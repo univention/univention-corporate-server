@@ -42,6 +42,7 @@ from debian.deb822 import Packages
 
 from tools import UniventionUpdater, NullHandler
 from ucs_version import UCS_Version
+from repo_url import UcsRepoUrl
 try:
     import univention.debug as ud
 except ImportError:
@@ -76,9 +77,7 @@ class UniventionMirror(UniventionUpdater):
     def config_repository(self):
         """ Retrieve configuration to access repository. Overrides UniventionUpdater. """
         self.online_repository = self.configRegistry.is_true('repository/mirror', True)
-        self.repository_server = self.configRegistry.get('repository/mirror/server', 'updates.software-univention.de')
-        self.repository_port = self.configRegistry.get('repository/mirror/port', '80')
-        self.repository_prefix = self.configRegistry.get('repository/mirror/prefix', '').strip('/')
+        self.repourl = UcsRepoUrl(self.configRegistry, 'repository/mirror')
         self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
         self.timeout = float(self.configRegistry.get('repository/mirror/timeout', 600))
         self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()

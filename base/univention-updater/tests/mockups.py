@@ -56,13 +56,9 @@ class MockUCSHttpServer(U.UCSLocalServer):
     PREFIX = 'mock'
     mock_content = {}
 
-    def __init__(self, server, port=None, prefix=None, username=None, password=None, user_agent=None, timeout=None):
+    def __init__(self, baseurl, user_agent=None, timeout=None):
         U.UCSLocalServer.__init__(self, MockUCSHttpServer.PREFIX)
-        self.mock_server = server
-        self.mock_port = port
-        self.mock_prefix = prefix
-        self.mock_username = username
-        self.mock_password = password
+        self.mock_url = baseurl
         self.mock_uris = []
         self.mock_uri = None
 

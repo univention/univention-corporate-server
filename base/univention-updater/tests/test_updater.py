@@ -51,9 +51,9 @@ class TestUniventionUpdater(unittest.TestCase):
         })
         self.u.config_repository()
         self.assertFalse(self.u.online_repository)
-        self.assertEqual(self.u.repository_server, 'example.net')
-        self.assertEqual(self.u.repository_port, '1234')
-        self.assertEqual(self.u.repository_prefix, 'prefix')
+        self.assertEqual(self.u.repourl.hostname, 'example.net')
+        self.assertEqual(self.u.repourl.port, 1234)
+        self.assertEqual(self.u.repourl.path, '/prefix/')
         self.assertTrue(self.u.sources)
         self.assertEqual(U.UCSHttpServer.http_method, 'POST')
 
@@ -599,11 +599,75 @@ class TestUniventionUpdater(unittest.TestCase):
             'deb file:///mock/%d.%d/maintained/ errata%d/%s/' % (MAJOR, MINOR, 2, ARCH),
         )), set(tmp.splitlines()))
 
+    def test__get_component_baseurl_default(self):
+        """Test getting default component configuration."""
+        u = self.u._get_component_baseurl('a')
+        self.assertEqual(self.u.repourl, u)
+
+    def test__get_component_baseurl_custom(self):
+        """Test getting custom component configuration."""
+        self._ucr({
+            'repository/online/component/a/server': 'a.example.net',
+            'repository/online/component/a/port': '4711',
+        })
+        u = self.u._get_component_baseurl('a')
+        self.assertEqual('a.example.net', u.hostname)
+        self.assertEqual(4711, u.port)
+
+    def test__get_component_baseurl_local(self):
+        """Test getting local component configuration."""
+        MockConfigRegistry._EXTRA = {
+            'local/repository': 'yes',
+            'repository/online/server': 'a.example.net',
+            'repository/online/port': '4711',
+            'repository/online/component/a': 'yes',
+        }
+        self.u.ucr_reinit()
+        u = self.u._get_component_baseurl('a')
+        self.assertEqual('a.example.net', u.hostname)
+        self.assertEqual(4711, u.port)
+
+    def test__get_component_baseurl_nonlocal(self):
+        """Test getting non local mirror component configuration."""
+        MockConfigRegistry._EXTRA = {
+            'local/repository': 'yes',
+            'repository/online/component/a': 'yes',
+            'repository/online/component/a/localmirror': 'no',
+            'repository/online/component/a/server': 'a.example.net',
+            'repository/online/component/a/port': '4711',
+        }
+        self.u.ucr_reinit()
+        u = self.u._get_component_baseurl('a')
+        self.assertEqual('a.example.net', u.hostname)
+        self.assertEqual(4711, u.port)
+
+    def test__get_component_baseurl_mirror(self):
+        """Test getting mirror component configuration."""
+        MockConfigRegistry._EXTRA = {
+            'local/repository': 'yes',
+            'repository/online/component/a': 'yes',
+            'repository/online/component/a/server': 'a.example.net',
+            'repository/online/component/a/port': '4711',
+        }
+        self.u.ucr_reinit()
+        u = self.u._get_component_baseurl('a', for_mirror_list=True)
+        self.assertEqual('a.example.net', u.hostname)
+        self.assertEqual(4711, u.port)
+
+    def test__get_component_baseurl_url(self):
+        """Test getting custom component configuration."""
+        self._ucr({
+            'repository/online/component/a/server': 'https://a.example.net/',
+        })
+        u = self.u._get_component_baseurl('a')
+        self.assertEqual('a.example.net', u.hostname)
+        self.assertEqual(443, u.port)
+        self.assertEqual('/', u.path)
+
     def test__get_component_server_default(self):
         """Test getting default component configuration."""
         s = self.u._get_component_server('a')
-        self.assertEqual(self.u.repository_server, s.mock_server)
-        self.assertEqual(self.u.repository_port, s.mock_port)
+        self.assertEqual(self.u.repourl, s.mock_url)
 
     def test__get_component_server_custom(self):
         """Test getting custom component configuration."""
@@ -612,8 +676,8 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/a/port': '4711',
         })
         s = self.u._get_component_server('a')
-        self.assertEqual('a.example.net', s.mock_server)
-        self.assertEqual('4711', s.mock_port)
+        self.assertEqual('a.example.net', s.mock_url.hostname)
+        self.assertEqual(4711, s.mock_url.port)
 
     def test__get_component_server_local(self):
         """Test getting local component configuration."""
@@ -625,8 +689,8 @@ class TestUniventionUpdater(unittest.TestCase):
         }
         self.u.ucr_reinit()
         s = self.u._get_component_server('a')
-        self.assertEqual('a.example.net', s.mock_server)
-        self.assertEqual('4711', s.mock_port)
+        self.assertEqual('a.example.net', s.mock_url.hostname)
+        self.assertEqual(4711, s.mock_url.port)
 
     def test__get_component_server_nonlocal(self):
         """Test getting non local mirror component configuration."""
@@ -639,8 +703,8 @@ class TestUniventionUpdater(unittest.TestCase):
         }
         self.u.ucr_reinit()
         s = self.u._get_component_server('a')
-        self.assertEqual('a.example.net', s.mock_server)
-        self.assertEqual('4711', s.mock_port)
+        self.assertEqual('a.example.net', s.mock_url.hostname)
+        self.assertEqual(4711, s.mock_url.port)
 
     def test__get_component_server_mirror(self):
         """Test getting mirror component configuration."""
@@ -652,8 +716,19 @@ class TestUniventionUpdater(unittest.TestCase):
         }
         self.u.ucr_reinit()
         s = self.u._get_component_server('a', for_mirror_list=True)
-        self.assertEqual('a.example.net', s.mock_server)
-        self.assertEqual('4711', s.mock_port)
+        self.assertEqual('a.example.net', s.mock_url.hostname)
+        self.assertEqual(4711, s.mock_url.port)
+
+    def test__get_component_server_none(self):
+        """Test getting custom component configuration."""
+        self._ucr({
+            'repository/online/component/a/server': 'a.example.net',
+            'repository/online/component/a/prefix': 'none',
+        })
+        s = self.u._get_component_server('a')
+        self.assertEqual('a.example.net', s.mock_url.hostname)
+        self.assertEqual('', s.mock_url.path)
+        self.assertEqual(1, len(s.mock_uris))
 
     def test__get_component_version_short(self):
         """Test getting component versions in range from MAJOR.MINOR."""

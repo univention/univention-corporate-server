@@ -52,6 +52,7 @@ from errors import (
     VerificationError,
 )
 from ucs_version import UCS_Version
+from repo_url import UcsRepoUrl
 
 import errno
 import sys
@@ -62,7 +63,6 @@ import httplib
 import socket
 import univention.config_registry
 import urllib2
-from urllib import quote
 import subprocess
 import new
 import tempfile
@@ -318,18 +318,10 @@ class UCSHttpServer(object):
             else:
                 return None
 
-    def __init__(self, server, port=80, prefix='', username=None, password=None, user_agent=None, timeout=None):
+    def __init__(self, baseurl, user_agent=None, timeout=None):
         self.log = logging.getLogger('updater.UCSHttp')
         self.log.addHandler(NullHandler())
-        self.server = server
-        self.port = int(port)
-        prefix = str(prefix).strip('/')
-        if prefix:
-            self.prefix = '%s/' % prefix
-        else:
-            self.prefix = ''
-        self.username = username
-        self.password = password
+        self.baseurl = baseurl
         self.user_agent = user_agent
         self.timeout = timeout
 
@@ -342,6 +334,10 @@ class UCSHttpServer(object):
     opener = urllib2.build_opener(head_handler, auth_handler, proxy_handler)
     failed_hosts = set()
 
+    @property
+    def prefix(self):
+        return self.baseurl.path.lstrip('/')
+
     @classmethod
     def reinit(self):
         '''Reload proxy settings and reset failed hosts.'''
@@ -349,60 +345,35 @@ class UCSHttpServer(object):
         self.opener = urllib2.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
         self.failed_hosts = set()
 
-    def __getitem__(self, item):
-        '''Convert attributes to dict.'''
-        if item == 'server':
-            return self.server
-        elif item == 'prefix':
-            return quote(self.prefix)
-        elif item == 'port':
-            if self.port == 80:
-                return ''
-            else:
-                return ':%d' % self.port
-        elif item == 'cred':
-            if self.username:
-                # FIXME http://bugs.debian.org/500560: [@:/] don't work
-                return "%s:%s@" % (quote(self.username), quote(self.password))
-            else:
-                return ''
-        else:
-            raise KeyError(item)
-
     def __str__(self):
         '''URI with credentials.'''
-        return 'http://%(cred)s%(server)s%(port)s/%(prefix)s' % self
+        return self.baseurl.private()
 
     def __repr__(self):
         '''Return canonical string representation.'''
-        return 'UCSHttpServer(%r, port=%d, prefix=%r, username=%r, password=%r, timeout=%r)' % (
-            self.server,
-            self.port,
-            self.prefix,
-            self.username,
-            self.password,
+        return '%s(%r, timeout=%r)' % (
+            self.__class__.__name__,
+            self.baseurl,
             self.timeout,
         )
 
     def __add__(self, rel):
-        '''Append relative URI.'''
+        '''Append relative path component.'''
         uri = copy.copy(self)
-        uri.prefix += '%s/' % str(rel).strip('/')
+        uri.baseurl += rel
         return uri
 
     def join(self, rel):
         '''Return joind URI without credential.'''
-        uri = 'http://%(server)s%(port)s/%(prefix)s' % self
-        uri += quote(str(rel).lstrip('/'))
-        return uri
+        return (self.baseurl + rel).public()
 
     def access(self, rel, get=False):
         '''Access URI and optionally get data. Return None on errors.'''
         if self.user_agent:
             UCSHttpServer.opener.addheaders = [('User-agent', self.user_agent)]
         uri = self.join(rel)
-        if self.username:
-            UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.username, passwd=self.password)
+        if self.baseurl.username:
+            UCSHttpServer.auth_handler.add_password(realm=None, uri=uri, user=self.baseurl.username, passwd=self.baseurl.password)
         req = urllib2.Request(uri)
         if req.get_host() in self.failed_hosts:
             self.log.error('Already failed %s', req.get_host())
@@ -560,9 +531,7 @@ class UniventionUpdater:
     def config_repository(self):
         '''Retrieve configuration to access repository. Overridden in UniventionMirror.'''
         self.online_repository = self.configRegistry.is_true('repository/online', True)
-        self.repository_server = self.configRegistry.get('repository/online/server', 'updates.software-univention.de')
-        self.repository_port = self.configRegistry.get('repository/online/port', '80')
-        self.repository_prefix = self.configRegistry.get('repository/online/prefix', '').strip('/')
+        self.repourl = UcsRepoUrl(self.configRegistry, 'repository/online')
         self.sources = self.configRegistry.is_true('repository/online/sources', False)
         self.timeout = float(self.configRegistry.get('repository/online/timeout', 600))
         UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
@@ -608,14 +577,12 @@ class UniventionUpdater:
 
         # Auto-detect prefix
         self.server = UCSHttpServer(
-            server=self.repository_server,
-            port=self.repository_port,
-            prefix=self.repository_prefix,
+            baseurl=self.repourl,
             user_agent=user_agent,
             timeout=self.timeout,
         )
         try:
-            if not self.repository_prefix:
+            if not self.repourl.path:
                 try:
                     assert self.server.access('/univention-repository/')
                     self.server += '/univention-repository/'
@@ -627,11 +594,11 @@ class UniventionUpdater:
             # Validate server settings
             try:
                 assert self.server.access('')
-                self.log.info('Using configured prefix %s', self.repository_prefix)
+                self.log.info('Using configured prefix %s', self.repourl.path)
             except DownloadError, e:
-                self.log.exception('Failed configured prefix %s', self.repository_prefix)
+                self.log.exception('Failed configured prefix %s', self.repourl.path)
                 uri, code = e
-                raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repository_prefix, uri))
+                raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
         except ConfigurationError, e:
             if self.check_access:
                 self.log.exception('Failed server detection: %s' % (e,))
@@ -1374,11 +1341,8 @@ class UniventionUpdater:
 
         return '\n'.join(result)
 
-    def _get_component_server(self, component, for_mirror_list=False):
-        '''
-        Return UCSServer as configures via UCR.
-        If for_repo_server=True then the
-
+    def _get_component_baseurl(self, component, for_mirror_list=False):
+        """
         CS = value of repository/online/component/%s/server
         MS = value of repository/mirror/server
         RS = value of repository/online/server
@@ -1408,55 +1372,41 @@ class UniventionUpdater:
 
         if repository/online/component/%s/localmirror is unset, then the value of
         repository/online/component/%s will be used to achieve backward compatibility.
-        '''
+        """
 
-        if not self.is_repository_server:
-            server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
-            port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
-        else:
-            m_server = self.configRegistry.get('repository/mirror/server', None)
-            m_port = self.configRegistry.get('repository/mirror/port', self.repository_port)
+        c_prefix = 'repository/online/component/%s' % component
+        if self.is_repository_server:
+            m_url = UcsRepoUrl(self.configRegistry, 'repository/mirror')
             c_enabled = self.configRegistry.is_true('repository/online/component/%s' % component, False)
             c_localmirror = self.configRegistry.is_true('repository/online/component/%s/localmirror' % component, c_enabled)
 
-            if not for_mirror_list:
-                # server/port for sources.list
-
-                if c_enabled and c_localmirror:
-                    server = self.repository_server
-                    port = self.repository_port
-
-                elif c_enabled and not c_localmirror:
-                    server = self.configRegistry.get('repository/online/component/%s/server' % component, m_server)
-                    port = self.configRegistry.get('repository/online/component/%s/port' % component,   m_port)
-
-                else:
-                    # if component is not enabled, then why is this method called?
-                    raise CannotResolveComponentServerError(component, for_mirror_list)
-
-            else:
-                # server/port for mirror.list
-
+            if for_mirror_list:  # mirror.list
                 if c_localmirror:
-                    server = self.configRegistry.get('repository/online/component/%s/server' % component, m_server)
-                    port = self.configRegistry.get('repository/online/component/%s/port' % component,   m_port)
+                    return UcsRepoUrl(self.configRegistry, c_prefix, m_url)
+            else:  # sources.list
+                if c_enabled:
+                    if c_localmirror:
+                        return self.repourl
+                    else:
+                        return UcsRepoUrl(self.configRegistry, c_prefix, m_url)
+        else:
+            return UcsRepoUrl(self.configRegistry, c_prefix, self.repourl)
 
-                else:
-                    # if component is not enabled for mirroring, then why is this method called?
-                    raise CannotResolveComponentServerError(component, for_mirror_list)
+        raise CannotResolveComponentServerError(component, for_mirror_list)
 
+    def _get_component_server(self, component, for_mirror_list=False):
+        '''
+        Return UCSServer as configures via UCR.
+        '''
+
+        c_url = self._get_component_baseurl(component, for_mirror_list)
+        c_url.path = ''
         prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, '')
-        username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
-        password = self.configRegistry.get('repository/online/component/%s/password' % component, None)
 
         user_agent = self._get_user_agent_string()
 
         server = UCSHttpServer(
-            server=server,
-            port=port,
-            prefix='',
-            username=username,
-            password=password,
+            baseurl=c_url,
             user_agent=user_agent,
             timeout=self.timeout,
         )
@@ -1467,28 +1417,24 @@ class UniventionUpdater:
                     assert server.access('')
                 except DownloadError, e:
                     uri, code = e
-                    raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (str(component), str(uri)))
+                    raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (component, uri))
             else:
-                # build list of possible repository prefixes
-                test_server_list = []
-                test_server_list.append(server + '/univention-repository/')    # first test
-                if self.repository_prefix:
-                    test_server_list.append(server + self.repository_prefix)   # second test (only if repository_prefix is defined)
-                test_server_list.append(server)                                # last guess :-)
-
-                for testserver in test_server_list:
-                    if prefix:
-                        testserver = testserver + prefix  # append prefix if defined
-
+                for testserver in [
+                    server + '/univention-repository/',
+                    server + self.repourl.path if self.repourl.path else None,
+                    server,
+                ]:
+                    if not testserver:
+                        continue
+                    if prefix:  # append prefix if defined
+                        testserver = testserver + '%s/' % (prefix.strip('/'),)
                     try:
                         assert testserver.access('')
-                        server = testserver               # testserver is valid ==> save it
-                        break                             # server is valid ==> stop loop here; "else" statement will not match
+                        return testserver
                     except DownloadError, e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
                         uri, code = e
-                else:
-                    raise ConfigurationError(uri, 'non-existing component prefix: %s' % (str(uri)))
+                raise ConfigurationError(uri, 'non-existing component prefix: %s' % (uri,))
 
         except ConfigurationError:
             if self.check_access:

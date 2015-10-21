@@ -1,3 +1,9 @@
+univention-updater (11.0.3-1) unstable; urgency=low
+
+  * Bug #39306: Use https:// by default
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 25 Sep 2015 09:12:17 +0200
+
 univention-updater (11.0.2-9) unstable; urgency=low
 
   * Bug #36721: Fix usage of /cdrom

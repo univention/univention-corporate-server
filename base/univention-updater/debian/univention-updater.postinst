@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#REPOSITORY="updates.software-univention.de"
-REPOSITORY="updates-test.software-univention.de"
+#REPOSITORY="https://updates.software-univention.de/"
+REPOSITORY="https://updates-test.software-univention.de/"
 
 # Force linking of Python modules
 if which update-python-modules >/dev/null 2>&1; then
@@ -61,6 +61,21 @@ Vahr	UCS 4.1	https://de.wikipedia.org/wiki/Vahr
 __CODENAMES__
 
 if [ "$1" = "configure" ]; then
+	# Bug 39306: unset repository server for switch-over to https:// with UCS-4.1
+	if dpkg --compare-versions "$2" lt-nl 11.0.3
+	then
+		case "$(ucr get repository/online/server)" in
+		apt.univention.de|updates.software-univention.de)
+			ucr unset repository/online/server repository/online/port repository/online/prefix
+			;;
+		esac
+		case "$(ucr get repository/mirror/server)" in
+		apt.univention.de|updates.software-univention.de)
+			ucr unset repository/mirror/server repository/mirror/port repository/mirror/prefix
+			;;
+		esac
+	fi
+
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
 		/usr/lib/univention-directory-policy/univention-policy-maintenance
@@ -74,7 +89,6 @@ if [ "$1" = "configure" ]; then
 		update/umc/nextversion?true \
 		repository/online?no \
 		repository/online/server?"${REPOSITORY}" \
-		repository/online/port?80 \
 		repository/online/unmaintained?no \
 		repository/mirror?no \
 		repository/mirror/threads?10 \

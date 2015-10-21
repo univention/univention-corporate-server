@@ -1,6 +1,6 @@
 [repository/online/server]
-Description[de]=Der Repository-Server, von dem Softwarepakete bezogen werden. Ist die Variable nicht gesetzt, wird updates.software-univention.de verwendet.
-Description[en]=The repository server from which software packages are retrieved. If the variable is unset, updates.software-univention.de is used.
+Description[de]=Der Repository-Server, von dem Softwarepakete bezogen werden. Ist die Variable nicht gesetzt, wird <https://updates.software-univention.de/> verwendet. Wird statt einem Hostname eine URI angegeben, überschreibt diese '.../port' und '.../prefix'.
+Description[en]=The repository server from which software packages are retrieved. If the variable is unset, <https://updates.software-univention.de/> is used. If an URI is given instead on a hostname, this also overwrites '.../port' and '.../prefix'.
 Type=str
 Categories=service-software-management
 
@@ -126,8 +126,8 @@ Type=str
 Categories=service-software-management
 
 [repository/online/component/.*/server]
-Description[de]=Der Repository-Server, von dem die Pakete der Komponente bezogen werden. Ist die Variable nicht gesetzt, wird der Wert aus 'repository/online/server' verwendet.
-Description[en]=The repository server from which packages of the component are retrieved. If the variable is unset, the value from 'repository/online/server' is used.
+Description[de]=Der Repository-Server, von dem die Pakete der Komponente bezogen werden. Ist die Variable nicht gesetzt, wird der Wert aus 'repository/online/server' verwendet. Wird statt einem Hostname eine URI angegeben, überschreibt diese '.../port' und '.../prefix'.
+Description[en]=The repository server from which packages of the component are retrieved. If the variable is unset, the value from 'repository/online/server' is used. If an URI is given instead on a hostname, this also overwrites '.../port' and '.../prefix'.
 Type=str
 Categories=service-software-management
 
@@ -174,8 +174,8 @@ Type=bool
 Categories=service-software-management
 
 [repository/mirror/server]
-Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), kann hier der Server konfiguriert werden, von dem die Pakete geladen werden. Ist die Variable nicht gesetzt, wird 'updates.software-univention.de' verwendet.
-Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror'), the server can be configured here from which the packages are retrieved. If the variable is unset, 'updates.software-univention.de' is used.
+Description[de]=Ist die Spiegelung des Repositorys aktiviert (siehe 'repository/mirror'), kann hier der Server konfiguriert werden, von dem die Pakete geladen werden. Ist die Variable nicht gesetzt, wird <https://updates.software-univention.de/> verwendet. Wird statt einem Hostname eine URI angegeben, überschreibt diese '.../port' und '.../prefix'.
+Description[en]=If the mirroring of the repository has been activated (see 'repository/mirror'), the server can be configured here from which the packages are retrieved. If the variable is unset, <https://updates.software-univention.de/> is used. If an URI is given instead on a hostname, this also overwrites '.../port' and '.../prefix'.
 Type=str
 Categories=service-software-management
 

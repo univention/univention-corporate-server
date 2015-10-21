@@ -24,6 +24,7 @@ class TestUniventionMirror(unittest.TestCase):
         self._uri({
             # 'univention-repository/': '',
             '': '',
+            '/': '',
         })
         self.base_dir = mkdtemp()
         self.mock_file = MockFile(os.path.join(self.base_dir, 'mock'))
@@ -70,9 +71,9 @@ class TestUniventionMirror(unittest.TestCase):
         })
         self.m.config_repository()
         self.assertFalse(self.m.online_repository)
-        self.assertEqual(self.m.repository_server, 'example.net')
-        self.assertEqual(self.m.repository_port, '1234')
-        self.assertEqual(self.m.repository_prefix, 'prefix')
+        self.assertEqual(self.m.repourl.hostname, 'example.net')
+        self.assertEqual(self.m.repourl.port, 1234)
+        self.assertEqual(self.m.repourl.path, '/prefix/')
         self.assertTrue(self.m.sources)
         self.assertEqual(self.m.http_method, 'POST')
         self.assertTrue(self.m.script_verify)
@@ -149,7 +150,11 @@ class TestUniventionMirrorList(unittest.TestCase):
         MockConfigRegistry._EXTRA = {
             'repository/mirror/basepath': self.base_dir,
         }
-        self._uri({'univention-repository/': ''})
+        self._uri({
+            '': '',
+            '/': '',
+            'univention-repository/': '',
+        })
         self.m = M.UniventionMirror()
         repos = (
                 (U.UCS_Version((MAJOR, MINOR, PATCH)), False),
