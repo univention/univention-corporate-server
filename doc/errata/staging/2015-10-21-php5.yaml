@@ -1,0 +1,65 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-7
+src: php5
+fix: 5.3.3.1-7.217.201510211813
+version: [7]
+desc: |
+ This erratum fixes the following issues in php5:
+ * Remote Denial of Service and possibly unspecified other impact via a
+   crafted tar archive due to heap metadata corruption in the
+   phar_parse_metadata function in ext/phar/phar.c (CVE-2015-3307)
+ * missing null byte checks for paths in various PHP extensions (CVE-2015-3411
+   and CVE-2015-3412)
+ * Remote Denial of Service via a crafted entry in a tar archive due to
+   integer underflow and memory corruption in the phar_parse_tarfile function
+   in ext/phar/tar.c (CVE-2015-4021)
+ * Integer overflow in the ftp_genlist() function may result in denial of
+   service or potentially the execution of arbitrary code (CVE-2015-4022)
+ * Multiple function didn't check for NULL bytes in path names (CVE-2015-4025
+   CVE-2015-4026)
+ * Arbitrary code execution by providing crafted serialized data with an
+   unexpected data type, due to SoapClient::__call method in ext/soap/soap.c
+   in PHP before 5.4.39 not verifying that __default_headers is an array
+   (CVE-2015-4147)
+ * Information disclosure providing crafted serialized data with an int data
+   type due to the do_soap_call function in ext/soap/soap.c in PHP before
+   5.4.39 not verifying that the uri property is a string (CVE-2015-4148)
+ * missing null byte checks for paths in DOM and GD extensions (CVE-2015-4598)
+ * Type confusion vulnerability in exception::getTraceAsString in
+   unserialize() with various SOAP methods (CVE-2015-4599 CVE-2015-4600
+   CVE-2015-4601)
+ * Incomplete Class unserialization type confusion (CVE-2015-4602)
+ * denial of service when processing a crafted file with Fileinfo
+   (CVE-2015-4604 CVE-2015-4605)
+ * integer overflow in ftp_genlist() resulting in heap overflow (improved fix
+   for CVE-2015-4022) (CVE-2015-4643)
+ * NULL pointer dereference in php_pgsql_meta_data() (CVE-2015-4644)
+ * Denial of Service due to Segfault in Phar::convertToData on invalid file
+   (CVE-2015-5589)
+ * Crash or code injection due to Buffer overflow and stack smashing error in
+   phar_fix_filepath (CVE-2015-5590)
+bug:
+ - 39214
+cve:
+ - CVE-2015-3307
+ - CVE-2015-3411
+ - CVE-2015-3412
+ - CVE-2015-4021
+ - CVE-2015-4022
+ - CVE-2015-4025
+ - CVE-2015-4026
+ - CVE-2015-4147
+ - CVE-2015-4148
+ - CVE-2015-4598
+ - CVE-2015-4599
+ - CVE-2015-4600
+ - CVE-2015-4601
+ - CVE-2015-4602
+ - CVE-2015-4604
+ - CVE-2015-4605
+ - CVE-2015-4022
+ - CVE-2015-4643
+ - CVE-2015-4644
+ - CVE-2015-5589
+ - CVE-2015-5590
