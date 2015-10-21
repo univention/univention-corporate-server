@@ -31,26 +31,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-name='license_uuid'
-description='Dump key id from license to local UCR variable'
-filter='(&(objectClass=univentionLicense)(cn=admin))'
+name = 'license_uuid'
+description = 'Dump key id from license to local UCR variable'
+filter = '(&(objectClass=univentionLicense)(cn=admin))'
 
-__package__='' 	# workaround for PEP 366
+__package__ = '' 	# workaround for PEP 366
 import listener
 import univention.config_registry
 
+
 def handler(dn, new, old):
-	if new:
-		listener.setuid(0)
-		try:
-			ucrVars = ['license/base=%s' % new.get('univentionLicenseBaseDN')[0]]
-			if new.get('univentionLicenseKeyID'):
-				ucrVars.append('uuid/license=%s' % new.get('univentionLicenseKeyID')[0])
-			else:
-				univention.config_registry.handler_unset(['uuid/license'])
-			univention.config_registry.handler_set(ucrVars)
-		finally:
-			listener.unsetuid()
-	pass
-
-
+    if new:
+        listener.setuid(0)
+        try:
+            ucrVars = ['license/base=%s' % new.get('univentionLicenseBaseDN')[0]]
+            if new.get('univentionLicenseKeyID'):
+                ucrVars.append('uuid/license=%s' % new.get('univentionLicenseKeyID')[0])
+            else:
+                univention.config_registry.handler_unset(['uuid/license'])
+            univention.config_registry.handler_set(ucrVars)
+        finally:
+            listener.unsetuid()
+    pass

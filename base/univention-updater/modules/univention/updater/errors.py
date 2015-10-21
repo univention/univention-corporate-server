@@ -33,77 +33,94 @@
 
 
 class UpdaterException(Exception):
-	"""The root of all updater excptions."""
-	pass
+
+    """The root of all updater excptions."""
+    pass
 
 
 class RequiredComponentError(UpdaterException):
-	"""Signal required component not available."""
-	def __init__(self, version, components):
-		self.version = version
-		self.components = components
 
-	def __str__(self):
-		"""
-		>>> '%s' % RequiredComponentError('4.0-0', set(('a',)))
-		"The update to UCS 4.0-0 is blocked because the component 'a' is marked as required."
-		>>> '%s' % RequiredComponentError('4.0-0', set(('a', 'b'))) #doctest: +ELLIPSIS
-		"The update to UCS 4.0-0 is blocked because the components '...', '...' are marked as required."
-		"""
-		return (
-			"The update to UCS %s is blocked because the component %s is marked as required."
-			if len(self.components) == 1
-			else "The update to UCS %s is blocked because the components %s are marked as required."
-		) % (self.version, ', '.join("'%s'" % (_,) for _ in self.components))
+    """Signal required component not available."""
+
+    def __init__(self, version, components):
+        self.version = version
+        self.components = components
+
+    def __str__(self):
+        """
+        >>> '%s' % RequiredComponentError('4.0-0', set(('a',)))
+        "The update to UCS 4.0-0 is blocked because the component 'a' is marked as required."
+        >>> '%s' % RequiredComponentError('4.0-0', set(('a', 'b'))) #doctest: +ELLIPSIS
+        "The update to UCS 4.0-0 is blocked because the components '...', '...' are marked as required."
+        """
+        return (
+            "The update to UCS %s is blocked because the component %s is marked as required."
+                if len(self.components) == 1
+                else "The update to UCS %s is blocked because the components %s are marked as required."
+        ) % (self.version, ', '.join("'%s'" % (_,) for _ in self.components))
 
 
 class PreconditionError(UpdaterException):
-	"""Signal abort by release or component pre-/post-update script.
-	args=(phase=preup|postup, order=pre|main|post, component, script-filename)."""
-	def __init__(self, phase, order, component, script):
-		Exception.__init__(self, phase, order, component, script)
+
+    """Signal abort by release or component pre-/post-update script.
+    args=(phase=preup|postup, order=pre|main|post, component, script-filename)."""
+
+    def __init__(self, phase, order, component, script):
+        Exception.__init__(self, phase, order, component, script)
 
 
 class DownloadError(UpdaterException):
-	"""Signal temporary error in network communication."""
-	def __str__(self):
-		return "Error downloading %s: %d" % self.args
+
+    """Signal temporary error in network communication."""
+
+    def __str__(self):
+        return "Error downloading %s: %d" % self.args
 
 
 class ConfigurationError(UpdaterException):
-	"""Signal permanent error in configuration."""
-	def __str__(self):
-		return "Configuration error: %s" % self.args[1]
+
+    """Signal permanent error in configuration."""
+
+    def __str__(self):
+        return "Configuration error: %s" % self.args[1]
 
 
 class VerificationError(ConfigurationError):
-	"""Signal permanent error in script verification."""
-	def __str__(self):
-		return "Verification error: %s" % self.args[1]
+
+    """Signal permanent error in script verification."""
+
+    def __str__(self):
+        return "Verification error: %s" % self.args[1]
 
 
 class CannotResolveComponentServerError(ConfigurationError):
-	"""Signal permanent error in component configuration."""
-	def __init__(self, component, for_mirror_list):
-		self.component = component
-		self.for_mirror_list = for_mirror_list
 
-	def __str__(self):
-		return "Cannot resolve component server for disabled component '%s' (mirror_list=%s)." % (self.component, self.for_mirror_list)
+    """Signal permanent error in component configuration."""
+
+    def __init__(self, component, for_mirror_list):
+        self.component = component
+        self.for_mirror_list = for_mirror_list
+
+    def __str__(self):
+        return "Cannot resolve component server for disabled component '%s' (mirror_list=%s)." % (self.component, self.for_mirror_list)
 
 
 class ProxyError(ConfigurationError):
-	"""Signal permanent error in proxy configuration."""
-	def __str__(self):
-		return "Proxy configuration error: %s %s" % (self.args[1], self.args[0])
+
+    """Signal permanent error in proxy configuration."""
+
+    def __str__(self):
+        return "Proxy configuration error: %s %s" % (self.args[1], self.args[0])
 
 
 class LockingError(UpdaterException):
-	"""Signal other updater process running."""
-	def __str__(self):
-		return "Another updater process is currently running - abort\n%s" % self.args[0]
+
+    """Signal other updater process running."""
+
+    def __str__(self):
+        return "Another updater process is currently running - abort\n%s" % self.args[0]
 
 
 if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
+    import doctest
+    doctest.testmod()

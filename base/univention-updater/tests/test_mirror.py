@@ -13,6 +13,7 @@ DATA = 'x' * U.MIN_GZIP
 
 
 class TestUniventionMirror(unittest.TestCase):
+
     """Unit test for univention.updater.tools"""
 
     def setUp(self):
@@ -20,7 +21,7 @@ class TestUniventionMirror(unittest.TestCase):
         self._uri({
             #'univention-repository/': '',
             '': '',
-            })
+        })
         self.base_dir = mkdtemp()
         self.mock_file = MockFile(os.path.join(self.base_dir, 'mock'))
         __builtins__.open = self.mock_file
@@ -30,7 +31,7 @@ class TestUniventionMirror(unittest.TestCase):
             #'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
             'repository/mirror/architectures': ' '.join(ARCH),
             'repository/mirror/verify': 'no',
-            }
+        }
         self.m = M.UniventionMirror()
 
     def _ucr(self, variables):
@@ -63,7 +64,7 @@ class TestUniventionMirror(unittest.TestCase):
             'repository/mirror/sources': 'yes',
             'repository/mirror/httpmethod': 'POST',
             'repository/mirror/verify': 'yes',
-            })
+        })
         self.m.config_repository()
         self.assertFalse(self.m.online_repository)
         self.assertEqual(self.m.repository_server, 'example.net')
@@ -95,7 +96,7 @@ class TestUniventionMirror(unittest.TestCase):
             'repository/online/component/b': 'yes',
             'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
             'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, 0, 0),
-            })
+        })
         uris = {
             '%d.%d/maintained/%d.%d-%d/%s/Packages.gz' % (MAJOR, 0, MAJOR, 0, 0, 'all'): DATA,
             '%d.%d/maintained/%d.%d-%d/%s/preup.sh' % (MAJOR, 0, MAJOR, 0, 0, 'all'): '#!r_pre',
@@ -109,7 +110,7 @@ class TestUniventionMirror(unittest.TestCase):
             '%d.%d/maintained/component/%s/Packages.gz' % (MAJOR, 0, 'b'): DATA,
             '%d.%d/maintained/component/%s/preup.sh' % (MAJOR, 0, 'b'): '#!b_pre',
             '%d.%d/maintained/component/%s/postup.sh' % (MAJOR, 0, 'b'): '#!b_post',
-            }
+        }
         self._uri(uris)
         self.m.mirror_update_scripts()
         for key, value in uris.items():
@@ -126,22 +127,25 @@ class TestUniventionMirror(unittest.TestCase):
                 fd_script.close()
             self.assertEqual(script, value)
 
-    #def test_update_dists_files(self):
+    # def test_update_dists_files(self):
     #    """Test dists/univention/main/binary-$ARCH/Packages.gz generation."""
-    #    pass  # TODO
+    # pass  # TODO
 
-    #def test_run(self):
+    # def test_run(self):
     #    """Test full mirror run."""
-    #    pass  # TODO
+    # pass  # TODO
+
 
 class TestUniventionMirrorList(unittest.TestCase):
+
     """Test listing locally available repositories."""
+
     def setUp(self):
         """Create Mirror mockup."""
         self.base_dir = mkdtemp()
         MockConfigRegistry._EXTRA = {
             'repository/mirror/basepath': self.base_dir,
-            }
+        }
         self._uri({'univention-repository/': ''})
         self.m = M.UniventionMirror()
         repos = (
@@ -151,7 +155,7 @@ class TestUniventionMirrorList(unittest.TestCase):
                 (U.UCS_Version((MAJOR, MINOR, PATCH + 1)), True),
                 (U.UCS_Version((MAJOR, MINOR + 1, PATCH)), True),
                 (U.UCS_Version((MAJOR, MINOR + 1, PATCH + 1)), True),
-                )
+        )
         self.repos = []
         for ver, maintained in repos:
             major_minor = U.UCS_Version.FORMAT % ver
@@ -224,7 +228,7 @@ if __name__ == '__main__':
     if False:
         import univention.debug as ud
         ud.init('stderr', ud.NO_FUNCTION, ud.NO_FLUSH)
-        ud.set_level(ud.NETWORK, ud.ALL+1)
+        ud.set_level(ud.NETWORK, ud.ALL + 1)
     if False:
         import logging
         logging.basicConfig(level=logging.DEBUG)

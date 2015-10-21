@@ -39,80 +39,80 @@ from univention.config_registry import ConfigRegistry
 import univention.updater.repository as urepo
 import univention.updater.tools
 
+
 def usage(fd=sys.stdout):
-	print >>fd, 'univention-repository-delpackage: tool for removing packages from local repository'
-	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
-	print >>fd, ''
-	print >>fd, 'Syntax:'
-	print >>fd, '  univention-repository-delpackage --file <debian_package> <debian_package>'
-	print >>fd, '  univention-repository-delpackage [--help] '
-	print >>fd, ''
+    print >>fd, 'univention-repository-delpackage: tool for removing packages from local repository'
+    print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+    print >>fd, ''
+    print >>fd, 'Syntax:'
+    print >>fd, '  univention-repository-delpackage --file <debian_package> <debian_package>'
+    print >>fd, '  univention-repository-delpackage [--help] '
+    print >>fd, ''
 
 # parse options
 if __name__ == '__main__':
 
-	if len(sys.argv) < 2:
-		usage()
-		sys.exit(1)
+    if len(sys.argv) < 2:
+        usage()
+        sys.exit(1)
 
-	if sys.argv[1] in ['-h', '-?', '--help']:
-		usage()
-		sys.exit(0)
+    if sys.argv[1] in ['-h', '-?', '--help']:
+        usage()
+        sys.exit(0)
 
+    longopts = ['file=']
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], '', longopts)
+    except getopt.error, msg:
+        print msg
+        sys.exit(1)
 
-	longopts=['file=' ]
-	try:
-		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
-	except getopt.error, msg:
-		print msg
-		sys.exit(1)
+    files = []
+    packages_dir = ''
+    for opt, val in opts:
+        if opt == '--file':
+            files.append(val)
 
-	files=[]
-	packages_dir=''
-	for opt, val in opts:
-		if opt == '--file':
-			files.append(val)
+    if len(files) > 0:
+        for i in args:
+            files.append(i)
 
-	if len(files) > 0:
-		for i in args:
-			files.append(i)
+    if len(files) < 1:
+        usage()
+        sys.exit(1)
 
-	if len(files) < 1:
-		usage()
-		sys.exit(1)
+    try:
+        lock = univention.updater.tools.updater_lock_acquire()
+    except univention.updater.tools.LockingError, e:
+        print >>sys.stderr, e
+        sys.exit(5)
+    try:
+        ucr = ConfigRegistry()
+        ucr.load()
 
-	try:
-		lock = univention.updater.tools.updater_lock_acquire()
-	except univention.updater.tools.LockingError, e:
-		print >>sys.stderr, e
-		sys.exit(5)
-	try:
-		ucr = ConfigRegistry()
-		ucr.load()
+        if ucr.is_false('local/repository', True):
+            print >> sys.stderr, 'Error: The local repository is diabled. Use "univention-config-registry set local/repository=yes" to activate local repository'
+            sys.exit(1)
 
-		if ucr.is_false('local/repository', True):
-			print >> sys.stderr, 'Error: The local repository is diabled. Use "univention-config-registry set local/repository=yes" to activate local repository'
-			sys.exit(1)
+        dirs = []
 
-		dirs=[]
+        for file in files:
+            if file.endswith('.deb') and os.path.exists(file):
+                dir, filename = os.path.split(file)
+                basedir = urepo.get_repo_basedir(dir)
+                if not basedir in dirs:
+                    dirs.append(basedir)
+                os.unlink(file)
 
-		for file in files:
-			if file.endswith('.deb') and os.path.exists(file):
-				dir, filename = os.path.split( file )
-				basedir = urepo.get_repo_basedir( dir )
-				if not basedir in dirs:
-					dirs.append( basedir )
-				os.unlink( file )
+        for path in dirs:
+            # these might not exist if creating a new repository
+            urepo.create_packages(path, '.')
+            if path[-1] == '/':
+                path = path[: -1]
 
-		for path in dirs:
-			# these might not exist if creating a new repository
-			urepo.create_packages( path, '.' )
-			if path[ -1 ] == '/':
-				path = path[ : -1 ]
-
-			head, tail = os.path.split( path )
-			for arch in urepo.ARCHITECTURES:
-				urepo.create_packages( head, '%s/%s' % ( tail, arch ) )
-	finally:
-		if not univention.updater.tools.updater_lock_release(lock):
-			print 'WARNING: updater-lock already released!'
+            head, tail = os.path.split(path)
+            for arch in urepo.ARCHITECTURES:
+                urepo.create_packages(head, '%s/%s' % (tail, arch))
+    finally:
+        if not univention.updater.tools.updater_lock_release(lock):
+            print 'WARNING: updater-lock already released!'

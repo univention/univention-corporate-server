@@ -49,302 +49,302 @@ from univention.updater.mirror import makedirs, UniventionMirror
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
-_mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
-_repo_base = "" # this path is set later in __main__
+_mirror_base = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
+_repo_base = ""  # this path is set later in __main__
 
 
-def check_preconditions( options ):
-	""" Check for already existing mirror and for debmirror package """
-	# check directories
-	if os.path.exists( os.path.join( _mirror_base, 'mirror' ) ):
-		print >> sys.stderr, 'Warning: The path %s/mirror already exists.' % _mirror_base
+def check_preconditions(options):
+    """ Check for already existing mirror and for debmirror package """
+    # check directories
+    if os.path.exists(os.path.join(_mirror_base, 'mirror')):
+        print >> sys.stderr, 'Warning: The path %s/mirror already exists.' % _mirror_base
 
-	if options.interactive:
-		print "Are you sure you want to create a local repository? [yN] ",
-		sys.stdin.flush()
-		if not sys.stdin.readline().startswith( 'y' ):
-			print >> sys.stderr, 'Aborted.'
-			sys.exit( 1 )
+    if options.interactive:
+        print "Are you sure you want to create a local repository? [yN] ",
+        sys.stdin.flush()
+        if not sys.stdin.readline().startswith('y'):
+            print >> sys.stderr, 'Aborted.'
+            sys.exit(1)
 
-	# install univention-debmirror
-	print 'Installing univention-debmirror'
-	ret=subprocess.call( ['univention-install', '--yes', 'univention-debmirror' ] )
-	if ret != 0:
-		print >> sys.stderr, 'Error: Failed to install univention-debmirror'
-		sys.exit( 1 )
+    # install univention-debmirror
+    print 'Installing univention-debmirror'
+    ret = subprocess.call(['univention-install', '--yes', 'univention-debmirror'])
+    if ret != 0:
+        print >> sys.stderr, 'Error: Failed to install univention-debmirror'
+        sys.exit(1)
 
-	ret, msg = urepo.is_debmirror_installed()
-	if not ret:
-		print >> sys.stderr, msg
-		sys.exit( 1 )
+    ret, msg = urepo.is_debmirror_installed()
+    if not ret:
+        print >> sys.stderr, msg
+        sys.exit(1)
 
 
 def prepare(options):
-	""" Set local/repository and create directory structure """
-	# set local/repository
-	if configRegistry.is_false( 'local/repository', True ):
-		ucr.handler_set( [ 'local/repository=yes' ] )
-		configRegistry.load()
+    """ Set local/repository and create directory structure """
+    # set local/repository
+    if configRegistry.is_false('local/repository', True):
+        ucr.handler_set(['local/repository=yes'])
+        configRegistry.load()
 
-	if configRegistry.is_false( 'repository/mirror', True):
-		ucr.handler_set( [ 'repository/mirror=yes' ] )
-		configRegistry.load()
+    if configRegistry.is_false('repository/mirror', True):
+        ucr.handler_set(['repository/mirror=yes'])
+        configRegistry.load()
 
-	# create directory structure
-	makedirs(_repo_base)
-	for arch in urepo.ARCHITECTURES:
-		makedirs(os.path.join(_repo_base, arch))
+    # create directory structure
+    makedirs(_repo_base)
+    for arch in urepo.ARCHITECTURES:
+        makedirs(os.path.join(_repo_base, arch))
 
 
-def copy_repository( options ):
-	""" Copy version info, kernels, grub configuration, profiles, packages and dists """
-	print 'Copying data. Please be patient ...'
+def copy_repository(options):
+    """ Copy version info, kernels, grub configuration, profiles, packages and dists """
+    print 'Copying data. Please be patient ...'
 
-	print '  copying version information ...',
-	try:
-		shutil.copy2( os.path.join( options.mount_point, '.univention_install' ), _mirror_base )
-	except:
-		print 'failed.'
-	else:
-		print 'done.'
+    print '  copying version information ...',
+    try:
+        shutil.copy2(os.path.join(options.mount_point, '.univention_install'), _mirror_base)
+    except:
+        print 'failed.'
+    else:
+        print 'done.'
 
-	# copy kernel and grub config
-	if options.version.major < 4:
-		print '  copying kernel and boot configuration ...',
-		boot_dest = os.path.join( _mirror_base, 'boot' )
-		if os.path.isdir( boot_dest ):
-			shutil.rmtree( boot_dest )
-		try:
-			shutil.copytree( os.path.join( options.mount_point, 'boot' ), boot_dest )
-		except shutil.Error, ex:
-			print "failed (%s)." % (ex,)
-		else:
-			print 'done.'
+    # copy kernel and grub config
+    if options.version.major < 4:
+        print '  copying kernel and boot configuration ...',
+        boot_dest = os.path.join(_mirror_base, 'boot')
+        if os.path.isdir(boot_dest):
+            shutil.rmtree(boot_dest)
+        try:
+            shutil.copytree(os.path.join(options.mount_point, 'boot'), boot_dest)
+        except shutil.Error, ex:
+            print "failed (%s)." % (ex,)
+        else:
+            print 'done.'
 
-		# copy profiles
-		if os.path.exists(os.path.join(options.mount_point, 'profiles')):
-			print '  copying profiles ...',
-			profiles_dest = os.path.join( _mirror_base, 'profiles' )
-			if os.path.isdir( profiles_dest ):
-				shutil.rmtree( profiles_dest )
-			try:
-				shutil.copytree(os.path.join(options.mount_point, 'profiles'), profiles_dest)
-			except shutil.Error, ex:
-				print "failed (%s)." % (ex,)
-			else:
-				# everyone should be able to read the profiles
-				os.chmod( profiles_dest, 0555 )
-				print 'done.'
+        # copy profiles
+        if os.path.exists(os.path.join(options.mount_point, 'profiles')):
+            print '  copying profiles ...',
+            profiles_dest = os.path.join(_mirror_base, 'profiles')
+            if os.path.isdir(profiles_dest):
+                shutil.rmtree(profiles_dest)
+            try:
+                shutil.copytree(os.path.join(options.mount_point, 'profiles'), profiles_dest)
+            except shutil.Error, ex:
+                print "failed (%s)." % (ex,)
+            else:
+                # everyone should be able to read the profiles
+                os.chmod(profiles_dest, 0555)
+                print 'done.'
 
-		copy_dists(options)
-	copy_packages(options)
+        copy_dists(options)
+    copy_packages(options)
 
 
 def copy_packages(options):
-	print '  copying packages ...',
-	sys.stdout.flush()
-	for subdir in ('packages', 'all', 'amd64', 'i386'):
-		if os.path.exists(os.path.join(options.mount_point, subdir)):
-			urepo.copy_package_files(os.path.join(options.mount_point, subdir), _repo_base)
-			sys.stdout.flush()
-	print "done."
+    print '  copying packages ...',
+    sys.stdout.flush()
+    for subdir in ('packages', 'all', 'amd64', 'i386'):
+        if os.path.exists(os.path.join(options.mount_point, subdir)):
+            urepo.copy_package_files(os.path.join(options.mount_point, subdir), _repo_base)
+            sys.stdout.flush()
+    print "done."
 
 
 def copy_dists(options):
-	print '  copying dists ...',
-	dists_dest = os.path.join( _repo_base, 'dists' )
-	if os.path.isdir( dists_dest ):
-		shutil.rmtree( dists_dest )
-	try:
-		# handle the different dists directories (UCS installer or d-i)
-		for dists_src in (os.path.join(options.mount_point, 'packages', 'dists'), os.path.join(options.mount_point, 'dists')):
-			if os.path.isdir(dists_src):
-				shutil.copytree(dists_src, dists_dest, symlinks=True)
-	except shutil.Error, ex:
-		print "failed (%s)." % (ex,)
-	else:
-		print 'done.'
+    print '  copying dists ...',
+    dists_dest = os.path.join(_repo_base, 'dists')
+    if os.path.isdir(dists_dest):
+        shutil.rmtree(dists_dest)
+    try:
+        # handle the different dists directories (UCS installer or d-i)
+        for dists_src in (os.path.join(options.mount_point, 'packages', 'dists'), os.path.join(options.mount_point, 'dists')):
+            if os.path.isdir(dists_src):
+                shutil.copytree(dists_src, dists_dest, symlinks=True)
+    except shutil.Error, ex:
+        print "failed (%s)." % (ex,)
+    else:
+        print 'done.'
 
 
-def mount( options ):
-	""" Mount CDROM and check for valid medium """
-	if options.interactive:
-		# ask user to insert cdrom
-		print '\nPlease insert a UCS installation medium and press <Enter>',
-		sys.stdin.readline()
-	if options.mount:
-		print "Mounting %s ..." % options.mount_point,
-		if options.iso:
-			cmd = ('mount', '-o', 'loop,ro', options.iso, options.mount_point)
-		else:
-			cmd = ('mount', '-o', 'ro', options.mount_point)
-		devnull = open( os.path.devnull, 'w' )
-		try:
-			ret = subprocess.call(cmd, stdout=devnull, stderr=subprocess.STDOUT)
-		finally:
-			devnull.close()
-		# if exit code is 0 or 32 (already mounted)
-		if ret in (0, 32):
-			print 'done.'
-		else:
-			print 'failed.'
-			return False
+def mount(options):
+    """ Mount CDROM and check for valid medium """
+    if options.interactive:
+        # ask user to insert cdrom
+        print '\nPlease insert a UCS installation medium and press <Enter>',
+        sys.stdin.readline()
+    if options.mount:
+        print "Mounting %s ..." % options.mount_point,
+        if options.iso:
+            cmd = ('mount', '-o', 'loop,ro', options.iso, options.mount_point)
+        else:
+            cmd = ('mount', '-o', 'ro', options.mount_point)
+        devnull = open(os.path.devnull, 'w')
+        try:
+            ret = subprocess.call(cmd, stdout=devnull, stderr=subprocess.STDOUT)
+        finally:
+            devnull.close()
+        # if exit code is 0 or 32 (already mounted)
+        if ret in (0, 32):
+            print 'done.'
+        else:
+            print 'failed.'
+            return False
 
-	print "Checking medium in %s ..." % options.mount_point,
-	found_error = True
-	if os.path.isdir(os.path.join(options.mount_point, 'packages')) and os.path.isdir(os.path.join(options.mount_point, 'profiles')):
-		found_error = False
-	elif os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
-			os.path.isdir(os.path.join(options.mount_point, 'all')) and \
-			(os.path.isdir(os.path.join(options.mount_point, 'amd64')) or \
-				 os.path.isdir(os.path.join(options.mount_point, 'i386'))):
-		found_error = False
-	if found_error:
-		print 'failed.'
-		print >> sys.stderr, 'Error: This is not an UCS installation medium.'
-		return False
+    print "Checking medium in %s ..." % options.mount_point,
+    found_error = True
+    if os.path.isdir(os.path.join(options.mount_point, 'packages')) and os.path.isdir(os.path.join(options.mount_point, 'profiles')):
+        found_error = False
+    elif os.path.exists(os.path.join(options.mount_point, '.univention_install')) and \
+        os.path.isdir(os.path.join(options.mount_point, 'all')) and \
+        (os.path.isdir(os.path.join(options.mount_point, 'amd64')) or
+         os.path.isdir(os.path.join(options.mount_point, 'i386'))):
+        found_error = False
+    if found_error:
+        print 'failed.'
+        print >> sys.stderr, 'Error: This is not an UCS installation medium.'
+        return False
 
-	print 'ok.'
-	return True
-
-
-def setup_repository( options ):
-	""" Update indexes """
-	urepo.update_indexes( _repo_base, dists = True )
-
-	basepath = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
-	for p in ['var', 'skel']:
-		d = os.path.join(basepath, p)
-		if not os.path.exists(d):
-			os.mkdir(d)
+    print 'ok.'
+    return True
 
 
-def setup_pxe( options ):
-	'''setup network installation (PXE)'''
-	pxedir = '/var/lib/univention-client-boot'
-	installerdir = os.path.join(pxedir, 'installer')
-	makedirs(pxedir)
+def setup_repository(options):
+    """ Update indexes """
+    urepo.update_indexes(_repo_base, dists=True)
 
-	if options.version.major >= 4:
-		installerdir = os.path.join(pxedir, 'installer', UCS_Version.FULLFORMAT % options.version)
-		makedirs(installerdir)
+    basepath = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
+    for p in ['var', 'skel']:
+        d = os.path.join(basepath, p)
+        if not os.path.exists(d):
+            os.mkdir(d)
 
-		# copy kernel and initrd to /var/lib/univention-client-boot/installer/<major>.<minor>-<patchlevel>/
-		# and create/refresh symlinks in /var/lib/univention-client-boot/ to these files
-		for fn in ['linux', 'initrd.gz']:
-			srcfn = os.path.join(options.mount_point, 'netboot', fn)
-			dstfn = os.path.join(installerdir, fn)
-			symlinkfn = os.path.join(pxedir, fn)
-			if os.path.exists(srcfn):
-				shutil.copy2(srcfn, dstfn)
-				if os.path.islink(symlinkfn):
-					os.remove(symlinkfn)
-				os.symlink(os.path.relpath(dstfn, pxedir), symlinkfn)
 
-		print '  generating Package files for installer ...',
-		mirror = UniventionMirror(False)
-		mirror.update_dists_files()
-	else:
-		print 'WARNING: The usage of this DVD for PXE reinstallation is not possible.'
-		print '         Please use an UCS installation DVD with UCS 4.0-0 or later.'
+def setup_pxe(options):
+    '''setup network installation (PXE)'''
+    pxedir = '/var/lib/univention-client-boot'
+    installerdir = os.path.join(pxedir, 'installer')
+    makedirs(pxedir)
+
+    if options.version.major >= 4:
+        installerdir = os.path.join(pxedir, 'installer', UCS_Version.FULLFORMAT % options.version)
+        makedirs(installerdir)
+
+        # copy kernel and initrd to /var/lib/univention-client-boot/installer/<major>.<minor>-<patchlevel>/
+        # and create/refresh symlinks in /var/lib/univention-client-boot/ to these files
+        for fn in ['linux', 'initrd.gz']:
+            srcfn = os.path.join(options.mount_point, 'netboot', fn)
+            dstfn = os.path.join(installerdir, fn)
+            symlinkfn = os.path.join(pxedir, fn)
+            if os.path.exists(srcfn):
+                shutil.copy2(srcfn, dstfn)
+                if os.path.islink(symlinkfn):
+                    os.remove(symlinkfn)
+                os.symlink(os.path.relpath(dstfn, pxedir), symlinkfn)
+
+        print '  generating Package files for installer ...',
+        mirror = UniventionMirror(False)
+        mirror.update_dists_files()
+    else:
+        print 'WARNING: The usage of this DVD for PXE reinstallation is not possible.'
+        print '         Please use an UCS installation DVD with UCS 4.0-0 or later.'
 
 
 def main():
-	for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
-		if os.path.isdir(mount_point_default):
-			break
-	parser = OptionParser( usage = "usage: %prog [options]" )
-	parser.add_option( '-n', '--non-interactive', action = 'store_false',
-					   dest = 'interactive', default = True,
-					   help = 'if given no questions are asked.' )
-	parser.add_option( '-N', '--no-mount', action = 'store_false',
-					   dest = 'mount', default = True,
-					   help = 'mounting the installation media is not required' )
-	parser.add_option( '-s', '--silent', action = 'store_true',
-					   dest = 'silent', default = False,
-					   help = 'do not print any information, just errors and warnings' )
-	parser.add_option( '-m', '--mount-point', action = 'store',
-					   dest = 'mount_point', default = mount_point_default,
-					   help = 'devices mount point for CD-ROM drive' )
-	parser.add_option('-i', '--iso', action='store', dest='iso',
-	                  default=None, help='define filename of an ISO image')
+    for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
+        if os.path.isdir(mount_point_default):
+            break
+    parser = OptionParser(usage="usage: %prog [options]")
+    parser.add_option('-n', '--non-interactive', action='store_false',
+                      dest='interactive', default=True,
+                      help='if given no questions are asked.')
+    parser.add_option('-N', '--no-mount', action='store_false',
+                      dest='mount', default=True,
+                      help='mounting the installation media is not required')
+    parser.add_option('-s', '--silent', action='store_true',
+                      dest='silent', default=False,
+                      help='do not print any information, just errors and warnings')
+    parser.add_option('-m', '--mount-point', action='store',
+                      dest='mount_point', default=mount_point_default,
+                      help='devices mount point for CD-ROM drive')
+    parser.add_option('-i', '--iso', action='store', dest='iso',
+                      default=None, help='define filename of an ISO image')
 
-	( options, arguments ) = parser.parse_args()
+    (options, arguments) = parser.parse_args()
 
-	if options.silent:
-		sys.stdout = open(os.path.devnull, 'w')
+    if options.silent:
+        sys.stdout = open(os.path.devnull, 'w')
 
-	try:
-		lock = univention.updater.tools.updater_lock_acquire()
-	except univention.updater.tools.LockingError, ex:
-		print >>sys.stderr, ex
-		sys.exit(5)
-	try:
-		check_preconditions( options )
+    try:
+        lock = univention.updater.tools.updater_lock_acquire()
+    except univention.updater.tools.LockingError, ex:
+        print >>sys.stderr, ex
+        sys.exit(5)
+    try:
+        check_preconditions(options)
 
-		if not mount( options ):
-			print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
-			sys.exit( 1 )
+        if not mount(options):
+            print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
+            sys.exit(1)
 
-		#define repository base path with information from image
-		installfile = os.path.join(options.mount_point, '.univention_install')
-		for line in open(installfile, 'r'):
-			try:
-				key, value = line.strip().split('=', 1)
-			except ValueError:
-				continue
-			if key == 'VERSION':
-				major_version, minor_version = map(int, value.split('.', 1))
-			elif key == 'PATCHLEVEL':
-				patchlevel_version = int(value)
-		try:
-			options.version = UCS_Version((major_version, minor_version, patchlevel_version))
-		except (NameError, ValueError):
-			print >> sys.stderr, "Error: Failed to parse %s" % (installfile,)
-			sys.exit(1)
+        # define repository base path with information from image
+        installfile = os.path.join(options.mount_point, '.univention_install')
+        for line in open(installfile, 'r'):
+            try:
+                key, value = line.strip().split('=', 1)
+            except ValueError:
+                continue
+            if key == 'VERSION':
+                major_version, minor_version = map(int, value.split('.', 1))
+            elif key == 'PATCHLEVEL':
+                patchlevel_version = int(value)
+        try:
+            options.version = UCS_Version((major_version, minor_version, patchlevel_version))
+        except (NameError, ValueError):
+            print >> sys.stderr, "Error: Failed to parse %s" % (installfile,)
+            sys.exit(1)
 
-		global _repo_base
-		_repo_base = os.path.join(
-			_mirror_base,
-			'mirror',
-			UCS_Version.FORMAT % options.version,
-			'maintained',
-			UCS_Version.FULLFORMAT % options.version,
-		)
+        global _repo_base
+        _repo_base = os.path.join(
+            _mirror_base,
+                'mirror',
+                UCS_Version.FORMAT % options.version,
+                'maintained',
+                UCS_Version.FULLFORMAT % options.version,
+        )
 
-		prepare( options )
+        prepare(options)
 
-		try:
-			copy_repository( options )
-			setup_repository( options )
-			setup_pxe( options )
-		finally:
-			if options.mount:
-				subprocess.call( [ 'umount', options.mount_point ] )
+        try:
+            copy_repository(options)
+            setup_repository(options)
+            setup_pxe(options)
+        finally:
+            if options.mount:
+                subprocess.call(['umount', options.mount_point])
 
-		# set repository server to local system
-		ucr_set = [
-			'repository/online/server=%(hostname)s.%(domainname)s' % configRegistry,
-			'repository/mirror/version/start?%d.0-0' % options.version.major,
-		]
-		# unset UCR variable marking old repository
-		if 'repository/local/old' in configRegistry:
-			ucr_set.handler_unset(['repository/local/old'])
-		# set last version contained in repository
-		end = configRegistry.get('repository/mirror/version/end', '').strip()
-		if not end or UCS_Version(end) < options.version:
-			ucr_set.append('repository/mirror/version/end=%s' % options.version)
+        # set repository server to local system
+        ucr_set = [
+            'repository/online/server=%(hostname)s.%(domainname)s' % configRegistry,
+                'repository/mirror/version/start?%d.0-0' % options.version.major,
+        ]
+        # unset UCR variable marking old repository
+        if 'repository/local/old' in configRegistry:
+            ucr_set.handler_unset(['repository/local/old'])
+        # set last version contained in repository
+        end = configRegistry.get('repository/mirror/version/end', '').strip()
+        if not end or UCS_Version(end) < options.version:
+            ucr_set.append('repository/mirror/version/end=%s' % options.version)
 
-		ucr.handler_set(ucr_set)
+        ucr.handler_set(ucr_set)
 
-		# create symbolic link univention-repository
-		try:
-			os.symlink('.', os.path.join(_mirror_base, 'mirror', 'univention-repository'))
-		except OSError, ex:
-			if ex.errno != errno.EEXIST:
-				raise
+        # create symbolic link univention-repository
+        try:
+            os.symlink('.', os.path.join(_mirror_base, 'mirror', 'univention-repository'))
+        except OSError, ex:
+            if ex.errno != errno.EEXIST:
+                raise
 
-		print dedent(r"""
+        print dedent(r"""
 		The local repository has been created.
 
 		The local host has been modified to use this local repository.  Other hosts
@@ -377,17 +377,17 @@ def main():
 		    --policy-reference "cn=%(hostname)s repository,cn=repository,cn=update,cn=policies,%(ldap/base)s"
 		""" % configRegistry)
 
-		if options.version.minor != 0 or options.version.patchlevel != 0:
-			print dedent("""
+        if options.version.minor != 0 or options.version.patchlevel != 0:
+            print dedent("""
 			An UCS repository must always start with minor version 0, for example
 			with UCS %(major)s.0-0. Please synchronize the repository
 			by using the tool 'univention-repository-update'.
 			""" % {'major': options.version.major, 'minor': options.version.minor})
 
-	finally:
-		if not univention.updater.tools.updater_lock_release(lock):
-			print 'WARNING: updater-lock already released!'
+    finally:
+        if not univention.updater.tools.updater_lock_release(lock):
+            print 'WARNING: updater-lock already released!'
 
 
 if __name__ == '__main__':
-	main()
+    main()

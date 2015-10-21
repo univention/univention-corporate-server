@@ -38,69 +38,70 @@ import subprocess
 import univention.config_registry
 
 # Name of the cron.d file
-CRON_D='/etc/cron.d/univention-maintenance'
+CRON_D = '/etc/cron.d/univention-maintenance'
+
 
 def write_cron_job(configRegistry, cron, updateto, reboot, try_release_update):
-	with open(CRON_D, 'w') as file:
-		file.write('# cron job for update\n')
-		file.write('PATH=/sbin:/usr/sbin:/usr/bin:/bin\n')
-		if cron == '* * * * * ':
-			return
-		cmd = ['/usr/sbin/jitter 600 true']
-		if try_release_update:
-			cmd.append(
-				'/usr/share/univention-updater/univention-updater %s %s --silent --noninteractive' % (
-					'local' if configRegistry.is_true('local/repository') else 'net',
-					'--updateto=%s' % (quote(updateto),) if updateto else '',
-				))
-		cmd.append('/usr/share/univention-updater/univention-actualise --dist-upgrade --silent')
-		if reboot:
-			cmd.append(
-				'if [ -f /run/univention-updater-reboot ];then '
-				'at -f /var/lib/univention-updater/reboot.at -- %s 2>/dev/null;'
-				'rm -f /run/univention-updater-reboot;'
-				'fi' % (
-					quote(reboot),))
-		print >> file, '%s\troot\t%s' % (cron, ';'.join(cmd))
+    with open(CRON_D, 'w') as file:
+        file.write('# cron job for update\n')
+        file.write('PATH=/sbin:/usr/sbin:/usr/bin:/bin\n')
+        if cron == '* * * * * ':
+            return
+        cmd = ['/usr/sbin/jitter 600 true']
+        if try_release_update:
+            cmd.append(
+                '/usr/share/univention-updater/univention-updater %s %s --silent --noninteractive' % (
+                    'local' if configRegistry.is_true('local/repository') else 'net',
+                            '--updateto=%s' % (quote(updateto),) if updateto else '',
+                ))
+        cmd.append('/usr/share/univention-updater/univention-actualise --dist-upgrade --silent')
+        if reboot:
+            cmd.append(
+                'if [ -f /run/univention-updater-reboot ];then '
+                    'at -f /var/lib/univention-updater/reboot.at -- %s 2>/dev/null;'
+                    'rm -f /run/univention-updater-reboot;'
+                    'fi' % (
+                        quote(reboot),))
+        print >> file, '%s\troot\t%s' % (cron, ';'.join(cmd))
 
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 if os.path.exists(CRON_D):
-	os.unlink(CRON_D)
+    os.unlink(CRON_D)
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
 
-	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
 
-	updateto=''
-	cron_active=''
-	reboot=''
-	cron=None
-	try_release_update = False
+    updateto = ''
+    cron_active = ''
+    reboot = ''
+    cron = None
+    try_release_update = False
 
-	for line in p1.stdout:
-		line=line.strip(' ').strip('\n')
-		key, value = line.split('=', 1)
-		if line.startswith('univentionCronActive='):
-			cron_active=line.replace('univentionCronActive=', '').replace('"','')
-		elif line.startswith('univentionCron='):
-			cron=line.replace('univentionCron=', '').replace('"','')
-		elif line.startswith('univentionUpdateVersion='):
-			updateto=line.replace('univentionUpdateVersion=', '').replace('"','')
-		elif line.startswith('univentionInstallationReboot='):
-			reboot=line.replace('univentionInstallationReboot=', '').replace('"','')
-		elif 'univentionUpdateActivate' == key:
-			try_release_update = value == '"TRUE"'
+    for line in p1.stdout:
+        line = line.strip(' ').strip('\n')
+        key, value = line.split('=', 1)
+        if line.startswith('univentionCronActive='):
+            cron_active = line.replace('univentionCronActive=', '').replace('"', '')
+        elif line.startswith('univentionCron='):
+            cron = line.replace('univentionCron=', '').replace('"', '')
+        elif line.startswith('univentionUpdateVersion='):
+            updateto = line.replace('univentionUpdateVersion=', '').replace('"', '')
+        elif line.startswith('univentionInstallationReboot='):
+            reboot = line.replace('univentionInstallationReboot=', '').replace('"', '')
+        elif 'univentionUpdateActivate' == key:
+            try_release_update = value == '"TRUE"'
 
-	if p1.wait() != 0:
-		print 'failed to execute univention_policy_result'
-		sys.exit(p1.returncode)
+    if p1.wait() != 0:
+        print 'failed to execute univention_policy_result'
+        sys.exit(p1.returncode)
 
-	if cron_active and cron_active == '1':
-		if cron:
-			write_cron_job(configRegistry, cron, updateto, reboot, try_release_update)
+    if cron_active and cron_active == '1':
+        if cron:
+            write_cron_job(configRegistry, cron, updateto, reboot, try_release_update)
 
 sys.exit(0)

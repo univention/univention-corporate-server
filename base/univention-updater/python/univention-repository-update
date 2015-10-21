@@ -51,246 +51,246 @@ configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 # regular expression matching a UCS version X.Y-Z
-_exp_version = re.compile( '(?P<major>[0-9]*)\.(?P<minor>[0-9]*)-(?P<patch>[0-9]*)' )
+_exp_version = re.compile('(?P<major>[0-9]*)\.(?P<minor>[0-9]*)-(?P<patch>[0-9]*)')
 # base directory for local repository
-_mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
+_mirror_base = configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
 # directory of current version's repository
-_current_version = '%s-%s' % ( configRegistry.get( 'version/version' ), configRegistry.get( 'version/patchlevel' ) )
-_repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
+_current_version = '%s-%s' % (configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))
+_repo_base = os.path.join(_mirror_base, 'mirror', configRegistry.get('version/version'), 'maintained', '%s-0' % configRegistry.get('version/version'))
 
 
-def copy_repository( options, source, version ):
-	""" Copy packages and scripts belonging to version from source directory into local repository """
-	print >>options.teefile, 'Please be patient, copying packages ...',
-	sys.stdout.flush()
+def copy_repository(options, source, version):
+    """ Copy packages and scripts belonging to version from source directory into local repository """
+    print >>options.teefile, 'Please be patient, copying packages ...',
+    sys.stdout.flush()
 
-	version = _exp_version.match( version ).groupdict()
-	dest_repo = os.path.join( _mirror_base, 'mirror', '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patch)s' % version )
+    version = _exp_version.match(version).groupdict()
+    dest_repo = os.path.join(_mirror_base, 'mirror', '%(major)s.%(minor)s/maintained/%(major)s.%(minor)s-%(patch)s' % version)
 
-	# check if repository already exists
-	if os.path.isdir( os.path.join( dest_repo ) ):
-		print >> options.teefile, '\nWarning: repository for UCS version %(major)s.%(minor)s-%(patch)s already exists' % version
-	else:
-		# create directory structure
-		for arch in urepo.ARCHITECTURES:
-			makedirs(os.path.join(dest_repo, arch))
+    # check if repository already exists
+    if os.path.isdir(os.path.join(dest_repo)):
+        print >> options.teefile, '\nWarning: repository for UCS version %(major)s.%(minor)s-%(patch)s already exists' % version
+    else:
+        # create directory structure
+        for arch in urepo.ARCHITECTURES:
+            makedirs(os.path.join(dest_repo, arch))
 
-	# copy packages to new directory structure
-	urepo.copy_package_files( source, dest_repo )
+    # copy packages to new directory structure
+    urepo.copy_package_files(source, dest_repo)
 
-	# create Packages files
-	print >>options.teefile, 'Packages ...',
-	urepo.update_indexes( dest_repo )
+    # create Packages files
+    print >>options.teefile, 'Packages ...',
+    urepo.update_indexes(dest_repo)
 
-	print >>options.teefile, 'Scripts ...',
-	for script in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
-		if os.path.exists(os.path.join(source, script)):
-			shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
-	print >>options.teefile, 'Done.'
-
-
-def update_cdrom( options ):
-	""" Copy repository from local DVD or ISO image """
-	# try to mount update ISO image or DVD
-	if options.iso_file:
-		ret = subprocess.call( [ 'mount', '-o', 'loop',  options.iso_file, options.mount_point ], stdout = options.logfile, stderr = options.logfile )
-	elif options.device:
-		ret = subprocess.call( [ 'mount', options.device, options.mount_point ], stdout = options.logfile, stderr = options.logfile )
-	else:
-		ret = subprocess.call( [ 'mount', options.mount_point ], stdout = options.logfile, stderr = options.logfile )
-
-	# 0 == success, 32 == already mounted
-	if not ret in ( 0, 32 ):
-		if options.iso_file:
-			print >> options.teefile, 'Error: Failed to mount ISO image %s' % options.iso_file
-		else:
-			print >> options.teefile, 'Error: Failed to mount CD-ROM device at %s' % options.mount_point
-		sys.exit( 1 )
-
-	try:
-		# check update medium
-		if not os.path.exists( os.path.join( options.mount_point, 'ucs-updates' ) ):
-			print >> options.teefile, 'Error: This is not a valid UCS update medium'
-			sys.exit( 1 )
-
-		# find UCS version
-		for entry in os.listdir( os.path.join( options.mount_point, 'ucs-updates' ) ):
-			directory = os.path.join( options.mount_point, 'ucs-updates', entry )
-			if os.path.isdir( directory ) and _exp_version.match( entry ):
-				# copy repository
-				try:
-					copy_repository( options, directory, entry )
-				except (IOError, os.error), why:
-					print >> options.teefile, '\nError: while copying %s: %s' % (entry, why)
-					sys.exit( 1 )
-	finally:
-		ret = subprocess.call( [ 'umount', options.mount_point ], stdout = options.logfile, stderr = options.logfile )
-		if ret != 0:
-			print >> options.teefile, 'Error: Failed to umount %s' % options.mount_point
-			sys.exit( ret )
+    print >>options.teefile, 'Scripts ...',
+    for script in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
+        if os.path.exists(os.path.join(source, script)):
+            shutil.copy2(os.path.join(source, script), os.path.join(dest_repo, 'all', script))
+    print >>options.teefile, 'Done.'
 
 
-def update_net( options ):
-	""" Copy packages and scripts from remote mirror into local repository """
-	mirror = UniventionMirror()
-	# update local repository if available
-	if not configRegistry.is_true('local/repository', False):
-		print >> options.teefile, 'Error: The local repository is not activated. Set the Univention Configuration Registry variable local/repository to yes'
-		sys.exit( 1 )
-	# mirror.run calls "apt-mirror", which needs /etc/apt/mirror.conf, which is
-	# only generated with repository/mirror=true
-	if not configRegistry.is_true('repository/mirror', False):
-		print >> options.teefile, 'Error: Mirroring for the local repository is disabled. Set the Univention Configuration Registry variable repository/mirror to yes.'
-		sys.exit( 1 )
+def update_cdrom(options):
+    """ Copy repository from local DVD or ISO image """
+    # try to mount update ISO image or DVD
+    if options.iso_file:
+        ret = subprocess.call(['mount', '-o', 'loop',  options.iso_file, options.mount_point], stdout=options.logfile, stderr=options.logfile)
+    elif options.device:
+        ret = subprocess.call(['mount', options.device, options.mount_point], stdout=options.logfile, stderr=options.logfile)
+    else:
+        ret = subprocess.call(['mount', options.mount_point], stdout=options.logfile, stderr=options.logfile)
 
-	# create mirror_base and symbolic link "univention-repository" if missing
-	destdir = os.path.join( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), 'mirror' )
-	makedirs(destdir)
-	try:
-		os.symlink( '.', os.path.join(destdir, 'univention-repository') )
-	except OSError, e:
-		if e.errno != errno.EEXIST:
-			raise
+    # 0 == success, 32 == already mounted
+    if not ret in (0, 32):
+        if options.iso_file:
+            print >> options.teefile, 'Error: Failed to mount ISO image %s' % options.iso_file
+        else:
+            print >> options.teefile, 'Error: Failed to mount CD-ROM device at %s' % options.mount_point
+        sys.exit(1)
 
-	if options.sync:
-		# only update packages of current repositories
-		mirror.run()
-	elif options.security_only:
-		# trigger update to find new security repositories
-		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
-		mirror.run()
-	elif options.errata_only:
-		# trigger update to find new errata repositories
-		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
-		mirror.run()
-	elif options.update_to:
-		# trigger update to explicitly mirror until given versions
-		ucr.handler_set( [ 'repository/mirror/version/end=%s' % options.update_to ] )
-		mirror = UniventionMirror()
-		mirror.run()
-	else:
-		# mirror all future versions
-		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
-		nextupdate = mirror.release_update_available()
-		mirror_run = False
-		while nextupdate:
-			ucr.handler_set( [ 'repository/mirror/version/end=%s' % nextupdate ] )
-			# UCR variable repository/mirror/version/end has change - reinit Mirror object
-			mirror = UniventionMirror()
-			mirror.run()
-			mirror_run = True
-			nextupdate = mirror.release_update_available( nextupdate )
-		if not mirror_run:
-			# sync only
-			mirror.run()
+    try:
+        # check update medium
+        if not os.path.exists(os.path.join(options.mount_point, 'ucs-updates')):
+            print >> options.teefile, 'Error: This is not a valid UCS update medium'
+            sys.exit(1)
 
-	# create .univention_install file
-	filename = os.path.join(_mirror_base, '.univention_install')
-	if not os.path.isfile(filename):
-		repos = mirror.list_local_repositories()
-		if not repos:
-			return
-		min_version = min(repo[1] for repo in repos)
-		with open(filename, 'w') as ver:
-			print >> ver, 'VERSION=%d.%d' % (min_version.major, min_version.minor)
-			print >> ver, 'PATCHLEVEL=%d' % (min_version.patchlevel,)
+        # find UCS version
+        for entry in os.listdir(os.path.join(options.mount_point, 'ucs-updates')):
+            directory = os.path.join(options.mount_point, 'ucs-updates', entry)
+            if os.path.isdir(directory) and _exp_version.match(entry):
+                # copy repository
+                try:
+                    copy_repository(options, directory, entry)
+                except (IOError, os.error), why:
+                    print >> options.teefile, '\nError: while copying %s: %s' % (entry, why)
+                    sys.exit(1)
+    finally:
+        ret = subprocess.call(['umount', options.mount_point], stdout=options.logfile, stderr=options.logfile)
+        if ret != 0:
+            print >> options.teefile, 'Error: Failed to umount %s' % options.mount_point
+            sys.exit(ret)
+
+
+def update_net(options):
+    """ Copy packages and scripts from remote mirror into local repository """
+    mirror = UniventionMirror()
+    # update local repository if available
+    if not configRegistry.is_true('local/repository', False):
+        print >> options.teefile, 'Error: The local repository is not activated. Set the Univention Configuration Registry variable local/repository to yes'
+        sys.exit(1)
+    # mirror.run calls "apt-mirror", which needs /etc/apt/mirror.conf, which is
+    # only generated with repository/mirror=true
+    if not configRegistry.is_true('repository/mirror', False):
+        print >> options.teefile, 'Error: Mirroring for the local repository is disabled. Set the Univention Configuration Registry variable repository/mirror to yes.'
+        sys.exit(1)
+
+    # create mirror_base and symbolic link "univention-repository" if missing
+    destdir = os.path.join(configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository'), 'mirror')
+    makedirs(destdir)
+    try:
+        os.symlink('.', os.path.join(destdir, 'univention-repository'))
+    except OSError, e:
+        if e.errno != errno.EEXIST:
+            raise
+
+    if options.sync:
+        # only update packages of current repositories
+        mirror.run()
+    elif options.security_only:
+        # trigger update to find new security repositories
+        ucr.handler_commit(['/etc/apt/mirror.list'])
+        mirror.run()
+    elif options.errata_only:
+        # trigger update to find new errata repositories
+        ucr.handler_commit(['/etc/apt/mirror.list'])
+        mirror.run()
+    elif options.update_to:
+        # trigger update to explicitly mirror until given versions
+        ucr.handler_set(['repository/mirror/version/end=%s' % options.update_to])
+        mirror = UniventionMirror()
+        mirror.run()
+    else:
+        # mirror all future versions
+        ucr.handler_commit(['/etc/apt/mirror.list'])
+        nextupdate = mirror.release_update_available()
+        mirror_run = False
+        while nextupdate:
+            ucr.handler_set(['repository/mirror/version/end=%s' % nextupdate])
+            # UCR variable repository/mirror/version/end has change - reinit Mirror object
+            mirror = UniventionMirror()
+            mirror.run()
+            mirror_run = True
+            nextupdate = mirror.release_update_available(nextupdate)
+        if not mirror_run:
+            # sync only
+            mirror.run()
+
+    # create .univention_install file
+    filename = os.path.join(_mirror_base, '.univention_install')
+    if not os.path.isfile(filename):
+        repos = mirror.list_local_repositories()
+        if not repos:
+            return
+        min_version = min(repo[1] for repo in repos)
+        with open(filename, 'w') as ver:
+            print >> ver, 'VERSION=%d.%d' % (min_version.major, min_version.minor)
+            print >> ver, 'PATCHLEVEL=%d' % (min_version.patchlevel,)
 
 
 def parse_args():
-	for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
-		if os.path.isdir(mount_point_default):
-			break
+    for mount_point_default in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
+        if os.path.isdir(mount_point_default):
+            break
 
-	parser = OptionParser( usage = "usage: %prog (net|cdrom) [options] " )
-	parser.add_option( '-i', '--iso', action = 'store',
-					   dest = 'iso_file',
-					   help = 'define filename of an ISO image' )
-	parser.add_option( '-d', '--device', action = 'store',
-					   dest = 'device',
-					   help = 'defines the device name of the CD-ROM drive' )
-	parser.add_option( '-c', '--cdrom', action = 'store',
-					   dest = 'mount_point', default=mount_point_default,
-					   help = 'devices mount point for CD-ROM drive' )
-	parser.add_option( '-s', '--sync-only', action = 'store_true',
-					   dest = 'sync', default = False,
-					   help = 'if given no new release repositories will be added, just the existing will be updated' )
-	parser.add_option( '-S', '--security-only', action = 'store_true',
-					   dest = 'security_only', default = False,
-					   help = 'if given only security repositories will be updated' )
-	parser.add_option( '-E', '--errata-only', action = 'store_true',
-					   dest = 'errata_only', default = False,
-					   help = 'if given only errata repositories will be updated' )
-	parser.add_option( '-u', '--updateto', action = 'store',
-					   dest = 'update_to', default = '',
-					   help = 'if given the repository is updated to the specified version but not higher' )
+    parser = OptionParser(usage="usage: %prog (net|cdrom) [options] ")
+    parser.add_option('-i', '--iso', action='store',
+                      dest='iso_file',
+                      help='define filename of an ISO image')
+    parser.add_option('-d', '--device', action='store',
+                      dest='device',
+                      help='defines the device name of the CD-ROM drive')
+    parser.add_option('-c', '--cdrom', action='store',
+                      dest='mount_point', default=mount_point_default,
+                      help='devices mount point for CD-ROM drive')
+    parser.add_option('-s', '--sync-only', action='store_true',
+                      dest='sync', default=False,
+                      help='if given no new release repositories will be added, just the existing will be updated')
+    parser.add_option('-S', '--security-only', action='store_true',
+                      dest='security_only', default=False,
+                      help='if given only security repositories will be updated')
+    parser.add_option('-E', '--errata-only', action='store_true',
+                      dest='errata_only', default=False,
+                      help='if given only errata repositories will be updated')
+    parser.add_option('-u', '--updateto', action='store',
+                      dest='update_to', default='',
+                      help='if given the repository is updated to the specified version but not higher')
 
-	( options, arguments ) = parser.parse_args()
+    (options, arguments) = parser.parse_args()
 
-	try:
-		(command,)  = arguments
-	except ValueError:
-		parser.error('A command is required')
+    try:
+        (command,) = arguments
+    except ValueError:
+        parser.error('A command is required')
 
-	if command not in ('net', 'cdrom'):
-		parser.error("Unknown command '%s' specified" % (command,))
+    if command not in ('net', 'cdrom'):
+        parser.error("Unknown command '%s' specified" % (command,))
 
-	return (command, options)
+    return (command, options)
 
 
 def main():
-	# PATH does not contain */sbin when called from cron
-	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+    # PATH does not contain */sbin when called from cron
+    os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
-	(command, options) = parse_args()
-	# redirect output to logfile
-	options.logfile = open('/var/log/univention/repository.log', 'a+')
-	options.stdout = sys.stdout
-	options.teefile = urepo.TeeFile( ( options.stdout, options.logfile ) )
-	sys.stdout = options.logfile
+    (command, options) = parse_args()
+    # redirect output to logfile
+    options.logfile = open('/var/log/univention/repository.log', 'a+')
+    options.stdout = sys.stdout
+    options.teefile = urepo.TeeFile((options.stdout, options.logfile))
+    sys.stdout = options.logfile
 
-	print '***** Starting univention-repository-update at %s\n' % time.ctime()
+    print '***** Starting univention-repository-update at %s\n' % time.ctime()
 
-	if not configRegistry.is_true('local/repository', True):
-		print >>options.teefile, 'Error: The local repository is disabled. To create a local repository use univention-repository-create.'
-		sys.exit( 1 )
+    if not configRegistry.is_true('local/repository', True):
+        print >>options.teefile, 'Error: The local repository is disabled. To create a local repository use univention-repository-create.'
+        sys.exit(1)
 
-	# if there is no _new_ repository server -> exit
-	if configRegistry.get('repository/local/old'):
-		print >> options.teefile, 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0'
-		sys.exit( 1 )
+    # if there is no _new_ repository server -> exit
+    if configRegistry.get('repository/local/old'):
+        print >> options.teefile, 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0'
+        sys.exit(1)
 
-	try:
-		lock = univention.updater.tools.updater_lock_acquire()
-	except univention.updater.tools.LockingError, e:
-		print >>sys.stderr, e
-		sys.exit(5)
-	try:
-		if command == 'net':
-			local_server = '%(hostname)s.%(domainname)s' % configRegistry
-			# BUG: The localhost has many names, FQDNs and adresses ...
-			if configRegistry['repository/mirror/server'] == local_server:
-				print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
-				sys.exit(1)
+    try:
+        lock = univention.updater.tools.updater_lock_acquire()
+    except univention.updater.tools.LockingError, e:
+        print >>sys.stderr, e
+        sys.exit(5)
+    try:
+        if command == 'net':
+            local_server = '%(hostname)s.%(domainname)s' % configRegistry
+            # BUG: The localhost has many names, FQDNs and adresses ...
+            if configRegistry['repository/mirror/server'] == local_server:
+                print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
+                sys.exit(1)
 
-			try:
-				update_net( options )
-			except VerificationError, ex:
-				print >> options.teefile, "Error: %s" % (ex,)
-				print >> options.teefile, '\n'.join(wrap(dedent("""\
+            try:
+                update_net(options)
+            except VerificationError, ex:
+                print >> options.teefile, "Error: %s" % (ex,)
+                print >> options.teefile, '\n'.join(wrap(dedent("""\
 						This can and should only be disabled temporarily using the UCR variable
 						'repository/mirror/verify'.
 						"""
-				)))
-				sys.exit(1)
-			except UpdaterException, e:
-				print >>options.teefile, "Error: %s" % e
-				sys.exit(1)
-		elif command == 'cdrom':
-			update_cdrom( options )
-	finally:
-		if not univention.updater.tools.updater_lock_release(lock):
-			print >> sys.stderr, 'WARNING: updater-lock already released!'
+                                                                )))
+                sys.exit(1)
+            except UpdaterException, e:
+                print >>options.teefile, "Error: %s" % e
+                sys.exit(1)
+        elif command == 'cdrom':
+            update_cdrom(options)
+    finally:
+        if not univention.updater.tools.updater_lock_release(lock):
+            print >> sys.stderr, 'WARNING: updater-lock already released!'
 
 
 if __name__ == '__main__':
-	main()
+    main()

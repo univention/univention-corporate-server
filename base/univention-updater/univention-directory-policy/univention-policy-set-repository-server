@@ -36,77 +36,78 @@ import sys
 import subprocess
 from univention.config_registry import ConfigRegistry, handler_set
 
-def exit(result, message = None):
-	"""
-	Exit with error message.
-	"""
-	script = os.path.basename(sys.argv[0])
-	if message:
-		print '%s: %s' % (script, message)
-	sys.exit(result)
+
+def exit(result, message=None):
+    """
+    Exit with error message.
+    """
+    script = os.path.basename(sys.argv[0])
+    if message:
+        print '%s: %s' % (script, message)
+    sys.exit(result)
 
 
 def query_policy(update, ldap_hostdn):
-	"""
-	Retrieve updateServer and version from policy.
-	"""
-	cmd = (
-			'univention_policy_result',
-			'-D', ldap_hostdn,
-			'-y', '/etc/machine.secret',
-			'-s', ldap_hostdn,
-			)
-	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-	result = p1.communicate()[0]
+    """
+    Retrieve updateServer and version from policy.
+    """
+    cmd = (
+        'univention_policy_result',
+                    '-D', ldap_hostdn,
+                    '-y', '/etc/machine.secret',
+                    '-s', ldap_hostdn,
+    )
+    p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    result = p1.communicate()[0]
 
-	if p1.returncode != 0:
-		exit(result, "FAIL: failed to execute `univention_policy_result'")
+    if p1.returncode != 0:
+        exit(result, "FAIL: failed to execute `univention_policy_result'")
 
-	server = None
-	for line in result.split('\n'):
-		line = line.strip()
-		if line.startswith('univentionRepositoryServer='):
-			server = line.split('=', 1)[1].split('"',2)[1]
-		elif line.startswith('univentionUpdateVersion='):
-			update = line.split('=', 1)[1].split('"',2)[1]
-	if server and server.startswith('http://'):
-		server = server.replace('http://', '', 1)
-	return (server, update)
+    server = None
+    for line in result.split('\n'):
+        line = line.strip()
+        if line.startswith('univentionRepositoryServer='):
+            server = line.split('=', 1)[1].split('"', 2)[1]
+        elif line.startswith('univentionUpdateVersion='):
+            update = line.split('=', 1)[1].split('"', 2)[1]
+    if server and server.startswith('http://'):
+        server = server.replace('http://', '', 1)
+    return (server, update)
 
 
 def main():
-	"""
-	Set repository server.
-	"""
-	ucr = ConfigRegistry()
-	ucr.load()
+    """
+    Set repository server.
+    """
+    ucr = ConfigRegistry()
+    ucr.load()
 
-	hostdn = ucr.get('ldap/hostdn')
-	if not hostdn:
-		# can't query policy without host-dn
-		exit(0)
+    hostdn = ucr.get('ldap/hostdn')
+    if not hostdn:
+        # can't query policy without host-dn
+        exit(0)
 
-	online_server = ucr.get('repository/online/server')
-	mirror_server = ucr.get('repository/mirror/server')
-	fqdn  = '%(hostname)s.%(domainname)s' % ucr
-	update = '%(version/version)s-%(version/patchlevel)s' % ucr
+    online_server = ucr.get('repository/online/server')
+    mirror_server = ucr.get('repository/mirror/server')
+    fqdn = '%(hostname)s.%(domainname)s' % ucr
+    update = '%(version/version)s-%(version/patchlevel)s' % ucr
 
-	ucr_variables = []
+    ucr_variables = []
 
-	new_server, update = query_policy(update, hostdn)
-	if ucr.is_true('local/repository'):
-		# on a repository server
-		if not new_server:
-			ucr_variables.append('repository/online/server?%s' % fqdn)
-		elif new_server != mirror_server and new_server != fqdn:
-			ucr_variables.append('repository/mirror/server=%s' % new_server)
-	else:
-		# without a local repository
-		if new_server and new_server != online_server:
-			ucr_variables.append('repository/online/server=%s' % new_server)
+    new_server, update = query_policy(update, hostdn)
+    if ucr.is_true('local/repository'):
+        # on a repository server
+        if not new_server:
+            ucr_variables.append('repository/online/server?%s' % fqdn)
+        elif new_server != mirror_server and new_server != fqdn:
+            ucr_variables.append('repository/mirror/server=%s' % new_server)
+    else:
+        # without a local repository
+        if new_server and new_server != online_server:
+            ucr_variables.append('repository/online/server=%s' % new_server)
 
-	if ucr_variables:
-		handler_set(ucr_variables)
+    if ucr_variables:
+        handler_set(ucr_variables)
 
 if __name__ == '__main__':
-	main()
+    main()

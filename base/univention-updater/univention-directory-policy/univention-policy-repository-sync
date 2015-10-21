@@ -31,37 +31,40 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, string, sys, subprocess
+import os
+import string
+import sys
+import subprocess
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 # Name of the cron.d file
-CRON_D='/etc/cron.d/univention-repository-sync'
+CRON_D = '/etc/cron.d/univention-repository-sync'
 
 if os.path.exists(CRON_D):
-	os.unlink(CRON_D)
+    os.unlink(CRON_D)
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
 
-	p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
-	result = p1.communicate()[0]
+    p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
+    result = p1.communicate()[0]
 
-	if p1.returncode != 0:
-		print 'failed to execute univention_policy_result'
-		sys.exit(result)
+    if p1.returncode != 0:
+        print 'failed to execute univention_policy_result'
+        sys.exit(result)
 
-	for line in result.split('\n'):
-		line=line.strip(' ').strip('\n').replace('"','')
-		if line.startswith('univentionRepositoryCron='):
-			new_repository_sync=line.replace('univentionRepositoryCron=', '')
-			if new_repository_sync:
-				cron_file=open(CRON_D, 'w')
-				cron_file.write('# cron job for syncing repository\n')
-				if new_repository_sync != '* * * * * ':
-					cron_file.write('%s root /usr/sbin/univention-repository-update net\n' % new_repository_sync)
-				cron_file.close()
+    for line in result.split('\n'):
+        line = line.strip(' ').strip('\n').replace('"', '')
+        if line.startswith('univentionRepositoryCron='):
+            new_repository_sync = line.replace('univentionRepositoryCron=', '')
+            if new_repository_sync:
+                cron_file = open(CRON_D, 'w')
+                cron_file.write('# cron job for syncing repository\n')
+                if new_repository_sync != '* * * * * ':
+                    cron_file.write('%s root /usr/sbin/univention-repository-update net\n' % new_repository_sync)
+                cron_file.close()
 
 sys.exit(0)

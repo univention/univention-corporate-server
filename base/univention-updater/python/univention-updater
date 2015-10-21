@@ -46,9 +46,9 @@ import itertools
 from textwrap import dedent, wrap
 
 try:
-	import univention.debug as ud
+    import univention.debug as ud
 except ImportError:
-	import univention.debug2 as ud
+    import univention.debug2 as ud
 
 import univention.config_registry as ucr
 
@@ -68,587 +68,602 @@ TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
 
 LOGNAME = '/var/log/univention/updater.log'
 fd_log = sys.stderr
-stdout_orig=sys.stdout
+stdout_orig = sys.stdout
 
 updater_status = {}
 
-class UpdateError(Exception):
-	""" Exception to signal errors on update.
 
-	msg: Human readable message.
-	errorsource: One of 'SETTINGS', 'PREPARATION', 'PREUP', 'UPDATE', 'POSTUP'
-	"""
-	def __init__(self, msg=None, errorsource=None):
-		Exception.__init__(self, msg)
-		self.errorsource = errorsource
+class UpdateError(Exception):
+
+    """ Exception to signal errors on update.
+
+    msg: Human readable message.
+    errorsource: One of 'SETTINGS', 'PREPARATION', 'PREUP', 'UPDATE', 'POSTUP'
+    """
+
+    def __init__(self, msg=None, errorsource=None):
+        Exception.__init__(self, msg)
+        self.errorsource = errorsource
+
 
 class UpToDateNoError(Exception):
-	""" Exception to signal when no update needs to be done """
-	pass
+
+    """ Exception to signal when no update needs to be done """
+    pass
+
 
 def log(str):
-	""" Log message to LOGNAME. """
-	print >>fd_log, str
-	fd_log.flush()
+    """ Log message to LOGNAME. """
+    print >>fd_log, str
+    fd_log.flush()
+
 
 def dprint(str):
-	""" Print message to stdout and LOGNAME. """
-	if nostdout:
-		print >>fd_log, str
-		fd_log.flush()
-		return
+    """ Print message to stdout and LOGNAME. """
+    if nostdout:
+        print >>fd_log, str
+        fd_log.flush()
+        return
 
-	for fd in (stdout_orig, fd_log):
-		print >>fd, str
-		fd.flush()
+    for fd in (stdout_orig, fd_log):
+        print >>fd, str
+        fd.flush()
+
 
 def update_status(**kwargs):
-	'''
-	update updater_status and write status to disk
+    '''
+    update updater_status and write status to disk
 
-	Keys:
-	- current_version ==> UCS_Version ==> 2.3-1
-	- next_version    ==> UCS_Version ==> 2.3-2
-	- updatetype      ==> (LOCAL|NET|CDROM)
-	- status          ==> (RUNNING|FAILED|DONE)
-	- errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
-	'''
-	global updater_status
-	updater_status.update(kwargs)
-	# write temporary file
-	fn = '%s.new' % FN_STATUS
-	try:
-		fd = open( fn, 'w+' )
-		for key, val in updater_status.items():
-			fd.write('%s=%s\n' % (key, val))
-		fd.close()
-	except:
-		dprint('Warning: cannot update %s' % fn)
-	try:
-		os.rename(fn, FN_STATUS)
-	except:
-		dprint('Warning: cannot update %s' % FN_STATUS)
+    Keys:
+    - current_version ==> UCS_Version ==> 2.3-1
+    - next_version    ==> UCS_Version ==> 2.3-2
+    - updatetype      ==> (LOCAL|NET|CDROM)
+    - status          ==> (RUNNING|FAILED|DONE)
+    - errorsource     ==> (SETTINGS|PREPARATION|PREUP|UPDATE|POSTUP)
+    '''
+    global updater_status
+    updater_status.update(kwargs)
+    # write temporary file
+    fn = '%s.new' % FN_STATUS
+    try:
+        fd = open(fn, 'w+')
+        for key, val in updater_status.items():
+            fd.write('%s=%s\n' % (key, val))
+        fd.close()
+    except:
+        dprint('Warning: cannot update %s' % fn)
+    try:
+        os.rename(fn, FN_STATUS)
+    except:
+        dprint('Warning: cannot update %s' % FN_STATUS)
 
 
 def usage(fd=sys.stdout):
-	""" Print usage message. """
-	print >>fd, 'univention-updater: tool for updating local system'
-	print >>fd, 'Copyright (c) 2005-2015 Univention GmbH, Germany'
-	print >>fd, ''
-	print >>fd, 'Syntax:'
-	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--no-clean] [--silent] [--check]'
-	print >>fd, '  univention-updater [--help] '
-	print >>fd, ''
-	print >>fd, 'Options:'
-	print >>fd, '  --updateto <release>  Upper limit for version'
-	print >>fd, '  --no-clean            Skip cleaning downloaded package file'
-	print >>fd, '  --silent              No output to STDOUT'
-	print >>fd, '  --check               Check if system is up-to-date'
-	print >>fd, '  --iso <file>          Path to ISO image'
-	print >>fd, '  --ignoressh           Skip check for SSH terminal'
-	print >>fd, '  --ignoreterm          Skip check for X11 Terminal'
-	print >>fd, '  --ignore-releasenotes Skip showing release notes'
-	print >>fd, '  --noninteractive      Do not ask interactive questions'
+    """ Print usage message. """
+    print >>fd, 'univention-updater: tool for updating local system'
+    print >>fd, 'Copyright (c) 2005-2015 Univention GmbH, Germany'
+    print >>fd, ''
+    print >>fd, 'Syntax:'
+    print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--no-clean] [--silent] [--check]'
+    print >>fd, '  univention-updater [--help] '
+    print >>fd, ''
+    print >>fd, 'Options:'
+    print >>fd, '  --updateto <release>  Upper limit for version'
+    print >>fd, '  --no-clean            Skip cleaning downloaded package file'
+    print >>fd, '  --silent              No output to STDOUT'
+    print >>fd, '  --check               Check if system is up-to-date'
+    print >>fd, '  --iso <file>          Path to ISO image'
+    print >>fd, '  --ignoressh           Skip check for SSH terminal'
+    print >>fd, '  --ignoreterm          Skip check for X11 Terminal'
+    print >>fd, '  --ignore-releasenotes Skip showing release notes'
+    print >>fd, '  --noninteractive      Do not ask interactive questions'
 
-def deactivateSourcesListMethods( methods = [ 'cdrom' ] ):
-	""" Rewrite sources.list deactivating all stanzas using any of the specified methods. """
-	cnt = 0
-	lines = []
-	deactivated_lines = []
-	f = open('/etc/apt/sources.list', 'r')
-	for line in f.readlines():
-		line=line.strip(' \n\t')
-		for method in methods:
-			if line.startswith( 'deb %s:' % method ) or line.startswith( 'deb-src %s:' % method ):
-				line = '#%s' % line
-				deactivated_lines.append(line)
-				cnt += 1
-		lines.append(line)
-	f.close()
-	if cnt:
-		f = open('/etc/apt/sources.list', 'w')
-		f.write( '\n'.join( lines ) )
-		f.write( '\n' )
-		f.close()
-		log('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
-		log( '   %s\n' % '\n   '.join(deactivated_lines) )
 
-def add_temporary_sources_list ( debline ):
-	""" Add line to a temporary sources.list. """
-	fp = open(TMPSOURCE, 'a+')
-	fp.write(debline+'\n')
-	fp.close()
+def deactivateSourcesListMethods(methods=['cdrom']):
+    """ Rewrite sources.list deactivating all stanzas using any of the specified methods. """
+    cnt = 0
+    lines = []
+    deactivated_lines = []
+    f = open('/etc/apt/sources.list', 'r')
+    for line in f.readlines():
+        line = line.strip(' \n\t')
+        for method in methods:
+            if line.startswith('deb %s:' % method) or line.startswith('deb-src %s:' % method):
+                line = '#%s' % line
+                deactivated_lines.append(line)
+                cnt += 1
+        lines.append(line)
+    f.close()
+    if cnt:
+        f = open('/etc/apt/sources.list', 'w')
+        f.write('\n'.join(lines))
+        f.write('\n')
+        f.close()
+        log('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
+        log('   %s\n' % '\n   '.join(deactivated_lines))
 
-def remove_temporary_sources_list ():
-	""" Add the temporary sources.list. """
-	if os.path.exists(TMPSOURCE):
-		os.remove(TMPSOURCE)
+
+def add_temporary_sources_list(debline):
+    """ Add line to a temporary sources.list. """
+    fp = open(TMPSOURCE, 'a+')
+    fp.write(debline + '\n')
+    fp.close()
+
+
+def remove_temporary_sources_list():
+    """ Add the temporary sources.list. """
+    if os.path.exists(TMPSOURCE):
+        os.remove(TMPSOURCE)
+
 
 def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None):
-	""" Checks if there is an update available.
-	Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified."""
+    """ Checks if there is an update available.
+    Returns the next version, or None if up-to-date, or throws an UpdateError if the next version can not be identified."""
 
-	log('--->DBG:update_available(mode=%s, cdrom_mount_point=%s, iso=%s)' % (mode, cdrom_mount_point, iso))
+    log('--->DBG:update_available(mode=%s, cdrom_mount_point=%s, iso=%s)' % (mode, cdrom_mount_point, iso))
 
-	nextversion = None
+    nextversion = None
 
-	vv=baseConfig['version/version']
-	vp=baseConfig['version/patchlevel']
+    vv = baseConfig['version/version']
+    vp = baseConfig['version/patchlevel']
 
-	if mode == 'local':
-		dprint('Checking local repository')
+    if mode == 'local':
+        dprint('Checking local repository')
 
-		if not updater:
-			updater = LocalUpdater()
-		try:
-			assert updater.server.access('')
-			nextversion = updater.release_update_available(errorsto='exception')
-		except DownloadError:
-			raise UpdateError('A local repository was not found.\n' +
-					'       Please check the UCR variable repository/mirror/basepath\n' +
-					'       or try to install via "univention-updater net"', errorsource='SETTINGS')
+        if not updater:
+            updater = LocalUpdater()
+        try:
+            assert updater.server.access('')
+            nextversion = updater.release_update_available(errorsto='exception')
+        except DownloadError:
+            raise UpdateError('A local repository was not found.\n' +
+                              '       Please check the UCR variable repository/mirror/basepath\n' +
+                              '       or try to install via "univention-updater net"', errorsource='SETTINGS')
 
-	elif mode == 'cdrom':
-		if iso:
-			device_name="ISO image"
+    elif mode == 'cdrom':
+        if iso:
+            device_name = "ISO image"
 
-			dprint('Mounting the ISO image %s' % iso)
+            dprint('Mounting the ISO image %s' % iso)
 
-			resultCode=os.system('mount -o loop %s %s' % ( iso, cdrom_mount_point))
-			if resultCode not in (0,32):
-				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
-				if res != 0:
-					raise UpdateError('Failed to mount %s' % iso, errorsource='PREPARATION')
-		else:
-			device_name="cdrom"
+            resultCode = os.system('mount -o loop %s %s' % (iso, cdrom_mount_point))
+            if resultCode not in (0, 32):
+                res = os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
+                if res != 0:
+                    raise UpdateError('Failed to mount %s' % iso, errorsource='PREPARATION')
+        else:
+            device_name = "cdrom"
 
-			dprint('Mounting cdrom %s' % cdrom_mount_point)
+            dprint('Mounting cdrom %s' % cdrom_mount_point)
 
-			resultCode = subprocess.call(['mount', cdrom_mount_point])
-			if resultCode not in (0,32):
-				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
-				if res != 0:
-					raise UpdateError('Failed to mount cdrom', errorsource='PREPARATION')
-		try:
-			# Let's check if this Update could be installed, as on the dvd is a textfile for which UCS release this update is
-			if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
-				try:
-					f=open('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point,vv,vp))
-					try:
-						nextversion = f.readline().strip('\n').lower().replace('nextupdate=', '')
-					finally:
-						f.close()
-				except:
-					raise UpdateError("%s does not contain an update for version %s-%s."%(device_name,vv,vp), errorsource='PREPARATION')
-			else:
-				raise UpdateError("%s is not a valid UCS update medium" % device_name, errorsource='PREPARATION')
-		finally:
-			resultCode = subprocess.call(['umount', cdrom_mount_point])
-			if resultCode != 0:
-				res=os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
-				if res == 0:
-					dprint('Warning: Failed to unmount %s' % device_name)
-		if nextversion:
-			try:
-				ver = UCS_Version(nextversion)
-			except ValueError:
-				pass
-			else:
-				mm_version = UCS_Version.FORMAT % ver
-				if not updater:
-					updater = LocalUpdater()
-				components = updater.get_current_components()
-				failed = set()
-				for component in components:
-					if not updater.get_component_repositories(component, [mm_version], False):
-						failed.add(component)
-				if failed:
-					raise RequiredComponentError(mm_version, failed)
+            resultCode = subprocess.call(['mount', cdrom_mount_point])
+            if resultCode not in (0, 32):
+                res = os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
+                if res != 0:
+                    raise UpdateError('Failed to mount cdrom', errorsource='PREPARATION')
+        try:
+            # Let's check if this Update could be installed, as on the dvd is a textfile for which UCS release this update is
+            if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
+                try:
+                    f = open('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point, vv, vp))
+                    try:
+                        nextversion = f.readline().strip('\n').lower().replace('nextupdate=', '')
+                    finally:
+                        f.close()
+                except:
+                    raise UpdateError("%s does not contain an update for version %s-%s." % (device_name, vv, vp), errorsource='PREPARATION')
+            else:
+                raise UpdateError("%s is not a valid UCS update medium" % device_name, errorsource='PREPARATION')
+        finally:
+            resultCode = subprocess.call(['umount', cdrom_mount_point])
+            if resultCode != 0:
+                res = os.system('mount -l 2>>%s | grep -q " %s "' % (LOGNAME, cdrom_mount_point))
+                if res == 0:
+                    dprint('Warning: Failed to unmount %s' % device_name)
+        if nextversion:
+            try:
+                ver = UCS_Version(nextversion)
+            except ValueError:
+                pass
+            else:
+                mm_version = UCS_Version.FORMAT % ver
+                if not updater:
+                    updater = LocalUpdater()
+                components = updater.get_current_components()
+                failed = set()
+                for component in components:
+                    if not updater.get_component_repositories(component, [mm_version], False):
+                        failed.add(component)
+                if failed:
+                    raise RequiredComponentError(mm_version, failed)
 
-	elif mode == 'net':
-		dprint('Checking network repository')
-		try:
-			if not updater:
-				updater = UniventionUpdater()
-			nextversion = updater.release_update_available(errorsto='exception')
-		except RequiredComponentError:
-			raise
-		except ConfigurationError, ex:
-			raise UpdateError('The configured repository is unavailable: %s' % (ex,), errorsource='SETTINGS')
+    elif mode == 'net':
+        dprint('Checking network repository')
+        try:
+            if not updater:
+                updater = UniventionUpdater()
+            nextversion = updater.release_update_available(errorsto='exception')
+        except RequiredComponentError:
+            raise
+        except ConfigurationError, ex:
+            raise UpdateError('The configured repository is unavailable: %s' % (ex,), errorsource='SETTINGS')
 
-	if nextversion in (None,'none'):
-		return None
-	else:
-		return nextversion
+    if nextversion in (None, 'none'):
+        return None
+    else:
+        return nextversion
+
 
 def update_ucr_updatestatus():
-	try:
-		devnull = open(os.path.devnull, 'w' )
-		subprocess.call( '/usr/share/univention-updater/univention-updater-check', stdout = devnull, stderr = devnull )
-		devnull.close()
-	except:
-		dprint('Warning: calling univention-updater-check failed.')
+    try:
+        devnull = open(os.path.devnull, 'w')
+        subprocess.call('/usr/share/univention-updater/univention-updater-check', stdout=devnull, stderr=devnull)
+        devnull.close()
+    except:
+        dprint('Warning: calling univention-updater-check failed.')
+
 
 def call_local(updateto=None, clean=None, ignoressh=False, ignoreterm=False, ignorereleasenotes=False):
-	"""Call updater in "local" mode."""
-	calllocal = [sys.argv[0], 'local']
-	if updateto:
-		calllocal += ['--updateto', '%s' % updateto]
-	if not clean:
-		calllocal.append('--no-clean')
-	if ignoressh:
-		calllocal.append('--ignoressh')
-	if ignoreterm:
-		calllocal.append('--ignoreterm')
-	if ignorereleasenotes:
-		calllocal.append('--ignore-releasenotes')
-	os.execv(sys.argv[0], calllocal)
-	dprint('Fatal: failed to exec: %r' % calllocal)
-	sys.exit(1)
+    """Call updater in "local" mode."""
+    calllocal = [sys.argv[0], 'local']
+    if updateto:
+        calllocal += ['--updateto', '%s' % updateto]
+    if not clean:
+        calllocal.append('--no-clean')
+    if ignoressh:
+        calllocal.append('--ignoressh')
+    if ignoreterm:
+        calllocal.append('--ignoreterm')
+    if ignorereleasenotes:
+        calllocal.append('--ignore-releasenotes')
+    os.execv(sys.argv[0], calllocal)
+    dprint('Fatal: failed to exec: %r' % calllocal)
+    sys.exit(1)
+
 
 def main():
-	# PATH does not contain */sbin when called from cron
-	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+    # PATH does not contain */sbin when called from cron
+    os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
 
-	for cdrom_mount_point in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
-		if os.path.isdir(cdrom_mount_point):
-			break
-	iso=None
-	global nostdout
+    for cdrom_mount_point in ('/cdrom', '/media/cdrom', '/media/cdrom0'):
+        if os.path.isdir(cdrom_mount_point):
+            break
+    iso = None
+    global nostdout
 
-	nostdout = False
-	ud.init(LOGNAME, 0, 0)
-	fp_debug=open(LOGNAME, 'a+')
-	stdout_orig=sys.stdout
-	#sys.stdout=fp_debug
+    nostdout = False
+    ud.init(LOGNAME, 0, 0)
+    fp_debug = open(LOGNAME, 'a+')
+    stdout_orig = sys.stdout
+    # sys.stdout=fp_debug
 
-	log('**** Starting univention-updater with parameter=%s' % sys.argv)
+    log('**** Starting univention-updater with parameter=%s' % sys.argv)
 
-	if len(sys.argv) < 2:
-		usage(sys.stderr)
-		fp_debug.close()
-		sys.exit(2)
+    if len(sys.argv) < 2:
+        usage(sys.stderr)
+        fp_debug.close()
+        sys.exit(2)
 
-	if sys.argv[1] == 'net':
-		command='net'
-	elif sys.argv[1] == 'cdrom':
-		command='cdrom'
-	elif sys.argv[1] == 'local':
-		command='local'
-	else:
-		usage(sys.stderr)
-		fp_debug.close()
-		sys.exit(2)
+    if sys.argv[1] == 'net':
+        command = 'net'
+    elif sys.argv[1] == 'cdrom':
+        command = 'cdrom'
+    elif sys.argv[1] == 'local':
+        command = 'local'
+    else:
+        usage(sys.stderr)
+        fp_debug.close()
+        sys.exit(2)
 
-	updateto = None
-	updateto_args = []
-	clean  = True
-	ignoressh = False
-	ignoreterm = False
-	ignorereleasenotes = False
+    updateto = None
+    updateto_args = []
+    clean = True
+    ignoressh = False
+    ignoreterm = False
+    ignorereleasenotes = False
 
-	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'ignore-releasenotes', 'silent', 'noninteractive', ]
-	try:
-		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
-	except getopt.error, msg:
-		dprint(msg)
-		fp_debug.close()
-		sys.exit(2)
+    longopts = ['src=', 'device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'ignore-releasenotes', 'silent', 'noninteractive', ]
+    try:
+        opts, args = getopt.getopt(sys.argv[2:], '', longopts)
+    except getopt.error, msg:
+        dprint(msg)
+        fp_debug.close()
+        sys.exit(2)
 
-	baseConfig = ucr.ConfigRegistry()
-	baseConfig.load()
-	for opt, val in opts:
-		if opt == '--src':
-			dprint('Warning: --src is deprecated; value is ignored.')
-		elif opt == "--device":
-			dprint('Warning: --device is deprecated; value is ignored.')
-		elif opt == "--cdrom":
-			cdrom_mount_point=val
-		elif opt == "--iso":
-			iso=val
-		elif opt == "--updateto":
-			try:
-				updateto = UCS_Version(val)
-				updateto_args = ['--updateto', val]
-			except ValueError, e:
-				dprint("%s" % e)
-				sys.exit(2)
-		elif opt == '--reboot':
-			dprint('Warning: --reboot is deprecated; value is ignored.')
-		elif opt == "--no-clean":
-			clean = False
-			dprint("Running updater without apt-get clean")
-		elif opt == '--check':
-			try:
-				nextversion = update_available(command, baseConfig, cdrom_mount_point, iso=iso)
-				if nextversion:
-					dprint('Next version is %s' % nextversion)
-					sys.exit(1)
-			except UpdateError, msg:
-				dprint("Error: %s" % msg)
-				print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
-				# Errors are handles as "update currently no available"
-			except RequiredComponentError as ex:
-				dprint("%s" % ex)
-			else:
-				dprint('System is up to date') # Sync with /etc/cron.d/univention-maintenance
-			sys.exit(0)
-		elif opt == '--ignore-releasenotes':
-			ignorereleasenotes = True
-		elif opt == '--ignoressh':
-			ignoressh = True
-		elif opt == '--ignoreterm':
-			ignoreterm = True
-		elif opt == '--silent':
-			nostdout = True
-		elif opt == '--noninteractive':
-			ignorereleasenotes = True
-			os.environ['UCS_FRONTEND'] = 'noninteractive'
-			with open(os.path.devnull, 'r') as null:
-				os.dup2(null.fileno(), sys.stdin.fileno())
-		else:
-			dprint('Unknown parameter: "%s"'%opt)
-			sys.exit(2)
+    baseConfig = ucr.ConfigRegistry()
+    baseConfig.load()
+    for opt, val in opts:
+        if opt == '--src':
+            dprint('Warning: --src is deprecated; value is ignored.')
+        elif opt == "--device":
+            dprint('Warning: --device is deprecated; value is ignored.')
+        elif opt == "--cdrom":
+            cdrom_mount_point = val
+        elif opt == "--iso":
+            iso = val
+        elif opt == "--updateto":
+            try:
+                updateto = UCS_Version(val)
+                updateto_args = ['--updateto', val]
+            except ValueError, e:
+                dprint("%s" % e)
+                sys.exit(2)
+        elif opt == '--reboot':
+            dprint('Warning: --reboot is deprecated; value is ignored.')
+        elif opt == "--no-clean":
+            clean = False
+            dprint("Running updater without apt-get clean")
+        elif opt == '--check':
+            try:
+                nextversion = update_available(command, baseConfig, cdrom_mount_point, iso=iso)
+                if nextversion:
+                    dprint('Next version is %s' % nextversion)
+                    sys.exit(1)
+            except UpdateError, msg:
+                dprint("Error: %s" % msg)
+                print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
+                # Errors are handles as "update currently no available"
+            except RequiredComponentError as ex:
+                dprint("%s" % ex)
+            else:
+                dprint('System is up to date')  # Sync with /etc/cron.d/univention-maintenance
+            sys.exit(0)
+        elif opt == '--ignore-releasenotes':
+            ignorereleasenotes = True
+        elif opt == '--ignoressh':
+            ignoressh = True
+        elif opt == '--ignoreterm':
+            ignoreterm = True
+        elif opt == '--silent':
+            nostdout = True
+        elif opt == '--noninteractive':
+            ignorereleasenotes = True
+            os.environ['UCS_FRONTEND'] = 'noninteractive'
+            with open(os.path.devnull, 'r') as null:
+                os.dup2(null.fileno(), sys.stdin.fileno())
+        else:
+            dprint('Unknown parameter: "%s"' % opt)
+            sys.exit(2)
 
-	deactivateSourcesListMethods( methods = [ 'cdrom' ] )
+    deactivateSourcesListMethods(methods=['cdrom'])
 
-	if clean:
-		subprocess.call(['apt-get', 'clean'])
+    if clean:
+        subprocess.call(['apt-get', 'clean'])
 
-	vv=baseConfig['version/version']
-	vp=baseConfig['version/patchlevel']
+    vv = baseConfig['version/version']
+    vp = baseConfig['version/patchlevel']
 
-	lastversion='%s-%s' % (vv,vp)
-	nextversion=None
+    lastversion = '%s-%s' % (vv, vp)
+    nextversion = None
 
-	update_status( current_version=lastversion, type=command.upper(), status='RUNNING' )
+    update_status(current_version=lastversion, type=command.upper(), status='RUNNING')
 
-	log('Version=%s' % vv)
-	log('Patchlevel=%s' % vp)
+    log('Version=%s' % vv)
+    log('Patchlevel=%s' % vp)
 
-	architecture=os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1]
+    architecture = os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1]
 
-	# if there is no _new_ repository server -> exit
-	if baseConfig.is_true('local/repository', False) and baseConfig.get('repository/local/old'):
-		dprint( 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0')
-		sys.exit( 1 )
+    # if there is no _new_ repository server -> exit
+    if baseConfig.is_true('local/repository', False) and baseConfig.get('repository/local/old'):
+        dprint(
+            'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0')
+        sys.exit(1)
 
+    if command == 'local':
+        log('starting local mode')
+        updater = LocalUpdater()
+        nextversion = update_available('local', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
+    elif command == 'cdrom':
+        log('starting cdrom mode')
+        if iso:
+            device_name = "ISO image"
+        else:
+            device_name = "cdrom"
+        updater = LocalUpdater()
+        nextversion = update_available('cdrom', baseConfig, cdrom_mount_point, iso=iso)
+    elif command == 'net':
+        log('starting net mode')
+        # if baseConfig.is_true('local/repository', False):
+        #	log('local/repository active, copy from net and start local mode')
+        #	resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
+        #	if resultCode != 0:
+        #		fp_debug.close()
+        #		raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
 
-	if command == 'local':
-		log('starting local mode')
-		updater = LocalUpdater()
-		nextversion = update_available('local', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
-	elif command == 'cdrom':
-		log('starting cdrom mode')
-		if iso:
-			device_name = "ISO image"
-		else:
-			device_name = "cdrom"
-		updater = LocalUpdater()
-		nextversion = update_available('cdrom', baseConfig, cdrom_mount_point, iso=iso)
-	elif command == 'net':
-		log('starting net mode')
-		#if baseConfig.is_true('local/repository', False):
-		#	log('local/repository active, copy from net and start local mode')
-		#	resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
-		#	if resultCode != 0:
-		#		fp_debug.close()
-		#		raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
+        #	call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
+        updater = UniventionUpdater()
+        nextversion = update_available('net', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
+    else:
+        dprint('Unknown mode: %s' % command)
+        sys.exit(1)
 
-		#	call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
-		updater = UniventionUpdater()
-		nextversion = update_available('net', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
-	else:
-		dprint('Unknown mode: %s' % command)
-		sys.exit(1)
+    if not nextversion:
+        dprint('System is up to date (UCS %s)' % lastversion)
+        fp_debug.close()
+        raise UpToDateNoError()
+    new_version = UCS_Version(nextversion)
+    if updateto and new_version > updateto:
+        dprint('Update hold at %s, next %s is after %s' % (lastversion, new_version, updateto))
+        fp_debug.close()
+        raise UpToDateNoError()
 
-	if not nextversion:
-		dprint('System is up to date (UCS %s)' % lastversion)
-		fp_debug.close()
-		raise UpToDateNoError()
-	new_version = UCS_Version(nextversion)
-	if updateto and new_version > updateto:
-		dprint('Update hold at %s, next %s is after %s' % (lastversion, new_version, updateto))
-		fp_debug.close()
-		raise UpToDateNoError()
+    dprint('Update to = %s' % nextversion)
+    update_status(next_version=nextversion)
 
-	dprint('Update to = %s' % nextversion)
-	update_status(next_version=nextversion)
+    if ignorereleasenotes:
+        os.putenv('update_warning_releasenotes_internal', 'no')
+    if ignoressh:
+        os.putenv('update%d%d_ignoressh' % (new_version.major, new_version.minor, ), 'yes')
+    if ignoreterm:
+        os.putenv('update%d%d_ignoreterm' % (new_version.major, new_version.minor, ), 'yes')
 
-	if ignorereleasenotes:
-		os.putenv('update_warning_releasenotes_internal', 'no')
-	if ignoressh:
-		os.putenv('update%d%d_ignoressh' % (new_version.major, new_version.minor, ), 'yes')
-	if ignoreterm:
-		os.putenv('update%d%d_ignoreterm' % (new_version.major, new_version.minor, ), 'yes')
+    temporary_sources_list = updater.release_update_temporary_sources_list(nextversion)
+    remove_temporary_sources_list()
+    add_temporary_sources_list('\n'.join(temporary_sources_list))
 
-	temporary_sources_list = updater.release_update_temporary_sources_list(nextversion)
-	remove_temporary_sources_list()
-	add_temporary_sources_list('\n'.join(temporary_sources_list))
+    if command == 'cdrom':
+        if baseConfig.is_true('local/repository', False):
+            log('local/reposity active, copy %s and start local mode' % device_name)
+            if iso:
+                resultCode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', cdrom_mount_point, '--iso', iso] + updateto_args)
+            else:
+                resultCode = subprocess.call(['/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', cdrom_mount_point] + updateto_args)
 
-	if command == 'cdrom':
-		if baseConfig.is_true('local/repository', False):
-			log('local/reposity active, copy %s and start local mode' % device_name)
-			if iso:
-				resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', cdrom_mount_point, '--iso', iso ] + updateto_args )
-			else:
-				resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'cdrom', '--cdrom', cdrom_mount_point ] + updateto_args )
+            if resultCode != 0:
+                fp_debug.close()
+                raise UpdateError('Failed to execute "univention-repository-update cdrom"', errorsource='UPDATE')
 
-			if resultCode != 0:
-				fp_debug.close()
-				raise UpdateError('Failed to execute "univention-repository-update cdrom"', errorsource='UPDATE')
+            call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
+        else:
+            dprint('Error: You are trying to install from a cdrom/dvd image')
+            dprint('       but a local repository was not found. If you want to')
+            dprint('       update via an ISO image you need to create a local')
+            dprint('       repository (/usr/sbin/univention-repository-create)')
+            dprint('       or try to install via "univention-updater net"')
+            sys.exit(1)
 
-			call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
-		else:
-			dprint('Error: You are trying to install from a cdrom/dvd image')
-			dprint('       but a local repository was not found. If you want to')
-			dprint('       update via an ISO image you need to create a local')
-			dprint('       repository (/usr/sbin/univention-repository-create)')
-			dprint('       or try to install via "univention-updater net"')
-			sys.exit( 1 )
+    rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
 
-	rel = updater._iterate_version_repositories(new_version, new_version, ('maintained',), ('all',))
+    components = updater.get_components()
+    # components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), components)
+    com = updater._iterate_component_repositories(components, new_version, new_version, ('all',))
 
-	components = updater.get_components()
-	#components = filter(lambda c: 'current' in baseConfig.get('repository/online/component/%s/version' % c, '').split(','), components)
-	com = updater._iterate_component_repositories(components, new_version, new_version, ('all',))
+    all = itertools.chain(rel, com)
+    scripts = updater.get_sh_files(all, baseConfig.is_true('repository/online/verify', True))
+    for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
+        if (phase, order) == ('update', 'pre'):
+            log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())
+        elif (phase, order) == ('preup', 'pre'):
+            log('**** Starting actual update at %s' % datetime.datetime.now().ctime())
+        elif (phase, order) == ('update', 'main'):
+            count = 300
+            while os.path.exists('/var/run/apt-get.lock') and count > 0:
+                time.sleep(1)
+                count -= 1
 
-	all = itertools.chain(rel, com)
-	scripts = updater.get_sh_files(all, baseConfig.is_true('repository/online/verify', True))
-	for phase, order in updater.call_sh_files(scripts, LOGNAME, str(new_version)):
-		if (phase, order) == ('update', 'pre'):
-			log('**** Downloading scripts at %s' % datetime.datetime.now().ctime())
-		elif (phase, order) == ('preup', 'pre'):
-			log('**** Starting actual update at %s' % datetime.datetime.now().ctime())
-		elif (phase, order) == ('update', 'main'):
-			count = 300
-			while os.path.exists('/var/run/apt-get.lock') and count > 0:
-				time.sleep(1)
-				count -= 1
+            # TODO: should we really exit if the 'apt-get update' process failed?
+            resultCode = os.system('touch /var/run/apt-get.lock && %s >>%s 2>&1' % (cmd_update, LOGNAME))
+            if os.path.exists('/var/run/apt-get.lock'):
+                os.unlink('/var/run/apt-get.lock')
+            if resultCode != 0:
+                raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
 
-			# TODO: should we really exit if the 'apt-get update' process failed?
-			resultCode=os.system('touch /var/run/apt-get.lock && %s >>%s 2>&1' % (cmd_update, LOGNAME))
-			if os.path.exists('/var/run/apt-get.lock'):
-				os.unlink('/var/run/apt-get.lock')
-			if resultCode != 0:
-				raise UpdateError('Failed to execute "%s"' % cmd_update, errorsource='UPDATE')
+            # Execute the dist-upgrade!
+            count = 300
+            while os.path.exists('/var/run/apt-get.lock') and count > 0:
+                time.sleep(1)
+                count -= 1
 
-			# Execute the dist-upgrade!
-			count = 300
-			while os.path.exists('/var/run/apt-get.lock') and count > 0:
-				time.sleep(1)
-				count -= 1
+            resultCode = os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s >>%s 2>&1' % (cmd_dist_upgrade, LOGNAME))
+            if os.path.exists('/var/run/apt-get.lock'):
+                os.unlink('/var/run/apt-get.lock')
+            if resultCode != 0:
+                raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
 
-			resultCode=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive %s >>%s 2>&1' % (cmd_dist_upgrade, LOGNAME))
-			if os.path.exists('/var/run/apt-get.lock'):
-				os.unlink('/var/run/apt-get.lock')
-			if resultCode != 0:
-				raise UpdateError('Failed to execute "%s"' % cmd_dist_upgrade, errorsource='UPDATE')
+    # Call the postup.sh
+    (nvv, nvp) = nextversion.split('-')[0:2]
 
-	# Call the postup.sh
-	(nvv,nvp)=nextversion.split('-')[0:2]
+    # Bug #23202: After the update from Python2.4 to Python2.6, ucr.handler_set() does not work any more because it still uses python2.4!
+    subprocess.call(('univention-config-registry', 'set', 'version/version=%s' % nvv, 'version/patchlevel=%s' % nvp), stdout=fp_debug, stderr=fp_debug)
+    remove_temporary_sources_list()
 
-	# Bug #23202: After the update from Python2.4 to Python2.6, ucr.handler_set() does not work any more because it still uses python2.4!
-	subprocess.call(('univention-config-registry', 'set', 'version/version=%s' % nvv, 'version/patchlevel=%s' % nvp), stdout=fp_debug, stderr=fp_debug)
-	remove_temporary_sources_list()
+    if os.path.exists('/usr/sbin/univention-pkgdb-scan'):
+        os.system('/usr/sbin/univention-pkgdb-scan >>%s 2>&1' % LOGNAME)
 
-	if os.path.exists('/usr/sbin/univention-pkgdb-scan'):
-		os.system('/usr/sbin/univention-pkgdb-scan >>%s 2>&1' % LOGNAME)
-
-	if os.path.exists(failure):
-		os.unlink(failure)
-	subprocess.call(['touch', reboot_required])
-	update_status( status='DONE' )
-	os.execv(sys.argv[0], sys.argv)
+    if os.path.exists(failure):
+        os.unlink(failure)
+    subprocess.call(['touch', reboot_required])
+    update_status(status='DONE')
+    os.execv(sys.argv[0], sys.argv)
 
 if __name__ == '__main__':
-	if '-h' in sys.argv or '-?' in sys.argv or '--help' in sys.argv:
-		usage()
-		sys.exit(0)
+    if '-h' in sys.argv or '-?' in sys.argv or '--help' in sys.argv:
+        usage()
+        sys.exit(0)
 
-	do_ucr_update = True
+    do_ucr_update = True
 
-	fd_log = open(LOGNAME, 'a+')
-	try:
-		lock = univention.updater.tools.updater_lock_acquire()
-	except univention.updater.tools.LockingError, e:
-		print >>sys.stderr, e
-		sys.exit(5)
-	try:
-		try:
-			try:
-				main()
-			except VerificationError, ex:
-				msg = '\n'.join([
-					"Update aborted due to verification error:",
-					"%s" % (ex,),
-				] + wrap(dedent("""\
+    fd_log = open(LOGNAME, 'a+')
+    try:
+        lock = univention.updater.tools.updater_lock_acquire()
+    except univention.updater.tools.LockingError, e:
+        print >>sys.stderr, e
+        sys.exit(5)
+    try:
+        try:
+            try:
+                main()
+            except VerificationError, ex:
+                msg = '\n'.join([
+                    "Update aborted due to verification error:",
+                        "%s" % (ex,),
+                ] + wrap(dedent("""\
 						This can and should only be disabled temporarily
 						using the UCR variable 'repository/online/verify'.
 						"""
-				)))
-				raise UpdateError(msg, errorsource='SETTINGS')
-			except ConfigurationError, e:
-				msg = 'Update aborted due to configuration error: %s' % e
-				raise UpdateError(msg, errorsource='SETTINGS')
-			except RequiredComponentError, ex:
-				update_status(status='DONE', errorsource='PREPARATION')
-				dprint("%s" % ex)
-			except PreconditionError, (phase, order, component, script):
-				if phase == 'preup':
-					phase = 'pre-update'
-					errorsource = 'PREUP'
-				elif phase == 'postup':
-					phase = 'post-update'
-					errorsource = 'POSTUP'
-				else:
-					errorsource = 'UPDATE'
+                                )))
+                raise UpdateError(msg, errorsource='SETTINGS')
+            except ConfigurationError, e:
+                msg = 'Update aborted due to configuration error: %s' % e
+                raise UpdateError(msg, errorsource='SETTINGS')
+            except RequiredComponentError, ex:
+                update_status(status='DONE', errorsource='PREPARATION')
+                dprint("%s" % ex)
+            except PreconditionError, (phase, order, component, script):
+                if phase == 'preup':
+                    phase = 'pre-update'
+                    errorsource = 'PREUP'
+                elif phase == 'postup':
+                    phase = 'post-update'
+                    errorsource = 'POSTUP'
+                else:
+                    errorsource = 'UPDATE'
 
-				if order == 'main':
-					order = 'release %s' % component
-				elif order == 'pre':
-					order = 'component %s before calling release script' % component
-				elif order == 'post':
-					order = 'component %s after calling release script' % component
+                if order == 'main':
+                    order = 'release %s' % component
+                elif order == 'pre':
+                    order = 'component %s before calling release script' % component
+                elif order == 'post':
+                    order = 'component %s after calling release script' % component
 
-				msg = 'Update aborted by %s script of %s' % (phase, order)
-				raise UpdateError(msg, errorsource=errorsource)
-		except UpdateError, msg:
-			if msg.errorsource:
-				update_status( status='FAILED', errorsource=msg.errorsource )
-			else:
-				update_status( status='FAILED' )
-			dprint("Error: %s" % msg)
-			print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
-			subprocess.call(['touch', failure])
-			# disable update of UCR variable update/available to prevent call loop of univention-updater
-			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
-			do_ucr_update = False
-			sys.exit(1)
-		except KeyboardInterrupt:
-			update_status( status='FAILED' )
-			dprint("\nUpdate aborted by user (ctrl-c)\n")
-			# disable update of UCR variable update/available to prevent call loop of univention-updater
-			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
-			do_ucr_update = False
-			sys.exit(1)
-		except UpToDateNoError, error:
-			update_status( status='DONE' )
-			if os.path.exists(failure):
-				os.unlink(failure)
-			sys.exit(0)
-		except SystemExit:
-			# disable update of UCR variable update/available to prevent call loop of univention-updater
-			# (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
-			do_ucr_update = False
-			raise
-	finally:
-		if not univention.updater.tools.updater_lock_release(lock):
-			print 'WARNING: updater-lock already released!'
-		try:
-			remove_temporary_sources_list()
-		except:
-			print >>sys.stderr, "Failed to remove %s." % TMPSOURCE
-		if do_ucr_update:
-			update_ucr_updatestatus()
-		fd_log.close()
+                msg = 'Update aborted by %s script of %s' % (phase, order)
+                raise UpdateError(msg, errorsource=errorsource)
+        except UpdateError, msg:
+            if msg.errorsource:
+                update_status(status='FAILED', errorsource=msg.errorsource)
+            else:
+                update_status(status='FAILED')
+            dprint("Error: %s" % msg)
+            print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
+            subprocess.call(['touch', failure])
+            # disable update of UCR variable update/available to prevent call loop of univention-updater
+            # (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+            do_ucr_update = False
+            sys.exit(1)
+        except KeyboardInterrupt:
+            update_status(status='FAILED')
+            dprint("\nUpdate aborted by user (ctrl-c)\n")
+            # disable update of UCR variable update/available to prevent call loop of univention-updater
+            # (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+            do_ucr_update = False
+            sys.exit(1)
+        except UpToDateNoError, error:
+            update_status(status='DONE')
+            if os.path.exists(failure):
+                os.unlink(failure)
+            sys.exit(0)
+        except SystemExit:
+            # disable update of UCR variable update/available to prevent call loop of univention-updater
+            # (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
+            do_ucr_update = False
+            raise
+    finally:
+        if not univention.updater.tools.updater_lock_release(lock):
+            print 'WARNING: updater-lock already released!'
+        try:
+            remove_temporary_sources_list()
+        except:
+            print >>sys.stderr, "Failed to remove %s." % TMPSOURCE
+        if do_ucr_update:
+            update_ucr_updatestatus()
+        fd_log.close()

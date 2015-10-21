@@ -13,8 +13,8 @@ import univention.updater.mirror as M
 import univention.config_registry as C
 
 __all__ = ['U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'SEC', 'ERRAT', 'PART', 'ARCH',
-        'MockConfigRegistry', 'MockUCSHttpServer', 'MockPopen', 'MockFile',
-        'verbose']
+           'MockConfigRegistry', 'MockUCSHttpServer', 'MockPopen', 'MockFile',
+           'verbose']
 
 MAJOR = 3
 MINOR = 0
@@ -26,14 +26,15 @@ ARCH = 'arch'
 
 
 class MockConfigRegistry(C.ConfigRegistry):
+
     """Mockup for ConfigRegistry."""
     _ORIG = C.ConfigRegistry
     _DEFAULT = {
-            'version/version': '%d.%d' % (MAJOR, MINOR),
+        'version/version': '%d.%d' % (MAJOR, MINOR),
             'version/patchlevel': '%d' % (PATCH,),
             'version/security-patchlevel': '%d' % (SEC,),
             'version/erratalevel': '%d' % (ERRAT,),
-            }
+    }
     _EXTRA = {}
 
     def __init__(self):
@@ -48,6 +49,7 @@ class MockConfigRegistry(C.ConfigRegistry):
 
 
 class MockUCSHttpServer(U.UCSLocalServer):
+
     """Mockup for UCSHttpServer."""
     PREFIX = 'mock'
     mock_content = {}
@@ -101,6 +103,7 @@ class MockUCSHttpServer(U.UCSLocalServer):
 
 
 class MockPopen(object):
+
     """Mockup for Popen."""
     _ORIG = U.subprocess.Popen
     mock_commands = []
@@ -150,8 +153,10 @@ class MockPopen(object):
 
 
 class MockFile(object):
+
     """Wrapper for open() / file()."""
     _ORIG = open
+
     def __init__(self, base='/tmp'):
         self.mock_base = base
         self.mock_whitelist = set()
