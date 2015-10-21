@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-2) unstable; urgency=low
+
+  * added add_host_record_in_ad to ad member init (Bug #39574)
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Oct 2015 12:24:18 +0200
+
 univention-ad-connector (10.0.1-1) unstable; urgency=medium
 
   * Bug #38820: change /umcp/ to /univention-management-console/
