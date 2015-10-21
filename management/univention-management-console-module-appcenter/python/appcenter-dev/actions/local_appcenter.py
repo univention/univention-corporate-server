@@ -43,7 +43,6 @@ from datetime import date
 import gzip
 import tarfile
 from tempfile import mkdtemp
-from ConfigParser import ConfigParser
 
 
 from univention.config_registry import ConfigRegistry
@@ -52,7 +51,7 @@ from univention.config_registry.frontend import ucr_update
 ucr = ConfigRegistry()
 ucr.load()
 
-from univention.appcenter.app import App, AppManager
+from univention.appcenter.app import App, AppManager, _get_from_parser, _read_ini_file
 from univention.appcenter.actions import UniventionAppAction
 from univention.appcenter.utils import get_md5_from_file, mkdir
 from univention.appcenter.actions.update import Update
@@ -86,8 +85,9 @@ class FileInfo(object):
 
 
 class AppcenterApp(object):
-	def __init__(self, name, ucs_version, meta_inf_dir, components_dir, server):
+	def __init__(self, name, id, ucs_version, meta_inf_dir, components_dir, server):
 		self.name = name
+		self.id = id
 		self.ucs_version = ucs_version
 		self.meta_inf_dir = meta_inf_dir
 		self.components_dir = components_dir
@@ -113,8 +113,14 @@ class AppcenterApp(object):
 	def _meta_inf_dir(self, filename):
 		return os.path.join(self.meta_inf_dir, filename)
 
+	def get_meta_file(self):
+		return self._meta_inf_dir('%s.meta' % self.name)
+
+	def get_meta_url(self):
+		return self._meta_url('%s.meta' % self.id)
+
 	def get_ini_file(self):
-		return self._meta_inf_dir('%s.ini' % self.name)
+		return self._meta_inf_dir('%s.ini' % self.id)
 
 	def get_ini_url(self):
 		return self._meta_url('%s.ini' % self.name)
@@ -130,7 +136,7 @@ class AppcenterApp(object):
 
 	def important_files(self):
 		# Adding "special ini and png file
-		for special_file in ['ini', 'png']:
+		for special_file in ['ini', 'png', 'meta']:
 			get_file_method = getattr(self, 'get_%s_file' % special_file.lower())
 			get_url_method = getattr(self, 'get_%s_url' % special_file.lower())
 			filename = get_file_method()
@@ -205,7 +211,11 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 						appname = check_ini_file(filename)
 						if not appname:
 							continue
-						app = AppcenterApp(appname, args.ucs_version, meta_inf_dir, repo_dir, args.appcenter_host)
+						parser = _read_ini_file(filename)
+						appid = _get_from_parser(parser, 'Application', 'ID')
+						if not appid:
+							continue
+						app = AppcenterApp(appname, appid, args.ucs_version, meta_inf_dir, repo_dir, args.appcenter_host)
 						apps[app.name] = app.to_index()
 						for filename_in_directory, filename_in_archive in app.tar_files():
 							archive.add(filename_in_directory, filename_in_archive)
@@ -432,6 +442,9 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 			with open(os.path.join(meta_inf_dir, '..', 'categories.ini'), 'wb') as f:
 				categories = urlopen('%s/meta-inf/categories.ini' % AppManager.get_server()).read()
 				f.write(categories)
+			with open(os.path.join(meta_inf_dir, '..', 'rating.ini'), 'wb') as f:
+				rating = urlopen('%s/meta-inf/rating.ini' % AppManager.get_server()).read()
+				f.write(rating)
 			server = 'http://%s' % args.appcenter_host
 			ucr_update(ucr, {'repository/app_center/server': server, 'update/secure_apt': 'no'})
 			DevRegenerateMetaInf.call(ucs_version=args.ucs_version, path=args.path, appcenter_host=server)

@@ -105,11 +105,14 @@ class Update(UniventionAppAction):
 
 	@possible_network_error
 	def _download_supra_files(self):
-		categories_url = urljoin('%s/' % self._get_metainf_url(), '../categories.ini')
-		self.log('Downloading "%s"...' % categories_url)
-		categories = urlopen(categories_url).read()
-		with open(os.path.join(CACHE_DIR, '.categories.ini'), 'wb') as f:
-			f.write(categories)
+		def _download_supra_file(filename):
+			url = urljoin('%s/' % self._get_metainf_url(), '../%s' % filename)
+			self.log('Downloading "%s"...' % url)
+			categories = urlopen(url).read()
+			with open(os.path.join(CACHE_DIR, '.%s' % filename), 'wb') as f:
+				f.write(categories)
+		_download_supra_file('categories.ini')
+		_download_supra_file('rating.ini')
 
 	@possible_network_error
 	def _download_archive(self, files_to_download):

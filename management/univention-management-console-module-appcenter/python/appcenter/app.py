@@ -36,7 +36,7 @@ import os
 import os.path
 from glob import glob
 import re
-from ConfigParser import RawConfigParser, NoOptionError, NoSectionError
+from ConfigParser import RawConfigParser, NoOptionError, NoSectionError, MissingSectionHeaderError
 from copy import copy
 from locale import getlocale
 from cgi import escape as cgi_escape
@@ -66,6 +66,41 @@ def _get_locale():
 	if locale:
 		locale = locale.split('_', 1)[0]
 	return locale
+
+
+def _read_ini_file(filename):
+	parser = RawConfigParser()
+	try:
+		with open(filename, 'rb') as f:
+			parser.readfp(f)
+	except (IOError, MissingSectionHeaderError):
+		pass
+	return parser
+
+
+def _get_from_parser(parser, section, attr):
+	try:
+		return parser.get(section, attr)
+	except (NoSectionError, NoOptionError):
+		return None
+
+
+def _get_rating_items():
+	if _get_rating_items._items is None:
+		_get_rating_items._items = []
+		rating_parser = _read_ini_file(os.path.join(CACHE_DIR, '.rating.ini'))
+		locale = _get_locale()
+		for section in rating_parser.sections():
+			label = _get_from_parser(rating_parser, section, 'Label')
+			if locale:
+				label = _get_from_parser(rating_parser, section, 'Label[%s]' % locale) or label
+			description = _get_from_parser(rating_parser, section, 'Description')
+			if locale:
+				description = _get_from_parser(rating_parser, section, 'Description[%s]' % locale) or description
+			item = {'name': section, 'description': description, 'label': label}
+			_get_rating_items._items.append(item)
+	return [itm.copy() for itm in _get_rating_items._items]
+_get_rating_items._items = None
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
@@ -385,6 +420,8 @@ class App(object):
 	default_packages = AppListAttribute()
 	default_packages_master = AppListAttribute()
 
+	rating = AppListAttribute()
+
 	umc_module_name = AppAttribute()
 	umc_module_flavor = AppAttribute()
 
@@ -465,25 +502,44 @@ class App(object):
 		app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
 			locale = _get_locale()
-		config_parser = RawConfigParser()
-		with open(ini_file, 'rb') as f:
-			config_parser.readfp(f)
+		ini_parser = _read_ini_file(ini_file)
+		meta_parser = RawConfigParser()  # always init
+		app_id = _get_from_parser(ini_parser, 'Application', 'ID')
+		if app_id:
+			meta_file = os.path.join(CACHE_DIR, '%s.meta' % app_id)
+			if os.path.exists(meta_file):
+				app_logger.debug('Using additional %s' % meta_file)
+				meta_parser = _read_ini_file(meta_file)
 		attr_values = {}
 		for attr in cls._attrs:
 			value = None
 			if attr.name == 'component_id':
 				value = os.path.splitext(os.path.basename(ini_file))[0]
+			elif attr.name == 'rating':
+				value = []
+				rating_items = _get_rating_items()
+				for item in rating_items:
+					val = _get_from_parser(meta_parser, 'Application', item['name'])
+					try:
+						val = int(val)
+					except (ValueError, TypeError):
+						pass
+					else:
+						item['value'] = val
+						value.append(item)
 			else:
 				ini_attr_name = attr.name.replace('_', '')
-				try:
-					if not attr.localisable or not locale:
-						raise NoOptionError(ini_attr_name, locale)
-					value = config_parser.get(locale, ini_attr_name)
-				except (NoSectionError, NoOptionError):
+				priority_sections = [(meta_parser, 'Application'), (ini_parser, 'Application')]
+				if attr.localisable and locale:
+					priority_sections.insert(0, (meta_parser, locale))
+					priority_sections.insert(2, (ini_parser, locale))
+				for parser, section in priority_sections:
 					try:
-						value = config_parser.get('Application', ini_attr_name)
+						value = parser.get(section, ini_attr_name)
 					except (NoSectionError, NoOptionError):
 						pass
+					else:
+						break
 			try:
 				value = attr.get(value, ini_file)
 			except ValueError as e:
@@ -833,6 +889,7 @@ class AppManager(object):
 	@classmethod
 	def clear_cache(cls):
 		cls._cache[:] = []
+		_get_rating_items._items = None
 
 	@classmethod
 	def _get_every_single_app(cls):

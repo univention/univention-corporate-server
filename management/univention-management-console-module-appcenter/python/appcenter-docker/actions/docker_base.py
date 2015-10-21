@@ -35,6 +35,7 @@
 import shutil
 import os.path
 import re
+from time import time
 
 from ldap.dn import explode_dn
 
@@ -42,7 +43,7 @@ from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.docker import Docker
 from univention.appcenter.actions import Abort, get_action
-from univention.appcenter.actions.service import Start
+from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir
 
 
@@ -52,6 +53,30 @@ class DockerActionMixin(object):
 		if not app.docker:
 			return
 		return Docker(app, cls.logger)
+
+	def _store_data(self, app):
+		process = self._execute_container_script(app, 'store_data', _credentials=False)
+		if not process or process.returncode != 0:
+			self.warn('Image upgrade script (pre) failed')
+			return False
+		return True
+
+	def _backup_container(self, app):
+		if not Start.call(app=app):
+			self.warn('Starting the container for %s failed' % app)
+			return False
+		if not self._store_data(app):
+			self.warn('Storing data for %s failed' % app)
+			return False
+		if not Stop.call(app=app):
+			self.warn('Stopping the container for %s failed' % app)
+			return False
+		docker = self._get_docker(app)
+		if docker.container:
+			image_name = 'appcenter-backup-%s:%d' % (app.id, time())
+			image_id = docker.commit(image_name)
+			self.log('Backed up %s as %s. ID: %s' % (app, image_name, image_id))
+			return image_id
 
 	def _execute_container_script(self, _app, _interface, _args=None, _credentials=True, _output=False, **kwargs):
 		self.log('Executing interface %s for %s' % (_interface, _app.id))
@@ -121,7 +146,7 @@ class DockerActionMixin(object):
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
 		set_vars['update/warning/releasenotes'] = 'no'
-		for var in ['nameserver.*', 'repository/online/server', 'repository/app_center/server', 'update/secure_apt', 'ldap/master.*', 'locale.*', 'domainname']:
+		for var in ['nameserver.*', 'repository/online/server', 'repository/app_center/server', 'update/secure_apt', 'appcenter/index/verify', 'ldap/master.*', 'locale.*', 'domainname']:
 			for key in ucr.iterkeys():
 				if re.match(var, key):
 					set_vars[key] = ucr.get(key)

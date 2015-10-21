@@ -217,7 +217,7 @@ def rm(container):
 
 
 def commit(container, new_base_image):
-	return call(['docker', 'commit', container, new_base_image])
+	return check_output(['docker', 'commit', container, new_base_image])
 
 
 class Docker(object):

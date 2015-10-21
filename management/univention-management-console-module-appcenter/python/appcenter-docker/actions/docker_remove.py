@@ -33,16 +33,12 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from univention.appcenter.actions import Abort
 from univention.appcenter.actions.remove import Remove
-from univention.appcenter.actions.service import Stop
 from univention.appcenter.actions.docker_base import DockerActionMixin
 
 
 class Remove(Remove, DockerActionMixin):
-	def setup_parser(self, parser):
-		super(Remove, self).setup_parser(parser)
-		parser.add_argument('--keep-data', action='store_true', help='Do not store the current data. New installations will not be able to restore them')
-
 	def _do_it(self, app, args):
 		self._unregister_host(app, args)
 		self.percentage = 5
@@ -55,10 +51,9 @@ class Remove(Remove, DockerActionMixin):
 			self._remove_docker_container(app, args)
 
 	def _remove_docker_container(self, app, args):
-		if args.keep_data:
-			# TODO
-			pass
-		Stop.call(app=app)
+		if not self._backup_container(app):
+			self.fatal('Could not backup container!')
+			raise Abort()
 		docker = self._get_docker(app)
 		if docker.container:
 			docker.rm()

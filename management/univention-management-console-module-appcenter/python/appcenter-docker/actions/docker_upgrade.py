@@ -42,7 +42,7 @@ from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.docker_remove import Remove
-from univention.appcenter.actions.service import Start, Stop
+from univention.appcenter.actions.service import Start
 from univention.appcenter.actions.configure import Configure
 
 
@@ -130,12 +130,9 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
 		config = Configure.list_config(self.old_app)
-		process = self._execute_container_script(self.old_app, 'store_data', _credentials=False)
-		if not process or process.returncode != 0:
-			self.fatal('Image upgrade script (pre) failed')
+		if not self._backup_container(self.old_app):
+			self.fatal('Could not backup container!')
 			raise Abort()
-		self.log('Stopping old container')
-		Stop.call(app=self.old_app)
 		self.log('Setting up new container (%s)' % app)
 		ucr = ConfigRegistry()
 		ucr_update(ucr, {app.ucr_image_key: None})

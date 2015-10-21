@@ -1,3 +1,10 @@
+univention-management-console-module-appcenter (5.0.6-53) unstable; urgency=medium
+
+  * Bug #39192: Back up container when uninstalling / image-upgrading an app
+  * Also use .meta files in App; useful for App Rating
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Oct 2015 01:34:07 +0200
+
 univention-management-console-module-appcenter (5.0.6-52) unstable; urgency=medium
 
   * Bug #39604: Check for already allocated ports

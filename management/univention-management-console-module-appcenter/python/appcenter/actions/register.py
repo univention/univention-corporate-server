@@ -46,8 +46,7 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.udm import create_object_if_not_exists, init_object, get_app_ldap_object, remove_object_if_exists
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.credentials import CredentialsAction
-from univention.appcenter.utils import mkdir, rmdir, get_md5
-from univention.appcenter.utils import app_ports, currently_free_port_in_range
+from univention.appcenter.utils import mkdir, get_md5, app_ports, currently_free_port_in_range
 from univention.appcenter.log import catch_stdout
 
 
@@ -169,10 +168,8 @@ class Register(CredentialsAction):
 				shutil.copy2(fname, app.get_share_file(ext))
 
 	def _unregister_files(self, app):
-		self.log('Removing data directories for %s...' % app.id)
-		rmdir(app.get_data_dir())
-		rmdir(app.get_conf_dir())
-		rmdir(app.get_share_dir())
+		# not removing anything here. these may be important backup files
+		pass
 
 	def _register_host_for_apps(self, apps, args):
 		if not self._shall_register(args, 'host'):
