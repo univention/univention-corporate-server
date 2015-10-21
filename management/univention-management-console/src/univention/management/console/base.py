@@ -152,7 +152,7 @@ class UMC_CommandError(UMC_Error):
 class UMC_PasswordRequired(UMC_Error):
 
 	def __init__(self):
-		message = _('For this action the password is required.')
+		message = _('This action requires you to supply your password.')
 		super(UMC_PasswordRequired, self).__init__(message, 401, {'password_required': True})
 
 

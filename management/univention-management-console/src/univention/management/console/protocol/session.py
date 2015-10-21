@@ -113,8 +113,21 @@ class State(signals.Provider):
 		self.processor = None
 
 	def _authenticated(self, result):
-		self.__credentials = result.credentials
+		self.authenticated = bool(result)
 		self.signal_emit('authenticated', result, self)
+		if not self.authenticated:
+			return
+		if self.processor is not None and self.processor.auth_type is None and result.credentials['auth_type']:
+			return # don't downgrade a regular login to e.g. a SAML login
+		self.__credentials = result.credentials
+		if self.processor is None:
+			return
+		# a second authentication request must cause an update of the password in all modules
+		self.processor.set_credentials(**self.credentials())
+		try:
+			self.processor.update_module_passwords()
+		except Exception:  # don't let it crash here until we catch exceptions on a higher layer
+			CORE.error('Failed to update module passwords: %s' % (traceback.format_exc(),))
 
 	def authenticate(self, msg):
 		"""Initiates an authentication process"""

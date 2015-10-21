@@ -1,3 +1,9 @@
+univention-management-console (8.0.20-1) unstable; urgency=medium
+
+  * Bug #39178: don't upgrade module passwords from plain password to SAML
+
+ -- Florian Best <best@univention.de>  Wed, 21 Oct 2015 04:36:53 +0200
+
 univention-management-console (8.0.19-1) unstable; urgency=medium
 
   * Bug #39564: fix status code
