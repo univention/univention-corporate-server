@@ -944,24 +944,25 @@ class CPAuth(CPgeneric):
 
 	@cherrypy.expose
 	@log_exceptions
-	def default(self, **kw):
+	def default(self, **kwargs):
 		remote = cherrypy.request.remote
 		CORE.info('CPAuth/auth: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
-		content_length = cherrypy.request.headers.get("Content-Length")
+		content_length = cherrypy.request.headers.get("Content-Length", 0)
 		if not content_length and content_length != 0:
 			CORE.process('auth: missing Content-Length header')
 			raise UMC_HTTPError(LENGTH_REQUIRED)
 
-		# get body and parse json
-		body = ''
 		if cherrypy.request.method in cherrypy.request.methods_with_bodies:
 			max_length = 2000 * 1024
 			if content_length <= max_length:  # prevent some DoS
 				raise UMC_HTTPError(REQUEST_ENTITY_TOO_LARGE, 'Request data is too large, allowed length is %d' % max_length)
-			body = cherrypy.request.body.read()
 
-		data = self.load_json(body)
+		if cherrypy.request.method in cherrypy.request.methods_with_bodies and not cherrypy.request.headers.get('Content-Type'):
+			# TODO: remove... backwards compatibility for broken UMCConnection lib in UCS 4.0
+			data = self.load_json(cherrypy.request.body.read())
+		else:
+			data = self.get_arguments(kwargs)
 
 		CORE.info('auth: request: command=%s' % cherrypy.request.path_info)
 

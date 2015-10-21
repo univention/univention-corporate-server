@@ -57,6 +57,8 @@ define([
 	 * */
 	var auth = {
 
+		_password_required: null,
+
 		handleAuthenticationError: function(error, info, args) {
 			//console.debug('auth error');
 			var message = info.message;
@@ -67,7 +69,7 @@ define([
 			}
 			if (result && result.password_required || this._password_required) {
 				this._password_required = true;
-				return this.setPassword(result && result.password_required ? null : info.message);
+				return this._requirePassword(result && result.password_required ? null : info.message);
 			}
 
 			dialog._loginDialog.updateForm(result && result.password_expired, message);
@@ -86,12 +88,13 @@ define([
 			dialog._initLoginDialog();
 			dialog._loginDialog.show();
 
-			dialog._loginDialog.standbyDuring(this.sessionlogin().then(undefined, lang.hitch(this, function() {
+			dialog._loginDialog.standby(false);
+			this.sessionlogin().then(undefined, lang.hitch(this, function() {
 				//console.debug('no active session found');
 				return this.passiveSamlSSO({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(dialog, 'login'), function(message) {
 					// TODO: set the message somewhere visibly in the login dialog
 				});
-			})));
+			}));
 		},
 
 		sessionlogin: function() {
@@ -188,13 +191,17 @@ define([
 			return deferred.promise;
 		},
 
-		setPassword: function() {
+		_requirePassword: function(message) {
+			var text = _('This action requires you to supply your password.');
+			if (message) {
+				text = message + '<br><br>' + text;
+			}
 			return dialog.confirmForm({
 				title: _('Authentication required'),
 				widgets: [{
 					name: 'text',
 					type: Text,
-					content: _('This action requires you to supply your password.')
+					content: text
 				}, {
 					name: 'password',
 					type: PasswordBox,
@@ -205,10 +212,13 @@ define([
 					'label': _('Login')
 				}]
 			}).then(lang.hitch(this, function(data) {
-				// FIXME: error handling...
-				return this.authenticate(lang.mixin(data, {
+				var authenticate = this.authenticate(lang.mixin(data, {
 					username: tools.status('username')
 				}));
+				authenticate.then(lang.hitch(this, function() {
+					this._password_required = false;
+				});
+				return authenticate;
 			}));
 		}
 	};

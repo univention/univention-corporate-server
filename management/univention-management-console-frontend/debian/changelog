@@ -2,6 +2,7 @@ univention-management-console-frontend (5.0.43-2) unstable; urgency=medium
 
   * Bug #39508: fixup error handling
   * Bug #39564: fix standby animation during login
+  * Bug #39178: add error handling for password require dialog
 
  -- Florian Best <best@univention.de>  Wed, 21 Oct 2015 03:21:47 +0200
 
