@@ -1,3 +1,9 @@
+univention-saml (3.0.24-3) unstable; urgency=low
+
+  * Bug #39574: register ucs-sso A in AD
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Oct 2015 09:35:09 +0200
+
 univention-saml (3.0.24-2) unstable; urgency=low
 
   * Bug #39574: register ucs-sso A in AD
