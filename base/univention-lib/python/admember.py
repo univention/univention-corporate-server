@@ -1095,7 +1095,7 @@ def run_samba_join_script(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d" % (p1.returncode,))
 		raise sambaJoinScriptFailed()
 
-def add_ucs_sso_host_record_in_ad(binddn=None, bindpw=None, bindpwdfile=None):
+def add_host_record_in_ad(binddn=None, bindpw=None, bindpwdfile=None, fqdn=None, ip=None):
 
 	uid = None
 	pwdfile = None
@@ -1112,45 +1112,38 @@ def add_ucs_sso_host_record_in_ad(binddn=None, bindpw=None, bindpwdfile=None):
 		create_pwdfile = True
 		pwdfile = bindpw
 
-	if not uid or not pwdfile:
-		print 'Missing binddn or bindpw/bindpwdfile, do nothing!'
+	if not uid or not pwdfile or not fqdn or not ip:
+		print 'Missing binddn/bindpw/bindpwdfile/fqdn or ip, do nothing!'
 		return False
 
-	ucr = univention.config_registry.ConfigRegistry()
-	ucr.load()
 	ad_domain_info = lookup_adds_dc()
 	ad_ip = ad_domain_info['DC IP']
-	ucs_sso = 'ucs-sso'
-	domainname = ucr.get('domainname')
-	fqdn = '%s.%s' % (ucs_sso, domainname)
-	i = Interfaces()
-	addr = i.get_default_ip_address()
 	found = False
 
-	print "Create ucs-sso A record on %s" % ad_ip
+	print "Create %s (%s) A record on %s" % (fqdn, ip, ad_ip)
 
-	# check if we are already defined as ucs-sso host record
+	# check if we are already defined as host record
 	try:
 		resolver = dns.resolver.Resolver()
 		resolver.lifetime = 10
 		resolver.nameservers = [ad_ip]
 		response = resolver.query(fqdn, 'A')
 		for data in response:
-			if str(data) == str(addr.ip):
+			if str(data) == str(ip):
 				found = True
 	except dns.resolver.NXDOMAIN:
 		found = False
 	except Exception as err:
-		print 'failed to query for ucs-sso A record (%s, %s)' % (err.__class__.__name__, err.message)
+		print 'failed to query for A record (%s, %s)' % (err.__class__.__name__, err.message)
 		found = False
 	if found:
-		print 'ucs-sso A record for %s found on %s' % (addr.ip, ad_ip)
+		print '%s A record for %s found' % (fqdn, ip)
 		return True
 
 	# create host record
 	fd = tempfile.NamedTemporaryFile(delete=False)
 	fd.write('server %s\n' % ad_ip)
-	fd.write('update add %s 86400 A %s\n' % (fqdn, addr.ip))
+	fd.write('update add %s 86400 A %s\n' % (fqdn, ip))
 	fd.write('send\n')
 	fd.write('quit\n')
 	fd.close()

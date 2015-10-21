@@ -1,3 +1,10 @@
+univention-lib (5.0.0-9) unstable; urgency=low
+
+  * AD Member: rename add_ucs_sso_host_record_in_ad()
+    to add_host_record_in_ad() (Bug #39574)
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Oct 2015 09:34:22 +0200
+
 univention-lib (5.0.0-8) unstable; urgency=medium
 
   * Bug #39508: Add error.html to umc_frontend_new_hash

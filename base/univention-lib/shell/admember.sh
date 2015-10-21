@@ -31,11 +31,13 @@
 # $1 binddn
 # $2 bindpw
 # $3 bindpwdfile
+# $4 fqdn
+# $5 ip
 add_ucs_sso_host_record_in_ad () {
 python -c "
 import univention.lib.admember
 import sys
-if univention.lib.admember.add_ucs_sso_host_record_in_ad(binddn='$1', bindpw='$2', bindpwdfile='$3'):
+if univention.lib.admember.add_ucs_sso_host_record_in_ad(binddn='$1', bindpw='$2', bindpwdfile='$3', fqdn='$4' ip='$5'):
 	sys.exit(0)
 else:
 	sys.exit(1)
