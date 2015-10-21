@@ -1,4 +1,4 @@
-ucs-test (6.0.10-6) unstable; urgency=low
+ucs-test (6.0.10-7) unstable; urgency=low
 
   * Bug #39574: added 56_admember/010ucs_sso_a_record 
 
