@@ -52,16 +52,16 @@ def write_cron_job(configRegistry, cron, updateto, reboot, try_release_update):
             cmd.append(
                 '/usr/share/univention-updater/univention-updater %s %s --silent --noninteractive' % (
                     'local' if configRegistry.is_true('local/repository') else 'net',
-                            '--updateto=%s' % (quote(updateto),) if updateto else '',
+                    '--updateto=%s' % (quote(updateto),) if updateto else '',
                 ))
         cmd.append('/usr/share/univention-updater/univention-actualise --dist-upgrade --silent')
         if reboot:
             cmd.append(
                 'if [ -f /run/univention-updater-reboot ];then '
-                    'at -f /var/lib/univention-updater/reboot.at -- %s 2>/dev/null;'
-                    'rm -f /run/univention-updater-reboot;'
-                    'fi' % (
-                        quote(reboot),))
+                'at -f /var/lib/univention-updater/reboot.at -- %s 2>/dev/null;'
+                'rm -f /run/univention-updater-reboot;'
+                'fi' % (
+                    quote(reboot),))
         print >> file, '%s\troot\t%s' % (cron, ';'.join(cmd))
 
 

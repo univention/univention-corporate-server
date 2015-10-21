@@ -201,28 +201,35 @@ def parse_args():
         if os.path.isdir(mount_point_default):
             break
 
-    parser = OptionParser(usage="usage: %prog (net|cdrom) [options] ")
-    parser.add_option('-i', '--iso', action='store',
-                      dest='iso_file',
-                      help='define filename of an ISO image')
-    parser.add_option('-d', '--device', action='store',
-                      dest='device',
-                      help='defines the device name of the CD-ROM drive')
-    parser.add_option('-c', '--cdrom', action='store',
-                      dest='mount_point', default=mount_point_default,
-                      help='devices mount point for CD-ROM drive')
-    parser.add_option('-s', '--sync-only', action='store_true',
-                      dest='sync', default=False,
-                      help='if given no new release repositories will be added, just the existing will be updated')
-    parser.add_option('-S', '--security-only', action='store_true',
-                      dest='security_only', default=False,
-                      help='if given only security repositories will be updated')
-    parser.add_option('-E', '--errata-only', action='store_true',
-                      dest='errata_only', default=False,
-                      help='if given only errata repositories will be updated')
-    parser.add_option('-u', '--updateto', action='store',
-                      dest='update_to', default='',
-                      help='if given the repository is updated to the specified version but not higher')
+    parser = OptionParser(usage="usage: %prog (net|cdrom) [options]")
+    parser.add_option(
+        '-i', '--iso', action='store',
+        dest='iso_file',
+        help='define filename of an ISO image')
+    parser.add_option(
+        '-d', '--device', action='store',
+        dest='device',
+        help='defines the device name of the CD-ROM drive')
+    parser.add_option(
+        '-c', '--cdrom', action='store',
+        dest='mount_point', default=mount_point_default,
+        help='devices mount point for CD-ROM drive')
+    parser.add_option(
+        '-s', '--sync-only', action='store_true',
+        dest='sync', default=False,
+        help='if given no new release repositories will be added, just the existing will be updated')
+    parser.add_option(
+        '-S', '--security-only', action='store_true',
+        dest='security_only', default=False,
+        help='if given only security repositories will be updated')
+    parser.add_option(
+        '-E', '--errata-only', action='store_true',
+        dest='errata_only', default=False,
+        help='if given only errata repositories will be updated')
+    parser.add_option(
+        '-u', '--updateto', action='store',
+        dest='update_to', default='',
+        help='if given the repository is updated to the specified version but not higher')
 
     (options, arguments) = parser.parse_args()
 
@@ -256,7 +263,13 @@ def main():
 
     # if there is no _new_ repository server -> exit
     if configRegistry.get('repository/local/old'):
-        print >> options.teefile, 'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0'
+        print >> options.teefile, '\n'.join(wrap(dedent(
+            '''\
+            The repository server directory structure has been changed with UCS 2.2-0.
+            The local repository still has the old structure and can not be used for updates anymore.
+            Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no".
+            Information on how to migrate the repository can be found in the release notes for UCS 2.2-0.
+            ''')))
         sys.exit(1)
 
     try:
@@ -276,11 +289,12 @@ def main():
                 update_net(options)
             except VerificationError, ex:
                 print >> options.teefile, "Error: %s" % (ex,)
-                print >> options.teefile, '\n'.join(wrap(dedent("""\
-						This can and should only be disabled temporarily using the UCR variable
-						'repository/mirror/verify'.
-						"""
-                                                                )))
+                print >> options.teefile, '\n'.join(wrap(dedent(
+                    """\
+                    This can and should only be disabled temporarily using the UCR variable
+                    'repository/mirror/verify'.
+                    """
+                )))
                 sys.exit(1)
             except UpdaterException, e:
                 print >>options.teefile, "Error: %s" % e

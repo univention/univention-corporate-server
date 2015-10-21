@@ -55,8 +55,10 @@ ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 class Tee(object):
 
-    '''Writes the given string to serveral files at once. Could by used
-    with the print statement'''
+    '''
+    Writes the given string to serveral files at once. Could by used
+    with the print statement
+    '''
 
     def __init__(self, files=[], stdout=True, filter=None):
         self.stdout = stdout

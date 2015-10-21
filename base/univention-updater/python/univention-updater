@@ -445,8 +445,13 @@ def main():
 
     # if there is no _new_ repository server -> exit
     if baseConfig.is_true('local/repository', False) and baseConfig.get('repository/local/old'):
-        dprint(
-            'The repository server directory structure has been changed with UCS 2.2-0. The local repository still has the old structure and can not be used for updates anymore. Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no". Information on how to migrate the repository can be found in the release notes for UCS 2.2-0')
+        dprint('\n'.join(wrap(dedent(
+            '''\
+            The repository server directory structure has been changed with UCS 2.2-0.
+            The local repository still has the old structure and can not be used for updates anymore.
+            Please migrate the repository to the new directory structure or disable the local repository by setting the UCR variable local/repository to "no".
+            Information on how to migrate the repository can be found in the release notes for UCS 2.2-0.
+            '''))))
         sys.exit(1)
 
     if command == 'local':
@@ -464,13 +469,13 @@ def main():
     elif command == 'net':
         log('starting net mode')
         # if baseConfig.is_true('local/repository', False):
-        #	log('local/repository active, copy from net and start local mode')
-        #	resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
-        #	if resultCode != 0:
-        #		fp_debug.close()
-        #		raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
-
-        #	call_local(updateto=updateto, clean=clean, ignoressh=ignoressh, ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
+        #   log('local/repository active, copy from net and start local mode')
+        #   resultCode = subprocess.call( [ '/usr/sbin/univention-repository-update', 'net' ] + updateto_args )
+        #   if resultCode != 0:
+        #     fp_debug.close()
+        #     raise UpdateError('Failed to execute "univention-repository-update net"', errorsource='PREPARATION')
+        #   call_local(updateto=updateto, clean=clean, ignoressh=ignoressh,
+        # ignoreterm=ignoreterm, ignorereleasenotes=ignorereleasenotes)
         updater = UniventionUpdater()
         nextversion = update_available('net', baseConfig, cdrom_mount_point, iso=iso, updater=updater)
     else:
@@ -596,12 +601,13 @@ if __name__ == '__main__':
             except VerificationError, ex:
                 msg = '\n'.join([
                     "Update aborted due to verification error:",
-                        "%s" % (ex,),
-                ] + wrap(dedent("""\
-						This can and should only be disabled temporarily
-						using the UCR variable 'repository/online/verify'.
-						"""
-                                )))
+                    "%s" % (ex,),
+                ] + wrap(dedent(
+                    """\
+                    This can and should only be disabled temporarily
+                    using the UCR variable 'repository/online/verify'.
+                    """
+                )))
                 raise UpdateError(msg, errorsource='SETTINGS')
             except ConfigurationError, e:
                 msg = 'Update aborted due to configuration error: %s' % e

@@ -55,14 +55,15 @@ class RequiredComponentError(UpdaterException):
         """
         return (
             "The update to UCS %s is blocked because the component %s is marked as required."
-                if len(self.components) == 1
-                else "The update to UCS %s is blocked because the components %s are marked as required."
+            if len(self.components) == 1
+            else "The update to UCS %s is blocked because the components %s are marked as required."
         ) % (self.version, ', '.join("'%s'" % (_,) for _ in self.components))
 
 
 class PreconditionError(UpdaterException):
 
-    """Signal abort by release or component pre-/post-update script.
+    """
+    Signal abort by release or component pre-/post-update script.
     args=(phase=preup|postup, order=pre|main|post, component, script-filename)."""
 
     def __init__(self, phase, order, component, script):

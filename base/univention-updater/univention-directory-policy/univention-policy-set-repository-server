@@ -53,9 +53,9 @@ def query_policy(update, ldap_hostdn):
     """
     cmd = (
         'univention_policy_result',
-                    '-D', ldap_hostdn,
-                    '-y', '/etc/machine.secret',
-                    '-s', ldap_hostdn,
+        '-D', ldap_hostdn,
+        '-y', '/etc/machine.secret',
+        '-s', ldap_hostdn,
     )
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     result = p1.communicate()[0]

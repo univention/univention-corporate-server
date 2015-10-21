@@ -140,8 +140,8 @@ class UniventionMirror(UniventionUpdater):
 
             # Check disabled, otherwise files won't get refetched if they change on upstream server
             # if os.path.exists(filename):
-            #	ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
-            #	continue
+            #   ud.debug(ud.NETWORK, ud.ALL, "Script already exists, skipping: %s" % filename)
+            #   continue
 
             makedirs(os.path.dirname(filename))
             fd = open(filename, "w")
@@ -222,12 +222,12 @@ class UniventionMirror(UniventionUpdater):
             for arch in self.architectures:
                 prev = [
                     (dir2, os.path.join(dir2, arch2, 'Packages'))
-                        for (dir2, ver2, maint2) in repos
-                        for arch2 in (arch, 'all')
-                        if (
-                            start_version <= ver2 <= version and
-                                os.path.exists(os.path.join(dir2, arch2, 'Packages'))
-                )
+                    for (dir2, ver2, maint2) in repos
+                    for arch2 in (arch, 'all')
+                    if (
+                        start_version <= ver2 <= version and
+                        os.path.exists(os.path.join(dir2, arch2, 'Packages'))
+                    )
                 ]
                 if not prev:
                     self.log.warn('No file "Packages" found for %s', arch)
@@ -276,25 +276,25 @@ class UniventionMirror(UniventionUpdater):
     def _compress(self, filename):
         self.log.debug('Compressing %s ...', filename)
         subprocess.call(
-                ('gzip',),
-                stdin=open(filename, 'rb'),
-                stdout=open(filename + '.gz', 'wb'),
+            ('gzip',),
+            stdin=open(filename, 'rb'),
+            stdout=open(filename + '.gz', 'wb'),
         )
 
     def _release(self, outdir, dist, archs, version):
         rel_name = os.path.join(outdir, 'dists', dist, 'Release')
         self.log.info('Generating %s ...', rel_name)
         cmd = (
-                'apt-ftparchive',
-                '-o', 'APT::FTPArchive::Release::Origin=Univention',
-                '-o', 'APT::FTPArchive::Release::Label=Univention',
-                '-o', 'APT::FTPArchive::Release::Suite=stable',
-                '-o', 'APT::FTPArchive::Release::Version=%(major)d.%(minor)d.%(patchlevel)d' % version,
-                '-o', 'APT::FTPArchive::Release::Codename=%s' % (dist,),
-                '-o', 'APT::FTPArchive::Release::Architectures=%s' % (' '.join(archs),),
-                '-o', 'APT::FTPArchive::Release::Components=main',
-                'release',
-                os.path.join('dists', dist),
+            'apt-ftparchive',
+            '-o', 'APT::FTPArchive::Release::Origin=Univention',
+            '-o', 'APT::FTPArchive::Release::Label=Univention',
+            '-o', 'APT::FTPArchive::Release::Suite=stable',
+            '-o', 'APT::FTPArchive::Release::Version=%(major)d.%(minor)d.%(patchlevel)d' % version,
+            '-o', 'APT::FTPArchive::Release::Codename=%s' % (dist,),
+            '-o', 'APT::FTPArchive::Release::Architectures=%s' % (' '.join(archs),),
+            '-o', 'APT::FTPArchive::Release::Components=main',
+            'release',
+            os.path.join('dists', dist),
         )
         self.log.debug('%r @ %s', cmd, outdir)
         try:

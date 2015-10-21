@@ -12,9 +12,11 @@ import univention.updater.tools as U
 import univention.updater.mirror as M
 import univention.config_registry as C
 
-__all__ = ['U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'SEC', 'ERRAT', 'PART', 'ARCH',
-           'MockConfigRegistry', 'MockUCSHttpServer', 'MockPopen', 'MockFile',
-           'verbose']
+__all__ = [
+    'U', 'M', 'MAJOR', 'MINOR', 'PATCH', 'SEC', 'ERRAT', 'PART', 'ARCH',
+    'MockConfigRegistry', 'MockUCSHttpServer', 'MockPopen', 'MockFile',
+    'verbose',
+]
 
 MAJOR = 3
 MINOR = 0
@@ -31,9 +33,9 @@ class MockConfigRegistry(C.ConfigRegistry):
     _ORIG = C.ConfigRegistry
     _DEFAULT = {
         'version/version': '%d.%d' % (MAJOR, MINOR),
-            'version/patchlevel': '%d' % (PATCH,),
-            'version/security-patchlevel': '%d' % (SEC,),
-            'version/erratalevel': '%d' % (ERRAT,),
+        'version/patchlevel': '%d' % (PATCH,),
+        'version/security-patchlevel': '%d' % (SEC,),
+        'version/erratalevel': '%d' % (ERRAT,),
     }
     _EXTRA = {}
 

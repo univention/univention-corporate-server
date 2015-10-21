@@ -43,19 +43,24 @@ cmd_show = configRegistry.get('update/commands/show', 'apt-cache show')
 
 # Upgrade only installed packages
 cmd_upgrade = configRegistry.get(
-    'update/commands/upgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u upgrade')
+    'update/commands/upgrade',
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u upgrade')
 cmd_upgrade_sim = configRegistry.get(
-    'update/commands/upgrade/simulate', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us upgrade')
+    'update/commands/upgrade/simulate',
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us upgrade')
 
 # Upgrade system, may install new packages to satisfy dependencies
 cmd_dist_upgrade = configRegistry.get(
-    'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u dist-upgrade')
+    'update/commands/distupgrade',
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -u dist-upgrade')
 cmd_dist_upgrade_sim = configRegistry.get(
-    'update/commands/distupgrade/simulate', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us dist-upgrade')
+    'update/commands/distupgrade/simulate',
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 -us dist-upgrade')
 
 # Install packages
 cmd_install = configRegistry.get(
-    'update/commands/install', 'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 install')
+    'update/commands/install',
+    'apt-get -o DPkg::Options::=--force-confold -o DPkg::Options::=--force-overwrite -o DPkg::Options::=--force-overwrite-dir --trivial-only=no --assume-yes --quiet=1 install')
 
 # Remove packages
 cmd_remove = configRegistry.get('update/commands/remove', 'apt-get --yes remove')

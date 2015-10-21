@@ -19,7 +19,7 @@ class TestUniventionMirror(unittest.TestCase):
     def setUp(self):
         """Create Mirror mockup."""
         self._uri({
-            #'univention-repository/': '',
+            # 'univention-repository/': '',
             '': '',
         })
         self.base_dir = mkdtemp()
@@ -27,8 +27,8 @@ class TestUniventionMirror(unittest.TestCase):
         __builtins__.open = self.mock_file
         MockConfigRegistry._EXTRA = {
             'repository/mirror/basepath': os.path.join(self.base_dir, 'repo'),
-            #'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, MINOR, PATCH),
-            #'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
+            # 'repository/mirror/version/end': '%d.%d-%d' % (MAJOR, MINOR, PATCH),
+            # 'repository/mirror/version/start': '%d.%d-%d' % (MAJOR, 0, 0),
             'repository/mirror/architectures': ' '.join(ARCH),
             'repository/mirror/verify': 'no',
         }
@@ -127,13 +127,13 @@ class TestUniventionMirror(unittest.TestCase):
                 fd_script.close()
             self.assertEqual(script, value)
 
-    # def test_update_dists_files(self):
-    #    """Test dists/univention/main/binary-$ARCH/Packages.gz generation."""
-    # pass  # TODO
+    def test_update_dists_files(self):
+        """Test dists/univention/main/binary-$ARCH/Packages.gz generation."""
+        pass  # TODO
 
-    # def test_run(self):
-    #    """Test full mirror run."""
-    # pass  # TODO
+    def test_run(self):
+        """Test full mirror run."""
+        pass  # TODO
 
 
 class TestUniventionMirrorList(unittest.TestCase):

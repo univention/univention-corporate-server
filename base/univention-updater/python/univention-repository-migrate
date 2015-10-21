@@ -179,10 +179,12 @@ def migrate_repository(options):
 
 if __name__ == '__main__':
     parser = OptionParser(usage="usage: %prog [options] ")
-    parser.add_option('-r', '--remove', action='store_true', dest='remove', default=False,
-                      help='if given, the old repositories will be deleted after the migration is complete')
-    parser.add_option('-R', '--remove-immediately', action='store_true', dest='remove_immediately', default=False,
-                      help='if given each repository is deleted directly after been copied to the new location')
+    parser.add_option(
+        '-r', '--remove', action='store_true', dest='remove', default=False,
+        help='if given, the old repositories will be deleted after the migration is complete')
+    parser.add_option(
+        '-R', '--remove-immediately', action='store_true', dest='remove_immediately', default=False,
+        help='if given each repository is deleted directly after been copied to the new location')
 
     (options, arguments) = parser.parse_args()
 

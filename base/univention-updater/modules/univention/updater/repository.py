@@ -48,8 +48,10 @@ ARCHITECTURES = ('i386', 'amd64', 'all')
 
 class TeeFile(object):
 
-    '''Writes the given string to serveral files at once. Could by used
-    with the print statement'''
+    '''
+    Writes the given string to serveral files at once. Could by used
+    with the print statement
+    '''
 
     def __init__(self, fds=[]):
         if not fds:

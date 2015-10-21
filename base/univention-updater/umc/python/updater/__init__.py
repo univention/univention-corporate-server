@@ -72,9 +72,9 @@ COMPONENTS_SERIAL_FILE = '/etc/apt/sources.list.d/20_ucs-online-component.list'
 # 'Updates' page.
 UPDATE_SERIAL_FILES = [
     '/etc/apt/mirror.list',
-        '/etc/apt/sources.list.d/15_ucs-online-version.list',
-        '/etc/apt/sources.list.d/18_ucs-online-errata.list',
-        '/etc/apt/sources.list.d/20_ucs-online-component.list'
+    '/etc/apt/sources.list.d/15_ucs-online-version.list',
+    '/etc/apt/sources.list.d/18_ucs-online-errata.list',
+    '/etc/apt/sources.list.d/20_ucs-online-component.list'
 ]
 
 HOOK_DIRECTORY = '/usr/share/pyshared/univention/management/console/modules/updater/hooks'
@@ -95,31 +95,32 @@ RUN_PROCESSING_ERROR = 2
 INSTALLERS = {
     'release': {
         'purpose':	_("Release update to version %s"),
-                'command':	"/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
-                'logfile':	'/var/log/univention/updater.log',
-                'statusfile':	'/var/lib/univention-updater/univention-updater.status',
+        'command':	"/usr/share/univention-updater/univention-updater net --updateto %s --ignoressh --ignoreterm",
+        'logfile':	'/var/log/univention/updater.log',
+        'statusfile':	'/var/lib/univention-updater/univention-updater.status',
     },
-        'distupgrade': {
-            'purpose':	_("Package update"),
-                'command':	"/usr/share/univention-updater/univention-updater-umc-dist-upgrade; /usr/share/univention-updater/univention-updater-check",
-                'logfile':	'/var/log/univention/updater.log',
-                'statusfile':	'/var/lib/univention-updater/umc-dist-upgrade.status',
-        },
-        # This is the call to be invoked when EASY mode is switched on.
-        'easyupgrade': {
-                'purpose':	_("Release update"),
-                'command':	'/usr/sbin/univention-upgrade --noninteractive --ignoressh --ignoreterm',
-                'logfile':	'/var/log/univention/updater.log',
-                'statusfile':	'/var/lib/univention-updater/univention-upgrade.status',
-        }
+    'distupgrade': {
+        'purpose':	_("Package update"),
+        'command':	"/usr/share/univention-updater/univention-updater-umc-dist-upgrade; /usr/share/univention-updater/univention-updater-check",
+        'logfile':	'/var/log/univention/updater.log',
+        'statusfile':	'/var/lib/univention-updater/umc-dist-upgrade.status',
+    },
+    # This is the call to be invoked when EASY mode is switched on.
+    'easyupgrade': {
+        'purpose':	_("Release update"),
+        'command':	'/usr/sbin/univention-upgrade --noninteractive --ignoressh --ignoreterm',
+        'logfile':	'/var/log/univention/updater.log',
+        'statusfile':	'/var/lib/univention-updater/univention-upgrade.status',
+    }
 }
 
 
 class Watched_File(object):
 
-    """	A class that takes a file name and watches changes to this file.
-            We don't use any advanced technologies (FAM, inotify etc.) but
-            rather basic 'stat' calls, monitoring mtime and size.
+    """
+    A class that takes a file name and watches changes to this file.
+    We don't use any advanced technologies (FAM, inotify etc.) but
+    rather basic 'stat' calls, monitoring mtime and size.
     """
 
     def __init__(self, file, count=2):
@@ -127,8 +128,7 @@ class Watched_File(object):
         self._file = file
         self._count = count
 
-        self._last_returned_stamp = 0  # the last result we returned to the caller. will be
-                                        # returned as long as there are not enough changes.
+        self._last_returned_stamp = 0  # the last result we returned to the caller. will be returned as long as there are not enough changes.
 
         self._unchanged_count = 0  # incremented if size and timestamp didn't change
 
@@ -137,9 +137,10 @@ class Watched_File(object):
         self._last_md5 = ''
 
     def timestamp(self):
-        """ Main function. returns the current timestamp whenever size or mtime
-                have changed. Defers returning the new value until changes have
-                settled down, e.g. until the same values have appeared 'count' times.
+        """
+        Main function. returns the current timestamp whenever size or mtime
+        have changed. Defers returning the new value until changes have
+        settled down, e.g. until the same values have appeared 'count' times.
         """
         current_stamp = 0
         current_size = 0
@@ -184,8 +185,7 @@ class Watched_Files(object):
         self._count = count
         self._files = []
 
-        self._last_returned_stamp = 0		# the last result we returned to the caller. will be returned
-                                                                                # as long as there are not enough changes.
+        self._last_returned_stamp = 0		# the last result we returned to the caller. will be returned as long as there are not enough changes.
 
         self._unchanged_count = 0			# incremented if size and timestamp didn't change
 
@@ -246,8 +246,9 @@ class Instance(umcm.Base):
         return True
 
     def query_releases(self, request):
-        """ Returns a list of system releases suitable for the
-                corresponding ComboBox
+        """
+        Returns a list of system releases suitable for the
+        corresponding ComboBox
         """
 
         # ----------- DEBUG -----------------
@@ -301,9 +302,11 @@ class Instance(umcm.Base):
         self.finished(request.id, result)
 
     def _check_thread_error(self, thread, result, request):
-        """Checks if the thread returned an exception. In that case in
+        """
+        Checks if the thread returned an exception. In that case in
         error response is send and the function returns True. Otherwise
-        False is returned."""
+        False is returned.
+        """
         if not isinstance(result, BaseException):
             return False
 
@@ -318,7 +321,8 @@ class Instance(umcm.Base):
         self.finished(request.id, result)
 
     def call_hooks(self, request):
-        """ Calls the specified hooks and returns data given back by each hook
+        """
+        Calls the specified hooks and returns data given back by each hook
         """
 
         def _thread(request):
@@ -335,25 +339,29 @@ class Instance(umcm.Base):
 
             self.finished(request.id, result)
 
-        thread = notifier.threads.Simple('call_hooks', notifier.Callback(_thread, request),
-                                                                          notifier.Callback(self._thread_finished, request))
+        thread = notifier.threads.Simple(
+            'call_hooks',
+            notifier.Callback(_thread, request),
+            notifier.Callback(self._thread_finished, request))
         thread.run()
 
     def updates_serial(self, request):
-        """ Watches the three sources.list snippets for changes
+        """
+        Watches the three sources.list snippets for changes
         """
         result = self._updates_serial.timestamp()
         MODULE.info(" -> Serial for UPDATES is '%s'" % result)
         self.finished(request.id, result)
 
     def updates_check(self, request):
-        """	Returns the list of packages to be updated/installed
-                by a distupgrade.
+        """
+        Returns the list of packages to be updated/installed
+        by a distupgrade.
 
-                *** NOTE *** contrary to the 2.4 behaviour, this call
-                                        does not regenerate the 20....components.list
-                                        since this must have been done recently by
-                                        the 'check for update availability' call.
+        *** NOTE *** contrary to the 2.4 behaviour, this call
+                     does not regenerate the 20....components.list
+                     since this must have been done recently by
+                     the 'check for update availability' call.
         """
         p0 = subprocess.Popen(['LC_ALL=C apt-get update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         (stdout, stderr) = p0.communicate()
@@ -371,10 +379,10 @@ class Instance(umcm.Base):
             # inst:
             #   Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
             #
-            # *** FIX ***	the above example lines ignore the fact that there's
-            #				some extra text (occasionally) after the last closing
-            #				parenthesis. Until now, I've seen only a pair of empty
-            #				brackets [], but who knows...
+            # *** FIX ***   the above example lines ignore the fact that there's
+            #               some extra text (occasionally) after the last closing
+            #               parenthesis. Until now, I've seen only a pair of empty
+            #               brackets [], but who knows...
             match = re.search('^Inst (\S+)\s+(.*?)\s*\((\S+)\s.*\)', line)
             if match:
                 pkg = match.group(1)
@@ -400,10 +408,11 @@ class Instance(umcm.Base):
         self.finished(request.id, result)
 
     def updates_available(self, request):
-        """ Asks if there are package updates available. (don't get confused
-                by the name of the UniventionUpdater function that is called here.)
-                This is a seperate call since it can take an amount of time, thus
-                being invoked by a seperate button (and not in the background)
+        """
+        Asks if there are package updates available. (don't get confused
+        by the name of the UniventionUpdater function that is called here.)
+        This is a seperate call since it can take an amount of time, thus
+        being invoked by a seperate button (and not in the background)
         """
         # ----------- DEBUG -----------------
         MODULE.info("updater/updates/available invoked with:")
@@ -520,17 +529,17 @@ class Instance(umcm.Base):
             result['enabled'] = e_count
 
             # HACK: the 'Updates' form polls on the serial file
-            #		to refresh itself. Including the serial value
-            #		into the form helps us to have a dependent field
-            #		that can trigger the refresh of the "Releases"
-            #		combobox and the 'package updates available' field.
+            #       to refresh itself. Including the serial value
+            #       into the form helps us to have a dependent field
+            #       that can trigger the refresh of the "Releases"
+            #       combobox and the 'package updates available' field.
             result['serial'] = self._serial_file.timestamp()
 
             # HACK: together with the hack in 'WatchedFile' regarding
-            #		mtime changes without content changes, the above 'serial'
-            #		value might not change even if we need a refresh...
-            #		so we include a dummy field that returns the
-            #		current time
+            #       mtime changes without content changes, the above 'serial'
+            #       value might not change even if we need a refresh...
+            #       so we include a dummy field that returns the
+            #       current time
             result['timestamp'] = int(time())
 
             # Any real installer action can set the following variable
@@ -557,17 +566,19 @@ class Instance(umcm.Base):
         self.finished(request.id, response)
 
     def reboot(self, request):
-        """ Reboots the computer. Simply invokes /sbin/reboot in the background
-                and returns success to the caller. The caller is prepared for
-                connection loss.
+        """
+        Reboots the computer. Simply invokes /sbin/reboot in the background
+        and returns success to the caller. The caller is prepared for
+        connection loss.
         """
         result = True
         Popen(['/sbin/reboot'])  # that's all
         self.finished(request.id, result)
 
     def running(self, request):
-        """ Returns the id (key into INSTALLERS) of a currently
-                running job, or the empty string if nothing is running.
+        """
+        Returns the id (key into INSTALLERS) of a currently
+        running job, or the empty string if nothing is running.
         """
         # ----------- DEBUG -----------------
         MODULE.info("updater/installer/running invoked with:")
@@ -590,18 +601,19 @@ class Instance(umcm.Base):
         self.finished(request.id, result)
 
     def updater_log_file(self, request):
-        """ returns the content of the log file associated with
-                the job.
+        """
+        returns the content of the log file associated with
+        the job.
 
-                Argument 'count' has the same meaning as already known:
-                <0 ...... return timestamp of file (for polling)
-                0 ....... return whole file as a string list
-                >0 ...... ignore this many lines, return the rest of the file
+        Argument 'count' has the same meaning as already known:
+        <0 ...... return timestamp of file (for polling)
+        0 ....... return whole file as a string list
+        >0 ...... ignore this many lines, return the rest of the file
 
-                *** NOTE *** As soon as we have looked for a running job at least once,
-                                        we know the job key and can associate it here.
+        *** NOTE *** As soon as we have looked for a running job at least once,
+                     we know the job key and can associate it here.
 
-                TODO: honor a given 'job' argument
+        TODO: honor a given 'job' argument
         """
         # ----------- DEBUG -----------------
         MODULE.info("updater/installer/logfile invoked with:")
@@ -656,11 +668,12 @@ class Instance(umcm.Base):
         self.finished(request.id, result)
 
     def updater_job_status(self, request):
-        """	Returns the content of the corresponding status file
-                for a given job. Note that this is made a seperate function
-                so we can call it even if the job is not running anymore. We need
-                this to get the result of a job, and possibly the affordance to
-                reboot.
+        """
+        Returns the content of the corresponding status file
+        for a given job. Note that this is made a seperate function
+        so we can call it even if the job is not running anymore. We need
+        this to get the result of a job, and possibly the affordance to
+        reboot.
         """
         # ----------- DEBUG -----------------
         MODULE.info("updater/installer/status invoked with:")
@@ -679,9 +692,6 @@ class Instance(umcm.Base):
         result = {}
         if job in INSTALLERS:
             # make a copy, not a reference!
-#			result = {}
-#			for arg in INSTALLERS[job]:
-#				result[arg] = INSTALLERS[job][arg]
             result = deepcopy(INSTALLERS[job])
 
             if 'statusfile' in INSTALLERS[job]:
@@ -754,19 +764,20 @@ class Instance(umcm.Base):
         self.finished(request.id, result)
 
     def run_installer(self, request):
-        """	This is the function that invokes any kind of installer. Arguments accepted:
-                job ..... the main thing to do. can be one of:
-                        'release' ...... perform a release update
-                        'component' .... install a component by installing its default package(s)
-                        'distupgrade' .. update all currently installed packages (distupgrade)
-                        'check' ........ check what would be done for 'update' ... do we need this?
-                detail ....... an argument that specifies the subject of the installer:
-                        for 'release' .... the target release number,
-                        for 'component' .. the component name,
-                        for all other subjects: detail has no meaning.
+        """
+        This is the function that invokes any kind of installer. Arguments accepted:
+        job ..... the main thing to do. can be one of:
+                'release' ...... perform a release update
+                'component' .... install a component by installing its default package(s)
+                'distupgrade' .. update all currently installed packages (distupgrade)
+                'check' ........ check what would be done for 'update' ... do we need this?
+        detail ....... an argument that specifies the subject of the installer:
+                for 'release' .... the target release number,
+                for 'component' .. the component name,
+                for all other subjects: detail has no meaning.
 
-                Setup for this function is contained in the INSTALLERS structure
-                at the top of the file.
+        Setup for this function is contained in the INSTALLERS structure
+        at the top of the file.
         """
         # ----------- DEBUG -----------------
         MODULE.info("updater/installer/execute invoked with:")
@@ -801,10 +812,10 @@ class Instance(umcm.Base):
 
         # initial values of current job
         self._current_job = {
-                'job':		subject,
-                'detail':	detail,
-                'logfile':	'',
-                'lines':	0
+            'job':		subject,
+            'detail':	detail,
+            'logfile':	'',
+            'lines':	0
         }
 
         # We want to limit the amount of logfile data being transferred
@@ -827,12 +838,12 @@ class Instance(umcm.Base):
         try:
             # Assemble the command line, now somewhat complicated:
             #
-            #	(1)	take the 'command' entry from the INSTALLERS entry of this subject
-            #	(2)	if it doesn't contain a percent sign -> ready.
-            #	(3)	if it contains a percent sign: we must format something:
-            #	(4)	if the subject is about 'component' we must get the 'defaultpackages'
-            #		entry from the UCR tuple named by 'detail' and use that.
-            #	(5)	if not, we can format the 'detail' field into the command.
+            #  (1)  take the 'command' entry from the INSTALLERS entry of this subject
+            #  (2)  if it doesn't contain a percent sign -> ready.
+            #  (3)  if it contains a percent sign: we must format something:
+            #  (4)  if the subject is about 'component' we must get the 'defaultpackages'
+            #       entry from the UCR tuple named by 'detail' and use that.
+            #  (5)  if not, we can format the 'detail' field into the command.
             #
             # cmd = '%s' % INSTALLERS[subject]['command']		# I need a copy of this string!
             #
@@ -861,15 +872,15 @@ class Instance(umcm.Base):
 
         self.finished(request.id, result)
 
-
 # ------------------------------------------------------------------------------
 #
-#		copied (and modified) from join module
+#  copied (and modified) from join module
 #
 # ------------------------------------------------------------------------------
 
     def _logstamp(self, fname):
-        """ Logfile timestamp. Now a seperate function.
+        """
+        Logfile timestamp. Now a seperate function.
         """
         try:
             st = stat(fname)
@@ -881,11 +892,12 @@ class Instance(umcm.Base):
             return 0
 
     def _logview(self, fname, count):
-        """ Contains all functions needed to view or 'tail' an arbitrary text file.
-                Argument 'count' can have different values:
-                < 0 ... ignore this many lines, return the rest of the file
-                0 ..... return the whole file, splitted into lines.
-                > 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
+        """
+        Contains all functions needed to view or 'tail' an arbitrary text file.
+        Argument 'count' can have different values:
+        < 0 ... ignore this many lines, return the rest of the file
+        0 ..... return the whole file, splitted into lines.
+        > 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
         """
         lines = []
         try:
@@ -903,19 +915,19 @@ class Instance(umcm.Base):
                 file.close()
         return lines
 
-
 # ------------------------------------------------------------------------------
 #
-#		copied from old Python module
+#  copied from old Python module
 #
 # ------------------------------------------------------------------------------
 
     def __create_at_job(self, command, detail=''):
-        """ Creates an 'at' job that will run the given command.
-                Stores now the start time and the 'detail' request field into
-                the job itself, so subsequent calls to '_which_job_is_running'
-                can fully decode the purpose of the job (even localized!)
-                and how long it is running.
+        """
+        Creates an 'at' job that will run the given command.
+        Stores now the start time and the 'detail' request field into
+        the job itself, so subsequent calls to '_which_job_is_running'
+        can fully decode the purpose of the job (even localized!)
+        and how long it is running.
         """
         started = int(time())
         logfile = self._current_job['logfile']
@@ -939,12 +951,13 @@ class Instance(umcm.Base):
             return (p1.returncode, stdout)
 
     def __which_job_is_running(self):
-        """	Checks all currently running AT jobs if there's one of our
-                predefined INSTALLER jobs.
+        """
+        Checks all currently running AT jobs if there's one of our
+        predefined INSTALLER jobs.
 
-                Additionally, this function parses the properties of the job and
-                stores them in the member variable _current_job {}. This will keep
-                the last seen state even if the job is already finished.
+        Additionally, this function parses the properties of the job and
+        stores them in the member variable _current_job {}. This will keep
+        the last seen state even if the job is already finished.
         """
         p1 = subprocess.Popen('/usr/bin/atq', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (atqout, stderr) = p1.communicate()
@@ -958,8 +971,8 @@ class Instance(umcm.Base):
                         cmd = INSTALLERS[inst]['command'].split('%')[0]
                         MODULE.info("   ++ Checking for '%s'" % cmd)
                         if cmd in atout:
-# cleaning up is done in 'run_installer()'
-#							self._current_job = {}
+                            # cleaning up is done in 'run_installer()'
+                            # self._current_job = {}
                             self._current_job['job'] = inst				# job key
                             self._current_job['running'] = True			# currently running: we have found it per 'at' job
                             self._current_job['time'] = int(time())		# record the last time we've seen this job

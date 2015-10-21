@@ -320,7 +320,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test enabled components."""
         self._ucr({
             'repository/online/component/a': 'yes',
-                'repository/online/component/b': 'no',
+            'repository/online/component/b': 'no',
         })
         c = self.u.get_components()
         self.assertEqual(c, set(('a',)))
@@ -329,15 +329,15 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test localy mirrored components."""
         self._ucr({
             'repository/online/component/a': 'yes',
-                'repository/online/component/b': 'no',
-                'repository/online/component/c': 'yes',
-                'repository/online/component/c/localmirror': 'yes',
-                'repository/online/component/d': 'yes',
-                'repository/online/component/d/localmirror': 'no',
-                'repository/online/component/e': 'no',
-                'repository/online/component/e/localmirror': 'yes',
-                'repository/online/component/f': 'no',
-                'repository/online/component/f/localmirror': 'no',
+            'repository/online/component/b': 'no',
+            'repository/online/component/c': 'yes',
+            'repository/online/component/c/localmirror': 'yes',
+            'repository/online/component/d': 'yes',
+            'repository/online/component/d/localmirror': 'no',
+            'repository/online/component/e': 'no',
+            'repository/online/component/e/localmirror': 'yes',
+            'repository/online/component/f': 'no',
+            'repository/online/component/f/localmirror': 'no',
         })
         c = self.u.get_components(only_localmirror_enabled=True)
         self.assertEqual(c, set(('a', 'c', 'e')))
@@ -346,13 +346,13 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test current components."""
         self._ucr({
             'repository/online/component/a': 'yes',
-                'repository/online/component/a/version': '1.2-3',
-                'repository/online/component/b': 'yes',
-                'repository/online/component/c': 'yes',
-                'repository/online/component/c/version': 'current',
-                'repository/online/component/d': 'yes',
-                'repository/online/component/d/version': '1.2-3 current',
-                'repository/online/component/e': 'no',
+            'repository/online/component/a/version': '1.2-3',
+            'repository/online/component/b': 'yes',
+            'repository/online/component/c': 'yes',
+            'repository/online/component/c/version': 'current',
+            'repository/online/component/d': 'yes',
+            'repository/online/component/d/version': '1.2-3 current',
+            'repository/online/component/e': 'no',
         })
         c = self.u.get_current_components()
         self.assertEqual(c, set(('c', 'd')))
@@ -361,7 +361,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test all defined components."""
         self._ucr({
             'repository/online/component/a': 'yes',
-                'repository/online/component/b': 'no',
+            'repository/online/component/b': 'no',
         })
         c = self.u.get_all_components()
         self.assertEqual(c, set(('a', 'b')))
@@ -370,7 +370,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test active component setup data."""
         self._ucr({
             'repository/online/component/a': 'yes',
-                'repository/online/component/a/foo': 'bar',
+            'repository/online/component/a/foo': 'bar',
         })
         c = self.u.get_component('a')
         self.assertEqual({'name': 'a', 'activated': True, 'foo': 'bar'}, c)
@@ -379,7 +379,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test active component setup data."""
         self._ucr({
             'repository/online/component/b': 'no',
-                'repository/online/component/b/foo': 'bar',
+            'repository/online/component/b/foo': 'bar',
         })
         c = self.u.get_component('b')
         self.assertEqual({'name': 'b', 'activated': False, 'foo': 'bar'}, c)
@@ -606,7 +606,7 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test getting custom component configuration."""
         self._ucr({
             'repository/online/component/a/server': 'a.example.net',
-                'repository/online/component/a/port': '4711',
+            'repository/online/component/a/port': '4711',
         })
         s = self.u._get_component_server('a')
         self.assertEqual('a.example.net', s.mock_server)
@@ -616,9 +616,9 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test getting local component configuration."""
         MockConfigRegistry._EXTRA = {
             'local/repository': 'yes',
-                'repository/online/server': 'a.example.net',
-                'repository/online/port': '4711',
-                'repository/online/component/a': 'yes',
+            'repository/online/server': 'a.example.net',
+            'repository/online/port': '4711',
+            'repository/online/component/a': 'yes',
         }
         self.u.ucr_reinit()
         s = self.u._get_component_server('a')
@@ -629,10 +629,10 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test getting non local mirror component configuration."""
         MockConfigRegistry._EXTRA = {
             'local/repository': 'yes',
-                'repository/online/component/a': 'yes',
-                'repository/online/component/a/localmirror': 'no',
-                'repository/online/component/a/server': 'a.example.net',
-                'repository/online/component/a/port': '4711',
+            'repository/online/component/a': 'yes',
+            'repository/online/component/a/localmirror': 'no',
+            'repository/online/component/a/server': 'a.example.net',
+            'repository/online/component/a/port': '4711',
         }
         self.u.ucr_reinit()
         s = self.u._get_component_server('a')
@@ -643,9 +643,9 @@ class TestUniventionUpdater(unittest.TestCase):
         """Test getting mirror component configuration."""
         MockConfigRegistry._EXTRA = {
             'local/repository': 'yes',
-                'repository/online/component/a': 'yes',
-                'repository/online/component/a/server': 'a.example.net',
-                'repository/online/component/a/port': '4711',
+            'repository/online/component/a': 'yes',
+            'repository/online/component/a/server': 'a.example.net',
+            'repository/online/component/a/port': '4711',
         }
         self.u.ucr_reinit()
         s = self.u._get_component_server('a', for_mirror_list=True)
@@ -685,8 +685,10 @@ class TestUniventionUpdater(unittest.TestCase):
         self.assertEqual(set((ver,)), comp_ver)
 
     def test_get_component_repositories_ARCH(self):
-        """Test component repositories with architecture sub directories.
-        errata is not explicitly requested."""
+        """
+        Test component repositories with architecture sub directories.
+        errata is not explicitly requested.
+        """
         self._ucr({
             'repository/online/component/a': 'yes',
         })
@@ -718,12 +720,14 @@ class TestUniventionUpdater(unittest.TestCase):
         )), set(r))
 
     def test_get_component_repositories_ARCH_MULTI(self):
-        """Test component errata repositories with architecture sub directories.
-        onyl last errata is ierated, only first there."""
+        """
+        Test component errata repositories with architecture sub directories.
+        onyl last errata is ierated, only first there.
+        """
         self._ucr({
             'repository/online/component/a': 'yes',
-                'repository/online/component/a/%d.%d/erratalevel' % (MAJOR, MINOR): '1',
-                'repository/online/component/a/%d.%d/erratalevel' % (MAJOR, MINOR + 1): '1',
+            'repository/online/component/a/%d.%d/erratalevel' % (MAJOR, MINOR): '1',
+            'repository/online/component/a/%d.%d/erratalevel' % (MAJOR, MINOR + 1): '1',
         })
         self._uri({
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR,   'all'): DATA,

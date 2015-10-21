@@ -214,7 +214,9 @@ class UCSRepo(UCS_Version):
 
     class _substitution:
 
-        '''Helper to print dynamically substituted variable.
+        '''
+        Helper to print dynamically substituted variable.
+
         >>> h={'major':2}
         >>> h['version'] = UCSRepo._substitution('%(major)d.%(minor)d', h)
         >>> h['minor'] = 3
@@ -249,7 +251,8 @@ class UCSRepoPool(UCSRepo):
         super(UCSRepoPool, self).__init__(**kw)
 
     def deb(self, type="deb"):
-        '''Format for /etc/apt/sources.list.
+        '''
+        Format for /etc/apt/sources.list.
 
         >>> r=UCSRepoPool(prefix='http://updates.software-univention.de/',major=2,minor=3,patchlevel=1,part='maintained',arch='i386')
         >>> r.deb()
@@ -259,7 +262,8 @@ class UCSRepoPool(UCSRepo):
         return "%s %s" % (type, super(UCSRepoPool, self)._format(fmt))
 
     def path(self, file='Packages.gz'):
-        '''Format pool for directory/file access. Returns relative path.
+        '''
+        Format pool for directory/file access. Returns relative path.
 
         >>> UCSRepoPool(prefix='http://updates.software-univention.de/',major=2,minor=3).path()
         '2.3/'
@@ -289,7 +293,8 @@ class UCSRepoPoolNoArch(UCSRepo):
         super(UCSRepoPoolNoArch, self).__init__(**kw)
 
     def deb(self, type="deb"):
-        '''Format for /etc/apt/sources.list.
+        '''
+        Format for /etc/apt/sources.list.
 
         >>> r=UCSRepoPoolNoArch(prefix='http://updates.software-univention.de/',major=2,minor=3,patch='comp',part='maintained/component',arch='all')
         >>> r.deb()
@@ -299,7 +304,8 @@ class UCSRepoPoolNoArch(UCSRepo):
         return "%s %s" % (type, super(UCSRepoPoolNoArch, self)._format(fmt))
 
     def path(self, file='Packages.gz'):
-        '''Format pool for directory/file access. Returns relative path.
+        '''
+        Format pool for directory/file access. Returns relative path.
 
         >>> UCSRepoPoolNoArch(prefix='http://updates.software-univention.de/',major=2,minor=3).path()
         '2.3/'
@@ -329,7 +335,8 @@ class UCSRepoDist(UCSRepo):
         super(UCSRepoDist, self).__init__(**kw)
 
     def deb(self, type="deb"):
-        '''Format for /etc/apt/sources.list.
+        '''
+        Format for /etc/apt/sources.list.
 
         >>> r=UCSRepoDist(prefix='http://updates.software-univention.de/',major=2,minor=2,patchlevel=0,part='maintained',arch='i386')
         >>> r.deb()
@@ -339,7 +346,8 @@ class UCSRepoDist(UCSRepo):
         return "%s %s" % (type, super(UCSRepoDist, self)._format(fmt))
 
     def path(self, file='Packages.gz'):
-        '''Format dist for directory/file access. Returns relative path.
+        '''
+        Format dist for directory/file access. Returns relative path.
 
         >>> UCSRepoDist(prefix='http://updates.software-univention.de/',major=2,minor=2).path()
         '2.2/'
@@ -430,11 +438,11 @@ class UCSHttpServer(object):
         '''Return canonical string representation.'''
         return 'UCSHttpServer(%r, port=%d, prefix=%r, username=%r, password=%r, timeout=%r)' % (
             self.server,
-                self.port,
-                self.prefix,
-                self.username,
-                self.password,
-                self.timeout,
+            self.port,
+            self.prefix,
+            self.username,
+            self.password,
+            self.timeout,
         )
 
     def __add__(self, rel):
@@ -589,6 +597,7 @@ class UCSLocalServer(object):
 class UniventionUpdater:
 
     '''Handle Univention package repositories.'''
+
     COMPONENT_AVAILABLE = 'available'
     COMPONENT_NOT_FOUND = 'not_found'
     COMPONENT_DISABLED = 'disabled'
@@ -597,8 +606,10 @@ class UniventionUpdater:
     FN_UPDATER_APTSOURCES_COMPONENT = '/etc/apt/sources.list.d/20_ucs-online-component.list'
 
     def __init__(self, check_access=True):
-        """Create new updater with settings from UCS.
-        Throws ConfigurationError when configured server is not available immediately."""
+        """
+        Create new updater with settings from UCS.
+        Throws ConfigurationError when configured server is not available immediately.
+        """
         self.log = logging.getLogger('updater.Updater')
         self.log.addHandler(NullHandler())
         self.check_access = check_access
@@ -659,10 +670,10 @@ class UniventionUpdater:
         # Auto-detect prefix
         self.server = UCSHttpServer(
             server=self.repository_server,
-                port=self.repository_port,
-                prefix=self.repository_prefix,
-                user_agent=user_agent,
-                timeout=self.timeout,
+            port=self.repository_port,
+            prefix=self.repository_prefix,
+            user_agent=user_agent,
+            timeout=self.timeout,
         )
         try:
             if not self.repository_prefix:
@@ -688,9 +699,10 @@ class UniventionUpdater:
                 raise
 
     def get_next_version(self, version, components=[], errorsto='stderr'):
-        '''Check if a new patchlevel, minor or major release is available for the given version.
-           Components must be available for the same major.minor version.
-           errorsto: stderr|exception|none
+        '''
+        Check if a new patchlevel, minor or major release is available for the given version.
+        Components must be available for the same major.minor version.
+        errorsto: stderr|exception|none
         '''
         debug = (errorsto == 'stderr')
 
@@ -731,13 +743,14 @@ class UniventionUpdater:
         return None
 
     def get_all_available_release_updates(self, ucs_version=None):
-        '''Returns a list of all available release updates - the function takes required components into account
-           and stops if a required component is missing
-           Arguments:
-             ucs_version: starts travelling through available version from version 'ucs_version'
-           Return value: tuple(versions, blocking component)
-             versions: available UCS versions (list of strings)
-             blocking component: None or name of update blocking component
+        '''
+        Returns a list of all available release updates - the function takes required components into account
+        and stops if a required component is missing
+        Arguments:
+            ucs_version: starts travelling through available version from version 'ucs_version'
+        Return value: tuple(versions, blocking component)
+            versions: available UCS versions (list of strings)
+            blocking component: None or name of update blocking component
          '''
 
         if not ucs_version:
@@ -817,10 +830,11 @@ class UniventionUpdater:
         return sources_list
 
     def get_all_available_security_updates(self):
-        '''Returns a list of all available security updates for current major.minor version
-           as integer
-           > updater.get_all_available_security_updates()
-           [3, 4, 5]
+        '''
+        Returns a list of all available security updates for current major.minor version
+        as integer
+        > updater.get_all_available_security_updates()
+        [3, 4, 5]
         '''
         result = []
         archs = ['all'] + self.architectures
@@ -897,8 +911,9 @@ class UniventionUpdater:
         return result
 
     def security_update_available(self, version=None):
-        '''Check for the security version for the current version.
-           Returns next available security update number (integer) or False if no security update is available.
+        '''
+        Check for the security version for the current version.
+        Returns next available security update number (integer) or False if no security update is available.
         '''
         if version:
             start = end = version
@@ -910,8 +925,9 @@ class UniventionUpdater:
         return False
 
     def errata_update_available(self, version=None):
-        '''Check for the errata version for the current version.
-           Returns next available security update number (integer) or False if no security update is available.
+        '''
+        Check for the errata version for the current version.
+        Returns next available security update number (integer) or False if no security update is available.
         '''
         if version:
             start = end = version
@@ -933,13 +949,13 @@ class UniventionUpdater:
 
     def get_components(self, only_localmirror_enabled=False):
         '''
-                Retrieve all enabled components from registry as set().
-                By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
-                If only_localmirror_enabled is True, then all components with
-                repository/online/component/%s/localmirror=$TRUE will be returned.
+        Retrieve all enabled components from registry as set().
+        By default, only "enabled" components will be returned (repository/online/component/%s=$TRUE).
+        If only_localmirror_enabled is True, then all components with
+        repository/online/component/%s/localmirror=$TRUE will be returned.
 
-                If repository/online/component/%s/localmirror is not set, then the value of
-                repository/online/component/%s is used (backward compatibility).
+        If repository/online/component/%s/localmirror is not set, then the value of
+        repository/online/component/%s is used (backward compatibility).
         '''
         components = set()
         for key, value in self.configRegistry.items():
@@ -980,7 +996,7 @@ class UniventionUpdater:
         '''Retrieve named component from registry as hash'''
         component = {
             'name': name,
-                        'activated': self.configRegistry.is_true('repository/online/component/%s' % name, False)
+            'activated': self.configRegistry.is_true('repository/online/component/%s' % name, False)
         }
         PREFIX = 'repository/online/component/%s/' % (name,)
         for key, value in self.configRegistry.items():
@@ -1075,8 +1091,9 @@ class UniventionUpdater:
 
     def component_update_get_packages(self):
         """Return tuple with list of (new, upgradeable) packages."""
-        p1 = subprocess.Popen(['univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list; LC_ALL=C %s >/dev/null; LC_ALL=C %s' % (cmd_update, cmd_dist_upgrade_sim)],
-                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        p1 = subprocess.Popen(
+            ['univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list; LC_ALL=C %s >/dev/null; LC_ALL=C %s' % (cmd_update, cmd_dist_upgrade_sim)],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         (stdout, stderr) = p1.communicate()
         ud.debug(ud.NETWORK, ud.PROCESS, 'check for updates with "dist-upgrade -s", the returncode is %d' % p1.returncode)
         ud.debug(ud.NETWORK, ud.PROCESS, 'stderr=%s' % stderr)
@@ -1089,9 +1106,9 @@ class UniventionUpdater:
             line_split = line.split(' ')
             if line.startswith('Inst '):
                 # upgrade:
-                #	Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
+                #    Inst univention-updater [3.1.1-5] (3.1.1-6.408.200810311159 192.168.0.10)
                 # inst:
-                #	Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
+                #    Inst mc (1:4.6.1-6.12.200710211124 oxae-update.open-xchange.com)
                 if len(line_split) > 3:
                     if line_split[2].startswith('[') and line_split[2].endswith(']'):
                         ud.debug(ud.NETWORK, ud.PROCESS, 'Added %s to the list of upgraded packages' % line_split[1])
@@ -1274,7 +1291,8 @@ class UniventionUpdater:
                             break
 
     def print_version_repositories(self, clean=False, dists=False, start=None, end=None):
-        '''Return a string of Debian repository statements for all UCS versions
+        '''
+        Return a string of Debian repository statements for all UCS versions
         between start and end.
 
         For dists=True, additional entries for the parts below dists/ are also added.
@@ -1314,7 +1332,8 @@ class UniventionUpdater:
         return '\n'.join(result)
 
     def print_security_repositories(self, clean=False, start=None, end=None, all_security_updates=False):
-        '''Return a string of Debian repository statements for all UCS security
+        '''
+        Return a string of Debian repository statements for all UCS security
         updates for UCS versions between start and end.
 
         Default for start: (major, minor)
@@ -1363,7 +1382,8 @@ class UniventionUpdater:
         return '\n'.join(result)
 
     def print_errata_repositories(self, clean=False, start=None, end=None, all_errata_updates=False):
-        '''Return a string of Debian repository statements for all UCS errata
+        '''
+        Return a string of Debian repository statements for all UCS errata
         updates for UCS versions between start and end.
 
         Default for start: (major, minor)
@@ -1420,38 +1440,38 @@ class UniventionUpdater:
 
     def _get_component_server(self, component, for_mirror_list=False):
         '''
-Return UCSServer as configures via UCR.
-If for_repo_server=True then the
+        Return UCSServer as configures via UCR.
+        If for_repo_server=True then the
 
-CS = value of repository/online/component/%s/server
-MS = value of repository/mirror/server
-RS = value of repository/online/server
-Y = value is "True"
-N = value is "False"
-- = value is unset or no entry
-? = value is irrelevant
+        CS = value of repository/online/component/%s/server
+        MS = value of repository/mirror/server
+        RS = value of repository/online/server
+        Y = value is "True"
+        N = value is "False"
+        - = value is unset or no entry
+        ? = value is irrelevant
 
-             component  component    component |        R E S U L T
-isRepoServer enabled    localmirror  server    | sources.list  mirror.list
-===============================================|==========================
-    N           N          N           -       |      -             -
-    N           Y          ?           -       |      RS            -
-    N           Y          ?           CS      |      CS            -
---------------------------------------------------------------------------
-    Y           N          N           ?       |      -             -
-    Y           N          Y           -       |      -             MS
-    Y           N          Y           CS      |      -             CS
-    Y           Y          N           -       |      MS            -
-    Y           Y          N           CS      |      CS            -
-    Y           Y          Y           -       |      RS            MS
-    Y           Y          Y           CS      |      RS            CS
---------------------------------------------------------------------------
-    Y           N =======>(-)          -       |      -             -
-    Y           Y =======>(-)          -       |      RS            MS
-    Y           Y =======>(-)          CS      |      RS            CS
+                     component  component    component |        R E S U L T
+        isRepoServer enabled    localmirror  server    | sources.list  mirror.list
+        ===============================================|==========================
+            N           N          N           -       |      -             -
+            N           Y          ?           -       |      RS            -
+            N           Y          ?           CS      |      CS            -
+        --------------------------------------------------------------------------
+            Y           N          N           ?       |      -             -
+            Y           N          Y           -       |      -             MS
+            Y           N          Y           CS      |      -             CS
+            Y           Y          N           -       |      MS            -
+            Y           Y          N           CS      |      CS            -
+            Y           Y          Y           -       |      RS            MS
+            Y           Y          Y           CS      |      RS            CS
+        --------------------------------------------------------------------------
+            Y           N =======>(-)          -       |      -             -
+            Y           Y =======>(-)          -       |      RS            MS
+            Y           Y =======>(-)          CS      |      RS            CS
 
-if repository/online/component/%s/localmirror is unset, then the value of
-repository/online/component/%s will be used to achieve backward compatibility.
+        if repository/online/component/%s/localmirror is unset, then the value of
+        repository/online/component/%s will be used to achieve backward compatibility.
         '''
 
         if not self.is_repository_server:
@@ -1497,12 +1517,12 @@ repository/online/component/%s will be used to achieve backward compatibility.
 
         server = UCSHttpServer(
             server=server,
-                port=port,
-                prefix='',
-                username=username,
-                password=password,
-                user_agent=user_agent,
-                timeout=self.timeout,
+            port=port,
+            prefix='',
+            username=username,
+            password=password,
+            user_agent=user_agent,
+            timeout=self.timeout,
         )
         try:
             # if prefix.lower() == 'none' ==> use no prefix
@@ -1566,9 +1586,10 @@ repository/online/component/%s will be used to achieve backward compatibility.
         return versions
 
     def get_component_repositories(self, component, versions, clean=False, debug=True, for_mirror_list=False, errata_level=None):
-        '''Return array of Debian repository statements for requested component.
-           With clean=True, additional clean statements for apt-mirror are added.
-           Component repositories for mirror.list are returned if for_mirror_list=True.
+        '''
+        Return array of Debian repository statements for requested component.
+        With clean=True, additional clean statements for apt-mirror are added.
+        Component repositories for mirror.list are returned if for_mirror_list=True.
         '''
         archs = ['all'] + self.architectures
         result = []
@@ -1645,7 +1666,8 @@ repository/online/component/%s will be used to achieve backward compatibility.
         return result
 
     def print_component_repositories(self, clean=False, start=None, end=None, for_mirror_list=False):
-        '''Return a string of Debian repository statements for all enabled components.
+        '''
+        Return a string of Debian repository statements for all enabled components.
         With clean=True, repository/online/component/%s/clean controls if additional clean statements for apt-mirror are added.
         With for_mirror_list=True, component entries for mirror.list will be returned, otherwise component entries for local sources.list.
         '''
@@ -1675,16 +1697,19 @@ repository/online/component/%s will be used to achieve backward compatibility.
         # USER_AGENT='updater/identify - version/version-version/patchlevel errata version/erratalevel - uuid/system - uuid/license'
         # USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 4c52d2da-d04d-4b05-a593-1974ee851fc8'
         # USER_AGENT='UCS upater - 3.1-0 errata28 - 77e6406d-7a3e-40b3-a398-81cf119c9ef7 - 00000000-0000-0000-0000-000000000000'
-        return '%s - %s-%s errata%s - %s - %s - %s' % (self.configRegistry.get('updater/identify', 'UCS'),
-                                                       self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
-                                                       self.configRegistry.get('version/erratalevel'),
-                                                       self.configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),
-                                                       self.configRegistry.get('uuid/license', '00000000-0000-0000-0000-000000000000'),
-                                                       ','.join(self.configRegistry.get('repository/app_center/installed', '').split('-')))
+        return '%s - %s-%s errata%s - %s - %s - %s' % (
+            self.configRegistry.get('updater/identify', 'UCS'),
+            self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
+            self.configRegistry.get('version/erratalevel'),
+            self.configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),
+            self.configRegistry.get('uuid/license', '00000000-0000-0000-0000-000000000000'),
+            ','.join(self.configRegistry.get('repository/app_center/installed', '').split('-')))
 
     @staticmethod
     def call_sh_files(scripts, logname, *args):
-        '''Get pre- and postup.sh files and call them in the right order.
+        '''
+        Get pre- and postup.sh files and call them in the right order.
+
         > u = UniventionUpdater()
         > ver = u.current_version
         > struct = u._iterate_version_repositories(ver, ver, u.parts, u.architectures)
@@ -1781,7 +1806,8 @@ repository/online/component/%s will be used to achieve backward compatibility.
 
     @staticmethod
     def get_sh_files(repositories, verify=False):
-        '''Return all preup- and postup-scripts of repositories.
+        '''
+        Return all preup- and postup-scripts of repositories.
         repositories: iteratable (server, struct)s
         Returns: iteratable (server, struct, phase, path, script)
         '''
