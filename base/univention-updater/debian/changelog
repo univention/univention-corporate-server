@@ -1,6 +1,7 @@
 univention-updater (11.0.3-1) unstable; urgency=low
 
   * Bug #39306: Use https:// by default
+  * Bug #39305: Implement repository access restriction
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 25 Sep 2015 09:12:17 +0200
 

@@ -73,8 +73,10 @@ import atexit
 RE_ALLOWED_DEBIAN_PKGNAMES = re.compile('^[a-z0-9][a-z0-9.+-]+$')
 RE_SPLIT_MULTI = re.compile('[ ,]+')
 RE_COMPONENT = re.compile(r'^repository/online/component/([^/]+)$')
+RE_CREDENTIALS = re.compile(r'^repository/credentials/(?:(?P<realm>[^/]+)/)?(?P<key>[^/]+)$')
 
 MIN_GZIP = 100  # size of non-empty gzip file
+UUID_NULL = '00000000-0000-0000-0000-000000000000'
 
 try:
     NullHandler = logging.NullHandler
@@ -319,16 +321,17 @@ class UCSHttpServer(object):
                 return None
 
     def __init__(self, baseurl, user_agent=None, timeout=None):
-        self.log = logging.getLogger('updater.UCSHttp')
         self.log.addHandler(NullHandler())
         self.baseurl = baseurl
         self.user_agent = user_agent
         self.timeout = timeout
 
+    log = logging.getLogger('updater.UCSHttp')
+
     http_method = 'HEAD'
     head_handler = HTTPHeadHandler()
-    pass_handler = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    auth_handler = urllib2.HTTPBasicAuthHandler(pass_handler)
+    password_manager = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    auth_handler = urllib2.HTTPBasicAuthHandler(password_manager)
     proxy_handler = urllib2.ProxyHandler()
     # No need for ProxyBasicAuthHandler, since ProxyHandler parses netloc for @
     opener = urllib2.build_opener(head_handler, auth_handler, proxy_handler)
@@ -343,7 +346,33 @@ class UCSHttpServer(object):
         '''Reload proxy settings and reset failed hosts.'''
         self.proxy_handler = urllib2.ProxyHandler()
         self.opener = urllib2.build_opener(self.head_handler, self.auth_handler, self.proxy_handler)
-        self.failed_hosts = set()
+        self.failed_hosts.clear()
+
+    @classmethod
+    def load_credentials(self, ucr):
+        uuid = ucr.get('uuid/license', UUID_NULL)
+
+        groups = {}
+        for key, value in ucr.items():
+            match = RE_CREDENTIALS.match(key)
+            if match:
+                realm, key = match.groups()
+                cfg = groups.setdefault(realm, {})
+                cfg[key] = value
+
+        for realm, cfg in groups.iteritems():
+            try:
+                uris = cfg.pop('uris').split()
+            except KeyError:
+                self.log.error('Incomplete credentials for realm "%s": %r', realm, cfg)
+                continue
+            username = cfg.pop('username', uuid)
+            password = cfg.pop('password', uuid)
+            if cfg:
+                self.log.warn('Extra credentials for realm "%s": %r', realm, cfg)
+
+            self.password_manager.add_password(realm, uris, username, password)
+            self.log.info('Loaded credentials for realm "%s"', realm)
 
     def __str__(self):
         '''URI with credentials.'''
@@ -394,6 +423,21 @@ class UCSHttpServer(object):
         try:
             res = UCSHttpServer.opener.open(req, timeout=self.timeout)
             try:
+                # <http://tools.ietf.org/html/rfc2617#section-2>
+                try:
+                    auth = req.unredirected_hdrs['Authorization']
+                    scheme, credentials = auth.split(' ', 1)
+                    if scheme != 'Basic':
+                        raise ValueError('Only "Basic" authorization is supported')
+                    try:
+                        basic = credentials.decode('base64')
+                    except Exception as ex:
+                        raise ValueError('Invalid base64')
+                    self.baseurl.username, self.baseurl.password = basic.split(':', 1)
+                except KeyError:
+                    pass
+                except ValueError as ex:
+                    self.log.info("Failed to decode %s: %s", auth, ex)
                 code = res.code
                 size = int(res.headers.get('content-length', 0))
                 content = res.read()
@@ -461,6 +505,10 @@ class UCSLocalServer(object):
             self.prefix = '%s/' % prefix
         else:
             self.prefix = ''
+
+    @classmethod
+    def load_credentials(self, ucr):
+        pass
 
     def __str__(self):
         '''Absolute file-URI.'''
@@ -576,6 +624,7 @@ class UniventionUpdater:
 
         # generate user agent string
         user_agent = self._get_user_agent_string()
+        UCSHttpServer.load_credentials(self.configRegistry)
 
         # Auto-detect prefix
         self.server = UCSHttpServer(
@@ -1581,8 +1630,8 @@ class UniventionUpdater:
             self.configRegistry.get('updater/identify', 'UCS'),
             self.configRegistry.get('version/version'), self.configRegistry.get('version/patchlevel'),
             self.configRegistry.get('version/erratalevel'),
-            self.configRegistry.get('uuid/system', '00000000-0000-0000-0000-000000000000'),
-            self.configRegistry.get('uuid/license', '00000000-0000-0000-0000-000000000000'),
+            self.configRegistry.get('uuid/system', UUID_NULL),
+            self.configRegistry.get('uuid/license', UUID_NULL),
             ','.join(self.configRegistry.get('repository/app_center/installed', '').split('-')))
 
     @staticmethod

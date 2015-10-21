@@ -94,6 +94,7 @@ if [ "$1" = "configure" ]; then
 		repository/mirror/threads?10 \
 		repository/mirror/recreate_packages?yes \
 		repository/mirror/basepath?/var/lib/univention-repository \
+		repository/credentials/'Univention Software Repository'/uris?'updates.software-univention.de updates-test.software-univention.de appcenter.software-univention.de appcenter-test.software-univention.de' \
 		update/custom/preup?/var/lib/local-preup.sh \
 		update/custom/postup?/var/lib/local-postup.sh \
 		update/commands/update?"apt-get update" \

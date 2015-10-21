@@ -392,3 +392,21 @@ Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der e
 Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed. [600s]
 Type=int
 Categories=service-software-management
+
+[repository/credentials/.*/uris]
+Description[de]=Der Zugriff auf das Univention Software Repository verlangen eine Authentifizierung. Diese Variable enthält eine mit Leerzeichen separierte Liste der Hostnamen, für welche diese Credentials gelten. '.*' muß dem 'Realm-Namen' entsprechen.
+Description[en]=Access to the Univention software repository require authentication. This variable contains a space separated list of host names, for which these credentials are used. '.*' must match the 'realm name'.
+Type=string
+Categories=service-software-management
+
+[repository/credentials/.*/username]
+Description[de]=Der Zugriff auf das Univention Software Repository verlangen eine Authentifizierung. Mit dieser Variable kann der Benutzername konfiguriert werden. Siehe auch 'repository/credentials/.*/password'.
+Description[en]=Access to the Univention software repository require authentication. The username can be configured with this variable. See also 'repository/credentials/.*/password'.
+Type=string
+Categories=service-software-management
+
+[repository/credentials/.*/password]
+Description[de]=Der Zugriff auf das Univention Software Repository verlangen eine Authentifizierung. Mit dieser Variable kann das Passwort konfiguriert werden. Siehe auch 'repository/credentials/.*/username'.
+Description[en]=Access to the Univention software repository require authentication. The password can be configured with this variable. See also 'repository/credentials/.*/username'.
+Type=string
+Categories=service-software-management
