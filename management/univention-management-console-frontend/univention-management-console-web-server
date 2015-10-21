@@ -444,7 +444,7 @@ def default_error_page_html(status, message, traceback, version, result=None):
 	content = default_error_page_json(status, message, traceback, version, result)
 	try:
 		with open('/usr/share/univention-management-console-frontend/error.html', 'rb') as fd:
-			content = fd.read().replace('%ERROR%', cherrypy._cperror._escape(content, True))
+			content = fd.read().replace('%ERROR%', json.dumps(cherrypy._cperror._escape(content, True)))
 		cherrypy.response.headers['Content-Type'] = 'text/html; charset=UTF-8'
 	except (OSError, IOError):
 		pass
