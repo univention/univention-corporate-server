@@ -641,7 +641,7 @@ class Application(object):
 		index_json_gz = urlopen(json_url).read()
 
 		if detached_sig_filename:
-			(rc, gpg_error) = gpg_verify("-", detached_sig_filename, content=index_json_gz)
+			(rc, gpg_error) = gpg_verify("-", detached_sig_path, content=index_json_gz)
 			if rc:
 				MODULE.error('Signature verification for %s failed' % (index_json_gz_filename,))
 				if gpg_error:

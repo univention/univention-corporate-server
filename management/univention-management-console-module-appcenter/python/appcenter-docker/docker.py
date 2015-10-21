@@ -60,7 +60,7 @@ _ = umc.Translation('univention-appcenter-docker').translate
 
 DOCKER_READ_USER_CRED = {
 	'username': 'ucs',
-	'pasword': 'readonly',
+	'password': 'readonly',
 	}
 
 class DockerImageVerificationFailedRegistryContact(Exception):
@@ -136,6 +136,11 @@ def verify(app, image):
 
 	try:
 		appinfo = json_apps[app.name]
+	except KeyError as exc:
+		_logger.error('Warning: Cannot check DockerImage checksum because app is not in index.json: %s' % app.name)
+		return True	## Nothing we can do here, this is mainly for ucs-test apps
+
+	try:
 		appfileinfo = appinfo['DockerImageManifestV2S1']
 		appcenter_sha256sum = appfileinfo['sha256']
 		docker_image_manifest_url = appfileinfo['url']
@@ -158,6 +163,8 @@ def verify(app, image):
 		exc = DockerImageVerificationFailedChecksum(app.name, docker_image_manifest_url)
 		_logger.error(exc.en_US)
 		raise exc
+
+	return True
 
 def ps(only_running=True):
 	args = ['docker', 'ps', '--no-trunc=true']
