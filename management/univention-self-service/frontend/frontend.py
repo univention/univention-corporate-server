@@ -29,15 +29,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import cherrypy
-
 from httplib import HTTPException
 from socket import error as SocketError
 import re
 import json
+import sys
 
 from univention.lib.umc_connection import UMCConnection
 from univention.management.console.config import ucr
+
+sys.stdout = sys.stderr
+import cherrypy
+
+cherrypy.config.update({
+	"environment": "embedded",
+	"log.access_file": "/var/log/univention/self-service-access.log",
+	"log.error_file": "/var/log/univention/self-service-error.log"})
 
 LDAP_SECRETS_FILE = "/etc/self-service-ldap.secret"
 
@@ -107,25 +114,31 @@ class UniventionSelfServiceFrontend(object):
 	def umc_request(self, connection, url, data, command="command"):
 		try:
 			result = connection.request(url, data, command=command)
-		except KeyError as ke:
-			# https://forge.univention.org/bugzilla/show_bug.cgi?id=39599
-			if "result" in str(ke):
-				return json.dumps({"status": 200, "result": ""})
+			if isinstance(result, dict):
+				status = int(result["status"])
+				message = result["message"]
+			elif isinstance(result, str) and "{" in result and "}" in result:
+				try:
+					json_thing = json.loads(result)
+					status = int(json_thing["status"])
+					message = json_thing["message"]
+				except (TypeError, ValueError):
+					status = 200
+					message = result
 			else:
-				self.log(ke)
-				raise ke
+				status = 200
+				message = result
 		except HTTPException as he:
 			self.log(he)
 			try:
 				status, message = UniventionSelfServiceFrontend.work_around_broken_api(he)
 				cherrypy.response.status = status
-				return json.dumps({"status": status, "result": message})
 			except AttributeError:
 				raise he
 		except (ValueError, NotImplementedError) as e:
 			self.log(e)
 			raise
-		return json.dumps({"status": 200, "result": result})
+		return {"status": status, "message": message}
 
 	@staticmethod
 	def work_around_broken_api(httpex):
@@ -135,4 +148,9 @@ class UniventionSelfServiceFrontend(object):
 		:param httperror:  HTTPException object
 		:return: (status, message) or AttributeError if extraction was not possible
 		"""
-		return re.search('\{\"status\": (.*),\ \"message\":\ \"(.*)\"\}', str(httpex)).groups()
+		status, message = re.search('\{\"status\": (.*),\ \"message\":\ \"(.*)\"\}', str(httpex)).groups()
+		try:
+			status = int(status)
+		except ValueError:
+			pass
+		return status, message

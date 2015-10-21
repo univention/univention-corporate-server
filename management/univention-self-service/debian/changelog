@@ -1,3 +1,14 @@
+univention-self-service (0.0.0-13) unstable; urgency=low
+
+  * remove work around #39599 (Bug #37890)
+  * work with all kinds of resonses from UMC replies: messages are passed
+    completely from backend to frontend
+  * make API similiar to UMC API (/result/message/)
+  * add username to set_password() arguments
+  * cherrypy log settings
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Oct 2015 13:41:48 +0200
+
 univention-self-service (0.0.0-12) unstable; urgency=low
 
   * work around #39599 (Bug #37890)

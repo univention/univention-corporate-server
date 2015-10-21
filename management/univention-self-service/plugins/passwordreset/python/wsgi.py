@@ -49,17 +49,17 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		fields must be non-empty.
 
 		:param username: username
-		:return: json encoded list of strings in 'result'
+		:return: HTTP200, json({"status": int, "message": [str, str]})
 		"""
 		try:
 			connection = self.get_umc_connection()
 		except UMCConnectionError as ue:
 			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "result": ue.msg})
+			return json.dumps({"status": ue.status, "message": ue.msg})
 
 		url = "passwordreset/get_reset_methods"
 		data = {"username": username}
-		return self.umc_request(connection, url, data)
+		return json.dumps(self.umc_request(connection, url, data))
 
 	@cherrypy.expose
 	def set_contact(self, username, password, email, mobile):
@@ -71,21 +71,27 @@ class PasswordReset(UniventionSelfServiceFrontend):
 		:param password: password
 		:param email: email
 		:param mobile: phone number
-		:return: json(True) in 'result' if success or HTTPException in case
-		of an authentication error.
+		:return: HTTP200, json({"status": int, "message": str}) success or
+		HTTPException in case of an authentication error.
 		"""
 		try:
 			connection = self.get_umc_connection()
 		except UMCConnectionError as ue:
 			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "result": ue.msg})
+			return json.dumps({"status": ue.status, "message": ue.msg})
 
 		url = "passwordreset/set_contact"
 		data = {"username": username,
 			"password": password,
 			"email": email,
 			"mobile": mobile}
-		return self.umc_request(connection, url, data)
+		result = self.umc_request(connection, url, data)
+
+		if result["status"] == 200:
+			self.log("Successfully set contact for user '{}' email: '{}' mobile: '{}'.".format(username, email, mobile))
+		else:
+			self.log("Error setting contact for user '{}' email: '{}' mobile: '{}'.".format(username, email, mobile))
+		return json.dumps(result)
 
 	@cherrypy.expose
 	def send_token(self, username, method):
@@ -94,35 +100,47 @@ class PasswordReset(UniventionSelfServiceFrontend):
 
 		:param username: username
 		:param method: method ('sms' / 'email')
-		:return: json(True) in 'result' if success
+		:return: HTTP200, json({"status": int, "message": str})
 		"""
 		try:
 			connection = self.get_umc_connection()
 		except UMCConnectionError as ue:
 			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "result": ue.msg})
+			return json.dumps({"status": ue.status, "message": ue.msg})
 
 		url = "passwordreset/send_token"
 		data = {"username": username, "method": method}
-		return self.umc_request(connection, url, data)
+		result = self.umc_request(connection, url, data)
+
+		if result["status"] == 200:
+			self.log("Successfully sent token for user '{}' with method '{}'.".format(username, method))
+		else:
+			self.log("Error sending token for user '{}' with method '{}'.".format(username, method))
+		return json.dumps(result)
 
 	@cherrypy.expose
-	def set_password(self, token, password):
+	def set_password(self, token, username, password):
 		"""
 		Change users password.
 
 		:param token: token
 		:param password: new password
-		:return: json(True) in 'result' if success or error message if error
+		:return: HTTP200, json({"status": int, "message": str})
 		"""
 		try:
 			connection = self.get_umc_connection()
 		except UMCConnectionError as ue:
 			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "result": ue.msg})
+			return json.dumps({"status": ue.status, "message": ue.msg})
 
 		url = "passwordreset/set_password"
-		data = {"token": token, "password": password}
-		return self.umc_request(connection, url, data)
+		data = {"token": token, "username": username, "password": password}
+		result = self.umc_request(connection, url, data)
+
+		if result["status"] == 200:
+			self.log("Successfully changed password of user '{}'.".format(username))
+		else:
+			self.log("Error changing password of user '{}'.".format(username))
+		return json.dumps(result)
 
 application = cherrypy.Application(PasswordReset(), "/self-service/passwordreset")

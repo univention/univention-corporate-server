@@ -132,7 +132,8 @@ class Instance(Base):
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("User is blacklisted."))
 		dn = self.auth(username, password)
-		return self.set_contact_data(dn, email, mobile)
+		if self.set_contact_data(dn, email, mobile):
+			return {"status": 200, "message": _("Successfully changed your contact data.")}
 
 #	@prevent_denial_of_service
 	@sanitize(
@@ -180,7 +181,7 @@ class Instance(Base):
 					method=method, username=username))
 				self.db.delete_tokens(username=username)
 				raise
-			return True
+			return {"status": 200, "message": _("Successfully send token via {}.".format(method))}
 		else:
 			# no contact info
 			raise UMC_Error(_("No contact information to send a token for password recovery to has been found."))
@@ -188,38 +189,40 @@ class Instance(Base):
 #	@prevent_denial_of_service
 	@sanitize(
 		token=StringSanitizer(required=True),
+		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True))
 	@simple_response
-	def set_password(self, token, password):
-		MODULE.info("set_password(): token: '{}' password: '{}'.".format(token, password))
+	def set_password(self, token, username, password):
+		MODULE.info("set_password(): token: '{}' username: '{}' password: '{}'.".format(token, username, password))
 		try:
-			token_from_db = self.db.get_one(token=token)
+			token_from_db = self.db.get_one(token=token, username=username)
 		except MultipleTokensInDB as e:
-				# this should not happen, delete all tokens, return False
+				# this should not happen, delete all tokens, raise Exception
 				# regardless of correctness of token
 				MODULE.error("set_password(): {}".format(e))
-				self.db.delete_tokens(token=token)
+				self.db.delete_tokens(token=token, username=username)
 				raise UMC_Error(_("A problem occurred on the server and has been corrected, please retry."), status=500)
 		if token_from_db:
 			if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
 				# token is correct and valid
-				MODULE.info("Receive valid token for '{username}'.".format(**token_from_db))
-				if self.is_blacklisted(token_from_db["username"]):
+				MODULE.info("Receive valid token for '{}'.".format(username))
+				if self.is_blacklisted(username):
 					# this should not happen
-					MODULE.error("Found token in DB for blacklisted user {}.".format(token_from_db["username"]))
-					self.db.delete_tokens(token=token)
+					MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
+					self.db.delete_tokens(token=token, username=username)
 					raise UMC_Error(_("User is blacklisted."))
-				ret = self.udm_set_password(token_from_db["username"], password)
-				self.db.delete_tokens(token=token)
-				return ret
+				ret = self.udm_set_password(username, password)
+				self.db.delete_tokens(token=token, username=username)
+				if ret:
+					return {"status": 200, "message": _("Successfully changed your password.")}
 			else:
 				# token is correct but expired
-				MODULE.info("Receive correct but expired token for '{username}'.".format(**token_from_db))
-				self.db.delete_tokens(token=token)
+				MODULE.info("Receive correct but expired token for '{}'.".format(username))
+				self.db.delete_tokens(token=token, username=username)
 				raise UMC_Error(_("The token you supplied has expired. Please request a new one."))
 		else:
 			# no token in DB
-			MODULE.info("Token '{}' not found in DB.".format(token))
+			MODULE.info("Token '{}' not found in DB for user '{}'.".format(token, username))
 			raise UMC_Error(_("The token you supplied could not be found. Please request a new one."))
 
 #	@prevent_denial_of_service

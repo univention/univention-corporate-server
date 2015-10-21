@@ -44,11 +44,19 @@ class SetPassword(UniventionSelfServiceFrontend):
 
 	@cherrypy.expose
 	def set_password(self, username, oldpassword, newpassword):
+		"""
+		Change a users password.
+
+		:param username: username
+		:param oldpassword: old password
+		:param newpassword: new password
+		:return: {"status": int, "message": str}
+		"""
 		try:
 			connection = self.get_umc_connection(username=username, password=oldpassword)
 		except UMCConnectionError as ue:
 			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "result": ue.msg})
+			return json.dumps({"status": ue.status, "message": ue.msg})
 
 		url = ""
 		data = {
@@ -56,6 +64,12 @@ class SetPassword(UniventionSelfServiceFrontend):
 				"password": oldpassword,
 				"new_password": newpassword}
 		}
-		return self.umc_request(connection, url, data, command='set')
+		result = self.umc_request(connection, url, data, command='set')
+
+		if result["status"] == 200:
+			self.log("Successfully changed password of user '{}'.".format(username))
+		else:
+			self.log("Error changing password of user '{}'.".format(username))
+		return json.dumps(result)
 
 application = cherrypy.Application(SetPassword(), "/self-service/setpassword")
