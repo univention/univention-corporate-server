@@ -193,9 +193,9 @@ class UCSRepoPool(UCSRepo):
         '''
         Format for /etc/apt/sources.list.
 
-        >>> r=UCSRepoPool(prefix='http://updates.software-univention.de/',major=2,minor=3,patchlevel=1,part='maintained',arch='i386')
+        >>> r=UCSRepoPool(prefix='https://updates.software-univention.de/',major=2,minor=3,patchlevel=1,part='maintained',arch='i386')
         >>> r.deb()
-        'deb http://updates.software-univention.de/2.3/maintained/ 2.3-1/i386/'
+        'deb https://updates.software-univention.de/2.3/maintained/ 2.3-1/i386/'
         '''
         fmt = "%(prefix)s%(version)s/%(part)s/ %(patch)s/%(arch)s/"
         return "%s %s" % (type, super(UCSRepoPool, self)._format(fmt))
@@ -204,7 +204,7 @@ class UCSRepoPool(UCSRepo):
         '''
         Format pool for directory/file access. Returns relative path.
 
-        >>> UCSRepoPool(prefix='http://updates.software-univention.de/',major=2,minor=3).path()
+        >>> UCSRepoPool(prefix='https://updates.software-univention.de/',major=2,minor=3).path()
         '2.3/'
         >>> UCSRepoPool(major=2,minor=3,part='maintained').path()
         '2.3/maintained/'
@@ -235,9 +235,9 @@ class UCSRepoPoolNoArch(UCSRepo):
         '''
         Format for /etc/apt/sources.list.
 
-        >>> r=UCSRepoPoolNoArch(prefix='http://updates.software-univention.de/',major=2,minor=3,patch='comp',part='maintained/component',arch='all')
+        >>> r=UCSRepoPoolNoArch(prefix='https://updates.software-univention.de/',major=2,minor=3,patch='comp',part='maintained/component',arch='all')
         >>> r.deb()
-        'deb http://updates.software-univention.de/2.3/maintained/component/comp/ ./'
+        'deb https://updates.software-univention.de/2.3/maintained/component/comp/ ./'
         '''
         fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/ ./"
         return "%s %s" % (type, super(UCSRepoPoolNoArch, self)._format(fmt))
@@ -246,7 +246,7 @@ class UCSRepoPoolNoArch(UCSRepo):
         '''
         Format pool for directory/file access. Returns relative path.
 
-        >>> UCSRepoPoolNoArch(prefix='http://updates.software-univention.de/',major=2,minor=3).path()
+        >>> UCSRepoPoolNoArch(prefix='https://updates.software-univention.de/',major=2,minor=3).path()
         '2.3/'
         >>> UCSRepoPoolNoArch(major=2,minor=3,part='maintained/component').path()
         '2.3/maintained/component/'
@@ -277,9 +277,9 @@ class UCSRepoDist(UCSRepo):
         '''
         Format for /etc/apt/sources.list.
 
-        >>> r=UCSRepoDist(prefix='http://updates.software-univention.de/',major=2,minor=2,patchlevel=0,part='maintained',arch='i386')
+        >>> r=UCSRepoDist(prefix='https://updates.software-univention.de/',major=2,minor=2,patchlevel=0,part='maintained',arch='i386')
         >>> r.deb()
-        'deb http://updates.software-univention.de/2.2/maintained/2.2-0/ dists/univention/main/binary-i386/'
+        'deb https://updates.software-univention.de/2.2/maintained/2.2-0/ dists/univention/main/binary-i386/'
         '''
         fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/ dists/univention/main/binary-%(arch)s/"
         return "%s %s" % (type, super(UCSRepoDist, self)._format(fmt))
@@ -288,7 +288,7 @@ class UCSRepoDist(UCSRepo):
         '''
         Format dist for directory/file access. Returns relative path.
 
-        >>> UCSRepoDist(prefix='http://updates.software-univention.de/',major=2,minor=2).path()
+        >>> UCSRepoDist(prefix='https://updates.software-univention.de/',major=2,minor=2).path()
         '2.2/'
         >>> UCSRepoDist(major=2,minor=2,part='maintained').path()
         '2.2/maintained/'

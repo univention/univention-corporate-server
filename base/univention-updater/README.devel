@@ -30,8 +30,7 @@ Repository layout
 
 Repository Server
 -----------------
-* [IPv6](http://updates.software-univention.de/)
-* [IPv4](http://apt.univention.de/)
+* [IPvX](https://updates.software-univention.de/)
 * [Lokal](http://univention-repository.$FQDN/univention-repository/)
 
 With arch/

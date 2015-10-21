@@ -600,7 +600,7 @@ define([
 				console.warn('Malformed version: ', version);
 			}
 			if (versionWithoutPatchlevel) {
-				var erratalink = lang.replace('<a href="http://errata.univention.de/ucs/{version}/" target="_blank">{label}</a>', {
+				var erratalink = lang.replace('<a href="https://errata.software-univention.de/ucs/{version}/" target="_blank">{label}</a>', {
 					version: versionWithoutPatchlevel,
 					label: _('Information about the updates')
 				});

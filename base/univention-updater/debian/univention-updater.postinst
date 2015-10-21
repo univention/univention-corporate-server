@@ -42,6 +42,18 @@ create_logfile /var/log/univention/actualise.log "root:adm" 640
 
 [ -d /etc/apt/sources.list.d ] || mkdir -p /etc/apt/sources.list.d
 
+while IFS='	' read releasename version url; do :; done <<__CODENAMES__
+mountain beech	UCS 2.1	https://en.wikipedia.org/wiki/Nothofagus_solandri
+copper beech	UCS 2.2	https://en.wikipedia.org/wiki/European_Beech
+hornbeam	UCS 2.3	httss://en.wikipedia.org/wiki/Hornbeam
+golden beech	UCS 2.4	https://en.wikipedia.org/wiki/Fagus_sylvatica
+Horn-Lehe	UCS 3.0	https://de.wikipedia.org/wiki/Horn-Lehe
+Findorff	UCS 3.1	https://de.wikipedia.org/wiki/Findorff_%28Bremen%29
+Borgfeld	UCS 3.2	https://de.wikipedia.org/wiki/Borgfeld
+Walle	UCS 4.0	https://de.wikipedia.org/wiki/Walle_%28Bremen%29
+Vahr	UCS 4.1	https://de.wikipedia.org/wiki/Vahr
+__CODENAMES__
+
 if [ "$1" = "configure" ]; then
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
@@ -54,8 +66,6 @@ if [ "$1" = "configure" ]; then
 		update/warning/lang?"default" \
 		update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7" \
 		update/umc/nextversion?true \
-		update/doc/releasenotes/url"?http://download.univention.de/doc/" \
-		update/doc/releasenotes/description"?http://download.univention.de/doc/"\
 		repository/online?no \
 		repository/online/server?"${REPOSITORY}" \
 		repository/online/port?80 \
@@ -86,34 +96,8 @@ if [ "$1" = "configure" ]; then
 		version/version?4.1 \
 		version/patchlevel?0 \
 		version/erratalevel?0 \
+		version/releasename="$releasename" \
 		uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
-
-	# http://en.wikipedia.org/wiki/Nothofagus_solandri
-	# univention-config-registry set version/releasename="mountain beech" # UCS 2.1
-
-	# http://en.wikipedia.org/wiki/European_Beech
-	# univention-config-registry set version/releasename="copper beech" # UCS 2.2
-
-	# htts://en.wikipedia.org/wiki/Hornbeam
-	# univention-config-registry set version/releasename="hornbeam" # UCS 2.3
-
-	# http://en.wikipedia.org/wiki/Fagus_sylvatica
-	# univention-config-registry set version/releasename="golden beech" # UCS 2.4
-
-	# http://de.wikipedia.org/wiki/Horn-Lehe
-	# univention-config-registry set version/releasename="Horn-Lehe" # UCS 3.0
-
-	# http://de.wikipedia.org/wiki/Findorff_%28Bremen%29
-	# univention-config-registry set version/releasename="Findorff" # UCS 3.1
-
-	# http://de.wikipedia.org/wiki/Borgfeld
-	# univention-config-registry set version/releasename="Borgfeld" # UCS 3.2
-	
-	# http://de.wikipedia.org/wiki/Walle_%28Bremen%29
-	# univention-config-registry set version/releasename="Walle" # UCS 4.0
-
-	# https://de.wikipedia.org/wiki/Vahr
-	univention-config-registry set version/releasename="Vahr" # UCS 4.1
 
 	if [ -z "$2" ]; then
 		# enable current errata component
