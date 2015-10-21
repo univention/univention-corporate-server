@@ -377,6 +377,9 @@
 			<listitem><simpara>
 					The updater now uses the license UUID (&ucsUCRV; <envar>license/uuid</envar>) to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39305</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The updater now skips downloading translation files and differential <filename>Packages</filename> files (<u:bug>28022</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:deployment:pkgdb">
