@@ -1,0 +1,27 @@
+# Copyright 2015 Univention GmbH
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-appcenter-docker\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-21 12:26+0200\n"
+"PO-Revision-Date: 2015-10-21 12:26+0200\n"
+"Last-Translator: Arvid Requate <requate@univention.de>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: docker.py:70 docker.py:82
+#, python-format
+msgid "Image verification for %s failed"
+msgstr "Verifikation des Images %s schlug fehl"
+
+#: docker.py:73
+#, python-format
+msgid "Error while contacting Docker registry server %s"
+msgstr "Fehler bei der Kontaktaufnahme mit dem Docker-Registry-Server %s"
+
+#: docker.py:85
+msgid "Metadata checksum mismatch"
+msgstr "Checksumme der Image-Spezifikation is abweichend"

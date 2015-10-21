@@ -33,13 +33,19 @@
 %:
 	dh $@ --with 'python_support'
 
-PO_FILES := $(shell find udm -name '*.po')
-MO_FILES := $(PO_FILES:%.po=%.mo)
+UDM_PO_FILES := $(shell find udm -name '*.po')
+UDM_MO_FILES := $(UDM_PO_FILES:%.po=%.mo)
+
+DOCKER_PKG_NAME := univention-appcenter-docker
+DOCKER_MO_FILE := python/appcenter-docker/de.mo
+DOCKER_DST_DIR := debian/$(DOCKER_PKG_NAME)
+GERMAN_LC_MSG_DIR := /usr/share/locale/de/LC_MESSAGES
+DOCKER_LC_MSG_DIR := $(DOCKER_DST_DIR)$(GERMAN_LC_MSG_DIR)
 
 %.mo:	%.po
 	msgfmt --check -o $@ $<
 
-override_dh_auto_build: $(MO_FILES)
+override_dh_auto_build: $(UDM_MO_FILES) $(DOCKER_MO_FILE)
 	dh-umc-module-build
 	dh_auto_build
 
@@ -50,10 +56,14 @@ override_dh_auto_install:
 	dh_auto_install
 
 	@set -e;\
-	for i in $(MO_FILES); do\
+	for i in $(UDM_MO_FILES); do\
 		lang=`basename "$$i" .mo`;\
 		domain=`dirname "$$i" | sed 's,^udm/,univention/admin/,;s,/,-,g'`;\
 		o=debian/univention-management-console-module-appcenter/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
 		install -d "`dirname "$$o"`";\
 		install -m 644 "$$i" "$$o";\
 	done
+
+	install -d $(DOCKER_LC_MSG_DIR)
+	install -m 644 $(DOCKER_MO_FILE) \
+		$(DOCKER_LC_MSG_DIR)/$(DOCKER_PKG_NAME).mo

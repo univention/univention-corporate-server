@@ -56,7 +56,7 @@ from univention.appcenter.actions.update import Update
 _logger = get_base_logger().getChild('docker')
 
 import univention.management.console as umc
-_ = umc.Translation('univention-management-console-module-appcenter').translate
+_ = umc.Translation('univention-appcenter-docker').translate
 
 DOCKER_READ_USER_CRED = {
 	'username': 'ucs',

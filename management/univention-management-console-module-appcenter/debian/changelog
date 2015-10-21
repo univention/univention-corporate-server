@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-48) unstable; urgency=medium
+
+  * Bug #39591: Add Translation
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Oct 2015 15:16:42 +0200
+
 univention-management-console-module-appcenter (5.0.6-47) unstable; urgency=medium
 
   * Bug #39591: Rename 'DockerImage' hash tag to DockerImageManifestV2S1
