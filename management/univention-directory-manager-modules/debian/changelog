@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-21) unstable; urgency=low
+
+  * Bug #38796: reduce code and raise readability
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Oct 2015 19:29:36 +0200
+
 univention-directory-manager-modules (10.0.31-20) unstable; urgency=low
 
   * version bump Bug #38796
