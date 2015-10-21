@@ -52,7 +52,7 @@ from univention.updater.commands import (
     cmd_upgrade,
     cmd_upgrade_sim,
 )
-import univention.updater.tools
+from univention.updater.locking import UpdaterLock
 
 LOGNAME = '/var/log/univention/actualise.log'
 
@@ -414,15 +414,8 @@ def update_ucr_updatestatus():
 
 if __name__ == '__main__':
     res = 0
-    do_ucr_update = False
     try:
-        lock = univention.updater.tools.updater_lock_acquire()
-    except univention.updater.tools.LockingError, e:
-        print >>sys.stderr, e
-        sys.exit(5)
-    # use nested try-finally-try-except since python2.4 does not support http://www.python.org/dev/peps/pep-0341/
-    try:
-        try:
+        with UpdaterLock():
             failure = '/var/lib/univention-updater/update-failed'
             if os.path.exists(failure):
                 print 'univention-actualise: univention-updater failed, stopping...'
@@ -441,13 +434,7 @@ if __name__ == '__main__':
                 sys.exit(2)
 
             res = main()
-        except SystemExit, e:
-            if e.args[0] == 0:
-                do_ucr_update = True
-
-    finally:
-        if not univention.updater.tools.updater_lock_release(lock):
-            print 'WARNING: updater-lock already released!'
-        if do_ucr_update:
+    except SystemExit as ex:
+        if ex.args[0] == 0:
             update_ucr_updatestatus()
     sys.exit(res)

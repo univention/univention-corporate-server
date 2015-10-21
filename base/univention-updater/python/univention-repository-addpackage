@@ -41,7 +41,7 @@ import re
 
 from univention.config_registry import ConfigRegistry
 import univention.updater.repository as urepo
-import univention.updater.tools
+from univention.updater.locking import UpdaterLock
 
 
 def usage(fd=sys.stdout):
@@ -115,12 +115,7 @@ if __name__ == '__main__':
         print >> sys.stderr, 'Error: The local repository is disabled. Check if univention-debmirror ist installed.'
         sys.exit(1)
 
-    try:
-        lock = univention.updater.tools.updater_lock_acquire()
-    except univention.updater.tools.LockingError, e:
-        print >>sys.stderr, e
-        sys.exit(5)
-    try:
+    with UpdaterLock():
         packages_path = urepo.get_repo_basedir(packages_dir)
 
         # if file expansion is used (as in --file /tmp/*.deb), and no such file exists,
@@ -169,6 +164,3 @@ if __name__ == '__main__':
         head, tail = os.path.split(packages_path)
         for arch in urepo.ARCHITECTURES:
             urepo.create_packages(head, '%s/%s' % (tail, arch))
-    finally:
-        if not univention.updater.tools.updater_lock_release(lock):
-            print 'WARNING: updater-lock already released!'

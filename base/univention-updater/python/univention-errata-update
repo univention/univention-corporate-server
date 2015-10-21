@@ -143,8 +143,6 @@ if __name__ == '__main__':
                     sys.exit(1)  # reversed: 1=update available
                 else:
                     sys.exit(0)  # reversed: 0=no updates
-            except SystemExit:
-                raise
             except Exception, e:
                 dprint(traceback.format_exc(), [fp_debug])
                 dprint("Failure to query repository: %s" % e)

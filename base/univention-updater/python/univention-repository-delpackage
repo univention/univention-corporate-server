@@ -37,7 +37,7 @@ import getopt
 
 from univention.config_registry import ConfigRegistry
 import univention.updater.repository as urepo
-import univention.updater.tools
+from univention.updater.locking import UpdaterLock
 
 
 def usage(fd=sys.stdout):
@@ -81,19 +81,13 @@ if __name__ == '__main__':
         usage()
         sys.exit(1)
 
-    try:
-        lock = univention.updater.tools.updater_lock_acquire()
-    except univention.updater.tools.LockingError, e:
-        print >>sys.stderr, e
-        sys.exit(5)
-    try:
-        ucr = ConfigRegistry()
-        ucr.load()
+    ucr = ConfigRegistry()
+    ucr.load()
+    if ucr.is_false('local/repository', True):
+        print >> sys.stderr, 'Error: The local repository is diabled. Use "univention-config-registry set local/repository=yes" to activate local repository'
+        sys.exit(1)
 
-        if ucr.is_false('local/repository', True):
-            print >> sys.stderr, 'Error: The local repository is diabled. Use "univention-config-registry set local/repository=yes" to activate local repository'
-            sys.exit(1)
-
+    with UpdaterLock():
         dirs = []
 
         for file in files:
@@ -113,6 +107,3 @@ if __name__ == '__main__':
             head, tail = os.path.split(path)
             for arch in urepo.ARCHITECTURES:
                 urepo.create_packages(head, '%s/%s' % (tail, arch))
-    finally:
-        if not univention.updater.tools.updater_lock_release(lock):
-            print 'WARNING: updater-lock already released!'

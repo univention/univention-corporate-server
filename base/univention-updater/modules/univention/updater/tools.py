@@ -50,11 +50,9 @@ from errors import (
     RequiredComponentError,
     ProxyError,
     VerificationError,
-    LockingError,
 )
 
 import errno
-import time
 import sys
 import re
 import os
@@ -1857,78 +1855,6 @@ class LocalUpdater(UniventionUpdater):
         repository_path = self.configRegistry.get('repository/mirror/basepath', '/var/lib/univention-repository')
         self.server = UCSLocalServer("%s/mirror/" % repository_path)
 
-__UPDATER_LOCK_FILE_NAME = '/var/lock/univention-updater'
-
-
-def updater_lock_acquire(timeout=0):
-    '''Acquire the updater-lock.
-    Returns 0 if it could be acquired within <timeout> seconds.
-    Returns a value >= 1 if locked by parent.
-    Returns LockingError otherwise.'''
-    deadline = time.time() + timeout
-    my_pid = "%d\n" % os.getpid()
-    parent_pid = "%d\n" % os.getppid()
-    while True:
-        try:
-            lock_fd = os.open(__UPDATER_LOCK_FILE_NAME, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0644)
-            bytes_written = os.write(lock_fd, my_pid)
-            assert bytes_written == len(my_pid)
-            os.close(lock_fd)
-            return 0
-        except OSError, error:
-            if error.errno == errno.EEXIST:
-                try:
-                    lock_fd = os.open(__UPDATER_LOCK_FILE_NAME, os.O_RDONLY | os.O_EXCL)
-                    try:
-                        lock_pid = os.read(lock_fd, 11)  # sizeof(s32) + len('\n')
-                    finally:
-                        os.close(lock_fd)
-                    if my_pid == lock_pid:
-                        return 0
-                    if parent_pid == lock_pid:  # u-repository-* called from u-updater
-                        return 1
-                    try:
-                        lock_pid = lock_pid.strip() or '?'
-                        lock_pid = int(lock_pid)
-                        os.kill(lock_pid, 0)
-                    except ValueError:
-                        msg = 'Invalid PID %s in lockfile %s.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
-                        raise LockingError(msg)
-                    except OSError, error:
-                        if error.errno == errno.ESRCH:
-                            print >>sys.stderr, 'Stale PID %s in lockfile %s, removing.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
-                            os.remove(__UPDATER_LOCK_FILE_NAME)
-                            continue  # redo acquire
-                    # PID is valid and process is still alive...
-                except OSError:
-                    pass
-                if time.time() > deadline:
-                    if timeout > 0:
-                        msg = 'Timeout: still locked by PID %s. Check lockfile %s' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
-                    else:
-                        msg = 'Locked by PID %s. Check lockfile %s' % (lock_pid or '?', __UPDATER_LOCK_FILE_NAME)
-                    raise LockingError(msg)
-                else:
-                    time.sleep(1)
-            else:
-                raise
-
-
-def updater_lock_release(lock):
-    '''Release the updater-lock.
-    Returns True if it has been unlocked (or decremented when nested).
-    Returns False if it was already unlocked.'''
-    if lock > 0:
-        # parent process still owns the lock, do nothing and just return success
-        return True
-    try:
-        os.remove(__UPDATER_LOCK_FILE_NAME)
-        return True
-    except OSError, error:
-        if error.errno == errno.ENOENT:
-            return False
-        else:
-            raise
 
 if __name__ == '__main__':
     import doctest

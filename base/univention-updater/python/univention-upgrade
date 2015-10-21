@@ -44,7 +44,7 @@ import univention.config_registry
 
 from univention.updater.errors import ConfigurationError
 from univention.updater.tools import UniventionUpdater, UCS_Version
-import univention.updater.tools
+from univention.updater.locking import UpdaterLock
 
 FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'
 
@@ -469,8 +469,6 @@ def main():
     if options.check:
         try:
             update_available = performUpdate(options, checkForUpdates=True, silent=False)
-        except SystemExit, e:
-            sys.exit(e)
         except ConfigurationError, e:
             print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
             sys.exit(3)
@@ -492,8 +490,6 @@ def main():
     else:
         try:
             performUpdate(options, silent=False)
-        except SystemExit, e:
-            sys.exit(e)
         except ConfigurationError, e:
             update_status(status='FAILED', errorsource='SETTINGS')
             print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
@@ -511,8 +507,6 @@ def main():
         # BUG: After an release upgrade this process MUST NOT continue to use old python, ucr, updater, ...
         try:
             update_available = performUpdate(options, checkForUpdates=True, silent=True)
-        except SystemExit, e:
-            sys.exit(e)
         except ConfigurationError, e:
             print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
             sys.exit(3)
@@ -529,13 +523,5 @@ def main():
 
 
 if __name__ == '__main__':
-    try:
-        lock = univention.updater.tools.updater_lock_acquire()
-    except univention.updater.tools.LockingError, e:
-        print >>sys.stderr, e
-        sys.exit(5)
-    try:
+    with UpdaterLock():
         main()
-    finally:
-        if not univention.updater.tools.updater_lock_release(lock):
-            print 'WARNING: updater-lock already released!'

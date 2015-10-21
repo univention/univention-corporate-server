@@ -41,7 +41,7 @@ import time
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
 from univention.updater.mirror import UCS_Version, makedirs
-import univention.updater.tools
+from univention.updater.locking import UpdaterLock
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -210,17 +210,9 @@ if __name__ == '__main__':
         print >> options.teefile, msg
         sys.exit(1)
 
-    try:
-        lock = univention.updater.tools.updater_lock_acquire()
-    except univention.updater.tools.LockingError, e:
-        print >>sys.stderr, e
-        sys.exit(5)
-    try:
+    with UpdaterLock():
         migrate_repository(options)
 
         # unset UCR variable makring old repository
         if 'repository/local/old' in configRegistry:
             ucr.handler_unset('repository/local/old')
-    finally:
-        if not univention.updater.tools.updater_lock_release(lock):
-            print 'WARNING: updater-lock already released!'
