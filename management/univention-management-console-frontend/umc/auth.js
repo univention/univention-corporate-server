@@ -65,8 +65,9 @@ define([
 			if (result && result.saml_renewal_required) {
 				return this.passiveSamlSSO();
 			}
-			if (result && result.password_required) {
-				return this.setPassword();
+			if (result && result.password_required || this._password_required) {
+				this._password_required = true;
+				return this.setPassword(result && result.password_required ? null : info.message);
 			}
 
 			dialog._loginDialog.updateForm(result && result.password_expired, message);
