@@ -36,10 +36,8 @@ import shutil
 import sys
 import getopt
 
-import univention.config_registry as ucr
 import univention.updater.repository as urepo
 import univention.updater.tools
-from univention.updater import UniventionMirror, UCS_Version
 
 l_package = {}
 p_remove = []
@@ -104,7 +102,7 @@ def cleanup_repository(directory):
                 try:
                     os.unlink(filename)
                 except:
-                    fp_debug.write('Warning: failed to remove %s\n' % i)
+                    fp_debug.write('Warning: failed to remove %s\n' % filename)
 
     fp_debug = open('/var/log/univention/repository.log', 'a+')
     try:

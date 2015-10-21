@@ -90,7 +90,7 @@ def copy_package_files(source_dir, dest_dir):
                 continue
             try:
                 shutil.copy2(src, dest)
-            except shutil.Error, e:
+            except shutil.Error:
                 print >> sys.stderr, "Copying package '%s' failed." % filename
         if filename in ('preup.sh', 'preup.sh.gpg', 'postup.sh', 'postup.sh.gpg'):
             src = os.path.join(source_dir, filename)
@@ -129,12 +129,11 @@ def update_indexes(base_dir, update_only=False, dists=False, stdout=None, stderr
 
         if ret:
             print >> stdout, 'failed.'
-            print >> stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join(_repo_path, arch)
+            print >> stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join(base_dir, arch)
             sys.exit(1)
 
     # create Packages file in dists directory if it exists
     if dists and os.path.isdir(os.path.join(base_dir, 'dists')):
-        version = configRegistry.get('version/version')
         for arch in ('i386', 'amd64'):
             if not os.path.isdir(os.path.join(base_dir, 'dists/univention/main', 'binary-%s' % arch)):
                 continue
@@ -243,7 +242,6 @@ def is_debmirror_installed():
 
 
 def get_installation_version():
-    version = None
     try:
         fd = open(os.path.join(configRegistry.get('repository/mirror/basepath'), '.univention_install'))
     except:

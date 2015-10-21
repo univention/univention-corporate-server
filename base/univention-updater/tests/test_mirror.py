@@ -6,7 +6,10 @@ import os
 import unittest
 from tempfile import mkdtemp
 from shutil import rmtree
-from mockups import *  # pylint: disable-msg=W0401
+from mockups import (
+    U, M, MAJOR, MINOR, PATCH, ARCH,
+    MockFile, MockConfigRegistry, MockUCSHttpServer, MockPopen,
+)
 
 UM = M.UniventionMirror
 DATA = 'x' * U.MIN_GZIP

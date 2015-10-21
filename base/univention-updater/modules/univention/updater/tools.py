@@ -37,8 +37,21 @@ except ImportError:
     import univention.debug2 as ud
 
 # TODO: Convert to absolute imports only AFTER the unit test has been adopted
-from commands import cmd_update, cmd_dist_upgrade_sim, cmd_dist_upgrade
-from errors import *
+from commands import (
+    cmd_dist_upgrade,
+    cmd_dist_upgrade_sim,
+    cmd_update,
+)
+from errors import (
+    CannotResolveComponentServerError,
+    ConfigurationError,
+    DownloadError,
+    PreconditionError,
+    RequiredComponentError,
+    ProxyError,
+    VerificationError,
+    LockingError,
+)
 
 import errno
 import time
@@ -797,7 +810,7 @@ class UniventionUpdater:
             repos = []
             try:
                 repos = self.get_component_repositories(component, [mmp_version], False)
-            except (ConfigurationError, ProxyError), e:
+            except (ConfigurationError, ProxyError):
                 # if component is marked as required (UCR variable "version" contains "current")
                 # then raise error, otherwise ignore it
                 if component in current_components:
@@ -837,7 +850,6 @@ class UniventionUpdater:
         [3, 4, 5]
         '''
         result = []
-        archs = ['all'] + self.architectures
         for sp in xrange(self.security_patchlevel + 1, 100):
             version = UCS_Version((self.version_major, self.version_minor, sp))
             secver = self.security_update_available(version)
@@ -856,7 +868,6 @@ class UniventionUpdater:
         [3, 4, 5]
         '''
         result = []
-        archs = ['all'] + self.architectures
         for el in xrange(self.erratalevel + 1, 1000):
             version = UCS_Version((self.version_major, self.version_minor, el))
             secver = self.errata_update_available(version)
@@ -890,7 +901,6 @@ class UniventionUpdater:
         ]
         '''
         result = []
-        archs = ['all'] + self.architectures
         for component in self.get_all_components():
             # get configured versions for component; default: this major
             versions = self._get_component_versions(component, None, None)
@@ -1020,7 +1030,7 @@ class UniventionUpdater:
 
         try:
             comp_file = open(self.FN_UPDATER_APTSOURCES_COMPONENT, 'r')
-        except IOError, e:
+        except IOError:
             return self.COMPONENT_UNKNOWN
         rePath = re.compile('(un)?maintained/component/ ?%s/' % name)
         reDenied = re.compile('credentials not accepted: %s$' % name)
@@ -1271,7 +1281,7 @@ class UniventionUpdater:
                             struct = UCSRepoPoolVariant(prefix=server, patch=patch_name)
                             for ver in self._iterate_versions(struct, version, version, parts, subarchs, server):
                                 yield server, ver
-                    except (ConfigurationError, ProxyError), e:
+                    except (ConfigurationError, ProxyError):
                         # if component is marked as required (UCR variable "version" contains "current")
                         # then raise error, otherwise ignore it
                         if component in self.get_current_components():
@@ -1408,7 +1418,7 @@ class UniventionUpdater:
             try:
                 skip = self.configRegistry['repository/online/errata/start']
                 start.patchlevel = int(skip)
-            except (KeyError, TypeError, ValueError), e:
+            except (KeyError, TypeError, ValueError):
                 pass
 
         # Hopefully never more than 999 errata updates
@@ -1554,7 +1564,7 @@ class UniventionUpdater:
                 else:
                     raise ConfigurationError(uri, 'non-existing component prefix: %s' % (str(uri)))
 
-        except ConfigurationError, e:
+        except ConfigurationError:
             if self.check_access:
                 raise
         return server
@@ -1596,10 +1606,6 @@ class UniventionUpdater:
 
         if errata_level > 999:
             return result
-
-        cleanComponent = False
-        if clean:
-            cleanComponent = self.configRegistry.is_true('repository/online/component/%s/clean' % component, False)
 
         # Sanitize versions: UCS_Version() and Major.Minor
         versions_mmp = set()
@@ -1885,7 +1891,7 @@ def updater_lock_acquire(timeout=0):
                         lock_pid = lock_pid.strip() or '?'
                         lock_pid = int(lock_pid)
                         os.kill(lock_pid, 0)
-                    except ValueError, e:
+                    except ValueError:
                         msg = 'Invalid PID %s in lockfile %s.' % (lock_pid, __UPDATER_LOCK_FILE_NAME)
                         raise LockingError(msg)
                     except OSError, error:
@@ -1894,7 +1900,7 @@ def updater_lock_acquire(timeout=0):
                             os.remove(__UPDATER_LOCK_FILE_NAME)
                             continue  # redo acquire
                     # PID is valid and process is still alive...
-                except OSError, error:
+                except OSError:
                     pass
                 if time.time() > deadline:
                     if timeout > 0:

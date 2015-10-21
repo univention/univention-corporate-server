@@ -36,13 +36,22 @@
 import os
 import sys
 import time
-import tempfile
 import commands
 import shlex
 import subprocess
 
 import univention.config_registry as ucr
-from univention.updater.commands import *
+from univention.updater.commands import (
+    cmd_config,
+    cmd_dist_upgrade,
+    cmd_dist_upgrade_sim,
+    cmd_install,
+    cmd_remove,
+    cmd_show,
+    cmd_update,
+    cmd_upgrade,
+    cmd_upgrade_sim,
+)
 import univention.updater.tools
 
 LOGNAME = '/var/log/univention/actualise.log'
@@ -183,7 +192,6 @@ def check(configRegistry, dist_upgrade=False):
     upgraded = int(sres[0])
     newlyinstalled = int(sres[2])
     remove = int(sres[5])
-    notupgraded = int(sres[9])
 
     # If there are any pakages to upgrade, install or remove
     if upgraded != 0 or newlyinstalled != 0 or remove != 0:
@@ -402,7 +410,7 @@ def update_ucr_updatestatus():
             subprocess.call('/usr/share/univention-updater/univention-updater-check', stdout=devnull, stderr=devnull)
             devnull.close()
     except:
-        dprint('Warning: calling univention-updater-check failed.')
+        print('Warning: calling univention-updater-check failed.')
 
 if __name__ == '__main__':
     res = 0

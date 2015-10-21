@@ -52,8 +52,8 @@ except ImportError:
 
 import univention.config_registry as ucr
 
-from univention.updater import UniventionUpdater, UCS_Version, PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
-from univention.updater.tools import LocalUpdater
+from univention.updater.errors import PreconditionError, ConfigurationError, RequiredComponentError, VerificationError, DownloadError
+from univention.updater.tools import UniventionUpdater, UCS_Version, LocalUpdater
 from univention.updater.commands import cmd_update, cmd_dist_upgrade
 import univention.updater.tools
 
@@ -69,6 +69,7 @@ TMPSOURCE = '/etc/apt/sources.list.d/00_ucs_temporary_installation.list'
 LOGNAME = '/var/log/univention/updater.log'
 fd_log = sys.stderr
 stdout_orig = sys.stdout
+nostdout = False
 
 updater_status = {}
 
@@ -329,12 +330,9 @@ def main():
         if os.path.isdir(cdrom_mount_point):
             break
     iso = None
-    global nostdout
 
-    nostdout = False
     ud.init(LOGNAME, 0, 0)
     fp_debug = open(LOGNAME, 'a+')
-    stdout_orig = sys.stdout
     # sys.stdout=fp_debug
 
     log('**** Starting univention-updater with parameter=%s' % sys.argv)
@@ -415,6 +413,7 @@ def main():
         elif opt == '--ignoreterm':
             ignoreterm = True
         elif opt == '--silent':
+            global nostdout
             nostdout = True
         elif opt == '--noninteractive':
             ignorereleasenotes = True
@@ -440,8 +439,6 @@ def main():
 
     log('Version=%s' % vv)
     log('Patchlevel=%s' % vp)
-
-    architecture = os.popen('dpkg --print-architecture 2>/dev/null').readline()[:-1]
 
     # if there is no _new_ repository server -> exit
     if baseConfig.is_true('local/repository', False) and baseConfig.get('repository/local/old'):

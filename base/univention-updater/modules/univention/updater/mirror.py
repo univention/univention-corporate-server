@@ -172,9 +172,9 @@ class UniventionMirror(UniventionUpdater):
                     continue
 
                 version = UCS_Version(match.group(3))
-                if not start is None and version < start:
+                if start is not None and version < start:
                     continue
-                if not end is None and end < version:
+                if end is not None and end < version:
                     continue
 
                 result.append((dirname, version, match.group(2) == 'maintained'))

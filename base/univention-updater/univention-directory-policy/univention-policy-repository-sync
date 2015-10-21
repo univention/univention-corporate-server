@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
-import string
 import sys
 import subprocess
 import univention.config_registry

@@ -100,7 +100,7 @@ if __name__ == '__main__':
             if file.endswith('.deb') and os.path.exists(file):
                 dir, filename = os.path.split(file)
                 basedir = urepo.get_repo_basedir(dir)
-                if not basedir in dirs:
+                if basedir not in dirs:
                     dirs.append(basedir)
                 os.unlink(file)
 

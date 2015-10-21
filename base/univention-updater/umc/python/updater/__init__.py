@@ -51,7 +51,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response
 from univention.management.console.protocol.definitions import SUCCESS, MODULE_ERR
 
-from univention.updater import UniventionUpdater
+from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import RequiredComponentError
 
 _ = umc.Translation('univention-management-console-module-updater').translate
@@ -634,12 +634,12 @@ class Instance(umcm.Base):
             result = 0
         else:
             result = []
-        if not job in INSTALLERS:
+        if job not in INSTALLERS:
             # job empty: this is the first call I can't avoid
             if job != '':
                 MODULE.warn("   ?? Don't know a '%s' job" % job)
         else:
-            if not 'logfile' in INSTALLERS[job]:
+            if 'logfile' not in INSTALLERS[job]:
                 MODULE.warn("   ?? Job '%s' has no associated log file" % job)
             else:
                 fname = INSTALLERS[job]['logfile']
@@ -795,7 +795,7 @@ class Instance(umcm.Base):
 
         subject = request.options.get('job', '')
         detail = request.options.get('detail', '')
-        if not subject in INSTALLERS:
+        if subject not in INSTALLERS:
             result['message'] = "Unknown installer job type '%s'" % subject
             result['status'] = RUN_PARAMETER_ERROR
             MODULE.warn(result['message'])
@@ -803,7 +803,7 @@ class Instance(umcm.Base):
             return
 
         MODULE.info("   ++ starting function '%s'" % subject)
-        if not 'command' in INSTALLERS[subject]:
+        if 'command' not in INSTALLERS[subject]:
             result['message'] = "Function '%s' has no command" % subject
             result['status'] = RUN_PARAMETER_ERROR
             MODULE.warn(result['message'])

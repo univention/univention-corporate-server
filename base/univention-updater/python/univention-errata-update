@@ -38,15 +38,13 @@ try:
     import univention.debug as ud
 except ImportError:
     import univention.debug2 as ud
-import univention.config_registry as ucr
 import time
-import subprocess
 import traceback
-import shlex
 
-import univention.updater
-from univention.updater.commands import cmd_dist_upgrade, cmd_update
-import univention.updater.tools
+from univention.updater.tools import (
+    LocalUpdater,
+    UniventionUpdater,
+)
 
 updater_status = {}
 
@@ -78,9 +76,9 @@ def usage(fd=sys.stdout):
 def checkForUpdate(command):
     """ Check for availability of errata updates """
     if command == 'local':
-        updater = univention.updater.LocalUpdater()
+        updater = LocalUpdater()
     elif command == 'net':
-        updater = univention.updater.UniventionUpdater()
+        updater = UniventionUpdater()
     return updater.errata_update_available()
 
 if __name__ == '__main__':

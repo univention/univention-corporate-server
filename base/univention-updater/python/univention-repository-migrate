@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from optparse import OptionParser
-import copy
 import os
 import errno
 import shutil
@@ -41,7 +40,7 @@ import time
 
 import univention.config_registry as ucr
 import univention.updater.repository as urepo
-from univention.updater.mirror import UniventionMirror, UCS_Version, makedirs
+from univention.updater.mirror import UCS_Version, makedirs
 import univention.updater.tools
 
 configRegistry = ucr.ConfigRegistry()

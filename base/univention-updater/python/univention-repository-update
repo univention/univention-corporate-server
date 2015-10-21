@@ -100,7 +100,7 @@ def update_cdrom(options):
         ret = subprocess.call(['mount', options.mount_point], stdout=options.logfile, stderr=options.logfile)
 
     # 0 == success, 32 == already mounted
-    if not ret in (0, 32):
+    if ret not in (0, 32):
         if options.iso_file:
             print >> options.teefile, 'Error: Failed to mount ISO image %s' % options.iso_file
         else:

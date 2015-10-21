@@ -42,7 +42,8 @@ import logging
 
 import univention.config_registry
 
-from univention.updater import UniventionUpdater, UCS_Version, ConfigurationError
+from univention.updater.errors import ConfigurationError
+from univention.updater.tools import UniventionUpdater, UCS_Version
 import univention.updater.tools
 
 FN_STATUS = '/var/lib/univention-updater/univention-upgrade.status'

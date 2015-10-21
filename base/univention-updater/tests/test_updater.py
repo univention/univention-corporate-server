@@ -4,7 +4,10 @@
 # pylint: disable-msg=C0301,W0212,C0103,R0904
 import unittest
 from tempfile import NamedTemporaryFile
-from mockups import *  # pylint: disable-msg=W0401,W0614
+from mockups import (
+    U, MAJOR, MINOR, PATCH, ARCH, SEC, ERRAT, PART,
+    MockConfigRegistry, MockUCSHttpServer, MockPopen,
+)
 
 UU = U.UniventionUpdater
 DATA = 'x' * U.MIN_GZIP

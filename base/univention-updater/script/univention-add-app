@@ -39,7 +39,7 @@ import logging
 
 from univention.lib.package_manager import PackageManager
 from univention.config_registry import ConfigRegistry
-from univention.updater import UniventionUpdater
+from univention.updater.tools import UniventionUpdater
 try:
 	from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
 	from univention.management.console.modules.appcenter.app_center import Application, LICENSE, MODULE
