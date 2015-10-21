@@ -37,4 +37,4 @@ modules/univention/updater/*.py usr/share/pyshared/univention/updater/
 
 appliance-hooks.d/updater usr/lib/univention-system-setup/appliance-hooks.d/
 
-10https.conf	etc/apt/apt.conf.d/
+apt.conf.d/*	etc/apt/apt.conf.d/

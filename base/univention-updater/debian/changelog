@@ -1,3 +1,9 @@
+univention-updater (11.0.3-2) unstable; urgency=low
+
+  * Bug #28022: Reduce number of downloaded files
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Oct 2015 20:11:37 +0200
+
 univention-updater (11.0.3-1) unstable; urgency=low
 
   * Bug #39306: Use https:// by default
