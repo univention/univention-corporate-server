@@ -1095,11 +1095,13 @@ def run_samba_join_script(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d" % (p1.returncode,))
 		raise sambaJoinScriptFailed()
 
-def add_host_record_in_ad(binddn=None, bindpw=None, bindpwdfile=None, fqdn=None, ip=None):
+def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, fqdn=None, ip=None, sso=False):
 
-	uid = None
 	pwdfile = None
 	create_pwdfile = False
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+	domainname = ucr.get('domainname')
 
 	if binddn:
 		for i in binddn.split(','):
@@ -1111,6 +1113,13 @@ def add_host_record_in_ad(binddn=None, bindpw=None, bindpwdfile=None, fqdn=None,
 	elif bindpw:
 		create_pwdfile = True
 		pwdfile = bindpw
+
+	# take myself as default
+	if not ip:
+		ip = Interfaces().get_default_ip_address().ip	
+
+	if sso and not fqdn:
+		fqdn = ucr.get('ucs/server/sso/fqdn', 'ucs-sso.' + domainname)
 
 	if not uid or not pwdfile or not fqdn or not ip:
 		print 'Missing binddn/bindpw/bindpwdfile/fqdn or ip, do nothing!'
