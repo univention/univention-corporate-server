@@ -1,3 +1,9 @@
+ucs-test (6.0.10-8) unstable; urgency=low
+
+  * Bug #36383: Fix test for kernel module signing
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Oct 2015 17:32:01 +0200
+
 ucs-test (6.0.10-7) unstable; urgency=low
 
   * Bug #39574: added 56_admember/010ucs_sso_a_record 
