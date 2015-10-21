@@ -371,6 +371,12 @@
 				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
 				have been adapted to the needs of UCS 4.1 (<u:bug>39271</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The updater now uses the protocol <systemitem class="protocol">https://</systemitem> to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39306</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					The updater now uses the license UUID (&ucsUCRV; <envar>license/uuid</envar>) to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39305</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:deployment:pkgdb">
