@@ -535,6 +535,15 @@ Provides: ucs-test-module
 Description: Test scripts to test the SAML integration
  This package includes test-cases for SAML.
 
+Package: ucs-test-admember
+Architecture: all
+Depends: ucs-test-libs (= ${source:Version}),
+ ${misc:Depends}
+Recommends: ucs-test-framework
+Provides: ucs-test-module
+Description: Test scripts to test the AD member mode
+ This package includes test-cases for AD member mode.
+
 Package: ucs-test-modules-all
 Architecture: all
 Depends: ${ucs-test:all-packages}
