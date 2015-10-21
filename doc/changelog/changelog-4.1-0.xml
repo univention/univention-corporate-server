@@ -213,7 +213,7 @@
 			<title>Modules for system settings / Setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Allow to black list the page in the setup wizard for selecting the system role and use a pre-configure role value instead
+					Allow to black list the page for selecting the system role and use a pre-configure role value instead
 					(<u:bug>38315</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
