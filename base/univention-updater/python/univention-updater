@@ -215,7 +215,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
         if not updater:
             updater = LocalUpdater()
         try:
-            assert updater.server.access('')
+            assert updater.server.access(None, '')
             nextversion = updater.release_update_available(errorsto='exception')
         except DownloadError:
             raise UpdateError('A local repository was not found.\n' +

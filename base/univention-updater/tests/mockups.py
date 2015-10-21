@@ -62,8 +62,9 @@ class MockUCSHttpServer(U.UCSLocalServer):
         self.mock_uris = []
         self.mock_uri = None
 
-    def access(self, rel, get=False):  # pylint: disable-msg=W0613
+    def access(self, repo, filename=None, get=False):  # pylint: disable-msg=W0613
         """Access relative URI."""
+        rel = filename if repo is None else repo.path(filename)
         self.mock_uri = self.join(rel)
         self.mock_uris.append(self.mock_uri)
         try:

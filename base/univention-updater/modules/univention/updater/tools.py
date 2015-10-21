@@ -189,22 +189,22 @@ class UCSRepoPool(UCSRepo):
         kw.setdefault('patch', UCS_Version.FULLFORMAT)
         super(UCSRepoPool, self).__init__(**kw)
 
-    def deb(self, type="deb"):
+    def deb(self, server, type="deb"):
         '''
         Format for /etc/apt/sources.list.
 
-        >>> r=UCSRepoPool(prefix='https://updates.software-univention.de/',major=2,minor=3,patchlevel=1,part='maintained',arch='i386')
-        >>> r.deb()
+        >>> r=UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained',arch='i386')
+        >>> r.deb('https://updates.software-univention.de/')
         'deb https://updates.software-univention.de/2.3/maintained/ 2.3-1/i386/'
         '''
-        fmt = "%(prefix)s%(version)s/%(part)s/ %(patch)s/%(arch)s/"
-        return "%s %s" % (type, super(UCSRepoPool, self)._format(fmt))
+        fmt = "%(version)s/%(part)s/ %(patch)s/%(arch)s/"
+        return "%s %s%s" % (type, server, super(UCSRepoPool, self)._format(fmt))
 
-    def path(self, file='Packages.gz'):
+    def path(self, filename=None):
         '''
         Format pool for directory/file access. Returns relative path.
 
-        >>> UCSRepoPool(prefix='https://updates.software-univention.de/',major=2,minor=3).path()
+        >>> UCSRepoPool(major=2,minor=3).path()
         '2.3/'
         >>> UCSRepoPool(major=2,minor=3,part='maintained').path()
         '2.3/maintained/'
@@ -213,13 +213,13 @@ class UCSRepoPool(UCSRepo):
         >>> UCSRepoPool(major=2,minor=3,patchlevel=1,part='maintained',arch='i386').path()
         '2.3/maintained/2.3-1/i386/Packages.gz'
         '''
-        fmt = "%(version)s/%(part)s/%(patch)s/%(arch)s/" + file
+        fmt = "%(version)s/%(part)s/%(patch)s/%(arch)s/" + (filename or 'Packages.gz')
         return super(UCSRepoPool, self)._format(fmt)
 
-    def clean(self):
+    def clean(self, server):
         '''Format for /etc/apt/mirror.list'''
-        fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/"  # %(arch)s/
-        return "clean %s" % super(UCSRepoPool, self)._format(fmt)
+        fmt = "%(version)s/%(part)s/%(patch)s/"  # %(arch)s/
+        return "clean %s%s" % (server, super(UCSRepoPool, self)._format(fmt))
 
 
 class UCSRepoPoolNoArch(UCSRepo):
@@ -231,22 +231,22 @@ class UCSRepoPoolNoArch(UCSRepo):
         kw.setdefault('patch', UCS_Version.FULLFORMAT)
         super(UCSRepoPoolNoArch, self).__init__(**kw)
 
-    def deb(self, type="deb"):
+    def deb(self, server, type="deb"):
         '''
         Format for /etc/apt/sources.list.
 
-        >>> r=UCSRepoPoolNoArch(prefix='https://updates.software-univention.de/',major=2,minor=3,patch='comp',part='maintained/component',arch='all')
-        >>> r.deb()
+        >>> r=UCSRepoPoolNoArch(major=2,minor=3,patch='comp',part='maintained/component',arch='all')
+        >>> r.deb('https://updates.software-univention.de/')
         'deb https://updates.software-univention.de/2.3/maintained/component/comp/ ./'
         '''
-        fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/ ./"
-        return "%s %s" % (type, super(UCSRepoPoolNoArch, self)._format(fmt))
+        fmt = "%(version)s/%(part)s/%(patch)s/ ./"
+        return "%s %s%s" % (type, server, super(UCSRepoPoolNoArch, self)._format(fmt))
 
-    def path(self, file='Packages.gz'):
+    def path(self, filename=None):
         '''
         Format pool for directory/file access. Returns relative path.
 
-        >>> UCSRepoPoolNoArch(prefix='https://updates.software-univention.de/',major=2,minor=3).path()
+        >>> UCSRepoPoolNoArch(major=2,minor=3).path()
         '2.3/'
         >>> UCSRepoPoolNoArch(major=2,minor=3,part='maintained/component').path()
         '2.3/maintained/component/'
@@ -255,13 +255,13 @@ class UCSRepoPoolNoArch(UCSRepo):
         >>> UCSRepoPoolNoArch(major=2,minor=3,part='maintained/component',patch='comp',arch='all').path()
         '2.3/maintained/component/comp/Packages.gz'
         '''
-        fmt = "%(version)s/%(part)s/%(patch)s/" + file
+        fmt = "%(version)s/%(part)s/%(patch)s/" + (filename or 'Packages.gz')
         return super(UCSRepoPoolNoArch, self)._format(fmt)
 
-    def clean(self):
+    def clean(self, server):
         '''Format for /etc/apt/mirror.list'''
-        fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/"
-        return "clean %s" % super(UCSRepoPoolNoArch, self)._format(fmt)
+        fmt = "%(version)s/%(part)s/%(patch)s/"
+        return "clean %s%s" % (server, super(UCSRepoPoolNoArch, self)._format(fmt))
 
 
 class UCSRepoDist(UCSRepo):
@@ -273,22 +273,22 @@ class UCSRepoDist(UCSRepo):
         kw.setdefault('patch', UCS_Version.FULLFORMAT)
         super(UCSRepoDist, self).__init__(**kw)
 
-    def deb(self, type="deb"):
+    def deb(self, server, type="deb"):
         '''
         Format for /etc/apt/sources.list.
 
-        >>> r=UCSRepoDist(prefix='https://updates.software-univention.de/',major=2,minor=2,patchlevel=0,part='maintained',arch='i386')
-        >>> r.deb()
+        >>> r=UCSRepoDist(major=2,minor=2,patchlevel=0,part='maintained',arch='i386')
+        >>> r.deb('https://updates.software-univention.de/')
         'deb https://updates.software-univention.de/2.2/maintained/2.2-0/ dists/univention/main/binary-i386/'
         '''
-        fmt = "%(prefix)s%(version)s/%(part)s/%(patch)s/ dists/univention/main/binary-%(arch)s/"
-        return "%s %s" % (type, super(UCSRepoDist, self)._format(fmt))
+        fmt = "%(version)s/%(part)s/%(patch)s/ dists/univention/main/binary-%(arch)s/"
+        return "%s %s%s" % (type, server, super(UCSRepoDist, self)._format(fmt))
 
-    def path(self, file='Packages.gz'):
+    def path(self, filename=None):
         '''
         Format dist for directory/file access. Returns relative path.
 
-        >>> UCSRepoDist(prefix='https://updates.software-univention.de/',major=2,minor=2).path()
+        >>> UCSRepoDist(major=2,minor=2).path()
         '2.2/'
         >>> UCSRepoDist(major=2,minor=2,part='maintained').path()
         '2.2/maintained/'
@@ -297,7 +297,7 @@ class UCSRepoDist(UCSRepo):
         >>> UCSRepoDist(major=2,minor=2,patchlevel=0,part='maintained',arch='i386').path()
         '2.2/maintained/2.2-0/dists/univention/main/binary-i386/Packages.gz'
         '''
-        fmt = "%(version)s/%(part)s/%(patch)s/dists/univention/main/binary-%(arch)s/" + file
+        fmt = "%(version)s/%(part)s/%(patch)s/dists/univention/main/binary-%(arch)s/" + (filename or 'Packages.gz')
         return super(UCSRepoDist, self)._format(fmt)
 
 
@@ -367,8 +367,9 @@ class UCSHttpServer(object):
         '''Return joind URI without credential.'''
         return (self.baseurl + rel).public()
 
-    def access(self, rel, get=False):
+    def access(self, repo, filename=None, get=False):
         '''Access URI and optionally get data. Return None on errors.'''
+        rel = filename if repo is None else repo.path(filename)
         if self.user_agent:
             UCSHttpServer.opener.addheaders = [('User-agent', self.user_agent)]
         uri = self.join(rel)
@@ -481,8 +482,9 @@ class UCSLocalServer(object):
         uri += str(rel).lstrip('/')
         return uri
 
-    def access(self, rel, get=False):
+    def access(self, repo, filename=None, get=False):
         '''Access URI and optionally get data. Return None on errors.'''
+        rel = filename if repo is None else repo.path(filename)
         uri = self.join(rel)
         ud.debug(ud.NETWORK, ud.ALL, "updater: %s" % (uri,))
         # urllib2.urlopen() doesn't work for directories
@@ -584,7 +586,7 @@ class UniventionUpdater:
         try:
             if not self.repourl.path:
                 try:
-                    assert self.server.access('/univention-repository/')
+                    assert self.server.access(None, '/univention-repository/')
                     self.server += '/univention-repository/'
                     self.log.info('Using detected prefix /univention-repository/')
                 except DownloadError, e:
@@ -593,7 +595,7 @@ class UniventionUpdater:
                 return  # already validated or implicit /
             # Validate server settings
             try:
-                assert self.server.access('')
+                assert self.server.access(None, '')
                 self.log.info('Using configured prefix %s', self.repourl.path)
             except DownloadError, e:
                 self.log.exception('Failed configured prefix %s', self.repourl.path)
@@ -625,7 +627,7 @@ class UniventionUpdater:
             repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
             self.log.info('Checking for version %s', repo)
             try:
-                assert self.server.access(repo.path())
+                assert self.server.access(repo)
                 self.log.info('Found version %s', repo.path())
                 failed = set()
                 for component in components:
@@ -698,7 +700,7 @@ class UniventionUpdater:
 
         result = []
         for server, ver in self._iterate_version_repositories(mmp_version, mmp_version, self.parts, archs):
-            result.append(ver.deb())
+            result.append(ver.deb(server))
         for component in components:
             repos = []
             try:
@@ -722,7 +724,7 @@ class UniventionUpdater:
 
         sources_list = []
         for server, ver in self._iterate_security_repositories(start, end, self.parts, archs):
-            sources_list.append(ver.deb())
+            sources_list.append(ver.deb(server))
         return sources_list
 
     def errata_update_temporary_sources_list(self):
@@ -732,7 +734,7 @@ class UniventionUpdater:
 
         sources_list = []
         for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
-            sources_list.append(ver.deb())
+            sources_list.append(ver.deb(server))
         return sources_list
 
     def get_all_available_security_updates(self):
@@ -1053,7 +1055,7 @@ class UniventionUpdater:
             try:
                 while ver.minor <= 99:
                     self.log.info('Checking version %s', ver.path())
-                    assert server.access(ver.path())  # minor
+                    assert server.access(ver)  # minor
                     findFirst = False
                     found_patchlevel = True
                     while found_patchlevel and ver.patchlevel <= ver.patchlevel_max:
@@ -1061,11 +1063,11 @@ class UniventionUpdater:
                         for ver.part in parts:  # part
                             try:
                                 self.log.info('Checking version %s', ver.path())
-                                assert server.access(ver.path())  # patchlevel
+                                assert server.access(ver)  # patchlevel
                                 found_patchlevel = True
                                 for ver.arch in archs:  # architecture
                                     try:
-                                        code, size, content = server.access(ver.path())
+                                        code, size, content = server.access(ver)
                                         self.log.info('Found content: code=%d size=%d', code, size)
                                         if size >= MIN_GZIP:
                                             yield ver
@@ -1219,16 +1221,16 @@ class UniventionUpdater:
         result = []
 
         for server, ver in self._iterate_version_repositories(start, end, self.parts, archs, dists):
-            result.append(ver.deb())
+            result.append(ver.deb(server))
             if isinstance(ver, UCSRepoPool) and ver.arch == archs[-1]:  # after architectures but before next patch(level)
                 if clean:
-                    result.append(ver.clean())
+                    result.append(ver.clean(server))
                 if self.sources:
                     ver.arch = "source"
                     try:
-                        code, size, content = server.access(ver.path("Sources.gz"))
+                        code, size, content = server.access(ver, "Sources.gz")
                         if size >= MIN_GZIP:
-                            result.append(ver.deb("deb-src"))
+                            result.append(ver.deb(server, "deb-src"))
                     except DownloadError, e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
@@ -1269,16 +1271,16 @@ class UniventionUpdater:
         result = []
 
         for server, ver in self._iterate_security_repositories(start, end, self.parts, archs, self.hotfixes):
-            result.append(ver.deb())
+            result.append(ver.deb(server))
             if ver.arch == archs[-1]:  # after architectures but before next patch(level)
                 if clean:
-                    result.append(ver.clean())
+                    result.append(ver.clean(server))
                 if self.sources:
                     ver.arch = "source"
                     try:
-                        code, size, content = server.access(ver.path("Sources.gz"))
+                        code, size, content = server.access(ver, "Sources.gz")
                         if size >= MIN_GZIP:
-                            result.append(ver.deb("deb-src"))
+                            result.append(ver.deb(server, "deb-src"))
                     except DownloadError, e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
@@ -1326,16 +1328,16 @@ class UniventionUpdater:
         result = []
 
         for server, ver in self._iterate_errata_repositories(start, end, self.parts, archs):
-            result.append(ver.deb())
+            result.append(ver.deb(server))
             if ver.arch == archs[-1]:  # after architectures but before next patch(level)
                 if clean:
-                    result.append(ver.clean())
+                    result.append(ver.clean(server))
                 if self.sources:
                     ver.arch = "source"
                     try:
-                        code, size, content = server.access(ver.path("Sources.gz"))
+                        code, size, content = server.access(ver, "Sources.gz")
                         if size >= MIN_GZIP:
-                            result.append(ver.deb("deb-src"))
+                            result.append(ver.deb(server, "deb-src"))
                     except DownloadError, e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
@@ -1414,7 +1416,7 @@ class UniventionUpdater:
             # if prefix.lower() == 'none' ==> use no prefix
             if prefix and prefix.lower() == 'none':
                 try:
-                    assert server.access('')
+                    assert server.access(None, '')
                 except DownloadError, e:
                     uri, code = e
                     raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (component, uri))
@@ -1429,7 +1431,7 @@ class UniventionUpdater:
                     if prefix:  # append prefix if defined
                         testserver = testserver + '%s/' % (prefix.strip('/'),)
                     try:
-                        assert testserver.access('')
+                        assert testserver.access(None, '')
                         return testserver
                     except DownloadError, e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
@@ -1499,16 +1501,16 @@ class UniventionUpdater:
             iterate_errata = version == max(versions_mmp)
 
             for server, ver in self._iterate_component_repositories([component], version, version, archs, for_mirror_list=for_mirror_list, errata_level=errata_level, iterate_errata=iterate_errata):
-                result.append(ver.deb())
+                result.append(ver.deb(server))
                 if ver.arch == archs[-1]:  # after architectures but before next patch(level)
                     if clean:
-                        result.append(ver.clean())
+                        result.append(ver.clean(server))
                     if self.sources:
                         ver.arch = "source"
                         try:
-                            code, size, content = server.access(ver.path("Sources.gz"))
+                            code, size, content = server.access(ver, "Sources.gz")
                             if size >= MIN_GZIP:
-                                result.append(ver.deb("deb-src"))
+                                result.append(ver.deb(server, "deb-src"))
                         except DownloadError, e:
                             ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
@@ -1531,7 +1533,7 @@ class UniventionUpdater:
         for version.major in range(start.major, min(99, end.major + 1)):
             while version <= end:
                 try:
-                    assert self.server.access(version.path())
+                    assert self.server.access(version)
                     foundFirst = True
                     result.append(UCS_Version(version))
                 except DownloadError:
@@ -1695,15 +1697,16 @@ class UniventionUpdater:
                 path = struct.path(name)
                 ud.debug(ud.ADMIN, ud.ALL, "Accessing %s" % path)
                 try:
-                    _code, _size, script = server.access(path, get=True)
+                    _code, _size, script = server.access(struct, name, get=True)
                     # Bug #37031: dansguarding is lying and returns 200 even for blocked content
                     if not script.startswith('#!') and server.proxy_handler.proxies:
                         uri = server.join(path)
                         raise ProxyError(uri, "download blocked by proxy?")
                     if verify and struct >= UCS_Version((3, 2, 0)):
-                        path_gpg = path + '.gpg'
+                        name_gpg = name + '.gpg'
+                        path_gpg = struct.path(name_gpg)
                         try:
-                            _code, _size, signature = server.access(path_gpg, get=True)
+                            _code, _size, signature = server.access(struct, name_gpg, get=True)
                             if not signature.startswith("-----BEGIN PGP SIGNATURE-----") and server.proxy_handler.proxies:
                                 uri = server.join(path_gpg)
                                 raise ProxyError(uri, "download blocked by proxy?")
