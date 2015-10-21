@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-4) unstable; urgency=low
+
+  * Bug #38796: reduce code and raise readability
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Oct 2015 19:29:36 +0200
+
 univention-directory-manager-modules (11.0.2-3) unstable; urgency=low
 
   * Bug #38796: test if object has uid/gidNumber, refactor

@@ -1765,10 +1765,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		return self['username']+'@'+realm
 
 	def _check_uid_gid_uniqueness(self):
-		fg = univention.admin.filter.expression('gidNumber', self['uidNumber'])
-		group_objects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=fg)
-		if group_objects:
-			raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber('%r' % self["uidNumber"])
+		if not configRegistry.is_true("directory/manager/uid_gid/uniqueness", True):
+			return
+		if "posix" in self.options or "samba" in self.options:
+			fg = univention.admin.filter.expression('gidNumber', self['uidNumber'])
+			group_objects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=fg)
+			if group_objects:
+				raise univention.admin.uexceptions.uidNumberAlreadyUsedAsGidNumber('%r' % self["uidNumber"])
 
 	def _ldap_pre_create(self):
 		_d=univention.debug.function('admin.handlers.users.user.object._ldap_pre_create')
@@ -1784,8 +1787,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress']=self['mailPrimaryAddress'].lower()
 
-		if configRegistry.is_true("directory/manager/uid_gid/uniqueness", True) and ("posix" in self.options or "samba" in self.options):
-			self._check_uid_gid_uniqueness()
+		self._check_uid_gid_uniqueness()
 
 	def _ldap_addlist(self):
 
@@ -1960,7 +1962,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			else:
 				self.modifypassword=1
 
-		if self.hasChanged("uidNumber") and configRegistry.is_true("directory/manager/uid_gid/uniqueness", True) and ("posix" in self.options or "samba" in self.options):
+		if self.hasChanged("uidNumber"):
 			# this should never happen, as uidNumber is marked as unchangeable
 			self._check_uid_gid_uniqueness()
 
