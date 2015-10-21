@@ -736,6 +736,9 @@
 			<listitem><simpara>
 				Several package dependencies in Docker related base packages have been changed (<u:bug>39410</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The response handling in the <emphasis>univention.lib.umc_connection.UMCConnection</emphasis> library has been improoved (<u:bug>39599</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
