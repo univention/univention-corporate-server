@@ -210,8 +210,12 @@
 		</section>
 
 		<section id="changelog:umc:setup">
-			<title>Basic settings / Appliance mode</title>
+			<title>Modules for system settings / Setup wizard</title>
 			<itemizedlist>
+				<listitem><simpara>
+					Allow to black list the page in the setup wizard for selecting the system role and use a pre-configure role value instead
+					(<u:bug>38315</u:bug>).
+				</simpara></listitem>
 				<listitem><simpara>
 					The <package>System Setup</package> wizard now can have a configurable domain while the hostname itself is fixed. This is needed
 					for Univention Apps (<u:bug>38275</u:bug>, <u:bug>38154</u:bug>).
