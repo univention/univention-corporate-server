@@ -36,12 +36,19 @@ import tarfile
 import os
 import os.path
 import urllib2
-from hashlib import md5
+import base64
+import socket
+from hashlib import md5, sha256
 from optparse import OptionParser
 from simplejson import dumps
 from difflib import unified_diff
 from glob import glob
 from ConfigParser import ConfigParser
+
+DOCKER_READ_USER_CRED = {
+	'username': 'ucs',
+	'password': 'readonly',
+	}
 
 class FileInfo(object):
 	def __init__(self, app, name, url, filename):
@@ -49,7 +56,14 @@ class FileInfo(object):
 		self.url = url
 		self.filename = filename
 		self.md5 = md5sum(filename)
+		self.sha256 = sha256sum(filename)
 		self.archive_filename = '%s.%s' % (app.name, name)
+
+class DockerImageInfo(object):
+	def __init__(self, name, url, content):
+		self.name = name
+		self.url = url
+		self.sha256 = sha256(content).hexdigest()
 
 class App(object):
 	def __init__(self, name, ucs_version, meta_inf_dir, components_dir, server):
@@ -94,6 +108,9 @@ class App(object):
 	def file_info(self, name, url, filename):
 		return FileInfo(self, name, url, filename)
 
+	def docker_image_info(self, name, url, content):
+		return DockerImageInfo(name, url, content)
+
 	def important_files(self):
 		# Adding "special ini and png file
 		for special_file in ['ini', 'png']:
@@ -133,6 +150,45 @@ class App(object):
 			url = self._repository_url(basename)
 			yield self.file_info(basename, url, readme_filename)
 
+	def docker_images(self):
+		# Adding manifest signature for docker
+		config = ConfigParser()
+		config.read(self.get_ini_file())
+		if config.has_option('Application', 'DockerImage'):
+			docker_image = config.get('Application', 'DockerImage')
+			try:
+				registry, image_name = docker_image.split('/', 1)
+				try:
+					socket.gethostbyname(registry)
+				except socket.gaierror:
+					registry = None
+			except ValueError:
+				image_name = docker_image
+				registry = None
+
+			if registry:
+				docker_image_name_parts = image_name.split(':', 1)
+				docker_image_repo = docker_image_name_parts[0]
+				if len(docker_image_name_parts) > 1:
+					docker_image_tag = docker_image_name_parts[1]
+				else:
+					docker_image_tag = 'latest'
+
+				docker_url = 'https://%s/v2/%s/manifests/%s' % (registry, docker_image_repo, docker_image_tag)
+				request = urllib2.Request(docker_url)
+				base64string = base64.b64encode(DOCKER_READ_USER_CRED['username'] + ':' + DOCKER_READ_USER_CRED['password'])
+				request.add_header("Authorization", "Basic %s" % base64string)
+				try:
+					response = urllib2.urlopen(request)
+				except (urllib2.HTTPError, urllib2.URLError) as exc:
+					print >> sys.stderr, 'Error fetching DockerImage manifest for %s' % (self.name,)
+					print >> sys.stderr, 'from %s' % (docker_url,)
+					print >> sys.stderr, str(exc)
+					sys.exit(1)
+
+				name = 'DockerImageManifestV2S1'
+				docker_image_manifest = response.read()
+				yield self.docker_image_info(name, docker_url, docker_image_manifest)
 
 	def tar_files(self):
 		for file_info in self.important_files():
@@ -141,7 +197,20 @@ class App(object):
 	def to_index(self):
 		index = {}
 		for file_info in self.important_files():
-			index[file_info.name] = {'url' : file_info.url, 'md5' : file_info.md5}
+			index[file_info.name] = {
+				'url' : file_info.url,
+				}
+			for hash_type in ('md5', 'sha256'):
+				try:
+					hash_value = getattr(file_info, hash_type)
+					index[file_info.name][hash_type] = hash_value
+				except AttributeError:
+					pass
+		for docker_image_info in self.docker_images():
+			index['ini'][docker_image_info.name] = {
+				'url' : docker_image_info.url,
+				'sha256' : docker_image_info.sha256,
+				}
 		return index
 
 def check_ini_file(filename):
@@ -151,6 +220,12 @@ def check_ini_file(filename):
 
 def md5sum(filename):
 	m = md5()
+	with open(filename, 'r') as f:
+		m.update(f.read())
+		return m.hexdigest()
+
+def sha256sum(filename):
+	m = sha256()
 	with open(filename, 'r') as f:
 		m.update(f.read())
 		return m.hexdigest()
