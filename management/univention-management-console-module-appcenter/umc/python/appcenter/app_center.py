@@ -624,8 +624,6 @@ class Application(object):
 		index_json_gz_filename = 'index.json.gz'
 		detached_sig_filename = None
 
-		ucr = ConfigRegistry()
-		ucr.load()
 		if not ucr.is_false('appcenter/index/verify'):
 			detached_sig_filename = index_json_gz_filename + '.gpg'
 

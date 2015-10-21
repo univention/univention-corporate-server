@@ -46,12 +46,9 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.udm import create_object_if_not_exists, init_object, get_app_ldap_object, remove_object_if_exists
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.credentials import CredentialsAction
-from univention.appcenter.utils import mkdir, rmdir, get_md5, app_ports
+from univention.appcenter.utils import mkdir, rmdir, get_md5
+from univention.appcenter.utils import app_ports, currently_free_port_in_range
 from univention.appcenter.log import catch_stdout
-
-
-class NoMorePorts(Exception):
-	pass
 
 
 class Register(CredentialsAction):
@@ -329,25 +326,27 @@ class Register(CredentialsAction):
 						max_port = int(ucr.get('appcenter/ports/max'))
 					except (TypeError, ValueError):
 						max_port = 41000
-					ports_taken = [min_port]
+					ports_taken = set([min_port])
 					for app_id, container_port, host_port in app_ports():
 						if host_port < max_port:
-							ports_taken.append(host_port)
-					next_port = max(ports_taken) + 1
-					if next_port > (max_port - 2):
-						raise NoMorePorts(next_port)
+							ports_taken.add(host_port)
 					if app.web_interface_port_http:
 						key = app.ucr_ports_key % app.web_interface_port_http
-						value = str(next_port)
 						if key in current_port_config:
 							value = current_port_config[key]
+						else:
+							next_port = currently_free_port_in_range(min_port, max_port, ports_taken)
+							value = str(next_port)
+						ports_taken.add(next_port)
 						port_updates[key] = value
-						next_port = max(ports_taken) + 2
 					if app.web_interface_port_https:
 						key = app.ucr_ports_key % app.web_interface_port_https
-						value = str(next_port)
 						if key in current_port_config:
 							value = current_port_config[key]
+						else:
+							next_port = currently_free_port_in_range(min_port, max_port, ports_taken)
+							value = str(next_port)
+						ports_taken.add(next_port)
 						port_updates[key] = value
 				for container_port, host_port in current_port_config.iteritems():
 					if container_port in port_updates:

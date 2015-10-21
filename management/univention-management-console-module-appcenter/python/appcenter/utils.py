@@ -42,6 +42,7 @@ from threading import Thread
 import time
 import urllib2
 from hashlib import md5
+import socket
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
@@ -88,7 +89,22 @@ def app_ports():
 				pass
 	return sorted(ret)
 
+class NoMorePorts(Exception):
+	pass
 
+def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
+	for port in range (lower_bound, upper_bound):
+		if port in blacklist:
+			continue
+		s=socket.socket()
+		try:
+			s.bind(('', port))
+		except:
+			pass
+		else:
+			return port
+	raise NoMorePorts()
+_
 def underscore(value):
 	if value:
 		return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()

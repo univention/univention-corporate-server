@@ -1,3 +1,9 @@
+univention-management-console-module-appcenter (5.0.6-52) unstable; urgency=medium
+
+  * Bug #39604: Check for already allocated ports
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Oct 2015 21:22:58 +0200
+
 univention-management-console-module-appcenter (5.0.6-51) unstable; urgency=medium
 
   * Bug #39591: Handle ISV Docker repos gracefully (might come in the future)
