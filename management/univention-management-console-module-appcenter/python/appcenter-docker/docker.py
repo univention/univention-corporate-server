@@ -141,9 +141,10 @@ def verify(app, image):
 		return True	## Nothing we can do here, this is mainly for ucs-test apps
 
 	try:
-		appfileinfo = appinfo['DockerImageManifestV2S1']
-		appcenter_sha256sum = appfileinfo['sha256']
-		docker_image_manifest_url = appfileinfo['url']
+		appfileinfo = appinfo['ini']
+		dockerimageinfo = appfileinfo['DockerImageManifestV2S1']
+		appcenter_sha256sum = dockerimageinfo['sha256']
+		docker_image_manifest_url = dockerimageinfo['url']
 	except KeyError as exc:
 		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.name)
 		raise
