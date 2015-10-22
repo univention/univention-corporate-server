@@ -207,6 +207,10 @@
 					The design of the UMC App Center module has been adjusted, and some usability aspects have been improved
 					(<u:bug>38894</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The App Center now checks a digital signature of the index of app meta files.
+					(<u:bug>39591</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -671,6 +675,11 @@
 				<listitem><simpara>
 					The Docker log file is now readable only by root and the docker process
 					(<u:bug>39494</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The App Center checks the digital checksum of docker images hosted
+					on <uri>docker.software-univention.de</uri> before downloading them
+					(<u:bug>39591</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
