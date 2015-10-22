@@ -30,4 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-invoke-rc.d univention-welcome-screen start
+# only start welcome-screen if debian installer is not running
+pgrep debian-installe || pgrep -f /sbin/debian-installer > /dev/null
+if [ "0" != "$?" ]; then
+	invoke-rc.d univention-welcome-screen start
+fi
