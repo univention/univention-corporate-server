@@ -1,3 +1,10 @@
+univention-welcome-screen (1.0.0-4) unstable; urgency=low
+
+  * Bug #39137: Cleanup script starts welcome screen only if debian
+    installer is not running
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 22 Oct 2015 14:20:08 +0200
+
 univention-welcome-screen (1.0.0-3) unstable; urgency=low
 
   * Bug #39137: Changed defaults back to 99 instead of 100
