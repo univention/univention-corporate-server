@@ -1,3 +1,12 @@
+univention-saml (3.0.24-6) unstable; urgency=medium
+
+  * Bug #39479: Allow only SAML services to connect to stunnel
+  * Reordered stunnel/univention_saml.conf options to prevent warning
+  * Added UCRV stunnel/debuglevel with default=4 to reduce logfile spam
+  * Added univention-saml restart to idp-server listener
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 22 Oct 2015 15:53:21 +0200
+
 univention-saml (3.0.24-5) unstable; urgency=medium
 
   * Bug #39181: Check for expired passwords, required password changes,

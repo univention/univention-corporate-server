@@ -48,10 +48,17 @@ def handler(dn, new, old):
 			fqdn = '%s.%s' % (new['cn'][0], new['associatedDomain'][0])
 		except (KeyError, IndexError):
 			return
+
+		change = False
 		if 'univention-saml' in new.get('univentionService', []):
 			handler_set(['ucs/server/saml-idp-server/%s=%s' % (fqdn, fqdn)])
+			change = True
 		elif 'univention-saml' in old.get('univentionService', []):
 			handler_unset(['ucs/server/saml-idp-server/%s' % (fqdn,)])
+			change = True
+
+		if change:
+			subprocess.call(['invoke-rc.d', 'univention-saml', 'restart'])
 	finally:
 		listener.unsetuid()
 
