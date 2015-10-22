@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/aspect",
+	"dojo/when",
 	"dojo/has",
 	"dojo/on",
 	"dojo/dom",
@@ -53,7 +54,7 @@ define([
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, win, aspect, has, on, dom, query, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, DialogUnderlay, tools, Text, StandbyMixin, _) {
+], function(declare, lang, array, win, aspect, when, has, on, dom, query, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, DialogUnderlay, tools, Text, StandbyMixin, _) {
 
 	_('Username');
 	_('Password');
@@ -144,11 +145,14 @@ define([
 		},
 
 		_wipeInMessage: function() {
+			var deferred = new Deferred();
 			setTimeout(function() {
 				fx.wipeIn({node: 'umcLoginMessages', onEnd: function() {
+					deferred.resolve();
 					query('#umcLoginMessages').style('display', 'block');
 				}}).play();
 			}, 200);
+			return deferred.promise;
 		},
 
 		_initForm: function() {
@@ -378,7 +382,7 @@ define([
 		show: function() {
 			// only open the dialog if it has not been opened before
 			if (this.get('open')) {
-				return;
+				return dojo.when();
 			}
 			this.set('open', true);
 
@@ -417,22 +421,27 @@ define([
 			this._text.set('content', msg);
 
 			if (this._isRendered) {
-				this._show();
+				return this._show();
 			} else {
+				var deferred = new Deferred();
 				var handle = aspect.after(this, '_connectEvents', lang.hitch(this, function() {
-					this._show();
+					this._show().always(function() {
+						deferred.resolve();
+					});
 					handle.remove();
 				}));
+				return deferred.promise;
 			}
 		},
 
 		_show: function() {
+			var deferred;
 			query('#umcLoginWrapper').style('display', 'block');
 			query('#umcLoginDialog').style('opacity', '1');  // baseFx.fadeOut sets opacity to 0
 			this._setInitialFocus();
 			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 			if (this._text.get('content')) {
-				this._wipeInMessage();
+				deferred = this._wipeInMessage();
 			}
 			// display the body background (hides rendering of GUI) the first time
 			if (!tools.status('setupGui')) {
@@ -448,6 +457,7 @@ define([
 					console.log('dialogUnderlay', e);
 				}
 			}
+			return when(deferred);
 		},
 
 		_setInitialFocus: function() {

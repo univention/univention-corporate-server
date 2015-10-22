@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.44-1) unstable; urgency=medium
+
+  * Bug #39233: fix standby animation of login dialog during startup
+  * Bug #39233: fix detection of currently opened sessions
+
+ -- Florian Best <best@univention.de>  Thu, 22 Oct 2015 11:52:57 +0200
+
 univention-management-console-frontend (5.0.43-2) unstable; urgency=medium
 
   * Bug #39508: fixup error handling

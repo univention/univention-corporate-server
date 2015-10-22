@@ -391,9 +391,27 @@ class User(object):
 		self.username = username
 		self.saml = saml
 
+	def get_client(self):
+		return UMCP_Dispatcher.sessions.get(self.sessionid)
+
+	@property
+	def session_validity(self):
+		if self.saml is not None:
+			return self.time_remaining
+		return _session_timeout
+
 	@property
 	def time_remaining(self):
-		return self.saml.time_remaining
+		remaining = []
+		if self.saml is not None:
+			remaining.append(self.saml.time_remaining)
+		client = self.get_client()
+		if client is not None:
+			remaining.append(client._time_remaining)
+		try:
+			return min(remaining)
+		except ValueError:  # no SAML, no client
+			return 0
 
 	def timed_out(self):
 		return self.saml.timed_out()
@@ -615,23 +633,10 @@ class Ressource(object):
 
 	@property
 	def session_validity(self):
-		validity = _session_timeout
 		user = self.get_user()
-		if user and user.saml is not None:
-			validity = user.time_remaining
-		return validity
-
-	@property
-	def session_remaining(self):
-		user = self.get_user()
-		remaining = 0
-		if user and user.saml is not None:
-			remaining = user.time_remaining
-		else:
-			client = self.get_session()
-			if client is not None:
-				remaining = client._time_remaining
-		return remaining
+		if user:
+			return user.session_validity
+		return _session_timeout
 
 	def set_cookies(self, *cookies, **kwargs):
 		# TODO: use expiration from session timeout?
@@ -668,13 +673,18 @@ class Ressource(object):
 	def expire_session(self):
 		sessionid = self.get_session_id()
 		if sessionid:
+			self.sessions.pop(sessionid, None)
 			UMCP_Dispatcher.cleanup_session(sessionid)
 			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.now())
 
 	def get_user(self):
 		value = self.get_session_id()
-		if value:
-			return self.sessions.get(value)
+		if not value or value not in self.sessions:
+			return
+		user = self.sessions[value]
+		if user.time_remaining <= 0:
+			return
+		return user
 
 
 class CPgeneric(Ressource):
@@ -787,8 +797,8 @@ class CPGet(CPgeneric):
 			raise UMC_HTTPError(UNAUTHORIZED)
 		info['username'] = user.username
 		info['auth_type'] = user.saml and 'SAML'
-		info['remaining'] = self.session_remaining
-		info['validity'] = self.session_validity
+		info['remaining'] = user.time_remaining
+		info['validity'] = user.session_validity
 		return json.dumps({"status": 200, "result": info, "message": ""})
 
 	@cherrypy.expose

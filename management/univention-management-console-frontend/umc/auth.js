@@ -65,7 +65,7 @@ define([
 			var result = info.result;
 
 			if (result && result.saml_renewal_required) {
-				return this.passiveSamlSSO();
+				return this.passiveSingleSignOn();
 			}
 			if (result && result.password_required || this._password_required) {
 				this._password_required = true;
@@ -86,13 +86,15 @@ define([
 			//console.debug('starting auth');
 
 			dialog._initLoginDialog();
-			dialog._loginDialog.show();
+			dialog._loginDialog.standby(true);
+			dialog._loginDialog.show().then(function() {
+				dialog._loginDialog.standby(true);
+			});
 
-			dialog._loginDialog.standby(false);
 			this.sessionlogin().then(undefined, lang.hitch(this, function() {
 				//console.debug('no active session found');
-				return this.passiveSamlSSO({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(dialog, 'login'), function(message) {
-					// TODO: set the message somewhere visibly in the login dialog
+				return this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(dialog, 'login'), function(message) {
+					// TODO: set the progress message somewhere visibly in the login dialog
 				});
 			}));
 		},
@@ -153,7 +155,7 @@ define([
 			}));
 		},
 
-		passiveSamlSSO: function(args) {
+		passiveSingleSignOn: function(args) {
 			var deferred = new Deferred();
 			var request = xhr.get('/univention-management-console/saml/?passive=true', lang.mixin(args, {
 				handleAs: 'html',
