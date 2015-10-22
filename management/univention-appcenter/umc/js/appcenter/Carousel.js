@@ -43,7 +43,8 @@ define([
 	"dojox/html/styles",
 	"umc/tools",
 	"umc/widgets/ContainerWidget",
-	"umc/widgets/_RegisterOnShowMixin"
+	"umc/widgets/_RegisterOnShowMixin",
+	"dojo/domReady!"
 ], function(declare, array, lang, kernel, baseWin, on, query, domConstruct, domStyle, domGeometry, domClass, styles, tools, ContainerWidget, _RegisterOnShowMixin) {
 	return declare("umc.modules.appcenter.Carousel_new", [ContainerWidget, _RegisterOnShowMixin], {
 		baseClass: 'umcCarouselWidget',
@@ -55,9 +56,11 @@ define([
 		shownItemIndex: null,
 
 		itemHeight: null,
+		heighestImg: null,
 
 		// items: Array
 		//     array of objects({src: <src-string>})
+		//     where <src-string> is either an image or a youtube video url 
 		items: null,
 		itemNodes: null,
 
@@ -78,15 +81,42 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+
 			this.outerContainer = new ContainerWidget({
 				'class': 'carouselOuterContainer'
 			});
+
 			this.addChild(this.outerContainer);
 			this.own(this.outerContainer);
 
 			this.renderContentSlider();
 			this.renderNavButtons();
 			this.renderScaleButton();
+			
+		},
+
+		postCreate: function() {
+			if (window.YT && window.YT.loaded) {
+				setTimeout(lang.hitch(this, function() {
+					this._renderYoutubeVideos();
+				}), 500);
+			} else {
+				//load youtube api
+				var tag = document.createElement('script');
+				tag = domConstruct.create('script', {
+					id: "youtubeAPI",
+					src: "https://www.youtube.com/iframe_api"
+				});
+				var firstScriptTag = document.getElementsByTagName('script')[0];
+				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+				window.onYouTubeIframeAPIReady = lang.hitch(this, function() {
+					this._renderYoutubeVideos();
+				});
+			}
+			onPlayerReady = lang.hitch(this, function() {
+				this.imagesLoaded();
+			});
 		},
 
 		renderContentSlider: function() {
@@ -100,7 +130,6 @@ define([
 			this.outerContainer.addChild(this.contentSliderWrapper);
 
 			this._renderThumbs();
-			this._setDefaultThumbsHeight();
 		},
 
 		_renderThumbs: function() {
@@ -108,31 +137,71 @@ define([
 			var index = 0;
 
 			array.forEach(this.items, lang.hitch(this, function(item) {
-				var imgWrapper = domConstruct.create('div', {}, this.contentSlider.domNode);
-				var img = domConstruct.create('img', {
-					src: item.src,
-					index: index,
-					'class': 'carouselScreenshot',
-					onload: lang.hitch(this, function() {
-						this.imagesLoaded();
-					}),
-					onclick: lang.hitch(this, function(evt) {
-						this.togglePreviewSize();
-						//TODO two calls for showItem
-						this.showItem(parseInt(evt.target.getAttribute('index')));
-					})
-				}, imgWrapper);
-				this.itemNodes.push(imgWrapper);
+				if (this._srcIsYoutubeVideo(item.src)) {
+					var videoId = this._getYoutubeUrlVideoId(item.src);
+
+					var videoWrapper = domConstruct.create('div', {'class': 'galleryVideo'}, this.contentSlider.domNode);
+					var div = domConstruct.create('div', {
+						id: videoId
+					}, videoWrapper);
+
+					this.itemNodes.push(videoWrapper);
+				} else {
+					var imgWrapper = domConstruct.create('div', {}, this.contentSlider.domNode);
+					var img = domConstruct.create('img', {
+						src: item.src,
+						index: index,
+						'class': 'carouselScreenshot',
+						onload: lang.hitch(this, function() {
+							this._updateHeighestImage(img);
+							this.imagesLoaded();
+						}),
+						onclick: lang.hitch(this, function(evt) {
+							this.togglePreviewSize(parseInt(evt.target.getAttribute('index')));
+						})
+					}, imgWrapper);
+					this.itemNodes.push(imgWrapper);
+				}
 				index++;
 			}));
 		},
+
+		_renderYoutubeVideos: function() {
+			query('.galleryVideo', this.contentSlider.domNode).forEach(lang.hitch(this, function(videoWrapper) {
+				var player;
+				var videoId = videoWrapper.firstChild.id;
+				player = new YT.Player(videoId, {
+					height: this.itemHeight.toString(),
+					width: 'auto',
+					videoId: videoId,
+					events: {
+						'onReady': onPlayerReady
+					}
+				});
+				this.own(player);
+			}));
+		},
+
+		_srcIsYoutubeVideo: function(src) {
+			//taken from http://stackoverflow.com/questions/28735459/how-to-validate-youtube-url-in-client-side-in-text-box
+			var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+			if(src.match(p)){
+				return true;
+			}
+			return false;
+		},
+
+		_getYoutubeUrlVideoId: function(src) {
+			var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+			return src.match(p)[1];
+		},
 		
 		_setDefaultThumbsHeight: function() {
-			if (!styles.getStyleSheet('defaultItemHeightWrapper')) {
-				styles.insertCssRule('.contentSlider .carouselScreenshot', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightWrapper');
-			}
 			if (!styles.getStyleSheet('defaultItemHeightImage')) {
-				styles.insertCssRule('.contentSlider div', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightImage');
+				styles.insertCssRule('.contentSlider .carouselScreenshot', lang.replace('max-height: {0}px', [this.itemHeight]), 'defaultItemHeightImage');
+			}
+			if (!styles.getStyleSheet('defaultItemHeightWrapper')) {
+				styles.insertCssRule('.contentSlider div', lang.replace('height: {0}px', [this.itemHeight]), 'defaultItemHeightWrapper');
 			}
 		},
 
@@ -162,7 +231,7 @@ define([
 			this.scaleButton = domConstruct.create('div', {
 				'class': 'scaleButton',
 				onclick: lang.hitch(this, function() {
-					this.togglePreviewSize();
+					this.togglePreviewSize(this.shownItemIndex);
 				})
 			}, this.domNode);
 		},
@@ -171,7 +240,48 @@ define([
 			this.loadedImagesCount++;
 			if (this.loadedImagesCount === this.items.length) {
 				this.allItemsLoaded = true;
+				this.heighestImg = this.heighestImg.cloneNode();
+				domConstruct.place(this.heighestImg, this.domNode);
+				domClass.add(this.heighestImg, 'dijitHidden');
+				
+				this._setDefaultThumbsHeight();
 				this.resizeCarousel();
+				this.calcDefaultSliderWidth();
+				this.calcOffsets();
+			}
+		},
+
+		_updateHeighestImage: function(img) {
+			if (!this.heighestImg) {
+				this.heighestImg = img;
+			}
+			if ((img.height > img.width) && (img.height > this.heighestImg.height)) {
+				this.heighestImg = img;
+			}
+		},
+
+		calcDefaultSliderWidth: function() {
+			this.defaultSliderWidth = domGeometry.getMarginBox(this.contentSlider.domNode).w;
+			this.defaultItemWidths = [];
+			array.forEach(this.itemNodes, lang.hitch(this, function(itemNode) {
+				this.defaultItemWidths.push(domGeometry.getMarginBox(itemNode).w);
+			}));
+		},
+
+		calcOffsets: function() {
+			this.offsets = [0];
+			var maxOffset = Math.max(0, this.defaultSliderWidth - domGeometry.getMarginBox(this.contentSliderWrapper.domNode).w);
+
+			for (var i = 1; i < this.itemNodes.length; i++) {
+				var offset = 0;
+				for (var c = 0; c < i; c++) {
+					offset += this.defaultItemWidths[c];
+				}
+				if (offset >= maxOffset) {
+					this.offsets.push(maxOffset);
+				} else {
+					this.offsets.push(offset);
+				}
 			}
 		},
 
@@ -181,12 +291,9 @@ define([
 			}
 			var totalItemsWidth = 0;
 			array.forEach(this.itemNodes, function(imgWrapper) {
-				var imgWidth = domGeometry.getContentBox(imgWrapper.firstChild).w;
-				//domStyle.set(imgWrapper, 'width', imgWidth + 'px');
 				var imgWrapperWidth = domGeometry.getMarginBox(imgWrapper).w;
 				totalItemsWidth += imgWrapperWidth;
 			});
-			domStyle.set(this.contentSlider.domNode, 'width', totalItemsWidth + 'px');
 			
 			var contentSliderHeight = domGeometry.getMarginBox(this.contentSlider.domNode).h;
 			domStyle.set(this.outerContainer.domNode, 'height', contentSliderHeight + 'px');
@@ -210,30 +317,44 @@ define([
 			this._toggleNavButtonsVisibility();
 		},
 
-		_resizeBigThumbnails: function() {
+		_resizeBigThumbnails: function(newIndex) {
 			var maxHeight = dojo.window.getBox().h - 200;
 			maxHeight = (maxHeight < this.itemHeight) ? this.itemHeight : maxHeight;
 
 			var marginOfThumbs = domGeometry.getMarginExtents(this.itemNodes[0]).w;
 			domClass.remove(this.leftButton, 'dijitHidden'); //make sure navButton is visible for sizing calculations
+			domClass.remove(this.rightButton, 'dijitHidden');
 			var maxWidth = domGeometry.getMarginBox(this.domNode).w - (domGeometry.getMarginBox(this.leftButton).w * 2) - marginOfThumbs;
+			domStyle.set(this.outerContainer.domNode, 'width', '');
+			domStyle.set(this.contentSliderWrapper.domNode, 'width', maxWidth + 'px');
 
 			styles.disableStyleSheet('defaultItemHeightWrapper');
-			styles.disableStyleSheet('defaultItemHeightImage');
+			//styles.disableStyleSheet('defaultItemHeightImage');
+			
+			domStyle.set(this.heighestImg, 'position', 'absolute');
+			domStyle.set(this.heighestImg, 'right', '1000000px');
+			domClass.toggle(this.heighestImg, 'dijitHidden');
 
-			var heighestImg = 0;
-			query('.carouselScreenshot', this.contentSlider.domNode).forEach(lang.hitch(this, function(imgNode) {
-				domStyle.set(imgNode, 'max-height', maxHeight + 'px');
-				domStyle.set(imgNode, 'max-width', maxWidth + 'px');
-				domStyle.set(imgNode.parentNode, 'width', maxWidth + 'px');
-				domStyle.set(imgNode.parentNode, 'height', maxHeight + 'px');
-				
-				var imgHeight = domGeometry.getMarginBox(imgNode).h;
-				heighestImg = (imgHeight > heighestImg) ? imgHeight : heighestImg;
+
+			domStyle.set(this.heighestImg, 'max-height', maxHeight + 'px');
+			domStyle.set(this.heighestImg, 'max-width', maxWidth + 'px');
+			var heighestImgHeight = domGeometry.getMarginBox(this.heighestImg).h;
+			domClass.toggle(this.heighestImg, 'dijitHidden');
+
+			array.forEach(this.itemNodes, lang.hitch(this, function(imgWrapper) {
+				domStyle.set(imgWrapper.firstChild, 'max-width', maxWidth + 'px');
+				domStyle.set(imgWrapper.firstChild, 'max-height', maxHeight + 'px');
+				domStyle.set(imgWrapper, 'height', heighestImgHeight + 'px');
+				domStyle.set(imgWrapper, 'width', maxWidth + 'px');
 			}));
-			query('.carouselScreenshot', this.contentSlider.domNode).forEach(lang.hitch(this, function(imgNode) {
-				domStyle.set(imgNode.parentNode, 'height', heighestImg + 'px');
+			query('.galleryVideo', this.contentSlider.domNode).forEach(lang.hitch(this, function(videoWrapper) {
+				domStyle.set(videoWrapper.firstChild, 'height', '100%');
+				domStyle.set(videoWrapper.firstChild, 'width', '100%');
 			}));
+			domStyle.set(this.outerContainer.domNode, 'height', heighestImgHeight + 'px');
+
+			var newOffset = newIndex * (maxWidth + marginOfThumbs);
+			domStyle.set(this.contentSlider.domNode, 'left', (newOffset * (-1)) + 'px');
 		},
 
 		_toggleNavButtonsVisibility: function(newOffset) {
@@ -250,30 +371,53 @@ define([
 			domClass.toggle(this.rightButton, 'disabled', (_contentSliderOffset === maxOffset || this.shownItemIndex === this.items.length-1));
 		},
 
-		togglePreviewSize: function() {
-			domClass.add(this.contentSlider.domNode, 'noTransition');
+		togglePreviewSize: function(newIndex) {
 			if (this.bigThumbnails) {
 				styles.enableStyleSheet('defaultItemHeightWrapper');
-				styles.enableStyleSheet('defaultItemHeightImage');
+				//styles.enableStyleSheet('defaultItemHeightImage');
+				var availableWidth = domGeometry.getMarginBox(this.domNode).w;
+
+				if (availableWidth >= this.defaultSliderWidth) {
+					domClass.add(this.leftButton, 'dijitHidden');
+					domClass.add(this.rightButton, 'dijitHidden');
+					domStyle.set(this.outerContainer.domNode, 'transition', 'height 0.5s, width 0.5s');
+					domStyle.set(this.contentSliderWrapper.domNode, 'transition', 'height 0.5s, width 0.5s');
+					domStyle.set(this.outerContainer.domNode, 'width', this.defaultSliderWidth + 'px');
+					domStyle.set(this.contentSliderWrapper.domNode, 'width', this.defaultSliderWidth + 'px');
+				}
+
+
 				query('.carouselScreenshot', this.contentSlider.domNode).forEach(lang.hitch(this, function(imgNode) {
 					domStyle.set(imgNode, 'max-height', '');
 					domStyle.set(imgNode, 'max-width', '');
 					domStyle.set(imgNode.parentNode, 'width', '');
-					domStyle.set(imgNode.parentNode, 'height', this.itemHeight + 'px');
+					domStyle.set(imgNode.parentNode, 'height', '');
 				}));
+				query('.galleryVideo', this.contentSlider.domNode).forEach(lang.hitch(this, function(videoWrapper) {
+					domStyle.set(videoWrapper, 'height', '');
+					domStyle.set(videoWrapper, 'width', '');
+					domStyle.set(videoWrapper.firstChild, 'height', '');
+					domStyle.set(videoWrapper.firstChild, 'width', '');
+				}));
+				domStyle.set(this.outerContainer.domNode, 'height', this.itemHeight + 'px');
+				domStyle.set(this.contentSlider.domNode, 'left', Math.abs(this.offsets[newIndex]) * (-1) + 'px');
+				
 			} else {
-				this._resizeBigThumbnails();
+				domStyle.set(this.outerContainer.domNode, 'transition', '');
+				domStyle.set(this.contentSliderWrapper.domNode, 'transition', '');
+				this._resizeBigThumbnails(newIndex);
 			}
 			this.bigThumbnails = !this.bigThumbnails;
 			domClass.toggle(this.scaleButton, 'minimize');
+			this.shownItemIndex = newIndex;
 
-			this.resizeCarousel();
-			this.showItem(this.shownItemIndex);
-			domClass.remove(this.contentSlider.domNode, 'noTransition');
+			setTimeout(lang.hitch(this, function() {
+				this.resizeCarousel();
+			}), 600);
 
 			//scroll to the top of the image
-			var scrollTarget = domGeometry.position(this.domNode, true).y - 50;
-			window.scrollTo(0, scrollTarget);
+			//var scrollTarget = domGeometry.position(this.domNode, true).y - 50;
+			//window.scrollTo(0, scrollTarget);
 		},
 
 		showItem: function(newIndex) {
@@ -300,8 +444,6 @@ define([
 			
 			//if the new index would not change the offset
 			//take the next lower index till a new offset is found
-			//this can only happen when the new index is lower than the current index since the
-			//highest possible index to show without having blank space must not be the last index of all thumbs
 			if (oldOffset === newOffset && newIndex < this.shownItemIndex) {
 				this.showItem(newIndex -1);
 				return;
@@ -319,6 +461,7 @@ define([
 			}
 			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
 				this.resizeCarousel();
+				this.calcOffsets();
 				this.showItem(this.shownItemIndex);
 			}), 200);
 			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */ });
@@ -335,7 +478,7 @@ define([
 			this.own(on(baseWin.doc, 'resize', lang.hitch(this, '_handleResize')));
 			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
 			styles.enableStyleSheet('defaultItemHeightWrapper');
-			styles.enableStyleSheet('defaultItemHeightImage');
+			//styles.enableStyleSheet('defaultItemHeightImage');
 		}
 	});
 });
