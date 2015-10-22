@@ -1,0 +1,2 @@
+34univention-self-service-backend.inst usr/lib/univention-install/
+66univention-self-service-backend-uninstall.uinst usr/lib/univention-uninstall/

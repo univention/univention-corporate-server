@@ -1,3 +1,13 @@
+univention-self-service (0.0.0-14) unstable; urgency=low
+
+  * use Univention namespace in LDAP schema (Bug #37890)
+  * split and rename packages for frontend and backend
+  * split join scripts
+  * add single-server meta package
+  * add appcenter data
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Oct 2015 15:14:56 +0200
+
 univention-self-service (0.0.0-13) unstable; urgency=low
 
   * remove work around #39599 (Bug #37890)

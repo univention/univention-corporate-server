@@ -1,5 +1,7 @@
-#!/bin/sh
-# postinst script for univention-self-service
+#!/bin/bash
+#
+# Univention Self Service backend
+#  postinst file for the debian package
 #
 # Copyright 2015 Univention GmbH
 #
@@ -30,28 +32,19 @@
 
 #DEBHELPER#
 
-# web site logging
-ACCESS_LOG=/var/log/univention/self-service-access.log
-ERROR_LOG=/var/log/univention/self-service-error.log
+eval "$(univention-config-registry shell)"
 
-if [ "$1" = "configure" -a -z "$2" ] ; then
-	echo "Fresh installation..."
-	adduser --system --no-create-home --group self-service
+if ! [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	echo "ERROR: This package must be installed on a DC master or DC backup!"
+	echo "ERROR: Please uninstall and install on a DC master or DC backup!"
 fi
 
-touch $ACCESS_LOG $ERROR_LOG
-chown self-service:adm $ACCESS_LOG $ERROR_LOG
-chmod 640 $ACCESS_LOG $ERROR_LOG
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/66univention-self-service-backend-uninstall.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
 
-/usr/lib/univention-server/server_password_change.d/univention-self-service postchange
-
-MASTER=$(ucr get ldap/master)
-univention-config-registry set \
-	"self-service/backend-server?$MASTER" \
-	self-service/web/enabled?yes
-
-a2enmod wsgi
-a2ensite univention-self-service
-invoke-rc.d apache2 restart
+. /usr/share/univention-lib/base.sh
+call_joinscript 34univention-self-service-backend.inst
 
 exit 0

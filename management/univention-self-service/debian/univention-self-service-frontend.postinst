@@ -1,8 +1,5 @@
 #!/bin/sh
-
-#
-# Univention Management Console Module
-#  unjoin script
+# postinst script for univention-self-service
 #
 # Copyright 2015 Univention GmbH
 #
@@ -31,30 +28,32 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+#DEBHELPER#
 
-. /usr/share/univention-join/joinscripthelper.lib
-. /usr/share/univention-lib/ldap.sh
+# web site logging
+ACCESS_LOG=/var/log/univention/self-service-access.log
+ERROR_LOG=/var/log/univention/self-service-error.log
 
-joinscript_init
-
-ucs_removeServiceFromLocalhost "self-service-passwordreset-backend" "$@" || die
-
-if ucs_isServiceUnused "self-service-passwordreset-backend" "$@"
-then
-	eval "$(ucr shell)"
-	udm settings/extended_attribute remove "$@" \
-		--dn "cn=UniventionPasswordSelfServiceContactEmail,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/extended_attribute remove "$@" \
-		--dn "cn=UniventionPasswordSelfServiceContactMobile,cn=custom attributes,cn=univention,$ldap_base"
-	udm policies/umc "$@" modify \
-		--dn cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base \
-		--remove allow=cn=passwordreset-all,cn=operations,cn=UMC,cn=univention,$ldap_base
-	udm settings/umc_operationset remove "$@" \
-		--dn cn=passwordreset-all,cn=operations,cn=UMC,cn=univention,$ldap_base
-	ucs_unregisterLDAPExtension "$@" --schema /usr/share/univention-self-service/self-service-passwordreset.schema
+if [ "$1" = "configure" -a -z "$2" ] ; then
+	echo "Fresh installation..."
+	adduser --system --no-create-home --group self-service
 fi
 
-joinscript_remove_script_from_status_file univention-management-console-module-passwordreset
+touch $ACCESS_LOG $ERROR_LOG
+chown self-service:adm $ACCESS_LOG $ERROR_LOG
+chmod 640 $ACCESS_LOG $ERROR_LOG
+
+/usr/lib/univention-server/server_password_change.d/univention-self-service postchange
+
+MASTER=$(ucr get ldap/master)
+univention-config-registry set \
+	"self-service/backend-server?$MASTER" \
+	self-service/web/enabled?yes
+
+a2enmod wsgi
+a2ensite univention-self-service
+# restart, so apache reloads WSGI
+# retry if fail because of to quick successive restarts (from other frontend packages)
+invoke-rc.d apache2 restart || (sleep 2; invoke-rc.d apache2 restart)
 
 exit 0

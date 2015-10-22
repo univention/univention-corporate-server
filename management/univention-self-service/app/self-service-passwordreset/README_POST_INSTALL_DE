@@ -1,0 +1,3 @@
+<p>Gratulation, der Univention Password Reset Self Service wurde installiert!</p>
+<p>Um ihn zu verwenden, müssen Benutzer sich mit ihrem aktuellen Passwort auf der <a href="/ucs-overview/passwordreset.html">Password Reset Seite</a> einloggen und ihre Kontaktdaten hinterlegen.</p>
+<p>Administratoren können die Kontaktdaten im Benutzermodul der <a href="/univention-management-console/#module=udm:users/user:0:">Univention Management Console</a> bearbeiten.</p>

@@ -1,8 +1,8 @@
 #!/bin/sh
-
+# -*- coding: utf-8 -*-
 #
-# Univention Management Console Module
-#  unjoin script
+# Univention Sself Service Backend
+#  join script
 #
 # Copyright 2015 Univention GmbH
 #
@@ -35,26 +35,27 @@ VERSION=1
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/ldap.sh
+. /usr/share/univention-lib/base.sh
 
 joinscript_init
 
-ucs_removeServiceFromLocalhost "self-service-passwordreset-backend" "$@" || die
+ucs_addServiceToLocalhost "self-service-backend" "$@"
 
-if ucs_isServiceUnused "self-service-passwordreset-backend" "$@"
-then
-	eval "$(ucr shell)"
-	udm settings/extended_attribute remove "$@" \
-		--dn "cn=UniventionPasswordSelfServiceContactEmail,cn=custom attributes,cn=univention,$ldap_base"
-	udm settings/extended_attribute remove "$@" \
-		--dn "cn=UniventionPasswordSelfServiceContactMobile,cn=custom attributes,cn=univention,$ldap_base"
-	udm policies/umc "$@" modify \
-		--dn cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base \
-		--remove allow=cn=passwordreset-all,cn=operations,cn=UMC,cn=univention,$ldap_base
-	udm settings/umc_operationset remove "$@" \
-		--dn cn=passwordreset-all,cn=operations,cn=UMC,cn=univention,$ldap_base
-	ucs_unregisterLDAPExtension "$@" --schema /usr/share/univention-self-service/self-service-passwordreset.schema
-fi
+eval "$(ucr shell)"
 
-joinscript_remove_script_from_status_file univention-management-console-module-passwordreset
+udm policies/umc "$@" create \
+	--position=cn=UMC,cn=policies,$ldap_base \
+	--set name=selfservice-umc-servers \
+	--set ldapFilter='(|(objectClass=univentionMemberserver)(objectClass=univentionDomainController))'
+udm container/cn "$@" modify \
+	--dn=cn=dc,cn=computers,$ldap_base \
+	--policy-reference cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base
+udm container/cn "$@" modify \
+	--dn=cn=memberserver,cn=computers,$ldap_base \
+	--policy-reference cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base
+
+stop_udm_cli_server
+
+joinscript_save_current_version
 
 exit 0
