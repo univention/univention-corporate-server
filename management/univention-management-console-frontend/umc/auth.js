@@ -86,15 +86,17 @@ define([
 
 			dialog._initLoginDialog();
 			dialog._loginDialog.standby(true);
-			dialog._loginDialog.show().then(function() {
+			this.__standby = dialog._loginDialog.show().then(function() {
 				dialog._loginDialog.standby(true);
 			});
 
 			this.sessionlogin().then(undefined, lang.hitch(this, function() {
 				//console.debug('no active session found');
-				return this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(dialog, 'login'), function(message) {
-					// TODO: set the progress message somewhere visibly in the login dialog
-				});
+				return this.passiveSingleSignOn({ timeout: 3000 }).then(
+					lang.hitch(this, 'sessionlogin'),
+					this.__standby.always(lang.hitch(dialog, 'login'))
+					// TODO: set the progress message somewhere visibly in the login dialog: function(message) { }
+				);
 			}));
 		},
 

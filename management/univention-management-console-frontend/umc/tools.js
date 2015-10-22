@@ -1136,7 +1136,7 @@ define([
 
 		setUserPreference: function(preferences) {
 			return tools.umcpCommand('set', {
-				user: {	preferences: preferences }
+				user: { preferences: preferences }
 			}, false);
 		},
 

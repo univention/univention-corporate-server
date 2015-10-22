@@ -1175,8 +1175,8 @@ define([
 			var options = reload ? {reload: true} : null;
 			var onlyLoadAutoStartModule = !tools.status('overview') && tools.status('autoStartModule');
 			return all({
-				modules: tools.umcpCommand('get/modules/list', options, false),
-				categories: tools.umcpCommand('get/categories/list', undefined, false)
+				modules: tools.umcpCommand('get/modules/list', options),
+				categories: tools.umcpCommand('get/categories/list')
 			}).then(lang.hitch(this, function(data) {
 				// update progress
 				var _modules = lang.getObject('modules.modules', false, data) || [];
