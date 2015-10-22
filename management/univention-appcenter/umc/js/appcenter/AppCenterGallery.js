@@ -48,19 +48,20 @@ define([
 
 		bootstrapClasses: "",
 
-		getIconClass: function(item) {
-			return tools.getIconClass('apps-' + item.logo, 'scalable', 'umcAppCenter');
+		getIconClass: function(item, suffix) {
+			suffix = suffix || '';
+			return tools.getIconClass('apps-' + item.id + suffix, 'scalable', 'umcAppCenter');
 		},
 
 		renderRow: function(item) {
 			var appWrapperDiv = put(lang.replace('div.umcGalleryWrapperItem.{bootstrapClasses}[moduleID={moduleID}]', {
-				moduleID: item.$id$,
+				moduleID: item.id,
 				bootstrapClasses: this.bootstrapClasses
 			}));
 			var innerWrapper = put(appWrapperDiv, 'div.appInnerWrapper.umcGalleryItem');
-			
+
 			put(innerWrapper, 'div.border');
-			
+
 			var iconClass = this.getIconClass(item);
 			if (iconClass) {
 				put(innerWrapper, 'div.appIcon.umcGalleryIcon.' + iconClass);

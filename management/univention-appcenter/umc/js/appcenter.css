@@ -231,6 +231,7 @@
 	display: inline-block;
 	margin-right: 20px;
 	background-position: center center;
+	background-size: contain;
 }
 
 .umc .umcAppDetailsPage .umcPageNav .navHeaderButton {

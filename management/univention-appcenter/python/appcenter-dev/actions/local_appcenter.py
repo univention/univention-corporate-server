@@ -92,7 +92,7 @@ class AppcenterApp(object):
 		self.meta_inf_dir = meta_inf_dir
 		self.app_dir = ''
 		if os.path.exists(os.path.join(self.meta_inf_dir, self.id)):
-			# since UCS 4.1 we have for each app a separate subdirectory
+			# since UCS 4.1, each app has a separate subdirectory
 			self.app_dir = self.id
 		self.components_dir = components_dir
 		if server.endswith('/'):

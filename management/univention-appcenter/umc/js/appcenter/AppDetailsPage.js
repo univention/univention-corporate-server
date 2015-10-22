@@ -279,7 +279,8 @@ define([
 				this._icon.destroyRecursive();
 				this._icon = null;
 			}
-			var icon_class = this._grid.getIconClass(this.app);
+			var suffix = this.app.logoDetailPage ? '-detailpage' : '';
+			var icon_class = this._grid.getIconClass(this.app, suffix);
 			if (icon_class) {
 				this._icon = new ContainerWidget({
 					region: 'nav',

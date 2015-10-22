@@ -631,8 +631,13 @@ class App(object):
 		return self.get_cache_file('ini')
 
 	def get_screenshot_url(self):
-		if self.screenshot:
-			return '%s/meta-inf/%s/%s' % (AppManager.get_server(), self.ucs_version, self.screenshot)
+		if not self.screenshot:
+			return None
+		app_path = '%s/' % self.id
+		if self.ucs_version == '4.0' or self.ucs_version.startswith('3.'):
+			# since UCS 4.1, each app has a separate subdirectory
+			app_path = ''
+		return '%s/meta-inf/%s/%s%s' % (AppManager.get_server(), self.ucs_version, app_path, self.screenshot)
 
 	def get_localised(self, key, loc=None):
 		from univention.appcenter import get_action
