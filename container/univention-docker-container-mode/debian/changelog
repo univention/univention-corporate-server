@@ -1,3 +1,10 @@
+univention-docker-container-mode (1.0.6-1) unstable; urgency=medium
+
+  * restore_data_before_setup: check if files and directories exist
+    (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Oct 2015 20:29:35 +0200
+
 univention-docker-container-mode (1.0.5-2) unstable; urgency=medium
 
   * univention-docker-container-mod/setup: fixed typo in last commit

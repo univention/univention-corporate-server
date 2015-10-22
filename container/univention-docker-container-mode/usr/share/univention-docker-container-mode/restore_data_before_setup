@@ -54,6 +54,8 @@ def copy_permissions(src, dest):
 
 
 def restore_files(source_dir):
+	if not os.path.exists(source_dir):
+		return
 	for (path, dirs, files) in os.walk(source_dir):
 		for d in dirs:
 			r_path = string.replace(path, source_dir, '/', 1)
@@ -71,6 +73,8 @@ def restore_files(source_dir):
 
 
 def restore_ucr_layer(ucr_file, options):
+	if not os.path.exists(ucr_file):
+		return
 	f = open(ucr_file, "r")
 	vv = []
 	for v in f.readlines():
