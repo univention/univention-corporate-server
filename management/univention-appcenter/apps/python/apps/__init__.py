@@ -57,7 +57,7 @@ class Instance(umcm.Base):
 	@simple_response
 	def get(self, application):
 		app = AppManager.find(application)
-		get = get_action('get')
+		domain = get_action('domain')
 		if app is None:
 			return None
-		return get.to_dict(app)
+		return domain.to_dict([app])[0]

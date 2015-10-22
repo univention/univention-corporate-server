@@ -36,83 +36,8 @@ univention-config-registry set repository/app_center/server?appcenter.software-u
 	appcenter/domainwide?true
 
 
-if dpkg --compare-versions "$2" lt-nl 3.0.48-3; then
-	ucrErrataToRemove=()
-	for app  in agorumcore-pro-errata asterisk4ucs_20130304-errata kixbox-errata sep-sesam-errata ucc_20130429-errata univention-demoapp-errata xrdp-errata fetchmail-errata ucsschool_20131007-errata; do
-		for var in description server prefix password username defaultpackages version localmirror unmaintained; do
-			ucrErrataToRemove[${#ucrErrataToRemove[@]}]="repository/online/component/$app/$var"
-		done
-		ucrErrataToRemove[${#ucrErrataToRemove[@]}]="repository/online/component/$app"
-	done
-	univention-config-registry unset "${ucrErrataToRemove[@]}"
-fi
-
-if dpkg --compare-versions "$2" lt-nl 3.0.50-18; then
-	python -c "
-from univention.lib.package_manager import PackageManager
-from univention.updater import UniventionUpdater
-from univention.config_registry import ConfigRegistry
-from univention.management.console.modules.appcenter.util import ComponentManager, install_opener, set_save_commit_load
-from univention.management.console.modules.appcenter.app_center import Application
-
-ucr = ConfigRegistry()
-ucr.load()
-uu = UniventionUpdater(False)
-component_manager = ComponentManager(ucr, uu)
-package_manager = PackageManager(lock=False)
-
-install_opener(ucr)
-
-with set_save_commit_load(component_manager.ucr) as super_ucr:
-  for app in Application.all():
-    for version in app.versions:
-      if version.is_registered(ucr) and not version.is_installed(package_manager, strict=False):
-        version.unregister(component_manager, super_ucr)
-"
-fi
-
-if dpkg --compare-versions "$2" lt-nl 3.0.51-5; then
-	/usr/sbin/univention-rename-app tine20org tine20
-fi
-
-if dpkg --compare-versions "$2" lt-nl 3.0.51-17; then
-	python -c "
-from univention.updater import UniventionUpdater
-from univention.config_registry import ConfigRegistry
-from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
-from univention.management.console.modules.appcenter.app_center import Application
-
-ucr = ConfigRegistry()
-ucr.load()
-uu = UniventionUpdater(False)
-component_manager = ComponentManager(ucr, uu)
-
-install_opener(ucr)
-
-app = Application.find('radius')
-if app:
-  component_manager.remove_app(app)
-"
-fi
-
-if dpkg --compare-versions "$2" lt-nl 3.0.51-23; then
-	# set repository/app_center/installed initially when updating
-	# new installations will have it set by joinscript execution
-	python -c "
-from univention.config_registry import ConfigRegistry
-from univention.management.console.modules.appcenter.util import install_opener
-from univention.management.console.modules.appcenter.app_center import Application
-from univention.lib.package_manager import PackageManager
-
-package_manager = PackageManager(lock=False)
-ucr = ConfigRegistry()
-ucr.load()
-
-install_opener(ucr)
-
-Application._set_ucr_codes_variable(ucr, package_manager)
-"
+if dpkg --compare-versions "$2" lt 5.0.6-18; then
+	/usr/share/univention-appcenter/univention-appcenter-register-40-to-41 || true
 fi
 
 exit 0
-

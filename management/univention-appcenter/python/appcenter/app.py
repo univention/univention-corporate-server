@@ -373,6 +373,7 @@ class App(object):
 	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
 	component_id = AppAttribute(required=True)
+	ucs_version = AppAttribute(required=True)
 	logo = AppAttribute(regex='^.+\.svg$', required=False)  # TODO: should be required
 	logo_detail_page = AppAttribute(regex='.+\.svg$', required=False)
 
@@ -450,7 +451,6 @@ class App(object):
 	docker_allowed_images = AppListAttribute()
 	docker_volumes = AppListAttribute()
 	docker_server_role = AppAttribute(default='memberserver', choices=['memberserver', 'domaincontroller_slave'])
-	docker_auto_update = AppAttribute(choices=[None, 'packages', 'release'])
 	docker_script_init = AppAttribute(default='/sbin/init')
 	docker_script_setup = AppDockerScriptAttribute()
 	docker_script_store_data = AppDockerScriptAttribute()
@@ -462,11 +462,9 @@ class App(object):
 	docker_script_update_app_version = AppDockerScriptAttribute()
 
 	def __init__(self, **kwargs):
+		self._is_ucs_component = None
 		for attr in self._attrs:
 			setattr(self, attr.name, kwargs.get(attr.name))
-		ucr = ConfigRegistry()
-		ucr.load()
-		self.ucs_version = ucr.get('version/version')
 		if self.docker:
 			self.supported_architectures = ['amd64']
 
@@ -515,6 +513,9 @@ class App(object):
 			value = None
 			if attr.name == 'component_id':
 				value = os.path.splitext(os.path.basename(ini_file))[0]
+			if attr.name == 'ucs_version':
+				# TODO: ucr.get('version/version')
+				value = '4.1'
 			elif attr.name == 'rating':
 				value = []
 				rating_items = _get_rating_items()
@@ -598,11 +599,10 @@ class App(object):
 		return installed
 
 	def is_ucs_component(self):
-		from univention.appcenter import get_action
-		get = get_action('get')
-		categories = self.get_attr('categories')
-		value = categories.parse(get.raw_value(self, 'Application', 'Categories'))
-		return 'UCS Components' in value
+		if self._is_ucs_component is None:
+			app = App.from_ini(self.get_ini_file(), locale=False)
+			self._is_ucs_component = 'UCS Components' in app.categories
+		return self._is_ucs_component
 
 	def get_share_dir(self):
 		return os.path.join(SHARE_DIR, self.id)

@@ -101,9 +101,6 @@ class AppcenterApp(object):
 
 	def get_metainf_url(self):
 		return '%s/meta-inf/%s/' % (self.server, self.ucs_version)
-		if self.app_dir:
-			url = '%s/%s' % (url, self.app_dir)
-		return
 
 	def get_repository_url(self):
 		return '%s/univention-repository/%s/maintained/component/%s/' % (self.server, self.ucs_version, self.name)

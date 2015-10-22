@@ -50,10 +50,6 @@ class UpgradeSearch(UpgradeSearch, DockerActionMixin):
 		if output:
 			output = output.strip()
 		if output:
-			if output == 'packages' and app.docker_auto_update:
-				return  # shall be done automatically
-			if output.startswith('release') and app.docker_auto_update == 'release':
-				return  # shall be done automatically
 			self.log('%s: Update available: %s' % (app, output))
 			return True
 		return upgrade_available

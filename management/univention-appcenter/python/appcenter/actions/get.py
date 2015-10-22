@@ -43,7 +43,6 @@ from univention.config_registry import ConfigRegistry
 from univention.appcenter.app import CaseSensitiveConfigParser, AppManager
 from univention.appcenter.utils import shell_safe
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-from univention.appcenter.udm import get_app_ldap_object
 
 
 class StoreKeysAction(Action):
@@ -104,8 +103,6 @@ class Get(UniventionAppAction):
 		ucr = ConfigRegistry()
 		ucr.load()
 		ret = app.attrs_dict()
-		ret['logo'] = app.logo
-		ret['logo_detail_page'] = app.logo_detail_page
 		ret['screenshot'] = app.get_screenshot_url()
 		ret['is_installed'] = app.is_installed()
 		ret['is_current'] = app.without_repository or ucr.get('repository/online/component/%s' % app.component_id) == 'enabled'
@@ -114,18 +111,12 @@ class Get(UniventionAppAction):
 		ret['host_master'] = ucr.get('ldap/master')
 		ret['autostart'] = ucr.get('%s/autostart' % app.id, 'yes')
 		ret['is_ucs_component'] = app.is_ucs_component()
-		ldap_obj = get_app_ldap_object(app)
-		if ldap_obj:
-			ret['is_installed_anywhere'] = ldap_obj.anywhere_installed()
-		else:
-			ret['is_installed_anywhere'] = False
 		latest = AppManager.find(app.id, latest=True)
 		if latest != app:
 			ret['candidate_version'] = latest.version
 			ret['candidate_component_id'] = latest.component_id
 			ret['candidate_readme_update'] = latest.readme_update
 			ret['candidate_readme_post_update'] = latest.readme_post_update
-		ret['fully_loaded'] = True
 		return ret
 
 	@classmethod

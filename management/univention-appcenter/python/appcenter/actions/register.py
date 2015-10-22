@@ -201,19 +201,6 @@ class Register(CredentialsAction):
 		if hostdn:
 			if lo.get(hostdn):
 				self.log('Already found %s as a host for %s. Better do nothing...' % (hostdn, app.id))
-				obj = init_object('computers/%s' % app.docker_server_role, lo, pos, hostdn)
-				save = False
-				for auto_update in ['packages', 'release']:
-					policy_dn = 'cn=appcenter-update-%s,cn=policies,%s' % (auto_update, ucr.get('ldap/base'))
-					if app.docker_auto_update == auto_update and policy_dn not in obj.policies:
-						obj.policies.append(policy_dn)
-						save = True
-					elif app.docker_auto_update != auto_update and policy_dn in obj.policies:
-						obj.policies.remove(policy_dn)
-						save = True
-				if save:
-					self.log('... except changing release policy!')
-					obj.save()
 				return hostdn, None
 			else:
 				self.warn('%s should be the host for %s. But it was not found in LDAP. Creating a new one' % (hostdn, app.id))
@@ -230,11 +217,7 @@ class Register(CredentialsAction):
 		pos.setDn(base)
 		domain = ucr.get('domainname')
 		description = '%s (%s)' % (app.name, app.version)
-		policies = []
-		if app.docker_auto_update == 'packages':
-			policies = ['cn=appcenter-update-packages,cn=policies,%s' % ucr.get('ldap/base')]
-		elif app.docker_auto_update == 'release':
-			policies = ['cn=appcenter-update-release,cn=policies,%s' % ucr.get('ldap/base')]
+		policies = ['cn=app-release-update,cn=policies,%s' % ucr.get('ldap/base'), 'cn=app-update-schedule,cn=policies,%s' % ucr.get('ldap/base')]
 		obj = create_object_if_not_exists('computers/%s' % app.docker_server_role, lo, pos, name=hostname, description=description, domain=domain, password=password, objectFlag='docker', policies=policies)
 		ucr_update(ucr, {app.ucr_hostdn_key: obj.dn})
 		return obj.dn, password

@@ -32,12 +32,13 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import re
 from fnmatch import fnmatch
 
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.actions import UniventionAppAction
-from univention.appcenter.app import AppManager
+from univention.appcenter.app import App, AppManager
 from univention.appcenter.udm import get_app_ldap_object
 from univention.appcenter.utils import flatten
 
@@ -77,7 +78,13 @@ class List(UniventionAppAction):
 		apps = AppManager.get_all_apps()
 		ucr = ConfigRegistry()
 		ucr.load()
+		blacklist = re.split('\s*,\s*', ucr.get('repository/app_center/blacklist') or '')
+		whitelist = re.split('\s*,\s*', ucr.get('repository/app_center/whitelist') or '')
 		for app in apps:
+			if blacklist or whitelist:
+				app = App.from_ini(app.get_ini_file(), locale=False)
+				if cls._blacklist_includes_app(blacklist, app) and not cls._blacklist_includes_app(whitelist, app):
+					continue
 			if app.end_of_life and not app.is_installed():
 				continue
 			if ucr.is_true('ad/member') and app.ad_member_issue_hide:
@@ -86,6 +93,21 @@ class List(UniventionAppAction):
 				continue
 			ret.append(app)
 		return ret
+
+	@classmethod
+	def _blacklist_includes_app(cls, the_list, app):
+		if not the_list:
+			return False
+		if '*' in the_list:
+			return True
+		the_list = [item.lower() for item in the_list]
+		if app.id.lower() in the_list:
+			return True
+		if app.name.lower() in the_list:
+			return True
+		if any(category.lower() in the_list for category in app.categories):
+			return True
+		return False
 
 	def _list(self, pattern):
 		ret = []

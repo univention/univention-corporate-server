@@ -54,7 +54,7 @@ from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response, sanitize, sanitize_list, multi_response, require_password
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
-from univention.updater import UniventionUpdater
+from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.config_registry
 import univention.management.console as umc

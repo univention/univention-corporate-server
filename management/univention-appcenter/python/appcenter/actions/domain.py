@@ -97,29 +97,33 @@ class Domain(CredentialsAction):
 		ucr = ConfigRegistry()
 		ucr.load()
 		ret = []
+		app_ldap_objects = search_objects('appcenter/app', lo, pos)
 		for app in apps:
 			if not app:
 				ret.append(None)
 			else:
 				app_dict = get.to_dict(app)
-				app_dict['installations'] = self.get_installations(app, hosts, lo, pos, ucr)
+				app_dict['installations'] = self._get_installations(app, hosts, app_ldap_objects, lo, pos, ucr)
+				app_dict['is_installed_anywhere'] = any(inst['version'] for inst in app_dict['installations'].itervalues())
+				app_dict['fully_loaded'] = True
 				ret.append(app_dict)
 		return ret
 
-	def get_installations(self, app, hosts, lo, pos, ucr):
+	def _get_installations(self, app, hosts, app_ldap_objects, lo, pos, ucr):
 		ret = {}
-		container = 'cn=%s,cn=apps,cn=univention,%s' % (app.id, ucr.get('ldap/base'))
-		app_objects = search_objects('appcenter/app', lo, pos, container)
 		for host in hosts:
 			role = host.info.get('serverRole')[0]
 			description = host.info.get('description')
 			ip = host.info.get('ip')  # list
 			version = None
 			candidate_version = AppManager.find(app.id, latest=True).version
-			for app_obj in app_objects:
-				if host.info.get('fqdn') in app_obj.info.get('server', []):
-					version = app_obj.info.get('version')
-					break
+			for app_obj in app_ldap_objects:
+				app_obj_version = app_obj.info.get('version')
+				app_obj_id = app_obj.info.get('id').rstrip('_%s' % app_obj_version)
+				if app_obj_id == app.id:
+					if host.info.get('fqdn') in app_obj.info.get('server', []):
+						version = app_obj.info.get('version')
+						break
 			ret[host['name']] = {
 				'version': version,
 				'candidate_version': candidate_version,

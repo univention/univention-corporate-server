@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 
@@ -40,13 +40,14 @@ joinscript_init
 eval "$(ucr shell ldap/base)"
 
 udm policies/release create "$@" --ignore_exists \
-	--set name=appcenter-update-packages \
-	--set activate=FALSE \
+	--set name=app-release-update \
+	--set activate=TRUE \
 	--position "cn=policies,$ldap_base" || die
 
-udm policies/release create "$@" --ignore_exists \
-	--set name=appcenter-update-release \
-	--set activate=TRUE \
+udm policies/maintenance create "$@" --ignore_exists \
+	--set name=app-update-schedule \
+	--set cron=1 \
+	--set hour=1 \
 	--position "cn=policies,$ldap_base" || die
 
 joinscript_save_current_version

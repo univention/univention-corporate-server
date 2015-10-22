@@ -1,3 +1,11 @@
+univention-appcenter (5.0.6-67) unstable; urgency=medium
+
+  * Bug #39204: Improved update policies for docker containers
+  * UMC Startup optimization
+  * univention-updater code change fixes
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Oct 2015 00:05:31 +0200
+
 univention-appcenter (5.0.6-66) unstable; urgency=medium
 
   Bug #39525:
