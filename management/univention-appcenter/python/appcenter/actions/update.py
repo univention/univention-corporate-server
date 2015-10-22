@@ -51,7 +51,7 @@ from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.app import AppManager, CACHE_DIR, LOCAL_ARCHIVE
-from univention.appcenter.actions import UniventionAppAction, possible_network_error
+from univention.appcenter.actions import UniventionAppAction, possible_network_error, Abort
 from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify
 
 
@@ -284,9 +284,11 @@ class Update(UniventionAppAction):
 		if detached_sig_filename:
 			(rc, gpg_error) = gpg_verify("-", detached_sig_path, content=index_json_gz)
 			if rc:
-				self.fatal('Signature verification for %s failed' % (index_json_gz_filename,))
+				message = 'Signature verification for %s failed' % (index_json_gz_filename,)
+				self.fatal(message)
 				if gpg_error:
 					self.fatal(gpg_error)
+				raise Abort(message)
 
 		index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
 		with open(index_json_gz_path, 'wb') as f:

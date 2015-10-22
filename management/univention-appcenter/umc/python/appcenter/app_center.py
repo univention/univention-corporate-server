@@ -84,7 +84,7 @@ from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 from univention.appcenter.app import AppManager
-from univention.appcenter.actions import get_action
+from univention.appcenter.actions import get_action, Abort
 
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
@@ -641,9 +641,11 @@ class Application(object):
 		if detached_sig_filename:
 			(rc, gpg_error) = gpg_verify("-", detached_sig_path, content=index_json_gz)
 			if rc:
-				MODULE.error('Signature verification for %s failed' % (index_json_gz_filename,))
+				message = 'Signature verification for %s failed' % (index_json_gz_filename,)
+				MODULE.error(message)
 				if gpg_error:
 					MODULE.error(gpg_error)
+				raise Abort(message)
 
 		index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
 		with open(index_json_gz_path, 'wb') as f:

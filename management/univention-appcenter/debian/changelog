@@ -1,3 +1,9 @@
+univention-appcenter (5.0.6-63) unstable; urgency=medium
+
+  * Bug #39591: raise Abort() in case verification fails
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2015 20:02:19 +0200
+
 univention-appcenter (5.0.6-62) unstable; urgency=low
 
   * Bug #39524: added css rules for Carousel transitions
