@@ -1,5 +1,9 @@
 import univention.Apps
 
+// Build parameters are exposed as environment variables in Jenkins.
+// A seed job build parameter named FOO is available as FOO variable
+// in the DSL scripts. See the section about environment variables above.
+
 // get location (and UCS version) from job name 
 def loc = new File(JOB_NAME)
 def workdir = loc.getParent()
@@ -38,6 +42,11 @@ test_apps.keySet()each { app ->
     logRotator(-1, 5, -1, -1)
     description("run job for ${app}")
     concurrentBuild()
+
+    // build parameters
+    parameters {
+      booleanParam('HALT', true, 'uncheck to disable shutdown of ec2 instances')
+    }
     
     // svn
     scm {
@@ -72,6 +81,7 @@ test_apps.keySet()each { app ->
       cmd = """
 cfg="examples/jenkins/autotest-10*-app-\${Systemrolle}-\${SambaVersion}.cfg"
 sed -i "s|APP_ID|${app}|g" \$cfg
+sed -i "s|%PARAM_HALT%|$HALT|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg"""
       shell(cmd)
     }
