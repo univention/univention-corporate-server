@@ -81,7 +81,7 @@ test_apps.keySet()each { app ->
       cmd = """
 cfg="examples/jenkins/autotest-10*-app-\${Systemrolle}-\${SambaVersion}.cfg"
 sed -i "s|APP_ID|${app}|g" \$cfg
-sed -i "s|%PARAM_HALT%|$HALT|g" \$cfg
+sed -i "s|%PARAM_HALT%|\$HALT|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg"""
       shell(cmd)
     }
