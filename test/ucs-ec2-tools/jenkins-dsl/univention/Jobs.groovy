@@ -1,6 +1,6 @@
 package univention
 
-import javaposse.jobdsl.dsl.Job
+import javaposse.jobdsl.dsl.Job.matrixJob
 
 // 1. Make a directory at the same level as the DSL called "utilities"
 // 2. Make a file called MyUtilities.groovy in the utilities directory
