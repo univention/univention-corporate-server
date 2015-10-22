@@ -34,14 +34,85 @@ test_apps.keySet()each { app ->
   folder(workdir + '/apps/' + app)
   
   // create matrix job App Autotest MultiEnv
-  job_name = workdir + '/apps/' + app + '/App Autotest MultiEnv'
+  path = workdir + '/apps/' + app
+
+  // create jobs
+  createAppAutotestMultiEnv(path, app, verion, patch_level, test_apps[app].get('roles'))
+  //createAppAutotestSingleEnv(....
+  //...
+
+
+//  matrixJob(job_name) {
+//    
+//    // config
+//    quietPeriod(60)
+//    logRotator(-1, 5, -1, -1)
+//    description("run job for ${app}")
+//    concurrentBuild()
+//
+//    // build parameters
+//    parameters {
+//      booleanParam('HALT', true, 'uncheck to disable shutdown of ec2 instances')
+//    }
+//    
+//    // svn
+//    scm {
+//      svn {
+//        checkoutStrategy(SvnCheckoutStrategy.CHECKOUT)
+//        location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-${patch_level}/test/ucs-ec2-tools") {
+//          credentials('50021505-442b-438a-8ceb-55ea76d905d3')    
+//        }
+//        configure { scmNode ->
+//          scmNode / browser(class: 'hudson.plugins.websvn2.WebSVN2RepositoryBrowser') {
+//            url('https://billy.knut.univention.de/websvn/listing.php/?repname=dev')
+//            baseUrl('https://billy.knut.univention.de/websvn/')
+//            repname('repname=dev')      
+//          }
+//        }
+//      }
+//    }
+//    
+//    // axies
+//    axes {
+//      text('Systemrolle', test_apps[app].get('roles'))
+//      text('SambaVersion', 's3', 's4')
+//    }
+//    
+//    // wrappers
+//    wrappers {
+//      preBuildCleanup()
+//    }
+//    
+//    // build step
+//    steps {
+//      cmd = """
+//cfg="examples/jenkins/autotest-10*-app-\${Systemrolle}-\${SambaVersion}.cfg"
+//sed -i "s|APP_ID|${app}|g" \$cfg
+//sed -i "s|%PARAM_HALT%|\$HALT|g" \$cfg
+//exec ./ucs-ec2-create -c \$cfg"""
+//      shell(cmd)
+//    }
+//    
+//    // post build
+//    publishers {
+//      archiveArtifacts('**/autotest-*.log,**/ucs-test.log')
+//      archiveJunit('**/test-reports/**/*.xml')
+//    }
+//  }
+}
+
+
+def createAppAutotestMultiEnv(String path, String app, String verion, String patch_level, List roles) {
+
+  def desc = 'App Autotest MultiEnv'
+  def job_name = path + '/' + desc
 
   matrixJob(job_name) {
     
     // config
     quietPeriod(60)
     logRotator(-1, 5, -1, -1)
-    description("run job for ${app}")
+    description("run ${desc} for ${app}")
     concurrentBuild()
 
     // build parameters
@@ -68,7 +139,7 @@ test_apps.keySet()each { app ->
     
     // axies
     axes {
-      text('Systemrolle', test_apps[app].get('roles'))
+      text('Systemrolle', roles)
       text('SambaVersion', 's3', 's4')
     }
     
@@ -93,4 +164,5 @@ exec ./ucs-ec2-create -c \$cfg"""
       archiveJunit('**/test-reports/**/*.xml')
     }
   }
+
 }
