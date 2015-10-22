@@ -373,8 +373,8 @@ class App(object):
 	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
 	component_id = AppAttribute(required=True)
-	logo = AppAttribute(regex='^[a-zA-Z0-9-_]+\.svg$', required=False)  # TODO: should be required
-	logo_detail_page = AppAttribute(regex='^[a-zA-Z0-9-_]+\.svg$', required=False)
+	logo = AppAttribute(regex='^.+\.svg$', required=False)  # TODO: should be required
+	logo_detail_page = AppAttribute(regex='.+\.svg$', required=False)
 
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)

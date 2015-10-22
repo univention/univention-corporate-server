@@ -90,6 +90,10 @@ class AppcenterApp(object):
 		self.id = id
 		self.ucs_version = ucs_version
 		self.meta_inf_dir = meta_inf_dir
+		self.app_dir = ''
+		if os.path.exists(os.path.join(self.meta_inf_dir, self.id)):
+			# since UCS 4.1 we have for each app a separate subdirectory
+			self.app_dir = self.id
 		self.components_dir = components_dir
 		if server.endswith('/'):
 			server = server[:-1]
@@ -97,12 +101,18 @@ class AppcenterApp(object):
 
 	def get_metainf_url(self):
 		return '%s/meta-inf/%s/' % (self.server, self.ucs_version)
+		if self.app_dir:
+			url = '%s/%s' % (url, self.app_dir)
+		return
 
 	def get_repository_url(self):
 		return '%s/univention-repository/%s/maintained/component/%s/' % (self.server, self.ucs_version, self.name)
 
-	def _meta_url(self, filename):
-		return urllib2.urlparse.urljoin(self.get_metainf_url(), filename)
+	def _meta_url(self, filename, with_app_dir=True):
+		path = filename
+		if with_app_dir:
+			path = os.path.join(self.app_dir, filename)
+		return urllib2.urlparse.urljoin(self.get_metainf_url(), path)
 
 	def _repository_url(self, filename):
 		return urllib2.urlparse.urljoin(self.get_repository_url(), filename)
@@ -110,25 +120,30 @@ class AppcenterApp(object):
 	def _components_dir(self, filename):
 		return os.path.join(self.components_dir, self.name, filename)
 
-	def _meta_inf_dir(self, filename):
-		return os.path.join(self.meta_inf_dir, filename)
+	def _meta_inf_dir(self, filename, with_app_dir=True):
+		path = self.meta_inf_dir
+		if with_app_dir:
+			path = os.path.join(path, self.app_dir)
+		return os.path.join(path, filename)
 
 	def get_meta_file(self):
-		return self._meta_inf_dir('%s.meta' % self.name)
+		return self._meta_inf_dir('%s.meta' % self.id, False)
 
 	def get_meta_url(self):
-		return self._meta_url('%s.meta' % self.id)
+		return self._meta_url('%s.meta' % self.id, False)
 
 	def get_ini_file(self):
-		return self._meta_inf_dir('%s.ini' % self.id)
+		return self._meta_inf_dir('%s.ini' % self.name)
 
 	def get_ini_url(self):
 		return self._meta_url('%s.ini' % self.name)
 
 	def get_png_file(self):
+		# since UCS 4.1 deprecated
 		return self._meta_inf_dir('%s.png' % self.name)
 
 	def get_png_url(self):
+		# since UCS 4.1 deprecated
 		return self._meta_url('%s.png' % self.name)
 
 	def file_info(self, name, url, filename):
@@ -145,14 +160,14 @@ class AppcenterApp(object):
 				yield self.file_info(special_file, url, filename)
 
 		# Adding logo files
-		config = ConfigParser()
+		config = ConfigParser.ConfigParser()
 		config.read(self.get_ini_file())
 		for ikey in ('Logo', 'LogoDetailPage'):
 			if config.has_option('Application', ikey):
 				basename = config.get('Application', ikey)
 				filename = self._meta_inf_dir(basename)
 				url = self._meta_url(basename)
-				yield self.file_info(ikey, url, filename)
+				yield self.file_info(ikey.lower(), url, filename)
 
 		# Adding LICENSE_AGREEMENT and localised versions like LICENSE_AGREEMENT_DE
 		for readme_filename in glob(self._components_dir('LICENSE_AGREEMENT*')):
@@ -208,10 +223,11 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 				apps = {}
 				for root, dirs, files in os.walk(meta_inf_dir):
 					for filename in files:
+						path = os.path.join(root, filename)
 						appname = check_ini_file(filename)
 						if not appname:
 							continue
-						parser = _read_ini_file(filename)
+						parser = _read_ini_file(path)
 						appid = _get_from_parser(parser, 'Application', 'ID')
 						if not appid:
 							continue

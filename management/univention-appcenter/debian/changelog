@@ -1,6 +1,8 @@
 univention-appcenter (5.0.6-66) unstable; urgency=medium
 
-  * Bug #39525: adjust dict key in index.json for app logos
+  Bug #39525:
+  * Implement handling for new meta-inf file structure
+  * Adjust dict key in index.json for app logos
 
  -- Alexander Kläser <klaeser@univention.de>  Thu, 22 Oct 2015 21:03:51 +0200
 
