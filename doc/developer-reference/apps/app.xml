@@ -156,7 +156,7 @@
 			application! To workaround this issue, the vendor has to do the
 			following: In a first step he has to grab the packages from the
 			unmaintained repository (see for example <ulink
-				url="http://apt.software-univention.de/4.0/unmaintained/" />) and
+				url="https://updates.software-univention.de/4.1/unmaintained/" />) and
 			bundle it with his own packages so that they are put into the app's own
 			repository. In a second step he should inform Univention about these
 			packages. We will probably move them into maintained so that this
