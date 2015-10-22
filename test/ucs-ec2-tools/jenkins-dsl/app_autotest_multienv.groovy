@@ -37,7 +37,7 @@ test_apps.keySet()each { app ->
   path = workdir + '/apps/' + app
 
   // create jobs
-  createAppAutotestMultiEnv(path, app, verion, patch_level, test_apps[app].get('roles'))
+  createAppAutotestMultiEnv(path, app, version, patch_level, test_apps[app].get('roles'))
   //createAppAutotestSingleEnv(....
   //...
 
@@ -102,7 +102,7 @@ test_apps.keySet()each { app ->
 }
 
 
-def createAppAutotestMultiEnv(String path, String app, String verion, String patch_level, List roles) {
+def createAppAutotestMultiEnv(String path, String app, String version, String patch_level, List roles) {
 
   def desc = 'App Autotest MultiEnv'
   def job_name = path + '/' + desc
