@@ -678,8 +678,10 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The App Center checks the digital checksum of docker images hosted
-					on <uri>docker.software-univention.de</uri> before downloading them
-					(<u:bug>39591</u:bug>).
+					on <uri>docker.software-univention.de</uri> before downloading them.
+					The integrity of the container maintainer scripts are verified in
+					this manner as well
+					(<u:bug>39194</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The timezone in Docker containers is now set to the same as the host.
