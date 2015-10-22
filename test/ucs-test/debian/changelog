@@ -1,3 +1,10 @@
+ucs-test (6.0.10-12) unstable; urgency=low
+
+  * Bug #39373: fixed 29_user_uidNumber_and_group_gidNumber_collision for
+    users without uidNumber attribute
+
+ -- Eduard Mai <mai@univention.de>  Thu, 22 Oct 2015 14:20:35 +0200
+
 ucs-test (6.0.10-11) unstable; urgency=medium
 
   * Bug #39609: Avoid unnecessary error message in 26check_logfiles_general
