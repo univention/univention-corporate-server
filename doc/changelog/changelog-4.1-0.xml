@@ -483,6 +483,9 @@
 					The SAML join script has been moved from <package>univention-saml-schema</package> to
 					<package>univention-saml</package> (<u:bug>39472</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A required password change, expired passwords, locked and disabled accounts are detected by the SAML login and the user is informed, while login is denied (<u:bug>39181</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 		<section id="changelog:service:mail">
