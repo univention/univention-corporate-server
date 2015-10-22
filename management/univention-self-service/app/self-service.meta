@@ -1,5 +1,5 @@
 [Application]
-ID=self-service-changepassword
+ID=self-service
 BaseApp=
 LogoDetailPage=Univention_catalouge_logo.svg
 
