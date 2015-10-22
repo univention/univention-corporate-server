@@ -1,3 +1,10 @@
+univention-appcenter (5.0.6-64) unstable; urgency=medium
+
+  * Bug #39591: Abort doesn't trigger any message on the user interface
+    So raise ugly Exception instead. Better safe than sorry.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2015 20:14:12 +0200
+
 univention-appcenter (5.0.6-63) unstable; urgency=medium
 
   * Bug #39591: raise Abort() in case verification fails
