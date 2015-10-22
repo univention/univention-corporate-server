@@ -1,0 +1,61 @@
+{
+	"title_WRONGUSERPASS": {
+		"de": "Nutzername oder Passwort falsch"
+	}
+	"descr_WRONGUSERPASS": {
+		"de": "Entweder es konnte kein Nutzer mit dem angegebenen Nutzernamen gefunden werden oder das Passwort ist falsch. \u00dcberpr\u00fcfen Sie die Zugangsdaten und probieren Sie es nochmal"
+	"title_LDAP_ACCDISABLED": {
+		"de": "Account deaktiviert"
+	},
+	"descr_LDAP_ACCDISABLED": {
+		"de": "Der LDAP Account ist deaktiviert, Login verweigert"
+	},
+	"title_LDAP_ACCEXPIRED": {
+		"de": "Account abgelaufen"
+	},
+	"descr_LDAP_ACCEXPIRED": {
+		"de": "Der LDAP Account ist abgelaufen, Login verweigert"
+	},
+	"title_KRB_ACCEXPIRED": {
+		"de": "Account abgelaufen"
+	},
+	"descr_KRB_ACCEXPIRED": {
+		"de": "Der Kerberos Account ist abgelaufen, Login verweigert"
+	},
+	"title_SAMBA_ACCEXPIRED": {
+		"de": "Account abgelaufen"
+	},
+	"descr_SAMBA_ACCEXPIRED": {
+		"de": "Der Samba Account ist abgelaufen, Login verweigert"
+	},
+	"title_LDAP_PWCHANGE": {
+		"de": "Passwortänderung notwendig"
+	},
+	"descr_LDAP_PWCHANGE": {
+		"de": "Eine Änderung des LDAP Passworts ist notwendig, Login verweigert"
+	},
+	"title_KRB_PWCHANGE": {
+		"de": "Passwortänderung notwendig"
+	},
+	"descr_KRB_PWCHANGE": {
+		"de": "Eine Änderung des Kerberos Passworts ist notwendig, Login verweigert"
+	},
+	"title_SAMBA_PWCHANGE": {
+		"de": "Passwortänderung notwendig"
+	},
+	"descr_SAMBA_PWCHANGE": {
+		"de": "Eine Änderung des Samba Passworts ist notwendig, Login verweigert"
+	},
+	"title_SAMBA_ACCLOCKED": {
+		"de": "Account gesperrt"
+	},
+	"descr_SAMBA_ACCLOCKED": {
+		"de": "Der Samba Account ist gesperrt, Login verweigert"
+	},
+	"title_KRB_ACCLOCKED": {
+		"de": "Account gesperrt"
+	},
+	"descr_KRB_ACCLOCKED": {
+		"de": "Der Kerberos Account ist gesperrt, Login verweigert"
+	}
+}

@@ -32,7 +32,7 @@ $config = array(
 
 	// LDAP authentication source.
 	'univention-ldap' => array(
-		'ldap:LDAP',
+		'uldap:uLDAP',
 
 		// Give the user an option to save their username for future login attempts
 		// And when enabled, what should the default be, to save the username or not
@@ -49,10 +49,16 @@ $config = array(
 from univention.lib.misc import getLDAPURIs
 hostname = getLDAPURIs()
 
+expiry_attributes = "'shadowExpire', 'sambaPwdLastSet', 'shadowLastChange', 'shadowMax', 'sambaKickoffTime', 'krb5ValidEnd', 'krb5PasswordEnd', 'sambaAcctFlags'"
+
+config_attributes = configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\'')
+
+attributes = "%s, %s" % (config_attributes, expiry_attributes)
+
 print "	'hostname'		=> '%s'," % hostname
 print "	'enable_tls'		=> %s," % configRegistry.get('saml/idp/ldap/enable_tls', 'true')
 print "	'debug' 		=> %s," % configRegistry.get('saml/idp/ldap/debug', 'FALSE')
-print "	'attributes'		=> array(%s)," % configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\'')
+print "	'attributes'		=> array(%s)," % attributes
 print "	'search.base'		=> '%s'," % configRegistry.get('ldap/base', 'null')
 print "	'search.attributes' 	=> array(%s)," % configRegistry.get('saml/idp/ldap/search_attributes', '\'uid\'')
 

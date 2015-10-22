@@ -25,7 +25,7 @@ if (strlen($this->data['username']) > 0) {
 		echo('<p>' . htmlspecialchars($login_user_pass_text) . '</p>');
 		?>
 	<?php
-	if (isset($this->data['SPMetadata']['description'])) {
+	if (empty($this->data['SPMetadata']['description'])) {
 		$description = $this->data['SPMetadata']['description'];
 		if (is_array($description)) {
 			$description = implode($this->data['SPMetadata']['description']);
@@ -134,8 +134,8 @@ if ($this->data['errorcode'] !== NULL) {
 if ($this->data['errorcode'] !== NULL) {
 ?>
 	<div class="errorbox" id="umcLoginMessages" widgetid="umcLoginMessages">
-		<h1><?php echo htmlspecialchars($this->t('{errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?></h1>
-		<p><?php echo htmlspecialchars($this->t('{errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?></p>
+		<h1><?php echo htmlspecialchars($this->t('{univentiontheme:errors:title_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?></h1>
+		<p><?php echo htmlspecialchars($this->t('{univentiontheme:errors:descr_' . $this->data['errorcode'] . '}', $this->data['errorparams'])); ?></p>
 	</div>
 <?php
 }
