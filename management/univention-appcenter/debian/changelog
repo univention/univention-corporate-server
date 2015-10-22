@@ -1,3 +1,9 @@
+univention-appcenter (5.0.6-61) unstable; urgency=medium
+
+  * Bug #39591: Don't remove index.json.gz and index.json.gz.gpg from cache
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2015 19:08:42 +0200
+
 univention-appcenter (5.0.6-60) unstable; urgency=low
 
   * Bug #39524: added function to embed youtube videos in the 

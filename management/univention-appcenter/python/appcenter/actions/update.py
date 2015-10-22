@@ -313,7 +313,8 @@ class Update(UniventionAppAction):
 					# ask to re-download this file
 					files_to_download.append((remote_url, filename, remote_md5sum))
 					something_changed = True
-		files_in_json_file.extend(('index.json.gz', 'index.json.gz.gpg'))
+		for index_filename in ('index.json.gz', 'index.json.gz.gpg'):
+			files_in_json_file.append(os.path.join(CACHE_DIR, index_filename))
 		# remove those files that apparently do not exist on server anymore
 		for cached_filename in glob(os.path.join(CACHE_DIR, '*')):
 			if cached_filename not in files_in_json_file:

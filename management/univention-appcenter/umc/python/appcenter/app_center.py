@@ -678,7 +678,8 @@ class Application(object):
 					files_to_download.append((remote_url, filename, remote_md5sum))
 					something_changed = True
 		# remove those files that apparently do not exist on server anymore
-		files_in_json_file.extend(('index.json.gz', 'index.json.gz.gpg'))
+		for index_filename in ('index.json.gz', 'index.json.gz.gpg'):
+			files_in_json_file.append(os.path.join(CACHE_DIR, index_filename))
 		for cached_filename in glob(os.path.join(CACHE_DIR, '*')):
 			if cached_filename not in files_in_json_file:
 				MODULE.info('Deleting obsolete %s' % cached_filename)
