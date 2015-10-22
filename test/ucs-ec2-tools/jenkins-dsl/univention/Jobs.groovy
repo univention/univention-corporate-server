@@ -1,5 +1,22 @@
 package univention
 
+import javaposse.jobdsl.dsl.Job
+
+// 1. Make a directory at the same level as the DSL called "utilities"
+// 2. Make a file called MyUtilities.groovy in the utilities directory
+// 3. Put the following contents in it:
+//   import javaposse.jobdsl.dsl.Job
+//   class MyUtilities {
+//     def addEnterpriseFeature(Job job) {
+//         job.with {
+//           description('Arbitrary feature')
+//        }
+//     }
+//   }
+// 4. Then from the DSL, add something like this:
+//   import utilities.MyUtilities
+//   MyUtilities.addEnterpriseFeature(job)
+
 class Jobs {
 
 	def appAutotestMultiEnv(String path, String version, String patch_level, String app, List roles) {
