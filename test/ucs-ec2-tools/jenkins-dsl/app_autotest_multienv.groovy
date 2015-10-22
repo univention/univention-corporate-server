@@ -2,30 +2,29 @@
 // but should be checked out from svn
 import univention.Apps
 
-apps = new Apps().getApps('4.1', test=true)
+// get location (and UCS version) from job name 
+def loc = new File(JOB_NAME)
+def workdir = loc.getParent()
 
+// better get version from JOB_NAME
+def version = '4.1'
+def patch_level = '0'
+
+// get apps from testing, without ucs components
+apps = new Apps().getApps(version, test=true, ucs_components=false)
+
+// just for testing, print found apps, but create jobs only for zarafa and dudle
 apps.keySet().each { app ->
   println app
   println apps[app].get('roles')
 }
-
-// just for testing
 def test_apps = [:]
 test_apps['zarafa'] = [:]
 test_apps['zarafa']['roles'] = ['master', 'backup', 'slave', 'memberserver']
 test_apps['dudle'] = [:]
 test_apps['dudle']['roles'] = ['master', 'backup']
 
-// get location (and UCS version) from job name 
-def loc = new File(JOB_NAME)
-workdir = loc.getParent()
-name = loc.getName()
-
-//hudson.FilePath workspace = hudson.model.Executor.currentExecutor().getCurrentWorkspace()
-//println workspace
-
-
-// create matrix job for every app (only)
+// create matrix job for every app
 test_apps.keySet()each { app ->
   
   // create folders
@@ -46,7 +45,7 @@ test_apps.keySet()each { app ->
     scm {
       svn {
         checkoutStrategy(SvnCheckoutStrategy.CHECKOUT)
-        location('svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-4.1/ucs-4.1-0/test/ucs-ec2-tools') {    
+        location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-${patch_level}/test/ucs-ec2-tools") {
           credentials('50021505-442b-438a-8ceb-55ea76d905d3')    
         }
         configure { scmNode ->
