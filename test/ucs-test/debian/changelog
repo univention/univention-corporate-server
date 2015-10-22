@@ -1,3 +1,9 @@
+ucs-test (6.0.10-13) unstable; urgency=medium
+
+  * dockertest.py: create rating.ini (Bug #38891)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Oct 2015 15:30:01 +0200
+
 ucs-test (6.0.10-12) unstable; urgency=low
 
   * Bug #39373: fixed 29_user_uidNumber_and_group_gidNumber_collision for

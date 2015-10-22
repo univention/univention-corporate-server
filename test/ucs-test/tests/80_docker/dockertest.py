@@ -306,6 +306,9 @@ System services=Systemdienste
 UCS components=UCS-Komponenten
 Virtualization=Virtualisierung''')
 			f.close()
+			f = open('/var/www/meta-inf/rating.ini', 'w')
+			f.write('# rating stuff\n')
+			f.close()
 
 		handler_set([
 			'update/secure_apt=no',
