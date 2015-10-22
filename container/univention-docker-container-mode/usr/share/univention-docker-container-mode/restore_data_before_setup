@@ -35,6 +35,7 @@ import os
 import shutil
 import string
 import univention.config_registry
+import traceback
 
 BLACKLIST_UCR_VARIABLES = [
 	'version/version',
@@ -98,11 +99,18 @@ if __name__ == '__main__':
 	conf_dir = '/var/lib/univention-appcenter/apps/%s/conf/' % opts.app
 	source_dir = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
 
-	restore_files(source_dir)
+	try:
+		restore_files(source_dir)
 
-	print '** Restore forced UCR layer:'
-	restore_ucr_layer(os.path.join(conf_dir, 'base-forced.conf'), {'force': True})
-	print '** Restore ldap UCR layer'
-	restore_ucr_layer(os.path.join(conf_dir, 'base-ldap.conf'), {'ldap-policy': True})
-	print '** Restore normal UCR layer:'
-	restore_ucr_layer(os.path.join(conf_dir, 'base.conf'), {})
+		print '** Restore forced UCR layer:'
+		restore_ucr_layer(os.path.join(conf_dir, 'base-forced.conf'), {'force': True})
+		print '** Restore ldap UCR layer'
+		restore_ucr_layer(os.path.join(conf_dir, 'base-ldap.conf'), {'ldap-policy': True})
+		print '** Restore normal UCR layer:'
+		restore_ucr_layer(os.path.join(conf_dir, 'base.conf'), {})
+	except:
+		if opts.error_file:
+			error_file = open(opt.error_file, 'a+')
+			traceback.print_exc(file=error_file)
+			error_file.close()
+		raise

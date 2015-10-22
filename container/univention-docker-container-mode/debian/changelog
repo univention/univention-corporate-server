@@ -1,3 +1,10 @@
+univention-docker-container-mode (1.0.7-1) unstable; urgency=medium
+
+  * store_data + restore_data_before_setup: dump traceback to error file
+    (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Oct 2015 15:21:21 +0200
+
 univention-docker-container-mode (1.0.6-1) unstable; urgency=medium
 
   * restore_data_before_setup: check if files and directories exist

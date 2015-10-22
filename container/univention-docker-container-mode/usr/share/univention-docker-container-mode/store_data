@@ -35,6 +35,7 @@ import glob
 import os
 import shutil
 import string
+import traceback
 
 
 # Helper function to copy all meta data of a file or directory
@@ -92,12 +93,19 @@ if __name__ == '__main__':
 	# automatically after the new container has been started
 	store = '/var/lib/univention-appcenter/apps/%s/conf/files' % opts.app
 
-	for f in glob.glob('/etc/univention/base*conf'):
-		print 'cp %s %s' % (f, dest)
-		shutil.copy(f, dest)
-	copy_files('/etc/*.secret', store)
-	copy_recursive('/etc/univention/ssl', store)
-	copy_recursive('/var/univention-join', store)
-	copy_recursive('/var/lib/univention-ldap/', store)
-	copy_recursive('/var/lib/univention-directory-listener/', store)
-	copy_recursive('/etc/univention/connector', store)
+	try:
+		for f in glob.glob('/etc/univention/base*conf'):
+			print 'cp %s %s' % (f, dest)
+			shutil.copy(f, dest)
+		copy_files('/etc/*.secret', store)
+		copy_recursive('/etc/univention/ssl', store)
+		copy_recursive('/var/univention-join', store)
+		copy_recursive('/var/lib/univention-ldap/', store)
+		copy_recursive('/var/lib/univention-directory-listener/', store)
+		copy_recursive('/etc/univention/connector', store)
+	except:
+		if opts.error_file:
+			error_file = open(opt.error_file, 'a+')
+			traceback.print_exc(file=error_file)
+			error_file.close()
+		raise
