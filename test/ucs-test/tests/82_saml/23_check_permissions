@@ -13,7 +13,7 @@
 
 check_perm -e /etc/idp-ldap-user.secret 0640 root "DC Backup Hosts" || RETVAL=110
 
-for file in /etc/simplesamlphp/authsources.php /etc/simplesamlphp/ucs-sso.ucs.local-idp-certificate.key; do
+for file in /etc/simplesamlphp/authsources.php /etc/simplesamlphp/ucs-sso.$(ucr get domainname)-idp-certificate.key; do
 	check_perm -e "$file" 0640 root samlcgi || RETVAL=110
 done
 
