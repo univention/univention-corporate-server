@@ -152,7 +152,7 @@ class AppcenterApp(object):
 				basename = config.get('Application', ikey)
 				filename = self._meta_inf_dir(basename)
 				url = self._meta_url(basename)
-				yield self.file_info(basename, url, filename)
+				yield self.file_info(ikey, url, filename)
 
 		# Adding LICENSE_AGREEMENT and localised versions like LICENSE_AGREEMENT_DE
 		for readme_filename in glob(self._components_dir('LICENSE_AGREEMENT*')):
