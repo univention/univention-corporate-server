@@ -374,7 +374,7 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			Computerrichtlinien werden erstmalig beim Systemstart ausgewertet, Benutzerrichtlinien bei
+			Computerrichtlinien werden erstmals beim Systemstart ausgewertet, Benutzerrichtlinien bei
 			der Anmeldung. Die Richtlinien werden auch für angemeldete Benutzer/laufende Systeme
 			fortlaufend ausgewertet und aktualisiert (in der Grundeinstellung alle 90-120 Minuten,
 			der Zeitraum wird zur Vermeidung von Lastspitzen nach dem Zufallsprinzip variiert).

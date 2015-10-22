@@ -417,9 +417,9 @@
 	  <section id="school:ref">
 		<title>Referenzen</title>
 		  <itemizedlist>
-			<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
-			<listitem><simpara><ulink url="http://docs.univention.de/ucsschool-manual.html"/> (UCS@school-Handbuch für Administratoren)</simpara></listitem>
-			<listitem><simpara><ulink url="http://docs.univention.de/ucsschool-teacher-manual.html"/> (UCS@school-Handbuch für Lehrer)</simpara></listitem>
+			<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
+			<listitem><simpara><ulink url="https://docs.software-univention.de/ucsschool-manual.html"/> (UCS@school-Handbuch für Administratoren)</simpara></listitem>
+			<listitem><simpara><ulink url="https://docs.software-univention.de/ucsschool-teacher-manual.html"/> (UCS@school-Handbuch für Lehrer)</simpara></listitem>
 			<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/kolab-enterprise/"/> (Kolab Enterprise)</simpara></listitem>
 		  </itemizedlist>
 	  </section>

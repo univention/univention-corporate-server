@@ -662,7 +662,7 @@
 			If the meta data (text file, logo and screenshot) and the packages are
 			ready for upload, they can be put into a file archive (<filename class="extension">.zip</filename> or
 			(preferably) <filename class="extension">.tar.gz</filename>) and uploaded to <ulink
-				url="http://upload.univention.de">http://upload.univention.de</ulink>.
+				url="http://upload.univention.de/"/>.
 			If the archive is larger than 150 MB it has to be split into single parts
 			not larger than 150 MB.
 		</para>
