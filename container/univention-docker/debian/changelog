@@ -1,3 +1,9 @@
+univention-docker (0.1.0-8) unstable; urgency=low
+
+  * exit with 0 if docker is already stopped or started (Bug #39273)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 22 Oct 2015 17:40:54 +0200
+
 univention-docker (0.1.0-7) unstable; urgency=low
 
   * Docker logfile not world readable anymore (Bug #39494).
