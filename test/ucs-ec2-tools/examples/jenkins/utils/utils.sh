@@ -295,6 +295,16 @@ run_tests ()
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
+run_tests_with_parameters()
+{
+	if [ $test_section = 'all_sections' ]
+	then
+		ucs-test -E dangerous -F junit -l "ucs-test.log"
+	else
+		ucs-test -s $test_section -E dangerous -F junit -l "ucs-test.log"
+	fi
+}
+
 run_join_scripts ()
 {
 	local admin_password="${1:-univention}"
@@ -443,3 +453,4 @@ set_administrator_password_for_ucs_test ()
 # vim:set filetype=sh ts=4:
 release_update='public'
 errata_update='testing'
+
