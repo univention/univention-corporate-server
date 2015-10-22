@@ -1605,6 +1605,9 @@ class Application(object):
 	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False, previously_registered_by_dry_run=False):
 		if self.candidate:
 			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install, previously_registered_by_dry_run)
+		if self.get('dockerimage'):
+			MODULE.error('Cannot install a Docker app. Use "univention-app install" or a newer version of the UMC module App Center')
+			return False
 		raised_before_installed = True
 		something_went_wrong_with_ldap = False
 		previously_registered = None

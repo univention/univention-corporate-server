@@ -138,6 +138,16 @@ class Register(CredentialsAction):
 		ret[ucr_base_key % 'version'] = ucr.get(ucr_base_key % 'version', 'current')
 		return ret
 
+	def _unregister_component(self, app):
+		if app.without_repository:
+			self.log('No repository to unregister')
+			return
+		ucr = ConfigRegistry()
+		ucr.load()
+		updates = self._unregister_component_dict(app, ucr)
+		ucr_update(ucr, updates)
+		return updates
+
 	def _unregister_component_dict(self, app, ucr):
 		ret = {}
 		ucr_base_key = self._ucr_component_base(app)

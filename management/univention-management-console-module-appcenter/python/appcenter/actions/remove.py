@@ -52,10 +52,13 @@ class Remove(InstallRemoveUpgrade):
 		self._remove_app(app, args)
 		self.percentage = 45
 		self._unregister_app(app, args)
+		self.percentage = 60
+		if self._unregister_component(app):
+			self._subprocess(['apt-get', 'update'])
 		self.percentage = 70
 		self._unregister_files(app)
 		self.percentage = 80
 		self._call_unjoin_script(app, args)
 
 	def _remove_app(self, app, args):
-		self._apt_get('remove', app.default_packages, 45)
+		self._apt_get('remove', app.default_packages, 45, update=False)
