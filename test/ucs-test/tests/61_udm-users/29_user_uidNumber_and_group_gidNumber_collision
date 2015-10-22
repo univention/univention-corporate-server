@@ -18,6 +18,7 @@ import univention.testing.udm as udm_test
 import univention.admin.modules as udm_modules
 import univention.config_registry
 
+
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 
@@ -30,8 +31,8 @@ def get_max_id():
 	users = udm_modules.lookup('users/user', None, lo, base=base_dn, scope='sub')
 	groups = udm_modules.lookup('groups/group', None, lo, base=base_dn, scope='sub')
 
-	highest_uid = max(int(user['uidNumber']) for user in users)
-	highest_gid = max(int(group['gidNumber']) for group in groups)
+	highest_uid = max(int(user['uidNumber']) for user in users if user['uidNumber'])
+	highest_gid = max(int(group['gidNumber']) for group in groups if group['gidNumber'])
 
 	id_to_collide_with = max(highest_uid, highest_gid) + 2
 
@@ -47,9 +48,7 @@ def consecutive_user_creation():
 
 	if int(lo.getAttr(testcase_user_dn, 'uidNumber')[0]) == id_to_collide_with:
 		return {'failed': True,
-					'msg': "Aquired user uidNumber which collides with a groups \
-gidNumber by consecutivley adding users."
-		}
+					'msg': "Aquired user uidNumber which collides with a groups gidNumber by consecutivley adding users."}
 
 	return {'failed': False,
 			'msg': None}
@@ -64,13 +63,10 @@ def consecutive_group_creation():
 
 	if int(lo.getAttr(testcase_group_dn, 'gidNumber')[0]) == id_to_collide_with:
 		return {'failed': True,
-					'msg': "Aquired a group gidNumber which collides with a \
-users uidNumber by consecutively adding users."
-		}
+					'msg': "Aquired a group gidNumber which collides with a users uidNumber by consecutively adding users."}
 
 	return {'failed': False,
-				'msg': None
-	}
+				'msg': None}
 
 
 def explicit_user_creation():
@@ -81,12 +77,9 @@ def explicit_user_creation():
 		udm.create_user(uidNumber=id_to_collide_with)
 	except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 		return {'failed': False,
-					'msg': None
-		}
+					'msg': None}
 
-	return {'failed': True, 'msg': "Explicitly added a user setting the \
-uidNumber to an existing groups gidNumber."
-	}
+	return {'failed': True, 'msg': "Explicitly added a user setting the uidNumber to an existing groups gidNumber."}
 
 
 def explicit_group_creation():
@@ -97,13 +90,10 @@ def explicit_group_creation():
 		udm.create_group(gidNumber=id_to_collide_with)
 	except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 		return {'failed': False,
-					'msg': None
-		}
+					'msg': None}
 
 	return {'failed': True,
-				'msg': "Explicitly added a group setting the gidNumber to an \
-existing users uidNumber."
-	}
+				'msg': "Explicitly added a group setting the gidNumber to an existing users uidNumber."}
 
 
 if __name__ == '__main__':
@@ -114,8 +104,7 @@ if __name__ == '__main__':
 		test_results.append(explicit_group_creation())
 
 	failure_msg = '\n'.join(
-		result.get('msg') for result in test_results if result.get('failed')
-	)
+		result.get('msg') for result in test_results if result.get('failed'))
 
 	if any(result['failed'] for result in test_results):
 		utils.fail(failure_msg)
