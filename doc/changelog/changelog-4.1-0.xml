@@ -681,6 +681,10 @@
 					on <uri>docker.software-univention.de</uri> before downloading them
 					(<u:bug>39591</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The timezone in Docker containers is now set to the same as the host.
+					(<u:bug>39483</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
