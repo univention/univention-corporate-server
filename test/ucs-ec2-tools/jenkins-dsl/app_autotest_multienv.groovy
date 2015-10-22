@@ -1,5 +1,3 @@
-// /var/lib/jenkins/workspace/Mitarbeiter/Felix Botner/App Autotest MultiEnv Seed/univention
-// but should be checked out from svn
 import univention.Apps
 
 // get location (and UCS version) from job name 
