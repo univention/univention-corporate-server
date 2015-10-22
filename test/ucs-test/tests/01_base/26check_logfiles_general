@@ -19,7 +19,7 @@ NAGIOS=$?
 if [ $SAMBA -eq "0" ] || [ $SAMBA4 -eq "0" ] ; then
 	# /var/log/samba should only be accessible by root:adm . If not, the world-readable
 	# logfiles within the directory are exposed to arbitrary users:
-	if ! check_perm -d /var/log/samba 0750 root adm && ! check_perm -d /var/log/samba 0750 root root; then
+	if ! check_perm -d /var/log/samba 0750 root root && ! check_perm -d /var/log/samba 0750 root adm; then
 		RETVAL=121 # Bug #25164
 	fi
 fi
