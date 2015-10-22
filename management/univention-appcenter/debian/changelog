@@ -1,3 +1,9 @@
+univention-appcenter (5.0.6-59) unstable; urgency=medium
+
+  * Bug #39591: Start at min_port, not at min_port+1
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2015 18:09:44 +0200
+
 univention-appcenter (5.0.6-58) unstable; urgency=medium
 
   * Bug #39591: Make gpg verify work also with missing /root/.gnupg dir

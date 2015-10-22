@@ -333,7 +333,7 @@ class Register(CredentialsAction):
 						max_port = int(ucr.get('appcenter/ports/max'))
 					except (TypeError, ValueError):
 						max_port = 41000
-					ports_taken = set([min_port])
+					ports_taken = set()
 					for app_id, container_port, host_port in app_ports():
 						if host_port < max_port:
 							ports_taken.add(host_port)
