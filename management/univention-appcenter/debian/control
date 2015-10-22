@@ -1,4 +1,4 @@
-Source: univention-management-console-module-appcenter
+Source: univention-appcenter
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>

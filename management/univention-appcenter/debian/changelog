@@ -1,3 +1,9 @@
+univention-appcenter (5.0.6-55) unstable; urgency=medium
+
+  * Bug #39585: Rename source to univention-appcenter
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 22 Oct 2015 11:56:48 +0200
+
 univention-management-console-module-appcenter (5.0.6-54) unstable; urgency=medium
 
   * Bug #39330: Prevent installing docker apps with old docker unaware tools
