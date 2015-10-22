@@ -334,6 +334,7 @@
 .carouselOuterContainer {
 	margin: auto;
 	position: relative;
+	transition: height 0.5s;
 }
 
 .carouselOuterContainer .contentSliderWrapper {
@@ -369,6 +370,7 @@
 	transform: translateY(-50%);
 	-ms-transform: translateY(-50%);
 	-webkit-transform: translateY(-50%);
+	transition: max-height 0.5s, max-width 0.5s;
 }
 
 .carouselButton {
