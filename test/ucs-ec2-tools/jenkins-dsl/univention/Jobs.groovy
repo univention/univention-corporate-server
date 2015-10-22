@@ -5,7 +5,7 @@ class Jobs {
 	def appAutotestMultiEnv(String path, String version, String patch_level, String app, List roles) {
 
 		def desc = 'App Autotest MultiEnv'
-		def name = path '/' + desc
+		def name = path + '/' + desc
 
 		matrixJob(name) {
 			// config
