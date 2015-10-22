@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define setTimeout*/
+/*global define console*/
 
 define([
 	"dojo/_base/lang",
@@ -34,7 +34,6 @@ define([
 	"dojo/topic",
 	"dojo/dom-construct",
 	"dojo/query",
-	"dojo/on",
 	"dojo/request/xhr",
 	"dojo/Deferred",
 	"umc/dialog",
@@ -43,7 +42,7 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, topic, domConstruct, query, on, xhr, Deferred, dialog, tools, Text, PasswordBox, i18nTools, _) {
+], function(lang, array, topic, domConstruct, query, xhr, Deferred, dialog, tools, Text, PasswordBox, i18nTools, _) {
 	/**
 	 * Utilities for authentication. Authentication must handle:
 	 * * autologin into a current active session
@@ -219,7 +218,7 @@ define([
 				}));
 				authenticate.then(lang.hitch(this, function() {
 					this._password_required = false;
-				});
+				}));
 				return authenticate;
 			}));
 		}
