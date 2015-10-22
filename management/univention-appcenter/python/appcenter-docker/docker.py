@@ -52,6 +52,7 @@ from univention.appcenter.utils import app_ports, call_process, shell_safe
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.app import CACHE_DIR
 from univention.appcenter.actions.update import Update
+from univention.appcenter.actions import Abort
 
 _logger = get_base_logger().getChild('docker')
 
@@ -66,27 +67,19 @@ DOCKER_READ_USER_CRED = {
 class DockerImageVerificationFailedRegistryContact(Exception):
 
 	def __init__(self, app_name, docker_image_manifest_url):
-		symptom_en_US = 'Image verification for %s failed' % (app_name,)
-		symptom_message = _('Image verification for %s failed') % (app_name,)
-
 		reason_en_US = 'Error while contacting Docker registry server %s' % (docker_image_manifest_url,)
 		reason_message = _('Error while contacting Docker registry server %s') % (docker_image_manifest_url,)
 
-		self.en_US = symptom_en_US + '. ' + reason_en_US
-		message = symptom_message + '. ' + reason_message
-		super(DockerImageVerificationFailedRegistryContact, self).__init__(message)
+		_logger.error(reason_en_US)
+		super(DockerImageVerificationFailedRegistryContact, self).__init__(reason_message)
 
 class DockerImageVerificationFailedChecksum(Exception):
 	def __init__(self, app_name):
-		symptom_en_US = 'Image verification for %s failed' % (app_name,)
-		symptom_message = _('Image verification for %s failed') % (app_name,)
-
 		reason_en_US = 'Manifest checksum mismatch'
 		reason_message = _('Manifest checksum mismatch')
 
-		self.en_US = symptom_en_US + '. ' + reason_en_US
-		message = symptom_message + '. ' + reason_message
-		super(DockerImageVerificationFailedChecksum, self).__init__(message)
+		_logger.error(reason_en_US)
+		super(DockerImageVerificationFailedChecksum, self).__init__(reason_message)
 
 def inspect(name):
 	out = check_output(['docker', 'inspect', name])
@@ -138,7 +131,7 @@ def verify(app, image):
 		appinfo = json_apps[app.name]
 	except KeyError as exc:
 		_logger.error('Warning: Cannot check DockerImage checksum because app is not in index.json: %s' % app.name)
-		return True	## Nothing we can do here, this is mainly for ucs-test apps
+		return ## Nothing we can do here, this is mainly for ucs-test apps
 
 	try:
 		appfileinfo = appinfo['ini']
@@ -147,13 +140,12 @@ def verify(app, image):
 		docker_image_manifest_url = dockerimageinfo['url']
 	except KeyError as exc:
 		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.name)
-		return True	## Nothing we can do here, this is the case of ISV Docker repos
+		return ## Nothing we can do here, this is the case of ISV Docker repos
 
 	https_request_auth = requests.auth.HTTPBasicAuth(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password'])
 	https_request_answer = requests.get(docker_image_manifest_url, auth=https_request_auth)
 	if not https_request_answer.ok:
 		exc = DockerImageVerificationFailedRegistryContact(app.name, docker_image_manifest_url)
-		_logger.error(exc.en_US)
 		raise exc
 
 	docker_image_manifest = https_request_answer.content
@@ -162,10 +154,7 @@ def verify(app, image):
 	# compare with docker registry
 	if appcenter_sha256sum != docker_image_manifest_hash:
 		exc = DockerImageVerificationFailedChecksum(app.name, docker_image_manifest_url)
-		_logger.error(exc.en_US)
 		raise exc
-
-	return True
 
 def ps(only_running=True):
 	args = ['docker', 'ps', '--no-trunc=true']
@@ -251,8 +240,12 @@ class Docker(object):
 
 	def verify(self):
 		if self.ucr.is_false('appcenter/index/verify'):
-			return True
-		return verify(self.app, self.image)
+			return
+		try:
+			verify(self.app, self.image)
+		except Exception as exc:
+			self.fatal = exc.args[0]
+			raise Abort()
 
 	def execute_with_output(self, *args, **kwargs):
 		args = list(args)

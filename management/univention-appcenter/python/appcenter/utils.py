@@ -43,6 +43,7 @@ import time
 import urllib2
 from hashlib import md5
 import socket
+import tempfile
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
@@ -240,26 +241,37 @@ def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileNa
 
 	if not keyringFileName:
 		keyringFileName = '/usr/share/keyrings/univention-archive-key-ucs-4x.gpg'
-	cmd = ('gpg',
-		   '--no-options',
-		   '--no-default-keyring', '--keyring', keyringFileName,
-		   '--batch', '--quiet', '--no-tty',
-		   # '--logger-file', '/dev/null'
-		   '--with-colons', '--utf8-strings',
-		   '--no-auto-check-trustdb', '--no-auto-key-locate', '--no-use-agent',
-		   '--no-random-seed-file',
-		   '--trust-model', 'always',
-		   '--verify',
-		   )
 
-	if detached_sig_filename:
-		cmd += (detached_sig_filename,)
+	try:
+		gpg_homedirname = tempfile.mkdtemp()
 
-	cmd += (filename,)
+		cmd = ('gpg',
+			   '--no-options',
+			   '--no-default-keyring', '--keyring', keyringFileName,
+			   '--batch', '--quiet', '--no-tty',
+			   # '--logger-file', '/dev/null'
+			   '--with-colons', '--utf8-strings',
+			   '--no-auto-check-trustdb', '--no-auto-key-locate', '--no-use-agent',
+			   '--no-random-seed-file',
+			   '--trust-model', 'always',
+			   '--homedir', gpg_homedirname,
+			   '--verify',
+			   )
 
-	p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
-	if filename == '-':
-		stdout, stderr = p.communicate(content)
-	else:
-		stdout, stderr = p.communicate()
+		if detached_sig_filename:
+			cmd += (detached_sig_filename,)
+
+		cmd += (filename,)
+
+		p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
+		if filename == '-':
+			stdout, stderr = p.communicate(content)
+		else:
+			stdout, stderr = p.communicate()
+	finally:
+		try:
+			shutil.rmtree(gpg_homedirname)
+		except OSError as exc:
+			if exc.errno != errno.ENOENT:
+				raise
 	return (p.returncode, stderr)

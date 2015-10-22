@@ -1,3 +1,11 @@
+univention-appcenter (5.0.6-58) unstable; urgency=medium
+
+  * Bug #39591: Make gpg verify work also with missing /root/.gnupg dir
+  * raise Abort() when Docker.verify() fails
+  * Don't remove index.json.gz and index.json.gz.gpg from cache
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2015 18:07:28 +0200
+
 univention-appcenter (5.0.6-57) unstable; urgency=medium
 
   * Bug #39591: Clean up duplicate appcenter/index/verify
