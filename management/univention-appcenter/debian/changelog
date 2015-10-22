@@ -1,3 +1,10 @@
+univention-appcenter (5.0.6-56) unstable; urgency=medium
+
+  * Bug #39591: Copy appcenter/index/verify to Container
+  * Bug #39604: close socket properly
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Oct 2015 14:01:33 +0200
+
 univention-appcenter (5.0.6-55) unstable; urgency=medium
 
   * Bug #39585: Rename source to univention-appcenter

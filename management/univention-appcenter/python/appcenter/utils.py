@@ -102,6 +102,7 @@ def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
 		except:
 			pass
 		else:
+			s.close()
 			return port
 	raise NoMorePorts()
 _
