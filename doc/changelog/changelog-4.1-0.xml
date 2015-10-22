@@ -499,7 +499,7 @@
 					A required password change, expired passwords, locked and disabled accounts are detected by the SAML login and the user is informed, while login is denied (<u:bug>39181</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						<package>stunnel4</package> has been updated to 5.18, and now supports certificate validation for the connected <service>memcache</service> instances (<u:bug>39479</u:bug>).
+					<package>stunnel4</package> has been updated to 5.18, and now supports certificate validation for the connected <application>memcache</application> instances (<u:bug>39479</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
