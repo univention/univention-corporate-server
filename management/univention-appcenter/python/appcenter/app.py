@@ -237,6 +237,8 @@ class AppIntAttribute(AppAttribute):
 
 class AppListAttribute(AppAttribute):
 	def parse(self, value):
+		if value == '':
+			value = None
 		if isinstance(value, basestring):
 			value = re.split('\s*,\s*', value)
 		if value is None:
@@ -375,7 +377,7 @@ class App(object):
 	component_id = AppAttribute(required=True)
 	ucs_version = AppAttribute(required=True)
 	logo = AppAttribute(regex='^.+\.svg$', required=False)  # TODO: should be required
-	logo_detail_page = AppAttribute(regex='.+\.svg$', required=False)
+	logo_detail_page = AppAttribute(regex='^.+\.svg$', required=False)
 
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
@@ -501,13 +503,14 @@ class App(object):
 		if locale is True:
 			locale = _get_locale()
 		ini_parser = _read_ini_file(ini_file)
-		meta_parser = RawConfigParser()  # always init
 		app_id = _get_from_parser(ini_parser, 'Application', 'ID')
-		if app_id:
-			meta_file = os.path.join(CACHE_DIR, '%s.meta' % app_id)
-			if os.path.exists(meta_file):
+		for meta_file in glob(os.path.join(CACHE_DIR, '*.meta')):
+			meta_parser = _read_ini_file(meta_file)
+			if _get_from_parser(meta_parser, 'Application', 'ID') == app_id:
 				app_logger.debug('Using additional %s' % meta_file)
-				meta_parser = _read_ini_file(meta_file)
+				break
+		else:
+			meta_parser = RawConfigParser()  # empty
 		attr_values = {}
 		for attr in cls._attrs:
 			value = None

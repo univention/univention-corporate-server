@@ -1,3 +1,9 @@
+univention-appcenter (5.0.6-69) unstable; urgency=medium
+
+  * Bug #38891: Fix finding meta file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Oct 2015 17:03:21 +0200
+
 univention-appcenter (5.0.6-68) unstable; urgency=medium
 
   * Bug #39604: Fix next_port variable scope

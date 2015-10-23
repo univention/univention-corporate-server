@@ -93,6 +93,7 @@ define([
 			this.candidateReadmePostUpdate = props.candidate_readme_post_update;
 			this.useShop = !!props.shop_url;
 			this.shopURL = props.shop_url;
+			this.rating = props.rating;
 			this.isMaster = props.is_master;
 			this.isUCSComponent = props.is_ucs_component;
 			this.isDocker = !!props.docker_image;

@@ -180,7 +180,10 @@ class UniventionAppAction(object):
 		self.percentage = 0
 		try:
 			result = self.main(namespace)
-		except Abort:
+		except Abort as exc:
+			msg = str(exc)
+			if msg:
+				self.fatal(msg)
 			self.percentage = 100
 			return 10
 		except Exception as exc:

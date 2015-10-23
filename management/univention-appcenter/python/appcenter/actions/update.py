@@ -40,8 +40,7 @@ import time
 from threading import Thread
 from urlparse import urljoin
 from glob import glob
-from StringIO import StringIO
-from gzip import GzipFile
+from gzip import open as gzip_open
 from json import loads
 import tarfile
 from urlparse import urlsplit
@@ -51,7 +50,7 @@ from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.app import AppManager, CACHE_DIR, LOCAL_ARCHIVE
-from univention.appcenter.actions import UniventionAppAction, possible_network_error
+from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
 from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify
 
 
@@ -105,14 +104,19 @@ class Update(UniventionAppAction):
 
 	@possible_network_error
 	def _download_supra_files(self):
-		def _download_supra_file(filename):
-			url = urljoin('%s/' % self._get_metainf_url(), '../%s' % filename)
+		def _download_supra_file(filename, version_specific):
+			if version_specific:
+				url = urljoin('%s/' % self._get_metainf_url(), '%s' % filename)
+			else:
+				url = urljoin('%s/' % self._get_metainf_url(), '../%s' % filename)
 			self.log('Downloading "%s"...' % url)
-			categories = urlopen(url).read()
+			content = urlopen(url).read()
 			with open(os.path.join(CACHE_DIR, '.%s' % filename), 'wb') as f:
-				f.write(categories)
-		_download_supra_file('categories.ini')
-		_download_supra_file('rating.ini')
+				f.write(content)
+		_download_supra_file('index.json.gz', version_specific=True)
+		_download_supra_file('index.json.gz.gpg', version_specific=True)
+		_download_supra_file('categories.ini', version_specific=False)
+		_download_supra_file('rating.ini', version_specific=False)
 
 	@possible_network_error
 	def _download_archive(self, files_to_download):
@@ -222,7 +226,7 @@ class Update(UniventionAppAction):
 		pass
 
 	def _extract_local_archive(self):
-		if os.listdir(CACHE_DIR):
+		if any(not fname.startswith('.') for fname in os.listdir(CACHE_DIR)):
 			# we already have a cache. our archive is just outdated...
 			return False
 		if not os.path.exists(LOCAL_ARCHIVE):
@@ -260,43 +264,20 @@ class Update(UniventionAppAction):
 			self._appcenter_server = 'https://%s' % self._appcenter_server
 		return self._appcenter_server
 
-	@possible_network_error
 	def _load_index_json(self):
-		index_json_gz_filename = 'index.json.gz'
-		detached_sig_filename = None
-
+		index_json_gz_filename = os.path.join(CACHE_DIR, '.index.json.gz')
 		ucr = ConfigRegistry()
 		ucr.load()
-		if not ucr.is_false('appcenter/index/verify'):
-			detached_sig_filename = index_json_gz_filename + '.gpg'
-
-			sig_url = urljoin('%s/' % self._get_metainf_url(), detached_sig_filename)
-			self.log('Downloading "%s"...' % sig_url)
-			detached_sig = urlopen(sig_url).read()
-			detached_sig_path = os.path.join(CACHE_DIR, detached_sig_filename)
-			with open(detached_sig_path, 'wb') as f:
-				f.write(detached_sig)
-
-		json_url = urljoin('%s/' % self._get_metainf_url(), index_json_gz_filename)
-		self.log('Downloading "%s"...' % json_url)
-		index_json_gz = urlopen(json_url).read()
-
-		if detached_sig_filename:
-			(rc, gpg_error) = gpg_verify("-", detached_sig_path, content=index_json_gz)
-			if rc:
-				message = 'Signature verification for %s failed' % (index_json_gz_filename,)
-				self.fatal(message)
-				if gpg_error:
-					self.fatal(gpg_error)
-				raise Exception(message)
-
-		index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
-		with open(index_json_gz_path, 'wb') as f:
-			f.write(index_json_gz)
-
-		zipped = StringIO(index_json_gz)
-		content = GzipFile(mode='rb', fileobj=zipped).read()
-		return loads(content)
+		with gzip_open(index_json_gz_filename, 'rb') as fgzip:
+			content = fgzip.read()
+			if not ucr.is_false('appcenter/index/verify'):
+				detached_sig_path = index_json_gz_filename + '.gpg'
+				(rc, gpg_error) = gpg_verify('-', detached_sig_path, content=content)
+				if rc:
+					if gpg_error:
+						self.fatal(gpg_error)
+					raise Abort('Signature verification for %s failed' % index_json_gz_filename)
+			return loads(content)
 
 	def _read_index_json(self, json_apps):
 		files_to_download = []
@@ -315,10 +296,10 @@ class Update(UniventionAppAction):
 					# ask to re-download this file
 					files_to_download.append((remote_url, filename, remote_md5sum))
 					something_changed = True
-		for index_filename in ('index.json.gz', 'index.json.gz.gpg'):
-			files_in_json_file.append(os.path.join(CACHE_DIR, index_filename))
 		# remove those files that apparently do not exist on server anymore
 		for cached_filename in glob(os.path.join(CACHE_DIR, '*')):
+			if os.path.basename(cached_filename).startswith('.'):
+				continue
 			if cached_filename not in files_in_json_file:
 				self.log('Deleting obsolete %s' % cached_filename)
 				something_changed = True

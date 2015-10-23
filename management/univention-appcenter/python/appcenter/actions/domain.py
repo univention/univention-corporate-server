@@ -93,9 +93,12 @@ class Domain(CredentialsAction):
 		self = cls()
 		lo, pos = self._get_ldap_connection(args=None, allow_machine_connection=True)
 		hosts = self.get_appcenter_hosts(lo, pos)
-		get = get_action('get')
 		ucr = ConfigRegistry()
 		ucr.load()
+		if ucr.is_false('appcenter/domainwide'):
+			hostname = ucr.get('hostname')
+			hosts = [host for host in hosts if host['name'] == hostname]
+		get = get_action('get')
 		ret = []
 		app_ldap_objects = search_objects('appcenter/app', lo, pos)
 		for app in apps:

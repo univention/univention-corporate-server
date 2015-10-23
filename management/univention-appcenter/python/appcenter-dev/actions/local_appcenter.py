@@ -447,7 +447,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 				shutil.rmtree(repo_dir)
 			except OSError as exc:
 				self.warn(exc)
-			ucr_update(ucr, {'repository/app_center/server': 'appcenter.software-univention.de', 'update/secure_apt': 'yes'})
+			ucr_update(ucr, {'repository/app_center/server': 'appcenter.software-univention.de', 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
 			Update.call()
 		else:
 			mkdir(meta_inf_dir)
@@ -459,7 +459,7 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 				rating = urlopen('%s/meta-inf/rating.ini' % AppManager.get_server()).read()
 				f.write(rating)
 			server = 'http://%s' % args.appcenter_host
-			ucr_update(ucr, {'repository/app_center/server': server, 'update/secure_apt': 'no'})
+			ucr_update(ucr, {'repository/app_center/server': server, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
 			DevRegenerateMetaInf.call(ucs_version=args.ucs_version, path=args.path, appcenter_host=server)
 			self.log('Local App Center server is set up at %s.' % server)
 			self.log('If this server should serve as an App Center server for other computers in the UCS domain, the following command has to be executed on each computer:')
