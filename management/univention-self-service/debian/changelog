@@ -1,3 +1,9 @@
+univention-self-service (0.0.0-16) unstable; urgency=low
+
+  * always use localhost as server, packaging fixes (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 23 Oct 2015 12:36:01 +0200
+
 univention-self-service (0.0.0-15) unstable; urgency=low
 
   * reduce to 1 app (Bug #37890)
