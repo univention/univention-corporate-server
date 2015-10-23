@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.8-1) unstable; urgency=medium
+
+  * Disable homedir/mount by default (Bug #39490)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Oct 2015 17:01:36 +0200
+
 univention-docker-container-mode (1.0.7-1) unstable; urgency=medium
 
   * store_data + restore_data_before_setup: dump traceback to error file
