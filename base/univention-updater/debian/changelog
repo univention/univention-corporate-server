@@ -1,3 +1,9 @@
+univention-updater (11.0.3-4) unstable; urgency=medium
+
+  * Bug #39082: univention-upgrade should suggest app upgrades (4.1)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 23 Oct 2015 17:12:30 +0200
+
 univention-updater (11.0.3-3) unstable; urgency=low
 
   * Bug #39306: Fix backward compatibility
