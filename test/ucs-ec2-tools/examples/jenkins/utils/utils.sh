@@ -295,14 +295,12 @@ run_tests ()
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
-run_tests_with_parameters()
-{
-	if [ $test_section = 'all_sections' ]
-	then
-		ucs-test -E dangerous -F junit -l "ucs-test.log"
-	else
-		ucs-test -s $test_section -E dangerous -F junit -l "ucs-test.log"
-	fi
+run_tests_with_parameters() {
+	local s="${test_section:-}"
+	case "$s" in
+	all_sections|all*) s= ;;
+	esac
+	ucs-test ${s:+-s "$s"} -E dangerous -F junit -l "ucs-test.log" "$@"
 }
 
 run_join_scripts ()
