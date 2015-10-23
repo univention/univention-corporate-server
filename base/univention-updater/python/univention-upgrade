@@ -205,7 +205,7 @@ def performUpdate(options, checkForUpdates=False, silent=False):
                         params.append('--ignoressh')
                     if options.ignoreterm:
                         params.append('--ignoreterm')
-                    retcode = subprocess.call(['/usr/share/univention-updater/univention-updater',  'net', '--updateto', '%s' % (version_next)] + params, shell=False, env=os.environ)
+                    retcode = subprocess.call(['/usr/share/univention-updater/univention-updater', 'net', '--updateto', '%s' % (version_next)] + params, shell=False, env=os.environ)
                     if retcode:
                         dprint(silent, 'exitcode of univention-updater: %s' % retcode, debug=True)
                         dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
@@ -296,7 +296,7 @@ def do_app_updates(options, checkForUpdates, silent):
     interactive = not (options.noninteractive or checkForUpdates)
     try:
         from univention.appcenter.actions import get_action
-        from univention.appcenter.app_center import AppcenterServerContactFailed
+        from univention.appcenter.app import AppManager
         import univention.appcenter.log as appcenter_log
         app_upgrade = get_action('upgrade')
         if app_upgrade is None:
@@ -320,13 +320,7 @@ def do_app_updates(options, checkForUpdates, silent):
     handler.setLevel(logging.INFO)
     logger.addHandler(handler)
 
-    try:
-        new_apps = list(app_upgrade.iter_upgradable_apps())
-    except AppcenterServerContactFailed:
-        dprint(silent, 'not available')
-        if logfd:
-            print >> logfd, traceback.format_exc()
-        return False
+    new_apps = list(app_upgrade.iter_upgradable_apps())
     if not new_apps:
         dprint(silent, 'none')
         return False
@@ -335,19 +329,30 @@ def do_app_updates(options, checkForUpdates, silent):
         return True
 
     dprint(silent, 'found\n')
-    dprint(silent, 'The following apps can be updated:\n')
+    dprint(silent, 'The following apps can be upgraded:\n')
     for app in new_apps:
-        dprint(silent, '%(name)s: Version %(old)s can be updated to %(new)s' % {
-            'name': app.name,
-            'old': app.version,
-            'new': app.candidate.version,
-        })
+        latest_app = AppManager.find(app, latest=True)
+        if latest_app > app:
+            dprint(silent, '%(name)s: Version %(old)s can be upgraded to %(new)s' % {
+                'name': app.name,
+                'old': app.version,
+                'new': latest_app.version,
+            })
+        elif app.docker:
+            dprint(silent, '%(name)s: The underlying container can be upgraded' % {
+                'name': app.name,
+            })
+        else:
+            # dont know how this is possible... but anyways
+            dprint(silent, '%(name)s' % {
+                'name': app.name,
+            })
 
-    dprint(silent, 'Starting univention-app update at %s...' % time.ctime(), debug=True)
-    dprint(silent, '\nStarting app update', newline=False)
+    dprint(silent, 'Starting univention-app upgrade at %s...' % time.ctime(), debug=True)
+    dprint(silent, '\nStarting app upgrade', newline=False)
     success = True
     for app in new_apps:
-        if interactive and not readcontinue('\nDo you want to update %s [Y|n]?' % app.name):
+        if interactive and not readcontinue('\nDo you want to upgrade %s [Y|n]?' % app.name):
             continue
         success &= bool(app_upgrade.call(
             app=app,
