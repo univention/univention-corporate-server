@@ -1,3 +1,9 @@
+univention-kernel-image (9.0.0-3) unstable; urgency=low
+
+  * Bug #38872: linux-4.1.11
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 23 Oct 2015 17:38:20 +0200
+
 univention-kernel-image (9.0.0-2) unstable; urgency=low
 
   * Bug #38872: Fix univention-kernel-source dependency
