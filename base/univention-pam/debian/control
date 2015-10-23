@@ -17,10 +17,11 @@ Depends: ${misc:Depends},
  pam-runasroot,
  univention-skel,
  nscd,
- univention-home-mounter,
  shell-univention-lib (>= 3.0.26-7.202.201312111504),
  python-univention-lib (>= 3.0.26-14),
  libnss-extrausers
+Recommends:
+ univention-home-mounter
 Description: UCS - login configuration
  This package contains the configuration for the pluggable
  authentication modules (PAM) and the network name switch
