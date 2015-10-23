@@ -542,6 +542,16 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:service:kerberos">
+			<title>Kerberos</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The dependency to <package>univention-home-mounter</package> has been removed
+					from the <application>Kerberos rsh daemon</application> (<u:bug>39490</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
 			<itemizedlist>
@@ -581,6 +591,9 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The dependency to <package>univention-home-mounter</package> has been changed
+					to a recommendation in the <package>univention-pam</package> package
+					(<u:bug>39490</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
