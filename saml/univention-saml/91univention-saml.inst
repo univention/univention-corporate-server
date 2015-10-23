@@ -154,7 +154,7 @@ udm saml/serviceprovider create "$@" \
 	--position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
 	--set isActivated=FALSE \
 	--set Identifier=google.com \
-	--set NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" \
+	--set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
 	--set simplesamlAttributes="false" \
 	--set AssertionConsumerService="https://www.google.com/a/univention-test.mygbiz.com/acs" \
 	--set simplesamlNameIDAttribute="uid" \
@@ -166,7 +166,7 @@ udm saml/serviceprovider create "$@" \
 	--position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
 	--set isActivated=FALSE \
 	--set Identifier="https://sp.testshib.org/shibboleth-sp" \
-	--set NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" \
+	--set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
 	--set simplesamlAttributes="false" \
 	--set AssertionConsumerService="https://sp.testshib.org/Shibboleth.sso/SAML2/POST" \
 	--set simplesamlNameIDAttribute="uid" \
@@ -179,12 +179,19 @@ udm saml/serviceprovider create "$@" \
 	--position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
 	--set isActivated=FALSE \
 	--set Identifier="https://saml.salesforce.com" \
-	--set NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" \
+	--set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
 	--set simplesamlAttributes="false" \
 	--set AssertionConsumerService="https://sp.testshib.org/Shibboleth.sso/SAML2/POST" \
 	--set simplesamlNameIDAttribute="mailPrimaryAddress" \
 	--set privacypolicyURL="https://trust.salesforce.com/trust/privacy/" \
 	--set serviceProviderOrganizationName="Salesforce" || die
+
+# Change unsupported NameIDFormat value to supported one
+if joinscript_check_version_in_range_executed 1 3; then
+	udm saml/serviceprovider list "$@" --filter NameIDFormat="urn:oasis:names:tc:SAML:2.0:nameid-format:email" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
+		udm saml/serviceprovider modify "$@" --dn "$dn" --set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" || die
+	done
+fi
 
 /etc/init.d/univention-saml restart
 

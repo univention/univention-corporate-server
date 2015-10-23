@@ -1,3 +1,12 @@
+univention-saml (3.0.24-8) unstable; urgency=medium
+
+  * Bug #39431: Change default NameIDFormat to
+    urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified, update old LDAP
+    objects
+  * Bug #39627: Fix listener regressions
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 23 Oct 2015 15:45:54 +0200
+
 univention-saml (3.0.24-7) unstable; urgency=medium
 
   * listener/univention-saml-servers.py: import subporocess (Bug #39479)

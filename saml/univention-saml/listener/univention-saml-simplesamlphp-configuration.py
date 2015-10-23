@@ -38,7 +38,7 @@ import glob
 import os.path
 import xml.etree.ElementTree
 from tempfile import NamedTemporaryFile
-from subprocess import call, Popen, PIPE
+from subprocess import Popen, PIPE
 
 import univention.debug as ud
 
@@ -156,14 +156,15 @@ def write_configuration_file(dn, new, filename):
 		fd.write("	'NameIDFormat'	=> %s,\n" % php_string(new.get('NameIDFormat')[0]))
 	if new.get('simplesamlNameIDAttribute'):
 		fd.write("	'simplesaml.nameidattribute'	=> %s,\n" % php_string(new.get('simplesamlNameIDAttribute')[0]))
-
-	simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', [])) + ['enabledServiceProviderIdentifier']
 	if new.get('simplesamlAttributes'):
 		fd.write("	'simplesaml.attributes'	=> %s,\n" % php_bool(new.get('simplesamlAttributes')[0]))
+	if new.get('simplesamlAttributes') and new.get('simplesamlAttributes')[0] == "TRUE":
+		simplesamlLDAPattributes = list(new.get('simplesamlLDAPattributes', []))
+		if new.get('simplesamlNameIDAttribute') and new.get('simplesamlNameIDAttribute')[0] not in simplesamlLDAPattributes:
+			simplesamlLDAPattributes.append(new.get('simplesamlNameIDAttribute')[0])
+		fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))
 	if new.get('attributesNameFormat'):
 		fd.write("	'attributes.NameFormat'	=> %s,\n" % php_string(new.get('attributesNameFormat')[0]))
-	fd.write("	'attributes'	=> %s,\n" % php_array(simplesamlLDAPattributes))
-
 	if new.get('serviceproviderdescription'):
 		fd.write("	'description'	=> %s,\n" % php_string(new.get('serviceproviderdescription')[0]))
 	if new.get('serviceProviderOrganizationName'):
@@ -174,7 +175,7 @@ def write_configuration_file(dn, new, filename):
 	fd.write("	'authproc' => array(\n")
 	if not metadata:  # TODO: make it configurable
 		# make sure that only users that are enabled to use this service provider are allowed
-		fd.write("		60 => array(\n")
+		fd.write("		10 => array(\n")
 		fd.write("		'class' => 'authorize:Authorize',\n")
 		fd.write("		'regex' => FALSE,\n")
 		fd.write("		'enabledServiceProviderIdentifier' => %s,\n" % php_array([dn]))
