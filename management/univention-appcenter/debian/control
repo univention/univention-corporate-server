@@ -8,7 +8,8 @@ Build-Depends: debhelper (>= 7.0.50~),
  univention-join,
  univention-config-dev,
  univention-management-console-dev,
- python-all
+ python-all,
+ ucslint,
 Standards-Version: 3.8.2
 XS-Python-Version: 2.6, 2.7
 
@@ -21,7 +22,9 @@ Depends: univention-management-console-server,
  python-univention-appcenter,
  univention-config,
  univention-updater,
- univention-management-console-module-lib
+ univention-management-console-module-lib,
+ ${misc:Depends},
+ ${python:Depends},
 Replaces: univention-management-console-module-packages (<< 2.0.55-1)
 Breaks: univention-management-console-module-packages (<< 2.0.55-1)
 Description: UMC module for software management
@@ -34,15 +37,18 @@ Description: UMC module for software management
 
 Package: univention-management-console-module-packages
 Architecture: all
-Depends: univention-management-console-module-appcenter
+Depends: univention-management-console-module-appcenter,
+ ${misc:Depends},
 Description: transitional dummy package
  This is a transitional dummy package. It can safely be removed.
 
 Package: univention-appcenter
-Depends: python-univention-appcenter
+Depends: python-univention-appcenter,
+ ${misc:Depends},
+ ${python:Depends},
 Recommends: univention-appcenter-docker
 Architecture: all
-Description: Tools for the Univention App Center.
+Description: Tools for Univention App Center
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -55,9 +61,11 @@ Depends: univention-ssh,
  univention-join,
  python-univention-config-registry,
  python-univention-directory-manager,
- gnupg
+ gnupg,
+ ${misc:Depends},
+ ${python:Depends},
 Recommends: univention-appcenter
-Description: Library for the Univention App Center.
+Description: Library for Univention App Center
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -67,9 +75,12 @@ Description: Library for the Univention App Center.
 Package: univention-appcenter-dev
 Architecture: all
 Replaces: python-univention-appcenter-dev
-Depends: univention-appcenter, dpkg-dev, apt-utils
-Description: Development tools for packaging an app in
- the Univention App Center.
+Depends: univention-appcenter,
+ dpkg-dev,
+ apt-utils,
+ ${misc:Depends},
+ ${python:Depends},
+Description: Development tools for Univention App Center
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -81,9 +92,12 @@ Architecture: all
 Depends: python-univention-appcenter,
  univention-docker,
  univention-apache,
- python-requests
-Description: Docker integration for certain apps of
- the Univention App Center.
+ python-requests,
+ ${misc:Depends},
+ ${python:Depends},
+Description: Docker integration for Univention App Center
+ This package contains a Docker integration for certain apps
+ of the Univention App Center.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -93,9 +107,12 @@ Description: Docker integration for certain apps of
 Package: univention-management-console-module-apps
 Architecture: all
 Depends: univention-management-console-module-appcenter,
- python-polib
+ python-polib,
+ ${misc:Depends},
+ ${python:Depends},
 Description: UMC module for application overview
- This package contains an introduction for every installed app.
+ This package contains the overview page for every installed
+ Univention App.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

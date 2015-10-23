@@ -1,3 +1,21 @@
+univention-appcenter (5.0.6-70) unstable; urgency=low
+
+  * Bug #39585: Fix univention-appcenter packaging
+    - debian/control: Fix shot descriptions
+    - debian/control: Add missing ${*:Depnds}
+    - debian/control: Add missing Build-Depends: ucslint
+    - debian/rules: Add missing call to ucslint
+    - debian/ucslint.overrides: Added
+    - debian/*.postinst: Add "exit 0"
+    - debian/*.postinst: Explicitly link Python modules
+    - umc/python/appcenter/__init__.py: Fix translation errors
+    - umc/python/appcenter/__init__.py: Fix use of invoke-rc.d
+    - umc/python/appcenter/de.po: Add missing translation
+  * Change http://docs.univention.de/ to https://docs.software-univention.de/
+  * Update translations.
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 23 Oct 2015 16:00:42 +0200
+
 univention-appcenter (5.0.6-69) unstable; urgency=medium
 
   * Bug #38891: Fix finding meta file

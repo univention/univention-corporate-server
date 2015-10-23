@@ -1,0 +1,7 @@
+# Binary file must have no UCR header
+0004-16: conffiles/usr/share/univention-management-console/i18n/de/apps.mo
+# UCR subfiles
+0004-18: debian/univention-appcenter-docker.univention-config-registry
+0004-10: debian/univention-appcenter-docker.univention-config-registry
+0004-24: debian/univention-appcenter-docker.univention-config-registry-variables
+0004-24: debian/univention-management-console-module-apps.univention-config-registry-variables

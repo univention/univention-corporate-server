@@ -33,6 +33,7 @@
 # this is for the files to be available when the ucr templates are
 # registered for the very first time
 update-python-modules univention-appcenter-docker.public
+update-python-modules --post-install
 
 #DEBHELPER#
 
@@ -40,3 +41,4 @@ update-python-modules univention-appcenter-docker.public
 a2dissite univention-appcenter 2>/dev/null || true
 service apache2 reload
 
+exit 0

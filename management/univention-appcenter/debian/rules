@@ -67,3 +67,7 @@ override_dh_auto_install:
 	install -d $(DOCKER_LC_MSG_DIR)
 	install -m 644 $(DOCKER_MO_FILE) \
 		$(DOCKER_LC_MSG_DIR)/$(DOCKER_PKG_NAME).mo
+
+override_dh_auto_test:
+	ucslint
+	dh_auto_test

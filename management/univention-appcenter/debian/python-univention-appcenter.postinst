@@ -33,5 +33,8 @@
 # this is for the files to be available when the ucr templates are
 # registered for the very first time
 update-python-modules python-univention-appcenter.public
+update-python-modules --post-install
 
 #DEBHELPER#
+
+exit 0

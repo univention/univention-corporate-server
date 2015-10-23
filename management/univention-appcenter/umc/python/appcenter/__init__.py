@@ -185,7 +185,7 @@ class Instance(umcm.Base, ProgressMixin):
 				MODULE.warn('Docker is not running! Trying to start it now...')
 				call_process(['invoke-rc.d', 'docker', 'start'])
 				if not docker_is_running():
-					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "invoke-rc.d docker start"'))
+					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "service docker start"'))
 		return domain.to_dict(apps)
 
 	@simple_response
@@ -305,7 +305,7 @@ class Instance(umcm.Base, ProgressMixin):
 	def invoke_docker(self, function, app, force, values, progress):
 		with self.locked():
 			serious_problems = False
-			progress.title = _('%s: Running tests' % app.name)
+			progress.title = _('%s: Running tests') % (app.name,)
 			errors, warnings = app.check(function)
 			can_continue = force  # "dry_run"
 			if errors:
@@ -324,13 +324,13 @@ class Instance(umcm.Base, ProgressMixin):
 			if can_continue:
 				kwargs = {'noninteractive': True}
 				if function == 'install':
-					progress.title = _('Installing %s' % app.name)
+					progress.title = _('Installing %s') % (app.name,)
 					kwargs['set_vars'] = values
 				elif function == 'uninstall':
-					progress.title = _('Uninstalling %s' % app.name)
+					progress.title = _('Uninstalling %s') % (app.name,)
 					kwargs['keep_data'] = not values.get('dont_keep_data', False)
 				elif function == 'upgrade':
-					progress.title = _('Upgrading %s' % app.name)
+					progress.title = _('Upgrading %s') % (app.name,)
 				action = get_action(function)
 				handler = UMCProgressHandler(progress)
 				handler.setLevel(logging.INFO)
