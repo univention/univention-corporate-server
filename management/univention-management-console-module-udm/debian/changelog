@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.6-2) unstable; urgency=low
+
+  * Bug #38190: Check if _searchPage exists before selecting it
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 23 Oct 2015 11:32:52 +0200
+
 univention-management-console-module-udm (6.0.6-1) unstable; urgency=medium
 
   * Bug #20439: fix editing of ldap base
