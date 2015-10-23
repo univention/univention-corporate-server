@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-91) unstable; urgency=low
+
+  * Bug #38190: Check if _searchPage exists before selecting it
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 23 Oct 2015 11:18:58 +0200
+
 univention-management-console-module-udm (5.1.25-90) unstable; urgency=low
 
   * Bug #39234: Made extended attributes more visible

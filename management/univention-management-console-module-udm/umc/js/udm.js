@@ -1576,7 +1576,10 @@ define([
 				objectNameSingular: this.objectNameSingular
 			});
 			this.addChild(this._detailPage);
-			this.selectChild(this._searchPage);
+
+			if (this._searchPage) {
+				this.selectChild(this._searchPage);
+			}
 		},
 
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
