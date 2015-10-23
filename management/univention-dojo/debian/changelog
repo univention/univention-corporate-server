@@ -1,3 +1,9 @@
+univention-dojo (8.0.3-5) unstable; urgency=medium
+
+  * Change dependency to openjdk-7-jdk (Bug #39572)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Oct 2015 16:34:29 +0200
+
 univention-dojo (8.0.3-4) unstable; urgency=medium
 
   * Bug #38225: use CSS class dj_trident for IE11+
