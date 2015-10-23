@@ -44,6 +44,7 @@
 		<title>Release highlights</title>
 
 		<para>
+			An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
@@ -71,6 +72,10 @@
 					This might lead to an increased space requirement for local repositories, as <phrase>maintained</phrase> now consists of more packages than in previous releases.
 				</para>
 			</listitem>
+			<listitem><para>
+				The Linux kernel has been updated to the latest stable version of the 4.1 longterm kernel.
+				This includes several security updates as well as new and updated drivers for a better hardware support.
+			</para></listitem>
 			<listitem>
 				<para>
 				</para>

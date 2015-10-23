@@ -44,6 +44,7 @@
 		<title>Release-Highlights</title>
 
 		<para>
+			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
@@ -71,6 +72,10 @@
 					Diese Änderung kann zu einer erhöhten Nutzung von Speicherplatz auf einem lokalen Repository-Server führen, da <foreignphrase>maintained</foreignphrase> nun mehr Pakete enthält als in früheren Releases-
 				</para>
 			</listitem>
+			<listitem><para>
+				Der Linux Kernel wurde auf den letzten stabilen 4.1er <foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert.
+				Dieser beinhaltet diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
+			</para></listitem>
 			<listitem><para>
 			</para></listitem>
 		</itemizedlist>
