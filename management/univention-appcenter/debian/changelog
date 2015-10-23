@@ -1,3 +1,9 @@
+univention-appcenter (5.0.6-68) unstable; urgency=medium
+
+  * Bug #39604: Fix next_port variable scope
+
+ -- Arvid Requate <requate@univention.de>  Fri, 23 Oct 2015 10:36:45 +0200
+
 univention-appcenter (5.0.6-67) unstable; urgency=medium
 
   * Bug #39204: Improved update policies for docker containers

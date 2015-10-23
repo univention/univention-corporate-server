@@ -326,8 +326,8 @@ class Register(CredentialsAction):
 							value = current_port_config[key]
 						else:
 							next_port = currently_free_port_in_range(min_port, max_port, ports_taken)
+							ports_taken.add(next_port)
 							value = str(next_port)
-						ports_taken.add(next_port)
 						port_updates[key] = value
 					if app.web_interface_port_https:
 						key = app.ucr_ports_key % app.web_interface_port_https
@@ -335,8 +335,8 @@ class Register(CredentialsAction):
 							value = current_port_config[key]
 						else:
 							next_port = currently_free_port_in_range(min_port, max_port, ports_taken)
+							ports_taken.add(next_port)
 							value = str(next_port)
-						ports_taken.add(next_port)
 						port_updates[key] = value
 				for container_port, host_port in current_port_config.iteritems():
 					if container_port in port_updates:
