@@ -684,7 +684,7 @@
 					(<u:bug>39194</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The timezone in Docker containers is now set to the same as the host.
+					The time zone in Docker containers is now set to the same as the host.
 					(<u:bug>39483</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
