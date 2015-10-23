@@ -32,6 +32,7 @@
 
 __package__ = ''  # workaround for PEP 366
 import listener
+import subprocess
 
 from univention.config_registry import handler_set, handler_unset
 

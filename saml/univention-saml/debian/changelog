@@ -1,3 +1,9 @@
+univention-saml (3.0.24-7) unstable; urgency=medium
+
+  * listener/univention-saml-servers.py: import subporocess (Bug #39479)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Oct 2015 06:18:25 +0200
+
 univention-saml (3.0.24-6) unstable; urgency=medium
 
   * Bug #39479: Allow only SAML services to connect to stunnel
