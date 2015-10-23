@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.8-2) unstable; urgency=medium
+
+  * Disable postfix by default (Bug #39542)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Oct 2015 22:57:05 +0200
+
 univention-docker-container-mode (1.0.8-1) unstable; urgency=medium
 
   * Disable homedir/mount by default (Bug #39490)
