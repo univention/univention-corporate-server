@@ -501,6 +501,9 @@
 				<listitem><simpara>
 					<package>stunnel4</package> has been updated to 5.18, and now supports certificate validation for the connected <application>memcache</application> instances (<u:bug>39479</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The default <property>NameID</property> identifier format for configured service providers is changed to <property>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</property> (<u:bug>39431</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 		<section id="changelog:service:mail">
