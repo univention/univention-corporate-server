@@ -30,8 +30,10 @@ if __name__ == '__main__':
 									WebInterfacePortHTTPS='443',
 									AutoModProxy='True',
 									DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
+									DockerScriptStoreData='/usr/share/univention-appcenter/app/%s/store_data' % app_name,
 							)
 		app.create_basic_modproxy_settings()
+		app.add_script(store_data=store_data_script_4_1())
 
 		app.add_to_local_appcenter()
 

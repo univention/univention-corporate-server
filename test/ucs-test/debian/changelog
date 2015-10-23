@@ -1,3 +1,14 @@
+ucs-test (6.0.10-14) unstable; urgency=medium
+
+  * 80_docker/40_app_install_4_0-3: store_data is now called while
+    removing the container. The 4.0-3 store data is broken due to
+    pathname changes thus the 4.1 store_data script is now used
+    (Bug #39204)
+  * 80_docker/40_app_install_4_0-3: The new repository online server
+    format is not known by 4.0-3. The UCR variable is now modified
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Oct 2015 06:58:30 +0200
+
 ucs-test (6.0.10-13) unstable; urgency=medium
 
   * dockertest.py: create rating.ini (Bug #38891)

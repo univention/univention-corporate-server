@@ -239,6 +239,10 @@ class App:
 	def create_basic_modproxy_settings(self):
 		self.add_script(setup='''#!/bin/bash
 set -x -e
+eval "$(ucr shell)"
+if [ "$version_version" = 4.0 ]; then
+	ucr set repository/online/server="$(echo $repository_online_server | sed -e 's|.*//\(.*\)/|\\1|')"
+fi
 univention-install --yes univention-apache
 mkdir /var/www/%(app_name)s
 echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
