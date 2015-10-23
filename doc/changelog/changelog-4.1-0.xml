@@ -177,6 +177,10 @@
 					The dropdown menu to switch the Univention Management Console uses the SAML single sign on process now.
 					The before then used Univention Management Console single sign on has therefore been removed (<u:bug>39227</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The dependency of <package>univention-dojo-dev</package> has changed to
+					<package>OpenJDK 7</package> (<u:bug>39572</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
