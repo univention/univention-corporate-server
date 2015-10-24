@@ -86,8 +86,6 @@ class FileInfo(object):
 
 class AppcenterApp(object):
 	def __init__(self, name, id, ucs_version, meta_inf_dir, components_dir, server):
-		self.config = ConfigParser.ConfigParser()
-		self.config.read(self.get_ini_file())
 		self.name = name
 		self.id = id
 		self.ucs_version = ucs_version
@@ -100,6 +98,8 @@ class AppcenterApp(object):
 		if server.endswith('/'):
 			server = server[:-1]
 		self.server = server
+		self.config = ConfigParser.ConfigParser()
+		self.config.read(self.get_ini_file())
 
 	def get_metainf_url(self):
 		url = '%s/meta-inf/%s/' % (self.server, self.ucs_version)
