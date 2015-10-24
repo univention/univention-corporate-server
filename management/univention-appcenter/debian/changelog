@@ -1,3 +1,10 @@
+univention-appcenter (5.0.7-1) unstable; urgency=medium
+
+  * Don't download index.json.gz.gpg if appcenter/index/verify is set to
+    false. It was accidentally broken with changes for Bug #38891
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 24 Oct 2015 19:50:13 +0200
+
 univention-appcenter (5.0.6-71) unstable; urgency=medium
 
   Bug #39525:

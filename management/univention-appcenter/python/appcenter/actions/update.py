@@ -113,8 +113,11 @@ class Update(UniventionAppAction):
 			content = urlopen(url).read()
 			with open(os.path.join(CACHE_DIR, '.%s' % filename), 'wb') as f:
 				f.write(content)
+		ucr = ConfigRegistry()
+		ucr.load()
 		_download_supra_file('index.json.gz', version_specific=True)
-		_download_supra_file('index.json.gz.gpg', version_specific=True)
+		if not ucr.is_false('appcenter/index/verify'):
+			_download_supra_file('index.json.gz.gpg', version_specific=True)
 		_download_supra_file('categories.ini', version_specific=False)
 		_download_supra_file('rating.ini', version_specific=False)
 
