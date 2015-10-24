@@ -504,13 +504,18 @@ class App(object):
 			locale = _get_locale()
 		ini_parser = _read_ini_file(ini_file)
 		app_id = _get_from_parser(ini_parser, 'Application', 'ID')
+		meta_parser = RawConfigParser()  # empty
 		for meta_file in glob(os.path.join(CACHE_DIR, '*.meta')):
-			meta_parser = _read_ini_file(meta_file)
-			if _get_from_parser(meta_parser, 'Application', 'ID') == app_id:
+			_meta_parser = _read_ini_file(meta_file)
+			if _get_from_parser(_meta_parser, 'Application', 'ID') == app_id:
 				app_logger.debug('Using additional %s' % meta_file)
+				meta_parser = _meta_parser
+				# Remove Logo* entries from meta file to avoid collision
+				# with information contained in ini files.
+				# Logos from meta files are used for www.univention.de website.
+				meta_parser.remove_option('Application', 'Logo')
+				meta_parser.remove_option('Application', 'LogoDetailPage')
 				break
-		else:
-			meta_parser = RawConfigParser()  # empty
 		attr_values = {}
 		for attr in cls._attrs:
 			value = None

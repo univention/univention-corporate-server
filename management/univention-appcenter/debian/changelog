@@ -1,6 +1,9 @@
 univention-appcenter (5.0.6-71) unstable; urgency=medium
 
-  * Bug #39525: Store ConfigParser instance at AppcenterApp object
+  Bug #39525:
+  * Store ConfigParser instance at AppcenterApp object
+  * Ignore Logo and LogoDetailPage values from meta file to avoid conflicting
+    paths with the univention.de website
 
  -- Alexander Kläser <klaeser@univention.de>  Sat, 24 Oct 2015 02:35:24 +0200
 
