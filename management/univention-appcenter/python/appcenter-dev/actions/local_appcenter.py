@@ -86,6 +86,8 @@ class FileInfo(object):
 
 class AppcenterApp(object):
 	def __init__(self, name, id, ucs_version, meta_inf_dir, components_dir, server):
+		self.config = ConfigParser.ConfigParser()
+		self.config.read(self.get_ini_file())
 		self.name = name
 		self.id = id
 		self.ucs_version = ucs_version
@@ -100,7 +102,10 @@ class AppcenterApp(object):
 		self.server = server
 
 	def get_metainf_url(self):
-		return '%s/meta-inf/%s/' % (self.server, self.ucs_version)
+		url = '%s/meta-inf/%s/' % (self.server, self.ucs_version)
+		if self.app_dir:
+			url = '%s%s/' % (url, self.app_dir)
+		return url
 
 	def get_repository_url(self):
 		return '%s/univention-repository/%s/maintained/component/%s/' % (self.server, self.ucs_version, self.name)
@@ -157,11 +162,9 @@ class AppcenterApp(object):
 				yield self.file_info(special_file, url, filename)
 
 		# Adding logo files
-		config = ConfigParser.ConfigParser()
-		config.read(self.get_ini_file())
 		for ikey in ('Logo', 'LogoDetailPage'):
-			if config.has_option('Application', ikey):
-				basename = config.get('Application', ikey)
+			if self.config.has_option('Application', ikey):
+				basename = self.config.get('Application', ikey)
 				filename = self._meta_inf_dir(basename)
 				url = self._meta_url(basename)
 				yield self.file_info(ikey.lower(), url, filename)

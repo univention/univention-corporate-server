@@ -1,3 +1,9 @@
+univention-appcenter (5.0.6-71) unstable; urgency=medium
+
+  * Bug #39525: Store ConfigParser instance at AppcenterApp object
+
+ -- Alexander Kläser <klaeser@univention.de>  Sat, 24 Oct 2015 02:35:24 +0200
+
 univention-appcenter (5.0.6-70) unstable; urgency=low
 
   * Bug #39585: Fix univention-appcenter packaging
