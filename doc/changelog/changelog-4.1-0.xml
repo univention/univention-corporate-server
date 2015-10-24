@@ -396,6 +396,9 @@
 			<listitem><simpara>
 					The updater now skips downloading translation files and differential <filename>Packages</filename> files (<u:bug>28022</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The updater <filename>preup.sh</filename> script now checks if the DC master has already been updated (<u:bug>37260</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:deployment:pkgdb">
