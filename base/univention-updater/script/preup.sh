@@ -317,6 +317,38 @@ then
 	fi
 fi
 
+# check for DC Master UCS version
+check_master_version ()
+{
+	if [ -f /var/univention-join/joined ]; then
+		if [ "$server_role" != domaincontroller_master -a "$server_role" != basesystem ]; then
+			master_version="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get version/version 2>/dev/null)" >&3 2>&3
+			master_patchlevel="$(univention-ssh /etc/machine.secret ${hostname}\$@$ldap_master /usr/sbin/ucr get version/patchlevel 2>/dev/null)" >&3 2>&3
+			python -c 'from univention.lib.ucs import UCS_Version
+import sys
+master=UCS_Version("'$master_version'-'$master_patchlevel'")
+me=UCS_Version("'$version_version'-'$version_patchlevel'")
+if master <= me:
+	sys.exit(1)
+'
+			if [ $? != 0 ]; then
+				echo "WARNING: Your domain controller master is still on version $master_version-$master_patchlevel."
+				echo "         It is strongly recommended that the domain controller master is"
+				echo "         always the first system to be updated during a release update."
+				
+				if is_ucr_true update41/ignore_version; then
+					echo "WARNING: update41/ignore_version is set to true. Skipped as requested."
+				else
+					echo "This check can be skipped by setting the UCR"
+					echo "variable update41/ignore_version to yes."
+					exit 1
+				fi
+			fi
+		fi
+	fi
+}
+check_master_version
+
 # autoremove before the update
 if ! is_ucr_true update41/skip/autoremove; then
     DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1

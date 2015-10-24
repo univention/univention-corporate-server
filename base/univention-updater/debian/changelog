@@ -1,3 +1,10 @@
+univention-updater (11.0.4-1) unstable; urgency=medium
+
+  * scripts/preup.sh: Check DC Master UCS version and abort if the DC
+    master version is lower or equal (Bug #37260)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 24 Oct 2015 20:55:26 +0200
+
 univention-updater (11.0.3-6) unstable; urgency=medium
 
   * Bug #39082: Re-Revert, now with pep8 support
