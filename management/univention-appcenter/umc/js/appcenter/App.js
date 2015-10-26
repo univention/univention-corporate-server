@@ -97,6 +97,8 @@ define([
 			this.isMaster = props.is_master;
 			this.isUCSComponent = props.is_ucs_component;
 			this.isDocker = !!props.docker_image;
+			this.config = props.config;
+			this.isRunning = props.is_running;
 			this.hostMaster = props.host_master;
 			this.userActivationRequired = props.user_activation_required;
 			this.ipAddress = props.ip_address;
@@ -252,6 +254,10 @@ define([
 
 		canDisable: function() {
 			return this.isInstalled && this.endOfLife && this.isCurrent;
+		},
+
+		canConfigure: function() {
+			return this.isDocker && this.isInstalled && this.isLocal();
 		},
 
 		canDisableInDomain: function() {

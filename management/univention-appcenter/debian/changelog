@@ -1,3 +1,11 @@
+univention-appcenter (5.0.8-2) unstable; urgency=medium
+
+  * Bug #38194: configure docker apps from App Center
+  * Bug #39190: Start/stop docker apps from App Center
+  * Bug #39625: .meta files are now in the app dir of meta-inf/
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Oct 2015 16:39:02 +0100
+
 univention-appcenter (5.0.8-1) unstable; urgency=medium
 
   * Bug #39625: Minor adjustment for ignoring logo values from meta file

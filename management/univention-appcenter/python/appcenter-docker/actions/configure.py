@@ -33,7 +33,6 @@
 #
 
 import os.path
-import locale
 import ConfigParser
 import shlex
 from argparse import Action
@@ -44,7 +43,7 @@ from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.utils import app_is_running, mkdir
+from univention.appcenter.utils import app_is_running, mkdir, get_locale
 
 
 class NoDatabaseFound(Exception):
@@ -109,9 +108,7 @@ class Configure(UniventionAppAction, DockerActionMixin):
 		parser = ConfigParser.ConfigParser()
 		with open(filename, 'rb') as fp:
 			parser.readfp(fp)
-		loc = locale.getlocale()[0]
-		if isinstance(loc, basestring):
-			loc = loc.split('_')[0]
+		locale = get_locale()
 		try:
 			_ucr = cls._get_app_ucr(app)
 		except NoDatabaseFound:
@@ -131,8 +128,8 @@ class Configure(UniventionAppAction, DockerActionMixin):
 		ucr = ConfigRegistry()
 		for section in parser.sections():
 			variable = {'id': section}
-			variable['description'] = _get_cfg(parser, section, 'Description[%s]' % loc) or _get_cfg(parser, section, 'Description[en]')
-			variable['labels'] = _get_cfg(parser, section, 'Labels[%s]' % loc, split=True) or _get_cfg(parser, section, 'Labels[en]', split=True)
+			variable['description'] = _get_cfg(parser, section, 'Description[%s]' % locale) or _get_cfg(parser, section, 'Description[en]')
+			variable['labels'] = _get_cfg(parser, section, 'Labels[%s]' % locale, split=True) or _get_cfg(parser, section, 'Labels[en]', split=True)
 			variable['values'] = _get_cfg(parser, section, 'values', split=True)
 			variable['type'] = _get_cfg(parser, section, 'type')
 			if variable['type'] == 'boolean':
@@ -144,7 +141,10 @@ class Configure(UniventionAppAction, DockerActionMixin):
 					value = value.lower()
 				value = ucr.is_true(value=value)
 			variable['value'] = value
-			variable['advanced'] = _get_cfg(parser, section, 'advanced')
+			advanced = _get_cfg(parser, section, 'advanced')
+			if advanced:
+				advanced = ucr.is_true(value=advanced.lower())
+			variable['advanced'] = advanced
 			variables.append(variable)
 		return variables
 

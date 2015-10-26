@@ -62,21 +62,23 @@ class DockerActionMixin(object):
 		return True
 
 	def _backup_container(self, app):
-		if not Start.call(app=app):
-			self.warn('Starting the container for %s failed' % app)
-			return False
-		if not self._store_data(app):
-			self.warn('Storing data for %s failed' % app)
-			return False
-		if not Stop.call(app=app):
-			self.warn('Stopping the container for %s failed' % app)
-			return False
 		docker = self._get_docker(app)
-		if docker.container:
+		if docker.exists():
+			if not Start.call(app=app):
+				self.warn('Starting the container for %s failed' % app)
+				return False
+			if not self._store_data(app):
+				self.warn('Storing data for %s failed' % app)
+				return False
+			if not Stop.call(app=app):
+				self.warn('Stopping the container for %s failed' % app)
+				return False
 			image_name = 'appcenter-backup-%s:%d' % (app.id, time())
 			image_id = docker.commit(image_name)
 			self.log('Backed up %s as %s. ID: %s' % (app, image_name, image_id))
 			return image_id
+		else:
+			self.warn('No container found. Unable to backup')
 
 	def _execute_container_script(self, _app, _interface, _args=None, _credentials=True, _output=False, **kwargs):
 		self.log('Executing interface %s for %s' % (_interface, _app.id))
@@ -130,7 +132,7 @@ class DockerActionMixin(object):
 
 		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
 		docker.verify()
-		
+
 		self.log('Downloading app image %s. This may take several minutes' % docker.image)
 		docker.pull()
 

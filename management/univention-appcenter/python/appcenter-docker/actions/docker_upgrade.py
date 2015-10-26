@@ -124,13 +124,13 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 
 		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
 		docker.verify()
-		
+
 		docker.pull()
 		self.log('Saving data from old container (%s)' % self.old_app)
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
 		config = Configure.list_config(self.old_app)
-		if not self._backup_container(self.old_app):
+		if self._backup_container(self.old_app) is False:
 			self.fatal('Could not backup container!')
 			raise Abort()
 		self.log('Setting up new container (%s)' % app)

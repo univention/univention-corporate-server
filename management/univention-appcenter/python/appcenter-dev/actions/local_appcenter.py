@@ -129,10 +129,10 @@ class AppcenterApp(object):
 		return os.path.join(path, filename)
 
 	def get_meta_file(self):
-		return self._meta_inf_dir('%s.meta' % self.id, False)
+		return self._meta_inf_dir('%s.meta' % self.id)
 
 	def get_meta_url(self):
-		return self._meta_url('%s.meta' % self.id, False)
+		return self._meta_url('%s.meta' % self.id)
 
 	def get_ini_file(self):
 		return self._meta_inf_dir('%s.ini' % self.name)

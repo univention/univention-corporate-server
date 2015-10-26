@@ -38,7 +38,6 @@ from glob import glob
 import re
 from ConfigParser import RawConfigParser, NoOptionError, NoSectionError, MissingSectionHeaderError
 from copy import copy
-from locale import getlocale
 from cgi import escape as cgi_escape
 from distutils.version import LooseVersion
 import platform
@@ -49,7 +48,7 @@ from univention.lib.package_manager import PackageManager
 
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
-from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, _
+from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, _
 
 
 CACHE_DIR = '/var/cache/univention-appcenter'
@@ -59,13 +58,6 @@ DATA_DIR = '/var/lib/univention-appcenter/apps'
 CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 
 app_logger = get_base_logger().getChild('apps')
-
-
-def _get_locale():
-	locale = getlocale()[0]
-	if locale:
-		locale = locale.split('_', 1)[0]
-	return locale
 
 
 def _read_ini_file(filename):
@@ -89,7 +81,7 @@ def _get_rating_items():
 	if _get_rating_items._items is None:
 		_get_rating_items._items = []
 		rating_parser = _read_ini_file(os.path.join(CACHE_DIR, '.rating.ini'))
-		locale = _get_locale()
+		locale = get_locale()
 		for section in rating_parser.sections():
 			label = _get_from_parser(rating_parser, section, 'Label')
 			if locale:
@@ -296,7 +288,7 @@ class AppLocalisedListAttribute(AppListAttribute):
 
 	def parse(self, value):
 		value = super(AppLocalisedListAttribute, self).parse(value)
-		locale = _get_locale()
+		locale = get_locale()
 		if self.localisable_by_file and locale:
 			for i, val in enumerate(value):
 				value[i] = self._translate(self.localisable_by_file, locale, val)
@@ -304,7 +296,7 @@ class AppLocalisedListAttribute(AppListAttribute):
 
 	def test_choices(self, value):
 		value = value[:]
-		locale = _get_locale()
+		locale = get_locale()
 		for i, val in enumerate(value):
 			value[i] = self._translate(self.localisable_by_file, locale, val, reverse=True)
 		super(AppLocalisedListAttribute, self).test_choices(value)
@@ -354,7 +346,7 @@ class AppFileAttribute(AppAttribute):
 		fname = self.name.upper()
 		localised_file_exts = [fname, '%s_EN' % fname]
 		if self.localisable:
-			locale = _get_locale()
+			locale = get_locale()
 			if locale:
 				localised_file_exts.insert(0, '%s_%s' % (fname, locale.upper()))
 		for localised_file_ext in localised_file_exts:
@@ -501,7 +493,7 @@ class App(object):
 	def from_ini(cls, ini_file, locale=True):
 		app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
-			locale = _get_locale()
+			locale = get_locale()
 		ini_parser = _read_ini_file(ini_file)
 		app_id = _get_from_parser(ini_parser, 'Application', 'ID')
 		for meta_file in glob(os.path.join(CACHE_DIR, '*.meta')):

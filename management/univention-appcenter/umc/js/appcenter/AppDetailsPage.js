@@ -83,6 +83,7 @@ define([
 
 		backLabel: _('Back to overview'),
 		detailsDialog: null,
+		configDialog: null,
 		isSubPage: false,
 
 		appCenterInformation:
@@ -139,6 +140,7 @@ define([
 				this._set('app', app);
 				this.hostDialog.set('app', app);
 				this.detailsDialog.set('app', app);
+				this.configDialog.set('app', app);
 				this.set('headerText', app.name);
 				//this.set('helpText', app.longDescription);
 				this.buildInnerPage();
@@ -239,6 +241,17 @@ define([
 						return app.data.canDisable();
 					}),
 					callback: lang.hitch(this, 'disableApp')
+				});
+			}
+			if (this.app.isDocker) {
+				buttons.push({
+					name: 'configure',
+					label: _('Configuration'),
+					align: 'right',
+					canExecute: lang.hitch(this, function(app) {
+						return app.data.canConfigure();
+					}),
+					callback: lang.hitch(this, 'configureApp')
 				});
 			}
 			if (this.app.canUninstallInDomain()) {
@@ -509,6 +522,10 @@ define([
 			this.standbyDuring(action);
 		},
 
+		configureApp: function() {
+			this.configDialog.showUp();
+		},
+
 		uninstallApp: function(host) {
 			// before installing, user must read uninstall readme
 			this.showReadme(this.app.readmeUninstall, _('Uninstall Information'), _('Uninstall')).then(lang.hitch(this, function() {
@@ -626,7 +643,7 @@ define([
 			return readmeDeferred;
 		},
 
-		callInstaller: function(func, host, force, deferred) {
+		callInstaller: function(func, host, force, deferred, values) {
 			deferred = deferred || new Deferred();
 			var nonInteractive = new Deferred();
 			deferred.then(lang.hitch(nonInteractive, 'resolve'));
@@ -666,7 +683,8 @@ define([
 				'application': this.app.id,
 				'app': this.app.id,
 				'host': host || '',
-				'force': force === true
+				'force': force === true,
+				'values': values || {}
 			};
 
 			this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
@@ -730,8 +748,8 @@ define([
 					}
 					nonInteractive.reject();
 					this.detailsDialog.showUp().then(
-						lang.hitch(this, function() {
-							this.callInstaller(func, host, true, deferred);
+						lang.hitch(this, function(values) {
+							this.callInstaller(func, host, true, deferred, values);
 						}),
 						function() {
 							deferred.reject();
@@ -878,6 +896,9 @@ define([
 			var webInterface = this.app.getWebInterfaceTag();
 			if (webInterface) {
 				txts.push(_('The app provides a web interface: %s.', webInterface));
+			}
+			if (this.app.isDocker) {
+				txts.push(_('%s uses a container technology for enhanced security and compatibility.', this.app.name));
 			}
 			if (txts.length) {
 				return txts.join(' ');

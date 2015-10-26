@@ -32,6 +32,8 @@
 		<command name="appcenter/sync_ldap" function="sync_ldap" />
 		<command name="appcenter/query" function="query" />
 		<command name="appcenter/get" function="get" />
+		<command name="appcenter/configure" function="configure" />
+		<command name="appcenter/service" function="app_service" />
 		<command name="appcenter/invoke" function="invoke" />
 		<command name="appcenter/docker/invoke" function="invoke_docker" />
 		<!-- ATTENTION: uses invoke. added because of compatibility issues between newer and older versions -->

@@ -44,6 +44,7 @@ import urllib2
 from hashlib import md5
 import socket
 import tempfile
+from locale import getlocale
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
@@ -236,6 +237,16 @@ def flatten(list_of_lists):
 		else:
 			ret.append(sublist)
 	return ret
+
+
+def get_locale():
+	# returns currently set locale: de_AT.UTF-8 -> de
+	# may return None if not set (i.e. 'C')
+	locale = getlocale()[0]
+	if locale:
+		locale = locale.split('_', 1)[0]
+	return locale
+
 
 def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileName=None):
 

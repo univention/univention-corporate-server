@@ -223,19 +223,17 @@ class Instance(umcm.Base, ProgressMixin):
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
 		return domain.to_dict([app])[0]
 
-	@sanitize(application=StringSanitizer(minimum=1, required=True), values=DictSanitizer({}))
+	@sanitize(app=AppSanitizer(required=True), values=DictSanitizer({}))
 	@simple_response
-	def configure(self, application, autostart, values):
-		application = AppManager.find(application)
+	def configure(self, app, autostart, values):
 		configure = get_action('configure')
-		configure.call(app=application, set_vars=values, autostart=autostart)
+		configure.call(app=app, set_vars=values, autostart=autostart)
 
-	@sanitize(application=StringSanitizer(minimum=1, required=True), mode=ChoicesSanitizer(['start', 'stop']))
+	@sanitize(app=AppSanitizer(required=True), mode=ChoicesSanitizer(['start', 'stop']))
 	@simple_response
-	def app_service(self, application, mode):
-		application = AppManager.find(application)
+	def app_service(self, app, mode):
 		service = get_action(mode)
-		service.call(app=application)
+		service.call(app=app)
 
 	@require_password
 	def _invoke_docker(self, function, application, force, values):
@@ -328,7 +326,6 @@ class Instance(umcm.Base, ProgressMixin):
 					kwargs['set_vars'] = values
 				elif function == 'uninstall':
 					progress.title = _('Uninstalling %s') % (app.name,)
-					kwargs['keep_data'] = not values.get('dont_keep_data', False)
 				elif function == 'upgrade':
 					progress.title = _('Upgrading %s') % (app.name,)
 				action = get_action(function)

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
-#  univention-app module for uninstalling an app
+#  univention-app module for getting app meta information
 #  (docker version)
 #
 # Copyright 2015 Univention GmbH
@@ -33,27 +33,16 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions import Abort
-from univention.appcenter.actions.remove import Remove
-from univention.appcenter.actions.docker_base import DockerActionMixin
+from univention.appcenter.utils import app_is_running
+from univention.appcenter.actions import get_action
+from univention.appcenter.actions.get import Get
 
 
-class Remove(Remove, DockerActionMixin):
-	def _do_it(self, app, args):
-		self._unregister_host(app, args)
-		self.percentage = 5
-		super(Remove, self)._do_it(app, args)
-
-	def _remove_app(self, app, args):
-		if not app.docker:
-			super(Remove, self)._remove_app(app, args)
-		else:
-			self._remove_docker_container(app, args)
-
-	def _remove_docker_container(self, app, args):
-		if self._backup_container(app) is False:
-			self.fatal('Could not backup container!')
-			raise Abort()
-		docker = self._get_docker(app)
-		if docker.container:
-			docker.rm()
+class Get(Get):
+	@classmethod
+	def to_dict(cls, app):
+		ret = super(Get, cls).to_dict(app)
+		configure = get_action('configure')
+		ret['config'] = configure.list_config(app)
+		ret['is_running'] = app_is_running(app)
+		return ret

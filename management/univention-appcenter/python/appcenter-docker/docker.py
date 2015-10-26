@@ -64,6 +64,7 @@ DOCKER_READ_USER_CRED = {
 	'password': 'readonly',
 	}
 
+
 class DockerImageVerificationFailedRegistryContact(Exception):
 
 	def __init__(self, app_name, docker_image_manifest_url):
@@ -73,6 +74,7 @@ class DockerImageVerificationFailedRegistryContact(Exception):
 		_logger.error(reason_en_US)
 		super(DockerImageVerificationFailedRegistryContact, self).__init__(reason_message)
 
+
 class DockerImageVerificationFailedChecksum(Exception):
 	def __init__(self, app_name):
 		reason_en_US = 'Manifest checksum mismatch'
@@ -80,6 +82,7 @@ class DockerImageVerificationFailedChecksum(Exception):
 
 		_logger.error(reason_en_US)
 		super(DockerImageVerificationFailedChecksum, self).__init__(reason_message)
+
 
 def inspect(name):
 	out = check_output(['docker', 'inspect', name])
@@ -103,8 +106,9 @@ def pull(image):
 				_logger.warn('Could not login to %s. You may not be able to pull the image from the repository!' % hub)
 	call(['docker', 'pull', image])
 
+
 def verify(app, image):
-	index_json_gz_filename = 'index.json.gz'
+	index_json_gz_filename = '.index.json.gz'
 	index_json_gz_path = os.path.join(CACHE_DIR, index_json_gz_filename)
 
 	if os.path.exists(index_json_gz_path):
@@ -131,7 +135,7 @@ def verify(app, image):
 		appinfo = json_apps[app.name]
 	except KeyError as exc:
 		_logger.error('Warning: Cannot check DockerImage checksum because app is not in index.json: %s' % app.name)
-		return ## Nothing we can do here, this is mainly for ucs-test apps
+		return  # Nothing we can do here, this is mainly for ucs-test apps
 
 	try:
 		appfileinfo = appinfo['ini']
@@ -140,7 +144,7 @@ def verify(app, image):
 		docker_image_manifest_url = dockerimageinfo['url']
 	except KeyError as exc:
 		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.name)
-		return ## Nothing we can do here, this is the case of ISV Docker repos
+		return  # Nothing we can do here, this is the case of ISV Docker repos
 
 	https_request_auth = requests.auth.HTTPBasicAuth(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password'])
 	https_request_answer = requests.get(docker_image_manifest_url, auth=https_request_auth)
@@ -155,6 +159,7 @@ def verify(app, image):
 	if appcenter_sha256sum != docker_image_manifest_hash:
 		exc = DockerImageVerificationFailedChecksum(app.name, docker_image_manifest_url)
 		raise exc
+
 
 def ps(only_running=True):
 	args = ['docker', 'ps', '--no-trunc=true']
@@ -227,9 +232,15 @@ class Docker(object):
 	def image(self):
 		return self.app.get_docker_image_name()
 
+	def exists(self):
+		return self._find_container(only_running=False)
+
 	def is_running(self):
+		return self._find_container(only_running=True)
+
+	def _find_container(self, only_running):
 		if self.container:
-			out = ps(only_running=True)
+			out = ps(only_running=only_running)
 			for line in out.splitlines():
 				if line.startswith(self.container):
 					return True

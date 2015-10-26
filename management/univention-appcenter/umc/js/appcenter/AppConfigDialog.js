@@ -196,7 +196,7 @@ define([
 		},
 
 		startStop: function(mode) {
-			this.standbyDuring(tools.umcpCommand('appcenter/service', {application: this.app.id, mode: mode}).then(lang.hitch(this, function() {
+			this.standbyDuring(tools.umcpCommand('appcenter/service', {app: this.app.id, mode: mode}).then(lang.hitch(this, function() {
 				this.onUpdate();
 			})));
 		},
@@ -204,7 +204,7 @@ define([
 		apply: function(serviceValues, confValues, advancedConfValues) {
 			var autostart = serviceValues.autostart;
 			var values = lang.mixin({}, confValues, advancedConfValues);
-			return this.standbyDuring(tools.umcpCommand('appcenter/configure', {application: this.app.id, autostart: autostart, values: values}));
+			return this.standbyDuring(tools.umcpCommand('appcenter/configure', {app: this.app.id, autostart: autostart, values: values}));
 		},
 
 		onUpdate: function() {
