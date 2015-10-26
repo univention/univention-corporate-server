@@ -1,0 +1,16 @@
+product: ucs
+release: "4.0"
+version: [3]
+scope: ucs_4.0-0-errata4.0-3
+src: openssh
+fix: 1:6.0p1-4.51.201510261316
+desc: |
+ The following vulnerabilities have been fixed in OpenSSH:
+ * Reject X11 connections after hard-coded Xauth cookie expiration time of
+   1200 seconds (CVE-2015-5352).
+ * Only query each keyboard-interactive device once per authentication
+   request regardless of how many times it is listed (CVE-2015-5600)
+bug: [39436]
+cve:
+ - CVE-2015-5352
+ - CVE-2015-5600
