@@ -1386,7 +1386,7 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 					<entry>Single <foreignphrase>logout</foreignphrase> URL des Service Providers</entry>
 					<entry>
 						Service Provider können einen URL Endpunkt anbieten, mit dem die Session am Service Provider beendet werden kann.
-						Loggt sich der Benutzer am UCS Identity Provider aus, wird über die hier übergebene URL ein <foreignphrase>Logout</foreignphase> am Service Provider durchgeführt.
+						Loggt sich der Benutzer am UCS Identity Provider aus, wird über die hier übergebene URL ein <foreignphrase>Logout</foreignphrase> am Service Provider durchgeführt.
 					</entry>
 
 				</row>
