@@ -5,7 +5,7 @@ scope: ucs_4.0-0-errata4.0-3
 src: univention-updater
 fix: 10.0.55-4.1406.201509151021
 desc: |
-  This update addresses the following issues:
-  * The command line tool 'univention-upgrade' now performa App updated by
-    default.
+  This update addresses the following issue:
+  * The command line tool 'univention-upgrade' is now able to perform
+    App updates.
 bug: [30417]
