@@ -1,3 +1,10 @@
+ucs-test (6.0.10-16) unstable; urgency=medium
+
+  * 80_docker/52_app_install_dc_slave: Give the ldap connection a second
+    chance if the LDAP server is down (Bug #39196)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2015 08:36:46 +0100
+
 ucs-test (6.0.10-15) unstable; urgency=medium
 
   * 00_checks: Dump running processes if the target process is not
