@@ -1,3 +1,10 @@
+ucs-test (6.0.10-17) unstable; urgency=low
+
+  * Bug #39373: extended 29_user_uidNumber_and_group_gidNumber_collision for
+    uid gid uniqueness switch. PEP8 compliance.
+
+ -- Eduard Mai <mai@univention.de>  Mon, 26 Oct 2015 16:30:13 +0100
+
 ucs-test (6.0.10-16) unstable; urgency=medium
 
   * 80_docker/52_app_install_dc_slave: Give the ldap connection a second

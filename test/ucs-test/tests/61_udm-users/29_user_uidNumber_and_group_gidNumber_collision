@@ -12,24 +12,27 @@
 ## exposure: dangerous
 ## packages:
 ##   - python-univention-directory-manager
-
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+import univention.testing.ucr as ucr_test
 import univention.admin.modules as udm_modules
 import univention.config_registry
 
+UCR = ucr_test.UCSTestConfigRegistry()
+UCR.load()
 
-ucr = univention.config_registry.ConfigRegistry()
-ucr.load()
+LO = utils.get_ldap_connection()
 
-udm_modules.update()
-lo = utils.get_ldap_connection()
+
+class Failure():
+	def __init__(self, message):
+		self.message = message
 
 
 def get_max_id():
-	base_dn = ucr['ldap/base']
-	users = udm_modules.lookup('users/user', None, lo, base=base_dn, scope='sub')
-	groups = udm_modules.lookup('groups/group', None, lo, base=base_dn, scope='sub')
+	base_dn = UCR['ldap/base']
+	users = udm_modules.lookup('users/user', None, LO, base=base_dn, scope='sub')
+	groups = udm_modules.lookup('groups/group', None, LO, base=base_dn, scope='sub')
 
 	highest_uid = max(int(user['uidNumber']) for user in users if user['uidNumber'])
 	highest_gid = max(int(group['gidNumber']) for group in groups if group['gidNumber'])
@@ -41,70 +44,75 @@ def get_max_id():
 
 def consecutive_user_creation():
 	id_to_collide_with = get_max_id()
-	udm.create_group(gidNumber=id_to_collide_with)
+	UDM.create_group(gidNumber=id_to_collide_with)
 
-	udm.create_user(uidNumber=id_to_collide_with - 1)
-	testcase_user_dn = udm.create_user()[0]
+	UDM.create_user(uidNumber=id_to_collide_with - 1)
+	testcase_user_dn = UDM.create_user()[0]
 
-	if int(lo.getAttr(testcase_user_dn, 'uidNumber')[0]) == id_to_collide_with:
-		return {'failed': True,
-					'msg': "Aquired user uidNumber which collides with a groups gidNumber by consecutivley adding users."}
-
-	return {'failed': False,
-			'msg': None}
+	if int(LO.getAttr(testcase_user_dn, 'uidNumber')[0]) == id_to_collide_with:
+		return Failure("Aquired user uidNumber which collides with a groups gidNumber by consecutivley adding users.")
 
 
 def consecutive_group_creation():
 	id_to_collide_with = get_max_id()
-	udm.create_user(uidNumber=id_to_collide_with)
+	UDM.create_user(uidNumber=id_to_collide_with)
 
-	udm.create_group(gidNumber=id_to_collide_with - 1)
-	testcase_group_dn = udm.create_group()[0]
+	UDM.create_group(gidNumber=id_to_collide_with - 1)
+	testcase_group_dn = UDM.create_group()[0]
 
-	if int(lo.getAttr(testcase_group_dn, 'gidNumber')[0]) == id_to_collide_with:
-		return {'failed': True,
-					'msg': "Aquired a group gidNumber which collides with a users uidNumber by consecutively adding users."}
-
-	return {'failed': False,
-				'msg': None}
+	if int(LO.getAttr(testcase_group_dn, 'gidNumber')[0]) == id_to_collide_with:
+		return Failure("Aquired a group gidNumber which collides with a users uidNumber by consecutively adding users.")
 
 
 def explicit_user_creation():
 	id_to_collide_with = get_max_id()
-	udm.create_group(gidNumber=id_to_collide_with)
+	UDM.create_group(gidNumber=id_to_collide_with)
 
 	try:
-		udm.create_user(uidNumber=id_to_collide_with)
+		UDM.create_user(uidNumber=id_to_collide_with)
 	except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-		return {'failed': False,
-					'msg': None}
-
-	return {'failed': True, 'msg': "Explicitly added a user setting the uidNumber to an existing groups gidNumber."}
+		return
+	return Failure("Explicitly added a user setting the uidNumber to an existing groups gidNumber.")
 
 
 def explicit_group_creation():
 	id_to_collide_with = get_max_id()
-	udm.create_user(uidNumber=id_to_collide_with)
+	UDM.create_user(uidNumber=id_to_collide_with)
 
 	try:
-		udm.create_group(gidNumber=id_to_collide_with)
+		UDM.create_group(gidNumber=id_to_collide_with)
 	except udm_test.UCSTestUDM_CreateUDMObjectFailed:
-		return {'failed': False,
-					'msg': None}
-
-	return {'failed': True,
-				'msg': "Explicitly added a group setting the gidNumber to an existing users uidNumber."}
+		return
+	return Failure("Explicitly added a group setting the gidNumber to an existing users uidNumber.")
 
 
 if __name__ == '__main__':
-	with udm_test.UCSTestUDM() as udm:
-		test_results = [consecutive_user_creation()]
-		test_results.append(consecutive_group_creation())
-		test_results.append(explicit_user_creation())
-		test_results.append(explicit_group_creation())
+	udm_modules.update()
+	TESTS = [consecutive_user_creation,
+				consecutive_group_creation,
+				explicit_user_creation,
+				explicit_group_creation]
 
+	TESTS_UNIQUENESS = [explicit_user_creation,
+						explicit_group_creation]
+
+	with udm_test.UCSTestUDM() as UDM:
+		# make sure UNIQUENESS is set right
+		if UCR['directory/manager/uid_gid/uniqueness']:
+			univention.config_registry.handler_unset(['directory/manager/uid_gid/uniqueness'])
+
+		FAILURES = [test() for test in TESTS if test()]
+
+		# now test with uniquness set to false
+		univention.config_registry.handler_set(['directory/manager/uid_gid/uniqueness=no'])
+		UDM.stop_cli_server()
+
+		# with uniqueness set to false failure case inverts
+		FAILURES.extend([Failure("Not able to collide ids with uid gid uniqueness off for: %s", test) for test in TESTS_UNIQUENESS if not test()])
+
+	UCR.revert_to_original_registry()
 	failure_msg = '\n'.join(
-		result.get('msg') for result in test_results if result.get('failed'))
+		failure.message for failure in FAILURES)
 
-	if any(result['failed'] for result in test_results):
+	if any(FAILURES):
 		utils.fail(failure_msg)
