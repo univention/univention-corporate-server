@@ -1,3 +1,9 @@
+univention-updater (10.0.55-6) unstable; urgency=medium
+
+  * Bug #30417: Fix import error; silence stdout for UCR commits
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Oct 2015 00:52:11 +0100
+
 univention-updater (10.0.55-5) unstable; urgency=low
 
   * Bug #30417: Remove join status check

@@ -293,7 +293,7 @@ def do_app_updates(options, checkForUpdates, silent):
 	interactive = not (options.noninteractive or checkForUpdates)
 	try:
 		from univention.appcenter.actions import get_action
-		from univention.appcenter.app_center import AppcenterServerContactFailed
+		from univention.management.console.modules.appcenter.app_center import AppcenterServerContactFailed
 		import univention.appcenter.log as appcenter_log
 		app_upgrade = get_action('upgrade')
 		if app_upgrade is None:
@@ -317,13 +317,18 @@ def do_app_updates(options, checkForUpdates, silent):
 	handler.setLevel(logging.INFO)
 	logger.addHandler(handler)
 
+	old_out = sys.stdout
 	try:
+		sys.stdout = open('/dev/null', 'wb')
 		new_apps = list(app_upgrade.iter_upgradable_apps())
 	except AppcenterServerContactFailed:
+		sys.stdout = old_out
 		dprint(silent, 'not available')
 		if logfd:
 			print >> logfd, traceback.format_exc()
 		return False
+	finally:
+		sys.stdout = old_out
 	if not new_apps:
 		dprint(silent, 'none')
 		return False
@@ -340,11 +345,11 @@ def do_app_updates(options, checkForUpdates, silent):
 			'new': app.candidate.version,
 		})
 
-	dprint(silent, 'Starting univention-app update at %s...' % time.ctime(), debug=True)
-	dprint(silent, '\nStarting app update', newline=False)
+	dprint(silent, 'Starting univention-app upgrade at %s...' % time.ctime(), debug=True)
+	dprint(silent, '\nStarting app upgrade', newline=False)
 	success = True
 	for app in new_apps:
-		if interactive and not readcontinue('\nDo you want to update %s [Y|n]?' % app.name):
+		if interactive and not readcontinue('\nDo you want to upgrade %s [Y|n]?' % app.name):
 			continue
 		success &= bool(app_upgrade.call(
 			app=app,
