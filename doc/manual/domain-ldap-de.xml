@@ -1291,7 +1291,7 @@ univention-directory-listener-ctrl resync cups-printers
 <section id="domain:saml">
 	<title>SAML Identity Provider</title>
 	<para>
-	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von Authentifizierungsinformationen, der Single Sign-On über Domänengrenzen hinweg erlaubt.
+	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von Authentifizierungsinformationen, der <foreignphrase>Single Sign-On</foreignphrase> über Domänengrenzen hinweg erlaubt.
 	  UCS stellt auf UCS Master und Backup Domänencontrollern einen ausfallsicheren SAML Identity Provider bereit:
 	  Über ein kryptografisches Zertifikat wird der SAML Identity Provider bei einem externen Dienst fest registriert und vertraut diesem.
 	  Der Benutzer authentifiziert sich dann einmalig gegenüber UCS und kann den Dienst ohne erneute Authentifizierung nutzen.
@@ -1302,25 +1302,25 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 		Der UCS Identity Provider ist eng in die UCS Domäne eingebunden.
 		Daher müssen Rechner, von denen der UCS Identity Providers genutzt werden soll, DNS Namen in der UCS Domäne auflösen können.
-		Die DNS Server der Domäne sollten auf allen Clients eingetragen sein, um den zentralen DNS-Namen, im Normalfall ucs-sso.<replaceable>domainname</replaceable>, auflösen zu können.
+		Die DNS Server der Domäne sollten auf allen Clients eingetragen sein, um den zentralen DNS-Namen, im Normalfall <uri>ucs-sso.<replaceable>domainname</replaceable></uri>, auflösen zu können.
 	</para>
 	<para>
 		Der UCS Identity Provider wird auf dem UCS Master und UCS Backup Systemen mit der Installation automatisch eingerichtet.
 		Um die Ausfallsicherheit innerhalb der Domäne zu erhöhen, können weitere UCS Backup Server in der Domäne verfügbar gemacht werden.
 		Für den ausfallsicheren Zugriff auf den UCS Identity Provider wird standardmäßig der DNS Eintrag <uri>ucs-sso.<replaceable>domainname</replaceable></uri> registriert. 
 		Das für diesen Eintrag vorgesehene TLS Zertifikat wird auf allen beteiligten Systemen der Domäne vorgehalten.
-		Es wird empfohlen, das Wurzelzertifikat der UCS Domäne auf allen Rechnern, die Single Sign-On nutzen, zu installieren.
+		Es wird empfohlen, das Wurzelzertifikat der UCS Domäne auf allen Rechnern, die <foreignphrase>Single Sign-On</foreignphrase> nutzen, zu installieren.
 	</para>
 
 	<section id="domain:saml:ssologin">
-	<title>Anmelden per Single Sign-On</title>
+	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
 	<para>
-		Um sich per Single Sign-On an der &ucsUMC; anzumelden, 
+		Um sich per <foreignphrase>Single Sign-On</foreignphrase> an der &ucsUMC; anzumelden, 
 		<!-- TODO: feature not finalized; use normal domain account-->
 		<!-- TODO: Screenshot SSO page -->
 	</para>
 	<para>
-		Der Single Sign-On an einem Dienst kann auch vom UCS Identity Provider initiiert werden.
+		Der <foreignphrase>Single Sign-On</foreignphrase> an einem Dienst kann auch vom UCS Identity Provider initiiert werden.
 		Dies erspart den Umweg, zunächst den externen Dienst selbst aufzurufen und sich von dort zur Authentifizierung weiterleiten zu lassen.
 		Dazu muss der Identity Provider mit einem Link der Form <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri> aufgerufen werden.
 		Wenn beispielsweise ein externer Dienst mit dem Service Provider Bezeichner <replaceable>externalService</replaceable> registriert wurde, erzeugt folgendes Kommando einen Link auf der UCS Übersichtsseite
@@ -1338,12 +1338,12 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 	<section id="domain:saml:additionalserviceprovider">
 	<title>Hinzufügen eines neuen externen Service Providers</title>
 	<para>
-		Die am UCS Identity Provider registrierten Service Provider können über das UMC Domänenmodul <guimenu>SAML identity provider</guimenu> verwaltet werden.
+		Die am UCS Identity Provider registrierten Service Provider können über das UMC Domänen Modul <guimenu>SAML identity provider</guimenu> verwaltet werden.
 		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des SAML Zertifikats auf dem Service Provider benötigt.
 	       	Dieses kann über einen Download-Link im UMC Modul heruntergeladen werden.
 	</para>
 	<para>
-		Andere Service Provider benötigen die XML-Metadaten des Identity Providers in Form eines Dateiuploads.
+		Andere Service Provider benötigen die XML-Metadaten des Identity Providers in Form eines Datei <foreignphrase>Uploads</foreignphrase>.
 		In der Standardkonfiguration kann die XML Datei unter der URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri> heruntergeladen werden.
 	</para>
 	<table>
@@ -1383,7 +1383,7 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 
 				</row>
 				<row>
-					<entry>Single logout URL des Service Providers</entry>
+					<entry>Single <foreignphrase>logout</foreignphrase> URL des Service Providers</entry>
 					<entry>
 						Service Provider können einen URL Endpunkt anbieten, mit dem die Session am Service Provider beendet werden kann.
 						Loggt sich der Benutzer am UCS Identity Provider aus, wird über die hier übergebene URL ein Logout am Service Provider durchgeführt.
@@ -1395,21 +1395,21 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 					<entry>
 						Der Wert <option>NameIDFormat</option> den der Service Provider erhält.
 						Die Dokumentation des Service Providers sollte erwartete Formate erwähnen.
-						Beispiel: urn:oasis:names:tc:SAML:2.0:nameid-format:transient oder urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified
+						Beispiel: <option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option> oder <option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>
 					</entry>
 
 				</row>
 				<row>
 					<entry>Name des Attributs, das als <option>NameID</option> verwendet wird</entry>
 					<entry>
-						Hier wird kann das LDAP Attribut eingetragen werden, dass für eine eindeutige Identifizierung des Benutzers am Service Provider verwendet wird, beispielsweise uid.
+						Hier wird kann das LDAP Attribut eingetragen werden, dass für eine eindeutige Identifizierung des Benutzers am Service Provider verwendet wird, beispielsweise <option>uid</option>.
 					</entry>
 
 				</row>
 				<row>
 					<entry>Name der Organisation des Service Providers</entry>
 					<entry>
-						Der hier eingetragene Wert beim auf der UCS Single Sign-On Loginseite angezeigt.
+						Der hier eingetragene Wert beim auf der UCS <foreignphrase>Single Sign-On</foreignphrase> Login Seite angezeigt.
 						Dem Benutzer wird so dargestellt, für welchen Dienst er sich authentifiziert.
 					</entry>
 
@@ -1417,8 +1417,8 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 				<row>
 					<entry>Beschreibung dieses Service Providers</entry>
 					<entry>
-						Der hier eingetragene Wert beim auf der UCS Single Sign-On Loginseite angezeigt.
-						Hier kann eine längere Beschreibung über den Dienst angegeben werden, der auf der Loginseite in einem eigenen Absatz angezeigt wird.
+						Der hier eingetragene Wert beim auf der UCS <foreignphrase>Single Sign-On</foreignphrase> Login Seite angezeigt.
+						Hier kann eine längere Beschreibung über den Dienst angegeben werden, der auf der Login Seite in einem eigenen Absatz angezeigt wird.
 					</entry>
 
 				</row>
@@ -1440,7 +1440,7 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 				<row>
 					<entry>URL zur Datenschutzrichtlinie des Service Providers</entry>
 					<entry>
-						Wird hier eine URL eingetragen, wird dem Benutzer ein Link zu dieser Seite auf der UCS Identity Provider Loginseite angezeigt.
+						Wird hier eine URL eingetragen, wird dem Benutzer ein Link zu dieser Seite auf der UCS Identity Provider Login Seite angezeigt.
 					</entry>
 				</row>
 				<row>
@@ -1452,9 +1452,9 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 					</entry>
 				</row>
 				<row>
-					<entry>Der Wert des Formatfeldes für Attribute</entry>
+					<entry>Der Wert des <option>Formatfeldes</option> für Attribute</entry>
 					<entry>
-						Sollen die übertragenen Attribute mit einem besonderen Formatwert übertragen werden, kann dieser hier eingetragen werden.
+						Sollen die übertragenen Attribute mit einem besonderen <option>Formatwert</option> übertragen werden, kann dieser hier eingetragen werden.
 					</entry>
 				</row>
 				<row>
@@ -1474,7 +1474,7 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 	<para>
 		<!-- TODO: screenshot user freischaltung -->
 		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
-		Auf dem Konto Tab eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
+		Auf dem <guimenu>Konto Tab</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
 	</para>
 	</section>
 </section>
