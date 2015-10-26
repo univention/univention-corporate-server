@@ -399,8 +399,11 @@ define([
 				this._resizeDeferred.cancel();
 			}
 			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
-				this._currentWidth = win.global.window.getViewport().w;
-				this.filter();
+				var type = this._searchForm.get('value').type;
+				if (type === 'domain') {
+					this._currentWidth = win.global.window.getViewport().w;
+					this.updateGrid(type);
+				}
 			}), 200);
 			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */});
 		},
@@ -1733,9 +1736,7 @@ define([
 				domainPattern: domainPattern,
 				nodePattern: nodePattern
 			});
-			var columns = this._getGridColumns(type);
-			var actions = this._getGridActions(type);
-			this._grid.setColumnsAndActions(columns, actions);
+			this.updateGrid(type);
 
 			// update tree
 			if (tree_item && tree_item.type == 'node') {
@@ -1754,6 +1755,12 @@ define([
 				}));
 			}
 			this._itemCountChangedNoteShowed = false;
+		},
+
+		updateGrid: function(type) {
+			var columns = this._getGridColumns(type);
+			var actions = this._getGridActions(type);
+			this._grid.setColumnsAndActions(columns, actions);
 		},
 
 		showProgress: function() {

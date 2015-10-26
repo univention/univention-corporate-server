@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.24-14) unstable; urgency=low
+
+  * Bug #38676: Separated grid update from grid filtering
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 26 Oct 2015 12:41:53 +0100
+
 univention-virtual-machine-manager-daemon (4.0.24-13) unstable; urgency=low
 
   * Bug #38676: Display vm description in umc
