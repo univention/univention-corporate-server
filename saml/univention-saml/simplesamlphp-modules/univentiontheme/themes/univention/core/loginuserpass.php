@@ -25,7 +25,7 @@ if (strlen($this->data['username']) > 0) {
 		echo('<p>' . htmlspecialchars($login_user_pass_text) . '</p>');
 		?>
 	<?php
-	if (empty($this->data['SPMetadata']['description'])) {
+	if (!empty($this->data['SPMetadata']['description'])) {
 		$description = $this->data['SPMetadata']['description'];
 		if (is_array($description)) {
 			$description = implode($this->data['SPMetadata']['description']);

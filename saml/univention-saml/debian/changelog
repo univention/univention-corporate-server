@@ -1,3 +1,9 @@
+univention-saml (3.0.24-11) unstable; urgency=medium
+
+  * Bug #39181: Fix logic bug
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 26 Oct 2015 14:41:35 +0100
+
 univention-saml (3.0.24-10) unstable; urgency=medium
 
   * Bug #39479: Listener: Restart univention-saml only if certificates are
