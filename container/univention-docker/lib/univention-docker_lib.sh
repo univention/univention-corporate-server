@@ -33,11 +33,8 @@ get_container_names() {
 	docker ps -q "$@" | tr '\n' ' '
 }
 
-_shutdown_container() {
+exec_halt_inside_container() {
 	local CONT_ID="${1:?Missing argument: container ID}"
-	local BACKGR="${2:-}"
-	local cmd
-	local output
 
 	if EXE=$(docker exec "${CONT_ID}" which telinit); then
 		cmd="telinit 0"
@@ -66,6 +63,15 @@ _shutdown_container() {
 			docker exec "${CONT_ID}" ${cmd}
 		fi
 	fi
+}
+
+_shutdown_container() {
+	local CONT_ID="${1:?Missing argument: container ID}"
+	local BACKGR="${2:-}"
+	local cmd
+	local output
+
+	exec_halt_inside_container "${CONT_ID}"
 
 	if [ -z "$BACKGR" ]; then
 		output=$(docker stop --time=$TIME "${CONT_ID}" 2>&1)
@@ -121,6 +127,20 @@ shutdown_containers() {
 			fi
 		done
 		sleep 1
+	done
+}
+
+wait_for_containers_inner_shutdown() {
+	local CONT_ID="${1:?Missing argument: container ID}"
+	local TIMEOUT="${2:?Missing argument: timeout in sec}"
+	local SEC_WAITING=0
+
+	while [ "$SEC_WAITING" -lt "$TIMEOUT" ]; do
+		if container_with_init_has_shutdown "${CONT_ID}"; then
+			break
+		fi
+		sleep 1
+		SEC_WAITING=$(( $SEC_WAITING + 1 ))
 	done
 }
 

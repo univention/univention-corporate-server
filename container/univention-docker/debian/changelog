@@ -1,3 +1,9 @@
+univention-docker (0.1.0-9) unstable; urgency=medium
+
+  * Bug #39474: Add wait_for_containers_inner_shutdown
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Oct 2015 17:38:01 +0100
+
 univention-docker (0.1.0-8) unstable; urgency=low
 
   * exit with 0 if docker is already stopped or started (Bug #39273)
