@@ -3,7 +3,7 @@ release: "4.0"
 version: [3]
 scope: ucs_4.0-0-errata4.0-3
 src: univention-updater
-fix: 10.0.55-4.1406.201509151021
+fix: 10.0.55-5.1418.201510261045
 desc: |
   This update addresses the following issue:
   * The command line tool 'univention-upgrade' is now able to perform
