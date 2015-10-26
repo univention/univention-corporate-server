@@ -799,7 +799,7 @@
 				<command>nscd</command> terminates its children when stopping (<u:bug>38135</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The packages for the default <emphasis>settings/packages</emphasis> &ucsUDM; objects
+				The packages for the default <classname>settings/packages</classname> &ucsUDM; objects
 				have been updated (<u:bug>32443</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>

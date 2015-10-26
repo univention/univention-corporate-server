@@ -161,12 +161,12 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 		</para>
 		<para>
 			An Extended Attribute is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
-			The module is called <literal>settings/extended_attribute</literal>.
+			The module is called <classname>settings/extended_attribute</classname>.
 			Extended Attributes can be stored anywhere in the <acronym>LDAP</acronym>, but the default location would be <literal>cn=custom attributes,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The module <literal>settings/extended_attribute</literal> requires many parameters.
+			The module <classname>settings/extended_attribute</classname> requires many parameters.
 			They are described in <olink targetdoc="ucs-4.1" targetptr="central:extendedattrs"/>.
 		</para>
 		<variablelist>
@@ -588,12 +588,12 @@ udm settings/extended_attribute create --position "cn=custom attributes,$base" \
 			</para>
 			<para>
 				Similar to Extended Attributes an Extended Option is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
-				The module is called <literal>settings/extended_options</literal>.
+				The module is called <classname>settings/extended_options</classname>.
 				Extended Options can be stored anywhere in the <acronym>LDAP</acronym>, but the default location would be <literal>cn=custom attributes,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 				Since the join script creating the option may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 			</para>
 			<para>
-				The module <literal>settings/extended_options</literal> has the following properties:
+				The module <classname>settings/extended_options</classname> has the following properties:
 			</para>
 			<variablelist>
 				<varlistentry><term><literal>name</literal> (required)</term>
@@ -1260,7 +1260,7 @@ class MyServers(UDM_Objects):
 								<term><firstterm>UDM API</firstterm></term>
 								<listitem>
 									<simpara>
-										By creating a <acronym>UDM</acronym> object in <acronym>LDAP</acronym> using the module <literal>settings/syntax</literal>.
+										By creating a <acronym>UDM</acronym> object in <acronym>LDAP</acronym> using the module <classname>settings/syntax</classname>.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -1426,7 +1426,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		<para>
 			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> hook in the UCS domain
 			from any system in the domain. For this purpose, a UDM hook can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <literal>settings/udm_hook</literal>. As these objects are replicated throughout the
+			The module responsible for this type of objects is called <classname>settings/udm_hook</classname>. As these objects are replicated throughout the
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
@@ -1436,7 +1436,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The module <literal>settings/udm_hook</literal> requires several parameters.
+			The module <classname>settings/udm_hook</classname> requires several parameters.
 			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
 		<variablelist>
@@ -1513,7 +1513,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		<para>
 			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> module in the UCS domain
 			from any system in the domain. For this purpose, a UDM module can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <literal>settings/udm_module</literal>. As these objects are replicated throughout the
+			The module responsible for this type of objects is called <classname>settings/udm_module</classname>. As these objects are replicated throughout the
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
@@ -1523,14 +1523,14 @@ udm settings/syntax create "$@" --ignore_exists \
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The module <literal>settings/udm_module</literal> requires several parameters.
+			The module <classname>settings/udm_module</classname> requires several parameters.
 			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the UDM module, e.g. <literal>newapp/someobject</literal>.
+						Name of the UDM module, e.g. <classname>newapp/someobject</classname>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1620,7 +1620,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		<para>
 			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> syntax in the UCS domain
 			from any system in the domain. For this purpose, a UDM syntax can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <literal>settings/udm_syntax</literal>. As these objects are replicated throughout the
+			The module responsible for this type of objects is called <classname>settings/udm_syntax</classname>. As these objects are replicated throughout the
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
@@ -1630,7 +1630,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The module <literal>settings/udm_syntax</literal> requires several parameters.
+			The module <classname>settings/udm_syntax</classname> requires several parameters.
 			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
 		<variablelist>

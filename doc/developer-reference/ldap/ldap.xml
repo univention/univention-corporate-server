@@ -50,7 +50,7 @@
 		<para>
 			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> schema extension
 			from any system in the UCS domain. For this purpose, the schema extension can be stored as a special type of UDM object. The module
-			responsible for this type of objects is called <literal>settings/ldapschema</literal>. As these objects are replicated throughout the
+			responsible for this type of objects is called <classname>settings/ldapschema</classname>. As these objects are replicated throughout the
 			UCS domain, the &ucsMaster; and &ucsBackup; systems listen for modifications of these objects and integrate them into the local
 			<acronym>LDAP</acronym> schema directory. As noted above, this simplifies the task of keeping the schema on the &ucsBackup; systems
 			up to date with that on the &ucsMaster;.
@@ -62,7 +62,7 @@
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The UDM module <literal>settings/ldapschema</literal> requires several parameters:
+			The UDM module <classname>settings/ldapschema</classname> requires several parameters:
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
@@ -136,7 +136,7 @@ ucs_registerLDAPExtension "$@" \
 		<para>
 			For some purposes, e.g. for app installation, it is convenient to be able to register a new <acronym>LDAP</acronym> ACL extension
 			from any system in the UCS domain. For this purpose, the UCR template for an ACL extension can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <literal>settings/ldapacl</literal>. As these objects are replicated throughout the
+			The module responsible for this type of objects is called <classname>settings/ldapacl</classname>. As these objects are replicated throughout the
 			UCS domain, the &ucsMaster;, &ucsBackup; and &ucsSlave; systems listen for modifications on these objects and integrate them into the local
 			<acronym>LDAP</acronym> ACL UCR template directory. This simplifies the task of keeping the <acronym>LDAP</acronym> ACLs on the &ucsBackup; systems
 			up to date with those on the &ucsMaster;.
@@ -148,7 +148,7 @@ ucs_registerLDAPExtension "$@" \
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The UDM module <literal>settings/ldapacl</literal> requires several parameters:
+			The UDM module <classname>settings/ldapacl</classname> requires several parameters:
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
