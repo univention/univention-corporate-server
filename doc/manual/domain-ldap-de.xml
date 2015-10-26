@@ -1343,7 +1343,7 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 	       	Dieses kann über einen Download-Link im UMC Modul heruntergeladen werden.
 	</para>
 	<para>
-		Andere Service Provider benötigen die XML-Metadaten des Identity Providers in Form eines Datei <foreignphrase>Uploads</foreignphrase>.
+		Andere Service Provider benötigen die XML Metadaten des Identity Providers in Form eines Datei <foreignphrase>Uploads</foreignphrase>.
 		In der Standardkonfiguration kann die XML Datei unter der URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri> heruntergeladen werden.
 	</para>
 	<table>
@@ -1386,7 +1386,7 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 					<entry>Single <foreignphrase>logout</foreignphrase> URL des Service Providers</entry>
 					<entry>
 						Service Provider können einen URL Endpunkt anbieten, mit dem die Session am Service Provider beendet werden kann.
-						Loggt sich der Benutzer am UCS Identity Provider aus, wird über die hier übergebene URL ein Logout am Service Provider durchgeführt.
+						Loggt sich der Benutzer am UCS Identity Provider aus, wird über die hier übergebene URL ein <foreignphrase>Logout</foreignphase> am Service Provider durchgeführt.
 					</entry>
 
 				</row>
