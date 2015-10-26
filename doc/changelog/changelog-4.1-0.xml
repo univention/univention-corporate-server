@@ -399,6 +399,9 @@
 			<listitem><simpara>
 					The updater <filename>preup.sh</filename> script now checks if the DC master has already been updated (<u:bug>37260</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+					The fatal error message in <command>univention-upgrade</command> now includes references the logfile <filename>/var/log/univention/updater.log</filename> for further details (<u:bug>31006</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:deployment:pkgdb">
