@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-48) unstable; urgency=medium
+
+  * Bug #34184: Ignore ..TrustAnchors pseudo zone in ForestDnsZones
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Oct 2015 12:05:12 +0100
+
 univention-s4-connector (9.0.16-47) unstable; urgency=medium
 
   * Fix log message (Bug #34184)
