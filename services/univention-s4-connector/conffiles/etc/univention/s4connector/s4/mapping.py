@@ -61,6 +61,7 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'DC=RootDNSServers,CN=MicrosoftDNS,CN=System,@%@connector/s4/ldap/base@%@',
 			'DC=RootDNSServers,CN=MicrosoftDNS,DC=DomainDnsZones,@%@connector/s4/ldap/base@%@',
 			'DC=RootDNSServers,CN=MicrosoftDNS,DC=ForestDnsZones,@%@connector/s4/ldap/base@%@',
+			'DC=..TrustAnchors,CN=MicrosoftDNS,DC=ForestDnsZones,@%@connector/s4/ldap/base@%@',
 			'CN=File Replication Service,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=RpcServices,CN=System,@%@connector/s4/ldap/base@%@',
 			'CN=Meetings,CN=System,@%@connector/s4/ldap/base@%@',
