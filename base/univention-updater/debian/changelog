@@ -1,3 +1,9 @@
+univention-updater (11.0.4-3) unstable; urgency=medium
+
+  * Bug #39082: Search for new upgrades
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Oct 2015 00:04:22 +0100
+
 univention-updater (11.0.4-2) unstable; urgency=low
 
   * Bug #39610: Detect disabled repositories early

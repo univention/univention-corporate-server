@@ -298,6 +298,7 @@ def do_app_updates(options, checkForUpdates, silent):
         from univention.appcenter.actions import get_action
         from univention.appcenter.app import AppManager
         import univention.appcenter.log as appcenter_log
+        app_upgrade_search = get_action('upgrade-search')
         app_upgrade = get_action('upgrade')
         if app_upgrade is None:
             raise ImportError()
@@ -308,7 +309,6 @@ def do_app_updates(options, checkForUpdates, silent):
         return False
 
     # check if component updates are available
-    app_upgrade = app_upgrade()
     appcenter_log.log_to_logfile()
     appcenter_log._reverse_umc_module_logger()
 
@@ -320,6 +320,7 @@ def do_app_updates(options, checkForUpdates, silent):
     handler.setLevel(logging.INFO)
     logger.addHandler(handler)
 
+    app_upgrade_search.call()
     new_apps = list(app_upgrade.iter_upgradable_apps())
     if not new_apps:
         dprint(silent, 'none')
