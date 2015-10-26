@@ -71,8 +71,12 @@ class UcsRepoUrl(object):
             self.scheme = 'http'
             self.username = ucrv('username', default.username)
             self.password = ucrv('password', default.password)
-            self.hostname = server or default.hostname
-            port = ucrv('port', default.port)
+            if server:
+                self.hostname = server
+                port = ucrv('port', 80)
+            else:
+                self.hostname = default.hostname
+                port = ucrv('port', default.port)
             prefix = ucrv('prefix', default.path)
         self.port = int(port if port else 443 if self.scheme == 'https' else 80)
         if prefix:

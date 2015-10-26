@@ -1455,7 +1455,7 @@ class UniventionUpdater:
         Return UCSServer as configures via UCR.
         '''
 
-        c_url = self._get_component_baseurl(component, for_mirror_list)
+        c_url = copy.copy(self._get_component_baseurl(component, for_mirror_list))
         c_url.path = ''
         prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, '')
 

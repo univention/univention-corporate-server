@@ -1,6 +1,7 @@
 univention-updater (11.0.4-2) unstable; urgency=low
 
   * Bug #39610: Detect disabled repositories early
+  * Bug #39610: Reset port when only hostname is given
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 26 Oct 2015 09:34:02 +0100
 
