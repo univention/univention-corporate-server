@@ -175,10 +175,11 @@ _do_restart_container() {
 	container_uuid="$2"
 
 	if [ "$run_state" = "running" ]; then
-		output=$(docker exec "$container_uuid" halt 2>&1)
+		exec_halt_inside_container "$container_uuid"
+		wait_for_containers_inner_shutdown "$container_uuid" 60
 	fi
 
-	uuid=$(docker restart "$container_uuid")
+	uuid=$(docker restart --time=0 "$container_uuid")
 	local ip="$(docker inspect --format={{.NetworkSettings.IPAddress}} "$uuid")"
 	local ucr_key="$(univention-app get $app_name ucr_ip_key --values-only)"
 	ucr set "${ucr_key}=${ip}" >/dev/null
@@ -186,6 +187,7 @@ _do_restart_container() {
 
 stop_container() {
 	local container_uuid
+	local short_container_uuid
 	container_uuid="$1"
 
 	run_state=$(container_run_state "$container_uuid") || return $?
@@ -195,9 +197,10 @@ stop_container() {
 	fi
 
 	log_begin_msg "Stopping $app_name Container $container_uuid ..."
-	output=$(shutdown_containers $(echo "$container_uuid" | cut -b -12))
+	short_container_uuid="${container_uuid:0:12}"
+	output=$(shutdown_containers "$short_container_uuid")
 	log_end_msg $?
-	if [ "$output" != "$container_uuid" ]; then
+	if [ "$output" != " $short_container_uuid" ]; then
 		echo -n "$output"
 	fi
 	local ucr_key="$(univention-app get $app_name ucr_ip_key --values-only)"

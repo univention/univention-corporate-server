@@ -1,3 +1,10 @@
+univention-appcenter (5.0.9-1) unstable; urgency=medium
+
+  * Fix short ids (Bug #39474)
+  * wait for shutdown of containers
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Oct 2015 17:39:36 +0100
+
 univention-appcenter (5.0.8-2) unstable; urgency=medium
 
   * Bug #38194: configure docker apps from App Center
