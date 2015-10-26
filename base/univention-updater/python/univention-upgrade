@@ -479,7 +479,7 @@ def main():
             print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
             sys.exit(3)
         except Exception, e:
-            print 'An error occurred - stopping here.'
+            print 'An error occurred - see "%s" for details' % (LOGFN,)
             print >>logfd, 'Traceback in univention-upgrade:'
             print >>logfd, traceback.format_exc()
             sys.exit(2)
@@ -502,7 +502,7 @@ def main():
             sys.exit(3)
         except Exception, e:
             update_status(status='FAILED')
-            print 'An error occurred - stopping here.'
+            print 'An error occurred - see "%s" for details' % (LOGFN,)
             print >>logfd, 'Traceback in univention-upgrade:'
             print >>logfd, traceback.format_exc()
             sys.exit(2)
@@ -517,7 +517,7 @@ def main():
             print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
             sys.exit(3)
         except Exception, e:
-            print 'An error occurred - stopping here.'
+            print 'An error occurred - see "%s" for details' % (LOGFN,)
             print >>logfd, 'Traceback in univention-upgrade:'
             print >>logfd, traceback.format_exc()
             sys.exit(2)
