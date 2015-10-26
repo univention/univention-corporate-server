@@ -1,3 +1,10 @@
+ucs-test (6.0.10-15) unstable; urgency=medium
+
+  * 00_checks: Dump running processes if the target process is not
+    running (Bug #37022)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2015 06:04:59 +0100
+
 ucs-test (6.0.10-14.1) unstable; urgency=low
 
   * dont wait for DRS replication for mail/folders (Bug #38600)

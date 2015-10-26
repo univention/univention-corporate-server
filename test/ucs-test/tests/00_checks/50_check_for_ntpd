@@ -13,11 +13,16 @@ proc = Popen(['pgrep', 'ntpd'], stdout=PIPE, stderr=PIPE)
 
 stdout, stderr = proc.communicate()
 
+def dump_ps():
+	subprocess.call(['ps', 'afwx'])
+
 if stderr.strip():
-        utils.fail('An error ocurred when running the pgrep command'
-                   'to check for ntpd, STDERR: %s ' % stderr)
+	dump_ps()
+	utils.fail('An error ocurred when running the pgrep command'
+		'to check for ntpd, STDERR: %s ' % stderr)
 
 if proc.returncode != 0:
-    utils.fail('ntpd not found.')
+	dump_ps()
+	utils.fail('ntpd not found.')
 
 exit(0)

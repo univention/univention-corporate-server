@@ -16,6 +16,7 @@ if pgrep "nmbd" >/dev/null
 then
     echo "OK. Process found."
 else
+	ps afxw
     fail_fast 110 "Could not find the 'nmbd' process."
 fi
 
