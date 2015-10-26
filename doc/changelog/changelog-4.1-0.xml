@@ -620,6 +620,10 @@
 				<listitem><simpara>
 					UVMM profiles for Windows 10 have been added (<u:bug>39335</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The description of a virtual machine is dynamically displayed
+					as a grid column (<u:bug>38676</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
