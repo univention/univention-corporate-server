@@ -10,7 +10,7 @@ desc: |
    1200 seconds (CVE-2015-5352).
  * Only query each keyboard-interactive device once per authentication
    request regardless of how many times it is listed (CVE-2015-5600)
-note: This update fixes these vulnerabilities.
+bug: [39437]
 cve:
  - CVE-2015-5352
  - CVE-2015-5600
