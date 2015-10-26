@@ -5,6 +5,6 @@ class Constants {
 		domaincontroller_master : 'master',
 		domaincontroller_backup : 'backup',
 		domaincontroller_slave : 'slave',
-		memberserver : 'memberserver',
+		memberserver : 'member',
 	]
 }
