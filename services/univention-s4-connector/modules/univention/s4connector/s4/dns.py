@@ -1269,6 +1269,9 @@ def ucs_zone_delete(s4connector, object, dns_type):
 	
 
 def _identify_dns_ucs_object(s4connector, object):
+	## At this point dn_mapping_function already has converted object['dn'] from ucs to con
+	## But since there is no attribute mapping defined for DNS, the object attributes still
+	## are the ones from UCS. Passing the Samba4 object['dn'] is irrelevant here:
 	if object.get('attributes'):
 		if univention.admin.handlers.dns.forward_zone.identify(object['dn'], object['attributes']):
 			return 'forward_zone'
@@ -1286,6 +1289,9 @@ def _identify_dns_ucs_object(s4connector, object):
 
 def _identify_dns_con_object(s4connector, object):
 	_d=ud.function('_identify_dns_con_object')
+	## At this point dn_mapping_function already has converted object['dn'] from con to ucs
+	## But since there is no attribute mapping defined for DNS, the object attributes still
+	## are the ones from Samba.
 
 	if object.get('attributes'):
 		oc=object['attributes'].get('objectClass')
@@ -1299,10 +1305,9 @@ def _identify_dns_con_object(s4connector, object):
 		if oc and 'dnsNode' in oc:
 			if dc and dc[0] == '@':
 				zone_type='forward_zone'
-				split_dn=object['dn'].split(',')[1:]
-				for rdn in split_dn:
+				for rdn in object['dn'].split(','):
 					rdn=rdn.lower()
-					if rdn.startswith('dc=') and rdn.endswith('in-addr.arpa'):
+					if rdn.startswith('zonename=') and rdn.endswith('in-addr.arpa'):
 						zone_type='reverse_zone'
 						break
 				return zone_type
@@ -1333,6 +1338,9 @@ def _identify_dns_con_object(s4connector, object):
 def ucs2con (s4connector, key, object):
 	_d=ud.function('dns: ucs2con')
 
+	## At this point dn_mapping_function already has converted object['dn'] from ucs to con
+	## But since there is no attribute mapping defined for DNS, the object attributes still
+	## are the ones from UCS.
 	dns_type=_identify_dns_ucs_object(s4connector, object)
 	
 	if not dns_type:
@@ -1342,10 +1350,8 @@ def ucs2con (s4connector, key, object):
 
 	ud.debug(ud.LDAP, ud.INFO, 'dns ucs2con: Object (%s) is of type %s' % (object['dn'], dns_type))
 
-	## At this point dn_mapping_function already has converted object['dn'] from ucs to con
-	## But since there is no attribute mapping defined for DNS, the object attributes still
-	## are the ones from UCS.
-	## We can only get the mapped zone_name from the DN here:
+	## We can only get the mapped zone_name from the DN here (see comment above):
+	## (In the case of _msdcs the zoneName would be wrong here otherwise)
 
 	(zoneName, relativeDomainName) = __split_s4_dnsNode_dn(object['dn'])
 	object['attributes']['zoneName'] = [zoneName]
@@ -1394,6 +1400,9 @@ def con2ucs (s4connector, key, object):
 
 	ud.debug(ud.LDAP, ud.INFO, 'dns con2ucs: Object (%s): %s' % (object['dn'], object))
 	
+	## At this point dn_mapping_function already has converted object['dn'] from con to ucs
+	## But since there is no attribute mapping defined for DNS, the object attributes still
+	## are the ones from Samba.
 	dns_type=_identify_dns_con_object(s4connector, object)
 
 	if not dns_type:
@@ -1401,14 +1410,12 @@ def con2ucs (s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, 'dns con2ucs: Ignore unkown dns object: %s' % object['dn'])
 		return True
 
-	ud.debug(ud.LDAP, ud.INFO, 'dns con2ucs: Object (%s) is from type %s' % (object['dn'], dns_type))
+	ud.debug(ud.LDAP, ud.INFO, 'dns con2ucs: Object (%s) is of type %s' % (object['dn'], dns_type))
 
-	## At this point dn_mapping_function already has converted object['dn'] from con to ucs
-	## But since there is no attribute mapping defined for DNS, the object attributes still
-	## are the ones from Samba.
-	## We can only get the mapped zone_name from the DN here:
+	## We can only get the mapped zone_name from the DN here (see comment above):
 
 	(zoneName, relativeDomainName) = __split_ol_dNSZone_dn(object['dn'], object['attributes']['objectClass'])
+	## Inject the zoneName and relativeDomainName to simplify things below
 	object['attributes']['zoneName'] = [zoneName]
 	object['attributes']['relativeDomainName'] = [relativeDomainName]
 

@@ -1,3 +1,10 @@
+univention-s4-connector (9.0.16-49) unstable; urgency=medium
+
+  * Bug #34184: Fix _identify_dns_con_object, the DN it gets is a mapped
+    UCS DN, so look for "zoneName" instead of "DC".
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Oct 2015 16:50:49 +0100
+
 univention-s4-connector (9.0.16-48) unstable; urgency=medium
 
   * Bug #34184: Ignore ..TrustAnchors pseudo zone in ForestDnsZones
