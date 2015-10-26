@@ -1,3 +1,9 @@
+univention-appcenter (5.0.8-1) unstable; urgency=medium
+
+  * Bug #39625: Minor adjustment for ignoring logo values from meta file
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 26 Oct 2015 07:12:15 +0100
+
 univention-appcenter (5.0.7-2) unstable; urgency=medium
 
   * Set permissions for /var/log/univention/appcenter.log (Bug #39629)
