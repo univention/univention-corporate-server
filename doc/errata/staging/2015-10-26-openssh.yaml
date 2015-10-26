@@ -8,7 +8,7 @@ desc: |
  The following vulnerabilities have been fixed in OpenSSH:
  * Reject X11 connections after hard-coded Xauth cookie expiration time of
    1200 seconds (CVE-2015-5352).
- * Only query each keyboard-interactive device once per authenticatio
+ * Only query each keyboard-interactive device once per authentication
    request regardless of how many times it is listed (CVE-2015-5600)
 note: This update fixes these vulnerabilities.
 cve:
