@@ -1,3 +1,9 @@
+univention-saml (3.0.24-9) unstable; urgency=medium
+
+  * Removed apache2 reload workaround (Bug #39476)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2015 10:00:13 +0100
+
 univention-saml (3.0.24-8) unstable; urgency=medium
 
   * Bug #39431: Change default NameIDFormat to

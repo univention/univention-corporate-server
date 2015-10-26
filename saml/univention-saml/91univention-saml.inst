@@ -195,13 +195,7 @@ fi
 
 /etc/init.d/univention-saml restart
 
-if [ -f "/usr/sbin/apache2" ] && [ ! -x "/usr/sbin/apache2" ]; then
-	/bin/chmod a+x "/usr/sbin/apache2"
-	/etc/init.d/apache2 reload
-	/bin/chmod a-x "/usr/sbin/apache2"
-else
-	/etc/init.d/apache2 reload
-fi
+test -x /etc/init.d/apache2 && /etc/init.d/apache2 reload
 
 joinscript_save_current_version
 exit 0
