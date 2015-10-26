@@ -32,6 +32,8 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/_base/kernel",
+	"dojo/_base/window",
 	"dojo/string",
 	"dojo/query",
 	"dojo/Deferred",
@@ -69,7 +71,7 @@ define([
 	"umc/modules/uvmm/CloudConnectionWizard",
 	"umc/modules/uvmm/types",
 	"umc/i18n!umc/modules/uvmm"
-], function(declare, lang, array, string, query, Deferred, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
+], function(declare, lang, array, kernel, win, string, query, Deferred, on, aspect, has, entities, Menu, MenuItem, ProgressBar, Dialog, _TextBoxMixin,
 	tools, dialog, Module, Page, Form, Grid, SearchForm, Tree, Tooltip, Text, ContainerWidget,
 	CheckBox, ComboBox, TextBox, Button, GridUpdater, TreeModel, DomainPage, DomainWizard, InstancePage, InstanceWizard, CreatePage, CloudConnectionWizard, types, _) {
 
@@ -128,6 +130,15 @@ define([
 
 		// internal flag to indicate that GridUpdater should show a notification
 		_itemCountChangedNoteShowed: false,
+
+		// internal field to store the current width of the viewport
+		_currentWidth: null,
+
+		// internal constant to decide which GridColumns should be displayed for domain vms
+		_GRID_COLUMNS_WIDTH_LIMIT: 550,
+
+		// internal Deferred to control the rate of updating _currentWidth
+		_resizeDeferred: null,
 
 		uninitialize: function() {
 			this.inherited(arguments);
@@ -350,6 +361,10 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
+			this.own(on(win.doc, 'resize', lang.hitch(this, '_handleResize')));
+			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
+			this._currentWidth = win.global.window.getViewport().w;
+
 			on.once(this._tree, 'load', lang.hitch(this, function() {
 				if (this._tree._getFirst() && this._tree._getFirst().item.id == 'cloudconnections') {
 					this._searchForm.getWidget('type').set('value', 'instance');
@@ -377,6 +392,17 @@ define([
 					dialog.alert(_('A connection to a virtualization infrastructure could not be established. You can either connect to a public or private cloud. Alternatively you can install a hypervisor on this or on any other UCS server in this domain. Further details about the virtualization can be found in <a target="_blank" href="http://docs.univention.de/manual-4.0.html#uvmm:chapter">the manual</a>.'));
 				}
 			}));
+		},
+
+		_handleResize: function(evt) {
+			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
+				this._resizeDeferred.cancel();
+			}
+			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
+				this._currentWidth = win.global.window.getViewport().w;
+				this.filter();
+			}), 200);
+			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */});
 		},
 
 		_selectInputText: function() {
@@ -1190,7 +1216,7 @@ define([
 			}
 
 			// else type == 'domain'
-			return [{
+			var domainColumns =  [{
 				name: 'label',
 				label: _('Name'),
 				formatter: lang.hitch(this, 'iconFormatter')
@@ -1216,6 +1242,18 @@ define([
 				}),
 				formatter: lang.hitch(this, '_viewFormatter')
 			}];
+
+			var description = {
+				name: 'description',
+				label: _('Description'),
+				formatter: lang.hitch(this, '_descriptionFormatter')
+			};
+
+			if (this._currentWidth > this._GRID_COLUMNS_WIDTH_LIMIT) {
+				domainColumns.splice(1, 0, description);
+			}
+
+			return domainColumns;
 		},
 
 		_adjustIconColumns: function(row) {
@@ -1575,12 +1613,13 @@ define([
 
 			// create an HTML image that contains the icon (if we have a valid iconName)
 			var item = this._grid._grid.getItem(rowIndex);
-			var html = string.substitute('<img src="${themeUrl}/icons/16x16/${icon}" height="${height}" width="${width}" style="float:left; margin-right: 5px" /> ${label}', {
+			var html = string.substitute('<img src="${themeUrl}/icons/16x16/${icon}" height="${height}" width="${width}" style="float:left; margin-right: 5px" /><div style="${style}">${label}</div>', {
 				icon: this._iconClass(item),
 				height: '16px',
 				width: '16px',
 				label: label,
-				themeUrl: require.toUrl('dijit/themes/umc')
+				themeUrl: require.toUrl('dijit/themes/umc'),
+				style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
 			});
 			// set content after creating the object because of HTTP404: Bug #25635
 			var widget = new Text({});
@@ -1588,13 +1627,25 @@ define([
 			widget.set('content', html);
 
 			if ( undefined !== item.state ) {
+				// use _GRID_COLUMNS_WIDTH_LIMIT to decide which details should be
+				// displayed inside the tooltip
+				var tooltipContent;
+				var tooltipData = {
+					name: label,
+					state: types.getDomainStateDescription( item ),
+					node: item.nodeName,
+					description: entities.encode(item.description).replace('\n', '<br>'),
+					vnc_port: !canVNC(item) ? '' : _( 'VNC-Port: %s', item.vnc_port)
+				};
+
+				if (this._currentWidth <= this._GRID_COLUMNS_WIDTH_LIMIT) {
+					tooltipContent = lang.replace( _('Name: {name}<br>State: {state}<br>Server: {node}<br>Description: {description}<br>{vnc_port}' ), tooltipData);
+				} else {
+					tooltipContent = lang.replace( _('State: {state}<br>Server: {node}<br>{vnc_port}' ), tooltipData);
+				}
+
 				var tooltip = new Tooltip( {
-					label: lang.replace( _( 'State: {state}<br>Server: {node}<br>Description: {description}<br>{vnc_port}' ), {
-						state: types.getDomainStateDescription( item ),
-						node: item.nodeName,
-						description: entities.encode(item.description).replace('\n', '<br>'),
-						vnc_port: !canVNC(item) ? '' : _( 'VNC-Port: %s', item.vnc_port)
-					} ),
+					label: tooltipContent,
 					connectId: [ widget.domNode ],
 					position: [ 'below' ]
 				});
@@ -1603,6 +1654,27 @@ define([
 				// destroy the tooltip when the widget is destroyed
 				tooltip.connect( widget, 'destroy', 'destroy' );
 			}
+
+			return widget;
+		},
+
+		_descriptionFormatter: function(description, rowIndex) {
+			var html = lang.replace('<div style="{style}">{description}</div>', {
+				description: description,
+				style: 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'
+			});
+			var widget = new Text({});
+			this._grid.own(widget);
+			widget.set('content', html);
+
+			var tooltip = new Tooltip({
+				label: description,
+				connectId: [ widget.domNode ],
+				position: [ 'below' ]
+			});
+			widget.own(tooltip);
+			// destroy the tooltip when the widget is destroy
+			tooltip.connect( widget, 'destroy', 'destroy' );
 
 			return widget;
 		},
