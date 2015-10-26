@@ -1,3 +1,9 @@
+univention-updater (11.0.4-2) unstable; urgency=low
+
+  * Bug #39610: Detect disabled repositories early
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 26 Oct 2015 09:34:02 +0100
+
 univention-updater (11.0.4-1) unstable; urgency=medium
 
   * scripts/preup.sh: Check DC Master UCS version and abort if the DC

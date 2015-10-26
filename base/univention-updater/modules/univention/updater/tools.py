@@ -622,6 +622,11 @@ class UniventionUpdater:
         # UniventionMirror needs to provide its own settings
         self.config_repository()
 
+        if not self.online_repository:
+            self.log.info('Disabled')
+            self.server = UCSLocalServer('')
+            return
+
         # generate user agent string
         user_agent = self._get_user_agent_string()
         UCSHttpServer.load_credentials(self.configRegistry)
