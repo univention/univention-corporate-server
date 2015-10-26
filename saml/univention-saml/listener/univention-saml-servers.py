@@ -33,8 +33,9 @@
 __package__ = ''  # workaround for PEP 366
 import listener
 import subprocess
+import os.path
 
-from univention.config_registry import handler_set, handler_unset
+from univention.config_registry import ConfigRegistry, handler_set, handler_unset
 
 name = 'univention-saml-servers'
 description = 'Manage ucs/server/saml-idp-server/* variables'
@@ -43,6 +44,8 @@ attributes = ['univentionService']
 
 
 def handler(dn, new, old):
+	ucr = ConfigRegistry()
+	ucr.load()
 	listener.setuid(0)
 	try:
 		try:
@@ -59,7 +62,9 @@ def handler(dn, new, old):
 			change = True
 
 		if change:
-			subprocess.call(['invoke-rc.d', 'univention-saml', 'restart'])
+			path_to_cert = ucr.get('saml/idp/certificate/certificate')
+			path_to_key = ucr.get('saml/idp/certificate/privatekey')
+			if os.path.exists(path_to_cert) and os.path.exists(path_to_key):
+				subprocess.call(['invoke-rc.d', 'univention-saml', 'restart'])
 	finally:
 		listener.unsetuid()
-
