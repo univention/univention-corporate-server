@@ -8,6 +8,8 @@ Build-Depends: debhelper,
 
 Package: univention-postgresql
 Architecture: all
+Priority: optional
+Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
  univention-postgresql-9.1 | univention-postgresql-8.4,
  shell-univention-lib (>= 3.0.4-1),
@@ -23,7 +25,9 @@ Description: UCS - postgresql configuration
 
 Package: univention-postgresql-9.1
 Architecture: all
-Pre-Depends: postgresql-9.1
+Priority: optional
+Pre-Depends: ${misc:Pre-Depends},
+ postgresql-9.1
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry
@@ -38,7 +42,9 @@ Description: UCS - postgresql 9.1 configuration
 
 Package: univention-postgresql-8.4
 Architecture: all
-Pre-Depends: postgresql-8.4
+Priority: optional
+Pre-Depends: ${misc:Pre-Depends},
+ postgresql-8.4
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry

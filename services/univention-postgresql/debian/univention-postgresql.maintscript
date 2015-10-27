@@ -1,0 +1,12 @@
+rm_conffile /etc/univention/templates/files/etc/postgres/7.4/main/pg_hba.conf     8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/7.4/main/pg_ident.conf   8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/7.4/main/postgresql.conf 8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/8.3/main/pg_hba.conf     8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/8.3/main/pg_ident.conf   8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/8.3/main/postgresql.conf 8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/8.4/main/pg_hba.conf     8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/8.4/main/pg_ident.conf   8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/8.4/main/postgresql.conf 8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/9.1/main/pg_hba.conf     8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/9.1/main/pg_ident.conf   8.0.0-1~
+rm_conffile /etc/univention/templates/files/etc/postgres/9.1/main/postgresql.conf 8.0.0-1~

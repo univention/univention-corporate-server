@@ -42,9 +42,11 @@ case "$1" in
 		# then
 		# fi
 
-		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1 # upgrade
-		# then
-		# fi
+		if [ -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1
+		then # upgrade from before the split into multiple binary packages
+			# let remove the generated files after rm_conffile for the templates
+			univention-config-registry update
+		fi
 
 		;;
 
