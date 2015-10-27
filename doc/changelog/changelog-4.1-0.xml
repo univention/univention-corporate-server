@@ -46,7 +46,7 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Linux kernel has been updated to 4.1.11 (<u:bug>38873</u:bug>, <u:bug>38872</u:bug>).
+					The Linux kernel has been updated to 4.1.12 (<u:bug>38873</u:bug>, <u:bug>38872</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
