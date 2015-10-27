@@ -1,3 +1,9 @@
+univention-appcenter (5.0.9-3) unstable; urgency=medium
+
+  * Bug #38194: configure docker apps before installation
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Oct 2015 15:45:28 +0100
+
 univention-appcenter (5.0.9-2) unstable; urgency=medium
 
   * Bug #39194: Fix index.json signature verification

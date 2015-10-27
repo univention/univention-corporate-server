@@ -41,12 +41,13 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
+	"umc/widgets/ComboBox",
 	"umc/widgets/Form",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/modules/appcenter/requirements",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, Form, ContainerWidget, Page, requirements, _) {
+], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, ComboBox, Form, ContainerWidget, Page, requirements, _) {
 	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page ], {
 		app: null,
 		_container: null,
@@ -119,27 +120,33 @@ define([
 					array.forEach(conf, function(variable) {
 						var type = TextBox;
 						var value = variable.value;
+						var additionalParams = {};
 						if (variable.type === 'bool') {
 							type = CheckBox;
 							value = tools.isTrue(value);
+						} else if (variable.type == 'list') {
+							type = ComboBox;
+							additionalParams.staticValues = [];
+							array.forEach(variable.values, function(val, i) {
+								var label = variable.labels[i] || val;
+								additionalParams.staticValues.push({
+									id: val,
+									label: label
+								});
+							});
 						}
-						widgets.push({
+						var widget = {
 							name: variable.id,
 							type: type,
 							label: variable.description,
 							disabled: disabled,
 							value: value
-						});
+						};
+						widget = lang.mixin(widget, additionalParams);
+						widgets.push(widget);
 					});
 				};
 				addWidgets(array.filter(this.app.config, function(w) { return !w.advanced; }), false, widgets);
-			} else if (funcName == 'uninstall') {
-				widgets.push({
-					name: 'dont_keep_data',
-					type: CheckBox,
-					value: true,
-					label: _('Also delete any data the app stored')
-				});
 			}
 			if (widgets.length) {
 				this._confForm = new Form({

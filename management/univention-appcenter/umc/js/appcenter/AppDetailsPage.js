@@ -731,6 +731,9 @@ define([
 						headline = _('You cannot continue');
 					}
 					this.detailsDialog.reset(mayContinue, headline, actionLabel);
+					if (this.app.isDocker && mayContinue) {
+						this.detailsDialog.showConfiguration(func);
+					}
 					this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);
 					this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
 					if (result.software_changes_computed) {

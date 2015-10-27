@@ -175,6 +175,7 @@ class Instance(umcm.Base, ProgressMixin):
 			update = get_action('update')
 			update.call()
 			Application.all(force_reread=True, only_local=True)
+		AppManager.clear_cache()
 		Application.all(only_local=True)  # cache 'em!
 		list_apps = get_action('list')
 		domain = get_action('domain')

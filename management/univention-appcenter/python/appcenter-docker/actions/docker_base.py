@@ -133,7 +133,7 @@ class DockerActionMixin(object):
 		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
 		docker.verify()
 
-		self.log('Downloading app image %s. This may take several minutes' % docker.image)
+		self.log('Downloading app image %s. This may take up to 15 minutes' % docker.image)
 		docker.pull()
 
 		self.log('Initializing app image')
