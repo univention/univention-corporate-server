@@ -1,3 +1,10 @@
+univention-appcenter (5.0.9-4) unstable; urgency=medium
+
+  * Bug #39587: New option --ids-only for "univention-app list"
+  * Fix blacklist/whitelist checking in "univention-app list"
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Oct 2015 17:01:29 +0100
+
 univention-appcenter (5.0.9-3) unstable; urgency=medium
 
   * Bug #38194: configure docker apps before installation

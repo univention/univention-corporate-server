@@ -45,14 +45,19 @@ from univention.appcenter.utils import flatten
 
 class List(UniventionAppAction):
 	'''Lists all available apps; shows installed version.'''
-	help = 'List all app'
+	help = 'List all apps'
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', nargs='?', help='The ID of the app that shall be listed. May contain asterisk. Default: list all apps')
 		parser.add_argument('--with-repository', action='store_true', help='Also list the repository name')
+		parser.add_argument('--ids-only', action='store_true', help='Only list the IDs')
 
 	def main(self, args):
 		first = True
+		if args.ids_only:
+			for app in self.get_apps():
+				self.log('%s' % app.id)
+			return
 		for app, versions, installations in self._list(args.app):
 			if not first:
 				self.log('')
@@ -78,8 +83,12 @@ class List(UniventionAppAction):
 		apps = AppManager.get_all_apps()
 		ucr = ConfigRegistry()
 		ucr.load()
-		blacklist = re.split('\s*,\s*', ucr.get('repository/app_center/blacklist') or '')
-		whitelist = re.split('\s*,\s*', ucr.get('repository/app_center/whitelist') or '')
+		blacklist = ucr.get('repository/app_center/blacklist')
+		whitelist = ucr.get('repository/app_center/whitelist')
+		if blacklist:
+			blacklist = re.split('\s*,\s*', blacklist)
+		if whitelist:
+			whitelist = re.split('\s*,\s*', whitelist)
 		for app in apps:
 			if blacklist or whitelist:
 				app = App.from_ini(app.get_ini_file(), locale=False)
