@@ -26,23 +26,24 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define*/
 
 define([
 	"dojo/_base/lang",
-	"dojo/_base/array",
+	"dojo/_base/window",
 	"dojo/topic",
-	"dojo/dom-construct",
-	"dojo/query",
 	"dojo/request/xhr",
+	"dojo/request/iframe",
 	"dojo/Deferred",
+	"dojo/json",
+	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Text",
 	"umc/widgets/PasswordBox",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, array, topic, domConstruct, query, xhr, Deferred, dialog, tools, Text, PasswordBox, i18nTools, _) {
+], function(lang, win, topic, xhr, iframe, Deferred, json, entities, dialog, tools, Text, PasswordBox, i18nTools, _) {
 	/**
 	 * Utilities for authentication. Authentication must handle:
 	 * * autologin into a current active session
@@ -156,41 +157,29 @@ define([
 			}));
 		},
 
-		passiveSingleSignOn: function(args) {
+		passiveSingleSignOn: function() {
 			var deferred = new Deferred();
-			var request = xhr.get('/univention-management-console/saml/?passive=true', lang.mixin(args, {
-				handleAs: 'html',
-				withCredentials: true
-			})).then(function(response) {
-				deferred.progress(_('Received answer from identity provider.'));
-				var data = {};
-				array.forEach(query('input', domConstruct.toDom(response)), function(node) {
-					if (node.name && node.value) {
-						data[node.name] = node.value;
+			var iframeid = ('passive_single_sign_on_' + Math.random().toString(36).substring(7)).replace(/[\/\.\-]/g, '_');
+			var i = 0;
+			var _iframe;
+			win.global[iframeid + '_onload'] = function() {
+				// callback which is invoked if the iframe successfully loaded a site
+				// the first time this is called it contains a <form> which is automatically submitted
+				// the seconds time this is called it contains the response
+				if (i++ > 0) {
+					try {
+						var data = json.parse(iframe.doc(_iframe).getElementsByTagName('textarea')[0].value);
+						if (tools.parseError(data).status > 299) {
+							deferred.reject(data);
+						} else {
+							deferred.resolve(data);
+						}
+					} catch(error) {
+						deferred.reject(error);
 					}
-				});
-				return xhr.post('/univention-management-console/saml/', {
-					data: data,
-					handleAs: 'json'
-				}).then(function(response) {
-					deferred.progress(_('Successfully renewed single sign on session.'));
-					deferred.resolve();
-				}, function(error) {
-					deferred.progress(_('Could not renew single sign on session.'));
-					deferred.reject(error);
-				});
-			}, function(error) {
-				deferred.progress(_('Could not reach Identity provider for automatic single sign on.'));
-				deferred.reject(error);
-			}).then(undefined, function(error) {
-				deferred.progress(_('Unknown error during single sign on.'));
-				deferred.reject(error);
-			});
-			deferred.then(undefined, function(error) {
-				console.error(error);
-			}, function(progress) {
-				console.debug(progress);
-			});
+				}
+			};
+			_iframe = iframe.create(iframeid, entities.encode(iframeid + '_onload()'), 'saml/iframe/');
 			return deferred.promise;
 		},
 

@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.45-1) unstable; urgency=medium
+
+  * Bug #39564: use iframe instead of ajax to detect current open session
+
+ -- Florian Best <best@univention.de>  Tue, 27 Oct 2015 21:07:15 +0100
+
 univention-management-console-frontend (5.0.44-3) unstable; urgency=medium
 
   * Bug #39233: fix race condition, add error handling to get/modules/list

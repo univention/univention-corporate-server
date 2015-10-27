@@ -266,69 +266,80 @@ class UMCP_Dispatcher(object):
 			except Queue.Empty:
 				# Queue is empty - nothing to do (for now)
 				return True
-			CORE.info('UMCP_Dispatcher: check_queue: new request: 0x%x' % (id(queuerequest),))
-
-			if not isinstance(queuerequest.sessionid, basestring) and queuerequest.sessionid is not None:
-				CORE.process('UMCP_Dispatcher: check_queue: got invalid sessionid: %r' % (queuerequest.sessionid,))
-			if not isinstance(queuerequest.request, umcp.Request):
-				CORE.process('UMCP_Dispatcher: check_queue: got invalid UMCP request: %r' % (queuerequest.request,))
-			if not isinstance(queuerequest.response_queue, Queue.Queue):
-				CORE.process('UMCP_Dispatcher: check_queue: got invalid response_queue: %r' % (queuerequest.response_queue,))
-
-			# stop here if sessionid is missing or unknown and request is no AUTH request
 			try:
-				client = cls.sessions[queuerequest.sessionid]
-				if queuerequest.ip != client.ip and not (queuerequest.ip in ('127.0.0.1', '::1') and client.ip in ('127.0.0.1', '::1')):
-					CORE.process('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
-					raise ValueError()
-			except (KeyError, ValueError):
-				client = None
-				if queuerequest.request.command != 'AUTH':
-					CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%r' % (queuerequest.sessionid))
-					response = umcp.Response(queuerequest.request)
-					response.status = UNAUTHORIZED
-					queuerequest.response_queue.put(response)
-					continue  # with next request
+				cls.dispatch(queuerequest)
+			except Exception as exc:
+				CORE.process('Failed to create UMC connection: %s' % (exc,))
+				response = umcp.Response(queuerequest.request)
+				response.status = 500
+				response.message = traceback.format_exc()
+				queuerequest.response_queue.put(response)
 
-			if queuerequest.request.command == 'AUTH' and client is None:
-				# AUTH request
-				CORE.info('UMCP_Dispatcher: check_queue: AUTH request')
-				try:
-					# create new session / umcp client
-					# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
-					client = SessionClient(timeout=queuerequest.timeout + 5, ip=queuerequest.ip)
-				except Exception as exc:
-					CORE.process('Failed to create UMC connection: %s' % (exc,))
-					response = umcp.Response(queuerequest.request)
-					response.status = SERVICE_UNAVAILABLE
-					response.message = '\n'.join((
-						'The Univention Management Console Server is currently not running. ',
-						'If you have root permissions on the system you can restart it by executing the following command:',
-						' * invoke-rc.d univention-management-console-server restart',
-						'The following logfile may contain information why the server is not running:',
-						' * /var/log/univention/management-console-server.log',
-						'Otherwise please contact an administrator or try again later.'
-					))
-					queuerequest.response_queue.put(response)
-					continue
+	@classmethod
+	def dispatch(cls, queuerequest):
+		CORE.info('UMCP_Dispatcher: check_queue: new request: 0x%x' % (id(queuerequest),))
 
-				cls.sessions[queuerequest.sessionid] = client
-				callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
-				client.client.signal_connect('closed', callback)
+		if not isinstance(queuerequest.sessionid, basestring) and queuerequest.sessionid is not None:
+			CORE.process('UMCP_Dispatcher: check_queue: got invalid sessionid: %r' % (queuerequest.sessionid,))
+		if not isinstance(queuerequest.request, umcp.Request):
+			CORE.process('UMCP_Dispatcher: check_queue: got invalid UMCP request: %r' % (queuerequest.request,))
+		if not isinstance(queuerequest.response_queue, Queue.Queue):
+			CORE.process('UMCP_Dispatcher: check_queue: got invalid response_queue: %r' % (queuerequest.response_queue,))
 
-			if queuerequest.request.command == 'AUTH':
-				client.authenticate_user(queuerequest.request, queuerequest.response_queue)
-			else:
-				# COMMAND / GET / SET request
-				CORE.info('UMCP_Dispatcher: check_queue: normal request')
-				try:
-					client.send_request(queuerequest.request, queuerequest.response_queue)
-				except umcp.client.NotAuthenticatedError:
-					response = umcp.Response(queuerequest.request)
-					response.status = UNAUTHORIZED
-					queuerequest.response_queue.put(response)
-					# remove response_queue from internal mapping
-					client.cleanup_request(queuerequest.request)
+		# stop here if sessionid is missing or unknown and request is no AUTH request
+		try:
+			client = cls.sessions[queuerequest.sessionid]
+			if queuerequest.ip != client.ip and not (queuerequest.ip in ('127.0.0.1', '::1') and client.ip in ('127.0.0.1', '::1')):
+				CORE.process('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
+				raise ValueError()
+		except (KeyError, ValueError):
+			client = None
+			if queuerequest.request.command != 'AUTH':
+				CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%r' % (queuerequest.sessionid))
+				response = umcp.Response(queuerequest.request)
+				response.status = UNAUTHORIZED
+				queuerequest.response_queue.put(response)
+				return
+
+		if queuerequest.request.command == 'AUTH' and client is None:
+			# AUTH request
+			CORE.info('UMCP_Dispatcher: check_queue: AUTH request')
+			try:
+				# create new session / umcp client
+				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
+				client = SessionClient(timeout=queuerequest.timeout + 5, ip=queuerequest.ip)
+			except Exception as exc:
+				CORE.process('Failed to create UMC connection: %s' % (exc,))
+				response = umcp.Response(queuerequest.request)
+				response.status = SERVICE_UNAVAILABLE
+				response.message = '\n'.join((
+					'The Univention Management Console Server is currently not running. ',
+					'If you have root permissions on the system you can restart it by executing the following command:',
+					' * invoke-rc.d univention-management-console-server restart',
+					'The following logfile may contain information why the server is not running:',
+					' * /var/log/univention/management-console-server.log',
+					'Otherwise please contact an administrator or try again later.'
+				))
+				queuerequest.response_queue.put(response)
+				return
+
+			cls.sessions[queuerequest.sessionid] = client
+			callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
+			client.client.signal_connect('closed', callback)
+
+		if queuerequest.request.command == 'AUTH':
+			client.authenticate_user(queuerequest.request, queuerequest.response_queue)
+		else:
+			# COMMAND / GET / SET request
+			CORE.info('UMCP_Dispatcher: check_queue: normal request')
+			try:
+				client.send_request(queuerequest.request, queuerequest.response_queue)
+			except umcp.client.NotAuthenticatedError:
+				response = umcp.Response(queuerequest.request)
+				response.status = UNAUTHORIZED
+				queuerequest.response_queue.put(response)
+				# remove response_queue from internal mapping
+				client.cleanup_request(queuerequest.request)
 
 	@classmethod
 	def cleanup_session(cls, sessionid):
@@ -827,14 +838,46 @@ class CPSet(CPgeneric):
 		return umcp.Request('SET', options=args.get('options', {}))
 
 
-class CPUpload(CPgeneric):
+class CPCommand(CPgeneric):
 
 	@log_exceptions
 	def get_request(self, path, args):
-		self._log('info', 'Handle upload command')
-		global _upload_manager
-		req = umcp.Request('UPLOAD', arguments=[path])
+		if cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+			return self.get_request_upload(path, args)
 
+		if not path:
+			raise UMC_HTTPError(NOT_FOUND)
+
+		req = umcp.Command([path], options=args.get('options', {}))
+		if 'flavor' in args:
+			req.flavor = args['flavor']
+
+		return req
+
+	def get_response(self, sessionid, path, args):
+		response = super(CPCommand, self).get_response(sessionid, path, args)
+
+		# check if the request is a iframe upload
+		if cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+			if 'iframe' in args and (args['iframe'] not in ('false', False, 0, '0')):
+				# this is a workaround to make iframe uploads work, they need the textarea field
+				cherrypy.response.headers['Content-Type'] = 'text/html'
+				return '<html><body><textarea>%s</textarea></body></html>' % (response)
+
+		return response
+
+	def get_request_upload(self, path, args):
+		self._log('info', 'Handle upload command')
+		req = umcp.Request('UPLOAD', arguments=[path])
+		req.body = self._get_upload_arguments(req, args)
+		return req
+
+	def get_arguments(self, kwargs):
+		if cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+			return kwargs
+		return super(CPCommand, self).get_arguments(kwargs)
+
+	def _get_upload_arguments(self, req, args):
 		options = []
 		body = {}
 
@@ -848,12 +891,14 @@ class CPUpload(CPgeneric):
 
 		for iid, ifield in args.iteritems():
 			if isinstance(ifield, cherrypy._cpreqbody.Part):
-				options.append(self._check_field_storage(req, iid, ifield))
+				tmpfile = _upload_manager.add(req.id, ifield)
+				options.append(self._sanitize_file(tmpfile, ifield))
 			elif isinstance(ifield, list):
 				# multiple files
 				for jfield in ifield:
 					if isinstance(jfield, cherrypy._cpreqbody.Part):
-						options.append(self._check_field_storage(req, iid, jfield))
+						tmpfile = _upload_manager.add(req.id, jfield)
+						options.append(self._sanitize_file(tmpfile, jfield))
 					else:
 						CORE.warn('Unknown type of multipart/form-data entry: %r=%r' % (iid, jfield))
 			elif isinstance(ifield, basestring):
@@ -862,15 +907,10 @@ class CPUpload(CPgeneric):
 			else:
 				CORE.warn('Unknown type of multipart/form-data entry: %r=%r' % (iid, ifield))
 
-		req.body = body
-		req.body['options'] = options
-		return req
+		body['options'] = options
+		return body
 
-	def _check_field_storage(self, req, iid, ifield):
-		# field is a FieldStorage object
-		store = ifield
-		tmpfile = _upload_manager.add(req.id, store)
-
+	def _sanitize_file(self, tmpfile, store):
 		# check if filesize is allowed
 		st = os.stat(tmpfile)
 		max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
@@ -880,43 +920,14 @@ class CPUpload(CPgeneric):
 
 		filename = store.filename
 		# some security
-		for c in ('<>/'):
+		for c in '<>/':
 			filename = filename.replace(c, '_')
 
-		return {'filename': filename, 'name': store.name, 'tmpfile': tmpfile}
-
-	@cherrypy.expose
-	@log_exceptions
-	def default(self, *path, **kwargs):
-		response = super(CPUpload, self).default(*path, **kwargs)
-
-		# check if the request is a iframe upload
-		if 'iframe' in kwargs and (kwargs['iframe'] not in ('false', False, 0, '0')):
-			# this is a workaround to make iframe uploads work, they need the textarea field
-			cherrypy.response.headers['Content-Type'] = 'text/html'
-			return '<html><body><textarea>%s</textarea></body></html>' % (response)
-
-		return response
-
-	def get_arguments(self, kwargs):
-		if not cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
-			raise UMC_HTTPError(BAD_REQUEST, 'Content type and URL do not match')
-		return kwargs
-
-
-class CPCommand(CPgeneric):
-
-	@log_exceptions
-	def get_request(self, path, args):
-		if not path:
-			self._log('error', 'get_request: path is empty')
-			raise UMC_HTTPError(NOT_FOUND)
-
-		req = umcp.Command([path], options=args.get('options', {}))
-		if 'flavor' in args:
-			req.flavor = args['flavor']
-
-		return req
+		return {
+			'filename': filename,
+			'name': store.name,
+			'tmpfile': tmpfile
+		}
 
 
 class CPAuth(CPgeneric):
@@ -928,7 +939,7 @@ class CPAuth(CPgeneric):
 		CORE.info('CPAuth/auth/sso: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
 
 		user = self.get_user()
-		if user is None or (user and user.saml is None) or user.timed_out():
+		if not user or not user.saml or user.timed_out():
 			# redirect user to login page in case he's not authenticated or his session timed out
 			raise HTTPRedirect('/univention-management-console/saml/')
 
@@ -947,10 +958,8 @@ class CPAuth(CPgeneric):
 				raise HTTPRedirect('/univention-management-console/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
 			raise
 
-		if 'passive' not in kwargs:
-			cherrypy.response.status = 303
-			cherrypy.response.headers['Location'] = '/univention-management-console/'
-		return response
+		cherrypy.response.status = 303
+		cherrypy.response.headers['Location'] = '/univention-management-console/'
 
 	@cherrypy.expose
 	@log_exceptions
@@ -1022,11 +1031,10 @@ class CPAuth(CPgeneric):
 class Root(Ressource):
 
 	def __init__(self):
-		self.command = CPCommand()
+		self.command = self.upload = CPCommand()
 		self.auth = CPAuth()
 		self.get = CPGet()
 		self.set = CPSet()
-		self.upload = CPUpload()
 		self.saml = SAML()
 		reload_webserver.callbacks.append(self.saml.reload)
 
@@ -1064,6 +1072,7 @@ class SAML(Ressource):
 
 		self.outstanding_queries = {}
 		self.relay_state = {}
+		self._acs_callbacks = {}
 		self.reload()
 
 	@property
@@ -1093,16 +1102,12 @@ class SAML(Ressource):
 	@log_exceptions
 	def index(self, *args, **kwargs):
 		binding, message, relay_state = self._get_saml_message()
-		user = self.get_user()
-		relay_state = self.relay_state.get(relay_state, '')
-
-		is_passive = 'passive' in kwargs or '?passive=true' in relay_state
-
-		if user and user.saml is not None and not user.timed_out() and not is_passive:
-			raise HTTPRedirect('/univention-management-console/auth/sso')
 
 		if message is None:
-			return self.do_single_sign_on(is_passive='true' if is_passive else 'false')
+#			user = self.get_user()
+#			if user and user.saml is not None and not user.timed_out():
+#				raise HTTPRedirect('/univention-management-console/auth/sso')
+			return self.do_single_sign_on()
 
 		response = self.acs(message, binding)
 
@@ -1115,10 +1120,30 @@ class SAML(Ressource):
 		saml = SAMLUser(response, message)
 		user = self.set_session(sessionid, saml.username, saml)
 
-		path = '/univention-management-console/auth/sso'
-		if is_passive:
-			path += '?passive=true'
-		raise HTTPRedirect(path)
+		acs = self._acs_callbacks.pop(relay_state, self.attribute_consuming_service)
+		return acs(binding, message, relay_state, user)
+
+	@cherrypy.expose
+	def iframe(self, *args, **kwargs):
+		cherrypy.request.uri = cherrypy.request.uri.replace('/iframe', '')
+		relay_state = rndstr()
+		self._acs_callbacks[relay_state] = self.attribute_consuming_service_iframe
+		return self.do_single_sign_on(is_passive='true', relay_state=relay_state)
+
+	def attribute_consuming_service(self, message, binding, relay_state, user):
+		raise HTTPRedirect('/univention-management-console/auth/sso')
+
+	def attribute_consuming_service_iframe(self, message, binding, relay_state, user):
+		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
+		req = umcp.Request('AUTH')
+		req.body = {
+			"auth_type": "SAML",
+			"username": user.username,
+			"password": user.saml.message
+		}
+		response = cherrypy.request.app.root.auth._auth_request(req, user.sessionid)
+		cherrypy.response.headers['Content-Type'] = 'text/html'
+		return '<html><body><textarea>%s</textarea></body></html>' % (response)
 
 	@cherrypy.expose
 	@log_exceptions
@@ -1207,14 +1232,16 @@ class SAML(Ressource):
 		identity_provider_entity_id = self.select_identity_provider()
 		binding, destination = self.get_identity_provider_destination(identity_provider_entity_id)
 
+		relay_state = kwargs.pop('relay_state', None)
+
 		reply_binding, service_provider_url = self.select_service_provider()
 		sid, message = self.sp.create_authn_request(destination, binding=reply_binding, assertion_consumer_service_urls=(service_provider_url,), **kwargs)
 
-		relay_state = rndstr()
-		self.relay_state[relay_state] = cherrypy.request.uri
+		if relay_state:
+			self.relay_state[relay_state] = cherrypy.request.uri
 
 		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
-		self.outstanding_queries[sid] = cherrypy.request.uri  # TODO: shouldn't this contain service_provider_url?
+		self.outstanding_queries[sid] = service_provider_url #cherrypy.request.uri  # TODO: shouldn't this contain service_provider_url?
 		return binding, http_args
 
 	def select_identity_provider(self):
