@@ -1,3 +1,9 @@
+univention-appcenter (5.0.9-5) unstable; urgency=medium
+
+  * Bug #39587: Updated all.tar.gz
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Oct 2015 18:22:48 +0100
+
 univention-appcenter (5.0.9-4) unstable; urgency=medium
 
   * Bug #39587: New option --ids-only for "univention-app list"
