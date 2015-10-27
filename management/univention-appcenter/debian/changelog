@@ -1,3 +1,9 @@
+univention-appcenter (5.0.9-2) unstable; urgency=medium
+
+  * Bug #39194: Fix index.json signature verification
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Oct 2015 12:52:26 +0100
+
 univention-appcenter (5.0.9-1) unstable; urgency=medium
 
   * Fix short ids (Bug #39474)

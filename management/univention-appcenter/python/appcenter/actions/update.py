@@ -271,15 +271,15 @@ class Update(UniventionAppAction):
 		index_json_gz_filename = os.path.join(CACHE_DIR, '.index.json.gz')
 		ucr = ConfigRegistry()
 		ucr.load()
+		if not ucr.is_false('appcenter/index/verify'):
+			detached_sig_path = index_json_gz_filename + '.gpg'
+			(rc, gpg_error) = gpg_verify(index_json_gz_filename, detached_sig_path)
+			if rc:
+				if gpg_error:
+					self.fatal(gpg_error)
+				raise Abort('Signature verification for %s failed' % index_json_gz_filename)
 		with gzip_open(index_json_gz_filename, 'rb') as fgzip:
 			content = fgzip.read()
-			if not ucr.is_false('appcenter/index/verify'):
-				detached_sig_path = index_json_gz_filename + '.gpg'
-				(rc, gpg_error) = gpg_verify('-', detached_sig_path, content=content)
-				if rc:
-					if gpg_error:
-						self.fatal(gpg_error)
-					raise Abort('Signature verification for %s failed' % index_json_gz_filename)
 			return loads(content)
 
 	def _read_index_json(self, json_apps):
