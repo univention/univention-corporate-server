@@ -64,7 +64,7 @@ def handler(dn, new, old):
 		if change:
 			path_to_cert = ucr.get('saml/idp/certificate/certificate')
 			path_to_key = ucr.get('saml/idp/certificate/privatekey')
-			if os.path.exists(path_to_cert) and os.path.exists(path_to_key):
+			if path_to_cert and os.path.exists(path_to_cert) and path_to_key and os.path.exists(path_to_key):
 				subprocess.call(['invoke-rc.d', 'univention-saml', 'restart'])
 	finally:
 		listener.unsetuid()
