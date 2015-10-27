@@ -63,8 +63,13 @@ class Apps {
 				}
 			}
 
-			ret_val[name] = [:]
-			ret_val[name]['roles'] = []
+			def app_id = properties.getProperty('ID')
+			if (app_id == null) {
+				return
+			}
+
+			ret_val[app_id] = [:]
+			ret_val[app_id]['roles'] = []
 
 			// get roles
 			def roles = properties.getProperty('ServerRole')
@@ -73,7 +78,7 @@ class Apps {
 			}
 			roles.split(',').each { role ->
 				if (univention.Constants.ROLE_MAPPING.get(role)) {
-					ret_val[name]['roles'] << univention.Constants.ROLE_MAPPING.get(role)
+					ret_val[app_id]['roles'] << univention.Constants.ROLE_MAPPING.get(role)
 				}
 			}
 		}
