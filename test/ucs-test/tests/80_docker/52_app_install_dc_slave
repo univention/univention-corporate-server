@@ -38,7 +38,7 @@ univention-install --yes --no-install-recommends univention-server-slave univent
 				lo = get_ldap_connection()
 			except ldap.SERVER_DOWN():
 				print 'LDAP connection failed. Wait for ten seconds and try again.'
-				time.sleep(10)
+				time.sleep(60)
 				lo = get_ldap_connection()
 				
 			print lo.searchDn(filter='(&(cn=%s-*)(objectClass=univentionDomainController)(univentionServerRole=slave)(!(aRecord=*)))' % app_name, unique=True, required=True)

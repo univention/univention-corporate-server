@@ -1,3 +1,10 @@
+ucs-test (6.0.10-19) unstable; urgency=medium
+
+  * 52_app_install_dc_slave: wait up to 60 seconds if the LDAP server is
+    not available (Bug #39196)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Oct 2015 06:16:36 +0100
+
 ucs-test (6.0.10-18) unstable; urgency=medium
 
   * 00_checks: fixed import error (Bug #37022)
