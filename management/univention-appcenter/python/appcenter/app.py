@@ -595,10 +595,19 @@ class App(object):
 	def is_installed(self):
 		ucr = ConfigRegistry()
 		ucr.load()
-		installed = ucr.get(self.ucr_status_key) in ['installed', 'stalled']
-		if not self.without_repository:
-			installed = installed and ucr.get(self.ucr_version_key) == self.version
-		return installed
+		if self.docker:
+			return ucr.get(self.ucr_status_key) in ['installed', 'stalled']
+		else:
+			package_manager = AppManager.get_package_manager()
+			for package_name in self.default_packages:
+				try:
+					package = package_manager.get_package(package_name, raise_key_error=True)
+				except KeyError:
+					return False
+				else:
+					if not package.is_installed:
+						return False
+		return True
 
 	def is_ucs_component(self):
 		if self._is_ucs_component is None:
@@ -955,6 +964,12 @@ class AppManager(object):
 					return app
 		if apps:
 			return apps[-1]
+
+	@classmethod
+	def reload_package_manager(cls):
+		if cls._package_manager is None:
+			return
+		return cls._package_manager.reopen_cache()
 
 	@classmethod
 	def get_package_manager(cls):

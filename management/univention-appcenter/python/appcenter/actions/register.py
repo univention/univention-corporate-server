@@ -43,7 +43,7 @@ from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.app import AppManager
-from univention.appcenter.udm import create_object_if_not_exists, init_object, get_app_ldap_object, remove_object_if_exists
+from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, get_md5, app_ports, currently_free_port_in_range
@@ -65,6 +65,7 @@ class Register(CredentialsAction):
 		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the app that shall be registered')
 
 	def main(self, args):
+		AppManager.reload_package_manager()
 		apps = args.apps
 		if not apps:
 			self.debug('No apps given. Using all')
@@ -258,7 +259,7 @@ class Register(CredentialsAction):
 		self.log('Registering UCR for %s' % app.id)
 		self.log('Marking %s as installed' % app)
 		if app.is_installed():
-			status = ucr.get(app.ucr_status_key)
+			status = ucr.get(app.ucr_status_key, 'installed')
 		else:
 			status = 'installed'
 		ucr_update(ucr, {app.ucr_status_key: status, app.ucr_version_key: app.version})

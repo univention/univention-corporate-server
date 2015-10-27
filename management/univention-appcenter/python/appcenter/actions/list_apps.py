@@ -50,7 +50,7 @@ class List(UniventionAppAction):
 	def setup_parser(self, parser):
 		parser.add_argument('app', nargs='?', help='The ID of the app that shall be listed. May contain asterisk. Default: list all apps')
 		parser.add_argument('--with-repository', action='store_true', help='Also list the repository name')
-		parser.add_argument('--ids-only', action='store_true', help='Only list the IDs')
+		parser.add_argument('--ids-only', action='store_true', help='Only list the IDs. Does not respect APP argument')
 
 	def main(self, args):
 		first = True

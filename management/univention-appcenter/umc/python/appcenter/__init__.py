@@ -192,7 +192,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response
 	def sync_ldap(self):
 		register = get_action('register')
-		register.call(register_task=['app'])
+		register.call()
 
 	# used in updater-umc
 	@simple_response

@@ -57,8 +57,6 @@ fi
 umc_operation_create "appcenter-all" "Manage Software packages" "" "appcenter/*" "lib/server/*"
 umc_policy_append "default-umc-all" "appcenter-all"
 
-/usr/sbin/univention-register-apps
-
 joinscript_save_current_version
 
 exit 0

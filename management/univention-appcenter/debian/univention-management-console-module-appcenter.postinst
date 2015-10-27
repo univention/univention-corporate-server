@@ -38,8 +38,4 @@ univention-config-registry set repository/app_center/server?appcenter.software-u
 	appcenter/domainwide?true
 
 
-if dpkg --compare-versions "$2" lt 5.0.6-18; then
-	/usr/share/univention-appcenter/univention-appcenter-register-40-to-41 || true
-fi
-
 exit 0

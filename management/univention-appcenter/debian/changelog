@@ -1,3 +1,10 @@
+univention-appcenter (5.0.9-5) unstable; urgency=medium
+
+  * Bug #39587: Identify non-docker apps as installed based on pkg status
+  * Bug #39463: Not needed anymore
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Oct 2015 21:57:00 +0100
+
 univention-appcenter (5.0.9-4) unstable; urgency=medium
 
   * Bug #38891: First iteration for app rating; performance improvements
