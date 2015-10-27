@@ -1,10 +1,10 @@
-univention-postgresql (8.0.0-1) unstable; urgency=medium
+univention-postgresql (8.0.0-2) unstable; urgency=medium
 
   * Update for UCS 4.1 (Bug #39595)
   * Split into multiple binary packages for different PostgreSQL versions (Bug #39595)
   * Remove support for old PostgreSQL versions (Bug #39595)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 19 Oct 2015 19:29:46 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 27 Oct 2015 16:07:44 +0100
 
 univention-postgresql (7.0.0-4) unstable; urgency=low
 
