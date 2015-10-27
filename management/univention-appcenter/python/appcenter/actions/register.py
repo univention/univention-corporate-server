@@ -124,12 +124,9 @@ class Register(CredentialsAction):
 				ucr_update(ucr, updates)
 		return updates
 
-	def _ucr_component_base(self, app):
-		return 'repository/online/component/%s' % app.component_id
-
 	def _register_component_dict(self, app, ucr, server):
 		ret = {}
-		ucr_base_key = self._ucr_component_base(app)
+		ucr_base_key = app.ucr_component_key
 		self.debug('Adding %s' % ucr_base_key)
 		ret[ucr_base_key] = 'enabled'
 		ucr_base_key = '%s/%%s' % ucr_base_key
@@ -151,7 +148,7 @@ class Register(CredentialsAction):
 
 	def _unregister_component_dict(self, app, ucr):
 		ret = {}
-		ucr_base_key = self._ucr_component_base(app)
+		ucr_base_key = app.ucr_component_key
 		for key in ucr.keys():
 			if key == ucr_base_key or key.startswith('%s/' % ucr_base_key):
 				self.debug('Removing %s' % key)
@@ -393,34 +390,31 @@ class Register(CredentialsAction):
 		if lo is None:
 			lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
 		updates = {}
-		if app.is_installed():
-			for key in ucr.iterkeys():
-				if key.startswith('appcenter/apps/%s/' % app.id):
-					updates[key] = None
-				if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
-					updates[key] = None
-				if re.match('appreport/%s/' % app.id, key):
-					updates[key] = None
-			if app.docker:
+		for key in ucr.iterkeys():
+			if key.startswith('appcenter/apps/%s/' % app.id):
+				updates[key] = None
+			if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
+				updates[key] = None
+			if re.match('appreport/%s/' % app.id, key):
+				updates[key] = None
+		if app.docker:
+			try:
+				from univention.appcenter.actions.service import Service
+			except ImportError:
+				# univention-appcenter-docker is not installed
+				pass
+			else:
 				try:
-					from univention.appcenter.actions.service import Service
-				except ImportError:
-					# univention-appcenter-docker is not installed
+					init_script = Service.get_init(app)
+					os.unlink(init_script)
+					self._call_script('update-rc.d', os.path.basename(init_script), 'remove')
+				except OSError:
 					pass
-				else:
-					try:
-						init_script = Service.get_init(app)
-						os.unlink(init_script)
-						self._call_script('update-rc.d', os.path.basename(init_script), 'remove')
-					except OSError:
-						pass
-			ldap_object = get_app_ldap_object(app, lo, pos, ucr)
-			if ldap_object:
-				self.log('Removing localhost from LDAP object')
-				ldap_object.remove_localhost()
-			if not delay:
-				ucr_update(ucr, updates)
-				self._reload_apache()
-		else:
-			self.log('%s is not installed. Cannot unregister' % app)
+		ldap_object = get_app_ldap_object(app, lo, pos, ucr)
+		if ldap_object:
+			self.log('Removing localhost from LDAP object')
+			ldap_object.remove_localhost()
+		if not delay:
+			ucr_update(ucr, updates)
+			self._reload_apache()
 		return updates

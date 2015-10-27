@@ -1,3 +1,11 @@
+univention-appcenter (5.0.9-6) unstable; urgency=medium
+
+  * Bug #39643: Do not register non docker apps if installing only master
+    packages
+  * Bug #39587: Minor fixes to recognition routine
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Oct 2015 23:12:58 +0100
+
 univention-appcenter (5.0.9-5) unstable; urgency=medium
 
   * Bug #39587: Identify non-docker apps as installed based on pkg status

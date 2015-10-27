@@ -1691,10 +1691,11 @@ class Application(object):
 				raise
 
 			# successful installation
-			register = get_action('register')
-			app = AppManager.find(self.id, self.version)
-			if app:
-				register.call(apps=[app], do_it=True)
+			if not only_master_packages:
+				register = get_action('register')
+				app = AppManager.find(self.id, self.version)
+				if app:
+					register.call(apps=[app], do_it=True)
 			status = 200
 		except:
 			MODULE.warn(traceback.format_exc())

@@ -57,13 +57,10 @@ class Stall(UniventionAppAction):
 		else:
 			self._stall(args.app)
 
-	def _ucr_component_base(self, app):
-		return 'repository/online/component/%s' % app.component_id
-
 	def _undo_stall(self, app):
 		ucr = ConfigRegistry()
-		ucr_update(ucr, {app.ucr_status_key: 'installed', self._ucr_component_base(app): 'enabled'})
+		ucr_update(ucr, {app.ucr_status_key: 'installed', app.ucr_component_key: 'enabled'})
 
 	def _stall(self, app):
 		ucr = ConfigRegistry()
-		ucr_update(ucr, {app.ucr_status_key: 'stalled', self._ucr_component_base(app): 'disabled'})
+		ucr_update(ucr, {app.ucr_status_key: 'stalled', app.ucr_component_key: 'disabled'})

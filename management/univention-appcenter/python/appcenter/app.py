@@ -587,6 +587,10 @@ class App(object):
 	def ucr_ports_key(self):
 		return 'appcenter/apps/%s/ports/%%s' % self.id
 
+	@property
+	def ucr_component_key(self):
+		return 'repository/online/component/%s' % self.component_id
+
 	def get_attr(self, attr_name):
 		for attr in self._attrs:
 			if attr.name == attr_name:
@@ -598,6 +602,9 @@ class App(object):
 		if self.docker:
 			return ucr.get(self.ucr_status_key) in ['installed', 'stalled']
 		else:
+			if not self.without_repository:
+				if self.ucr_component_key not in ucr:
+					return False
 			package_manager = AppManager.get_package_manager()
 			for package_name in self.default_packages:
 				try:
@@ -607,7 +614,7 @@ class App(object):
 				else:
 					if not package.is_installed:
 						return False
-		return True
+			return True
 
 	def is_ucs_component(self):
 		if self._is_ucs_component is None:
