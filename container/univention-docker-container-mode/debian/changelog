@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.9-1) unstable; urgency=medium
+
+  * Re-enable postfix (Bug #39542)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Oct 2015 11:26:30 +0100
+
 univention-docker-container-mode (1.0.8-2) unstable; urgency=medium
 
   * Disable postfix by default (Bug #39542)
