@@ -1,3 +1,9 @@
+ucs-test (6.0.10-18) unstable; urgency=medium
+
+  * 00_checks: fixed import error (Bug #37022)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Oct 2015 06:05:07 +0100
+
 ucs-test (6.0.10-17) unstable; urgency=low
 
   * Bug #39373: extended 29_user_uidNumber_and_group_gidNumber_collision for

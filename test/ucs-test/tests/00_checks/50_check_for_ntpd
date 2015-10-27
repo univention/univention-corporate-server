@@ -3,7 +3,7 @@
 ## exposure: safe
 ## bugs: [39297]
 
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 import univention.testing.utils as utils
 from sys import exit
 
@@ -14,7 +14,7 @@ proc = Popen(['pgrep', 'ntpd'], stdout=PIPE, stderr=PIPE)
 stdout, stderr = proc.communicate()
 
 def dump_ps():
-	subprocess.call(['ps', 'afwx'])
+	call(['ps', 'afwx'])
 
 if stderr.strip():
 	dump_ps()
