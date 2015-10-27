@@ -1,5 +1,6 @@
 Source: univention-postgresql
 Section: univention
+Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 Build-Depends: debhelper,
@@ -8,13 +9,12 @@ Build-Depends: debhelper,
 
 Package: univention-postgresql
 Architecture: all
-Priority: optional
 Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
  univention-postgresql-9.1 | univention-postgresql-8.4,
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry
-Description: UCS - postgresql configuration
+Description: UCS - PostgreSQL configuration
  This meta-package depends on the package with the configuration for
  the specific postgresql-*.* package.
  .
@@ -25,14 +25,13 @@ Description: UCS - postgresql configuration
 
 Package: univention-postgresql-9.1
 Architecture: all
-Priority: optional
 Pre-Depends: postgresql-9.1
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry
 Breaks: univention-postgresql (< 8),
 Replaces: univention-postgresql (< 8),
-Description: UCS - postgresql 9.1 configuration
+Description: UCS - PostgreSQL 9.1 configuration
  This package contains the configuration for the
  postgresql-9.1 package.
  .
@@ -43,14 +42,13 @@ Description: UCS - postgresql 9.1 configuration
 
 Package: univention-postgresql-8.4
 Architecture: all
-Priority: optional
 Pre-Depends: postgresql-8.4
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry
 Breaks: univention-postgresql (< 8),
 Replaces: univention-postgresql (< 8),
-Description: UCS - postgresql 8.4 configuration
+Description: UCS - PostgreSQL 8.4 configuration
  This package contains the configuration for the
  postgresql-8.4 package.
  .
