@@ -4,9 +4,12 @@ Variables: apache2/maxclients
 Variables: hostname
 Variables: domainname
 Variables: apache2/loglevel
-Variables: apache2/documentroot
 Variables: apache2/allowoverride
+
+Type: file
+File: etc/apache2/ucs-sites.conf.d/ucs-sites.conf
 Variables: apache2/startsite
+Variables: apache2/documentroot
 
 Type: multifile
 Multifile: etc/apache2/sites-available/default

@@ -1,3 +1,9 @@
+univention-apache (8.0.0-7) unstable; urgency=medium
+
+  * Bug #38807: Put some of the global config into ucs sites
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Oct 2015 16:59:41 +0100
+
 univention-apache (8.0.0-6) unstable; urgency=medium
 
   * Bug #37637: Support HTTP Strict-Transport-Security (HSTS)
