@@ -1,23 +1,24 @@
-univention-virtual-machine-manager-daemon (4.0.24-14) unstable; urgency=low
+univention-virtual-machine-manager-daemon (5.0.1-2) unstable; urgency=low
 
   * Bug #38676: Separated grid update from grid filtering
 
  -- Alexander Kramer <kramer@univention.de>  Mon, 26 Oct 2015 12:41:53 +0100
 
-univention-virtual-machine-manager-daemon (4.0.24-13) unstable; urgency=low
+univention-virtual-machine-manager-daemon (5.0.1-1) unstable; urgency=low
 
   * Bug #38676: Display vm description in umc
 
  -- Alexander Kramer <kramer@univention.de>  Mon, 26 Oct 2015 11:18:24 +0100
 
-univention-virtual-machine-manager-daemon (4.0.24-12) unstable; urgency=low
+univention-virtual-machine-manager-daemon (5.0.0-2) unstable; urgency=low
 
-  * Bug #39335: added UCS 4.1 profile 
+  * Bug #39335: added UCS 4.1 profile
 
  -- Felix Botner <botner@univention.de>  Thu, 15 Oct 2015 17:30:33 +0200
 
-univention-virtual-machine-manager-daemon (4.0.24-11) unstable; urgency=low
+univention-virtual-machine-manager-daemon (5.0.0-1) unstable; urgency=low
 
+  * UCS 4.1 Version bump
   * Bug #39335: added Microsoft Windows 10 profiles,
     removed UCS 4.0 (32 bit) profile
 
