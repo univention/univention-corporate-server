@@ -174,14 +174,14 @@ run_setup_join_on_non_master ()
 wait_for_reboot ()
 {
 	local i=0
-	while [ $i -lt 360 ]
+	while [ $i -lt 900 ]
 	do
 		pidof apache2 && break
 		sleep 1
 		i=$((i + 1))
 	done
-	if [ $i = 360 ]; then
-		echo "WARNING: wait_for_reboot: Did not find running apache after 360 seconds"
+	if [ $i = 900 ]; then
+		echo "WARNING: wait_for_reboot: Did not find running apache after 900 seconds"
 	fi
 }
 
