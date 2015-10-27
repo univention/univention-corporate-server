@@ -54,12 +54,13 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/Grid",
+	"umc/widgets/Tooltip",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/Carousel",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Grid, AppCenterGallery, App, Carousel, _) {
-	
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Grid, Tooltip, AppCenterGallery, App, Carousel, _) {
+
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
 			this.inherited(arguments);
@@ -301,7 +302,7 @@ define([
 				});
 				this.addChild(this._icon, 0);
 			}
-			
+
 			if (this._navHeaderButtonContainer) {
 				this.removeChild(this._navHeaderButtonContainer);
 				//TODO fix
@@ -341,7 +342,31 @@ define([
 
 			this.addChild(this._navHeaderButtonContainer);
 			this.own(this._navHeaderButtonContainer);
-			
+
+			if (this._navHeaderRatingContainer) {
+				this.removeChild(this._navHeaderRatingContainer);
+				this._navHeaderRatingContainer.destroyRecursive();
+				this._navHeaderRatingContainer = null;
+			}
+			this._navHeaderRatingContainer = new ContainerWidget({
+				region: 'nav',
+				'class': 'navHeaderRating'
+			});
+			this.addChild(this._navHeaderRatingContainer);
+			this.own(this._navHeaderRatingContainer);
+			array.forEach(this.app.rating, lang.hitch(this, function(rating) {
+				var ratingText = new Text({
+					content: rating.label,
+					'class': 'umcAppRating' + rating.value
+				});
+				this._navHeaderRatingContainer.addChild(ratingText);
+				var tooltip = new Tooltip({
+					label: rating.description,
+					connectId: [ ratingText.domNode ]
+				});
+				this._navHeaderRatingContainer.own(tooltip);
+			}));
+
 			if (this._mainRegionContainer) {
 				this.removeChild(this._mainRegionContainer);
 				this._mainRegionContainer.destroyRecursive();
@@ -402,10 +427,10 @@ define([
 				});
 				this._mainRegionContainer.addChild(this._installedAppsGrid);
 			}
-			
+
 			this._detailsContainer = new ContainerWidget({
 				'class': 'detailsContainer'
-			});			
+			});
 
 			var descriptionContainerClass = 'descriptionContainer';
 			descriptionContainerClass += this.app.longDescription.length > 360 ? ' longText' : '';
@@ -421,7 +446,7 @@ define([
 				var styleContainer = new ContainerWidget({
 					'class': 'carouselWrapper'
 				});
-				
+
 				this.carousel = new Carousel({
 					items: [{src: this.app.screenshot}]
 				});
@@ -448,7 +473,7 @@ define([
 			//TODO just for testing
 			domConstruct.empty(this._footer.domNode);
 			domStyle.set(this._footer.domNode, 'margin-bottom', '9em');
-			
+
 			domConstruct.create('span', {
 				innerHTML: _('More information'),
 				'class': 'mainHeader'
@@ -539,7 +564,7 @@ define([
 			}));
 		},
 
-		
+
 		installAppDialog: function() {
 			if (this.app.installationData) {
 				var hosts = [];

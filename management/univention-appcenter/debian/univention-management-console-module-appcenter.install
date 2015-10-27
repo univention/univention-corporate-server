@@ -10,4 +10,5 @@ umc/js/appcenter.css usr/share/univention-management-console-frontend/js/umc/mod
 umc/js/appcenter/app-vignette.svg usr/share/univention-management-console-frontend/js/umc/modules/appcenter
 umc/js/appcenter/minimize.svg usr/share/univention-management-console-frontend/js/umc/modules/appcenter
 umc/js/appcenter/maximize.svg usr/share/univention-management-console-frontend/js/umc/modules/appcenter
+umc/js/appcenter/star.svg usr/share/univention-management-console-frontend/js/umc/modules/appcenter
 umc/js/appcenter/carouselArrowRight.svg usr/share/univention-management-console-frontend/js/umc/modules/appcenter

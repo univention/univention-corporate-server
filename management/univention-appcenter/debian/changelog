@@ -1,3 +1,9 @@
+univention-appcenter (5.0.9-4) unstable; urgency=medium
+
+  * Bug #38891: First iteration for app rating; performance improvements
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 27 Oct 2015 18:29:45 +0100
+
 univention-appcenter (5.0.9-5) unstable; urgency=medium
 
   * Bug #39587: Updated all.tar.gz

@@ -246,6 +246,23 @@
 	color: #787878;
 }
 
+.umc .umcAppDetailsPage .umcPageNav .navHeaderRating {
+	display: inline-block;
+	vertical-align: top;
+	float: right;
+}
+
+.umc .umcAppDetailsPage .umcPageNav .navHeaderRating .umcAppRating0 {
+	display: none;
+}
+
+.umc .umcAppDetailsPage .umcPageNav .navHeaderRating .umcAppRating1 {
+	background: transparent url("appcenter/star.svg") no-repeat scroll 0px 0px;
+}
+
+.umc .umcAppDetailsPage .umcPageNav .navHeaderRating .umcAppRating2 {
+}
+
 .umc .umcAppDetailsPage h1 {
 	margin-bottom: 0.3em;
 }

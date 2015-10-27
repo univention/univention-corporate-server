@@ -494,28 +494,27 @@ class App(object):
 		app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
 			locale = get_locale()
+		component_id = os.path.splitext(os.path.basename(ini_file))[0]
+		meta_file = os.path.join(CACHE_DIR, '%s.meta' % component_id)
 		ini_parser = _read_ini_file(ini_file)
-		app_id = _get_from_parser(ini_parser, 'Application', 'ID')
-		for meta_file in glob(os.path.join(CACHE_DIR, '*.meta')):
+		if os.path.exists(meta_file):
+			app_logger.debug('Using additional %s' % meta_file)
 			meta_parser = _read_ini_file(meta_file)
-			if _get_from_parser(meta_parser, 'Application', 'ID') == app_id:
-				app_logger.debug('Using additional %s' % meta_file)
-				# Remove Logo* entries from meta file to avoid collision
-				# with information contained in ini files.
-				# Logos from meta files are used for www.univention.de website.
-				try:
-					meta_parser.remove_option('Application', 'Logo')
-					meta_parser.remove_option('Application', 'LogoDetailPage')
-				except (NoSectionError, NoOptionError):
-					pass
-				break
+			# Remove Logo* entries from meta file to avoid collision
+			# with information contained in ini files.
+			# Logos from meta files are used for www.univention.de website.
+			try:
+				meta_parser.remove_option('Application', 'Logo')
+				meta_parser.remove_option('Application', 'LogoDetailPage')
+			except (NoSectionError, NoOptionError):
+				pass
 		else:
 			meta_parser = RawConfigParser()  # empty
 		attr_values = {}
 		for attr in cls._attrs:
 			value = None
 			if attr.name == 'component_id':
-				value = os.path.splitext(os.path.basename(ini_file))[0]
+				value = component_id
 			if attr.name == 'ucs_version':
 				# TODO: ucr.get('version/version')
 				value = '4.1'
