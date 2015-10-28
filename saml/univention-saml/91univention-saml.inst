@@ -100,7 +100,7 @@ if [ ! -e "${saml_idp_certificate_certificate}" ]; then
 fi
 
 # Re-create Apache configuration after the certificate generation
-ucr commit /etc/apache2/sites-available/univention-saml-apache
+ucr commit /etc/apache2/sites-available/univention-saml
 
 sso_hostname="$(echo "$ucs_server_sso_fqdn"  | cut -d '.' -f 1)"
 sso_domainname="$(echo "$ucs_server_sso_fqdn"  | cut -d '.' -f 2-)"

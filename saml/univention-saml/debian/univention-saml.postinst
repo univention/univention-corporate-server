@@ -72,7 +72,7 @@ configure)
 	done
 	chmod 640 /var/log/stunnel4/stunnel.log
 
-	a2ensite univention-saml-apache
+	a2ensite univention-saml
 	a2enmod headers
 	a2enmod actions
 	a2enmod suexec
@@ -85,4 +85,9 @@ abort-upgrade|abort-remove|abort-deconfigure)
 	exit 1
 	;;
 esac
+
+if dpkg --compare-versions "$2" lt '3.0.25-1'; then
+	a2dissite univention-saml-apache
+fi
+
 exit 0

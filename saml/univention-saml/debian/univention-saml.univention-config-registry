@@ -53,7 +53,7 @@ Variables: ldap/server/name
 Variables: ldap/server/port
 
 Type: file
-File: etc/apache2/sites-available/univention-saml-apache
+File: etc/apache2/sites-available/univention-saml
 User: root
 Group: root
 Mode: 644
