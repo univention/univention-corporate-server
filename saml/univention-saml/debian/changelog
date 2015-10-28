@@ -1,3 +1,9 @@
+univention-saml (3.0.24-13) unstable; urgency=medium
+
+  * Bug #39479: Use correct host identifier in stunnel config
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 28 Oct 2015 09:56:47 +0100
+
 univention-saml (3.0.24-12) unstable; urgency=medium
 
   * listener module: Check if UCR variables are set (Bug #39479)

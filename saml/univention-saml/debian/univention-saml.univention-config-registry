@@ -72,6 +72,7 @@ Variables: hostname
 Variables: domainname
 Variables: ucs/server/saml-idp-server/.*
 Variables: stunnel/debuglevel
+Variables: ucs/server/sso/fqdn
 
 Type: file
 File: etc/memcached_univention_saml.conf
