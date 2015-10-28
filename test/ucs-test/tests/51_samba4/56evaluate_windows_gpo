@@ -7,6 +7,8 @@
 ## roles:
 ## - domaincontroller_master
 ## - domaincontroller_slave
+## versions:
+##  4.1-0: skip
 
 from os import path
 from sys import exit

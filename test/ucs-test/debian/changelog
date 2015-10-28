@@ -1,3 +1,10 @@
+ucs-test (6.0.10-22) unstable; urgency=medium
+
+  * Ignore ERROR_DNS_UPDATE_FAILED warning (Bug #39622)
+  * Skip 51_samba4/56evaluate_windows_gpo (Bug #39456)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Oct 2015 14:02:30 +0100
+
 ucs-test (6.0.10-21) unstable; urgency=medium
 
   * 80_docker/79_app_ports_already_used: Added a test script if the next
