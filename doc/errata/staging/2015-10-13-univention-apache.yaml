@@ -5,7 +5,7 @@ src: univention-apache
 fix: 7.0.16-16.248.201510131207
 version: [3]
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
  * HTTP Strict-Transport-Security (HSTS) can be enabled and configured through
    the UCR variables 'apache2/hsts', 'apache2/hsts/max-age', and
    'apache2/hsts/includeSubDomains'. See their description for more details.

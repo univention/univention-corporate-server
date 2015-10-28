@@ -5,8 +5,8 @@ src: univention-lib
 fix: 4.0.5-21.310.201510082036
 version: [3]
 desc: |
- This update addresses the following issues:
- * Joining an UCS system into a a subdomain of an Active Directory forest
+ This update addresses the following issue:
+ * Joining an UCS system into a subdomain of an Active Directory forest
    failed with a Python traceback because of an unexpected reply to an
    LDAP search request.
 bug: [37626]
