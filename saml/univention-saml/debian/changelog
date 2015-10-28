@@ -1,3 +1,9 @@
+univention-saml (3.0.25-1) unstable; urgency=medium
+
+  * Bug #39605: make it possible to detect if the IDP is reachable
+
+ -- Florian Best <best@univention.de>  Tue, 27 Oct 2015 21:11:06 +0100
+
 univention-saml (3.0.24-13) unstable; urgency=medium
 
   * Bug #39479: Use correct host identifier in stunnel config

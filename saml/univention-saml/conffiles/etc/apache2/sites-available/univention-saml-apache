@@ -20,11 +20,14 @@ ScriptAlias /saml-bin /var/www/saml
 SuexecUserGroup samlcgi samlcgi
 
 <LocationMatch /simplesamlphp/>
-	# AJAX-Requests via UMC should be possible:  FIXME: allow only specific origins
+	# AJAX-Requests via UMC must be possible
 	Header always set Access-Control-Allow-Origin "*"
 	SetEnvIf Origin "^https?://" origin=true
+	# TODO: allow only specific origins (not easy to add every IP + host here)
 	Header always set Access-Control-Allow-Origin "%{HTTP:Origin}s" env=origin
 	Header always set Access-Control-Allow-Credentials "true"
+	Header always set Access-Control-Allow-Headers "X-Requested-With"
+	Header always set Access-Control-Allow-Methods "GET, HEAD, POST, PUT, DELETE"
 </LocationMatch>
 
 <Directory /usr/share/simplesamlphp/www/>
@@ -52,6 +55,13 @@ if enable_virtualhost and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.p
 	SSLCertificateFile /etc/univention/ssl/%(ssofqdn)s/cert.pem
 	SSLCertificateKeyFile /etc/univention/ssl/%(ssofqdn)s/private.key
 	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
+	DocumentRoot /var/www/
+	RedirectMatch ^/$ /simplesamlphp/
+</VirtualHost>
+<VirtualHost *:80>
+	ServerName %(ssofqdn)s
+	DocumentRoot /var/www/
+	RedirectMatch ^/$ /simplesamlphp/
 </VirtualHost>
 </IfModule>
 ''' % ssofqdn

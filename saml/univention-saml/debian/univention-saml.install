@@ -4,3 +4,4 @@ simplesamlphp-modules/* usr/share/simplesamlphp/modules
 24univention-saml-uninstall.uinst usr/lib/univention-uinstall
 91univention-saml.inst usr/lib/univention-install
 scripts/php-cgi /var/www/saml
+blank.json usr/share/simplesamlphp/www/
