@@ -171,6 +171,13 @@
 		<para>
 			Anschließend muss das UCS-System neu gestartet werden.
 		</para>
+
+		<para>
+			Die App <foreignphrase>SAML identity provider</foreignphrase> gehört nun zum Produktumfang von UCS 4.1.
+			Während des Updates auf UCS 4.1 wird der <foreignphrase>SAML identity provider</foreignphrase> automatisch konfiguriert.
+			Wurde die App unter UCS 4.0 genutzt, müssen die Einstellungen der benutzten Service Provider aktualisiert werden.
+			Insbesondere müssen auf den <foreignphrase>Service Providern</foreignphrase> neue Zertifikate und Metadaten verfügbar gemacht werden, um die Funktionalität wieder herzustellen.
+		</para>
 	</chapter>
 
 	<chapter id="relnotes:packages">

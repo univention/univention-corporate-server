@@ -171,6 +171,10 @@
 		<para>
 			Subsequently the UCS system needs to be restarted.
 		</para>
+
+		<para>
+			<!-- TODO: translate SAML identity provider paragraph -->
+		</para>
 	</chapter>
 
 	<chapter id="relnotes:packages">
