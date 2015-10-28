@@ -1,3 +1,9 @@
+univention-appcenter (5.0.9-9) unstable; urgency=low
+
+  * Bug #39524: Fixed a css selector not working in the installed apps module
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 28 Oct 2015 18:14:30 +0100
+
 univention-appcenter (5.0.9-8) unstable; urgency=medium
 
   * Bug #39194: Fix Docker manifest verification

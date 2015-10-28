@@ -522,7 +522,7 @@ define([
 				footerRight.addChild(notificationText);
 			}
 
-			domStyle.set(document.querySelectorAll('.umcModule[id^="umc_modules_appcenter"] .umcModuleContent')[0], 'overflow', 'visible');
+			domStyle.set(document.querySelectorAll('.umcModule[id^="umc_modules_app"] .umcModuleContent')[0], 'overflow', 'visible');
 			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
 		},
 
