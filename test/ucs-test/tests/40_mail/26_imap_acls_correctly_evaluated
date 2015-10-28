@@ -7,6 +7,7 @@
 from essential.mail import send_mail, check_delivery, create_shared_mailfolder
 from essential.mailclient import MailClient_SSL
 import subprocess
+import sys
 import time
 import univention.config_registry
 import univention.testing.strings as uts
@@ -126,6 +127,8 @@ def main():
 
 
 if __name__ == '__main__':
+	if utils.package_installed('univention-samba4'):
+		sys.exit(132)
 	main()
 
 # vim: set ft=python ts=4 sw=4 noet :
