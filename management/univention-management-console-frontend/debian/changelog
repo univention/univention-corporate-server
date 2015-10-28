@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.46-1) unstable; urgency=medium
+
+  * Bug #39605: add link to SDB article if the SAML identity provider cannot
+  	be reached.
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2015 14:56:45 +0100
+
 univention-management-console-frontend (5.0.45-1) unstable; urgency=medium
 
   * Bug #39564: use iframe instead of ajax to detect current open session

@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define setTimeout*/
 
 define([
 	"dojo/_base/lang",
@@ -65,7 +65,7 @@ define([
 			var result = info.result;
 
 			if (result && result.saml_renewal_required) {
-				return this.passiveSingleSignOn();
+				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(dialog, 'login'));
 			}
 			if (result && result.password_required || this._password_required) {
 				this._password_required = true;
@@ -87,17 +87,15 @@ define([
 
 			dialog._initLoginDialog();
 			dialog._loginDialog.standby(true);
-			this.__standby = dialog._loginDialog.show().then(function() {
+			this.__loading = dialog._loginDialog.show().then(function() {
 				dialog._loginDialog.standby(true);
 			});
 
 			this.sessionlogin().then(undefined, lang.hitch(this, function() {
 				//console.debug('no active session found');
-				return this.passiveSingleSignOn({ timeout: 3000 }).then(
-					lang.hitch(this, 'sessionlogin'),
-					this.__standby.always(lang.hitch(dialog, 'login'))
-					// TODO: set the progress message somewhere visibly in the login dialog: function(message) { }
-				);
+				this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(this, function() {
+					this.__loading.always(lang.hitch(dialog, 'login'));
+				}));
 			}));
 		},
 
@@ -157,7 +155,7 @@ define([
 			}));
 		},
 
-		passiveSingleSignOn: function() {
+		passiveSingleSignOn: function(args) {
 			var deferred = new Deferred();
 			var iframeid = ('passive_single_sign_on_' + Math.random().toString(36).substring(7)).replace(/[\/\.\-]/g, '_');
 			var i = 0;
@@ -180,6 +178,11 @@ define([
 				}
 			};
 			_iframe = iframe.create(iframeid, entities.encode(iframeid + '_onload()'), 'saml/iframe/');
+			if (args && args.timeout) {
+				setTimeout(function() {
+					deferred.cancel();
+				}, args.timeout);
+			}
 			return deferred.promise;
 		},
 

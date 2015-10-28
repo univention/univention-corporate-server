@@ -26,36 +26,49 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console window setTimeout */
+/*global define window*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/_base/array",
-	"umc/tools",
+	"dojo/request/xhr",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
-	"umc/widgets/Text",
-	"umc/widgets/ComboBox",
-	"umc/widgets/StandbyMixin",
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, tools, ContainerWidget, Button, Text, ComboBox, StandbyMixin, _) {
-	return declare("umc.app.SingleSignOn", [ContainerWidget], {
+], function(declare, lang, xhr, ContainerWidget, Button, _) {
+	return declare('umc.app.SingleSignOn', [ContainerWidget], {
 		_languageMenu: null,
 		_languageButton: null,
 
-		buildRendering: function() {
-			this.inherited(arguments);
-			this.addChild(new Button({
+		sso_uri: '/univention-management-console/saml/',
+
+		postMixInProperties: function() {
+			this.ssoButton = new Button({
 				label: _('Single Sign On'),
 				iconClass: 'umcPlayIcon',
 				description: _('Single Sign On allows a user to login once and access multiple applications seamlessly. For a safe implementation, it is necessary that the names of the involved systems can be reached via DNS by the web browser.'),
-				callback: function() {
-					window.location.pathname = '/univention-management-console/saml/';
-				}
+				callback: lang.hitch(this, function() {
+					window.location = this.sso_uri;
+				})
+			});
+			xhr.get('/univention-management-console/entries.json', {handleAs: 'json'}).always(lang.hitch(this, function(result) {
+				var uri = 'https://' + result.ucr['ucs/server/sso/fqdn'] + '/simplesamlphp/blank.json';
+				return xhr.get(uri, {handleAs: 'json', timeout: 3}).then(function(res) {
+					if (res.status == 200) {
+						return true;
+					}
+					throw new Error('IDP is not reachable!');
+				});
+			})).otherwise(lang.hitch(this, function() {
+				this.sso_uri = _('http://sdb.univention.de/1351');
+				this.ssoButton.set('label', '<s>' + this.ssoButton.get('label') + '</s>');
 			}));
+		},
+		buildRendering: function() {
+			this.inherited(arguments);
+			this.addChild(this.ssoButton);
 		}
 	});
 });

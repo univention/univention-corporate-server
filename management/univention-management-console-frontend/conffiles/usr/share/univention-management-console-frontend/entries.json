@@ -1,0 +1,7 @@
+@!@
+import json
+data = {'ucr': {}}
+for var in ('ucs/server/sso/fqdn',):
+	data['ucr'][var] = configRegistry.get(var)
+print json.dumps(data, indent=2)
+@!@

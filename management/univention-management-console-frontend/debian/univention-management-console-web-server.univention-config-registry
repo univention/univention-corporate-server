@@ -7,3 +7,7 @@ Variables: umc/http/session/timeout
 Type: module
 Module: setup_saml_sp.py
 Variables: umc/saml/idp-server
+
+Type: file
+File: usr/share/univention-management-console-frontend/entries.json
+Variables: ucs/server/sso/fqdn
