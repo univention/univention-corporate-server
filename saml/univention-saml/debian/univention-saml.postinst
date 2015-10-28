@@ -38,11 +38,18 @@ configure)
 		rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
 	fi
 
+	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.0-1; then
+		ucr unset saml/idp/certificate/privatekey \
+			saml/idp/certificate/certificate
+	fi
+
 	ucr set saml/idp/enableSAML20-IdP?true \
 		saml/idp/ldap/get_attributes?"'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'" \
 		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true" \
+		saml/idp/log/debug/enabled=True \
+		saml/idp/log/level=ERR \
 		ucs/server/sso/virtualhost?"true"
 
 	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php

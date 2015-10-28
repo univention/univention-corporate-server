@@ -1,3 +1,10 @@
+univention-saml (3.0.25-2) unstable; urgency=medium
+
+  * Bug #39455: Support update from UCS 4.0
+  * Raise default simplesamlphp loglevel to ERR
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 28 Oct 2015 16:13:06 +0100
+
 univention-saml (3.0.25-1) unstable; urgency=medium
 
   * Bug #39605: make it possible to detect if the IDP is reachable
