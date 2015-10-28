@@ -87,15 +87,11 @@ define([
 
 			dialog._initLoginDialog();
 			dialog._loginDialog.standby(true);
-			this.__loading = dialog._loginDialog.show().then(function() {
-				dialog._loginDialog.standby(true);
-			});
+			dialog._loginDialog.show();
 
 			this.sessionlogin().then(undefined, lang.hitch(this, function() {
 				//console.debug('no active session found');
-				this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(this, function() {
-					this.__loading.always(lang.hitch(dialog, 'login'));
-				}));
+				this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(dialog, 'login'));
 			}));
 		},
 

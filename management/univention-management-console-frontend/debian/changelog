@@ -1,3 +1,13 @@
+univention-management-console-frontend (5.0.47-1) unstable; urgency=medium
+
+  * Bug #39233: fix security warning when accessing UMC via HTTP
+  * Bug #39564: fix error handling for iframe requests
+  * Bug #31943: set expiration in the past even if server time is wrong
+  * allow basic authentication (e.g. for faster debugging)
+  * enhance error logging
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2015 20:29:11 +0100
+
 univention-management-console-frontend (5.0.46-1) unstable; urgency=medium
 
   * Bug #39605: add link to SDB article if the SAML identity provider cannot
