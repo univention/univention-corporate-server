@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check whether SSO is possible with expired user account
+## tags:
+##  - saml
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##  - python-requests
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+import samltest
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		testcase_user_name = udm.create_user(userexpiry='2015-01-01')[1]
+
+		try:
+			samltest.login_with_new_session_at_IdP(testcase_user_name, 'univention')
+		except samltest.SamlError as exc:
+			if exc.message == 'Got account expired notice':
+				return
+			else:
+				utils.fail(exc.message)
+		utils.fail("Could login with expired account")
+
+
+if __name__ == '__main__':
+	main()

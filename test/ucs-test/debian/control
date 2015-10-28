@@ -549,3 +549,11 @@ Architecture: all
 Depends: ${ucs-test:all-packages}
 Description: UCS test environment meta package
  This package depends on all other tests of UCS test.
+
+Package: ucs-test-saml-sso
+Architecture: all
+Depends: python-requests
+Recommends: ucs-test-framework
+Provides: ucs-test-module
+Description: Test scripts to test SSO Login
+ This package includes test-cases for SAML SSO Login.

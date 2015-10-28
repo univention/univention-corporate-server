@@ -1,0 +1,24 @@
+#!/usr/share/ucs-test/runner python
+## desc: SSO Login at UMC as Service Provider
+## tags: [saml]
+## roles: [domaincontroller_master]
+## exposure: safe
+## packages:
+##   - python-requests
+import univention.testing.utils as utils
+import samltest as samllogin
+import univention.testing.utils as utils
+
+def main():
+	account = utils.UCSTestDomainAdminCredentials()
+	try:
+		cookies = samllogin.login_with_new_session_at_IdP(account.username, account.bindpw)
+		samllogin.test_login(cookies)
+		cookies = samllogin.logout_at_IdP(cookies)
+		samllogin.test_logout(cookies)
+	except samllogin.SamlError as exc:
+		utils.fail(exc.message)
+
+
+if __name__ == '__main__':
+	main()

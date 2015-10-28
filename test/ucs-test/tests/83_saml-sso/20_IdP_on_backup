@@ -1,0 +1,35 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check whether idP is synchronized between DC Master and DC Backup.
+## tags:
+##  - saml
+##  - SKIP
+## bugs: [39479]
+## roles: [domaincontroller_master]
+## exposure: safe
+## packages:
+##  - python-requests
+import time
+import univention.admin.modules as udm_modules
+import univention.testing.utils as utils
+import samltest
+
+udm_modules.update()
+
+
+def main():
+
+	account = utils.UCSTestDomainAdminCredentials()
+	lo = utils.get_ldap_connection()
+	backups = udm_modules.lookup('computers/domaincontroller_backup', None, lo, scope='sub')
+	backup_hostname = "%s.%s" % (backups[0]['name'], backups[0]['domain'])
+
+	try:
+		cookies = samltest.login_with_new_session_at_IdP(account.username, account.bindpw)
+		time.sleep(1)
+		cookies = samltest.login_with_existing_session_at_IdP(hostname=backup_hostname, cookies=cookies, IdP_IP=backups[0]['ip'][0])
+		samltest.test_login(cookies, hostname=backup_hostname)
+	except samltest.SamlError as exc:
+		utils.fail(exc.message)
+
+if __name__ == '__main__':
+	main()
