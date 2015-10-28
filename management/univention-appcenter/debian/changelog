@@ -1,3 +1,9 @@
+univention-appcenter (5.0.9-9) unstable; urgency=medium
+
+  * Bug #39190: Fixed autostart not sent to frontend
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Oct 2015 00:37:23 +0100
+
 univention-appcenter (5.0.9-8) unstable; urgency=medium
 
   * Bug #39192: Backup conf and data files when uninstalling docker app

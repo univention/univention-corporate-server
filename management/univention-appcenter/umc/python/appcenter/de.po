@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-26 14:20+0100\n"
+"POT-Creation-Date: 2015-10-29 00:39+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 "Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
 "Server hin. Bitte versuchen Sie es später noch einmal."
 
-#: umc/python/appcenter/__init__.py:308
+#: umc/python/appcenter/__init__.py:307
 #, python-format
 msgid "%s: Running tests"
 msgstr "%s: Starte Tests"
 
-#: umc/python/appcenter/__init__.py:512 umc/python/appcenter/__init__.py:660
+#: umc/python/appcenter/__init__.py:510 umc/python/appcenter/__init__.py:658
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -35,8 +35,8 @@ msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 msgid "Any of %r must be given"
 msgstr "Ein Wert aus %r muss gegeben sein"
 
-#: umc/python/appcenter/__init__.py:208 umc/python/appcenter/__init__.py:223
-#: umc/python/appcenter/__init__.py:377
+#: umc/python/appcenter/__init__.py:209 umc/python/appcenter/__init__.py:224
+#: umc/python/appcenter/__init__.py:375
 #, python-format
 msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
@@ -46,7 +46,7 @@ msgstr "Konnte keine Applikation für %s finden"
 msgid "Error while contacting the App Center server. %s"
 msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
 
-#: umc/python/appcenter/__init__.py:327
+#: umc/python/appcenter/__init__.py:326
 #, python-format
 msgid "Installing %s"
 msgstr "Installiere %s"
@@ -77,7 +77,7 @@ msgstr ""
 "Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server "
 "läuft mit einem %(has)s-Bit-Betriebssystem."
 
-#: umc/python/appcenter/__init__.py:188
+#: umc/python/appcenter/__init__.py:189
 msgid ""
 "The docker service is not running! The App Center will not work properly. "
 "Make sure docker.io is installed, try starting the service with \"service "
@@ -91,7 +91,7 @@ msgstr ""
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:856
+#: umc/python/appcenter/__init__.py:854
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -122,12 +122,12 @@ msgstr ""
 "Dies kann auf ein Problem mit einem auf Ihrem System eingerichteten Proxy "
 "hindeuten. Sie finden Hilfe unter %s."
 
-#: umc/python/appcenter/__init__.py:330
+#: umc/python/appcenter/__init__.py:329
 #, python-format
 msgid "Uninstalling %s"
 msgstr "Deinstalliere %s"
 
-#: umc/python/appcenter/__init__.py:333
+#: umc/python/appcenter/__init__.py:331
 #, python-format
 msgid "Upgrading %s"
 msgstr "Aktualisiere %s"
@@ -146,15 +146,15 @@ msgstr ""
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
 
-#: umc/python/appcenter/__init__.py:704
+#: umc/python/appcenter/__init__.py:702
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:706
+#: umc/python/appcenter/__init__.py:704
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:702
+#: umc/python/appcenter/__init__.py:700
 msgid "upgradable"
 msgstr "aktualisierbar"
 

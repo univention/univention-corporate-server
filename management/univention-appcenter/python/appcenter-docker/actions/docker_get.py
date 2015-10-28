@@ -33,6 +33,8 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+from univention.config_registry import ConfigRegistry
+
 from univention.appcenter.utils import app_is_running
 from univention.appcenter.actions import get_action
 from univention.appcenter.actions.get import Get
@@ -42,7 +44,10 @@ class Get(Get):
 	@classmethod
 	def to_dict(cls, app):
 		ret = super(Get, cls).to_dict(app)
+		ucr = ConfigRegistry()
+		ucr.load()
 		configure = get_action('configure')
 		ret['config'] = configure.list_config(app)
 		ret['is_running'] = app_is_running(app)
+		ret['autostart'] = ucr.get('%s/autostart' % app.id, 'yes')
 		return ret

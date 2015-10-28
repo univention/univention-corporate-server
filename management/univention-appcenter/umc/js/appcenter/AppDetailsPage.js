@@ -247,7 +247,7 @@ define([
 			if (this.app.isDocker) {
 				buttons.push({
 					name: 'configure',
-					label: _('Configuration'),
+					label: _('App settings'),
 					'class': 'umcAppButton',
 					isContextAction: true,
 					isStandardAction: true,

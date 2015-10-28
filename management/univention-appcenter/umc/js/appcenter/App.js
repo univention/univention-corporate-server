@@ -97,6 +97,7 @@ define([
 			this.isMaster = props.is_master;
 			this.isUCSComponent = props.is_ucs_component;
 			this.isDocker = !!props.docker_image;
+			this.autoStart = props.autostart;
 			this.config = props.config;
 			this.isRunning = props.is_running;
 			this.hostMaster = props.host_master;
