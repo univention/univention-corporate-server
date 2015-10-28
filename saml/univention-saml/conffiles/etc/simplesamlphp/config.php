@@ -15,13 +15,13 @@ if configRegistry.is_true('saml/idp/enableSAML20-IdP'):
 print "	'enable.saml20-idp'	=> %s," % saml20_enabled
 
 print "	'timezone'		=> '%s'," % configRegistry.get('saml/idp/timezone', 'Europe/Berlin')
-print"	'debug'		=> %s," % configRegistry.get('saml/idp/log/debug/enabled', 'FALSE')
-print "	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'NOTICE')
+print "	'debug'		=> %s," % configRegistry.get('saml/idp/log/debug/enabled', 'FALSE')
+print "	'logging.level'		=> SimpleSAML_Logger::%s," % configRegistry.get('saml/idp/log/level', 'ERR')
 print "	'language.default'	=> '%s'," % configRegistry.get('locale/default', 'en')[:2]
 print "	'theme.use'		=> '%s'," % configRegistry.get('saml/idp/lookandfeel/theme', 'default')
-print"	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator')
-print"	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%s' % configRegistry.get('domainname'))
-print"	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegistry.get('domainname', ''))
+print "	'technicalcontact_name'		=> '%s'," % configRegistry.get('saml/idp/technicalcontactname', 'Administrator')
+print "	'technicalcontact_email'	=> '%s'," % configRegistry.get('saml/idp/technicalcontactemail', 'root@%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname')))
+print "	'hostfqdn'	=> '%s.%s'," % (configRegistry.get('hostname', ''),configRegistry.get('domainname', ''))
 @!@
 	/**
 	 * Setup the following parameters to match the directory of your installation.

@@ -48,8 +48,6 @@ configure)
 		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
 		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
 		saml/idp/https?"true" \
-		saml/idp/log/debug/enabled=True \
-		saml/idp/log/level=ERR \
 		ucs/server/sso/virtualhost?"true"
 
 	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
