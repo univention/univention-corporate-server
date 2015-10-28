@@ -26,7 +26,7 @@ SuexecUserGroup samlcgi samlcgi
 	# TODO: allow only specific origins (not easy to add every IP + host here)
 	Header always set Access-Control-Allow-Origin "%{HTTP:Origin}s" env=origin
 	Header always set Access-Control-Allow-Credentials "true"
-	Header always set Access-Control-Allow-Headers "X-Requested-With"
+	Header always set Access-Control-Allow-Headers "X-Requested-With, Content-Type"
 	Header always set Access-Control-Allow-Methods "GET, HEAD, POST, PUT, DELETE"
 </LocationMatch>
 
