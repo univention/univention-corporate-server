@@ -1,3 +1,9 @@
+univention-saml (3.0.25-5) unstable; urgency=medium
+
+  * Bug #31943: fixup
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2015 20:56:20 +0100
+
 univention-saml (3.0.25-4) unstable; urgency=medium
 
   * Bug #39455: default loglevel is not set to errors
