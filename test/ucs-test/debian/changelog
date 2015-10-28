@@ -1,3 +1,9 @@
+ucs-test (6.0.10-25) unstable; urgency=low
+
+  * increased LongDescription max to 2000 (Bug #38798) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 28 Oct 2015 15:05:48 +0100
+
 ucs-test (6.0.10-24) unstable; urgency=low
 
   * more debug in 51_samba4/59checkPrimaryGroupInPacInfo (Bug #39101)
