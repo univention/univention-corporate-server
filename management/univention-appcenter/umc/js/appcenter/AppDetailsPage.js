@@ -248,7 +248,9 @@ define([
 				buttons.push({
 					name: 'configure',
 					label: _('Configuration'),
-					align: 'right',
+					'class': 'umcAppButton',
+					isContextAction: true,
+					isStandardAction: true,
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canConfigure();
 					}),
@@ -298,7 +300,7 @@ define([
 			if (icon_class) {
 				this._icon = new ContainerWidget({
 					region: 'nav',
-					'class': icon_class + ' icon',
+					'class': icon_class + ' icon'
 				});
 				this.addChild(this._icon, 0);
 			}
@@ -342,30 +344,6 @@ define([
 
 			this.addChild(this._navHeaderButtonContainer);
 			this.own(this._navHeaderButtonContainer);
-
-			if (this._navHeaderRatingContainer) {
-				this.removeChild(this._navHeaderRatingContainer);
-				this._navHeaderRatingContainer.destroyRecursive();
-				this._navHeaderRatingContainer = null;
-			}
-			this._navHeaderRatingContainer = new ContainerWidget({
-				region: 'nav',
-				'class': 'navHeaderRating'
-			});
-			this.addChild(this._navHeaderRatingContainer);
-			this.own(this._navHeaderRatingContainer);
-			array.forEach(this.app.rating, lang.hitch(this, function(rating) {
-				var ratingText = new Text({
-					content: rating.label,
-					'class': 'umcAppRating' + rating.value
-				});
-				this._navHeaderRatingContainer.addChild(ratingText);
-				var tooltip = new Tooltip({
-					label: rating.description,
-					connectId: [ ratingText.domNode ]
-				});
-				this._navHeaderRatingContainer.own(tooltip);
-			}));
 
 			if (this._mainRegionContainer) {
 				this.removeChild(this._mainRegionContainer);
@@ -507,19 +485,47 @@ define([
 			this.addToDetails(_('Candidate version'), 'CandidateVersion');
 			this.addToDetails(_('Categories'), 'Categories');
 			this.addToDetails(_('End of life'), 'EndOfLife');
+			this.addToDetails(_('Notification'), 'NotifyVendor');
 
 			domConstruct.place(this._detailsTable, footerLeft.domNode);
 
-			if (this._detailFieldCustomNotifyVendor()) {
-				var notificationHeader = new Text({
-					content: _('Notification'),
-					style: 'font-weight: bold'
+			var maxRating = 0;
+			array.forEach(this.app.rating, function(rating) {
+				if (maxRating < rating.value) {
+					maxRating = rating.value;
+				}
+			});
+			array.forEach(this.app.rating, function(rating) {
+				var ratingText = new Text({
+					'class': 'umcAppRating'
 				});
-				footerRight.addChild(notificationHeader);
-				var notificationText = new Text({
-					content: this._detailFieldCustomNotifyVendor()
+				domConstruct.create('div', {
+						'class': 'umcAppRatingIcon',
+						style: {width: 1.5 * rating.value + 'em'}
+					}, ratingText.domNode
+				);
+				domConstruct.create('div', {
+						'class': 'umcAppRatingText',
+						textContent: rating.label,
+						style: {paddingLeft: 1.5 * (maxRating - rating.value) + 'em'}
+					}, ratingText.domNode
+				);
+				footerRight.addChild(ratingText);
+			});
+			if (maxRating) {
+				var moreinfoRating = domConstruct.create('button', {
+					textContent: _('More information'),
+					'class': 'categoryButton'
+				}, footerRight.domNode);
+				var moreInformation = '';
+				array.forEach(this.app.rating, function(rating) {
+					moreInformation += lang.replace('<h3>{label}</h3><p>{description}</p>', rating);
 				});
-				footerRight.addChild(notificationText);
+				var tooltip = new Tooltip({
+					label: moreInformation,
+					connectId: [ moreinfoRating ]
+				});
+				this.own(tooltip);
 			}
 
 			domStyle.set(document.querySelectorAll('.umcModule[id^="umc_modules_app"] .umcModuleContent')[0], 'overflow', 'visible');

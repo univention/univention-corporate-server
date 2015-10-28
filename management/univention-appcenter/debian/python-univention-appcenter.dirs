@@ -1,2 +1,3 @@
 /var/lib/univention-appcenter/apps
+/var/lib/univention-appcenter/backups
 /var/cache/univention-appcenter

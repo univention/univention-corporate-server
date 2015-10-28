@@ -37,16 +37,19 @@ from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.docker import rm as docker_rm
-from univention.appcenter.actions import Abort
+from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
-from univention.appcenter.actions.docker_remove import Remove
 from univention.appcenter.actions.service import Start
 from univention.appcenter.actions.configure import Configure
 
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
+	def setup_parser(self, parser):
+		super(Upgrade, self).setup_parser(parser)
+		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
+
 	def __init__(self):
 		super(Upgrade, self).__init__()
 		self._had_image_upgrade = False
@@ -130,7 +133,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
 		config = Configure.list_config(self.old_app)
-		if self._backup_container(self.old_app) is False:
+		if self._backup_container(self.old_app, backup_data='copy') is False:
 			self.fatal('Could not backup container!')
 			raise Abort()
 		self.log('Setting up new container (%s)' % app)
@@ -148,8 +151,11 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 	def _revert(self, app, args):
 		if self._had_image_upgrade:
 			try:
-				Remove.call(app=app, noninteractive=args.noninteractive, username=args.username, pwdfile=args.pwdfile, send_info=False, skip_checks=[], keep_data=False)
-				Install.call(app=self.old_app, noninteractive=args.noninteractive, username=args.username, pwdfile=args.pwdfile, send_info=False, skip_checks=[])
+				remove = get_action('remove')
+				install = get_action('install')
+				password = self._get_password(args, ask=False)
+				remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
+				install.call(app=self.old_app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[])
 			except Exception:
 				pass
 		else:

@@ -246,21 +246,23 @@
 	color: #787878;
 }
 
-.umc .umcAppDetailsPage .umcPageNav .navHeaderRating {
+.umc .umcAppDetailsPage .umcAppRating {
+	margin-bottom: 1em;
+}
+
+.umc .umcAppDetailsPage .umcAppRatingIcon {
 	display: inline-block;
-	vertical-align: top;
-	float: right;
+	background: transparent url("appcenter/star.svg") repeat scroll;
+	background-size: 1.5em;
+	height: 1.5em;
+	width: 1.5em;
 }
 
-.umc .umcAppDetailsPage .umcPageNav .navHeaderRating .umcAppRating0 {
-	display: none;
-}
-
-.umc .umcAppDetailsPage .umcPageNav .navHeaderRating .umcAppRating1 {
-	background: transparent url("appcenter/star.svg") no-repeat scroll 0px 0px;
-}
-
-.umc .umcAppDetailsPage .umcPageNav .navHeaderRating .umcAppRating2 {
+.umc .umcAppDetailsPage .umcAppRatingText {
+	display: inline-block;
+	position: relative;
+	bottom: 5px;
+	left: 5px;
 }
 
 .umc .umcAppDetailsPage h1 {

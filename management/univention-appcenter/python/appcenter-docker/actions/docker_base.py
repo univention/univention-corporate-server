@@ -47,6 +47,9 @@ from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir
 
 
+BACKUP_DIR = '/var/lib/univention-appcenter/backups'
+
+
 class DockerActionMixin(object):
 	@classmethod
 	def _get_docker(cls, app):
@@ -61,7 +64,7 @@ class DockerActionMixin(object):
 			return False
 		return True
 
-	def _backup_container(self, app):
+	def _backup_container(self, app, backup_data=False):
 		docker = self._get_docker(app)
 		if docker.exists():
 			if not Start.call(app=app):
@@ -70,10 +73,16 @@ class DockerActionMixin(object):
 			if not self._store_data(app):
 				self.warn('Storing data for %s failed' % app)
 				return False
+			image_name = 'appcenter-backup-%s:%d' % (app.id, time())
+			if backup_data in 'copy':
+				shutil.copytree(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
+				shutil.copytree(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
+			elif backup_data == 'move':
+				shutil.move(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
+				shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
 			if not Stop.call(app=app):
 				self.warn('Stopping the container for %s failed' % app)
 				return False
-			image_name = 'appcenter-backup-%s:%d' % (app.id, time())
 			image_id = docker.commit(image_name)
 			self.log('Backed up %s as %s. ID: %s' % (app, image_name, image_id))
 			return image_id

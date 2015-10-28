@@ -1,3 +1,10 @@
+univention-appcenter (5.0.9-8) unstable; urgency=medium
+
+  * Bug #39192: Backup conf and data files when uninstalling docker app
+  * Bug #38891: Improved position for rating information
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Oct 2015 23:57:09 +0100
+
 univention-appcenter (5.0.9-9) unstable; urgency=low
 
   * Bug #39524: Fixed a css selector not working in the installed apps module

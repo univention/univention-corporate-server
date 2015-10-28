@@ -39,7 +39,6 @@ from univention.config_registry import ConfigRegistry
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
-from univention.appcenter.actions.remove import Remove
 from univention.appcenter.udm import search_objects
 
 
@@ -146,7 +145,8 @@ class Install(InstallRemoveUpgrade):
 	def _revert(self, app, args):
 		try:
 			password = self._get_password(args, ask=False)
-			Remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[])
+			remove = get_action('remove')
+			remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
 		except Exception:
 			pass
 

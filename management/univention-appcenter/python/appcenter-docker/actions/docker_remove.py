@@ -39,6 +39,10 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 
 
 class Remove(Remove, DockerActionMixin):
+	def setup_parser(self, parser):
+		super(Remove, self).setup_parser(parser)
+		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
+
 	def _do_it(self, app, args):
 		self._unregister_host(app, args)
 		self.percentage = 5
@@ -51,9 +55,10 @@ class Remove(Remove, DockerActionMixin):
 			self._remove_docker_container(app, args)
 
 	def _remove_docker_container(self, app, args):
-		if self._backup_container(app) is False:
-			self.fatal('Could not backup container!')
-			raise Abort()
+		if args.backup:
+			if self._backup_container(app, backup_data='move') is False:
+				self.fatal('Could not backup container!')
+				raise Abort()
 		docker = self._get_docker(app)
 		if docker.container:
 			docker.rm()

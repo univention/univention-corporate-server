@@ -37,9 +37,8 @@ from argparse import SUPPRESS
 
 from univention.appcenter.actions.configure import StoreConfigAction
 from univention.appcenter.actions.install import Install
-from univention.appcenter.actions.docker_remove import Remove
 from univention.appcenter.actions.docker_base import DockerActionMixin
-from univention.appcenter.actions import Abort
+from univention.appcenter.actions import Abort, get_action
 
 
 class Install(Install, DockerActionMixin):
@@ -64,7 +63,8 @@ class Install(Install, DockerActionMixin):
 			return
 		try:
 			password = self._get_password(args, ask=False)
-			Remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], keep_data=False)
+			remove = get_action('remove')
+			remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
 		except Exception:
 			pass
 
