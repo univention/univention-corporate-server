@@ -1,3 +1,9 @@
+univention-appcenter (5.0.9-7) unstable; urgency=medium
+
+  * Bug #38194: Fix Installed Apps module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 28 Oct 2015 10:15:38 +0100
+
 univention-appcenter (5.0.9-6) unstable; urgency=medium
 
   * Bug #39643: Do not register non docker apps if installing only master

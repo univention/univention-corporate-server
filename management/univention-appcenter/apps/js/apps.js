@@ -32,12 +32,15 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/topic",
+	"dojo/when",
+	"dojo/promise/all",
 	"umc/widgets/Module",
 	"umc/modules/appcenter/AppDetailsPage",
+	"umc/modules/appcenter/AppConfigDialog",
 	"umc/modules/appcenter/AppChooseHostDialog",
 	"umc/modules/appcenter/AppDetailsDialog",
 	"umc/i18n!umc/modules/apps"
-], function(declare, lang, topic, Module, AppDetailsPage, AppChooseHostDialog, AppDetailsDialog, _) {
+], function(declare, lang, topic, when, all, Module, AppDetailsPage, AppConfigDialog, AppChooseHostDialog, AppDetailsDialog, _) {
 	return declare("umc.modules.apps", Module, {
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -48,6 +51,11 @@ define([
 			} catch(e) {
 			}
 			this._dialog =  new AppDetailsDialog({
+				moduleID: this.moduleID,
+				moduleFlavor: this.moduleFlavor,
+				standbyDuring: lang.hitch(this, 'standbyDuring')
+			});
+			this._configDialog = new AppConfigDialog({
 				moduleID: this.moduleID,
 				moduleFlavor: this.moduleFlavor,
 				standbyDuring: lang.hitch(this, 'standbyDuring')
@@ -64,6 +72,7 @@ define([
 				backLabel: _('Close'),
 				getAppCommand: 'apps/get',
 				detailsDialog: this._dialog,
+				configDialog: this._configDialog,
 				hostDialog: this._choose,
 				udmAccessible: udmAccessible,
 				standby: lang.hitch(this, 'standby'),
@@ -74,11 +83,32 @@ define([
 			}));
 			this.standbyDuring(this._page.appLoadingDeferred);
 			this.addChild(this._dialog);
+			this.addChild(this._configDialog);
 			this.addChild(this._choose);
 			this.addChild(this._page);
 			this.selectChild(this._page);
 			this._dialog.on('showUp', lang.hitch(this, function() {
 				this.selectChild(this._dialog);
+			}));
+			this._configDialog.on('showUp', lang.hitch(this, function() {
+				this.selectChild(this._configDialog);
+			}));
+			this._configDialog.on('back', lang.hitch(this, function(applied) {
+				var loadPage = true;
+				if (applied) {
+					loadPage = all([this._page.reloadPage()]);
+					this.standbyDuring(loadPage);
+				}
+				when(loadPage).then(lang.hitch(this, function() {
+					this.selectChild(this._page);
+				}));
+			}));
+			this._configDialog.on('update', lang.hitch(this, function() {
+				var loadPage = all([this._page.reloadPage()]);
+				loadPage = loadPage.then(lang.hitch(this, function() {
+					this._configDialog.showUp();
+				}));
+				this.standbyDuring(loadPage);
 			}));
 			this._choose.on('showUp', lang.hitch(this, function() {
 				this.selectChild(this._choose);
