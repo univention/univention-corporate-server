@@ -132,9 +132,9 @@ def verify(app, image):
 		json_apps = upd._load_index_json()
 
 	try:
-		appinfo = json_apps[app.name]
+		appinfo = json_apps[app.id]
 	except KeyError as exc:
-		_logger.error('Warning: Cannot check DockerImage checksum because app is not in index.json: %s' % app.name)
+		_logger.error('Warning: Cannot check DockerImage checksum because app is not in index.json: %s' % app.id)
 		return  # Nothing we can do here, this is mainly for ucs-test apps
 
 	try:
@@ -143,13 +143,13 @@ def verify(app, image):
 		appcenter_sha256sum = dockerimageinfo['sha256']
 		docker_image_manifest_url = dockerimageinfo['url']
 	except KeyError as exc:
-		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.name)
+		_logger.error('Error looking up DockerImage checksum for %s from index.json' % app.id)
 		return  # Nothing we can do here, this is the case of ISV Docker repos
 
 	https_request_auth = requests.auth.HTTPBasicAuth(DOCKER_READ_USER_CRED['username'], DOCKER_READ_USER_CRED['password'])
 	https_request_answer = requests.get(docker_image_manifest_url, auth=https_request_auth)
 	if not https_request_answer.ok:
-		exc = DockerImageVerificationFailedRegistryContact(app.name, docker_image_manifest_url)
+		exc = DockerImageVerificationFailedRegistryContact(app.id, docker_image_manifest_url)
 		raise exc
 
 	docker_image_manifest = https_request_answer.content
@@ -157,7 +157,7 @@ def verify(app, image):
 
 	# compare with docker registry
 	if appcenter_sha256sum != docker_image_manifest_hash:
-		exc = DockerImageVerificationFailedChecksum(app.name, docker_image_manifest_url)
+		exc = DockerImageVerificationFailedChecksum(app.id, docker_image_manifest_url)
 		raise exc
 
 
