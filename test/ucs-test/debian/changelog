@@ -1,3 +1,10 @@
+ucs-test (6.0.10-21) unstable; urgency=medium
+
+  * 80_docker/79_app_ports_already_used: Added a test script if the next
+    'free' port is already used (Bug #39604)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Oct 2015 09:28:21 +0100
+
 ucs-test (6.0.10-20) unstable; urgency=low
 
   * fixed 12_check_apps_ini_all_fields (Bug #39478) 
