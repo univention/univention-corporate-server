@@ -37,7 +37,7 @@ desc: |
  * Heap-buffer-overflow due to overflow in nestegg_track_codec_data
    (CVE-2015-4511)
 bug:
- - 38387
+ - 39387
 cve:
  - CVE-2015-4517
  - CVE-2015-4521
