@@ -43,6 +43,8 @@ import functools
 import uuid
 import datetime
 import json
+import hashlib
+import binascii
 from errno import ESRCH
 from urlparse import urlparse
 from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
@@ -82,6 +84,12 @@ except (TypeError, ValueError):
 	_session_timeout = 300
 
 
+def sessionidhash():
+	return hashlib.sha256('%s%s' % (cherrypy.request.headers['Authorization'], sessionidhash.salt)).hexdigest()[:36]
+# python 2.7.7 required:
+	#return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', cherrypy.request.headers['Authorization']), sessionidhash.salt, 100000)[:36]
+sessionidhash.salt = rndstr()
+
 def log_exceptions(func):
 	@functools.wraps(func)
 	def _decorated(*args, **kwargs):
@@ -95,7 +103,6 @@ def log_exceptions(func):
 	return _decorated
 
 
-@log_exceptions
 def _proxy_uri():
 	scheme, _, base = cherrypy.request.base.partition('://')
 	if cherrypy.request.headers.get('X-UMC-HTTPS') == 'on':
@@ -453,6 +460,8 @@ class SAMLUser(object):
 
 @log_exceptions
 def default_error_page(status, message, traceback, version, result=None):
+	if traceback:
+		CORE.error('%s' % (traceback,))
 	#accept_json, accept_html = True, True
 	#for accept in cherrypy.request.headers.elements('Accept'):
 	#	acceptable = accept.qvalue > 0
@@ -627,6 +636,8 @@ class Ressource(object):
 	def get_session_id(self):
 		"""get the current session ID from cookie."""
 		sessionid = self.get_cookie('UMCSessionId')
+		if not sessionid and 'Authorization' in cherrypy.request.headers:
+			sessionid = sessionidhash()
 		if not sessionid:
 			self._log('info', 'no session found')
 			return
@@ -686,7 +697,7 @@ class Ressource(object):
 		if sessionid:
 			self.sessions.pop(sessionid, None)
 			UMCP_Dispatcher.cleanup_session(sessionid)
-			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.now())
+			self.set_cookies(('UMCSessionId', ''), expires=datetime.datetime.fromtimestamp(0))
 
 	def get_user(self):
 		value = self.get_session_id()
@@ -703,7 +714,6 @@ class CPgeneric(Ressource):
 	def get_request(self, path, args):
 		return umcp.Request(['generic'], opts={})
 
-	@log_exceptions
 	def load_json(self, body):
 		try:
 			json_ = json.loads(body)
@@ -715,7 +725,6 @@ class CPgeneric(Ressource):
 		return json_
 
 	@cherrypy.expose
-	@log_exceptions
 	def default(self, *path, **kwargs):
 		self._log('info', 'got new request')
 
@@ -748,7 +757,6 @@ class CPgeneric(Ressource):
 				args['flavor'] = kwargs['flavor']
 		return args
 
-	@log_exceptions
 	def get_response(self, sessionid, path, args):
 		# create new UMCP request
 		req = self.get_request('/'.join(path), args)
@@ -792,12 +800,11 @@ class CPgeneric(Ressource):
 
 class CPGet(CPgeneric):
 
-	@log_exceptions
-	def get_request(self, path, args):
-		if not path:
-			self._log('error', 'get_request: path is empty')
-			raise UMC_HTTPError(NOT_FOUND)
+	@cherrypy.expose
+	def index(self, *args, **kwargs):
+		raise UMC_HTTPError(NOT_FOUND)
 
+	def get_request(self, path, args):
 		return umcp.Request('GET', arguments=[path], options=args.get('options', {}))
 
 	@cherrypy.expose
@@ -813,7 +820,6 @@ class CPGet(CPgeneric):
 		return json.dumps({"status": 200, "result": info, "message": ""})
 
 	@cherrypy.expose
-	@log_exceptions
 	def ipaddress(self, *a, **kw):
 		try:
 			addresses = self.addresses
@@ -833,16 +839,14 @@ class CPGet(CPgeneric):
 
 class CPSet(CPgeneric):
 
-	@log_exceptions
 	def get_request(self, path, args):
 		return umcp.Request('SET', options=args.get('options', {}))
 
 
 class CPCommand(CPgeneric):
 
-	@log_exceptions
 	def get_request(self, path, args):
-		if cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+		if self._is_file_upload():
 			return self.get_request_upload(path, args)
 
 		if not path:
@@ -858,7 +862,7 @@ class CPCommand(CPgeneric):
 		response = super(CPCommand, self).get_response(sessionid, path, args)
 
 		# check if the request is a iframe upload
-		if cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+		if self._is_file_upload():
 			if 'iframe' in args and (args['iframe'] not in ('false', False, 0, '0')):
 				# this is a workaround to make iframe uploads work, they need the textarea field
 				cherrypy.response.headers['Content-Type'] = 'text/html'
@@ -868,14 +872,18 @@ class CPCommand(CPgeneric):
 
 	def get_request_upload(self, path, args):
 		self._log('info', 'Handle upload command')
+		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
 		req = umcp.Request('UPLOAD', arguments=[path])
 		req.body = self._get_upload_arguments(req, args)
 		return req
 
 	def get_arguments(self, kwargs):
-		if cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data'):
+		if self._is_file_upload():
 			return kwargs
 		return super(CPCommand, self).get_arguments(kwargs)
+
+	def _is_file_upload(self):
+		return cherrypy.request.headers.get('Content-Type', '').startswith('multipart/form-data')
 
 	def _get_upload_arguments(self, req, args):
 		options = []
@@ -933,7 +941,6 @@ class CPCommand(CPgeneric):
 class CPAuth(CPgeneric):
 
 	@cherrypy.expose
-	@log_exceptions
 	def sso(self, *args, **kwargs):
 		remote = cherrypy.request.remote
 		CORE.info('CPAuth/auth/sso: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
@@ -962,7 +969,6 @@ class CPAuth(CPgeneric):
 		cherrypy.response.headers['Location'] = '/univention-management-console/'
 
 	@cherrypy.expose
-	@log_exceptions
 	def default(self, **kwargs):
 		remote = cherrypy.request.remote
 		CORE.info('CPAuth/auth: got new auth request (%s:%s <=> %s)' % (get_ip_address(), remote.port, remote.name))
@@ -1027,6 +1033,32 @@ class CPAuth(CPgeneric):
 		CORE.process('auth: username: %s, status code: %s' % (req.body.get('username'), response.status))
 		raise UMC_HTTPError(response.status, response.message, response.result)
 
+	def basic(self):
+		credentials = cherrypy.request.headers.get('Authorization')
+		if not credentials:
+			return
+		sessionid = self.get_session_id()
+		if sessionid in UMCP_Dispatcher.sessions:
+			return
+		try:
+			scheme, credentials = credentials.split(' ', 1)
+		except ValueError:
+			return
+		if scheme.lower() != 'basic':
+			return
+		try:
+			username, password = credentials.decode('base64').split(':', 1)
+		except ValueError:
+			return
+
+		sessionid = sessionidhash()
+		req = umcp.Request('AUTH')
+		req.body = {
+			"username": username,
+			"password": password
+		}
+		self._auth_request(req, sessionid)
+
 
 class Root(Ressource):
 
@@ -1039,7 +1071,6 @@ class Root(Ressource):
 		reload_webserver.callbacks.append(self.saml.reload)
 
 	@cherrypy.expose
-	@log_exceptions
 	def index(self, **kw):
 		"""
 		http://localhost:<ucr:umc/http/port>/
@@ -1047,7 +1078,6 @@ class Root(Ressource):
 		raise HTTPRedirect('/univention-management-console/', status=305)
 
 	@cherrypy.expose
-	@log_exceptions
 	def logout(self, **kwargs):
 		user = self.get_user()
 		if user and user.saml is not None:
@@ -1092,14 +1122,12 @@ class SAML(Ressource):
 		return False
 
 	@cherrypy.expose
-	@log_exceptions
 	def metadata(self, *args, **kwargs):
 		metadata = create_metadata_string(self.configfile, None, valid='4', cert=None, keyfile=None, mid=None, name=None, sign=False)
 		cherrypy.response.headers['Content-Type'] = 'application/xml'
 		return metadata
 
 	@cherrypy.expose
-	@log_exceptions
 	def index(self, *args, **kwargs):
 		binding, message, relay_state = self._get_saml_message()
 
@@ -1109,19 +1137,8 @@ class SAML(Ressource):
 #				raise HTTPRedirect('/univention-management-console/auth/sso')
 			return self.do_single_sign_on()
 
-		response = self.acs(message, binding)
-
-		sessionid = str(uuid.uuid4())
-		if self.get_session():
-			# if the user is already authenticated at the UMC-Server
-			# we must not change the session ID cookie as this might cause
-			# race conditions in the frontend during login
-			sessionid = self.get_session_id();
-		saml = SAMLUser(response, message)
-		user = self.set_session(sessionid, saml.username, saml)
-
 		acs = self._acs_callbacks.pop(relay_state, self.attribute_consuming_service)
-		return acs(binding, message, relay_state, user)
+		return acs(binding, message, relay_state)
 
 	@cherrypy.expose
 	def iframe(self, *args, **kwargs):
@@ -1130,11 +1147,15 @@ class SAML(Ressource):
 		self._acs_callbacks[relay_state] = self.attribute_consuming_service_iframe
 		return self.do_single_sign_on(is_passive='true', relay_state=relay_state)
 
-	def attribute_consuming_service(self, message, binding, relay_state, user):
+	def attribute_consuming_service(self, binding, message, relay_state):
+		response = self.acs(message, binding)
+		self.attribute_consuming_service_session(response, message)
 		raise HTTPRedirect('/univention-management-console/auth/sso')
 
-	def attribute_consuming_service_iframe(self, message, binding, relay_state, user):
+	def attribute_consuming_service_iframe(self, binding, message, relay_state):
 		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
+		response = self.acs(message, binding)
+		user = self.attribute_consuming_service_session(response, message)
 		req = umcp.Request('AUTH')
 		req.body = {
 			"auth_type": "SAML",
@@ -1145,8 +1166,17 @@ class SAML(Ressource):
 		cherrypy.response.headers['Content-Type'] = 'text/html'
 		return '<html><body><textarea>%s</textarea></body></html>' % (response)
 
+	def attribute_consuming_service_session(self, response, message):
+		sessionid = str(uuid.uuid4())
+		if self.get_session():
+			# if the user is already authenticated at the UMC-Server
+			# we must not change the session ID cookie as this might cause
+			# race conditions in the frontend during login
+			sessionid = self.get_session_id();
+		saml = SAMLUser(response, message)
+		return self.set_session(sessionid, saml.username, saml)
+
 	@cherrypy.expose
-	@log_exceptions
 	def slo(self, *args, **kwargs):  # single logout service
 		binding, message, relay_state = self._get_saml_message()
 		if message is None:
@@ -1155,7 +1185,6 @@ class SAML(Ressource):
 		return self._logout_success()
 
 	@cherrypy.expose
-	@log_exceptions
 	def logout(self, *args, **kwargs):
 		user = self.get_user()
 
@@ -1309,6 +1338,8 @@ class SAML(Ressource):
 def run_cherrypy(options):
 	# TODO FIXME Folgenden Configeintrag einbauen, wenn loglevel in (0,1,2)
 	# 'server.environment': 'production',
+	root = Root()
+	cherrypy.tools.umcp_auth = cherrypy.Tool('before_handler', root.auth.basic, priority=1)
 	cherrypy.config.update({
 		'log.screen': not options.daemon_mode,
 		'server.socket_port': int(ucr.get('umc/http/port', 8090)),
@@ -1322,10 +1353,11 @@ def run_cherrypy(options):
 			('Content-Type', umcp.MIMETYPE_JSON)
 		],
 		'tools.fix_uri.on': True,
-		'error_page.default': default_error_page
+		'tools.umcp_auth.on': True,
+		'error_page.default': default_error_page,
 	})
 
-	cherrypy.quickstart(root=Root())
+	cherrypy.quickstart(root=root)
 
 
 def reload_webserver():
