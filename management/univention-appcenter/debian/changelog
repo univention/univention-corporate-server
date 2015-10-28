@@ -1,3 +1,9 @@
+univention-appcenter (5.0.10-1) unstable; urgency=medium
+
+  * Bug #39190: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Oct 2015 00:45:01 +0100
+
 univention-appcenter (5.0.9-9) unstable; urgency=medium
 
   * Bug #39190: Fixed autostart not sent to frontend
