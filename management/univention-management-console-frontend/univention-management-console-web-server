@@ -1149,32 +1149,33 @@ class SAML(Ressource):
 
 	def attribute_consuming_service(self, binding, message, relay_state):
 		response = self.acs(message, binding)
-		self.attribute_consuming_service_session(response, message)
+		saml = SAMLUser(response, message)
+		self.set_session(self.create_sessionid(), saml.username, saml)
 		raise HTTPRedirect('/univention-management-console/auth/sso')
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
 		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
 		response = self.acs(message, binding)
-		user = self.attribute_consuming_service_session(response, message)
+		saml = SAMLUser(response, message)
 		req = umcp.Request('AUTH')
 		req.body = {
 			"auth_type": "SAML",
-			"username": user.username,
-			"password": user.saml.message
+			"username": saml.username,
+			"password": saml.message
 		}
-		response = cherrypy.request.app.root.auth._auth_request(req, user.sessionid)
+		sessionid = self.create_sessionid()
+		auth_response = cherrypy.request.app.root.auth._auth_request(req, sessionid)
+		self.set_session(sessionid, saml.username, saml)
 		cherrypy.response.headers['Content-Type'] = 'text/html'
-		return '<html><body><textarea>%s</textarea></body></html>' % (response)
+		return '<html><body><textarea>%s</textarea></body></html>' % (auth_response,)
 
-	def attribute_consuming_service_session(self, response, message):
-		sessionid = str(uuid.uuid4())
+	def create_sessionid(self):
 		if self.get_session():
 			# if the user is already authenticated at the UMC-Server
 			# we must not change the session ID cookie as this might cause
 			# race conditions in the frontend during login
-			sessionid = self.get_session_id();
-		saml = SAMLUser(response, message)
-		return self.set_session(sessionid, saml.username, saml)
+			return self.get_session_id();
+		return str(uuid.uuid4())
 
 	@cherrypy.expose
 	def slo(self, *args, **kwargs):  # single logout service
