@@ -1281,14 +1281,14 @@ class SAML(Ressource):
 			Returns the EntityID of the IDP.
 		"""
 		idps = self.sp.metadata.with_descriptor("idpsso")
-		if not idps:
-			if not self.reload():
-				raise SamlError().no_identity_provider()
+		if not idps and self.reload():
 			idps = self.sp.metadata.with_descriptor("idpsso")
 		if self.idp_query_param in cherrypy.request.query and cherrypy.request.query[self.idp_query_param] in idps:
 			return cherrypy.request.query[self.idp_query_param]
 		if len(idps) == 1:
 			return idps.keys()[0]
+		if not idps:
+			raise SamlError().no_identity_provider()
 		raise SamlError().multiple_identity_provider(idps.keys(), self.idp_query_param)
 
 	def get_identity_provider_destination(self, entity_id):
