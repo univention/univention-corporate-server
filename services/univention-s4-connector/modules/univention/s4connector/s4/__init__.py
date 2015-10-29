@@ -1053,8 +1053,8 @@ class s4(univention.s4connector.ucs):
 			base=self.lo_s4.base
 
 		ctrls=[
+			SimplePagedResultsControl(True, PAGE_SIZE, ''),				## Must be the first
 			LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0),	## Don't show referrals
-			SimplePagedResultsControl(True, PAGE_SIZE, ''),
 		]
 
 		if show_deleted:

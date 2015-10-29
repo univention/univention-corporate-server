@@ -1,3 +1,11 @@
+univention-s4-connector (10.0.1-1) unstable; urgency=medium
+
+  * The LDAP Page Control must be the first in the internal LDAP control
+    list because it is referenced at first position later (Bug #39673)
+  * Bump version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Oct 2015 21:27:40 +0100
+
 univention-s4-connector (9.0.16-50) unstable; urgency=medium
 
   * Bug #34184: Update version number used in update check
