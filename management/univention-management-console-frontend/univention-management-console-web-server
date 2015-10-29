@@ -44,7 +44,7 @@ import uuid
 import datetime
 import json
 import hashlib
-import binascii
+import zlib
 from errno import ESRCH
 from urlparse import urlparse
 from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
@@ -1182,7 +1182,17 @@ class SAML(Ressource):
 		binding, message, relay_state = self._get_saml_message()
 		if message is None:
 			raise UMC_HTTPError(400, 'The HTTP request is missing required SAML parameter.')
-		self.sp.parse_logout_request_response(message, binding)
+
+		try:
+			is_logout_request = 'LogoutRequest' in zlib.decompress(message.decode('base64'), -15).split('>', 1)[0]
+		except:
+			CORE.error(traceback.format_exc())
+			is_logout_request = False
+
+		if is_logout_request:
+			self.sp.parse_logout_request(message, binding)
+		else:
+			self.sp.parse_logout_request_response(message, binding)
 		return self._logout_success()
 
 	@cherrypy.expose
