@@ -41,31 +41,31 @@ class SyncedAppcenter(Appcenter):
 	def download_index_json(self):
 		self.download('meta-inf/%s/index.json.gz' % self.vv)
 
-	def download_index_json_pgp(self):
+	def download_index_json_gpg(self):
 		self.download('meta-inf/%s/index.json.gz.gpg' % self.vv)
 		
 	def remove_from_cache(self, f):
 		if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
 			os.remove(os.path.join('/var/cache/univention-appcenter/', f))
 
-	def test_index_without_pgp(self):
+	def test_index_without_gpg(self):
 		self.download_index_json()
 		res = call('univention-app update', shell=True)
 		if res == 0:
-			fail('_test_index_without_pgp failed')
-		print '### _test_index_without_pgp passed'
+			fail('_test_index_without_gpg failed')
+		print '### _test_index_without_gpg passed'
 
-	def test_index_with_pgp(self):
+	def test_index_with_gpg(self):
 		self.download_index_json()
-		self.download_index_json_pgp()
+		self.download_index_json_gpg()
 		res = call('univention-app update', shell=True)
 		if res != 0:
-			fail('_test_index_with_pgp failed')
-		print '### _test_index_with_pgp passed'
+			fail('_test_index_with_gpg failed')
+		print '### _test_index_with_gpg passed'
 
 	def test_modify_index(self):
 		self.download_index_json()
-		self.download_index_json_pgp()
+		self.download_index_json_gpg()
 		f = '/var/www/meta-inf/%s/index.json' % self.vv
 		call('gunzip %(f)s.gz; echo "foo" >>%(f)s; gzip %(f)s' % {'f':f}, shell=True)
 		res = call('univention-app update', shell=True)
@@ -75,7 +75,7 @@ class SyncedAppcenter(Appcenter):
 
 	def test_modify_ini(self):
 		self.download_index_json()
-		self.download_index_json_pgp()
+		self.download_index_json_gpg()
 		self.remove_from_cache('dudle-docker.ini')
 		self.download('meta-inf/%s/dudle-docker/dudle-docker.ini' % self.vv)
 		call('echo "## SIGNATURE TEST ###" >>/var/www/meta-inf/%s/dudle-docker/dudle-docker.ini' % self.vv, shell=True)
@@ -88,7 +88,7 @@ class SyncedAppcenter(Appcenter):
 
 	def test_modify_inst(self):
 		self.download_index_json()
-		self.download_index_json_pgp()
+		self.download_index_json_gpg()
 		self.remove_from_cache('owncloud8-docker_20150917.inst')
 		self.download('univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv)
 		call('echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv, shell=True)
@@ -99,8 +99,8 @@ class SyncedAppcenter(Appcenter):
 		print '### _test_modify_inst passed'
 
 	def test(self):
-		self.test_index_without_pgp()
-		self.test_index_with_pgp()
+		self.test_index_without_gpg()
+		self.test_index_with_gpg()
 		self.reset_local_cache()
 		self.test_modify_index()
 		self.reset_local_cache()
