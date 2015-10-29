@@ -1,3 +1,9 @@
+univention-self-service (0.0.0-19) unstable; urgency=low
+
+  * Bug #39597: Adapted install and postinst file
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 29 Oct 2015 09:53:31 +0100
+
 univention-self-service (0.0.0-18) unstable; urgency=low
 
   * Bug #39597: Restructuring package
