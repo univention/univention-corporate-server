@@ -1,5 +1,0 @@
-<p>Self Service modules allow users to take care of their login and user data without administrator interaction.</p>
-<ul>
-    <li>Change Password: On this webpage users can change their password as long as they know their old password.</li>
-    <li>Passwort Reset: On this webpage users can reset their password by requesting a token to be sent to a previously registered contact address.</li>
-</ul>

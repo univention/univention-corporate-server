@@ -1,3 +1,0 @@
-<p>Congratulations, the Self Service Modules were installed!</p>
-<p>To use them, point users to the <a href="/ucs-overview/">UCS overview page</a>.</p>
-<p>Administrators can configure the password reset contact data in the users module of the <a href="/univention-management-console/#module=udm:users/user:0:">Univention Management Console</a>.</p>
