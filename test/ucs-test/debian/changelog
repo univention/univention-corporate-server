@@ -1,3 +1,10 @@
+ucs-test (6.0.11-2) unstable; urgency=medium
+
+  * 80_docker/58_app_uninstallation: Test the Docker App uninstallation
+    (Bug #39192)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Oct 2015 06:56:58 +0100
+
 ucs-test (6.0.11-1) unstable; urgency=low
 
   * Added tests for SAML SSO (83_saml-sso) (Bug #39657)
