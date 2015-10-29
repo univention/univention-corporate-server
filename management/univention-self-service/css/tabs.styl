@@ -1,0 +1,53 @@
+#navigation {
+	text-align: center;
+	margin-bottom: 35px;
+}
+
+#navigation {
+	.button-container {
+		display: inline-block;
+	}
+
+	.button {
+		width: 70px;
+		height: 70px;
+		margin: 0 2em;
+		background: url(icons/tab-buttons.svg) no-repeat;
+		display: inline-block;
+	}
+
+	#register-button {
+		background-position: 0 -70px;
+		&.focused {
+			background-position: 0 0;
+		}
+	}
+
+	#upload-button {
+		background-position: -70px -70px;
+		&.focused {
+			background-position: -70px 0;
+		}
+	}
+
+	#finished-button {
+		background-position: -140px -70px;
+		&.focused {
+			background-position: -140px 0;
+		}
+	}
+
+	.loading-bar {
+		opacity: 0;
+		transition: opacity 1s ease-in-out;
+		width: 100%;
+		height: 32px;
+		background: url(icons/loading-bubbles.gif) no-repeat;
+		background-position: center center;
+	}
+
+	.loading-bar.focused {
+		opacity: 1;
+	}
+}
+

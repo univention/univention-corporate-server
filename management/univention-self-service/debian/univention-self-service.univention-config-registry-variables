@@ -1,0 +1,23 @@
+[self-service/backend-server]
+Description[de]=Master oder Backup Domain Controller auf dem das UMC backend läuft (es muss dort das Paket 'univention-management-console-module-passwordreset' installert sein. Standard ist der DC master.
+Description[en]=Master or backup domain controller on which the UMC backend is running (package 'univention-management-console-module-passwordreset' must be installed there). Defaults to the domains master DC.
+Type=str
+Categories=self-service
+
+[self-service/web/enabled]
+Description[de]=Die Startseite des Self-Service Moduls einschalten (Standard: "yes").
+Description[en]=Enable the landing web page of the self service module (default "yes").
+Type=bool
+Categories=self-service
+
+[self-service/passwordreset/web/enabled]
+Description[de]=Die Webseite des Password-Reset-Self-Service Moduls einschalten (Standard: "yes").
+Description[en]=Enable the web page of the password reset self service module (default "yes").
+Type=bool
+Categories=self-service
+
+[self-service/passwordchange/web/enabled]
+Description[de]=Die Webseite des Password-Self-Service Moduls einschalten (Standard: "yes").
+Description[en]=Enable the web page of the password self service module (default "yes").
+Type=bool
+Categories=self-service

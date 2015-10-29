@@ -1,0 +1,64 @@
+#!/bin/sh
+# -*- coding: utf-8 -*-
+#
+# Univention Self Service
+#  join script
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+VERSION=1
+
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/ldap.sh
+. /usr/share/univention-lib/base.sh
+
+joinscript_init
+
+ucs_addServiceToLocalhost "univention-self-service" "$@"
+
+eval "$(ucr shell)"
+
+udm policies/umc "$@" create \
+	--position=cn=UMC,cn=policies,$ldap_base \
+	--set name=selfservice-umc-servers \
+	--set ldapFilter='(|(objectClass=univentionMemberserver)(objectClass=univentionDomainController))'
+udm policies/umc "$@" modify \
+	--dn cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base \
+	--append allow=cn=passwordchange-all,cn=operations,cn=UMC,cn=univention,$ldap_base
+udm container/cn "$@" modify \
+	--dn=cn=dc,cn=computers,$ldap_base \
+	--policy-reference cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base
+udm container/cn "$@" modify \
+	--dn=cn=memberserver,cn=computers,$ldap_base \
+	--policy-reference cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base
+
+stop_udm_cli_server
+
+joinscript_save_current_version
+
+exit 0

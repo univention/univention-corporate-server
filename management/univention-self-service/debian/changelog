@@ -1,0 +1,130 @@
+univention-self-service (0.0.0-18) unstable; urgency=low
+
+  * Bug #39597: Restructuring package
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 29 Oct 2015 09:38:06 +0100
+
+univention-self-service (0.0.0-17) unstable; urgency=low
+
+  * cleanup after uninstalling (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 23 Oct 2015 15:41:18 +0200
+
+univention-self-service (0.0.0-16) unstable; urgency=low
+
+  * always use localhost as server, packaging fixes (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 23 Oct 2015 12:36:01 +0200
+
+univention-self-service (0.0.0-15) unstable; urgency=low
+
+  * reduce to 1 app (Bug #37890)
+  * offer App only on DC master and DC backup
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 22 Oct 2015 13:12:42 +0200
+
+univention-self-service (0.0.0-14) unstable; urgency=low
+
+  * use Univention namespace in LDAP schema (Bug #37890)
+  * split and rename packages for frontend and backend
+  * split join scripts
+  * add single-server meta package
+  * add appcenter data
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Oct 2015 15:14:56 +0200
+
+univention-self-service (0.0.0-13) unstable; urgency=low
+
+  * remove work around #39599 (Bug #37890)
+  * work with all kinds of resonses from UMC replies: messages are passed
+    completely from backend to frontend
+  * make API similiar to UMC API (/result/message/)
+  * add username to set_password() arguments
+  * cherrypy log settings
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 21 Oct 2015 13:41:48 +0200
+
+univention-self-service (0.0.0-12) unstable; urgency=low
+
+  * work around #39599 (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 20 Oct 2015 11:37:39 +0200
+
+univention-self-service (0.0.0-11) unstable; urgency=low
+
+  * fix change password UMC call (Bug #37890)
+  * better Exception handling
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 20 Oct 2015 11:10:12 +0200
+
+univention-self-service (0.0.0-10) unstable; urgency=low
+
+  * No central loading for plugins frontends any more, they are separate WSGI
+    scripts now (Bug #37890).
+  * add password self service package
+  * packaging adjustments
+  * static files are served by apache
+  * integration with ucs-overwiew
+  * UMC policy creation
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 19 Oct 2015 11:08:51 +0200
+
+univention-self-service (0.0.0-9) unstable; urgency=low
+
+  * add password self service plugin (Bug #37890)
+  * modify framework to work with multiple WSGI scripts (Bug #37890)
+  * add example HTML/static code to verify plugin loading & URLs/paths
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Oct 2015 23:33:37 +0200
+
+univention-self-service (0.0.0-8) unstable; urgency=low
+
+  * refactor common UDM/LDAP code (Bug #37890)
+  * allow to delete contact data
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Oct 2015 13:37:18 +0200
+
+univention-self-service (0.0.0-7) unstable; urgency=low
+
+  * add support to run external sending plaugin (Bug #37890)
+  * sort UCRs into correct files
+  * add UCRV to choose backend server
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 13 Oct 2015 17:26:18 +0200
+
+univention-self-service (0.0.0-6) unstable; urgency=low
+
+  * use extended attributes for pasword recovery contacts (Bug #37890)
+  * add translations
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 13 Oct 2015 08:49:50 +0200
+
+univention-self-service (0.0.0-5) unstable; urgency=low
+
+  * make token sending code to plugins (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 12 Oct 2015 17:49:43 +0200
+
+univention-self-service (0.0.0-4) unstable; urgency=low
+
+  * Error messages reach UMC (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 30 Sep 2015 13:27:20 +0200
+
+univention-self-service (0.0.0-3) unstable; urgency=low
+
+  * Add black and white lists (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 29 Sep 2015 15:01:30 +0200
+
+univention-self-service (0.0.0-2) unstable; urgency=low
+
+  * Implement backend (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 28 Sep 2015 15:54:48 +0200
+
+univention-self-service (0.0.0-1) unstable; urgency=medium
+
+  * Bug #37890: Initial release
+
+ -- Florian Best <best@univention.de>  Thu, 17 Sep 2015 20:56:48 +0200

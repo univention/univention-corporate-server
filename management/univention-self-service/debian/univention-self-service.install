@@ -1,0 +1,7 @@
+34univention-self-service.inst usr/lib/univention-install
+65univention-self-service.uinst usr/lib/univention-uninstall
+univention-self-service usr/lib/univention-server/server_password_change.d/
+python/*.py usr/share/univention-self-service/wsgi
+www usr/share/univention-self-service
+usr/share/univention-self-service/www/
+var/www/univention-self-service

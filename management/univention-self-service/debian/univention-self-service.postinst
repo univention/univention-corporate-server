@@ -1,0 +1,97 @@
+#!/bin/bash
+#
+# Univention Self Service
+#  postinst file for the debian package
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+eval "$(univention-config-registry shell)"
+
+if ! [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	echo "ERROR: This package must be installed on a DC master or DC backup!"
+	echo "ERROR: Please uninstall and install on a DC master or DC backup!"
+fi
+
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/65univention-self-service.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
+. /usr/share/univention-lib/base.sh
+call_joinscript 34univention-self-service.inst
+
+# web site logging
+ACCESS_LOG=/var/log/univention/self-service-access.log
+ERROR_LOG=/var/log/univention/self-service-error.log
+
+if [ "$1" = "configure" -a -z "$2" ] ; then
+	echo "Fresh installation..."
+	adduser --system --no-create-home --group self-service
+fi
+
+touch $ACCESS_LOG $ERROR_LOG
+chown self-service:adm $ACCESS_LOG $ERROR_LOG
+chmod 640 $ACCESS_LOG $ERROR_LOG
+
+/usr/lib/univention-server/server_password_change.d/univention-self-service postchange
+
+MASTER=$(ucr get ldap/master)
+univention-config-registry set \
+	"self-service/backend-server?$MASTER" \
+	self-service/web/enabled?yes
+
+a2enmod wsgi
+a2ensite univention-self-service
+
+univention-config-registry set \
+	self-service/passwordreset/web/enabled?yes \
+	"ucs/web/overview/entries/service/passwordreset/description=Password Reset" \
+	"ucs/web/overview/entries/service/passwordreset/description/de=Passwort Reset" \
+	"ucs/web/overview/entries/service/passwordreset/label=Password Reset" \
+	"ucs/web/overview/entries/service/passwordreset/label/de=Passwort Reset" \
+	"ucs/web/overview/entries/service/passwordreset/link=/unvivention-self-service/#passwordreset" \
+	"ucs/web/overview/entries/service/passwordreset/port_http=" \
+	"ucs/web/overview/entries/service/passwordreset/port_https=443"
+
+univention-config-registry set \
+	self-service/passwordchange/web/enabled?yes \
+	"ucs/web/overview/entries/service/passwordchange/description=Change Password" \
+	"ucs/web/overview/entries/service/passwordchange/description/de=Passwort ändern" \
+	"ucs/web/overview/entries/service/passwordchange/label=Change Password" \
+	"ucs/web/overview/entries/service/passwordchange/label/de=Passwort ändern" \
+	"ucs/web/overview/entries/service/passwordchange/link=/unvivention-self-service/#passwordchange" \
+	"ucs/web/overview/entries/service/passwordchange/port_http=" \
+	"ucs/web/overview/entries/service/passwordchange/port_https=443"
+
+# restart, so apache reloads WSGI and sees activated plugin in its config
+# retry if fail because of to quick successive restarts (from other frontend packages)
+invoke-rc.d apache2 restart || (sleep 2; invoke-rc.d apache2 restart)
+
+exit 0
