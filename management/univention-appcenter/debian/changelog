@@ -1,3 +1,10 @@
+univention-appcenter (5.0.10-3) unstable; urgency=medium
+
+  * Bug #39189: Add a warning if a docker image is to be downloaded
+  * Bug #39660: Fix searching long_description
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Oct 2015 14:03:42 +0100
+
 univention-appcenter (5.0.11-2) unstable; urgency=low
 
   Bug #39653:

@@ -74,7 +74,7 @@ define([
 				this._searchSidebar = new AppLiveSearchSidebar({
 					region: 'nav',
 					searchLabel: _('Search applications...'),
-					searchableAttributes: ['name', 'description', 'longdescription', 'categories']
+					searchableAttributes: ['name', 'description', 'long_description', 'categories']
 				});
 				this.addChild(this._searchSidebar);
 				this._searchSidebar.on('search', lang.hitch(this, 'filterApplications'));

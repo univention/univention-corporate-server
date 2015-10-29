@@ -53,13 +53,14 @@ define([
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
+	"umc/widgets/CheckBox",
 	"umc/widgets/Grid",
 	"umc/widgets/Tooltip",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/Carousel",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Grid, Tooltip, AppCenterGallery, App, Carousel, _) {
+], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, CheckBox, Grid, Tooltip, AppCenterGallery, App, Carousel, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -674,135 +675,189 @@ define([
 			return readmeDeferred;
 		},
 
-		callInstaller: function(func, host, force, deferred, values) {
-			deferred = deferred || new Deferred();
-			var nonInteractive = new Deferred();
-			deferred.then(lang.hitch(nonInteractive, 'resolve'));
-			var verb = '';
-			var verb1 = '';
-			switch(func) {
-			case 'install':
-				verb = _("install");
-				verb1 = _("Installing");
-				break;
-			case 'uninstall':
-				verb = _("uninstall");
-				verb1 = _("Uninstalling");
-				break;
-			case 'update':
-				verb = _("upgrade");
-				verb1 = _("Upgrading");
-				break;
-			default:
-				console.warn(func, 'is not a known function');
-				break;
-			}
-
-			if (!force) {
-				topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
-			}
-
-			var command = 'appcenter/invoke';
-			if (!force) {
-				command = 'appcenter/invoke_dry_run';
-			}
-			if (this.app.isDocker) {
-				command = 'appcenter/docker/invoke';
-			}
-			var commandArguments = {
-				'function': func,
-				'application': this.app.id,
-				'app': this.app.id,
-				'host': host || '',
-				'force': force === true,
-				'values': values || {}
-			};
-
-			this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
-			this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
-			var invokation;
-			if (this.app.isDocker) {
-				invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
-						undefined,
-						undefined,
-						lang.hitch(this, function(result) {
-							var errors = array.map(result.intermediate, function(res) {
-								if (res.level == 'WARNING' || res.level == 'ERROR' || res.level == 'CRITICAL') {
-									return res.message;
-								}
-							});
-							this._progressBar._addErrors(errors);
-						})
-				);
-			} else {
-				invokation = tools.umcpCommand(command, commandArguments);
-			}
-			invokation = invokation.then(lang.hitch(this, function(data) {
-				if (!('result' in data)) {
-					data = {'result': data};
+		_showDockerWarning: function() {
+			var prefDeferred = new Deferred();
+			tools.getUserPreferences().then(
+				function(data) {
+					prefDeferred.resolve(data.appcenterDockerSeen);
+				},
+				function() {
+					prefDeferred.resolve('true');
 				}
-				var result = data.result;
-				var headline = '';
-				var actionLabel = tools.capitalize(verb);
-				var mayContinue = true;
-
-				if ('success' in result) {
-					if (result.success) {
-						deferred.resolve();
-					} else {
-						deferred.reject();
-					}
-				} else if (!result.can_continue) {
-					mayContinue = !result.serious_problems;
-					if (mayContinue) {
-						headline = _("Do you really want to %(verb)s %(ids)s?",
-									{verb: verb, ids: this.app.name});
-					} else {
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'cannot-continue');
-						headline = _('You cannot continue');
-					}
-					this.detailsDialog.reset(mayContinue, headline, actionLabel);
-					if (this.app.isDocker && mayContinue) {
-						this.detailsDialog.showConfiguration(func);
-					}
-					this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);
-					this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
-					if (result.software_changes_computed) {
-						if (result.unreachable.length) {
-							this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
-						}
-						var noHostInfo = tools.isEqual({}, result.hosts_info);
-						if (func == 'update') {
-							this.detailsDialog.showErrataHint();
-						}
-						this.detailsDialog.showPackageChanges(result.install, result.remove, result.broken, false, noHostInfo, host);
-						tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
-							this.detailsDialog.showPackageChanges(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host);
-						}));
-					}
-					nonInteractive.reject();
-					this.detailsDialog.showUp().then(
-						lang.hitch(this, function(values) {
-							this.callInstaller(func, host, true, deferred, values);
-						}),
-						function() {
-							deferred.reject();
-						}
-					);
+			);
+			return when(prefDeferred).always(lang.hitch(this, function(appcenterDockerSeen) {
+				if (tools.isTrue(appcenterDockerSeen)) {
+					return;
 				} else {
-					var progressMessage = _("%(verb)s %(ids)s on %(host)s", {verb: verb1, ids: this.app.name, host: host || _('this host')});
-
-					this.switchToProgressBar(progressMessage).then(
-						function() {
-							deferred.resolve();
-						}, function() {
-							deferred.reject();
-						}
+					return dialog.confirmForm({
+						title: _('Docker based Apps'),
+						widgets: [
+							{
+								type: Text,
+								name: 'help_text',
+								content: '<div style="width: 535px">' +
+									'<p>' + _('This App uses a container technology. Containers have to be downloaded once. After that they can be used multiple times.') + '</p>' +
+									'<p>' + _('Depending on your internet connection, this may take up to 15 minutes') + '</p>' +
+									'<p>' + _('Which container is to be used is controlled by the App. It may be necessary to download a new container with another container based App or with an update of the App. But most Apps base on the same container.') + '</p>' +
+								'</div>'
+							},
+							{
+								type: CheckBox,
+								name: 'do_not_show_again',
+								label: _("Do not show this message again")
+							}
+						],
+						buttons: [{
+							name: 'submit',
+							'default': true,
+							label: _('Continue')
+						}]
+					}).then(
+						lang.hitch(this, function(data) {
+							tools.setUserPreference({appcenterDockerSeen: data.do_not_show_again ? 'true' : 'false'});
+						})
 					);
 				}
 			}));
-			this.standbyDuring(all([invokation, deferred, nonInteractive]), this._progressBar);
-			return deferred;
+		},
+
+		callInstaller: function(func, host, force, deferred, values) {
+			var warningDeferred = new Deferred();
+			if (this.app.isDocker && !force) {
+				warningDeferred = this._showDockerWarning();
+			} else {
+				warningDeferred.resolve();
+			}
+			return warningDeferred.then(lang.hitch(this, function() {
+				deferred = deferred || new Deferred();
+				var nonInteractive = new Deferred();
+				deferred.then(lang.hitch(nonInteractive, 'resolve'));
+				var verb = '';
+				var verb1 = '';
+				switch(func) {
+				case 'install':
+					verb = _("install");
+					verb1 = _("Installing");
+					break;
+				case 'uninstall':
+					verb = _("uninstall");
+					verb1 = _("Uninstalling");
+					break;
+				case 'update':
+					verb = _("upgrade");
+					verb1 = _("Upgrading");
+					break;
+				default:
+					console.warn(func, 'is not a known function');
+					break;
+				}
+
+				if (!force) {
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, func);
+				}
+
+				var command = 'appcenter/invoke';
+				if (!force) {
+					command = 'appcenter/invoke_dry_run';
+				}
+				if (this.app.isDocker) {
+					command = 'appcenter/docker/invoke';
+				}
+				var commandArguments = {
+					'function': func,
+					'application': this.app.id,
+					'app': this.app.id,
+					'host': host || '',
+					'force': force === true,
+					'values': values || {}
+				};
+
+				this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
+				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
+				var invokation;
+				if (this.app.isDocker) {
+					invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
+							undefined,
+							undefined,
+							lang.hitch(this, function(result) {
+								var errors = array.map(result.intermediate, function(res) {
+									if (res.level == 'WARNING' || res.level == 'ERROR' || res.level == 'CRITICAL') {
+										return res.message;
+									}
+								});
+								this._progressBar._addErrors(errors);
+							})
+					);
+				} else {
+					invokation = tools.umcpCommand(command, commandArguments);
+				}
+				invokation = invokation.then(lang.hitch(this, function(data) {
+					if (!('result' in data)) {
+						data = {'result': data};
+					}
+					var result = data.result;
+					var headline = '';
+					var actionLabel = tools.capitalize(verb);
+					var mayContinue = true;
+
+					if ('success' in result) {
+						if (result.success) {
+							deferred.resolve();
+						} else {
+							deferred.reject();
+						}
+					} else if (!result.can_continue) {
+						mayContinue = !result.serious_problems;
+						if (mayContinue) {
+							headline = _("Do you really want to %(verb)s %(ids)s?",
+										{verb: verb, ids: this.app.name});
+						} else {
+							topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, this.app.id, 'cannot-continue');
+							headline = _('You cannot continue');
+						}
+						this.detailsDialog.reset(mayContinue, headline, actionLabel);
+						if (this.app.isDocker && mayContinue) {
+							this.detailsDialog.showConfiguration(func);
+						}
+						this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);
+						this.detailsDialog.showSoftRequirements(result.invokation_warning_details, this);
+						if (result.software_changes_computed) {
+							if (result.unreachable.length) {
+								this.detailsDialog.showUnreachableHint(result.unreachable, result.master_unreachable);
+							}
+							var noHostInfo = tools.isEqual({}, result.hosts_info);
+							if (func == 'update') {
+								this.detailsDialog.showErrataHint();
+							}
+							this.detailsDialog.showPackageChanges(result.install, result.remove, result.broken, false, noHostInfo, host);
+							tools.forIn(result.hosts_info, lang.hitch(this, function(host, host_info) {
+								this.detailsDialog.showPackageChanges(host_info.result.install, host_info.result.remove, host_info.result.broken, !host_info.compatible_version, false, host);
+							}));
+						}
+						nonInteractive.reject();
+						this.detailsDialog.showUp().then(
+							lang.hitch(this, function(values) {
+								this.callInstaller(func, host, true, deferred, values);
+							}),
+							function() {
+								deferred.reject();
+							}
+						);
+					} else {
+						var progressMessage = _("%(verb)s %(ids)s on %(host)s", {verb: verb1, ids: this.app.name, host: host || _('this host')});
+
+						this.switchToProgressBar(progressMessage).then(
+							function() {
+								deferred.resolve();
+							}, function() {
+								deferred.reject();
+							}
+						);
+					}
+				}));
+				this.standbyDuring(all([warningDeferred, invokation, deferred, nonInteractive]), this._progressBar);
+				return deferred;
+			}));
 		},
 
 		showLicenseRequest: function(action) {

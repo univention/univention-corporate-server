@@ -912,6 +912,7 @@ class AppManager(object):
 	@classmethod
 	def clear_cache(cls):
 		cls._cache[:] = []
+		cls.reload_package_manager()
 		_get_rating_items._items = None
 
 	@classmethod
