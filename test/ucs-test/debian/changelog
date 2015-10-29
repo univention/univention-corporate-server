@@ -1,3 +1,10 @@
+ucs-test (6.0.11-3) unstable; urgency=medium
+
+  * 80_docker/59_app_center_signature: Added first tests to verify the
+    signature implementation (Bug #39194)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Oct 2015 08:45:44 +0100
+
 ucs-test (6.0.11-2) unstable; urgency=medium
 
   * 80_docker/58_app_uninstallation: Test the Docker App uninstallation

@@ -1,0 +1,117 @@
+#!/usr/share/ucs-test/runner python
+## desc: Verify the signature implementation
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+import os
+from dockertest import *
+from subprocess import call
+from univention.testing.utils import fail
+
+class SyncedAppcenter(Appcenter):
+	def __init__(self):
+		Appcenter.__init__(self)
+		self.vv = self.ucr.get('version/version')
+		self.upstream_appcenter='http://appcenter-test.software-univention.de'
+		handler_set([
+			'appcenter/index/verify=true',
+		])
+
+	def reset_local_cache(self):
+		handler_set([
+			'repository/app_center/server=%s' % (self.upstream_appcenter)
+		])
+		call('univention-app update', shell=True)
+		handler_set([
+			'repository/app_center/server=%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+		])
+
+	def download(self, f):
+		if os.path.exists('/var/www/%s' % f):
+			os.remove('/var/www/%s' % f)
+
+		d = os.path.dirname('/var/www/%s' % f)
+		if not os.path.exists(d):
+			os.makedirs(d)
+		
+		call('wget -O /var/www/%s %s/%s' % (f, self.upstream_appcenter, f), shell=True)
+
+	def download_index_json(self):
+		self.download('meta-inf/%s/index.json.gz' % self.vv)
+
+	def download_index_json_pgp(self):
+		self.download('meta-inf/%s/index.json.gz.gpg' % self.vv)
+		
+	def remove_from_cache(self, f):
+		if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
+			os.remove(os.path.join('/var/cache/univention-appcenter/', f))
+
+	def test_index_without_pgp(self):
+		self.download_index_json()
+		res = call('univention-app update', shell=True)
+		if res == 0:
+			fail('_test_index_without_pgp failed')
+		print '### _test_index_without_pgp passed'
+
+	def test_index_with_pgp(self):
+		self.download_index_json()
+		self.download_index_json_pgp()
+		res = call('univention-app update', shell=True)
+		if res != 0:
+			fail('_test_index_with_pgp failed')
+		print '### _test_index_with_pgp passed'
+
+	def test_modify_index(self):
+		self.download_index_json()
+		self.download_index_json_pgp()
+		f = '/var/www/meta-inf/%s/index.json' % self.vv
+		call('gunzip %(f)s.gz; echo "foo" >>%(f)s; gzip %(f)s' % {'f':f}, shell=True)
+		res = call('univention-app update', shell=True)
+		if res == 0:
+			fail('_test_modify_index failed')
+		print '### _test_modify_index passed'
+
+	def test_modify_ini(self):
+		self.download_index_json()
+		self.download_index_json_pgp()
+		self.remove_from_cache('dudle-docker.ini')
+		self.download('meta-inf/%s/dudle-docker/dudle-docker.ini' % self.vv)
+		call('echo "## SIGNATURE TEST ###" >>/var/www/meta-inf/%s/dudle-docker/dudle-docker.ini' % self.vv, shell=True)
+		res = call('univention-app update', shell=True)
+		# dudle-docker must have been removed
+		res = call('univention-app get dudle-docker name', shell=True)
+		if res == 0:
+			fail('_test_modify_ini failed')
+		print '### _test_modify_ini passed'
+
+	def test_modify_inst(self):
+		self.download_index_json()
+		self.download_index_json_pgp()
+		self.remove_from_cache('owncloud8-docker_20150917.inst')
+		self.download('univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv)
+		call('echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv, shell=True)
+		res = call('univention-app update', shell=True)
+		res = call('univention-app get owncloud8-docker name', shell=True)
+		if res == 0:
+			fail('_test_modify_inst failed')
+		print '### _test_modify_inst passed'
+
+	def test(self):
+		self.test_index_without_pgp()
+		self.test_index_with_pgp()
+		self.reset_local_cache()
+		self.test_modify_index()
+		self.reset_local_cache()
+		self.test_modify_ini()
+		self.reset_local_cache()
+		self.test_modify_inst()
+		self.reset_local_cache()
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		Appcenter.__exit__(self, exc_type, exc_value, traceback)
+
+if __name__ == '__main__':
+	with SyncedAppcenter() as appcenter:
+		appcenter.test()
