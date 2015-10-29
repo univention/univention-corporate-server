@@ -146,8 +146,16 @@ define([
 			// called from login dialog by user action
 			//console.debug('dialog auth');
 			return tools.umcpCommand('auth', data).then(lang.hitch(this, function(data) {
+				try {
+					var username = data.result.username;
+				} catch (error) {
+					// if the umc-webserver is not restarted after a upgrade from UCS 4.0 the auth request doesn't return a username yet
+					// TODO: remove in UCS 4.2
+					username = tools.status('username') || '';
+					try { username = username || dojo.byId('umcLoginUsername').value; } catch (e) {}
+				}
 				//console.debug('auth via dialog successful');
-				return this.authenticated(data.result.username);
+				return this.authenticated(username);
 			}));
 		},
 
