@@ -148,6 +148,10 @@ previous_containers_exist() {
 	test -e "$CONT_ID_FILE"
 }
 
+previous_containers_list_clean() {
+	ehco -n > "$CONT_ID_FILE"
+}
+
 start_previous_containers() {
 	local output
 	for CONT_ID in $(cat "$CONT_ID_FILE"); do

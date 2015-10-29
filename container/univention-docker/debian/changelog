@@ -1,3 +1,10 @@
+univention-docker (1.0-0-1) unstable; urgency=medium
+
+  * Cleanup previous container list after starting the previous
+    containers (Bug #39429)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Oct 2015 14:23:53 +0100
+
 univention-docker (0.1.0-9) unstable; urgency=medium
 
   * Bug #39474: Add wait_for_containers_inner_shutdown

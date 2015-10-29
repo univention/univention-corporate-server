@@ -128,6 +128,7 @@ case "$1" in
 			if docker_is_running; then
 				log_progress_msg "previously stopped containers... "
 				start_previous_containers
+				previous_containers_list_clean
 			fi
 		fi
 		log_end_msg $ret
