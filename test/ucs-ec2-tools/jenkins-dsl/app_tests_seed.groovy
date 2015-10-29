@@ -39,7 +39,7 @@ apps.keySet()each { app ->
 
 }
 
-def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version, String patch_level, String, last_version, List roles) {
+def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version, String patch_level, String last_version, List roles) {
 
   def desc = "App Autotest MultiEnv Update from ${last_version} to ${version}"
   def job_name = path + '/' + desc
