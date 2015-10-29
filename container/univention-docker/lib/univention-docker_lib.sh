@@ -149,7 +149,7 @@ previous_containers_exist() {
 }
 
 previous_containers_list_clean() {
-	ehco -n > "$CONT_ID_FILE"
+	echo -n > "$CONT_ID_FILE"
 }
 
 start_previous_containers() {
