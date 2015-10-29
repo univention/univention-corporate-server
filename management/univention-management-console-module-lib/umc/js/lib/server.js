@@ -94,6 +94,7 @@ define([
 			topic.publish('/umc/actions', 'lib', 'server', 'askRestart');
 
 			this._askingForRestart = true;
+			tools.status('ignorePageReload', true);
 			this._keepSessionOpen();
 
 			var msg = '';
@@ -114,6 +115,7 @@ define([
 				if (response == 'restart') {
 					return this.restart();
 				}
+				tools.status('ignorePageReload', false);
 				// reload modules
 				return app.reloadModules().always(function() {
 					// throw error to break the deferred chain
@@ -149,11 +151,12 @@ define([
 				progress.close();
 			});
 
-			return deferred;
+			return deferred.promise;
 		},
 
 		askReboot: function(_msg) {
 			topic.publish('/umc/actions', 'lib', 'server', 'askReboot');
+			tools.status('ignorePageReload', true);
 
 			var msg = _msg ? '<p>' + _msg + '</p>' : '';
 			msg += '<p>' + _('Please confirm to reboot this server. This may take a few minutes.') + '</p>';
@@ -169,6 +172,7 @@ define([
 				if (response == 'reboot') {
 					return this.reboot();
 				}
+				tools.status('ignorePageReload', false);
 				// throw error to break the deferred chain
 				throw new Error('restart canceled');
 			})).then(function() {
@@ -211,11 +215,12 @@ define([
 				progress.close();
 			});
 
-			return deferred;
+			return deferred.promise;
 		},
 
 		askShutdown: function(_msg) {
 			topic.publish('/umc/actions', 'lib', 'server', 'askShutdown');
+			tools.status('ignorePageReload', true);
 
 			var msg = _msg ? '<p>' + _msg + '</p>' : '';
 			msg += '<p>' + _('Please confirm to shutdown this server. This may take a few minutes.') + '</p>';
@@ -230,13 +235,18 @@ define([
 				if (response == 'shutdown') {
 					return this.shutdown();
 				}
+				tools.status('ignorePageReload', false);
 				// throw error to break the deferred chain
 				throw new Error('shutdown canceled');
-			}));
+			})).always(function() {
+				tools.status('ignorePageReload', false);
+			});
 		},
 
 		shutdown: function() {
 			topic.publish('/umc/actions', 'lib', 'server', 'shutdown');
+
+			var deferred = new Deferred();
 
 			var progress = new _ProgressDialog({
 				title: _('Shutting down server'),
@@ -252,6 +262,7 @@ define([
 				basexhr("HEAD", {url: require.toUrl("umc/").replace(/js_\$.*?\$/, 'js'), timeout: 3000}).then(function() {
 					timer = window.setTimeout(start_pinging, milliseconds);
 				}, function() {
+					deferred.resolve();
 					progress.close();
 					tools.closeSession();
 					window.clearTimeout(timer);
@@ -260,7 +271,9 @@ define([
 
 			tools.umcpCommand('lib/server/shutdown').then(start_pinging, function() {
 				progress.close();
+				deferred.reject();
 			});
+			return deferred.promise;
 		},
 
 		ping: function() {

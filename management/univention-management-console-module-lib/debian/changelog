@@ -1,3 +1,10 @@
+univention-management-console-module-lib (5.0.1-1) unstable; urgency=medium
+
+  * Bug #39578: don't display page reload dialog if a server restart is
+  	required
+
+ -- Florian Best <best@univention.de>  Thu, 29 Oct 2015 15:21:07 +0100
+
 univention-management-console-module-lib (5.0.0-1) unstable; urgency=medium
 
   * Bug #39227: remove UMC SSO feature

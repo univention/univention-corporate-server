@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.48-2) unstable; urgency=medium
+
+  * Bug #39578: make it possible to prevent page reload dialog
+
+ -- Florian Best <best@univention.de>  Thu, 29 Oct 2015 15:25:09 +0100
+
 univention-management-console-frontend (5.0.48-1) unstable; urgency=medium
 
   * Bug #38528: fix login against UCS 4.0 backend (which might still run
