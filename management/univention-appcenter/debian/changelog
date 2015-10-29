@@ -1,3 +1,9 @@
+univention-appcenter (5.0.11-1) unstable; urgency=medium
+
+  * Bug #39525: convert appcenter.css to a stylus file
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 29 Oct 2015 11:56:51 +0100
+
 univention-appcenter (5.0.10-2) unstable; urgency=medium
 
   * Bug #39190: Fix path

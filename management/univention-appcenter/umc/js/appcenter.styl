@@ -1,0 +1,426 @@
+/*
+ * Copyright 2014-2015 Univention GmbH
+ *
+ * http://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3.
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3; if not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
+.umcAppCenterGallery
+	.umcGalleryItem
+		background-color: #eaeaea
+
+	.umcGalleryItemActive .umcUpdateIcon,
+	.umcGalleryItem:hover .umcUpdateIcon
+		/* change icon color to white on hover */
+		background-image: url("../../dijit/themes/umc/images/icons-white.svg")
+
+.umcAppDetailsPage
+	.umcAppButton
+		float: left
+
+	.umcAppButton.umcAppButtonFirstRow
+		margin-bottom: 15px
+
+	.umcAppButton.umcAppButtonFirstRow + .umcAppButton:not(.umcAppButtonFirstRow)
+		clear: left
+
+.categoryButton
+	background-color: transparent
+	border: 0
+	border-right: 1px solid lightgrey
+	padding: 0 0.4em 0 0
+	margin-right: 0.4em
+	text-decoration: underline
+	opacity: 0.66
+
+	&:first-child
+		padding-left: 0
+
+	&:last-child
+		border-right: 0
+
+	&:hover
+		opacity: 1
+
+.umcGalleryCategoryHeader
+	margin: 1em 5px 1em 5px
+	border-bottom: 0
+
+.umcGalleryButton
+	margin-top: 1em
+	padding-bottom: 1em
+	border-bottom: 1px solid #b4b4b4
+
+	&:last-child
+		border-bottom: 0
+
+.umcAppCenterGallery
+	.umcGalleryItem.appInnerWrapper
+		background-image: linear-gradient(to bottom, #f0f0f0 0%, #eaeaea 100%)
+		width:155px
+		height: 165px
+		padding: 0
+
+	.appInnerWrapper
+		.border
+			background-image: url("appcenter/app-vignette.svg")
+			background-size: 100% 100%
+			position: absolute
+			width: 100%
+			height: 100%
+			z-index: 2
+
+		.appIcon
+			height: 95px
+			width: 100%
+			z-index: 0
+			top: 0
+			transition: opacity 0.5s
+			background-position: center center
+
+		&.hover .appIcon
+			opacity: 0.05
+
+		.appContent
+			width: 100%
+			height: 70px
+			padding: 0.3em 0.6em 0.3em 1em
+			display: inline-block
+			transition: transform 0.5s
+
+		&.hover .appContent
+			transform: translateY(-100%)
+			-webkit-transform: translateY(-100%)
+			-ms-transform: translateY(-100%)
+
+		.appHover
+			width: 100%
+			height: 70px
+			background-color: #6e6e6e
+			color: #fff
+			padding: 0.3em 1.1em 0.3em 1em
+			position: absolute
+			bottom: 0
+			transform: translateY(100%)
+			-webkit-transform: translateY(100%)
+			-ms-transform: translateY(100%)
+			transition: transform 0.5s
+
+	.appHover span
+		display: block
+		padding-bottom: 0.2em
+		word-break: break-word
+
+	.appInnerWrapper.hover .appHover
+		transform: translateY(0)
+		-webkit-transform: translateY(0)
+		-ms-transform: translateY(0)
+
+	.appContent
+		.umcGalleryName
+			font-size: 1.4em
+			display: block
+			margin-bottom: 0.2em
+			margin-right: 0
+			transform: none
+			font-weight: normal
+			color: #282828 !important
+
+		.umcGalleryVendor
+			color: #666666
+			text-overflow: ellipsis
+			overflow: hidden
+			white-space: nowrap
+			width: 100%
+
+.umcGalleryPane .umcGalleryWrapperItem
+	float: left
+	padding: 14px
+
+.umc .dijitTitlePane.appDetailsPane
+	.dijitTitlePaneTitle
+		color: #a9a9a9
+		border-top: 0
+		padding: 0.5em 0 0.5em 0
+
+		.dijitTitlePaneTextNode
+			vertical-align: middle
+
+		.dijitArrowNode
+			opacity: 0.66
+
+	.dijitTitlePaneTitleClosed .dijitArrowNode
+		background-position: -80px 0
+
+	.dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode
+		background-position: -100px 0
+		opacity: 0.66
+
+	.dijitTitlePaneTitleOpen .dijitArrowNode
+		background-position: 0px 0
+
+	.dijitTitlePaneTitleOpen.dijitTitlePaneTitleHover .dijitArrowNode
+		background-position: -20px 0
+		opacity: 0.66
+
+.appcenterMetaCategory
+	margin-bottom: 3em
+	padding-bottom: 2em
+	border-bottom: 1px solid #c8c8c8
+
+	.umcText
+		font-size: 1.6em
+		font-weight: bold
+		padding-top: 0.4em
+		padding-bottom: 1em
+		float: left
+
+	.dijitButton
+		float: right
+
+.appDetailsPageGrid
+	margin-bottom: 3em
+
+	.appDetailsPageGridContent
+		height: 105px !important
+
+.umc .umcAppDetailsPage
+	.umcPageNav
+		.icon
+			margin-bottom: 1em
+			width: 100%
+			height: 120px
+			display: inline-block
+			background-position: center center
+			background-size: contain
+			/* border instead of padding works with background-size:contain */
+			border-right: solid transparent 20px
+
+		.navHeaderButton
+			display: inline-block
+			vertical-align: top
+			padding-left: 0.5em
+
+			.umcText
+				margin-bottom: 0.3em
+				color: #787878
+
+	.umcAppRating
+		margin-bottom: 1em
+
+	.umcAppRatingIcon
+		display: inline-block
+		background: transparent url("appcenter/star.svg") repeat scroll
+		background-size: 1.5em
+		height: 1.5em
+		width: 1.5em
+
+	.umcAppRatingText
+		display: inline-block
+		position: relative
+		bottom: 5px
+		left: 5px
+
+	h1
+		margin-bottom: 0.3em
+
+	.mainHeader
+		display: block
+		font-size: 1.6em
+		font-weight: bold
+		margin-bottom: 0.4em
+
+	.usage
+		margin-bottom: 3em
+
+	.detailsContainer
+		background-color: #f0f0f0
+		margin: 0 -1000px
+		padding: 0 1000px
+
+	.carouselWrapper
+		border-top: 1px solid #c8c8c8
+		padding: 3em 0 1em 0
+
+	.descriptionContainer
+		margin-bottom: 3em
+
+	@media (min-width: 550px)
+		.descriptionContainer.longText div
+			column-count: 2
+			-webkit-column-count: 2
+			-moz-column-count: 2
+
+		.umcPageNav .icon
+			width: 50%
+
+	@media (min-width: 992px)
+		.descriptionContainer.longText div
+			column-count: 3
+			-webkit-column-count: 3
+			-moz-column-count: 3
+
+		.umcPageNav .icon
+			width: 33%
+
+	.appDetailsPane
+		background-color: #f0f0f0
+		margin: 0 -1000px
+		padding: 1.5em 1000px
+
+	.appDetailsFooter
+		display: inline-block
+		vertical-align: top
+		width: 50%
+
+.AppLiveSearchSidebarDropDown
+	.dijitMenuSeparatorIconCell, .dijitMenuSeparatorLabelCell
+		padding: 3px 0
+
+.umc
+	.umcAppCenter .umcPageNav,
+	.umcAppDetailsPage .umcPageNav
+		margin-bottom: 1.5em
+
+	.umcAppDetailsPage
+		.umcPageMain
+			margin-bottom: 2.25em
+		.umcPageFooter
+			margin-bottom: 9em
+
+
+	.umcAppCenter .appcenterMetaCategory
+		.dijitButton.hiddenButton
+			visibility: hidden
+
+		.umcAppCenterGallery
+			/*height: 175px;*/
+			height: auto
+			margin: 0 -14px
+
+	.umcAppCenter .umcLiveSearchSidebar
+		.searchField, .dropDownMenu
+			display: inline-block
+			padding: 0 0.5em 1em
+
+	.umcPage.umcAppCenter .umcSize-TwoThirds
+		@media screen and (max-width: 549px)
+			width: 100%
+
+	.umcCarouselWidget
+		position: relative
+
+		.carouselOuterContainer
+			margin: auto
+			position: relative
+			transition: height 0.5s
+
+			.contentSliderWrapper
+				float: left
+				white-space: nowrap
+				overflow: hidden
+				position: relative
+				height: 100%
+
+				.contentSlider
+					position: absolute
+					left: 0
+					transition: left 0.5s
+
+					div
+						margin: 0 10px
+						display: inline-block
+						/*border: 2px solid darkgrey;*/
+						/*box-sizing: content-box;*/
+
+
+					&.noTransition
+						transition: none !important
+
+					.carouselScreenshot
+						cursor: pointer
+						display: block
+						margin: auto
+						position: relative
+						top: 50%
+						transform: translateY(-50%)
+						-ms-transform: translateY(-50%)
+						-webkit-transform: translateY(-50%)
+						transition: max-height 0.5s, max-width 0.5s
+
+		.carouselButton
+			float: left
+
+			cursor: pointer
+			width: 40px
+			height: 100%
+			opacity: 1
+			transition: opacity 0.5s
+
+			&.disabled
+				opacity: 0
+				cursor: default
+
+			.carouselButtonImage
+				background-image: url("appcenter/carouselArrowRight.svg")
+				background-size: contain
+				background-repeat: no-repeat
+				background-position: 0 50%
+				height: 100%
+				opacity: 0.4
+				transition: opacity 0.3s
+
+				&:hover
+					opacity: 1
+
+			&.rightCarouselButton
+				margin-left: 5px
+
+			&.leftCarouselButton
+				margin-right: 5px
+
+				.carouselButtonImage
+					transform: rotateY(180deg)
+					-ms-transform: rotateY(180deg)
+					-webkit-transform: rotateY(180deg)
+
+		.scaleButton
+			cursor: pointer
+			width: 40px
+			height: 40px
+			background-image: url("appcenter/maximize.svg")
+			background-size: 100% 100%
+			position: absolute
+			right: 0
+			top: 0
+			z-index: 1
+			opacity: 0.4
+
+			&.minimize
+				background-image: url("appcenter/minimize.svg")
+
+			&:hover
+				opacity: 1
+
