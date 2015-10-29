@@ -1,3 +1,14 @@
+univention-appcenter (5.0.11-2) unstable; urgency=low
+
+  Bug #39653:
+  * removed the header in the app center gallery view
+  * adjusted css selector for the app center gallery that affected
+    the umc gallery view
+  * inverted logic for the checkbox in the dialog that pops up
+    the first time the appcenter is opened
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 29 Oct 2015 13:49:11 +0100
+
 univention-appcenter (5.0.11-1) unstable; urgency=medium
 
   * Bug #39525: convert appcenter.css to a stylus file

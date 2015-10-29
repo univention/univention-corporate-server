@@ -28,13 +28,17 @@
  */
 
 .umcAppCenterGallery
-	.umcGalleryItem
-		background-color: #eaeaea
+	.umcGalleryWrapperItem
+		float: left
+		padding: 14px
 
-	.umcGalleryItemActive .umcUpdateIcon,
-	.umcGalleryItem:hover .umcUpdateIcon
-		/* change icon color to white on hover */
-		background-image: url("../../dijit/themes/umc/images/icons-white.svg")
+		.umcGalleryItem
+			background-color: #eaeaea
+
+		.umcGalleryItemActive .umcUpdateIcon,
+		.umcGalleryItem:hover .umcUpdateIcon
+			/* change icon color to white on hover */
+			background-image: url("../../dijit/themes/umc/images/icons-white.svg")
 
 .umcAppDetailsPage
 	.umcAppButton
@@ -99,6 +103,7 @@
 			top: 0
 			transition: opacity 0.5s
 			background-position: center center
+			background-size: contain
 
 		&.hover .appIcon
 			opacity: 0.05
@@ -154,10 +159,6 @@
 			overflow: hidden
 			white-space: nowrap
 			width: 100%
-
-.umcGalleryPane .umcGalleryWrapperItem
-	float: left
-	padding: 14px
 
 .umc .dijitTitlePane.appDetailsPane
 	.dijitTitlePaneTitle

@@ -61,7 +61,6 @@ define([
 		appQuery: null,
 
 		title: _("App management"),
-		headerText: _("Manage Applications for UCS"),
 		//helpText: _("Install or remove applications on this or another UCS system."),
 
 		navBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
@@ -113,8 +112,8 @@ define([
 							},
 							{
 								type: CheckBox,
-								name: 'show_again',
-								label: _("Show this message again")
+								name: 'do_not_show_again',
+								label: _("Do not show this message again")
 							}
 						],
 						buttons: [{
@@ -124,7 +123,7 @@ define([
 						}]
 					}).then(
 						lang.hitch(this, function(data) {
-							tools.setUserPreference({appcenterSeen: data.show_again ? 'false' : 'true'});
+							tools.setUserPreference({appcenterSeen: data.do_not_show_again ? 'true' : 'false'});
 							return this.updateApplications();
 						}),
 						lang.hitch(this, function() {
