@@ -41,6 +41,7 @@ build: l10n $(buildDir) i18n $(buildDir)/css/fonts
 build-dev: l10n $(buildCssDir) $(buildBootstrap) i18n $(buildDir)/css/fonts
 	mkdir -p build $(buildJsDir)
 	cp -r www/* build
+	cp js/config.js $(buildJsDir)
 	# symlink UCS javascript code
 	[ -e $(buildJsDir)/ucs ] || cp -frsn $(CURDIR)/js/ucs $(buildJsDir)/ucs
 	# symlinks for dojo packages
@@ -70,7 +71,8 @@ $(buildDir): $(buildJsDir) $(buildCssDir) $(buildBootstrap)
 
 # rule for the main dojo build process
 $(buildJsDir):
-	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(version)"
+	/usr/share/univention-dojo/util/buildscripts/build.sh package=js/ucs profile=build_profile.js version="$(version)"
+	cp js/config.js $(buildJsDir)
 
 # rule for converting stylus CSS files into one final CSS file
 $(buildCssDir):
@@ -99,7 +101,7 @@ install: build
 	mkdir -p "$(DESTDIR)$(pkgDir)/usr/share/univention-self-service"
 	cp -r $(buildDir) "$(DESTDIR)$(pkgDir)/usr/share/univention-self-service/www"
 	mkdir -p "$(DESTDIR)$(pkgDir)/var/www"
-	ln -s /usr/share/univention-self-service/www "$(DESTDIR)$(pkgDir)/var/www"
+	ln -s /usr/share/univention-self-service/www "$(DESTDIR)$(pkgDir)/var/www/univention-self-service"
 
 clean:
 	rm -rf $(buildDir)

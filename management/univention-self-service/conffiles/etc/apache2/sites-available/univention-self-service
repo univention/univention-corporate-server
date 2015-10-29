@@ -1,19 +1,21 @@
-@%@UCRWARNING=# @%@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file(s) instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
+# 
+# 	/etc/univention/templates/files/etc/apache2/sites-available/univention-self-service
+# 
 
-@!@
-if configRegistry.is_true("self-service/web/enabled", True):
-	print """
+
 <Directory /usr/share/univention-self-service/www/>
     Order allow,deny
     allow from all
 </Directory>
-"""
-	import re
-	ussweb = re.compile('^self-service/(.*)/web/enabled$')
-	for plugin in [ussweb.search(k).groups()[0] for k, v in configRegistry.items() if ussweb.search(k) and configRegistry.is_true(k)]:
-		print "WSGIScriptAlias /univention-self-service/{0} /usr/share/univention-self-service/wsgi/{0}.py".format(plugin)
-	print """
-WSGIDaemonProcess self-service user=self-service group=self-service home=/usr/share/univention-self-service/wsgi python-path=/usr/share/univention-self-service/wsgi
+
+WSGIScriptAlias /univention-self-service/passwordreset /usr/share/univention-self-service/wsgi/passwordreset.py
+WSGIScriptAlias /univention-self-service/passwordchange /usr/share/univention-self-service/wsgi/passwordchange.py
+
+WSGIDaemonProcess self-service user=self-service group=self-service python-path=/usr/share/univention-self-service/wsgi
 WSGIProcessGroup self-service
-"""
-@!@

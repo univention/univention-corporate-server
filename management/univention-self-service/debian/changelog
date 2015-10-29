@@ -1,3 +1,9 @@
+univention-self-service (0.0.0-20) unstable; urgency=low
+
+  * Bug #39597: Adapted apache and cherrypy config
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 29 Oct 2015 14:55:35 +0100
+
 univention-self-service (0.0.0-19) unstable; urgency=low
 
   * Bug #39597: Adapted install and postinst file

@@ -43,17 +43,16 @@ class SetPassword(UniventionSelfServiceFrontend):
 		return "Password Self Service"
 
 	@cherrypy.expose
-	def set_password(self, username, oldpassword, newpassword):
-		"""
-		Change a users password.
+	def index(self):
+		options = self.get_arguments()
+		username = options.get('username')
+		password = options.get('password')
+		new_password = options.get('new_password')
+		if not all((username, password, new_password)):
+			raise cherrypy.HTTPError(422)
 
-		:param username: username
-		:param oldpassword: old password
-		:param newpassword: new password
-		:return: {"status": int, "message": str}
-		"""
 		try:
-			connection = self.get_umc_connection(username=username, password=oldpassword)
+			connection = self.get_umc_connection(username=username, password=password)
 		except UMCConnectionError as ue:
 			cherrypy.response.status = ue.status
 			return json.dumps({"status": ue.status, "message": ue.msg})
@@ -61,8 +60,8 @@ class SetPassword(UniventionSelfServiceFrontend):
 		url = ""
 		data = {
 			"password": {
-				"password": oldpassword,
-				"new_password": newpassword}
+				"password": password,
+				"new_password": new_password}
 		}
 		result = self.umc_request(connection, url, data, command='set')
 
@@ -72,4 +71,4 @@ class SetPassword(UniventionSelfServiceFrontend):
 			self.log("Error changing password of user '{}'.".format(username))
 		return json.dumps(result)
 
-application = cherrypy.Application(SetPassword(), "/univention-self-service/setpassword")
+application = cherrypy.Application(SetPassword(), "/univention-self-service/passwordchange")

@@ -111,7 +111,7 @@ define([
 			//   https://forge.univention.org/bugzilla/show_bug.cgi?id=26214#c3
 			for (var ikey in params) {
 				if (params.hasOwnProperty(ikey)) {
-					this[ikey] = ival;
+					this[ikey] = params[ikey];
 				}
 			}
 		},

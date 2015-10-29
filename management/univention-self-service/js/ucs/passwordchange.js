@@ -30,33 +30,94 @@
 
 define([
 	"dojo/_base/lang",
-	"dojo/_base/kernel",
-	"dojo/_base/array",
-	"dojo/io-query",
-	"dojo/query",
 	"dojo/on",
 	"dojo/dom",
-	"dojo/dom-construct",
-	"dojo/dom-attr",
-	"dojo/dom-style",
-	"dojo/dom-class",
-	"dojo/dom-geometry",
+	"dojo/json",
 	"dojo/request/xhr",
-	"./PasswordBox"
-	//"../ucs/text!/ucs-overview/passwordchange.json",
-	//"./i18n!passwordchange,ucs"
-], function(lang, kernel, array, ioQuery, query, on, dom, domConstruct, domAttr, domStyle, domClass, domGeometry, xhr, PasswordBox) {
+	"dijit/form/Button",
+	"put-selector/put",
+	"./TextBox",
+	"./PasswordBox",
+	"./PasswordInputBox",
+	"./i18n!"
+], function(lang, on, dom, json, xhr, Button, put, TextBox, PasswordBox, PasswordInputBox, _) {
 	return {
-		_createForm: function() {
-			
+		_createTitle: function() {
+			var title = _('Change Password');
+			document.title = title;
+			var titleNode = dom.byId('title');
+			put(titleNode, 'h1', title);
+			put(titleNode, '!.dijitHidden');
 		},
 
-		createElements: function() {
-			this._createForm();
+		_createForm: function() {
+			var contentNode = dom.byId('content');
+			var tabNode = put(contentNode, 'div');
+			put(tabNode, 'p > b', _('Change your password'));
+			put(tabNode, 'p', _('Please follow this description I still have to write'));
+
+			// create input field for username
+			this._username = new TextBox({
+				inlineLabel: _('Username'),
+				required: true
+			});
+			put(tabNode, '>', this._username.domNode);
+			this._username.startup();
+
+			// create input field for old password
+			this._oldPassword = new PasswordBox({
+				inlineLabel: _('Old password'),
+				required: true
+			});
+			put(tabNode, '>', this._oldPassword.domNode);
+			this._oldPassword.startup();
+
+			// create input fields for new password
+			this._newPassword = new PasswordInputBox({
+				inlineLabel: _('New password'),
+				twoRows: true,
+				required: true
+			});
+			put(tabNode, '>', this._newPassword.domNode);
+			this._newPassword.startup();
+
+			// create submit button
+			this._submitButton = new Button({
+				label: _('Submit'),
+				onClick: lang.hitch(this, '_submit')
+			});
+			put(tabNode, '>', this._submitButton.domNode);
+		},
+
+		_submit: function() {
+			var allInputFieldsValid = this._username.isValid() &&
+				this._oldPassword.isValid() &&
+				this._newPassword.isValid();
+			
+			if (allInputFieldsValid) {
+				data = json.stringify({
+					'username': this._username.get('value'),
+					'password': this._oldPassword.get('value'),
+					'new_password': this._newPassword.get('value')
+				});
+
+				xhr.post('passwordchange/', {
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					data: data
+				}).then(function() {
+					// TODO show msg
+				}, lang.hitch(this, function(err) {
+					// TODO show msg
+				}));
+			}
 		},
 
 		start: function() {
-			this.createElements();
+			this._createTitle();
+			this._createForm();
 		}
 	};
 });
