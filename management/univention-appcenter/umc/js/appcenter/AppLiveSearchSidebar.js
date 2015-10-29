@@ -135,10 +135,13 @@ define([
 				return category.label === child.label;
 			});
 			this._selectForm.focusChild(selectedChild[0]);
+			this._searchTextBox.set('value', '');
 			this.onSearch();
 			this.onCategorySelected();
 			if (!has('touch')) {
-				this._searchTextBox.focus();
+				setTimeout(lang.hitch(this, function() {
+					this._searchTextBox.focus();
+				}), 0);
 			}
 		},
 
