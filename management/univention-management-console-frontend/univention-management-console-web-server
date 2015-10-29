@@ -1242,7 +1242,7 @@ class SAML(Ressource):
 
 	def acs(self, message, binding):  # attribute consuming service  # TODO: rename into parse
 		try:
-			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)#, allow_unsolicited=True)
+			response = self.sp.parse_authn_request_response(message, binding, self.outstanding_queries)
 		except (UnknownPrincipal, UnsupportedBinding, VerificationError, UnsolicitedResponse, StatusError, MissingKey, SignatureError):
 			raise SamlError().from_exception(*sys.exc_info())
 		if response is None:

@@ -30,6 +30,7 @@ CONFIG = {
 	"description": "Univention Management Console SAML2.0 Service Provider",
 	"service": {
 		"sp": {
+			"allow_unsolicited": True,
 			"want_assertions_signed": True,
 			"authn_requests_signed": True,
 			"logout_requests_signed": True,
