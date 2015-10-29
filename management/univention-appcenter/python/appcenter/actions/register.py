@@ -285,7 +285,7 @@ class Register(CredentialsAction):
 					init_script = Service.get_init(app)
 					self.log('Creating %s' % init_script)
 					os.symlink(ORIGINAL_INIT_SCRIPT, init_script)
-					self._call_script('update-rc.d', os.path.basename(init_script), 'defaults', '41', '14')
+					self._call_script('/usr/sbin/update-rc.d', os.path.basename(init_script), 'defaults', '41', '14')
 				except OSError as exc:
 					msg = str(exc)
 					if exc.errno == 17:
@@ -407,7 +407,7 @@ class Register(CredentialsAction):
 				try:
 					init_script = Service.get_init(app)
 					os.unlink(init_script)
-					self._call_script('update-rc.d', os.path.basename(init_script), 'remove')
+					self._call_script('/usr/sbin/update-rc.d', os.path.basename(init_script), 'remove')
 				except OSError:
 					pass
 		ldap_object = get_app_ldap_object(app, lo, pos, ucr)
