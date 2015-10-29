@@ -1,4 +1,5 @@
 import univention.Apps
+import univention.Constants
 
 // Build parameters are exposed as environment variables in Jenkins.
 // A seed job build parameter named FOO is available as FOO variable
@@ -12,6 +13,11 @@ def workdir = loc.getParent()
 println JOB_NAME
 def version = '4.1'
 def patch_level = '0'
+def last_version = univention.Constants.LAST_VERSION.get(version)
+
+if (last_version == null) {
+	throw new RuntimeException("last version for version ${version} not found")
+}
 
 // get apps from testing, without ucs components
 apps = new Apps().getApps(version, test=true, ucs_components=false)
@@ -28,11 +34,74 @@ apps.keySet()each { app ->
 
   // create jobs
   createAppAutotestMultiEnv(path, app, version, patch_level, apps[app].get('roles'))
-  //createAppAutotestSingleEnv(....
+  createAppAutotestMultiEnvUpdateFrom(path, app, version, patch_level, last_version, apps[app].get('roles'))
   //...
 
 }
 
+def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version, String patch_level, String, last_version, List roles) {
+
+  def desc = "App Autotest MultiEnv Update from ${last_version} to ${version}"
+  def job_name = path + '/' + desc
+
+  matrixJob(job_name) {
+
+    // config
+    quietPeriod(60)
+    logRotator(-1, 5, -1, -1)
+    description("run ${desc} for ${app}")
+    concurrentBuild()
+
+    // build parameters
+    parameters {
+      booleanParam('HALT', true, 'uncheck to disable shutdown of ec2 instances')
+    }
+
+    // svn
+    scm {
+      svn {
+        checkoutStrategy(SvnCheckoutStrategy.CHECKOUT)
+        location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-${patch_level}/test/ucs-ec2-tools") {
+          credentials('50021505-442b-438a-8ceb-55ea76d905d3')
+        }
+        configure { scmNode ->
+          scmNode / browser(class: 'hudson.plugins.websvn2.WebSVN2RepositoryBrowser') {
+            url('https://billy.knut.univention.de/websvn/listing.php/?repname=dev')
+            baseUrl('https://billy.knut.univention.de/websvn/')
+            repname('repname=dev')
+          }
+        }
+      }
+    }
+
+    // axies
+    axes {
+      text('Systemrolle', roles)
+      text('SambaVersion', 's3', 's4')
+    }
+
+    // wrappers
+    wrappers {
+      preBuildCleanup()
+    }
+
+    // build step
+    steps {
+      cmd = """
+cfg="examples/jenkins/autotest-11*-update-${last_version}-to-${version}-appupdate-\${Systemrolle}-\${SambaVersion}.cfg"
+sed -i "s|APP_ID|${app}|g" \$cfg
+sed -i "s|%PARAM_HALT%|\$HALT|g" \$cfg
+exec ./ucs-ec2-create -c \$cfg"""
+      shell(cmd)
+    }
+
+    // post build
+    publishers {
+      archiveArtifacts('**/autotest-*.log,**/ucs-test.log')
+      archiveJunit('**/test-reports/**/*.xml')
+    }
+  }
+}
 
 def createAppAutotestMultiEnv(String path, String app, String version, String patch_level, List roles) {
 

@@ -7,4 +7,10 @@ class Constants {
 		domaincontroller_slave : 'slave',
 		memberserver : 'member',
 	]
+
+	static LAST_VERSION = [
+		'4.0' : '3.2',
+		'3.2' : '3.1',
+		'4.1' : '4.0',
+	]
 }
