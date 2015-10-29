@@ -1,3 +1,9 @@
+univention-saml (3.0.25-6) unstable; urgency=medium
+
+  * Bug #39479: Check certificate for unix sockets
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 29 Oct 2015 12:00:03 +0100
+
 univention-saml (3.0.25-5) unstable; urgency=medium
 
   * Bug #31943: fixup
