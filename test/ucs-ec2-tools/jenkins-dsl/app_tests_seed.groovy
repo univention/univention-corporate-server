@@ -41,7 +41,7 @@ apps.keySet()each { app ->
 
 def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version, String patch_level, String last_version, List roles) {
 
-  def desc = "App Autotest MultiEnv Update from ${last_version} to ${version}"
+  def desc = "App Autotest MultiEnv Release Update"
   def job_name = path + '/' + desc
 
   matrixJob(job_name) {
@@ -49,7 +49,7 @@ def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version,
     // config
     quietPeriod(60)
     logRotator(-1, 5, -1, -1)
-    description("run ${desc} for ${app}")
+    description("run ${desc} for ${app} (update from ${last_version} to ${version})")
     concurrentBuild()
 
     // build parameters
