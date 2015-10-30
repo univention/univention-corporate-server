@@ -67,8 +67,9 @@ def postrun():
 
 	if __changed_trusted_sp:
 		__changed_trusted_sp = False
+		slapd_running = not subprocess.call(['pidof', 'slapd'])
 		initscript='/etc/init.d/slapd'
-		if os.path.exists(initscript):
+		if os.path.exists(initscript) and slapd_running:
 			listener.setuid(0)
 			try:
 				ud.debug(ud.LISTENER, ud.INFO, '%s: Reloading LDAP server.' % (name,) )
