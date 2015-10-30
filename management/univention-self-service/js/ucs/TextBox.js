@@ -66,6 +66,12 @@ define([
 			this.own(on(this._inlineLabelNode, 'click', lang.hitch(this, 'focus')));
 		},
 
+		reset: function() {
+			this.set('value', '');
+			this.setValid();
+			this._updateInlineLabelVisibility();
+		},
+
 		_updateInlineLabelVisibility: function(eventType) {
 			var showInlineLabel = !this.get('value') && eventType != 'keydown';
 			put(this._inlineLabelNode, showInlineLabel ? '.umcEmptyValue' : '!umcEmptyValue');

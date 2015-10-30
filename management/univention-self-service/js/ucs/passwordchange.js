@@ -40,7 +40,6 @@ define([
 	"./TextBox",
 	"./i18n!"
 ], function(lang, on, keys, dom, json, xhr, Button, put, TextBox, _) {
-	
 
 	return {
 		_createTitle: function() {
@@ -151,9 +150,8 @@ define([
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
-					// TODO show msg
-					this._showMessage(data, '.success');
-					// TODO implement redirect by query string
+					this._showMessage(data.message, '.success');
+					this._clearAllInputFields();
 				}), lang.hitch(this, function(err) {
 					this._showMessage(err.name + ": " + err.message, '.error');
 				})).always(lang.hitch(this, function(){
@@ -171,6 +169,13 @@ define([
 			//this._verifyPassword.setValid(this._verifyPassword.isValid());
 		},
 
+		_clearAllInputFields: function() {
+			this._username.reset();
+			this._oldPassword.reset();
+			this._newPassword.reset();
+			this._verifyPassword.reset();
+		},
+
 		_showMessage: function(msg, msgClass) {
 			var formNode = dom.byId('form');
 			var msgNode = dom.byId('msg');
@@ -180,7 +185,7 @@ define([
 			}
 
 			if (msgClass) {
-				put(msgNode, "." + msgClass);
+				put(msgNode, msgClass);
 			}
 			// replace newlines with BR tags
 			msg = msg.replace(/\n/g, '<br/>');

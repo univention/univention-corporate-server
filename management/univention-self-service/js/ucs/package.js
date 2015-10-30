@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 Univention GmbH
+ * Copyright 2015 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -26,16 +26,12 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
 
-define([
-	"dojo/_base/declare",
-	"./TextBox",
-	"./_FormWidgetMixin"
-], function(declare, TextBox, _FormWidgetMixin) {
-	return declare("umc.widgets.PasswordBox", [ TextBox, _FormWidgetMixin ], {
-		type: 'password'
-	});
-});
-
+var profile = {
+	resourceTags: {
+		amd: function(filename, mid) {
+			return (/\.js$/).test(filename) && filename.indexOf('config.js') < 0;
+		}
+	}
+};
 

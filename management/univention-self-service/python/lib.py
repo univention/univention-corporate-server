@@ -66,6 +66,11 @@ class UniventionSelfServiceFrontend(object):
 		self.log("__init__()")
 		self._backend = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
 
+	def get_arguments(self):
+		if cherrypy.request.headers.get('Content-Type', '').startswith('application/json'):
+			return json.loads(cherrypy.request.body.read())
+		raise cherrypy.HTTPError(415)
+
 	def log(self, msg, traceback=False):
 		cherrypy.log("{}: {}".format(self.name, msg), traceback=traceback)
 
