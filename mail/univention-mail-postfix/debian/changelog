@@ -1,3 +1,9 @@
+univention-mail-postfix (10.0.0-3) unstable; urgency=low
+
+  * Bug #39542: fix detection if postfix master is already running
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 30 Oct 2015 15:12:24 +0100
+
 univention-mail-postfix (10.0.0-2) unstable; urgency=low
 
   * Bug #39542: fix detection if postfix master is already running

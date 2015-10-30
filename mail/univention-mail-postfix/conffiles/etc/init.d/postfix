@@ -78,7 +78,7 @@ running() {
     queue=$($POSTCONF -h queue_directory 2>/dev/null || echo /var/spool/postfix)
     if [ -f ${queue}/pid/master.pid ]; then
         pid=$(sed 's/ //g' ${queue}/pid/master.pid)
-        pgrep -f /usr/lib/postfix/master -s "$pid" && echo y || true
+        pgrep -f /usr/lib/postfix -s "$pid" && echo y || true
     fi
 }
 
