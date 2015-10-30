@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
+<chapter id="chap:sso">
+	<title><foreignphrase>Single Sign-On</foreignphrase>: Integrating a service provider into UCS 
+		<indexterm><primary>Single Sign-On</primary><secondary>SAML</secondary></indexterm>
+		<indexterm><primary>SSO</primary><see>Single Sign-On</see></indexterm>
+	</title>
+	<para>
+		UCS provides <foreignphrase>Single Sign-On</foreignphrase> functionality with a SAML 2.0 compatible identity provider based on <package>simplesamlphp</package>.
+		The identity provider is by default installed on the DC Master and all DC Backup servers.
+		A DNS Record for all Systems providing <foreignphrase>Single Sign-On</foreignphrase> services is registered for failover, usually <uri>ucs-sso.domainname</uri>.
+		Clients are required to be able to resolve the <foreignphrase>Single Sign-On</foreignphrase> DNS name.
+	</para>
+
+	<section id="sso:register">
+		<title>Register new service provider via <foreignphrase>udm</foreignphrase></title>
+		<para>
+			New service providers can be registred by using the <foreignphrase>UDM</foreignphrase> module <emphasis>saml/serviceprovider</emphasis>.
+			To create a new service provider entry in a <foreignphrase>joinscript</foreignphrase>, see the following example:
+<screen>
+eval $(ucr shell)
+udm saml/serviceprovider create "$@" \
+	--ignore_exists \
+	--position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
+	--set isActivated=TRUE \
+	--set Identifier="MyServiceProviderIdentifier" \
+	--set NameIDFormat="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified" \
+	--set simplesamlAttributes="false" \
+	--set AssertionConsumerService="https://$hostname.$domainname/sso-login-page" \
+	--set simplesamlNameIDAttribute="uid" \
+	--set privacypolicyURL="https://example.com/policy.html" \
+	--set serviceProviderOrganizationName="My Service Name" \
+	--set serviceproviderdescription="A long description shown to the user on the Single Sign-On page." || die
+</screen>
+		</para>
+	</section>
+
+	<section id="sso:idpinfo">
+		<title>Get information required by the service provider</title>
+		<para>
+			The service provider usually requires at least a public certificate or XML metadata about the identity provider.
+			The certificate can e.g. be downloaded with the following call:
+<screen>
+eval $(ucr shell)
+wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
+https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/certificate \
+	-O /etc/idp.cert
+</screen>
+			The XML metadata is available e.g. from
+<screen>
+eval $(ucr shell)
+wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
+https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/metadata.php \
+	-O /etc/idp.metadata
+</screen>
+The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in the service provider is <uri>https://ucs-sso.domainname/simplesamlphp/saml2/idp/SSOService.php</uri>
+		</para>
+	</section>
+
+	<section id="sso:addlink">
+		<title>Add direct login link to ucs-overview page</title>
+		<para>
+			To provide users with a convenient link to an identity provider initiated login, the following ucr command may be used
+<screen>
+ucr set ucs/web/overview/entries/service/SP/description="External Service Login" \
+ucs/web/overview/entries/service/SP/label="External Service SSO" \
+ucs/web/overview/entries/service/SP/link="https://ucs-sso.domainname/simplesamlphp/saml2/idp/SSOService.php?spentityid=MyServiceProviderIdentifier" \
+ucs/web/overview/entries/service/SP/description/de="Externer Dienst Login" \
+ucs/web/overview/entries/service/SP/label/de="Externer Dienst SSO" \
+ucs/web/overview/entries/service/SP/priority=50
+</screen>
+			Where <foreignphrase>MyServiceProviderIdentifier</foreignphrase> is the identifier used when creating the UDM service provider object.
+		</para>
+	</section>
+</chapter>
+<!-- vim:set ts=2 sw=2 noet ft=docbk:-->
