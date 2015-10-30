@@ -220,6 +220,11 @@
 					may define a different logo which is displayed in the app detail view (<u:bug>39525</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					The property <classname>Screenshot</classname> has been replaced with the property
+					<classname>Thumbnails</classname> which allows a comma separated list of pictures or
+					youtube URIs (<u:bug>39654</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The App Center now checks a digital signature of the index of app meta files.
 					(<u:bug>39591</u:bug>).
 				</simpara></listitem>
