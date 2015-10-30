@@ -1,3 +1,9 @@
+univention-self-service (0.0.0-21) unstable; urgency=low
+
+  * Bug #39597: Improved UI for passwordchange
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 30 Oct 2015 10:20:50 +0100
+
 univention-self-service (0.0.0-20) unstable; urgency=low
 
   * Bug #39597: Adapted apache and cherrypy config
