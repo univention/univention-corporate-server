@@ -48,7 +48,7 @@ case "$1" in
 		univention-config-registry commit /etc/ldap/slapd.conf
 
 		## restart the OpenLDAP Server to unload the overlay
-		/etc/init.d/slapd restart
+		/etc/init.d/slapd crestart
 
 		## unset main ucr variable
 		univention-config-registry unset "${registrySection}"

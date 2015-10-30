@@ -57,7 +57,7 @@ if [ "$1" = "configure" ]; then
 	univention-config-registry commit /etc/ldap/slapd.conf
 
 	## restart the OpenLDAP Server to load the module
-	/etc/init.d/slapd restart
+	/etc/init.d/slapd crestart
 
 	# exclude temporary objects by default
 	eval "$(univention-config-registry shell ldap/base)"
