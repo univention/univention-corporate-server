@@ -99,7 +99,7 @@ class AppcenterApp(object):
 			server = server[:-1]
 		self.server = server
 		self.config = ConfigParser.ConfigParser()
-		self.config.read(self.get_ini_file())
+		self.config.read([self.get_ini_file(), self.get_meta_file()])
 
 	def get_metainf_url(self):
 		url = '%s/meta-inf/%s/' % (self.server, self.ucs_version)

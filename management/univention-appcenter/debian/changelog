@@ -1,3 +1,9 @@
+univention-appcenter (5.0.13-6) unstable; urgency=medium
+
+  * Bug #39525: read META as well as INI file for creating index.json
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Oct 2015 17:36:09 +0100
+
 univention-appcenter (5.0.13-5) unstable; urgency=medium
 
   * Bug #38891: Improved overall appearance
