@@ -29,6 +29,7 @@
 # <http://www.gnu.org/licenses/>.
 
 nat_core_rules() {
+	iptables -L DOCKER > /dev/null 2> /dev/null || iptables -N DOCKER  # create docker queue if missing
 	iptables -t nat -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
 	iptables -t nat -A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
 	iptables -t nat -A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
@@ -39,20 +40,22 @@ nat_core_rules() {
 }
 
 nat_container_rule() {
-	IP=$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $1)
+	IP=$(docker inspect --format='{{.NetworkSettings.IPAddress}}' "$1")
 
-	docker port $1 | sed -e 's#[/tcp>: -]\+# #g' | awk -v IP=$IP \
-	'{ system("iptables -t nat -A DOCKER ! -i docker0 -p tcp -m tcp --dport "$3" -j DNAT --to-destination "IP":"$1";\
-	iptables -t filter -A DOCKER -d "IP"/32 ! -i docker0 -o docker0 -p tcp -m tcp --dport "$1" -j ACCEPT;\
-	iptables -t nat -A POSTROUTING -s "IP"/32 -d "IP"/32 -p tcp -m tcp --dport "$1" -j MASQUERADE") }'
+	# convert "443/tcp -> 0.0.0.0:40001" to "443 tcp 0.0.0.0 40001"
+	docker port "$1" | sed -re 's#[/>: -]+# #g' | \
+		while read localport proto addr containerport ; do
+			iptables -t nat -A DOCKER ! -i docker0 -p "$proto" --dport "$containerport" -j DNAT --to-destination "$IP:$localport"
+			iptables -t filter -A DOCKER -d "$IP/32" ! -i docker0 -o docker0 -p "$proto" --dport "$localport" -j ACCEPT
+			iptables -t nat -A POSTROUTING -s "$IP/32" -d "$IP/32" -p "$proto" --dport "$localport" -j MASQUERADE
+		done
 }
 
-if [ -x /usr/bin/docker ] && [ -z $(ucr get docker/container/uuid) ] && /etc/init.d/docker status > /dev/null; then
+if [ -x /usr/bin/docker ] && [ -z "$(ucr get docker/container/uuid)" ] && /etc/init.d/docker status > /dev/null; then
 	# this is a docker host
 	nat_core_rules
-	
+
 	for CONT_ID in $(docker ps -q); do
-		nat_container_rule $CONT_ID
+		nat_container_rule "$CONT_ID"
 	done
 fi
-
