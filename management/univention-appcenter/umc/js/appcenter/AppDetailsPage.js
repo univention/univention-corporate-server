@@ -496,27 +496,10 @@ define([
 					maxRating = rating.value;
 				}
 			});
-			array.forEach(this.app.rating, function(rating) {
-				var ratingText = new Text({
-					'class': 'umcAppRating'
-				});
-				domConstruct.create('div', {
-						'class': 'umcAppRatingIcon',
-						style: {width: 1.5 * rating.value + 'em'}
-					}, ratingText.domNode
-				);
-				domConstruct.create('div', {
-						'class': 'umcAppRatingText',
-						textContent: rating.label,
-						style: {paddingLeft: 1.5 * (maxRating - rating.value) + 'em'}
-					}, ratingText.domNode
-				);
-				footerRight.addChild(ratingText);
-			});
 			if (maxRating) {
-				var moreinfoRating = domConstruct.create('button', {
-					textContent: _('More information'),
-					'class': 'categoryButton'
+				var moreinfoRating = domConstruct.create('div', {
+					innerHTML: _('This app provides the following features (<a href="javascript:void(0)">more information</a>):'),
+					'class': 'umcAppRatingInfo'
 				}, footerRight.domNode);
 				var moreInformation = '';
 				array.forEach(this.app.rating, function(rating) {
@@ -528,6 +511,23 @@ define([
 				});
 				this.own(tooltip);
 			}
+			array.forEach(this.app.rating, function(rating) {
+				var ratingText = new Text({
+					'class': 'umcAppRating'
+				});
+				for (var i = 0; i < rating.value; i++) {
+					domConstruct.create('div', {
+							'class': 'umcAppRatingIcon',
+						}, ratingText.domNode
+					);
+				}
+				domConstruct.create('div', {
+						'class': 'umcAppRatingText',
+						textContent: rating.label,
+					}, ratingText.domNode
+				);
+				footerRight.addChild(ratingText);
+			});
 
 			var _parent = this.getParent();
 			if (_parent && _parent.domNode) {

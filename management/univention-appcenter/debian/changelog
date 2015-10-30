@@ -1,3 +1,10 @@
+univention-appcenter (5.0.13-5) unstable; urgency=medium
+
+  * Bug #38891: Improved overall appearance
+  * Bug #39483: Set timezone in install; make it more OS neutral
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 30 Oct 2015 17:16:17 +0100
+
 univention-appcenter (5.0.13-4) unstable; urgency=low
 
   * Bug #39524: removed commented out code in Carousel.js
@@ -59,13 +66,13 @@ univention-appcenter (5.0.10-1) unstable; urgency=medium
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Oct 2015 00:45:01 +0100
 
-univention-appcenter (5.0.9-9) unstable; urgency=medium
+univention-appcenter (5.0.9-11) unstable; urgency=medium
 
   * Bug #39190: Fixed autostart not sent to frontend
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 29 Oct 2015 00:37:23 +0100
 
-univention-appcenter (5.0.9-8) unstable; urgency=medium
+univention-appcenter (5.0.9-10) unstable; urgency=medium
 
   * Bug #39192: Backup conf and data files when uninstalling docker app
   * Bug #38891: Improved position for rating information

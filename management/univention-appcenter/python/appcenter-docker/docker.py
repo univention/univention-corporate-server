@@ -132,7 +132,7 @@ def verify(app, image):
 		json_apps = upd._load_index_json()
 
 	try:
-		appinfo = json_apps[app.id]
+		appinfo = json_apps[app.component_id]
 	except KeyError as exc:
 		_logger.error('Warning: Cannot check DockerImage checksum because app is not in index.json: %s' % app.id)
 		return  # Nothing we can do here, this is mainly for ucs-test apps

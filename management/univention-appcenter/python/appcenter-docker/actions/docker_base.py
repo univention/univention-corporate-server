@@ -134,6 +134,13 @@ class DockerActionMixin(object):
 				docker.execute('rm', password_file)
 			docker.execute('rm', error_file)
 
+	def _set_timezone(self, app):
+		self.debug('Setting timezone')
+		docker = self._get_docker(app)
+		shutil.copy('/etc/timezone', docker.path('/etc/timezone'))
+		self.debug('Setting timezone')
+		shutil.copy('/etc/localtime', docker.path('/etc/localtime'))
+
 	def _start_docker_image(self, app, hostdn, password, args):
 		docker = self._get_docker(app)
 		if not docker:
@@ -172,3 +179,4 @@ class DockerActionMixin(object):
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)
 		configure.call(app=app, autostart=autostart, set_vars=set_vars)
+		self._set_timezone(app)

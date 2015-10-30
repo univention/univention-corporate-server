@@ -86,7 +86,6 @@ class Configure(UniventionAppAction, DockerActionMixin):
 			for key in (args.unset or []):
 				set_vars[key] = None
 			self._set_config(args.app, set_vars)
-			self._set_timezone(args.app)
 
 	@classmethod
 	def _get_app_ucr(cls, app):
@@ -207,11 +206,3 @@ class Configure(UniventionAppAction, DockerActionMixin):
 			docker.execute('ucr', 'set', *set_args)
 		if unset_args:
 			docker.execute('ucr', 'unset', *unset_args)
-
-	def _set_timezone(self, app):
-		docker = self._get_docker(app)
-		cont_tz_file = docker.path("/etc/timezone")
-		host_tz = open("/etc/timezone", "rb").read().strip()
-		with open(cont_tz_file, 'wb') as f:
-				f.write(host_tz)
-		docker.execute("dpkg-reconfigure", "-f", "noninteractive", "tzdata")
