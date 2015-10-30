@@ -69,7 +69,18 @@ class Apps {
 			}
 
 			ret_val[app_id] = [:]
+			ret_val[app_id]['id'] = app_id
 			ret_val[app_id]['roles'] = []
+			ret_val[app_id]['required_apps'] = []
+
+			// requierd apps, always add app itself
+			def required_apps = properties.getProperty('RequiredApps')
+			if (required_apps) {
+				required_apps.split(',').each {
+					ret_val[app_id]['required_apps'] << it
+				}
+			}
+			ret_val[app_id]['required_apps'] << app_id
 
 			// get roles
 			def roles = properties.getProperty('ServerRole')

@@ -33,13 +33,13 @@ apps.keySet()each { app ->
   path = workdir + '/apps/' + app
 
   // create jobs
-  createAppAutotestMultiEnv(path, app, version, patch_level, apps[app].get('roles'))
-  createAppAutotestMultiEnvUpdateFrom(path, app, version, patch_level, last_version, apps[app].get('roles'))
+  createAppAutotestMultiEnv(path, version, patch_level, apps[app])
+  createAppAutotestMultiEnvUpdateFrom(path, version, patch_level, last_version, apps[app])
   //...
 
 }
 
-def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version, String patch_level, String last_version, List roles) {
+def createAppAutotestMultiEnvUpdateFrom(String path, String version, String patch_level, String last_version, Map app) {
 
   def desc = "App Autotest MultiEnv Release Update"
   def job_name = path + '/' + desc
@@ -49,7 +49,7 @@ def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version,
     // config
     quietPeriod(60)
     logRotator(-1, 5, -1, -1)
-    description("run ${desc} for ${app} (update from ${last_version} to ${version})")
+    description("run ${desc} for ${app.id} (update from ${last_version} to ${version})")
     concurrentBuild()
 
     // build parameters
@@ -76,7 +76,7 @@ def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version,
 
     // axies
     axes {
-      text('Systemrolle', roles)
+      text('Systemrolle', app.roles)
       text('SambaVersion', 's3', 's4')
     }
 
@@ -89,7 +89,7 @@ def createAppAutotestMultiEnvUpdateFrom(String path, String app, String version,
     steps {
       cmd = """
 cfg="examples/jenkins/autotest-11*-update-${last_version}-to-${version}-appupdate-\${Systemrolle}-\${SambaVersion}.cfg"
-sed -i "s|APP_ID|${app}|g" \$cfg
+sed -i "s|APP_ID|${app.required_apps.join(' ')}|g" \$cfg
 sed -i "s|%PARAM_HALT%|\$HALT|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg"""
       shell(cmd)
@@ -103,7 +103,7 @@ exec ./ucs-ec2-create -c \$cfg"""
   }
 }
 
-def createAppAutotestMultiEnv(String path, String app, String version, String patch_level, List roles) {
+def createAppAutotestMultiEnv(String path, String version, String patch_level, Map app) {
 
   def desc = 'App Autotest MultiEnv'
   def job_name = path + '/' + desc
@@ -113,7 +113,7 @@ def createAppAutotestMultiEnv(String path, String app, String version, String pa
     // config
     quietPeriod(60)
     logRotator(-1, 5, -1, -1)
-    description("run ${desc} for ${app}")
+    description("run ${desc} for ${app.id}")
     concurrentBuild()
 
     // build parameters
@@ -140,7 +140,7 @@ def createAppAutotestMultiEnv(String path, String app, String version, String pa
     
     // axies
     axes {
-      text('Systemrolle', roles)
+      text('Systemrolle', app.roles)
       text('SambaVersion', 's3', 's4')
     }
     
@@ -153,7 +153,7 @@ def createAppAutotestMultiEnv(String path, String app, String version, String pa
     steps {
       cmd = """
 cfg="examples/jenkins/autotest-10*-app-\${Systemrolle}-\${SambaVersion}.cfg"
-sed -i "s|APP_ID|${app}|g" \$cfg
+sed -i "s|APP_ID|${app.required_apps.join(' ')}|g" \$cfg
 sed -i "s|%PARAM_HALT%|\$HALT|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg"""
       shell(cmd)
