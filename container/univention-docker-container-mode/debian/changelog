@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.10-1) unstable; urgency=medium
+
+  * Support links in store_data and restore_data (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Oct 2015 07:25:28 +0100
+
 univention-docker-container-mode (1.0.9-1) unstable; urgency=medium
 
   * Re-enable postfix (Bug #39542)

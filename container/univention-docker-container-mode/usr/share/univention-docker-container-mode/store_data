@@ -60,6 +60,14 @@ def copy_to_persistent_storage(src, dest):
 			if not os.path.exists(d):
 				os.makedirs(d)
 				copy_permissions(s, d)
+		elif os.path.islink(s):
+			linkto = os.readlink(s)
+			if os.path.exists(d):
+				print 'rm %s' % d
+				os.remove(d)
+			print 'ln -sf %s %s' % (linkto, d)
+			os.symlink(linkto, d)
+			copy_permissions(s, d)
 		else:
 			print 'cp %s %s' % (s, d)
 			shutil.copy(s, d)
@@ -104,8 +112,9 @@ if __name__ == '__main__':
 		copy_recursive('/var/lib/univention-directory-listener/', store)
 		copy_recursive('/etc/univention/connector', store)
 	except:
+		traceback.print_exc()
 		if opts.error_file:
-			error_file = open(opt.error_file, 'a+')
+			error_file = open(opts.error_file, 'a+')
 			traceback.print_exc(file=error_file)
 			error_file.close()
 		raise

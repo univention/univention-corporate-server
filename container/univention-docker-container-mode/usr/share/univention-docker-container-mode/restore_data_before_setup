@@ -68,8 +68,16 @@ def restore_files(source_dir):
 		for i in files:
 			src = os.path.join(path, i)
 			dest = string.replace(src, source_dir, '', 1)
-			print 'cp %s %s' % (src, dest)
-			shutil.copy(src, dest)
+			if os.path.islink(src):
+				linkto = os.readlink(src)
+				if os.path.exists(dest):
+					print 'rm %s' % dest
+					os.remove(dest)
+				print 'ln -sf %s %s' % (linkto, dest)
+				os.symlink(linkto, dest)
+			else:
+				print 'cp %s %s' % (src, dest)
+				shutil.copy(src, dest)
 			copy_permissions(src, dest)
 
 
@@ -109,8 +117,9 @@ if __name__ == '__main__':
 		print '** Restore normal UCR layer:'
 		restore_ucr_layer(os.path.join(conf_dir, 'base.conf'), {})
 	except:
+		traceback.print_exc()
 		if opts.error_file:
-			error_file = open(opt.error_file, 'a+')
+			error_file = open(opts.error_file, 'a+')
 			traceback.print_exc(file=error_file)
 			error_file.close()
 		raise
