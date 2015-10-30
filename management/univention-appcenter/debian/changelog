@@ -1,3 +1,9 @@
+univention-appcenter (5.0.14-3) unstable; urgency=medium
+
+  * Bug #39654: replace screenshot with thumbnails property
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Oct 2015 19:02:24 +0100
+
 univention-appcenter (5.0.14-2) unstable; urgency=medium
 
   * Bug #39525: ignore non-existing logos in AppcenterApp.importan_files()

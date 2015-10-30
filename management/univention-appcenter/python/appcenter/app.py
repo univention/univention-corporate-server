@@ -375,7 +375,8 @@ class App(object):
 	version = AppAttribute(required=True)
 	description = AppAttribute(localisable=True)
 	long_description = AppAttribute(escape=False, localisable=True)
-	screenshot = AppAttribute(localisable=True)
+	thumbnails = AppListAttribute()
+	screenshot = AppAttribute(localisable=True)  # deprecated, use thumbnails instead
 	categories = AppLocalisedListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], localisable_by_file='categories.ini', strict=False)
 
 	website = AppAttribute(localisable=True)
@@ -648,6 +649,23 @@ class App(object):
 			# since UCS 4.1, each app has a separate subdirectory
 			app_path = ''
 		return '%s/meta-inf/%s/%s%s' % (AppManager.get_server(), self.ucs_version, app_path, self.screenshot)
+
+	def get_thumbnail_urls(self):
+		if not self.thumbnails:
+			return []
+		thumbnails = []
+		for ithumb in self.thumbnails:
+			if ithumb.startswith('http://') or ithumb.startswith('https://'):
+				# item is already a full URI
+				thumbnails.append(ithumb)
+				continue
+
+			app_path = '%s/' % self.id
+			if self.ucs_version == '4.0' or self.ucs_version.startswith('3.'):
+				# since UCS 4.1, each app has a separate subdirectory
+				app_path = ''
+			thumbnails.append('%s/meta-inf/%s/%s%s' % (AppManager.get_server(), self.ucs_version, app_path, ithumb))
+		return thumbnails
 
 	def get_localised(self, key, loc=None):
 		from univention.appcenter import get_action

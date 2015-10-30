@@ -421,13 +421,18 @@ define([
 			}, descriptionContainer.domNode);
 			this._detailsContainer.addChild(descriptionContainer);
 
-			if (this.app.screenshot) {
+			if (this.app.thumbnails) {
 				var styleContainer = new ContainerWidget({
 					'class': 'carouselWrapper'
 				});
 
+				var urls = array.map(this.app.thumbnails, function(ithumb) {
+					return {
+						src: ithumb
+					};
+				});
 				this.carousel = new Carousel({
-					items: [{src: this.app.screenshot}]
+					items: urls
 				});
 				styleContainer.addChild(this.carousel);
 				this._detailsContainer.addChild(styleContainer);
@@ -1084,14 +1089,6 @@ define([
 					warning += ' ' + _('Click on "%(button)s" if you want to continue running this application at your own risk.', {button: _('Continue using')});
 				}
 				return warning;
-			}
-		},
-
-		_detailFieldCustomScreenshot: function() {
-			if (this.app.screenshot) {
-				return lang.replace('<img src="{url}" style="max-width: 90%; height:200px;" class="umcScreenshot" />', {
-					url: this.app.screenshot
-				});
 			}
 		},
 

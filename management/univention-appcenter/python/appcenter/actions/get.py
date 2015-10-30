@@ -104,6 +104,7 @@ class Get(UniventionAppAction):
 		ucr.load()
 		ret = app.attrs_dict()
 		ret['screenshot'] = app.get_screenshot_url()
+		ret['thumbnails'] = app.get_thumbnail_urls()
 		ret['is_installed'] = app.is_installed()
 		ret['is_current'] = app.without_repository or ucr.get('repository/online/component/%s' % app.component_id) == 'enabled'
 		ret['local_role'] = ucr.get('server/role')

@@ -68,7 +68,7 @@ define([
 			this.notifyVendor = props.notify_vendor;
 			this.maintainer = props.maintainer;
 			this.websiteMaintainer = props.website_maintainer;
-			this.screenshot = props.screenshot;
+			this.thumbnails = props.thumbnails;
 			this.withoutRepository = props.without_repository;
 			this.isInstalled = props.is_installed;
 			this.moduleName = props.umc_module_name;
