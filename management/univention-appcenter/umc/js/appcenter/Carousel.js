@@ -329,7 +329,6 @@ define([
 			domStyle.set(this.contentSliderWrapper.domNode, 'width', maxWidth + 'px');
 
 			styles.disableStyleSheet('defaultItemHeightWrapper');
-			//styles.disableStyleSheet('defaultItemHeightImage');
 			
 			domStyle.set(this.heighestImg, 'position', 'absolute');
 			domStyle.set(this.heighestImg, 'right', '1000000px');
@@ -374,7 +373,6 @@ define([
 		togglePreviewSize: function(newIndex) {
 			if (this.bigThumbnails) {
 				styles.enableStyleSheet('defaultItemHeightWrapper');
-				//styles.enableStyleSheet('defaultItemHeightImage');
 				var availableWidth = domGeometry.getMarginBox(this.domNode).w;
 
 				if (availableWidth >= this.defaultSliderWidth) {
@@ -470,6 +468,9 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 			this._registerAtParentOnShowEvents(lang.hitch(this, function() {
+				if (this.defaultSliderWidth === 0 && !this.bigThumbnails) {
+					this.calcDefaultSliderWidth();
+				}
 				if (this.allItemsLoaded) {
 					this.resizeCarousel();
 					this.showItem(this.shownItemIndex);
@@ -478,7 +479,6 @@ define([
 			this.own(on(baseWin.doc, 'resize', lang.hitch(this, '_handleResize')));
 			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
 			styles.enableStyleSheet('defaultItemHeightWrapper');
-			//styles.enableStyleSheet('defaultItemHeightImage');
 		}
 	});
 });

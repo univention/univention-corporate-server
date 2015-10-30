@@ -529,7 +529,10 @@ define([
 				this.own(tooltip);
 			}
 
-			domStyle.set(document.querySelectorAll('.umcModule[id^="umc_modules_app"] .umcModuleContent')[0], 'overflow', 'visible');
+			var _parent = this.getParent();
+			if (_parent && _parent.domNode) {
+				domStyle.set(_parent.domNode, 'overflow', 'visible');
+			}
 			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
 		},
 
