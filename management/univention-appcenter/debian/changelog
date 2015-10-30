@@ -1,3 +1,9 @@
+univention-appcenter (5.0.14-5) unstable; urgency=medium
+
+  * Bug #39654: check JS thumbnails array for length
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Oct 2015 19:26:37 +0100
+
 univention-appcenter (5.0.14-4) unstable; urgency=medium
 
   * Bug #39654: allow to localize thumbnails

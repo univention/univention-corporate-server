@@ -421,7 +421,7 @@ define([
 			}, descriptionContainer.domNode);
 			this._detailsContainer.addChild(descriptionContainer);
 
-			if (this.app.thumbnails) {
+			if (this.app.thumbnails.length) {
 				var styleContainer = new ContainerWidget({
 					'class': 'carouselWrapper'
 				});
