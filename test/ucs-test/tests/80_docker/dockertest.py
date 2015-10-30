@@ -386,7 +386,7 @@ def restore_files(source_dir):
 			dest = string.replace(src, source_dir, '', 1)
 			if os.path.islink(src):
 				linkto = os.readlink(src)
-				if os.path.exists(dest):
+				if os.path.exists(dest) or os.path.islink(dest):
 					print 'rm %s' % dest
 					os.remove(dest)
 				print 'ln -sf %s %s' % (linkto, dest)
@@ -394,7 +394,7 @@ def restore_files(source_dir):
 			else:
 				print 'cp %s %s' % (src, dest)
 				shutil.copy(src, dest)
-			copy_permissions(src, dest)
+				copy_permissions(src, dest)
 
 
 def restore_ucr_layer(ucr_file, options):
@@ -475,12 +475,11 @@ def copy_to_persistent_storage(src, dest):
 				copy_permissions(s, d)
 		elif os.path.islink(s):
 			linkto = os.readlink(s)
-			if os.path.exists(d):
+			if os.path.exists(d) or os.path.islink(d):
 				print 'rm %s' % d
 				os.remove(d)
 			print 'ln -sf %s %s' % (linkto, d)
 			os.symlink(linkto, d)
-			copy_permissions(s, d)
 		else:
 			print 'cp %s %s' % (s, d)
 			shutil.copy(s, d)

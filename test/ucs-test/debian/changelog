@@ -1,3 +1,10 @@
+ucs-test (6.0.11-5) unstable; urgency=medium
+
+  * dockertest.py: Updates to the link support in store_data and
+    restore_data (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Oct 2015 09:17:14 +0100
+
 ucs-test (6.0.11-4) unstable; urgency=medium
 
   * 80_docker/59_app_center_signature: Only the file is removed and not
