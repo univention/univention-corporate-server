@@ -500,14 +500,6 @@ class App(object):
 		if os.path.exists(meta_file):
 			app_logger.debug('Using additional %s' % meta_file)
 			meta_parser = _read_ini_file(meta_file)
-			# Remove Logo* entries from meta file to avoid collision
-			# with information contained in ini files.
-			# Logos from meta files are used for www.univention.de website.
-			try:
-				meta_parser.remove_option('Application', 'Logo')
-				meta_parser.remove_option('Application', 'LogoDetailPage')
-			except (NoSectionError, NoOptionError):
-				pass
 		else:
 			meta_parser = RawConfigParser()  # empty
 		attr_values = {}

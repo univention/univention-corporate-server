@@ -1,3 +1,9 @@
+univention-appcenter (5.0.13-2) unstable; urgency=medium
+
+  * Bug #39525: remove exception of inheriting values from meta file
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Oct 2015 15:53:38 +0100
+
 univention-appcenter (5.0.13-1) unstable; urgency=low
 
   * Bug #39652: Search text now resets when switching categories
