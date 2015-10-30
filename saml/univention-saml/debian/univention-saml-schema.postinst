@@ -35,7 +35,7 @@ case "$1" in
 	configure)
 		
 		if [ -x /etc/init.d/slapd ]; then
-			invoke-rc.d slapd restart
+			invoke-rc.d slapd crestart
 		fi
 
 		stop_udm_cli_server

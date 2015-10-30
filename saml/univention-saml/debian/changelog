@@ -1,3 +1,9 @@
+univention-saml (3.0.25-7) unstable; urgency=medium
+
+  * schema.postinst: restart slapd only if it runs (Bug #39683)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Oct 2015 16:37:34 +0100
+
 univention-saml (3.0.25-6) unstable; urgency=medium
 
   * Bug #39479: Check certificate for unix sockets
