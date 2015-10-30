@@ -46,6 +46,8 @@ def createAppAutotestMultiEnvUpdateFrom(String path, String version, String patc
 
   matrixJob(job_name) {
 
+    authenticationToken('secret')
+
     // config
     quietPeriod(60)
     logRotator(-1, 5, -1, -1)
@@ -109,6 +111,8 @@ def createAppAutotestMultiEnv(String path, String version, String patch_level, M
   def job_name = path + '/' + desc
 
   matrixJob(job_name) {
+
+    authenticationToken('secret')
     
     // config
     quietPeriod(60)
