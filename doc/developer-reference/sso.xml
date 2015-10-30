@@ -23,7 +23,7 @@
 	<section id="sso:register">
 		<title>Register new service provider via <foreignphrase>udm</foreignphrase></title>
 		<para>
-			New service providers can be registred by using the <foreignphrase>UDM</foreignphrase> module <emphasis>saml/serviceprovider</emphasis>.
+			New service providers can be registered by using the <foreignphrase>UDM</foreignphrase> module <option>saml/serviceprovider</option>.
 			To create a new service provider entry in a <foreignphrase>joinscript</foreignphrase>, see the following example:
 <screen>
 eval $(ucr shell)
@@ -66,7 +66,7 @@ The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in
 	</section>
 
 	<section id="sso:addlink">
-		<title>Add direct login link to ucs-overview page</title>
+		<title>Add direct login link to <wordasword>ucs-overview</wordasword> page</title>
 		<para>
 			To provide users with a convenient link to an identity provider initiated login, the following ucr command may be used
 <screen>
