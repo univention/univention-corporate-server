@@ -1,3 +1,10 @@
+ucs-test (6.0.11-6) unstable; urgency=medium
+
+  * 40_mail/42_dovecot_rename_mail_primary_address: removed the apptest
+    tag (Bug #39687)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Oct 2015 14:11:26 +0100
+
 ucs-test (6.0.11-5) unstable; urgency=medium
 
   * dockertest.py: Updates to the link support in store_data and
