@@ -1,0 +1,22 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-7
+src: xen-4.1
+fix: 4.1.3-21.53.201510301602
+version: [6,7]
+desc: |
+ The following security vulnerabilities have been fixed in xen-4.1:
+ * x86: Uncontrolled creation of large page mappings by PV guests
+   (CVE-2015-7835)
+ * leak of main per-domain vcpu pointer array (CVE-2015-7969)
+ * x86: leak of per-domain profiling-related vcpu pointer array
+   (CVE-2015-7969)
+ * x86: some pmu and profiling hypercalls log without rate limiting
+   (CVE-2015-7971)
+bug:
+ - 39684
+cve:
+ - CVE-2015-7835
+ - CVE-2015-7969
+ - CVE-2015-7969
+ - CVE-2015-7971
