@@ -1,3 +1,9 @@
+univention-appcenter (5.0.14-4) unstable; urgency=medium
+
+  * Bug #39654: allow to localize thumbnails
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Oct 2015 19:12:45 +0100
+
 univention-appcenter (5.0.14-3) unstable; urgency=medium
 
   * Bug #39654: replace screenshot with thumbnails property

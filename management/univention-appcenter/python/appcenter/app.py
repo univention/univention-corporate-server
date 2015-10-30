@@ -375,7 +375,7 @@ class App(object):
 	version = AppAttribute(required=True)
 	description = AppAttribute(localisable=True)
 	long_description = AppAttribute(escape=False, localisable=True)
-	thumbnails = AppListAttribute()
+	thumbnails = AppListAttribute(localisable=True)
 	screenshot = AppAttribute(localisable=True)  # deprecated, use thumbnails instead
 	categories = AppLocalisedListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], localisable_by_file='categories.ini', strict=False)
 
