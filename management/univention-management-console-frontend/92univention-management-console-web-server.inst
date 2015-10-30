@@ -88,7 +88,7 @@ ucr set umc/saml/idp-server?"https://${ucs_server_sso_fqdn}/simplesamlphp/saml2/
 [ "$(ls -A /usr/share/univention-management-console/saml/idp/*.xml)" ] || _cleanup_die
 
 /etc/init.d/univention-management-console-web-server restart
-/etc/init.d/slapd restart
+/etc/init.d/slapd crestart
 
 ucs_addServiceToLocalhost 'Univention Management Console' "$@"
 

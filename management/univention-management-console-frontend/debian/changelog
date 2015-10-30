@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.50-1) unstable; urgency=medium
+
+  * 92univention-management-console-web-server.inst: restart slapd only
+    if it runs (Bug #39683)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Oct 2015 16:36:52 +0100
+
 univention-management-console-frontend (5.0.49-1) unstable; urgency=medium
 
   * Bug #39576: fix handling of <samlp:LogoutRequest> in single logout service
