@@ -528,11 +528,6 @@ define([
 				);
 				footerRight.addChild(ratingText);
 			});
-
-			var _parent = this.getParent();
-			if (_parent && _parent.domNode) {
-				domStyle.set(_parent.domNode, 'overflow', 'visible');
-			}
 			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
 		},
 
