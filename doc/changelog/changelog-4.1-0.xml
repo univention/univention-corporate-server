@@ -212,6 +212,11 @@
 					(<u:bug>38894</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					App logos must be in the SVG format from UCS 4.1 on. Logos are referenced in the INI or META files as
+					<classname>Logo</classname> and <classname>LogoDetailPage</classname> whereas the latter optional entry
+					may define a different logo which is displayed in the app detail view (<u:bug>39525</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The App Center now checks a digital signature of the index of app meta files.
 					(<u:bug>39591</u:bug>).
 				</simpara></listitem>
