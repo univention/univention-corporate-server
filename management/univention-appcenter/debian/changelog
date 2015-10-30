@@ -1,3 +1,9 @@
+univention-appcenter (5.0.14-2) unstable; urgency=medium
+
+  * Bug #39525: ignore non-existing logos in AppcenterApp.importan_files()
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 30 Oct 2015 18:19:56 +0100
+
 univention-appcenter (5.0.14-1) unstable; urgency=low
 
   * Bug #39524: removed setting of domStyle in js code and put
