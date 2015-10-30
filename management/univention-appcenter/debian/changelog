@@ -1,3 +1,10 @@
+univention-appcenter (5.0.13-3) unstable; urgency=low
+
+  * Bug #39651: Added 'upgrade' and 'end of life' status icons for apps
+    in the App center gallery
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 30 Oct 2015 16:28:01 +0100
+
 univention-appcenter (5.0.13-2) unstable; urgency=medium
 
   * Bug #39525: remove exception of inheriting values from meta file

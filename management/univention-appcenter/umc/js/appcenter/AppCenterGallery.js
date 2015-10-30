@@ -83,6 +83,12 @@ define([
 				domClass.toggle(innerWrapper, 'hover');
 			};
 
+			var statusIconClass = this.getStatusIconClass(item);
+			if (statusIconClass) {
+				put(appWrapperDiv, lang.replace('div.appStatusIcon{0}', [statusIconClass]));
+				put(appWrapperDiv, lang.replace('div.appStatusIcon.appStatusHoverIcon{0}', [statusIconClass]));
+			}
+
 			return appWrapperDiv;
 		},
 
@@ -99,14 +105,14 @@ define([
 		getStatusIconClass: function(item) {
 			var iconClass = '';
 			if (item.endoflife) {
-				iconClass = 'umcErrorIcon';
+				iconClass = '.appEndOfLifeIcon';
 			} else if (item.is_installed && item.candidate_version) {
-				iconClass = 'umcUpdateIcon';
+				iconClass = '.appUpdateIcon';
 			}
 			if (item.installations) {
 				tools.forIn(item.installations, function(server, info) {
 					if (info.version && ((item.candidate_version || item.version) != info.version)) {
-						iconClass = 'umcUpdateIcon';
+						iconClass = '.appUpdateIcon';
 						return false;
 					}
 				});
