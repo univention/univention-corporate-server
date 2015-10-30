@@ -1,3 +1,9 @@
+ucs-test (6.0.11-7) unstable; urgency=low
+
+  * Bug #39021: added 20_check_postfix_auth_per_port
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 30 Oct 2015 17:33:46 +0100
+
 ucs-test (6.0.11-6) unstable; urgency=medium
 
   * 40_mail/42_dovecot_rename_mail_primary_address: removed the apptest
