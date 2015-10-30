@@ -83,9 +83,11 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-			
+
 			this.watch('selectedChildWidget', lang.hitch(this, '_updateModuleState'));
-			this._appCenterPage._searchSidebar.watch('category', lang.hitch(this, '_updateModuleState'));
+			if (this._appCenterPage) {
+				this._appCenterPage._searchSidebar.watch('category', lang.hitch(this, '_updateModuleState'));
+			}
 		},
 
 		_updateModuleState: function() {

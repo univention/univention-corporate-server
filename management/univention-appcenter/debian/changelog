@@ -1,3 +1,9 @@
+univention-appcenter (5.0.13-6) unstable; urgency=medium
+
+  * Bug #39688: Making Repository / Packages module work again
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 30 Oct 2015 23:57:19 +0100
+
 univention-appcenter (5.0.14-5) unstable; urgency=medium
 
   * Bug #39654: check JS thumbnails array for length
