@@ -150,6 +150,31 @@ h3, h4, h5, h6 {
 	color: #619410;
 }
 
+div.step {
+	margin: 15px 0;
+	opacity: 1;
+	visibility: visible;
+	transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+div.step.hide-step {
+	opacity: 0;
+	visibility: hidden;
+	transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
+}
+
+div.step .dijitButton {
+	margin-top: 5px;
+}
+
+div.step .dijitTextBox {
+	margin-top: 0;
+}
+
+div.step .dijitTextBoxDisabled dijitInputContainer.dijitInputField {
+	background-color: transparent;
+}
+
 .success {
 	background-color: #A8E091;
 	padding: 5px;

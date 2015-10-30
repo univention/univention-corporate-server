@@ -84,7 +84,6 @@ define([
 			// create input fields for new password
 			this._newPassword = new TextBox({
 				inlineLabel: _('New password'),
-				twoRows: true,
 				type: 'password',
 				isValid: function() {
 					return !!this.get('value');
@@ -98,7 +97,6 @@ define([
 			// create input fields for new password
 			this._verifyPassword = new TextBox({
 				inlineLabel: _('New password (retype)'),
-				twoRows: true,
 				type: 'password',
 				isValid: lang.hitch(this, function() {
 					return this._newPassword.get('value') ===
