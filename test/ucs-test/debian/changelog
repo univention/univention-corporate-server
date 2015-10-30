@@ -1,3 +1,11 @@
+ucs-test (6.0.11-4) unstable; urgency=medium
+
+  * 80_docker/59_app_center_signature: Only the file is removed and not
+    the complete App if the file hash doesn't match (Bug #39671)
+  * 80_docker/64_app_container_upgrade: Support links (Bug #39462)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Oct 2015 07:18:31 +0100
+
 ucs-test (6.0.11-3) unstable; urgency=medium
 
   * 80_docker/59_app_center_signature: Added first tests to verify the

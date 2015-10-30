@@ -48,6 +48,9 @@ class SyncedAppcenter(Appcenter):
 		if os.path.exists(os.path.join('/var/cache/univention-appcenter/', f)):
 			os.remove(os.path.join('/var/cache/univention-appcenter/', f))
 
+	def file_exists_in_cache(self, f):
+		return os.path.exists(os.path.join('/var/cache/univention-appcenter/', f))
+
 	def test_index_without_gpg(self):
 		self.download_index_json()
 		res = call('univention-app update', shell=True)
@@ -93,8 +96,8 @@ class SyncedAppcenter(Appcenter):
 		self.download('univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv)
 		call('echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv, shell=True)
 		res = call('univention-app update', shell=True)
-		res = call('univention-app get owncloud8-docker name', shell=True)
-		if res == 0:
+		# Check only if the file was removed from th local cache
+		if not self.remove_from_cache('owncloud8-docker_20150917.inst'):
 			fail('_test_modify_inst failed')
 		print '### _test_modify_inst passed'
 
