@@ -329,6 +329,7 @@
 			<title>Mail</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A problem with postfix' init.d script has been fixed that could lead to the inability to start/stop postfix in docker contaienrs (<u:bug>39542</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
