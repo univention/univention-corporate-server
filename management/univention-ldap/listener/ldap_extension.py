@@ -74,8 +74,9 @@ def postrun():
 		schema_handler._todo_list = []
 		acl_handler._todo_list = []
 
+	slapd_running = not subprocess.call(['pidof', 'slapd'])
 	initscript='/etc/init.d/slapd'
-	if os.path.exists(initscript):
+	if os.path.exists(initscript) and slapd_running:
 		listener.setuid(0)
 		try:
 			if schema_handler._do_reload or acl_handler._do_reload:
