@@ -108,6 +108,9 @@
 				<listitem><simpara>
 					OpenLDAP has been updated to version 2.4.42 (<u:bug>38876</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The directory logger and the <package>ldap_extension</package> listener module now restart the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
@@ -522,6 +525,9 @@
 				</simpara></listitem>
 				<listitem><simpara>
 						The default <property>NameID</property> identifier format for configured service providers is changed to <property>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</property> (<u:bug>39431</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The SAML schema package now restarts the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
