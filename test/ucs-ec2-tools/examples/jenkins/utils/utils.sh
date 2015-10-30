@@ -252,6 +252,12 @@ install_ucs_test_appcenter_uninstall ()
 	install_with_unmaintained ucs-test-appcenter-uninstall
 }
 
+remove_s4connector_tests_and_mark_tests_manual_installed ()
+{
+	univention-remove --yes ucs-test-s4connector
+	apt-mark manual $(apt-mark showauto | grep ^ucs-test-)
+}
+
 install_ucs_windows_tools ()
 {
 	install_with_unmaintained ucs-windows-tools
