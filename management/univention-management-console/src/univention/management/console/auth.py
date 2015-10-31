@@ -88,7 +88,7 @@ class AuthHandler(signals.Provider):
 		username, password, new_password, locale = msg.body['username'], msg.body['password'], msg.body.get('new_password'), msg.body.get('locale')
 		# PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so. See http://pam-python.sourceforge.net/doc/html/#bugs
 		self.pam = PamAuth(locale)
-		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password, locale), notifier.Callback(self.__authentication_result))
+		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password, locale), notifier.Callback(self.__authentication_result, msg))
 		thread.run()
 
 	def __authenticate_thread(self, username, password, new_password, locale):
@@ -133,7 +133,7 @@ class AuthHandler(signals.Provider):
 		finally:  # ignore all exceptions, even  in except blocks
 			return username
 
-	def __authentication_result(self, thread, result):
+	def __authentication_result(self, thread, result, request):
 		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, PasswordExpired, PasswordChangeFailed)):
 			import traceback
 			AUTH.error(''.join(traceback.format_exception(*thread.exc_info)))
@@ -141,4 +141,4 @@ class AuthHandler(signals.Provider):
 			username, password = result
 			result = {'username': username, 'password': password, 'auth_type': self.__auth_type}
 		auth_result = AuthenticationResult(result)
-		self.signal_emit('authenticated', auth_result)
+		self.signal_emit('authenticated', auth_result, request)

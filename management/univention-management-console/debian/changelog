@@ -1,3 +1,9 @@
+univention-management-console (8.0.22-1) unstable; urgency=medium
+
+  * Bug #39695: fix race condition during duplicated authentication
+
+ -- Florian Best <best@univention.de>  Sat, 31 Oct 2015 13:29:04 +0100
+
 univention-management-console (8.0.21-1) unstable; urgency=medium
 
   * umc-service-providers.py: restart slapd only if it runs (Bug #39683)

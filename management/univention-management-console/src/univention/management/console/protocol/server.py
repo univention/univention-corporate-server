@@ -102,19 +102,19 @@ class MagicBucket(object):
 			del state
 		self.__states = {}
 
-	def _authenticated(self, result, state):
+	def _authenticated(self, result, state, request):
 		"""Signal callback: Invoked when a authentication has been
 		tried. This function generates the UMCP response.
 
 		:param bool result: True if the authentication was successful
 		:param State state: the state object for the connection (see also :class:`~univention.management.console.protocol.session.State`)
 		"""
-		state.authResponse.status = result.status
+		response = Response(request)
+		response.status = result.status
 		if result.message:
-			state.authResponse.message = result.message
-		state.authResponse.result = result.result
-		self._response(state.authResponse, state)
-		state.authResponse = None
+			response.message = result.message
+		response.result = result.result
+		self._response(response, state)
 
 	def _receive(self, socket):
 		"""Signal callback: Handles incoming data. Processes SSL events
@@ -189,14 +189,12 @@ class MagicBucket(object):
 			self._response(res, state)
 		elif msg.command == 'AUTH':
 			Server.reload()
-			state.authResponse = Response(msg)
 			try:
 				state.authenticate(msg)
 			except (TypeError, KeyError):
-				state.authResponse.status = BAD_REQUEST_INVALID_OPTS
-				state.authResponse.message = 'insufficient authentification information'
-				self._response(state.authResponse, state)
-				state.authResponse = None
+				response = Response(msg)
+				response.status = 400
+				self._response(response, state)
 		elif msg.command == 'GET' and 'newsession' in msg.arguments:
 			CORE.info('Renewing session')
 			state.processor = None

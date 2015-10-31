@@ -96,7 +96,6 @@ class State(signals.Provider):
 		self.__credentials = None
 		self.buffer = ''
 		self.requests = {}
-		self.authResponse = None
 		self.signal_new('authenticated')
 		self.resend_queue = []
 		self.running = False
@@ -112,9 +111,9 @@ class State(signals.Provider):
 		del self.processor
 		self.processor = None
 
-	def _authenticated(self, result):
+	def _authenticated(self, result, request):
 		self.authenticated = bool(result)
-		self.signal_emit('authenticated', result, self)
+		self.signal_emit('authenticated', result, self, request)
 		if not self.authenticated:
 			return
 		if self.processor is not None and self.processor.auth_type is None and result.credentials['auth_type']:

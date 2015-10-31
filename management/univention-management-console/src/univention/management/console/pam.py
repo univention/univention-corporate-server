@@ -196,10 +196,10 @@ class PamAuth(object):
 
 	def error_message(self, pam_err):
 		errors = {
-			PAM_NEW_AUTHTOK_REQD: self._('The password has expired and must be renewed'),
-			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore'),
-			PAM_USER_UNKNOWN: self._('The authentication has failed, please login again'),
-			PAM_AUTH_ERR: self._('The authentication has failed, please login again'),
+			PAM_NEW_AUTHTOK_REQD: self._('The password has expired and must be renewed.'),
+			PAM_ACCT_EXPIRED: self._('The account is expired and can not be used anymore.'),
+			PAM_USER_UNKNOWN: self._('The authentication has failed, please login again.'),
+			PAM_AUTH_ERR: self._('The authentication has failed, please login again.'),
 			PAM_AUTHTOK_ERR: self._('Make sure the kerberos service is functioning or inform an Administrator.'),
 			PAM_AUTHTOK_RECOVER_ERR: self._('The entered password does not match the current one.'),
 		}
