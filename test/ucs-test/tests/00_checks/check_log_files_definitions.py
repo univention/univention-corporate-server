@@ -77,6 +77,7 @@ class Errors(LogMessage):
 		'DNS Update for .* failed: ERROR_DNS_UPDATE_FAILED', #Bug #39622
 		'DNS update failed: NT_STATUS_UNSUCCESSFUL', #Bug #39622
 		'rndc: connect failed: 127.0.0.1#953: connection refused', #Bug #39691
+		'.*Ignoring import error: No module named ucs_version', #Bug #39692
 		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.' #Bug #38911
 	]
 
