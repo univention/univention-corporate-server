@@ -1,5 +1,7 @@
 univention-management-console-frontend (5.0.50-2) unstable; urgency=medium
 
+  * Bug #39605: use the same request protocol scheme when testing if the IDP
+  	is reachable
   * Bug #39576: fix logout requests
 
  -- Florian Best <best@univention.de>  Fri, 30 Oct 2015 12:44:28 +0100

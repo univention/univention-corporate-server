@@ -54,7 +54,7 @@ define([
 				})
 			});
 			xhr.get('/univention-management-console/entries.json', {handleAs: 'json'}).always(lang.hitch(this, function(result) {
-				var uri = 'https://' + result.ucr['ucs/server/sso/fqdn'] + '/simplesamlphp/blank.json';
+				var uri = window.location.protocol + '//' + result.ucr['ucs/server/sso/fqdn'] + '/simplesamlphp/blank.json';
 				return xhr.get(uri, {handleAs: 'json', timeout: 3000}).then(function(res) {
 					if (res.status == 200) {
 						return true;
