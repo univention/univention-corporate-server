@@ -1,3 +1,9 @@
+ucs-test (6.0.12-2) unstable; urgency=medium
+
+  * Fix last commit and use the right version numbers (Bug #39101)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Oct 2015 08:57:20 +0100
+
 ucs-test (6.0.12-1) unstable; urgency=medium
 
   * Ignore ERROR_DNS_UPDATE_FAILED warning (Bug #39622)
