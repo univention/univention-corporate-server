@@ -78,10 +78,10 @@ class Errors(LogMessage):
 		'DNS update failed: NT_STATUS_UNSUCCESSFUL', #Bug #39622
 		'rndc: connect failed: 127.0.0.1#953: connection refused', #Bug #39691
 		'.*Ignoring import error: No module named ucs_version', #Bug #39692
-		'[!] error queue: 140DC002: error:140DC002:SSL routines:SSL_CTX_use_certificate_chain_file:system lib', #Bug #39646
-		'[!] error queue: 20074002: error:20074002:BIO routines:FILE_CTRL:system lib', #Bug #39646
-		'[!] SSL_CTX_use_certificate_chain_file: 2001002: error:02001002:system library:fopen:No such file or directory', #Bug #39646
-		'[!] Service [memcached]: Failed to initialize SSL context', #Bug #39646
+		'\[!\] error queue: 140DC002: error:140DC002:SSL routines:SSL_CTX_use_certificate_chain_file:system lib', #Bug #39646
+		'\[!\] error queue: 20074002: error:20074002:BIO routines:FILE_CTRL:system lib', #Bug #39646
+		'\[!\] SSL_CTX_use_certificate_chain_file: 2001002: error:02001002:system library:fopen:No such file or directory', #Bug #39646
+		'\[!\] Service \[memcached\]: Failed to initialize SSL context', #Bug #39646
 		'failed', #Bug #39646
 		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.' #Bug #38911
 	]
