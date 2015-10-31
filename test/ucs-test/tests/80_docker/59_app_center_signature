@@ -97,7 +97,7 @@ class SyncedAppcenter(Appcenter):
 		call('echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv, shell=True)
 		res = call('univention-app update', shell=True)
 		# Check only if the file was removed from th local cache
-		if not self.remove_from_cache('owncloud8-docker_20150917.inst'):
+		if self.file_exists_in_cache('owncloud8-docker_20150917.inst'):
 			fail('_test_modify_inst failed')
 		print '### _test_modify_inst passed'
 

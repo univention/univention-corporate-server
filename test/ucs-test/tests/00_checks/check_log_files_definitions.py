@@ -75,6 +75,8 @@ class Errors(LogMessage):
 		'.*E: Unable to locate package univention-welcome-screen.*', '.*E: Handler silently failed.*',  # Bug #37537 ^^
 		'.*ERROR\(runtime\): uncaught exception - \(-1073741823.*', '.*open: error=2 \(No such file or directory\).*', #Bug #39123
 		'DNS Update for .* failed: ERROR_DNS_UPDATE_FAILED', #Bug #39622
+		'DNS update failed: NT_STATUS_UNSUCCESSFUL', #Bug #39622
+		'rndc: connect failed: 127.0.0.1#953: connection refused', #Bug #39691
 		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.' #Bug #38911
 	]
 

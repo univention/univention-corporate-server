@@ -1,3 +1,25 @@
+ucs-test (6.0.12-1) unstable; urgency=medium
+
+  * Ignore ERROR_DNS_UPDATE_FAILED warning (Bug #39622)
+  * 80_docker/59_app_center_signature: Fix logical error in result check
+    (Bug #39671)
+  * 99check_log_files: Ignore 'rndc: connect failed: 127.0.0.1#953:
+    connection refused' message (Bug #39691)
+  * 01_base/90change_user_pwd_via_umcp: change from spaces to tabs
+  * 01_base/90change_user_pwd_via_umcp: In one test setup the LDAP was
+    not available while the container should be created. Catch the
+    exception and try again (Bug #36900)
+  * 40_mail/33_smart_host_configuration: Disabled the test for UCS 4.1
+    (Bug #38941)
+  * 51_samba4/59checkPrimaryGroupInPacInfo: disable test case (Bug
+    #39101)
+  * 52_s4connector/100sync_gpo_ntsecurity_descriptor: convert to tabs,
+    print more debug and give the connector more time
+  * 59_udm/*: wait for replication because it
+    failed on a DC backup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Oct 2015 08:45:11 +0100
+
 ucs-test (6.0.11-7) unstable; urgency=low
 
   * Bug #39021: added 20_check_postfix_auth_per_port

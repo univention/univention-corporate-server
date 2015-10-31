@@ -6,6 +6,7 @@
 ##  - 38663
 ##  - 38712
 
+. "$TESTLIBPATH/base.sh" || exit 137
 . udm.sh || exit 137
 
 setup () {
@@ -39,6 +40,7 @@ setup () {
 }
 
 check () {
+	wait_for_replication
 	policy "cn=pool,cn=$NET,cn=$name,$BASE" -s >"$tmp/pool.sh"
 	grep -Fx "univentionDhcpRouters=\"$router\"" "$tmp/pool.sh" ||
 		die "Policy not applied to DHCP-Pool"
