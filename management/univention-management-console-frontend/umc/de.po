@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-09-30 21:38+0200\n"
+"POT-Creation-Date: 2015-10-31 13:33+0100\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/tools.js:1515
+#: umc/tools.js:1518
 msgid "\"${moduleName}\" module"
 msgstr "Modul \"${moduleName}\""
 
@@ -179,7 +179,7 @@ msgstr ""
 "univention.de/produkte/support/community-support/\" target=\"_blank"
 "\">Community und Support</a></li></ul>"
 
-#: umc/tools.js:224
+#: umc/tools.js:227
 msgid ""
 "A reload of the Univention Management Console is required to use new modules."
 "<br>Currently opened modules may not work properly.<br>Do you want to reload "
@@ -214,15 +214,15 @@ msgstr "Objekte hinzufügen"
 msgid "Add to favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: umc/tools.js:914
+#: umc/tools.js:917
 msgid "An assert statement failed"
 msgstr "Ein Assert-Anweisung schlug fehl"
 
-#: umc/tools.js:712 umc/tools.js:790
+#: umc/tools.js:715 umc/tools.js:793
 msgid "An error occurred"
 msgstr "Ein Fehler ist aufgetreten: "
 
-#: umc/tools.js:718
+#: umc/tools.js:721
 msgid ""
 "An error occurred while connecting to the server, please try again later."
 msgstr ""
@@ -233,7 +233,7 @@ msgstr ""
 msgid "An error occurred: "
 msgstr "Ein Fehler ist aufgetreten: "
 
-#: umc/tools.js:715
+#: umc/tools.js:718
 #, python-format
 msgid ""
 "An unknown error with status code %s occurred while connecting to the "
@@ -242,11 +242,11 @@ msgstr ""
 "Ein unbekannter Fehler mit Status-Code %s trat während des "
 "Verbindungsaufbaus zum Server auf. Bitte versuchen Sie es später noch einmal."
 
-#: umc/dialog/LoginDialog.js:142
+#: umc/dialog/LoginDialog.js:143
 msgid "Authentication failure"
 msgstr "Authentifizierungsfehler"
 
-#: umc/auth.js:195
+#: umc/auth.js:199
 msgid "Authentication required"
 msgstr "Authentifizierung notwendig"
 
@@ -258,7 +258,7 @@ msgstr "Zurück"
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/app.js:1826 umc/dialog.js:304 umc/tools.js:226
+#: umc/app.js:1826 umc/dialog.js:304 umc/tools.js:229
 #: umc/widgets/MultiObjectSelect.js:139 umc/widgets/Wizard.js:163
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -271,7 +271,7 @@ msgstr "Daten leeren"
 msgid "Clear image data"
 msgstr "Bilddaten leeren"
 
-#: umc/app.js:833 umc/tools.js:766 umc/widgets/Module.js:172
+#: umc/app.js:833 umc/tools.js:769 umc/widgets/Module.js:172
 msgid "Close"
 msgstr "Schließen"
 
@@ -283,7 +283,7 @@ msgstr "Ende des Begrüßungsassistenten"
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: umc/tools.js:586
+#: umc/tools.js:589
 msgid "Could not fulfill the request."
 msgstr "Die Anfrage konnte nicht ausgeführt werden."
 
@@ -292,24 +292,18 @@ msgstr "Die Anfrage konnte nicht ausgeführt werden."
 msgid "Could not load module \"%s\"."
 msgstr "Modul \"%s\" konnte nicht geladen werden."
 
-#: univention-management-console-web-server:563
+#: univention-management-console-web-server:604
 #, python-format
 msgid ""
 "Could not pick an identity provider. You can specify one via the query "
 "string parameter %r from %r"
-msgstr "Konnte keinen Identity Provider auswählen. Sie können über den Query-String-Parameter %r einen der folgenden %r auswählen."
+msgstr ""
+"Konnte keinen Identity Provider auswählen. Sie können über den Query-String-"
+"Parameter %r einen der folgenden %r auswählen."
 
-#: umc/tools.js:606
+#: umc/tools.js:609
 msgid "Could not process the request."
 msgstr "Die Anfrage konnte nicht bearbeitet werden."
-
-#: umc/auth.js:179
-msgid "Could not reach Identity provider for automatic single sign on."
-msgstr "Konnte den Identity Provider zum automatisch Single Sign-On nicht erreichen."
-
-#: umc/auth.js:175
-msgid "Could not renew single sign on session."
-msgstr "Konnte die Single Sign-On-Session nicht erneuern."
 
 #: umc/app/AboutPage.js:59
 msgid "Date of expiry of the SSL certificate for this system"
@@ -379,7 +373,7 @@ msgstr "Hello %s %s!"
 msgid "Help"
 msgstr "Hilfe"
 
-#: umc/tools.js:746
+#: umc/tools.js:749
 msgid "Hide server error message"
 msgstr "Fehlernachricht des Servers ausblenden"
 
@@ -392,55 +386,55 @@ msgstr "Ich sehe Verbesserungsmöglichkeiten."
 msgid "Importing license data..."
 msgstr "Importieren der Lizenzdaten..."
 
-#: umc/tools.js:782
+#: umc/tools.js:785
 msgid "Inform vendor"
 msgstr "Dem Hersteller melden"
 
-#: umc/tools.js:324
+#: umc/tools.js:327
 msgid "Information"
 msgstr "Hinweis"
 
-#: umc/dialog/LoginDialog.js:390
+#: umc/dialog/LoginDialog.js:395
 msgid "Insecure Connection"
 msgstr "Unsichere Verbindung"
 
-#: umc/tools.js:603
+#: umc/tools.js:606
 msgid "Internal UMC protocol error: The UMCP message body could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Body konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:602
+#: umc/tools.js:605
 msgid ""
 "Internal UMC protocol error: The UMCP message header could not be parsed."
 msgstr ""
 "Interner UMC-Protokoll-Fehler: Der UMCP-Message-Header konnte nicht geparst "
 "werden."
 
-#: umc/tools.js:605
+#: umc/tools.js:608
 msgid "Internal module error: An error occured during command processing."
 msgstr ""
 "Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
 "auf."
 
-#: umc/tools.js:607
+#: umc/tools.js:610
 msgid ""
 "Internal module error: The initialization of the module caused a fatal error."
 msgstr ""
 "Interner Modul-Fehler: Die Initialisierung des Moduls erzeugte einen fatalen "
 "Fehler."
 
-#: umc/tools.js:596
+#: umc/tools.js:599
 msgid "Internal server error."
 msgstr "Interner Server-Fehler."
 
-#: umc/tools.js:599
+#: umc/tools.js:602
 msgid "Internal server error: Could not connect to the module process."
 msgstr ""
 "Interner Server-Fehler: Verbindung zum Modulprozess konnte nicht aufgebaut "
 "werden."
 
-#: umc/tools.js:600
+#: umc/tools.js:603
 msgid ""
 "Internal server error: The SSL server certificate is not trustworthy. Please "
 "check your SSL configurations."
@@ -448,11 +442,11 @@ msgstr ""
 "Interner Server-Fehler: Das SSL-Server-Zertifikat ist nicht "
 "vertrauenswürdig. Bitte überprüfen Sie ihre SSL-Konfiguration."
 
-#: umc/tools.js:598
+#: umc/tools.js:601
 msgid "Internal server error: The module process died unexpectedly."
 msgstr "Interner Server-Fehler: Der Modulprozess wurde unerwartet beendet."
 
-#: umc/tools.js:597
+#: umc/tools.js:600
 msgid "Internal server error: The service is temporarily not available."
 msgstr "Interner Server-Fehler: Der Dienst ist momentan nicht erreichbar!"
 
@@ -464,7 +458,7 @@ msgstr "Sprache"
 msgid "License import"
 msgstr "Lizenz-Import"
 
-#: umc/auth.js:207 umc/dialog/LoginDialog.js:62
+#: umc/auth.js:211 umc/dialog/LoginDialog.js:63
 msgid "Login"
 msgstr "Anmelden"
 
@@ -476,11 +470,11 @@ msgstr "Abmelden"
 msgid "Module search"
 msgstr "Modulsuche"
 
-#: umc/dialog/LoginDialog.js:60
+#: umc/dialog/LoginDialog.js:61
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: umc/dialog/LoginDialog.js:61
+#: umc/dialog/LoginDialog.js:62
 msgid "New Password (retype)"
 msgstr "Neues Passwort (wiederholen)"
 
@@ -536,7 +530,7 @@ msgstr "Andere"
 msgid "Owner"
 msgstr "Besitzer"
 
-#: umc/auth.js:203 umc/dialog/LoginDialog.js:59
+#: umc/auth.js:207 umc/dialog/LoginDialog.js:60
 msgid "Password"
 msgstr "Passwort"
 
@@ -549,7 +543,7 @@ msgstr ""
 "Bitte melden Sie sich mit einem gültigen Benutzernamen und Passwort an. Der "
 "Standardbenutzername zur Administration der Domäne ist %s."
 
-#: umc/tools.js:729
+#: umc/tools.js:732
 msgid "Please take a second to provide the following information:"
 msgstr ""
 "Bitte nehmen Sie sich einen Augenblick Zeit, um die folgenden Informationen "
@@ -560,18 +554,17 @@ msgstr ""
 msgid "Read"
 msgstr "Lesen"
 
-#: univention-management-console-web-server:539
+#: univention-management-console-web-server:580
 #, python-format
 msgid ""
 "Received an unsolicited SAML response. Please try to single sign on again by "
 "accessing /univention-management-console/saml/. Error message: %s"
-msgstr "Unaufgeforderte SAML-Antwort erhalten. Bitte versuchen Sie einen erneuten Single Sign-On durch aufrufen von /univention-management-console/saml/. Fehlernachricht: %s"
+msgstr ""
+"Unaufgeforderte SAML-Antwort erhalten. Bitte versuchen Sie einen erneuten "
+"Single Sign-On durch aufrufen von /univention-management-console/saml/. "
+"Fehlernachricht: %s"
 
-#: umc/auth.js:161
-msgid "Received answer from identity provider."
-msgstr "Antwort vom Identity Provider erhalten."
-
-#: umc/tools.js:232
+#: umc/tools.js:235
 msgid "Reload"
 msgstr "Neu laden"
 
@@ -608,7 +601,7 @@ msgstr "Suchergebnisse:"
 msgid "Search term"
 msgstr "Suchbegriff"
 
-#: umc/tools.js:742
+#: umc/tools.js:745
 msgid "Send as email"
 msgstr "Als E-Mail senden"
 
@@ -625,11 +618,11 @@ msgid "Server"
 msgstr "Server"
 
 #: umc/app/ActivationDialog.js:149 umc/app/StartupDialog.js:134
-#: umc/tools.js:712
+#: umc/tools.js:715
 msgid "Server error message:"
 msgstr "Fehlernachricht des Servers:"
 
-#: umc/dialog/LoginDialog.js:408
+#: umc/dialog/LoginDialog.js:413
 msgid "Session timeout"
 msgstr "Session-Timeout"
 
@@ -641,15 +634,15 @@ msgstr "Setgid"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: umc/tools.js:747
+#: umc/tools.js:750
 msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"
 
-#: umc/app/SingleSignOn.js:52
+#: umc/app/SingleSignOn.js:49
 msgid "Single Sign On"
 msgstr "Single Sign-On"
 
-#: umc/app/SingleSignOn.js:54
+#: umc/app/SingleSignOn.js:51
 msgid ""
 "Single Sign On allows a user to login once and access multiple applications "
 "seamlessly. For a safe implementation, it is necessary that the names of the "
@@ -660,13 +653,13 @@ msgstr ""
 "ist es erforderlich, dass die Namen der beteiligten Systeme via DNS vom "
 "Webbrowser erreicht werden können."
 
-#: umc/auth.js:130
+#: umc/auth.js:129
 msgid "So far the authentification failed. Continuing nevertheless."
 msgstr ""
 "Bis jetzt schlug die Authentifizierung fehl. Nichtdestotrotz wird weiterhin "
 "probiert."
 
-#: umc/tools.js:309
+#: umc/tools.js:312
 msgid ""
 "So far, the connection to the server could not be established after {time} "
 "seconds. This can be a normal behavior. In any case, the process will "
@@ -676,7 +669,7 @@ msgstr ""
 "aufgebaut werden. Dies kann ein vorhergesehenes Verhalten sein. In jedem "
 "Fall wird der Prozess weiterhin versuchen die Verbindung wieder herzustellen."
 
-#: umc/tools.js:594
+#: umc/tools.js:597
 msgid "Specified locale is not available."
 msgstr "Die angegebene Sprachdefinition ist nicht verfügbar."
 
@@ -688,25 +681,21 @@ msgstr "Sticky bit"
 msgid "Submit"
 msgstr "Absenden"
 
-#: umc/auth.js:172
-msgid "Successfully renewed single sign on session."
-msgstr "Single Sign-On Sitzung erfolgreich erneuert."
-
 #: umc/app.js:528
 #, python-format
 msgid "The %s will expire in %d days and should be renewed!"
 msgstr "Das %s wird in %d Tagen ablaufen und sollte erneuert werden!"
 
-#: univention-management-console-web-server:555
+#: univention-management-console-web-server:596
 msgid "The SAML message is invalid for this service provider."
 msgstr "Die SAML Nachricht ist ungültig für diesen Service Provider."
 
-#: univention-management-console-web-server:551
+#: univention-management-console-web-server:592
 #, python-format
 msgid "The SAML response contained a invalid signature: %s"
 msgstr "Die SAML-Antwort enthält eine ungültige Signatur: %s"
 
-#: univention-management-console-web-server:534
+#: univention-management-console-web-server:576
 #, python-format
 msgid "The SAML response could not be verified: %s"
 msgstr "Die SAML-Antwort konnte nicht verifiziert werden: %s"
@@ -727,7 +716,7 @@ msgstr ""
 "Die folgenden Dateien können nicht hochgeladen werden, da sie die maximale "
 "Dateigröße überschreiten:"
 
-#: univention-management-console-web-server:543
+#: univention-management-console-web-server:584
 #, python-format
 msgid "The identity provider reported a status error: %s"
 msgstr "Der Identity Provider hat einen Status-Fehler gemeldet: %s"
@@ -740,33 +729,40 @@ msgstr ""
 "Der Import der Lizenz schlug fehl. Überprüfen Sie die Integrität der "
 "Originaldatei, die Ihnen zugestellt wurde."
 
-#: univention-management-console-web-server:547
+#: univention-management-console-web-server:588
 #, python-format
 msgid ""
 "The issuer %r is now known to the SAML service provider. This is probably a "
 "misconfiguration and might be resolved by restarting the univention-"
 "management-console-web-server."
-msgstr "Der Aussteller %r ist diesem SAML Service Provider nicht bekannt. Dies ist wahrscheinlich eine Miskonfiguration und könnte durch einen Neustart des univention-management-console-web-server behoben werden."
+msgstr ""
+"Der Aussteller %r ist diesem SAML Service Provider nicht bekannt. Dies ist "
+"wahrscheinlich eine Miskonfiguration und könnte durch einen Neustart des "
+"univention-management-console-web-server behoben werden."
 
 #: umc/app/LicenseImportPage.js:65
 msgid "The license has been imported successfully."
 msgstr "Die Lizenz wurde erfolgreich importiert."
+
+#: univention-management-console-web-server:572
+msgid "The logout binding is not known."
+msgstr "Das SAML-Logout Binding ist unbekannt."
 
 #: umc/widgets/Uploader.js:181
 #, python-format
 msgid "The maximum size of a file is %.1f MB."
 msgstr "Die Maximalgröße einer Datei ist %.1f MB."
 
-#: umc/widgets/PasswordInputBox.js:122 umc/dialog/LoginDialog.js:235
+#: umc/widgets/PasswordInputBox.js:122 umc/dialog/LoginDialog.js:239
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
-#: univention-management-console-web-server:526
+#: univention-management-console-web-server:564
 #, python-format
 msgid "The principal is unknown: %s"
 msgstr "Der SAML-Prinzipal ist unbekannt: %s"
 
-#: univention-management-console-web-server:530
+#: univention-management-console-web-server:568
 #, python-format
 msgid "The requested SAML binding is not known: %s"
 msgstr "Das angeforderte SAML-Binding ist unbekannt: %s"
@@ -776,22 +772,24 @@ msgstr "Das angeforderte SAML-Binding ist unbekannt: %s"
 msgid "The total cost was %.2f EUR!"
 msgstr "The total cost was %.2f EUR!"
 
-#: univention-management-console-web-server:559
+#: univention-management-console-web-server:600
 msgid ""
 "There is a configuration error in the service provider: No identity provider "
 "are set up for use."
-msgstr "Der Service Provider ist fehlkonfiguriert: Keine Identity Provider sind zur Benutzung eingerichtet."
+msgstr ""
+"Der Service Provider ist fehlkonfiguriert: Keine Identity Provider sind zur "
+"Benutzung eingerichtet."
 
 #: umc/app.js:1284
 #, python-format
 msgid "There is no module available for the authenticated user %s."
 msgstr "Für den angemeldeten Benutzer %s ist kein Modul verfügbar."
 
-#: umc/auth.js:199
+#: umc/auth.js:194
 msgid "This action requires you to supply your password."
 msgstr "Diese Aktion erfordert die Eingabe Ihres Passwortes."
 
-#: umc/dialog/LoginDialog.js:391
+#: umc/dialog/LoginDialog.js:396
 #, python-format
 msgid ""
 "This network connection is not encrypted. All personal or sensitive data "
@@ -818,7 +816,7 @@ msgstr "UCS Startseite"
 msgid "UMC Version"
 msgstr "UMC-Version"
 
-#: umc/tools.js:223
+#: umc/tools.js:226
 msgid "UMC reload required"
 msgstr "Erneutes Laden der UMC notwendig"
 
@@ -829,10 +827,6 @@ msgstr "Univention Management Console"
 #: umc/app.js:770
 msgid "Univention Website"
 msgstr "Univention Webseite"
-
-#: umc/auth.js:182
-msgid "Unknown error during single sign on."
-msgstr "Unbekannter Fehler während des Single Sign-On's."
 
 #: umc/app/LicenseImportPage.js:62
 msgid "Updating session data..."
@@ -868,11 +862,11 @@ msgstr "Dateiübertragung beendet"
 msgid "Usage statistics"
 msgstr "Nutzungsstatistiken"
 
-#: umc/dialog/LoginDialog.js:58
+#: umc/dialog/LoginDialog.js:59
 msgid "Username"
 msgstr "Benutzername"
 
-#: umc/tools.js:593
+#: umc/tools.js:596
 msgid "Validation error"
 msgstr "Validierungsfehler"
 
@@ -880,7 +874,7 @@ msgstr "Validierungsfehler"
 msgid "Warning"
 msgstr "Warnung"
 
-#: umc/tools.js:591
+#: umc/tools.js:594
 msgid ""
 "Webfrontend error: The specified UMCP command arguments of the request are "
 "invalid."
@@ -888,7 +882,7 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen UMCP-Befehl-Argumente der Anfrage sind "
 "nicht zulässig."
 
-#: umc/tools.js:592
+#: umc/tools.js:595
 msgid ""
 "Webfrontend error: The specified arguments for the UMCP module method are "
 "invalid or missing."
@@ -896,7 +890,7 @@ msgstr ""
 "Webfrontend-Fehler: Die angegebenen Argumente für die UMCP-Modul-Methode "
 "sind nicht zulässig oder fehlen."
 
-#: umc/tools.js:590
+#: umc/tools.js:593
 msgid "Webfrontend error: The specified request is unknown."
 msgstr "Webfrontend-Fehler: Die angegebene Anfrage ist nicht bekannt."
 
@@ -913,7 +907,7 @@ msgstr "Willkommen bei Univention Management Console"
 msgid "Write"
 msgstr "Schreiben"
 
-#: umc/tools.js:588
+#: umc/tools.js:591
 msgid "You are not authorized to perform this action."
 msgstr "Sie sind nicht authorisiert, diese Aktion durchzuführen."
 
@@ -925,11 +919,11 @@ msgstr ""
 "Sie können die Lizenzdatei auch zu einem späteren Zeitpunkt über das "
 "Benutzermenü oben rechts importieren."
 
-#: umc/dialog/LoginDialog.js:402
+#: umc/dialog/LoginDialog.js:407
 msgid "Your Browser is outdated"
 msgstr "Ihr Browser ist veraltet"
 
-#: umc/dialog/LoginDialog.js:403
+#: umc/dialog/LoginDialog.js:408
 msgid ""
 "Your Browser is outdated and should be updated. You may continue to use "
 "Univention Management Console but you may experience performance issues and "
@@ -939,29 +933,33 @@ msgstr ""
 "Univention Management Console benutzen, aber es kann zu Geschwindigkeits- "
 "und anderen Problemen kommen."
 
-#: umc/dialog/LoginDialog.js:408
+#: umc/dialog/LoginDialog.js:413
 msgid "Your session has been closed due to inactivity. Please login again."
 msgstr ""
 "Ihre Sitzung wurde wegen Inaktivität geschlossen. Bitte melden Sie sich "
 "erneut an."
 
-#: umc/tools.js:587
+#: umc/tools.js:590
 msgid "Your session has expired, please login again."
 msgstr "Ihre Sitzung ist abgelaufen, bitte melden Sie sich erneut an."
 
-#: umc/tools.js:732
+#: umc/tools.js:735
 msgid "actual result"
 msgstr "beobachtetes Ergebnis"
 
-#: umc/tools.js:731
+#: umc/tools.js:734
 msgid "expected result"
 msgstr "erwartetes Ergebnis"
+
+#: umc/app/SingleSignOn.js:65
+msgid "http://sdb.univention.de/1351"
+msgstr ""
 
 #: umc/widgets/Grid.js:591
 msgid "more"
 msgstr "mehr"
 
-#: umc/tools.js:730
+#: umc/tools.js:733
 msgid "steps to reproduce the failure"
 msgstr "Schritte, um den Fehler zu reproduzieren"
 
@@ -1002,6 +1000,14 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Automatic logon failed"
 #~ msgstr "Automatischer Login fehlgeschlagen"
 
+#~ msgid "Could not reach Identity provider for automatic single sign on."
+#~ msgstr ""
+#~ "Konnte den Identity Provider zum automatisch Single Sign-On nicht "
+#~ "erreichen."
+
+#~ msgid "Could not renew single sign on session."
+#~ msgstr "Konnte die Single Sign-On-Session nicht erneuern."
+
 #~ msgid "Favorites"
 #~ msgstr "Favoriten"
 
@@ -1035,6 +1041,12 @@ msgstr "{number} Fehler sind aufgetreten: "
 #~ msgid "Open context menu"
 #~ msgstr "Kontextmenü öffnen"
 
+#~ msgid "Received answer from identity provider."
+#~ msgstr "Antwort vom Identity Provider erhalten."
+
+#~ msgid "Successfully renewed single sign on session."
+#~ msgstr "Single Sign-On Sitzung erfolgreich erneuert."
+
 #~ msgid "The account as been disabled."
 #~ msgstr "Das Benutzerkonto wurde deaktiviert."
 
@@ -1058,6 +1070,9 @@ msgstr "{number} Fehler sind aufgetreten: "
 
 #~ msgid "Tooltips"
 #~ msgstr "Tooltips"
+
+#~ msgid "Unknown error during single sign on."
+#~ msgstr "Unbekannter Fehler während des Single Sign-On's."
 
 #~ msgid "Unknown error while performing automatic login at host "
 #~ msgstr "Unbekannter Fehler während des automatischen Logins an Rechner "

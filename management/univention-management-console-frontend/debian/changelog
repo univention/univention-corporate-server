@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.50-3) unstable; urgency=medium
+
+  * Bug #39576: fix fuzzy
+
+ -- Florian Best <best@univention.de>  Sat, 31 Oct 2015 13:34:54 +0100
+
 univention-management-console-frontend (5.0.50-2) unstable; urgency=medium
 
   * Bug #39605: use the same request protocol scheme when testing if the IDP
