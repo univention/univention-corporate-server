@@ -1,3 +1,10 @@
+ucs-test (6.0.12-4) unstable; urgency=medium
+
+  * 99check_log_files: Ignore some memcache and stunnel messages
+    (Bug #39646)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Oct 2015 09:24:59 +0100
+
 ucs-test (6.0.12-3) unstable; urgency=medium
 
   * 99check_log_files: Ignore 'Ignoring import error: No module named
