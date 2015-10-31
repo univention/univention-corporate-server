@@ -345,7 +345,6 @@ define([
 		},
 
 		_authentication_failed: function(error) {
-			console.log('authentication dialog failed');
 			// don't call _updateFormDeferred or _resetForm here!
 			// It would break setting of new_password
 			this.standby(false);

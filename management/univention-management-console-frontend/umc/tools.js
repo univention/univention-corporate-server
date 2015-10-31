@@ -353,19 +353,15 @@ define([
 						this._dialog.destroyRecursive();
 						this.finishedDeferred.resolve(data);
 					}), lang.hitch(this, function(error) {
-						var result = tools.parseError(error);
+						var info = tools.parseError(error);
+						info.exception = error;
 
-						if (!this.noLogin) {
-							// handle login cases
-							if (401 == result.status) {
-								// command was rejected, user is not authorized / or login failed... continue to poll after successful login
-								var deferred = require('umc/auth').handleAuthenticationError(error, result, args);
-								if (deferred) {
-									deferred.then(lang.hitch(this, 'sendRequest'));
-									return;
-								}
-								// TODO: in theory we should display the login dialog here as the credentials in the query string are wrong
-								// but as this is also used in system-setup for autologin leave it as is for now
+						if (!this.noLogin && 401 == info.status) {
+							// command was rejected, user is not authorized... continue to poll after successful login
+							var deferred = require('umc/auth').handleAuthenticationError(info);
+							if (deferred) {
+								deferred.then(lang.hitch(this, 'sendRequest'));
+								return;
 							}
 						}
 
@@ -402,7 +398,7 @@ define([
 		umcpCommand: function(
 			/*String*/ command,
 			/*Object?*/ dataObj,
-			/*Boolean?*/ handleErrors,
+			/*Object|Boolean?*/ handleErrors,
 			/*String?*/ flavor,
 			/*Object?*/ longPollingOptions) {
 
@@ -422,7 +418,7 @@ define([
 			return this.request({
 				url: '/univention-management-console/' + command,
 				data: _body,
-				handleErrors: handleErrors,
+				errorHandler: this.__getErrorHandler(handleErrors),
 				flavor: flavor,
 				longPollingOptions: longPollingOptions
 			});
@@ -435,7 +431,6 @@ define([
 			//		A deferred object.
 
 			// set default values for parameters
-			var handleErrors = (undefined === args.handleErrors) || args.handleErrors;
 			var url = args.url ? args.url : '/univention-management-console/' + args.type + (args.command ? '/' + args.command : '');
 			var body = args.body;
 			if (args.data !== undefined) {
@@ -471,40 +466,23 @@ define([
 				call = call.then(function(data) {
 					tools._updateSession();
 					return data;
-				}, lang.hitch(this, function(error) {
-					var info = this.parseError(error);
-
-					if (info.status == 401) {
-						var deferred = require('umc/auth').handleAuthenticationError(error, info, args);
-						if (deferred) {
-							// authentication error wait for the login and execute the request again
-							return deferred.then(lang.hitch(this, function() {
-								return this.request.apply(this, [args]);
-							}));
-						}
-					}
-					throw error; // propagate the error
-				}));
+				});
 
 				// handle XHR errors unless not specified otherwise
-				if (handleErrors) {
+				if (args.errorHandler) {
 					call = call.then(function(data) {
-						// do not modify the data
-						if ( data && data.message ) {
-							if ( parseInt(data.status, 10) == 200 ) {
-								dialog.notify( data.message );
-							} else {
-								dialog.alert( data.message );
-							}
-						}
-
-						return data; // Object
+						args.errorHandler.success(data);
+						return data;
 					}, lang.hitch(this, function(error) {
-						// handle errors
-						if (error.response) {
-							tools.handleErrorStatus(error.response, handleErrors);
+						var info = tools.parseError(error);
+						info.exception = error;
+						var deferred = args.errorHandler.error(info);
+						if (!deferred) {
+							throw error;
 						}
-						throw error;
+						return deferred.then(lang.hitch(this, function() {
+							return this.request.apply(this, [args]);
+						}));
 					}));
 				}
 
@@ -513,11 +491,123 @@ define([
 			}
 		},
 
+		__getErrorHandler: function(handleErrors) {
+			var custom = {};
+			if (handleErrors === false) {
+				custom = {
+					displayErrors: false,
+					displayMessages: false
+				};
+			} else if (handleErrors && handleErrors.onValidationError) {
+				custom = {
+					display422: function(info) {
+						handleErrors.onValidationError(info.message, info.result);
+					}
+				};
+			} else if (typeof handleErrors == 'object') {
+				custom = handleErrors;
+			}
+
+			var errorHandler = lang.mixin({
+				displayMessages: true,
+				displayErrors: true,
+
+				401: lang.hitch(require('umc/auth'), 'handleAuthenticationError'),
+
+				display422: function(info) {
+					var message = info.message + ':<br>';
+					var formatter = function(result) {
+						message += '<ul>';
+						tools.forIn(result, function(key, value) {
+							if (typeof value == 'object') {
+								message += '<li>' + entities.encode(key);
+								formatter(value);
+								message += '</li>';
+								return;
+							}
+							message += '<li>' + entities.encode(key) + ': ' + entities.encode(value) + '</li>';
+						});
+						message += '</ul>';
+					};
+					formatter(info.result);
+					dialog.alert(message, tools._statusMessages[info.status]);
+				},
+
+				success: function(data) {
+					if (!this.displayMessages) {
+						return;
+					}
+					// do not modify the data!
+					if (data && data.message) {
+						if (parseInt(data.status, 10) == 200) {
+							dialog.notify(data.message);
+						} else {
+							dialog.alert(data.message);
+						}
+					}
+				},
+
+				error: function(info) {
+					topic.publish('/umc/actions', 'error', info.status || 'unknown');
+
+					this.displayError(info);
+
+					if (this[info.status]) {
+						return this[info.status](info);
+					}
+				},
+
+				displayError: function(info) {
+					if (!this.displayErrors) {
+						return;
+					}
+					var status = info.status;
+					var message = info.message;
+					var statusMessage = tools._statusMessages[status];
+
+					if (this['display' + status]) {
+						this['display' + status](info);
+						return;
+					}
+
+					if (status == 401) {
+						return;
+					}
+
+					// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
+					if (message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
+						this.displayTraceback(info);
+					} else if (503 == status && dialog.loginOpened()) {
+						// either the UMC-server or the UMC-Web-Server is not runnning
+						dialog.updateLoginForm(statusMessage);
+						if (message) {
+							dialog.alert(message, statusMessage);
+						}
+					} else if (statusMessage) {
+						// all other cases
+						dialog.alert('<p>' + statusMessage + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''), _('An error occurred'));
+					} else if (status) {
+						// unknown status code .. should not happen
+						dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
+					} else {
+						// probably server timeout, could also be a different error
+						dialog.alert(_('An error occurred while connecting to the server, please try again later.'));
+					}
+				},
+
+				displayTraceback: function(info) {
+					topic.publish('/umc/actions', 'error', 'traceback');
+					tools._handleTraceback(info.message, tools._statusMessages[info.status]);
+				}
+			}, custom);
+			return errorHandler;
+		},
+
 		umcpProgressCommand: function(
 			/*Object*/ progressBar,
 			/*String*/ commandStr,
 			/*Object?*/ dataObj,
-			/*Boolean?*/ handleErrors,
+			/*Object?*/ errorHandler,
 			/*String?*/ flavor,
 			/*Object?*/ longPollingOptions) {
 
@@ -526,7 +616,7 @@ define([
 			// returns:
 			//		A deferred object.
 			var deferred = new Deferred();
-			this.umcpCommand(commandStr, dataObj, handleErrors, flavor, longPollingOptions).then(
+			this.umcpCommand(commandStr, dataObj, errorHandler, flavor, longPollingOptions).then(
 				lang.hitch(this, function(data) {
 					var progressID = data.result.id;
 					var title = data.result.title;
@@ -566,7 +656,7 @@ define([
 			if (deferred === undefined) {
 				deferred = new Deferred();
 			}
-			this.umcpCommand(props.progressCmd, {'progress_id' : props.progressID}, props.handleErrors, props.flavor).then(
+			this.umcpCommand(props.progressCmd, {'progress_id' : props.progressID}, props.errorHandler, props.flavor).then(
 				lang.hitch(this, function(data) {
 					deferred.progress(data.result);
 					if (data.result.finished) {
@@ -629,8 +719,8 @@ define([
 		},
 
 		parseError: function(error) {
-			var status = error.status !== undefined ? error.status : 500;
-			var message = this._statusMessages[status] || this._statusMessages[500];
+			var status = error.status !== undefined ? error.status : -1;
+			var message = this._statusMessages[status] || '';
 			var result = null;
 
 			var r = /<title>(.*)<\/title>/;
@@ -649,7 +739,7 @@ define([
 					result = error.response.data.result || null;
 				} else {
 					// no JSON was returned, probably proxy error
-					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : (this._statusMessages[status] || this._statusMessages[500]);
+					message = r.test(error.response.text) ? r.exec(error.response.text)[1] : (this._statusMessages[status] || '');
 				}
 			} else if (error.data) {
 				if (error.data.xhr) {
@@ -676,50 +766,16 @@ define([
 		},
 
 		handleErrorStatus: function(error, handleErrors) {
-			// parse the error
+			// deprecated function to display errors
+			// only used in uvmm/GridUpdater and adtakeover
+			// TODO: remove
 			var info = this.parseError(error);
-			var status = info.status;
-			topic.publish('/umc/actions', 'error', info.status || 'unknown');
+			info.exception = error;
 
-			if (401 == status) {
+			if (401 == info.status) {
 				return; /*already handled*/
 			}
-
-			var message = info.message;
-			var result = info.result;
-			var statusMessage = this._statusMessages[status];
-
-			if (422 == status) {
-				if (handleErrors && handleErrors.onValidationError) {
-					handleErrors.onValidationError(message, result);
-				} else {
-					message = message + ':<br>';
-					tools.forIn(result, function(key, value) {
-						message += key + ': ' + value + '<br>';
-					});
-					dialog.alert(message, statusMessage);
-				}
-			}
-			// handle Tracebacks; on InternalServerErrors(500) they don't contain the word 'Traceback'
-			else if(message.match(/Traceback.*most recent call.*File.*line/) || (message.match(/File.*line.*in/) && status >= 500)) {
-				topic.publish('/umc/actions', 'error', 'traceback');
-				tools._handleTraceback(message, statusMessage);
-			} else if (503 == status && dialog.loginOpened()) {
-				// either the UMC-server or the UMC-Web-Server is not runnning
-				dialog.updateLoginForm(statusMessage);
-				if (message) {
-					dialog.alert(message, statusMessage);
-				}
-			} else if (statusMessage) {
-				// all other cases
-				dialog.alert('<p>' + statusMessage + '</p>' + (message ? '<p>' + _('Server error message:') + '</p><p class="umcServerErrorMessage">' + message + '</p>' : ''), _('An error occurred'));
-			} else if (status) {
-				// unknown status code .. should not happen
-				dialog.alert(_('An unknown error with status code %s occurred while connecting to the server, please try again later.', status));
-			} else {
-				// probably server timeout, could also be a different error
-				dialog.alert(_('An error occurred while connecting to the server, please try again later.'));
-			}
+			this.__getErrorHandler(handleErrors ? handleErrors : {}).error(info);
 		},
 
 		_handleTraceback: function(message, statusMessage, title) {

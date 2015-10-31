@@ -94,7 +94,7 @@ define([
 		},
 
 		updateLoginForm: function(message) {
-			return require('umc/auth')._loginDialog.updateForm(false, message);
+			return this._loginDialog.updateForm(false, message);
 		},
 
 		_notificationMaster: null,

@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/lang",
 	"dojo/_base/window",
+	"dojo/dom",
 	"dojo/topic",
 	"dojo/request/xhr",
 	"dojo/request/iframe",
@@ -40,10 +41,11 @@ define([
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Text",
+	"umc/widgets/TextBox",
 	"umc/widgets/PasswordBox",
 	"umc/i18n/tools",
 	"umc/i18n!"
-], function(lang, win, topic, xhr, iframe, Deferred, json, entities, dialog, tools, Text, PasswordBox, i18nTools, _) {
+], function(lang, win, dom, topic, xhr, iframe, Deferred, json, entities, dialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
 	/**
 	 * Utilities for authentication. Authentication must handle:
 	 * * autologin into a current active session
@@ -59,26 +61,24 @@ define([
 
 		_password_required: null,
 
-		handleAuthenticationError: function(error, info, args) {
+		handleAuthenticationError: function(info) {
 			//console.debug('auth error');
 			var message = info.message;
-			var result = info.result;
+			var result = info.result || {};
 
-			if (result && result.saml_renewal_required) {
+			if (result.saml_renewal_required) {
 				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(dialog, 'login'));
 			}
-			if (result && result.password_required || this._password_required) {
-				this._password_required = true;
-				return this._requirePassword(result && result.password_required ? null : info.message);
+			if (this._password_required || result.password_required) {
+				if (!this._password_required) {
+					this._password_required = new Deferred();
+					message = '';
+				}
+				this._requirePassword(message);
+				return this._password_required;
 			}
 
-			dialog._loginDialog.updateForm(result && result.password_expired, message);
-			if (args.url == '/univention-management-console/auth') {
-				// in case we are coming from a (failed) authentication we must not return a deferred
-				// otherwise the login is impossible as it waits for the currently existing login deferred
-				// which would never resolve if we return a deferred here
-				return;
-			}
+			dialog._loginDialog.updateForm(result.password_expired, message);
 			return dialog.login();
 		},
 
@@ -108,10 +108,13 @@ define([
 			//console.debug('authenticated');
 			return tools.umcpCommand('set', {
 				locale: i18nTools.defaultLang().replace('-', '_')
-			}, false).always(lang.hitch(this, function() {
+			}).then(lang.hitch(this, function() {
 				//console.debug('locale set');
 				topic.publish('/umc/authenticated', username);
 				return username;
+			}), lang.hitch(function(error) {
+				dialog.login();
+				throw error;
 			}));
 		},
 
@@ -125,7 +128,7 @@ define([
 				return tools.umcpCommand('auth', {
 					username: username,
 					password: password
-				}, false, undefined, {
+				}, this.errorHandler(), undefined, {
 					message: _('So far the authentification failed. Continuing nevertheless.'),
 					noLogin: true
 				}).then(lang.hitch(this, function(response) {
@@ -143,20 +146,32 @@ define([
 		},
 
 		authenticate: function(data) {
-			// called from login dialog by user action
 			//console.debug('dialog auth');
-			return tools.umcpCommand('auth', data).then(lang.hitch(this, function(data) {
+			return tools.umcpCommand('auth', data, this.errorHandler()).then(lang.hitch(this, function(data) {
+				var username;
 				try {
-					var username = data.result.username;
+					username = data.result.username;
 				} catch (error) {
 					// if the umc-webserver is not restarted after a upgrade from UCS 4.0 the auth request doesn't return a username yet
 					// TODO: remove in UCS 4.2
 					username = tools.status('username') || '';
-					try { username = username || dojo.byId('umcLoginUsername').value; } catch (e) {}
+					try { username = username || dom.byId('umcLoginUsername').value; } catch (e) {}
 				}
 				//console.debug('auth via dialog successful');
 				return this.authenticated(username);
 			}));
+		},
+
+		errorHandler: function() {
+			return {
+				401: lang.hitch(this, function(info) {
+					// in case we are coming from a (failed) authentication we must not return a deferred
+					// otherwise the login is impossible as it waits for the currently existing login deferred
+					// which would never be resolved if we return a deferred here
+					// the authentication should also not be repeated after a successful authentication
+					this.handleAuthenticationError(info);
+				})
+			};
 		},
 
 		passiveSingleSignOn: function(args) {
@@ -187,6 +202,7 @@ define([
 					deferred.cancel();
 				}, args.timeout);
 			}
+			// deferred.promise.always(function() { TODO: howto remove the _iframe? });
 			return deferred.promise;
 		},
 
@@ -202,22 +218,31 @@ define([
 					type: Text,
 					content: text
 				}, {
+					name: 'username',
+					type: TextBox,
+					disabled: true,
+					value: tools.status('username')
+				}, {
 					name: 'password',
 					type: PasswordBox,
+					placeHolder: _('Password'),
+					required: true,
 					label: _('Password')
 				}],
 				buttons: [{
 					name: 'submit',
-					'label': _('Login')
+					label: _('Login')
 				}]
 			}).then(lang.hitch(this, function(data) {
-				var authenticate = this.authenticate(lang.mixin(data, {
+				return this.authenticate(lang.mixin(data, {
 					username: tools.status('username')
+				})).then(lang.hitch(this, function() {
+					this._password_required.resolve();
+					this._password_required = null;
 				}));
-				authenticate.then(lang.hitch(this, function() {
-					this._password_required = false;
-				}));
-				return authenticate;
+			}), lang.hitch(this, function() {
+				this._password_required.reject();
+				this._password_required = null;
 			}));
 		}
 	};
