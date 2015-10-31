@@ -568,12 +568,15 @@ class SamlError(UMC_HTTPError):
 		return self._('The requested SAML binding is not known: %s') % (exc,)
 
 	@error
+	def unknown_logout_binding(self, binding):
+		return self._('The logout binding is not known.')
+
+	@error
 	def verification_error(self, exc):
 		return self._('The SAML response could not be verified: %s') % (exc,)
 
 	@error
 	def unsolicited_response(self, exc):
-		# TODO: redirect to SSO?  # happens e.g. UMC-webserver restart between IDP→SP authentication
 		return self._('Received an unsolicited SAML response. Please try to single sign on again by accessing /univention-management-console/saml/. Error message: %s') % (exc,)
 
 	@error
@@ -1190,9 +1193,14 @@ class SAML(Ressource):
 			is_logout_request = False
 
 		if is_logout_request:
-			self.sp.parse_logout_request(message, binding)
+			user = self.get_user()
+			if user.saml is None:
+				return self._logout_success()
+			http_args = self.sp.handle_logout_request(message, user.saml.response.name_id, binding, relay_state=relay_state)
+			return self.http_response(binding, http_args)
 		else:
-			self.sp.parse_logout_request_response(message, binding)
+			response = self.sp.parse_logout_request_response(message, binding)
+			self.sp.handle_logout_response(response)
 		return self._logout_success()
 
 	@cherrypy.expose
@@ -1211,7 +1219,7 @@ class SAML(Ressource):
 
 			binding, http_args = logout_info
 			if binding not in (BINDING_HTTP_POST, BINDING_HTTP_REDIRECT):
-				raise UMC_HTTPError(500, 'unknown logout binding: %s', binding)
+				raise SamlError().unknown_logout_binding(binding)
 
 			return self.http_response(binding, http_args)
 		return self._logout_success()
