@@ -190,7 +190,7 @@ class Testclass_GPO_Security_Descriptor(object):
 			if time.time() - t0 > 120:
 						utils.fail("ERROR: %s: Replication takes too long, aborting" % logtag)
 			time.sleep(1)
-		time.sleep(3)
+		time.sleep(15)
 
 	def wait_for_object_usn_change(self, ldb_msg, logtag="wait_for_object_usn_change"):
 
@@ -204,7 +204,7 @@ class Testclass_GPO_Security_Descriptor(object):
 						utils.fail("ERROR: %s: Replication takes too long, aborting" % logtag)
 			ldb_msg = self.get_ldb_object(dn=str(ldb_msg.dn), attrs=["uSNChanged"])
 			usn = int(ldb_msg["uSNChanged"][0])
-		time.sleep(3)
+		time.sleep(15)
 
 	def remove_gpo(self, critical=True):
 		if self.gponame:
@@ -224,7 +224,7 @@ class Testclass_GPO_Security_Descriptor(object):
 				self.gponame = None
 
 	def create_gpo(self, logtag="create_gpo"):
-			display_name = 'ucs_test_gpo_' + random_username(8)
+		display_name = 'ucs_test_gpo_' + random_username(8)
 
 		cmd = ("samba-tool", "gpo", "create", display_name,
 			"-k", "no",
@@ -235,7 +235,7 @@ class Testclass_GPO_Security_Descriptor(object):
 		p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 		stdout, stderr = p1.communicate()
 		if p1.returncode != 0:
-					utils.fail("ERROR: %s: creating GPO using samba-tool: %s"
+			utils.fail("ERROR: %s: creating GPO using samba-tool: %s"
 			"\nCommand was: %s"% (logtag, stdout, cmd))
 
 		stdout = stdout.rstrip()
@@ -264,8 +264,8 @@ class Testcase_GPO_Security_Descriptor_UDM_to_SAM(Testclass_GPO_Security_Descrip
 		print "GPO Security Descriptor sync from %s to %s" % (sync_from, sync_to)
 		PHASE= "preparation"
 
-		print 'GPO Name: %s' % self.gponame
 		self.create_gpo(logtag=PHASE)
+		print 'GPO Name: %s' % self.gponame
 		ldb_msg = self.get_ldb_gpo(self.gponame)
 		sam_ntsd = self.get_ntsd(ldb_msg)
 		self.assert_owner(sam_ntsd, self.DA_SID, logtag=PHASE)
@@ -334,8 +334,8 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 		print "GPO Security Descriptor sync from %s to %s" % (sync_from, sync_to)
 		PHASE= "preparation"
 
-		print 'GPO Name: %s' % self.gponame
 		self.create_gpo(logtag=PHASE)
+		print 'GPO Name: %s' % self.gponame
 		ldb_msg = self.get_ldb_gpo(self.gponame)
 		sam_ntsd = self.get_ntsd(ldb_msg)
 		self.assert_owner(sam_ntsd, self.DA_SID, logtag=PHASE)
@@ -371,7 +371,9 @@ class Testcase_GPO_Security_Descriptor_SAM_to_UDM(Testclass_GPO_Security_Descrip
 			utils.fail("ERROR: %s: %s" % (PHASE, ex.args[0]))
 
 		if ucs_ntsd.as_sddl() != sam_ntsd.as_sddl():
-					utils.fail("ERROR: %s: NT Security descriptor not synchronized from %s to %s" % (PHASE,  sync_from, sync_to))
+			print 'ucs_ntsd.as_sddl: %s' % ucs_ntsd.as_sddl()
+			print 'sam_ntsd.as_sddl: %s' % sam_ntsd.as_sddl()
+			utils.fail("ERROR: %s: NT Security descriptor not synchronized from %s to %s" % (PHASE,  sync_from, sync_to))
 
 		PHASE= "cleanup"
 

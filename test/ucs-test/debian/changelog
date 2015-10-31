@@ -1,3 +1,10 @@
+ucs-test (6.0.12-5) unstable; urgency=medium
+
+  * 52_s4connector/100sync_gpo_ntsecurity_descriptor: Fixed
+    IndentationError and give the connector more time (Bug #38144)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 31 Oct 2015 19:56:19 +0100
+
 ucs-test (6.0.12-4) unstable; urgency=medium
 
   * 99check_log_files: Ignore some memcache and stunnel messages
