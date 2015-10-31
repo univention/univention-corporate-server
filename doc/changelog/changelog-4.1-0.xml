@@ -111,6 +111,9 @@
 				<listitem><simpara>
 					The directory logger and the <package>ldap_extension</package> listener module now restart the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The OpenLDAP server might be started multiple times during the upgrade. This is no longer a problem for the OpenLDAP package scripts (<u:bug>39683</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
