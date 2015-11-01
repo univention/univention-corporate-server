@@ -1,3 +1,9 @@
+univention-management-console (8.0.23-2) unstable; urgency=medium
+
+  * Fixed python syntax error in PAM configuration (Bug #39612)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 01 Nov 2015 19:51:14 +0100
+
 univention-management-console (8.0.23-1) unstable; urgency=medium
 
   * Split the UMC PAM configuration and make it possible to extend the

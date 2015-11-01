@@ -25,7 +25,7 @@ auth     [success=done new_authtok_reqd=ok          ignore=ignore default=bad]  
 # authenticate against cache (if a service fails)
 auth     sufficient                         pam_passwdcache.so try_first_pass
 ''' % { 'user' : user }
-elif auth_umc_addons
+elif auth_umc_addons:
 	if 'krb5' in methods:
 		print 'auth     [success=2 new_authtok_reqd=2 default=ignore]                         pam_unix.so'
 		print 'auth     [success=1 new_authtok_reqd=1 default=ignore]                         pam_krb5.so use_first_pass'
