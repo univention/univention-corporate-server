@@ -693,15 +693,14 @@ define([
 					return;
 				} else {
 					return dialog.confirmForm({
-						title: _('Docker based Apps'),
+						title: _('App installation notes'),
 						widgets: [
 							{
 								type: Text,
 								name: 'help_text',
 								content: '<div style="width: 535px">' +
 									'<p>' + _('This App uses a container technology. Containers have to be downloaded once. After that they can be used multiple times.') + '</p>' +
-									'<p>' + _('Depending on your internet connection, this may take up to 15 minutes') + '</p>' +
-									'<p>' + _('Which container is to be used is controlled by the App. It may be necessary to download a new container with another container based App or with an update of the App. But most Apps base on the same container.') + '</p>' +
+									'<p>' + _('Depending on your internet connection and on your server performance, the download and the App installation may take up to 15 minutes') + '</p>' +
 								'</div>'
 							},
 							{
@@ -726,7 +725,7 @@ define([
 
 		callInstaller: function(func, host, force, deferred, values) {
 			var warningDeferred = new Deferred();
-			if (this.app.isDocker && !force) {
+			if (this.app.isDocker && !force && func != 'uninstall') {
 				warningDeferred = this._showDockerWarning();
 			} else {
 				warningDeferred.resolve();
