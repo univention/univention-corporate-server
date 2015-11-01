@@ -11,6 +11,7 @@ Subfile: etc/pam.d/univention-management-console.d/50_base
 Variables: auth/methods
 Variables: auth/passwdcache/max_user
 Variables: auth/passwdcache
+Variables: auth/umc/addon/.*
 
 Type: subfile
 Multifile: etc/pam.d/univention-management-console
@@ -19,6 +20,23 @@ Variables: hostname
 Variables: domainname
 Variables: umc/saml/sp-server
 Variables: umc/saml/grace_time
+
+Type: subfile
+Multifile: etc/pam.d/univention-management-console
+Subfile: etc/pam.d/univention-management-console.d/59_auth_end
+
+Type: subfile
+Multifile: etc/pam.d/univention-management-console
+Subfile: etc/pam.d/univention-management-console.d/60_account
+Variables: auth/methods
+
+Type: subfile
+Multifile: etc/pam.d/univention-management-console
+Subfile: etc/pam.d/univention-management-console.d/70_session
+
+Type: subfile
+Multifile: etc/pam.d/univention-management-console
+Subfile: etc/pam.d/univention-management-console.d/80_password
 
 Type: file
 File: etc/logrotate.d/univention-management-console

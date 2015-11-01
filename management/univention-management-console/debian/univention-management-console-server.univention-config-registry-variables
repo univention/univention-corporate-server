@@ -39,3 +39,9 @@ Description[de]=Diese Variable speichert die gültigen Service Provider. Dieser 
 Description[en]=This variable stores the valid service provider. This value is generated automatically and should not be modified.
 Type=str
 Categories=management-umc
+
+[auth/umc/addon/.*]
+Description[de]=Diese Variable aktiviert in der PAM Konfiguration weitere Authentifizierungsmethoden.
+Description[en]=This variable activates additional auth methods in the PAM configuration.
+Type=str
+Categories=management-umc
