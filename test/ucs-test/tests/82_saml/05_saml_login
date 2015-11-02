@@ -1,11 +1,10 @@
 #!/usr/share/ucs-test/runner python
 ## desc: SSO Login at UMC as Service Provider
 ## tags: [saml]
-## roles: [domaincontroller_master]
+## join: true
 ## exposure: safe
 ## packages:
 ##   - python-requests
-import univention.testing.utils as utils
 import samltest as samllogin
 import univention.testing.utils as utils
 

@@ -2,18 +2,24 @@
 ## desc: Check whether SSO is possible with expired user account
 ## tags:
 ##  - saml
-## roles: [domaincontroller_master]
+##  - univention
+## join: true
 ## exposure: dangerous
 ## packages:
 ##  - python-requests
+from datetime import date, timedelta
+
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 
 import samltest
 
 def main():
+	today = date.today()
+	yesterday = date.today() - timedelta(days=1)
+	yesterday_str = '%s-%s-%s' % (yesterday.year, yesterday.month, yesterday.day)
 	with udm_test.UCSTestUDM() as udm:
-		testcase_user_name = udm.create_user(userexpiry='2015-01-01')[1]
+		testcase_user_name = udm.create_user(userexpiry=yesterday_str)[1]
 
 		try:
 			samltest.login_with_new_session_at_IdP(testcase_user_name, 'univention')

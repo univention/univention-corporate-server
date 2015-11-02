@@ -2,17 +2,21 @@
 ## desc: Check whether idP is synchronized between DC Master and DC Backup.
 ## tags:
 ##  - saml
-##  - SKIP
 ## bugs: [39479]
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_backup]
+## join: true
 ## exposure: safe
 ## packages:
 ##  - python-requests
 import time
+
+import univention.config_registry as configRegistry
 import univention.admin.modules as udm_modules
 import univention.testing.utils as utils
 import samltest
 
+ucr=configRegistry.ConfigRegistry()
+ucr.load()
 udm_modules.update()
 
 
@@ -20,14 +24,14 @@ def main():
 
 	account = utils.UCSTestDomainAdminCredentials()
 	lo = utils.get_ldap_connection()
-	backups = udm_modules.lookup('computers/domaincontroller_backup', None, lo, scope='sub')
-	backup_hostname = "%s.%s" % (backups[0]['name'], backups[0]['domain'])
+	master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
+	master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
 
 	try:
 		cookies = samltest.login_with_new_session_at_IdP(account.username, account.bindpw)
 		time.sleep(1)
-		cookies = samltest.login_with_existing_session_at_IdP(hostname=backup_hostname, cookies=cookies, IdP_IP=backups[0]['ip'][0])
-		samltest.test_login(cookies, hostname=backup_hostname)
+		cookies = samltest.login_with_existing_session_at_IdP(hostname=master_hostname, cookies=cookies, IdP_IP=ucr['interfaces/eth0/address'])
+		samltest.test_login(cookies, hostname=master_hostname)
 	except samltest.SamlError as exc:
 		utils.fail(exc.message)
 

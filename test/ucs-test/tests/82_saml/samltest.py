@@ -74,14 +74,9 @@ def _request(method, url, status_code, position, data=None, cookies=None, IdP_IP
 
 def _login_at_idp_with_credentials(username, password, response):
 	"""Send form with login data"""
-	AuthState = re.search('name="AuthState" value="([^"]+)"',
-							bytes(response.text)).group(1)
-	if not AuthState:
-		raise SamlError("No AuthSate value found")
 	response = _request('POST', response.url, 200, "posting login form",
 				data={'username': username,
-					  'password': password,
-					  'AuthState': AuthState
+					  'password': password
 					  },
 				cookies = response.cookies
 				)
@@ -114,11 +109,10 @@ def _send_saml_response_to_sp(response):
 	
 	url = _extract_sp_url_from_response(response.text)
 	saml_msg = _extract_value_from_saml_response(response.text, 'SAMLResponse')
-	relay_state = _extract_value_from_saml_response(response.text, 'RelayState')
 
 	# POST the SAML message to SP, thus logging in.
 	return _request('POST', url, 200, "posting SAML message",
-			data={'SAMLResponse': saml_msg, 'RelayState': relay_state},
+			data={'SAMLResponse': saml_msg},
 			cookies=response.cookies)
 
 

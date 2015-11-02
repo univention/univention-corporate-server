@@ -5,7 +5,8 @@
 ## tags:
 ##  - saml
 ##  - SKIP
-## roles: [domaincontroller_master]
+## roles-not: [domaincontroller_master]
+## join: true
 ## exposure: safe
 ## packages:
 ##  - python-requests
@@ -19,20 +20,20 @@ def main():
 	account = utils.UCSTestDomainAdminCredentials()
 	lo = utils.get_ldap_connection()
 
-	backups = udm_modules.lookup('computers/domaincontroller_backup', None, lo, scope='sub')
-	backup_hostname = "%s.%s" % (backups[0]['name'], backups[0]['domain'])
+	master = udm_modules.lookup('computers/domaincontroller_master', None, lo, scope='sub')
+	master_hostname = "%s.%s" % (master[0]['name'], master[0]['domain'])
 
 	try:
 		cookies = samltest.login_with_new_session_at_IdP(account.username, account.bindpw)
-		cookies = samltest.login_with_existing_session_at_IdP(hostname=backup_hostname, cookies=cookies)
+		cookies = samltest.login_with_existing_session_at_IdP(hostname=master_hostname, cookies=cookies)
 
 		samltest.test_login(cookies)
-		samltest.test_login(cookies, hostname=backup_hostname)
+		samltest.test_login(cookies, hostname=master_hostname)
 
 		cookies = samltest.logout_at_IdP(cookies)
 	
 		samltest.test_logout(cookies)
-		samltest.test_logout(cookies, hostname=backup_hostname)
+		samltest.test_logout(cookies, hostname=master_hostname)
 	except samltest.SamlError as exc:
 		utils.fail(exc.message)
 
