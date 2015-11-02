@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (5.0.1-3) unstable; urgency=low
+
+  * Bug #33546: On can now select the mac address in the InterfaceGrid
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 02 Nov 2015 08:22:34 +0100
+
 univention-virtual-machine-manager-daemon (5.0.1-2) unstable; urgency=low
 
   * Bug #38676: Separated grid update from grid filtering
