@@ -38,10 +38,12 @@ define([
 	"dojo/request/xhr",
 	"dijit/form/Button",
 	"put-selector/put",
+	"./ContainerWidget",
+	"./LabelPane",
 	"./TextBox",
 	"./RadioButton",
 	"./i18n!"
-], function(lang, array, on, keys, dom, json, xhr, Button, put, TextBox, RadioButton, _) {
+], function(lang, array, on, keys, dom, json, xhr, Button, put, ContainerWidget, LabelPane, TextBox, RadioButton, _) {
 
 	return {
 		_createTitle: function() {
@@ -85,7 +87,8 @@ define([
 			// step 2 token
 			this.tokenNode = put(formNode, 'div.step.hide-step');
 			put(this.tokenNode, 'p', _('2. Choose a method to receive a token.'));
-			put(this.tokenNode, 'div#token-options');
+			this._tokenOptions = new ContainerWidget({});
+			put(this.tokenNode, this._tokenOptions.domNode);
 			this._requestTokenButton = new Button({
 				label: _('Submit'),
 				onClick: lang.hitch(this, '_requestToken')
@@ -135,37 +138,122 @@ define([
 		},
 
 		_getResetMethods: function() {
-			//TODO
-			put(this.tokenNode, '!hide-step');
-			this._username.set('disabled', true);
+			this._removeMessage();
 			this._usernameButton.set('disabled', true);
-			this._addTokenOptions(["sms", "email"]);
+
+			if (this._username.isValid()) {
+				// TODO delete mockup
+				// this._buildTokenOptions(['sms', 'email']);
+
+				data = json.stringify({
+					'username': this._username.get('value')
+				});
+				xhr.post('passwordreset/get_reset_methods', {
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					data: data
+				}).then(lang.hitch(this, function(data) {
+					this._buildTokenOptions(data.message);
+				}), lang.hitch(this, function(err){
+					var message = err.name + ": " + err.message;
+					if (err.response && err.response.data && error.response.data.message) {
+						message = error.response.data.message;
+					}
+					this._showMessage(message, '.error');
+					this._usernameButton.set('disabled', false);
+				}));
+			} else {
+				this._usernameButton.set('disabled', false);
+			}
+		},
+
+		_buildTokenOptions: function(options) {
+			// TODO make the RadioButtons visible
+			array.forEach(options, lang.hitch(this, function(item, idx){
+				var radioButton = new RadioButton({
+					name: 'button' + idx,
+					label: item,
+					value: item,
+					checked: idx === 0,
+					radioButtonGroup: 'token',
+					_categoryID: 'token'
+				});
+				var label = new LabelPane({
+					'class': 'ucsRadioButtonLabel',
+					content: radioButton
+				});
+				this._tokenOptions.addChild(label);
+			}));
+			put(this.tokenNode, '!hide-step');
 		},
 
 		_requestToken: function() {
-			//TODO
-			put(this.newPasswordNode, '!hide-step');
+			this._removeMessage();
 			this._requestTokenButton.set('disabled', true);
-		},
 
-		_addTokenOptions: function(options) {
-			var tokenOptionNode = dom.byId('token-options');
-			array.forEach(options, function(item){
-				var radioButton = new RadioButton({
-					radioButtonGroup: 'token',
-					name: '_tokenOption',
-					label: '<strong>' + item + '</strong>',
-					checked: false
-				});
-				put(tokenOptionNode, radioButton.domNode);
+			// TODO check which RadioButton is selected
+			// Make it possible for the user to select another option
+
+			data = json.stringify({
+				'username': this._username.get('value'),
+				'method': 'foo' //TODO get the value of the checked RadioButton
 			});
+			xhr.post('passwordreset/send_token', {
+				handleAs: 'json',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: data
+			}).then(lang.hitch(this, function(data) {
+				put(this.newPasswordNode, '!hide-step');
+			}), lang.hitch(this, function(err){
+				var message = err.name + ": " + err.message;
+				if (err.response && err.response.data && error.response.data.message) {
+					message = error.response.data.message;
+				}
+				this._showMessage(message, '.error');
+				this._requestTokenButton.set('disabled', false);
+			}));
 		},
 
 		_setPassword: function() {
-			this._token.set('disabled', true);
-			this._newPassword.set('disabled', true);
-			this._verifyPassword.set('disabled', true);
+			this._removeMessage();
 			this._setPasswordButton.set('disabled', true);
+
+			var isTokenAndNewPassValid = this._token.isValid() &&
+				this._verifyPassword;
+
+			if (isTokenAndNewPassValid) {
+				data = json.stringify({
+					'username': this._username.get('value'),
+					'password': this._verifyPassword.get('value'),
+					'token' : this._token.get('value')
+				});
+				xhr.post('passwordreset/set_password', {
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					data: data
+				}).then(lang.hitch(this, function(data) {
+					this._setPasswordButton.set('disabled', true);
+					this._token.set('disabled', true);
+					this._newPassword.set('disabled', true);
+					this._verifyPassword.set('disabled', true);
+					this._showMessage(data.message, '.success');
+				}), lang.hitch(this, function(err){
+					var message = err.name + ": " + err.message;
+					if (err.response && err.response.data && error.response.data.message) {
+						message = error.response.data.message;
+					}
+					this._showMessage(message, '.error');
+					this._setPasswordButton.set('disabled', false);
+				}));
+			} else {
+				this._setPasswordButton.set('disabled', false);
+			}
 		},
 
 		_showMessage: function(msg, msgClass) {

@@ -39,6 +39,17 @@ define([
 	"./ContainerWidget",
 	"./LabelPane"
 ], function(declare, lang, array, RadioButton, registry, _FormWidgetMixin, ContainerWidget, LabelPane) {
+	function forIn(/*Object*/ obj, /*Function*/ callback, /*Object?*/ scope, /*Boolean?*/ inheritedProperties) {
+		scope = scope || _window.global;
+		for (var i in obj) {
+			if (obj.hasOwnProperty(i) || inheritedProperties) {
+				if ( false === callback.call(scope, i, obj[i], obj ) ) {
+					break;
+				}
+			}
+		}
+	}
+
 	return declare("umc.widgets.RadioButton", [ RadioButton, _FormWidgetMixin ], {
 		value: null,
 
@@ -64,23 +75,12 @@ define([
 			this.sizeClass = null;
 		},
 
-		forIn: function(obj, callback, scope, inheritedProperties) {
-			scope = scope || _window.global;
-			for (var i in obj) {
-				if (obj.hasOwnProperty(i) || inheritedProperties) {
-					if ( false === callback.call(scope, i, obj[i], obj ) ) {
-						break;
-					}
-				}
-			}
-		},
-
 		_getRelateWidgets: function() {
 			// summary:
 			//		Return all widgets of the same radio button group.
 			var form = registry.getEnclosingWidget(this.focusNode.form);
 			var relatedWidgets = [];
-			this.forIn(form._widgets, function(key, widget) {
+			forIn(form._widgets, function(key, widget) {
 				if (widget.radioButtonGroup == this.radioButtonGroup) {
 					relatedWidgets.push(widget);
 				}

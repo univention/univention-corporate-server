@@ -151,7 +151,11 @@ define([
 					this._showMessage(data.message, '.success');
 					this._clearAllInputFields();
 				}), lang.hitch(this, function(err) {
-					this._showMessage(err.name + ": " + err.message, '.error');
+					var message = err.name + ": " + err.message;
+					if (err.response && err.response.data && error.response.data.message) {
+						message = error.response.data.message;
+					}
+					this._showMessage(message, '.error');
 				})).always(lang.hitch(this, function(){
 					this._submitButton.set('disabled', false);
 				}));
