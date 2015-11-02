@@ -29,118 +29,88 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import json
-
 import cherrypy
 
-from lib import UniventionSelfServiceFrontend, UMCConnectionError
+from lib import Ressource, json_response
 
 
-class PasswordReset(UniventionSelfServiceFrontend):
+class PasswordReset(Ressource):
+
 	@property
 	def name(self):
 		return "Password Reset"
 
 	@cherrypy.expose
-	def get_reset_methods(self, username):
+	@json_response
+	def get_reset_methods(self, *args, **kwargs):
 		"""
 		Get list of reset methods available for a user. The respective plugin
 		must be loaded and activated via UCR and the users respective data
 		fields must be non-empty.
-
-		:param username: username
-		:return: HTTP200, json({"status": int, "message": [str, str]})
 		"""
 		try:
-			connection = self.get_umc_connection()
-		except UMCConnectionError as ue:
-			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "message": ue.msg})
+			username = self.get_arguments('username')
+		except KeyError:
+			raise cherrypy.HTTPError(422, 'missing parameter username')
 
-		url = "passwordreset/get_reset_methods"
 		data = {"username": username}
-		return json.dumps(self.umc_request(connection, url, data))
+		return self.umc_request('passwordreset/get_reset_methods', data)
 
 	@cherrypy.expose
-	def set_contact(self, username, password, email, mobile):
+	@json_response
+	def set_contact(self, *args, **kwargs):
 		"""
 		Change password reset contact data for user.
 		An emtpy string to clear contact data is allowed.
-
-		:param username: username
-		:param password: password
-		:param email: email
-		:param mobile: phone number
-		:return: HTTP200, json({"status": int, "message": str}) success or
-		HTTPException in case of an authentication error.
 		"""
-		try:
-			connection = self.get_umc_connection()
-		except UMCConnectionError as ue:
-			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "message": ue.msg})
+		username, password, email, mobile = self.get_arguments('username', 'password', 'email', 'mobile')
 
-		url = "passwordreset/set_contact"
-		data = {"username": username,
+		data = {
+			"username": username,
 			"password": password,
 			"email": email,
-			"mobile": mobile}
-		result = self.umc_request(connection, url, data)
+			"mobile": mobile
+		}
+		result = self.umc_request('passwordreset/set_contact', data)
+		cherrypy.response.status = result.pop('status', 500)
 
-		if result["status"] == 200:
+		if cherrypy.response.status == 200:
 			self.log("Successfully set contact for user '{}' email: '{}' mobile: '{}'.".format(username, email, mobile))
 		else:
 			self.log("Error setting contact for user '{}' email: '{}' mobile: '{}'.".format(username, email, mobile))
-		return json.dumps(result)
+		return result
 
 	@cherrypy.expose
-	def send_token(self, username, method):
+	@json_response
+	def send_token(self, *args, **kwargs):
 		"""
 		Send a token to the user using supplied contact method.
-
-		:param username: username
-		:param method: method ('sms' / 'email')
-		:return: HTTP200, json({"status": int, "message": str})
 		"""
-		try:
-			connection = self.get_umc_connection()
-		except UMCConnectionError as ue:
-			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "message": ue.msg})
+		username, method = self.get_arguments('username', 'method')
 
-		url = "passwordreset/send_token"
 		data = {"username": username, "method": method}
-		result = self.umc_request(connection, url, data)
+		result = self.umc_request('passwordreset/send_token', data)
+		cherrypy.response.status = result.pop('status', 500)
 
-		if result["status"] == 200:
+		if cherrypy.response.status == 200:
 			self.log("Successfully sent token for user '{}' with method '{}'.".format(username, method))
 		else:
 			self.log("Error sending token for user '{}' with method '{}'.".format(username, method))
-		return json.dumps(result)
+		return result
 
 	@cherrypy.expose
-	def set_password(self, token, username, password):
-		"""
-		Change users password.
-
-		:param token: token
-		:param password: new password
-		:return: HTTP200, json({"status": int, "message": str})
-		"""
-		try:
-			connection = self.get_umc_connection()
-		except UMCConnectionError as ue:
-			cherrypy.response.status = ue.status
-			return json.dumps({"status": ue.status, "message": ue.msg})
-
-		url = "passwordreset/set_password"
+	@json_response
+	def set_password(self, *args, **kwargs):
+		"""Change users password."""
+		token, username, password = self.get_arguments('token', 'username', 'password')
 		data = {"token": token, "username": username, "password": password}
-		result = self.umc_request(connection, url, data)
+		result = self.umc_request('passwordreset/set_password', data)
+		cherrypy.response.status = result.pop('status', 500)
 
-		if result["status"] == 200:
+		if cherrypy.response.status == 200:
 			self.log("Successfully changed password of user '{}'.".format(username))
 		else:
 			self.log("Error changing password of user '{}'.".format(username))
-		return json.dumps(result)
+		return result
 
 application = cherrypy.Application(PasswordReset(), "/univention-self-service/passwordreset")

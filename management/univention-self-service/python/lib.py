@@ -29,11 +29,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from httplib import HTTPException
-from socket import error as SocketError
 import re
 import json
 import sys
+from functools import wraps
+from httplib import HTTPException
+from socket import error as SocketError
 
 from univention.lib.umc_connection import UMCConnection
 from univention.management.console.config import ucr
@@ -50,6 +51,7 @@ LDAP_SECRETS_FILE = "/etc/self-service-ldap.secret"
 
 
 class UMCConnectionError(Exception):
+
 	def __init__(self, msg, status):
 		self.msg = msg
 		self.status = status
@@ -58,30 +60,49 @@ class UMCConnectionError(Exception):
 		return "(status {}) {}".format(self.status, self.msg)
 
 
-class UniventionSelfServiceFrontend(object):
-	"""
-	base class
-	"""
-	def __init__(self):
-		self.log("__init__()")
-		self._backend = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
+def json_response(func):
 
-	def get_arguments(self):
-		if cherrypy.request.headers.get('Content-Type', '').startswith('application/json'):
-			return json.loads(cherrypy.request.body.read())
-		raise cherrypy.HTTPError(415)
+	@wraps(func)
+	def _decorated(*args, **kwargs):
+		data = json.dumps(func(*args, **kwargs))
+		cherrypy.response.headers['Content-Type'] = 'application/json'
+		return data
+	return _decorated
 
-	def log(self, msg, traceback=False):
-		cherrypy.log("{}: {}".format(self.name, msg), traceback=traceback)
+
+class Ressource(object):
 
 	@property
 	def name(self):
-		"""
-		Implement me
-
-		:return: unique name of plugin (used for logging and overview page)
-		"""
 		return self.__class__.__name__
+
+	def __init__(self):
+		self._backend = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
+
+	def get_arguments(self, *names):
+		if cherrypy.request.headers.get('Content-Type', '').startswith('application/json'):
+			try:
+				data = json.loads(cherrypy.request.body.read())
+			except ValueError:
+				raise cherrypy.HTTPError(400, 'invalid application/json document')
+		else:
+			raise cherrypy.HTTPError(415, 'unknown content-type, supported are application/json, ')
+
+		if not isinstance(data, dict):
+			raise cherrypy.HTTPError(422, 'not a object')
+
+		if not names:
+			return data
+		try:
+			args = [data[key] for key in names]
+		except KeyError:
+			raise cherrypy.HTTPError(422, 'Missing parameters %s' % ', '.join(map(repr, names)))
+		if len(names) == 1:
+			return args[0]
+		return args
+
+	def log(self, msg, traceback=False):
+		cherrypy.log("{}: {}".format(self.name, msg), traceback=traceback)
 
 	def get_umc_connection(self, username=None, password=None):
 		"""
@@ -104,58 +125,45 @@ class UniventionSelfServiceFrontend(object):
 
 		try:
 			return UMCConnection(self._backend, username=username, password=password)
-		except HTTPException as he:
-			self.log(he)
-			try:
-				status, message = UniventionSelfServiceFrontend.work_around_broken_api(he)
-				raise UMCConnectionError(message, status)
-			except AttributeError:
-				raise he
+		except HTTPException as error:
+			self.log(error)
+			exc = sys.exc_info()
+			try:  # broken lib
+				result = json.loads(re.search('({.*})', str(error)).group())
+			except (AttributeError, ValueError):
+				raise exc[0], exc[1], exc[2]
+			raise UMCConnectionError(result.get('message'), result.get('status'))
 		except SocketError as e:
 			msg = "Could not connect to UMC server on '{}': {}".format(self._backend, e)
 			self.log(msg)
 			raise UMCConnectionError(msg, 500)
 
-	def umc_request(self, connection, url, data, command="command"):
+	def umc_request(self, url, data, command="command", connection=None, **kwargs):
 		try:
-			result = connection.request(url, data, command=command)
-			if isinstance(result, dict):
-				status = int(result["status"])
-				message = result["message"]
-			elif isinstance(result, str) and "{" in result and "}" in result:
-				try:
-					json_thing = json.loads(result)
-					status = int(json_thing["status"])
-					message = json_thing["message"]
-				except (TypeError, ValueError):
-					status = 200
-					message = result
+			if connection is None:
+				connection = self.get_umc_connection(**kwargs)
+			try:
+				result = connection.request(url, data, command=command)
+			except HTTPException as error:
+				exc = sys.exc_info()
+				try:  # broken lib API
+					result = json.loads(re.search('({.*})', str(error)).group())
+				except (AttributeError, ValueError):
+					raise exc[0], exc[1], exc[2]
+
+			if isinstance(result, dict) and 'status' in result:  # broken lib API
+				status = int(result['status'])
+				message = result.get('message')
 			else:
 				status = 200
 				message = result
+		except UMCConnectionError as ue:
+			status, message = ue.status, ue.message
 		except HTTPException as he:
 			self.log(he)
-			try:
-				status, message = UniventionSelfServiceFrontend.work_around_broken_api(he)
-				cherrypy.response.status = status
-			except AttributeError:
-				raise he
+			status, message = 500, str(he)
 		except (ValueError, NotImplementedError) as e:
 			self.log(e)
 			raise
-		return {"status": status, "message": message}
 
-	@staticmethod
-	def work_around_broken_api(httpex):
-		"""
-		Try to extract status and message from a HTTPException object
-
-		:param httperror:  HTTPException object
-		:return: (status, message) or AttributeError if extraction was not possible
-		"""
-		status, message = re.search('\{\"status\": (.*),\ \"message\":\ \"(.*)\"\}', str(httpex)).groups()
-		try:
-			status = int(status)
-		except ValueError:
-			pass
-		return status, message
+		return {"message": message, "status": status}

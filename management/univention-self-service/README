@@ -15,7 +15,7 @@ as backend and a Python module for the frontend.
 
 Place the directory with the frontend Python module inside
 /usr/share/univention-self-service/web/plugins/. Its __init__.py must contain a
-class that is derived from univention.selfservice.frontend.UniventionSelfServiceFrontend.
+class that is derived from univention.selfservice.frontend.Ressource.
 
 === Password reset sending plugins ==
 As a reference three plugins are provided that can be used to send a token to a user.
