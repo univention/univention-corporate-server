@@ -619,7 +619,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>univention-apache</package> now ships expandable <property>VHost</property> configuration files (<u:bug>38807</u:bug>).
+					<package>univention-apache</package> now ships expandable <property>VirtualHost</property> configuration files (<u:bug>38807</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
