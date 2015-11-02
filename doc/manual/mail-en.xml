@@ -839,6 +839,44 @@ postmap /etc/postfix/smtp_auth
 	  </para>
 	</section>
 
+	<section id="mail::serverconfig::smtpports">
+		<title>Configuration of SMTP ports</title>
+		<para>
+			On a &ucsUCS; mail server Postfix is configured to listen for connections
+			on three ports:
+		</para>
+		<itemizedlist>
+			<listitem>
+				<para>
+					Port 25 (<systemitem class="service">SMTP</systemitem>) should be
+					used by other mail server only. By default authentication is disabled.
+					If submission of emails from users is desired on port 25, then
+					authentication can be enabled by setting &ucsUCRV;
+					<envar>mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes</envar>.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Port 465 (<systemitem class="service">SMTPS</systemitem>) allows
+					authentication and email submission through a SSL encrypted connection.
+					<systemitem class="service">SMTPS</systemitem> has been declared
+					deprecated in favor of port 587 but is kept enabled for legacy clients.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Port 587 (<systemitem class="service">Submission</systemitem>) allows
+					authentication and email submission through a TLS encrypted connection.
+					The use of STARTTLS is enforced.
+				</para>
+			</listitem>
+		</itemizedlist>
+		<para>
+			The Submission port should be preferred by email clients. The use of ports
+			25 and 465 for email submission is deprected.
+		</para>
+	</section>
+
 	<section id="mail::renamedusers">
 	  <title>Handling of mailboxes during e-mail changes and the deletion of user accounts</title>
 	  <para>
