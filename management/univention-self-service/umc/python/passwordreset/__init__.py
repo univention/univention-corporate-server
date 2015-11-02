@@ -75,22 +75,13 @@ def prevent_denial_of_service(func):
 class ContactChangingFailed(UMC_Error):
 	status = 500
 
-	def __init__(self, msg):
-		super(ContactChangingFailed, self).__init__(_(msg))
-
 
 class UnknownMethodError(UMC_Error):
 	status = 500
 
-	def __init__(self, msg):
-		super(UnknownMethodError, self).__init__(_(msg))
-
 
 class MethodDisabledError(UMC_Error):
 	status = 500
-
-	def __init__(self, msg):
-		super(MethodDisabledError, self).__init__(_(msg))
 
 
 class Instance(Base):
@@ -132,7 +123,7 @@ class Instance(Base):
 			raise UMC_Error(_("User is blacklisted."))
 		dn = self.auth(username, password)
 		if self.set_contact_data(dn, email, mobile):
-			return {"status": 200, "message": _("Successfully changed your contact data.")}
+			raise UMC_Error(_("Successfully changed your contact data."), status=200)
 
 #	@prevent_denial_of_service
 	@sanitize(
@@ -180,7 +171,7 @@ class Instance(Base):
 					method=method, username=username))
 				self.db.delete_tokens(username=username)
 				raise
-			return {"status": 200, "message": _("Successfully send token via {}.".format(method))}
+			raise UMC_Error(_("Successfully send token via {}.").format(method), status=200)
 		else:
 			# no contact info
 			raise UMC_Error(_("No contact information to send a token for password recovery to has been found."))
@@ -213,7 +204,7 @@ class Instance(Base):
 				ret = self.udm_set_password(username, password)
 				self.db.delete_tokens(token=token, username=username)
 				if ret:
-					return {"status": 200, "message": _("Successfully changed your password.")}
+					raise UMC_Error(_("Successfully changed your password."), status=200)
 			else:
 				# token is correct but expired
 				MODULE.info("Receive correct but expired token for '{}'.".format(username))
@@ -303,7 +294,7 @@ class Instance(Base):
 			return True
 		except:
 			MODULE.info("set_contact_data(): failed to add contact: {}".format(traceback.format_exc()))
-			raise ContactChangingFailed("Failed to change contact information.")
+			raise ContactChangingFailed(_("Failed to change contact information."))
 
 	def udm_set_password(self, username, password):
 		MODULE.info("udm_set_password(): username: {} password: {}".format(username, password))

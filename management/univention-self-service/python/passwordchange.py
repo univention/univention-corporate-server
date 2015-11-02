@@ -45,21 +45,30 @@ class SetPassword(Ressource):
 	def index(self):
 		username, password, new_password = self.get_arguments('username', 'password', 'new_password')
 
-		# FIXME: makes connection to the DC master instead of localhost
-		# FIXME: fails if userpassword is expired
-		data = {
+		session = self.get_connection()
+
+		# (try to) authenticate with the user credentials
+		status, response = session.auth({"username": username, "password": password})
+		if status == 401:
+			# if the password is expired we need to change it directly
+			status, response = session.auth({
+				"username": username,
+				"password": password,
+				"new_password": new_password
+			})
+			if status == 200:
+				# password changing succeeded
+				return response
+
+		if status != 200:
+			raise cherrypy.HTTPError(response, status)
+
+		cherrypy.response.status, response = session.set({
 			"password": {
 				"password": password,
 				"new_password": new_password
 			}
-		}
-		result = self.umc_request('', data, command='set', username=username, password=password)
-		cherrypy.response.status = result.pop('status', 500)
-
-		if cherrypy.response.status == 200:
-			self.log("Successfully changed password of user '{}'.".format(username))
-		else:
-			self.log("Error changing password of user '{}'.".format(username))
-		return result
+		})
+		return response
 
 application = cherrypy.Application(SetPassword(), "/univention-self-service/passwordchange")

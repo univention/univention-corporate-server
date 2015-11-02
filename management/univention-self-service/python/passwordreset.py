@@ -31,6 +31,7 @@
 
 import cherrypy
 
+from univention.management.console.config import ucr
 from lib import Ressource, json_response
 
 
@@ -40,6 +41,29 @@ class PasswordReset(Ressource):
 	def name(self):
 		return "Password Reset"
 
+	def __init__(self):
+		super(PasswordReset, self).__init__()
+		self.umc_server = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
+
+	def get_connection(self):
+		connection = super(PasswordReset, self).get_connection()
+		username = "{}$".format(ucr.get("hostname"))
+		try:
+			with open('/etc/self-service-ldap.secret') as fd:
+				password = fd.read().strip()
+		except (OSError, IOError) as exc:
+			self.log('Could not read UMC server credentials: %s' % (exc,))
+			raise cherrypy.HTTPError('Could not authenticate at Univention Management Console service.', 503)
+		status, response = connection.auth({'username': username, 'password': password})
+		if status != 200:
+			raise cherrypy.HTTPError(response, status)
+
+	def umc_request(self, url, data):
+		connection = self.get_connection()
+		cherrypy.response.status, response = connection.command(url, data)
+		response.pop('status', None)
+		return response
+
 	@cherrypy.expose
 	@json_response
 	def get_reset_methods(self, *args, **kwargs):
@@ -48,15 +72,9 @@ class PasswordReset(Ressource):
 		must be loaded and activated via UCR and the users respective data
 		fields must be non-empty.
 		"""
-		try:
-			username = self.get_arguments('username')
-		except KeyError:
-			raise cherrypy.HTTPError(422, 'missing parameter username')
+		username = self.get_arguments('username')
 
-		data = {"username": username}
-		result = self.umc_request('passwordreset/get_reset_methods', data)
-		cherrypy.response.status = result.pop('status', 500)
-		return result
+		return self.umc_request('passwordreset/get_reset_methods', {"username": username})
 
 	@cherrypy.expose
 	@json_response
@@ -67,20 +85,12 @@ class PasswordReset(Ressource):
 		"""
 		username, password, email, mobile = self.get_arguments('username', 'password', 'email', 'mobile')
 
-		data = {
+		return self.umc_request('passwordreset/set_contact', {
 			"username": username,
 			"password": password,
 			"email": email,
 			"mobile": mobile
-		}
-		result = self.umc_request('passwordreset/set_contact', data)
-		cherrypy.response.status = result.pop('status', 500)
-
-		if cherrypy.response.status == 200:
-			self.log("Successfully set contact for user '{}' email: '{}' mobile: '{}'.".format(username, email, mobile))
-		else:
-			self.log("Error setting contact for user '{}' email: '{}' mobile: '{}'.".format(username, email, mobile))
-		return result
+		})
 
 	@cherrypy.expose
 	@json_response
@@ -90,29 +100,21 @@ class PasswordReset(Ressource):
 		"""
 		username, method = self.get_arguments('username', 'method')
 
-		data = {"username": username, "method": method}
-		result = self.umc_request('passwordreset/send_token', data)
-		cherrypy.response.status = result.pop('status', 500)
-
-		if cherrypy.response.status == 200:
-			self.log("Successfully sent token for user '{}' with method '{}'.".format(username, method))
-		else:
-			self.log("Error sending token for user '{}' with method '{}'.".format(username, method))
-		return result
+		return self.umc_request('passwordreset/send_token', {
+			"username": username,
+			"method": method
+		})
 
 	@cherrypy.expose
 	@json_response
 	def set_password(self, *args, **kwargs):
 		"""Change users password."""
 		token, username, password = self.get_arguments('token', 'username', 'password')
-		data = {"token": token, "username": username, "password": password}
-		result = self.umc_request('passwordreset/set_password', data)
-		cherrypy.response.status = result.pop('status', 500)
 
-		if cherrypy.response.status == 200:
-			self.log("Successfully changed password of user '{}'.".format(username))
-		else:
-			self.log("Error changing password of user '{}'.".format(username))
-		return result
+		return self.umc_request('passwordreset/set_password', {
+			"token": token,
+			"username": username,
+			"password": password
+		})
 
 application = cherrypy.Application(PasswordReset(), "/univention-self-service/passwordreset")
