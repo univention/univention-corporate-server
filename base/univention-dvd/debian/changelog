@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-14) unstable; urgency=low
+
+  * Bug #39697: Add screen
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 02 Nov 2015 09:14:04 +0100
+
 univention-dvd (1.0.0-13) unstable; urgency=low
 
   * Bug #38913: Add recommended packages for docker.io

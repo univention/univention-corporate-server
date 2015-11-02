@@ -43,7 +43,6 @@ less
 locate
 nmap
 univention-network-common
-locate
 vim
 wget
 zip
@@ -64,6 +63,7 @@ openssh-blacklist
 python-univention-license
 univention-nagios-client
 univention-saml
+screen
 
 univention-management-console-module-quota
 
@@ -71,7 +71,6 @@ univention-management-console-module-quota
 /* usr/share/univention-system-setup/download-packages */
 
 univention-ad-connector
-sqlite3
 univention-nagios-ad-connector
 
 univention-management-console-module-adtakeover
@@ -124,7 +123,6 @@ univention-nagios-uvmmd
 libvirt-clients
 ebtables
 
-univention-welcome-screen
 firefox-de
 firefox-en
 
