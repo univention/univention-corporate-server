@@ -896,7 +896,7 @@ postmap /etc/postfix/smtp_auth
 			<listitem>
 				<para>
 					Port 465 (<systemitem class="service">SMTPS</systemitem>) erlaubt
-					Authentifikation und Einliefern von E-Mails über eine SSL-verschlüsselte
+					Authentifikation und Einliefern von E-Mails über eine mit SSL verschlüsselte
 					Verbindung. <systemitem class="service">SMTPS</systemitem> wurde zugunsten
 					von Port 587 als veraltet erklärt, wird jedoch für Altsysteme aktiviert gelassen.
 				</para>

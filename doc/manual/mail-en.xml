@@ -860,7 +860,7 @@ postmap /etc/postfix/smtp_auth
 					Port 465 (<systemitem class="service">SMTPS</systemitem>) allows
 					authentication and email submission through a SSL encrypted connection.
 					<systemitem class="service">SMTPS</systemitem> has been declared
-					deprecated in favor of port 587 but is kept enabled for legacy clients.
+					deprecated in favour of port 587 but is kept enabled for legacy clients.
 				</para>
 			</listitem>
 			<listitem>
@@ -873,7 +873,7 @@ postmap /etc/postfix/smtp_auth
 		</itemizedlist>
 		<para>
 			The Submission port should be preferred by email clients. The use of ports
-			25 and 465 for email submission is deprected.
+			25 and 465 for email submission is deprecated.
 		</para>
 	</section>
 
