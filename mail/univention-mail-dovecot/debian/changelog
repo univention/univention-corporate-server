@@ -1,3 +1,9 @@
+univention-mail-dovecot (2.0.0-3) unstable; urgency=low
+
+  * Make Managesieve available via IPv6 (Bug #39702)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 02 Nov 2015 14:56:50 +0100
+
 univention-mail-dovecot (2.0.0-2) unstable; urgency=low
 
   * lowercase all paths (except shared folder w/o email address) (Bug #39346)
