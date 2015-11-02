@@ -547,7 +547,7 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Authentication (and thus submitting) has been disabled by default on port 25. Set &ucsUCRV; <envar>mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes</envar> to reenable it (<u:bug>39021</u:bug>).
+						Authentication (and thus submitting) has been disabled by default on port 25. Set &ucsUCRV; <envar>mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes</envar> to enable the old behavior (<u:bug>39021</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
