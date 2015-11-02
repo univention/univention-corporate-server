@@ -6,8 +6,8 @@ fix: 10.0.31-21.1350.201510211936
 version: [3]
 desc: |
  This update addresses the following issues:
- * When acquiring new uidNumber or gidNumber ensure they do not collide with
-   each other.
+ * It is not possible to create a user with a user id which exists as group
+   id (and vice versa) anymore.
  * DNS TXT records are now shown via the DNS UMC module.
  * In some cases the automatic update of the attribute "displayName" caused
    tracebacks in S4 connector. The UDM module users/user has been updated to
