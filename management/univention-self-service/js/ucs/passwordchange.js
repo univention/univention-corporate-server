@@ -152,8 +152,8 @@ define([
 					this._clearAllInputFields();
 				}), lang.hitch(this, function(err) {
 					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && error.response.data.message) {
-						message = error.response.data.message;
+					if (err.response && err.response.data && err.response.data.message) {
+						message = err.response.data.message;
 					}
 					this._showMessage(message, '.error');
 				})).always(lang.hitch(this, function(){

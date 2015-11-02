@@ -1,3 +1,9 @@
+univention-self-service (0.0.0-25) unstable; urgency=low
+
+  * Bug #39597: Improved UI error handling
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 02 Nov 2015 14:37:29 +0100
+
 univention-self-service (0.0.0-24) unstable; urgency=low
 
   * Bug #39597: Adapted Radiobutton for passwordreset UI
