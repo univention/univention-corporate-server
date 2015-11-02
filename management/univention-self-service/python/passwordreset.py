@@ -57,11 +57,13 @@ class PasswordReset(Ressource):
 		status, response = connection.auth({'username': username, 'password': password})
 		if status != 200:
 			raise cherrypy.HTTPError(response, status)
+		return connection
 
 	def umc_request(self, url, data):
 		connection = self.get_connection()
 		cherrypy.response.status, response = connection.command(url, data)
-		response.pop('status', None)
+		if isinstance(response, dict):
+			response.pop('status', None)
 		return response
 
 	@cherrypy.expose

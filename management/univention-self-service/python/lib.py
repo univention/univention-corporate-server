@@ -61,6 +61,11 @@ class Session(object):
 	def __init__(self, hostname, locale=None):
 		self.hostname = hostname
 		self.locale = locale
+		self._headers = {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json; q=1.0; text/html; q=0.5; */*; q=0.1',
+			'X-Requested-With': 'XMLHttpRequest',
+		}
 		self._cookie = SimpleCookie()
 
 	def get_connection(self):
@@ -75,7 +80,7 @@ class Session(object):
 		return status, content
 
 	def auth(self, data):
-		status, content, headers = self._request('/univention-management-console/auth', data)
+		status, content, headers = self._request('/univention-management-console/auth', {'options': data})
 		if status == 200:
 			if self.locale:
 				self.set({'locale': self.locale})
@@ -98,9 +103,9 @@ class Session(object):
 			self._cookie.load(cookie)
 			self._headers['Cookie'] = '; '.join('%s=%s' % (k, v.value)  for k, v in self._cookie.items())
 
+		content = response.read()
 		if response.getheader('Content-Type', '').startswith('application/json'):
-			content = response.read()
-			content = json.dumps(content)
+			content = json.loads(content)
 		return response.status, content, response.getheaders()
 
 	def _handle_exception(self, etype, exc, etraceback):
@@ -112,6 +117,9 @@ class Session(object):
 		except HTTPException:
 			self.log('HTTPException during request to %s: %s' % (self.hostname, exc))
 			return 503, 'The communication with the Univention Management Console service failed.', {}
+
+	def log(self, msg, traceback=False):
+		cherrypy.log("{}".format(msg), traceback=traceback)
 
 
 def json_response(func):

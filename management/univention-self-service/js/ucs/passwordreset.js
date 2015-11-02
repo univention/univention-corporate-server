@@ -144,12 +144,10 @@ define([
 
 		_getResetMethods: function() {
 			this._removeMessage();
+			this._username.set('disabled', true);
 			this._usernameButton.set('disabled', true);
 
 			if (this._username.isValid()) {
-				// TODO delete mockup
-				// this._buildTokenOptions(['sms', 'email']);
-
 				data = json.stringify({
 					'username': this._username.get('value')
 				});
@@ -160,7 +158,7 @@ define([
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
-					this._buildTokenOptions(data.message);
+					this._buildTokenOptions(data.result);
 				}), lang.hitch(this, function(err){
 					var message = err.name + ": " + err.message;
 					if (err.response && err.response.data && err.response.data.message) {
@@ -168,14 +166,15 @@ define([
 					}
 					this._showMessage(message, '.error');
 					this._usernameButton.set('disabled', false);
+					this._username.set('disabled', false);
 				}));
 			} else {
 				this._usernameButton.set('disabled', false);
+				this._username.set('disabled', false);
 			}
 		},
 
 		_buildTokenOptions: function(options) {
-			// TODO make the RadioButtons visible
 			array.forEach(options, lang.hitch(this, function(item, idx){
 				var radioButton = new RadioButton({
 					name: 'button' + idx,
@@ -236,7 +235,8 @@ define([
 			this._setPasswordButton.set('disabled', true);
 
 			var isTokenAndNewPassValid = this._token.isValid() &&
-				this._verifyPassword;
+				this._newPassword.isValid() &&
+				this._verifyPassword.isValid();
 
 			if (isTokenAndNewPassValid) {
 				data = json.stringify({

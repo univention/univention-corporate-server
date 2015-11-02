@@ -173,8 +173,13 @@ div.step .dijitTextBox {
 	margin-top: 0;
 }
 
-div.step .dijitTextBoxDisabled dijitInputContainer.dijitInputField {
+div.step .dijitTextBoxDisabled .dijitInputContainer.dijitInputField,
+div.step .dijitTextBoxDisabled  {
 	background-color: transparent;
+
+		.dijitInputInner {
+			color: #8D8D8D;
+		}
 }
 
 .success {
