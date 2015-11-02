@@ -16,6 +16,7 @@ import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
 from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR
 
+import re
 
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
 check_installed_apps = []  # list of installed apps (from APPCENTER_FILE)
@@ -89,7 +90,9 @@ def findall_urls(filename):
         with open(filename, 'r') as ini_file:
             for line in ini_file:
                 if not line.startswith('#'):
-                    all_urls += findall(re_pattern, line)
+                    url = findall(re_pattern, line)
+                    for u in url:
+                        all_urls.append(re.sub(r'<[^>]+>', '', u))
 
     except (IOError, OSError) as exc:
         utils.fail("An %r error occured while working with %s"

@@ -1,3 +1,9 @@
+ucs-test (6.0.12-7) unstable; urgency=low
+
+  * remove tags in 20_appcenter/18_check_app_links Bug #39478
+
+ -- Felix Botner <botner@univention.de>  Mon, 02 Nov 2015 12:03:59 +0100
+
 ucs-test (6.0.12-6) unstable; urgency=medium
 
   * 99check_log_files: Ignore some memcache and stunnel messages
