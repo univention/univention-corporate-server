@@ -307,11 +307,21 @@
 			-webkit-column-count: 2
 			-moz-column-count: 2
 
+		.usage.longText 
+			column-count: 2
+			-webkit-column-count: 2
+			-moz-column-count: 2
+
 		.umcPageNav .icon
 			width: 50%
 
 	@media (min-width: 992px)
 		.descriptionContainer.longText div
+			column-count: 3
+			-webkit-column-count: 3
+			-moz-column-count: 3
+
+		.usage.longText 
 			column-count: 3
 			-webkit-column-count: 3
 			-moz-column-count: 3
@@ -325,9 +335,11 @@
 		padding: 1.5em 1000px
 
 	.appDetailsFooter
-		display: inline-block
-		vertical-align: top
-		width: 50%
+		margin-bottom: 2em
+		padding: 0
+	@media (min-width: 768px)
+		.appDetailsFooter:last-child
+			padding-left: 15px
 
 .AppLiveSearchSidebarDropDown
 	.dijitMenuSeparatorIconCell, .dijitMenuSeparatorLabelCell
@@ -342,7 +354,10 @@
 		.umcPageMain
 			margin-bottom: 2.25em
 		.umcPageFooter
-			margin-bottom: 9em
+			margin-bottom: 7em
+		@media (max-width 768px) 
+			.umcPageFooter
+				margin-bottom: 5em
 
 
 	.umcAppCenter .appcenterMetaCategory

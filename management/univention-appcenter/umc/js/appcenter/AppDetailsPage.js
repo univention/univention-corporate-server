@@ -369,9 +369,11 @@ define([
 					});
 					this._mainRegionContainer.addChild(usageHeader);
 
+					var usageClass = 'usage';
+					usageClass += usage.length > 360 ? ' longText' : '';
 					var usagePane = new Text({
 						content: usage,
-						'class': 'usage'
+						'class': usageClass
 					});
 					this._mainRegionContainer.addChild(usagePane);
 				}
@@ -456,20 +458,21 @@ define([
 			//footer
 			//TODO just for testing
 			domConstruct.empty(this._footer.domNode);
-			domStyle.set(this._footer.domNode, 'margin-bottom', '9em');
 
 			domConstruct.create('span', {
 				innerHTML: _('More information'),
 				'class': 'mainHeader'
 			}, this._footer.domNode);
 
+			var footerClass = "appDetailsFooter col-xs-12 col-sm-6";
+
 			var footerLeft = new ContainerWidget({
-				'class': 'appDetailsFooter'
+				'class': footerClass
 			});
 			this._footer.own(footerLeft);
 			this._footer.addChild(footerLeft);
 			var footerRight = new ContainerWidget({
-				'class': 'appDetailsFooter'
+				'class': footerClass
 			});
 			this._footer.own(footerRight);
 			this._footer.addChild(footerRight);

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.14-9) unstable; urgency=low
+
+  * Bug #39665: adjusted text layout for the AppDetailsPage 
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 02 Nov 2015 18:24:55 +0100
+
 univention-appcenter (5.0.14-8) unstable; urgency=low
 
   * Bug #39199: ignore port test for updates
