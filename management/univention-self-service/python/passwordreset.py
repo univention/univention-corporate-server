@@ -54,7 +54,9 @@ class PasswordReset(Ressource):
 			raise cherrypy.HTTPError(422, 'missing parameter username')
 
 		data = {"username": username}
-		return self.umc_request('passwordreset/get_reset_methods', data)
+		result = self.umc_request('passwordreset/get_reset_methods', data)
+		cherrypy.response.status = result.pop('status', 500)
+		return result
 
 	@cherrypy.expose
 	@json_response
