@@ -825,7 +825,7 @@ class App(object):
 		for i in self.ports_redirection:
 			ports.append(i.split(':', 1)[0])
 		for app_id, container_port, host_port in app_ports():
-			if str(host_port) in ports:
+			if app_id != self.id and str(host_port) in ports:
 				conflictedapps.append({'id': app_id})
 		if conflictedapps:
 			return conflictedapps

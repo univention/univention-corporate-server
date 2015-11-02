@@ -1,3 +1,9 @@
+univention-appcenter (5.0.14-8) unstable; urgency=low
+
+  * Bug #39199: ignore port test for updates
+
+ -- Felix Botner <botner@univention.de>  Mon, 02 Nov 2015 14:40:22 +0100
+
 univention-appcenter (5.0.14-7) unstable; urgency=medium
 
   * Bug #39189: Wording
