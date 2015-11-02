@@ -5,6 +5,7 @@ src: univention-welcome-screen
 fix: 0.0.0-15.17.201510221033
 version: [3]
 desc: |
- This update addresses the following issues:
- * A script which is called after the installation has been improved.
+ This update addresses the following issue:
+ * The welcome-screen initscript will now detect running instances and
+   it will not be started when debian-installer is running
 bug: [39137]
