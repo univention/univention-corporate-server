@@ -1,3 +1,9 @@
+ucs-test (6.0.12-9) unstable; urgency=low
+
+  * ignore some links in 20_appcenter/18_check_app_links (Bug #39478) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 02 Nov 2015 14:17:29 +0100
+
 ucs-test (6.0.12-8) unstable; urgency=low
 
   * Fixed SAML tests (Bug #39657)

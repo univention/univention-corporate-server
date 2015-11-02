@@ -25,6 +25,10 @@ re_pattern = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0
 failures_counter = 0  # errors counter
 bad_links = []  # list of problematic links
 
+# these links return 403
+forbidden_links = dict()
+forbidden_links['https://univention.ikarus.at/index-en.php'] = True
+forbidden_links['https://univention.ikarus.at/index.php'] = True
 
 def fail_the_test(bad_link):
     """
@@ -157,6 +161,9 @@ def check_ini_files():
                 fail_the_test(link)  # when ValueError or URLError happens
             else:
                 print "The HTTP response code is:", response_code
+                if link in forbidden_links and str(response_code) == '403':
+                    print 'ignored, link is in forbidden_links'
+                    continue
                 # fail if HTTP response code startswith 4xx or 5xx:
                 if str(response_code).startswith(('4', '5')):
                     print "Response code indicates a problem."
