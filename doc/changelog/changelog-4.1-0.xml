@@ -211,7 +211,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The App Center is now able to install docker based apps. These apps are installed in a small container (minimal UCS) within the host system
-					(<u:bug>38887</u:bug>, <u:bug>39185</u:bug>, <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>, <u:bug>39184</u:bug>, <u:bug>39183</u:bug>, <u:bug>39196</u:bug>, <u:bug>39496</u:bug>, <u:bug>39417</u:bug>, <u:bug>39330</u:bug>, <u:bug>39192</u:bug>, <u:bug>39467</u:bug>, <u:bug>39462</u:bug>, <u:bug>39629</u:bug>, <u:bug>39204</u:bug>, <u:bug>39189</u:bug>, <u:bug>39587</u:bug>, <u:bug>39189</u:bug>, <u:bug>39660</u:bug>).
+					(<u:bug>38887</u:bug>, <u:bug>39185</u:bug>, <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>, <u:bug>39184</u:bug>, <u:bug>39183</u:bug>, <u:bug>39196</u:bug>, <u:bug>39496</u:bug>, <u:bug>39417</u:bug>, <u:bug>39330</u:bug>, <u:bug>39192</u:bug>, <u:bug>39467</u:bug>, <u:bug>39462</u:bug>, <u:bug>39629</u:bug>, <u:bug>39204</u:bug>, <u:bug>39189</u:bug>, <u:bug>39587</u:bug>, <u:bug>39189</u:bug>, <u:bug>39660</u:bug>, <u:bug>39434</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The source package has been renamed to <package>univention-appcenter</package> to reflect the fact that the UMC module is
@@ -219,7 +219,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The design of the UMC App Center module has been adjusted, and some usability aspects have been improved
-					(<u:bug>38894</u:bug>).
+					(<u:bug>38894</u:bug>, <u:bug>39653</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					App logos must be in the SVG format from UCS 4.1 on. Logos are referenced in the <wordasword>INI</wordasword> or META files as
