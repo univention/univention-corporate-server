@@ -1,3 +1,10 @@
+univention-appcenter (5.0.14-10) unstable; urgency=low
+
+  * Bug #39524: fixed the Carousel widget not displaying correctly when the 
+    same youtube video is stated more then once
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 02 Nov 2015 18:37:46 +0100
+
 univention-appcenter (5.0.14-9) unstable; urgency=low
 
   * Bug #39665: adjusted text layout for the AppDetailsPage 

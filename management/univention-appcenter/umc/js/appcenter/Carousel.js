@@ -135,10 +135,15 @@ define([
 		_renderThumbs: function() {
 			this.loadedImagesCount = 0;
 			var index = 0;
+			var uniqueYTVideoIds = [];
 
 			array.forEach(this.items, lang.hitch(this, function(item) {
 				if (this._srcIsYoutubeVideo(item.src)) {
 					var videoId = this._getYoutubeUrlVideoId(item.src);
+					if (uniqueYTVideoIds.indexOf(videoId) !== -1) {
+						return;
+					}
+					uniqueYTVideoIds.push(videoId);
 
 					var videoWrapper = domConstruct.create('div', {'class': 'galleryVideo'}, this.contentSlider.domNode);
 					var div = domConstruct.create('div', {
@@ -229,7 +234,7 @@ define([
 
 		renderScaleButton: function() {
 			this.scaleButton = domConstruct.create('div', {
-				'class': 'scaleButton',
+				'class': 'scaleButton dijitHidden',
 				onclick: lang.hitch(this, function() {
 					this.togglePreviewSize(this.shownItemIndex);
 				})
@@ -238,11 +243,12 @@ define([
 
 		imagesLoaded: function() {
 			this.loadedImagesCount++;
-			if (this.loadedImagesCount === this.items.length) {
+			if (this.loadedImagesCount === this.itemNodes.length) {
 				this.allItemsLoaded = true;
 				this.heighestImg = this.heighestImg.cloneNode();
 				domConstruct.place(this.heighestImg, this.domNode);
 				domClass.add(this.heighestImg, 'dijitHidden');
+				domClass.remove(this.scaleButton, 'dijitHidden');
 				
 				this._setDefaultThumbsHeight();
 				this.resizeCarousel();
