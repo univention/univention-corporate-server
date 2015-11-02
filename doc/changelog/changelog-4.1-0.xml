@@ -201,7 +201,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The UMC PAM configuration has been extended. It is now possible to integrate additional
-					services via PAM such as mutli factor authentication modules (<u:bug>39612</u:bug>).
+					services via PAM such as multi factor authentication modules (<u:bug>39612</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
