@@ -650,6 +650,10 @@
 					The description of a virtual machine is dynamically displayed
 					as a grid column (<u:bug>38676</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The user can now select the MAC address inside the interface grid.
+					(<u:bug>33546</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
