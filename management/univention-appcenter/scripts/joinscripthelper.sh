@@ -31,8 +31,7 @@
 . /usr/share/univention-lib/ldap.sh
 
 JS_SCRIPT_FULLNAME="$(readlink -f "$JS_RUNNING_FILENAME")"
-joinscript_get_package_name
-APP="$JS_PACKAGE"
+APP="$(echo "$JS_SCRIPT_FULLNAME" | sed 's/.*\/[0-9]\+\(\(.*\)-uninstall\.uinst\|\(.*\)\.u\?inst\)/\2\3/')"
 SERVICE="$(univention-app get "$APP" Application:Name --values-only)"
 ucr_container_key="$(univention-app get $APP ucr_container_key --values-only)"
 APP_VERSION="$(univention-app get $APP version --values-only)"

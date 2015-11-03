@@ -233,21 +233,21 @@ class InstallRemoveUpgrade(Register):
 			ext = 'uinst'
 		else:
 			ext = 'inst'
-			unjoinscript = self._get_joinscript_path(app, True)
+			unjoinscript = self._get_joinscript_path(app, unjoin=True)
 			if os.path.exists(unjoinscript):
 				self.log('Uninstalling unjoin script')
 				os.unlink(unjoinscript)
 		joinscript = app.get_cache_file(ext)
 		if os.path.exists(joinscript):
 			self.log('Installing join script %s' % joinscript)
-			dest = self._get_joinscript_path(app, unjoin)
+			dest = self._get_joinscript_path(app, unjoin=unjoin)
 			shutil.copy2(joinscript, dest)
 			# change to UCS umask + +x:      -rwxr-xr-x
 			os.chmod(dest, 0755)
 			ucr = ConfigRegistry()
 			ucr.load()
 			if ucr.get('server/role') == 'domaincontroller_master' and getuser() == 'root':
-				return self._call_script(dest, run_scripts=os.path.basename(dest))
+				return self._call_script(dest)
 			else:
 				with self._get_password_file(args) as password_file:
 					joinargs = []

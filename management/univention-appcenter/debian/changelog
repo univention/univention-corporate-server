@@ -1,3 +1,9 @@
+univention-appcenter (5.0.14-13) unstable; urgency=medium
+
+  * Bug #39475: Do not use --run-scripts when calling join scripts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Nov 2015 13:44:45 +0100
+
 univention-appcenter (5.0.14-12) unstable; urgency=low
 
   * Bug #39482: schedule Postfix DH parameters regeneration
