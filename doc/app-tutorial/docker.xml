@@ -275,7 +275,7 @@ univention-app dev-populate-appcenter \
 					The calender and contact data is stored at <filename class="directory">/var/lib/radicale/collections/</filename>.
 					We just need to save this directory and restore it accordingly.
 					Luckily, the Univention App Center provides a shared directory where the App can store its data easily.
-					This directory is <filename class="directory">/var/lib/appcenter/app/<replaceable>$APPID</replaceable>/data/</filename>.
+					This directory is <filename class="directory">/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/data/</filename>.
 				</para>
 				<para>
 					Create the file <filename>~/radicale.store_data</filename> with the following content:
@@ -284,7 +284,7 @@ univention-app dev-populate-appcenter \
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.restore_data" parse="text"/></programlisting>
 				</para>
 				<important><para>
-					<filename class="directory">/var/lib/appcenter/app/<replaceable>$APPID</replaceable>/data/</filename> is always mounted into the docker container.
+					<filename class="directory">/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/data/</filename> is always mounted into the docker container.
 					The very same directory exists on the docker host. If your app can be configured to save its data on a different location, you may want to consider
 					using this directory. Not only will it make storing and restoring data in the image exchange process very easy, it should also be faster because
 					it does not rely on the Docker storage driver, thereby reducing overhead. In fact, <application>Radicale</application> should have been configured
@@ -558,7 +558,7 @@ univention-app restart radicale
 							or just copy the important files. The App Center always mounts the following
 							directory into the container, which can be used to store the data (and later
 							restore the data from there as the very same directory will be mounted into the
-							new container): <filename class="directory">/var/lib/appcenter/app/<replaceable>$APPID</replaceable>/data/</filename>.
+							new container): <filename class="directory">/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/data/</filename>.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -691,7 +691,7 @@ univention-app restart radicale
 						<term><varname>DockerVolumes</varname></term>
 						<listitem>
 							<simpara>
-								Apart from <filename class="directory">/var/lib/appcenter/app/<replaceable>$APPID</replaceable>/{data,conf}/</filename>,
+								Apart from <filename class="directory">/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/{data,conf}/</filename>,
 								one may choose further directories that shall be mounted into the docker container. This is a good idea if it makes
 								storing / restoring data easy and also provides the benefit of increased I/O performance. The syntax is
 								<envar>DockerVolumes=/path/on/host/:/path/in/container/,...</envar>.
@@ -706,7 +706,7 @@ univention-app restart radicale
 								object can either be a <envar>memberserver</envar> (default) or a <envar>domaincontroller_slave</envar>.
 								The latter is useful if the container needs more rights (DC systems may have more rights in the ACL definitions
 								of LDAP). Other than that, both roles are free to choose their software selection (depending on the app package
-								definitions in its <filename>debian/control</filename>.
+								definitions in its <filename>debian/control</filename>).
 							</simpara>
 						</listitem>
 					</varlistentry>
