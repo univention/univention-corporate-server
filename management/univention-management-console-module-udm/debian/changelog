@@ -1,6 +1,12 @@
+univention-management-console-module-udm (6.0.6-4) unstable; urgency=medium
+
+  * Bug #38190: re-adjust order in NewObjectDialog:_renderForm()
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Nov 2015 14:53:16 +0100
+
 univention-management-console-module-udm (6.0.6-3) unstable; urgency=medium
 
-  * Bug #38190: adjusted order of calls in NewObjectDialog:buildRendering()
+  * Bug #38190: adjusted order of calls in NewObjectDialog::_renderForm()
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Nov 2015 14:14:21 +0100
 

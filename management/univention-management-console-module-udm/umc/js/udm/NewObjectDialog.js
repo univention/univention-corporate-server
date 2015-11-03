@@ -133,10 +133,6 @@ define([
 				iarray.sort(tools.cmpObjects('label'));
 			});
 
-			this._notificationText = new NotificationText();
-			this.own(this._notificationText);
-			this.addChild(this._notificationText, 0);
-
 			this._wizardContainer = new StackContainer({});
 			this._preWizard = new FirstPageWizard({
 				types: types,
@@ -170,6 +166,10 @@ define([
 			this._preWizard.on('Cancel', lang.hitch(this, function() {
 				this.hide();
 			}));
+
+			this._notificationText = new NotificationText();
+			this.own(this._notificationText);
+			this.addChild(this._notificationText, 0);
 
 			var createWizard = lang.hitch(this, function() {
 				var firstPageValues = this._preWizard.getValues();
