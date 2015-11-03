@@ -59,7 +59,7 @@ if [ "$auth_faillog" = "yes" -o "$auth_faillog" = "enabled" -o "$auth_faillog" =
 			exit 1
 		fi
 
-		univention-directory-manager users/user modify --binddn "$binddn" --bindpwd "$(cat $bindpw)" --logfile /dev/null --dn "$user_dn" --set locked=all
+		HOME=/ univention-directory-manager users/user modify --binddn "$binddn" --bindpwd "$(cat $bindpw)" --logfile /dev/null --dn "$user_dn" --set locked=all
 
 		exit $?
 	else

@@ -1,3 +1,9 @@
+univention-pam (8.0.3-3) unstable; urgency=low
+
+  * Bug #39369: overwrite HOME in univention-pam/lock-user 
+
+ -- Felix Botner <botner@univention.de>  Tue, 03 Nov 2015 14:02:49 +0100
+
 univention-pam (8.0.3-2) unstable; urgency=low
 
   * Bug #37971: Delay auth/sshd/ restrictions until role is known
