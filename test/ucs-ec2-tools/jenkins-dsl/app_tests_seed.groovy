@@ -92,7 +92,14 @@ def createStatusViews(String path) {
     listView(path + '/Running') {
         description('Show all running app test')
         recurse()
-        filterBuildQueue()
+    configure { view ->
+        view / jobFilters(class: 'hudson.views.BuildStatusFilter') {
+            includeExcludeTypeString('includeMatched')
+            neverBuilt('false')
+            building('true')
+            inBuildQueue('true')
+        }
+    }
         columns {
             status()
             weather()
