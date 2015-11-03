@@ -292,9 +292,9 @@ class Instance(Base):
 				user["PasswordRecoveryMobile"] = mobile
 			user.modify()
 			return True
-		except:
+		except Exception, e:
 			MODULE.info("set_contact_data(): failed to add contact: {}".format(traceback.format_exc()))
-			raise ContactChangingFailed(_("Failed to change contact information."))
+			raise ContactChangingFailed(_("Failed to change contact information: {}").format(e))
 
 	def udm_set_password(self, username, password):
 		MODULE.info("udm_set_password(): username: {} password: {}".format(username, password))
@@ -333,13 +333,14 @@ class Instance(Base):
 		lo = getMachineConnection()
 		try:
 			userdn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
+			groups_dns = self.get_groups(userdn)
+			for group_dn in list(groups_dns):
+				groups_dns.extend(self.get_nested_groups(group_dn))
+			groups_dns = list(set(groups_dns))
+			gr_names = map(str.lower, self.dns_to_groupname(groups_dns))
 		except IndexError:
+			# no user or no group found
 			raise UMC_Error(_("Unknown user '{}'.").format(username))
-		groups_dns = self.get_groups(userdn)
-		for group_dn in list(groups_dns):
-			groups_dns.extend(self.get_nested_groups(group_dn))
-		groups_dns = list(set(groups_dns))
-		gr_names = map(str.lower, self.dns_to_groupname(groups_dns))
 
 		# group blacklist
 		if any([gr in bl_groups for gr in gr_names]):
@@ -423,13 +424,10 @@ class Instance(Base):
 				univention.admin.modules.init(self.lo, self.position, self.usersmod)
 			lo = self.lo
 			usersmod = self.usersmod
-		try:
-			user = usersmod.lookup(self.config, lo, filter_s=uidf, base=base)[0]
-			user.open()
-			return user
-		except IndexError:
-			# no user found
-			raise UMC_Error(_("Unknown user '{}'.").format(userdn if userdn else username))
+
+		user = usersmod.lookup(self.config, lo, filter_s=uidf, base=base)[0]
+		user.open()
+		return user
 
 	def get_udm_group(self, groupdn):
 		dn_part = groupdn.partition(",")
@@ -444,10 +442,7 @@ class Instance(Base):
 			if not self.lo or not self.position:
 				self.lo, self.position = univention.admin.uldap.getMachineConnection()
 			univention.admin.modules.init(self.lo, self.position, self.groupmod)
-		try:
-			group = self.groupmod.lookup(self.config, self.lo, filter_s=gidf, base=base)[0]
-			group.open()
-			return group
-		except IndexError:
-			# no group found
-			raise UMC_Error(_("Unknown group '{}'.").format(groupdn))
+
+		group = self.groupmod.lookup(self.config, self.lo, filter_s=gidf, base=base)[0]
+		group.open()
+		return group
