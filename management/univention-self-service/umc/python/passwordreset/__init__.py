@@ -87,7 +87,6 @@ class MethodDisabledError(UMC_Error):
 class Instance(Base):
 
 	def init(self):
-		MODULE.info("init()")
 		if not ucr.is_true("umc/self-service/passwordreset/enabled"):
 			err = "Module is disabled by UCR."
 			MODULE.error(err)
@@ -118,7 +117,7 @@ class Instance(Base):
 		mobile=StringSanitizer(required=False))
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
-		MODULE.info("set_contact(): username: {} password: {} email: {} mobile: {}".format(username, password, email, mobile))
+		MODULE.info("set_contact(): username: {} password: {} email: {} mobile: {}".format(username, "*"*len(password), email, mobile))
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("User is blacklisted."))
 		dn = self.auth(username, password)
@@ -183,7 +182,7 @@ class Instance(Base):
 		password=StringSanitizer(required=True))
 	@simple_response
 	def set_password(self, token, username, password):
-		MODULE.info("set_password(): token: '{}' username: '{}' password: '{}'.".format(token, username, password))
+		MODULE.info("set_password(): token: '{}' username: '{}' password: '{}'.".format(token, username, "*"*len(password)))
 		try:
 			token_from_db = self.db.get_one(token=token, username=username)
 		except MultipleTokensInDB as e:
@@ -221,7 +220,6 @@ class Instance(Base):
 		username = request.options.get("username")
 		if not username:
 			raise UMC_Error(_("Empty username supplied."))
-		MODULE.info("get_reset_methods(): username: '{}'".format(username))
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("User is blacklisted."))
 		user = self.get_udm_user(username=username)
@@ -238,11 +236,10 @@ class Instance(Base):
 		res = ""
 		for _ in xrange(length):
 			res += rand.choice(chars)
-		MODULE.info("create_token({}): {}".format(length, res))
 		return res
 
 	def send_message(self, username, method, address, token):
-		MODULE.info("send_message(): username: {} method: {} address: {} token: {}".format(username, method, address, token))
+		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
 		try:
 			plugin = self.send_plugins[method]
 		except KeyError:
@@ -266,12 +263,10 @@ class Instance(Base):
 
 	@staticmethod
 	def auth(username, password):
-		MODULE.info("auth(): username: {} password: {}".format(username, password))
 		lo = None
 		try:
 			lo = getMachineConnection()
 			binddn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
-			MODULE.info("auth(): Connecting as {} to LDAP...".format(binddn))
 			get_user_connection(binddn=binddn, bindpw=password)
 		except univention.admin.uexceptions.authFail:
 			raise UMC_Error(_("Username or password is incorrect."))
@@ -283,7 +278,6 @@ class Instance(Base):
 		return binddn
 
 	def set_contact_data(self, dn, email, mobile):
-		MODULE.info("set_contact_data(): dn: {} email: {} mobile: {}".format(dn, email, mobile))
 		try:
 			user = self.get_udm_user(userdn=dn, admin=True)
 			if email is not None and email.lower() != user["PasswordRecoveryEmail"].lower():
@@ -297,7 +291,6 @@ class Instance(Base):
 			raise ContactChangingFailed(_("Failed to change contact information: {}").format(e))
 
 	def udm_set_password(self, username, password):
-		MODULE.info("udm_set_password(): username: {} password: {}".format(username, password))
 		try:
 			user = self.get_udm_user(username=username, admin=True)
 			user["password"] = password
