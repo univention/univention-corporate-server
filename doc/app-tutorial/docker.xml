@@ -641,8 +641,8 @@ univention-app restart radicale
 							This script is different from <literal>update_packages</literal>. This has technical reasons, because
 							for normal UCS based docker images, this requires a new repository to be registered. But it also has
 							usability reasons: First, users may want to distinguish between necessary, stability improving package
-							updates and (potentially) ground-shaking App updates; second, an App can be configured to install those
-							package updates automatically through <envar>DockerAutoUpdate</envar>.
+							updates and (potentially) ground-shaking App updates; second, at least the UCS containers are configured
+							to install security / stability updates automatically.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -707,17 +707,6 @@ univention-app restart radicale
 								The latter is useful if the container needs more rights (DC systems may have more rights in the ACL definitions
 								of LDAP). Other than that, both roles are free to choose their software selection (depending on the app package
 								definitions in its <filename>debian/control</filename>).
-							</simpara>
-						</listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><varname>DockerAutoUpdate</varname></term>
-						<listitem>
-							<simpara>
-								The container can be configured to automatically update itself. This does not hold for the App itself, but
-								rather for either <envar>packages</envar> (security fixes in PHP etc) or <envar>release</envar>s (new UCS versions).
-								Default is that the container is not updated automatically. Note that release updates are only performed if the
-								app is actually released for that specific UCS version, otherwise the update process will stall.
 							</simpara>
 						</listitem>
 					</varlistentry>
