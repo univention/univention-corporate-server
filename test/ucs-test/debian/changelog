@@ -1,3 +1,10 @@
+ucs-test (6.0.12-11) unstable; urgency=low
+
+  * Added performance test for the appcenter (Bug #38545)
+    20_appcenter/60_check_appcenter_performance
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 03 Nov 2015 12:02:49 +0100
+
 ucs-test (6.0.12-10) unstable; urgency=low
 
   * use isoformat for date in 82_saml/11_saml_user_expire (Bug #39657)

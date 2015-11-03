@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check the performance for requests against the UMC appcenter
+## bugs: [38545]
+## roles-not: [basesystem]
+## packages:
+##   - univention-management-console-module-appcenter
+## exposure: safe
+## tags: [appcenter, performance]
+
+import univention.lib.umc_connection as UMCC
+import univention.testing.utils as utils
+import time
+
+def main():
+	max_time = 5
+	account = utils.UCSTestDomainAdminCredentials()
+	request_query = ('appcenter/query', {}, )
+	c = UMCC.UMCConnection('localhost')
+	
+	c.auth(account.username, account.bindpw)
+	start_time = time.time()
+	c.request(*request_query)
+	end_time = time.time()
+	#print end_time - start_time # What would be a good value?
+	
+	if end_time - start_time > max_time:
+		utils.fail("The appcenter answered too slow\nThreshold is %s sec; Appcenter replied in %s sec." % (max_time, end_time - start_time, ))
+
+if __name__ == '__main__':
+	main()
