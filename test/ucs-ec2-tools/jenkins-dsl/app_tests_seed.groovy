@@ -24,7 +24,7 @@ apps = new Apps().getApps(version, test=true, ucs_components=false)
 
 // create folder and views
 folder(workdir + '/apps')
-createStatusViews(workdir + 'apps')
+createStatusViews(workdir + '/apps')
 
 // create jobs for every app
 apps.keySet()each { app ->
@@ -45,7 +45,7 @@ apps.keySet()each { app ->
 def createStatusViews(String path) {
 
     // stable
-    listView(path + 'Stable') {
+    listView(path + '/Stable') {
         description('Show all successful app test')
         recurse()
         jobFilters {
