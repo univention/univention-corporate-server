@@ -669,6 +669,8 @@
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The package <package>qemu</package> has been updated and has been re-compiled with support for Xen disabled.
+						The package <package>libvirt</package> has also been re-compiled with support for Xen disabled (<u:bug>39685</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
