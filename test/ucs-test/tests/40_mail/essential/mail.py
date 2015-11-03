@@ -29,7 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.config_registry import handler_set
 import glob
 import smtplib
 import imaplib
@@ -48,6 +47,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 import email.encoders as Encoders
+import poplib
+
+from univention.config_registry import handler_set
 import univention.testing.utils as utils
 import univention.testing.ucr as ucr_test
 from univention.testing.decorators import WaitForNonzeroResultOrTimeout
@@ -171,33 +173,18 @@ class ImapMail(Mail):
 
 class PopMail(Mail):
 
-	def get_return_code(self, response):
-		regex = '(.*?) .*$'
-		m = re.search(regex, response)
-		try:
-			return m.group(1)
-		except:
-			return '-ERR'
-
-	def send_and_receive(self, s, message):
-		self.send_message(s, message)
-		response = self.get_reply(s)
-		print response,
-		r = self.get_return_code(response)
-		return r
-
 	def login_OK(self, username, password):
 		hostname = socket.gethostname()
-		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		s.settimeout(self.timeout)
-		s.connect((hostname, 110))
-		print self.get_reply(s),
-		self.send_and_receive(s, 'USER %s' % username)
-		retval = self.send_and_receive(s, 'PASS %s' % password)
-		self.send_and_receive(s, 'QUIT')
-		s.close()
-		return (retval == '+OK')
-
+		con = poplib.POP3(hostname)
+		con.set_debuglevel(2)
+		con.user(username)
+		try:
+			con.pass_(password)
+		except poplib.error_proto:
+			return False
+		finally:
+			con.quit()
+		return True
 
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
@@ -671,7 +658,7 @@ def wait_for_mailboxes(mailboxes, timeout=90):
 
 def create_shared_mailfolder(udm, mailHomeServer, mailAddress=None, user_permission=None, group_permission=None):
 	with ucr_test.UCSTestConfigRegistry() as ucr:
-		domain = ucr.get('domainname')
+		domain = ucr.get('domainname').lower() # lower() can be removed, when #39721 is fixed
 		basedn = ucr.get('ldap/base')
 		dovecat = ucr.is_true('mail/dovecot')
 	name = uts.random_name()
