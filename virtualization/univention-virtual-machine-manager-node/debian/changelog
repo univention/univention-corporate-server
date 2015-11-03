@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (4.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:31:15 +0100
+
 univention-virtual-machine-manager-node (3.0.4-1) unstable; urgency=low
 
   * Bug #36605: Increase timeout in check script

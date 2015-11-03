@@ -1,3 +1,9 @@
+univention-debug (8.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 21:57:24 +0100
+
 univention-debug (7.0.1-6) unstable; urgency=medium
 
   * Bug #37317: Fix a segfault which occurred when trying to reopen the logfile

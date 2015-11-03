@@ -1,3 +1,9 @@
+univention-quota (10.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:02:56 +0100
+
 univention-quota (9.1.5-9) unstable; urgency=medium
 
   * If the policy doesn't exist, we don't now if the policy was a quota

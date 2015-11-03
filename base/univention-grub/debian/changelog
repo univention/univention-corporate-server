@@ -1,3 +1,9 @@
+univention-grub (9.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 21:59:21 +0100
+
 univention-grub (8.0.4-2) unstable; urgency=low
 
   * Bug #38779: Make title configurable

@@ -1,3 +1,9 @@
+univention-java (8.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:06:06 +0100
+
 univention-java (7.0.1-1) unstable; urgency=medium
 
   * Switch to OpenJDK 7 (Bug #35382)

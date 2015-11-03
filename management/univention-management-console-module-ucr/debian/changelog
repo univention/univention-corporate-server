@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (5.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:17:11 +0100
+
 univention-management-console-module-ucr (4.1.1-4) unstable; urgency=low
 
   * Bug #38036: Encode HTML entities in description and tool-tip

@@ -1,3 +1,9 @@
+univention-heimdal (9.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 21:59:32 +0100
+
 univention-heimdal (8.0.0-3) unstable; urgency=medium
 
   * Fix UCRV registry (Bug #38295)

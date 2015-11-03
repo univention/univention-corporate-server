@@ -1,4 +1,10 @@
-univention-samba4wins (6.0.0-1) UNRELEASED; urgency=medium
+univention-samba4wins (7.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:49:54 +0100
+
+univention-samba4wins (6.0.0-1) unstable; urgency=medium
 
   * version bump for UCS 4.0 (Bug #35319)
   * Adjust for python2.7

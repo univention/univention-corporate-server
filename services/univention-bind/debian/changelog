@@ -1,3 +1,9 @@
+univention-bind (10.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:22:47 +0100
+
 univention-bind (9.0.5-3) unstable; urgency=low
 
   * Bug #36532: Improve restart of bind9 on network reconfiguration

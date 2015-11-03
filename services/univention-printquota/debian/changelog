@@ -1,3 +1,9 @@
+univention-printquota (8.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:24:59 +0100
+
 univention-printquota (7.0.0-4) unstable; urgency=low
 
   * moved /etc/machine.secret stuff from postinst to

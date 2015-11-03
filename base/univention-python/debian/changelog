@@ -1,3 +1,9 @@
+univention-python (9.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:02:30 +0100
+
 univention-python (8.0.3-9) unstable; urgency=low
 
   * Bug #38712: Fix policy inheritance

@@ -1,3 +1,9 @@
+univention-mail-cyrus (8.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:08:11 +0100
+
 univention-mail-cyrus (7.0.4-2) unstable; urgency=low
 
   * Bug #39004: register mailquota.py in LDAP with ucsversionstart==3.2-0

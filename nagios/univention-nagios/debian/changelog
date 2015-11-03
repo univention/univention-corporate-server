@@ -1,3 +1,9 @@
+univention-nagios (9.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:18:44 +0100
+
 univention-nagios (8.0.0-5) unstable; urgency=low
 
   * use FQDN in check_univention_ldap (Bug #27043) 

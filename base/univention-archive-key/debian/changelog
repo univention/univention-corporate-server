@@ -1,3 +1,9 @@
+univention-archive-key (6.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 21:56:35 +0100
+
 univention-archive-key (5.0.1-1) unstable; urgency=low
 
   * Bug #36238: Add univention-archive-key-udeb

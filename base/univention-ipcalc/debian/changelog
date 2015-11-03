@@ -1,3 +1,9 @@
+univention-ipcalc (7.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:00:01 +0100
+
 univention-ipcalc (6.0.0-2) unstable; urgency=low
 
   * Fix python2.7 support for UCS-4.0 (Bug #35138)

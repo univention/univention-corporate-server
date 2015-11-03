@@ -1,3 +1,9 @@
+univention-dojo (9.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:13:13 +0100
+
 univention-dojo (8.0.3-5) unstable; urgency=medium
 
   * Change dependency to openjdk-7-jdk (Bug #39572)

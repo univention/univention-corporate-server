@@ -1,3 +1,9 @@
+ucs-windows-tools (3.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:29:06 +0100
+
 ucs-windows-tools (2.0.9-2) unstable; urgency=low
 
   * lib/winexe.py: added function to do "gpupdate.exe /force" (Bug #37568).

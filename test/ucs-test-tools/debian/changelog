@@ -1,3 +1,9 @@
+ucs-test-tools (5.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:28:54 +0100
+
 ucs-test-tools (4.0.0-2) unstable; urgency=low
 
   * bump version number (Bug #35664)

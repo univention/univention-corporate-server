@@ -1,3 +1,9 @@
+univention-sasl (4.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:26:41 +0100
+
 univention-sasl (3.0.0-3) unstable; urgency=low
 
   * Added mail/saslauthd/cache/timeout?1800 (Bug #36949) 

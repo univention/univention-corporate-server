@@ -1,3 +1,9 @@
+univention-dansguardian (9.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:23:42 +0100
+
 univention-dansguardian (8.0.0-2) unstable; urgency=low
 
   * Updated config files (Bug #36114) 

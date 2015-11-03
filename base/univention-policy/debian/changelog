@@ -1,3 +1,9 @@
+univention-policy (7.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:02:05 +0100
+
 univention-policy (6.0.2-8) unstable; urgency=medium
 
   * Bug #38663: fixedAttributes, emptyAttributes, prohibitedObjectClasses and

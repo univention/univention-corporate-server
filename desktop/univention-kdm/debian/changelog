@@ -1,3 +1,9 @@
+univention-kdm (2.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:06:28 +0100
+
 univention-kdm (1.0.0-5) unstable; urgency=low
 
   * theme update (Bug #35936) 

@@ -1,3 +1,9 @@
+univention-nagios-raid (5.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:18:54 +0100
+
 univention-nagios-raid (4.0.0-3) unstable; urgency=low
 
   * Increased join script version number (Bug #35265)

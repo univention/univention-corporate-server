@@ -1,3 +1,9 @@
+univention-admingrp-user-passwordreset (6.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 22:10:54 +0100
+
 univention-admingrp-user-passwordreset (5.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #36114) 

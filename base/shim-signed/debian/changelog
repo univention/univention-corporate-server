@@ -1,3 +1,9 @@
+shim-signed (2.0.1-1) unstable; urgency=medium
+
+  * Bump version for UCS 4.1 (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 21:56:25 +0100
+
 shim-signed (1.2-0) unstable; urgency=medium
 
   * Signed with valid certificate (Bug #35915)
