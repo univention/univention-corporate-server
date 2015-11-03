@@ -30,6 +30,12 @@ SuexecUserGroup samlcgi samlcgi
 	Header always set Access-Control-Allow-Methods "GET, HEAD, POST, PUT, DELETE"
 </LocationMatch>
 
+<LocationMatch /simplesamlphp/blank.json>
+	Header always set Cache-Control "no-cache, no-store, must-revalidate"
+	Header always unset Etag
+	Header always unset Last-Modified
+</LocationMatch>
+
 <Directory /usr/share/simplesamlphp/www/>
 	<FilesMatch ".+\.ph(p[345]?|t|tml)$">
 		SetHandler php5-cgi

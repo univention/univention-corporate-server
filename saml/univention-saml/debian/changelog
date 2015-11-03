@@ -1,3 +1,9 @@
+univention-saml (3.0.26-1) unstable; urgency=medium
+
+  * Bug #39605: prevent caching of blank.json
+
+ -- Florian Best <best@univention.de>  Tue, 03 Nov 2015 12:25:43 +0100
+
 univention-saml (3.0.25-7) unstable; urgency=medium
 
   * schema.postinst: restart slapd only if it runs (Bug #39683)
