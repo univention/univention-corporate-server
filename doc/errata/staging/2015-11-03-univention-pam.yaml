@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-pam
-fix: 0.0.0-15.17.201510221033
+fix: 8.0.3-4.262.201511031409
 version: [3]
 desc: |
  This update addresses the following issue:
