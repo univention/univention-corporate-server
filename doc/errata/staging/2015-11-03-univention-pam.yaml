@@ -9,5 +9,4 @@ desc: |
  * The pam script lock-user (automatic user lockouts) now sets the HOME
    environment variable before calling UDM to avoid problems with 
    invalid HOME directories.
-
 bug: [39369]
