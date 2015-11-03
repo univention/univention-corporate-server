@@ -64,7 +64,7 @@ if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
 	fi
 
 	if [ -x /etc/init.d/slapd ]; then
-		/etc/init.d/slapd restart
+		/etc/init.d/slapd crestart
 	fi
 
 	# Set DNS backend to ldap

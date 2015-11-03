@@ -1,3 +1,10 @@
+univention-samba4 (5.0.0-13) unstable; urgency=medium
+
+  * Switch from slapd restart to crestart in univention-samba4.prerm
+    (Bug #39683)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 03 Nov 2015 17:02:03 +0100
+
 univention-samba4 (5.0.0-12) unstable; urgency=low
 
   * fixed ACL check in sysvol-sync.sh (Bug #39511)
