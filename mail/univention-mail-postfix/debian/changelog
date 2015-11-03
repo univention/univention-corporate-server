@@ -1,3 +1,10 @@
+univention-mail-postfix (10.0.0-4) unstable; urgency=low
+
+  * Do not schedule DH parameter generation when creating Docker image
+    (Bug #39482).
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 03 Nov 2015 10:12:31 +0100
+
 univention-mail-postfix (10.0.0-3) unstable; urgency=low
 
   * Bug #39542: fix detection if postfix master is already running

@@ -141,6 +141,13 @@ class DockerActionMixin(object):
 		self.debug('Setting timezone')
 		shutil.copy('/etc/localtime', docker.path('/etc/localtime'))
 
+	def _schedule_dh_generation(self, app):
+		docker = self._get_docker(app)
+		dh_script_path = docker.path('/usr/share/univention-mail-postfix/create-dh-parameter-files.sh')
+		if os.path.exists(dh_script_path):
+			self.debug('Scheduling regeneration of DH parameters for Postfix for tomorrow.')
+			docker.execute('at', '-f', '/usr/share/univention-mail-postfix/create-dh-parameter-files.sh', 'tomorrow')
+
 	def _start_docker_image(self, app, hostdn, password, args):
 		docker = self._get_docker(app)
 		if not docker:
@@ -180,3 +187,4 @@ class DockerActionMixin(object):
 				f.write(password)
 		configure.call(app=app, autostart=autostart, set_vars=set_vars)
 		self._set_timezone(app)
+		self._schedule_dh_generation(app)

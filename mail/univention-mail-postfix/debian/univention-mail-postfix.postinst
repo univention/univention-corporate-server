@@ -41,7 +41,9 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.0-7 
 fi
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.13-3; then
-	echo "/usr/share/univention-mail-postfix/create-dh-parameter-files.sh" | at tomorrow >/dev/null 2>&1
+	if ! is_ucr_true repository/online/component/ucs-container; then
+		at -f /usr/share/univention-mail-postfix/create-dh-parameter-files.sh tomorrow >/dev/null 2>&1
+	fi
 fi
 
 univention-config-registry set \
