@@ -1,3 +1,10 @@
+univention-pam (9.0.0-1) unstable; urgency=low
+
+  * Bug #39369: overwrite HOME in univention-pam/lock-user 
+  * UCS 4.1-0 version bump
+
+ -- Felix Botner <botner@univention.de>  Tue, 03 Nov 2015 14:16:17 +0100
+
 univention-pam (8.0.3-3) unstable; urgency=medium
 
   * Make univention-home-mounter optional (Bug #39490)
