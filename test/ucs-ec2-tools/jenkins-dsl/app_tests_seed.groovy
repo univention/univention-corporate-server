@@ -93,11 +93,11 @@ def createStatusViews(String path) {
         description('Show all running app test')
         recurse()
     configure { view ->
-        view / jobFilters(class: 'hudson.views.BuildStatusFilter') {
-            includeExcludeTypeString('includeMatched')
-            neverBuilt('false')
-            building('true')
-            inBuildQueue('true')
+        view / 'jobFilters' / 'hudson.views.BuildStatusFilter' {
+            includeExcludeTypeString 'includeMatched'
+            neverBuilt false
+            building true
+            inBuildQueue true
         }
     }
         columns {
