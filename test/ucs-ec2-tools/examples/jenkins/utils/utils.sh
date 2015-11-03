@@ -190,6 +190,14 @@ switch_to_test_app_center ()
 	ucr set repository/app_center/server=appcenter-test.software-univention.de
 }
 
+switch_components_to_test_app_center ()
+{
+	ucr search --brief --value appcenter.software-univention.de | \
+		grep 'repository/online/component/.*/server' | \
+		awk -F ':' '{print $1}' | \
+		xargs -I % ucr set %=appcenter-test.software-univention.de
+}
+
 install_apps ()
 {
 	local app rv=0
