@@ -416,7 +416,7 @@ define([
 			});
 
 			var descriptionContainerClass = 'descriptionContainer';
-			descriptionContainerClass += this.app.longDescription.length > 360 ? ' longText' : '';
+			descriptionContainerClass += (this.app.longDescription || '').length > 360 ? ' longText' : '';
 			var descriptionContainer = new ContainerWidget({
 				'class': descriptionContainerClass
 			});
@@ -461,11 +461,6 @@ define([
 			//TODO just for testing
 			domConstruct.empty(this._footer.domNode);
 
-			domConstruct.create('span', {
-				innerHTML: _('More information'),
-				'class': 'mainHeader'
-			}, this._footer.domNode);
-
 			var footerClass = "appDetailsFooter col-xs-12 col-sm-6";
 
 			var footerLeft = new ContainerWidget({
@@ -479,6 +474,11 @@ define([
 			this._footer.own(footerRight);
 			this._footer.addChild(footerRight);
 
+
+			domConstruct.create('span', {
+				innerHTML: _('More information'),
+				'class': 'mainHeader'
+			}, footerLeft.domNode);
 
 			this._detailsTable = domConstruct.create('table', {
 				style: {borderSpacing: '1em 0.1em'}
@@ -500,50 +500,47 @@ define([
 
 			domConstruct.place(this._detailsTable, footerLeft.domNode);
 
-			var maxRating = 0;
-			array.forEach(this.app.rating, function(rating) {
-				if (maxRating < rating.value) {
-					maxRating = rating.value;
-				}
-			});
-			if (maxRating) {
-				domConstruct.create('h3', {
-					textContent: _('App Rating')
+			var hasRating = array.some(this.app.rating, function(rating) { return rating.value; });
+			if (hasRating) {
+				domConstruct.create('span', {
+					innerHTML: _('App Rating'),
+					'class': 'mainHeader'
 				}, footerRight.domNode);
-			}
-			array.forEach(this.app.rating, function(rating) {
-				var ratingText = new Text({
-					'class': 'umcAppRating'
-				});
-				for (var i = 0; i < rating.value; i++) {
+
+				array.forEach(this.app.rating, function(rating) {
+					var ratingText = new Text({
+						'class': 'umcAppRating'
+					});
+					for (var i = 0; i < rating.value; i++) {
+						domConstruct.create('div', {
+								'class': 'umcAppRatingIcon',
+							}, ratingText.domNode
+						);
+					}
 					domConstruct.create('div', {
-							'class': 'umcAppRatingIcon',
+							'class': 'umcAppRatingText',
+							textContent: rating.label,
 						}, ratingText.domNode
 					);
-				}
-				domConstruct.create('div', {
-						'class': 'umcAppRatingText',
-						textContent: rating.label,
-					}, ratingText.domNode
-				);
-				domConstruct.create('div', {
-						'class': 'umcAppRatingHelp umcHelpIcon',
-						onclick: function(evt) {
-							// stolen from system-setup
-							var node = evt.target;
-							Tooltip.show(rating.description, node);
-							if (evt) {
-								dojoEvent.stop(evt);
+					domConstruct.create('div', {
+							'class': 'umcAppRatingHelp umcHelpIconSmall',
+							onclick: function(evt) {
+								// stolen from system-setup
+								var node = evt.target;
+								Tooltip.show(rating.description, node);
+								if (evt) {
+									dojoEvent.stop(evt);
+								}
+								on.once(kernel.body(), 'click', function(evt) {
+									Tooltip.hide(node);
+									dojoEvent.stop(evt);
+								});
 							}
-							on.once(kernel.body(), 'click', function(evt) {
-								Tooltip.hide(node);
-								dojoEvent.stop(evt);
-							});
-						}
-					}, ratingText.domNode
-				);
-				footerRight.addChild(ratingText);
-			});
+						}, ratingText.domNode
+					);
+					footerRight.addChild(ratingText);
+				});
+			}
 			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
 		},
 
