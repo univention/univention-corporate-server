@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (3.0.0-2) unstable; urgency=medium
+
+  * Bug #39723: Add fping as dependency 
+
+ -- Arvid Requate <requate@univention.de>  Tue, 03 Nov 2015 11:41:39 +0100
+
 univention-management-console-module-adtakeover (3.0.0-1) unstable; urgency=low
 
   * added FSMO roles 'domaindnsmaster' and 'forestdnsmaster' (Bug #39222)
