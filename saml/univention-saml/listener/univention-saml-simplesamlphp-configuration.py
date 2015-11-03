@@ -194,6 +194,8 @@ def write_configuration_file(dn, new, filename):
 	if process.returncode:
 		ud.debug(ud.LISTENER, ud.ERROR, 'broken PHP syntax(%d) in %s: %s%s' % (process.returncode, filename, stderr, stdout))
 		try:
+			with open(filename) as fd:
+				ud.debug(ud.LISTENER, ud.ERROR, 'repr(%r)' % (fd.read(),))
 			os.unlink(filename)
 		except IOError:
 			pass

@@ -1,3 +1,9 @@
+univention-saml (3.0.26-2) unstable; urgency=medium
+
+  * Bug #39739: add more debug output
+
+ -- Florian Best <best@univention.de>  Tue, 03 Nov 2015 16:56:25 +0100
+
 univention-saml (3.0.26-1) unstable; urgency=medium
 
   * Bug #39605: prevent caching of blank.json
