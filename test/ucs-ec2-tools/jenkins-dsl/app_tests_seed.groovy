@@ -99,7 +99,7 @@ exec ./ucs-ec2-create -c \$cfg"""
 
     // post build
     publishers {
-      archiveArtifacts('**/autotest-*.log,**/ucs-test.log')
+      archiveArtifacts('**/autotest-*.log,**/ucs-test.log,**/updater.log,**/setup.log,**/join.log')
       archiveJunit('**/test-reports/**/*.xml')
     }
   }
@@ -165,7 +165,7 @@ exec ./ucs-ec2-create -c \$cfg"""
     
     // post build
     publishers {
-      archiveArtifacts('**/autotest-*.log,**/ucs-test.log')
+      archiveArtifacts('**/autotest-*.log,**/ucs-test.log,**/updater.log,**/setup.log,**/join.log')
       archiveJunit('**/test-reports/**/*.xml')
     }
   }
