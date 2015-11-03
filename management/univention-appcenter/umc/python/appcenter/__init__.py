@@ -124,6 +124,7 @@ class Instance(umcm.Base, ProgressMixin):
 		self.ucr.load()
 
 		util.install_opener(self.ucr)
+		self._remote_progress = {}
 
 		try:
 			self.package_manager = PackageManager(
@@ -189,7 +190,7 @@ class Instance(umcm.Base, ProgressMixin):
 					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "service docker start"'))
 		return domain.to_dict(apps)
 
-	@simple_response
+	@simple_response(with_progress=True)
 	def sync_ldap(self):
 		register = get_action('register')
 		register.call()
@@ -288,6 +289,32 @@ class Instance(umcm.Base, ProgressMixin):
 	def invoke_dry_run(self, request):
 		request.options['only_dry_run'] = True
 		self.invoke(request)
+
+	@require_password
+	@sanitize(
+			host=StringSanitizer(required=True),
+			function=ChoicesSanitizer(['install', 'update', 'uninstall'], required=True),
+			app=StringSanitizer(required=True),
+			force=BooleanSanitizer(),
+			values=DictSanitizer({})
+	)
+	@simple_response(with_progress=True)
+	def invoke_remote_docker(self, host, function, app, force, values, progress):
+		connection = UMCConnection(host, error_handler=MODULE.warn)
+		connection.auth(self.username, self.password)
+		options = {'function': function, 'app': app, 'force': force, 'values': values}
+		result = connection.request('appcenter/docker/invoke', options)
+		self._remote_progress[progress.id] = connection, result['id']
+
+	@simple_response
+	def remote_progress(self, progress_id):
+		try:
+			connection, remote_progress_id = self._remote_progress[progress_id]
+		except KeyError:
+			# actually happens: before invoke_remote_docker is finished, remote_progress is already called
+			return {}
+		else:
+			return connection.request('appcenter/docker/progress', {'progress_id': remote_progress_id})
 
 	@require_password
 	@sanitize(

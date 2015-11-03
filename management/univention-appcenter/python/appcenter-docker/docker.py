@@ -255,7 +255,7 @@ class Docker(object):
 		try:
 			verify(self.app, self.image)
 		except Exception as exc:
-			self.fatal(exc.args[0])
+			self.logger.fatal(str(exc))
 			raise Abort()
 
 	def execute_with_output(self, *args, **kwargs):

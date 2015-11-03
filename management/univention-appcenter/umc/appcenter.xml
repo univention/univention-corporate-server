@@ -36,6 +36,8 @@
 		<command name="appcenter/service" function="app_service" />
 		<command name="appcenter/invoke" function="invoke" />
 		<command name="appcenter/docker/invoke" function="invoke_docker" />
+		<command name="appcenter/docker/remote/invoke" function="invoke_remote_docker" />
+		<command name="appcenter/docker/remote/progress" function="remote_progress"/>
 		<!-- ATTENTION: uses invoke. added because of compatibility issues between newer and older versions -->
 		<command name="appcenter/invoke_dry_run" function="invoke_dry_run" />
 		<!-- ATTENTION: progress comes from ProgressMixin -->

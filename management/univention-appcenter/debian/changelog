@@ -1,3 +1,11 @@
+univention-appcenter (5.0.14-11) unstable; urgency=medium
+
+  * Bug #39717: Allow remote installations of docker apps
+  * Bug #39655: Keep module (and session) alive while browsing App Center
+  * Bug #38891: Wording / layout
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Nov 2015 01:03:45 +0100
+
 univention-appcenter (5.0.14-10) unstable; urgency=low
 
   * Bug #39524: fixed the Carousel widget not displaying correctly when the 

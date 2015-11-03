@@ -33,6 +33,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/array",
+	"dojo/_base/event",
 	"dojo/promise/all",
 	"dojo/when",
 	"dojo/query",
@@ -41,9 +42,11 @@ define([
 	"dojo/Deferred",
 	"dojo/dom-construct",
 	"dojo/dom-class",
+	"dojo/on",
 	"dojo/dom-style",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
+	"dijit/Tooltip",
 	"dojox/image/LightboxNano",
 	"umc/app",
 	"umc/tools",
@@ -55,12 +58,11 @@ define([
 	"umc/widgets/Text",
 	"umc/widgets/CheckBox",
 	"umc/widgets/Grid",
-	"umc/widgets/Tooltip",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/Carousel",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, domStyle, Memory, Observable, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, CheckBox, Grid, Tooltip, AppCenterGallery, App, Carousel, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, CheckBox, Grid, AppCenterGallery, App, Carousel, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -505,19 +507,9 @@ define([
 				}
 			});
 			if (maxRating) {
-				var moreinfoRating = domConstruct.create('div', {
-					innerHTML: _('This app provides the following features (<a href="javascript:void(0)">more information</a>):'),
-					'class': 'umcAppRatingInfo'
+				domConstruct.create('h3', {
+					textContent: _('App Rating')
 				}, footerRight.domNode);
-				var moreInformation = '';
-				array.forEach(this.app.rating, function(rating) {
-					moreInformation += lang.replace('<h3>{label}</h3><p>{description}</p>', rating);
-				});
-				var tooltip = new Tooltip({
-					label: moreInformation,
-					connectId: [ moreinfoRating ]
-				});
-				this.own(tooltip);
 			}
 			array.forEach(this.app.rating, function(rating) {
 				var ratingText = new Text({
@@ -532,6 +524,22 @@ define([
 				domConstruct.create('div', {
 						'class': 'umcAppRatingText',
 						textContent: rating.label,
+					}, ratingText.domNode
+				);
+				domConstruct.create('div', {
+						'class': 'umcAppRatingHelp umcHelpIcon',
+						onclick: function(evt) {
+							// stolen from system-setup
+							var node = evt.target;
+							Tooltip.show(rating.description, node);
+							if (evt) {
+								dojoEvent.stop(evt);
+							}
+							on.once(kernel.body(), 'click', function(evt) {
+								Tooltip.hide(node);
+								dojoEvent.stop(evt);
+							});
+						}
 					}, ratingText.domNode
 				);
 				footerRight.addChild(ratingText);
@@ -767,6 +775,9 @@ define([
 				}
 				if (this.app.isDocker) {
 					command = 'appcenter/docker/invoke';
+					if (host && tools.status('hostname') != host) {
+						command = 'appcenter/docker/remote/invoke';
+					}
 				}
 				var commandArguments = {
 					'function': func,

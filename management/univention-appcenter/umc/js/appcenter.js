@@ -179,6 +179,7 @@ define([
 
 		showApp: function(app) {
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
+			tools.umcpCommand('appcenter/ping')
 			//this.standby(true);
 			var appDetailsDialog = new AppDetailsDialog({
 				moduleID: this.moduleID,
