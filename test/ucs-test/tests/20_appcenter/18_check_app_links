@@ -29,6 +29,7 @@ bad_links = []  # list of problematic links
 forbidden_links = dict()
 forbidden_links['https://univention.ikarus.at/index-en.php'] = True
 forbidden_links['https://univention.ikarus.at/index.php'] = True
+forbidden_links['http://download.siouxapp.com/redirect/ucs-appcenter/appvendor.html'] = True
 
 def fail_the_test(bad_link):
     """
