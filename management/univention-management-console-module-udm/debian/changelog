@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.6-3) unstable; urgency=medium
+
+  * Bug #38190: adjusted order of calls in NewObjectDialog:buildRendering()
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 03 Nov 2015 14:14:21 +0100
+
 univention-management-console-module-udm (6.0.6-2) unstable; urgency=low
 
   * Bug #38190: Check if _searchPage exists before selecting it

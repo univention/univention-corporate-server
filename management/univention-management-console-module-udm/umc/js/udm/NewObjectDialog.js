@@ -133,6 +133,10 @@ define([
 				iarray.sort(tools.cmpObjects('label'));
 			});
 
+			this._notificationText = new NotificationText();
+			this.own(this._notificationText);
+			this.addChild(this._notificationText, 0);
+
 			this._wizardContainer = new StackContainer({});
 			this._preWizard = new FirstPageWizard({
 				types: types,
@@ -180,9 +184,6 @@ define([
 			// otherwise the prewidget gets selected after the real wizard has been selected so that the wrong wizard is shown
 			this.canContinue.then(undefined, lang.hitch(this._preWizard, 'selectCorrectChild'));
 
-			this._notificationText = new NotificationText();
-			this.own(this._notificationText);
-			this.addChild(this._notificationText, 0);
 
 		},
 
