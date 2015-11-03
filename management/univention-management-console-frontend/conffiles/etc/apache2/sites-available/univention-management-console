@@ -1,5 +1,9 @@
 @%@UCRWARNING=# @%@
 
+# backwards compatibility with UCS 4.0 mixed environments:
+RedirectMatch ^/umcp/sso$ /univention-management-console/
+RedirectMatch ^/univention-management-console/sso$ /univention-management-console/
+
 ProxyPreserveHost on
 
 @!@

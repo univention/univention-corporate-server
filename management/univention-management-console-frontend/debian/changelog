@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.52-1) unstable; urgency=medium
+
+  * Bug #39227: fix backwards compatibility for old SSO mechanism
+
+ -- Florian Best <best@univention.de>  Tue, 03 Nov 2015 11:16:32 +0100
+
 univention-management-console-frontend (5.0.51-1) unstable; urgency=medium
 
   * Bug #39233: fix error handling during/shortly after authentication
