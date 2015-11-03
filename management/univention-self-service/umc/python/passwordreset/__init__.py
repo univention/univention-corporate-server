@@ -138,7 +138,7 @@ class Instance(Base):
 			plugin = self.send_plugins[method]
 		except KeyError:
 			MODULE.error("send_token() method '{}' not in {}.".format(method, self.send_plugins.keys()))
-			raise UMC_Error(_("Unknown recovery method '{}'.".format(method)))
+			raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
 		# check if the user has the required attribute set
 		user = self.get_udm_user(username=username)
 
@@ -155,10 +155,10 @@ class Instance(Base):
 			token = self.create_token(plugin.token_length)
 			if token_from_db:
 				if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
-					raise UMC_Error(_("Token for user '{}' still valid. Please retry in one hour.".format(username)))
+					raise UMC_Error(_("Token for user '{}' still valid. Please retry in one hour.").format(username))
 				else:
 					# replace with fresh token
-					MODULE.info("send_token(): Updating token for user '{}'...".format(username))
+					MODULE.info("send_token(): Updating token for user '{}'...").format(username)
 					self.db.update_token(username, method, token)
 			else:
 				# store a new token
@@ -258,7 +258,7 @@ class Instance(Base):
 		try:
 			ret = plugin.send()
 		except Exception as ex:
-			raise UMC_Error(_("Error sending token: {}".format(ex)), status=500)
+			raise UMC_Error(_("Error sending token: {}").format(ex), status=500)
 		if ret:
 			return True
 		else:
@@ -334,7 +334,7 @@ class Instance(Base):
 		try:
 			userdn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
 		except IndexError:
-			raise UMC_Error(_("Unknown user '{}'.".format(username)))
+			raise UMC_Error(_("Unknown user '{}'.").format(username))
 		groups_dns = self.get_groups(userdn)
 		for group_dn in list(groups_dns):
 			groups_dns.extend(self.get_nested_groups(group_dn))
@@ -429,7 +429,7 @@ class Instance(Base):
 			return user
 		except IndexError:
 			# no user found
-			raise UMC_Error(_("Unknown user '{}'.".format(userdn if userdn else username)))
+			raise UMC_Error(_("Unknown user '{}'.").format(userdn if userdn else username))
 
 	def get_udm_group(self, groupdn):
 		dn_part = groupdn.partition(",")
@@ -450,4 +450,4 @@ class Instance(Base):
 			return group
 		except IndexError:
 			# no group found
-			raise UMC_Error(_("Unknown group '{}'.".format(groupdn)))
+			raise UMC_Error(_("Unknown group '{}'.").format(groupdn))
