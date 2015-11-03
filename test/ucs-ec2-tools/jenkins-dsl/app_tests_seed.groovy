@@ -66,7 +66,7 @@ def createStatusViews(String path) {
     }
 
     // failed
-    listView(path + 'Failed') {
+    listView(path + '/Failed') {
         description('Show all failed app test')
         recurse()
         jobFilters {
@@ -89,7 +89,7 @@ def createStatusViews(String path) {
     }
 
     // running
-    listView(path + 'Running') {
+    listView(path + '/Running') {
         description('Show all running app test')
         recurse()
         filterBuildQueue()
