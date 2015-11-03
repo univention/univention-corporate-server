@@ -801,6 +801,10 @@
 					<wordasword>forestdnsmaster</wordasword> are now seized during
 					the takeover (<u:bug>39222</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Installation of <package>Univention AD Takover</package> now also installs
+					<package>fping</package> (<u:bug>39723</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
