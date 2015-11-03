@@ -54,8 +54,11 @@ define([
 				})
 			});
 			xhr.get('/univention-management-console/entries.json', {handleAs: 'json'}).always(lang.hitch(this, function(result) {
+				if (!result.ucr['ucs/server/sso/fqdn']) {
+					throw new Error('IDP is not configured!');
+				}
 				var uri = window.location.protocol + '//' + result.ucr['ucs/server/sso/fqdn'] + '/simplesamlphp/blank.json';
-				return xhr.get(uri, {handleAs: 'json', timeout: 3000}).then(function(res) {
+				return xhr.get(uri, {handleAs: 'json', timeout: 3000, preventCache: true}).then(function(res) {
 					if (res.status == 200) {
 						return true;
 					}
