@@ -790,6 +790,9 @@
 					This change avoids a lot of unnecessary warning messages from samba
 					(<u:bug>29227</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Samba package now restarts the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
