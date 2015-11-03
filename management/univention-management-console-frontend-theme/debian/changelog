@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.1-6) unstable; urgency=medium
+
+  * Bug #38891: Add umcHelpIconSmall
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 03 Nov 2015 13:55:42 +0100
+
 univention-management-console-frontend-theme (1.0.1-5) unstable; urgency=low
 
   * Bug #33546: One can now select the mac address inside the InterfaceGrid
