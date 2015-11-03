@@ -22,11 +22,14 @@ if (last_version == null) {
 // get apps from testing, without ucs components
 apps = new Apps().getApps(version, test=true, ucs_components=false)
 
+// create folder and views
+folder(workdir + '/apps')
+createStatusViews(workdir + 'apps')
+
 // create jobs for every app
 apps.keySet()each { app ->
   
-  // create folders
-  folder(workdir + '/apps')
+  // create app folder
   folder(workdir + '/apps/' + app)
   
   // create matrix job App Autotest MultiEnv
@@ -36,6 +39,70 @@ apps.keySet()each { app ->
   createAppAutotestMultiEnv(path, version, patch_level, apps[app])
   createAppAutotestMultiEnvUpdateFrom(path, version, patch_level, last_version, apps[app])
   //...
+
+}
+
+def createStatusViews(String path) {
+
+    // stable
+    listView(path + 'Stable') {
+        description('Show all successful app test')
+        recurse()
+        jobFilters {
+            status {
+                matchType(MatchType.INCLUDE_MATCHED)
+                status(Status.STABLE)
+            }
+        }
+        columns {
+            status()
+            weather()
+            name()
+            lastSuccess()
+            lastFailure()
+            lastDuration()
+            buildButton()
+        }
+    }
+
+    // failed
+    listView(path + 'Failed') {
+        description('Show all failed app test')
+        recurse()
+        jobFilters {
+            status {
+                matchType(MatchType.INCLUDE_MATCHED)
+                status(Status.UNSTABLE)
+                status(Status.FAILED)
+                status(Status.ABORTED)
+            }
+        }
+        columns {
+            status()
+            weather()
+            name()
+            lastSuccess()
+            lastFailure()
+            lastDuration()
+            buildButton()
+        }
+    }
+
+    // running
+    listView(path + 'Running') {
+        description('Show all running app test')
+        recurse()
+        filterBuildQueue()
+        columns {
+            status()
+            weather()
+            name()
+            lastSuccess()
+            lastFailure()
+            lastDuration()
+            buildButton()
+        }
+    }
 
 }
 
