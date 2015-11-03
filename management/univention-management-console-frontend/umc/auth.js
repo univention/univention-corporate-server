@@ -221,13 +221,12 @@ define([
 					name: 'username',
 					type: TextBox,
 					disabled: true,
+					placeHolder: _('Username'),
 					value: tools.status('username')
 				}, {
 					name: 'password',
 					type: PasswordBox,
-					placeHolder: _('Password'),
-					required: true,
-					label: _('Password')
+					placeHolder: _('Password')
 				}],
 				buttons: [{
 					name: 'submit',
