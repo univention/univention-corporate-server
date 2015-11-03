@@ -25,7 +25,7 @@ def main():
 			pop = PopMail()
 
 			print '* Test pop login with the correct password:'
-			if pop.login_OK(usermail, password):
+			if not pop.login_OK(usermail, password):
 				utils.fail('POP3 login failed with the correct password')
 
 			print '* Test pop login with the wrong password:'
