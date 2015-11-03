@@ -1,3 +1,13 @@
+xen-4.1 (4.1.3-22) unstable; urgency=medium
+
+  [ Jan Beulich ]
+  * CVE-2015-7835 x86: guard against undue super page PTE creation
+  * CVE-2015-7969.1 free domain's vcpu array
+  * CVE-2015-7969.2 xenoprof: free domain's vcpu array
+  * CVE-2015-7971 x86: rate-limit logging in do_xen{oprof,pmu}_op()
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 02 Nov 2015 11:55:47 +0100
+
 xen-4.1 (4.1.3-21) unstable; urgency=medium
 
   [ Philipp Hahn ]

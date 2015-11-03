@@ -108,3 +108,7 @@
 0108-CVE-2015-5165.5-rtl8139-check-IP-Total-Length-field.patch
 0109-CVE-2015-5165.6-rtl8139-skip-offload-on-short-TCP-he.patch
 0110-CVE-2015-5165.7-rtl8139-check-TCP-Data-Offset-field.patch
+0111-CVE-2015-7835-x86-guard-against-undue-super-page-PTE.patch
+0112-CVE-2015-7969.1-free-domain-s-vcpu-array.patch
+0113-CVE-2015-7969.2-xenoprof-free-domain-s-vcpu-array.patch
+0114-CVE-2015-7971-x86-rate-limit-logging-in-do_xen-oprof.patch
