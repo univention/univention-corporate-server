@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
+VERSION=4
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -64,6 +64,8 @@ if ! udm mail/domain list "$@" | grep -q "^DN:" ; then
 			--set name="$domain"
 	done
 fi
+
+at -f /usr/share/univention-mail-postfix/create-dh-parameter-files.sh tomorrow >/dev/null 2>&1
 
 # call server password change script - system was likely not joined before package installation
 /usr/lib/univention-server/server_password_change.d/50univention-mail-server prechange

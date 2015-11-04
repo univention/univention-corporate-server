@@ -41,9 +41,7 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.0-7 
 fi
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.13-3; then
-	if ! is_ucr_true repository/online/component/ucs-container; then
-		at -f /usr/share/univention-mail-postfix/create-dh-parameter-files.sh tomorrow >/dev/null 2>&1
-	fi
+	(umask 022; openssl dhparam -out /etc/postfix/dh_512.pem.tmp -2 512 && mv /etc/postfix/dh_512.pem.tmp /etc/postfix/dh_512.pem)
 fi
 
 univention-config-registry set \

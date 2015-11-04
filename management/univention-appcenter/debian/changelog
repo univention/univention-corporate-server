@@ -1,3 +1,10 @@
+univention-appcenter (5.0.15-2) unstable; urgency=low
+
+  * Bug #39482: do not schedule Postfix DH parameters regeneration (revert
+    r65106 / 5.0.14-12)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 04 Nov 2015 13:55:31 +0100
+
 univention-appcenter (5.0.15-1) unstable; urgency=medium
 
   * Start app update cron job only once per day (Bug #39204)
