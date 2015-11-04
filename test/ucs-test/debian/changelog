@@ -1,7 +1,12 @@
+ucs-test (5.0.173-9) unstable; urgency=low
+
+  * fix 40_mail/26_imap_acls_correctly_evaluated (Bug #38600)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 04 Nov 2015 14:38:35 +0100
+
 ucs-test (5.0.173-8) unstable; urgency=low
 
   * fix 40_mail/07pop_login (Bug #39358)
-  * fix 40_mail/26_imap_acls_correctly_evaluated (Bug #38600)
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 03 Nov 2015 13:40:20 +0100
 
