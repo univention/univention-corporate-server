@@ -83,6 +83,7 @@ class Errors(LogMessage):
 		'\[!\] SSL_CTX_use_certificate_chain_file: 2001002: error:02001002:system library:fopen:No such file or directory', #Bug #39646
 		'\[!\] Service \[memcached\]: Failed to initialize SSL context', #Bug #39646
 		'failed', #Bug #39646
+		'Failed to process Subfile /etc/univention/templates/files/etc/postgresql/.*/main/pg_hba.conf.d/.*-pg_.*.conf', #39595
 		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.' #Bug #38911
 	]
 

@@ -1,3 +1,9 @@
+ucs-test (6.0.12-16) unstable; urgency=medium
+
+  * Ignore postgres update error messages (Bug #39595)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Nov 2015 15:03:45 +0100
+
 ucs-test (6.0.12-15) unstable; urgency=low
 
   * fix 40_mail/26_imap_acls_correctly_evaluated (Bug #38600)
