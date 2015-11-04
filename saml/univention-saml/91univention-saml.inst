@@ -95,7 +95,8 @@ if [ ! -e "${saml_idp_certificate_certificate}" ]; then
 		cp "/etc/univention/ssl/${ucs_server_sso_fqdn}/cert.pem" "${saml_idp_certificate_certificate}" || die  # FIXME: copied because www-data cannot +rx the directory contents
 		cp "/etc/univention/ssl/${ucs_server_sso_fqdn}/private.key" "${saml_idp_certificate_privatekey}" || die
 		chown root:samlcgi "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
-		chmod 640 "${saml_idp_certificate_certificate}" "${saml_idp_certificate_privatekey}" || die
+		chmod 644 "${saml_idp_certificate_certificate}" || die
+		chmod 640 "${saml_idp_certificate_privatekey}" || die
 	fi
 fi
 
