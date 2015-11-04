@@ -1,3 +1,9 @@
+ucs-test (6.0.12-15) unstable; urgency=low
+
+  * fix 40_mail/26_imap_acls_correctly_evaluated (Bug #38600)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 04 Nov 2015 14:36:51 +0100
+
 ucs-test (6.0.12-14) unstable; urgency=low
 
   * ignore some links in 20_appcenter/18_check_app_links (Bug #39478) 
@@ -13,7 +19,6 @@ ucs-test (6.0.12-13) unstable; urgency=low
 ucs-test (6.0.12-12) unstable; urgency=low
 
   * fix 40_mail/07pop_login (Bug #39358)
-  * fix 40_mail/26_imap_acls_correctly_evaluated (Bug #38600)
 
  -- Daniel Troeder <troeder@univention.de>  Tue, 03 Nov 2015 13:40:20 +0100
 
