@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-15) unstable; urgency=low
+
+  * Bug #37890: add univention-self-service
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 04 Nov 2015 14:47:57 +0100
+
 univention-dvd (1.0.0-14) unstable; urgency=low
 
   * Bug #39697: Add screen

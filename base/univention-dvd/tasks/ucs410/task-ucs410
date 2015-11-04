@@ -128,3 +128,6 @@ firefox-en
 
 univention-appcenter-docker
 cgroupfs-mount
+
+univention-self-service
+univention-self-service-passwordreset-umc
