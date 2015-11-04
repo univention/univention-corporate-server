@@ -49,7 +49,10 @@ import os
 import subprocess
 
 from univention.config_registry import ConfigRegistry
+from univention.lib.i18n import Translation
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
+
+_ = Translation('univention-management-console-module-passwordreset').translate
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -59,6 +62,10 @@ class SendWithExernal(UniventionSelfServiceTokenEmitter):
 	@staticmethod
 	def send_method():
 		return ucr.get("umc/self-service/passwordreset/external/method")
+
+	@staticmethod
+	def send_method_label():
+		return _("External")
 
 	@staticmethod
 	def is_enabled():

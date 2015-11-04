@@ -1,3 +1,11 @@
+univention-self-service (1.0.1-2) unstable; urgency=low
+
+  * get_reset_methods() returns localized label (Bug #37890)
+  * add some translations
+  * remove deprecated dependency
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 04 Nov 2015 13:10:54 +0100
+
 univention-self-service (1.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

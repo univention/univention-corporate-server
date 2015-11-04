@@ -30,6 +30,9 @@
 # <http://www.gnu.org/licenses/>.
 
 from univention.config_registry import ConfigRegistry
+from univention.lib.i18n import Translation
+
+_ = Translation('univention-management-console-module-passwordreset').translate
 
 
 class UniventionSelfServiceTokenEmitter(object):
@@ -44,6 +47,10 @@ class UniventionSelfServiceTokenEmitter(object):
 	@staticmethod
 	def send_method():
 		return "????"
+
+	@staticmethod
+	def send_method_label():
+		return _("????")
 
 	@staticmethod
 	def is_enabled():

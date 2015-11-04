@@ -52,7 +52,10 @@ from email.utils import formatdate
 import email.charset
 
 from univention.config_registry import ConfigRegistry
+from univention.lib.i18n import Translation
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
+
+_ = Translation('univention-management-console-module-passwordreset').translate
 
 
 class SendEmail(UniventionSelfServiceTokenEmitter):
@@ -64,6 +67,10 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 	@staticmethod
 	def send_method():
 		return "email"
+
+	@staticmethod
+	def send_method_label():
+		return _("Email")
 
 	@staticmethod
 	def is_enabled():
