@@ -1,3 +1,10 @@
+univention-appcenter (5.0.15-3) unstable; urgency=medium
+
+  * Bug #39782: Fix finding LDAP objects for Apps
+  * Bug #38891: Layout
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 04 Nov 2015 22:27:30 +0100
+
 univention-appcenter (5.0.15-2) unstable; urgency=low
 
   * Bug #39482: do not schedule Postfix DH parameters regeneration (revert

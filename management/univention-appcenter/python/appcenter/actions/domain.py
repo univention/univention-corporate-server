@@ -122,10 +122,10 @@ class Domain(CredentialsAction):
 			candidate_version = AppManager.find(app.id, latest=True).version
 			for app_obj in app_ldap_objects:
 				app_obj_version = app_obj.info.get('version')
-				app_obj_id = app_obj.info.get('id').rstrip('_%s' % app_obj_version)
+				app_obj_id = app_obj.info.get('id')[:-len(app_obj_version) - 1]
 				if app_obj_id == app.id:
 					if host.info.get('fqdn') in app_obj.info.get('server', []):
-						version = app_obj.info.get('version')
+						version = app_obj_version
 						break
 			ret[host['name']] = {
 				'version': version,
