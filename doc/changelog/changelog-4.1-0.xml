@@ -489,8 +489,9 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Every SAML identity provider registers its default IP address via DNS at the
-					host record <property>ucs-sso</property> to provide a failover configuration. The name can be changed through the
-					&ucsUCRV; <envar>ucs/server/sso/fqdn</envar> (<u:bug>39386</u:bug>, <u:bug>39574</u:bug>, <u:bug>39399</u:bug>).
+					host record <property>ucs-sso</property> to provide a failover configuration. The name can be changed before
+					joining the UCS system through the &ucsUCRV; <envar>ucs/server/sso/fqdn</envar>
+					(<u:bug>39386</u:bug>, <u:bug>39574</u:bug>, <u:bug>39399</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The <application>SimpleSAMLphp</application> certificate is now created in the joinscript instead of the postinst of the package (<u:bug>39255</u:bug>).
