@@ -44,7 +44,7 @@ import notifier.threads as threads
 
 from univention.uldap import getMachineConnection
 from univention.management.console.log import AUTH
-from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, PasswordExpired, AccountExpired, PasswordChangeFailed
+from univention.management.console.pam import PamAuth, AuthenticationError, AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, AccountExpired, PasswordChangeFailed
 
 
 class AuthenticationResult(object):
@@ -67,6 +67,8 @@ class AuthenticationResult(object):
 				self.result['password_expired'] = True
 			elif isinstance(result, AccountExpired):
 				self.result['account_expired'] = True
+			elif isinstance(result, AuthenticationInformationMissing):
+				self.result['missing_prompts'] = result.missing_prompts
 		elif isinstance(result, BaseException):
 			self.status = 500
 			self.message = str(result)
@@ -84,18 +86,25 @@ class AuthHandler(signals.Provider):
 		self.signal_new('authenticated')
 
 	def authenticate(self, msg):
-		self.__auth_type = msg.body.get('auth_type')
-		username, password, new_password, locale = msg.body['username'], msg.body['password'], msg.body.get('new_password'), msg.body.get('locale')
-		# PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so. See http://pam-python.sourceforge.net/doc/html/#bugs
+		# PAM MUST be initialized outside of a thread. Otherwise it segfaults e.g. with pam_saml.so.
+		# See http://pam-python.sourceforge.net/doc/html/#bugs
+
+		args = msg.body.copy()
+		locale = args.pop('locale', None)
+		args.pop('auth_type', None)
+		args.setdefault('new_password', None)
+		args.setdefault('username', '')
+		args.setdefault('password', '')
+
 		self.pam = PamAuth(locale)
-		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, username, password, new_password, locale), notifier.Callback(self.__authentication_result, msg))
+		thread = threads.Simple('pam', notifier.Callback(self.__authenticate_thread, **args), notifier.Callback(self.__authentication_result, msg))
 		thread.run()
 
-	def __authenticate_thread(self, username, password, new_password, locale):
+	def __authenticate_thread(self, username, password, new_password, **custom_prompts):
 		AUTH.info('Trying to authenticate user %r' % (username,))
 		username = self.__canonicalize_username(username)
 		try:
-			self.pam.authenticate(username, password)
+			self.pam.authenticate(username, password, **custom_prompts)
 		except AuthenticationFailed as auth_failed:
 			AUTH.error(str(auth_failed))
 			raise
@@ -139,6 +148,6 @@ class AuthHandler(signals.Provider):
 			AUTH.error(''.join(traceback.format_exception(*thread.exc_info)))
 		if isinstance(result, tuple):
 			username, password = result
-			result = {'username': username, 'password': password, 'auth_type': self.__auth_type}
+			result = {'username': username, 'password': password, 'auth_type': request.body.get('auth_type')}
 		auth_result = AuthenticationResult(result)
 		self.signal_emit('authenticated', auth_result, request)

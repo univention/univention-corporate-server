@@ -72,6 +72,13 @@ class AuthenticationFailed(AuthenticationError):
 	pass
 
 
+class AuthenticationInformationMissing(AuthenticationError):
+
+	def __init__(self, message, missing_prompts):
+		self.missing_prompts = missing_prompts
+		super(AuthenticationInformationMissing, self).__init__(message)
+
+
 class AccountExpired(AuthenticationError):
 	pass
 
@@ -99,6 +106,8 @@ class PamAuth(object):
 		for response_message in possible_responses
 	)
 
+	custom_prompts = ('OTP',)
+
 	def __init__(self, locale=None):
 		i18n = Translation('univention-management-console')
 		try:
@@ -108,18 +117,15 @@ class PamAuth(object):
 		self._ = i18n.translate
 		self.pam = self.init()
 
-	def authenticate(self, username, password):
-		answers = {
-			# 'Your password will expire at ...\n', 'Changing password', 'Error: Password does not meet complexity requirements\n'
-			PAM_TEXT_INFO: ['', '', ''],
-
-			# e.g.: 'Password: ', 'New password: ', 'Repeat new password: ' or 'SAML message: ', 'Password: '
-			PAM_PROMPT_ECHO_OFF: [password, password],
-
-			# 'You are required to change your password immediately (password aged)'
-			PAM_ERROR_MSG: ['']
-		}
-		self.start(username, (answers, None))
+	def authenticate(self, username, password, **answers):
+		answers.update({
+			PAM_TEXT_INFO: '',
+			PAM_ERROR_MSG: '',
+			PAM_PROMPT_ECHO_ON: username,
+			PAM_PROMPT_ECHO_OFF: password,
+		})
+		missing = []
+		self.start(username, (answers, [], missing))
 
 		try:
 			self.pam.authenticate()
@@ -130,17 +136,21 @@ class PamAuth(object):
 				raise PasswordExpired(self.error_message(pam_err))
 			if pam_err[1] == PAM_ACCT_EXPIRED:  # error: ('User account has expired', 13)
 				raise AccountExpired(self.error_message(pam_err))
+			if missing:
+				raise AuthenticationInformationMissing(self.error_message(pam_err), missing)
 			raise AuthenticationFailed(self.error_message(pam_err))
 
 	def change_password(self, username, old_password, new_password):
-		prompts = []
 		answers = {
-			PAM_PROMPT_ECHO_ON: [username],  # 'login:'
-			PAM_TEXT_INFO: [''],  # 'Your password will expire at Thu Jan  1 01:00:00 1970\n'
-			# 'Current Kerberos password: ', 'New password: ', 'Retype new password: '
+			PAM_TEXT_INFO: '',
+			PAM_ERROR_MSG: '',
+			PAM_PROMPT_ECHO_ON: username,
 			PAM_PROMPT_ECHO_OFF: [old_password, new_password, new_password],
+			# pam_kerberos asks for the old password first and then twice for the new password.
+			# 'Current Kerberos password: ', 'New password: ', 'Retype new password: '
 		}
-		self.start(username, (answers, prompts))
+		prompts = []
+		self.start(username, (answers, prompts, []))
 
 		try:
 			self.pam.chauthtok()
@@ -160,17 +170,35 @@ class PamAuth(object):
 		self.pam.setUserData(data)
 
 	def conversation(self, auth, query_list, data):
-		answers, prompts = data
 		try:
-			if prompts is not None:
-				prompts.extend(query_list)
-			answer = [(answers.get(qt, ['']).pop(0), 0) for query, qt in query_list]
+			return list(self._conversation(auth, query_list, data))
 		except:
-			#AUTH.error('## query_list=%r, auth=%r, data=%r, prompts=%r, answers=%r' % (query_list, auth, data, prompts, answers))
-			AUTH.error(traceback.format_exc())
+			AUTH.error('Unexpected error during PAM conversation: %s' % (traceback.format_exc(),))
 			raise
-		#AUTH.error('### query_list=%r, auth=%r, data=%r, answer=%r, prompts=%r' % (query_list, auth, data, answer, prompts))
-		return answer
+
+	def _conversation(self, auth, query_list, data):
+		answers, prompts, missing = data
+		prompts.extend(query_list)
+		for query, qt in query_list:
+			prompt = qt
+			if qt == PAM_PROMPT_ECHO_OFF and query.strip(':\t ') in self.custom_prompts:
+				prompt = query
+
+			response = ''
+			try:
+				response = answers[prompt]
+				if isinstance(response, list):
+					response = response.pop(0)
+			except KeyError as exc:
+				AUTH.error('Missing answer for prompt: %r' % (str(exc),))
+				missing.append(query)
+			except IndexError:
+				AUTH.error('Unexpected prompt: %r' % (query,))
+
+			if qt in (PAM_TEXT_INFO, PAM_ERROR_MSG):
+				AUTH.info('PAM says: %r' % (query,))
+			#AUTH.error('# PAM(%d) %s: answer=%r' % (qt, repr(query).strip("':\" "), response))
+			yield (response, 0)
 
 	def _parse_error_message_from(self, pam_err, prompts):
 		# okay, check prompts, maybe they have a hint why it failed?

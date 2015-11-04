@@ -1,3 +1,9 @@
+univention-management-console (8.0.24-1) unstable; urgency=medium
+
+  * Bug #39611: make pam.py able to answer custom prompts
+
+ -- Florian Best <best@univention.de>  Wed, 04 Nov 2015 15:18:01 +0100
+
 univention-management-console (8.0.23-2) unstable; urgency=medium
 
   * Fixed python syntax error in PAM configuration (Bug #39612)
