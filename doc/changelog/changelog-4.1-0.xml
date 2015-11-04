@@ -867,6 +867,13 @@
 			<listitem><simpara>
 				The response handling in the <classname>univention.lib.umc_connection.UMCConnection</classname> library has been improved (<u:bug>39599</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The <package>iceweasel</package> has been put into unmaintained
+				status, so it will not be considered any longer for security
+				updates. It has not been used anyway as <package>firefox-en</package>
+				and <package>firefox-de</package> are installed
+				e.g. for the system setup (<u:bug>38281</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
