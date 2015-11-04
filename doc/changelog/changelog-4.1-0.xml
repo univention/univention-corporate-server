@@ -410,7 +410,7 @@
 		<itemizedlist>
 			<listitem><simpara>
 					The size of the UCS installation DVD has been reduced by removing all packages not strictly required for installation from the DVD.
-					All maintained packages are still available online or through the update DVD.
+					All maintained packages are still available online or through the update DVD (<u:bug>38913</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
