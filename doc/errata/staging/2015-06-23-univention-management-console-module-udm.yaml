@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-3
 src: univention-management-console-module-udm
-fix: 5.1.25-93.622.201511031456
+fix: 5.1.25-94.623.201511041606
 version: [3]
 desc: |
  This update addresses the following issues:
