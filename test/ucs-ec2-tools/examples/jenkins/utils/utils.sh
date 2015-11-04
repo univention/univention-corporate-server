@@ -293,6 +293,8 @@ run_admember_tests ()
 
 run_adconnector_tests ()
 {
+	# Test if the failed Jenkins test are timing issues
+	sed -i 's|AD_ESTIMATED_MAX_COMPUTATION_TIME=3|AD_ESTIMATED_MAX_COMPUTATION_TIME=16|' /usr/share/ucs-test/55_adconnector/adconnector.sh
 	run_tests -s adconnector "$@"
 }
 
