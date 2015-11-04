@@ -3,6 +3,7 @@
 ## tags: [import65000,performance]
 ## rolest: [domaincontroller_master]
 ## exposure: dangerous
+## timeout: 0
 ## packages:
 ##   - ucs-school-import
 ##   - univention-s4-connector
