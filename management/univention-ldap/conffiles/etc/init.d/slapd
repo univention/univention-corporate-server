@@ -286,7 +286,7 @@ if baseConfig['ldap/server/type']=="master":
   graceful-stop)
 	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 	log_action_begin_msg "Sending HUP to ldap server(s): slapd "
-	signal_plan="HUP/120/TERM/30/KILL/2"
+	signal_plan="HUP/10/TERM/5/KILL/1"
 	## first try with pidfile
 	start-stop-daemon --stop --quiet --oknodo --retry "$signal_plan" \
 		--pidfile "$pidfile" -v | sed -rn 's/.*, (retry #|refused to die)/\1/p' \

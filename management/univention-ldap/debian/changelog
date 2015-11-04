@@ -1,3 +1,9 @@
+univention-ldap (12.1.3-1) unstable; urgency=medium
+
+  * Bug #39719: Reduce grace time for /etc/init.d/slapd graceful-stop
+
+ -- Arvid Requate <requate@univention.de>  Wed, 04 Nov 2015 17:04:48 +0100
+
 univention-ldap (12.1.2-1) unstable; urgency=medium
 
   * ldap_extension.py: restart slapd only if it runs (Bug #39683)
