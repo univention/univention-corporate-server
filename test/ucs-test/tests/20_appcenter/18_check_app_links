@@ -25,11 +25,14 @@ re_pattern = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0
 failures_counter = 0  # errors counter
 bad_links = []  # list of problematic links
 
-# these links return 403
+# these links return 403 -> Bug #39730
 forbidden_links = dict()
 forbidden_links['https://univention.ikarus.at/index-en.php'] = True
 forbidden_links['https://univention.ikarus.at/index.php'] = True
 forbidden_links['http://download.siouxapp.com/redirect/ucs-appcenter/appvendor.html'] = True
+forbidden_links['http://www.cloudssky.com/en/support/opencms/index.html'] = True
+forbidden_links['http://cloudssky.com/en/solutions/index.html'] = True
+forbidden_links['http://www.cloudssky.com'] = True
 
 def fail_the_test(bad_link):
     """

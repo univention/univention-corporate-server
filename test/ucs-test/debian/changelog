@@ -1,3 +1,9 @@
+ucs-test (6.0.12-14) unstable; urgency=low
+
+  * ignore some links in 20_appcenter/18_check_app_links (Bug #39478) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 04 Nov 2015 08:56:21 +0100
+
 ucs-test (6.0.12-13) unstable; urgency=low
 
   * ignore some links in 20_appcenter/18_check_app_links (Bug #39478) 
