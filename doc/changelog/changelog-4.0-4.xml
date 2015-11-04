@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%entities;
+]>
+<chapter id="relnotes:changelog" lang="en">
+	<title>Changelog</title>
+	<section id="changelog:general">
+		<title>General</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					All security updates issued for UCS 4.0-3 are included:
+				</para>
+				<itemizedlist>
+					<listitem><simpara>
+						<package>eglibc</package> (<u:cve>2015-1472</u:cve> <u:cve>2015-1473</u:cve> <u:cve>2012-3406</u:cve> <u:cve>2014-4043</u:cve> <u:cve>2014-9402</u:cve> <u:cve>2013-7424</u:cve>) (<u:bug>37643</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>icu</package> (<u:cve>2013-1569</u:cve> <u:cve>2013-2383</u:cve> <u:cve>2013-2384</u:cve> <u:cve>2013-2419</u:cve> <u:cve>2014-6585</u:cve> <u:cve>2014-6591</u:cve> <u:cve>2014-7923</u:cve> <u:cve>2014-7926</u:cve> <u:cve>2014-7940</u:cve> <u:cve>2014-9654</u:cve> <u:cve>2015-4760</u:cve> <u:cve>2014-8146</u:cve> <u:cve>2014-8147</u:cve>) (<u:bug>37629</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>policykit-1</package> (<u:cve>2015-4625</u:cve> <u:cve>2015-3255</u:cve> <u:cve>2015-3218</u:cve>) (<u:bug>38909</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>file</package> (<u:cve>2014-9653</u:cve> <u:cve>2014-9652</u:cve>) (<u:bug>37747</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>nss</package> (<u:cve>2015-2721</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2014-1569</u:cve>) (<u:bug>37045</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl</package> (<u:cve>2014-8176</u:cve> <u:cve>2015-1788</u:cve> <u:cve>2015-1789</u:cve> <u:cve>2015-1790</u:cve> <u:cve>2015-1791</u:cve> <u:cve>2015-1792</u:cve> <u:cve>2015-4000</u:cve>) (<u:bug>38691</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>dpkg</package> (<u:cve>2015-0840</u:cve>) (<u:bug>38243</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libgcrypt11</package> (<u:cve>2014-3591</u:cve> <u:cve>2015-0837</u:cve>) (<u:bug>37922</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libssh2</package> (<u:cve>2015-1782</u:cve>) (<u:bug>38013</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>subversion</package> (<u:cve>2015-0248</u:cve> <u:cve>2015-0251</u:cve> <u:cve>2015-3187</u:cve>) (<u:bug>38323</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>cups-filters</package> (<u:cve>2015-3258</u:cve> <u:cve>2015-3279</u:cve>) (<u:bug>38790</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libreoffice</package> (<u:cve>2014-9093</u:cve> <u:cve>2015-1774</u:cve>) (<u:bug>37073</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>requests</package> (<u:cve>2014-1829</u:cve> <u:cve>2014-1830</u:cve>) (<u:bug>37069</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ruby1.9.1</package> (<u:cve>2014-4975</u:cve> <u:cve>2014-8080</u:cve> <u:cve>2014-8090</u:cve> <u:cve>2015-1855</u:cve>) (<u:bug>36993</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>squid3</package> (<u:cve>2015-5400</u:cve>) (<u:bug>37038</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>tidy</package> (<u:cve>2015-5522</u:cve> <u:cve>2015-5523</u:cve>) (<u:bug>39172</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>vlc</package> (<u:cve>2013-6933</u:cve> <u:cve>2014-9626</u:cve> <u:cve>2014-9627</u:cve> <u:cve>2014-9628</u:cve> <u:cve>2014-9629</u:cve> <u:cve>2014-9630</u:cve>) (<u:bug>36952</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>zendframework</package> (<u:cve>2014-2681</u:cve> <u:cve>2014-2682</u:cve> <u:cve>2014-2683</u:cve> <u:cve>2014-2684</u:cve> <u:cve>2014-2685</u:cve> <u:cve>2014-4914</u:cve> <u:cve>2014-8088</u:cve> <u:cve>2014-8089</u:cve> <u:cve>2015-3154</u:cve> <u:cve>2015-5161</u:cve>) (<u:bug>37002</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>cups</package> (<u:cve>2014-9679</u:cve> <u:cve>2015-1158</u:cve> <u:cve>2015-1159</u:cve>) (<u:bug>37815</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>e2fsprogs</package> (<u:cve>2015-0247</u:cve> <u:cve>2015-1572</u:cve>) (<u:bug>37744</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>gnutls26</package> (<u:cve>2015-0294</u:cve> <u:cve>2015-0282</u:cve>) (<u:bug>38067</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libgd2</package> (<u:cve>2014-2497</u:cve> <u:cve>2014-9709</u:cve>) (<u:bug>37089</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libtasn1-3</package> (<u:cve>2015-2806</u:cve>) (<u:bug>38246</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openldap</package> (<u:cve>2015-6908</u:cve>) (<u:bug>39340</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>tiff</package> (<u:cve>2014-8127</u:cve> <u:cve>2014-8128</u:cve> <u:cve>2014-8129</u:cve> <u:cve>2014-9330</u:cve> <u:cve>2014-9655</u:cve> <u:cve>2015-1547</u:cve>) (<u:bug>37434</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-de</package> (<u:cve>2015-2708</u:cve> <u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve> <u:cve>2015-4497</u:cve> <u:cve>2015-4498</u:cve>) (<u:bug>38523</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-en</package> (<u:cve>2015-2708</u:cve> <u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve> <u:cve>2015-4497</u:cve> <u:cve>2015-4498</u:cve>) (<u:bug>38523</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>iceweasel</package> (<u:cve>2015-2708</u:cve> <u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve> <u:cve>2015-4497</u:cve> <u:cve>2015-4498</u:cve>) (<u:bug>38541</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>php5</package> (<u:cve>2014-8116</u:cve> <u:cve>2014-9652</u:cve> <u:cve>2015-0232</u:cve> <u:cve>2015-0273</u:cve> <u:cve>2015-1352</u:cve> <u:cve>2015-2301</u:cve> <u:cve>2015-2305</u:cve> <u:cve>2015-2331</u:cve> <u:cve>2015-2348</u:cve> <u:cve>2015-2783</u:cve> <u:cve>2015-2787</u:cve> <u:cve>2015-3329</u:cve> <u:cve>2015-3330</u:cve> <u:cve>2015-3411</u:cve> <u:cve>2015-3412</u:cve> <u:cve>2015-4021</u:cve> <u:cve>2015-4022</u:cve> <u:cve>2015-4024</u:cve> <u:cve>2015-4025</u:cve> <u:cve>2015-4026</u:cve> <u:cve>2015-4147</u:cve> <u:cve>2015-4148</u:cve> <u:cve>2015-4598</u:cve> <u:cve>2015-4599</u:cve> <u:cve>2015-4600</u:cve> <u:cve>2015-4601</u:cve> <u:cve>2015-4602</u:cve> <u:cve>2015-4603</u:cve> <u:cve>2015-4604</u:cve> <u:cve>2015-4605</u:cve> <u:cve>2015-4643</u:cve> <u:cve>2015-4644</u:cve> <u:cve>2015-5589</u:cve> <u:cve>2015-5590</u:cve> <u:cve>2015-6834</u:cve> <u:cve>2015-6835</u:cve> <u:cve>2015-6836</u:cve> <u:cve>2015-6837</u:cve> <u:cve>2015-6838</u:cve>) (<u:bug>36997</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>postgresql-9.1</package> (<u:cve>2015-3165</u:cve> <u:cve>2015-3166</u:cve> <u:cve>2015-3167</u:cve>) (<u:bug>38608</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-de</package> (<u:cve>2015-4517</u:cve> <u:cve>2015-4521</u:cve> <u:cve>2015-4522</u:cve> <u:cve>2015-7174</u:cve> <u:cve>2015-7175</u:cve> <u:cve>2015-7176</u:cve> <u:cve>2015-7177</u:cve> <u:cve>2015-7180</u:cve> <u:cve>2015-4520</u:cve> <u:cve>2015-4519</u:cve> <u:cve>2015-4509</u:cve> <u:cve>2015-4506</u:cve> <u:cve>2015-4500</u:cve> <u:cve>2015-4511</u:cve>) (<u:bug>39387</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox-en</package> (<u:cve>2015-4517</u:cve> <u:cve>2015-4521</u:cve> <u:cve>2015-4522</u:cve> <u:cve>2015-7174</u:cve> <u:cve>2015-7175</u:cve> <u:cve>2015-7176</u:cve> <u:cve>2015-7177</u:cve> <u:cve>2015-7180</u:cve> <u:cve>2015-4520</u:cve> <u:cve>2015-4519</u:cve> <u:cve>2015-4509</u:cve> <u:cve>2015-4506</u:cve> <u:cve>2015-4500</u:cve> <u:cve>2015-4511</u:cve>) (<u:bug>39387</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssh</package> (<u:cve>2015-5352</u:cve> <u:cve>2015-5600</u:cve>) (<u:bug>39436</u:bug>)
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>qemu-kvm</package> (<u:cve>2015-5165</u:cve> <u:cve>2015-5745</u:cve> <u:cve>2015-5278</u:cve> <u:cve>2015-5279</u:cve> <u:cve>2015-6815</u:cve> <u:cve>2015-6855</u:cve>) (<u:bug>39546</u:bug>)
+					</simpara></listitem>
+				</itemizedlist>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+		<!--
+	<section id="changelog:installer">
+		<title>Univention Installer</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+		-->
+
+
+	<section id="changelog:basic">
+		<title>Basic system services</title>
+
+		<section id="changelog:basic:kernel">
+			<title>Linux kernel and firmware packages</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:basis:ucr">
+			<title>Univention Configuration Registry</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+			<!--
+			<section id="changelog:basis:ucr:template">
+				<title>Changes to templates and modules</title>
+				<itemizedlist>
+					<listitem><simpara>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+			-->
+		</section>
+
+		<section id="changelog:basis:boot">
+			<title>Boot Loader</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:basis:other">
+			<title>Other system services</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+
+	<section id="changelog:domain">
+		<title>Domain services</title>
+
+		<section id="changelog:domain:openldap">
+			<title>OpenLDAP</title>
+			<itemizedlist>
+				<listitem><simpara>
+When using the mdb backend, the ldap search erroneously returned the base object in some cases. This has been fixed (<u:bug>36343(</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+
+
+	<!--
+			<section id="changelog:domain:openldap:acl">
+				<title>LDAP ACL changes</title>
+				<itemizedlist>
+					<listitem><simpara>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+	-->
+
+			<section id="changelog:domain:openldap:schema">
+				<title>LDAP schema changes</title>
+				<itemizedlist>
+					<listitem><simpara>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+
+			<section id="changelog:domain:openldap:replication">
+				<title>Listener/Notifier domain replication</title>
+				<itemizedlist>
+					<listitem><simpara>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+
+			<section id="changelog:domain:dnsserver">
+				<title>DNS server</title>
+				<itemizedlist>
+					<listitem><simpara>
+					</simpara></listitem>
+				</itemizedlist>
+			</section>
+		</section>
+	</section>
+
+
+	<section id="changelog:umc">
+		<title>Univention Management Console</title>
+
+		<section id="changelog:umc:web">
+			<title>Univention Management Console web interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:server">
+			<title>Univention Management Console server</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:appcenter">
+			<title>Univention App Center</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:udmcli">
+			<title>&ucsUDM; UMC modules and command line interface</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:setup">
+			<title>Basic settings / Appliance mode</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:user">
+			<title>Users module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:umc:reports">
+			<title>Univention Directory Reports</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:umc:computers">
+			<title>Computers module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:umc:dns">
+			<title>DNS module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:umc:license">
+			<title>License module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:umc:top">
+			<title>Process overview module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:update">
+			<title>Software update module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:umc:share">
+			<title>Shares module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:umc:policy">
+			<title>Policies</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<!--
+		<section id="changelog:umc:printer">
+			<title>Printers module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:umc:mail">
+			<title>Mail</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<!--
+		<section id="changelog:umc:quota">
+			<title>Filesystem quota module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<!--
+		<section id="changelog:umc:ucr">
+			<title>Univention Configuration Registry module</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<!--
+		<section id="changelog:umc:ldap">
+			<title>LDAP directory browser</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<!--
+		<section id="changelog:umc:other">
+			<title>Other modules</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<!--
+		<section id="changelog:umc:development">
+			<title>Development of modules for &ucsUMC;</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+
+	<section id="changelog:deployment">
+		<title>Software deployment</title>
+
+		<!--
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+
+		<section id="changelog:deployment:pkgdb">
+			<title>Software monitor</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:deployment:cli">
+			<title>Software deployment command line tools</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The update scripts have been adjusted to UCS 4.0-4 (<u:bug>39711</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+
+	<section id="changelog:lib">
+		<title>Univention base libraries</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+
+	<section id="changelog:service">
+		<title>System services</title>
+
+		<section id="changelog:service:mail">
+			<title>Mail services</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:service:virus">
+			<title>Spam/virus detection and countermeasures</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:service:print">
+			<title>Printing services</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:nagios">
+			<title>Nagios</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:service:ssl">
+			<title>SSL</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:proxy">
+			<title>Proxy services</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<!--
+		<section id="changelog:service:systeminfo">
+			<title>Univention System Info</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:service:dhcp">
+			<title>DHCP server</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:service:apache">
+			<title>Apache</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:service:pam">
+			<title>PAM / Local group cache</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+		<section id="changelog:service:kerberos">
+			<title>Kerberos server</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:service:other">
+			<title>Other services</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+
+	<section id="changelog:virt">
+		<title>Virtualization</title>
+
+		<section id="changelog:virt:uvmm">
+			<title>Univention Virtual Machine Manager (UVMM)</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The VirtIO drivers for Windows have been updated to version 0.1.105 to fix a problem with broken driver signatures in Windows 2012 server (<u:bug>38655</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<!--
+		<section id="changelog:virt:operation">
+			<title>Operate UCS as virtual machine</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+	</section>
+
+	<!--
+	<section id="changelog:container">
+		<title>Container Technologies</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+	</section>
+	-->
+
+
+	<section id="changelog:win">
+		<title>Services for Windows</title>
+		<section id="changelog:win:samba">
+			<title>Samba</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		<!--
+		<section id="changelog:win:takeover">
+			<title>Univention AD Takeover</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		-->
+
+		<section id="changelog:win:s4c">
+			<title>Univention S4 Connector</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
+		<section id="changelog:win:adc">
+			<title>Univention Active Directory Connection</title>
+			<itemizedlist>
+				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+
+	<section id="changelog:other">
+		<title>Other changes</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+</chapter>
+<!-- vim: set ts=4 sw=4 noet: -->

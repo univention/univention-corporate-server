@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.0-3-de">
+<book lang="de" id="releasenotes-4.0-4-de">
 	<bookinfo>
-		<title>UCS 4.0-3 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.0-3</subtitle>
+		<title>UCS 4.0-4 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.0-4</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,38 +44,14 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.0-3 steht das dritte Point-Release für &ucsUCS; (UCS) 4.0 zur Verfügung.
+			Mit &ucsUCS; 4.0-4 steht das vierte Point-Release für &ucsUCS; (UCS) 4.0 zur Verfügung.
 			Es umfasst diverse Detailverbesserungen und Fehlerkorrekturen.
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Der Mailserver Dovecot wurde als Standard IMAP/POP3-Server in UCS integriert und bietet somit eine Alternative
-				zum weiterhin zur Verfügung stehenden Cyrus IMAP Server. Weitere Informationen zur Integration sind in
-				<ulink url="https://www.univention.de/2015/07/mailserver-dovecot-als-standard-imappop3-server-in-ucs/">diesem Artikel </ulink> beschrieben.
-			</para></listitem>
-			<listitem><para>
-				Mit dem Update auf Samba 4.2.3 wurde die Kompatibilität zu Active Directory weiter ausgebaut.
-				Dies beinhaltet u.a. Verbesserungen in der DRS-Replikation und der Handhabung von Druckertreibern.
-				Auch ist der Domänenbeitritt von <application>Huawai Storage Systemen</application>
-				in die von UCS bereitgestellte Active Directory-Domäne nun möglich.
-			</para></listitem>
-			<listitem><para>
-				Es gibt zahlreiche Verbesserungen in Design und Usability des UCS-Managementsystems. So ist es nun bspw. möglich die Vor- und
-				Zurück-Buttons des Webbrowsers zu benutzen. Dies ermöglicht ein einfacheres und schnelleres Navigieren in der Managementoberfläche.
-			</para></listitem>
-			<listitem><para>
-				Für LDAP-Richtlinien können nun LDAP-Filter definiert werden, das bedeutet die LDAP-Richtlinien gelten nur auf die Objekte, die 
-				dem LDAP-Filter entsprechen. Dadurch ist es, vor allen in größeren Umgebungen möglich, LDAP-Richtlinien noch einfacher und generischer
-				anzuwenden.
-			</para></listitem>
-			<listitem><para>
-				Der Linux Kernel wurde auf den letzten stabilen 3.16er <foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert.
-				Dieser beinhaltet diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
-			</para></listitem>
-			<listitem><para>
-				Sämtliche für UCS 4.0-2 veröffentlichten Sicherheitsupdates sind in diesem Update enthalten. Um die Sicherheit des UCS-Systems
+				Sämtliche für UCS 4.0-3 veröffentlichten Sicherheitsupdates sind in diesem Update enthalten. Um die Sicherheit des UCS-Systems
 				zu erhöhen, ist es nun einfach per &ucsUCRV; möglich die HTTP-Anfragen auf HTTPS umzuleiten.
 			</para></listitem>
 		</itemizedlist>
@@ -152,14 +128,6 @@
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
-		<section id="relnotes:instprofil">
-			<title>Netzwerkinstallation von UCS</title>
-			<para>
-				Die Profil-basierte Netzwerkinstallation von UCS steht mit UCS 4.0-2 zur Verfügung.
-				Genauere Informationen dazu befinden sich in <biblioref linkend="ext-doc-inst"/>.
-			</para>
-		</section>
-
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
@@ -225,10 +193,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 4.0-2:
+			Aufgeführt sind die Änderungen seit UCS 4.0-3:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-3.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-4.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<bibliography id="bibliography">
