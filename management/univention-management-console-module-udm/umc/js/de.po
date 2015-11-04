@@ -242,7 +242,7 @@ msgstr "Erstelle den Report ..."
 
 #: udm/DetailPage.js:1230
 msgid "Customize this page"
-msgstr ""
+msgstr "Diese Seite anpassen"
 
 #: udm.js:208
 msgid "DHCP object"

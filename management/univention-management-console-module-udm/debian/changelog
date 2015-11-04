@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-94) unstable; urgency=low
+
+  * Bug #39234: added translation for extended attributes
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 04 Nov 2015 16:03:31 +0100
+
 univention-management-console-module-udm (5.1.25-93) unstable; urgency=medium
 
   * Bug #38190: re-adjust order in NewObjectDialog:_renderForm()
