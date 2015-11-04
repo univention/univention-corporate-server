@@ -1,9 +1,0 @@
-product: ucs
-release: "4.0"
-scope: ucs_4.0-0-errata4.0-3
-src: univention-ldb-modules
-fix: 3.0.3-1.68.201508271310
-version: [3]
-desc: |
- The package has been rebuilt to match the new Samba version.
-bug: [39275]
