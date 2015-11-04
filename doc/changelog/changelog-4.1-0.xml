@@ -22,6 +22,9 @@
 			<listitem><simpara>
 				The errata level is reset during the upgrade to UCS 4.1 (<u:bug>39312</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				All packages have been adapted to UCS 4.1 (<u:bug>39729</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
