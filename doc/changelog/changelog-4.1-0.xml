@@ -117,6 +117,10 @@
 				<listitem><simpara>
 					The OpenLDAP server might be started multiple times during the upgrade. This is no longer a problem for the OpenLDAP package scripts (<u:bug>39683</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <phrase>graceful-restart</phrase> of the OpenLDAP init script
+					has been adjusted to reduce the grace time (<u:bug>39719</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
