@@ -1,3 +1,9 @@
+univention-saml (3.0.26-3) unstable; urgency=medium
+
+  * Bug #39739: Reinitialize listener module to write metadata config
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 04 Nov 2015 13:03:48 +0100
+
 univention-saml (3.0.26-2) unstable; urgency=medium
 
   * Bug #39739: add more debug output

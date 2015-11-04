@@ -193,6 +193,12 @@ if joinscript_check_version_in_range_executed 1 3; then
 	done
 fi
 
+# Bug #39739: the listener will be installed and running before univention-saml has configured the 
+# simplesamlphp config. The listener will then not be able to write the SP metadata. Reinitialize it here
+if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_executed 1 3; then
+	/usr/sbin/univention-directory-listener-ctrl resync univention-saml-simplesamlphp-configuration
+fi
+
 /etc/init.d/univention-saml restart
 
 test -x /etc/init.d/apache2 && /etc/init.d/apache2 reload
