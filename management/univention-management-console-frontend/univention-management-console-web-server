@@ -188,7 +188,7 @@ class SessionClient(object):
 
 	def authenticate_user(self, request, response_queue):
 		"""Send authentication request to UMC server."""
-		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %r' % (id(self), request.body['username']))
+		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %r' % (id(self), request.body.get('username')))
 		self._auth_response = umcp.Response(request)
 		self._auth_response_queue = response_queue
 		self.client.authenticate(request)
@@ -1001,10 +1001,7 @@ class CPAuth(CPgeneric):
 
 		# create new UMCP request
 		req = umcp.Request('AUTH')
-		req.body["auth_type"] = data['options'].get('auth_type')
-		req.body['username'] = data['options'].get('username', '')
-		req.body['password'] = data['options'].get('password', '')
-		req.body['new_password'] = data['options'].get('new_password')
+		req.body = data.get('options', {})
 		return self._auth_request(req, sessionid)
 
 	def _auth_request(self, req, sessionid):
