@@ -559,7 +559,7 @@
 					A problem with postfix' start script <filename>/etc/init.d/postfix</filename> has been fixed that could lead to the inability to start/stop postfix in docker containers (<u:bug>39542</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						When installing the first time, 512 bit DH parameters for Postfix are now regenerated immediately and 2048 bit DH parameters are schduled by the univention-mail-postfix join script to be regenerated the next day (<u:bug>39482</u:bug>).
+						When installing <package>univention-mail-postfix</package> for the first time, 512 bit DH parameters for Postfix are now generated immediately and 2048 bit DH parameters are scheduled by the join script to be generated on the next day (<u:bug>39482</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
