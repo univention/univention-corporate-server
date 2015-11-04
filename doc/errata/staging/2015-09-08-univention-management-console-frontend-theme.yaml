@@ -8,5 +8,6 @@ desc: |
  This update addresses the following issue:
  * UMC modules with long descriptions might overlap the borders of the box in
    the Gallery. Now the text is cut at some point.
- * It is now easier to find information for creating cutom attributes.
+ * A link to the manual section about extended attributes has been added in the
+   UMC users, groups and computers modules.
 bug: [39319, 39234]

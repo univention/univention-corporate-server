@@ -14,5 +14,6 @@ desc: |
  * The notification for successfully creating a user or computer now appears
    inside the wizard dialog.
  * Opening a user is now faster.
- * It is now easier to find information for creating cutom attributes.
+ * A link to the manual section about extended attributes has been added in the
+   UMC users, groups and computers modules.
 bug: [39041, 38346, 38834, 38190, 39234]
