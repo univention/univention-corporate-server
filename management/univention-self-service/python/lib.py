@@ -168,4 +168,4 @@ class Ressource(object):
 
 	def get_connection(self):
 		locale = cherrypy.request.headers.values('Accept-Language') or ['en-US']
-		return Session(self.umc_server, locale[0])
+		return Session(self.umc_server, locale[0].replace('-', '_'))
