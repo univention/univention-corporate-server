@@ -235,6 +235,12 @@
 					<wordasword>youtube</wordasword> URIs (<u:bug>39654</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+						Apps can be rated. This rating is shown on the detail page of an App (<U:bug>38891</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Every time an app is opened from the Gallery, the session is refreshed silently to prevent logouts (<u:bug>39655</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The App Center now checks a digital signature of the index of app meta files.
 					(<u:bug>39591</u:bug>).
 				</simpara></listitem>
