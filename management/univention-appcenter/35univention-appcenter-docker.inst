@@ -48,6 +48,7 @@ udm policies/maintenance create "$@" --ignore_exists \
 	--set name=app-update-schedule \
 	--set cron=1 \
 	--set hour=1 \
+	--set minute=5 \
 	--position "cn=policies,$ldap_base" || die
 
 joinscript_save_current_version
