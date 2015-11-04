@@ -2,3 +2,4 @@ Type: file
 File: etc/ucsversion
 Variables: foobar
 Variables: version/.*
+Variables: bar/baz/value

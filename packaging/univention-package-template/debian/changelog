@@ -1,3 +1,10 @@
+univention-package-template (4.0.2-1) unstable; urgency=medium
+
+  * Fixed build error, bar/baz/value was not registered in univention-
+    package-template.univention-config-registry (Bug #39729)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Nov 2015 06:32:09 +0100
+
 univention-package-template (4.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
