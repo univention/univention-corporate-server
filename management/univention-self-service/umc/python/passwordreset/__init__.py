@@ -57,7 +57,7 @@ from univention.management.console.ldap import get_user_connection
 from univention.management.console.modules.passwordreset.tokendb import TokenDB, MultipleTokensInDB
 from univention.management.console.modules.passwordreset.sending import get_plugins as get_sending_plugins
 
-_ = Translation('univention-management-console-module-passwordreset').translate
+_ = Translation('univention-self-service-passwordreset-umc').translate
 
 TOKEN_VALIDITY_TIME = 3600
 
