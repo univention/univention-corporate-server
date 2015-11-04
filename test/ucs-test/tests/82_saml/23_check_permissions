@@ -17,6 +17,8 @@ for file in /etc/simplesamlphp/authsources.php /etc/simplesamlphp/ucs-sso.$(ucr 
 	check_perm -e "$file" 0640 root samlcgi || RETVAL=110
 done
 
+check_perm -e /etc/simplesamlphp/ucs-sso.$(ucr get domainname)-idp-certificate.crt 0644 root samlcgi || RETVAL=110
+
 exit $RETVAL
 
 # vim: set ft=sh :
