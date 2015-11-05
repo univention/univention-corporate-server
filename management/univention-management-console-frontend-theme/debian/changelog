@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.2-1) unstable; urgency=medium
+
+  * Bug #39656: add transparent border for scaled up icons of UMC modules
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 05 Nov 2015 17:09:49 +0100
+
 univention-management-console-frontend-theme (1.0.1-7) unstable; urgency=low
 
   * Bug #33546: Adapted class selectable

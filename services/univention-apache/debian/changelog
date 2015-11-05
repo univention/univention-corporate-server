@@ -1,3 +1,11 @@
+univention-apache (8.0.1-1) unstable; urgency=medium
+
+  Bug #39656:
+  * Give SVG images a special treat and scale them up
+  * Remove unneeded dojox packages to reduce debian package size
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 05 Nov 2015 17:07:08 +0100
+
 univention-apache (8.0.0-7) unstable; urgency=medium
 
   * Bug #38807: Put some of the global config into ucs sites

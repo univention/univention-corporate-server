@@ -237,11 +237,17 @@ define([
 				}
 				localizedProps.link = protocol + '//' + window.location.hostname + port + localizedProps.link;
 			}
+			var iconHTML = '';
+			if (localizedProps.icon) {
+				// show in icon and scale it up if it is an SVG image
+				var backgroundSizeCSS = /\.svg$/.test(localizedProps.icon) ? 'background-size: contain;' : '';
+				iconHTML = lang.replace('<div class="umcGalleryIcon" style="background-image:url({0}); {1}"></div>\n', [localizedProps.icon, backgroundSizeCSS]);
+			}
 			var node = domConstruct.toDom(lang.replace(
 				'<div class="umcGalleryWrapperItem col-xxs-12 col-xs-6 col-sm-6 col-md-4" id="{id}">\n'
 				+ '	<a href="{link}">\n'
 				+ '		<div class="umcGalleryItem umcGalleryCategory-{category}">\n'
-				+ (localizedProps.icon ? '			<div class="umcGalleryIcon" style="background-image:url({icon})"></div>\n' : '')
+				+ '        ' + iconHTML
 				+ '			<div class="umcGalleryName">{label}</div>\n'
 				+ '			<div class="umcGalleryDescription">{description}</div>\n'
 				+ '		</div>\n'

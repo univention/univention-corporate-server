@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.56-1) unstable; urgency=medium
+
+  * Bug #39656: scale up SVG icon files for UMC modules
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 05 Nov 2015 17:08:56 +0100
+
 univention-management-console-frontend (5.0.55-1) unstable; urgency=medium
 
   * Bug #39611: adapt login form for one time password

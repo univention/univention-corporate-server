@@ -245,10 +245,11 @@ define([
 				var icon;
 				if (/\.svg$/.test(item.icon)) {
 					icon = item.icon.replace(/\.svg$/, '');
-				} else {
-					// for backwards compatibility we need to support png
-					icon = lang.replace('{icon}.png', item);
+					return tools.getIconClass(icon, 'scalable', '', 'background-size: contain;');
 				}
+
+				// for backwards compatibility we need to support png
+				icon = lang.replace('{icon}.png', item);
 				return tools.getIconClass(icon, 50);
 			}
 			return '';

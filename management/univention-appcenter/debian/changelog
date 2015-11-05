@@ -1,3 +1,9 @@
+univention-appcenter (5.0.16-1) unstable; urgency=medium
+
+  * Bug #39656: use SVG icons for installed apps in UMC overview
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 05 Nov 2015 17:11:10 +0100
+
 univention-appcenter (5.0.15-3) unstable; urgency=medium
 
   * Bug #39782: Fix finding LDAP objects for Apps

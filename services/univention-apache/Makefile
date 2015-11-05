@@ -69,6 +69,8 @@ $(buildDir): $(buildJsDir) $(buildCssDir) $(buildBootstrap)
 # rule for the main dojo build process
 $(buildJsDir): 
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(version)"
+	# remove all dojox code that is not needed
+	find build/www/ucs-overview/js/dojox/ -mindepth 1 -maxdepth 1 \! -name "gfx.js" -a \! -name "gfx" -a \( -type d -o -name "*.js" \) -exec rm -rf {} \;
 
 # rule for converting stylus CSS files into one final CSS file
 $(buildCssDir):
