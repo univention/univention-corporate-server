@@ -93,10 +93,6 @@ define([
 			return this._loginDialog && this._loginDialog.get('open'); // Boolean
 		},
 
-		updateLoginForm: function(message) {
-			return this._loginDialog.updateForm(false, message);
-		},
-
 		_notificationMaster: null,
 
 		createNotificationMaster: function() {

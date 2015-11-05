@@ -151,11 +151,17 @@
 						<input type="submit" name="submit" value="Login"/>
 					</label>
 				</form>
-				<iframe id="umcLoginIframe" src="login.html"></iframe>
+				<form id="umcCustomPromptForm" name="umcCustomPromptForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
+					<label for="umcLoginCustomPrompt">
+						<input placeholder="One time password" id="umcLoginCustomPrompt" type="password"/>
+						<input type="submit" name="submit" value="Login"/>
+					<label>
+				</form>
 				<img src="js%HASH%/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
 			</div>
 		</div>
 		<!--<![endif]-->
+		<iframe id="umcLoginIframe" src="login.html"></iframe>
 		<div id="umcTopContainer" class="umcTopContainer"></div>
 		<noscript>
 			<div class="warningWrapper">

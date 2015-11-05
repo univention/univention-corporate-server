@@ -579,7 +579,7 @@ define([
 						this.displayTraceback(info);
 					} else if (503 == status && dialog.loginOpened()) {
 						// either the UMC-server or the UMC-Web-Server is not runnning
-						dialog.updateLoginForm(statusMessage);
+						dialog._loginDialog.updateForm({message: statusMessage});
 						if (message) {
 							dialog.alert(message, statusMessage);
 						}

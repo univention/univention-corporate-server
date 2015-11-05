@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.55-1) unstable; urgency=medium
+
+  * Bug #39611: adapt login form for one time password
+
+ -- Florian Best <best@univention.de>  Thu, 05 Nov 2015 16:21:08 +0100
+
 univention-management-console-frontend (5.0.54-1) unstable; urgency=medium
 
   * Bug #39611: allow to specify custom prompts in authentication request

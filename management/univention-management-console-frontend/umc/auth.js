@@ -78,7 +78,7 @@ define([
 				return this._password_required;
 			}
 
-			dialog._loginDialog.updateForm(result.password_expired, message);
+			dialog._loginDialog.updateForm(info);
 			return dialog.login();
 		},
 

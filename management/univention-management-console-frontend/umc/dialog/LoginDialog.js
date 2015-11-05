@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console window setTimeout */
+/*global define console window setTimeout require*/
 
 define([
 	"dojo/_base/declare",
@@ -61,32 +61,29 @@ define([
 	_('New Password');
 	_('New Password (retype)');
 	_('Login');
+	_('One time password');
 
 	return declare("umc.dialog.LoginDialog", [StandbyMixin], {
-		// our own variables
-		_connections: null,
 		_iframe: null,
+		_form: null,
 		_text: null,
 
-		_username: null,
-		_password: null,
-		_newPassword: null,
-		_updateFormDeferred: null,
-		_nLogins: 0,
+		_currentResult: null,
 
 		id: 'umcLoginWrapper',
-
-		// internal flag whether the dialog is rendered or not
-		_isRendered: false,
 
 		open: false,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
-			this._connections = [];
+			this._currentResult = {};
 			this._replaceLabels();
 			this.containerNode = dom.byId('umcLoginDialog');
 			this.domNode = dom.byId('umcLoginWrapper');
+
+			this._iframe = dom.byId('umcLoginIframe');
+			this._form = dom.byId('umcLoginForm');
+			this._watchFormSubmits();
 
 			// hide the login dialog. but wait for the GUI to be rendered.
 			tools.status('app.loaded').then(lang.hitch(this, function() {
@@ -98,19 +95,11 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			this._updateFormDeferred = new Deferred();
-			this._updateFormDeferred.resolve(false); // may update form, dont show new password
-
 			// set the properties for the dialog underlay element
 			this.underlayAttrs = {
 				dialogId: this.id,
 				'class': 'dijitDialogUnderlay umcLoginDialogUnderlay'
 			};
-
-			// initialize the form+iframe
-			this._iframe = dom.byId('umcLoginIframe');
-			this._form = dom.byId('umcLoginForm');
-			this._initForm();
 
 			// create the info text
 			this._text = new Text({
@@ -127,10 +116,10 @@ define([
 			})));
 		},
 
-		updateForm: function(passwordExpired, message) {
-			this._passwordExpired = passwordExpired;
-			this._updateFormDeferred.resolve(this._passwordExpired);
+		updateForm: function(info) {
+			this._updateView(info.result || {});
 
+			var message = info.message;
 			if (message) {
 				if (message.slice(-1) !== '.') {
 					message += '.';
@@ -155,117 +144,118 @@ define([
 			return deferred.promise;
 		},
 
-		_initForm: function() {
-			// FIXME: remove this endless loop
-			// wait until the iframe is completely loaded
-			setTimeout(lang.hitch(this, function() {
-				// check whether the form is available or not
-				var state = lang.getObject('contentWindow.state', false, this._iframe);
-				if (state === 'loaded') {
-					// each time the page is loaded, we need to connect to the form events
-					this._updateFormDeferred.then(lang.hitch(this, '_updateView'));
-					this._connectEvents();
+		_updateView: function(result) {
+			this._currentResult = result;
+			var showLogin = true, showNewPassword = false, showCustomPrompt = false;
+			if (result.password_expired) {
+				showLogin = false;
+				showNewPassword = true;
+				showCustomPrompt = false;
+			} else if (result.missing_prompts) {
+				showLogin = false;
+				showNewPassword = false;
+				showCustomPrompt = true;
+			}
 
-					this._isRendered = true;
-					lang.setObject('contentWindow.state', 'initialized', this._iframe);
-					this._initForm();
-				} else {
-					// we can't access the form, or it has already been initialized
-					// ... trigger the function again to monitor reloads
-					this._initForm();
-				}
-			}), 100);
-		},
-
-		_updateView: function(showNewPassword) {
-			query('#umcLoginForm').style('display', showNewPassword ? 'none' : 'block');
+			query('#umcLoginForm').style('display', showLogin ? 'block' : 'none');
 			query('#umcNewPasswordForm').style('display', showNewPassword ? 'block' : 'none');
-			if (showNewPassword) {
-				if (this._username) {
-					attr.set(dom.byId('umcLoginUsername'), 'value', this._username);
-					tools.status('username', this._username); // already set status, otherwise _setInitialFocus may cause problems
-				}
-				if (this._password) {
-					attr.set(dom.byId('umcLoginPassword'), 'value', this._password);
-				}
-				attr.set(dom.byId('umcLoginNewPassword'), 'value', '');
-				attr.set(dom.byId('umcLoginNewPasswordRetype'), 'value', '');
-				if (!has('touch')) {
+			query('#umcCustomPromptForm').style('display', showCustomPrompt ? 'block' : 'none');
+
+			if (showLogin) {
+				this._resetForm();
+			}
+			// username is specified, we need to auto fill the username
+			attr.set('umcLoginUsername', 'value', tools.status('username'));
+			this._setFocus();
+			if (!has('touch')) {
+				if (showNewPassword) {
 					dom.byId('umcLoginNewPassword').focus();
+				} else if (showCustomPrompt) {
+					dom.byId('umcLoginCustomPrompt').focus();
 				}
-			} else if (this._nLogins || tools.status('setupGui')) {
-				attr.set(dom.byId('umcLoginPassword'), 'value', '');
 			}
 		},
 
 		_resetForm: function() {
-			// reset all hidden values in the iframe
-			win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
-				query('input').forEach(function(node) {
+			array.forEach(['umcLoginForm', 'umcNewPasswordForm', 'umcCustomPromptForm'], function(name) {
+				query('input', dom.byId(name)).forEach(function(node) {
 					attr.set(node, 'value', '');
 				});
-			}));
-			query('input', this._form).forEach(function(node) {
-				attr.set(node, 'value', '');
 			});
 		},
 
-		_connectEvents: function() {
-			var oldEvents = this._connections;
-			this._connections = [];
-			var iframeLoginForm, usernameInput, passwordInput, newPasswordInput, newPasswordRetypeInput;
-
-			win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
-				iframeLoginForm = dom.byId('umcLoginForm');
-				usernameInput = dom.byId('umcLoginUsername');
-				passwordInput = dom.byId('umcLoginPassword');
-				newPasswordInput = dom.byId('umcLoginNewPassword');
-				newPasswordRetypeInput = dom.byId('umcLoginNewPasswordRetype');
-			}));
-
-			// register all events
-			array.forEach(['umcLoginForm', 'umcNewPasswordForm'], lang.hitch(this, function(name) {
+		_watchFormSubmits: function() {
+			array.forEach(['umcLoginForm', 'umcNewPasswordForm', 'umcCustomPromptForm'], lang.hitch(this, function(name) {
 				var form = dom.byId(name);
-				var iform = dom.byId(name, this._iframe.contentWindow.document);
+				on(form, 'submit', lang.hitch(this, function(evt) {
+					evt.preventDefault();
+					if (name == 'umcLoginForm') {
+						this._submitFakeForm();
+					}
+					// FIXME: if custom prompts and(!) new password is required we should just switch the view
 
-				if (iform) {
-					this._connections.push(on(iform, 'submit', lang.hitch(this, function(evt) {
-						var username = usernameInput.value;
-						var password = passwordInput.value;
-						var newPassword;
-
-						if (iform !== iframeLoginForm) {
-							if (newPasswordInput.value !== newPasswordRetypeInput.value) {
-								this.set('LoginMessage', _('The passwords do not match, please retype again.'));
-								evt.preventDefault();
-								return;
-							}
-							newPassword = newPasswordInput.value;
-						}
-
-						this._authenticate(username, password, newPassword);
-						this._isRendered = false;
-						this._initForm();
-					})));
-				}
-
-				if (form) {
-					this._connections.push(on(form, 'submit', lang.hitch(this, function(evt) {
-						evt.preventDefault();
-
-						query('.umcLoginForm input').forEach(lang.hitch(this, function(node) {
-							var iframeNode = dom.byId(node.id, this._iframe.contentWindow.document);
-							if (iframeNode) {
-								iframeNode.value = node.value;
-							}
-						}));
-						// don't use iform (if the page was reloaded the old iframe does not exists anymore)
-						iform = dom.byId(name, this._iframe.contentWindow.document);
-						iform.submit.click();
-					})));
-				}
+					var data = this._getFormData();
+					if (data) {
+						this._authenticate(data);
+					}
+				}));
 			}));
-			this._disconnectEvents(oldEvents);
+		},
+
+		_getFormData: function() {
+			var newPasswordInput = dom.byId('umcLoginNewPassword');
+			var newPasswordRetypeInput = dom.byId('umcLoginNewPasswordRetype');
+
+			var data = {};
+
+			tools.forIn({
+				username: dom.byId('umcLoginUsername'),
+				password: dom.byId('umcLoginPassword'),
+				new_password: newPasswordInput
+			}, function(key, node) {
+				if (node.value) {
+					data[key] = node.value;
+				}
+			});
+
+			// validate new password form
+			if (newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
+				this.set('LoginMessage', _('The passwords do not match, please retype again.'));
+				return;
+			}
+			// custom prompts
+			array.forEach(this._currentResult.missing_prompts || [], function(prompt_) {
+				data[prompt_] = dom.byId('umcLoginCustomPrompt').value;
+			});
+			// TODO: what if data is empty
+			return data;
+		},
+
+		_submitFakeForm: function() {
+			try {
+				if (!this._iframe) {
+					return;  // iframe not yet loaded
+				}
+				var fakeDoc = this._iframe.contentWindow ? this._iframe.contentWindow.document : this._iframe.contentDocument;
+				if (!fakeDoc) {
+					// iframe reloading just in this second
+					return;
+				}
+				// set all current form values into the fake iframe form
+				query('.umcLoginForm input').forEach(lang.hitch(this, function(node) {
+					var iframeNode = dom.byId(node.id, fakeDoc);
+					if (iframeNode) {
+						iframeNode.value = node.value;
+					}
+				}));
+
+				// submit the fake form to show a password save dialog
+				var iform = dom.byId('umcLoginForm', fakeDoc);
+				iform.submit.click();
+			} catch(e) {
+				// just for the case...
+				console.error('error in submitting fake iframe:', e);
+			}
 		},
 
 		_disconnectEvents: function(connections) {
@@ -306,34 +296,19 @@ define([
 			}));
 		},
 
-		_authenticate: function(username, password, new_password) {
-			// count number of login trials
-			++this._nLogins;
-
-			// save in case password expired and username and password have to be sent again
-			this._username = username;
-			this._password = password;
-			var args = {
-				username: username,
-				password: password
-			};
-			if (new_password) {
-				this._newPassword = new_password;
-				args.new_password = new_password;
-			}
-			this._updateFormDeferred = new Deferred();
+		_authenticate: function(data) {
 			this.standby(true);
-			require('umc/auth').authenticate(args).then(lang.hitch(this, '_authenticated'), lang.hitch(this, '_authentication_failed'));
+			tools.status('username', data.username);
+			require('umc/auth').authenticate(data).then(
+				lang.hitch(this, '_authenticated'),
+				lang.hitch(this, '_authentication_failed')
+			);
 		},
 
 		_authenticated: function(username) {
 			// delete password ASAP. should not be stored
-			this._username = null;
-			this._password = null;
-			this._newPassword = null;
-			this._passwordExpired = false;
-			this._updateFormDeferred.resolve(this._passwordExpired);
 			this._resetForm();
+			this._currentResult = {};
 
 			// make sure that we got data
 			this.onLogin(username);
@@ -345,10 +320,11 @@ define([
 		},
 
 		_authentication_failed: function(error) {
+			// the authentication failed and(!) was triggered by this dialog... we only need to show()+hide()
+			// errors must be handled by the _updateView() functions!!
 			// don't call _updateFormDeferred or _resetForm here!
 			// It would break setting of new_password
 			this.standby(false);
-			this._setInitialFocus();
 			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 			Dialog._DialogLevelManager.hide(this);
 		},
@@ -381,7 +357,7 @@ define([
 		show: function() {
 			// only open the dialog if it has not been opened before
 			if (this.get('open')) {
-				return dojo.when();
+				return when();
 			}
 			this.set('open', true);
 
@@ -419,25 +395,18 @@ define([
 			query('#umcLoginMessages').style('display', 'none');
 			this._text.set('content', msg);
 
-			if (this._isRendered) {
-				return this._show();
-			} else {
-				var deferred = new Deferred();
-				var handle = aspect.after(this, '_connectEvents', lang.hitch(this, function() {
-					this._show().always(function() {
-						deferred.resolve();
-					});
-					handle.remove();
-				}));
-				return deferred.promise;
-			}
+			return this._show();
 		},
 
 		_show: function() {
 			var deferred;
 			query('#umcLoginWrapper').style('display', 'block');
 			query('#umcLoginDialog').style('opacity', '1');  // baseFx.fadeOut sets opacity to 0
-			this._setInitialFocus();
+			this._setFocus();
+			if (has('ie') < 10) {
+				// trigger IE9 workaround
+				this._replaceLabels();
+			}
 			Dialog._DialogLevelManager.show(this, this.underlayAttrs);
 			if (this._text.get('content')) {
 				deferred = this._wipeInMessage();
@@ -459,29 +428,18 @@ define([
 			return when(deferred);
 		},
 
-		_setInitialFocus: function() {
-			//win.withGlobal(this._iframe.contentWindow, lang.hitch(this, function() {
-				if (tools.status('username')) {
-					// username is specified, we need to auto fill
-					// the username and disable the textbox.
-					attr.set('umcLoginUsername', 'value', tools.status('username'));
-					if (!has('touch')) {
-						dom.byId('umcLoginPassword').focus();
-					}
+		_setFocus: function() {
+			// disable the username field during relogin, i.e., when the GUI has been previously set up
+			attr.set('umcLoginUsername', 'disabled', tools.status('setupGui'));
 
-					// disable the username field during relogin, i.e., when the GUI has been previously set up
-					attr.set('umcLoginUsername', 'disabled', tools.status('setupGui'));
-				} else {
-					// initial focus on username input
-					if (!has('touch')) {
-						dom.byId('umcLoginUsername').focus();
-					}
-				}
-				if (has('ie') < 10 ) {
-					//trigger IE9 workaround
-					this._replaceLabels();
-				}
-			//}));
+			if (has('touch')) {
+				return;
+			}
+			if (!dom.byId('umcLoginPassword').value) {
+				dom.byId('umcLoginPassword').focus();
+			} else {
+				dom.byId('umcLoginPassword').focus();
+			}
 		},
 
 		hide: function() {
@@ -518,6 +476,8 @@ define([
 			query('#umcLoginIframe').style('display', 'block');
 			query('#umcLoginIframe').style('width', 'inherit');
 			query('#umcLoginIframe').style('height', 'inherit');
+			query('#umcLoginIframe').style('position', 'absolute');
+			query('#umcLoginIframe').style('z-index', '1000000');
 			query('#umcLoginDialog').style('height', 'inherit');
 		},
 
