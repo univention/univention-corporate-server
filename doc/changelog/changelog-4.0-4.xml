@@ -965,6 +965,7 @@
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
@@ -972,6 +973,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 	</section>
 
 
