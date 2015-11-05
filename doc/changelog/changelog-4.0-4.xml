@@ -924,7 +924,7 @@
 					(<u:bug>38868</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A <appliacation>testparm</appliacation> error message about the UCS default for winbind separator has been
+					A <application>testparm</application> error message about the UCS default for winbind separator has been
 					relaxed to only issue a warning message (<u:bug>36581</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
