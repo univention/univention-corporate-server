@@ -44,6 +44,8 @@ __SH__
 		chmod +x /etc/network/if-up.d/z_route
 		/etc/network/if-up.d/z_route
 		sleep 10 # just wait a few seconds to give the amazone cloud some time
+		# set dns/forwarder*, this should prevent a later bind restart (Bug #39807)
+		i=1; cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do ucr set dns/forwarder$i=$ns; i="$((i+1))"; done
 		ucr set --force updater/identify="UCS (EC2 Test)"
 		ucr set update/check/cron/enabled=false update/check/boot/enabled=false
 		if grep -F /dev/vda /boot/grub/device.map && [ -b /dev/xvda ] # Bug 36256
