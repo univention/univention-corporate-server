@@ -352,7 +352,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Some widgets are now filtering out values which are already selected and don't present them in a dialogue anymore (<u:bug>37799</u:bug>).
+					Some widgets are now filtering out values which are already selected and don't present them in a <wordasword>dialog</wordasword> anymore (<u:bug>37799</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					UMC modules with long descriptions might overlap the borders of the box in the Gallery. Now the text is cut at some point (<u:bug>39319</u:bug>).
@@ -386,7 +386,7 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The mapping of syntax classes to UMC widgets is now extendable via the UCR
+					The mapping of syntax classes to UMC widgets is now <wordasword>extendable</wordasword> via the UCR
 					variable group <envar>directory/manager/web/widget/.*/</envar> (<u:bug>39041</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -396,13 +396,13 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The notification for successfully creating a user or computer now appears
-					inside the wizard dialog (<u:bug>38834</u:bug>).
+					inside the wizard <wordasword>dialog</wordasword> (<u:bug>38834</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Opening a user is now faster (<u:bug>38190</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					It is now easier to find information for creating cutom attributes
+					It is now easier to find information for creating custom attributes
 					(<u:bug>39234</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -451,7 +451,7 @@
 					(<u:bug>39154</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The AppCenter notification has been fixed in the system activation wizard
+					The App Center notification has been fixed in the system activation wizard
 					(<u:bug>39395</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -670,13 +670,13 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The long waiting for the DH parameter generation on the first install has been
+					The long waiting for the <wordasword>DH</wordasword> parameter generation on the first install has been
 					removed in the Dovecot package (<u:bug>38990</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					<wordasword>DH</wordasword> parameters are not created at installation time any more.
 					Pre-calculated <wordasword>DH</wordasword>
-					parameters for 512 and 2048 bit are provided. A one time generation of DH
+					parameters for 512 and 2048 bit are provided. A one time generation of <wordasword>DH</wordasword>
 					parameters is scheduled for the next day (<u:bug>37459</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -924,7 +924,7 @@
 					(<u:bug>38868</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A <application>testparm</application> error message about the UCS default for winbind separator has been
+					A <application>testparm</application> error message about the UCS default for <application>winbind</application> separator has been
 					relaxed to only issue a warning message (<u:bug>36581</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -937,7 +937,7 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DNS zones <wordasword>DC=DomainDnsZones</wordasword> and <wordasword>DC=ForestDnsZones</wordasword> are synchronized now
+					The DNS zones <wordasword>DC=DomainDnsZones</wordasword> and <wordasword>DC=ForestDnsZones</wordasword> are <wordasword>synchronized</wordasword> now
 					(<u:bug>34184</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -947,7 +947,7 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DNS zones <wordasword>DC=DomainDNSZones</wordasword> and <wordasword>DC=ForestDNSZones</wordasword> are sychronized now, this
+					The DNS zones <wordasword>DC=DomainDNSZones</wordasword> and <wordasword>DC=ForestDNSZones</wordasword> are <wordasword>sychronized</wordasword> now, this
 					is relevant in AD Takeover scenarios. For updated domains, this is not activated
 					(<u:bug>34184</u:bug>).
 				</simpara></listitem>
