@@ -73,7 +73,7 @@
 				</para>
 			</listitem>
 			<listitem><para>
-				As of UCS 4.1 <systemitem class="protocol">HTTPS</systemitem> will be the new default protocol for accessing Univention's online repository. During the update this will be reconfigured
+				As of UCS 4.1 <systemitem class="protocol">HTTPS</systemitem> will be the new default protocol for accessing the online repository of Univention. During the update this will be reconfigured
 				automatically to <ulink url="https://updates.software-univention.de/"/> if the default repository server are still in use by the system.
 			</para></listitem>
 			<listitem><para>
