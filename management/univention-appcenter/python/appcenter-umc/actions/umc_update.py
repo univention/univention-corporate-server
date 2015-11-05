@@ -61,17 +61,18 @@ class Update(Update):
 			os.unlink(isvg)
 
 		for app in AppManager.get_all_apps():
-			if app.logo:
-				self._update_svg_file(app.id, '', app.get_cache_file('logo'), app.logo)
-			if app.logo_detail_page:
-				self._update_svg_file(app.id, '-detailpage', app.get_cache_file('logodetailpage'), app.logo_detail_page)
+			for _app in AppManager.get_all_apps_with_id(app.id):
+				self._update_svg_file(_app.logo_name, _app.get_cache_file('logo'))
+				self._update_svg_file(_app.logo_detail_page_name, _app.get_cache_file('logodetailpage'))
 
 	def _update_conffiles(self):
 		with catch_stdout(self.logger):
 			handler_commit(['/usr/share/univention-management-console/modules/apps.xml', '/usr/share/univention-management-console/i18n/de/apps.mo'])
 
-	def _update_svg_file(self, app_id, suffix, src_file, filename):
-		dest_file = os.path.join(FRONTEND_ICONS_DIR, 'apps-%s%s.svg' % (app_id, suffix))
+	def _update_svg_file(self, _dest_file, src_file):
+		if not _dest_file:
+			return
+		dest_file = os.path.join(FRONTEND_ICONS_DIR, _dest_file)
 		if os.path.exists(src_file):
 			shutil.copy2(src_file, dest_file)
 			self.debug('copying %s -> %s' % (src_file, dest_file))

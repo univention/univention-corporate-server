@@ -26,7 +26,7 @@ for app in apps:
 			name=app.name,
 			version=app.version,
 			description=app.description,
-			icon='apps-%s.svg' % app.id,
+			icon=app.logo_name,
 		)
 	print xml
 @!@

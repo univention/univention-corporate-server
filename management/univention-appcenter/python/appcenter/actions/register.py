@@ -370,7 +370,7 @@ class Register(CredentialsAction):
 			self.log('Setting overview variables')
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (app.ucs_overview_category, app.id)
 			variables = {
-				'icon': '/univention-management-console/js/dijit/themes/umc/icons/scalable/apps-%s.svg' % app.id,
+				'icon': os.path.join('/univention-management-console/js/dijit/themes/umc/icons/scalable', app.logo_name),
 				'port_http': str(app.web_interface_port_http or ''),
 				'port_https': str(app.web_interface_port_https or ''),
 				'label': app.get_localised('name'),

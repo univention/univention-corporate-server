@@ -368,8 +368,6 @@ class App(object):
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
 	component_id = AppAttribute(required=True)
 	ucs_version = AppAttribute(required=True)
-	logo = AppAttribute(regex='^.+\.svg$|^$', required=False)  # TODO: should be required
-	logo_detail_page = AppAttribute(regex='^.+\.svg$|^$', required=False)
 
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
@@ -462,6 +460,7 @@ class App(object):
 			setattr(self, attr.name, kwargs.get(attr.name))
 		if self.docker:
 			self.supported_architectures = ['amd64']
+		self._has_logo_detail_page = None
 
 	def attrs_dict(self):
 		ret = {}
@@ -640,6 +639,19 @@ class App(object):
 
 	def get_ini_file(self):
 		return self.get_cache_file('ini')
+
+	@property
+	def logo_name(self):
+		return 'apps-%s.svg' % self.component_id
+
+	@property
+	def logo_detail_page_name(self):
+		if self._has_logo_detail_page is None:
+			# cache value
+			self._has_logo_detail_page = os.path.exists(self.get_cache_file('logodetailpage'))
+		if self._has_logo_detail_page:
+			return 'apps-%s-detail.svg' % self.component_id
+		return None
 
 	def get_screenshot_url(self):
 		if not self.screenshot:

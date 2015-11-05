@@ -103,6 +103,8 @@ class Get(UniventionAppAction):
 		ucr = ConfigRegistry()
 		ucr.load()
 		ret = app.attrs_dict()
+		ret['logo_name'] = app.logo_name
+		ret['logo_detail_page_name'] = app.logo_detail_page_name
 		ret['screenshot'] = app.get_screenshot_url()
 		ret['thumbnails'] = app.get_thumbnail_urls()
 		ret['is_installed'] = app.is_installed()

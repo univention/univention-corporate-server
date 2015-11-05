@@ -1,3 +1,9 @@
+univention-appcenter (5.0.17-1) unstable; urgency=medium
+
+  * Bug #39525: incorporate component_id into SVG icon files
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 05 Nov 2015 19:27:58 +0100
+
 univention-appcenter (5.0.16-2) unstable; urgency=medium
 
   * Bug #39799: Fix recognising installation status of docker Apps

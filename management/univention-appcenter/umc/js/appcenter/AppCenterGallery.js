@@ -48,9 +48,8 @@ define([
 
 		bootstrapClasses: "",
 
-		getIconClass: function(item, suffix) {
-			suffix = suffix || '';
-			return tools.getIconClass('apps-' + item.id + suffix, 'scalable', 'umcAppCenter');
+		getIconClass: function(iconName) {
+			return tools.getIconClass(iconName, 'scalable', 'umcAppCenter');
 		},
 
 		renderRow: function(item) {
@@ -62,7 +61,7 @@ define([
 
 			put(innerWrapper, 'div.border');
 
-			var iconClass = this.getIconClass(item);
+			var iconClass = this.getIconClass(item.logo_name);
 			if (iconClass) {
 				put(innerWrapper, 'div.appIcon.umcGalleryIcon.' + iconClass);
 			}
