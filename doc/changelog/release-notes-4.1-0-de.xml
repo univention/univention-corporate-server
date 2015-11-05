@@ -54,12 +54,12 @@
 				</para>
 				<itemizedlist spacing="compact">
 					<listitem><simpara>
-							Die <emphasis>Installations-DVD</emphasis> beinhaltet nur noch die Pakete, die für die Installation eines neuen UCS Systems mit allen Komponenten, die von Univention bereitgestellt werden.
-							Frühere DVD enthielten auch alle anderen <foreignphrase>maintained</foreignphrase>-Pakete.
+							Die <emphasis>Installations-DVD</emphasis> beinhaltet nur noch die Pakete, die für die Installation eines neuen UCS-Systems mit allen Komponenten, die von Univention bereitgestellt werden.
+							Frühere DVDs enthielten auch alle anderen <foreignphrase>maintained</foreignphrase>-Pakete.
 							Diese wurden entfernt, um die Größe für den Download zu reduzieren.
 					</simpara></listitem>
 					<listitem><simpara>
-							Die vollständige Menge alle <foreignphrase>maintained</foreignphrase>-Pakete wird über die <emphasis>Update DVD</emphasis> bereitgestellt.
+							Die vollständige Menge aller <foreignphrase>maintained</foreignphrase>-Pakete wird über die <emphasis>Update DVD</emphasis> bereitgestellt.
 							Diese kann benutzt werden, um ein lokales Repository zu aktualisieren.
 					</simpara></listitem>
 					<listitem><simpara>
