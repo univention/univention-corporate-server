@@ -130,17 +130,31 @@ def main():
 				# check if mailboxes have been removed
 				for user in userbase:
 					maildir = get_dovecot_maildir(user.addr.lower())   # HINT: use user.addr.lower() to check if the correct maildir is created (Bug #39346)
-					if os.path.isdir(maildir):
-						utils.fail('maildir for %r has not been removed: %r' % (user.addr, maildir))
-					else:
-						print 'OK: does not exist: %r' % (maildir,)
+					tries = 10
+					while True:
+						if os.path.isdir(maildir):
+							if tries > 0:
+								time.sleep(1)
+								tries -= 1
+								continue
+							utils.fail('maildir for %r has not been removed: %r' % (user.addr, maildir))
+						else:
+							print 'OK: does not exist: %r' % (maildir,)
+							break
 
 					mixed_case_maildir = get_mixed_case_maildir(user.addr)
 					if maildir != mixed_case_maildir:
-						if os.path.isdir(mixed_case_maildir):
-							utils.fail('maildir for %r does exist: %r' % (user.addr, mixed_case_maildir))
-						else:
-							print 'OK: does not exist: %r' % (mixed_case_maildir,)
+						tries = 10
+						while True:
+							if os.path.isdir(mixed_case_maildir):
+								if tries > 0:
+									time.sleep(1)
+									tries -= 1
+									continue
+								utils.fail('maildir for %r does exist: %r' % (user.addr, mixed_case_maildir))
+							else:
+								print 'OK: does not exist: %r' % (mixed_case_maildir,)
+								break
 
 if __name__ == '__main__':
 	main()
