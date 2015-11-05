@@ -1,3 +1,9 @@
+ucs-test (6.0.15-1) unstable; urgency=medium
+
+  * 80_docker/52_app_install_dc_slave: Disable test case (Bug #39801)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Nov 2015 21:53:52 +0100
+
 ucs-test (6.0.14-1) unstable; urgency=low
 
   * Bug #39687: reenable 40_mail/42_dovecot_rename_mail_primary_address

@@ -4,6 +4,11 @@
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
+## versions:
+##  4.1-0: skip
+## bugs:
+##  - 39792
+##  - 39801
 
 from dockertest import *
 from univention.testing.utils import get_ldap_connection
