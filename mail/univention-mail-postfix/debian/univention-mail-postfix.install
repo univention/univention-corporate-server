@@ -5,3 +5,4 @@ usr/lib/univention-server/server_password_change.d/50univention-mail-server usr/
 hosteddomains.py /usr/lib/univention-directory-listener/system
 share/create-dh-parameter-files.sh usr/share/univention-mail-postfix/
 dh_*.pem usr/share/univention-mail-postfix/
+etc/univention/docker/init.d etc/univention/docker/

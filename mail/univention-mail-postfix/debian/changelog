@@ -1,3 +1,9 @@
+univention-mail-postfix (10.0.0-6) unstable; urgency=low
+
+  * recreate missing lookup tables if docker container is started (Bug #39542)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 04 Nov 2015 21:35:30 +0100
+
 univention-mail-postfix (10.0.0-5) unstable; urgency=low
 
   * Move scheduling of DH parameter generation to join script, create 512 bit
