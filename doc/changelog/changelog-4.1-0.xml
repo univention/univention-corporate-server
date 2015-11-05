@@ -231,7 +231,7 @@
 				<listitem><simpara>
 					App logos must be in the SVG format from UCS 4.1 on. Logos are referenced in the <wordasword>INI</wordasword> or META files as
 					<classname>Logo</classname> and <classname>LogoDetailPage</classname> whereas the latter optional entry
-					may define a different logo which is displayed in the app detail view (<u:bug>39525</u:bug>).
+					may define a different logo which is displayed in the app detail view (<u:bug>39525</u:bug>, <u:bug>39656</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The property <classname>Screenshot</classname> has been replaced with the property
