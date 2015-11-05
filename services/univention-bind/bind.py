@@ -324,6 +324,7 @@ def postrun():
 			for filename in os.listdir(PROXY_CACHE_DIR):
 				os.remove(os.path.join(PROXY_CACHE_DIR, filename))
 				if not os.path.exists(os.path.join(NAMED_CACHE_DIR, filename)):
+					ud.debug(ud.LISTENER, ud.PROCESS, 'DNS: %s does not exist. Triggering a bind9 restart.' % (os.path.join(NAMED_CACHE_DIR, filename)))
 					restart = True
 				else:
 					zone = filename.replace(".zone", "")

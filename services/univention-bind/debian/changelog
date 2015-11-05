@@ -1,3 +1,9 @@
+univention-bind (10.0.2-1) unstable; urgency=medium
+
+  * Added more debug to bind9 listener module (Bug #39792)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 05 Nov 2015 17:15:25 +0100
+
 univention-bind (10.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
