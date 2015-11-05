@@ -45,16 +45,10 @@
 
 		<para>
 			With &ucsUCS; 4.0-4, the fourth point release of &ucsUCS; (UCS) 4.0 is now available.
-			It provides various improvements and bugfixes.
-			An overview of the most important changes:
+			It provides various improvements and bugfixes especially in the areas of Active
+			Directory compatibility, and the UCS management system. All security updates released
+			for UCS 4.0-3 are included in this update.
 		</para>
-
-		<itemizedlist>
-			<listitem><para>
-				All security updates released for UCS 4.0-3 are included in this update. It is now also possible to redirect all HTTP requests to HTTPS
-				by only setting an Univention Configuration Registry variable. This increases the security of the UCS system.
-			</para></listitem>
-		</itemizedlist>
 
 	</chapter>
 

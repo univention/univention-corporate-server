@@ -42,19 +42,12 @@
 
 	<chapter id="relnotes:highlights">
 		<title>Release-Highlights</title>
-
 		<para>
 			Mit &ucsUCS; 4.0-4 steht das vierte Point-Release für &ucsUCS; (UCS) 4.0 zur Verfügung.
-			Es umfasst diverse Detailverbesserungen und Fehlerkorrekturen.
-			Die wichtigsten Änderungen im Überblick:
+			Es umfasst diverse Detailverbesserungen und Fehlerkorrekturen vor allem in den Bereichen
+			Active Directory Kompatibilität und dem UCS-Managementsystem.  Sämtliche für UCS 4.0-3
+			veröffentlichten Sicherheitsupdates sind in diesem Update enthalten. 
 		</para>
-
-		<itemizedlist>
-			<listitem><para>
-				Sämtliche für UCS 4.0-3 veröffentlichten Sicherheitsupdates sind in diesem Update enthalten. Um die Sicherheit des UCS-Systems
-				zu erhöhen, ist es nun einfach per &ucsUCRV; möglich die HTTP-Anfragen auf HTTPS umzuleiten.
-			</para></listitem>
-		</itemizedlist>
 	</chapter>
 
 	<chapter id="relnotes:update">
