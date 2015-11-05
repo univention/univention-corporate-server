@@ -43,7 +43,7 @@ from univention.config_registry import handler_commit
 
 from univention.appcenter.actions.update import Update
 from univention.appcenter.log import catch_stdout
-from univention.appcenter.app import CACHE_DIR, AppManager
+from univention.appcenter.app import AppManager
 
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable'
 
@@ -79,4 +79,3 @@ class Update(Update):
 			# images are created with UMC umask: -rw-------
 			# change the mode to UCS umask:      -rw-r--r--
 			os.chmod(dest_file, stat.S_IREAD | stat.S_IWRITE | stat.S_IRGRP | stat.S_IROTH)
-

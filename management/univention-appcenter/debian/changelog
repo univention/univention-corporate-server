@@ -1,3 +1,9 @@
+univention-appcenter (5.0.16-2) unstable; urgency=medium
+
+  * Bug #39799: Fix recognising installation status of docker Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 05 Nov 2015 17:19:49 +0100
+
 univention-appcenter (5.0.16-1) unstable; urgency=medium
 
   * Bug #39656: use SVG icons for installed apps in UMC overview

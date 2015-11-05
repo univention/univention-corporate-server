@@ -52,9 +52,8 @@ ucr = ConfigRegistry()
 ucr.load()
 
 from univention.appcenter.app import App, AppManager, _get_from_parser, _read_ini_file
-from univention.appcenter.actions import UniventionAppAction
+from univention.appcenter.actions import UniventionAppAction, get_action
 from univention.appcenter.utils import get_md5_from_file, mkdir
-from univention.appcenter.actions.update import Update
 from univention.appcenter.utils import urlopen
 
 
@@ -103,8 +102,6 @@ class AppcenterApp(object):
 
 	def get_metainf_url(self):
 		url = '%s/meta-inf/%s/' % (self.server, self.ucs_version)
-		if self.app_dir:
-			url = '%s%s/' % (url, self.app_dir)
 		return url
 
 	def get_repository_url(self):
@@ -238,7 +235,8 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 							archive.add(filename_in_directory, filename_in_archive)
 				index_json.write(dumps(apps, sort_keys=True, indent=4))
 		if args.ucs_version == ucr.get('version/version'):
-			Update.call()
+			update = get_action('update')
+			update.call()
 
 
 class DevPopulateAppcenter(LocalAppcenterAction):
@@ -452,7 +450,8 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 			except OSError as exc:
 				self.warn(exc)
 			ucr_update(ucr, {'repository/app_center/server': 'appcenter.software-univention.de', 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
-			Update.call()
+			update = get_action('update')
+			update.call()
 		else:
 			mkdir(meta_inf_dir)
 			mkdir(os.path.join(repo_dir, 'maintained', 'component'))

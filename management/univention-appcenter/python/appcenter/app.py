@@ -593,7 +593,7 @@ class App(object):
 		ucr = ConfigRegistry()
 		ucr.load()
 		if self.docker:
-			return ucr.get(self.ucr_status_key) in ['installed', 'stalled']
+			return ucr.get(self.ucr_status_key) in ['installed', 'stalled'] and ucr.get(self.ucr_version_key) == self.version
 		else:
 			if not self.without_repository:
 				if self.ucr_component_key not in ucr:
