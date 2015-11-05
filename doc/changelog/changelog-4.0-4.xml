@@ -265,7 +265,7 @@
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
-					A SecureBoot-signed version of GRUB has been added (<u:bug>39027</u:bug>).
+					A Secure Boot-signed version of GRUB has been added (<u:bug>39027</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -289,10 +289,10 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
-					When using the mdb backend, the ldap search erroneously returned the base object in some cases. This has been fixed (<u:bug>36343(</u:bug>).
+					When using the <wordasword>mdb</wordasword> backend, the ldap search erroneously returned the base object in some cases. This has been fixed (<u:bug>36343(</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The confirmation prompt in non-interactive script univention-backup2master has been removed (<u:bug>38774</u:bug>).
+					The confirmation prompt in non-interactive script <application>univention-backup2master</application> has been removed (<u:bug>38774</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -352,13 +352,13 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Some widgets are now filtering out values which are already selected and don't present them in a dialog anymore (<u:bug>37799</u:bug>).
+					Some widgets are now filtering out values which are already selected and don't present them in a dialogue anymore (<u:bug>37799</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					UMC modules with long descriptions might overlap the borders of the box in the Gallery. Now the text is cut at some point (<u:bug>39319</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
- 					It is now easier to find information for creating cutom attributes (<u:bug>39234</u:bug>).
+ 					It is now easier to find information for creating custom attributes (<u:bug>39234</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -377,7 +377,7 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Support for UCR variable templates in AppCenter readme files has been added (<u:bug>38233</u:bug>).
+					Support for UCR variable templates in App Center readme files has been added (<u:bug>38233</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -420,7 +420,7 @@
 					changed (<u:bug>39292</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					In some cases the automatic update of the attribute displayName caused
+					In some cases the automatic update of the attribute <wordasword>displayName</wordasword> caused
 					tracebacks in S4 connector. The UDM module users/user has been updated to fix
 					this traceback (<u:bug>39409</u:bug>).
 				</simpara></listitem>
@@ -438,7 +438,7 @@
 			<title>Basic settings / Appliance mode</title>
 			<itemizedlist>
 				<listitem><simpara>
-					A timining issue in the <package>univenton-system-activation</package> package
+					A timing issue in the <package>univenton-system-activation</package> package
 					that could occur when uploading a license has been fixed (<u:bug>39159</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -674,14 +674,15 @@
 					removed in the Dovecot package (<u:bug>38990</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					DH parameters are not created at installation time any more. Precalculated DH
+					<wordasword>DH</wordasword> parameters are not created at installation time any more.
+					Pre-calculated <wordasword>DH</wordasword>
 					parameters for 512 and 2048 bit are provided. A one time generation of DH
 					parameters is scheduled for the next day (<u:bug>37459</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The default of the UCR variable
 					<envar>mail/postfix/cron/recreate/dh/parameter</envar> is changed to not
-					recreate the DH parameters every night. The cronjob of existing installations is
+					recreate the <wordasword>DH</wordasword> parameters every night. The <wordasword>cronjob</wordasword> of existing installations is
 					not changed (<u:bug>37459</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -695,7 +696,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					A configuration error in the dovecot PAM stack has been fixed that lead to
-					higher than usual time to authenticate against postfix smtpd. In some cases
+					higher than usual time to authenticate against postfix SMTP. In some cases
 					postfix' authentication timeout has been reached and resulted in authentication
 					failure (<u:bug>39267</u:bug>).
 				</simpara></listitem>
@@ -717,12 +718,12 @@
 			<title>Spam/virus detection and countermeasures</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Amavis is now configured to use the default log template. Statistic tools like
-					logwatch work better with it (<u:bug>38915</u:bug>).
+					AMaViS is now configured to use the default log template. Statistic tools like
+					<application>logwatch</application> work better with it (<u:bug>38915</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The UCR variable <envar>mail/antivir/amavis/debug/level</envar> can be used to
-					set Amavis' log level (<u:bug>38915</u:bug>).
+					set AMaViS' log level (<u:bug>38915</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -788,7 +789,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					HTTP Strict-Transport-Security (HSTS) can be enabled and configured through the
+					HTTP Strict-Transport-Security (<wordasword>HSTS</wordasword>) can be enabled and configured through the
 					UCR variables <envar>apache2/hsts</envar>, <envar>apache2/hsts/max-age</envar>,
 					and <envar>apache2/hsts/includeSubDomains</envar>. See their description for
 					more details (<u:bug>37637</u:bug>).
@@ -800,7 +801,7 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The pam script <application>lock-user</application> (automatic user lockouts) now sets
+					The PAM script <application>lock-user</application> (automatic user lockouts) now sets
 					the HOME environment variable before calling UDM to avoid problems with invalid
 					HOME directories (<u:bug>39369</u:bug>).
 				</simpara></listitem>
@@ -821,10 +822,10 @@
 			<title>RADIUS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Key expansion for DES encryption has been fixed (<u:bug>38785</u:bug>).
+					Key expansion for <wordasword>DES</wordasword> encryption has been fixed (<u:bug>38785</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					File system permission of DH file on UCS slaves was fixed
+					File system permission of <wordasword>DH</wordasword> file on UCS slaves was fixed
 					(<u:bug>38786</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -890,13 +891,13 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Samba dlz_bind9 module didn't properly handle zone reloads. The next request
-					after a zone reload triggered a segmentation fault. After that named/bind9 was
-					automatically restarted via runit, so the crash went unnoticed in most cases.
+					The Samba <application>dlz_bind9</application> module didn't properly handle zone reloads. The next request
+					after a zone reload triggered a segmentation fault. After that <application>bind9</application> was
+					automatically restarted via <application>runit</application>, so the crash went unnoticed in most cases.
 					Now the zone reload has been fixed (<u:bug>39139</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Windows 2008 R2 Foundation raises error popup after join. This issue has been
+					Windows 2008 R2 Foundation raises error pop-up after join. This issue has been
 					fixed previously but was not part of the last Samba version
 					(<u:bug>39254</u:bug>).
 				</simpara></listitem>
@@ -911,23 +912,23 @@
 					issues with the external Heimdal libraries (<u:bug>39244</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The unattended Windows sysprep join failed against Samba 4. This issue has been
+					The unattended Windows <application>sysprep</application> join failed against Samba 4. This issue has been
 					fixed (<u:bug>39079</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Under certain circumstances the Samba dlz_bind9 module segfaulted. This issue
+					Under certain circumstances the Samba <application>dlz_bind9</application> module crashed. This issue
 					has been fixed (<u:bug>39362</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Error handling and logging has been improved in the sysvol sync script
+					Error handling and logging has been improved in the <wordasword>sysvol</wordasword> sync script
 					(<u:bug>38868</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A testparm error message about the UCS default for winbind separator has been
+					A <appliacation>testparm</appliacation> error message about the UCS default for winbind separator has been
 					relaxed to only issue a warning message (<u:bug>36581</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The ACL check in the sysvol sync script has been fixed (<u:bug>39511</u:bug>).
+					The ACL check in the <wordasword>sysvol</wordasword> sync script has been fixed (<u:bug>39511</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -936,7 +937,7 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DNS zones DC=DomainDnsZones and DC=ForestDnsZones are synchronized now
+					The DNS zones <wordasword>DC=DomainDnsZones</wordasword> and <wordasword>DC=ForestDnsZones</wordasword> are synchronized now
 					(<u:bug>34184</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -946,7 +947,7 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DNS zones DC=DomainDNSZones and DC=ForestDNSZones are sychronized now, this
+					The DNS zones <wordasword>DC=DomainDNSZones</wordasword> and <wordasword>DC=ForestDNSZones</wordasword> are sychronized now, this
 					is relevant in AD Takeover scenarios. For updated domains, this is not activated
 					(<u:bug>34184</u:bug>).
 				</simpara></listitem>
@@ -981,7 +982,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				Incorrect quotation marks have been removed from /etc/lsb-release
+				Incorrect quotation marks have been removed from <filename>/etc/lsb-release</filename>
 				(<u:bug>37725</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -1001,7 +1002,7 @@
 				(<u:bug>39166</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The programm <application>univention-openssh-recreate-host-keys</application> now
+				The program <application>univention-openssh-recreate-host-keys</application> now
 				re-creates all host key files supported by SSH (<u:bug>38710</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -1011,7 +1012,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The package <package>lockfile-progs</package> has been moved to maintained, as
-				univention-base-files depends on it (<u:bug>39357</u:bug>).
+				<package>univention-base-files</package> depends on it (<u:bug>39357</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The programs <application>ntpd</application> and <application>ntpdate</application> won't
