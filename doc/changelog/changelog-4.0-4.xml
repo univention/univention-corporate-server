@@ -289,10 +289,10 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
-					When using the MDB backend, the ldap search erroneously returned the base object in some cases. This has been fixed (<u:bug>36343(</u:bug>).
+					When using the MDB backend, the LDAP search erroneously returned the base object in some cases. This has been fixed (<u:bug>36343</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The confirmation prompt in non-interactive script <application>univention-backup2master</application> has been removed (<u:bug>38774</u:bug>).
+					The confirmation prompt in non-interactive script <command>univention-backup2master</command> has been removed (<u:bug>38774</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -390,16 +390,16 @@
 					variable group <envar>directory/manager/web/widget/.*/</envar> (<u:bug>39041</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					In some cases ldap operations against a broken ldap connection were done which
-					lead to LDAP connection invalid error messages. In that case the operation is
-					executed again with a new ldap connection (<u:bug>38346</u:bug>).
+					In some cases LDAP operations against a broken LDAP connection were done which
+					led to LDAP connection invalid error messages. In that case the operation is
+					executed again with a new LDAP connection (<u:bug>38346</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The notification for successfully creating a user or computer now appears
 					inside the wizard dialogue (<u:bug>38834</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Opening a user is now faster (<u:bug>38190</u:bug>).
+					Opening a user object is now faster (<u:bug>38190</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					It is now easier to find information for creating custom attributes
@@ -421,15 +421,15 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					In some cases the automatic update of the attribute <property>displayName</property> caused
-					tracebacks in S4 connector. The UDM module users/user has been updated to fix
+					tracebacks in the S4 Connector. The UDM module users/user has been updated to fix
 					this traceback (<u:bug>39409</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					It is not possible to create a user with a user id which exists as group id (and
-					vice versa) anymore (<u:bug>38796</u:bug>).
+					It is not possible any longer to create a user with a user ID (<property>uidNumber</property>) which already exists as group ID (<property>gidNumber</property>) (and
+					vice versa) (<u:bug>38796</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					DNS TXT records are now shown via the DNS UMC module (<u:bug>25356</u:bug>).
+					DNS TXT records are now shown via the UMC DNS module (<u:bug>25356</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -446,7 +446,7 @@
 					(<u:bug>39153</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A link has been added to skip the first system activation wizard page thus the
+					A link has been added to skip the first system activation wizard page so the
 					user has the opportunity to upload an existing license directly
 					(<u:bug>39154</u:bug>).
 				</simpara></listitem>
@@ -455,7 +455,7 @@
 					(<u:bug>39395</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The welcome-screen initscript will now detect running instances and it will not
+					The welcome screen initscript will now detect running instances and it will not
 					be started when the installer is running (<u:bug>39137</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -599,7 +599,7 @@
 					(<u:bug>39302</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A new diagnostic plugin has been added to check ssh connections to other UCS
+					A new diagnostic plugin has been added to check SSH connections to other UCS
 					servers (<u:bug>38137</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -643,7 +643,7 @@
 					(<u:bug>39711</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The command line tool <application>univention-upgrade</application> is now able to
+					The command line tool <command>univention-upgrade</command> is now able to
 					perform App updates (<u:bug>30417</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -686,7 +686,7 @@
 					not changed (<u:bug>37459</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The activation of <envar>mail/postfix/policy/listfilter</envar> lead to the mail
+					The activation of <envar>mail/postfix/policy/listfilter</envar> led to the mail
 					server rejecting all emails. This has been fixed (<u:bug>39093</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -695,9 +695,9 @@
 					(<u:bug>39151</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A configuration error in the dovecot PAM stack has been fixed that lead to
-					higher than usual time to authenticate against postfix SMTP. In some cases
-					postfix' authentication timeout has been reached and resulted in authentication
+					A configuration error in the Dovecot PAM stack has been fixed that led to
+					higher than usual time to authenticate against Postfix SMTP. In some cases
+					Postfix' authentication timeout has been reached and resulted in authentication
 					failure (<u:bug>39267</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -705,7 +705,7 @@
 					(<u:bug>39148</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The logrotate configuration has been fixed (<u:bug>39130</u:bug>).
+					The Dovecot logrotate configuration has been fixed (<u:bug>39130</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Dovecot now works internally with lowercase email addresses
@@ -750,7 +750,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Deleted SSL certificates are also deleted on DC backups (<u:bug>33870</u:bug>).
+					Deleted SSL certificates are also deleted on DC backup servers (<u:bug>33870</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -801,7 +801,7 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The PAM script <application>lock-user</application> (automatic user lockouts) now sets
+					The PAM script <command>lock-user</command> (automatic user lockouts) now sets
 					the HOME environment variable before calling UDM to avoid problems with invalid
 					HOME directories (<u:bug>39369</u:bug>).
 				</simpara></listitem>
@@ -825,7 +825,7 @@
 					Key expansion for DES encryption has been fixed (<u:bug>38785</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					File system permission of DH file on UCS slaves was fixed
+					File system permission of the DH file on UCS slave servers was fixed
 					(<u:bug>38786</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -854,7 +854,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The VirtIO drivers for Windows have been updated to version 0.1.105 to fix a
-					problem with broken driver signatures in Windows 2012 server
+					problem with broken driver signatures in Microsoft Windows 2012 server
 					(<u:bug>38655</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -875,7 +875,7 @@
 		<title>Container Technologies</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Package upgrade will not fail anymore if server was not running
+					Package upgrade will not fail anymore if docker daemon was not running
 					(<u:bug>38549</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -897,22 +897,22 @@
 					Now the zone reload has been fixed (<u:bug>39139</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Windows 2008 R2 Foundation raises error pop-up after join. This issue has been
-					fixed previously but was not part of the last Samba version
+					Microsoft Windows 2008 R2 Foundation raised an error pop-up after join. This issue has been
+					fixed previously but the fix was not part of the last Samba package version
 					(<u:bug>39254</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					NetApp filer NAS devices joined to a Samba/AD DC failed to lookup SIDs due to an
 					issue in negotiating strong encryption for server authentication. This issue has
-					been fixed previously but was not part of the last Samba version
+					been fixed previously but the fix was not part of the last Samba package version
 					(<u:bug>39263</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Samba is now build with the embedded Heimdal code to avoid memory management
+					Samba is now built with the embedded Heimdal code to avoid memory management
 					issues with the external Heimdal libraries (<u:bug>39244</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The unattended Windows <application>sysprep</application> join failed against Samba 4. This issue has been
+					The unattended Microsoft Windows <command>sysprep</command> join failed against Samba 4. This issue has been
 					fixed (<u:bug>39079</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -924,7 +924,7 @@
 					(<u:bug>38868</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A <application>testparm</application> error message about the UCS default for <application>winbind</application> separator has been
+					A <command>testparm</command> error message about the UCS default for <option>winbind separator</option> has been
 					relaxed to only issue a warning message (<u:bug>36581</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -960,7 +960,7 @@
 					the new Samba version (<u:bug>39275</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The S4 connector start failed if more than 1000 search results were returned by
+					The S4 Connector start failed if more than 1000 search results were returned by
 					Samba 4 (<u:bug>39673</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -1002,11 +1002,11 @@
 				(<u:bug>39166</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The program <application>univention-openssh-recreate-host-keys</application> now
+				The program <command>univention-openssh-recreate-host-keys</command> now
 				re-creates all host key files supported by SSH (<u:bug>38710</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The number of bits used when re-creating new host keys can be over-written
+				The number of bits used when re-creating new host keys can be overwritten
 				through the UCR variables like <envar>sshd/HostKey/rsa</envar>
 				(<u:bug>38711</u:bug>).
 			</simpara></listitem>
@@ -1015,7 +1015,7 @@
 				<package>univention-base-files</package> depends on it (<u:bug>39357</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The programs <application>ntpd</application> and <application>ntpdate</application> won't
+				The programs <command>ntpd</command> and <command>ntpdate</command> won't
 				collide with each other, when started in short succession (e.g. while booting)
 				(<u:bug>39299</u:bug>).
 			</simpara></listitem>

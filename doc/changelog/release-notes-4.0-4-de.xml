@@ -192,9 +192,11 @@
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-4.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
+	<!--
 	<bibliography id="bibliography">
 		<bibliomixed id="ext-doc-inst"/>
 	</bibliography>
+	-->
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
