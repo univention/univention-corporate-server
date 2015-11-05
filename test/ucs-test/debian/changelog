@@ -1,3 +1,10 @@
+ucs-test (6.0.13-2) unstable; urgency=low
+
+  * Set 20_appcenter/60_check_appcenter_performance to SKIP
+    (Bug #38545; #39632)
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 05 Nov 2015 13:48:33 +0100
+
 ucs-test (6.0.13-1) unstable; urgency=medium
 
   * 02_import-performance: overwrite timeout (Bug #39759)

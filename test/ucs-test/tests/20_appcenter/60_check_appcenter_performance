@@ -1,11 +1,13 @@
 #!/usr/share/ucs-test/runner python
-## desc: Check the performance for requests against the UMC appcenter
-## bugs: [38545]
+## desc: |
+##  Check the performance for requests against the UMC appcenter.
+##  Set to SKIP because of known bug: 39632
+## bugs: [38545, 39632]
 ## roles-not: [basesystem]
 ## packages:
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
-## tags: [appcenter, performance]
+## tags: [appcenter, performance, SKIP]
 
 import univention.lib.umc_connection as UMCC
 import univention.testing.utils as utils
