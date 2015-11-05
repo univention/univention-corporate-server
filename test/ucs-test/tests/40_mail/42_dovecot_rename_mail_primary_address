@@ -17,7 +17,6 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from essential.mail import send_mail, random_email, imap_search_mail, get_dovecot_maildir
 
-timeout = 10
 
 def main():
 	with udm_test.UCSTestUDM() as udm:
@@ -100,12 +99,8 @@ def main():
 					cnt = imap_search_mail(messageid=userbase[i][3], server=fqdn, imap_user=new_mpa, imap_folder='INBOX', use_ssl=True)
 					if not cnt:
 						print 'Test %d: maildir does not contain old mails: cnt=%d' % (i, cnt)
-						import time
-						time.sleep(180)
 						utils.fail('Test %d: maildir does not contain old mails' % (i,))
 
 
 if __name__ == '__main__':
-	global timeout
-	timeout = 1
 	main()
