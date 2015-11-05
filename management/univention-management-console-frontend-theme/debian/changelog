@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.1-7) unstable; urgency=low
+
+  * Bug #33546: Adapted class selectable
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 05 Nov 2015 16:23:11 +0100
+
 univention-management-console-frontend-theme (1.0.1-6) unstable; urgency=medium
 
   * Bug #38891: Add umcHelpIconSmall
