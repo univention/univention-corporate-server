@@ -879,14 +879,14 @@ postmap /etc/postfix/smtp_auth
 	<section id="mail::serverconfig::smtpports">
 		<title>Konfiguration der SMTP Ports</title>
 		<para>
-			Auf einem &ucsUCS; Mail Server ist Postfix so konfiguriert, dass es auf
+			Auf einem &ucsUCS;-Mailserver ist Postfix so konfiguriert, dass es auf
 			Verbindungen an drei Ports wartet:
 		</para>
 		<itemizedlist>
 			<listitem>
 				<para>
 					Port 25 (<systemitem class="service">SMTP</systemitem>) sollte nur von
-					anderen E-Mail Servern verwendet werden. Standardmäßig ist die
+					anderen Mailservern verwendet werden. Standardmäßig ist die
 					Authentifikation an diesem Port deaktiviert. Wenn das Einliefern von
 					E-Mails an Port 25 erlaubt werden soll, kann die &ucsUCRV;
 					<envar>mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes</envar>
@@ -895,8 +895,8 @@ postmap /etc/postfix/smtp_auth
 			</listitem>
 			<listitem>
 				<para>
-					Port 465 (<systemitem class="service">SMTPS</systemitem>) erlaubt
-					Authentifikation und Einliefern von E-Mails über eine mit SSL verschlüsselte
+					Port 465 (<systemitem class="service">SMTPS</systemitem>) erlaubt die
+					Authentifikation gegenüber dem Mailserver und das Einliefern von E-Mails über eine mit SSL verschlüsselte
 					Verbindung. <systemitem class="service">SMTPS</systemitem> wurde zugunsten
 					von Port 587 als veraltet erklärt, wird jedoch für Altsysteme aktiviert gelassen.
 				</para>
@@ -904,15 +904,15 @@ postmap /etc/postfix/smtp_auth
 			<listitem>
 				<para>
 					Port 587 (<systemitem class="service">Submission</systemitem>) erlaubt
-					Authentifikation und Einliefern von E-Mails über eine TLS-verschlüsselte
+					die Authentifikation gegenüber dem Mailserver und das Einliefern von E-Mails über eine TLS-verschlüsselte
 					Verbindung. Die Verwendung von STARTTLS wird erzwungen.
 				</para>
 			</listitem>
 		</itemizedlist>
 		<para>
-			Der <systemitem class="service">Submission</systemitem> Port sollte von
-			E-Mail Clients bevorzugt verwendet werden. Die Verwendung der Ports 25
-			und 465 zur E-Mail-Einlieferung ist überholt.
+			Der <systemitem class="service">Submission</systemitem>-Port sollte von
+			E-Mail-Clients bevorzugt verwendet werden. Die Verwendung der Ports 25
+			und 465 zur Einlieferung von E-Mails ist überholt.
 		</para>
 	</section>
 

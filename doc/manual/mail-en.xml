@@ -849,9 +849,9 @@ postmap /etc/postfix/smtp_auth
 			<listitem>
 				<para>
 					Port 25 (<systemitem class="service">SMTP</systemitem>) should be
-					used by other mail server only. By default authentication is disabled.
-					If submission of emails from users is desired on port 25, then
-					authentication can be enabled by setting &ucsUCRV;
+					used by other mail servers only. By default authentication is disabled.
+					If submission of emails from users is desired on port 25,
+					authentication can be enabled by setting the &ucsUCRV;
 					<envar>mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes</envar>.
 				</para>
 			</listitem>
@@ -872,7 +872,7 @@ postmap /etc/postfix/smtp_auth
 			</listitem>
 		</itemizedlist>
 		<para>
-			The Submission port should be preferred by email clients. The use of ports
+			The Submission port should be preferred by email clients. The use of the ports
 			25 and 465 for email submission is deprecated.
 		</para>
 	</section>
