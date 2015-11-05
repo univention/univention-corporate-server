@@ -289,7 +289,7 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
-					When using the <wordasword>mdb</wordasword> backend, the ldap search erroneously returned the base object in some cases. This has been fixed (<u:bug>36343(</u:bug>).
+					When using the MDB backend, the ldap search erroneously returned the base object in some cases. This has been fixed (<u:bug>36343(</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The confirmation prompt in non-interactive script <application>univention-backup2master</application> has been removed (<u:bug>38774</u:bug>).
@@ -352,7 +352,7 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Some widgets are now filtering out values which are already selected and don't present them in a <wordasword>dialog</wordasword> anymore (<u:bug>37799</u:bug>).
+					Some widgets are now filtering out values which are already selected and don't present them in a dialogue anymore (<u:bug>37799</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					UMC modules with long descriptions might overlap the borders of the box in the Gallery. Now the text is cut at some point (<u:bug>39319</u:bug>).
@@ -386,7 +386,7 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The mapping of syntax classes to UMC widgets is now <wordasword>extendable</wordasword> via the UCR
+					The mapping of syntax classes to UMC widgets is now extendible via the UCR
 					variable group <envar>directory/manager/web/widget/.*/</envar> (<u:bug>39041</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -396,7 +396,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The notification for successfully creating a user or computer now appears
-					inside the wizard <wordasword>dialog</wordasword> (<u:bug>38834</u:bug>).
+					inside the wizard dialogue (<u:bug>38834</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Opening a user is now faster (<u:bug>38190</u:bug>).
@@ -420,7 +420,7 @@
 					changed (<u:bug>39292</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					In some cases the automatic update of the attribute <wordasword>displayName</wordasword> caused
+					In some cases the automatic update of the attribute <property>displayName</property> caused
 					tracebacks in S4 connector. The UDM module users/user has been updated to fix
 					this traceback (<u:bug>39409</u:bug>).
 				</simpara></listitem>
@@ -670,19 +670,19 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The long waiting for the <wordasword>DH</wordasword> parameter generation on the first install has been
+					The long waiting for the DH parameter generation on the first install has been
 					removed in the Dovecot package (<u:bug>38990</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					<wordasword>DH</wordasword> parameters are not created at installation time any more.
-					Pre-calculated <wordasword>DH</wordasword>
-					parameters for 512 and 2048 bit are provided. A one time generation of <wordasword>DH</wordasword>
+					DH parameters are not created at installation time any more.
+					Pre-calculated DH
+					parameters for 512 and 2048 bit are provided. A one time generation of DH
 					parameters is scheduled for the next day (<u:bug>37459</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The default of the UCR variable
 					<envar>mail/postfix/cron/recreate/dh/parameter</envar> is changed to not
-					recreate the <wordasword>DH</wordasword> parameters every night. The <wordasword>cronjob</wordasword> of existing installations is
+					recreate the DH parameters every night. The <wordasword>cronjob</wordasword> of existing installations is
 					not changed (<u:bug>37459</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -789,7 +789,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					HTTP Strict-Transport-Security (<wordasword>HSTS</wordasword>) can be enabled and configured through the
+					HTTP Strict-Transport-Security (<acronym>HSTS</acronym>) can be enabled and configured through the
 					UCR variables <envar>apache2/hsts</envar>, <envar>apache2/hsts/max-age</envar>,
 					and <envar>apache2/hsts/includeSubDomains</envar>. See their description for
 					more details (<u:bug>37637</u:bug>).
@@ -822,10 +822,10 @@
 			<title>RADIUS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Key expansion for <wordasword>DES</wordasword> encryption has been fixed (<u:bug>38785</u:bug>).
+					Key expansion for DES encryption has been fixed (<u:bug>38785</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					File system permission of <wordasword>DH</wordasword> file on UCS slaves was fixed
+					File system permission of DH file on UCS slaves was fixed
 					(<u:bug>38786</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -920,7 +920,7 @@
 					has been fixed (<u:bug>39362</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Error handling and logging has been improved in the <wordasword>sysvol</wordasword> sync script
+					Error handling and logging has been improved in the SYSVOL sync script
 					(<u:bug>38868</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -928,7 +928,7 @@
 					relaxed to only issue a warning message (<u:bug>36581</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The ACL check in the <wordasword>sysvol</wordasword> sync script has been fixed (<u:bug>39511</u:bug>).
+					The ACL check in the SYSVOL sync script has been fixed (<u:bug>39511</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -937,7 +937,7 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DNS zones <wordasword>DC=DomainDnsZones</wordasword> and <wordasword>DC=ForestDnsZones</wordasword> are <wordasword>synchronized</wordasword> now
+					The DNS zones <uri>DC=DomainDnsZones</uri> and <uri>DC=ForestDnsZones</uri> are synchronized now
 					(<u:bug>34184</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -947,7 +947,7 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DNS zones <wordasword>DC=DomainDNSZones</wordasword> and <wordasword>DC=ForestDNSZones</wordasword> are <wordasword>sychronized</wordasword> now, this
+					The DNS zones <uri>DC=DomainDNSZones</uri> and <uri>DC=ForestDNSZones</uri> are synchronized now, this
 					is relevant in AD Takeover scenarios. For updated domains, this is not activated
 					(<u:bug>34184</u:bug>).
 				</simpara></listitem>
