@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-09-09 07:28+0200\n"
+"POT-Creation-Date: 2015-11-05 14:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,165 +12,216 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: app.js:360
-msgid ""
-"A license file has been sent to <strong id=\"email-address\">{0}</strong>. "
-"This file is necessary to activate the system. For this, please carry out "
-"the following steps: <ol><li>Open the email.</li><li>Save the attachement "
-"(ucs.license) on your computer.</li><li>Click the button 'Upload license "
-"file'.</li><li>Select the file (ucs.license) you just saved.</li><li>Confirm "
-"the selection.</li></ol>Once the activation has been finished your email "
-"address will be sent to the app provider. The app provider may contact you."
+#: js/ucs/passwordreset.js:67
+msgid "1. Enter your username."
+msgstr "1. Geben Sie Ihren Benutzernamen ein."
+
+#: js/ucs/passwordreset.js:92
+msgid "2. Choose a method to receive a token."
+msgstr "2. Wählen Sie eine Methode, mit der Sie einen token erhalten wollen."
+
+#: js/ucs/passwordreset.js:104
+msgid "3. Enter the token and a new password."
+msgstr "3. Geben sie den token und ein neues Passwort ein."
+
+#: js/ucs/passwordreset.js:270
+msgid "</br><a href='/'>Back to the overview.</a>"
 msgstr ""
-"Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> "
-"gesendet. Sie wird benötigt um das System zu aktivieren. Bitte führen Sie "
-"dazu folgende Schritte aus: <ol><li>Öffnen Sie die E-Mail.</li><li>Speichern "
-"Sie den Anhang (ucs.license) auf Ihren Computer.</li><li>Klicken Sie auf die "
-"Schaltfläche 'Lizenzdatei hochladen'.</li><li>Wählen Sie die soeben "
-"gespeicherte Datei (ucs.license) aus.</li><li>Bestätigen Sie die Auswahl.</"
-"li></ol> Sobald die Aktivierung durchgeführt ist, wird Ihre E-Mail-Adresse "
-"an den App-Anbieter weitergeleitet. Der App-Anbieter wird Sie ggf. "
-"kontaktieren."
 
-#: app.js:174
-msgid "Activation of {appliance_name} Univention App"
-msgstr "Aktivierung von {appliance_name} Univention App"
+#: js/ucs/passwordchange.js:46
+msgid "Change Password"
+msgstr "Passwort ändern"
 
-#: app.js:379
-msgid "Activation successful!"
-msgstr "Aktivierung erfolgreich!"
+#: js/ucs/passwordchange.js:114 js/ucs/passwordreset.js:143
+msgid "Change password"
+msgstr "Passwort ändern"
 
-#: app.js:343 app.js:349
-msgid "An unknown error has occurred."
-msgstr "Ein unbekannter Fehler trat auf."
+#: js/ucs/passwordreset.js:85
+msgid "Confirm username"
+msgstr "Benutzername bestätigen"
 
-#: app.js:258
-msgid "An unknown error occured. Please try it again later!"
-msgstr ""
-"Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch einmal!"
-
-#: app.js:374
-msgid "Continue"
-msgstr "Weiter"
-
-#: app.js:195
-msgid "E-mail address"
-msgstr "E-Mail-Adresse"
-
-#: app.js:260
-msgid "Error "
-msgstr "Fehler "
-
-#: i18n.js:84
+#: js/ucs/i18n.js:96
 #, python-format
 msgid "Hello %(last)s, %(first)s!"
 msgstr ""
 
-#: i18n.js:83
+#: js/ucs/i18n.js:95
 #, python-format
 msgid "Hello %s %s!"
 msgstr ""
 
-#: app.js:226
-msgid ""
-"If you already have a license file you can <a href=\"#upload\">skip this "
-"step and upload the license</a>."
+#: js/ucs/passwordreset.js:63
+msgid "In order to reset your password please carry out the following steps: "
 msgstr ""
-"Wenn Sie bereits über eine Lizenzdatei verfügen, dann können Sie diesen "
-"<a href=\"#upload\">Schritt überspringen und die Lizenz einspielen</a>."
+"Um Ihr Passwort zurückzusetzen führen Sie bitte die folgenden Schritte aus: "
 
-#: app.js:363
-msgid ""
-"If you did not receive an email, please check your SPAM directory or <a href="
-"\"#register\"> request the email again</a>."
-msgstr ""
-"Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
-"oder <a href=\"#register\">fordern Sie die Lizenzdatei noch einmal an</a>."
-
-#: app.js:302
-msgid ""
-"If you encounter problems during the activation, please send an email to: "
-"<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
-"#000\">feedback@univention.de</a></strong>"
-msgstr ""
-"Sollten Probleme bei der Aktivierung auftreten, senden Sie bitte eine E-Mail "
-"an: <strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
-"#000\">feedback@univention.de</a></strong>"
-
-#: app.js:164
+#: js/ucs/LanguagesDropDown.js:89
 msgid "Language"
-msgstr "Language"
+msgstr "Sprache"
 
-#: app.js:190
-msgid "License request."
-msgstr "Anforderung einer Lizenz."
+#: js/ucs/passwordchange.js:86 js/ucs/passwordreset.js:116
+msgid "New password"
+msgstr "Neues Passwort"
 
-#: app.js:209
-msgid ""
-"More details about the activation can be found in the <a href=\"http://docs."
-"univention.de/manual.html#central:license\" target=\"_blank\">UCS manual</a>."
+#: js/ucs/passwordchange.js:99 js/ucs/passwordreset.js:126
+msgid "New password (retype)"
+msgstr "Neues Passwort (Wiederholung)"
+
+#: js/ucs/passwordchange.js:73
+msgid "Old password"
+msgstr "Altes Passwort"
+
+#: js/ucs/passwordreset.js:52
+msgid "Password Reset"
+msgstr "Passwort zurücksetzen"
+
+#: js/ucs/passwordchange.js:57
+msgid "Please provide the necessary data to set a new password."
 msgstr ""
-"Weitere Informationen zu der Aktivierung können im <a href=\"http://docs."
-"univention.de/handbuch.html#central:license\" target=\"_blank\">UCS-"
-"Handbuch</a> gefunden werden."
+"Bitte geben Sie die notwendigen Daten an, um Ihr Passwort zurückzusetzen."
 
-#: app.js:197
-msgid "No valid email address."
-msgstr "Keine gültige E-Mail-Adresse."
+#: js/ucs/passwordreset.js:97
+msgid "Request token"
+msgstr "Token anfordern"
 
-#: app.js:191
-msgid ""
-"Please enter a valid email address in order to activate {appliance_name} "
-"Univention App. The activation is mandatory to deploy the system. In the "
-"next step you can upload the license file that has been sent to your email "
-"address."
-msgstr ""
-"Bitte geben Sie eine gültige E-Mail-Adresse ein, um {appliance_name} "
-"Univention App zu aktivieren. Die Aktivierung ist Voraussetzung, um das "
-"System in Gebrauch zu nehmen. Im nächsten Schritt können sie die Lizenzdatei "
-"hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
+#: js/ucs/passwordchange.js:105 js/ucs/passwordreset.js:132
+msgid "The passwords do not match, please retype again."
+msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
-#: app.js:214
-msgid "Request activation"
-msgstr "Aktivierung anfordern"
-
-#: app.js:300
-msgid "The following error occurred:"
-msgstr "Der folgende Fehler trat auf:"
-
-#: app.js:399
-msgid "The server is not responding. Please restart the system."
-msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
-
-#: i18n.js:82
+#: js/ucs/i18n.js:94
 #, python-format
 msgid "The total cost was %.2f EUR!"
 msgstr ""
 
-#: i18n.js:81
+#: js/ucs/passwordreset.js:107
+msgid "Token"
+msgstr "Token"
+
+#: js/ucs/i18n.js:93
 msgid "Translate me!"
 msgstr ""
 
-#: app.js:317
-msgid "Upload license file"
-msgstr "Lizenzdatei hochladen"
+#: js/ucs/passwordchange.js:61 js/ucs/passwordreset.js:70
+msgid "Username"
+msgstr "Benutzername"
 
-#: app.js:358
-msgid "You have received a license file by email!"
-msgstr "Sie haben eine Lizendatei per E-Mail erhalten!"
+#~ msgid ""
+#~ "A license file has been sent to <strong id=\"email-address\">{0}</"
+#~ "strong>. This file is necessary to activate the system. For this, please "
+#~ "carry out the following steps: <ol><li>Open the email.</li><li>Save the "
+#~ "attachement (ucs.license) on your computer.</li><li>Click the button "
+#~ "'Upload license file'.</li><li>Select the file (ucs.license) you just "
+#~ "saved.</li><li>Confirm the selection.</li></ol>Once the activation has "
+#~ "been finished your email address will be sent to the app provider. The "
+#~ "app provider may contact you."
+#~ msgstr ""
+#~ "Eine Lizenzdatei wurde an <strong id=\"email-address\">{0}</strong> "
+#~ "gesendet. Sie wird benötigt um das System zu aktivieren. Bitte führen Sie "
+#~ "dazu folgende Schritte aus: <ol><li>Öffnen Sie die E-Mail.</"
+#~ "li><li>Speichern Sie den Anhang (ucs.license) auf Ihren Computer.</"
+#~ "li><li>Klicken Sie auf die Schaltfläche 'Lizenzdatei hochladen'.</"
+#~ "li><li>Wählen Sie die soeben gespeicherte Datei (ucs.license) aus.</"
+#~ "li><li>Bestätigen Sie die Auswahl.</li></ol> Sobald die Aktivierung "
+#~ "durchgeführt ist, wird Ihre E-Mail-Adresse an den App-Anbieter "
+#~ "weitergeleitet. Der App-Anbieter wird Sie ggf. kontaktieren."
 
-#: app.js:67
-msgid "your email address"
-msgstr "Ihre E-Mail-Adresse"
+#~ msgid "Activation of {appliance_name} Univention App"
+#~ msgstr "Aktivierung von {appliance_name} Univention App"
 
-#: app.js:380
-msgid ""
-"{appliance_name} Univention App is now activated. Click \"Continue\" to "
-"access the management interface (which may take a while)."
-msgstr ""
-"{appliance_name} Univention App ist nun aktiviert. Klicken sie auf \"Weiter"
-"\", um auf die Verwaltungsoberfläche zuzugreifen. (Das kann einige Zeit "
-"benötigen.)"
+#~ msgid "Activation successful!"
+#~ msgstr "Aktivierung erfolgreich!"
+
+#~ msgid "An unknown error has occurred."
+#~ msgstr "Ein unbekannter Fehler trat auf."
+
+#~ msgid "An unknown error occured. Please try it again later!"
+#~ msgstr ""
+#~ "Ein unbekannter Fehler trat auf. Bitte versuchen sie es später noch "
+#~ "einmal!"
+
+#~ msgid "Change your password"
+#~ msgstr "Ändern Sie ihr Passwort"
+
+#~ msgid "Continue"
+#~ msgstr "Weiter"
+
+#~ msgid "E-mail address"
+#~ msgstr "E-Mail-Adresse"
+
+#~ msgid "Error "
+#~ msgstr "Fehler "
+
+#~ msgid ""
+#~ "If you already have a license file you can <a href=\"#upload\">skip this "
+#~ "step and upload the license</a>."
+#~ msgstr ""
+#~ "Wenn Sie bereits über eine Lizenzdatei verfügen, dann können Sie diesen "
+#~ "<a href=\"#upload\">Schritt überspringen und die Lizenz einspielen</a>."
+
+#~ msgid ""
+#~ "If you did not receive an email, please check your SPAM directory or <a "
+#~ "href=\"#register\"> request the email again</a>."
+#~ msgstr ""
+#~ "Sollten Sie keine E-Mail erhalten haben, prüfen Sie Ihr SPAM-Verzeichnis "
+#~ "oder <a href=\"#register\">fordern Sie die Lizenzdatei noch einmal an</a>."
+
+#~ msgid ""
+#~ "If you encounter problems during the activation, please send an email to: "
+#~ "<strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
+#~ "#000\">feedback@univention.de</a></strong>"
+#~ msgstr ""
+#~ "Sollten Probleme bei der Aktivierung auftreten, senden Sie bitte eine E-"
+#~ "Mail an: <strong><a href=\"mailto:feedback@univention.de\" style=\"color:"
+#~ "#000\">feedback@univention.de</a></strong>"
+
+#~ msgid "License request."
+#~ msgstr "Anforderung einer Lizenz."
+
+#~ msgid ""
+#~ "More details about the activation can be found in the <a href=\"http://"
+#~ "docs.univention.de/manual.html#central:license\" target=\"_blank\">UCS "
+#~ "manual</a>."
+#~ msgstr ""
+#~ "Weitere Informationen zu der Aktivierung können im <a href=\"http://docs."
+#~ "univention.de/handbuch.html#central:license\" target=\"_blank\">UCS-"
+#~ "Handbuch</a> gefunden werden."
+
+#~ msgid "No valid email address."
+#~ msgstr "Keine gültige E-Mail-Adresse."
+
+#~ msgid ""
+#~ "Please enter a valid email address in order to activate {appliance_name} "
+#~ "Univention App. The activation is mandatory to deploy the system. In the "
+#~ "next step you can upload the license file that has been sent to your "
+#~ "email address."
+#~ msgstr ""
+#~ "Bitte geben Sie eine gültige E-Mail-Adresse ein, um {appliance_name} "
+#~ "Univention App zu aktivieren. Die Aktivierung ist Voraussetzung, um das "
+#~ "System in Gebrauch zu nehmen. Im nächsten Schritt können sie die "
+#~ "Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
+
+#~ msgid "The following error occurred:"
+#~ msgstr "Der folgende Fehler trat auf:"
+
+#~ msgid "The server is not responding. Please restart the system."
+#~ msgstr "Der Webserver antwortet nicht. Bitte starten Sie das System neu."
+
+#~ msgid "Upload license file"
+#~ msgstr "Lizenzdatei hochladen"
 
 #~ msgid "You have got mail!"
 #~ msgstr "Sie haben eine neue E-Mail!"
+
+#~ msgid "You have received a license file by email!"
+#~ msgstr "Sie haben eine Lizendatei per E-Mail erhalten!"
+
+#~ msgid "your email address"
+#~ msgstr "Ihre E-Mail-Adresse"
+
+#~ msgid ""
+#~ "{appliance_name} Univention App is now activated. Click \"Continue\" to "
+#~ "access the management interface (which may take a while)."
+#~ msgstr ""
+#~ "{appliance_name} Univention App ist nun aktiviert. Klicken sie auf "
+#~ "\"Weiter\", um auf die Verwaltungsoberfläche zuzugreifen. (Das kann "
+#~ "einige Zeit benötigen.)"

@@ -34,8 +34,20 @@ define("ucs/i18n", [
 	"dojo/_base/kernel",
 	"dojo/request",
 	"dojo/json",
-	"dojo/Deferred"
-], function(lang, array, kernel, request, json, Deferred) {
+	"dojo/Deferred",
+	"./text!/univention-self-service/languages.json"
+], function(lang, array, kernel, request, json, Deferred, _availableLocales) {
+
+	// make sure that en-US exists
+	var existsEnUsLocale = array.some(_availableLocales, function(ilocale) {
+		return ilocale.id == 'en-US';
+	}); 
+	if (!existsEnUsLocale) {
+		_availableLocales.push({
+			id: 'en-US',
+			label: 'English'
+		}); 
+	}   
 
 	// return full path of a given scope
 	var _scopePath = function(language, scope) {
@@ -83,6 +95,8 @@ define("ucs/i18n", [
 		// |		msg = _('Hello %s %s!', 'John', 'Miller');
 		// |		msg = _('Hello %(last)s, %(first)s!', { first: 'John', last: 'Miller' });
 		// |	});
+
+		availableLocales: _availableLocales,
 
 		load: function (params, req, load, config) {
 			// detect the locale language (ignore territory)

@@ -2,3 +2,8 @@ Type: file
 File: etc/apache2/sites-available/univention-self-service
 Variables: self-service/web/enabled
 Variables: self-service/.*/web/enabled
+
+Type: file
+File: usr/share/univention-self-service/www/languages.json
+Variables: locale
+Variables: ucs/server/languages/.*

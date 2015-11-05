@@ -42,10 +42,12 @@ define([
 	"./LabelPane",
 	"./TextBox",
 	"./RadioButton",
-	"./i18n!"
+	"./i18n!."
 ], function(lang, array, on, keys, dom, json, xhr, Button, put, ContainerWidget, LabelPane, TextBox, RadioButton, _) {
 
 	return {
+		selectedTokenMethod: null,
+		
 		_createTitle: function() {
 			var title = _('Password Reset');
 			document.title = title;
@@ -57,12 +59,13 @@ define([
 		_createForm: function() {
 			var contentNode = dom.byId('content');
 			var formNode = put(contentNode, 'div[id=form]');
-			put(formNode, 'p > b', _('Reset your password'));
-			put(formNode, 'p', _('Please carry out the following steps: '));
+			put(dom.byId('navigation'), '!');
+			put(formNode, 'p', _('In order to reset your password please carry out the following steps: '));
 
 			// step 1 username
 			this.usernameNode = put(formNode, 'div.step');
-			put(this.usernameNode, 'p', _('1. Enter your username.'));
+			put(this.usernameNode, 'p > b', _('1. Enter your username.'));
+			var stepContent = put(this.usernameNode, 'div.stepContent');
 			this._username = new TextBox({
 				inlineLabel: _('Username'),
 				isValid: function() {
@@ -76,28 +79,30 @@ define([
 					this._getResetMethods();
 				}
 			}));
-			put(this.usernameNode, this._username.domNode);
+			put(stepContent, this._username.domNode);
 			this._username.startup();
 			this._usernameButton = new Button({
-				label: _('Submit'),
+				label: _('Confirm username'),
 				onClick: lang.hitch(this, '_getResetMethods')
 			});
-			put(this.usernameNode, this._usernameButton.domNode);
+			put(stepContent, this._usernameButton.domNode);
 
 			// step 2 token
 			this.tokenNode = put(formNode, 'div.step.hide-step');
-			put(this.tokenNode, 'p', _('2. Choose a method to receive a token.'));
+			put(this.tokenNode, 'p > b', _('2. Choose a method to receive a token.'));
+			var stepContent = put(this.tokenNode, 'div.stepContent');
 			this._tokenOptions = new ContainerWidget({});
-			put(this.tokenNode, this._tokenOptions.domNode);
+			put(stepContent, this._tokenOptions.domNode);
 			this._requestTokenButton = new Button({
-				label: _('Submit'),
+				label: _('Request token'),
 				onClick: lang.hitch(this, '_requestToken')
 			});
-			put(this.tokenNode, this._requestTokenButton.domNode);
+			put(stepContent, this._requestTokenButton.domNode);
 
 			// step 3 use the token to set a new password
 			this.newPasswordNode = put(formNode, 'div.step.hide-step');
-			put(this.newPasswordNode, 'p', _('3. Enter the token and a new password.'));
+			put(this.newPasswordNode, 'p > b', _('3. Enter the token and a new password.'));
+			var stepContent = put(this.newPasswordNode, 'div.stepContent');
 			this._token = new TextBox({
 				inlineLabel: _('Token'),
 				isValid: function() {
@@ -105,7 +110,7 @@ define([
 				},
 				required: true
 			});
-			put(this.newPasswordNode, this._token.domNode);
+			put(stepContent, this._token.domNode);
 			this._token.startup();
 			this._newPassword = new TextBox({
 				inlineLabel: _('New password'),
@@ -115,7 +120,7 @@ define([
 				},
 				required: true
 			});
-			put(this.newPasswordNode, this._newPassword.domNode);
+			put(stepContent, this._newPassword.domNode);
 			this._newPassword.startup();
 			this._verifyPassword = new TextBox({
 				inlineLabel: _('New password (retype)'),
@@ -132,13 +137,13 @@ define([
 					this._setPassword();
 				}
 			}));
-			put(this.newPasswordNode, this._verifyPassword.domNode);
+			put(stepContent, this._verifyPassword.domNode);
 			this._verifyPassword.startup();
 			this._setPasswordButton = new Button({
-				label: _('Submit'),
+				label: _('Change password'),
 				onClick: lang.hitch(this, '_setPassword')
 			});
-			put(this.newPasswordNode, this._setPasswordButton.domNode);
+			put(stepContent, this._setPasswordButton.domNode);
 			
 		},
 
@@ -164,7 +169,7 @@ define([
 					if (err.response && err.response.data && err.response.data.message) {
 						message = err.response.data.message;
 					}
-					this._showMessage(message, '.error');
+					this._showMessage(message, '.error', this.usernameNode);
 					this._usernameButton.set('disabled', false);
 					this._username.set('disabled', false);
 				}));
@@ -175,11 +180,11 @@ define([
 		},
 
 		_buildTokenOptions: function(options) {
-			array.forEach(options, lang.hitch(this, function(item, idx){
+			array.forEach(options, lang.hitch(this, function(obj, idx){
 				var radioButton = new RadioButton({
 					name: 'button' + idx,
-					label: item,
-					value: item,
+					label: obj.label,
+					method: obj.id,
 					checked: idx === 0,
 					radioButtonGroup: 'token',
 					_categoryID: 'token'
@@ -191,25 +196,30 @@ define([
 				this._tokenOptions.addChild(label);
 			}));
 			put(this.tokenNode, '!hide-step');
+			if (options.length === 1) {
+				this._requestToken();
+			}
 		},
 
 		_requestToken: function() {
 			this._removeMessage();
 
 			// get selected method for requesting a token
-			var method = null;
-			array.some(this._tokenOptions.getChildren(), function(tokenLabel) {
+			array.some(this._tokenOptions.getChildren(), lang.hitch(this, function(tokenLabel) {
 				var radioButton = tokenLabel.getChildren()[0];
 				if (radioButton.checked) {
-					method = radioButton.get('label');
+					this.selectedTokenMethod = {
+						label: radioButton.get('label'),
+						method: radioButton.get('method')
+					}
 				}
-			});
+			}));
 
-			if (method) {
+			if (this.selectedTokenMethod) {
 				this._requestTokenButton.set('disabled', true);
 				data = json.stringify({
 					'username': this._username.get('value'),
-					'method': method
+					'method': this.selectedTokenMethod.method
 				});
 				xhr.post('passwordreset/send_token', {
 					handleAs: 'json',
@@ -218,13 +228,14 @@ define([
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
+					this._showMessage(data.message, '.success', this.tokenNode);
 					put(this.newPasswordNode, '!hide-step');
 				}), lang.hitch(this, function(err){
 					var message = err.name + ": " + err.message;
 					if (err.response && err.response.data && err.response.data.message) {
 						message = err.response.data.message;
 					}
-					this._showMessage(message, '.error');
+					this._showMessage(message, '.error', this.tokenNode);
 					this._requestTokenButton.set('disabled', false);
 				}));
 			}
@@ -255,13 +266,15 @@ define([
 					this._token.set('disabled', true);
 					this._newPassword.set('disabled', true);
 					this._verifyPassword.set('disabled', true);
-					this._showMessage(data.message, '.success');
+					var message = data.message;
+					message += _("</br><a href='/'>Back to the overview.</a>");
+					this._showMessage(message, '.success', this.newPasswordNode);
 				}), lang.hitch(this, function(err){
 					var message = err.name + ": " + err.message;
 					if (err.response && err.response.data && err.response.data.message) {
 						message = err.response.data.message;
 					}
-					this._showMessage(message, '.error');
+					this._showMessage(message, '.error', this.newPasswordNode);
 					this._setPasswordButton.set('disabled', false);
 				}));
 			} else {
@@ -269,12 +282,12 @@ define([
 			}
 		},
 
-		_showMessage: function(msg, msgClass) {
-			var formNode = dom.byId('form');
+		_showMessage: function(msg, msgClass, targetNode) {
+			targetNode = targetNode || dom.byId("form");
 			var msgNode = dom.byId('msg');
 			if (!msgNode) {
 				msgNode = put('div[id=msg]');
-				put(formNode, 'div', msgNode);
+				put(targetNode, 'div', msgNode);
 			}
 
 			if (msgClass) {

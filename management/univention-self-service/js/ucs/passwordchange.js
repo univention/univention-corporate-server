@@ -38,7 +38,7 @@ define([
 	"dijit/form/Button",
 	"put-selector/put",
 	"./TextBox",
-	"./i18n!"
+	"./i18n!."
 ], function(lang, on, keys, dom, json, xhr, Button, put, TextBox, _) {
 
 	return {
@@ -53,7 +53,7 @@ define([
 		_createForm: function() {
 			var contentNode = dom.byId('content');
 			var formNode = put(contentNode, 'div[id=form]');
-			put(formNode, 'p > b', _('Change your password'));
+			put(dom.byId('navigation'), '!');
 			put(formNode, 'p', _('Please provide the necessary data to set a new password.'));
 
 			// create input field for username
@@ -111,7 +111,7 @@ define([
 
 			// create submit button
 			this._submitButton = new Button({
-				label: _('Submit'),
+				label: _('Change password'),
 				style: 'margin-top: 12px',
 				onClick: lang.hitch(this, '_submit')
 			});

@@ -18,6 +18,8 @@ if (locale) {
 	locale = locale.replace('_', '-');
 }
 
+redirectToURL = getQuery('url') || '/';
+
 // load the javascript module that is specified in the hash
 selfService = document.location.hash.substr(1)
 
@@ -26,8 +28,9 @@ var dojoConfig = {
 	locale: locale,
 	async: true,
 	callback: function() {
-		require(["ucs/" + selfService, "dojo/domReady!"], function(app) {
+		require(["ucs/" + selfService, "ucs/LanguagesDropDown", "dojo/domReady!"], function(app, LanguagesDropDown) {
 			app.start();
+			LanguagesDropDown.start();
 		});
 	}
 };

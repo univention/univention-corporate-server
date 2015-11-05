@@ -105,6 +105,7 @@ define([
 				this._registerInlineLabelEvents();
 				this._updateInlineLabelVisibility();
 			}
+			this.tooltipPosition = ['after', 'below'];
 		},
 
 		//FIXME: the name should be different from _loadValues, e.g., _dependencyUpdate,

@@ -154,10 +154,10 @@ class Instance(Base):
 			token = self.create_token(plugin.token_length)
 			if token_from_db:
 				if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
-					raise UMC_Error(_("Token for user '{}' still valid. Please retry in one hour.").format(username))
+					raise UMC_Error(_("Token for user '{}' has already been sent.").format(username), status=200)
 				else:
 					# replace with fresh token
-					MODULE.info("send_token(): Updating token for user '{}'...").format(username)
+					MODULE.info(_("send_token(): Updating token for user '{}'...").format(username))
 					self.db.update_token(username, method, token)
 			else:
 				# store a new token
