@@ -1,1 +1,2 @@
 /etc/univention/docker/preinit.d
+/etc/univention/docker/init.d

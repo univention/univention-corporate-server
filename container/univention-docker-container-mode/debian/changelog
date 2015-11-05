@@ -1,3 +1,10 @@
+univention-docker-container-mode (1.0.11-1) unstable; urgency=low
+
+  * run all scripts from /etc/univention/docker/init.d after starting
+    "univention-docker-container-mode" (Bug #39542)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 04 Nov 2015 21:25:04 +0100
+
 univention-docker-container-mode (1.0.10-2) unstable; urgency=medium
 
   * Updates to the link support in store_data and restore_data

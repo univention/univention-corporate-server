@@ -217,6 +217,10 @@ case "$1" in
 				ret=1
 			fi
 		fi
+
+		# run additional scripts provided by other packages (e.g. univention-mail-postfix)
+		run-parts --verbose /etc/univention/docker/init.d
+
 		log_action_end_msg $ret
 		;;
 	stop)
