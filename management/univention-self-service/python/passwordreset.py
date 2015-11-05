@@ -80,6 +80,20 @@ class PasswordReset(Ressource):
 
 	@cherrypy.expose
 	@json_response
+	def get_contact(self, *args, **kwargs):
+		"""
+		Get contact data available for a user. The users respective data
+		fields must be non-empty.
+		"""
+		username, password = self.get_arguments('username', 'password')
+
+		return self.umc_request('passwordreset/get_contact', {
+			"username": username,
+			"password": password
+		})
+
+	@cherrypy.expose
+	@json_response
 	def set_contact(self, *args, **kwargs):
 		"""
 		Change password reset contact data for user.

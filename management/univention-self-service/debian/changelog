@@ -1,3 +1,9 @@
+univention-self-service (1.0.1-5) unstable; urgency=low
+
+  * add UMC function passwordreset/get_contact (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 05 Nov 2015 15:30:06 +0100
+
 univention-self-service (1.0.1-4) unstable; urgency=low
 
   * Bug #39597: adapted UI for password reset

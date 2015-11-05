@@ -112,6 +112,36 @@ class Instance(Base):
 #	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
+		password=StringSanitizer(required=True))
+	def get_contact(self, request):
+		"""
+		Get users contact data.
+
+		:param request: arguments are username and password
+		:return: list of dicts with users contact data
+		"""
+		username = request.options.get("username")
+		password = request.options.get("password")
+		if not username:
+			raise UMC_Error(_("Empty username supplied."))
+		if self.is_blacklisted(username):
+			raise UMC_Error(_("User is blacklisted."))
+		self.auth(username, password)
+		user = self.get_udm_user(username=username)
+		if not self.send_plugins:
+			raise UMC_Error(_('No password reset method available for this user.'))
+		self.finished(
+			request.id,
+			[{
+				"id": p.send_method(),
+				"label": p.send_method_label(),
+				"value": user[p.ldap_attribute]
+			} for p in self.send_plugins.values() if user[p.ldap_attribute]]
+		)
+
+#	@prevent_denial_of_service
+	@sanitize(
+		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True),
 		email=EmailSanitizer(required=False),
 		mobile=StringSanitizer(required=False))
@@ -157,7 +187,7 @@ class Instance(Base):
 					raise UMC_Error(_("Token for user '{}' has already been sent.").format(username), status=200)
 				else:
 					# replace with fresh token
-					MODULE.info(_("send_token(): Updating token for user '{}'...").format(username))
+					MODULE.info("send_token(): Updating token for user '{}'...").format(username)
 					self.db.update_token(username, method, token)
 			else:
 				# store a new token
