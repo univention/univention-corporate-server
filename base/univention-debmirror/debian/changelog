@@ -1,3 +1,9 @@
+univention-debmirror (7.0.1-2) unstable; urgency=low
+
+  * Bug #39306: Switch mirror to https://
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 05 Nov 2015 14:00:30 +0100
+
 univention-debmirror (7.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

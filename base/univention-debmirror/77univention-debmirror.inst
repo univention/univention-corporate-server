@@ -49,7 +49,7 @@ then
 
 	case "$target" in
 	"")
-		univention-config-registry set repository/mirror/server=updates.software-univention.de
+		univention-config-registry set repository/mirror/server=https://updates.software-univention.de/
 		/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --stoptls \
 			--ignore-exists "$domainname" add cname univention-repository "$FQDN."
 		;;
