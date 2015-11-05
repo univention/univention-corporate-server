@@ -31,7 +31,8 @@ def main():
 		samltest.test_login(cookies, hostname=master_hostname)
 
 		cookies = samltest.logout_at_IdP(cookies)
-	
+
+		print("=== HERE COME THE LOGUT CHECK REQUESTS ====")
 		samltest.test_logout(cookies)
 		samltest.test_logout(cookies, hostname=master_hostname)
 	except samltest.SamlError as exc:
@@ -40,3 +41,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
+	print("Success: Global logout is working")

@@ -1,3 +1,10 @@
+ucs-test (6.0.13-3) unstable; urgency=low
+
+  * Fix bug in error handling (Bug #39657)
+  * Enhanced verbosity
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 05 Nov 2015 17:54:32 +0100
+
 ucs-test (6.0.13-2) unstable; urgency=low
 
   * Set 20_appcenter/60_check_appcenter_performance to SKIP

@@ -20,3 +20,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
+	print("Success: SSO session is still working after slapd restart")
