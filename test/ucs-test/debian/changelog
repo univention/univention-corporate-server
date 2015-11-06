@@ -1,3 +1,9 @@
+ucs-test (6.0.19-1) unstable; urgency=medium
+
+  * 01_base/45udm-cli: more cleanups (Bug #39100)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Nov 2015 22:31:05 +0100
+
 ucs-test (6.0.18-1) unstable; urgency=low
 
   * Bug #39816: wait for drs replication in 40_mail/45_dovecot_test_camelcase_mailadresses
