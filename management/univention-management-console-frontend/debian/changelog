@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.57-1) unstable; urgency=medium
+
+  * Bug #39233: request session information instead of counting down for
+  	session timeout
+
+ -- Florian Best <best@univention.de>  Fri, 06 Nov 2015 09:15:25 +0100
+
 univention-management-console-frontend (5.0.56-1) unstable; urgency=medium
 
   * Bug #39656: scale up SVG icon files for UMC modules

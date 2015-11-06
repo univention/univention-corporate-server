@@ -169,6 +169,7 @@ define([
 		},
 
 		_checkSessionTimer: null,
+		_checkSessionRequest: null,
 
 		checkSession: function(enable) {
 			// summary:
@@ -182,29 +183,38 @@ define([
 				return;
 			}
 
+			if (this._checkSessionRequest) {
+				return;
+			}
+
 			if (!this._checkSessionTimer) {
 				// create a new timer instance
-				this._checkSessionTimer = new timing.Timer(1000);
+				this._checkSessionTimer = new timing.Timer(30000);
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
-					// check the remaining time for the current session
-					var diff = (new Date() - this.status('sessionLastRequest')) / 1000;
-
 					// check whether session is still valid
-					if (this.status('sessionTimeout') < diff) {
+					this._checkSessionRequest = require('umc/auth').sessioninfo().otherwise(lang.hitch(this, function() {
 						this._checkSessionTimer.stop();
 						if (tools.status('loggingIn')) {
 							// login dialog is already running
 							return;
 						}
-
-						// try to login
 						topic.publish('/umc/actions', 'session', 'timeout');
-						dialog.login().then(lang.hitch(this, function() {
+						// try to login
+						var def;
+						if (tools.status('authType') == 'SAML') {
+							def = require('umc/auth').passiveSingleSignOn().otherwise(lang.hitch(dialog, 'login'));
+						} else {
+							def = dialog.login();
+						}
+						def.then(lang.hitch(this, function() {
 							if (!this._checkSessionTimer.isRunning) {
 								this._checkSessionTimer.start();
 							}
 						}));
-					}
+					}));
+					this._checkSessionRequest.always(lang.hitch(this, function() {
+						this,_checkSessionRequest = null;
+					}));
 				});
 			}
 

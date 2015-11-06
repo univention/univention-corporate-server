@@ -47,7 +47,7 @@ define([
 	"umc/i18n!"
 ], function(lang, win, dom, topic, xhr, iframe, Deferred, json, entities, dialog, tools, Text, TextBox, PasswordBox, i18nTools, _) {
 	/**
-	 * Utilities for authentication. Authentication must handle:
+	 * Private utilities for authentication. Authentication must handle:
 	 * * autologin into a current active session
 	 * * autologin via Single-Sign-On
 	 * * login via the login dialog
@@ -95,9 +95,16 @@ define([
 			}));
 		},
 
+		sessioninfo: function() {
+			return xhr.post('/univention-management-console/get/session-info', { handleAs: 'json' }).then(function(response) {
+				tools.status('authType', response.result.auth_type);
+				return response;
+			});
+		},
+
 		sessionlogin: function() {
 			// login with a currently existing session (if exists)
-			return xhr.post('/univention-management-console/get/session-info', { handleAs: 'json' }).then(lang.hitch(this, function(response) {
+			return this.sessioninfo().then(lang.hitch(this, function(response) {
 				//console.debug('using existing session');
 				return this.authenticated(response.result.username);
 			}));
