@@ -149,7 +149,7 @@ define([
 			var deferred = new Deferred();
 			deferred.then(null, function() { /* prevent logging of exception */ });
 			deferred.reject();
-			return deferred;
+			return deferred.promise;
 		},
 
 		authenticate: function(data) {
