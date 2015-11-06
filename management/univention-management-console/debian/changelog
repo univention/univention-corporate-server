@@ -1,3 +1,9 @@
+univention-management-console (8.0.25-2) unstable; urgency=medium
+
+  * Bug #39611: don't log OTP traceback
+
+ -- Florian Best <best@univention.de>  Fri, 06 Nov 2015 13:00:58 +0100
+
 univention-management-console (8.0.25-1) unstable; urgency=medium
 
   * Bug #39611: adjust error messages

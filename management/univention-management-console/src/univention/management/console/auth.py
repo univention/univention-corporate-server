@@ -139,11 +139,11 @@ class AuthHandler(signals.Provider):
 			AUTH.warn('Canonicalization of username was not possible: %s' % (exc,))
 		except:
 			AUTH.error('Canonicalization of username failed: %s' % (traceback.format_exc(),))
-		finally:  # ignore all exceptions, even  in except blocks
+		finally:  # ignore all exceptions, even in except blocks
 			return username
 
 	def __authentication_result(self, thread, result, request):
-		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, PasswordExpired, PasswordChangeFailed)):
+		if isinstance(result, BaseException) and not isinstance(result, (AuthenticationFailed, AuthenticationInformationMissing, PasswordExpired, PasswordChangeFailed)):
 			import traceback
 			AUTH.error(''.join(traceback.format_exception(*thread.exc_info)))
 		if isinstance(result, tuple):
