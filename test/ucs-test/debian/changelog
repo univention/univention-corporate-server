@@ -1,3 +1,9 @@
+ucs-test (6.0.18-1) unstable; urgency=low
+
+  * Bug #39816: wait for drs replication in 40_mail/45_dovecot_test_camelcase_mailadresses
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 06 Nov 2015 16:34:48 +0100
+
 ucs-test (6.0.17-2) unstable; urgency=low
 
   * 20_appcenter/17_app_status: check app webinterface (Bug #39478) 

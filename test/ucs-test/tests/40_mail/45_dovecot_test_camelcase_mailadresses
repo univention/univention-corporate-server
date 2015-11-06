@@ -15,6 +15,7 @@ import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+from univention.testing.ucs_samba import wait_for_drs_replication
 from essential.mail import send_mail, random_email, file_search_mail, get_dovecot_maildir
 import univention.uldap
 
@@ -125,7 +126,9 @@ def main():
 				# test removing user object
 				#
 				for user in userbase:
-					udm.remove_object('users/user', dn=user.dn, check_for_drs_replication=True)
+					udm.remove_object('users/user', dn=user.dn)
+					if utils.package_installed('univention-samba4'):
+						wait_for_drs_replication('cn=%s' % user.dn.partition(",")[0].rpartition("=")[-1])
 
 				# check if mailboxes have been removed
 				for user in userbase:
