@@ -89,9 +89,9 @@ define([
 			dialog._loginDialog.standby(true);
 			dialog._loginDialog.show();
 
-			this.sessionlogin().then(undefined, lang.hitch(this, function() {
+			this.autologin().otherwise(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(this, function() {
 				//console.debug('no active session found');
-				this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin'), lang.hitch(dialog, 'login'));
+				this.passiveSingleSignOn({ timeout: 3000 }).then(lang.hitch(this, 'sessionlogin')).otherwise(lang.hitch(dialog, 'login'));
 			}));
 		},
 

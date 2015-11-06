@@ -201,7 +201,7 @@ define([
 					}
 					// FIXME: if custom prompts and(!) new password is required we should just switch the view
 
-					var data = this._getFormData();
+					var data = this._getFormData(name);
 					if (data) {
 						this._authenticate(data);
 					}
@@ -209,7 +209,7 @@ define([
 			}));
 		},
 
-		_getFormData: function() {
+		_getFormData: function(name) {
 			var newPasswordInput = dom.byId('umcLoginNewPassword');
 			var newPasswordRetypeInput = dom.byId('umcLoginNewPasswordRetype');
 
@@ -226,7 +226,7 @@ define([
 			});
 
 			// validate new password form
-			if (newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
+			if (name == 'umcNewPasswordForm' && newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
 				this.set('LoginMessage', '<h1>' + _('Changing password failed') + '</h1><p>' +  _('The passwords do not match, please retype again.') + '</p>');
 				return;
 			}
