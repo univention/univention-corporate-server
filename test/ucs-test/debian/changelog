@@ -1,3 +1,9 @@
+ucs-test (6.0.17-2) unstable; urgency=low
+
+  * 20_appcenter/17_app_status: check app webinterface (Bug #39478) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 06 Nov 2015 11:56:15 +0100
+
 ucs-test (6.0.17-1) unstable; urgency=medium
 
   * 10_ldap/31ldapi: Try to use the ldapi interface as user nobody

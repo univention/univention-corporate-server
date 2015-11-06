@@ -18,6 +18,8 @@ from univention.config_registry import ConfigRegistry
 from univention.lib.package_manager import PackageManager, LockError
 from univention.management.console.modules.appcenter.app_center import Application
 
+import requests
+import lxml.html
 
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"
 
@@ -51,7 +53,6 @@ def get_app_dn(App):
               % (App.id, App.version, App.id, UCR.get('ldap/base')))
     return app_dn
 
-
 def check_app_webinterface_registration(App):
     """
     Checks if the 'App' registered its web interface in UCR.
@@ -67,6 +68,38 @@ def check_app_webinterface_registration(App):
             print "FAIL: the '%s' did not register its webinterface." % App.id
             set_test_return_code_failure()
 
+    # check if webinterface is reachable
+    if app_webinterface:
+        if app_webinterface.startswith('http'):
+            url = app_webinterface
+        else:
+            port = App.get('WebInterfacePortHTTP')
+            if port == 0:
+                port = 80
+            fqdn = UCR['hostname'] + '.' + UCR['domainname']
+            url = 'http://%s:%s/%s' % (fqdn, port, app_webinterface)
+        print 'Checking webinterface %s' % url,
+        r = requests.get(url, timeout=3)
+        print r.status_code
+        assert not str(r.status_code).startswith(('4', '5'))
+
+        # check meta refresh
+        soup = lxml.html.fromstring(r.text)
+        refresh = soup.cssselect('meta[http-equiv="refresh"]')
+        if refresh:
+            refresh_url = refresh[0].get('content')
+            if refresh_url:
+                print 'Found meta refresh: %s' % refresh_url
+                # e.g., 0;URL=controller.pl?action=LoginScreen/user_login
+                index = refresh_url.lower().find('url=')
+                if index > 0:
+                    refresh_url = refresh_url[index+4:]
+                    if not refresh_url.lower().startswith('http'):
+                        refresh_url = '%s%s' % (url, refresh_url)
+                    print 'Checking webinterface %s' % refresh_url,
+                    rr = requests.get(refresh_url, timeout=3)
+                    print rr.status_code
+                    assert not str(rr.status_code).startswith(('4', '5'))
 
 def verify_app_ldap_objects(App):
     """
