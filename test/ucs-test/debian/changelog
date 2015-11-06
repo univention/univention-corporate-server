@@ -1,3 +1,9 @@
+ucs-test (5.0.174-1) unstable; urgency=low
+
+  * Bug #35153: Fix timeout handling
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 06 Nov 2015 10:46:45 +0100
+
 ucs-test (5.0.173-10) unstable; urgency=low
 
   * patience in slow vms (Bug #39407)
