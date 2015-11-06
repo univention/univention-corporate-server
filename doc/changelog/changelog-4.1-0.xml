@@ -662,6 +662,12 @@
 			<title>Other services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					<package>univention-postgresql</package> has been split into multiple packages,
+					one for each PostgreSQL version (<u:bug>39595</u:bug>).
+					<package>univention-bacula</package> does not create the PostgreSQL configuration
+					files for not-installed versions anymore (<u:bug>39595</u:bug>).
+					<package>univention-pkgdb</package> does not create the PostgreSQL configuration
+					files for not-installed versions anymore (<u:bug>39595</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
