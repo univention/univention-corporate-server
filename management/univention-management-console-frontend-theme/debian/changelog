@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.3-1) unstable; urgency=medium
+
+  * Bug #39611: make umcLoginIframe positioned absolute
+
+ -- Florian Best <best@univention.de>  Fri, 06 Nov 2015 09:09:32 +0100
+
 univention-management-console-frontend-theme (1.0.2-1) unstable; urgency=medium
 
   * Bug #39656: add transparent border for scaled up icons of UMC modules
