@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-10-31 01:52+0100\n"
+"POT-Creation-Date: 2015-11-06 09:18+0100\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgstr "Kann nicht in eine Zahl umgewandelt werden"
 msgid "Cannot connect to the LDAP service."
 msgstr "Konnte nicht zum LDAP-Dienst verbinden."
 
-#: univention/management/console/pam.py:150
+#: univention/management/console/pam.py:161
 msgid "Changing password failed."
 msgstr "Passwort ändern fehlgeschlagen."
 
@@ -80,7 +80,7 @@ msgstr ""
 msgid "Connection to module process failed"
 msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
 
-#: univention/management/console/protocol/session.py:811
+#: univention/management/console/protocol/session.py:810
 msgid ""
 "Could not open the module. There is not enough memory available on the "
 "server. Please try again later."
@@ -125,9 +125,13 @@ msgstr "Weitere Informationen können der Protokolldatei %s entnommen werden."
 msgid "Has more than the allowed keys"
 msgstr "Hat mehr Schlüssel als erlaubt"
 
-#: univention/management/console/pam.py:193
+#: univention/management/console/pam.py:222
 msgid "In case it helps, the raw error message will be displayed"
 msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
+
+#: univention/management/console/pam.py:140
+msgid "Incomplete authentication information provided."
+msgstr "Unvollständige Authentifizierungsinformation angegeben."
 
 #: univention/management/console/base.py:186
 msgid "Install the latest software updates"
@@ -137,7 +141,7 @@ msgstr "Installieren Sie alle Softwareaktualisierungen"
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: univention/management/console/protocol/session.py:395
+#: univention/management/console/protocol/session.py:394
 #, python-format
 msgid "Invalid UCR variable requested: %s"
 msgstr "Ungültige UCR-Variable: %s"
@@ -169,7 +173,7 @@ msgstr ""
 "Stellen Sie sicher, dass der Domänencontroller Master läuft und von %s aus "
 "erreichbar ist"
 
-#: univention/management/console/pam.py:203
+#: univention/management/console/pam.py:232
 msgid ""
 "Make sure the kerberos service is functioning or inform an Administrator."
 msgstr ""
@@ -201,7 +205,7 @@ msgstr "Modulprozess hat sich unerwartet beendet"
 msgid "Must have at least %(min_elements)d element(s)"
 msgstr "Muss mindestens %(min_elements)d Element(e) haben"
 
-#: univention/management/console/protocol/session.py:649
+#: univention/management/console/protocol/session.py:648
 msgid ""
 "Nevertheless an error occured while updating the password for running "
 "modules. Please relogin to UMC to solve this problem."
@@ -246,7 +250,7 @@ msgstr "OK, Partielle Antwort"
 msgid "One or more options to %s are missing: %s"
 msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
 
-#: univention/management/console/protocol/session.py:640
+#: univention/management/console/protocol/session.py:639
 msgid "Password successfully changed."
 msgstr "Passwort erfolgreich geändert."
 
@@ -295,7 +299,7 @@ msgstr ""
 "Der UMC-Dienst ist gerade am Neustarten oder Herunterfahren. Bitte später "
 "erneut versuchen."
 
-#: univention/management/console/pam.py:200
+#: univention/management/console/pam.py:229
 msgid "The account is expired and can not be used anymore."
 msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden."
 
@@ -304,8 +308,8 @@ msgstr "Das Konto ist abgelaufen und kann nicht mehr verwendet werden."
 msgid "The authentication has failed"
 msgstr "Authentisierung ist fehlgeschlagen"
 
-#: univention/management/console/pam.py:201
-#: univention/management/console/pam.py:202
+#: univention/management/console/pam.py:230
+#: univention/management/console/pam.py:231
 msgid "The authentication has failed, please login again."
 msgstr "Authentisierung ist fehlgeschlagen. Bitte melden Sie sich erneut an."
 
@@ -319,7 +323,7 @@ msgstr "Das Kommando '%s' hat keine Argumente"
 msgid "The command has failed: %s"
 msgstr "Das Kommando ist fehlgeschlagen: %s"
 
-#: univention/management/console/pam.py:204
+#: univention/management/console/pam.py:233
 msgid "The entered password does not match the current one."
 msgstr "Das eingegebene Passwort stimmt nicht mit dem aktuellen überein."
 
@@ -368,7 +372,7 @@ msgstr "Das Passwort enthält nicht genügend unterschiedliche Zeichen"
 msgid "The password has expired and must be renewed"
 msgstr "Das Passwort ist abgelaufen und muss erneuert werden"
 
-#: univention/management/console/pam.py:199
+#: univention/management/console/pam.py:228
 msgid "The password has expired and must be renewed."
 msgstr "Das Passwort ist abgelaufen und muss erneuert werden."
 
@@ -392,7 +396,7 @@ msgstr "Das Passwort ist zu einfach"
 msgid "The password was already used"
 msgstr "Das Passwort wurde bereits genutzt"
 
-#: univention/management/console/pam.py:192
+#: univention/management/console/pam.py:221
 msgid "The reason could not be determined"
 msgstr "Der Grund konnte nicht festgestellt werden"
 

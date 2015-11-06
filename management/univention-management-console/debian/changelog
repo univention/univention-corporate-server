@@ -1,3 +1,9 @@
+univention-management-console (8.0.25-1) unstable; urgency=medium
+
+  * Bug #39611: adjust error messages
+
+ -- Florian Best <best@univention.de>  Fri, 06 Nov 2015 09:17:54 +0100
+
 univention-management-console (8.0.24-1) unstable; urgency=medium
 
   * Bug #39611: make pam.py able to answer custom prompts

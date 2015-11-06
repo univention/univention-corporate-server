@@ -137,7 +137,8 @@ class PamAuth(object):
 			if pam_err[1] == PAM_ACCT_EXPIRED:  # error: ('User account has expired', 13)
 				raise AccountExpired(self.error_message(pam_err))
 			if missing:
-				raise AuthenticationInformationMissing(self.error_message(pam_err), missing)
+				message = _('Incomplete authentication information provided.')
+				raise AuthenticationInformationMissing(message, missing)
 			raise AuthenticationFailed(self.error_message(pam_err))
 
 	def change_password(self, username, old_password, new_password):
