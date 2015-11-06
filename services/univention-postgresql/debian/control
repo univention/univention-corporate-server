@@ -13,7 +13,7 @@ Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends},
  univention-postgresql-9.1 | univention-postgresql-8.4,
  shell-univention-lib (>= 3.0.4-1),
- univention-config-registry
+ univention-config,
 Description: UCS - PostgreSQL configuration
  This meta-package depends on the package with the configuration for
  the specific postgresql-*.* package.
@@ -28,7 +28,7 @@ Architecture: all
 Pre-Depends: postgresql-9.1
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
- univention-config-registry
+ univention-config,
 Breaks: univention-postgresql (< 8),
  univention-bacula (<< 7.0.1-2),
  univention-pkgdb (<< 9.0.1-2),
@@ -47,7 +47,7 @@ Architecture: all
 Pre-Depends: postgresql-8.4
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
- univention-config-registry
+ univention-config,
 Breaks: univention-postgresql (< 8),
  univention-bacula (<< 7.0.1-2),
  univention-pkgdb (<< 9.0.1-2),
