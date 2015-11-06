@@ -379,6 +379,9 @@
 				<listitem><simpara>
 					Support for UCR variable templates in App Center readme files has been added (<u:bug>38233</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The current App descriptions have been integrated into the App Center package (<u:bug>39316</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
