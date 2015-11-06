@@ -68,6 +68,7 @@ define([
 
 		reset: function() {
 			this.set('value', '');
+			this.set('disabled', false);
 			this.setValid();
 			this._updateInlineLabelVisibility();
 		},

@@ -32,14 +32,15 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/dom",
-	"dojo/dom-geometry",
 	"put-selector/put",
 	"./RadioButton",
 	"./LabelPane",
 	"./passwordchange",
+	"./passwordreset",
+	"./setcontactinformation",
 	"./lib",
 	"./i18n!."
-], function(lang, array, dom, domGeom, put, RadioButton, LabelPane, PasswordChange, lib, _) {
+], function(lang, array, dom, put, RadioButton, LabelPane, PasswordChange, PasswordReset, SetContactInformation, lib, _) {
 
 	return {
 		_createTitle: function() {
@@ -62,9 +63,11 @@ define([
 				label: _('I want to change my (expired) password.')
 			},{
 				name: 'resetPassword',
+				content: PasswordReset._getFormNode(),
 				label: _('I have forgotten my password.')
 			},{
 				name: 'setContactInformation',
+				content: SetContactInformation._getFormNode(),
 				label: _('I would like to set my contact information for resetting my password.')
 			}];
 			array.forEach(options, function(option) {
@@ -82,14 +85,13 @@ define([
 				});
 				put(optNode, label.domNode);
 				if (option.content) {
-					var initialHeight = domGeom.getMarginBox(option.content).h;
-					put(option.content, "[style='overflow: hidden; height: 0']");
-					put(optNode, option.content);
+					var height = lib.getNodeHeight(option.content);
+					put(optNode, option.content, '.fadeInit');
 					radioButton.watch('checked', function(attr, oldValue, newValue){
 						if (newValue) { // radioButton is checked
-							lib.fadeInNode({ node: option.content, endHeight: initialHeight});
+							lib.fadeInNode({node: option.content, endHeight: height});
 						} else {
-							lib.fadeOutNode({node: option.content});
+							lib.fadeOutNode({ node: option.content, startHeight: height});
 						}
 					});
 				}

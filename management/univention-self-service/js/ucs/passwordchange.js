@@ -54,13 +54,12 @@ define([
 		_createContent: function() {
 			var contentNode = dom.byId('content');
 			var formNode = this._getFormNode();
-			put(formNode, '!dijitHidden');
+			put(formNode, '[id=form]!dijitHidden');
 			put(contentNode, formNode);
 		},
 
 		_getFormNode: function() {
-			var formNode = put('div[id=form]');
-			put(dom.byId('navigation'), '!');
+			var formNode = put('div');
 			put(formNode, 'p', _('Please provide the required data to change your password.'));
 
 			// create input field for username

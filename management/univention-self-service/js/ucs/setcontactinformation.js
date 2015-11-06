@@ -50,7 +50,7 @@ define([
 		selectedTokenMethod: null,
 		
 		_createTitle: function() {
-			var title = _('Password Reset');
+			var title = _('Contact information for Password reset');
 			document.title = title;
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', title);
@@ -66,12 +66,13 @@ define([
 
 		_getFormNode: function() {
 			var formNode = put('div[style="overflow: hidden;"]');
-			put(formNode, 'p', _('To set a new password you will need a token which will be sent to you after providing your username.'));
+			put(formNode, 'p', _('If you want to reset your password in the future it is necessary to provide contact information. This information are required to automatically receive a token for setting a new password.'));
 
-			// step 1 username
+			// step 1 username and password
 			this.usernameNode = put(formNode, 'div.step');
-			put(this.usernameNode, 'p > b', _('Please enter your username.'));
+			put(this.usernameNode, 'p > b', _('Please enter your username and password to display your contact information.'));
 			var stepContent = put(this.usernameNode, 'div.stepContent');
+
 			this._username = new TextBox({
 				inlineLabel: _('Username'),
 				isValid: function() {
@@ -82,142 +83,128 @@ define([
 			});
 			this._username.on('keyup', lang.hitch(this, function(evt) {
 				if (evt.keyCode === keys.ENTER) {
-					this._getResetMethods();
+					this._getContactInformation();
 				}
 			}));
 			put(stepContent, this._username.domNode);
 			this._username.startup();
-			this._usernameButton = new Button({
-				label: _('Confirm username'),
-				onClick: lang.hitch(this, '_getResetMethods')
-			});
-			put(stepContent, this._usernameButton.domNode);
 
-			// step 2 token
-			this.tokenNode = put(formNode, 'div.step.hide-step');
-			put(this.tokenNode, 'p > b', _('Please choose a method to receive the token.'));
-			var stepContent = put(this.tokenNode, 'div.stepContent');
-			this._tokenOptions = new ContainerWidget({});
-			put(stepContent, this._tokenOptions.domNode);
-			this._requestTokenButton = new Button({
-				label: _('Request token'),
-				onClick: lang.hitch(this, '_requestToken')
-			});
-			put(stepContent, this._requestTokenButton.domNode);
-
-			// step 3 use the token to set a new password
-			this.newPasswordNode = put(formNode, 'div.step.hide-step');
-			put(this.newPasswordNode, 'p > b', _('Please enter the token and your new password.'));
-			var stepContent = put(this.newPasswordNode, 'div.stepContent');
-			this._token = new TextBox({
-				inlineLabel: _('Token'),
+			this._password = new TextBox({
+				inlineLabel: _('Password'),
 				isValid: function() {
 					return !!this.get('value');
 				},
-				required: true
+				style: 'margin-top: 6px',
+				required: true,
+				type: 'password'
 			});
-			this._token.on('keyup', lang.hitch(this, function(evt) {
+			this._password.on('keyup', lang.hitch(this, function(evt) {
 				if (evt.keyCode === keys.ENTER) {
-					this._setPassword();
+					this._getContactInformation();
 				}
 			}));
-			put(stepContent, this._token.domNode);
-			this._token.startup();
+			put(stepContent, this._password.domNode);
+			this._password.startup();
 
-			this._newPassword = new TextBox({
-				inlineLabel: _('New password'),
-				type: 'password',
-				isValid: function() {
-					return !!this.get('value');
-				},
-				required: true
+			this._showContactInformationButton = new Button({
+				label: _('Show contact information'),
+				onClick: lang.hitch(this, '_getContactInformation')
 			});
-			this._newPassword.on('keyup', lang.hitch(this, function(evt) {
-				if (evt.keyCode === keys.ENTER) {
-					this._setPassword();
-				}
-			}));
-			put(stepContent, this._newPassword.domNode);
-			this._newPassword.startup();
+			put(stepContent, this._showContactInformationButton.domNode);
 
-			this._verifyPassword = new TextBox({
-				inlineLabel: _('New password (retype)'),
-				type: 'password',
-				isValid: lang.hitch(this, function() {
-					return this._newPassword.get('value') ===
-						this._verifyPassword.get('value');
-				}),
-				invalidMessage: _('The passwords do not match, please retype again.'),
-				required: true
+			// step 2 show and set contact information
+			this.contactInformationNode = put(formNode, 'div.step.hide-step');
+			put(this.contactInformationNode, 'p > b', _('Feel free to change your contact information. Press "Save" to confirm your changes.'));
+			var stepContent = put(this.contactInformationNode, 'div.stepContent');
+			this._contactInformation = new ContainerWidget({});
+			put(stepContent, this._contactInformation.domNode);
+			this._saveButton = new Button({
+				label: _('Save'),
+				onClick: lang.hitch(this, '_setContactInformation')
 			});
-			this._verifyPassword.on('keyup', lang.hitch(this, function(evt) {
-				if (evt.keyCode === keys.ENTER) {
-					this._setPassword();
-				}
-			}));
-			put(stepContent, this._verifyPassword.domNode);
-			this._verifyPassword.startup();
-			this._setPasswordButton = new Button({
-				label: _('Change password'),
-				onClick: lang.hitch(this, '_setPassword')
+			put(stepContent, this._saveButton.domNode);
+			this._cancelButton = new Button({
+				label: _('Cancel'),
+				onClick: lang.hitch(this, '_deleteContactInformationNode')
 			});
-			put(stepContent, this._setPasswordButton.domNode);
+			put(stepContent, this._cancelButton.domNode);
+
 			return formNode;
 		},
 
-		_getResetMethods: function() {
+		_getContactInformation: function() {
 			this._username.set('disabled', true);
-			this._usernameButton.set('disabled', true);
+			this._password.set('disabled', true);
+			this._showContactInformationButton.set('disabled', true);
 
-			if (this._username.isValid()) {
-				data = json.stringify({
-					'username': this._username.get('value')
-				});
-				xhr.post('passwordreset/get_reset_methods', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
-					lib._removeMessage();
-					this._buildTokenOptions(data.result);
-				}), lang.hitch(this, function(err){
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
-					lib.showMessage({
-						content: message,
-						targetNode: this.usernameNode,
-						'class': '.error'
-					});
-					this._usernameButton.set('disabled', false);
-					this._username.set('disabled', false);
-				}));
+			var validCredentials = 	this._username.isValid() && this._password.isValid();
+			if (validCredentials) {
+				this._buildContactInformation([{
+					label: 'Email',
+					id: 'email',
+					value: 'keiser@univention.de'
+				}, {
+					label: 'SMS',
+					id: 'sms',
+					value: '0815'
+				}]);
+				//data = json.stringify({
+				//	'username': this._username.get('value'),
+				//	'password': this._password.get('value')
+				//});
+				//xhr.post('passwordreset/get_contact', {
+				//	handleAs: 'json',
+				//	headers: {
+				//		'Content-Type': 'application/json'
+				//	},
+				//	data: data
+				//}).then(lang.hitch(this, function(data) {
+				//	lib._removeMessage();
+				//	this._buildContactInformation(data.result);
+				//}), lang.hitch(this, function(err){
+				//	var message = err.name + ": " + err.message;
+				//	if (err.response && err.response.data && err.response.data.message) {
+				//		message = err.response.data.message;
+				//	}
+				//	lib.showMessage({
+				//		content: message,
+				//		targetNode: this.usernameNode,
+				//		'class': '.error'
+				//	});
+				//	this._showContactInformationButton.set('disabled', false);
+				//	this._username.set('disabled', false);
+				//	this._password.set('disabled', false);
+				//}));
 			} else {
-				this._usernameButton.set('disabled', false);
+				this._showContactInformationButton.set('disabled', false);
 				this._username.set('disabled', false);
+				this._password.set('disabled', false);
 			}
+
 		},
 
-		_buildTokenOptions: function(options) {
+		_buildContactInformation: function(options) {
 			array.forEach(options, lang.hitch(this, function(obj, idx){
-				var radioButton = new RadioButton({
-					name: 'button' + idx,
+				var textBox = new TextBox({
 					label: obj.label,
-					method: obj.id,
-					checked: idx === 0,
-					radioButtonGroup: 'token',
-					_categoryID: 'token'
+					value: obj.value,
+					id: obj.id
 				});
-				var label = new LabelPane({
-					'class': 'ucsRadioButtonLabel',
-					content: radioButton
-				});
-				this._tokenOptions.addChild(label);
+				this._contactInformation.addChild(textBox);
 			}));
-			put(this.tokenNode, '!hide-step');
+			put(this.contactInformationNode, '!hide-step');
+		},
+
+		_setContactInformation: function() {
+
+		},
+
+		_deleteContactInformationNode: function() {
+			this._contactInformation.destroyDescendants();
+			put(this.contactInformationNode, '.hide-step');
+			this._showContactInformationButton.set('disabled', false);
+			this._username.reset();
+			this._password.reset();
 		},
 
 		_requestToken: function() {

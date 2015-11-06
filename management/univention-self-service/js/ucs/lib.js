@@ -33,12 +33,13 @@ define([
 	"dojo/_base/fx",
 	"dojo/dom",
 	"dojo/dom-geometry",
-	"put-selector/put"
-], function(lang, fx, dom, domGeom, put) {
+	"put-selector/put",
+	"./i18n!"
+], function(lang, fx, dom, domGeom, put, _) {
 
 	return {
 		showMessage: function(msg) {
-			var targetNode = targetNode || dom.byId("content");
+			var targetNode = msg.targetNode || dom.byId("content");
 			var msgNode = dom.byId('msg');
 
 			if (msgNode) {
@@ -54,6 +55,51 @@ define([
 				// msg = msg.replace(/\n/g, '<br/>');
 				msgNode.innerHTML = msg.content;
 			}
+		},
+
+		showLastMessage: function(msg) {
+			var targetNode = msg.targetNode || dom.byId("content");
+			var msgNode = dom.byId('msg');
+
+			if (msgNode) {
+				this._removeMessage();
+				setTimeout(lang.hitch(this, 'showLastMessage', msg), 500);
+			} else {
+				var message = this._prepareLastMessage(msg);
+
+				msgNode = put('div[id=msg]');
+				put(targetNode, 'div', msgNode);
+				if (msg['class']) {
+					put(msgNode, msg['class']);
+				}
+				msgNode.innerHTML = message;
+			}
+		},
+
+		_prepareLastMessage: function(msg) {
+			var message = msg.content;
+			if (redirectToURL) {
+				var timer = 5;
+				
+				var redirectToLabel = redirectToURLLabel || '';
+				if (redirectToLabel) {
+					redirectToLabel = "to '" + redirectToLabel + "'";
+				}
+				message += lang.replace(_("</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> second(s).</div>", [redirectToLabel, timer])); 
+				var redirectInterval = setInterval(function() {
+					timer--;
+					if (timer === 0) {
+						clearInterval(redirectInterval);
+						window.location.href = redirectToURL;
+					}
+					var redirectTimerNode = dom.byId("redirectTimer");
+					redirectTimerNode.innerHTML = timer;
+				}, 1000);
+			} else {
+				message += _("</br><a href='/'>Back to the overview.</a>");
+			}
+
+			return message;
 		},
 
 		_removeMessage: function() {
@@ -80,9 +126,19 @@ define([
 				node: conf.node,
 				duration: conf.duration || 500,
 				properties: {
-					height: { start: currentHeight, end: 0, units: 'px'}
-				}
+					height: { end: 0, units: 'px'}
+				},
+				onEnd: conf.callback
 			}).play();
+		},
+
+		getNodeHeight: function(node) {
+			put(node, '.offScreen');
+			put(document.body, node);
+			var height = domGeom.position(node).h;
+			put(node, '!offScreen');
+			put(node, '!');
+			return height;
 		}
 	};
 });

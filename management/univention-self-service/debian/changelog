@@ -1,3 +1,9 @@
+univention-self-service (1.0.1-9) unstable; urgency=low
+
+  * Bug #39597: added site where the user can set his contact information
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 06 Nov 2015 17:11:09 +0100
+
 univention-self-service (1.0.1-8) unstable; urgency=low
 
   * Reset pwdChangeNextLogin after password change (Bug #37890)

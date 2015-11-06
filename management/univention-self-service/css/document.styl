@@ -155,10 +155,6 @@ div.step {
 	opacity: 1;
 	visibility: visible;
 	transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
-
-	.stepContent {
-		margin-left: 2em;
-	}
 }
 
 div.step.hide-step {
@@ -194,6 +190,16 @@ div.step .dijitTextBoxDisabled  {
 	background-color: #E67272;
 	padding: 5px;
 	margin-top: 10px;
+}
+
+.fadeInit {
+	overflow: hidden;
+	height: 0;
+}
+
+.offScreen {
+	position: absolute;
+	left: -10000em;
 }
 
 .claro .dijitTooltipContainer {
