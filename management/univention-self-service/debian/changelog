@@ -1,3 +1,9 @@
+univention-self-service (1.0.1-7) unstable; urgency=medium
+
+  * Bug #39682: fix responses in error cases
+
+ -- Florian Best <best@univention.de>  Fri, 06 Nov 2015 13:56:43 +0100
+
 univention-self-service (1.0.1-6) unstable; urgency=low
 
   * Bug #39597: Added an overview page if no hash is provided

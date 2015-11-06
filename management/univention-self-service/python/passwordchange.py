@@ -58,10 +58,12 @@ class SetPassword(Ressource):
 			})
 			if status == 200:
 				# password changing succeeded
+				cherrypy.response.status = status
 				return response
 
 		if status != 200:
-			raise cherrypy.HTTPError(response, status)
+			cherrypy.response.status = status
+			return response
 
 		cherrypy.response.status, response = session.set({
 			"password": {
