@@ -92,6 +92,7 @@ univention-s4-connector
 univention-newsid
 univention-ad-connector
 univention-ad-connector-exchange
+libunivention-ldb-modules
 
 /* Installer and Basics */
 univention-quota

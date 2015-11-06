@@ -1,3 +1,9 @@
+univention-dvd (0.2.29-17) unstable; urgency=medium
+
+  * Added libunivention-ldb-modules to maintained list (Bug #39277)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 06 Nov 2015 16:06:23 +0100
+
 univention-dvd (0.2.29-16) unstable; urgency=low
 
   * Bug #39710: UCS-4.0-4
