@@ -1,3 +1,10 @@
+univention-self-service (1.0.1-6) unstable; urgency=low
+
+  * Bug #39597: Added an overview page if no hash is provided
+    Also moved some logic into a shared lib file
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 06 Nov 2015 12:10:54 +0100
+
 univention-self-service (1.0.1-5) unstable; urgency=low
 
   * add UMC function passwordreset/get_contact (Bug #37890)

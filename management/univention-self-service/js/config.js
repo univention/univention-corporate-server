@@ -21,7 +21,10 @@ if (locale) {
 redirectToURL = getQuery('url') || '/';
 
 // load the javascript module that is specified in the hash
-selfService = document.location.hash.substr(1)
+var selfService = document.location.hash.substr(1);
+if (!selfService.length) {
+	selfService = 'passwordselfservice';
+}
 
 var dojoConfig = {
 	isDebug: false,

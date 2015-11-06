@@ -38,8 +38,9 @@ define([
 	"dijit/form/Button",
 	"put-selector/put",
 	"./TextBox",
+	"./lib",
 	"./i18n!."
-], function(lang, on, keys, dom, json, xhr, Button, put, TextBox, _) {
+], function(lang, on, keys, dom, json, xhr, Button, put, TextBox, lib, _) {
 
 	return {
 		_createTitle: function() {
@@ -50,11 +51,17 @@ define([
 			put(titleNode, '!.dijitHidden');
 		},
 
-		_createForm: function() {
+		_createContent: function() {
 			var contentNode = dom.byId('content');
-			var formNode = put(contentNode, 'div[id=form]');
+			var formNode = this._getFormNode();
+			put(formNode, '!dijitHidden');
+			put(contentNode, formNode);
+		},
+
+		_getFormNode: function() {
+			var formNode = put('div[id=form]');
 			put(dom.byId('navigation'), '!');
-			put(formNode, 'p', _('Please provide the necessary data to set a new password.'));
+			put(formNode, 'p', _('Please provide the required data to change your password.'));
 
 			// create input field for username
 			this._username = new TextBox({
@@ -123,10 +130,11 @@ define([
 					this._submit();
 				}
 			}));
+
+			return formNode;
 		},
 
 		_submit: function() {
-			this._removeMessage();
 			this._showValidStatusOfInputFields();
 			this._submitButton.set('disabled', true);
 			var allInputFieldsAreValid = this._username.isValid() &&
@@ -148,14 +156,14 @@ define([
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
-					this._showMessage(data.message, '.success');
+					lib.showMessage({content: data.message, 'class': '.success'});
 					this._clearAllInputFields();
 				}), lang.hitch(this, function(err) {
 					var message = err.name + ": " + err.message;
 					if (err.response && err.response.data && err.response.data.message) {
 						message = err.response.data.message;
 					}
-					this._showMessage(message, '.error');
+					lib.showMessage({content: message, 'class': '.error'});
 				})).always(lang.hitch(this, function(){
 					this._submitButton.set('disabled', false);
 				}));
@@ -178,32 +186,9 @@ define([
 			this._verifyPassword.reset();
 		},
 
-		_showMessage: function(msg, msgClass) {
-			var formNode = dom.byId('form');
-			var msgNode = dom.byId('msg');
-			if (!msgNode) {
-				msgNode = put('div[id=msg]');
-				put(formNode, 'div', msgNode);
-			}
-
-			if (msgClass) {
-				put(msgNode, msgClass);
-			}
-			// replace newlines with BR tags
-			msg = msg.replace(/\n/g, '<br/>');
-			msgNode.innerHTML = msg;
-		},
-
-		_removeMessage: function() {
-			var msgNode = dom.byId('msg');
-			if (msgNode) {
-				put(msgNode, "!");
-			}
-		},
-
 		start: function() {
 			this._createTitle();
-			this._createForm();
+			this._createContent();
 		}
 	};
 });
