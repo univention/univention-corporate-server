@@ -571,8 +571,10 @@ class TestCase(object):
 			self.exposure = CheckExposure(
 				header.get('exposure', 'dangerous'),
 				digest)
-			if header.get('timeout'):
+			try:
 				self.timeout = int(header['timeout'])
+			except LookupError:
+				pass
 		except (TypeError, ValueError) as ex:
 			TestCase.logger.critical(
 				'Tag error in "%s": %s',
