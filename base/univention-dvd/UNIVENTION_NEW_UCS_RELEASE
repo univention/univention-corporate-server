@@ -1,0 +1,50 @@
+#!/bin/sh
+#
+# Generate files needed for the next UCS release
+#
+set -e -u
+
+parse () {
+	case "${1:?major}" in
+	[1-9]*.[0-9]*-[0-9]*)
+		local IFS='.-'
+		parse $@ # IFS
+		return $?
+		;;
+	[1-9])
+		major="${1:?major}"
+		minor="${2:?minor}"
+		patch="${3:?patch}"
+		;;
+	*) usage ;;
+	esac
+
+	long="${major}.${minor}-${patch}"
+	short="ucs${major}${minor}${patch}"
+
+	prev="$(($patch - 1))"
+	plong="${major}.${minor}-${prev}"
+	pshort="ucs${major}${minor}${prev}"
+}
+
+copy () {
+	cp -lrP "data/$pshort" "data/$short"
+	cp -lrP "tasks/$pshort" "tasks/$short"
+	mv "tasks/$short/task-$pshort" "tasks/$short/task-$short"
+	ln "tools/$pshort" "tools/$short"
+	cp -lrP "tools/boot/$pshort" "tools/boot/$short"
+	sed -e "s/$pshort/$short/g" -e "s/$plong/$long/" <"$pshort.conf" >"$short.conf"
+}
+
+usage () {
+	echo "${0##*/} major minor patch"
+	exit 0
+}
+
+die () {
+	echo "${0##*/}: $*" >&2
+	exit 1
+}
+
+parse "$@"
+copy
