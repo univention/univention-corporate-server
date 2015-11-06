@@ -121,6 +121,10 @@
 					The <phrase>graceful-restart</phrase> of the OpenLDAP init script
 					has been adjusted to reduce the grace time (<u:bug>39719</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The group access for the LDAPI socket interface has been removed
+					(<u:bug>39811</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 			<section id="changelog:domain:openldap:acl">
