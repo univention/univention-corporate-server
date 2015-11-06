@@ -425,7 +425,7 @@ define([
 				_body.flavor = flavor;
 			}
 
-			return this.request({
+			return this._request({
 				url: '/univention-management-console/' + command,
 				data: _body,
 				errorHandler: this.__getErrorHandler(handleErrors),
@@ -434,7 +434,7 @@ define([
 			});
 		},
 
-		request: function(args) {
+		_request: function(args) {
 			// summary:
 			//		Encapsulates an AJAX call for a given UMCP command.
 			// returns:
