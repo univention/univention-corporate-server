@@ -16,9 +16,6 @@ RewriteRule ^/?simplesamlphp/(.*) https://%{SERVER_NAME}/simplesamlphp/$1 [R,L]
 '''
 @!@
 
-ScriptAlias /saml-bin /var/www/saml
-SuexecUserGroup samlcgi samlcgi
-
 <LocationMatch /simplesamlphp/>
 	# AJAX-Requests via UMC must be possible
 	Header always set Access-Control-Allow-Origin "*"
@@ -45,7 +42,6 @@ SuexecUserGroup samlcgi samlcgi
 	Order allow,deny
 	Allow from all
 </Directory>
-
 @!@
 sso_fqdn = configRegistry.get('ucs/server/sso/fqdn', 'ucs-sso.%s' % configRegistry.get('domainname'))
 ssofqdn = {'ssofqdn': sso_fqdn}
@@ -63,6 +59,9 @@ if enable_virtualhost and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.p
 	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem
 	DocumentRoot /var/www/
 	RedirectMatch ^/$ /simplesamlphp/
+
+	ScriptAlias /saml-bin /var/www/saml
+	SuexecUserGroup samlcgi samlcgi
 </VirtualHost>
 <VirtualHost *:80>
 	ServerName %(ssofqdn)s
@@ -71,4 +70,12 @@ if enable_virtualhost and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.p
 </VirtualHost>
 </IfModule>
 ''' % ssofqdn
+
+# If a single FQDN is required for SSO, the virtualhost directive above is deactivated.
+# However, we need the suexec features, so activate them globally (does not work for Directory)
+# Warning: This interferes with other programs that use cgi scripts.
+elif not enable_virtualhost:
+	print '''
+ScriptAlias /saml-bin /var/www/saml
+SuexecUserGroup samlcgi samlcgi'''
 @!@

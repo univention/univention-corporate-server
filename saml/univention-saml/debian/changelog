@@ -1,3 +1,11 @@
+univention-saml (3.0.26-5) unstable; urgency=medium
+
+  * Bug #38947: Move suexec functionality back to VirtualHost to increase
+    compatibility with other programs. Only activate it globally in
+    single-server scenarios
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 06 Nov 2015 14:20:28 +0100
+
 univention-saml (3.0.26-4) unstable; urgency=medium
 
   * Bug #38947: Allow webserver to read public certificate
