@@ -117,19 +117,26 @@ define([
 		},
 
 		updateForm: function(info) {
-			this._updateView(info.result || {});
-
 			var message = info.message;
+			var result = info.result || {};
+			this._updateView(result);
+
 			if (message) {
 				if (message.slice(-1) !== '.') {
 					message += '.';
 				}
-				this.set('LoginMessage', message);
+				var title = _('Authentication failure');
+				if (result.password_expired) {
+					title = _('The password is expired');
+				} else if (result.missing_prompts) {
+					title = _('One time password required');
+				}
+				this.set('LoginMessage', '<h1>' + title + '</h1><p>' + message + '</p>');
 			}
 		},
 
-		_setLoginMessageAttr: function(message) {
-			this._text.set('content', '<h1>' + _('Authentication failure') + '</h1><p>' + message + '</p>');
+		_setLoginMessageAttr: function(content) {
+			this._text.set('content', content);
 			this._wipeInMessage();
 		},
 
@@ -220,7 +227,7 @@ define([
 
 			// validate new password form
 			if (newPasswordInput.value && newPasswordInput.value !== newPasswordRetypeInput.value) {
-				this.set('LoginMessage', _('The passwords do not match, please retype again.'));
+				this.set('LoginMessage', '<h1>' + _('Changing password failed') + '</h1><p>' +  _('The passwords do not match, please retype again.') + '</p>');
 				return;
 			}
 			// custom prompts
