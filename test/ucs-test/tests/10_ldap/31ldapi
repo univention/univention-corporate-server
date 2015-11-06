@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
-## desc: Try to bind to ldapi as normal user
-## bugs: [10529]
+## desc: Try to bind to ldapi as normal user and as user nobody
+## bugs: [10529,39811]
 ## tags:
 ##  - basic
 ##  - apptest
@@ -45,6 +45,11 @@ done
 
 echo -e "\n\n***Try to call ldapdelete via the ldapi interface. This shouln't work."
 if ! su - "$USERNAME" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user $USERNAME via ldapi socket.' && exit 1 || exit 0"
+then
+	fail_test 1
+fi
+echo -e "\n\n***Try to call ldapdelete via the ldapi interfaceas user nobody. This shouln't work."
+if ! su - "nobody" -c "ldapdelete -x -H ldapi:/// 'uid=$USERNAME,cn=users,$ldap_base' && echo 'Error: Removed the object as user nobody via ldapi socket.' && exit 1 || exit 0"
 then
 	fail_test 1
 fi
