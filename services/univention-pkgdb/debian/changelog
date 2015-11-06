@@ -1,3 +1,10 @@
+univention-pkgdb (9.0.1-2) unstable; urgency=medium
+
+  * remove multifile entry from UCR specification, to only generate
+    files for the correct postgresql version (Bug #39595)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 06 Nov 2015 16:07:21 +0100
+
 univention-pkgdb (9.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

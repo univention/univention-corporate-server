@@ -30,6 +30,8 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry
 Breaks: univention-postgresql (< 8),
+ univention-bacula (<< 7.0.1-2),
+ univention-pkgdb (<< 9.0.1-2),
 Replaces: univention-postgresql (< 8),
 Description: UCS - PostgreSQL 9.1 configuration
  This package contains the configuration for the
@@ -47,6 +49,8 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry
 Breaks: univention-postgresql (< 8),
+ univention-bacula (<< 7.0.1-2),
+ univention-pkgdb (<< 9.0.1-2),
 Replaces: univention-postgresql (< 8),
 Description: UCS - PostgreSQL 8.4 configuration
  This package contains the configuration for the
