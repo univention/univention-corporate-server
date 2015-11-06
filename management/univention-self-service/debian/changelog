@@ -1,3 +1,10 @@
+univention-self-service (1.0.1-8) unstable; urgency=low
+
+  * Reset pwdChangeNextLogin after password change (Bug #37890)
+  * Don't catch unknown exceptions
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 06 Nov 2015 14:47:31 +0100
+
 univention-self-service (1.0.1-7) unstable; urgency=medium
 
   * Bug #39682: fix responses in error cases

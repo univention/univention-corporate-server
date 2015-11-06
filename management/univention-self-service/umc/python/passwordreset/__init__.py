@@ -72,10 +72,6 @@ def prevent_denial_of_service(func):
 		return func(self, request, *args, **kwargs)
 
 
-class ContactChangingFailed(UMC_Error):
-	status = 500
-
-
 class UnknownMethodError(UMC_Error):
 	status = 500
 
@@ -320,13 +316,14 @@ class Instance(Base):
 			user.modify()
 			return True
 		except Exception, e:
-			MODULE.info("set_contact_data(): failed to add contact: {}".format(traceback.format_exc()))
-			raise ContactChangingFailed(_("Failed to change contact information: {}").format(e))
+			MODULE.error("set_contact_data(): {}".format(traceback.format_exc()))
+			raise
 
 	def udm_set_password(self, username, password):
 		try:
 			user = self.get_udm_user(username=username, admin=True)
 			user["password"] = password
+			user["pwdChangeNextLogin"] = 0
 			user.modify()
 			return True
 		except udm_errors.pwToShort as ex:
