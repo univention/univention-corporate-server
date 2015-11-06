@@ -1,3 +1,9 @@
+univention-self-service (1.0.1-10) unstable; urgency=low
+
+  * Bug #39597: removed fuzzy in po file
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 06 Nov 2015 17:20:22 +0100
+
 univention-self-service (1.0.1-9) unstable; urgency=low
 
   * Bug #39597: added site where the user can set his contact information
