@@ -134,19 +134,13 @@ def execute_timing(description, allowedTime, callback, *args):
 	return True
 
 def count_ldap_users():
-	count = 0
 
-	udmsearch = subprocess.Popen("udm users/user list", shell=True, stdout=subprocess.PIPE)
-	udmresult = udmsearch.communicate()
-	for line in udmresult[0].split('\n'):
-		line = line.strip()
-		if line.startswith('DN: '):
-			count += 1
+	lo = univention.uldap.getMachineConnection()
+	res = lo.search('(&(uid=*)(!(uid=*$))(objectClass=sambaSamAccount))', attr=['dn'])
+	print 'INFO: Found %d OpenLDAP users' % len(res)
 
-	print 'INFO: Found %d OpenLDAP users' % count
-
-	return count
-
+	return len(res)
+	
 def count_samba4_users():
 	count = 0
 

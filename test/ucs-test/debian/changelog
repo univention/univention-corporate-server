@@ -1,3 +1,10 @@
+ucs-test (6.0.20-1) unstable; urgency=medium
+
+  * 02_import-performance: count LDAP users directly and increase the
+    UMC auth to 8 seconds (Bug #39759)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 07 Nov 2015 13:59:43 +0100
+
 ucs-test (6.0.19-1) unstable; urgency=medium
 
   * 01_base/45udm-cli: more cleanups (Bug #39100)
