@@ -171,8 +171,6 @@ define([
 			if (showLogin) {
 				this._resetForm();
 			}
-			// username is specified, we need to auto fill the username
-			attr.set('umcLoginUsername', 'value', tools.status('username'));
 			this._setFocus();
 			if (!has('touch')) {
 				if (showNewPassword) {
@@ -189,6 +187,8 @@ define([
 					attr.set(node, 'value', '');
 				});
 			});
+			// username is specified, we need to auto fill the username
+			attr.set('umcLoginUsername', 'value', tools.status('username'));
 		},
 
 		_watchFormSubmits: function() {
