@@ -351,44 +351,47 @@ define([
 
 		_updateModuleState: function() {
 			tools.defer(lang.hitch(this, function() {
-				this.set('moduleState', this.get('moduleState'));
+				when(this.get('moduleState')).then(lang.hitch(this, function(moduleState) {
+					this.set('moduleState', moduleState);
+				}));
 			}), 0);
 		},
 
 		_setModuleStateAttr: function(_state) {
-			var currentState = this.get('moduleState');
-			if (this._created && _state == this.moduleState || currentState == _state) {
-				this._set('moduleState', _state);
-				return;
-			}
-			var state = _state.split(':');
-			if (!state.length || (state.length == 1 && state[0] == '')) {
-				if (this._searchPage) {
-					this.selectChild(this._searchPage);
+			when(this.get('moduleState')).then(lang.hitch(this, function(currentState) {
+				if (this._created && _state == this.moduleState || currentState == _state) {
+					this._set('moduleState', _state);
+					return;
 				}
-			}
-			else {
-				var objType = state.shift();
-				var ldapName = state.length > 1 ? state : state[0];
-				this._loadUCRVariables().then(lang.hitch(this, function() {
-					this.createDetailPage(objType, ldapName);
-				}));
-			}
-			this._set('moduleState', _state);
+				var state = _state.split(':');
+				if (!state.length || (state.length == 1 && state[0] == '')) {
+					if (this._searchPage) {
+							this.closeDetailPage();
+					}
+				}
+				else {
+					var objType = state.shift();
+					var ldapName = state.length > 1 ? state : state[0];
+					this._loadUCRVariables().then(lang.hitch(this, function() {
+						this.createDetailPage(objType, ldapName);
+					}));
+				}
+				this._set('moduleState', _state);
+			}));
 		},
 
 		_getModuleStateAttr: function() {
-			var state = [];
-			if (this.selectedChildWidget && this.selectedChildWidget == this._detailPage) {
-				var objectType = this._detailPage.objectType;
-				var ldapName = this._detailPage.ldapName;
-				state = [objectType];
-				if (ldapName && !(ldapName instanceof Array)) {
-					state.push(ldapName);
+			if (this.selectedChildWidget != this._detailPage) {
+				// no detail page shown
+				return '';
+			};
+			return when(this._detailPage && this._detailPage.ldapName).then(lang.hitch(this, function(ldapName) {
+				if ('string' == typeof ldapName) {
+					// only handle single edits and ignore multi edits
+					return lang.replace('{0}:{1}', [this._detailPage.objectType, ldapName]);
 				}
-			}
-			return state.join(':');
-
+				return '';
+			}));
 		},
 
 		_ldapDN2TreePath: function( ldapDN ) {
@@ -1665,8 +1668,7 @@ define([
 			} else {
 				this.selectChild(this._detailPage);
 			}
-			this._detailPage.ready().then(lang.hitch(this, '_updateModuleState'), 
-			lang.hitch(this, function() {
+			this._detailPage.ready().then(null, lang.hitch(this, function() {
 				this.closeDetailPage();
 			}));
 

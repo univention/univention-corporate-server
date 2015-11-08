@@ -1,3 +1,11 @@
+univention-management-console-module-udm (6.0.7-1) unstable; urgency=medium
+
+  Bug #39033:
+  * Fix switching UDM objects via browser history
+  * Consider that an LDAP name may be a Deferred object and not a string
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 08 Nov 2015 03:26:54 +0100
+
 univention-management-console-module-udm (6.0.6-5) unstable; urgency=low
 
   * Bug #39234: added translation for extended attributes
