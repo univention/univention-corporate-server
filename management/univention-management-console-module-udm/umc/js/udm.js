@@ -345,7 +345,9 @@ define([
 
 			// watch the state of the currently focused page
 			this._loadUCRVariables().then(lang.hitch(this, function() {
-				this.watch('selectedChildWidget', lang.hitch(this, '_updateModuleState'));
+				this.watch('selectedChildWidget', lang.hitch(this, function(child) {
+					this._updateModuleState();
+				}));
 			}));
 		},
 

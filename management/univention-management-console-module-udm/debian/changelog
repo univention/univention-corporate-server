@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.7-2) unstable; urgency=medium
+
+  * Bug #39033: fix opening UDM objects directly via URI
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 08 Nov 2015 03:56:07 +0100
+
 univention-management-console-module-udm (6.0.7-1) unstable; urgency=medium
 
   Bug #39033:
