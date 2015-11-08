@@ -198,6 +198,9 @@
 					The dependency of <package>univention-dojo-dev</package> has changed to
 					<package>OpenJDK 7</package> (<u:bug>39572</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The integration of the browser history into UMC has been improved and added to UDM modules (<u:bug>39033</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
