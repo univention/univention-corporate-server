@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.59-1) unstable; urgency=medium
+
+  * Bug #39033: handle encoding problems with hashes on Firefox
+
+ -- Alexander Kläser <klaeser@univention.de>  Sun, 08 Nov 2015 03:25:50 +0100
+
 univention-management-console-frontend (5.0.58-3) unstable; urgency=medium
 
   * Bug #39784: don't reset the username field ever

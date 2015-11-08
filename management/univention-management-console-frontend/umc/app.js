@@ -94,7 +94,7 @@ define([
 	// cache UCR variables
 	var _ucr = {};
 	var _favoritesDisabled = false;
-	var _initialHash = hash();
+	var _initialHash = decodeURIComponent(hash());
 
 	var _hasFreeLicense = function() {
 		return _ucr['license/base'] == 'Free for personal use edition' || _ucr['license/base'] == 'UCS Core Edition';
@@ -1340,23 +1340,23 @@ define([
 
 		_getStateHash: function() {
 			var moduleTab = lang.getObject('_tabContainer.selectedChildWidget', false, this);
+			var state = '';
 
 			if (!moduleTab.isOverview) {
 				// module tab
-				return 'module=' + lang.replace('{id}:{flavor}:{index}:{state}', {
+				state = 'module=' + lang.replace('{id}:{flavor}:{index}:{state}', {
 					id: moduleTab.moduleID,
 					flavor: moduleTab.moduleFlavor || '',
 					index: this._getModuleTabIndex(moduleTab),
 					state: moduleTab.moduleState
 				});
 			}
-
-			if (moduleTab.isOverview && this.category) {
+			else if (moduleTab.isOverview && this.category) {
 				// overview tab with selected category
-				return 'category=' + this.category.id;
+				state = 'category=' + this.category.id;
 			}
 
-			return '';
+			return decodeURIComponent(state);
 		},
 
 		_parseModuleStateHash: function(hash) {
@@ -1378,7 +1378,8 @@ define([
 		_reModule: /^module=(.*)$/,
 		_lastStateHash: '',
 		_setupStateHashing: function() {
-			topic.subscribe('/dojo/hashchange', lang.hitch(this, function(hash) {
+			topic.subscribe('/dojo/hashchange', lang.hitch(this, function(_hash) {
+				var hash = decodeURIComponent(_hash);
 				if (this._getStateHash() == hash || this._lastStateHash == hash) {
 					// nothing to do
 					this._lastStateHash = hash;
