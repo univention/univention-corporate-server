@@ -1,3 +1,9 @@
+univention-management-console-module-udm (5.1.25-96) unstable; urgency=medium
+
+  * Bug #39779: Fix error when creating a share or group UDM object
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 09 Nov 2015 17:23:45 +0100
+
 univention-management-console-module-udm (5.1.25-95) unstable; urgency=medium
 
   Bug #39779:

@@ -1508,14 +1508,11 @@ define([
 				this.createDetailPage(options.objectType, undefined, options);
 			}));
 			this._newObjectDialog.on('Done', lang.hitch(this, function() {
-				this._ldapNameDeferred.resolve();
-				when(this._ldapNameDeferred).then(lang.hitch(this, function() {
-					if (this._newObjectDialog) {
-						this._newObjectDialog.destroyRecursive();
-						this._newObjectDialog = null;
-					}
-					this.selectChild(this._detailPage);
-				}));
+				if (this._newObjectDialog) {
+					this._newObjectDialog.destroyRecursive();
+					this._newObjectDialog = null;
+				}
+				this.selectChild(this._detailPage);
 			}));
 			this._newObjectDialog.on('hide', lang.hitch(this, function() {
 				this._newObjectDialog.destroyRecursive();
@@ -1548,19 +1545,19 @@ define([
 		},
 
 		_preloadDetailPage: function() {
+			this._ldapNameDeferred = new Deferred();
 			if (this.moduleFlavor != this._preloadedObjectType) {
 				// make sure that only users/user is preloaded
 				return;
 			}
 
-			this._ldapNameDeferred = new Deferred();
 			this._setDetailPage(
-					this._preloadedObjectType,
-					this._ldapNameDeferred,
-					/*newObjectOptions*/ null,
-					/*isClosable*/ false,
-					/*note*/ null
-				);
+				this._preloadedObjectType,
+				this._ldapNameDeferred,
+				/*newObjectOptions*/ null,
+				/*isClosable*/ false,
+				/*note*/ null
+			);
 		},
 
 		_setDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean*/ isClosable, /*String*/ note) {
@@ -1596,6 +1593,7 @@ define([
 				this._ldapNameDeferred.resolve(ldapName);
 			} else {
 				this._setDetailPage(objectType, ldapName, newObjOptions, isClosable, note);
+				this._ldapNameDeferred.resolve(null);
 			}
 
 			this._detailPage.on('closeTab', lang.hitch(this, 'closeDetailPage'));
