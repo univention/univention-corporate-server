@@ -18,7 +18,7 @@ Authentication request
 
 ::
 
-	POST URL:http://10.200.15.31/umcp/auth HTTP/1.1
+	POST URL:http://10.200.15.31/univention-management-console/auth HTTP/1.1
 
 ::
 
@@ -29,7 +29,7 @@ Request: search for users
 
 ::
 
-	POST URL:http://10.200.15.31/umcp/command/udm/query HTTP/1.1
+	POST URL:http://10.200.15.31/univention-management-console/command/udm/query HTTP/1.1
 
 ::
 
