@@ -72,7 +72,7 @@ define([
 					message = '';
 				}
 				this._requirePassword(message);
-				return this._password_required;
+				return this._password_required.promise;
 			}
 
 			dialog._loginDialog.updateForm(info);

@@ -491,7 +491,7 @@ define([
 							throw error;
 						}
 						return deferred.then(lang.hitch(this, function() {
-							return this.request.apply(this, [args]);
+							return this._request.apply(this, [args]);
 						}));
 					}));
 				}
