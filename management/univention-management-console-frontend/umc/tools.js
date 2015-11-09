@@ -192,7 +192,11 @@ define([
 				this._checkSessionTimer = new timing.Timer(30000);
 				this._checkSessionTimer.onTick = lang.hitch(this, function() {
 					// check whether session is still valid
-					this._checkSessionRequest = require('umc/auth').sessioninfo().otherwise(lang.hitch(this, function() {
+					this._checkSessionRequest = require('umc/auth').sessioninfo().otherwise(lang.hitch(this, function(error) {
+						if (tools.parseError(error).status !== 401) {
+							// ignore any other error than unauthenticated (e.g. not reachable, or UCS 4.0 webserver still running)
+							return;
+						}
 						this._checkSessionTimer.stop();
 						if (tools.status('loggingIn')) {
 							// login dialog is already running
@@ -213,7 +217,7 @@ define([
 						}));
 					}));
 					this._checkSessionRequest.always(lang.hitch(this, function() {
-						this,_checkSessionRequest = null;
+						this._checkSessionRequest = null;
 					}));
 				});
 			}
