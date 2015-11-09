@@ -1089,8 +1089,7 @@ class Instance(Base, ProgressMixin):
 				policy_module = UDM_Module(ioptions['policyType'])
 				policy_obj = _get_object(policy_dns[0] if policy_dns else None, policy_module)
 
-				if policy_dns and not policy_obj.exists() or (not policy_dns and not object_dn and not container_dn):
-					# a policy DN was provided which does not exists
+				if obj is None:
 					ret.append({})
 					continue
 

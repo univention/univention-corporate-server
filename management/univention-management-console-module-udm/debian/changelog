@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.8-1) unstable; urgency=medium
+
+  * Bug #37667: be more friendly on invalid object/policy request
+
+ -- Florian Best <best@univention.de>  Mon, 09 Nov 2015 11:25:50 +0100
+
 univention-management-console-module-udm (6.0.7-2) unstable; urgency=medium
 
   * Bug #39033: fix opening UDM objects directly via URI
