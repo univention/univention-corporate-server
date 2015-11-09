@@ -129,7 +129,7 @@ define([
 
 		// internal variables for preloading a DetailPage Bug# 38190
 		_ldapNameDeferred: null,
-		_defaultObjectType: 'users/user',
+		_preloadedObjectType: 'users/user',
 
 		// internal reference if Page is fully rendered
 		_pageRenderedDeferred: null,
@@ -1547,10 +1547,15 @@ define([
 			);
 		},
 
-		_preloadDetailPage: function(){
+		_preloadDetailPage: function() {
+			if (this.moduleFlavor != this._preloadedObjectType) {
+				// make sure that only users/user is preloaded
+				return;
+			}
+
 			this._ldapNameDeferred = new Deferred();
 			this._setDetailPage(
-					this._defaultObjectType,
+					this._preloadedObjectType,
 					this._ldapNameDeferred,
 					/*newObjectOptions*/ null,
 					/*isClosable*/ false,
@@ -1559,6 +1564,7 @@ define([
 		},
 
 		_setDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean*/ isClosable, /*String*/ note) {
+			this._destroyDetailPage();
 			this._detailPage = new DetailPage({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				addWarning: lang.hitch(this, 'addWarning'),
@@ -1585,7 +1591,8 @@ define([
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
 			// summary:
 			//		Creates and views the detail page for editing LDAP objects.
-			if(this._detailPage && this._defaultObjectType == objectType && !this._newObjectDialog){
+			if (this._detailPage && this._preloadedObjectType == this.moduleFlavor && ldapName && !(ldapName instanceof Array)) {
+				// use pre-rendered detail page when loading a (single) object
 				this._ldapNameDeferred.resolve(ldapName);
 			} else {
 				this._setDetailPage(objectType, ldapName, newObjOptions, isClosable, note);
@@ -1618,6 +1625,17 @@ define([
 			}));
 		},
 
+		_destroyDetailPage: function() {
+			if (this._detailPage) {
+				var oldDetailPage = this._detailPage;
+				this.removeChild(oldDetailPage);
+				this._detailPage = null;
+				tools.defer(function() {
+					oldDetailPage.destroyRecursive();
+				}, 10);
+			}
+		},
+
 		closeDetailPage: function() {
 			// summary:
 			//		Closes the detail page for editing LDAP objects.
@@ -1628,12 +1646,8 @@ define([
 				return;
 			}
 
+			this._destroyDetailPage();
 			this.selectChild(this._searchPage);
-			if (this._detailPage) {
-				this.removeChild(this._detailPage);
-				this._detailPage.destroyRecursive();
-				this._detailPage = null;
-			}
 			this._preloadDetailPage();
 			this.resetTitle();
 		},
