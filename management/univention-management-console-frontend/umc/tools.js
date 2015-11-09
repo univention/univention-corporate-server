@@ -222,6 +222,9 @@ define([
 		_reloadDialog: null,
 		_reloadDialogOpened: false,
 		askToReload: function() {
+			if (this.status('ignorePageReload')) {
+				return;
+			}
 			if (!this._reloadDialog) {
 				// The URL does not exists, so the symlink is deleted
 				this._reloadDialog = new ConfirmDialog({
