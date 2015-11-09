@@ -778,17 +778,25 @@ define([
 		_prepareIndividualProperties: function(properties) {
 			var deferred = new Deferred();
 			var activeDirectoryEnabled = this.active_directory_enabled();
-			if (!this.ldapName || !activeDirectoryEnabled) {
-				// new object / multiEdit...
+			if (!activeDirectoryEnabled) {
 				deferred.resolve(properties);
 				return deferred;
 			}
 
-			var isSyncedObject = function(obj) { return -1 !== obj.$flags$[0].indexOf('synced'); };
+			var _isSyncedObject = function(obj) {
+				return obj.$flags$.length && obj.$flags$[0].indexOf('synced') >= 0;
+			};
 
+			// the following checks are only necessary for the AD member mode
 			when(this.ldapName, lang.hitch(this, function(ldapName){
 				this.ldapName = ldapName;
-				var objects = this.ldapName;
+				if (!ldapName) {
+					// new object / multiEdit...
+					deferred.resolve(properties);
+					return;
+				}
+
+				var objects = ldapName;
 				if (!this._multiEdit) {
 					objects = [objects];
 				}
@@ -796,7 +804,7 @@ define([
 				all(array.map(objects, lang.hitch(this, function(dn) {
 					return this.moduleStore.get(dn);
 				}))).then(lang.hitch(this, function(objs) {
-					if (array.some(objs, isSyncedObject)) {
+					if (array.some(objs, _isSyncedObject)) {
 						properties = this._disableSyncedReadonlyProperties(properties);
 						this.isSyncedObject = true;
 					}

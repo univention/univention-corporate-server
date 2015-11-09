@@ -1,3 +1,15 @@
+univention-management-console-module-udm (6.0.9-1) unstable; urgency=medium
+
+  Bug #39779:
+  * Ignore pre-rendered detail page for multi-edit operations
+  * Only pre-render detail page for users/user flavor
+  * Make sure that a pre-rendered detail page is properly destroyed
+    (e.g., when creating a new user)
+  * Correct problems when creating a new object in AD member mode
+  * Remove margin below search form
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 09 Nov 2015 16:04:19 +0100
+
 univention-management-console-module-udm (6.0.8-1) unstable; urgency=medium
 
   * Bug #37667: be more friendly on invalid object/policy request

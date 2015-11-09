@@ -1,3 +1,7 @@
+.umc .umcModuleUDM .umcPageNav {
+	margin-bottom: 0em;
+}
+
 .umc .umcUDMSearchForm .umcLabelPane.umcSearchFormElementBeforeSubmitButton {
 	margin-right: -6.5em;
 	padding-right: 6.5em;
