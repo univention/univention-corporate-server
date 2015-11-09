@@ -393,8 +393,9 @@ class Register(CredentialsAction):
 		for key in ucr.iterkeys():
 			if key.startswith('appcenter/apps/%s/' % app.id):
 				updates[key] = None
-			if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
-				updates[key] = None
+			if app.ucs_overview_category is not False:
+				if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
+					updates[key] = None
 			if re.match('appreport/%s/' % app.id, key):
 				updates[key] = None
 		if app.docker:

@@ -1,3 +1,10 @@
+univention-appcenter (5.0.17-3) unstable; urgency=medium
+
+  * Bug #39718: Do not delete ucs/overview variables if ini does not allow that
+  * Bug #39829: Disable service.info integration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Nov 2015 16:35:55 +0100
+
 univention-appcenter (5.0.17-2) unstable; urgency=medium
 
   * Bug #39822: Do not create service entries for non-docker apps

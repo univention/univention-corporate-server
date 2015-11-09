@@ -302,29 +302,22 @@ class AppLocalisedListAttribute(AppListAttribute):
 		super(AppLocalisedListAttribute, self).test_choices(value)
 
 
-class AppAttributeOrFalse(AppBooleanAttribute):
-	def parse(self, value):
-		try:
-			boolean_value = super(AppAttributeOrFalse, self).parse(value)
-		except ValueError:
-			if value:
-				return value
-			return False
-		else:
-			if boolean_value is True:
-				return value
-			return boolean_value
+class AppAttributeOrFalseOrNone(AppBooleanAttribute):
+	def __init__(self, required=False, default=None, regex=None, choices=None, escape=True, localisable=False, localisable_by_file=None, strict=True):
+		choices = (choices or [])[:]
+		choices.extend([None, False])
+		super(AppAttributeOrFalseOrNone, self).__init__(required, default, regex, choices, escape, localisable, localisable_by_file, strict)
 
-	def test_choices(self, value):
-		if value is False:
-			return
-		super(AppAttributeOrFalse, self).test_choices(value)
+	def parse(self, value):
+		if value == 'False':
+			value = False
+		elif value == 'None':
+			value = None
+		return value
 
 	def test_type(self, value, instance_type):
-		try:
-			super(AppAttributeOrFalse, self).test_type(value, bool)
-		except ValueError:
-			super(AppBooleanAttribute, self).test_type(value, None)
+		if value is not False and value is not None:
+			super(AppBooleanAttribute, self).test_type(value, basestring)
 
 
 class AppFileAttribute(AppAttribute):
@@ -402,7 +395,7 @@ class App(object):
 	web_interface_port_http = AppIntAttribute(default=80)
 	web_interface_port_https = AppIntAttribute(default=443)
 	auto_mod_proxy = AppBooleanAttribute(default=True)
-	ucs_overview_category = AppAttributeOrFalse(default='service', choices=['admin', 'service'])
+	ucs_overview_category = AppAttributeOrFalseOrNone(default='service', choices=['admin', 'service'])
 
 	conflicted_apps = AppListAttribute()
 	required_apps = AppListAttribute()
