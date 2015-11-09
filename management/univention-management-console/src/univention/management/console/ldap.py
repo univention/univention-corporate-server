@@ -107,6 +107,9 @@ class LDAP(object):
 			return ldap_connection, ldap_position
 		return connection()
 
+	def reset_cache(self):
+		self.__ldap_connections.clear()
+
 	def _wrapped(self, func, hash_, connection, loarg, poarg):
 		def setter(conn):
 			if conn is None:
@@ -150,4 +153,5 @@ backup_connection = _LDAP.backup_connection
 get_backup_connection = _LDAP.get_backup_connection
 user_connection = _LDAP.user_connection
 get_user_connection = _LDAP.get_user_connection
+reset_cache = _LDAP.reset_cache
 del _LDAP
