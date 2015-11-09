@@ -1,3 +1,9 @@
+univention-management-console-frontend (4.1.106-95) unstable; urgency=medium
+
+  * Bug #39578: make it possible to prevent page reload dialog
+
+ -- Florian Best <best@univention.de>  Thu, 29 Oct 2015 15:25:09 +0100
+
 univention-management-console-frontend (4.1.106-94) unstable; urgency=medium
 
   * Bug #39319: Version bump
