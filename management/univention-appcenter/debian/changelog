@@ -1,3 +1,10 @@
+univention-appcenter (5.0.17-2) unstable; urgency=medium
+
+  * Bug #39822: Do not create service entries for non-docker apps
+  * Bug #39820: Register apps in join script noninterractively
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 09 Nov 2015 15:04:06 +0100
+
 univention-appcenter (5.0.17-1) unstable; urgency=medium
 
   * Bug #39525: incorporate component_id into SVG icon files

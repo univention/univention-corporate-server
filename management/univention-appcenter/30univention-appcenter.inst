@@ -49,7 +49,22 @@ ucs_registerLDAPExtension "$@" \
 	--acl /usr/share/univention-appcenter/66univention-appcenter_app.acl \
 	--udm_module /usr/share/univention-appcenter/app.py || die
 
-univention-app register
+ARGS="$@"
+getarg() {
+	local found=0
+	for arg in $ARGS; do
+		if [ "$found" -eq 1 ]; then
+			echo "$arg"
+			break
+		fi
+		if [ "$arg" = "$1" ]; then
+			found=1
+		fi
+	done
+}
+username="$(getarg --binddn | sed -e 's/uid=//' -e 's/,.*//')"
+password="$(getarg --bindpwd)"
+univention-app register --noninteractive --username="$username" --password="$password"
 
 joinscript_save_current_version
 
