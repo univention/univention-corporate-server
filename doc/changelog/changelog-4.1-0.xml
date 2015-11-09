@@ -201,6 +201,9 @@
 				<listitem><simpara>
 					The integration of the browser history into UMC has been improved and added to UDM modules (<u:bug>39033</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Univention Management Console login is now extendable to support authentication via a one time password (<u:bug>39611</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
