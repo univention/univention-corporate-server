@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-management-console-frontend
+fix: 4.1.106-95.1185.201511091436
+version: [3]
+desc: |
+  This update addresses the following issues:
+  * If a restart of the UMC components is required the dialog to ask for a
+    page reload doesn't pop up.
+bug: [39578]
