@@ -202,7 +202,16 @@ define([
 					data: data
 				}).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
-					lib.showLastMessage(data.result);
+					var callback = function() {
+						lib.showLastMessage({
+							content: data.message,
+							'class': '.success'
+						});
+					};
+					lib.wipeOutNode({
+						node: dom.byId('form'),
+						callback: callback
+					});
 				}), lang.hitch(this, function(err){
 					var message = err.name + ": " + err.message;
 					if (err.response && err.response.data && err.response.data.message) {

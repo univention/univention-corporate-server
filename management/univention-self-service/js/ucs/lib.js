@@ -38,6 +38,10 @@ define([
 ], function(lang, fx, dom, domGeom, put, _) {
 
 	return {
+		getCurrentLanguageQuery: function() {
+			return '?lang=' + (getQuery('lang') || 'en-US');
+		},
+
 		showMessage: function(msg) {
 			var targetNode = msg.targetNode || dom.byId("content");
 			var msgNode = dom.byId('msg');
@@ -83,9 +87,9 @@ define([
 				
 				var redirectToLabel = redirectToURLLabel || '';
 				if (redirectToLabel) {
-					redirectToLabel = "to '" + redirectToLabel + "'";
+					redirectToLabel = _("to '") + redirectToLabel + "'";
 				}
-				message += lang.replace(_("</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> second(s).</div>", [redirectToLabel, timer])); 
+				message += lang.replace(_("</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> second(s).</div>", [redirectToLabel, timer]));
 				var redirectInterval = setInterval(function() {
 					timer--;
 					if (timer === 0) {
@@ -96,7 +100,7 @@ define([
 					redirectTimerNode.innerHTML = timer;
 				}, 1000);
 			} else {
-				message += _("</br><a href='/'>Back to the overview.</a>");
+				message += lang.replace(_("</br><a href='/{0}'>Back to the overview.</a>", [this.getCurrentLanguageQuery()]));
 			}
 
 			return message;

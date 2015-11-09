@@ -45,7 +45,7 @@ define([
 	return {
 		_createTitle: function() {
 			var title = _('Change Password');
-			var siteDescription = _('On this page you can change your password. If you want to reset your password instead use this link to the <a href="/univention-self-service/#passwordreset">password reset</a> page.');
+			var siteDescription = lang.replace(_('On this page you can change your password. If you want to reset your password instead use this link to the <a href="/univention-self-service/{0}#passwordreset">password reset</a> page.', [lib.getCurrentLanguageQuery()]));
 			document.title = title;
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', title);
@@ -61,7 +61,7 @@ define([
 		},
 
 		_getFormNode: function() {
-			var formNode = put('div');
+			var formNode = put('div[style="overflow: hidden;"]');
 			put(formNode, 'p > b', _('Please provide the required data to change your password.'));
 
 			// create input field for username
@@ -158,7 +158,17 @@ define([
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
-					lib.showLastMessage({content: data.message, 'class': '.success'});
+					lib._removeMessage();
+					var callback = function() {
+						lib.showLastMessage({
+							content: data.message,
+							'class': '.success'
+						});
+					};
+					lib.wipeOutNode({
+						node: dom.byId('form'),
+						callback: callback
+					});
 					this._clearAllInputFields();
 				}), lang.hitch(this, function(err) {
 					var message = err.name + ": " + err.message;

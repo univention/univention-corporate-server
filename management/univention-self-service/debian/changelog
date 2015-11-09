@@ -1,3 +1,9 @@
+univention-self-service (1.0.1-12) unstable; urgency=low
+
+  * Bug #39597: Extended some links by the language query string
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 09 Nov 2015 14:41:17 +0100
+
 univention-self-service (1.0.1-11) unstable; urgency=low
 
   * Bug #39597: include dojo.hash to reload the page on hashChanged

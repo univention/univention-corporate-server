@@ -76,7 +76,8 @@ univention-config-registry set \
 	"ucs/web/overview/entries/service/passwordreset/description/de=Passwort Reset" \
 	"ucs/web/overview/entries/service/passwordreset/label=Password Reset" \
 	"ucs/web/overview/entries/service/passwordreset/label/de=Passwort Reset" \
-	"ucs/web/overview/entries/service/passwordreset/link=/univention-self-service/#passwordreset" \
+	"ucs/web/overview/entries/service/passwordreset/link=/univention-self-service/?lang=en-US#passwordreset" \
+	"ucs/web/overview/entries/service/passwordreset/link/de=/univention-self-service/?lang=de-DE#passwordreset" \
 	"ucs/web/overview/entries/service/passwordreset/port_http=" \
 	"ucs/web/overview/entries/service/passwordreset/port_https=443"
 
@@ -86,7 +87,8 @@ univention-config-registry set \
 	"ucs/web/overview/entries/service/passwordchange/description/de=Passwort ändern" \
 	"ucs/web/overview/entries/service/passwordchange/label=Change Password" \
 	"ucs/web/overview/entries/service/passwordchange/label/de=Passwort ändern" \
-	"ucs/web/overview/entries/service/passwordchange/link=/univention-self-service/#passwordchange" \
+	"ucs/web/overview/entries/service/passwordchange/link=/univention-self-service/?lang=en-US#passwordchange" \
+	"ucs/web/overview/entries/service/passwordchange/link/de=/univention-self-service/?lang=de-DE#passwordchange" \
 	"ucs/web/overview/entries/service/passwordchange/port_http=" \
 	"ucs/web/overview/entries/service/passwordchange/port_https=443"
 

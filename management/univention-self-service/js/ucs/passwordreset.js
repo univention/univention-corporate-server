@@ -99,7 +99,7 @@ define([
 			this.contactNode = put(formNode, 'div.step');
 			put(this.contactNode, 'p > b', _('Provide your contact information.'));
 			put(this.contactNode, 'p', {
-				innerHTML: _('Please click the following link to <a href="/univention-self-service/#setcontactinformation">change your contact information</a> for resetting the password in the future.')
+				innerHTML: lang.replace(_('Please click the following link to <a href="/univention-self-service/{0}#setcontactinformation">change your contact information</a> for resetting the password in the future.', [lib.getCurrentLanguageQuery()]))
 			});
 
 			// step 2 token
