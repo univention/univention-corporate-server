@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-3
+src: univention-management-console-module-udm
+fix: 5.1.25-95.627.201511091610
+version: [3]
+desc: |
+  This update corrects problems with multi-edit operations as well as create/
+  edit operations for UCS systems that have joined an existing AD domain.
+bug: [39779]
