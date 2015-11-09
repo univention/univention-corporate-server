@@ -93,8 +93,8 @@ fi
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	# Deactivate app center component if present
 	if is_ucr_true repository/online/component/simplesamlphp_20140304; then
-		ucr set repository/online/component/simplesamlphp_20140304=disabled
-		/usr/sbin/univention-register-apps
+		ucr set repository/online/component/simplesamlphp_20140304=disabled >>"$UPDATER_LOG" 2>&1
+		/usr/sbin/univention-register-apps >>"$UPDATER_LOG" 2>&1
 	fi
 	install univention-saml
 fi

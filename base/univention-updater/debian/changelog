@@ -1,3 +1,9 @@
+univention-updater (11.0.4-4) unstable; urgency=medium
+
+  * Bug #38881: Redirect output to updater.log
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 09 Nov 2015 09:14:33 +0100
+
 univention-updater (11.0.4-3) unstable; urgency=medium
 
   * Bug #39082: Search for new upgrades
