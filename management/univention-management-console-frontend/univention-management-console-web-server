@@ -651,7 +651,7 @@ class Ressource(object):
 	def check_saml_session_validity(self):
 		user = self.get_user()
 		if user and user.saml is not None and user.time_remaining < 1:
-			raise UMC_HTTPError(UNAUTHORIZED, body={'saml_renewal_required': True})
+			raise UMC_HTTPError(UNAUTHORIZED)
 
 	def get_session(self):
 		return UMCP_Dispatcher.sessions.get(self.get_session_id())

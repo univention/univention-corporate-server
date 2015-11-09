@@ -66,9 +66,6 @@ define([
 			var message = info.message;
 			var result = info.result || {};
 
-			if (result.saml_renewal_required) {
-				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(dialog, 'login'));
-			}
 			if (this._password_required || result.password_required) {
 				if (!this._password_required) {
 					this._password_required = new Deferred();
@@ -79,6 +76,9 @@ define([
 			}
 
 			dialog._loginDialog.updateForm(info);
+			if (tools.status('authType') === 'SAML') {
+				return this.passiveSingleSignOn({ timeout: 15000 }).otherwise(lang.hitch(dialog, 'login'));
+			}
 			return dialog.login();
 		},
 
