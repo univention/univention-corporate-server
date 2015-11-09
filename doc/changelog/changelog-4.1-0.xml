@@ -355,7 +355,7 @@
 			<title>Policies</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 A traceback has been fixed when adding a objects without having policies referenced (<u:bug>37667</u:bug>).
+					 When adding an object without policies referenced, no traceback occurs anymore (<u:bug>37667</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
