@@ -45,9 +45,11 @@ define([
 	return {
 		_createTitle: function() {
 			var title = _('Change Password');
+			var siteDescription = _('On this page you can change your password. If you want to reset your password instead use this link to the <a href="/univention-self-service/#passwordreset">password reset</a> page.');
 			document.title = title;
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', title);
+			put(titleNode, 'p', { innerHTML : siteDescription });
 			put(titleNode, '!.dijitHidden');
 		},
 
@@ -60,7 +62,7 @@ define([
 
 		_getFormNode: function() {
 			var formNode = put('div');
-			put(formNode, 'p', _('Please provide the required data to change your password.'));
+			put(formNode, 'p > b', _('Please provide the required data to change your password.'));
 
 			// create input field for username
 			this._username = new TextBox({
@@ -151,11 +153,12 @@ define([
 				xhr.post('passwordchange/', {
 					handleAs: 'json',
 					headers: {
-						'Content-Type': 'application/json'
+						'Content-Type': 'application/json',
+						'Accept-Language': getQuery('lang') || 'en-US'
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
-					lib.showMessage({content: data.message, 'class': '.success'});
+					lib.showLastMessage({content: data.message, 'class': '.success'});
 					this._clearAllInputFields();
 				}), lang.hitch(this, function(err) {
 					var message = err.name + ": " + err.message;

@@ -183,7 +183,7 @@ class Instance(Base):
 					raise UMC_Error(_("Token for user '{}' has already been sent.").format(username), status=200)
 				else:
 					# replace with fresh token
-					MODULE.info("send_token(): Updating token for user '{}'...").format(username)
+					MODULE.info("send_token(): Updating token for user '{}'...".format(username))
 					self.db.update_token(username, method, token)
 			else:
 				# store a new token

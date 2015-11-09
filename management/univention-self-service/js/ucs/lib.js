@@ -79,7 +79,7 @@ define([
 		_prepareLastMessage: function(msg) {
 			var message = msg.content;
 			if (redirectToURL) {
-				var timer = 5;
+				var timer = msg.timer || 5;
 				
 				var redirectToLabel = redirectToURLLabel || '';
 				if (redirectToLabel) {
@@ -109,7 +109,7 @@ define([
 			}
 		},
 
-		fadeInNode: function(conf) {
+		wipeInNode: function(conf) {
 			var endHeight = domGeom.getMarginBox(conf.node).h;
 			fx.animateProperty({
 				node: conf.node,
@@ -120,7 +120,7 @@ define([
 			}).play();
 		},
 
-		fadeOutNode: function(conf) {
+		wipeOutNode: function(conf) {
 			var currentHeight = domGeom.getMarginBox(conf.node).h;
 			fx.animateProperty({
 				node: conf.node,

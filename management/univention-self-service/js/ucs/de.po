@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-11-06 06:05+0100\n"
+"POT-Creation-Date: 2015-11-09 12:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,166 +12,187 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: js/ucs/lib.js:99
+#: lib.js:99
 msgid "</br><a href='/'>Back to the overview.</a>"
-msgstr ""
+msgstr "</br><a href='/'>Zurück zur Übersicht.</a>"
 
-#: js/ucs/lib.js:88
+#: lib.js:88
 msgid ""
 "</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> "
 "second(s).</div>"
 msgstr ""
+"</br><div>Sie werden {0} in <a id='redirectTimer'> {1} </a> Sekunden "
+"weitergeleitet.</div>"
 
-#: js/ucs/setcontactinformation.js:127
+#: setcontactinformation.js:128
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
-#: js/ucs/passwordchange.js:47
+#: passwordchange.js:47
 msgid "Change Password"
 msgstr "Passwort ändern"
 
-#: js/ucs/passwordchange.js:120 js/ucs/passwordreset.js:161
+#: passwordchange.js:122 passwordreset.js:170
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: js/ucs/passwordreset.js:91
+#: passwordreset.js:93
 msgid "Confirm username"
 msgstr "Benutzername bestätigen"
 
-#: js/ucs/setcontactinformation.js:53
+#: setcontactinformation.js:53
 msgid "Contact information for Password reset"
-msgstr ""
+msgstr "Kontaktinformationen zum Zurücksetzen des Passworts"
 
-#: js/ucs/setcontactinformation.js:117
+#: setcontactinformation.js:118
 msgid ""
 "Feel free to change your contact information. Press \"Save\" to confirm your "
 "changes."
 msgstr ""
+"Ändern Sie ihre Kontaktinformationen. Drücken Sie anschließend den "
+"\"Speichern\" Button, um Ihre Änderungen zu bestätigen."
 
-#: js/ucs/i18n.js:96
+#: i18n.js:96
 #, python-format
 msgid "Hello %(last)s, %(first)s!"
-msgstr ""
+msgstr "Hallo %(last)s, %(first)s!"
 
-#: js/ucs/i18n.js:95
+#: i18n.js:95
 #, python-format
 msgid "Hello %s %s!"
-msgstr ""
+msgstr "Hallo %s %s!"
 
-#: js/ucs/passwordselfservice.js:67
-msgid "I have forgotten my password."
-msgstr "Ändern Sie ihr Passwort"
-
-#: js/ucs/passwordselfservice.js:63
-msgid "I want to change my (expired) password."
-msgstr ""
-
-#: js/ucs/passwordselfservice.js:71
-msgid "I would like to set my contact information for resetting my password."
-msgstr ""
-
-#: js/ucs/setcontactinformation.js:69
-msgid ""
-"If you want to reset your password in the future it is necessary to provide "
-"contact information. This information are required to automatically receive "
-"a token for setting a new password."
-msgstr ""
-
-#: js/ucs/LanguagesDropDown.js:89
+#: LanguagesDropDown.js:89
 msgid "Language"
 msgstr "Sprache"
 
-#: js/ucs/passwordchange.js:92 js/ucs/passwordreset.js:128
+#: passwordchange.js:94 passwordreset.js:137
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: js/ucs/passwordchange.js:105 js/ucs/passwordreset.js:144
+#: passwordchange.js:107 passwordreset.js:153
 msgid "New password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: js/ucs/passwordchange.js:79
+#: passwordchange.js:81
 msgid "Old password"
 msgstr "Altes Passwort"
 
-#: js/ucs/setcontactinformation.js:93
+#: passwordchange.js:48
+msgid ""
+"On this page you can change your password. If you want to reset your "
+"password instead use this link to the <a href=\"/univention-self-service/"
+"#passwordreset\">password reset</a> page."
+msgstr ""
+
+#: passwordreset.js:54
+msgid ""
+"On this page you can reset your password or provide contact information for "
+"setting a new password in the future."
+msgstr ""
+"Auf dieser Seite können Sie Ihr Passwort zurücksetzen oder Ihre "
+"Kontaktinformationen angeben, um zukünftig Ihr Passwort zurücksetzen zu "
+"können."
+
+#: setcontactinformation.js:54
+msgid ""
+"On this page you can set your contact information to reset your password in "
+"the future. This information are required to receive a token that is "
+"necessary to renew the password."
+msgstr ""
+"Auf dieser Seite können Sie Ihre Kontaktinformationen angeben. Diese "
+"Informationen werden benötigt, um Ihnen einen Token (Sicherheitsschlüssel) "
+"zuzusenden. Nur mit Hilfe eines Tokens ist es möglich das Passwort "
+"zurück zu setzen."
+
+#: setcontactinformation.js:94
 msgid "Password"
 msgstr "Passwort"
 
-#: js/ucs/passwordreset.js:53
+#: passwordreset.js:53
 msgid "Password Reset"
 msgstr "Passwort zurücksetzen"
 
-#: js/ucs/passwordselfservice.js:47
-msgid "Password self-service"
-msgstr "Passwort zurücksetzen"
-
-#: js/ucs/passwordreset.js:98
+#: passwordreset.js:107
 msgid "Please choose a method to receive the token."
-msgstr "Bitte wählen Sie eine Methode, mit der Sie einen token erhalten wollen."
+msgstr ""
+"Bitte wählen Sie eine Benachrichtigungsart, über die Sie einen Token "
+"(Sicherheitsschlüssel) erhalten wollen."
 
-#: js/ucs/passwordreset.js:110
+#: passwordreset.js:102
+msgid ""
+"Please click the following link to <a href=\"/univention-self-service/"
+"#setcontactinformation\">change your contact information</a> for resetting "
+"the password in the future."
+msgstr ""
+"Bitte nutzen Sie den folgenden Link, um Ihre <a href=\"/univention-self-"
+"service/#setcontactinformation\">  Kontaktinformationen zu ändern</a> damit "
+"Sie zukünftig Ihr Passwort zurücksetzen können."
+
+#: passwordreset.js:119
 msgid "Please enter the token and your new password."
-msgstr "Bitte geben sie den token und ein neues Passwort ein."
+msgstr ""
+"Bitte geben sie den Token (Sicherheitsschlüssel) und ein neues Passwort ein."
 
-#: js/ucs/setcontactinformation.js:73
+#: setcontactinformation.js:74
 msgid ""
 "Please enter your username and password to display your contact information."
 msgstr ""
+"Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein, um Ihre "
+"Kontaktinformationen einsehen und ändern zu können."
 
-#: js/ucs/passwordreset.js:73
-msgid "Please enter your username."
-msgstr "Bitte geben Sie Ihren Benutzernamen ein."
-
-#: js/ucs/passwordchange.js:63
+#: passwordchange.js:65
 msgid "Please provide the required data to change your password."
-msgstr ""
-"Bitte geben Sie die notwendigen Daten an, um Ihr Passwort zurückzusetzen."
+msgstr "Bitte geben Sie die notwendigen Daten ein, um Ihr Passwort zu ändern."
 
-#: js/ucs/passwordreset.js:103
+#: passwordreset.js:75
+msgid ""
+"Please provide your username to receive a token that is required to reset "
+"your password."
+msgstr ""
+"Bitte geben Sie Ihren Benutzernamen ein. Sie erhalten anschließend einen "
+"Token (Sicherheitsschlüssel) mit dem Sie Ihr Passwort zurücksetzen können."
+
+#: passwordreset.js:100
+msgid "Provide your contact information."
+msgstr "Geben Sie Ihre Kontaktinformationen an."
+
+#: passwordreset.js:112
 msgid "Request token"
 msgstr "Token anfordern"
 
-#: js/ucs/setcontactinformation.js:122
+#: passwordreset.js:74
+msgid "Reset your password."
+msgstr "Passwort zurücksetzen."
+
+#: setcontactinformation.js:123
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
-#: js/ucs/setcontactinformation.js:110
+#: setcontactinformation.js:111
 msgid "Show contact information"
-msgstr ""
+msgstr "Kontaktinformationen anzeigen"
 
-#: js/ucs/passwordchange.js:111 js/ucs/passwordreset.js:150
+#: passwordchange.js:113 passwordreset.js:159
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
-#: js/ucs/i18n.js:94
+#: i18n.js:94
 #, python-format
 msgid "The total cost was %.2f EUR!"
 msgstr ""
 
-#: js/ucs/passwordreset.js:69
-msgid ""
-"To set a new password you will need a token which will be sent to you after "
-"providing your username."
-msgstr ""
-
-#: js/ucs/passwordreset.js:113
+#: passwordreset.js:122
 msgid "Token"
-msgstr "Token"
+msgstr "Token (Sicherheitsschlüssel)"
 
-#: js/ucs/i18n.js:93
+#: i18n.js:93
 msgid "Translate me!"
 msgstr ""
 
-#: js/ucs/passwordchange.js:67 js/ucs/passwordreset.js:76
-#: js/ucs/setcontactinformation.js:77
+#: setcontactinformation.js:78 passwordchange.js:69 passwordreset.js:78
 msgid "Username"
 msgstr "Benutzername"
-
-#: js/ucs/passwordselfservice.js:48
-msgid ""
-"Welcome to the Password self-service. On this site you can reset and change "
-"your password. Please select an option to get more information."
-msgstr ""
 
 #~ msgid ""
 #~ "A license file has been sent to <strong id=\"email-address\">{0}</"
@@ -215,6 +236,18 @@ msgstr ""
 
 #~ msgid "Error "
 #~ msgstr "Fehler "
+
+#~ msgid "I have forgotten my password."
+#~ msgstr "Ich habe mein Passwort vergessen."
+
+#~ msgid "I want to change my (expired) password."
+#~ msgstr "Ich will mein (abgelaufenes) Passwort ändern."
+
+#~ msgid ""
+#~ "I would like to set my contact information for resetting my password."
+#~ msgstr ""
+#~ "Ich möchte meine Kontaktinformationen ändern, um zukünftig mein Password  "
+#~ "zurücksetzen zu können."
 
 #~ msgid ""
 #~ "If you already have a license file you can <a href=\"#upload\">skip this "
@@ -260,6 +293,9 @@ msgstr ""
 #~ msgid "No valid email address."
 #~ msgstr "Keine gültige E-Mail-Adresse."
 
+#~ msgid "Password self-service"
+#~ msgstr "Passwort verwalten"
+
 #~ msgid ""
 #~ "Please enter a valid email address in order to activate {appliance_name} "
 #~ "Univention App. The activation is mandatory to deploy the system. In the "
@@ -271,6 +307,9 @@ msgstr ""
 #~ "System in Gebrauch zu nehmen. Im nächsten Schritt können sie die "
 #~ "Lizenzdatei hochladen, die an Ihre E-Mail-Adresse gesendet wurde."
 
+#~ msgid "Please enter your username."
+#~ msgstr "Bitte geben Sie Ihren Benutzernamen ein."
+
 #~ msgid "The following error occurred:"
 #~ msgstr "Der folgende Fehler trat auf:"
 
@@ -279,6 +318,14 @@ msgstr ""
 
 #~ msgid "Upload license file"
 #~ msgstr "Lizenzdatei hochladen"
+
+#~ msgid ""
+#~ "Welcome to the Password self-service. On this site you can reset and "
+#~ "change your password. Please select an option to get more information."
+#~ msgstr ""
+#~ "Willkommen zur Passwortverwaltung. Auf dieser Seite können Sie Ihr "
+#~ "Passwort  zurücksetzen oder ändern. Bitte wählen Sie eine Option, um mehr "
+#~ "Informationen  zu erhalten."
 
 #~ msgid "You have got mail!"
 #~ msgstr "Sie haben eine neue E-Mail!"

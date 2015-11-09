@@ -51,9 +51,11 @@ define([
 		
 		_createTitle: function() {
 			var title = _('Contact information for Password reset');
+			var siteDescription = _('On this page you can set your contact information to reset your password in the future. This information are required to receive a token that is necessary to renew the password.');
 			document.title = title;
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', title);
+			put(titleNode, 'p', siteDescription);
 			put(titleNode, '!.dijitHidden');
 		},
 
@@ -66,7 +68,6 @@ define([
 
 		_getFormNode: function() {
 			var formNode = put('div[style="overflow: hidden;"]');
-			put(formNode, 'p', _('If you want to reset your password in the future it is necessary to provide contact information. This information are required to automatically receive a token for setting a new password.'));
 
 			// step 1 username and password
 			this.usernameNode = put(formNode, 'div.step');
@@ -137,50 +138,41 @@ define([
 			this._password.set('disabled', true);
 			this._showContactInformationButton.set('disabled', true);
 
-			var validCredentials = 	this._username.isValid() && this._password.isValid();
+			var validCredentials = this._username.isValid() && this._password.isValid();
 			if (validCredentials) {
-				this._buildContactInformation([{
-					label: 'Email',
-					id: 'email',
-					value: 'keiser@univention.de'
-				}, {
-					label: 'SMS',
-					id: 'sms',
-					value: '0815'
-				}]);
-				//data = json.stringify({
-				//	'username': this._username.get('value'),
-				//	'password': this._password.get('value')
-				//});
-				//xhr.post('passwordreset/get_contact', {
-				//	handleAs: 'json',
-				//	headers: {
-				//		'Content-Type': 'application/json'
-				//	},
-				//	data: data
-				//}).then(lang.hitch(this, function(data) {
-				//	lib._removeMessage();
-				//	this._buildContactInformation(data.result);
-				//}), lang.hitch(this, function(err){
-				//	var message = err.name + ": " + err.message;
-				//	if (err.response && err.response.data && err.response.data.message) {
-				//		message = err.response.data.message;
-				//	}
-				//	lib.showMessage({
-				//		content: message,
-				//		targetNode: this.usernameNode,
-				//		'class': '.error'
-				//	});
-				//	this._showContactInformationButton.set('disabled', false);
-				//	this._username.set('disabled', false);
-				//	this._password.set('disabled', false);
-				//}));
+				data = json.stringify({
+					'username': this._username.get('value'),
+					'password': this._password.get('value')
+				});
+				xhr.post('passwordreset/get_contact', {
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept-Language': getQuery('lang') || 'en-US'
+					},
+					data: data
+				}).then(lang.hitch(this, function(data) {
+					lib._removeMessage();
+					this._buildContactInformation(data.result);
+				}), lang.hitch(this, function(err){
+					var message = err.name + ": " + err.message;
+					if (err.response && err.response.data && err.response.data.message) {
+						message = err.response.data.message;
+					}
+					lib.showMessage({
+						content: message,
+						targetNode: this.usernameNode,
+						'class': '.error'
+					});
+					this._showContactInformationButton.set('disabled', false);
+					this._username.set('disabled', false);
+					this._password.set('disabled', false);
+				}));
 			} else {
 				this._showContactInformationButton.set('disabled', false);
 				this._username.set('disabled', false);
 				this._password.set('disabled', false);
 			}
-
 		},
 
 		_buildContactInformation: function(options) {
@@ -196,7 +188,46 @@ define([
 		},
 
 		_setContactInformation: function() {
+			this._cancelButton.set('disabled', true);
+			this._saveButton.set('disabled', true);
+			// also alle Input fields
+			// does isValid make Sense?
+			data = this._getNewContactInformation();
+			xhr.post('passwordreset/set_contact', {
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept-Language': getQuery('lang') || 'en-US'
+					},
+					data: data
+				}).then(lang.hitch(this, function(data) {
+					lib._removeMessage();
+					lib.showLastMessage(data.result);
+				}), lang.hitch(this, function(err){
+					var message = err.name + ": " + err.message;
+					if (err.response && err.response.data && err.response.data.message) {
+						message = err.response.data.message;
+					}
+					lib.showMessage({
+						content: message,
+						targetNode: this.contactInformationNode,
+						'class': '.error'
+					});
+					this._cancelButton.set('disabled', false);
+					this._saveButton.set('disabled', false);
+				}));
+		},
 
+		_getNewContactInformation: function() {
+			var contactInformation = {
+				'username': this._username.get('value'),
+				'password': this._password.get('value')
+			};
+			array.forEach(this._contactInformation.getChildren(), function(child) {
+				var key = child.get('id');
+				contactInformation[key] = child.get('value');
+			});
+			return json.stringify(contactInformation);
 		},
 
 		_deleteContactInformationNode: function() {
@@ -205,109 +236,6 @@ define([
 			this._showContactInformationButton.set('disabled', false);
 			this._username.reset();
 			this._password.reset();
-		},
-
-		_requestToken: function() {
-			// get selected method for requesting a token
-			array.some(this._tokenOptions.getChildren(), lang.hitch(this, function(tokenLabel) {
-				var radioButton = tokenLabel.getChildren()[0];
-				if (radioButton.checked) {
-					this.selectedTokenMethod = {
-						label: radioButton.get('label'),
-						method: radioButton.get('method')
-					};
-				}
-			}));
-
-			if (this.selectedTokenMethod) {
-				this._requestTokenButton.set('disabled', true);
-				data = json.stringify({
-					'username': this._username.get('value'),
-					'method': this.selectedTokenMethod.method
-				});
-				xhr.post('passwordreset/send_token', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
-					lib.showMessage({
-						content: data.message,
-						targetNode: this.tokenNode,
-						'class': '.success'
-					});
-					put(this.newPasswordNode, '!hide-step');
-				}), lang.hitch(this, function(err){
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
-					lib.showMessage({
-						content: message,
-						targetNode: this.tokenNode,
-						'class': '.error'
-					});
-					this._requestTokenButton.set('disabled', false);
-				}));
-			}
-		},
-
-		_setPassword: function() {
-			this._setPasswordButton.set('disabled', true);
-			this._token.set('disabled', true);
-			this._newPassword.set('disabled', true);
-			this._verifyPassword.set('disabled', true);
-
-			var isTokenAndNewPassValid = this._token.isValid() &&
-				this._newPassword.isValid() &&
-				this._verifyPassword.isValid();
-
-			if (isTokenAndNewPassValid) {
-				data = json.stringify({
-					'username': this._username.get('value'),
-					'password': this._verifyPassword.get('value'),
-					'token' : this._token.get('value')
-				});
-				xhr.post('passwordreset/set_password', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
-					lib._removeMessage();
-					var callback = function() {
-						lib.showLastMessage({
-							content: data.message,
-							'class': '.success'
-						});
-					};
-					lib.fadeOutNode({
-						node: dom.byId('form'),
-						callback: callback
-					});
-				}), lang.hitch(this, function(err){
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
-					lib.showMessage({
-						content: message,
-						targetNode: this.newPasswordNode,
-						'class': '.error'
-					});
-					this._setPasswordButton.set('disabled', false);
-					this._token.set('disabled', true);
-					this._newPassword.set('disabled', true);
-					this._verifyPassword.set('disabled', true);
-				}));
-			} else {
-				this._setPasswordButton.set('disabled', false);
-				this._token.set('disabled', true);
-				this._newPassword.set('disabled', true);
-				this._verifyPassword.set('disabled', true);
-			}
 		},
 
 		start: function() {

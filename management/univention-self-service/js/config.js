@@ -23,18 +23,24 @@ redirectToURLLabel = getQuery('urlLabel');
 
 // load the javascript module that is specified in the hash
 var selfService = document.location.hash.substr(1);
-if (!selfService.length) {
-	selfService = 'passwordselfservice';
-}
 
 var dojoConfig = {
 	isDebug: false,
 	locale: locale,
 	async: true,
 	callback: function() {
-		require(["ucs/" + selfService, "ucs/LanguagesDropDown", "dojo/domReady!"], function(app, LanguagesDropDown) {
+		require([
+			"dojo/hash",
+			"dojo/topic",
+			"ucs/" + selfService,
+			"ucs/LanguagesDropDown",
+			"dojo/domReady!"
+		], function(hash, topic, app, LanguagesDropDown) {
 			app.start();
 			LanguagesDropDown.start();
+			topic.subscribe("/dojo/hashchange", function(changedHash) {
+				window.location.reload();
+			});
 		});
 	}
 };

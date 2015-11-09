@@ -51,9 +51,11 @@ define([
 		
 		_createTitle: function() {
 			var title = _('Password Reset');
+			var siteDescription = _('On this page you can reset your password or provide contact information for setting a new password in the future.');
 			document.title = title;
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', title);
+			put(titleNode, 'p', siteDescription);
 			put(titleNode, '!.dijitHidden');
 		},
 
@@ -66,11 +68,11 @@ define([
 
 		_getFormNode: function() {
 			var formNode = put('div[style="overflow: hidden;"]');
-			put(formNode, 'p', _('To set a new password you will need a token which will be sent to you after providing your username.'));
 
-			// step 1 username
+			// step 1 username and link to contact information
 			this.usernameNode = put(formNode, 'div.step');
-			put(this.usernameNode, 'p > b', _('Please enter your username.'));
+			put(this.usernameNode, 'p > b', _('Reset your password.'));
+			put(this.usernameNode, 'p', _('Please provide your username to receive a token that is required to reset your password.'));
 			var stepContent = put(this.usernameNode, 'div.stepContent');
 			this._username = new TextBox({
 				inlineLabel: _('Username'),
@@ -93,9 +95,16 @@ define([
 			});
 			put(stepContent, this._usernameButton.domNode);
 
+			// contact information
+			this.contactNode = put(formNode, 'div.step');
+			put(this.contactNode, 'p > b', _('Provide your contact information.'));
+			put(this.contactNode, 'p', {
+				innerHTML: _('Please click the following link to <a href="/univention-self-service/#setcontactinformation">change your contact information</a> for resetting the password in the future.')
+			});
+
 			// step 2 token
 			this.tokenNode = put(formNode, 'div.step.hide-step');
-			put(this.tokenNode, 'p > b', _('Please choose a method to receive the token.'));
+			put(this.tokenNode, 'p', _('Please choose a method to receive the token.'));
 			var stepContent = put(this.tokenNode, 'div.stepContent');
 			this._tokenOptions = new ContainerWidget({});
 			put(stepContent, this._tokenOptions.domNode);
@@ -176,11 +185,13 @@ define([
 				xhr.post('passwordreset/get_reset_methods', {
 					handleAs: 'json',
 					headers: {
-						'Content-Type': 'application/json'
+						'Content-Type': 'application/json',
+						'Accept-Language': getQuery('lang') || 'en-US'
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
+					put(this.contactNode, '!');
 					this._buildTokenOptions(data.result);
 				}), lang.hitch(this, function(err){
 					var message = err.name + ": " + err.message;
@@ -241,7 +252,8 @@ define([
 				xhr.post('passwordreset/send_token', {
 					handleAs: 'json',
 					headers: {
-						'Content-Type': 'application/json'
+						'Content-Type': 'application/json',
+						'Accept-Language': getQuery('lang') || 'en-US'
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
@@ -285,7 +297,8 @@ define([
 				xhr.post('passwordreset/set_password', {
 					handleAs: 'json',
 					headers: {
-						'Content-Type': 'application/json'
+						'Content-Type': 'application/json',
+						'Accept-Language': getQuery('lang') || 'en-US'
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
@@ -296,7 +309,7 @@ define([
 							'class': '.success'
 						});
 					};
-					lib.fadeOutNode({
+					lib.wipeOutNode({
 						node: dom.byId('form'),
 						callback: callback
 					});
@@ -311,15 +324,15 @@ define([
 						'class': '.error'
 					});
 					this._setPasswordButton.set('disabled', false);
-					this._token.set('disabled', true);
-					this._newPassword.set('disabled', true);
-					this._verifyPassword.set('disabled', true);
+					this._token.set('disabled', false);
+					this._newPassword.set('disabled', false);
+					this._verifyPassword.set('disabled', false);
 				}));
 			} else {
 				this._setPasswordButton.set('disabled', false);
-				this._token.set('disabled', true);
-				this._newPassword.set('disabled', true);
-				this._verifyPassword.set('disabled', true);
+				this._token.set('disabled', false);
+				this._newPassword.set('disabled', false);
+				this._verifyPassword.set('disabled', false);
 			}
 		},
 

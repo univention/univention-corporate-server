@@ -1,3 +1,11 @@
+univention-self-service (1.0.1-11) unstable; urgency=low
+
+  * Bug #39597: include dojo.hash to reload the page on hashChanged
+    Add setContact to setcontactinformation
+    Adapted translations
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 09 Nov 2015 13:29:50 +0100
+
 univention-self-service (1.0.1-10) unstable; urgency=low
 
   * Bug #39597: removed fuzzy in po file
