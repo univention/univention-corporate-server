@@ -67,6 +67,9 @@ if enable_virtualhost and os.path.isfile('/etc/univention/ssl/%(ssofqdn)s/cert.p
 	ServerName %(ssofqdn)s
 	DocumentRoot /var/www/
 	RedirectMatch ^/$ /simplesamlphp/
+
+	ScriptAlias /saml-bin /var/www/saml
+	SuexecUserGroup samlcgi samlcgi
 </VirtualHost>
 </IfModule>
 ''' % ssofqdn
