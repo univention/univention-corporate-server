@@ -117,13 +117,35 @@ define([
 			this.contactInformationNode = put(formNode, 'div.step.hide-step');
 			put(this.contactInformationNode, 'p > b', _('Feel free to change your contact information. Press "Save" to confirm your changes.'));
 			stepContent = put(this.contactInformationNode, 'div.stepContent');
-			this._contactInformation = new ContainerWidget({});
-			put(stepContent, this._contactInformation.domNode);
+
+			this._email = new TextBox({
+				inlineLabel: _('EMail'),
+				id: 'email'
+			});
+			this._email.on('keyup', lang.hitch(this, function(evt) {
+				if (evt.keyCode === keys.ENTER) {
+					this._setContactInformation();
+				}
+			}));
+			put(stepContent, this._email.domNode);
+
+			this._mobile = new TextBox({
+				inlineLabel: _('Mobile'),
+				id: 'mobile'
+			});
+			this._mobile.on('keyup', lang.hitch(this, function(evt) {
+				if (evt.keyCode === keys.ENTER) {
+					this._setContactInformation();
+				}
+			}));
+			put(stepContent, this._mobile.domNode);
+
 			this._saveButton = new Button({
 				label: _('Save'),
 				onClick: lang.hitch(this, '_setContactInformation')
 			});
 			put(stepContent, this._saveButton.domNode);
+
 			this._cancelButton = new Button({
 				label: _('Cancel'),
 				onClick: lang.hitch(this, '_deleteContactInformationNode')
@@ -153,7 +175,7 @@ define([
 					data: data
 				}).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
-					this._buildContactInformation(data.result);
+					this._displayContactInformation(data.result);
 				}), lang.hitch(this, function(err){
 					var message = err.name + ": " + err.message;
 					if (err.response && err.response.data && err.response.data.message) {
@@ -175,14 +197,18 @@ define([
 			}
 		},
 
-		_buildContactInformation: function(options) {
-			array.forEach(options, lang.hitch(this, function(obj, idx){
-				var textBox = new TextBox({
-					label: obj.label,
-					value: obj.value,
-					id: obj.id
-				});
-				this._contactInformation.addChild(textBox);
+		_displayContactInformation: function(contactInformation) {
+			var mappingIdAndInput = {
+				'email': this._email,
+				'mobile': this._mobile
+			};
+
+			array.forEach(contactInformation, lang.hitch(this, function(contact){
+				var currentInput = mappingIdAndInput[contact.id];
+				if (currentInput) {
+					currentInput.set('value', contact.value);
+					currentInput._updateInlineLabelVisibility();
+				}
 			}));
 			put(this.contactInformationNode, '!hide-step');
 		},
@@ -190,59 +216,72 @@ define([
 		_setContactInformation: function() {
 			this._cancelButton.set('disabled', true);
 			this._saveButton.set('disabled', true);
-			// also alle Input fields
-			// does isValid make Sense?
+
 			data = this._getNewContactInformation();
-			xhr.post('passwordreset/set_contact', {
-					handleAs: 'json',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept-Language': getQuery('lang') || 'en-US'
-					},
-					data: data
-				}).then(lang.hitch(this, function(data) {
-					lib._removeMessage();
-					var callback = function() {
-						lib.showLastMessage({
-							content: data.message,
-							'class': '.success'
+			var isValidMail = this._validateMail(data.email);
+			if (isValidMail) {
+				xhr.post('passwordreset/set_contact', {
+						handleAs: 'json',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept-Language': getQuery('lang') || 'en-US'
+						},
+						data: json.stringify(data)
+					}).then(lang.hitch(this, function(data) {
+						lib._removeMessage();
+						var callback = function() {
+							lib.showLastMessage({
+								content: data.message,
+								'class': '.success'
+							});
+						};
+						lib.wipeOutNode({
+							node: dom.byId('form'),
+							callback: callback
 						});
-					};
-					lib.wipeOutNode({
-						node: dom.byId('form'),
-						callback: callback
-					});
-				}), lang.hitch(this, function(err){
-					var message = err.name + ": " + err.message;
-					if (err.response && err.response.data && err.response.data.message) {
-						message = err.response.data.message;
-					}
-					lib.showMessage({
-						content: message,
-						targetNode: this.contactInformationNode,
-						'class': '.error'
-					});
-					this._cancelButton.set('disabled', false);
-					this._saveButton.set('disabled', false);
-				}));
+					}), lang.hitch(this, function(err){
+						var message = err.name + ": " + err.message;
+						if (err.response && err.response.data && err.response.data.message) {
+							message = err.response.data.message;
+						}
+						lib.showMessage({
+							content: message,
+							targetNode: this.contactInformationNode,
+							'class': '.error'
+						});
+						this._cancelButton.set('disabled', false);
+						this._saveButton.set('disabled', false);
+					}));
+			} else {
+				this._cancelButton.set('disabled', false);
+				this._saveButton.set('disabled', false);
+			}
 		},
 
 		_getNewContactInformation: function() {
 			var contactInformation = {
 				'username': this._username.get('value'),
 				'password': this._password.get('value'),
-				'email': '',
-				'mobile': ''
+				'email': this._email.get('value'),
+				'mobile': this._mobile.get('value')
 			};
-			array.forEach(this._contactInformation.getChildren(), function(child) {
-				var key = child.get('id');
-				contactInformation[key] = child.get('value');
-			});
-			return json.stringify(contactInformation);
+			return contactInformation;
+		},
+
+		_validateMail: function(email) {
+			var reg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+			var isValid = !email.length || reg.test(email);
+			if(!isValid) {
+				lib.showMessage({
+					content: _('Please enter a valid email address.'),
+					'class': '.error',
+					targetNode: this.contactInformationNode
+				});
+			}
+			return isValid;
 		},
 
 		_deleteContactInformationNode: function() {
-			this._contactInformation.destroyDescendants();
 			put(this.contactInformationNode, '.hide-step');
 			this._showContactInformationButton.set('disabled', false);
 			this._username.reset();

@@ -1,3 +1,10 @@
+univention-self-service (1.0.2-2) unstable; urgency=low
+
+  * Bug #39597: Added frontend validation for mail address
+    * Always display inputs for mobile and email
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 10 Nov 2015 13:01:40 +0100
+
 univention-self-service (1.0.2-1) unstable; urgency=medium
 
   * Bug #39834: move conflicting apache config directive into directory
