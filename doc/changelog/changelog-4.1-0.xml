@@ -258,6 +258,9 @@
 					The App Center now checks a digital signature of the index of app meta files.
 					(<u:bug>39591</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The text layout on the detail page of an App has been improved (<u:bug>39665</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
