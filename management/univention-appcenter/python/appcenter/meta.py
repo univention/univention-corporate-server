@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+
 class UniventionMetaInfo(object):
 	pop = False
 	save_as_list = False
@@ -65,6 +66,7 @@ class UniventionMetaInfo(object):
 				setattr(klass, self.save_as_dict, {})
 			getattr(klass, self.save_as_dict)[name] = self
 
+
 class UniventionMetaClass(type):
 	def __new__(mcs, name, bases, attrs):
 		meta_infos = []
@@ -88,4 +90,3 @@ class UniventionMetaClass(type):
 		for meta_info_name, meta_info in meta_infos:
 			meta_info.contribute_to_class(new_cls, meta_info_name)
 		return new_cls
-

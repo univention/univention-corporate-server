@@ -48,16 +48,13 @@ from hashlib import sha256
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
 
-from univention.appcenter.utils import app_ports, call_process, shell_safe
+from univention.appcenter.utils import app_ports, call_process, shell_safe, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.app import CACHE_DIR
 from univention.appcenter.actions.update import Update
 from univention.appcenter.actions import Abort
 
 _logger = get_base_logger().getChild('docker')
-
-import univention.management.console as umc
-_ = umc.Translation('univention-appcenter-docker').translate
 
 DOCKER_READ_USER_CRED = {
 	'username': 'ucs',

@@ -51,6 +51,7 @@ from univention.config_registry.misc import key_shell_escape
 from univention.config_registry import ConfigRegistry
 
 # "global" translation for univention-appcenter
+# also provides translation for univention-appcenter-docker etc
 _ = Translation('univention-appcenter').translate
 
 

@@ -36,16 +36,16 @@
 UDM_PO_FILES := $(shell find udm -name '*.po')
 UDM_MO_FILES := $(UDM_PO_FILES:%.po=%.mo)
 
-DOCKER_PKG_NAME := univention-appcenter-docker
-DOCKER_MO_FILE := python/appcenter-docker/de.mo
-DOCKER_DST_DIR := debian/$(DOCKER_PKG_NAME)
+APPCENTER_PKG_NAME := univention-appcenter
+APPCENTER_MO_FILE := python/de.mo
+APPCENTER_DST_DIR := debian/$(APPCENTER_PKG_NAME)
 GERMAN_LC_MSG_DIR := /usr/share/locale/de/LC_MESSAGES
-DOCKER_LC_MSG_DIR := $(DOCKER_DST_DIR)$(GERMAN_LC_MSG_DIR)
+APPCENTER_LC_MSG_DIR := $(APPCENTER_DST_DIR)$(GERMAN_LC_MSG_DIR)
 
 %.mo:	%.po
 	msgfmt --check -o $@ $<
 
-override_dh_auto_build: $(UDM_MO_FILES) $(DOCKER_MO_FILE)
+override_dh_auto_build: $(UDM_MO_FILES) $(APPCENTER_MO_FILE)
 	dh-umc-module-build
 	dh_auto_build
 
@@ -64,9 +64,10 @@ override_dh_auto_install:
 		install -m 644 "$$i" "$$o";\
 	done
 
-	install -d $(DOCKER_LC_MSG_DIR)
-	install -m 644 $(DOCKER_MO_FILE) \
-		$(DOCKER_LC_MSG_DIR)/$(DOCKER_PKG_NAME).mo
+	scripts/build-appcenter-po
+	install -d $(APPCENTER_LC_MSG_DIR)
+	install -m 644 $(APPCENTER_MO_FILE) \
+		$(APPCENTER_LC_MSG_DIR)/$(APPCENTER_PKG_NAME).mo
 
 override_dh_auto_test:
 	ucslint

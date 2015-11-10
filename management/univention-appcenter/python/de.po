@@ -1,0 +1,67 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-appcenter\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-10 23:27+0100\n"
+"PO-Revision-Date: 2015-11-10 16:41:22+0100\n"
+"Last-Translator: Dirk Wiesenthal <wiesenthal@univention.de>\n"
+"Language-Team: \n"
+"Language: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, python-format
+msgid "Error while contacting Docker registry server %s"
+msgstr "Fehler bei der Kontaktaufnahme mit dem Docker-Registry-Server %s"
+
+msgid "Manifest checksum mismatch"
+msgstr "Prüfsumme für das Manifest weicht ab"
+
+#, python-format
+msgid ""
+"%s could not be downloaded. This seems to be a problem with the App Center "
+"server. Please try again later."
+msgstr ""
+"Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
+"Server hin. Bitte versuchen Sie es später noch einmal."
+
+msgid "This is a problem with the App Center server. Please try again later."
+msgstr ""
+"Das ist ein Problem auf dem App Center-Server. Bitte versuchen Sie es später "
+"noch einmal."
+
+#, python-format
+msgid ""
+"https://docs.software-univention.de/manual-%s.html#ip-config:"
+"Web_proxy_for_caching_and_policy_management__virus_scan"
+msgstr ""
+"https://docs.software-univention.de/handbuch-%s.html#ip-config:Web-"
+"Proxy_fuer_Caching_und_Policy_Management_Virenscan"
+
+#, python-format
+msgid ""
+"This may be a problem with the proxy of your system. You may find help at %s."
+msgstr ""
+"Dies kann auf ein Problem mit einem auf Ihrem System eingerichteten Proxy "
+"hindeuten. Sie finden Hilfe unter %s."
+
+#, python-format
+msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
+msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
+
+#, python-format
+msgid ""
+"This is probably due to the DNS settings of your server. You may find help "
+"at %s."
+msgstr ""
+"Grund sind wahrscheinlich die DNS-Einstellungen Ihres Servers. Sie finden "
+"Hilfe unter %s."
+
+#, python-format
+msgid ""
+"The application needs a %(needs)s-bit operating system. This server is "
+"running a %(has)s-bit operating system."
+msgstr ""
+"Die Applikation benötigt ein %(needs)s-Bit-Betriebssystem. Dieser Server "
+"läuft mit einem %(has)s-Bit-Betriebssystem."

@@ -36,6 +36,12 @@ import sys
 from argparse import ArgumentParser
 import locale
 
+# do it immediately before univention.appcenter.utils loads Translation
+try:
+	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
+except locale.Error:
+	pass
+
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter import all_actions
@@ -43,6 +49,7 @@ from univention.appcenter.log import _reverse_umc_module_logger, log_to_logfile,
 
 ucr = ConfigRegistry()
 ucr.load()
+
 
 def add_action(subparsers, action):
 	description = action.__doc__ or action.help
@@ -52,13 +59,13 @@ def add_action(subparsers, action):
 	subparser.set_defaults(func=action.call_with_namespace)
 	return subparser
 
+
 def main():
 	usage = '%(prog)s'
 	description = '%(prog)s is a program to manage Apps from the Univention App Center'
 	parser = ArgumentParser(usage=usage, description=description)
 	subparsers = parser.add_subparsers(description='type %(prog)s <action> --help for further help and possible arguments', metavar='action')
 
-	locale.setlocale(locale.LC_ALL, locale.getdefaultlocale())
 	try:
 		log_to_logfile()
 	except IOError:
@@ -82,4 +89,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
