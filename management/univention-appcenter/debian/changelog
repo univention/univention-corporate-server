@@ -1,3 +1,9 @@
+univention-appcenter (5.0.17-4) unstable; urgency=low
+
+  * Bug #39651: Added statusIcons.svg
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 10 Nov 2015 12:53:42 +0100
+
 univention-appcenter (5.0.17-3) unstable; urgency=medium
 
   * Bug #39718: Do not delete ucs/overview variables if ini does not allow that
