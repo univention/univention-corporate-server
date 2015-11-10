@@ -35,7 +35,7 @@
 			<listitem><simpara>
 				If your software is not provided via <filename class="extension">.deb</filename> files, Debian packages have to be created.
 				Please follow the chapter <ulink
-				url="http://docs.univention.de/developer-reference.html#chap:packaging">packaging
+				url="https://docs.software-univention.de/developer-reference.html#chap:packaging">packaging
 				software</ulink> in the UCS developer reference about how to create Debian packages.
 			</simpara></listitem>
 		</orderedlist>

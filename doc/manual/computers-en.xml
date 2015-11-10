@@ -1078,8 +1078,8 @@ ucr unset umc/modules/setup/network/disabled/by
 			<para>
 				Individual domains can be excluded from use by the proxy by including them
 				separated by commas in the &ucsUCRV; <envar>proxy/no_proxy</envar>. Subdomains
-				are taken into account; e.g. an exception for <uri>univention.de</uri> also
-				applies for <uri>apt.univention.de</uri>.
+				are taken into account; e.g. an exception for <uri>software-univention.de</uri> also
+				applies for <uri>updates.software-univention.de</uri>.
 			</para>
 		</section>
 	</section>

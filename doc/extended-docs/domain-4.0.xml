@@ -779,7 +779,7 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 		<para>
 		  Now a syncrepl proxy needs to be set up on the &ucsMaster;. The required configuration
 		  files are downloaded from
-		  <uri>http://apt.univention.de/download/syncrepl/ucs4-syncrepl-proxy-setup.tar.bz2</uri> as
+		  <uri>https://updates.software-univention.de/download/syncrepl/ucs4-syncrepl-proxy-setup.tar.bz2</uri> as
 		  a Tar archive.
 		</para>
 

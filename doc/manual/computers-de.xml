@@ -1059,8 +1059,8 @@ ucr unset umc/modules/setup/network/disabled/by
                 <para>
                     Einzelne Domänen können von der Verwendung des Proxys ausgenommen werden, in
                     dem sie kommasepariert in die &ucsUCRV; <envar>proxy/no_proxy</envar> aufgenommen werden.
-                    Unterdomänen werden dabei berücksichtigt; eine Ausnahme für <uri>univention.de</uri>
-                    wirkt sich also auch auf <uri>apt.univention.de</uri> aus.
+                    Unterdomänen werden dabei berücksichtigt; eine Ausnahme für <uri>software-univention.de</uri>
+                    wirkt sich also auch auf <uri>updates.software-univention.de</uri> aus.
                 </para>
             </section>
         </section>

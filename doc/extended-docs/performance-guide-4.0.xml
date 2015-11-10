@@ -196,7 +196,7 @@ slapadd -l ldif
 	</para>
 	<para>
 		A script can be downloaded from
-		<ulink url="http://download.univention.de/download/scripts/nscdCachesize.sh"/>
+		<ulink url="https://updates.software-univention.de/download/scripts/nscdCachesize.sh"/>
 		which suggests corresponding values based on the objects currently included in
 		the system.
 	</para>

@@ -202,7 +202,7 @@
 							Both packages providing them must be added as additional runtime dependencies.
 						</para>
 						<para>
-							The unjoin functions were added to UCS 3.1-0 only as <ulink url="http://errata.univention.de/ucs/3.1/80.html">erratum update 81</ulink>.
+							The unjoin functions were added to UCS 3.1-0 only as <ulink url="https://errata.software-univention.de/ucs/3.1/80.html">erratum update 81</ulink>.
 							Because of this the minimum versions must be specified explicitly.
 						</para>
 						<programlisting language="debcontrol"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/control" parse="text"/></programlisting>

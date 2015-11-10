@@ -65,7 +65,7 @@
 			<listitem><simpara>
 				A text file in the <filename class="extension">.ini</filename> format including information like description, several website
 				links, contact information, conflicting apps, etc. Please refer to the <ulink
-				url="http://docs.univention.de/developer-reference.html#app:iniFile">Developer
+				url="https://docs.software-univention.de/developer-reference.html#app:iniFile">Developer
 				Reference</ulink> for a template and the description of every attribute.
 			</simpara></listitem>
 			<listitem><simpara>
@@ -101,7 +101,7 @@ myapp.png
 
 		<para>
 			A detailed explanation about the notifications can be found in the <ulink
-			url="http://docs.univention.de/developer-reference.html#app:notification">Developer Reference</ulink>.
+			url="https://docs.software-univention.de/developer-reference.html#app:notification">Developer Reference</ulink>.
 		</para>
 	</section>
 
@@ -126,7 +126,7 @@ myapp.png
 			<listitem><simpara>
 				<filename>README</filename> files: You may add different readme files depending on action taking place.
 				For example, you may present text before installation or before update only. Please refer to the
-				<ulink url="http://docs.univention.de/developer-reference.html#app:optionalFiles">Optional
+				<ulink url="https://docs.software-univention.de/developer-reference.html#app:optionalFiles">Optional
 				application files section</ulink> for the set of possible readme files.
 			</simpara></listitem>
 		</orderedlist>

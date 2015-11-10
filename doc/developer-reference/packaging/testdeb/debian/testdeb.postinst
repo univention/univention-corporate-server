@@ -6,7 +6,7 @@ configure)
 	# invoke sample program
 	testdeb.py
 	# Set UCR variable if previously unset
-	ucr set repository/online/server?http://apt.univention.de/
+	ucr set repository/online/server?updates.software-univention.de
 	# Force UCR variable on upgrade from previous package only
 	if dpkg --compare-versions "$2" lt-nl 0.1-2
 	then

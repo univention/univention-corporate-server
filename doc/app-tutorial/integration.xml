@@ -33,7 +33,7 @@
 	<para>
 		The following sections give an impression of several integration scenarios. Further
 		information can be found in the <ulink
-		url="http://docs.univention.de/developer-reference.html">UCS developer reference</ulink>.
+		url="https://docs.software-univention.de/developer-reference.html">UCS developer reference</ulink>.
 	</para>
 	<section id="integration:ldap">
 		<title>Read information from the directory service</title>
@@ -66,7 +66,7 @@
 
 		<para>
 			More information about the OpenLDAP server in UCS can be found <ulink
-			url="http://docs.univention.de/manual.html#domain:ldap">in the manual</ulink>.
+			url="https://docs.software-univention.de/manual.html#domain:ldap">in the manual</ulink>.
 		</para>
 
 		<section id="integration:ldap:access">
@@ -160,7 +160,7 @@ esac
 
 			<para>
 				More details can be found in the <ulink
-				url="http://docs.univention.de/developer-reference.html#chap:listener">Developer Reference</ulink>.
+				url="https://docs.software-univention.de/developer-reference.html#chap:listener">Developer Reference</ulink>.
 			</para>
 
 			<para>
@@ -217,7 +217,7 @@ def get_db_connection():
 			Configuration Registry (UCR). It holds information about the local host (like hostname or network settings)
 			and to some extent about the domain configuration (like the domainname or where the DC Master can be
 			found). More details can be found in the <ulink
-			url="http://docs.univention.de/developer-reference.html#chap:ucr">Developer Reference</ulink>.
+			url="https://docs.software-univention.de/developer-reference.html#chap:ucr">Developer Reference</ulink>.
 		</para>
 
 		<para>
@@ -510,7 +510,7 @@ override_dh_auto_install:
 			The join script needs to lie in the root directory of the source code and has to be named
 			after the package, e.g. <filename>50univention-myapp.inst</filename> and <filename>50univention-myapp-uninstall.uinst</filename>. If you need
 			more control, just do not <command>univention-install-joinscript</command>, details what to do can be found in the
-			<ulink url="http://docs.univention.de/developer-reference.html#join:write">Developer
+			<ulink url="https://docs.software-univention.de/developer-reference.html#join:write">Developer
 			Reference</ulink>.
 		</para>
 	</section>
@@ -536,7 +536,7 @@ override_dh_auto_install:
 APP="myapp"
 SERVICE="My App"
 # for more details, see
-#   http://docs.univention.de/developer-reference.html#udm:ea
+#   https://docs.software-univention.de/developer-reference.html#udm:ea
 # "$@" is here because this should go into a join script and there
 # passing the arguments of the script invocation to udm is necessary
 udm settings/extended_attribute create "$@" \
@@ -710,7 +710,7 @@ udm/handlers/appcenter/
 			<para>
 				UMC modules are very versatile (both the JavaScript based frontend part as well as the Python
 				backend part) and can be used for nearly anything. This guide cannot cover everything there is about
-				UMC modules. One starting point may be 
+				UMC modules. One starting point may be
 			</para>
 
 			<programlisting language="sh">

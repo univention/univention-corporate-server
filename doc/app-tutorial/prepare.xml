@@ -27,7 +27,7 @@
 		<section id="prepare:setup">
 			<title>Initial setup </title>
 			<para>
-				Please refer to the <ulink url="http://docs.univention.de/quickstart-en.html" lang="">UCS Quickstart
+				Please refer to the <ulink url="https://docs.software-univention.de/quickstart-en.html" lang="">UCS Quickstart
 				Guide</ulink> for the steps about installation and initial setup.
 			</para>
 		</section>
@@ -78,14 +78,14 @@ univention-install build-essential debhelper
 			<programlisting language="sh">
 # ucslint checks for common mistakes in a variety of files if enabled
 # in debian/rules
-#  see http://docs.univention.de/developer-reference.html#misc:ucslint
+#  see https://docs.software-univention.de/developer-reference.html#misc:ucslint
 univention-install ucslint
 			</programlisting>
 
 			<programlisting language="sh">
 # univention-config-dev takes care of installing and registering UCR
 # variables if enabled in debian/rules
-#   see http://docs.univention.de/developer-reference.html#chap:ucr
+#   see https://docs.software-univention.de/developer-reference.html#chap:ucr
 univention-install univention-config-dev
 			</programlisting>
 
