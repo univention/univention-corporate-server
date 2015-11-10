@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-1) unstable; urgency=medium
+
+  * Bug #39836: don't display OTP field as password field
+
+ -- Florian Best <best@univention.de>  Tue, 10 Nov 2015 12:58:21 +0100
+
 univention-management-console-frontend (5.0.62-1) unstable; urgency=medium
 
   * Bug #39233: ignore errors != 401 when checking if the session has timed
