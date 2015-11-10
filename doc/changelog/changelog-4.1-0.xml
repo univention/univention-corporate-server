@@ -264,6 +264,9 @@
 				<listitem><simpara>
 						The searched keyword in the App Center resets if the category gets changed (<u:bug>39652</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						A icon in the App Center gallery shows the status of the App (<u:bug>39651</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
