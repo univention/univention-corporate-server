@@ -261,6 +261,9 @@
 				<listitem><simpara>
 						The text layout on the detail page of an App has been improved (<u:bug>39665</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+						The searched keyword in the App Center resets if the category gets changed (<u:bug>39652</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
