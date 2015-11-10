@@ -65,6 +65,7 @@ class Session(object):
 			'Content-Type': 'application/json',
 			'Accept': 'application/json; q=1.0; text/html; q=0.5; */*; q=0.1',
 			'X-Requested-With': 'XMLHttpRequest',
+			'Accept-Language': locale or 'en-US',
 		}
 		self._cookie = SimpleCookie()
 
