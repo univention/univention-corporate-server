@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-1) unstable; urgency=medium
+
+  * Bug #39834: move conflicting apache config directive into directory
+
+ -- Florian Best <best@univention.de>  Tue, 10 Nov 2015 10:37:30 +0100
+
 univention-self-service (1.0.1-14) unstable; urgency=low
 
   * raise Exception if user has not registered any contact for password reset
