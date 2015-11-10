@@ -130,8 +130,8 @@ msgid "In case it helps, the raw error message will be displayed"
 msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
 
 #: univention/management/console/pam.py:140
-msgid "Incomplete authentication information provided."
-msgstr "Unvollständige Authentifizierungsinformation angegeben."
+msgid "Please insert your one time password (OTP)."
+msgstr "Bitte geben Sie ihr Einmalpasswort (OTP) ein."
 
 #: univention/management/console/base.py:186
 msgid "Install the latest software updates"
