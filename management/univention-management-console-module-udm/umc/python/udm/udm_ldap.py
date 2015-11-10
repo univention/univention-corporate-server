@@ -789,7 +789,7 @@ class UDM_Module(object):
 	@property
 	def operations(self):
 		"""Allowed operations of the UDM module"""
-		return getattr(self.module, 'operations', [])
+		return getattr(self.module, 'operations', ['add', 'edit', 'remove', 'search', 'move'])
 
 	@property
 	def template(self):
