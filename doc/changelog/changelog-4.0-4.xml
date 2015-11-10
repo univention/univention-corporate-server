@@ -969,6 +969,11 @@
 					the new Samba version (<u:bug>39275</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					The package <package>libunivention-ldb-modules</package> is now
+					maintained and part of the installation DVD
+					(<u:bug>39277</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 					The S4 Connector start failed if more than 1000 search results were returned by
 					Samba 4 (<u:bug>39673</u:bug>).
 				</simpara></listitem>
