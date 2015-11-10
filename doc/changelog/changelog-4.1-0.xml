@@ -574,7 +574,7 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The user can now change or reset her/his password by using the Password self-service (<u:bug>39597</u:bug>).
+						The user can now change or reset her/his password by using the password self-service (<u:bug>39597</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
