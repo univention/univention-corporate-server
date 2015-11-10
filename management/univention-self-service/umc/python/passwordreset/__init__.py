@@ -252,10 +252,11 @@ class Instance(Base):
 		if not self.send_plugins:
 			raise UMC_Error(_('No password reset method available for this user.'))
 		# return list of method names, for all LDAP attribs user has data
-		self.finished(
-			request.id,
-			[{"id": p.send_method(), "label": p.send_method_label()} for p in self.send_plugins.values() if user[p.ldap_attribute]]
-		)
+		reset_methods = [{"id": p.send_method(), "label": p.send_method_label()} for p in self.send_plugins.values() if user[p.ldap_attribute]]
+		if reset_methods:
+			self.finished(request.id, reset_methods)
+		else:
+			raise UMC_Error(_('No password reset method available for this user.'))
 
 	@staticmethod
 	def create_token(length):
