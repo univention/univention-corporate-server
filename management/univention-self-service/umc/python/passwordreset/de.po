@@ -79,8 +79,8 @@ msgid "Successfully send token."
 msgstr "Der Token wurde erfolgreich versendet."
 
 #: umc/python/passwordreset/sending/send_sms.py:66
-msgid "Text Message"
-msgstr "SMS"
+msgid "Mobile number"
+msgstr "Handynummer"
 
 #: umc/python/passwordreset/__init__.py:332
 msgid "The Password has been used already. Please supply a new one."
@@ -123,8 +123,8 @@ msgstr "Unbekannter Benutzer '{}'."
 #: umc/python/passwordreset/__init__.py:161
 #: umc/python/passwordreset/__init__.py:228
 #: umc/python/passwordreset/__init__.py:250
-msgid "User is blacklisted."
-msgstr "Benutzer ist auf der schwarzen Liste."
+msgid "Service is not available for this user."
+msgstr "Der Dienst steht für diesen Benutzer nicht zur Verfügung."
 
 #: umc/python/passwordreset/__init__.py:301
 msgid "Username or password is incorrect."

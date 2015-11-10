@@ -50,7 +50,7 @@ from univention.management.console.base import Base
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize, simple_response
-from univention.management.console.modules.sanitizers import StringSanitizer, EmailSanitizer
+from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_Error
 from univention.management.console.ldap import get_user_connection
 
@@ -121,7 +121,7 @@ class Instance(Base):
 		if not username:
 			raise UMC_Error(_("Empty username supplied."))
 		if self.is_blacklisted(username):
-			raise UMC_Error(_("User is blacklisted."))
+			raise UMC_Error(_("Service is not available for this user."))
 		self.auth(username, password)
 		user = self.get_udm_user(username=username)
 		if not self.send_plugins:
@@ -139,13 +139,13 @@ class Instance(Base):
 	@sanitize(
 		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True),
-		email=EmailSanitizer(required=False),
+		email=StringSanitizer(required=False),
 		mobile=StringSanitizer(required=False))
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
 		MODULE.info("set_contact(): username: {} password: {} email: {} mobile: {}".format(username, "*"*len(password), email, mobile))
 		if self.is_blacklisted(username):
-			raise UMC_Error(_("User is blacklisted."))
+			raise UMC_Error(_("Service is not available for this user."))
 		dn = self.auth(username, password)
 		if self.set_contact_data(dn, email, mobile):
 			raise UMC_Error(_("Successfully changed your contact data."), status=200)
@@ -158,7 +158,7 @@ class Instance(Base):
 	def send_token(self, username, method):
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
 		if self.is_blacklisted(username):
-			raise UMC_Error(_("User is blacklisted."))
+			raise UMC_Error(_("Service is not available for this user."))
 		try:
 			plugin = self.send_plugins[method]
 		except KeyError:
@@ -225,7 +225,7 @@ class Instance(Base):
 					# this should not happen
 					MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
 					self.db.delete_tokens(token=token, username=username)
-					raise UMC_Error(_("User is blacklisted."))
+					raise UMC_Error(_("Service is not available for this user."))
 				ret = self.udm_set_password(username, password)
 				self.db.delete_tokens(token=token, username=username)
 				if ret:
@@ -247,7 +247,7 @@ class Instance(Base):
 		if not username:
 			raise UMC_Error(_("Empty username supplied."))
 		if self.is_blacklisted(username):
-			raise UMC_Error(_("User is blacklisted."))
+			raise UMC_Error(_("Service is not available for this user."))
 		user = self.get_udm_user(username=username)
 		if not self.send_plugins:
 			raise UMC_Error(_('No password reset method available for this user.'))

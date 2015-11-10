@@ -59,11 +59,11 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 
 	@staticmethod
 	def send_method():
-		return "sms"
+		return "mobile"
 
 	@staticmethod
 	def send_method_label():
-		return _("Text Message")
+		return _("Mobile number")
 
 	@staticmethod
 	def is_enabled():
