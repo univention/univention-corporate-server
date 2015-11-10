@@ -222,7 +222,7 @@ create_hvm_profile "Microsoft Windows 2012 (64 Bit)" "w2012-" "kvm" "x86_64" "20
 #   1 GB RAM (32-bit) or 2 GB RAM (64-bit)
 #   16 GB available hard disk space (32-bit) or 20 GB (64-bit)
 create_hvm_profile "Microsoft Windows 10" "win10-" "kvm" "automatic" "1024MB" "0" "0" "0" "32GB" "localtime"
-create_hvm_profile "Microsoft Windows 10 (64 Bit)" "win8-10-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
+create_hvm_profile "Microsoft Windows 10 (64 Bit)" "win10-64-" "kvm" "x86_64" "2048MB" "0" "0" "0" "32GB" "localtime"
 
 create_hvm_profile "UCS 3.2" "ucs32-" "kvm" "automatic" "1024MB" "1" "0" "1" "20GB" "utc"
 create_hvm_profile "UCS 3.2 (64 Bit)" "ucs32-64-" "kvm" "x86_64" "1024MB" "1" "0" "1" "20GB" "utc"
