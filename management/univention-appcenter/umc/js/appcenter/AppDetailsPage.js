@@ -329,12 +329,42 @@ define([
 				this._navHeaderButtonContainer.addChild(_vendorTextPane);
 			}
 
+			//Status of the App
 			if (this.app.isInstalled || this.app.getHosts().length) {
-				var installedText = new Text({
-					content: _('Installed')
+				var informationText = new Text({
+					'class': 'umcAppStatus'
 				});
-				this._navHeaderButtonContainer.addChild(installedText);
+				var text = _('Installed');
+				if (this.app.endOfLife) {
+					text = _('End of life');
+					var tooltipText = this._detailFieldCustomEndOfLife();
+
+					domConstruct.create('div', {
+							'class': 'umcEndOfLifeHelp umcHelpIconSmall',
+							onclick: function(evt) {
+								// stolen from system-setup
+								var node = evt.target;
+								Tooltip.show(tooltipText, node);
+								if (evt) {
+									dojoEvent.stop(evt);
+								}
+								on.once(kernel.body(), 'click', function(evt) {
+									Tooltip.hide(node);
+									dojoEvent.stop(evt);
+								});
+							}
+						}, informationText.domNode
+					);
+				} else if (this.app.canUpgradeInDomain()) {
+					text = _('Update available');
+				}
+				domConstruct.create('div', {
+					textContent: text,
+					'class': 'umcAppStatusText'
+				}, informationText.domNode, 'first');
+				this._navHeaderButtonContainer.addChild(informationText);
 			} else {
+			//Categories of the App
 				var categoryButtons = this._detailFieldCustomCategories();
 				if (categoryButtons) {
 					this._navHeaderButtonContainer.domNode.appendChild(categoryButtons);

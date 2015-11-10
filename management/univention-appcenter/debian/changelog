@@ -1,3 +1,9 @@
+univention-appcenter (5.0.17-6) unstable; urgency=low
+
+  * Bug #39651: Added tooltip for the app status icons in the appcenter gallery
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 10 Nov 2015 19:08:16 +0100
+
 univention-appcenter (5.0.17-5) unstable; urgency=medium
 
   * Bug #39718: Fix not deleting ucs/overview variables

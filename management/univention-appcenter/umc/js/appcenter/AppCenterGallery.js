@@ -32,15 +32,19 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/array",
 	"dojo/_base/lang",
+	"dojo/_base/kernel",
+	"dojo/_base/event",
 	"put-selector/put",
 	"dojo/dom-class",
+	"dojo/on",
 	"umc/tools",
 	"umc/widgets/GalleryPane",
+	"dijit/Tooltip",
 	"dojo/query",
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, array, lang, put, domClass, tools, GalleryPane, query, domGeometry, domStyle, _) {
+], function(declare, array, lang, kernel, dojoEvent, put, domClass, on, tools, GalleryPane, Tooltip, query, domGeometry, domStyle, _) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'main',
 
@@ -85,7 +89,30 @@ define([
 			var statusIconClass = this.getStatusIconClass(item);
 			if (statusIconClass) {
 				put(appWrapperDiv, lang.replace('div.appStatusIcon{0}', [statusIconClass]));
-				put(appWrapperDiv, lang.replace('div.appStatusIcon.appStatusHoverIcon{0}', [statusIconClass]));
+
+				var statusIcon = put(lang.replace('div.appStatusIcon.appStatusHoverIcon{0}', [statusIconClass]));
+
+				var tooltipMessage;
+				if (statusIconClass.indexOf("EndOfLife") !== -1) {
+					if (item.is_installed) {
+						tooltipMessage = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: item.name});
+					} else {
+						tooltipMessage = _("This application will not get any further updates.");
+					}
+				} else if (statusIconClass.indexOf('Update') !== -1) {
+					tooltipMessage = _("Update available");
+				}
+				on(statusIcon, 'click', function(evt) {
+					Tooltip.show(tooltipMessage, statusIcon);
+					if (evt) {
+						dojoEvent.stop(evt);
+					}
+					on.once(kernel.body(), 'click', function(evt) {
+						Tooltip.hide(statusIcon);
+						dojoEvent.stop(evt);
+					});
+				});
+				put(appWrapperDiv, statusIcon);
 			}
 
 			return appWrapperDiv;
@@ -103,7 +130,7 @@ define([
 
 		getStatusIconClass: function(item) {
 			var iconClass = '';
-			if (item.endoflife) {
+			if (item.end_of_life) {
 				iconClass = '.appEndOfLifeIcon';
 			} else if (item.is_installed && item.candidate_version) {
 				iconClass = '.appUpdateIcon';

@@ -354,7 +354,7 @@ define([
 							server: item.displayName,
 							id: item.hostName,
 							data: item,
-							appStatus: item.canUpgrade() ? 'Update available' : ''
+							appStatus: item.canUpgrade() ? _('Update available') : ''
 						};
 						hosts.push(ihost);
 					}
@@ -365,7 +365,7 @@ define([
 						server: this.displayName,
 						id: this.hostName,
 						data: this,
-						appStatus: this.canUpgrade() ? 'Update available' : ''
+						appStatus: this.canUpgrade() ? _('Update available') : ''
 					});
 				}
 			}
