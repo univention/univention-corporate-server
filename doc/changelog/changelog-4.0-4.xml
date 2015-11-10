@@ -360,6 +360,9 @@
 				<listitem><simpara>
  					It is now easier to find information for creating custom attributes (<u:bug>39234</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					If a restart of the UMC components is required, the dialogue to ask for a page reload doesn't pop up (<u:bug>39578</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -433,6 +436,9 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					DNS TXT records are now shown via the UMC DNS module (<u:bug>25356</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					This update corrects problems with multi-edit operations as well as create and edit operations for UCS systems that have joined an existing AD domain (<u:bug>39779</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
