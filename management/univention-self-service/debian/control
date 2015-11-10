@@ -23,7 +23,8 @@ Depends: ${misc:Depends},
  univention-join,
  shell-univention-lib,
  python-cherrypy3,
- libapache2-mod-wsgi
+ libapache2-mod-wsgi,
+ univention-management-console-module-passwordchange
 Description:
  This package contains the password self service module that
  allows users to reset their password without administrator
