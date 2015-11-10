@@ -391,7 +391,7 @@ class Processor(Base):
 				except (TypeError, IndexError, AttributeError):
 					CORE.warn('Invalid UCR variable requested: %s' % (value,))
 					res.status = BAD_REQUEST_INVALID_OPTS
-					res.message = self.i18n._('Invalid UCR variable requested: %s') % (value,)
+					res.message = self._('Invalid UCR variable requested: %s') % (value,)
 		elif 'info' in msg.arguments:
 			ucr.load()
 			res.result = {}
@@ -636,7 +636,7 @@ class Processor(Base):
 		else:
 			CORE.info('Successfully changed password')
 			res.status = 200
-			res.message = self.i18n._('Password successfully changed.')
+			res.message = self._('Password successfully changed.')
 
 			self.auth_type = None
 			self._password = new_password
@@ -645,7 +645,7 @@ class Processor(Base):
 				self.update_module_passwords()
 			except:
 				res.status = 500
-				error_msg = self.i18n._('Nevertheless an error occured while updating the password for running modules. Please relogin to UMC to solve this problem.')
+				error_msg = self._('Nevertheless an error occured while updating the password for running modules. Please relogin to UMC to solve this problem.')
 				res.message = ('%s %s%s' % (res.message, error_msg, traceback.format_exc()))
 
 		self.result(res)
@@ -807,7 +807,7 @@ class Processor(Base):
 					mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=self.i18n.locale)
 				except OSError as exc:
 					if exc.errno == 12:  # cannot allocate Memory
-						raise UMC_Error(self.i18n._('Could not open the module. There is not enough memory available on the server. Please try again later.'), status=503)
+						raise UMC_Error(self._('Could not open the module. There is not enough memory available on the server. Please try again later.'), status=503)
 					raise
 				mod_proc.signal_connect('result', self.result)
 
