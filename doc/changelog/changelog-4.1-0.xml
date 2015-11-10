@@ -564,6 +564,9 @@
 				<listitem><simpara>
 					The SAML schema package now restarts the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Display problems for the <application>Internet Explorer</application> compatibility mode have been corrected (<u:bug>39850</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 		<section id="changelog:service:mail">
