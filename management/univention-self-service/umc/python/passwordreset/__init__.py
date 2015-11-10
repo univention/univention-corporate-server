@@ -196,7 +196,7 @@ class Instance(Base):
 					method=method, username=username))
 				self.db.delete_tokens(username=username)
 				raise
-			raise UMC_Error(_("Successfully send token via {}.").format(method), status=200)
+			raise UMC_Error(_("Successfully send token.").format(method), status=200)
 		else:
 			# no contact info
 			raise UMC_Error(_("No contact information to send a token for password recovery to has been found."))

@@ -18,9 +18,6 @@ if (locale) {
 	locale = locale.replace('_', '-');
 }
 
-redirectToURL = getQuery('url');
-redirectToURLLabel = getQuery('urlLabel');
-
 // load the javascript module that is specified in the hash
 var selfService = document.location.hash.substr(1);
 

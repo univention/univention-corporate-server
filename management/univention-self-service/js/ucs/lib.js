@@ -82,19 +82,19 @@ define([
 
 		_prepareLastMessage: function(msg) {
 			var message = msg.content;
-			if (redirectToURL) {
-				var timer = msg.timer || 5;
-				
-				var redirectToLabel = redirectToURLLabel || '';
-				if (redirectToLabel) {
-					redirectToLabel = _("to '") + redirectToLabel + "'";
-				}
-				message += lang.replace(_("</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> second(s).</div>", [redirectToLabel, timer]));
+			var redirect = {
+				url: this._getUrlForRedirect(),
+				label: this._getUrlLabelForRedirect(),
+				timer: getQuery('timer')
+			};
+			if (redirect.url) {
+				var timer = redirect.timer || msg.timer || 5;
+				message += lang.replace(_("</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> second(s).</div>", [redirect.label, timer]));
 				var redirectInterval = setInterval(function() {
 					timer--;
 					if (timer === 0) {
 						clearInterval(redirectInterval);
-						window.location.href = redirectToURL;
+						window.location.href = redirect.url;
 					}
 					var redirectTimerNode = dom.byId("redirectTimer");
 					redirectTimerNode.innerHTML = timer;
@@ -102,8 +102,31 @@ define([
 			} else {
 				message += lang.replace(_("</br><a href='/{0}'>Back to the overview.</a>", [this.getCurrentLanguageQuery()]));
 			}
-
 			return message;
+		},
+
+		_getUrlForRedirect: function() {
+			var url = getQuery('url');
+			if (url) {
+				// checking for 'ftp://', 'http(s)://'
+				var reg = /tp*:\/\//i;
+				var isUrlRelative = !reg.test(url);
+				if (isUrlRelative) {
+					return url;
+				} else {
+					// forbidden to provide absolute urls
+					console.error('Forbidden redirect to: ', url);
+				}
+			}
+		},
+
+		_getUrlLabelForRedirect: function() {
+			var label = getQuery('urlLabel');
+			if (label) {
+				return lang.replace(_("to '{0}'", [label]));
+			} else {
+				return '';
+			}
 		},
 
 		_removeMessage: function() {

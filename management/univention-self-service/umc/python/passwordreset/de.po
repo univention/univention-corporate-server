@@ -37,11 +37,11 @@ msgstr "Leerer Benutzername angegeben."
 
 #: umc/python/passwordreset/__init__.py:291
 msgid "Error sending token."
-msgstr "Fehler beim Versenden des Schlüssels (Token)."
+msgstr "Fehler beim Versenden des Tokens (Sicherheitsschlüssel)."
 
 #: umc/python/passwordreset/__init__.py:287
 msgid "Error sending token: {}"
-msgstr "Fehler beim Versenden des Schlüssels (Token): {}"
+msgstr "Fehler beim Versenden des Tokens: {}"
 
 #: umc/python/passwordreset/sending/send_with_external.py:68
 msgid "External"
@@ -52,8 +52,9 @@ msgid ""
 "No contact information to send a token for password recovery to has been "
 "found."
 msgstr ""
-"Es wurden keine Kontaktadressen gefunden, an die ein Schlüssel (Token) zur "
-"Password Wiederherstellung geschickt werden könnte."
+"Es wurden keine Kontaktadressen gefunden, an die ein Token "
+"(Sicherheitsschlüssel) zur Wiederherstellung des Password "
+"geschickt werden könnte."
 
 #: umc/python/passwordreset/__init__.py:128
 #: umc/python/passwordreset/__init__.py:253
@@ -74,8 +75,8 @@ msgid "Successfully changed your password."
 msgstr "Ihr Passwort wurde erfolgreich geändert."
 
 #: umc/python/passwordreset/__init__.py:199
-msgid "Successfully send token via {}."
-msgstr "Der Schlüssel (Token) wurde erfolgreich mit {} versendet."
+msgid "Successfully send token."
+msgstr "Der Token wurde erfolgreich versendet."
 
 #: umc/python/passwordreset/sending/send_sms.py:66
 msgid "Text Message"
@@ -88,14 +89,14 @@ msgstr "Das Passwort wurde bereits verwendet. Bitte geben Sie ein neues ein."
 #: umc/python/passwordreset/__init__.py:241
 msgid "The token you supplied could not be found. Please request a new one."
 msgstr ""
-"Der Schlüssel (Token) den Sie angegeben haben konnte nicht gefunden werden. "
-"Bitte fordern Sie einen neuen an."
+"Der Token (Sicherheitsschlüssel) den Sie angegeben haben konnte "
+"nicht gefunden werden. Bitte fordern Sie einen neuen an."
 
 #: umc/python/passwordreset/__init__.py:237
 msgid "The token you supplied has expired. Please request a new one."
 msgstr ""
-"Der Schlüssel (Token) den Sie angegeben haben ist abgelaufen. Bitte fordern "
-"Sie einen neuen an."
+"Der Token (Sicherheitsschlüssel) den Sie angegeben haben ist "
+"abgelaufen. Bitte fordern Sie einen neuen an."
 
 #: umc/python/passwordreset/__init__.py:414
 msgid ""
@@ -107,7 +108,7 @@ msgstr ""
 
 #: umc/python/passwordreset/__init__.py:183
 msgid "Token for user '{}' has already been sent."
-msgstr "Schlüssel (Token) für Benutzer '{}' wurde bereits gesendet."
+msgstr "Der Token für Benutzer '{}' wurde bereits gesendet."
 
 #: umc/python/passwordreset/__init__.py:166
 msgid "Unknown recovery method '{}'."

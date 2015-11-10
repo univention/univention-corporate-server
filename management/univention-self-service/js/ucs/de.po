@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-11-09 14:32+0100\n"
+"POT-Creation-Date: 2015-11-10 09:53+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,8 +21,8 @@ msgid ""
 "</br><div>You will be redirected {0} in <a id='redirectTimer'> {1} </a> "
 "second(s).</div>"
 msgstr ""
-"</br><div>Sie werden in <a id='redirectTimer'> {1} </a> Sekunden "
-"{0} weitergeleitet.</div>"
+"</br><div>Sie werden in <a id='redirectTimer'> {1} </a> Sekunden {0} "
+"weitergeleitet.</div>"
 
 #: setcontactinformation.js:128
 msgid "Cancel"
@@ -85,9 +85,8 @@ msgid ""
 "#passwordreset\">password reset</a> page."
 msgstr ""
 "Auf dieser Seite können Sie Ihr Passwort ändern. Wenn Sie stattdessen Ihr "
-"Passwort zurücksetzen möchten, nutzen Sie bitte den folgenden Link: "
-"<a href=\"/univention-self-service/{0}#passwordreset\">Passwort zurücksetzen."
-"</a>"
+"Passwort zurücksetzen möchten, nutzen Sie bitte den folgenden Link: <a href="
+"\"/univention-self-service/{0}#passwordreset\">Passwort zurücksetzen.</a>"
 
 #: passwordreset.js:54
 msgid ""
@@ -120,8 +119,8 @@ msgstr "Passwort zurücksetzen"
 #: passwordreset.js:107
 msgid "Please choose a method to receive the token."
 msgstr ""
-"Bitte wählen Sie eine Benachrichtigungsart, über die Sie einen Token "
-"(Sicherheitsschlüssel) erhalten wollen."
+"Bitte wählen Sie eine Benachrichtigungsart über die Sie einen Token "
+"(Sicherheitsschlüssel) erhalten möchten."
 
 #: passwordreset.js:102
 msgid ""
@@ -130,8 +129,8 @@ msgid ""
 "the password in the future."
 msgstr ""
 "Bitte nutzen Sie den folgenden Link, um Ihre <a href=\"/univention-self-"
-"service/{0}#setcontactinformation\">  Kontaktinformationen zu ändern</a> damit "
-"Sie zukünftig Ihr Passwort zurücksetzen können."
+"service/{0}#setcontactinformation\">  Kontaktinformationen zu ändern</a> "
+"damit Sie zukünftig Ihr Passwort zurücksetzen können."
 
 #: passwordreset.js:119
 msgid "Please enter the token and your new password."
@@ -198,8 +197,8 @@ msgstr ""
 msgid "Username"
 msgstr "Benutzername"
 
-#: lib.js:90
-msgid "to '"
+#: lib.js:126
+msgid "to '{0}'"
 msgstr ""
 
 #~ msgid ""

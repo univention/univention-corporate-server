@@ -116,7 +116,7 @@ define([
 			// step 2 show and set contact information
 			this.contactInformationNode = put(formNode, 'div.step.hide-step');
 			put(this.contactInformationNode, 'p > b', _('Feel free to change your contact information. Press "Save" to confirm your changes.'));
-			var stepContent = put(this.contactInformationNode, 'div.stepContent');
+			stepContent = put(this.contactInformationNode, 'div.stepContent');
 			this._contactInformation = new ContainerWidget({});
 			put(stepContent, this._contactInformation.domNode);
 			this._saveButton = new Button({
@@ -230,7 +230,9 @@ define([
 		_getNewContactInformation: function() {
 			var contactInformation = {
 				'username': this._username.get('value'),
-				'password': this._password.get('value')
+				'password': this._password.get('value'),
+				'email': '',
+				'mobile': ''
 			};
 			array.forEach(this._contactInformation.getChildren(), function(child) {
 				var key = child.get('id');

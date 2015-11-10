@@ -1,3 +1,12 @@
+univention-self-service (1.0.1-13) unstable; urgency=low
+
+  * Bug #39597: Finsihed setcontactinformation
+    * Adapted translation
+    * Imrpoved css styling
+    * Added regex to avoid redirect to absolute paths
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 10 Nov 2015 09:58:13 +0100
+
 univention-self-service (1.0.1-12) unstable; urgency=low
 
   * Bug #39597: Extended some links by the language query string

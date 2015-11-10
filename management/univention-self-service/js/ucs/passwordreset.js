@@ -105,7 +105,7 @@ define([
 			// step 2 token
 			this.tokenNode = put(formNode, 'div.step.hide-step');
 			put(this.tokenNode, 'p', _('Please choose a method to receive the token.'));
-			var stepContent = put(this.tokenNode, 'div.stepContent');
+			stepContent = put(this.tokenNode, 'div.stepContent');
 			this._tokenOptions = new ContainerWidget({});
 			put(stepContent, this._tokenOptions.domNode);
 			this._requestTokenButton = new Button({
@@ -117,7 +117,7 @@ define([
 			// step 3 use the token to set a new password
 			this.newPasswordNode = put(formNode, 'div.step.hide-step');
 			put(this.newPasswordNode, 'p > b', _('Please enter the token and your new password.'));
-			var stepContent = put(this.newPasswordNode, 'div.stepContent');
+			stepContent = put(this.newPasswordNode, 'div.stepContent');
 			this._token = new TextBox({
 				inlineLabel: _('Token'),
 				isValid: function() {

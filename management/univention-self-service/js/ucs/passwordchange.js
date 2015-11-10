@@ -61,7 +61,7 @@ define([
 		},
 
 		_getFormNode: function() {
-			var formNode = put('div[style="overflow: hidden;"]');
+			var formNode = put('div.step');
 			put(formNode, 'p > b', _('Please provide the required data to change your password.'));
 
 			// create input field for username
@@ -120,7 +120,6 @@ define([
 			// create submit button
 			this._submitButton = new Button({
 				label: _('Change password'),
-				style: 'margin-top: 12px',
 				onClick: lang.hitch(this, '_submit')
 			});
 			put(formNode, '>', this._submitButton.domNode);

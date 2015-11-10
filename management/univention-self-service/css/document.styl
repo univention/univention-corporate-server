@@ -95,17 +95,20 @@ h3, h4, h5, h6 {
 
 .container {
 	margin-top: 60px;
-	max-width: 900px;
+	max-width: 750px;
 
-	@media (min-width: $lg-min) {
-		margin-top: 0;
+	p {
+		font-size: 1.1em;
 	}
+
+//	@media (min-width: $lg-min) {
+//		margin-top: 0;
+//	}
 //	@media (min-width: $sm-min) {
 //		width: 400px;
 //	}
 //
 //	@media (min-width: 900px) {
-//		margin-top: 0;
 //		width: 600px;
 //	}
 //
@@ -133,6 +136,10 @@ h3, h4, h5, h6 {
 	}
 }
 
+div#title > p {
+	margin: 5px 0 0 0;
+}
+
 .tab {
 	position: absolute;
 	opacity: 1;
@@ -146,12 +153,13 @@ h3, h4, h5, h6 {
 	transition: visibility 0s linear 0.5s, opacity 0.5s ease-in-out;
 }
 
-.tab a {
+.container a {
 	color: #619410;
 }
 
 div.step {
-	margin-bottom: 15px;
+	margin-bottom: 30px;
+	overflow: hidden;
 	opacity: 1;
 	visibility: visible;
 	transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
@@ -164,7 +172,7 @@ div.step.hide-step {
 }
 
 div.step .dijitButton {
-	margin-top: 5px;
+	margin-top: 9px;
 }
 
 div.step .dijitTextBox {
