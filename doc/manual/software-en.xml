@@ -284,7 +284,7 @@
 	  <para>
 		An individual UCS system can be updated using the
 		<command>univention-upgrade</command> command in the command line. A check is
-		performed to establish whether new updates are available and these are then
+		performed to establish whether new release or application updates are available and these are then
 		installed if a prompt is confirmed. In addition, package updates are also
 		performed (e.g., in the scope of an errata update).
 	  </para>

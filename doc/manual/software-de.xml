@@ -289,7 +289,7 @@
 	  <para>
 		Ein einzelnes UCS-System kann auf der Kommandozeile mit dem Befehl
 		<command>univention-upgrade</command> aktualisiert werden. Es wird geprüft, ob neue
-		Updates vorliegen, die dann nach Bestätigung einer Nachfrage installiert
+		Release oder Applikations-Updates vorliegen, die dann nach Bestätigung einer Nachfrage installiert
 		werden. Außerdem werden Paket-Aktualisierungen durchgeführt (z.B. im Rahmen
 		eines Errata-Updates).
 	  </para>
