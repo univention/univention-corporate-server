@@ -1645,7 +1645,10 @@ define([
 
 		createDetailPage: function(objectType, ldapName, newObjOptions, /*Boolean?*/ isClosable, /*String?*/ note) {
 			// summary:
-			//		Creates and views the detail page for editing LDAP objects.
+			//		Creates and views the detail page for editing LDAP objects if it doesn't exists. Afterwards it opens the detailpage.
+			if (!this._ldapNameDeferred) {
+				this._preloadDetailPage();
+			}
 			if (this._detailPage && this._preloadedObjectType == this.moduleFlavor && ldapName && !(ldapName instanceof Array)) {
 				// use pre-rendered detail page when loading a (single) object
 				this._ldapNameDeferred.resolve(ldapName);

@@ -828,7 +828,7 @@ class UDM_Module(object):
 							'id': obj.dn,
 							'label': obj[module.identifies],
 							'objectType': module.name,
-							'operations': module.operations,
+							'$operations$': module.operations,
 							'$flags$': obj.oldattr.get('univentionObjectFlag', []),
 							'title': module.title,
 							'icon': 'udm-%s' % module.name.replace('/', '-'),
