@@ -49,7 +49,7 @@ Categories=service-mail
 
 [mail/relayauth]
 Description[de]=Wird ein Mail-Relay verwendet (siehe 'mail/relayhost') und erfordert das Relay Authentifizierung, muss diese Option aktiviert werden. Der Benutzername und das Passwort für den Relay-Server werden in der Datei /etc/postfix/smtp_auth konfiguriert. Dies ist im UCS-Handbuch dokumentiert.
-Description[en]=If a mail relay is used (see 'mail/relayhost') and if the relay requires authentication, this option must be authenticated. The username and the password for the relay server are configured in the file /etc/postfix/smtp_auth. This is documented in the UCS manual.
+Description[en]=If a mail relay is used (see 'mail/relayhost') and if the relay requires authentication, this option must be enabled. The username and the password for the relay server are configured in the file /etc/postfix/smtp_auth. This is documented in the UCS manual.
 Type=bool
 Categories=service-mail
 
