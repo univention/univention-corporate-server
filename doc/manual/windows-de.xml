@@ -188,7 +188,7 @@
 			</simpara></listitem>
 
 			<listitem><simpara>
-					<literal>SMB3</literal> konfiguriert <systemitem class="protocol">SMB3</systemitem> (unterstützt ab <systemitem class="osname">Windows 8</systemitem>) (aktuell nicht durch Univention-Support abgedeckt)
+					<literal>SMB3</literal> konfiguriert <systemitem class="protocol">SMB3</systemitem> (unterstützt ab <systemitem class="osname">Windows 8</systemitem>)
 			</simpara></listitem>
 		  </itemizedlist>
 		</para>
