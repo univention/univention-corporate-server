@@ -1,3 +1,9 @@
+univention-updater (11.0.4-5) unstable; urgency=medium
+
+  * Bug #39595: manually upgrade univention-postgresql if it was held back
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 11 Nov 2015 13:36:15 +0100
+
 univention-updater (11.0.4-4) unstable; urgency=medium
 
   * Bug #38881: Redirect output to updater.log

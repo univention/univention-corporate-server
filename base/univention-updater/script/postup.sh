@@ -99,6 +99,9 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	install univention-saml
 fi
 
+# Bug #39595: manually upgrade univention-postgresql if it was held back
+check_and_install univention-postgresql
+
 # Update to UCS 4.1 autoremove
 if ! is_ucr_true update41/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
