@@ -5,6 +5,7 @@ univention-postgresql (8.0.0-8) unstable; urgency=medium
   * Remove support for old PostgreSQL versions (Bug #39595)
   * do not use Pre-Depends for postgresql depedency (Bug #39595)
   * do not create empty pg_hba.conf on remove (Bug #39595)
+  * remove empty pg_hba.conf on installation or upgrade (Bug #39595)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 11 Nov 2015 13:38:39 +0100
 
