@@ -44,7 +44,7 @@ from univention.config_registry import ConfigRegistry
 from univention.appcenter.docker import Docker
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.service import Start, Stop
-from univention.appcenter.utils import mkdir
+from univention.appcenter.utils import mkdir  # get_locale
 
 
 BACKUP_DIR = '/var/lib/univention-appcenter/backups'
@@ -119,6 +119,9 @@ class DockerActionMixin(object):
 		kwargs['error_file'] = error_file
 		kwargs['app'] = _app.id
 		kwargs['app_version'] = _app.version
+		#locale = get_locale()
+		#if locale:
+		#	kwargs['lang'] = locale
 		try:
 			if _output:
 				return docker.execute_with_output(interface, **kwargs)

@@ -32,8 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from tempfile import NamedTemporaryFile
-
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.app import AppManager
@@ -50,6 +48,7 @@ class Install(InstallRemoveUpgrade):
 	'''Installs an application from the Univention App Center.'''
 	help = 'Install an app'
 
+	prescript_ext = 'preinst'
 	pre_readme = 'readme_install'
 	post_readme = 'readme_post_install'
 
@@ -149,17 +148,3 @@ class Install(InstallRemoveUpgrade):
 			remove.call(app=app, noninteractive=args.noninteractive, username=args.username, password=password, send_info=False, skip_checks=[], backup=False)
 		except Exception:
 			pass
-
-	def _call_prescript(self, app, **kwargs):
-		ext = 'preinst'
-		with NamedTemporaryFile('r+b') as error_file:
-			kwargs['version'] = app.version
-			kwargs['error_file'] = error_file.name
-			success = self._call_cache_script(app, ext, **kwargs)
-			if success is None:
-				# no preinst
-				success = True
-			if not success:
-				for line in error_file:
-					self.warn(line)
-			return success

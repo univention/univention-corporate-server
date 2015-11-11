@@ -39,6 +39,7 @@ class Remove(InstallRemoveUpgrade):
 	'''Removes an application from the Univention App Center.'''
 	help = 'Uninstall an app'
 
+	prescript_ext = 'prerm'
 	pre_readme = 'readme_uninstall'
 	post_readme = 'readme_post_uninstall'
 

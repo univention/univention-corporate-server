@@ -37,6 +37,7 @@ import shutil
 from getpass import getuser
 import subprocess
 from argparse import SUPPRESS
+from tempfile import NamedTemporaryFile
 
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
@@ -45,6 +46,7 @@ from univention.appcenter.app import App, AppManager
 from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, get_action
 from univention.appcenter.actions.register import Register
 from univention.appcenter.log import catch_stdout
+from univention.appcenter.utils import get_locale
 
 
 class _AptLogger(object):
@@ -75,6 +77,7 @@ class _AptLogger(object):
 
 
 class InstallRemoveUpgrade(Register):
+	prescript_ext = None
 	pre_readme = None
 	post_readme = None
 
@@ -172,8 +175,25 @@ class InstallRemoveUpgrade(Register):
 					return aggreed.lower()[:1] in ['y', 'j']
 		return True
 
-	def _call_prescript(self, app):
-		return True
+	def _call_prescript(self, app, **kwargs):
+		ext = self.prescript_ext
+		self.debug('Calling prescript (%s)' % ext)
+		if not ext:
+			return True
+		with NamedTemporaryFile('r+b') as error_file:
+			kwargs['version'] = app.version
+			kwargs['error_file'] = error_file.name
+			locale = get_locale()
+			if locale:
+				kwargs['lang'] = locale
+			success = self._call_cache_script(app, ext, **kwargs)
+			if success is None:
+				# no prescript
+				success = True
+			if not success:
+				for line in error_file:
+					self.warn(line)
+			return success
 
 	def _revert(self, app, args):
 		pass

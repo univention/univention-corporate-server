@@ -1,3 +1,9 @@
+univention-appcenter (5.0.18-2) unstable; urgency=medium
+
+  * Bug #39716: Pass --lang to preinst / prerm
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 Nov 2015 00:55:29 +0100
+
 univention-appcenter (5.0.18-1) unstable; urgency=medium
 
   * Bug #39835: Adjust multi-column layout according to text length
