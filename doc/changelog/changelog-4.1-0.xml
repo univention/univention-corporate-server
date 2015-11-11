@@ -236,7 +236,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The design of the UMC App Center module has been adjusted, and some usability aspects have been improved
-					(<u:bug>38894</u:bug>, <u:bug>39653</u:bug>).
+					(<u:bug>38894</u:bug>, <u:bug>39653</u:bug>, <u:bug>39665</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					App logos must be in the SVG format from UCS 4.1 on. Logos are referenced in the <wordasword>INI</wordasword> or META files as
@@ -257,9 +257,6 @@
 				<listitem><simpara>
 					The App Center now checks a digital signature of the index of app meta files.
 					(<u:bug>39591</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The text layout on the detail page of an App has been improved (<u:bug>39665</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						The searched keyword in the App Center resets if the category gets changed (<u:bug>39652</u:bug>).
