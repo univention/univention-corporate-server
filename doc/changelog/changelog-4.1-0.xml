@@ -131,7 +131,7 @@
 				<title>LDAP ACL changes</title>
 				<itemizedlist>
 					<listitem><simpara>
-						The permissions for GSSAPI SASL authentication have been fixed (<u:bug>29482</u:bug>).
+						The permissions for GSSAPI SASL authentication have been fixed (<u:bug>29482</u:bug>, <u:bug>39877</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
