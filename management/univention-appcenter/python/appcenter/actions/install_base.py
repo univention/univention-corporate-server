@@ -185,7 +185,7 @@ class InstallRemoveUpgrade(Register):
 			kwargs['error_file'] = error_file.name
 			locale = get_locale()
 			if locale:
-				kwargs['lang'] = locale
+				kwargs['locale'] = locale
 			success = self._call_cache_script(app, ext, **kwargs)
 			if success is None:
 				# no prescript
