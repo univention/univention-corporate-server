@@ -1,3 +1,9 @@
+ucs-test (6.0.22-1) unstable; urgency=low
+
+  * Bug #39887: added 80_check_dovecot_mailspool_permissions
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 11 Nov 2015 22:43:07 +0100
+
 ucs-test (6.0.21-1) unstable; urgency=low
 
   * activate various mail tests (Bug #39753)

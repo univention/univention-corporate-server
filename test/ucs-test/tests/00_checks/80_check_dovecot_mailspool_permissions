@@ -1,0 +1,25 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check that the mail spool permissions are correct
+## bugs: [39887]
+## tags: [producttest]
+## packages:
+## - univention-mail-dovecot
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+DOVEMAIL_UID=$(getent passwd dovemail | cut -d: -f3)
+DOVEMAIL_GID=$(getent passwd dovemail | cut -d: -f4)
+
+if [ -n "$(find /var/spool/dovecot/ -not -uid $DOVEMAIL_UID)" ] ; then
+	find /var/spool/dovecot/ -not -uid $DOVEMAIL_UID -ls
+	fail_test 110 "found wrong UID in dovecot mail spool"
+fi
+if [ -n "$(find /var/spool/dovecot/ -not -gid $DOVEMAIL_GID)" ] ; then
+	find /var/spool/dovecot/ -not -gid $DOVEMAIL_GID -ls
+	fail_test 110 "found wrong GID in dovecot mail spool"
+fi
+
+exit $RETVAL
