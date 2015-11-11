@@ -43,6 +43,7 @@ def main():
 					'name'     : maildomain
 				}
 			)
+			udm.stop_cli_server()
 
 			password = 'univention'
 			recipient_email = '%s@%s' % (uts.random_name(), maildomain)
