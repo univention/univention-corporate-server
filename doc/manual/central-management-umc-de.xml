@@ -141,7 +141,7 @@
 
 		<para>
 		  Es besteht die Möglichkeit durch die Installation von Drittanbietern Software,
-		  bspw.  <application>privacyIDEA</application>, die &ucsUMC;-Anmeldung um eine Zwei-Faktor-Authentifizierung
+		  bspw.  <application>privacyIDEA</application>, die &ucsUMC; Anmeldung um eine Zwei-Faktor-Authentifizierung
 		  (2FA) zu ergänzen. Diese Erweiterungen können aus dem Univention App Center installiert werden.
 		</para>
 

@@ -141,7 +141,7 @@
 
 		<para>
 		  With the installation of a third-party application such as <application>privacyIDEA</application>
-		  it is possible to extend the UMC authentication with a two-factor authentication (2FA)
+		  it is possible to extend the &ucsUMC; authentication with a two-factor authentication (2FA)
 		  These extensions can be installed from the Univention App Center.
 		</para>
 
