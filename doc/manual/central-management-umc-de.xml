@@ -139,6 +139,12 @@
 		  ein Rechner ausgewählt, öffnet sich ein neues Fenster mit der &ucsUMC; des Systems.
 		</para>
 
+		<para>
+		  Es besteht auch die Möglichkeit durch die Installation von Drittanbietern Software,
+		  bspw.  <application>privacyIDEA</application>, die UMC-Anmeldung um eine Zwei-Faktor-Authentifizierung
+		  (2FA) zu ergänzen. Diese Erweiterungen können aus dem Univention App Center installiert werden.
+		</para>
+
 	</section>
 
 	<section id="central:license">

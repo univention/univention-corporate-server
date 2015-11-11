@@ -139,6 +139,12 @@
 		  <guimenu>Host:</guimenu>, a new window opens with the system's &ucsUMC;.
 		</para>
 
+		<para>
+		  With the installation of a thrid party application such as <application>privacyIDEA</application>
+		  it is possible to extend the UMC authentication with a two-factor authentication (2FA)
+		  These extensions can be installed from the Univention App Center.
+		</para>
+
 	</section>
 
 	<section id="central:license">
