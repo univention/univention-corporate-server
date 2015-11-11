@@ -1,3 +1,10 @@
+univention-system-setup (9.0.2-9) unstable; urgency=medium
+
+  * Bug #37890: Add u-self-service and u-self-service-passwordreset-umc
+    to required packages list for appliance mode
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 11 Nov 2015 16:26:24 +0100
+
 univention-system-setup (9.0.2-8) unstable; urgency=low
 
   * added add_host_record_in_ad to ad member init (Bug #39574)
