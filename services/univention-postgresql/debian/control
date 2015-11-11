@@ -25,9 +25,9 @@ Description: UCS - PostgreSQL configuration
 
 Package: univention-postgresql-9.1
 Architecture: all
-Pre-Depends: postgresql-9.1
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
+ postgresql-9.1,
  univention-config,
 Breaks: univention-postgresql (< 8),
  univention-bacula (<< 7.0.1-2),
@@ -44,9 +44,9 @@ Description: UCS - PostgreSQL 9.1 configuration
 
 Package: univention-postgresql-8.4
 Architecture: all
-Pre-Depends: postgresql-8.4
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
+ postgresql-8.4,
  univention-config,
 Breaks: univention-postgresql (< 8),
  univention-bacula (<< 7.0.1-2),
