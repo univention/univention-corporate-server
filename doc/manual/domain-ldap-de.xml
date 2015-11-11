@@ -1296,6 +1296,10 @@ univention-directory-listener-ctrl resync cups-printers
 	  Über ein kryptografisches Zertifikat wird der SAML Identity Provider bei einem externen Dienst fest registriert und vertraut diesem.
 	  Der Benutzer authentifiziert sich dann einmalig gegenüber UCS und kann den Dienst ohne erneute Authentifizierung nutzen.
 	</para>
+		<figure id="domain:saml:samllogin">
+			<title>Die <foreignphrase>Single Sign-On</foreignphrase> Anmeldeseite</title>
+			<graphic scalefit="1" width="70%" fileref="illustrations41/sso_SAML_login_page.png"/>
+		</figure>
 	<para>
 		Der SAML 2.0 kompatible UCS Identity Provider wird durch die Integration von <package>simplesamlphp</package> bereitgestellt.
 	</para>
@@ -1315,9 +1319,13 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
 	<para>
-		Um sich per <foreignphrase>Single Sign-On</foreignphrase> an der &ucsUMC; anzumelden, 
-		<!-- TODO: feature not finalized; use normal domain account-->
-		<!-- TODO: Screenshot SSO page -->
+		Um sich per <foreignphrase>Single Sign-On</foreignphrase> an der &ucsUMC; anzumelden, findet sich oben auf der UMC Anmeldeseite ein Link zum <foreignphrase>Single Sign-On</foreignphrase>.
+		Nach einem Klick darauf erscheint die Anmeldemaske den UCS Identity Providers.
+		Hier werden die gleichen Anmeldedaten wie beim normalen &ucsUMC; Login verwendet.
+		<figure id="domain:saml:umclogin">
+			<title>Der <foreignphrase>Single Sign-On</foreignphrase> Link auf der &ucsUMC; Anmeldeseite</title>
+			<graphic scalefit="1" width="70%" fileref="illustrations41/sso_umc_login_page.png"/>
+		</figure>
 	</para>
 	<para>
 		Der <foreignphrase>Single Sign-On</foreignphrase> an einem Dienst kann auch vom UCS Identity Provider initiiert werden.
@@ -1472,7 +1480,6 @@ ucr set ucs/web/overview/entries/service/SP/description="External Service Login"
 	<section id="domain:saml:usermanagement">
 	<title>Benutzer für die Benutzung eines Service Providers freischalten</title>
 	<para>
-		<!-- TODO: screenshot user freischaltung -->
 		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
 		Auf dem <guimenu>Konto Tab</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
 	</para>
