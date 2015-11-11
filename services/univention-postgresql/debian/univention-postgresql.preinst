@@ -37,11 +37,15 @@
 case "$1" in
 	install|upgrade)
 		# delete empty pb_hba.conf probably created by a remove of univention-postgresql
-		find /etc/postgresql/7.4/main/pg_hba.conf \
-			 /etc/postgresql/8.3/main/pg_hba.conf \
-			 /etc/postgresql/8.4/main/pg_hba.conf \
-			 /etc/postgresql/9.1/main/pg_hba.conf \
-			 -empty -delete
+		# on installation or upgrade to 8.0.0-8
+		if dpkg --compare-versions "$2" lt 8.0.0-8
+		then
+			find /etc/postgresql/7.4/main/pg_hba.conf \
+				 /etc/postgresql/8.3/main/pg_hba.conf \
+				 /etc/postgresql/8.4/main/pg_hba.conf \
+				 /etc/postgresql/9.1/main/pg_hba.conf \
+				 -empty -delete
+		fi
 
 		# if [ -z "$2" ] # installation
 		# then
