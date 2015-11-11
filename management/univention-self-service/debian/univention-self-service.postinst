@@ -72,10 +72,10 @@ a2ensite univention-self-service
 
 univention-config-registry set \
 	self-service/passwordreset/web/enabled?yes \
-	"ucs/web/overview/entries/service/passwordreset/description=Password Reset" \
-	"ucs/web/overview/entries/service/passwordreset/description/de=Passwort Reset" \
+	"ucs/web/overview/entries/service/passwordreset/description=Reset your password or provide contact information" \
+	"ucs/web/overview/entries/service/passwordreset/description/de=Setzen Sie Ihr Passwort zurück oder hinterlegen Sie Kontaktinformationen." \
 	"ucs/web/overview/entries/service/passwordreset/label=Password Reset" \
-	"ucs/web/overview/entries/service/passwordreset/label/de=Passwort Reset" \
+	"ucs/web/overview/entries/service/passwordreset/label/de=Passwort zurücksetzen" \
 	"ucs/web/overview/entries/service/passwordreset/link=/univention-self-service/?lang=en-US#passwordreset" \
 	"ucs/web/overview/entries/service/passwordreset/link/de=/univention-self-service/?lang=de-DE#passwordreset" \
 	"ucs/web/overview/entries/service/passwordreset/port_http=" \
@@ -83,8 +83,8 @@ univention-config-registry set \
 
 univention-config-registry set \
 	self-service/passwordchange/web/enabled?yes \
-	"ucs/web/overview/entries/service/passwordchange/description=Change Password" \
-	"ucs/web/overview/entries/service/passwordchange/description/de=Passwort ändern" \
+	"ucs/web/overview/entries/service/passwordchange/description=Change your (expired) password." \
+	"ucs/web/overview/entries/service/passwordchange/description/de=Ändern Sie Ihr (abgelaufenes) Passwort." \
 	"ucs/web/overview/entries/service/passwordchange/label=Change Password" \
 	"ucs/web/overview/entries/service/passwordchange/label/de=Passwort ändern" \
 	"ucs/web/overview/entries/service/passwordchange/link=/univention-self-service/?lang=en-US#passwordchange" \

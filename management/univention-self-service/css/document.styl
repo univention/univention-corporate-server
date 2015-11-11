@@ -87,12 +87,7 @@ h3, h4, h5, h6 {
 	padding: 0;
 }
 
-/* Category tabs */
-.umc .umcCategoryBar {
-	text-align: center;
-	margin-bottom: 35px;
-}
-
+/* Container */
 .container {
 	margin-top: 60px;
 	max-width: 750px;
@@ -100,25 +95,6 @@ h3, h4, h5, h6 {
 	p {
 		font-size: 1.1em;
 	}
-
-//	@media (min-width: $lg-min) {
-//		margin-top: 0;
-//	}
-//	@media (min-width: $sm-min) {
-//		width: 400px;
-//	}
-//
-//	@media (min-width: 900px) {
-//		width: 600px;
-//	}
-//
-//	@media (min-width: 1200px) {
-//		width: 900px;
-//	}
-//
-//	@media (min-width: 1500px) {
-//		width: 1200px;
-//	}
 }
 
 .ucs #content,
@@ -157,6 +133,10 @@ div#title > p {
 	color: #619410;
 }
 
+div.stepContent {
+	margin-top: 1.5em;
+}
+
 div.step {
 	margin-bottom: 30px;
 	overflow: hidden;
@@ -173,6 +153,31 @@ div.step.hide-step {
 
 div.step .dijitButton {
 	margin-top: 9px;
+}
+
+div.umcLabelPane, div.doubleLabelPane {
+	width: 48%;
+	margin: 1.5% 0;
+}
+
+div.doubleLabelPane.left {
+	margin-right: 4%
+}
+
+div.soloLabelPane {
+	width: 100%;
+	margin: 0;
+}
+
+@media (max-width: 500px) {
+	div.umcLabelPane {
+		width: 100%;
+		margin: 0;
+	}
+}
+
+div.umcLabelPane.block {
+	display: block;
 }
 
 div.step .dijitTextBox {

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-11-10 12:44+0100\n"
+"POT-Creation-Date: 2015-11-11 12:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,15 +24,15 @@ msgstr ""
 "</br><div>Sie werden in <a id='redirectTimer'> {1} </a> Sekunden {0} "
 "weitergeleitet.</div>"
 
-#: setcontactinformation.js:150
+#: setcontactinformation.js:152
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: passwordchange.js:47
+#: passwordchange.js:48
 msgid "Change Password"
 msgstr "Passwort ändern"
 
-#: passwordchange.js:122 passwordreset.js:170
+#: passwordchange.js:124 passwordreset.js:173
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -70,23 +70,23 @@ msgstr "Hallo %s %s!"
 msgid "Language"
 msgstr "Sprache"
 
-#: setcontactinformation.js:133
+#: setcontactinformation.js:134
 msgid "Mobile"
 msgstr ""
 
-#: passwordchange.js:94 passwordreset.js:137
+#: passwordchange.js:96 passwordreset.js:138
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: passwordchange.js:107 passwordreset.js:153
+#: passwordchange.js:109 passwordreset.js:155
 msgid "New password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: passwordchange.js:81
+#: passwordchange.js:83
 msgid "Old password"
 msgstr "Altes Passwort"
 
-#: passwordchange.js:48
+#: passwordchange.js:49
 msgid ""
 "On this page you can change your password. If you want to reset your "
 "password instead use this link to the <a href=\"/univention-self-service/{0}"
@@ -140,7 +140,7 @@ msgstr ""
 "service/{0}#setcontactinformation\">  Kontaktinformationen zu ändern</a> "
 "damit Sie zukünftig Ihr Passwort zurücksetzen können."
 
-#: setcontactinformation.js:272
+#: setcontactinformation.js:278
 msgid "Please enter a valid email address."
 msgstr "Keine gültige E-Mail-Adresse."
 
@@ -156,7 +156,7 @@ msgstr ""
 "Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein, um Ihre "
 "Kontaktinformationen einsehen und ändern zu können."
 
-#: passwordchange.js:65
+#: passwordchange.js:66
 msgid "Please provide the required data to change your password."
 msgstr "Bitte geben Sie die notwendigen Daten ein, um Ihr Passwort zu ändern."
 
@@ -180,7 +180,7 @@ msgstr "Token anfordern"
 msgid "Reset your password."
 msgstr "Passwort zurücksetzen."
 
-#: setcontactinformation.js:144
+#: setcontactinformation.js:146
 msgid "Save"
 msgstr "Speichern"
 
@@ -188,7 +188,7 @@ msgstr "Speichern"
 msgid "Show contact information"
 msgstr "Kontaktinformationen anzeigen"
 
-#: passwordchange.js:113 passwordreset.js:159
+#: passwordchange.js:116 passwordreset.js:162
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
@@ -205,7 +205,7 @@ msgstr "Token (Sicherheitsschlüssel)"
 msgid "Translate me!"
 msgstr ""
 
-#: setcontactinformation.js:78 passwordchange.js:69 passwordreset.js:78
+#: setcontactinformation.js:78 passwordchange.js:71 passwordreset.js:78
 msgid "Username"
 msgstr "Benutzername"
 

@@ -75,11 +75,11 @@ define([
 			var stepContent = put(this.usernameNode, 'div.stepContent');
 
 			this._username = new TextBox({
-				inlineLabel: _('Username'),
+				label: _('Username'),
+				'class': 'doubleLabelPane left',
 				isValid: function() {
 					return !!this.get('value');
 				},
-				style: 'margin-top: 6px',
 				required: true
 			});
 			this._username.on('keyup', lang.hitch(this, function(evt) {
@@ -87,15 +87,15 @@ define([
 					this._getContactInformation();
 				}
 			}));
-			put(stepContent, this._username.domNode);
+			put(stepContent, this._username.label.domNode);
 			this._username.startup();
 
 			this._password = new TextBox({
-				inlineLabel: _('Password'),
+				label: _('Password'),
+				'class': 'doubleLabelPane',
 				isValid: function() {
 					return !!this.get('value');
 				},
-				style: 'margin-top: 6px',
 				required: true,
 				type: 'password'
 			});
@@ -104,7 +104,7 @@ define([
 					this._getContactInformation();
 				}
 			}));
-			put(stepContent, this._password.domNode);
+			put(stepContent, this._password.label.domNode);
 			this._password.startup();
 
 			this._showContactInformationButton = new Button({
@@ -115,11 +115,12 @@ define([
 
 			// step 2 show and set contact information
 			this.contactInformationNode = put(formNode, 'div.step.hide-step');
-			put(this.contactInformationNode, 'p > b', _('Feel free to change your contact information. Press "Save" to confirm your changes.'));
+			put(this.contactInformationNode, 'p', _('Feel free to change your contact information. Press "Save" to confirm your changes.'));
 			stepContent = put(this.contactInformationNode, 'div.stepContent');
 
 			this._email = new TextBox({
-				inlineLabel: _('EMail'),
+				label: _('EMail'),
+				'class': 'doubleLabelPane left',
 				id: 'email'
 			});
 			this._email.on('keyup', lang.hitch(this, function(evt) {
@@ -127,10 +128,11 @@ define([
 					this._setContactInformation();
 				}
 			}));
-			put(stepContent, this._email.domNode);
+			put(stepContent, this._email.label.domNode);
 
 			this._mobile = new TextBox({
-				inlineLabel: _('Mobile'),
+				label: _('Mobile'),
+				'class': 'doubleLabelPane',
 				id: 'mobile'
 			});
 			this._mobile.on('keyup', lang.hitch(this, function(evt) {
@@ -138,7 +140,7 @@ define([
 					this._setContactInformation();
 				}
 			}));
-			put(stepContent, this._mobile.domNode);
+			put(stepContent, this._mobile.label.domNode);
 
 			this._saveButton = new Button({
 				label: _('Save'),
@@ -207,7 +209,7 @@ define([
 				var currentInput = mappingIdAndInput[contact.id];
 				if (currentInput) {
 					currentInput.set('value', contact.value);
-					currentInput._updateInlineLabelVisibility();
+					//currentInput._updateInlineLabelVisibility();
 				}
 			}));
 			put(this.contactInformationNode, '!hide-step');

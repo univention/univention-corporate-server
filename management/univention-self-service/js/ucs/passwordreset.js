@@ -75,11 +75,11 @@ define([
 			put(this.usernameNode, 'p', _('Please provide your username to receive a token that is required to reset your password.'));
 			var stepContent = put(this.usernameNode, 'div.stepContent');
 			this._username = new TextBox({
-				inlineLabel: _('Username'),
+				label: _('Username'),
+				'class': 'soloLabelPane',
 				isValid: function() {
 					return !!this.get('value');
 				},
-				style: 'margin-top: 6px',
 				required: true
 			});
 			this._username.on('keyup', lang.hitch(this, function(evt) {
@@ -87,7 +87,7 @@ define([
 					this._getResetMethods();
 				}
 			}));
-			put(stepContent, this._username.domNode);
+			put(stepContent, this._username.label.domNode);
 			this._username.startup();
 			this._usernameButton = new Button({
 				label: _('Confirm username'),
@@ -116,10 +116,11 @@ define([
 
 			// step 3 use the token to set a new password
 			this.newPasswordNode = put(formNode, 'div.step.hide-step');
-			put(this.newPasswordNode, 'p > b', _('Please enter the token and your new password.'));
+			put(this.newPasswordNode, 'p', _('Please enter the token and your new password.'));
 			stepContent = put(this.newPasswordNode, 'div.stepContent');
 			this._token = new TextBox({
-				inlineLabel: _('Token'),
+				label: _('Token'),
+				'class': 'soloLabelPane',
 				isValid: function() {
 					return !!this.get('value');
 				},
@@ -130,12 +131,13 @@ define([
 					this._setPassword();
 				}
 			}));
-			put(stepContent, this._token.domNode);
+			put(stepContent, this._token.label.domNode);
 			this._token.startup();
 
 			this._newPassword = new TextBox({
-				inlineLabel: _('New password'),
+				label: _('New password'),
 				type: 'password',
+				'class': 'doubleLabelPane left',
 				isValid: function() {
 					return !!this.get('value');
 				},
@@ -146,12 +148,13 @@ define([
 					this._setPassword();
 				}
 			}));
-			put(stepContent, this._newPassword.domNode);
+			put(stepContent, this._newPassword.label.domNode);
 			this._newPassword.startup();
 
 			this._verifyPassword = new TextBox({
-				inlineLabel: _('New password (retype)'),
+				label: _('New password (retype)'),
 				type: 'password',
+				'class': 'doubleLabelPane',
 				isValid: lang.hitch(this, function() {
 					return this._newPassword.get('value') ===
 						this._verifyPassword.get('value');
@@ -164,7 +167,7 @@ define([
 					this._setPassword();
 				}
 			}));
-			put(stepContent, this._verifyPassword.domNode);
+			put(stepContent, this._verifyPassword.label.domNode);
 			this._verifyPassword.startup();
 			this._setPasswordButton = new Button({
 				label: _('Change password'),

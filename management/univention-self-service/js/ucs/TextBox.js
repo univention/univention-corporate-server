@@ -35,9 +35,10 @@ define([
 	"dojo/on",
 	"dojo/when",
 	"dijit/form/ValidationTextBox",
+	"./LabelPane",
 	"./_FormWidgetMixin"
 	//"umc/tools"
-], function(declare, lang, put, on, when, ValidationTextBox, _FormWidgetMixin) {
+], function(declare, lang, put, on, when, ValidationTextBox, LabelPane, _FormWidgetMixin) {
 	return declare("umc.widgets.TextBox", [ ValidationTextBox, _FormWidgetMixin ], {
 		// dynamicValue: String|Function
 		//		Either an UMCP command to query a value from or a javascript function.
@@ -60,6 +61,7 @@ define([
 		//		If specified, the given string ias positioned as label above the input field.
 		inlineLabel: null,
 		_inlineLabelNode: null,
+		label: null,
 
 		_createInlineLabelNode: function(value) {
 			this._inlineLabelNode = put(this.focusNode, '-span.umcInlineLabel', value);
@@ -105,6 +107,13 @@ define([
 				this._createInlineLabelNode(this.inlineLabel);
 				this._registerInlineLabelEvents();
 				this._updateInlineLabelVisibility();
+			}
+			if (this.label !== undefined) {
+				this.label = new LabelPane({
+					content: this,
+					'class': this['class']
+				});
+				this.set('class', '');
 			}
 			this.tooltipPosition = ['after', 'below'];
 		},

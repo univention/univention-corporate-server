@@ -1,3 +1,10 @@
+univention-self-service (1.0.2-4) unstable; urgency=low
+
+  * Bug #39597: Adapted style and labels for input fields
+    * Changed labels and long desc for the overview items
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 11 Nov 2015 12:43:16 +0100
+
 univention-self-service (1.0.2-3) unstable; urgency=low
 
   * change labels and error msg (Bug #37890)

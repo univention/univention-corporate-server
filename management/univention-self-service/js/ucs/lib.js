@@ -62,7 +62,7 @@ define([
 		},
 
 		showLastMessage: function(msg) {
-			var targetNode = msg.targetNode || dom.byId("content");
+			var targetNode = msg.targetNode || dom.byId("title");
 			var msgNode = dom.byId('msg');
 
 			if (msgNode) {
