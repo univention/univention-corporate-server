@@ -1,6 +1,6 @@
 univention-appcenter (5.0.18-2) unstable; urgency=medium
 
-  * Bug #39716: Pass --lang to preinst / prerm
+  * Bug #39716: Pass --locale to preinst / prerm
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 Nov 2015 00:55:29 +0100
 
