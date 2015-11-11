@@ -7,8 +7,6 @@
 ##  - univention-mail-dovecot
 ##  - univention-directory-manager-tools
 ## bugs: [38727]
-## versions:
-##  4.0-2: skip
 
 # * quota-service for Postfix: new mails should be rejected during SMTP dialogue if user is over quota (until 110%
 #   is allowed)
@@ -26,8 +24,6 @@ import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from essential.mail import send_mail, mail_delivered
-
-timeout = 10
 
 def main():
 	with udm_test.UCSTestUDM() as udm:
@@ -67,6 +63,4 @@ def main():
 				subprocess.call(["/usr/bin/doveadm", "quota", "get", "-u", mail])
 
 if __name__ == '__main__':
-	global timeout
-	timeout = 1
 	main()

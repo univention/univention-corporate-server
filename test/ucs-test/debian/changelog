@@ -1,3 +1,9 @@
+ucs-test (6.0.21-1) unstable; urgency=low
+
+  * activate various mail tests (Bug #39753)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 11 Nov 2015 10:31:03 +0100
+
 ucs-test (6.0.20-1) unstable; urgency=medium
 
   * 02_import-performance: count LDAP users directly and increase the
