@@ -811,6 +811,11 @@
 					The time zone in Docker containers is now set to the same as the host.
 					(<u:bug>39483</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					A base image for UCS hosted apps has been created and uploaded
+					to <uri>docker.software-univention.de</uri>
+					(<u:bug>39187</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 	</section>
 
