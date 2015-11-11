@@ -236,7 +236,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					The design of the UMC App Center module has been adjusted, and some usability aspects have been improved
-					(<u:bug>38894</u:bug>, <u:bug>39653</u:bug>, <u:bug>39665</u:bug>, <u:bug>39651</u:bug>).
+					(<u:bug>38894</u:bug>, <u:bug>39653</u:bug>, <u:bug>39665</u:bug>, <u:bug>39651</u:bug>, <u:bug>39835</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					App logos must be in the SVG format from UCS 4.1 on. Logos are referenced in the <wordasword>INI</wordasword> or META files as

@@ -27,6 +27,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+column-count(count)
+	column-count: count
+	-webkit-column-count: count
+	-moz-column-count: count
+
 .umcAppCenterGallery
 	.umcGalleryWrapperItem
 		float: left
@@ -312,33 +317,29 @@
 	.descriptionContainer
 		margin-bottom: 3em
 
+
 	@media (min-width: 550px)
-		.descriptionContainer.longText div
-			column-count: 2
-			-webkit-column-count: 2
-			-moz-column-count: 2
-
-		.usage.longText 
-			column-count: 2
-			-webkit-column-count: 2
-			-moz-column-count: 2
-
 		.umcPageNav .icon
 			width: 50%
 
-	@media (min-width: 992px)
-		.descriptionContainer.longText div
-			column-count: 3
-			-webkit-column-count: 3
-			-moz-column-count: 3
+	/* NOTE: _All_ CSS classes textLongerThanXXXChars from _getCSSClass4TextLength() need to be addressed here! */
+	.descriptionContainer div,
+	.usage
+		@media (min-width: 650px) and (max-width:767px)
+			&.textLongerThan400Chars
+				column-count: 2
 
-		.usage.longText 
-			column-count: 3
-			-webkit-column-count: 3
-			-moz-column-count: 3
+		@media (min-width: 650px) and (max-width: 991px)
+			&.textLongerThan500Chars
+				column-count: 2
 
-		.umcPageNav .icon
-			width: 33%
+		@media (min-width: 650px) and (max-width: 1199px)
+			&.textLongerThan600Chars
+				column-count: 2
+
+		@media (min-width: 650px)
+			&.textLongerThan800Chars
+				column-count: 2
 
 	.appDetailsPane
 		background-color: #f0f0f0
@@ -348,6 +349,7 @@
 	.appDetailsFooter
 		margin-bottom: 2em
 		padding: 0
+
 	@media (min-width: 768px)
 		.appDetailsFooter:last-child
 			padding-left: 15px

@@ -293,6 +293,16 @@ define([
 		},
 
 		buildInnerPage: function() {
+			var _getCSSClass4TextLength = function(text) {
+				var cssClass = '';
+				array.forEach([400, 500, 600, 800], function(ilength) {
+					if (text.length > ilength) {
+						cssClass = 'textLongerThan' + ilength + 'Chars';
+					}
+				});
+				return cssClass;
+			};
+
 			if (this._icon) {
 				this.removeChild(this._icon);
 				this._icon.destroyRecursive();
@@ -396,13 +406,12 @@ define([
 				}
 				if (usage) {
 					usageHeader = new Text({
-						content: _('First steps'), 
+						content: _('First steps'),
 						'class': 'mainHeader'
 					});
 					this._mainRegionContainer.addChild(usageHeader);
 
-					var usageClass = 'usage';
-					usageClass += usage.length > 360 ? ' longText' : '';
+					var usageClass = 'usage ' + _getCSSClass4TextLength(usage);
 					var usagePane = new Text({
 						content: usage,
 						'class': usageClass
@@ -445,14 +454,13 @@ define([
 				'class': 'detailsContainer'
 			});
 
-			var descriptionContainerClass = 'descriptionContainer';
-			descriptionContainerClass += (this.app.longDescription || '').length > 360 ? ' longText' : '';
 			var descriptionContainer = new ContainerWidget({
-				'class': descriptionContainerClass
+				'class': 'descriptionContainer'
 			});
-			domConstruct.create('div', {
+			var longDescCSSClass = _getCSSClass4TextLength(this.app.longDescription);
+			domClass.add(domConstruct.create('div', {
 				innerHTML: this.app.longDescription
-			}, descriptionContainer.domNode);
+			}, descriptionContainer.domNode), longDescCSSClass);
 			this._detailsContainer.addChild(descriptionContainer);
 
 			if (this.app.thumbnails.length) {
