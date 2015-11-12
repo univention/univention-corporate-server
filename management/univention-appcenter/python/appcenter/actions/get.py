@@ -113,6 +113,7 @@ class Get(UniventionAppAction):
 		ret['is_master'] = ret['local_role'] == 'domaincontroller_master'
 		ret['host_master'] = ucr.get('ldap/master')
 		ret['autostart'] = ucr.get('%s/autostart' % app.id, 'yes')
+		ret['update_available'] = ucr.is_true(app.ucr_upgrade_key)
 		ret['is_ucs_component'] = app.is_ucs_component()
 		latest = AppManager.find(app.id, latest=True)
 		if latest != app:

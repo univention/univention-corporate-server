@@ -32,6 +32,9 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import re
+from distutils.version import LooseVersion
+
 from univention.config_registry import ConfigRegistry
 
 from univention.appcenter.log import LogCatcher
@@ -114,12 +117,17 @@ class Domain(CredentialsAction):
 
 	def _get_installations(self, app, hosts, app_ldap_objects, lo, pos, ucr):
 		ret = {}
+		local_ucs_version = ucr.get('version/version')
+		candidate_version = AppManager.find(app.id, latest=True).version
 		for host in hosts:
 			role = host.info.get('serverRole')[0]
 			description = host.info.get('description')
+			remote_ucs_version = host.info.get('operatingSystemVersion')
+			if remote_ucs_version:
+				remote_ucs_version = re.sub('.*([0-9]+\.[0-9]+).*', '\\1', remote_ucs_version)
 			ip = host.info.get('ip')  # list
 			version = None
-			candidate_version = AppManager.find(app.id, latest=True).version
+			update_available = None
 			for app_obj in app_ldap_objects:
 				app_obj_version = app_obj.info.get('version')
 				app_obj_id = app_obj.info.get('id')[:-len(app_obj_version) - 1]
@@ -127,8 +135,14 @@ class Domain(CredentialsAction):
 					if host.info.get('fqdn') in app_obj.info.get('server', []):
 						version = app_obj_version
 						break
+			if local_ucs_version != remote_ucs_version:
+				# unable to compute directly... better treat as not available
+				update_available = False
+			elif version:
+				update_available = LooseVersion(version) < LooseVersion(candidate_version)
 			ret[host['name']] = {
 				'version': version,
+				'update_available': update_available,
 				'candidate_version': candidate_version,
 				'description': description,
 				'ip': ip,

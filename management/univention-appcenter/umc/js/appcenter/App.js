@@ -78,6 +78,7 @@ define([
 			this.webInterfacePortHTTP = props.web_interface_port_http;
 			this.webInterfacePortHTTPS = props.web_interface_port_https;
 			this.endOfLife = props.end_of_life;
+			this.ucsVersion = props.ucs_version;
 			this.isCurrent = props.is_current;
 			this.allowedRoles = props.server_role;
 			this.role = props.local_role;
@@ -103,6 +104,7 @@ define([
 			this.hostMaster = props.host_master;
 			this.userActivationRequired = props.user_activation_required;
 			this.ipAddress = props.ip_address;
+			this.updateAvailable = props.update_available;
 			this.installations = props.installations;
 			this.installationData = null;
 			if (this.installations) {
@@ -129,6 +131,7 @@ define([
 					newProps.local_role = roles[info.role] || info.role;
 					newProps.ip_address = info.ip[0];
 					newProps.is_installed = !!info.version;
+					newProps.update_available = info.update_available;
 					var installation = new App(newProps, page, hostName);
 					this.installationData.push(installation);
 				}));
@@ -279,7 +282,7 @@ define([
 
 
 		canUpgrade: function() {
-			return this.isInstalled && !!this.candidateVersion;
+			return this.updateAvailable;
 		},
 
 		canUpgradeInDomain: function() {
@@ -356,6 +359,9 @@ define([
 							data: item,
 							appStatus: item.canUpgrade() ? _('Update available') : ''
 						};
+						if (!item.isLocal() && item.ucsVersion != this.ucsVersion) {
+							ihost.appStatus = _('Different UCS Version. Limited manageability');
+						}
 						hosts.push(ihost);
 					}
 				});

@@ -132,12 +132,12 @@ define([
 			var iconClass = '';
 			if (item.end_of_life) {
 				iconClass = '.appEndOfLifeIcon';
-			} else if (item.is_installed && item.candidate_version) {
+			} else if (item.update_available) {
 				iconClass = '.appUpdateIcon';
 			}
 			if (item.installations) {
 				tools.forIn(item.installations, function(server, info) {
-					if (info.version && ((item.candidate_version || item.version) != info.version)) {
+					if (info.update_available) {
 						iconClass = '.appUpdateIcon';
 						return false;
 					}
