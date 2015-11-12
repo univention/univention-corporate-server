@@ -1,3 +1,10 @@
+ucs-test (6.0.22-2) unstable; urgency=low
+
+  * deactivate 40_mail.39 and 40_mail.41, partially reverting r65395/6.0.21-1
+    (Bug #39900)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 12 Nov 2015 11:40:50 +0100
+
 ucs-test (6.0.22-1) unstable; urgency=low
 
   * Bug #39887: added 80_check_dovecot_mailspool_permissions
