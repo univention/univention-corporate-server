@@ -1,3 +1,9 @@
+univention-join (8.0.2-1) unstable; urgency=medium
+
+  * Save UCS version at ldap host object (Bug #39915)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2015 20:21:26 +0100
+
 univention-join (8.0.1-1) unstable; urgency=medium
 
   * Bug #39233: simplify error handling
