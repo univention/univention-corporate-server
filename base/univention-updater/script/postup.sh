@@ -141,17 +141,13 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.1-0"
+		--set operatingSystemVersion="4.1-0" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
 	repository/online/component/4.0-3-errata=false \
 	repository/online/component/4.0-3-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
-
-ucr set \
-	repository/online/component/4.0-4-errata=false \
-	repository/online/component/4.0-4-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
 # Set errata component for UCS 4.1-0
 ucr set \
