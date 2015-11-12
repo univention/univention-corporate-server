@@ -90,6 +90,25 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'operatingSystem': univention.admin.property(
+			short_description=_('Operating system'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			include_in_default_search=1,
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'operatingSystemVersion': univention.admin.property(
+			short_description=_('Operating system version'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'domain': univention.admin.property(
 			short_description=_('Domain'),
 			long_description='',
@@ -370,6 +389,8 @@ mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapp
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
 mapping.register('service', 'univentionService')
+mapping.register('operatingSystem', 'univentionOperatingSystem', None, univention.admin.mapping.ListToString)
+mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)

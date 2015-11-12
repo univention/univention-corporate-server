@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-5) unstable; urgency=medium
+
+  * Save UCS version at DCs and member servers (Bug #39915)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2015 16:17:03 +0100
+
 univention-directory-manager-modules (11.0.2-4) unstable; urgency=low
 
   * Bug #38796: reduce code and raise readability
