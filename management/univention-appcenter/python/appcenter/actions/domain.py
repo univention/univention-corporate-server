@@ -141,6 +141,7 @@ class Domain(CredentialsAction):
 			elif version:
 				update_available = LooseVersion(version) < LooseVersion(candidate_version)
 			ret[host['name']] = {
+				'ucs_version': remote_ucs_version,
 				'version': version,
 				'update_available': update_available,
 				'candidate_version': candidate_version,

@@ -114,6 +114,7 @@ define([
 					delete newProps.installations;
 					newProps.version = info.version;
 					newProps.candidate_version = null;
+					newProps.ucs_version = info.ucs_version;
 					if (info.version !== info.candidate_version) {
 						newProps.candidate_version = info.candidate_version;
 					}
@@ -351,7 +352,7 @@ define([
 		getHosts: function() {
 			var hosts = [];
 			if (!!this.installationData) {
-				array.forEach(this.installationData, function(item) {
+				array.forEach(this.installationData, lang.hitch(this, function(item) {
 					if (item.isInstalled) {
 						var ihost = {
 							server: item.displayName,
@@ -364,7 +365,7 @@ define([
 						}
 						hosts.push(ihost);
 					}
-				});
+				}));
 			} else {
 				if (this.isInstalled) {
 					hosts.push({

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-4) unstable; urgency=medium
+
+  * Bug #39912: Some fixes to initial patch
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 Nov 2015 22:30:15 +0100
+
 univention-appcenter (5.0.19-3) unstable; urgency=medium
 
   * Bug #39912: Do not show update_available if ucs versions don't match
