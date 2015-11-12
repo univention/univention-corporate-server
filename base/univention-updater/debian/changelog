@@ -1,3 +1,10 @@
+univention-updater (11.0.6-1) unstable; urgency=low
+
+  * Bug #39922: introduced proxy/https for proxying HTTPS connections -
+    use proxy/http as fallback
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 12 Nov 2015 21:32:11 +0100
+
 univention-updater (11.0.5-2) unstable; urgency=medium
 
   * postup.sh: Don't disable the 4.0-4-errata scope (Bug #39614)

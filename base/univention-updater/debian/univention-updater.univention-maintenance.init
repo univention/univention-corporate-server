@@ -63,16 +63,31 @@ case "$1" in
 			log_action_end_msg 1
 			exit 1
 		fi
-		if [ -n "$proxy_http" ]
-		then
-			repository_server="${proxy_http#http://}"
-			repository_server="${repository_server%:*}" # strip port
-			repository_server="${repository_server##*@}" # strip login information
-			log_action_cont_msg "proxy[${repository_server}]"
+
+		# determine protocol of main repository server
+		repository_protocol="${repository_online_server%://*}"
+		# use HTTP if no protocol is specified
+		[ "$repository_protocol" = "$repository_online_server" ] && repository_protocol="http"
+		# use proxy/http as fallback if proxy/https is not specified
+		[ -z "$proxy_https" -a -n "$proxy_http" ] && proxy_https="$proxy_http"
+
+		msg_prefix="proxy"
+		if [ -n "$proxy_http" -a "$repository_protocol" = "http" ] ; then
+			repository_server="${proxy_http}"
+		elif [ -n "$proxy_https" -a "$repository_protocol" = "https" ] ; then
+			repository_server="${proxy_https}"
 		else
 			repository_server="$repository_online_server"
-			log_action_cont_msg "repository[$repository_server]"
+			msg_prefix="repository"
 		fi
+		# get hostname from URL and strip off everything else
+		repository_server="${repository_server#http://}"
+		repository_server="${repository_server#https://}"
+		repository_server="${repository_server%:*}" # strip port
+		repository_server="${repository_server##*@}" # strip login information
+		repository_server="${repository_server%/*}" # strip path
+		log_action_cont_msg "${msg_prefix}[$repository_server]"
+
 		if ! ping -c 1 "$repository_server" >/dev/null 2>&1
 		then
 			log_action_end_msg 1

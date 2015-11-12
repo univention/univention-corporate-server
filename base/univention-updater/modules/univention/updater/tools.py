@@ -593,11 +593,19 @@ class UniventionUpdater:
 
         self.is_repository_server = self.configRegistry.is_true('local/repository', False)
 
+        reinitUCSHttpServer = False
         if 'proxy/http' in self.configRegistry and self.configRegistry['proxy/http']:
             os.environ['http_proxy'] = self.configRegistry['proxy/http']
-            UCSHttpServer.reinit()
+            os.environ['https_proxy'] = self.configRegistry['proxy/http']
+            reinitUCSHttpServer = True
+        if 'proxy/https' in self.configRegistry and self.configRegistry['proxy/https']:
+            os.environ['https_proxy'] = self.configRegistry['proxy/https']
+            reinitUCSHttpServer = True
         if 'proxy/no_proxy' in self.configRegistry and self.configRegistry['proxy/no_proxy']:
             os.environ['no_proxy'] = self.configRegistry['proxy/no_proxy']
+            reinitUCSHttpServer = True
+        if reinitUCSHttpServer:
+            UCSHttpServer.reinit()
 
         # check for maintained and unmaintained
         self.parts = ['maintained']
