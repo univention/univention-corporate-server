@@ -1,3 +1,9 @@
+univention-updater (11.0.5-1) unstable; urgency=medium
+
+  * Save UCS version at ldap host object (Bug #39915)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2015 20:39:37 +0100
+
 univention-updater (11.0.4-6) unstable; urgency=low
 
   * Bug #39917: Fix release name parsing

@@ -135,6 +135,15 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
+if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
+	udm computers/$server_role modify \
+		--binddn "$ldap_hostdn" \
+		--bindpwdfile "/etc/machine.secret" \
+		--dn "$ldap_hostdn" \
+		--set operatingSystem="Univention Corporate Server" \
+		--set operatingSystemVersion="4.1-0"
+fi
+
 # Move to mirror mode for previous errata component
 ucr set \
 	repository/online/component/4.0-3-errata=false \
