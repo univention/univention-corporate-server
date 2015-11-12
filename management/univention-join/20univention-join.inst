@@ -140,7 +140,7 @@ fi
 
 udm computers/$server_role modify "$@" --dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="$version_$version-$version_patchlevel" || die
+		--set operatingSystemVersion="$version_version-$version_patchlevel" || die
 
 # create ssl/validity/... to avoid nagios UNIVENTION_SSL warnings
 if [ -x /usr/sbin/univention-certificate-check-validity ]; then
