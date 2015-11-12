@@ -450,7 +450,13 @@
 				upgrade (<u:bug>39915</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-					The updater now uses the protocol <systemitem class="protocol">https://</systemitem> to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39306</u:bug>).
+					The updater now uses the protocol <systemitem class="protocol">HTTPS</systemitem> to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39306</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					The updater now uses the proxy defined in the &ucsUCRV; <envar>proxy/https</envar> for <systemitem class="protocol">HTTPS</systemitem> connections. If <envar>proxy/https</envar> is not defined, the fallback <envar>proxy/http</envar> is used (<u:bug>39922</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					The &ucsUCRV; <envar>proxy/address</envar>, <envar>proxy/port</envar>, <envar>proxy/username</envar> and <envar>proxy/password</envar> are no longer used to configure the package toolkit <literal>apt</literal>. Please use the &ucsUCRV; <envar>proxy/http</envar> or <envar>proxy/https</envar> instead (<u:bug>39922</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The updater now uses the license UUID (&ucsUCRV; <envar>license/uuid</envar>) to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39305</u:bug>).
