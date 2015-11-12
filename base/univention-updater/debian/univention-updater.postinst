@@ -48,7 +48,7 @@ create_logfile /var/log/univention/actualise.log "root:adm" 640
 
 [ -d /etc/apt/sources.list.d ] || mkdir -p /etc/apt/sources.list.d
 
-while IFS='	' read releasename version url; do :; done <<__CODENAMES__
+while IFS='	' read r v u; do releasename=$r; done <<__CODENAMES__
 mountain beech	UCS 2.1	https://en.wikipedia.org/wiki/Nothofagus_solandri
 copper beech	UCS 2.2	https://en.wikipedia.org/wiki/European_Beech
 hornbeam	UCS 2.3	https://en.wikipedia.org/wiki/Hornbeam
