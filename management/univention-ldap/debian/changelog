@@ -1,3 +1,10 @@
+univention-ldap (12.1.5-1) unstable; urgency=medium
+
+  * Grant access to univentionOperatingSystem and
+    univentionOperatingSystemVersion by self (Bug #39915)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2015 20:26:54 +0100
+
 univention-ldap (12.1.4-1) unstable; urgency=medium
 
   * Consider ldap/acl/read/ips in entry,uid ACL which was modified for

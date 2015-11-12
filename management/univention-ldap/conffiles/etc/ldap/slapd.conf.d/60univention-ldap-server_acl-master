@@ -65,4 +65,9 @@ if configRegistry['ldap/server/type'] == "slave":
 print '    by * read break'
 print ''
 
+print 'access to attrs=univentionOperatingSystem,univentionOperatingSystemVersion'
+print '    by self %s' % (usr)
+print '    by * none break'
+print ''
+
 @!@
