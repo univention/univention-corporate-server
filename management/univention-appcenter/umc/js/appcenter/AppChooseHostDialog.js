@@ -37,15 +37,12 @@ define([
 	"umc/widgets/Page",
 	"umc/widgets/Text",
 	"umc/widgets/ComboBox",
+	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, topic, Deferred, Form, Page, Text, ComboBox, _) {
-	return declare("umc.modules.appcenter.AppChooseHostDialog", [ Page ], {
-		app: null,
+], function(declare, lang, topic, Deferred, Form, Page, Text, ComboBox, _AppDialogMixin, _) {
+	return declare("umc.modules.appcenter.AppChooseHostDialog", [ Page, _AppDialogMixin ], {
 		_form: null,
-		_page: null,
 		_continueDeferred: null,
-		noFooter: true,
-
 		title: _('App management'),
 
 		postMixInProperties: function() {
@@ -53,18 +50,29 @@ define([
 			this.headerButtons = [{
 				name: 'close',
 				iconClass: 'umcCloseIconWhite',
-				label: _('Back'),
+				label: _('Cancel installation'),
 				align: 'left',
 				callback: lang.hitch(this, 'onBack')
 			}];
 		},
 
-		reset: function(title, hosts, removedDueToInstalled, removedDueToRole) {
+		reset: function(hosts, removedDueToInstalled, removedDueToRole) {
+			this._clearWidget('_form', true);
+
+			this.set('headerText', _('Installation of %s', this.app.name));
+			this.set('helpText', _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.app.name));
+
 			if (this._continueDeferred) {
 				this._continueDeferred.reject();
 			}
 			this._continueDeferred = new Deferred();
-			this.set('headerText', title);
+
+			if (hosts.length == 1 && !removedDueToRole.length && !removedDueToInstalled.length) {
+				// safely resolve this dialog's deferred object if there is
+				// only a single choice to be made
+				this._continueDeferred.resolve(hosts[0].id);
+			}
+
 			var buttons = [{
 				name: 'cancel',
 				'default': true,
@@ -83,14 +91,6 @@ define([
 					}
 				})
 			}];
-			if (this._page) {
-				this.removeChild(this._page);
-				this._page.destroyRecursive();
-			}
-			this._page = new Page({
-				footerButtons: buttons
-			});
-			this.addChild(this._page);
 			var removeExplanation = '';
 			if (removedDueToInstalled.length === 1) {
 				removeExplanation += '<p>' + _('%s was removed from the list because the application is installed on this host.', removedDueToInstalled[0]) + '</p>';
@@ -108,7 +108,7 @@ define([
 			this._form = new Form({
 				widgets: [{
 					type: ComboBox,
-					label: _('Select the host where you want to install the application'),
+					label: _('Host for installation of application'),
 					name: 'host',
 					required: true,
 					size: 'Two',
@@ -117,26 +117,17 @@ define([
 					type: Text,
 					name: 'remove_explanation',
 					content: removeExplanation
-				}]
+				}],
+				buttons: buttons
 			});
-			this._page.addChild(this._form);
+			this.addChild(this._form);
 		},
 
 		showUp: function() {
 			this.onShowUp();
 			this._continueDeferred.then(lang.hitch(this, 'onBack'), lang.hitch(this, 'onBack'));
 			return this._continueDeferred;
-		},
-
-		onShowUp: function() {
-		},
-
-		onNext: function() {
-		},
-
-		onBack: function() {
 		}
-
 	});
 });
 

@@ -1,3 +1,16 @@
+univention-appcenter (5.0.19-1) unstable; urgency=medium
+
+  Bug #39668:
+  * Adjust layout and texts during installation process
+  * Merge navigation and main layout elements, limit their max width
+  * Skip page for choosing the host if only one host is present in domain
+  * Prompt license agreement at the very beginning
+  * Move cancel/apply buttons from AppConfigDialog into module header
+  * Use pointing mouse cursor over status icons in AppCenterGallery
+  * Fix module URI during installation process
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 12 Nov 2015 03:47:26 +0100
+
 univention-appcenter (5.0.18-2) unstable; urgency=medium
 
   * Bug #39716: Pass --locale to preinst / prerm

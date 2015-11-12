@@ -46,28 +46,30 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Page",
 	"umc/modules/appcenter/requirements",
+	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, ComboBox, Form, ContainerWidget, Page, requirements, _) {
-	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page ], {
-		app: null,
+], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, ComboBox, Form, ContainerWidget, Page, requirements, _AppDialogMixin, _) {
+	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page, _AppDialogMixin ], {
 		_container: null,
 		_continueDeferred: null,
-		_confForm: null,
-		noFooter: true,
+		_configForm: null,
+		_confirmForm: null,
 
 		title: _('App management'),
 
-		reset: function(mayContinue, title, actionLabel) {
-			if (this._confForm) {
-				this._confForm.destroyRecursive();
-				this._confForm = null;
-			}
+		reset: function(mayContinue, title, text, actionLabel) {
+			this._clearWidget('_configForm', false);
+			this._clearWidget('_container', true);
+			this._clearWidget('_confirmForm', true);
+
 			if (this._continueDeferred) {
 				this._continueDeferred.reject();
 			}
 			this._continueDeferred = new Deferred();
 
 			this.set('headerText', title);
+			this.set('helpText', text);
+
 			this.actionLabel = actionLabel;
 			var close = lang.hitch(this, function() {
 				if (mayContinue) {
@@ -79,7 +81,7 @@ define([
 			this.set('headerButtons', [{
 				name: 'close',
 				iconClass: 'umcCloseIconWhite',
-				label: _('Cancel'),
+				label: _('Cancel installation'),
 				callback: close
 			}]);
 
@@ -95,22 +97,22 @@ define([
 					label: this.actionLabel,
 					callback: lang.hitch(this, function() {
 						var values = null;
-						if (this._confForm) {
-							values = this._confForm.get('value');
+						if (this._configForm) {
+							values = this._configForm.get('value');
 						}
 						this._continueDeferred.resolve(values);
 					})
 				});
 			}
+
 			this._continueDeferred.then(lang.hitch(this, 'onBack', true), lang.hitch(this, 'onBack', false));
-			if (this._container) {
-				this.removeChild(this._container);
-				this._container.destroyRecursive();
-			}
-			this.set('navButtons', buttons);
-			this._container = new ContainerWidget({
-			});
+			this._container = new ContainerWidget({});
 			this.addChild(this._container);
+
+			this._confirmForm = new Form({
+				buttons: buttons
+			});
+			this.addChild(this._confirmForm);
 		},
 
 		showConfiguration: function(funcName) {
@@ -149,13 +151,14 @@ define([
 				addWidgets(array.filter(this.app.config, function(w) { return !w.advanced; }), false, widgets);
 			}
 			if (widgets.length) {
-				this._confForm = new Form({
+				this._configForm = new Form({
 					widgets: widgets
 				});
 				var titlePane = new TitlePane({
+					'class': 'umcAppConfigTitlePane',
 					title: _('Configure %s', this.app.name)
 				});
-				titlePane.addChild(this._confForm);
+				titlePane.addChild(this._configForm);
 				this._container.addChild(titlePane);
 			}
 		},
@@ -174,7 +177,6 @@ define([
 			}));
 			if (foundRequirements.length) {
 				var container = new ContainerWidget({});
-				var navButtons = this.get('navButtons') || [];
 				array.forEach(foundRequirements, lang.hitch(this, function(foundRequirementArray, i) {
 					var foundRequirement = foundRequirementArray[0];
 					var details = foundRequirementArray[1];
@@ -238,43 +240,63 @@ define([
 			}
 		},
 
-		packageChangesOne: function(changes, label) {
-			var txt = '';
-			var details;
-			if (changes === undefined || changes.length) {
-				if (changes === undefined) {
-					details = '<div>' + _('Unknown') + '</div>';
-				} else {
-					details = '<ul><li>' + changes.join('</li><li>') + '</li></ul>';
-				}
-				txt = '<p>' + label + details + '</p>';
-			}
-			return txt;
-		},
-
 		showPackageChanges: function(install, remove, broken, incompatible, opened, host) {
+			var _packageChangesList = function(changes, label) {
+				var txt = '';
+				var details;
+				if (changes === undefined || changes.length) {
+					if (changes === undefined) {
+						details = '<div>' + _('Unknown') + '</div>';
+					} else {
+						details = '<ul><li>' + changes.join('</li><li>') + '</li></ul>';
+					}
+					txt = '<p>' + label + details + '</p>';
+				}
+				return txt;
+			};
+
+			var _packageChangeLabel = function(changes, labelSingular, labelPlural, resultList) {
+				if (!changes) {
+					resultList.push(lang.replace(labelPlural, [_('unknown')]));
+				}
+				else if (changes.length === 1) {
+					resultList.push(labelSingular);
+				}
+				else if (changes.length > 1) {
+					resultList.push(lang.replace(labelPlural, [changes.length]));
+				}
+			};
+
+			if (incompatible) {
+				this._container.addChild(new Text({
+					content: '<p>' + _('The version of the remote App Center is <strong>incompatible</strong> with the local one. Please update your hosts.') + '</p>'
+				}));
+			}
+
+			var changeLabels = [];
+			_packageChangeLabel(install, _('1 installed/upgraded package'), _('{0} installed/upgraded packages'), changeLabels);
+			_packageChangeLabel(remove, '<strong>' + _('1 removed package') + '</strong>', '<strong>' + _('{0} removed packages') + '</strong>', changeLabels);
+			_packageChangeLabel(broken, '<strong>' + _('1 erroneous package') + '</strong>', '<strong>' + _('{0} erroneous packages') + '</strong>', changeLabels);
+			if (!changeLabels.length) {
+				changeLabels = [_('No changes')];
+			}
+			this._container.addChild(new Text({
+				content: '<p>' + _('The software changes on %s consist of: ', host || _('this host')) + changeLabels.join(', ') + '</p>'
+			}));
+
 			var txt = '';
-			txt += this.packageChangesOne(install, _('The following packages will be installed or upgraded:'));
-			txt += this.packageChangesOne(remove, _('The following packages will be removed:'));
-			txt += this.packageChangesOne(broken, _('This operation causes problems in the following packages that cannot be resolved:'));
+			txt += _packageChangesList(install, _('The following packages will be installed or upgraded:'));
+			txt += _packageChangesList(remove, _('The following packages will be removed:'));
+			txt += _packageChangesList(broken, _('This operation causes problems in the following packages that cannot be resolved:'));
 			if (txt === '') {
 				txt = '<p>' + _('No changes') + '</p>';
 			}
-			if (incompatible) {
-				txt += '<div>' + _('The version of the remote App Center is <strong>incompatible</strong> with the local one. Please update your hosts.') + '</div>';
-			}
-			var install_count = install ? install.length : _('Unknown');
-			var remove_count = remove ? (remove.length === 0 ? 0 : '<strong>' + remove.length + '</strong>') : _('Unknown');
-			var broken_count = broken ? (broken.length === 0 ? 0 : '<strong>' + broken.length + '</strong>') : _('Unknown');
-			var incompatible_headline = incompatible ? ', <strong>' + _('incompatible') : '</strong>';
 			this._container.addChild(new TitlePane({
-				title: _('Software changes on %(host)s (installed/upgraded: %(installed)s, removed: %(removed)s, erroneous: %(erroneous)s%(incompatible)s)', {host: host || _('this host'), installed: install_count, removed: remove_count, erroneous: broken_count, incompatible: incompatible_headline}),
-				open: opened,
+				'class': 'umcAppMoreTitlePane',
+				title: _('More information...'),
+				open: false,
 				content: txt
 			}));
-		},
-
-		onShowUp: function() {
 		},
 
 		onBack: function(continued) {
@@ -285,7 +307,6 @@ define([
 				this._continueDeferred.reject();
 			}
 		}
-
 	});
 });
 

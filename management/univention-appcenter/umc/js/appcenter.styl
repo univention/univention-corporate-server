@@ -47,25 +47,26 @@ column-count(count)
 			right: 0
 			z-index: 2
 			transition: opacity 0.5s
+			cursor: pointer
+
+			&.appUpdateIcon
+				background-position: 0 0
+
+			&.appEndOfLifeIcon
+				background-position: -80px 0
 
 		.appStatusHoverIcon
 			z-index: 3
 			opacity: 0
 
+			&.appUpdateIcon
+				background-position: -40px 0
+
+			&.appEndOfLifeIcon
+				background-position: -120px 0
+
 		.appInnerWrapper.hover ~ .appStatusHoverIcon
 			opacity: 1
-
-		.appStatusIcon.appUpdateIcon
-			background-position: 0 0
-
-		.appStatusHoverIcon.appUpdateIcon
-			background-position: -40px 0
-
-		.appStatusIcon.appEndOfLifeIcon
-			background-position: -80px 0
-
-		.appStatusHoverIcon.appEndOfLifeIcon
-			background-position: -120px 0
 
 		.umcGalleryItem
 			background-color: #eaeaea
@@ -242,6 +243,50 @@ column-count(count)
 
 	.appDetailsPageGridContent
 		height: 105px !important
+
+.umc .umcAppDialog
+	.dijitDefaultButton
+		float: right
+
+	.umcPageNav
+		margin-bottom: 0
+
+	.umcAppMoreTitlePane
+		margin-bottom: 1em
+
+		.dijitTitlePaneTitle
+			font-weight: normal
+			color: #787878
+			text-decoration: underline
+			border: none
+			font-size: 1em
+			padding-top: 0.5em
+			padding-bottom: 0.5em
+
+		.dijitArrowNode
+			float: left
+			margin-right: 5px
+			margin-top: 2px
+			background-image: url(../../ dijit/themes/umc/images/icons-small.svg)
+			background-position: 0 -12px
+			background-size: auto
+			width: 12px
+			height: 12px
+			opacity: 0.66
+
+		.dijitTitlePaneTitleHover
+			color: #282828
+
+			.dijitArrowNode
+				background-position: -12px -12px
+				opacity: 1
+
+		.dijitTitlePaneTitleClosed .dijitArrowNode
+			background-position: -72px -12px
+
+		.dijitTitlePaneTitleClosed.dijitTitlePaneTitleHover .dijitArrowNode
+			background-position: -84px -12px
+
 
 .umc .umcAppDetailsPage
 	.umcPageNav

@@ -125,17 +125,15 @@ define([
 
 		_getModuleStateAttr: function() {
 			var state = [];
-			if (this.selectedChildWidget && this.selectedChildWidget == this._appDetailsPage) {
-				state = ['id', this._appDetailsPage.app.id];
-			} else if (this.selectedChildWidget && this.selectedChildWidget == this._appCenterPage) {
+			var _selectedWidget = lang.getObject('selectedChildWidget', false, this)
+			var _app = lang.getObject('selectedChildWidget.app', false, this)
+			if (_selectedWidget == this._appCenterPage) {
 				state = ['category', this._appCenterPage._searchSidebar.get('category')];
+			} else if (_app) {
+				state = ['id', _app.id];
 			}
 			return state.join(':');
 		},
-
-
-
-
 
 		udmAccessible: function() {
 			// FIXME: this is a synchronous call and can

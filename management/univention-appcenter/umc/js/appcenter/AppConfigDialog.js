@@ -41,47 +41,36 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Page",
+	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, tools, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _) {
+], function(declare, lang, array, tools, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _AppDialogMixin, _) {
 	var endsWith = function(str, suffix) {
 	    return str.indexOf(suffix, str.length - suffix.length) !== -1;
 	};
-	return declare("umc.modules.appcenter.AppConfigDialog", [ Page ], {
-		app: null,
+	return declare("umc.modules.appcenter.AppConfigDialog", [ Page, _AppDialogMixin ], {
 		_container: null,
-		noFooter: true,
-
 		title: _('App management'),
 
 		showUp: function() {
+			this._clearWidget('_container', true);
+
 			this.set('headerText', _('Configure %s', this.app.name));
 			this.set('helpText', _('Here you can set configuration options as well as start and stop the application.'));
 
 			this.set('headerButtons', [{
-				name: 'close',
-				iconClass: 'umcCloseIconWhite',
-				label: _('Cancel'),
-				callback: lang.hitch(this, 'onBack', false)
-			}]);
-
-			var buttons = [{
-				name: 'cancel',
-				'default': true,
-				label: _('Cancel'),
-				callback: lang.hitch(this, 'onBack', false)
-			}, {
 				name: 'submit',
-				label: _('Apply'),
+				iconClass: 'umcSaveIconWhite',
+				label: _('Apply changes'),
 				callback: lang.hitch(this, function() {
 					this.apply(this._serviceForm.get('value'), this._confForm.get('value'), this._advancedConfForm.get('value')).then(lang.hitch(this, 'onBack', true));
 				})
-			}];
-			this.set('navButtons', buttons);
+			}, {
+				name: 'close',
+				iconClass: 'umcCloseIconWhite',
+				label: _('Cancel configuration'),
+				callback: lang.hitch(this, 'onBack', false)
+			}]);
 
-			if (this._container) {
-				this.removeChild(this._container);
-				this._container.destroyRecursive();
-			}
 			this._container = new ContainerWidget({});
 			this.addChild(this._container);
 
@@ -173,6 +162,7 @@ define([
 				widgets: widgets
 			});
 			var formTitlePane = new TitlePane({
+				'class': 'umcAppDialogTitlePane',
 				title: _('Settings')
 			});
 			formTitlePane.addChild(this._serviceForm);
@@ -186,6 +176,7 @@ define([
 			});
 			if (widgets.length) {
 				var advancedFormTitlePane = new TitlePane({
+					'class': 'umcAppDialogTitlePane',
 					title: _('Settings (advanced)'),
 					open: false
 				});
@@ -205,17 +196,7 @@ define([
 			var autostart = serviceValues.autostart;
 			var values = lang.mixin({}, confValues, advancedConfValues);
 			return this.standbyDuring(tools.umcpCommand('appcenter/configure', {app: this.app.id, autostart: autostart, values: values}));
-		},
-
-		onUpdate: function() {
-		},
-
-		onShowUp: function() {
-		},
-
-		onBack: function(applied) {
 		}
-
 	});
 });
 
