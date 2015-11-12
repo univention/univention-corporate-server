@@ -133,6 +133,10 @@
 					<listitem><simpara>
 						The permissions for GSSAPI SASL authentication have been fixed (<u:bug>29482</u:bug>, <u:bug>39877</u:bug>).
 					</simpara></listitem>
+					<listitem><simpara>
+						The hosts can now modify their own <property>operatingSystem</property> and
+						<property>operatingSystemVersion</property> attributes (<u:bug>39915</u:bug>).
+					</simpara></listitem>
 				</itemizedlist>
 			</section>
 
@@ -314,6 +318,9 @@
 			<title>Computers module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The UDM attributes <property>operatingSystem</property> and
+					<property>operatingSystemVersion</property> can now set for domain controllers
+					and member servers (<u:bug>39915</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -436,6 +443,11 @@
 			<listitem><simpara>
 				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
 				have been adapted to the needs of UCS 4.1 (<u:bug>39271</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The UDM attributes <property>operatingSystem</property> and
+				<property>operatingSystemVersion</property> of an UCS server are now set during the
+				upgrade (<u:bug>39915</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 					The updater now uses the protocol <systemitem class="protocol">https://</systemitem> to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39306</u:bug>).
