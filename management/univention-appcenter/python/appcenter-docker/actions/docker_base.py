@@ -121,7 +121,7 @@ class DockerActionMixin(object):
 		kwargs['app_version'] = _app.version
 		#locale = get_locale()
 		#if locale:
-		#	kwargs['lang'] = locale
+		#	kwargs['locale'] = locale
 		try:
 			if _output:
 				return docker.execute_with_output(interface, **kwargs)
@@ -152,7 +152,7 @@ class DockerActionMixin(object):
 		self.log('Verifying Docker registry manifest for app image %s' % docker.image)
 		docker.verify()
 
-		self.log('Downloading app image %s. This may take up to 15 minutes' % docker.image)
+		self.log('Downloading app image %s' % docker.image)
 		docker.pull()
 
 		self.log('Initializing app image')
