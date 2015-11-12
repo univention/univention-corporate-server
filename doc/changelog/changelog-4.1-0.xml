@@ -230,8 +230,10 @@
 					The App Center is now able to install docker based apps. These apps are installed in a small container (minimal UCS) within the host system
 					(<u:bug>38887</u:bug>, <u:bug>39185</u:bug>, <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>, <u:bug>39184</u:bug>, <u:bug>39183</u:bug>, <u:bug>39196</u:bug>, <u:bug>39496</u:bug>, <u:bug>39417</u:bug>, <u:bug>39330</u:bug>, <u:bug>39192</u:bug>, <u:bug>39467</u:bug>, <u:bug>39462</u:bug>, <u:bug>39629</u:bug>, <u:bug>39204</u:bug>, <u:bug>39189</u:bug>, <u:bug>39587</u:bug>, <u:bug>39189</u:bug>, <u:bug>39660</u:bug>, <u:bug>39434</u:bug>, <u:bug>39199</u:bug>, <u:bug>39820</u:bug>, <u:bug>39822</u:bug>, <u:bug>39716</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
 					The variable <envar>UCSOverviewCategoriy</envar> now accepts the value <wordasword>None</wordasword> in which case any
 					UCR variable once registered will be removed (<u:bug>39718</u:bug>).
+				</simpara></listitem>
 				<listitem><simpara>
 					The source package has been renamed to <package>univention-appcenter</package> to reflect the fact that the UMC module is
 					a frontend for the Univention App Center (<u:bug>39585</u:bug>).
@@ -542,7 +544,7 @@
 					The <property>entityID</property> of the identity provider is now configurable via the &ucsUCRV; <envar>saml/idp/entityID</envar> (<u:bug>33912</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The SAML identity provider now uses a dedicated LDAP user to access the LDAP and a separate user is used to access <acronym><wordasword>SSO</wordasword></acronym> specific web-content by <application>apache2</application> (<u:bug>38947</u:bug>).
+					The SAML identity provider now uses a dedicated LDAP user to access the LDAP and a separate user is used to access <acronym>SSO</acronym> specific web-content by <application>apache2</application> (<u:bug>38947</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The App Center module has been adapted to work with single sign on (<u:bug>39226</u:bug>).
