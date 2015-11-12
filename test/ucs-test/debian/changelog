@@ -1,3 +1,11 @@
+ucs-test (6.0.23-1) unstable; urgency=medium
+
+  * 00_checks/07_check_os_hostdn: Check for operatingSystem and
+    operatingSystemVersion of ldap/hostdn (Bug #39915)
+  * 00_checks/08_releasename: Check for releasename (Bug #39917)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Nov 2015 21:02:51 +0100
+
 ucs-test (6.0.22-2) unstable; urgency=low
 
   * deactivate 40_mail.39 and 40_mail.41, partially reverting r65395/6.0.21-1

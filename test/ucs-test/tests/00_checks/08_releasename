@@ -1,0 +1,21 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check releasename
+## tags:
+##  - basic
+##  - apptest
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+code_name="$(lsb_release -c -s)"
+
+# 4.1 Codename is Vahr
+if [ "$code_name" != "Vahr" ]; then
+	fail_test 110 "Codename is set to $code_name"
+fi
+
+exit $RETVAL
+
+
