@@ -267,6 +267,9 @@
 					(<u:bug>39591</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
+					The global App Center now only suggests app updates on remote hosts now only when that's UCS version matches the local version (<u:bug>39912</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
 						The searched keyword in the App Center resets if the category gets changed (<u:bug>39652</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
