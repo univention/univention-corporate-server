@@ -4,6 +4,12 @@ Description[en]=The HTTP proxy server, e.g. <http://192.168.1.100:3128>. If the 
 Type=str
 Categories=system-network
 
+[proxy/https]
+Description[de]=Der zu verwendende Proxyserver für HTTPS-Verbindungen, z.B. <http://192.168.1.100:3128>. Wenn der Proxy eine Authenzifizierung erfordert, kann ein Benutzername und ein Passwort im Format <http://benutzername:passwort@192.168.1.100:3128> angegeben werden.
+Description[en]=The proxy server for HTTPS connections, e.g. <http://192.168.1.100:3128>. If the proxy requires authentication, the username and the password can be provided in the format <http://username:password@192.168.1.100:3128>.
+Type=str
+Categories=system-network
+
 [proxy/no_proxy]
 Description[de]=Eine Komma-separierte Liste von Domänennamen, für die der Proxy nicht verwendet werden soll. Eine Ausnahme für eine Domäne wie univention.de wirkt sich auch auf eine Unterdomäne wie apt.univention.de aus.
 Description[en]=A comma-separated list of domain names for which the proxy should not be consulted. An exception for a domain like univention.de also applies to a subdomain like apt.univention.de.

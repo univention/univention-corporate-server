@@ -1,29 +1,27 @@
 @%@UCRWARNING=// @%@
 
 @!@
-def print_proxy(proxy):
+def print_proxy(proxy, proto):
 	print 'Acquire'
 	print '{'
-	print '    http'
+	print '    %s' % (proto,)
 	print '    {'
 	print '        Proxy "%s";' % proxy
 	print '    }'
 	print '}'
+	print
 
 proxy = configRegistry.get('proxy/http', None)
-# Bug #18397: this will be removed
-if not proxy: # fallback
-	proxy = configRegistry.get('proxy/address', None)
-	port = configRegistry.get('proxy/port', None)
-	if proxy and port:
-		proxy = "%s:%s" % (proxy, port)
-	username = configRegistry.get('proxy/username', None)
-	password = configRegistry.get('proxy/password', None)
-	if proxy and username and password:
-		from urllib import quote
-		proxy = "%s:%s@%s" % (quote(username), quote(password), proxy)
 if proxy:
 	if '://' not in proxy:
 		proxy = 'http://%s' % proxy
-	print_proxy(proxy)
+	print_proxy(proxy, 'http')
+	if not configRegistry.get('proxy/https', None):
+		print_proxy(proxy, 'https')
+
+proxy = configRegistry.get('proxy/https', None)
+if proxy:
+	if '://' not in proxy:
+		proxy = 'http://%s' % proxy
+	print_proxy(proxy, 'https')
 @!@

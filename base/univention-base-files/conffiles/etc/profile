@@ -27,10 +27,14 @@ fi
 
 @!@
 if configRegistry.get('proxy/http'):
-    print 'http_proxy="%s"' % configRegistry['proxy/http']
-    print 'export PATH PS1 http_proxy'
-else:
-    print 'export PATH PS1'
+    print 'export http_proxy="%s"' % configRegistry['proxy/http']
+	if not configRegistry.get('proxy/https'):
+		print 'export https_proxy="%s"' % configRegistry['proxy/http']
+
+if configRegistry.get('proxy/https'):
+    print 'export https_proxy="%s"' % configRegistry['proxy/https']
+
+print 'export PATH PS1'
 
 if configRegistry.get('proxy/no_proxy'):
     print 'export no_proxy="%s"' % configRegistry['proxy/no_proxy']

@@ -1,6 +1,7 @@
 Type: file
 File: etc/profile
 Variables: proxy/http
+Variables: proxy/https
 Variables: proxy/no_proxy
 Variables: locale/default
 Variables: umask
@@ -109,6 +110,7 @@ File: etc/modprobe.d/vmgfx.conf
 Type: file
 File: etc/apt/apt.conf.d/80proxy
 Variables: proxy/http
+Variables: proxy/https
 Variables: proxy/username
 Variables: proxy/password
 Variables: proxy/address
