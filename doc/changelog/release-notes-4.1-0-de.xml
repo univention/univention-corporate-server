@@ -64,7 +64,9 @@
 				Der Linux Kernel wurde auf den letzten stabilen 4.1er <foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert.
 				Dieser beinhaltet diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
 			</para></listitem>
+			<listitem><para>
     			OpenLDAP Update
+			</para></listitem>
 			<listitem><para>
 				Ab UCS 4.1 wird das Protokoll <systemitem class="protocol">HTTPS</systemitem> als neues Standardprotokoll für den Zugriff auf das Online Repository von Univention verwendet. Während des Updates wird das
 				System automatisch auf <ulink url="https://updates.software-univention.de/"/> umgestellt, sofern noch der Standard-Repository-Server verwendet wird.
