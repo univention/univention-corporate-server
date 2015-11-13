@@ -152,7 +152,7 @@
 	  Informationen zur Lizenzierung können bei einigen Applikationen direkt über einen
 	  <guimenu>Kaufen</guimenu> Button in der unteren Bildleiste bezogen werden.
 	  Für alle anderen Applikationen muss der Hersteller der Applikation über die unter
-	  <guimenu>Kontakt</guimenu> angezeigt E-Mail-Adresse kontaktiert werden.
+	  <guimenu>Kontakt</guimenu> angezeigte E-Mail-Adresse kontaktiert werden.
 	</para>
 
 	<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
@@ -176,6 +176,43 @@
 	  Sofern mehrere UCS Systeme in der Domäne vorhanden sind, kann ausgewählt werden, auf welchem
 	  der Systeme die Applikation installiert werden soll.
 	</para>
+
+	<para>
+	  Einige Applikationen nutzen eine Container-Technologie (<application>Docker</application>). Dadurch wird
+	  die Applikation (und ihre unmittelbare Umgebung) vom Rest gekapselt. Dadurch erhöht sich die Sicherheit
+	  und die Kompatibilität. Weitergehende Informationen sind hier zu finden:
+	  <ulink url="https://www.univention.de/2015/11/neu-in-ucs-4-1-docker-apps-fuer-das-univention-app-center/"/>.
+	  Die Kapselung dieser sogenannten <wordasword>Docker Apps</wordasword> führt dazu, dass, wenn
+	  eine Kommandozeile in der App-Umgebung benötigt wird, folgender Befehl ausgeführt werden muss (hier am Beispiel
+	  der fiktiven App "demo-docker-app"):
+	  <command>docker exec -it "$(ucr get appcenter/apps/demo-docker-app/container)" /bin/bash</command>.
+	</para>
+
+	<para>
+	  <wordasword>Docker Apps</wordasword> lassen sich über das UMC-Modul weiter konfigurieren. Die App kann
+	  gestartet und gestoppt und die Autostart-Option gesetzt werden:
+	  <itemizedlist>
+	    <listitem><simpara>
+	      <envar>Automatisch gestartet</envar> sorgt dafür, dass die App automatisch beim Hochfahren des Servers
+	      gestartet wird.
+	    </simpara></listitem>
+	    <listitem><simpara>
+	      <envar>Manuell gestartet</envar> startet die App nicht automatisch, sie muss über eben diese Konfigurationsseite
+	      gestartet werden.
+	    </simpara></listitem>
+	    <listitem><simpara>
+	      <envar>Start wird verhindert</envar> erlaubt den Start der App grundsätzlich nicht. Auch nicht über diese Seite.
+	    </simpara></listitem>
+	  </itemizedlist>
+	  Darüber hinaus können Apps weitere Parameter definieren, die eingestellt werden können und die sich direkt
+	  auf die App auswirken.
+	  Das Menü zur weiteren Konfiguration ist über den Button <guimenu>App-Einstellungen</guimenu> einer installierten App
+	  zu erreichen.
+	</para>
+
+	<figure id="appcenter-configure"><title>App-Einstellungen einer Applikation im App Center</title>
+	<graphic scalefit="1" width="100%" fileref="illustrations41/appcenter_configure_de.png"/>
+	</figure>
 
 	<para>
 	  Nach der Installation einer Applikation werden beim Klick auf das Icon einer Applikation
