@@ -1062,9 +1062,9 @@
 				password management without administrator interaction.
 			</para>
 			<para>
-				The Self Service app registers two web services on the UCS startsite
+				The Self Service app registers two web services on the UCS start site
 				which can be accessed via a dedicated web page:
-				"Change Password" and "Passwort Reset".
+				"Change Password" and "Password Reset".
 				They allow users to update their password given their old password as well as
 				to reset their password by requesting a token to be sent to a registered
 				contact address.

@@ -1084,18 +1084,18 @@
 			</para>
 		</section>
 		<section id="user-management:password-changes-by-users:self-service">
-			<title>Passwort-Verwaltung über Self Service-App</title>
+			<title>Passwort-Verwaltung über <wordasword>Self Service-App</wordasword></title>
 			<para>
-				Durch die Instalation der UCS-Komponente <guimenu>Self Service</guimenu>
+				Durch die Installation der <wordasword>UCS-Komponente</wordasword> <guimenu>Self Service</guimenu>
 				über das <guimenu>App Center</guimenu> werden Benutzer dazu befähigt,
 				ihr Passwort zu verwalten ohne die Interaktion eines Administrators.
 			</para>
 			<para>
-				Die Self Service-App registriert zwei Web-Dienste auf der UCS-Startseite,
+				Die <wordasword>Self Service-App</wordasword> registriert zwei Web-Dienste auf der <wordasword>UCS-Startseite</wordasword>,
 				auf die über eine eigene Webseite zugegriffen werden kann:
 				"Password ändern" und "Password zurücksetzen".
 				Sie erlauben es Benutzern, ein neues Passwort zu setzen mit Angabe ihres alten
-				Passwortes, oder aber ihr Passwort über eine angefragten Token zurückzusetzen,
+				Passwortes, oder aber ihr Passwort über eine angefragten <wordasword>Token</wordasword> zurückzusetzen,
 				welcher an eine vorher dafür registrierte Kontakt-Adresse gesendet wird.
 			</para>
 		</section>
