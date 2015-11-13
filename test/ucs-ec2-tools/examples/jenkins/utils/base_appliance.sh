@@ -689,7 +689,7 @@ __EOF__
 	ucr unset dns/forwarder2 dns/forwarder3
 
 	# fill up HDD with ZEROs to maximize possible compression
-	dd if=/dev/zero of=/fill-it-up bs=512b count="$(df | grep rootfs | awk '{print $4 - 10000}')"; rm /fill-it-up
+	dd if=/dev/zero of=/fill-it-up bs=1M; rm /fill-it-up
 
 	# Remove persistent net rule
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
