@@ -54,6 +54,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
@@ -69,6 +70,7 @@
 				</itemizedlist>
 			</section>
 		</section>
+				-->
 
 		<section id="changelog:basis:boot">
 			<title>Boot Loader</title>
@@ -140,6 +142,7 @@
 				</itemizedlist>
 			</section>
 
+				<!--
 			<section id="changelog:domain:openldap:schema">
 				<title>LDAP schema changes</title>
 				<itemizedlist>
@@ -147,7 +150,9 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+				-->
 
+				<!--
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
@@ -155,7 +160,9 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+				-->
 
+				<!--
 			<section id="changelog:domain:dnsserver">
 				<title>DNS server</title>
 				<itemizedlist>
@@ -163,6 +170,7 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+				-->
 		</section>
 	</section>
 
@@ -275,6 +283,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:umc:udmcli">
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
@@ -282,6 +291,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:umc:setup">
 			<title>Modules for system settings / setup wizard</title>
@@ -301,6 +311,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:umc:user">
 			<title>Users module</title>
 			<itemizedlist>
@@ -308,7 +319,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:reports">
 			<title>Univention Directory Reports</title>
 			<itemizedlist>
@@ -316,6 +329,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:umc:computers">
 			<title>Computers module</title>
@@ -328,6 +342,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:umc:dns">
 			<title>DNS module</title>
 			<itemizedlist>
@@ -335,7 +350,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:license">
 			<title>License module</title>
 			<itemizedlist>
@@ -343,7 +360,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:top">
 			<title>Process overview module</title>
 			<itemizedlist>
@@ -351,7 +370,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:update">
 			<title>Software update module</title>
 			<itemizedlist>
@@ -359,7 +380,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:share">
 			<title>Shares module</title>
 			<itemizedlist>
@@ -367,6 +390,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:umc:policy">
 			<title>Policies</title>
@@ -377,6 +401,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:umc:printer">
 			<title>Printers module</title>
 			<itemizedlist>
@@ -384,7 +409,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:mail">
 			<title>Mail</title>
 			<itemizedlist>
@@ -392,7 +419,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:quota">
 			<title>Filesystem quota module</title>
 			<itemizedlist>
@@ -400,7 +429,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:ucr">
 			<title>Univention Configuration Registry module</title>
 			<itemizedlist>
@@ -408,7 +439,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:umc:ldap">
 			<title>LDAP directory browser</title>
 			<itemizedlist>
@@ -416,6 +449,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:umc:other">
 			<title>Other modules</title>
@@ -426,6 +460,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:umc:development">
 			<title>Development of modules for &ucsUMC;</title>
 			<itemizedlist>
@@ -433,6 +468,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 	</section>
 
 
@@ -478,6 +514,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 
+				<!--
 		<section id="changelog:deployment:pkgdb">
 			<title>Software monitor</title>
 			<itemizedlist>
@@ -485,6 +522,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:deployment:cli">
 			<title>Software deployment command line tools</title>
@@ -625,6 +663,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:service:virus">
 			<title>Spam/virus detection and countermeasures</title>
 			<itemizedlist>
@@ -632,7 +671,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:service:print">
 			<title>Printing services</title>
 			<itemizedlist>
@@ -640,7 +681,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:service:nagios">
 			<title>Nagios</title>
 			<itemizedlist>
@@ -648,6 +691,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:service:kerberos">
 			<title>Kerberos</title>
@@ -669,6 +713,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:service:proxy">
 			<title>Proxy services</title>
 			<itemizedlist>
@@ -676,7 +721,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:service:systeminfo">
 			<title>Univention System Info</title>
 			<itemizedlist>
@@ -684,6 +731,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:service:apache">
 			<title>Apache</title>
@@ -892,6 +940,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
@@ -899,7 +948,9 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
+				<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
@@ -907,6 +958,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 	</section>
 
 
