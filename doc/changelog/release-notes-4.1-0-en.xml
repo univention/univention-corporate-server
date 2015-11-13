@@ -48,42 +48,27 @@
 		</para>
 
 		<itemizedlist>
-			<listitem>
-				<para>
-					With UCS 4.1 the handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages was changed.
-				</para>
-				<itemizedlist spacing="compact">
-					<listitem><simpara>
-							The <emphasis>Installation DVD</emphasis> now only contains the packages needed to install a new UCS system with all the components provided by Univention.
-							Previously the DVD also contained all other <phrase>maintained</phrase> packages too.
-							They were removed from the DVD to decrease the download size.
-					</simpara></listitem>
-					<listitem><simpara>
-							The full set of <phrase>maintained</phrase> packages is provided through the <emphasis>Update DVD</emphasis>.
-							It can be used to update a local repository.
-					</simpara></listitem>
-					<listitem><simpara>
-							All packages (<phrase>maintained</phrase> and <phrase>unmaintained</phrase>) are available online through <ulink url="https://updates.software-univention.de/"/>.
-					</simpara></listitem>
-				</itemizedlist>
-				<para>
-					With this change the definition of <phrase>maintained</phrase> also changed:
-					<phrase>maintained</phrase> is now defined on the basis of the <emphasis>source package</emphasis>, while previously it was defined on a subset of <emphasis>binary packages</emphasis>.
-					This might lead to an increased space requirement for local repositories, as <phrase>maintained</phrase> now consists of more packages than in previous releases.
-				</para>
-			</listitem>
 			<listitem><para>
-				As of UCS 4.1 <systemitem class="protocol">HTTPS</systemitem> will be the new default protocol for accessing the online repository of Univention. During the update this will be reconfigured
-				automatically to <ulink url="https://updates.software-univention.de/"/> if the default repository server are still in use by the system.
+				App Center Docker, Design / Usability, Rating
+			</para></listitem>
+			<listitem><para>
+				SAML Integration
+			</para></listitem>
+			<listitem><para>
+    			User self service for password reset
+			</para></listitem>
+			<listitem><para>
+    			Samba 4.3 
 			</para></listitem>
 			<listitem><para>
 				The Linux kernel has been updated to the latest stable version of the 4.1 longterm kernel.
 				This includes several security updates as well as new and updated drivers for a better hardware support.
 			</para></listitem>
-			<listitem>
-				<para>
-				</para>
-			</listitem>
+    			OpenLDAP Update
+			<listitem><para>
+				As of UCS 4.1 <systemitem class="protocol">HTTPS</systemitem> will be the new default protocol for accessing the online repository of Univention. During the update this will be reconfigured
+				automatically to <ulink url="https://updates.software-univention.de/"/> if the default repository server are still in use by the system.
+			</para></listitem>
 		</itemizedlist>
 	</chapter>
 
@@ -184,14 +169,6 @@
 	<chapter id="relnotes:packages">
 		<title>Further notes on selected packages</title>
 
-		<section id="relnotes:instprofil">
-			<title>Network-based installation of UCS</title>
-			<para>
-				The profile-based UCS network installation is available since UCS 4.0-2.
-				Further details are described in <biblioref linkend="ext-doc-inst"/>.
-			</para>
-		</section>
-
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
 			<para>
@@ -252,12 +229,38 @@
 			</para>
 		</section>
 
+		<section id="relnotes:maintained">
+			<title>Handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages</title>
+				<para>
+					With UCS 4.1 the handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages was changed.
+				</para>
+				<itemizedlist spacing="compact">
+					<listitem><simpara>
+							The <emphasis>Installation DVD</emphasis> now only contains the packages needed to install a new UCS system with all the components provided by Univention.
+							Previously the DVD also contained all other <phrase>maintained</phrase> packages too.
+							They were removed from the DVD to decrease the download size.
+					</simpara></listitem>
+					<listitem><simpara>
+							The full set of <phrase>maintained</phrase> packages is provided through the <emphasis>Update DVD</emphasis>.
+							It can be used to update a local repository.
+					</simpara></listitem>
+					<listitem><simpara>
+							All packages (<phrase>maintained</phrase> and <phrase>unmaintained</phrase>) are available online through <ulink url="https://updates.software-univention.de/"/>.
+					</simpara></listitem>
+				</itemizedlist>
+				<para>
+					With this change the definition of <phrase>maintained</phrase> also changed:
+					<phrase>maintained</phrase> is now defined on the basis of the <emphasis>source package</emphasis>, while previously it was defined on a subset of <emphasis>binary packages</emphasis>.
+					This might lead to an increased space requirement for local repositories, as <phrase>maintained</phrase> now consists of more packages than in previous releases.
+				</para>
+		</section>
+
 	</chapter>
 
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 4.0-3:
+			Listed are the changes since UCS 4.0-4:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-0.xml" xpointer="xpointer(/chapter/section)"/>

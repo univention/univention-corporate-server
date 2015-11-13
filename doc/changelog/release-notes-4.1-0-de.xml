@@ -48,39 +48,26 @@
 		</para>
 
 		<itemizedlist>
-			<listitem>
-				<para>
-					Mit UCS 4.1 wurde das Verfahren für <foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>-Pakete geändert.
-				</para>
-				<itemizedlist spacing="compact">
-					<listitem><simpara>
-							Die <emphasis>Installations-DVD</emphasis> beinhaltet nur noch die Pakete, die für die Installation eines neuen UCS-Systems mit allen Komponenten, die von Univention bereitgestellt werden.
-							Frühere DVDs enthielten auch alle anderen <foreignphrase>maintained</foreignphrase>-Pakete.
-							Diese wurden entfernt, um die Größe für den Download zu reduzieren.
-					</simpara></listitem>
-					<listitem><simpara>
-							Die vollständige Menge aller <foreignphrase>maintained</foreignphrase>-Pakete wird über die <emphasis>Update DVD</emphasis> bereitgestellt.
-							Diese kann benutzt werden, um ein lokales Repository zu aktualisieren.
-					</simpara></listitem>
-					<listitem><simpara>
-							Alle Pakete (<foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>) sind auch online über <ulink url="https://updates.software-univention.de/"/> verfügbar.
-					</simpara></listitem>
-				</itemizedlist>
-				<para>
-					Mit dieser Änderung ändert sich auch die Definition der <foreignphrase>maintained</foreignphrase>-Pakete:
-					<foreignphrase>maintained</foreignphrase> ist nun auf der Basis der <emphasis>Quellpakete</emphasis> definiert, während es früher auf einer Untermenge der <emphasis>Binärpakete</emphasis> definiert war.
-					Diese Änderung kann zu einer erhöhten Nutzung von Speicherplatz auf einem lokalen Repository-Server führen, da <foreignphrase>maintained</foreignphrase> nun mehr Pakete enthält als in früheren Releases-
-				</para>
-			</listitem>
 			<listitem><para>
-				Ab UCS 4.1 wird das Protokoll <systemitem class="protocol">HTTPS</systemitem> als neues Standardprotokoll für den Zugriff auf das Online Repository von Univention verwendet. Während des Updates wird das
-				System automatisch auf <ulink url="https://updates.software-univention.de/"/> umgestellt, sofern noch der Standard-Repository-Server verwendet wird.
+				App Center Docker, Design / Usability, Rating
+			</para></listitem>
+			<listitem><para>
+				SAML Integration
+			</para></listitem>
+			<listitem><para>
+    			User self service for password reset
+			</para></listitem>
+			<listitem><para>
+    			Samba 4.3 
 			</para></listitem>
 			<listitem><para>
 				Der Linux Kernel wurde auf den letzten stabilen 4.1er <foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert.
 				Dieser beinhaltet diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
 			</para></listitem>
+    			OpenLDAP Update
 			<listitem><para>
+				Ab UCS 4.1 wird das Protokoll <systemitem class="protocol">HTTPS</systemitem> als neues Standardprotokoll für den Zugriff auf das Online Repository von Univention verwendet. Während des Updates wird das
+				System automatisch auf <ulink url="https://updates.software-univention.de/"/> umgestellt, sofern noch der Standard-Repository-Server verwendet wird.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -187,14 +174,6 @@
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
-		<section id="relnotes:instprofil">
-			<title>Netzwerkinstallation von UCS</title>
-			<para>
-				Die Profil-basierte Netzwerkinstallation von UCS steht seit UCS 4.0-2 zur Verfügung.
-				Genauere Informationen dazu befinden sich in <biblioref linkend="ext-doc-inst"/>.
-			</para>
-		</section>
-
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
@@ -254,13 +233,39 @@
 			</para>
 		</section>
 
+		<section id="relnotes:maintained">
+			<title>Verfahren für <foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>-Pakete</title>
+				<para>
+					Mit UCS 4.1 wurde das Verfahren für <foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>-Pakete geändert.
+				</para>
+				<itemizedlist spacing="compact">
+					<listitem><simpara>
+							Die <emphasis>Installations-DVD</emphasis> beinhaltet nur noch die Pakete, die für die Installation eines neuen UCS-Systems mit allen Komponenten, die von Univention bereitgestellt werden.
+							Frühere DVDs enthielten auch alle anderen <foreignphrase>maintained</foreignphrase>-Pakete.
+							Diese wurden entfernt, um die Größe für den Download zu reduzieren.
+					</simpara></listitem>
+					<listitem><simpara>
+							Die vollständige Menge aller <foreignphrase>maintained</foreignphrase>-Pakete wird über die <emphasis>Update DVD</emphasis> bereitgestellt.
+							Diese kann benutzt werden, um ein lokales Repository zu aktualisieren.
+					</simpara></listitem>
+					<listitem><simpara>
+							Alle Pakete (<foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>) sind auch online über <ulink url="https://updates.software-univention.de/"/> verfügbar.
+					</simpara></listitem>
+				</itemizedlist>
+				<para>
+					Mit dieser Änderung ändert sich auch die Definition der <foreignphrase>maintained</foreignphrase>-Pakete:
+					<foreignphrase>maintained</foreignphrase> ist nun auf der Basis der <emphasis>Quellpakete</emphasis> definiert, während es früher auf einer Untermenge der <emphasis>Binärpakete</emphasis> definiert war.
+					Diese Änderung kann zu einer erhöhten Nutzung von Speicherplatz auf einem lokalen Repository-Server führen, da <foreignphrase>maintained</foreignphrase> nun mehr Pakete enthält als in früheren Releases-
+				</para>
+		</section>
+
 	</chapter>
 
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 4.0-3:
+			Aufgeführt sind die Änderungen seit UCS 4.0-4:
 		</para>
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-0.xml" xpointer="xpointer(/chapter/section)"/>
