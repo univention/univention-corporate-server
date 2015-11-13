@@ -104,7 +104,15 @@ define([
 
 			// step 2 token
 			this.tokenNode = put(formNode, 'div.step.hide-step');
-			put(this.tokenNode, 'p', _('Please choose a method to receive the token.'));
+			var skipStep = function() { 
+				put(this.newPasswordNode, '!hide-step');
+				this._requestTokenButton.set('disabled', true);
+			};
+			var descRequestToken = put(this.tokenNode, 'p', _('Please choose a method to receive the token.'));
+			put(descRequestToken, 'span', {
+				innerHTML: _(' If you already have a token you can <a>skip this step</a>.'),
+				onclick: lang.hitch(this, skipStep)
+			});
 			stepContent = put(this.tokenNode, 'div.stepContent');
 			this._tokenOptions = new ContainerWidget({});
 			put(stepContent, this._tokenOptions.domNode);
@@ -116,7 +124,15 @@ define([
 
 			// step 3 use the token to set a new password
 			this.newPasswordNode = put(formNode, 'div.step.hide-step');
-			put(this.newPasswordNode, 'p', _('Please enter the token and your new password.'));
+			var prevStep = function() { 
+				put(this.newPasswordNode, '.hide-step');
+				this._requestTokenButton.set('disabled', false);
+			};
+			var descNewPassword = put(this.newPasswordNode, 'p', _('Please enter the token and your new password.'));
+			put(descNewPassword, 'span', {
+				innerHTML: _(' If your token is expired you can <a>return to the previous step</a>.'),
+				onclick: lang.hitch(this, prevStep)
+			});
 			stepContent = put(this.newPasswordNode, 'div.stepContent');
 			this._token = new TextBox({
 				label: _('Token'),
