@@ -66,7 +66,7 @@
 
 		<!-- Progress: information for the progress bar. -->
 		<!-- ATTENTION: same progress function as in app_center/packages -->
-		<command name="appcenter/packages/progress" function="progress"/>
+		<command name="appcenter/packages/progress" function="custom_progress"/>
 
 		<!--
 		ONLINE/COMPONENTS namespace: drives the components grid

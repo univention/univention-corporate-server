@@ -113,10 +113,11 @@ class Get(UniventionAppAction):
 		ret['is_master'] = ret['local_role'] == 'domaincontroller_master'
 		ret['host_master'] = ucr.get('ldap/master')
 		ret['autostart'] = ucr.get('%s/autostart' % app.id, 'yes')
-		ret['update_available'] = ucr.is_true(app.ucr_upgrade_key)
 		ret['is_ucs_component'] = app.is_ucs_component()
+		ret['update_available'] = False  # TODO: ucr.is_true(app.ucr_upgrade_key); Bug#39916
 		latest = AppManager.find(app.id, latest=True)
-		if latest != app:
+		if latest > app:
+			ret['update_available'] = True
 			ret['candidate_version'] = latest.version
 			ret['candidate_component_id'] = latest.component_id
 			ret['candidate_readme_update'] = latest.readme_update

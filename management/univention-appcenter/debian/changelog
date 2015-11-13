@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-5) unstable; urgency=medium
+
+  * Bug #39912: Fix update_available for local app
+  * Bug #39925: Fix package management progressbar
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 13 Nov 2015 09:17:22 +0100
+
 univention-appcenter (5.0.19-4) unstable; urgency=medium
 
   * Bug #39912: Some fixes to initial patch
