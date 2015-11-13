@@ -64,6 +64,7 @@ define([
 			var formNode = this._getFormNode();
 			put(formNode, '[id=form].step!dijitHidden');
 			put(contentNode, formNode);
+			this._fillContentByUrl();
 		},
 
 		_getFormNode: function() {
@@ -126,11 +127,13 @@ define([
 			this.newPasswordNode = put(formNode, 'div.step.hide-step');
 			var prevStep = function() { 
 				put(this.newPasswordNode, '.hide-step');
+				put(this.tokenNode, '!dijitHidden');
+				put(this.tokenNode, '!hide-step');
 				this._requestTokenButton.set('disabled', false);
 			};
 			var descNewPassword = put(this.newPasswordNode, 'p', _('Please enter the token and your new password.'));
 			put(descNewPassword, 'span', {
-				innerHTML: _(' If your token is expired you can <a>return to the previous step</a>.'),
+				innerHTML: _(' If your token is expired you can <a>go back one step to request a new one</a>.'),
 				onclick: lang.hitch(this, prevStep)
 			});
 			stepContent = put(this.newPasswordNode, 'div.stepContent');
@@ -352,6 +355,22 @@ define([
 				this._token.set('disabled', false);
 				this._newPassword.set('disabled', false);
 				this._verifyPassword.set('disabled', false);
+			}
+		},
+
+		_fillContentByUrl: function() {
+			// checks if the url contains a username and a token
+			// show and fill the corresponding input fields if true
+			var token = getQuery('token');
+			var username = getQuery('username');
+			if (token && username) {
+				this._username.set('value', username);
+				this._token.set('value', token);
+				put(this.contactNode, '!');
+				this._getResetMethods();
+				this._requestTokenButton.set('disabled', true);
+				put(this.tokenNode, '.dijitHidden');
+				put(this.newPasswordNode, '!hide-step');
 			}
 		},
 
