@@ -89,7 +89,7 @@ operatingSystem_attribute() {
 	operatingSystem: Univention Corporate Server
 	-
 	$operation: operatingSystemVersion
-	operatingSystemVersion: 3.1
+	operatingSystemVersion: $version_version-$version_patchlevel
 	%EOF
 }
 

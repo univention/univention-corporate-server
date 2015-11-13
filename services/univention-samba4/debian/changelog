@@ -1,3 +1,10 @@
+univention-samba4 (5.0.1-1) unstable; urgency=medium
+
+  * Set operatingSystemVersion of the Samba 4 DC in Samba 4 to the
+    UCS version (Bug #39915)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Nov 2015 06:00:48 +0100
+
 univention-samba4 (5.0.0-13) unstable; urgency=medium
 
   * Switch from slapd restart to crestart in univention-samba4.prerm
