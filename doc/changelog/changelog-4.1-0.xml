@@ -12,6 +12,9 @@
 		<title>General</title>
 		<itemizedlist>
 			<listitem><simpara>
+				All packages have been adapted to UCS 4.1 (<u:bug>39729</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
 				The codename for UCS 4.1 has been set to <wordasword>Vahr</wordasword> (<u:bug>39223</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -21,9 +24,6 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The errata level is reset during the upgrade to UCS 4.1 (<u:bug>39312</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				All packages have been adapted to UCS 4.1 (<u:bug>39729</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -35,7 +35,7 @@
 				The default inode density for partitions smaller than 4TB has
 				been increased from 1 inode per 16KiB to 1 inode per 8KiB.
 				This adjustment should avoid running out of inodes on system
-				volumes. This only affects creation of new filesystem volumes.
+				volumes. This only affects creation of new filesystem volumes
 				(<u:bug>39432</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
@@ -76,7 +76,7 @@
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The boot menu on the installation DVD has been improved (<u:bug>39554</u:bug>).
+					The boot menu on the installation DVD has been improved. The DHCP request can now be skipped directly (<u:bug>39554</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -96,7 +96,7 @@
 						rules for services in Docker containers (<u:bug>38307</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						Prevent an error when logging into a docker image without an interface.
+						Prevent an error when logging into a docker image without an interface
 						(<u:bug>38861</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -188,7 +188,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					All UMC cookies are now restricted to the path <uri>/univention-management-console/</uri>.
-					The entry point <uri>/umcp/</uri> has therefore been moved to <uri>/univention-management-console/</uri> (<u:bug>38820</u:bug>).
+					Therefore, the entry point <uri>/umcp/</uri> has been moved to <uri>/univention-management-console/</uri> (<u:bug>38820</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The session and username cookie are now suffixed with the port to allow multiple parallel UMC session on the same host (<u:bug>38344</u:bug>).
@@ -203,8 +203,8 @@
 					(<u:bug>31943</u:bug>, <u:bug>39549</u:bug>, <u:bug>39552</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The dropdown menu to switch the Univention Management Console uses the SAML single sign on process now.
-					The before then used Univention Management Console single sign on has therefore been removed (<u:bug>39227</u:bug>).
+					The dropdown menu to switch the Univention Management Console uses the SAML single-sign on process now.
+					The previously used UMC single-sign on implementation has been replaced with SAML (<u:bug>39227</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The dependency of <package>univention-dojo-dev</package> has changed to
@@ -271,11 +271,10 @@
 					Every time an app is opened from the Gallery, the session is refreshed silently to prevent logouts (<u:bug>39655</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The App Center now checks a digital signature of the index of app meta files.
-					(<u:bug>39591</u:bug>).
+					The App Center now checks a digital signature of the index of app meta files (<u:bug>39591</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The global App Center now only suggests app updates on remote hosts now only when that's UCS version matches the local version (<u:bug>39912</u:bug>).
+					The global App Center now only suggests app updates on remote hosts when that's UCS version matches the local version (<u:bug>39912</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 						The searched keyword in the App Center resets if the category gets changed (<u:bug>39652</u:bug>).
@@ -297,16 +296,16 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Allow to black list the page for selecting the system role and use a pre-configured role value instead
+					It is now possible to to black list the page for selecting the system role and use a pre-configured role value instead
 					(<u:bug>38315</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The <package>System Setup</package> wizard now can have a configurable domain while the hostname itself is fixed. This is needed
-					for Univention Apps (<u:bug>38275</u:bug>, <u:bug>38154</u:bug>).
+					for Docker based apps (<u:bug>38275</u:bug>, <u:bug>38154</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					During the initial system setup the restart of the webserver is no longer disabled.
-					This is needed for Univention Apps (<u:bug>39476</u:bug>).
+					During the initial system setup, the restart of the webserver is no longer disabled.
+					This is needed for Docker based apps (<u:bug>39476</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -528,7 +527,7 @@
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The mount point for CD-ROM images in <command>univention-updater</command> and <command>univention-repository-update</command> have been fixed (<u:bug>36721</u:bug>).
+						The mount point for CD-ROM images in <command>univention-updater</command> and <command>univention-repository-update</command> has been fixed (<u:bug>36721</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -542,10 +541,14 @@
 				The function <function>is_ucr_true</function> has been added to the package <package>shell-univention-lib</package> (<u:bug>27701</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-					The package <package>OpenSSL</package> was updated to version <literal>1.0.2d</literal> (<u:bug>39500</u:bug>).
+					The package <package>OpenSSL</package> has been updated to version <literal>1.0.2d</literal> (<u:bug>39500</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-					The package <package>cURL</package> treated warning alerts as fatal during the TLS handshake, which prevented connecting to some <systemitem class="protocol">https://</systemitem> servers using <acronym lang="">SNI</acronym> (<u:bug>39603</u:bug>).
+					The package <package>cURL</package> treated warning alerts as fatal during the
+					TLS handshake, which prevented connecting to some
+					<systemitem class="protocol">https://</systemitem> servers using
+					<acronym lang="">SNI</acronym>. This has been fixed
+					(<u:bug>39603</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
@@ -567,7 +570,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Single sign on via SAML 2.0 is now possible with Univention Management Console
-					(<u:bug>39171</u:bug>), (<u:bug>39178</u:bug>), (<u:bug>31943</u:bug>).
+					(<u:bug>39171</u:bug>, <u:bug>39178</u:bug>, <u:bug>31943</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					A download link for the public certificate of the identity provider has been added to the module (<u:bug>32786</u:bug>).
@@ -606,7 +609,7 @@
 					The SAML identity provider now uses a dedicated LDAP user to access the LDAP and a separate user is used to access <acronym>SSO</acronym> specific web-content by <application>apache2</application> (<u:bug>38947</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The App Center module has been adapted to work with single sign on (<u:bug>39226</u:bug>).
+					The App Center module has been adapted to work with single-sign on (<u:bug>39226</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The UMC server and LDAP server allow authentication with a SAML assertion via the packages <application>pam-saml</application> and <application>cy2-saml</application> (<u:bug>39315</u:bug>).
@@ -854,13 +857,13 @@
 					Docker images running UCS in container mode now update their
 					IP addresses in LDAP if one is already registered there.
 					This is useful because Docker dynamically assigns IP
-					addresses during container restarts.
+					addresses during container restarts
 					(<u:bug>38334</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Docker images running UCS in container mode now try to
 					register the IP also with a <systemitem class="service">consul</systemitem> and
-					<systemitem class="service">etcd</systemitem> service running the Docker host.
+					<systemitem class="service">etcd</systemitem> service running the Docker host
 					(<u:bug>38331</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -875,7 +878,7 @@
 					(<u:bug>39194</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The time zone in Docker containers is now set to the same as the host.
+					The time zone in Docker containers is now set to the same as the host
 					(<u:bug>39483</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -909,7 +912,7 @@
 					The &ucsUCRV; <envar>samba/max/protocol</envar> doesn't get set any longer for new
 					installations. Additionally, if it was set to the default "SMB2" it will get unset
 					as well during updates. The purpose of this change is to give customers the
-					highest protocol level considered stable by the Samba team. Currently this
+					highest protocol level considered stable by the Samba defaults. Currently this
 					is <option>SMB3_11</option>.
 					(<u:bug>32939</u:bug>).
 				</simpara></listitem>
@@ -986,7 +989,7 @@
 				The response handling in the <classname>univention.lib.umc_connection.UMCConnection</classname> library has been improved (<u:bug>39599</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The <package>iceweasel</package> has been put into unmaintained
+				The <package>iceweasel</package> package has been put into unmaintained
 				status, so it will not be considered any longer for security
 				updates. It has not been used anyway as <package>firefox-en</package>
 				and <package>firefox-de</package> are installed

@@ -55,7 +55,7 @@
 				SAML Integration
 			</para></listitem>
 			<listitem><para>
-    			User self service for password reset
+				<foreignphrase>User Self Service</foreignphrase>
 			</para></listitem>
 			<listitem><para>
     			Samba 4.3 
