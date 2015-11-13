@@ -925,6 +925,9 @@
 				<listitem><simpara>
 					The Samba package now restarts the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The in place upgrade of Samba 3/NT4 to Samba 4/AD has been fixed (<u:bug>39932</u:bug>, <u:bug>37646</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
