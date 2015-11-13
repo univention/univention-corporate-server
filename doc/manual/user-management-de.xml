@@ -1068,18 +1068,37 @@
 
 	</section>
 
-    <section id="user-management:Passwortwechsel_durch_Benutzer_ueber_die_UMC">
-        <title>Passwortwechsel durch Benutzer über &ucsUMC;</title>
-        <para>
-			In &ucsUMC; kann jeder Benutzer sein Passwort über das Modul
-			<guimenu>Passwort ändern</guimenu> neu setzen. Dieses wird auch bei
-			Auswahl des Eintrages <guimenu>Einstellungen &ar; Passwort ändern</guimenu>
-			im oberen, rechten Benutzermenü aufgerufen.
-			Damit das Passwort geändert werden kann, muss zunächst das aktuelle
-			angegeben werden. Die Änderung wird dann direkt über den PAM-Stack
-			(siehe <xref linkend="computers:Authentifizierung__PAM"/>) durchgeführt
-			und ist danach zentral für alle Dienste verfügbar.
-        </para>
+    <section id="user-management:password-changes-by-users">
+        <title>Passwortwechsel durch Benutzer</title>
+		<section id="user-management:Passwortwechsel_durch_Benutzer_ueber_die_UMC">
+			<title>Passwortwechsel über &ucsUMC;</title>
+			<para>
+				In &ucsUMC; kann jeder Benutzer sein Passwort über das Modul
+				<guimenu>Passwort ändern</guimenu> neu setzen. Dieses wird auch bei
+				Auswahl des Eintrages <guimenu>Einstellungen &ar; Passwort ändern</guimenu>
+				im oberen, rechten Benutzermenü aufgerufen.
+				Damit das Passwort geändert werden kann, muss zunächst das aktuelle
+				angegeben werden. Die Änderung wird dann direkt über den PAM-Stack
+				(siehe <xref linkend="computers:Authentifizierung__PAM"/>) durchgeführt
+				und ist danach zentral für alle Dienste verfügbar.
+			</para>
+		</section>
+		<section id="user-management:password-changes-by-users:self-service">
+			<title>Passwort-Verwaltung über Self Service-App</title>
+			<para>
+				Durch die Instalation der UCS-Komponente <guimenu>Self Service</guimenu>
+				über das <guimenu>App Center</guimenu> werden Benutzer dazu befähigt,
+				ihr Passwort zu verwalten ohne die Interaktion eines Administrators.
+			</para>
+			<para>
+				Die Self Service-App registriert zwei Web-Dienste auf der UCS-Startseite,
+				auf die über eine eigene Webseite zugegriffen werden kann:
+				"Password ändern" und "Password zurücksetzen".
+				Sie erlauben es Benutzern, ein neues Passwort zu setzen mit Angabe ihres alten
+				Passwortes, oder aber ihr Passwort über eine angefragten Token zurückzusetzen,
+				welcher an eine vorher dafür registrierte Kontakt-Adresse gesendet wird.
+			</para>
+		</section>
     </section>
     <section id="users:faillog">
         <title>Automatisches Sperren von Benutzern nach fehlgeschlagenen Anmeldungen</title>

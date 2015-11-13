@@ -1039,19 +1039,42 @@
 
 	</section>
 
-    <section id="user-management:Password_changes_by_users_via_UMC">
-		<title>Password change by user via &ucsUMC;</title>
-		<para>
-			In &ucsUMC;, every user can reset his password via the
-			<guimenu>Change password</guimenu> module. The module can also be opened
-			by selecting the <guimenu>Settings &ar; Change password</guimenu>
-			entry in the top right user menu.
-			To change the password, the current password must be entered first.
-			The change is performed directly via the PAM stack
-			(see <xref linkend="computers:Authentication__PAM"/>) and is
-			then available centrally for all services.
-		</para>
-    </section>
+    <section id="user-management:Password-changes-by-users">
+		<title>Password change by users</title>
+		<section id="user-management:Password_changes_by_users_via_UMC">
+			<title>Password change by user via &ucsUMC;</title>
+			<para>
+				In &ucsUMC;, every user can reset his password via the
+				<guimenu>Change password</guimenu> module. The module can also be opened
+				by selecting the <guimenu>Settings &ar; Change password</guimenu>
+				entry in the top right user menu.
+				To change the password, the current password must be entered first.
+				The change is performed directly via the PAM stack
+				(see <xref linkend="computers:Authentication__PAM"/>) and is
+				then available centrally for all services.
+			</para>
+		</section>
+		<title>Password change via Self Service App</title>
+		<section id="user-management:password-changes-by-users:self-service">
+			<title>Password management via Self Service app</title>
+			<para>
+				By installing the UCS component <guimenu>Self Service</guimenu> via the
+				<guimenu>App Center</guimenu>, users are enabled to take care of their
+				password management without administrator interaction.
+			</para>
+			<para>
+				The Self Service app registers two web services on the UCS startsite
+				which can be accessed via a dedicated web page:
+				"Change Password" and "Passwort Reset".
+				They allow users to update their password given their old password as well as
+				to reset their password by requesting a token to be sent to a registered
+				contact address.
+			</para>
+		</section>
+	</section>
+
+
+
 
     <section id="users:faillog">
         <title>Automatic lockout of users after failed login attempts</title>
