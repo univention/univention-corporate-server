@@ -1,0 +1,80 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention Self Service
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import argparse
+import subprocess
+import univention.config_registry
+
+ucr_passwordreset = {
+	"self-service/passwordreset/web/enabled": "yes",
+	"ucs/web/overview/entries/service/passwordreset/description": u"Reset your password or provide contact information",
+	"ucs/web/overview/entries/service/passwordreset/description/de": u"Setzen Sie Ihr Passwort zurück oder hinterlegen Sie Kontaktinformationen.",
+	"ucs/web/overview/entries/service/passwordreset/label": u"Password Reset",
+	"ucs/web/overview/entries/service/passwordreset/label/de": u"Passwort zurücksetzen",
+	"ucs/web/overview/entries/service/passwordreset/link": "/univention-self-service/?lang=en-US#passwordreset",
+	"ucs/web/overview/entries/service/passwordreset/link/de": "/univention-self-service/?lang=de-DE#passwordreset",
+	"ucs/web/overview/entries/service/passwordreset/port_http": "",
+	"ucs/web/overview/entries/service/passwordreset/port_https": "443"
+}
+ucr_passwordchange = {
+	"self-service/passwordchange/web/enabled": "yes",
+	"ucs/web/overview/entries/service/passwordchange/description": u"Change your (expired) password.",
+	"ucs/web/overview/entries/service/passwordchange/description/de": u"Ändern Sie Ihr (abgelaufenes) Passwort.",
+	"ucs/web/overview/entries/service/passwordchange/label": u"Change Password",
+	"ucs/web/overview/entries/service/passwordchange/label/de": u"Passwort ändern",
+	"ucs/web/overview/entries/service/passwordchange/link": "/univention-self-service/?lang=en-US#passwordchange",
+	"ucs/web/overview/entries/service/passwordchange/link/de": "/univention-self-service/?lang=de-DE#passwordchange",
+	"ucs/web/overview/entries/service/passwordchange/port_http": "",
+	"ucs/web/overview/entries/service/passwordchange/port_https": "443"
+}
+
+actions = ["enable", "disable"]
+modules = {"passwordchange": ucr_passwordchange, "passwordreset": ucr_passwordreset}
+
+parser = argparse.ArgumentParser()
+parser.add_argument("action", help=" / ".join(actions))
+parser.add_argument("module", help=" / ".join(modules))
+args = parser.parse_args()
+
+if args.action not in actions:
+	parser.error('"action" must be one of %s.' % ", ".join(actions))
+if args.module not in modules.keys():
+	parser.error('"module" must be one of %s.' % ", ".join(modules.keys()))
+
+if args.action == "enable":
+	ucrs = map("=".join, modules[args.module].items())
+	univention.config_registry.handler_set(ucrs)
+else:
+	ucrs = modules[args.module].keys()
+	univention.config_registry.handler_unset(ucrs)
+
+subprocess.Popen(["invoke-rc.d", "apache2", "reload"])
