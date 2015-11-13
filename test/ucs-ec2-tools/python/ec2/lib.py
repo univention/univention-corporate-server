@@ -470,6 +470,8 @@ class VM_KVM(VM):
 			port=22,
 			username='root',
 			password='univention',
+			look_for_keys=False,
+			allow_agent=False,
 		)
 
 	def _connect_kvm_host(self):

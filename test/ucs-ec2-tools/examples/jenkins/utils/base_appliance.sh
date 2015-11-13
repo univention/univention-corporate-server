@@ -301,7 +301,7 @@ download_system_setup_packages ()
 		packages="$packages ad-connector samba welcome-screen"
 
 		if ! app_appliance_is_software_blacklisted $app; then
-			packages="$packages management-console-module-adtakeover printserver dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon"
+			packages="$packages management-console-module-adtakeover printserver dhcp fetchmail kde radius virtual-machine-manager-node-kvm mail-server nagios-server pkgdb samba4 s4-connector squid virtual-machine-manager-daemon self-service self-service-passwordreset-umc"
 		fi
 
 		for package in $packages; do
@@ -672,7 +672,7 @@ __EOF__
 	/usr/sbin/univention-certificate-check-validity
 
 	# Set official update server
-	ucr set repository/online/server=updates.software-univention.de	 
+	ucr set repository/online/server='https://updates.software-univention.de'
 	# ucr set repository/online/server=univention-repository.knut.univention.de
 
 	# Cleanup apt archive
@@ -766,7 +766,7 @@ __EOF__
 
 appliance_reset_servers ()
 {
-	ucr set repository/online/server="updates.software-univention.de"
+	ucr set repository/online/server="https://updates.software-univention.de/"
 
 	ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
 		ucr set "$key=appcenter.software-univention.de"
@@ -790,7 +790,7 @@ appliance_poweroff ()
 	halt -p
 }
 
-appliance_write_ucs403_sources_list ()
+appliance_write_ucs410_sources_list ()
 {
 	# Set initial repository settings
         cat >/etc/apt/sources.list.d/15_ucs-online-version.list <<__EOF__
@@ -804,14 +804,18 @@ appliance_write_ucs403_sources_list ()
 #       /etc/univention/templates/files/etc/apt/sources.list.d/15_ucs-online-version.list
 #
  
-deb http://updates.software-univention.de/4.0/maintained/ 4.0-0/all/
-deb http://updates.software-univention.de/4.0/maintained/ 4.0-0/amd64/
-deb http://updates.software-univention.de/4.0/maintained/ 4.0-1/all/
-deb http://updates.software-univention.de/4.0/maintained/ 4.0-1/amd64/
-deb http://updates.software-univention.de/4.0/maintained/ 4.0-2/all/
-deb http://updates.software-univention.de/4.0/maintained/ 4.0-2/amd64/
-deb http://updates.software-univention.de/4.0/maintained/ 4.0-3/all/
-deb http://updates.software-univention.de/4.0/maintained/ 4.0-3/amd64/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-0/all/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-0/amd64/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-1/all/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-1/amd64/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-2/all/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-2/amd64/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-3/all/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-3/amd64/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-4/all/
+deb https://updates.software-univention.de/4.0/maintained/ 4.0-4/amd64/
+deb https://updates.software-univention.de/4.0/maintained/ 4.1-0/all/
+deb https://updates.software-univention.de/4.0/maintained/ 4.1-0/amd64/
 __EOF__
 
 	cat >/etc/apt/sources.list.d/20_ucs-online-component.list <<__EOF__
@@ -825,8 +829,8 @@ __EOF__
 #       /etc/univention/templates/files/etc/apt/sources.list.d/20_ucs-online-component.list
 #
  
-deb http://updates.software-univention.de/4.0/maintained/component/ 4.0-3-errata/all/
-deb http://updates.software-univention.de/4.0/maintained/component/ 4.0-3-errata/amd64/
+deb https://updates.software-univention.de/4.0/maintained/component/ 4.1-0-errata/all/
+deb https://updates.software-univention.de/4.0/maintained/component/ 4.1-0-errata/amd64/
 __EOF__
 
 }
