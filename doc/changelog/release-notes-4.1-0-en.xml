@@ -47,6 +47,7 @@
 			An overview of the most important changes:
 		</para>
 
+<!--
 		<itemizedlist>
 			<listitem><para>
 				App Center Docker, Design / Usability, Rating
@@ -72,6 +73,7 @@
 				automatically to <ulink url="https://updates.software-univention.de/"/> if the default repository server are still in use by the system.
 			</para></listitem>
 		</itemizedlist>
+-->
 	</chapter>
 
 	<chapter id="relnotes:update">
