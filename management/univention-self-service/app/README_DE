@@ -1,4 +1,4 @@
-<p>Selbstbedienungsmodule erlauben Benutzern selbständig (ohne Administratorunterstützung) ihre Passwörter zu verändern.</p>
+<p>Self-Service-Module erlauben Benutzern selbständig (ohne Administratorunterstützung) ihre Passwörter zu verändern.</p>
 <ul>
     <li>Passwort ändern: Auf dieser Webseite können Benutzer ihr (abgelaufenes) Passwort ändern, solange sie sich noch an ihr bestehendes erinnern.</li>
     <li>Passwort zurücksetzen: Auf dieser Webseite können Benutzer ihr Passwort zurücksetzen, indem sie einen Schlüssel (Token) an eine zuvor hinterlegte Adresse schicken lassen.</li>
