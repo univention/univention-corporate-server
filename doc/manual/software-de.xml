@@ -184,7 +184,7 @@
 	  <ulink url="https://www.univention.de/2015/11/neu-in-ucs-4-1-docker-apps-fuer-das-univention-app-center/"/>.
 	  Die Kapselung dieser sogenannten <wordasword>Docker Apps</wordasword> führt dazu, dass, wenn
 	  eine Kommandozeile in der App-Umgebung benötigt wird, folgender Befehl ausgeführt werden muss (hier am Beispiel
-	  der fiktiven App "demo-docker-app"):
+	  der fiktiven App <application>demo-docker-app</application>):
 	  <command>docker exec -it "$(ucr get appcenter/apps/demo-docker-app/container)" /bin/bash</command>.
 	</para>
 
