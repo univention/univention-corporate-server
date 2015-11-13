@@ -1,6 +1,6 @@
 univention-updater (11.0.7-1) unstable; urgency=medium
 
-  * Switch back to updates.software-univention.de (Bug #39247)
+  * Switch back to updates.software-univention.de (Bug #39247, #39248)
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 13 Nov 2015 18:12:25 +0100
 
