@@ -137,7 +137,7 @@ class BaseMailClient(object):
 		:returns: string, acl strign or permission denied
 		"""
 		code, acls = self.getacl(mailbox)
-		if code is not 'OK':
+		if code != 'OK':
 			raise ReadFail('Unable to read ACL for %r: %r %r' % (mailbox, code, acls))
 		acl = acls[0].split()
 		if '"' in acl[0]:

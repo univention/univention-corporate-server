@@ -1,3 +1,10 @@
+ucs-test (6.0.23-2) unstable; urgency=low
+
+  * fix comparation to fix 40_mail/25_imap_acls_correctly_respected
+    (Bug #39900)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 13 Nov 2015 09:32:04 +0100
+
 ucs-test (6.0.23-1) unstable; urgency=medium
 
   * 00_checks/07_check_os_hostdn: Check for operatingSystem and
