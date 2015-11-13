@@ -53,8 +53,8 @@ msgid ""
 "Feel free to change your contact information. Press \"Save\" to confirm your "
 "changes."
 msgstr ""
-"Ändern Sie ihre Kontaktinformationen. Drücken Sie anschließend den "
-"\"Speichern\" Button, um Ihre Änderungen zu bestätigen."
+"Ändern Sie ihre Kontaktinformationen. Drücken Sie anschließend "
+"\"Speichern\", um Ihre Änderungen zu bestätigen."
 
 #: i18n.js:96
 #, python-format

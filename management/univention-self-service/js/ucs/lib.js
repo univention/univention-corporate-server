@@ -34,7 +34,7 @@ define([
 	"dojo/dom",
 	"dojo/dom-geometry",
 	"put-selector/put",
-	"./i18n!"
+	"./i18n!."
 ], function(lang, fx, dom, domGeom, put, _) {
 
 	return {

@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-5) unstable; urgency=low
+
+  * Bug #39597: Adapted wording and translation
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 13 Nov 2015 07:46:04 +0100
+
 univention-self-service (1.0.2-4) unstable; urgency=low
 
   * Bug #39597: Adapted style and labels for input fields
