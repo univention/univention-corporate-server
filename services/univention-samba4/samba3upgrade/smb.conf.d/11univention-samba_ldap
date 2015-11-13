@@ -28,6 +28,9 @@ elif configRegistry['server/role'] == 'domaincontroller_master':
 else:
 	print '\tldap admin dn = "cn=backup,%s"' % (configRegistry['ldap/base'])
 
+if configRegistry.is_true('samba/ldapsam/trusted', True):
+	print '\tldapsam:trusted = yes'
+
 print '\tldap ssl = start tls'
 
 if configRegistry.has_key('server/role') and configRegistry['server/role'] != 'memberserver':

@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-2) unstable; urgency=low
+
+  * Set ldapsam:trusted = yes in upgrade smb.conf (Bug #39932)
+
+ -- Felix Botner <botner@univention.de>  Fri, 13 Nov 2015 13:27:43 +0100
+
 univention-samba4 (5.0.1-1) unstable; urgency=medium
 
   * Set operatingSystemVersion of the Samba 4 DC in Samba 4 to the
