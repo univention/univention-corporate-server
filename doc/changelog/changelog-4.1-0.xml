@@ -335,7 +335,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The UDM attributes <property>operatingSystem</property> and
-					<property>operatingSystemVersion</property> can now set for domain controllers
+					<property>operatingSystemVersion</property> can now be set for domain controllers
 					and member servers (<u:bug>39915</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
