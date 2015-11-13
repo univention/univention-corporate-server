@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Postgresql
-#  postinst
+#  postrm
 #
-# Copyright 2004-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,32 +49,5 @@ do
 		dpkg-maintscript-helper rm_conffile "$conf" '8.0.0-5~' -- "$@"
 	fi
 done
-
-. /usr/share/univention-lib/all.sh
-
-case "$1" in
-	configure)
-		call_joinscript 40univention-postgresql.inst
-
-		# if [ -z "$2" ] # installation
-		# then
-		# fi
-
-		if [ -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1
-		then # upgrade from before the split into multiple binary packages
-			# let remove the generated files after rm_conffile for the templates
-			univention-config-registry update
-		fi
-
-		;;
-
-	abort-upgrade|abort-remove|abort-deconfigure)
-		;;
-
-	*)
-		echo "postinst called with unknown argument \`$1'" >&2
-		exit 1
-		;;
-esac
 
 exit 0

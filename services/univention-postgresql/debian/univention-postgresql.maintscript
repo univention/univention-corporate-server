@@ -6,11 +6,3 @@ rm_conffile /etc/univention/templates/files/etc/postgresql/8.3/main/pg_hba.conf.
 rm_conffile /etc/univention/templates/files/etc/postgresql/8.3/main/pg_hba.conf.d/99-pg_hba.conf     8.0.0-5~
 rm_conffile /etc/univention/templates/files/etc/postgresql/8.3/main/pg_ident.conf.d/00-pg_ident.conf 8.0.0-5~
 rm_conffile /etc/univention/templates/files/etc/postgresql/8.3/main/postgresql.conf                  8.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/postgresql/8.4/main/pg_hba.conf.d/00-pg_hba.conf     8.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/postgresql/8.4/main/pg_hba.conf.d/99-pg_hba.conf     8.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/postgresql/8.4/main/pg_ident.conf.d/00-pg_ident.conf 8.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/postgresql/8.4/main/postgresql.conf                  8.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/00-pg_hba.conf     8.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/99-pg_hba.conf     8.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/postgresql/9.1/main/pg_ident.conf.d/00-pg_ident.conf 8.0.0-5~
-rm_conffile /etc/univention/templates/files/etc/postgresql/9.1/main/postgresql.conf                  8.0.0-5~
