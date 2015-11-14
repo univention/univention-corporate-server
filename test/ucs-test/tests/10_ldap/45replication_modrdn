@@ -21,6 +21,7 @@ import univention.testing.udm as udm_test
 import univention.testing.utils as utils
 from atexit import register
 import os
+import sys
 
 
 if __name__ == '__main__':
