@@ -1,6 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check if a nscd stop also kills the container nscd processes
 ## tags: [docker]
+## timeout: 7200
 ## exposure: dangerous
 ## packages:
 ##   - docker.io

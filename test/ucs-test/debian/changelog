@@ -1,3 +1,9 @@
+ucs-test (6.0.27-1) unstable; urgency=medium
+
+  * Increase timeout for all docker tests to 2 hours (Bug #39954)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Nov 2015 20:03:08 +0100
+
 ucs-test (6.0.26-1) unstable; urgency=medium
 
   * 10_ldap/45replication_modrdn: Import sys (Bug #39132)
