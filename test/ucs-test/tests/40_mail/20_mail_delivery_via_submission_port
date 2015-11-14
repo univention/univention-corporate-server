@@ -3,6 +3,8 @@
 ## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
+## versions:
+##  4.1-0: skip
 
 from essential.mail import check_sending_mail
 from univention.testing.network import NetworkRedirector
