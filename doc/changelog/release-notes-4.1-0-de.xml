@@ -47,33 +47,53 @@
 			Die wichtigsten Änderungen im Überblick:
 		</para>
 
-<!--
 		<itemizedlist>
 			<listitem><para>
-				App Center Docker, Design / Usability, Rating
+				Das Univention App Center integriert die Linux Containertechnologie Docker. Mittels
+				Docker lassen sich Apps voneinander getrennt und gekapspelt betreiben. Dadurch
+				wird die Sicherheit der UCS Umgebung erhöht und die Abhängigkeiten der Apps zu
+				anderen Software-Bibliotheken reduziert. Die Integration von Docker ist für den die
+				Benutzer transparent. Das App Center kümmert sich um die Inbetriebnahme und
+				Konfiguration der Docker-Container.
 			</para></listitem>
+
 			<listitem><para>
-				SAML Integration
+				Die Usability im Univention App Center wurde deutlich verbessert. Apps werden nun
+				übersichtlicher dargestellt. Die Detailseiten der Apps wurden aufgeräumt und um ein
+				Rating in den Kategorien Vendor Supported, Popularity's Award und Editor's
+				Award ergänzt.  Die Einteilung basiert auf Daten wie zum Beispiel der
+				Installationsbasis der Apps oder Wartungsverhalten der App Anbieter.  Dadurch werden
+				Transparenz und Vergleichbarkeit der Apps untereinander gesteigert.
 			</para></listitem>
+
 			<listitem><para>
-				<foreignphrase>User Self Service</foreignphrase>
+				Single-Sign-On via SAML ist ab UCS 4.1 Produktbestandteil und arbeitet Out-of-the-box
+				mit dem UCS-Managementsystem.  Einmal angemeldet kann ohne Neuanmeldung zwischen
+				Web-Anwendungen gewechselt werden.
 			</para></listitem>
+
 			<listitem><para>
-    			Samba 4.3 
+				Benutzer können über den neuen <foreignphrase>Self Service</foreignphrase>
+				selbstständig ihr Passwort ändern oder im Fall eines vergessenen Passwort dies neu
+				setzen lassen. Dafür können vorab E-Mailadressen oder Mobilfunknummern hinterlegt
+				werden, an die dann ein entsprechendes Token verschickt wird. Mit dem Token kann
+				dann ein neues Passswort gesetzt werden..
 			</para></listitem>
+
 			<listitem><para>
-				Der Linux Kernel wurde auf den letzten stabilen 4.1er <foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert.
-				Dieser beinhaltet diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung.
+				Der Linux Kernel wurde auf den letzten stabilen 4.1er
+				<foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert. Dieser beinhaltet
+				diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine
+				verbesserte Hardware-Unterstützung.
 			</para></listitem>
+
 			<listitem><para>
-    			OpenLDAP Update
+				Samba wurde auf 4.3.1 aktualisiert. Neben sehr vielen Detailverbesserungen bietet
+				Samba 4.3 unterstützung für SMB 3.1.1, welches Microsoft mit Windows 10
+				eingeführt hat und das eine höhere Sicherheit und mehr Funktionien bietet. 
 			</para></listitem>
-			<listitem><para>
-				Ab UCS 4.1 wird das Protokoll <systemitem class="protocol">HTTPS</systemitem> als neues Standardprotokoll für den Zugriff auf das Online Repository von Univention verwendet. Während des Updates wird das
-				System automatisch auf <ulink url="https://updates.software-univention.de/"/> umgestellt, sofern noch der Standard-Repository-Server verwendet wird.
-			</para></listitem>
+
 		</itemizedlist>
--->
 	</chapter>
 
 	<chapter id="relnotes:update">
