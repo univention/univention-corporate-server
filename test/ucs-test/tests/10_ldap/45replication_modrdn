@@ -6,6 +6,7 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
+##  - domaincontroller_slave
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
@@ -23,9 +24,8 @@ import os
 
 
 if __name__ == '__main__':
-	if os.path.exists('/etc/init.d/univention-s4-connector'):
-		register(utils.start_s4connector)
-		utils.stop_s4connector()
+	if utils.package_installed('univention-samba4'):
+		sys.exit(138)
 
 def _get_name_normal():
 	return random_name()

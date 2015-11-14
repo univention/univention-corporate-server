@@ -1,3 +1,9 @@
+ucs-test (6.0.25-1) unstable; urgency=medium
+
+  * Disable 10_ldap/45replication_modrdn in S4 environments (Bug #39132)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Nov 2015 09:38:00 +0100
+
 ucs-test (6.0.24-1) unstable; urgency=medium
 
   * Disable 40_mail/20_mail_delivery_via_submission_por (Bug #39953)
