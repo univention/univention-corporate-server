@@ -1,3 +1,4 @@
 <p>Gratulation, die Self-Service-Module wurden installiert!</p>
 <p>Um sie zu verwenden, müssen Benutzer zur <a href="/ucs-overview/">UCS Überblicksseite</a> gehen.</p>
 <p>Administratoren können die Kontaktdaten für das "Passwort Zurücksetzen" Modul im Benutzermodul der <a href="/univention-management-console/#module=udm:users/user:0:">Univention Management Console</a> bearbeiten.</p>
+<p>Um einzelne Module ein- oder auszuschalten, verwenden Sie bitte das mitgelieferte "univention-self-service-modules" Skript ("--help" zeigt einen Hilfstext).</p>
