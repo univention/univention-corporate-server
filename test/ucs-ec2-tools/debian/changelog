@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-7) unstable; urgency=medium
+
+  * Don't fail during an unknown SSH error (Bug #38984)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 15 Nov 2015 11:08:56 +0100
+
 ucs-ec2-tools (2.0.0-6) unstable; urgency=low
 
   * Bug #39566: added ucs-kvm-create-dynamic to ucslint.overrides 
