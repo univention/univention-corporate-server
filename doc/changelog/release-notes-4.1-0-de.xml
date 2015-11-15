@@ -52,13 +52,13 @@
 				Das Univention App Center integriert die Linux Containertechnologie Docker. Mittels
 				Docker lassen sich Apps voneinander getrennt und gekapselt betreiben. Dadurch
 				wird die Sicherheit der UCS Umgebung erhöht und die Abhängigkeiten der Apps zu
-				anderen Software-Bibliotheken reduziert. Die Integration von Docker ist für den die
-				Benutzer transparent. Das App Center kümmert sich um die Inbetriebnahme und
-				Konfiguration der Docker-Container.
+				anderen Software-Bibliotheken reduziert. Die Integration von Docker ist für die
+				Benutzer transparent. Das App Center führt die Inbetriebnahme und Konfiguration der
+				Docker-Container automatisch durch.
 			</para></listitem>
 
 			<listitem><para>
-				Die Usability im Univention App Center wurde deutlich verbessert. Apps werden nun
+				Die Usability im Univention App Center wurde weiter verbessert. Apps werden nun
 				übersichtlicher dargestellt. Die Detailseiten der Apps wurden aufgeräumt und um ein
 				Rating in den Kategorien <foreignphrase>Vendor Supported</foreignphrase>,
 				<foreignphrase>Popularity's Award</foreignphrase> und <foreignphrase>Editor's
