@@ -69,7 +69,13 @@ Following installation on hardware or in a virtualization solution, UCS can also
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<guimenuitem>Installation of Univention Corporate Server</guimenuitem> starts the interactive, graphic installation. During the installation, the system requests a number of parameters such as the network settings, hard drive partitions, domain settings and selection of software components for the UCS system to be installed and then performs the installation and the configuration.
+			<guimenuitem>Start with default settings</guimenuitem> starts the interactive, graphic installation. During the installation, the system requests a number of parameters such as the network settings, hard drive partitions, domain settings and selection of software components for the UCS system to be installed and then performs the installation and the configuration.
+			</simpara>
+		</listitem>
+		<listitem>
+			<simpara>
+				<guimenuitem>Start with manual network settings</guimenuitem> performs a standard installation, where the network is not configured automatically through DHCP.
+				This is practical on systems, where the network must be setup manually.
 			</simpara>
 		</listitem>
 		<listitem>
@@ -77,12 +83,6 @@ Following installation on hardware or in a virtualization solution, UCS can also
 			  The <guisubmenu>Advanced options</guisubmenu> submenu offers advanced options for the installation process for selection:
 			</para>
 			<itemizedlist>
-				<listitem>
-					<simpara>
-						<guimenuitem>Install with DHCP disabled</guimenuitem> performs a standard installation, where the network is not configured automatically through DHCP.
-						This is practical on systems, where the network must be setup manually.
-					</simpara>
-				</listitem>
 				<listitem>
 					<simpara>
 					<guimenuitem>Install in text mode</guimenuitem> performs an interactive standard installation in text mode. This is practical on systems which display problems with the graphic version of the installer.</simpara>

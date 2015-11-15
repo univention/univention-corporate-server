@@ -84,7 +84,7 @@
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			<guimenuitem>Installation Univention Corporate Server</guimenuitem> startet die interaktive, graphische Installation
+			<guimenuitem>Start with default settings</guimenuitem> startet die interaktive, graphische Installation
 			von UCS. Bei der
 			Installation fragt das System nach einigen Parametern wie
 			Netzwerkeinstellungen, Festplattenpartitionierung, Domäneneinstellungen und
@@ -93,17 +93,17 @@
 			</simpara>
 		</listitem>
 		<listitem>
+			<simpara>
+				<guimenuitem>Start with manual network settings</guimenuitem> führt eine Standardinstallation durch, bei der das Netzwerk nicht automatisch per DHCP konfiguriert wird.
+				Dies ist auf Systemen sinnvoll, wo das Netzwerk manuell eingerichtet werden muss.
+			</simpara>
+		</listitem>
+		<listitem>
 			<para>
 			  Das Untermenü <guisubmenu>Advanced options</guisubmenu> bietet die Auswahl
 			  fortgeschrittener Optionen für den Installationsprozess:
 			</para>
 			<itemizedlist>
-				<listitem>
-					<simpara>
-						<guimenuitem>Install with DHCP disabled</guimenuitem> führt eine Standardinstallation durch, bei der das Netzwerk nicht automatisch per DHCP konfiguriert wird.
-						Dies ist auf Systemen sinnvoll, wo das Netzwerk manuell eingerichtet werden muss.
-					</simpara>
-				</listitem>
 				<listitem>
 					<simpara>
 					<guimenuitem>Install in text mode</guimenuitem> führt eine interaktive
