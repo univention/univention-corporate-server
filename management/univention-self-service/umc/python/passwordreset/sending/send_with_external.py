@@ -65,7 +65,7 @@ class SendWithExernal(UniventionSelfServiceTokenEmitter):
 
 	@staticmethod
 	def send_method_label():
-		return _("External")
+		return ucr.get("umc/self-service/passwordreset/external/method_label", _("External"))
 
 	@staticmethod
 	def is_enabled():
