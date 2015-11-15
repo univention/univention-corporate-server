@@ -72,9 +72,9 @@ class SendWithExernal(UniventionSelfServiceTokenEmitter):
 		return ucr.is_true("umc/self-service/passwordreset/external/enabled")
 
 	@property
-	def ldap_attribute(self):
+	def udm_property(self):
 		ucr.load()
-		return ucr.get("umc/self-service/passwordreset/external/ldap_attribute")
+		return ucr.get("umc/self-service/passwordreset/external/udm_property")
 
 	@property
 	def token_length(self):

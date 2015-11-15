@@ -34,5 +34,5 @@ def get_plugins(log):
 			else:
 				log("get_plugins(): Plugin class '{}' for sending method '{}' is disabled.".format(plugin_class.__name__, plugin_class.send_method()))
 	for name, plugin in plugins.items():
-		log("get_plugins(): plugin class '{}' for sending method '{}': ldap_attribute: '{}' token_length: '{}'".format(plugin.__class__.__name__, plugin.send_method(), plugin.ldap_attribute, plugin.token_length))
+		log("get_plugins(): plugin class '{}' for sending method '{}': udm_property: '{}' token_length: '{}'".format(plugin.__class__.__name__, plugin.send_method(), plugin.udm_property, plugin.token_length))
 	return plugins

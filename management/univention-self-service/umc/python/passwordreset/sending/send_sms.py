@@ -72,7 +72,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		return ucr.is_true("umc/self-service/passwordreset/sms/enabled")
 
 	@property
-	def ldap_attribute(self):
+	def udm_property(self):
 		return "PasswordRecoveryMobile"
 
 	@property

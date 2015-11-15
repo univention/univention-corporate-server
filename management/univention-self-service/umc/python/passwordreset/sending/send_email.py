@@ -79,7 +79,7 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 		return ucr.is_true("umc/self-service/passwordreset/email/enabled")
 
 	@property
-	def ldap_attribute(self):
+	def udm_property(self):
 		return "PasswordRecoveryEmail"
 
 	@property

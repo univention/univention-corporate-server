@@ -59,7 +59,7 @@ class UniventionSelfServiceTokenEmitter(object):
 		return ucr.is_true("umc/self-service/passwordreset/????/enabled")
 
 	@property
-	def ldap_attribute(self):
+	def udm_property(self):
 		return "self-service-????"
 
 	@property

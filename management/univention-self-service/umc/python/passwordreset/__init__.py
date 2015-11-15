@@ -131,8 +131,8 @@ class Instance(Base):
 			[{
 				"id": p.send_method(),
 				"label": p.send_method_label(),
-				"value": user[p.ldap_attribute]
-			} for p in self.send_plugins.values() if user[p.ldap_attribute]]
+				"value": user[p.udm_property]
+			} for p in self.send_plugins.values() if user[p.udm_property]]
 		)
 
 #	@prevent_denial_of_service
@@ -167,7 +167,7 @@ class Instance(Base):
 		# check if the user has the required attribute set
 		user = self.get_udm_user(username=username)
 
-		if len(user[plugin.ldap_attribute]) > 0:
+		if len(user[plugin.udm_property]) > 0:
 			# found contact info
 			try:
 				token_from_db = self.db.get_one(username=username)
@@ -190,7 +190,7 @@ class Instance(Base):
 				MODULE.info("send_token(): Adding new token for user '{}'...".format(username))
 				self.db.insert_token(username, method, token)
 			try:
-				self.send_message(username, method, user[plugin.ldap_attribute], token)
+				self.send_message(username, method, user[plugin.udm_property], token)
 			except:
 				MODULE.error("send_token(): Error sending token with via '{method}' to '{username}'.".format(
 					method=method, username=username))
@@ -252,7 +252,7 @@ class Instance(Base):
 		if not self.send_plugins:
 			raise UMC_Error(_('No password reset method available for this user.'))
 		# return list of method names, for all LDAP attribs user has data
-		reset_methods = [{"id": p.send_method(), "label": p.send_method_label()} for p in self.send_plugins.values() if user[p.ldap_attribute]]
+		reset_methods = [{"id": p.send_method(), "label": p.send_method_label()} for p in self.send_plugins.values() if user[p.udm_property]]
 		if reset_methods:
 			self.finished(request.id, reset_methods)
 		else:
