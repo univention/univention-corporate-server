@@ -77,7 +77,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 
 	@property
 	def token_length(self):
-		length = self.ucr.get("umc/self-service/passwordreset/email/token_length", 12)
+		length = self.ucr.get("umc/self-service/passwordreset/sms/token_length", 12)
 		try:
 			length = int(length)
 		except ValueError:

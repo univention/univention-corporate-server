@@ -92,7 +92,11 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 		return length
 
 	def send(self):
-		path = os.path.join(os.path.realpath(os.path.dirname(__file__)), "email_body.txt")
+		path_ucr = self.ucr.get("umc/self-service/passwordreset/email/text_file")
+		if path_ucr and os.path.exists(path_ucr):
+			path = path_ucr
+		else:
+			path = os.path.join(os.path.realpath(os.path.dirname(__file__)), "email_body.txt")
 		with open(path, "rb") as fp:
 			txt = fp.read()
 
