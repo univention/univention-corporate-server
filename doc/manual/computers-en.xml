@@ -467,8 +467,8 @@
 	<section id="computers:Available_kernel_variants">
 		<title>Available kernel variants</title>
 		<para>
-			The standard kernel in UCS 4.0 is based on the Linux kernel 3.16. In
-			principle, there are three different types of kernel packages:
+			The standard kernel in UCS 4.1 is based on the Linux kernel 4.1.
+			In principle, there are three different types of kernel packages:
 		</para>
 		<itemizedlist>
 			<listitem>
