@@ -57,7 +57,7 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 ucr = ConfigRegistry()
 ucr.load()
 
-class SendWithExernal(UniventionSelfServiceTokenEmitter):
+class SendWithExternal(UniventionSelfServiceTokenEmitter):
 
 	@staticmethod
 	def send_method():
@@ -88,9 +88,9 @@ class SendWithExernal(UniventionSelfServiceTokenEmitter):
 
 	def send(self):
 		env = os.environ.copy()
-		env["username"] = self.data["username"]
-		env["address"] = self.data["address"]
-		env["token"] = self.data["token"]
+		env["selfservice_username"] = self.data["username"]
+		env["selfservice_address"] = self.data["address"]
+		env["selfservice_token"] = self.data["token"]
 
 		#############################################################################
 		#                                                                           #
