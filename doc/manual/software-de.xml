@@ -183,7 +183,7 @@
 	  und die Kompatibilität. Weitergehende Informationen sind hier zu finden:
 	  <ulink url="https://www.univention.de/2015/11/neu-in-ucs-4-1-docker-apps-fuer-das-univention-app-center/"/>.
 	  Die Kapselung dieser sogenannten <wordasword>Docker Apps</wordasword> führt dazu, dass, wenn
-	  eine Kommandozeile in der App-Umgebung benötigt wird, folgender Befehl ausgeführt werden muss (hier am Beispiel
+	  eine Kommandozeile in der Umgebung der App benötigt wird, folgender Befehl ausgeführt werden muss (hier am Beispiel
 	  der fiktiven App <application>demo-docker-app</application>):
 	  <command>docker exec -it "$(ucr get appcenter/apps/demo-docker-app/container)" /bin/bash</command>.
 	</para>
@@ -210,7 +210,7 @@
 	  zu erreichen.
 	</para>
 
-	<figure id="appcenter-configure"><title>App-Einstellungen einer Applikation im App Center</title>
+	<figure id="appcenter-configure"><title>Einstellungen einer Applikation im App Center</title>
 	<graphic scalefit="1" width="100%" fileref="illustrations41/appcenter_configure_de.png"/>
 	</figure>
 
