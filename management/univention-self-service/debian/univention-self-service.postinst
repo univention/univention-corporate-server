@@ -62,14 +62,6 @@ chmod 640 $ACCESS_LOG $ERROR_LOG
 
 /usr/lib/univention-server/server_password_change.d/univention-self-service postchange
 
-MASTER=$(ucr get ldap/master)
-univention-config-registry set \
-	"self-service/backend-server?$MASTER" \
-	self-service/web/enabled?yes
-
-a2enmod wsgi
-a2ensite univention-self-service
-
 univention-config-registry set \
 	self-service/passwordreset/web/enabled?yes \
 	"ucs/web/overview/entries/service/passwordreset/description=Reset your password or provide contact information" \
@@ -92,8 +84,5 @@ univention-config-registry set \
 	"ucs/web/overview/entries/service/passwordchange/port_http=" \
 	"ucs/web/overview/entries/service/passwordchange/port_https=443"
 
-# restart, so apache reloads WSGI and sees activated plugin in its config
-# retry if fail because of to quick successive restarts (from other frontend packages)
-invoke-rc.d apache2 restart || (sleep 2; invoke-rc.d apache2 restart)
 
 exit 0

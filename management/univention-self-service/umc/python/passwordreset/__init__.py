@@ -61,11 +61,6 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 
 TOKEN_VALIDITY_TIME = 3600
 
-GRP_BLACKLIST = ["Domain Admins", "Windows Hosts", "DC Backup Hosts", "DC Slave", "Hosts", "Computers", "Backup Join", "Slave Join", "World Authority", "Null Authority", "Nobody", "Enterprise Domain Controllers", "Remote Interactive Logon", "SChannel Authentication", "Digest Authentication", "Terminal Server User", "NTLM Authentication", "Other Organization", "This Organization", "Anonymous Logon", "Network Service", "Creator Group", "Creator Owner", "Local Service", "Owner Rights", "Interactive", "Restricted", "Network", "Service", "System", "Batch", "Proxy", "IUSR", "Self", "Performance Log Users", "DnsUpdateProxy", "Cryptographic Operators", "Schema Admins", "Backup Operators", "Administrators", "Domain Computers", "Windows Authorization Access Group", "IIS_IUSRS", "RAS and IAS Servers", "Network Configuration Operators", "Account Operators", "Distributed COM Users", "Read-Only Domain Controllers", "Terminal Server License Servers", "Replicator", "Allowed RODC Password Replication Group", "Denied RODC Password Replication Group", "Enterprise Admins", "Group Policy Creator Owners", "Server Operators", "Domain Controllers", "DnsAdmins", "Cert Publishers", "Incoming Forest Trust Builders", "Event Log Readers", "Pre-Windows 2000 Compatible Access", "Remote Desktop Users", "Performance Monitor Users", "Certificate Service DCOM Access", "Enterprise Read-Only Domain Controllers"]
-
-USER_BLACKLIST = ["Administrator", "krbtgt"]
-
-
 def prevent_denial_of_service(func):
 	def _decorated(self, request, *args, **kwargs):
 		self.prevent_denial_of_service()
@@ -344,9 +339,6 @@ class Instance(Base):
 		bl_groups = listize(ucr.get("umc/self-service/passwordreset/blacklist/group", ""))
 		wh_users = listize(ucr.get("umc/self-service/passwordreset/whitelist/users", ""))
 		wh_groups = listize(ucr.get("umc/self-service/passwordreset/whitelist/groups", ""))
-
-		bl_users.extend(map(str.lower, USER_BLACKLIST))
-		bl_groups.extend(map(str.lower, GRP_BLACKLIST))
 
 		# user blacklist
 		if username.lower() in bl_users:

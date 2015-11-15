@@ -86,7 +86,7 @@ msgstr "Sprache"
 
 #: setcontactinformation.js:134
 msgid "Mobile"
-msgstr ""
+msgstr "Mobiltelefon"
 
 #: passwordchange.js:96 passwordreset.js:157
 msgid "New password"

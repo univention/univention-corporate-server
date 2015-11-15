@@ -38,28 +38,30 @@ case "$1" in
 	;;
 esac
 
-univention-config-registry unset \
-	ucs/web/overview/entries/service/passwordreset/description \
-	ucs/web/overview/entries/service/passwordreset/description/de \
-	ucs/web/overview/entries/service/passwordreset/icon \
-	ucs/web/overview/entries/service/passwordreset/label \
-	ucs/web/overview/entries/service/passwordreset/label/de \
-	ucs/web/overview/entries/service/passwordreset/link \
-	ucs/web/overview/entries/service/passwordreset/port_http \
-	ucs/web/overview/entries/service/passwordreset/port_https
+if [ "$1" = "remove" -o "$1" = "pruge" ]; then
+	univention-config-registry unset \
+		ucs/web/overview/entries/service/passwordreset/description \
+		ucs/web/overview/entries/service/passwordreset/description/de \
+		ucs/web/overview/entries/service/passwordreset/icon \
+		ucs/web/overview/entries/service/passwordreset/label \
+		ucs/web/overview/entries/service/passwordreset/label/de \
+		ucs/web/overview/entries/service/passwordreset/link \
+		ucs/web/overview/entries/service/passwordreset/port_http \
+		ucs/web/overview/entries/service/passwordreset/port_https
 
-univention-config-registry unset \
-	ucs/web/overview/entries/service/passwordchange/description \
-	ucs/web/overview/entries/service/passwordchange/description/de \
-	ucs/web/overview/entries/service/passwordchange/icon \
-	ucs/web/overview/entries/service/passwordchange/label \
-	ucs/web/overview/entries/service/passwordchange/label/de \
-	ucs/web/overview/entries/service/passwordchange/link \
-	ucs/web/overview/entries/service/passwordchange/port_http \
-	ucs/web/overview/entries/service/passwordchange/port_https
+	univention-config-registry unset \
+		ucs/web/overview/entries/service/passwordchange/description \
+		ucs/web/overview/entries/service/passwordchange/description/de \
+		ucs/web/overview/entries/service/passwordchange/icon \
+		ucs/web/overview/entries/service/passwordchange/label \
+		ucs/web/overview/entries/service/passwordchange/label/de \
+		ucs/web/overview/entries/service/passwordchange/link \
+		ucs/web/overview/entries/service/passwordchange/port_http \
+		ucs/web/overview/entries/service/passwordchange/port_https
 
-# restart, so apache unloads WSGI and deactivats plugin in its config
-# retry if fail because of to quick successive restarts (from other frontend packages)
-invoke-rc.d apache2 restart || (sleep 2; invoke-rc.d apache2 restart)
+	# restart, so apache unloads WSGI and deactivats plugin in its config
+	# retry if fail because of to quick successive restarts (from other frontend packages)
+	invoke-rc.d apache2 restart || (sleep 2; invoke-rc.d apache2 restart)
+fi
 
 exit 0
