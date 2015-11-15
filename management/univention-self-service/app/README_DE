@@ -2,4 +2,6 @@
 <ul>
     <li>Passwort ändern: Auf dieser Webseite können Benutzer ihr (abgelaufenes) Passwort ändern, solange sie sich noch an ihr bestehendes erinnern.</li>
     <li>Passwort zurücksetzen: Auf dieser Webseite können Benutzer ihr Passwort zurücksetzen, indem sie einen Schlüssel (Token) an eine zuvor hinterlegte Adresse schicken lassen.</li>
+	<li>Für die korrekte Funktion des Passwort-Resets über E-Mails muss die Konfiguration des lokalen Mailsystems geprüft werden. Das Mailsystem muss ausgehende E-Mails direkt oder über ein Mail-Relay zustellen. Nähere Hinweise zur <a href="http://docs.software-univention.de/handbuch.html#mail::serverconfig::relay">Konfiguration eines Mail-Relays</a> finden sich im UCS-Handbuch.</li>
+	<li>Administratoren können die Benutzerkontaktdaten für einen Passwortreset im <a href="/univention-management-console/#module=udm:users/user:0:">Benutzer-Modul</a> der Univention Management Console bearbeiten.</li>
 </ul>
