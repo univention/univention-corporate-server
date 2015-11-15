@@ -256,7 +256,7 @@ class Instance(Base):
 	@staticmethod
 	def create_token(length):
 		# remove easily confusable characters
-		chars = string.ascii_letters.replace("l", "").replace("I", "").replace("O", "") + string.digits
+		chars = string.ascii_letters.replace("l", "").replace("I", "").replace("O", "") + "".join(map(str, range(2,10)))
 		rand = random.SystemRandom()
 		res = ""
 		for _ in xrange(length):

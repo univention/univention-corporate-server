@@ -39,10 +39,11 @@ class UniventionSelfServiceTokenEmitter(object):
 	"""
 	base class
 	"""
-	def __init__(self):
+	def __init__(self, log):
 		self.ucr = ConfigRegistry()
 		self.ucr.load()
 		self.data = {}
+		self.log = log
 
 	@staticmethod
 	def send_method():

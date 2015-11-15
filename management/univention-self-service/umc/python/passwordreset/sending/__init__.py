@@ -30,7 +30,7 @@ def get_plugins(log):
 		if plugin_class:
 			if plugin_class.is_enabled():
 				log("get_plugins(): Loaded sending plugin class '{}' for sending method '{}'.".format(plugin_class.__name__, plugin_class.send_method()))
-				plugins[plugin_class.send_method()] = plugin_class()
+				plugins[plugin_class.send_method()] = plugin_class(log)
 			else:
 				log("get_plugins(): Plugin class '{}' for sending method '{}' is disabled.".format(plugin_class.__name__, plugin_class.send_method()))
 	for name, plugin in plugins.items():
