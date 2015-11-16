@@ -278,13 +278,10 @@ class Instance(Base):
 		plugin.set_data(data)
 		MODULE.info("send_message(): Running plugin of class {}...".format(plugin.__class__.__name__))
 		try:
-			ret = plugin.send()
+			plugin.send()
 		except Exception as ex:
 			raise UMC_Error(_("Error sending token: {}").format(ex), status=500)
-		if ret:
-			return True
-		else:
-			raise UMC_Error(_("Error sending token."), status=500)
+		return True
 
 	@staticmethod
 	def auth(username, password):

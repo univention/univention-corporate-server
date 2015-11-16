@@ -60,8 +60,8 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 
 class SendEmail(UniventionSelfServiceTokenEmitter):
 
-	def __init__(self):
-		super(SendEmail, self).__init__()
+	def __init__(self, *args, **kwargs):
+		super(SendEmail, self).__init__(*args, **kwargs)
 		self.server = self.ucr.get("umc/self-service/passwordreset/email/server", "localhost")
 
 	@staticmethod

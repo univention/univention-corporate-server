@@ -45,6 +45,7 @@
 #                                                                           #
 #############################################################################
 
+import xmlrpclib
 from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
@@ -53,9 +54,24 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 
 
 class SendSMS(UniventionSelfServiceTokenEmitter):
-	def __init__(self):
-		super(SendSMS, self).__init__()
-		self.server = self.ucr.get("umc/self-service/passwordreset/sms/server", "localhost")
+	def __init__(self, *args, **kwargs):
+		super(SendSMS, self).__init__(*args, **kwargs)
+
+		self.country_code = self.ucr.get("umc/self-service/passwordreset/sms/country_code")
+		if not unicode(self.country_code).isnumeric():
+			raise ValueError("UCR umc/self-service/passwordreset/sms/country_code must contain a number.")
+
+		self.password_file = self.ucr.get("umc/self-service/passwordreset/sms/password_file")
+		try:
+			with open(self.password_file) as pw_file:
+				self.username, self.password = pw_file.readline().strip().split(":")
+		except ValueError as ve:
+			self.log("__init__(): Format of sipgate secrets file is 'username:password'.")
+			self.log("__init__(): Error while parsing sipgate secrets file: {}".format(ve))
+			raise
+		except (OSError, IOError) as e:
+			self.log("__init__(): Could not read {}: {}".format(self.password_file, e))
+			raise
 
 	@staticmethod
 	def send_method():
@@ -85,4 +101,35 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		return length
 
 	def send(self):
-		raise NotImplementedError("Text message sending not yet implemented")
+		xmlrpc_url = "https://%s:%s@samurai.sipgate.net/RPC2" % (self.username, self.password)
+		self.rpc_srv = xmlrpclib.ServerProxy(xmlrpc_url)
+		reply = self.rpc_srv.samurai.ClientIdentify(
+			{"ClientName": "Univention Self Service (python xmlrpclib)", "ClientVersion": "1.0",
+			 "ClientVendor": "https://www.univention.com/"}
+		)
+		self.log("send(): Login success. Server reply to ClientIdentify(): {}".format(reply))
+
+		msg = "Password reset token: {token}".format(token=self.data["token"])
+
+		if len(msg) > 160:
+			raise ValueError("Message to long: '{}'.".format(msg))
+
+		if self.data["address"].startswith("00"):
+			num = self.data["address"][2:]
+		elif self.data["address"].startswith("0"):
+			num = "{}{}".format(self.country_code, self.data["address"][1:])
+		elif self.data["address"].startswith("+"):
+			num = self.data["address"][1:]
+		else:
+			num = self.data["address"]
+
+		self.log("send(): Sending text message to '{}'".format(num))
+		args = {"RemoteUri": "sip:%s@sipgate.net" % num, "TOS": "text", "Content": msg}
+		reply = self.rpc_srv.samurai.SessionInitiate(args)
+
+		if reply.get("StatusCode") == 200:
+			self.log("send(): Success sending token to user {}.".format(self.data["username"]))
+			return True
+		else:
+			self.log("send(): Error sending token to user {}. Sipgate returned: {}".format(self.data["username"]), reply)
+			raise Exception("Sipgate error: {}".format(reply))
