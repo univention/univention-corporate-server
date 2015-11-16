@@ -107,6 +107,7 @@ define([
 			this.tokenNode = put(formNode, 'div.step.hide-step');
 			var skipStep = function() { 
 				put(this.newPasswordNode, '!hide-step');
+				put(this._requestTokenButton.domNode, '.dijitHidden');
 				this._requestTokenButton.set('disabled', true);
 			};
 			var descRequestToken = put(this.tokenNode, 'p', _('Please choose a method to receive the token.'));
@@ -129,6 +130,7 @@ define([
 				put(this.newPasswordNode, '.hide-step');
 				put(this.tokenNode, '!dijitHidden');
 				put(this.tokenNode, '!hide-step');
+				put(this._requestTokenButton.domNode, '!dijitHidden');
 				this._requestTokenButton.set('disabled', false);
 			};
 			var descNewPassword = put(this.newPasswordNode, 'p', _('Please enter the token and your new password.'));
@@ -285,6 +287,7 @@ define([
 						targetNode: this.tokenNode,
 						'class': '.success'
 					});
+					put(this._requestTokenButton.domNode, '.dijitHidden');
 					put(this.newPasswordNode, '!hide-step');
 				}), lang.hitch(this, function(err){
 					var message = err.name + ": " + err.message;
