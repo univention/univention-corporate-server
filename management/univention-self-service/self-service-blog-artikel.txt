@@ -1,0 +1,22 @@
+Mit der Version 4.1 von Univention Corporate Server führt Univention einen Dienst ein, der Benutzern und Administratoren gleichermaßen das Leben erleichtert: die Univention Self-Service-Module. Sie erlauben es Benutzern selbständig (ohne Administratorunterstützung) ihre Daten zu verändern.
+
+Zwei Module werden gibt es bisher: "Passwort ändern" und "Passwort zurücksetzen". Bei "Passwort ändern" handelt es sich um eine Webseite auf der Benutzer ihr (abgelaufenes) Passwort ändern können, solange sie sich noch an ihr bestehendes erinnern. Bei "Passwort zurücksetzen" können Benutzer, die ihr Passwort vergessen haben, auf einer Webseite veranlassen, dass ihnen ein Schlüssel (Token) an eine zuvor hinterlegte Adresse geschickt wird. Beide Module sind über die Übersichtsseite des UCS Servers erreichbar.
+
+Die Univention Self-Service-Module sind über das AppCenter auf Servern in den Rollen Master und Backup installierbar. Nach der Installation können die Module einzeln aktiviert oder deaktiviert werden. Um z.B. das Modul "Passwort zurücksetzen" zu deaktivieren, führen Sie an der Kommandozeile folgendes aus:
+<code>univention-self-service-modules disable passwordreset</code>
+Wie gewohnt gibt "--help" Auskunft über weitere Optionen.
+
+App-Hersteller
+--------------
+Für Hersteller von Apps interessant: wenn sie beim Login eines Benutzers in ihre App feststellen, dass dessen Passwort abgelaufen ist, könne ihm nun einen Link anbieten um sein Passwort zu erneuern. Der Link ist in der UCR Variablen ucs/web/overview/entries/service/passwordchange/link gespeichert (bzw. ucs/web/overview/entries/service/passwordchange/link/de um Deutsch als Sprache voreinzustellen).
+
+Konfiguration
+-------------
+Während es für den einfachen Passwortwechsel (Modul "passwordchange") nichts weiter einzustellen gibt, ist das Modul um Passwörter zurückzusetzen ("passwordreset") so gestaltet worden, dass es an möglichst viele verschiedene Umgebungen angepasst werden kann. Es können Berechtigungen, Länge der Schlüssel (Token) und die Art ihres Versandts eingestellt werden.
+
+In der Standardeinstellung ist es allen Benutzern die in der Gruppe "Domain Users", nicht aber in den Gruppen "Administrators" oder "Domain Admins" sind, erlaubt den Dienst zu nutzen. Es ist nur der Versandt des Tokens via E-Mail aktiviert.
+
+Um alle relevanten UCR-Variablen zu sehen, suchen sie nach "self-service".
+
+Die UCR-Variablen "umc/self-service/passwordreset/blacklist/*" und "umc/self-service/passwordreset/whitelist/*" können Sie verwenden um Benutzer und Gruppen den Zugriff auf den Dienst zu erlauben.
+
