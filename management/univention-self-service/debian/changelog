@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-19) unstable; urgency=low
+
+  * make text message sending code run an external executable (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 16 Nov 2015 16:10:46 +0100
+
 univention-self-service (1.0.2-18) unstable; urgency=low
 
   * Bug #37890: fix typo, add description for UCRV

@@ -45,7 +45,8 @@
 #                                                                           #
 #############################################################################
 
-import xmlrpclib
+import os
+import subprocess
 from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
 from univention.management.console.modules.passwordreset.send_plugin import UniventionSelfServiceTokenEmitter
@@ -57,6 +58,8 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 	def __init__(self, *args, **kwargs):
 		super(SendSMS, self).__init__(*args, **kwargs)
 
+		self.cmd = self.ucr.get("umc/self-service/passwordreset/sms/command").split()
+
 		self.country_code = self.ucr.get("umc/self-service/passwordreset/sms/country_code")
 		if not unicode(self.country_code).isnumeric():
 			raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/country_code must contain a number.")
@@ -64,13 +67,13 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		self.password_file = self.ucr.get("umc/self-service/passwordreset/sms/password_file")
 		try:
 			with open(self.password_file) as pw_file:
-				self.username, self.password = pw_file.readline().strip().split(":")
+				self.sms_username, self.sms_password = pw_file.readline().strip().split(":")
 		except ValueError as ve:
-			self.log("SendSMS: Format of Sipgate secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
-			self.log("SendSMS: Format error in Sipgate secrets file ({}): {}".format(self.password_file, ve))
+			self.log("SendSMS: Format of sms secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
+			self.log("SendSMS: Format error in sms secrets file ({}): {}".format(self.password_file, ve))
 			raise
 		except (OSError, IOError) as e:
-			self.log("SendSMS: Error reading Sipgate secrets file ({}): {}".format(self.password_file, e))
+			self.log("SendSMS: Error reading sms secrets file ({}): {}".format(self.password_file, e))
 			raise
 
 	@staticmethod
@@ -101,34 +104,34 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		return length
 
 	def send(self):
-		xmlrpc_url = "https://%s:%s@samurai.sipgate.net/RPC2" % (self.username, self.password)
-		self.rpc_srv = xmlrpclib.ServerProxy(xmlrpc_url)
-		reply = self.rpc_srv.samurai.ClientIdentify(
-			{"ClientName": "Univention Self Service (python xmlrpclib)", "ClientVersion": "1.0",
-			 "ClientVendor": "https://www.univention.com/"}
-		)
-		self.log("SendSMS.send(): Login success. Server reply to ClientIdentify(): {}".format(reply))
+		env = os.environ.copy()
+		env["selfservice_username"] = self.data["username"]
+		env["selfservice_address"] = self.data["address"]
+		env["selfservice_token"] = self.data["token"]
+		env["sms_country_code"] = self.country_code
+		env["sms_username"] = self.sms_username
+		env["sms_password"] = self.sms_password
 
-		msg = "Password reset token: {token}".format(token=self.data["token"])
+		#############################################################################
+		#                                                                           #
+		# ATTENTION                                                                 #
+		# The environment is inherited by all programs that are started by your     #
+		# program. Your program should remove the token from its environment,       #
+		# before starting any other program.                                        #
+		#                                                                           #
+		#############################################################################
 
-		if len(msg) > 160:
-			raise ValueError("Message to long: '{}'.".format(msg))
+		print "Starting external program {}...".format(self.cmd)
+		cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		cmd_out, cmd_err = cmd_proc.communicate()
+		cmd_exit = cmd_proc.wait()
 
-		num = "".join(map(lambda x: x if x.isdigit() else "", self.data["address"]))
-		if num.startswith("00"):
-			num = num[2:]
-		elif num.startswith("0"):
-			num = "{}{}".format(self.country_code, num[1:])
-		else:
-			pass
+		if cmd_out:
+			self.log("STDOUT of {}: {}".format(self.cmd, cmd_out))
+		if cmd_err:
+			self.log("STDERR of {}: {}".format(self.cmd, cmd_err))
 
-		self.log("SendSMS.send(): Sending text message to '{}'".format(num))
-		args = {"RemoteUri": "sip:%s@sipgate.net" % num, "TOS": "text", "Content": msg}
-		reply = self.rpc_srv.samurai.SessionInitiate(args)
-
-		if reply.get("StatusCode") == 200:
-			self.log("SendSMS.send(): Success sending token to user {}.".format(self.data["username"]))
+		if cmd_exit == 0:
 			return True
 		else:
-			self.log("SendSMS.send(): Error sending token to user {}. Sipgate returned: {}".format(self.data["username"]), reply)
-			raise Exception("SendSMS.send(): Sipgate error: {}".format(reply))
+			raise Exception("Error sending token.")

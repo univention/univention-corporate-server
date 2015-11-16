@@ -57,7 +57,12 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 ucr = ConfigRegistry()
 ucr.load()
 
+
 class SendWithExternal(UniventionSelfServiceTokenEmitter):
+
+	def __init__(self, *args, **kwargs):
+		super(SendWithExternal, self).__init__(*args, **kwargs)
+		self.cmd = self.ucr.get("umc/self-service/passwordreset/external/command").split()
 
 	@staticmethod
 	def send_method():
@@ -101,18 +106,15 @@ class SendWithExternal(UniventionSelfServiceTokenEmitter):
 		#                                                                           #
 		#############################################################################
 
-		ucr.load()
-		cmd = ucr.get("umc/self-service/passwordreset/external/command", "/bin/false")
-		cmd = cmd.split()
-		print "Starting external program {}...".format(cmd)
-		cmd_proc = subprocess.Popen(cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		self.log("Starting external program {}...".format(self.cmd))
+		cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		cmd_out, cmd_err = cmd_proc.communicate()
 		cmd_exit = cmd_proc.wait()
 
 		if cmd_out:
-			print "STDOUT of {}:\n{}".format(cmd, cmd_out)
+			self.log("STDOUT of {}: {}".format(self.cmd, cmd_out))
 		if cmd_err:
-			print "STDERR of {}:\n{}".format(cmd, cmd_err)
+			self.log("STDERR of {}: {}".format(self.cmd, cmd_err))
 
 		if cmd_exit == 0:
 			return True
