@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-14) unstable; urgency=low
+
+  * better logging, set app release date (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 16 Nov 2015 10:05:56 +0100
+
 univention-self-service (1.0.2-13) unstable; urgency=low
 
   * Bug #39936: Passwordreset rename button and hide it

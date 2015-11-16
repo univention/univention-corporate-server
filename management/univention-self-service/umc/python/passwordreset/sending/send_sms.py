@@ -59,18 +59,18 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 
 		self.country_code = self.ucr.get("umc/self-service/passwordreset/sms/country_code")
 		if not unicode(self.country_code).isnumeric():
-			raise ValueError("UCR umc/self-service/passwordreset/sms/country_code must contain a number.")
+			raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/country_code must contain a number.")
 
 		self.password_file = self.ucr.get("umc/self-service/passwordreset/sms/password_file")
 		try:
 			with open(self.password_file) as pw_file:
 				self.username, self.password = pw_file.readline().strip().split(":")
 		except ValueError as ve:
-			self.log("__init__(): Format of sipgate secrets file is 'username:password'.")
-			self.log("__init__(): Error while parsing sipgate secrets file: {}".format(ve))
+			self.log("SendSMS: Format of Sipgate secrets file ({}) is 'username:password'. Error: {}").format(self.password_file, ve)
+			self.log("SendSMS: Format error in Sipgate secrets file ({}): {}".format(self.password_file, ve))
 			raise
 		except (OSError, IOError) as e:
-			self.log("__init__(): Could not read {}: {}".format(self.password_file, e))
+			self.log("SendSMS: Error reading Sipgate secrets file ({}): {}".format(self.password_file, e))
 			raise
 
 	@staticmethod
@@ -107,7 +107,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 			{"ClientName": "Univention Self Service (python xmlrpclib)", "ClientVersion": "1.0",
 			 "ClientVendor": "https://www.univention.com/"}
 		)
-		self.log("send(): Login success. Server reply to ClientIdentify(): {}".format(reply))
+		self.log("SendSMS.send(): Login success. Server reply to ClientIdentify(): {}".format(reply))
 
 		msg = "Password reset token: {token}".format(token=self.data["token"])
 
@@ -122,13 +122,13 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		else:
 			pass
 
-		self.log("send(): Sending text message to '{}'".format(num))
+		self.log("SendSMS.send(): Sending text message to '{}'".format(num))
 		args = {"RemoteUri": "sip:%s@sipgate.net" % num, "TOS": "text", "Content": msg}
 		reply = self.rpc_srv.samurai.SessionInitiate(args)
 
 		if reply.get("StatusCode") == 200:
-			self.log("send(): Success sending token to user {}.".format(self.data["username"]))
+			self.log("SendSMS.send(): Success sending token to user {}.".format(self.data["username"]))
 			return True
 		else:
-			self.log("send(): Error sending token to user {}. Sipgate returned: {}".format(self.data["username"]), reply)
-			raise Exception("Sipgate error: {}".format(reply))
+			self.log("SendSMS.send(): Error sending token to user {}. Sipgate returned: {}".format(self.data["username"]), reply)
+			raise Exception("SendSMS.send(): Sipgate error: {}".format(reply))
