@@ -175,6 +175,12 @@
 	  application is to be installed.
 	</para>
 
+	<!-- TODO: Bug #39847 r65505 -->
+
+	<figure id="appcenter-configure"><title>Setting of an application in the App Center</title>
+	<graphic scalefit="1" width="100%" fileref="illustrations41/appcenter_configure_en.png"/>
+	</figure>
+
 	<para>
 	  After its installation, one or several new options are shown when clicking on the icon
 	  of an application: <guimenu>Uninstall</guimenu> removes an application.
