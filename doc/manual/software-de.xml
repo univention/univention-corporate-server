@@ -189,7 +189,7 @@
 	</para>
 
 	<para>
-	  Bei der Installation einer <wordasword>Docker App</wordasword> wird ein &ucsMember;-Objekt im LDAP angelegt, dass
+	  Bei der Installation einer <wordasword>Docker App</wordasword> wird ein Objekt für den &ucsMember; im LDAP angelegt, dass
 	  über &ucsUDM; bearbeitet werden kann (z.B. um bestimmte Richtlinien zu setzen). Der Computer selbst ist aber
 	  durch das Netzwerk-Setup von Docker nur von dem Rechner aus zu erreichen, auf dem die App installiert ist – die App
 	  kann aber bestimmte Ports öffnen, die dann über den eigentlichen Rechner weitergeleitet werden.
@@ -215,7 +215,7 @@
 	  </itemizedlist>
 	  Darüber hinaus können Apps weitere Parameter definieren, die eingestellt werden können und die sich direkt
 	  auf die App auswirken.
-	  Das Menü zur weiteren Konfiguration ist über den Button <guimenu><wordasword>App-Einstellungen</wordasword></guimenu> einer installierten App
+	  Das Menü zur weiteren Konfiguration ist über den Button <guimenu>App-Einstellungen</guimenu> einer installierten App
 	  zu erreichen.
 	</para>
 
