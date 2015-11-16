@@ -1,3 +1,9 @@
+univention-demo-configuration (4.0.2-2) unstable; urgency=medium
+
+  * Bug #39738: update again index.html
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 16 Nov 2015 14:30:52 +0100
+
 univention-demo-configuration (4.0.2-1) unstable; urgency=medium
 
   * Bug #39738: update files for UCS 4.1
