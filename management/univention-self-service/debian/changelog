@@ -1,3 +1,10 @@
+univention-self-service (1.0.2-18) unstable; urgency=low
+
+  * Bug #37890: fix typo, add description for UCRV
+    umc/self-service/passwordreset/external/udm_property
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 16 Nov 2015 13:54:33 +0100
+
 univention-self-service (1.0.2-17) unstable; urgency=low
 
   * move join script calling to bottom of postinst (Bug #37890)
