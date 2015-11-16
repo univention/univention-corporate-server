@@ -1,10 +1,10 @@
 Mit der Version 4.1 von Univention Corporate Server führt Univention einen Dienst ein, der Benutzern und Administratoren gleichermaßen das Leben erleichtert: die Univention Self-Service-Module. Sie erlauben es Benutzern selbständig (ohne Administratorunterstützung) ihre Daten zu verändern.
 
-Zwei Module werden gibt es bisher: "Passwort ändern" und "Passwort zurücksetzen". Bei "Passwort ändern" handelt es sich um eine Webseite auf der Benutzer ihr (abgelaufenes) Passwort ändern können, solange sie sich noch an ihr bestehendes erinnern. Bei "Passwort zurücksetzen" können Benutzer, die ihr Passwort vergessen haben, auf einer Webseite veranlassen, dass ihnen ein Schlüssel (Token) an eine zuvor hinterlegte Adresse geschickt wird. Beide Module sind über die Übersichtsseite des UCS Servers erreichbar.
+Zwei Module werden gibt es bisher: "Passwort ändern" und "Passwort zurücksetzen". Bei "Passwort ändern" handelt es sich um eine Webseite, auf der Benutzer ihr (abgelaufenes) Passwort ändern können, solange sie sich noch an ihr bestehendes erinnern. Bei "Passwort zurücksetzen" können Benutzer, die ihr Passwort vergessen haben, auf einer Webseite veranlassen, dass ihnen ein Schlüssel (Token) an eine zuvor hinterlegte Adresse geschickt wird. Beide Module sind über die Übersichtsseite des UCS Servers erreichbar.
 
-Die Univention Self-Service-Module sind über das AppCenter auf Servern in den Rollen Master und Backup installierbar. Nach der Installation können die Module einzeln aktiviert oder deaktiviert werden. Um z.B. das Modul "Passwort zurücksetzen" zu deaktivieren, führen Sie an der Kommandozeile folgendes aus:
+Die Univention Self-Service-Module sind über das AppCenter auf Servern in den Rollen Domänencontroller Master und Domänencontroller Backup installierbar. Nach der Installation können die Module einzeln aktiviert oder deaktiviert werden. Um z.B. das Modul "Passwort zurücksetzen" zu deaktivieren, führen Sie an der Kommandozeile folgendes aus:
 <code>univention-self-service-modules disable passwordreset</code>
-Wie gewohnt gibt "--help" Auskunft über weitere Optionen.
+Wie gewohnt, gibt die Option "--help" eine Auskunft über weitere Optionen.
 
 App-Hersteller
 --------------
