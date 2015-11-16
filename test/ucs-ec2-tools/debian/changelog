@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-8) unstable; urgency=low
+
+  * Bug #38984: Ignore SSH exceptions
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 16 Nov 2015 14:11:21 +0100
+
 ucs-ec2-tools (2.0.0-7) unstable; urgency=medium
 
   * Don't fail during an unknown SSH error (Bug #38984)

@@ -194,8 +194,11 @@ class VM:
 					self._log('[%d] Network error: %s' % (timeout - now + start, ex))
 				except paramiko.AuthenticationException as ex:
 					self._log('[%d]: Authentication failed... [%s]' % (timeout - now + start, ex))
-				except Exception, ex:
+				except paramiko.SSHException as ex:
+					self._log('[%d]: SSH failed... [%s]' % (timeout - now + start, ex))
+				except Exception as ex:
 					self._log('[%d]: Unknown error "%s"...' % (timeout - now + start, ex))
+					raise
 				time.sleep(5)
 				now = time.time()
 			else:
