@@ -19,7 +19,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The package <package>univention-container-role-common</package> has been added. It
-				is used to strip down the base installed packages in a Docker image
+				is used to strip down the base of installed packages in a Docker image
 				(<u:bug>38283</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -96,7 +96,7 @@
 						rules for services in Docker containers (<u:bug>38307</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-						Prevent an error when logging into a docker image without an interface
+						Prevent an error when logging into a docker container without network interface
 						(<u:bug>38861</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -203,8 +203,8 @@
 					(<u:bug>31943</u:bug>, <u:bug>39549</u:bug>, <u:bug>39552</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The dropdown menu to switch the Univention Management Console uses the SAML single-sign on process now.
-					The previously used UMC single-sign on implementation has been replaced with SAML (<u:bug>39227</u:bug>).
+					The dropdown menu to switch the Univention Management Console uses the SAML single-sign-on process now.
+					The previously used UMC single-sign-on implementation has been replaced with SAML (<u:bug>39227</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The dependency of <package>univention-dojo-dev</package> has changed to
@@ -243,7 +243,7 @@
 					(<u:bug>38887</u:bug>, <u:bug>39185</u:bug>, <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>, <u:bug>39184</u:bug>, <u:bug>39183</u:bug>, <u:bug>39196</u:bug>, <u:bug>39496</u:bug>, <u:bug>39417</u:bug>, <u:bug>39330</u:bug>, <u:bug>39192</u:bug>, <u:bug>39467</u:bug>, <u:bug>39462</u:bug>, <u:bug>39629</u:bug>, <u:bug>39204</u:bug>, <u:bug>39189</u:bug>, <u:bug>39587</u:bug>, <u:bug>39189</u:bug>, <u:bug>39660</u:bug>, <u:bug>39434</u:bug>, <u:bug>39199</u:bug>, <u:bug>39820</u:bug>, <u:bug>39822</u:bug>, <u:bug>39716</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The variable <envar>UCSOverviewCategoriy</envar> now accepts the value <wordasword>None</wordasword> in which case any
+					The variable <envar>UCSOverviewCategory</envar> now accepts the value <wordasword>None</wordasword> in which case any
 					UCR variable once registered will be removed (<u:bug>39718</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -256,7 +256,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					App logos must be in the SVG format from UCS 4.1 on. Logos are referenced in the <wordasword>INI</wordasword> or META files as
-					<classname>Logo</classname> and <classname>LogoDetailPage</classname> whereas the latter optional entry
+					<classname>Logo</classname> and <classname>LogoDetailPage</classname> where the latter optional entry
 					may define a different logo which is displayed in the app detail view (<u:bug>39525</u:bug>, <u:bug>39656</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -569,7 +569,7 @@
 					(<u:bug>39313</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Single sign on via SAML 2.0 is now possible with Univention Management Console
+					Single-sign-on via SAML 2.0 is now possible with Univention Management Console
 					(<u:bug>39171</u:bug>, <u:bug>39178</u:bug>, <u:bug>31943</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -609,7 +609,7 @@
 					The SAML identity provider now uses a dedicated LDAP user to access the LDAP and a separate user is used to access <acronym>SSO</acronym> specific web-content by <application>apache2</application> (<u:bug>38947</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The App Center module has been adapted to work with single-sign on (<u:bug>39226</u:bug>).
+					The App Center module has been adapted to work with single-sign-on (<u:bug>39226</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The UMC server and LDAP server allow authentication with a SAML assertion via the packages <application>pam-saml</application> and <application>cy2-saml</application> (<u:bug>39315</u:bug>).
@@ -749,7 +749,7 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The dependency to <package>univention-home-mounter</package> has been changed
+					The dependency on <package>univention-home-mounter</package> has been changed
 					to a recommendation in the <package>univention-pam</package> package
 					(<u:bug>39490</u:bug>).
 				</simpara></listitem>
@@ -863,7 +863,7 @@
 				<listitem><simpara>
 					Docker images running UCS in container mode now try to
 					register the IP also with a <systemitem class="service">consul</systemitem> and
-					<systemitem class="service">etcd</systemitem> service running the Docker host
+					<systemitem class="service">etcd</systemitem> service running on the Docker host
 					(<u:bug>38331</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
