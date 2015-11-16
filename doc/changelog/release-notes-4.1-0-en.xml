@@ -51,7 +51,7 @@
 			<listitem><para>
 				The Univention App Center integrates the Linux container technology Docker. It is
 				possible to run Apps separately and encapsulated from each other with Docker. This
-				increases the security of the UCS domain and it reduces the dependecies of the Apps.
+				increases the security of the UCS domain and it reduces the dependencies of the Apps.
 				The integration of Docker is transparent to the user. The App Center will
 				automatically perform the startup and the configuration of the Docker container.
 			</para></listitem>
@@ -60,7 +60,7 @@
 				displayed more clearly. The App details pages have been cleaned up and a rating in
 				the categories Vendor Supported, Popularity's Award and Editor's Award has been
 				added. The classification is based on data such as the installed base of Apps or
-				the maintenance behavior of the App providers. Thus, the transparency and
+				the maintenance behaviour of the App providers. Thus, the transparency and
 				comparability of Apps are increased.
 			</para></listitem>
 			<listitem><para>
