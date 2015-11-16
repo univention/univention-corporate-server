@@ -451,7 +451,7 @@
 									key_id (Key ID of the License)
 							</simpara></listitem>
 							<listitem><simpara>
-									ucs_version (major and minor version of UCS, e.g. 4.0)
+									ucs_version (major and minor version of UCS, e.g. 4.1)
 							</simpara></listitem>
 							<listitem><simpara>
 									app_id (internal ID of the Application)

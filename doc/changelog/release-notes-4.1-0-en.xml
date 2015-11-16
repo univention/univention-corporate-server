@@ -115,7 +115,7 @@
 			<para>
 				If applications have been installed from the Univention App Center, the update can only be performed once all installed applications are available in a compatible version.
 				Some applications are updated to newer versions during the UCS update.
-				If an application is not yet available for UCS 4.0, a statement about the release date can be obtained from the application vendor.
+				If an application is not yet available for UCS 4.1, a statement about the release date can be obtained from the application vendor.
 			</para>
 		</section>
 
