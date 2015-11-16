@@ -1088,15 +1088,16 @@
 			<para>
 				Durch die Installation der <wordasword>UCS-Komponente</wordasword> <guimenu>Self Service</guimenu>
 				über das <guimenu>App Center</guimenu> werden Benutzer dazu befähigt,
-				ihr Passwort zu verwalten ohne die Interaktion eines Administrators.
+				ihr Passwort ohne die Interaktion mit einem Administrator zu verwalten.
 			</para>
 			<para>
 				Die <wordasword>Self Service-App</wordasword> registriert zwei Web-Dienste auf der <wordasword>UCS-Startseite</wordasword>,
 				auf die über eine eigene Webseite zugegriffen werden kann:
-				"Password ändern" und "Password zurücksetzen".
-				Sie erlauben es Benutzern, ein neues Passwort zu setzen mit Angabe ihres alten
-				Passwortes, oder aber ihr Passwort über eine angefragten <wordasword>Token</wordasword> zurückzusetzen,
-				welcher an eine vorher dafür registrierte Kontakt-Adresse gesendet wird.
+				<guimenu>Passwort ändern</guimenu> und <guimenu>Passwort zurücksetzen</guimenu>.
+				Sie erlauben es Benutzern, unter Angabe ihres alten	Passwortes ein neues Passwort
+				zu setzen, oder aber ihr vergessenes Passwort zurückzusetzen. Für das Zurücksetzen
+				des Passworts wird ein <wordasword>Token</wordasword> an eine vorher dafür registrierte
+				Kontakt-E-Mail-Adresse gesendet, das dann auf der Webseite vom Benutzer einzugeben ist.
 			</para>
 		</section>
     </section>
