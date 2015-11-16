@@ -1,7 +1,7 @@
 <p>Gratulation, die Self-Service-Module wurden installiert!</p>
 <ul>
-<li>Die Self-Service-Module sind für Benutzer über die <a href="/ucs-overview/">UCS-Übersichtsseite</a> erreichbar.</li>
-<li>Für die korrekte Funktion des Passwort-Resets über E-Mails muss die Konfiguration des lokalen Mailsystems geprüft werden. Das Mailsystem muss ausgehende E-Mails direkt oder über ein Mail-Relay zustellen. Nähere Hinweise zur <a href="http://docs.software-univention.de/handbuch.html#mail::serverconfig::relay">Konfiguration eines Mail-Relays</a> finden sich im UCS-Handbuch.</li>
-<li>Administratoren können die Benutzerkontaktdaten für einen Passwortreset im <a href="/univention-management-console/#module=udm:users/user:0:">Benutzer-Modul</a> der Univention Management Console bearbeiten.</li>
+<li>Die Self-Service-Module sind für Benutzer über die <a href="/ucs-overview/" target="_blank">UCS-Übersichtsseite</a> erreichbar.</li>
+<li>Für die korrekte Funktion des Passwort-Resets über E-Mails muss die Konfiguration des lokalen Mailsystems geprüft werden. Das Mailsystem muss ausgehende E-Mails direkt oder über ein Mail-Relay zustellen. Nähere Hinweise zur <a href="http://docs.software-univention.de/handbuch.html#mail::serverconfig::relay" target="_blank">Konfiguration eines Mail-Relays</a> finden sich im UCS-Handbuch.</li>
+<li>Administratoren können die Benutzerkontaktdaten für einen Passwortreset im <a href="/univention-management-console/#module=udm:users/user:0:" target="_blank">Benutzer-Modul</a> der Univention Management Console bearbeiten.</li>
 <li>Einzelne Module können über das mitgelieferte Skipt <i>"univention-self-service-modules"</i>  ein- oder ausgeschaltet werden.</li>
 </ul>
