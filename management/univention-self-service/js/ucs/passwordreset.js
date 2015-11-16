@@ -118,7 +118,7 @@ define([
 			this._tokenOptions = new ContainerWidget({});
 			put(stepContent, this._tokenOptions.domNode);
 			this._requestTokenButton = new Button({
-				label: _('Request token'),
+				label: _('Next'),
 				onClick: lang.hitch(this, '_requestToken')
 			});
 			put(stepContent, this._requestTokenButton.domNode);
