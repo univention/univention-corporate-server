@@ -175,7 +175,7 @@
   <title>Netzwerkkonfiguration</title>
   <para>
 	Initial versucht der Univention Installer eine automatische Konfiguration der Netzwerkschnittstellen vorzunehmen.
-	Dies kann durch die Auswahl des Menüeintrags <guimenuitem>Start with manual network settings</guimenuitem> im Menü im Bootloader deaktiviert werden.
+	Dies kann durch die Auswahl des Menüeintrags <guimenuitem>Start with manual network settings</guimenuitem> im Menü des Bootloaders deaktiviert werden.
 	Dabei wird zunächst versucht, eine IPv6-Adresse über die Stateless Address Autoconfiguration (SLAAC) zu ermitteln.
 	Sollte dies nicht erfolgreich sein, versucht der Univention Installer eine IPv4-Adresse über das Dynamic Host Configuration
 	Protocol (DHCP) zu erfragen. Ist dies erfolgreich, wird die manuelle Netzwerkkonfiguration von Univention Installer übersprungen.
