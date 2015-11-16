@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
+		<title>Univention Management Console</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Univention Management Console</title>
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		<link rel="stylesheet" href="js_$20141811192458$/dijit/themes/umc/umc.css" type="text/css"/>
+		<link rel="stylesheet" href="js_$20151611134246$/dijit/themes/umc/umc.css" type="text/css"/>
 
 		<script type="text/javascript">
 			//<!--
@@ -43,11 +43,19 @@
 			var _fillUsernameField = function() {
 				require('dojo/dom').byId('umcLoginUsername').value = 'Administrator';
 				require('dojo/dom').byId('umcLoginPassword').focus();
+				//fire change event manually for internet explorer
+				require(['dojo/dom', 'dojo/has'], function(dom, has) {
+					if (has('ie') < 10) {
+						var event = document.createEvent("HTMLEvents");
+						event.initEvent("change",true,false);
+						dom.byId('umcLoginUsername').dispatchEvent(event);
+					}
+				});
 			};
 			var _showLoginTooltip = function(evt) {
 				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
 					var node = evt.target;
-					Tooltip.show(_('Please login with a valid username and password. A login with an e-mail address is not possible. The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField()">Administrator</a></b>'), node);
+					Tooltip.show(_('Please login with a valid username and password. The default username to manage the domain is %s.', '<b><a href="javascript:void();" onclick="_fillUsernameField()">Administrator</a></b>'), node);
 					if (evt) {
 						dojoEvent.stop(evt);
 					}
@@ -76,7 +84,7 @@
 						parser.parse();
 
 						// set the version of the UMC frontend
-						tools.status('version', '4.1.106-45.1025.201503241655');
+						tools.status('version', '5.0.63-2.1189.201511102323');
 
 						// start the application when everything has been loaded
 						app.start({
@@ -91,7 +99,7 @@
 			};
 			//-->
 		</script>
-		<script type="text/javascript" async src="js_$20141811192458$/dojo/dojo.js"></script>
+		<script type="text/javascript" async src="js_$201516111342468$/dojo/dojo.js"></script>
 	</head>
 	<body class="umc umcOverviewShown">
 		<!--[if lte IE 8]>
@@ -133,19 +141,25 @@
 				</form>
 				<form id="umcNewPasswordForm" name="umcLoginForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
 					<label for="umcLoginNewPassword">
-						<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password"/>
+						<input placeholder="New Password" id="umcLoginNewPassword" name="new_password" type="password" autocomplete="off"/>
 					</label>
 					<label for="umcLoginNewPasswordRetype">
-						<input placeholder="New Password (retype)" id="umcLoginNewPasswordRetype" type="password"/>
+						<input placeholder="New Password (retype)" id="umcLoginNewPasswordRetype" type="password" autocomplete="off"/>
 						<input type="submit" name="submit" value="Login"/>
 					</label>
 				</form>
-				<iframe id="umcLoginIframe" src="login.html"></iframe>
-				<img src="js_$20141811192458$/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
+				<form id="umcCustomPromptForm" name="umcCustomPromptForm" action="blank.html" method="post" class="umcLoginForm" style="display: none;" autocomplete="off">
+					<label for="umcLoginCustomPrompt">
+						<input placeholder="One time password" id="umcLoginCustomPrompt" type="password" autocomplete="off"/>
+						<input type="submit" name="submit" value="Login"/>
+					<label>
+				</form>
+				<img src="js%HASH%/dijit/themes/umc/images/login_bg.gif" height="0" width="0">
 			</div>
 		</div>
 		<!--<![endif]-->
 		<div id="umcTopContainer" class="umcTopContainer"></div>
+		<iframe id="umcLoginIframe" src="login.html"></iframe>
 		<noscript>
 			<div class="warningWrapper">
 				<div class="warningCenterer"></div>

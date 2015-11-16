@@ -1,3 +1,9 @@
+univention-demo-configuration (4.0.2-1) unstable; urgency=medium
+
+  * Bug #39738: update files for UCS 4.1
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 16 Nov 2015 14:10:51 +0100
+
 univention-demo-configuration (4.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

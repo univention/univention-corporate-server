@@ -32,8 +32,12 @@
 		<command name="appcenter/sync_ldap" function="sync_ldap" />
 		<command name="appcenter/query" function="query" />
 		<command name="appcenter/get" function="get" />
-		<!-- ATTENTION: same progress function as in packages -->
-		<command name="appcenter/progress" function="progress"/>
+		<!-- ATTENTION: progress comes from ProgressMixin -->
+		<command name="appcenter/docker/progress" function="progress"/>
+		<!-- ATTENTION: custom progress; same progress function as in packages -->
+		<command name="appcenter/progress" function="custom_progress"/>
+		<command name="appcenter/keep_alive" function="keep_alive"/>
+		<command name="appcenter/ping" function="ping"/>
 		<command name="appcenter/buy" function="buy"/>
 
 		<!-- Query: all args are filter args. -->
@@ -50,7 +54,7 @@
 
 		<!-- Progress: information for the progress bar. -->
 		<!-- ATTENTION: same progress function as in app_center/packages -->
-		<command name="appcenter/packages/progress" function="progress"/>
+		<command name="appcenter/packages/progress" function="custom_progress"/>
 
 		<!--
 		ONLINE/COMPONENTS namespace: drives the components grid

@@ -6,6 +6,5 @@
 		<keywords>reboot,shutdown,halt</keywords>
 		<categories>
 		</categories>
-		<command name="reboot/show" function="show" />
 	</module>
 </umc>
