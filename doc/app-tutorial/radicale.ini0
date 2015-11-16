@@ -14,6 +14,6 @@ Categories=Collaboration
 
 DefaultPackages=radicale
 
-DockerImage=docker.software-univention.de/ucs-appbox-amd64:4.1-0-minbase
+DockerImage=docker.software-univention.de/ucs-appbox-amd64:4.1-0
 
 PortsExclusive=5232

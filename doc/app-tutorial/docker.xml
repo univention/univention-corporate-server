@@ -18,7 +18,7 @@
 	<section id="docker:goal">
 		<title>Why Docker?</title>
 		<para>
-			Prior to UCS 4.1 Apps in the Univention App Center were installed next to all other system packages. This made the development
+			Prior to UCS 4.1, Apps in the Univention App Center were installed next to all other system packages. This made the development
 			of enterprise applications for UCS fairly easy but had some shortcomings:
 			<itemizedlist>
 				<listitem><simpara>
@@ -27,26 +27,26 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					With a growing number of apps in the App Center catalogue it got harder for Univention to verify that the
-					app did not break anything by enabling/disabling features of certain software components. With the Debian
-					Maintainer scripts, app vendors had effectively root access on the system.
+					App did not break anything by enabling/disabling features of certain software components. With the Debian
+					Maintainer scripts, App vendors had effectively root access on the system.
 				</simpara></listitem>
 			</itemizedlist>
-			By supporting Docker, we aim to overcome those points while preserving the simplicity of developing an app.
+			By supporting Docker, we aim to overcome those points while preserving the simplicity of developing an App.
 		</para>
 		<para>
 			If you have already worked with Docker, you may know that Docker is sometimes advertised as a way to encapsulate each and
 			every task into its own container, sometimes referred to as <emphasis>Micro services</emphasis>. In the Univention App Center
-			we currently focus on a different route: We start minimal, yet fully functional UCS systems in which one app is installed
+			we currently focus on a different route: We start minimal, yet fully functional UCS systems in which one App is installed
 			and started.
 			<important>
 				<para>
 					For App development this means that an ISV still programs against a UCS. There is no need to build a dedicated
-					docker container. Univention already provides such a container along with the tools to actually install
-					debian packages just like the app would be installed "on metal" (or just like it was prior to UCS 4.1).
+					Docker Container. Univention already provides such a container along with the tools to actually install
+					debian packages just like the App would be installed "on metal" (or just like it was prior to UCS 4.1).
 				</para>
 				<para>
-					An ISV needs to provide debian packages, not docker images (very much the same as in UCS &lt; 4.1). The integration
-					of the app into the UCS infrastructure may be done via an additional package or via separate scripts that live
+					An ISV needs to provide debian packages, not Docker images (very much the same as in UCS &lt; 4.1). The integration
+					of the App into the UCS infrastructure may be done via an additional package or via separate scripts that live
 					unpackaged on the App Center server (see below for an example).
 				</para>
 			</important>
@@ -55,7 +55,7 @@
 	<section id="docker:example">
 		<title>Example: Docker App <application>Radicale</application></title>
 		<para>
-			In this section we will develop a docker based app step by step.
+			In this section we will develop a Docker based App step by step.
 		</para>
 		<para>
 			We use the software <application>Radicale</application> for it.
@@ -64,7 +64,9 @@
 		</para>
 		<note><para>
 			In general, apps need to come in the Debian package format (<filename class="extension">.deb</filename>).
-			If you do not have your application packaged in this way, please see ???.
+			If you do not have your application packaged in this way, you may want to check
+			the chapter <ulink url="https://docs.software-univention.de/developer-reference.html#chap:packaging">packaging</ulink> in the UCS developer reference
+			as a starting point.
 			Here we will use a pre packaged application already present in (the unmaintained repository of) UCS.
 		</para></note>
 		<section id="docker:example:prerequisites">
@@ -88,12 +90,12 @@
 		<section id="docker:example:ini">
 			<title>The ini file</title>
 			<para>
-				An app consists of the actual packages and meta information about the app.
-				The app may ship a screenshot, various <filename>README</filename> files and so on.
-				But every app <emphasis>has</emphasis> to have an <filename class="extension">ini</filename> file.
+				An App consists of the actual packages and meta information about the App.
+				The App <emphasis>may</emphasis> ship one or more screenshots, various <filename>README</filename> files and so on.
+				But every App <emphasis>has</emphasis> to have an <filename class="extension">ini</filename> file.
 			</para>
 			<important><para>
-				Every version of an app (i.e. the original upload and every update of it) has its own <filename class="extension">ini</filename> file!
+				Every version of an App (i.e. the original upload and every update of it) has its own <filename class="extension">ini</filename> file!
 				It may be just a copy of the original file with the <option>Version=</option> increased, yet a new ini file is necessary.
 			</para></important>
 			<para>
@@ -120,7 +122,7 @@ WebsiteVendor=http://kozea.fr/
 Maintainer=Univention
 WebsiteMaintainer=http://www.univention.de/
 				</programlisting>
-				<application>Radicale</application> can be used to manage shared calendars, so this makes it a Collaboration app:
+				<application>Radicale</application> can be used to manage shared calendars, so this makes it a Collaboration App:
 				<programlisting language="ini">
 Categories=Collaboration
 				</programlisting>
@@ -130,16 +132,16 @@ Categories=Collaboration
 				</para></note>
 				Now the important parts:
 				The Debian package that is to be installed is called <package>radicale</package>.
-				It will live in a repository created for this app on the App Center server.
-				The package is unmaintained by Univention, so it needs to be copied from the unmaintained repository to the app's repository (this is done later).
+				It will live in a repository created for this App on the App Center server.
+				The package is unmaintained by Univention, so it needs to be copied from the unmaintained repository to the App's repository (this is done later).
 				<programlisting language="ini">
 DefaultPackages=radicale
 				</programlisting>
-				It shall be installed as a Docker app, so the following needs to be specified:
+				It shall be installed as a Docker App, so the following needs to be specified:
 				<programlisting language="ini">
 DockerImage=docker.software-univention.de/ucs-appbox-amd64:4.1-0
 				</programlisting>
-				This means that the package is not installed on your system but rather in a docker container running on your system.
+				This means that the package is not installed on your system but rather in a Docker Container running on your system.
 				To access the relevant bits of the container (i.e. the calendars and contacts), you need to forward the port (which happens to be 5232 for <application>Radicale</application>):
 				<programlisting language="ini">
 PortsExclusive=5232
@@ -147,7 +149,7 @@ PortsExclusive=5232
 				</programlisting>
 				<note><para>
 					Univention provides a set of images at <uri>docker.software-univention.de</uri>, at least one per minor version of UCS.
-					If unsure, it is probably a good idea to have the image's UCS version match the UCS version of the Docker host.
+					If unsure, it is probably a good idea to have the image's UCS version match the UCS version of the Docker Host.
 					But this is absolutely not mandatory.
 					In fact, it is one of the advantages of Docker apps that their OS may differ from the host's.
 					For a list of the images, ask Univention.
@@ -202,12 +204,12 @@ univention-app dev-populate-appcenter --new \
 				<note><para>
 					We need to distinguish between the <emphasis>Docker Host</emphasis> - this is the "real" UCS installed.
 					The Docker Host is running the <emphasis>Docker Container</emphasis>s.
-					These may also be UCS systems, but they essentially only run the app packages.
+					These may also be UCS systems, but they essentially only run the App packages.
 				</para></note>
 				<para>
 					The App Center provides an easy way to add a join script to the App by just adding it to the repository on the App Center server.
 					The join script is then executed on the <emphasis>Docker Host</emphasis> after the <emphasis>Docker Container</emphasis> is set up.
-					So the join script is not executed locally with respect to the app, but the Docker Host may access the file system of the Container anyway.
+					So the join script is not executed locally with respect to the App, but the Docker Host may access the file system of the Container anyway.
 				</para>
 				<para>
 					To add a join script, just create a file <filename>~/radicale.inst</filename> and add the following to it:
@@ -222,16 +224,16 @@ univention-app dev-populate-appcenter --new \
 				</para>
 				<note><para>
 					<programlisting language="sh"><![CDATA[univention-app dev-populate-appcenter --new]]></programlisting>
-					will create a new version of the app and write the internal component to the screen
+					will create a new version of the App and write the internal component to the screen
 					(In this case something like <literal>radicale_<replaceable>yyyymmdd</replaceable></literal>).
-					But if you are fast enough, it will overwrite the existing app version because the date does not (yet) differ.
+					But if you are fast enough, it will overwrite the existing App version because the date does not (yet) differ.
 					Correct would be something like
 					<programlisting language="sh"><![CDATA[
 univention-app dev-populate-appcenter \
 	--component radicale_20150929 \
 	--join ~/radicale.inst
 ]]></programlisting>
-					to really alter the app.
+					to really alter the App.
 				</para></note>
 			</section>
 			<section id="docker:example:store">
@@ -239,36 +241,36 @@ univention-app dev-populate-appcenter \
 				<para>
 					Now the App should be installable and run as expected.
 					As specified in the ini	<filename>ucs-appbox-amd64:4.1-0</filename> will be used
-					as the docker image. It is downloaded from a docker registry set up at Univention and started on the Docker Host.
-					The image contains a minimal UCS member server which will eventually contain the app packages.
+					as the Docker image. It is downloaded from a docker registry set up at Univention and started on the Docker Host.
+					The image contains a minimal UCS member server which will eventually contain the App packages.
 				</para>
 				<important><para>
-					There are some things you should be aware of when developing a docker app for the Univention App Center:
+					There are some things you should be aware of when developing a Docker App for the Univention App Center:
 					<itemizedlist>
 						<listitem><simpara>
 							The default image is a minimal, yet fully functional UCS.
 						</simpara></listitem>
 						<listitem><simpara>
 							The system will join into the domain.
-							The docker app will be listed as a member server when showing all hosts of the domain.
+							The Docker App will be listed as a member server when showing all hosts of the domain.
 						</simpara></listitem>
 						<listitem><simpara>
 							The system will not run something like <filename>/usr/bin/radicale</filename> directly.
 							Instead it runs <command>/sbin/init</command> (it is actually a slightly altered version of the original <command>/sbin/init</command> of UCS).
-							The app will be run because it is somehow configured to be started on a certain run-level (somehow means: This is the job of the corresponding Debian package).
+							The App will be run because it is somehow configured to be started on a certain run-level (somehow means: This is the job of the corresponding Debian package).
 						</simpara></listitem>
 						<listitem><simpara>
-							The docker image is writable, i.e. the app can create and modify all files it wants and after restarting the container, the files persist.
-							This also holds for updates: The docker container may install package updates released by Univention (so called errata updates) and even new major versions of the operating system.
+							The Docker image is writable, i.e. the App can create and modify all files it wants and after restarting the container, the files persist.
+							This also holds for updates: The Docker Container may install package updates released by Univention (so called errata updates) and even new major versions of the operating system.
 							This means that the image can be used "forever".
 						</simpara></listitem>
 					</itemizedlist>
 				</para></important>
 				<para>
-					Last point for this section will be storing and restoring data from the docker container.
+					Last point for this section will be storing and restoring data from the Docker Container.
 					Although the container may be used forever, it may be that the underlying image needs to be exchanged.
 					This is done by effectively removing the old container and setting up a completely new one.
-					Thus, we need to store the app data just before removing the old container and restore it in the new one.
+					Thus, we need to store the App data just before removing the old container and restore it in the new one.
 				</para>
 				<para>
 					<application>Radicale</application> has some backends where to store the data, but preconfigured is the file backend - which makes it very easy for us to backup the data.
@@ -284,8 +286,8 @@ univention-app dev-populate-appcenter \
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.restore_data" parse="text"/></programlisting>
 				</para>
 				<important><para>
-					<filename class="directory">/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/data/</filename> is always mounted into the docker container.
-					The very same directory exists on the docker host. If your app can be configured to save its data on a different location, you may want to consider
+					<filename class="directory">/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/data/</filename> is always mounted into the Docker Container.
+					The very same directory exists on the Docker Host. If your App can be configured to save its data on a different location, you may want to consider
 					using this directory. Not only will it make storing and restoring data in the image exchange process very easy, it should also be faster because
 					it does not rely on the Docker storage driver, thereby reducing overhead. In fact, <application>Radicale</application> should have been configured
 					to store its collection data there in the first place instead of copying it in <filename>store_data</filename>. But this would render the script useless and it shall be part
@@ -302,7 +304,7 @@ DockerScriptRestoreDataAfterSetup=/usr/share/univention-appcenter/app/radicale/r
 					</programlisting>
 				</para>
 				<note><para>
-					All docker scripts that may be specified in the ini file have a reasonable default already installed in the default container.
+					All Docker scripts that may be specified in the ini file have a reasonable default already installed in the default container.
 					So it is generally a good idea to execute the default script in your script.
 				</para></note>
 				<warning><para>
@@ -326,9 +328,9 @@ univention-app dev-populate-appcenter --new \
 		<section id="docker:example:integration2">
 			<title>Integration, second iteration</title>
 			<para>
-				The app should be in a functional state now.
+				The App should be in a functional state now.
 				<programlisting language="sh"><![CDATA[univention-app install radicale]]></programlisting>
-				should give you a running CalDAV/CardDAV service at port 5232 on you Docker Host.
+				should give you a running CalDAV/CardDAV service at port 5232 on your Docker Host.
 			</para>
 			<para>
 				The configuration of the service is not optimal, though.
@@ -339,18 +341,18 @@ univention-app dev-populate-appcenter --new \
 				This is not scope of this example, though.
 			</para>
 			<section id="docker:example:ucr">
-				<title>Making the app configurable by the user</title>
+				<title>Making the App configurable by the user</title>
 				<para>
 					<application>Radicale</application>'s rights management can be configured in various ways.
 					We want to
-					let the administrator decide whether the app's configuration is <envar>owner_write</envar> (users
+					let the administrator decide whether the App's configuration is <envar>owner_write</envar> (users
 					need to have valid credentials; their own calenders/contacts can be modified,
 					others' can be read) or <envar>authenticated</envar> (same, but others' can also be modified).
 				</para>
 				<para>
 					This is achieved by adding <filename>~/radicale.ucr</filename>.
 					This file defines some Univention Configuration Registry variables (UCR).
-					These are a core feature of UCS and thus of a docker app based on UCS.
+					These are a core feature of UCS and thus of a Docker App based on UCS.
 					<programlisting language="ini"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.ucr" parse="text"/></programlisting>
 				</para>
 				<para>
@@ -376,13 +378,13 @@ univention-app dev-populate-appcenter --new \
 				</para>
 			</section>
 			<section id="docker:example:ldap">
-				<title>Making the app LDAP aware</title>
+				<title>Making the App LDAP aware</title>
 				<para>
 					<application>Radicale</application> comes with LDAP support.
 					We just need to configure it.
 					<application>Radicale</application> binds to LDAP and can then check any credentials.
 					But for that we need a <literal>binddn</literal> for <application>Radicale</application>.
-					A new user for that app needs to be created in LDAP.
+					A new user for that App needs to be created in LDAP.
 				</para>
 				<para>
 					After that this very user has to be specified in the configuration file
@@ -398,11 +400,11 @@ univention-app dev-populate-appcenter --new \
 					make the domain administrator aware where the application <application>Radicale</application> is installed.
 				</para>
 				<important><para>
-					The command <command>ucs_addServiceToLocalhost</command> should be reverted when the app is uninstalled.
-					But even more importantly, the join script needs to be run again as soon as the app is uninstalled and then installed again (changing <filename>/etc/default/radicale</filename> and so on...).
-					As the joinscript saved the information bit that it was successfully executed at the end of itself, we need to revert that, too.
+					The command <command>ucs_addServiceToLocalhost</command> should be reverted when the App is uninstalled.
+					But even more importantly, the join script needs to be run again as soon as the App is uninstalled and then installed again (changing <filename>/etc/default/radicale</filename> and so on...).
+					As the join script saved the information bit that it was successfully executed at the end of itself, we need to revert that, too.
 					To do so, we need an <emphasis>unjoin script</emphasis>.
-					Technically it is similar to a join script but run after uninstalling the app, not after installing it.
+					Technically it is similar to a join script but run after uninstalling the App, not after installing it.
 					The script would simple do this (save to <filename>~/radicale.uinst</filename>):
 					<programlisting language="sh"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.uinst" parse="text"/></programlisting>
 				</para></important>
@@ -443,10 +445,10 @@ univention-app restart radicale
 			<title>Docker scripts</title>
 			<para>
 				For every App, the App Center server holds a repository containing the debian packages. But it also may hold
-				several scripts that do not need to be packaged. In theory one may integrate one's app without needing to
+				several scripts that do not need to be packaged. In theory one may integrate one's App without needing to
 				build an additional integration package. That being said, with increasing complexity, it is advised to build
 				such a package nonetheless. Furthermore, not everything can be achieved easily with these scripts. There are
-				interfaces rarely used that the App Center does not support. Should your app require these interfaces, it may
+				interfaces rarely used that the App Center does not support. Should your App require these interfaces, it may
 				be necessary to create a package.
 			</para>
 			<para>
@@ -462,23 +464,23 @@ univention-app restart radicale
 			<note><para>
 				None of the following scripts is mandatory, all have reasonable defaults / fall-backs. But every scripts may be
 				overridden! Just upload them along with the ini file and Univention will place them on the App Center server.
-				See also ??? to specify these scripts in the ini file.
+				See also <xref linkend="docker:epilogue:ini" /> on how to specify these scripts in the ini file.
 			</para></note>
 			<para>
 				The following scripts are for installation and uninstallation. Upgrades use these scripts, too, if (and only if)
-				the upgrade consists of an image exchange (i.e. the new version with the new ini file specifies a different
-				<envar>DockerImage</envar>). In that case the old app is uninstalled and the new app is installed.
+				the upgrade includes an image exchange (i.e. the new version with the new ini file specifies a different
+				<envar>DockerImage</envar>). In that case the old App is uninstalled and the new App is installed.
 			</para>
 			<variablelist>
 				<varlistentry>
 					<term><filename>preinst</filename></term>
 					<listitem>
 						<simpara>
-							An <emphasis>outer script</emphasis> called before the Docker container is initialized, even
+							An <emphasis>outer script</emphasis> called before the Docker Container is initialized, even
 							before the image is downloaded. Its purpose is to check whether installation may be successful.
 							For example, the preinst may fail if certain hardware requirements are not met. Any exit code
 							other than 0 will result in cancellation of the installation process.
-							If the installation of an app is the result of an image exchange (and thus more of an upgrade)
+							If the installation of an App is the result of an image exchange (and thus more of an upgrade)
 							the preinst is also called.
 						</simpara>
 					</listitem>
@@ -501,7 +503,7 @@ univention-app restart radicale
 							An <emphasis>inner script</emphasis> and heart of the whole installation process. By default it joins the system,
 							(a script called <command>univention-join</command> provided by Univention), adds the repository that was created
 							on the App Center server and installs <envar>DefaultPackages</envar> specified in the ini file.
-							After that it once again joins, running all scripts that may have been installed during the app installation.
+							After that it once again joins, running all scripts that may have been installed during the App installation.
 							If the script fails (exit code != 0) the installation is aborted.
 						</simpara>
 					</listitem>
@@ -512,7 +514,7 @@ univention-app restart radicale
 						<simpara>
 							An <emphasis>inner script</emphasis> called after <emphasis>setup</emphasis> is called. Its purpose
 							is to actually restore the data that may have been saved in <emphasis>store_data</emphasis> – now that
-							the app is up and running but the database is still empty.
+							the App is up and running but the database is still empty.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -520,13 +522,14 @@ univention-app restart radicale
 					<term><filename>inst</filename></term>
 					<listitem>
 						<simpara>
-							Also called <emphasis>joinscript</emphasis>. An <emphasis>outer script</emphasis> called after the
-							<emphasis>Docker Container</emphasis> is configured. Think of it as a postinst of the app.
-							See ??? for how to write a join script. If the join script runs successfully, the join script
+							Also called <emphasis>join script</emphasis>. An <emphasis>outer script</emphasis> called after the
+							<emphasis>Docker Container</emphasis> is configured. Think of it as a postinst of the App.
+							See the <ulink url="https://docs.software-univention.de/developer-reference.html#join:write">Developer
+							Reference</ulink> for how to write a join script. If the join script runs successfully, the join script
 							may save this information in a status file. If this does not happen, the user is constantly
 							reminded to re-run the join script. So the join script does not need to run successfully. The installation
 							will not be aborted at this point. But of course at some point it should run through successfully.
-							The main purpose of the joinscript is to set up the domain for the new app, e.g. by adding a domain
+							The main purpose of the join script is to set up the domain for the new App, e.g. by adding a domain
 							user that can be used as the <literal>LDAP binddn</literal> that your App may need to authenticate
 							against the central user management of UCS.
 						</simpara>
@@ -536,7 +539,7 @@ univention-app restart radicale
 					<term><filename>prerm</filename></term>
 					<listitem>
 						<simpara>
-							An <emphasis>outer script</emphasis> called before the Docker container is removed.
+							An <emphasis>outer script</emphasis> called before the Docker Container is removed.
 							Its purpose is to check whether an uninstallation may be successful. But it may
 							be used to somehow prepare the system for the uninstallation.
 							For example, the prerm may fail if other software still depends on it. Any exit code
@@ -549,12 +552,12 @@ univention-app restart radicale
 					<listitem>
 						<simpara>
 							An <emphasis>inner script</emphasis> called before removing the
-							<emphasis>Docker Container</emphasis>. In fact the app is not really uninstalled.
+							<emphasis>Docker Container</emphasis>. In fact the App is not really uninstalled.
 							The container is just thrown away. This also happens during image upgrades: The
 							current image is thrown away and a new image is set up. Therefore it is important
-							to store the data of the current app to be able to start into exactly that state
+							to store the data of the current App to be able to start into exactly that state
 							when the container was removed.
-							You may call any app specific commands like <command>myapp-backup --full</command>
+							You may call any App specific commands like <command>myapp-backup --full</command>
 							or just copy the important files. The App Center always mounts the following
 							directory into the container, which can be used to store the data (and later
 							restore the data from there as the very same directory will be mounted into the
@@ -567,9 +570,10 @@ univention-app restart radicale
 					<listitem>
 						<simpara>
 							Also called <emphasis>unjoin script</emphasis>. An <emphasis>outer script</emphasis> called after the
-							<emphasis>Docker Container</emphasis> is removed. Think of it as a postrm of the app.
-							See ??? for how to write an unjoin script. It should somehow revert most (if not all) changes done
-							in the <emphasis>inst</emphasis> script (or joinscript). With the notable exception of schema
+							<emphasis>Docker Container</emphasis> is removed. Think of it as a postrm of the App.
+							See the <ulink url="https://docs.software-univention.de/developer-reference.html#join:write">Developer
+							Reference</ulink> for how to write an unjoin script. It should somehow revert most (if not all) changes done
+							in the <emphasis>inst</emphasis> script (or join script). With the notable exception of schema
 							registration. An LDAP schema extension should never be removed once it was registered.
 						</simpara>
 					</listitem>
@@ -586,7 +590,7 @@ univention-app restart radicale
 						Upgrade of the operating system (a new patchlevel release or even a minor/major update of UCS (4.1-1 or 4.2-0)
 					</simpara></listitem>
 					<listitem><simpara>
-						Upgrade of app packages, i.e. a new version (with the same <literal>DockerImage</literal>) was released
+						Upgrade of App packages, i.e. a new version (with the same <literal>DockerImage</literal>) was released
 					</simpara></listitem>
 				</itemizedlist>
 			</para>
@@ -639,7 +643,7 @@ univention-app restart radicale
 						<simpara>
 							An <emphasis>inner script</emphasis> called when a new version of the App packages shall be installed.
 							This script is different from <literal>update_packages</literal>. This has technical reasons, because
-							for normal UCS based docker images, this requires a new repository to be registered. But it also has
+							for normal UCS based Docker images, this requires a new repository to be registered. But it also has
 							usability reasons: First, users may want to distinguish between necessary, stability improving package
 							updates and (potentially) ground-shaking App updates; second, at least the UCS containers are configured
 							to install security / stability updates automatically.
@@ -651,7 +655,7 @@ univention-app restart radicale
 		<section id="docker:epilogue:ini">
 			<title>Docker related variables in the ini file</title>
 			<para>
-				We used some of the ini's variables to adjust the Docker App to our needs. Here is a brief overview regarding all docker related
+				We used some of the ini's variables to adjust the Docker App to our needs. Here is a brief overview regarding all Docker related
 				variables:
 				<variablelist>
 					<varlistentry>
@@ -660,7 +664,7 @@ univention-app restart radicale
 							<para>
 								The image the container will be based on. The Univention App Center will provide a list of
 								UCS based images that can be used to run the application. Other images may work but are strongly
-								discouraged as they will lack domain functionality that would be required to integrate the app
+								discouraged as they will lack domain functionality that would be required to integrate the App
 								into the UCS domain.
 								<note><simpara>
 									If you want to develop a Docker App, this variable is <emphasis>required</emphasis>.
@@ -674,9 +678,9 @@ univention-app restart radicale
 						<term><varname>DockerAllowedImages</varname></term>
 						<listitem>
 							<simpara>
-								When the app does not rely on a well defined basis, it may be convenient to update <literal>DockerImage</literal>
+								When the App does not rely on a well defined basis, it may be convenient to update <literal>DockerImage</literal>
 								every now and then (e.g. when a new minor version of UCS is released). This is not required, but not doing so
-								would configure an outdated base image that needs to be upgraded after the app installation. This may take
+								would configure an outdated base image that needs to be upgraded after the App installation. This may take
 								a long time depending on the age of the image.
 							</simpara>
 							<simpara>
@@ -692,7 +696,7 @@ univention-app restart radicale
 						<listitem>
 							<simpara>
 								Apart from <filename class="directory">/var/lib/univention-appcenter/apps/<replaceable>$APPID</replaceable>/{data,conf}/</filename>,
-								one may choose further directories that shall be mounted into the docker container. This is a good idea if it makes
+								one may choose further directories that shall be mounted into the Docker Container. This is a good idea if it makes
 								storing / restoring data easy and also provides the benefit of increased I/O performance. The syntax is
 								<envar>DockerVolumes=/path/on/host/:/path/in/container/,...</envar>.
 							</simpara>
@@ -705,7 +709,7 @@ univention-app restart radicale
 								The Univention App Center adds a computer object for the container in the LDAP database. This computer
 								object can either be a <envar>memberserver</envar> (default) or a <envar>domaincontroller_slave</envar>.
 								The latter is useful if the container needs more rights (DC systems may have more rights in the ACL definitions
-								of LDAP). Other than that, both roles are free to choose their software selection (depending on the app package
+								of LDAP). Other than that, both roles are free to choose their software selection (depending on the App package
 								definitions in its <filename>debian/control</filename>).
 							</simpara>
 						</listitem>
@@ -715,16 +719,65 @@ univention-app restart radicale
 						<listitem>
 							<simpara>
 								The various <varname>DockerScript<replaceable>*</replaceable></varname> variables are used to specify the path to the script that shall
-								be executed. So an app package may ship its own <literal>DockerScriptStoreData</literal> and the ini file
-								can point to it. More importantly though, the app can ship these scripts unpackaged along with the ini file
-								and the App Center will install these scripts at that destination and then call it. See ??? for a brief
+								be executed. So an App package may ship its own <literal>DockerScriptStoreData</literal> and the ini file
+								can point to it. More importantly though, the App can ship these scripts unpackaged along with the ini file
+								and the App Center will install these scripts at that destination and then call it. See <xref linkend="docker:epilogue:scripts" /> for a brief
 								overview over the scripts. The name in the ini file for <filename>store_data</filename> is
 								<literal>DockerScriptStoreData</literal> and so on.
 							</simpara>
 						</listitem>
 					</varlistentry>
+					<varlistentry>
+						<term><varname>PortsExclusive</varname></term>
+						<listitem>
+							<simpara>
+								Not really limited to Docker Apps, but this variable will be essential to make your Docker App work: It specifies
+								a comma separated list of ports that the Docker Container shall expose publicly. If your App opens port, say, 3000,
+								you need to specify that in the ini file, otherwise the port will not be accessible from any host but the Docker
+								Container itself. The Docker Host will configure the container according to this variable on startup. By default, no
+								port is exposed. One exception is a port to a <varname>WebInterface</varname> (also to be specified in the ini file)
+								which is handled automatically by the Univention App Center.
+								<note><simpara>
+									<package>univention-firewall</package> on the Docker Host will be reconfigured automatically to allow
+									connections to these ports.
+								</simpara></note>
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>PortsRedirection</varname></term>
+						<listitem>
+							<simpara>
+								Just like <varname>PortsExclusive</varname> but with an the option to map the local port to one other port on the Docker Host. Useful
+								when exposing a service that is used commonly and therefore will generate port conflicts. E.g., if your App shall be accessible via SSH,
+								you cannot exclusively claim port 22. But you can specify <varname>PortsRedirection=10022:22</varname>.
+							</simpara>
+						</listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>WebInterface</varname></term>
+						<listitem>
+							<simpara>
+								Not exclusive to Docker Apps, but a bit different as to what happens in the background: If your App provides a WebInterface
+								(e.g., /radicale), you can specify it here. In this case, the Univention App Center will automatically make the Docker Container's
+								web interface publicly accessible by using <package>mod_proxy</package> of <package>apache</package> (using the port range 40000
+								up to 41000, controlled by the Univention App Center itself).
+								<note><simpara>
+									The proxy entry in the apache configuration will be something like:
+									<programlisting><![CDATA[ProxyPass /radicale http://127.0.0.1:40000/radicale]]></programlisting>
+									where the port 40000 is mapped to Docker Container's port <varname>WebInterfacePortHTTP</varname> (which defaults to 80).
+									So your App needs to make /radicale accessible, too. Note that there will be a separate entry for HTTPS, too.
+								</simpara></note>
+								<note><simpara>
+									HTTP or HTTPS access can be disabled by specifying <varname>WebInterfacePortHTTP=0</varname>
+									(<varname>WebInterfacePortHTTPS</varname> respectively).
+								</simpara></note>
+							</simpara>
+						</listitem>
+					</varlistentry>
 				</variablelist>
-				For the other variables, see ???.
+				Please refer to the <ulink url="https://docs.software-univention.de/developer-reference.html#app:iniFile">Developer Reference</ulink>
+				for a template and the description of every attribute in the ini file.
 			</para>
 		</section>
 	</section>
@@ -741,7 +794,7 @@ univention-app restart radicale
 			which will list your container. Find the container and call:
 			<programlisting language="sh"><![CDATA[docker exec -it $CONTAINER /bin/bash]]></programlisting>
 			Normally you should be able to do this without finding the container by hand:
-			<programlisting language="sh"><![CDATA[CONTAINER="$(ucr get appcenters/apps/radicale/container)"; docker exec -it $CONTAINER /bin/bash]]></programlisting>
+			<programlisting language="sh"><![CDATA[CONTAINER="$(ucr get appcenter/apps/radicale/container)"; docker exec -it $CONTAINER /bin/bash]]></programlisting>
 			From here you can debug the system as normal.
 		</para>
 		<para>
