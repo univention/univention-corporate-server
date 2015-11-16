@@ -41,7 +41,7 @@
 	</bookinfo>
 
 	<chapter id="relnotes:highlights">
-		<title>Release highlights</title>
+		<title>Release Highlights</title>
 
 		<para>
 			An overview of the most important changes:
@@ -49,32 +49,32 @@
 
 		<itemizedlist>
 			<listitem><para>
-				The Univention App Center integrates the container technology Docker. It is
-				possible to run Apps separately and encapsulated from each other with Docker. This
-				increases the security of the UCS domain and it reduces the dependencies of the Apps.
-				The integration of Docker is transparent to the user. The App Center will
-				automatically perform the startup and the configuration of the Docker containers.
+				The Univention App Center integrates the container technology Docker. With Docker, it is
+				possible to run Apps separately and encapsulated from each other. This
+				increases the security of the UCS domain and reduces the dependencies of the Apps on
+				other software libraries.
+				The integration of Docker is transparent to the users. The App Center will
+				automatically perform the startup and configuration of the Docker containers.
 			</para></listitem>
 			<listitem><para>
-				The usability of Univention App Center has been improved further. Apps are now
-				displayed more clearly. The App detail pages have been cleaned up and a rating
-				has been added in the categories Vendor Supported, Popularity's Award and
+				The Univention App Center's usability has been improved further. Apps are now
+				displayed more clearly. The App detail pages have been cleared and supplemented by
+				a rating in the categories Vendor Supported, Popularity's Award and
 				Editor's Award.
-				The classification is based on data such as the installation base of Apps or
-				the maintenance behaviour of the App providers. Thus, transparency and
-				comparability of Apps is increased.
+				The classification is based on data such as the installation base of the Apps or
+				the maintenance behaviour of the App providers. Thus, the transparency and
+				comparability of Apps are increased.
 			</para></listitem>
 			<listitem><para>
-				Starting with UCS 4.1 Single-Sign-On via SAML is a product component and works out of the box
+				Single-sign-on via SAML is a product component from UCS 4.1 and works out of the box
 				with the UCS management system. Once logged in, you can switch between web
 				applications without an additional login.
 			</para></listitem>
 			<listitem><para>
-				The new Self Service allows users to independently change their password
-				or to reset it in case of a forgotten password.
-				Therefore, a token is sent to e-mail addresses or mobile phone numbers,
-				which are required to have be stored in advance by the user.
-				Afterwards, the token can be used to set a new password.
+				Users can independently change their password or reset it in case of a forgotten
+				password via the new Self Service. In this case, a token will be sent to e-mail
+				addresses or mobile phone numbers. These have to be defined in advance by the users.
+				The then received token can be used to set a new password.
 			</para></listitem>
 			<listitem><para>
 				The Linux kernel has been updated to the latest stable version of the 4.1 longterm
