@@ -333,7 +333,7 @@ class Instance(Base):
 			return [x.lower() for x in map(str.strip, li.split(",")) if x]
 
 		bl_users = listize(ucr.get("umc/self-service/passwordreset/blacklist/users", ""))
-		bl_groups = listize(ucr.get("umc/self-service/passwordreset/blacklist/group", ""))
+		bl_groups = listize(ucr.get("umc/self-service/passwordreset/blacklist/groups", ""))
 		wh_users = listize(ucr.get("umc/self-service/passwordreset/whitelist/users", ""))
 		wh_groups = listize(ucr.get("umc/self-service/passwordreset/whitelist/groups", ""))
 
