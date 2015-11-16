@@ -1493,7 +1493,7 @@ univention-directory-manager users/user list \
 </programlisting>
 
 		<para>
-			Dieser Aufruf entfernt einen Benutzer <systemitem class="username">>user04</systemitem>:
+			Dieser Aufruf entfernt einen Benutzer <systemitem class="username">user04</systemitem>:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user remove \
@@ -1515,8 +1515,8 @@ univention-directory-manager users/user move \
 	  <section id="central:udm:example:groups">
 		<title>Gruppen</title>
 		<para>
-			Anlegen einer Gruppe <systemitem class="groupname">>Example Users</systemitem> und Hinzufügen des Benutzers
-		  <systemitem class="username">>user01</systemitem> in diese Gruppe:
+			Anlegen einer Gruppe <systemitem class="groupname">Example Users</systemitem> und Hinzufügen des Benutzers
+		  <systemitem class="username">user01</systemitem> in diese Gruppe:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager groups/group create \
@@ -1526,7 +1526,7 @@ univention-directory-manager groups/group create \
 </programlisting>
 
 		<para>
-			Nachträgliches Hinzufügen des Benutzers <systemitem class="username">>user02</systemitem> zur gerade angelegten
+			Nachträgliches Hinzufügen des Benutzers <systemitem class="username">user02</systemitem> zur gerade angelegten
 		  Gruppe:
 		</para>
 		<programlisting language="sh">
@@ -1543,7 +1543,7 @@ univention-directory-manager groups/group modify \
 		</caution>
 
 		<para>
-			Nachträgliches Entfernen des Benutzers <systemitem class="username">>user01</systemitem> aus der Gruppe:
+			Nachträgliches Entfernen des Benutzers <systemitem class="username">user01</systemitem> aus der Gruppe:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager groups/group modify \
@@ -1631,7 +1631,7 @@ univention-directory-manager computers/windows create \
 		<title>Freigaben</title>
 		<para>
 		  Der folgende Befehl legt eine Freigabe <emphasis>Documentation</emphasis> auf dem Server
-		  <systemitem class="server">>fileserver.example.com</systemitem> an. Sofern
+		  <systemitem class="server">fileserver.example.com</systemitem> an. Sofern
 		  <filename class="directory">/var/shares/documentation/</filename> auf dem Server noch nicht existiert, wird
 		  es durch diesen Aufruf auch gleich angelegt.
 		</para>

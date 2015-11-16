@@ -1502,7 +1502,7 @@ univention-directory-manager groups/group modify \
 		</caution>
 
 		<para>
-			Subsequent removal of the user <systemitem class="username">>user01</systemitem> from the group:
+			Subsequent removal of the user <systemitem class="username">user01</systemitem> from the group:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager groups/group modify \
@@ -1588,7 +1588,7 @@ univention-directory-manager computers/windows create \
 		<title>Shares</title>
 		<para>
 		  The following command creates a share <emphasis>Documentation</emphasis> on the server
-		  <systemitem class="server">>fileserver.example.com</systemitem>. As long as
+		  <systemitem class="server">fileserver.example.com</systemitem>. As long as
 		  <filename class="directory">/var/shares/documentation/</filename> does not yet exist on the server, it is
 		  also created automatically:
 		</para>

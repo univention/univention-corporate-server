@@ -689,7 +689,6 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		  uncovered.
 		</para>
 
-		
 		<para>
 		  Individual areas of the directory service can be excluded from the logging. These branches
 		  can be configured using the &ucsUCR; variables <envar>ldap/logging/exclude1</envar>,
@@ -1253,7 +1252,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 	  SAML (Security Assertion Markup Language) is an XML-based standard for exchanging
 	  authentication information, which allows single sign-on across domain boundaries.
-	  UCS provides a SAML identity provider on UCS master and backup domaincontrollers:
+	  UCS provides a SAML identity provider on the &ucsMaster; and the &ucsBackup;:
 	  The SAML identity provider is registered at an external service with a cryptographic certificate and establishes a trust relationship.
 	  The user then only needs to authenticate himself in UCS and can use the service without renewed authentication.
 	</para>
@@ -1272,9 +1271,9 @@ univention-directory-listener-ctrl resync cups-printers
 		The domain DNS Servers should therefore be configured on all clients in order to be able to resolve the central DNS record, which by default is <uri>ucs-sso.<replaceable>domainname</replaceable></uri>.
 	</para>
 	<para>
-		The UCS identity provider is automatically installed on UCS master and backup domaincontrollers.
-		Further UCS backup domaincontrollers can be made available in the domain to increase failsafe safety. 
-		The default DNS record <uri>ucs-sso.<replaceable>domainname</replaceable></uri> is registered to increase failsafe access to the UCS identity provider.
+		The UCS identity provider is automatically installed on &ucsMaster; and &ucsBackup;s.
+		Further &ucsBackup;s can be made available in the domain to increase fail-safe safety.
+		The default DNS record <uri>ucs-sso.<replaceable>domainname</replaceable></uri> is registered to increase fail-safe access to the UCS identity provider.
 		The SSL certificate for this record is kept on all participating systems in the domain.
 		It is advised to install the UCS domain root certificate on all clients that are using <foreignphrase>single sign-on</foreignphrase>.
 	</para>
@@ -1383,7 +1382,7 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>Description of this service provider</entry>
 					<entry>
 						The value provided here will be shown on the UCS single sign-on login page.
-						A longer description about the service provider can be provided here, which will be shown on the login page in a seperate paragraph.
+						A longer description about the service provider can be provided here, which will be shown on the login page in a separate paragraph.
 					</entry>
 
 				</row>
