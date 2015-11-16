@@ -122,6 +122,7 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 			num = self.data["address"][1:]
 		else:
 			num = self.data["address"]
+		num = num.replace("-", "").replace(".", "").replace(" ", "").replace("/", "")
 
 		self.log("send(): Sending text message to '{}'".format(num))
 		args = {"RemoteUri": "sip:%s@sipgate.net" % num, "TOS": "text", "Content": msg}
