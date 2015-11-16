@@ -16,7 +16,7 @@
 	<para>
 		UCS provides <foreignphrase>Single Sign-On</foreignphrase> functionality with a SAML 2.0 compatible identity provider based on <package>simplesamlphp</package>.
 		The identity provider is by default installed on the DC Master and all DC Backup servers.
-		A DNS Record for all Systems providing <foreignphrase>Single Sign-On</foreignphrase> services is registered for failover, usually <uri>ucs-sso.domainname</uri>.
+		A DNS Record for all systems providing <foreignphrase>Single Sign-On</foreignphrase> services is registered for failover, usually <uri>ucs-sso.domainname</uri>.
 		Clients are required to be able to resolve the <foreignphrase>Single Sign-On</foreignphrase> DNS name.
 	</para>
 
@@ -26,7 +26,7 @@
 			New service providers can be registered by using the <foreignphrase>UDM</foreignphrase> module <option>saml/serviceprovider</option>.
 			To create a new service provider entry in a <foreignphrase>joinscript</foreignphrase>, see the following example:
 <screen>
-eval $(ucr shell)
+eval "$(ucr shell)"
 udm saml/serviceprovider create "$@" \
 	--ignore_exists \
 	--position "cn=saml-serviceprovider,cn=univention,$ldap_base" \
@@ -49,7 +49,7 @@ udm saml/serviceprovider create "$@" \
 			The service provider usually requires at least a public certificate or XML metadata about the identity provider.
 			The certificate can e.g. be downloaded with the following call:
 <screen>
-eval $(ucr shell)
+eval "$(ucr shell)"
 wget --ca-certificate /etc/univention/ssl/ucsCA/CAcert.pem \
 https://"${ucs_server_sso_fqdn:-ucs-sso.$domainname}"/simplesamlphp/saml2/idp/certificate \
 	-O /etc/idp.cert
@@ -70,9 +70,11 @@ The <foreignphrase>Single Sign-On</foreignphrase> Login page to be configured in
 		<para>
 			To provide users with a convenient link to an identity provider initiated login, the following ucr command may be used
 <screen>
+fqdn="ucs-sso.domainname"
+myspi="MyServiceProviderIdentifier"
 ucr set ucs/web/overview/entries/service/SP/description="External Service Login" \
 ucs/web/overview/entries/service/SP/label="External Service SSO" \
-ucs/web/overview/entries/service/SP/link="https://ucs-sso.domainname/simplesamlphp/saml2/idp/SSOService.php?spentityid=MyServiceProviderIdentifier" \
+ucs/web/overview/entries/service/SP/link="https://$fqdn/simplesamlphp/saml2/idp/SSOService.php?spentityid=$myspi" \
 ucs/web/overview/entries/service/SP/description/de="Externer Dienst Login" \
 ucs/web/overview/entries/service/SP/label/de="Externer Dienst SSO" \
 ucs/web/overview/entries/service/SP/priority=50
