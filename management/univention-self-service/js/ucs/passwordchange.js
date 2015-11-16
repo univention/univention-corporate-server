@@ -46,7 +46,7 @@ define([
 	return {
 		_createTitle: function() {
 			var title = _('Change Password');
-			var siteDescription = lang.replace(_('On this page you can change your password. If you want to reset your password instead use this link to the <a href="/univention-self-service/{0}#passwordreset">password reset</a> page.', [lib.getCurrentLanguageQuery()]));
+			var siteDescription = lang.replace(_('On this page you can change your password. If you have lost your password, use this link to the <a href="/univention-self-service/{0}#passwordreset">password reset</a> page.', [lib.getCurrentLanguageQuery()]));
 			document.title = title;
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', title);

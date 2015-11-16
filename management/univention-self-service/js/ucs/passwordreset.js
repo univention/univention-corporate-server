@@ -51,7 +51,7 @@ define([
 		
 		_createTitle: function() {
 			var title = _('Password Reset');
-			var siteDescription = _('On this page you can reset your password or provide contact information for setting a new password in the future.');
+			var siteDescription = _('On this page you can reset your lost password or provide contact information for setting a new password in the future.');
 			document.title = title;
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', title);
@@ -100,7 +100,7 @@ define([
 			this.contactNode = put(formNode, 'div.step');
 			put(this.contactNode, 'p > b', _('Provide your contact information.'));
 			put(this.contactNode, 'p', {
-				innerHTML: lang.replace(_('Please click the following link to <a href="/univention-self-service/{0}#setcontactinformation">change your contact information</a> for resetting the password in the future.', [lib.getCurrentLanguageQuery()]))
+				innerHTML: lang.replace(_('Please click the following link to <a href="/univention-self-service/{0}#setcontactinformation">change your contact information</a> for resetting your password in the future.', [lib.getCurrentLanguageQuery()]))
 			});
 
 			// step 2 token
@@ -133,7 +133,7 @@ define([
 			};
 			var descNewPassword = put(this.newPasswordNode, 'p', _('Please enter the token and your new password.'));
 			put(descNewPassword, 'span', {
-				innerHTML: _(' If your token is expired you can <a>go back one step to request a new one</a>.'),
+				innerHTML: _(' If your token has expired you can <a>request a new token</a>.'),
 				onclick: lang.hitch(this, prevStep)
 			});
 			stepContent = put(this.newPasswordNode, 'div.stepContent');

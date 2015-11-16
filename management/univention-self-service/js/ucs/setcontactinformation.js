@@ -51,7 +51,7 @@ define([
 		
 		_createTitle: function() {
 			var title = _('Contact information for Password reset');
-			var siteDescription = _('On this page you can set your contact information to reset your password in the future. This information are required to receive a token that is necessary to renew the password.');
+			var siteDescription = _('On this page you can set your contact information to reset your password in the future. During the reset process a token is sent to you. Without contact information it is not possible to reset your password.');
 			document.title = title;
 			var titleNode = dom.byId('title');
 			put(titleNode, 'h1', title);

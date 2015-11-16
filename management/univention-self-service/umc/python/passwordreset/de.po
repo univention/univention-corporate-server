@@ -60,7 +60,8 @@ msgstr ""
 #: umc/python/passwordreset/__init__.py:253
 msgid "No password reset method available for this user."
 msgstr ""
-"Für diesen Benutzer ist keine Methode zum Passwort zurücksetzen vorhanden."
+"Für diesen Benutzer wurden keine Kontaktinformationen hinterlegt. "
+"Das Zurücksetzen des Passworts ist daher nicht möglich."
 
 #: umc/python/passwordreset/__init__.py:426
 msgid "Program error. Please report this to the administrator."
@@ -80,7 +81,7 @@ msgstr "Der Token wurde erfolgreich versendet."
 
 #: umc/python/passwordreset/sending/send_sms.py:66
 msgid "Mobile number"
-msgstr "Handynummer"
+msgstr "Mobilfunknummer"
 
 #: umc/python/passwordreset/__init__.py:332
 msgid "The Password has been used already. Please supply a new one."

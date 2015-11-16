@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-11-13 10:13+0100\n"
+"POT-Creation-Date: 2015-11-16 08:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,12 +19,10 @@ msgstr ""
 "Schritt überspringen</a>."
 
 #: passwordreset.js:136
-msgid ""
-" If your token is expired you can <a>go back one step to request a new one</"
-"a>."
+msgid " If your token has expired you can <a>request a new token</a>."
 msgstr ""
-" Wenn Ihr Token abgelaufen ist, dann können Sie einen Schritt zurück gehen "
-" und einen <a>neuen Token anfordern</a>."
+" Wenn Ihr Token abgelaufen ist, können Sie einen "
+"<a>neuen Token anfordern</a>."
 
 #: lib.js:103
 msgid "</br><a href='/{0}'>Back to the overview.</a>"
@@ -67,8 +65,8 @@ msgid ""
 "Feel free to change your contact information. Press \"Save\" to confirm your "
 "changes."
 msgstr ""
-"Ändern Sie Ihre Kontaktinformationen. Drücken Sie anschließend \"Speichern"
-"\", um Ihre Änderungen zu bestätigen."
+"Bitte tragen Sie Ihre Kontaktinformationen ein und drücken Sie anschließend "
+"\"Speichern\", um Ihre Änderungen zu bestätigen."
 
 #: i18n.js:96
 #, python-format
@@ -86,7 +84,7 @@ msgstr "Sprache"
 
 #: setcontactinformation.js:134
 msgid "Mobile"
-msgstr "Mobiltelefon"
+msgstr "Mobilfunknummer"
 
 #: passwordchange.js:96 passwordreset.js:157
 msgid "New password"
@@ -102,18 +100,18 @@ msgstr "Altes Passwort"
 
 #: passwordchange.js:49
 msgid ""
-"On this page you can change your password. If you want to reset your "
-"password instead use this link to the <a href=\"/univention-self-service/{0}"
-"#passwordreset\">password reset</a> page."
+"On this page you can change your password. If you have lost your password, "
+"use this link to the <a href=\"/univention-self-service/{0}#passwordreset"
+"\">password reset</a> page."
 msgstr ""
-"Auf dieser Seite können Sie Ihr Passwort ändern. Wenn Sie stattdessen Ihr "
-"Passwort zurücksetzen möchten, nutzen Sie bitte den folgenden Link: <a href="
+"Auf dieser Seite können Sie Ihr Passwort ändern. Wenn Sie Ihr "
+"Passwort vergessen haben, nutzen Sie bitte den folgenden Link: <a href="
 "\"/univention-self-service/{0}#passwordreset\">Passwort zurücksetzen.</a>"
 
 #: passwordreset.js:54
 msgid ""
-"On this page you can reset your password or provide contact information for "
-"setting a new password in the future."
+"On this page you can reset your lost password or provide contact information "
+"for setting a new password in the future."
 msgstr ""
 "Auf dieser Seite können Sie Ihr Passwort zurücksetzen oder Ihre "
 "Kontaktinformationen angeben, um zukünftig Ihr Passwort zurücksetzen zu "
@@ -122,13 +120,13 @@ msgstr ""
 #: setcontactinformation.js:54
 msgid ""
 "On this page you can set your contact information to reset your password in "
-"the future. This information are required to receive a token that is "
-"necessary to renew the password."
+"the future. During the reset process a token is sent to you. Without contact "
+"information it is not possible to reset your password."
 msgstr ""
 "Auf dieser Seite können Sie Ihre Kontaktinformationen angeben. Diese "
 "Informationen werden benötigt, um Ihnen einen Token (Sicherheitsschlüssel) "
-"zuzusenden. Nur mit Hilfe eines Tokens ist es möglich das Passwort zurück zu "
-"setzen."
+"zuzusenden. Nur mit Hilfe eines Tokens ist es möglich das Passwort "
+"zurückzusetzen."
 
 #: setcontactinformation.js:94
 msgid "Password"
@@ -148,7 +146,7 @@ msgstr ""
 msgid ""
 "Please click the following link to <a href=\"/univention-self-service/{0}"
 "#setcontactinformation\">change your contact information</a> for resetting "
-"the password in the future."
+"your password in the future."
 msgstr ""
 "Bitte nutzen Sie den folgenden Link, um Ihre <a href=\"/univention-self-"
 "service/{0}#setcontactinformation\">  Kontaktinformationen zu ändern</a> "
@@ -161,7 +159,7 @@ msgstr "Keine gültige E-Mail-Adresse."
 #: passwordreset.js:134
 msgid "Please enter the token and your new password."
 msgstr ""
-"Bitte geben sie den Token (Sicherheitsschlüssel) und ein neues Passwort ein."
+"Bitte geben Sie den Token (Sicherheitsschlüssel) und ein neues Passwort ein."
 
 #: setcontactinformation.js:74
 msgid ""
