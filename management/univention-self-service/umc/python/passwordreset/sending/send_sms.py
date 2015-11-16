@@ -114,15 +114,13 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 		if len(msg) > 160:
 			raise ValueError("Message to long: '{}'.".format(msg))
 
-		if self.data["address"].startswith("00"):
-			num = self.data["address"][2:]
-		elif self.data["address"].startswith("0"):
-			num = "{}{}".format(self.country_code, self.data["address"][1:])
-		elif self.data["address"].startswith("+"):
-			num = self.data["address"][1:]
+		num = "".join(map(lambda x: x if x.isdigit() else "", self.data["address"]))
+		if num.startswith("00"):
+			num = num[2:]
+		elif num.startswith("0"):
+			num = "{}{}".format(self.country_code, num[1:])
 		else:
-			num = self.data["address"]
-		num = num.replace("-", "").replace(".", "").replace(" ", "").replace("/", "")
+			pass
 
 		self.log("send(): Sending text message to '{}'".format(num))
 		args = {"RemoteUri": "sip:%s@sipgate.net" % num, "TOS": "text", "Content": msg}

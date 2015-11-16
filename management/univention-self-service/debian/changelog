@@ -1,3 +1,10 @@
+univention-self-service (1.0.2-12) unstable; urgency=low
+
+  * fix blacklisted groups detection (Bug #37890)
+  * simplify mobile number mangling
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 16 Nov 2015 09:43:50 +0100
+
 univention-self-service (1.0.2-11) unstable; urgency=low
 
   * Bug #39936: Rename button and hide it if request successful
