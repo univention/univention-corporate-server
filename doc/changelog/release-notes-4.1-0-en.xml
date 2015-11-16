@@ -49,35 +49,37 @@
 
 		<itemizedlist>
 			<listitem><para>
-				The Univention App Center integrates the Linux container technology Docker. It is
+				The Univention App Center integrates the container technology Docker. It is
 				possible to run Apps separately and encapsulated from each other with Docker. This
 				increases the security of the UCS domain and it reduces the dependencies of the Apps.
 				The integration of Docker is transparent to the user. The App Center will
-				automatically perform the startup and the configuration of the Docker container.
+				automatically perform the startup and the configuration of the Docker containers.
 			</para></listitem>
 			<listitem><para>
-				The Univention App Center usability has been further improved. Apps are now
-				displayed more clearly. The App details pages have been cleaned up and a rating in
-				the categories Vendor Supported, Popularity's Award and Editor's Award has been
-				added. The classification is based on data such as the installed base of Apps or
-				the maintenance behaviour of the App providers. Thus, the transparency and
-				comparability of Apps are increased.
+				The usability of Univention App Center has been improved further. Apps are now
+				displayed more clearly. The App detail pages have been cleaned up and a rating
+				has been added in the categories Vendor Supported, Popularity's Award and
+				Editor's Award.
+				The classification is based on data such as the installation base of Apps or
+				the maintenance behaviour of the App providers. Thus, transparency and
+				comparability of Apps is increased.
 			</para></listitem>
 			<listitem><para>
-				Single-Sign-On via SAML is from UCS 4.1 a product component and works out of the box
+				Starting with UCS 4.1 Single-Sign-On via SAML is a product component and works out of the box
 				with the UCS management system. Once logged in, you can switch between web
 				applications without an additional login.
 			</para></listitem>
 			<listitem><para>
-				Users can independently change their password or in case of a forgotten password
-				reset the password via the new Self Service. Therefore, a token is sent to e-mail
-				addresses or mobile phone numbers, which have to be stored in advance by the user.
+				The new Self Service allows users to independently change their password
+				or to reset it in case of a forgotten password.
+				Therefore, a token is sent to e-mail addresses or mobile phone numbers,
+				which are required to have be stored in advance by the user.
 				Afterwards, the token can be used to set a new password.
 			</para></listitem>
 			<listitem><para>
 				The Linux kernel has been updated to the latest stable version of the 4.1 longterm
 				kernel. This includes several security updates as well as new and updated drivers
-				for a better hardware support.
+				for better hardware support.
 			</para></listitem>
 			<listitem><para>
 				Samba has been updated to 4.3.1. Besides many detail improvements, Samba 4.3
@@ -88,12 +90,12 @@
 	</chapter>
 
 	<chapter id="relnotes:update">
-		<title>Notes on the update</title>
+		<title>Notes about the update</title>
 		<para>
-			During the update some services in the domain may not be available, i.e. the update should occur in a maintenance window.
+			During the update some services in the domain may not be available temporarily, that is why the update should occur in a maintenance window.
 			It is recommended to test the update in a separate test environment prior to the actual update.
 			The test environment should be identical to the production environment.
-			Depending on the system performance, network connection and the installed software the update takes between 20 minutes and several hours.
+			Depending on the system performance, network connection and the installed software the update will take between 20 minutes and several hours.
 		</para>
 
 		<section id="relnotes:order">
@@ -103,8 +105,8 @@
 			</para>
 
 			<para>
-				The authoritative version of the LDAP directory service is maintained on the &ucsMaster; and replicated on all the remaining LDAP servers of the UCS domain.
-				As changes to the LDAP schemes can occur during release updates, the &ucsMaster; must always be the first system to be updated during a release update.
+				The authoritative version of the LDAP directory service is maintained on the &ucsMaster; and replicated to all the remaining LDAP servers of the UCS domain.
+				As changes to the LDAP schema can occur during release updates, the &ucsMaster; must always be the first system to be updated during a release update.
 			</para>
 		</section>
 
@@ -112,17 +114,17 @@
 			<title>Univention App Center</title>
 			<para>
 				If applications have been installed from the Univention App Center, the update can only be performed once all installed applications are available in a compatible version.
-				Some applications are updated to newer versions during the update.
-				If an application is not yet available for UCS 4.0, the release date can be obtained from the application vendor.
+				Some applications are updated to newer versions during the UCS update.
+				If an application is not yet available for UCS 4.0, a statement about the release date can be obtained from the application vendor.
 			</para>
 		</section>
 
 		<section id="relnotes:32bit">
 			<title>UCS installation DVDs only available for 64 bit</title>
 			<para>
-				Starting with UCS 4.0 UCS, installation DVDs are only provided for the x86 64 bit architecture (amd64).
+				Starting with UCS 4.0, installation DVDs are only provided for the x86 64 bit architecture (amd64).
 				Existing 32 bit UCS 3 systems can still be updated to UCS 4.0 through the online repository or by using update DVDs.
-				The 32 bit architecture will be supported over the entire UCS 4 maintenance.
+				The 32 bit architecture will be supported over the entire UCS 4 maintenance period.
 			</para>
 		</section>
 	</chapter>
@@ -133,7 +135,7 @@
 		<para>
 			It must be checked whether sufficient disk space is available.
 			A standard installation requires a minimum of 6 GB of disk space.
-			Depending on the scope of the existing installation, the update will require about another 2 GB of disk space for downloading and installing all packages.
+			Depending on the scope of the existing installation, the update will require about another 2 GB of disk space for download and installation all packages.
 		</para>
 
 		<para>
@@ -144,8 +146,8 @@
 		<para>
 			Remote updating via SSH is not recommended as this may result in the update procedure being cancelled, e.g., if the network connection is interrupted.
 			In consequence, this can affect the system severely.
-			If updating should occur over a network connection nevertheless, it must be verified that the update continues despite disconnection from the network.
-			This can be done, e.g., using the tools <command>screen</command> and <command>at</command>.  These tools are installed on all system roles by default.
+			If updating should occur over a network connection nevertheless, it must be verified that the update continues in case of disconnection from the network.
+			This can be achieved, e.g., using the tools <command>screen</command> and <command>at</command>.  These tools are installed on all UCS system roles by default.
 		</para>
 		<section id="relnotes:removed">
 			<title>Removed/unsupported Components</title>
@@ -156,7 +158,7 @@
 				<listitem>
 					<para>
 						<application>PostgreSQL 8.4</application> is no longer provided in UCS 4.1. The
-						migration of the databases to PostgreSQL 9.1 is described in <u:sdb>1292</u:sdb>.
+						migration of existing databases to PostgreSQL 9.1 is described in <u:sdb>1292</u:sdb>.
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -205,7 +207,7 @@
 		<section id="relnotes:secbrowsers">
 			<title>Scope of security support for WebKit, Konqueror and QtWebKit</title>
 			<para>
-				WebKit, Konqueror and QtWebKit are shipped in the maintained branch of the UCS repository, but not covered with security support.
+				WebKit, Konqueror and QtWebKit are shipped in the maintained branch of the UCS repository, but not covered by security support.
 				WebKit is primarily used for displaying HTML help pages etc.
 				Firefox should be used as web browser.
 			</para>
@@ -240,7 +242,7 @@
 			</itemizedlist>
 
 			<para>
-				Users with older browsers may experience display or performance problems.
+				Users with older browsers may experience display or performance issues.
 			</para>
 		</section>
 
@@ -251,9 +253,9 @@
 				</para>
 				<itemizedlist spacing="compact">
 					<listitem><simpara>
-							The <emphasis>Installation DVD</emphasis> now only contains the packages needed to install a new UCS system with all the components provided by Univention.
-							Previously the DVD also contained all other <phrase>maintained</phrase> packages too.
-							They were removed from the DVD to decrease the download size.
+							The <emphasis>Installation DVD</emphasis> now only contains the packages required to install a new UCS system with all the components provided by Univention.
+							Previously the DVD contained all other <phrase>maintained</phrase> packages too.
+							They have been removed from the DVD to decrease the download size.
 					</simpara></listitem>
 					<listitem><simpara>
 							The full set of <phrase>maintained</phrase> packages is provided through the <emphasis>Update DVD</emphasis>.

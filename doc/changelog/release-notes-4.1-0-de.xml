@@ -49,7 +49,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Das Univention App Center integriert die Linux Containertechnologie Docker. Mittels
+				Das Univention App Center integriert die Containertechnologie Docker. Mittels
 				Docker lassen sich Apps voneinander getrennt und gekapselt betreiben. Dadurch
 				wird die Sicherheit der UCS Umgebung erhöht und die Abhängigkeiten der Apps zu
 				anderen Software-Bibliotheken reduziert. Die Integration von Docker ist für die
@@ -101,9 +101,9 @@
 	<chapter id="relnotes:update">
 		<title>Hinweise zum Update</title>
 		<para>
-			Während der Aktualisierung kann es zu Ausfällen von Diensten innerhalb der Domäne kommen.
+			Während der Aktualisierung kann es zu temporären Ausfällen von Diensten innerhalb der Domäne kommen.
 			Aus diesem Grund sollte das Update innerhalb eines Wartungsfensters erfolgen.
-			Grundsätzlich wird empfohlen das Update zunächst in einer Testumgebung einzuspielen und zu testen.
+			Grundsätzlich wird empfohlen, das Update zunächst in einer Testumgebung einzuspielen und zu testen.
 			Die Testumgebung sollte dabei identisch zur Produktivumgebung sein.
 			Je nach Systemgeschwindigkeit, Netzwerkanbindung und installierter Software kann das Update zwischen 20 Minuten und mehreren Stunden dauern.
 		</para>
@@ -157,7 +157,7 @@
 		<para>
 			Eine Remote-Aktualisierung über SSH wird nicht empfohlen, da dies beispielsweise bei Unterbrechung der Netzverbindung zum Abbruch des Update-Vorgangs und zu einer Beeinträchtigung des Systems führen kann.
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
-			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen Systemrollen installiert sind.
+			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen UCS Systemrollen installiert sind.
 		</para>
 		<section id="relnotes:removed">
 			<title>Entfernte/nicht mehr unterstützte Komponenten</title>
@@ -281,7 +281,7 @@
 				<para>
 					Mit dieser Änderung ändert sich auch die Definition der <foreignphrase>maintained</foreignphrase>-Pakete:
 					<foreignphrase>maintained</foreignphrase> ist nun auf der Basis der <emphasis>Quellpakete</emphasis> definiert, während es früher auf einer Untermenge der <emphasis>Binärpakete</emphasis> definiert war.
-					Diese Änderung kann zu einer erhöhten Nutzung von Speicherplatz auf einem lokalen Repository-Server führen, da <foreignphrase>maintained</foreignphrase> nun mehr Pakete enthält als in früheren Releases-
+					Diese Änderung kann zu einer erhöhten Nutzung von Speicherplatz auf einem lokalen Repository-Server führen, da <foreignphrase>maintained</foreignphrase> nun mehr Pakete enthält als in früheren Releases.
 				</para>
 		</section>
 
