@@ -1,3 +1,10 @@
+univention-self-service (1.0.2-17) unstable; urgency=low
+
+  * move join script calling to bottom of postinst (Bug #37890)
+  * remove dependency for PostgreSQL of specific version
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 16 Nov 2015 13:21:56 +0100
+
 univention-self-service (1.0.2-16) unstable; urgency=low
 
   * Bug #39936: Adapted Textbox reset

@@ -39,14 +39,6 @@ if ! [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincon
 	echo "ERROR: Please uninstall and install on a DC master or DC backup!"
 fi
 
-if [ "$1" = "configure" ]; then
-	uinst=/usr/lib/univention-install/65univention-self-service.uinst
-	[ -e "$uinst" ] && rm "$uinst"
-fi
-
-. /usr/share/univention-lib/base.sh
-call_joinscript 34univention-self-service.inst
-
 # web site logging
 ACCESS_LOG=/var/log/univention/self-service-access.log
 ERROR_LOG=/var/log/univention/self-service-error.log
@@ -84,5 +76,13 @@ univention-config-registry set \
 	"ucs/web/overview/entries/service/passwordchange/port_http=" \
 	"ucs/web/overview/entries/service/passwordchange/port_https=443"
 
+
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/65univention-self-service.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
+. /usr/share/univention-lib/base.sh
+call_joinscript 34univention-self-service.inst
 
 exit 0

@@ -40,7 +40,6 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-config,
  univention-postgresql,
- univention-postgresql-9.1,
  univention-join,
  shell-univention-lib,
  univention-apache,
