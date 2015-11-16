@@ -1345,6 +1345,9 @@ univention-directory-listener-ctrl resync cups-printers
 		Andere Service Provider benötigen die XML Metadaten des Identity Providers in Form eines Datei <foreignphrase>Uploads</foreignphrase>.
 		In der Standardkonfiguration kann die XML Datei unter der URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri> heruntergeladen werden.
 	</para>
+	<para>
+		Die folgenden Attribute können beim anlegen eines neuen Service Provider Eintrags konfiguriert werden.
+	</para>
 	<table>
 		<title>Allgemeine Felder bei der Anbindung eines Service Providers</title>
 		<tgroup cols="2">
