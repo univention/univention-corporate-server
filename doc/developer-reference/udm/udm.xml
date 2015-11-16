@@ -1487,8 +1487,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM hook is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.0-x release range a value like 4.0.99 may be used.
-						<remark>2014-12-12 PMH: 4.0.99 or 4.0-99?</remark>
+						Maximal required UCS version. The UDM hook is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.0-x release range a value like 4.0-99 may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1595,7 +1594,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM module is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.0-x release range a value like 4.0.99 may be used.
+						Maximal required UCS version. The UDM module is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.0-x release range a value like 4.0-99 may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1681,7 +1680,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>ucsversionend</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Maximal required UCS version. The UDM syntax is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.0-x release range a value like 4.0.99 may be used.
+						Maximal required UCS version. The UDM syntax is only activated by systems with a version lower than or equal to this. To  specify validity for the whole 4.0-x release range a value like 4.0-99 may be used.
 					</simpara>
 				</listitem>
 			</varlistentry>

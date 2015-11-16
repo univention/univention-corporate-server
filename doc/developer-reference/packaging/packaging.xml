@@ -379,7 +379,7 @@ dpkg-buildpackage: full upload; Debian-native package (full source is included)
 		<para>
 			For this example the repository is created below <filename class="directory">/var/www/repository/</filename>, which is exported by default on all UCS systems, where <application>apache2</application> is installed.
 			Below that directory several other sub-directories and files must be created to be compatible with the <application>UCS Updater</application>.
-			The following example commands create a repository for UCS version 3.1 with the component name <replaceable>testcomp</replaceable>:
+			The following example commands create a repository for UCS version 4.0 with the component name <replaceable>testcomp</replaceable>:
 		</para>
 		<programlisting><![CDATA[
 WWW_BASE="/var/www/repository/4.0/maintained/component"
