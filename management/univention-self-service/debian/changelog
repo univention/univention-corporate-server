@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-9) unstable; urgency=low
+
+  * support for sending text messages through Sipgate (Bug #37890)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 16 Nov 2015 01:16:14 +0100
+
 univention-self-service (1.0.2-8) unstable; urgency=low
 
   * add scipt to en/disable modules (Bug #37890)
