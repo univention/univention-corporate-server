@@ -137,7 +137,7 @@ Following installation on hardware or in a virtualization solution, UCS can also
   <title>Network configuration</title>
   <para>
 	Initially, the Univention Installer attempts to configure the network interfaces automatically.
-	This can be disabled by selecting the menu item <guimenuitem>Install with DHCP disabled</guimenuitem> from the <guimenu>Advanced options</guimenu> menu in the GRUB bootloader.
+	This can be disabled by selecting the menu item <guimenuitem>Start with manual network settings</guimenuitem> from the menu of the bootloader.
 	Firstly, an attempt is made to determine an IPv6 address via the stateless address autoconfiguration (SLAAC).
 	If this is not successful, the Univention Installer attempts to request an IPv4 address via the Dynamic Host Configuration
 	Protocol (DHCP). If this is successful, the manual network configuration of Univention Installer is skipped.
