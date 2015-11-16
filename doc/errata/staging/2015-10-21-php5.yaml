@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-7
 src: php5
-fix: 5.3.3.1-7.217.201510211813
+fix: 5.3.3.1-7.218.201511161319
 version: [7]
 desc: |
  This erratum fixes the following issues in php5:
@@ -39,6 +39,41 @@ desc: |
    (CVE-2015-5589)
  * Crash or code injection due to Buffer overflow and stack smashing error in
    phar_fix_filepath (CVE-2015-5590)
+ * Use after free vulnerability was found in unserialize() function.
+   We can create ZVAL and free it via Serializable::unserialize.
+   However the unserialize() will still allow to use R: or r: to set
+   references to that already freed memory. It is possible to
+   use-after-free attack and execute arbitrary code remotely (CVE-2015-6831)
+ * Dangling pointer in the unserialization of ArrayObject items
+   (CVE-2015-6832)
+ * Files extracted from archive may be placed outside of destination
+   directory (CVE-2015-6833)
+ * Use after free vulnerability was found in unserialize() function.
+   We can create ZVAL and free it via Serializable::unserialize.
+   However the unserialize() will still allow to use R: or r: to set
+   references to that already freed memory. It is possible to
+   use-after-free attack and execute arbitrary code remotely (CVE-2015-6834)
+ * A type confusion occurs within SOAP serialize_function_call due
+   to an insufficient validation of the headers field.
+   In the SoapClient's __call method, the verify_soap_headers_array
+   check is applied only to headers retrieved from
+   zend_parse_parameters; problem is that a few lines later,
+   soap_headers could be updated or even replaced with values from
+   the __default_headers object fields (CVE-2015-6836).
+ * The XSLTProcessor class misses a few checks on the input from the
+   libxslt library. The valuePop() function call is able to return
+   NULL pointer and php does not check that (CVE-2015-6837)
+ * The XSLTProcessor class misses a few checks on the input from the
+   libxslt library. The valuePop() function call is able to return
+   NULL pointer and php does not check that (CVE-2015-6838)
+ * A NULL pointer dereference flaw was found in the way PHP's Phar
+   extension parsed Phar archives. A specially crafted archive could
+   cause PHP to crash (CVE-2015-7803)
+ * An uninitialized pointer use flaw was found in the
+   phar_make_dirstream() function of PHP's Phar extension.
+   A specially crafted phar file in the ZIP format with a directory
+   entry with a file name "/ZIP" could cause a PHP application
+   function to crash (CVE-2015-7804)
 bug:
  - 39214
 cve:
@@ -63,3 +98,12 @@ cve:
  - CVE-2015-4644
  - CVE-2015-5589
  - CVE-2015-5590
+ - CVE-2015-6831
+ - CVE-2015-6832
+ - CVE-2015-6833
+ - CVE-2015-6834
+ - CVE-2015-6836
+ - CVE-2015-6837
+ - CVE-2015-6838
+ - CVE-2015-7803
+ - CVE-2015-7804
