@@ -108,7 +108,7 @@ define([
 			this._password.startup();
 
 			this._showContactInformationButton = new Button({
-				label: _('Show contact information'),
+				label: _('Next'),
 				onClick: lang.hitch(this, '_getContactInformation')
 			});
 			put(stepContent, this._showContactInformationButton.domNode);
@@ -177,6 +177,7 @@ define([
 					data: data
 				}).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
+					put(this._showContactInformationButton.domNode, '.dijitHidden');
 					this._displayContactInformation(data.result);
 				}), lang.hitch(this, function(err){
 					var message = err.name + ": " + err.message;
@@ -285,6 +286,7 @@ define([
 
 		_deleteContactInformationNode: function() {
 			put(this.contactInformationNode, '.hide-step');
+			put(this._showContactInformationButton.domNode, '!dijitHidden');
 			this._showContactInformationButton.set('disabled', false);
 			this._username.reset();
 			this._password.reset();

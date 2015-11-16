@@ -91,7 +91,7 @@ define([
 			put(stepContent, this._username.label.domNode);
 			this._username.startup();
 			this._usernameButton = new Button({
-				label: _('Confirm username'),
+				label: _('Next'),
 				onClick: lang.hitch(this, '_getResetMethods')
 			});
 			put(stepContent, this._usernameButton.domNode);
@@ -213,6 +213,7 @@ define([
 					data: data
 				}).then(lang.hitch(this, function(data) {
 					lib._removeMessage();
+					put(this._usernameButton.domNode, '.dijitHidden');
 					put(this.contactNode, '!');
 					this._buildTokenOptions(data.result);
 				}), lang.hitch(this, function(err){
