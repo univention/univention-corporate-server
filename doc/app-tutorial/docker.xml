@@ -737,11 +737,11 @@ univention-app restart radicale
 								Container itself. The Docker Host will configure the container according to this variable on startup. By default, no
 								port is exposed. One exception is a port to a <varname>WebInterface</varname> (also to be specified in the ini file)
 								which is handled automatically by the Univention App Center.
+							</simpara>
 								<note><simpara>
 									<package>univention-firewall</package> on the Docker Host will be reconfigured automatically to allow
 									connections to these ports.
 								</simpara></note>
-							</simpara>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
@@ -762,9 +762,12 @@ univention-app restart radicale
 								(e.g., /radicale), you can specify it here. In this case, the Univention App Center will automatically make the Docker Container's
 								web interface publicly accessible by using <package>mod_proxy</package> of <package>apache</package> (using the port range 40000
 								up to 41000, controlled by the Univention App Center itself).
+							</simpara>
 								<note><simpara>
 									The proxy entry in the apache configuration will be something like:
+								</simpara>
 									<programlisting><![CDATA[ProxyPass /radicale http://127.0.0.1:40000/radicale]]></programlisting>
+								<simpara>
 									where the port 40000 is mapped to Docker Container's port <varname>WebInterfacePortHTTP</varname> (which defaults to 80).
 									So your App needs to make /radicale accessible, too. Note that there will be a separate entry for HTTPS, too.
 								</simpara></note>
@@ -772,7 +775,6 @@ univention-app restart radicale
 									HTTP or HTTPS access can be disabled by specifying <varname>WebInterfacePortHTTP=0</varname>
 									(<varname>WebInterfacePortHTTPS</varname> respectively).
 								</simpara></note>
-							</simpara>
 						</listitem>
 					</varlistentry>
 				</variablelist>
