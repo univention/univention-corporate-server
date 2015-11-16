@@ -72,7 +72,9 @@ define([
 			this.set('value', '');
 			this.set('disabled', false);
 			this.setValid();
-			this._updateInlineLabelVisibility();
+			if (this.inlineLabel && this._inlineLabelNode) {
+				this._updateInlineLabelVisibility();
+			}
 		},
 
 		_updateInlineLabelVisibility: function(eventType) {
