@@ -1,6 +1,5 @@
 import univention.Apps
 import univention.Constants
-import univention.Jobs
 
 
 evaluate(new File("./univention/Jobs.groovy"))
