@@ -118,6 +118,6 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 		smtp = smtplib.SMTP(self.server)
 		smtp.sendmail(msg["From"], self.data["address"], msg.as_string())
 		smtp.quit()
-		self.log("Sent mail with token '{}' to address {}.".format(self.data["token"], self.data["address"]))
+		self.log("Sent mail with token to address {}.".format(self.data["address"]))
 
 		return True

@@ -203,7 +203,7 @@ msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 #: i18n.js:94
 #, python-format
 msgid "The total cost was %.2f EUR!"
-msgstr ""
+msgstr "Die Gesamtkosten waren %.2f EUR!"
 
 #: passwordreset.js:141
 msgid "Token"
@@ -211,7 +211,7 @@ msgstr "Token (Sicherheitsschlüssel)"
 
 #: i18n.js:93
 msgid "Translate me!"
-msgstr ""
+msgstr "Übersetz mich!"
 
 #: setcontactinformation.js:78 passwordchange.js:71 passwordreset.js:79
 msgid "Username"

@@ -138,7 +138,7 @@ class Instance(Base):
 		mobile=StringSanitizer(required=False))
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
-		MODULE.info("set_contact(): username: {} password: {} email: {} mobile: {}".format(username, "*"*len(password), email, mobile))
+		MODULE.info("set_contact(): username: {} password: ***** email: {} mobile: {}".format(username, email, mobile))
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("Service is not available for this user."))
 		dn = self.auth(username, password)
@@ -203,7 +203,7 @@ class Instance(Base):
 		password=StringSanitizer(required=True))
 	@simple_response
 	def set_password(self, token, username, password):
-		MODULE.info("set_password(): token: '{}' username: '{}' password: '{}'.".format(token, username, "*"*len(password)))
+		MODULE.info("set_password(): username: '{}'.".format(username))
 		try:
 			token_from_db = self.db.get_one(token=token, username=username)
 		except MultipleTokensInDB as e:
@@ -232,7 +232,7 @@ class Instance(Base):
 				raise UMC_Error(_("The token you supplied has expired. Please request a new one."))
 		else:
 			# no token in DB
-			MODULE.info("Token '{}' not found in DB for user '{}'.".format(token, username))
+			MODULE.info("Token not found in DB for user '{}'.".format(username))
 			raise UMC_Error(_("The token you supplied could not be found. Please request a new one."))
 
 #	@prevent_denial_of_service
