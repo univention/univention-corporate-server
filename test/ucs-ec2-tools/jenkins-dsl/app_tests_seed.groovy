@@ -21,12 +21,14 @@ if (last_version == null) {
 	throw new RuntimeException("last version for version ${version} not found")
 }
 
+def path = workdir + '/Apps'
+
+// create folder, generic app jobs and views
+folder(path)
+Jobs.createAppStatusViews(this, path)
+
 // get apps from testing, without ucs components
 apps = Apps.getApps(version, test=true, ucs_components=false)
-
-// create folder and views
-folder(workdir + '/Apps')
-Jobs.createAppStatusViews(this, workdir + '/Apps')
 
 // create jobs for every app
 apps.keySet().sort().each { app ->
