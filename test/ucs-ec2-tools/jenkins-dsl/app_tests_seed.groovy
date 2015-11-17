@@ -25,10 +25,10 @@ def workdir = loc.getParent()
 
 def path = workdir + '/Apps'
 
-univention.Constants.VERSIONS.keySet().each { version ->
+univention.Constants.VERSIONS.each { version ->
 
+    println version['patch_level']
     println version
-    println version.patch_level
 }
 
 //// create folder, generic app jobs and views
