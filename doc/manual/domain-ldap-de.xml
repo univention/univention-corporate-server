@@ -1292,12 +1292,12 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>SAML Identity Provider</title>
 	<para>
 	  SAML (Security Assertion Markup Language) ist ein XML-basierter Standard zum Austausch von Authentifizierungsinformationen, der <foreignphrase>Single Sign-On</foreignphrase> über Domänengrenzen hinweg erlaubt.
-	  UCS stellt auf dem &ucsMaster; und den &ucsBackup; einen ausfallsicheren SAML Identity Provider bereit:
+	  UCS stellt auf dem &ucsMaster; und den &ucsBackup; einen ausfallsicheren SAML Identity Provider bereit.
 	  Über ein kryptografisches Zertifikat wird der SAML Identity Provider bei einem externen Dienst fest registriert und vertraut diesem.
 	  Der Benutzer authentifiziert sich dann einmalig gegenüber UCS und kann den Dienst ohne erneute Authentifizierung nutzen.
 	</para>
 		<figure id="domain:saml:samllogin">
-			<title>Die <foreignphrase>Single Sign-On</foreignphrase> Anmeldeseite</title>
+			<title>Die <foreignphrase>Single Sign-On</foreignphrase>-Anmeldeseite</title>
 			<graphic scalefit="1" width="70%" fileref="illustrations41/sso_SAML_login_page.png"/>
 		</figure>
 	<para>
@@ -1305,13 +1305,13 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		Der UCS Identity Provider ist eng in die UCS Domäne eingebunden.
-		Daher müssen Rechner, von denen der UCS Identity Providers genutzt werden soll, DNS Namen in der UCS Domäne auflösen können.
-		Die DNS Server der Domäne sollten auf allen Clients eingetragen sein, um den zentralen DNS-Namen, im Normalfall <uri>ucs-sso.<replaceable>domainname</replaceable></uri>, auflösen zu können.
+		Daher müssen Rechner, von denen der UCS Identity Providers genutzt werden soll, DNS-Namen in der UCS-Domäne auflösen können.
+		Die DNS-Server der Domäne sollten auf allen Clients eingetragen sein, um den zentralen DNS-Namen, im Normalfall <uri>ucs-sso.<replaceable>domainname</replaceable></uri>, auflösen zu können.
 	</para>
 	<para>
-		Der UCS Identity Provider wird auf dem UCS Master und UCS Backup Systemen mit der Installation automatisch eingerichtet.
-		Um die Ausfallsicherheit innerhalb der Domäne zu erhöhen, können weitere UCS Backup Server in der Domäne verfügbar gemacht werden.
-		Für den ausfallsicheren Zugriff auf den UCS Identity Provider wird standardmäßig der DNS Eintrag <uri>ucs-sso.<replaceable>domainname</replaceable></uri> registriert. 
+		Der UCS Identity Provider wird auf dem &ucsMaster; und &ucsBackup; mit der Installation automatisch eingerichtet.
+		Um die Ausfallsicherheit innerhalb der Domäne zu erhöhen, können weitere Systeme der Rolle &ucsBackup; verfügbar gemacht werden.
+		Für den ausfallsicheren Zugriff auf den UCS Identity Provider wird standardmäßig der DNS-Eintrag <uri>ucs-sso.<replaceable>domainname</replaceable></uri> registriert.
 		Das für diesen Eintrag vorgesehene TLS Zertifikat wird auf allen beteiligten Systemen der Domäne vorgehalten.
 		Es wird empfohlen, das Wurzelzertifikat der UCS Domäne auf allen Rechnern, die <foreignphrase>Single Sign-On</foreignphrase> nutzen, zu installieren.
 	</para>
@@ -1319,8 +1319,8 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
 	<para>
-		Um sich per <foreignphrase>Single Sign-On</foreignphrase> an der &ucsUMC; anzumelden, findet sich oben auf der UMC Anmeldeseite ein Link zum <foreignphrase>Single Sign-On</foreignphrase>.
-		Nach einem Klick darauf erscheint die Anmeldemaske den UCS Identity Providers.
+		Um sich per <foreignphrase>Single Sign-On</foreignphrase> an &ucsUMC; anzumelden, findet sich oben auf der UMC Anmeldeseite ein Link zum <foreignphrase>Single Sign-On</foreignphrase>.
+		Nach einem Klick darauf erscheint die Anmeldemaske des UCS Identity Providers.
 		Hier werden die gleichen Anmeldedaten wie beim normalen &ucsUMC; Login verwendet.
 		<figure id="domain:saml:umclogin">
 			<title>Der <foreignphrase>Single Sign-On</foreignphrase> Link auf der &ucsUMC; Anmeldeseite</title>
@@ -1338,15 +1338,15 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>Hinzufügen eines neuen externen Service Providers</title>
 	<para>
 		Die am UCS Identity Provider registrierten Service Provider können über das UMC Domänen Modul <guimenu>SAML identity provider</guimenu> verwaltet werden.
-		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des SAML Zertifikats auf dem Service Provider benötigt.
-	       	Dieses kann über einen Download-Link im UMC Modul heruntergeladen werden.
+		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des SAML-Zertifikats auf dem Service Provider benötigt.
+	    Dieses kann über einen Download-Link im UMC Modul heruntergeladen werden.
 	</para>
 	<para>
-		Andere Service Provider benötigen die XML Metadaten des Identity Providers in Form eines Datei <foreignphrase>Uploads</foreignphrase>.
-		In der Standardkonfiguration kann die XML Datei unter der URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri> heruntergeladen werden.
+		Andere Service Provider benötigen die XML-Metadaten des Identity Providers in Form eines Datei-<foreignphrase>Uploads</foreignphrase>.
+		In der Standardkonfiguration kann die XML-Datei unter der URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri> heruntergeladen werden.
 	</para>
 	<para>
-		Die folgenden Attribute können beim anlegen eines neuen Service Provider Eintrags konfiguriert werden.
+		Die folgenden Attribute können beim anlegen eines neuen Service Provider-Eintrags konfiguriert werden.
 	</para>
 	<table>
 		<title>Allgemeine Felder bei der Anbindung eines Service Providers</title>
@@ -1370,9 +1370,9 @@ univention-directory-listener-ctrl resync cups-printers
 				<row>
 					<entry>Bezeichner des Service Providers</entry>
 					<entry>
-						Definiert den internen Namen des Service Providers
+						Definiert den internen Namen des Service Providers.
 						Dieser wird später an Benutzerobjekt angezeigt und ausgewählt, um Benutzer für die Verbindung freizuschalten.
-						Der Bezeichner kann später nicht mehr verändert werden.
+						Der Bezeichner kann später nicht mehr geändert werden.
 					</entry>
 
 				</row>
@@ -1395,23 +1395,23 @@ univention-directory-listener-ctrl resync cups-printers
 				<row>
 					<entry>Format des <option>NameID</option> Attributs</entry>
 					<entry>
-						Der Wert <option>NameIDFormat</option> den der Service Provider erhält.
+						Der Wert <option>NameIDFormat</option>, den der Service Provider erhält.
 						Die Dokumentation des Service Providers sollte erwartete Formate erwähnen.
-						Beispiel: <option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option> oder <option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>
+						Beispiel: <option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option> oder <option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>.
 					</entry>
 
 				</row>
 				<row>
 					<entry>Name des Attributs, das als <option>NameID</option> verwendet wird</entry>
 					<entry>
-						Hier wird kann das LDAP Attribut eingetragen werden, dass für eine eindeutige Identifizierung des Benutzers am Service Provider verwendet wird, beispielsweise <option>uid</option>.
+						Hier kann das LDAP Attribut eingetragen werden, das für eine eindeutige Identifizierung des Benutzers am Service Provider verwendet wird, beispielsweise <option>uid</option>.
 					</entry>
 
 				</row>
 				<row>
 					<entry>Name der Organisation des Service Providers</entry>
 					<entry>
-						Der hier eingetragene Wert beim auf der UCS <foreignphrase>Single Sign-On</foreignphrase> Login Seite angezeigt.
+						Der hier eingetragene Wert wird auf der UCS <foreignphrase>Single Sign-On</foreignphrase>-Login-Seite angezeigt.
 						Dem Benutzer wird so dargestellt, für welchen Dienst er sich authentifiziert.
 					</entry>
 
@@ -1419,7 +1419,7 @@ univention-directory-listener-ctrl resync cups-printers
 				<row>
 					<entry>Beschreibung dieses Service Providers</entry>
 					<entry>
-						Der hier eingetragene Wert beim auf der UCS <foreignphrase>Single Sign-On</foreignphrase> Login Seite angezeigt.
+						Der hier eingetragene Wert wird auf der UCS <foreignphrase>Single Sign-On</foreignphrase>-Login-Seite angezeigt.
 						Hier kann eine längere Beschreibung über den Dienst angegeben werden, der auf der Login Seite in einem eigenen Absatz angezeigt wird.
 					</entry>
 
@@ -1442,15 +1442,15 @@ univention-directory-listener-ctrl resync cups-printers
 				<row>
 					<entry>URL zur Datenschutzrichtlinie des Service Providers</entry>
 					<entry>
-						Wird hier eine URL eingetragen, wird dem Benutzer ein Link zu dieser Seite auf der UCS Identity Provider Login Seite angezeigt.
+						Wird hier eine URL eingetragen, wird dem Benutzer ein Link zu dieser Seite auf der UCS Identity Provider-Login-Seite angezeigt.
 					</entry>
 				</row>
 				<row>
 					<entry>Erlaube die Übertragung von LDAP Attributen an den Service Provider</entry>
 					<entry>
-						Standardmäßig übertragt der UCS Identity Provider nur das auf dem Reiter 'Allgemein' angegebene <option>NameID</option> Attribut an den Service Provider.
-						Benötigt der Service Provider weitere LDAP Benutzerattribute, kann diese Checkbox aktiviert werden.
-						Die zu übertragenen Attribute werden dann unter 'Liste der zu übermittelnden LDAP Attribute' eingetragen.
+						Standardmäßig überträgt der UCS Identity Provider nur das auf dem Reiter <guimenu>Allgemein</guimenu> angegebene <option>NameID</option> Attribut an den Service Provider.
+						Benötigt der Service Provider weitere LDAP-Benutzerattribute, kann diese Checkbox aktiviert werden.
+						Die zu übertragenen Attribute werden dann unter <guimenu>Liste der zu übermittelnden LDAP Attribute</guimenu> eingetragen.
 					</entry>
 				</row>
 				<row>
@@ -1460,10 +1460,10 @@ univention-directory-listener-ctrl resync cups-printers
 					</entry>
 				</row>
 				<row>
-					<entry>Liste der zu übermittelnden LDAP Attribute</entry>
+					<entry>Liste der zu übermittelnden LDAP-Attribute</entry>
 					<entry>
-						Hier kann jedes zu übertragende LDAP Attribut eingetragen werden.
-						Damit der UCS Identity Provider es verarbeiten kann, muss das Attribut zusätzlich in der &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar> registriert werden.
+						Hier kann jedes zu übertragende LDAP-Attribut eingetragen werden.
+						Damit der UCS Identity Provider die angegebenen Attribute verarbeiten kann, müssen sie zusätzlich in der &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar> eingetragen werden.
 					</entry>
 				</row>
 			</tbody>
@@ -1475,7 +1475,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>Benutzer für Service Provider freischalten</title>
 	<para>
 		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
-		Auf dem <guimenu>Konto Tab</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
+		Auf dem Tab <guimenu>Konto</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
 	</para>
 	</section>
 </section>

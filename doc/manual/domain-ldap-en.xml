@@ -1251,10 +1251,10 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>SAML identity provider</title>
 	<para>
 	  SAML (Security Assertion Markup Language) is an XML-based standard for exchanging
-	  authentication information, which allows single sign-on across domain boundaries.
-	  UCS provides a SAML identity provider on the &ucsMaster; and the &ucsBackup;:
+	  authentication information in order to allow single sign-on across domain boundaries.
+	  UCS provides a failsafe SAML identity provider on a &ucsMaster; as well as &ucsBackup;.
 	  The SAML identity provider is registered at an external service with a cryptographic certificate and establishes a trust relationship.
-	  The user then only needs to authenticate himself in UCS and can use the service without renewed authentication.
+	  The user then only needs to authenticate himself against UCS and can use the service without renewed authentication.
 	</para>
 
 	<figure id="domain:saml:samllogin">
@@ -1291,15 +1291,15 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		The <foreignphrase>single sign-on</foreignphrase> can also be initiated from the UCS identity provider.
-		This removes the need to visit the external web service and then get redirected to the authentication site.
-		This can be done by visiting the UCS identity provider page and providing the name of the service provider in the form of <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri>.
+		This saves an extra visit at the external web service for getting redirected to the authentication site.
+		To do so, a link to the UCS identity provider page needs to be provided in the form of <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri>.
 	</para>
 	</section>
 
 	<section id="domain:saml:additionalserviceprovider">
 	<title>Adding a new external service provider</title>
 	<para>
-		The service providers registered at the UCS identity provider can be managed in the &ucsUMC; domain module <guimenu>SAML identity provider</guimenu>.
+		The &ucsUMC; domain module <guimenu>SAML identity provider</guimenu> allows to manage all service providers that are registered at the UCS identity provider.
 		To register the UCS identity provider at an external service provider, the public part of the SAML certificate is required by the service provider.
 		The certificate can be downloaded via a link in the UMC module.
 	</para>
@@ -1334,22 +1334,22 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>
 						Defines the internal name of the service provider.
 						The name is later selected at user objects, when giving them access to a service provider.
-						The identifier can not be changed later.
+						The identifier cannot be changed later.
 					</entry>
 
 				</row>
 				<row>
 					<entry>Respond to this service provider URL after login</entry>
 					<entry>
-						After successful authentication, the user's browser gets redirected to the service provider.
-						The redirection is done to the provided URL.
+						After successful authentication, the user's browser is redirected to the service provider.
+						The redirection is done to this provided URL.
 					</entry>
 
 				</row>
 				<row>
-					<entry>Single logout URL for this service provider</entry>
+					<entry>Single logout URL for service provider</entry>
 					<entry>
-						Service providers can offer a URL endpoint, at which the session at the service provider can be terminated.
+						Service providers can offer a URL endpoint at which the session at the service provider can be terminated.
 						If a user logs out at the UCS identity provider, the browser will get redirected to the provided URL to terminate the session.
 					</entry>
 
@@ -1359,7 +1359,7 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>
 						The value <option>NameIDFormat</option> that the service provider receives.
 						The service provider's documentation should contain information about possible values.
-						Example: <option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option> or <option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>
+						Example: <option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option> or <option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>.
 					</entry>
 
 				</row>
@@ -1371,10 +1371,10 @@ univention-directory-listener-ctrl resync cups-printers
 
 				</row>
 				<row>
-					<entry>Name of the organization for this service provider</entry>
+					<entry>Name of the organization for service provider</entry>
 					<entry>
 						The value provided here will be shown on the UCS single sign-on login page.
-						The user is then able to identify for which service he enters credentials.
+						It helps the user to identify for which service he enters credentials.
 					</entry>
 
 				</row>
@@ -1382,7 +1382,8 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>Description of this service provider</entry>
 					<entry>
 						The value provided here will be shown on the UCS single sign-on login page.
-						A longer description about the service provider can be provided here, which will be shown on the login page in a separate paragraph.
+						A longer description about the service provider can be given here.
+						The description will be shown on the login page in a separate paragraph.
 					</entry>
 
 				</row>
@@ -1408,24 +1409,24 @@ univention-directory-listener-ctrl resync cups-printers
 					</entry>
 				</row>
 				<row>
-					<entry>Allow transmission of ldap attributes to the service provider</entry>
+					<entry>Allow transmission of LDAP attributes to the service provider</entry>
 					<entry>
-						By default, the UCS identity provider transmits only the <option>NameID</option> attribute entered on the 'General' page to the service provider.
+						By default, the UCS identity provider transmits only the <option>NameID</option> attribute entered on the <guimenu>General</guimenu> page to the service provider.
 						If additional LDAP user attributes are required by the service provider, this checkbox can be activated.
-						The attributes that should be transmitted have to be entered in the 'List of ldap attributes to transmit'.
+						The attributes that should be transmitted have to be entered in the <guimenu>List of LDAP attributes to transmit</guimenu>.
 					</entry>
 				</row>
 				<row>
 					<entry>Value for attribute format field</entry>
 					<entry>
-						If the transmitted attributes should be send using a particular format value, it can be entered here.
+						In case the transmitted attributes need to be sent in a particular format value, this format can be entered here.
 					</entry>
 				</row>
 				<row>
-					<entry>List of ldap attributes to transmit</entry>
+					<entry>List of LDAP attributes to transmit</entry>
 					<entry>
 						Every LDAP attribute that should be transmitted to the service provider can be entered here.
-						In order for the UCS identity provider to process the attribute, it has to be registered in the &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar>.
+						In order for the UCS identity provider to process these attributes, they need to be registered additionally via the &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar>.
 					</entry>
 				</row>
 			</tbody>
