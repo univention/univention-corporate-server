@@ -2,7 +2,7 @@ package univention
 
 class Jobs {
 
-def createAppAutotestUpdateMultiEnv(dslFactory, String path, String version, String patch_level, Map app) {
+def createAppAutotestUpdateMultiEnv(Object dslFactory, String path, String version, String patch_level, Map app) {
 
   def desc = 'App Autotest Update MultiEnv'
   def job_name = path + '/' + desc
