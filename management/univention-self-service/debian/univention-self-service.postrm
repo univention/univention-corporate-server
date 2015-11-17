@@ -38,7 +38,7 @@ case "$1" in
 	;;
 esac
 
-if [ "$1" = "remove" -o "$1" = "pruge" ]; then
+if [ "$1" = "remove" -o "$1" = "purge" ]; then
 	univention-config-registry unset \
 		ucs/web/overview/entries/service/passwordreset/description \
 		ucs/web/overview/entries/service/passwordreset/description/de \
@@ -62,6 +62,12 @@ if [ "$1" = "remove" -o "$1" = "pruge" ]; then
 	# restart, so apache unloads WSGI and deactivats plugin in its config
 	# retry if fail because of to quick successive restarts (from other frontend packages)
 	invoke-rc.d apache2 restart || (sleep 2; invoke-rc.d apache2 restart)
+fi
+
+if [ "$1" = "remove" ]
+then
+	. /usr/share/univention-lib/all.sh
+	call_unjoinscript 66univention-self-service.uinst
 fi
 
 exit 0
