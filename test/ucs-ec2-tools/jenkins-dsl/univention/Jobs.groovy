@@ -1,9 +1,13 @@
-def createAppAutotestUpdateMultiEnv(String path, String version, String patch_level, Map app) {
+package univention
+
+class Jobs {
+
+def createAppAutotestUpdateMultiEnv(dslFactory, String path, String version, String patch_level, Map app) {
 
   def desc = 'App Autotest Update MultiEnv'
   def job_name = path + '/' + desc
 
-  matrixJob(job_name) {
+  dslFactory.matrixJob(job_name) {
 
     authenticationToken('secret')
     
@@ -63,4 +67,6 @@ exec ./ucs-ec2-create -c \$cfg"""
       archiveJunit('**/test-reports/**/*.xml')
     }
   }
+}
+
 }
