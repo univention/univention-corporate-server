@@ -1,6 +1,7 @@
 package univention
 
-import javaposse.jobdsl.dsl.jobs.*
+import javaposse.jobdsl.dsl.DslFactory.*
+
 
 
 class Jobs {
