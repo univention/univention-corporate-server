@@ -25,7 +25,7 @@ if (last_version == null) {
 
 
 // get apps from testing, without ucs components
-apps = new Apps().getApps(version, test=true, ucs_components=false)
+apps = Apps.getApps(version, test=true, ucs_components=false)
 
 // create jobs for every app
 apps.keySet().sort().each { app ->
@@ -40,9 +40,10 @@ apps.keySet().sort().each { app ->
   //// create jobs
   //println "${app} ${path} ${version} ${patch_level}"
 
+  println app
   //println apps[app].get('roles')
   //println apps[app].get('required_apps')
-  Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
+  //Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
 
 }
 

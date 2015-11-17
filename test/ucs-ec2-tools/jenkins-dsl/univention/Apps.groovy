@@ -8,7 +8,7 @@ import univention.Constants
 
 class Apps {
 
-	def getApps(String version, Boolean test=true, Boolean ucs_components=false) {
+	static getApps(String version, Boolean test=true, Boolean ucs_components=false) {
 
 		def server = 'appcenter.software-univention.de'
 		if (test) {

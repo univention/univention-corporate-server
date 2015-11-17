@@ -22,25 +22,23 @@ if (last_version == null) {
 }
 
 // get apps from testing, without ucs components
-apps = new Apps().getApps(version, test=true, ucs_components=false)
+apps = Apps.getApps(version, test=true, ucs_components=false)
 
 // create folder and views
 folder(workdir + '/Apps')
-//createStatusViews(workdir + '/Apps')
 Jobs.createAppStatusViews(this, workdir + '/Apps')
 
 // create jobs for every app
 apps.keySet().sort().each { app ->
-  
-  // create app folder
-  folder(workdir + '/Apps/' + app)
-  
-  // create matrix job App Autotest MultiEnv
+
   path = workdir + '/Apps/' + app
 
+  // create app folder
+  folder(path)
+  
+  // create  jobs
   Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
   Jobs.createAppAutotestMultiEnv(this, path, version, patch_level, apps[app])
   Jobs.createAppAutotestMultiEnvUpdateFrom(this, path, version, patch_level, last_version, apps[app])
-  //...
 
 }
