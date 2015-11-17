@@ -32,9 +32,18 @@ univention.Constants.VERSIONS.each {
     patch_level = it.getValue()['patch_level']
     last_version = it.getValue()['last_version']
 
+    path = 'UCS-' + version + 'Apps'
+
     println version
     println patch_level
     println last_version
+    println path
+
+    apps = Apps.getApps(version, test=true, ucs_components=false)
+    apps.keySet().sort().each { app ->
+        app_path = path + '/' + app
+        println app
+    }
 }
 
 //// create folder, generic app jobs and views
