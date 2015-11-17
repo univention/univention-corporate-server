@@ -324,7 +324,7 @@ ucr set locale=...
 			Furthermore you need to add the following in <filename>debian/rules</filename>:
 		</para>
 
-		<programlisting language="sh">
+		<programlisting language="make">
 override_dh_auto_install:
 	univention-install-config-registry
 	dh_auto_install
@@ -497,7 +497,7 @@ exit 0
 			of the package. There is a helper script that does that automatically. In <filename>debian/rules</filename>, add
 		</para>
 
-		<programlisting language="sh">
+		<programlisting language="make">
 override_dh_auto_install:
 	univention-install-joinscript
 	dh_auto_install
@@ -598,7 +598,7 @@ udm settings/extended_attribute create "$@" \
 				The syntax is a Python class and needs to be defined in a separate file:
 			</para>
 
-			<programlisting language="sh">
+			<programlisting language="python">
 class myappUserOrAdmin(select):
 	choices=[('user', 'User'), ('admin', 'Admin')]
 			</programlisting>
@@ -627,7 +627,7 @@ ucs_registerLDAPExtension "$@" \
 				The example above needs a file like this:
 			</para>
 
-			<programlisting language="sh">
+			<programlisting language="schema">
 attributetype ( 1.3.6.1.4.1.10176.99998.xxx.1.1 NAME 'myapp-enabled'
 	DESC 'My App allowed'
 	EQUALITY caseIgnoreMatch
@@ -811,7 +811,7 @@ WebInterface=/$APP/
 			</para>
 
 	<programlisting language="sh">
-# postint
+# postinst
 
 #DEBHELPER#
 

@@ -35,17 +35,17 @@
 		</para>
 		<para>
 			If you have already worked with Docker, you may know that Docker is sometimes advertised as a way to encapsulate each and
-			every task into its own container, sometimes referred to as <emphasis>Micro services</emphasis>. In the Univention App Center
+			every task into its own container, sometimes referred to as <firstterm>Micro services</firstterm>. In the Univention App Center
 			we currently focus on a different route: We start minimal, yet fully functional UCS systems in which one App is installed
 			and started.
 			<important>
 				<para>
 					For App development this means that an ISV still programs against a UCS. There is no need to build a dedicated
 					Docker Container. Univention already provides such a container along with the tools to actually install
-					debian packages just like the App would be installed "on metal" (or just like it was prior to UCS 4.1).
+					Debian packages just like the App would be installed <phrase>on metal</phrase> (or just like it was prior to UCS 4.1).
 				</para>
 				<para>
-					An ISV needs to provide debian packages, not Docker images (very much the same as in UCS &lt; 4.1). The integration
+					An ISV needs to provide Debian packages, not Docker images (very much the same as in UCS &lt; 4.1). The integration
 					of the App into the UCS infrastructure may be done via an additional package or via separate scripts that live
 					unpackaged on the App Center server (see below for an example).
 				</para>
@@ -72,7 +72,7 @@
 		<section id="docker:example:prerequisites">
 			<title>Prerequisites</title>
 			<para>
-				You need a running UCS 4.1 system (Domaincontroller Master for the sake of convenience).
+				You need a running UCS 4.1 system (&ucsMaster; for the sake of convenience).
 				As <application>Radicale</application> will be installed from the UCS repository, not from the App Center and <application>Radicale</application> is unmaintained by Univention, you need to activate the unmaintained repository:
 				<programlisting language="sh"><![CDATA[ucr set repository/online/unmaintained='yes']]></programlisting>
 				Also, make sure your system has the following packages installed:
@@ -127,7 +127,7 @@ WebsiteMaintainer=http://www.univention.de/
 Categories=Collaboration
 				</programlisting>
 				<note><para>
-					The following categories are allowed (multiple can be specified, split by ","):
+					The following categories are allowed (multiple can be specified, separated by ","):
 					Administration, Business, Collaboration, Education, System services, <wordasword>Virtualization</wordasword> (+ UCS Components, but these are meant for Univention Software)
 				</para></note>
 				Now the important parts:
@@ -158,7 +158,7 @@ PortsExclusive=5232
 			<para>
 				Together, this makes:
 				<programlisting language="ini"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="radicale.ini0" parse="text"/></programlisting>
-				Finally, put the ini file into the (local) App Center (do not forget to upload the debian packages - here this means two unmaintained packages already built):
+				Finally, put the ini file into the (local) App Center (do not forget to upload the Debian packages - here this means two unmaintained packages already built):
 				<programlisting language="sh"><![CDATA[
 univention-app dev-populate-appcenter --new \
 	--ini ~/radicale.ini \
@@ -444,7 +444,7 @@ univention-app restart radicale
 		<section id="docker:epilogue:scripts">
 			<title>Docker scripts</title>
 			<para>
-				For every App, the App Center server holds a repository containing the debian packages. But it also may hold
+				For every App, the App Center server holds a repository containing the Debian packages. But it also may hold
 				several scripts that do not need to be packaged. In theory one may integrate one's App without needing to
 				build an additional integration package. That being said, with increasing complexity, it is advised to build
 				such a package nonetheless. Furthermore, not everything can be achieved easily with these scripts. There are
@@ -789,14 +789,17 @@ univention-app restart radicale
 			So you developed the App, put it into the App Center and now that you want to test it, something fails? If something goes
 			wrong really badly (like the installation of packages fails), the App Center reverts the installation (i.e. it removes the
 			container). This means you cannot look into it to see what exactly happened. For testing purposes you may use the undocumented
-			options <command>--do-not-revert</command> (still using <application>Radicale</application>):
+			options <option>--do-not-revert</option> (still using <application>Radicale</application>):
 			<programlisting language="sh"><![CDATA[univention-app install radicale --do-not-revert]]></programlisting>
 			This will leave you with a running, yet somewhat "unconfigured" container. You may now login into this container by doing
 			<programlisting language="sh"><![CDATA[docker ps -a]]></programlisting>
 			which will list your container. Find the container and call:
-			<programlisting language="sh"><![CDATA[docker exec -it $CONTAINER /bin/bash]]></programlisting>
+			<programlisting language="sh"><![CDATA[docker exec -it "$CONTAINER "/bin/bash]]></programlisting>
 			Normally you should be able to do this without finding the container by hand:
-			<programlisting language="sh"><![CDATA[CONTAINER="$(ucr get appcenter/apps/radicale/container)"; docker exec -it $CONTAINER /bin/bash]]></programlisting>
+			<programlisting language="sh"><![CDATA[
+CONTAINER="$(ucr get appcenter/apps/radicale/container)"
+docker exec -it "$CONTAINER" /bin/bash
+]]></programlisting>
 			From here you can debug the system as normal.
 		</para>
 		<para>

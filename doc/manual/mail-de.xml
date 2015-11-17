@@ -690,7 +690,7 @@ zwei Warn-Nachrichten automatisch konfiguriert:
 		<tip>
 			<para>
 				Existierende <property>smtpd_recipient_restrictions</property> Regeln können wie folgt aufgelistet werden:
-				<programlisting language="sh">ucr search &hyphen;&hyphen;brief mail/postfix/smtpd/restrictions/recipient</programlisting>
+				<programlisting language="sh">ucr search --brief mail/postfix/smtpd/restrictions/recipient</programlisting>
 			</para>
 		</tip>
 		<para>
@@ -809,7 +809,7 @@ zwei Warn-Nachrichten automatisch konfiguriert:
 		in einer Zeile hinterlegt werden:
 	  </para>
 		<programlisting>
-<replaceable>FQDN-Relayhost</replaceable>			<replaceable>Benutzername</replaceable>:<replaceable>Passwort</replaceable>
+<replaceable>FQDN-Relayhost</replaceable>	<replaceable>Benutzername</replaceable>:<replaceable>Passwort</replaceable>
 		</programlisting>
 		<para>
 		Anschließend muss für diese Datei
@@ -1140,7 +1140,8 @@ doveadm reload
 </programlisting>
 			Ein Blick in <filename>/var/log/dovecot.info</filename> offenbart nun noch eine letzte Warnung:
 <screen>
-master: Warning: fd limit (ulimit -n) is lower than required under max. load (2000 &lt; 15000), because of service auth { client_limit }
+master: Warning: fd limit (ulimit -n) is lower than required under max. load (2000 &lt; 15000),…
+ because of service auth { client_limit }
 </screen>
 			Das vom Linux-Kernel kontrolliere <literal>ulimit</literal> (die erlaubte Anzahl gleichzeitig geöffneter Dateien/Verbindungen pro Prozess) wird nur bei einem Neustart des Dovecot-Dienstes verändert, daher:
 <programlisting language="sh">

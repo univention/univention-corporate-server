@@ -40,7 +40,7 @@
 			Use <command>ucslint</command> to find packaging mistakes.
 			Called best from <filename>debian/rules</filename>, needs build dependency on <package>ucslint</package>.
 		</para>
-		<programlisting><![CDATA[
+		<programlisting language="make"><![CDATA[
 override_dh_auto_test:
 	dh_auto_test
 	ucslint

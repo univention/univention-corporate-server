@@ -904,7 +904,7 @@ programs=<executable>]]></programlisting>
 			During package build time <command>univention-install-config-registry</command> needs to be called.
 			This should be done by overriding the <literal>dh_auto_install_target</literal> in <filename>debian/rules</filename>:
 		</para>
-		<programlisting><![CDATA[
+		<programlisting language="make"><![CDATA[
 override_dh_auto_install:
 	univention-install-config-registry
 	dh_auto_install

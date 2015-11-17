@@ -649,7 +649,7 @@
 		<tip>
 			<para>
 				Existing <property>smtpd_recipient_restrictions</property> regulations can be listed as follows:
-				<programlisting language="sh">ucr search &hyphen;&hyphen;brief mail/postfix/smtpd/restrictions/recipient</programlisting>
+				<programlisting language="sh">ucr search --brief mail/postfix/smtpd/restrictions/recipient</programlisting>
 			</para>
 		</tip>
 		<para>
@@ -763,13 +763,13 @@
 				user name and password must be saved in this file in one line.
 			</para>
 			<programlisting>
-				<replaceable>FQDN-Relayhost</replaceable>			<replaceable>username</replaceable>:<replaceable>password</replaceable>
+<replaceable>FQDN-Relayhost</replaceable>	<replaceable>username</replaceable>:<replaceable>password</replaceable>
 			</programlisting>
 			<para>
 				The command
 			</para>
 			<programlisting language="sh">
-				postmap /etc/postfix/smtp_auth
+postmap /etc/postfix/smtp_auth
 			</programlisting>
 			<para>
 				must then be executed for this file to adopt the changes via Postfix.
@@ -1035,3 +1035,4 @@
 
 	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
+<!-- vim:set ts=2 sw=2 tw=0 noet ft=docbk:-->

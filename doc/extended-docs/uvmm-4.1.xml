@@ -556,7 +556,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<term>Different Xen patch set</term>
 					<listitem>
 						<simpara>
-							The UCS version contained several patches on top of the Debian version, which fixed several issues (<ulink url="&ucsbug;18357">Bug 18357</ulink>, <ulink url="&ucsbug;23394">Bug 23394</ulink>, <ulink url="&ucsbug;23812">Bug 23812</ulink>, <ulink url="&ucsbug;36098">Bug 36098</ulink>).
+							The UCS version contained several patches on top of the Debian version, which fixed several issues (<u:bug>>18357</u:bug>, <u:bug>23394</u:bug>, <u:bug>23812</u:bug>, <u:bug>36098</u:bug>).
 							Their status in Debian is unknown.
 						</simpara>
 					</listitem>
@@ -565,7 +565,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<term>Different libvirt patch set</term>
 					<listitem>
 						<simpara>
-							The UCS version of <package>libvirt</package> contained several patches specifically for <application>Xen</application>, which are no longer applied (<ulink url="&ucsbug;20024">Bug 20024</ulink>, <ulink url="&ucsbug;29532">Bug 29532</ulink>).
+							The UCS version of <package>libvirt</package> contained several patches specifically for <application>Xen</application>, which are no longer applied (<u:bug>20024</u:bug>, <u:bug>29532</u:bug>).
 						</simpara>
 					</listitem>
 				</varlistentry>

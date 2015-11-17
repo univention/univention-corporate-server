@@ -663,7 +663,7 @@ doveadm auth cache flush
 		<tip>
 			<para>
 				Existing <property>smtpd_recipient_restrictions</property> regulations can be listed as follows:
-				<programlisting language="sh">ucr search &hyphen;&hyphen;brief mail/postfix/smtpd/restrictions/recipient</programlisting>
+				<programlisting language="sh">ucr search --brief mail/postfix/smtpd/restrictions/recipient</programlisting>
 			</para>
 		</tip>
 		<para>
@@ -777,7 +777,7 @@ doveadm auth cache flush
 		user name and password must be saved in this file in one line.
 	  </para>
 		<programlisting>
-<replaceable>FQDN-Relayhost</replaceable>			<replaceable>username</replaceable>:<replaceable>password</replaceable>
+<replaceable>FQDN-Relayhost</replaceable>	<replaceable>username</replaceable>:<replaceable>password</replaceable>
 		</programlisting>
 	  <para>
 		The command
@@ -1087,7 +1087,8 @@ doveadm reload
 </programlisting>
 			Another warning appears in <filename>/var/log/dovecot.info</filename>:
 <screen>
-master: Warning: fd limit (ulimit -n) is lower than required under max. load (2000 &lt; 15000), because of service auth { client_limit }
+master: Warning: fd limit (ulimit -n) is lower than required under max. load (2000 &lt; 15000),…
+ because of service auth { client_limit }
 </screen>
 			The Linux kernel controlled setting <literal>ulimit</literal> setting (limit on the number of files/connections a process is allowed to open) is changed only when the Dovecot service is restarted:
 <programlisting language="sh">

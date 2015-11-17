@@ -834,7 +834,7 @@ target: dependencies
 				If this is not sufficient, any <application>debhelper</application> command can be individually overridden by adding an <emphasis>override</emphasis> target to the <filename>rules</filename> file.
 				For example the following snippet disables the automatic detection of the build system used to build the package and passes additional options:
 			</para>
-			<programlisting><![CDATA[
+			<programlisting language="make"><![CDATA[
 override_dh_auto_configure:
 	./setup --prefix=/usr --with-option-foo
 			]]></programlisting>

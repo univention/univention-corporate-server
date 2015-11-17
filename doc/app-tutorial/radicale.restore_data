@@ -1,8 +1,10 @@
 #!/bin/sh
 
-/usr/share/univention-docker-container-mode/restore_data_after_setup "$@"
+/usr/share/univention-docker-container-mode/restore_data_after_setup \
+	"$@"
 
 rm -r /var/lib/radicale/collections
-cp -r /var/lib/appcenter/app/radicale/data/collections /var/lib/radicale/
+cp -r /var/lib/appcenter/app/radicale/data/collections \
+	/var/lib/radicale/
 
 exit 0
