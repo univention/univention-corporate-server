@@ -51,7 +51,7 @@
 			<listitem><para>
 				Das Univention App Center integriert die Containertechnologie Docker. Mittels
 				Docker lassen sich Apps voneinander getrennt und gekapselt betreiben. Dadurch
-				wird die Sicherheit der UCS Umgebung erhöht und die Abhängigkeiten der Apps zu
+				werden die Sicherheit der UCS Umgebung erhöht und die Abhängigkeiten der Apps zu
 				anderen Software-Bibliotheken reduziert. Die Integration von Docker ist für die
 				Benutzer transparent. Das App Center führt die Inbetriebnahme und Konfiguration der
 				Docker-Container automatisch durch.
@@ -75,10 +75,10 @@
 
 			<listitem><para>
 				Benutzer können über den neuen <foreignphrase>Self Service</foreignphrase>
-				selbstständig ihr Passwort ändern oder im Fall eines vergessenen Passwort dies neu
+				selbstständig ihr Passwort ändern oder im Fall eines vergessenen Passworts dies neu
 				setzen lassen. Dafür können vorab E-Mailadressen oder Mobilfunknummern hinterlegt
 				werden, an die dann ein entsprechendes <foreignphrase>Token</foreignphrase>
-				verschickt wird. Mit dem <foreignphrase>Token</foreignphrase> kann dann ein neues
+				verschickt wird. Mit dem <foreignphrase>Token</foreignphrase> kann ein neues
 				Passwort gesetzt werden.
 			</para></listitem>
 
@@ -90,7 +90,7 @@
 			</para></listitem>
 
 			<listitem><para>
-				Samba wurde auf 4.3.1 aktualisiert. Neben sehr vielen Detailverbesserungen bietet
+				Samba wurde auf Version 4.3.1 aktualisiert. Neben sehr vielen Detailverbesserungen bietet
 				Samba 4.3 Unterstützung für SMB 3.1.1, welches Microsoft mit Windows 10
 				eingeführt hat und das eine höhere Sicherheit und mehr Funktionen bietet. 
 			</para></listitem>
@@ -125,7 +125,7 @@
 			<para>
 				Sofern Applikationen aus dem App Center installiert sind, ist das Update erst dann möglich, wenn alle lokal installierten Applikationen im App Center verfügbar sind.
 				Einige Applikationen werden beim Update ebenfalls auf neuere Versionen aktualisiert.
-				Sollte eine Applikation noch nicht für UCS 4.1 verfügbar sein, kann der Zeitpunkt der Veröffentlichung beim Applikationshersteller nachgefragt werden.
+				Sollte eine Applikation noch nicht für UCS 4.1 verfügbar sein, kann der Zeitpunkt der Veröffentlichung beim Applikationsanbieter nachgefragt werden.
 			</para>
 		</section>
 
@@ -203,14 +203,14 @@
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
-				Bei Verwendung der <phrase>UCS Core Edition</phrase>-Version von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung von &ucsUMC; erzeugt.
+				Bei Verwendung der <phrase>UCS Core Edition</phrase> Edition von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung von &ucsUMC; erzeugt.
 				Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert.
 				Dies ermöglicht es Univention die Entwicklung von &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
 			</para>
 			<para>
 				Diese Protokollierung erfolgt nur bei Verwendung der <phrase>UCS Core Edition</phrase>.
 				Der Lizenzstatus kann überprüft werden durch den Eintrag <guimenu>Lizenz &ar; Lizenzinformation</guimenu> des Benutzermenüs in der rechten, oberen Ecke von &ucsUMC;.
-				Steht hier unter <guimenu>License type</guimenu> <guimenu>UCS Core Edition</guimenu> wird eine solche Version verwendet.
+				Steht hier unter <guimenu>License type</guimenu> der Eintrag <guimenu>UCS Core Edition</guimenu> wird eine solche Edition verwendet.
 				Bei Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der Nutzungsstatistik.
 			</para>
 			<para>

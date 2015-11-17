@@ -72,8 +72,8 @@
 			</para></listitem>
 			<listitem><para>
 				Users can independently change their password or reset it in case of a forgotten
-				password via the new Self Service. In this case, a token will be sent to e-mail
-				addresses or mobile phone numbers. These have to be defined in advance by the users.
+				password via the new Self Service. In this case, a token will be sent to an e-mail
+				address or mobile phone number that has to be defined in advance by the users.
 				The then received token can be used to set a new password.
 			</para></listitem>
 			<listitem><para>
@@ -82,7 +82,7 @@
 				for better hardware support.
 			</para></listitem>
 			<listitem><para>
-				Samba has been updated to 4.3.1. Besides many detail improvements, Samba 4.3
+				Samba has been updated to version 4.3.1. Besides many detail improvements, Samba 4.3
 				provides support for SMB 3.1.1, which was introduced by Microsoft with Windows
 				10 and provides security improvements and more features.
 			</para></listitem>
@@ -115,7 +115,7 @@
 			<para>
 				If applications have been installed from the Univention App Center, the update can only be performed once all installed applications are available in a compatible version.
 				Some applications are updated to newer versions during the UCS update.
-				If an application is not yet available for UCS 4.1, a statement about the release date can be obtained from the application vendor.
+				If an application is not yet available for UCS 4.1, a statement about the release date can be obtained from the application provider.
 			</para>
 		</section>
 
@@ -189,7 +189,7 @@
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
 			<para>
-				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>UCS Core Edition</emphasis> version of UCS (which is generally used for evaluating UCS).
+				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>UCS Core Edition</emphasis> of UCS (which is generally used for evaluating UCS).
 				The modules opened are logged in an instance of the web traffic analysis tool Piwik.
 				This makes it possible for Univention to tailor the development of &ucsUMC; better to customer needs and carry out usability improvements.
 			</para>
@@ -249,7 +249,7 @@
 		<section id="relnotes:maintained">
 			<title>Handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages</title>
 				<para>
-					With UCS 4.1 the handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages was changed.
+					With UCS 4.1 the handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages has been changed.
 				</para>
 				<itemizedlist spacing="compact">
 					<listitem><simpara>
