@@ -13,4 +13,10 @@ class Constants {
 		'3.2' : '3.1',
 		'4.1' : '4.0',
 	]
+
+    static LASTEST_PATCHLEVEL = [
+        '4.0' : '4',
+        '4.1' : '0',
+        '3.2' : '7',
+    ]
 }

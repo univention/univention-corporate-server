@@ -83,12 +83,13 @@ class Jobs {
       parameters {
         booleanParam('HALT', true, 'uncheck to disable shutdown of ec2 instances')
         booleanParam('Update_to_testing_errata_updates', false, 'Update to unreleased errata updates from updates-test.software-univention.de?')
+        stringParam('patch_level', "${patch_level}", "test this patch level version of UCS ${version}")
       }
       // svn
       scm {
         svn {
           checkoutStrategy(SvnCheckoutStrategy.CHECKOUT)
-          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-${patch_level}/test/ucs-ec2-tools") {
+          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-\$patch_level/test/ucs-ec2-tools") {
             credentials('50021505-442b-438a-8ceb-55ea76d905d3')    
           }
           configure { scmNode ->
@@ -141,12 +142,13 @@ exec ./ucs-ec2-create -c \$cfg
       // build parameters
       parameters {
         booleanParam('HALT', true, 'uncheck to disable shutdown of ec2 instances')
+        stringParam('patch_level', "${patch_level}", "test this patch level version of UCS ${version}")
       }
       // svn
       scm {
         svn {
           checkoutStrategy(SvnCheckoutStrategy.CHECKOUT)
-          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-${patch_level}/test/ucs-ec2-tools") {
+          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-\$patch_level/test/ucs-ec2-tools") {
             credentials('50021505-442b-438a-8ceb-55ea76d905d3')    
           }
           configure { scmNode ->
@@ -199,12 +201,13 @@ exec ./ucs-ec2-create -c \$cfg
       // build parameters
       parameters {
         booleanParam('HALT', true, 'uncheck to disable shutdown of ec2 instances')
+        stringParam('patch_level', "${patch_level}", "test this patch level version of UCS ${version}")
       }
       // svn
       scm {
         svn {
           checkoutStrategy(SvnCheckoutStrategy.CHECKOUT)
-          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-${patch_level}/test/ucs-ec2-tools") {
+          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-\$patch_level/test/ucs-ec2-tools") {
             credentials('50021505-442b-438a-8ceb-55ea76d905d3')
           }
           configure { scmNode ->

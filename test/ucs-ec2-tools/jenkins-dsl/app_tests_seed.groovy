@@ -12,11 +12,15 @@ def workdir = loc.getParent()
 
 // better get version from JOB_NAME
 def version = JOB_NAME.split('/')[0].replace('UCS-', '')
-def patch_level = JOB_NAME.split('/')[1].replace('UCS-', '').replace(version, '').replace('-', '')
 def last_version = univention.Constants.LAST_VERSION.get(version)
+def patch_level = univention.Constants.LASTEST_PATCHLEVEL.get(version)
 
 if (last_version == null) {
 	throw new RuntimeException("last version for version ${version} not found")
+}
+
+if (patch_level == null) {
+    throw new RuntimeException("lastest patch_level for version ${version} not found")
 }
 
 def path = workdir + '/Apps'
