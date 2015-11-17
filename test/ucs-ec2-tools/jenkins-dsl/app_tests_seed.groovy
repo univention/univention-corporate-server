@@ -23,16 +23,13 @@ def workdir = loc.getParent()
 //    throw new RuntimeException("lastest patch_level for version ${version} not found")
 //}
 
-def path = workdir + '/Apps'
-
-println workdir
 univention.Constants.VERSIONS.each {
 
     version = it.getKey()
     patch_level = it.getValue()['patch_level']
     last_version = it.getValue()['last_version']
 
-    path = 'UCS-' + version + 'Apps'
+    path = 'UCS-' + version + '/Apps'
 
     println version
     println patch_level
@@ -42,7 +39,7 @@ univention.Constants.VERSIONS.each {
     apps = Apps.getApps(version, test=true, ucs_components=false)
     apps.keySet().sort().each { app ->
         app_path = path + '/' + app
-        println app
+        println "${app_path} -> ${app}"
     }
 }
 
