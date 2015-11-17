@@ -77,8 +77,8 @@
 			The <filename class="extension">.ini</filename> file has the attribute <property>ID</property>. Simply name the <filename class="extension">.ini</filename> file and the product logo after that ID:
 		</para>
 		<itemizedlist>
-			<listitem><simpara>myapp.ini</simpara></listitem>
-			<listitem><simpara>myapp.png</simpara></listitem>
+			<listitem><simpara><filename>myapp.ini</filename></simpara></listitem>
+			<listitem><simpara><filename>myapp.png</filename></simpara></listitem>
 		</itemizedlist>
 		<para>
 			Put those files below the <filename class="directory">metadata/</filename> directory.
