@@ -11,14 +11,9 @@ def loc = new File(JOB_NAME)
 def workdir = loc.getParent()
 
 // better get version from JOB_NAME
-println JOB_NAME
-println workdir
 def version = JOB_NAME.split('/')[0].replace('UCS-', '')
 def patch_level = JOB_NAME.split('/')[1].replace('UCS-', '').replace(version, '').replace('-', '')
 def last_version = univention.Constants.LAST_VERSION.get(version)
-
-println version
-println patch_level
 
 if (last_version == null) {
 	throw new RuntimeException("last version for version ${version} not found")
@@ -33,17 +28,17 @@ Jobs.createAppStatusViews(this, path)
 // get apps from testing, without ucs components
 apps = Apps.getApps(version, test=true, ucs_components=false)
 
-//// create jobs for every app
-//apps.keySet().sort().each { app ->
-//
-//  path = workdir + '/Apps/' + app
-//
-//  // create app folder
-//  folder(path)
-//  
-//  // create  jobs
-//  Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
-//  Jobs.createAppAutotestMultiEnv(this, path, version, patch_level, apps[app])
-//  Jobs.createAppAutotestMultiEnvUpdateFrom(this, path, version, patch_level, last_version, apps[app])
-//
-//}
+// create jobs for every app
+apps.keySet().sort().each { app ->
+
+  path = workdir + '/Apps/' + app
+
+  // create app folder
+  folder(path)
+  
+  // create  jobs
+  Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
+  Jobs.createAppAutotestMultiEnv(this, path, version, patch_level, apps[app])
+  Jobs.createAppAutotestMultiEnvUpdateFrom(this, path, version, patch_level, last_version, apps[app])
+
+}
