@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-2) unstable; urgency=medium
+
+  * Bug #39675: adapt license import to work with SAML login
+
+ -- Florian Best <best@univention.de>  Tue, 17 Nov 2015 22:30:08 +0100
+
 univention-management-console-module-udm (6.0.11-1) unstable; urgency=medium
 
   * Bug #39863: fix direct opening of objects

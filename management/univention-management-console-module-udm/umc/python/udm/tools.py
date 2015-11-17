@@ -103,15 +103,13 @@ class LicenseImport(ldif.LDIFParser):
 		# for atr in entry:
 		# 	self.mod_list.insert( 0, ( ldap.MOD_REPLACE, atr, entry[ atr ] ) )
 
-	def write(self, user_dn, passwd):
-		ldap_con = ldap.open("localhost", port=int(ucr.get('ldap/server/port', 7389)))
-		ldap_con.simple_bind_s(user_dn, passwd)
+	def write(self, ldap_connection):
+		ldap_con = ldap_connection.lo.lo
 		try:
 			ldap_con.add_s(self.dn, self.addlist)
 		except ldap.ALREADY_EXISTS:
 			ldap_con.delete_s(self.dn)
 			ldap_con.add_s(self.dn, self.addlist)
-		ldap_con.unbind_s()
 
 
 def check_license(ldap_connection, ignore_core_edition=False):

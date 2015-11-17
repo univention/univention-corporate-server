@@ -267,7 +267,8 @@ class Instance(Base, ProgressMixin):
 
 		self.finished(request.id, license_data)
 
-	def license_import(self, request):
+	@LDAP_Connection
+	def license_import(self, request, ldap_connection=None, ldap_position=None):
 		filename = None
 		if isinstance(request.options, (list, tuple)) and request.options:
 			# file upload
@@ -298,7 +299,7 @@ class Instance(Base, ProgressMixin):
 				# check license and write it to LDAP
 				importer = LicenseImport(fd)
 				importer.check(ucr.get('ldap/base', ''))
-				importer.write(self._user_dn, self._password)
+				importer.write(ldap_connection)
 		except (ValueError, AttributeError, LDAPError) as exc:
 			MODULE.error('License import failed (malformed LDIF): %r' % (exc, ))
 			# AttributeError: missing univentionLicenseBaseDN
