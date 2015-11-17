@@ -189,7 +189,7 @@
 		<section id="relnotes:usage">
 			<title>Collection of usage statistics</title>
 			<para>
-				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>UCS Core Edition</emphasis> of UCS (which is generally used for evaluating UCS).
+				Anonymous usage statistics on the use of &ucsUMC; are collected when using the <emphasis>UCS Core Edition</emphasis> (which is generally used for evaluating UCS).
 				The modules opened are logged in an instance of the web traffic analysis tool Piwik.
 				This makes it possible for Univention to tailor the development of &ucsUMC; better to customer needs and carry out usability improvements.
 			</para>

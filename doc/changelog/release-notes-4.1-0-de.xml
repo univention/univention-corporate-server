@@ -203,7 +203,7 @@
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken</title>
 			<para>
-				Bei Verwendung der <phrase>UCS Core Edition</phrase> Edition von UCS (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung von &ucsUMC; erzeugt.
+				Bei Verwendung der <phrase>UCS Core Edition</phrase> (die in der Regel für Evaluationen von UCS herangezogen wird) werden anonyme Nutzungsstatistiken zur Verwendung von &ucsUMC; erzeugt.
 				Die aufgerufenen Module werden dabei von einer Instanz des Web-Traffic-Analyse-Tools Piwik protokolliert.
 				Dies ermöglicht es Univention die Entwicklung von &ucsUMC; besser auf das Kundeninteresse zuzuschneiden und Usability-Verbesserungen vorzunehmen.
 			</para>
