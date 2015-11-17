@@ -228,7 +228,9 @@ int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 int change_new_modules(univention_ldap_parameters_t *lp)
 {
 	Handler	*handler;
+	int old_init_only = INIT_ONLY;
 
+	INIT_ONLY = 1;
 	for (handler = handlers; handler != NULL; handler = handler->next) {
 		if ((handler->state & HANDLER_READY) != HANDLER_READY) {
 			handler->state |= HANDLER_READY;
@@ -239,6 +241,8 @@ int change_new_modules(univention_ldap_parameters_t *lp)
 				handler->state ^= HANDLER_READY;
 		}
 	}
+	INIT_ONLY = old_init_only;
+	cache_sync();
 
 	return 0;
 }
