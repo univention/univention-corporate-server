@@ -28,7 +28,7 @@ folder(workdir + '/Apps')
 createStatusViews(workdir + '/Apps')
 
 // create jobs for every app
-apps.keySet()each { app ->
+apps.keySet().sort().each { app ->
   
   // create app folder
   folder(workdir + '/Apps/' + app)
@@ -38,9 +38,9 @@ apps.keySet()each { app ->
 
   println path
   // create jobs
-  //createAppAutotestMultiEnv(path, version, patch_level, apps[app])
-  //createAppAutotestUpdateMultiEnv(path, version, patch_level, apps[app])
-  //createAppAutotestMultiEnvUpdateFrom(path, version, patch_level, last_version, apps[app])
+  createAppAutotestMultiEnv(path, version, patch_level, apps[app])
+  createAppAutotestUpdateMultiEnv(path, version, patch_level, apps[app])
+  createAppAutotestMultiEnvUpdateFrom(path, version, patch_level, last_version, apps[app])
   //...
 
 }
