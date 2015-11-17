@@ -9,7 +9,7 @@
 	%entities;
 ]>
 <chapter id="prepare">
-		<title> Prepare the environment</title>
+		<title>Prepare the environment</title>
 		<para>
 			Before you can start with the creation of an app for Univention App Center, you'll need to
 			prepare your UCS environment. This section guides you through the necessary steps.

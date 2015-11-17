@@ -26,7 +26,7 @@
 					of the operating system and also led to (not obvious) conflicts between apps.
 				</simpara></listitem>
 				<listitem><simpara>
-					With a growing number of apps in the App Center catalogue it got harder for Univention to verify that the
+					With a growing number of apps in the App Center catalog it got harder for Univention to verify that the
 					App did not break anything by enabling/disabling features of certain software components. With the Debian
 					Maintainer scripts, App vendors had effectively root access on the system.
 				</simpara></listitem>
