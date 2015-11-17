@@ -1,6 +1,6 @@
 package univention
 
-import javaposse.jobdsl.dsl.jobs.MatrixJob
+import javaposse.jobdsl.dsl.jobs.*
 
 
 class Jobs {
