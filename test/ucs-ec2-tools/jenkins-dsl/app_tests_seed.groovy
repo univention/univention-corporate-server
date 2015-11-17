@@ -29,7 +29,8 @@ univention.Constants.VERSIONS.each {
 
     version = it.getValue()
     println version['patch_level']
-    println version
+    println version['last_version']
+    print it
 }
 
 //// create folder, generic app jobs and views
