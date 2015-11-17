@@ -27,10 +27,13 @@ def path = workdir + '/Apps'
 
 univention.Constants.VERSIONS.each {
 
-    version = it.getValue()
-    println version['patch_level']
-    println version['last_version']
-    print it
+    version = it.getKey()
+    patch_level = it.getValue()['patch_level']
+    last_version = it.getValue()['last_version']
+
+    println version
+    println patch_level
+    println last_version
 }
 
 //// create folder, generic app jobs and views
