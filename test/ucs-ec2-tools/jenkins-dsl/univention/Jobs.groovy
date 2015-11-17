@@ -1,5 +1,8 @@
 package univention
 
+import javaposse.jobdsl.dsl.jobs.MatrixJob
+
+
 class Jobs {
 
   def createAppAutotestUpdateMultiEnv(String path, String version, String patch_level, Map app) {
