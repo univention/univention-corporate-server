@@ -178,48 +178,45 @@
 	</para>
 
 	<para>
-	  Einige Applikationen nutzen eine Container-Technologie (<application>Docker</application>). Dadurch wird
-	  die Applikation (und ihre unmittelbare Umgebung) vom Rest gekapselt und die Sicherheit sowie die Kompatibilität
-	  von Applikationen untereinander erhöht sich.
-	  Technisch wird ein weiterer &ucsMember; als Docker Container gestartet, in dem die App dann installiert ist.
+		Einige Applikationen nutzen die Container-Technologie <application>Docker</application>.
+		Dadurch wird die Applikation (und ihre unmittelbare Umgebung) vom Rest gekapselt und die Sicherheit sowie die Kompatibilität von Applikationen untereinander erhöht.
 	</para>
 
 	<para>
-	  Dieser &ucsMember; ist insofern eigenständig, als dass er selber Errata- und ggf. auch Release-Updates installiert.
-	  Für den &ucsMember; wird im LDAP ein Objekt angelegt, das über die &ucsUMC; bearbeitet werden kann (z.B. um
-	  die Richtlinien für Updates zu ändern).
+		Technisch wird ein weiterer &ucsMember; als Docker Container gestartet, in dem die App dann installiert ist.
+		Dieser &ucsMember; ist insofern eigenständig, als dass dort auch Errata- und Release-Updates installiert werden müssen.
+		Für den &ucsMember; wird im LDAP ein zugehöriges Rechner-Objekt angelegt, das über die &ucsUMC; bearbeitet werden kann.
+		Darüber lässt sich dann z.B. die Richtlinien für Updates ändern.
 	</para>
 
 	<para>
-	  Der Container selbst ist durch das Netzwerk-Setup von Docker nur von dem
-	  Rechner aus zu erreichen, auf dem die App installiert ist – die App
-	  kann aber bestimmte Ports öffnen, die dann über den eigentlichen Rechner weitergeleitet werden, die Firewall von
-	  UCS wird dann entsprechend konfiguriert.
-	  Wird eine Kommandozeile in der Umgebung der App benötigt, muss folgender Befehl ausgeführt werden (hier am Beispiel
-	  der fiktiven App <application>demo-docker-app</application>):
-	  <command>docker exec -it "$(ucr get appcenter/apps/demo-docker-app/container)" /bin/bash</command>.
+		Der Container ist per Netzwerk nur von dem Rechner aus zu erreichen, auf dem die App installiert ist.
+		Die App kann aber bestimmte Ports öffnen, die dann vom eigentlichen Rechner in den Container weitergeleitet werden.
+		Die Firewall von UCS wird entsprechend automatisch konfiguriert, damit der Zugriff auf die Ports möglich ist.
 	</para>
 
 	<para>
-	  <wordasword>Docker Apps</wordasword> lassen sich über das UMC-Modul weiter konfigurieren. Die App kann
-	  gestartet und gestoppt und die Autostart-Option gesetzt werden:
-	  <itemizedlist>
-	    <listitem><simpara>
-	      <envar>Automatisch gestartet</envar> sorgt dafür, dass die App automatisch beim Hochfahren des Servers
-	      gestartet wird.
-	    </simpara></listitem>
-	    <listitem><simpara>
-	      <envar>Manuell gestartet</envar> startet die App nicht automatisch, sie muss über eben diese Konfigurationsseite
-	      gestartet werden.
-	    </simpara></listitem>
-	    <listitem><simpara>
-	      <envar>Start wird verhindert</envar> erlaubt den Start der App grundsätzlich nicht. Auch nicht über diese Seite.
-	    </simpara></listitem>
-	  </itemizedlist>
-	  Darüber hinaus können Apps weitere Parameter definieren, die eingestellt werden können und die sich direkt
-	  auf die App auswirken.
-	  Das Menü zur weiteren Konfiguration ist über den Button <guimenu>App-Einstellungen</guimenu> einer installierten App
-	  zu erreichen.
+		Wird eine Kommandozeile in der Umgebung der App benötigt, muss zunächst in den Container gewechselt werden.
+		Dazu kann folgender Befehl ausgeführt werden (hier am Beispiel der fiktiven App <application>demo-docker-app</application>):
+	  <command>docker exec -it "$(ucr get appcenter/apps/<replaceable>demo-docker-app</replaceable>/container)" /bin/bash</command>.
+	</para>
+
+	<para>
+		<wordasword>Docker Apps</wordasword> lassen sich über das UMC-Modul weiter konfigurieren.
+		Die App kann gestartet und gestoppt, sowie die <guimenu>Autostart</guimenu>-Option gesetzt werden:
+		<itemizedlist>
+			<listitem><simpara>
+					<envar>Automatisch gestartet</envar> sorgt dafür, dass die App automatisch beim Hochfahren des Servers gestartet wird.
+			</simpara></listitem>
+			<listitem><simpara>
+					<envar>Manuell gestartet</envar> verhindert den automatischen Start der App, sie kann aber über das UMC-Modul gestartet werden.
+			</simpara></listitem>
+			<listitem><simpara>
+					<envar>Start wird verhindert</envar> unterbindet grundsätzlich den Start der App; sie kann dann auch nicht über das UMC-Modul gestartet werden.
+			</simpara></listitem>
+		</itemizedlist>
+		Darüber hinaus können Apps ggf. über weitere Parameter angepasst werden.
+		Das Menü dafür ist über den Button <guibutton>App-Einstellungen</guibutton> einer installierten App zu erreichen.
 	</para>
 
 	<figure id="appcenter-configure"><title>Einstellungen einer Applikation im App Center</title>
@@ -957,3 +954,4 @@ univention-pkgdb-scan --remove-system RECHNERNAME
 	</programlisting>
   </section>
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->
