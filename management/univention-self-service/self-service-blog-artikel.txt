@@ -79,7 +79,7 @@ Es werden auch andere Versandmethoden als E-Mail und SMS unterstützt. Wie bei S
 <code>ucr search umc/self-service/passwordreset/external</code>
 
 * umc/self-service/passwordreset/external/command: Das zum Versand aufzurufende Programm - wie bei SMS, z.B. "/usr/local/sbin/send_with_jabber".
-* umc/self-service/passwordreset/external/method: Bezeichnung die intern zur Unterscheidung der Module verwendet wird, z.B. "jabber". Darf nicht "email" oder "mobile" heißen.
+* umc/self-service/passwordreset/external/method: Bezeichnung die intern zur Unterscheidung der Module verwendet wird, z.B. "xmpp". Darf nicht "email" oder "mobile" heißen.
 * umc/self-service/passwordreset/external/method_label: Die Bezeichnung der Methode, wie sie auf der Webseite angezeigt wird, z.B. "Jabber".
 * umc/self-service/passwordreset/external/udm_property: Name des Attributes des Benutzermoduls aus dem der Kontakt ausgelesen werden soll, z.B. "description". Das E-Mail-Modul verwendet "PasswordRecoveryEmail", das SMS-Modul "PasswordRecoveryMobile". Um alle bekannten Attribute gelistet zu bekommen, kann folgendes ausgeführt werden:
 <code>udm users/user</code>
@@ -91,6 +91,8 @@ Dem aufgerufenen Progamm werden, wie beim SMS-Modul, Daten in den folgenden Umge
 
 Der Sicherheitshinweis bzgl. des Vererbens von Umgebungsvariablen gilt auch hier.
 
+>>>Beispiel-Code unten, evtl. hier verlinken.<<<
+
 = >> Überschrift oder nicht? << =
 
 Wir hoffen die Benutzung und Administration von UCS-Domänen mit den Self-Service-Modulen weiter zu vereinfachen. Gerne würden wir hier von Ihren Erfahrungen hören, in welcher Form Sie sie einsetzen und wie Ihre Benutzer sie annehmen. (>>> So direkt ansprechen? Post-count auf dem Blog erhöhen oder unseriös? <<<)
@@ -98,13 +100,23 @@ Wir hoffen die Benutzung und Administration von UCS-Domänen mit den Self-Servic
 
 = Anhang =
 
->>> Der folgende Code kann auch in einen Kommentar oder vielleicht sogar besser irgendwohin hochgeladen und dann verlinkt werden. ACHTUNG: die Einrückungen sind sehr wichtig! Bitte entsprechend oben bei "umc/self-service/passwordreset/sms/command" verlinken. <<<
+>>> Der folgende Code kann auch in einen Kommentar oder vielleicht sogar besser irgendwohin hochgeladen und dann verlinkt werden. ACHTUNG: die Einrückungen sind sehr wichtig! Bitte entsprechend oben bei "umc/self-service/passwordreset/sms/command" bzw. "Anders" verlinken. <<<
 
 
 
 Beispiel Programm zum Versand von SMS mit Sipgate.
 
 ------------------------------------------------------------------------------
+
+# ucr set umc/self-service/passwordreset/sms/command=/usr/local/sbin/sipgate_sms.py \
+	umc/self-service/passwordreset/sms/country_code: 49 \
+	umc/self-service/passwordreset/sms/enabled=yes \
+	umc/self-service/passwordreset/sms/password_file=/etc/sipgate.pw
+
+# echo "myaccount:s3cr3t" > /etc/sipgate.pw
+# chmod 600 /etc/sipgate.pw
+
+----------------------   sipgate_sms.py   ------------------------------------
 
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
@@ -153,4 +165,39 @@ else:
 	sys.exit(1)
 
 ------------------------------------------------------------------------------
+
+>>> Der folgende Code kann auch in einen Kommentar oder vielleicht sogar besser irgendwohin hochgeladen und dann verlinkt werden. ACHTUNG: die Einrückungen sind sehr wichtig! Bitte entsprechend oben bei "Anders" verlinken. <<<
+
+------------------------------------------------------------------------------
+
+Beispiel Programm zum Versand von Jabber-Nachrichten.
+
+------------------------------------------------------------------------------
+
+# ucr set repository/online/unmaintained="yes"
+# univention-install sendxmpp
+# ucr set repository/online/unmaintained="no"
+
+# cat > /usr/local/sbin/send_jabber <<EOF
+#!/bin/sh
+
+echo "Hello \$username, your password recovery token is \$token. Greetings, Administrator" | sendxmpp -f /etc/send_jabber.cfg --tls "\$address"
+EOF
+
+# chmod a+x /usr/bin/send_jabber
+# echo "sampleaccount@jabber.org myPassW0rd" > /etc/send_jabber.cfg
+# chmod 0600 /etc/send_jabber.cfg
+
+# ucr set umc/self-service/passwordreset/external/enabled='yes' \
+	umc/self-service/passwordreset/external/command="/usr/local/sbin/send_jabber" \
+	umc/self-service/passwordreset/external/method=xmpp \
+	umc/self-service/passwordreset/external/method_label=Jabber \
+	umc/self-service/passwordreset/external/token_length=12 \
+	umc/self-service/passwordreset/external/ldap_attribute=description
+
+# eval "$(ucr shell)"
+# udm users/user modify --dn "uid=user1,cn=users,$ldap_base" \
+	--set description="user1@jabber.org"
+
+→ Nun sollte bei einem Benutzer "user1" die Methode "Jabber" auf der Webseite zur Passwortwiederherstellung auftauchen. Wird diese gewählt, wird "/usr/local/sbin/send_jabber" ausgeführt.
 
