@@ -2,7 +2,7 @@ package univention
 
 class Jobs {
 
-  def createAppStatusViews(dslFactory, String path) {
+  static createAppStatusViews(dslFactory, String path) {
   
       // stable
       dslFactory.listView(path + '/Stable') {
