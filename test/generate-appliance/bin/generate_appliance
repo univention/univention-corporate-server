@@ -424,14 +424,10 @@ VMware = VMware()
 
 
 LICENSE = '''The complete source code of Univention Corporate Server is provided
-under GNU Affero General Public License (AGPL). The software is tried-
-and-tested and regularly updated. For private users, UCS is free of charge with\x20
-infinite use for up to 5 users and support is provided via the Univention forum.
+under GNU Affero General Public License (AGPL). This image contains a license key
+of the UCS Core Edition. More details can be found here:
 \x20
-Commercial users can obtain UCS at reasonable prices and have guaranteed, individually adjustable support.
-\x20
-https://www.univention.com/about-us/open-source/
-https://www.univention.com/downloads/license-models/free-for-personal-use-license/'''
+https://www.univention.com/downloads/license-models/licensing-conditions-ucs-core-edition/'''
 
 ANNOTATION = '''Univention Corporate Server (UCS) is a complete solution to provide standard
 IT services (like domain management or file services for Microsoft Windows

@@ -1,3 +1,9 @@
+generate-appliance (2.0.2-1) unstable; urgency=medium
+
+  * Switch from FFPU to Core Edition (Bug #38532)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Nov 2015 07:05:55 +0100
+
 generate-appliance (2.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
