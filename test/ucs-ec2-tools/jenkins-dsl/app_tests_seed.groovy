@@ -25,6 +25,7 @@ def workdir = loc.getParent()
 
 def path = workdir + '/Apps'
 
+println workdir
 univention.Constants.VERSIONS.each {
 
     version = it.getKey()
