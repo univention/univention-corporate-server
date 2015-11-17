@@ -1252,7 +1252,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<para>
 	  SAML (Security Assertion Markup Language) is an XML-based standard for exchanging
 	  authentication information in order to allow single sign-on across domain boundaries.
-	  UCS provides a failsafe SAML identity provider on a &ucsMaster; as well as &ucsBackup;.
+	  UCS provides a fail-safe SAML identity provider on a &ucsMaster; as well as &ucsBackup;.
 	  The SAML identity provider is registered at an external service with a cryptographic certificate and establishes a trust relationship.
 	  The user then only needs to authenticate himself against UCS and can use the service without renewed authentication.
 	</para>

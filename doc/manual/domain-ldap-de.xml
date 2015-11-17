@@ -1338,11 +1338,11 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>Hinzufügen eines neuen externen Service Providers</title>
 	<para>
 		Die am UCS Identity Provider registrierten Service Provider können über das UMC Domänen Modul <guimenu>SAML identity provider</guimenu> verwaltet werden.
-		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des SAML-Zertifikats auf dem Service Provider benötigt.
+		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des <wordasword>SAML-Zertifikats</wordasword> auf dem Service Provider benötigt.
 	    Dieses kann über einen Download-Link im UMC Modul heruntergeladen werden.
 	</para>
 	<para>
-		Andere Service Provider benötigen die XML-Metadaten des Identity Providers in Form eines Datei-<foreignphrase>Uploads</foreignphrase>.
+		Andere Service Provider benötigen die <wordasword>XML-Metadaten</wordasword> des Identity Providers in Form eines Datei-<foreignphrase>Uploads</foreignphrase>.
 		In der Standardkonfiguration kann die XML-Datei unter der URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri> heruntergeladen werden.
 	</para>
 	<para>
@@ -1475,7 +1475,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>Benutzer für Service Provider freischalten</title>
 	<para>
 		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
-		Auf dem Tab <guimenu>Konto</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
+		Auf dem <foreignphrase>Tab</foreignphrase> <guimenu>Konto</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
 	</para>
 	</section>
 </section>
