@@ -17,6 +17,8 @@ fast::
 	${Q}find -name \*.xml -exec $(FGREP) 'https\?://forge.univention.org/bugzilla/show_bug.cgi' {} +
 fast::
 	${Q}find -name \*.xml -exec $(GREP) 'url="https\?://sdb.univention.de/[1-9]' {} +
+fast::
+	${Q}find */illustrations?? -type f -printf '%f\n' | sort | uniq -d
 
 check: fast
 
