@@ -125,19 +125,24 @@ define([
 				if (message.slice(-1) !== '.') {
 					message += '.';
 				}
-				var title = _('Authentication failure');
+				var title = info.title || _('Authentication failure');
 				if (result.password_expired) {
 					title = _('The password is expired');
 				} else if (result.missing_prompts) {
 					title = _('One time password required');
 				}
-				this.set('LoginMessage', '<h1>' + title + '</h1><p>' + message + '</p>');
+				message = '<h1>' + title + '</h1><p>' + message + '</p>';
 			}
+			this.set('LoginMessage', message);
 		},
 
 		_setLoginMessageAttr: function(content) {
 			this._text.set('content', content);
-			this._wipeInMessage();
+			if (content) {
+				this._wipeInMessage();
+			} else {
+				query('#umcLoginMessages').style('display', 'none');
+			}
 		},
 
 		_wipeInMessage: function() {
@@ -370,12 +375,13 @@ define([
 
 			// update info text
 			var msg = '';
+			var title = '';
 
 			// Show warning if connection is unsecured
 			if (window.location.protocol === 'http:') {
 				var link = '<a href="https://' + window.location.href.slice(7) + '">';
-				msg += '<h1>' + _('Insecure Connection') + '</h1>';
-				msg += '<p>' + _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', link) + '</p>';
+				title = _('Insecure Connection');
+				msg = _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', link);
 			}
 			
 			if (has('ie') < 9 || has('ff') < 24) {
@@ -386,13 +392,14 @@ define([
 			// IE 8 is also known to cause timeouts when under heavy load
 			// (presumably because of many async requests to the server
 			// during UDM-Form loading)
-			msg += '<h1>' + _('Your Browser is outdated') + '</h1>';
-			msg += '<p>' + _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + '</p>';
+				title = _('Your Browser is outdated');
+				msg = _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + msg;
 			}
 
 			if (tools.status('setupGui')) {
 				// user has already logged in before, show message for relogin
-				msg = '<h1>' + _('Session timeout')  + '</h1><p>' + _('Your session has been closed due to inactivity. Please login again.') + '</p>';
+				title = _('Session timeout');
+				msg = _('Your session has been closed due to inactivity. Please login again.');
 
 				// remove language selection and SSO button after first successful login
 				query('#umcLoginHeaderRight').style('display', 'none');
@@ -400,7 +407,7 @@ define([
 			}
 
 			query('#umcLoginMessages').style('display', 'none');
-			this._text.set('content', msg);
+			this.updateForm({message: msg, title: title});
 
 			return this._show();
 		},
@@ -445,7 +452,7 @@ define([
 			if (!dom.byId('umcLoginPassword').value) {
 				dom.byId('umcLoginPassword').focus();
 			} else {
-				dom.byId('umcLoginPassword').focus();
+				dom.byId('umcLoginUsername').focus();
 			}
 		},
 

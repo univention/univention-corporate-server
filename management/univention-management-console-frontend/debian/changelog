@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-3) unstable; urgency=medium
+
+  * Bug #39898: fix username field in login dialog
+
+ -- Florian Best <best@univention.de>  Tue, 17 Nov 2015 22:11:32 +0100
+
 univention-management-console-frontend (5.0.63-2) unstable; urgency=medium
 
   * revert Bug #39836: don't display OTP field as password field
