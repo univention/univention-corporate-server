@@ -26,7 +26,8 @@ apps = new Apps().getApps(version, test=true, ucs_components=false)
 
 // create folder and views
 folder(workdir + '/Apps')
-createStatusViews(workdir + '/Apps')
+//createStatusViews(workdir + '/Apps')
+Jobs.createAppStatusViews(this, workdir + '/Apps')
 
 // create jobs for every app
 apps.keySet().sort().each { app ->
@@ -38,7 +39,8 @@ apps.keySet().sort().each { app ->
   path = workdir + '/Apps/' + app
 
   println path
-  Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
+  Jobs.createAppStatusViews(this)
+  //Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
   // create jobs
   //createAppAutotestMultiEnv(path, version, patch_level, apps[app])
   //createAppAutotestUpdateMultiEnv(path, version, patch_level, apps[app])
@@ -47,76 +49,76 @@ apps.keySet().sort().each { app ->
 
 }
 
-def createStatusViews(String path) {
-
-    // stable
-    listView(path + '/Stable') {
-        description('Show all successful app test')
-        recurse()
-        jobFilters {
-            status {
-                matchType(MatchType.INCLUDE_MATCHED)
-                status(Status.STABLE)
-            }
-        }
-        columns {
-            status()
-            weather()
-            name()
-            lastSuccess()
-            lastFailure()
-            lastDuration()
-            buildButton()
-        }
-    }
-
-    // failed
-    listView(path + '/Failed') {
-        description('Show all failed app test')
-        recurse()
-        jobFilters {
-            status {
-                matchType(MatchType.INCLUDE_MATCHED)
-                status(Status.UNSTABLE)
-                status(Status.FAILED)
-                status(Status.ABORTED)
-            }
-        }
-        columns {
-            status()
-            weather()
-            name()
-            lastSuccess()
-            lastFailure()
-            lastDuration()
-            buildButton()
-        }
-    }
-
-    // running
-    listView(path + '/Running') {
-        description('Show all running app test')
-        recurse()
-    configure { view ->
-        view / 'jobFilters' / 'hudson.views.BuildStatusFilter' {
-            includeExcludeTypeString 'includeMatched'
-            neverBuilt false
-            building true
-            inBuildQueue true
-        }
-    }
-        columns {
-            status()
-            weather()
-            name()
-            lastSuccess()
-            lastFailure()
-            lastDuration()
-            buildButton()
-        }
-    }
-
-}
+//def createStatusViews(String path) {
+//
+//    // stable
+//    listView(path + '/Stable') {
+//        description('Show all successful app test')
+//        recurse()
+//        jobFilters {
+//            status {
+//                matchType(MatchType.INCLUDE_MATCHED)
+//                status(Status.STABLE)
+//            }
+//        }
+//        columns {
+//            status()
+//            weather()
+//            name()
+//            lastSuccess()
+//            lastFailure()
+//            lastDuration()
+//            buildButton()
+//        }
+//    }
+//
+//    // failed
+//    listView(path + '/Failed') {
+//        description('Show all failed app test')
+//        recurse()
+//        jobFilters {
+//            status {
+//                matchType(MatchType.INCLUDE_MATCHED)
+//                status(Status.UNSTABLE)
+//                status(Status.FAILED)
+//                status(Status.ABORTED)
+//            }
+//        }
+//        columns {
+//            status()
+//            weather()
+//            name()
+//            lastSuccess()
+//            lastFailure()
+//            lastDuration()
+//            buildButton()
+//        }
+//    }
+//
+//    // running
+//    listView(path + '/Running') {
+//        description('Show all running app test')
+//        recurse()
+//    configure { view ->
+//        view / 'jobFilters' / 'hudson.views.BuildStatusFilter' {
+//            includeExcludeTypeString 'includeMatched'
+//            neverBuilt false
+//            building true
+//            inBuildQueue true
+//        }
+//    }
+//        columns {
+//            status()
+//            weather()
+//            name()
+//            lastSuccess()
+//            lastFailure()
+//            lastDuration()
+//            buildButton()
+//        }
+//    }
+//
+//}
 
 //def createAppAutotestMultiEnvUpdateFrom(String path, String version, String patch_level, String last_version, Map app) {
 //
