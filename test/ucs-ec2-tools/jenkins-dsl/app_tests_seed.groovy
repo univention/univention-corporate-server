@@ -25,8 +25,9 @@ def workdir = loc.getParent()
 
 def path = workdir + '/Apps'
 
-univention.Constants.VERSIONS.each { version ->
+univention.Constants.VERSIONS.each {
 
+    version = it.getValue()
     println version['patch_level']
     println version
 }
