@@ -30,17 +30,17 @@ Jobs.createAppStatusViews(this, path)
 // get apps from testing, without ucs components
 apps = Apps.getApps(version, test=true, ucs_components=false)
 
-// create jobs for every app
-apps.keySet().sort().each { app ->
-
-  path = workdir + '/Apps/' + app
-
-  // create app folder
-  folder(path)
-  
-  // create  jobs
-  Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
-  Jobs.createAppAutotestMultiEnv(this, path, version, patch_level, apps[app])
-  Jobs.createAppAutotestMultiEnvUpdateFrom(this, path, version, patch_level, last_version, apps[app])
-
-}
+//// create jobs for every app
+//apps.keySet().sort().each { app ->
+//
+//  path = workdir + '/Apps/' + app
+//
+//  // create app folder
+//  folder(path)
+//  
+//  // create  jobs
+//  Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
+//  Jobs.createAppAutotestMultiEnv(this, path, version, patch_level, apps[app])
+//  Jobs.createAppAutotestMultiEnvUpdateFrom(this, path, version, patch_level, last_version, apps[app])
+//
+//}
