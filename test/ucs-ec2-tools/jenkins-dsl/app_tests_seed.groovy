@@ -39,8 +39,7 @@ apps.keySet().sort().each { app ->
   path = workdir + '/Apps/' + app
 
   println path
-  Jobs.createAppStatusViews(this)
-  //Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
+  Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
   // create jobs
   //createAppAutotestMultiEnv(path, version, patch_level, apps[app])
   //createAppAutotestUpdateMultiEnv(path, version, patch_level, apps[app])
