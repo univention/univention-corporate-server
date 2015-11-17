@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-directory-manager-modules
+fix: 11.0.2-6.1353.201511172242
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * The locale is not anymore replaced by the Country syntax class. This caused
+   side effects in all processes which imported the UDM python modules. For
+   example the translation of the appcenter UMC modules was not possible.
+bug: [39146]

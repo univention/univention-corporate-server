@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-management-console-module-udm
+fix: 6.0.11-2.633.201511172240
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * It is now possible to import a license file when being logged in via
+   single sign on.
+bug: [39675]
