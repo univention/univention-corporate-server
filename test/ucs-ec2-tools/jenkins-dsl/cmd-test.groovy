@@ -27,7 +27,7 @@ if (last_version == null) {
 apps = new Apps().getApps(version, test=true, ucs_components=false)
 
 // create jobs for every app
-apps.keySet()each { app ->
+apps.keySet().sort().each { app ->
   
   //// create folders
   //println workdir + '/apps'
@@ -47,8 +47,11 @@ apps.keySet()each { app ->
 
 def createJob(Map app) {
     println " -> ${app.id}"
+    println " -> ${app.required_apps}"
+    println " -> ${app.roles}"
 
-    if (app.required_apps) {
-        println " ...${app.required_apps.join(' ')}..."
-    }
+
+    //if (app.required_apps) {
+    //    println " ...${app.required_apps.join(' ')}..."
+    //}
 }

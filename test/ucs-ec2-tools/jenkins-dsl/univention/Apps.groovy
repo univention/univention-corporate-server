@@ -20,80 +20,61 @@ class Apps {
 		def index = new JsonSlurper().parse(reader)
 
 		def apps = [:]
-		index.keySet().sort().each {
-			def app = it.split('_')
-			if (app.size() == 1) {
-				version = '00000000'
-			} else {
-				version = app[1]
-			}
-			if (index."$it".get('ini') == null) {
-				return 
-			}
-			if (index."$it".ini.get('url') == null) {
-				return
-			}
-			def name = app[0]
-			if (apps.get(name) == null) {
-				apps[name] = [:]
-				apps[name]['version'] = version
-				apps[name]['ini'] = index."$it".ini.url.replace('appcenter.test', 'appcenter-test')
-			} else {
-		    	if (version > apps[name]['version']) {
-		        	apps[name]['version'] = version
-		        	apps[name]['ini'] = index."$it".ini.url.replace('appcenter.test', 'appcenter-test')
-		    	}
-			}
-		}
+        index.each {
 
-		def ret_val = [:]
-		apps.keySet().sort().each { name ->
+            // get ini url
+            def app = it.getValue()
+            if (app.get('ini') == null || app.ini.get('url') == null) {
+                return
+            }
+            app.ini.url = app.ini.url.replace('appcenter.test', 'appcenter-test')
 
+            // get ini as property object
+            url = new URL(app.ini.url)
+            def properties = new java.util.Properties()
+            properties.load(url.newInputStream())
 
-			// get ini as property object
-			url = new URL(apps."$name".ini)
-			def properties = new java.util.Properties()
-			properties.load(url.newInputStream())
+            // ignore UCS components
+            if (! ucs_components) {
+                def categories = properties.getProperty('Categories')
+                if (categories && categories.toLowerCase().contains('ucs components')) {
+                    return
+                }
+            }
 
-			// ignore UCS components
-			if (! ucs_components) {
-				def categories = properties.getProperty('Categories')
-				if (categories && categories.toLowerCase().contains('ucs components')) {
-					return
-				}
-			}
+            // get ID
+            def app_id = properties.getProperty('ID')
+            if (app_id == null) {
+                return
+            }
 
-			def app_id = properties.getProperty('ID')
-			if (app_id == null) {
-				return
-			}
+            // get infos
+            apps[app_id] = [:]
+            apps[app_id]['id'] = app_id
+            apps[app_id]['roles'] = []
+            apps[app_id]['required_apps'] = []
 
-			ret_val[app_id] = [:]
-			ret_val[app_id]['id'] = app_id
-			ret_val[app_id]['roles'] = []
-			ret_val[app_id]['required_apps'] = []
+            // requierd apps, always add app itself
+            def required_apps = properties.getProperty('RequiredApps')
+            if (required_apps) {
+                required_apps.split(',').each {
+                    apps[app_id]['required_apps'] << it
+                }
+            }
+            apps[app_id]['required_apps'] << app_id
 
-			// requierd apps, always add app itself
-			def required_apps = properties.getProperty('RequiredApps')
-			if (required_apps) {
-				required_apps.split(',').each {
-					ret_val[app_id]['required_apps'] << it
-				}
-			}
-			ret_val[app_id]['required_apps'] << app_id
+            // get roles
+            def roles = properties.getProperty('ServerRole')
+            if (roles == null) {
+                roles = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
+            }
+            roles.split(',').each { role ->
+                if (univention.Constants.ROLE_MAPPING.get(role)) {
+                    apps[app_id]['roles'] << univention.Constants.ROLE_MAPPING.get(role)
+                }
+            }
+        }
 
-			// get roles
-			def roles = properties.getProperty('ServerRole')
-			if (roles == null) {
-				roles = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
-			}
-			roles.split(',').each { role ->
-				if (univention.Constants.ROLE_MAPPING.get(role)) {
-					ret_val[app_id]['roles'] << univention.Constants.ROLE_MAPPING.get(role)
-				}
-			}
-		}
-
-		return ret_val
+		return apps
 	}
 }
