@@ -262,8 +262,8 @@ exec ./ucs-ec2-create -c \$cfg
       // throttle build
       throttleConcurrentBuilds {
         categories(['ec2apptests'])
-        configure { throttleNode ->
-          throttleNode / matrixOptions {
+        configure { project ->
+          'hudson.plugins.throttleconcurrents.ThrottleJobProperty' / matrixOptions {
             throttleMatrixBuilds(true)
             throttleMatrixConfigurations(false)
           }
