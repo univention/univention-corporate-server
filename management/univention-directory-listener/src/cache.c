@@ -86,8 +86,6 @@
 #define MASTER_KEY "__master__"
 #define MASTER_KEY_SIZE (sizeof MASTER_KEY)
 
-extern int INIT_ONLY;
-
 char *cache_dir = "/var/lib/univention-directory-listener";
 char *ldap_dir = "/var/lib/univention-ldap";
 
@@ -193,6 +191,12 @@ int cache_init(void)
 #endif
 	setup_cache_filter();
 	return 0;
+}
+
+void cache_sync(void) {
+	if (!INIT_ONLY && dbp) {
+		dbp->sync(dbp, 0);
+	}
 }
 
 int cache_set_schema_id(char *key, const NotifierID value)
@@ -313,9 +317,7 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp)
 		return rv;
 	}
 
-	if ( !INIT_ONLY ) {
-		dbp->sync(dbp, 0);
-	}
+	cache_sync();
 
 	return 0;
 }
@@ -415,9 +417,7 @@ inline int cache_update_entry(NotifierID id, char *dn, CacheEntry *entry)
 #ifdef WITH_DB42
 	dbtxnp->commit(dbtxnp, 0);
 #endif
-	if ( !INIT_ONLY ) {
-		dbp->sync(dbp, 0);
-	}
+	cache_sync();
 	signals_unblock();
 
 	free(data.data);
@@ -473,9 +473,7 @@ int cache_delete_entry(NotifierID id, char *dn)
 #ifdef WITH_DB42
 	dbtxnp->commit(dbtxnp, 0);
 #endif
-	if ( !INIT_ONLY ) {
-		dbp->sync(dbp, 0);
-	}
+	cache_sync();
 	signals_unblock();
 
 	return rv;

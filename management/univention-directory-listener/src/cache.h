@@ -38,6 +38,7 @@
 #include "network.h"
 #include "cache_entry.h"
 
+extern int INIT_ONLY;
 extern char *cache_dir;
 extern char *ldap_dir;
 
@@ -49,6 +50,7 @@ struct _CacheMasterEntry {
 #endif
 
 int	cache_init				(void);
+void	cache_sync(void);
 #ifdef WITH_DB42
 int	cache_get_master_entry			(CacheMasterEntry	 *master_entry);
 int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
