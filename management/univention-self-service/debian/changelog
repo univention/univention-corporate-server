@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-23) unstable; urgency=low
+
+  * Bug #39981: Adapted regex for redirect url
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 18 Nov 2015 12:05:42 +0100
+
 univention-self-service (1.0.2-22) unstable; urgency=low
 
   * Add unjoin scipt copy to prerm scripts (Bug #39980)

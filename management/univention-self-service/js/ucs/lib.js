@@ -108,8 +108,9 @@ define([
 		_getUrlForRedirect: function() {
 			var url = getQuery('url');
 			if (url) {
-				// checking for 'ftp://', 'http(s)://'
-				var reg = /tp*:\/\//i;
+				// checking if url is relative
+				// both items '//' or ':' are forbidden except ':' followed by a number, like a port
+				var reg = /^\s*(\w*:\D|\/\/)/i;
 				var isUrlRelative = !reg.test(url);
 				if (isUrlRelative) {
 					return url;
