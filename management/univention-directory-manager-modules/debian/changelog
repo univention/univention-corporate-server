@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-7) unstable; urgency=low
+
+  * Lowercase domain names for mail domains (Bug #39721)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2015 17:17:58 +0100
+
 univention-directory-manager-modules (11.0.2-6) unstable; urgency=medium
 
   * Bug #39146: Fix removing of locale by Country syntax class
