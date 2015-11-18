@@ -1319,7 +1319,7 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
 	<para>
-		Der <foreignphrase>Single Sign-On</foreignphrase> für &ucsUMC; ist standardmäßig aktiviert und kann auf der UMC-Anmeldeseite oben rechts initiiert werden.
+		Der <foreignphrase>Single Sign-On</foreignphrase> für &ucsUMC; ist standardmäßig aktiviert und kann auf der <wordasword>UMC-Anmeldeseite</wordasword> oben rechts initiiert werden.
 		Nach einem Klick auf den Link erscheint die Anmeldemaske des UCS Identity Providers.
 		Hier werden die gleichen Anmeldedaten wie beim normalen &ucsUMC; Login verwendet.
 	</para>
