@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-4) unstable; urgency=low
+
+  * Bug #38622: added mobile check for UMC header
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 18 Nov 2015 13:55:36 +0100
+
 univention-management-console-frontend (5.0.63-3) unstable; urgency=medium
 
   * Bug #39898: fix username field in login dialog
