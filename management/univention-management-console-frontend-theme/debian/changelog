@@ -1,3 +1,9 @@
+univention-management-console-frontend-theme (1.0.4-1) unstable; urgency=medium
+
+  * Bug #39498: fix grid header checkbox rule for Internet Explorer
+
+ -- Florian Best <best@univention.de>  Wed, 18 Nov 2015 11:15:25 +0100
+
 univention-management-console-frontend-theme (1.0.3-1) unstable; urgency=medium
 
   * Bug #39611: make umcLoginIframe positioned absolute
