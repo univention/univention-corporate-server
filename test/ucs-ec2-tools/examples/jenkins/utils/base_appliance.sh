@@ -814,8 +814,8 @@ deb https://updates.software-univention.de/4.0/maintained/ 4.0-3/all/
 deb https://updates.software-univention.de/4.0/maintained/ 4.0-3/amd64/
 deb https://updates.software-univention.de/4.0/maintained/ 4.0-4/all/
 deb https://updates.software-univention.de/4.0/maintained/ 4.0-4/amd64/
-deb https://updates.software-univention.de/4.0/maintained/ 4.1-0/all/
-deb https://updates.software-univention.de/4.0/maintained/ 4.1-0/amd64/
+deb https://updates.software-univention.de/4.1/maintained/ 4.1-0/all/
+deb https://updates.software-univention.de/4.1/maintained/ 4.1-0/amd64/
 __EOF__
 
 	cat >/etc/apt/sources.list.d/20_ucs-online-component.list <<__EOF__
@@ -829,8 +829,8 @@ __EOF__
 #       /etc/univention/templates/files/etc/apt/sources.list.d/20_ucs-online-component.list
 #
  
-deb https://updates.software-univention.de/4.0/maintained/component/ 4.1-0-errata/all/
-deb https://updates.software-univention.de/4.0/maintained/component/ 4.1-0-errata/amd64/
+deb https://updates.software-univention.de/4.1/maintained/component/ 4.1-0-errata/all/
+deb https://updates.software-univention.de/4.1/maintained/component/ 4.1-0-errata/amd64/
 __EOF__
 
 }
