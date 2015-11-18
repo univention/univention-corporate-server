@@ -94,7 +94,7 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.open(self)
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name'].lower()), self.position.getDn())
 
 	def _ldap_addlist(self):
 		ocs=[]
@@ -104,6 +104,11 @@ class object(univention.admin.handlers.simpleLdap):
 
 		al.insert(0, ('objectClass', ocs))
 		return al
+
+	def _ldap_modlist(self):
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		ml = [(a, b, c.lower()) if a == "cn" else (a, b, c) for (a, b, c) in ml]
+		return ml
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
