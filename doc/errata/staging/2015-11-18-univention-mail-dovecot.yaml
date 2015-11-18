@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: univention-mail-dovecot
+fix: 1.0.0-11.51.201511181601
+version: [4]
+desc: |
+ This update addresses the following issue:
+ * An error in the dovecot listener could lead to the unintended
+   deletion of a shared folder, when it should just have been renamed
+   (Bug 40018).
+bug: [40018]
