@@ -260,15 +260,15 @@ exec ./ucs-ec2-create -c \$cfg
         )
       }
       // throttle build
-      throttleConcurrentBuilds {
-        categories(['ec2apptests'])
-        configure { throttleConcurrentBuildsNode ->
-          throttleConcurrentBuildsNode / matrixOptions {
-            throttleMatrixBuilds(true)
-            throttleMatrixConfigurations(false)
-          }
-        }
-      }
+      //throttleConcurrentBuilds {
+      //  categories(['ec2apptests'])
+      //  configure { throttleConcurrentBuildsNode ->
+      //    throttleConcurrentBuildsNode / matrixOptions {
+      //      throttleMatrixBuilds(true)
+      //      throttleMatrixConfigurations(false)
+      //    }
+      //  }
+      //}
       // post build
       publishers {
         archiveArtifacts('**/autotest-*.log,**/ucs-test.log,**/updater.log,**/setup.log,**/join.log,**/*.log')
