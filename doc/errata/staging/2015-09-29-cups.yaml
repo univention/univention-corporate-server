@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-7
 src: cups
-fix: 1.4.4-7.97.201509291754
+fix: 1.4.4-7.100.201511181602
 version: [7]
 desc: |
  This update addresses the following issues:
