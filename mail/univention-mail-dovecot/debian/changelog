@@ -1,3 +1,9 @@
+univention-mail-dovecot (2.0.0-4) unstable; urgency=low
+
+  * case insensitive name comparison for shared folders (Bug #40014)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2015 12:41:22 +0100
+
 univention-mail-dovecot (2.0.0-3) unstable; urgency=low
 
   * Make Managesieve available via IPv6 (Bug #39702)
