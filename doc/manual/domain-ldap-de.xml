@@ -1296,10 +1296,10 @@ univention-directory-listener-ctrl resync cups-printers
 	  Über ein kryptografisches Zertifikat wird der SAML Identity Provider bei einem externen Dienst fest registriert und vertraut diesem.
 	  Der Benutzer authentifiziert sich dann einmalig gegenüber UCS und kann den Dienst ohne erneute Authentifizierung nutzen.
 	</para>
-		<figure id="domain:saml:samllogin">
-			<title>Die <foreignphrase>Single Sign-On</foreignphrase>-Anmeldeseite</title>
-			<graphic scalefit="1" width="70%" fileref="illustrations41/sso_SAML_login_page.png"/>
-		</figure>
+	<figure id="domain:saml:samllogin">
+		<title>Die <foreignphrase>Single Sign-On</foreignphrase>-Anmeldeseite</title>
+		<graphic scalefit="1" width="70%" fileref="illustrations41/sso_SAML_login_page.png"/>
+	</figure>
 	<para>
 		Der SAML 2.0 kompatible UCS Identity Provider wird durch die Integration von <package>simplesamlphp</package> bereitgestellt.
 	</para>
@@ -1319,32 +1319,36 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Anmelden per <foreignphrase>Single Sign-On</foreignphrase></title>
 	<para>
-		Um sich per <foreignphrase>Single Sign-On</foreignphrase> an &ucsUMC; anzumelden, findet sich oben auf der UMC Anmeldeseite ein Link zum <foreignphrase>Single Sign-On</foreignphrase>.
-		Nach einem Klick darauf erscheint die Anmeldemaske des UCS Identity Providers.
+		Der <foreignphrase>Single Sign-On</foreignphrase> für &ucsUMC; ist standardmäßig aktiviert und kann auf der UMC-Anmeldeseite oben rechts initiiert werden.
+		Nach einem Klick auf den Link erscheint die Anmeldemaske des UCS Identity Providers.
 		Hier werden die gleichen Anmeldedaten wie beim normalen &ucsUMC; Login verwendet.
-		<figure id="domain:saml:umclogin">
-			<title>Der <foreignphrase>Single Sign-On</foreignphrase> Link auf der &ucsUMC; Anmeldeseite</title>
-			<graphic scalefit="1" width="70%" fileref="illustrations41/sso_umc_login_page.png"/>
-		</figure>
 	</para>
-	</section>
-
-	<section id="domain:saml:usermanagement">
-	<title>Benutzer für Service Provider freischalten</title>
 	<para>
-		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
-		Auf dem <foreignphrase>Tab</foreignphrase> <guimenu>Konto</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
+		Andere Webdienste leiten ebenfalls auf die Anmeldeseite des UCS Identity Providers weiter, wenn ein <foreignphrase>Single Sign-On</foreignphrase> durchgeführt wird.
+		Nach erfolgreicher Authentifizierung wird der Benutzer wieder auf die Seite des Webdienstes gesendet werden.
+		Diese Dienste müssen wie in <xref linkend="domain:saml:additionalserviceprovider"/> beschrieben registriert werden.
 	</para>
+	<para>
+		Der <foreignphrase>Single Sign-On</foreignphrase> an einem Dienst kann auch vom UCS Identity Provider initiiert werden.
+		Dies erspart den Umweg, zunächst den externen Dienst selbst aufzurufen und sich von dort zur Authentifizierung weiterleiten zu lassen.
+		Dazu muss der Identity Provider mit einem Link der Form <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri> aufgerufen werden.
+	</para>
+	<figure id="domain:saml:umclogin">
+		<title>Der <foreignphrase>Single Sign-On</foreignphrase> Link auf der &ucsUMC; Anmeldeseite</title>
+		<graphic scalefit="1" width="70%" fileref="illustrations41/sso_umc_login_page.png"/>
+	</figure>
 	</section>
 
 	<section id="domain:saml:additionalserviceprovider">
 	<title>Hinzufügen eines neuen externen Service Providers</title>
 	<para>
 		Die am UCS Identity Provider registrierten Service Provider können über das UMC Domänen Modul <guimenu>SAML identity provider</guimenu> verwaltet werden.
-		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des <wordasword>SAML-Zertifikats</wordasword> auf dem Service Provider benötigt.
-	    Dieses kann über einen Download-Link im UMC Modul heruntergeladen werden.
+		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
+		Auf dem <foreignphrase>Tab</foreignphrase> <guimenu>Konto</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
 	</para>
 	<para>
+		Um den UCS Identity Provider bei einem SAML Service Provider zu registrieren, wird der öffentliche Teil	des <wordasword>SAML-Zertifikats</wordasword> auf dem Service Provider benötigt.
+	    Dieses kann über einen Download-Link im UMC Modul heruntergeladen werden.
 		Andere Service Provider benötigen die <wordasword>XML-Metadaten</wordasword> des Identity Providers in Form eines Datei-<foreignphrase>Uploads</foreignphrase>.
 		In der Standardkonfiguration kann die XML-Datei unter der URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri> heruntergeladen werden.
 	</para>
@@ -1474,11 +1478,6 @@ univention-directory-listener-ctrl resync cups-printers
 			</tbody>
 		</tgroup>
 	</table>
-	<para>
-		Der <foreignphrase>Single Sign-On</foreignphrase> an einem Dienst kann auch vom UCS Identity Provider initiiert werden.
-		Dies erspart den Umweg, zunächst den externen Dienst selbst aufzurufen und sich von dort zur Authentifizierung weiterleiten zu lassen.
-		Dazu muss der Identity Provider mit einem Link der Form <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri> aufgerufen werden.
-	</para>
 	</section>
 </section>
 

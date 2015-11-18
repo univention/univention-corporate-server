@@ -439,7 +439,7 @@
 			and the hostname of the Mac OS X client in the field <guimenu>Computer ID</guimenu>, the
 			join process is initiated after clicking the button <guimenu>Bind...</guimenu>. The
 			username and password of an account in the <systemitem class="groupname">Domain Admins</systemitem> group
-			needs to be entered, e.g. <systemitem class="username">Administrator</systemitem>.
+			needs to be entered, e.g., <systemitem class="username">Administrator</systemitem>.
 		  </para>
 		</section>
 
@@ -1281,32 +1281,36 @@ univention-directory-listener-ctrl resync cups-printers
 	<section id="domain:saml:ssologin">
 	<title>Login via <foreignphrase>single sign-on</foreignphrase></title>
 	<para>
-		To login to &ucsUMC; via <foreignphrase>single sign-on</foreignphrase>, a link to the <foreignphrase>single sign-on</foreignphrase> page is available on the top of the login page.
-		By clicking that link the UCS identity provider login page will be shown.
+		The <foreignphrase>single sign-on</foreignphrase> for &ucsUMC; is enabled by default and can be accessed at the top right of the login page.
+		By clicking the link, the UCS identity provider login page will be shown.
 		Here, the same login credentials as on the standard &ucsUMC; login page must be provided.
-		<figure id="domain:saml:umclogin">
+	</para>
+	<para>
+		Other web services will redirect to the UCS identity provider login page in a similar fashion in order to carry out a <foreignphrase>single sign-on</foreignphrase>.
+		After authenticating, the user will be forwarded back to the web service itself.
+		These services need to be registered as described in <xref linkend="domain:saml:additionalserviceprovider"/>.
+	</para>
+	<para>
+		The <foreignphrase>single sign-on</foreignphrase> for a particular service can be initiated from the UCS identity provider, as well.
+		This saves an extra visit at the external web service which redirects to the authentication site.
+		To do so, a link to the UCS identity provider page needs to be provided in the form of <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri>.
+	</para>
+	<figure id="domain:saml:umclogin">
 		<title>The <foreignphrase>single sign-on</foreignphrase> link on the &ucsUMC; login page</title>
 		<graphic scalefit="1" width="70%" fileref="illustrations41/sso_umc_login_page_en.png"/>
-		</figure>
-	</para>
-	</section>
-
-	<section id="domain:saml:usermanagement">
-	<title>Activating users for service providers</title>
-	<para>
-		Users have to be activated for a service provider, to be able to authenticate for it at the UCS identity provider.
-		On the user's <guimenu>Account tab</guimenu>, the service provider has to be added under <guimenu>SAML settings</guimenu>.
-	</para>
+	</figure>
 	</section>
 
 	<section id="domain:saml:additionalserviceprovider">
 	<title>Adding a new external service provider</title>
 	<para>
 		The &ucsUMC; domain module <guimenu>SAML identity provider</guimenu> allows to manage all service providers that are registered at the UCS identity provider.
-		To register the UCS identity provider at an external service provider, the public part of the SAML certificate is required by the service provider.
-		The certificate can be downloaded via a link in the UMC module.
+		Users have to be activated for a service provider, to be able to authenticate for it at the UCS identity provider.
+		On the user's <guimenu>Account tab</guimenu>, the service provider has to be added under <guimenu>SAML settings</guimenu>.
 	</para>
 	<para>
+		To register the UCS identity provider at an external service provider, the public part of the SAML certificate is required by the service provider.
+		The certificate can be downloaded via a link in the UMC module.
 		Some service providers may require the UCS identity provider XML metadata as a file upload.
 		In the default configuration, the XML file can be downloaded from the URL <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/metadata.php</uri>.
 	</para>
@@ -1369,7 +1373,7 @@ univention-directory-listener-ctrl resync cups-printers
 				<row>
 					<entry>Name of the attribute that is used as <option>NameID</option></entry>
 					<entry>
-						The LDAP attribute that is used to uniquely identify the user is provided here, e.g. <option>uid</option>.
+						The LDAP attribute that is used to uniquely identify the user is provided here, e.g., <option>uid</option>.
 					</entry>
 
 				</row>
@@ -1431,17 +1435,12 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>
 						Every LDAP attribute that should be transmitted to the service provider can be entered here.
 						In order for the UCS identity provider to process these attributes, they need to be registered additionally via the &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar>.
-						Values in the &ucsUCRV; have to be surrounded by apostrophes and be separated by commas, e.g. <option>'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'</option>.
+						Values in the &ucsUCRV; have to be surrounded by apostrophes and be separated by commas, e.g., <option>'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'</option>.
 					</entry>
 				</row>
 			</tbody>
 		</tgroup>
 	</table>
-	<para>
-		The <foreignphrase>single sign-on</foreignphrase> can also be initiated from the UCS identity provider.
-		This saves an extra visit at the external web service for getting redirected to the authentication site.
-		To do so, a link to the UCS identity provider page needs to be provided in the form of <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri>.
-	</para>
 	</section>
 </section>
 
