@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-directory-manager-modules
+fix: 11.0.2-7.1356.201511181848
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * Domain names for mail domains are now lowercased (Bug 39721).
+bug: [39721]
