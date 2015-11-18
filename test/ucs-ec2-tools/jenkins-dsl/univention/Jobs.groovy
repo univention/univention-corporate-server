@@ -124,12 +124,12 @@ exec ./ucs-ec2-create -c \$cfg
       // throttle build
       throttleConcurrentBuilds {
         categories(['ec2apptests'])
-        configure { matrixOptions ->
-           matrixOptions {
-             throttleMatrixBuilds('true')
-             throttleMatrixConfigurations('false')
-           }
-        }
+        //configure { matrixOptions ->
+        //   matrixOptions {
+        //     throttleMatrixBuilds('true')
+        //     throttleMatrixConfigurations('false')
+        //   }
+        //}
       }
       // post build
       publishers {
@@ -193,12 +193,12 @@ exec ./ucs-ec2-create -c \$cfg
       // throttle build
       throttleConcurrentBuilds {
         categories(['ec2apptests'])
-        configure { matrixOptions ->
-           matrixOptions {
-             throttleMatrixBuilds('true')
-             throttleMatrixConfigurations('false')
-           }
-        }
+        //configure { matrixOptions ->
+        //   matrixOptions {
+        //     throttleMatrixBuilds('true')
+        //     throttleMatrixConfigurations('false')
+        //   }
+        //}
       }
       // post build
       publishers {
@@ -263,10 +263,8 @@ exec ./ucs-ec2-create -c \$cfg
       throttleConcurrentBuilds {
         categories(['ec2apptests'])
         configure { matrixOptions ->
-           matrixOptions {
-             throttleMatrixBuilds('true')
-             throttleMatrixConfigurations('false')
-           }
+             throttleMatrixBuilds(true)
+             throttleMatrixConfigurations(false)
         }
       }
       // post build
