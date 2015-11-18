@@ -126,8 +126,11 @@ name = 'dovecot-shared-folder'
 description = 'Create shared folders for Dovecot'
 filter = '(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))' % (hostname, domainname)
 
-
 def handler(dn, new, old):
+	global hostname, domainname
+	hostname = hostname.lower()
+	domainname = domainname.lower()
+
 	listener.configRegistry.load()
 	dl = DovecotSharedFolderListener(listener, name)
 
