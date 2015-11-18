@@ -121,6 +121,10 @@ exec ./ucs-ec2-create -c \$cfg
           """
         )
       }
+      // throttle build
+      throttleConcurrentBuilds {
+        categories(['ec2apptests'])
+      }
       // post build
       publishers {
         archiveArtifacts('**/autotest-*.log,**/ucs-test.log,**/updater.log,**/setup.log,**/join.log,**/*.log')
@@ -180,6 +184,10 @@ exec ./ucs-ec2-create -c \$cfg
 """
         )
       }
+      // throttle build
+      throttleConcurrentBuilds {
+        categories(['ec2apptests'])
+      }
       // post build
       publishers {
         archiveArtifacts('**/autotest-*.log,**/ucs-test.log,**/updater.log,**/setup.log,**/join.log,**/*.log')
@@ -238,6 +246,10 @@ sed -i "s|%PARAM_HALT%|\$HALT|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg
 """
         )
+      }
+      // throttle build
+      throttleConcurrentBuilds {
+        categories(['ec2apptests'])
       }
       // post build
       publishers {
