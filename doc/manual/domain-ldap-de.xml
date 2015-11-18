@@ -1305,7 +1305,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		Der UCS Identity Provider ist eng in die UCS Domäne eingebunden.
-		Daher müssen Rechner, von denen der UCS Identity Providers genutzt werden soll, DNS-Namen in der UCS-Domäne auflösen können.
+		Daher müssen Rechner, von denen der UCS Identity Provider genutzt werden soll, DNS-Namen in der UCS-Domäne auflösen können.
 		Die DNS-Server der Domäne sollten auf allen Clients eingetragen sein, um den zentralen DNS-Namen, im Normalfall <uri>ucs-sso.<replaceable>domainname</replaceable></uri>, auflösen zu können.
 	</para>
 	<para>
@@ -1327,10 +1327,13 @@ univention-directory-listener-ctrl resync cups-printers
 			<graphic scalefit="1" width="70%" fileref="illustrations41/sso_umc_login_page.png"/>
 		</figure>
 	</para>
+	</section>
+
+	<section id="domain:saml:usermanagement">
+	<title>Benutzer für Service Provider freischalten</title>
 	<para>
-		Der <foreignphrase>Single Sign-On</foreignphrase> an einem Dienst kann auch vom UCS Identity Provider initiiert werden.
-		Dies erspart den Umweg, zunächst den externen Dienst selbst aufzurufen und sich von dort zur Authentifizierung weiterleiten zu lassen.
-		Dazu muss der Identity Provider mit einem Link der Form <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri> aufgerufen werden.
+		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
+		Auf dem <foreignphrase>Tab</foreignphrase> <guimenu>Konto</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
 	</para>
 	</section>
 
@@ -1457,6 +1460,7 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>Der Wert des <option>Formatfeldes</option> für Attribute</entry>
 					<entry>
 						Sollen die übertragenen Attribute mit einem besonderen <option>Formatwert</option> übertragen werden, kann dieser hier eingetragen werden.
+						Beispiel: <option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option> oder <option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>.
 					</entry>
 				</row>
 				<row>
@@ -1464,18 +1468,16 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>
 						Hier kann jedes zu übertragende LDAP-Attribut eingetragen werden.
 						Damit der UCS Identity Provider die angegebenen Attribute verarbeiten kann, müssen sie zusätzlich in der &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar> eingetragen werden.
+						Die Werte in der &ucsUCRV; müssen in Apostrophe umgeben und durch Kommata voneinander getrennt werden, beispielsweise <option>'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'</option>.
 					</entry>
 				</row>
 			</tbody>
 		</tgroup>
 	</table>
-	</section>
-
-	<section id="domain:saml:usermanagement">
-	<title>Benutzer für Service Provider freischalten</title>
 	<para>
-		Benutzer müssen freigeschaltet werden, bevor sie sich am UCS Identity Provider für einen Dienst authentifizieren können.
-		Auf dem <foreignphrase>Tab</foreignphrase> <guimenu>Konto</guimenu> eines Benutzers muss dazu unter <guimenu>SAML Einstellungen</guimenu> der Service Provider Eintrag hinzugefügt werden.
+		Der <foreignphrase>Single Sign-On</foreignphrase> an einem Dienst kann auch vom UCS Identity Provider initiiert werden.
+		Dies erspart den Umweg, zunächst den externen Dienst selbst aufzurufen und sich von dort zur Authentifizierung weiterleiten zu lassen.
+		Dazu muss der Identity Provider mit einem Link der Form <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri> aufgerufen werden.
 	</para>
 	</section>
 </section>

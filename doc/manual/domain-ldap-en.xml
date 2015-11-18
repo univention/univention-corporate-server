@@ -1267,7 +1267,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		The UCS identity provider is tightly integrated into the UCS domain.
-		clients that will be used to access the UCS identity provider have to be able to resolve DNS record in the UCS domain.
+		Clients that will be used to access the UCS identity provider have to be able to resolve DNS record in the UCS domain.
 		The domain DNS Servers should therefore be configured on all clients in order to be able to resolve the central DNS record, which by default is <uri>ucs-sso.<replaceable>domainname</replaceable></uri>.
 	</para>
 	<para>
@@ -1289,10 +1289,13 @@ univention-directory-listener-ctrl resync cups-printers
 		<graphic scalefit="1" width="70%" fileref="illustrations41/sso_umc_login_page_en.png"/>
 		</figure>
 	</para>
+	</section>
+
+	<section id="domain:saml:usermanagement">
+	<title>Activating users for service providers</title>
 	<para>
-		The <foreignphrase>single sign-on</foreignphrase> can also be initiated from the UCS identity provider.
-		This saves an extra visit at the external web service for getting redirected to the authentication site.
-		To do so, a link to the UCS identity provider page needs to be provided in the form of <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri>.
+		Users have to be activated for a service provider, to be able to authenticate for it at the UCS identity provider.
+		On the user's <guimenu>Account tab</guimenu>, the service provider has to be added under <guimenu>SAML settings</guimenu>.
 	</para>
 	</section>
 
@@ -1417,9 +1420,10 @@ univention-directory-listener-ctrl resync cups-printers
 					</entry>
 				</row>
 				<row>
-					<entry>Value for attribute format field</entry>
+					<entry>Value for <option>attribute format</option> field</entry>
 					<entry>
 						In case the transmitted attributes need to be sent in a particular format value, this format can be entered here.
+						Example: <option>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</option> or <option>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</option>.
 					</entry>
 				</row>
 				<row>
@@ -1427,18 +1431,16 @@ univention-directory-listener-ctrl resync cups-printers
 					<entry>
 						Every LDAP attribute that should be transmitted to the service provider can be entered here.
 						In order for the UCS identity provider to process these attributes, they need to be registered additionally via the &ucsUCRV; <envar>saml/idp/ldap/get_attributes</envar>.
+						Values in the &ucsUCRV; have to be surrounded by apostrophes and be seperated by commas, e.g. <option>'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'</option>.
 					</entry>
 				</row>
 			</tbody>
 		</tgroup>
 	</table>
-	</section>
-
-	<section id="domain:saml:usermanagement">
-	<title>Activating users for service providers</title>
 	<para>
-		Users have to be activated for a service provider, to be able to authenticate for it at the UCS identity provider.
-		On the user's <guimenu>Account tab</guimenu>, the service provider has to be added under <guimenu>SAML settings</guimenu>.
+		The <foreignphrase>single sign-on</foreignphrase> can also be initiated from the UCS identity provider.
+		This saves an extra visit at the external web service for getting redirected to the authentication site.
+		To do so, a link to the UCS identity provider page needs to be provided in the form of <uri>https://ucs-sso.<replaceable>domainname</replaceable>/simplesamlphp/saml2/idp/SSOService.php?spentityid=<replaceable>[Service provider identifier]</replaceable></uri>.
 	</para>
 	</section>
 </section>
