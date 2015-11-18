@@ -6,7 +6,7 @@ fix: 11.0.2-6.1353.201511172242
 version: [0]
 desc: |
  This update addresses the following issue:
- * The locale is not anymore replaced by the Country syntax class. This caused
+ * The locale is not replaced by the Country syntax class anymore. This caused
    side effects in all processes which imported the UDM python modules. For
    example the translation of the appcenter UMC modules was not possible.
 bug: [39146]
