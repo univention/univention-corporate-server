@@ -2,11 +2,12 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: 1.0.2-22.38.201511171551
+fix: 1.0.2-23.39.201511181211
 version: [0]
 desc: |
  This update addresses the following issues:
  * Regardless of the configured debug level, the token is now never
    written to a log file (Bug 39996).
  * Execute unjoin script, when removing package (Bug 39980).
-bug: [39980,39996]
+ * Improved the security of redirecting a user.
+bug: [39980,39996,39981]
