@@ -2,11 +2,13 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-directory-manager-modules
-fix: 11.0.2-6.1353.201511172242
+fix: 11.0.2-7.1356.201511181848
 version: [0]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The locale is not replaced by the Country syntax class anymore. This caused
    side effects in all processes which imported the UDM python modules. For
-   example the translation of the appcenter UMC modules was not possible.
-bug: [39146]
+   example the translation of the appcenter UMC modules was not possible
+   (Bug 39146).
+ * Domain names for mail domains are now lowercased (Bug 39721).
+bug: [39146,39721]
