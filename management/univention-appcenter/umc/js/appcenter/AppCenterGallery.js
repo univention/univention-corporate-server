@@ -61,7 +61,7 @@ define([
 				moduleID: item.id,
 				bootstrapClasses: this.bootstrapClasses
 			}));
-			var innerWrapper = put(appWrapperDiv, 'div.appInnerWrapper.umcGalleryItem');
+			var innerWrapper = put(appWrapperDiv, lang.replace('div[id={0}].appInnerWrapper.umcGalleryItem', [item.id]));
 
 			put(innerWrapper, 'div.border');
 
@@ -83,7 +83,7 @@ define([
 				domClass.toggle(innerWrapper, 'hover');
 			};
 			innerWrapper.onmouseout = function() {
-				domClass.toggle(innerWrapper, 'hover');
+				domClass.toggle(innerWrapper, 'hover secondTouch');
 			};
 
 			var statusIconClass = this.getStatusIconClass(item);

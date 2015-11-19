@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-6) unstable; urgency=low
+
+  * Bug #39663: Also show app description on touch devices
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 19 Nov 2015 12:16:17 +0100
+
 univention-appcenter (5.0.19-5) unstable; urgency=medium
 
   * Bug #39912: Fix update_available for local app

@@ -34,7 +34,9 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/window",
 	"dojo/on",
+	"dojo/has",
 	"dojo/query",
+	"dojo/dom",
 	"dojo/dom-class",
 	"dojo/dom-geometry",
 	"dojo/store/Memory",
@@ -45,7 +47,7 @@ define([
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, lang, array, win, on, domQuery, domClass, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
+], function(declare, lang, array, win, on, has, domQuery, dom, domClass, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
 	return declare("umc.modules.appcenter.AppCenterMetaCategory", [Container], {
 		// summary:
 		//		Offers a container which contains a label, More/Less button and a grid to
@@ -100,7 +102,21 @@ define([
 					isContextAction: false,
 					label: _('Open'),
 					callback: lang.hitch(this, function(id, app) {
-						this.onShowApp(app);
+						// for touch devices like smartphones and tablets:
+						// on the first touch show hover with long desc
+						// on second touch open app
+						if (has('touch')) {
+							var appNode = dom.byId(app.id);
+							var isSecondTouch = domClass.contains(appNode, 'secondTouch');
+							if (isSecondTouch) {
+								this.onShowApp(app);
+							} else {
+								domClass.add(appNode, 'hover secondTouch');
+							}
+						
+						} else {
+							this.onShowApp(app);
+						}
 					})
 				}]
 			});
