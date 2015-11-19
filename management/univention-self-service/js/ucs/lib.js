@@ -109,7 +109,7 @@ define([
 			var url = getQuery('url');
 			if (url) {
 				// checking if url is relative = has to start wit only one '/'
-				var reg = /^(\/[^\/])/;
+				var reg = /^\/([^\/]|$)/;
 				var isUrlRelative = reg.test(url);
 				if (isUrlRelative) {
 					return url;
