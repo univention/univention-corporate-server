@@ -198,21 +198,24 @@
 	<para>
 		Wird eine Kommandozeile in der Umgebung der App benötigt, muss zunächst in den Container gewechselt werden.
 		Dazu kann folgender Befehl ausgeführt werden (hier am Beispiel der fiktiven App <application>demo-docker-app</application>):
-	  <command>docker exec -it "$(ucr get appcenter/apps/<replaceable>demo-docker-app</replaceable>/container)" /bin/bash</command>.
 	</para>
-
+	<programlisting language="sh">
+docker exec \
+	-it "$(ucr get appcenter/apps/<replaceable>demo-docker-app</replaceable>/container)" \
+	/bin/bash
+	</programlisting>
 	<para>
 		<wordasword>Docker Apps</wordasword> lassen sich über das UMC-Modul weiter konfigurieren.
 		Die App kann gestartet und gestoppt, sowie die <guimenu>Autostart</guimenu>-Option gesetzt werden:
 		<itemizedlist>
 			<listitem><simpara>
-					<envar>Automatisch gestartet</envar> sorgt dafür, dass die App automatisch beim Hochfahren des Servers gestartet wird.
+					<guilabel>Automatisch gestartet</guilabel> sorgt dafür, dass die App automatisch beim Hochfahren des Servers gestartet wird.
 			</simpara></listitem>
 			<listitem><simpara>
-					<envar>Manuell gestartet</envar> verhindert den automatischen Start der App, sie kann aber über das UMC-Modul gestartet werden.
+					<guilabel>Manuell gestartet</guilabel> verhindert den automatischen Start der App, sie kann aber über das UMC-Modul gestartet werden.
 			</simpara></listitem>
 			<listitem><simpara>
-					<envar>Start wird verhindert</envar> unterbindet grundsätzlich den Start der App; sie kann dann auch nicht über das UMC-Modul gestartet werden.
+					<guilabel>Start wird verhindert</guilabel> unterbindet grundsätzlich den Start der App; sie kann dann auch nicht über das UMC-Modul gestartet werden.
 			</simpara></listitem>
 		</itemizedlist>
 		Darüber hinaus können Apps ggf. über weitere Parameter angepasst werden.

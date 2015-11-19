@@ -175,7 +175,51 @@
 	  application is to be installed.
 	</para>
 
-	<!-- TODO: Bug #39847 r65505 -->
+	<para>
+		Some applications use the container technology <application>Docker</application>.
+		In these cases, the application (and its direct environment) is encapsulated from the rest and both security as well as the compatibility with other applications increased.
+	</para>
+
+	<para>
+		From a technical perspective, another &ucsMember; is started as the Docker container in which the app is then installed.
+		This &ucsMember; is self-contained to the point that errata and release updates also need to be installed there.
+		A corresponding host object is created for the &ucsMember; in the LDAP directory and can be edited via the &ucsUMS;.
+		This can then be used to change the update policies, for example.
+	</para>
+
+	<para>
+		On the network side, the container can only be reached from the computer on which the app is installed.
+		The app can, however, open certain ports, which can be forwarded from the actual computer to the container.
+		UCS' firewall is correspondingly configured automatically to allow access to these ports.
+	</para>
+
+	<para>
+		If a command line is required in the app's environment, the first step is to switch to the container.
+		This can be done by running the following command (using the fictitious app <application>demo-docker-app</application> as an example in this case):
+	</para>
+	<programlisting language="sh">
+docker exec \
+	-it "$(ucr get appcenter/apps/<replaceable>demo-docker-app</replaceable>/container)" \
+	/bin/bash
+	</programlisting>
+
+	<para>
+		<wordasword>Docker apps</wordasword> can be further configured via the UMC module.
+		The app can be started and stopped and the <guimenu>autostart</guimenu> option be set:
+		<itemizedlist>
+			<listitem><simpara>
+					<guilabel>Started automatically</guilabel> ensures that the app is started automatically when the server is started up.
+			</simpara></listitem>
+			<listitem><simpara>
+					<guilabel>Started manually</guilabel> prevents the app from starting automatically, but it can be started via the UMC module.
+			</simpara></listitem>
+			<listitem><simpara>
+					<guilabel>Start is prevented</guilabel> prevents the app from starting at any time; it cannot even be started via the UMC module.
+			</simpara></listitem>
+		</itemizedlist>
+		In addition, apps can also be adjusted using additional parameters.
+		The menu for doing so can be opened using the <guibutton>App Settings</guibutton> button of an installed app.
+	</para>
 
 	<figure id="appcenter-configure"><title>Setting of an application in the App Center</title>
 	<graphic scalefit="1" width="100%" fileref="illustrations41/appcenter_configure_en.png"/>
@@ -918,3 +962,4 @@ univention-pkgdb-scan --remove-system RECHNERNAME
   </section>
 
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->
