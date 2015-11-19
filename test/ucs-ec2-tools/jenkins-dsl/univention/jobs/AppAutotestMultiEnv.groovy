@@ -1,18 +1,17 @@
 package univention.jobs
 
-class AppAutotestUpdateMultiEnv {
+class AppAutotestMultiEnv {
   static create(dslFactory, String path, String version, String patch_level, Map app) {
-    dslFactory.matrixJob(path + '/App Autotest Update MultiEnv') {
+    dslFactory.matrixJob(path + '/App Autotest MultiEnv') {
       // config
       authenticationToken('secret')
       quietPeriod(60)
       logRotator(-1, 5, -1, -1)
-      description("1. Install the given apps from App Center<br/>2. Switch to Test App Center and Update the apps<br/>3. Run ucs-test")
+      description("1. Switch to Test App Center and install the given apps<br/>2. Run ucs-test<br/>3. Uninstall the given apps<br/>4. Run appcenter uninstall test")
       concurrentBuild()
       // build parameters
       parameters {
         booleanParam('HALT', true, 'uncheck to disable shutdown of ec2 instances')
-        booleanParam('Update_to_testing_errata_updates', false, 'Update to unreleased errata updates from updates-test.software-univention.de?')
         stringParam('patch_level', "${patch_level}", "test this patch level version of UCS ${version}")
       }
       // svn
@@ -43,12 +42,12 @@ class AppAutotestUpdateMultiEnv {
       // build step
       steps {
         shell(
-          """
-cfg="examples/jenkins/autotest-12*-appupdate-\${Systemrolle}-\${SambaVersion}.cfg"
+"""
+cfg="examples/jenkins/autotest-10*-app-\${Systemrolle}-\${SambaVersion}.cfg"
 sed -i "s|APP_ID|${app.required_apps.join(' ')}|g" \$cfg
-test "\$Update_to_testing_errata_updates" = true && sed -i "s|upgrade_to_latest_errata|upgrade_to_latest_test_errata|g" \$cfg
+sed -i "s|%PARAM_HALT%|\$HALT|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg
-          """
+"""
         )
       }
       // throttle build
