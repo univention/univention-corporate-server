@@ -10,5 +10,8 @@ desc: |
    side effects in all processes which imported the UDM python modules. For
    example the translation of the appcenter UMC modules was not possible
    (Bug 39146).
- * Domain names for mail domains are now lowercased (Bug 39721).
+ * From now on domain names for mail domains will be lowercased when created
+   or modified. Existing domain names will not be changed automatically, only
+   when they are modified. Mixed case domain names caused inconsistent
+   behaviour with Dovecot and shared folders (Bug 39721).
 bug: [39146,39721]
