@@ -7,7 +7,7 @@ class AppAutotestMultiEnvUpdateFrom {
       quietPeriod(60)
       authenticationToken('secret')
       logRotator(-1, 5, -1, -1)
-      description("1. Install the apps from App Center<br/>2. Switch to Test App Center<br/>3. Upgrade from ${last_version} to ${version}4. Run ucs-test")
+      description("1. Install the apps from App Center<br/>2. Switch to Test App Center<br/>3. Upgrade from ${last_version} to ${version}<br/>4. Run ucs-test")
       concurrentBuild()
       // build parameters
       parameters {
