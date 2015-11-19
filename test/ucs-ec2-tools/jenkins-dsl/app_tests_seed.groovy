@@ -4,14 +4,11 @@ import univention.Constants
 import univention.jobs.AppStatusViews
 import univention.jobs.AppAutotestUpdateMultiEnv
 import univention.jobs.AppAutotestMultiEnv
+import univention.jobs.AppAutotestMultiEnvUpdateFrom
 
 // Build parameters are exposed as environment variables in Jenkins.
 // A seed job build parameter named FOO is available as FOO variable
 // in the DSL scripts. See the section about environment variables above.
-
-// get location (and UCS version) from job name 
-//def loc = new File(JOB_NAME)
-//def workdir = loc.getParent()
 
 univention.Constants.VERSIONS.each {
 
@@ -31,6 +28,6 @@ univention.Constants.VERSIONS.each {
         folder(app_path)
         AppAutotestUpdateMultiEnv.create(this, app_path, version, patch_level, apps[app])
         AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
-        //Jobs.createAppAutotestMultiEnvUpdateFrom(this, app_path, version, patch_level, last_version, apps[app])
+        AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
     }
 }
