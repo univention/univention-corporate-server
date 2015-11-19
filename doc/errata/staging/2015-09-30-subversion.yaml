@@ -3,7 +3,7 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-7
 src: subversion
 fix: 1.6.12dfsg-7.92.201509300953
-version: [6,7]
+version: [7]
 desc: |
  This update addresses the following issues:
  * Various denial of service issues in mod_dav_svn (CVE-2013-1845,
