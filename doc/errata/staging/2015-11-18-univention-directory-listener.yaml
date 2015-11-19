@@ -6,5 +6,5 @@ fix: 9.0.2-8.288.201511181406
 version: [4]
 desc: |
  This update addresses the following issue:
- * Disabling flushing the listener cache during module initialization.
+ * Disable flushing the listener cache during module initialization.
 bug: [39958]
