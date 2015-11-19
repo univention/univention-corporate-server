@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-system-activation
+fix: 1.0.1-1.49.201511190935
+version: [0]
+desc: |
+ This update addresses the following issues:
+ * The package has been build for UCS 4.1.
+bug: [40019]
