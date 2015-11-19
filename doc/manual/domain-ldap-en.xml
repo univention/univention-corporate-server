@@ -1267,7 +1267,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 		The UCS identity provider is tightly integrated into the UCS domain.
-		Clients that will be used to access the UCS identity provider have to be able to resolve DNS record in the UCS domain.
+		Clients that will be used to access the UCS identity provider have to be able to resolve DNS records in the UCS domain.
 		The domain DNS Servers should therefore be configured on all clients in order to be able to resolve the central DNS record, which by default is <uri>ucs-sso.<replaceable>domainname</replaceable></uri>.
 	</para>
 	<para>
