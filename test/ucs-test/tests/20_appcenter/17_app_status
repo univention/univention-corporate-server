@@ -79,7 +79,7 @@ def check_app_webinterface_registration(App):
             fqdn = UCR['hostname'] + '.' + UCR['domainname']
             url = 'http://%s:%s/%s' % (fqdn, port, app_webinterface)
         print 'Checking webinterface %s' % url,
-        r = requests.get(url, timeout=3)
+        r = requests.get(url, timeout=3, verify=False)
         print r.status_code
         assert not str(r.status_code).startswith(('4', '5'))
 
@@ -97,7 +97,7 @@ def check_app_webinterface_registration(App):
                     if not refresh_url.lower().startswith('http'):
                         refresh_url = '%s%s' % (url, refresh_url)
                     print 'Checking webinterface %s' % refresh_url,
-                    rr = requests.get(refresh_url, timeout=3)
+                    rr = requests.get(refresh_url, timeout=3, verify=False)
                     print rr.status_code
                     assert not str(rr.status_code).startswith(('4', '5'))
 
