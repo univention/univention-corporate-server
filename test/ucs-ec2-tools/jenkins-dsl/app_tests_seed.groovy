@@ -2,6 +2,7 @@ import univention.Apps
 import univention.Constants
 
 import univention.jobs.AppStatusViews
+import univention.jobs.AppAutotestUpdateMultiEnv
 
 // Build parameters are exposed as environment variables in Jenkins.
 // A seed job build parameter named FOO is available as FOO variable
