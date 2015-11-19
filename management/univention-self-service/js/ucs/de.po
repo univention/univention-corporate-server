@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-apache\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-11-16 09:28+0100\n"
+"POT-Creation-Date: 2015-11-19 09:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,13 +12,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: passwordreset.js:114
+#: passwordreset.js:115
 msgid " If you already have a token you can <a>skip this step</a>."
 msgstr ""
 " Wenn Sie bereits über einen Token verfügen, dann können Sie <a>diesen "
 "Schritt überspringen</a>."
 
-#: passwordreset.js:136
+#: passwordreset.js:138
 msgid " If your token has expired you can <a>request a new token</a>."
 msgstr ""
 " Wenn Ihr Token abgelaufen ist, können Sie einen <a>neuen Token anfordern</"
@@ -44,7 +44,7 @@ msgstr "Abbrechen"
 msgid "Change Password"
 msgstr "Passwort ändern"
 
-#: passwordchange.js:124 passwordreset.js:192
+#: passwordchange.js:124 passwordreset.js:194
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -64,6 +64,14 @@ msgstr ""
 "Bitte tragen Sie Ihre Kontaktinformationen ein und drücken Sie anschließend "
 "\"Speichern\", um Ihre Änderungen zu bestätigen."
 
+#: lib.js:118
+msgid ""
+"Forbidden redirect to: {0}\n"
+" The url has to start with (only) one \"/\"."
+msgstr ""
+"Verbotene Weiterleitung nach: {0}\n "
+"Die URL muss mit (nur) einem \"/\" beginnen."
+
 #: i18n.js:96
 #, python-format
 msgid "Hello %(last)s, %(first)s!"
@@ -82,15 +90,15 @@ msgstr "Sprache"
 msgid "Mobile"
 msgstr "Mobilfunknummer"
 
-#: passwordchange.js:96 passwordreset.js:157
+#: passwordchange.js:96 passwordreset.js:159
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: passwordchange.js:109 passwordreset.js:174
+#: passwordchange.js:109 passwordreset.js:176
 msgid "New password (retype)"
 msgstr "Neues Passwort (Wiederholung)"
 
-#: setcontactinformation.js:111 passwordreset.js:94
+#: setcontactinformation.js:111 passwordreset.js:94 passwordreset.js:122
 msgid "Next"
 msgstr "Weiter"
 
@@ -136,7 +144,7 @@ msgstr "Passwort"
 msgid "Password Reset"
 msgstr "Passwort zurücksetzen"
 
-#: passwordreset.js:112
+#: passwordreset.js:113
 msgid "Please choose a method to receive the token."
 msgstr ""
 "Bitte wählen Sie eine Benachrichtigungsart über die Sie einen Token "
@@ -156,7 +164,7 @@ msgstr ""
 msgid "Please enter a valid email address."
 msgstr "Keine gültige E-Mail-Adresse."
 
-#: passwordreset.js:134
+#: passwordreset.js:136
 msgid "Please enter the token and your new password."
 msgstr ""
 "Bitte geben Sie den Token (Sicherheitsschlüssel) und ein neues Passwort ein."
@@ -184,10 +192,6 @@ msgstr ""
 msgid "Provide your contact information."
 msgstr "Geben Sie Ihre Kontaktinformationen an."
 
-#: passwordreset.js:121
-msgid "Request token"
-msgstr "Token anfordern"
-
 #: passwordreset.js:75
 msgid "Reset your password."
 msgstr "Passwort zurücksetzen."
@@ -196,7 +200,7 @@ msgstr "Passwort zurücksetzen."
 msgid "Save"
 msgstr "Speichern"
 
-#: passwordchange.js:116 passwordreset.js:181
+#: passwordchange.js:116 passwordreset.js:183
 msgid "The passwords do not match, please retype again."
 msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 
@@ -205,7 +209,7 @@ msgstr "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es erneut."
 msgid "The total cost was %.2f EUR!"
 msgstr "Die Gesamtkosten waren %.2f EUR!"
 
-#: passwordreset.js:141
+#: passwordreset.js:143
 msgid "Token"
 msgstr "Token (Sicherheitsschlüssel)"
 
@@ -329,6 +333,9 @@ msgstr "zu '{0}'"
 
 #~ msgid "Please enter your username."
 #~ msgstr "Bitte geben Sie Ihren Benutzernamen ein."
+
+#~ msgid "Request token"
+#~ msgstr "Token anfordern"
 
 #~ msgid "Show contact information"
 #~ msgstr "Kontaktinformationen anzeigen"

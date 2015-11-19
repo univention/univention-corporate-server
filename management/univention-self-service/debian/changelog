@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-24) unstable; urgency=low
+
+  * Bug #39981: Improved regex for redirect url
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 19 Nov 2015 09:26:19 +0100
+
 univention-self-service (1.0.2-23) unstable; urgency=low
 
   * Bug #39981: Adapted regex for redirect url

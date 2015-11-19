@@ -108,15 +108,14 @@ define([
 		_getUrlForRedirect: function() {
 			var url = getQuery('url');
 			if (url) {
-				// checking if url is relative
-				// both items '//' or ':' are forbidden except ':' followed by a number, like a port
-				var reg = /^\s*(\w*:\D|\/\/)/i;
-				var isUrlRelative = !reg.test(url);
+				// checking if url is relative = has to start wit only one '/'
+				var reg = /^(\/[^\/])/;
+				var isUrlRelative = reg.test(url);
 				if (isUrlRelative) {
 					return url;
 				} else {
 					// forbidden to provide absolute urls
-					console.error('Forbidden redirect to: ', url);
+					console.error(lang.replace(_('Forbidden redirect to: {0}\n The url has to start with (only) one "/".', [url])));
 				}
 			}
 		},
