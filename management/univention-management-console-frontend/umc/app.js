@@ -924,10 +924,6 @@ define([
 			tools.status('username', props.username || tools.getCookies().username);
 			// password has been given in the query string... in this case we may cache it, as well
 			tools.status('password', props.password);
-			// check for mobile device
-			if (win.getBox().w <= 400 || has('touch')) {
-				tools.status('mobileView', true);
-			}
 
 			tools.status('app.loaded', new Deferred());
 
@@ -1020,7 +1016,6 @@ define([
 			this._topContainer.addChild(dialog.createNotificationMaster());
 			this._topContainer.addChild(this._tabContainer);
 			this._topContainer.startup();
-			domClass.toggle(this._tabController.domNode, 'dijitHidden', tools.status('mobileView'));
 			//this._updateScrolling();
 
 			// subscribe to requests for opening modules and closing/focusing tabs
@@ -1064,9 +1059,7 @@ define([
 				this._header.toggleBackToOverviewVisibility(!overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
-				if (!tools.status('mobileView')) {
-					domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
-				}
+				domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
 				if (newModule.selectedChildWidget && newModule.selectedChildWidget._onShow) {
 					this._tabContainer.ready().then(lang.hitch(newModule.selectedChildWidget, '_onShow'));
 				}
@@ -1624,7 +1617,7 @@ define([
 
 				// create a new tab
 				var tab = null; // will be the module
-				if (BaseClass.prototype.unique || tools.status('mobileView')) {
+				if (BaseClass.prototype.unique) {
 					var sameModules = array.filter(this._tabContainer.getChildren(), function(i) {
 						return i.moduleID == module.id && i.moduleFlavor == module.flavor;
 					});
