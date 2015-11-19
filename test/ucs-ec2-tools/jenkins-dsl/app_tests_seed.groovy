@@ -1,6 +1,7 @@
 import univention.Apps
 import univention.Constants
-import univention.Jobs
+
+import univention.jobs.AppStatusViews
 
 // Build parameters are exposed as environment variables in Jenkins.
 // A seed job build parameter named FOO is available as FOO variable
@@ -19,15 +20,15 @@ univention.Constants.VERSIONS.each {
 
     // create folder, generic app jobs and views
     folder(path)
-    Jobs.createAppStatusViews(this, path)
+    AppStatusViews.create(this, path)
 
     // get apps for version and create folder and jobs
     apps = Apps.getApps(version, test=true, ucs_components=false)
     apps.keySet().sort().each { app ->
         app_path = path + '/' + app
         folder(app_path)
-        Jobs.createAppAutotestUpdateMultiEnv(this, app_path, version, patch_level, apps[app])
-        Jobs.createAppAutotestMultiEnv(this, app_path, version, patch_level, apps[app])
-        Jobs.createAppAutotestMultiEnvUpdateFrom(this, app_path, version, patch_level, last_version, apps[app])
+        //Jobs.createAppAutotestUpdateMultiEnv(this, app_path, version, patch_level, apps[app])
+        //Jobs.createAppAutotestMultiEnv(this, app_path, version, patch_level, apps[app])
+        //Jobs.createAppAutotestMultiEnvUpdateFrom(this, app_path, version, patch_level, last_version, apps[app])
     }
 }

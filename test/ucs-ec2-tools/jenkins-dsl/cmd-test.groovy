@@ -2,6 +2,10 @@ import univention.Apps
 import univention.Constants
 import univention.Jobs
 
+import univention.jobs.AppTest
+
+AppTest.Job()
+
 // Build parameters are exposed as environment variables in Jenkins.
 // A seed job build parameter named FOO is available as FOO variable
 // in the DSL scripts. See the section about environment variables above.
@@ -24,36 +28,36 @@ if (last_version == null) {
 }
 
 
-// get apps from testing, without ucs components
-apps = Apps.getApps(version, test=true, ucs_components=false)
-
-// create jobs for every app
-apps.keySet().sort().each { app ->
-  
-  //// create folders
-  //println workdir + '/apps'
-  //println workdir + '/apps/' + app
-  //
-  //// create matrix job App Autotest MultiEnv
-  //path = workdir + '/apps/' + app
-
-  //// create jobs
-  //println "${app} ${path} ${version} ${patch_level}"
-
-  println app
-  //println apps[app].get('roles')
-  //println apps[app].get('required_apps')
-  //Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
-
-}
-
-def createJob(Map app) {
-    println " -> ${app.id}"
-    println " -> ${app.required_apps}"
-    println " -> ${app.roles}"
-
-
-    //if (app.required_apps) {
-    //    println " ...${app.required_apps.join(' ')}..."
-    //}
-}
+//// get apps from testing, without ucs components
+//apps = Apps.getApps(version, test=true, ucs_components=false)
+//
+//// create jobs for every app
+//apps.keySet().sort().each { app ->
+//  
+//  //// create folders
+//  //println workdir + '/apps'
+//  //println workdir + '/apps/' + app
+//  //
+//  //// create matrix job App Autotest MultiEnv
+//  //path = workdir + '/apps/' + app
+//
+//  //// create jobs
+//  //println "${app} ${path} ${version} ${patch_level}"
+//
+//  println app
+//  //println apps[app].get('roles')
+//  //println apps[app].get('required_apps')
+//  //Jobs.createAppAutotestUpdateMultiEnv(this, path, version, patch_level, apps[app])
+//
+//}
+//
+//def createJob(Map app) {
+//    println " -> ${app.id}"
+//    println " -> ${app.required_apps}"
+//    println " -> ${app.roles}"
+//
+//
+//    //if (app.required_apps) {
+//    //    println " ...${app.required_apps.join(' ')}..."
+//    //}
+//}
