@@ -58,7 +58,9 @@ class SendSMS(UniventionSelfServiceTokenEmitter):
 	def __init__(self, *args, **kwargs):
 		super(SendSMS, self).__init__(*args, **kwargs)
 
-		self.cmd = self.ucr.get("umc/self-service/passwordreset/sms/command").split()
+		self.cmd = self.ucr.get("umc/self-service/passwordreset/sms/command", "").split()
+		if not self.cmd:
+			raise ValueError("SendSMS: UCR umc/self-service/passwordreset/sms/command must contain the path to the program to execute.")
 
 		self.country_code = self.ucr.get("umc/self-service/passwordreset/sms/country_code")
 		if not unicode(self.country_code).isnumeric():

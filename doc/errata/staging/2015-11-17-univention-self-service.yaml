@@ -12,4 +12,7 @@ desc: |
  * Improved the security of redirecting a user.
  * Remove links from overview website completely when uninstalling
    (Bug 40033).
-bug: [39980,39996,39981,40033]
+ * Provide protection against denial of service attacks against server
+   and users. Adds UCR variables umc/self-service/passwordreset/limit/.*
+   to configure request limits (Bug 39720).
+bug: [39720,39980,39996,39981,40033]

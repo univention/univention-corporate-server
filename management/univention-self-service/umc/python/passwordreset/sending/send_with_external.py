@@ -62,7 +62,9 @@ class SendWithExternal(UniventionSelfServiceTokenEmitter):
 
 	def __init__(self, *args, **kwargs):
 		super(SendWithExternal, self).__init__(*args, **kwargs)
-		self.cmd = self.ucr.get("umc/self-service/passwordreset/external/command").split()
+		self.cmd = self.ucr.get("umc/self-service/passwordreset/external/command", "").split()
+		if not self.cmd:
+			raise ValueError("SendWithExternal: UCR umc/self-service/passwordreset/external/command must contain the path to the program to execute.")
 
 	@staticmethod
 	def send_method():

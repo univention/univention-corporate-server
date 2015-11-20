@@ -44,7 +44,9 @@ Depends: ${misc:Depends},
  shell-univention-lib,
  univention-apache,
  python-psycopg2,
- univention-mail-postfix | mail-transport-agent
+ univention-mail-postfix | mail-transport-agent,
+ memcached,
+ python-pylibmc
 Description:
  This package contains a UMC module that is the backend for the
  univention-self-service-passwordreset-frontend package. It that must be

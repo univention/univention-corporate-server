@@ -1,0 +1,104 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# dump data stored in memcache for request limit
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import socket
+import datetime
+import re
+from univention.management.console.config import ucr
+
+socket_file = "/var/run/memcached-univention-self-service.socket"
+
+limit_total_min = ucr.get("umc/self-service/passwordreset/limit/total/min", 0)
+limit_total_hour = ucr.get("umc/self-service/passwordreset/limit/total/hour", 0)
+limit_total_day = ucr.get("umc/self-service/passwordreset/limit/total/day", 0)
+limit_user_min = ucr.get("umc/self-service/passwordreset/limit/per_user/min", 0)
+limit_user_hour = ucr.get("umc/self-service/passwordreset/limit/per_user/hour", 0)
+limit_user_day = ucr.get("umc/self-service/passwordreset/limit/per_user/day", 0)
+
+so = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+so.connect(socket_file)
+so.sendall("stats items STAT items:0:number 0 END\r\n")
+text = ""
+while True:
+	data = so.recv(1024)
+	if not data:
+		break
+	else:
+		text += str(data)
+		if "END" in data:
+			break
+
+lines = text.split("\r\n")
+entries = dict()
+reg = re.compile('^ITEM (.*) \[.*; (.*) .*\]$')
+for line in lines:
+	parts = line.split(":")
+	if len(parts) >= 3:
+		slab = parts[1]
+	else:
+		continue
+	so.sendall("stats cachedump {} 200000 ITEM views.decorators.cache.cache_header..cc7d9 [6 b; 1256056128 s] END\r\n".format(slab))
+	data = so.recv(1024)
+	cachelines = data.split("\r\n")
+	for line in cachelines:
+		regmatch = reg.match(line)
+		if regmatch:
+			key, tsstr = regmatch.groups()
+			if key not in entries:
+				ts = int(tsstr)
+				expdate = datetime.datetime.fromtimestamp(ts)
+				so.sendall("get {}\r\n".format(key))
+				data = so.recv(1024)
+				text = data.split("\r\n")
+				entries[key] = (text[1], expdate)
+so.sendall("quit\r\n")
+so.close()
+
+for key in sorted(entries.keys()):
+	if key == "tc_min":
+		limit = limit_total_min
+	elif key == "tc_hour":
+		limit = limit_total_hour
+	elif key == "tc_day":
+		limit = limit_total_day
+	elif key.endswith("_min"):
+		limit = limit_user_min
+	elif key.endswith("_hour"):
+		limit = limit_user_hour
+	elif key.endswith("_day"):
+		limit = limit_user_day
+	else:
+		raise ValueError("key '{}' not recognized".format(key))
+
+	expdiff = entries[key][1] - datetime.datetime.now()
+	exp = "in {:>5} seconds (at {})".format(expdiff.seconds, entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))
+	print "{:<15} {:>5} /{:>5} \t expiration {}".format(key+":", entries[key][0], limit, exp)

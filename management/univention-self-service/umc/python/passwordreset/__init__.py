@@ -36,8 +36,10 @@ import datetime
 import random
 import string
 import atexit
+from functools import wraps
 from ldap import LDAPError
 from ldap.filter import escape_filter_chars
+import pylibmc
 
 from univention.lib.i18n import Translation
 from univention.uldap import getMachineConnection
@@ -60,11 +62,56 @@ from univention.management.console.modules.passwordreset.sending import get_plug
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
 TOKEN_VALIDITY_TIME = 3600
+MEMCACHED_SOCKET = "/var/run/memcached-univention-self-service.socket"
+
 
 def prevent_denial_of_service(func):
-	def _decorated(self, request, *args, **kwargs):
-		self.prevent_denial_of_service()
-		return func(self, request, *args, **kwargs)
+	@wraps(func)
+	def _decorated(self, *args, **kwargs):
+		def _check_limits(limits):
+			limit_reached = False
+			for key, decay, limit in limits:
+				# Not really a "decay", as for that we'd have to store the date for
+				# each request. Then a moving window could be implemented. But
+				# my guess is that we won't need that, so this is simpler.
+				# Continue even if a limit was reached, so that all counters are
+				# incremented.
+				try:
+					count = self.memcache.incr(key)
+				except pylibmc.NotFound:
+					count = 1
+					self.memcache.set(key, count, decay)
+				if count > limit:
+					limit_reached = True
+			return limit_reached
+
+		# check total request limits
+		total_limit_reached = _check_limits(self.total_limits)
+
+		# check user request limits
+		try:
+			if "username" in kwargs:
+				username = kwargs["username"]
+			else:
+				username = args[0].options.get("username")
+		except (IndexError, AttributeError, KeyError, TypeError) as e:
+			# args[0] is not the expected 'request'
+			MODULE.error("prevent_denial_of_service() could not find username argument. self: %r args: %r kwargs: %r exception: %s" % (self, args, kwargs, traceback.format_exc()))
+			raise
+
+		user_limits = [
+			("{}_min".format(username), 60, self.limit_user_min),
+			("{}_hour".format(username), 3600, self.limit_user_hour),
+			("{}_day".format(username), 86400, self.limit_user_day)
+		]
+
+		user_limit_reached = _check_limits(user_limits)
+
+		if total_limit_reached or user_limit_reached:
+			raise ConnectionLimitError(_("The allowed maximum number of connections to the server has been reached. Please retry later."))
+
+		return func(self, *args, **kwargs)
+	return _decorated
 
 
 class UnknownMethodError(UMC_Error):
@@ -73,6 +120,10 @@ class UnknownMethodError(UMC_Error):
 
 class MethodDisabledError(UMC_Error):
 	status = 500
+
+
+class ConnectionLimitError(UMC_Error):
+	status = 503
 
 
 class Instance(Base):
@@ -98,9 +149,44 @@ class Instance(Base):
 		if not self.db.table_exists():
 			self.db.create_table()
 
+		self.token_validity_period = ucr.get("umc/self-service/passwordreset/token_validity_period", 3600)
+		try:
+			self.token_validity_period = int(self.token_validity_period)
+		except ValueError as e:
+			err = _("umc/self-service/passwordreset/token_validity_period must be a number: {}").format(e)
+			MODULE.error(err)
+			raise UMC_Error(err, status=500)
+
 		self.send_plugins = get_sending_plugins(MODULE.info)
 
-#	@prevent_denial_of_service
+		self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
+
+		def _memcached_stats():
+			MODULE.info("memcached_stats: {}".format(self.memcache.get_stats()))
+		atexit.register(_memcached_stats)
+
+		limit_total_min = ucr.get("umc/self-service/passwordreset/limit/total/min", 0)
+		limit_total_hour = ucr.get("umc/self-service/passwordreset/limit/total/hour", 0)
+		limit_total_day = ucr.get("umc/self-service/passwordreset/limit/total/day", 0)
+		self.limit_user_min = ucr.get("umc/self-service/passwordreset/limit/per_user/min", 0)
+		self.limit_user_hour = ucr.get("umc/self-service/passwordreset/limit/per_user/hour", 0)
+		self.limit_user_day = ucr.get("umc/self-service/passwordreset/limit/per_user/day", 0)
+		try:
+			limit_total_min = int(limit_total_min)
+			limit_total_hour = int(limit_total_hour)
+			limit_total_day = int(limit_total_day)
+		except ValueError as e:
+			err = _("umc/self-service/passwordreset/limit/.* must be a number: {}").format(e)
+			MODULE.error(err)
+			raise UMC_Error(err, status=500)
+
+		self.total_limits = [
+			("tc_min", 60, limit_total_min),
+			("tc_hour", 3600, limit_total_hour),
+			("tc_day", 86400, limit_total_day)
+		]
+
+	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True))
@@ -130,7 +216,7 @@ class Instance(Base):
 			} for p in self.send_plugins.values() if user[p.udm_property]]
 		)
 
-#	@prevent_denial_of_service
+	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
 		password=StringSanitizer(required=True),
@@ -145,7 +231,7 @@ class Instance(Base):
 		if self.set_contact_data(dn, email, mobile):
 			raise UMC_Error(_("Successfully changed your contact data."), status=200)
 
-#	@prevent_denial_of_service
+	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
 		method=StringSanitizer(required=True))
@@ -174,12 +260,9 @@ class Instance(Base):
 
 			token = self.create_token(plugin.token_length)
 			if token_from_db:
-				if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
-					raise UMC_Error(_("Token for user '{}' has already been sent.").format(username), status=200)
-				else:
-					# replace with fresh token
-					MODULE.info("send_token(): Updating token for user '{}'...".format(username))
-					self.db.update_token(username, method, token)
+				# replace with fresh token
+				MODULE.info("send_token(): Updating token for user '{}'...".format(username))
+				self.db.update_token(username, method, token)
 			else:
 				# store a new token
 				MODULE.info("send_token(): Adding new token for user '{}'...".format(username))
@@ -196,7 +279,7 @@ class Instance(Base):
 			# no contact info
 			raise UMC_Error(_("No contact information to send a token for password recovery to has been found."))
 
-#	@prevent_denial_of_service
+	@prevent_denial_of_service
 	@sanitize(
 		token=StringSanitizer(required=True),
 		username=StringSanitizer(required=True),
@@ -235,7 +318,7 @@ class Instance(Base):
 			MODULE.info("Token not found in DB for user '{}'.".format(username))
 			raise UMC_Error(_("The token you supplied could not be found. Please request a new one."))
 
-#	@prevent_denial_of_service
+	@prevent_denial_of_service
 	@sanitize(username=StringSanitizer(required=True))
 	def get_reset_methods(self, request):
 		username = request.options.get("username")
@@ -396,12 +479,6 @@ class Instance(Base):
 			group = self.get_udm_group(groupdn)
 			names.append(group["name"])
 		return names
-
-	def prevent_denial_of_service(self):
-		# TODO: implement
-		MODULE.error("prevent_denial_of_service(): implement me")
-		if False:
-			raise UMC_Error(_('There have been too many requests in the last time. Please wait 5 minutes for the next request.'))
 
 	def get_udm_user(self, userdn=None, username=None, admin=False):
 		if userdn:
