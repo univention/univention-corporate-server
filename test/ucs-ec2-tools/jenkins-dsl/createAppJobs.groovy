@@ -27,7 +27,7 @@ univention.Constants.VERSIONS.each {
         app_path = path + '/' + app
         folder(app_path)
         AppAutotestUpdateMultiEnv.create(this, app_path, version, patch_level, apps[app])
-        //AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
-        //AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
+        AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
+        AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
     }
 }
