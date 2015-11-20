@@ -345,7 +345,7 @@ class Domain(PersistentCached):
 			driver = disk.find('driver')
 			if driver is not None:
 				dev.driver = driver.attrib.get('name')  # optional
-				dev.driver_type = driver.attrib['type']
+				dev.driver_type = driver.attrib.get('type')  # optional
 				dev.driver_cache = driver.attrib.get('cache', '')  # optional
 			source = disk.find('source')
 			if source is not None:
