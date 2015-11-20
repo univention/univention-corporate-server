@@ -11,7 +11,7 @@
 	<section id="changelog:general">
 		<title>General</title>
 		<para>
-			All security updates issued for UCS 3.2-6 are included:
+			All security updates issued for UCS 3.2-7 are included:
 		</para>
 		<itemizedlist>
 			<listitem><simpara>
@@ -86,20 +86,20 @@
 	</section>
 	-->
 
+		<!--
 	<section id="changelog:basic">
 		<title>Basic system services</title>
+		-->
 
+		<!--
 		<section id="changelog:basic:kernel">
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The Linux kernel has been updated to <wordasword>3.10.87</wordasword>. It
-						provides many bugfixes and fixes several vulnerabilities (<u:bug>38008</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
@@ -160,7 +160,9 @@
 			</itemizedlist>
 		</section>
 		-->
+		<!--
 	</section>
+		-->
 
 	<!--
 	<section id="changelog:domain">
@@ -216,7 +218,6 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The PID file is no longer created world-writable (<u:bug>25162</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -225,9 +226,6 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The mapping of syntax classes to UMC widgets is now extendable via the
-  					UCR variable group <envar>directory/manager/web/widget/.*/"</envar>
-					(<u:bug>38743</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -366,7 +364,7 @@
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The update scripts have been adjusted to UCS 3.2-7 (<u:bug>38972</u:bug>).
+						The update scripts have been adjusted to UCS 3.2-8 (<u:bug>40010</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -409,10 +407,6 @@
 			<title>Spam/virus detection and countermeasures</title>
 			<itemizedlist>
 				<listitem><simpara>
-					To configure the max. number of concurrent AMaViS processes, a new UCR
-					variable has been introduced: <envar>mail/antivir/max_servers</envar>. 
-					When unset, the current default <literal>2</literal> is used
-					(<u:bug>38937</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -438,28 +432,7 @@
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>
-				<listitem>
-					<simpara>
- 					The configuration of the SSL/TLS support in Apache has been improved.
-					</simpara>
-					<itemizedlist>
-						<listitem><simpara>
-							Apache no longer accepts various insecure ciphers and hash algorithms
-							(e.g. RC4, MD5 and the outdated export ciphers) by default. Note
-							that such algorithms would not have been negotiated if the TLS
-							client supports current crypto algorithms. A different set of ciphers
-							can be configured using the new UCR variable
-							<envar>apache2/ssl/ciphersuite</envar>.
-						</simpara></listitem>
-						<listitem><simpara>
-							If the new UCR variable <envar>apache2/ssl/honorcipherorder</envar> is
-							set, the server choice of ciphers is used instead of the ciphers
-							preferred by the TLS client.
-						</simpara></listitem>
-					</itemizedlist>
-					<simpara>
-					Please refer to the UCR variable descriptions for additional details
-					(<u:bug>38632</u:bug>).
+				<listitem><simpara>
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -468,8 +441,6 @@
 			<title>DNS</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The DNS server <package>bind9</package> has been updated to <wordasword>9.8.4-P1</wordasword>. It
-					provides many bugfixes and fixes several vulnerabilities (<u:bug>37247</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -546,9 +517,6 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					This update adds support for the default profile directory paths
-					of Windows 8, 8.1 and 10. For new users they will now be created
-					automatically on first logon (<u:bug>38644</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -567,7 +535,6 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 A bug concerning renaming computer objects has been fixed (<u:bug>31083</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -587,8 +554,6 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The time zone database was updated to include information about the scheduled
- 				leap second at the end of June 2015 (<u:bug>38719</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
