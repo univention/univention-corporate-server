@@ -15,68 +15,69 @@
 		</para>
 		<itemizedlist>
 			<listitem><simpara>
-					<package>qemu-kvm</package> (<u:cve>2012-6075</u:cve> <u:cve>2014-0150</u:cve> <u:cve>2014-2894</u:cve> <u:cve>2013-4344</u:cve> <u:cve>2014-0142</u:cve> <u:cve>2014-0143</u:cve> <u:cve>2014-0144</u:cve> <u:cve>2014-0145</u:cve> <u:cve>2014-0146</u:cve> <u:cve>2014-0147</u:cve> <u:cve>2014-0223</u:cve> <u:cve>2014-0222</u:cve> <u:cve>2014-3640</u:cve> <u:cve>2014-3689</u:cve> <u:cve>2014-7815</u:cve> <u:cve>2014-8106</u:cve> <u:cve>2014-3615</u:cve> <u:cve>2015-3456</u:cve> <u:cve>2015-4037</u:cve> <u:cve>2015-3209</u:cve>) (<u:bug>33279</u:bug>)
+				<package>acpi-support</package> (<u:cve>2014-0484</u:cve> <u:cve>2014-1419</u:cve>) (<u:bug>35439</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>clamav</package> (<u:cve>2014-9050</u:cve> <u:cve>2013-6497</u:cve> <u:cve>2014-9328</u:cve> <u:cve>2015-1461</u:cve> <u:cve>2015-1462</u:cve> <u:cve>2015-1463</u:cve> <u:cve>2015-2170</u:cve> <u:cve>2015-2221</u:cve> <u:cve>2015-2222</u:cve> <u:cve>2015-2668</u:cve> <u:cve>2015-2305</u:cve>) (<u:bug>36965</u:bug>)
+				<package>apache2</package> (<u:cve>2013-6438</u:cve> <u:cve>2014-0226</u:cve> <u:cve>2014-0118</u:cve> <u:cve>2014-0231</u:cve> <u:cve>2014-3581</u:cve> <u:cve>2013-5704</u:cve> <u:cve>2015-3183</u:cve>) (<u:bug>33286</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>curl</package> (<u:cve>2014-3707</u:cve> <u:cve>2014-8150</u:cve> <u:cve>2015-3143</u:cve> <u:cve>2015-3148</u:cve>) (<u:bug>36468</u:bug>)
+				<package>file</package> (<u:cve>2014-1943</u:cve> <u:cve>2014-2270</u:cve> <u:cve>2013-7345</u:cve> <u:cve>2014-3487</u:cve> <u:cve>2014-3479</u:cve> <u:cve>2014-3480</u:cve> <u:cve>2014-0207</u:cve> <u:cve>2014-3478</u:cve> <u:cve>2014-3587</u:cve> <u:cve>2014-3710</u:cve> <u:cve>2014-8116</u:cve> <u:cve>2014-8117</u:cve> <u:cve>2014-9653</u:cve> <u:cve>2014-0237</u:cve> <u:cve>2014-0238</u:cve> <u:cve>2014-3538</u:cve>) (<u:bug>34135</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>ntp</package> (<u:cve>2015-1798</u:cve> <u:cve>2015-1799</u:cve>) (<u:bug>38245</u:bug>)
+				<package>squid3</package> (<u:cve>2015-5400</u:cve>) (<u:bug>35853</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>bind9</package> (<u:cve>22014-8500</u:cve> <u:cve>22015-1349</u:cve> <u:cve>22015-4620</u:cve> <u:cve>22015-5477</u:cve>) (<u:bug>37247</u:bug>)
+				<package>qt4-x11</package> (<u:cve>2011-3193</u:cve> <u:cve>2011-3194</u:cve> <u:cve>2013-0254</u:cve> <u:cve>2015-0295</u:cve> <u:cve>2015-1858</u:cve> <u:cve>2015-1859</u:cve> <u:cve>2015-1860</u:cve>) (<u:bug>33269</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>linux</package> (<u:cve>2015-2150</u:cve> <u:cve>2014-8159</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2014-8160</u:cve> <u:cve>2014-7822</u:cve> <u:cve>2015-0239</u:cve> <u:cve>2015-1805</u:cve> <u:cve>2014-9710</u:cve> <u:cve>2015-3332</u:cve> <u:cve>2015-3636</u:cve> <u:cve>2015-5364</u:cve> <u:cve>2015-5366</u:cve> <u:cve>2015-2830</u:cve> <u:cve>2015-3331</u:cve> <u:cve>2015-3339</u:cve>) (<u:bug>38008</u:bug>)
+				<package>openldap</package> (<u:cve>2015-1545</u:cve> <u:cve>2015-6908</u:cve>) (<u:bug>38424</u:bug> <u:bug>37728</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>eglibc</package> (<u:cve>2015-1781</u:cve>) (<u:bug>38115</u:bug>)
+				<package>postgresql-8.4</package> (<u:cve>2015-3165</u:cve> <u:cve>2015-3166</u:cve> <u:cve>2015-3167</u:cve>) (<u:bug>38607</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>firefox-de</package> (<u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve>) (<u:bug>38524</u:bug>)
+				<package>xen-4.1</package> (<u:cve>2012-5511</u:cve> <u:cve>2013-4416</u:cve> <u:cve>2013-4554</u:cve> <u:cve>2013-6885</u:cve> <u:cve>2013-2212</u:cve> <u:cve>2014-1666</u:cve> <u:cve>2015-2752</u:cve> <u:cve>2015-2152</u:cve> <u:cve>2015-3340</u:cve> <u:cve>2015-4103</u:cve> <u:cve>2015-4104</u:cve> <u:cve>2015-4105</u:cve> <u:cve>2015-2756</u:cve> <u:cve>2015-4106</u:cve> <u:cve>2015-3209</u:cve> <u:cve>2015-4164</u:cve> <u:cve>2015-3259</u:cve> <u:cve>2015-5154</u:cve> <u:cve>2015-5165</u:cve>) (<u:bug>35104</u:bug> <u:bug>38565</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>firefox-en</package> (<u:cve>2015-0797</u:cve> <u:cve>2015-2710</u:cve> <u:cve>2015-2713</u:cve> <u:cve>2015-2716</u:cve> <u:cve>2015-2721</u:cve> <u:cve>2015-2722</u:cve> <u:cve>2015-2724</u:cve> <u:cve>2015-2725</u:cve> <u:cve>2015-2726</u:cve> <u:cve>2015-2728</u:cve> <u:cve>2015-2730</u:cve> <u:cve>2015-2733</u:cve> <u:cve>2015-2734</u:cve> <u:cve>2015-2735</u:cve> <u:cve>2015-2736</u:cve> <u:cve>2015-2737</u:cve> <u:cve>2015-2738</u:cve> <u:cve>2015-2739</u:cve> <u:cve>2015-2740</u:cve> <u:cve>2015-2743</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4475</u:cve> <u:cve>2015-4478</u:cve> <u:cve>2015-4479</u:cve> <u:cve>2015-4480</u:cve> <u:cve>2015-4482</u:cve> <u:cve>2015-4484</u:cve> <u:cve>2015-4485</u:cve> <u:cve>2015-4486</u:cve> <u:cve>2015-4487</u:cve> <u:cve>2015-4488</u:cve> <u:cve>2015-4489</u:cve> <u:cve>2015-4491</u:cve> <u:cve>2015-4492</u:cve> <u:cve>2015-4493</u:cve>) (<u:bug>38524</u:bug>)
+				<package>firefox-de</package> (<u:cve>2015-4498</u:cve> <u:cve>2015-4497</u:cve> <u:cve>2015-4517</u:cve> <u:cve>2015-4521</u:cve> <u:cve>2015-4522</u:cve> <u:cve>2015-7174</u:cve> <u:cve>2015-7175</u:cve> <u:cve>2015-7176</u:cve> <u:cve>2015-7177</u:cve> <u:cve>2015-7180</u:cve> <u:cve>2015-4520</u:cve> <u:cve>2015-4519</u:cve> <u:cve>2015-4509</u:cve> <u:cve>2015-4506</u:cve> <u:cve>2015-4500</u:cve> <u:cve>2015-4511</u:cve>) (<u:bug>39338</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>icu</package> (<u:cve>2013-0900</u:cve> <u:cve>2013-1569</u:cve> <u:cve>2013-2383</u:cve> <u:cve>2013-2384</u:cve> <u:cve>2013-2419</u:cve> <u:cve>2013-2924</u:cve> <u:cve>2014-6585</u:cve> <u:cve>2014-6591</u:cve> <u:cve>2014-7923</u:cve> <u:cve>2014-7926</u:cve> <u:cve>2014-7940</u:cve> <u:cve>2014-9654</u:cve> <u:cve>2015-4760</u:cve>) (<u:bug>33284</u:bug>)
+				<package>firefox-en</package> (<u:cve>2015-4498</u:cve> <u:cve>2015-4497</u:cve> <u:cve>2015-4517</u:cve> <u:cve>2015-4521</u:cve> <u:cve>2015-4522</u:cve> <u:cve>2015-7174</u:cve> <u:cve>2015-7175</u:cve> <u:cve>2015-7176</u:cve> <u:cve>2015-7177</u:cve> <u:cve>2015-7180</u:cve> <u:cve>2015-4520</u:cve> <u:cve>2015-4519</u:cve> <u:cve>2015-4509</u:cve> <u:cve>2015-4506</u:cve> <u:cve>2015-4500</u:cve> <u:cve>2015-4511</u:cve>) (<u:bug>39338</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>jasper</package> (<u:cve>2014-9029</u:cve> <u:cve>2014-8137</u:cve> <u:cve>2014-8138</u:cve> <u:cve>2014-8157</u:cve> <u:cve>2014-8158</u:cve>) (<u:bug>33281</u:bug>)
+				<package>cups</package> (<u:cve>2015-3258</u:cve> <u:cve>2015-3279</u:cve>) (<u:bug>39401</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>nspr</package> (<u:cve>2014-1545</u:cve>) (<u:bug>35097</u:bug>)
+				<package>subversion</package> (<u:cve>2013-1845</u:cve> <u:cve>2013-1846</u:cve> <u:cve>2013-1847</u:cve> <u:cve>2013-1849</u:cve> <u:cve>2014-0032</u:cve> <u:cve>2014-3580</u:cve> <u:cve>2015-0248</u:cve> <u:cve>2015-0251</u:cve> <u:cve>2015-3187</u:cve>) (<u:bug>33285</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>nss</package> (<u:cve>2011-3389</u:cve> <u:cve>2013-1741</u:cve> <u:cve>2013-5606</u:cve> <u:cve>2014-1491</u:cve> <u:cve>2014-1492</u:cve> <u:cve>2014-1544</u:cve> <u:cve>2014-1568</u:cve> <u:cve>2014-1569</u:cve>) (<u:bug>33281</u:bug>)
+				<package>php5</package> (<u:cve>2015-3307</u:cve> <u:cve>2015-3411</u:cve> <u:cve>2015-3412</u:cve> <u:cve>2015-4021</u:cve> <u:cve>2015-4022</u:cve> <u:cve>2015-4025</u:cve> <u:cve>2015-4026</u:cve> <u:cve>2015-4147</u:cve> <u:cve>2015-4148</u:cve> <u:cve>2015-4598</u:cve> <u:cve>2015-4599</u:cve> <u:cve>2015-4600</u:cve> <u:cve>2015-4601</u:cve> <u:cve>2015-4602</u:cve> <u:cve>2015-4604</u:cve> <u:cve>2015-4605</u:cve> <u:cve>2015-4022</u:cve> <u:cve>2015-4643</u:cve> <u:cve>2015-4644</u:cve> <u:cve>2015-5589</u:cve> <u:cve>2015-5590</u:cve> <u:cve>2015-6831</u:cve> <u:cve>2015-6832</u:cve> <u:cve>2015-6833</u:cve> <u:cve>2015-6834</u:cve> <u:cve>2015-6836</u:cve> <u:cve>2015-6837</u:cve> <u:cve>2015-6838</u:cve> <u:cve>2015-7803</u:cve> <u:cve>2015-7804</u:cve>) (<u:bug>39214</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>openjdk-6</package> (<u:cve>2015-0460</u:cve> <u:cve>2015-0469</u:cve> <u:cve>2015-0477</u:cve> <u:cve>2015-0478</u:cve> <u:cve>2015-0480</u:cve> <u:cve>2015-0488</u:cve>) (<u:bug>38303</u:bug>)
+				<package>openjdk-6</package> (<u:cve>2015-2590</u:cve> <u:cve>2015-2601</u:cve> <u:cve>2015-2613</u:cve> <u:cve>2015-2619</u:cve> <u:cve>2015-2621</u:cve> <u:cve>2015-2625</u:cve> <u:cve>2015-2628</u:cve> <u:cve>2015-2632</u:cve> <u:cve>2015-2637</u:cve> <u:cve>2015-2638</u:cve> <u:cve>2015-2808</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4731</u:cve> <u:cve>2015-4732</u:cve> <u:cve>2015-4733</u:cve> <u:cve>2015-4748</u:cve> <u:cve>2015-4749</u:cve> <u:cve>2015-4760</u:cve>) (<u:bug>38929</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>openssl</package> (<u:cve>2014-8176</u:cve> <u:cve>2015-1789</u:cve> <u:cve>2015-1790</u:cve> <u:cve>2015-1791</u:cve> <u:cve>2015-1792</u:cve> <u:cve>2015-4000</u:cve>) (<u:bug>38692</u:bug>)
+				<package>openssh</package> (<u:cve>2015-5352</u:cve> <u:cve>2015-5600</u:cve>) (<u:bug>39437</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>php5</package> (<u:cve>2014-0237</u:cve> <u:cve>2014-0238</u:cve> <u:cve>2014-2270</u:cve> <u:cve>2014-8117</u:cve> <u:cve>2014-9652</u:cve> <u:cve>2014-9705</u:cve> <u:cve>2015-0232</u:cve> <u:cve>2015-2301</u:cve> <u:cve>2015-2331</u:cve> <u:cve>2015-2783</u:cve> <u:cve>2015-2787</u:cve> <u:cve>2015-3329</u:cve> <u:cve>2015-3330</u:cve> <u:cve>2015-4604</u:cve> <u:cve>2015-4605</u:cve>) (<u:bug>37093</u:bug>)
+				<package>qemu-kvm</package> (<u:cve>2015-5165</u:cve> <u:cve>2015-5745</u:cve> <u:cve>2015-5278</u:cve> <u:cve>2015-5279</u:cve> <u:cve>2015-6815</u:cve> <u:cve>2015-6855</u:cve>) (<u:bug>39545</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
-					<package>wget</package> (<u:cve>2014-4877</u:cve>) (<u:bug>36368</u:bug>)
+				<package>xen-4.1</package> (<u:cve>2015-7835</u:cve> <u:cve>2015-7969</u:cve> <u:cve>2015-7969</u:cve> <u:cve>2015-7971</u:cve>) (<u:bug>39684</u:bug>)
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
+	<section id="changelog:installer">
+		<title>Univention Installer</title>
+		<itemizedlist>
+			<listitem><simpara>
+  				The testing repositories have been renamed (<u:bug>39324</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
 	<!--
-	<section id="changelog:installer">
-		<title>Univention Installer</title>
-		<itemizedlist>
-			<listitem><simpara>
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
-
 	<section id="changelog:updater">
 		<title>Univention Updater</title>
 		<itemizedlist>
@@ -214,9 +215,12 @@
 		-->
 	</section>
 
+		<!--
 	<section id="changelog:umc">
 		<title>Univention Management Console</title>
+		-->
 
+		<!--
 		<section id="changelog:umc:web">
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
@@ -232,6 +236,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:umc:appcenter">
@@ -358,7 +363,9 @@
 			</itemizedlist>
 		</section>
 		-->
+		<!--
 	</section>
+		-->
 
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
@@ -406,6 +413,7 @@
 		</section>
 		-->
 
+		<!--
 		<section id="changelog:service:virus">
 			<title>Spam/virus detection and countermeasures</title>
 			<itemizedlist>
@@ -413,6 +421,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:service:print">
@@ -444,6 +453,14 @@
 			<title>DNS</title>
 			<itemizedlist>
 				<listitem><simpara>
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		<section id="changelog:service:dhcp">
+			<title>DHCP</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The default routing policy is only updated for the first created DHCP subnet (<u:bug>39238</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -513,16 +530,21 @@
 	</section>
 	-->
 
+		<!--
 	<section id="changelog:win">
 		<title>Services for Windows</title>
+		-->
 
+		<!--
 		<section id="changelog:win:ad">
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<!--
 		<section id="changelog:win:takeover">
@@ -532,17 +554,16 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connector</title>
 			<itemizedlist>
@@ -551,8 +572,11 @@
 			</itemizedlist>
 		</section>
 		-->
+		<!--
 	</section>
+		-->
 
+		<!--
 	<section id="changelog:other">
 		<title>Other changes</title>
 		<itemizedlist>
@@ -560,5 +584,6 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+		-->
 </chapter>
 <!-- vim: set ts=4 sw=4 noet foldmethod=syntax foldlevel=2: -->
