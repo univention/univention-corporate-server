@@ -676,7 +676,7 @@ def getOldValues( ldapconn, dn ):
 	if not isinstance(ldapconn, LDIFObject):
 		try:
 			res=ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
-		except ldap.NO_SUCH_OBJECT:
+		except ldap.NO_SUCH_OBJECT as ex:
 			ud.debug(ud.LISTENER, ud.PROCESS, "LOCAL not found: %s %s" % (dn, ex))
 			old={}
 		else:
@@ -962,17 +962,7 @@ def handler(dn, new, listener_old, operation):
 
 		# Read old entry directly from LDAP server
 		if not isinstance(l, LDIFObject):
-			try:
-				res=l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
-			except ldap.NO_SUCH_OBJECT:
-				old={}
-			except ldap.SERVER_DOWN:
-				old=listener_old
-			else:
-				if res:
-					old=res[0][1]
-				else:
-					old={}
+			old = getOldValues(l, dn)
 
 			# Check if both entries really match
 			match=1
