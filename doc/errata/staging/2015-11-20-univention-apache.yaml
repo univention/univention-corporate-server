@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-apache
+fix: 8.0.1-2.252.201511201644
+version: [0]
+desc: |
+ This update addresses the following issues:
+ * A warning about unencrypted HTTP connection has been added to the UCS
+   overview page.
+bug: [39361]
