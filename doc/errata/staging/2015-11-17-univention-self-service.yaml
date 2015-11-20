@@ -2,14 +2,14 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: todo
+fix: 1.0.2-27.42.201511201539
 version: [0]
 desc: |
  This update addresses the following issues:
  * Regardless of the configured debug level, the token is now never
    written to a log file (Bug 39996).
  * Execute unjoin script, when removing package (Bug 39980).
- * Improved the security of redirecting a user.
+ * Improved the security of redirecting a user (Bug 39981).
  * Remove links from overview website completely when uninstalling
    (Bug 40033).
  * Provide protection against denial of service attacks against server
