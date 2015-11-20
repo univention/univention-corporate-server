@@ -756,14 +756,6 @@ define([
 				}));
 			});
 
-			var nodeURI /*= undefined*/;
-/*			try {
-				var tree_path = this._tree.get('path');
-				var tree_item = tree_path[tree_path.length - 1];
-				if (tree_item.type == 'node' && tree_item.available) {
-					nodeURI = tree_item.id;
-				}
-			} catch (err) { }*/
 			wizard = new DomainWizard({
 				onFinished: _finished,
 				onCancel: _cleanup,
