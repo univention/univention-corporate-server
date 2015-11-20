@@ -1493,7 +1493,7 @@ define([
 				isStandardAction: true,
 				isMultiAction: false,
 				iconClass: 'umcIconView',
-				description: _('Open a view to the virtual machine {label} on {nodeName}'),
+				description: _('Open a view to the virtual machine'),
 				callback: lang.hitch(this, 'vncLink' ),
 				canExecute: canVNC
 			}, {

@@ -890,9 +890,13 @@ msgstr "Nicht löschbar"
 msgid "Number of CPUs"
 msgstr "Anzahl der CPUs"
 
-#: uvmm.js:1241 uvmm.js:1505
+#: uvmm.js:1241
 msgid "Open a view to the virtual machine {label} on {nodeName}"
 msgstr "Öffnet eine Anzeige der virtuellen Maschine {label} auf {nodeName}"
+
+#: uvmm.js:1505
+msgid "Open a view to the virtual machine"
+msgstr "Öffnet eine Anzeige der virtuellen Maschine"
 
 #: uvmm/DomainPage.js:125
 msgid "Operating system"
