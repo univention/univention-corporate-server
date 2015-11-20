@@ -164,13 +164,13 @@
 	</section>
 		-->
 
-	<!--
 	<section id="changelog:domain">
 		<title>Domain services</title>
 
 		<section id="changelog:domain:openldap">
 			<title>OpenLDAP</title>
 
+			<!--
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>
@@ -191,16 +191,19 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+			-->
 
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
+							Some replicated objects were not deleted, when the LDAP server closed its side of the LDAP connection (<u:bug>39439</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
 		</section>
 
+		<!--
 		<section id="changelog:domain:join">
 			<title>Domain join</title>
 			<itemizedlist>
@@ -208,8 +211,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 	</section>
-	-->
 
 	<section id="changelog:umc">
 		<title>Univention Management Console</title>
