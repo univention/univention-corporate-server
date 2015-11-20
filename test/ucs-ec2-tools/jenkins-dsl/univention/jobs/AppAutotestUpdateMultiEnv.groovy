@@ -2,6 +2,7 @@ package univention.jobs
 
 class AppAutotestUpdateMultiEnv {
   static create(dslFactory, String path, String version, String patch_level, Map app) {
+    def combinations = app.roles.collect{it + '-s4'} + ['master-s3']
     dslFactory.matrixJob(path + '/App Autotest Update MultiEnv') {
       // config
       authenticationToken('secret')
@@ -32,10 +33,7 @@ class AppAutotestUpdateMultiEnv {
         }
       }
       // axies
-      axes {
-        text('combinations', app.roles.collect{it + '-s4'} + ['master-s3'])
-      }
-      combinationFilter('(SambaVersion=="s3").implies(Systemrolle=="master")')
+      axes {text('combinations', combinations)}
       // wrappers
       wrappers {
         preBuildCleanup()

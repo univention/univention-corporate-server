@@ -28,6 +28,7 @@ roles.each { println it }
 
 print roles.collect{it + '-s4'} + ['master-s3']
 
+
 //// get apps from testing, without ucs components
 //apps = Apps.getApps(version, test=true, ucs_components=false)
 //
