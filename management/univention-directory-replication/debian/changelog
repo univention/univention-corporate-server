@@ -1,3 +1,9 @@
+univention-directory-replication (7.0.1-16) unstable; urgency=low
+
+  * Bug #39439: Fix LDAP server timeout handling
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 20 Nov 2015 17:17:01 +0100
+
 univention-directory-replication (7.0.1-15) unstable; urgency=low
 
   * Bug #39439: Fix LDAP server timeout handling
