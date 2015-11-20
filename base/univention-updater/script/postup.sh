@@ -105,16 +105,18 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
-# Move to mirror mode for previous errata component
-ucr set \
-	repository/online/component/3.2-6-errata=false \
-	repository/online/component/3.2-6-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+## Do no longer disable the previous errata scopes:
+##  https://forge.univention.org/bugzilla/show_bug.cgi?id=39614
+### Move to mirror mode for previous errata component
+###ucr set \
+###	repository/online/component/3.2-6-errata=false \
+###	repository/online/component/3.2-6-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 3.2-7
+# Set errata component for UCS 3.2-8
 ucr set \
-	repository/online/component/3.2-7-errata=enabled \
-	repository/online/component/3.2-7-errata/description="Errata updates for UCS 3.2-7" \
-	repository/online/component/3.2-7-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/3.2-8-errata=enabled \
+	repository/online/component/3.2-8-errata/description="Errata updates for UCS 3.2-8" \
+	repository/online/component/3.2-8-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
 
 # make sure that UMC server is restarted (Bug #33426)
 echo "
