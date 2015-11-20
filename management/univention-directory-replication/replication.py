@@ -40,7 +40,6 @@
 __package__='' 	# workaround for PEP 366
 import listener
 import os
-import pwd
 import ldap
 import ldap.schema
 # import ldif as ldifparser since the local module already uses ldif as variable
@@ -49,6 +48,7 @@ import re
 import time
 import base64
 import univention.debug
+import univention.debug as ud
 import smtplib
 from email.MIMEText import MIMEText
 import univention.uldap
@@ -577,7 +577,7 @@ def connect(ldif=0):
 
 		local_ip='127.0.0.1'
 		local_port=listener.baseConfig.get('slapd/port', '7389').split(',')[0]
-		
+
 		try:
 			connection=ldap.open(local_ip, int(local_port))
 			connection.simple_bind_s('cn=update,'+listener.baseConfig['ldap/base'], pw)
@@ -677,15 +677,18 @@ def getOldValues( ldapconn, dn ):
 		try:
 			res=ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
 		except ldap.NO_SUCH_OBJECT:
-			old={}
-		except ldap.SERVER_DOWN:
+			ud.debug(ud.LISTENER, ud.PROCESS, "LOCAL not found: %s %s" % (dn, ex))
 			old={}
 		else:
-			if res:
-				old=res[0][1]
-			else:
-				old={}
+			try:
+				((_dn, old),) = res
+				entryCSN = old.get('entryCSN', None)
+				ud.debug(ud.LISTENER, ud.PROCESS, "LOCAL found result: %s %s" % (dn, entryCSN))
+			except (TypeError, ValueError) as ex:
+				ud.debug(ud.LISTENER, ud.PROCESS, "LOCAL empty result: %s" % (dn,))
+				old = {}
 	else:
+		ud.debug(ud.LISTENER, ud.PROCESS, "LDIF empty result: %s" % (dn,))
 		old={}
 
 	return old
@@ -840,19 +843,19 @@ def _backup_dn_recursive(l, dn):
 	if not os.path.exists(backup_directory):
 		os.makedirs(backup_directory)
 		os.chmod(backup_directory, 0700)
-	
+
 	backup_file = os.path.join(backup_directory, str(time.time()))
 	fd = open(backup_file, 'w+')
 	fd.close()
 	os.chmod(backup_file, 0600)
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: dump %s to %s' % (dn, backup_file))
-	
+
 	fd = open(backup_file, 'w+')
 	ldif_writer = ldifparser.LDIFWriter(fd)
 	for dn,entry in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
 		ldif_writer.unparse(dn,entry)
 	fd.close()
-		
+
 def _get_current_modrdn_link():
 	return os.path.join(STATE_DIR, 'current_modrdn')
 
@@ -1055,7 +1058,7 @@ def handler(dn, new, listener_old, operation):
 						_delete_dn_recursive(l, old_dn)
 					else:
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication: no old dn has been found')
-					
+
 					if not old:
 						_add_object_from_new(l, dn, new)
 					elif old:
