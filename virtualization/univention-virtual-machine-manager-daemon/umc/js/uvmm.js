@@ -1197,11 +1197,7 @@ define([
 				}];
 			}
 
-			if (has("ff")) {
-				var cell_width = '80px';
-			} else {
-				var cell_width = '60px';
-			}
+			var cell_width = has("ff") ? '80px' : '60px';
 
 			if (type == 'instance') {
 				return [{
