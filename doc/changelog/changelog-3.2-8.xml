@@ -441,6 +441,7 @@
 		</section>
 		-->
 
+		<!--
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>
@@ -456,6 +457,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 		<section id="changelog:service:dhcp">
 			<title>DHCP</title>
 			<itemizedlist>
