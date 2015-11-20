@@ -1032,7 +1032,7 @@ define([
 			// wait for changed instance state
 			var max = 60;
 			var counter = 1;
-			var deferred = new Deferred();
+			deferred = new Deferred();
 			var wait = lang.hitch(this, function() {
 				tools.umcpCommand('uvmm/instance/query', {}, false).then(lang.hitch(this, function(data) {
 					var items_update = array.filter(data.result, function(item) {
