@@ -1,10 +1,5 @@
 import univention.Apps
 import univention.Constants
-import univention.Jobs
-
-import univention.jobs.AppTest
-
-AppTest.Job()
 
 // Build parameters are exposed as environment variables in Jenkins.
 // A seed job build parameter named FOO is available as FOO variable
@@ -27,6 +22,11 @@ if (last_version == null) {
 	throw new RuntimeException("last version for version ${version} not found")
 }
 
+def roles = ['master', 'slave']
+
+roles.each { println it }
+
+print roles.collect{it + '-s4'} + ['master-s3']
 
 //// get apps from testing, without ucs components
 //apps = Apps.getApps(version, test=true, ucs_components=false)

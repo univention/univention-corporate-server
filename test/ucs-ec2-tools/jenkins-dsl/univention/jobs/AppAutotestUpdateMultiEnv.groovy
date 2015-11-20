@@ -33,8 +33,7 @@ class AppAutotestUpdateMultiEnv {
       }
       // axies
       axes {
-        text('Systemrolle', app.roles)
-        text('SambaVersion', 's3', 's4')
+        text('combinations', app.roles.collect{it + '-s4'} + ['master-s3'])
       }
       combinationFilter('(SambaVersion=="s3").implies(Systemrolle=="master")')
       // wrappers
@@ -45,7 +44,7 @@ class AppAutotestUpdateMultiEnv {
       steps {
         shell(
           """
-cfg="examples/jenkins/autotest-12*-appupdate-\${Systemrolle}-\${SambaVersion}.cfg"
+cfg="examples/jenkins/autotest-12*-appupdate-\${combinations}.cfg"
 sed -i "s|APP_ID|${app.required_apps.join(' ')}|g" \$cfg
 test "\$Update_to_testing_errata_updates" = true && sed -i "s|upgrade_to_latest_errata|upgrade_to_latest_test_errata|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg
