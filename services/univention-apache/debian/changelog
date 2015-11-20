@@ -1,3 +1,10 @@
+univention-apache (8.0.1-2) unstable; urgency=medium
+
+  * Bug #39361: Add warning about unencrypted HTTP connection to the UCS
+  	overview page
+
+ -- Florian Best <best@univention.de>  Fri, 20 Nov 2015 16:40:23 +0100
+
 univention-apache (8.0.1-1) unstable; urgency=medium
 
   Bug #39656:
