@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: 1.0.2-25.41.201511191351
+fix: todo
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -10,4 +10,6 @@ desc: |
    written to a log file (Bug 39996).
  * Execute unjoin script, when removing package (Bug 39980).
  * Improved the security of redirecting a user.
-bug: [39980,39996,39981]
+ * Remove links from overview website completely when uninstalling
+   (Bug 40033).
+bug: [39980,39996,39981,40033]

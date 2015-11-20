@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-26) unstable; urgency=low
+
+  * completely remove overview links when uninstalling (Bug #40033)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 20 Nov 2015 15:14:51 +0100
+
 univention-self-service (1.0.2-25) unstable; urgency=low
 
   * Bug #39981: Another regex improvment for redirect url

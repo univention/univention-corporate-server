@@ -46,6 +46,7 @@ if [ "$1" = "remove" -o "$1" = "purge" ]; then
 		ucs/web/overview/entries/service/passwordreset/label \
 		ucs/web/overview/entries/service/passwordreset/label/de \
 		ucs/web/overview/entries/service/passwordreset/link \
+		ucs/web/overview/entries/service/passwordreset/link/de \
 		ucs/web/overview/entries/service/passwordreset/port_http \
 		ucs/web/overview/entries/service/passwordreset/port_https
 
@@ -56,6 +57,7 @@ if [ "$1" = "remove" -o "$1" = "purge" ]; then
 		ucs/web/overview/entries/service/passwordchange/label \
 		ucs/web/overview/entries/service/passwordchange/label/de \
 		ucs/web/overview/entries/service/passwordchange/link \
+		ucs/web/overview/entries/service/passwordchange/link/de \
 		ucs/web/overview/entries/service/passwordchange/port_http \
 		ucs/web/overview/entries/service/passwordchange/port_https
 
