@@ -395,6 +395,15 @@ define([
 			domClass.remove('footer', 'dijitHidden');
 		},
 
+		_checkSecureConnection: function() {
+			if (window.location.protocol === 'http:') {
+				var link = '<a href="https://' + window.location.href.slice(7) + '">';
+				var msg = _('This network connection is not encrypted, sensitive data will be transmitted in plain text. Please follow {link} this link</a> to use a secure HTTPS connection.', {link: link});
+				domAttr.set('https-warning-msg', 'innerHTML', msg);
+				domClass.remove('https-warning', 'dijitHidden');
+			}
+		},
+
 
 		start: function() {
 			this._registerRouter();
@@ -405,6 +414,7 @@ define([
 			this._createLanguagesDropDown();
 			this._registerResizeHandling();
 			this._showFooter();
+			this._checkSecureConnection();
 			if (this._hasServiceEntries()) {
 				router.startup("service");
 			}

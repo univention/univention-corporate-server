@@ -102,3 +102,9 @@ msgstr "https://www.univention.de/produkte/"
 #: startsite.js:84
 msgid "{hostname}.{domainname}"
 msgstr "{hostname}.{domainname}"
+
+msgid "Insecure Connection."
+msgstr "Unsichere Verbindung."
+
+msgid "This network connection is not encrypted, sensitive data will be transmitted in plain text. Please follow {link} this link</a> to use a secure HTTPS connection."
+msgstr "Die Netzwerkverbindung ist nicht verschlüsselt, sensible Daten werden im Klartext übertragen. Bitte verwenden Sie {link}diesen Link</a> für eine verschlüsselte HTTPS-Verbindung."
