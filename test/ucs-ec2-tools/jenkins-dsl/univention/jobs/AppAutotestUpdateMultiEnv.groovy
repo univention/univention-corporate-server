@@ -36,6 +36,7 @@ class AppAutotestUpdateMultiEnv {
         text('Systemrolle', app.roles)
         text('SambaVersion', 's3', 's4')
       }
+      combinationFilter('(SambaVersion=="s3").implies(Systemrolle=="master")')
       // wrappers
       wrappers {
         preBuildCleanup()
