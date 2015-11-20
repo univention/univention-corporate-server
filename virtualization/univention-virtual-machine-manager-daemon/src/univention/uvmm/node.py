@@ -1520,7 +1520,7 @@ def domain_migrate(source_uri, domain, target_uri):
 				target_conn.defineXML(xml)
 			except IOError, ex:
 				raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=ex)
-		elif source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED):
+		elif source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED, libvirt.VIR_DOMAIN_PAUSED):
 			# running domains are live migrated
 			flags = libvirt.VIR_MIGRATE_LIVE | libvirt.VIR_MIGRATE_PERSIST_DEST | libvirt.VIR_MIGRATE_UNDEFINE_SOURCE
 			target_dom = source_dom.migrate(target_conn, flags, None, None, 0)

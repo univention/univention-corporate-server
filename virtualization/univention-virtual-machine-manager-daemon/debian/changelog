@@ -1,6 +1,7 @@
 univention-virtual-machine-manager-daemon (5.0.1-5) unstable; urgency=low
 
   * Bug #39825: /domain/devices/disk/driver/@type is optional
+  * Bug #39242: Allow migration of paused VMs
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 20 Nov 2015 17:46:14 +0100
 

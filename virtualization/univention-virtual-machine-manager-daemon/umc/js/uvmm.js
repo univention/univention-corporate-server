@@ -1515,7 +1515,8 @@ define([
 				isMultiAction: true,
 				callback: lang.hitch(this, '_migrateDomain' ),
 				canExecute: function(item) {
-					return item.state != 'PAUSED'; // FIXME need to find out if there are more than one node of this type
+					// FIXME need to find out if there are more than one node of this type
+					return !isTerminated(item);
 				}
 			}, {
 				name: 'remove',
