@@ -677,18 +677,18 @@ def getOldValues( ldapconn, dn ):
 		try:
 			res=ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
 		except ldap.NO_SUCH_OBJECT as ex:
-			ud.debug(ud.LISTENER, ud.PROCESS, "LOCAL not found: %s %s" % (dn, ex))
+			ud.debug(ud.LISTENER, ud.ALL, "LOCAL not found: %s %s" % (dn, ex))
 			old={}
 		else:
 			try:
 				((_dn, old),) = res
 				entryCSN = old.get('entryCSN', None)
-				ud.debug(ud.LISTENER, ud.PROCESS, "LOCAL found result: %s %s" % (dn, entryCSN))
+				ud.debug(ud.LISTENER, ud.ALL, "LOCAL found result: %s %s" % (dn, entryCSN))
 			except (TypeError, ValueError) as ex:
-				ud.debug(ud.LISTENER, ud.PROCESS, "LOCAL empty result: %s" % (dn,))
+				ud.debug(ud.LISTENER, ud.ALL, "LOCAL empty result: %s" % (dn,))
 				old = {}
 	else:
-		ud.debug(ud.LISTENER, ud.PROCESS, "LDIF empty result: %s" % (dn,))
+		ud.debug(ud.LISTENER, ud.ALL, "LDIF empty result: %s" % (dn,))
 		old={}
 
 	return old
