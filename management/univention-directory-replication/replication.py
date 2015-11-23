@@ -40,7 +40,6 @@
 __package__='' 	# workaround for PEP 366
 import listener
 import os
-import pwd
 import ldap
 import ldap.schema
 # import ldif as ldifparser since the local module already uses ldif as variable
@@ -49,6 +48,7 @@ import re
 import time
 import base64
 import univention.debug
+import univention.debug as ud
 import smtplib
 from email.MIMEText import MIMEText
 import univention.uldap
@@ -676,16 +676,19 @@ def getOldValues( ldapconn, dn ):
 	if not isinstance(ldapconn, LDIFObject):
 		try:
 			res=ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
-		except ldap.NO_SUCH_OBJECT:
-			old={}
-		except ldap.SERVER_DOWN:
+		except ldap.NO_SUCH_OBJECT as ex:
+			ud.debug(ud.LISTENER, ud.ALL, "LOCAL not found: %s %s" % (dn, ex))
 			old={}
 		else:
-			if res:
-				old=res[0][1]
-			else:
-				old={}
+			try:
+				((_dn, old),) = res
+				entryCSN = old.get('entryCSN', None)
+				ud.debug(ud.LISTENER, ud.ALL, "LOCAL found result: %s %s" % (dn, entryCSN))
+			except (TypeError, ValueError) as ex:
+				ud.debug(ud.LISTENER, ud.ALL, "LOCAL empty result: %s" % (dn,))
+				old = {}
 	else:
+		ud.debug(ud.LISTENER, ud.ALL, "LDIF empty result: %s" % (dn,))
 		old={}
 
 	return old
@@ -959,17 +962,7 @@ def handler(dn, new, listener_old, operation):
 
 		# Read old entry directly from LDAP server
 		if not isinstance(l, LDIFObject):
-			try:
-				res=l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
-			except ldap.NO_SUCH_OBJECT:
-				old={}
-			except ldap.SERVER_DOWN:
-				old=listener_old
-			else:
-				if res:
-					old=res[0][1]
-				else:
-					old={}
+			old = getOldValues(l, dn)
 
 			# Check if both entries really match
 			match=1

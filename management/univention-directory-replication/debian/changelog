@@ -1,3 +1,9 @@
+univention-directory-replication (8.0.2-6) unstable; urgency=low
+
+  * Bug #40066 replication: Fix LDAP server timeout handling
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 23 Nov 2015 11:59:50 +0100
+
 univention-directory-replication (8.0.2-5) unstable; urgency=low
 
   * Bug #37291: Prevent recursive listener restart
