@@ -1,3 +1,9 @@
+univention-directory-replication (9.0.1-2) unstable; urgency=medium
+
+  * Bug #40067 replication: Fix LDAP server timeout handling
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 23 Nov 2015 11:59:50 +0100
+
 univention-directory-replication (9.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
