@@ -1,7 +1,13 @@
+univention-self-service (1.0.2-28) unstable; urgency=low
+
+  * fix bad comparison, raise request limits (Bug #39720)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 23 Nov 2015 10:00:51 +0100
+
 univention-self-service (1.0.2-27) unstable; urgency=low
 
   * Add protection against denial of service attacks against server and
-    users. Adds UCRVs umc/self-service/passwordreset/limit/.*
+    users. Adds UCRVs umc/self-service/passwordreset/limit/.* (Bug #39720)
 
  -- Daniel Troeder <troeder@univention.de>  Fri, 20 Nov 2015 15:29:40 +0100
 

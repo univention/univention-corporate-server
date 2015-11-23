@@ -175,6 +175,9 @@ class Instance(Base):
 			limit_total_min = int(limit_total_min)
 			limit_total_hour = int(limit_total_hour)
 			limit_total_day = int(limit_total_day)
+			self.limit_user_min = int(self.limit_user_min)
+			self.limit_user_hour = int(self.limit_user_hour)
+			self.limit_user_day = int(self.limit_user_day)
 		except ValueError as e:
 			err = _("umc/self-service/passwordreset/limit/.* must be a number: {}").format(e)
 			MODULE.error(err)
