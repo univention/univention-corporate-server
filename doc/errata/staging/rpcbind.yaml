@@ -1,0 +1,15 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: rpcbind
+fix: 0.2.0-8.8.201511231144
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * A remotely triggerable use-after-free vulnerability was found in rpcbind, a
+   server that converts RPC program numbers into universal addresses. A remote
+   attacker can take advantage of this flaw to mount a denial of service
+   (rpcbind crash) (CVE-2015-7236)
+bug: [40023]
+cve:
+ - CVE-2015-7236
