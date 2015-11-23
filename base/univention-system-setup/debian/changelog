@@ -1,3 +1,10 @@
+univention-system-setup (9.0.2-10) unstable; urgency=medium
+
+  * Bug #39974: don't display reload pop up on success page
+  * Bug #39156: adjust info text on success page
+
+ -- Florian Best <best@univention.de>  Mon, 23 Nov 2015 16:00:41 +0100
+
 univention-system-setup (9.0.2-9) unstable; urgency=medium
 
   * Bug #37890: Add u-self-service and u-self-service-passwordreset-umc

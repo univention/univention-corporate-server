@@ -1799,7 +1799,11 @@ define([
 			} else if (isUniventionApp) {
 				msg += _('<p>Click on <i>Finish</i> for putting this system into operation.</p>');
 				if (isMaster) {
-					msg += _('<p>When accessing the system for the first time, you will be asked to upload a new license that has been sent to your email account.</p>');
+					if (this.getValues().email_address) {
+						msg += _('<p>When accessing the system for the first time, you will be asked to upload a new license that has been sent to your email account.</p>');
+					} else {
+						msg += _('<p>When accessing the system for the first time, you will be asked to request and upload a new license.</p>');
+					}
 				}
 			} else {
 				msg += _('<p>Click on <i>Finish</i> for putting UCS into operation.</p>');
@@ -2046,6 +2050,9 @@ define([
 				// make sure that no re-login is tried/required due to the server time
 				// being adjusted in 40_ssl/10ssl (cf., Bug #38455)
 				tools.checkSession(false);
+
+				// make sure no page reload is requested
+				tools.status('ignorePageReload', true);
 
 				// send save command to server
 				this._progressBar.reset(_('Initialize the configuration process ...'));
