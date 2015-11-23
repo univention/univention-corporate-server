@@ -3,7 +3,7 @@
 # Univention Directory Replication
 #  listener module for Directory replication
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -577,7 +577,7 @@ def connect(ldif=0):
 
 		local_ip='127.0.0.1'
 		local_port=listener.baseConfig.get('slapd/port', '7389').split(',')[0]
-		
+
 		try:
 			connection=ldap.open(local_ip, int(local_port))
 			connection.simple_bind_s('cn=update,'+listener.baseConfig['ldap/base'], pw)
@@ -843,19 +843,19 @@ def _backup_dn_recursive(l, dn):
 	if not os.path.exists(backup_directory):
 		os.makedirs(backup_directory)
 		os.chmod(backup_directory, 0700)
-	
+
 	backup_file = os.path.join(backup_directory, str(time.time()))
 	fd = open(backup_file, 'w+')
 	fd.close()
 	os.chmod(backup_file, 0600)
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: dump %s to %s' % (dn, backup_file))
-	
+
 	fd = open(backup_file, 'w+')
 	ldif_writer = ldifparser.LDIFWriter(fd)
 	for dn,entry in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
 		ldif_writer.unparse(dn,entry)
 	fd.close()
-		
+
 def _get_current_modrdn_link():
 	return os.path.join(STATE_DIR, 'current_modrdn')
 
@@ -1048,7 +1048,7 @@ def handler(dn, new, listener_old, operation):
 						_delete_dn_recursive(l, old_dn)
 					else:
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication: no old dn has been found')
-					
+
 					if not old:
 						_add_object_from_new(l, dn, new)
 					elif old:
