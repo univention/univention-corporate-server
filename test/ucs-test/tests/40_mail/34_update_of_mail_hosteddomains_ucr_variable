@@ -2,6 +2,8 @@
 ## desc: Test update of mail/hosteddomains ucr variable
 ## tags: [apptest]
 ## exposure: dangerous
+## packages:
+##  - univention-mail-postfix
 
 import random
 import univention.testing.strings as uts

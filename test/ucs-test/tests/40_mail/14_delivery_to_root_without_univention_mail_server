@@ -2,6 +2,8 @@
 ## desc: Delivery to root without univention mail server
 ## tags: [apptest]
 ## exposure: dangerous
+## packages:
+##  - univention-mail-postfix
 
 from essential.mail import send_mail, check_delivery
 from univention.config_registry import handler_set
