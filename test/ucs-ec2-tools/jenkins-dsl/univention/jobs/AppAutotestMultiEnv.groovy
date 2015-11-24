@@ -46,7 +46,6 @@ class AppAutotestMultiEnv {
 """
 cfg="examples/jenkins/autotest-10*-app-\${Systemrolle}-\${SambaVersion}.cfg"
 sed -i "s|APP_ID|${app.required_apps.join(' ')}|g" \$cfg
-sed -i "s|%PARAM_HALT%|\$HALT|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg
 """
         )
