@@ -401,12 +401,13 @@
 					<term>Thumbnails</term>
 					<listitem>
 						<simpara>
-							A comma separated list of screenshots and/or YouTube videos.
-							Will be listed in the App's detail page of the UMC module.
-							For screenshots, filenames need to be specified (and they need
-							to be sent along with the ini file), for YouTube videos, a url
-							to that video has to be given. The url needs to point directly
-							to the video on youtube.com.
+							A comma separated list of screenshots and/or
+							<wordasword>YouTube</wordasword> videos. Will be listed in the App's
+							detail page of the UMC module. For screenshots, filenames need to be
+							specified (and they need to be sent along with the ini file), for
+							<wordasword>YouTube</wordasword> videos, a URL to that video has to
+							be given. The URL needs to point directly to the video on
+							<ulink url="https://youtube.com/"/>
 						</simpara>
 					</listitem>
 				</varlistentry>
