@@ -183,7 +183,7 @@
 	<para>
 		From a technical perspective, another &ucsMember; is started as the Docker container in which the app is then installed.
 		This &ucsMember; is self-contained to the point that errata and release updates also need to be installed there.
-		A corresponding host object is created for the &ucsMember; in the LDAP directory and can be edited via the &ucsUMS;.
+		A corresponding computer object is created for the &ucsMember; in the LDAP directory and can be edited via the &ucsUMS;.
 		This can then be used to change the update policies, for example.
 	</para>
 
@@ -214,7 +214,7 @@ docker exec \
 					<guilabel>Started manually</guilabel> prevents the app from starting automatically, but it can be started via the UMC module.
 			</simpara></listitem>
 			<listitem><simpara>
-					<guilabel>Start is prevented</guilabel> prevents the app from starting at any time; it cannot even be started via the UMC module.
+					<guilabel>Starting is prevented</guilabel> prevents the app from starting at any time; it cannot even be started via the UMC module.
 			</simpara></listitem>
 		</itemizedlist>
 		In addition, apps can also be adjusted using additional parameters.

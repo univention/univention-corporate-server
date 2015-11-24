@@ -892,8 +892,8 @@ apt-cache search fax
 	  Die webbasierte Abfrageschnittstelle des Software-Monitors integriert sich in die
 	  &ucsUMC; und kann über das Modul <guimenu>Software-Monitor</guimenu> erreicht
 	  werden. Folgende Funktionen stehen zur Verfügung:
-
 	</para>
+
 	<itemizedlist>
 	  <listitem><simpara>
 		<emphasis>Systeme</emphasis> erlaubt die Suche nach den installierten Versionsständen
