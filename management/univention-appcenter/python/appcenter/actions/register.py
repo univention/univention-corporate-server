@@ -74,6 +74,7 @@ class Register(CredentialsAction):
 		self._register_files_for_apps(apps, args)
 		self._register_host_for_apps(apps, args)
 		self._register_app_for_apps(apps, args)
+		self._register_installed_apps_in_ucr()
 
 	def _do_register(self, app, args):
 		if args.do_it is None:
@@ -419,3 +420,15 @@ class Register(CredentialsAction):
 			ucr_update(ucr, updates)
 			self._reload_apache()
 		return updates
+
+	def _register_installed_apps_in_ucr(self):
+		ucr = ConfigRegistry()
+		installed_codes = []
+		for app in AppManager.get_all_apps():
+			if app.is_installed():
+				installed_codes.append(app.code)
+		with catch_stdout(self.logger):
+			ucr_update(ucr, {
+				'appcenter/installed': '-'.join(installed_codes),
+				'repository/app_center/installed': '-'.join(installed_codes),  # to be deprecated
+			})

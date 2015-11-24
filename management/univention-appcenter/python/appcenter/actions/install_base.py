@@ -39,13 +39,11 @@ import subprocess
 from argparse import SUPPRESS
 from tempfile import NamedTemporaryFile
 
-from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
 
-from univention.appcenter.app import App, AppManager
+from univention.appcenter.app import App
 from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, get_action
 from univention.appcenter.actions.register import Register
-from univention.appcenter.log import catch_stdout
 from univention.appcenter.utils import get_locale
 
 
@@ -235,18 +233,6 @@ class InstallRemoveUpgrade(Register):
 
 	def _call_unjoin_script(self, app, args):
 		return self._call_join_script(app, args, unjoin=True)
-
-	def _register_installed_apps_in_ucr(self):
-		ucr = ConfigRegistry()
-		installed_codes = []
-		for app in AppManager.get_all_apps():
-			if app.is_installed():
-				installed_codes.append(app.code)
-		with catch_stdout(self.logger):
-			ucr_update(ucr, {
-				'appcenter/installed': '-'.join(installed_codes),
-				'repository/app_center/installed': '-'.join(installed_codes),  # to be deprecated
-			})
 
 	def _call_join_script(self, app, args, unjoin=False):
 		if unjoin:
