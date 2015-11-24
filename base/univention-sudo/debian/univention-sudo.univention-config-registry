@@ -1,0 +1,3 @@
+Type: file
+File: etc/sudoers.d/univention
+Variables: groups/default/domainadmins

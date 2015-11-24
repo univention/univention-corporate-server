@@ -1,0 +1,8 @@
+@%@UCRWARNING=# @%@
+
+# Allow members of group "Domain Admins" to execute any command
+## %Domain\ Admins ALL=(ALL:ALL) ALL
+@!@
+da = configRegistry.get("groups/default/domainadmins", "Domain Admins").replace(" ", "\ ")
+print "%{} ALL=(ALL:ALL) ALL".format(da)
+@!@

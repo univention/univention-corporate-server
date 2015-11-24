@@ -1,0 +1,5 @@
+univention-sudo (1.0.0) unstable; urgency=low
+
+  * Initial release. (Bug #37995)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 24 Nov 2015 15:20:49 +0100
