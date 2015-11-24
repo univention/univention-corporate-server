@@ -671,8 +671,9 @@ __EOF__
 	# set initial values for UCR ssl variables
 	/usr/sbin/univention-certificate-check-validity
 
-	# Set official update server
-	ucr set repository/online/server='https://updates.software-univention.de'
+	# Set official update server, deactivate online repository until system setup script 90_postjoin/20upgrade
+	ucr set repository/online=no \
+		repository/online/server='https://updates.software-univention.de'
 	# ucr set repository/online/server=univention-repository.knut.univention.de
 
 	# Cleanup apt archive
