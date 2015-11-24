@@ -183,7 +183,7 @@
 	<para>
 		From a technical perspective, another &ucsMember; is started as the Docker container in which the app is then installed.
 		This &ucsMember; is self-contained to the point that errata and release updates also need to be installed there.
-		A corresponding computer object is created for the &ucsMember; in the LDAP directory and can be edited via the &ucsUMS;.
+		A corresponding computer object is created for the &ucsMember; in the LDAP directory and can be edited via the &ucsUMC;.
 		This can then be used to change the update policies, for example.
 	</para>
 
