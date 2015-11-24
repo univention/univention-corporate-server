@@ -2,10 +2,12 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-appcenter
-fix: 5.0.19-6.68.201511191238
+fix: 5.0.19-7.70.201511242345
 version: [0]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * On touch devices the long decscription of an app is now visible by touching
    the app once. Touching a second time will open the detail page.
-bug: [39663]
+ * Installed apps are now correctly stored in repository/app_center/installed
+   even when bypassing the App Center
+bug: [39663, 40087]
