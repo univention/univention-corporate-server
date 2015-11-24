@@ -1,3 +1,9 @@
+univention-pam (9.0.0-2) unstable; urgency=low
+
+  * Bug #24840: add dependency on german wordlist for cracklib
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 24 Nov 2015 12:33:11 +0100
+
 univention-pam (9.0.0-1) unstable; urgency=low
 
   * Bug #39369: overwrite HOME in univention-pam/lock-user 
