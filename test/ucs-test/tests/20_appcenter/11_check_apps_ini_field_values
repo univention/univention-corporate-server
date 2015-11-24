@@ -66,7 +66,7 @@ def check_ini_files():
     if not path.exists(CACHE_DIR):
         utils.fail("The path to App center .ini files does not exist.")
 
-    test_path = glob(path.join(CACHE_DIR, '*.ini'))
+    test_path = [fname for fname in glob(path.join(CACHE_DIR, '*.ini')) if not path.basename(fname).startswith('.')]
     for filename in test_path:
         try:
             check_file(filename)

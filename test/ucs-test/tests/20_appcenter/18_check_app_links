@@ -115,7 +115,7 @@ def collect_links():
     Opens the .inis of installed Apps and looks for links;
     Adds links found to a set and returns it when done.
     """
-    test_path = glob(path.join(CACHE_DIR, '*.ini'))
+    test_path = [fname for fname in glob(path.join(CACHE_DIR, '*.ini')) if not path.basename(fname).startswith('.')]
     links_to_check = set()
 
     for app in check_installed_apps:

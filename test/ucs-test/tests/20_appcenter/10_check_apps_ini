@@ -74,7 +74,7 @@ def check_ini_files():
     Checks all .ini files that are found in the CACHE_DIR.
     """
     test_locales = ('de_DE', 'en_US')
-    test_path = glob(path.join(CACHE_DIR, '*.ini'))
+    test_path = [fname for fname in glob(path.join(CACHE_DIR, '*.ini')) if not path.basename(fname).startswith('.')]
 
     for local in test_locales:
         if set_locale(local):

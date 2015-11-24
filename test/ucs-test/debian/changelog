@@ -1,3 +1,9 @@
+ucs-test (6.0.27-5) unstable; urgency=medium
+
+  * Bug #39354: Only check apps' ini files
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 24 Nov 2015 09:36:52 +0100
+
 ucs-test (6.0.27-4) unstable; urgency=low
 
   * Bug #40036: support https in 20_appcenter/17_app_status
