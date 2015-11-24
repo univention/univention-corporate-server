@@ -69,16 +69,16 @@
 				Reference</ulink> for a template and the description of every attribute.
 			</simpara></listitem>
 			<listitem><simpara>
-    		A product logo in PNG format, size: 50x50 pixels, with transparent background.
+				A product logo in SVG format, ratio: square.
 			</simpara></listitem>
 		</orderedlist>
 
 		<para>
-			The <filename class="extension">.ini</filename> file has the attribute <property>ID</property>. Simply name the <filename class="extension">.ini</filename> file and the product logo after that ID:
+			The <filename class="extension">.ini</filename> file has the attribute <property>ID</property>. Simply name the <filename class="extension">.ini</filename> file and the product logo after that ID (note that you need to specify the logo file in the ini file!):
 		</para>
 		<itemizedlist>
 			<listitem><simpara><filename>myapp.ini</filename></simpara></listitem>
-			<listitem><simpara><filename>myapp.png</filename></simpara></listitem>
+			<listitem><simpara><filename>myapp.svg</filename></simpara></listitem>
 		</itemizedlist>
 		<para>
 			Put those files below the <filename class="directory">metadata/</filename> directory.
@@ -113,12 +113,16 @@
 
 		<orderedlist>
 			<listitem><simpara>
-    		Screenshot of your solution: The filename of the screenshot is given in the app meta
+				Another product logo in SVG format. This time, no ratio requirements. It will be shown in the details of the app
+				rather than in the overview.
+			</simpara></listitem>
+			<listitem><simpara>
+				Screenshot of your solution: The filename of the screenshot is given in the app meta
 				data with the attribute <property>Screenshot</property>. Recommended name: <filename><replaceable>myapp</replaceable>_screenshot.png</filename> (you may also provide a
 				<filename class="extension">jpg</filename>).
 			</simpara></listitem>
 			<listitem><simpara>
-    		License agreement: If you require the user to confirm a license agreement before
+				License agreement: If you require the user to confirm a license agreement before
 				installation, provide the file <filename>LICENSE_AGREEMENT_EN</filename> and <filename>LICENSE_AGREEMENT_DE</filename>.
 			</simpara></listitem>
 			<listitem><simpara>
