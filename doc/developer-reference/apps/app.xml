@@ -229,11 +229,13 @@
 			Besides the text file and the above mentioned statements, a product logo and a screenshot, if given, are needed:
 			<itemizedlist>
 				<listitem><simpara>
-					Product logo in PNG format, size: 50x50 pixels, with transparent
-					background. Required.
+					Product logo in SVG format, ratio: square. Required.
 				</simpara></listitem>
 				<listitem><simpara>
-					Screenshot of the application. Format can be JPG or (preferably) PNG.
+					"Big" product logo in SVG format (e.g. with claim, app name in logo, etc), ratio: no restrictions. Optional.
+				</simpara></listitem>
+				<listitem><simpara>
+					Screenshot(s) of the application. Format can be JPG or (preferably) PNG.
 					Optional.
 				</simpara></listitem>
 			</itemizedlist>
@@ -396,12 +398,15 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Screenshot</term>
+					<term>Thumbnails</term>
 					<listitem>
 						<simpara>
-							In contrast to the product logo, the screenshot has to be given
-							explicitly in the ini file. That is the filename (with file
-							extension, without any webserver or directory).
+							A comma separated list of screenshots and/or YouTube videos.
+							Will be listed in the App's detail page of the UMC module.
+							For screenshots, filenames need to be specified (and they need
+							to be sent along with the ini file), for YouTube videos, a url
+							to that video has to be given. The url needs to point directly
+							to the video on youtube.com.
 						</simpara>
 					</listitem>
 				</varlistentry>
