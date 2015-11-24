@@ -130,3 +130,6 @@ cgroupfs-mount
 
 univention-self-service
 univention-self-service-passwordreset-umc
+
+/* Bug 24840: add german wordlist for cracklib */
+wngerman
