@@ -30,9 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# this is for the files to be available when the ucr templates are
-# registered for the very first time
-
 if [ "$1" = configure -a -z "$2" ]; then
 	touch /var/log/univention/appcenter.log
 	chown root:adm /var/log/univention/appcenter.log
@@ -40,5 +37,9 @@ if [ "$1" = configure -a -z "$2" ]; then
 fi
 
 #DEBHELPER#
+
+if dpkg --compare-versions "$2" lt-nl 5.0.19-7; then
+	univention-app register --noninteractive --component
+fi
 
 exit 0

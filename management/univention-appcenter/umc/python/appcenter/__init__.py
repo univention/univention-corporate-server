@@ -193,7 +193,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response(with_progress=True)
 	def sync_ldap(self):
 		register = get_action('register')
-		register.call()
+		register.call(username=self.username, password=self.password)
 
 	# used in updater-umc
 	@simple_response
