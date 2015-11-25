@@ -3,7 +3,7 @@ release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: firefox-en
 fix: 1:38.4.0esr-ucs-4.0.61.201511191931
-version: [4]
+version: [3,4]
 desc: |
  Firefox ESR 38.4 fixes these issues:
  * ASan: use-after-poison in sec_asn1d_parse_leaf() (CVE-2015-7181)
