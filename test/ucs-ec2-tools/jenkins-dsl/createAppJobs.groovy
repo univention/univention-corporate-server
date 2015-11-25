@@ -21,7 +21,7 @@ univention.Constants.VERSIONS.each {
     // create folder, generic app job and views
     folder(path)
     AppStatusViews.create(this, path)
-    AppGenericTest.create(this, path, version, patch_level, last_version)
+    AppGenericTest.create(this, 'UCS-' + version, version, patch_level, last_version)
 
     //// get apps for version and create folder and jobs
     //apps = Apps.getApps(version, test=true, ucs_components=false)
