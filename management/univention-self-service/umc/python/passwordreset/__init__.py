@@ -126,6 +126,10 @@ class ConnectionLimitError(UMC_Error):
 	status = 503
 
 
+class UnknownUserError(UMC_Error):
+	pass
+
+
 class Instance(Base):
 
 	def init(self):
@@ -327,7 +331,11 @@ class Instance(Base):
 		username = request.options.get("username")
 		if not username:
 			raise UMC_Error(_("Empty username supplied."))
-		if self.is_blacklisted(username):
+		try:
+			blacklisted = self.is_blacklisted(username)
+		except UnknownUserError:
+			raise UMC_Error(_('No password reset method available for this user.'))
+		if blacklisted:
 			raise UMC_Error(_("Service is not available for this user."))
 		user = self.get_udm_user(username=username)
 		if not self.send_plugins:
@@ -439,7 +447,7 @@ class Instance(Base):
 			gr_names = map(str.lower, self.dns_to_groupname(groups_dns))
 		except IndexError:
 			# no user or no group found
-			raise UMC_Error(_("Unknown user '{}'.").format(username))
+			raise UnknownUserError(_("Unknown user."))
 
 		# group blacklist
 		if any([gr in bl_groups for gr in gr_names]):

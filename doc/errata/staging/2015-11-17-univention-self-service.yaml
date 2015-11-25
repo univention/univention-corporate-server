@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: 1.0.2-28.43.201511231019
+fix: 1.0.2-29...
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -14,5 +14,10 @@ desc: |
    (Bug 40033).
  * Provide protection against denial of service attacks against server
    and users. Adds UCR variables umc/self-service/passwordreset/limit/.*
-   to configure request limits (Bug 39720).
-bug: [39720,39980,39996,39981,40033]
+   to configure request limits. To see current request count and limits run
+   /usr/lib/univention-self-service/univention-self-service-request-count
+   (Bug 39720).
+ * It was possible to reveal all known usernames in a domain, because the
+   error message for providing an unknown username was different to the one
+   for users without available reset methods (Bug 39939).
+bug: [39720,39939,39980,39996,39981,40033]

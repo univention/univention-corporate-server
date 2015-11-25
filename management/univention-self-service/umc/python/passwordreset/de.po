@@ -121,9 +121,9 @@ msgstr "Konnte keine Verbindung zum LDAP-Server aufbauen."
 msgid "The Password has been used already. Please supply a new one."
 msgstr "Das Passwort wurde bereits verwendet. Bitte geben Sie ein neues ein."
 
-#: umc/python/passwordreset/__init__.py:439
-msgid "Unknown user '{}'."
-msgstr "Unbekannter Benutzer '{}'."
+#: umc/python/passwordreset/__init__.py:450
+msgid "Unknown user."
+msgstr "Unbekannter Benutzer."
 
 #: umc/python/passwordreset/__init__.py:493
 msgid "Program error. Please report this to the administrator."
