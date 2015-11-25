@@ -1,3 +1,10 @@
+univention-self-service (1.0.2-31) unstable; urgency=low
+
+  * Make token-request mail sender address changable with UCRV
+    umc/self-service/passwordreset/email/from_addr (Bug #40048).
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Nov 2015 12:09:04 +0100
+
 univention-self-service (1.0.2-30) unstable; urgency=low
 
   * protect all exported functions against username scanning (Bug #39939)

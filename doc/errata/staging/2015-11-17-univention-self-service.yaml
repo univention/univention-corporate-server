@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: 1.0.2-30...
+fix: 1.0.2-31...
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -20,4 +20,6 @@ desc: |
  * It was possible to scan for all known usernames in a domain, because the
    error message for providing an unknown username was different to those
    for users without available reset methods or wrong passwords (Bug 39939).
-bug: [39720,39939,39980,39996,39981,40033]
+ * The sender address of token emails is now changable with the UCR variable
+   umc/self-service/passwordreset/email/from_addr (Bug 40048).
+bug: [39720,39939,39980,39996,39981,40033,40048]
