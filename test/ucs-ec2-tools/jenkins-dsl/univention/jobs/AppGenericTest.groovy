@@ -2,7 +2,7 @@ package univention.jobs
 
 class AppGenericTest {
   static create(dslFactory, String path, String version, String patch_level, String last_version) {
-    dslFactory.Job(path + '/App Generic Test') {
+    dslFactory.job(path + '/App Generic Test') {
       // config
       authenticationToken('secret')
       quietPeriod(60)
