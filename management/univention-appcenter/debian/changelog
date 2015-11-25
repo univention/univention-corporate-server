@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-8) unstable; urgency=low
+
+  * Bug #39664: Offer next/previous buttons in app detail view
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 25 Nov 2015 08:55:46 +0100
+
 univention-appcenter (5.0.19-7) unstable; urgency=medium
 
   * Bug #40087: Set repository/app_center/installed when registering apps

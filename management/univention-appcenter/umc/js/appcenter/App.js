@@ -53,6 +53,7 @@ define([
 			}
 			this.id = props.id;
 			this.name = props.name;
+			this.siblings = props.siblings;
 			this.logoName = props.logo_name;
 			this.logoDetailPageName = props.logo_detail_page_name;
 			this.version = props.version;
