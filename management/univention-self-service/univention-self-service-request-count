@@ -33,6 +33,7 @@
 import socket
 import datetime
 import re
+import sys
 from univention.management.console.config import ucr
 
 socket_file = "/var/run/memcached-univention-self-service.socket"
@@ -83,7 +84,16 @@ for line in lines:
 so.sendall("quit\r\n")
 so.close()
 
-for key in sorted(entries.keys()):
+keys = sorted(entries.keys())
+if not keys:
+	sys.exit(0)
+
+# move totals to end of (possibly long) list
+for k in ["tc_day", "tc_hour", "tc_min"]:
+	keys.remove(k)
+	keys.append(k)
+
+for key in keys:
 	if key == "tc_min":
 		limit = limit_total_min
 	elif key == "tc_hour":
@@ -96,6 +106,8 @@ for key in sorted(entries.keys()):
 		limit = limit_user_hour
 	elif key.endswith("_day"):
 		limit = limit_user_day
+	elif key.startswith("_e2u_"):
+		continue
 	else:
 		raise ValueError("key '{}' not recognized".format(key))
 

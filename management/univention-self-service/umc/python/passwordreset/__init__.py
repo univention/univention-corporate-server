@@ -99,6 +99,13 @@ def prevent_denial_of_service(func):
 			MODULE.error("prevent_denial_of_service() could not find username argument. self: %r args: %r kwargs: %r exception: %s" % (self, args, kwargs, traceback.format_exc()))
 			raise
 
+		try:
+			username = self.email2username(username)
+		except UnknownUserError:
+			# cannot send any error message, or it can be used to scan for email addresses
+			# not important for this function anyway
+			pass
+
 		user_limits = [
 			("{}_min".format(username), 60, self.limit_user_min),
 			("{}_hour".format(username), 3600, self.limit_user_hour),
@@ -161,13 +168,9 @@ class Instance(Base):
 			MODULE.error(err)
 			raise UMC_Error(err, status=500)
 
-		self.send_plugins = get_sending_plugins(MODULE.info)
+		self.send_plugins = get_sending_plugins(MODULE.process)
 
 		self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
-
-		def _memcached_stats():
-			MODULE.info("memcached_stats: {}".format(self.memcache.get_stats()))
-		atexit.register(_memcached_stats)
 
 		limit_total_min = ucr.get("umc/self-service/passwordreset/limit/total/min", 0)
 		limit_total_hour = ucr.get("umc/self-service/passwordreset/limit/total/hour", 0)
@@ -208,7 +211,7 @@ class Instance(Base):
 		password = request.options.get("password")
 		if not username:
 			raise UMC_Error(_("Empty username supplied."))
-		self.auth(username, password)
+		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("Service is not available for this user."))
 		user = self.get_udm_user(username=username)
@@ -232,7 +235,7 @@ class Instance(Base):
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
 		MODULE.info("set_contact(): username: {} password: ***** email: {} mobile: {}".format(username, email, mobile))
-		dn = self.auth(username, password)
+		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("Service is not available for this user."))
 		if self.set_contact_data(dn, email, mobile):
@@ -258,6 +261,7 @@ class Instance(Base):
 			raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
 		# check if the user has the required attribute set
 		user = self.get_udm_user(username=username)
+		username = user["username"]
 
 		if len(user[plugin.udm_property]) > 0:
 			# found contact info
@@ -298,6 +302,10 @@ class Instance(Base):
 	@simple_response
 	def set_password(self, token, username, password):
 		MODULE.info("set_password(): username: '{}'.".format(username))
+		try:
+			username = self.email2username(username)
+		except UnknownUserError:
+			raise UMC_Error(_("The token you supplied could not be found. Please request a new one."))
 		try:
 			token_from_db = self.db.get_one(token=token, username=username)
 		except MultipleTokensInDB as e:
@@ -363,6 +371,7 @@ class Instance(Base):
 
 	def send_message(self, username, method, address, token):
 		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
+		assert "@" not in username
 		try:
 			plugin = self.send_plugins[method]
 		except KeyError:
@@ -386,7 +395,7 @@ class Instance(Base):
 		lo = None
 		try:
 			lo = getMachineConnection()
-			binddn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
+			binddn, userdict = lo.search(filter="(|(uid={0})(mailPrimaryAddress={0}))".format(escape_filter_chars(username)))[0]
 			get_user_connection(binddn=binddn, bindpw=password)
 		except (univention.admin.uexceptions.authFail, IndexError):
 			raise UMC_Error(_("Username or password is incorrect."))
@@ -395,7 +404,7 @@ class Instance(Base):
 			raise UMC_Error(_("Could not connect to the LDAP server."))
 		finally:
 			lo.lo.unbind()
-		return binddn
+		return binddn, userdict["uid"][0]
 
 	def set_contact_data(self, dn, email, mobile):
 		try:
@@ -435,6 +444,8 @@ class Instance(Base):
 		wh_users = listize(ucr.get("umc/self-service/passwordreset/whitelist/users", ""))
 		wh_groups = listize(ucr.get("umc/self-service/passwordreset/whitelist/groups", ""))
 
+		username = self.email2username(username)
+
 		# user blacklist
 		if username.lower() in bl_users:
 			MODULE.info("is_blacklisted({}): match in blacklisted users".format(username))
@@ -443,7 +454,7 @@ class Instance(Base):
 		# get groups
 		lo = getMachineConnection()
 		try:
-			userdn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
+			userdn = lo.search(filter="(|(uid={0})(mailPrimaryAddress={0}))".format(escape_filter_chars(username)))[0][0]
 			groups_dns = self.get_groups(userdn)
 			for group_dn in list(groups_dns):
 				groups_dns.extend(self.get_nested_groups(group_dn))
@@ -501,10 +512,10 @@ class Instance(Base):
 			uidf = dn_part[0]
 			base = dn_part[-1]
 		elif username:
-			uidf = 'uid={}'.format(escape_filter_chars(username))
+			uidf = '(|(uid={0})(mailPrimaryAddress={0}))'.format(escape_filter_chars(username))
 			base = ""
 		else:
-			MODULE.error("userdn=None and username=None")
+			MODULE.error("get_udm_user(): userdn=None and username=None")
 			raise UMC_Error(_("Program error. Please report this to the administrator."), status=500)
 
 		if admin:
@@ -551,3 +562,23 @@ class Instance(Base):
 		group = self.groupmod.lookup(self.config, self.lo, filter_s=gidf, base=base)[0]
 		group.open()
 		return group
+
+	def email2username(self, email):
+		if "@" not in email:
+			return email
+
+		# cache email->username in memcache
+		username = self.memcache.get("_e2u_{}".format(email))
+		if not username:
+			try:
+				if not self.lo:
+					self.lo = getMachineConnection()
+				binddn, userdict = self.lo.search(filter="(mailPrimaryAddress={0})".format(escape_filter_chars(email)))[0]
+			except IndexError:
+				raise UnknownUserError()
+			except (LDAPError, udm_errors.ldapError, udm_errors.base):
+				raise UMC_Error(_("Could not connect to the LDAP server."))
+			username = userdict["uid"][0]
+			self.memcache.set("_e2u_{}".format(email), username, 7200)
+
+		return username
