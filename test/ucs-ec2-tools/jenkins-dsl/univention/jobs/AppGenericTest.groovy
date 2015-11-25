@@ -12,7 +12,7 @@ class AppGenericTest {
       // build parameters
       parameters {
         booleanParam('HALT', true, 'Uncheck to disable shutdown of ec2 instances.')
-        stringParam('patch_level', "${patch_level}", "Checkout this patch level version of UCS ${version} ucs-ec2-tools.")
+        stringParam('PATCH_LEVEL', "${patch_level}", "Checkout this patch level version of UCS ${version} ucs-ec2-tools.")
         stringParam('APP_ID', null, 'Insert the ID of the Apps which should be installed.')
         choiceParam('CFG', [
           "autotest-100-app-master-s3.cfg",
@@ -45,7 +45,7 @@ class AppGenericTest {
       scm {
         svn {
           checkoutStrategy(SvnCheckoutStrategy.CHECKOUT)
-          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-\$patch_level/test/ucs-ec2-tools") {
+          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-\$PATCH_LEVEL/test/ucs-ec2-tools") {
             credentials('50021505-442b-438a-8ceb-55ea76d905d3')    
           }
           configure { scmNode ->

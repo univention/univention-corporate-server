@@ -23,13 +23,13 @@ univention.Constants.VERSIONS.each {
     AppStatusViews.create(this, path)
     AppGenericTest.create(this, 'UCS-' + version, version, patch_level, last_version)
 
-    //// get apps for version and create folder and jobs
-    //apps = Apps.getApps(version, test=true, ucs_components=false)
-    //apps.keySet().sort().each { app ->
-    //    app_path = path + '/' + app
-    //    folder(app_path)
-    //    AppAutotestUpdateMultiEnv.create(this, app_path, version, patch_level, apps[app])
-    //    AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
-    //    AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
-    //}
+    // get apps for version and create folder and jobs
+    apps = Apps.getApps(version, test=true, ucs_components=false)
+    apps.keySet().sort().each { app ->
+        app_path = path + '/' + app
+        folder(app_path)
+        AppAutotestUpdateMultiEnv.create(this, app_path, version, patch_level, apps[app])
+        AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
+        AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
+    }
 }
