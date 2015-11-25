@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: 1.0.2-29...
+fix: 1.0.2-30...
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -17,7 +17,7 @@ desc: |
    to configure request limits. To see current request count and limits run
    /usr/lib/univention-self-service/univention-self-service-request-count
    (Bug 39720).
- * It was possible to reveal all known usernames in a domain, because the
-   error message for providing an unknown username was different to the one
-   for users without available reset methods (Bug 39939).
+ * It was possible to scan for all known usernames in a domain, because the
+   error message for providing an unknown username was different to those
+   for users without available reset methods or wrong passwords (Bug 39939).
 bug: [39720,39939,39980,39996,39981,40033]

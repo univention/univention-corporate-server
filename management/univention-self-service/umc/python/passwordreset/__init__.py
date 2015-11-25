@@ -208,9 +208,9 @@ class Instance(Base):
 		password = request.options.get("password")
 		if not username:
 			raise UMC_Error(_("Empty username supplied."))
+		self.auth(username, password)
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("Service is not available for this user."))
-		self.auth(username, password)
 		user = self.get_udm_user(username=username)
 		if not self.send_plugins:
 			raise UMC_Error(_('No password reset method available for this user.'))
@@ -232,9 +232,9 @@ class Instance(Base):
 	@simple_response
 	def set_contact(self, username, password, email=None, mobile=None):
 		MODULE.info("set_contact(): username: {} password: ***** email: {} mobile: {}".format(username, email, mobile))
+		dn = self.auth(username, password)
 		if self.is_blacklisted(username):
 			raise UMC_Error(_("Service is not available for this user."))
-		dn = self.auth(username, password)
 		if self.set_contact_data(dn, email, mobile):
 			raise UMC_Error(_("Successfully changed your contact data."), status=200)
 
@@ -245,7 +245,11 @@ class Instance(Base):
 	@simple_response
 	def send_token(self, username, method):
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
-		if self.is_blacklisted(username):
+		try:
+			blacklisted = self.is_blacklisted(username)
+		except UnknownUserError:
+			raise UMC_Error(_("No contact information to send a token for password recovery to has been found."))
+		if blacklisted:
 			raise UMC_Error(_("Service is not available for this user."))
 		try:
 			plugin = self.send_plugins[method]
@@ -384,7 +388,7 @@ class Instance(Base):
 			lo = getMachineConnection()
 			binddn = lo.search(filter="(uid={})".format(escape_filter_chars(username)))[0][0]
 			get_user_connection(binddn=binddn, bindpw=password)
-		except univention.admin.uexceptions.authFail:
+		except (univention.admin.uexceptions.authFail, IndexError):
 			raise UMC_Error(_("Username or password is incorrect."))
 		except (LDAPError, udm_errors.ldapError, udm_errors.base):
 			MODULE.error("auth(): ERROR: connecting to LDAP: {}".format(traceback.format_exc()))
