@@ -110,6 +110,14 @@ define([
 			this.own(this._progressBar);
 			this._grid = new AppCenterGallery({});
 			this.own(this._grid);
+
+			this.headerButtons = [{
+				name: 'close',
+				iconClass: this.isSubPage ? 'umcArrowLeftIconWhite' : 'umcCloseIconWhite',
+				label: this.backLabel,
+				align: 'left',
+				callback: lang.hitch(this, 'onBack')
+			}];
 		},
 
 		_setAppAttr: function(app) {
@@ -123,7 +131,6 @@ define([
 				// we need to ask the server,
 				// it is not yet known!
 				appLoaded = tools.umcpCommand(this.getAppCommand, {'application': app.id}).then(function(data) {
-					data.result.siblings = app.siblings;
 					return data.result;
 				});
 			}
@@ -161,49 +168,6 @@ define([
 			// reset same app, but only pass the id => loads new from server
 			this.set('app', {id: this.app.id});
 			return this.appLoadingDeferred;
-		},
-
-		loadApp: function(app, idx) {
-			app.id = this.app.siblings[idx];
-			this.set('app', app);
-		},
-
-		getHeaderButtons: function() {
-			var buttons = [{
-				name: 'close',
-				iconClass: this.isSubPage ? 'umcArrowLeftIconWhite' : 'umcCloseIconWhite',
-				label: this.backLabel,
-				align: 'left',
-				callback: lang.hitch(this, 'onBack')
-			}];
-
-			if (this.app.siblings && this.app.siblings.length) {
-				var idx = array.indexOf(this.app.siblings, this.app.id);
-				var prev_idx = idx -1;
-				var next_idx = idx +1;
-				var isPrevIdxValid = prev_idx >= 0;
-				var isNextIdxValid = next_idx < this.app.siblings.length;
-				var app = {
-					siblings: this.app.siblings
-				};
-				buttons.push({
-					name: 'prev',
-					iconClass: 'umcLeftIconWhite',
-					label: isPrevIdxValid ? _('Previous app') : '',
-					align: 'left',
-					disabled: !isPrevIdxValid,
-					callback: lang.hitch(this, 'loadApp', app, prev_idx)
-				});
-				buttons.push({
-					name: 'next',
-					iconClass: 'umcRightIconWhite',
-					label: isNextIdxValid ? _('Next app') : '',
-					align: 'left',
-					disabled: !isNextIdxValid,
-					callback: lang.hitch(this, 'loadApp', app, next_idx)
-				});
-			}
-			return buttons;
 		},
 
 		getButtons: function() {
@@ -418,7 +382,6 @@ define([
 			}
 
 			this.set('navButtons', this.getButtons());
-			this.set('headerButtons', this.getHeaderButtons());
 			this._navButtons.set('style', {'margin-left': '-0.2em', 'margin-top': '1em'});
 			this._navHeaderButtonContainer.addChild(this._navButtons);
 
@@ -588,13 +551,13 @@ define([
 					});
 					for (var i = 0; i < rating.value; i++) {
 						domConstruct.create('div', {
-								'class': 'umcAppRatingIcon'
+								'class': 'umcAppRatingIcon',
 							}, ratingText.domNode
 						);
 					}
 					domConstruct.create('div', {
 							'class': 'umcAppRatingText',
-							textContent: rating.label
+							textContent: rating.label,
 						}, ratingText.domNode
 					);
 					domConstruct.create('div', {

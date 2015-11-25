@@ -102,8 +102,21 @@ define([
 					isContextAction: false,
 					label: _('Open'),
 					callback: lang.hitch(this, function(id, app) {
-						app.siblings = this._getCurrentSiblings();
-						this._responsibleStart(app);
+						// for touch devices like smartphones and tablets:
+						// on the first touch show hover with long desc
+						// on second touch open app
+						if (has('touch')) {
+							var appNode = dom.byId(app.id);
+							var isSecondTouch = domClass.contains(appNode, 'secondTouch');
+							if (isSecondTouch) {
+								this.onShowApp(app);
+							} else {
+								domClass.add(appNode, 'hover secondTouch');
+							}
+						
+						} else {
+							this.onShowApp(app);
+						}
 					})
 				}]
 			});
@@ -149,16 +162,6 @@ define([
 			this._handleButtonVisibility();
 		},
 
-		_getCurrentSiblings: function() {
-			// to show prev or next app on the AppDetailsPage
-			// we need all ids of the current siblings
-			var siblings = this.grid.store.query(this.filterQuery);
-			var siblingIds = array.map(siblings, function(iapp) {
-				return iapp.id;
-			});
-			return siblingIds;
-		},
-
 		_handleButtonVisibility: function() {
 			if (!this._visibilityDeferred || this._visibilityDeferred.isFulfilled()) {
 				this._visibilityDeferred = tools.defer(lang.hitch(this, '_updateButtonVisibility'), 200);
@@ -181,24 +184,6 @@ define([
 				domClass.toggle(this.button.domNode, 'hiddenButton', hideButton);
 			}
 			domClass.toggle(this.domNode, 'dijitHidden', !appsDisplayed.length);
-		},
-
-		_responsibleStart: function(app) {
-			// for touch devices like smartphones and tablets:
-			// on the first touch show hover with long desc
-			// on second touch open app
-			if (has('touch')) {
-				var appNode = dom.byId(app.id);
-				var isSecondTouch = domClass.contains(appNode, 'secondTouch');
-				if (isSecondTouch) {
-					this.onShowApp(app);
-				} else {
-					domClass.add(appNode, 'hover secondTouch');
-				}
-			
-			} else { // for non-touch devices
-				this.onShowApp(app);
-			}
 		},
 
 		onShowApp: function(app) {
