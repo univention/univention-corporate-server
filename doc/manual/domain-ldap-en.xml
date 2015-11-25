@@ -1514,4 +1514,13 @@ ucr dump &gt; ucr.txt
 	</para>
 </section>
 
+<section id="domain:fault-tolerant">
+	<title>Fault-tolerant domain setup</title>
+	<para>
+		In a domain exist some services that are important for the functionality of all of its members.
+		Redundancy can be used to remove those single points of failure.
+		An article in the Univention Support database explains how to secure LDAP, Kerberos, DNS, DHCP and Active Directory-compatible Domain Controllers: <u:sdb>1349</u:sdb>.
+	</para>
+</section>
+
 </chapter>

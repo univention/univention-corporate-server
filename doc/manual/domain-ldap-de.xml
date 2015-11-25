@@ -1552,4 +1552,13 @@ ucr dump &gt; ucr.txt
 	</para>
 </section>
 
+<section id="domain:fault-tolerant">
+	<title>Fehlertolerante Domain Einrichtung</title>
+	<para>
+		Einige Dieste in einer Domäne sind zentral für das Funktionieren von deren Mitgliedern.
+		Redundanz ist ein Mittel um diesen potenziellen Bruchstellen (<wordasword>single points of failure</wordasword>) zu entfernen.
+		Ein Artikel in der Univention Support Datenbank erklärt das Vorgehen um die Dienste LDAP, Kerberos, DNS, DHCP und Active Directory-kompatible Domain Controller abzusichern: <u:sdb>1349</u:sdb>.
+	</para>
+</section>
+
 </chapter>
