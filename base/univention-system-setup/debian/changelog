@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-11) unstable; urgency=medium
+
+  * Bug #40087: Set repository/app_center/installed in 90_postjoin
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 25 Nov 2015 10:14:57 +0100
+
 univention-system-setup (9.0.2-10) unstable; urgency=medium
 
   * Bug #39974: don't display reload pop up on success page
