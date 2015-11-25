@@ -5,6 +5,7 @@ import univention.jobs.AppStatusViews
 import univention.jobs.AppAutotestUpdateMultiEnv
 import univention.jobs.AppAutotestMultiEnv
 import univention.jobs.AppAutotestMultiEnvUpdateFrom
+import univention.jobs.AppGenericTests
 
 // Build parameters are exposed as environment variables in Jenkins.
 // A seed job build parameter named FOO is available as FOO variable
@@ -20,14 +21,15 @@ univention.Constants.VERSIONS.each {
     // create folder, generic app jobs and views
     folder(path)
     AppStatusViews.create(this, path)
+    AppGenericTest.create(this, path, version, patch_level, last_version)
 
-    // get apps for version and create folder and jobs
-    apps = Apps.getApps(version, test=true, ucs_components=false)
-    apps.keySet().sort().each { app ->
-        app_path = path + '/' + app
-        folder(app_path)
-        AppAutotestUpdateMultiEnv.create(this, app_path, version, patch_level, apps[app])
-        AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
-        AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
-    }
+    //// get apps for version and create folder and jobs
+    //apps = Apps.getApps(version, test=true, ucs_components=false)
+    //apps.keySet().sort().each { app ->
+    //    app_path = path + '/' + app
+    //    folder(app_path)
+    //    AppAutotestUpdateMultiEnv.create(this, app_path, version, patch_level, apps[app])
+    //    AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
+    //    AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
+    //}
 }
