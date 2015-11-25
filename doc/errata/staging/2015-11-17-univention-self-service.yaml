@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: 1.0.2-32.44.201511251505
+fix: 1.0.2-33.45.201511251511
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -21,7 +21,7 @@ desc: |
    error message for providing an unknown username was different to those
    for users without available reset methods or wrong passwords (Bug 39939).
  * The sender address of token emails is now changable with the UCR variable
-   umc/self-service/passwordreset/email/from_addr (Bug 40048).
+   umc/self-service/passwordreset/email/sender_address (Bug 40048).
  * It is now possible to use the passwort reset service with the primary
    email address instead of the username (Bug 40049).
 bug: [39720,39939,39980,39996,39981,40033,40048,40049]
