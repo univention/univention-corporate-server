@@ -1,3 +1,10 @@
+univention-self-service (1.0.2-33) unstable; urgency=low
+
+  * rename UCRV from umc/self-service/passwordreset/email/from_addr
+    to umc/self-service/passwordreset/email/sender_address
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 25 Nov 2015 15:09:09 +0100
+
 univention-self-service (1.0.2-32) unstable; urgency=low
 
   * Allow email address instead of username (Bug #40049).
