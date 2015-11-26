@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-2) unstable; urgency=low
+
+  * Recommends univention-nagios-s4-connector (Bug #37006)
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Nov 2015 12:44:34 +0100
+
 univention-s4-connector (10.0.1-1) unstable; urgency=medium
 
   * The LDAP Page Control must be the first in the internal LDAP control
