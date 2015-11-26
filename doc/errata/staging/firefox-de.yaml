@@ -1,0 +1,48 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-8
+src: firefox-de
+fix: 
+version: [7,8]
+desc: |
+ Firefox ESR 38.4 fixes these issues:
+ * ASan: use-after-poison in sec_asn1d_parse_leaf() (CVE-2015-7181)
+ * ASN.1 decoder heap overflow when decoding constructed OCTET STRING
+   (CVE-2015-7182)
+ * NSPR overflow in PL_ARENA_ALLOCATE can lead to crash (under ASAN),
+   potential memory corruption (CVE-2015-7183)
+ * WebSocket secure requirements can be bypassed in a worker
+   (CVE-2015-7197)
+ * Overflow in TextureStorage11 can cause memory-safety bug
+   (CVE-2015-7198)
+ * Missing status checks in AddWeightedPathSegLists and
+   SVGPathSegListSMILType::Interpolate cause memory-safety bugs
+   (CVE-2015-7199)
+ * Missing status check in CryptoKey creates potential security bug
+   (CVE-2015-7200)
+ * crashes in GC with Java applet (CVE-2015-7196) [only affected when
+   java plugin is enabled]
+ * Arbitrary memory access in libjar (libxul) (CVE-2015-7194)
+ * CORS does a simple instead of preflighted request for POST with
+   non-standard Content-Type header (CVE-2015-7193)
+ * Heap Buffer Overflow in nsJPEGEncoder (CVE-2015-7189)
+ * White-spaces in host IP address, leading to same origin policy
+   bypass (CVE-2015-7188)
+ * Memory safety bugs fixed in Firefox ESR 38.4 and Firefox
+   42. (CVE-2015-4513)
+bug:
+ - 39785
+cve:
+ - CVE-2015-7181
+ - CVE-2015-7182
+ - CVE-2015-7183
+ - CVE-2015-7197
+ - CVE-2015-7198
+ - CVE-2015-7199
+ - CVE-2015-7200
+ - CVE-2015-7196
+ - CVE-2015-7194
+ - CVE-2015-7193
+ - CVE-2015-7189
+ - CVE-2015-7188
+ - CVE-2015-4513
