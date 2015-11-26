@@ -1,3 +1,10 @@
+univention-dvd (1.0.0-18) unstable; urgency=low
+
+  * revert 1.0.0-17, because wngerman is already a dependency of
+    univention-pam, and will be pulled automatically onto the DVD (Bug #24840)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2015 09:24:19 +0100
+
 univention-dvd (1.0.0-17) unstable; urgency=low
 
   * Bug #24840: add german wordlist for cracklib
