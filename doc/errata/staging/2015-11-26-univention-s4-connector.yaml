@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-s4-connector
+fix: 10.0.1-2.588.201511261246
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * The package new recommends univention-nagios-s4-connector.
+bug: [37006]
