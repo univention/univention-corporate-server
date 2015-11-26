@@ -45,7 +45,7 @@ class AppAutotestUpdateMultiEnv {
       steps {
         shell(
           """
-cfg="examples/jenkins/autotest-12*-appupdate-\${combinations}.cfg"
+cfg="examples/jenkins/autotest-12*-appupdate-\${Systemrolle}-\${SambaVersion}.cfg"
 sed -i "s|APP_ID|${app.required_apps.join(' ')}|g" \$cfg
 test "\$Update_to_testing_errata_updates" = true && sed -i "s|upgrade_to_latest_errata|upgrade_to_latest_test_errata|g" \$cfg
 exec ./ucs-ec2-create -c \$cfg
