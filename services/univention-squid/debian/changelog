@@ -1,3 +1,9 @@
+univention-squid (9.0.2-1) unstable; urgency=low
+
+  * Bug #40095: added UCRV squid/rewrite/children
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 26 Nov 2015 15:57:25 +0100
+
 univention-squid (9.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
