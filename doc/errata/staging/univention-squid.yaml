@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: univention-squid
+fix: TO BE DEFINED
+version: [4]
+desc: |
+  This update adds the possibility to define the number of squid's
+  rewrite helper processes via the new UCR variable
+  squid/rewrite/children.
+bug: [40094]

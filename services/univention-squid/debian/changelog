@@ -1,3 +1,9 @@
+univention-squid (8.0.2-6) unstable; urgency=low
+
+  * Bug #40094: added UCRV squid/rewrite/children
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 26 Nov 2015 15:33:35 +0100
+
 univention-squid (8.0.2-5) unstable; urgency=medium
 
   * Bug #37543: Add UCRV for custom squid.conf-ACLs
