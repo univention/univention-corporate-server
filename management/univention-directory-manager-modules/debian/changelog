@@ -1,3 +1,9 @@
+univention-directory-manager-modules (10.0.31-23) unstable; urgency=low
+
+  * Fix bug number: Lowercase domain names for mail domains (Bug #40108)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2015 10:32:06 +0100
+
 univention-directory-manager-modules (10.0.31-22) unstable; urgency=low
 
   * Lowercase domain names for mail domains (Bug #39721)

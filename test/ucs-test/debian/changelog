@@ -1,7 +1,7 @@
 ucs-test (5.0.174-3) unstable; urgency=low
 
   * Modify mail/domains test to take lowercased domain names into account
-    (Bug #39721)
+    (Bug #40108)
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 18 Nov 2015 18:23:27 +0100
 
