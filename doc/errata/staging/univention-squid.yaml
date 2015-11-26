@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-8
 src: univention-squid
-fix: TO BE DEFINED
+fix: 7.0.4-4.229.201511261643
 version: [8]
 desc: |
   This update adds the possibility to define the number of squid's
