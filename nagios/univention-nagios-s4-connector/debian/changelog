@@ -1,3 +1,9 @@
+univention-nagios-s4-connector (1.0.0-2) unstable; urgency=low
+
+  * return OK if connector/s4/autostart is not true (Bug #37006)
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Nov 2015 12:07:42 +0100
+
 univention-nagios-s4-connector (1.0.0-1) unstable; urgency=low
 
   * Initial release (Bug #37006)

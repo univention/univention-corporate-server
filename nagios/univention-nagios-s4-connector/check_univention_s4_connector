@@ -32,6 +32,8 @@
 #
 #
 
+. /usr/share/univention-lib/ucr.sh
+
 STATE_OK=0
 STATE_WARNING=1
 STATE_CRITICAL=2
@@ -43,7 +45,7 @@ nagios_exit() {
 
 	case $state in
 	0)
-		echo "S4CONNECTOR OK: System operational"
+		echo "S4CONNECTOR OK: $msg"
 		exit 0
 		;;
 	1)
@@ -60,6 +62,11 @@ nagios_exit() {
 		;;
 	esac
 }
+
+# check whether the s4 connector is activated
+if ! is_ucr_true connector/s4/autostart; then
+    nagios_exit $STATE_OK "Connector not activated (connector/s4/autostart =! true)"
+fi
 
 # check whether we can connect to the S4
 # CRITICAL: in case we cannot connect to the S4
@@ -92,4 +99,4 @@ nRejects=$(univention-s4connector-list-rejected | sed -rn '/^ *[1-9]+: *(S4|UCS)
 [ "$nRejects" -gt 0 ] && nagios_exit $STATE_WARNING "Found $nRejects reject(s)! Please check output of univention-s4connector-list-rejected."
 
 # otherwise everything looks fine
-nagios_exit $STATE_OK
+nagios_exit $STATE_OK "System operational"
