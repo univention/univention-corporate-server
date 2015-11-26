@@ -11,7 +11,12 @@
 DOCKER_OPTS="--storage-driver=overlay"
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
-#export http_proxy="http://127.0.0.1:3128/"
-
+@!@
+pr = configRegistry.get("proxy/http")
+if pr:
+	print 'export http_proxy="%s"' % pr
+else:
+	print '#export http_proxy="http://127.0.0.1:3128/" set UCR variable proxy/http to change this'
+@!@
 # This is also a handy place to tweak where Docker's temporary files go.
 #export TMPDIR="/mnt/bigdrive/docker-tmp"

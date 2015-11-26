@@ -1,3 +1,9 @@
+univention-docker (1.0.1-2) unstable; urgency=low
+
+  * docker now uses UCRV proxy/http if configured in the host (Bug #40030)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 26 Nov 2015 11:38:23 +0100
+
 univention-docker (1.0.1-1) unstable; urgency=medium
 
   * Fixed typo in last commit (Bug #39429)
