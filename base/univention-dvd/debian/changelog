@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-19) unstable; urgency=low
+
+  * Bug #37006 : add univention-nagios-s4-connector 
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Nov 2015 12:10:29 +0100
+
 univention-dvd (1.0.0-18) unstable; urgency=low
 
   * revert 1.0.0-17, because wngerman is already a dependency of

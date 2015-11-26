@@ -111,6 +111,7 @@ univention-samba
 univention-samba4
 
 univention-s4-connector
+univention-nagios-s4-connector
 sqlite3
 
 univention-squid
