@@ -25,6 +25,7 @@ Variables: interfaces/.*/network
 Variables: squid/ntlmauth/children
 Variables: squid/ntlmauth/keepalive
 Variables: squid/redirect
+Variables: squid/rewrite/children
 Variables: squid/krb5auth
 Variables: squid/krb5auth/children
 Variables: squid/krb5auth/keepalive

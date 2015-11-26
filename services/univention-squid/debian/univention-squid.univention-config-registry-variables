@@ -148,6 +148,12 @@ Description[en]=This variable configures the squid option 'url_rewrite_program'.
 Type=str
 Categories=service-webproxy
 
+[squid/rewrite/children]
+Description[de]=Die maximale Anzahl an Prozessen für Prüfung und Umschreibung von angefragten URLs. Ist die Variable nicht gesetzt, werden maximal 5 Prozesse genutzt.
+Description[en]=The maximum amount of URL rewrite processes. If the variable is unset, up to five processes are used.
+Type=int
+Categories=service-webproxy
+
 [squid/forwardedfor]
 Description[de]=Diese Option erlaubt die Konfiguration ob bzw. wie die Client IP im HTTP-Header X-Forwarded-For behandelt wird.
 Description[en]=This options allows to finetune how/if the requesting client IP should be forwarded in the HTTP-Header X-Forwarded-For.
