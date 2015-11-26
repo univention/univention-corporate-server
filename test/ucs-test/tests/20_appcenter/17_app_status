@@ -58,6 +58,7 @@ def check_app_webinterface_registration(App):
     Checks if the 'App' registered its web interface in UCR.
     """
     app_webinterface = App.get('webinterface')
+    requests_timeout = 30
 
     if App.get('ucsoverviewcategory') and app_webinterface:
         print "\nChecking if '%s' app registered its web interface" % App.id
@@ -79,7 +80,7 @@ def check_app_webinterface_registration(App):
             fqdn = UCR['hostname'] + '.' + UCR['domainname']
             url = 'http://%s:%s/%s' % (fqdn, port, app_webinterface)
         print 'Checking webinterface %s' % url,
-        r = requests.get(url, timeout=3, verify=False)
+        r = requests.get(url, timeout=requests_timeout, verify=False)
         print r.status_code
         assert not str(r.status_code).startswith(('4', '5'))
 
@@ -97,7 +98,7 @@ def check_app_webinterface_registration(App):
                     if not refresh_url.lower().startswith('http'):
                         refresh_url = '%s%s' % (url, refresh_url)
                     print 'Checking webinterface %s' % refresh_url,
-                    rr = requests.get(refresh_url, timeout=3, verify=False)
+                    rr = requests.get(refresh_url, timeout=requests_timeout, verify=False)
                     print rr.status_code
                     assert not str(rr.status_code).startswith(('4', '5'))
 

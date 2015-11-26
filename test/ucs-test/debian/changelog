@@ -1,6 +1,12 @@
+ucs-test (6.0.27-8) unstable; urgency=low
+
+  * Bug #40036: timeout 30 for requests.get in 20_appcenter/17_app_status
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Nov 2015 13:39:20 +0100
+
 ucs-test (6.0.27-7) unstable; urgency=low
 
-  * Bug #40084 34_update_of_mail_hosteddomains_ucr_variable
+  * Bug #40084: 34_update_of_mail_hosteddomains_ucr_variable
     and 14_delivery_to_root_without_univention_mail_server  only
     if univention-mail-postfix is installed 
 
