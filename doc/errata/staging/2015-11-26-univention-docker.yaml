@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-docker
+fix: 1.0.1-2.11.201511261158
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * The Docker engine now uses a HTTP proxy for downloading of images, if
+   the UCR variable "proxy/http" is configured.
+bug: [40030]
