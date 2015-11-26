@@ -1,0 +1,4 @@
+31univention-nagios-s4-connector.inst usr/lib/univention-install/
+69univention-nagios-s4-connector.uinst usr/lib/univention-uninstall/
+check_univention_s4_connector usr/lib/nagios/plugins/
+check_univention_s4_connector_suidwrapper usr/lib/nagios/plugins/

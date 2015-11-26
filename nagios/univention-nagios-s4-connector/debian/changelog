@@ -1,0 +1,5 @@
+univention-nagios-s4-connector (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #37006)
+
+ -- Felix Botner <botner@univention.de>  Thu, 26 Nov 2015 10:14:19 +0100
