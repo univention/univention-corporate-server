@@ -434,6 +434,7 @@ class App(object):
 	app_report_attribute_filter = AppAttribute()
 
 	docker_image = AppAttribute()
+	docker_shell_command = AppAttribute(default='/bin/bash')
 	docker_allowed_images = AppListAttribute()
 	docker_volumes = AppListAttribute()
 	docker_server_role = AppAttribute(default='memberserver', choices=['memberserver', 'domaincontroller_slave'])
