@@ -120,6 +120,25 @@ define([
 				libServer.askReboot();
 			}
 		}),
+		must_not_be_docker_if_docker_is_disabled: new Requirement({
+			reasonDescription: function() {
+				return _('The application uses a container technology while the App Center is configured to not not support it.');
+			},
+			solutionDescription: function() {
+				return _('You can configure the App Center to support it now. The service "docker" will be started.');
+			},
+			solutionLabel: function() {
+				return _('Support Docker Apps');
+			},
+			solution: function(opts) {
+				tools.umcpCommand('appcenter/docker/enable');
+			}
+		}),
+		must_not_be_docker_in_docker: new Requirement({
+			reasonDescription: function() {
+				return _('The application uses a container technology while the system itself runs in a container. Using the application is not supported on this host.');
+			}
+		}),
 		must_have_valid_license: new Requirement({
 			reasonDescription: function() {
 				return _('For the installation of this application, a UCS license key with a key identification (Key ID) is required.');

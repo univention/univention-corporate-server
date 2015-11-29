@@ -57,6 +57,7 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, M
 from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.config_registry
+from univention.config_registry.frontend import ucr_update
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter import get_action, AppManager
@@ -182,13 +183,21 @@ class Instance(umcm.Base, ProgressMixin):
 		domain = get_action('domain')
 		apps = list_apps.get_apps()
 		self.ucr.load()
-		if not self.ucr.get('docker/container/uuid'):
-			if not docker_is_running():
-				MODULE.warn('Docker is not running! Trying to start it now...')
-				call_process(['invoke-rc.d', 'docker', 'start'])
-				if not docker_is_running():
-					raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "service docker start"'))
+		if self.ucr.is_true('appcenter/docker', True):
+			self._test_for_docker_service()
 		return domain.to_dict(apps)
+
+	def _test_for_docker_service(self):
+		if not docker_is_running():
+			MODULE.warn('Docker is not running! Trying to start it now...')
+			call_process(['invoke-rc.d', 'docker', 'start'])
+			if not docker_is_running():
+				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "service docker start"'))
+
+	@simple_response
+	def enable_docker(self):
+		if self._test_for_docker_service():
+			ucr_update(self.ucr, {'appcenter/docker': 'enabled'})
 
 	@simple_response(with_progress=True)
 	def sync_ldap(self):

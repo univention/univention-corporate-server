@@ -35,6 +35,7 @@
 		<command name="appcenter/configure" function="configure" />
 		<command name="appcenter/service" function="app_service" />
 		<command name="appcenter/invoke" function="invoke" />
+		<command name="appcenter/docker/enable" function="enable_docker" />
 		<command name="appcenter/docker/invoke" function="invoke_docker" />
 		<command name="appcenter/docker/remote/invoke" function="invoke_remote_docker" />
 		<command name="appcenter/docker/remote/progress" function="remote_progress"/>

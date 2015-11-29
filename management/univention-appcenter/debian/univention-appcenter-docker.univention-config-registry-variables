@@ -1,0 +1,5 @@
+[appcenter/docker]
+Description[de]=Diese Variable steuert, ob das App Center sogenannte Docker Apps unterstützt. Docker Apps laufen in einem Container und setzen den Dienst "docker" voraus.
+Description[en]=This variable controls whether the App Center supports so-called Docker Apps. Docker Apps run in a container and need a running "docker" service.
+Type=bool
+Categories=management-umc

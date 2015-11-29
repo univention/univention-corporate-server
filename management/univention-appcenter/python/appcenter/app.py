@@ -718,6 +718,12 @@ class App(object):
 		return True
 
 	@hard_requirement('install', 'upgrade')
+	def must_not_be_docker_if_docker_is_disabled(self, ucr):
+		'''The application uses a container technology while the App Center
+		is configured to not not support it'''
+		return not self.docker or ucr.is_true('appcenter/docker', True)
+
+	@hard_requirement('install', 'upgrade')
 	def must_not_be_docker_in_docker(self, ucr):
 		'''The application uses a container technology while the system
 		itself runs in a container. Using the application is not

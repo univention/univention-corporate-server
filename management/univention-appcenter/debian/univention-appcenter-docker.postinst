@@ -37,8 +37,6 @@ update-python-modules --post-install
 
 #DEBHELPER#
 
-# can be removed after 4.1-0, see Bug #39469
-a2dissite univention-appcenter 2>/dev/null || true
-service apache2 reload
+ucr set appcenter/docker?enabled
 
 exit 0
