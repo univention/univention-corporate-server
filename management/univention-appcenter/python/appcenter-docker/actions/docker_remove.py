@@ -61,4 +61,5 @@ class Remove(Remove, DockerActionMixin):
 				raise Abort()
 		docker = self._get_docker(app)
 		if docker.container:
+			docker.stop()
 			docker.rm()

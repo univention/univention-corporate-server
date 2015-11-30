@@ -207,6 +207,10 @@ def rm(container):
 	return call(['docker', 'rm', container])
 
 
+def stop(container):
+	return call(['docker', 'stop', container])
+
+
 def commit(container, new_base_image):
 	return check_output(['docker', 'commit', container, new_base_image])
 
@@ -299,6 +303,9 @@ class Docker(object):
 
 	def commit(self, new_image_name):
 		return commit(self.container, new_image_name)
+
+	def stop(self):
+		return stop(self.container)
 
 	def rm(self):
 		return rm(self.container)
