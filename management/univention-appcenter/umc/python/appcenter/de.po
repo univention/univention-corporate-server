@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-30 00:08+0100\n"
+"POT-Creation-Date: 2015-11-30 11:01+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 "Konnte %s nicht herunterladen. Das deutet auf ein Problem auf dem App Center-"
 "Server hin. Bitte versuchen Sie es später noch einmal."
 
-#: umc/python/appcenter/__init__.py:343
+#: umc/python/appcenter/__init__.py:342
 #, python-format
 msgid "%s: Running tests"
 msgstr "%s: Starte Tests"
 
-#: umc/python/appcenter/__init__.py:546 umc/python/appcenter/__init__.py:694
+#: umc/python/appcenter/__init__.py:545 umc/python/appcenter/__init__.py:693
 msgid "Another package operation is in progress"
 msgstr "Zur Zeit wird eine andere Paketverarbeitung durchgeführt"
 
@@ -36,7 +36,7 @@ msgid "Any of %r must be given"
 msgstr "Ein Wert aus %r muss gegeben sein"
 
 #: umc/python/appcenter/__init__.py:219 umc/python/appcenter/__init__.py:234
-#: umc/python/appcenter/__init__.py:411
+#: umc/python/appcenter/__init__.py:410
 #, python-format
 msgid "Could not find an application for %s"
 msgstr "Konnte keine Applikation für %s finden"
@@ -46,7 +46,7 @@ msgstr "Konnte keine Applikation für %s finden"
 msgid "Error while contacting the App Center server. %s"
 msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
 
-#: umc/python/appcenter/__init__.py:362
+#: umc/python/appcenter/__init__.py:361
 #, python-format
 msgid "Installing %s"
 msgstr "Installiere %s"
@@ -91,7 +91,7 @@ msgstr ""
 msgid "There already is a component with this name"
 msgstr "Es gibt bereits eine Komponente mit diesem Namen"
 
-#: umc/python/appcenter/__init__.py:890
+#: umc/python/appcenter/__init__.py:889
 msgid ""
 "There is no repository at this server (or at least none for the current UCS "
 "version)"
@@ -122,12 +122,12 @@ msgstr ""
 "Dies kann auf ein Problem mit einem auf Ihrem System eingerichteten Proxy "
 "hindeuten. Sie finden Hilfe unter %s."
 
-#: umc/python/appcenter/__init__.py:365
+#: umc/python/appcenter/__init__.py:364
 #, python-format
 msgid "Uninstalling %s"
 msgstr "Deinstalliere %s"
 
-#: umc/python/appcenter/__init__.py:367
+#: umc/python/appcenter/__init__.py:366
 #, python-format
 msgid "Upgrading %s"
 msgstr "Aktualisiere %s"
@@ -146,15 +146,15 @@ msgstr ""
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"
 
-#: umc/python/appcenter/__init__.py:738
+#: umc/python/appcenter/__init__.py:737
 msgid "installed"
 msgstr "installiert"
 
-#: umc/python/appcenter/__init__.py:740
+#: umc/python/appcenter/__init__.py:739
 msgid "not installed"
 msgstr "nicht installiert"
 
-#: umc/python/appcenter/__init__.py:736
+#: umc/python/appcenter/__init__.py:735
 msgid "upgradable"
 msgstr "aktualisierbar"
 

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-15) unstable; urgency=medium
+
+  * Bug #40119: de.po
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 30 Nov 2015 11:02:55 +0100
+
 univention-appcenter (5.0.19-14) unstable; urgency=medium
 
   * Bug #40119: Rename to univention-app shell
