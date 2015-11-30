@@ -1,3 +1,12 @@
+univention-ldap (12.1.6-1) unstable; urgency=low
+
+  * Create default LDAP server policy and UCR policy with LDAP servers on
+    dc master and dc backups for dc slaves and member server to use. Version
+    of join script is not raised to not modify existing installations
+    (Bug #38091).
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 30 Nov 2015 15:49:37 +0100
+
 univention-ldap (12.1.5-1) unstable; urgency=medium
 
   * Grant access to univentionOperatingSystem and
