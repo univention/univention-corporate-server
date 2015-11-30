@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-2) unstable; urgency=low
+
+  * add missing '$@' to join script (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 30 Nov 2015 16:05:03 +0100
+
 univention-ldap (12.1.6-1) unstable; urgency=low
 
   * Create default LDAP server policy and UCR policy with LDAP servers on

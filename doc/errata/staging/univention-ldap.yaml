@@ -1,0 +1,14 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-ldap
+fix: 12.1.6-2.........
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * When a domain controller (DC) master or DC backup is created, two
+    policies are now created or modified: a LDAP server policy to be used
+    by member servers and a UCR policy be used by DC slaves.
+    The policies configure them to use the LDAP servers of all available
+    DC backups, in case the DC master is down.
+bug: [38091]

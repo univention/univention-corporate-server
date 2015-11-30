@@ -277,7 +277,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		--append requiredObjectClasses=univentionDomainController \
 		--set ldapFilter="(univentionServerRole=slave)"
 	ldapservers=""
-	for i in $(univention-directory-manager policies/ldapserver list --filter name=default-settings | grep ldapServer | cut -f 2 -d ':'); do
+	for i in $(univention-directory-manager policies/ldapserver list "$@" --filter name=default-settings | grep ldapServer | cut -f 2 -d ':'); do
 		if [ $i != $ldap_master ]; then
 			ldapservers="$ldapservers \"$i\"";
 		fi
