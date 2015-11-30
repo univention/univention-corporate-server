@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: samba
+fix: 2:4.3.1-1.804.201511301640
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * In certain situations samba restart left samba in a non-functional state.
+ * When closing sessions the smbd server processes exited with a memory
+   corruption error.
+bug: [40132, 40131]
