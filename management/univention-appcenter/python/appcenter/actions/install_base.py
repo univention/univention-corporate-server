@@ -151,13 +151,13 @@ class InstallRemoveUpgrade(Register):
 			except IndexError:
 				message = ''
 			message = '(%s) %s' % (error, message or '')
-			if fatal:
-				self.fatal(message)
-			else:
-				self.warn(message)
 			if args.skip_checks is not None and (error in args.skip_checks or args.skip_checks == []):
-					continue
+				self.log(message)
 			else:
+				if fatal:
+					self.fatal(message)
+				else:
+					self.warn(message)
 				can_continue = False
 		if not can_continue:
 			if fatal:

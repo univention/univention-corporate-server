@@ -284,12 +284,11 @@ class Instance(umcm.Base, ProgressMixin):
 						with NamedTemporaryFile('w+b') as password_file:
 							password_file.write(self.password)
 							password_file.flush()
-							action.call(app=app, username=self._username, pwdfile=password_file.name, **kwargs)
+							action.call(app=app, username=self._username, pwdfile=password_file.name, skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service'], **kwargs)
 
 			def _finished(thread, result):
 				if isinstance(result, BaseException):
 					MODULE.warn('Exception during %s %s: %s' % (function, app.id, str(result)))
-				self.package_manager._hacked_thread_result = (result, thread)
 			thread = notifier.threads.Simple('invoke',
 				notifier.Callback(_thread, app, function), _finished)
 			thread.run()
@@ -357,7 +356,7 @@ class Instance(umcm.Base, ProgressMixin):
 				'software_changes_computed': False,
 			}
 			if can_continue:
-				kwargs = {'noninteractive': True}
+				kwargs = {'noninteractive': True, 'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service']}
 				if function == 'install':
 					progress.title = _('Installing %s') % (app.name,)
 					kwargs['set_vars'] = values
