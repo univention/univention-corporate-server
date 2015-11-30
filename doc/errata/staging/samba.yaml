@@ -7,4 +7,6 @@ version: [3,4]
 desc: |
  This update addresses the following issue:
  * In certain situations samba restart left samba in a non-functional state.
-bug: [39217]
+ * When closing sessions the smbd server processes exited with a memory
+   corruption error
+bug: [39217, 39276]
