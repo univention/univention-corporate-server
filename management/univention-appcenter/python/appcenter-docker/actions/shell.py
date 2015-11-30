@@ -41,7 +41,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.utils import app_is_running
 
 
-class Within(UniventionAppAction, DockerActionMixin):
+class Shell(UniventionAppAction, DockerActionMixin):
 	'''Run commands within a docker app.'''
 	help = 'Run in app env'
 

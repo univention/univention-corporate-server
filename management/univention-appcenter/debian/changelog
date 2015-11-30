@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-14) unstable; urgency=medium
+
+  * Bug #40119: Rename to univention-app shell
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 30 Nov 2015 10:57:47 +0100
+
 univention-appcenter (5.0.19-13) unstable; urgency=medium
 
   * Bug #39926: Do not show pre-check warnings as errors after successful
