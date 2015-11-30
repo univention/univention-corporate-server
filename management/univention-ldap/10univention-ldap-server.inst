@@ -269,7 +269,8 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		--dn "cn=computers,$ldap_base" \
 		--policy-reference "cn=default-settings,cn=ldap,cn=policies,$ldap_base"
 
-	# slaves currently do not support LDAP server policies, let's create a UCR policy and use it instead
+	# slaves currently do not support LDAP server policies, let's create a UCR policy, but not use it,
+	# UCS admins can use it if they wish to
 	univention-directory-manager policies/registry create  "$@" \
 		--position="cn=config-registry,cn=policies,$ldap_base" \
 		--ignore_exists \
@@ -287,9 +288,6 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 			--dn="cn=default-ldap-servers,cn=config-registry,cn=policies,$ldap_base" \
 			--append registry="\"ldap/server/addition\" $ldapservers"
 	fi
-	univention-directory-manager container/cn modify "$@" \
-		--dn "cn=computers,$ldap_base" \
-		--policy-reference "cn=default-ldap-servers,cn=config-registry,cn=policies,$ldap_base"
 fi
 
 ucs_addServiceToLocalhost 'LDAP' "$@"
