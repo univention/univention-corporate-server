@@ -44,7 +44,7 @@ from gzip import open as gzip_open
 from json import loads
 import tarfile
 from urlparse import urlsplit
-import urllib2
+from urllib2 import quote, Request, HTTPError
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
@@ -104,15 +104,41 @@ class Update(UniventionAppAction):
 
 	@possible_network_error
 	def _download_supra_files(self):
+		present_etags = {}
+		etags_file = os.path.join(CACHE_DIR, '.etags')
+		if os.path.exists(etags_file):
+			with open(etags_file, 'rb') as f:
+				for line in f:
+					try:
+						fname, etag = line.split('\t')
+					except ValueError:
+						pass
+					else:
+						present_etags[fname] = etag.rstrip('\n')
+
 		def _download_supra_file(filename, version_specific):
 			if version_specific:
 				url = urljoin('%s/' % self._get_metainf_url(), '%s' % filename)
 			else:
 				url = urljoin('%s/' % self._get_metainf_url(), '../%s' % filename)
 			self.log('Downloading "%s"...' % url)
-			content = urlopen(url).read()
+			headers = {}
+			if filename in present_etags:
+				headers['If-None-Match'] = present_etags[filename]
+			request = Request(url, headers=headers)
+			try:
+				response = urlopen(request)
+			except HTTPError as exc:
+				if exc.getcode() == 304:
+					self.debug('  ... Not Modified')
+					return
+				raise
+			etag = response.headers.get('etag')
+			present_etags[filename] = etag
+			content = response.read()
 			with open(os.path.join(CACHE_DIR, '.%s' % filename), 'wb') as f:
 				f.write(content)
+
 		ucr = ConfigRegistry()
 		ucr.load()
 		_download_supra_file('index.json.gz', version_specific=True)
@@ -120,6 +146,9 @@ class Update(UniventionAppAction):
 			_download_supra_file('index.json.gz.gpg', version_specific=True)
 		_download_supra_file('categories.ini', version_specific=False)
 		_download_supra_file('rating.ini', version_specific=False)
+		with open(etags_file, 'wb') as f:
+			for fname, etag in present_etags.iteritems():
+				f.write('%s\t%s\n' % (fname, etag))
 
 	@possible_network_error
 	def _download_archive(self, files_to_download):
@@ -161,7 +190,7 @@ class Update(UniventionAppAction):
 		for filename_url, filename, remote_md5sum in files_to_download:
 			# dont forget to quote: 'foo & bar.ini' -> 'foo%20&%20bar.ini'
 			# but dont quote https:// -> https%3A//
-			path = urllib2.quote(urlsplit(filename_url).path)
+			path = quote(urlsplit(filename_url).path)
 			filename_url = '%s%s' % (self._get_server(), path)
 
 			cached_filename = os.path.join(CACHE_DIR, filename)

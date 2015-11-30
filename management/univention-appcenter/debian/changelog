@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-18) unstable; urgency=medium
+
+  * Bug #40136: Use etags to download index.json et at only when needed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 30 Nov 2015 22:48:11 +0100
+
 univention-appcenter (5.0.19-17) unstable; urgency=medium
 
   * Bug #40135: Fix docker containers not being removed after installation
