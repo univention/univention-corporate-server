@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-kernel-image-signed
+fix: 
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * 
+bug: [40059]
