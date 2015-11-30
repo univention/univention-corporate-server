@@ -1,0 +1,5 @@
+univention-mysql (1.0.0-1) unstable; urgency=low
+
+  * Bug #39471: Initial Release.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 Nov 2015 16:58:32 +0100

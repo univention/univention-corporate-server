@@ -1,0 +1,3 @@
+Type: file
+File: etc/mysql/conf.d/50ucr.cnf
+Variables: mysql/config/.*

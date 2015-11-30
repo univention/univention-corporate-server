@@ -1,0 +1,5 @@
+[mysql]
+Description[de]=MySQL-Server
+Description[en]=MySQL Server
+programs=/usr/sbin/mysqld
+start_type=mysql/autostart

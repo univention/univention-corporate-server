@@ -1,0 +1,27 @@
+@%@UCRWARNING=# @%@
+
+@!@
+import re
+
+def read_config_from_ucr():
+	RE = re.compile(r'^mysql/config/([^/]+)/([^/]+)$')
+	config = {}
+	for key, value in configRegistry.items():
+		match = RE.match(key)
+		if not match:
+			continue
+		section, key = match.groups()
+		settings = config.setdefault(section, {})
+		settings[key] = value
+	return config
+
+def write_config_as_ini(config):
+	for section, settings in config.iteritems():
+		print '[%s]' % (section,)
+		for key, value in settings.iteritems():
+			print '%s = %s' % (key, value)
+		print
+
+config = read_config_from_ucr()
+write_config_as_ini(config)
+@!@
