@@ -1,0 +1,19 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-appcenter
+fix: 5.0.19-18.77.201511302249
+version: [0]
+desc: |
+ This update addresses the following issues:
+ * Checking whether docker is up and running at the startup of the App Center
+   can now be disabled by setting the UCR variable appcenter/docker=diabled. In
+   this case, Docker Apps cannot be installed anymore.
+ * Added a new command for univention-app: univention-app shell runs a command
+   within the environment of a Docker App.
+ * Warnings shown before App installation (like very few available RAM) do not
+   show up as errors after a successful installation anymore.
+ * Docker Containers are now correctly cleaned up if the installation fails.
+ * Downloading specific files from the App Center server now makes use of
+   ETags, resulting in a speedup of module opening.
+bug: [40074, 40119, 39926, 40135, 40136]
