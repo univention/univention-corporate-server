@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: samba
+fix: 2:4.2.3-1.802.201511251827
+version: [3,4]
+desc: |
+ This update addresses the following issue:
+ * In certain situations samba restart left samba in a non-functional state.
+bug: [39217]
