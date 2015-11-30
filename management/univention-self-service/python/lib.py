@@ -40,7 +40,7 @@ sys.stdout = sys.stderr
 import cherrypy
 
 
-def default_error_page(status, message, traceback, version):
+def default_error_page(status, message, traceback, version=None):
 	cherrypy.response.headers['Content-type'] = 'application/json'
 	data = {'message': message}
 	if traceback:

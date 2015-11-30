@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-34) unstable; urgency=low
+
+  * make error handling more robust (Bug #40049)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 30 Nov 2015 12:30:28 +0100
+
 univention-self-service (1.0.2-33) unstable; urgency=low
 
   * rename UCRV from umc/self-service/passwordreset/email/from_addr
@@ -13,7 +19,7 @@ univention-self-service (1.0.2-32) unstable; urgency=low
 
 univention-self-service (1.0.2-31) unstable; urgency=low
 
-  * Make token-request mail sender address changable with UCRV
+  * Make token-request mail sender address changeable with UCRV
     umc/self-service/passwordreset/email/from_addr (Bug #40048).
 
  -- Daniel Troeder <troeder@univention.de>  Wed, 25 Nov 2015 12:09:04 +0100
