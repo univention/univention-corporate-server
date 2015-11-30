@@ -184,7 +184,8 @@ class Instance(umcm.Base, ProgressMixin):
 		apps = list_apps.get_apps()
 		self.ucr.load()
 		if self.ucr.is_true('appcenter/docker', True):
-			self._test_for_docker_service()
+			if not self._test_for_docker_service():
+				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 		return domain.to_dict(apps)
 
 	def _test_for_docker_service(self):
@@ -192,12 +193,15 @@ class Instance(umcm.Base, ProgressMixin):
 			MODULE.warn('Docker is not running! Trying to start it now...')
 			call_process(['invoke-rc.d', 'docker', 'start'])
 			if not docker_is_running():
-				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly. Make sure docker.io is installed, try starting the service with "service docker start"'))
+				return False
+		return True
 
 	@simple_response
 	def enable_docker(self):
 		if self._test_for_docker_service():
 			ucr_update(self.ucr, {'appcenter/docker': 'enabled'})
+		else:
+			raise umcm.UMC_CommandError(_('Unable to start the docker service!') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 
 	@simple_response(with_progress=True)
 	def sync_ldap(self):

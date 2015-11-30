@@ -34,7 +34,7 @@
 
 # standard library
 import sys
-from subprocess import check_output, call
+from subprocess import check_output, call, CalledProcessError
 import os
 import os.path
 import shlex
@@ -237,10 +237,14 @@ class Docker(object):
 
 	def _find_container(self, only_running):
 		if self.container:
-			out = ps(only_running=only_running)
-			for line in out.splitlines():
-				if line.startswith(self.container):
-					return True
+			try:
+				out = ps(only_running=only_running)
+			except CalledProcessError:
+				return False
+			else:
+				for line in out.splitlines():
+					if line.startswith(self.container):
+						return True
 		return False
 
 	def pull(self):

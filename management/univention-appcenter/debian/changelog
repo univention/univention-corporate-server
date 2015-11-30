@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-16) unstable; urgency=medium
+
+  * Bug #40074: Fixes, wording
+  * Bug #40119: Fix typo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 30 Nov 2015 12:35:10 +0100
+
 univention-appcenter (5.0.19-15) unstable; urgency=medium
 
   * Bug #40119: de.po

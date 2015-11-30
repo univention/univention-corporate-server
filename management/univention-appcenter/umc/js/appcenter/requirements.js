@@ -33,9 +33,10 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/topic",
+	"umc/tools",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/appcenter"
-], function(kernel, lang, array, topic, libServer, _) {
+], function(kernel, lang, array, topic, tools, libServer, _) {
 	var Requirement = function(args) {
 		this.reasonDescription = args.reasonDescription;
 		this.solutionDescription = args.solutionDescription;
