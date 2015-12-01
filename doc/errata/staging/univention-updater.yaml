@@ -2,8 +2,13 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-updater
-fix: 
+fix: 11.0.7-3.1433.201512011332
 version: [0]
 desc: |
- This update addresses the following issues:
+ The AWS EC2 image "Univention Corporate Server (UCS) 4.1 (official
+ image) rev. 0 - ami-4e944e3d" uses the repository server
+ "updates-test.software-univention.de" instead of
+ "updates.software-univention.de".
+ This update resets the UCR variable repository/online/server on EC2
+ images to "updates.software-univention.de".
 bug: [40142]
