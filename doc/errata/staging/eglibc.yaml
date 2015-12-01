@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: eglibc
-fix: 2.13-38.26.201511251527
+fix: 2.13-38.27.201511261620
 version: [0]
 desc: |
  This update addresses the following issue:
