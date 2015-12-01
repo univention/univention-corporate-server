@@ -1,3 +1,9 @@
+univention-updater (11.0.7-6) unstable; urgency=low
+
+  * Version bump (Bug #36444)
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 01 Dec 2015 18:53:34 +0100
+
 univention-updater (11.0.7-5) unstable; urgency=low
 
   * Rename and don't call "_update_errata_link" at page load (Bug #36444)
