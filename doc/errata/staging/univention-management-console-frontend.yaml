@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-management-console-frontend
+fix: 5.0.63-6.1193.201512011357
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * If the system is unconfigured the username help text field in the login
+   dialog shows a hint about the root user.
+bug: [40144]
