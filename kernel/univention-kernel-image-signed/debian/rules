@@ -42,6 +42,9 @@ VER := $(subst $(SPACE),.,$(wordlist 1,2,$(subst .,$(SPACE),$(VERSION))))
 override_dh_install:
 	dh_install --all $(KERNEL) /boot
 
+override_dh_clean: debian/control
+	dh_clean
+
 debian/control: FORCED
 	sed -e 's/\$$(VERSION)/$(VERSION)/;s/\$$(VER)/$(VER)/' debian/control.in >$@
 FORCED: ;

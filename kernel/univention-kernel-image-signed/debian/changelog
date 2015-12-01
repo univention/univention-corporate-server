@@ -1,4 +1,4 @@
-univention-kernel-image-signed (2.0.1-1) unstable; urgency=medium
+univention-kernel-image-signed (2.0.0-3) unstable; urgency=medium
 
   * Update to ucs163 (Bug #40059)
 
