@@ -1,3 +1,9 @@
+univention-samba (10.0.1-5) unstable; urgency=low
+
+  * Ignore appliance-mode-temporary (Bug #39601) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 01 Dec 2015 18:35:32 +0100
+
 univention-samba (10.0.1-4) unstable; urgency=low
 
   * Respect samba/interfaces/bindonly in
