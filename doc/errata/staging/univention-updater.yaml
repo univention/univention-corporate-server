@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-updater
-fix: 11.0.7-3.1433.201512011332
+fix: 11.0.7-6.1436.201512011855
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -14,4 +14,6 @@ desc: |
    "updates.software-univention.de".
    This update resets the UCR variable repository/online/server on EC2
    images to "updates.software-univention.de".
-bug: [39991,40142]
+ * The layout in the UMC software update module has been adjusted to be
+   responsive.
+bug: [39991,40142,36444]
