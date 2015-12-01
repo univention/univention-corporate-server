@@ -19,7 +19,8 @@ Depends: ${misc:Depends},
  libxmlsec1,
  xmlsec1,
  liblasso3,
-Description: This package contains a PAM module that performs a crude
+Description: PAM module for SAML authentication
+ This package contains a PAM module that performs a crude
  check on a SAML authentication assertion. The assertion signature and date
  are verified, and access is granted on behalf to the user taken for a
  configurable attribute.
@@ -37,7 +38,8 @@ Depends: ${misc:Depends},
  libxmlsec1,
  xmlsec1,
  liblasso3,
-Description: This package contains a SASL plugin that performs a crude
+Description: SASL plugin for SAML authentication
+ This package contains a SASL plugin that performs a crude
  check on a SAML authentication assertion. The assertion signature and date
  are verified, and access is granted on behalf to the user taken for a
  configurable attribute.
@@ -53,7 +55,8 @@ Section: debug
 Priority: extra
 Depends: pam-saml (= ${binary:Version}),
  ${misc:Depends},
-Description: This package contains the debugging symbols for pam-saml.
+Description: debugging symbols for pam-saml
+ This package contains the debugging symbols for pam-saml.
 
 Package: cy2-saml-dbg
 Architecture: any
@@ -61,4 +64,5 @@ Section: debug
 Priority: extra
 Depends: cy2-saml (= ${binary:Version}),
  ${misc:Depends},
-Description: This package contains the debugging symbols for cy2-saml.
+Description: debugging symbols for cy2-saml
+ This package contains the debugging symbols for cy2-saml.
