@@ -27,7 +27,8 @@ Depends: ${misc:Depends},
  python-tdb,
  samba-common-bin,
  shell-univention-lib (>= 4.0.3-5),
- python-univention-lib (>= 3.0.26-45)
+ python-univention-lib (>= 3.0.26-45),
+ python-netifaces
 Conflicts: samba-ad-dc
 Description: UCS - Samba domain controller
  This package contains the configuration for the Samba

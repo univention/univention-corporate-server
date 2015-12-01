@@ -12,6 +12,7 @@ Variables: server/role
 Variables: windows/domain
 Variables: windows/wins-server
 Variables: windows/wins-support
+Variables: interfaces/.*
 
 Type: subfile
 Multifile: etc/samba/smb.conf
