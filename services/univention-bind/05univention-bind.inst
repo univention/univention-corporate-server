@@ -84,10 +84,12 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 
 	univention-config-registry set dns/master/address=127.0.0.1 dns/master/port?7777
 
-	# Append local server as DNS server to the zones
-	zone="$(udm dns/forward_zone list "$@" --filter "(&(zone=$domainname)(!(nameserver=${hostname}.${domainname}.)))" | sed -ne 's|DN: ||p')"
-	if [ -n "$zone" ]; then
-		udm dns/forward_zone modify "$@" --dn "$zone" --append nameserver="${hostname}.${domainname}."
+	# Append local server as DNS server to the zones, except if dc slave and in ucs@school environment
+	if [ "$server_role" = "domaincontroller_slave" ] && ! dpkg -l python-ucs-school >/dev/null 2>&1; then
+		zone="$(udm dns/forward_zone list "$@" --filter "(&(zone=$domainname)(!(nameserver=${hostname}.${domainname}.)))" | sed -ne 's|DN: ||p')"
+		if [ -n "$zone" ]; then
+			udm dns/forward_zone modify "$@" --dn "$zone" --append nameserver="${hostname}.${domainname}."
+		fi
 	fi
 
 	zone="$(udm dns/reverse_zone list "$@" --filter "(&(subnet=$reversezone)(!(nameserver=${hostname}.${domainname}.)))" | sed -ne 's|DN: ||p')"

@@ -1,3 +1,10 @@
+univention-bind (9.0.5-4) unstable; urgency=low
+
+  *  Don't add schoolslaves as nameservers for the forward lookup zone
+     (Bug #39384).
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 01 Dec 2015 15:14:59 +0100
+
 univention-bind (9.0.5-3) unstable; urgency=low
 
   * Bug #36532: Improve restart of bind9 on network reconfiguration
