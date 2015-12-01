@@ -1,0 +1,9 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-updater
+fix: 
+version: [0]
+desc: |
+ This update addresses the following issues:
+bug: [40142]
