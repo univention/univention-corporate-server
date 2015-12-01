@@ -1,3 +1,10 @@
+univention-samba (10.0.1-4) unstable; urgency=low
+
+  * Respect samba/interfaces/bindonly in
+    samba/register/exclude/interfaces (Bug #39601) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 01 Dec 2015 18:10:08 +0100
+
 univention-samba (10.0.1-3) unstable; urgency=low
 
   * Added samba/register/exclude/interfaces (Bug #39601) 
