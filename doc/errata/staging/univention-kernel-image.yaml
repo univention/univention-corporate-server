@@ -1,11 +1,11 @@
 product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
-src: univention-kernel-image-signed
-fix: 2.0.0-3.11.201512011131
+src: univention-kernel-image
+fix: 9.0.0-5.83.201512011131
 version: [0]
 desc: |
     This update reverts two changes to the NETLINK address family which leads
     to a dead-lock in multi-threaded programs calling getaddrinfo().
-note: This is the 3rd part of the update.
+note: This is the 2nd part of the update.
 bug: [40059]
