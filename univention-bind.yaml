@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-bind
+fix:
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * Domain controller slaves in UCS@school environments do not add themselfs
+    as DNS servers for the domain anymore (Bug 40139).
+bug: [40139]
