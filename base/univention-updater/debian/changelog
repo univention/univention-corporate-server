@@ -1,3 +1,9 @@
+univention-updater (11.0.7-4) unstable; urgency=low
+
+  * Update for a more responsive design (Bug #36444)
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 01 Dec 2015 17:57:09 +0100
+
 univention-updater (11.0.7-3) unstable; urgency=medium
 
   * switch to updates.software-univention.de on EC2 instances (Bug #40142)

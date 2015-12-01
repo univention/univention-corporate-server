@@ -79,6 +79,7 @@ define([
 					type:			'Text',
 					name:			'reboot_progress_text',
 					label:			'',
+					size:			'Two',
 					content:		_("The computer is now rebooting. ") +
 									_("This may take some time. Please be patient. ") +
 									_("During reboot, the connection to the system will be lost. ") +
@@ -87,10 +88,10 @@ define([
 				{
 					type:			'Text',
 					name:			'reboot_text',
-					label:			'',
+					label:			' ',
 					content:		_("In order to complete the recently executed action, it is required to reboot the system."),
-					// FIXME: Manual placement: should be done by the layout framework some day.
-					style:			'width:500px;'
+					size:			'One',
+					labelPosition:	'bottom'
 				},
 				// ------------------- Easy upgrade mode -------------------------
 				{
@@ -105,15 +106,16 @@ define([
 					type:			'Text',
 					name:			'easy_release_text',
 					label:			'',
-					content:		'easy_release_text'			// set in onLoaded event
+					content:		'easy_release_text',			// set in onLoaded event
+					size:			'One'
 				},
 				{
 					type:			'Text',
-					// FIXME: Manual placement: should be done by the layout framework some day.
-					style:			'width:500px;',
 					name:			'easy_available_text',
-					label:			'',
-					content:		'easy_available_text'		// changed in onLoaded event
+					label:			' ',
+					content:		'easy_available_text',		// changed in onLoaded event
+					size:			'One',
+					labelPosition:	'bottom'
 				},
 				// -------------------- Release updates --------------------------
 				{
@@ -137,8 +139,7 @@ define([
 					// whenever the form itself has been reloaded.
 					depends:		['ucs_version', 'erratalevel', 'serial', 'timestamp'],
 					dynamicValues:	'updater/updates/query',
-					// FIXME Manual placement: should be done by the layout framework some day.
-					style:			'width:300px;',
+					size:			'One',
 					onValuesLoaded:	lang.hitch(this, function(values) {
 						// TODO check updater/installer/running, don't do anything if something IS running
 						try
@@ -236,8 +237,6 @@ define([
 
 							// hide or show combobox, spacers and corresponding button
 							this._form.showWidget('releases', to_show);
-							this._form.showWidget('hspacer_180px', to_show);
-							this._form.showWidget('vspacer_1em', to_show);
 
 							var but = this._form._buttons.run_release_update;
 							but.set('visible', to_show);
@@ -284,27 +283,17 @@ define([
 				{
 					type:			'Text',
 					label:			'',
-					name:			'vspacer_1em',
-					style:			'height:1em;'
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'hspacer_180px',
-					// FIXME Manual placement: should be done by the layout framework some day.
-					style:			'width:180px;'
-				},
-				{
-					type:			'Text',
-					label:			'',
 					name:			'ucs_version_text',
-					content:		_("... loading data ...")
+					content:		_("... loading data ..."),
+					style:			'margin-bottom:1em',
+					size:			'One'
 				},
 				{
 					type:			'Text',
 					label:			'',
 					name:			'ucs_updates_text',
-					content:		_("There are no release updates available.")
+					content:		_("There are no release updates available."),
+					size:			'One'
 				},
 				// ---------------------- Errata updates -----------------------
 				{
@@ -314,29 +303,25 @@ define([
 				// -------------------- Package updates ------------------------
 				{
 					type:			'Text',
-					label:			'',
+					label:			' ',
 					name:			'package_update_text1',
 					// FIXME Manual placement: should be done by the layout framework some day.
-					content:		_("Package update status not yet checked")
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'erratalink',
-					style:			'width:500px;margin-top:.5em;',
-					content:		''
+					content:		_("Package update status not yet checked"),
+					size:			'One',
+					labelPosition:	'bottom'
 				},
 				{
 					type:			'Text',
 					label:			'',
 					name:			'app_center_updates_text',
-					content:		_('... loading data ...')
+					content:		_('... loading data ...'),
+					size:			'Two'
 				},
 				{
 					type:			'Text',
 					label:			'',
 					name:			'app_center_updates_apps',
-					style:			'width:500px;margin-top:.5em;',
+					size:			'Two',
 					content:		''
 				}
 			];
@@ -357,7 +342,9 @@ define([
 						this.onRunReleaseUpdate(release);
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'release-update');
 					}),
-					visible:	false
+					visible:	false,
+					style:		'margin:0',
+					size:		'One'
 				},
 				{
 					name:		'run_packages_update',
@@ -368,7 +355,9 @@ define([
 							this.standbyDuring(distUpdgradeDeferred);
 						}
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
-					})
+					}),
+					style:		'margin:0',
+					size:		'One'
 				},
 				// If refresh isn't automatic anymore... should we show a "Refresh" button?
 	//			{
@@ -384,7 +373,9 @@ define([
 					callback:	lang.hitch(this, function() {
 						this._reboot();
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reboot');
-					})
+					}),
+					style:		'margin:0',
+					size:		'One'
 				},
 				{
 					name:		'easy_upgrade',
@@ -393,7 +384,9 @@ define([
 						// TODO check updater/installer/running, don't do action if a job is running
 						this.onRunEasyUpgrade();
 						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'easy-upgrade');
-					})
+					}),
+					style:		'margin:0',
+					size:		'One'
 				}
 			];
 
@@ -420,8 +413,7 @@ define([
 					layout:
 					[
 						['ucs_version_text'],
-						['vspacer_1em'],
-						['releases', 'hspacer_180px', 'run_release_update'],
+						['releases', 'run_release_update'],
 						['ucs_updates_text']
 					]
 				},
@@ -429,8 +421,7 @@ define([
 					label:		_("Package updates"),
 					layout:
 					[
-						['package_update_text1'],
-						['erratalink', 'run_packages_update']
+						['package_update_text1', 'run_packages_update'],
 					]
 				},
 				{
@@ -602,9 +593,9 @@ define([
 			if (versionWithoutPatchlevel) {
 				var erratalink = lang.replace('<a href="https://errata.software-univention.de/ucs/{version}/" target="_blank">{label}</a>', {
 					version: versionWithoutPatchlevel,
-					label: _('Information about the updates')
+					label: _('Detailed informations about the updates.')
 				});
-				this._form.getWidget('erratalink').set('content', erratalink);
+				return erratalink
 			}
 		},
 
@@ -664,7 +655,7 @@ define([
 					lang.hitch(this, function(data) {
 						this._set_updates_button(data.result,
 							data.result ?
-								_("Package updates are available.") :
+								_("Package updates are available. %(link)s", {link: this._update_errata_link(this._form.gatherFormValues().ucs_version)}) :
 								_("There are no package updates available."));
 					}),
 					lang.hitch(this, function() {
