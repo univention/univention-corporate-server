@@ -76,6 +76,28 @@ if [ "$1" = "configure" ]; then
 		esac
 	fi
 
+	# Bug #40142: The 4.1 image
+	# "Univention Corporate Server (UCS) 4.1 (official image) rev. 0 - ami-4e944e3d"
+	# uses updates-test.software-univention.de.
+	# only for updates (nl) from older (lt) versions
+	if dpkg --compare-versions "$2" lt-nl 11.0.7-3
+	then
+		# only if EC2
+		if [ "$(ucr get updater/identify)" = 'UCS (EC2)' ]
+		then
+			# only if EC2
+			if [ "$(ucr get server/amazon)" = 'true' ]
+			then
+				# only if incorrect
+				if [ "$(ucr get repository/online/server)" = 'https://updates-test.software-univention.de' ]
+				then
+					# unset, will be set via defaults below
+					ucr unset repository/online/server
+				fi
+			fi
+		fi
+	fi
+
 	# update cronjob-entries
 	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
 		/usr/lib/univention-directory-policy/univention-policy-maintenance

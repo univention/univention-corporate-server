@@ -1,3 +1,9 @@
+univention-updater (11.0.7-3) unstable; urgency=medium
+
+  * switch to updates.software-univention.de on EC2 instances (Bug #40142)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 01 Dec 2015 12:46:49 +0100
+
 univention-updater (11.0.7-2) unstable; urgency=low
 
   * Bug #39991: checks for more free space 
