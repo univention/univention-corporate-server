@@ -143,7 +143,7 @@ msgstr ""
 "kann das Update zwischen dreißig Minuten und mehreren Stunden dauern."
 
 #: umc/js/updater/UpdatesPage.js:596
-msgid "Detailed informations about the updates."
+msgid "Detailed information about the updates."
 msgstr "Detaillierte Informationen zu den Aktualisierungen."
 
 #: umc/js/updater.js:259

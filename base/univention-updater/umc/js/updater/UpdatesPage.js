@@ -471,9 +471,6 @@ define([
 					this.onQuerySuccess('updater/updates/get');
 					var values = this._form.gatherFormValues();
 
-					// first set the link for information about updates
-					this._update_errata_link(values.ucs_version);
-
 					// send event that value have been loaded
 					this.onStatusLoaded(values);
 
@@ -582,7 +579,7 @@ define([
 			);
 		},
 
-		_update_errata_link: function(version) {
+		_get_errata_link: function(version) {
 			var versionWithoutPatchlevel;
 			try {
 				// 3.1-0 -> 3.1
@@ -593,7 +590,7 @@ define([
 			if (versionWithoutPatchlevel) {
 				var erratalink = lang.replace('<a href="https://errata.software-univention.de/ucs/{version}/" target="_blank">{label}</a>', {
 					version: versionWithoutPatchlevel,
-					label: _('Detailed informations about the updates.')
+					label: _('Detailed information about the updates.')
 				});
 				return erratalink
 			}
@@ -655,7 +652,7 @@ define([
 					lang.hitch(this, function(data) {
 						this._set_updates_button(data.result,
 							data.result ?
-								_("Package updates are available. %(link)s", {link: this._update_errata_link(this._form.gatherFormValues().ucs_version)}) :
+								_("Package updates are available. %(link)s", {link: this._get_errata_link(this._form.gatherFormValues().ucs_version)}) :
 								_("There are no package updates available."));
 					}),
 					lang.hitch(this, function() {
