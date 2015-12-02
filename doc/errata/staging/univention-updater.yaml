@@ -6,7 +6,7 @@ fix: 11.0.7-6.1436.201512011855
 version: [0]
 desc: |
  This update addresses the following issues:
- * The free disc space requirement in the updater "preup" script has been
+ * The free disc space requirement in the updater's "preup" script has been
    increased to 1.5GiB.
  * The AWS EC2 image "Univention Corporate Server (UCS) 4.1 (official
    image) rev. 0" uses the repository server
