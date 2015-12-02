@@ -28,6 +28,7 @@ class SimpleSquid(object):
 
 	def restart(self):
 		"""Trying to restart"""
+		print 'Restarting squid'
 		return call([self.path, "restart"])
 
 	def is_not_running(self):
