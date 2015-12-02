@@ -5,7 +5,7 @@ src: univention-directory-replication
 fix: 9.0.1-2.99.201511231207
 version: [0]
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
  * Some replicated objects were not deleted, when the LDAP server closed its
    side of the LDAP connection.
 bug: [40067]
