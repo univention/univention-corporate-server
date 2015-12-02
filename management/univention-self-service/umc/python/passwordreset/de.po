@@ -29,8 +29,8 @@ msgid ""
 "The allowed maximum number of connections to the server has been reached. "
 "Please retry later."
 msgstr ""
-"Die erlaubte maximale Anzahl an Verbindungen zum Server wurde erreicht.Bitte "
-"versuchen Sie es später noch einmal."
+"Die erlaubte maximale Anzahl an Verbindungen zum Server wurde erreicht. Bitte "
+"versuchen Sie es später erneut."
 
 #: umc/python/passwordreset/__init__.py:156
 msgid ""

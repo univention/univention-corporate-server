@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-37) unstable; urgency=low
+
+  * run memcached as non-privileged user (Bug #39720)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 02 Dec 2015 12:03:39 +0100
+
 univention-self-service (1.0.2-36) unstable; urgency=low
 
   * Bug #39981: Decode query string for redirect

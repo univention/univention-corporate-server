@@ -62,7 +62,7 @@ from univention.management.console.modules.passwordreset.sending import get_plug
 _ = Translation('univention-self-service-passwordreset-umc').translate
 
 TOKEN_VALIDITY_TIME = 3600
-MEMCACHED_SOCKET = "/var/run/memcached-univention-self-service.socket"
+MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 
 
 def prevent_denial_of_service(func):
