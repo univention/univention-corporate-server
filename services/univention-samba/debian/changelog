@@ -1,3 +1,9 @@
+univention-samba (10.0.1-6) unstable; urgency=low
+
+  * Added samba/register/exclude/interfaces (Bug #39601) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 02 Dec 2015 09:41:58 +0100
+
 univention-samba (10.0.1-5) unstable; urgency=low
 
   * Ignore appliance-mode-temporary (Bug #39601) 

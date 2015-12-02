@@ -35,7 +35,8 @@ if configRegistry.get('samba/register/exclude/interfaces') and not configRegistr
 	import netifaces
 	interfaces = netifaces.interfaces()
 	for ignore in configRegistry['samba/register/exclude/interfaces'].split(' '):
-		interfaces.remove(ignore)
+		if ignore in interfaces:
+			interfaces.remove(ignore)
 	# also ignore appliance-mode-temporary interface
 	for iface in interfaces[:]:
 		if configRegistry.get('interfaces/%s/type' % iface, '') == 'appliance-mode-temporary':
