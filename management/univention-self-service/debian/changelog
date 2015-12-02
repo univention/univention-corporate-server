@@ -1,3 +1,16 @@
+univention-self-service (1.0.3-1) unstable; urgency=low
+
+  * return waiting time if request limit is reached (Bug #39720)
+  * use UMC LDAP connection and error handling
+  * rename keys for total request count and email2username to prevent clash
+    with username
+  * fix socket path in univention-self-service-request-count forgotten in
+    previous commit
+  * mind memcached maximum key length
+  * cleaner LDAP filter handling
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 02 Dec 2015 14:35:48 +0100
+
 univention-self-service (1.0.2-37) unstable; urgency=low
 
   * run memcached as non-privileged user (Bug #39720)

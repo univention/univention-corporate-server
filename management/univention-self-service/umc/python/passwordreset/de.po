@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-passwordreset\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-11-20 14:54+0100\n"
+"POT-Creation-Date: 2015-12-02 15:41+0100\n"
 "PO-Revision-Date: 2015-09-22 09:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -24,57 +24,69 @@ msgstr "Extern"
 msgid "Email"
 msgstr "E-Mail"
 
-#: umc/python/passwordreset/__init__.py:111
-msgid ""
-"The allowed maximum number of connections to the server has been reached. "
-"Please retry later."
-msgstr ""
-"Die erlaubte maximale Anzahl an Verbindungen zum Server wurde erreicht. Bitte "
-"versuchen Sie es später erneut."
+#: umc/python/passwordreset/__init__.py:71
+msgid "one minute"
+msgstr "einer Minute"
 
-#: umc/python/passwordreset/__init__.py:156
-msgid ""
-"umc/self-service/passwordreset/token_validity_period must be a number: {}"
-msgstr "umc/self-service/passwordreset/token_validity_period muss eine Zahl sein: {}"
+#: umc/python/passwordreset/__init__.py:75
+msgid "{} minutes"
+msgstr "{} Minuten"
 
-#: umc/python/passwordreset/__init__.py:179
-msgid "umc/self-service/passwordreset/limit/.* must be a number: {}"
-msgstr "umc/self-service/passwordreset/limit/.* muss eine Zahl sein: {}"
+#: umc/python/passwordreset/__init__.py:77
+msgid "one hour"
+msgstr "einer Stunde"
 
-#: umc/python/passwordreset/__init__.py:203
-#: umc/python/passwordreset/__init__.py:326
-msgid "Empty username supplied."
-msgstr "Leerer Benutzername angegeben."
+#: umc/python/passwordreset/__init__.py:80
+msgid "{} hours"
+msgstr "{} Stunden"
 
-#: umc/python/passwordreset/__init__.py:205
-#: umc/python/passwordreset/__init__.py:229
-#: umc/python/passwordreset/__init__.py:242
-#: umc/python/passwordreset/__init__.py:306
-#: umc/python/passwordreset/__init__.py:328
+#: umc/python/passwordreset/__init__.py:120
+#: umc/python/passwordreset/__init__.py:236
+#: umc/python/passwordreset/__init__.py:260
+#: umc/python/passwordreset/__init__.py:276
+#: umc/python/passwordreset/__init__.py:345
+#: umc/python/passwordreset/__init__.py:371
 msgid "Service is not available for this user."
 msgstr "Der Dienst steht für diesen Benutzer nicht zur Verfügung."
 
+#: umc/python/passwordreset/__init__.py:139
+msgid ""
+"The allowed maximum number of connections to the server has been reached. "
+"Please retry in {}."
+msgstr ""
+"Die erlaubte maximale Anzahl an Verbindungen zum Server wurde erreicht. "
+"Bitte versuchen Sie es in {} erneut."
+
+#: umc/python/passwordreset/__init__.py:187
+msgid ""
+"umc/self-service/passwordreset/token_validity_period must be a number: {}"
+msgstr ""
+"umc/self-service/passwordreset/token_validity_period muss eine Zahl sein: {}"
+
 #: umc/python/passwordreset/__init__.py:209
-#: umc/python/passwordreset/__init__.py:331
-#: umc/python/passwordreset/__init__.py:337
+msgid "umc/self-service/passwordreset/limit/.* must be a number: {}"
+msgstr "umc/self-service/passwordreset/limit/.* muss eine Zahl sein: {}"
+
+#: umc/python/passwordreset/__init__.py:233
+#: umc/python/passwordreset/__init__.py:365
+msgid "Empty username supplied."
+msgstr "Leerer Benutzername angegeben."
+
+#: umc/python/passwordreset/__init__.py:239
+#: umc/python/passwordreset/__init__.py:369
+#: umc/python/passwordreset/__init__.py:374
+#: umc/python/passwordreset/__init__.py:380
 msgid "No password reset method available for this user."
 msgstr ""
 "Für diesen Benutzer wurden keine Kontaktinformationen hinterlegt. Das "
 "Zurücksetzen des Passworts ist daher nicht möglich."
 
-#: umc/python/passwordreset/__init__.py:232
+#: umc/python/passwordreset/__init__.py:262
 msgid "Successfully changed your contact data."
 msgstr "Ihre Kontaktdaten wurden erfolgreich geändert."
 
-#: umc/python/passwordreset/__init__.py:247
-msgid "Unknown recovery method '{}'."
-msgstr "Unbekannte Wiederherstellungsfunktion '{}'."
-
-#: umc/python/passwordreset/__init__.py:277
-msgid "Successfully send token."
-msgstr "Der Token wurde erfolgreich versendet."
-
-#: umc/python/passwordreset/__init__.py:280
+#: umc/python/passwordreset/__init__.py:274
+#: umc/python/passwordreset/__init__.py:315
 msgid ""
 "No contact information to send a token for password recovery to has been "
 "found."
@@ -83,53 +95,57 @@ msgstr ""
 "(Sicherheitsschlüssel) zur Wiederherstellung des Password geschickt werden "
 "könnte."
 
-#: umc/python/passwordreset/__init__.py:297
-msgid "A problem occurred on the server and has been corrected, please retry."
-msgstr ""
-"Auf dem Server trat ein Problem auf, das beseitig wurde. Bitte versuchen Sie "
-"es erneut."
+#: umc/python/passwordreset/__init__.py:281
+msgid "Unknown recovery method '{}'."
+msgstr "Unbekannte Wiederherstellungsfunktion '{}'."
 
-#: umc/python/passwordreset/__init__.py:310
-msgid "Successfully changed your password."
-msgstr "Ihr Passwort wurde erfolgreich geändert."
+#: umc/python/passwordreset/__init__.py:312
+msgid "Successfully send token."
+msgstr "Der Token wurde erfolgreich versendet."
 
-#: umc/python/passwordreset/__init__.py:315
-msgid "The token you supplied has expired. Please request a new one."
-msgstr ""
-"Der Token (Sicherheitsschlüssel) den Sie angegeben haben ist abgelaufen. "
-"Bitte fordern Sie einen neuen an."
-
-#: umc/python/passwordreset/__init__.py:319
+#: umc/python/passwordreset/__init__.py:328
+#: umc/python/passwordreset/__init__.py:358
 msgid "The token you supplied could not be found. Please request a new one."
 msgstr ""
 "Der Token (Sicherheitsschlüssel) den Sie angegeben haben konnte nicht "
 "gefunden werden. Bitte fordern Sie einen neuen an."
 
-#: umc/python/passwordreset/__init__.py:366
+#: umc/python/passwordreset/__init__.py:336
+msgid "A problem occurred on the server and has been corrected, please retry."
+msgstr ""
+"Auf dem Server trat ein Problem auf, das beseitig wurde. Bitte versuchen Sie "
+"es erneut."
+
+#: umc/python/passwordreset/__init__.py:349
+msgid "Successfully changed your password."
+msgstr "Ihr Passwort wurde erfolgreich geändert."
+
+#: umc/python/passwordreset/__init__.py:354
+msgid "The token you supplied has expired. Please request a new one."
+msgstr ""
+"Der Token (Sicherheitsschlüssel) den Sie angegeben haben ist abgelaufen. "
+"Bitte fordern Sie einen neuen an."
+
+#: umc/python/passwordreset/__init__.py:409
 msgid "Error sending token: {}"
 msgstr "Fehler beim Versenden des Tokens: {}"
 
-#: umc/python/passwordreset/__init__.py:377
+#: umc/python/passwordreset/__init__.py:420
 msgid "Username or password is incorrect."
 msgstr "Benutzername oder Passwort sind falsch."
 
-#: umc/python/passwordreset/__init__.py:380
-msgid "Could not connect to the LDAP server."
-msgstr "Konnte keine Verbindung zum LDAP-Server aufbauen."
-
-#: umc/python/passwordreset/__init__.py:408
+#: umc/python/passwordreset/__init__.py:446
 msgid "The Password has been used already. Please supply a new one."
 msgstr "Das Passwort wurde bereits verwendet. Bitte geben Sie ein neues ein."
 
-#: umc/python/passwordreset/__init__.py:450
+#: umc/python/passwordreset/__init__.py:479
 msgid "Unknown user."
 msgstr "Unbekannter Benutzer."
 
-#: umc/python/passwordreset/__init__.py:493
+#: umc/python/passwordreset/__init__.py:533
 msgid "Program error. Please report this to the administrator."
 msgstr "Programm Fehler. Bitte berichten Sie dies dem Administrator."
 
 #: umc/python/passwordreset/send_plugin.py:54
 msgid "????"
 msgstr "????"
-

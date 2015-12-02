@@ -37,14 +37,10 @@ import random
 import string
 import atexit
 from functools import wraps
-from ldap import LDAPError
-from ldap.dn import explode_dn
-from ldap.filter import escape_filter_chars
+from ldap.filter import filter_format
 import pylibmc
 
 from univention.lib.i18n import Translation
-from univention.uldap import getMachineConnection
-import univention.admin.uldap
 import univention.admin.uexceptions
 import univention.admin.objects
 import univention.admin.uexceptions as udm_errors
@@ -54,7 +50,7 @@ from univention.management.console.config import ucr
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.management.console.modules.sanitizers import StringSanitizer
 from univention.management.console.modules import UMC_Error
-from univention.management.console.ldap import get_user_connection
+from univention.management.console.ldap import get_user_connection, get_machine_connection, get_admin_connection, machine_connection
 
 from univention.management.console.modules.passwordreset.tokendb import TokenDB, MultipleTokensInDB
 from univention.management.console.modules.passwordreset.sending import get_plugins as get_sending_plugins
@@ -63,13 +59,28 @@ _ = Translation('univention-self-service-passwordreset-umc').translate
 
 TOKEN_VALIDITY_TIME = 3600
 MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
+MEMCACHED_MAX_KEY = 250
 
 
 def prevent_denial_of_service(func):
 	@wraps(func)
 	def _decorated(self, *args, **kwargs):
+		def _pretty_time(sec):
+			if sec <= 60:
+				return _("one minute")
+			else:
+				m, s = divmod(sec, 60)
+				if m < 60:
+					return _("{} minutes").format(m + 1)
+				elif m == 60:
+					return _("one hour")  # and one minute, but nvm
+				else:
+					h, m = divmod(m, 60)
+					return _("{} hours").format(h + 1)
+
 		def _check_limits(limits):
 			limit_reached = False
+			_max_wait = datetime.datetime.now()
 			for key, decay, limit in limits:
 				# Not really a "decay", as for that we'd have to store the date for
 				# each request. Then a moving window could be implemented. But
@@ -80,13 +91,20 @@ def prevent_denial_of_service(func):
 					count = self.memcache.incr(key)
 				except pylibmc.NotFound:
 					count = 1
-					self.memcache.set(key, count, decay)
+					self.memcache.set_multi(
+						{
+							key: count,
+							"{}:exp".format(key): datetime.datetime.now() + datetime.timedelta(seconds=decay)
+						},
+						decay
+					)
 				if count > limit:
 					limit_reached = True
-			return limit_reached
+					_max_wait = max(_max_wait, self.memcache.get("{}:exp".format(key)))
+			return limit_reached, _max_wait
 
 		# check total request limits
-		total_limit_reached = _check_limits(self.total_limits)
+		total_limit_reached, total_max_wait = _check_limits(self.total_limits)
 
 		# check user request limits
 		try:
@@ -98,6 +116,9 @@ def prevent_denial_of_service(func):
 			# args[0] is not the expected 'request'
 			MODULE.error("prevent_denial_of_service() could not find username argument. self: %r args: %r kwargs: %r exception: %s" % (self, args, kwargs, traceback.format_exc()))
 			raise
+
+		if len(username) > MEMCACHED_MAX_KEY - 9:  # "_hour:exp"
+			raise UnknownUserError(_("Service is not available for this user."))
 
 		try:
 			username = self.email2username(username)
@@ -112,10 +133,11 @@ def prevent_denial_of_service(func):
 			("{}_day".format(username), 86400, self.limit_user_day)
 		]
 
-		user_limit_reached = _check_limits(user_limits)
+		user_limit_reached, user_max_wait = _check_limits(user_limits)
 
 		if total_limit_reached or user_limit_reached:
-			raise ConnectionLimitError(_("The allowed maximum number of connections to the server has been reached. Please retry later."))
+			time_s = _pretty_time((max(total_max_wait, user_max_wait) - datetime.datetime.now()).seconds)
+			raise ConnectionLimitError(_("The allowed maximum number of connections to the server has been reached. Please retry in {}.").format(time_s))
 
 		return func(self, *args, **kwargs)
 	return _decorated
@@ -190,9 +212,9 @@ class Instance(Base):
 			raise UMC_Error(err, status=500)
 
 		self.total_limits = [
-			("tc_min", 60, limit_total_min),
-			("tc_hour", 3600, limit_total_hour),
-			("tc_day", 86400, limit_total_day)
+			("t:c_min", 60, limit_total_min),
+			("t:c_hour", 3600, limit_total_hour),
+			("t:c_day", 86400, limit_total_day)
 		]
 
 	@prevent_denial_of_service
@@ -389,24 +411,20 @@ class Instance(Base):
 		return True
 
 	@staticmethod
-	def auth(username, password):
-		lo = None
+	@machine_connection
+	def auth(username, password, ldap_connection=None, ldap_position=None):
+		filter_s = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (username, username))
+		users = ldap_connection.search(filter=filter_s)
 		try:
-			lo = getMachineConnection()
-			binddn, userdict = lo.search(filter="(|(uid={0})(mailPrimaryAddress={0}))".format(escape_filter_chars(username)))[0]
+			binddn, userdict = users[0]
 			get_user_connection(binddn=binddn, bindpw=password)
 		except (univention.admin.uexceptions.authFail, IndexError):
 			raise UMC_Error(_("Username or password is incorrect."))
-		except (LDAPError, udm_errors.ldapError, udm_errors.base):
-			MODULE.error("auth(): ERROR: connecting to LDAP: {}".format(traceback.format_exc()))
-			raise UMC_Error(_("Could not connect to the LDAP server."))
-		finally:
-			lo.lo.unbind()
 		return binddn, userdict["uid"][0]
 
 	def set_contact_data(self, dn, email, mobile):
 		try:
-			user = self.get_udm_user(userdn=dn, admin=True)
+			user = self.get_udm_user_dn(userdn=dn, admin=True)
 			if email is not None and email.lower() != user["PasswordRecoveryEmail"].lower():
 				user["PasswordRecoveryEmail"] = email
 			if mobile is not None and mobile.lower() != user["PasswordRecoveryMobile"].lower():
@@ -433,7 +451,8 @@ class Instance(Base):
 			raise
 
 	#TODO: decoratorize
-	def is_blacklisted(self, username):
+	@machine_connection
+	def is_blacklisted(self, username, ldap_connection=None, ldap_position=None):
 		def listize(li):
 			return [x.lower() for x in map(str.strip, li.split(",")) if x]
 
@@ -450,9 +469,9 @@ class Instance(Base):
 			return True
 
 		# get groups
-		lo = getMachineConnection()
 		try:
-			userdn = lo.search(filter="(|(uid={0})(mailPrimaryAddress={0}))".format(escape_filter_chars(username)))[0][0]
+			filter_s = filter_format("(|(uid=%s)(mailPrimaryAddress=%s))", (username, username))
+			userdn = ldap_connection.search(filter=filter_s)[0][0]
 			groups_dns = self.get_groups(userdn)
 			for group_dn in list(groups_dns):
 				groups_dns.extend(self.get_nested_groups(group_dn))
@@ -483,7 +502,7 @@ class Instance(Base):
 		return not (wh_users or wh_groups)
 
 	def get_groups(self, userdn):
-		user = self.get_udm_user(userdn=userdn)
+		user = self.get_udm_user_dn(userdn=userdn)
 		groups = user["groups"]
 		prim_group = user["primaryGroup"]
 		if prim_group not in groups:
@@ -504,73 +523,53 @@ class Instance(Base):
 			names.append(group["name"])
 		return names
 
-	def get_udm_user(self, userdn=None, username=None, admin=False):
-		if userdn:
-			dn_part = explode_dn(userdn)
-			uidf = dn_part[0]
-			base = ",".join(dn_part[1:])
-		elif username:
-			uidf = '(|(uid={0})(mailPrimaryAddress={0}))'.format(escape_filter_chars(username))
-			base = ""
-		else:
-			MODULE.error("get_udm_user(): userdn=None and username=None")
-			raise UMC_Error(_("Program error. Please report this to the administrator."), status=500)
-
+	def get_udm_user_dn(self, userdn, admin=False):
 		if admin:
-			if not self.usersmod_rw:
-				univention.admin.modules.update()
-				self.usersmod_rw = univention.admin.modules.get("users/user")
-				if not self.lo_rw:
-					self.lo_rw, self.position_rw = univention.admin.uldap.getAdminConnection()
-				univention.admin.modules.init(self.lo_rw, self.position_rw, self.usersmod_rw)
-			lo = self.lo_rw
-			usersmod = self.usersmod_rw
+			lo, po = get_admin_connection()
 		else:
-			if not self.usersmod:
-				univention.admin.modules.update()
-				self.usersmod = univention.admin.modules.get("users/user")
-				if not self.lo or not self.position:
-					self.lo, self.position = univention.admin.uldap.getMachineConnection()
-				univention.admin.modules.init(self.lo, self.position, self.usersmod)
-			lo = self.lo
-			usersmod = self.usersmod
-
-		user = usersmod.lookup(None, lo, filter_s=uidf, base=base)[0]
+			lo, po = get_machine_connection()
+		univention.admin.modules.update()
+		usersmod = univention.admin.modules.get("users/user")
+		univention.admin.modules.init(lo, po, usersmod)
+		user = usersmod.object(None, lo, po, userdn)
 		user.open()
 		return user
 
-	def get_udm_group(self, groupdn):
-		dn_part = explode_dn(groupdn)
-		gidf = dn_part[0]
-		base = ",".join(dn_part[1:])
+	def get_udm_user(self, username, admin=False):
+		uidf = filter_format('(|(uid=%s)(mailPrimaryAddress=%s))', (username, username))
+		base = ucr["ldap/base"]
 
+		lo, po = get_machine_connection()
+		dn = lo.searchDn(filter=uidf, base=base)[0]
+		return self.get_udm_user_dn(dn)
+
+	@machine_connection
+	def get_udm_group(self, groupdn, ldap_connection=None, ldap_position=None):
+		# reuse module for recursive lookups by get_nested_groups()
 		if not self.groupmod:
 			univention.admin.modules.update()
 			self.groupmod = univention.admin.modules.get("groups/group")
-			if not self.lo or not self.position:
-				self.lo, self.position = univention.admin.uldap.getMachineConnection()
-			univention.admin.modules.init(self.lo, self.position, self.groupmod)
+			univention.admin.modules.init(ldap_connection, ldap_position, self.groupmod)
 
-		group = self.groupmod.lookup(None, self.lo, filter_s=gidf, base=base)[0]
+		group = self.groupmod.object(None, ldap_connection, ldap_position, groupdn)
 		group.open()
 		return group
 
-	def email2username(self, email):
+	@machine_connection
+	def email2username(self, email, ldap_connection=None, ldap_position=None):
 		if "@" not in email:
 			return email
 
 		# cache email->username in memcache
-		username = self.memcache.get("_e2u_{}".format(email))
+		username = self.memcache.get("e2u:{}".format(email))
 		if not username:
+			mailf = filter_format("(mailPrimaryAddress=%s)", email)
+			users = ldap_connection.search(filter=mailf)
 			try:
-				if not self.lo:
-					self.lo = getMachineConnection()
-				binddn, userdict = self.lo.search(filter="(mailPrimaryAddress={0})".format(escape_filter_chars(email)))[0]
+				_, userdict = users[0]
 			except IndexError:
 				raise UnknownUserError()
-			except (LDAPError, udm_errors.ldapError, udm_errors.base):
-				raise UMC_Error(_("Could not connect to the LDAP server."))
 			username = userdict["uid"][0]
-			self.memcache.set("_e2u_{}".format(email), username, 7200)
+			self.memcache.set("e2u:{}".format(email), username, 300)
 
 		return username

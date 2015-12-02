@@ -36,7 +36,7 @@ import re
 import sys
 from univention.management.console.config import ucr
 
-socket_file = "/var/run/memcached-univention-self-service.socket"
+socket_file = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 
 limit_total_min = ucr.get("umc/self-service/passwordreset/limit/total/min", 0)
 limit_total_hour = ucr.get("umc/self-service/passwordreset/limit/total/hour", 0)
@@ -89,16 +89,19 @@ if not keys:
 	sys.exit(0)
 
 # move totals to end of (possibly long) list
-for k in ["tc_day", "tc_hour", "tc_min"]:
-	keys.remove(k)
-	keys.append(k)
+for k in ["t:c_day", "t:c_hour", "t:c_min"]:
+	try:
+		keys.remove(k)
+		keys.append(k)
+	except ValueError:
+		continue
 
 for key in keys:
-	if key == "tc_min":
+	if key == "t:c_min":
 		limit = limit_total_min
-	elif key == "tc_hour":
+	elif key == "t:c_hour":
 		limit = limit_total_hour
-	elif key == "tc_day":
+	elif key == "t:c_day":
 		limit = limit_total_day
 	elif key.endswith("_min"):
 		limit = limit_user_min
@@ -106,7 +109,7 @@ for key in keys:
 		limit = limit_user_hour
 	elif key.endswith("_day"):
 		limit = limit_user_day
-	elif key.startswith("_e2u_"):
+	elif key.startswith("e2u:") or key.endswith(":exp"):
 		continue
 	else:
 		raise ValueError("key '{}' not recognized".format(key))
