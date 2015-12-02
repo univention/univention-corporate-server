@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: univention-bind
-fix:
+fix: 9.0.5-4.212.201512020859
 version: [4]
 desc: |
   Domain controller slaves in UCS@school environments do not add themselfs
