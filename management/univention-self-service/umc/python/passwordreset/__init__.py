@@ -38,6 +38,7 @@ import string
 import atexit
 from functools import wraps
 from ldap import LDAPError
+from ldap.dn import explode_dn
 from ldap.filter import escape_filter_chars
 import pylibmc
 
@@ -45,7 +46,6 @@ from univention.lib.i18n import Translation
 from univention.uldap import getMachineConnection
 import univention.admin.uldap
 import univention.admin.uexceptions
-import univention.admin.config
 import univention.admin.objects
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.base import Base
@@ -148,7 +148,6 @@ class Instance(Base):
 		self.usersmod = None
 		self.usersmod_rw = None
 		self.groupmod = None
-		self.config = None
 		self.lo = None
 		self.lo_rw = None
 		self.position = None
@@ -371,7 +370,6 @@ class Instance(Base):
 
 	def send_message(self, username, method, address, token):
 		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
-		assert "@" not in username
 		try:
 			plugin = self.send_plugins[method]
 		except KeyError:
@@ -508,9 +506,9 @@ class Instance(Base):
 
 	def get_udm_user(self, userdn=None, username=None, admin=False):
 		if userdn:
-			dn_part = userdn.partition(",")
+			dn_part = explode_dn(userdn)
 			uidf = dn_part[0]
-			base = dn_part[-1]
+			base = ",".join(dn_part[1:])
 		elif username:
 			uidf = '(|(uid={0})(mailPrimaryAddress={0}))'.format(escape_filter_chars(username))
 			base = ""
@@ -520,8 +518,6 @@ class Instance(Base):
 
 		if admin:
 			if not self.usersmod_rw:
-				if not self.config:
-					self.config = univention.admin.config.config()
 				univention.admin.modules.update()
 				self.usersmod_rw = univention.admin.modules.get("users/user")
 				if not self.lo_rw:
@@ -531,8 +527,6 @@ class Instance(Base):
 			usersmod = self.usersmod_rw
 		else:
 			if not self.usersmod:
-				if not self.config:
-					self.config = univention.admin.config.config()
 				univention.admin.modules.update()
 				self.usersmod = univention.admin.modules.get("users/user")
 				if not self.lo or not self.position:
@@ -541,25 +535,23 @@ class Instance(Base):
 			lo = self.lo
 			usersmod = self.usersmod
 
-		user = usersmod.lookup(self.config, lo, filter_s=uidf, base=base)[0]
+		user = usersmod.lookup(None, lo, filter_s=uidf, base=base)[0]
 		user.open()
 		return user
 
 	def get_udm_group(self, groupdn):
-		dn_part = groupdn.partition(",")
+		dn_part = explode_dn(groupdn)
 		gidf = dn_part[0]
-		base = dn_part[-1]
+		base = ",".join(dn_part[1:])
 
 		if not self.groupmod:
-			if not self.config:
-				self.config = univention.admin.config.config()
 			univention.admin.modules.update()
 			self.groupmod = univention.admin.modules.get("groups/group")
 			if not self.lo or not self.position:
 				self.lo, self.position = univention.admin.uldap.getMachineConnection()
 			univention.admin.modules.init(self.lo, self.position, self.groupmod)
 
-		group = self.groupmod.lookup(self.config, self.lo, filter_s=gidf, base=base)[0]
+		group = self.groupmod.lookup(None, self.lo, filter_s=gidf, base=base)[0]
 		group.open()
 		return group
 

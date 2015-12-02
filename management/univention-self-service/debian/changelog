@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-35) unstable; urgency=low
+
+  * use explode_dn instead of str.partition, remove unused code (Bug #40049)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 02 Dec 2015 09:55:15 +0100
+
 univention-self-service (1.0.2-34) unstable; urgency=low
 
   * make error handling more robust (Bug #40049)
