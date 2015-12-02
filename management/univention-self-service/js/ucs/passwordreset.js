@@ -210,7 +210,7 @@ define([
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
-						'Accept-Language': getQuery('lang') || 'en-US'
+						'Accept-Language': lib.getQuery('lang') || 'en-US'
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
@@ -278,7 +278,7 @@ define([
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
-						'Accept-Language': getQuery('lang') || 'en-US'
+						'Accept-Language': lib.getQuery('lang') || 'en-US'
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
@@ -324,7 +324,7 @@ define([
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
-						'Accept-Language': getQuery('lang') || 'en-US'
+						'Accept-Language': lib.getQuery('lang') || 'en-US'
 					},
 					data: data
 				}).then(lang.hitch(this, function(data) {
@@ -365,8 +365,8 @@ define([
 		_fillContentByUrl: function() {
 			// checks if the url contains a username and a token
 			// show and fill the corresponding input fields if true
-			var token = getQuery('token');
-			var username = getQuery('username');
+			var token = lib.getQuery('token');
+			var username = lib.getQuery('username');
 			if (token && username) {
 				this._username.set('value', username);
 				this._token.set('value', token);

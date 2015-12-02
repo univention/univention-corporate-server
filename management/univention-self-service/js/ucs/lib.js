@@ -33,13 +33,14 @@ define([
 	"dojo/_base/fx",
 	"dojo/dom",
 	"dojo/dom-geometry",
+	"dojo/io-query",
 	"put-selector/put",
 	"./i18n!."
-], function(lang, fx, dom, domGeom, put, _) {
+], function(lang, fx, dom, domGeom, ioQuery, put, _) {
 
 	return {
 		getCurrentLanguageQuery: function() {
-			return '?lang=' + (getQuery('lang') || 'en-US');
+			return '?lang=' + (this.getQuery('lang') || 'en-US');
 		},
 
 		showMessage: function(msg) {
@@ -85,7 +86,7 @@ define([
 			var redirect = {
 				url: this._getUrlForRedirect(),
 				label: this._getUrlLabelForRedirect(),
-				timer: getQuery('timer')
+				timer: this.getQuery('timer')
 			};
 			if (redirect.url) {
 				var timer = redirect.timer || msg.timer || 5;
@@ -106,27 +107,39 @@ define([
 		},
 
 		_getUrlForRedirect: function() {
-			var url = getQuery('url');
-			if (url) {
-				// checking if url is relative = has to start wit only one '/'
+			var queryUrl = this.getQuery('url');
+			if (queryUrl) {
+				// checking if queryUrl is relative = has to start wit only one '/'
 				var reg = /^\/([^\/]|$)/;
-				var isUrlRelative = reg.test(url);
+				var isUrlRelative = reg.test(queryUrl);
 				if (isUrlRelative) {
-					return url;
+					return queryUrl;
 				} else {
 					// forbidden to provide absolute urls
-					console.error(lang.replace(_('Forbidden redirect to: {0}\n The url has to start with (only) one "/".', [url])));
+					console.error(lang.replace(_('Forbidden redirect to: {0}\n The url has to start with (only) one "/".', [queryUrl])));
 				}
 			}
+			return;
 		},
 
 		_getUrlLabelForRedirect: function() {
-			var label = getQuery('urlLabel');
+			var label = this.getQuery('urlLabel');
 			if (label) {
+				label = this._sanitizeHtmlTags(label);
 				return lang.replace(_("to '{0}'", [label]));
 			} else {
 				return '';
 			}
+		},
+
+		getQuery: function(key) {
+			var queryString = window.location.search.substring(1);
+			var queryObject = ioQuery.queryToObject(queryString);
+			return queryObject[key];
+		},
+
+		_sanitizeHtmlTags: function(str) {
+			return str.replace(/<(.|\n)*?>/g, '');
 		},
 
 		_removeMessage: function() {

@@ -1,3 +1,9 @@
+univention-self-service (1.0.2-36) unstable; urgency=low
+
+  * Bug #39981: Decode query string for redirect
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 02 Dec 2015 11:24:04 +0100
+
 univention-self-service (1.0.2-35) unstable; urgency=low
 
   * use explode_dn instead of str.partition, remove unused code (Bug #40049)
