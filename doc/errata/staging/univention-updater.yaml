@@ -9,7 +9,7 @@ desc: |
  * The minimum free disc space in the updaters preup script tests has
    been increased.
  * The AWS EC2 image "Univention Corporate Server (UCS) 4.1 (official
-   image) rev. 0 - ami-4e944e3d" uses the repository server
+   image) rev. 0" uses the repository server
    "updates-test.software-univention.de" instead of
    "updates.software-univention.de".
    This update resets the UCR variable repository/online/server on EC2
