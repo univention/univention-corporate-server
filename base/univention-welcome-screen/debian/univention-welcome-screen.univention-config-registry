@@ -1,7 +1,0 @@
-Type: file
-File: var/www/ucs-overview/welcome.json
-Variables: interfaces/.*
-Variables: server/role
-Variables: hostname
-Variables: domainname
-Variables: umc/web/appliance/.*
