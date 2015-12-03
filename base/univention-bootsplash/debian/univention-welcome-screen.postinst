@@ -35,6 +35,7 @@ set -e
 #DEBHELPER#
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.2-1; then
+	. /usr/share/univention-lib/all.sh
 	remove_ucr_template var/www/ucs-overview/welcome.json
 	remove_ucr_info_file univention-welcome-screen.info
 fi
