@@ -34,7 +34,9 @@ set -e
 
 #DEBHELPER#
 
-dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/var/www/ucs-overview/welcome.json" 1.0.0-4~ univention-welcome-screen -- "$@"
-dpkg-maintscript-helper rm_conffile "/etc/univention/templates/info/univention-welcome-screen.info" 1.0.0-4~ univention-welcome-screen -- "$@"
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.2-1; then
+	remove_ucr_template var/www/ucs-overview/welcome.json
+	remove_ucr_info_file univention-welcome-screen.info
+fi
 
 exit 0
