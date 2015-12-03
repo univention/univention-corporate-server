@@ -1,9 +1,9 @@
-#!/usr/bin/make -f
+#! /bin/sh
 #
-# Univention Bootsplash
-#  rules file for the univention-bootsplash debian package
+# Univention welcome screen
+#  preinst script
 #
-# Copyright 2004-2015 Univention GmbH
+# Copyright 2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,21 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-override_dh_auto_install:
-	univention-install-config-registry
-	dh_auto_install
+set -e
 
-override_dh_auto_build:
-	msgfmt -o i18n/univention-welcome-screen.mo i18n/de.po
-	dh_auto_build
+#DEBHELPER#
 
-override_dh_installinit:
-	dh_installinit --init-script=univention-welcome-screen --no-start -u "defaults 99"
+dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/var/www/ucs-overview/welcome.json" 7.0.2-1~ univention-welcome-screen -- "$@"
+dpkg-maintscript-helper rm_conffile "/etc/univention/templates/info/univention-welcome-screen.info" 7.0.2-1~ univention-welcome-screen -- "$@"
 
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
-%:
-	dh $@
-
+exit 0
