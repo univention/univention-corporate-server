@@ -34,7 +34,7 @@ set -e
 
 #DEBHELPER#
 
-dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/var/www/ucs-overview/welcome.json" 7.0.2-1~ univention-welcome-screen -- "$@"
-dpkg-maintscript-helper rm_conffile "/etc/univention/templates/info/univention-welcome-screen.info" 7.0.2-1~ univention-welcome-screen -- "$@"
+dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/var/www/ucs-overview/welcome.json" 1.0.0-4~ univention-welcome-screen -- "$@"
+dpkg-maintscript-helper rm_conffile "/etc/univention/templates/info/univention-welcome-screen.info" 1.0.0-4~ univention-welcome-screen -- "$@"
 
 exit 0
