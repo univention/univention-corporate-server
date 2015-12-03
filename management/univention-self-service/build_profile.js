@@ -44,6 +44,9 @@ var profile = {
 		name: 'dojo',
 		location: '/usr/share/univention-dojo/dojo'
 	}, {
+		name: 'dojox',
+		location: '/usr/share/univention-dojo/dojox'
+	}, {
 		name: 'dijit',
 		location: '/usr/share/univention-dojo/dijit'
 	}, {

@@ -34,9 +34,10 @@ define([
 	"dojo/dom",
 	"dojo/dom-geometry",
 	"dojo/io-query",
+	"dojox/html/entities",
 	"put-selector/put",
 	"./i18n!."
-], function(lang, fx, dom, domGeom, ioQuery, put, _) {
+], function(lang, fx, dom, domGeom, ioQuery, htmlEntities, put, _) {
 
 	return {
 		getCurrentLanguageQuery: function() {
@@ -125,7 +126,7 @@ define([
 		_getUrlLabelForRedirect: function() {
 			var label = this.getQuery('urlLabel');
 			if (label) {
-				label = this._sanitizeHtmlTags(label);
+				label = htmlEntities.encode(label);
 				return lang.replace(_("to '{0}'", [label]));
 			} else {
 				return '';
@@ -136,10 +137,6 @@ define([
 			var queryString = window.location.search.substring(1);
 			var queryObject = ioQuery.queryToObject(queryString);
 			return queryObject[key];
-		},
-
-		_sanitizeHtmlTags: function(str) {
-			return str.replace(/<(.|\n)*?>/g, '');
 		},
 
 		_removeMessage: function() {

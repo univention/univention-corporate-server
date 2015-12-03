@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-2) unstable; urgency=low
+
+  * Bug #39981: Use dojo encode to avert working HTML inside urlLabel
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 03 Dec 2015 11:11:26 +0100
+
 univention-self-service (1.0.3-1) unstable; urgency=low
 
   * return waiting time if request limit is reached (Bug #39720)
