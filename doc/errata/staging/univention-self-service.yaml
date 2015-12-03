@@ -9,7 +9,7 @@ desc: |
  * Regardless of the configured debug level, the token is now never
    written to a log file (Bug 39996).
  * Execute unjoin script, when removing package (Bug 39980).
- * Improved the security of redirecting a user (Bug 39981).
+ * Redirections are now restricted to relative paths only (Bug 39981).
  * Remove links from overview website completely when uninstalling
    (Bug 40033).
  * Provide protection against denial of service attacks against server
