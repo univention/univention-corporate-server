@@ -3,7 +3,7 @@
 # Univention Bootsplash
 #  rules file for the univention-bootsplash debian package
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,13 +31,16 @@
 # <http://www.gnu.org/licenses/>.
 
 override_dh_auto_install:
-	# make ucslint happy: univention-install-config-registry-info
 	univention-install-config-registry
 	dh_auto_install
 
 override_dh_auto_build:
-	ucslint
+	msgfmt -o i18n/univention-welcome-screen.mo i18n/de.po
 	dh_auto_build
+
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
 
 %:
 	dh $@

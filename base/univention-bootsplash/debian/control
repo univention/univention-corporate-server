@@ -2,10 +2,11 @@ Source: univention-bootsplash
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
 Build-Depends: debhelper,
  univention-config-dev,
- ucslint-univention
-Standards-Version: 3.8.2
+ ucslint-univention,
+ gettext
 
 Package: univention-bootsplash
 Architecture: all
@@ -17,5 +18,20 @@ Description: UCS - bootsplash
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-welcome-screen
+Architecture: all
+Depends: ${misc:Depends},
+ univention-bootsplash (= ${binary:Version}),
+ gettext-base,
+ bsdmainutils
+Description: UCS - welcome screen
+ This package provides a welcome screen to the UCS system
+ which is shown after the system startup.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/

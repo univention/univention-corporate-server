@@ -1,0 +1,2 @@
+univention-welcome-screen usr/bin/
+i18n/univention-welcome-screen.mo usr/share/plymouth/themes/ucs/de/LC_MESSAGES/

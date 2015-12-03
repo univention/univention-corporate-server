@@ -37,7 +37,7 @@ line_height = Image.Text("AfpqtM").GetHeight();
 
 # to determine the mode of operation plymouth was started in use Plymouth.GetMode
 # which returns a string of one of: "boot", "shutdown", "suspend", "resume" or unknown.
-#status = Plymouth.GetMode ();
+#status = Plymouth.GetMode();
 
 ##########
 # helper #
@@ -62,6 +62,42 @@ fun trim(string) {
 		index++;
 	}
 
+	return ret;
+}
+
+# return True is string starts with substring
+fun stringStartsWith(string, substring) {
+
+	local.index = 0;
+	while (substring.CharAt(index)) {
+		if ((!string.CharAt(index)) || (substring.CharAt(index) != string.CharAt(index))) {
+			return NULL;
+		}
+		index++;
+	}
+	return 1;
+}
+
+# wrap line to size
+fun textWrapToSize(string, size, font) {
+
+	local.ret = "";
+	local.index = 0;
+	local.tmp = "";
+	local.image;
+	while (string.CharAt(index)) {
+		tmp += string.CharAt(index);
+		image = Image.Text(tmp, 0, 0, 0, 0, font);
+		if (image.GetWidth() > size - 20 && string.CharAt(index) == " ") {
+			ret += tmp;
+			ret += "\n"; 
+			tmp = "";
+		}
+		index++;
+	}
+	if (tmp) {
+		ret += tmp;
+	}
 	return ret;
 }
 
@@ -151,6 +187,14 @@ fun StringToInteger (str) {
 		}
 	}
 	return int;
+}
+
+fun width_percent(percent) {
+	return ((percent * Window.GetWidth()) / 100);
+}
+
+fun height_percent(percent) {
+	return ((percent * Window.GetHeight()) / 100);
 }
 
 # ask-question dialog
@@ -277,6 +321,242 @@ fun ask_opacity(opacity) {
 	}
 }
 
+fun normal_opacity(opacity) {
+	global.logo.sprite.SetOpacity(opacity);
+	global.message.sprite.SetOpacity(opacity);
+	global.message_action.sprite(opacity);
+	global.statusmsg.sprite(opacity);
+}
+
+# normal screen
+fun normal_setup() {
+	if (global.dialog) dialog_opacity (0);
+	if (global.ask) ask_opacity (0);
+	if (global.welcome) welcome_screen_opacity(0);
+	normal_opacity(1);
+}
+
+
+
+##################
+# Welcome Screen #
+##################
+
+fun welcome_screen_opacity(opacity) {
+	global.welcome.header.sprite.SetOpacity(opacity);
+	global.welcome.line.sprite.SetOpacity(opacity);
+	global.welcome.hostname.sprite.SetOpacity(opacity);
+	global.welcome.logo1.sprite.SetOpacity(opacity);
+	global.welcome.logo2.sprite.SetOpacity(opacity);
+	global.welcome.logo3.sprite.SetOpacity(opacity);
+	global.welcome.number1.sprite.SetOpacity(opacity);
+	global.welcome.number2.sprite.SetOpacity(opacity);
+	global.welcome.number3.sprite.SetOpacity(opacity);
+	global.welcome.message1.sprite.SetOpacity(opacity);
+	global.welcome.message2.sprite.SetOpacity(opacity);
+	global.welcome.message3.sprite.SetOpacity(opacity);
+	global.welcome.arrow1.sprite.SetOpacity(opacity);
+	global.welcome.arrow2.sprite.SetOpacity(opacity);
+	global.welcome.console.sprite.SetOpacity(opacity);
+	global.welcome.address.sprite.SetOpacity(opacity);
+	global.welcome.addresses.sprite.SetOpacity(opacity);
+}
+
+fun welcome_screen_setup() {
+
+	# disable everything else
+	if (global.dialog) dialog_opacity (0);
+	if (global.ask) ask_opacity (0);
+	normal_opacity(0);
+
+	local.line;
+	local.header;
+	local.hostname;
+	local.logo1;
+	local.logo2;
+	local.logo3;
+	local.number1;
+	local.number2;
+	local.number3;
+	local.message1;
+	local.message2;
+	local.message3;
+	local.arrow1;
+	local.arrow2;
+	local.console;
+	local.address;
+
+	header.text = "Welcome to Univention Corporate Server";
+	hostname.text = "HOSTNAME";
+	message1.text = "Open a browser window";
+	message2.text = "Navigate to one of the following addresses:";
+	message3.text = "Open the web management interface";
+	address.text = "ADDRESS";
+	addresses.text = "https://alternative1 https://alternative2 https://alternative3";
+	console.text = "[ Press any key to open text console ]";
+	logo3.file = "logo-step3.png";
+
+	if (global.welcome.header.text) header.text = global.welcome.header.text;
+	if (global.welcome.hostname.text) hostname.text = global.welcome.hostname.text;
+	if (global.welcome.address.text) address.text = global.welcome.address.text;
+	if (global.welcome.message1.text) message1.text = global.welcome.message1.text;
+	if (global.welcome.message2.text) message2.text = global.welcome.message2.text;
+	if (global.welcome.message3.text) message3.text = global.welcome.message3.text;
+	if (global.welcome.console.text) console.text = global.welcome.console.text;
+	if (global.welcome.addresses.text) addresses.text = global.welcome.addresses.text;
+	if (global.welcome.logo3.file) logo3.file = global.welcome.logo3.file;
+
+	# line
+	line.sprite = Sprite();
+	line.image = Image.Text("_", 0.23, 0.23, 0.23, 1, "Sans 1");
+	line.sprite.SetX(width_percent(5));
+	line.sprite.SetY(height_percent(16));
+	line.text = "";
+	while (width_percent(90) > line.image.GetWidth()) {
+		line.text += "_";
+		line.image = Image.Text(line.text, 0.23, 0.23, 0.23, 1, "Sans 1");
+        }
+	line.sprite.SetImage(line.image);
+	global.welcome.line = line;
+
+	# welcome screen header - relative to line
+	header.sprite = Sprite();
+	header.image = Image.Text(header.text, 0.23, 0.23, 0.23, 1, "Sans 14");
+	header.sprite.SetX(width_percent(5));
+	header.sprite.SetY(line.sprite.GetY() - header.image.GetHeight() - line.image.GetHeight());
+	header.sprite.SetImage(header.image);
+	global.welcome.header = header;
+
+	# hostname - relative to line
+	hostname.sprite = Sprite();
+	hostname.sprite.SetX(width_percent(5));
+	hostname.sprite.SetY(line.sprite.GetY() + line.image.GetHeight());
+	hostname.image = Image.Text(hostname.text, 0.23, 0.23, 0.23, 1, "Sans 11");
+	hostname.sprite.SetImage(hostname.image);
+	global.welcome.hostname = hostname;
+
+	# logo step2
+	logo2.image = Image("logo-step2.png");
+	logo2.sprite = Sprite(logo2.image);
+	logo2.sprite.SetOpacity(1);
+	logo2.sprite.SetX(width_percent(50) - logo2.image.GetWidth() / 2);
+	logo2.sprite.SetY(height_percent(50) - 35 - logo2.image.GetHeight() / 2);
+	global.welcome.logo2 = logo2;
+
+	# number step2
+	number2.image = Image("number2.png");
+	number2.sprite = Sprite(number2.image);
+	number2.sprite.SetOpacity(1);
+	number2.sprite.SetX(logo2.sprite.GetX() + (logo2.image.GetWidth() / 2) - number2.image.GetWidth() / 2);
+	number2.sprite.SetY(height_percent(50) + 68 - number2.image.GetHeight() / 2);
+	global.welcome.number2 = number2;
+
+	# message step2
+	message2.image = Image.Text(textWrapToSize(message2.text, logo2.image.GetWidth(), "Sans 11"), 0.23, 0.23, 0.23, 1, "Sans 11");
+	message2.sprite = Sprite();
+	message2.sprite.SetX(logo2.sprite.GetX());
+	message2.sprite.SetY(height_percent(50) + 105);
+	message2.sprite.SetImage(message2.image);
+	global.welcome.message2 = message2;
+
+	# logo step1
+	logo1.image = Image("logo-step1.png");
+	logo1.sprite = Sprite(logo1.image);
+	logo1.sprite.SetOpacity(1);
+	logo1.sprite.SetX(logo2.sprite.GetX() - 102 - logo1.image.GetWidth());
+	logo1.sprite.SetY(logo2.sprite.GetY() - logo1.image.GetHeight() / 2 + logo2.image.GetHeight() / 2);
+	global.welcome.logo1 = logo1;
+
+	# number step1
+	number1.image = Image("number1.png");
+	number1.sprite = Sprite(number1.image);
+	number1.sprite.SetOpacity(1);
+	number1.sprite.SetX(logo1.sprite.GetX() + (logo1.image.GetWidth() / 2) - number1.image.GetWidth() / 2);
+	number1.sprite.SetY(height_percent(50) + 68 - number2.image.GetHeight() / 2);
+	global.welcome.number1 = number1;
+
+	# message step1
+	message1.image = Image.Text(textWrapToSize(message1.text, logo1.image.GetWidth(), "Sans 11"), 0.23, 0.23, 0.23, 1, "Sans 11");
+	message1.sprite = Sprite();
+	message1.sprite.SetX(logo1.sprite.GetX());
+	message1.sprite.SetY(height_percent(50) + 105);
+	message1.sprite.SetImage(message1.image);
+	global.welcome.message1 = message1;
+
+	# addresses
+	addresses.image = Image.Text(textWrapToSize(addresses.text, 1, "Sans 11"), 0.4, 0.4, 0.4, 1, "Sans 11");
+	addresses.sprite = Sprite();
+	addresses.sprite.SetX(logo2.sprite.GetX());
+	addresses.sprite.SetY(message2.sprite.GetY() + message2.image.GetHeight());
+	addresses.sprite.SetImage(addresses.image);
+	global.welcome.addresses = addresses;
+
+	# logo step3
+	logo3.image = Image(logo3.file);
+	logo3.sprite = Sprite(logo3.image);
+	logo3.sprite.SetOpacity(1);
+	logo3.sprite.SetX(logo2.sprite.GetX() + logo2.image.GetWidth() + 102);
+	logo3.sprite.SetY(logo2.sprite.GetY() - logo3.image.GetHeight() / 2 + logo2.image.GetHeight() / 2);
+	global.welcome.logo3 = logo3;
+
+	# number step3
+	number3.image = Image("number3.png");
+	number3.sprite = Sprite(number3.image);
+	number3.sprite.SetOpacity(1);
+	number3.sprite.SetX(logo3.sprite.GetX() + (logo3.image.GetWidth() / 2) - number3.image.GetWidth() / 2);
+	number3.sprite.SetY(height_percent(50) + 68 - number3.image.GetHeight() / 2);
+	global.welcome.number3 = number3;
+
+	# message step3
+	message3.image = Image.Text(textWrapToSize(message3.text, logo3.image.GetWidth(), "Sans 11"), 0.23, 0.23, 0.23, 1, "Sans 11");
+	message3.sprite = Sprite();
+	message3.sprite.SetX(logo3.sprite.GetX());
+	message3.sprite.SetY(height_percent(50) + 105);
+	message3.sprite.SetImage(message3.image);
+	global.welcome.message3 = message3;
+
+	# arrows
+	arrow1.image = Image("arrow.png");
+	arrow1.sprite = Sprite(arrow1.image);
+	arrow1.sprite.SetOpacity(1);
+	arrow1.logo1end = logo1.sprite.GetX() + logo1.image.GetWidth();
+	arrow1.logo2start = logo2.sprite.GetX();
+	arrow1.logo1distlogo2 = arrow1.logo2start - arrow1.logo1end;
+	arrow1.x = arrow1.logo1end + arrow1.logo1distlogo2 / 2 - arrow1.image.GetWidth() / 2;
+	arrow1.sprite.SetX(arrow1.x);
+	arrow1.sprite.SetY(logo1.sprite.GetY() + logo1.image.GetHeight() / 2 - arrow1.image.GetHeight() / 2);
+	global.welcome.arrow1 = arrow1;
+
+	arrow2.image = Image("arrow.png");
+	arrow2.sprite = Sprite(arrow2.image);
+	arrow2.sprite.SetOpacity(1);
+	arrow2.logo2end = logo2.sprite.GetX() + logo2.image.GetWidth();
+	arrow2.logo3start = logo3.sprite.GetX();
+	arrow2.logo2distlogo3 = arrow2.logo3start - arrow2.logo2end;
+	arrow2.x = arrow2.logo2end + arrow2.logo2distlogo3 / 2 - arrow2.image.GetWidth() / 2;
+	arrow2.sprite.SetX(arrow2.x);
+	arrow2.sprite.SetY(logo1.sprite.GetY() + logo1.image.GetHeight() / 2 - arrow2.image.GetHeight() / 2);
+	global.welcome.arrow2 = arrow2;
+
+	# console text
+	console.image = Image.Text(console.text, 0.23, 0.23, 0.23, 1, "Sans 11");
+	console.sprite = Sprite();
+	console.sprite.SetX(width_percent(50) - console.image.GetWidth() / 2);
+	console.sprite.SetY(height_percent(91));
+	console.sprite.SetImage(console.image);
+	global.welcome.console = console;
+
+	# address - relative to logo
+	address.image = Image.Text(address.text, 0.23, 0.23, 0.23, 1, "Sans 11");
+	address.sprite = Sprite();
+	address.sprite.SetX(width_percent(50) - address.image.GetWidth() / 2);
+	address.sprite.SetY(logo2.sprite.GetY() + logo2.image.GetHeight() /2 - address.image.GetHeight() / 2);
+	address.sprite.SetImage(address.image);
+	global.welcome.address = address;
+
+	welcome_screen_opacity(1);
+}
+
 #############
 # callbacks #
 #############
@@ -286,14 +566,15 @@ fun ask_opacity(opacity) {
 ##########
 
 fun display_normal_callback () {
-	global.status = "normal";
 
-	# disbale password|question dialog
-	if (global.dialog) dialog_opacity (0);
-	if (global.ask) ask_opacity (0);
-
-	# display logo
-	global.logo.sprite.SetOpacity(1.0);
+	if (global.status != "univention-welcome") {
+		global.status = "normal";
+		if (global.dialog) dialog_opacity (0);
+		if (global.ask) ask_opacity (0);
+		normal_opacity(1);
+	} else {
+		welcome_screen_setup();
+	}
 }
 
 # the callback function is called when the display should return to normal
@@ -351,25 +632,55 @@ statusmsg.sprite.SetX(Window.GetX() + Window.GetWidth()  / 2 - box.image.GetWidt
 statusmsg.sprite.SetY(Window.GetY() + Window.GetHeight() / 2 + box.image.GetHeight() / 2);
 
 fun update_status_callback (text) {
-	local.image = Image.Text(text, 0.4, 0.4, 0.4, 1, statusmsg.font);
-	string_it = 0;
-	update_strings[string_it] = "";
-	for (i=0; (String(text).CharAt(i) != ""); i++) {
-		local.temp_char = String(text).CharAt(i);
-		if (temp_char != ":")
-			update_strings[string_it] += temp_char;
-		else
-			update_strings[++string_it] = "";
+
+	if (stringStartsWith(text, "univention-welcome")) {
+		if (text == "univention-welcome") {
+			global.status = "univention-welcome";
+			welcome_screen_setup();
+		} else if (stringStartsWith(text, "univention-welcome:header:")) {
+			global.welcome.header.text = text.SubString(26, StringLength(text));
+		} else if (stringStartsWith(text, "univention-welcome:message1:")) {
+			global.welcome.message1.text = text.SubString(28, StringLength(text));
+		} else if (stringStartsWith(text, "univention-welcome:message2:")) {
+			global.welcome.message2.text = text.SubString(28, StringLength(text));
+		} else if (stringStartsWith(text, "univention-welcome:message3:")) {
+			global.welcome.message3.text = text.SubString(28, StringLength(text));
+		} else if (stringStartsWith(text, "univention-welcome:address:")) {
+			global.welcome.address.text = text.SubString(27, StringLength(text));
+		} else if (stringStartsWith(text, "univention-welcome:console:")) {
+			global.welcome.console.text = text.SubString(27, StringLength(text));
+		} else if (stringStartsWith(text, "univention-welcome:addresses:")) {
+			global.welcome.addresses.text = text.SubString(29, StringLength(text));
+		} else if (stringStartsWith(text, "univention-welcome:hostname:")) {
+			global.welcome.hostname.text = text.SubString(28, StringLength(text));
+		} else if (text == "univention-welcome:appliance") {
+			global.welcome.logo3.file = "appliance.png";
+		}
 	}
-	if ((string_it >= 2) && (update_strings[0] == "fsck")) {
-		local.device = update_strings[1];
-		local.progress = update_strings[2];
-		if (StringToInteger(progress) >= 100)
-			image = Image.Text("", 0, 0, 0, 1, statusmsg.font);
-		else
-			image = Image.Text("Checking disk " + device + " (" + progress + "%)", 0.4, 0.4, 0.4, 1, statusmsg.font);
+	else if (text == "normal") {
+		global.status = "normal";
+		normal_setup();
+	} else {
+		local.image = Image.Text(text, 0.4, 0.4, 0.4, 1, statusmsg.font);
+		string_it = 0;
+		update_strings[string_it] = "";
+		for (i=0; (String(text).CharAt(i) != ""); i++) {
+			local.temp_char = String(text).CharAt(i);
+			if (temp_char != ":")
+				update_strings[string_it] += temp_char;
+			else
+				update_strings[++string_it] = "";
+		}
+		if ((string_it >= 2) && (update_strings[0] == "fsck")) {
+			local.device = update_strings[1];
+			local.progress = update_strings[2];
+			if (StringToInteger(progress) >= 100)
+				image = Image.Text("", 0, 0, 0, 1, statusmsg.font);
+			else
+				image = Image.Text("Checking disk " + device + " (" + progress + "%)", 0.4, 0.4, 0.4, 1, statusmsg.font);
+		}
+		statusmsg.sprite.SetImage(image);	
 	}
-	statusmsg.sprite.SetImage(image);	
 }
 
 # the callback function is called with the new boot status string
@@ -463,10 +774,12 @@ Plymouth.SetMessageFunction(message_callback);
 
 fun refresh_callback () {
 
-	# logo animation
-	global.logo.count = logo.count + 0.2;
-	index = Math.Int(logo.count % 48);
-	global.logo.sprite.SetImage(logo[index].image);
+	if (global.status != "univention-welcome") {
+		# logo animation
+		global.logo.count = logo.count + 0.2;
+		index = Math.Int(logo.count % 48);
+		global.logo.sprite.SetImage(logo[index].image);
+	}
 }
 
 # calling Plymouth.SetRefreshFunction with a function will set that 
