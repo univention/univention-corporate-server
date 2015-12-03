@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: ntp
-fix: 1.0.2d-1.104.201510141521
+fix: 1:4.2.6.p5+dfsg-2.51.201511241933
 version: [0]
 desc: |
  * Incomplete autokey data packet length checks (CVE-2015-7691,
