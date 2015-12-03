@@ -2,11 +2,10 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-system-setup
-fix: 9.0.2-13.928.201511252243
+fix: 
 version: [0]
 desc: |
- This update addresses the following issues:
- * Make sure no pop up which asks for a page reload is shown at the end of an
-   installation.
- * Small text adjustments have been done.
-bug: [39974, 39156]
+ This update addresses the following issue:
+ * If installed the univention welcome screen is now started
+   at the end of the setup.
+bug: [39241]
