@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-19) unstable; urgency=medium
+
+  * Bug #40119: Do not log command to stdout; do not require -- to pass args to
+    command
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Dec 2015 13:50:26 +0100
+
 univention-appcenter (5.0.19-18) unstable; urgency=medium
 
   * Bug #40136: Use etags to download index.json et at only when needed

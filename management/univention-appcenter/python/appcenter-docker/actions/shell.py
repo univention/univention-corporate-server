@@ -35,6 +35,7 @@
 import sys
 import subprocess
 import shlex
+from argparse import REMAINDER
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction, Abort
 from univention.appcenter.actions.docker_base import DockerActionMixin
@@ -47,7 +48,7 @@ class Shell(UniventionAppAction, DockerActionMixin):
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the app in whose environments COMMANDS shall be executed')
-		parser.add_argument('commands', nargs='*', help='Command to be run. Defaults to an interactive shell')
+		parser.add_argument('commands', nargs=REMAINDER, help='Command to be run. Defaults to an interactive shell')
 
 	def main(self, args):
 		docker = self._get_docker(args.app)
@@ -58,7 +59,7 @@ class Shell(UniventionAppAction, DockerActionMixin):
 			raise Abort('Cannot run command: No command specified')
 		if not app_is_running(args.app):
 			raise Abort('Cannot run command: %s is not running in a container' % args.app.id)
-		self.log('Calling %s' % commands[0])
+		self.debug('Calling %s' % commands[0])
 		docker_exec = ['docker', 'exec']
 		tty = sys.stdin.isatty()
 		if tty:
