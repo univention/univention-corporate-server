@@ -1,2 +1,3 @@
 univention-welcome-screen usr/bin/
 i18n/univention-welcome-screen.mo usr/share/plymouth/themes/ucs/de/LC_MESSAGES/
+98_start_univention_welcome_screen usr/lib/univention-system-setup/cleanup-post.d/
