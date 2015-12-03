@@ -63,10 +63,10 @@ Depends: ${misc:Depends},
  univention-apache (>= 7.0.16-10),
  x11-utils,
  x11-xkb-utils,
- openbox,
-Recommends: firefox-en | firefox-de | firefox | iceweasel,
  xinit,
- smbclient,
+ openbox,
+ firefox-en | firefox-de | firefox | iceweasel
+Recommends: smbclient,
  univention-kernel-image,
 Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot
