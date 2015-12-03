@@ -1,15 +1,3 @@
-univention-system-setup (9.0.2-15) unstable; urgency=low
-
-  * Bug #39241: start univention welcome screen 
-
- -- Felix Botner <botner@univention.de>  Thu, 03 Dec 2015 17:19:25 +0100
-
-univention-system-setup (9.0.2-14) unstable; urgency=low
-
-  * Bug #39241: start univention welcome screen 
-
- -- Felix Botner <botner@univention.de>  Thu, 03 Dec 2015 16:43:47 +0100
-
 univention-system-setup (9.0.2-13) unstable; urgency=medium
 
   * Bug #40087: Revert
