@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-bootsplash.yaml
-fix: 
+fix: 7.0.2-7.95.201512031740
 version: [0]
 desc: |
   This update addresses the following issues:
