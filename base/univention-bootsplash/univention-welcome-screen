@@ -94,11 +94,13 @@ plymouth quit --retain-splash
 # grab the ANY key, this blocks
 hexdump -n 96 $keyboards | head -n 1
 
-# restart and 
-plymouthd
-plymouth show-splash
-plymouth hide-splash
-plymouth quit
-chvt 1
+if [ "N 2" = "$(runlevel)" ]; then
+	# restart and quit plymouth
+	plymouthd
+	plymouth show-splash
+	plymouth hide-splash
+	plymouth quit
+	chvt 1
+fi
 
 exit 0
