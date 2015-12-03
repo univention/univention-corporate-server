@@ -13,7 +13,8 @@ desc: |
    within the environment of a Docker App.
  * Warnings shown before App installation (like very few available RAM) do not
    show up as errors after a successful installation anymore.
- * Docker Containers are now correctly cleaned up if the installation fails.
+ * Failed Docker App installations now now correctly remove their Docker
+   containers when cleaning up.
  * Downloading specific files from the App Center server now makes use of
    ETags, resulting in a speedup of module opening.
 bug: [40074, 40119, 39926, 40135, 40136]
