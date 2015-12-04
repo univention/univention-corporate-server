@@ -27,4 +27,5 @@ desc: |
  * The name of th server used in token emails is now configurable using the
    UCR variable umc/self-service/passwordreset/email/webserver_address. It
    defaults to the backends FQDN (Bug 40107).
-bug: [39720,39939,39980,39996,39981,40033,40048,40049,40107]
+ * The postrm script has been modified to correctly restart apache2.
+bug: [39720,39939,39980,39996,39981,40033,40048,40049,40107,40061]
