@@ -63,7 +63,7 @@ if [ "$1" = "remove" -o "$1" = "purge" ]; then
 
 	# restart, so apache unloads WSGI and deactivats plugin in its config
 	# retry if fail because of to quick successive restarts (from other frontend packages)
-	invoke-rc.d apache2 restart || (sleep 2; invoke-rc.d apache2 restart)
+	invoke-rc.d apache2 restart
 fi
 
 if [ "$1" = "remove" ]
