@@ -101,8 +101,9 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 			txt = fp.read()
 
 		fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
-		link = "https://{fqdn}/univention-self-service/#passwordreset".format(fqdn=fqdn)
-		tokenlink = "https://{fqdn}/univention-self-service/?token={token}&username={username}#passwordreset".format(fqdn=fqdn, username=self.data["username"], token=self.data["token"])
+		frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
+		link = "https://{fqdn}/univention-self-service/#passwordreset".format(fqdn=frontend_server)
+		tokenlink = "https://{fqdn}/univention-self-service/?token={token}&username={username}#passwordreset".format(fqdn=frontend_server, username=self.data["username"], token=self.data["token"])
 
 		txt = txt.format(username=self.data["username"], token=self.data["token"], link=link, tokenlink=tokenlink)
 

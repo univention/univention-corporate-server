@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-4) unstable; urgency=low
+
+  * make hostname used in email configurable (Bug #40107)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 04 Dec 2015 11:20:46 +0100
+
 univention-self-service (1.0.3-3) unstable; urgency=low
 
   * Bug #39981: Add ucslint exceptions for dojox

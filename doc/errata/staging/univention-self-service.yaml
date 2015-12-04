@@ -24,4 +24,7 @@ desc: |
    umc/self-service/passwordreset/email/sender_address (Bug 40048).
  * It is now possible to use the passwort reset service with the primary
    email address instead of the username (Bug 40049).
-bug: [39720,39939,39980,39996,39981,40033,40048,40049]
+ * The name of th server used in token emails is now configurable using the
+   UCR variable umc/self-service/passwordreset/email/webserver_address. It
+   defaults to the backends FQDN (Bug 40107).
+bug: [39720,39939,39980,39996,39981,40033,40048,40049,40107]
