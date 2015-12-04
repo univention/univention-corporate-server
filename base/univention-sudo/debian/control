@@ -12,8 +12,8 @@ Architecture: all
 Depends: ${shlib:Depends},
  ${misc:Depends},
  sudo
-Description: This package installs default rules for the
- sudo command.
+Description: UCS sudo rules
+ This package installs default rules for the sudo command.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
