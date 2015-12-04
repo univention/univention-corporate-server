@@ -63,48 +63,46 @@ MEMCACHED_MAX_KEY = 250
 
 
 def prevent_denial_of_service(func):
+	def _pretty_time(sec):
+		if sec <= 60:
+			return _("one minute")
+		m, s = divmod(sec, 60)
+		if m < 60:
+			return _("{} minutes").format(m + 1)
+		elif m == 60:
+			return _("one hour")  # and one minute, but nvm
+		h, m = divmod(m, 60)
+		return _("{} hours").format(h + 1)
+
+	def _check_limits(memcache, limits):
+		limit_reached = False
+		_max_wait = datetime.datetime.now()
+		for key, decay, limit in limits:
+			# Not really a "decay", as for that we'd have to store the date for
+			# each request. Then a moving window could be implemented. But
+			# my guess is that we won't need that, so this is simpler.
+			# Continue even if a limit was reached, so that all counters are
+			# incremented.
+			try:
+				count = memcache.incr(key)
+			except pylibmc.NotFound:
+				count = 1
+				memcache.set_multi(
+					{
+						key: count,
+						"{}:exp".format(key): datetime.datetime.now() + datetime.timedelta(seconds=decay)
+					},
+					decay
+				)
+			if count > limit:
+				limit_reached = True
+				_max_wait = max(_max_wait, memcache.get("{}:exp".format(key)))
+		return limit_reached, _max_wait
+
 	@wraps(func)
 	def _decorated(self, *args, **kwargs):
-		def _pretty_time(sec):
-			if sec <= 60:
-				return _("one minute")
-			else:
-				m, s = divmod(sec, 60)
-				if m < 60:
-					return _("{} minutes").format(m + 1)
-				elif m == 60:
-					return _("one hour")  # and one minute, but nvm
-				else:
-					h, m = divmod(m, 60)
-					return _("{} hours").format(h + 1)
-
-		def _check_limits(limits):
-			limit_reached = False
-			_max_wait = datetime.datetime.now()
-			for key, decay, limit in limits:
-				# Not really a "decay", as for that we'd have to store the date for
-				# each request. Then a moving window could be implemented. But
-				# my guess is that we won't need that, so this is simpler.
-				# Continue even if a limit was reached, so that all counters are
-				# incremented.
-				try:
-					count = self.memcache.incr(key)
-				except pylibmc.NotFound:
-					count = 1
-					self.memcache.set_multi(
-						{
-							key: count,
-							"{}:exp".format(key): datetime.datetime.now() + datetime.timedelta(seconds=decay)
-						},
-						decay
-					)
-				if count > limit:
-					limit_reached = True
-					_max_wait = max(_max_wait, self.memcache.get("{}:exp".format(key)))
-			return limit_reached, _max_wait
-
 		# check total request limits
-		total_limit_reached, total_max_wait = _check_limits(self.total_limits)
+		total_limit_reached, total_max_wait = _check_limits(self.memcache, self.total_limits)
 
 		# check user request limits
 		try:
@@ -112,51 +110,67 @@ def prevent_denial_of_service(func):
 				username = kwargs["username"]
 			else:
 				username = args[0].options.get("username")
-		except (IndexError, AttributeError, KeyError, TypeError) as e:
+		except (IndexError, AttributeError, KeyError, TypeError):
 			# args[0] is not the expected 'request'
 			MODULE.error("prevent_denial_of_service() could not find username argument. self: %r args: %r kwargs: %r exception: %s" % (self, args, kwargs, traceback.format_exc()))
 			raise
+			# TODO: return func(self, *args, **kwargs) here?!
 
 		if len(username) > MEMCACHED_MAX_KEY - 9:  # "_hour:exp"
-			raise UnknownUserError(_("Service is not available for this user."))
+			raise ServiceForbidden()
 
-		try:
-			username = self.email2username(username)
-		except UnknownUserError:
-			# cannot send any error message, or it can be used to scan for email addresses
-			# not important for this function anyway
-			pass
-
+		username = self.email2username(username)
 		user_limits = [
 			("{}_min".format(username), 60, self.limit_user_min),
 			("{}_hour".format(username), 3600, self.limit_user_hour),
 			("{}_day".format(username), 86400, self.limit_user_day)
 		]
 
-		user_limit_reached, user_max_wait = _check_limits(user_limits)
+		user_limit_reached, user_max_wait = _check_limits(self.memcache, user_limits)
 
 		if total_limit_reached or user_limit_reached:
 			time_s = _pretty_time((max(total_max_wait, user_max_wait) - datetime.datetime.now()).seconds)
-			raise ConnectionLimitError(_("The allowed maximum number of connections to the server has been reached. Please retry in {}.").format(time_s))
+			raise ConnectionLimitReached(time_s)
 
 		return func(self, *args, **kwargs)
 	return _decorated
 
 
-class UnknownMethodError(UMC_Error):
-	status = 500
-
-
-class MethodDisabledError(UMC_Error):
-	status = 500
-
-
-class ConnectionLimitError(UMC_Error):
+class ConnectionLimitReached(UMC_Error):
 	status = 503
 
+	def __init__(self, seconds):
+		super(ConnectionLimitReached, self).__init__(_("The allowed maximum number of connections to the server has been reached. Please retry in {}.").format(seconds))
 
-class UnknownUserError(UMC_Error):
-	pass
+
+class ServiceForbidden(UMC_Error):
+	# protection against bruteforcing user names
+	status = 403
+
+	def __init__(self):
+		super(ServiceForbidden, self).__init__(
+		_("Either username or password is incorrect or you are not allowed to use this service.")
+	)
+
+
+class TokenNotFound(UMC_Error):
+	status = 400
+
+	def __init__(self):
+		super(TokenNotFound, self).__init__(
+			_("The token you supplied is either expired or invalid. Please request a new one."))
+
+
+class NoMethodsAvailable(UMC_Error):
+
+	def __init__(self):
+		super(NoMethodsAvailable, self).__init__(_('No password reset method available for this user.'))
+
+
+class MissingContactInformation(UMC_Error):
+
+	def __init__(self):
+		super(MissingContactInformation, self).__init__(_("No contact information to send a token for password recovery to has been found."))  # FXME: string typo
 
 
 class Instance(Base):
@@ -181,35 +195,23 @@ class Instance(Base):
 		if not self.db.table_exists():
 			self.db.create_table()
 
-		self.token_validity_period = ucr.get("umc/self-service/passwordreset/token_validity_period", 3600)
-		try:
-			self.token_validity_period = int(self.token_validity_period)
-		except ValueError as e:
-			err = _("umc/self-service/passwordreset/token_validity_period must be a number: {}").format(e)
-			MODULE.error(err)
-			raise UMC_Error(err, status=500)
+		def ucr_try_int(variable, default):
+			try:
+				return int(ucr.get(variable, default))
+			except ValueError:
+				MODULE.error('UCR variables %s is not a number, using default: %s' % (variable, default))
+				return default
 
+		self.token_validity_period = ucr_try_int("umc/self-service/passwordreset/token_validity_period", 3600)
 		self.send_plugins = get_sending_plugins(MODULE.process)
-
 		self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
 
-		limit_total_min = ucr.get("umc/self-service/passwordreset/limit/total/min", 0)
-		limit_total_hour = ucr.get("umc/self-service/passwordreset/limit/total/hour", 0)
-		limit_total_day = ucr.get("umc/self-service/passwordreset/limit/total/day", 0)
-		self.limit_user_min = ucr.get("umc/self-service/passwordreset/limit/per_user/min", 0)
-		self.limit_user_hour = ucr.get("umc/self-service/passwordreset/limit/per_user/hour", 0)
-		self.limit_user_day = ucr.get("umc/self-service/passwordreset/limit/per_user/day", 0)
-		try:
-			limit_total_min = int(limit_total_min)
-			limit_total_hour = int(limit_total_hour)
-			limit_total_day = int(limit_total_day)
-			self.limit_user_min = int(self.limit_user_min)
-			self.limit_user_hour = int(self.limit_user_hour)
-			self.limit_user_day = int(self.limit_user_day)
-		except ValueError as e:
-			err = _("umc/self-service/passwordreset/limit/.* must be a number: {}").format(e)
-			MODULE.error(err)
-			raise UMC_Error(err, status=500)
+		limit_total_min = ucr_try_int("umc/self-service/passwordreset/limit/total/min", 0)
+		limit_total_hour = ucr_try_int("umc/self-service/passwordreset/limit/total/hour", 0)
+		limit_total_day = ucr_try_int("umc/self-service/passwordreset/limit/total/day", 0)
+		self.limit_user_min = ucr_try_int("umc/self-service/passwordreset/limit/per_user/min", 0)
+		self.limit_user_hour = ucr_try_int("umc/self-service/passwordreset/limit/per_user/hour", 0)
+		self.limit_user_day = ucr_try_int("umc/self-service/passwordreset/limit/per_user/day", 0)
 
 		self.total_limits = [
 			("t:c_min", 60, limit_total_min),
@@ -219,33 +221,28 @@ class Instance(Base):
 
 	@prevent_denial_of_service
 	@sanitize(
-		username=StringSanitizer(required=True),
-		password=StringSanitizer(required=True))
-	def get_contact(self, request):
+		username=StringSanitizer(required=True, minimum=1),
+		password=StringSanitizer(required=True, minimum=1))
+	@simple_response
+	def get_contact(self, username, password):
 		"""
 		Get users contact data.
 
-		:param request: arguments are username and password
 		:return: list of dicts with users contact data
 		"""
-		username = request.options.get("username")
-		password = request.options.get("password")
-		if not username:
-			raise UMC_Error(_("Empty username supplied."))
 		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username):
-			raise UMC_Error(_("Service is not available for this user."))
+			raise ServiceForbidden()
+
 		user = self.get_udm_user(username=username)
 		if not self.send_plugins:
-			raise UMC_Error(_('No password reset method available for this user.'))
-		self.finished(
-			request.id,
-			[{
-				"id": p.send_method(),
-				"label": p.send_method_label(),
-				"value": user[p.udm_property]
-			} for p in self.send_plugins.values() if user[p.udm_property]]
-		)
+			raise ServiceForbidden()
+
+		return [{
+			"id": p.send_method(),
+			"label": p.send_method_label(),
+			"value": user[p.udm_property]
+		} for p in self.send_plugins.values() if user[p.udm_property]]
 
 	@prevent_denial_of_service
 	@sanitize(
@@ -258,9 +255,10 @@ class Instance(Base):
 		MODULE.info("set_contact(): username: {} password: ***** email: {} mobile: {}".format(username, email, mobile))
 		dn, username = self.auth(username, password)
 		if self.is_blacklisted(username):
-			raise UMC_Error(_("Service is not available for this user."))
+			raise ServiceForbidden()
 		if self.set_contact_data(dn, email, mobile):
 			raise UMC_Error(_("Successfully changed your contact data."), status=200)
+		raise UMC_Error(_('Changing contact data failed.'), status=500)
 
 	@prevent_denial_of_service
 	@sanitize(
@@ -270,16 +268,14 @@ class Instance(Base):
 	def send_token(self, username, method):
 		MODULE.info("send_token(): username: '{}' method: '{}'.".format(username, method))
 		try:
-			blacklisted = self.is_blacklisted(username)
-		except UnknownUserError:
-			raise UMC_Error(_("No contact information to send a token for password recovery to has been found."))
-		if blacklisted:
-			raise UMC_Error(_("Service is not available for this user."))
-		try:
 			plugin = self.send_plugins[method]
 		except KeyError:
 			MODULE.error("send_token() method '{}' not in {}.".format(method, self.send_plugins.keys()))
 			raise UMC_Error(_("Unknown recovery method '{}'.").format(method))
+
+		if self.is_blacklisted(username):
+			raise MissingContactInformation()
+
 		# check if the user has the required attribute set
 		user = self.get_udm_user(username=username)
 		username = user["username"]
@@ -311,79 +307,74 @@ class Instance(Base):
 				self.db.delete_tokens(username=username)
 				raise
 			raise UMC_Error(_("Successfully send token.").format(method), status=200)
-		else:
-			# no contact info
-			raise UMC_Error(_("No contact information to send a token for password recovery to has been found."))
+
+		# no contact info
+		raise MissingContactInformation()
 
 	@prevent_denial_of_service
 	@sanitize(
 		token=StringSanitizer(required=True),
 		username=StringSanitizer(required=True),
-		password=StringSanitizer(required=True))
+		password=StringSanitizer(required=True))  # new_password(!)
 	@simple_response
 	def set_password(self, token, username, password):
 		MODULE.info("set_password(): username: '{}'.".format(username))
-		try:
-			username = self.email2username(username)
-		except UnknownUserError:
-			raise UMC_Error(_("The token you supplied could not be found. Please request a new one."))
+		username = self.email2username(username)
+
 		try:
 			token_from_db = self.db.get_one(token=token, username=username)
 		except MultipleTokensInDB as e:
-				# this should not happen, delete all tokens, raise Exception
-				# regardless of correctness of token
-				MODULE.error("set_password(): {}".format(e))
-				self.db.delete_tokens(token=token, username=username)
-				raise UMC_Error(_("A problem occurred on the server and has been corrected, please retry."), status=500)
-		if token_from_db:
-			if (datetime.datetime.now() - token_from_db["timestamp"]).seconds < TOKEN_VALIDITY_TIME:
-				# token is correct and valid
-				MODULE.info("Receive valid token for '{}'.".format(username))
-				if self.is_blacklisted(username):
-					# this should not happen
-					MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
-					self.db.delete_tokens(token=token, username=username)
-					raise UMC_Error(_("Service is not available for this user."))
-				ret = self.udm_set_password(username, password)
-				self.db.delete_tokens(token=token, username=username)
-				if ret:
-					raise UMC_Error(_("Successfully changed your password."), status=200)
-			else:
-				# token is correct but expired
-				MODULE.info("Receive correct but expired token for '{}'.".format(username))
-				self.db.delete_tokens(token=token, username=username)
-				raise UMC_Error(_("The token you supplied has expired. Please request a new one."))
-		else:
+			# this should not happen, delete all tokens, raise Exception
+			# regardless of correctness of token
+			MODULE.error("set_password(): {}".format(e))
+			self.db.delete_tokens(token=token, username=username)
+			raise TokenNotFound()
+
+		if not token_from_db:
 			# no token in DB
 			MODULE.info("Token not found in DB for user '{}'.".format(username))
-			raise UMC_Error(_("The token you supplied could not be found. Please request a new one."))
+			raise TokenNotFound()
+
+		if (datetime.datetime.now() - token_from_db["timestamp"]).seconds >= TOKEN_VALIDITY_TIME:
+			# token is correct but expired
+			MODULE.info("Receive correct but expired token for '{}'.".format(username))
+			self.db.delete_tokens(token=token, username=username)
+			raise TokenNotFound()
+
+		# token is correct and valid
+		MODULE.info("Receive valid token for '{}'.".format(username))
+		if self.is_blacklisted(username):
+			# this should not happen
+			MODULE.error("Found token in DB for blacklisted user '{}'.".format(username))
+			self.db.delete_tokens(token=token, username=username)
+			raise ServiceForbidden()  # TokenNotFound() ?
+		ret = self.udm_set_password(username, password)
+		self.db.delete_tokens(token=token, username=username)
+		if ret:
+			raise UMC_Error(_("Successfully changed your password."), status=200)
+		raise UMC_Error(_('Failed to change password.'), status=500)
 
 	@prevent_denial_of_service
-	@sanitize(username=StringSanitizer(required=True))
-	def get_reset_methods(self, request):
-		username = request.options.get("username")
-		if not username:
-			raise UMC_Error(_("Empty username supplied."))
-		try:
-			blacklisted = self.is_blacklisted(username)
-		except UnknownUserError:
-			raise UMC_Error(_('No password reset method available for this user.'))
-		if blacklisted:
-			raise UMC_Error(_("Service is not available for this user."))
+	@sanitize(username=StringSanitizer(required=True, minimum=1))
+	@simple_response
+	def get_reset_methods(self, username):
+		if self.is_blacklisted(username):
+			raise NoMethodsAvailable()
+
 		user = self.get_udm_user(username=username)
 		if not self.send_plugins:
-			raise UMC_Error(_('No password reset method available for this user.'))
+			raise NoMethodsAvailable()
+
 		# return list of method names, for all LDAP attribs user has data
 		reset_methods = [{"id": p.send_method(), "label": p.send_method_label()} for p in self.send_plugins.values() if user[p.udm_property]]
-		if reset_methods:
-			self.finished(request.id, reset_methods)
-		else:
-			raise UMC_Error(_('No password reset method available for this user.'))
+		if not reset_methods:
+			raise NoMethodsAvailable()
+		return reset_methods
 
 	@staticmethod
 	def create_token(length):
 		# remove easily confusable characters
-		chars = string.ascii_letters.replace("l", "").replace("I", "").replace("O", "") + "".join(map(str, range(2,10)))
+		chars = string.ascii_letters.replace("l", "").replace("I", "").replace("O", "") + "".join(map(str, range(2, 10)))
 		rand = random.SystemRandom()
 		res = ""
 		for _ in xrange(length):
@@ -394,20 +385,21 @@ class Instance(Base):
 		MODULE.info("send_message(): username: {} method: {} address: {}".format(username, method, address))
 		try:
 			plugin = self.send_plugins[method]
+			if not plugin.is_enabled:
+				raise KeyError
 		except KeyError:
-			raise UnknownMethodError("send_message(): Unknown method '{}'.".format(method))
-		if not plugin.is_enabled:
-			raise MethodDisabledError("send_message(): Method '{}' is disabled by UCR.".format(method))
-		data = {
+			raise UMC_Error("Method not allowed!", status=403)
+
+		plugin.set_data({
 			"username": username,
 			"address": address,
-			"token": token}
-		plugin.set_data(data)
+			"token": token})
 		MODULE.info("send_message(): Running plugin of class {}...".format(plugin.__class__.__name__))
 		try:
 			plugin.send()
-		except Exception as ex:
-			raise UMC_Error(_("Error sending token: {}").format(ex), status=500)
+		except Exception as exc:
+			MODULE.error('Unknown error: %s' % (traceback.format_exc(),))
+			raise UMC_Error(_("Error sending token: {}").format(exc), status=500)
 		return True
 
 	@staticmethod
@@ -419,7 +411,7 @@ class Instance(Base):
 			binddn, userdict = users[0]
 			get_user_connection(binddn=binddn, bindpw=password)
 		except (univention.admin.uexceptions.authFail, IndexError):
-			raise UMC_Error(_("Username or password is incorrect."))
+			raise ServiceForbidden()
 		return binddn, userdict["uid"][0]
 
 	def set_contact_data(self, dn, email, mobile):
@@ -431,7 +423,7 @@ class Instance(Base):
 				user["PasswordRecoveryMobile"] = mobile
 			user.modify()
 			return True
-		except Exception, e:
+		except Exception:
 			MODULE.error("set_contact_data(): {}".format(traceback.format_exc()))
 			raise
 
@@ -479,10 +471,10 @@ class Instance(Base):
 			gr_names = map(str.lower, self.dns_to_groupname(groups_dns))
 		except IndexError:
 			# no user or no group found
-			raise UnknownUserError(_("Unknown user."))
+			return True
 
 		# group blacklist
-		if any([gr in bl_groups for gr in gr_names]):
+		if any(gr in bl_groups for gr in gr_names):
 			MODULE.info("is_blacklisted({}): match in blacklisted groups".format(username))
 			return True
 
@@ -493,7 +485,7 @@ class Instance(Base):
 			return False
 
 		# group whitelist
-		if any([gr in wh_groups for gr in gr_names]):
+		if any(gr in wh_groups for gr in gr_names):
 			MODULE.info("is_blacklisted({}): match in whitelisted groups".format(username))
 			return False
 
@@ -536,11 +528,11 @@ class Instance(Base):
 		return user
 
 	def get_udm_user(self, username, admin=False):
-		uidf = filter_format('(|(uid=%s)(mailPrimaryAddress=%s))', (username, username))
+		filter_s = filter_format('(|(uid=%s)(mailPrimaryAddress=%s))', (username, username))
 		base = ucr["ldap/base"]
 
 		lo, po = get_machine_connection()
-		dn = lo.searchDn(filter=uidf, base=base)[0]
+		dn = lo.searchDn(filter=filter_s, base=base)[0]
 		return self.get_udm_user_dn(dn)
 
 	@machine_connection
@@ -555,7 +547,7 @@ class Instance(Base):
 		group.open()
 		return group
 
-	@machine_connection
+	@machine_connection  # TODO: overwrite StringSanitizer and do it there
 	def email2username(self, email, ldap_connection=None, ldap_position=None):
 		if "@" not in email:
 			return email
@@ -563,12 +555,12 @@ class Instance(Base):
 		# cache email->username in memcache
 		username = self.memcache.get("e2u:{}".format(email))
 		if not username:
-			mailf = filter_format("(mailPrimaryAddress=%s)", email)
+			mailf = filter_format("(mailPrimaryAddress=%s)", (email,))
 			users = ldap_connection.search(filter=mailf)
 			try:
 				_, userdict = users[0]
 			except IndexError:
-				raise UnknownUserError()
+				return username
 			username = userdict["uid"][0]
 			self.memcache.set("e2u:{}".format(email), username, 300)
 

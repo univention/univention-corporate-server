@@ -38,10 +38,12 @@ from socket import error as SocketError
 
 sys.stdout = sys.stderr
 import cherrypy
+from cherrypy.lib import httputil
 
 
 def default_error_page(status, message, traceback, version=None):
 	cherrypy.response.headers['Content-type'] = 'application/json'
+	cherrypy.response.status = '%s %s' % (status, httputil.valid_status(status)[1] or 'unknown',)  # important to set 'unknown', otherwise ValueError: status message was not supplied
 	data = {'message': message}
 	if traceback:
 		data['traceback'] = traceback
