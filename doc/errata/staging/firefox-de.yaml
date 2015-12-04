@@ -31,7 +31,7 @@ desc: |
  * Memory safety bugs fixed in Firefox ESR 38.4 and Firefox
    42. (CVE-2015-4513)
 bug:
- - 39785
+ - 39786
 cve:
  - CVE-2015-7181
  - CVE-2015-7182
