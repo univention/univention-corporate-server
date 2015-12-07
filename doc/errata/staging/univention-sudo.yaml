@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-sudo
-fix:
+fix: 1.0.0-2.3.201512071007
 version: [0]
 desc: |
     This is the first release of the new package univention-sudo. It
