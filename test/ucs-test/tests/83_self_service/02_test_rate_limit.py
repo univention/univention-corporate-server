@@ -1,0 +1,113 @@
+#!/usr/share/ucs-test/runner python
+## desc: Tests rate limit of Univention Self Service
+## tags: []
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-self-service
+##   - univention-self-service-passwordreset-umc
+
+from test_self_service import self_service_user, HTTPError, capture_mails
+from univention.testing.ucr import UCSTestConfigRegistry as UCR
+from univention.config_registry import handler_set, handler_unset
+
+from subprocess import call
+from time import sleep
+import contextlib
+
+LIMIT_TOTAL_MINUTE = 'umc/self-service/passwordreset/limit/total/minute'
+LIMIT_TOTAL_HOUR = 'umc/self-service/passwordreset/limit/total/hour'
+LIMIT_TOTAL_DAY = 'umc/self-service/passwordreset/limit/total/day'
+LIMIT_USER_MINUTE = 'umc/self-service/passwordreset/limit/per_user/minute'
+LIMIT_USER_HOUR = 'umc/self-service/passwordreset/limit/per_user/hour'
+LIMIT_USER_DAY = 'umc/self-service/passwordreset/limit/per_user/day'
+
+
+class Main(object):
+
+	def __init__(self):
+		with capture_mails():
+			self.test_total_limits()
+			self.test_user_limits()
+
+	def test_total_limits(self):
+		cuser = self_service_user(email='user@localhost')
+		with cuser as user, set_limits(total_minute=1):
+			assert fail_after(user, 1, 'one minute'), LIMIT_TOTAL_MINUTE
+			wait(minutes=1)
+			dont_fail(user)
+
+	def test_user_limits(self):
+		cuser1 = self_service_user(email='user1@localhost')
+		cuser2 = self_service_user(email='user2@localhost')
+		limits = set_limits(total_minute=6, user_minute=3)
+		with cuser1 as user1, cuser2 as user2, limits:
+			assert fail_after(user1, 3, 'one minute')
+			assert fail_after(user2, 2, 'one minute')
+			wait(minutes=1)
+			dont_fail(user2)
+
+
+@contextlib.contextmanager
+def set_limits(total_minute=None, total_hour=None, total_day=None, user_minute=None, user_hour=None, user_day=None):
+	with UCR(), resetting_limits():
+		total_minute = (LIMIT_TOTAL_MINUTE, total_minute)
+		total_hour = (LIMIT_TOTAL_HOUR, total_hour)
+		total_day = (LIMIT_USER_DAY, total_day)
+		user_minute = (LIMIT_USER_MINUTE, user_minute)
+		user_hour = (LIMIT_USER_HOUR, user_hour)
+		user_day = (LIMIT_USER_DAY, user_day)
+		args = [total_minute, total_hour, total_day, user_minute, user_hour, user_day]
+		handler_set(['%s=%s' % (key, val) for key, val in args if val is not None])
+		handler_unset([key for key, val in args if val is None])
+		yield
+
+
+def fail_after(user, x, retry_after):
+	print 'We should fail after', x
+	for i in range(x):
+		print 'Attempt', i+1
+		user.send_token('email')
+
+	try:
+		print 'We should fail now...'
+		user.send_token('email')
+	except HTTPError as exc:
+		retry_after = 'Please retry in %s.' % (retry_after,)
+		assert isinstance(exc.content, dict), repr(exc.content)
+		assert exc.response.status == 503
+		assert retry_after in exc.content.get('message', ''), '%r not in %r' % (retry_after, exc.content)
+		print 'Yippie, failed!'
+		return True
+	assert False, 'limit not avaluated'
+
+
+def dont_fail(user):
+	print 'Now we should not fail anymore'
+	user.send_token('email')
+	print 'Did not fail ;)'
+
+
+@contextlib.contextmanager
+def resetting_limits():
+	reset_server_limits()
+	try:
+		yield
+	finally:
+		reset_server_limits()
+
+
+def reset_server_limits():
+	assert 0 == call(['invoke-rc.d', 'memcached', 'restart'], close_fds=True)
+	assert 0 == call(['invoke-rc.d', 'univention-management-console-server', 'restart'], close_fds=True)
+	sleep(1)
+
+
+def wait(minutes):
+	# TODO: set the server time otherwise this test blocks that long
+	print 'Waiting %d minutes' % (minutes,)
+	sleep((minutes * 60) + 1)
+
+
+if __name__ == '__main__':
+	Main()

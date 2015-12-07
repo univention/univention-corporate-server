@@ -5,8 +5,13 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
 from httplib import HTTPConnection, HTTPException
+from threading import Thread
+from smtpd import SMTPServer
+import subprocess
 import contextlib
+import asyncore
 import json
+import fcntl
 
 
 class HTTPError(Exception):
@@ -14,6 +19,14 @@ class HTTPError(Exception):
 	def __init__(self, response, content):
 		self.response = response
 		self.content = content
+		super(HTTPError, self).__init__(response, content)
+		print self
+
+	def __str__(self):
+		return unicode(self).encode('utf-8')
+
+	def __unicode__(self):
+		return u'Status: %s, content=%r' % (self.response.status, self.content)
 
 
 class Connection(object):
@@ -72,9 +85,55 @@ class SelfServiceUser(Connection):
 
 
 @contextlib.contextmanager
-def self_service_user():
+def self_service_user(email=None, **kwargs):
 	with udm_test.UCSTestUDM() as udm:
 		password = uts.random_string()
-		dn, username = udm.create_user(password=password)
+		if email:
+			kwargs['PasswordRecoveryEmail'] = email
+		dn, username = udm.create_user(password=password, **kwargs)
 		utils.verify_ldap_object(dn)
 		yield SelfServiceUser(username, password)
+
+
+@contextlib.contextmanager
+def capture_mails(timeout=5):
+
+	class Mail(SMTPServer):
+
+		def __init__(self, *args, **kwargs):
+			SMTPServer.__init__(self, *args, **kwargs)
+			self.set_reuse_addr()
+			fcntl.fcntl(self.socket.fileno(), fcntl.F_SETFD, fcntl.fcntl(self.socket.fileno(), fcntl.F_GETFD) | fcntl.FD_CLOEXEC)
+			self.data = []
+
+		def process_message(self, peer, mailfrom, rcpttos, data):
+			print 'receiving email with length=', len(data)
+			self.data.append(data)
+
+	class MailServer(object):
+
+		def __init__(self):
+			print 'Starting mail server'
+			self.smtp = Mail(('', 25), '')
+			self.thread = Thread(target=asyncore.loop, kwargs={'timeout': timeout})
+			self.thread.start()
+
+		def stop(self):
+			print 'Stopping mail server'
+			self.smtp.close()
+			self.thread.join()
+
+	subprocess.call(['invoke-rc.d', 'postfix', 'stop'], close_fds=True)
+	try:
+		server = MailServer()
+		try:
+			yield server.smtp
+		finally:
+			try:
+				server.smtp.close()
+			except:
+				print 'Warn: Could not close SMTP socket'
+			server.stop()
+	finally:
+		print '(re)starting postfix'
+		subprocess.call(['invoke-rc.d', 'postfix', 'start'], close_fds=True)

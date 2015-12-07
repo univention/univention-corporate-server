@@ -7,12 +7,9 @@
 ##   - univention-self-service
 ##   - univention-self-service-passwordreset-umc
 
-from threading import Thread
-from smtpd import SMTPServer
-import asyncore
 import subprocess
 
-from test_self_service import self_service_user
+from test_self_service import self_service_user, capture_mails
 import univention.testing.strings as uts
 
 
@@ -23,7 +20,7 @@ def main():
 			test_reset_method_email(user)
 	finally:
 		# force all module processes to close
-		subprocess.call['invoke-rc.d', 'univention-management-console-server', 'restart'])
+		subprocess.call(['invoke-rc.d', 'univention-management-console-server', 'restart'], close_fds=True)
 
 
 def test_contact(user):
@@ -40,36 +37,14 @@ def test_reset_method_email(user):
 	assert 'email' in user.get_reset_methods()
 
 	timeout = 5
-	class Mail(SMTPServer):
-		data = None
-		def process_message(self, peer, mailfrom, rcpttos, data):
-			print 'receiving email with length=', len(data)
-			Mail.data = data
+	with capture_mails(timeout=timeout) as mails:
+		user.send_token('email')
 
-	class MailServer(object):
-		def __init__(self):
-			print 'Starting mail server'
-			subprocess.call(['invoke-rc.d', 'postfix', 'stop'])
-			self.smtp = Mail(('', 25), '')
-			self.thread = Thread(target=asyncore.loop, kwargs={'timeout': timeout})
-			self.thread.start()
-		def stop(self):
-			print 'Stopping mail server'
-			self.smtp.close()
-			self.thread.join()
-	try:
-		server = MailServer()
-		try:
-			user.send_token('email')
-		finally:
-			server.stop()
-	finally:
-		print '(re)starting postfix'
-		subprocess.call(['invoke-rc.d', 'postfix', 'start'])
+	mail = mails.data and mails.data[0]
 
-	assert Mail.data, 'No email has been received in %s seconds' % (timeout,)
-	token = Mail.data.split('and enter the following token manually:')[-1].split('Greetings from your password self service system.')[0].strip()
-	assert token, 'Could not parse token from mail. Is there a token in it? %r' % (Mail.data,)
+	assert mail, 'No email has been received in %s seconds' % (timeout,)
+	token = mail.split('and enter the following token manually:')[-1].split('Greetings from your password self service system.')[0].strip()
+	assert token, 'Could not parse token from mail. Is there a token in it? %r' % (mail,)
 
 	user.password = uts.random_string()
 	user.set_password(token, user.password)
