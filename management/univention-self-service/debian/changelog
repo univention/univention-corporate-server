@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-8) unstable; urgency=low
+
+  * ignore deactivated limit (Bug #39720)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 07 Dec 2015 11:41:38 +0100
+
 univention-self-service (1.0.3-7) unstable; urgency=low
 
   * be more explicit about the UCRV default value when unset (Bug #39720)

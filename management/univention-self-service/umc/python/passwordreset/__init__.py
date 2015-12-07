@@ -83,6 +83,9 @@ def prevent_denial_of_service(func):
 			# my guess is that we won't need that, so this is simpler.
 			# Continue even if a limit was reached, so that all counters are
 			# incremented.
+			if limit == 0:
+				# limit deactivated by UCR
+				continue
 			try:
 				count = memcache.incr(key)
 			except pylibmc.NotFound:
