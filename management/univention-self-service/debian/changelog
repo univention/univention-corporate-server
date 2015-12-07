@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-7) unstable; urgency=low
+
+  * be more explicit about the UCRV default value when unset (Bug #39720)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 07 Dec 2015 10:28:46 +0100
+
 univention-self-service (1.0.3-6) unstable; urgency=medium
 
   * Bug #39939: prevent guessing of usernames
