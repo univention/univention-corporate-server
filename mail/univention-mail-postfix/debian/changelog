@@ -1,3 +1,10 @@
+univention-mail-postfix (10.0.0-7) unstable; urgency=low
+
+  * remove leftover scheduling DH parameter generation from postinst
+    (Bug #40134)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 07 Dec 2015 14:05:25 +0100
+
 univention-mail-postfix (10.0.0-6) unstable; urgency=low
 
   * recreate missing lookup tables if docker container is started (Bug #39542)

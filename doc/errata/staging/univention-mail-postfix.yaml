@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-mail-postfix
+fix:
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * A premature scheduling of the DH parameter generation caused an atd
+    process to hang in Docker containers. (Bug 40134).
+bug: [40134]
