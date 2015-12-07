@@ -1,3 +1,10 @@
+univention-sudo (1.0.0-2) unstable; urgency=low
+
+  * move file permission from postinst to ucr conf, escape all forbidden
+    characters (Bug #37995)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 07 Dec 2015 09:54:26 +0100
+
 univention-sudo (1.0.0-1) unstable; urgency=low
 
   * fix package description field (Bug #37995)
