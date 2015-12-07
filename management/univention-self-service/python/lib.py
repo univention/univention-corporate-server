@@ -41,9 +41,14 @@ import cherrypy
 from cherrypy.lib import httputil
 
 
+def format_status(status):
+	# set status always as string with a reason phrase (!) otherwise cgi fails with "ValueError: status message was not supplied"
+	return '%s %s' % (status, httputil.valid_status(status)[1] or 'unknown',)
+
+
 def default_error_page(status, message, traceback, version=None):
 	cherrypy.response.headers['Content-type'] = 'application/json'
-	cherrypy.response.status = '%s %s' % (status, httputil.valid_status(status)[1] or 'unknown',)  # important to set 'unknown', otherwise ValueError: status message was not supplied
+	cherrypy.response.status = format_status(status)
 	data = {'message': message}
 	if traceback:
 		data['traceback'] = traceback

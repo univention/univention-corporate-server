@@ -32,7 +32,7 @@
 import cherrypy
 
 from univention.management.console.config import ucr
-from lib import Ressource, json_response
+from lib import Ressource, json_response, format_status
 
 
 class PasswordReset(Ressource):
@@ -56,12 +56,13 @@ class PasswordReset(Ressource):
 			raise cherrypy.HTTPError(503, 'Could not authenticate at Univention Management Console service.')
 		status, response = connection.auth({'username': username, 'password': password})
 		if status != 200:
-			raise cherrypy.HTTPError(status, response)
+			raise cherrypy.HTTPError(format_status(status), response)
 		return connection
 
 	def umc_request(self, url, data):
 		connection = self.get_connection()
-		cherrypy.response.status, response = connection.command(url, data)
+		status, response = connection.command(url, data)
+		cherrypy.response.status = format_status(status)
 		if isinstance(response, dict):
 			response.pop('status', None)
 		return response

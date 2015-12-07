@@ -38,10 +38,10 @@ from univention.management.console.config import ucr
 
 socket_file = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 
-limit_total_min = ucr.get("umc/self-service/passwordreset/limit/total/min", 0)
+limit_total_minute = ucr.get("umc/self-service/passwordreset/limit/total/minute", 0)
 limit_total_hour = ucr.get("umc/self-service/passwordreset/limit/total/hour", 0)
 limit_total_day = ucr.get("umc/self-service/passwordreset/limit/total/day", 0)
-limit_user_min = ucr.get("umc/self-service/passwordreset/limit/per_user/min", 0)
+limit_user_minute = ucr.get("umc/self-service/passwordreset/limit/per_user/minute", 0)
 limit_user_hour = ucr.get("umc/self-service/passwordreset/limit/per_user/hour", 0)
 limit_user_day = ucr.get("umc/self-service/passwordreset/limit/per_user/day", 0)
 
@@ -89,7 +89,7 @@ if not keys:
 	sys.exit(0)
 
 # move totals to end of (possibly long) list
-for k in ["t:c_day", "t:c_hour", "t:c_min"]:
+for k in ["t:c_day", "t:c_hour", "t:c_minute"]:
 	try:
 		keys.remove(k)
 		keys.append(k)
@@ -97,14 +97,14 @@ for k in ["t:c_day", "t:c_hour", "t:c_min"]:
 		continue
 
 for key in keys:
-	if key == "t:c_min":
-		limit = limit_total_min
+	if key == "t:c_minute":
+		limit = limit_total_minute
 	elif key == "t:c_hour":
 		limit = limit_total_hour
 	elif key == "t:c_day":
 		limit = limit_total_day
-	elif key.endswith("_min"):
-		limit = limit_user_min
+	elif key.endswith("_minute"):
+		limit = limit_user_minute
 	elif key.endswith("_hour"):
 		limit = limit_user_hour
 	elif key.endswith("_day"):

@@ -1,3 +1,11 @@
+univention-self-service (1.0.3-9) unstable; urgency=low
+
+  * Bug #39720: safer error handling,
+  * rename umc/self-service/passwordreset/limit/.*/min
+    to umc/self-service/passwordreset/limit/.*/minute
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 07 Dec 2015 14:42:26 +0100
+
 univention-self-service (1.0.3-8) unstable; urgency=low
 
   * ignore deactivated limit (Bug #39720)

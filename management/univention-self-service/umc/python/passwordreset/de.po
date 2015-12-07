@@ -48,8 +48,7 @@ msgstr "Mobilfunknummer"
 
 #: umc/python/passwordreset/__init__.py:173
 msgid ""
-"No contact information to send a token for password recovery to has been "
-"found."
+"No address has been stored, where a password recovery token could be sent to."
 msgstr ""
 "Es wurden keine Kontaktadressen gefunden, an die ein Token "
 "(Sicherheitsschlüssel) zur Wiederherstellung des Password geschickt werden "

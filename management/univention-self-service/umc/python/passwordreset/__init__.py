@@ -124,7 +124,7 @@ def prevent_denial_of_service(func):
 
 		username = self.email2username(username)
 		user_limits = [
-			("{}_min".format(username), 60, self.limit_user_min),
+			("{}_minute".format(username), 60, self.limit_user_minute),
 			("{}_hour".format(username), 3600, self.limit_user_hour),
 			("{}_day".format(username), 86400, self.limit_user_day)
 		]
@@ -173,7 +173,7 @@ class NoMethodsAvailable(UMC_Error):
 class MissingContactInformation(UMC_Error):
 
 	def __init__(self):
-		super(MissingContactInformation, self).__init__(_("No contact information to send a token for password recovery to has been found."))  # FXME: string typo
+		super(MissingContactInformation, self).__init__(_("No address has been stored, where a password recovery token could be sent to."))
 
 
 class Instance(Base):
@@ -209,15 +209,15 @@ class Instance(Base):
 		self.send_plugins = get_sending_plugins(MODULE.process)
 		self.memcache = pylibmc.Client([MEMCACHED_SOCKET], binary=True)
 
-		limit_total_min = ucr_try_int("umc/self-service/passwordreset/limit/total/min", 0)
+		limit_total_minute = ucr_try_int("umc/self-service/passwordreset/limit/total/minute", 0)
 		limit_total_hour = ucr_try_int("umc/self-service/passwordreset/limit/total/hour", 0)
 		limit_total_day = ucr_try_int("umc/self-service/passwordreset/limit/total/day", 0)
-		self.limit_user_min = ucr_try_int("umc/self-service/passwordreset/limit/per_user/min", 0)
+		self.limit_user_minute = ucr_try_int("umc/self-service/passwordreset/limit/per_user/minute", 0)
 		self.limit_user_hour = ucr_try_int("umc/self-service/passwordreset/limit/per_user/hour", 0)
 		self.limit_user_day = ucr_try_int("umc/self-service/passwordreset/limit/per_user/day", 0)
 
 		self.total_limits = [
-			("t:c_min", 60, limit_total_min),
+			("t:c_minute", 60, limit_total_minute),
 			("t:c_hour", 3600, limit_total_hour),
 			("t:c_day", 86400, limit_total_day)
 		]
