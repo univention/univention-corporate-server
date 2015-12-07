@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: 1.0.3-7.54.201512071030
+fix: 1.0.3-8.55.201512071143
 version: [0]
 desc: |
  This update addresses the following issues:
