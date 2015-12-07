@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: apache2
-fix: 2.2.22-13.94.201511261335
+fix: 2.2.22-13.95.201512071109
 version: [0]
 desc: |
  This update addresses the following issue:
