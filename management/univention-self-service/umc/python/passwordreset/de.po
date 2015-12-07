@@ -55,7 +55,8 @@ msgstr ""
 "könnte."
 
 #: umc/python/passwordreset/__init__.py:167
-msgid "No password reset method available for this user."
+msgid ""
+"No contact information is stored for this user. Resetting the password is not possible."
 msgstr ""
 "Für diesen Benutzer wurden keine Kontaktinformationen hinterlegt. Das "
 "Zurücksetzen des Passworts ist daher nicht möglich."

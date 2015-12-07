@@ -165,9 +165,10 @@ class TokenNotFound(UMC_Error):
 
 
 class NoMethodsAvailable(UMC_Error):
+	status = 403
 
 	def __init__(self):
-		super(NoMethodsAvailable, self).__init__(_('No password reset method available for this user.'))
+		super(NoMethodsAvailable, self).__init__(_('No contact information is stored for this user. Resetting the password is not possible.'))
 
 
 class MissingContactInformation(UMC_Error):
@@ -563,7 +564,7 @@ class Instance(Base):
 			try:
 				_, userdict = users[0]
 			except IndexError:
-				return username
+				return email
 			username = userdict["uid"][0]
 			self.memcache.set("e2u:{}".format(email), username, 300)
 
