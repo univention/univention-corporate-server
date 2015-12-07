@@ -1,0 +1,42 @@
+#!/usr/share/ucs-test/runner python
+## desc: Tests the Univention Self Service
+## tags: []
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-self-service
+##   - univention-self-service-passwordreset-umc
+
+from univention.testing import utils
+from test_self_service import SelfServiceUser, HTTPError
+
+error_get_contact = u'Either username or password is incorrect or you are not allowed to use this service.'
+error_set_contact = u'Either username or password is incorrect or you are not allowed to use this service.'
+error_get_reset_methods = u'No contact information is stored for this user. Resetting the password is not possible.'
+error_send_token = u'No address has been stored, where a password recovery token could be sent to.'
+error_set_password = u'The token you supplied is either expired or invalid. Please request a new one.'
+
+
+def main():
+	account = utils.UCSTestDomainAdminCredentials()
+	user = SelfServiceUser(account.username, account.bindpw)
+
+	assert_raises(HTTPError, error_get_contact, user.get_contact)
+	assert_raises(HTTPError, error_set_contact, user.set_contact)
+	assert_raises(HTTPError, error_get_reset_methods, user.get_reset_methods)
+	assert_raises(HTTPError, error_send_token, user.send_token, method='email')
+	assert_raises(HTTPError, error_set_password, user.set_password, token='A', password='B')
+
+
+def assert_raises(exc_type, message, callback, *args, **kwargs):
+	try:
+		callback(*args, **kwargs)
+	except exc_type as exc:
+		if message:
+			assert message in str(exc), 'Exception %r doesnt contain %r' % (str(exc), message)
+	else:
+		assert False, 'did not raise %r' % (exc_type,)
+
+
+if __name__ == '__main__':
+	main()
