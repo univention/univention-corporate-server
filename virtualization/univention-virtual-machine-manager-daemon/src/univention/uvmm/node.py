@@ -63,7 +63,6 @@ try:
 except ImportError:
 	import pickle
 QEMU_URI = 'http://libvirt.org/schemas/domain/qemu/1.0'
-QEMU_PXE_PREFIX = '/usr/share/kvm/pxe'
 
 import univention.config_registry as ucr
 
@@ -1167,16 +1166,6 @@ def _domain_edit(node, dom_stat, xml):
 		if domain_devices_graphic.attrib.get('passwd') != graphics.passwd:
 			domain_devices_graphic.attrib['passwd'] = graphics.passwd or ''
 			live_updates.append(domain_devices_graphic)
-
-	if dom_stat.domain_type in ('kvm', 'qemu'):
-		models = set()
-		for iface in dom_stat.interfaces:
-			model = getattr(iface, 'model', None) or 'rtl8139'
-			models.add(model)
-		if 'network' not in dom_stat.boot: # qemu-kvm_0.12.4 ignores boot-order and always prefers Network
-			models = set()
-		models &= set(['e1000', 'ne2k_isa', 'ne2k_pci', 'pcnet', 'rtl8139', 'virtio'])
-		roms = set(['%s-%s.bin' % (QEMU_PXE_PREFIX, model) for model in models])
 
 	# Make ET happy and cleanup None values
 	for n in domain.getiterator():
