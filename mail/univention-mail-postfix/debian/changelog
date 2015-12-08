@@ -1,3 +1,9 @@
+univention-mail-postfix (10.0.0-8) unstable; urgency=low
+
+  * remove at job, if active (Bug #40134)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 08 Dec 2015 08:53:20 +0100
+
 univention-mail-postfix (10.0.0-7) unstable; urgency=low
 
   * remove leftover scheduling DH parameter generation from postinst
