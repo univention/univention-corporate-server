@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-17) unstable; urgency=medium
+
+  * Bug #40140: fix translation in initialsetup.html
+
+ -- Florian Best <best@univention.de>  Tue, 08 Dec 2015 12:26:40 +0100
+
 univention-system-setup (9.0.2-16) unstable; urgency=low
 
   * Bug #39241: Revert
