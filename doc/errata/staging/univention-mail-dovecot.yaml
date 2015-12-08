@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: univention-mail-dovecot
-fix:
+fix: 1.0.1-1.53.201512082155
 version: [4]
 desc: |
  This update addresses the following issue:
