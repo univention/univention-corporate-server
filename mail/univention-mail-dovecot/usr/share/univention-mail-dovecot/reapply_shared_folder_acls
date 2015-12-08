@@ -1,0 +1,98 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention Mail Dovecot - reapply shared folder ACLs
+#
+# Copyright 2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import copy
+import optparse
+import univention.debug as ud
+from univention.config_registry import ConfigRegistry
+from univention.uldap import getMachineConnection
+from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
+
+
+class ListenerMockup(object):
+	def __init__(self, ucr):
+		self.configRegistry = ucr
+
+	def unsetuid(self):
+		pass
+
+	def setuid(self, uid):
+		pass
+
+
+def main():
+	usage = '''%prog [-v] [-n]
+
+Reapplies the ACLs to all shared IMAP folder on this system.'''
+	parser = optparse.OptionParser(usage=usage)
+	parser.add_option("-v", "--verbose", dest="verbose", default=False, action="store_true", help="show verbose output additionally on stdout")
+	parser.add_option("-n", "--dry-run", dest="dryrun", default=False, action="store_true", help="perform dry run without changes")
+	(options, _) = parser.parse_args()
+
+	# open log file
+	ud.init('/var/log/univention/reapply_shared_folder_acls.log', ud.NO_FLUSH, ud.NO_FUNCTION)
+	ud.set_level(ud.MAIN, ud.ALL)
+	ud.set_level(ud.LISTENER, ud.ALL)
+
+	def log(level, msg):
+		ud.debug(ud.MAIN, level, msg)
+		if options.verbose:
+			print msg
+
+	ucr = ConfigRegistry()
+	ucr.load()
+
+	ldapfilter = '(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))' % (
+		ucr.get('hostname'),
+		ucr.get('domainname'),
+	)
+
+	log(ud.INFO, 'Initialising reapply_shared_folder_acls...')
+	lm = ListenerMockup(ucr)
+	dl = DovecotSharedFolderListener(lm, 'reapply_shared_folder_acls')
+
+	# get ldap connection
+	lo = getMachineConnection()
+	log(ud.INFO, 'Looking for objects matching to following LDAP filter:\n   %s' % (ldapfilter,))
+	for dn, attrs_new in lo.search(filter=ldapfilter):
+		log(ud.PROCESS, 'DN: %r' % (dn,))
+		attrs_old = copy.deepcopy(attrs_new)
+		attrs_old[dl.acl_key] = []
+		if not options.dryrun:
+			dl.mod_shared_folder(attrs_old, attrs_new)
+			log(ud.PROCESS, 'ACLs updated')
+		else:
+			log(ud.PROCESS, 'dry-run: skipping object')
+	log(ud.PROCESS, 'Done')
+
+if __name__ == '__main__':
+	main()

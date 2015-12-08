@@ -1,3 +1,10 @@
+univention-mail-dovecot (2.0.1-1) unstable; urgency=low
+
+  * Bug #40038: add IMAP permission "expunge" if shared folder permission
+    "write" or "all" has been selected
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 02 Dec 2015 14:55:28 +0100
+
 univention-mail-dovecot (2.0.0-4) unstable; urgency=low
 
   * case insensitive name comparison for shared folders (Bug #40014)
