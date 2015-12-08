@@ -1,0 +1,14 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: univention-mail-dovecot
+fix:
+version: [4]
+desc: |
+ This update addresses the following issue:
+ * The UMC permissions "write" and "all" for shared folders did not
+   contain the IMAP permission for expunge. A removal of mails or moving
+   mails was not possible. This problem has been fixed and the permission
+   will be updated automatically if the join script of
+   univention-mail-dovecot is called.
+bug: [40037]
