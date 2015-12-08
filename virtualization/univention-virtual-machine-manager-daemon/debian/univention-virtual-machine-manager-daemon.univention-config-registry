@@ -3,15 +3,6 @@ File: etc/univention/uvmmd.ini
 Variables: uvmm/debug.*
 
 Type: file
-File: etc/security/access-uvmmd.conf
-
-Type: file
-File: etc/pam.d/uvmmd
-Variables: auth/uvmmd/accessfile
-Variables: auth/uvmmd/restrict
-Variables: pamaccess/maxent
-
-Type: file
 File: etc/logrotate.d/univention-virtual-machine-manager-daemon
 Variables: logrotate/.*
 

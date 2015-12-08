@@ -26,8 +26,7 @@ debug problems.
 .br
 Normally it communicates directly with the local
 .BR univention\-virtual\-machine\-manager\-daemon (8)
-using a UNIX-domain socket, but it can also be used to communicate to remote
-daemons over an unencrypted or SSL-encrypted TCP-connection.
+using a UNIX-domain socket.
 .br
 The first argument
 .I mode
@@ -41,14 +40,6 @@ Show this help message and exit.
 .TP
 \fB\-u\fP \fISOCKET\fP, \fB\-\-unix=\fP\fISOCKET\fP
 Path to the UNIX socket.
-.TP
-\fB\-t\fP \fIHOST\fP[\fB:\fP\fIPORT\fP], \fB\-\-tcp=\fP\fIHOST\fP[\fB:\fP\fIPORT\fP]
-Use \fIHOST\fP and \fIPORT\fP number for the TCP socket connection.
-Default \fIPORT\fP is \fB2105\fP.
-.TP
-\fB\-s\fP \fIHOST\fP[\fB:\fP\fIPORT\fP], \fB\-\-ssl=\fP\fIHOST\fP[\fB:\fP\fIPORT\fP]
-Use \fIHOST\fP and \fIPORT\fP number for the SSL encrypted TCP socket connection.
-Default \fIPORT\fP is \fB2106\fP.
 .TP
 \fB\-v\fP, \fB\-\-verbose\fP
 Print additional information during command execution.

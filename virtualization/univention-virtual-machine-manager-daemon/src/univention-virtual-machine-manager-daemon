@@ -206,12 +206,6 @@ if __name__ == '__main__':
 	socket_group.add_option('-u', '--unix',
 				action='store', dest='socket', default="/var/run/uvmm.socket",
 				help=_('Path to the UNIX socket [%(default)s]') % {'default': '%default'})
-	socket_group.add_option('-t', '--tcp',
-			action='store', dest='tcp', default=None, metavar=_("HOST:PORT"),
-			help=_('HOST and PORT number of the TCP socket'))
-	socket_group.add_option('-s', '--ssl',
-			action='store', dest='ssl', default=None, metavar=_("HOST:PORT"),
-			help=_('HOST and PORT number of the SSL encrypted TCP socket'))
 	parser.add_option_group(socket_group)
 
 	cache_group = OptionGroup(parser, _('Cache options'))

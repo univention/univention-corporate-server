@@ -345,16 +345,6 @@ msgstr "Keine UVMM-Antwort."
 msgid "Not a valid Packet: %(msg)s"
 msgstr "Kein gültiges Paket: %(msg)s"
 
-#: univention/uvmm/client.py:155
-#, python-format
-msgid "PAM error: %(msg)s"
-msgstr "PAM Fehler: %(msg)s"
-
-#: univention/uvmm/client.py:157
-#, python-format
-msgid "PAM info: %(msg)s"
-msgstr "PAM Information: %(msg)s"
-
 #: univention/uvmm/unix.py:112
 #, python-format
 msgid "Packet is no UVMM Request: %(type)s"

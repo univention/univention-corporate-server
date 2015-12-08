@@ -622,12 +622,6 @@ class _Commands:
 		res.data = storage.storage_volume_usedby( node.nodes, request.volume )
 		return res
 
-	@staticmethod
-	def AUTHENTICATION(server, request):
-		'''Handle authentication.'''
-		# handled in unix.py#AuthenticatedStreamHandler
-		pass
-
 	def __getitem__(self, cmd):
 		if cmd.startswith('_'):
 			raise CommandError(cmd, _('Command "%(command)s" is restricted'))

@@ -39,8 +39,6 @@ import json
 from optparse import OptionParser
 from univention.uvmm import protocol, client
 from univention.uvmm.helpers import TranslatableException, _, N_
-import PAM
-from getpass import getpass
 from pprint import pprint
 try:
 	from lxml import etree as ET
@@ -54,21 +52,8 @@ class ParameterModeError(TranslatableException):
 def create_socket(options):
 	"""Create socket for communication with UVMMd.
 
-	Either SSL, TCP or UNIX."""
-	if options.ssl:
-		if ':' in options.ssl:
-			host, port = options.ssl.rsplit(':', 1)
-		else:
-			host, port = options.ssl, 2106
-		sock = client.UVMM_ClientSSLSocket(host, int(port), tcp_timeout=options.timeout, ssl_timeout=options.timeout)
-	elif options.tcp:
-		if ':' in options.tcp:
-			host, port = options.tcp.rsplit(':', 1)
-		else:
-			host, port = options.tcp, 2105
-		sock = client.UVMM_ClientTCPSocket(host, int(port), timeout=options.timeout)
-	else:
-		sock = client.UVMM_ClientUnixSocket(options.socket, timeout=options.timeout)
+	UNIX socket only."""
+	sock = client.UVMM_ClientUnixSocket(options.socket, timeout=options.timeout)
 	if options.verbose:
 		print >>sys.stderr, "sock=%s" % (sock,)
 	return sock
@@ -80,26 +65,6 @@ def request(options, req):
 		if options.verbose:
 			print >>sys.stderr, "request=%s" % (req,)
 		res = sock.send(req)
-		while isinstance(res, protocol.Response_AUTHENTICATION):
-			resp = []
-			for query, type in res.challenge:
-				if type == PAM.PAM_PROMPT_ECHO_ON:
-					val = raw_input(query)
-					resp.append((val, PAM.PAM_SUCCESS))
-				elif type == PAM.PAM_PROMPT_ECHO_OFF:
-					val = getpass(query)
-					resp.append((val, PAM.PAM_SUCCESS))
-				elif type == PAM.PAM_PROMPT_ERROR_MSG:
-					print >>sys.stderr, query
-					resp.append(('', PAM.PAM_SUCCESS))
-				elif type == PAM.PAM_PROMPT_TEXT_INFO:
-					print >>sys.stdout, query
-					resp.append(('', PAM.PAM_SUCCESS))
-			req2 = protocol.Request_AUTHENTICATION(response=resp)
-			res = sock.send(req2)
-			if isinstance(res, protocol.Response_OK):
-				# repeat original request
-				res = sock.send(req)
 		if isinstance(res, protocol.Response_DUMP):
 			print "DATA:"
 			try:
@@ -787,12 +752,6 @@ if __name__ == '__main__':
 	parser.add_option('-u', '--unix',
 			action='store', dest='socket', default="/var/run/uvmm.socket",
 			help=_('Path to the UNIX socket'))
-	parser.add_option('-t', '--tcp',
-			action='store', dest='tcp', default=None, metavar=_("HOST:PORT"),
-			help=_('HOST and PORT number of the TCP socket'))
-	parser.add_option('-s', '--ssl',
-			action='store', dest='ssl', default=False, metavar=_("HOST:PORT"),
-			help=_('HOST and PORT number of the SSL encrypted TCP socket'))
 	parser.add_option( '-v', '--verbose',
 			action='store_true', dest='verbose', default=False,
 			help=_('Print additional information'))

@@ -1,0 +1,2 @@
+rm_conffile /etc/univention/templates/files/etc/pam.d/uvmmd
+rm_conffile /etc/univention/templates/files/etc/security/access-uvmmd.conf

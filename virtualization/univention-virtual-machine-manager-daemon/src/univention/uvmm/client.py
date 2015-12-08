@@ -34,18 +34,12 @@
 import socket
 import protocol
 from helpers import TranslatableException, FQDN, N_ as _
-from OpenSSL import SSL
-import PAM
 import univention.config_registry as ucr
 
 __all__ = [
 		'ClientError',
 		'UVMM_ClientSocket',
 		'UVMM_ClientUnixSocket',
-		'UVMM_ClientAuthenticatedSocket',
-		'UVMM_ClientTCPSocket',
-		'UVMM_ClientSSLSocket',
-		'UVMM_ClientAuthSSLSocket',
 		'uvmm_connect',
 		'uvmm_cmd',
 		]
@@ -127,99 +121,6 @@ class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 	def __str__(self):
 		return "UNIX Socket %s" % (self.sock.getpeername(),)
 
-class UVMM_ClientAuthenticatedSocket(UVMM_ClientSocket):
-	"""Mixin-class to handle client connection requiring authentication.
-
-	class Auth(UVMM_ClientSSLSocket, UVMM_ClientAuthenticatedSocket): pass
-	c = Auth('qemu.ucs.local', 2106)
-	c.set_auth_data('Administrator', 'univention')
-	res = c.send(...)
-	"""
-
-	def set_auth_data(self, username, password):
-		"""Register username and password for authentication."""
-		self.username = username
-		self.password = password
-
-	def send(self, req):
-		"""Send request, wait for and return answer."""
-		response = super(UVMM_ClientAuthenticatedSocket, self).send(req)
-		while isinstance(response, protocol.Response_AUTHENTICATION):
-			resp = []
-			for query, type in response.challenge:
-				if type == PAM.PAM_PROMPT_ECHO_ON:
-					resp.append((self.username, PAM.PAM_SUCCESS))
-				elif type == PAM.PAM_PROMPT_ECHO_OFF:
-					resp.append((self.password, PAM.PAM_SUCCESS))
-				elif type == PAM.PAM_PROMPT_ERROR_MSG:
-					raise ClientError(_("PAM error: %(msg)s"), msg=query)
-				elif type == PAM.PAM_PROMPT_TEXT_INFO:
-					raise ClientError(_("PAM info: %(msg)s"), msg=query)
-				else:
-					raise ClientError(_("Unknown PAM type: %(type)s"), type=type)
-			request = protocol.Request_AUTHENTICATION(response=resp)
-			response = super(UVMM_ClientAuthenticatedSocket, self).send(request)
-			if isinstance(response, protocol.Response_OK):
-				# repeat original request
-				return self.send(req)
-		return response
-
-class UVMM_ClientTCPSocket(UVMM_ClientSocket):
-	"""UVMM client TCP socket to (str(host), int(port))."""
-	def __init__(self, host, port=2105, timeout=0):
-		"""Open new TCP socket to host:port."""
-		try:
-			self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			if timeout > 0:
-				self.sock.settimeout(timeout)
-			self.sock.connect((host, port))
-		except socket.timeout, msg:
-			raise ClientError(_('Timed out while connecting to "%(host)s:%(port)d".'), host=host, port=port)
-		except socket.error, (errno, msg):
-			raise ClientError(_('Could not connect to "%(host)s:%(port)d": %(errno)d'), host=host, port=port, errno=errno)
-
-	def __str__(self):
-		return "TCP Socket %s:%d -> %s:%d" % (self.sock.getsockname() + self.sock.getpeername())
-
-class UVMM_ClientSSLSocket(UVMM_ClientSocket):
-	"""UVMM client SSL enctrypted TCP socket to (str(host), int(port))."""
-	privatekey = '/etc/univention/ssl/%s/private.key' % FQDN
-	certificate = '/etc/univention/ssl/%s/cert.pem' % FQDN
-	cas = '/etc/univention/ssl/ucsCA/CAcert.pem'
-
-	def __init__(self, host, port=2106, ssl_timeout=0, tcp_timeout=0):
-		"""Open new SSL encrypted TCP socket to host:port."""
-		try:
-			ctx = SSL.Context(SSL.SSLv23_METHOD)
-			ctx.set_options(SSL.OP_NO_SSLv2)
-			#ctx.set_verify(SSL.VERIFY_PEER|SSL.VERIFY_FAIL_IF_NO_PEER_CERT, verify_cb)
-			ctx.use_privatekey_file(UVMM_ClientSSLSocket.privatekey)
-			ctx.use_certificate_file(UVMM_ClientSSLSocket.certificate)
-			ctx.load_verify_locations(UVMM_ClientSSLSocket.cas)
-
-			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-			if tcp_timeout > 0:
-				sock.settimeout(tcp_timeout)
-			self.sock = SSL.Connection(ctx, sock)
-			self.sock.connect((host, port))
-
-			if ssl_timeout > 0:
-				import struct
-				self.sock.setblocking(1)
-				tv = struct.pack('ii', int(ssl_timeout), int(0))
-				self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVTIMEO, tv)
-
-		except socket.timeout, msg:
-			raise ClientError(_('Timed out while connecting to "%(host)s:%(port)d".'), host=host, port=port)
-		except socket.error, (errno, msg):
-			raise ClientError(_('Could not connect to "%(host)s:%(port)d": %(errno)d'), host=host, port=port, errno=errno)
-
-	def __str__(self):
-		return "TCP-SSL Socket %s:%d -> %s:%d" % (self.sock.getsockname() + self.sock.getpeername())
-
-class UVMM_ClientAuthSSLSocket(UVMM_ClientSSLSocket, UVMM_ClientAuthenticatedSocket):
-	"""SSL-socket plus authentication."""
-	pass
 
 __ucr = ucr.ConfigRegistry()
 __ucr.load()
@@ -243,27 +144,10 @@ def __debug(msg):
 	except:
 		pass
 
-def uvmm_connect(managers=None, cred=None):
-	"""Get connection to UVMM.
-	managers: space separated list of hosts or iteratable.
-	cred: tupel of (username, password), defaults to machine credential."""
-	if managers is None:
-		managers = __ucr.get('uvmm/managers', '')
-	if isinstance(managers, basestring):
-		managers = managers.split(' ')
+
+def uvmm_connect():
+	"""Get connection to UVMM."""
 	try:
-		for uvmmd in managers:
-			try:
-				__debug("Opening connection to UVMMd %s ..." % uvmmd)
-				uvmm = UVMM_ClientAuthSSLSocket(uvmmd)
-				if not cred:
-					cred = __auth_machine()
-				uvmm.set_auth_data(*cred)
-				break
-			except Exception, e:
-				__debug("Failed: %s" % e)
-				pass
-		else:
 			__debug("Opening connection to local UVVMd...")
 			uvmm = UVMM_ClientUnixSocket('/var/run/uvmm.socket')
 	except ClientError, e:
@@ -271,12 +155,14 @@ def uvmm_connect(managers=None, cred=None):
 	return uvmm
 
 __uvmm = None
-def uvmm_cmd(request, managers=None, cred=None):
+
+
+def uvmm_cmd(request):
 	"""Send request to UVMM.
 	cred: tupel of (username, password), defaults to machine credential."""
 	global __uvmm
 	if __uvmm is None:
-		__uvmm = uvmm_connect(managers=managers, cred=cred)
+		__uvmm = uvmm_connect()
 	assert __uvmm is not None, "No connection to UVMM daemon."
 
 	response = __uvmm.send(request)
