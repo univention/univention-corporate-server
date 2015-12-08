@@ -5,6 +5,6 @@ src: univention-s4-connector
 fix: 8.0.33-93.591.201512011116
 version: [8]
 desc: |
-This errata update addresses the following issue:
+ This errata update addresses the following issue:
  * Some GPO and WMI attributes have not been treated as single-value.
 bug: [39365]
