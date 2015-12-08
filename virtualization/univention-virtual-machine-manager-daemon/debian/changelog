@@ -2,6 +2,7 @@ univention-virtual-machine-manager-daemon (5.0.1-6) unstable; urgency=low
 
   * Bug #36141: Support VPC
   * Bug #36289: Add eu-central-1
+  * umc/*.xml: Remove disabled module definition
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 03 Dec 2015 12:51:54 +0100
 

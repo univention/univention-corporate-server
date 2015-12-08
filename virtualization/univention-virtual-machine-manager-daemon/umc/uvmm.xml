@@ -10,12 +10,6 @@
 			<description>Manages virtual machines</description>
 			<keywords></keywords>
 		</flavor>
-		<!-- Deactivated: Just for translation and used by uvmm-cloudconnection.xml -->
-		<flavor id="uvmm/cloudconnection" deactivated="yes">
-			<name>Cloud Connections (UVMM)</name>
-			<description>Manages Cloud Connections</description>
-			<keywords></keywords>
-		</flavor>
 		<categories>
 			<category name="system"/>
 		</categories>
