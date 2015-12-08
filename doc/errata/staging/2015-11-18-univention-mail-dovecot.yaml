@@ -2,11 +2,16 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-mail-dovecot
-fix: 2.0.0-4.50.201511181543
+fix:
 version: [0]
 desc: |
  This update addresses the following issue:
  * An error in the dovecot listener could lead to the unintended
    deletion of a shared folder, when it should just have been renamed
    (Bug 40014).
-bug: [40014]
+ * The UMC permissions "write" and "all" for shared folders did not
+   contain the IMAP permission for expunge. A removal of mails or moving
+   mails was not possible. This problem has been fixed and the permission
+   will be updated automatically if the join script of
+   univention-mail-dovecot is called.
+bug: [40014,40038]
