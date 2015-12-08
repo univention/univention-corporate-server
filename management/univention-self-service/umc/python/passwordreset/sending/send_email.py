@@ -50,6 +50,7 @@ import smtplib
 from email.mime.nonmultipart import MIMENonMultipart
 from email.utils import formatdate
 import email.charset
+import re
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.i18n import Translation
@@ -102,6 +103,9 @@ class SendEmail(UniventionSelfServiceTokenEmitter):
 
 		fqdn = ".".join([self.ucr["hostname"], self.ucr["domainname"]])
 		frontend_server = self.ucr.get("umc/self-service/passwordreset/email/webserver_address", fqdn)
+		allowed = re.compile("(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
+		if not frontend_server.strip() or not all(allowed.match(x) for x in frontend_server.split(".")):
+			frontend_server = fqdn
 		link = "https://{fqdn}/univention-self-service/#passwordreset".format(fqdn=frontend_server)
 		tokenlink = "https://{fqdn}/univention-self-service/?token={token}&username={username}#passwordreset".format(fqdn=frontend_server, username=self.data["username"], token=self.data["token"])
 

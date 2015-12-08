@@ -1,3 +1,10 @@
+univention-self-service (1.0.3-11) unstable; urgency=low
+
+  * check validity of hostname in umc/self-service/passwordreset/email/webserver_address
+    Bug #40107
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 08 Dec 2015 06:16:59 +0100
+
 univention-self-service (1.0.3-10) unstable; urgency=low
 
   * better wording in error message (Bug #39720)
