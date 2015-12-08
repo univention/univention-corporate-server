@@ -285,6 +285,7 @@ class Cloud(object):
 		"""
 		self.required_options(request, 'conn_name')
 		conn_name = request.options.get('conn_name')
+		network_id = request.options.get('network_id')
 
 		def _finished(thread, result, request):
 			"""
@@ -298,7 +299,7 @@ class Cloud(object):
 				secgroup_list = [
 						{'id': item.id, 'label': item.name}
 						for conn_name, images in data.items()
-						for item in images
+						for item in images if network_id in ('default', item.network_id)
 						]
 
 				self.finished(request.id, secgroup_list)
@@ -312,6 +313,87 @@ class Cloud(object):
 
 		self.uvmm.send(
 				'L_CLOUD_SECGROUP_LIST',
+				Callback(_finished, request),
+				conn_name=conn_name
+				)
+
+	def cloud_list_network(self, request):
+		"""
+		Returns a list of networks for the given cloud conn_name.
+		"""
+		self.required_options(request, 'conn_name')
+		conn_name = request.options.get('conn_name')
+
+		def _finished(thread, result, request):
+			"""
+			Process asynchronous UVMM L_CLOUD_NETWORK_LIST answer.
+			"""
+			if self._check_thread_error(thread, result, request):
+				return
+
+			success, data = result
+			if success:
+				network_list = [
+						{
+							'id': item.id,
+							'label': '%s %s' % (item.name, item.cidr or "")
+						}
+						for conn_name, images in data.items()
+						for item in images
+						]
+
+				self.finished(request.id, network_list)
+			else:
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
+
+		self.uvmm.send(
+				'L_CLOUD_NETWORK_LIST',
+				Callback(_finished, request),
+				conn_name=conn_name
+				)
+
+	def cloud_list_subnet(self, request):
+		"""
+		Returns a list of subnet for the given cloud conn_name.
+		"""
+		self.required_options(request, 'conn_name')
+		conn_name = request.options.get('conn_name')
+		network_id = request.options.get('network_id')
+
+		def _finished(thread, result, request):
+			"""
+			Process asynchronous UVMM L_CLOUD_SUBNET_LIST answer.
+			"""
+			if self._check_thread_error(thread, result, request):
+				return
+
+			success, data = result
+			if success:
+				subnet_list = [
+						{
+							'id': item.id,
+							'label': '%s %s' % (item.name, item.cidr or "")
+						}
+						for conn_name, images in data.items()
+						for item in images if network_id == item.network_id
+						]
+
+				self.finished(request.id, subnet_list)
+			else:
+				self.finished(
+						request.id,
+						None,
+						message=str(data),
+						status=MODULE_ERR_COMMAND_FAILED
+						)
+
+		self.uvmm.send(
+				'L_CLOUD_SUBNET_LIST',
 				Callback(_finished, request),
 				conn_name=conn_name
 				)

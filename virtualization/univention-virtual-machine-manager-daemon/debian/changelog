@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (5.0.1-6) unstable; urgency=low
+
+  * Bug #36141: Support VPC
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 03 Dec 2015 12:51:54 +0100
+
 univention-virtual-machine-manager-daemon (5.0.1-5) unstable; urgency=low
 
   * Bug #39825: /domain/devices/disk/driver/@type is optional

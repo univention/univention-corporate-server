@@ -32,10 +32,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: univention-virtual-machina-manager-daemon 1.0.103-1\n"
+"Project-Id-Version: univention-virtual-machine-manager-daemon 5.0.1-6\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
 "POT-Creation-Date: 2015-10-26 11:15+0100\n"
-"PO-Revision-Date: 2013-07-24 19:03+0200\n"
+"PO-Revision-Date: 2015-12-03 12:51+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <de@li.org>\n"
 "Language: de\n"
@@ -376,9 +376,17 @@ msgstr "Cloud-Verbindungen"
 msgid "Cloud instance"
 msgstr "Cloud-Instanz"
 
-#: uvmm/InstanceWizard.js:224 uvmm/InstanceWizard.js:299
+#: uvmm/InstanceWizard.js:304
+msgid "Configure Network"
+msgstr "Netzwerk konfigurieren"
+
+#: uvmm/InstanceWizard.js:228 uvmm/InstanceWizard.js:328
 msgid "Configure Security Group"
 msgstr "Konfigurieren einer Sicherheitsgruppe"
+
+#: uvmm/InstanceWizard.js:321
+msgid "Configure Subnet"
+msgstr "Subnetz konfigurieren"
 
 #: uvmm/DriveGrid.js:291
 msgid "Configure cache behaviour of host."
@@ -783,6 +791,10 @@ msgstr "Schlüsselpaar"
 msgid "Latvian"
 msgstr "Lettisch"
 
+#: uvmm/InstanceWizard.js:313
+msgid "Launch into default Network"
+msgstr "In Standard-Netzwerk starten"
+
 #: uvmm/types.js:157
 msgid "Lithuanian"
 msgstr "Litauisch"
@@ -1122,6 +1134,23 @@ msgstr "Sicherheitsgruppe"
 msgid "Select a key pair"
 msgstr "Auswahl eines Schlüsselpaares"
 
+#: uvmm/InstanceWizard.js:109
+msgid ""
+"Select a network in which the new virtual machine instance should be "
+"launched. The network configuration has to be done at the provider's "
+"administration interface. <a href=\"https://aws.amazon.com/documentation/vpc/"
+"\" target=\"_blank\">Use this link for more information about Amazon VPC</a> "
+"and <a href=\"https://console.aws.amazon.com/vpc/home?#s=vpcs\" target="
+"\"_blank\">this link to configure VPC</a>."
+msgstr ""
+"Wählen Sie das Netzwerk aus, in welchem die neue virtuelle Instanz gestartet "
+"werden soll. Die Netzwerkkonfiguration erfolgt direkt über die "
+"Verwaltungsseite der Cloud. <a href=\"https://aws.amazon.com/de/"
+"documentation/vpc/\" target=\"_blank\">Nutzen Sie diesen Link um weitere "
+"Informationen über Amazon VPC zu erhalten</a> und <a href=\"https://console."
+"aws.amazon.com/vpc/home?#s=vpcs\" target=\"_blank\">diesen Link um VPC zu "
+"konfigurieren</a>."
+
 #: uvmm/CreatePage.js:116
 msgid ""
 "Select if you want to create a new machine using an established connection, "
@@ -1136,7 +1165,7 @@ msgid ""
 "Select the cloud in which a new virtual machine instance is going to be "
 "created. Alternatively, it is possible to register a new cloud connection."
 msgstr ""
-"Wählen sie die Cloud aus, in der eine neue virtuelle Instanz erzeugt werden "
+"Wählen Sie die Cloud aus, in der eine neue virtuelle Instanz erzeugt werden "
 "soll. Alternativ ist es ebenfalls möglich, eine neue Cloud-Verbindung "
 "einzutragen."
 
@@ -1581,6 +1610,9 @@ msgstr "{volumeFilename} (Speicherbereich: {pool})"
 
 #~ msgid "Boot device"
 #~ msgstr "Bootmedium"
+
+#~ msgid "Create new Network"
+#~ msgstr "Erstellen einer neuen Image-Datei"
 
 #~ msgid "Full virtualization (KVM)"
 #~ msgstr "Voll-Virtualisierung (KVM)"

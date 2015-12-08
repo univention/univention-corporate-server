@@ -205,6 +205,15 @@ class CloudConnectionMananger(dict):
 
 		return networks
 
+	def list_conn_subnets(self, conn_name="*"):
+		connection_list = self._get_connections(conn_name)
+
+		subnets = {}
+		for connection in connection_list:
+			subnets[connection.publicdata.name] = connection.list_subnets()
+
+		return subnets
+
 	def instance_state(self, conn_name, instance_id, state):
 		self._check_if_connection_exists(conn_name)
 		self[conn_name].instance_state(instance_id, state)

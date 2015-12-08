@@ -46,6 +46,8 @@
 		<command name="uvmm/cloud/list/size" function="cloud_list_size"/>
 		<command name="uvmm/cloud/list/image" function="cloud_list_image"/>
 		<command name="uvmm/cloud/list/secgroup" function="cloud_list_secgroup"/>
+		<command name="uvmm/cloud/list/network" function="cloud_list_network"/>
+		<command name="uvmm/cloud/list/subnet" function="cloud_list_subnet"/>
 		<command name="uvmm/instance/query" function="instance_query"/>
 		<command name="uvmm/instance/state" function="instance_state"/>
 		<command name="uvmm/instance/remove" function="instance_remove"/>

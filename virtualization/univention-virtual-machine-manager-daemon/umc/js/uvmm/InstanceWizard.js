@@ -52,7 +52,7 @@ define([
 		}
 		on.once(dojo.body(), 'click', function(evt) {
 			Tooltip.hide(node);
-			dojoEvent.stop(evt);
+			//dojoEvent.stop(evt); // links in tooltip should be clickable
 		});
 	};
 
@@ -87,13 +87,25 @@ define([
 		},
 
 		_setupJavaScriptLinks: function() {
-			array.forEach([
-					['details', 'keyname'],
-					['details', 'security_group_ids']
-				], function(iitem) {
+			array.forEach(this._getTooltipLinkArray(), function(iitem) {
 				var iwidget = this.getWidget(iitem[0], iitem[1]);
 				iwidget.set('label', lang.replace(iwidget.label, this));
 			}, this);
+		},
+
+		_getTooltipLinkArray: function() {
+			if (this.cloud.type == 'OpenStack') {
+				return [
+					['details', 'keyname'],
+					['details', 'security_group_ids']
+				]
+			} else if (this.cloud.type == 'EC2') {
+				return [
+					['details', 'keyname'],
+					['details', 'security_group_ids'],
+					['details', 'network_id']
+				]
+			}
 		},
 
 		showTooltip: function(evt, type) {
@@ -103,6 +115,9 @@ define([
 			}
 			else if (type == 'security_group_ids') {
 				msg = _('A security group acts as a virtual firewall that controls the traffic of the instance. To enable access, correct rules have to be configured (for example, a UCS instance needs at least TCP ports 22 (ssh) and 443 (https)). The security group configuration has to be done at the provider\'s administration interface.');
+			}
+			else if (type == 'network_id') {
+				msg = _('Select a network in which the new virtual machine instance should be launched. The network configuration has to be done at the provider\'s administration interface. <a href="https://aws.amazon.com/documentation/vpc/" target="_blank">Use this link for more information about Amazon VPC</a> and <a href="https://console.aws.amazon.com/vpc/home?#s=vpcs" target="_blank">this link to configure VPC</a>.');
 			}
 			if (msg) {
 				_showTooltip(evt.target, msg, evt);
@@ -239,6 +254,7 @@ define([
 						'image_id',
 						'size_id',
 						'size_info_text',
+						['network_id', 'subnet_id'],
 						['keyname', 'security_group_ids']
 					],
 					widgets: [{
@@ -294,6 +310,30 @@ define([
 						required: true,
 						size: 'Two'
 					}, {
+						name: 'network_id',
+						type: ComboBox,
+						label: _('Configure Network') +
+						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'network_id\');">' +
+						_('more information') +
+						'</a>)' +
+						' [<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').getWidget(\'details\', \'network_id\').reloadDynamicValues();">' +
+						_('Reload') +
+						'</a>]',
+						dynamicOptions: {conn_name: this.cloud.name},
+						dynamicValues: types.getCloudListNetwork,
+						staticValues: [ { id: 'default', label: _('Launch into default Network') } ],
+						onChange: lang.hitch(this, function(newVal) {
+							var widget = this.getWidget('details', 'subnet_id');
+							widget.set('disabled', newVal == 'default');
+						}),
+					}, {
+						name: 'subnet_id',
+						type: ComboBox,
+						label: _('Configure Subnet'),
+						dynamicOptions: {conn_name: this.cloud.name},
+						dynamicValues: types.getCloudListSubnet,
+						depends: 'network_id'
+					}, {
 						name: 'security_group_ids',
 						type: ComboBox,
 						label: _('Configure Security Group') +
@@ -302,6 +342,7 @@ define([
 						'</a>)',
 						dynamicOptions: {conn_name: this.cloud.name},
 						dynamicValues: types.getCloudListSecgroup,
+						depends: 'network_id',
 						required: true
 					}]
 				};
