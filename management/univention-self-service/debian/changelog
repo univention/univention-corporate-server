@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-12) unstable; urgency=low
+
+  * Bug #40107: revert r66134 (1.0.3-11), allowing ports and paths
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 08 Dec 2015 11:26:38 +0100
+
 univention-self-service (1.0.3-11) unstable; urgency=low
 
   * check validity of hostname in umc/self-service/passwordreset/email/webserver_address
