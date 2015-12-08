@@ -5,7 +5,7 @@ src: samba
 fix: 2:4.2.3-1.802.201511251827
 version: [3,4]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * In certain situations samba restart left samba in a non-functional state.
  * When closing sessions the smbd server processes exited with a memory
    corruption error
