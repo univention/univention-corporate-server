@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: samba
-fix: 2:4.2.3-1.802.201511251827
+fix: 2:4.2.3-1.806.201512081136
 version: [3,4]
 desc: |
  This update addresses the following issues:
