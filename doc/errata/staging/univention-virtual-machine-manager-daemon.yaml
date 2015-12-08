@@ -1,0 +1,16 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-virtual-machine-manager-daemon
+fix: 5.0.1-6.609.201512080816
+version: [0]
+desc: |
+ This update addresses the following issues:
+ * Support the new AWS API for EC2 region eu-central-1 (Frankfurt am Main).
+ * Add support for Virtual Pricate Clouds (VPC) with AWS EC2.
+ * The deprecated support for TLS/SSL connections and authentication through
+   PAM has been removed.
+ * The deprecated code for booting old VMs through PXE with old qemu-0.x has
+   been removed.
+ * The command line tool for debugging UVMM has been improved.
+bug: [36141,36289,40180,40181,40182]

@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: libcloud
+fix: 0.19.0-0.2.9.201512041332
+version: [0]
+desc: |
+ This update addresses the following issues:
+ * Support the new AWS API for EC2 region eu-central-1 (Frankfurt am Main).
+ * Add support for Virtual Pricate Clouds (VPC) with AWS EC2.
+bug: [36141,36289]
