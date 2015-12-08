@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-7) unstable; urgency=medium
+
+  * Bug #40146: fix the alignment of the single sign on button
+
+ -- Florian Best <best@univention.de>  Tue, 08 Dec 2015 13:02:32 +0100
+
 univention-management-console-frontend (5.0.63-6) unstable; urgency=medium
 
   * Bug #40144: Give hint about username on unconfigured systems.

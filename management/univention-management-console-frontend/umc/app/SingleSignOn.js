@@ -32,12 +32,14 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/request/xhr",
+	"dojo/dom-style",
+	"dojo/query",
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/Button",
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, xhr, ContainerWidget, Button, _) {
+], function(declare, lang, xhr, domStyle, query, ContainerWidget, Button, _) {
 	return declare('umc.app.SingleSignOn', [ContainerWidget], {
 		_languageMenu: null,
 		_languageButton: null,
@@ -66,7 +68,7 @@ define([
 				});
 			})).otherwise(lang.hitch(this, function() {
 				this.sso_uri = _('http://sdb.univention.de/1351');
-				this.ssoButton.set('label', '<s>' + this.ssoButton.get('label') + '</s>');
+				domStyle.set(query('.dijitButtonText', this.domNode)[0], 'text-decoration', 'line-through');
 			}));
 		},
 		buildRendering: function() {
