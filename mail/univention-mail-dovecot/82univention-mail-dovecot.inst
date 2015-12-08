@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 
@@ -71,6 +71,12 @@ ucs_addServiceToLocalhost "IMAP" "$@"
 # Terminate UDM server to force module reload
 . /usr/share/univention-lib/base.sh
 stop_udm_cli_server
+
+# Fix for Bug #40038/40037:
+# only used during update from univention-mail-dovecot <=2.0.0 to 2.0.1-1
+if joinscript_check_specific_version_executed 1 ; then
+	/usr/share/univention-mail-dovecot/reapply_shared_folder_acls
+fi
 
 /usr/lib/univention-server/server_password_change.d/univention-mail-dovecot postchange
 

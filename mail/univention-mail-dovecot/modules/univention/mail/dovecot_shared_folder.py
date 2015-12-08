@@ -48,8 +48,8 @@ dovecot_acls = {
 	"read":   ("lrws",     ["lookup", "read", "write", "write-seen"]),
 	"post":   ("lrwsp",    ["lookup", "read", "write", "write-seen", "post"]),
 	"append": ("lrwspi",   ["lookup", "read", "write", "write-seen", "post", "insert"]),
-	"write":  ("lrwspit",  ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted"]),
-	"all":    ("lrwspita", ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "admin"])}
+	"write":  ("lrwspite",  ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "expunge"]),
+	"all":    ("lrwspitea", ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "expunge", "admin"])}
 
 
 class DovecotSharedFolderListener(DovecotListener):
