@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-system-setup
+fix: 9.0.2-19.934.201512091724
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * Added more input validation for certificate values.
+bug: [39376]

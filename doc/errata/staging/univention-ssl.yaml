@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-ssl
+fix: 10.0.0-10.167.201512091718
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * Certificate variables are now correctly escaped when writing to
+    configuration file before creating new certificates.
+bug: [39376]
