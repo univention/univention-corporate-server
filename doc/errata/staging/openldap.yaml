@@ -5,8 +5,8 @@ src: openldap
 fix: 2.4.40-1.211.201511242052
 version: [3,4]
 desc: |
-  This update addresses the following issue:
-  * Under certain circumstances the ldapi interface socket was writable
-    for the group "nogroup" after installation and before the first slapd
-    restart.
+ This update addresses the following issue:
+ * Under certain circumstances the ldapi interface socket was writable
+   for the group "nogroup" after installation and before the first slapd
+   restart.
 bug: [39812]
