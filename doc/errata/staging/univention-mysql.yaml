@@ -2,9 +2,9 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-mysql
-fix: 1.0.0-1.15.201511300938
+fix: 3.0.0-1.16.201512091026
 version: [0]
 desc: |
  This new package allows to configure arbitrary MySQL settings through UCR
- variables named 'mysql/config/$section/$key'.
+ variables named 'mysql/config/$group/$option'.
 bug: [39471]
