@@ -28,7 +28,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
-import simplejson as json
+import json
 import _util
 
 if __name__ == '__main__':

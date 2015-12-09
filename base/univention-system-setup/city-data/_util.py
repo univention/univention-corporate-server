@@ -29,7 +29,7 @@
 
 import os
 import sys
-import simplejson as json
+import json
 
 def _get_path(filename):
 	for ipath in (

@@ -42,7 +42,7 @@ import time
 import re
 import csv
 import os.path
-import simplejson as json
+import json
 import random
 import urllib2
 import psutil
@@ -501,8 +501,11 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 	if restartServer:
 		f.write('=== Restart of UMC server and web server (%s) ===\n' % timestamp())
 		f.flush()
-		subprocess.call(['/etc/init.d/univention-management-console-server', 'restart'], stdout=f, stderr=f)
-		subprocess.call(['/etc/init.d/univention-management-console-web-server', 'restart'], stdout=f, stderr=f)
+		p = subprocess.Popen(['/usr/bin/at', 'now'], stdin=subprocess.PIPE, stderr=f, stdout=f)
+		p.communicate('''#!/bin/sh
+sleep 5;  # leave enough time to display error messages or indicate success
+/etc/init.d/univention-management-console-server restart;
+/etc/init.d/univention-management-console-web-server''')
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()

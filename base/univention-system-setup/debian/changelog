@@ -1,3 +1,13 @@
+univention-system-setup (9.0.2-19) unstable; urgency=medium
+
+  * Bug #39376: validate SSL related variables
+  * Bug #39376: fix HTML encoding of variables on the summary
+  * Bug #39376: defer restart of UMC by 5 seconds to allow displaying of error
+  	messages in the frontend. Otherwise the module process is dead without
+  	returning possible errors.
+
+ -- Florian Best <best@univention.de>  Wed, 09 Dec 2015 16:43:10 +0100
+
 univention-system-setup (9.0.2-18) unstable; urgency=medium
 
   * Bug #40053: Fix AWS specific help text

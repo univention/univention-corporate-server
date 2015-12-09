@@ -47,14 +47,14 @@ done
 
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-info_header "$0" "$(gettext "Generating SSL certificate")"
-
 eval "$(univention-config-registry shell)"
 
 # SSL certificate can only be created on a DC master
 if [ "$server_role" != "domaincontroller_master" ]; then
 	exit 0
 fi
+
+info_header "$0" "$(gettext "Generating SSL certificate")"
 
 new_ssl_common=$(get_profile_var "ssl/common")
 new_ssl_locality=$(get_profile_var "ssl/locality")
@@ -75,6 +75,10 @@ for var in "common" "locality" "organization" "country" "state" "organizationalu
 done
 
 if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
+	progress_steps 10
+	progress_next_step 2
+	progress_msg "$(gettext "Backing up old SSL certificate")"
+
 	# remove old backup
 	if [ -d /etc/univention/ssl.orig ]; then
 		rm -rf /etc/univention/ssl.orig
@@ -101,10 +105,25 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 		fi
 	done
 
+	_certificate_creation_failed() {
+		progress_next_step 10
+		if [ -d /etc/univention/ssl ]; then
+			rm -rf /etc/univention/ssl
+		fi
+		mv /etc/univention/ssl.orig /etc/univention/ssl
+
+		progress_error "$(gettext "The SSL certificate creation failed. The old certificates have been restored.")"
+		exit 1
+	}
+
 	# create new CA und certificates
+	progress_next_step 5
+	progress_msg "$(gettext "Generating SSL CA certificate.")"
 	. /usr/share/univention-ssl/make-certificates.sh
-	init
-	(
+	init || _certificate_creation_failed
+
+	progress_next_step 7
+	[ -d /etc/univention/ssl.orig ] && (
 		cd /etc/univention/ssl.orig
 		for fqdn in *; do
 			# just check directories for certificates
@@ -120,25 +139,29 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 				continue
 			fi
 			# get the hostname
-			host=$(echo $fqdn | sed 's/\([^.]*\)\..*/\1/')
-			univention-certificate new -name $fqdn
-			ln -sf /etc/univention/ssl/$host.$domainname /etc/univention/ssl/$host
+			progress_msg "$(gettext $(printf "Recreate SSL certificate for %s") "$fqdn")"
+			host=$(echo "$fqdn" | sed 's/\([^.]*\)\..*/\1/')
+			univention-certificate new -name "$fqdn" || progress_error "$(gettext $(printf "Could not recreate SSL certificate for %s.") "$fqdn")"
+			ln -sf "/etc/univention/ssl/$host.$domainname" "/etc/univention/ssl/$host"
 		done
 	)
+	progress_next_step 9
 
 	# copy certificates for cyrus
 	for file in cert.pem private.key; do
 		if [ -e "/var/lib/cyrus/$file" ]
 		then
-			cp /etc/univention/ssl/$hostname.$domainname/$file /var/lib/cyrus/$file
-			chown cyrus /var/lib/cyrus/$file
-			chmod 600 /var/lib/cyrus/$file
+			cp "/etc/univention/ssl/$hostname.$domainname/$file" "/var/lib/cyrus/$file"
+			chown cyrus "/var/lib/cyrus/$file"
+			chmod 600 "/var/lib/cyrus/$file"
 		fi
 	done
 
+	progress_next_step 10
+
 	# restart services
 	for service in slapd apache2 cyrus postfix; do
-		invoke-rc.d --quiet $service restart
+		invoke-rc.d --quiet "$service" restart
 	done
 fi
 

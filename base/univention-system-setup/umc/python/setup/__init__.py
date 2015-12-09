@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import stringprep
 import threading
 import traceback
 import time
@@ -38,7 +39,7 @@ import re
 import os
 import copy
 import subprocess
-import simplejson as json
+import json
 import locale as _locale
 import lxml.etree 
 
@@ -418,12 +419,28 @@ class Instance(Base, ProgressMixin):
 		_check('root_password', util.is_ascii, _("The root password may only contain ascii characters."))
 
 		# ssl + email
-		for ikey, iname in [('ssl/state', _('State')), ('ssl/locality', _('Location'))]:
-			_check(ikey, lambda x: len(x) <= 128, _('The following value is too long, only 128 characters allowed: %s') % iname)
-		for ikey, iname in [('ssl/organization', _('Organization')), ('ssl/organizationalunit', _('Business unit')), ('ssl/email', _('Email address')), ('email_address', _('Email address'))]:
-			_check(ikey, lambda x: len(x) <= 64, _('The following value is too long, only 64 characters allowed: %s') % iname)
+		labels = {
+			'ssl/country': _('Country'),
+			'ssl/state': _('State'),
+			'ssl/locality': _('Location'),
+			'ssl/organization': _('Organization'),
+			'organization': _('Organization'),
+			'ssl/organizationalunit': _('Business unit'),
+			'ssl/email': _('Email address'),
+			'email_address': _('Email address'),
+			'ssl/common': _('Common name for the root SSL certificate'),
+		}
+		for maxlenth, keys in [(2, ('ssl/country',)), (128, ('ssl/state', 'ssl/locality',)), (64, ('organization', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'email_address', 'ssl/common'))]:
+			for ikey in keys:
+				_check(ikey, lambda x: len(x) <= maxlenth, _('The following value is too long, only %s characters allowed: %s') % (maxlenth, labels[ikey],))
+
+		for ikey in ('ssl/country', 'ssl/state', 'ssl/locality', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'ssl/common'):
+			for table in (stringprep.in_table_c21, stringprep.in_table_a1, stringprep.in_table_c8, stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, lambda c: c == u'\ufffd'):
+				_check(ikey, lambda x: not any(map(table, unicode(x))) , _('The value for %s contains invalid characters.') % (labels[ikey],))
+
+		_check('ssl/country', lambda x: len(x) == 2, _('Country must be a country code consisting of 2 characters.'))
 		for ikey in ['ssl/email', 'email_address']:
-			_check(ikey, lambda x: x.find('@') >= 0, _("Please enter a valid email address"))
+			_check(ikey, lambda x: x.find('@') > 0, _("Please enter a valid email address"))
 
 		# net
 		try:

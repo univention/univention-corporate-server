@@ -37,6 +37,7 @@ define([
 	"dojo/topic",
 	"dojo/Deferred",
 	"dojox/html/styles",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Module",
@@ -49,7 +50,7 @@ define([
 	"./setup/LanguagePage",
 	"./setup/NetworkPage",
 	"./setup/CertificatePage"
-], function(dojo, declare, lang, array, all, topic, Deferred, styles,
+], function(dojo, declare, lang, array, all, topic, Deferred, styles, entities,
 	tools, dialog, Module, ProgressBar, libServer, ApplianceWizard, _) {
 
 	var CancelDialogException = declare("umc.modules.setup.CancelDialogException", null, {
@@ -492,7 +493,7 @@ define([
 				var confirmMessage = '<p>' + _('The following changes will be applied to the system:') + '</p><ul style="max-height:200px; overflow:auto;">';
 				array.forEach(summaries, function(idesc) {
 					if (idesc.showConfirm) {
-						confirmMessage += '<li>' + idesc.description + ': ' + idesc.values + '</li>';
+						confirmMessage += '<li>' + entities.encode(idesc.description) + ': ' + entities.encode(idesc.values) + '</li>';
 					}
 				});
 				confirmMessage += '</ul><p>' + _('Please confirm to apply these changes to the system. This may take some time.') + '</p>';
@@ -541,7 +542,7 @@ define([
 					var validationMessage = '<p>' + _('The following entries could not be validated:') + '</p><ul style="max-height:200px; overflow:auto;">';
 					array.forEach(summaries, function(idesc) {
 						array.forEach(idesc.validationMessages || [], function(imsg) {
-							validationMessage += '<li>' + idesc.description + ': ' + imsg + '</li>';
+							validationMessage += '<li>' + entities.encode(idesc.description) + ': ' + entities.encode(imsg) + '</li>';
 						});
 					});
 					validationMessage += '</ul>';

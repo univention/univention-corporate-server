@@ -46,6 +46,7 @@ define([
 	"dijit/focus",
 	"dojox/timing/_base",
 	"dojox/html/styles",
+	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/TextBox",
@@ -64,7 +65,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, timing, styles, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -1723,7 +1724,7 @@ define([
 				if (label) {
 					msg += '<b>' + label + ':</b><br/>';
 				}
-				msg += ientry.message;
+				msg += entities.encode(ientry.message);
 				msg += '</li>';
 			}, this);
 			msg += '</ul>';
