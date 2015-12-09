@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: ucslint
+fix: 5.0.1-2.70.201512091330
+version: [0]
+desc: |
+    This update fixes a crash of the UCS policy conformance checker for the
+    case, when issues don't include a file name or reference a not existing
+    file.
+bug: [36456]
