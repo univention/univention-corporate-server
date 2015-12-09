@@ -1,4 +1,4 @@
-univention-mysql (1.0.0-2) unstable; urgency=low
+univention-mysql (3.0.0-1) unstable; urgency=low
 
   * Bug #39471: Allow options without value.
 
