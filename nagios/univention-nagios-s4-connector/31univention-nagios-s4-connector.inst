@@ -57,7 +57,7 @@ else
 			--set notificationOptionUnreachable=1 \
 			--set notificationOptionCritical=1 \
 			--set checkArgs='' \
-			--set useNRPE=0 || die
+			--set useNRPE=1 || die
 
 	if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		univention-directory-manager nagios/service modify "$@" --ignore_exists \
