@@ -1,3 +1,10 @@
+univention-ssl (10.0.0-10) unstable; urgency=medium
+
+  * Bug #39376: correctly escape config variables; The characters " and $
+  	causes an invalid config and must be escaped.
+
+ -- Florian Best <best@univention.de>  Wed, 09 Dec 2015 16:38:36 +0100
+
 univention-ssl (10.0.0-9) unstable; urgency=low
 
   * recommend rdate (Bug #39410)

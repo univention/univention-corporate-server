@@ -86,6 +86,10 @@ mk_config () {
 	touch "$outfile"
 	chmod 0600 "$outfile"
 
+	_escape() {
+		sed 's/["$]/\\\0/g'
+	}
+
 	cat >"$outfile" <<EOF
 # HOME			= .
 # RANDFILE		= \$ENV::HOME/.rnd
@@ -159,13 +163,13 @@ req_extensions = v3_req
 
 [ req_distinguished_name ]
 
-C	= $(ucr get ssl/country)
-ST	= $(ucr get ssl/state)
-L	= $(ucr get ssl/locality)
-O	= $(ucr get ssl/organization)
-OU	= $(ucr get ssl/organizationalunit)
-CN	= $name
-emailAddress	= $(ucr get ssl/email)
+C	= $(ucr get ssl/country | _escape)
+ST	= $(ucr get ssl/state | _escape)
+L	= $(ucr get ssl/locality | _escape)
+O	= $(ucr get ssl/organization | _escape)
+OU	= $(ucr get ssl/organizationalunit | _escape)
+CN	= $(echo -en "$name" | _escape)
+emailAddress	= $(ucr get ssl/email | _escape)
 
 [ req_attributes ]
 
@@ -271,27 +275,28 @@ init () {
 	# make the root-CA configuration file
 	mk_config openssl.cnf "$PASSWD" "$DEFAULT_DAYS" "$cn" || return $?
 
-	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${CA}/private/CAkey.pem" "$DEFAULT_BITS"
-	openssl req -batch -config openssl.cnf -new -x509 -days "$DEFAULT_DAYS" -key "${CA}/private/CAkey.pem" -out "${CA}/CAcert.pem"
+	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${CA}/private/CAkey.pem" "$DEFAULT_BITS" || return $?
+	openssl req -batch -config openssl.cnf -new -x509 -days "$DEFAULT_DAYS" -key "${CA}/private/CAkey.pem" -out "${CA}/CAcert.pem" || return $?
 
 	# copy the public key to a place, from where browsers can access it
-	openssl x509 -in "${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt
+	openssl x509 -in "${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt || return $?
 
 	# mv the certificate to the certs dir and link it to its hash value
 	cp "${CA}/CAcert.pem" "${CA}/newcerts/00.pem"
 	move_cert "${CA}/newcerts/00.pem"
 
 	# generate root ca request
-	openssl x509 -x509toreq -in "${CA}/CAcert.pem" -signkey "${CA}/private/CAkey.pem" -out "${CA}/CAreq.pem" -passin pass:"$PASSWD"
+	openssl x509 -x509toreq -in "${CA}/CAcert.pem" -signkey "${CA}/private/CAkey.pem" -out "${CA}/CAreq.pem" -passin pass:"$PASSWD" || return $?
 
 	find "${CA}" -type f -exec chmod 600 {} +
 	find "${CA}" -type d -exec chmod 700 {} +
 
 	chmod 755 "${CA}"
 	chmod 644 "${CA}/CAcert.pem"
-	#generate empty crl at installation time
-	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD"
-	openssl crl -in "${CA}/crl/crl.pem" -out "${CA}/crl/${CA}.crl" -inform pem -outform der
+
+	# generate empty crl at installation time
+	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD" || return $?
+	openssl crl -in "${CA}/crl/crl.pem" -out "${CA}/crl/${CA}.crl" -inform pem -outform der || return $?
 	cp "${CA}/crl/${CA}.crl" /var/www/
 
 	if getent group 'DC Backup Hosts' >/dev/zero
