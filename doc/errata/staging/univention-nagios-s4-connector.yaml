@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-nagios-s4-connector
-fix: 1.0.0-2.2.201511261209
+fix: 1.0.0-3.3.201512090901
 version: [0]
 desc: |
  This update addresses the following issue:
