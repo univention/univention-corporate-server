@@ -2,7 +2,7 @@
 # Univention Baseconfig
 #  call lilo
 #
-# Copyright (C) 2004-2012   Univention GmbH
+# Copyright (C) 2004-2015   Univention GmbH
 #
 # http://www.univention.de/
 #

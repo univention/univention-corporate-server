@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2008-2014 Univention GmbH
+# Copyright (C) 2008-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -74,8 +74,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in uub.FilteredDirWalkGenerator(path, reHashBang=re.compile('^#!'), readSize=100):
 			check_files.append(fn)
 
-		# Copyright (C) 2004, 2005, 2006 Univention GmbH
-		# Copyright (C) 2004-2014 Univention GmbH
+		# Copyright (C) 2004-2015 Univention GmbH
+		# Copyright (C) 2004-2015 Univention GmbH
 		# Copyright 2008 by
 		reCopyrightVersion = re.compile('Copyright(\s+\(C\))?\s+([0-9, -]+)\s+(by|Univention\s+GmbH)')
 
