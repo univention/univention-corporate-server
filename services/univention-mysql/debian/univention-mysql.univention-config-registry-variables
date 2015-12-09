@@ -5,7 +5,7 @@ Type=str
 Categories=service-base
 
 [mysql/config/.*/.*]
-Description[de]=Diese Variablen der From 'mysql/config/$abschnitt/$schlüssel=$wert' konfigurieren beliebige MySQL-Einstellungen im Format für '/etc/mysql/my.cnf'.
-Description[en]=These variables in the format 'mysql/config/$section/$key=$value' configure arbitrary MySQL settings in the format for '/etc/mysql/my.cnf'.
+Description[de]=Diese Variablen der Form 'mysql/config/$gruppe/$option=$wert' konfigurieren beliebige MySQL-Einstellungen im Format für '/etc/mysql/my.cnf'. Endet der Optionsname mit einem '/', so wird der Wert ignoriert und nicht ausgegeben.
+Description[en]=These variables in the format 'mysql/config/$group/$option=$value' configure arbitrary MySQL settings in the format for '/etc/mysql/my.cnf'. If the option name ends on a '/', the value is ignored and not printed.
 Type=str
 Categories=system

@@ -1,3 +1,9 @@
+univention-mysql (1.0.0-2) unstable; urgency=low
+
+  * Bug #39471: Allow options without value.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Dec 2015 09:10:25 +0100
+
 univention-mysql (1.0.0-1) unstable; urgency=low
 
   * Bug #39471: Initial Release.
