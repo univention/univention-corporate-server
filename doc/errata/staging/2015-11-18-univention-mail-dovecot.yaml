@@ -5,7 +5,7 @@ src: univention-mail-dovecot
 fix: 2.0.1-1.52.201512082057
 version: [0]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * An error in the dovecot listener could lead to the unintended
    deletion of a shared folder if the corresponding LDAP objects is changed
    (Bug 40014).

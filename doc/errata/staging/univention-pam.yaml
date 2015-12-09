@@ -6,6 +6,6 @@ fix: 9.0.0-2.264.201511241236
 version: [0]
 desc: |
  This update addresses the following issue:
- * A German wordlist was added, so that passwords can be checked to not
-   include German words.
+ * A german wordlist was added, so that passwords can be checked to not
+   include german words.
 bug: [24840]
