@@ -38,6 +38,7 @@ tmpdir=$(mktemp -d)
 trap "rm -rf '$tmpdir'" EXIT
 tmpresult="$tmpdir/result"
 tmpdiff="$tmpdir/diff"
+tmperr="$tmpdir/err"
 
 export PYTHONPATH="$PWD:$PYTHONPATH"
 BINPATH="$PWD/bin/ucslint"
@@ -46,7 +47,7 @@ UCSLINTPATH=(
 	-p "$PWD/ucslint-univention"
 	)
 
-for dir in testframework/*
+for dir in testframework/$@*
 do
     if [ -d "$dir" ]
     then
@@ -55,7 +56,13 @@ do
         DIRNAME=$(basename "$dir")
         MODULE="${DIRNAME:0:4}"
 
-        ( cd "$dir" && "$BINPATH" "${UCSLINTPATH[@]}" -m "$MODULE" >"$tmpresult" 2>/dev/null )
+        if ! ( cd "$dir" && "$BINPATH" "${UCSLINTPATH[@]}" -m "$MODULE" >"$tmpresult" 2>"$tmperr" )
+        then
+            [ -z "$quiet" ] && echo "${red}ERROR${norm}"
+            cat "$tmperr"
+            RETVAL+=1
+            continue
+        fi
         ./ucslint-sort-output.py "$tmpresult" >"${dir}.test"
 
         if diff -u "${dir}.correct" "${dir}.test" >"$tmpdiff" 2>&1

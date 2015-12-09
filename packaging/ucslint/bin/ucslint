@@ -32,12 +32,14 @@
 # <http://www.gnu.org/licenses/>.
 #
 #
-import fnmatch
+from fnmatch import fnmatch
 import os
+from os.path import abspath, dirname, join, pardir
 import sys
-import imp
-import optparse
+from imp import new_module
+from optparse import OptionParser
 import re
+from errno import ENOENT
 try:
 	import univention.ucslint.base as uub
 except ImportError:
@@ -45,7 +47,7 @@ except ImportError:
 		import ucslint.base as uub
 		print >> sys.stderr, 'using fallback ucslint.base instead of univention.ucslint.base'
 	except ImportError:
-		sys.path.insert(0, os.path.curdir)
+		sys.path.insert(0, join(dirname(sys.argv[0]), pardir))
 		import ucslint.base as uub
 		print >> sys.stderr, 'using local ucslint.base instead of univention.ucslint.base'
 
@@ -67,7 +69,7 @@ class DebianPackageCheck(object):
 
 	def loadplugins(self):
 		"""Load modules from plugin directory."""
-		for plugindir in plugindirs:
+		for plugindir in self.plugindirs:
 			plugindir = os.path.expanduser(plugindir)
 			if not os.path.exists(plugindir):
 				if self.debuglevel:
@@ -80,7 +82,7 @@ class DebianPackageCheck(object):
 						if ( not self.enabled_modules or f[0:4] in self.enabled_modules ) and not f[0:4] in self.disabled_modules:
 							modname = f[0:-3]
 							fd = open( os.path.join( plugindir, f ) )
-							module = imp.new_module(modname)
+							module = new_module(modname)
 							try:
 								exec fd in module.__dict__
 								self.pluginlist[modname] = module
@@ -126,52 +128,43 @@ class DebianPackageCheck(object):
 		"""
 		self.overrides = set()
 		fn = os.path.join( self.path, 'debian', 'ucslint.overrides' )
-		if os.path.isfile(fn):
-			lines = []
-			try:
-				lines = open(fn, 'r').readlines()
-			except IOError:
-				print >> sys.stderr, 'WARNING: cannot load debian/ucslint.overrides'
+		try:
+			with open(fn, 'r') as overrides:
+				RE = re.compile(r'^(\d+-\d+)(?::|:\s*(.+?)\s*(?::\s*(\d+))?)?$')
+				for line in overrides:
+					line = line.strip()
+					if line.startswith('#'):
+						continue
+					result = RE.match(line)
+					if not result:
+						print >> sys.stderr, 'IGNORED: debian/ucslint.overrides: %s' % (line,)
+						continue
 
-			reModule = re.compile('^(\d+-\d+):?\s*')
-			reFilename = re.compile('^(.*?)(:\d+)?$')
-			for line in lines:
-				module = None
-				filename = None
-				linenumber = None
+					module, filename, linenumber = result.groups()
+					if not filename:
+						filename = linenumber = None
+					elif not linenumber:
+						linenumber = None
+					else:
+						linenumber = int(linenumber)
 
-				line = line.strip()
+					override = (module, filename, linenumber)
+					self.overrides.add(override)
+		except IOError as ex:
+			if ex.errno != ENOENT:
+				print >> sys.stderr, 'WARNING: load debian/ucslint.overrides: %s' % (ex,)
 
-				# find UCR module and cut it off
-				result = reModule.search(line)
-				if not result:
-					continue
-				module = result.group(1)
-				line = line[ result.end(): ]
-
-				# find filename and cut it off
-				result = reFilename.search(line)
-				if not result:
-					self.overrides.add( (module, filename, linenumber, ) )
-					continue
-				filename = result.group(1)
-				if not filename:
-					filename = None
-				linenumber = result.group(2)
-				if linenumber:
-					linenumber = int(linenumber.strip(':'))
-
-				self.overrides.add( (module, filename, linenumber, ) )
-
-	def inOverrides(self, module, filename, linenumber):
+	def in_overrides(self, msg):
 		"""Check message agains overrides."""
-		if (module, None, None, ) in self.overrides:
-			return True
+		filepath = abspath(msg.filename) if msg.filename else ''
 		for (modulename, pattern, number, ) in self.overrides:
-			if modulename == module:
-				if fnmatch.fnmatch(os.path.abspath(filename), os.path.abspath(pattern)):
-					if number is None or number == linenumber:
-						return True
+			if modulename != msg.getId():
+				continue
+			if pattern and not fnmatch(filepath, abspath(pattern)):
+				continue
+			if number is not None and number != msg.line:
+				continue
+			return True
 		return False
 
 	def printResult(self, ignore_IDs, display_only_IDs, display_only_categories, exitcode_categories ):
@@ -186,7 +179,7 @@ class DebianPackageCheck(object):
 				continue
 			if display_only_IDs and not msg.getId() in display_only_IDs:
 				continue
-			if self.inOverrides( msg.getId(), msg.filename, msg.line ):
+			if self.in_overrides(msg):
 				# ignore msg if mentioned in overrides files
 				continue
 			category = uub.RESULT_INT2STR.get( self.msgidlist.get( msg.getId(), ['FIXME'] )[0], 'FIXME')
@@ -222,9 +215,9 @@ def clean_msgid(msgid):
 	return '%d' % int(msgid)
 
 
-if __name__ == '__main__':
+def parse_args():
 	usage = "usage: %prog [options] [<path>]"
-	parser = optparse.OptionParser(usage=usage)
+	parser = OptionParser(usage=usage)
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
 					   dest = 'debug', default = 0,
 					   help = 'if set, debugging is activated and set to the specified level' )
@@ -272,6 +265,12 @@ if __name__ == '__main__':
 	if not os.path.isdir( os.path.join(pkgpath, 'debian') ):
 		parser.error("%s/debian does not exist or is not a directory!" % pkgpath)
 
+	return options, pkgpath
+
+
+def main():
+	options, pkgpath = parse_args()
+
 	plugindirs = [
 		'~/.ucslint',
 		os.path.dirname(uub.__file__),
@@ -310,3 +309,7 @@ if __name__ == '__main__':
 
 	if exitcode_cnt:
 		sys.exit(1)
+
+
+if __name__ == '__main__':
+	main()

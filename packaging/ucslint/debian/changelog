@@ -1,3 +1,9 @@
+ucslint (5.0.1-2) unstable; urgency=low
+
+  * Bug #36456: Fix override handling
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 09 Dec 2015 11:42:29 +0100
+
 ucslint (5.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
