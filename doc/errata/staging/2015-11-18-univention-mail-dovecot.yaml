@@ -7,7 +7,7 @@ version: [0]
 desc: |
  This update addresses the following issue:
  * An error in the dovecot listener could lead to the unintended
-   deletion of a shared folder, when it should just have been renamed
+   deletion of a shared folder if the corresponding LDAP objects is changed
    (Bug 40014).
  * The UMC permissions "write" and "all" for shared folders did not
    contain the IMAP permission for expunge. A removal of mails or moving
