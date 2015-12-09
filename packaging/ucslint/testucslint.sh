@@ -56,21 +56,17 @@ do
         DIRNAME=$(basename "$dir")
         MODULE="${DIRNAME:0:4}"
 
-        if ! ( cd "$dir" && "$BINPATH" "${UCSLINTPATH[@]}" -m "$MODULE" >"$tmpresult" 2>"$tmperr" )
-        then
-            [ -z "$quiet" ] && echo "${red}ERROR${norm}"
-            cat "$tmperr"
-            RETVAL+=1
-            continue
-        fi
+        ( cd "$dir" && "$BINPATH" "${UCSLINTPATH[@]}" -m "$MODULE" >"$tmpresult" 2>"$tmperr" )
+        ret=$?
         ./ucslint-sort-output.py "$tmpresult" >"${dir}.test"
 
-        if diff -u "${dir}.correct" "${dir}.test" >"$tmpdiff" 2>&1
+        if diff -u "${dir}.correct" "${dir}.test" >"$tmpdiff" 2>&1 && [ 1 -ne "$ret" ]
         then
             [ -z "$quiet" ] && echo "${green}OK${norm}"
             [ -n "$clean" ] && rm -f "${dir}.test"
         else
             [ -z "$quiet" ] && echo "${red}FAILED${norm}"
+            [ 2 -ne "$ret" ] && cat "$tmperr"
             RETVAL+=1
             [ -n "$verbose" ] && sed "s/^+/${red}&/;s/^-/${green}&/;s/$/${norm}/" "$tmpdiff"
 

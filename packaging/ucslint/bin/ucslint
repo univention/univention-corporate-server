@@ -308,7 +308,7 @@ def main():
 	incident_cnt, exitcode_cnt = chk.printResult( options.ignore_IDs, options.display_only_IDs, options.display_only_categories, options.exitcode_categories )
 
 	if exitcode_cnt:
-		sys.exit(1)
+		sys.exit(2)
 
 
 if __name__ == '__main__':
