@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-appcenter
+fix: 5.0.19-20.79.201512101207
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * The app details page for small domains has been simplified.
+bug: [40116]
