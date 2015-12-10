@@ -18,7 +18,7 @@ import select
 import errno
 import re
 from hashlib import md5
-from time import sleep
+from time import time
 
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']
@@ -513,6 +513,7 @@ class TestCase(object):
 		self.bugs = set()
 		self.otrs = set()
 		self.timeout = None
+		self.signaled = None
 
 	def load(self, filename):
 		"""
@@ -601,24 +602,43 @@ class TestCase(object):
 		conditions += list(self.exposure.check(environment))
 		return conditions
 
-	@staticmethod
-	def _run_tee(proc, result, stdout=sys.stdout, stderr=sys.stderr):
+	def _run_tee(self, proc, result, stdout=sys.stdout, stderr=sys.stderr):
 		"""Run test collecting and passing through stdout, stderr:"""
+		EOF = ''
 		channels = {
 			proc.stdout.fileno(): (proc.stdout, [], 'stdout', stdout, '[]', bytearray()),
 			proc.stderr.fileno(): (proc.stderr, [], 'stderr', stderr, '()', bytearray()),
 		}
 		combined = []
-		timeout = None
+		next_kill = next_read = None
+		shutdown = False
+		kill_sequence = self._terminate_proc(proc)
 		while channels:
+			current = time()
+			if self.signaled == signal.SIGALRM:
+				if next_kill <= current:
+					try:
+						next_kill = current + kill_sequence.next()
+					except StopIteration:
+						shutdown = True
+						next_kill = current + 1.0
+			elif self.signaled == signal.SIGCHLD:
+				shutdown = True
+				next_kill = current + 1.0
 			try:
-				rlist, _wlist, _elist = select.select(channels.keys(), [], [], timeout)
-			except select.error, ex:
+				delay = max(0.0, min(filter(None, (next_kill, next_read))) - current)
+			except ValueError:
+				delay = None
+
+			try:
+				rlist, _wlist, _elist = select.select(channels.keys(), [], [], delay)
+			except select.error as ex:
 				if ex.args[0] == errno.EINTR:
+					TestCase.logger.debug('select() interrupted by SIG%d rc=%r', self.signaled, proc.poll())
 					continue
 				raise
 
-			timeout = None
+			next_read = None
 			for fd in rlist or channels.keys():
 				stream, log, name, out, paren, buf = channels[fd]
 
@@ -627,10 +647,10 @@ class TestCase(object):
 					out.write(data)
 					buf += data
 				else:
-					data = None
+					data = EOF if shutdown else None
 
 				while buf:
-					if data == '':
+					if data == EOF:
 						line = buf
 						buf = None
 					else:
@@ -645,15 +665,35 @@ class TestCase(object):
 					log.append(entry)
 					combined.append(entry)
 
-				if data == '':
+				if data == EOF:
 					stream.close()
 					del channels[fd]
 					TestCase._attach(result, name, log)
 
 				if buf and data:
-					timeout = 0.1
+					next_read = current + 0.1
 
 		TestCase._attach(result, 'stdout', combined)
+
+	@staticmethod
+	def _terminate_proc(proc):
+		try:
+			for i in range(8):  # 2^8 * 100ms = 25.5s
+				TestCase.logger.info('Sending %d. SIGTERM to %d', i + 1, proc.pid)
+				rc = os.killpg(proc.pid, signal.SIGTERM)
+				TestCase.logger.debug('rc=%s', rc)
+				rc = proc.poll()
+				TestCase.logger.debug('rc=%s', rc)
+				if rc is not None:
+					return
+				yield (1 << i) / 10.0
+			TestCase.logger.info('Sending SIGKILL to %d', proc.pid)
+			os.killpg(proc.pid, signal.SIGKILL)
+		except OSError as ex:
+			if ex.errno != errno.ESRCH:
+				TestCase.logger.warn(
+					'Failed to kill process %d: %s', proc.pid, ex,
+					exc_info=True)
 
 	@staticmethod
 	def _attach(result, part, content):
@@ -713,6 +753,7 @@ class TestCase(object):
 
 		def prepare_child():
 			"""Setup child process."""
+			os.setsid()
 			signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 		try:
@@ -722,7 +763,8 @@ class TestCase(object):
 				if result.environment.interactive:
 					proc = Popen(cmd, executable=self.exe.filename,
 							shell=False, stdout=PIPE, stderr=PIPE,
-							close_fds=True, cwd=dirname)
+							close_fds=True, cwd=dirname,
+							preexec_fn=os.setsid)
 					to_stdout, to_stderr = sys.stdout, sys.stderr
 				else:
 					devnull = open(os.path.devnull, 'r')
@@ -735,26 +777,12 @@ class TestCase(object):
 						devnull.close()
 					to_stdout = to_stderr = result.environment.log
 
+				signal.signal(signal.SIGCHLD, self.handle_shutdown)
 				if self.timeout:
-					def handle_alarm(_signal, _frame):
-						try:
-							for i in range(8):  # 2^8 * 100ms = 25.5s
-								TestCase.logger.info('Sending %d. SIGTERM', i + 1)
-								proc.terminate()
-								if proc.poll() is not None:
-									return
-								sleep((1 << i) / 10.0)
-							TestCase.logger.info('Sending SIGKILL')
-							proc.kill()
-						except OSError as ex:
-							if ex.errno != errno.ESRCH:
-								TestCase.logger.warn(
-									'Failed to kill process %r: %s', cmd, ex,
-									exc_info=True)
-					old_sig_alrm = signal.signal(signal.SIGALRM, handle_alarm)
+					old_sig_alrm = signal.signal(signal.SIGALRM, self.handle_shutdown)
 					signal.alarm(self.timeout)
 
-				TestCase._run_tee(proc, result, to_stdout, to_stderr)
+				self._run_tee(proc, result, to_stdout, to_stderr)
 
 				result.result = proc.wait()
 			except OSError:
@@ -784,6 +812,10 @@ class TestCase(object):
 				cmd, self.exe, dirname, result.result, result.duration)
 
 		self._translate_result(result)
+
+	def handle_shutdown(self, signal, _frame):
+		TestCase.logger.debug('Received SIG%d', signal)
+		self.signaled = signal
 
 
 class TestResult(object):

@@ -71,7 +71,8 @@ def setup_environment():
 def setup_debug(level):
 	"""Setup Python logging."""
 	level = setup_debug.TAB.get(level, logging.DEBUG)
-	logging.basicConfig(stream=sys.stderr, level=level)
+	FORMAT = '%(asctime)-15s ' + logging.BASIC_FORMAT
+	logging.basicConfig(stream=sys.stderr, level=level, format=FORMAT)
 setup_debug.TAB = {  # pylint: disable-msg=W0612
 		None: logging.WARNING,
 		0: logging.WARNING,
