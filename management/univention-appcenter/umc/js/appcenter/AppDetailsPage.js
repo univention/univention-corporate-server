@@ -56,13 +56,14 @@ define([
 	"umc/widgets/ProgressBar",
 	"umc/widgets/Page",
 	"umc/widgets/Text",
+	"umc/widgets/Button",
 	"umc/widgets/CheckBox",
 	"umc/widgets/Grid",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/Carousel",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, CheckBox, Grid, AppCenterGallery, App, Carousel, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, Carousel, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -78,6 +79,7 @@ define([
 		standby: null,
 
 		title: _("App management"),
+		moduleTitle: null,
 		noFooter: true,
 		getAppCommand: 'appcenter/get',
 
@@ -145,11 +147,15 @@ define([
 				this.hostDialog.set('app', app);
 				this.detailsDialog.set('app', app);
 				this.configDialog.set('app', app);
-				this.set('headerText', app.name);
-				//this.set('helpText', app.longDescription);
-				this.buildInnerPage();
+				this.renderPage();
+				this.set('moduleTitle', app.name);
 				this.appLoadingDeferred.resolve();
 			}));
+		},
+
+		_setModuleTitleAttr: function(name) {
+			this._set('moduleTitle', name);
+			this.moduleTitle = name;
 		},
 
 		_appIsInstalledInDomain: function() {
@@ -172,23 +178,19 @@ define([
 
 		getButtons: function() {
 			var buttons = [];
-			if (this.app.canOpen() && this.app.isInstalled) {
+			if (this.app.canOpenInDomain() && this.app.isInstalled) {
 				buttons.push({
 					name: 'open',
 					label: this.app.getOpenLabel(),
 					defaultButton: true,
-					'class': 'umcAppButton umcAppButtonFirstRow',
-					callback: lang.hitch(this, function() {
-						this.app.open();
-					})
+					'class': 'umcAppButton',
+					callback: lang.hitch(this.app, 'open')
 				});
-			} else if (this.app.canInstall) {
+			} else if (this.app.canInstall && !this.app.isInstalled) {
 				buttons.push({
 					name: 'install',
 					label: _('Install'),
 					'class': 'umcAppButton',
-					isStandardAction: true,
-					isContextAction: false,
 					iconClass: 'umcIconAdd',
 					callback: lang.hitch(this.app, 'install')
 				});
@@ -199,27 +201,27 @@ define([
 					name: 'shop',
 					label: _('Buy'),
 					iconClass: 'umcShopIcon',
-					'class': 'umcAppButton umcAppButtonFirstRow',
+					'class': 'umcAppButton',
 					callback: lang.hitch(this, 'openShop')
 				});
 			}
 			return buttons;
 		},
 
-		getActionButtons: function() {
+		getActionButtons: function(isSingleServerInstallation) {
 			var buttons = [];
-			if (this.app.canInstall) {
+			if (this.app.canInstall && this.app.getHosts().length > 1) {
 				buttons.push({
 					name: 'install',
 					label: _('Install'),
-					'class': 'umcAppButton',
+					'class': 'umcAppButton umcActionButton',
 					isStandardAction: true,
 					isContextAction: false,
 					iconClass: 'umcIconAdd',
 					callback: lang.hitch(this.app, 'install')
 				});
 			}
-			if (this.app.canOpenInDomain()) {
+			if (this.app.canOpenInDomain() && !this.app.isInstalled) {
 				buttons.push({
 					name: 'open',
 					label: this.app.getOpenLabel(),
@@ -238,7 +240,7 @@ define([
 				buttons.push({
 					name: 'disable',
 					label: _('Continue using'),
-					'class': 'umcAppButton umcAppButtonFirstRow',
+					'class': 'umcAppButton umcActionButton',
 					isContextAction: true,
 					isStandardAction: true,
 					canExecute: lang.hitch(this, function(app) {
@@ -251,7 +253,7 @@ define([
 				buttons.push({
 					name: 'configure',
 					label: _('App settings'),
-					'class': 'umcAppButton',
+					'class': 'umcAppButton umcActionButton',
 					isContextAction: true,
 					isStandardAction: true,
 					canExecute: lang.hitch(this, function(app) {
@@ -261,21 +263,35 @@ define([
 				});
 			}
 			if (this.app.canUninstallInDomain()) {
+				var callback;
+				if (isSingleServerInstallation) {
+					callback = lang.hitch(this.app, 'uninstall');
+				} else {
+					callback = lang.hitch(this, function(host, app) {
+						app[0].data.uninstall();
+					});
+				}
 				buttons.push({
 					name: 'uninstall',
 					label: _('Uninstall'),
 					isContextAction: true,
 					isStandardAction: true,
-					'class': 'umcAppButton',
+					'class': 'umcAppButton umcActionButton',
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canUninstall();
 					}),
-					callback: lang.hitch(this, function(host, app) {
-						app[0].data.uninstall();
-					})
+					callback: callback
 				});
 			}
 			if (this.app.canUpgradeInDomain()) {
+				var callback;
+				if (isSingleServerInstallation) {
+					callback = lang.hitch(this.app, 'upgrade');
+				} else {
+					callback = lang.hitch(this, function(host, app) {
+						app[0].data.upgrade();
+					});
+				}
 				buttons.push({
 					name: 'update',
 					label: _('Upgrade'),
@@ -284,25 +300,20 @@ define([
 					canExecute: lang.hitch(this, function(app) {
 						return app.data.canUpgrade();
 					}),
-					callback: lang.hitch(this, function(host, app) {
-						app[0].data.upgrade();
-					})
+					callback: callback
 				});
 			}
 			return buttons;
 		},
 
-		buildInnerPage: function() {
-			var _getCSSClass4TextLength = function(text) {
-				var cssClass = '';
-				array.forEach([400, 500, 600, 800], function(ilength) {
-					if (text.length > ilength) {
-						cssClass = 'textLongerThan' + ilength + 'Chars';
-					}
-				});
-				return cssClass;
-			};
+		renderPage: function() {
+			this._renderIcon();
+			this._renderNavContainer();
+			this._renderMainContainer();
+			this._renderFooter();
+		},
 
+		_renderIcon: function() {
 			if (this._icon) {
 				this.removeChild(this._icon);
 				this._icon.destroyRecursive();
@@ -317,42 +328,38 @@ define([
 				});
 				this.addChild(this._icon, 0);
 			}
+		},
 
-			if (this._navHeaderButtonContainer) {
-				this.removeChild(this._navHeaderButtonContainer);
-				//TODO fix
-				//this._navHeaderButtonContainer.destroyRecursive();
-				this._navHeaderButtonContainer = null;
+		_renderNavContainer: function() {
+			if (this._navContainer) {
+				this.removeChild(this._navContainer);
+				this._navContainer = null;
 			}
-			this._navHeaderButtonContainer = new ContainerWidget({
+			this._navContainer = new ContainerWidget({
 				region: 'nav',
-				'class': 'navHeaderButton'
+				'class': 'navContainer'
 			});
 
-			this._navHeaderButtonContainer.addChild(this._headerTextPane, 0);
+			// build Text Widget for HeaderDetails
+			var _navHeaderDetails = new Text({
+				'class': 'umcAppStatusText'
+			});
 
+			// vendor
 			var vendor = this._detailFieldCustomVendor();
 			if (vendor) {
-				var _vendorTextPane = new Text({
-					content: vendor
-				});
-				this._navHeaderButtonContainer.addChild(_vendorTextPane);
+				_navHeaderDetails.set('content', vendor);
 			}
 
 			//Status of the App
 			if (this.app.isInstalled || this.app.getHosts().length) {
-				var informationText = new Text({
-					'class': 'umcAppStatus'
-				});
 				var text = _('Installed');
 				if (this.app.endOfLife) {
 					text = _('End of life');
 					var tooltipText = this._detailFieldCustomEndOfLife();
-
 					domConstruct.create('div', {
 							'class': 'umcEndOfLifeHelp umcHelpIconSmall',
 							onclick: function(evt) {
-								// stolen from system-setup
 								var node = evt.target;
 								Tooltip.show(tooltipText, node);
 								if (evt) {
@@ -363,7 +370,7 @@ define([
 									dojoEvent.stop(evt);
 								});
 							}
-						}, informationText.domNode
+						}, _navHeaderDetails.domNode
 					);
 				} else if (this.app.canUpgradeInDomain()) {
 					text = _('Update available');
@@ -371,23 +378,24 @@ define([
 				domConstruct.create('div', {
 					textContent: text,
 					'class': 'umcAppStatusText'
-				}, informationText.domNode, 'first');
-				this._navHeaderButtonContainer.addChild(informationText);
+				}, _navHeaderDetails.domNode);
 			} else {
 			//Categories of the App
 				var categoryButtons = this._detailFieldCustomCategories();
 				if (categoryButtons) {
-					this._navHeaderButtonContainer.domNode.appendChild(categoryButtons);
+					_navHeaderDetails.domNode.appendChild(categoryButtons);
 				}
 			}
 
+			this._navContainer.addChild(_navHeaderDetails);
 			this.set('navButtons', this.getButtons());
-			this._navButtons.set('style', {'margin-left': '-0.2em', 'margin-top': '1em'});
-			this._navHeaderButtonContainer.addChild(this._navButtons);
+			this._navContainer.addChild(this._navButtons);
 
-			this.addChild(this._navHeaderButtonContainer);
-			this.own(this._navHeaderButtonContainer);
+			this.addChild(this._navContainer);
+			this.own(this._navContainer);
+		},
 
+		_renderMainContainer: function() {
 			if (this._mainRegionContainer) {
 				this.removeChild(this._mainRegionContainer);
 				this._mainRegionContainer.destroyRecursive();
@@ -397,67 +405,109 @@ define([
 			this.addChild(this._mainRegionContainer);
 			this.own(this._mainRegionContainer);
 
-			if (this.app.isInstalled || this.app.getHosts().length > 0) {
-				var usage = this.app.readme;
-				if (usage) {
-					usage = lang.replace(usage, this.app);
-				} else {
-					usage = this._detailFieldCustomUsage();
-				}
-				if (usage) {
-					usageHeader = new Text({
-						content: _('First steps'),
-						'class': 'mainHeader'
-					});
-					this._mainRegionContainer.addChild(usageHeader);
+			var isAppInstalled = this.app.isInstalled || this.app.getHosts().length > 0;
+			if (isAppInstalled) {
+				this._renderUsage();
+				this._renderInstallationManagement();
+			}
+			this._renderDetailsPane(isAppInstalled);
 
-					var usageClass = 'usage ' + _getCSSClass4TextLength(usage);
-					var usagePane = new Text({
-						content: usage,
-						'class': usageClass
-					});
-					this._mainRegionContainer.addChild(usagePane);
-				}
+			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
+		},
 
-				var gridHeader = new Text({
-					content: _('Manage domain wide installations'),
+		_renderUsage: function() {
+			var usage = this.app.readme;
+			if (usage) {
+				usage = lang.replace(usage, this.app);
+			} else {
+				usage = this._detailFieldCustomUsage();
+			}
+			if (usage) {
+				usageHeader = new Text({
+					content: _('First steps'),
 					'class': 'mainHeader'
 				});
-				this._mainRegionContainer.addChild(gridHeader);
+				this._mainRegionContainer.addChild(usageHeader);
 
-				var actions = this.getActionButtons();
-
-				var columns = [{
-					name: 'server',
-					label: _('Server')
-				}, {
-					name: 'appStatus',
-					label: _('Status')
-				}];
-
-				var myStore = new Observable(new Memory({
-					data: this.app.getHosts()
-				}));
-				this._installedAppsGrid = new adaptedGrid({
-					'class': 'appDetailsPageGrid',
-					actions: actions,
-					columns: columns,
-					moduleStore: myStore,
-					gridOptions: {
-						'class': 'appDetailsPageGridContent'
-					}
+				var usageClass = 'usage ' + this._getCSSClass4TextLength(usage);
+				var usagePane = new Text({
+					content: usage,
+					'class': usageClass
 				});
-				this._mainRegionContainer.addChild(this._installedAppsGrid);
+				this._mainRegionContainer.addChild(usagePane);
 			}
+		},
 
+		_renderInstallationManagement: function() {
+			var isSingleServerInstallation = this.app.isInstalled && this.app.installationData.length === 1;
+			var actions = this.getActionButtons(isSingleServerInstallation);
+			if (isSingleServerInstallation || this.app.isDocker) {
+				this._renderSingleManagement(actions);
+			} else {
+				this._renderDomainwideManagement(actions);
+			}
+		},
+
+		_renderSingleManagement: function(actions) {
+			var header = new Text({
+				content: _('Manage local installation'),
+				'class': 'mainHeader'
+			});
+			this._mainRegionContainer.addChild(header);
+			this._mainRegionContainer.own(header);
+
+			var actionButtonContainer = new ContainerWidget({
+				'class': 'appDetailsPageActions'
+			});
+			array.forEach(actions, function(action) {
+				var button = new Button(action);
+				actionButtonContainer.addChild(button);
+				actionButtonContainer.own(button);
+			});
+			this._mainRegionContainer.addChild(actionButtonContainer);
+			this._mainRegionContainer.own(actionButtonContainer);
+		},
+
+		_renderDomainwideManagement: function(actions) {
+			var header = new Text({
+				content: _('Manage domain wide installations'),
+				'class': 'mainHeader'
+			});
+			this._mainRegionContainer.addChild(header);
+			this._mainRegionContainer.own(header);
+
+			var columns = [{
+				name: 'server',
+				label: _('Server')
+			}, {
+				name: 'appStatus',
+				label: _('Status')
+			}];
+
+			var myStore = new Observable(new Memory({
+				data: this.app.getHosts()
+			}));
+			this._installedAppsGrid = new adaptedGrid({
+				'class': 'appDetailsPageActions',
+				actions: actions,
+				columns: columns,
+				moduleStore: myStore,
+				gridOptions: {
+					'class': 'appDetailsPageActionsContent'
+				}
+			});
+			this._mainRegionContainer.addChild(this._installedAppsGrid);
+			this._mainRegionContainer.own(this._installedAppsGrid);
+		},
+
+		_renderDetailsPane: function(isAppInstalled) {
 			this._detailsContainer = new ContainerWidget({
 				'class': 'detailsContainer'
 			});
-
 			var descriptionContainer = new ContainerWidget({
 				'class': 'descriptionContainer'
 			});
-			var longDescCSSClass = _getCSSClass4TextLength(this.app.longDescription);
+			var longDescCSSClass = this._getCSSClass4TextLength(this.app.longDescription);
 			domClass.add(domConstruct.create('div', {
 				innerHTML: this.app.longDescription
 			}, descriptionContainer.domNode), longDescCSSClass);
@@ -467,7 +517,6 @@ define([
 				var styleContainer = new ContainerWidget({
 					'class': 'carouselWrapper'
 				});
-
 				var urls = array.map(this.app.thumbnails, function(ithumb) {
 					return {
 						src: ithumb
@@ -480,22 +529,27 @@ define([
 				this._detailsContainer.addChild(styleContainer);
 			}
 
-			// for an uninstalled app show details (open TitlePane) at the top of main
-			// otherwise close the Titlepane and move it under the grid
-			var isOpen = true;
-			if (this.app.isInstalled || this.app.getHosts().length) {
-				isOpen = false;
-			}
 			var detailsPane = new TitlePane({
-				open: isOpen,
+				open: !isAppInstalled,
 				//class: 'installedAppDetailsPane',
 				title: _('Details'),
 				content: this._detailsContainer,
 				'class': 'appDetailsPane'
 			});
-			this._mainRegionContainer.addChild(detailsPane, isOpen ? 0 : null);
+			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
+		},
 
-			//footer
+		_getCSSClass4TextLength: function(text) {
+			var cssClass = '';
+			array.forEach([400, 500, 600, 800], function(ilength) {
+				if (text.length > ilength) {
+					cssClass = 'textLongerThan' + ilength + 'Chars';
+				}
+			});
+			return cssClass;
+		},
+
+		_renderFooter: function() {
 			//TODO just for testing
 			domConstruct.empty(this._footer.domNode);
 
@@ -551,13 +605,13 @@ define([
 					});
 					for (var i = 0; i < rating.value; i++) {
 						domConstruct.create('div', {
-								'class': 'umcAppRatingIcon',
+								'class': 'umcAppRatingIcon'
 							}, ratingText.domNode
 						);
 					}
 					domConstruct.create('div', {
 							'class': 'umcAppRatingText',
-							textContent: rating.label,
+							textContent: rating.label
 						}, ratingText.domNode
 					);
 					domConstruct.create('div', {
@@ -579,7 +633,6 @@ define([
 					footerRight.addChild(ratingText);
 				});
 			}
-			domStyle.set(this._main.domNode, 'margin-bottom', '2em');
 		},
 
 		openShop: function() {
@@ -1099,12 +1152,12 @@ define([
 		},
 
 		_detailFieldCustomVendor: function() {
-			var vendor = this.app.vendor;
+			var vendor = this.app.vendor || this.app.maintainer;
 			var website = this.app.websiteVendor;
 			if (vendor && website) {
-				return '<a href="' + website + '" target="_blank">' + vendor + '</a>';
+				return '<div><a href="' + website + '" target="_blank">' + vendor + '</a></div>';
 			} else if (vendor) {
-				return vendor;
+				return '<div>' + vendor + '</div>';
 			}
 		},
 
@@ -1158,14 +1211,24 @@ define([
 				var categoriesContainerNode = domConstruct.create('div', {
 					'class': 'categoryContainer'
 				});
-				this.app.categories.forEach(lang.hitch(this, function(category) {
-					var categoryButton = domConstruct.create('button', {
-						textContent: _(category),
-						onclick: lang.hitch(this, function() { this.onBack(category); }),
-						'class': 'categoryButton'
-					});
-					domConstruct.place(categoryButton, categoriesContainerNode);
-				}));
+				if (this.moduleID === 'appcenter') {
+					this.app.categories.forEach(lang.hitch(this, function(category) {
+						var categoryButton = domConstruct.create('button', {
+							textContent: _(category),
+							onclick: lang.hitch(this, function() { this.onBack(category); }),
+							'class': 'categoryButton'
+						});
+						domConstruct.place(categoryButton, categoriesContainerNode);
+					}));
+				} else {
+					this.app.categories.forEach(lang.hitch(this, function(category) {
+						var categoryButton = domConstruct.create('span', {
+							textContent: _(category),
+							'class': 'categorySpan'
+						});
+						domConstruct.place(categoryButton, categoriesContainerNode);
+					}));
+				}
 				return categoriesContainerNode;
 			}
 		},

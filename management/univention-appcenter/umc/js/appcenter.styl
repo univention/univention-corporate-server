@@ -78,7 +78,7 @@ column-count(count)
 
 .umcAppDetailsPage
 	.umcAppButton
-		float: left
+		float: right
 
 	.umcAppButton.umcAppButtonFirstRow
 		margin-bottom: 15px
@@ -86,20 +86,25 @@ column-count(count)
 	.umcAppButton.umcAppButtonFirstRow + .umcAppButton:not(.umcAppButtonFirstRow)
 		clear: left
 
-.categoryButton
+	.umcAppButton.umcActionButton
+		float: none
+
+.categoryButton, .categorySpan
 	background-color: transparent
 	border: 0
 	border-right: 1px solid lightgrey
 	padding: 0 0.4em 0 0
 	margin-right: 0.4em
-	text-decoration: underline
-	opacity: 0.66
 
 	&:first-child
 		padding-left: 0
 
 	&:last-child
 		border-right: 0
+
+.categoryButton
+	text-decoration: underline
+	opacity: 0.66
 
 	&:hover
 		opacity: 1
@@ -238,10 +243,10 @@ column-count(count)
 	.dijitButton
 		float: right
 
-.appDetailsPageGrid
+.appDetailsPageActions
 	margin-bottom: 3em
 
-	.appDetailsPageGridContent
+	.appDetailsPageActionsContent
 		height: 105px !important
 
 .umc .umcAppDialog
@@ -293,23 +298,32 @@ column-count(count)
 		.icon
 			margin-bottom: 1em
 			width: 100%
+			max-width: 550px
 			height: 120px
 			display: inline-block
-			background-position: center center
+			background-position: left center
 			background-size: contain
 			/* border instead of padding works with background-size:contain */
 			border-right: solid transparent 20px
 
-		.navHeaderButton
+		.navContainer
 			display: inline-block
-			vertical-align: top
-			padding-left: 0.5em
+			width: 100%
+			border-top: 1px solid #c8c8c8
+			padding: 0.8em 0
 
 			.umcText
 				margin-bottom: 0.3em
 				color: #787878
+			.umcAppStatusText, .umcContainerWidget
+				display: block
+				width: 100%
+				@media screen and (min-width: 550px)
+					display: inline-block
+					width: 50%
 			.umcAppStatusText
-				display: inline-block
+				vertical-align: top
+
 			.umcEndOfLifeHelp
 				display: inline-block
 				position: relative
@@ -362,10 +376,6 @@ column-count(count)
 	.descriptionContainer
 		margin-bottom: 3em
 
-
-	@media (min-width: 550px)
-		.umcPageNav .icon
-			width: 50%
 
 	/* NOTE: _All_ CSS classes textLongerThanXXXChars from _getCSSClass4TextLength() need to be addressed here! */
 	.descriptionContainer div,

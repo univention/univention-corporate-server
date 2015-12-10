@@ -113,6 +113,7 @@ define([
 					this.showApp({id: state[1]});
 				} else {
 					if (this._appCenterPage && state[0] === 'category') {
+						this.set('title', 'App Center');
 						this.selectChild(this._appCenterPage);
 						when(this._appCenterPage._searchSidebar.selectFormDeferred, lang.hitch(this, function() {
 							this._appCenterPage._searchSidebar.set('category', state[1]);
@@ -216,7 +217,14 @@ define([
 			this._appDetailsPage.own(appChooseHostDialog);
 			this._appDetailsPage.own(appDetailsDialog);
 			this._appDetailsPage.own(appConfigDialog);
+			this._appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
+				if (newVal) {
+					this.set('title', newVal);
+				}
+			}));
+			this.set('title', app.name);
 			this._appDetailsPage.on('back', lang.hitch(this, function(category) {
+				this.set('title', 'App Center');
 				if (category && category.length) {
 					this._appCenterPage._searchSidebar.set('category', category);
 				}
