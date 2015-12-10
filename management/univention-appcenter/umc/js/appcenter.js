@@ -110,7 +110,16 @@ define([
 			else {
 				state = _state.split(':');
 				if (state[0] === 'id' ) {
-					this.showApp({id: state[1]});
+					var app = {id: state[1]};
+					if (this._appCenterPage._applications && this._appCenterPage._applications.length) {
+						var loadedApp = array.filter(this._appCenterPage._applications, function(iapp) {
+							return iapp.id === app.id;
+						});
+						if (loadedApp.length) {
+							app = loadedApp[0];
+						}
+					}
+					this.showApp(app);
 				} else {
 					if (this._appCenterPage && state[0] === 'category') {
 						this.set('title', 'App Center');

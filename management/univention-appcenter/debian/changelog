@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-23) unstable; urgency=low
+
+  * Bug #40116: Show grid also for docker apps
+    use already loaded apps for moduleState
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 10 Dec 2015 13:36:28 +0100
+
 univention-appcenter (5.0.19-22) unstable; urgency=low
 
   * Bug #39662: Center app tiles in the UMC App Center gallery pane

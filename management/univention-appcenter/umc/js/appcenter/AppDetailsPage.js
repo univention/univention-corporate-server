@@ -471,7 +471,7 @@ define([
 		_renderInstallationManagement: function() {
 			var isSingleServerInstallation = this.app.isInstalled && this.app.installationData.length === 1;
 			var actions = this.getActionButtons(isSingleServerInstallation);
-			if (isSingleServerInstallation || this.app.isDocker) {
+			if (isSingleServerInstallation) {
 				this._renderSingleManagement(actions);
 			} else {
 				this._renderDomainwideManagement(actions);
