@@ -2,9 +2,11 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-appcenter
-fix: 5.0.19-20.79.201512101207
+fix:
 version: [0]
 desc: |
   This update addresses the following issue:
+  * On an app details page the user can now navigate to the previous and next
+    app.
   * The app details page for small domains has been simplified.
-bug: [40116]
+bug: [39664,40116]
