@@ -347,7 +347,7 @@ class Application(object):
 				self._options[ikey] = 0
 
 		# parse list values
-		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection'):
+		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'requiredappsindomain', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection'):
 			ival = self.get(ikey)
 			if ival:
 				self._options[ikey] = self._reg_comma.split(ival)
@@ -1124,6 +1124,33 @@ class Application(object):
 				conflictedapps.append({'id': app_id})
 		if conflictedapps:
 			return conflictedapps
+		return True
+
+	@HardRequirement('install', 'upgrade')
+	def must_have_no_unmet_dependencies_domain(self, package_manager):
+		unmet_packages = []
+		apps = [Application.find(app_id) for app_id in self.get('requiredappsindomain')]
+		for app in apps:
+			if not app:
+				continue
+			app = app.to_dict(package_manager, domainwide_managed=True)
+			if not app['is_installed_anywhere']:
+				local_allowed = app['id'] not in self.get('conflictedapps')
+				unmet_packages.append({'id': app['id'], 'name': app['name'], 'local_allowed': local_allowed})
+		if unmet_packages:
+			return unmet_packages
+		return True
+
+	@HardRequirement('remove')
+	def must_not_be_depended_on_domain(self, package_manager):
+		depending_apps = []
+		apps = [app for app in Application.get_all_apps() if self.id in app.get('requiredappsindomain')]
+		for app in apps:
+			app = app.to_dict(package_manager, domainwide_managed=True)
+			if app['is_installed_anywhere']:
+				depending_apps.append({'id': app['id'], 'name': app['name']})
+		if depending_apps:
+			return depending_apps
 		return True
 
 	@HardRequirement('install', 'update')

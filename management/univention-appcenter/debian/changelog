@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-23) unstable; urgency=medium
+
+  *Bug #37539: Add RequiredAppsInDomain
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 10 Dec 2015 17:47:20 +0100
+
 univention-appcenter (5.0.19-23) unstable; urgency=low
 
   * Bug #40116: Show grid also for docker apps

@@ -210,6 +210,46 @@ define([
 				return opts.appDetailsPage.appLoadingDeferred;
 			}
 		}),
+		must_have_no_unmet_dependencies_domain: new Requirement({
+			reasonDescription: function(details) {
+				var txt = _('%s requires the following applications to be installed somewhere in the domain.', details.name);
+				txt += '<ul><li>' + array.map(details.detail, function(app) {
+					var txt = app.name;
+					if (!app.local_allowed) {
+						txt += ' (' + _('this application may not be installed on the same system') + ')';
+					}
+					return txt;
+				}).join('</li><li>') + '</li></ul>';
+				return txt;
+			},
+			solutionDescription: function() {
+				return _('Install them first.');
+			},
+			solutionLabel: function(details) {
+				return _('Open %s', details.detail[0].name);
+			},
+			solution: function(opts, details) {
+				opts.appDetailsPage.set('app', details[0]);
+				return opts.appDetailsPage.appLoadingDeferred;
+			}
+		}),
+		must_not_be_depended_on_domain: new Requirement({
+			reasonDescription: function(details) {
+				var txt = _('%s has to be installed anywhere in the domain for the following applications to work.', details.name);
+				txt += '<ul><li>' + array.map(details.detail, function(app) { return app.name; }).join('</li><li>') + '</li></ul>';
+				return txt;
+			},
+			solutionDescription: function() {
+				return _('Uninstall them first.');
+			},
+			solutionLabel: function(details) {
+				return _('Open %s', details.detail[0].name);
+			},
+			solution: function(opts, details) {
+				opts.appDetailsPage.set('app', details[0]);
+				return opts.appDetailsPage.appLoadingDeferred;
+			}
+		}),
 		must_have_no_conflicts_packages: new Requirement({
 			reasonDescription: function(details) {
 				var txt = _('%s conflicts with the following packages.', details.name);

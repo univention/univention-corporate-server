@@ -399,6 +399,7 @@ class App(object):
 
 	conflicted_apps = AppListAttribute()
 	required_apps = AppListAttribute()
+	required_apps_in_domain = AppListAttribute()
 	conflicted_system_packages = AppListAttribute()
 	required_ucs_version = AppAttribute(regex=r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$')
 	end_of_life = AppBooleanAttribute()
@@ -841,6 +842,40 @@ class App(object):
 				conflictedapps.append({'id': app_id})
 		if conflictedapps:
 			return conflictedapps
+		return True
+
+	@hard_requirement('install', 'upgrade')
+	def must_have_no_unmet_dependencies_domain(self):
+		'''The application requires the following applications to be installed somewhere in the domain: %r'''
+		from univention.appcenter.actions import get_action
+		domain = get_action('domain')
+		unmet_packages = []
+		apps = [AppManager.find(app_id) for app_id in self.required_apps_in_domain]
+		apps_info = domain.to_dict(apps)
+		for app in apps_info:
+			if not app:
+				continue
+			if not app['is_installed_anywhere']:
+				local_allowed = app['id'] not in self.conflicted_apps
+				unmet_packages.append({'id': app['id'], 'name': app['name'], 'local_allowed': local_allowed})
+		if unmet_packages:
+			return unmet_packages
+		return True
+
+	@hard_requirement('remove')
+	def must_not_be_depended_on_domain(self):
+		'''The application needs to be installed anywhere in the domain for the following applications
+		to work: %r'''
+		from univention.appcenter.actions import get_action
+		domain = get_action('domain')
+		depending_apps = []
+		apps = [app for app in AppManager.get_all_apps() if self.id in app.required_apps_in_domain]
+		apps_info = domain.to_dict(apps)
+		for app in apps_info:
+			if app['is_installed_anywhere']:
+				depending_apps.append({'id': app['id'], 'name': app['name']})
+		if depending_apps:
+			return depending_apps
 		return True
 
 	@hard_requirement('install', 'upgrade')

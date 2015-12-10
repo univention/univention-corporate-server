@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-30 12:20+0100\n"
+"POT-Creation-Date: 2015-12-10 14:46+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
 msgid "Installing %s"
 msgstr "Installiere %s"
 
-#: umc/python/appcenter/app_center.py:1591
+#: umc/python/appcenter/app_center.py:1618
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
@@ -61,13 +61,14 @@ msgid ""
 "Make sure docker.io is installed, try starting the service with \"service "
 "docker start\"."
 msgstr ""
-"Stellen Sie sicher, dass docker.io installiert ist. Starten Sie den Dienst mit \"service docker start\"."
+"Stellen Sie sicher, dass docker.io installiert ist. Starten Sie den Dienst "
+"mit \"service docker start\"."
 
 #: umc/python/appcenter/__init__.py:81
 msgid "Package not found in repository"
 msgstr "Paket wurde in keinem Repository gefunden"
 
-#: umc/python/appcenter/app_center.py:1505
+#: umc/python/appcenter/app_center.py:1532
 msgid ""
 "Registration of the application in LDAP failed. It will be retried every "
 "time the App Center module is opened."
