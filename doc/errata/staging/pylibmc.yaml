@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: pylibmc
+fix: 1.2.2-1.5.201511241415
+version: [0]
+desc: |
+ For univention-self-service to
+ * Protect against denial of service attacks. (Bug 39720).
+ it needs pylibmc. This update releases pylibmc to maintained.
+bug: [39720, 40209]
