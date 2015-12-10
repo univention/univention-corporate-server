@@ -5,9 +5,12 @@ src: univention-appcenter
 fix:
 version: [0]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
   * The layout of the App Center gallery has been improved.
   * On an app details page the user can now navigate to the previous and next
     app.
   * The app details page for small domains has been simplified.
-bug: [39662,39664,40116]
+  * Apps now support RequiredAppsInDomain which can be used to state that a
+    specific App has to be installed somewhere in the domain in order for the
+    current App to work.
+bug: [39662,39664,40116,37539]
