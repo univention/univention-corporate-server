@@ -112,14 +112,6 @@ define([
 			this.own(this._progressBar);
 			this._grid = new AppCenterGallery({});
 			this.own(this._grid);
-
-			this.headerButtons = [{
-				name: 'close',
-				iconClass: this.isSubPage ? 'umcArrowLeftIconWhite' : 'umcCloseIconWhite',
-				label: this.backLabel,
-				align: 'left',
-				callback: lang.hitch(this, 'onBack')
-			}];
 		},
 
 		_setAppAttr: function(app) {
@@ -203,6 +195,43 @@ define([
 					iconClass: 'umcShopIcon',
 					'class': 'umcAppButton',
 					callback: lang.hitch(this, 'openShop')
+				});
+			}
+			return buttons;
+		},
+
+		getHeaderButtons: function() {
+			var buttons = [{
+				name: 'close',
+				iconClass: this.isSubPage ? 'umcArrowLeftIconWhite' : 'umcCloseIconWhite',
+				label: this.backLabel,
+				align: 'left',
+				callback: lang.hitch(this, 'onBack')
+			}];
+
+			if (this.visibleApps && this.visibleApps.length) {
+				var currentIndex = -1;
+				array.some(this.visibleApps, lang.hitch(this, function(iapp, idx) {
+					currentIndex = iapp.id === this.app.id ? idx : undefined;
+					return currentIndex >= 0;
+				}));
+				var prevApp = this.visibleApps[currentIndex - 1];
+				var nextApp = this.visibleApps[currentIndex + 1];
+				buttons.push({
+					name: 'prev',
+					iconClass: 'umcLeftIconWhite',
+					label: prevApp ? _('Previous app') : '',
+					align: 'left',
+					disabled: !prevApp,
+					callback: lang.hitch(this, 'set', 'app', prevApp)
+				});
+				buttons.push({
+					name: 'next',
+					iconClass: 'umcRightIconWhite',
+					label: nextApp ? _('Next app') : '',
+					align: 'left',
+					disabled: !nextApp,
+					callback: lang.hitch(this, 'set', 'app', nextApp)
 				});
 			}
 			return buttons;
@@ -389,6 +418,7 @@ define([
 
 			this._navContainer.addChild(_navHeaderDetails);
 			this.set('navButtons', this.getButtons());
+			this.set('headerButtons', this.getHeaderButtons());
 			this._navContainer.addChild(this._navButtons);
 
 			this.addChild(this._navContainer);

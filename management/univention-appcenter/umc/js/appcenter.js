@@ -126,8 +126,8 @@ define([
 
 		_getModuleStateAttr: function() {
 			var state = [];
-			var _selectedWidget = lang.getObject('selectedChildWidget', false, this)
-			var _app = lang.getObject('selectedChildWidget.app', false, this)
+			var _selectedWidget = lang.getObject('selectedChildWidget', false, this);
+			var _app = lang.getObject('selectedChildWidget.app', false, this);
 			if (_selectedWidget == this._appCenterPage) {
 				state = ['category', this._appCenterPage._searchSidebar.get('category')];
 			} else if (_app) {
@@ -178,7 +178,7 @@ define([
 
 		showApp: function(app) {
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
-			tools.umcpCommand('appcenter/ping')
+			tools.umcpCommand('appcenter/ping');
 			//this.standby(true);
 			var appDetailsDialog = new AppDetailsDialog({
 				moduleID: this.moduleID,
@@ -209,6 +209,7 @@ define([
 				detailsDialog: appDetailsDialog,
 				configDialog: appConfigDialog,
 				hostDialog: appChooseHostDialog,
+				visibleApps: this._appCenterPage.getVisibleApps(),
 				udmAccessible: this.udmAccessible(),
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring'),

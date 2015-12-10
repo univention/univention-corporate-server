@@ -181,6 +181,19 @@ define([
 			return deferred;
 		},
 
+		getVisibleApps: function() {
+			// to show prev or next app on the AppDetailsPage
+			// we need all currently visible apps
+			var visibleApps = [];
+			array.forEach(this.metaCategories, function(metaCategory) {
+				if (metaCategory.grid.store) { // undefined if reloading AppDetailsPage
+					var apps = metaCategory.grid.store.query(metaCategory.filterQuery);
+					visibleApps = visibleApps.concat(apps);
+				}
+			});
+			return visibleApps;
+		},
+
 		getApplications: function() {
 			if (!this._applications) {
 				return tools.umcpCommand('appcenter/query', {}).then(lang.hitch(this, function(data) {
