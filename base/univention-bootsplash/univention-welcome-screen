@@ -30,6 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+eval "$(ucr shell)"
+. /usr/share/univention-lib/base.sh
+
+vt="11"
+
 # no running plymouth, go away
 if ! plymouth --ping; then
 	exit 0
@@ -38,20 +43,24 @@ fi
 # if no keyboards, go away
 keyboards="$(ls /dev/input/by-path/*-kbd*)"
 if [ -z "$keyboards" ]; then
-	plymouth hide-splash
 	plymouth quit
 	exit 0
 fi
 
-eval "$(ucr shell)"
-. /usr/share/univention-lib/base.sh
+# no framebuffer device
+if [ ! -e /dev/fb0 ]; then
+	plymouth quit
+	exit 0
+fi
 
 # check appliance logo
 appliance=false
-if [ -n "$umc_web_appliance_logo" -a -x "$(which convert)" ]; then
+if [ -n "$umc_web_appliance_logo" ]; then
 	if [ -e "/var/www/$umc_web_appliance_logo" -a ! -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
 		cp "/var/www/$umc_web_appliance_logo" /usr/share/plymouth/themes/ucs/appliance.logo
-		convert -background None /usr/share/plymouth/themes/ucs/appliance.logo /usr/share/plymouth/themes/ucs/appliance.png
+		if [ -x "$(which convert)" ]; then
+			convert -background None /usr/share/plymouth/themes/ucs/appliance.logo /usr/share/plymouth/themes/ucs/appliance.png
+		fi
 	fi
 	if [ -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
 		appliance=true
@@ -69,37 +78,41 @@ console="$(gettext -d univention-welcome-screen "[ Press any key to open text co
 message1="$(gettext -d univention-welcome-screen "Open a browser window")"
 message2="$(gettext -d univention-welcome-screen "Navigate to one of the following addresses:")"
 message3="$(gettext -d univention-welcome-screen "Open the web management interface")"
-
 hostname="$hostname.$domainname"
 address="https://$(get_default_ip_address)"
 addresses="$address https://$hostname"
 
 # show welcome screen
+plymouth update --status=univention-welcome
 if $appliance; then
 	plymouth update --status="univention-welcome:appliance"
 fi
 plymouth update --status="univention-welcome:header:$header"
-plymouth update --status="univention-welcome:hostname:$hostname"
-plymouth update --status="univention-welcome:address:$address"
-plymouth update --status="univention-welcome:addresses:$addresses"
 plymouth update --status="univention-welcome:message1:$message1"
 plymouth update --status="univention-welcome:message2:$message2"
 plymouth update --status="univention-welcome:message3:$message3"
+plymouth update --status="univention-welcome:hostname:$hostname"
+plymouth update --status="univention-welcome:address:$address"
+plymouth update --status="univention-welcome:addresses:$addresses"
 plymouth update --status="univention-welcome:console:$console"
-plymouth update --status=univention-welcome
+plymouth update --status="univention-welcome:console:$console" # this is not a type, second call flushes screen
 
-# quit plymouth to relieve CPU, but retain splash screen
-plymouth quit --retain-splash
+# copy framebuffer image, quit plymouth and show framebuffer image
+# on virtual terminal
+data=$(mktemp)
+cp /dev/fb0 "$data"
+plymouth quit
+chvt "$vt"
+echo -e '\033[?17;0;0c' > "/dev/tty$vt"
+dd if="$data" of=/dev/fb0
 
 # grab the ANY key, this blocks
-hexdump -n 96 $keyboards | head -n 1
+hexdump -n 96 $keyboards &
+echo $! > /var/run/univention-welcome-screen.pid
+wait
 
 if [ "N 2" = "$(runlevel)" ]; then
-	# restart and quit plymouth
-	plymouthd
-	plymouth show-splash
-	plymouth hide-splash
-	plymouth quit
+	rm "$data"
 	chvt 1
 fi
 

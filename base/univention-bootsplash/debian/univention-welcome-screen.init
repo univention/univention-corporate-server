@@ -34,6 +34,16 @@
 
 pid="$(pgrep -n -f 'bash /usr/bin/univention-welcome-screen')"
 
+is_running () {
+	if [ -e /var/run/univention-welcome-screen.pid ]; then
+		pid="$(< /var/run/univention-welcome-screen.pid)"
+		if ps -p "$pid" >/dev/null; then
+			return 0
+		fi
+	fi
+	return 1
+}
+
 case "$1" in
 	start)
 		# check UCR autostart setting
@@ -42,20 +52,21 @@ case "$1" in
 			check_autostart univention-welcome-screen welcome-screen/autostart
 		fi
 
-		if [ -n "$pid" ]; then
+		if is_running; then
 			log_warning_msg "univention-welcome-screen already running"
 		elif ! plymouth --ping; then
 			log_warning_msg "plymouth bootsplash daemon ist not running"
 		else
 			log_daemon_msg "Starting univention welcome screen" "univention-welcome-screen"
 			/usr/bin/univention-welcome-screen > "/var/log/univention/welcome-screen.log" 2>&1 &
+			echo $! > /var/run/univention-welcome-screen.pid
 			log_end_msg 0
 		fi
 		;;
 	stop)
-		if [ -n "$pid" ]; then
+		if is_running; then
 			log_daemon_msg "Stopping univention welcome screen" "univention-welcome-screen"
-			kill -9 "$pid"
+			kill -9 "$(< /var/run/univention-welcome-screen.pid)"
 			log_end_msg $?
 		else
 			log_warning_msg "univention-welcome-screen is not running"
