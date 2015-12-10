@@ -38,6 +38,7 @@ define([
 	"dojo/query",
 	"dojo/dom",
 	"dojo/dom-class",
+	"dojo/dom-style",
 	"dojo/dom-geometry",
 	"dojo/store/Memory",
 	"dojo/store/Observable",
@@ -47,7 +48,7 @@ define([
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/widgets/ContainerWidget",
 	"umc/i18n!"
-], function(declare, lang, array, win, on, has, domQuery, dom, domClass, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
+], function(declare, lang, array, win, on, has, domQuery, dom, domClass, domStyle, domGeom, Memory, Observable, tools, Text, Button, AppCenterGallery, Container, _) {
 	return declare("umc.modules.appcenter.AppCenterMetaCategory", [Container], {
 		// summary:
 		//		Offers a container which contains a label, More/Less button and a grid to
@@ -131,7 +132,7 @@ define([
 			this.own(this.grid);
 
 			this.own(on(win.global, 'resize', lang.hitch(this, function() {
-				this._handleButtonVisibility();
+				this._handleResize();
 			})));
 		},
 
@@ -153,18 +154,17 @@ define([
 				data: filteredApps
 			})));
 			this._set('store', applications);
-			this._handleButtonVisibility();
+			this._centerApps();
 		},
 
 		_setFilterQueryAttr: function(query) {
 			this.grid.set('query', query);
 			this._set('filterQuery', query);
-			this._handleButtonVisibility();
 		},
 
-		_handleButtonVisibility: function() {
+		_handleResize: function() {
 			if (!this._visibilityDeferred || this._visibilityDeferred.isFulfilled()) {
-				this._visibilityDeferred = tools.defer(lang.hitch(this, '_updateButtonVisibility'), 200);
+				this._visibilityDeferred = tools.defer(lang.hitch(this, '_centerApps'), 100);
 			}
 		},
 
@@ -180,8 +180,25 @@ define([
 				var appWidth = appMarginBox.w;
 				var neededWidthToDisplayApps = appsDisplayed.length * appWidth;
 
+
 				var hideButton = neededWidthToDisplayApps < gridWidth;
 				domClass.toggle(this.button.domNode, 'hiddenButton', hideButton);
+			}
+			domClass.toggle(this.domNode, 'dijitHidden', !appsDisplayed.length);
+		},
+
+		_centerApps: function() {
+			//make sure the domNode is not hidden
+			domClass.remove(this.domNode, 'dijitHidden');
+			var appsDisplayed = domQuery('div[class*="dgrid-row"]', this.id);
+			var gridContentNodes = domQuery('div[class="dgrid-content ui-widget-content"]', this.id);
+			if (appsDisplayed.length && gridContentNodes.length) {
+				var gridContentNode = gridContentNodes[0];
+				var gridContentWidth = domGeom.getMarginBox(gridContentNode).w;
+				var appDomNode = appsDisplayed[0];
+				var appWidth = domGeom.getMarginBox(appDomNode).w;
+				var leftMargin = (gridContentWidth % appWidth) / 2;
+				domStyle.set(gridContentNode, "margin-left", leftMargin + "px");
 			}
 			domClass.toggle(this.domNode, 'dijitHidden', !appsDisplayed.length);
 		},

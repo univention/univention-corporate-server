@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-22) unstable; urgency=low
+
+  * Bug #39662: Center app tiles in the UMC App Center gallery pane
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 10 Dec 2015 12:44:33 +0100
+
 univention-appcenter (5.0.19-21) unstable; urgency=low
 
   * Bug #39664: Offer next/previous buttons in app detail view
