@@ -84,6 +84,7 @@ addresses="$address https://$hostname"
 
 # show welcome screen
 plymouth update --status=univention-welcome
+plymouth display-message --text="$console"
 if $appliance; then
 	plymouth update --status="univention-welcome:appliance"
 fi
