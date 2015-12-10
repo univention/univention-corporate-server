@@ -6,7 +6,8 @@ fix:
 version: [0]
 desc: |
   This update addresses the following issue:
+  * The layout of the App Center gallery has been improved.
   * On an app details page the user can now navigate to the previous and next
     app.
   * The app details page for small domains has been simplified.
-bug: [39664,40116]
+bug: [39662,39664,40116]
