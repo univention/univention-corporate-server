@@ -160,6 +160,7 @@ define([
 		_setFilterQueryAttr: function(query) {
 			this.grid.set('query', query);
 			this._set('filterQuery', query);
+			this._updateVisibility();
 		},
 
 		_handleResize: function() {
@@ -184,7 +185,7 @@ define([
 				var hideButton = neededWidthToDisplayApps < gridWidth;
 				domClass.toggle(this.button.domNode, 'hiddenButton', hideButton);
 			}
-			domClass.toggle(this.domNode, 'dijitHidden', !appsDisplayed.length);
+			this._updateVisibility(appsDisplayed);
 		},
 
 		_centerApps: function() {
@@ -200,7 +201,13 @@ define([
 				var leftMargin = (gridContentWidth % appWidth) / 2;
 				domStyle.set(gridContentNode, "margin-left", leftMargin + "px");
 			}
-			domClass.toggle(this.domNode, 'dijitHidden', !appsDisplayed.length);
+			this._updateVisibility(appsDisplayed);
+		},
+
+		_updateVisibility: function(apps) {
+			var appsDisplayed = apps || domQuery('div[class*="dgrid-row"]', this.id);
+			var isMetaCategoryEmpty = appsDisplayed.length === 0;
+			domClass.toggle(this.domNode, 'dijitHidden', isMetaCategoryEmpty);
 		},
 
 		onShowApp: function(app) {

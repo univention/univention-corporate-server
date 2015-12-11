@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-25) unstable; urgency=low
+
+  * Bug #39662: Hide empty meta categories
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 11 Dec 2015 12:46:00 +0100
+
 univention-appcenter (5.0.19-24) unstable; urgency=medium
 
   * Bug #37539: Add RequiredAppsInDomain

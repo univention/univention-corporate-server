@@ -186,6 +186,9 @@ define([
 		},
 
 		showApp: function(app) {
+			if (this._appDetailsPage) {
+				this._appDetailsPage.destroyRecursive();
+			}
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
 			tools.umcpCommand('appcenter/ping');
 			//this.standby(true);
