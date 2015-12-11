@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-4) unstable; urgency=low
+
+  * Bug #39884: Add printerModel to substring search index
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 11 Dec 2015 18:19:20 +0100
+
 univention-ldap (12.1.6-3) unstable; urgency=low
 
   * do not use UCR policy on slaves by default (Bug #38091)
