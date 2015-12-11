@@ -1,0 +1,9 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: ldb
+fix: 2:1.1.24-1.65.201512111417
+version: [0]
+desc: |
+ This ldb update is requried for Samba version 4.3.3
+bug: [40221]
