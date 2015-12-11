@@ -2,11 +2,10 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-updater
-fix:
+fix: 11.0.7-7.1437.201512111644
 version: [0]
 desc: |
  This update addresses the following issues:
  * UCS-3.0 errata updates are no longer mirrored with newer systems.
- *
- *
-bug: [29633,39940,40148]
+ * Fix inheritance of using https:// scheme for components.
+bug: [29633,40148]
