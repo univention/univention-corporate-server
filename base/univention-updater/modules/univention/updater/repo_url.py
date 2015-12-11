@@ -44,11 +44,15 @@ class UcsRepoUrl(object):
     def __init__(self, ucr, prefix, default=None):
         '''
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_').path
-        ''
-        >>> UcsRepoUrl({'_/server': 'hostname', '_/prefix': '/'}, '_').path
         '/'
+        >>> UcsRepoUrl({'_/server': 'hostname', '_/prefix': '/p'}, '_').path
+        '/p/'
         >>> UcsRepoUrl({'_/server': 'hostname', '_/prefix': 'path'}, '_').path
         '/path/'
+        >>> UcsRepoUrl({}, '', UcsRepoUrl({'_/server': 'https://hostname/'}, '_')).private()
+        'https://hostname/'
+        >>> UcsRepoUrl({'_/server': 'hostname'}, '_', UcsRepoUrl({'_/server': 'https://hostname:80/'}, '_')).private()
+        'http://hostname/'
         '''
         ucrv = lambda key, default=None: ucr.get('%s/%s' % (prefix, key), default)
 
@@ -68,15 +72,16 @@ class UcsRepoUrl(object):
                 default = default.private()
             default = urlsplit(default)
 
-            self.scheme = 'http'
             self.username = ucrv('username', default.username)
             self.password = ucrv('password', default.password)
             if server:
                 self.hostname = server
                 port = ucrv('port', 80)
+                self.scheme = 'https' if port == 443 else 'http'
             else:
                 self.hostname = default.hostname
                 port = ucrv('port', default.port)
+                self.scheme = default.scheme
             prefix = ucrv('prefix', default.path)
         self.port = int(port if port else 443 if self.scheme == 'https' else 80)
         if prefix:

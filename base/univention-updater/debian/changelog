@@ -1,6 +1,7 @@
 univention-updater (11.0.7-7) unstable; urgency=low
 
   * Bug #29633: Stop mirroring UCS-3.0 errata repositories
+  * Bug #40148: Fix https:// inheritance for components
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 09 Dec 2015 14:50:06 +0100
 
