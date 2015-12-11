@@ -109,7 +109,7 @@ def _proxy_uri():
 		scheme = 'https'
 
 	cherrypy.request.scheme = scheme
-	cherrypy.request.base = '%s://%s' % (scheme, base)
+	cherrypy.request.base = '%s://%s/univention-management-console' % (scheme, base)
 	cherrypy.request.uri = ('%s%s?%s' % (cherrypy.request.base, cherrypy.request.path_info, cherrypy.request.query_string)).rstrip('?')
 	foo = cherrypy.request.params
 	try:
@@ -1191,7 +1191,8 @@ class SAML(Ressource):
 
 		if is_logout_request:
 			user = self.get_user()
-			if user.saml is None:
+			if not user or user.saml is None:
+				# The user is either already logged out or has no cookie because he signed in via IP and gets redirected to the FQDN
 				return self._logout_success()
 			http_args = self.sp.handle_logout_request(message, user.saml.response.name_id, binding, relay_state=relay_state)
 			return self.http_response(binding, http_args)
@@ -1208,7 +1209,16 @@ class SAML(Ressource):
 			return self._logout_success()
 
 		# What if more than one
-		data = self.sp.global_logout(user.saml.response.name_id)
+		try:
+			data = self.sp.global_logout(user.saml.response.name_id)
+		except KeyError as exc:
+			tb = sys.exc_info()[2]
+			while tb.tb_next:
+				tb = tb.tb_next
+			if tb.tb_frame.f_code.co_name != 'entities':
+				raise
+			# already logged out or UMC-Webserver restart
+			data = {}
 
 		for entity_id, logout_info in data.items():
 			if not isinstance(logout_info, tuple):
