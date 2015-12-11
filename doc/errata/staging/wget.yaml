@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: wget
+fix: 1.13.4-3.27.201512111540
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * wget loads the SSL certificates multiple times, which makes is slow and
+   consumes a lot of memory, which can lead to it being killed by the Linux
+   kernel.
+bug: [39940]
