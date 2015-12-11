@@ -124,4 +124,5 @@ class LockingError(UpdaterException):
 
 if __name__ == '__main__':
     import doctest
-    doctest.testmod()
+    from sys import exit
+    exit(doctest.testmod()[0])
