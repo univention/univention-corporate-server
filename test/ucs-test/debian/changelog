@@ -1,3 +1,10 @@
+ucs-test (5.0.174-4) unstable; urgency=medium
+
+  * Added 52_s4connector/125sync_recreate_user_at_different_position
+    (Bug #40234)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Dec 2015 20:04:12 +0100
+
 ucs-test (5.0.174-3) unstable; urgency=low
 
   * Modify mail/domains test to take lowercased domain names into account
