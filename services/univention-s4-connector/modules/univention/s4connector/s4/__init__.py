@@ -224,6 +224,9 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 		if (not dn_key in dn_mapping_stored) or (not object[dn_key]):
 			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: not premapped (in first instance)")
 			return False
+		elif object.get('modtype') == 'delete':
+			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: modtype is delete, use the premapped DN: %s" % object[dn_key])
+			return True
 		else: # check if DN exists
 			if ucsobject:
 				if s4connector.get_object(object[dn_key]) != None:

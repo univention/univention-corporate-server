@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-3) unstable; urgency=medium
+
+  * Use the premapped DN in case of a deletion (Bug #40233)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Dec 2015 19:48:56 +0100
+
 univention-s4-connector (10.0.1-2) unstable; urgency=low
 
   * Recommends univention-nagios-s4-connector (Bug #37006)
