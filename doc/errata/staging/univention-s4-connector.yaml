@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: univention-s4-connector
+fix: 9.0.16-52.593.201512122004
+version: [4]
+desc: |
+ This update addresses the following issue:
+ * The synchronization failed if a removed user was recreated at a
+   different position. This issue has been fixed.
+bug: [40234]
