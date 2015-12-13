@@ -44,12 +44,12 @@ import platform
 from inspect import getargspec
 from cPickle import load, dump, PickleError
 
-from univention.config_registry import ConfigRegistry
 from univention.lib.package_manager import PackageManager
 
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, _
+from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load
 
 
 CACHE_DIR = '/var/cache/univention-appcenter'
@@ -111,7 +111,7 @@ class Requirement(UniventionMetaInfo):
 		self.hard = hard
 		self.func = func
 
-	def test(self, app, function, package_manager, ucr):
+	def test(self, app, function, package_manager):
 		method = getattr(app, self.name)
 		kwargs = {}
 		arguments = getargspec(method).args[1:]  # remove self
@@ -119,8 +119,6 @@ class Requirement(UniventionMetaInfo):
 			kwargs['function'] = function
 		if 'package_manager' in arguments:
 			kwargs['package_manager'] = package_manager
-		if 'ucr' in arguments:
-			kwargs['ucr'] = ucr
 		return method(**kwargs)
 
 	def contribute_to_class(self, klass, name):
@@ -467,9 +465,7 @@ class App(object):
 	def get_docker_image_name(self):
 		image = self.get_docker_images()[0]
 		if self.is_installed():
-			ucr = ConfigRegistry()
-			ucr.load()
-			image = ucr.get(self.ucr_image_key) or image
+			image = ucr_get(self.ucr_image_key) or image
 		return image
 
 	def get_docker_images(self):
@@ -487,14 +483,14 @@ class App(object):
 
 	@classmethod
 	def from_ini(cls, ini_file, locale=True):
-		app_logger.debug('Loading app from %s' % ini_file)
+		#app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
 			locale = get_locale()
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
 		meta_file = os.path.join(CACHE_DIR, '%s.meta' % component_id)
 		ini_parser = _read_ini_file(ini_file)
 		if os.path.exists(meta_file):
-			app_logger.debug('Using additional %s' % meta_file)
+			#app_logger.debug('Using additional %s' % meta_file)
 			meta_parser = _read_ini_file(meta_file)
 		else:
 			meta_parser = RawConfigParser()  # empty
@@ -504,7 +500,6 @@ class App(object):
 			if attr.name == 'component_id':
 				value = component_id
 			if attr.name == 'ucs_version':
-				# TODO: ucr.get('version/version')
 				value = '4.1'
 			elif attr.name == 'rating':
 				value = []
@@ -585,13 +580,11 @@ class App(object):
 				return attr
 
 	def is_installed(self):
-		ucr = ConfigRegistry()
-		ucr.load()
 		if self.docker:
-			return ucr.get(self.ucr_status_key) in ['installed', 'stalled'] and ucr.get(self.ucr_version_key) == self.version
+			return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version
 		else:
 			if not self.without_repository:
-				if self.ucr_component_key not in ucr:
+				if not ucr_includes(self.ucr_component_key):
 					return False
 			package_manager = AppManager.get_package_manager()
 			for package_name in self.default_packages:
@@ -698,14 +691,15 @@ class App(object):
 		return ret
 
 	@hard_requirement('install', 'upgrade')
-	def must_have_fitting_ucs_version(self, ucr):
+	def must_have_fitting_ucs_version(self):
 		required_version = self.required_ucs_version
 		if not required_version:
 			return True
+		ucr_load()
 		version_bits = re.match(r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$', required_version).groups()
-		major, minor = ucr.get('version/version').split('.', 1)
-		patchlevel = ucr.get('version/patchlevel')
-		errata = ucr.get('version/erratalevel')
+		major, minor = ucr_get('version/version').split('.', 1)
+		patchlevel = ucr_get('version/patchlevel')
+		errata = ucr_get('version/erratalevel')
 		comparisons = zip(version_bits, [major, minor, patchlevel, errata])
 		for required, present in comparisons:
 			if int(required or 0) > int(present):
@@ -713,7 +707,7 @@ class App(object):
 		return True
 
 	@hard_requirement('install', 'upgrade')
-	def must_have_fitting_kernel_version(self, ucr):
+	def must_have_fitting_kernel_version(self):
 		if self.docker:
 			kernel = LooseVersion(os.uname()[2])
 			if kernel < LooseVersion('4.1'):
@@ -721,24 +715,28 @@ class App(object):
 		return True
 
 	@hard_requirement('install', 'upgrade')
-	def must_not_be_docker_if_docker_is_disabled(self, ucr):
+	def must_not_be_docker_if_docker_is_disabled(self):
 		'''The application uses a container technology while the App Center
 		is configured to not not support it'''
-		return not self.docker or ucr.is_true('appcenter/docker', True)
+		return not self.docker or ucr_is_true('appcenter/docker', True)
 
 	@hard_requirement('install', 'upgrade')
-	def must_not_be_docker_in_docker(self, ucr):
+	def must_not_be_docker_in_docker(self):
 		'''The application uses a container technology while the system
 		itself runs in a container. Using the application is not
 		supported on this host'''
-		return not self.docker or not ucr.get('docker/container/uuid')
+		return not self.docker or not ucr_get('docker/container/uuid')
 
 	@hard_requirement('install', 'upgrade')
-	def must_have_valid_license(self, ucr):
+	def must_have_valid_license(self):
 		'''For the installation of this application, a UCS license key
 		with a key identification (Key ID) is required'''
 		if self.notify_vendor:
-			return ucr.get('uuid/license') is not None
+			license = ucr_get('uuid/license')
+			if license is None:
+				ucr_load()
+				license = ucr_get('uuid/license')
+			return license is not None
 		return True
 
 	@hard_requirement('install')
@@ -796,12 +794,12 @@ class App(object):
 			return package_manager.progress_state._finished  # TODO: package_manager.is_finished()
 
 	@hard_requirement('install', 'upgrade')
-	def must_have_correct_server_role(self, ucr):
+	def must_have_correct_server_role(self):
 		'''The application cannot be installed on the current server
 		role (%(current_role)s). In order to install the application,
 		one of the following roles is necessary: %(allowed_roles)r'''
-		server_role = ucr.get('server/role')
-		if not self._allowed_on_local_server(ucr):
+		server_role = ucr_get('server/role')
+		if not self._allowed_on_local_server():
 			return {
 				'current_role': server_role,
 				'allowed_roles': ', '.join(self.server_role),
@@ -820,13 +818,13 @@ class App(object):
 		return True
 
 	@hard_requirement('install', 'upgrade')
-	def must_have_no_conflicts_apps(self, ucr):
+	def must_have_no_conflicts_apps(self):
 		'''The application conflicts with the following applications:
 			%r'''
 		conflictedapps = []
 		# check ConflictedApps
 		for app in AppManager.get_all_apps():
-			if not app._allowed_on_local_server(ucr):
+			if not app._allowed_on_local_server():
 				# cannot be installed, continue
 				continue
 			if app.id in self.conflicted_apps or self.id in app.conflicted_apps:
@@ -913,15 +911,13 @@ class App(object):
 		return True
 
 	@soft_requirement('install', 'upgrade')
-	def shall_only_be_installed_in_ad_env_with_password_service(self, ucr):
+	def shall_only_be_installed_in_ad_env_with_password_service(self):
 		'''The application requires the password service to be set up
 		on the Active Directory domain controller server.'''
-		return not self._has_active_ad_member_issue(ucr, 'password')
+		return not self._has_active_ad_member_issue('password')
 
 	def check(self, function):
 		package_manager = AppManager.get_package_manager()
-		ucr = ConfigRegistry()
-		ucr.load()
 		hard_problems = {}
 		soft_problems = {}
 		for requirement in self._requirements:
@@ -935,7 +931,7 @@ class App(object):
 					#   special handling
 					hard_problems['must_have_candidate'] = False
 					continue
-			result = requirement.test(app, function, package_manager, ucr)
+			result = requirement.test(app, function, package_manager)
 			if result is not True:
 				if requirement.hard:
 					hard_problems[requirement.name] = result
@@ -943,13 +939,13 @@ class App(object):
 					soft_problems[requirement.name] = result
 		return hard_problems, soft_problems
 
-	def _allowed_on_local_server(self, ucr):
-		server_role = ucr.get('server/role')
+	def _allowed_on_local_server(self):
+		server_role = ucr_get('server/role')
 		allowed_roles = self.server_role
 		return not allowed_roles or server_role in allowed_roles
 
-	def _has_active_ad_member_issue(self, ucr, issue):
-		return ucr.is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False)
+	def _has_active_ad_member_issue(self, issue):
+		return ucr_is_true('ad/member') and getattr(self, 'ad_member_issue_%s' % issue, False)
 
 	def __cmp__(self, other):
 		return cmp(self.id, other.id) or cmp(LooseVersion(self.version), LooseVersion(other.version))
@@ -971,10 +967,27 @@ class AppManager(object):
 
 	@classmethod
 	def clear_cache(cls):
+		ucr_load()
 		cls._cache[:] = []
 		cls.reload_package_manager()
 		cls.invalidate_pickle_cache()
 		_get_rating_items._items = None
+
+	@classmethod
+	def inject_into_cache(cls, app):
+		cls.remove_from_cache(app.component_id)
+		cls._cache.append(app)
+		cls.invalidate_pickle_cache()
+
+	@classmethod
+	def remove_from_cache(cls, component):
+		for i, app in enumerate(cls._get_every_single_app()):
+			if app.component_id == component:
+				break
+		else:
+			return
+		cls._cache.pop(i)
+		cls.invalidate_pickle_cache()
 
 	@classmethod
 	def _get_every_single_app(cls):
@@ -1067,9 +1080,7 @@ class AppManager(object):
 
 	@classmethod
 	def get_server(cls):
-		ucr = ConfigRegistry()
-		ucr.load()
-		server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+		server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
 		if not server.startswith('http'):
 			server = 'https://%s' % server
 		return server

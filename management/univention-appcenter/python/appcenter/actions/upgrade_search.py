@@ -32,11 +32,9 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.config_registry import ConfigRegistry
-from univention.config_registry.frontend import ucr_update
-
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.ucr import ucr_save, ucr_is_true
 
 
 class UpgradeSearch(UniventionAppAction):
@@ -52,19 +50,16 @@ class UpgradeSearch(UniventionAppAction):
 		apps = args.app
 		if not apps:
 			apps = AppManager.get_all_locally_installed_apps()
-		ucr = ConfigRegistry()
 		for app in apps:
 			self.debug('Checking %s' % app)
 			if not app.is_installed():
 				continue
 			upgrade_available = self._check_for_upgrades(app)
 			if upgrade_available is True:
-				ucr_update(ucr, {app.ucr_upgrade_key: 'yes'})
+				ucr_save({app.ucr_upgrade_key: 'yes'})
 			elif upgrade_available is False:
-				ucr_update(ucr, {app.ucr_upgrade_key: None})
-		ucr = ConfigRegistry()
-		ucr.load()
-		return any(ucr.is_true(app.ucr_upgrade_key) for app in apps)
+				ucr_save({app.ucr_upgrade_key: None})
+		return any(ucr_is_true(app.ucr_upgrade_key) for app in apps)
 
 	def _check_for_upgrades(self, app):
 		return AppManager.find(app.id, latest=True) > app

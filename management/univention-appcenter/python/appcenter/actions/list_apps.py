@@ -35,12 +35,11 @@
 import re
 from fnmatch import fnmatch
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.actions import UniventionAppAction
 from univention.appcenter.app import App, AppManager
 from univention.appcenter.udm import get_app_ldap_object
 from univention.appcenter.utils import flatten
+from univention.appcenter.ucr import ucr_get, ucr_is_true
 
 
 class List(UniventionAppAction):
@@ -81,10 +80,8 @@ class List(UniventionAppAction):
 	def get_apps(cls):
 		ret = []
 		apps = AppManager.get_all_apps()
-		ucr = ConfigRegistry()
-		ucr.load()
-		blacklist = ucr.get('repository/app_center/blacklist')
-		whitelist = ucr.get('repository/app_center/whitelist')
+		blacklist = ucr_get('repository/app_center/blacklist')
+		whitelist = ucr_get('repository/app_center/whitelist')
 		if blacklist:
 			blacklist = re.split('\s*,\s*', blacklist)
 		if whitelist:
@@ -96,9 +93,9 @@ class List(UniventionAppAction):
 					continue
 			if app.end_of_life and not app.is_installed():
 				continue
-			if ucr.is_true('ad/member') and app.ad_member_issue_hide:
+			if ucr_is_true('ad/member') and app.ad_member_issue_hide:
 				continue
-			if ucr.get('server/role') not in app.server_role:
+			if ucr_get('server/role') not in app.server_role:
 				continue
 			ret.append(app)
 		return ret

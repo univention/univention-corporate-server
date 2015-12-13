@@ -35,14 +35,13 @@
 import re
 from distutils.version import LooseVersion
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.log import LogCatcher
 from univention.appcenter.utils import call_process
 from univention.appcenter.udm import search_objects
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.actions import get_action
+from univention.appcenter.ucr import ucr_get, ucr_is_false
 
 
 class Domain(CredentialsAction):
@@ -55,9 +54,7 @@ class Domain(CredentialsAction):
 	def main(self, args):
 		lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
 		first = True
-		ucr = ConfigRegistry()
-		ucr.load()
-		localhost = ucr.get('hostname')
+		localhost = ucr_get('hostname')
 		username = '%s$@%%s' % localhost
 		pwdfile = '/etc/machine.secret'
 		for obj in self.get_appcenter_hosts(lo, pos):
@@ -96,10 +93,8 @@ class Domain(CredentialsAction):
 		self = cls()
 		lo, pos = self._get_ldap_connection(args=None, allow_machine_connection=True)
 		hosts = self.get_appcenter_hosts(lo, pos)
-		ucr = ConfigRegistry()
-		ucr.load()
-		if ucr.is_false('appcenter/domainwide'):
-			hostname = ucr.get('hostname')
+		if ucr_is_false('appcenter/domainwide'):
+			hostname = ucr_get('hostname')
 			hosts = [host for host in hosts if host['name'] == hostname]
 		get = get_action('get')
 		ret = []
@@ -109,15 +104,15 @@ class Domain(CredentialsAction):
 				ret.append(None)
 			else:
 				app_dict = get.to_dict(app)
-				app_dict['installations'] = self._get_installations(app, hosts, app_ldap_objects, lo, pos, ucr)
+				app_dict['installations'] = self._get_installations(app, hosts, app_ldap_objects, lo, pos)
 				app_dict['is_installed_anywhere'] = any(inst['version'] for inst in app_dict['installations'].itervalues())
 				app_dict['fully_loaded'] = True
 				ret.append(app_dict)
 		return ret
 
-	def _get_installations(self, app, hosts, app_ldap_objects, lo, pos, ucr):
+	def _get_installations(self, app, hosts, app_ldap_objects, lo, pos):
 		ret = {}
-		local_ucs_version = ucr.get('version/version')
+		local_ucs_version = ucr_get('version/version')
 		candidate_version = AppManager.find(app.id, latest=True).version
 		for host in hosts:
 			role = host.info.get('serverRole')[0]

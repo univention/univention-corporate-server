@@ -34,10 +34,9 @@
 
 from json import dumps
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.actions import UniventionAppAction, get_action
 from univention.appcenter.app import AppManager
+from univention.appcenter.ucr import ucr_get
 
 
 class Info(UniventionAppAction):
@@ -67,9 +66,7 @@ class Info(UniventionAppAction):
 		self.log('Upgradable: %s' % ' '.join(app.id for app in self.get_upgradable_apps()))
 
 	def get_ucs_version(self):
-		ucr = ConfigRegistry()
-		ucr.load()
-		return '%s-%s errata%s' % (ucr.get('version/version'), ucr.get('version/patchlevel'), ucr.get('version/erratalevel'))
+		return '%s-%s errata%s' % (ucr_get('version/version'), ucr_get('version/patchlevel'), ucr_get('version/erratalevel'))
 
 	@classmethod
 	def get_compatibility(cls):

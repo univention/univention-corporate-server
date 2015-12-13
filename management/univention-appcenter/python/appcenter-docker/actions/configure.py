@@ -37,13 +37,12 @@ import ConfigParser
 import shlex
 from argparse import Action
 
-from univention.config_registry import ConfigRegistry
 from univention.config_registry.backend import _ConfigRegistry
-from univention.config_registry.frontend import ucr_update
 
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.utils import app_is_running, mkdir, get_locale
+from univention.appcenter.ucr import ucr_save, ucr_evaluated_as_true
 
 
 class NoDatabaseFound(Exception):
@@ -124,7 +123,6 @@ class Configure(UniventionAppAction, DockerActionMixin):
 				return val
 
 		variables = []
-		ucr = ConfigRegistry()
 		for section in parser.sections():
 			variable = {'id': section}
 			variable['description'] = _get_cfg(parser, section, 'Description[%s]' % locale) or _get_cfg(parser, section, 'Description[en]')
@@ -136,13 +134,11 @@ class Configure(UniventionAppAction, DockerActionMixin):
 			default = _get_cfg(parser, section, 'default')
 			value = _ucr.get(section, default)
 			if variable['type'] == 'bool':
-				if isinstance(value, basestring):
-					value = value.lower()
-				value = ucr.is_true(value=value)
+				value = ucr_evaluated_as_true(value)
 			variable['value'] = value
 			advanced = _get_cfg(parser, section, 'advanced')
 			if advanced:
-				advanced = ucr.is_true(value=advanced.lower())
+				advanced = ucr_evaluated_as_true(value)
 			variable['advanced'] = advanced
 			variables.append(variable)
 		return variables
@@ -158,8 +154,7 @@ class Configure(UniventionAppAction, DockerActionMixin):
 		if autostart not in ['yes', 'manually', 'no']:
 			self.warn('Autostart must be one of yes, manually, no. Not setting to %r' % autostart)
 			return
-		ucr = ConfigRegistry()
-		ucr_update(ucr, {'%s/autostart' % app.id: autostart})
+		ucr_save({'%s/autostart' % app.id: autostart})
 
 	def _set_config(self, app, set_vars):
 		if not app_is_running(app):
@@ -170,7 +165,6 @@ class Configure(UniventionAppAction, DockerActionMixin):
 		self._set_config_via_tool(app, set_vars)
 
 	def _set_config_directly(self, app, set_vars):
-		ucr = ConfigRegistry()
 		_ucr = self._get_app_ucr(app)
 		variables = self.list_config(app)
 		for key, value in set_vars.iteritems():
@@ -179,7 +173,7 @@ class Configure(UniventionAppAction, DockerActionMixin):
 			for variable in variables:
 				if variable['id'] == key:
 					if variable['type'] == 'bool':
-						value = str(ucr.is_true(value=str(value).lower())).lower()
+						value = str(ucr_evaluated_as_true(str(value))).lower()
 
 			_ucr[key] = value
 		_ucr.lock()

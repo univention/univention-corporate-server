@@ -38,12 +38,13 @@ import base64
 from ldap.filter import escape_filter_chars
 from ldap.dn import explode_dn
 
-from univention.config_registry import ConfigRegistry
 import univention.admin.objects as udm_objects
 import univention.admin.modules as udm_modules
 import univention.admin.uexceptions as udm_errors
 from univention.uldap import access as base_access
 from univention.admin.uldap import getMachineConnection, getAdminConnection, access, position
+
+from univention.appcenter.ucr import ucr_get
 
 udm_modules.update()
 
@@ -118,11 +119,9 @@ def get_admin_connection():
 
 
 def get_connection(userdn, password):
-	ucr = ConfigRegistry()
-	ucr.load()
-	port = int(ucr.get('ldap/master/port', '7389'))
-	host = ucr['ldap/master']
-	base = ucr['ldap/base']
+	port = int(ucr_get('ldap/master/port', '7389'))
+	host = ucr_get('ldap/master')
+	base = ucr_get('ldap/base')
 	lo = base_access(host=host, port=port, base=base, binddn=userdn, bindpw=password)
 	lo = access(lo=lo)
 	pos = position(lo.base)
@@ -130,14 +129,14 @@ def get_connection(userdn, password):
 
 
 class ApplicationLDAPObject(object):
-	def __init__(self, app, lo, pos, ucr, create_if_not_exists=False):
-		self._localhost = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
+	def __init__(self, app, lo, pos, create_if_not_exists=False):
+		self._localhost = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		self._udm_obj = None
 		self._rdn = '%s_%s' % (app.id, app.version)
-		self._container = 'cn=%s,cn=apps,cn=univention,%s' % (app.id, ucr.get('ldap/base'))
+		self._container = 'cn=%s,cn=apps,cn=univention,%s' % (app.id, ucr_get('ldap/base'))
 		self._lo = lo
 		self._pos = pos
-		self._reload(app, ucr, create_if_not_exists)
+		self._reload(app, create_if_not_exists)
 
 	def __nonzero__(self):
 		return self._udm_obj is not None
@@ -146,18 +145,18 @@ class ApplicationLDAPObject(object):
 	def dn(self):
 		return 'univentionAppID=%s,%s' % (self._rdn, self._container)
 
-	def _reload(self, app, ucr, create_if_not_exists=False):
+	def _reload(self, app, create_if_not_exists=False):
 		self._udm_obj = None
 		udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
 		if udm_obj.exists():
 			self._udm_obj = udm_obj
 		elif create_if_not_exists:
-			self._create_obj(app, ucr)
+			self._create_obj(app)
 
-	def _create_obj(self, app, ucr):
+	def _create_obj(self, app):
 		containers = explode_dn(self._container, 1)
 		containers = containers[0:containers.index('apps')]
-		base = 'cn=apps,cn=univention,%s' % ucr.get('ldap/base')
+		base = 'cn=apps,cn=univention,%s' % ucr_get('ldap/base')
 		self._pos.setDn(base)
 		for container in reversed(containers):
 			if not search_objects('container/cn', self._lo, self._pos, base, cn=container):
@@ -198,24 +197,22 @@ class ApplicationLDAPObject(object):
 		}
 		obj = create_object_if_not_exists('appcenter/app', self._lo, self._pos, **attrs)
 		if obj:
-			self._reload(app, ucr, create_if_not_exists=False)
+			self._reload(app, create_if_not_exists=False)
 
 	@classmethod
-	def from_udm_obj(cls, udm_obj, lo, pos, ucr):
+	def from_udm_obj(cls, udm_obj, lo, pos):
 		app_id = explode_dn(udm_obj.dn, 1)[1]
 		app = FakeApp(id=app_id, version=udm_obj.info.get('version'))
-		return cls(app, lo, pos, ucr)
+		return cls(app, lo, pos)
 
 	def add_localhost(self):
 		self._udm_obj.info.setdefault('server', [])
 		if self._localhost not in self._udm_obj.info['server']:
 			self._udm_obj.info['server'].append(self._localhost)
 			self._udm_obj.modify()
-		ucr = ConfigRegistry()
-		ucr.load()
 		for ldap_object in self.get_siblings():
 			if ldap_object.dn != self.dn:
-				app_obj = self.from_udm_obj(ldap_object, self._lo, self._pos, ucr)
+				app_obj = self.from_udm_obj(ldap_object, self._lo, self._pos)
 				app_obj.remove_localhost()
 
 	def remove_localhost(self):
@@ -247,7 +244,4 @@ class ApplicationLDAPObject(object):
 def get_app_ldap_object(app, lo=None, pos=None, ucr=None, or_create=False):
 	if lo is None or pos is None:
 		lo, pos = get_machine_connection()
-	if ucr is None:
-		ucr = ConfigRegistry()
-		ucr.load()
-	return ApplicationLDAPObject(app, lo, pos, ucr, or_create)
+	return ApplicationLDAPObject(app, lo, pos, or_create)

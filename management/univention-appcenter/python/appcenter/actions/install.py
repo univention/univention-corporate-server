@@ -32,12 +32,11 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.udm import search_objects
+from univention.appcenter.ucr import ucr_get
 
 
 class ControlScriptException(Exception):
@@ -75,9 +74,12 @@ class Install(InstallRemoveUpgrade):
 			self.percentage = 80
 			self._call_join_script(app, args)
 
+	def _install_packages(self, packages, percentage_end, update=True):
+		self._apt_get('install', packages, percentage_end, update=update)
+
 	def _install_master_packages(self, app, percentage_end=100):
 		self._register_component(app)
-		self._apt_get('install', app.default_packages_master, percentage_end)
+		self._install_packages(app.default_packages_master, percentage_end)
 		register = get_action('register')
 		app = AppManager.find(app.id)
 		register.call(apps=[app], register_task=['component'])
@@ -109,16 +111,14 @@ class Install(InstallRemoveUpgrade):
 
 	def _find_hosts_for_master_packages(self, args):
 		lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
-		ucr = ConfigRegistry()
-		ucr.load()
 		hosts = []
 		for host in search_objects('computers/domaincontroller_master', lo, pos):
 			hosts.append((host.info.get('fqdn'), True))
 		for host in search_objects('computers/domaincontroller_backup', lo, pos):
 			hosts.append((host.info.get('fqdn'), False))
 		try:
-			local_fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
-			local_is_master = ucr.get('server/role') == 'domaincontroller_master'
+			local_fqdn = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+			local_is_master = ucr_get('server/role') == 'domaincontroller_master'
 			hosts.remove((local_fqdn, local_is_master))
 		except ValueError:
 			# not in list
@@ -126,20 +126,18 @@ class Install(InstallRemoveUpgrade):
 		return hosts
 
 	def _install_app(self, app, args):
-		ucr = ConfigRegistry()
-		ucr.load()
-		self._register_component(app, ucr)
+		self._register_component(app)
 		install_master = False
 		if app.default_packages_master:
-			if ucr.get('server/role') == 'domaincontroller_master':
+			if ucr_get('server/role') == 'domaincontroller_master':
 				self._install_master_packages(app, 30)
 				install_master = True
 			for host, is_master in self._find_hosts_for_master_packages(args):
 				self._install_only_master_packages_remotely(app, host, is_master, args)
-			if ucr.get('server/role') == 'domaincontroller_backup':
+			if ucr_get('server/role') == 'domaincontroller_backup':
 				self._install_master_packages(app, 30)
 				install_master = True
-		self._apt_get('install', app.default_packages, 80, update=not install_master)
+		self._install_packages(app.default_packages, 80, update=not install_master)
 
 	def _revert(self, app, args):
 		try:

@@ -39,12 +39,11 @@ from time import time
 
 from ldap.dn import explode_dn
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.docker import Docker
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
+from univention.appcenter.ucr import ucr_keys, ucr_get
 
 
 BACKUP_DIR = '/var/lib/univention-appcenter/backups'
@@ -156,8 +155,6 @@ class DockerActionMixin(object):
 		docker.pull()
 
 		self.log('Initializing app image')
-		ucr = ConfigRegistry()
-		ucr.load()
 		hostname = explode_dn(hostdn, 1)[0]
 		set_vars = (args.set_vars or {}).copy()
 		configure = get_action('configure')
@@ -167,10 +164,11 @@ class DockerActionMixin(object):
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
 		set_vars['update/warning/releasenotes'] = 'no'
+		ucr_keys_list = list(ucr_keys())
 		for var in ['nameserver.*', 'repository/online/server', 'repository/app_center/server', 'update/secure_apt', 'appcenter/index/verify', 'ldap/master.*', 'locale.*', 'domainname']:
-			for key in ucr.iterkeys():
+			for key in ucr_keys_list:
 				if re.match(var, key):
-					set_vars[key] = ucr.get(key)
+					set_vars[key] = ucr_get(key)
 		set_vars['updater/identify'] = 'Docker App'
 		container = docker.create(hostname, set_vars)
 		self.log('Preconfiguring container %s' % container)

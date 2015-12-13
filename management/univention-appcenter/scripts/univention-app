@@ -42,13 +42,8 @@ try:
 except locale.Error:
 	pass
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter import all_actions
 from univention.appcenter.log import _reverse_umc_module_logger, log_to_logfile, log_to_stream
-
-ucr = ConfigRegistry()
-ucr.load()
 
 
 def add_action(subparsers, action):

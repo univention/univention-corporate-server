@@ -33,9 +33,6 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.config_registry.frontend import ucr_update
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.docker import rm as docker_rm
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.upgrade import Upgrade
@@ -43,6 +40,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
 from univention.appcenter.actions.configure import Configure
+from univention.appcenter.ucr import ucr_save
 
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
@@ -137,8 +135,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			self.fatal('Could not backup container!')
 			raise Abort()
 		self.log('Setting up new container (%s)' % app)
-		ucr = ConfigRegistry()
-		ucr_update(ucr, {app.ucr_image_key: None})
+		ucr_save({app.ucr_image_key: None})
 		args.set_vars = dict((var['id'], var['value']) for var in config)
 		self._install_new_app(app, args)
 		self.log('Removing old container')

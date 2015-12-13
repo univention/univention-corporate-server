@@ -200,9 +200,9 @@ define([
 					var appTxt = app.name;
 					if (app.in_domain) {
 						if (app.local_allowed) {
-							appTxt += ' (' + _('this application may be installed somewhere in the domain') + ')';
+							appTxt += ' (' + _('this application may be installed on any computer in the domain') + ')';
 						} else {
-							appTxt += ' (' + _('this application must be installed somewhere in the domain, not on this computer') + ')';
+							appTxt += ' (' + _('this application must be installed on another computer in the domain') + ')';
 						}
 					}
 					return appTxt;

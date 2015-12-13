@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention App Center
-#  univention-app base module for freezing an app
+#  univention-app wrapper for ucr functions
 #
 # Copyright 2015 Univention GmbH
 #
@@ -32,31 +32,46 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-from univention.appcenter.actions import UniventionAppAction, StoreAppAction
-from univention.appcenter.ucr import ucr_save
+from univention.config_registry import ConfigRegistry
+from univention.config_registry.frontend import ucr_update
+
+_UCR = ConfigRegistry()
+_UCR.load()
 
 
-class Stall(UniventionAppAction):
-	'''Disbales updates for this app. Useful for suppressing
-	warnings when an app reached its end of life but shall still
-	be used.'''
-	help = 'Stalls an app'
+def ucr_load():
+	_UCR.load()
 
-	def setup_parser(self, parser):
-		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be stalled')
-		parser.add_argument('--undo', action='store_true', help='Reenable a previously stalled app')
 
-	def main(self, args):
-		if not args.app.is_installed():
-			self.fatal('%s is not installed!' % args.app.id)
-			return
-		if args.undo:
-			self._undo_stall(args.app)
-		else:
-			self._stall(args.app)
+def ucr_get(key, default=None):
+	return _UCR.get(key, default)
 
-	def _undo_stall(self, app):
-		ucr_save({app.ucr_status_key: 'installed', app.ucr_component_key: 'enabled'})
 
-	def _stall(self, app):
-		ucr_save({app.ucr_status_key: 'stalled', app.ucr_component_key: 'disabled'})
+def ucr_save(values):
+	ucr_update(_UCR, values)
+
+
+def ucr_includes(key):
+	return key in _UCR
+
+
+def ucr_is_true(key, value=None):
+	return _UCR.is_true(key, value)
+
+
+def ucr_is_false(key):
+	return _UCR.is_false(key)
+
+
+def ucr_keys():
+	return _UCR.iterkeys()
+
+
+def ucr_evaluated_as_true(value):
+	if isinstance(value, basestring):
+		value = value.lower()
+	return _UCR.is_true(value=value)
+
+
+def ucr_instance():
+	return _UCR

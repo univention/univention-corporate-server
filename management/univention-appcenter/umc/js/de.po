@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-10 14:46+0100\n"
+"POT-Creation-Date: 2015-12-14 00:21+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -60,41 +60,26 @@ msgstr ""
 "%s kann nicht aktualisiert werden. Die Applikation ist entweder nicht "
 "installiert oder es existiert keine neuere Version."
 
-#: umc/js/appcenter/requirements.js:265
+#: umc/js/appcenter/requirements.js:235
 #, python-format
 msgid "%s conflicts with the following applications."
 msgstr ""
 "%s kann nicht gleichzeitig mit den folgenden Applikationen installiert sein."
 
-#: umc/js/appcenter/requirements.js:255
+#: umc/js/appcenter/requirements.js:225
 #, python-format
 msgid "%s conflicts with the following packages."
 msgstr "%s kann nicht gleichzeitig mit den folgenden Paketen installiert sein."
-
-#: umc/js/appcenter/requirements.js:238
-#, python-format
-msgid ""
-"%s has to be installed anywhere in the domain for the following applications "
-"to work."
-msgstr "%s muss in der Domäne installiert sein, damit die folgenden Applikationen funktionieren."
 
 #: umc/js/appcenter/requirements.js:164
 #, python-format
 msgid "%s is already installed."
 msgstr "%s ist bereits installiert."
 
-#: umc/js/appcenter/requirements.js:282
+#: umc/js/appcenter/requirements.js:252
 #, python-format
 msgid "%s is required for the following applications to work."
 msgstr "%s wird benötigt, damit die folgenden Applikationen funktionieren."
-
-#: umc/js/appcenter/requirements.js:215
-#, python-format
-msgid ""
-"%s requires the following applications to be installed somewhere in the "
-"domain."
-msgstr ""
-"Für %s müssen die folgenden Applikationen in der Domäne installiert sein."
 
 #: umc/js/appcenter/requirements.js:198
 #, python-format
@@ -560,7 +545,7 @@ msgstr ""
 msgid "Install the component's default package(s)"
 msgstr "Die Standardpakete dieser Komponente installieren"
 
-#: umc/js/appcenter/requirements.js:203 umc/js/appcenter/requirements.js:226
+#: umc/js/appcenter/requirements.js:213
 msgid "Install them first."
 msgstr "Installieren Sie diese zuerst."
 
@@ -720,9 +705,8 @@ msgstr "Modul \"Domänenbeitritt\" öffnen"
 msgid "Open \"Software update\" module"
 msgstr "Modul \"Software-Aktualisierung\" öffnen"
 
-#: umc/js/appcenter/requirements.js:206 umc/js/appcenter/requirements.js:229
-#: umc/js/appcenter/requirements.js:246 umc/js/appcenter/requirements.js:273
-#: umc/js/appcenter/requirements.js:290
+#: umc/js/appcenter/requirements.js:216 umc/js/appcenter/requirements.js:243
+#: umc/js/appcenter/requirements.js:260
 #, python-format
 msgid "Open %s"
 msgstr "%s öffnen"
@@ -731,7 +715,7 @@ msgstr "%s öffnen"
 msgid "Open module"
 msgstr "Modul öffnen"
 
-#: umc/js/appcenter/requirements.js:306
+#: umc/js/appcenter/requirements.js:276
 msgid "Open the documentation"
 msgstr "Dokumentation öffnen"
 
@@ -979,7 +963,7 @@ msgstr "Die Applikation läuft momentan nicht."
 msgid "The application is currently running."
 msgstr "Die Applikation läuft momentan."
 
-#: umc/js/appcenter/requirements.js:314
+#: umc/js/appcenter/requirements.js:284
 #, python-format
 msgid ""
 "The application requires %(minimum)d MB of free RAM but only %(current)d MB "
@@ -1001,7 +985,7 @@ msgstr ""
 "Die Applikation benötigt einen neueren Kernel als Ihr System momentan "
 "benutzt (mindestens Kernel 4.1 wird benötigt)."
 
-#: umc/js/appcenter/requirements.js:300
+#: umc/js/appcenter/requirements.js:270
 msgid ""
 "The application requires the password service to be set up on the Active "
 "Directory domain controller server."
@@ -1085,7 +1069,7 @@ msgstr ""
 msgid "The software changes on %s consist of: "
 msgstr "Die Software-Änderungen auf %s bestehen aus: "
 
-#: umc/js/appcenter/requirements.js:303
+#: umc/js/appcenter/requirements.js:273
 msgid ""
 "The steps how to install the service on that machine are described in the "
 "online documentation."
@@ -1218,8 +1202,8 @@ msgstr "Deinstallieren"
 msgid "Uninstall Information"
 msgstr "Informationen zur Deinstallation"
 
-#: umc/js/appcenter/requirements.js:243 umc/js/appcenter/requirements.js:260
-#: umc/js/appcenter/requirements.js:270 umc/js/appcenter/requirements.js:287
+#: umc/js/appcenter/requirements.js:230 umc/js/appcenter/requirements.js:240
+#: umc/js/appcenter/requirements.js:257
 msgid "Uninstall them first."
 msgstr "Deinstallieren Sie diese zuerst."
 
@@ -1387,7 +1371,7 @@ msgstr ""
 msgid "You're editing the details of the component definition."
 msgstr "Sie bearbeiten die Details der Komponenten-Definition."
 
-#: umc/js/appcenter/requirements.js:309
+#: umc/js/appcenter/requirements.js:279
 msgid "https://docs.univention.de/manual.html#ad-connector:password-dienst"
 msgstr "https://docs.univention.de/handbuch.html#ad-connector:password-dienst"
 
@@ -1399,9 +1383,13 @@ msgstr "https://www.univention.de/produkte/univention-app-center/vote-for-app/"
 msgid "install"
 msgstr "installieren"
 
-#: umc/js/appcenter/requirements.js:219
-msgid "this application may not be installed on the same system"
-msgstr "diese Applikation darf nicht auf demselben System installiert sein"
+#: umc/js/appcenter/requirements.js:203
+msgid "this application may be installed on any computer in the domain"
+msgstr "diese Applikation kann auf einem beliebigen Rechner in der Domäne installiert werden"
+
+#: umc/js/appcenter/requirements.js:205
+msgid "this application must be installed on another computer in the domain"
+msgstr "diese Applikation muss auf einem anderen Rechner in der Domäne installiert werden"
 
 #: umc/js/appcenter/App.js:50
 msgid "this computer"
@@ -1449,6 +1437,13 @@ msgstr "{0} entfernte Paket"
 
 #~ msgid "%(verb)s %(ids)s on %(host)s"
 #~ msgstr "%(verb)s %(ids)s auf %(host)s"
+
+#~ msgid ""
+#~ "%s has to be installed anywhere in the domain for the following "
+#~ "applications to work."
+#~ msgstr ""
+#~ "%s muss in der Domäne installiert sein, damit die folgenden Applikationen "
+#~ "funktionieren."
 
 #~ msgid ""
 #~ "A restart of the UMC server components may be necessary for the software "
@@ -1708,6 +1703,14 @@ msgstr "{0} entfernte Paket"
 
 #~ msgid "installed locally"
 #~ msgstr "lokal installiert"
+
+#~ msgid "this application may not be installed on the same system"
+#~ msgstr "diese Applikation darf nicht auf demselben System installiert sein"
+
+#~ msgid ""
+#~ "this application must be installed somewhere in the domain, not on this "
+#~ "computer"
+#~ msgstr "diese Applikation kann irgendwo in der Domäne installiert werden"
 
 #~ msgid "this server"
 #~ msgstr "diesem Server"

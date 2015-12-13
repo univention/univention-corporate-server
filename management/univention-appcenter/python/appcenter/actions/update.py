@@ -46,12 +46,10 @@ import tarfile
 from urlparse import urlsplit
 from urllib2 import quote, Request, HTTPError
 
-from univention.config_registry import ConfigRegistry
-from univention.config_registry.frontend import ucr_update
-
 from univention.appcenter.app import AppManager, CACHE_DIR, LOCAL_ARCHIVE
 from univention.appcenter.actions import UniventionAppAction, Abort, possible_network_error
 from univention.appcenter.utils import urlopen, get_md5_from_file, gpg_verify
+from univention.appcenter.ucr import ucr_get, ucr_save, ucr_is_false
 
 
 class Update(UniventionAppAction):
@@ -95,11 +93,10 @@ class Update(UniventionAppAction):
 		for thread in threads:
 			thread.join()
 		if something_changed_locally or something_changed_remotely:
-			ucr = ConfigRegistry()
 			AppManager.clear_cache()
 			for app in AppManager.get_all_locally_installed_apps():
 				if AppManager.find(app.id, latest=True) > app:
-					ucr_update(ucr, {app.ucr_upgrade_key: 'yes'})
+					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
 
 	@possible_network_error
@@ -140,10 +137,8 @@ class Update(UniventionAppAction):
 				f.write(content)
 			AppManager.invalidate_pickle_cache()
 
-		ucr = ConfigRegistry()
-		ucr.load()
 		_download_supra_file('index.json.gz', version_specific=True)
-		if not ucr.is_false('appcenter/index/verify'):
+		if not ucr_is_false('appcenter/index/verify'):
 			_download_supra_file('index.json.gz.gpg', version_specific=True)
 		_download_supra_file('categories.ini', version_specific=False)
 		_download_supra_file('rating.ini', version_specific=False)
@@ -289,9 +284,7 @@ class Update(UniventionAppAction):
 
 	def _get_server(self):
 		if self._appcenter_server is None:
-			ucr = ConfigRegistry()
-			ucr.load()
-			server = ucr.get('repository/app_center/server', 'appcenter.software-univention.de')
+			server = ucr_get('repository/app_center/server', 'appcenter.software-univention.de')
 			self._appcenter_server = server
 		if not self._appcenter_server.startswith('http'):
 			self._appcenter_server = 'https://%s' % self._appcenter_server
@@ -299,9 +292,7 @@ class Update(UniventionAppAction):
 
 	def _load_index_json(self):
 		index_json_gz_filename = os.path.join(CACHE_DIR, '.index.json.gz')
-		ucr = ConfigRegistry()
-		ucr.load()
-		if not ucr.is_false('appcenter/index/verify'):
+		if not ucr_is_false('appcenter/index/verify'):
 			detached_sig_path = index_json_gz_filename + '.gpg'
 			(rc, gpg_error) = gpg_verify(index_json_gz_filename, detached_sig_path)
 			if rc:
@@ -363,9 +354,7 @@ class Update(UniventionAppAction):
 			except (IOError, ValueError) as exc:
 				self.warn('Could not parse univention-updater.status: %s' % exc)
 			if version is None:
-				ucr = ConfigRegistry()
-				ucr.load()
-				version = ucr.get('version/version', '')
+				version = ucr_get('version/version', '')
 			self.debug('UCS Version is %r' % version)
 			self._ucs_version = version
 		return self._ucs_version

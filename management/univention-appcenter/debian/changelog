@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-28) unstable; urgency=medium
+
+  * Bug #40240: Performance improvements by UCR caching
+  * Bug #37539: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Dec 2015 00:16:11 +0100
+
 univention-appcenter (5.0.19-27) unstable; urgency=medium
 
   * Bug #40239: Pickle apps once they are loaded and use it instead of

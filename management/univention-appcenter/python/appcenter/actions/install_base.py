@@ -39,12 +39,11 @@ import subprocess
 from argparse import SUPPRESS
 from tempfile import NamedTemporaryFile
 
-from univention.config_registry import ConfigRegistry
-
-from univention.appcenter.app import App
+from univention.appcenter.app import App, AppManager
 from univention.appcenter.actions import Abort, StoreAppAction, NetworkError, get_action
 from univention.appcenter.actions.register import Register
 from univention.appcenter.utils import get_locale
+from univention.appcenter.ucr import ucr_get
 
 
 class _AptLogger(object):
@@ -61,10 +60,11 @@ class _AptLogger(object):
 
 	def info(self, msg):
 		match = self.progress_re.match(msg)
-		if match:
-			percentage = float(match.groups()[0]) / 100
-			percentage = self.start + ((self.end - self.start) * percentage)
-			self.action.percentage = percentage
+		if self.end:
+			if match:
+				percentage = float(match.groups()[0]) / 100
+				percentage = self.start + ((self.end - self.start) * percentage)
+				self.action.percentage = percentage
 		elif self.download_re.match(msg):
 			pass
 		else:
@@ -250,9 +250,7 @@ class InstallRemoveUpgrade(Register):
 			shutil.copy2(joinscript, dest)
 			# change to UCS umask + +x:      -rwxr-xr-x
 			os.chmod(dest, 0755)
-			ucr = ConfigRegistry()
-			ucr.load()
-			if ucr.get('server/role') == 'domaincontroller_master' and getuser() == 'root':
+			if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
 				return self._call_script(dest)
 			else:
 				with self._get_password_file(args) as password_file:
@@ -265,10 +263,17 @@ class InstallRemoveUpgrade(Register):
 	def _reload_apache(self):
 		self._call_script('/etc/init.d/apache2', 'reload')
 
+	def _apt_get_update(self):
+		self._subprocess(['apt-get', 'update'])
+		AppManager.reload_package_manager()
+
 	def _apt_get(self, command, packages, percentage_end=100, update=True):
 		env = os.environ.copy()
 		env['DEBIAN_FRONTEND'] = 'noninteractive'
 		if update:
-			self._subprocess(['apt-get', 'update'])
+			self._apt_get_update()
 		apt_logger = _AptLogger(self, percentage_end)
-		return self._subprocess(['apt-get', '-o', 'APT::Status-Fd=1', '-o', 'DPkg::Options::=--force-confold', '--assume-yes', '--force-yes', '--auto-remove', command] + packages, logger=apt_logger, env=env)
+		try:
+			return self._subprocess(['apt-get', '-o', 'APT::Status-Fd=1', '-o', 'DPkg::Options::=--force-confold', '--assume-yes', '--force-yes', '--auto-remove', command] + packages, logger=apt_logger, env=env)
+		finally:
+			AppManager.reload_package_manager()

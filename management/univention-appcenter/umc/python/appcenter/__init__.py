@@ -56,13 +56,12 @@ from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import PatternSanitizer, MappingSanitizer, DictSanitizer, StringSanitizer, ChoicesSanitizer, ListSanitizer, BooleanSanitizer
 from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import ConfigurationError
-import univention.config_registry
-from univention.config_registry.frontend import ucr_update
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter import get_action, AppManager
 from univention.appcenter.utils import docker_is_running, call_process
 from univention.appcenter.log import get_base_logger, log_to_logfile
+from univention.appcenter.ucr import ucr_instance, ucr_save
 
 # local application
 from app_center import Application, AppcenterServerContactFailed, LICENSE
@@ -121,8 +120,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	def init(self):
 		os.umask(0022)  # umc umask is too restrictive for app center as it creates a lot of files in docker containers
-		self.ucr = univention.config_registry.ConfigRegistry()
-		self.ucr.load()
+		self.ucr = ucr_instance()
 
 		util.install_opener(self.ucr)
 		self._remote_progress = {}
@@ -182,7 +180,6 @@ class Instance(umcm.Base, ProgressMixin):
 		list_apps = get_action('list')
 		domain = get_action('domain')
 		apps = list_apps.get_apps()
-		self.ucr.load()
 		if self.ucr.is_true('appcenter/docker', True):
 			if not self._test_for_docker_service():
 				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
@@ -199,7 +196,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@simple_response
 	def enable_docker(self):
 		if self._test_for_docker_service():
-			ucr_update(self.ucr, {'appcenter/docker': 'enabled'})
+			ucr_save({'appcenter/docker': 'enabled'})
 		else:
 			raise umcm.UMC_CommandError(_('Unable to start the docker service!') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 

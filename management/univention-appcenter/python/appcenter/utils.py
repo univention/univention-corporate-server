@@ -48,7 +48,8 @@ from locale import getlocale
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
-from univention.config_registry import ConfigRegistry
+
+from univention.appcenter.ucr import ucr_get, ucr_keys
 
 # "global" translation for univention-appcenter
 # also provides translation for univention-appcenter-docker etc
@@ -81,25 +82,25 @@ def docker_is_running():
 
 def app_ports():
 	ret = []
-	ucr = ConfigRegistry()
-	ucr.load()
-	for key in ucr.iterkeys():
+	for key in ucr_keys():
 		match = re.match(r'^appcenter/apps/(.*)/ports/(\d*)', key)
 		if match:
 			try:
-				ret.append((match.groups()[0], int(match.groups()[1]), int(ucr[key])))
+				ret.append((match.groups()[0], int(match.groups()[1]), int(ucr_get(key))))
 			except ValueError:
 				pass
 	return sorted(ret)
 
+
 class NoMorePorts(Exception):
 	pass
 
+
 def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
-	for port in range (lower_bound, upper_bound):
+	for port in range(lower_bound, upper_bound):
 		if port in blacklist:
 			continue
-		s=socket.socket()
+		s = socket.socket()
 		try:
 			s.bind(('', port))
 		except:
@@ -108,7 +109,8 @@ def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
 			s.close()
 			return port
 	raise NoMorePorts()
-_
+
+
 def underscore(value):
 	if value:
 		return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()
@@ -171,9 +173,7 @@ def verbose_http_error(exc):
 	while hasattr(exc, 'reason'):
 		exc = exc.reason
 	if hasattr(exc, 'errno'):
-		ucr = ConfigRegistry()
-		ucr.load()
-		version = ucr.get('version/version')
+		version = ucr_get('version/version')
 		errno = exc.errno
 		strerror += getattr(exc, 'strerror', '') or ''
 		if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')
@@ -189,9 +189,7 @@ def verbose_http_error(exc):
 
 def urlopen(request):
 	if not urlopen._opener_installed:
-		ucr = ConfigRegistry()
-		ucr.load()
-		proxy_http = ucr.get('proxy/http')
+		proxy_http = ucr_get('proxy/http')
 		if proxy_http:
 			proxy = urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http})
 			opener = urllib2.build_opener(proxy)
@@ -254,21 +252,21 @@ def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileNa
 	if not keyringFileName:
 		keyringFileName = '/usr/share/keyrings/univention-archive-key-ucs-4x.gpg'
 
+	gpg_homedirname = tempfile.mkdtemp()
 	try:
-		gpg_homedirname = tempfile.mkdtemp()
 
 		cmd = ('gpg',
-			   '--no-options',
-			   '--no-default-keyring', '--keyring', keyringFileName,
-			   '--batch', '--quiet', '--no-tty',
-			   # '--logger-file', '/dev/null'
-			   '--with-colons', '--utf8-strings',
-			   '--no-auto-check-trustdb', '--no-auto-key-locate', '--no-use-agent',
-			   '--no-random-seed-file',
-			   '--trust-model', 'always',
-			   '--homedir', gpg_homedirname,
-			   '--verify',
-			   )
+				'--no-options',
+				'--no-default-keyring', '--keyring', keyringFileName,
+				'--batch', '--quiet', '--no-tty',
+				# '--logger-file', '/dev/null'
+				'--with-colons', '--utf8-strings',
+				'--no-auto-check-trustdb', '--no-auto-key-locate', '--no-use-agent',
+				'--no-random-seed-file',
+				'--trust-model', 'always',
+				'--homedir', gpg_homedirname,
+				'--verify',
+				)
 
 		if detached_sig_filename:
 			cmd += (detached_sig_filename,)
@@ -281,9 +279,5 @@ def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileNa
 		else:
 			stdout, stderr = p.communicate()
 	finally:
-		try:
-			shutil.rmtree(gpg_homedirname)
-		except OSError as exc:
-			if exc.errno != errno.ENOENT:
-				raise
+		rmdir(gpg_homedirname)
 	return (p.returncode, stderr)

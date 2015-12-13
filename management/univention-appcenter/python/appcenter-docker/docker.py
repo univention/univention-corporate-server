@@ -44,15 +44,12 @@ from gzip import GzipFile
 import requests
 from hashlib import sha256
 
-# univention
-from univention.config_registry import ConfigRegistry
-from univention.config_registry.frontend import ucr_update
-
 from univention.appcenter.utils import app_ports, call_process, shell_safe, _
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.app import CACHE_DIR
 from univention.appcenter.actions.update import Update
 from univention.appcenter.actions import Abort
+from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get
 
 _logger = get_base_logger().getChild('docker')
 
@@ -218,10 +215,8 @@ def commit(container, new_base_image):
 class Docker(object):
 	def __init__(self, app, logger=None):
 		self.app = app
-		self.ucr = ConfigRegistry()
-		self.ucr.load()
 		self.logger = logger or _logger
-		self.container = self.ucr.get(self.app.ucr_container_key)
+		self.container = ucr_get(self.app.ucr_container_key)
 
 	def inspect_image(self):
 		return inspect(self.image)
@@ -255,7 +250,7 @@ class Docker(object):
 		return pull(self.image)
 
 	def verify(self):
-		if self.ucr.is_false('appcenter/index/verify'):
+		if ucr_is_false('appcenter/index/verify'):
 			return
 		try:
 			verify(self.app, self.image)
@@ -297,7 +292,7 @@ class Docker(object):
 				volumes.append(app_volume)
 		command = shlex.split(self.app.docker_script_init)
 		container = create(self.image, command, hostname, env, ports, volumes)
-		ucr_update(self.ucr, {self.app.ucr_container_key: container})
+		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
 		return container
 

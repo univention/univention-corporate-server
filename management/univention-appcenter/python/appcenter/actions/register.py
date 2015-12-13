@@ -39,15 +39,13 @@ import re
 
 from ldap.dn import str2dn, dn2str
 
-from univention.config_registry.frontend import ucr_update
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.app import AppManager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, get_md5, app_ports, currently_free_port_in_range
 from univention.appcenter.log import catch_stdout
+from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys
 
 
 class Register(CredentialsAction):
@@ -89,22 +87,17 @@ class Register(CredentialsAction):
 			return
 		server = AppManager.get_server()
 		server = server[server.find('/') + 2:]
-		ucr = ConfigRegistry()
-		ucr.load()
 		updates = {}
 		for app in apps:
 			if self._do_register(app, args):
-				updates.update(self._register_component(app, ucr, server, delay=True))
+				updates.update(self._register_component(app, server, delay=True))
 			else:
-				updates.update(self._unregister_component_dict(app, ucr))
+				updates.update(self._unregister_component_dict(app))
 		with catch_stdout(self.logger):
-			ucr_update(ucr, updates)
+			ucr_save(updates)
 
-	def _register_component(self, app, ucr=None, server=None, delay=False):
-		if ucr is None:
-			ucr = ConfigRegistry()
-			ucr.load()
-		if app.docker and not ucr.get('docker/container/uuid'):
+	def _register_component(self, app, server=None, delay=False):
+		if app.docker and not ucr_get('docker/container/uuid'):
 			self.log('Component needs to be registered in the container')
 			return {}
 		if app.without_repository:
@@ -117,15 +110,15 @@ class Register(CredentialsAction):
 		self.log('Registering component for %s' % app.id)
 		for _app in AppManager.get_all_apps_with_id(app.id):
 			if _app == app:
-				updates.update(self._register_component_dict(_app, ucr, server))
+				updates.update(self._register_component_dict(_app, server))
 			else:
-				updates.update(self._unregister_component_dict(_app, ucr))
+				updates.update(self._unregister_component_dict(_app))
 		if not delay:
 			with catch_stdout(self.logger):
-				ucr_update(ucr, updates)
+				ucr_save(updates)
 		return updates
 
-	def _register_component_dict(self, app, ucr, server):
+	def _register_component_dict(self, app, server):
 		ret = {}
 		ucr_base_key = app.ucr_component_key
 		self.debug('Adding %s' % ucr_base_key)
@@ -134,23 +127,21 @@ class Register(CredentialsAction):
 		ret[ucr_base_key % 'server'] = server
 		ret[ucr_base_key % 'description'] = app.name
 		ret[ucr_base_key % 'localmirror'] = 'false'
-		ret[ucr_base_key % 'version'] = ucr.get(ucr_base_key % 'version', 'current')
+		ret[ucr_base_key % 'version'] = ucr_get(ucr_base_key % 'version', 'current')
 		return ret
 
 	def _unregister_component(self, app):
 		if app.without_repository:
 			self.log('No repository to unregister')
 			return
-		ucr = ConfigRegistry()
-		ucr.load()
-		updates = self._unregister_component_dict(app, ucr)
-		ucr_update(ucr, updates)
+		updates = self._unregister_component_dict(app)
+		ucr_save(updates)
 		return updates
 
-	def _unregister_component_dict(self, app, ucr):
+	def _unregister_component_dict(self, app):
 		ret = {}
 		ucr_base_key = app.ucr_component_key
-		for key in ucr.keys():
+		for key in ucr_keys():
 			if key == ucr_base_key or key.startswith('%s/' % ucr_base_key):
 				self.debug('Removing %s' % key)
 				ret[key] = None
@@ -193,9 +184,7 @@ class Register(CredentialsAction):
 		if not app.docker:
 			self.debug('App is not docker. Skip registering host')
 			return None, None
-		ucr = ConfigRegistry()
-		ucr.load()
-		hostdn = ucr.get(app.ucr_hostdn_key)
+		hostdn = ucr_get(app.ucr_hostdn_key)
 		lo, pos = self._get_ldap_connection(args)
 		if hostdn:
 			if lo.get(hostdn):
@@ -208,72 +197,65 @@ class Register(CredentialsAction):
 		password = get_md5(time.time())
 		self.log('Registering the container host %s for %s' % (hostname, app.id))
 		if app.docker_server_role == 'memberserver':
-			base = 'cn=memberserver,cn=computers,%s' % ucr.get('ldap/base')
+			base = 'cn=memberserver,cn=computers,%s' % ucr_get('ldap/base')
 		else:
-			base = 'cn=dc,cn=computers,%s' % ucr.get('ldap/base')
+			base = 'cn=dc,cn=computers,%s' % ucr_get('ldap/base')
 		while base and not lo.get(base):
 			base = dn2str(str2dn(base)[1:])
 		pos.setDn(base)
-		domain = ucr.get('domainname')
+		domain = ucr_get('domainname')
 		description = '%s (%s)' % (app.name, app.version)
-		policies = ['cn=app-release-update,cn=policies,%s' % ucr.get('ldap/base'), 'cn=app-update-schedule,cn=policies,%s' % ucr.get('ldap/base')]
+		policies = ['cn=app-release-update,cn=policies,%s' % ucr_get('ldap/base'), 'cn=app-update-schedule,cn=policies,%s' % ucr_get('ldap/base')]
 		obj = create_object_if_not_exists('computers/%s' % app.docker_server_role, lo, pos, name=hostname, description=description, domain=domain, password=password, objectFlag='docker', policies=policies)
-		ucr_update(ucr, {app.ucr_hostdn_key: obj.dn})
+		ucr_save({app.ucr_hostdn_key: obj.dn})
 		return obj.dn, password
 
 	def _unregister_host(self, app, args):
-		ucr = ConfigRegistry()
-		ucr.load()
-		hostdn = ucr.get(app.ucr_hostdn_key)
+		hostdn = ucr_get(app.ucr_hostdn_key)
 		if not hostdn:
 			self.log('No hostdn for %s found. Nothing to remove' % app.id)
 			return
 		lo, pos = self._get_ldap_connection(args)
 		remove_object_if_exists('computers/%s' % app.docker_server_role, lo, pos, hostdn)
-		ucr_update(ucr, {app.ucr_hostdn_key: None})
+		ucr_save({app.ucr_hostdn_key: None})
 
 	def _register_app_for_apps(self, apps, args):
 		if not self._shall_register(args, 'app'):
 			return
-		ucr = ConfigRegistry()
-		ucr.load()
 		updates = {}
 		if apps:
 			lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
 		for app in apps:
 			if self._do_register(app, args):
-				updates.update(self._register_app(app, args, ucr, lo, pos, delay=True))
+				updates.update(self._register_app(app, args, lo, pos, delay=True))
 			else:
-				updates.update(self._unregister_app(app, args, ucr, lo, pos, delay=True))
-		ucr_update(ucr, updates)
+				updates.update(self._unregister_app(app, args, lo, pos, delay=True))
+		ucr_save(updates)
 
-	def _register_app(self, app, args, ucr=None, lo=None, pos=None, delay=False):
-		if ucr is None:
-			ucr = ConfigRegistry()
-			ucr.load()
+	def _register_app(self, app, args, lo=None, pos=None, delay=False):
 		if lo is None:
 			lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
 		updates = {}
 		self.log('Registering UCR for %s' % app.id)
 		self.log('Marking %s as installed' % app)
 		if app.is_installed():
-			status = ucr.get(app.ucr_status_key, 'installed')
+			status = ucr_get(app.ucr_status_key, 'installed')
 		else:
 			status = 'installed'
-		ucr_update(ucr, {app.ucr_status_key: status, app.ucr_version_key: app.version})
-		updates.update(self._register_docker_variables(app, ucr))
-		updates.update(self._register_app_report_variables(app, ucr))
+		ucr_save({app.ucr_status_key: status, app.ucr_version_key: app.version})
+		updates.update(self._register_docker_variables(app))
+		updates.update(self._register_app_report_variables(app))
 		# Register app in LDAP (cn=...,cn=apps,cn=univention)
-		ldap_object = get_app_ldap_object(app, lo, pos, ucr, or_create=True)
+		ldap_object = get_app_ldap_object(app, lo, pos, or_create=True)
 		self.log('Adding localhost to LDAP object')
 		ldap_object.add_localhost()
-		updates.update(self._register_overview_variables(app, ucr))
+		updates.update(self._register_overview_variables(app))
 		if not delay:
-			ucr_update(ucr, updates)
+			ucr_save(updates)
 			self._reload_apache()
 		return updates
 
-	def _register_docker_variables(self, app, ucr):
+	def _register_docker_variables(self, app):
 		updates = {}
 		if app.docker:
 			try:
@@ -308,11 +290,11 @@ class Register(CredentialsAction):
 				if app.auto_mod_proxy and app.has_local_web_interface():
 					self.log('Setting ports for apache proxy')
 					try:
-						min_port = int(ucr.get('appcenter/ports/min'))
+						min_port = int(ucr_get('appcenter/ports/min'))
 					except (TypeError, ValueError):
 						min_port = 40000
 					try:
-						max_port = int(ucr.get('appcenter/ports/max'))
+						max_port = int(ucr_get('appcenter/ports/max'))
 					except (TypeError, ValueError):
 						max_port = 41000
 					ports_taken = set()
@@ -342,13 +324,13 @@ class Register(CredentialsAction):
 						if port_updates[container_port] == host_port:
 							port_updates.pop(container_port)
 				if port_updates:
-					ucr_update(ucr, port_updates)
+					ucr_save(port_updates)
 					updates.update(port_updates)
 		return updates
 
-	def _register_app_report_variables(self, app, ucr):
+	def _register_app_report_variables(self, app):
 		updates = {}
-		for key in ucr.iterkeys():
+		for key in ucr_keys():
 			if re.match('appreport/%s/' % app.id, key):
 				updates[key] = None
 		registry_key = 'appreport/%s/%%s' % app.id
@@ -362,10 +344,10 @@ class Register(CredentialsAction):
 			updates[registry_key % 'report'] = 'yes'
 		return updates
 
-	def _register_overview_variables(self, app, ucr):
+	def _register_overview_variables(self, app):
 		updates = {}
 		if app.ucs_overview_category is not False:
-			for key in ucr.iterkeys():
+			for key in ucr_keys():
 				if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
 					updates[key] = None
 		if app.ucs_overview_category and app.web_interface:
@@ -385,14 +367,11 @@ class Register(CredentialsAction):
 				updates[registry_key % key] = value
 		return updates
 
-	def _unregister_app(self, app, args, ucr=None, lo=None, pos=None, delay=False):
-		if ucr is None:
-			ucr = ConfigRegistry()
-			ucr.load()
+	def _unregister_app(self, app, args, lo=None, pos=None, delay=False):
 		if lo is None:
 			lo, pos = self._get_ldap_connection(args, allow_machine_connection=True)
 		updates = {}
-		for key in ucr.iterkeys():
+		for key in ucr_keys():
 			if key.startswith('appcenter/apps/%s/' % app.id):
 				updates[key] = None
 			if re.match('ucs/web/overview/entries/[^/]+/%s/' % app.id, key):
@@ -412,23 +391,22 @@ class Register(CredentialsAction):
 					self._call_script('/usr/sbin/update-rc.d', os.path.basename(init_script), 'remove')
 				except OSError:
 					pass
-		ldap_object = get_app_ldap_object(app, lo, pos, ucr)
+		ldap_object = get_app_ldap_object(app, lo, pos)
 		if ldap_object:
 			self.log('Removing localhost from LDAP object')
 			ldap_object.remove_localhost()
 		if not delay:
-			ucr_update(ucr, updates)
+			ucr_save(updates)
 			self._reload_apache()
 		return updates
 
 	def _register_installed_apps_in_ucr(self):
-		ucr = ConfigRegistry()
 		installed_codes = []
 		for app in AppManager.get_all_apps():
 			if app.is_installed():
 				installed_codes.append(app.code)
 		with catch_stdout(self.logger):
-			ucr_update(ucr, {
+			ucr_save({
 				'appcenter/installed': '-'.join(installed_codes),
 				'repository/app_center/installed': '-'.join(installed_codes),  # to be deprecated
 			})

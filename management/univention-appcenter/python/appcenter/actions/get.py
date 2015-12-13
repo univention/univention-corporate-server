@@ -38,11 +38,10 @@ from argparse import Action
 from fnmatch import translate
 from ConfigParser import NoOptionError, NoSectionError
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.app import CaseSensitiveConfigParser, AppManager
 from univention.appcenter.utils import shell_safe
 from univention.appcenter.actions import UniventionAppAction, StoreAppAction
+from univention.appcenter.ucr import ucr_get
 
 
 class StoreKeysAction(Action):
@@ -100,19 +99,17 @@ class Get(UniventionAppAction):
 
 	@classmethod
 	def to_dict(cls, app):
-		ucr = ConfigRegistry()
-		ucr.load()
 		ret = app.attrs_dict()
 		ret['logo_name'] = app.logo_name
 		ret['logo_detail_page_name'] = app.logo_detail_page_name
 		ret['screenshot'] = app.get_screenshot_url()
 		ret['thumbnails'] = app.get_thumbnail_urls()
 		ret['is_installed'] = app.is_installed()
-		ret['is_current'] = app.without_repository or ucr.get('repository/online/component/%s' % app.component_id) == 'enabled'
-		ret['local_role'] = ucr.get('server/role')
+		ret['is_current'] = app.without_repository or ucr_get('repository/online/component/%s' % app.component_id) == 'enabled'
+		ret['local_role'] = ucr_get('server/role')
 		ret['is_master'] = ret['local_role'] == 'domaincontroller_master'
-		ret['host_master'] = ucr.get('ldap/master')
-		ret['autostart'] = ucr.get('%s/autostart' % app.id, 'yes')
+		ret['host_master'] = ucr_get('ldap/master')
+		ret['autostart'] = ucr_get('%s/autostart' % app.id, 'yes')
 		ret['is_ucs_component'] = app.is_ucs_component()
 		ret['update_available'] = False  # TODO: ucr.is_true(app.ucr_upgrade_key); Bug#39916
 		latest = AppManager.find(app.id, latest=True)

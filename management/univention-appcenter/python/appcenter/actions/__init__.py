@@ -41,11 +41,10 @@ import urllib2
 import urllib
 from functools import wraps
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter import AppManager
 from univention.appcenter.log import get_base_logger
 from univention.appcenter.utils import underscore, call_process, urlopen, verbose_http_error
+from univention.appcenter.ucr import ucr_get
 
 _ACTIONS = {}
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
@@ -241,11 +240,9 @@ class UniventionAppAction(object):
 		self.debug('%s %s: %s' % (action, app.id, status))
 		if not app.notify_vendor:
 			return
-		ucr = ConfigRegistry()
-		ucr.load()
 		server = AppManager.get_server()
 		url = '%s/postinst' % server
-		uuid = ucr.get('uuid/license', '00000000-0000-0000-0000-000000000000')
+		uuid = ucr_get('uuid/license', '00000000-0000-0000-0000-000000000000')
 		try:
 			values = {
 				'uuid': uuid,
@@ -253,7 +250,7 @@ class UniventionAppAction(object):
 				'version': app.version,
 				'action': action,
 				'status': status,
-				'role': ucr.get('server/role'),
+				'role': ucr_get('server/role'),
 			}
 			request_data = urllib.urlencode(values)
 			request = urllib2.Request(url, request_data)

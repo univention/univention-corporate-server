@@ -41,10 +41,9 @@ import time
 
 import ldap
 
-from univention.config_registry import ConfigRegistry
-
 from univention.appcenter.actions import UniventionAppAction, Abort
 from univention.appcenter.udm import search_objects, get_machine_connection, get_admin_connection, get_connection
+from univention.appcenter.ucr import ucr_get
 
 
 class CredentialsAction(UniventionAppAction):
@@ -144,10 +143,8 @@ class CredentialsAction(UniventionAppAction):
 			raise Abort()
 
 	def _get_ldap_connection(self, args, allow_machine_connection=False, allow_admin_connection=True):
-		ucr = ConfigRegistry()
-		ucr.load()
 		if allow_admin_connection:
-			if ucr.get('server/role') == 'domaincontroller_master' and getuser() == 'root':
+			if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
 				try:
 					return self._get_admin_connection()
 				except Abort:
