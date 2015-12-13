@@ -42,6 +42,7 @@ from cgi import escape as cgi_escape
 from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
+from cPickle import load, dump, PickleError
 
 from univention.config_registry import ConfigRegistry
 from univention.lib.package_manager import PackageManager
@@ -957,21 +958,45 @@ class App(object):
 class AppManager(object):
 	_cache = []
 	_package_manager = None
+	_pickle_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.pkl')
+
+	@classmethod
+	def invalidate_pickle_cache(cls):
+		pickle_pattern = re.sub(r'%\(.*?\).', '*', cls._pickle_file)
+		for pickle_file in glob(os.path.join(CACHE_DIR, pickle_pattern)):
+			try:
+				os.unlink(pickle_file)
+			except OSError:
+				pass
 
 	@classmethod
 	def clear_cache(cls):
 		cls._cache[:] = []
 		cls.reload_package_manager()
+		cls.invalidate_pickle_cache()
 		_get_rating_items._items = None
 
 	@classmethod
 	def _get_every_single_app(cls):
 		if not cls._cache:
-			for ini in glob(os.path.join(CACHE_DIR, '*.ini')):
-				app = App.from_ini(ini)
-				if app is not None:
-					cls._cache.append(app)
-			cls._cache.sort()
+			locale = get_locale() or 'en'
+			pickle_file = cls._pickle_file % {'locale': locale}
+			try:
+				cls._cache = load(open(pickle_file, 'rb'))
+			except (IOError, PickleError):
+				for ini in glob(os.path.join(CACHE_DIR, '*.ini')):
+					app = App.from_ini(ini, locale=locale)
+					if app is not None:
+						cls._cache.append(app)
+				cls._cache.sort()
+				try:
+					dump(cls._cache, open(pickle_file, 'wb'), 2)
+				except (IOError, PickleError):
+					app_logger.warn('Unable to cache apps')
+				else:
+					app_logger.debug('Saved %d apps into cache' % len(cls._cache))
+			else:
+				app_logger.debug('Loaded %d apps from cache' % len(cls._cache))
 		return cls._cache
 
 	@classmethod

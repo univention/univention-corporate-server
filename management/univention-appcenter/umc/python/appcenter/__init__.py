@@ -176,9 +176,9 @@ class Instance(umcm.Base, ProgressMixin):
 		if self.ucr.is_true('appcenter/umc/update/always', True):
 			update = get_action('update')
 			update.call()
-			Application.all(force_reread=True, only_local=True)
-		AppManager.clear_cache()
-		Application.all(only_local=True)  # cache 'em!
+			Application._all_applications = None
+		self.ucr.load()
+		AppManager.reload_package_manager()
 		list_apps = get_action('list')
 		domain = get_action('domain')
 		apps = list_apps.get_apps()

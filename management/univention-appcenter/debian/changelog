@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-27) unstable; urgency=medium
+
+  * Bug #40239: Pickle apps once they are loaded and use it instead of
+    rereading the ini files
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Dec 2015 00:03:53 +0100
+
 univention-appcenter (5.0.19-26) unstable; urgency=medium
 
   * Bug #37539: Put into existing functions
