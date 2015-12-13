@@ -1126,9 +1126,17 @@ class Application(object):
 			return conflictedapps
 		return True
 
-	@HardRequirement('install', 'upgrade')
-	def must_have_no_unmet_dependencies_domain(self, package_manager):
+	@HardRequirement('install', 'update')
+	def must_have_no_unmet_dependencies(self, package_manager):
 		unmet_packages = []
+
+		# RequiredApps
+		for app in self.all():
+			if app.id in self.get('requiredapps'):
+				if not app.is_installed(package_manager):
+					unmet_packages.append({'id': app.id, 'name': app.name, 'in_domain': False})
+
+		# RequiredAppsInDomain
 		apps = [Application.find(app_id) for app_id in self.get('requiredappsindomain')]
 		for app in apps:
 			if not app:
@@ -1136,30 +1144,8 @@ class Application(object):
 			app = app.to_dict(package_manager, domainwide_managed=True)
 			if not app['is_installed_anywhere']:
 				local_allowed = app['id'] not in self.get('conflictedapps')
-				unmet_packages.append({'id': app['id'], 'name': app['name'], 'local_allowed': local_allowed})
-		if unmet_packages:
-			return unmet_packages
-		return True
+				unmet_packages.append({'id': app['id'], 'name': app['name'], 'in_domain': True, 'local_allowed': local_allowed})
 
-	@HardRequirement('remove')
-	def must_not_be_depended_on_domain(self, package_manager):
-		depending_apps = []
-		apps = [app for app in Application.get_all_apps() if self.id in app.get('requiredappsindomain')]
-		for app in apps:
-			app = app.to_dict(package_manager, domainwide_managed=True)
-			if app['is_installed_anywhere']:
-				depending_apps.append({'id': app['id'], 'name': app['name']})
-		if depending_apps:
-			return depending_apps
-		return True
-
-	@HardRequirement('install', 'update')
-	def must_have_no_unmet_dependencies(self, package_manager):
-		unmet_packages = []
-		for app in self.all():
-			if app.id in self.get('requiredapps'):
-				if not app.is_installed(package_manager):
-					unmet_packages.append({'id' : app.id, 'name' : app.name})
 		if unmet_packages:
 			return unmet_packages
 		return True
@@ -1167,9 +1153,19 @@ class Application(object):
 	@HardRequirement('uninstall')
 	def must_not_be_depended_on(self, package_manager):
 		depending_apps = []
+
+		# RequiredApps
 		for app in self.all():
 			if self.id in app.get('requiredapps') and app.is_installed(package_manager):
-				depending_apps.append({'id' : app.id, 'name' : app.name})
+				depending_apps.append({'id': app.id, 'name': app.name})
+
+		# RequiredAppsInDomain
+		apps = [app for app in Application.get_all_apps() if self.id in app.get('requiredappsindomain')]
+		for app in apps:
+			app = app.to_dict(package_manager, domainwide_managed=True)
+			if app['is_installed_anywhere']:
+				depending_apps.append({'id': app['id'], 'name': app['name']})
+
 		if depending_apps:
 			return depending_apps
 		return True

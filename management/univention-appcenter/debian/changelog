@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-26) unstable; urgency=medium
+
+  * Bug #37539: Put into existing functions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 13 Dec 2015 23:05:20 +0100
+
 univention-appcenter (5.0.19-25) unstable; urgency=low
 
   * Bug #39662: Hide empty meta categories
