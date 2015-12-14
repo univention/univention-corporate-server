@@ -96,14 +96,12 @@ upgrade_to_latest_patchlevel ()
 	upgrade_to_latest --updateto "$updateto"
 }
 
-upgrade_to_latest_errata ()
-{
+upgrade_to_latest_errata () {
 	local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
 	upgrade_to_latest --updateto "$current"
 }
 
-upgrade_to_latest_test_errata ()
-{
+upgrade_to_latest_test_errata () {
 	local current prev=DUMMY rc=0
 	while current="$(ucr get version/version)-$(ucr get version/patchlevel)" && [ "$current" != "$prev" ]
 	do
@@ -111,15 +109,14 @@ upgrade_to_latest_test_errata ()
 		then
 			/root/activate-errata-test-scope.sh
 		fi
-		upgrade_to_latest
+		upgrade_to_latest --updateto "$current"
 		rc=$?
 		prev="$current"
 	done
 	return $rc
 }
 
-upgrade_to_testing ()
-{
+upgrade_to_testing () {
 	ucr set repository/online/server=updates-test.software-univention.de
 	upgrade_to_latest "$@"
 }

@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-9) unstable; urgency=low
+
+  * Bug #39818: Stop upgrade_to_latest_test_errata performg releas updates
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 14 Dec 2015 14:00:54 +0100
+
 ucs-ec2-tools (2.0.0-8) unstable; urgency=low
 
   * Bug #38984: Ignore SSH exceptions
