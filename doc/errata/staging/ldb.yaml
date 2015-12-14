@@ -1,0 +1,17 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-8
+src: ldb
+fix: 1:1.1.16-1.75.201512142122
+version: [7,8]
+desc: |
+ This update addresses the following issue:
+ * When closing sessions the smbd server processes exited with a memory
+   corruption error
+ * Malicious request can cause Samba LDAP server to hang consuming CPU time
+   (CVE-2015-3223)
+ * Remote read of uninitialized memory from Samba LDAP server (CVE-2015-5330)
+bug: [40223]
+cve:
+ - CVE-2015-3223
+ - CVE-2015-5330
