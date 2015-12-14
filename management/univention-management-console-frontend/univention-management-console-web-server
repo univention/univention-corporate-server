@@ -1193,8 +1193,11 @@ class SAML(Ressource):
 			user = self.get_user()
 			if not user or user.saml is None:
 				# The user is either already logged out or has no cookie because he signed in via IP and gets redirected to the FQDN
-				return self._logout_success()
-			http_args = self.sp.handle_logout_request(message, user.saml.response.name_id, binding, relay_state=relay_state)
+				name_id = None
+			else:
+				name_id = user.saml.response.name_id
+				user.saml = None
+			http_args = self.sp.handle_logout_request(message, name_id, binding, relay_state=relay_state)
 			return self.http_response(binding, http_args)
 		else:
 			response = self.sp.parse_logout_request_response(message, binding)
@@ -1218,6 +1221,7 @@ class SAML(Ressource):
 			if tb.tb_frame.f_code.co_name != 'entities':
 				raise
 			# already logged out or UMC-Webserver restart
+			user.saml = None
 			data = {}
 
 		for entity_id, logout_info in data.items():
