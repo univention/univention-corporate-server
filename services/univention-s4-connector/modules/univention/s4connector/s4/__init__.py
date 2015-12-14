@@ -224,24 +224,38 @@ def samaccountname_dn_mapping(s4connector, given_object, dn_mapping_stored, ucso
 		if (not dn_key in dn_mapping_stored) or (not object[dn_key]):
 			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: not premapped (in first instance)")
 			return False
-		elif object.get('modtype') == 'delete':
-			ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: modtype is delete, use the premapped DN: %s" % object[dn_key])
-			return True
-		else: # check if DN exists
-			if ucsobject:
-				if s4connector.get_object(object[dn_key]) != None:
-					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped S4 object found")
+
+		if object.get('modtype') == 'delete':
+			# In case the object was deleted, the mapping premapped DN should be used.
+			# But in case the sAMAccountName has been changed we should search for 
+			# the sAMAccountName. That's not the best solution but it works for now:
+			# See the following test cases:
+			#	125sync_recreate_user_at_different_position
+			#	272read_ad_change_username
+			t_dn = object.get('dn')
+			if t_dn:
+				t_dn = ldap.explode_rdn(t_dn)[0].split('=', 1)[-1]
+				t_samaccount = ''
+				if object.get('attributes'):
+					t_samaccount = object['attributes'].get('sAMAccountName', [''])[0]
+				if t_dn.lower() == t_samaccount.lower():
+					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: modtype is delete, use the premapped DN: %s" % object[dn_key])
 					return True
-				else:
-					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped S4 object not found")
-					return False
+
+		if ucsobject:
+			if s4connector.get_object(object[dn_key]) != None:
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped S4 object found")
+				return True
 			else:
-				if s4connector.get_ucs_ldap_object(object[dn_key]) != None:
-					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped UCS object found")
-					return True
-				else:
-					ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped UCS object not found")
-					return False
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped S4 object not found")
+				return False
+		else:
+			if s4connector.get_ucs_ldap_object(object[dn_key]) != None:
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped UCS object found")
+				return True
+			else:
+				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: premapped UCS object not found")
+				return False
 					
 								
 
