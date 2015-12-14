@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.14-3) unstable; urgency=low
+
+  * Bug #39818: Stop upgrade_to_latest_test_errata performg releas updates
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 14 Dec 2015 14:00:54 +0100
+
 ucs-ec2-tools (1.0.14-2) unstable; urgency=medium
 
   * Bug #38984: ucs-kvm-create: Start instances in sequence, as paramiko has
