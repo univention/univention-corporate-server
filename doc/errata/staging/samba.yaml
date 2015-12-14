@@ -2,11 +2,30 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: samba
-fix: 2:4.2.3-1.808.201512091827
+fix: 2:4.2.3-1.822.201512142149
 version: [3,4]
 desc: |
  This update addresses the following issues:
  * In certain situations samba restart left samba in a non-functional state.
  * When closing sessions the smbd server processes exited with a memory
    corruption error
-bug: [39217, 39276]
+ * Samba may expose Windows DCs to MS15-096 Denial of service via the
+   creation of multiple machine accounts. Pure Samba domains as in UCS
+   are not affected directly (CVE-2015-2535)
+ * Malicious request can cause Samba LDAP server to hang consuming CPU time
+   (CVE-2015-3223)
+ * Insufficient symlink verification (file access outside of share)
+   (CVE-2015-5252)
+ * Samba client requesting encryption vulnerable to downgrade attack
+   (CVE-2015-5296)
+ * Missing access control check in the VFS shadow_copy2 module could allow
+   unauthorized users to access snapshots (CVE-2015-5299)
+ * Remote read of uninitialized memory from Samba LDAP server (CVE-2015-5330)
+bug: [39217, 39276, 40222]
+cve:
+ - CVE-2015-2535
+ - CVE-2015-3223
+ - CVE-2015-5252
+ - CVE-2015-5296
+ - CVE-2015-5299
+ - CVE-2015-5330
