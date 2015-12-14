@@ -995,7 +995,8 @@ class AppManager(object):
 			locale = get_locale() or 'en'
 			pickle_file = cls._pickle_file % {'locale': locale}
 			try:
-				cls._cache = load(open(pickle_file, 'rb'))
+				with open(pickle_file, 'rb') as fd:
+					cls._cache = load(fd)
 			except (IOError, PickleError):
 				for ini in glob(os.path.join(CACHE_DIR, '*.ini')):
 					app = App.from_ini(ini, locale=locale)
@@ -1003,7 +1004,8 @@ class AppManager(object):
 						cls._cache.append(app)
 				cls._cache.sort()
 				try:
-					dump(cls._cache, open(pickle_file, 'wb'), 2)
+					with open(pickle_file, 'wb') as fd:
+						dump(cls._cache, fd, 2)
 				except (IOError, PickleError):
 					app_logger.warn('Unable to cache apps')
 				else:
