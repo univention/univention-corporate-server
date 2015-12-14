@@ -1,3 +1,9 @@
+ucs-test (6.0.28-4) unstable; urgency=low
+
+  * Bug #39878: Test LDAP anonymous read
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 14 Dec 2015 13:27:54 +0100
+
 ucs-test (6.0.28-3) unstable; urgency=medium
 
   * Added 52_s4connector/125sync_recreate_user_at_different_position

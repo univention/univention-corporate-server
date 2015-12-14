@@ -1,0 +1,31 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Test that LDAP anonymous read works
+## bugs: [39878, 34203]
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+
+trap "ucr_restore;/etc/init.d/slapd restart" EXIT
+
+search () {
+	echo "Testing $* ..."
+	ucr set "$@"
+	/etc/init.d/slapd restart
+	LC_ALL=C ldapsearch -LLLo ldif-wrap=no -H 'ldap://127.0.0.1' -x -b "$_ldap_base" -s base '(objectClass=*)' dn && :
+}
+search ldap/acl/read/anonymous=no ldap/acl/read/ips= &&
+	fail_test 110 "Anonymous read should not be allowed"
+search ldap/acl/read/anonymous=no ldap/acl/read/ips='127.0.0.1' ||
+	fail_test 110 "Failed anonymous read by IP"
+search ldap/acl/read/anonymous=yes ldap/acl/read/ips= ||
+	fail_test 110 "Failed anonymous read for all"
+
+exit $RETVAL
+
+# vim: set ft=sh :
