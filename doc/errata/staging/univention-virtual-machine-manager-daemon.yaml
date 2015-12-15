@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-virtual-machine-manager-daemon
-fix: 5.0.1-7.610.201512101753
+fix: 5.0.1-8.611.201512150831
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -13,4 +13,7 @@ desc: |
  * The deprecated code for booting old VMs through PXE with old qemu-0.x has
    been removed.
  * The command line tool for debugging UVMM has been improved.
-bug: [36141,36289,40180,40181,40182]
+ * Some unused helper code has been removed to fix an import error of the
+   Python libvirt module from the UVMM Univention Directory Listener module
+   handling the dynamic addition and removal of virtualization hosts.
+bug: [36141,36289,40180,40181,40182,40133]
