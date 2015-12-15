@@ -177,7 +177,7 @@ class DovecotSharedFolderListener(DovecotListener):
 				self.log_p("Moved mailbox '%s' -> '%s'." % (old_mailbox, new_mailbox))
 
 			# set ACLs
-			acls = new.get(self.acl_key, [])
+			acls = self._diff_acls(old, new)
 			# Even if there are no ACL entries, we must still _change_ at
 			# least one entry through IMAP, so the shared mailbox list
 			# dictionary is updated. Lets remove the (afterwards) unnecessary
@@ -233,26 +233,10 @@ class DovecotSharedFolderListener(DovecotListener):
 
 			# set ACLs
 			try:
-				if self.acl_key in old and self.acl_key not in new:
-					# remove all ACL entries for this mailbox
-					acls = old.get(self.acl_key)
-					if acls:
-						self.doveadm_set_mailbox_acls("%s/INBOX" % new_mailbox, ["%s none" % x.split()[0] for x in acls])
-				else:
-					curacl = {}
-					# find new ACLs
-					for acl in new.get(self.acl_key, []):
-						right = acl.split()[-1]
-						identifier = " ".join(acl.split()[:-1])
-						curacl[identifier] = right
-					# remove old ACLs
-					for acl in old.get(self.acl_key, []):
-						identifier = " ".join(acl.split()[:-1])
-						if identifier not in curacl:
-							curacl[identifier] = "none"
-					self.doveadm_set_mailbox_acls("%s/INBOX" % new_mailbox, ["%s %s" % (identifier_, right_) for identifier_, right_ in curacl.items()])
+				curacl = self._diff_acls(old, new)
+				self.doveadm_set_mailbox_acls("%s/INBOX" % new_mailbox, curacl)
 			except:
-					self.log_e("Error changing ACLs for mailbox '%s'." % new_mailbox)
+				self.log_e("Error changing ACLs for mailbox '%s'." % new_mailbox)
 			self.log_p("Set ACLs on '%s'." % new_mailbox)
 
 	def get_public_location(self, ns):
@@ -418,3 +402,17 @@ class DovecotSharedFolderListener(DovecotListener):
 			raise
 		finally:
 			self.listener.unsetuid()
+
+	def _diff_acls(self, old, new):
+		acl_diff = dict()
+		# find new ACLs
+		for acl in new.get(self.acl_key, []):
+			right = acl.split()[-1]
+			identifier = " ".join(acl.split()[:-1])
+			acl_diff[identifier] = right
+		# remove old ACLs
+		for acl in old.get(self.acl_key, []):
+			identifier = " ".join(acl.split()[:-1])
+			if identifier not in acl_diff:
+				acl_diff[identifier] = "none"
+		return map(" ".join, acl_diff.items())
