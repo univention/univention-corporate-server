@@ -83,13 +83,13 @@ Type=int
 Categories=service-bind
 
 [dns/nameserver/registration/forward_zone]
-Description[de]=Die automatische Registrierung als zusätzlicher authoritativer Nameserver der "forward zone", beim Ausführen des join Skriptes, einschalten. Aktiviert, wenn die Variable nicht gesetzt ist.
-Description[en]=Enable the automatic registration as additional authoritative nameserver for the forward zone, when executing the join script. Enabled if variable is unset.
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird eine automatische Registrierung als zusätzlicher authoritativer Nameserver der lokal verwendeten "DNS forward zone" durchgeführt.
+Description[en]=If this option is activated or the variable is unset, an automatic registration as additional authoritative nameserver for the locally used DNS forward zone is performed.
 Type=bool
 Categories=service-bind
 
 [dns/nameserver/registration/reverse_zone]
-Description[de]=Die automatische Registrierung als zusätzlicher authoritativer Nameserver der "reverse zone", beim Ausführen des join Skriptes, einschalten. Aktiviert, wenn die Variable nicht gesetzt ist.
-Description[en]=Enable the automatic registration as additional authoritative nameserver for the reverse zone, when executing the join script. Enabled if variable is unset.
+Description[de]=Ist diese Option aktiviert oder die Variable nicht gesetzt, wird eine automatische Registrierung als zusätzlicher authoritativer Nameserver der lokal verwendeten "DNS reverse zone" durchgeführt.
+Description[en]=If this option is activated or the variable is unset, an automatic registration as additional authoritative nameserver for the locally used DNS reverse zone is performed.
 Type=bool
 Categories=service-bind

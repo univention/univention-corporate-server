@@ -1,3 +1,9 @@
+univention-bind (9.0.5-6) unstable; urgency=low
+
+  * Updated UCR variable descriptions (Bug #39384)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Tue, 15 Dec 2015 14:08:28 +0100
+
 univention-bind (9.0.5-5) unstable; urgency=low
 
   * Add UCRVs dns/nameserver/registration/forward_zone and
