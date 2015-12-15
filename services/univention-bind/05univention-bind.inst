@@ -39,17 +39,17 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 wait_for_dns () {
-    if [ "$server_role" != "domaincontroller_master" ]
-    then
-        for ((i=0; i<600; i++))
-        do
-            echo "wait for named ?"
-            if ! host -W 1 "$ldap_master" 2>&1 | grep -Fq "timed out"
-            then
-                break
-            fi
-        done
-    fi
+	if [ "$server_role" != "domaincontroller_master" ]
+	then
+		for ((i=0; i<600; i++))
+		do
+			echo "wait for named ?"
+			if ! host -W 1 "$ldap_master" 2>&1 | grep -Fq "timed out"
+			then
+				break
+			fi
+		done
+	fi
 }
 
 if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
@@ -84,17 +84,20 @@ if [ $JS_LAST_EXECUTED_VERSION = 0 ]; then
 
 	univention-config-registry set dns/master/address=127.0.0.1 dns/master/port?7777
 
-	# Append local server as DNS server to the zones, except if dc slave and in ucs@school environment
-	if [ "$server_role" = "domaincontroller_slave" ] && ! dpkg -l python-ucs-school >/dev/null 2>&1; then
+	# Append local server as DNS server to the forward and reverse zones, except if disabled by UCR
+	eval "$(ucr shell dns/nameserver/registration/forward_zone)"
+	if [ -z "$dns_nameserver_registration_forward_zone" ] || is_ucr_true dns/nameserver/registration/forward_zone; then
 		zone="$(udm dns/forward_zone list "$@" --filter "(&(zone=$domainname)(!(nameserver=${hostname}.${domainname}.)))" | sed -ne 's|DN: ||p')"
 		if [ -n "$zone" ]; then
 			udm dns/forward_zone modify "$@" --dn "$zone" --append nameserver="${hostname}.${domainname}."
 		fi
 	fi
-
-	zone="$(udm dns/reverse_zone list "$@" --filter "(&(subnet=$reversezone)(!(nameserver=${hostname}.${domainname}.)))" | sed -ne 's|DN: ||p')"
-	if [ -n "$zone" ]; then
-		udm dns/reverse_zone modify "$@" --dn "$zone" --append nameserver="${hostname}.${domainname}."
+	eval "$(ucr shell dns/nameserver/registration/reverse_zone)"
+	if [ -z "$dns_nameserver_registration_reverse_zone" ] || is_ucr_true dns/nameserver/registration/reverse_zone; then
+		zone="$(udm dns/reverse_zone list "$@" --filter "(&(subnet=$reversezone)(!(nameserver=${hostname}.${domainname}.)))" | sed -ne 's|DN: ||p')"
+		if [ -n "$zone" ]; then
+			udm dns/reverse_zone modify "$@" --dn "$zone" --append nameserver="${hostname}.${domainname}."
+		fi
 	fi
 fi
 

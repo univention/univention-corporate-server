@@ -2,9 +2,10 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: univention-bind
-fix: 9.0.5-4.212.201512020859
+fix:
 version: [4]
 desc: |
-  Domain controller slaves in UCS@school environments do not add themselfs
-  as DNS servers for the domain anymore (Bug 39384).
+  Add UCR variables dns/nameserver/registration/forward_zone and
+  dns/nameserver/registration/reverse_zone that allow to disable
+  the automatic registration as additional nameserver (Bug 39384).
 bug: [39384]
