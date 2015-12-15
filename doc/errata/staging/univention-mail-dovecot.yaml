@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: univention-mail-dovecot
-fix: 1.0.1-1.53.201512082155
+fix: 1.0.1-2.54.201512151517
 version: [4]
 desc: |
  This update addresses the following issues:
@@ -14,4 +14,6 @@ desc: |
    mails was not possible. This problem has been fixed and the permission
    will be updated automatically if the join script of
    univention-mail-dovecot is called (Bug 40037).
-bug: [40018,40037]
+ * IMAP ACLs removed through the Management Console, did not get
+   removed on the IMAP server (Bug 40195).
+bug: [40018,40037,40195]
