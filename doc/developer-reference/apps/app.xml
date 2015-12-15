@@ -407,7 +407,7 @@
 							specified (and they need to be sent along with the ini file), for
 							<wordasword>YouTube</wordasword> videos, a URL to that video has to
 							be given. The URL needs to point directly to the video on
-							<ulink url="https://youtube.com/"/>
+							<ulink url="https://www.youtube.com/"/>
 						</simpara>
 					</listitem>
 				</varlistentry>
