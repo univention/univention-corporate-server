@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-mail-dovecot
+fix: 2.0.1-2.55.201512151518
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * IMAP ACLs removed through the Management Console, did not get
+    removed on the IMAP server (Bug 40194).
+bug: [40194]
