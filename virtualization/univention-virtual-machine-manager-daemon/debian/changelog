@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (5.0.1-8) unstable; urgency=low
+
+  * Bug #40133: Remove unused imports
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Dec 2015 07:35:14 +0100
+
 univention-virtual-machine-manager-daemon (5.0.1-7) unstable; urgency=low
 
   * Bug #40180: Remove last user of PAM/TCP/SSL code

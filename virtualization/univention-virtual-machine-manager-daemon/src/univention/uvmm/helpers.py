@@ -34,7 +34,6 @@ __all__ = [
 		'_',
 		'N_',
 		'TranslatableException',
-		'LIBVIRT_ERR',
 		'ms',
 		'FQDN',
 		'uri_encode',
@@ -44,12 +43,10 @@ __all__ = [
 		]
 
 import gettext
-import logging
-
-logger = logging.getLogger('uvmmd.cloudconnection')
 
 N_ = lambda msg: msg
 _ = gettext.translation('univention-virtual-machine-manager', fallback=True).ugettext
+
 
 class TranslatableException(Exception):
 	"""Translatable exception (translatable_text, dict, key=value)."""
@@ -74,8 +71,6 @@ class TranslatableException(Exception):
 	def dict(self):
 		return self.args[1]
 
-import libvirt
-LIBVIRT_ERR = dict([(getattr(libvirt, err), err) for err in dir(libvirt) if err.startswith('VIR_ERR_')])
 
 def ms(ms):
 	"""
@@ -86,6 +81,7 @@ def ms(ms):
 	hm, s = divmod(ms, 60000)
 	h, m = divmod(hm, 60)
 	return "%d:%02d:%06.3f" % (h, m, s / 1000.0)
+
 
 def tuple2version(version):
 	"""
@@ -99,6 +95,7 @@ import socket
 
 FQDN = socket.getfqdn()
 
+
 def uri_encode(uri):
 	"""
 	Encode URI for file-system compatibility.
@@ -106,6 +103,7 @@ def uri_encode(uri):
 	'qemu%2bssh%3a%2f%2fuser%3aunivention%40test%2eknut%2eunivention%2ede%2fsystem%3fno%5fverify%3d1'
 	"""
 	return ''.join([c.isalnum() and c or '%%%02x' % ord(c) for c in uri])
+
 
 def uri_decode(uri):
 	"""
@@ -122,8 +120,10 @@ def uri_decode(uri):
 import sys
 import threading
 
+
 class TimeoutError(Exception):
 	pass
+
 
 class timeout(object):
 	"""
@@ -160,8 +160,9 @@ class timeout(object):
 	def run(self, *args, **kwargs):
 		try:
 			self.result = self.target(*args, **kwargs)
-		except Exception, e:
+		except Exception:
 			self.exception = sys.exc_info()
+
 
 """
 Extension ot urlparse for node URIs
