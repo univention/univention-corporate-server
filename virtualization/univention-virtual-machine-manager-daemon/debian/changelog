@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (4.0.24-11) unstable; urgency=medium
+
+  * Bug #40255: Remove unused imports
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Dec 2015 08:40:57 +0100
+
 univention-virtual-machine-manager-daemon (4.0.24-10) unstable; urgency=medium
 
   * Bug #36615: make sure to clean up widgets created in formatter functions
