@@ -1,3 +1,9 @@
+univention-system-setup (9.0.3-1) unstable; urgency=medium
+
+  * Bug #39941: validate CountryName in ldap base
+
+ -- Florian Best <best@univention.de>  Tue, 15 Dec 2015 17:29:36 +0100
+
 univention-system-setup (9.0.2-19) unstable; urgency=medium
 
   * Bug #39376: validate SSL related variables
