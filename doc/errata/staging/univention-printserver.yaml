@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-printserver
+fix: 11.0.7-7.1437.201512111644
+version: [0]
+desc: |
+ This update addresses the following issues:
+ * The default cupy policy has been fixed and is now
+   configurable via the cups/policy/.* UCR variables.
+bug: [38023]
