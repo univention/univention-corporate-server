@@ -24,6 +24,8 @@ Type: file
 File: etc/cups/cups-access-limit.conf
 Variables: cups/printmode/hosts/all
 Variables: cups/printmode/hosts/none
+Variables: cups/policy/.*
+Variables: cups/access/limit
 
 Type: file
 File: etc/cups/cups-files.conf

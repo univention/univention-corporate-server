@@ -1,3 +1,9 @@
+univention-printserver (9.0.2-1) unstable; urgency=low
+
+  * added cups/policy (Bug #38023)
+
+ -- Felix Botner <botner@univention.de>  Fri, 11 Dec 2015 16:33:10 +0100
+
 univention-printserver (9.0.1-1) unstable; urgency=medium
 
   * The PDF printer model is no longer deleted during the join
