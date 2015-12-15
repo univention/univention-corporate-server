@@ -81,3 +81,15 @@ Description[de]=Der DNS-Dienst ist bei Verwendung des OpenLDAP-Backends (siehe '
 Description[en]=When using the OpenLDAP backend (see 'dns/backend'), the DNS service is two-fold: The Bind proxy is the primary nameserver and serves the DNS standard port 53. If data of the internal zones is edited in LDAP, the zonefile on a backend server is updated based on the LDAP information and transferred to the primary server through a zone transfer. This variable configures the port of the backend server. Default is 7777.
 Type=int
 Categories=service-bind
+
+[dns/nameserver/registration/forward_zone]
+Description[de]=Die automatische Registrierung als zusätzlicher authoritativer Nameserver der "forward zone", beim Ausführen des join Skriptes, einschalten. Aktiviert, wenn die Variable nicht gesetzt ist.
+Description[en]=Enable the automatic registration as additional authoritative nameserver for the forward zone, when executing the join script. Enabled if variable is unset.
+Type=bool
+Categories=service-bind
+
+[dns/nameserver/registration/reverse_zone]
+Description[de]=Die automatische Registrierung als zusätzlicher authoritativer Nameserver der "reverse zone", beim Ausführen des join Skriptes, einschalten. Aktiviert, wenn die Variable nicht gesetzt ist.
+Description[en]=Enable the automatic registration as additional authoritative nameserver for the reverse zone, when executing the join script. Enabled if variable is unset.
+Type=bool
+Categories=service-bind
