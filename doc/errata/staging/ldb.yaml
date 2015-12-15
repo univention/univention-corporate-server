@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: ldb
-fix: 2:1.1.24-1.65.201512111417
+fix: 2:1.1.24-1.67.201512111426
 version: [0]
 desc: |
  This ldb update fixes the following security issues:
