@@ -135,7 +135,7 @@ class Update(UniventionAppAction):
 			content = response.read()
 			with open(os.path.join(CACHE_DIR, '.%s' % filename), 'wb') as f:
 				f.write(content)
-			AppManager.invalidate_pickle_cache()
+			AppManager.clear_cache()
 
 		_download_supra_file('index.json.gz', version_specific=True)
 		if not ucr_is_false('appcenter/index/verify'):

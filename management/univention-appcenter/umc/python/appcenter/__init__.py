@@ -406,6 +406,7 @@ class Instance(umcm.Base, ProgressMixin):
 		if function.startswith('update'):
 			function = 'update'
 		application_id = request.options.get('application')
+		Application.all(only_local=True)  # if not yet cached, cache. but use only local inis
 		application = Application.find(application_id)
 		if application is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application_id,))

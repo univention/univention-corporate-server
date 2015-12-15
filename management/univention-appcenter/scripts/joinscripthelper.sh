@@ -71,7 +71,11 @@ joinscript_container_is_running () {
 
 joinscript_run_in_container () {
 	joinscript_container_is_running 1>/dev/null || die
-	docker exec -it "$CONTAINER" $@
+	if [ -t 0 ]; then
+		docker exec -it "$CONTAINER" $@
+	else
+		docker exec "$CONTAINER" $@
+	fi
 }
 
 joinscript_container_file_touch () {

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-30) unstable; urgency=medium
+
+  * Bug #40264: Fix joinscripthelper.sh in UMC context
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 16 Dec 2015 00:28:35 +0100
+
 univention-appcenter (5.0.19-29) unstable; urgency=medium
 
   * Bug #40238: Fixes for dev scripts
