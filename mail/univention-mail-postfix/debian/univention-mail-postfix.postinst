@@ -44,7 +44,7 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.13-3
 	(umask 022; openssl dhparam -out /etc/postfix/dh_512.pem.tmp -2 512 && mv /etc/postfix/dh_512.pem.tmp /etc/postfix/dh_512.pem)
 fi
 
-if [ "$1" = "configure" -a -n "$2" ] && grep -q docker /proc/1/cgroup; then
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 10.0.0-9 && grep -q docker /proc/1/cgroup; then
 	# remove hanging at job inside docker container
 	for JOBID in $(atq | cut -f 1); do
 		at -c "$JOBID" | grep -q create-dh-parameter-files && atrm "$JOBID"
