@@ -46,10 +46,9 @@ define([
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/StandbyMixin",
-	"umc/modules/updater/_PollingMixin",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, aspect, tools, Form, StandbyMixin, _PollingMixin, _) {
-	return declare("umc.modules.updater.Form", [ Form, StandbyMixin, _PollingMixin ],
+], function(declare, lang, aspect, tools, Form, StandbyMixin, _) {
+	return declare("umc.modules.updater.Form", [ Form, StandbyMixin],
 	{
 		// can be called in the onSave hook to set error flags and messages
 		// for individual fields.
@@ -61,33 +60,23 @@ define([
 
 			var firstname = '';
 			var errname = '';
-			for (var field in this._widgets)
-			{
-				if (firstname === '')
-				{
+			for (var field in this._widgets) {
+				if (firstname === '') {
 					firstname = field;
 				}
-				try
-				{
+				try {
 					var widget = this._widgets[field];
-					if (typeof(widget.setValid) == 'function')
-					{
-						if ((values) && (values[field]))
-						{
+					if (typeof(widget.setValid) == 'function') {
+						if ((values) && (values[field])) {
 							widget.setValid(false, values[field]);
-							if (errname === '')
-							{
+							if (errname === '') {
 								errname = field;
 							}
-						}
-						else
-						{
+						} else {
 							widget.setValid(null);
 						}
 					}
-				}
-				catch(error)
-				{
+				} catch(error) {
 					console.error("applyErrorIndicators failed for field '" + field + "': " + error.message);
 				}
 			}
@@ -97,8 +86,7 @@ define([
 			// want a different field to be focused.
 			//if (focus == '') { focus = firstname; }
 
-			if (focus !== '')
-			{
+			if (focus !== '') {
 				this._widgets[focus].focus();
 				// Our focus is not kept... we see it and then something takes control...
 				// Which event do we have to tack the focus() action on?
@@ -106,13 +94,6 @@ define([
 				//				this._widgets[focus].focus();
 				//			}));
 			}
-		},
-
-		// can be deleted when the last built version contains this method.
-		getWidget: function( /*String*/ widget_name) {
-			// summary:
-			//			  Return a reference to the widget with the specified name.
-			return this._widgets[widget_name]; // Widget|undefined
 		},
 
 		save: function(options) {
@@ -123,7 +104,7 @@ define([
 			tools.assert(this.moduleStore, 'In order to save form data to the server, the umc.widgets.Form.moduleStore needs to be set');
 
 			// sending the data to the server
-			var values = this.gatherFormValues();
+			var values = this.get('value');
 
 			// *** CHANGED *** propagate an 'options' dict to the 'put' call of the moduleStore
 			// *** CHANGED *** propagate the result of the put operation to the 'onSaved' callback
@@ -149,18 +130,15 @@ define([
 
 			this.on('saved', lang.hitch(this, function(success, data) {
 
-				if (success)		// this is only Python module result, not data validation result!
-				{
+				if (success) { // this is only Python module result, not data validation result!
 					var result = data;
-					if (data instanceof Array)
-					{
+					if (data instanceof Array) {
 						result = data[0];
 					}
 					// *** CHANGED *** We don't display the message here since
 					//		we don't have the detailed knowledge what the errors
 					//		and error codes mean.
-					if (result.status)
-					{
+					if (result.status) {
 						this.applyErrorIndicators(result.object);
 					}
 				}

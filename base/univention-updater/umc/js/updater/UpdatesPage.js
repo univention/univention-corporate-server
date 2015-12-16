@@ -42,13 +42,16 @@ define([
 	"umc/tools",
 	"umc/store",
 	"umc/widgets/TitlePane",
+	"umc/widgets/Text",
+	"umc/widgets/HiddenInput",
+	"umc/widgets/ComboBox",
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, all, domClass, topic, Deferred, sprintf, dialog, UMCApplication, tools, store, TitlePane, Page, Form, _) {
+], function(declare, lang, array, all, domClass, topic, Deferred, sprintf, dialog, UMCApplication, tools, store, TitlePane, Text, HiddenInput, ComboBox, Page, Form, _) {
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
-		_last_reboot:	false,
+		_last_reboot: false,
 		_update_prohibited: false,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -58,9 +61,9 @@ define([
 			this.inherited(arguments);
 
 			lang.mixin(this, {
-				title:			_("Updates"),
-				headerText:		_("Available system updates"),
-				helpText:		_("Overview of all updates that affect the system as a whole.")
+				title: _("Updates"),
+				headerText: _("Available system updates"),
+				helpText: _("Overview of all updates that affect the system as a whole.")
 			});
 		},
 
@@ -68,82 +71,66 @@ define([
 
 			this.inherited(arguments);
 
-			var widgets =
-			[
-				// --------------------- Reboot pane -----------------------------
-				{
-					type:			'HiddenInput',
-					name:			'reboot_required'
-				},
-				{
-					type:			'Text',
-					name:			'reboot_progress_text',
-					label:			'',
-					size:			'Two',
-					content:		_("The computer is now rebooting. ") +
-									_("This may take some time. Please be patient. ") +
-									_("During reboot, the connection to the system will be lost. ") +
-									_("When the connection is back you will be prompted to authenticate yourself again.")
-				},
-				{
-					type:			'Text',
-					name:			'reboot_text',
-					label:			' ',
-					content:		_("In order to complete the recently executed action, it is required to reboot the system."),
-					size:			'One',
-					labelPosition:	'bottom'
-				},
-				// ------------------- Easy upgrade mode -------------------------
-				{
-					type:			'HiddenInput',
-					name:			'easy_mode'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'easy_update_available'
-				},
-				{
-					type:			'Text',
-					name:			'easy_release_text',
-					label:			'',
-					content:		'easy_release_text',			// set in onLoaded event
-					size:			'One'
-				},
-				{
-					type:			'Text',
-					name:			'easy_available_text',
-					label:			' ',
-					content:		'easy_available_text',		// changed in onLoaded event
-					size:			'One',
-					labelPosition:	'bottom'
-				},
-				// -------------------- Release updates --------------------------
-				{
-					type:			'HiddenInput',
-					name:			'release_update_available'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'appliance_mode'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'release_update_blocking_components'
-				},
-				{
-					type:			'ComboBox',
-					name:			'releases',
-					label:			_('Update system up to release'),
+			var widgets = [{ // --------------------- Reboot pane -----------------------------
+					type: HiddenInput,
+					name: 'reboot_required'
+				}, {
+					type: Text,
+					name: 'reboot_progress_text',
+					label: '',
+					size: 'Two',
+					content: _("The computer is now rebooting. ") +
+							_("This may take some time. Please be patient. ") +
+							_("During reboot, the connection to the system will be lost. ") +
+							_("When the connection is back you will be prompted to authenticate yourself again.")
+				}, {
+					type: Text,
+					name: 'reboot_text',
+					label: ' ',
+					content: _("In order to complete the recently executed action, it is required to reboot the system."),
+					size: 'One',
+					labelPosition: 'bottom'
+				}, { // ------------------- Easy upgrade mode -------------------------
+					type: HiddenInput,
+					name: 'easy_mode'
+				}, {
+					type: HiddenInput,
+					name: 'easy_update_available'
+				}, {
+					type: Text,
+					name: 'easy_release_text',
+					label: '',
+					content: 'easy_release_text',			// set in onLoaded event
+					size: 'One'
+				}, {
+					type: Text,
+					name: 'easy_available_text',
+					label: ' ',
+					content: 'easy_available_text',		// changed in onLoaded event
+					size: 'One',
+					labelPosition: 'bottom'
+				}, { // -------------------- Release updates --------------------------
+					type: HiddenInput,
+					name: 'release_update_available'
+				}, {
+					type: HiddenInput,
+					name: 'appliance_mode'
+				}, {
+					type: HiddenInput,
+					name: 'release_update_blocking_components'
+				}, {
+					type: ComboBox,
+					name: 'releases',
+					label: _('Update system up to release'),
 					// No matter what has changed: the 'serial' API will reflect it.
 					// These dependencies establish the auto-refresh of the combobox
 					// whenever the form itself has been reloaded.
-					depends:		['ucs_version', 'erratalevel', 'serial', 'timestamp'],
-					dynamicValues:	'updater/updates/query',
-					size:			'One',
-					onValuesLoaded:	lang.hitch(this, function(values) {
+					depends: ['ucs_version', 'erratalevel', 'serial', 'timestamp'],
+					dynamicValues: 'updater/updates/query',
+					size: 'One',
+					onValuesLoaded: lang.hitch(this, function(values) {
 						// TODO check updater/installer/running, don't do anything if something IS running
-						try
-						{
+						try {
 							this.onQuerySuccess('updater/updates/query');
 							var element_releases = this._form.getWidget('releases');
 							var to_show = false;
@@ -151,8 +138,7 @@ define([
 							var element_updatestext = this._form.getWidget('ucs_updates_text');
 							element_updatestext.set('content', _("There are no release updates available."));
 
-							if (values.length)
-							{
+							if (values.length) {
 								var val = values[values.length-1].id;
 								to_show = true;
 								element_releases.set('value', val);
@@ -243,86 +229,70 @@ define([
 
 							// renew affordance to check for package updates, but only
 							// if we didn't see availability yet.
-							if (! this._updates_available)
-							{
+							if (!this._updates_available) {
 								this._set_updates_button(false, _("Package update status not yet checked"));
 							}
 
 							this.standbyDuring(all([componentQueryDeferred, this._check_dist_upgrade(), this._check_app_updates()]));
-						}
-						catch(error)
+						} catch(error)
 						{
 							console.error("onValuesLoaded: " + error.message);
 						}
 					})
-				},
-				{
-					type:			'HiddenInput',
-					name:			'ucs_version'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'serial'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'language'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'timestamp'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'components'
-				},
-				{
-					type:			'HiddenInput',
-					name:			'enabled'
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'ucs_version_text',
-					content:		_("... loading data ..."),
-					style:			'margin-bottom:1em',
-					size:			'One'
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'ucs_updates_text',
-					content:		_("There are no release updates available."),
-					size:			'One'
-				},
-				// ---------------------- Errata updates -----------------------
-				{
-					type:			'HiddenInput',
-					name:			'erratalevel'
-				},
-				// -------------------- Package updates ------------------------
-				{
-					type:			'Text',
-					label:			' ',
-					name:			'package_update_text1',
+				}, {
+					type: HiddenInput,
+					name: 'ucs_version'
+				}, {
+					type: HiddenInput,
+					name: 'serial'
+				}, {
+					type: HiddenInput,
+					name: 'language'
+				}, {
+					type: HiddenInput,
+					name: 'timestamp'
+				}, {
+					type: HiddenInput,
+					name: 'components'
+				}, {
+					type: HiddenInput,
+					name: 'enabled'
+				}, {
+					type: Text,
+					label: '',
+					name: 'ucs_version_text',
+					content: _("... loading data ..."),
+					style: 'margin-bottom:1em',
+					size: 'One'
+				}, {
+					type: Text,
+					label: '',
+					name: 'ucs_updates_text',
+					content: _("There are no release updates available."),
+					size: 'One'
+				}, { // ---------------------- Errata updates -----------------------
+					type: 'HiddenInput',
+					name: 'erratalevel'
+				}, { // -------------------- Package updates ------------------------
+					type: Text,
+					label: ' ',
+					name: 'package_update_text1',
 					// FIXME Manual placement: should be done by the layout framework some day.
-					content:		_("Package update status not yet checked"),
-					size:			'One',
-					labelPosition:	'bottom'
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'app_center_updates_text',
-					content:		_('... loading data ...'),
-					size:			'Two'
-				},
-				{
-					type:			'Text',
-					label:			'',
-					name:			'app_center_updates_apps',
-					size:			'Two',
-					content:		''
+					content: _("Package update status not yet checked"),
+					size: 'One',
+					labelPosition: 'bottom'
+				}, {
+					type: Text,
+					label: '',
+					name: 'app_center_updates_text',
+					content: _('... loading data ...'),
+					size: 'Two'
+				}, {
+					type: Text,
+					label: '',
+					name: 'app_center_updates_apps',
+					size: 'Two',
+					content: ''
 				}
 			];
 
@@ -330,122 +300,89 @@ define([
 			// (except the 'package updates' button that has different functions)
 			// We don't want to have clickable buttons before their underlying data
 			// has been fetched.
-			var buttons =
-			[
-				{
-					name:		'run_release_update',
-					label:		_('Install release update'),
-					callback:	lang.hitch(this, function() {
-						var element = this._form.getWidget('releases');
-						var release = element.get('value');
-						// TODO check updater/installer/running, don't do action if a job is running
-						this.onRunReleaseUpdate(release);
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'release-update');
-					}),
-					visible:	false,
-					style:		'margin:0',
-					size:		'One'
-				},
-				{
-					name:		'run_packages_update',
-					label:		_("Check for package updates"),
-					callback:	lang.hitch(this, function() {
-						var distUpdgradeDeferred = this._check_dist_upgrade();
-						if (distUpdgradeDeferred) {
-							this.standbyDuring(distUpdgradeDeferred);
-						}
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
-					}),
-					style:		'margin:0',
-					size:		'One'
-				},
-				// If refresh isn't automatic anymore... should we show a "Refresh" button?
-	//			{
-	//				name:		'refresh',
-	//				label:		_("Refresh"),
-	//				callback:	lang.hitch(this, function() {
-	//					this.refreshPage();
-	//				})
-	//			},
-				{
-					name:		'reboot',
-					label:		_("Reboot"),
-					callback:	lang.hitch(this, function() {
-						this._reboot();
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reboot');
-					}),
-					style:		'margin:0',
-					size:		'One'
-				},
-				{
-					name:		'easy_upgrade',
-					label:		_("Start Upgrade"), 		// FIXME Label not correct
-					callback:	lang.hitch(this, function() {
-						// TODO check updater/installer/running, don't do action if a job is running
-						this.onRunEasyUpgrade();
-						topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'easy-upgrade');
-					}),
-					style:		'margin:0',
-					size:		'One'
-				}
-			];
+			var buttons = [{
+				name: 'run_release_update',
+				label: _('Install release update'),
+				callback: lang.hitch(this, function() {
+					var element = this._form.getWidget('releases');
+					var release = element.get('value');
+					// TODO check updater/installer/running, don't do action if a job is running
+					this.onRunReleaseUpdate(release);
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'release-update');
+				}),
+				visible: false,
+				style: 'margin:0',
+				size: 'One'
+			}, {
+				name: 'run_packages_update',
+				label: _("Check for package updates"),
+				callback: lang.hitch(this, function() {
+					var distUpdgradeDeferred = this._check_dist_upgrade();
+					if (distUpdgradeDeferred) {
+						this.standbyDuring(distUpdgradeDeferred);
+					}
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'package-update');
+				}),
+				style: 'margin:0',
+				size: 'One'
+			}, {
+				name: 'reboot',
+				label: _("Reboot"),
+				callback: lang.hitch(this, function() {
+					this._reboot();
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reboot');
+				}),
+				style: 'margin:0',
+				size: 'One'
+			}, {
+				name: 'easy_upgrade',
+				label: _("Start Upgrade"), 		// FIXME Label not correct
+				callback: lang.hitch(this, function() {
+					// TODO check updater/installer/running, don't do action if a job is running
+					this.onRunEasyUpgrade();
+					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'easy-upgrade');
+				}),
+				style: 'margin:0',
+				size: 'One'
+			}];
 
-			var layout =
-			[
-				{
-					label:		_("Reboot required"),
-					layout:
-					[
-						['reboot_progress_text'],
-						['reboot_text', 'reboot']
-					]
-				},
-				{
-					label:		_("Release information"),
-					layout:
-					[
-						['easy_release_text'],
-						['easy_available_text', 'easy_upgrade']
-					]
-				},
-				{
-					label:		_("Release updates"),
-					layout:
-					[
-						['ucs_version_text'],
-						['releases', 'run_release_update'],
-						['ucs_updates_text']
-					]
-				},
-				{
-					label:		_("Package updates"),
-					layout:
-					[
-						['package_update_text1', 'run_packages_update'],
-					]
-				},
-				{
-					label:		_("App Center updates"),
-					layout:
-					[
-						['app_center_updates_text'],
-						['app_center_updates_apps']
-					]
-				}
-			];
+			var layout = [{
+				label: _("Reboot required"),
+				layout: [
+					['reboot_progress_text'],
+					['reboot_text', 'reboot']
+				]
+			}, {
+				label: _("Release information"),
+				layout: [
+					['easy_release_text'],
+					['easy_available_text', 'easy_upgrade']
+				]
+			}, {
+				label: _("Release updates"),
+				layout: [
+					['ucs_version_text'],
+					['releases', 'run_release_update'],
+					['ucs_updates_text']
+				]
+			}, {
+				label: _("Package updates"),
+				layout: [
+					['package_update_text1', 'run_packages_update'],
+				]
+			}, {
+				label: _("App Center updates"),
+				layout: [
+					['app_center_updates_text'],
+					['app_center_updates_apps']
+				]
+			}];
 
 			this._form = new Form({
 				widgets: widgets,
 				layout: layout,
 				buttons: buttons,
 				moduleStore: store(null, 'updater/updates')
-	//			polling:	{
-	//				interval:	5000,
-	//				query:		'updater/updates/serial',
-	//				callback:	lang.hitch(this, function() {
-	//					this.refreshPage();
-	//				})
-	//			}
 			});
 
 			// fetch all known/initial titlepanes and save them with their name
@@ -466,10 +403,9 @@ define([
 			this._form.showWidget('ucs_updates_text', false);
 
 			this._form.on('loaded', lang.hitch(this, function() {
-				try
-				{
+				try {
 					this.onQuerySuccess('updater/updates/get');
-					var values = this._form.gatherFormValues();
+					var values = this._form.get('value');
 
 					// send event that value have been loaded
 					this.onStatusLoaded(values);
@@ -499,7 +435,7 @@ define([
 					var blocking_component = this._form.getWidget('release_update_blocking_components').get('value').split(' ')[0];
 					if (ava) {
 						element.set('content', _("There are updates available."));
-					} else if ((blocking_component) && (! appliance_mode)) {
+					} else if ((blocking_component) && (!appliance_mode)) {
 						element.set('content', lang.replace(_("Further release updates are available but cannot be installed because the component '{0}' is not available for newer release versions."), [blocking_component]));
 					} else {
 						element.set('content', _("There are no updates available."));
@@ -509,9 +445,7 @@ define([
 
 					this._show_reboot_pane(values.reboot_required);
 
-				}
-				catch(error)
-				{
+				} catch(error) {
 					console.error("onLoaded: " + error.message);
 				}
 			}));
@@ -599,17 +533,14 @@ define([
 		// Internal function that sets the 'updates available' button and
 		// corresponding text widget.
 		_set_updates_button: function(avail, msg) {
-			try
-			{
+			try {
 				this._updates_available = avail;
 				var but = this._form._buttons.run_packages_update;
 				but.set('label', avail ?
 					_("Install package updates") :
 					_("Check for package updates"));
 				this._form.getWidget('package_update_text1').set('content', msg);
-			}
-			catch(error)
-			{
+			} catch(error) {
 				console.error("set_updates_button: " + error.message);
 			}
 		},
@@ -689,23 +620,19 @@ define([
 		//
 		_show_reboot_pane: function(yes, progress) {
 
-			if (typeof(yes) == 'string')
-			{
+			if (typeof(yes) == 'string') {
 				yes = (yes == 'true');
 			}
 
 			// pop a message up whenever the 'on' value changes
-			if (yes != this._last_reboot)
-			{
+			if (yes != this._last_reboot) {
 				this._last_reboot = yes;
 			}
 
 			domClass.toggle(this._titlepanes.reboot.domNode, 'dijitHidden', ! yes);
 
-			if (yes)
-			{
-				if (progress === undefined)
-				{
+			if (yes) {
+				if (progress === undefined) {
 					progress = false;
 				}
 				this._form.showWidget('reboot_text', ! progress);
@@ -721,24 +648,18 @@ define([
 		// now with confirmation that doesn't depend on the 'confirmations' setting.
 		_reboot: function() {
 
-			dialog.confirm(
-				_("Do you really want to reboot the machine?"),
-				[
-					{
-						label:		_("Cancel"),
-						'default':	true
-					},
-					{
-						label:		_("Reboot"),
-						callback:	lang.hitch(this, function() {
-							this.standbyDuring(tools.umcpCommand('updater/installer/reboot').then(lang.hitch(this, function() {
-								this._show_reboot_pane(true, true);
-								this._attemptReconnect();
-							})));
-						})
-					}
-				]
-			);
+			dialog.confirm(_("Do you really want to reboot the machine?"), [{
+				label: _("Cancel"),
+				'default': true
+			}, {
+				label: _("Reboot"),
+				callback: lang.hitch(this, function() {
+					this.standbyDuring(tools.umcpCommand('updater/installer/reboot').then(lang.hitch(this, function() {
+						this._show_reboot_pane(true, true);
+						this._attemptReconnect();
+					})));
+				})
+			}]);
 
 		},
 
@@ -769,7 +690,7 @@ define([
 			{
 				this._updates_available = false;
 			}
-			this._form.load(' ');
+			this._form.load({});
 		},
 
 		// gives a means to restart polling after reauthentication

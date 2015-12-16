@@ -152,7 +152,7 @@ define([
 					}
 					if (data.result !== '') {
 						// start the first call for 'update/installer/status' if we got a job name
-						if ((this._interval) && (! this._timer)) {
+						if ((this._interval) && (!this._timer)) {
 							this._timer = window.setTimeout(lang.hitch(this, function() {
 								this._timer = '';
 								this._query_job_status();
@@ -166,8 +166,7 @@ define([
 
 					if (data.result.running) {
 						// reschedule this as long as the job runs.
-						if ((this._interval) && (! this._timer))
-						{
+						if ((this._interval) && (!this._timer)) {
 							this._timer = window.setTimeout(lang.hitch(this, function() {
 								this._timer = '';
 								this._query_job_status();
@@ -179,7 +178,7 @@ define([
 				}
 			} else {
 				// error case, request could not been sent... try again
-				if ((this._interval) && (! this._timer)) {
+				if ((this._interval) && (!this._timer)) {
 					this._timer = window.setTimeout(lang.hitch(this, function() {
 						this._timer = '';
 						this._query_job_status();
@@ -199,8 +198,8 @@ define([
 						this._process_job_status(data);
 					}),
 					lang.hitch(this, function(data) {
-						this.onQueryError('updater/installer/running', data);		// handles error
-						this._process_job_status(null);							// only for rescheduling
+						this.onQueryError('updater/installer/running', data); // handles error
+						this._process_job_status(null); // only for rescheduling
 					})
 				);
 			} else {
@@ -210,8 +209,8 @@ define([
 						this._process_job_status(data);
 					}),
 					lang.hitch(this, function(data) {
-						this.onQueryError('updater/installer/status', data);		// handles error
-						this._process_job_status(null);							// only for rescheduling
+						this.onQueryError('updater/installer/status', data); // handles error
+						this._process_job_status(null); // only for rescheduling
 					})
 				);
 			}
@@ -242,8 +241,7 @@ define([
 					this._beforeunloadHandler.remove();
 					this._beforeunloadHandler = null;
 				}
-				if ((this._job_key !== '') && (this._last_job))
-				{
+				if ((this._job_key !== '') && (this._last_job)) {
 					// First thing to do: notify the Module that the job is finished. So it can already
 					// refresh the 'Updates' and 'Components' pages before the user gets back there.
 					this.onJobFinished();
@@ -251,15 +249,14 @@ define([
 					// set headers according to the outcome
 					var status = 'success';
 					var lstat = this._last_job._status_;
-					if ((lstat === undefined) || (lstat != 'DONE'))
-					{
+					if ((lstat === undefined) || (lstat != 'DONE')) {
 						status = 'failed';
 					}
 					this._switch_headings(status);
-					this._log.scrollToBottom(true);		// jump to bottom a very last time
-					this._log.onStopWatching();		// now log is freely scrollable manually
+					this._log.scrollToBottom(true); // jump to bottom a very last time
+					this._log.onStopWatching(); // now log is freely scrollable manually
 
-					this._last_job = null;	// can be deleted, but this._job_key should be retained!
+					this._last_job = null; // can be deleted, but this._job_key should be retained!
 				}
 			}
 		},
@@ -322,24 +319,23 @@ define([
 
 			var headings = {
  				'running': {
-					headerText:		_('UCS is being updated'),
+					headerText: _('UCS is being updated'),
 					helpText: '<p>' + _('The update is being executed.') +
 						' ' + _('<b>Leave the system up and running</b> at any moment during the update!') + '</p>' +
 						'<p>' + _('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.') + '</p>'
  				},
  				'success': {
-					headerText:		_('UCS update successful'),
-					helpText:		_('The update has been successfully finished. Press the "back" button to close this view.')
+					headerText: _('UCS update successful'),
+					helpText: _('The update has been successfully finished. Press the "back" button to close this view.')
  				},
  				'failed': {
-					headerText:		_('UCS update failed'),
-					helpText:		_('The update failed, please examine the log file for the exact cause. Press the "back" button to close this view.')
+					headerText: _('UCS update failed'),
+					helpText: _('The update failed, please examine the log file for the exact cause. Press the "back" button to close this view.')
  				}
 			};
 
 			var info = headings[status];
-			for (var v in info)
-			{
+			for (var v in info) {
 				this.set(v, info[v]);
 			}
 			// this.layout();

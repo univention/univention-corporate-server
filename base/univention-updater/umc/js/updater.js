@@ -68,7 +68,7 @@ define([
 	return declare("umc.modules.updater", Module, {
 
 		// some variables related to error handling
-		_connection_status:	0, 			// 0 ... successful or not set
+		_connection_status: 0, 			// 0 ... successful or not set
 										// 1 ... errors received
 										// 2 ... currently authenticating
 		_busy_dialog: null, 		// a handle to the 'connection lost' dialog while
@@ -85,14 +85,14 @@ define([
 				standby: lang.hitch(this, 'standby'),
 				standbyDuring: lang.hitch(this, 'standbyDuring')
 			});
+			this.addChild(this._updates);
 			this._progress = new ProgressPage({});
 
-			this.addChild(this._updates);
 			this.addChild(this._progress);
 
 			// --------------------------------------------------------------------------
 			//
-			//		Connections that make the UI work (mostly tab switching)
+			//        Connections that make the UI work (mostly tab switching)
 			//
 
 			this._progress.on('stopwatching', lang.hitch(this, function() {
@@ -108,21 +108,21 @@ define([
 
 			// --------------------------------------------------------------------------
 			//
-			//		Connections that listen for changes and propagate
-			//		them to other pages
+			//        Connections that listen for changes and propagate
+			//        them to other pages
 			//
 
 			// *** NOTE *** the Updates Page also has some mechanisms to refresh itself
-			//				on changes that reflect themselves in the sources.list
-			//				snippet files. But this refresh is intentionally slow (once
-			//				in 5 secs) to avoid resource congestion. The callbacks here
-			//				should immediately trigger refresh whenever something was
-			//				done at the frontend UI.
+			//                on changes that reflect themselves in the sources.list
+			//                snippet files. But this refresh is intentionally slow (once
+			//                in 5 secs) to avoid resource congestion. The callbacks here
+			//                should immediately trigger refresh whenever something was
+			//                done at the frontend UI.
 
 			// ---------------------------------------------------------------------------
 			//
-			//		Listens for 'query error' and 'query success' events on all attached pages
-			//		and their children, delivering them to our own (central) error handler
+			//        Listens for 'query error' and 'query success' events on all attached pages
+			//        and their children, delivering them to our own (central) error handler
 			//
 
 			array.forEach(this.getChildren(), lang.hitch(this, function(child) {
@@ -137,16 +137,16 @@ define([
 
 			// --------------------------------------------------------------------------
 			//
-			//		Connections that centralize the work of the installer:
-			//		listen for events that should start UniventionUpdater
+			//        Connections that centralize the work of the installer:
+			//        listen for events that should start UniventionUpdater
 			//
 
 			// invokes the installer from the 'release update' button (Updates Page)
 			this._updates.on('runreleaseupdate', lang.hitch(this, function(release) {
 				this._call_installer({
-					job:		'release',
-					detail:		release,
-					confirm:	lang.replace(_("Update to {release}"), {release: release})
+					job: 'release',
+					detail: release,
+					confirm: lang.replace(_("Update to {release}"), {release: release})
 				});
 			}));
 
@@ -158,8 +158,8 @@ define([
 			// invokes the installer in easy mode
 			this._updates.on('runeasyupgrade', lang.hitch(this, function() {
 				this._call_installer({
-					job:		'easyupgrade',
-					confirm:	_("Upgrade system")
+					job: 'easyupgrade',
+					confirm: _("Upgrade system")
 				});
 			}));
 
@@ -171,42 +171,30 @@ define([
 
 		// We defer these actions until the UI is readily rendered
 		startup: function() {
-
 			this.inherited(arguments);
-
 			this.selectChild(this._updates);
-
 		},
 
 		// Seperate function that can be called the same way as _call_installer:
 		// instead of presenting the usual confirm dialog it presents the list
 		// of packages for a distupgrade.
 		_confirm_distupgrade: function() {
-
-			try
-			{
-				this.standby(true);
-				this.umcpCommand('updater/updates/check').then(lang.hitch(this, function(data) {
-					this.standby(false);
+			try {
+				this.standbyDuring(this.umcpCommand('updater/updates/check')).then(lang.hitch(this, function(data) {
 					// FIXME Lots of manual styling to achieve resonable look
 					var txt = "<table>\n";
 					var upd = data.result.update;
 					var ins = data.result.install;
 					var rem = data.result.remove;
-					if ((! upd.length) && (! ins.length) && (! rem.length))
-					{
+					if ((!upd.length) && (!ins.length) && (!rem.length)) {
 						this._updates.refreshPage(true);
 						return;
 					}
-					if (rem.length)
-					{
+					if (rem.length) {
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
-						if (rem.length == 1)
-						{
+						if (rem.length == 1) {
 							txt += lang.replace(_("1 package to be REMOVED"));
-						}
-						else
-						{
+						} else {
 							txt += lang.replace(_("{count} packages to be REMOVED"), {count:rem.length});
 						}
 						txt += "</u></b></td></tr>";
@@ -217,15 +205,11 @@ define([
 							txt += "</tr>\n";
 						});
 					}
-					if (upd.length)
-					{
+					if (upd.length) {
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
-						if (upd.length == 1)
-						{
+						if (upd.length == 1) {
 							txt += lang.replace(_("1 package to be updated"));
-						}
-						else
-						{
+						} else {
 							txt += lang.replace(_("{count} packages to be updated"), {count:upd.length});
 						}
 						txt += "</u></b></td></tr>";
@@ -236,15 +220,11 @@ define([
 							txt += "</tr>\n";
 						});
 					}
-					if (ins.length)
-					{
+					if (ins.length) {
 						txt += "<tr><td colspan='2' style='padding:.5em;'><b><u>";
-						if (ins.length == 1)
-						{
+						if (ins.length == 1) {
 							txt += lang.replace(_("1 package to be installed"));
-						}
-						else
-						{
+						} else {
 							txt += lang.replace(_("{count} packages to be installed"), {count:ins.length});
 						}
 						txt += "</u></b></td></tr>";
@@ -258,45 +238,34 @@ define([
 					txt += "</table>";
 					txt += "<p style='padding:1em;'>" + _("Do you really want to perform the update/install/remove of the above packages?") + "</p>\n";
 					var dia = new ConfirmDialog({
-						title:			_("Start Upgrade?"),
-						message:		txt,
-						'class':		'updaterDialog',
-						options:
-						[
-							{
-								label:		_('Cancel'),
-								name:		'cancel'
-							},
-							{
-								label:		_('Install'),
-								name:		'start',
-								'default':	true
-							}
-						]
+						title: _("Start Upgrade?"),
+						message: txt,
+						'class': 'updaterDialog',
+						options: [{
+								label: _('Cancel'),
+								name: 'cancel'
+							}, {
+								label: _('Install'),
+								name: 'start',
+								'default': true
+							}]
 					});
 
 					dia.on('confirm', lang.hitch(this, function(answer) {
 						dia.close();
-						if (answer == 'start')
-						{
+						if (answer == 'start') {
 							this._call_installer({
-								confirm:		false,
-								job:			'distupgrade',
-								detail:			''
+								confirm: false,
+								job: 'distupgrade',
+								detail: ''
 							});
 						}
 					}));
 					dia.show();
 
 					return;
-				}),
-				lang.hitch(this, function() {
-					this.standby(false);
-				})
-				);
-			}
-			catch(error)
-			{
+				}));
+			} catch(error) {
 				console.error("PACKAGE DIALOG: " + error.message);
 			}
 		},
@@ -305,14 +274,13 @@ define([
 		// and detail are passed as args to the 'updater/installer/execute' backend.
 		//
 		// Argument 'confirm' has special meaning:
-		//		true ......... ask for confirmation and run the installer only if confirmed,
-		//		false ........ run the installer unconditionally.
-		//		any string ... the confirmation text to ask.
+		//        true ......... ask for confirmation and run the installer only if confirmed,
+		//        false ........ run the installer unconditionally.
+		//        any string ... the confirmation text to ask.
 		_call_installer: function(args) {
 
 			var msg = '';
-			if (args.confirm)
-			{
+			if (args.confirm) {
 				msg = '<p>' + _('Please respect the following guidelines for UCS updates:') + '</p>';
 				msg += '<ul>';
 				msg += '<li>' + _('<b>Leave the system up and running</b> at any moment during the update!') + ' ' + _('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.') + '</li>';
@@ -327,15 +295,12 @@ define([
 				msg += '</ul>';
 				msg += '<p>' + _('Depending on the system performance, network connection and the installed software the update may take from 30 minutes up to several hours.') + '</p>';
 
-				dialog.confirm(msg,
-				[
-					{
-						label:		_('Cancel')
-					},
-					{
-						label:		args.confirm,
-						'default':	true,
-						callback:	lang.hitch(this, function() {
+				dialog.confirm(msg, [{
+						label: _('Cancel')
+					}, {
+						label: args.confirm,
+						'default': true,
+						callback: lang.hitch(this, function() {
 							args.confirm = false;
 							this._call_installer(args);
 						})
@@ -345,26 +310,15 @@ define([
 				return;
 			}
 
-			this.standby(true);
-
-			this.umcpCommand('updater/installer/execute', {
-				job:	args.job,
-				detail:		args.detail || ''
-			}).then(lang.hitch(this, function(data) {
-				this.standby(false);
-				if (data.result.status === 0)
-				{
+			this.standbyDuring(this.umcpCommand('updater/installer/execute', {
+				job: args.job,
+				detail: args.detail || ''
+			})).then(lang.hitch(this, function(data) {
+				if (data.result.status === 0) {
 					this._switch_to_progress_page();
-				}
-				else
-				{
+				} else {
 					dialog.alert(lang.replace(_("The Univention Updater action could not be started [Error {status}]: {message}"), data.result));
 				}
-			}),
-			// Strongly needed: an error callback! In this case, the built-in error processing
-			// (popup or login prompt) is well suited for the situation, so we don't disable it.
-			lang.hitch(this, function() {
-				this.standby(false);
 			}));
 		},
 
@@ -372,17 +326,14 @@ define([
 		// Switches to the progress view: all tabs but the 'update in progess' will disappear.
 		// Remembers the currently selected tab and will restore it when finished.
 		// NOTE that we don't pass any args to the progress page since it is able
-		//		to fetch them all from the AT job.
+		//        to fetch them all from the AT job.
 		_switch_to_progress_page: function() {
 
-			try
-			{
+			try {
 				this.selectChild(this._progress);
 
 				this._progress.startWatching();
-			}
-			catch(error)
-			{
+			} catch(error) {
 				console.error("switch_progress: " + error.message);
 			}
 		},
@@ -392,25 +343,23 @@ define([
 		handleQuerySuccess: function(subject) {
 
 			//console.error("QUERY '" + subject + "' -> SUCCESS");
-			if (this._connection_status !== 0)
-			{
+			if (this._connection_status !== 0) {
 				this._reset_error_status();
 			}
 		},
 
 		// Recover after any kind of long-term failure:
 		//
-		//	-	set error counter to zero
-		//	-	set connection status to ok
-		//	-	close eventually opened 'connection lost' dialog
-		//	-	refresh Updates page
-		//	-	restart polling
+		//    -	set error counter to zero
+		//    -	set connection status to ok
+		//    -	close eventually opened 'connection lost' dialog
+		//    -	refresh Updates page
+		//    -	restart polling
 		_reset_error_status: function() {
 
 			this._connection_status = 0;
 			this._error_count = 0;
-			if (this._busy_dialog)
-			{
+			if (this._busy_dialog) {
 				this._busy_dialog.hide();
 				this._busy_dialog.destroy();
 				this._busy_dialog = null;
@@ -424,26 +373,21 @@ define([
 		// theoretically even survive a reboot...
 		handleQueryError: function(subject, data) {
 
-			try
-			{
+			try {
 				// While the login dialog is open -> all queries return at the
 				// error callback, but without data! (should be documented)
 				// FIXME: remove this if()
-				if (typeof(data) == 'undefined')
-				{
+				if (typeof(data) == 'undefined') {
 					//console.error("QUERY '" + subject + "' without DATA");
 					return;
 				}
 				//console.error("QUERY '" + subject + "' STATUS = " + data.status);
 				var result = tools.parseError(data);
-				if (result.status == 401)
-				{
-					if (this._connection_status != 2)
-					{
+				if (result.status == 401) {
+					if (this._connection_status != 2) {
 						this._connection_status = 2;
 
-						if (this._busy_dialog)
-						{
+						if (this._busy_dialog) {
 							this._busy_dialog.hide();
 							this._busy_dialog.destroy();
 							this._busy_dialog = null;
@@ -456,26 +400,18 @@ define([
 							this._updates.refreshPage();
 							this._updates.startPolling();
 							this._progress.startPolling();
-						})
-						);
+						}));
 					}
-	//				else
-	//				{
-	//					console.error("QUERY '" + subject + "' -> AGAIN STATUS 401");
-	//				}
-				}
-				else
-				{
+				} else {
 					this._connection_status = 1;
 
 					this._error_count = this._error_count + 1;
-					if (this._error_count >= 5 && this._busy_dialog === null)
-					{
+					if (this._error_count >= 5 && this._busy_dialog === null) {
 						this._busy_dialog = new Dialog({
-							title:		_('Update notes'),
-							closable:	false,
-							style:		"width: 300px",
-							'class':	'umcConfirmDialog'
+							title: _('Update notes'),
+							closable: false,
+							style: "width: 300px",
+							'class': 'umcConfirmDialog'
 						});
 						this._busy_dialog.attr("content",
 							'<p>' + _('The update is being executed.') + '</p>' +
@@ -484,9 +420,7 @@ define([
 						this._busy_dialog.show();
 					}
 				}
-			}
-			catch(error)
-			{
+			} catch(error) {
 				console.error("HANDLE_ERRORS: " + error.message);
 			}
 		}

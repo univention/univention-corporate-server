@@ -65,22 +65,6 @@ define([
 		// FIXME which class should I take here?
 		style: 'border: 1px solid #d0d0d0; background-color: #f8f8f8; padding: 0.3em;',
 
-	//	postMixinProperties: function() {
-	//
-	//		this.inherited(arguments);
-	//
-	//		// mix in the polling capability
-	//		lang.mixin(this,umc.modules._updater._PollingMixin({
-	//			polling: {
-	//				interval: 1000,
-	//				'function': lang.hitch(this, function() {
-	//					this._fetch_log();
-	//				}),
-	//				query: this.query
-	//			}
-	//		}));
-	//	},
-
 		buildRendering: function() {
 
 			this.inherited(arguments);
@@ -99,8 +83,7 @@ define([
 
 				this.onQuerySuccess(this.query + " [count=-1]");
 				var stamp = data.result;
-				if (stamp != this._last_stamp)
-				{
+				if (stamp != this._last_stamp) {
 					this._last_stamp = stamp;
 					tools.umcpCommand(this.query,{job:this._current_job,count:this._log_position},false).then(lang.hitch(this, function(data) {
 
@@ -117,8 +100,7 @@ define([
 					);
 				}
 
-				if (this._check_interval)
-				{
+				if (this._check_interval) {
 					window.setTimeout(lang.hitch(this,function() {
 						this._fetch_log();
 					}),this._check_interval);
@@ -128,8 +110,7 @@ define([
 			lang.hitch(this,function(data) {
 				this.onQueryError(this.query + " [count=-1]",data);
 				// even in case of errors -> reschedule polling!
-				if (this._check_interval)
-				{
+				if (this._check_interval) {
 					window.setTimeout(lang.hitch(this,function() {
 						this._fetch_log();
 					}),this._check_interval);
@@ -169,12 +150,12 @@ define([
 		// (3) the user scrolls to a defined position --> isAtBottom()
 		scrollToBottom: function(forceScrollToBottom) {
 			var text_node = this._text.domNode;
-			if(forceScrollToBottom === true) {
+			if (forceScrollToBottom === true) {
 				this._goToBottom = true;
 			}
 			this.hasUserMovedScrollbar(this._oldScrollPosition, text_node.scrollTop);
 			this.isAtBottom(text_node);
-			if(this._goToBottom){
+			if (this._goToBottom){
 				text_node.scrollTop = text_node.scrollHeight;
 			}
 			this._oldScrollPosition = text_node.scrollTop;
@@ -182,7 +163,7 @@ define([
 
 		// if the old scrollbar postion isn't the new one, the user has changed it
 		hasUserMovedScrollbar: function(oldPos, newPos){
-			if(oldPos != newPos){
+			if (oldPos != newPos){
 				this._goToBottom = false;
 			}
 		},
@@ -195,7 +176,7 @@ define([
 			var content_height = text_node.scrollHeight; // the overall height of the text inside the view
 			var scroll_position = text_node.scrollTop; //  current position auf the scrollbar
 			var ratio = scroll_position / (content_height - view_height); 
-			if(ratio >= 0.75){
+			if (ratio >= 0.75) {
 				this._goToBottom = true;
 			}
 		},
