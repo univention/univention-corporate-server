@@ -1,3 +1,10 @@
+univention-samba4 (5.0.1-5) UNRELEASED; urgency=medium
+
+  * Bug #40186: Lock the sysvol while operating on it (e.g. man flock)
+  * First check with "rsync -au... --dry-run" if copying is required at all
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Dec 2015 19:20:54 +0100
+
 univention-samba4 (5.0.1-4) unstable; urgency=low
 
   * limit ACL check in sysvol sync to Policies dir (Bug #40266) 
