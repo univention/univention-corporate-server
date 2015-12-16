@@ -7,8 +7,8 @@ version: [0]
 desc: |
   This update addresses the following issues:
   * The layout of the App Center gallery has been improved.
-  * On an app details page the user can now navigate to the previous and next
-    app.
+  * On an app details page, it is now possible to navigate to the previous and
+    next app in the search results.
   * The app details page for small domains has been simplified.
   * Apps now support RequiredAppsInDomain which can be used to state that a
     specific App has to be installed somewhere in the domain in order for the
