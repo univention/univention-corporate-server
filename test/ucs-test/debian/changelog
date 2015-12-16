@@ -1,3 +1,15 @@
+ucs-test (6.0.28-5) unstable; urgency=medium
+
+  * Removed apptest flag from the following test cases:
+    - 10_ldap/73schema_registration_twice (Bug #40237)
+    - 40_mail/29_mail_related_modifications_of_user_objects (Bug #40199)
+    - 61_udm-users/24_ignore_user_with_functional_flag (Bug #40198)
+    - 62_udm-groups/11_remove_user_which_is_group_member (Bug #40217)
+    - 01_base/01_ignore_synced_users_in_license_count (Bug #40218)
+    - 72_udm-extensions/40_test_udm_hook (Bug #40236)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Dec 2015 06:32:22 +0100
+
 ucs-test (6.0.28-4) unstable; urgency=low
 
   * Bug #39878: Test LDAP anonymous read

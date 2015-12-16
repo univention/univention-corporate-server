@@ -3,7 +3,7 @@
 ## roles: [domaincontroller_master]
 ## exposure: careful
 ## bugs: [35647]
-## tags: [udm, apptest]
+## tags: [udm]
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools

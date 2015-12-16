@@ -2,7 +2,6 @@
 ## desc: Test if a schema is still activated even if it was added twice
 ## tags:
 ##  - ldapextensions
-##  - apptest
 ## roles-not:
 ##  - basesystem
 ## packages:
