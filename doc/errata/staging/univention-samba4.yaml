@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-samba4
+fix: 5.0.1-4.623.201512161236
+version: [0]
+desc: |
+ This update addresses the following issues:
+ * The ACL check in the sysvol sync script is now limited
+   to the Policies directory.
+bug: [40266]
