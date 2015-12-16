@@ -382,14 +382,14 @@ Type=bool
 Categories=service-software-management
 
 [repository/online/timeout]
-Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird. [600s]
-Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed. [600s]
+Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird. [30s]
+Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed. [30s]
 Type=int
 Categories=service-software-management
 
 [repository/mirror/timeout]
-Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird. [600s]
-Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed. [600s]
+Description[de]=Diese Option legt das Zeitintervall in Sekunden fest, nach der eine inaktive HTTP-Verbindung zwangsweise beendet wird. [30s]
+Description[en]=This option sets the time interval in seconds, after which a stalled HTTP connection is forcibly closed. [30s]
 Type=int
 Categories=service-software-management
 

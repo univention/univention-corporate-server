@@ -79,7 +79,7 @@ class UniventionMirror(UniventionUpdater):
         self.online_repository = self.configRegistry.is_true('repository/mirror', True)
         self.repourl = UcsRepoUrl(self.configRegistry, 'repository/mirror')
         self.sources = self.configRegistry.is_true('repository/mirror/sources', False)
-        self.timeout = float(self.configRegistry.get('repository/mirror/timeout', 600))
+        self.timeout = float(self.configRegistry.get('repository/mirror/timeout', 30))
         self.http_method = self.configRegistry.get('repository/mirror/httpmethod', 'HEAD').upper()
         self.script_verify = self.configRegistry.is_true('repository/mirror/verify', True)
 

@@ -583,7 +583,7 @@ class UniventionUpdater:
         self.online_repository = self.configRegistry.is_true('repository/online', True)
         self.repourl = UcsRepoUrl(self.configRegistry, 'repository/online')
         self.sources = self.configRegistry.is_true('repository/online/sources', False)
-        self.timeout = float(self.configRegistry.get('repository/online/timeout', 600))
+        self.timeout = float(self.configRegistry.get('repository/online/timeout', 30))
         UCSHttpServer.http_method = self.configRegistry.get('repository/online/httpmethod', 'HEAD').upper()
 
     def ucr_reinit(self):
