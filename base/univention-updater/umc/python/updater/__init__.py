@@ -156,13 +156,17 @@ class Watched_File(object):
 			self._unchanged_count += 1
 			if self._unchanged_count >= self._count:
 				# Don't record new timestamp if MD5 of file is the same
-				with open(self._file, 'rb') as fd:
-					hash = md5(fd.read()).hexdigest()
-				if hash != self._last_md5:
-					self._last_md5 = hash
-					self._last_returned_stamp = current_stamp
+				try:
+					with open(self._file, 'rb') as fd:
+						hash_ = md5(fd.read()).hexdigest()
+				except (IOError, OSError):
+					pass
 				else:
-					MODULE.info("Hash of '%s' unchanged" % self._file)
+					if hash_ != self._last_md5:
+						self._last_md5 = hash_
+						self._last_returned_stamp = current_stamp
+					else:
+						MODULE.info("Hash of '%s' unchanged" % self._file)
 		else:
 			self._unchanged_count = 0
 			self._last_stamp = current_stamp
@@ -656,8 +660,11 @@ class Instance(Base):
 		# log file.
 		if 'logfile' in INSTALLERS[subject]:
 			fname = INSTALLERS[subject]['logfile']
-			with open(fname, 'rb') as fd:
-				count = sum([1 for line in fd])
+			try:
+				with open(fname, 'rb') as fd:
+					count = sum(1 for line in fd)
+			except (IOError, OSError):
+				count = 0
 			self._current_job['lines'] = count
 			self._current_job['logfile'] = fname
 
@@ -713,15 +720,18 @@ class Instance(Base):
 		> 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
 		"""
 		lines = []
-		with open(fname, 'rb') as fd:
-			for line in fd:
-				if (count < 0):
-					count += 1
-				else:
-					l = line.rstrip()
-					lines.append(l)
-					if (count > 0) and (len(lines) > count):
-						lines.pop(0)
+		try:
+			with open(fname, 'rb') as fd:
+				for line in fd:
+					if (count < 0):
+						count += 1
+					else:
+						l = line.rstrip()
+						lines.append(l)
+						if (count > 0) and (len(lines) > count):
+							lines.pop(0)
+		except (IOError, OSError):
+			pass
 		return lines
 
 # ------------------------------------------------------------------------------

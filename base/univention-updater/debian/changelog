@@ -2,6 +2,7 @@ univention-updater (11.0.7-8) unstable; urgency=medium
 
   * Bug #39780: don't display warning pop up if no update is currently
   	performed
+  * Bug #40051: don't fail if logfails doesn't exist
 
  -- Florian Best <best@univention.de>  Wed, 16 Dec 2015 13:36:01 +0100
 
