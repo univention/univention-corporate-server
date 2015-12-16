@@ -1,3 +1,9 @@
+ucs-test (6.0.28-6) unstable; urgency=low
+
+  * Bug #28829: Disable 51_samba4/60_dns_register_exclude_interfaces
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Dec 2015 13:52:42 +0100
+
 ucs-test (6.0.28-5) unstable; urgency=medium
 
   * Removed apptest flag from the following test cases:
