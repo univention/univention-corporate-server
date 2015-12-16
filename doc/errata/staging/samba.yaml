@@ -5,7 +5,7 @@ src: samba
 fix: 2:4.3.3-1.812.201512111459
 version: [0]
 desc: |
- This update updates Samba to version 4.3.3 and addresses the following issues:
+ This updates Samba to version 4.3.3 and addresses the following issues:
  * Samba 4.3.3 fixes a couple of security issues, see CVE list
  * In certain situations samba restart left samba in a non-functional state.
  * When closing sessions the smbd server processes exited with a memory
