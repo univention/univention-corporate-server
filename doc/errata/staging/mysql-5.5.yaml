@@ -1,5 +1,5 @@
 product: ucs
-release: "4.0"
+release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: mysql-5.5
 fix: 5.5.46-0.17.201512141630
