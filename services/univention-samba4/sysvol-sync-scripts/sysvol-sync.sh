@@ -59,15 +59,19 @@ LC_ALL=C
 
 # hash over the list of files/directories with ACLs set
 all_files_and_dirs_have_acls () {
-	local dir="$1"
+	local dir="$1/$(ucr get domainname)/Policies"
 	local host="$2"
-	log_debug "[$host] checking ACL's"
-	a_md5=$(getfacl -span -R "$1" | sed -ne 's/^# file: //p' | sort | md5sum)
-	f_md5=$(find "$1" -type f -o -type d | sort | md5sum)
-	if [ "$a_md5" != "$f_md5" ]; then
-		log_error "[$host] some files from $host don't have ACLs set. Will not sync to hot target!"
-		return 1
+
+	if [ -d "$dir" ]; then
+		log_debug "[$host] checking ACL's"
+		a_md5=$(getfacl -span -R "$dir" | sed -ne 's/^# file: //p' | sort | md5sum)
+		f_md5=$(find "$dir" -type f -o -type d | sort | md5sum)
+		if [ "$a_md5" != "$f_md5" ]; then
+			log_error "[$host] some files from $host don't have ACLs set. Will not sync to hot target!"
+			return 1
+		fi
 	fi
+
 	return 0
 }
 
