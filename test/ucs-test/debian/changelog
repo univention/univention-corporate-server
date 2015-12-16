@@ -1,3 +1,9 @@
+ucs-test (6.0.28-7) unstable; urgency=low
+
+  * Bug #39954: Reduce HTTP connection timeout to 30s
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 16 Dec 2015 14:53:29 +0100
+
 ucs-test (6.0.28-6) unstable; urgency=low
 
   * Bug #28829: Disable 51_samba4/60_dns_register_exclude_interfaces

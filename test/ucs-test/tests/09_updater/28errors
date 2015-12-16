@@ -136,7 +136,7 @@ run_tests () { # execute all updater programs
 	# check timeout 2nd last
 	iptables -I INPUT 1 -p tcp --dport discard -j DROP >&3 2>&3
 	ucr set repository/online/port=9
-	run_tests "Configuration error: port is blocked"
+	run_tests "Configuration error: "
 	iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3
 	ucr set repository/online/port=80
 

@@ -110,12 +110,12 @@ run_tests () { # execute all updater programs
 	# check timeout last
 	iptables -I INPUT 1 -p tcp --dport discard -j DROP >&3 2>&3
 	ucr set repository/mirror/port=9
-	run_tests "Configuration error: port is blocked"
+	run_tests "Configuration error: "
 	ucr set repository/mirror/port=80
 
 	ucr set proxy/http="http://${username}:${password}@localhost:9"
 	"${FIXED_12571}" || ucr commit /etc/apt/mirror.list >&3
-	run_tests "Proxy configuration error: port is blocked"
+	run_tests "onfiguration error: "
 	ucr unset proxy/http
 
 	iptables -D INPUT   -p tcp --dport discard -j DROP >&3 2>&3
