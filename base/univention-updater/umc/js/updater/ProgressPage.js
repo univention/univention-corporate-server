@@ -42,7 +42,6 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
-	"dojo/on",
 	"dojo/dom-class",
 	"umc/dialog",
 	"umc/tools",
@@ -53,7 +52,7 @@ define([
 	"umc/widgets/Text",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, on, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, libServer, _) {
+], function(declare, lang, domClass, dialog, tools, Page, _LogViewer, Button, ContainerWidget, Text, libServer, _) {
 	return declare("umc.modules.updater.ProgressPage", Page, {
 
 		// Polling interval for eventually running Updater jobs. If this is
@@ -64,7 +63,7 @@ define([
 
 		_reboot_required: null,
 
-		_beforeunloadHandler: null,
+		allowClose: null,
 
 		postMixInProperties: function() {
 			this.inherited(arguments);
@@ -100,11 +99,11 @@ define([
 
 			this._log.on('queryerror', lang.hitch(this, 'onQueryError'));
 			this._log.on('querysuccess', lang.hitch(this, 'onQuerySuccess'));
-			this._allow_close(false);
+			this.set('allowClose', false);
 		},
 
 		_closeLogView: function() {
-			if (!this._allow_closing) {
+			if (!this.get('allowClose')) {
 				dialog.alert(_('Closing not possible while running a update.'));
 				return;
 			}
@@ -141,14 +140,14 @@ define([
 					var txt = data.result;
 					if (txt !== '') {
 						if (this._job_key === '') {
-							this._job_key = txt;			// from now on, we'll fetch full job details
-							this._log.setJobKey(txt);		// tell the logViewer which job we're referring to.
+							this._job_key = txt; // from now on, we'll fetch full job details
+							this._log.setJobKey(txt); // tell the logViewer which job we're referring to.
 						}
 
 						// if the page is currently in background then we must notify
 						// our Module that we want to be shown now
 						this.onJobStarted();
-						this._allow_close(false);		// close button now invisible.
+						this.set('allowClose', false); // close button now invisible.
 					}
 					if (data.result !== '') {
 						// start the first call for 'update/installer/status' if we got a job name
@@ -162,7 +161,7 @@ define([
 				} else {
 					// This knows about all details of the job, and it will know when the job
 					// is finished.
-					this._last_job = data.result;	// remember for later
+					this._last_job = data.result; // remember for later
 
 					if (data.result.running) {
 						// reschedule this as long as the job runs.
@@ -173,7 +172,7 @@ define([
 							}), this._interval);
 						}
 					} else {
-						this._allow_close(true);		// does the rest.
+						this.set('allowClose', true); // does the rest.
 					}
 				}
 			} else {
@@ -218,29 +217,12 @@ define([
 
 		// switches visibility of our 'close' button on or off.
 		// Additionally, changes some labels to reflect the current situation.
-		_allow_close: function(allow_closing) {
-			this._allow_closing = allow_closing;
-			this.set('navButtons', this._allow_closing ? this._orgNavButtons : []);
+		_setAllowCloseAttr: function(allow_closing) {
+			this._set('allowClose', allow_closing);  // public attribute used by updater.js
+			this.set('navButtons', allow_closing ? this._orgNavButtons : []);
 			// While the button is hidden, the polling callback maintains the content.
 			// Only if Close is enabled -> set to a different text.
-			if (!allow_closing && !this._beforeunloadHandler)
-			{
-				// this piece of code was taken from:
-				// https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
-				this._beforeunloadHandler = on(window, "beforeunload", function (e) {
-					var msg = _('An update of the system is being executed.') + '\n' +
-						_('Are you sure to close the updater log view?') + '\n\n' +
-						_('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.');
-					(e || window.event).returnValue = msg;
-					return msg;
-				});
-				this.own(this._beforeunloadHandler);
-			}
 			if (allow_closing) {
-				if (this._beforeunloadHandler) {
-					this._beforeunloadHandler.remove();
-					this._beforeunloadHandler = null;
-				}
 				if ((this._job_key !== '') && (this._last_job)) {
 					// First thing to do: notify the Module that the job is finished. So it can already
 					// refresh the 'Updates' and 'Components' pages before the user gets back there.
@@ -280,8 +262,8 @@ define([
 
 		// updater Module calls this when the ProgressPage is to be opened.
 		startWatching: function() {
-			this._allow_close(false);					// forbid closing this tab.
-			this._log.startWatching(this._interval);	// start logfile tail
+			this.set('allowClose', false); // forbid closing this tab.
+			this._log.startWatching(this._interval); // start logfile tail
 		},
 
 		// updater Module listens to this event to close the page

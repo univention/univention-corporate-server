@@ -26,12 +26,13 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define console window*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojo/on",
 	"dijit/Dialog",
 	"umc/dialog",
 	"umc/app",
@@ -42,7 +43,7 @@ define([
 	"umc/modules/updater/ProgressPage",
 	"umc/i18n!umc/modules/updater",
 	"xstyle/css!./updater.css"
-], function(declare, lang, array, Dialog, dialog, app, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
+], function(declare, lang, array, on, Dialog, dialog, app, tools, ConfirmDialog, Module, UpdatesPage, ProgressPage, _) {
 
 	app.registerOnStartup(function() {
 		var checkUpdateIsRunning = function() {
@@ -74,6 +75,8 @@ define([
 		_busy_dialog: null, 		// a handle to the 'connection lost' dialog while
 								// queries return with errors.
 		_error_count: 0, 		// how much errors in one row
+
+		_beforeunloadHandler: null,
 
 		buildRendering: function() {
 
@@ -167,6 +170,24 @@ define([
 			this._updates.on('statusloaded', lang.hitch(this, function(vals) {
 				this._progress.updateStatus(vals);
 			}));
+
+			this.registerUnloadHandler();
+		},
+
+		registerUnloadHandler: function() {
+			// this piece of code was taken from:
+			// https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload
+			this._beforeunloadHandler = on(window, "beforeunload", lang.hitch(this, function(e) {
+				if (this.selectedChildWidget !== this._progress || this._progress.get('allowClose')) {
+					return;
+				}
+				var msg = _('An update of the system is being executed.') + '\n' +
+					_('Are you sure to close the updater log view?') + '\n\n' +
+					_('It is expected that the system may not respond (via web browser, SSH, etc.) during a period of up to several minutes during the update as services are stopped, updated, and restarted.');
+				(e || window.event).returnValue = msg;
+				return msg;
+			}));
+			this.own(this._beforeunloadHandler);
 		},
 
 		// We defer these actions until the UI is readily rendered

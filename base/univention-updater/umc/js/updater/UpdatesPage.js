@@ -368,7 +368,7 @@ define([
 			}, {
 				label: _("Package updates"),
 				layout: [
-					['package_update_text1', 'run_packages_update'],
+					['package_update_text1', 'run_packages_update']
 				]
 			}, {
 				label: _("App Center updates"),
@@ -526,7 +526,7 @@ define([
 					version: versionWithoutPatchlevel,
 					label: _('Detailed information about the updates.')
 				});
-				return erratalink
+				return erratalink;
 			}
 		},
 
