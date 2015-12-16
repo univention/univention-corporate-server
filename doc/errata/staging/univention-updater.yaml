@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-updater
-fix: 11.0.7-8.1438.201512161410
+fix: 11.0.7-9.1439.201512161511
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -12,4 +12,5 @@ desc: |
    closing UMC anymore.
  * The update process via the UMC module can be started if the logfiles don't
    exists.
-bug: [29633,40148,39780,40051]
+ * Reduce HTTP timeout to 30s.
+bug: [29633,40148,39780,40051,39954]
