@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-pam
+fix: 9.0.0-3.265.201512170903
+version: [0]
+desc: |
+    A dependency on the package "univention-sudo" was added. The sudo
+    rules are not automatically activated on updating systems, only on
+    new installations.
+bug: [37995]
