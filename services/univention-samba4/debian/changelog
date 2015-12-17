@@ -1,8 +1,26 @@
+univention-samba4 (5.0.1-10) UNRELEASED; urgency=medium
+
+  * Bug #40186: Set sshd/config/ClientAliveInterval?60 in postinst
+    during new installation and errata update. This addresses the
+    situation where the network interface of the remote sysvol-sync partner
+    becomes unresponsive (e.g. via ifdown) which would leave the remote
+    read flock process running forever. With ClientAliveInterval=60
+    and the sshd default of ClientAliveCountMax=3 the server expects
+    the ssh client to respond within 180 seconds otherwise it terminates
+    the unresponsive session.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 18:28:06 +0100
+
 univention-samba4 (5.0.1-9) unstable; urgency=medium
 
   * Bug #40186: Don't put DCs with (univentionService=S4 SlavePDC) into
-    samba4/sysvol/sync/host by default. This adresses the situation where
-    Samba
+    samba4/sysvol/sync/host by default. This addresses the situation
+    in UCS@school where univention-s4-connector may get installed on
+    the master after UCS@school slaves have been set up. UCS@school slaves
+    always use the master as samba4/sysvol/sync/host by default, but
+    the master should not also consider (*all*) UCS@school slaves
+    as "upstream", which would result in redundant duplicate rsync
+    in sysvol-sync.
 
  -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 18:21:17 +0100
 

@@ -67,6 +67,11 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 5.0.1-4 ; then
 	touch "$SYSVOL_LOCKFILE" \
 	&& chgrp "DC Slave Hosts" "$SYSVOL_LOCKFILE" \
 	&& chmod g+w "$SYSVOL_LOCKFILE"
+
+	ucr set sshd/config/ClientAliveInterval?60
+	if [ -x /etc/init.d/sshd ]; then
+		invoke-rc.d sshd reload
+	fi
 fi
 
 exit 0
