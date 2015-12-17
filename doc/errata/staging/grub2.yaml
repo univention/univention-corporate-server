@@ -1,0 +1,9 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: grub2
+fix: 
+version: [0]
+desc: |
+ This update addresses the following issue:
+bug: [39009]
