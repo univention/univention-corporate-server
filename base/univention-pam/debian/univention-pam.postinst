@@ -39,18 +39,6 @@ ln -sf /etc/machine.secret /etc/libnss-ldap.secret
 # /etc/pam_ldap.secret is required for rootbinddn in /etc/pam_ldap.conf
 ln -sf /etc/machine.secret /etc/pam_ldap.secret
 
-# Update to UCS 3.0, increase nscd cache sizes if pre 3.0 default values
-# are used. Bug #21358
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.15-1; then
-	if [ "$nscd_passwd_size" = "3001" -a "$nscd_group_size" = "3001" -a "$nscd_hosts_size" = "3001" ]; then
-		univention-config-registry set \
-			nscd/passwd/size=6007 \
-			nscd/group/size=56003 \
-			nscd/hosts/size=6007 \
-			nscd/group/maxdbsize=62914560
-	fi
-fi
-
 univention-config-registry set \
 	nscd/passwd/size?6007 \
 	nscd/group/size?56003 \
@@ -114,13 +102,6 @@ if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
     rm /etc/univention/templates/files/etc/pam.d/common-auth
 fi
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.2-1; then
-	if is_ucr_true nss/group/cachefile; then
-		/usr/lib/univention-pam/ldap-group-to-file.py
-		univention-config-registry set	nscd/group/invalidate_cache_on_changes="false"
-	fi
-fi
-
 # Restart listener
 if [ -x "/etc/init.d/univention-directory-listener" ] ; then
 	/etc/init.d/univention-directory-listener crestart
@@ -138,14 +119,10 @@ univention-config-registry set \
 	'security/limits/default/user/hard/nofile?32768' \
 	'security/limits/group/Domain Users/hard/nproc?1000'
 
-# Bug #32415, can be removed after 4.0-0
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.1-2; then
-	if [ -n "$security_limits_user_default_user_soft_nofile" ]; then
-		ucr unset security/limits/user/default/user/soft/nofile
-	fi
-	if [ -n "$security_limits_user_default_user_hard_nofile" ]; then
-		ucr unset security/limits/user/default/user/hard/nofile
-	fi
+# Bug #37995: Enable sudo only on new UCS-4.1 installs
+if [ "$1" = configure ] && [ -n "$2" ]
+then
+	univention-config-registry set auth/sudo?yes
 fi
 
 call_joinscript 11univention-pam.inst
