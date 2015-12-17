@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-appcenter
-fix: 5.0.19-30.88.201512160029
+fix: 5.0.19-31.89.201512171424
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -20,4 +20,5 @@ desc: |
   * Fixing developer scripts for using a local App Center.
   * One function of the Docker Apps Joinscript helpers has been fixed when
     called from within the UMC module.
-bug: [39662,39664,40116,37539,40239,40240,40238,40264]
+  * Uninstalling the last app doesn't cause a "Forbidden" pop up anymore.
+bug: [39662,39664,40116,37539,40239,40240,40238,40264,39157]
