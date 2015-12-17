@@ -1,3 +1,11 @@
+univention-samba4 (5.0.1-9) unstable; urgency=medium
+
+  * Bug #40186: Don't put DCs with (univentionService=S4 SlavePDC) into
+    samba4/sysvol/sync/host by default. This adresses the situation where
+    Samba
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 18:21:17 +0100
+
 univention-samba4 (5.0.1-8) unstable; urgency=medium
 
   * Bug #40186: Fix unset remote_login variable
