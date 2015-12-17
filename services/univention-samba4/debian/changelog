@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-8) unstable; urgency=medium
+
+  * Bug #40186: Fix unset remote_login variable
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 17:29:08 +0100
+
 univention-samba4 (5.0.1-7) unstable; urgency=medium
 
   * Bug #40186: Always place a trigger file upstream as the first step

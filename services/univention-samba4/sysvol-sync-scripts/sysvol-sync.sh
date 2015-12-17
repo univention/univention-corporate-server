@@ -208,9 +208,9 @@ trigger_upstream_sync() {
 	local remote_login="$1"
 
 	stderr_log_debug "[$log_prefix] placing triggerfile."
-	out="$(univention-ssh /etc/machine.secret "$remote_login" \
+	out="$(univention-ssh --no-split /etc/machine.secret "$remote_login" \
 		-o ServerAliveInterval=15 \
-		"mkdir -p '${SYSVOL_SYNC_TRIGGERDIR}'; touch '${SYSVOL_SYNC_TRIGGERDIR}/${hostname}'" 2>&1)"
+		"mkdir -p \"${SYSVOL_SYNC_TRIGGERDIR}\"; touch \"${SYSVOL_SYNC_TRIGGERDIR}/${hostname}\"" 2>&1)"
 
 	rsync_exitcode=$?
 	if [ $rsync_exitcode -ne 0 ]; then
@@ -272,6 +272,7 @@ sync_from_upstream_DC() {
 
 		log_prefix="$s4dc"
 		importdir="$SYSVOL_SYNCDIR/.$s4dc"
+		remote_login="$hostname\$@$s4dc"
 
 		## trigger the next pull by the parent s4dc
 		trigger_upstream_sync "$remote_login"
@@ -285,7 +286,6 @@ sync_from_upstream_DC() {
 
 		rsync_options=("${default_rsync_options[@]}" --delete)
 
-		remote_login="$hostname\$@$s4dc"
 		check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
 		if [ $? -ne 0 ]; then
 			stderr_log_debug "[$log_prefix] No changes."
