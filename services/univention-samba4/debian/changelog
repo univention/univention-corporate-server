@@ -1,4 +1,11 @@
-univention-samba4 (5.0.1-5) UNRELEASED; urgency=medium
+univention-samba4 (5.0.1-6) unstable; urgency=medium
+
+  * Bug #40186: Refactor sysvol-sync.sh to improve readability
+                and reduce code duplication
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 13:59:09 +0100
+
+univention-samba4 (5.0.1-5) unstable; urgency=medium
 
   * Bug #40186: Lock the sysvol while operating on it (e.g. man flock)
   * First check with "rsync -au... --dry-run" if copying is required at all
