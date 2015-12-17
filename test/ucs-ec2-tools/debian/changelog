@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-11) unstable; urgency=medium
+
+  * Bug #38984: more verbose error handling
+
+ -- Florian Best <best@univention.de>  Thu, 17 Dec 2015 16:33:42 +0100
+
 ucs-ec2-tools (2.0.0-10) unstable; urgency=low
 
   * Bug #39736 (undo): Restore ucslint

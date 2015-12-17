@@ -490,8 +490,8 @@ class VM_KVM(VM):
 				username=kvm_user,
 				port=22,
 			)
-		except socket_error as ex:
-			self._log('Failed to connect to %s...' % (kvm_server,))
+		except (paramiko.ssh_exception.AuthenticationException, socket_error) as ex:
+			self._log('Failed to connect to %s as %s...' % (kvm_server, kvm_user))
 			_print_done('fail (%s)' % (ex,))
 			sys.exit(1)
 
