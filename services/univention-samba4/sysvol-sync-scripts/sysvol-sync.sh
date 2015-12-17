@@ -89,6 +89,7 @@ check_if_need_sync() {
 
 	local src="$remote_login:$SYSVOL_PATH"
 	need_sync="$(univention-ssh-rsync /etc/machine.secret \
+		-o ServerAliveInterval=15 \
 		--dry-run -v "${rsync_options[@]}" \
 		"$src"/ "$dst" 2>&1 \
 		| sed '1,/^receiving incremental file list$/d;' | head --lines=-3)"
@@ -139,6 +140,7 @@ get_remote_lock() {
 	stderr_log_debug "[$log_prefix] trying to get remote read lock"
 	timeout=30
 	univention-ssh --no-split /etc/machine.secret "$remote_login" \
+		-o ServerAliveInterval=20 \
 		"(flock --timeout=$timeout -s 8 || exit 1; echo LOCKED; read WAIT;) 8>\"$SYSVOL_LOCKFILE\"" \
 		< <(cat "$pipe_dir/pipe0") 2>&1 > "$pipe_dir/pipe1" | grep -v 'Could not chdir to home directory' 1>&2 &
 
@@ -164,6 +166,7 @@ copy_sysvol_from() {
 
 		## Read remote sysvol to local importdir
 		out="$(univention-ssh-rsync /etc/machine.secret \
+			-o ServerAliveInterval=15 \
 			"${rsync_options[@]}" \
 			"$src"/ "$importdir" 2>&1)"
 
@@ -206,6 +209,7 @@ trigger_upstream_sync() {
 
 	stderr_log_debug "[$log_prefix] placing triggerfile."
 	out="$(univention-ssh /etc/machine.secret "$remote_login" \
+		-o ServerAliveInterval=15 \
 		"mkdir -p '${SYSVOL_SYNC_TRIGGERDIR}'; touch '${SYSVOL_SYNC_TRIGGERDIR}/${hostname}'" 2>&1)"
 
 	rsync_exitcode=$?
@@ -244,7 +248,7 @@ sync_from_active_downstream_DCs() {
 			continue
 		fi
 
-		copy_sysvol_from "$remote_login" "$importdir"
+		copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
 		if [ $? -ne 0 ]; then
 			stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
 			continue
@@ -269,6 +273,13 @@ sync_from_upstream_DC() {
 		log_prefix="$s4dc"
 		importdir="$SYSVOL_SYNCDIR/.$s4dc"
 
+		## trigger the next pull by the parent s4dc
+		trigger_upstream_sync "$remote_login"
+		if [ $? -ne 0 ]; then
+			stderr_log_error "[$log_prefix] Placing a trigger file failed."
+			continue
+		fi
+		
 		## check if parent s4dc has changes:
 		stderr_log_debug "[${s4dc}] rsync check for changes on upstream DC"
 
@@ -284,7 +295,7 @@ sync_from_upstream_DC() {
 		## pull from parent s4dc
 		stderr_log_debug "[$log_prefix] rsync pull from upstream DC"
 
-		copy_sysvol_from "$remote_login" "$importdir"
+		copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
 		if [ $? -ne 0 ]; then
 			stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
 			continue
@@ -297,17 +308,6 @@ sync_from_upstream_DC() {
 
 		## sync into hot target dir with local filesystem speed
 		sync_to_local_sysvol "$importdir" "${default_rsync_options[@]}"
-		if [ $? -ne 0 ]; then
-			stderr_log_error "[$log_prefix] Not placing a trigger file!"
-			continue
-		fi
-
-		## trigger the next pull by the parent s4dc
-		trigger_upstream_sync "$remote_login"
-		if [ $? -ne 0 ]; then
-			continue
-		fi
-		
 	done
 }
 

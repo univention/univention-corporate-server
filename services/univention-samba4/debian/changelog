@@ -1,3 +1,10 @@
+univention-samba4 (5.0.1-7) unstable; urgency=medium
+
+  * Bug #40186: Always place a trigger file upstream as the first step
+  * Add -o ServerAliveInterval to ssh clients to detect sudden server death
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 17:12:39 +0100
+
 univention-samba4 (5.0.1-6) unstable; urgency=medium
 
   * Bug #40186: Refactor sysvol-sync.sh to improve readability
