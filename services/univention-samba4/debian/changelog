@@ -1,3 +1,14 @@
+univention-samba4 (5.0.1-12) unstable; urgency=medium
+
+  * Bug #40186: Always sync from importdir to local sysvol, even if
+    check_if_need_sync didn't detect any changes upstream. This
+    addresses the case, where the local sync to the local sysvol is
+    blocked by read locks for longer than 60 seconds. In that case
+    the check_if_need_sync doesn't detect any changes during the next run
+    but still the local sync needs to be performed.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 19:22:35 +0100
+
 univention-samba4 (5.0.1-11) unstable; urgency=medium
 
   * Bug #40186: Don't pass -o ServerAliveInterval=15 to univention-ssh-rsync

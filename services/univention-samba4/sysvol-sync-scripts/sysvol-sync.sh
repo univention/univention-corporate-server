@@ -241,15 +241,17 @@ sync_from_active_downstream_DCs() {
 
 		remote_login="$hostname\$@$s4dc"
 		check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
-		if [ $? -ne 0 ]; then
-			stderr_log_debug "[$log_prefix] No changes."
-			continue
-		fi
+		if [ $? -eq 0 ]; then
+			## pull from parent s4dc
+			stderr_log_debug "[$log_prefix] rsync pull from downstream DC"
 
-		copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
-		if [ $? -ne 0 ]; then
-			stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
-			continue
+			copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
+			if [ $? -ne 0 ]; then
+				stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
+				continue
+			fi
+		else
+			stderr_log_debug "[$log_prefix] No downstream changes."
 		fi
 
 		## hash over the list of files/directories with ACLs set
@@ -285,18 +287,17 @@ sync_from_upstream_DC() {
 		rsync_options=("${default_rsync_options[@]}" --delete)
 
 		check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
-		if [ $? -ne 0 ]; then
-			stderr_log_debug "[$log_prefix] No changes."
-			continue
-		fi
+		if [ $? -eq 0 ]; then
+			## pull from parent s4dc
+			stderr_log_debug "[$log_prefix] rsync pull from upstream DC"
 
-		## pull from parent s4dc
-		stderr_log_debug "[$log_prefix] rsync pull from upstream DC"
-
-		copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
-		if [ $? -ne 0 ]; then
-			stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
-			continue
+			copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
+			if [ $? -ne 0 ]; then
+				stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
+				continue
+			fi
+		else
+			stderr_log_debug "[$log_prefix] No upstream changes."
 		fi
 
 		## hash over the list of files/directories with ACLs set
