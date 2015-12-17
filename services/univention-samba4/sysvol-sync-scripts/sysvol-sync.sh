@@ -89,7 +89,6 @@ check_if_need_sync() {
 
 	local src="$remote_login:$SYSVOL_PATH"
 	need_sync="$(univention-ssh-rsync /etc/machine.secret \
-		-o ServerAliveInterval=15 \
 		--dry-run -v "${rsync_options[@]}" \
 		"$src"/ "$dst" 2>&1 \
 		| sed '1,/^receiving incremental file list$/d;' | head --lines=-3)"
@@ -166,7 +165,6 @@ copy_sysvol_from() {
 
 		## Read remote sysvol to local importdir
 		out="$(univention-ssh-rsync /etc/machine.secret \
-			-o ServerAliveInterval=15 \
 			"${rsync_options[@]}" \
 			"$src"/ "$importdir" 2>&1)"
 

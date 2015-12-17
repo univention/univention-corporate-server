@@ -1,4 +1,11 @@
-univention-samba4 (5.0.1-10) UNRELEASED; urgency=medium
+univention-samba4 (5.0.1-11) unstable; urgency=medium
+
+  * Bug #40186: Don't pass -o ServerAliveInterval=15 to univention-ssh-rsync
+    since that's not a valid option for ssh (directly)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 18:52:53 +0100
+
+univention-samba4 (5.0.1-10) unstable; urgency=medium
 
   * Bug #40186: Set sshd/config/ClientAliveInterval?60 in postinst
     during new installation and errata update. This addresses the
