@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-pam
-fix: 9.0.0-3.265.201512170903
+fix: 9.0.0-4.266.201512171301
 version: [0]
 desc: |
     A dependency on the package "univention-sudo" was added. The sudo
