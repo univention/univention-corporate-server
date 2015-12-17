@@ -15,7 +15,7 @@ from sys import exit
 from time import sleep
 from pwd import getpwnam
 from subprocess import Popen
-from socket import (socket, error as socket_error)
+from socket import (socket, create_connection, error as socket_error)
 
 from univention.config_registry.frontend import handler_set
 
@@ -135,7 +135,7 @@ class Listener(object):
 	def get_master_transaction(self):
 		hostname = self.ucr['ldap/master']
 		try:
-			sock = socket.create_connection((hostname, 6669))
+			sock = create_connection((hostname, 6669))
 
 			sock.send('Version: 2\nCapabilities: \n\n')
 			sock.recv(100)
