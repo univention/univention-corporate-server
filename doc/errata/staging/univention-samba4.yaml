@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-samba4
-fix: 5.0.1-5.625.201512161925
+fix: 5.0.1-6.626.201512171400
 version: [0]
 desc: |
  This update addresses the following issues:
