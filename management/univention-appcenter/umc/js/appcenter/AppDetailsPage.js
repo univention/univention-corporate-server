@@ -239,7 +239,7 @@ define([
 
 		getActionButtons: function(isSingleServerInstallation) {
 			var buttons = [];
-			if (this.app.canInstall && this.app.getHosts().length > 1) {
+			if (this.app.canInstallInDomain()) {
 				buttons.push({
 					name: 'install',
 					label: _('Install'),
@@ -250,7 +250,7 @@ define([
 					callback: lang.hitch(this.app, 'install')
 				});
 			}
-			if (this.app.canOpenInDomain() && !this.app.isInstalled) {
+			if (this.app.canOpenInDomain()) {
 				buttons.push({
 					name: 'open',
 					label: this.app.getOpenLabel(),

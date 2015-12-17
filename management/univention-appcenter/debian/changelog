@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-32) unstable; urgency=low
+
+  * Bug #40116: Provide install and open action button to manage domain wide
+    installations.
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 17 Dec 2015 18:04:41 +0100
+
 univention-appcenter (5.0.19-31) unstable; urgency=medium
 
   * Bug #39157: prevent "Forbidden" pop up after uninstalling the last app.

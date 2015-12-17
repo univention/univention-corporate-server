@@ -308,6 +308,16 @@ define([
 			return this.hasFittingRole();
 		},
 
+		canInstallInDomain: function() {
+			if (!!this.installationData) {
+				return array.some(this.installationData, lang.hitch(this, function(app) {
+					return app.canInstall();
+				}));
+			} else {
+				return false;
+			}
+		},
+
 		open: function() {
 			var module = this.getModule();
 			var webInterface = this.getWebInterfaceURL();
@@ -329,6 +339,12 @@ define([
 			}
 		},
 
+		canOpenInDomain: function() {
+			return array.some(this.getHosts(), lang.hitch(this, function(app) {
+				return app.data.canOpen();
+			}));
+		},
+
 		getOpenLabel: function() {
 			var module = array.some(this.installationData, function(app) {
 				return app.getModule();
@@ -341,12 +357,6 @@ define([
 			} else if (webInterface) {
 				return _('Open web site');
 			}
-		},
-
-		canOpenInDomain: function() {
-			return array.some(this.getHosts(), lang.hitch(this, function(app) {
-				return app.data.canOpen();
-			}));
 		},
 
 		getHosts: function() {
