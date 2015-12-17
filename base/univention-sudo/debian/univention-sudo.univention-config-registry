@@ -1,5 +1,6 @@
 Type: file
 File: etc/sudoers.d/univention
+Variables: auth/sudo
 Variables: groups/default/domainadmins
 User: root
 Group: root

@@ -1,0 +1,5 @@
+[auth/sudo]
+Description[de]=Erlaubt die sudo Regeln für Domänenadministratoren.
+Description[en]=Permits the sudo rules for domain administrators.
+Type=bool
+Categories=system-base

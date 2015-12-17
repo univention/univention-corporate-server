@@ -1,3 +1,9 @@
+univention-sudo (1.0.0-3) unstable; urgency=low
+
+  * Bug #37995: Only enable for new installs
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Dec 2015 10:43:36 +0100
+
 univention-sudo (1.0.0-2) unstable; urgency=low
 
   * move file permission from postinst to ucr conf, escape all forbidden
