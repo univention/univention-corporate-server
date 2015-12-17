@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-31) unstable; urgency=medium
+
+  * Bug #39157: prevent "Forbidden" pop up after uninstalling the last app.
+
+ -- Florian Best <best@univention.de>  Thu, 17 Dec 2015 14:15:40 +0100
+
 univention-appcenter (5.0.19-30) unstable; urgency=medium
 
   * Bug #40264: Fix joinscripthelper.sh in UMC context

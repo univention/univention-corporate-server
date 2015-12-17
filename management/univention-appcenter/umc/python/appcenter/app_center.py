@@ -63,9 +63,7 @@ from ldap.filter import escape_filter_chars
 from operator import attrgetter
 import subprocess
 from tempfile import NamedTemporaryFile
-
-# related third party
-from simplejson import loads
+from json import loads
 
 # univention
 from univention.management.console.log import MODULE
