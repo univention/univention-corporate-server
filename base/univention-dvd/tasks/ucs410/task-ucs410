@@ -62,6 +62,7 @@ openssh-blacklist
 python-univention-license
 univention-nagios-client
 univention-saml
+univention-sudo
 screen
 
 univention-management-console-module-quota

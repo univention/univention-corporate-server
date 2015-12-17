@@ -1,3 +1,9 @@
+univention-dvd (1.0.0-20) unstable; urgency=low
+
+  * Bug #37995: Add univention-sudo
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 08 Dec 2015 10:43:11 +0100
+
 univention-dvd (1.0.0-19) unstable; urgency=low
 
   * Bug #37006 : add univention-nagios-s4-connector 
