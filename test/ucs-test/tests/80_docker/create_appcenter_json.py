@@ -40,7 +40,7 @@ import base64
 import socket
 from hashlib import md5, sha256
 from optparse import OptionParser
-from simplejson import dumps
+from json import dumps
 from difflib import unified_diff
 from glob import glob
 from ConfigParser import ConfigParser

@@ -1,3 +1,9 @@
+ucs-test (6.0.29-2) unstable; urgency=medium
+
+  * Bug #40231: simplejson → json
+
+ -- Florian Best <best@univention.de>  Thu, 17 Dec 2015 14:32:14 +0100
+
 ucs-test (6.0.29-1) unstable; urgency=low
 
   * Bug #40174: added import to fix AttributeError

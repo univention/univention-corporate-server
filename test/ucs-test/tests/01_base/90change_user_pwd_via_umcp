@@ -8,7 +8,7 @@
 ## exposure: dangerous
 
 from time import sleep
-import simplejson as json
+import json
 
 import univention.testing.utils as utils
 import univention.testing.strings as uts

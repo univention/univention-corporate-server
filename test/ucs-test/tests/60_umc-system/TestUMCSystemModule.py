@@ -2,7 +2,7 @@ import os
 import sys
 import shutil
 
-import simplejson as json
+import json
 from time import sleep
 from httplib import HTTPException
 from subprocess import Popen, PIPE

@@ -523,7 +523,6 @@ Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
  python-pytest,
- python-simplejson
 Recommends: ucs-test-framework
 Provides: ucs-test-module
 Description: Test scripts to test the Docker integration
