@@ -8,5 +8,5 @@ desc: |
     This is the first release of the new package univention-sudo. It
     provides default rules for "sudo". If installed and the UCR variable
     auth/sudo is turned on, users in the group "Domain Administrators"
-    are allowed to run arbitrary commands with root priviledges.
+    are allowed to run arbitrary commands with root privileges.
 bug: [37995]
