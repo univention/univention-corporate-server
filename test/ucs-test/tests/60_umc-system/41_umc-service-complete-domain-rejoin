@@ -5,7 +5,7 @@
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
 ##  - memberserver
-## tags: [producttest]
+## tags: [SKIP, producttest]
 ## exposure: dangerous
 
 import sys
