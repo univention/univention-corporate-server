@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-13) unstable; urgency=medium
+
+  * Bug #40186: Fix refactoring damage: close_remote_locking_pipe
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Dec 2015 19:33:31 +0100
+
 univention-samba4 (5.0.1-12) unstable; urgency=medium
 
   * Bug #40186: Always sync from importdir to local sysvol, even if
