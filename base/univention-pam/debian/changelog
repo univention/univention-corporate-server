@@ -1,3 +1,9 @@
+univention-pam (9.0.0-4) unstable; urgency=low
+
+  * fix postinst (Bug #37995)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 17 Dec 2015 13:00:01 +0100
+
 univention-pam (9.0.0-3) unstable; urgency=low
 
   * Bug #37995: Add sudo support

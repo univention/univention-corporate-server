@@ -120,7 +120,7 @@ univention-config-registry set \
 	'security/limits/group/Domain Users/hard/nproc?1000'
 
 # Bug #37995: Enable sudo only on new UCS-4.1 installs
-if [ "$1" = configure ] && [ -n "$2" ]
+if [ "$1" = configure ] && [ -z "$2" ]
 then
 	univention-config-registry set auth/sudo?yes
 fi
