@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-33) unstable; urgency=medium
+
+  * Bug #37539: Fix typos
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 18 Dec 2015 02:24:54 +0100
+
 univention-appcenter (5.0.19-32) unstable; urgency=low
 
   * Bug #40116: Provide install and open action button to manage domain wide

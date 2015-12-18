@@ -196,7 +196,7 @@ define([
 		must_have_no_unmet_dependencies: new Requirement({
 			reasonDescription: function(details) {
 				var txt = _('%s requires the following applications.', details.name);
-				txt += '<ul><li>' + array.map(details.detail, function(app) { return app.name; }).join('</li><li>') + '</li></ul>';
+				txt += '<ul><li>' + array.map(details.detail, function(app) {
 					var appTxt = app.name;
 					if (app.in_domain) {
 						if (app.local_allowed) {

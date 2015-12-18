@@ -1158,7 +1158,7 @@ class Application(object):
 				depending_apps.append({'id': app.id, 'name': app.name})
 
 		# RequiredAppsInDomain
-		apps = [app for app in Application.get_all_apps() if self.id in app.get('requiredappsindomain')]
+		apps = [app for app in Application.all() if self.id in app.get('requiredappsindomain')]
 		for app in apps:
 			app = app.to_dict(package_manager, domainwide_managed=True)
 			if app['is_installed_anywhere']:
