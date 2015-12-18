@@ -175,7 +175,7 @@ class UniventionAppAction(object):
 		return obj.call_with_namespace(namespace)
 
 	def call_with_namespace(self, namespace):
-		self.debug('Calling with %r' % namespace)
+		self.debug('Calling %s' % self.get_action_name())
 		self.percentage = 0
 		try:
 			result = self.main(namespace)

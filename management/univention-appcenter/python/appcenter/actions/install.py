@@ -36,7 +36,7 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.udm import search_objects
-from univention.appcenter.ucr import ucr_get
+from univention.appcenter.ucr import ucr_get, ucr_save
 
 
 class ControlScriptException(Exception):
@@ -78,11 +78,13 @@ class Install(InstallRemoveUpgrade):
 		self._apt_get('install', packages, percentage_end, update=update)
 
 	def _install_master_packages(self, app, percentage_end=100):
+		old_app = AppManager.find(app)
+		was_installed = old_app.is_installed()
 		self._register_component(app)
 		self._install_packages(app.default_packages_master, percentage_end)
-		register = get_action('register')
-		app = AppManager.find(app.id)
-		register.call(apps=[app], register_task=['component'])
+		if was_installed:
+			server = AppManager.get_server()
+			ucr_save(self._register_component_dict(self, old_app, server))
 
 	def _install_only_master_packages_remotely(self, app, host, is_master, args):
 		if args.install_master_packages_remotely:

@@ -60,8 +60,8 @@ class _AptLogger(object):
 
 	def info(self, msg):
 		match = self.progress_re.match(msg)
-		if self.end:
-			if match:
+		if match:
+			if self.end:
 				percentage = float(match.groups()[0]) / 100
 				percentage = self.start + ((self.end - self.start) * percentage)
 				self.action.percentage = percentage

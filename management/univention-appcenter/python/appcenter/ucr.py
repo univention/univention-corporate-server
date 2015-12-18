@@ -48,7 +48,13 @@ def ucr_get(key, default=None):
 
 
 def ucr_save(values):
-	ucr_update(_UCR, values)
+	changed_values = {}
+	_UCR.load()
+	for k, v in values.iteritems():
+		if _UCR.get(k) != v:
+			changed_values[k] = v
+	if changed_values:
+		ucr_update(_UCR, changed_values)
 
 
 def ucr_includes(key):

@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-34) unstable; urgency=medium
+
+  * Bug #40287: Do not log initial namespace of actions
+  * Bug #40060: Fix univention-app upgrade to correctly upgrade all packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 18 Dec 2015 10:36:16 +0100
+
 univention-appcenter (5.0.19-33) unstable; urgency=medium
 
   * Bug #37539: Fix typos
