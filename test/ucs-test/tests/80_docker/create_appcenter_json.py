@@ -266,7 +266,7 @@ if __name__ == '__main__':
 					archive.add(filename_in_directory, filename_in_archive)
 	if archive is not None:
 		archive.close()
-	out = dumps(apps, sort_keys=True, indent=4 * ' ')
+	out = dumps(apps, sort_keys=True, indent=4)
 	if options.output:
 		if not options.output.endswith('.gz'):
 			options.output += '.gz'

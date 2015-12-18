@@ -1,3 +1,9 @@
+ucs-test (6.0.29-3) unstable; urgency=medium
+
+  * Bug #40231: fixup, indent parameter of json.dumps() must be integer
+
+ -- Florian Best <best@univention.de>  Fri, 18 Dec 2015 11:00:39 +0100
+
 ucs-test (6.0.29-2) unstable; urgency=medium
 
   * Bug #40231: simplejson → json
