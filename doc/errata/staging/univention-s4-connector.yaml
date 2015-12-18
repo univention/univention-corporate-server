@@ -2,11 +2,13 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-s4-connector
-fix: 10.0.1-4.594.201512142136
+fix: 10.0.1-5.596.201512181532
 version: [0]
 desc: |
  This update addresses the following issues:
  * The package new recommends univention-nagios-s4-connector.
  * The synchronization failed if a removed user was recreated at a
    different position. This issue has been fixed.
-bug: [37006,40233]
+ * msPrint-ConnectionPolicy objects are now synced if the UCR
+   variable connector/s4/mapping/msprintconnectionpolicy is set to true.
+bug: [37006,40233,40298]
