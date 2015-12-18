@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-5) unstable; urgency=low
+
+  * sync msPrint-ConnectionPolicy (Bug #40298) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 18 Dec 2015 15:29:17 +0100
+
 univention-s4-connector (10.0.1-4) unstable; urgency=medium
 
   * Don't use the premapped DN in case the sAMAccountName has been
