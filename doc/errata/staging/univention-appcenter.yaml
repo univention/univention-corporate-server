@@ -21,4 +21,8 @@ desc: |
   * One function of the Docker Apps Joinscript helpers has been fixed when
     called from within the UMC module.
   * Uninstalling the last app doesn't cause a "Forbidden" pop up anymore.
-bug: [39662,39664,40116,37539,40239,40240,40238,40264,39157]
+  * Calling univention-app does not log the complete set of options, instead
+    just the name of the action being called.
+  * univention-app upgrade now correctly upgrades all packages for non Docker
+    Apps.
+bug: [39662,39664,40116,37539,40239,40240,40238,40264,39157,40287,40060]
