@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-samba4
-fix: 5.0.1-13.631.201512171933
+fix: 5.0.1-15.633.201512211131
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -11,4 +11,7 @@ desc: |
    concurrent read and write processes.
  * The ACL check in the sysvol-sync script is now limited
    to the Policies directory.
-bug: [40186, 40266]
+ * There are two new UCR variables samba4/sysvol/sync/from_upstream
+   and samba4/sysvol/sync/from_downstream which can be used to deactivate
+   copying files from other DCs.
+bug: [40186, 40266, 40313]
