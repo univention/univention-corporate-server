@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: plymouth
-fix: 0.8.5.1-5.16.201512031236
+fix: 0.8.5.1-5.17.201512031309
 version: [0]
 desc: |
  This update addresses the following issue:
