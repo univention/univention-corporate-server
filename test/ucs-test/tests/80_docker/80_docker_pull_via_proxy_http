@@ -4,7 +4,7 @@
 ## timeout: 7200
 ## exposure: dangerous
 ## packages:
-##   - docker.io
+##   - univention-docker
 
 import subprocess
 import apt
