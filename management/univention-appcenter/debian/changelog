@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-35) unstable; urgency=low
+
+  * Bug #40116: Show 'App Center' instead of undefined inside module header
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 21 Dec 2015 08:29:30 +0100
+
 univention-appcenter (5.0.19-34) unstable; urgency=medium
 
   * Bug #40287: Do not log initial namespace of actions

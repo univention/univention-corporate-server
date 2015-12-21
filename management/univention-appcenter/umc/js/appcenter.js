@@ -235,7 +235,7 @@ define([
 					this.set('title', newVal);
 				}
 			}));
-			this.set('title', app.name);
+			this.set('title', app.name || 'App Center');
 			this._appDetailsPage.on('back', lang.hitch(this, function(category) {
 				this.set('title', 'App Center');
 				if (category && category.length) {
