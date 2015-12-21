@@ -154,7 +154,7 @@ define([
 				data: filteredApps
 			})));
 			this._set('store', applications);
-			this._centerApps();
+			tools.defer(lang.hitch(this, '_centerApps'), 100);
 		},
 
 		_setFilterQueryAttr: function(query) {

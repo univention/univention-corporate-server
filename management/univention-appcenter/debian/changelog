@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-36) unstable; urgency=low
+
+  * Bug #39662: onBack will now trigger _centerApps
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 21 Dec 2015 11:01:21 +0100
+
 univention-appcenter (5.0.19-35) unstable; urgency=low
 
   * Bug #40116: Show 'App Center' instead of undefined inside module header
