@@ -70,7 +70,7 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 5.0.1-4 ; then
 
 	ucr set sshd/config/ClientAliveInterval?60
 	if [ -x /etc/init.d/sshd ]; then
-		invoke-rc.d sshd reload
+		invoke-rc.d sshd restart
 	fi
 fi
 
