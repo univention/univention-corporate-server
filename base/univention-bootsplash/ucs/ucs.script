@@ -13,7 +13,7 @@ univention.sprite.SetImage(univention.image);
 
 
 # box image
-box.image = Image("logo-box.png").Scale(Window.GetWidth() / 4, Window.GetWidth() / 4);
+box.image = Image("logo-box.png").Scale(250, 250);
 box.sprite = Sprite(box.image);
 box.sprite.SetOpacity(0.0);
 box.sprite.SetX(Window.GetX() + Window.GetWidth()  / 2 - box.image.GetWidth()  / 2);
@@ -21,7 +21,7 @@ box.sprite.SetY(Window.GetY() + Window.GetHeight() / 2 - box.image.GetHeight() /
 
 # animantion
 for (i=0; i<=47; i++) {
-	logo[i].image = Image("logo" + i + ".png").Scale(250, 250);
+	logo[i].image = Image("logo" + i + ".png").Scale(320, 320);
 }
 logo.sprite = Sprite(logo[0].image);
 logo.sprite.SetOpacity(1.0);
@@ -324,8 +324,8 @@ fun ask_opacity(opacity) {
 fun normal_opacity(opacity) {
 	global.logo.sprite.SetOpacity(opacity);
 	global.message.sprite.SetOpacity(opacity);
-	global.message_action.sprite(opacity);
-	global.statusmsg.sprite(opacity);
+	global.message_action.sprite.SetOpacity(opacity);
+	global.statusmsg.sprite.SetOpacity(opacity);
 }
 
 # normal screen
@@ -621,8 +621,8 @@ Plymouth.SetDisplayPasswordFunction(display_password_callback);
 
 statusmsg.sprite = Sprite();
 statusmsg.font = "Sans 13";
-statusmsg.sprite.SetX(Window.GetX() + Window.GetWidth()  / 2 - box.image.GetWidth()  / 2 + 5);
-statusmsg.sprite.SetY(Window.GetY() + Window.GetHeight() / 2 + box.image.GetHeight() / 2);
+statusmsg.sprite.SetX(Window.GetX() + Window.GetWidth()  / 2 - logo[0].image.GetWidth()  / 2 + 5);
+statusmsg.sprite.SetY(Window.GetY() + Window.GetHeight() / 2 + logo[0].image.GetHeight() / 2);
 
 fun update_status_callback (text) {
 
@@ -722,7 +722,7 @@ Plymouth.SetDisplayQuestionFunction(question_callback);
 message.font = "Sans 13";
 message.sprite = Sprite();
 message.sprite.SetPosition(10, 12, 10000);
-message.maxLength = 80;
+message.maxLength = 70;
 
 # fsck action line
 message_action.sprite = Sprite();
