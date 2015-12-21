@@ -241,10 +241,8 @@ class App:
 set -x -e
 eval "$(ucr shell)"
 if [ "$version_version" = 4.0 ]; then
-	ucr set repository/online/server="$(echo $repository_online_server | sed -e 's|.*//\(.*\)/|\\1|')"
+	ucr set repository/online/server="$(echo $repository_online_server | sed -e 's|.*//\(.*\)|\\1|')"
 fi
-cat /etc/apt/sources.list.d/15_ucs-online-version.list
-apt-get update
 univention-install --yes univention-apache
 mkdir /var/www/%(app_name)s
 echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt

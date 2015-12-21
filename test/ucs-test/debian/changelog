@@ -1,3 +1,11 @@
+ucs-test (6.0.29-5) unstable; urgency=medium
+
+  * 80_docker/dockertest.py: fix repository server (Bug #40312)
+  * 80_docker/62_app_update_available skip test case, wait for
+    Bug #40315
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Dec 2015 09:19:47 +0100
+
 ucs-test (6.0.29-4) unstable; urgency=medium
 
   * dockertest.py: added more debug (Bug #40312)
