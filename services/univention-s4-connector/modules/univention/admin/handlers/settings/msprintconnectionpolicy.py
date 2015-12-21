@@ -87,7 +87,7 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=1
+			identifies=0
 		),
 	'msPrinterName': univention.admin.property(
 			short_description=_('Printer-Name'),

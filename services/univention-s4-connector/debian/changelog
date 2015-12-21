@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-6) unstable; urgency=low
+
+  * fixed msPrint-ConnectionPolicy udm module (Bug #40298) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Dec 2015 11:25:15 +0100
+
 univention-s4-connector (10.0.1-5) unstable; urgency=low
 
   * sync msPrint-ConnectionPolicy (Bug #40298) 
