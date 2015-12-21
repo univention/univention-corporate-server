@@ -17,7 +17,7 @@ search () {
 	echo "Testing $* ..."
 	ucr set "$@"
 	/etc/init.d/slapd restart
-	LC_ALL=C ldapsearch -LLLo ldif-wrap=no -H 'ldap://127.0.0.1' -x -b "$_ldap_base" -s base '(objectClass=*)' dn && :
+	LC_ALL=C ldapsearch -LLLo ldif-wrap=no -H 'ldap://127.0.0.1:7389' -x -b "$_ldap_base" -s base '(objectClass=*)' dn && :
 }
 search ldap/acl/read/anonymous=no ldap/acl/read/ips= &&
 	fail_test 110 "Anonymous read should not be allowed"
