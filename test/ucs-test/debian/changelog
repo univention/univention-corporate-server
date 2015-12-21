@@ -1,3 +1,10 @@
+ucs-test (5.0.175-1) unstable; urgency=medium
+
+  * Bug #40267: Check if sysvol sync works even though unrelated
+    files without fACLs are present
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Dec 2015 15:01:19 +0100
+
 ucs-test (5.0.174-4) unstable; urgency=medium
 
   * Added 52_s4connector/125sync_recreate_user_at_different_position
