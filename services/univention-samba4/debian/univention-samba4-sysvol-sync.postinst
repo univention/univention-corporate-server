@@ -69,8 +69,8 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 5.0.1-4 ; then
 	&& chmod g+w "$SYSVOL_LOCKFILE"
 
 	ucr set sshd/config/ClientAliveInterval?60
-	if [ -x /etc/init.d/sshd ]; then
-		invoke-rc.d sshd restart
+	if [ -x /etc/init.d/ssh ]; then
+		invoke-rc.d ssh reload
 	fi
 fi
 

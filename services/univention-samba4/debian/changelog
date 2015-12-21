@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-17) unstable; urgency=medium
+
+  * Bug #40186: Fix sshd script name and revert last change
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Dec 2015 14:17:16 +0100
+
 univention-samba4 (5.0.1-16) unstable; urgency=medium
 
   * Bug #40186: sshd needs restart to pick up ClientAliveInterval option
