@@ -1,0 +1,88 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check the App installation if the next free port is already used
+## tags: [docker]
+## timeout: 7200
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+import subprocess
+import apt
+from univention.testing.ucr import UCSTestConfigRegistry
+from univention.config_registry import handler_set
+from univention.testing.utils import fail
+from dockertest import docker_login, pull_docker_image, docker_image_is_present
+from dockertest import remove_docker_image, restart_docker
+
+def deb_package_is_installed(pkgname):
+	cache = apt.Cache()
+	if cache[pkgname].is_installed:
+		return True
+	else:
+		return False
+
+def deb_install_package(pkgname):
+	cmd = ['univention-install', '-y', pkgname]
+	p = subprocess.Popen(cmd, close_fds=True)
+	p.wait()
+
+def deb_uninstall_package(pkgname):
+	cmd = ['apt-get', 'purge', '-y', pkgname]
+	p = subprocess.Popen(cmd, close_fds=True)
+	p.wait()
+
+	cmd = ['apt-get', 'autoremove', '-y']
+	p = subprocess.Popen(cmd, close_fds=True)
+	p.wait()
+
+class TestCase:
+	def __init__(self):
+		self.ucr = UCSTestConfigRegistry()
+		self.ucr.load()
+
+		self.imgname='docker.software-univention.de/ucs-appbox-amd64:4.1-0'
+
+		if not self.ucr.get('proxy/http'):
+			handler_set(['proxy/http=http://127.0.0.1:3128/'])
+			restart_docker()
+			self.ucr_changed = True
+		else:
+			self.ucr_changed = False
+
+		required_pkgname = 'univention-squid'
+		if not deb_package_is_installed(required_pkgname):
+			deb_install_package(required_pkgname)
+			self.remove_pkgname = required_pkgname
+		else:
+			self.remove_pkgname = None
+
+	def run(self):
+		if docker_image_is_present(self.imgname):
+			remove_docker_image(self.imgname)
+
+		docker_login()
+		pull_docker_image(self.imgname)
+		if not docker_image_is_present(self.imgname):
+			fail('The container could not be downloaded.')
+
+	def cleanup(self):
+		remove_docker_image(self.imgname)
+		if self.ucr_changed:
+			self.ucr.revert_to_original_registry()
+			restart_docker()
+		if self.remove_pkgname:
+			deb_uninstall_package(self.remove_pkgname)
+
+	def __enter__(self):
+		return self
+
+	def __exit__(self, exc_type, exc_value, traceback):
+		if exc_type:
+			print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
+		self.cleanup()
+
+
+if __name__ == '__main__':
+	
+	with TestCase() as tc:
+		tc.run()

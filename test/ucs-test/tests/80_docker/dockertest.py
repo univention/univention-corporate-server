@@ -59,10 +59,34 @@ def docker_login(server='docker.software-univention.de'):
 
 
 def docker_pull(image, server='docker.software-univention.de'):
-	ret = subprocess.call(['docker', 'pull', '%s/%s' % (server, image)])
+	ret = install_docker_image('%s/%s' % (server, image))
 	if ret != 0:
 		raise UCSTest_Docker_PullFailed()
 
+def docker_image_is_present(imgname):
+	cmd = ['docker', 'inspect', imgname]
+	with open('/dev/null', 'w') as devnull:
+		p = subprocess.Popen(cmd, close_fds=True, stdout=devnull)
+		p.wait()
+		return p.returncode == 0
+
+def remove_docker_image(imgname):
+	cmd = ['docker', 'rmi', imgname]
+	p = subprocess.Popen(cmd, close_fds=True)
+	p.wait()
+	return p.returncode == 0
+
+def pull_docker_image(imgname):
+	cmd = ['docker', 'pull', imgname]
+	p = subprocess.Popen(cmd, close_fds=True)
+	p.wait()
+	return p.returncode == 0
+
+def restart_docker():
+	cmd = ['invoke-rc.d', 'docker', 'restart']
+	p = subprocess.Popen(cmd, close_fds=True)
+	p.wait()
+	return p.returncode == 0
 
 def get_app_name():
 	""" returns a valid app name """

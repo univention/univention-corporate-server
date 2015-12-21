@@ -1,3 +1,9 @@
+ucs-test (6.0.31-1) unstable; urgency=medium
+
+  * Bug #40030: added 80_docker/80_docker_pull_via_proxy_http
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Dec 2015 17:28:58 +0100
+
 ucs-test (6.0.30-3) unstable; urgency=low
 
   * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy 
