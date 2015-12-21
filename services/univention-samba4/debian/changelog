@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-15) unstable; urgency=medium
+
+  * Bug #40313: samba4/sysvol/sync/from_upstream and from_downstream
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Dec 2015 11:31:04 +0100
+
 univention-samba4 (5.0.1-14) unstable; urgency=medium
 
   * Bug #40313: samba4/sysvol/sync/upstream/triggeronly

@@ -218,6 +218,10 @@ trigger_upstream_sync() {
 }
 
 sync_from_active_downstream_DCs() {
+	if is_ucr_false "samba4/sysvol/sync/from_downstream"; then
+		return
+	fi
+		
 	## merge updates pushed to us by other s4DCs
 	for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do
 		## clear flag
@@ -281,7 +285,7 @@ sync_from_upstream_DC() {
 			continue
 		fi
 
-		if is_ucr_true "samba4/sysvol/sync/upstream/triggeronly"; then
+		if is_ucr_false "samba4/sysvol/sync/from_upstream"; then
 			continue
 		fi
 		
