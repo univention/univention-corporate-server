@@ -1,3 +1,9 @@
+ucs-test (6.0.30-3) unstable; urgency=low
+
+  * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy 
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Dec 2015 16:55:17 +0100
+
 ucs-test (6.0.30-2) unstable; urgency=low
 
   * Bug #39878: Fix LDAP anonymous read
