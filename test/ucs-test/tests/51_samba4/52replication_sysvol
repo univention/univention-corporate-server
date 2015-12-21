@@ -16,8 +16,19 @@
 . "$TESTLIBPATH/random.sh" || exit 137
 . /usr/share/univention-lib/ldap.sh || exit 137
 
+set -x
+
 check_domainadmin_credentials || fail_fast 77 "UCR variables for admin credentials are not set"
 admin_account="$(ucs_convertDN2UID "$tests_domainadmin_account")"
+
+cleanup_functions=()
+cleanup() {
+	for cln in "${cleanup_functions[@]}"; do
+		"$cln"
+	done
+}
+
+trap cleanup INT TERM EXIT
 
 determine_neighbour_s4host() {
 	local s4host_fqdn
@@ -54,13 +65,31 @@ do
 	sleep 2
 done
 
+sysvol_path="/var/lib/samba/sysvol"
+sysvol_domain_path="$sysvol_path/$domainname"
+policies_path="$sysvol_domain_path/Policies"
+
+echo "## create an fACL-free file in sysvol on remote DC $s4host_fqdn"
+remote_temp_filename=$(univention-ssh "$tests_domainadmin_pwdfile" "$admin_account"@"$s4host_fqdn" mktemp --tmpdir="$sysvol_path")
+univention-ssh "$tests_domainadmin_pwdfile" "$admin_account"@"$s4host_fqdn" "setfacl -b '$remote_temp_filename'; chmod 644 '$remote_temp_filename'"
+
+
+delete_remote_test_file() {
+	univention-ssh "$tests_domainadmin_pwdfile" "$admin_account"@"$s4host_fqdn" rm "$remote_temp_filename"
+}
+cleanup_functions+=(delete_remote_test_file)
+
 ## create the GPO
 echo "## create the GPO '$gponame' on remote DC $s4host_fqdn"
 gpo_cn=$(samba-tool gpo create "$gponame" -H ldap://"$s4host_fqdn" -U"$admin_account%$tests_domainadmin_pwd" | sed -n "s/GPO '$gponame' created as //p")
 if [ -n "$gpo_cn" ]; then
 	echo "## GPO was created on $s4host_fqdn with ID $gpo_cn"
-	trap 'samba-tool gpo del "$gpo_cn" -H ldap://"$s4host_fqdn" -U"$admin_account%$tests_domainadmin_pwd"' INT TERM EXIT
-	gpo_path="/var/lib/samba/sysvol/$domainname/Policies/$gpo_cn"
+	delete_remote_test_gpo() {
+		samba-tool gpo del "$gpo_cn" -H ldap://"$s4host_fqdn" -U"$admin_account%$tests_domainadmin_pwd"
+	}
+	cleanup_functions+=(delete_remote_test_gpo)
+
+	gpo_path="$policies_path/$gpo_cn"
 else
 	fail_fast 1 "WARNING: samba-tool gpo create did not return a GPO cn"
 fi
@@ -110,6 +139,12 @@ do
 done
 echo "."
 echo "GPO sysvol replication took $(($i * $sleep_time)) seconds."
+
+if [ -f "$remote_temp_filename" ]; then
+	rm "$remote_temp_filename"
+else
+	fail_fast 1 "fACL-free file $remote_temp_filename not replicated."
+fi
 
 echo "## check GPO permissions"
 mode=$(stat -c "%a" "$gpo_path")
