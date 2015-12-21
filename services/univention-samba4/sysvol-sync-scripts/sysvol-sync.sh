@@ -280,6 +280,10 @@ sync_from_upstream_DC() {
 			stderr_log_error "[$log_prefix] Placing a trigger file failed."
 			continue
 		fi
+
+		if is_ucr_true "samba4/sysvol/sync/upstream/triggeronly"; then
+			continue
+		fi
 		
 		## check if parent s4dc has changes:
 		stderr_log_debug "[${s4dc}] rsync check for changes on upstream DC"
