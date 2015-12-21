@@ -6,7 +6,7 @@ fix: 10.0.1-5.596.201512181532
 version: [0]
 desc: |
  This update addresses the following issues:
- * The package new recommends univention-nagios-s4-connector.
+ * univention-s4-connector now recommends univention-nagios-s4-connector.
  * The synchronization failed if a removed user was recreated at a
    different position. This issue has been fixed.
  * msPrint-ConnectionPolicy objects are now synced if the UCR
