@@ -47,6 +47,17 @@ log_debug() {
 	fi
 }
 
+# Bug #27001
+local_is_ucr_false () { # test if UCS variable is "true" or "false"
+	local value
+	value="$(univention-config-registry get "$1")"
+	case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+		1|yes|on|true|enable|enabled) return 1 ;;
+		0|no|off|false|disable|disabled) return 0 ;;
+		*) return 2 ;;
+	esac
+}
+
 eval "$(/usr/sbin/univention-config-registry shell hostname samba4/sysvol/sync/host)"
 
 DEBUG=false
@@ -108,39 +119,41 @@ else
 	rsync_options=("-auAX" "--dirs-update")
 fi
 
-## merge updates pushed to us by other s4DCs
-for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do
-	## clear flag
-	rm "$triggerfile"
+if ! local_is_ucr_false "samba4/sysvol/sync/from_downstream"; then
+	## merge updates pushed to us by other s4DCs
+	for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do
+		## clear flag
+		rm "$triggerfile"
 
-	## pull from downstream s4dc
-	s4dc=$(basename "$triggerfile")
-	if [ "$s4dc" = "$hostname" ]; then
-		continue
-	fi
+		## pull from downstream s4dc
+		s4dc=$(basename "$triggerfile")
+		if [ "$s4dc" = "$hostname" ]; then
+			continue
+		fi
 
-	importdir="${SYSVOL_SYNCDIR}/${s4dc}"
+		importdir="${SYSVOL_SYNCDIR}/${s4dc}"
 
-	## pull over network from downstream s4dc
-	log_debug "[${s4dc}] rsync pull from downstream DC"
-	out="$(univention-ssh-rsync /etc/machine.secret -aAX --delete --delete-excluded \
-		--exclude='scripts/user/.*.vbs.[[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]]' \
-		"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$importdir" 2>&1)"
-	rsync_exitcode=$?
-	if [ $rsync_exitcode -ne 0 ]; then
-		log_error "[${s4dc}] rsync exitcode was $rsync_exitcode.  Will not sync to hot target! ($out)"
-		continue
-	fi
+		## pull over network from downstream s4dc
+		log_debug "[${s4dc}] rsync pull from downstream DC"
+		out="$(univention-ssh-rsync /etc/machine.secret -aAX --delete --delete-excluded \
+			--exclude='scripts/user/.*.vbs.[[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]]' \
+			"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$importdir" 2>&1)"
+		rsync_exitcode=$?
+		if [ $rsync_exitcode -ne 0 ]; then
+			log_error "[${s4dc}] rsync exitcode was $rsync_exitcode.  Will not sync to hot target! ($out)"
+			continue
+		fi
 
-	## hash over the list of files/directories with ACLs set
-	if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
-		continue
-	fi
+		## hash over the list of files/directories with ACLs set
+		if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
+			continue
+		fi
 
-	## sync into hot target dir with local filesystem speed
-	log_debug "[${s4dc}] local sync to hot target dir"
-	rsync "${rsync_options[@]}" "$importdir"/ "$SYSVOL_PATH"
-done
+		## sync into hot target dir with local filesystem speed
+		log_debug "[${s4dc}] local sync to hot target dir"
+		rsync "${rsync_options[@]}" "$importdir"/ "$SYSVOL_PATH"
+	done
+fi
 
 for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
 	if [ "$s4dc" = "$hostname" ]; then
@@ -149,28 +162,32 @@ for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
 
 	importdir="${SYSVOL_SYNCDIR}/.${s4dc}"
 
-	## pull from parent s4dc
-	log_debug "[${s4dc}] rsync pull from upstream DC: ${s4dc}"
-	out="$(univention-ssh-rsync /etc/machine.secret "${rsync_options[@]}" --delete \
-		"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$importdir" 2>&1)"
-	rsync_exitcode=$?
-	if [ $rsync_exitcode -ne 0 ]; then
-		log_error "[${s4dc}] rsync exitcode was $rsync_exitcode.  Will not sync to cold target! ($out)"
-		continue
-	fi
+	if ! local_is_ucr_false "samba4/sysvol/sync/from_upstream"; then
 
-	## hash over the list of files/directories with ACLs set
-	if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
-		continue
-	fi
+		## pull from parent s4dc
+		log_debug "[${s4dc}] rsync pull from upstream DC: ${s4dc}"
+		out="$(univention-ssh-rsync /etc/machine.secret "${rsync_options[@]}" --delete \
+			"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$importdir" 2>&1)"
+		rsync_exitcode=$?
+		if [ $rsync_exitcode -ne 0 ]; then
+			log_error "[${s4dc}] rsync exitcode was $rsync_exitcode.  Will not sync to cold target! ($out)"
+			continue
+		fi
 
-	## sync into hot target dir with local filesystem speed
-	log_debug "[${s4dc}] local sync to hot target dir"
-	out="$(rsync "${rsync_options[@]}" "$importdir"/ "$SYSVOL_PATH" 2>&1)"
-	rsync_exitcode=$?
-	if [ $rsync_exitcode -ne 0 ]; then
-		log_error "[${s4dc}] rsync to hot target exited with $rsync_exitcode.  Will not place a trigger file! ($out)"
-		continue
+		## hash over the list of files/directories with ACLs set
+		if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
+			continue
+		fi
+
+		## sync into hot target dir with local filesystem speed
+		log_debug "[${s4dc}] local sync to hot target dir"
+		out="$(rsync "${rsync_options[@]}" "$importdir"/ "$SYSVOL_PATH" 2>&1)"
+		rsync_exitcode=$?
+		if [ $rsync_exitcode -ne 0 ]; then
+			log_error "[${s4dc}] rsync to hot target exited with $rsync_exitcode.  Will not place a trigger file! ($out)"
+			continue
+		fi
+
 	fi
 
 	## trigger the next pull by the parent s4dc

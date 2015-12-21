@@ -33,3 +33,15 @@ Description[de]=Ist diese Option aktiviert, werden Debug Meldungen im während d
 Description[en]=If this option is activated the Sysvol replication is started in debug mode.
 Type=bool
 Categories=service-samba
+
+[samba4/sysvol/sync/from_downstream]
+Description[de]=Ist diese Option deaktiviert, dann werden keine Daten von downstream DCs kopiert.
+Description[en]=If this option is deactivated no files will be copied from downstream DCs.
+Type=bool
+Categories=service-samba
+
+[samba4/sysvol/sync/from_upstream]
+Description[de]=Ist diese Option deaktiviert, dann werden keine Daten von upstream DCs kopiert.
+Description[en]=If this option is deactivated no files will be copied from upstream DCs.
+Type=bool
+Categories=service-samba

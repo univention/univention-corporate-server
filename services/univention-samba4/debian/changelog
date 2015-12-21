@@ -1,3 +1,9 @@
+univention-samba4 (4.0.3-11) unstable; urgency=medium
+
+  * Bug #40314: samba4/sysvol/sync/from_upstream and from_downstream
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Dec 2015 11:48:08 +0100
+
 univention-samba4 (4.0.3-10) unstable; urgency=low
 
   * limit ACL check in sysvol sync to Policies dir (Bug #40267) 
