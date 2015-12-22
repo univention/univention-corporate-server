@@ -80,7 +80,7 @@ property_descriptions={
 			identifies=0
 		),
 	'msPrintAttributes': univention.admin.property(
-			short_description=_('Print-Attributes'),
+			short_description=_('Print attributes'),
 			long_description=_('A bitmask of printer attributes.'),
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -90,7 +90,7 @@ property_descriptions={
 			identifies=0
 		),
 	'msPrinterName': univention.admin.property(
-			short_description=_('Printer-Name'),
+			short_description=_('Printer name'),
 			long_description=_('The display name of an attached printer.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -100,7 +100,7 @@ property_descriptions={
 			identifies=0
 		),
 	'msPrintServerName': univention.admin.property(
-			short_description=_('Server-Name'),
+			short_description=_('Server name'),
 			long_description=_('The name of a server.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -110,7 +110,7 @@ property_descriptions={
 			identifies=0
 		),
 	'msPrintUNCName': univention.admin.property(
-			short_description=_('UNC-Name'),
+			short_description=_('UNC name'),
 			long_description=_('The universal naming convention name for shared volumes and printers.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -127,7 +127,7 @@ layout = [
 		[ 'description' ],
 		[ 'displayName' ],
 	] ),
-	Tab(_('ms-Print-ConnectionPolicy'), advanced = True, layout = [
+	Tab(_('Printer connection settings'), advanced = True, layout = [
 		[ 'msPrintAttributes' ],
 		[ 'msPrinterName' ],
 		[ 'msPrintServerName' ],
