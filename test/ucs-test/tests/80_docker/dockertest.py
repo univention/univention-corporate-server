@@ -59,7 +59,7 @@ def docker_login(server='docker.software-univention.de'):
 
 
 def docker_pull(image, server='docker.software-univention.de'):
-	ret = install_docker_image('%s/%s' % (server, image))
+	ret = subprocess.call(['docker', 'pull', '%s/%s' % (server, image)])
 	if ret != 0:
 		raise UCSTest_Docker_PullFailed()
 
