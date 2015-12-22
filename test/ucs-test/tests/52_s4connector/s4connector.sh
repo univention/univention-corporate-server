@@ -342,8 +342,9 @@ function ad_create_ConnectionPolicy() {
 	local printername="$2"
 	local servername="$3"
 	local uncname="$4"
-	local dn="$5"
-	local configbase="${6:-connector}"
+	local printattributes="$5"
+	local dn="$6"
+	local configbase="${7:-connector}"
 
 	python2.7 -c "
 import sys
@@ -356,6 +357,7 @@ attrs['cn'] = ['$cn']
 attrs['uNCName'] = ['$uncname']
 attrs['serverName'] = ['$servername']
 attrs['printerName'] = ['$printername']
+attrs['printAttributes'] = ['$printattributes']
 dn = '$dn'
 adconnection.create(dn, attrs)
 sys.exit (42)
