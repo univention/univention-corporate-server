@@ -1,3 +1,17 @@
+ucs-test (6.0.31-2) unstable; urgency=medium
+
+  * 80_docker/dockertest.py: use subprocess call again because the
+    function was unknown:
+     Traceback (most recent call last):
+       File "10_pull_appbox_mini", line 15, in <module>
+         docker_pull(ucs-appbox-amd64:4.1-0
+       File "/usr/share/ucs- test/80_docker/dockertest.py", line 62, in docker_pull
+         ret = install_docker_image(%s/%s % (server, image))
+     NameError: global name install_docker_image is not defined
+    (Bug #40030)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Dec 2015 06:02:49 +0100
+
 ucs-test (6.0.31-1) unstable; urgency=medium
 
   * Bug #40030: added 80_docker/80_docker_pull_via_proxy_http
