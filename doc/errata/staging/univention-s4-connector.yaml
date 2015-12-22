@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-s4-connector
-fix: 10.0.1-6.597.201512211126
+fix: 10.0.1-7.598.201512220956
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -10,5 +10,7 @@ desc: |
  * The synchronization failed if a removed user was recreated at a
    different position. This issue has been fixed.
  * msPrint-ConnectionPolicy objects are now synced if the UCR
-   variable connector/s4/mapping/msprintconnectionpolicy is set to true.
+   variable connector/s4/mapping/msprintconnectionpolicy is set to true
+   (the s4 connector has to be restarted after changing this UCR variable).
+   This is required for UCS@school and will be set there accordingly.
 bug: [37006,40233,40298]
