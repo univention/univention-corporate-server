@@ -1,3 +1,9 @@
+ucs-test (6.0.31-4) unstable; urgency=low
+
+  * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy
+
+ -- Felix Botner <botner@univention.de>  Tue, 22 Dec 2015 11:51:16 +0100
+
 ucs-test (6.0.31-3) unstable; urgency=low
 
   * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy 
