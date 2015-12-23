@@ -1,3 +1,10 @@
+ucs-test (6.0.31-5) unstable; urgency=medium
+
+  * 65_app_container_upgrade_dockerallowedimage: skip test (Bug #40338,
+    Bug #40045)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Dec 2015 13:31:10 +0100
+
 ucs-test (6.0.31-4) unstable; urgency=low
 
   * Bug #40298: added 52_s4connector/405sync_msprintconnectionpolicy
