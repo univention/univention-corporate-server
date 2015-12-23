@@ -12,5 +12,5 @@ desc: |
    closing UMC anymore.
  * The update process via the UMC module can be started if the logfiles don't
    exists.
- * Reduce HTTP timeout to 30s.
+ * The HTTP timeout has been reduced to 30 seconds.
 bug: [29633,40148,39780,40051,39954]
