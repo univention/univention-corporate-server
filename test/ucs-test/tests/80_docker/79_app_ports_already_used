@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Check the App installation if the next free port is already used
 ## tags: [docker]
-## timeout: 7200
 ## exposure: dangerous
 ## packages:
 ##   - docker.io

@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the update_available script
 ## tags: [docker]
-## timeout: 7200
 ## exposure: dangerous
 ## versions:
 ##  4.1-0: skip

@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Test the Docker App uninstallation
 ## tags: [docker]
-## timeout: 7200
 ## exposure: dangerous
 ## packages:
 ##   - docker.io
