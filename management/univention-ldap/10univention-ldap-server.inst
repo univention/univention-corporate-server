@@ -260,7 +260,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		--position="cn=ldap,cn=policies,$ldap_base" \
 		--ignore_exists \
 		--set name=default-settings \
-		--append requiredObjectClasses=univentionHost
+		--append requiredObjectClasses=univentionHost \
 		--set "ldapFilter=(univentionObjectType=computers/memberserver)"
 	univention-directory-manager policies/ldapserver modify "$@"  \
 		--dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" \
@@ -279,14 +279,14 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		--set ldapFilter="(univentionServerRole=slave)"
 	ldapservers=""
 	for i in $(univention-directory-manager policies/ldapserver list "$@" --filter name=default-settings | grep ldapServer | cut -f 2 -d ':'); do
-		if [ $i != $ldap_master ]; then
-			ldapservers="$ldapservers \"$i\"";
+		if [ "$i" != "$ldap_master" ]; then
+			ldapservers="$ldapservers $i";
 		fi
 	done
-	if ! [ -z $ldapservers ]; then 
+	if [ -n "$ldapservers" ]; then 
 		univention-directory-manager policies/registry modify "$@" \
 			--dn="cn=default-ldap-servers,cn=config-registry,cn=policies,$ldap_base" \
-			--append registry="\"ldap/server/addition\" $ldapservers"
+			--set registry="ldap/server/addition \"$ldapservers\""
 	fi
 fi
 

@@ -1,3 +1,10 @@
+univention-ldap (12.1.6-5) unstable; urgency=low
+
+  * fix duplicate UCR key appending in policy, quoting, line continuation
+    (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 28 Dec 2015 10:23:36 +0100
+
 univention-ldap (12.1.6-4) unstable; urgency=low
 
   * Bug #39884: Add printerModel to substring search index
