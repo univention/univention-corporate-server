@@ -59,6 +59,7 @@ class Update(UniventionAppAction):
 	def __init__(self):
 		super(Update, self).__init__()
 		self._ucs_version = None
+		self._appcenter_server = None
 
 	def setup_parser(self, parser):
 		parser.add_argument('--ucs-version', help=SUPPRESS)

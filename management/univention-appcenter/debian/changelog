@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-37) unstable; urgency=medium
+
+  * Bug #40240: Remove last "ucr" argument; unneeded
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 04 Jan 2016 23:29:48 +0100
+
 univention-appcenter (5.0.19-36) unstable; urgency=low
 
   * Bug #39662: onBack will now trigger _centerApps

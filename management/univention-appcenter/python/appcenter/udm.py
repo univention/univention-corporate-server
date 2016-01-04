@@ -241,7 +241,7 @@ class ApplicationLDAPObject(object):
 		return bool(self.installed_on_servers())
 
 
-def get_app_ldap_object(app, lo=None, pos=None, ucr=None, or_create=False):
+def get_app_ldap_object(app, lo=None, pos=None, or_create=False):
 	if lo is None or pos is None:
 		lo, pos = get_machine_connection()
 	return ApplicationLDAPObject(app, lo, pos, or_create)
