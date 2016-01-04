@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: univention-mail-postfix
-fix:
+fix: 9.0.3-9.275.201601041412
 version: [4]
 desc: |
  This update addresses the following issue:
