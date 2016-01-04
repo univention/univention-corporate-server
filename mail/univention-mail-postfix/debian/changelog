@@ -1,3 +1,9 @@
+univention-mail-postfix (9.0.3-9) unstable; urgency=low
+
+  * fix listfilter letting empty senders pass (Bug #40352)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 04 Jan 2016 13:52:51 +0100
+
 univention-mail-postfix (9.0.3-8) unstable; urgency=low
 
   * Bug #37459: fixed installation path of precalculated DH parameter files

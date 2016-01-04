@@ -53,8 +53,15 @@ def listfilter(attr):
 	action = "DUNNO default"
 	allowed = {}
 
-	if options.ldap_base and sender and recipient:
-
+	if not options.ldap_base:
+		return "443 LDAP base not set."
+	elif not recipient:
+		# We will never get here, because an empty recipient will have been rejected
+		# earlier by Postfix with '554 5.5.1 Error: no valid recipients'.
+		return "REJECT Access denied for empty recipient."
+	elif not sender:
+		return "REJECT Access denied for empty sender."
+	else:
 		# reuse secret file of univention-mail-cyrus
 		ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/listfilter.secret")
 
