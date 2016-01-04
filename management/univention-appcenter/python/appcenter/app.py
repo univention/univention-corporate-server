@@ -957,7 +957,7 @@ class AppManager(object):
 	_pickle_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.pkl')
 
 	@classmethod
-	def invalidate_pickle_cache(cls):
+	def _invalidate_pickle_cache(cls):
 		pickle_pattern = re.sub(r'%\(.*?\).', '*', cls._pickle_file)
 		for pickle_file in glob(os.path.join(CACHE_DIR, pickle_pattern)):
 			try:
@@ -970,24 +970,8 @@ class AppManager(object):
 		ucr_load()
 		cls._cache[:] = []
 		cls.reload_package_manager()
-		cls.invalidate_pickle_cache()
+		cls._invalidate_pickle_cache()
 		_get_rating_items._items = None
-
-	@classmethod
-	def inject_into_cache(cls, app):
-		cls.remove_from_cache(app.component_id)
-		cls._cache.append(app)
-		cls.invalidate_pickle_cache()
-
-	@classmethod
-	def remove_from_cache(cls, component):
-		for i, app in enumerate(cls._get_every_single_app()):
-			if app.component_id == component:
-				break
-		else:
-			return
-		cls._cache.pop(i)
-		cls.invalidate_pickle_cache()
 
 	@classmethod
 	def _get_every_single_app(cls):

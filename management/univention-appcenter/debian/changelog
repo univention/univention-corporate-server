@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-38) unstable; urgency=medium
+
+  * Bug #40239: Do not make methods public
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 05 Jan 2016 00:40:10 +0100
+
 univention-appcenter (5.0.19-37) unstable; urgency=medium
 
   * Bug #40240: Remove last "ucr" argument; unneeded
@@ -50,7 +56,7 @@ univention-appcenter (5.0.19-30) unstable; urgency=medium
 
 univention-appcenter (5.0.19-29) unstable; urgency=medium
 
-  * Bug #40238: Fixes for dev scripts
+  * Bug #40359: Fixes for dev scripts
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Dec 2015 01:06:25 +0100
 
