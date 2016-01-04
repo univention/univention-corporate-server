@@ -2,10 +2,12 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-directory-manager-modules
-fix: 11.0.2-8.1358.201601040926
+fix: 11.0.2-9.1360.201601041335
 version: [0]
 desc: |
   This update addresses the following issue:
   * The syntax check for the Base64GzipText attribute type had an error
-  that made it impossible to store data in such an attribute.
-bug: [40348]
+    that made it impossible to store data in such an attribute.
+  * The "simple" syntax class now allows None values to be able to e.g. remove
+    the birthday of a user.
+bug: [40348, 32321]
