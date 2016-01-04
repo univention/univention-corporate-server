@@ -414,7 +414,7 @@ class Base64GzipText( TextArea ):
 		except:
 			raise univention.admin.uexceptions.valueError( _( 'Not a valid Base64 string: %s' ) % str( text ) )
 		try:
-			zlib.decompress(gziped_data, 16+zlib.MAX_WBITS)
+			zlib.decompress(gziped_data)
 		except:
 			raise univention.admin.uexceptions.valueError( _( 'Value must be gzip compressed and Base64 encoded: %s' ) % str( text ) )
 		return text

@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-directory-manager-modules
+fiy:
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * The syntax check for the Base64GzipText attribute type had an error
+  that made it impossible to store data in such an attribute.
+bug: [40348]
