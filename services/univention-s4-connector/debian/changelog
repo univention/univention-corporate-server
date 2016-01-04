@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-54) unstable; urgency=medium
+
+  * Recommend univention-nagios-s4-connector (Bug #40345)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Jan 2016 18:29:22 +0100
+
 univention-s4-connector (9.0.16-53) unstable; urgency=medium
 
   * Don't use the premapped DN in case the sAMAccountName has been
