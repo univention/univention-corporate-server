@@ -34,14 +34,14 @@
 
 log() {
 	local msg="${2//$'\r'/}"
-	builtin echo $(date +"%F %T") "$1" "${msg//$'\n'/}"
+	builtin echo $(date +"%F %T") "$1" "${msg//$'\n'/}" 1>&2
 }
 
-log_error() {
+stderr_log_error() {
 	log ERROR "$1"
 }
 
-log_debug() {
+stderr_log_debug() {
 	if $DEBUG; then
 		log DEBUG "$1"
 	fi
@@ -64,26 +64,269 @@ DEBUG=false
 SYSVOL_PATH='/var/lib/samba/sysvol'
 SYSVOL_SYNCDIR='/var/cache/univention-samba4/sysvol-sync'
 SYSVOL_SYNC_TRIGGERDIR="$SYSVOL_SYNCDIR/.trigger"
-LOCKFILE="/var/lock/sysvol-sync"
+PROCESS_LOCKFILE="/var/lock/sysvol-sync-process"
+SYSVOL_LOCKFILE="/var/lock/sysvol-sync-dir"
 
 LC_ALL=C
 
 # hash over the list of files/directories with ACLs set
 all_files_and_dirs_have_acls () {
 	local dir="$1/$(ucr get domainname)/Policies"
-	local host="$2"
+	shift
+	local host="$1"
 
 	if [ -d "$dir" ]; then
-		log_debug "[$host] checking ACL's"
+		stderr_log_debug "[$host] checking ACL's"
 		a_md5=$(getfacl -span -R "$dir" | sed -ne 's/^# file: //p' | sort | md5sum)
 		f_md5=$(find "$dir" -type f -o -type d | sort | md5sum)
 		if [ "$a_md5" != "$f_md5" ]; then
-			log_error "[$host] some files from $host don't have ACLs set. Will not sync to hot target!"
+			stderr_log_error "[$host] some files from $host don't have ACLs set. Will not sync to hot target!"
 			return 1
 		fi
 	fi
 
 	return 0
+}
+
+check_if_need_sync() {
+	local remote_login="$1"
+	shift
+
+	local dst="$1"
+	shift
+
+	local rsync_options=("$@")
+	local need_sync
+
+	local src="$remote_login:$SYSVOL_PATH"
+	need_sync="$(univention-ssh-rsync /etc/machine.secret \
+		--dry-run -v "${rsync_options[@]}" \
+		"$src"/ "$dst" 2>&1 \
+		| sed '1,/^receiving incremental file list$/d;' | head --lines=-3)"
+
+	if [ -z "$need_sync" ]; then
+		return 1
+	fi
+	return 0
+}
+
+close_remote_locking_pipe() {
+	local pipe_dir="$1"
+
+	echo DONE > "$pipe_dir/pipe0"
+	rm -rf "$pipe_dir"
+}
+
+create_remote_locking_pipe() {
+	### Note: This function creates an EXIT trap.
+	### The EXIT trap is triggered whenever a calling subshell exits.
+	###
+	### So don't do things like: out=$(create_remote_locking_pipe)
+	### which would immediately trigger that trap!
+	###
+	local pipe_dir="$1"
+
+	## setup pipes for communication with remote locker process
+	trap "close_remote_locking_pipe '$pipe_dir'" EXIT
+	for pipename in "pipe0" "pipe1"; do
+		if ! mkfifo "$pipe_dir/$pipename"; then
+			stderr_log_error "[$log_prefix] Could not create fifo: $pipe_dir/$pipename."
+			close_remote_locking_pipe "$pipe_dir"
+			trap - EXIT
+			return 1
+		fi
+	done
+	return 0
+}
+
+get_remote_lock() {
+	local remote_login="$1"
+	local pipe_dir
+
+	pipe_dir=$(mktemp -d)
+	create_remote_locking_pipe "$pipe_dir" || return $?
+
+	## try to create remote shared (read) lock
+	stderr_log_debug "[$log_prefix] trying to get remote read lock"
+	timeout=30
+	univention-ssh --no-split /etc/machine.secret "$remote_login" \
+		-o ServerAliveInterval=20 \
+		"(flock --timeout=$timeout -s 8 || exit 1; echo LOCKED; read WAIT;) 8>\"$SYSVOL_LOCKFILE\"" \
+		< <(cat "$pipe_dir/pipe0") 2>&1 > "$pipe_dir/pipe1" | grep -v 'Could not chdir to home directory' 1>&2 &
+
+	read REPLY < "$pipe_dir/pipe1"
+	if [ "$REPLY" != "LOCKED" ]; then
+		stderr_log_error "[$log_prefix] Could not aquire remote read lock after $timeout seconds."
+		close_remote_locking_pipe "$pipe_dir"
+		trap - EXIT
+		return 1
+	fi
+	return 0
+}
+
+copy_sysvol_from() {
+	local remote_login="$1"
+	shift
+	local importdir="$1"
+	shift
+	local rsync_options=("$@")
+
+	local src="$remote_login:$SYSVOL_PATH"
+	(	get_remote_lock "$remote_login" || return 1
+
+		## Read remote sysvol to local importdir
+		out="$(univention-ssh-rsync /etc/machine.secret \
+			"${rsync_options[@]}" \
+			"$src"/ "$importdir" 2>&1)"
+
+		rsync_exitcode=$?
+		if [ $rsync_exitcode -ne 0 ]; then
+			stderr_log_error "[$log_prefix] rsync exitcode was $rsync_exitcode ($out)"
+			return 1
+		fi
+	)	## this subshell context is important to release the lock again
+
+	# Note: returns here with subshell exitcode
+}
+
+sync_to_local_sysvol() {
+	local importdir="$1"
+	shift
+	local rsync_options=("$@")
+
+	stderr_log_debug "[$log_prefix] local sync from importdir to sysvol"
+	(
+		stderr_log_debug "[$log_prefix] trying to get exclusive (write) lock on local sysvol"
+		timeout=60
+		if ! flock --timeout=$timeout 8; then
+			stderr_log_error "[$log_prefix] could not lock local sysvol dir for writing after $timeout seconds"
+			return 1
+		fi
+		out="$(rsync "${rsync_options[@]}" "$importdir"/ "$SYSVOL_PATH" 2>&1)"
+		rsync_exitcode=$?
+		if [ $rsync_exitcode -ne 0 ]; then
+			stderr_log_error "[$log_prefix] rsync to local sysvol exited with $rsync_exitcode ($out)"
+			return $rsync_exitcode
+		fi
+	) 8>"$SYSVOL_LOCKFILE"
+
+	# Note: returns here with subshell exitcode
+}
+
+trigger_upstream_sync() {
+	local remote_login="$1"
+
+	stderr_log_debug "[$log_prefix] placing triggerfile."
+	out="$(univention-ssh --no-split /etc/machine.secret "$remote_login" \
+		-o ServerAliveInterval=15 \
+		"mkdir -p \"${SYSVOL_SYNC_TRIGGERDIR}\"; touch \"${SYSVOL_SYNC_TRIGGERDIR}/${hostname}\"" 2>&1)"
+
+	rsync_exitcode=$?
+	if [ $rsync_exitcode -ne 0 ]; then
+		stderr_log_error "[$log_prefix] placing triggerfile with ssh failed with $rsync_exitcode. ($out)"
+		return $rsync_exitcode
+	fi
+}
+
+sync_from_active_downstream_DCs() {
+	if is_ucr_false "samba4/sysvol/sync/from_downstream"; then
+		return
+	fi
+		
+	## merge updates pushed to us by other s4DCs
+	for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do
+		## clear flag
+		rm "$triggerfile"
+
+		## pull from downstream s4dc
+		s4dc=$(basename "$triggerfile")
+		if [ "$s4dc" = "$hostname" ]; then
+			continue
+		fi
+
+		log_prefix="$s4dc"
+		importdir="$SYSVOL_SYNCDIR/$s4dc"
+
+		## check if downstream s4dc has changes:
+		stderr_log_debug "[$log_prefix] rsync check for changes on downstream DC"
+
+		rsync_options=(-aAX --delete --delete-excluded \
+			--exclude='scripts/user/.*.vbs.[[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]]' \
+			)
+
+		remote_login="$hostname\$@$s4dc"
+		check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
+		if [ $? -eq 0 ]; then
+			## pull from parent s4dc
+			stderr_log_debug "[$log_prefix] rsync pull from downstream DC"
+
+			copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
+			if [ $? -ne 0 ]; then
+				stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
+				continue
+			fi
+		else
+			stderr_log_debug "[$log_prefix] No downstream changes."
+		fi
+
+		## hash over the list of files/directories with ACLs set
+		if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
+			continue
+		fi
+
+		## sync into hot target dir with local filesystem speed
+		sync_to_local_sysvol "$importdir" "${default_rsync_options[@]}"
+	done
+}
+
+sync_from_upstream_DC() {
+	for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
+		if [ "$s4dc" = "$hostname" ]; then
+			continue
+		fi
+
+		log_prefix="$s4dc"
+		importdir="$SYSVOL_SYNCDIR/.$s4dc"
+		remote_login="$hostname\$@$s4dc"
+
+		## trigger the next pull by the parent s4dc
+		trigger_upstream_sync "$remote_login"
+		if [ $? -ne 0 ]; then
+			stderr_log_error "[$log_prefix] Placing a trigger file failed."
+			continue
+		fi
+
+		if is_ucr_false "samba4/sysvol/sync/from_upstream"; then
+			continue
+		fi
+		
+		## check if parent s4dc has changes:
+		stderr_log_debug "[${s4dc}] rsync check for changes on upstream DC"
+
+		rsync_options=("${default_rsync_options[@]}" --delete)
+
+		check_if_need_sync "$remote_login" "$importdir" "${rsync_options[@]}"
+		if [ $? -eq 0 ]; then
+			## pull from parent s4dc
+			stderr_log_debug "[$log_prefix] rsync pull from upstream DC"
+
+			copy_sysvol_from "$remote_login" "$importdir" "${rsync_options[@]}"
+			if [ $? -ne 0 ]; then
+				stderr_log_error "[$log_prefix] Skipping sync to local sysvol!"
+				continue
+			fi
+		else
+			stderr_log_debug "[$log_prefix] No upstream changes."
+		fi
+
+		## hash over the list of files/directories with ACLs set
+		if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
+			continue
+		fi
+
+		## sync into hot target dir with local filesystem speed
+		sync_to_local_sysvol "$importdir" "${default_rsync_options[@]}"
+	done
 }
 
 ########
@@ -108,98 +351,22 @@ fi
 
 is_ucr_true samba4/sysvol/sync/setfacl/AU
 if [ ! $? -eq 1 ]; then
-	log_debug "[local] setfacl on /var/lib/samba/sysvol"
+	stderr_log_debug "[local] setfacl on /var/lib/samba/sysvol"
 	setfacl -R -P -m 'g:Authenticated Users:r-x,d:g:Authenticated Users:r-x' /var/lib/samba/sysvol
 fi
 
 
 if [ "$1" = '--overwrite-local' ]; then
-	rsync_options=("-aAX")
+	default_rsync_options=("-aAX")
 else
-	rsync_options=("-auAX" "--dirs-update")
+	default_rsync_options=("-auAX" "--dirs-update")
 fi
 
-if ! local_is_ucr_false "samba4/sysvol/sync/from_downstream"; then
-	## merge updates pushed to us by other s4DCs
-	for triggerfile in $(find "${SYSVOL_SYNC_TRIGGERDIR}" -mindepth 1 -maxdepth 1 -type f); do
-		## clear flag
-		rm "$triggerfile"
+touch "$SYSVOL_LOCKFILE"
+chgrp "DC Slave Hosts" "$SYSVOL_LOCKFILE"
+chmod g+w "$SYSVOL_LOCKFILE"
 
-		## pull from downstream s4dc
-		s4dc=$(basename "$triggerfile")
-		if [ "$s4dc" = "$hostname" ]; then
-			continue
-		fi
+sync_from_active_downstream_DCs
+sync_from_upstream_DC
 
-		importdir="${SYSVOL_SYNCDIR}/${s4dc}"
-
-		## pull over network from downstream s4dc
-		log_debug "[${s4dc}] rsync pull from downstream DC"
-		out="$(univention-ssh-rsync /etc/machine.secret -aAX --delete --delete-excluded \
-			--exclude='scripts/user/.*.vbs.[[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]][[:alnum:]]' \
-			"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$importdir" 2>&1)"
-		rsync_exitcode=$?
-		if [ $rsync_exitcode -ne 0 ]; then
-			log_error "[${s4dc}] rsync exitcode was $rsync_exitcode.  Will not sync to hot target! ($out)"
-			continue
-		fi
-
-		## hash over the list of files/directories with ACLs set
-		if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
-			continue
-		fi
-
-		## sync into hot target dir with local filesystem speed
-		log_debug "[${s4dc}] local sync to hot target dir"
-		rsync "${rsync_options[@]}" "$importdir"/ "$SYSVOL_PATH"
-	done
-fi
-
-for s4dc in $samba4_sysvol_sync_host; do	## usually there should only be one..
-	if [ "$s4dc" = "$hostname" ]; then
-		continue
-	fi
-
-	importdir="${SYSVOL_SYNCDIR}/.${s4dc}"
-
-	if ! local_is_ucr_false "samba4/sysvol/sync/from_upstream"; then
-
-		## pull from parent s4dc
-		log_debug "[${s4dc}] rsync pull from upstream DC: ${s4dc}"
-		out="$(univention-ssh-rsync /etc/machine.secret "${rsync_options[@]}" --delete \
-			"${hostname}\$"@"${s4dc}":"${SYSVOL_PATH}"/ "$importdir" 2>&1)"
-		rsync_exitcode=$?
-		if [ $rsync_exitcode -ne 0 ]; then
-			log_error "[${s4dc}] rsync exitcode was $rsync_exitcode.  Will not sync to cold target! ($out)"
-			continue
-		fi
-
-		## hash over the list of files/directories with ACLs set
-		if ! all_files_and_dirs_have_acls "$importdir" "$s4dc"; then
-			continue
-		fi
-
-		## sync into hot target dir with local filesystem speed
-		log_debug "[${s4dc}] local sync to hot target dir"
-		out="$(rsync "${rsync_options[@]}" "$importdir"/ "$SYSVOL_PATH" 2>&1)"
-		rsync_exitcode=$?
-		if [ $rsync_exitcode -ne 0 ]; then
-			log_error "[${s4dc}] rsync to hot target exited with $rsync_exitcode.  Will not place a trigger file! ($out)"
-			continue
-		fi
-
-	fi
-
-	## trigger the next pull by the parent s4dc
-	log_debug "[${s4dc}] placing triggerfile on ${s4dc}"
-	out="$(univention-ssh /etc/machine.secret "${hostname}\$"@"${s4dc}" \
-		"mkdir -p '${SYSVOL_SYNC_TRIGGERDIR}'; touch '${SYSVOL_SYNC_TRIGGERDIR}/${hostname}'" 2>&1)"
-	rsync_exitcode=$?
-	if [ $rsync_exitcode -ne 0 ]; then
-		log_error "[${s4dc}] placing triggerfile with ssh failed with $rsync_exitcode. ($out)"
-		continue
-	fi
-	
-done
-
-) 9>"$LOCKFILE"
+) 9>"$PROCESS_LOCKFILE"

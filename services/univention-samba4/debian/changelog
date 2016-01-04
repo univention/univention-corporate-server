@@ -1,3 +1,38 @@
+univention-samba4 (4.0.3-12) unstable; urgency=medium
+
+  * Bug #40346: Backport of adjustments for Bug #40186:
+  * Bug #40186: Refactor sysvol-sync.sh to improve readability
+                and reduce code duplication
+  * Bug #40186: Lock the sysvol while operating on it (e.g. man flock)
+  * First check with "rsync -au... --dry-run" if copying is required at all
+  * Bug #40186: Always place a trigger file upstream as the first step
+  * Bug #40186: Always sync from importdir to local sysvol, even if
+    check_if_need_sync didn't detect any changes upstream. This
+    addresses the case, where the local sync to the local sysvol is
+    blocked by read locks for longer than 60 seconds. In that case
+    the check_if_need_sync doesn't detect any changes during the next run
+    but still the local sync needs to be performed.
+  * Add -o ServerAliveInterval to ssh clients to detect sudden server death
+  * Bug #40186: Set sshd/config/ClientAliveInterval?60 in postinst
+    during new installation and errata update. This addresses the
+    situation where the network interface of the remote sysvol-sync partner
+    becomes unresponsive (e.g. via ifdown) which would leave the remote
+    read flock process running forever. With ClientAliveInterval=60
+    and the sshd default of ClientAliveCountMax=3 the server expects
+    the ssh client to respond within 180 seconds otherwise it terminates
+    the unresponsive session.
+  * Bug #40186: sshd needs restart to pick up ClientAliveInterval option
+  * Bug #40186: Don't put DCs with (univentionService=S4 SlavePDC) into
+    samba4/sysvol/sync/host by default. This addresses the situation
+    in UCS@school where univention-s4-connector may get installed on
+    the master after UCS@school slaves have been set up. UCS@school slaves
+    always use the master as samba4/sysvol/sync/host by default, but
+    the master should not also consider (*all*) UCS@school slaves
+    as "upstream", which would result in redundant duplicate rsync
+    in sysvol-sync.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 04 Jan 2016 13:19:51 +0100
+
 univention-samba4 (4.0.3-11) unstable; urgency=medium
 
   * Bug #40314: samba4/sysvol/sync/from_upstream and from_downstream
