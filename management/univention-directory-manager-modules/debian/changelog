@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-9) unstable; urgency=medium
+
+  * Bug #32321: allow None to be passed to the 'simple' syntax class.
+
+ -- Florian Best <best@univention.de>  Mon, 04 Jan 2016 13:33:06 +0100
+
 univention-directory-manager-modules (11.0.2-8) unstable; urgency=low
 
   * fix syntax check for Base64GzipText (Bug #40348)

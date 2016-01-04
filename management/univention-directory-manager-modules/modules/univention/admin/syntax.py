@@ -128,11 +128,11 @@ class simple( ISyntax ):
 	error_message = _( 'Invalid value' )
 
 	@classmethod
-	def parse( self, text ):
-		if self.regex is None or self.regex.match( text ) is not None:
+	def parse(self, text):
+		if text is None or self.regex is None or self.regex.match(text) is not None:
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError( self.error_message )
+			raise univention.admin.uexceptions.valueError(self.error_message)
 
 	@classmethod
 	def new(self):
