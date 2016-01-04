@@ -1,3 +1,9 @@
+univention-directory-manager-modules (9.0.76-39) unstable; urgency=medium
+
+  * Bug #40325: allow None to be passed to the 'simple' syntax class.
+
+ -- Florian Best <best@univention.de>  Mon, 04 Jan 2016 12:41:04 +0100
+
 univention-directory-manager-modules (9.0.76-38) unstable; urgency=medium
 
   * Bug #40325: fix removal of date e.g. in account expiry date; backport of svn r56309, r56321
