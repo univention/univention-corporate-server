@@ -8,4 +8,6 @@ desc: |
   This update addresses the following issue:
   * Added more input validation for certificate values.
   * The country name field in the ldap DN is now validated.
-bug: [39376, 39941]
+  * The email address field provides a virtual keyboard for special
+    characters.
+bug: [39376, 39941, 38567]
