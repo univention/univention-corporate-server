@@ -19,7 +19,7 @@
 		<remark></remark>
 
 		<para>
-			By default UCS includes English and German localisation.
+			By default UCS includes English and German localization.
 			A package is provided to enable users to create additional translations for the &ucsUMC;.
 		</para>
 		<para>

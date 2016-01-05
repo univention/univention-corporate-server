@@ -130,12 +130,12 @@ root@backup:~#
     <chapter id="ad">
 	  <title>Advanced Active Directory connector documentation</title>
 	  <section id="ad:multiple">
-		<title>Synchronisation of several Active Directory domains with one UCS directory service</title>
+		<title>Synchronization of several Active Directory domains with one UCS directory service</title>
 		<para>
-		  It is possible to synchronise several separate Active Directory domains with one UCS
-		  directory service (e.g. to synchronise with an AD forest). One OU
-		  (organisational unit) can be defined in LDAP for each AD domain, under which the objects
-		  of the respective domains are synchronised. The configuration of further connector
+		  It is possible to synchronize several separate Active Directory domains with one UCS
+		  directory service (e.g. to synchronize with an AD forest). One OU
+		  (organizational unit) can be defined in LDAP for each AD domain, under which the objects
+		  of the respective domains are synchronized. The configuration of further connector
 		  instances is not covered by the UMC module.
 		</para>
 
@@ -179,7 +179,7 @@ univention-config-registry set \
 		</para>
 
 		<para>
-		  If a UCS synchronisation is performed towards Active Directory, the replication of the
+		  If a UCS synchronization is performed towards Active Directory, the replication of the
 		  listener module must be restarted after a further connector instance is created. To this
 		  end, the following command must be run:
 

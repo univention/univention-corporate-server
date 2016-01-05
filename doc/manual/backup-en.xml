@@ -333,7 +333,7 @@ labels for identification.
 				<simpara>
 Bacula manages the volumes in <emphasis>pools</emphasis>. Any number of
 volumes can be combined and their properties defined. Backups are only
-performed for pools. When doing so, Bacula manages the utilisation of
+performed for pools. When doing so, Bacula manages the utilization of
 the volumes and monitors when volumes can be overwritten again.
 				</simpara>
 			</listitem>

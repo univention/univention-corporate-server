@@ -214,7 +214,7 @@
 					The integration of the browser history into UMC has been improved and added to UDM modules (<u:bug>39033</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The Univention Management Console login is now extendible to support authentication via a one time password (<u:bug>39611</u:bug>).
+					The Univention Management Console login is now extensible to support authentication via a one time password (<u:bug>39611</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -652,7 +652,7 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Authentication (and thus submitting) has been disabled by default on port 25. Set &ucsUCRV; <envar>mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes</envar> to enable the old behaviour (<u:bug>39021</u:bug>).
+						Authentication (and thus submitting) has been disabled by default on port 25. Set &ucsUCRV; <envar>mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes</envar> to enable the old behavior (<u:bug>39021</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The <systemitem class="service">Dovecot Managesieve</systemitem> service is now also available via IPv6 (<u:bug>39702</u:bug>).

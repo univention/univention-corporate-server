@@ -208,7 +208,7 @@
 		  A <emphasis>forward lookup zone</emphasis> contains information which is
 		  used to resolve DNS names into IP addresses. Each DNS zone has at
 		  least one authoritative, primary name server whose information
-		  governs the zone. Subordinate servers synchronise themselves with
+		  governs the zone. Subordinate servers synchronize themselves with
 		  the authoritative server via zone transfers. The entry which defines
 		  such a zone is called a <emphasis>SOA record</emphasis> in DNS terminology.
 		</para>
@@ -255,7 +255,7 @@
 		  A <emphasis>reverse lookup zone</emphasis> contains information which is
 		  used to resolve IP addresses into DNS names. Each DNS zone has at
 		  least one authoritative, primary name server whose information
-		  governs the zone, subordinate servers synchronise themselves with
+		  governs the zone, subordinate servers synchronize themselves with
 		  the authoritative server via zone transfers. The entry which defines
 		  such a zone is the <emphasis>SOA record</emphasis>.
 		</para>
@@ -310,7 +310,7 @@
 			  <para>
 				Samba 4 provides an Active Directory domain. Active Directory is
 				closely connected with DNS, for DNS updates of Windows clients or
-				the localisation of NETLOGON shares among other things. If Samba 4
+				the localization of NETLOGON shares among other things. If Samba 4
 				is used, the domain controller in question is switched over to the
 				use of the <emphasis>Samba backend</emphasis>.
 				The DNS database is maintained in
@@ -367,7 +367,7 @@
 		is then used to create the object in this zone. To create a new forward or reverse zone,
 		start by selecting <guimenu>All DNS zones</guimenu>. Clicking on
 		<guimenu>Add</guimenu> then creates a new zone. If an object is created within the
-		zone, the zone is labelled in the UMC dialogues as a <emphasis>superordinate
+		zone, the zone is labeled in the UMC dialogues as a <emphasis>superordinate
 		object</emphasis>.
 	  </para>
 
@@ -474,7 +474,7 @@
 				  </entry>
 				  <entry>
 					<para>
-					  Other DNS servers use the serial number to recognise whether zone data
+					  Other DNS servers use the serial number to recognize whether zone data
 					  have changed. The slave name server compares the serial number of its
 					  copy with that on the master name server. If the serial number of the
 					  slave is lower than that on the master, the slave copies the changed
@@ -670,7 +670,7 @@
 	  </section>
 
 	  <section id="ip-config:CNAME-Record_Alias-Records">
-		<title>CNAME-Record (Alias-Records)</title>
+		<title>CNAME record (Alias records)</title>
 		<para>
 		  CNAME records / alias records are managed in the UMC module <emphasis>DNS</emphasis>
 		  (see <xref linkend="central:user-interface"/>).
@@ -988,7 +988,7 @@
 		  </table>
 		<para>
 		  Each DNS zone has at least one authoritative, primary name server
-		  whose information governs the zone. Subordinate servers synchronise
+		  whose information governs the zone. Subordinate servers synchronize
 		  themselves with the authoritative server via zone transfers. The entry
 		  which defines such a zone is called a SOA record in DNS terminology.
 		</para>
@@ -1252,7 +1252,7 @@ closest to the object always applies.
 		- the corresponding service must be selected. <guimenu>Add</guimenu> is then
 		used to create the object in this service. To create a new DHCP service, start by selecting
 		<guimenu>All DHCP services</guimenu>. Clicking on <guimenu>Add</guimenu> then
-		creates a new service. If an object is saved within a service, the service is labelled in
+		creates a new service. If an object is saved within a service, the service is labeled in
 		UMC dialogues as a <emphasis>superordinate object</emphasis>.
 	  </para>
 
@@ -2350,7 +2350,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 
 	  <caution>
 		<para>
-		To prevent unauthorised users from opening websites nonetheless, additional measures are
+		To prevent unauthorized users from opening websites nonetheless, additional measures are
 		required to prevent these users from bypassing the proxy server and accessing the
 		Internet. This can be done, for example, by limiting all HTTP traffic through a firewall.
 		</para>
@@ -2405,7 +2405,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  <title>Filtering/policy enforcement of web content with DansGuardian</title>
 	  <para>
 		DansGuardian accepts website requests from the network and checks
-		whether access by the request's sender is permitted. If so, the
+		whether access by the sender of the request is permitted. If so, the
 		request is forwarded to the proxy server, Squid. For example,
 		DansGuardian allows the blocking of individual file types and suffixes
 		or access to websites or domains.
@@ -2458,7 +2458,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 		The filter function can be configured via the following &ucsUCR; variables. Where several
 		values are to be added, these must each be separated by blank spaces. The filtering is
 		performed on the basis of group memberships, i.e., different rules can be
-		defined per group and as such it is possible to realise different rights when accessing the
+		defined per group and as such it is possible to realize different rights when accessing the
 		Internet. Which groups are taken into account by DansGuardian can be defined in the
 		&ucsUCRV; <envar>dansguardian/groups</envar>.
 	  </para>

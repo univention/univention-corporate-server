@@ -252,9 +252,9 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>NFS synchronisation</entry>
+		<entry>NFS synchronization</entry>
 		<entry>
-		  The synchronisation mode for the share. The <option>sync</option> setting is
+		  The synchronization mode for the share. The <option>sync</option> setting is
 		  used to write data directly on the underlying storage device. The
 		  opposite setting - <option>async</option> - can improve performance but also
 		  involves the risk of data loss if the server is shut down incorrectly.
@@ -412,7 +412,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>Valid users or groups</entry>
 		<entry>
 		  <para>
-			Names of users or groups which are authorised to access this Samba share. To
+			Names of users or groups which are authorized to access this Samba share. To
 			all other users, access is denied. If the field is empty, all users may access
 			the share - if necessary after entering a password. This option is
 			useful for securing access to a share at file server level beyond
@@ -443,7 +443,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>Invalid users or groups</entry>
 		<entry>
 		  The users or groups listed here cannot access the Samba share. The syntax is identical to the one
-		  for valid users. If a user or group is included in the list of valid users and unauthorised users,
+		  for valid users. If a user or group is included in the list of valid users and unauthorized users,
 		  access is denied.
 		</entry>
 	  </row>
@@ -459,7 +459,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>Allowed hosts/networks</entry>
 		<entry>
-		  Names of computers which are authorised to access this Samba share. All other computers are denied
+		  Names of computers which are authorized to access this Samba share. All other computers are denied
 		  access. In addition to computer names, it is also possible to specify IP or network addresses, e.g.,
 		  <userinput>192.168.0.0/255.255.255.0</userinput>.
 		</entry>
@@ -468,7 +468,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>Denied hosts/networks</entry>
 		<entry>
-		  The opposite to the authorised computers. If a computer appears in both lists, the computer is
+		  The opposite to the authorized computers. If a computer appears in both lists, the computer is
 		  permitted to access the Samba share.
 		</entry>
 	  </row>
@@ -566,7 +566,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
   </para>
   <para>
 	The user on the Windows side does not receive any notification of the fact
-	that the file or directory authorisations might by changed according to the
+	that the file or directory authorizations might by changed according to the
 	Samba settings on this tab.
   </para>
 </note>
@@ -627,7 +627,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>Directory security mode</entry>
 		<entry>
-		  The directory authorisations to which Samba is to permit changes made from
+		  The directory authorizations to which Samba is to permit changes made from
 		  Windows side.
 		</entry>
 	  </row>
@@ -968,7 +968,7 @@ MSDFS. References to other shares are only displayed in such an MSDFS root,
 elsewhere they are hidden.
 </para>
 <para>
-To be able to utilise the functions of a distributed file system, the
+To be able to utilize the functions of a distributed file system, the
 &ucsUCRV; <envar>samba/enable-msdfs</envar> has to be set to <literal>yes</literal> on a file
 server. Afterwards Samba has to be restarted.
 </para>
@@ -990,7 +990,7 @@ ln -s msdfs:sb\\fb tofb
 Only restricted user groups should have write access to root
 directories. Otherwise, it would be possible for users to redirect references
 to other shares, and intercept or manipulate files. In addition, paths to the
-shares, as well as the references are to be spelt entirely in lower case.
+shares, as well as the references are to be spelled entirely in lower case.
 If changes are made in the references, the concerned clients have to be
 restarted. Further information on this issue can be found in the Samba
 documentation <biblioref linkend="samba3-howto-chapter-20"/> in the chapter 'Hosting a
@@ -1164,7 +1164,7 @@ Used average: 4.000000
 
 	<para>
 	  Logged in users can use the <command>quota -v</command> command to view the applicable quota
-	  limits and the current utilisation.
+	  limits and the current utilization.
 	</para>
 
 	<para>

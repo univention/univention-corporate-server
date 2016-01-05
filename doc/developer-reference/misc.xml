@@ -408,7 +408,7 @@ override_dh_auto_test:
 		<section id="misc:nacl:ucr">
 			<title>Filter rules by &ucsUCR;</title>
 			<para>
-				Besides pre-defined service definitions, Univention Firewall also allows the implementation of package filter rules via &ucsUCR;.
+				Besides predefined service definitions, Univention Firewall also allows the implementation of package filter rules via &ucsUCR;.
 				These rules are included in <filename class="directory">/etc/security/packetfilter.d/</filename> via a &ucsUCR; module.
 			</para>
 			<para>
@@ -511,8 +511,8 @@ security/packetfilter/udp/500:600/all/en=Accept UDP port 500 to 600
 		<section id="misc:nacl:ipt">
 			<title>Local filter rules via <command>iptables</command> commands</title>
 			<para>
-				Besides the existing possibilities for settings via &ucsUCR;, there is also the possibility of integrating user-defined enhanced configurations in <filename class="directory">/etc/security/packetfilter.d/</filename>, e.g. for realising a firewall or <firstterm>Network Address Translation</firstterm>.
-				The enhancements should be realised in the form of shell scripts which execute the corresponding <command>iptables</command> for <acronym>IPv4</acronym> and <command>ip6table</command> for <acronym>IPv6</acronym> calls.
+				Besides the existing possibilities for settings via &ucsUCR;, there is also the possibility of integrating user-defined enhanced configurations in <filename class="directory">/etc/security/packetfilter.d/</filename>, e.g. for realizing a firewall or <firstterm>Network Address Translation</firstterm>.
+				The enhancements should be realized in the form of shell scripts which execute the corresponding <command>iptables</command> for <acronym>IPv4</acronym> and <command>ip6table</command> for <acronym>IPv6</acronym> calls.
 				For packages this is best done through using a &ucsUCR; template as described in <xref linkend="ucr:file"/>.
 			</para>
 			<para>

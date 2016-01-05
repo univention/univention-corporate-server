@@ -35,7 +35,7 @@
 		-->
 	</para>
 	<para>
-		A catalogue with the available applications can be viewed on the <ulink
+		A catalog with the available applications can be viewed on the <ulink
 			url="https://www.univention.com/products/univention-app-center/">Univention
 			website</ulink>.
 	</para>
@@ -90,7 +90,7 @@
 				<listitem><simpara>
 					The application has to be installed without any user interaction
 					(unattended). The installation process is not allowed to be
-					interrupted or cancelled which would result in an inconsistent state
+					interrupted or canceled which would result in an inconsistent state
 					of the package management.
 				</simpara></listitem>
 				<listitem><simpara>
@@ -457,7 +457,7 @@
 									key_id (Key ID of the License)
 							</simpara></listitem>
 							<listitem><simpara>
-									ucs_version (major and minor version of UCS, e.g. 4.1)
+									ucs_version (major and minor version of UCS, e.g. <literal>4.1</literal>)
 							</simpara></listitem>
 							<listitem><simpara>
 									app_id (internal ID of the Application)
@@ -466,7 +466,7 @@
 									app_version (current version of the Application)
 							</simpara></listitem>
 							<listitem><simpara>
-									locale (locale used in the frontend, e.g. de)
+									locale (locale used in the frontend, e.g. <literal>de</literal>)
 							</simpara></listitem>
 						</itemizedlist>
 					</listitem>
@@ -554,7 +554,7 @@
 				<listitem>
 					<simpara>
 						A file the user has to accept before the installation starts. As of
-						UCS 3.2 HTML in this file is allowed and it may be localised by
+						UCS 3.2 HTML in this file is allowed and it may be localized by
 						using the files <literal>LICENSE_AGREEMENT_EN</literal> resp.
 						<literal>LICENSE_AGREEMENT_DE</literal>.
 					</simpara>
@@ -574,7 +574,7 @@
 					<simpara>
 						A file that is presented to the user before installation (but after
 						<literal>LICENSE_AGREEMENT</literal>). HTML is allowed. It may be
-						localised by using the files <literal>README_INSTALL_EN</literal>
+						localized by using the files <literal>README_INSTALL_EN</literal>
 						resp. <literal>README_INSTALL_DE</literal>.
 					</simpara>
 				</listitem>
@@ -584,7 +584,7 @@
 				<listitem>
 					<simpara>
 						A file that is presented to the user after installation. HTML is
-						allowed. It may be localised by using the files
+						allowed. It may be localized by using the files
 						<literal>README_POST_INSTALL_EN</literal> resp.
 						<literal>README_POST_INSTALL_DE</literal>.
 					</simpara>
@@ -598,7 +598,7 @@
 						changes. Note that a user may only upgrade to the newest version
 						and does so in one step. Only the latest
 						<literal>README_UPDATE</literal> is shown.
-						As of UCS 3.2 it may be localised by using the files
+						As of UCS 3.2 it may be localized by using the files
 						<literal>README_UPDATE_EN</literal> resp.
 						<literal>README_UPDATE_DE</literal>.
 					</simpara>
@@ -619,7 +619,7 @@
 						A file that is presented to the user after upgrading. Note that a
 						user may only upgrade to the newest version and does so in one
 						step. Only the latest <literal>README_POST_UPDATE</literal> is
-						shown. HTML is allowed. It may be localised by using the files
+						shown. HTML is allowed. It may be localized by using the files
 						<literal>README_POST_UPDATE_EN</literal> resp.
 						<literal>README_POST_UPDATE_DE</literal>.
 					</simpara>
@@ -632,7 +632,7 @@
 						A README file that the user may see in a dedicated &ucsUMC; module
 						for the installed application. Should contain something like first
 						steps with the installed application and explain what can be done
-						with it and how. HTML is allowed. It may be localised by using the
+						with it and how. HTML is allowed. It may be localized by using the
 						files <literal>README_EN</literal> resp
 						<literal>README_DE</literal>.
 					</simpara>
@@ -643,7 +643,7 @@
 				<listitem>
 					<simpara>
 						A file that is presented to the user before uninstallation. HTML is
-						allowed. It may be localised by using the files
+						allowed. It may be localized by using the files
 						<literal>README_UNINSTALL_EN</literal> resp.
 						<literal>README_UNINSTALL_DE</literal>.
 					</simpara>
@@ -654,7 +654,7 @@
 				<listitem>
 					<simpara>
 						A file that is presented to the user after uninstallation. HTML is
-						allowed. It may be localised by using the files
+						allowed. It may be localized by using the files
 						<literal>README_POST_UNINSTALL_EN</literal> resp.
 						<literal>README_POST_UNINSTALL_DE</literal>.
 					</simpara>
@@ -679,7 +679,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					Upload ID for the file archive. Please provide all upload IDs if the
-					archive had to be splitted.
+					archive had to be split.
 				</simpara></listitem>
 				<listitem><simpara>
 					Grant permission to Univention to distribute the software through

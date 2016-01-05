@@ -62,7 +62,7 @@
 				a rating in the categories Vendor Supported, Popularity's Award and
 				Editor's Award.
 				The classification is based on data such as the installation base of the Apps or
-				the maintenance behaviour of the App providers. Thus, the transparency and
+				the maintenance behavior of the App providers. Thus, the transparency and
 				comparability of Apps are increased.
 			</para></listitem>
 			<listitem><para>
@@ -120,10 +120,10 @@
 		</section>
 
 		<section id="relnotes:32bit">
-			<title>UCS installation DVDs only available for 64 bit</title>
+			<title>UCS installation DVD only available for 64 bit</title>
 			<para>
-				Starting with UCS 4.0, installation DVDs are only provided for the x86 64 bit architecture (amd64).
-				Existing 32 bit UCS 3 systems can still be updated to UCS 4.0 through the online repository or by using update DVDs.
+				Starting with UCS 4.0, installation DVD are only provided for the x86 64 bit architecture (amd64).
+				Existing 32 bit UCS 3 systems can still be updated to UCS 4.0 through the online repository or by using update DVD.
 				The 32 bit architecture will be supported over the entire UCS 4 maintenance period.
 			</para>
 		</section>
@@ -144,7 +144,7 @@
 		</para>
 
 		<para>
-			Remote updating via SSH is not recommended as this may result in the update procedure being cancelled, e.g., if the network connection is interrupted.
+			Remote updating via SSH is not recommended as this may result in the update procedure being canceled, e.g., if the network connection is interrupted.
 			In consequence, this can affect the system severely.
 			If updating should occur over a network connection nevertheless, it must be verified that the update continues in case of disconnection from the network.
 			This can be achieved, e.g., using the tools <command>screen</command> and <command>at</command>.  These tools are installed on all UCS system roles by default.

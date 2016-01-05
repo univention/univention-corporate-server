@@ -1017,7 +1017,7 @@ udm settings/extended_attribute modify \
 				<indexterm><primary>Directory Manager</primary><secondary>Syntax override</secondary></indexterm>
 			</title>
 			<para>
-				Sometimes the pre-defined syntax is inappropriate in some scenarios.
+				Sometimes the predefined syntax is inappropriate in some scenarios.
 				This can be because of performance problems with <acronym>LDAP</acronym> searches or the need for more restrictive or lenient value checking.
 				The latter case might require a change to the <acronym>LDAP</acronym> schema, since <command>slapd</command> also checks the provided values for correctness.
 			</para>

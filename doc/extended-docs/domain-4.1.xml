@@ -499,7 +499,7 @@ getent group
 		  </para>
 
 		  <para>
-			Kerberos requires correct time synchronisation, see <xref linkend="ext-dom-time"/>.
+			Kerberos requires correct time synchronization, see <xref linkend="ext-dom-time"/>.
 		  </para>
 
 		  <para>
@@ -599,7 +599,7 @@ ServerName printserver.example.com
             <title>Storage of the certificates</title>
 			<para>
 			  The certificates are stored in the directory <filename class="directory">/etc/univention/ssl/</filename>
-			  on the &ucsMaster; and synchronised on all &ucsBackup; systems. A subdirectory with
+			  on the &ucsMaster; and synchronized on all &ucsBackup; systems. A subdirectory with
 			  the name of the certificate is kept in the directory <filename class="directory">/etc/univention/ssl/</filename>
 			  for every certificate, which contains the following files:
 			</para>
@@ -753,7 +753,7 @@ openssl ca -batch -config /etc/univention/ssl/openssl.cnf \
 
 	  	<para>
 		  The external OpenLDAP server is described as <systemitem class="fqdomainname">extldap.univention.test</systemitem>
-		  below and synchronises with the &ucsMaster;, which uses the LDAP base
+		  below and synchronizes with the &ucsMaster;, which uses the LDAP base
 		  <uri>dc=univention,dc=test</uri>.
 	  	</para>
 

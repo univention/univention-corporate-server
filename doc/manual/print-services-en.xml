@@ -14,7 +14,7 @@
 <section id="print-services:Introduction">
 <title>Introduction</title>
 	<para>
-		&ucsUCS; includes a print system, which can also be used to realise
+		&ucsUCS; includes a print system, which can also be used to realize
 		complex environments. Printers and printer groups can be created and
 		configured conveniently in &ucsUMC;. Extensions for cost
 		calculation and page limitation can be installed subsequently using
@@ -35,7 +35,7 @@
 	<para>
 		The technical capacities of a printer are specified in so-called PPD
 		files. These files include for example whether a printer can print in
-		colour, whether duplex printing is possible, whether there are several
+		color, whether duplex printing is possible, whether there are several
 		paper trays, which resolutions are supported and which printer control
 		languages are supported (e.g., PCL or PostScript).
 	</para>
@@ -53,7 +53,7 @@
 	<para>
 		A printer can either be connected directly to the print server
 		locally (e.g., via the USB port or a parallel port) or communicate
-		with a printer via remote protocols (e.g., TCP/IP-compatible printers,
+		with a printer via remote protocols (e.g., TCP/IP compatible printers,
 		which are connected via <systemitem class="protocol">IPP</systemitem> or <systemitem class="protocol">LPD</systemitem>).
 	</para>
 	<para>
@@ -64,7 +64,7 @@
 	<para>
 		CUPS offers the possibility of defining printer groups. The included
 		printers are used employed alternating, which allows automatic load
-		distribution between neighbouring printers.
+		distribution between neighboring printers.
 	</para>
 	<para>
 		The print quota system, which can be installed using
@@ -291,7 +291,7 @@
 					<entry>
 						<para>
 							The user is charged the value given in this input field for every page
-							printed. The incurred costs are summarised in the user's account and
+							printed. The incurred costs are summarized in the user's account and
 							used for the accurate calculation of print costs. If no value is
 							specified, print costs will not be calculated.
 						</para>
@@ -305,7 +305,7 @@
 					<entry>
 						<para>
 							The user is charged the value given in this input field for every
-							print job. The incurred costs are summarised in the user's account and
+							print job. The incurred costs are summarized in the user's account and
 							used for the accurate calculation of print costs. If no value is
 							specified, print costs will not be calculated.
 						</para>
@@ -385,7 +385,7 @@
 		availability of printer services. If the printer group is used to
 		print, the job is sent to the first printer in the printer group to
 		become available. The printers are selected based on the round robin
-		principle so that the degree of utilisation is kept uniform.
+		principle so that the degree of utilization is kept uniform.
 	</para>
 	<figure id="printergroup">
 	<title>Configuring a printer group</title>
@@ -487,7 +487,7 @@
 					<entry>Price per page</entry>
 					<entry>
 						The user is charged the value given in this input field for every page
-						printed. The incurred costs are summarised in the user's account and
+						printed. The incurred costs are summarized in the user's account and
 						used for the accurate calculation of print costs. If no value is
 						specified, print costs will not be calculated.
 					</entry>
@@ -496,7 +496,7 @@
 					<entry>Price per print job</entry>
 					<entry>
 						The user is charged the value given in this input field for every
-						print job. The incurred costs are summarised in the user's account and
+						print job. The incurred costs are summarized in the user's account and
 						used for the accurate calculation of print costs. If no value is
 						specified, print costs will not be calculated.
 					</entry>
@@ -596,9 +596,9 @@
   <para>
 	Printer shares are usually operated using the Windows printer drivers
 	provided. The network printer can alternatively be set up on the
-	Windows side with a standard PostScript printer driver. If a colour
+	Windows side with a standard PostScript printer driver. If a color
 	printer should be accessed, a driver for a PostScript-compatible
-	colour printer should be used on the Windows side, e.g., <wordasword>HP Color
+	color printer should be used on the Windows side, e.g., <wordasword>HP Color
 	LaserJet 8550</wordasword>.
   </para>
 
@@ -720,7 +720,7 @@
 					The old name for the printer share should still be displayed on the tab.
 					In UCS releases earlier than UCS 4.0-1, it is possible that the Windows system has changed the name of the printer share to the name of the printer driver.
 					If that were accepted, the printer would no longer be associated with the share!
-					If this is the case, the name of the printer on the <guimenu>General</guimenu> tab (the first input field next to the stylised printer symbol) needs to be reset to the name of the print share.
+					If this is the case, the name of the printer on the <guimenu>General</guimenu> tab (the first input field next to the stylized printer symbol) needs to be reset to the name of the print share.
 					This can be done using the <guimenu>Samba name</guimenu> field configured in the print management of the UMC (or if this was left blank, use the value from <guimenu>Name</guimenu>).
 					If the name has had to be reset in this fashion, Windows then asks if you are sure that you want to change the name when <guimenu>OK</guimenu> is clicked.
 					Confirm the prompt.
@@ -754,7 +754,7 @@
 	<para>
 		The technical capacities of a printer are specified in so-called PPD
 		files. These files include for example whether a printer can print in
-		colour, whether duplex printing is possible, whether there are several
+		color, whether duplex printing is possible, whether there are several
 		paper trays, which resolutions are supported and which printer control
 		languages are supported (e.g., PCL or PostScript).
 	</para>

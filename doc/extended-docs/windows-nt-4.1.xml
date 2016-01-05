@@ -212,7 +212,7 @@
 
 		<para>
 		  In the default setting, all adjustments are made in the
-		  <filename class="directory">/var/lib/samba/netlogon/</filename> directory on the &ucsMaster; and synchronised
+		  <filename class="directory">/var/lib/samba/netlogon/</filename> directory on the &ucsMaster; and synchronized
 		  hourly on all domain controllers with Samba installed via the <command>rsync</command>
 		  tool.
 		</para>
@@ -261,7 +261,7 @@
 		  Samba supports roaming profiles, i.e., user settings are saved on a central server. This
 		  directory is also used for storing the files which the user saves in the <emphasis>My
 		  Documents</emphasis> folder. Initially, these files are stored locally on the Windows
-		  computer and then synchronised onto the Samba server when the user logs off.
+		  computer and then synchronized onto the Samba server when the user logs off.
 		</para>
 
 		<para>
@@ -350,7 +350,7 @@
 
 	  <para>
 		Trust relations can be configured unidirectional or bidirectional. Technically a
-		bidirectional trust is simply realised as two unidirectional trusts; one in each direction.
+		bidirectional trust is simply realized as two unidirectional trusts; one in each direction.
 	  </para>
 
 	  <para>

@@ -25,7 +25,7 @@ environments.
 </para>
 <para>
 UCS consists of reliable Open Source software tried and
-tested in organisations of different sizes. These software components
+tested in organizations of different sizes. These software components
 are integrated together via the &ucsUMS;. This allows the easy
 integration and administration of the system in both simple and
 complex distributed or virtualized environments.
@@ -43,7 +43,7 @@ server systems</simpara></listitem>
 <listitem><simpara>App Center for simple installation and management of extensions and applications</simpara></listitem>
 <listitem><simpara>Comprehensive features for the operation of virtualized systems (e.g. running a
 Windows or Linux operating systems) in either the cloud of on locally running UCS systems</simpara></listitem>
-<listitem><simpara>Network and Intranet services for administration of DHCP and DNS</simpara></listitem>
+<listitem><simpara>Network and intranet services for administration of DHCP and DNS</simpara></listitem>
 <listitem><simpara>File and print services</simpara></listitem>
 <listitem><simpara>Computer administration and monitoring</simpara></listitem>
 <listitem><simpara>Mail services</simpara></listitem>
@@ -68,7 +68,7 @@ as well as additional tools for the installation, updating and configuration of
 clients and servers.
 </para>
 <para>
-The <emphasis>&ucsUMS;</emphasis> realises a single point of administration where
+The <emphasis>&ucsUMS;</emphasis> realizes a single point of administration where
 the accounts of all domain members (users, groups, and hosts) and
 services such as DNS and DHCP are managed in a single directory
 service. Core components of the management system are the services
@@ -99,7 +99,7 @@ management system.
 </para>
 
 <para>
-  Built on that base, UCS is a server operating system which is optimised
+  Built on that base, UCS is a server operating system which is optimized
   for the simple and secure operation and management of applications and infrastructure services in
   enterprises and public authorities. For efficient and secure management such applications rely on
   the tight integration in the user and permission management of the &ucsUMS;.
@@ -111,7 +111,7 @@ companies and authorities and provide the central control for it. This
 makes a considerable contribution to secure, efficient and
 cost-effective IT operation. The business-critical applications are
 integrated in a uniform concept, adapted to each other and
-pre-configured for professional utilisation. Alternatively it can be operated as part of an existing
+pre-configured for professional utilization. Alternatively it can be operated as part of an existing
 Microsoft Active Directory domain.
 </para>
 
@@ -142,7 +142,7 @@ the computer. These are automatically configured for the selected system role.
 The manual implementation and configuration of
 every single service and application is therefore not required. Due to the
 modular design and extensive configuration interfaces, tailor-made
-solutions to individual requirements can nevertheless be realised.
+solutions to individual requirements can nevertheless be realized.
 </para>
 <para>
 The integration of Samba, which provides the domain service for
@@ -199,7 +199,7 @@ domain. Microsoft Windows systems can also join the domain such that users
 can log in there with their domain passport.
 </para>
 <para>
-UCS utilises OpenLDAP as a directory service server. The directory is
+UCS utilizes OpenLDAP as a directory service server. The directory is
 provided by the &ucsMaster; and replicated on all domain controllers
 (DCs) in the domain. The complete LDAP directory is also replicated on
 a DC backup as this can replace the DC master in an emergency. In
@@ -223,7 +223,7 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 </para>
 <para>
 Access to the LDAP directory is performed via the web-based user interface &ucsUMC; (UMC).
-In addition to this, Univention Directory Manager allows the realisation of all
+In addition to this, Univention Directory Manager allows the realization of all
 domain-wide administrative tasks via a command line interface. This
 is particularly suitable for the integration in scripts or automated
 administrative steps.
@@ -271,12 +271,12 @@ administration as they are effective for all objects in the container
 in question as well as the objects in subfolders.
 </para>
 <para>
-For example, users can be organised in different containers or
-organisational units (which are a form of containers) depending on
+For example, users can be organized in different containers or
+organizational units (which are a form of containers) depending on
 which department they belong to. Settings such as the desktop
 background or accessible programs can then be connected to these
-organisational units using policies. Subsequently, they apply for all
-users within the organisational unit in question.
+organizational units using policies. Subsequently, they apply for all
+users within the organizational unit in question.
 </para>
 <para>
 Further information can be found in <xref linkend="central:policies"/>.
@@ -402,7 +402,7 @@ An arbitrary description of the Nagios service.
 
 <para>
 Menu entries, button labels, and similar details are printed in <guimenu>bold</guimenu> lettering.
-In addition, <mousebutton>button labels</mousebutton> are represented in square brackets.
+In addition, <mousebutton>button labels</mousebutton> are represented in square parentheses.
 </para>
 
 <para>

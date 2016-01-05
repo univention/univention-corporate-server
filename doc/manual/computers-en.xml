@@ -315,7 +315,7 @@
 		</tgroup>
 	</table>
 	<table>
-		<title>'DNS-Alias' tab (advanced settings)</title>
+		<title>'DNS alias' tab (advanced settings)</title>
 		<tgroup cols="2">
 			<colspec colnum="1" colname="col1" colwidth="1*"/>
 			<colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -553,11 +553,11 @@
 			implemented.
 		</para>
 		<para>
-			The drivers to be used are recognised automatically during system start and
+			The drivers to be used are recognized automatically during system start and
 			loaded via the <application>udev</application> device manager. At this point, the necessary device links
 			are also created under <filename class="directory">/dev/</filename>. If drivers are not
-			recognised (which can occur if no respective hardware IDs are registered or
-			hardware is employed which cannot be recognised automatically, e.g., ISA
+			recognized (which can occur if no respective hardware IDs are registered or
+			hardware is employed which cannot be recognized automatically, e.g., ISA
 			boards), kernel modules to be loaded can be added via &ucsUCRV;
 			<envar>kernel/modules</envar>. If more than one kernel module is to be loaded,
 			these must be separated by a semicolon. The &ucsUCRV; <envar>kernel/blacklist</envar>
@@ -572,7 +572,7 @@
 		</para>
 		<para>
 		  However, if external drivers / kernel modules are required, they can be integrated via the
-		  DKMS framework (Dynamic Kernel Module Support). This provides a standardised interface for
+		  DKMS framework (Dynamic Kernel Module Support). This provides a standardized interface for
 		  kernel sources, which are then built automatically for every installed kernel (insofar as
 		  the source package is compatible with the respective kernel). For this to happen, the
 		  kernel header package <package>univention-kernel-headers</package> must be
@@ -615,7 +615,7 @@
 			<envar>grub/timeout</envar>.
 		</para>
 		<para>
-			By default a screen of <wordasword>800x600</wordasword> pixels size and 16 Bit colour depth is
+			By default a screen of <wordasword>800x600</wordasword> pixels size and 16 Bit color depth is
 			pre-set. A different value can be set via the &ucsUCRV;
 			<envar>grub/gfxmode</envar>. Only resolutions are supported which can be set
 			via VESA BIOS extensions. A list of available modes can be found at
@@ -638,7 +638,7 @@
 			Older Xen environments might use a version of PyGrub, which still
 			requires the GRUB 1 configuration file <filename>/goot/grub/menu.lst</filename>
 			to boot paravirtualized Xen systems. This file is generated automatically if
-			it does not yet exist. This behaviour can be deactivated by setting the
+			it does not yet exist. This behavior can be deactivated by setting the
 			&ucsUCRV; <envar>grub/generate-menu-lst</envar> to <literal>no</literal>.
 		</para>
 	</section>
@@ -654,7 +654,7 @@
 			</para>
 			<para>
 				The configuration is saved in &ucsUCR; variables, which can also be set
-				directly. These variables are listed in brackets in the individual sections.
+				directly. These variables are listed in parentheses in the individual sections.
 			</para>
 			<figure id="network-settings">
 				<title>Configuring the network settings</title>
@@ -825,7 +825,7 @@
 					<programlisting language="sh">
 # for KVM:
 ucr set uvmm/kvm/bridge/autostart=no
-# After that re-enable the support in the UMC basic settings dialogue
+# After that re-enable the support in the UMC basic settings dialog
 ucr unset umc/modules/setup/network/disabled/by
 					</programlisting>
 					<para>
@@ -1096,7 +1096,7 @@ ucr unset umc/modules/setup/network/disabled/by
 		<para>
 			The settings can be set with a &ucsUCR; policy. Manual configuration is also necessary if dual monitor operation is to be
 			used. The following provides a selection of the important settings and the
-			corresponding UCR variables in brackets:
+			corresponding UCR variables in parentheses:
 		</para>
 		<itemizedlist>
 			<listitem>
@@ -1131,8 +1131,8 @@ ucr unset umc/modules/setup/network/disabled/by
 			<listitem>
 				<simpara>
 				The <guimenu>Color depth</guimenu> should be entered in bits per
-				pixel. Admissible values are 1, 2, 4, 8, 16 and 24. (24-bit is true colour
-				colour depth) (<envar>xorg/screen/DefaultDepth</envar>).
+				pixel. Admissible values are 1, 2, 4, 8, 16 and 24. (24-bit is true color
+				color depth) (<envar>xorg/screen/DefaultDepth</envar>).
 				</simpara>
 			</listitem>
 		</itemizedlist>
@@ -1349,8 +1349,8 @@ univention-config-registry set --force mail/messagesizelimit=1000000
 			the variable name.
 		</para>
 		<para>
-			Clicking on the icon with the stylised pen edits the setting of a variable. The
-			icon with the stylised minus sign allows the deletion of a variable.
+			Clicking on the icon with the stylized pen edits the setting of a variable. The
+			icon with the stylized minus sign allows the deletion of a variable.
 		</para>
 	</section>
 
@@ -1613,7 +1613,7 @@ X11Forwarding @%@sshd/xforwarding@%@
 			<para>
 				Any type of Python code can be embedded in UCR templates by entering a code
 				block framed by the string <literal>@!@</literal>. For example, these blocks
-				can be used to realise conditional requests so that when a parameter is changed
+				can be used to realize conditional requests so that when a parameter is changed
 				via a variable, further dependent settings are automatically adopted in the
 				configuration file. The following code sequence configures for example network
 				settings using the &ucsUCR; settings:
@@ -1687,10 +1687,10 @@ if configRegistry.get('version/version') and \
 	<section id="computers:Configuration_of_language_and_keyboard_settings">
 		<title>Configuration of language and keyboard settings</title>
 		<para>
-			In Linux, localisation properties for software are defined in so-called
+			In Linux, localization properties for software are defined in so-called
 			<emphasis>locales</emphasis>. Configuration includes, among other things,
 			settings for date and currency format, the set of characters in use and the
-			language used for internationalised programs. The installed locales can be
+			language used for internationalized programs. The installed locales can be
 			changed in &ucsUMC; under <guimenu>Language settings &ar; Installed
 			system locales</guimenu> The standard locale is set under <guimenu>Default
 			system locale</guimenu>.
@@ -1735,7 +1735,7 @@ if configRegistry.get('version/version') and \
 	<section id="computers:Authentication__PAM">
 		<title>Authentication / PAM</title>
 		<para>
-			Authentication services in Univention Corporate Server are realised via
+			Authentication services in Univention Corporate Server are realized via
 			<emphasis>Pluggable Authentication Modules</emphasis> (PAM). To this end
 			different log-in procedures are displayed on a common interface so that a new
 			log-in method does not require adaptation for existing applications.
@@ -1750,7 +1750,7 @@ if configRegistry.get('version/version') and \
 			</para>
 			<para>
 				This restriction can be configured with the &ucsUCRV;
-				<envar>auth/SERVICE/restrict</envar>. Access to this service can be authorised
+				<envar>auth/SERVICE/restrict</envar>. Access to this service can be authorized
 				by setting the variables <envar>auth/SERVICE/user/USERNAME</envar> and
 				<envar>auth/SERVICE/group/GROUPNAME</envar> to <literal>yes</literal>.
 			</para>
@@ -1884,7 +1884,7 @@ auth/sshd/restrict: yes
 				</listitem>
 				<listitem>
 					<simpara>
-					Temperature, fan and voltage indices from <application>lm-sensors</application> (<command>sensors</command>)
+					Temperature, fan and voltage indexes from <application>lm-sensors</application> (<command>sensors</command>)
 					</simpara>
 				</listitem>
 				<listitem>
@@ -1905,7 +1905,7 @@ auth/sshd/restrict: yes
 		<section id="computers:Querying_system_statistics_in_the_UMC">
 			<title>Querying system statistics in &ucsUMC;</title>
 			<para>
-				The UMC module <guimenu>Statistics</guimenu> displays the utilisation of system
+				The UMC module <guimenu>Statistics</guimenu> displays the utilization of system
 				resources. For this purpose, a graph is displayed for different periods:
 			</para>
 			<itemizedlist>
@@ -1918,10 +1918,10 @@ auth/sshd/restrict: yes
 				The following system information is documented:
 			</para>
 			<itemizedlist>
-				<listitem><simpara>The utilisation of the main memory in percent</simpara></listitem>
-				<listitem><simpara>The processor utilisation of the system</simpara></listitem>
+				<listitem><simpara>The utilization of the main memory in percent</simpara></listitem>
+				<listitem><simpara>The processor utilization of the system</simpara></listitem>
 				<listitem><simpara>The number of terminal server sessions active</simpara></listitem>
-				<listitem><simpara>The utilisation of the swap file</simpara></listitem>
+				<listitem><simpara>The utilization of the swap file</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -1933,7 +1933,7 @@ auth/sshd/restrict: yes
 				on the following properties by clicking on the corresponding table header:
 			</para>
 			<itemizedlist>
-				<listitem><simpara>CPU utilisation in percent</simpara></listitem>
+				<listitem><simpara>CPU utilization in percent</simpara></listitem>
 				<listitem><simpara>The user name under which the process is running</simpara></listitem>
 				<listitem><simpara>Memory consumption in percent</simpara></listitem>
 				<listitem><simpara>The process ID</simpara></listitem>
@@ -1967,7 +1967,7 @@ auth/sshd/restrict: yes
 		<section id="computers:modules:diagnostic"><title>System error diagnosis in &ucsUMC;</title>
 			<para>
 				The <guimenu>System diagnostic</guimenu> UMC module offers a
-				corresponding user interface to analyse a UCS system for a
+				corresponding user interface to analyze a UCS system for a
 				range of known problems.
 			</para>
 			<para>
@@ -2165,7 +2165,7 @@ nscd -i hosts
 		<title>SSH login to systems</title>
 		<para>
 			When installing a UCS system, an SSH server is also installed per
-			preselection. SSH is used for realising encrypted connections to other hosts,
+			preselection. SSH is used for realizing encrypted connections to other hosts,
 			wherein the identity of a host can be assured via a check sum. Essential
 			aspects of the SSH server's configuration can be adjusted in &ucsUCR;.
 		</para>
@@ -2205,7 +2205,7 @@ nscd -i hosts
 	</section>
 
 	<section id="basicservices::ntp">
-		<title>Configuring the time zone / time synchronisation</title>
+		<title>Configuring the time zone / time synchronization</title>
 		<para>
 			The time zone in which a system is located can be changed in &ucsUMC; under
 			<guimenu>Language settings &ar; Time zone</guimenu>.
@@ -2223,7 +2223,7 @@ nscd -i hosts
 			can be included as time sources.
 		</para>
 		<para>
-			Manual time synchronisation can be started by the command
+			Manual time synchronization can be started by the command
 			<command>ntpdate</command>.
 		</para>
 		<para>

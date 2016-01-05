@@ -148,7 +148,7 @@ Icons: umc/icons
 			<indexterm><primary>Management Console</primary><secondary>Module</secondary><tertiary>LDAP</tertiary></indexterm>
 		</title>
 		<para>
-			Done through <firstterm>flavour</firstterm>.
+			Done through <firstterm>flavor</firstterm>.
 		</para>
 		<programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>

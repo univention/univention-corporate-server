@@ -18,7 +18,7 @@
 	</para>
 
 	<para>
-		The most obvious integration makes use of the numerous user accounts stored in the UCS directory service. Apps using this information avoid double effort in user administration. They may technically make just a simple LDAP bind for user authentication. Or if the app needs certain user attributes in its own persistence layer (e.g. the database) they may be synchronised via the Listener-/Notifier mechanism.
+		The most obvious integration makes use of the numerous user accounts stored in the UCS directory service. Apps using this information avoid double effort in user administration. They may technically make just a simple LDAP bind for user authentication. Or if the app needs certain user attributes in its own persistence layer (e.g. the database) they may be synchronized via the Listener-/Notifier mechanism.
 		Furthermore, existing data can be extended with app specific attributes, e.g., shall a user be allowed to use the app or what role shall the user occupy for the app. The UCS management system can be extended by attributes and the information is usually stored in the directory service. It is even possible that certain values or their change may trigger certain actions.
 		A third integration possibility is to hook up the app in existing solution stacks of UCS, for example the mail stack or the web server. The app will among others benefit from a working configuration and a higher communication security because of already present security certificates.
 	</para>
@@ -52,7 +52,7 @@
 		</para>
 
 		<para>
-			UCS utilises OpenLDAP as a directory service server. The directory is provided by the master
+			UCS utilizes OpenLDAP as a directory service server. The directory is provided by the master
 			domain controller and replicated on all domain controllers (DCs) in the domain. The complete LDAP
 			directory is also replicated on a DC backup as this can replace the DC master in an emergency. In
 			contrast, the replication on DC slaves can be restricted to certain areas of the LDAP directory
@@ -860,7 +860,7 @@ local $app_db_name $app_db_user md5
 				</programlisting>
 
 			<para>
-				When your application uses MySQL, you may access the admin password by reading
+				When your application uses MySQL, you may access the administrator password by reading
 				<filename>/etc/mysql.secret</filename>. A dependency on the package <package>mysql-server</package> is enough as we patch the Debian package.
 			</para>
 		</section>

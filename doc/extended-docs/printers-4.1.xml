@@ -27,7 +27,7 @@
 	  <para>
 		Print quotas are implemented using the component PyKota. It creates an interface between the
 		print server CUPS and the connected printer. Before the print job is sent to
-		the printer, the system checks whether the user is authorised to print. In addition, every
+		the printer, the system checks whether the user is authorized to print. In addition, every
 		print job is logged, which allows cost evaluations.
 	  </para>
 

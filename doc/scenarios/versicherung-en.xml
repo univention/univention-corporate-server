@@ -14,7 +14,7 @@
 	<title>Initial situation</title>
 	<para>
 		<foreignphrase>Hanseatische Marineversicherung</foreignphrase> (<acronym>HMV</acronym>) is an insurance company with
-		1800 employees specialised in the logistics sector. <acronym>HMV</acronym> is a subsidiary
+		1800 employees specialized in the logistics sector. <acronym>HMV</acronym> is a subsidiary
 	  of the Vigil Insurances parent company.
 	</para>
 
@@ -33,7 +33,7 @@
 
 	<para>
 	  Microsoft Windows 7 is used on all the desktops. Software distribution
-	  and the installation of security updates are centralised.
+	  and the installation of security updates are centralized.
 	</para>
 
 	<para>
@@ -78,7 +78,7 @@
 	</para>
 
 	<para>
-	  The DC master is the centrepiece of the UCS domain. The central,
+	  The DC master is the centerpiece of the UCS domain. The central,
 	  writable LDAP directory is provided on this system.
 	</para>
 
@@ -211,33 +211,33 @@
   </section>
 
   <section id="insurance:ad">
-	<title>Active Directory synchronisation</title>
+	<title>Active Directory synchronization</title>
 	<para>
 	  The Univention Active Directory connector (AD connector for short)
-	  makes it possible to synchronise directory service objects between a
+	  makes it possible to synchronize directory service objects between a
 	  Microsoft Windows 2000/2003/2008/2012 server with Microsoft Active
 	  Directory (AD) and an Open Source LDAP directory service in &ucsUCS;.
 	</para>
 
 	<para>
-	  The synchronisation settings can be specified individually. The
+	  The synchronization settings can be specified individually. The
 	  administrator thus has the possibility of controlling the
-	  synchronisation precisely and only synchronising selected objects and
+	  synchronization precisely and only synchronizing selected objects and
 	  attributes.
 	</para>
 
 	<para>
-	  The UCS directory service synchronises with the Microsoft Active
+	  The UCS directory service synchronizes with the Microsoft Active
 	  Directory of the parent company. The replication encompasses
-	  all the containers, organisational units, users and groups. Users have
+	  all the containers, organizational units, users and groups. Users have
 	  a special position since the password cannot be queried via the
 	  LDAP protocol in Microsoft Active Directory. A system service is
 	  installed on the Windows server for this purpose, which enables
-	  password synchronisation.
+	  password synchronization.
 	</para>
 
 	<para>
-	  The computer accounts are not synchronised, as Windows computers can
+	  The computer accounts are not synchronized, as Windows computers can
 	  only be joined in one domain. All Windows clients are joined in the UCS
 	  Samba 4 domain.
 	</para>
@@ -278,7 +278,7 @@
 		  <simpara>All LDAP write accesses must be verifiable. This is
 		  done by means of the Univention Directory Logger. This
 		  transcribes each LDAP change in a secure transaction log
-		  file, which is protocolled audit-compliantly with
+		  file, which is protocoled audit-compliantly with
 		  checksums.</simpara></listitem>
 
 		<listitem><simpara>The user data must be available immediately

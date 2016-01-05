@@ -32,7 +32,7 @@
 	Whilst some of the settings can be preconfigured globally in the image, it is still necessary
 	for the end user to make final adjustments to the configuration, e.g., to set the computer name
 	or the domain used. For this reason, a basic system is installed for the appliance image and a
-	component set up, which then allows the end user to finalise the configuration. Alternatively,
+	component set up, which then allows the end user to finalize the configuration. Alternatively,
 	the configuration can also be performed automatically without user interaction. This is
 	described in <xref linkend="appliance:use:auto"/>.
   </para>
@@ -263,7 +263,7 @@ ucr set interfaces/eth0/type=dhcp dhclient/options/timeout=12
 	  <para>
 		The provisioning for OpenStack images occurs via Cloud-Init (see
 		<xref linkend="appliance:use:cloudinit"/>).
-		Cloud-Init is a standardised solution for configuration of an image. Cloud-Init checks a
+		Cloud-Init is a standardized solution for configuration of an image. Cloud-Init checks a
 		range of data sources for an existing configuration. The <package>univention-cloud-init</package>
 		package must be installed to prepare an image for provisioning via Cloud-Init:
 
@@ -837,7 +837,7 @@ univention-system-setup-boot uss/server/role string memberserver
 						<row>
 							<entry><varname>locales</varname></entry>
 							<entry>
-								Localisation packages to be installed (locales).
+								Localization packages to be installed (locales).
 								If more than one locale is specified, the locales are separated by blank spaces.
 							</entry>
 						</row>
@@ -1104,13 +1104,13 @@ univention-system-setup-boot uss/server/role string memberserver
 						<row>
 							<entry><varname>ssl/organization</varname></entry>
 							<entry>
-								Name of the organisation that appears in the certificate of the root CA.
+								Name of the organization that appears in the certificate of the root CA.
 							</entry>
 						</row>
 						<row>
 							<entry><varname>ssl/organizationalunit</varname></entry>
 							<entry>
-								Name of the organisational unit or department of the organisation that appears in the certificate of the root CA.
+								Name of the organizational unit or department of the organization that appears in the certificate of the root CA.
 							</entry>
 						</row>
 						<row>

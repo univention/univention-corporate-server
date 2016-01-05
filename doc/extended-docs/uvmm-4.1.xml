@@ -133,7 +133,7 @@ virsh pool-autostart iscsi
 			</para>
 
 			<para>
-				If new iSCSI LUNs are set up, the iSCSI storage pool must still be reimported manually at
+				If new iSCSI LUNs are set up, the iSCSI storage pool must still be re-imported manually at
 				present. This can be done using the following command:
 
 				<programlisting language="sh">
@@ -152,7 +152,7 @@ virsh pool-refresh iscsi
 	<chapter id="uvmmext:xen">
 		<title>Xen deprecated in UCS-4</title>
 		<para>
-			For UCS-4.0 Univention decided to drop support for the <application>Xen</application> hypervisor in favour of <application>QEMU/KVM</application>.
+			For UCS-4.0 Univention decided to drop support for the <application>Xen</application> hypervisor in favor of <application>QEMU/KVM</application>.
 			UCS-4 no longer contains the package <package>xen-4.1</package> as previously provided by Univention, but only the package <package>xen</package> as maintained by Debian.
 		</para>
 		<para>

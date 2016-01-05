@@ -86,7 +86,7 @@
 	</para>
 
 	<para>
-	  The DC master is the centrepiece of the UCS domain. The central,
+	  The DC master is the centerpiece of the UCS domain. The central,
 	  writable copy of the LDAP directory service is provided on this
 	  system.
 	</para>
@@ -186,7 +186,7 @@
 
 	<para>
 	  In addition, there is a print server, which forwards print jobs on to
-	  the selected printer. The print servers are realised with CUPS, which
+	  the selected printer. The print servers are realized with CUPS, which
 	  integrates the different printers in a central spooling.
 	</para>
   </section>
@@ -231,7 +231,7 @@
 	  white-listed. If a special software (iTALC) is installed
 	  on the pupil PCs, these PCs can also be controlled remotely. For example, the
 	  screens can be locked so that, for example in a chemistry lesson, the
-	  pupils' undivided attention can be focussed on the experiment.
+	  pupils' undivided attention can be focused on the experiment.
 	</para>
 
 	<para>
@@ -242,7 +242,7 @@
 
 	<para>
 	  Each school is supported by a help desk. The help desk can, for
-	  example, be maintained by a support organisation in the education
+	  example, be maintained by a support organization in the education
 	  authority or by technically trained teachers in the
 	  schools. The <guimenu>Contacting helpdesk</guimenu> module allows the
 	  teachers and school administrators to send a support request.
@@ -370,7 +370,7 @@
 	<title>Groupware</title>
 	<para>
 	  The school board uses the groupware solution Kolab for arranging
-	  meetings and organising contacts and tasks among the teachers and
+	  meetings and organizing contacts and tasks among the teachers and
 	  school employees. The installation can be performed with a few clicks
 	  using the Univention App Center.
 	</para>

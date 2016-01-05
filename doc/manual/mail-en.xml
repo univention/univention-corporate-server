@@ -71,10 +71,10 @@
     </para>
 
     <para>
-	  Optionally, e-mails received via Postfix can be checked for spam content
+	  Optionally, e-mails received via Postfix can be checked for Spam content
 	  and viruses before further processing by Dovecot.
 	  Spam e-mails are detected by the classification software SpamAssassin
-	  (<xref linkend="mail::spam"/>); ClamAV is used for the detection of
+	  (<xref linkend="mail::Spam"/>); ClamAV is used for the detection of
 	  viruses and other malware (<xref linkend="mail::viren"/>).
     </para>
 
@@ -256,7 +256,7 @@ doveadm auth cache flush
 		<guimenu>Users that are allowed to send e-mails to the list</guimenu>
 		and <guimenu>Groups that are allowed to send e-mails to the list</guimenu>
 		can be specified under <guimenu>Advanced settings</guimenu>. If a field is set
-		here, only authorised users/groups are allowed to send mails.
+		here, only authorized users/groups are allowed to send mails.
 	  </para>
 	</section>
 
@@ -288,7 +288,7 @@ doveadm auth cache flush
 		<guimenu>Users that are allowed to send e-mails to the group</guimenu>
 		and <guimenu>Groups that are allowed to send e-mails to the group</guimenu> can be specified
 		under <guimenu>Advanced settings</guimenu>. If a field is set here,
-		only authorised users/groups are allowed to send mails.
+		only authorized users/groups are allowed to send mails.
 	  </para>
 	</section>
 
@@ -542,16 +542,16 @@ doveadm auth cache flush
 	</section>
   </section>
 
-  <section id="mail::spam">
+  <section id="mail::Spam">
 	<title>Spam detection and filtering</title>
 	<para>
-	  Undesirable and unsolicited e-mails are designated as spam. The software
+	  Undesirable and unsolicited e-mails are designated as Spam. The software
 	  SpamAssassin and Postgrey are integrated in UCS for the automatic identification of these
 	  e-mails. SpamAssassin attempts to identify whether an e-mail is desirable or
 	  not based on heuristics concerning its origin, form and content.
-	  Postgrey is a policy server for Postfix, which implements grey listing.
-	  Grey listing is a spam detection method which denies the first delivery attempt of external mail servers.
-	  Mail servers of spammers most often do not perform a second delivery attempt, while legitimate servers do so.
+	  Postgrey is a policy server for Postfix, which implements gray listing.
+	  Grey listing is a Spam detection method which denies the first delivery attempt of external mail servers.
+	  Mail servers of Spam senders most often do not perform a second delivery attempt, while legitimate servers do so.
 	  Integration occurs via the packages <package>univention-spamassassin</package> and <package>univention-postgrey</package>,
 	  which are automatically set up during the installation of the mail
 	  server package.
@@ -559,26 +559,26 @@ doveadm auth cache flush
 	<para>
 	  SpamAssassin operates a point system, which uses an increasing number
 	  of points to express a high probability of the e-mail being
-	  spam. Points are awarded according to different criteria, for example,
+	  Spam. Points are awarded according to different criteria, for example,
 	  keywords within the e-mail or incorrect encodings.
 	  In the standard configuration only mails with a size of up to 300 kilobytes
 	  are scanned, this can be adjusted using
 	  the &ucsUCRV; <envar>mail/antispam/bodysizelimit</envar>.
-	  E-mails which are classified as spam - because they exceed a certain
+	  E-mails which are classified as Spam - because they exceed a certain
 	  number of points - are not delivered to the recipient's inbox by
 	  Dovecot, but rather in the <emphasis>Spam</emphasis> folder below it.
-	  The name of the folder for spam can be configured with the &ucsUCRV;
-	  <envar>mail/dovecot/folder/spam</envar>.
+	  The name of the folder for Spam can be configured with the &ucsUCRV;
+	  <envar>mail/dovecot/folder/Spam</envar>.
 	  The filtering is performed by a Sieve script, which is automatically generated when
 	  the user is created.
 	</para>
 	<para>
-	  The threshold in these scripts as of which e-mails are declared to be spam can be
+	  The threshold in these scripts as of which e-mails are declared to be Spam can be
 	  configured with the &ucsUCRV; <envar>mail/antispam/requiredhits</envar>.
 	  The presetting (<literal>5</literal>) generally does not need to be adjusted.
 	  However, depending on experience in the local environment, this
 	  value can also be set lower. This will, however, result in more
-	  e-mails being incorrectly designated as spam.
+	  e-mails being incorrectly designated as Spam.
 	  Changes to the threshold do not apply to existing users, but the users
 	  can change the value themselves in the Horde web client (see
 	  <xref linkend="mail::horde::filter"/>).
@@ -589,7 +589,7 @@ doveadm auth cache flush
 	  already gathered from processed e-mails and uses this to adapt it's
 	  evaluation to the user's e-mail.
 	  The Bayes classification is controlled by the user himself, whereby
-	  e-mails not identified as spam by the system can be placed in the <emphasis>Spam</emphasis>
+	  e-mails not identified as Spam by the system can be placed in the <emphasis>Spam</emphasis>
 	  subfolder by the user and a selection of legitimate e-mails copied into
 	  the <emphasis>Ham</emphasis> (<envar>mail/dovecot/folder/ham</envar>) subfolder. This folder is evaluated daily and data
 	  which have not yet been collected or were previously classified
@@ -598,9 +598,9 @@ doveadm auth cache flush
 	  the &ucsUCRV; <envar>mail/antispam/learndaily</envar>.
 	</para>
 	<para>
-	  The spam filtering can be deactivated by setting
-	  the &ucsUCRV; <envar>mail/antivir/spam</envar> to <literal>no</literal>.
-	  When modifying Univention Configuration Registry variables concerning spam
+	  The Spam filtering can be deactivated by setting
+	  the &ucsUCRV; <envar>mail/antivir/Spam</envar> to <literal>no</literal>.
+	  When modifying Univention Configuration Registry variables concerning Spam
 	  detection, the AMaViS service and Postfix must be restarted subsequently.
 	</para>
   </section>
@@ -615,7 +615,7 @@ doveadm auth cache flush
 	</para>
 	<para>
 	  All incoming and outgoing e-mails are scanned for viruses. If the
-	  scanner recognises a virus, the e-mail is sent to
+	  scanner recognizes a virus, the e-mail is sent to
 	  quarantine. That means that the e-mail is stored on the server where
 	  it is not accessible to the user. The original recipient receives a
 	  message per e-mail stating that this measure has been taken. If
@@ -639,11 +639,11 @@ doveadm auth cache flush
   </section>
 
 	<section id="mail::dnsbl">
-		<title>Identification of spam sources with <foreignphrase>DNS-based Blackhole Lists</foreignphrase> (DNSBL)</title>
+		<title>Identification of Spam sources with <foreignphrase>DNS-based Blackhole Lists</foreignphrase> (DNSBL)</title>
 		<para>
-			Another means of combating spam is to use a <foreignphrase>DNS-based Blackhole List</foreignphrase>
+			Another means of combating Spam is to use a <foreignphrase>DNS-based Blackhole List</foreignphrase>
 			(<acronym>DNSBL</acronym>) or <foreignphrase>Real-time Blackhole List</foreignphrase> (<acronym>RBL</acronym>).
-			DNSBLs are lists of IP addresses that the operator believes to be (potential) sources of spam.
+			DNSBLs are lists of IP addresses that the operator believes to be (potential) sources of Spam.
 			The lists are checked by DNS.
 			If the IP of the sending e-mail server is known to the DNS server, the message is rejected.
 			The IP address is checked quickly and in a comparatively resource-friendly manner.
@@ -860,7 +860,7 @@ postmap /etc/postfix/smtp_auth
 					Port 465 (<systemitem class="service">SMTPS</systemitem>) allows
 					authentication and email submission through a SSL encrypted connection.
 					<systemitem class="service">SMTPS</systemitem> has been declared
-					deprecated in favour of port 587 but is kept enabled for legacy clients.
+					deprecated in favor of port 587 but is kept enabled for legacy clients.
 				</para>
 			</listitem>
 			<listitem>
@@ -932,7 +932,7 @@ postmap /etc/postfix/smtp_auth
 				<colspec colnum="2" colname="col2" colwidth="2*"/>
 				<thead>
 					<row>
-						<entry>mail/dovecot/mailbox/…</entry>
+						<entry><envar>mail/dovecot/mailbox/…</envar></entry>
 						<entry>Meaning</entry>
 					</row>
 				</thead>
@@ -1132,7 +1132,7 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
 	<para>
 	  The use of IMAP is recommended for using a mail client with the UCS mail server. STARTTLS is
 	  used to switch to a TLS-secured connection after an initial negotiation phase when using SMTP
-	  (for sending mail) and IMAP (for receiving/synchronising mail). <emphasis>Password (plain
+	  (for sending mail) and IMAP (for receiving/synchronizing mail). <emphasis>Password (plain
 	  text)</emphasis> should be used in combination with <emphasis>STARTTLS</emphasis> as the
 	  authentication method. The method may have a different name depending on the mail client.
 	  The following screenshot shows
@@ -1182,7 +1182,7 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
 		modules.
 	  </para>
 	  <para>
-		The user can personalise Horde by clicking the cog symbol.
+		The user can personalize Horde by clicking the cog symbol.
 	  </para>
 	</section>
 
@@ -1258,7 +1258,7 @@ ucr set mail/dovecot/limits/imap-login/service_count=0
 		switched on and off in the <command>Enabled</command> column.
 	  </para>
 	  <para>
-		The <guimenu>Spam</guimenu> filter can be used user-specifically to set which spam
+		The <guimenu>Spam</guimenu> filter can be used user-specifically to set which Spam
 		threshold should apply. The specified <guimenu>Spam Level</guimenu> is the
 		SpamAssassin threshold. An e-mail which returns this value will be sent to
 		the specified folder.

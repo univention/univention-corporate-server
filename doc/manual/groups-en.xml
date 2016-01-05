@@ -140,7 +140,7 @@
 								can be entered in this field. Otherwise, &ucsUMC;
 								will automatically assign the next available group ID when
 								adding the group. The group ID cannot be subsequently changed. When
-								editing the group, the group ID will be represented in grey.
+								editing the group, the group ID will be represented in gray.
 							</para>
 							<para>
 								The group ID may consist of integers between 1000 and 59999 and
@@ -160,7 +160,7 @@
 							</para>
 							<para>
 								The RID cannot be subsequently changed. When editing the group, the group ID
-								will be represented in grey.
+								will be represented in gray.
 							</para>
 							<para>
 								The RIDs below 1000 are reserved for standard groups and other special objects.
@@ -324,9 +324,9 @@
 	</section>
 
 	<section id="groups:adgroups">
-	  <title>Synchronisation of Active Directory groups when using Samba 4</title>
+	  <title>Synchronization of Active Directory groups when using Samba 4</title>
 	  <para>
-		If Samba 4 is used, the group memberships are synchronised between the Samba 4 directory
+		If Samba 4 is used, the group memberships are synchronized between the Samba 4 directory
 		service and the OpenLDAP directory service by the Univention S4 connector, i.e., each group
 		on the UCS side is associated with a group in Active Directory. General information on the
 		Univention S4 connector can be found in <xref linkend="windows:s4connector"/>.
@@ -337,7 +337,7 @@
 		system groups). These are only managed internally by Active Directory/Samba 4, e.g., the
 		<systemitem class="groupname">Authenticated Users</systemitem> group includes a list of all the users currently
 		logged on to the system. Pseudo groups are stored in the UCS directory service, but they are
-		not synchronised by the Univention S4 connector and should usually not be edited. This
+		not synchronized by the Univention S4 connector and should usually not be edited. This
 		applies to the following groups:
 
 		<itemizedlist>
@@ -361,7 +361,7 @@
 		<itemizedlist>
 		  <listitem><simpara>
 			<emphasis>Local</emphasis> groups only exist locally on a host. A local group created in
-			Samba 4 is synchronised by the Univention S4 Connector and thus also appears in the
+			Samba 4 is synchronized by the Univention S4 Connector and thus also appears in the
 			UMC. There is no need to create local groups in the UMC.
 		  </simpara></listitem>
 
@@ -383,7 +383,7 @@
 		  <listitem><simpara>
 			<emphasis>Universal</emphasis> groups can adopt members from all domains and these
 			members are also shown in all the domains of a forest. These groups are stored in a
-			separate segment of the directory service, the so-called global catalogue. Domain
+			separate segment of the directory service, the so-called global catalog. Domain
 			forests are currently not supported by Samba 4.
 		  </simpara></listitem>
 		</itemizedlist>

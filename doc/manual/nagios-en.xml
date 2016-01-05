@@ -22,7 +22,7 @@
 	<para>
 	Nagios has a comprehensive collection of monitoring modules, the
 	so-called Nagios plugins. In addition to polling system indicators
-	(e.g., CPU and memory utilisation, free disk space), they also allow
+	(e.g., CPU and memory utilization, free disk space), they also allow
 	to test the availability and function of different services
 	(e.g., SSH, SMTP, HTTP). Simple program steps such as the delivery of
 	a test e-mail or the resolution of a DNS record are generally
@@ -244,7 +244,7 @@
 					<row>
 						<entry><systemitem class="service">UNIVENTION_SWAP</systemitem></entry>
 						<entry>
-							monitors the utilisation of the swap partition.
+							monitors the utilization of the swap partition.
 							An error status is raised if the remaining free space falls below the
 							threshold (40% or 20% in the default setting).
 						</entry>
@@ -253,7 +253,7 @@
 						<entry><systemitem class="service">UNIVENTION_REPLICATION</systemitem></entry>
 						<entry>
 							monitors the status of the LDAP replication
-							and recognises the creation of a <filename>failed.ldif</filename>
+							and recognizes the creation of a <filename>failed.ldif</filename>
 							file and the standstill of the replication
 							and warns of large differences between the transaction IDs.
 						</entry>
@@ -358,7 +358,7 @@
 
 		<para>
 		Default parameters have been set for the services listed above, which
-		are customised to the requirements of most UCS installations. If the
+		are customized to the requirements of most UCS installations. If the
 		default parameters are not suitable, they can also be altered
 		subsequently. This is documented in <xref linkend="Nagios:Dienst"/>.
 		</para>
@@ -986,7 +986,7 @@
   <para>
 	Access is only granted for users in the <systemitem class="groupname">Domain Admins</systemitem>
 	group (e.g., the Administrator) in the default setting. There is also
-	the possibility of expanding the circle of those authorised to log in.
+	the possibility of expanding the circle of those authorized to log in.
   </para>
 	<!--
 	<comment>

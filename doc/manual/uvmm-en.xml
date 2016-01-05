@@ -318,7 +318,7 @@ update-ca-certificates
 
 			<para>
 			  Running instances can be accessed via the VNC protocol - insofar as this is
-			  configured. The icon with the stylised screen opens a connection with noVNC, a
+			  configured. The icon with the stylized screen opens a connection with noVNC, a
 			  HTML5-based client. Any other VNC client can also be used for the access; the VNC port
 			  is displayed in a tooltip above the computer name.
 			</para>
@@ -503,7 +503,7 @@ update-ca-certificates
 							<entry>
 								The initial status of a virtual machine when created is specified via a source
 								image (OpenStack) or source AMI (EC2). This type of image usually includes a
-								prepared operating systems that the user can customise after the start-up. Any
+								prepared operating systems that the user can customize after the start-up. Any
 								number of virtual machines can be created from one source image.
 							</entry>
 						</row>
@@ -646,7 +646,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			</para>
 			<para>
 				<guimenu>Drives</guimenu> lists all existing drives, the image files used, their size and the assigned storage pools.
-				One can click on the stylised minus sign to delete a drive and <guimenu>Edit</guimenu> can be used to adjust setting subsequently.
+				One can click on the stylized minus sign to delete a drive and <guimenu>Edit</guimenu> can be used to adjust setting subsequently.
 			</para>
 			<para>
 				<guimenu>Paravirtual drive</guimenu> allows specification of whether the access to the drive should be paravirtualized.
@@ -654,7 +654,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 
 			</para>
 			<para>
-				If drives or network interfaces are subsequently added to a virtual instance, the utilisation of paravirtualization is determined by heuristics or its profile.
+				If drives or network interfaces are subsequently added to a virtual instance, the utilization of paravirtualization is determined by heuristics or its profile.
 			</para>
 			<para>
 				<guimenu>Add drive</guimenu> can be used to add an additional drive.
@@ -679,7 +679,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				</para>
 			</caution>
 			<para>
-				A snapshot can be removed by clicking in the stylised minus sign.
+				A snapshot can be removed by clicking in the stylized minus sign.
 				The current state of the virtual machine is not modified by this.
 			</para>
 			<para>
@@ -811,7 +811,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 			  bundled and, consequently, written more efficiently. However, this involves the risk of
 			  data loss, if, for example, a system crashes or the power supply is interrupted. The data
 			  which have been only saved in the write cache up to that point and have yet to be
-			  synchronised on the storage medium are lost. For this reasons, modern operating systems
+			  synchronized on the storage medium are lost. For this reasons, modern operating systems
 			  generally only keep pending write changes for a maximum of several seconds before writing
 			  them to the hard drive.
 			</para>
@@ -858,7 +858,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 
 				<listitem>
 					<simpara>
-				  With the <guimenuitem>unsafe</guimenuitem> strategy, synchronisation requests sent by the
+				  With the <guimenuitem>unsafe</guimenuitem> strategy, synchronization requests sent by the
 				  guest system are ignored in order to force the writing of outstanding data on the
 				  storage medium explicitly. Compared with <guimenuitem>write-back</guimenuitem>, this once
 				  again increases the performance, but can result in data loss if the host system
@@ -870,7 +870,7 @@ ssh -i [path/to/private/key] root@[instance-ip-address]
 				<listitem>
 					<simpara>
 				  The <guimenuitem>directsync</guimenuitem> strategy corresponds to <guimenuitem>none</guimenuitem>,
-				  with the only difference being that here synchronisation is explicitly forced after
+				  with the only difference being that here synchronization is explicitly forced after
 				  every write access.
 					</simpara>
 				</listitem>

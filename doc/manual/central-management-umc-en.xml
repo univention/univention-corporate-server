@@ -171,7 +171,7 @@
 
 		<para>
 		  Installation of most of the applications in the Univention App Center requires a
-		  personalised license key. UCS core edition licenses can
+		  personalized license key. UCS core edition licenses can
 		  be converted by clicking <guimenu>Activation of UCS</guimenu>.
 		  The current license key is sent to Univention and the updated key
 		  returned to a specified e-mail address within a few minutes. The new key can be imported
@@ -181,8 +181,8 @@
 		<para>
 		  If the number of licensed user or computer objects is exceeded, it is not possible to create
 		  any additional objects in &ucsUMC; or edit any existing ones unless an extended
-		  licence is imported or no longer required users or computers are deleted. A corresponding
-		  message is displayed on the UMC start page if the licence is exceeded.
+		  license is imported or no longer required users or computers are deleted. A corresponding
+		  message is displayed on the UMC start page if the license is exceeded.
 		</para>
 	</section>
 
@@ -293,7 +293,7 @@
 				<guimenu>Edit</guimenu> allows to edit the object. The
 				individual attributes are described in the individual
 				documentation chapters. By clicking on the floppy disk symbol
-				in the coloured module bar, all changes are written into the
+				in the colored module bar, all changes are written into the
 				LDAP directory. The X symbol cancels the editing and returns to
 				the previous search view.
 			</para>
@@ -303,7 +303,7 @@
 				individual objects can be selected. The selection status is also
 				displayed in the lowest screen line, e.g., <guimenu>2 users	of 102 selected</guimenu>
 				If more than one object is selected,
-				clicking on the stylised pen in the selection status bar activates the
+				clicking on the stylized pen in the selection status bar activates the
 				multi edit mode. The same attributes are now shown as when
 				editing an individual object, but the changes are only accepted for
 				the objects where the <guimenu>Overwrite</guimenu> tick is activated.
@@ -895,7 +895,7 @@
 			<entry>Group name</entry>
 			<entry>
 			  <para>
-				Groups allow the structuring of a tab. A group is separated by a grey horizontal bar
+				Groups allow the structuring of a tab. A group is separated by a gray horizontal bar
 				and can be shown and hidden.
 			  </para>
 
@@ -968,7 +968,7 @@
 		  <row>
 			<entry>Default value</entry>
 			<entry>
-			  If a preset value is defined here, new objects to be created will be initialised with
+			  If a preset value is defined here, new objects to be created will be initialized with
 			  this value. The value can still be edited manually during creation. Existing objects
 			  remain unchanged.
 			</entry>
@@ -1016,14 +1016,14 @@
 <section id="central:cn-and-ous">
 	<title>Structuring of the domain with user-defined LDAP structures</title>
 	<para>
-		Containers and organisational units (OU) are used to structure the
+		Containers and organizational units (OU) are used to structure the
 		data in the LDAP directory. There is no technical difference between
 		the two types, just in their application:
 	</para>
 	<itemizedlist>
 		<listitem>
 			<simpara>
-			Organisational units usually represent real, existing units such
+			Organizational units usually represent real, existing units such
 			as a department in a company or an institution
 			</simpara>
 		</listitem>
@@ -1035,7 +1035,7 @@
 		</listitem>
 	</itemizedlist>
 	<para>
-		Containers and organisational units are managed in
+		Containers and organizational units are managed in
 		the UMC module <guimenu>LDAP directory</guimenu> and are created
 		with <guimenu>Add</guimenu> and the object
 		types <guimenu>Container: Container</guimenu> and
@@ -1061,13 +1061,13 @@
 				<row>
 					<entry>Name</entry>
 					<entry>
-						A random name for the container / organisational unit.
+						A random name for the container / organizational unit.
 					</entry>
 				</row>
 				<row>
 					<entry>Description</entry>
 					<entry>
-						A random description for the container / organisational unit.
+						A random description for the container / organizational unit.
 					</entry>
 				</row>
 			</tbody>
@@ -1089,7 +1089,7 @@
 				<row>
 					<entry>Add to standard <replaceable>object type</replaceable> containers</entry>
 					<entry>
-						If this option is activated, the container or organisational unit will
+						If this option is activated, the container or organizational unit will
 						be regarded as a standard container for a certain object type. If the
 						current container is declared the standard user container, for
 						example, this container will also be displayed in users search and

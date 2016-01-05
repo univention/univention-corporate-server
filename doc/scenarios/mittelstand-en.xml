@@ -49,7 +49,7 @@
 	</para>
 
 	<para>
-	  To save energy and minimise maintenance costs, the employees in
+	  To save energy and minimize maintenance costs, the employees in
 	  Administration and Sales will be provided with thin clients (computers
 	  without hard drives). As no data or configurations are saved locally,
 	  a defective thin client can be easily replaced even by non-technical
@@ -83,7 +83,7 @@
 
 	<para>
 	  <figure id="mittelstand-ueberblick">
-		<title>Global organisation scheme of Ganupa Technologies</title>
+		<title>Global organization scheme of Ganupa Technologies</title>
 		<graphic scalefit="1" width="100%" fileref="illustrations41/mittelstand-ueberblick_en.png"/>
 	  </figure>
 	</para>
@@ -99,7 +99,7 @@
 	</para>
 
 	<para>
-	  The DC master is the centrepiece of the UCS domain. The central,
+	  The DC master is the centerpiece of the UCS domain. The central,
 	  writable copy of the LDAP directory service is maintained on this
 	  system.
 	</para>
@@ -187,7 +187,7 @@
 	  and spreadsheet analysis with LibreOffice, image processing with
 	  GIMP, Mozilla Firefox as web browser, Mozilla Thunderbird as groupware and
 	  e-mail client, multimedia applications for playing music and videos
-	  and burning DVDs/CDs).
+	  and burning DVD/CD).
 	</para>
 
 	<para>
@@ -211,7 +211,7 @@
 	<title>Print services</title>
 	<para>
 	  Print jobs are forwarded to the requested printer via a print
-	  server. The print servers are realised with CUPS, which manages the
+	  server. The print servers are realized with CUPS, which manages the
 	  different printers in a central spooling.
 	</para>
 
@@ -284,7 +284,7 @@
 	<title>Groupware</title>
 	<para>
 	  Ganupa Technologies uses the groupware solution Open-Xchange Server
-	  Edition for arranging meetings and organising contacts and tasks.
+	  Edition for arranging meetings and organizing contacts and tasks.
 	</para>
 
 	<para>
@@ -306,7 +306,7 @@
 	</para>
 
 	<para>
-	  Virus detection including signature updates and spam filters are
+	  Virus detection including signature updates and Spam filters are
 	  integrated at no additional cost.
 	</para>
   </section>
@@ -320,7 +320,7 @@
 	</para>
 
 	<para>
-	  Alternatively, it is also possible to procure a specialised appliance,
+	  Alternatively, it is also possible to procure a specialized appliance,
 	  which can authenticate the users against the UCS-LDAP server.
 	</para>
   </section>

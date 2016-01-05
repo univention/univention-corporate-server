@@ -67,7 +67,7 @@
 			If you do not have your application packaged in this way, you may want to check
 			the chapter <ulink url="https://docs.software-univention.de/developer-reference.html#chap:packaging">packaging</ulink> in the UCS developer reference
 			as a starting point.
-			Here we will use a pre packaged application already present in (the unmaintained repository of) UCS.
+			Here we will use a pre-packaged application already present in (the unmaintained repository of) UCS.
 		</para></note>
 		<section id="docker:example:prerequisites">
 			<title>Prerequisites</title>

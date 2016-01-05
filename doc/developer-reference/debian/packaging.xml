@@ -115,7 +115,7 @@ Type of package: single binary, indep binary, multiple binary, library, kernel m
 				<listitem>
 					<para>
 						A single kernel-dependent binary package is created from the source package.
-						Kernel modules need to be compiled for each kernel flavour.
+						Kernel modules need to be compiled for each kernel flavor.
 						<package>dkms</package> should probably be used instead.
 						This type of packages is not described in this manual.
 					</para>
@@ -208,7 +208,7 @@ or add --createorig to create one.
 			<varlistentry><term><filename>copyright</filename></term>
 				<listitem>
 					<para>
-						This file contains the copyright and licence information for all files contained in the package.
+						This file contains the copyright and license information for all files contained in the package.
 						See <xref linkend="deb:copyright"/> below for more information.
 					</para>
 				</listitem>
@@ -318,7 +318,7 @@ or add --createorig to create one.
 				<term><filename><replaceable>package</replaceable>.manpage.sgml</filename></term>
 				<listitem>
 					<para>
-						Manual page for programs, library functions or file formats, either directly in <acronym>TROFF</acronym> or <acronym>SGML</acronym>.
+						Manual page for programs, library functions or file formats, either directly in <acronym>troff</acronym> or <acronym>SGML</acronym>.
 						See <citerefentry><refentrytitle>dh_installman</refentrytitle><manvolnum>1</manvolnum></citerefentry> for more details.
 					</para>
 				</listitem>
@@ -407,8 +407,8 @@ Description: <insert up to 60 chars description>
 					<listitem>
 						<para>
 							Defines the priority of the package.
-							This information is only used by some tools to create installation DVDs.
-							More important packages are put on earlier CDs, while less important packages are put on later CDs.
+							This information is only used by some tools to create installation DVD.
+							More important packages are put on earlier CD, while less important packages are put on later CD.
 						</para>
 						<variablelist>
 							<varlistentry><term><literal>essential</literal></term>
@@ -658,7 +658,7 @@ Provides: www-browser, news-reader
 
 		<section id="deb:copyright"><title>debian/copyright</title>
 			<para>
-				The <filename>copyright</filename> file contains copyright and licence information.
+				The <filename>copyright</filename> file contains copyright and license information.
 				For a downloaded source package it should include the download location and names of upstream authors.
 			</para>
 			<programlisting><![CDATA[

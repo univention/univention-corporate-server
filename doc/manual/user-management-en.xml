@@ -150,14 +150,14 @@
                         <entry>
                             The display name is automatically composed of the first and
                             surnames. It generally does not need to be changed. The screen name is
-                            used for the synchronisation with Active Directory and Samba 4 among
+                            used for the synchronization with Active Directory and Samba 4 among
                             other things.
                         </entry>
                     </row>
                     <row>
-                        <entry>Organisation</entry>
+                        <entry>Organization</entry>
                         <entry>
-                            The organisation is to be entered here.
+                            The organization is to be entered here.
                         </entry>
                     </row>
                     <row>
@@ -247,7 +247,7 @@
                                 environment, an account deactivation might also be caused by external tools; in that
                                 case the selection field reflects the account status. Normally users should
                                 always be deactivated for all account types. The following deactivation states can be
-                                realised:
+                                realized:
                             </para>
                                 <itemizedlist>
                                     <listitem>
@@ -486,7 +486,7 @@
                             <para>
                                 The user ID can only
                                 be declared when adding the user. When the user data are subsequently edited,
-                                the user ID will be represented in grey and barred from change.
+                                the user ID will be represented in gray and barred from change.
                             </para>
                         </entry>
                     </row>
@@ -1181,7 +1181,7 @@ univention-director-manager users/user
         <para>
 		  If only a single character of an attribute is required instead of the complete attribute
 		  value, the index of the required character can be entered in the user template in square
-		  brackets after the name of the attribute. The count of characters of the attribute begins
+		  parentheses after the name of the attribute. The count of characters of the attribute begins
 		  with 0, so that index 1 corresponds to the second character of the attribute
 		  value. Accordingly, <userinput>&lt;firstname&gt;[0].&lt;lastname&gt;@company.com</userinput>
 		  means an e-mail address will consist of the first letter of the first name plus the lastname.
@@ -1189,7 +1189,7 @@ univention-director-manager users/user
 
         <para>
 		  A substring of the attribute value can be defined by entering a range in square
-		  brackets. In doing so, the index of the first required character and the index of the last
+		  parentheses. In doing so, the index of the first required character and the index of the last
 		  required character plus one are to be entered. For example, the input
 		  <userinput>&lt;firstname&gt;[2:5]</userinput> returns the third to fifth character of the
 		  first name.

@@ -16,8 +16,8 @@
 		Univention Corporate Server offers a cross platform domain concept with a
 		common trust context between Linux and/or Windows systems. Within this domain
 		a user is known to all systems via his username and password stored in the
-		&ucsUMS; and can use all services which are authorised for him. The management
-		system keeps the account synchronised for the windows log-in, Linux/POSIX
+		&ucsUMS; and can use all services which are authorized for him. The management
+		system keeps the account synchronized for the windows log-in, Linux/POSIX
 		systems and Kerberos. The management of user accounts is described in
 		<xref linkend="users:general"/>.
 	</para>
@@ -51,7 +51,7 @@
 	</para>
 	<para>
 		Kerberos is an authentication framework the purpose of which is to permit
-		secure identification in the potentially insecure connections of decentralised
+		secure identification in the potentially insecure connections of decentralized
 		networks. Every UCS domain operates its own Kerberos trust context
 		(realm). Further information can be found in <xref
 		linkend="domain:kerberos"/>.
@@ -85,7 +85,7 @@
 		</para>
 		<para>
 			When a computer joins, a computer account is created, the SSL certificates are
-			synchronised and an LDAP copy is initiated if necessary. The <emphasis>join
+			synchronized and an LDAP copy is initiated if necessary. The <emphasis>join
 			scripts</emphasis> are also run at the end of the join process. These register
 			further objects, etc., in the directory service using the software packages
 			installed on the system (see <xref linkend="domain-ldap:joinscripts"/>).
@@ -123,7 +123,7 @@
 				</listitem>
 				<listitem>
 					<simpara>
-					A user account which is authorised to add systems to the UCS domains
+					A user account which is authorized to add systems to the UCS domains
 					is called a join account. By default, this is the
 					<systemitem class="username">Administrator</systemitem> user or a member of the <systemitem class="groupname">Domain
 					Admins</systemitem> group. The join account can be assigned using the
@@ -154,7 +154,7 @@
 			</para>
 			<para>
 				As for the domain joining procedure via the command line, username and password of a
-				user account authorised to add computers to a domain must be entered
+				user account authorized to add computers to a domain must be entered
 				in the resulting dialogue.
 				Likewise, the &ucsMaster; will be determined automatically via a DNS request, but
 				can also be entered manually.
@@ -254,7 +254,7 @@
 	  </para>
 
 	  <para>
-		Joining the domain takes some time and the process must not be cancelled prematurely. After
+		Joining the domain takes some time and the process must not be canceled prematurely. After
 		successful joining a small window appears with the message <guimenu>Welcome to the domain
 		<replaceable>domain name</replaceable></guimenu>. This should be confirmed with
 		<mousebutton>OK</mousebutton>. The computer must then be restarted for the changes to take
@@ -280,7 +280,7 @@
 	  <para>
 		For a domain join against a domain controller based on Samba 4, the DNS configuration of the
 		client must be set up in such a way that DNS entries from the DNS zone of the UCS domain can
-		also be resolved. In addition, the time on the client system must also be synchronised with
+		also be resolved. In addition, the time on the client system must also be synchronized with
 		the time on the domain controller.
 	  </para>
 
@@ -463,7 +463,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 	<title>UCS system roles</title>
 	<para>
 		In a UCS domain systems can be installed in different <emphasis>system
-		roles</emphasis>. The following gives a short characterisation of the different
+		roles</emphasis>. The following gives a short characterization of the different
 		systems:
 	</para>
 
@@ -499,7 +499,7 @@ dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn<
 		<para>
 			All the domain data are saved as read-only copies on servers with the
 			&ucsSlave; role (slave DC for short). In contrast to the &ucsBackup;, however,
-			not all security certificates are synchronised.
+			not all security certificates are synchronized.
 		</para>
 		<para>
 			As access to the services running on a &ucsSlave; are performed against the
@@ -781,7 +781,7 @@ slapcat &gt; ldapdata.txt
 
 		<para>
 			The default setting of the LDAP server after new installations with UCS does
-			not allow anonymous access to the LDAP directory. This behaviour is configured
+			not allow anonymous access to the LDAP directory. This behavior is configured
 			with the &ucsUCRV; <envar>ldap/acl/read/anonymous</envar>. Individual IP
 			addresses can be granted anonymous read permissions via &ucsUCRV;
 			<envar>ldap/acl/read/ips</envar>.
@@ -895,10 +895,10 @@ slapcat &gt; ldapdata.txt
 	</section>
 
 	<section id="domain:ldap:syncrepl">
-		<title>Syncrepl for synchronisation with non-UCS OpenLDAP servers</title>
+		<title>Syncrepl for synchronization with non-UCS OpenLDAP servers</title>
 		<para>
 			The syncrepl replication service can also be activated parallel to the notifier
-			service for the synchronisation of OpenLDAP servers not installed on UCS
+			service for the synchronization of OpenLDAP servers not installed on UCS
 			systems. Syncrepl is a component of OpenLDAP, monitors changes in the local
 			directory service and transmits them to other OpenLDAP servers.
 		</para>
@@ -1076,22 +1076,22 @@ root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 
 
 	  <section id="domain:listenernotifier:erroranalysis:reinit">
-		<title>Reinitialisation of listener modules</title>
+		<title>Reinitialization of listener modules</title>
 
 		<para>
-		  If there are problems in running a listener module, there is the option of reinitialising
+		  If there are problems in running a listener module, there is the option of reinitializing
 		  the module. In this case, all LDAP objects with which the listener module works are passed
 		  on again.
 		</para>
 
 		<para>
 		  The name of the listener module must be supplied to the command for the renewed
-		  initialisation. The installed listener modules can be found in the
+		  initialization. The installed listener modules can be found in the
 		  <filename class="directory">/var/lib/univention-directory-listener/handlers/</filename> directory.
 		</para>
 
 		<para>
-		  The following command can be used to reinitialise the printer module, for example:
+		  The following command can be used to reinitialize the printer module, for example:
 
 		  <programlisting language="sh">
 univention-directory-listener-ctrl resync cups-printers
@@ -1146,16 +1146,16 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<!-- How the root CA can be transformed into a subordinate certification -->
 	<!-- authority (Sub CA) and positioned below the CA of another or an -->
-	<!-- existing organisation is documented in WIKIREF-23879. -->
+	<!-- existing organization is documented in WIKIREF-23879. -->
 
 	<para>
 		The UCS-CA is always found on the &ucsMaster;. A copy of the CA is stored on
-		every &ucsBackup;, which is synchronised with the CA on the domain controller
+		every &ucsBackup;, which is synchronized with the CA on the domain controller
 		master by a Cron job every 20 minutes.
 	</para>
 	<caution>
 		<para>
-		The CA is synchronised from the &ucsMaster; to the &ucsBackup; and not
+		The CA is synchronized from the &ucsMaster; to the &ucsBackup; and not
 		vice-versa. For this reason, only the CA on the &ucsMaster; should be used.
 		</para>
 	</caution>
@@ -1207,8 +1207,8 @@ univention-directory-listener-ctrl resync cups-printers
 	<title>Kerberos</title>
 	<para>
 	  Kerberos is an authentication framework the purpose of which is to permit secure
-	  identification in the potentially insecure connections of decentralised networks. In Kerberos,
-	  all clients use a foundation of mutual trust, the <emphasis>Key Distribution Centre</emphasis>
+	  identification in the potentially insecure connections of decentralized networks. In Kerberos,
+	  all clients use a foundation of mutual trust, the <emphasis>Key Distribution Center</emphasis>
 	  (KDC). A client authenticates at this KDC and receives an authentication token, the so-called
 	  ticket which can be used for authentication within the Kerberos environment (the so-called
 	  Kerberos realm). The name of the Kerberos realm is configured as part of the installation of
@@ -1217,7 +1217,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<para>
 	  Tickets have a standard validity period of 8 hours; this is why it is vital for a Kerberos
-	  domain to have the system time synchronised for all the systems belonging to the Kerberos
+	  domain to have the system time synchronized for all the systems belonging to the Kerberos
 	  realm.
 	</para>
 
@@ -1226,7 +1226,7 @@ univention-directory-listener-ctrl resync cups-printers
 	  on UCS domain controller systems without Samba 4, while Kerberos is provided by a Heimdal
 	  version integrated in Samba on Samba 4 DCs. In a environment composed of UCS domain
 	  controllers without Samba 4 and Samba 4 domain controllers both Kerberos environments are
-	  based on identical data (these are synchronised between Samba 4 and OpenLDAP via the
+	  based on identical data (these are synchronized between Samba 4 and OpenLDAP via the
 	  Univention S4 connector (see <xref linkend="windows:s4connector"/>)).
 	</para>
 

@@ -13,7 +13,7 @@
   <section id="windows:general">
 	<title>Introduction</title>
 	<para>
-	  UCS can offer Active Directory (AD) services, be a member of an Active Directory domain or synchronise objects between Active Directory domains and a UCS domain.
+	  UCS can offer Active Directory (AD) services, be a member of an Active Directory domain or synchronize objects between Active Directory domains and a UCS domain.
 #or function as an NT domain controller.
 	</para>
 
@@ -123,7 +123,7 @@
 
 		  <itemizedlist>
 			<listitem><simpara>
-			  Synchronisation of the system times between the Windows client and domain controller
+			  Synchronization of the system times between the Windows client and domain controller
 			  is essential for functioning Kerberos authentication. In the default setting, the
 			  system time is updated via NTP during system startup. This can also be done manually
 			  using the command <command>w32tm /resync</command>.
@@ -212,14 +212,14 @@
 
 		<para>
 		  When using Samba as an Active Directory domain controller, Samba provides a separate LDAP
-		  directory service. The synchronisation between the UCS LDAP and the Samba LDAP occurs via
+		  directory service. The synchronization between the UCS LDAP and the Samba LDAP occurs via
 		  an internal system service, the Univention S4 connector. The connector is enabled on the
 		  &ucsMaster; by default and typically requires no further configuration.
 		</para>
 
 		<para>
-		  Further information on the status of the synchronisation can be found in the log file
-		  <filename>/var/log/univention/connector-s4.log</filename>. Additional information on analysing
+		  Further information on the status of the synchronization can be found in the log file
+		  <filename>/var/log/univention/connector-s4.log</filename>. Additional information on analyzing
 		  connector replication problems can be found in <u:sdb>1235</u:sdb>.
 		</para>
 
@@ -250,7 +250,7 @@ instanceType: 4
 		<para>
 		  Samba AD domains use the Directory Replication System (DRS) to replicate the directory
 		  data. DRS allows multi-master replication, i.e., the write changes from multiple domain
-		  controllers are synchronised at protocol level. Consequently, the use of snapshots in
+		  controllers are synchronized at protocol level. Consequently, the use of snapshots in
 		  virtualization solutions should be avoided when using Samba 4 and Samba 4 should be
 		  operated on a server which is never switched off.
 		</para>
@@ -274,18 +274,18 @@ instanceType: 4
 
 
 	  <section id="windows:sysvolshare">
-		<title>Synchronisation of the SYSVOL share</title>
+		<title>Synchronization of the SYSVOL share</title>
 		<para>
 		  The SYSVOL share is a share which provides group policies and logon scripts in Active
-		  Directory / Samba 4. It is synchronised among all domain controllers and stored in the
+		  Directory / Samba 4. It is synchronized among all domain controllers and stored in the
 		  <filename class="directory">/var/lib/samba/sysvol/</filename> directory.
 		</para>
 
 		<para>
-		  In Microsoft Active Directory, the SYSVOL share is synchronised by the File Replication
+		  In Microsoft Active Directory, the SYSVOL share is synchronized by the File Replication
 		  Service (introduced with Windows 2000) or the Distributed File System (as of <systemitem class="osname">Windows 2008
 		  R2</systemitem>). These replication methods are not yet fully implemented in Samba 4. The
-		  synchronisation between the Samba 4 domain controllers is performed in UCS via a Cron job
+		  synchronization between the Samba 4 domain controllers is performed in UCS via a Cron job
 		  (every five minutes as standard - can be configured using the &ucsUCRV;
 		  <envar>samba4/sysvol/sync/cron</envar>).
 		</para>
@@ -313,7 +313,7 @@ instanceType: 4
 			objects</emphasis>). Put more precisely, a GPO can contain a series of policies. Despite
 			their name, group policy objects cannot be assigned directly to certain user groups, but
 			instead are linked with certain AD administration units (domains,
-			sites or organisational units) in the Samba directory service (Samba DS/AD) and thus
+			sites or organizational units) in the Samba directory service (Samba DS/AD) and thus
 			refer to subordinate objects. A group-specific or user-specific evaluation is only
 			indirectly possible via the <emphasis>Security Filtering</emphasis> of a group policy
 			object, in which the <emphasis>Apply group policy Allow/Deny</emphasis> privilege can be directly
@@ -505,7 +505,7 @@ instanceType: 4
 		  </para>
 
 		  <para>
-			One domain can be structured in different organisational units (OUs). This can, for
+			One domain can be structured in different organizational units (OUs). This can, for
 			example, be used to store the employees from accounting and the users in the
 			administration department in different LDAP positions.
 		  </para>
@@ -513,7 +513,7 @@ instanceType: 4
 		  <para>
 			Group policies can mutually overlap. In this case, the inheritance principle applies,
 			e.g., the superordinate policies overwrite the subordinate ones. The applicable policies
-			for a user can be displayed on the Windows client either with the modelling wizard in
+			for a user can be displayed on the Windows client either with the modeling wizard in
 			Group Policy Management or by entering the command <command>gpresult /user USERNAME
 			/v </command> in the Windows command line.
 		  </para>
@@ -547,7 +547,7 @@ instanceType: 4
 				  </simpara></listitem>
 
 				  <listitem><simpara>
-					Assignment of a policy to an organisational unit (OU) (in turn, each subordinate
+					Assignment of a policy to an organizational unit (OU) (in turn, each subordinate
 					OU overrules policies from superordinate OUs).
 				  </simpara></listitem>
 				</itemizedlist>
@@ -710,7 +710,7 @@ END CATEGORY
 		  Samba supports roaming profiles, i.e., user settings are saved on a central server. This
 		  directory is also used for storing the files which the user saves in the <emphasis>My
 		  Documents</emphasis> folder. Initially, these files are stored locally on the Windows
-		  computer and then synchronised onto the Samba server when the user logs off.
+		  computer and then synchronized onto the Samba server when the user logs off.
 		</para>
 
 		<para>
@@ -758,13 +758,13 @@ END CATEGORY
 	      UCS as a part (domain member) of an AD domain (see <xref linkend="ad-connector:ad-member-einrichtung"/>)
 	    </simpara></listitem>
 	    <listitem><simpara>
-	      Synchronisation of account data between an AD domain and a UCS domain (see <xref linkend="ad-connector:ad-connector-einrichtung"/>).
+	      Synchronization of account data between an AD domain and a UCS domain (see <xref linkend="ad-connector:ad-connector-einrichtung"/>).
 	    </simpara></listitem>
 	  </itemizedlist>
 	</para>
 
 	<para>
-	  In both modes, the Active Directory Connection service is used in UCS (UCS AD Connector for short), which can synchronise the directory service objects between a Windows 2003/2008/2012 server with Active Directory (AD) and the OpenLDAP directory of &ucsUCS;.
+	  In both modes, the Active Directory Connection service is used in UCS (UCS AD Connector for short), which can synchronize the directory service objects between a Windows 2003/2008/2012 server with Active Directory (AD) and the OpenLDAP directory of &ucsUCS;.
 	</para>
 
 	<para>
@@ -772,7 +772,7 @@ END CATEGORY
 	</para>
 
 	<para>
-	  The second mode, which can be configured via the <emphasis>Active Directory Connection</emphasis> app, is used to run the UCS domain parallel to an existing AD domain. In this mode, each domain user is assigned a user account with the same name in both the UCS and the AD domain. Thanks to the use of the name identity and the synchronisation of the encrypted password data, this mode allows transparent access between the two domains. In this mode, the authentication of a user in the UCS domain occurs directly within the UCS domain and as such is not directly dependent on the AD domain. The set-up of this operating mode is described in detail in <xref linkend="ad-connector:ad-connector-einrichtung"/>.
+	  The second mode, which can be configured via the <emphasis>Active Directory Connection</emphasis> app, is used to run the UCS domain parallel to an existing AD domain. In this mode, each domain user is assigned a user account with the same name in both the UCS and the AD domain. Thanks to the use of the name identity and the synchronization of the encrypted password data, this mode allows transparent access between the two domains. In this mode, the authentication of a user in the UCS domain occurs directly within the UCS domain and as such is not directly dependent on the AD domain. The set-up of this operating mode is described in detail in <xref linkend="ad-connector:ad-connector-einrichtung"/>.
 	</para>
   </section>
 
@@ -843,13 +843,13 @@ END CATEGORY
 
   <warning>
     <para>
-    	If additional UCS systems were already part of the UCS domain in addition to the &ucsMaster;, they must also join the domain anew. At the same time they recognise that the &ucsMaster; is in <emphasis>AD member</emphasis> mode and also join the authentication structure of the AD domain and can then also provide Samba file shares, for example.
+      If additional UCS systems were already part of the UCS domain in addition to the &ucsMaster;, they must also join the domain anew. At the same time they recognize that the &ucsMaster; is in <emphasis>AD member</emphasis> mode and also join the authentication structure of the AD domain and can then also provide Samba file shares, for example.
     </para>
   </warning>
 
   <note>
   	<para>
-    As the AD Kerberos infrastructure is used for the authentication of users in this mode, it is essential that the system times of UCS and the AD domain controller are synchronised (with a tolerance of 5 minutes). For this purpose, the AD domain controller is configured as the NTP time server in UCS.
+    As the AD Kerberos infrastructure is used for the authentication of users in this mode, it is essential that the system times of UCS and the AD domain controller are synchronized (with a tolerance of 5 minutes). For this purpose, the AD domain controller is configured as the NTP time server in UCS.
 
     	In the case of authentication problems, the system time should always be the first thing to be checked.
     </para>
@@ -868,8 +868,8 @@ END CATEGORY
   </para>
 
   <para>
-	  In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorisations of the &ucsMaster;'s machine account.
-	  These authorisations are not sufficient for exporting encrypted password data.
+	  In <emphasis>AD member</emphasis> mode, in the default setting, the UCS AD Connector exports object data from the AD with the authorizations of the &ucsMaster;'s machine account.
+	  These authorizations are not sufficient for exporting encrypted password data.
 	  As such, the LDAP DN of a privileged replication user can also be manually entered in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar> for the setting up of the password service.
 	  This must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD.
 	  The corresponding password must be saved in a file on the &ucsMaster; and the file name entered in the &ucsUCRV; <envar>connector/ad/ldap/bindpw</envar>.
@@ -898,19 +898,19 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <title>Setup of the UCS AD connector</title>
 
   <para>
-  	As an alternative to membership in an AD domain, as described in the previous section, the Active Directory Connection can be used to synchronise user and group objects between a UCS domain and an AD domain. In addition to unidirectional synchronisation, this operating mode also allows bidirectional synchronisation. In this operating mode, both domains exist in parallel and their authentication systems function independently. The prerequisite for this is the synchronisation of the encrypted password data. This requires the installation of a special password service on the AD domain controller.
+    As an alternative to membership in an AD domain, as described in the previous section, the Active Directory Connection can be used to synchronize user and group objects between a UCS domain and an AD domain. In addition to unidirectional synchronization, this operating mode also allows bidirectional synchronization. In this operating mode, both domains exist in parallel and their authentication systems function independently. The prerequisite for this is the synchronization of the encrypted password data. This requires the installation of a special password service on the AD domain controller.
   </para>
 
   <para>
-    In the default setting, containers, organisational units, users and groups are synchronised. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory. A special service is installed on the Windows server for this purpose, which enables password synchronisation (see <xref linkend="ad-connector:password-dienst"/>).
+    In the default setting, containers, organizational units, users and groups are synchronized. Users have an exceptional position since the password cannot be queried via the LDAP protocol in Active Directory. A special service is installed on the Windows server for this purpose, which enables password synchronization (see <xref linkend="ad-connector:password-dienst"/>).
   </para>
 
   <para>
-    Information on the attributes configured in the basic setting and particularities to take into account can be found in <xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronisation"/>.
+    Information on the attributes configured in the basic setting and particularities to take into account can be found in <xref linkend="ad-connector:details-zur-vorkonfigurierten-synchronization"/>.
   </para>
 
   <para>
-    The computer accounts are not synchronised, as Windows computers can only be mounted in one domain.
+    The computer accounts are not synchronized, as Windows computers can only be mounted in one domain.
   </para>
 
   <para>
@@ -918,7 +918,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </para>
 
   <para>
-    The initialisation is performed after the first start of the connector. All the entries are read out of the UCS, converted to AD objects according to the mapping set and added (or modified if already present) on the AD side. All the objects are then exported from the AD and converted to UCS objects and added/modified accordingly on the UCS side. As long as there are changes, the directory service servers continue to be requested. The UCS AD connector can also be operated in a unidirectional mode.
+    The initialization is performed after the first start of the connector. All the entries are read out of the UCS, converted to AD objects according to the mapping set and added (or modified if already present) on the AD side. All the objects are then exported from the AD and converted to UCS objects and added/modified accordingly on the UCS side. As long as there are changes, the directory service servers continue to be requested. The UCS AD connector can also be operated in a unidirectional mode.
   </para>
 
   <para>
@@ -926,7 +926,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </para>
 
   <para>
-    If an object cannot be synchronised, it is firstly reset (“rejected”). Following a configurable number of cycles – the interval can be adjusted using the &ucsUCR; variable <envar>connector/s4/retryrejected</envar> – another attempt is made to import the changes. The standard value is ten cycles. In addition, when the UCS AD Connector is restarted, an attempt is also made to synchronise the previously rejected changes again.
+    If an object cannot be synchronized, it is firstly reset (“rejected”). Following a configurable number of cycles – the interval can be adjusted using the &ucsUCR; variable <envar>connector/s4/retryrejected</envar> – another attempt is made to import the changes. The standard value is ten cycles. In addition, when the UCS AD Connector is restarted, an attempt is also made to synchronize the previously rejected changes again.
   </para>
 
   <para>
@@ -957,7 +957,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <warning>
 	<para>
 	  Despite intensive tests it is not possible to rule out that the
-	  results of the synchronisation may affect the operation of a
+	  results of the synchronization may affect the operation of a
 	  productive domain. The connector should therefore be tested for the
 	  respective requirements in a separate environment in advance.
 	</para>
@@ -973,7 +973,7 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </para>
 
   <para>
-	In the first dialogue window of the set-up wizard, the point <emphasis>Synchronisation of content data between an AD and this UCS domain</emphasis> must be selected and confirmed with <mousebutton>Next</mousebutton>.
+	In the first dialog window of the set-up wizard, the point <emphasis>Synchronization of content data between an AD and this UCS domain</emphasis> must be selected and confirmed with <mousebutton>Next</mousebutton>.
 	</para>
 
 	<figure id="windows:ad:connector"><title>Configuration of the UCS AD Connector in UMC</title>
@@ -1000,7 +1000,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   </para>
 
   <para>
-	In the <guimenu>Active Directory account</guimenu> field, the user is configured which is used for the access on the AD. The setting is saved in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>. The replication user must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD. If the connector performs read only synchronisation from AD to UCS, a standard user account can also be specified.
+	In the <guimenu>Active Directory account</guimenu> field, the user is configured which is used for the access on the AD. The setting is saved in the &ucsUCRV; <envar>connector/ad/ldap/binddn</envar>. The replication user must be a member of the <systemitem class="groupname">Domain Admins</systemitem> group in the AD. If the connector performs read only synchronization from AD to UCS, a standard user account can also be specified.
   </para>
 
   <para>
@@ -1012,17 +1012,17 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
   </para>
 
   <para>
-	Clicking on <mousebutton>Next</mousebutton> prompts the set-up wizard to check the connection to the AD domain controller. If it is not possible to create an SSL/TLS-encrypted connection, a warning is emitted in which you are advised to install a certification authority on the AD domain controller. It is recommended to follow this advice. Following this step, the set-up can be continued by clicking <mousebutton>Next</mousebutton> again. If it is still not possible to create an SSL/TLS-encrypted connection, a security query appears asking whether to set up the synchronisation without SSL encryption.
-	If this is desired, the set-up can be continued by clicking <mousebutton>Continue without encryption</mousebutton>. In this case, the synchronisation of the directory data is performed unencrypted.
+	Clicking on <mousebutton>Next</mousebutton> prompts the set-up wizard to check the connection to the AD domain controller. If it is not possible to create an SSL/TLS-encrypted connection, a warning is emitted in which you are advised to install a certification authority on the AD domain controller. It is recommended to follow this advice. Following this step, the set-up can be continued by clicking <mousebutton>Next</mousebutton> again. If it is still not possible to create an SSL/TLS-encrypted connection, a security query appears asking whether to set up the synchronization without SSL encryption.
+	If this is desired, the set-up can be continued by clicking <mousebutton>Continue without encryption</mousebutton>. In this case, the synchronization of the directory data is performed unencrypted.
   </para>
 
   <para>
-	If the AD domain controller supports SSL/TLS-encrypted connections, the set-up wizard offers <guimenu>Upload AD root certificate</guimenu> in the next step. This certificate must be exported from the AD certification authority in advance (see <xref linkend="ad-connector:ad-zertifikat"/>). In contrast, if this step is skipped, the certificate can also be uploaded via the UMC module at a later point in time and the SSL/TLS encryption enabled (until that point all directory data will, however, be synchronised unencrypted).
+	If the AD domain controller supports SSL/TLS-encrypted connections, the set-up wizard offers <guimenu>Upload AD root certificate</guimenu> in the next step. This certificate must be exported from the AD certification authority in advance (see <xref linkend="ad-connector:ad-zertifikat"/>). In contrast, if this step is skipped, the certificate can also be uploaded via the UMC module at a later point in time and the SSL/TLS encryption enabled (until that point all directory data will, however, be synchronized unencrypted).
   </para>
 
   <para>
-	The connector can be operated in different modes, which can be selected in the next dialogue window <guimenu>Configuration of Active Directory domain synchronisation</guimenu>.
-	In addition to bidirectional synchronisation, replication can also be performed in one direction from AD to UCS or from UCS to AD.
+	The connector can be operated in different modes, which can be selected in the next dialogue window <guimenu>Configuration of Active Directory domain synchronization</guimenu>.
+	In addition to bidirectional synchronization, replication can also be performed in one direction from AD to UCS or from UCS to AD.
 	Once the mode has been selected, <mousebutton>Next</mousebutton> needs to be clicked.
   </para>
 
@@ -1040,7 +1040,7 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 
   <note>
 	<para>
-		The connector can also synchronise several AD domains within one UCS domain; this is documented in <xref linkend="ext-doc-win"/>.
+		The connector can also synchronize several AD domains within one UCS domain; this is documented in <xref linkend="ext-doc-win"/>.
 	</para>
   </note>
 
@@ -1241,7 +1241,7 @@ The password service must then be restarted.
 <para>
 During a standard installation in Windows 2008 the Windows firewall
 blocks the access to the UCS AD Connector. This must either be deactivated
-in <guimenu>System settings</guimenu> or Port 6670/TCP authorised.
+in <guimenu>System settings</guimenu> or Port 6670/TCP authorized.
 </para>
 </section>
 
@@ -1315,10 +1315,10 @@ univention-adsearch cn=administrator cn givenName
 
 <section id="ad-connector:univention-connector-list-rejected"><title><command>univention-connector-list-rejected</command></title>
 <para>
-This tool lists the DNs of non-synchronised objects. In addition, in
+This tool lists the DNs of non-synchronized objects. In addition, in
 so far as temporarily stored, the corresponding DN in the
 respective other LDAP directory will be displayed. In conclusion
-<property>lastUSN</property> shows the ID of the last change synchronised by AD.
+<property>lastUSN</property> shows the ID of the last change synchronized by AD.
 </para>
 <para>
 This script may display an error message or an incomplete output if
@@ -1328,7 +1328,7 @@ the AD connector is in operation.
 
 <section id="windows:Logfiles"><title>Logfiles</title>
 <para>
-For troubleshooting when experiencing synchronisation problems,
+For troubleshooting when experiencing synchronization problems,
 corresponding messages can be found in the following files on the UCS
 system:
 </para>
@@ -1343,17 +1343,17 @@ logged in the <filename>C:\\Windows\\UCS-AD-Connector\\UCS-AD-Connector.log</fil
 </section>
 </section>
 
-<section id="ad-connector:details-zur-vorkonfigurierten-synchronisation"><title>Details on preconfigured synchronisation</title>
+<section id="ad-connector:details-zur-vorkonfigurierten-synchronization"><title>Details on preconfigured synchronization</title>
 <para>
 All containers which are ignored due to corresponding filters are
-exempted from synchronisation as standard. This can be found in the
+exempted from synchronization as standard. This can be found in the
 <filename>/etc/univention/connector/ad/mapping</filename> configuration file
 under the <emphasis>global_ignore_subtree</emphasis> setting.
 </para>
 
-<section id="ad-connector:container-und-organisationseinheiten"><title>Containers and organisational units</title>
+<section id="ad-connector:container-und-organisationseinheiten"><title>Containers and organizational units</title>
 <para>
-Containers and organisational units are synchronised together with their
+Containers and organizational units are synchronized together with their
 description. In addition, the <uri>cn=mail</uri> and <uri>cn=kerberos</uri>
 containers are ignored on both sides. Some particularities must be
 noted for containers on the AD side. In the <guimenu>User
@@ -1365,8 +1365,8 @@ containers, but displays them only in the advanced mode
 <section id="windows:ad-connector:Particularities"><title>Particularities</title>
 <itemizedlist>
 <listitem>
-<para>Containers or organisational units deleted in AD are deleted
-  recursively in UCS, which means that any non-synchronised subordinate
+<para>Containers or organizational units deleted in AD are deleted
+  recursively in UCS, which means that any non-synchronized subordinate
   objects, which are not visible in AD, are also deleted.</para>
   </listitem>
 </itemizedlist>
@@ -1375,7 +1375,7 @@ containers, but displays them only in the advanced mode
 
 <section id="ad-connector:gruppen"><title>Groups</title>
 <para>
-Groups are synchronised using the group name, whereby a user's primary
+Groups are synchronized using the group name, whereby a user's primary
 group is taken into account (which is only stored for the user in LDAP
 in AD).
 </para>
@@ -1384,13 +1384,13 @@ Group members with no opposite in the other system, e.g., due to
 ignore filters, are ignored (thus remain members of the group).
 </para>
 <para>
-The description of the group is also synchronised.
+The description of the group is also synchronized.
 </para>
 
 <section id="windows:groups:Particularities"><title>Particularities</title>
 <itemizedlist>
 <listitem>
-<para>The <emphasis>Pre-Windows 2000 name</emphasis> (LDAP attribute
+<para>The <emphasis>pre Windows 2000 name</emphasis> (LDAP attribute
 <property>samAccountName</property>) is used in AD, which means that a group in
 Active Directory can appear under a different name from in UCS.
 </para>
@@ -1398,20 +1398,20 @@ Active Directory can appear under a different name from in UCS.
 <listitem>
 <para>The connector ignores groups, which have been configured as a
   <emphasis>Well-Known Group</emphasis> under <guimenu>Samba group type</guimenu> in
-  &ucsUDM;. There is no synchronisation of the SID or the RID.
+  &ucsUDM;. There is no synchronization of the SID or the RID.
 </para>
 </listitem>
 <listitem>
 <para>Groups which were configured as <emphasis>Local Group</emphasis> under
-  <guimenu>Samba group type</guimenu> in &ucsUDM; are synchronised as a
+  <guimenu>Samba group type</guimenu> in &ucsUDM; are synchronized as a
   <emphasis>global group</emphasis> in the Active Directory by the connector.
 </para>
 </listitem>
 <listitem>
 <para>Newly created or moved groups are always saved in the same
   subcontainer on the opposite side. If several groups with the same
-  name are present in different containers during initialisation, the
-  members are synchronised, but not the position in LDAP. If one of
+  name are present in different containers during initialization, the
+  members are synchronized, but not the position in LDAP. If one of
   these groups is migrated on one side, the target container on the
   other side is identical, so that the DNs of the groups can no longer
   be differentiated from this point onward.
@@ -1420,7 +1420,7 @@ Active Directory can appear under a different name from in UCS.
 <listitem>
 <para>Certain group names are converted using a mapping table so that,
   for example in a German language setup, the UCS group <systemitem class="groupname">Domain
-    Users</systemitem> is synchronised with the AD group
+    Users</systemitem> is synchronized with the AD group
   <foreignphrase>Domänen-Benutzer</foreignphrase>. When used in anglophone AD domains, this
   mapping can result in <foreignphrase>germanophone</foreignphrase> groups' being created and
   should thus be deactivated in this case. This can be done using the
@@ -1461,7 +1461,7 @@ The complete table is:
 <listitem>
 <para>Nested groups are represented differently in AD and UCS. In UCS,
   if groups are members of groups, these objects can not always
-  be synchronised on the AD side and appear in the list of rejected
+  be synchronized on the AD side and appear in the list of rejected
   objects. Due to the existing limitations in Active Directory, nested
   groups should only be assigned there.
 </para>
@@ -1481,15 +1481,15 @@ The complete table is:
 
 <section id="ad-connector:benutzer"><title>Users</title>
 <para>
-Users are synchronised like groups using the user name or using the AD
-pre-Windows 2000 name. The <emphasis>First name</emphasis>, <emphasis>Last name</emphasis>,
+Users are synchronized like groups using the user name or using the AD
+pre Windows 2000 name. The <emphasis>First name</emphasis>, <emphasis>Last name</emphasis>,
 <emphasis>Primary group</emphasis> (in so far as present on the other side),
-<emphasis>Organisation</emphasis>, <emphasis>Description</emphasis>, <emphasis>Street</emphasis>, <emphasis>City</emphasis>,
+<emphasis>Organization</emphasis>, <emphasis>Description</emphasis>, <emphasis>Street</emphasis>, <emphasis>City</emphasis>,
 <emphasis>Postal code</emphasis>, <emphasis>Windows home path</emphasis>, <emphasis>Windows login script</emphasis>,
 <emphasis>Disabled</emphasis> and <emphasis>Account expiry date</emphasis> attributes are
 transferred. Indirectly <emphasis>Password</emphasis>, <emphasis>Password expiry date</emphasis>
 and <emphasis>Change password on next login</emphasis> are also
-synchronised. <emphasis>Primary e-mail address</emphasis> and <emphasis>Telephone number</emphasis> are
+synchronized. <emphasis>Primary e-mail address</emphasis> and <emphasis>Telephone number</emphasis> are
 prepared but commented out due to differing syntax in the mapping
 configuration.
 </para>
@@ -1501,12 +1501,12 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 <itemizedlist>
 <listitem>
 <para>Users are also identified using the name, so that for users
-  created before the first synchronisation on both sides, the same
+  created before the first synchronization on both sides, the same
   process applies as for groups as regards the position in LDAP.
 </para>
 </listitem>
 <listitem>
-<para>The synchronisation of the password expiry date and the
+<para>The synchronization of the password expiry date and the
   <emphasis>Change password on next login</emphasis> user option occurs on the
   UCS side on the Samba level alone. If a password change is initiated
   by &ucsUDM;, but the password changed in Active Directory, the
@@ -1530,7 +1530,7 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 <listitem>
 <para>AD and UCS create new users in a specific primary group (usually
   <systemitem class="groupname">Domain Users</systemitem> or <systemitem class="groupname" lang="de">Domänen-Benutzer</systemitem>) depending on the
-  presetting. During the first synchronisation from UCS to AD the
+  presetting. During the first synchronization from UCS to AD the
   users are therefore always a member in this group.
   </para>
 </listitem>
@@ -1577,7 +1577,7 @@ The <systemitem class="username">root</systemitem> and <systemitem class="userna
 
 		<listitem><simpara>
 		  The UCS domain controller needs to be installed with the same DNS domain name, NetBIOS
-		  (pre-Windows 2000) domain name and Kerberos realm as the AD domain. It is also recommended
+		  (pre Windows 2000) domain name and Kerberos realm as the AD domain. It is also recommended
 		  to configure the same LDAP base DN.
 		</simpara></listitem>
 
@@ -1719,7 +1719,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 
 		<listitem><simpara>
 		  When "<emphasis>Well Known</emphasis>" account and group objects
-		  (identified by their special RIDs) are synchronised into
+		  (identified by their special RIDs) are synchronized into
 		  the UCS OpenLDAP, a listener module running on each UCS system
 		  sets a &ucsUCR; variable to locally to map the English name to the non-English AD name.
 		  These variables are used to translate the English names used in the UCS configuration

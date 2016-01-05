@@ -318,20 +318,20 @@ the size of the respective hard drive.
   <section id="installation:Domäneneinstellungen:NeueDomäne">
 	<title>"Create a new UCS domain" mode</title>
 	<para>
-	  Once the <guimenu>Create a new UCS domain</guimenu> mode has been selected, an <emphasis>organisation name</emphasis>, an <emphasis>e-mail address</emphasis>, a <emphasis>fully qualified domain name</emphasis> and an <emphasis>LDAP base</emphasis> are requested in the following two steps.
+	  Once the <guimenu>Create a new UCS domain</guimenu> mode has been selected, an <emphasis>organization name</emphasis>, an <emphasis>e-mail address</emphasis>, a <emphasis>fully qualified domain name</emphasis> and an <emphasis>LDAP base</emphasis> are requested in the following two steps.
 	</para>
 	<para>
-	  Specification of an organisation name is optional and it is used in the second step to generate a domain name and the LDAP base automatically.
+	  Specification of an organization name is optional and it is used in the second step to generate a domain name and the LDAP base automatically.
 	</para>
 	<para>
-	  If a valid e-mail address is specified, this is used to activate a personalised license, which is required for the use of the Univention App Center. The license is generated automatically and sent to the specified e-mail address immediately. The license can then be imported via the &ucsUMC; license dialogue.
+	  If a valid e-mail address is specified, this is used to activate a personalized license, which is required for the use of the Univention App Center. The license is generated automatically and sent to the specified e-mail address immediately. The license can then be imported via the &ucsUMC; license dialog.
 	</para>
 	<para>
 	  The name of the UCS system to be configured and the name of the DNS domain are determined from the fully qualified domain name (host name including domain name) entered here.
-	  A suggestion is generated automatically from the organisation name entered in the previous step. It is recommended not to use a publicly available DNS domain, as this can result in problems during the name resolution.
+	  A suggestion is generated automatically from the organization name entered in the previous step. It is recommended not to use a publicly available DNS domain, as this can result in problems during the name resolution.
 	</para>
 	<para>
-	  A LDAP base needs to be specified for the initialisation of the directory service. A suggestion is also derived here automatically from the fully qualified domain name. This value can usually be adopted without any changes.
+	  A LDAP base needs to be specified for the initialization of the directory service. A suggestion is also derived here automatically from the fully qualified domain name. This value can usually be adopted without any changes.
 	</para>
 	<figure id="installation-newdomain">
 	  <title>Specification of host name and LDAP base</title>
@@ -530,7 +530,7 @@ see <xref linkend="installation-overview"/>.
   <para>
 	The open source version of the VMware Tools (Open VM Tools) is delivered with UCS. The tools can
 	be installed using the <package>open-vm-tools</package> package (they are not required
-	but do, for example, allow synchronisation of the time on the virtualization server with the
+	but do, for example, allow synchronization of the time on the virtualization server with the
 	guest system).
   </para>
 </section>
