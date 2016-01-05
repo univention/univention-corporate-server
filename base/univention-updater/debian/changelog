@@ -1,3 +1,11 @@
+univention-updater (11.0.7-10) unstable; urgency=medium
+
+  * Bug #39993: fix code execution vulnerability
+  * use univention.lib.atjobs instead of own parsing
+  * remove dead code
+
+ -- Florian Best <best@univention.de>  Tue, 05 Jan 2016 18:16:08 +0100
+
 univention-updater (11.0.7-9) unstable; urgency=low
 
   * Bug #39954: Reduce HTTP connection timeout to 30s
