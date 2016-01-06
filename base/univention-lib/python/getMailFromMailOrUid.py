@@ -5,7 +5,7 @@
 #  get primaryMailAddress and uid from primaryMailAddress or uid
 #  (used by horde/imp login hook to map uid to mail address)
 #
-# Copyright 2011-2014 Univention GmbH
+# Copyright 2011-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

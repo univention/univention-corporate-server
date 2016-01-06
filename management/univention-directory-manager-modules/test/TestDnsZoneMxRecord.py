@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  unit tests: dns/zone_mx_record tests
 #
-# Copyright 2004-2015 Univention GmbH
+# Copyright 2004-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

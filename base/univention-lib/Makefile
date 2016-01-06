@@ -3,7 +3,7 @@
 # ucs-school-lib
 #  makefile
 #
-# Copyright 2012-2014 Univention GmbH
+# Copyright 2012-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

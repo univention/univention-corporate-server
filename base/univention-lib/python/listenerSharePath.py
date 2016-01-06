@@ -4,7 +4,7 @@
 # Univention Helper
 #  function for creating or rename share directories
 #
-# Copyright 2011-2014 Univention GmbH
+# Copyright 2011-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

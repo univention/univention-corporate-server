@@ -1,7 +1,7 @@
 """
 Internal functions for test finding and setup.
 """
-# Copyright 2013-2015 Univention GmbH
+# Copyright 2013-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

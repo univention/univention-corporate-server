@@ -3,7 +3,7 @@
 """
 Univention Updater: Locking
 """
-# Copyright 2008-2015 Univention GmbH
+# Copyright 2008-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
