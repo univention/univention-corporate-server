@@ -33,38 +33,41 @@
 """Watch for addition or deletion of virtualization nodes and notify UVMM daemon
 accordingly."""
 
-name='uvmmd-nodes'
-description='UCS Virtual Machine Manager Daemon Nodes'
-filter='(objectClass=univentionHost)'
-attributes=['univentionService']
+name = 'uvmmd-nodes'
+description = 'UCS Virtual Machine Manager Daemon Nodes'
+filter = '(objectClass=univentionHost)'
+attributes = ['univentionService']
 
-__package__='' 	# workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug as debug
 from univention.uvmm.uvmm_ldap import SERVICES, ldap2fqdn
+
 
 def uvmm(mode, uri):
 	"""Invoke UVMM CLI as root."""
 	# Bug #21534: listener breaks pickle, using external CLI instead
 	return listener.run("/usr/sbin/univention-virtual-machine-manager", ["univention-virtual-machine-manager", "-T", "5", mode, uri], 0, True)
 
+
 def initialize():
 	"""Called once on first initialization."""
 	pass
+
 
 def handler(dn, new, old):
 	"""Called on each change."""
 	try:
 		old_services = old.get('univentionService', [])
 		old_fqdn = ldap2fqdn(old)
-	except StandardError, e: # NameError, KeyError
+	except StandardError:  # NameError, KeyError
 		old_services = []
 		old_fqdn = ""
 
 	try:
 		new_services = new.get('univentionService', [])
 		new_fqdn = ldap2fqdn(new)
-	except StandardError, e: # NameError, KeyError
+	except StandardError:  # NameError, KeyError
 		new_services = []
 		new_fqdn = ""
 
@@ -83,9 +86,11 @@ def handler(dn, new, old):
 			rc = uvmm("add", uri)
 			debug.debug(debug.LISTENER, debug.INFO, "adding node %s: %d" % (uri, rc))
 
+
 def postrun():
 	"""Called 15s after handler."""
 	pass
+
 
 def clean():
 	"""Called before resync."""

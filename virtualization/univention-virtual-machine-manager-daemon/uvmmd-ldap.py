@@ -38,13 +38,15 @@ description = 'UCS Virtual Machine Manager Daemon LDAP monitor'
 filter = '(objectClass=univentionVirtualMachine)'
 attributes = []
 
-__package__='' 	# workaround for PEP 366
+__package__ = '' 	# workaround for PEP 366
 import listener
 import univention.debug as debug
+
 
 def initialize():
 	"""Called once on first initialization."""
 	pass
+
 
 def handler(dn, new, old):
 	"""Called on each change."""
@@ -61,6 +63,7 @@ def handler(dn, new, old):
 def postrun():
 	"""Called 15s after handler."""
 	pass
+
 
 def clean():
 	"""Called before resync."""
