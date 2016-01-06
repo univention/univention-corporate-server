@@ -3,7 +3,7 @@
 # Univention mail Postfix Policy
 #  check allowed email senders for groups and distlist
 #
-# Copyright 2005-2015 Univention GmbH
+# Copyright 2005-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -46,12 +46,10 @@ parser.add_option("-t", "--test", dest="test", help="test run", action="store_tr
 options, args = parser.parse_args()
 
 
-def listfilter(attr):
+def listfilter(attrib):
 
-	sender = attr.get("sender", None)
-	recipient = attr.get("recipient", None)
-	action = "DUNNO default"
-	allowed = {}
+	sender = attrib.get("sender", None)
+	recipient = attrib.get("recipient", None)
 
 	if not options.ldap_base:
 		return "443 LDAP base not set."
@@ -59,62 +57,62 @@ def listfilter(attr):
 		# We will never get here, because an empty recipient will have been rejected
 		# earlier by Postfix with '554 5.5.1 Error: no valid recipients'.
 		return "REJECT Access denied for empty recipient."
-	elif not sender:
-		return "REJECT Access denied for empty sender."
 	else:
 		# reuse secret file of univention-mail-cyrus
 		ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/postfix/listfilter.secret")
 
-		userDn = ""
-		userGroups = []
-		allowedUserDns = []
-		allowedGroupDns = []
+		user_dn = ""
+		users_groups = []
+		allowed_user_dns = []
+		allowed_group_dns = []
 
 		# try the ldap stuff, if that fails send email anyway
 		try:
-			# get dn and groups of sender
-			filter = '(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))' % (sender, sender, sender)
-			userResult = ldap.search(base=options.ldap_base, filter=filter, attr=["dn"])
-			if userResult:
-				userDn = userResult[0][0]
-				filter = '(uniqueMember=%s)' % userDn
-				groupResult = ldap.search(base=options.ldap_base, filter=filter, attr=["dn"])
-				if groupResult:
-					for i in groupResult:
-						userGroups.append(i[0])
-
 			# get recipient restriction
-			ldapAttr = ["univentionAllowedEmailGroups", "univentionAllowedEmailUsers"]
-			filter = '(&(mailPrimaryAddress=%s)(|(objectclass=univentionMailList)(objectclass=posixGroup)))' % recipient
-			result = ldap.search(base=options.ldap_base, filter=filter, attr=ldapAttr)
+			ldap_attr = ["univentionAllowedEmailGroups", "univentionAllowedEmailUsers"]
+			ldap_filter = '(&(mailPrimaryAddress=%s)(|(objectclass=univentionMailList)(objectclass=posixGroup)))' % recipient
+			result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=ldap_attr)
 
 			if result:
 				# get allowed user and group dns
 				for g in result[0][1].get("univentionAllowedEmailGroups", []):
-					allowedGroupDns.append(g)
+					allowed_group_dns.append(g)
 				for u in result[0][1].get("univentionAllowedEmailUsers", []):
-					allowedUserDns.append(u)
+					allowed_user_dns.append(u)
 
-				# check if there are restrictions
-				if allowedUserDns or allowedGroupDns:
+				# check if there are restrictions, check sender first
+				if allowed_user_dns or allowed_group_dns:
+					if not sender:
+						return "REJECT Access denied for empty sender to restricted list %s" % (recipient, )
+
+					# get dn and groups of sender
+					ldap_filter = '(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))' % (sender, sender, sender)
+					user_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
+					if user_result:
+						user_dn = user_result[0][0]
+						ldap_filter = '(uniqueMember=%s)' % user_dn
+						group_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
+						if group_result:
+							for i in group_result:
+								users_groups.append(i[0])
 
 					# check userdn in univentionAllowedEmailUsers
-					if allowedUserDns:
-						if userDn:
-							if userDn in allowedUserDns:
+					if allowed_user_dns:
+						if user_dn:
+							if user_dn in allowed_user_dns:
 								return "DUNNO allowed per user dn"
 
 					# check groups
-					if allowedGroupDns:
-						if userGroups:
+					if allowed_group_dns:
+						if users_groups:
 							# check user groups in univentionAllowedEmailGroups
-							for j in userGroups:
-								if j in allowedGroupDns:
+							for j in users_groups:
+								if j in allowed_group_dns:
 									return "DUNNO allowed per group membership"
 							# check nested group in univentionAllowedEmailGroups, depth 1!
-							for a in allowedGroupDns:
+							for a in allowed_group_dns:
 								nested = ldap.getAttr(a, 'uniqueMember')
-								for b in userGroups:
+								for b in users_groups:
 									if b in nested:
 										return "DUNNO allowed per nested group"
 
@@ -125,8 +123,6 @@ def listfilter(attr):
 				return "DUNNO no group found for %s" % recipient
 		except Exception, e:
 			return "DUNNO search exception %s" % e
-
-	return "DUNNO default"
 
 # main
 attr = {}
