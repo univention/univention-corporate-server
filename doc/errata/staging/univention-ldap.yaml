@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-ldap
-fix: 12.1.6-5.790.201512281026
+fix: 12.1.6-6.791.201601061553
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -14,4 +14,5 @@ desc: |
     activated on members, the UCR policy for slaves is not activated by
     default.
   * Added printerModel to LDAP sub-string search index.
-bug: [38091,39884]
+  * Add univentionAppID to equality search index.
+bug: [38091,39884,39866]
