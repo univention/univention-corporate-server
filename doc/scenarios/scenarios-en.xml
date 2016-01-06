@@ -17,6 +17,4 @@
 <xi:include href="mittelstand-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 <xi:include href="versicherung-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 <xi:include href="schultraeger-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

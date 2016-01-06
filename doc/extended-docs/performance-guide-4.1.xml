@@ -414,6 +414,4 @@ ucr mail/dovecot/limits/imap-login/service_count=0
 	<bibliography id="bibliography">
 		<bibliomixed id="ucs-manual"/>
 	</bibliography>
-
-<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

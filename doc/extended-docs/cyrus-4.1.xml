@@ -1032,7 +1032,5 @@ postmap /etc/postfix/smtp_auth
 	<bibliography id="bibliography">
 		<bibliomixed id="ucs-manual"/>
 	</bibliography>
-
-	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
 <!-- vim:set ts=2 sw=2 tw=0 noet ft=docbk:-->

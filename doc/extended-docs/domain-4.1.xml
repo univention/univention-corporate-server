@@ -997,6 +997,4 @@ BASE LDAPBASE
 		</para>
 	  </section>
 	</chapter>
-
-    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

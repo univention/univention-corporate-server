@@ -1255,7 +1255,5 @@ univention-system-setup-boot uss/server/role string memberserver
 		<title>Debian Installer - <ulink url="https://www.debian.org/releases/wheezy/amd64/apb.html">Automating the installation using pre-seeding</ulink></title>
 	</biblioentry>
 </bibliography>
-
-<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
 <!-- vim:set ts=2 sw=2 noet: -->

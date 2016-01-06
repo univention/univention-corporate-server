@@ -296,7 +296,5 @@
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
-
-	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

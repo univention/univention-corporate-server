@@ -232,5 +232,4 @@ edpykota --delete user01 --printer labelprinter
 	</section>
 
   </chapter>
-  <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

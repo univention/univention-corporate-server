@@ -179,5 +179,4 @@ sysctl -p
 		</section>
 
     </chapter>
-    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

@@ -47,7 +47,5 @@
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="provide.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="next.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="docker.xml"/>
-
-<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
 <!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

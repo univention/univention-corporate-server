@@ -443,6 +443,4 @@ net rpc trustdom list
     <bibliomixed id="wiki-samba-update"/>
     <bibliomixed id="windows-trust"/>
   </bibliography>
-
-    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
