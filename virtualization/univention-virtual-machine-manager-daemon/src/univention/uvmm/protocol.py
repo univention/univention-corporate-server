@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager Daemon
 #  listener module
 #
-# Copyright 2010-2015 Univention GmbH
+# Copyright 2010-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
