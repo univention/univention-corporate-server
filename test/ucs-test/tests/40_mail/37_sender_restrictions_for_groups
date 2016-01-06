@@ -73,6 +73,10 @@ def main():
 				print "group %r: email: %r users: %r" % (group1_name, group1_mail, mails[0])
 				print "group %r: email: %r users: %r allowedEmailUsers: %r allowedEmailGroups: %r" % (group2_name, group2_mail, mails[4], mails[2], group1_name)
 
+				for sender in ('noreply@univention.de', mails[1], '<>'):
+					print "\n>>> sending mail to user 1 (%s): sender=%s -> allowed" % (mails[1], sender)
+					check_sending_mail(sender, mails[1], mails[1], password, True)
+
 				print "\n>>> sending to unrestricted mail group %r with a member posix account -> allowed" % group1_mail
 				check_sending_mail(mails[0], group1_mail, mails[0], password, True)
 				print "\n>>> sending to unrestricted mail group %r with a non-member -> allowed" % group1_mail

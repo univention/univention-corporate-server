@@ -87,6 +87,10 @@ def main():
 				print "list %r: email: %r members: %r" % (list1_name, list1_mail, mails[1])
 				print "list %r: email: %r members: %r allowedEmailUsers: %r allowedEmailGroups: %r" % (list2_name, list2_mail, mails[2], mails[3], group1_name)
 
+				for sender in ('noreply@univention.de', mails[1], '<>'):
+					print "\n>>> sending mail to user 1 (%s): sender=%s -> allowed" % (mails[1], sender)
+					check_sending_mail(sender, mails[1], mails[1], password, True)
+
 				print "\n>>> sending to unrestricted mailing list %r with a member -> allowed" % list1_name
 				check_sending_mail(mails[1], list1_mail, mails[1], password, True)
 				print "\n>>> sending to unrestricted mailing list %r with a non-member -> allowed" % list1_name
