@@ -59,6 +59,11 @@
 		<title>Structure of Listener Modules</title>
 
 		<para>
+			By default the Listener loads all modules from the directory <filename class="directory">/usr/lib/univention-directory-listener/system/</filename>.
+			Other directories can be specified using the option <option>-m</option> when starting the <command>univention-directory-listener</command> daemon.
+		</para>
+
+		<para>
 			Each listener module must declare several string constants.
 			They are required by the &ucsUDL; to handle each module.
 			They should be defined at the beginning of the module.
