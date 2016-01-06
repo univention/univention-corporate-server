@@ -1,3 +1,10 @@
+univention-mail-postfix (9.0.3-10) unstable; urgency=low
+
+  * reorder checks to allow empty sender for all recipients except restricted
+    mailing lists and to prevent unneccessary LDAP queries (Bug #40352)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 06 Jan 2016 15:01:29 +0100
+
 univention-mail-postfix (9.0.3-9) unstable; urgency=low
 
   * fix listfilter letting empty senders pass (Bug #40352)
