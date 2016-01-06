@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-samba4
+fix: 5.0.1-18.638.201601062034
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * Some shell quoting errors were fixed.
+bug: [40031]

@@ -5,9 +5,10 @@ src: univention-system-setup
 fix: 9.0.2-22.938.201601051309
 version: [0]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
   * Added more input validation for certificate values.
   * The country name field in the ldap DN is now validated.
   * The email address field provides a virtual keyboard for special
     characters.
-bug: [39376, 39941, 38567]
+  * Some shell quoting errors were fixed.
+bug: [39376, 39941, 38567, 40031]

@@ -5,8 +5,9 @@ src: univention-bind
 fix: 10.0.2-4.217.201512151428
 version: [0]
 desc: |
-  This update addresses the following issue:
+  This update addresses the following issues:
   * Add UCR variables dns/nameserver/registration/forward_zone and
-  dns/nameserver/registration/reverse_zone that allow to disable
-  the automatic registration as additional nameserver (Bug 40139).
-bug: [40139]
+    dns/nameserver/registration/reverse_zone that allow to disable
+    the automatic registration as additional nameserver (Bug 40139).
+  * Some shell quoting errors were fixed.
+bug: [40139,40031]

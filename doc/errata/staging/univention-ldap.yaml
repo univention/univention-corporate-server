@@ -15,4 +15,5 @@ desc: |
     default.
   * Added printerModel to LDAP sub-string search index.
   * Add univentionAppID to equality search index.
-bug: [38091,39884,39866]
+  * Some shell quoting errors were fixed.
+bug: [38091,39884,39866,40031]
