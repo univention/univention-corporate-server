@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-10) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:11:23 +0100
+
 univention-directory-manager-modules (11.0.2-9) unstable; urgency=medium
 
   * Bug #32321: allow None to be passed to the 'simple' syntax class.

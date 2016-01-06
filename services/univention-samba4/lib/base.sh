@@ -32,7 +32,7 @@
 univention_samba4_is_ucr_false () { # test if UCS variable is "false"
     local value
     value="$(univention-config-registry get "$1")"
-    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+    case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
         1|yes|on|true|enable|enabled) return 1 ;;
         0|no|off|false|disable|disabled) return 0 ;;
         *) return 2 ;;

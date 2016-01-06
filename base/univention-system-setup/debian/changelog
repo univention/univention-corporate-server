@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-23) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:07:53 +0100
+
 univention-system-setup (9.0.2-22) unstable; urgency=low
 
   * Bug #38567: Show virtual keyboard in setup wizard for special characters

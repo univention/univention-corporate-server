@@ -2985,7 +2985,7 @@ then
 	# policies/*packages
 	############################################################################
 	for uhost in Master Slave Member Client MobileClient; do
-		mhost=`echo $uhost |tr [:upper:] [:lower:]`
+		mhost=`echo "$uhost" |tr '[:upper:]' '[:lower:]'`
 		if [ "$uhost" = "MobileClient" ]
 		then 
 			host=client

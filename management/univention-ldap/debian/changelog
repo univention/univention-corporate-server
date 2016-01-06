@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-7) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:12:04 +0100
+
 univention-ldap (12.1.6-6) unstable; urgency=low
 
   * Bug #39866: Add univentionAppID to equality search index

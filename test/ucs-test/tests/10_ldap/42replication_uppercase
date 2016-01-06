@@ -48,7 +48,7 @@ verify_description ()
 	fi
 }
 
-group_name_lowercase="$(echo $group | tr [:upper:] [:lower:])"
+group_name_lowercase="$(echo "$group" | tr '[:upper:]' '[:lower:]')"
 group_dn="cn=$group_name_lowercase,$position"
 
 set_description "$group_dn" "$description1"

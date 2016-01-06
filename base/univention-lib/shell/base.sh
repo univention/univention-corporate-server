@@ -263,7 +263,7 @@ custom_username() {
 	local ucr_varname
 	local result
 	name="${1:?Usage: custom_username <username>}"
-	ucr_varname="$(echo "$name" | tr [A-Z] [a-z] | sed 's| ||g')"
+	ucr_varname="$(echo "$name" | tr '[A-Z]' '[a-z]' | sed 's| ||g')"
 	ucr_varname="users/default/$ucr_varname"
 
 	result="$(/usr/sbin/univention-config-registry get "$ucr_varname")"
@@ -282,7 +282,7 @@ custom_groupname() {
 	local ucr_varname
 	local result
 	name="${1:?Usage: custom_groupname <groupname>}"
-	ucr_varname="$(echo "$name" | tr [A-Z] [a-z] | sed 's| ||g')"
+	ucr_varname="$(echo "$name" | tr '[A-Z]' '[a-z]' | sed 's| ||g')"
 	ucr_varname="groups/default/$ucr_varname"
 
 	result="$(/usr/sbin/univention-config-registry get "$ucr_varname")"

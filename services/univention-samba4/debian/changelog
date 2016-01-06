@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-18) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:14:06 +0100
+
 univention-samba4 (5.0.1-17) unstable; urgency=medium
 
   * Bug #40186: Fix sshd script name and revert last change

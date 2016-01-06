@@ -1,3 +1,9 @@
+univention-bind (10.0.2-5) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:12:53 +0100
+
 univention-bind (10.0.2-4) unstable; urgency=low
 
   * Bug #40139: updated UCR variable descriptions

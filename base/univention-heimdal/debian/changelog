@@ -1,3 +1,9 @@
+univention-heimdal (9.0.1-2) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:05:18 +0100
+
 univention-heimdal (9.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

@@ -1,3 +1,9 @@
+univention-lib (5.0.0-13) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:06:16 +0100
+
 univention-lib (5.0.0-12) unstable; urgency=low
 
   * Bug #38951: added univention.lib.license_tools and

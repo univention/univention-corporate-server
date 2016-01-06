@@ -5,7 +5,7 @@ NET='192.168.2.0'
 router="${NET%.0}.1"
 
 BASE="$(ucr get ldap/base)"
-name="$(tr -d -c [:alnum:] </dev/urandom 2>/dev/null | head -c 20)"
+name="$(tr -d -c '[:alnum:]' </dev/urandom 2>/dev/null | head -c 20)"
 
 policy () {
 	univention-policy-result -D "$(ucr get ldap/hostdn)" -y /etc/machine.secret "$@"

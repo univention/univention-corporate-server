@@ -285,8 +285,8 @@ if [ "$server_role" != "basesystem" ]; then
 	#TODO: get keytab from dc master
 	echo `date` : "Setting new hostname into effect for Kerberos"  >> /var/log/univention/setup.log
 	rm -f /etc/krb5.keytab
-	kadmin -l ext "host/$new_hostname.$domainname@`echo $kerberos_realm | tr [[:lower:]] [[:upper:]]`"
-	kadmin -l ext "ldap/$new_hostname.$domainname@`echo $kerberos_realm | tr [[:lower:]] [[:upper:]]`"
+	kadmin -l ext "host/$new_hostname.$domainname@`echo "$kerberos_realm" | tr '[:lower:]' '[:upper:]'`"
+	kadmin -l ext "ldap/$new_hostname.$domainname@`echo "$kerberos_realm" | tr '[:lower:]' '[:upper:]'`"
 fi
 
 

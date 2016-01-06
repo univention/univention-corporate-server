@@ -145,7 +145,7 @@ is_profile_var_true ()
 	if [ -z "$value" ]; then
 		return 2
 	fi
-	value=$(echo "$value" | tr [:upper:] [:lower:])
+	value=$(echo "$value" | tr '[:upper:]' '[:lower:]')
 	for falsevalue in no false 0 disable disabled off; do
 		if [ "$value" = "$falsevalue" ]; then
 			return 1

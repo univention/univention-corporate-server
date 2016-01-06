@@ -1,3 +1,9 @@
+univention-updater (11.0.7-11) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:09:10 +0100
+
 univention-updater (11.0.7-10) unstable; urgency=medium
 
   * Bug #39993: fix code execution vulnerability

@@ -1,3 +1,9 @@
+ucs-test (6.0.31-8) unstable; urgency=low
+
+  * Bug #40031: Fix shell escaping
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 06 Jan 2016 18:15:20 +0100
+
 ucs-test (6.0.31-7) unstable; urgency=low
 
   * Bug #40353: improved 36_sender_restrictions_for_mailing_lists and
