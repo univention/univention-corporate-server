@@ -7,6 +7,7 @@ from essential.mail import send_mail, restart_postfix
 from univention.config_registry import handler_set
 import smtplib
 import time
+import sys
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -25,6 +26,10 @@ def check_sending_mail(sender, recipient, username, password, should_be_accepted
 
 
 def main():
+	if utils.package_installed('univention-ox'):
+		print 'WARNING: Mailing lists with sender restrictions are not supported by OX App Suite - stopping test now'
+		sys.exit(77)
+
 	cmd = ['/etc/init.d/postfix', 'restart']
 	with utils.AutoCallCommand(exit_cmd=cmd, stderr=open('/dev/null', 'w')) as acc:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
@@ -80,6 +85,7 @@ def main():
 					}
 				)
 
+
 				print ""
 				for i in xrange(5):
 					print "user: %r \t email: %r emailAlt: %r" % (users[i].partition(",")[0], mails[i], alts[i])
@@ -91,10 +97,14 @@ def main():
 					print "\n>>> sending mail to user 1 (%s): sender=%s -> allowed" % (mails[1], sender)
 					check_sending_mail(sender, mails[1], mails[1], password, True)
 
+				print "\n>>> sending to unrestricted mailing list %r with a null sender -> allowed" % list1_name
+				check_sending_mail('<>', list1_mail, mails[1], password, True)
 				print "\n>>> sending to unrestricted mailing list %r with a member -> allowed" % list1_name
 				check_sending_mail(mails[1], list1_mail, mails[1], password, True)
 				print "\n>>> sending to unrestricted mailing list %r with a non-member -> allowed" % list1_name
 				check_sending_mail(mails[4], list1_mail, mails[4], password, True)
+				print "\n>>> sending to restricted mailing list %r with a null sender -> not allowed" % list1_name
+				check_sending_mail('<>', list2_mail, mails[2], password, False)
 				print "\n>>> sending to restricted mailing list %r with a member not listed in allowedEmailUsers/Groups -> not allowed" % list2_mail
 				check_sending_mail(mails[2], list2_mail, mails[2], password, False)
 				print "\n>>> sending to restricted mailing list %r with a non-member not listed in allowedEmailUsers/Groups -> not allowed" % list2_mail
