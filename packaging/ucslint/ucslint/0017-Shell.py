@@ -57,9 +57,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.tester = uub.UPCFileTester()
 		self.tester.addTest(re.compile(r'eval\s+(`|[$][(])\s*(/usr/sbin/)?(ucr|univention-baseconfig|univention-config-registry)\s+shell\s*[^`)]*[`)]\s*'),
 				'0017-1', 'unquoted call of eval "$(ucr shell)"', cntmax=0)
+		self.tester.addTest(re.compile(r'tr\s+\[:(alnum|alpha|blank|cntrl|digit|graph|lower|print|punct|space|upper|xdigit):\]'),
+				'0017-2', 'unquoted argument for tr (e.g. "tr [:upper:] [:lower:]")', cntmax=0)
+		self.tester.addTest(re.compile(r'''tr\s+["']\[:(alnum|alpha|blank|cntrl|digit|graph|lower|print|punct|space|upper|xdigit):\]["']\s+\[:(alnum|alpha|blank|cntrl|digit|graph|lower|print|punct|space|upper|xdigit):\]'''),
+				'0017-2', 'unquoted argument for tr (e.g. "tr [:upper:] [:lower:]")', cntmax=0)
 
 	def getMsgIds(self):
-		return { '0017-1': [ uub.RESULT_WARN,   'script contains unquoted calls of eval "$(ucr shell)"' ]}
+		return {
+			'0017-1': [ uub.RESULT_WARN,  'script contains unquoted calls of eval "$(ucr shell)"' ],
+			'0017-2': [ uub.RESULT_ERROR,  'script contains unquoted arguments of tr' ],
+		}
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """

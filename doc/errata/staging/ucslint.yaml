@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: ucslint
+fix:
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * A new check for undesired shell globbing patterns in conjunction with
+   "tr" has been added.
+bug: [40386]
