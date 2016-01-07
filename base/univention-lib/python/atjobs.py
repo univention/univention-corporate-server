@@ -75,9 +75,19 @@ def add(cmd, execTime=None, comments={}):
 	else:
 		atCmd.append('now')
 
+	# prevent injections from user supplied input
+	# by encoding newlines
+	def _encode_comment(value):
+		if isinstance(value, bytes):
+			try:
+				value = value.decode('utf-8')
+			except UnicodeDecodeError:
+				value = value.decode('latin-1')
+		return (u'%s' % (value,)).encode('unicode_escape')
+
 	# add comments
 	if comments:
-		cmd = '\n'.join(map(lambda c: '%s%s:%s' % (COMMENT_PREFIX, c[0], c[1]), comments.items())) + '\n' + SCRIPT_PREFIX + '\n' + cmd
+		cmd = '\n'.join(map(lambda c: '%s%s:%s' % (COMMENT_PREFIX, _encode_comment(c[0]).replace(':', ''), _encode_comment(c[1])), comments.items())) + '\n' + SCRIPT_PREFIX + '\n' + cmd
 
 	# add job
 	p = subprocess.Popen(atCmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -151,7 +161,14 @@ def _parseScript(job):
 			continue
 		if line.startswith(COMMENT_PREFIX):
 			line = line[len(COMMENT_PREFIX):]
-			key, value = line.split(':', 1)
+			try:
+				key, value = line.split(':', 1)
+			except ValueError:
+				continue
+			try:
+				key, value = key.decode('unicode_escape'), value.decode('unicode_escape')
+			except UnicodeDecodeError:
+				pass  # can only happen if user manipulates/fakes atjob.
 			job.comments[key] = value
 		elif line.startswith(SCRIPT_PREFIX):
 			script = True

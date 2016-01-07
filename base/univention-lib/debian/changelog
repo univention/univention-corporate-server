@@ -1,3 +1,9 @@
+univention-lib (5.0.0-14) unstable; urgency=medium
+
+  * Bug #40354: Bug #39993: encode atjob comments
+
+ -- Florian Best <best@univention.de>  Wed, 06 Jan 2016 13:51:50 +0100
+
 univention-lib (5.0.0-13) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping
