@@ -899,6 +899,73 @@ if configRegistry.is_true('connector/s4/mapping/wmifilter', False):
 
 		),
 ''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
+
+if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False):
+	ignore_filter = ''
+	for cfilter in configRegistry.get('connector/s4/mapping/msprintconnectionpolicy/ignorelist', '').split(','):
+		if cfilter:
+			ignore_filter += '(cn=%s)' % (cfilter)
+	if configRegistry.get('connector/s4/mapping/ou/syncmode'):
+		sync_mode_ou=configRegistry.get('connector/s4/mapping/ou/syncmode')
+	else:
+		sync_mode_ou=configRegistry.get('connector/s4/mapping/syncmode')
+	print '''
+	'msPrintConnectionPolicy': univention.s4connector.property (
+			ucs_module='settings/msprintconnectionpolicy',
+			sync_mode='%(sync_mode_ou)s',
+			scope='sub',
+			con_search_filter='(objectClass=msPrint-ConnectionPolicy)',
+			ignore_filter='%(ignore_filter)s',
+			ignore_subtree = global_ignore_subtree,
+			con_create_objectclass=['top', 'msPrint-ConnectionPolicy' ],
+			attributes= {
+					'cn': univention.s4connector.attribute (
+							ucs_attribute='name',
+							ldap_attribute='cn',
+							con_attribute='cn',
+							required=1,
+							single_value=True,
+						),
+					'description': univention.s4connector.attribute (
+							ucs_attribute='description',
+							ldap_attribute='description',
+							con_attribute='description',
+							single_value=True,
+						),
+					'displayName': univention.s4connector.attribute (
+							ucs_attribute='displayName',
+							ldap_attribute='displayName',
+							con_attribute='displayName',
+							single_value=True,
+						),
+					'msPrintAttributes': univention.s4connector.attribute (
+							ucs_attribute='msPrintAttributes',
+							ldap_attribute='msPrintAttributes',
+							con_attribute='printAttributes',
+							single_value=True,
+						),
+					'msPrinterName': univention.s4connector.attribute (
+							ucs_attribute='msPrinterName',
+							ldap_attribute='msPrinterName',
+							con_attribute='printerName',
+							single_value=True,
+						),
+					'msPrintServerName': univention.s4connector.attribute (
+							ucs_attribute='msPrintServerName',
+							ldap_attribute='msPrintServerName',
+							con_attribute='serverName',
+							single_value=True,
+						),
+					'msPrintUNCName': univention.s4connector.attribute (
+							ucs_attribute='msPrintUNCName',
+							ldap_attribute='msPrintUNCName',
+							con_attribute='uNCName',
+							single_value=True,
+						),
+				},
+		),
+''' % {'ignore_filter': ignore_filter, 'sync_mode_ou': sync_mode_ou}
+
 @!@
 	'container': univention.s4connector.property (
 			ucs_module='container/cn',

@@ -250,6 +250,18 @@ Description[en]=A static list mapping group names in UCS LDAP to group names in 
 Type=str
 Categories=service-s4con
 
+[connector/s4/mapping/msprintconnectionpolicy]
+Description[de]=ms-Print-ConnectionPolicy Objekte werden im Samba-LDAP gespeichert. Diese Option legt fest, ob die ms-Print-ConnectionPolicy Objekte in das UCS-LDAP synchronisiert werden sollen. Bei nicht gesetzter Variable werden die Objekte nicht synchronisiert.
+Description[en]=ms-Print-ConnectionPolicy objects are stored in Samba 4 LDAP. This option controls if the ms-Print-ConnectionPolicy objects are synchronised to the UCS LDAP. If the variable is unset, the objects are not synchronised.
+Type=bool
+Categories=service-s4con
+
+[connector/s4/mapping/msprintconnectionpolicy/ignorelist]
+Description[de]=Wenn die Synchronisation von ms-Print-ConnectionPolicy Objekten aktiviert wurde (siehe 'connector/s4/mapping/msprintconnectionpolicy'), können hier Namen von ms-Print-ConnectionPolicy Objekten angegeben werden, die durch den Connector nicht synchronisiert werden sollen. Mehrere Werte müssen durch Komma getrennt werden.
+Description[en]=If the synchronisation of ms-Print-ConnectionPolicy objects has been activated (see 'connector/s4/mapping/msprintconnectionpolicy'), ms-Print-ConnectionPolicy names can be specified here which shall not be synchronised by the connector. Multiple values need to be separated by commas.
+Type=bool
+Categories=service-s4con
+
 [connector/s4/mapping/wmifilter]
 Description[de]=WMI-Filter sind im Samba 4-LDAP gespeichter. Diese Option legt fest, ob die WMI-Filter in das UCS-LDAP synchronisiert werden sollen. Bei nicht gesetzter Variable werden die WMI-Filter nicht synchronisiert.
 Description[en]=WMI filters are stored in Samba 4 LDAP. This option controls if the WMI filters are synchronised to the UCS LDAP. If the variable is unset, the WMI filters are not synchronised.

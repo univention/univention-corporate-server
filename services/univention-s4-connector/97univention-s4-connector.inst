@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=5
+VERSION=6
 . /usr/share/univention-join/joinscripthelper.lib
 joinscript_init
 
@@ -121,6 +121,10 @@ ucs_registerLDAPExtension "$@" \
 ucs_registerLDAPExtension "$@" \
 	--udm_module /usr/share/pyshared/univention/admin/handlers/settings/mswmifilter.py || die
 
+ucs_registerLDAPExtension "$@" \
+	--schema /usr/share/univention-s4-connector/ldap/msprintconnectionpolicy.schema \
+	--udm_module /usr/share/pyshared/univention/admin/handlers/settings/msprintconnectionpolicy.py || die
+
 if ! is_ucr_true 'connector/s4/allow/secondary'; then
 	s4connectorservicehost_dns="$(univention-directory-manager computers/computer list "$@" --filter "(&(univentionService=${NAME})(!(cn=$hostname)))" | sed -ne 's|^DN: ||p')"
 fi
@@ -201,6 +205,11 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 				# Write MS WMI filter links from UCS to Samba 4
 				/usr/share/univention-s4-connector/msGPOWQLFilter.py --write2samba4 "$@"
 			fi
+		fi
+
+		if [ $JS_LAST_EXECUTED_VERSION -lt 6 ] && is_ucr_true connector/s4/mapping/msprintconnectionpolicy; then
+			# resync msPrint-ConnectionPolicy objects from samba to ucs
+			/usr/share/univention-s4-connector/resync_object_from_s4.py --filter '(objectClass=msPrint-ConnectionPolicy)'
 		fi
 	fi
 
