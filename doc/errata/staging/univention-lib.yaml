@@ -2,9 +2,10 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-lib
-fix: 5.0.0-13.319.201601062026
+fix: 5.0.0-14.320.201601071132
 version: [0]
 desc: |
   This update addresses the following issue:
   * Some shell quoting errors were fixed.
-bug: [40031]
+  * Atjob comments are now properly encoded.
+bug: [40031,39993]

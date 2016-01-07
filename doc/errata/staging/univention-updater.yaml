@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-updater
-fix: 11.0.7-9.1439.201512161511
+fix: 11.0.7-10.1440.201601051851
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -14,4 +14,5 @@ desc: |
    exists.
  * The HTTP timeout has been reduced to 30 seconds.
  * Some shell quoting errors were fixed.
-bug: [29633,40148,39780,40051,39954,40031]
+ * A vulnerability has been fixed which could lead to code execution.
+bug: [29633,40148,39780,40051,39954,40031,39993]
