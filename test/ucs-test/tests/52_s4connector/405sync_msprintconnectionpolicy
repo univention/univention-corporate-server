@@ -1,0 +1,122 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check settings/msprintconnectionpolicy synchronisation"
+## exposure: dangerous
+## packages:
+## - univention-s4-connector
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## bugs:
+## - 40298
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/udm.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+. /usr/share/univention-lib/ucr.sh || exit 137
+. "s4connector.sh" || exit 137
+
+RETVAL=100
+
+test -n "$connector_s4_ldap_host" || exit 137
+connector_running_on_this_host || exit 137
+
+
+SYNCMODE="$(ad_get_sync_mode)"
+PRINTPOLICY="$(ucr get connector/s4/mapping/msprintconnectionpolicy)"
+ad_set_sync_mode "sync"
+ucr set connector/s4/mapping/msprintconnectionpolicy=true
+service univention-s4-connector restart
+
+section "msPrint-ConnectionPolicy: UDM add"
+
+name='{D61D623E-57C3-4F7A-853B-F79668DA6C99}'
+msPrinterName='printer1'
+msPrintServerName='\\srv'
+msPrintUNCName='\\srv\printer1'
+msPrintAttributes='1'
+policy="{31B2F340-016D-11D2-945F-00C04FB984F9}"
+AD_DN="CN=$name,CN=PushedPrinterConnections,CN=User,CN=$policy,CN=Policies,CN=System,$ldap_base"
+UDM_DN="$AD_DN"
+
+udm container/cn create \
+	--position "cn=$policy,cn=Policies,cn=System,$ldap_base" \
+	--set name="User"
+udm container/cn create \
+	--position "cn=User,cn=$policy,cn=Policies,cn=System,$ldap_base" \
+	--set name="PushedPrinterConnections"
+udm settings/msprintconnectionpolicy create \
+	--position "cn=PushedPrinterConnections,cn=User,cn=$policy,cn=Policies,cn=System,$ldap_base" \
+	--set name="$name" \
+	--set msPrinterName="$msPrinterName" \
+	--set msPrintServerName="$msPrintServerName" \
+	--set msPrintAttributes="$msPrintAttributes" \
+	--set msPrintUNCName="$msPrintUNCName" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "cn" "$name"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "printerName" "$msPrinterName"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "serverName" "$msPrintServerName"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "uNCName" "$msPrintUNCName"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "printAttributes" "$msPrintAttributes"; fail_bool 0 110
+
+section "msPrint-ConnectionPolicy: UDM modify"
+
+udm settings/msprintconnectionpolicy modify --dn "$UDM_DN" \
+	--set msPrinterName="${msPrinterName}-1" \
+	--set msPrintServerName="${msPrintServerName}-1" || fail_test 110
+ad_wait_for_synchronization; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "printerName" "${msPrinterName}-1"; fail_bool 0 110
+ad_verify_attribute "$AD_DN" "serverName" "${msPrintServerName}-1"; fail_bool 0 110
+
+section "msPrint-ConnectionPolicy: UDM remove"
+
+udm settings/msprintconnectionpolicy remove --dn "$UDM_DN"
+ad_wait_for_synchronization; fail_bool 0 110
+ad_exists "$AD_DN"; fail_bool 1 110
+
+section "msPrint-ConnectionPolicy: AD add"
+
+name='{F33D623E-57C3-4F7A-853B-F79668DA6C99}'
+msPrinterName='printer2'
+msPrintServerName='\\\\srv2'
+msPrintAttributes='1'
+msPrintUNCName='\\\\srv2\\printer2'
+policy="{31B2F340-016D-11D2-945F-00C04FB984F9}"
+AD_DN="CN=$name,CN=PushedPrinterConnections,CN=User,CN=$policy,CN=Policies,CN=System,$ldap_base"
+UDM_DN="$AD_DN"
+
+ad_create_ConnectionPolicy "$name" "$msPrinterName" "$msPrintServerName" "$msPrintUNCName" "$msPrintAttributes" "$AD_DN"
+ad_wait_for_synchronization; fail_bool 0 110
+udm settings/msprintconnectionpolicy list --filter name="$name" | grep -q "DN: " || fail_test 110
+udm settings/msprintconnectionpolicy list --filter msPrinterName="$msPrinterName" | grep -q "DN: " || fail_test 110
+udm settings/msprintconnectionpolicy list --filter msPrintAttributes="$msPrintAttributes" | grep -q "DN: " || fail_test 110
+udm settings/msprintconnectionpolicy list --filter msPrintServerName="$msPrintServerName" | grep -q "DN: " || fail_test 110
+udm settings/msprintconnectionpolicy list --filter msPrintUNCName="$msPrintUNCName" | grep -q "DN: " || fail_test 110
+
+section "msPrint-ConnectionPolicy: AD modify"
+
+ad_set_attribute "$AD_DN" "printerName" "${msPrinterName}-1"
+ad_set_attribute "$AD_DN" "printAttributes" "9"
+ad_set_attribute "$AD_DN" "serverName" "${msPrintServerName}-1"
+ad_set_attribute "$AD_DN" "uNCName" "${msPrintUNCName}-1"
+ad_wait_for_synchronization; fail_bool 0 110
+udm settings/msprintconnectionpolicy list --filter msPrinterName="${msPrinterName}-1" | grep -q "DN: " || fail_test 110
+udm settings/msprintconnectionpolicy list --filter msPrintAttributes="9" | grep -q "DN: " || fail_test 110
+udm settings/msprintconnectionpolicy list --filter msPrintServerName="${msPrintServerName}-1" | grep -q "DN: " || fail_test 110
+udm settings/msprintconnectionpolicy list --filter msPrintUNCName="${msPrintUNCName}-1" | grep -q "DN: " || fail_test 110
+
+section "msPrint-ConnectionPolicy: AD remove"
+
+ldbdel -H /var/lib/samba/private/sam.ldb "$AD_DN"
+ad_wait_for_synchronization; fail_bool 0 110
+udm settings/msprintconnectionpolicy list --filter name="$name" | grep -q "DN: " && fail_test 110
+
+section "msPrint-ConnectionPolicy: cleanup"
+
+ad_set_sync_mode "$SYNCMODE"
+if [ -n "$PRINTPOLICY" ]; then ucr set connector/s4/mapping/msprintconnectionpolicy="$PRINTPOLICY";
+else ucr unset connector/s4/mapping/msprintconnectionpolicy; fi
+service univention-s4-connector restart
+udm settings/msprintconnectionpolicy remove --dn "$UDM_DN"
+
+exit "$RETVAL"

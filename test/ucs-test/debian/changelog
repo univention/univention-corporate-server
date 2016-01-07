@@ -1,3 +1,9 @@
+ucs-test (5.0.175-2) UNRELEASED; urgency=medium
+
+  * Bug #40299: Add 52_s4connector/405sync_msprintconnectionpolicy 
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Jan 2016 18:51:26 +0100
+
 ucs-test (5.0.175-1) unstable; urgency=medium
 
   * Bug #40267: Check if sysvol sync works even though unrelated

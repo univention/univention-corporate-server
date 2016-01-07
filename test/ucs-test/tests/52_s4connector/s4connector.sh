@@ -337,6 +337,41 @@ sys.exit (42)
 	fi
 }
 
+function ad_create_ConnectionPolicy() {
+	local cn="$1"
+	local printername="$2"
+	local servername="$3"
+	local uncname="$4"
+	local printattributes="$5"
+	local dn="$6"
+	local configbase="${7:-connector}"
+
+	python2.7 -c "
+import sys
+sys.path.append('$TESTLIBPATH')
+import s4connector
+adconnection = s4connector.S4Connection('$configbase')
+attrs = {}
+attrs['objectclass'] = ['top', 'msPrint-ConnectionPolicy']
+attrs['cn'] = ['$cn']
+attrs['uNCName'] = ['$uncname']
+attrs['serverName'] = ['$servername']
+attrs['printerName'] = ['$printername']
+attrs['printAttributes'] = ['$printattributes']
+dn = '$dn'
+adconnection.create(dn, attrs)
+sys.exit (42)
+"
+	local retval="$?"
+	if [ "$retval" == 42 ]; then
+		info "ConnectionPolicy $cn created"
+		return 0
+	else
+		scriptlet_error "ad_create_ConnectionPolicy"
+		return 2
+	fi
+}
+
 function ad_createuser () {
 	local username="$1"
 	local description="$2"
