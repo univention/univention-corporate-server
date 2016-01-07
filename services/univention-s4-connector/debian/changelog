@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-8) unstable; urgency=medium
+
+  * Escape ldap search attribute values in dns.py (Bug #40380)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Jan 2016 16:31:09 +0100
+
 univention-s4-connector (10.0.1-7) unstable; urgency=low
 
   * added translation for msprintconnectionpolicy (Bug #40298)
