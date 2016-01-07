@@ -46,6 +46,7 @@
 
 #include "cache.h"
 #include "common.h"
+#include "utils.h"
 
 int INIT_ONLY=0;
 
@@ -151,7 +152,7 @@ int main(int argc, char* argv[])
 	LDAPControl **serverctrls = NULL;
 	LDAPControl **clientctrls = NULL;
 	struct timeval timeout = {
-		.tv_sec = 5*60,
+		.tv_sec = ldap_timeout_scans(),
 		.tv_usec = 0,
 	};
 	int sizelimit0 = 0;
