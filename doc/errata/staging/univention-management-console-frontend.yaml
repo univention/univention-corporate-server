@@ -2,9 +2,10 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-management-console-frontend
-fix: 5.0.63-8.1195.201512141847
+fix: 5.0.63-9.1196.201601071221
 version: [0]
 desc: |
  This update addresses the following issue:
  * The SAML logout process is now more robust.
-bug: [39815]
+ * Missing translation files won't cause a HTTP 404 Not Found error anymore.
+bug: [39815, 40242]
