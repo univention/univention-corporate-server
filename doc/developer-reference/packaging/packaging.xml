@@ -37,14 +37,15 @@
 	<section id="pkg:preparation"><title>Preparations</title>
 		<para>
 			This chapter describes some simple examples using existing packages as examples.
-			For downloading and building them, two packages must be installed on the system used as a development system.
+			For downloading and building them, some packages must be installed on the system used as a development system.
 			<package>subversion</package> is used to checkout the source files belonging to the packages.
 			<package>build-essential</package> must be installed for building the package.
+			<package>devscripts</package> provides some useful tools for maintaining packages.
 		</para>
 		<para>
 			This can be achieved by running the following command as user <literal>root</literal>:
 		</para>
-		<programlisting>apt-get install subversion build-essential</programlisting>
+		<programlisting>apt-get install subversion build-essential devscripts</programlisting>
 	</section>
 
 	<section id="pkg:rebuild">
