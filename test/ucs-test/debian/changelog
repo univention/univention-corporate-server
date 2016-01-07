@@ -1,3 +1,9 @@
+ucs-test (6.0.31-9) unstable; urgency=medium
+
+  * Bug #39993: add test case for univention.lib.atjobs comments
+
+ -- Florian Best <best@univention.de>  Thu, 07 Jan 2016 11:22:56 +0100
+
 ucs-test (6.0.31-8) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping

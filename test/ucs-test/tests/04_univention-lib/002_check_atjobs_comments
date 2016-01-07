@@ -1,0 +1,36 @@
+#!/usr/share/ucs-test/runner python
+# -*- coding: utf-8 -*-
+## desc: Test comments of atjobs
+## tags: [basic]
+## packages:
+##   - python-univention-lib
+## exposure: safe
+
+import univention.testing.utils as utils
+import univention.lib.atjobs as atjobs
+
+
+def main():
+	comments = {
+		'foo\nbar→baz': '\\ ä : \r \n \x00',
+		u'foo\nbar→': u'blub ä : \r \n \x00',
+		'test': u'foobär'.encode('latin1'),
+		1: 2,
+	}
+	expected_comments = {
+		u'foo\nbar→baz': u'\\ ä : \r \n \x00',
+		u'foo\nbar→': u'blub ä : \r \n \x00',
+		u'test': u'foobär',
+		u'1': u'2',
+	}
+	job = atjobs.add('sleep 3', comments=comments)
+	for testjob in atjobs.list(extended=True):
+		if testjob.nr == job.nr:
+			assert testjob.comments == expected_comments, 'storing comments failed: %r != %r' % (testjob.comments, comments)
+			break
+	else:
+		utils.fail('job %r not found in list' % (job.nr,))
+
+
+if __name__ == '__main__':
+	main()
