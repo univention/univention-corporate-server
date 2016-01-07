@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-9) unstable; urgency=medium
+
+  * Bug #40242: Deliver empty translation files instead of a 404 Not found error
+
+ -- Florian Best <best@univention.de>  Thu, 07 Jan 2016 12:20:31 +0100
+
 univention-management-console-frontend (5.0.63-8) unstable; urgency=medium
 
   * Bug #39815: fix error during logout

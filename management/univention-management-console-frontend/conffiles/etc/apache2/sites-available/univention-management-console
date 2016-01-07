@@ -45,6 +45,12 @@ RewriteCond %{DOCUMENT_ROOT}/%1 !-d
 RewriteCond %{REQUEST_METHOD} ^GET
 RewriteRule ^(/univention-management-console/js)_[^/]*/(.*) $1/$2 [R=301]
 
+# avoid 404 Not Found errors for not existing translation files
+RewriteCond %{REQUEST_URI} ^/univention-management-console/js[^/]*/umc/modules/i18n/(en|de)/.*\.json
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
+RewriteRule .* /univention-management-console/js/umc/modules/i18n/empty.json [P,L,T=application/json]
+
 <LocationMatch "^/univention-management-console/(set|get|logout|saml|auth|upload|command).*">
 	RequestHeader set X-UMC-HTTPS %{HTTPS}s
 	ErrorDocument 503 "{\"status\": 503, \"message\": \"The Univention Management Console Web Server could not be reached. Please restart it or try again later.\"}"
