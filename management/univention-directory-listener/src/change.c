@@ -77,6 +77,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 	DBC *dbc_cur;
 	char *dn = NULL;
 	int i;
+	bool abort_init = false;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 			"initializing module %s", handler->name);
@@ -125,7 +126,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"module %s for relating objects", handler->name);
-	for (f = handler->filters; f != NULL && *f != NULL; f++) {
+	for (f = handler->filters; !abort_init && f != NULL && *f != NULL; f++) {
 		/* When initializing a module, only search for the DNs. If the
 		   entry for a DN is already in our cache, we use that one,
 		   instead of fetching it from LDAP. It's not only faster, but
@@ -173,7 +174,8 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		}
 
 		if ((rv = change_update_schema(lp)) != LDAP_SUCCESS) {
-			return rv;
+			abort_init = true;
+			goto cleanup;
 		}
 
 		for (i=0; i<dn_count; i++) {
@@ -189,7 +191,8 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 				} else if (rv != LDAP_NO_SUCH_OBJECT) {
 					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get DN %s for handler %s: %s", dns[i].dn, handler->name, ldap_err2string(rv));
 					cache_free_entry(NULL, &cache_entry);
-					return rv;
+					abort_init = true;
+					goto cleanup;
 				}
 				/* Ignore LDAP_NO_SUCH_OBJECT. An object can be
 				   deleted after we do the ldapsearch. We
@@ -197,7 +200,8 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 			} else if (rv != 0) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
 				rv = LDAP_OTHER;
-				break;
+				abort_init = true;
+				goto cleanup;
 			}
 
 			signals_block();
@@ -213,16 +217,15 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 			signals_unblock();
 			cache_free_entry(NULL, &cache_entry);
 		}
+cleanup:
 		for(i=0; i<dn_count; i++) {
 			ldap_memfree(dns[i].dn);
 		}
-		if ( dn_count > 1) {
-		  free(dns);
-		}
+		free(dns);
 	}
 	cache_free_entry(NULL, &old_cache_entry);
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
-			"finished initializing module %s", handler->name);
+			"finished initializing module %s with rv=%d", handler->name, rv);
 	return rv;
 }
 
