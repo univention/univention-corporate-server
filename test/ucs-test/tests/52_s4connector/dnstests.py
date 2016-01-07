@@ -1,3 +1,7 @@
+import os
+import sys
+import time
+import ldap
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import subprocess
@@ -6,10 +10,6 @@ import random
 import univention.config_registry
 ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
-import os
-import sys
-import time
-import ldap
 
 
 ## Adding a DNS zone causes bind restart in postrun, so we may have to
@@ -17,7 +17,7 @@ import ldap
 MATCH_ATTEMPTS = 17  # number of 'dig' attempts to be done, see Bug #38288
 
 
-def check_ldap_object(item, item_name, item_attribute = None, expected_values = None, should_exist=True):
+def check_ldap_object(item, item_name, item_attribute=None, expected_values=None, should_exist=True):
 	print (" Testing Ldap object : {0}			".format(item_name)),
 	if not isinstance(expected_values, list):
 		expected_values = [expected_values]
@@ -35,64 +35,64 @@ def check_ldap_object(item, item_name, item_attribute = None, expected_values = 
 
 
 def test_dns_ns(zone_name, test_object, should_exist=True):
-	re_test_object=re.compile(r'{0}\.*\s+\d+\s+IN\s+NS\s+\"*{1}\"*'.format(zone_name, test_object))
+	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+NS\s+\"*{1}\"*'.format(map(re.escape, (zone_name, test_object))))
 	match(re_test_object, zone_name, 'NS', should_exist=should_exist)
 
 
 def test_dns_txt(dns_name, test_object, should_exist=True):
-	re_test_object=re.compile(r'{0}\.*\s+\d+\s+IN\s+TXT\s+\"*{1}\"*'.format(dns_name, test_object))
+	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+TXT\s+\"*{1}\"*'.format(map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'TXT', should_exist=should_exist)
 
 
 def test_dns_soa_ttl(dns_name, test_object, should_exist=True):
-	re_test_object=re.compile(r"{0}\.*\s+{1}\s+IN\s+SOA".format(dns_name, test_object))
+	re_test_object = re.compile(r"{0}\.*\s+{1}\s+IN\s+SOA".format(map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'SOA', should_exist=should_exist)
 
 
 def test_dns_reverse_zone(zone_name, test_object, should_exist=True):
 	temp = zone_name.split('.')
 	zone_namereverse = temp[2] + '.' + temp[1] + '.' + temp[0]
-	re_test_object=re.compile(r"{0}.in-addr.arpa.\s+\d+\s+IN\s+NS\s+{1}".format(zone_namereverse, test_object))
+	re_test_object = re.compile(r"{0}.in-addr.arpa.\s+\d+\s+IN\s+NS\s+{1}".format(map(re.escape, (zone_namereverse, test_object))))
 	match(re_test_object, zone_name, 'NS', '-x', should_exist=should_exist)
 
 
 def test_dns_serial(zone_name, test_object, should_exist=True):
-	re_test_object=re.compile(r"{0}\.*\s+\d+\s+IN\s+SOA\s+.+\s+.+\s+{1}\s+".format(zone_name, test_object))
+	re_test_object = re.compile(r"{0}\.*\s+\d+\s+IN\s+SOA\s+.+\s+.+\s+{1}\s+".format(map(re.escape, (zone_name, test_object))))
 	match(re_test_object, zone_name, 'SOA', should_exist=should_exist)
 
 
 def test_dns_a_record(dns_name, test_object, should_exist=True):
-	re_test_object=re.compile(r'{0}\.*\s+\d+\s+IN\s+A\s+\"*{1}\"*'.format(dns_name, test_object))
+	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+A\s+\"*{1}\"*'.format(map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'A', should_exist=should_exist)
 
 
 def test_dns_aaaa_record(dns_name, test_object, should_exist=True):
-	#leading zeros will not be displayed in dig output so test_object has to be
-	#manipulated accordingly or test will fail even with correct sync
-	test_object_parts=test_object.split(':')
-	new_test_object_parts=[]
+	# leading zeros will not be displayed in dig output so test_object has to be
+	# manipulated accordingly or test will fail even with correct sync
+	test_object_parts = test_object.split(':')
+	new_test_object_parts = []
 	for part in test_object_parts:
 		while part[0] == '0':
 			part = part[1:]
 		new_test_object_parts.append(part)
-	test_object=(':').join(new_test_object_parts)
+	test_object = (':').join(new_test_object_parts)
 	print test_object
-	re_test_object=re.compile(r'{0}\.*\s+\d+\s+IN\s+AAAA\s+\"*{1}\"*'.format(dns_name, test_object))
-	match(re_test_object, dns_name ,'AAAA', should_exist=should_exist)
+	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+AAAA\s+\"*{1}\"*'.format(map(re.escape, (dns_name, test_object))))
+	match(re_test_object, dns_name, 'AAAA', should_exist=should_exist)
 
 
 def test_dns_alias(dns_name, test_object, should_exist=True):
-	re_test_object=re.compile(r'{0}\.*\s+\d+\s+IN\s+CNAME\s+\"*{1}\"*'.format(dns_name, test_object))
+	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+CNAME\s+\"*{1}\"*'.format(map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'CNAME', should_exist=should_exist)
 
 
 def test_dns_service_record(dns_name, test_object, should_exist=True):
-	re_test_object=re.compile(r'{0}\.*\s+\d+\s+IN\s+SRV\s+\"*{1}\"*'.format(dns_name, test_object))
+	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+SRV\s+\"*{1}\"*'.format(map(re.escape, (dns_name, test_object))))
 	match(re_test_object, dns_name, 'SRV', should_exist=should_exist)
 
 def test_dns_pointer_record(reverse_zone, ip, test_object, should_exist=True):
 	reverse_address = str(ip) + '.' + reverse_zone
-	re_test_object=re.compile(r'{0}\.*\s+\d+\s+IN\s+PTR\s+\"*{1}\"*'.format(reverse_address, test_object))
+	re_test_object = re.compile(r'{0}\.*\s+\d+\s+IN\s+PTR\s+\"*{1}\"*'.format(map(re.escape, (reverse_address, test_object))))
 	match(re_test_object, reverse_address, 'PTR', should_exist=should_exist)
 
 
@@ -106,7 +106,7 @@ def match(re_test_object, dns_name, typ, param=None, should_exist=True):
 	## Adding a DNS zone causes bind restart in postrun, so we may have to
 	## retry a couple of times
 	for attempt in range(MATCH_ATTEMPTS):
-		dig_subprocess = subprocess.Popen(dig_cmd, shell = False, stdout = subprocess.PIPE).communicate()
+		dig_subprocess = subprocess.Popen(dig_cmd, shell=False, stdout=subprocess.PIPE).communicate()
 		dig_answer = dig_subprocess[0].splitlines()
 
 		if not re_test_object and dig_answer:
@@ -167,7 +167,7 @@ def make_random_ip():
 		command = os.system('ping -c 1 {0} >/dev/null'.format(randomIP))
 		if command == 0:
 			pass
-		else: 
+		else:
 			break
 	return randomIP
 
@@ -175,7 +175,7 @@ def make_random_ip():
 def make_random_ipv6():
 	ipv6 = random_hex()
 	for i in range(7):
-		ipv6 +=':'+(random_hex())
+		ipv6 += ':'+(random_hex())
 	return ipv6
 
 
@@ -190,7 +190,7 @@ def fail_if_cant_resolve_own_hostname(max_attempts=17, delta_t_seconds=1):
 		attempt = 1
 		while rc != 0:
 			if attempt > max_attempts:
-				fail("Cannot resolve own hostname after %s seconds" % max_attempts)
+				utils.fail("Cannot resolve own hostname after %s seconds" % max_attempts)
 			sys.stdout.flush()
 			time.sleep(delta_t_seconds)
 			p = subprocess.Popen(["host", "%(hostname)s.%(domainname)s" % ucr])
@@ -200,7 +200,7 @@ def fail_if_cant_resolve_own_hostname(max_attempts=17, delta_t_seconds=1):
 
 def udm_remove_dns_record_object(module, object_dn):
 	superordinate = ",".join(ldap.explode_dn(object_dn)[1:])
-	cmd = [ '/usr/sbin/udm-test', module, 'remove', '--dn', object_dn, '--superordinate', superordinate]
+	cmd = ['/usr/sbin/udm-test', module, 'remove', '--dn', object_dn, '--superordinate', superordinate]
 	p = subprocess.Popen(cmd)
 	rc = p.wait()
 
@@ -222,4 +222,3 @@ def nsupdate(nsupdate_request):
 	(stdout, stderr) = p.communicate(input=nsupdate_request)
 	if p.returncode != 0:
 		utils.fail("nsupdate failed")
-

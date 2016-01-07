@@ -1,3 +1,11 @@
+ucs-test (6.0.31-10) unstable; urgency=medium
+
+  * Bug #40380: add 52_s4connector/175sync_create_dns_wildcard_host
+  * Fix regex quoting in 52_s4connector/dnstests.py
+  * Fix pep8 issues in 52_s4connector/dnstests.py
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Jan 2016 17:17:22 +0100
+
 ucs-test (6.0.31-9) unstable; urgency=medium
 
   * Bug #39993: add test case for univention.lib.atjobs comments
