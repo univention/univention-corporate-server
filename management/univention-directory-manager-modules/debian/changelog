@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-11) unstable; urgency=medium
+
+  * Bug #40120: don't depend on order when comparing attributes to create modlist
+
+ -- Florian Best <best@univention.de>  Wed, 06 Jan 2016 18:20:32 +0100
+
 univention-directory-manager-modules (11.0.2-10) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping

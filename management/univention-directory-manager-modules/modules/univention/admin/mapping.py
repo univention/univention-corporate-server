@@ -133,7 +133,7 @@ def unmapBase64( value ):
 	return ""
 
 def mapBase64(value):
-	'''mapBase64 converts Base64 encoded UDM propertry values to binary data (for storage in LDAP)'''
+	'''mapBase64 converts Base64 encoded UDM property values to binary data (for storage in LDAP)'''
 	if value == '*':
 		# special case for filter pattern '*'
 		return value

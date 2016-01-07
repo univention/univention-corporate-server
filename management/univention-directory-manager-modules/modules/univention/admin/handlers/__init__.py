@@ -128,7 +128,7 @@ class base(object):
 				null=[]
 			else:
 				null=None
-			if not self.info.has_key(key):
+			if key not in self.info:
 				changes.append((key, value, null))
 			elif self.info[key] != value:
 				changes.append((key, value, self.info[key]))
@@ -138,7 +138,7 @@ class base(object):
 				null=[]
 			else:
 				null=None
-			if not self.oldinfo.has_key(key):
+			if key not in self.oldinfo:
 				changes.append((key, null, value))
 
 		# verify that no key is listed that requires an disabled option (Bug #13964)
@@ -666,8 +666,9 @@ class simpleLdap(base):
 				#self.mapping.unregister(desc)
 
 		diff_ml = self.diff()
-		ml = univention.admin.mapping.mapDiff( self.mapping, diff_ml )
-		ml = self._post_map( ml, diff_ml )
+		ml = univention.admin.mapping.mapDiff(self.mapping, diff_ml)
+		ml = [(attr, old, new) for attr, old, new in ml if isinstance(old, basestring) or isinstance(new, basestring) or set(old) != set(new)]
+		ml = self._post_map(ml, diff_ml)
 
 		# policies
 		if self.policies != self.oldpolicies:
@@ -675,7 +676,6 @@ class simpleLdap(base):
 			if not classes or not 'univentionPolicyReference' in classes:
 				ml.append(('objectClass', self.oldattr.get('objectClass', []), self.oldattr.get('objectClass', [])+['univentionPolicyReference']))
 			ml.append(('univentionPolicyReference', self.oldpolicies, self.policies))
-
 
 		return ml
 
