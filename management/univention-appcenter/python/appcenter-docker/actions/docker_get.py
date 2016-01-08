@@ -5,7 +5,7 @@
 #  univention-app module for getting app meta information
 #  (docker version)
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2015-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

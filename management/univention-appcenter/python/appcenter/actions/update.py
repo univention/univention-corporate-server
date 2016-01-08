@@ -4,7 +4,7 @@
 # Univention App Center
 #  univention-app module for updating the list of available apps
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2015-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
