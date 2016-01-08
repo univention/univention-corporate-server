@@ -28,10 +28,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from optparse import OptionParser
-
 import os
-import sys
 import fnmatch
 import re
 import getpass
@@ -43,20 +40,22 @@ import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
 
 # do not translate modules with these names, as they are examples and thus not worth the effort
-MODULE_BLACKLIST = [ 
- 'PACKAGENAME',
- '0001-6-7'
- ]
+MODULE_BLACKLIST = [
+	'PACKAGENAME',
+	'0001-6-7'
+]
+
 
 def reversereplace(s, old, new, occurrence):
 	li = s.rsplit(old, occurrence)
 	return new.join(li)
 
+
 def update_package_translation_files(module, modulename, packagedir, source_dir, target_language, startdir):
 	curr_dir = os.getcwd()
 	try:
 		# create directories for package translation
-		translated_package_dir_absolute = os.path.normpath("%s/%s/%s" %(startdir, target_language, packagedir))
+		translated_package_dir_absolute = os.path.normpath("%s/%s/%s" % (startdir, target_language, packagedir))
 		if not os.path.exists(translated_package_dir_absolute):
 			os.makedirs(translated_package_dir_absolute)
 		p = os.path.join(source_dir, packagedir)
@@ -65,25 +64,25 @@ def update_package_translation_files(module, modulename, packagedir, source_dir,
 		if not module['core']:
 			# build python po files
 			for po_file in module.python_po_files:
-				po_file_full_path = translated_package_dir_absolute+"/"+po_file
+				po_file_full_path = translated_package_dir_absolute + "/" + po_file
 				if not os.path.exists(os.path.dirname(po_file_full_path)):
 					os.makedirs(os.path.dirname(po_file_full_path))
-				dh_umc.create_po_file( po_file_full_path, modulename, module.python_files )
+				dh_umc.create_po_file(po_file_full_path, modulename, module.python_files)
 
 			# build javascript PO files
 			for po_file in module.js_po_files:
-				po_file_full_path = translated_package_dir_absolute+"/"+po_file
+				po_file_full_path = translated_package_dir_absolute + "/" + po_file
 				if not os.path.exists(os.path.dirname(po_file_full_path)):
 					os.makedirs(os.path.dirname(po_file_full_path))
 				# using python as language seems to work better than perl
-				dh_umc.create_po_file( po_file_full_path, modulename, module.js_files, 'python' )
+				dh_umc.create_po_file(po_file_full_path, modulename, module.js_files, 'python')
 
 		# xml always has to be present
 		for lang, po_file in module.xml_po_files:
-			po_file_full_path = translated_package_dir_absolute+"/"+po_file
+			po_file_full_path = translated_package_dir_absolute + "/" + po_file
 			if not os.path.exists(os.path.dirname(po_file_full_path)):
 				os.makedirs(os.path.dirname(po_file_full_path))
-			dh_umc.module_xml2po( module,po_file_full_path, lang )
+			dh_umc.module_xml2po(module, po_file_full_path, lang)
 
 	except OSError as e:
 		print traceback.format_exc()
@@ -91,24 +90,41 @@ def update_package_translation_files(module, modulename, packagedir, source_dir,
 	print ""
 	os.chdir(curr_dir)
 
+
 def update_and_install_translation_files_to_correct_path(module, target_language, package_path_absolute, startdir):
 	if not module['core']:
 		for po_file in module.python_po_files:
-			if os.path.isfile(os.path.join(package_path_absolute, po_file)):
-				dh_umc.create_mo_file(os.path.join(package_path_absolute, po_file))
-				dh_ucs.doIt('install', '-D', os.path.join(package_path_absolute, po_file.replace('.po', '.mo')), os.path.join(startdir, 'usr/share/locale/%s/LC_MESSAGES/%s.mo' % (target_language, module['package'])))
-				os.unlink(os.path.join(package_path_absolute, po_file.replace('.po', '.mo')))
+			po_file_path = os.path.join(package_path_absolute, po_file)
+			mo_file_path = os.path.join(package_path_absolute, po_file.replace('.po', '.mo'))
+			if os.path.isfile(po_file_path):
+				dh_umc.create_mo_file(po_file_path)
+				if not os.path.exists(mo_file_path):
+					print 'error creating mo file %s' % (mo_file_path,)
+					continue
+				dh_ucs.doIt('install', '-D', mo_file_path, os.path.join(startdir, 'usr/share/locale/%s/LC_MESSAGES/%s.mo' % (target_language, module['package'])))
+				os.unlink(mo_file_path)
 		for po_file in module.js_po_files:
-			if os.path.isfile(os.path.join(package_path_absolute, po_file)):
-				dh_umc.create_json_file(os.path.join(package_path_absolute, po_file))
-				dh_ucs.doIt( 'install', '-D', os.path.join(package_path_absolute, po_file.replace('.po', '.json')), os.path.join(startdir, 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/%s/%s.json' % (target_language, module['Module'] ) ))
-				os.unlink(os.path.join(package_path_absolute, po_file.replace('.po', '.json')))
+			po_file_path = os.path.join(package_path_absolute, po_file)
+			json_file_path = os.path.join(package_path_absolute, po_file.replace('.po', '.json'))
+			if os.path.isfile(po_file_path):
+				dh_umc.create_json_file(po_file_path)
+				if not os.path.exists(json_file_path):
+					print 'error creating json file %s' % (json_file_path,)
+					continue
+				dh_ucs.doIt('install', '-D', json_file_path, os.path.join(startdir, 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/%s/%s.json' % (target_language, module['Module'])))
+				os.unlink(json_file_path)
 	# xml always has to be present
 	for lang, po_file in module.xml_po_files:
-		if os.path.isfile(os.path.join(package_path_absolute, po_file)):
-			dh_umc.create_mo_file(os.path.join(package_path_absolute, po_file))
-			dh_ucs.doIt('install', '-D', os.path.join(package_path_absolute, po_file.replace('.po', '.mo')), os.path.join(startdir, 'usr/share/univention-management-console/i18n/%s/%s.mo' % (target_language, module['Module'])))
-			os.unlink(os.path.join(package_path_absolute, po_file.replace('.po', '.mo')))
+		po_file_path = os.path.join(package_path_absolute, po_file)
+		mo_file_path = os.path.join(package_path_absolute, po_file.replace('.po', '.mo'))
+		if os.path.isfile(po_file_path):
+			dh_umc.create_mo_file(po_file_path)
+			if not os.path.exists(mo_file_path):
+				print 'error creating %s.' % (mo_file_path,)
+				continue
+			dh_ucs.doIt('install', '-D', mo_file_path, os.path.join(startdir, 'usr/share/univention-management-console/i18n/%s/%s.mo' % (target_language, module['Module'])))
+			os.unlink(mo_file_path)
+
 
 # special case e.g. univention-management-modules-frontend: translation files are built with a makefile
 def translate_special_case(module, source_dir, start_dir, target_language):
@@ -116,7 +132,7 @@ def translate_special_case(module, source_dir, start_dir, target_language):
 	package_base_path = os.path.join(source_dir, module['packagedir'])
         os.chdir(package_base_path)
 
-	output_dir = os.path.join(start_dir, target_language, module['packagedir'], module['po_subdir'] )
+	output_dir = os.path.join(start_dir, target_language, module['packagedir'], module['po_subdir'])
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
 
@@ -124,14 +140,15 @@ def translate_special_case(module, source_dir, start_dir, target_language):
 	matches = []
 	for root, dirnames, filenames in os.walk('.'):
                 for filename in filenames:
-			if fnmatch.fnmatch(os.path.join(root,filename), module['inputfiles']):
-				matches.append(os.path.join(root,filename))
-	
+			if fnmatch.fnmatch(os.path.join(root, filename), module['inputfiles']):
+				matches.append(os.path.join(root, filename))
+
 	print "matching %s: %s" % (module['inputfiles'], matches)
 
-	dh_umc.create_po_file( output_dir+'/%s.po' % target_language, module['packagename'], matches )
+	dh_umc.create_po_file(output_dir + '/%s.po' % target_language, module['packagename'], matches)
 
 	os.chdir(curr_dir)
+
 
 def translate_special_case_po_to_target(module, start_dir, target_language):
 	curr_dir = os.getcwd()
@@ -155,6 +172,7 @@ def translate_special_case_po_to_target(module, start_dir, target_language):
 
 	os.chdir(curr_dir)
 
+
 def get_modules_from_path(modulename, modulepath):
 	modules = []
 	curr_dir = os.getcwd()
@@ -164,7 +182,7 @@ def get_modules_from_path(modulename, modulepath):
 		modules = dh_umc.read_modules(modulename, False)
 	except AttributeError as e:
 		print "%s attributeerror in module, trying to load as core module" % str(e)
-		try: 
+		try:
 			modules = dh_umc.read_modules(modulename, True)
 		except AttributeError as e:
 			print "%s core module load failed" % str(e)
@@ -179,6 +197,7 @@ def get_modules_from_path(modulename, modulepath):
 	os.chdir(curr_dir)
 	return modules
 
+
 def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 	print 'looking in %s' % source_dir
 	print 'looking for files matching %s' % module_basefile_name
@@ -186,12 +205,11 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 	matches = []
 	for root, dirnames, filenames in os.walk('.'):
 		for filename in fnmatch.filter(filenames, "*" + module_basefile_name):
-			matches.append(os.path.join(root,filename))
+			matches.append(os.path.join(root, filename))
 
 	base_translation_modules = []
 
-	pattern_get_package_name = ".*/(.*)/debian/.*%s$" % module_basefile_name
-	regex = re.compile(pattern_get_package_name)
+	regex = re.compile(".*/(.*)/debian/.*%s$" % re.escape(module_basefile_name))
 	for match in matches:
 		print match
 		packagenameresult = regex.search(match)
@@ -205,16 +223,17 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 
 			packagedir = os.path.dirname(os.path.dirname(match))
 			print "Found package: %s" % packagedir
-			module = {} 
+			module = {}
 			module['modulename'] = modulename
 			module['packagename'] = packagename
 			module['packagedir'] = packagedir
 			base_translation_modules.append(module)
 		else:
 			print "could not obtain packagename from directory %s" % match
-		
+
 	os.chdir(startdir)
 	return base_translation_modules
+
 
 def create_new_package(new_package_dir, target_language, target_locale, language_name, startdir):
 	new_package_dir_debian = os.path.join(new_package_dir, 'debian')
@@ -226,7 +245,7 @@ def create_new_package(new_package_dir, target_language, target_locale, language
 	translation_creator = getpass.getuser()
 	translation_host = socket.getfqdn()
 	with open(os.path.join(new_package_dir_debian, 'copyright'), 'w') as f:
-		f.write("""Copyright 2013-2014 Univention GmbH
+		f.write("""Copyright 2013-2016 Univention GmbH
 
 http://www.univention.de/
 
@@ -260,11 +279,11 @@ License with the Debian GNU/Linux or Univention distribution in file
   * Initial release
 
  -- %s <%s@%s>  %s""" % (translation_package_name, translation_creator, translation_creator, translation_host, formatdate()))
-		
+
 	with open(os.path.join(new_package_dir_debian, 'rules'), 'w') as f:
 		f.write("""#!/usr/bin/make -f
 #
-# Copyright 2013-2014 Univention GmbH
+# Copyright 2013-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -297,7 +316,6 @@ override_dh_auto_test:
 
 %:
 	dh $@""")
-	
 
 	with open(os.path.join(new_package_dir_debian, 'control'), 'w') as f:
                 f.write("""Source: %s
@@ -339,7 +357,7 @@ exit 0""" % (target_locale, target_language.lower(), target_language.upper(), la
 
 	language_dict = {"lang": target_language}
 	with open(os.path.join(new_package_dir_debian, '%s.install' % translation_package_name), 'w') as f:
-		f.write("""usr/share/univention-management-console-frontend/js/umc/* usr/share/univention-management-console-frontend/js/umc	
+		f.write("""usr/share/univention-management-console-frontend/js/umc/* usr/share/univention-management-console-frontend/js/umc
 usr/share/univention-management-console/i18n/%(lang)s/* usr/share/univention-management-console/i18n/%(lang)s
 usr/share/locale/%(lang)s/LC_MESSAGES/* usr/share/locale/%(lang)s/LC_MESSAGES""" % language_dict )
 
@@ -357,6 +375,7 @@ usr/share/locale/%(lang)s/LC_MESSAGES
 
 	shutil.copytree(os.path.join(startdir, target_language), os.path.join(new_package_dir, target_language))
 	shutil.rmtree(os.path.join(startdir, target_language))
+
 
 def get_template(module, source_dir, start_dir, target_language):
 	curr_dir = os.getcwd()
@@ -379,16 +398,17 @@ def get_template(module, source_dir, start_dir, target_language):
 	shutil.copy(source_file_dir, output_dir)
 
 	os.chdir(curr_dir)
-	
+
+
 def install_template(module, start_dir, target_language):
 	curr_dir = os.getcwd()
 	package_base_path = start_dir
 	os.chdir(package_base_path)
 	module['language'] = target_language
 
-	source_file_dir = os.path.join(package_base_path, 
-		target_language, 
-		module['packagedir'], 
+	source_file_dir = os.path.join(package_base_path,
+		target_language,
+		module['packagedir'],
 		module['inputfile'] % module)
 
 	output_name = os.path.join(package_base_path, module['outputfile'] % module)

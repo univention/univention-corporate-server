@@ -30,12 +30,11 @@
 
 from optparse import OptionParser
 
-import sys
 import os
 import json
-import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
 import univention.translationhelper as tlh
+
 
 if __name__ == '__main__':
 	usage = '''%prog [options] -s source_dir -c language_code -l locale -n language_name
@@ -52,7 +51,7 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 
 	if not options.source_dir:
 		parser.error('Missing argument -s. %s' % help_message)
-	
+
 	if not options.target_language:
 		parser.error('Missing argument -c. %s' % help_message)
 
@@ -65,10 +64,10 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 	# make options.source_dir absolute
 	options.source_dir = os.path.abspath(options.source_dir)
 	# find all module files and move them to a language specific directory
-	startdir=os.getcwd()
-	base_translation_modules = tlh.find_base_translation_modules(startdir, options.source_dir, options.basefiles)	
+	startdir = os.getcwd()
+	base_translation_modules = tlh.find_base_translation_modules(startdir, options.source_dir, options.basefiles)
 	# generate/update language specific .po files and generate .mo files in the correct directory
-	dh_umc.LANGUAGES = ( options.target_language, )
+	dh_umc.LANGUAGES = (options.target_language, )
 	for modules in base_translation_modules:
 		umc_modules = tlh.get_modules_from_path(modules['modulename'], os.path.join(options.source_dir, modules['packagedir']))
 		for module in umc_modules:
@@ -80,8 +79,8 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 	specialmodules = []
 	specialcases_file = "/usr/share/univention-ucs-translation-template/specialcases.json"
 	if os.path.exists(specialcases_file):
-		with open(specialcases_file, 'r') as f:
-			specialmodules = json.loads(f.read())
+		with open(specialcases_file, 'rb') as fd:
+			specialmodules = json.load(fd)
 	else:
 		print "Error: Could not find file %s. Several files will not be handled." % specialcases_file
 
@@ -95,10 +94,9 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 				tlh.get_template(module, options.source_dir, startdir, options.target_language)
 			elif module['action'] == 'install-template':
 				tlh.install_template(module, startdir, options.target_language)
-		except Exception as e:
-			print "Warning in special case: %s" % str(e)
+		except Exception as exc:
+			print "Warning in special case: %s" % (exc,)
 	# end special case
-	
 
 	# create new package
 	new_package_dir = os.path.join(startdir, 'univention-ucs-translation-%s' % options.target_language)
