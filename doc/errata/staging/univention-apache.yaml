@@ -2,11 +2,13 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-apache
-fix: 8.0.1-3.253.201601041343
+fix: 8.0.1-4.254.201601081337
 version: [0]
 desc: |
   This update addresses the following issues:
   * The HTTP redirection has been changed to a permanent redirection when
     forcing HTTPS access.
   * HTTPS is not enforced for the apache mod_status ressources.
-bug: [40121, 40173]
+  * Links on the UCS overview preserve the port if accessed through a non
+    default port.
+bug: [40121, 40173, 40070]
