@@ -48,6 +48,7 @@ Depends: python-univention-appcenter,
  ${misc:Depends},
  ${python:Depends},
 Recommends: univention-appcenter-docker
+Breaks: univention-ldap-server (<< 12.1.6-8),
 Architecture: all
 Description: Tools for Univention App Center
  .

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-39) unstable; urgency=low
+
+  * Bug #39866: Add univentionAppID to equality search index
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Jan 2016 13:45:33 +0100
+
 univention-appcenter (5.0.19-38) unstable; urgency=medium
 
   * Bug #40239: Do not make methods public
