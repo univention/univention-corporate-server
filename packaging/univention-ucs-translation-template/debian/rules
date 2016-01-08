@@ -32,4 +32,4 @@ override_dh_auto_test:
 	dh_auto_test
 
 %:
-	dh $@
+	dh $@ --with python_support

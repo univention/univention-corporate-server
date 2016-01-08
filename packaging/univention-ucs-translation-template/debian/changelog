@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.0.1-2) unstable; urgency=medium
+
+  * Bug #38155: fix python build
+
+ -- Florian Best <best@univention.de>  Fri, 08 Jan 2016 13:45:58 +0100
+
 univention-ucs-translation-template (3.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
