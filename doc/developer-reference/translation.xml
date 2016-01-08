@@ -43,7 +43,7 @@
 								It requires some additional Debian tools to build the package.
 								The following packages must be installed on an UCS server by running the following command:
 								<programlisting language="sh">
-univention-install univention-ucs-translation-template dpkg-dev
+univention-install univention-ucs-translation-template dpkg-dev subversion
 								</programlisting>
 							</para>
 						</listitem>
@@ -76,7 +76,7 @@ svn co http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-0
 				To create a new translation package for e.g. French in the users home directory, the following command must be executed:
 				<programlisting language="sh">
 cd ~/translation
-univention-ucs-translation-build-package \
+univention-ucs-translation-build-package.py \
 	-s ~/translation/ucs-4.1-0 -c fr -l fr_FR.UTF-8:UTF-8 -n French
 				</programlisting>
 				This creates a new directory <filename class="directory">univention-ucs-translation-fr/</filename>, which contains a Debian source package of the same name.
