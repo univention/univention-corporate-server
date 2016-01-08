@@ -1,3 +1,10 @@
+univention-apache (8.0.1-4) unstable; urgency=medium
+
+  * Bug #40070: don't rewrite port on ucs-overview if accessed via non default
+  	port
+
+ -- Florian Best <best@univention.de>  Fri, 08 Jan 2016 13:34:38 +0100
+
 univention-apache (8.0.1-3) unstable; urgency=medium
 
   * Bug #40121: fix HTTP status when redirecting to HTTPS

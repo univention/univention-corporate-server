@@ -232,6 +232,11 @@ define([
 					protocol = 'https:';
 					port = '';
 				}
+				if (!port && window.location.port) {
+					// in case of access to https://host:1443/
+					protocol = window.location.protocol;
+					port = window.location.port;
+				}
 				if (port) {
 					port = ':' + port;
 				}
