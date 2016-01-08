@@ -1,0 +1,368 @@
+#!/usr/bin/python2.7
+# vim: set ts=4 sw=4 et fileencoding=UTF-8:
+"""
+Add and remove LDAP attributes to index.
+"""
+# Copyright 2001-2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import sys
+from argparse import ArgumentParser
+from subprocess import (PIPE, Popen)
+from univention.config_registry.frontend import (ConfigRegistry, ucr_update)
+from logging import (ERROR, WARNING, INFO, DEBUG, basicConfig, getLogger)
+import re
+
+LOG = getLogger(__name__)
+
+RE_UNDEFINED = re.compile(
+    r'/etc/ldap/slapd\.conf: line [0-9]+: index attribute "([^"]+)" undefined'
+)
+
+
+class LdapIndex(object):
+
+    def main(self):
+        with ConfigRegistry() as ucr:
+            self.load_ucr(ucr)
+            self.add_defaults()
+            self.modify_index()
+            self.save_ucr(ucr)
+            self.validate_config(ucr)
+        self.update_index()
+
+    def __init__(self):
+        self.args = self.parse_args()
+        self.setup_logging()
+        self.autorebuild = None
+        self.index = {}
+
+    @staticmethod
+    def parse_args():
+        usage = '%(prog)s [options] [--(add|rm)-(eq|pres|sub|approx) ATTR ...]'
+        description = sys.modules[__name__].__doc__
+        parser = ArgumentParser(usage=usage, description=description)
+        parser.add_argument(
+            '--verbose', '-v', dest='verbose', action='count', default=0,
+            help='Increase output verbosity')
+        parser.add_argument(
+            '--add-defaults', '-d', action='store_true',
+            help='Add recommended default attributes')
+        parser.add_argument(
+            '--remove-unknown', '-u', action='store_true',
+            help='Remove unknown attributes from invalid configuration')
+        parser.add_argument(
+            '--add-eq', '-e', action='append', metavar='ATTR',
+            help='Add to equality index')
+        parser.add_argument(
+            '--rm-eq', '-E', action='append', metavar='ATTR',
+            help='Remove from equality index')
+        parser.add_argument(
+            '--add-pres', '-p', action='append', metavar='ATTR',
+            help='Add to presence index')
+        parser.add_argument(
+            '--rm-pres', '-P', action='append', metavar='ATTR',
+            help='Remove from presence index')
+        parser.add_argument(
+            '--add-sub', '-s', action='append', metavar='ATTR',
+            help='Add to sub-string index')
+        parser.add_argument(
+            '--rm-sub', '-S', action='append', metavar='ATTR',
+            help='Remove from sub-string index')
+        parser.add_argument(
+            '--add-approx', '-a', action='append', metavar='ATTR',
+            help='Add to approximation index')
+        parser.add_argument(
+            '--rm-approx', '-A', action='append', metavar='ATTR',
+            help='Remove from approximation index')
+        return parser.parse_args()
+
+    def setup_logging(self):
+        levels = [ERROR, WARNING, INFO, DEBUG]
+        try:
+            level = levels[self.args.verbose]
+        except IndexError:
+            level = levels[-1]
+        basicConfig(stream=sys.stderr, level=level)
+
+    def load_ucr(self, ucr):
+        self.autorebuild = ucr.is_true('ldap/index/autorebuild')
+        if self.autorebuild:
+            LOG.debug('Automatically updating indexes is enabled')
+        self.index = dict(
+            (typ, self.split_ucr(ucr, typ))
+            for typ in RECOMMENDED_LDAP_INDEX
+        )
+
+    def split_ucr(self, ucr, typ):
+        ucrv = self.ucrv(typ)
+        value = ucr.get(ucrv, '')
+        values = value.split(',')
+        stripped = (_.strip() for _ in values)
+        return set((_ for _ in stripped if _))
+
+    @staticmethod
+    def ucrv(typ):
+        return 'ldap/index/%s' % (typ,)
+
+    def add_defaults(self):
+        if not self.args.add_defaults:
+            return
+        LOG.debug('Adding defaults...')
+        for typ, attributes in self.index.iteritems():
+            attributes |= RECOMMENDED_LDAP_INDEX[typ]  # noqa
+
+    def modify_index(self):
+        for typ, attributes in self.index.iteritems():
+            to_add = getattr(self.args, 'add_%s' % (typ,))
+            if to_add:
+                LOG.debug('Adding %s to %s', to_add, typ)
+                attributes |= set(to_add)
+            to_rm = getattr(self.args, 'rm_%s' % (typ,))
+            if to_rm:
+                LOG.debug('Removing %s from %s', to_add, typ)
+                attributes -= set(to_rm)
+
+    def save_ucr(self, ucr):
+        changes = {}
+        for (typ, attributes) in self.index.iteritems():
+            oldv = self.split_ucr(ucr, typ)
+            if oldv == attributes:
+                continue
+            ucrv = self.ucrv(typ)
+            old = ucr.get(ucrv)
+            if old is None or self.autorebuild:
+                changes[ucrv] = ','.join(sorted(attributes))
+        LOG.info('Applying %s...', changes)
+        if not changes:
+            sys.exit(0)
+        ucr_update(ucr, changes)
+
+    def validate_config(self, ucr):
+        cmd = ('slaptest',)
+        while True:
+            proc = Popen(cmd, stderr=PIPE)
+            _stdout, stderr = proc.communicate()
+            if proc.wait() == 0:
+                return
+            self.fix_unknown(stderr)
+            self.save_ucr(ucr)
+
+    def fix_unknown(self, stderr):
+        if self.args.remove_unknown:
+            match = RE_UNDEFINED.search(stderr)
+            if match:
+                attr = match.group(1)
+                LOG.info('Removing attribute %s from all indexes...', attr)
+                for attributes in self.index.itervalues():
+                    attributes.discard(attr)
+                return
+        LOG.fatal('Error in OpenLDAP configuration:\n%s', stderr)
+        sys.exit(3)
+
+    def update_index(self):
+        """Run slapindex and filter out unsettling warning from stderr"""
+        if not self.autorebuild:
+            return
+        LOG.info('Generating indexes...')
+        self.check_slapd()
+        slapindex_cmd = ('/usr/sbin/slapindex',)
+        slapindex = Popen(slapindex_cmd, stderr=PIPE)
+        beautify_cmd = (
+            'sed', '-e',
+            "/Runnig as root!/,"
+            "/There's a fair chance slapd will fail to start./d",
+        )
+        beautify = Popen(beautify_cmd, stdin=slapindex.stderr)
+        slapindex.stderr.close()
+        if beautify.wait():
+            LOG.error('%r failed with %d', beautify_cmd, beautify.returncode)
+        if slapindex.wait():
+            LOG.error('%r failed with %d', slapindex_cmd, slapindex.returncode)
+            sys.exit(slapindex.returncode)
+
+    @staticmethod
+    def check_slapd():
+        cmd = ('pidof', 'slapd',)
+        proc = Popen(cmd, stdout=PIPE, stderr=PIPE)
+        proc.communicate()
+        if proc.wait() == 0:
+            LOG.fatal('OpenLDAP slapd is running; aborting')
+            sys.exit(4)
+
+
+UDM_PROP_ATTRS = set((
+    'univentionUDMPropertyCLIName',
+    'univentionUDMPropertyDefault',
+    'univentionUDMPropertyDeleteObjectClass',
+    'univentionUDMPropertyDoNotSearch',
+    'univentionUDMPropertyHook',
+    'univentionUDMPropertyLayoutOverwritePosition',
+    'univentionUDMPropertyLayoutOverwriteTab',
+    'univentionUDMPropertyLayoutPosition',
+    'univentionUDMPropertyLayoutTabAdvanced',
+    'univentionUDMPropertyLayoutTabName',
+    'univentionUDMPropertyLdapMapping',
+    'univentionUDMPropertyLongDescription',
+    'univentionUDMPropertyModule',
+    'univentionUDMPropertyMultivalue',
+    'univentionUDMPropertyObjectClass',
+    'univentionUDMPropertyOptions',
+    'univentionUDMPropertyShortDescription',
+    'univentionUDMPropertySyntax',
+    'univentionUDMPropertyTranslationLongDescription',
+    'univentionUDMPropertyTranslationShortDescription',
+    'univentionUDMPropertyTranslationTabName',
+    'univentionUDMPropertyValueMayChange',
+    'univentionUDMPropertyValueRequired',
+    'univentionUDMPropertyVersion',
+))
+
+RECOMMENDED_LDAP_INDEX = {
+    'eq': UDM_PROP_ATTRS | set((
+        'aRecord',
+        'automountInformation',
+        'cn',
+        'cNAMERecord',
+        'description',
+        'dhcpHWAddress',
+        'displayName',
+        'entryUUID',
+        'gidNumber',
+        'givenName',
+        'homeDirectory',
+        'krb5PrincipalName',
+        'macAddress',
+        'mail',
+        'mailAlternativeAddress',
+        'mailPrimaryAddress',
+        'memberUid',
+        'objectClass',
+        'ou',
+        'pTRRecord',
+        'relativeDomainName',
+        'sambaAcctFlags',
+        'sambaDomainName',
+        'sambaGroupType',
+        'sambaPrimaryGroupSID',
+        'sambaSID',
+        'sambaSIDList',
+        'secretary',
+        'shadowExpire',
+        'sn',
+        'uid',
+        'uidNumber',
+        'uniqueMember',
+        # 'univentionAppID',  # Bug #39866
+        'univentionCanonicalRecipientRewriteEnabled',
+        'univentionInventoryNumber',
+        'univentionLicenseModule',
+        'univentionLicenseObject',
+        'univentionMailHomeServer',
+        'univentionNagiosHostname',
+        'univentionObjectFlag',
+        'univentionObjectType',
+        'univentionPolicyReference',
+        'univentionServerRole',
+        'univentionService',
+        'univentionShareGid',
+        'univentionShareSambaName',
+        'univentionShareWriteable',
+        'univentionUDMOptionModule',
+        'zoneName',
+    )),
+    'pres': UDM_PROP_ATTRS | set((
+        'aRecord',
+        'automountInformation',
+        'cn',
+        'description',
+        'dhcpHWAddress',
+        'displayName',
+        'gidNumber',
+        'givenName',
+        'homeDirectory',
+        'krb5PrincipalName',
+        'macAddress',
+        'mail',
+        'mailAlternativeAddress',
+        'mailPrimaryAddress',
+        'memberUid',
+        'name',
+        'objectClass',
+        'ou',
+        'relativeDomainName',
+        'shadowMax',
+        'sn',
+        'uid',
+        'uidNumber',
+        'uniqueMember',
+        'univentionMailHomeServer',
+        'univentionObjectFlag',
+        'univentionPolicyReference',
+        'zoneName',
+    )),
+    'sub': set((
+        'aRecord',
+        'associatedDomain',
+        'automountInformation',
+        'cn',
+        'default',
+        'description',
+        'displayName',
+        'employeeNumber',
+        'givenName',
+        'macAddress',
+        'mail',
+        'mailAlternativeAddress',
+        'mailPrimaryAddress',
+        'name',
+        'ou',
+        'printerModel',
+        'pTRRecord',
+        'relativeDomainName',
+        'sambaSID',
+        'sn',
+        'uid',
+        'univentionInventoryNumber',
+        'univentionOperatingSystem',
+        'univentionSyntaxDescription',
+        'univentionUDMPropertyLongDescription',
+        'univentionUDMPropertyShortDescription',
+        'zoneName',
+    )),
+    'approx': set((
+        'cn',
+        'givenName',
+        'mail',
+        'sn',
+        'uid',
+    )),
+}
+
+
+if __name__ == '__main__':
+    LdapIndex().main()

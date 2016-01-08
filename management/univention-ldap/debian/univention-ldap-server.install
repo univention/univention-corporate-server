@@ -8,3 +8,4 @@ listener/*.py usr/lib/univention-directory-listener/system/
 well-known-sid-name-mapping.d/univention-ldap-server.py usr/lib/univention-pam/well-known-sid-name-mapping.d
 scripts/create-dh-parameter-files	usr/share/univention-ldap/
 dh_2048.pem	usr/share/univention-ldap/
+scripts/ldap_setup_index	usr/share/univention-ldap/

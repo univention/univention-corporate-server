@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-8) unstable; urgency=low
+
+  * Bug #39866: Delay adding univentionAppID to equality search index
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 08 Jan 2016 09:29:28 +0100
+
 univention-ldap (12.1.6-7) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping
