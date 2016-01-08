@@ -144,7 +144,7 @@ class LdapIndex(object):
                 attributes |= set(to_add)
             to_rm = getattr(self.args, 'rm_%s' % (typ,))
             if to_rm:
-                LOG.debug('Removing %s from %s', to_add, typ)
+                LOG.debug('Removing %s from %s', to_rm, typ)
                 attributes -= set(to_rm)
 
     def save_ucr(self, ucr):
