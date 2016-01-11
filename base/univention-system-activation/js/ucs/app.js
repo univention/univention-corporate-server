@@ -171,7 +171,7 @@ define([
 
 		_createTitle: function() {
 			var titleNode = dom.byId('title');
-			put(titleNode, 'h1', _('Activation of {appliance_name} Univention App', entries));
+			put(titleNode, 'h1', _('Activation of {appliance_name} Appliance', entries));
 			put(titleNode, '!.dijitHidden');
 		},
 
@@ -188,7 +188,7 @@ define([
 			var contentNode = dom.byId('content');
 			var tabNode = put(contentNode, 'div.tab#register-tab.hide-tab');
 			put(tabNode, 'p > b', _('License request.'));
-			put(tabNode, 'p', _('Please enter a valid email address in order to activate {appliance_name} Univention App. The activation is mandatory to deploy the system. In the next step you can upload the license file that has been sent to your email address.', entries));
+			put(tabNode, 'p', _('Please enter a valid email address in order to activate {appliance_name} Appliance. The activation is mandatory to deploy the system. In the next step you can upload the license file that has been sent to your email address.', entries));
 
 			// create input field for email address
 			this._email = new TextBox({
@@ -377,7 +377,7 @@ define([
 				})
 			});
 			put(tabNode, 'p > b', _('Activation successful!'));
-			put(tabNode, 'p', _('{appliance_name} Univention App is now activated. Click "Continue" to access the management interface (which may take a while).', entries));
+			put(tabNode, 'p', _('{appliance_name} Appliance is now activated. Click "Continue" to access the management interface (which may take a while).', entries));
 			put(tabNode, '>', this._continueButton.domNode);
 			this._continueButton.startup();
 		},
