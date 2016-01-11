@@ -73,6 +73,9 @@ class LdapIndex(object):
             '--add-defaults', '-d', action='store_true',
             help='Add recommended default attributes')
         parser.add_argument(
+            '--force-defaults', '-D', action='store_true',
+            help='Force recommended default attributes')
+        parser.add_argument(
             '--remove-unknown', '-u', action='store_true',
             help='Remove unknown attributes from invalid configuration')
         parser.add_argument(
@@ -113,10 +116,15 @@ class LdapIndex(object):
         self.autorebuild = ucr.is_true('ldap/index/autorebuild')
         if self.autorebuild:
             LOG.debug('Automatically updating indexes is enabled')
-        self.index = dict(
-            (typ, self.split_ucr(ucr, typ))
-            for typ in RECOMMENDED_LDAP_INDEX
-        )
+        if self.args.force_defaults:
+            LOG.debug('Forcing default values')
+            self.index = dict((typ, set()) for typ in RECOMMENDED_LDAP_INDEX)
+        else:
+            LOG.debug('Loading values from UCR')
+            self.index = dict(
+                (typ, self.split_ucr(ucr, typ))
+                for typ in RECOMMENDED_LDAP_INDEX
+            )
 
     def split_ucr(self, ucr, typ):
         ucrv = self.ucrv(typ)
@@ -130,11 +138,10 @@ class LdapIndex(object):
         return 'ldap/index/%s' % (typ,)
 
     def add_defaults(self):
-        if not self.args.add_defaults:
-            return
-        LOG.debug('Adding defaults...')
-        for typ, attributes in self.index.iteritems():
-            attributes |= RECOMMENDED_LDAP_INDEX[typ]  # noqa
+        if self.args.add_defaults or self.args.force_defaults:
+            LOG.debug('Adding defaults...')
+            for typ, attributes in self.index.iteritems():
+                attributes |= RECOMMENDED_LDAP_INDEX[typ]  # noqa
 
     def modify_index(self):
         for typ, attributes in self.index.iteritems():

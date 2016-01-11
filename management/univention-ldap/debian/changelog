@@ -1,6 +1,7 @@
 univention-ldap (12.1.6-11) unstable; urgency=low
 
   * Bug #38051: Initialize LDAP only on master
+  * Bug #39866: Force ldap/index/* to defaults during join
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2016 15:36:11 +0100
 

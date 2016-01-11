@@ -45,6 +45,9 @@ if ! test -e "/etc/ldap.secret"; then
 	LDAP_SECRET="not_found"
 fi
 
+/usr/share/univention-ldap/ldap_setup_index --force-defaults ||
+	[ $? -eq 4 ]
+
 # initialize ldap
 database_name="id2entry"
 if [ "mdb" = "$ldap_database_type" ]; then
