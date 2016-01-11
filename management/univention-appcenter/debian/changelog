@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-40) unstable; urgency=low
+
+  * Bug #39866: Improve adding univentionAppID to equality search index
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 11 Jan 2016 08:48:35 +0100
+
 univention-appcenter (5.0.19-39) unstable; urgency=low
 
   * Bug #39866: Add univentionAppID to equality search index

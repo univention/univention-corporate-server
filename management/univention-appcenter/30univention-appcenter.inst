@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=1
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/ldap.sh
@@ -49,7 +49,11 @@ ucs_registerLDAPExtension "$@" \
 	--acl /usr/share/univention-appcenter/66univention-appcenter_app.acl \
 	--udm_module /usr/share/univention-appcenter/app.py || die
 
-if [ -x /usr/share/univention-ldap/ldap_setup_index ]
+if [ -x /etc/init.d/slapd ] &&
+	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
+	[ -e /var/univention-join/joined ] &&
+	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionAppID
+	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionAppID'"
 then
 	if pidof slapd >/dev/null 2>/dev/null
 	then

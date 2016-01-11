@@ -38,6 +38,22 @@ fi
 
 #DEBHELPER#
 
+if [ -x /etc/init.d/slapd ] &&
+	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
+	[ -e /var/univention-join/joined ] &&
+	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionAppID &&
+	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionAppID'"
+then
+	if pidof slapd >/dev/null 2>/dev/null
+	then
+		invoke-rc.d slapd stop
+		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionAppID
+		invoke-rc.d slapd start
+	else
+		/usr/share/univention-ldap/ldap_setup_index --add-eq univentionAppID
+	fi
+fi
+
 if dpkg --compare-versions "$2" lt-nl 5.0.19-7; then
 	univention-app register --noninteractive --component
 fi
