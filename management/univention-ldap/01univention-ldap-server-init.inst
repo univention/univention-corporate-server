@@ -42,16 +42,7 @@ if [ -z "$ldap_server_type" ]; then
 fi
 
 if ! test -e "/etc/ldap.secret"; then
-	LDAP_SECRET="not_founnd"
-fi
-
-if [ "$server_role" = "domaincontroller_slave" ]; then
-	touch /etc/ldap/rootpw.conf
-fi
-
-if [ "$ldap_server_type" = "slave" -a ! -f /var/lib/univention-ldap/schema.conf ]; then
-	# schema.conf is included by slapd.conf, slapadd complains if it's not readable
-	touch /var/lib/univention-ldap/schema.conf
+	LDAP_SECRET="not_found"
 fi
 
 # initialize ldap
@@ -60,10 +51,10 @@ if [ "mdb" = "$ldap_database_type" ]; then
 	database_name="data"
 fi
 files=$(find /var/lib/univention-ldap/ldap/ -name "$database_name.*" -type f)
-if [ -z "$files" ] ; then
-	killall slapd >/dev/null 2>&1
-	killall slapd >/dev/null 2>&1
-	killall -9 slapd >/dev/null 2>&1
+if [ -z "$files" ] && [ "$server_role" = "domaincontroller_master" ] ; then
+	killall slapd >/dev/null 2>&1 || :
+	killall slapd >/dev/null 2>&1 || :
+	killall -9 slapd >/dev/null 2>&1 || :
 
 	rm -f /var/lib/univention-ldap/ldap/*
 
@@ -95,7 +86,8 @@ if [ -z "$files" ] ; then
 	cat /usr/share/univention-ldap/base.ldif /usr/share/univention-ldap/core-edition.ldif |
 		 sed -e \
 		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@backup\.pw@@%%@@|$backup_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
-		univention-config-registry filter | slapadd >>/var/log/univention/join.log 2>&1
+		univention-config-registry filter | slapadd >>/var/log/univention/join.log 2>&1 ||
+		exit 1
 
 	univention-config-registry set windows/domain?"$sambadomain" \
 		kerberos/realm?"$realm"

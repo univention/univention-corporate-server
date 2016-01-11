@@ -62,7 +62,11 @@ restart_slapd ()
 }
 # } # end of function definitions
 
-touch /etc/ldap/rootpw.conf
+# Replication: password for rootdn/updatedn and schema from master
+case "$ldap_server_type" in
+master) ;;
+slave|*) touch /etc/ldap/rootpw.conf /var/lib/univention-ldap/schema.conf ;;
+esac
 
 #DEBHELPER#
 
