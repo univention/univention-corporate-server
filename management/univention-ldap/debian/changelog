@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-10) unstable; urgency=low
+
+  * Add message catalog to LDAP schema of UDM hook and UDM syntax (Bug #35840)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 11 Jan 2016 12:57:35 +0100
+
 univention-ldap (12.1.6-9) unstable; urgency=low
 
   * Bug #39866: Fix debug message output

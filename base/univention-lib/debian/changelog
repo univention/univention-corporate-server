@@ -588,7 +588,7 @@ univention-lib (3.0.20-5) unstable; urgency=low
   * Fix detection of Active flag in ldap_extension listener
     (Bug #26785, Bug #32393)
   * Resolve circular dependency by copying UCS_Version from
-    univention-updater to python-univention-lib (Bug #32393)
+    univention-updater to python-univntion-lib (Bug #32393)
 
  -- Arvid Requate <requate@univention.de>  Tue, 08 Oct 2013 14:48:04 +0200
 
