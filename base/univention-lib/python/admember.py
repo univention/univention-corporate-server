@@ -825,7 +825,7 @@ def set_nameserver(server_ips, ucr=None):
 	for server_ip in server_ips:
 		var = u'nameserver%d' % count
 		val = ucr.get(var)
-		if val != None:
+		if val is not None:
 			previous_ucr_set.append(u'%s=%s' % (var, val))
 		else:
 			previous_ucr_unset.append(u'%s' % (var,))
@@ -834,7 +834,7 @@ def set_nameserver(server_ips, ucr=None):
 	for i in range(count, 4):
 		var = u'nameserver%s' % i
 		val = ucr.get(var)
-		if val != None:
+		if val is not None:
 			previous_ucr_set.append(u'%s=%s' % (var, val))
 			univention.config_registry.handler_unset([var])
 	return (previous_ucr_set, previous_ucr_unset)
@@ -947,7 +947,7 @@ def prepare_kerberos_ucr_settings(realm=None, ucr=None):
 	for setting in ucr_set:
 		var = setting.split("=", 1)[0]
 		old_val = ucr.get(var)
-		if old_val != None:
+		if old_val is not None:
 			previous_ucr_set.append(u'%s=%s' % (var, old_val))
 		else:
 			previous_ucr_unset.append(u'%s' % (var,))
@@ -963,7 +963,7 @@ def prepare_kerberos_ucr_settings(realm=None, ucr=None):
 
 	for var in ucr_unset:
 		val = ucr.get(var)
-		if val != None:
+		if val is not None:
 			previous_ucr_set.append(u'%s=%s' % (var, val))
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)

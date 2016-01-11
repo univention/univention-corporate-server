@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-ldap
-fix: 12.1.6-9.796.201601081702
+fix: 12.1.6-10.798.201601111310
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -18,6 +18,4 @@ desc: |
     extracted. It can be used to manage the attributes, which are indexed by
     the LDAP server.
   * Some shell quoting errors were fixed.
-  * Allow installation of translations for extensions of UDM hooks and UDM
-    syntaxes.
-bug: [35840,38091,39884,39866,40031]
+bug: [38091,39884,39866,40031]

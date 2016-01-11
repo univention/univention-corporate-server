@@ -146,17 +146,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'messagecatalog': univention.admin.property(
-			short_description=_('GNU message catalog for translations'),
-			long_description='GNU message catalog (syntax: <language tag> <Base64 encoded GNU message catalog>)',
-			syntax=univention.admin.syntax.Localesubdirname_and_GNUMessageCatalog,
-			multivalue=1,
-			include_in_default_search=0,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
-			),
 	}
 
 layout = [
@@ -165,7 +154,6 @@ layout = [
 			["name"],
 			["filename"],
 			["data"],
-			["messagecatalog"],
 		] ),
 		Group( _( 'Metadata' ), layout = [
 			["package"],
@@ -192,7 +180,6 @@ mapping.register('package', 'univentionOwnedByPackage', None, univention.admin.m
 mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionstart', 'univentionUCSVersionStart', None, univention.admin.mapping.ListToString)
 mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.admin.mapping.ListToString)
-## messagecatalog is handled via object._post_map and object._post_unmap defined below
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -203,7 +190,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.mapping=mapping
 		self.descriptions=property_descriptions
-		self.options=[]
+ 		self.options=[]
 
 		self.alloc=[]
 
@@ -231,44 +218,7 @@ class object(univention.admin.handlers.simpleLdap):
 			if not  apt.apt_pkg.version_compare(self['packageversion'], old_version) > -1:
 				raise univention.admin.uexceptions.valueInvalidSyntax, _('packageversion: Version must not be lower than the current one.')
 
-	def _post_unmap(self, info, values):
-		info['messagecatalog'] = []
-		messagecatalog_ldap_attribute = "univentionMessageCatalog"
-		messagecatalog_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (messagecatalog_ldap_attribute,)
-		for ldap_attribute, value_list in values.items():
-			if ldap_attribute.startswith(messagecatalog_ldap_attribute_and_tag_prefix):
-				language_tag = ldap_attribute.split(messagecatalog_ldap_attribute_and_tag_prefix, 1)[1]
-				mo_data_base64 = univention.admin.mapping.unmapBase64(value_list)
-				info['messagecatalog'].append((language_tag, mo_data_base64))
-		return info
-
-	def _post_map(self, modlist, diff):
-		messagecatalog_ldap_attribute = "univentionMessageCatalog"
-		messagecatalog_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (messagecatalog_ldap_attribute,)
-		for property_name, old_value, new_value in diff:
-			if property_name == 'messagecatalog':
-				old_dict = dict(old_value)
-				new_dict = dict(new_value)
-				for language_tag, old_mo_data_base64 in old_dict.items():
-					ldap_attribute = ''.join((messagecatalog_ldap_attribute_and_tag_prefix, language_tag))
-					new_mo_data_base64 = new_dict.get(language_tag)
-					if not new_mo_data_base64:  # property value has been removed
-						old_mo_data_binary = univention.admin.mapping.mapBase64(old_mo_data_base64)
-						modlist.append((ldap_attribute, old_mo_data_binary, None))
-					else:
-						if new_mo_data_base64 != old_mo_data_base64:
-							old_mo_data_binary = univention.admin.mapping.mapBase64(old_mo_data_base64)
-							new_mo_data_binary = univention.admin.mapping.mapBase64(new_mo_data_base64)
-							modlist.append((ldap_attribute, old_mo_data_binary, new_mo_data_binary))
-				for language_tag, new_mo_data_base64 in new_dict.items():
-					ldap_attribute = ''.join((messagecatalog_ldap_attribute_and_tag_prefix, language_tag))
-					if not old_dict.get(language_tag):  # property value has been added
-						new_mo_data_binary = univention.admin.mapping.mapBase64(new_mo_data_base64)
-						modlist.append((ldap_attribute, None, new_mo_data_binary))
-				break
-		return modlist
-
-
+	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
