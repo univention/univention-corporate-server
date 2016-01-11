@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: lksctp-tools
+fix: 1.0.11+dfsg-2.10.201601111546
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * Package is added as a new dependency of OpenJDK-7.
+bug: [40043]
