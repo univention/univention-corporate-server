@@ -30,6 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+# From /var/lib/dpkg/info/dbus.postinst
+# Copyright © 2003 Colin Walters <walters@debian.org>
+# Copyright © 2006 Sjoerd Simons <sjoerd@debian.org>
+if [ "$1" = configure ]; then
+    MESSAGEUSER=messagebus
+    MESSAGEHOME=/var/run/dbus
+    adduser --system \
+            --quiet \
+            --home "$MESSAGEHOME" \
+            --no-create-home \
+            --disabled-password \
+            --group "$MESSAGEUSER"
+fi
+
 . /usr/share/univention-lib/all.sh
 
 eval "$(univention-config-registry shell)"
