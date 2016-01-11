@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-ldap
-fix: 12.1.7-1.800.201601111513
+fix: 12.1.6-11.801.201601111622
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -18,4 +18,5 @@ desc: |
     extracted. It can be used to manage the attributes, which are indexed by
     the LDAP server.
   * Some shell quoting errors were fixed.
-bug: [38091,39884,39866,40031]
+  * Only initialize the LDAP server on the DC Master and abort on errors.
+bug: [38091,39884,39866,40031,38051]
