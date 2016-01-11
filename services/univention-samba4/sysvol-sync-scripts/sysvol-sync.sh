@@ -229,7 +229,7 @@ trigger_upstream_sync() {
 }
 
 sync_from_active_downstream_DCs() {
-	if is_ucr_false "samba4/sysvol/sync/from_downstream"; then
+	if local_is_ucr_false "samba4/sysvol/sync/from_downstream"; then
 		return
 	fi
 		
@@ -296,7 +296,7 @@ sync_from_upstream_DC() {
 			continue
 		fi
 
-		if is_ucr_false "samba4/sysvol/sync/from_upstream"; then
+		if local_is_ucr_false "samba4/sysvol/sync/from_upstream"; then
 			continue
 		fi
 		

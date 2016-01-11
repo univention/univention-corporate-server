@@ -1,3 +1,9 @@
+univention-samba4 (4.0.3-13) unstable; urgency=medium
+
+  * Bug #40346: use local_is_ucr_false
+
+ -- Arvid Requate <requate@univention.de>  Mon, 11 Jan 2016 17:16:49 +0100
+
 univention-samba4 (4.0.3-12) unstable; urgency=medium
 
   * Bug #40346: Backport of adjustments for Bug #40186:
