@@ -313,14 +313,14 @@ define([
 			var credentialsMasterHelpText = _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>');
 			if (this.ucr['umc/web/appliance/name']) {
 				applianceName = this.ucr['umc/web/appliance/name'];
-				welcomeMessage = _('Welcome to the setup of %s Univention App.', applianceName);
-				welcomeHeader = _('%s Univention App', applianceName);
+				welcomeMessage = _('Welcome to the setup of %s Appliance.', applianceName);
+				welcomeHeader = _('%s Appliance', applianceName);
 				doneHeader = _('Setup successful');
 				errorHeader = _('Setup - An error occurred');
 				creatDomainLabel = _('Manage users and permissions directly on this system');
 				createDomainHelpTextContent = _('A new domain directory is created on this system. User and management data are stored locally.');
-				credentialsMasterEmailLabel = _('E-mail address to activate %s Univention App', applianceName)
-				credentialsMasterHelpText = _('<p>Enter the name of your organization, an e-mail address to activate %s Univention App and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>', applianceName);
+				credentialsMasterEmailLabel = _('E-mail address to activate %s Appliance', applianceName)
+				credentialsMasterHelpText = _('<p>Enter the name of your organization, an e-mail address to activate %s Appliance and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>', applianceName);
 			}
 			welcomeMessage += ' ' + _('A few questions are needed to complete the configuration process.');
 			if (this.ucr['umc/web/appliance/logo']) {
@@ -405,7 +405,7 @@ define([
 			}), lang.mixin({}, pageConf, {
 				name: 'license',
 				headerText: _('License agreement'),
-				helpText: _('Please read carefully the license agreement for %s Univention App.', applianceName || ''),
+				helpText: _('Please read carefully the license agreement for %s Appliance.', applianceName || ''),
 				widgets: [{
 					type: Text,
 					'class': 'umcUCSSetupLicenseAgreement',
@@ -1111,7 +1111,7 @@ define([
 			var msg = '';
 			if (type == 'email') {
 				if (this.ucr['umc/web/appliance/name']) {
-					msg = _('A valid e-mail address is required to activate %s Univention App. The address can be specified now or also at a later point in time. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded after the setup process.', this.ucr['umc/web/appliance/name']);
+					msg = _('A valid e-mail address is required to activate %s Appliance. The address can be specified now or also at a later point in time. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded after the setup process.', this.ucr['umc/web/appliance/name']);
 				} else {
 					msg = _('A valid e-mail address allows to activate the UCS system for using the Univention App Center. The address can be specified now or also at a later point in time. An e-mail with a personalized license key will then be sent to your e-mail address. This license can be uploaded via the license dialog in Univention Management Console.');
 				}
@@ -1799,7 +1799,7 @@ define([
 
 			var msg = '';
 			if (isUniventionApp) {
-				msg += '<p>' + _('%s Univention App has been successfully set up.', this.ucr['umc/web/appliance/name']) + ' ';
+				msg += '<p>' + _('%s Appliance has been successfully set up.', this.ucr['umc/web/appliance/name']) + ' ';
 			} else {
 				msg += '<p>' + _('UCS has been successfully set up.') + ' ';
 			}

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-05 12:00+0100\n"
+"POT-Creation-Date: 2016-01-11 12:37+0100\n"
 "PO-Revision-Date: 2012-02-20 11:34+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -9,6 +9,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: setup/ApplianceWizard.js:317
+#, python-format
+msgid "%s Appliance"
+msgstr ""
+
+#: setup/ApplianceWizard.js:1802
+#, python-format
+msgid "%s Appliance has been successfully set up."
+msgstr "%s Appliance wurde erfolgreich eingerichtet."
 
 #: setup/ApplianceWizard.js:1137
 #, python-format
@@ -19,16 +29,6 @@ msgstr ""
 #, python-format
 msgid "%s MiB"
 msgstr ""
-
-#: setup/ApplianceWizard.js:317
-#, python-format
-msgid "%s Univention App"
-msgstr "%s Univention App"
-
-#: setup/ApplianceWizard.js:1802
-#, python-format
-msgid "%s Univention App has been successfully set up."
-msgstr "%s Univention App wurde erfolgreich eingerichtet."
 
 #: setup/ApplianceWizard.js:433
 msgid "(Request address again)"
@@ -119,15 +119,15 @@ msgstr ""
 #, python-format
 msgid ""
 "<p>Enter the name of your organization, an e-mail address to activate %s "
-"Univention App and a password for your <i>Administrator</i> account.</"
-"p><p>The password is mandatory, it will be used for the domain Administrator "
-"as well as for the local superuser <i>root</i>.</p>"
+"Appliance and a password for your <i>Administrator</i> account.</p><p>The "
+"password is mandatory, it will be used for the domain Administrator as well "
+"as for the local superuser <i>root</i>.</p>"
 msgstr ""
 "<p>Geben Sie den Namen Ihrer Organisation, eine E-Mail-Adresse für die "
-"Aktivierung von %s Univention App sowie ein Passwort für das Konto "
-"<i>Administrator</i> an.</p><p>Das Passwort ist ein Pflichtfeld. Es wird für "
-"das Domänen-Administrator-Konto als auch für den lokalen Superuser <i>root</"
-"i> verwendet.</p>"
+"Aktivierung von UCS sowie ein Passwort für das Konto <i>Administrator</i> an."
+"</p><p>Das Passwort ist ein Pflichtfeld. Es wird für das Domänen-"
+"Administrator-Konto als auch für den lokalen Superuser <i>root</i> verwendet."
+"</p>"
 
 #: setup/ApplianceWizard.js:313
 msgid ""
@@ -271,12 +271,12 @@ msgstr ""
 #: setup/ApplianceWizard.js:1114
 #, python-format
 msgid ""
-"A valid e-mail address is required to activate %s Univention App. The "
-"address can be specified now or also at a later point in time. An e-mail "
-"with a personalized license key will then be sent to your e-mail address. "
-"This license can be uploaded after the setup process."
+"A valid e-mail address is required to activate %s Appliance. The address can "
+"be specified now or also at a later point in time. An e-mail with a "
+"personalized license key will then be sent to your e-mail address. This "
+"license can be uploaded after the setup process."
 msgstr ""
-"Eine gültige E-Mail-Adresse ist für die Aktivierung von %s Univention App "
+"Eine gültige E-Mail-Adresse ist für die Aktivierung von %s Appliance "
 "notwendig. Die Adresse kann jetzt oder auch zu einem späteren Zeitpunkt "
 "angegeben werden. An diese E-Mail-Adresse wird Ihnen dann ein "
 "personalisierter Lizenzschlüssel zugesendet. Die Lizenz kann über den "
@@ -691,8 +691,8 @@ msgstr "Dynamisch (DHCP)"
 
 #: setup/ApplianceWizard.js:322
 #, python-format
-msgid "E-mail address to activate %s Univention App"
-msgstr "E-Mail-Adresse zur Aktivierung von %s Univention App"
+msgid "E-mail address to activate %s Appliance"
+msgstr "E-Mail-Adresse zur Aktivierung von %s Appliance"
 
 #: setup/ApplianceWizard.js:312 setup/ApplianceWizard.js:1551
 #: setup/ApplianceWizard.js:1650
@@ -1252,6 +1252,10 @@ msgid "Please choose a network interface before querying a DHCP address."
 msgstr ""
 "Bitte wählen Sie ein Netzwerkgerät bevor Sie eine DHCP-Adresse anfragen."
 
+#: setup/VirtualKeyboardBox.js:65
+msgid "Please click on the required character."
+msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
+
 #: setup/ApplianceWizard.js:841
 msgid ""
 "Please confirm the chosen configuration settings which are summarized in the "
@@ -1273,9 +1277,9 @@ msgstr "Bitte Löschung der folgenden Netzwerkgeräte bestätigen:"
 
 #: setup/ApplianceWizard.js:408
 #, python-format
-msgid "Please read carefully the license agreement for %s Univention App."
+msgid "Please read carefully the license agreement for %s Appliance."
 msgstr ""
-"Bitte lesen Sie die nachstehende Lizenzvereinbarung für %s Univention App."
+"Bitte lesen Sie die nachstehende Lizenzvereinbarung für %s Appliance."
 
 #: setup/ApplianceWizard.js:556
 msgid "Please select your domain settings."
@@ -1288,10 +1292,6 @@ msgstr "Bitte geben Sie die Ports an, die zu der Bridge hinzugefügt werden."
 #: setup/ApplianceWizard.js:528
 msgid "Preferred DNS server"
 msgstr "Bevorzugter DNS-Server"
-
-#: setup/VirtualKeyboardBox.js:65
-msgid "Please click on the required character."
-msgstr "Bitte klicken Sie auf das gewünschte Zeichen."
 
 #: setup/ApplianceWizard.js:1565 setup/NetworkPage.js:101
 #: setup/NetworkPage.js:303
@@ -1348,10 +1348,6 @@ msgstr ""
 #, python-format
 msgid "Should the nameserver and gateway be set: %s"
 msgstr "Sollen DNS-Server und Gateway gesetzt werden: %s"
-
-#: setup/VirtualKeyboardBox.js:54
-msgid "Virtual keyboard"
-msgstr "Virtuelle Tastatur"
 
 #: setup/ApplianceWizard.js:1221
 msgid "Software component"
@@ -1583,6 +1579,10 @@ msgstr "Validierungsfehler"
 msgid "Virtual LAN"
 msgstr "Virtuelles LAN"
 
+#: setup/VirtualKeyboardBox.js:54
+msgid "Virtual keyboard"
+msgstr "Virtuelle Tastatur"
+
 #: setup/ApplianceWizard.js:1147 setup/ApplianceWizard.js:2265
 #: setup/ApplianceWizard.js:2281 setup/ApplianceWizard.js:2343
 #: setup/ApplianceWizard.js:2460
@@ -1595,8 +1595,8 @@ msgstr "Wilkommen bei Univention Corporate Server (UCS)."
 
 #: setup/ApplianceWizard.js:316
 #, python-format
-msgid "Welcome to the setup of %s Univention App."
-msgstr "Wilkommen bei der Einrichtung von %s Univention App."
+msgid "Welcome to the setup of %s Appliance."
+msgstr "Wilkommen bei der Einrichtung von %s Appliance."
 
 #: setup/ApplianceWizard.js:1756
 msgid "You may restart the configuration process again with modified settings."
@@ -1626,3 +1626,18 @@ msgstr "mehr Informationen"
 #: setup/InterfaceWizard.js:630
 msgid "set"
 msgstr "setzen"
+
+#~ msgid "%s Univention App"
+#~ msgstr "%s Univention App"
+
+#~ msgid ""
+#~ "<p>Enter the name of your organization, an e-mail address to activate %s "
+#~ "Univention App and a password for your <i>Administrator</i> account.</"
+#~ "p><p>The password is mandatory, it will be used for the domain "
+#~ "Administrator as well as for the local superuser <i>root</i>.</p>"
+#~ msgstr ""
+#~ "<p>Geben Sie den Namen Ihrer Organisation, eine E-Mail-Adresse für die "
+#~ "Aktivierung von %s Univention App sowie ein Passwort für das Konto "
+#~ "<i>Administrator</i> an.</p><p>Das Passwort ist ein Pflichtfeld. Es wird "
+#~ "für das Domänen-Administrator-Konto als auch für den lokalen Superuser "
+#~ "<i>root</i> verwendet.</p>"

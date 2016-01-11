@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-24) unstable; urgency=low
+
+  * Bug #40304: Rename "<appname> Univention App" to "<appname> appliance"
+
+ -- Alexander Kramer <kramer@univention.de>  Mon, 11 Jan 2016 14:39:26 +0100
+
 univention-system-setup (9.0.2-23) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping
