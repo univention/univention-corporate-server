@@ -41,10 +41,6 @@ if [ -z "$ldap_server_type" ]; then
 	exit 1
 fi
 
-if ! test -e "/etc/ldap.secret"; then
-	LDAP_SECRET="not_found"
-fi
-
 /usr/share/univention-ldap/ldap_setup_index --force-defaults ||
 	[ $? -eq 4 ]
 
@@ -54,7 +50,8 @@ if [ "mdb" = "$ldap_database_type" ]; then
 	database_name="data"
 fi
 files=$(find /var/lib/univention-ldap/ldap/ -name "$database_name.*" -type f)
-if [ -z "$files" ] && [ "$server_role" = "domaincontroller_master" ] ; then
+if [ -z "$files" ]
+then
 	killall slapd >/dev/null 2>&1 || :
 	killall slapd >/dev/null 2>&1 || :
 	killall -9 slapd >/dev/null 2>&1 || :
@@ -65,14 +62,19 @@ if [ -z "$files" ] && [ "$server_role" = "domaincontroller_master" ] ; then
 		mv "/etc/ldap/slapd.d/cn=config.ldif" "/etc/ldap/slapd.d/cn=config.ldif.DISABLED"
 	fi
 
-	if [ ! "mdb" = "$ldap_database_type" ]; then
+	if [ "mdb" != "$ldap_database_type" ]; then
 		univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 	fi
-
+fi
+if [ -z "$files" ] && [ "$server_role" = "domaincontroller_master" ]
+then
+	if ! [ -e "/etc/ldap.secret" ]; then
+		LDAP_SECRET="not_found"
+	fi
 	if [ -z "$LDAP_SECRET" ]; then
 		pw_crypt=$(mkpasswd --hash=md5 -s < /etc/ldap.secret)
 	else
-		#if no ldap.secret is available, replication.py remove the ldap entries
+		#if no ldap.secret is available, replication.py removes the ldap entries
 		pw_crypt="univention"
 	fi
 
@@ -89,7 +91,8 @@ if [ -z "$files" ] && [ "$server_role" = "domaincontroller_master" ] ; then
 	cat /usr/share/univention-ldap/base.ldif /usr/share/univention-ldap/core-edition.ldif |
 		 sed -e \
 		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@backup\.pw@@%%@@|$backup_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
-		univention-config-registry filter | slapadd >>/var/log/univention/join.log 2>&1 ||
+		univention-config-registry filter |
+		slapadd -f /etc/ldap/slapd.conf >>/var/log/univention/join.log 2>&1 ||
 		exit 1
 
 	univention-config-registry set windows/domain?"$sambadomain" \

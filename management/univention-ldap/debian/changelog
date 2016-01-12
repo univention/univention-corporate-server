@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-12) unstable; urgency=low
+
+  * Bug #38051: Move cn=config on all server roles
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Jan 2016 10:49:32 +0100
+
 univention-ldap (12.1.6-11) unstable; urgency=low
 
   * Bug #38051: Initialize LDAP only on master
@@ -2514,7 +2520,7 @@ univention-ldap (5.0.8-1) unstable; urgency=low
 
   * fixed typo "opnessh-server" (Bug #12301)
 
- -- Tim Petersen <petersen@univention.de>  Thu, 17 Dez 2009 12:07:18 +0100
+ -- Tim Petersen <petersen@univention.de>  Thu, 17 Dec 2009 12:07:18 +0100
 
 univention-ldap (5.0.7-5) unstable; urgency=low
 
