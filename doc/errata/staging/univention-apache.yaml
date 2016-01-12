@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-apache
-fix: 8.0.1-4.254.201601081337
+fix: 8.0.1-5.255.201601121222
 version: [0]
 desc: |
   This update addresses the following issues:
