@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+version: [4]
+scope: ucs_4.0-0-errata4.0-4
+src: univention-join
+fix: 7.1.2-17.514.201601121355
+desc: |
+ This update addresses the following issue:
+         * Univention S4 Connector was still running during re-joins.
+bug: [40389]
