@@ -1,3 +1,10 @@
+univention-join (8.0.4-1) unstable; urgency=medium
+
+  * Bug #40391: Stop univention-s4-connector if present
+  * Stop samba instead of only samba-ad-dc
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 Jan 2016 13:51:50 +0100
+
 univention-join (8.0.3-1) unstable; urgency=medium
 
   * Fixed typo in operatingSystemVersion (Bug #39915)
