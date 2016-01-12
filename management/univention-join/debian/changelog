@@ -1,3 +1,10 @@
+univention-join (7.1.2-17) unstable; urgency=medium
+
+  * Bug #40389: Stop univention-s4-connector in univention-join
+  * Stop samba instead of only samba-ad-dc
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 Jan 2016 13:54:12 +0100
+
 univention-join (7.1.2-16) unstable; urgency=low
 
   * Bug #38756: Force kill UDN und UDL
