@@ -1,3 +1,9 @@
+univention-apache (8.0.1-5) unstable; urgency=medium
+
+  * Bug #40121: fix syntax error
+
+ -- Florian Best <best@univention.de>  Tue, 12 Jan 2016 12:21:03 +0100
+
 univention-apache (8.0.1-4) unstable; urgency=medium
 
   * Bug #40070: don't rewrite port on ucs-overview if accessed via non default
