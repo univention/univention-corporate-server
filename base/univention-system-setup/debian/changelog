@@ -1,3 +1,10 @@
+univention-system-setup (9.0.2-25) unstable; urgency=medium
+
+  * Bug #39941: restrict country codes in ldap/base
+  * Bug #39376: fix UMC-Webserver restart
+
+ -- Florian Best <best@univention.de>  Tue, 12 Jan 2016 12:06:20 +0100
+
 univention-system-setup (9.0.2-24) unstable; urgency=low
 
   * Bug #40304: Rename "<appname> Univention App" to "<appname> appliance"

@@ -435,7 +435,7 @@ class Instance(Base, ProgressMixin):
 				_check(ikey, lambda x: len(x) <= maxlenth, _('The following value is too long, only %s characters allowed: %s') % (maxlenth, labels[ikey],))
 
 		for ikey in ('ssl/country', 'ssl/state', 'ssl/locality', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'ssl/common'):
-			for table in (stringprep.in_table_c21, stringprep.in_table_a1, stringprep.in_table_c8, stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, lambda c: c == u'\ufffd'):
+			for table in (stringprep.in_table_c21_c22, stringprep.in_table_a1, stringprep.in_table_c8, stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, lambda c: c == u'\ufffd'):
 				_check(ikey, lambda x: not any(map(table, unicode(x))) , _('The value for %s contains invalid characters.') % (labels[ikey],))
 
 		_check('ssl/country', lambda x: len(x) == 2, _('Country must be a country code consisting of 2 characters.'))

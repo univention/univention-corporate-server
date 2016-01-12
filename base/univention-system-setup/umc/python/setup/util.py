@@ -39,6 +39,7 @@ import subprocess
 import threading
 import univention.config_registry
 import time
+import ldap
 import re
 import csv
 import os.path
@@ -505,7 +506,7 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 		p.communicate('''#!/bin/sh
 sleep 5;  # leave enough time to display error messages or indicate success
 /etc/init.d/univention-management-console-server restart;
-/etc/init.d/univention-management-console-web-server''')
+/etc/init.d/univention-management-console-web-server restart''')
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
@@ -821,8 +822,26 @@ def is_domaincontroller(domaincontroller):
 is_domaincontroller.RE = re.compile("^[a-zA-Z].*\..*$")
 
 def is_ldap_base(ldap_base):
-	return is_ldap_base.RE.match(ldap_base) is not None
+	"""
+	>>> is_ldap_base('dc=foo,dc=bar')
+	True
+	>>> is_ldap_base('cn=foo,c=De,dc=foo,dc=bar')
+	True
+	>>> is_ldap_base('cn=foo,c=DED,dc=foo,dc=bar')
+	False
+	>>> is_ldap_base('dc=foo,')
+	False
+	>>> is_ldap_base(',dc=bar')
+	False
+	>>> is_ldap_base('dc=foo')
+	False
+	>>> is_ldap_base('cn=foo,c=ZZ,dc=foo,dc=bar')
+	False
+	"""
+	match = is_ldap_base.RE.match(ldap_base)
+	return match is not None and not any(part.upper().startswith('C=') and not part.upper()[2:] in is_ldap_base.CC for part in ldap.dn.explode_dn(ldap_base))
 is_ldap_base.RE = re.compile('^(c=[A-Za-z]{2}|(dc|cn|o|l)=[a-zA-Z0-9-]+)(,(c=[A-Za-z]{2}|((dc|cn|o|l)=[a-zA-Z0-9-]+)))+$')
+is_ldap_base.CC = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HM', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'ZA', 'ZM', 'ZW']
 
 # new defined methods
 def is_ascii(str):

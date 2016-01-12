@@ -120,7 +120,8 @@ Depends: univention-management-console-server,
  univention-heimdal-common,
  libsasl2-modules-gssapi-heimdal,
  python-lxml,
- xkb-data
+ xkb-data,
+ at
 Description: UMC module for Univention System Setup
  This package contains the UMC module for the UCS System Setup.
  .
