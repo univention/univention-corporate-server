@@ -1,3 +1,9 @@
+ucs-test (6.0.31-13) unstable; urgency=low
+
+  * Bug #40385: Wait for replication
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 12 Jan 2016 14:17:59 +0100
+
 ucs-test (6.0.31-12) unstable; urgency=low
 
   * Bug #40353: improved 36_sender_restrictions_for_mailing_lists and
@@ -841,6 +847,8 @@ ucs-test (6.0.9-5) unstable; urgency=medium
 ucs-test (6.0.9-4) unstable; urgency=medium
 
   * fix some mail tests (Bug #39477)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 14 Oct 2015 10:34:58 +0200
 
 ucs-test (6.0.9-3) unstable; urgency=medium
 
