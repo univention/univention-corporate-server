@@ -5,10 +5,10 @@ src: univention-apache
 fix: 8.0.1-5.255.201601121222
 version: [0]
 desc: |
-  This update addresses the following issues:
-  * The HTTP redirection has been changed to a permanent redirection when
-    forcing HTTPS access.
-  * HTTPS is not enforced for the apache mod_status ressources.
-  * Links on the UCS overview preserve the port if accessed through a non
-    default port.
+ This update addresses the following issues:
+ * The HTTP redirection has been changed to a permanent redirection when
+   forcing HTTPS access.
+ * HTTPS is not enforced for the apache mod_status ressources.
+ * Links on the UCS overview preserve the port if accessed through a non
+   default port.
 bug: [40121, 40173, 40070]
