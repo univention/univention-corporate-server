@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.0.1-4) unstable; urgency=medium
+
+  * Bug #40341: Bug #38155: be more error tolerant
+
+ -- Florian Best <best@univention.de>  Wed, 13 Jan 2016 19:39:17 +0100
+
 univention-ucs-translation-template (3.0.1-3) unstable; urgency=medium
 
   * Bug #38155: enhance robustness of univention-ucs-translation-build-package.py

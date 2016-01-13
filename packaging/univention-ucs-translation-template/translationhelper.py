@@ -52,6 +52,7 @@ def reversereplace(s, old, new, occurrence):
 
 
 def update_package_translation_files(module, modulename, packagedir, source_dir, target_language, startdir):
+	print "update_package_translation_files module: %s" % module
 	curr_dir = os.getcwd()
 	try:
 		# create directories for package translation
@@ -59,36 +60,38 @@ def update_package_translation_files(module, modulename, packagedir, source_dir,
 		if not os.path.exists(translated_package_dir_absolute):
 			os.makedirs(translated_package_dir_absolute)
 		p = os.path.join(source_dir, packagedir)
-		print "update_package_translation_files module: %s" % module
 		os.chdir(p)
 		if not module['core']:
-			# build python po files
-			for po_file in module.python_po_files:
-				po_file_full_path = translated_package_dir_absolute + "/" + po_file
-				if not os.path.exists(os.path.dirname(po_file_full_path)):
-					os.makedirs(os.path.dirname(po_file_full_path))
-				dh_umc.create_po_file(po_file_full_path, modulename, module.python_files)
+			def _create_po_files(po_files):
+				for po_file in po_files:
+					po_file_full_path = os.path.join(translated_package_dir_absolute, po_file)
+					if not os.path.exists(os.path.dirname(po_file_full_path)):
+						os.makedirs(os.path.dirname(po_file_full_path))
+					try:
+						dh_umc.create_po_file(po_file_full_path, modulename, module.python_files)
+					except dh_umc.Error as exc:
+						print str(exc)
 
-			# build javascript PO files
-			for po_file in module.js_po_files:
-				po_file_full_path = translated_package_dir_absolute + "/" + po_file
-				if not os.path.exists(os.path.dirname(po_file_full_path)):
-					os.makedirs(os.path.dirname(po_file_full_path))
-				# using python as language seems to work better than perl
-				dh_umc.create_po_file(po_file_full_path, modulename, module.js_files, 'python')
+			# build python po files
+			_create_po_files(module.python_po_files)
+			_create_po_files(module.js_po_files)
 
 		# xml always has to be present
 		for lang, po_file in module.xml_po_files:
-			po_file_full_path = translated_package_dir_absolute + "/" + po_file
+			po_file_full_path = os.path.join(translated_package_dir_absolute, po_file)
 			if not os.path.exists(os.path.dirname(po_file_full_path)):
 				os.makedirs(os.path.dirname(po_file_full_path))
-			dh_umc.module_xml2po(module, po_file_full_path, lang)
+			try:
+				dh_umc.module_xml2po(module, po_file_full_path, lang)
+			except dh_umc.Error as exc:
+				print str(exc)
 
-	except OSError as e:
+	except OSError as exc:
 		print traceback.format_exc()
-		print "error in update_package_translation_files: %s" % str(e)
+		print "error in update_package_translation_files: %s" % (exc,)
+	finally:
+		os.chdir(curr_dir)
 	print ""
-	os.chdir(curr_dir)
 
 
 def update_and_install_translation_files_to_correct_path(module, target_language, package_path_absolute, startdir):
@@ -97,7 +100,10 @@ def update_and_install_translation_files_to_correct_path(module, target_language
 			po_file_path = os.path.join(package_path_absolute, po_file)
 			mo_file_path = os.path.join(package_path_absolute, po_file.replace('.po', '.mo'))
 			if os.path.isfile(po_file_path):
-				dh_umc.create_mo_file(po_file_path)
+				try:
+					dh_umc.create_mo_file(po_file_path)
+				except dh_umc.Error as exc:
+					print str(exc)
 				if not os.path.exists(mo_file_path):
 					print 'error creating mo file %s' % (mo_file_path,)
 					continue
@@ -107,7 +113,10 @@ def update_and_install_translation_files_to_correct_path(module, target_language
 			po_file_path = os.path.join(package_path_absolute, po_file)
 			json_file_path = os.path.join(package_path_absolute, po_file.replace('.po', '.json'))
 			if os.path.isfile(po_file_path):
-				dh_umc.create_json_file(po_file_path)
+				try:
+					dh_umc.create_json_file(po_file_path)
+				except dh_umc.Error as exc:
+					print str(exc)
 				if not os.path.exists(json_file_path):
 					print 'error creating json file %s' % (json_file_path,)
 					continue
@@ -118,7 +127,10 @@ def update_and_install_translation_files_to_correct_path(module, target_language
 		po_file_path = os.path.join(package_path_absolute, po_file)
 		mo_file_path = os.path.join(package_path_absolute, po_file.replace('.po', '.mo'))
 		if os.path.isfile(po_file_path):
-			dh_umc.create_mo_file(po_file_path)
+			try:
+				dh_umc.create_mo_file(po_file_path)
+			except dh_umc.Error as exc:
+				print str(exc)
 			if not os.path.exists(mo_file_path):
 				print 'error creating %s.' % (mo_file_path,)
 				continue
@@ -130,47 +142,59 @@ def update_and_install_translation_files_to_correct_path(module, target_language
 def translate_special_case(module, source_dir, start_dir, target_language):
 	curr_dir = os.getcwd()
 	package_base_path = os.path.join(source_dir, module['packagedir'])
-        os.chdir(package_base_path)
+	if not os.path.isdir(package_base_path):
+		return
+	os.chdir(package_base_path)
 
-	output_dir = os.path.join(start_dir, target_language, module['packagedir'], module['po_subdir'])
-	if not os.path.exists(output_dir):
-		os.makedirs(output_dir)
+	try:
+		output_dir = os.path.join(start_dir, target_language, module['packagedir'], module['po_subdir'])
+		if not os.path.exists(output_dir):
+			os.makedirs(output_dir)
 
-	# find source files
-	matches = []
-	for root, dirnames, filenames in os.walk('.'):
-                for filename in filenames:
-			if fnmatch.fnmatch(os.path.join(root, filename), module['inputfiles']):
-				matches.append(os.path.join(root, filename))
+		# find source files
+		matches = []
+		for root, dirnames, filenames in os.walk('.'):
+                	for filename in filenames:
+				if fnmatch.fnmatch(os.path.join(root, filename), module['inputfiles']):
+					matches.append(os.path.join(root, filename))
 
-	print "matching %s: %s" % (module['inputfiles'], matches)
+		print "matching %s: %s" % (module['inputfiles'], matches)
 
-	dh_umc.create_po_file(output_dir + '/%s.po' % target_language, module['packagename'], matches)
-
-	os.chdir(curr_dir)
+		try:
+			dh_umc.create_po_file(output_dir + '/%s.po' % target_language, module['packagename'], matches)
+		except dh_umc.Error as exc:
+			print str(exc)
+	finally:
+		os.chdir(curr_dir)
 
 
 def translate_special_case_po_to_target(module, start_dir, target_language):
 	curr_dir = os.getcwd()
 	package_base_path = os.path.join(start_dir, target_language, module['packagedir'])
+	if not os.path.isdir(package_base_path):
+		return
 	os.chdir(package_base_path)
 
-	po_file = package_base_path + '/%s/%s.po' % (module['po_subdir'], target_language)
+	try:
+		po_file = package_base_path + '/%s/%s.po' % (module['po_subdir'], target_language)
 
-	module['language'] = target_language
-	output_name = os.path.join(start_dir, module['outputdir'] % module)
-	print "output name: %s" % output_name
-	if not os.path.exists(os.path.dirname(output_name)):
-		os.makedirs(os.path.dirname(output_name))
+		module['language'] = target_language
+		output_name = os.path.join(start_dir, module['outputdir'] % module)
+		print "output name: %s" % output_name
+		if not os.path.exists(os.path.dirname(output_name)):
+			os.makedirs(os.path.dirname(output_name))
 
-	if module['target'] == 'json':
-		dh_umc.create_json_file(po_file)
-		shutil.move(reversereplace(po_file, 'po', 'json', 1), output_name)
-	elif module['target'] == 'mo':
-		dh_umc.create_mo_file(po_file)
-		shutil.move(reversereplace(po_file, 'po', 'mo', 1), output_name)
-
-	os.chdir(curr_dir)
+		try:
+			if module['target'] == 'json':
+				dh_umc.create_json_file(po_file)
+				shutil.move(reversereplace(po_file, 'po', 'json', 1), output_name)
+			elif module['target'] == 'mo':
+				dh_umc.create_mo_file(po_file)
+				shutil.move(reversereplace(po_file, 'po', 'mo', 1), output_name)
+		except dh_umc.Error as exc:
+			print str(exc)
+	finally:
+		os.chdir(curr_dir)
 
 
 def get_modules_from_path(modulename, modulepath):
@@ -193,8 +217,8 @@ def get_modules_from_path(modulename, modulepath):
 	else:
 		for module in modules:
 			module['core'] = False
-
-	os.chdir(curr_dir)
+	finally:
+		os.chdir(curr_dir)
 	return modules
 
 
@@ -245,7 +269,7 @@ def create_new_package(new_package_dir, target_language, target_locale, language
 	translation_creator = getpass.getuser()
 	translation_host = socket.getfqdn()
 	with open(os.path.join(new_package_dir_debian, 'copyright'), 'w') as f:
-		f.write("""Copyright 2013-2016 Univention GmbH
+		f.write("""Copyright 2016 Univention GmbH
 
 http://www.univention.de/
 
@@ -283,7 +307,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 	with open(os.path.join(new_package_dir_debian, 'rules'), 'w') as f:
 		f.write("""#!/usr/bin/make -f
 #
-# Copyright 2013-2016 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -370,9 +394,13 @@ usr/share/locale/%(lang)s/LC_MESSAGES
 """ % language_dict)
 
 	### Move source files and installed .mo files to new package dir
+	if os.path.exists(os.path.join(new_package_dir, 'usr')):
+		shutil.rmtree(os.path.join(new_package_dir, 'usr'))
 	shutil.copytree(os.path.join(startdir, 'usr'), os.path.join(new_package_dir, 'usr'))
 	shutil.rmtree(os.path.join(startdir, 'usr'))
 
+	if os.path.exists(os.path.join(new_package_dir, target_language)):
+		shutil.rmtree(os.path.join(new_package_dir, target_language))
 	shutil.copytree(os.path.join(startdir, target_language), os.path.join(new_package_dir, target_language))
 	shutil.rmtree(os.path.join(startdir, target_language))
 
@@ -380,43 +408,42 @@ usr/share/locale/%(lang)s/LC_MESSAGES
 def get_template(module, source_dir, start_dir, target_language):
 	curr_dir = os.getcwd()
 	package_base_path = os.path.join(source_dir, module['packagedir'])
-        os.chdir(package_base_path)
-	module['language'] = target_language
+	os.chdir(package_base_path)
+	try:
+		module['language'] = target_language
 
-	# find source file
-	source_file_dir = os.path.join(package_base_path, module['inputfile'])
-	if not os.path.exists(source_file_dir):
-		raise Exception("Could not find template/file %s" % source_file_dir)
+		# find source file
+		source_file_dir = os.path.join(package_base_path, module['inputfile'])
+		if not os.path.exists(source_file_dir):
+			raise Exception("Could not find template/file %s" % source_file_dir)
 
-	output_dir = os.path.join(start_dir, target_language, module['packagedir'], module['targetfile'] % module)
-	if not os.path.exists(os.path.dirname(output_dir)):
-		os.makedirs(os.path.dirname(output_dir))
+		output_dir = os.path.join(start_dir, target_language, module['packagedir'], module['targetfile'] % module)
+		if not os.path.exists(os.path.dirname(output_dir)):
+			os.makedirs(os.path.dirname(output_dir))
 
-	print "copy from %s" % source_file_dir
-	print "copy to %s" % output_dir
+		print "copy from %s" % source_file_dir
+		print "copy to %s" % output_dir
 
-	shutil.copy(source_file_dir, output_dir)
-
-	os.chdir(curr_dir)
+		shutil.copy(source_file_dir, output_dir)
+	finally:
+		os.chdir(curr_dir)
 
 
 def install_template(module, start_dir, target_language):
 	curr_dir = os.getcwd()
 	package_base_path = start_dir
 	os.chdir(package_base_path)
-	module['language'] = target_language
+	try:
+		module['language'] = target_language
 
-	source_file_dir = os.path.join(package_base_path,
-		target_language,
-		module['packagedir'],
-		module['inputfile'] % module)
+		source_file_dir = os.path.join(package_base_path, target_language, module['packagedir'], module['inputfile'] % module)
 
-	output_name = os.path.join(package_base_path, module['outputfile'] % module)
-	if not os.path.exists(os.path.dirname(output_name)):
-		os.makedirs(os.path.dirname(output_name))
+		output_name = os.path.join(package_base_path, module['outputfile'] % module)
+		if not os.path.exists(os.path.dirname(output_name)):
+			os.makedirs(os.path.dirname(output_name))
 
-	print "copy from %s" % source_file_dir
-	print "copy to %s" % output_name
-	shutil.copy(source_file_dir, output_name)
-
-	os.chdir(curr_dir)
+		print "copy from %s" % source_file_dir
+		print "copy to %s" % output_name
+		shutil.copy(source_file_dir, output_name)
+	finally:
+		os.chdir(curr_dir)
