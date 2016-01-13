@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-26) unstable; urgency=medium
+
+  * Bug #39376: fix gettext calls
+
+ -- Florian Best <best@univention.de>  Wed, 13 Jan 2016 12:27:37 +0100
+
 univention-system-setup (9.0.2-25) unstable; urgency=medium
 
   * Bug #39941: restrict country codes in ldap/base

@@ -139,9 +139,9 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 				continue
 			fi
 			# get the hostname
-			progress_msg "$(gettext $(printf "Recreate SSL certificate for %s") "$fqdn")"
+			progress_msg "$(printf "$(gettext 'Recreate SSL certificate for %s')" "$fqdn")"
 			host=$(echo "$fqdn" | sed 's/\([^.]*\)\..*/\1/')
-			univention-certificate new -name "$fqdn" || progress_error "$(gettext $(printf "Could not recreate SSL certificate for %s.") "$fqdn")"
+			univention-certificate new -name "$fqdn" || progress_error "$(printf "$(gettext 'Could not recreate SSL certificate for %s.')" "$fqdn")"
 			ln -sf "/etc/univention/ssl/$host.$domainname" "/etc/univention/ssl/$host"
 		done
 	)
