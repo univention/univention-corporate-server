@@ -1,3 +1,11 @@
+ucs-test (6.0.31-14) unstable; urgency=low
+
+  * Bug #40421: 43_proxy/06_check_number_of_child_processes
+    Check number of running processes several times if unexpected
+    number of processes has been found.
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Wed, 13 Jan 2016 13:04:33 +0100
+
 ucs-test (6.0.31-13) unstable; urgency=low
 
   * Bug #40385: Wait for replication
