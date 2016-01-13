@@ -1,3 +1,10 @@
+univention-management-console (8.0.28-2) unstable; urgency=medium
+
+  * Bug #40341: remove duplicated messages, don't create metadata fuzzy
+  	warnings
+
+ -- Florian Best <best@univention.de>  Wed, 13 Jan 2016 19:36:05 +0100
+
 univention-management-console (8.0.28-1) unstable; urgency=medium
 
   * Bug #39836: adjust error message

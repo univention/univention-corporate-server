@@ -33,6 +33,7 @@
 
 import copy
 import os
+import sys
 from email.utils import formatdate
 
 import json
@@ -85,6 +86,10 @@ Example:
  Category: umc/categories/ucr.xml
  Icons: umc/icons
 """
+
+
+class Error(SystemExit):
+	pass
 
 
 class UMC_Module(dict):
@@ -222,14 +227,18 @@ def _appendPoEntry(poFile, xmlEntry):
 	"""Helper function to access text property of XML elements and to find the
 	corresponding po-entry."""
 	if xmlEntry is not None and xmlEntry.text is not None:  # important to use "xmlEntry is non None"!
-		poFile.append(polib.POEntry(msgid=xmlEntry.text, msgstr=''))
+		entry = polib.POEntry(msgid=xmlEntry.text, msgstr='')
+		try:
+			poFile.append(entry)
+		except ValueError as exc:  # Entry "..." already exists
+			print >> sys.stderr, 'Warning: Appending %r to po file failed: %s' % (xmlEntry.text, exc)
 
 
 def module_xml2po(module, po_file, language):
 	"""Create a PO file the XML definition of an UMC module"""
 	message_po = '%s/messages.po' % (os.path.dirname(po_file) or '.')
 
-	po = polib.POFile()
+	po = polib.POFile(check_for_duplicates=True)
 	po.header = PO_HEADER
 	po.metadata = copy.copy(PO_METADATA)
 	po.metadata['Project-Id-Version'] = module.package
@@ -249,11 +258,15 @@ def module_xml2po(module, po_file, language):
 		for cat in tree.findall('categories/category'):
 			_appendPoEntry(po, cat.find('name'))
 
+	print 'Saving po file as %s' % (message_po,)
 	po.save(message_po)
 	if os.path.isfile(po_file):
-		dh_ucs.doIt('msgmerge', '--update', '--sort-output', po_file, message_po)
-		if os.path.isfile(message_po):
-			os.unlink(message_po)
+		try:
+			if dh_ucs.doIt('msgmerge', '--update', '--sort-output', po_file, message_po):
+				raise Error('Failed to merge module translations into %s.' % (po_file,))
+		finally:
+			if os.path.isfile(message_po):
+				os.unlink(message_po)
 	else:
 		dh_ucs.doIt('mv', message_po, po_file)
 
@@ -266,21 +279,31 @@ def create_po_file(po_file, package, files, language='python'):
 		os.unlink(message_po)
 	if isinstance(files, basestring):
 		files = [files]
-	dh_ucs.doIt('xgettext', '--force-po', '--from-code=UTF-8', '--sort-output', '--package-name=%s' % package, '--msgid-bugs-address=packages@univention.de', '--copyright-holder=Univention GmbH', '--language', language, '-o', message_po, *files)
+	if dh_ucs.doIt('xgettext', '--force-po', '--from-code=UTF-8', '--sort-output', '--package-name=%s' % package, '--msgid-bugs-address=packages@univention.de', '--copyright-holder=Univention GmbH', '--language', language, '-o', message_po, *files):
+		raise Error('xgettext failed for the files: %r' % (files,))
 	po = polib.pofile(message_po)
 	po.header = PO_HEADER
 	po.metadata['Content-Type'] = 'text/plain; charset=UTF-8'
+	if po.metadata_is_fuzzy:  # xgettext always creates fuzzy metadata
+		try:
+			po.metadata_is_fuzzy.remove('fuzzy')
+		except ValueError:
+			pass
 	po.save()
 	if os.path.isfile(po_file):
-		dh_ucs.doIt('msgmerge', '--update', '--sort-output', po_file, message_po)
-		if os.path.isfile(message_po):
-			os.unlink(message_po)
+		try:
+			if dh_ucs.doIt('msgmerge', '--update', '--sort-output', po_file, message_po):
+				raise Error('Failed to merge translations into %s.' % (po_file,))
+		finally:
+			if os.path.isfile(message_po):
+				os.unlink(message_po)
 	else:
 		dh_ucs.doIt('mv', message_po, po_file)
 
 
 def create_mo_file(po_file):
-	dh_ucs.doIt('msgfmt', '--check', '--output-file', po_file.replace('.po', '.mo'), po_file)
+	if dh_ucs.doIt('msgfmt', '--check', '--output-file', po_file.replace('.po', '.mo'), po_file):
+		raise Error('Failed to compile translation file from %s.' % (po_file,))
 
 
 def create_json_file(po_file):
