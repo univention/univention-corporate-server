@@ -26,4 +26,4 @@ desc: |
   * univention-app upgrade now correctly upgrades all packages for non Docker
     Apps.
   * Add attribute 'univentionAppID' to the LDAP equality search index.
-bug: [39662,39664,40116,37539,40239,40240,40238,40264,39157,40287,40060,39866]
+bug: [39662,39664,40116,37539,40239,40240,40359,40264,39157,40287,40060,39866]
