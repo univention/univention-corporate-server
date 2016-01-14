@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (3.0.0-4) unstable; urgency=medium
+
+  * Bug #40339: format string with multiple unnamed arguments
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 12:16:03 +0100
+
 univention-management-console-module-adtakeover (3.0.0-3) unstable; urgency=low
 
   * Bug #39222: claim_FSMO_roles before Removing ad server/dns takeover 

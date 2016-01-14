@@ -423,7 +423,7 @@ class AD_Takeover_State():
 		elif current_state == self.stateorder[i-1]:
 			self._set_persistent_state(new_state)
 		else:
-			raise TakeoverError(_("Internal module error: Cannot go from state '%s' to state '%s'.") % (current_state, new_state))
+			raise TakeoverError(_("Internal module error: Cannot go from state '%(current)s' to state '%(new)s'.") % {'current': current_state, 'new': new_state})
 
 	def check_sysvol(self):
 		current_state = self.current()
