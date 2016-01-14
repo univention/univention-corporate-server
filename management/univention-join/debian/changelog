@@ -1,3 +1,9 @@
+univention-join (8.0.4-2) unstable; urgency=medium
+
+  * Bug #40339: format string with multiple unnamed arguments
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 12:35:03 +0100
+
 univention-join (8.0.4-1) unstable; urgency=medium
 
   * Bug #40391: Stop univention-s4-connector if present

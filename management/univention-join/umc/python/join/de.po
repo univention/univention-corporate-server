@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-02-03 09:44+0100\n"
+"POT-Creation-Date: 2016-01-14 12:32+0100\n"
 "PO-Revision-Date: 2012-04-23 15:37+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,20 +12,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/join/__init__.py:389 umc/python/join/__init__.py:443
+#: umc/python/join/__init__.py:386 umc/python/join/__init__.py:437
 msgid "A join process is already running."
 msgstr "Ein Join-Vorgang läuft bereits."
 
-#: umc/python/join/__init__.py:420 umc/python/join/__init__.py:476
+#: umc/python/join/__init__.py:417 umc/python/join/__init__.py:470
 #, python-format
 msgid "An unexpected error occurred: %s"
 msgstr "Ein unerwarteter Fehler ist aufgetreten: %s"
 
-#: umc/python/join/__init__.py:457
+#: umc/python/join/__init__.py:451
 msgid "Authentication"
 msgstr "Authentifizierung"
 
-#: umc/python/join/__init__.py:397 umc/python/join/__init__.py:447
+#: umc/python/join/__init__.py:394 umc/python/join/__init__.py:441
 msgid ""
 "Currently, software is being installed or uninstalled. Join scripts should "
 "not be run right now."
@@ -33,7 +33,7 @@ msgstr ""
 "Momentan wird Software installiert oder deinstalliert. Join-Skripte sollten "
 "jetzt nicht ausgeführt werden."
 
-#: umc/python/join/__init__.py:401
+#: umc/python/join/__init__.py:398
 msgid "Domain join"
 msgstr "Domänenbeitritt"
 
@@ -55,7 +55,7 @@ msgstr "Ausführung der Join-Skripte"
 msgid "Initializing"
 msgstr "Initialisiere"
 
-#: umc/python/join/__init__.py:393
+#: umc/python/join/__init__.py:390
 msgid "Invalid server role! A master domain controller can not be joined."
 msgstr ""
 "Ungültige Serverrolle. Ein Master-Domänencontroller kann nicht gejoined "
@@ -110,6 +110,6 @@ msgstr ""
 "join.log</i> gefunden werden.<br/>Bitte den Join-Vorgang nach Lösen aller "
 "Konflikte erneut durchführen."
 
-#: umc/python/join/__init__.py:415 umc/python/join/__init__.py:471
+#: umc/python/join/__init__.py:412 umc/python/join/__init__.py:465
 msgid "finished..."
 msgstr "beendet..."
