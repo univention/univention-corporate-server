@@ -250,7 +250,7 @@ define([
 					callback: lang.hitch(this.app, 'install')
 				});
 			}
-			if (this.app.canOpenInDomain()) {
+			if (this.app.canOpenInDomain() && !isSingleServerInstallation) {
 				buttons.push({
 					name: 'open',
 					label: this.app.getOpenLabel(),

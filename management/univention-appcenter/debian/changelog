@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-41) unstable; urgency=low
+
+  * Bug #40116: Don't show open button twice if isSingleServerInstallation
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 14 Jan 2016 10:15:36 +0100
+
 univention-appcenter (5.0.19-40) unstable; urgency=low
 
   * Bug #39866: Improve adding univentionAppID to equality search index
