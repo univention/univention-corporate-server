@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-14 11:58+0100\n"
+"POT-Creation-Date: 2016-01-14 12:11+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Frank Greif <fg@it25.de>\n"
 "Language-Team: German <de_DE@li.org>\n"
@@ -574,8 +574,8 @@ msgstr "Installiere"
 
 #: umc/js/appcenter/AppDetailsPage.js:877
 #, python-format
-msgid "Installing %s on host %s"
-msgstr "Installiere %s auf Rechner %s"
+msgid "Installing %(name)s on host %(host)s"
+msgstr "Installiere %(name)s auf Rechner %(host)s"
 
 #: umc/js/appcenter/AppDetailsPage.js:874
 #, python-format
@@ -762,9 +762,9 @@ msgstr "Zugriff verweigert"
 
 #: umc/js/appcenter/AppDetailsPage.js:876
 #, python-format
-msgid "Please confirm to install the application %s on host %s."
+msgid "Please confirm to install the application %(name)s on host %(host)s."
 msgstr ""
-"Bitte bestätigen Sie die installation der Applikation %s auf Rechner %s"
+"Bitte bestätigen Sie die installation der Applikation %(name)s auf Rechner %(host)s"
 
 #: umc/js/appcenter/AppDetailsPage.js:873
 #, python-format
@@ -774,9 +774,10 @@ msgstr ""
 
 #: umc/js/appcenter/AppDetailsPage.js:886
 #, python-format
-msgid "Please confirm to uninstall the application %s from host %s."
+msgid ""
+"Please confirm to uninstall the application %(name)s from host %(host)s."
 msgstr ""
-"Bitte bestätigen Sie die Deinstallation der Applikation %s auf Rechner %s."
+"Bitte bestätigen Sie die Deinstallation der Applikation %(name)s auf Rechner %(host)s."
 
 #: umc/js/appcenter/AppDetailsPage.js:883
 #, python-format
@@ -787,9 +788,9 @@ msgstr ""
 
 #: umc/js/appcenter/AppDetailsPage.js:896
 #, python-format
-msgid "Please confirm to upgrade the application %s on host %s."
+msgid "Please confirm to upgrade the application %(name)s on host %(host)s."
 msgstr ""
-"Bitte bestätigen Sie die Aktualisierung der Applikation %s auf Rechner %s."
+"Bitte bestätigen Sie die Aktualisierung der Applikation %(name)s auf Rechner %(host)s."
 
 #: umc/js/appcenter/AppDetailsPage.js:893
 #, python-format
@@ -1213,8 +1214,8 @@ msgstr "Deinstalliere"
 
 #: umc/js/appcenter/AppDetailsPage.js:887
 #, python-format
-msgid "Uninstalling %s from host %s"
-msgstr "Deinstalliere %s von Rechner %s"
+msgid "Uninstalling %(name)s from host %(host)s"
+msgstr "Deinstalliere %(name)s von Rechner %(host)s"
 
 #: umc/js/appcenter/AppDetailsPage.js:884
 #, python-format
@@ -1284,8 +1285,8 @@ msgstr "Aktualisiere"
 
 #: umc/js/appcenter/AppDetailsPage.js:897
 #, python-format
-msgid "Upgrading %s on host %s"
-msgstr "Aktualisiere %s auf Rechner %s"
+msgid "Upgrading %(name)s on host %(host)s"
+msgstr "Aktualisiere %(name)s auf Rechner %(host)s"
 
 #: umc/js/appcenter/AppDetailsPage.js:894
 #, python-format

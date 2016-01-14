@@ -873,8 +873,8 @@ define([
 					text = _('Please confirm to install the application %s on this host.', this.app.name);
 					progressMessage = _('Installing %s on this host', this.app.name);
 					if (isRemoteAction) {
-						text = _('Please confirm to install the application %s on host %s.', this.app.name, host);
-						progressMessage = _('Installing %s on host %s', this.app.name, host);
+						text = _('Please confirm to install the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
+						progressMessage = _('Installing %(name)s on host %(host)s', {name: this.app.name, host: host});
 					}
 					break;
 				case 'uninstall':
@@ -883,8 +883,8 @@ define([
 					text = _('Please confirm to uninstall the application %s on this host.', this.app.name);
 					progressMessage = _('Uninstalling %s from this host', this.app.name);
 					if (isRemoteAction) {
-						text = _('Please confirm to uninstall the application %s from host %s.', this.app.name, host);
-						progressMessage = _('Uninstalling %s from host %s', this.app.name, host);
+						text = _('Please confirm to uninstall the application %(name)s from host %(host)s.', {name: this.app.name, host: host});
+						progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: this.app.name, host: host});
 					}
 					break;
 				case 'update':
@@ -893,8 +893,8 @@ define([
 					text = _('Please confirm to upgrade the application %s on this host.', this.app.name);
 					progressMessage = _('Upgrading %s on this host', this.app.name);
 					if (isRemoteAction) {
-						text = _('Please confirm to upgrade the application %s on host %s.', this.app.name, host);
-						progressMessage = _('Upgrading %s on host %s', this.app.name, host);
+						text = _('Please confirm to upgrade the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
+						progressMessage = _('Upgrading %(name)s on host %(host)s', {name: this.app.name, host: host});
 					}
 					break;
 				default:

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-42) unstable; urgency=medium
+
+  * Bug #40339: format string with multiple unnamed arguments
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 12:13:02 +0100
+
 univention-appcenter (5.0.19-41) unstable; urgency=low
 
   * Bug #40116: Don't show open button twice if isSingleServerInstallation
