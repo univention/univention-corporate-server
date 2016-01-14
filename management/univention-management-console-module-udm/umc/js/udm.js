@@ -1181,7 +1181,7 @@ define([
 			} else {
 				objectName = this.objectNamePlural;
 				container.addChild(new Text({
-					content: '<p>' + _('Please select an LDAP position to move %d selected %s to:', ids.length, objectName) + '</p>',
+					content: '<p>' + _('Please select an LDAP position to move %(length)d selected %(name)s to:', {length: ids.length, name: objectName}) + '</p>',
 					style: 'width:300px;'
 				}));
 			}
@@ -1425,7 +1425,7 @@ define([
 			}
 
 			// let user confirm deletion
-			var msg = _('Please confirm the removal of the %d selected %s!', objects.length, this.objectNamePlural);
+			var msg = _('Please confirm the removal of the %(length)d selected %(name)s!', {length: objects.length, name: this.objectNamePlural});
 			if (objects.length == 1) {
 				msg = _('Please confirm the removal of %s:', this.objectNameSingular);
 				msg += lang.replace('<div>{0}</div>', [this.iconFormatter(objects[0])]);

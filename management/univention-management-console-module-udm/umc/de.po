@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-udm\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Mon, 04 Nov 2013 05:47:43 -0500\n"
+"POT-Creation-Date: Thu, 14 Jan 2016 11:21:22 +0100\n"
 "PO-Revision-Date: 2011-10-21 17:59+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -15,8 +15,8 @@ msgstr ""
 msgid "Browsing and managing the LDAP tree"
 msgstr "Durchsuchen und Verwalten des LDAP-Verzeichnisbaums"
 
-msgid "User settings"
-msgstr "Benutzereinstellungen"
+msgid "Change settings for the user currently logged in"
+msgstr "Änderung der Benutzereinstellungen des angemeldeten Benutzers"
 
 msgid "Computers"
 msgstr "Rechner"
@@ -78,9 +78,6 @@ msgstr "Nagios"
 msgid "Networks"
 msgstr "Netzwerke"
 
-msgid "Change settings for the user currently logged in"
-msgstr "Änderung der Benutzereinstellungen des angemeldeten Benutzers"
-
 msgid "Policies"
 msgstr "Richtlinien"
 
@@ -92,6 +89,9 @@ msgstr "Freigaben"
 
 msgid "Univention Directory Manager"
 msgstr "Univention Directory Manager"
+
+msgid "User settings"
+msgstr "Benutzereinstellungen"
 
 msgid "Users"
 msgstr "Benutzer"

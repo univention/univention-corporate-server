@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-3) unstable; urgency=medium
+
+  * Bug #40339: format string with multiple unnamed arguments
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 11:46:43 +0100
+
 univention-management-console-module-udm (6.0.11-2) unstable; urgency=medium
 
   * Bug #39675: adapt license import to work with SAML login

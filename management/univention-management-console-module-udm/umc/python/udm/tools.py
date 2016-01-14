@@ -41,7 +41,6 @@ import univention.admin.uldap
 import univention.admin.uexceptions as udm_errors
 from univention.lib.i18n import Translation
 
-from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 
 _ = Translation('univention-management-console-module-udm').translate
@@ -81,7 +80,7 @@ class LicenseImport(ldif.LDIFParser):
 
 		# check LDAP base
 		if self.base.lower() not in [base.lower(), 'free for personal use edition', 'ucs core edition']:
-			raise LicenseError(_("The license can not be applied. The LDAP base does not match (expected %s, found: %s).") % (base, self.base))
+			raise LicenseError(_("The license can not be applied. The LDAP base does not match (expected %(expected)s, found: %(found)s).") % {'expected': base, 'found': self.base})
 
 	def handle(self, dn, entry):
 		"""This method is invoked bei LDIFParser.parse for each object

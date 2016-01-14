@@ -839,7 +839,7 @@ define([
 						return false; // break out of forIn
 					}
 				}, this);
-				name = _('<b>Attention:</b> The %s "%s" is', this.objectNameSingular, value);
+				name = _('<b>Attention:</b> The %(name)s "%(value)s" is', {name: this.objectNameSingular, value: value});
 			}
 			if (!this.adInformation) {
 				this.adInformation = new Text({

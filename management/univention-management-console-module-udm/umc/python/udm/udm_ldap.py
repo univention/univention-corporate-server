@@ -311,8 +311,8 @@ class UDM_Module(object):
 				for ival in value:
 					try:
 						subResults.append(property_obj.syntax.parse(ival))
-					except TypeError as e:
-						raise UMC_OptionTypeError(_('The property %s has an invalid value: %s') % (property_obj.short_description, str(e)))
+					except TypeError as exc:
+						raise UMC_OptionTypeError(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
 				if subResults:  # empty list represents removing of the attribute (handlers/__init__.py def diff)
 					MODULE.info('Setting of property ignored (is empty)')
 					obj[property_name] = subResults
@@ -325,8 +325,8 @@ class UDM_Module(object):
 					continue
 				try:
 					obj[property_name] = property_obj.syntax.parse(value)
-				except TypeError as e:
-					raise UMC_OptionTypeError(_('The property %s has an invalid value: %s') % (property_obj.short_description, str(e)))
+				except TypeError as exc:
+					raise UMC_OptionTypeError(_('The property %(property)s has an invalid value: %(value)s') % {'property': property_obj.short_description, 'value': exc})
 
 		return obj
 

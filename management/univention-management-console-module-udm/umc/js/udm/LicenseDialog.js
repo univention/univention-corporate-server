@@ -196,7 +196,7 @@ define([
 			if (this.licenseInfo.licenses[limit] === null) {
 				return  _('unlimited');
 			} else {
-				return _('%s (used: %s)', this.licenseInfo.licenses[limit], this.licenseInfo.real[limit]);
+				return _('%(limit)s (used: %(used)s)', {limit: this.licenseInfo.licenses[limit], used: this.licenseInfo.real[limit]});
 			}
 		}
 	});

@@ -94,7 +94,7 @@ define([
 			var widgets = [{
 				type: ComboBox,
 				name: 'report',
-				label: _('Report for %d %s', this.objects.length, this.objects.length === 1 ? this.objectNameSingular : this.objectNamePlural),
+				label: _('Report for %(length)d %(name)s', {length: this.objects.length, name: this.objects.length === 1 ? this.objectNameSingular : this.objectNamePlural}),
 				description: _('The report template that should be used for the report.'),
 				value: this.reports[0],
 				staticValues: reports
@@ -131,7 +131,7 @@ define([
 		onDone: function(options) {
 
 			var waiting = new Text({
-				content: _('<p>Generating %s report for %d objects.</p><p>This may take a while</p>', this.objectNameSingular, this.objects.length)
+				content: _('<p>Generating %(name)s report for %(length)d objects.</p><p>This may take a while</p>', {name: this.objectNameSingular, length: this.objects.length})
 			});
 			this._container.addChild(waiting, 0);
 
@@ -147,7 +147,7 @@ define([
 				waiting.destroy();
 
 				if (true === data.result.success) {
-					message = lang.replace('<p>{0}</p>', [_('The %s can be downloaded at<br><br><a target="_blank" href="%s">%s report</a>', data.result.docType, data.result.URL, this.objectNameSingular)]);
+					message = lang.replace('<p>{0}</p>', [_('The %(type)s can be downloaded at<br><br><a target="_blank" href="%(href)s">%(name)s report</a>', {type: data.result.docType, href: data.result.URL, name: this.objectNameSingular})]);
 					title = _('Report has been created');
 				} else {
 					title = _('Report creation has failed');
