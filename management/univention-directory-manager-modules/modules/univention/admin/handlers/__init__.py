@@ -667,7 +667,6 @@ class simpleLdap(base):
 
 		diff_ml = self.diff()
 		ml = univention.admin.mapping.mapDiff(self.mapping, diff_ml)
-		ml = [(attr, old, new) for attr, old, new in ml if isinstance(old, basestring) or isinstance(new, basestring) or set(old) != set(new)]
 		ml = self._post_map(ml, diff_ml)
 
 		# policies

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-12) unstable; urgency=medium
+
+  * Bug #40120: Move comparision of modlist into uldap.py
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 14:54:23 +0100
+
 univention-directory-manager-modules (11.0.2-11) unstable; urgency=medium
 
   * Bug #40120: don't depend on order when comparing attributes to create modlist
