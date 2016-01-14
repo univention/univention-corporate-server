@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-top\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-23 06:33+0200\n"
+"POT-Creation-Date: 2016-01-14 12:27+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,90 +12,90 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/top.js:116
+#: umc/js/top.js:153
 msgid "All"
 msgstr "Alle"
 
-#: umc/js/top.js:86
+#: umc/js/top.js:117
 msgid "CPU (%)"
 msgstr "CPU (%)"
 
-#: umc/js/top.js:44
+#: umc/js/top.js:76
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/top.js:114
+#: umc/js/top.js:151
 msgid "Category"
 msgstr "Kategorie"
 
-#: umc/js/top.js:94 umc/js/top.js:119
+#: umc/js/top.js:131 umc/js/top.js:156
 msgid "Command"
 msgstr "Befehl"
 
-#: umc/js/top.js:58
-msgid "Entries"
-msgstr "Einträge"
-
-#: umc/js/top.js:70
+#: umc/js/top.js:101
 msgid "Force termination"
 msgstr "Beenden erzwingen"
 
-#: umc/js/top.js:125
+#: umc/js/top.js:162
 msgid "Keyword"
 msgstr "Schlüsselwort"
 
-#: umc/js/top.js:90
+#: umc/js/top.js:124
 msgid "Memory (%)"
 msgstr "Speicher (%)"
 
-#: umc/js/top.js:37
+#: umc/js/top.js:67
 msgid "OK"
 msgstr "OK"
 
-#: umc/js/top.js:82 umc/js/top.js:118
+#: umc/js/top.js:113 umc/js/top.js:155
 msgid "PID"
 msgstr "PID"
 
-#: umc/js/top.js:34
+#: umc/js/top.js:64
 #, python-format
-msgid "Please confirm sending %(sig)s to the %(pids)s selected processes!"
+msgid ""
+"Please confirm sending %(signal)s to the %(processid)s selected processes!"
 msgstr ""
-"Bitte bestätigen Sie %(sig)s an die %(pid)s ausgewählten Prozesse zu senden!"
+"Bitte bestätigen Sie %(signal)s an die %(processid)s ausgewählten Prozesse zu senden!"
 
-#: umc/js/top.js:31
+#: umc/js/top.js:61
 #, python-format
 msgid "Please confirm sending %s to the selected process!"
 msgstr "Bitte bestätigen Sie %s an den ausgewählten Prozess zu senden!"
 
-#: umc/js/top.js:52
+#: umc/js/top.js:88
 msgid "Process overview"
 msgstr "Prozessübersicht"
 
-#: umc/js/top.js:40
+#: umc/js/top.js:70
 #, python-format
 msgid "Signal (%s) sent successfully"
 msgstr "Signal (%s) wurde erfolgreich gesendet"
 
-#: umc/js/top.js:64
+#: umc/js/top.js:95
 msgid "Terminate"
 msgstr "Beenden"
 
-#: umc/js/top.js:53
+#: umc/js/top.js:89
 msgid ""
 "This module generates an overview of all running processes. The search "
 "function can reduce the number of results. Specified processes can be "
 "selected and terminated. If a process can't be normally terminated (using "
 "SIGTERM signal), the termination can be forced (using SIGKILL signal)."
 msgstr ""
-"Dieses Modul zeigt alle laufenden Prozesse an. Über die "
-"Suchfunktion kann die Ergebnisliste eingeschränkt werden. Einzelne Prozesse "
-"können ausgewählt und beendet werden. Wenn ein Prozess nicht normal beendet "
-"werden kann (mittels des Signals SIGTERM), kann die Beendigung erzwungen "
-"werden (mittels des Signals SIGKILL)."
+"Dieses Modul zeigt alle laufenden Prozesse an. Über die Suchfunktion kann "
+"die Ergebnisliste eingeschränkt werden. Einzelne Prozesse können ausgewählt "
+"und beendet werden. Wenn ein Prozess nicht normal beendet werden kann "
+"(mittels des Signals SIGTERM), kann die Beendigung erzwungen werden (mittels "
+"des Signals SIGKILL)."
 
-#: umc/js/top.js:78 umc/js/top.js:117
+#: umc/js/top.js:109 umc/js/top.js:154
 msgid "User"
 msgstr "Benutzer"
+
+#~ msgid "Entries"
+#~ msgstr "Einträge"
 
 #~ msgid "Kill"
 #~ msgstr "Beenden"

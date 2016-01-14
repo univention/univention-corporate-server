@@ -61,7 +61,7 @@ define([
 				msg = _('Please confirm sending %s to the selected process!', signal);
 			}
 			else {
-				msg = _('Please confirm sending %(sig)s to the %(pid)s selected processes!', {sig: signal, pid: pids.length});
+				msg = _('Please confirm sending %(signal)s to the %(processid)s selected processes!', {signal: signal, processid: pids.length});
 			}
 			dialog.confirm(msg, [{
 				label: _('OK'),

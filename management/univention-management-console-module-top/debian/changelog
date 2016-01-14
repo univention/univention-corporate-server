@@ -1,3 +1,9 @@
+univention-management-console-module-top (5.0.1-2) unstable; urgency=medium
+
+  * Bug #40339: format string with multiple unnamed arguments
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 12:28:01 +0100
+
 univention-management-console-module-top (5.0.1-1) unstable; urgency=medium
 
   * Bug #39302: support psutil 0.9 and >= 2.0
