@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-appcenter
-fix: 5.0.19-41.98.201601141021
+fix: 5.0.19-42.99.201601141256
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -26,4 +26,6 @@ desc: |
   * univention-app upgrade now correctly upgrades all packages for non Docker
     Apps.
   * Add attribute 'univentionAppID' to the LDAP equality search index.
-bug: [39662,39664,40116,37539,40239,40240,40359,40264,39157,40287,40060,39866]
+  * Translation format strings with multiple unnamed arguments have been
+    adjusted.
+bug: [39662,39664,40116,37539,40239,40240,40359,40264,39157,40287,40060,39866, 40339]

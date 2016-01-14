@@ -2,10 +2,12 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-management-console
-fix: 8.0.28-2.905.201601141047
+fix: 8.0.28-3.906.201601141255
 version: [0]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The dh_umc debhelper scripts doesn't create duplicated message entries
    or false warnings about fuzzy PO file headers anymore.
-bug: [40341]
+ * Translation format strings with multiple unnamed arguments have been
+   adjusted.
+bug: [40341, 40339]

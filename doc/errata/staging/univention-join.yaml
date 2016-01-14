@@ -3,8 +3,10 @@ release: "4.1"
 version: [0]
 scope: ucs_4.1-0-errata4.1-0
 src: univention-join
-fix: 8.0.4-1.513.201601121355
+fix: 8.0.4-2.515.201601141300
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Univention S4 Connector was still running during re-joins.
-bug: [40391]
+ * Translation format strings with multiple unnamed arguments have been
+   adjusted.
+bug: [40391, 40339]

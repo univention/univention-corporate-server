@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [0]
+scope: ucs_4.1-0-errata4.1-0
+src: univention-management-console-module-adtakeover
+fix: 3.0.0-4.71.201601141257
+desc: |
+ This update addresses the following issue:
+ * Translation format strings with multiple unnamed arguments have been
+   adjusted.
+bug: [40339]

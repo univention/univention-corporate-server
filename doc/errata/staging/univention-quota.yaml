@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [0]
+scope: ucs_4.1-0-errata4.1-0
+src: univention-quota
+fix: 10.0.1-2.158.201601141304
+desc: |
+ This update addresses the following issue:
+ * Translation format strings with multiple unnamed arguments have been
+   adjusted.
+bug: [40339]
