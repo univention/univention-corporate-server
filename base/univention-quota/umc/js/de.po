@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-07 18:16+0100\n"
+"POT-Creation-Date: 2016-01-14 12:44+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -47,11 +47,11 @@ msgstr "Zurück zur Übersicht"
 msgid "Back to partition"
 msgstr "Zurück zur Partition"
 
-#: umc/js/quota/PartitionPage.js:234 umc/js/quota.js:201
+#: umc/js/quota.js:201 umc/js/quota/PartitionPage.js:234
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: umc/js/quota/PartitionPage.js:118 umc/js/quota.js:89
+#: umc/js/quota.js:89 umc/js/quota/PartitionPage.js:118
 msgid "Configure"
 msgstr "Konfigurieren"
 
@@ -118,10 +118,12 @@ msgstr "Quota-Einstellungen anpassen"
 
 #: umc/js/quota/DetailPage.js:165
 #, python-format
-msgid "Modify the quota settings for user <i>%s</i> on partition <i>%s</i>."
+msgid ""
+"Modify the quota settings for user <i>%(user)s</i> on partition <i>"
+"%(partition)s</i>."
 msgstr ""
-"Anpassung der Quota-Einstellungen für Benutzer <i>%s</i> auf Partition <i>"
-"%s</i>."
+"Anpassung der Quota-Einstellungen für Benutzer <i>%(user)s</i> auf Partition <i>"
+"%(partition)s</i>."
 
 #: umc/js/quota.js:114
 msgid "Mount point"
@@ -135,8 +137,8 @@ msgstr "Mount-Point: "
 msgid "Not all limits can be set to zero."
 msgstr "Es können nicht alle Limits auf Null gesetzt sein."
 
-#: umc/js/quota/PartitionPage.js:211 umc/js/quota/PartitionPage.js:228
-#: umc/js/quota.js:188 umc/js/quota.js:223
+#: umc/js/quota.js:188 umc/js/quota.js:223 umc/js/quota/PartitionPage.js:211
+#: umc/js/quota/PartitionPage.js:228
 msgid "OK"
 msgstr "OK"
 
@@ -144,7 +146,7 @@ msgstr "OK"
 msgid "Options: "
 msgstr "Optionen: "
 
-#: umc/js/quota/DetailPage.js:92 umc/js/quota.js:110
+#: umc/js/quota.js:110 umc/js/quota/DetailPage.js:92
 msgid "Partition"
 msgstr "Partition"
 
@@ -219,7 +221,7 @@ msgstr "Das Soft-Limit muss äquivalent oder kleiner als das Hard-Limit sein"
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: umc/js/quota/DetailPage.js:87 umc/js/quota/PartitionPage.js:139
+#: umc/js/quota/PartitionPage.js:139 umc/js/quota/DetailPage.js:87
 msgid "User"
 msgstr "Benutzer"
 

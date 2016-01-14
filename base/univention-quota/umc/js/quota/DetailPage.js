@@ -162,7 +162,7 @@ define([
 				this._form.setFormValues(userQuota);
 				this._form.getWidget('user').set('disabled', true);
 				this.set('headerText', _('Modify quota'));
-				this.set('helpText', _('Modify the quota settings for user <i>%s</i> on partition <i>%s</i>.', userQuota.user, userQuota.partitionDevice));
+				this.set('helpText', _('Modify the quota settings for user <i>%(user)s</i> on partition <i>%(partition)s</i>.', {user: userQuota.user, partition: userQuota.partitionDevice}));
 			}
 			this._form.getWidget('partitionDevice').setValue(this.partitionDevice);
 		},

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-quota\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-11-07 18:16+0100\n"
+"POT-Creation-Date: 2016-01-14 12:44+0100\n"
 "PO-Revision-Date: 2016-01-14 11:26+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -38,9 +38,10 @@ msgstr "Abgelaufen"
 
 #: umc/python/quota/user.py:115
 #, python-format
-msgid "Failed to modify quota settings for user %s on partition %s"
+msgid ""
+"Failed to modify quota settings for user %(user)s on partition %(partition)s"
 msgstr ""
-"Konnte Quota-Einstellungen für den Benutzer %s auf der Partition %s nicht "
+"Konnte Quota-Einstellungen für den Benutzer %(user)s auf der Partition %(partition)s nicht "
 "modifizieren"
 
 #: umc/python/quota/tools.py:297

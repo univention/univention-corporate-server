@@ -112,7 +112,7 @@ class Commands(object):
 			failed = tools.setquota(partition, user, tools.byte2block(size_soft), tools.byte2block(size_hard), file_soft, file_hard)
 			if failed:
 				MODULE.error('Failed to modify quota settings for user %s on partition %s' % (user, partition))
-				message = _('Failed to modify quota settings for user %s on partition %s') % (user, partition)
+				message = _('Failed to modify quota settings for user %(user)s on partition %(partition)s') % {'user': user, 'partition': partition}
 				return dict(status=MODULE_ERR, message=message)
 			return dict(result={'objects': [], 'success': True})
 

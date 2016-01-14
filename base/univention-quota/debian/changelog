@@ -1,3 +1,9 @@
+univention-quota (10.0.1-2) unstable; urgency=medium
+
+  * Bug #40339: format string with multiple unnamed arguments
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 12:46:16 +0100
+
 univention-quota (10.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
