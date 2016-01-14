@@ -157,7 +157,7 @@ virsh pool-refresh iscsi
 		</para>
 		<para>
 			Managing Xen virtual machines in no longer possible using &ucsUVMM; from UCS-4.
-			Customers using <application>Xen</application> can continue using existing UCS-3 virtualization servers with UVMM from UCS-3 by not updating them, but should consider one of the following options longterm:
+			Customers using <application>Xen</application> can continue using existing UCS-3 virtualization servers with UVMM from UCS-3 by not updating them, but should consider one of the following options long-term:
 		</para>
 		<itemizedlist>
 			<listitem><simpara>switch to the hypervisor <application>QEMU/KVM</application>, which requires updating all virtual machines.</simpara></listitem>
@@ -176,7 +176,7 @@ virsh pool-refresh iscsi
 			</para>
 			<para>
 				Univention recommends to setup a new virtualization server using <application>KVM</application> and to copy over the exiting image files to the new server.
-				This has the advantage that the new setup can be tested thoroughly and a fall-back to the old hypervisor using <application>Xen</application> is possible.
+				This has the advantage that the new setup can be tested thoroughly and a fallback to the old hypervisor using <application>Xen</application> is possible.
 			</para>
 			<procedure id="uvmm:xen2kvm">
 				<title>Convert virtual machines from Xen to KVM</title>

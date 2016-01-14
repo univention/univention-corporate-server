@@ -215,7 +215,7 @@ def get_db_connection():
 		<para>
 			UCS ships with a key-value store used to save parameters of the environment, the Univention
 			Configuration Registry (UCR). It holds information about the local host (like hostname or network settings)
-			and to some extent about the domain configuration (like the domainname or where the DC Master can be
+			and to some extent about the domain configuration (like the domain name or where the DC Master can be
 			found). More details can be found in the <ulink
 			url="https://docs.software-univention.de/developer-reference.html#chap:ucr">Developer Reference</ulink>.
 		</para>

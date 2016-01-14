@@ -462,7 +462,7 @@ univention-app restart radicale
 				are that of the <emphasis>Administrator account</emphasis>.
 			</para>
 			<note><para>
-				None of the following scripts is mandatory, all have reasonable defaults / fall-backs. But every scripts may be
+				None of the following scripts is mandatory, all have reasonable defaults / fallbacks. But every scripts may be
 				overridden! Just upload them along with the ini file and Univention will place them on the App Center server.
 				See also <xref linkend="docker:epilogue:ini" /> on how to specify these scripts in the ini file.
 			</para></note>

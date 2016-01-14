@@ -983,7 +983,7 @@ ln -s msdfs:sb\\fb tofb
 </programlisting>
 <para>
 	This reference will be displayed on every client capable of <acronym>MSDFS</acronym>
-	(e.g. <systemitem class="osname">Windows 2000</systemitem> and <systemitem class="osname">Windos XP</systemitem>) as a regular directory.
+	(e.g. <systemitem class="osname">Windows 2000</systemitem> and <systemitem class="osname">Windows XP</systemitem>) as a regular directory.
 </para>
 <caution>
 	<para>

@@ -435,7 +435,7 @@
 		  </para>
 
 		  <para>
-			After filling in the domainname in the field <guimenu>Active Directory Domain</guimenu>
+			After filling in the domain name in the field <guimenu>Active Directory Domain</guimenu>
 			and the hostname of the Mac OS X client in the field <guimenu>Computer ID</guimenu>, the
 			join process is initiated after clicking the button <guimenu>Bind...</guimenu>. The
 			username and password of an account in the <systemitem class="groupname">Domain Admins</systemitem> group

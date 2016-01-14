@@ -359,7 +359,7 @@ instanceType: 4
 			<itemizedlist>
 			  <listitem><simpara>
 				<emphasis>User policies</emphasis> configure a user's settings, e.g., the
-				preconfiguration of the desktop. It is also possible to configure applications via
+				configuration of the desktop. It is also possible to configure applications via
 				group policies (e.g., the start page of Microsoft Internet Explorer or settings in
 				LibreOffice).
 			  </simpara></listitem>

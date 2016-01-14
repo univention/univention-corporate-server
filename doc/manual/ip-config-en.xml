@@ -270,7 +270,7 @@
 	</itemizedlist>
 
 	<section id="ip-config:Configuration_of_the_Bind_nameserver">
-	  <title>Configuration of the BIND nameserver</title>
+	  <title>Configuration of the BIND name server</title>
 
 	  <section id="ip-config:bind-debug">
 		<title>Configuration of BIND debug output</title>
@@ -1148,8 +1148,8 @@
 					  For a network with a 16-bit network prefix (subnet mask <systemitem class="netmask">255.255.0.0</systemitem>)
 					  the last two octets should be entered in reverse order for this
 					  computer (here <userinput>101.1</userinput>).
-					  <userinput>client001.company.com.</userinput>also needs
-					  to be entered in the <guimenu>Pointer</guimenu>field here.
+					  <userinput>client001.company.com.</userinput> also needs
+					  to be entered in the <guimenu>Pointer</guimenu> field here.
 					</para>
 				  </entry>
 				</row>
@@ -2472,7 +2472,7 @@ univention-config-registry set squid/webports=&quot;80 443&quot;
 	  <para>
 		For group changes to take effect, DansGuardian needs to be restarted. This can be done
 		either in the UMC module <guimenu>System services</guimenu> or on the
-		commandline using the command
+		command line using the command
 	  </para>
 <programlisting language="sh">
 /etc/init.d/dansguardian restart
