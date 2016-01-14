@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-diagnostic\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-10-30 13:09+0100\n"
+"POT-Creation-Date: 2016-01-14 12:20+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -14,8 +14,8 @@ msgstr ""
 
 #: umc/js/diagnostic.js:120
 #, python-format
-msgid "\"%s - %s\" Module (as Administrator)"
-msgstr "Module \"%s - %s\" (als Administrator)"
+msgid "\"%(module)s - %(flavor)s\" Module (as Administrator)"
+msgstr "Module \"%(module)s - %(flavor)s\" (als Administrator)"
 
 #: umc/js/diagnostic.js:207
 msgid "Analyzing for problems..."

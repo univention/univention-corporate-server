@@ -117,7 +117,7 @@ define([
 				var link = tools.linkToModule(module);
 				if (description.indexOf(repl) !== -1) {
 					if (!link) {
-						link = _('"%s - %s" Module (as Administrator)', module.module, module.flavor);
+						link = _('"%(module)s - %(flavor)s" Module (as Administrator)', {module: module.module, flavor: module.flavor});
 					}
 					description = description.replace(repl, link);
 				} else if (link) {

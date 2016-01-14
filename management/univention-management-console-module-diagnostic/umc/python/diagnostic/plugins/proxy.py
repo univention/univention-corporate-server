@@ -62,7 +62,7 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 			code = 0
 			msg = str(exc)
 		if code == pycurl.E_COULDNT_CONNECT:
-			msg = _('The proxy host could not be reached. Make sure that hostname (%r) and port (%r) are correctly set up.') % (proxy.hostname, proxy.port,)
+			msg = _('The proxy host could not be reached. Make sure that hostname (%(hostname)r) and port (%(port)r) are correctly set up.') % {'hostname': proxy.hostname, 'port': proxy.port}
 		elif code == pycurl.E_COULDNT_RESOLVE_PROXY:
 			msg = _('The hostname of the proxy could not be resolved. May check your DNS configuration.')
 		elif code == pycurl.E_OPERATION_TIMEOUTED:

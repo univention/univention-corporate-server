@@ -40,7 +40,7 @@ def run():
 			try:
 				query_dns_server(ucr[nameserver], hostname)
 			except DNSException as exc:
-				msgs = ['\n', _('The nameserver %s (UCR variable %r) is not responsive:') % (ucr[nameserver], nameserver)]
+				msgs = ['\n', _('The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:') % {'nameserver': ucr[nameserver], 'var': nameserver}]
 
 				if isinstance(exc, Timeout):
 					msgs.append(_('A timeout occured while reaching the nameserver (is it online?).'))
