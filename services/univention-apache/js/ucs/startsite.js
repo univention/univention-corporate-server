@@ -123,13 +123,13 @@ define([
 			query('*[data-i18n]').forEach(lang.hitch(this, function(inode) {
 				var value = domAttr.get(inode, 'data-i18n');
 				var translation = _(value, ucr);
-				domAttr.set(inode, 'innerHTML', translation);
-
-				// set the first h1 tag as the windows title
+				// check for appliance and set the first h1 tag as the windows title
 				if ((inode.tagName || '').toLowerCase() == 'h1' && !isTitleSet) {
+					translation += this._ucr.appliance_name || 'Univention Corporate Server';
 					window.document.title = translation;
 					isTitleSet = true;
 				}
+				domAttr.set(inode, 'innerHTML', translation);
 			}));
 			query('a[href]').forEach(lang.hitch(this, function(inode) {
 				var href = domAttr.get(inode, 'href');

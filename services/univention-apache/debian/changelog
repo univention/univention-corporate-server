@@ -1,3 +1,9 @@
+univention-apache (8.0.1-6) unstable; urgency=low
+
+  * Bug #40304: Show Welcome to <appname> instead of UCS
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 14 Jan 2016 08:35:02 +0100
+
 univention-apache (8.0.1-5) unstable; urgency=medium
 
   * Bug #40121: fix syntax error

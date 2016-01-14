@@ -153,6 +153,7 @@ data = dict(
 		domainname=configRegistry['domainname'],
 		hostname=configRegistry['hostname'],
 		serveraddress=get_ec2_address(),
+		appliance_name=configRegistry['umc/web/appliance/name']
 	),
 	tracebacks=tracebacks,
 )
