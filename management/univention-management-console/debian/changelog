@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-3) unstable; urgency=medium
+
+  * Bug #40341: remove debug output from last commit
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 12:51:30 +0100
+
 univention-management-console (8.0.28-2) unstable; urgency=medium
 
   * Bug #40341: remove duplicated messages, don't create metadata fuzzy

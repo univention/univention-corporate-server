@@ -258,7 +258,6 @@ def module_xml2po(module, po_file, language):
 		for cat in tree.findall('categories/category'):
 			_appendPoEntry(po, cat.find('name'))
 
-	print 'Saving po file as %s' % (message_po,)
 	po.save(message_po)
 	if os.path.isfile(po_file):
 		try:

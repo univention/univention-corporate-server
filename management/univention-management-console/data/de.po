@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-server\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: Wed, 02 Nov 2011 15:20:00 +0100\n"
+"POT-Creation-Date: Thu, 14 Jan 2016 12:52:49 +0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,20 +12,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "System"
-msgstr "System"
-
-msgid "Favorites"
-msgstr "Favoriten"
-
-msgid "Users"
-msgstr "Benutzer"
-
 msgid "Devices"
 msgstr "Geräte"
 
 msgid "Domain"
 msgstr "Domäne"
 
+msgid "Favorites"
+msgstr "Favoriten"
+
 msgid "Software"
 msgstr "Software"
+
+msgid "System"
+msgstr "System"
+
+msgid "Users"
+msgstr "Benutzer"
