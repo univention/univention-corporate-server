@@ -442,9 +442,11 @@ class Instance(Base):
 			raise UMC_Error(str(ex))
 		except udm_errors.pwalreadyused:
 			raise UMC_Error(_("The Password has been used already. Please supply a new one."))
-		except:
-			MODULE.info("udm_set_password(): failed to set password: {}".format(traceback.format_exc()))
-			raise
+		except udm_errors.pwQuality as ex:
+			raise UMC_Error(str(ex))
+		except Exception as ex:
+			MODULE.error("udm_set_password(): failed to set password: {}".format(traceback.format_exc()))
+			raise UMC_Error(str(ex))
 
 	#TODO: decoratorize
 	@machine_connection

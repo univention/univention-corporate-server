@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-13) unstable; urgency=low
+
+  * fix passwordreset crashing on udm_errors.pwQuality (Bug #40433)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 14 Jan 2016 19:28:24 +0100
+
 univention-self-service (1.0.3-12) unstable; urgency=low
 
   * Bug #40107: revert r66134 (1.0.3-11), allowing ports and paths
