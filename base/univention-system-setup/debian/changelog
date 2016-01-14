@@ -1,3 +1,9 @@
+univention-system-setup (9.0.2-27) unstable; urgency=medium
+
+  * Bug #40339: format string with multiple unnamed arguments
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 12:41:26 +0100
+
 univention-system-setup (9.0.2-26) unstable; urgency=medium
 
   * Bug #39376: fix gettext calls

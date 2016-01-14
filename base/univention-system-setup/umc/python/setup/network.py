@@ -376,7 +376,7 @@ class Device(object):
 			if device.name != self.name:
 				for idevice in self.subdevices:
 					if idevice in device.subdevices:
-						raise DeviceError(_('Device %r is already in use by %r') % (idevice.name, device.name), self.name)
+						raise DeviceError(_('Device %(device)r is already in use by %(name)r') % {'device': idevice.name, 'name': device.name}, self.name)
 
 	def disable_ips(self):
 		self.ip4 = []

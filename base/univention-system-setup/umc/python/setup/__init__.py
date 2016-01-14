@@ -432,7 +432,7 @@ class Instance(Base, ProgressMixin):
 		}
 		for maxlenth, keys in [(2, ('ssl/country',)), (128, ('ssl/state', 'ssl/locality',)), (64, ('organization', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'email_address', 'ssl/common'))]:
 			for ikey in keys:
-				_check(ikey, lambda x: len(x) <= maxlenth, _('The following value is too long, only %s characters allowed: %s') % (maxlenth, labels[ikey],))
+				_check(ikey, lambda x: len(x) <= maxlenth, _('The following value is too long, only %(max)s characters allowed: %(name)s') % {'max': maxlenth, 'name': labels[ikey]})
 
 		for ikey in ('ssl/country', 'ssl/state', 'ssl/locality', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'ssl/common'):
 			for table in (stringprep.in_table_c21_c22, stringprep.in_table_a1, stringprep.in_table_c8, stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, lambda c: c == u'\ufffd'):
@@ -461,7 +461,7 @@ class Instance(Base, ProgressMixin):
 					if not values.get(jkey):
 						# allow empty value
 						continue
-					_check(jkey, util.is_ipaddr, _('The specified IP address (%s) is not valid: %s') % (iname, jval))
+					_check(jkey, util.is_ipaddr, _('The specified IP address (%(name)s) is not valid: %(value)s') % {'name': iname, 'value': jval})
 
 		def guess_domain(obj):
 			for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):

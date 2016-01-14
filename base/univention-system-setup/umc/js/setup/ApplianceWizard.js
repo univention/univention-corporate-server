@@ -1769,7 +1769,7 @@ define([
 				var ips = this._getIPAdresses();
 				msg += '<p>';
 				msg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems at a later point.') + ' ';
-				msg += _('The system is reachable at <i>%s</i> or via its IP address(es) <i>%s</i>.', fqdn, ips.join(', '));
+				msg += _('The system is reachable at <i>%(fqdn)s</i> or via its IP address(es) <i>%(addresses)s</i>.', {fqdn: fqdn, addresses: ips.join(', ')});
 				msg += '</p>';
 			} else { // if (isNonMaster || isAdMemberMaster || isAdMember) {
 				msg += '<p>';

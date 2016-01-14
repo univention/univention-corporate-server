@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-12-09 16:53+0100\n"
+"POT-Creation-Date: 2016-01-14 12:40+0100\n"
 "PO-Revision-Date: 2015-07-01 12:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -38,7 +38,7 @@ msgstr "Bond-primary muss in bond-slaves enthalten sein"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/__init__.py:503 umc/python/setup/util.py:172
+#: umc/python/setup/util.py:173 umc/python/setup/__init__.py:503
 msgid ""
 "Cannot automatically determine the domain. Please specify the server's fully "
 "qualified domain name."
@@ -60,7 +60,7 @@ msgstr "Kann Gerät %s nicht verwenden: Gerät muss unkonfiguriert sein"
 msgid "Common name for the root SSL certificate"
 msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 
-#: umc/python/setup/util.py:726
+#: umc/python/setup/util.py:727
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "App-Center-Daten konnten nicht abgefragt werden: %s"
@@ -75,8 +75,8 @@ msgstr "Land muss ein Ländercode bestehend aus 2 Zeichen sein."
 
 #: umc/python/setup/network.py:379
 #, python-format
-msgid "Device %r is already in use by %r"
-msgstr "Device %r ist bereits von %r in Benutzung"
+msgid "Device %(device)r is already in use by %(name)r"
+msgstr "Device %(device)r ist bereits von %(name)r in Benutzung"
 
 #: umc/python/setup/network.py:684
 #, python-format
@@ -233,8 +233,10 @@ msgstr ""
 "dc=net)."
 
 #: umc/python/setup/__init__.py:435
-msgid "The following value is too long, only %s characters allowed: %s"
-msgstr "Der folgende Wert ist zu lang, es sind nur %s Zeichen erlaubt: %s"
+#, python-format
+msgid ""
+"The following value is too long, only %(max)s characters allowed: %(name)s"
+msgstr "Der folgende Wert ist zu lang, es sind nur %(max)s Zeichen erlaubt: %(name)s"
 
 #: umc/python/setup/__init__.py:767
 msgid ""
@@ -278,8 +280,8 @@ msgstr "Für das Root-Passwort sind nur ASCII-Zeichen erlaubt."
 
 #: umc/python/setup/__init__.py:464
 #, python-format
-msgid "The specified IP address (%s) is not valid: %s"
-msgstr "Die angegebenen IP-Adresse (%s) ist nicht gültig: %s"
+msgid "The specified IP address (%(name)s) is not valid: %(value)s"
+msgstr "Die angegebenen IP-Adresse (%(name)s) ist nicht gültig: %(value)s"
 
 #: umc/python/setup/__init__.py:510
 #, python-format
