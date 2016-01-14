@@ -470,6 +470,8 @@ class access:
 			if oldvalue and newvalue:
 				if oldvalue == newvalue:
 					continue
+				if not isinstance(oldvalue, basestring) and not isinstance(newvalue, basestring) and set(oldvalue) == set(newvalue):
+					continue
 				if atomic:
 					ml.append((ldap.MOD_DELETE, key, val))
 					ml.append((ldap.MOD_ADD, key, val))

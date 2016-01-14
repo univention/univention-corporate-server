@@ -1,3 +1,9 @@
+univention-python (9.0.1-2) unstable; urgency=medium
+
+  * Bug #40120: don't depend on attribute order when building modlist
+
+ -- Florian Best <best@univention.de>  Thu, 14 Jan 2016 14:50:31 +0100
+
 univention-python (9.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
