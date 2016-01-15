@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: samba
+fix: 2:4.3.3-1.823.201601151012
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * In case an account locking password policy has been defined for the domain,
+   e.g. via samba-tool domain passwordsettings, the badPwdCount increased
+   in steps of two for each failed login attempt at a windows client.
+bug: [40328]
