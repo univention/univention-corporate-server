@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-14) unstable; urgency=low
+
+  * cleanup udm_errors handling (Bug #40433)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 15 Jan 2016 11:48:35 +0100
+
 univention-self-service (1.0.3-13) unstable; urgency=low
 
   * fix passwordreset crashing on udm_errors.pwQuality (Bug #40433)

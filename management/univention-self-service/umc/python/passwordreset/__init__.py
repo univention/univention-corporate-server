@@ -41,7 +41,6 @@ from ldap.filter import filter_format
 import pylibmc
 
 from univention.lib.i18n import Translation
-import univention.admin.uexceptions
 import univention.admin.objects
 import univention.admin.uexceptions as udm_errors
 from univention.management.console.base import Base
@@ -414,7 +413,7 @@ class Instance(Base):
 		try:
 			binddn, userdict = users[0]
 			get_user_connection(binddn=binddn, bindpw=password)
-		except (univention.admin.uexceptions.authFail, IndexError):
+		except (udm_errors.authFail, IndexError):
 			raise ServiceForbidden()
 		return binddn, userdict["uid"][0]
 
@@ -438,15 +437,13 @@ class Instance(Base):
 			user["pwdChangeNextLogin"] = 0
 			user.modify()
 			return True
-		except udm_errors.pwToShort as ex:
-			raise UMC_Error(str(ex))
-		except udm_errors.pwalreadyused:
-			raise UMC_Error(_("The Password has been used already. Please supply a new one."))
-		except udm_errors.pwQuality as ex:
-			raise UMC_Error(str(ex))
-		except Exception as ex:
+		except (udm_errors.pwToShort, udm_errors.pwQuality) as exc:
+			raise UMC_Error(str(exc))
+		except udm_errors.pwalreadyused as exc:
+			raise UMC_Error(exc.message)
+		except Exception:
 			MODULE.error("udm_set_password(): failed to set password: {}".format(traceback.format_exc()))
-			raise UMC_Error(str(ex))
+			raise
 
 	#TODO: decoratorize
 	@machine_connection

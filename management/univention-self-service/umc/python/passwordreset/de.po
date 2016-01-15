@@ -73,10 +73,6 @@ msgstr "Ihr Passwort wurde erfolgreich geändert."
 msgid "Successfully send token."
 msgstr "Der Token wurde erfolgreich versendet."
 
-#: umc/python/passwordreset/__init__.py:440
-msgid "The Password has been used already. Please supply a new one."
-msgstr "Das Passwort wurde bereits verwendet. Bitte geben Sie ein neues ein."
-
 #: umc/python/passwordreset/__init__.py:143
 msgid ""
 "The allowed maximum number of connections to the server has been reached. "
