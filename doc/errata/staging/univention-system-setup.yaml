@@ -12,6 +12,6 @@ desc: |
     characters.
   * Some shell quoting errors were fixed.
   * The term 'Univention App' has been replaced by 'Appliance'
- * Translation format strings with multiple unnamed arguments have been
+  * Translation format strings with multiple unnamed arguments have been
    adjusted.
 bug: [39376, 39941, 38567, 40031, 40304, 40339]
