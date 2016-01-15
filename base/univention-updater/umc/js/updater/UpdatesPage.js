@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,console,setTimeout*/
+/*global define,console*/
 
 define([
 	"dojo/_base/declare",
@@ -37,10 +37,10 @@ define([
 	"dojo/topic",
 	"dojo/Deferred",
 	"dojox/string/sprintf",
-	"umc/dialog",
 	"umc/app",
 	"umc/tools",
 	"umc/store",
+	"umc/modules/lib/server",
 	"umc/widgets/TitlePane",
 	"umc/widgets/Text",
 	"umc/widgets/HiddenInput",
@@ -48,10 +48,9 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, all, domClass, topic, Deferred, sprintf, dialog, UMCApplication, tools, store, TitlePane, Text, HiddenInput, ComboBox, Page, Form, _) {
+], function(declare, lang, array, all, domClass, topic, Deferred, sprintf, UMCApplication, tools, store, server, TitlePane, Text, HiddenInput, ComboBox, Page, Form, _) {
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
-		_last_reboot: false,
 		_update_prohibited: false,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
 		standbyDuring: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -74,15 +73,6 @@ define([
 			var widgets = [{ // --------------------- Reboot pane -----------------------------
 					type: HiddenInput,
 					name: 'reboot_required'
-				}, {
-					type: Text,
-					name: 'reboot_progress_text',
-					label: '',
-					size: 'Two',
-					content: _("The computer is now rebooting. ") +
-							_("This may take some time. Please be patient. ") +
-							_("During reboot, the connection to the system will be lost. ") +
-							_("When the connection is back you will be prompted to authenticate yourself again.")
 				}, {
 					type: Text,
 					name: 'reboot_text',
@@ -329,7 +319,7 @@ define([
 				name: 'reboot',
 				label: _("Reboot"),
 				callback: lang.hitch(this, function() {
-					this._reboot();
+					server.askReboot();
 					topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'reboot');
 				}),
 				style: 'margin:0',
@@ -349,7 +339,6 @@ define([
 			var layout = [{
 				label: _("Reboot required"),
 				layout: [
-					['reboot_progress_text'],
 					['reboot_text', 'reboot']
 				]
 			}, {
@@ -443,7 +432,7 @@ define([
 					var ebu = this._form._buttons.easy_upgrade;
 					domClass.toggle(ebu.domNode, 'dijitHidden', ! ava);
 
-					this._show_reboot_pane(values.reboot_required);
+					this._show_reboot_pane(tools.isTrue(values.reboot_required));
 
 				} catch(error) {
 					console.error("onLoaded: " + error.message);
@@ -486,31 +475,6 @@ define([
 				}, this);
 			}));
 
-		},
-
-		_attemptReconnect: function() {
-			tools.umcpCommand('updater/poll', {}, false).then(
-				lang.hitch(this, function() {
-					this.onQuerySuccess('updater/poll');
-					// most probably not restarted yet
-					setTimeout(lang.hitch(this, function() {
-						this._attemptReconnect();
-					}), 5000);
-				}),
-				lang.hitch(this, function(data) {
-					var result = tools.parseError(data);
-					if (result.status == 401) {
-						// to reset this._updates_available
-						// see this._check_dist_upgrade()
-						this.refreshPage(true);
-					} else {
-						setTimeout(lang.hitch(this, function() {
-							this._attemptReconnect();
-						}), 5000);
-					}
-					this.onQueryError('updater/poll', data);
-				})
-			);
 		},
 
 		_get_errata_link: function(version) {
@@ -614,52 +578,16 @@ define([
 			}
 		},
 
-		// Switches visibility of the reboot pane on or off. Second arg 'inprogress'
-		// switches between 'affordance to reboot' (progress=false) and
-		// 'reboot in progress' (progress=true).
-		//
-		_show_reboot_pane: function(yes, progress) {
-
-			if (typeof(yes) == 'string') {
-				yes = (yes == 'true');
-			}
-
-			// pop a message up whenever the 'on' value changes
-			if (yes != this._last_reboot) {
-				this._last_reboot = yes;
-			}
-
-			domClass.toggle(this._titlepanes.reboot.domNode, 'dijitHidden', ! yes);
+		// Switches visibility of the reboot pane on or off
+		_show_reboot_pane: function(yes) {
+			domClass.toggle(this._titlepanes.reboot.domNode, 'dijitHidden', !yes);
 
 			if (yes) {
-				if (progress === undefined) {
-					progress = false;
-				}
-				this._form.showWidget('reboot_text', ! progress);
-				this._form.showWidget('reboot_progress_text', progress);
+				this._form.showWidget('reboot_text', yes);
 
 				var but = this._form._buttons.reboot;
-				domClass.toggle(but.domNode, 'dijitHidden', progress);
+				domClass.toggle(but.domNode, 'dijitHidden', false);
 			}
-
-		},
-
-		// called when the 'reboot' button is pressed.
-		// now with confirmation that doesn't depend on the 'confirmations' setting.
-		_reboot: function() {
-
-			dialog.confirm(_("Do you really want to reboot the machine?"), [{
-				label: _("Cancel"),
-				'default': true
-			}, {
-				label: _("Reboot"),
-				callback: lang.hitch(this, function() {
-					this.standbyDuring(tools.umcpCommand('updater/installer/reboot').then(lang.hitch(this, function() {
-						this._show_reboot_pane(true, true);
-						this._attemptReconnect();
-					})));
-				})
-			}]);
 
 		},
 

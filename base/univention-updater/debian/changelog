@@ -1,3 +1,9 @@
+univention-updater (11.0.7-12) unstable; urgency=medium
+
+  * Bug #40343: display progressbar during system reboot
+
+ -- Florian Best <best@univention.de>  Fri, 15 Jan 2016 12:48:22 +0100
+
 univention-updater (11.0.7-11) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping
