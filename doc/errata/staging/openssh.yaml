@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-8
+src: openssh
+fix: 1:5.5p1-6.55.201601151048
+version: [8]
+desc: |
+ Multiple vulnerabilities were discovered in the OpenSSH client:
+ * Information leak due to use of roaming connection feature (CVE-2016-0777)
+ * Buffer-overflow when using roaming connections (CVE-2016-0778)
+bug: [40440]
+cve:
+ - CVE-2016-0777
+ - CVE-2016-0778
