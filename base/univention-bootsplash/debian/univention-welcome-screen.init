@@ -32,12 +32,12 @@
 
 . /lib/lsb/init-functions
 
-pid="$(pgrep -n -f 'bash /usr/bin/univention-welcome-screen')"
-
 is_running () {
 	if [ -e /var/run/univention-welcome-screen.pid ]; then
-		pid="$(< /var/run/univention-welcome-screen.pid)"
-		if ps -p "$pid" >/dev/null; then
+		if pgrep -nf 'hexdump -n 96' -F /var/run/univention-welcome-screen.pid >/dev/null; then
+			return 0
+		fi
+		if pgrep -nf 'univention-welcome-screen' -F /var/run/univention-welcome-screen.pid >/dev/null; then
 			return 0
 		fi
 	fi

@@ -1,3 +1,9 @@
+univention-bootsplash (7.0.2-11) unstable; urgency=low
+
+  * added univention-welcome-screen (Bug #39241) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 15 Jan 2016 15:28:56 +0100
+
 univention-bootsplash (7.0.2-10) unstable; urgency=low
 
   * added univention-welcome-screen (Bug #39241) 
