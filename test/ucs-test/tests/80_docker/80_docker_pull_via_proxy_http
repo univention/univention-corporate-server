@@ -39,7 +39,14 @@ class TestCase:
 		self.ucr = UCSTestConfigRegistry()
 		self.ucr.load()
 
-		self.imgname='docker.software-univention.de/ucs-appbox-amd64:4.1-0'
+		self.imgname = 'docker.software-univention.de/ucs-appbox-amd64:4.1-0'
+
+                required_pkgname = 'univention-squid'
+		if not deb_package_is_installed(required_pkgname):
+			deb_install_package(required_pkgname)
+			self.remove_pkgname = required_pkgname
+		else:
+			self.remove_pkgname = None
 
 		if not self.ucr.get('proxy/http'):
 			handler_set(['proxy/http=http://127.0.0.1:3128/'])
@@ -47,13 +54,6 @@ class TestCase:
 			self.ucr_changed = True
 		else:
 			self.ucr_changed = False
-
-		required_pkgname = 'univention-squid'
-		if not deb_package_is_installed(required_pkgname):
-			deb_install_package(required_pkgname)
-			self.remove_pkgname = required_pkgname
-		else:
-			self.remove_pkgname = None
 
 	def run(self):
 		if docker_image_is_present(self.imgname):
