@@ -37,5 +37,5 @@ while IFS=$'\n' read -r line_data; do
 	count=$((i=i+1))
 done < ./output.txt
 rm ./output.txt
-ssh "build@$kvm" "ucs-kt-remove --terminate $master"
-ssh "build@$kvm" "ucs-kt-remove --terminate $subsystem"
+if [ -n "$master" ]; then ssh -o StrictHostKeyChecking=no "build@$kvm" "ucs-kt-remove --terminate $master"; fi
+if [ -n "$subsystem" ]; then ssh -o StrictHostKeyChecking=no "build@$kvm" "ucs-kt-remove --terminate $subsystem"; fi
