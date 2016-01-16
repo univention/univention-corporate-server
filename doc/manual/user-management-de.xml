@@ -1244,6 +1244,10 @@ univention-directory-manager users/user
 		</para>
 
         <para>
+		  Die Optionen <literal>:strip</literal> bzw. <literal>:trim</literal> entfernen alle Leerzeichen am Anfang und Ende der Zeichenkette.
+		</para>
+
+        <para>
 		  Optionen können auch kombiniert werden, z.B: <literal>:umlauts,upper</literal>.
 		</para>
 

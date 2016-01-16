@@ -1209,6 +1209,10 @@ univention-director-manager users/user
 		</para>
 
         <para>
+			The options <literal>:strip</literal> or <literal>:trim</literal> remove all white space characters from the start and end of the string.
+		</para>
+
+        <para>
 		  It is also possible to combine options, e.g: <literal>:umlauts,upper</literal>.
 		</para>
 
