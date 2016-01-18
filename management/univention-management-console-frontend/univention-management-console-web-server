@@ -601,7 +601,7 @@ class SamlError(UMC_HTTPError):
 
 	@error # TODO: multiple choices redirection status
 	def multiple_identity_provider(self, idps, idp_query_param):
-		return self._('Could not pick an identity provider. You can specify one via the query string parameter %r from %r') % (idp_query_param, idps)
+		return self._('Could not pick an identity provider. You can specify one via the query string parameter %(param)r from %(idps)r') % {'param': idp_query_param, 'idps': idps}
 
 
 class Ressource(object):

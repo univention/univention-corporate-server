@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-frontend\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-12-01 13:53+0100\n"
+"POT-Creation-Date: 2016-01-18 12:37+0100\n"
 "PO-Revision-Date: 2013-09-12 11:31+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -26,10 +26,15 @@ msgstr "Modul \"${moduleName}\""
 msgid "%(label)s (retype)"
 msgstr "%(label)s (Wiederholung)"
 
+#: umc/widgets/Form.js:620
+#, python-format
+msgid "%(label)s: %(message)s"
+msgstr "%(label)s: %(message)s"
+
 #: umc/widgets/Grid.js:812
 #, python-format
-msgid "%d entries of %d selected"
-msgstr "%d Einträge von %d ausgewählt"
+msgid "%(num)d entries of %(total)d selected"
+msgstr "%(num)d Einträge von %(total)d ausgewählt"
 
 #: umc/widgets/Form.js:612
 msgid "%s (%.1f%)"
@@ -39,11 +44,6 @@ msgstr ""
 #, python-format
 msgid "%s loaded"
 msgstr "%s geladen"
-
-#: umc/widgets/Form.js:620
-#, python-format
-msgid "%s: %s"
-msgstr "%s: %s"
 
 #: umc/widgets/Grid.js:817
 #, python-format
@@ -259,7 +259,7 @@ msgstr "Zurück"
 msgid "Back to overview"
 msgstr "Zurück zur Übersicht"
 
-#: umc/widgets/Wizard.js:163 umc/widgets/MultiObjectSelect.js:139
+#: umc/widgets/MultiObjectSelect.js:139 umc/widgets/Wizard.js:163
 #: umc/dialog.js:300 umc/tools.js:243 umc/app.js:1828
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -301,10 +301,10 @@ msgstr "Modul \"%s\" konnte nicht geladen werden."
 #, python-format
 msgid ""
 "Could not pick an identity provider. You can specify one via the query "
-"string parameter %r from %r"
+"string parameter %(param)r from %(idps)r"
 msgstr ""
 "Konnte keinen Identity Provider auswählen. Sie können über den Query-String-"
-"Parameter %r einen der folgenden %r auswählen."
+"Parameter %(param)r einen der folgenden %(idps)r auswählen."
 
 #: umc/tools.js:713
 msgid "Could not process the request."
@@ -371,8 +371,8 @@ msgstr "Hello %(last)s, %(first)s!"
 
 #: umc/i18n.js:126
 #, python-format
-msgid "Hello %s %s!"
-msgstr "Hello %s %s!"
+msgid "Hello %s!"
+msgstr "Hello %s!"
 
 #: umc/widgets/Module.js:162 umc/app.js:642 umc/app.js:737
 msgid "Help"
@@ -647,11 +647,11 @@ msgstr "Einstellungen"
 msgid "Show server error message"
 msgstr "Fehlernachricht des Servers anzeigen"
 
-#: umc/app/SingleSignOn.js:49
+#: umc/app/SingleSignOn.js:51
 msgid "Single Sign On"
 msgstr "Single Sign-On"
 
-#: umc/app/SingleSignOn.js:51
+#: umc/app/SingleSignOn.js:53
 msgid ""
 "Single Sign On allows a user to login once and access multiple applications "
 "seamlessly. For a safe implementation, it is necessary that the names of the "
@@ -693,8 +693,10 @@ msgstr "Absenden"
 
 #: umc/app.js:529
 #, python-format
-msgid "The %s will expire in %d days and should be renewed!"
-msgstr "Das %s wird in %d Tagen ablaufen und sollte erneuert werden!"
+msgid "The %(certificate)s will expire in %(days)d days and should be renewed!"
+msgstr ""
+"Das %(certificate)s wird in %(days)d Tagen ablaufen und sollte erneuert "
+"werden!"
 
 #: univention-management-console-web-server:596
 msgid "The SAML message is invalid for this service provider."
@@ -851,8 +853,8 @@ msgstr "Univention Webseite"
 msgid "Updating session data..."
 msgstr "Aktualisieren der Sitzungsdaten..."
 
-#: umc/widgets/InfoUploader.js:43 umc/widgets/MultiUploader.js:109
-#: umc/widgets/Uploader.js:119
+#: umc/widgets/InfoUploader.js:43 umc/widgets/Uploader.js:119
+#: umc/widgets/MultiUploader.js:109
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -870,8 +872,8 @@ msgstr "Datenübertragung..."
 
 #: umc/widgets/MultiUploader.js:238
 #, python-format
-msgid "Uploading... %d of %d files remaining."
-msgstr "Dateiübertragung... %d von %d Dateien verbleiben"
+msgid "Uploading... %(current)d of %(total)d files remaining."
+msgstr "Dateiübertragung... %(current)d von %(total)d Dateien verbleiben."
 
 #: umc/widgets/MultiUploader.js:235
 msgid "Uploads finished"
@@ -975,7 +977,7 @@ msgstr "beobachtetes Ergebnis"
 msgid "expected result"
 msgstr "erwartetes Ergebnis"
 
-#: umc/app/SingleSignOn.js:68
+#: umc/app/SingleSignOn.js:70
 msgid "http://sdb.univention.de/1351"
 msgstr ""
 
@@ -999,6 +1001,9 @@ msgstr "http://www.univention.de"
 #, python-brace-format
 msgid "{number} errors occurred: "
 msgstr "{number} Fehler sind aufgetreten: "
+
+#~ msgid "%s: %s"
+#~ msgstr "%s: %s"
 
 #~ msgid "<b>Host</b> "
 #~ msgstr "<b>Host</b> "
