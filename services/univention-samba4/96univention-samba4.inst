@@ -503,16 +503,28 @@ sysvol_fixup() {
 	set_default_fACL /var/lib/samba/sysvol
 }
 
-get_s4connector_dc () {
-	univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p'
+get_available_s4connector_dc () {
+	local s4connector_dc
+	local s4connector_dc_candidates
+	s4connector_dc=()
+	s4connector_dc_candidates=$(univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
+	for dc in "${s4connector_dc_candidates[@]}"; do
+		if samba-tool drs showrepl "$dc" >/dev/null 2>&1; then
+			s4connector_dc+=( "$dc" )
+		fi
+		if [ "${#s4connector_dc[@]}" -gt 1 ]; then
+			echo "ERROR: More than one S4 Connector hosts available: $s4connector_dc_candidates" 1>&2
+			return 1	## this is fatal
+		fi
+	done
+	echo "$s4connector_dc"
 }
 
 wait_until_dc_was_replicated_to_connector_dc () {
-	s4connector_dc="$(get_s4connector_dc)"
-
+	s4connector_dc=$(get_available_s4connector_dc) || return $?
 	if [ -z "$s4connector_dc" ]; then
 		echo "WARNING: Failed to search for S4 connector DC"
-		return
+		return 0
 	fi
 
 	echo -n "Waiting for DRS replication: "
@@ -1114,7 +1126,7 @@ fi
 
 # To prevent a DRS replication conflict: 
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32257
-wait_until_dc_was_replicated_to_connector_dc
+wait_until_dc_was_replicated_to_connector_dc || die
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 

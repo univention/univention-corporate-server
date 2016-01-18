@@ -1,3 +1,10 @@
+univention-samba4 (5.0.1-20) unstable; urgency=medium
+
+  * Bug #33399: When looking for a S4-Connector host only consider DCs that
+    are known to DRS replication. This adjusts a patch for Bug #32257.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Jan 2016 22:04:18 +0100
+
 univention-samba4 (5.0.1-19) unstable; urgency=medium
 
   * Bug #40434: Merge patches for Bug #39601 to univention-samba4
