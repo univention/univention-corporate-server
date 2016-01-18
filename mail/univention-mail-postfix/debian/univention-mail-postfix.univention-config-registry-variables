@@ -155,6 +155,12 @@ Description[en]=If sender restrictions are configured (see 'mail/postfix/policy/
 Type=int
 Categories=service-mail
 
+[mail/postfix/policy/listfilter/use_sasl_username]
+Description[de]=Ist diese Variable eingeschaltet oder nicht gesetzt, wird zur Erkennung des Absenders einer E-Mail an eine Mailingliste oder eine Mailgruppe der per SMTP Authentifizierte Benutzer verwendet, und nicht die angegebene Absenderadresse. Dies ist sicherer, setzt aber vorraus, dass der Benutzer sich an diesem Server anmeldet und die E-Mail einliefert. Um stattdessen die E-Mail-Adresse zur Absendererkennung zu verwenden muss diese Variable auf "no" gesetzt werden.
+Description[en]=If this variable is enabled or unset, the login name of an SMTP authenticated user is used to determine the sender of emails to a mailinglist or a mail group. This is more secure than using the email address declared by the sender. It does require however, that the sender logs into this server to deliver the email. To use the email address to determine the sender, set this variable to "no".
+Type=bool
+Categories=service-mail
+
 [mail/postfix/smtpd/restrictions/recipient/.*]
 Description[de]=Mit Variablen der Form mail/postfix/smtpd/restrictions/recipient/SEQUENZNUMMER=REGEL können Empfangsbeschränkungen über die Postfix-Option 'smtpd_recipient_restrictions' konfiguriert werden (siehe <http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions>). Die Sequenznummer wird alphanumerisch sortiert und beeinflusst die Reihenfolge.
 Description[en]=Variables in the format mail/postfix/smtpd/restrictions/recipient/SEQUENCE=RULE can be used to configure recipient restrictions using the Postfix option 'smtpd_recipient_restrictions' (see <http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions>). The sequence numbers are sorted alphabetically and ensure the order.

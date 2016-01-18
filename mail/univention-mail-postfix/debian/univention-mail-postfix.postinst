@@ -58,6 +58,7 @@ univention-config-registry set \
 	mail/postfix/inet/interfaces?127.0.0.1 \
 	mail/postfix/ldap/timeout?15 \
 	mail/postfix/policy/listfilter?no \
+	mail/postfix/policy/listfilter/use_sasl_username?yes \
 	'mail/postfix/masquerade/domains?$mydomain' \
 	mail/postfix/masquerade/exceptions?root \
 	mail/alias/root?systemmail@$hostname.$domainname \

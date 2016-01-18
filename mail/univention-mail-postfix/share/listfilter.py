@@ -37,8 +37,7 @@ import sys
 import re
 import traceback
 import syslog
-
-syslog.openlog(ident="listfilter", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
+from univention.config_registry import ConfigRegistry
 
 usage = "help"
 parser = optparse.OptionParser(usage=usage)
@@ -48,10 +47,16 @@ parser.add_option("-r", "--recipient", dest="recipient", help="sender address (f
 parser.add_option("-t", "--test", dest="test", help="test run", action="store_true", default=False)
 options, args = parser.parse_args()
 
+syslog.openlog(ident="listfilter", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
+ucr = ConfigRegistry()
+ucr.load()
+check_sasl_username = ucr.is_true("mail/postfix/policy/listfilter/use_sasl_username", True)
 
 def listfilter(attrib):
-
-	sender = attrib.get("sender", None)
+	if check_sasl_username:
+		sender = attrib.get("sasl_username", None)
+	else:
+		sender = attrib.get("sender", None)
 	recipient = attrib.get("recipient", None)
 
 	if not options.ldap_base:
@@ -86,10 +91,16 @@ def listfilter(attrib):
 				# check if there are restrictions, check sender first
 				if allowed_user_dns or allowed_group_dns:
 					if not sender:
-						return "REJECT Access denied for empty sender to restricted list %s" % (recipient, )
+						if check_sasl_username:
+							return "REJECT Access denied for not authenticated sender to restricted list %s" % (recipient, )
+						else:
+							return "REJECT Access denied for empty sender to restricted list %s" % (recipient, )
 
 					# get dn and groups of sender
-					ldap_filter = '(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))' % (sender, sender, sender)
+					if check_sasl_username:
+						ldap_filter = '(&(uid=%s)(objectclass=posixAccount))' % sender
+					else:
+						ldap_filter = '(&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)(mail=%s))(objectclass=posixAccount))' % (sender, sender, sender)
 					user_result = ldap.search(base=options.ldap_base, filter=ldap_filter, attr=["dn"])
 					if user_result:
 						user_dn = user_result[0][0]
@@ -125,7 +136,7 @@ def listfilter(attrib):
 			else:
 				return "DUNNO no group found for %s" % recipient
 		except Exception as exc:
-			syslog.syslog(syslog.LOG_ERR, "Error with attrib={} traceback={}".format(attrib, traceback.format_exc()))
+			syslog.syslog(syslog.LOG_ERR, "Error with attrib={}, check_sasl_username={} traceback={}".format(attrib, check_sasl_username, traceback.format_exc()))
 			return "DUNNO search exception %s" % exc
 
 # main
