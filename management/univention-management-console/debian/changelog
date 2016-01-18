@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-5) unstable; urgency=medium
+
+  * Bug #40339: fix format string with multiple unnamed arguments
+
+ -- Florian Best <best@univention.de>  Mon, 18 Jan 2016 11:33:35 +0100
+
 univention-management-console (8.0.28-4) unstable; urgency=medium
 
   * Bug #30520: dh_umc installs files with correct permissions

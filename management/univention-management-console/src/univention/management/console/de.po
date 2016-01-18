@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-11-06 09:18+0100\n"
+"POT-Creation-Date: 2016-01-18 11:31+0100\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -33,8 +33,8 @@ msgstr "'%s' ist kein gültiges UMCP-Kommando"
 
 #: univention/management/console/base.py:315
 #, python-format
-msgid "An option passed to %s has the wrong type: %s"
-msgstr "Eine Option für %s hat den falschen Typ: %s"
+msgid "An option passed to %(method)s has the wrong type: %(exc)s"
+msgstr "Eine Option für %(method)s hat den falschen Typ: %(exc)s"
 
 #: univention/management/console/modules/sanitizers.py:172
 msgid "Argument required"
@@ -106,11 +106,11 @@ msgstr ""
 #: univention/management/console/protocol/modserver.py:103
 #, python-format
 msgid ""
-"Failed to load module %s: %s\n"
-"%s"
+"Failed to load module %(module)s: %(error)s\n"
+"%(traceback)s"
 msgstr ""
-"Konnte das Modul %s nicht laden: %s\n"
-"%s"
+"Konnte das Modul %(module)s nicht laden: %(error)s\n"
+"%(traceback)s"
 
 #: univention/management/console/protocol/definitions.py:110
 msgid "Forbidden"
@@ -128,10 +128,6 @@ msgstr "Hat mehr Schlüssel als erlaubt"
 #: univention/management/console/pam.py:222
 msgid "In case it helps, the raw error message will be displayed"
 msgstr "Für den Fall, dass es hilft, hier die originale Fehlernachricht"
-
-#: univention/management/console/pam.py:140
-msgid "Please insert your one time password (OTP)."
-msgstr "Bitte geben Sie ihr Einmalpasswort (OTP) ein."
 
 #: univention/management/console/base.py:186
 msgid "Install the latest software updates"
@@ -188,13 +184,13 @@ msgstr "Darf höchstens %(max_elements)d Element(e) haben"
 #: univention/management/console/base.py:277
 #, python-format
 msgid ""
-"Method %r (%r) in %r does not exists.\n"
+"Method %(method)r (%(path)r) in %(module)r does not exists.\n"
 "\n"
-"%s"
+"%(traceback)s"
 msgstr ""
-"Methode %r (%r) in %r existiert nicht.\n"
+"Methode %(method)r (%(path)r) in %(module)r existiert nicht.\n"
 "\n"
-"%s"
+"%(traceback)s"
 
 #: univention/management/console/protocol/definitions.py:119
 msgid "Module process died unexpectedly"
@@ -247,12 +243,16 @@ msgstr "OK, Partielle Antwort"
 
 #: univention/management/console/base.py:317
 #, python-format
-msgid "One or more options to %s are missing: %s"
-msgstr "Eine oder mehrere Optionen für %s fehlen: %s"
+msgid "One or more options to %(method)s are missing: %(exc)s"
+msgstr "Eine oder mehrere Optionen für %(method)s fehlen: %(exc)s"
 
 #: univention/management/console/protocol/session.py:639
 msgid "Password successfully changed."
 msgstr "Passwort erfolgreich geändert."
+
+#: univention/management/console/pam.py:140
+msgid "Please insert your one time password (OTP)."
+msgstr "Bitte geben Sie ihr Einmalpasswort (OTP) ein."
 
 #: univention/management/console/protocol/modserver.py:108
 msgid ""

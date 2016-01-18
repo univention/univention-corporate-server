@@ -274,7 +274,7 @@ class Base(signals.Provider, Translation):
 		try:
 			function = getattr(self, method).im_func
 		except AttributeError:
-			message = _('Method %r (%r) in %r does not exists.\n\n%s') % (method, request.arguments, self.__class__.__module__, traceback.format_exc())
+			message = _('Method %(method)r (%(path)r) in %(module)r does not exists.\n\n%(traceback)s') % {'method': method, 'path': request.arguments, 'module': self.__class__.__module__, 'traceback': traceback.format_exc()}
 			self.finished(request.id, None, message=message, status=500)
 			return
 
@@ -312,9 +312,9 @@ class Base(signals.Provider, Translation):
 			status = exc.status
 			result = exc.result
 			if isinstance(exc, UMC_OptionTypeError):
-				message = _('An option passed to %s has the wrong type: %s') % (method, exc)
+				message = _('An option passed to %(method)s has the wrong type: %(exc)s') % {'method': method, 'exc': exc}
 			elif isinstance(exc, UMC_OptionMissing):
-				message = _('One or more options to %s are missing: %s') % (method, exc)
+				message = _('One or more options to %(method)s are missing: %(exc)s') % {'method': method, 'exc': exc}
 			elif isinstance(exc, UMC_CommandError):
 				message = _('The command has failed: %s') % (exc,)
 			else:

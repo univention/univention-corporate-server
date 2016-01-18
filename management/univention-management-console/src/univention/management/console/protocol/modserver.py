@@ -100,7 +100,7 @@ class ModuleServer(Server):
 			self.__module = __import__(file_, [], [], modname)
 			self.__handler = self.__module.Instance()
 		except Exception as exc:
-			error = _('Failed to load module %s: %s\n%s') % (modname, exc, traceback.format_exc())
+			error = _('Failed to load module %(module)s: %(error)s\n%(traceback)s') % {'module': modname, 'error': exc, 'traceback': traceback.format_exc()}
 			MODULE.error(error)
 			if isinstance(exc, ImportError) and str(exc).startswith('No module named %s' % (modname,)):
 				error = '\n'.join((_('The requested module %r does not exists.') % (modname,),
