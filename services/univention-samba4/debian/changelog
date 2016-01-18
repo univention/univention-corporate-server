@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-22) unstable; urgency=medium
+
+  * Bug #33399: Make the check UCS@school specific
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Jan 2016 23:12:16 +0100
+
 univention-samba4 (5.0.1-21) unstable; urgency=medium
 
   * Bug #33399: Only do the DRS-check when there is more than one S4-Connector
