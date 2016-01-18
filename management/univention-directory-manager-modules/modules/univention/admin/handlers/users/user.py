@@ -1797,11 +1797,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 			if not ( 'posix' in self.options or 'samba' in self.options or 'person' in self.options or 'ldap_pwd' in self.options):
 				#no objectClass which provides uid...
-				raise univention.admin.uexceptions.invalidOptions, _('Need one of %s, %s, %s or %s in options to create user.')%(
-					'posix',
-					'samba',
-					'person',
-					'ldap_pwd')
+				raise univention.admin.uexceptions.invalidOptions(_('Need one of %(posix)s, %(samba)s, %(person)s or %(ldap)s in options to create user.') % {
+					'posix': 'posix',
+					'samba': 'samba',
+					'person': 'person',
+					'ldap': 'ldap_pwd'})
 
 			if 'samba' in self.options and not self.lo.search(base=self['primaryGroup'], attr=['sambaSID'])[0][1]:
 				raise univention.admin.uexceptions.primaryGroupWithoutSamba

@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization

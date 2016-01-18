@@ -228,7 +228,7 @@ class base(object):
 			raise univention.admin.uexceptions.noProperty, key
 		# attribute may not be changed
 		elif not all(_changeable()):
-			raise univention.admin.uexceptions.valueMayNotChange, _('key=%s old=%s new=%s') % (key, self[key], value)
+			raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': self[key], 'new':value})
 		# required attribute may not be removed
 		elif self.descriptions[key].required and not value:
 			raise univention.admin.uexceptions.valueRequired, _('The property %s is required') % self.descriptions[key].short_description
@@ -458,7 +458,7 @@ class base(object):
 						subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 						if not subobject or not (univention.admin.modules.supports(submodule,'move') or
 												 univention.admin.modules.supports(submodule,'subtree_move')):
-							raise univention.admin.uexceptions.invalidOperation, _('Unable to move object %s (%s) in subtree, trying to revert changes.' ) % (subolddn[:subolddn.find(',')],univention.admin.modules.identifyOne(subolddn, suboldattrs))
+							raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.' ) % {'name': subolddn[:subolddn.find(',')], 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
 						subobject.open()
 						subobject.move(subnewdn)
 						moved.append((subolddn,subnewdn))
@@ -501,7 +501,7 @@ class base(object):
 					subobject = univention.admin.objects.get(submodule, None, self.lo, position='', dn=subolddn)
 					if not subobject or not (univention.admin.modules.supports(submodule, 'move') or
 								 univention.admin.modules.supports(submodule, 'subtree_move')):
-						raise univention.admin.uexceptions.invalidOperation, _('Unable to move object %s (%s) in subtree, trying to revert changes.') % (subolddn[:subolddn.find(',')], univention.admin.modules.identifyOne(subolddn, suboldattrs))
+						raise univention.admin.uexceptions.invalidOperation(_('Unable to move object %(name)s (%(type)s) in subtree, trying to revert changes.') % {'name': subolddn[:subolddn.find(',')], 'type': univention.admin.modules.identifyOne(subolddn, suboldattrs)})
 					subobject.open()
 					subobject._move(subnewdn)
 					moved.append((subolddn,subnewdn))
@@ -1160,7 +1160,7 @@ class simpleLdap(base):
 				value = self.info.get(key)
 				oldval = self.oldinfo.get(key)
 				if oldval != value:
-					raise univention.admin.uexceptions.valueMayNotChange, _('key=%s old=%s new=%s') % (key, oldval, value)
+					raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': oldval, 'new': value})
 
 	def _is_synced_object(self):
 		return 'synced' in self.oldattr.get('univentionObjectFlag', [])

@@ -939,18 +939,17 @@ class object(univention.admin.handlers.simpleLdap):
 				uid=temp[4:]
 				userstring+=uid
 
-				exstr=_("The %s %s%s %s this share as home share!")%(pluralstring,userstring,numstring,usestring)
-
-				raise univention.admin.uexceptions.homeShareUsed,exstr
+				exstr = _("The %(plural)s %(user)s%(num)s %(use)s this share as home share!") % {'plural': pluralstring, 'user': userstring, 'num': numstring, 'use': usestring}
+				raise univention.admin.uexceptions.homeShareUsed(exstr)
 
 	def description(self):
-		return _('%s (%s on %s)') % (self['name'], self['path'], self['host'])
+		return _('%(name)s (%(path)s on %(host)s)') % {'name': self['name'], 'path': self['path'], 'host': self['host']}
 
 	def check_options_for_validity(self):
 		if not ( 'samba' in self.options or 'nfs' in self.options):
-			raise univention.admin.uexceptions.invalidOptions, ('Need  %s or %s in options to create a share.')%(
-				options['samba'].short_description,
-				options['nfs'].short_description)
+			raise univention.admin.uexceptions.invalidOptions(_('Need %(samba)s or %(nfs)s in options to create a share.') % {
+				'samba': options['samba'].short_description,
+				'nfs': options['nfs'].short_description})
 
 
 def lookup_filter(filter_s=None, lo=None):

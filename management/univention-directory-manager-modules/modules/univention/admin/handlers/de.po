@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2011-10-25 15:04+0200\n"
+"POT-Creation-Date: 2016-01-18 12:10+0100\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,54 +38,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:211
-#, python-format
-msgid "key=%s old=%s new=%s"
-msgstr "Attribut=%s alter Wert=%s neuer Wert=%s"
+#: modules/univention/admin/handlers/__init__.py:2604
+msgid "DHCP"
+msgstr "DHCP"
 
-#: __init__.py:214
-#, python-format
-msgid "The property %s is required"
-msgstr "Die Eigenschaft %s wird benötigt."
+#: modules/univention/admin/handlers/__init__.py:2612
+msgid "DNS Alias"
+msgstr "DNS-Alias"
 
-#: __init__.py:358
-msgid "Moving not possible: old and new DN are identical."
-msgstr "Verschieben ist nicht möglich: Alter und neuer DN sind identisch."
+#: modules/univention/admin/handlers/__init__.py:1910
+msgid "DNS alias is already in use."
+msgstr "DNS-Alias ist bereits verwendet."
 
-#: __init__.py:360
+#: modules/univention/admin/handlers/__init__.py:2588
+msgid "DNS forward zone"
+msgstr "DNS-Forward-Zone"
+
+#: modules/univention/admin/handlers/__init__.py:2596
+msgid "DNS reverse zone"
+msgstr "DNS-Reverse-Zone"
+
+#: modules/univention/admin/handlers/__init__.py:412
+msgid "Destination object can't have sub objects."
+msgstr "Zielobjekt kann keine Unterobjekte haben."
+
+#: modules/univention/admin/handlers/__init__.py:426
 msgid "Moving into one's own sub container not allowed."
 msgstr ""
 "Verschieben in einen Container innerhalb des zu verschiebenden Objektes "
 "nicht erlaubt."
 
-#: __init__.py:366
-msgid "Destination object can't have sub objects."
-msgstr "Zielobjekt kann keine Unterobjekte haben."
+#: modules/univention/admin/handlers/__init__.py:416
+msgid "Moving not possible: old and new DN are identical."
+msgstr "Verschieben ist nicht möglich: Alter und neuer DN sind identisch."
 
-#: __init__.py:393 __init__.py:430
-#, python-format
-msgid "Unable to move object %s (%s) in subtree, trying to revert changes."
-msgstr ""
-"Das Objekt %s (%s) im Teilbaum kann nicht verschoben werden, versuche den "
-"Ausgangzustand wiederherzustellen."
+#: modules/univention/admin/handlers/__init__.py:406
+msgid "Objects from Active Directory can not be moved."
+msgstr "Objekte aus Active-Directory-Domänen können nicht verschoben werden."
 
-#: __init__.py:1484 __init__.py:1503
+#: modules/univention/admin/handlers/__init__.py:1011
+msgid "Objects from Active Directory can not be removed."
+msgstr "Objekte aus Active-Directory-Domänen können nicht gelöscht werden."
+
+#: modules/univention/admin/handlers/__init__.py:1644
+#: modules/univention/admin/handlers/__init__.py:1662
 msgid "Reverse zone and IP address are incompatible."
 msgstr "Reverse Zone und IP-Adresse sind inkompatibel."
 
-#: __init__.py:1711
-msgid "DNS alias is already in use."
-msgstr "DNS-Alias ist bereits verwendet."
-
-#: __init__.py:2008
+#: modules/univention/admin/handlers/__init__.py:2269
 msgid ""
-"The DHCP entry for this host should contain the zone LDAP-DN, the IP address and "
-"the MAC address."
+"The DHCP entry for this host should contain the zone LDAP-DN, the IP address "
+"and the MAC address."
 msgstr ""
 "Der DHCP-Eintrag für diesen Rechner sollte die Zonen LDAP-DN, die IP- und "
 "MAC-Adresse enthalten."
 
-#: __init__.py:2042
+#: modules/univention/admin/handlers/__init__.py:2302
 msgid ""
 "The DNS alias entry for this host should contain the zone name, the alias "
 "zone container LDAP-DN and the alias."
@@ -93,55 +101,46 @@ msgstr ""
 "Der DNS-Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN "
 "des Alias-Zonencontainers und den Alias-Namen enthalten."
 
-#: __init__.py:2302
-msgid "DNS forward zone"
-msgstr "DNS-Forward-Zone"
+#: modules/univention/admin/handlers/__init__.py:234
+#, python-format
+msgid "The property %s is required"
+msgstr "Die Eigenschaft %s wird benötigt."
+
+#: modules/univention/admin/handlers/__init__.py:461
+#: modules/univention/admin/handlers/__init__.py:504
+#, python-format
+msgid ""
+"Unable to move object %(name)s (%(type)s) in subtree, trying to revert "
+"changes."
+msgstr ""
+"Das Objekt %(name)s (%(type)s) im Teilbaum kann nicht verschoben werden, versuche den "
+"Ausgangzustand wiederherzustellen."
 
 # __init__.py:chen"024
-#: __init__.py:2302 __init__.py:2310 __init__.py:2318 __init__.py:2326
+#: modules/univention/admin/handlers/__init__.py:2588
+#: modules/univention/admin/handlers/__init__.py:2596
+#: modules/univention/admin/handlers/__init__.py:2604
+#: modules/univention/admin/handlers/__init__.py:2612
 msgid "delete"
 msgstr "Löschen"
 
-#: __init__.py:2310
-msgid "DNS reverse zone"
-msgstr "DNS-Reverse-Zone"
-
-#: __init__.py:2318
-msgid "DHCP"
-msgstr "DHCP"
-
-#: __init__.py:2326
-msgid "DNS Alias"
-msgstr "DNS-Alias"
-
-#: __init__.py:404
-msgid "Objects from Active Directory can not be moved."
-msgstr "Objekte aus Active-Directory-Domänen können nicht verschoben werden."
-
-#: __init__.py:404
-msgid "Objects from Active Directory can not be removed."
-msgstr "Objekte aus Active-Directory-Domänen können nicht gelöscht werden."
-
-#~ msgid "There is more than one DNS Forward-Zone-Entry."
-#~ msgstr "Es existiert mehr als ein Eintrag in einer DNS-Forward-Zone."
-
-#~ msgid "Object has entries in more than one DNS-Forward-Zone."
-#~ msgstr "Das Objekt hat mehr als einen Eintrag in einer DNS-Forward-Zone."
-
-#~ msgid "There is more than one DNS Reverse-Zone-Entry."
-#~ msgstr "Es existiert mehr als ein Eintrag in einer DNS-Reverse-Zone."
-
-#~ msgid "There is more than one DHCP-Entry."
-#~ msgstr "Es existiert mehr als ein DHCP-Eintrag."
-
-#~ msgid "The MAC Address is missing."
-#~ msgstr "Die MAC-Adresse fehlt."
+#: modules/univention/admin/handlers/__init__.py:231
+#: modules/univention/admin/handlers/__init__.py:1163
+#, python-format
+msgid "key=%(key)s old=%(old)s new=%(new)s"
+msgstr "Attribut=%(key)s alter Wert=%(old)s neuer Wert=%(new)s"
 
 #~ msgid "MAC Address not found: %s"
 #~ msgstr "MAC Adresse nicht gefunden: %s"
 
-#~ msgid "The IP Address is missing."
-#~ msgstr "Die IP-Adresse fehlt."
+#~ msgid "Missing DNS Forward Entry"
+#~ msgstr "Ein DNS Forward Eintrag fehlt"
+
+#~ msgid "Next free IP Address not found"
+#~ msgstr "Keine weiteren freien IP-Adressen gefunden"
+
+#~ msgid "Object has entries in more than one DNS-Forward-Zone."
+#~ msgstr "Das Objekt hat mehr als einen Eintrag in einer DNS-Forward-Zone."
 
 #~ msgid ""
 #~ "Reverse Zone Entry can not be created without corresponding Forward Zone "
@@ -150,11 +149,20 @@ msgstr "Objekte aus Active-Directory-Domänen können nicht gelöscht werden."
 #~ "Ein Reverse Zone Eintrag kann nicht ohne einen entsprechen Forward Zone "
 #~ "Eintrag erstellt werden."
 
-#~ msgid "Missing DNS Forward Entry"
-#~ msgstr "Ein DNS Forward Eintrag fehlt"
+#~ msgid "The IP Address is missing."
+#~ msgstr "Die IP-Adresse fehlt."
+
+#~ msgid "The MAC Address is missing."
+#~ msgstr "Die MAC-Adresse fehlt."
+
+#~ msgid "There is more than one DHCP-Entry."
+#~ msgstr "Es existiert mehr als ein DHCP-Eintrag."
+
+#~ msgid "There is more than one DNS Forward-Zone-Entry."
+#~ msgstr "Es existiert mehr als ein Eintrag in einer DNS-Forward-Zone."
+
+#~ msgid "There is more than one DNS Reverse-Zone-Entry."
+#~ msgstr "Es existiert mehr als ein Eintrag in einer DNS-Reverse-Zone."
 
 #~ msgid "create"
 #~ msgstr "Anlegen"
-
-#~ msgid "Next free IP Address not found"
-#~ msgstr "Keine weiteren freien IP-Adressen gefunden"

@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import string
-
 from univention.admin.layout import Tab, Group
 import univention.admin.uldap
 import univention.admin.syntax
@@ -191,7 +189,7 @@ class object(univention.admin.handlers.simpleLdap):
 					if member_cn == self.info['name']:
 						group_cn.append(member_list[0][1]['cn'][0])
 			if len(group_cn) > 0:
-				raise univention.admin.uexceptions.leavePrinterGroup, _('%s is member of following quota printer groups %s')%(self.info['name'],string.join(group_cn,", "))
+				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
 		elif self.info.get( 'setQuota', None ) == '1':
 			for member_cn in self.info['groupMember']:
 				member_dn=self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(univentionPrinterSpoolHost=%s)(cn=%s)(univentionPrinterQuotaSupport=1))' % (self.info['spoolHost'][0], member_cn))
@@ -210,7 +208,7 @@ class object(univention.admin.handlers.simpleLdap):
 				if member_cn == self.info['name']:
 					rm_attrib.append(member_list[0][0])
 					if len(member_list[0][1]['univentionPrinterGroupMember']) < 2:
-						raise univention.admin.uexceptions.emptyPrinterGroup, _('%s is the last member of the printer group %s. ')%(self.info['name'],member_list[0][1]['cn'][0])
+						raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list[0][1]['cn'][0]})
 		printergroup_module=univention.admin.modules.get('shares/printergroup')
 		for rm_dn in rm_attrib:
 			printergroup_object=univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn)
@@ -227,7 +225,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 			test=self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(cn=%s)%s)' % ( member, spoolhosts ) )
 			if len(test) < 1:
-				raise univention.admin.uexceptions.notValidPrinter,_('%s is not a valid printer on Spoolhost %s.')%(member,self.info['spoolHost'])
+				raise univention.admin.uexceptions.notValidPrinter(_('%(name)s is not a valid printer on Spoolhost %(host)s.') % {'name': member, 'host': self.info['spoolHost']})
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):

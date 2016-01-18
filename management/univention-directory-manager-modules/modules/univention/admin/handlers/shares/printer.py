@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
-import string
 
 from univention.admin.layout import Tab, Group
 import univention.admin.uldap
@@ -335,7 +334,7 @@ class object(univention.admin.handlers.simpleLdap):
 					if member_cn == self.info['name']:
 						group_cn.append(member_list[0][1]['cn'][0])
 			if len(group_cn) > 0:
-				raise univention.admin.uexceptions.leavePrinterGroup, _('%s is member of following quota printer groups %s')%(self.info['name'],string.join(group_cn,", "))
+				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
 
 
 	def _ldap_pre_remove(self): # check for last member in printerclass
@@ -347,7 +346,7 @@ class object(univention.admin.handlers.simpleLdap):
 				if member_cn == self.info['name']:
 					rm_attrib.append(member_list[0][0])
 					if len(member_list[0][1]['univentionPrinterGroupMember']) < 2:
-						raise univention.admin.uexceptions.emptyPrinterGroup, _('%s is the last member of the printer group %s. ')%(self.info['name'],member_list[0][1]['cn'][0])
+						raise univention.admin.uexceptions.emptyPrinterGroup(_('%(name)s is the last member of the printer group %(group)s. ') % {'name': self.info['name'], 'group': member_list[0][1]['cn'][0]})
 		printergroup_module=univention.admin.modules.get('shares/printergroup')
 		for rm_dn in rm_attrib:
 			printergroup_object=univention.admin.objects.get(printergroup_module, None, self.lo, position='', dn=rm_dn)

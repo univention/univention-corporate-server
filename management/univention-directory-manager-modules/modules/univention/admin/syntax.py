@@ -3026,9 +3026,9 @@ class hostname_or_ipadress_or_network(simple):
 				ipnetwork.parse(text)
 			else: # a hostname or ip address
 				hostOrIP.parse(text)
-		except univention.admin.uexceptions.valueError as e:
-			error = _('Error: %s - %s')
-			raise univention.admin.uexceptions.valueError( error % (text, str(e)))
+		except univention.admin.uexceptions.valueError as exc:
+			error = _('Error: %(text)s - %(exc)s')
+			raise univention.admin.uexceptions.valueError(error % {'text': text, 'exc': exc})
 		return text
 
 class ObjectFlag( select ):
