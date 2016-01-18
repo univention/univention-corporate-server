@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-19) unstable; urgency=medium
+
+  * Bug #40434: Merge patches for Bug #39601 to univention-samba4
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Jan 2016 21:57:22 +0100
+
 univention-samba4 (5.0.1-18) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping

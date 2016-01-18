@@ -465,7 +465,7 @@ Type=str
 Categories=service-samba
 
 [samba/register/exclude/interfaces]
-Description[de]=Mit dieser Variable können Netzwerk Interfaces definiert werden, deren IP-Adresse nicht automatisch im DNS registriert wird, z.B. eth0. Mehrere Werte müssen durch Leerzeichen getrennt werden.
-Description[en]=This variable defines network interfaces whose IP addresses are not registered automatically in DNS, e.g. eth0. Multiple values need to be separated by blanks.
+Description[de]=Diese Variable definiert Netzwerk Interfaces  die von Samba ignoriert werden (z.B. eth0). Mehrere Werte müssen durch Leerzeichen getrennt werden.
+Description[en]=This variable defines network interfaces which are ignored by samba (e.g. eth0). Multiple values need to be separated by blanks.
 Type=str
 Categories=service-samba

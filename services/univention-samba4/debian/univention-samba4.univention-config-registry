@@ -24,6 +24,7 @@ Variables: samba4/.*
 Variables: windows/wins-.*
 Variables: cups/server
 Variables: server/role
+Variables: interfaces/.*
 
 Type: subfile
 Multifile: etc/samba/smb.conf

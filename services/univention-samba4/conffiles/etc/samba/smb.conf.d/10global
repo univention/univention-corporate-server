@@ -82,5 +82,21 @@ print '\tmachine password timeout\t= %d' % int(configRegistry.get('samba/machine
 
 if configRegistry.is_true('samba/acl/allow/execute/always', True):
 	print '\tacl allow execute always = True'
+
+if configRegistry.get('samba/register/exclude/interfaces') and not configRegistry.is_true('samba/interfaces/bindonly', False):
+	import netifaces
+	interfaces = netifaces.interfaces()
+	for ignore in configRegistry['samba/register/exclude/interfaces'].split(' '):
+		if ignore in interfaces:
+			interfaces.remove(ignore)
+	# also ignore appliance-mode-temporary interface
+	for iface in interfaces[:]:
+		if configRegistry.get('interfaces/%s/type' % iface, '') == 'appliance-mode-temporary':
+			interfaces.remove(iface)
+	if interfaces:
+		print
+		print '\t# ignore interfaces in samba/register/exclude/interfaces'
+		print '\tbind interfaces only = yes'
+		print '\tinterfaces = %s' % ' '.join(interfaces)
 @!@
 ; ---------------------</10global>------------------------
