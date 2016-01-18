@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-mail-postfix
+fix: 10.0.0-12.280.201601181526
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * Errors when checking restrictions of mailing lists and mail groups are now
+    written to the system mail log.
+bug: [40376]
