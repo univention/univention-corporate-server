@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-directory-manager-modules
-fix: 9.0.1-2.159.201601141456
+fix: 11.0.2-13.1365.201601181224
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -11,4 +11,6 @@ desc: |
   * The "simple" syntax class now allows None values to be able to e.g. remove
     the birthday of a user.
   * Some shell quoting errors were fixed.
-bug: [40348, 32321, 40031]
+  * Translation format strings with multiple unnamed arguments have been
+    adjusted.
+bug: [40348, 32321, 40031, 40339]
