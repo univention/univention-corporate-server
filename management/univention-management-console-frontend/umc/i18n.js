@@ -123,7 +123,7 @@ define([
 		// |	require(['umc/i18n!umc/branding,umc/app'], function(_) {
 		// |		var msg = _('Translate me!');
 		// |		msg = _('The total cost was %.2f EUR!', 10.2353);
-		// |		msg = _('Hello %s %s!', 'John', 'Miller');
+		// |		msg = _('Hello %s!', 'John Miller');
 		// |		msg = _('Hello %(last)s, %(first)s!', { first: 'John', last: 'Miller' });
 		// |	});
 

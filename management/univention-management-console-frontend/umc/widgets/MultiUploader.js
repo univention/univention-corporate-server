@@ -235,7 +235,7 @@ define([
 				this._progressBar.update(1, '', _('Uploads finished'));
 			}
 			else {
-				this._progressBar.update(currentVal, '', _('Uploading... %d of %d files remaining.', this._uploadingFiles.length - nDone, this._uploadingFiles.length));
+				this._progressBar.update(currentVal, '', _('Uploading... %(current)d of %(total)d files remaining.', {current: this._uploadingFiles.length - nDone, total: this._uploadingFiles.length}));
 			}
 		},
 

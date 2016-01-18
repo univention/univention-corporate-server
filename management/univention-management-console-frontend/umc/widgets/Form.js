@@ -617,7 +617,7 @@ define([
 							}
 						}
 						if (iprogress.message) {
-							message = _('%s: %s', label, iprogress.message);
+							message = _('%(label)s: %(message)s', {label: label, message: iprogress.message});
 						}
 						var progress = {
 							percentage: _getOverallProgress(),

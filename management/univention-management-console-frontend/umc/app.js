@@ -526,7 +526,7 @@ define([
 			var today = new Date().getTime() / 1000 / 60 / 60 / 24; // now in days
 			var days = certExp - today;
 			if (days <= warning) {
-				dialog.warn(_('The %s will expire in %d days and should be renewed!', certType, days));
+				dialog.warn(_('The %(certificate)s will expire in %(days)d days and should be renewed!', {certificate: certType, days: days}));
 			}
 		};
 

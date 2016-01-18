@@ -809,7 +809,7 @@ define([
 				msg = this.footerFormatter(nItems, nItemsTotal);
 			}
 			else {
-				msg = _('%d entries of %d selected', nItems, nItemsTotal);
+				msg = _('%(num)d entries of %(total)d selected', {num: nItems, total: nItemsTotal});
 				if (0 === nItemsTotal) {
 					msg = _('No entries could be found');
 				}
