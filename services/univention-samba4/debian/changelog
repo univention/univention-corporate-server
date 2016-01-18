@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-21) unstable; urgency=medium
+
+  * Bug #33399: Only do the DRS-check when there is more than one S4-Connector
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Jan 2016 22:07:59 +0100
+
 univention-samba4 (5.0.1-20) unstable; urgency=medium
 
   * Bug #33399: When looking for a S4-Connector host only consider DCs that
