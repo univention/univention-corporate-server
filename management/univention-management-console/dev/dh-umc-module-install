@@ -108,32 +108,32 @@ def do_package(package, core):
 				# get destination path
 				destFile = 'debian/%s/usr/share/univention-management-console-frontend/js/umc/modules/%s' % (package, srcFile[len(module.js_path):])
 				# copy the .html file
-				dh_ucs.doIt('install', srcFile, destFile)
+				dh_ucs.doIt('install', '-m', '644', srcFile, destFile)
 
 			# copy XML definitions
-			dh_ucs.doIt('install', module.xml_definition, 'debian/%(package)s/usr/share/univention-management-console/modules' % module)
+			dh_ucs.doIt('install', '-m', '644', module.xml_definition, 'debian/%(package)s/usr/share/univention-management-console/modules' % module)
 
 		if module.xml_categories:
-			dh_ucs.doIt('install', module.xml_categories, 'debian/%(package)s/usr/share/univention-management-console/categories' % module)
+			dh_ucs.doIt('install', '-m', '644', module.xml_categories, 'debian/%(package)s/usr/share/univention-management-console/categories' % module)
 
 		if not core:
 			# copy translation files (python)
 			for lang in dh_umc.LANGUAGES:
 				mo_file = os.path.join(module.python_path, '%s.mo' % lang)
 				module['lang'] = lang
-				dh_ucs.doIt('install', mo_file, 'debian/%(package)s/usr/share/locale/%(lang)s/LC_MESSAGES/%(package)s.mo' % module)
+				dh_ucs.doIt('install', '-m', '644', mo_file, 'debian/%(package)s/usr/share/locale/%(lang)s/LC_MESSAGES/%(package)s.mo' % module)
 
 			# copy translation files (javascript)
 			for lang in dh_umc.LANGUAGES:
 				json_file = os.path.join(module.js_path, '%s.json' % lang)
 				module['lang'] = lang
-				dh_ucs.doIt('install', json_file, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s/%(Module)s.json' % module)
+				dh_ucs.doIt('install', '-m', '644', json_file, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s/%(Module)s.json' % module)
 
 		# copy translation files (xml)
 		for lang in dh_umc.LANGUAGES:
 			mo_file = os.path.join(os.path.dirname(module.xml_definition), '%s.mo' % lang)
 			module['lang'] = lang
-			dh_ucs.doIt('install', '-D', mo_file, 'debian/%(package)s/usr/share/univention-management-console/i18n/%(lang)s/%(Module)s.mo' % module)
+			dh_ucs.doIt('install', '-m', '644', '-D', mo_file, 'debian/%(package)s/usr/share/univention-management-console/i18n/%(lang)s/%(Module)s.mo' % module)
 
 		# join script
 		join_script = '%s.inst' % package

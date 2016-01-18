@@ -31,13 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
 import sys
 
 from optparse import OptionParser
 
 import univention.dh_umc as dh_umc
-import univention.debhelper as dh_ucs
 
 """Tool creates .json files for translation using gettext."""
 
@@ -107,4 +105,8 @@ def main():
 		create_final_output(ipo_file)
 
 if __name__ == '__main__':
-	main()
+	try:
+		main()
+	except dh_umc.Error as exc:
+		print >> sys.stderr, str(exc)
+		sys.exit(1)

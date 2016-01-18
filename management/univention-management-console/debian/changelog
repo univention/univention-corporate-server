@@ -1,3 +1,10 @@
+univention-management-console (8.0.28-4) unstable; urgency=medium
+
+  * Bug #30520: dh_umc installs files with correct permissions
+  * Bug #40341: enhance error output
+
+ -- Florian Best <best@univention.de>  Mon, 18 Jan 2016 10:40:22 +0100
+
 univention-management-console (8.0.28-3) unstable; urgency=medium
 
   * Bug #40341: remove debug output from last commit

@@ -31,7 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
 import sys
 from optparse import OptionParser
 
@@ -81,5 +80,9 @@ if __name__ == '__main__':
 	parser.add_option('-c', '--core', action='store_true', dest='core', help='If specified modules without javascript and python code are excepted')
 
 	(options, args) = parser.parse_args()
-	for package in dh_ucs.binary_packages():
-		do_package(package, options.core)
+	try:
+		for package in dh_ucs.binary_packages():
+			do_package(package, options.core)
+	except dh_umc.Error as exc:
+		print >> sys.stderr, str(exc)
+		sys.exit(1)

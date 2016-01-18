@@ -41,4 +41,8 @@ if 1 == len(sys.argv) or '-h' in sys.argv or '--help' in sys.argv:
 	sys.exit(0)
 
 for ifile in sys.argv[1:]:
-	dh_umc.create_json_file(ifile)
+	try:
+		dh_umc.create_json_file(ifile)
+	except dh_umc.Error as exc:
+		print >> sys.stderr, str(exc)
+		sys.exit(1)
