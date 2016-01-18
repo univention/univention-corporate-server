@@ -1,3 +1,9 @@
+univention-mail-postfix (10.0.0-12) unstable; urgency=low
+
+  * write exceptions in listfilter.py to syslog (Bug #40376)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 18 Jan 2016 15:00:13 +0100
+
 univention-mail-postfix (10.0.0-11) unstable; urgency=low
 
   * reorder checks to allow empty sender for all recipients except restricted

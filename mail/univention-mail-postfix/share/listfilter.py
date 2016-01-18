@@ -35,7 +35,10 @@ import univention.uldap
 import optparse
 import sys
 import re
+import traceback
+import syslog
 
+syslog.openlog(ident="listfilter", logoption=syslog.LOG_PID, facility=syslog.LOG_MAIL)
 
 usage = "help"
 parser = optparse.OptionParser(usage=usage)
@@ -58,16 +61,16 @@ def listfilter(attrib):
 		# earlier by Postfix with '554 5.5.1 Error: no valid recipients'.
 		return "REJECT Access denied for empty recipient."
 	else:
-		# reuse secret file of univention-mail-cyrus
-		ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/listfilter.secret")
-
-		user_dn = ""
-		users_groups = []
-		allowed_user_dns = []
-		allowed_group_dns = []
-
-		# try the ldap stuff, if that fails send email anyway
 		try:
+			# reuse secret file of univention-mail-cyrus
+			ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/listfilter.secret")
+
+			user_dn = ""
+			users_groups = []
+			allowed_user_dns = []
+			allowed_group_dns = []
+
+			# try the ldap stuff, if that fails send email anyway
 			# get recipient restriction
 			ldap_attr = ["univentionAllowedEmailGroups", "univentionAllowedEmailUsers"]
 			ldap_filter = '(&(mailPrimaryAddress=%s)(|(objectclass=univentionMailList)(objectclass=posixGroup)))' % recipient
@@ -121,8 +124,9 @@ def listfilter(attrib):
 					return "DUNNO no restrictions"
 			else:
 				return "DUNNO no group found for %s" % recipient
-		except Exception, e:
-			return "DUNNO search exception %s" % e
+		except Exception as exc:
+			syslog.syslog(syslog.LOG_ERR, "Error with attrib={} traceback={}".format(attrib, traceback.format_exc()))
+			return "DUNNO search exception %s" % exc
 
 # main
 attr = {}
