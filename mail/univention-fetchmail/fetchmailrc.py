@@ -45,7 +45,7 @@ modrdn="1"
 
 fn_fetchmailrc = '/etc/fetchmailrc'
 __initscript = '/etc/init.d/fetchmail'
-FETCHMAIL_OLD_PICKLE = "/var/spool/univention-mail-fetchmail/fetchmail_old_dn"
+FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 
 
 REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")

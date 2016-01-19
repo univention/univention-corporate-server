@@ -34,7 +34,7 @@
 
 . /usr/share/univention-lib/all.sh
 
-chown listener:root /var/spool/univention-mail-fetchmail
+chown listener:root /var/spool/univention-fetchmail
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.1; then
 	if ! is_ucr_true fetchmail/enabled; then

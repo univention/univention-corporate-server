@@ -40,7 +40,7 @@ override_dh_auto_install:
 
 override_dh_fixperms:
 	dh_fixperms
-	chmod 0700 debian/univention-mail-fetchmail/var/spool/univention-mail-fetchmail
+	chmod 0700 debian/univention-fetchmail/var/spool/univention-fetchmail
 
 %:
 	dh $@
