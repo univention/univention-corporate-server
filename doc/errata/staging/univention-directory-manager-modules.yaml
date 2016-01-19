@@ -13,4 +13,6 @@ desc: |
   * Some shell quoting errors were fixed.
   * Translation format strings with multiple unnamed arguments have been
     adjusted.
-bug: [40348, 32321, 40031, 40339]
+  * Allow installation of translations for extensions of UDM hooks and UDM
+    syntaxes.
+bug: [40348, 32321, 40031, 40339, 34556]

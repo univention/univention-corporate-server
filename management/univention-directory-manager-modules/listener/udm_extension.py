@@ -137,8 +137,8 @@ def handler(dn, new, old):
 		try:
 			if not install_python_file(objectclass, target_subdir, new_relative_filename, new_object_data):
 				return
+			install_messagecatalog(dn, new, objectclass)
 			if objectclass == 'univentionUDMModule':
-				install_messagecatalog(dn, new)
 				install_umcregistration(dn, new)
 				install_umcicons(dn, new)
 		finally:
@@ -151,10 +151,10 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			remove_python_file(objectclass, target_subdir, old_relative_filename)
+			remove_messagecatalog(dn, old, univentionUDMSyntax)
 			if objectclass == 'univentionUDMModule':
 				remove_umcicons(dn, old)
 				remove_umcregistration(dn, old)
-				remove_messagecatalog(dn, old)
 		finally:
 			listener.unsetuid()
 
@@ -475,9 +475,15 @@ def cleanup_python_moduledir(python_basedir, target_subdir, module_directory):
 	if parent_dir:
 		cleanup_python_moduledir(python_basedir, target_subdir, parent_dir)
 
-def install_messagecatalog(dn, attrs):
+def install_messagecatalog(dn, attrs, objectclass):
 	translationfile_ldap_attribute = "univentionMessageCatalog"
 	translationfile_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (translationfile_ldap_attribute,)
+	if objectclass == 'univentionUDMModule':
+		prefix = "univention-admin-handlers"
+	elif objectclass == 'univentionUDMSyntax':
+		prefix = "univention-admin-syntax"
+	elif objectclass == 'univentionUDMHook':
+		prefix = "univention-admin-hooks"
 
 	values = {}
 	for ldap_attribute in attrs.keys():
@@ -490,16 +496,22 @@ def install_messagecatalog(dn, attrs):
 	module_name = attrs.get('cn')[0]
 	for language_tag, mo_data_binary in values.items():
 		targetdir = os.path.join(LOCALE_BASEDIR, language_tag, 'LC_MESSAGES')
-		filename = os.path.join(targetdir, "univention-admin-handlers-%s.mo" % (module_name.replace('/', '-'),) )
+		filename = os.path.join(targetdir, "%s-%s.mo" % (prefix, module_name.replace('/', '-'),) )
 		if not os.path.exists(targetdir):
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
 			continue
 		with open(filename, 'w') as f:
 			f.write(mo_data_binary)
 
-def remove_messagecatalog(dn, attrs):
+def remove_messagecatalog(dn, attrs, objectclass):
 	translationfile_ldap_attribute = "univentionMessageCatalog"
 	translationfile_ldap_attribute_and_tag_prefix = "%s;entry-lang-" % (translationfile_ldap_attribute,)
+	if objectclass == 'univentionUDMModule':
+		prefix = "univention-admin-handlers"
+	elif objectclass == 'univentionUDMSyntax':
+		prefix = "univention-admin-syntax"
+	elif objectclass == 'univentionUDMHook':
+		prefix = "univention-admin-hooks"
 
 	language_tags = []
 	for ldap_attribute in attrs.keys():
@@ -512,7 +524,7 @@ def remove_messagecatalog(dn, attrs):
 	module_name = attrs.get('cn')[0]
 	for language_tag in language_tags:
 		targetdir = os.path.join(LOCALE_BASEDIR, language_tag, 'LC_MESSAGES')
-		filename = os.path.join(targetdir, "univention-admin-handlers-%s.mo" % (module_name.replace('/', '-'),) )
+		filename = os.path.join(targetdir, "%s-%s.mo" % (prefix, module_name.replace('/', '-'),) )
 		if not os.path.exists(targetdir):
 			ud.debug(ud.LISTENER, ud.ERROR, '%s: Error writing %s. Parent directory does not exist.' % (name, filename))
 			continue
