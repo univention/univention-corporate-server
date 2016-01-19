@@ -1,5 +1,5 @@
 var/lib/dovecot/sieve
-var/lib/univention-mail-dovecot
+var/spool/univention-mail-dovecot
 var/spool/dovecot/private
 var/spool/dovecot/public
 usr/share/pyshared/univention/mail
