@@ -1,3 +1,4 @@
 usr/lib/univention-install
 usr/lib/univention-directory-listener/system
 etc
+var/spool/univention-mail-fetchmail

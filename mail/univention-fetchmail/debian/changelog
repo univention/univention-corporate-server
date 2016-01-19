@@ -1,3 +1,9 @@
+univention-fetchmail (9.0.1-2) unstable; urgency=low
+
+  * create listener pickle file in a secure location (Bug #40245)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 19 Jan 2016 10:00:55 +0100
+
 univention-fetchmail (9.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
