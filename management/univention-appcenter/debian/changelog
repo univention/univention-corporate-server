@@ -1,4 +1,4 @@
-univention-appcenter (5.0.19-39) unstable; urgency=medium
+univention-appcenter (5.0.19-43) unstable; urgency=medium
 
   * Bug #40264: Use univention-app shell in joinscripthelper.sh
   * Bug #40359: Fixes for dev scripts
