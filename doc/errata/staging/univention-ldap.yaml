@@ -19,4 +19,6 @@ desc: |
     the LDAP server.
   * Some shell quoting errors were fixed.
   * Only initialize the LDAP server on the DC Master and abort on errors.
-bug: [38091,39884,39866,40031,38051]
+  * Allow installation of translations for extensions of UDM hooks and UDM
+    syntaxes.
+bug: [38091,39884,39866,40031,38051,35840]

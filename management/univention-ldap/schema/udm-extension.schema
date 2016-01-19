@@ -82,6 +82,7 @@ objectclass ( univentionUDMExtensionObjectClass:2 NAME 'univentionUDMHook'
 	MAY (	univentionUDMHookFilename
 		$ univentionUDMHookData
 		$ univentionUDMHookActive
+		$ univentionMessageCatalog
 		)
 	)
 
@@ -112,5 +113,6 @@ objectclass ( univentionUDMExtensionObjectClass:3 NAME 'univentionUDMSyntax'
 	MAY (	univentionUDMSyntaxFilename
 		$ univentionUDMSyntaxData
 		$ univentionUDMSyntaxActive
+		$ univentionMessageCatalog
 		)
 	)

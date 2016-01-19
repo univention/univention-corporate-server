@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-13) unstable; urgency=low
+
+  * Add message catalog to LDAP schema of UDM hook and UDM syntax (Bug #35840)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 19 Jan 2016 10:57:19 +0100
+
 univention-ldap (12.1.6-12) unstable; urgency=low
 
   * Bug #38051: Move cn=config on all server roles
