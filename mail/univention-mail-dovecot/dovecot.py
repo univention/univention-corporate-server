@@ -2,7 +2,7 @@
 #
 # Univention Mail Dovecot - listener module: add/edit/remove mailboxes
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2015-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -45,7 +45,7 @@ filter = '(&(objectClass=univentionMail)(uid=*))'
 attributes = ['mailPrimaryAddress', 'univentionMailHomeServer']
 modrdn = "1"
 
-DOVECOT_OLD_PICKLE = os.path.join("/var/tmp", "dovecot_old_dn")
+DOVECOT_OLD_PICKLE = os.path.join("/var/lib/univention-mail-dovecot", "dovecot_old_dn")
 
 
 class DovecotUserListener(DovecotListener):

@@ -3,7 +3,7 @@
 # Univention Mail Dovecot
 #  rules file for the debian package
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2015-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -43,6 +43,7 @@ override_dh_fixperms:
 	dh_fixperms
 	chmod 2750 debian/univention-mail-dovecot/var/lib/dovecot
 	chmod 2755 debian/univention-mail-dovecot/var/lib/dovecot/sieve
+	chmod 0700 debian/univention-mail-dovecot/var/lib/univention-mail-dovecot
 	chmod 2750 debian/univention-mail-dovecot/var/spool/dovecot/*
 
 %:
