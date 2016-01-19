@@ -2,7 +2,7 @@
 #
 # Univention Mail Dovecot - listener module: manages shared folders
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2015-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
