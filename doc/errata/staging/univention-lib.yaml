@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-lib
+fix:
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * Allow installation of translations for extensions of UDM hooks and UDM
+    syntaxes.
+bug: [34556]

@@ -140,10 +140,10 @@ class UniventionLDAPExtension(object):
 				common_udm_options.extend(["--set", "ucsversionend=%s" % (options.ucsversionend,),])
 
 		if self.udm_module_name == "settings/udm_module":
-			for messagecatalog in options.messagecatalog:
-				filename_parts = os.path.splitext(os.path.basename(messagecatalog))
+			for udm_module_messagecatalog in options.udm_module_messagecatalog:
+				filename_parts = os.path.splitext(os.path.basename(udm_module_messagecatalog))
 				language = filename_parts[0]
-				with open(messagecatalog, 'r') as f:
+				with open(udm_module_messagecatalog, 'r') as f:
 					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),),])
 			if options.umcregistration:
 				try:
@@ -156,6 +156,20 @@ class UniventionLDAPExtension(object):
 			for icon in options.icon:
 				with open(icon, 'r') as f:
 					common_udm_options.extend(["--append", "icon=%s" % (base64.b64encode(f.read()),),])
+
+		if self.udm_module_name == "settings/udm_syntax":
+			for udm_syntax_messagecatalog in options.udm_syntax_messagecatalog:
+				filename_parts = os.path.splitext(os.path.basename(udm_syntax_messagecatalog))
+				language = filename_parts[0]
+				with open(udm_syntax_messagecatalog, 'r') as f:
+					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),),])
+
+		if self.udm_module_name == "settings/udm_hook":
+			for udm_hook_messagecatalog in options.udm_hook_messagecatalog:
+				filename_parts = os.path.splitext(os.path.basename(udm_hook_messagecatalog))
+				language = filename_parts[0]
+				with open(udm_hook_messagecatalog, 'r') as f:
+					common_udm_options.extend(["--append", "messagecatalog=%s %s" % (language, base64.b64encode(f.read()),),])
 
 		rc, self.object_dn, stdout = self.udm_find_object_dn()
 		if not self.object_dn:
@@ -858,6 +872,26 @@ def option_callback_append_udm_module_options(option, opt_str, value, parser):
 	check_udm_module_options(option, opt_str, value, parser)
 	parser.values.ensure_value(option.dest, []).append(value)
 
+def check_udm_syntax_options(option, opt_str, value, parser):
+	if value.startswith('--'):
+		raise OptionValueError("%s requires an argument" % (opt_str,))
+	if not parser.values.udm_syntax:
+		raise OptionValueError("%s can only be used after --udm_syntax" % (opt_str,))
+
+def option_callback_append_udm_syntax_options(option, opt_str, value, parser):
+	check_udm_syntax_options(option, opt_str, value, parser)
+	parser.values.ensure_value(option.dest, []).append(value)
+
+def check_udm_hook_options(option, opt_str, value, parser):
+	if value.startswith('--'):
+		raise OptionValueError("%s requires an argument" % (opt_str,))
+	if not parser.values.udm_hook:
+		raise OptionValueError("%s can only be used after --udm_hook" % (opt_str,))
+
+def option_callback_append_udm_hook_options(option, opt_str, value, parser):
+	check_udm_hook_options(option, opt_str, value, parser)
+	parser.values.ensure_value(option.dest, []).append(value)
+
 def ucs_registerLDAPExtension():
 	functionname = inspect.stack()[0][3]
 	parser = OptionParser(prog=functionname, option_class=UCSOption)
@@ -895,7 +929,11 @@ def ucs_registerLDAPExtension():
 			help="End activation with UCS version", metavar="<UCS Version>")
 
 	udm_module_options = OptionGroup(parser, "UDM module specific options")
-	udm_module_options.add_option("--messagecatalog", dest="messagecatalog",
+	udm_module_options.add_option("--messagecatalog", dest="udm_module_messagecatalog",
+			type="existing_filename", default=[],
+			action="callback", callback=option_callback_append_udm_module_options,
+			help="Gettext mo file", metavar="<GNU message catalog file>")
+	udm_module_options.add_option("--udm_module_messagecatalog", dest="udm_module_messagecatalog",
 			type="existing_filename", default=[],
 			action="callback", callback=option_callback_append_udm_module_options,
 			help="Gettext mo file", metavar="<GNU message catalog file>")
@@ -909,6 +947,19 @@ def ucs_registerLDAPExtension():
 			help="UDM module icon", metavar="<Icon file>")
 	parser.add_option_group(udm_module_options)
 
+	udm_module_options = OptionGroup(parser, "UDM syntax specific options")
+	udm_module_options.add_option("--udm_syntax_messagecatalog", dest="udm_syntax_messagecatalog",
+			type="existing_filename", default=[],
+			action="callback", callback=option_callback_append_udm_syntax_options,
+			help="Gettext mo file", metavar="<GNU message catalog file>")
+	parser.add_option_group(udm_module_options)
+
+	udm_module_options = OptionGroup(parser, "UDM hook specific options")
+	udm_module_options.add_option("--udm_hook_messagecatalog", dest="udm_hook_messagecatalog",
+			type="existing_filename", default=[],
+			action="callback", callback=option_callback_append_udm_hook_options,
+			help="Gettext mo file", metavar="<GNU message catalog file>")
+	parser.add_option_group(udm_module_options)
 
 	# parser.add_option("-v", "--verbose", action="count")
 
