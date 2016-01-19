@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-virtual-machine-manager-node
+fix: 4.0.1-2.89.201601191051
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * The con job to check checking libvirtd was removed.
+bug: [35101]
