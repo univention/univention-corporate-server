@@ -48,8 +48,7 @@ from distutils.version import LooseVersion
 
 from univention.appcenter.app import App, AppManager, _get_from_parser, _read_ini_file
 from univention.appcenter.actions import UniventionAppAction, get_action, Abort
-from univention.appcenter.utils import get_md5_from_file, mkdir
-from univention.appcenter.utils import urlopen
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen
 from univention.appcenter.ucr import ucr_save, ucr_get
 
 
@@ -76,6 +75,7 @@ class FileInfo(object):
 		self.url = url
 		self.filename = filename
 		self.md5 = get_md5_from_file(filename)
+		self.sha256 = get_sha256_from_file(filename)
 		self.archive_filename = '%s.%s' % (app.name, name)
 
 
@@ -191,7 +191,7 @@ class AppcenterApp(object):
 	def to_index(self):
 		index = {}
 		for file_info in self.important_files():
-			index[file_info.name] = {'url': file_info.url, 'md5': file_info.md5}
+			index[file_info.name] = {'url': file_info.url, 'md5': file_info.md5, 'sha256': file_info.sha256}
 		return index
 
 

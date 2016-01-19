@@ -41,7 +41,7 @@ import pipes
 from threading import Thread
 import time
 import urllib2
-from hashlib import md5
+from hashlib import md5, sha256
 import socket
 import tempfile
 from locale import getlocale
@@ -209,6 +209,14 @@ def get_md5_from_file(filename):
 	if os.path.exists(filename):
 		with open(filename, 'r') as f:
 			return get_md5(f.read())
+
+
+def get_sha256_from_file(filename):
+	if os.path.exists(filename):
+		with open(filename, 'r') as f:
+			m = sha256()
+			m.update(str(f.read()))
+			return m.hexdigest()
 
 
 def get_current_ram_available():
