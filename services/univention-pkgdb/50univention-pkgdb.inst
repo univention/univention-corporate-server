@@ -3,7 +3,7 @@
 # Univention Package Database
 #  join script
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,7 +49,7 @@ do
 	then # service record available
 		break
 	fi
-	sleep 3s
+	sleep 3
 done
 
 univention-pkgdb-scan --db-server "$hostname.$domainname" --add "$hostname$" || exit 1

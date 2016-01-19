@@ -46,4 +46,13 @@ fi
 
 call_joinscript 98univention-pkgdb-tools.inst || true
 
+# before 9.0.1-4 pkgdb-scans did not run on any system except the pkgdb-server
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 9.0.1-4; then
+	eval "$(ucr shell)"
+	SERVER=$(univention-ldapsearch -xLLL relativeDomainName=_pkgdb._tcp sRVRecord | grep sRVRecord | cut -d ' ' -f 5)
+	if [ -n "$SERVER" ] && [ "$hostname.$domainname." != "$SERVER" ]; then
+		univention-pkgdb-scan
+	fi
+fi
+
 exit 0

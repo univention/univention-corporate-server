@@ -1,3 +1,9 @@
+univention-pkgdb (9.0.1-4) unstable; urgency=low
+
+  * move 60invoke to univention-pkgdb-tools (Bug #33935)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 19 Jan 2016 12:14:03 +0100
+
 univention-pkgdb (9.0.1-3) unstable; urgency=medium
 
   * remove multifile entry from UCR specification, to only generate

@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-pkgdb
+fix:
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * The package database was not being automatically updated on systems
+    other than the database server.
+bug: [38993]

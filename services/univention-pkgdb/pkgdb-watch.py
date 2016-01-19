@@ -3,7 +3,7 @@
 # Univention Software-Monitor
 #  listener module that watches the availability of the software monitor service
 #
-# Copyright 2010-2014 Univention GmbH
+# Copyright 2010-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -69,7 +69,7 @@ def ldap_reconnect():
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'pkgdb-watch: ldap reconnect failed: %s' % str(ex))
 			ldap_info['lo'] = None
 		else:
-			if ldap_info['lo'] == None:
+			if ldap_info['lo'] is None:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'pkgdb-watch: ldap reconnect failed')
 
 def setdata(key, value):

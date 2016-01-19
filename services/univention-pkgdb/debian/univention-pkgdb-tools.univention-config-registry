@@ -1,0 +1,4 @@
+Type: file
+File: etc/apt/apt.conf.d/60invoke
+Variables: pkgdb/scan
+Variables: pkgdb/overwrite/joincheck

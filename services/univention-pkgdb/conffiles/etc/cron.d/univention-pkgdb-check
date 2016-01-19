@@ -1,3 +1,5 @@
+@%@UCRWARNING=# @%@
+
 # /etc/cron.d/univention-pkgdb-check: crontab fragment to check the dbuser for the pkgdb
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
