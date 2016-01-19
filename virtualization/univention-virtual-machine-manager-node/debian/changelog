@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (4.0.1-2) unstable; urgency=low
+
+  * Bug #35101: Remove cron job to check/restart libvirtd
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Jan 2016 10:34:08 +0100
+
 univention-virtual-machine-manager-node (4.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

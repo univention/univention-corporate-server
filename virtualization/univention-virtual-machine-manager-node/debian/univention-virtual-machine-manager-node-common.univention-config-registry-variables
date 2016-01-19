@@ -46,18 +46,6 @@ Description[en]=Deactivates the network configuration through UMC while the depr
 Type=str
 Categories=uvmm
 
-[libvirt/check/interval]
-Description[de]=Diese Variable konfiguriert einen Intervall in Minuten, in dem geprüft wird, ob der libvirt-Dienst noch läuft. Setzt man die Variable auf '0' oder ist die Variable nicht gesetzt, erfolgt keine Verfügbarkeitsprüfung.
-Description[en]=This variable configures an interval in minutes for checking whether the libvirt service is running. If the variable is set to '0' or the variable is unset, no availability check is made.
-Type=int
-Categories=uvmm,system-services
-
-[libvirt/check/timeout]
-Description[de]=Ist die Verfügbarkeitsprüfung des libvirt-Dienstes aktiviert (siehe 'libvirt/check/interval'), konfiguriert diese Variable die Zeit in Sekunden, in der der libvirt-Dienst auf eine Anfrage antworten muss.
-Description[en]=If the availability check for libvirt is enabled (see 'libvirt/check/interval'), this variable configures the time in seconds in which the libvirt service must reply to a request.
-Type=int
-Categories=uvmm,system-services
-
 [libvirt/log/level]
 Description[de]=Konfiguration des allgemeinen libvirtd Loglevels. Mögliche Werte sind 1-4, wobei 3 der Standardwert ist (DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4). Jede Nachricht enthält dabei Informationen über die Priorität, die Kategorie, den Funktionsnamen, die Zeilennummer und einen formatierten Nachrichtentext.
 Description[en]=Configuration of the general libvirtd log level. Possible values range from 1-4 with 3 being the default (DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4). Each message includes a priority level, a category, function name, line number and a formatted message text.
