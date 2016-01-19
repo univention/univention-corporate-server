@@ -2,7 +2,7 @@
 -- Univention Package Database
 --  database table definitions
 --
--- Copyright 2004-2014 Univention GmbH
+-- Copyright 2004-2016 Univention GmbH
 --
 -- http://www.univention.de/
 --

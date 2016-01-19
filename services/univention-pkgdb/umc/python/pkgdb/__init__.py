@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: software monitor
 #
-# Copyright 2011-2014 Univention GmbH
+# Copyright 2011-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
