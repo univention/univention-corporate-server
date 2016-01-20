@@ -48,8 +48,7 @@ this_is_initial_or_rejoin() {
 
 this_host_is_registered_as_s4_connector() {
 	local my_dn_or_empty
-	my_dn_or_empty="$(univention-directory-manager \
-		computers/computer list "$@" \
+	my_dn_or_empty="$(univention-directory-manager computers/computer list "$@" \
 		--filter "(&(univentionService=${NAME})(cn=$hostname))" \
 		| sed -ne 's|^DN: ||p')"
 	test -n "$my_dn_or_empty"
