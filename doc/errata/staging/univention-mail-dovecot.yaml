@@ -6,8 +6,9 @@ fix: 2.0.1-4.57.201601191033
 version: [0]
 desc: |
   This update addresses the following issues:
-  * IMAP ACLs removed through the Management Console, did not get
-    removed on the IMAP server (Bug 40194).
+  * A problem regarding IMAP ACLs at shared folders with primary mail address
+    has been fixed. ACLs that have been removed via Univention Management
+    Console or CLI have not been removed on the IMAP server (Bug 40194).
   * A file for the process of handling user renames has been moved to a
     secure location (Bug 40246).
 bug: [40194,40246]
