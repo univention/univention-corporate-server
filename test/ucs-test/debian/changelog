@@ -1,3 +1,9 @@
+ucs-test (6.0.31-16) unstable; urgency=low
+
+  * Bug #40120 LDAP: Ignore order of multi-valued attributes on modify
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Jan 2016 13:34:02 +0100
+
 ucs-test (6.0.31-15) unstable; urgency=low
 
   * install squid first, then set UCRV (Bug #40420)
