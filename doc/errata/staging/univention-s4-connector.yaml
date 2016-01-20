@@ -1,0 +1,15 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-s4-connector
+fix: 10.0.1-10.604.201601201402
+version: [0]
+desc: |
+ This update addresses the following issue:
+ * Erratum 39 accidentally set connector/s4/listener/disabled=true on
+   UCS Samba/AD DCs which run an S4 Connector in an UCS domain where
+   multiple S4 Connector services are registered in LDAP. This may affect
+   a DC Master in an UCS@school environment. This doesn't affect
+   UCS Samba/AD DCs where connector/s4/allow/secondary is true, which comprises
+   UCS@school Samba AD DC Salve systems.
+bug: [40467]
