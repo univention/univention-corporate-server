@@ -138,6 +138,17 @@ if [ -x /etc/init.d/univention-s4-connector ] && [ -f /usr/share/univention-join
 		univention-config-registry set connector/s4/mapping/dns/position?'legacy'
 	fi
 
+	if [ "$1" = "configure" -a -n "$2" ]; then
+		if dpkg --compare-versions "$2" eq 10.0.1-7.598.201512220956 \
+			|| dpkg --compare-versions "$2" eq 10.0.1-8.601.201601071718; then
+			if is_ucr_true 'connector/s4/autostart' \
+				&& [ "$connector_s4_listener_disabled" = 'true' ]; then
+					univention-config-registry unset connector/s4/listener/disabled
+					/etc/init.d/univention-directory-listener crestart
+			fi
+		fi
+	fi
+
 	if [ "$skip_final_restart" != "true" ]; then
 		/etc/init.d/univention-s4-connector restart
 	fi

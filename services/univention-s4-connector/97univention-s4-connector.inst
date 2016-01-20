@@ -41,6 +41,26 @@ eval "$(univention-config-registry shell)"
 
 NAME="S4 Connector"
 
+this_is_initial_or_rejoin() {
+	test "$JS_LAST_EXECUTED_VERSION" -le 0
+	return $?
+}
+
+this_host_is_registered_as_s4_connector() {
+	local my_dn_or_empty
+	my_dn_or_empty="$(univention-directory-manager \
+		computers/computer list "$@" \
+		--filter "(&(univentionService=${NAME})(cn=$hostname))" \
+		| sed -ne 's|^DN: ||p')"
+	test -n "$my_dn_or_empty"
+	return $?
+}
+
+this_host_is_not_registered_as_s4_connector() {
+	! this_host_is_registered_as_s4_connector
+}
+
+
 if is_domain_in_admember_mode; then
 	echo "ERROR: The domain is in AD Member Mode."
 	## Don't autostart S4 Connector
@@ -258,11 +278,26 @@ if [ -z "$s4connectorservicehost_dns" ]; then	## we are first system to provide 
 	# Restart the connector to use the new values for connector/s4/poll/sleep and connector/s4/retryrejected
 	/etc/init.d/univention-s4-connector restart
 else
-	## Don't autostart S4 Connector
-	/etc/init.d/univention-s4-connector stop
-	univention-config-registry set	connector/s4/autostart?no \
+	##
+	## This branch runs in case
+	##   a) we are first system to provide this service
+	## or
+	##   b) connector/s4/allow/secondary is true
+	##
+	## Note that connector/s4/allow/secondary is set in these cases:
+	## 1. automatically on UCS@school Samba/AD Slave PDCs
+	## 2. manually on Multischool Master where S4-Connector was installed
+	##    later, after UCS@school Samba/AD Slave PDCs have been joined.
+	##
+
+	if this_is_initial_or_rejoin \
+		&& this_host_is_not_registered_as_s4_connector; then
+		## Don't autostart S4 Connector on DC Backups.
+		/etc/init.d/univention-s4-connector stop
+		univention-config-registry set	connector/s4/autostart?no \
 						connector/s4/listener/disabled=true
-	/etc/init.d/univention-directory-listener crestart
+		/etc/init.d/univention-directory-listener crestart
+	fi
 fi
 
 joinscript_save_current_version

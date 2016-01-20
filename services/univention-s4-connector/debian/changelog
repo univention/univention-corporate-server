@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-9) unstable; urgency=medium
+
+  * Bug #40467: Fix connector/s4/listener/disabled
+
+ -- Arvid Requate <requate@univention.de>  Wed, 20 Jan 2016 13:38:16 +0100
+
 univention-s4-connector (10.0.1-8) unstable; urgency=medium
 
   * Escape ldap search attribute values in dns.py (Bug #40380)
