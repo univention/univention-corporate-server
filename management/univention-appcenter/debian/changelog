@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-44) unstable; urgency=medium
+
+  * Bug #40240: Link new file immediately for upgrade phase issues
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jan 2016 13:17:51 +0100
+
 univention-appcenter (5.0.19-43) unstable; urgency=medium
 
   * Bug #40264: Use univention-app shell in joinscripthelper.sh

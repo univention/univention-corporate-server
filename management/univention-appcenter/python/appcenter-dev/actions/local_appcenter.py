@@ -247,7 +247,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		parser.add_argument('-c', '--component-id', help='The internal component ID for this version of the App')
 		parser.add_argument('-i', '--ini', help='Path to the ini file of the App')
 		parser.add_argument('-l', '--logo', help='Path to the logo file of the App (UCS 4.1: square SVG; UCS <= 4.0: 50x50 transparent PNG)')
-		parser.add_argument('--logo-detail', help='Path to the detail logo file of the App (4.1 only, elongated SVG)')
+		parser.add_argument('--logo-detail', dest='logo_detail_page', help='Path to the detail logo file of the App (4.1 only, elongated SVG)')
 		parser.add_argument('-s', '--screenshot', nargs='+', help='Path to a screenshot. Needs to be mentioned in INI as Screenshot=.... If the screenshot is localised (Screenshot= in [de]), two screenshots should be given')
 		parser.add_argument('-t', '--thumbnails', nargs='+', help='Path to Thumbnails. Need to be mentioned in INI as Thumbnails=.... If the thumbnails are localised (Thumbnails= in [de]), two first [en], then [de] Thumbnails should be given')
 		parser.add_argument('--ucr', help='Path to a file describing Univention Config Registry variables')
@@ -363,14 +363,14 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 					self.copy_file(args.logo, os.path.join(meta_inf_dir, logo_fname))
 				else:
 					self.copy_file(args.logo, os.path.join(meta_inf_dir, '%s.png' % component_id))
-		if args.logo_detail:
+		if args.logo_detail_page:
 			parser = ConfigParser()
 			parser.read(ini_file)
 			try:
 				logo_detail_fname = parser.get('Application', 'LogoDetailPage')
 			except NoOptionError:
 				self.fatal('No Logo specified in ini file!')
-			self.copy_file(args.logo_detail, os.path.join(meta_inf_dir, logo_detail_fname))
+			self.copy_file(args.logo_detail_page, os.path.join(meta_inf_dir, logo_detail_fname))
 		if args.screenshot:
 			self.copy_file(args.screenshot[0], os.path.join(meta_inf_dir, app_en.screenshot))
 			if len(args.screenshot) > 1:
