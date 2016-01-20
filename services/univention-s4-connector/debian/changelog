@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-10) unstable; urgency=medium
+
+  * Bug #40467: Make ucs-lint happy
+
+ -- Arvid Requate <requate@univention.de>  Wed, 20 Jan 2016 13:43:02 +0100
+
 univention-s4-connector (10.0.1-9) unstable; urgency=medium
 
   * Bug #40467: Fix connector/s4/listener/disabled
