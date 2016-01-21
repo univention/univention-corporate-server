@@ -1,3 +1,10 @@
+ucs-test (6.0.31-18) unstable; urgency=low
+
+  * add test for UCR cronjobs (Bug #19317)
+  * add test for UCR true/false values (Bug #19340)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 21 Jan 2016 13:10:36 +0100
+
 ucs-test (6.0.31-17) unstable; urgency=medium
 
   * Bug #40469: Add 00_checks/10_s4_connector_listener_active
