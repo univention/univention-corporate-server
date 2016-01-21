@@ -1,3 +1,10 @@
+ucs-test (5.0.175-4) unstable; urgency=low
+
+  * add test for UCR cronjobs (Bug #19317)
+  * add test for UCR true/false values (Bug #19340)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 21 Jan 2016 13:13:16 +0100
+
 ucs-test (5.0.175-3) unstable; urgency=medium
 
   * Bug #40299: Fix 52_s4connector/405sync_msprintconnectionpolicy 

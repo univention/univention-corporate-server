@@ -1,0 +1,70 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test is_ucr_true is_ucr_false
+## bugs: [15125]
+## tags: [basic]
+## packages:
+##   - python-univention-lib
+## exposure: safe
+
+import subprocess
+from operator import itemgetter
+
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
+from univention.config_registry import handler_unset
+
+
+true_values = ["yes", "Yes", "YES", "1", "true", "True", "TRUE", "On", "on", "ON", "enabled", "Enabled", "ENABLED"]
+false_values = ["no", "No", "NO", "0", "false", "False", "FALSE", "Off", "off", "OFF", "disabled", "Disabled", "DISABLED"]
+not_bool_values = ["yes2", "On2", uts.random_name(), uts.random_name(), uts.random_name()]
+
+
+test_run = uts.random_name()
+
+
+def rand_ucr(val):
+	return "ucs-test/{0}/{1}".format(test_run, uts.random_name()), val
+
+
+def set_on_cmdline(ucrs):
+	return subprocess.Popen(["ucr", "set"] + ucrs).communicate()
+
+
+def main():
+	true_ucrvs = map(rand_ucr, true_values)
+	true_ucrs = map(itemgetter(0), true_ucrvs)
+	false_ucrvs = map(rand_ucr, false_values)
+	false_ucrs = map(itemgetter(0), false_ucrvs)
+	not_bool_ucrvs = map(rand_ucr, not_bool_values)
+	not_bool_ucrs = map(itemgetter(0), not_bool_ucrvs)
+
+	try:
+		set_on_cmdline(map("=".join, true_ucrvs))
+		set_on_cmdline(map("=".join, false_ucrvs))
+		set_on_cmdline(map("=".join, not_bool_ucrvs))
+
+		with ucr_test.UCSTestConfigRegistry() as ucr:
+			if not all(map(ucr.is_true, true_ucrs)):
+				utils.fail("All should be true: {0}.".format(true_ucrs))
+			if any(map(ucr.is_false, true_ucrs)):
+				utils.fail("None should be false: {0}.".format(true_ucrs))
+
+			if not all(map(ucr.is_false, false_ucrs)):
+				utils.fail("All should be false: {0}.".format(false_ucrs))
+			if any(map(ucr.is_true, false_ucrs)):
+				utils.fail("None should be true: {0}.".format(false_ucrs))
+
+			if any(map(ucr.is_true, not_bool_ucrs)):
+				utils.fail("None should be true: {0}.".format(not_bool_ucrs))
+			if any(map(ucr.is_false, not_bool_ucrs)):
+				utils.fail("None should be false: {0}.".format(not_bool_ucrs))
+
+	finally:
+		handler_unset(true_ucrs)
+		handler_unset(false_ucrs)
+		handler_unset(not_bool_ucrs)
+
+
+if __name__ == '__main__':
+	main()
