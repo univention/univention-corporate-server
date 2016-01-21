@@ -15,24 +15,30 @@ RETVAL=0
 VAR_COUNT=500
 PREFIX="$(random_chars 128)"
 
-resultFile=$(mktemp)
+cleanup () {
+	[ -e "$resultFile" ] && rm -f "$resultFile"
+	seq -f "${PREFIX}_%.0f" 0 "$VAR_COUNT" | xargs ucr unset
+	[ -n "$pid" ] && ps "$pid" >/dev/null 2>&1 && kill "$pid"
+	wait
+}
+trap cleanup EXIT
 
 echo "Starting at $(date)"
 ucr set "${PREFIX}_400=value400"
 
-while true
+resultFile=$(mktemp)
+while [ -w "$resultFile" ]
 do
 	if [ "$(ucr get "${PREFIX}_400")" != "value400" ]
 	then
 		echo "Error at $(date)" | tee -a "$resultFile"
 	fi
 done &
+pid=$!
 
 echo "Setting UCR variables"
-for((i=0;i<$VAR_COUNT;i++)); do ucr set "${PREFIX}_$i=value$i"; done
+for ((i=0;i<=$VAR_COUNT;i++)); do ucr set "${PREFIX}_${i}=value${i}"; done
 
-kill $!
-wait
 echo "Stopping at $(date)"
 
 if [ -s "$resultFile" ]; then
@@ -41,10 +47,6 @@ if [ -s "$resultFile" ]; then
 	fail_test 110
 fi
 
-rm -f "$resultFile"
-
 echo "Starting cleanup"
-
-for((i=0;i<$VAR_COUNT;i++)); do ucr unset "${PREFIX}_$i"; done
 
 exit $RETVAL

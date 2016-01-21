@@ -1,3 +1,9 @@
+ucs-test (6.0.31-19) unstable; urgency=low
+
+  * Bug #33172: Improve parallel ucs set/get test
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Jan 2016 13:35:00 +0100
+
 ucs-test (6.0.31-18) unstable; urgency=low
 
   * add test for UCR cronjobs (Bug #19317)
