@@ -151,7 +151,7 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		try:
 			remove_python_file(objectclass, target_subdir, old_relative_filename)
-			remove_messagecatalog(dn, old, univentionUDMSyntax)
+			remove_messagecatalog(dn, old, objectclass)
 			if objectclass == 'univentionUDMModule':
 				remove_umcicons(dn, old)
 				remove_umcregistration(dn, old)

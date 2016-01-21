@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-15) unstable; urgency=low
+
+  * fix typo preventing removal of message catalogs (Bug #34556)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 21 Jan 2016 08:56:54 +0100
+
 univention-directory-manager-modules (11.0.2-14) unstable; urgency=low
 
   * version bump (Bug #34556)
