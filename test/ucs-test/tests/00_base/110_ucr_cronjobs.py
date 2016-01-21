@@ -1,0 +1,76 @@
+#!/usr/share/ucs-test/runner python
+## desc: schedule cronjobs via UCR
+## bugs: [16541]
+## tags: [basic]
+## packages:
+##   - python-univention-config-registry
+## exposure: dangerous
+
+import datetime
+import time
+
+from univention.config_registry import handler_set, handler_unset
+import univention.testing.strings as uts
+import univention.testing.ucr as ucr_test
+import univention.testing.utils as utils
+
+
+def ucr_cron(name, time_s, command, description=None, mailto=None, user=None):
+	ret = [
+		"cron/{0}/command={1}".format(name, command),
+		"cron/{0}/time={1}".format(name, time_s)
+	]
+	for field in ["description", "mailto", "user"]:
+		if locals()[field]:
+			ret.append("cron/{0}/{1}={2}".format(name, field, locals()[field]))
+	return ret
+
+
+def main():
+	# find next minute at least 20s from now
+	now = datetime.datetime.now()
+	for somemore in range(10, 80, 10):
+		then = now + datetime.timedelta(seconds=somemore)
+		if then.minute > now.minute:
+			break
+
+	time_s = "{m} {h} * * *".format(h=then.hour, m=then.minute)
+	token = str(time.time())
+	name = uts.random_name()
+	ucrs = ucr_cron(name, time_s, "echo {0}".format(token), name, "root")
+	try:
+		handler_set(ucrs)
+
+		# wait for cron
+		cron_plus_ten = datetime.datetime(
+			year=then.year,
+			month=then.month,
+			day=then.day,
+			hour=then.hour,
+			minute=then.minute,
+			second=10
+		)
+		if not now > cron_plus_ten:
+			print "Sleeping {0} seconds...".format((cron_plus_ten - now).seconds)
+			time.sleep((cron_plus_ten - now).seconds)
+	finally:
+		if ucrs:
+			handler_unset(map(lambda x: x.split("=")[0], ucrs))
+
+	# look for mail
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		root_mail_alias = ucr.get("mail/alias/root", "")
+	if "systemmail" in root_mail_alias:
+		mailbox = "/var/mail/systemmail"
+	else:
+		mailbox = "/var/mail/root"
+
+	with open(mailbox, "r") as f:
+		for line in f:
+			if token in line:
+				break
+		else:
+			utils.fail("Token '{0}' not found in /var/mail/root at {1}, UCRs: {2}.".format(token, datetime.datetime.now(), ucrs))
+
+if __name__ == '__main__':
+	main()

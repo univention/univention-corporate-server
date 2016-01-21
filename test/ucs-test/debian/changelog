@@ -1,3 +1,10 @@
+ucs-test (4.0.215-11) unstable; urgency=low
+
+  * add test for UCR cronjobs (Bug #19317)
+  * add test for UCR true/false values (Bug #19340)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 21 Jan 2016 13:12:42 +0100
+
 ucs-test (4.0.215-10) unstable; urgency=low
 
   * Bug #39324: rename testing repositories
