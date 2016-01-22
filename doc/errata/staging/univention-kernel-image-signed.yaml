@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
 src: univention-kernel-image-signed
-fix:
+fix: 1.0.3-3.12.201601221815
 version: [4]
 desc: |
 bug: [38764]
