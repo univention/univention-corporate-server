@@ -229,6 +229,9 @@ def main():
 	parser.add_argument('--url', '-u', 
 		    help='the url of a jenkins matrix project. case sensitive.',
 		    required=True)
+	parser.add_argument(
+			'--output', '-o', help='output file.'
+			)
 	group = parser.add_mutually_exclusive_group(required=True)
 	group.add_argument(
 			'--latest', '-l', help='get all results for the latest build',
@@ -258,7 +261,12 @@ def main():
 				single_build(job, args)
 			if args['test']:
 				single_test(job, args)
-	print(indent(doc.getvalue()))
+
+	if args['output']:
+		with open(args['output'], 'w') as f:
+			f.write(doc.getvalue())
+	else:
+		print(doc.getvalue())
 
 
 def table_header(machines):
@@ -336,7 +344,7 @@ def single_build(job, args):
 	with tag('table', klass='table table-header-rotated'):
 		table_header(pretty_names)
 		with tag('tbody'):
-			for section, test_names in sections.items():
+			for section, test_names in sections.iteritems():
 				with tag('tr', onclick='togglecollapse.bind(this)();', klass='section_header'):
 					with tag('td', colspan=len(pretty_names)+2):
 						text(section + "[+]")
@@ -389,7 +397,7 @@ def single_test(job, args):
 	with tag('table', klass='table table-header-rotated'):
 		table_header(pretty_names)
 		with tag('tbody'):
-			for build_id, resultset_dict in results.items():
+			for build_id, resultset_dict in results.iteritems():
 				with tag('tr'):
 					with tag('td'):
 						text('{:03d}'.format(build_id))
