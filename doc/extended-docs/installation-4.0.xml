@@ -990,7 +990,7 @@ univention-system-setup-boot uss/server/role string memberserver
 							</entry>
 						</row>
 						<row>
-							<entry><varname>interfaces/eth<replaceable>N</replaceable>/acceptra</varname></entry>
+							<entry><varname>interfaces/eth<replaceable>N</replaceable>/acceptRA</varname></entry>
 							<entry>
 								If this setting is set to <literal>yes</literal>, the stateless address auto-configuration (<acronym>SLAAC</acronym>) is used.
 								In this, the IP address is assigned from the routers of the local network segment.
