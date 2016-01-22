@@ -19,10 +19,6 @@ desc: |
     the LDAP server.
   * Some shell quoting errors were fixed.
   * Only initialize the LDAP server on the DC Master and abort on errors.
-  * The LDAP schema for UDM extensions was modified. Object classes
-    univentionUDMHook and univentionUDMSyntax now have attributes for message
-    catalogs that allow shipping of translations for UDM hooks and UDM syntax
-    settings.
-  * Allow installation of translations for extensions of UDM hooks and UDM
-    syntaxes.
+  * The attribute "univentionMessageCatalog" has been added to the LDAP schema
+    for the univentionUDMHook and univentionUDMSyntax object classes.
 bug: [38091,39884,39866,40031,38051,35840]

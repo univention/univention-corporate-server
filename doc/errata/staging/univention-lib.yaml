@@ -6,6 +6,6 @@ fix: 5.0.0-15.321.201601191121
 version: [0]
 desc: |
   This update addresses the following issue:
-  * Allow installation of translations for extensions of UDM hooks and UDM
-    syntaxes.
+  * It is now possible to ship translations for UDM hooks and UDM syntax
+    settings.
 bug: [34556]
