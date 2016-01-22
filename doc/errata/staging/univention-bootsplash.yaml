@@ -1,11 +1,11 @@
 product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
-src: univention-bootsplash.yaml
+src: univention-bootsplash
 fix: 7.0.2-11.99.201601151533
 version: [0]
 desc: |
-  This update addresses the following issues:
-  * The backend of the univention welcome screen has been
-    changed from X firefox to plymouth.
+  This update addresses the following issue:
+  * The backend of univention-welcome-screen has been changed from Firefox to
+    Plymouth.
 bug: [39241]

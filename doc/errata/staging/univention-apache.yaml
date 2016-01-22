@@ -5,6 +5,6 @@ src: univention-apache
 fix: 8.0.1-6.256.201601140838
 version: [0]
 desc: |
- This update addresses the following issues:
+ This update addresses the following issue:
   * The term 'Univention App' has been replaced by 'Appliance'
 bug: [40304]

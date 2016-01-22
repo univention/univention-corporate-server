@@ -6,10 +6,10 @@ fix: 8.0.28-5.908.201601181224
 version: [0]
 desc: |
  This update addresses the following issues:
- * The dh_umc debhelper scripts doesn't create duplicated message entries
+ * The 'dh_umc' debhelper scripts doesn't create duplicated message entries
    or false warnings about fuzzy PO file headers anymore.
  * Translation format strings with multiple unnamed arguments have been
    adjusted.
- * The file permissions of files installed by the dh_umc debhelper have been
+ * The file permissions of files installed by the 'dh_umc' debhelper have been
    adjusted.
 bug: [40341, 40339, 30520]

@@ -6,6 +6,6 @@ fix: 9.0.0-5.267.201601111715
 version: [0]
 desc: |
   This update addresses the following issue:
-  * Create the user 'messagebus' as the owner  '/etc/libnss-ldap.conf'.
+  * Create the user 'messagebus' as the owner for '/etc/libnss-ldap.conf'.
     Thanks to Lutz Willek.
 bug: [38993]

@@ -6,6 +6,6 @@ fix: 9.0.1-4.200.201601191315
 version: [0]
 desc: |
   This update addresses the following issue:
-  * The package database was not being automatically updated on systems
-    other than the database server.
+  * The package database was not updated automatically on systems other than
+    the database server.
 bug: [38993]

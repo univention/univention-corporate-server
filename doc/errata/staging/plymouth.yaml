@@ -6,6 +6,6 @@ fix: 0.8.5.1-5.17.201512031309
 version: [0]
 desc: |
  This update addresses the following issue:
- * Some changes have been made to the plymouth init script to
-   support the univention welcome screen.
+ * Some changes have been made to the Plymouth init script to support
+   univention-welcome-screen.
 bug: [39241]

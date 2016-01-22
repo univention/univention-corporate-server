@@ -6,7 +6,7 @@ fix: 3.0.1-4.7.201601141044
 version: [0]
 desc: |
   This update addresses the following issues:
-  * Enhanced robustnesss of the univention-ucs-translation-build-package.py
+  * Enhanced robustness of the univention-ucs-translation-build-package.py
     script.
   * No fuzzy PO file header entries are created anymore.
 bug: [40340, 40341]

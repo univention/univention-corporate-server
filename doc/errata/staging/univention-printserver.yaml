@@ -5,7 +5,7 @@ src: univention-printserver
 fix: 9.0.2-1.666.201512151336
 version: [0]
 desc: |
- This update addresses the following issues:
- * The default cups policy has been fixed and is now
-   configurable via the cups/policy/.* UCR variables.
+ This update addresses the following issue:
+ * The default CUPS policy has been fixed and is now configurable via the
+   'cups/policy/.*' UCR variables.
 bug: [38023]
