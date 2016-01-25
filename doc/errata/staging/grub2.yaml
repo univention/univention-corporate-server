@@ -2,8 +2,12 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: grub2
-fix: 
+fix: 2.02~beta2-22+deb8u1.105.201601251600
 version: [0]
 desc: |
- This update addresses the following issue:
-bug: [39009]
+ This updates grub2 to 2.02~beta2-22+deb8u1 to fix the following issues:
+ * buffer overflow when checking password entered during bootup (CVE-2015-8370)
+ * grub hangs on some hardware when booting via UEFI (Bug #39009)
+bug: [39009, 40280]
+cve:
+ - CVE-2015-8370
