@@ -1,8 +1,8 @@
 product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-4
-src: univention-kernel-image-signed
-fix: 1.0.3-3.12.201601221815
+src: univention-kernel-image
+fix: 8.0.6-8.84.201601231355
 version: [4]
 desc: |
  The Linux kernel in Univention Corporate Server 4.0 has been updated to
@@ -135,7 +135,7 @@ desc: |
  * SCTP denial of service during heartbeat timeout functions (CVE-2015-8767)
  * use-after-free in TIOCGETD ioctl (CVE-2016-0723)
  * KEYS: Fix keyring ref leak in join_session_keyring() (CVE-2016-0728)
-note: This is the second part of the fix, which provides the new kernel package.
+note: This is the third part of the fix, which updates the meta package.
 cve:
  - CVE-2013-4312
  - CVE-2013-7446
