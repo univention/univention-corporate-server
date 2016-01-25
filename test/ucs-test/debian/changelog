@@ -1,3 +1,9 @@
+ucs-test (4.0.215-12) unstable; urgency=low
+
+  * workaround Bug #37649 in test for UCR cronjobs (Bug #19317)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 25 Jan 2016 16:07:35 +0100
+
 ucs-test (4.0.215-11) unstable; urgency=low
 
   * add test for UCR cronjobs (Bug #19317)

@@ -5,6 +5,7 @@
 ## packages:
 ##   - python-univention-config-registry
 ## exposure: dangerous
+## roles: [domaincontroller_master]
 
 import datetime
 import time
