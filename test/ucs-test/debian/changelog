@@ -1,3 +1,9 @@
+ucs-test (6.0.31-20) unstable; urgency=low
+
+  * workaround Bug #37649 in test for UCR cronjobs (Bug #19317)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 25 Jan 2016 16:06:14 +0100
+
 ucs-test (6.0.31-19) unstable; urgency=low
 
   * Bug #33172: Improve parallel ucs set/get test
