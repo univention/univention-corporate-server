@@ -475,7 +475,11 @@ def default_error_page(status, message, traceback, version, result=None):
 	#if not accept_json or (not is_ajax and accept_html):
 	if not is_ajax:
 		return default_error_page_html(status, message, traceback, version, result)
-	return default_error_page_json(status, message, traceback, version, result)
+	page = default_error_page_json(status, message, traceback, version, result)
+	if 'X-Iframe-Response' in cherrypy.request.headers:
+		cherrypy.response.headers['Content-Type'] = 'text/html'
+		return '<html><body><textarea>%s</textarea></body></html>' % (cherrypy._cperror._escape(page),)
+	return page
 
 
 def default_error_page_html(status, message, traceback, version, result=None):
@@ -865,17 +869,18 @@ class CPCommand(CPgeneric):
 		response = super(CPCommand, self).get_response(sessionid, path, args)
 
 		# check if the request is a iframe upload
-		if self._is_file_upload():
-			if 'iframe' in args and (args['iframe'] not in ('false', False, 0, '0')):
-				# this is a workaround to make iframe uploads work, they need the textarea field
-				cherrypy.response.headers['Content-Type'] = 'text/html'
-				return '<html><body><textarea>%s</textarea></body></html>' % (response)
+		if 'X-Iframe-Response' in cherrypy.request.headers:
+			# this is a workaround to make iframe uploads work, they need the textarea field
+			cherrypy.response.headers['Content-Type'] = 'text/html'
+			return '<html><body><textarea>%s</textarea></body></html>' % (response)
 
 		return response
 
 	def get_request_upload(self, path, args):
 		self._log('info', 'Handle upload command')
 		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
+		if 'iframe' in args and (args['iframe'] not in ('false', False, 0, '0')):
+			cherrypy.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
 		req = umcp.Request('UPLOAD', arguments=[path])
 		req.body = self._get_upload_arguments(req, args)
 		return req
@@ -1155,6 +1160,7 @@ class SAML(Ressource):
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
 		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
+		cherrypy.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
 		req = umcp.Request('AUTH')
