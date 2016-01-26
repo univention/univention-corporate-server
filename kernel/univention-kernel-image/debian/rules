@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ABI := ucs163
+ABI := ucs167
 
 SOURCEVERSION := 4.1
 amd64_VERSION := ${SOURCEVERSION}.0-${ABI}-amd64
