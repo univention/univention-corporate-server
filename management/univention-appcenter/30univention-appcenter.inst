@@ -52,7 +52,7 @@ ucs_registerLDAPExtension "$@" \
 if [ -x /etc/init.d/slapd ] &&
 	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 	[ -e /var/univention-join/joined ] &&
-	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionAppID
+	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionAppID &&
 	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionAppID'"
 then
 	if pidof slapd >/dev/null 2>/dev/null

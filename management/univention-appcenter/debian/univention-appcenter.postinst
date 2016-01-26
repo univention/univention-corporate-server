@@ -41,6 +41,8 @@ fi
 if [ -x /etc/init.d/slapd ] &&
 	[ -x /usr/share/univention-ldap/ldap_setup_index ] &&
 	[ -e /var/univention-join/joined ] &&
+	[ "$1" = configure ] &&
+	dpkg --compare-versions "$2" lt 5.0.19-45~ &&
 	! ucr get ldap/index/eq | tr , '\n' | grep -Fxq univentionAppID &&
 	univention-ldapsearch -LLL -o ldif-wrap=no -b cn=Subschema -s base attributeTypes | grep -Fq "NAME 'univentionAppID'"
 then
