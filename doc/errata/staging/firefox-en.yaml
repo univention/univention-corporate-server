@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: firefox-en
-fix:
+fix: 1:38.5.2esr-ucs-4.1.63.201601260929
 version: [0]
 desc: |
  Firefox ESR 38.5.2 fixes these issues:
