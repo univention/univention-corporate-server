@@ -1,0 +1,19 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Check if ldbsearch is possible
+## exposure: safe
+## tags:
+##  - basic
+##  - apptest
+## bugs: [40434]
+## roles-not: [basesystem]
+
+RETVAL=0
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+ldbsearch -H "ldaps://$(hostname -f)" \
+    -U"$(hostname)$%$(cat /etc/machine.secret)" \
+    -s base  || fail_test 1 "Failed to run ldbsearch with the host account"
+
+exit $RETVAL
+

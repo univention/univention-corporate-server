@@ -1,3 +1,10 @@
+ucs-test (5.0.175-6) unstable; urgency=medium
+
+  * Added 00_checks/21_kinit_hostaccount and
+    00_checks/22_ldbsearch_hostaccount (Bug #40434)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Jan 2016 21:07:38 +0100
+
 ucs-test (5.0.175-5) unstable; urgency=low
 
   * workaround Bug #37649 in test for UCR cronjobs (Bug #19317)
