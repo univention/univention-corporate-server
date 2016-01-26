@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2013-2015 Univention GmbH
+# Copyright 2013-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -259,6 +259,28 @@ install_ucs_test_appcenter_uninstall ()
 	install_with_unmaintained ucs-test-appcenter-uninstall
 }
 
+install_ucsschool ()
+{
+	case $ucsschool_release in
+		appcenter.test)
+			switch_to_test_app_center
+			install_apps ucsschool
+			;;
+		public)
+			install_apps ucsschool
+			;;
+		*)
+			local component="repository/online/component/ucsschool_DEVEL"
+			ucr set "$component"/description="Development version of UCS@school packages" \
+				"$component"/version="$(ucr get version/version)" \
+				"$component"/server=updates-test.software-univention.de \
+				"$component"=enabled
+			univention-install --yes ucs-school-umc-installer
+			;;
+	esac
+
+}
+
 remove_s4connector_tests_and_mark_tests_manual_installed ()
 {
 	univention-remove --yes ucs-test-s4connector
@@ -469,4 +491,4 @@ set_administrator_password_for_ucs_test ()
 # vim:set filetype=sh ts=4:
 release_update='public'
 errata_update='testing'
-
+ucsschool_release='scope'
