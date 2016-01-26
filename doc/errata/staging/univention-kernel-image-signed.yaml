@@ -1,0 +1,53 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-kernel-image-signed
+fix: 2.0.0-4.13.201601261420
+version: [0]
+desc: |
+ The Linux kernel in Univention Corporate Server 4.1 has been updated to
+ 4.1.16. It provides many bugfixes and fixes several vulnerabilities:
+ * Use-after-free vulnerability in net/unix/af_unix.c allows local users to
+   bypass intended AF_UNIX socket permissions or cause a denial of service
+   (panic) via crafted epoll_ctl calls (CVE-2013-7446)
+ * virtio-net: drop NETIF_F_FRAGLIST (CVE-2015-5156)
+ * [x86] KVM: Intercept #AC to avoid guest->host denial-of-service
+   (CVE-2015-5307)
+ * RDS: verify the underlying transport exists before creating a connection
+   (CVE-2015-6937)
+ * RDS: fix race condition when sending a message on unbound socket
+   (CVE-2015-7990)
+ * fs/btrfs/inode.c mishandles compressed inline extents, which allows local
+   users to obtain sensitive pre-truncation information from a file via a
+   clone action (CVE-2015-8374)
+ * usb: serial: visor: fix crash on detecting device without write_urbs
+   (CVE-2015-7566)
+ * tty: Fix unsafe ldisc reference via ioctl(TIOCGETD) (CVE-2016-0723)
+ * unix: properly account for FDs passed over unix sockets (CVE-2013-4312)
+ * keyring ref leak in join_session_keyring() (CVE-2016-0728)
+ * KEYS: Fix race between read and revoke (CVE-2015-7550)
+ * net: add validation for the socket syscall protocol argument
+   (CVE-2015-8543)
+ * bluetooth: Validate socket address length in sco_sock_bind()
+   (CVE-2015-8575)
+ * KEYS: Fix crash when attempt to garbage collect an uninstantiated keyring
+   (CVE-2015-7872)
+ * pptp: verify sockaddr_len in pptp_bind() and pptp_connect() (CVE-2015-8569)
+note: This is the 2nd part of the update.
+bug: [40481]
+cve:
+ - CVE-2013-4312
+ - CVE-2013-7446
+ - CVE-2015-5156
+ - CVE-2015-5307
+ - CVE-2015-6937
+ - CVE-2015-7550
+ - CVE-2015-7566
+ - CVE-2015-7872
+ - CVE-2015-7990
+ - CVE-2015-8374
+ - CVE-2015-8543
+ - CVE-2015-8569
+ - CVE-2015-8575
+ - CVE-2016-0723
+ - CVE-2016-0728
