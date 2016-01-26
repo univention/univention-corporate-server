@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-appcenter
-fix: 5.0.19-44.101.201601201319
+fix: 5.0.19-45.102.201601260812
 version: [0]
 desc: |
   This update addresses the following issues:
