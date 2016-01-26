@@ -1,0 +1,37 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: firefox-de
+fix:
+version: [3,4]
+desc: |
+ Firefox ESR 38.5.2 fixes these issues:
+ * Mozilla Firefox allows remote attackers to bypass the Same Origin
+   Policy via data: and view-source: URIs (CVE-2015-7214).
+ * Integer underflow allows remote attackers to execute arbitrary code
+   or cause a denial of service via an MP4 video file with crafted covr
+   metadata (CVE-2015-7222).
+ * Integer overflow allows remote attackers to execute arbitrary code
+   via a crafted MP4 video file (CVE-2015-7213).
+ * Integer underflow might allow remote attackers to obtain sensitive
+   information, cause a denial of service by triggering a crafted WebRTC
+   RTP packet (CVE-2015-7205).
+ * Integer overflow allows remote attackers to execute arbitrary code by
+   triggering a graphics operation that requires a large texture
+   allocation (CVE-2015-7212).
+ * Use-after-free vulnerability allows remote attackers to execute
+   arbitrary code by triggering attempted use of a data channel that has
+   been closed by a WebRTC function (CVE-2015-7210).
+ * Multiple unspecified vulnerabilities in the browser engine allow remote
+   attackers to cause a denial of service or possibly execute arbitrary
+   code via unknown vectors (CVE-2015-7201).
+bug:
+ - 40273
+cve:
+ - CVE-2015-7214
+ - CVE-2015-7222
+ - CVE-2015-7213
+ - CVE-2015-7205
+ - CVE-2015-7212
+ - CVE-2015-7210
+ - CVE-2015-7201
