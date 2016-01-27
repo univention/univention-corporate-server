@@ -56,6 +56,9 @@ samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret 
 for s4dc in $samba4servicedcs; do
 	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${s4dc}\$" \
 							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
+	if [ -z "$server_object_dn" ]; then
+		continue
+	fi
 	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
 							"CN=NTDS Settings" objectGUID | ldapsearch-wrapper | sed -n 's/^objectGUID: \(.*\)/\1/p')
 	NTDS_objectGUIDs+=($NTDS_objectGUID)
