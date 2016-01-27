@@ -334,7 +334,47 @@
 						<simpara>
 							Application IDs for apps that need to be installed in order to run
 							this one correctly. These applications will not be installed
-							automatically. New in UCS 3.2.
+							automatically. Multiple IDs may be split by comma.
+						</simpara>
+						<note>
+							<para>
+								Application IDs are the <literal>ID</literal> values in the ini file.
+								To find the ID, use <command>univention-app list</command>. The command
+								is new in UCS 4.1.
+							</para>
+						</note>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>ConflictedApps</term>
+					<listitem>
+						<simpara>
+							Application IDs for apps that may to be installed along with this
+							App on the same server. Multiple IDs may be split by comma.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>PortsExclusive</term>
+					<listitem>
+						<simpara>
+							Comma separated list of ports that the App will use exclusively. For
+							conventional Apps, this has no immediate effects but will build an
+							implicit list of <literal>ConflictedApps</literal>. For Docker Apps,
+							this will set up the bridge to the container accordingly and change
+							the Firewall rules.
+						</simpara>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>PortsRedirection</term>
+					<listitem>
+						<simpara>
+							Same as <literal>PortsExclusive</literal>, but only for Docker Apps:
+							The port in the Docker Container will be redirected to a port on the
+							Docker Host. Syntax: <literal>PortsRedirection=8080:80</literal> will
+							make the container's port 80 accessible on port 8080. Note that in this
+							case it may be a better idea to use <literal>WebInterface</literal>.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -348,8 +388,7 @@
 							application. This list is just to show the user conflicts
 							<emphasis>before</emphasis> the application is to be installed.
 							Conflicts on package level are resolved automatically and the user
-							has to confirm if some packages will be uninstalled. Same for
-							<literal>ConflictedApps</literal>.
+							has to confirm if some packages will be uninstalled.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -421,22 +460,10 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>UseShop</term>
-					<listitem>
-						<simpara>
-							New in UCS 3.2: Boolean value whether a link shall be displayed
-							leading directly to some kind of shop. If
-							<literal>ShopURL</literal> is not given
-							<literal>https://shop.univention.com</literal> is used by
-							default.
-						</simpara>
-					</listitem>
-				</varlistentry>
-				<varlistentry>
 					<term>SupportURL</term>
 					<listitem>
 						<simpara>
-							New in UCS 3.2: Points to a website where the user can get/buy
+							Points to a website where the user can get/buy
 							support for the app. If not set, the user will instead be
 							encouraged to contact the app vendor
 							(<literal>Contact</literal>). If set to <envar>None</envar>,
@@ -448,8 +475,8 @@
 					<term>ShopURL</term>
 					<listitem>
 						<simpara>
-							New in UCS 3.2: Only makes sense in combination with
-							<literal>UseShop=True</literal>. The following parameters are
+							If set, a button appears in the App Center: "Buy". This button
+							leads to the URL specified here. The following parameters are
 							sent to this URL via GET:
 						</simpara>
 						<itemizedlist>
@@ -484,7 +511,7 @@
 					<term>UCSOverviewCategory</term>
 					<listitem>
 						<simpara>
-							New in UCS 3.2: If there is a <literal>WebInterface</literal> the
+							If there is a <literal>WebInterface</literal> the
 							App Center automatically registers a link in the overview page of
 							the UCS server. By default these are added in the
 							<envar>service</envar> section of the overview page. If
@@ -792,7 +819,7 @@
 				any (or much) help from the vendor.
 			</para>
 			<para>
-				New in UCS 3.2: The overview of any UCS system (i.e. plain
+				The overview of any UCS system (i.e. plain
 				https://<replaceable>IP</replaceable>/) can link to various web
 				frontends, e.g. the &ucsUMC;. If the application provides a
 				<literal>WebInterface</literal> in the ini file, a link is built
@@ -846,7 +873,7 @@
 				</variablelist>
 			</para>
 			<para>
-				New in UCS 3.2: Each application registers itself in the LDAP directory
+				Each application registers itself in the LDAP directory
 				and sets the hosts on which it is installed automatically. These
 				information can be accessed by any <literal>machine
 					connection</literal>. The path is
