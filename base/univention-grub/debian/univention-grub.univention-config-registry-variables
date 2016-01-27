@@ -101,7 +101,19 @@ Type=str
 Categories=system-base
 
 [grub/title]
-Description[de]=Titel für den Eintrag von UCS im GRUB Boot Menu. Standard ist "Univention Corporate Server".
+Description[de]=Titel für den Eintrag von UCS im GRUB Boot Menü. Standard ist "Univention Corporate Server".
 Description[en]=Title for the entry of UCS in the GRUB boot menu. Default is "Univention Corporate Server".
 Type=str
+Categories=system-base
+
+[grub/default]
+Description[de]=Der Menü-Eintrag, der standardmäßig gebootet wird. Entweder ein 0-basierter Index, der Menü-Titel, oder 'saved' zum laden des gespeicherten Eintrags (siehe UCRV 'grub/savedefault' bzw. Kommando 'grub-set-default'). Standard ist '0' zum booten des ersten/neusten Eintrags.
+Description[en]=The menu entry to boot by default. Either selected by a 0-based index, title name or 'saved' to load the saved entry (see UCRV 'grub/savedefault' or command 'grub-set-set-default'). Default is '0' to boot the first/newest entry.
+Type=str
+Categories=system-base
+
+[grub/savedefault]
+Description[de]=Wird diese Option aktiviert, speichert GRUB den ausgewählten Eintrag, sodaß dieser beim nächsten Booten wieder benutzt wird. Wird nicht von allen Dateisystemen unterstützt!
+Description[en]=If this option is enabled, GRUB saves the selected entry, so it gets selected again on the next boot. Not supported by all file systems!
+Type=bool
 Categories=system-base

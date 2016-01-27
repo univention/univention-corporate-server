@@ -3,7 +3,12 @@
 # update-grub is automatically run through a Univention Configuration
 # Registry module upon modification
 
-GRUB_DEFAULT=0
+@!@
+default = configRegistry.get('grub/default', '0')
+print 'GRUB_DEFAULT=%s' % (default,)
+savedefault = configRegistry.get('grub/savedefault', True)
+print 'GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',)
+@!@
 GRUB_TIMEOUT=@%@grub/timeout@%@
 GRUB_DISTRIBUTOR=Univention
 

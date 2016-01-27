@@ -1,3 +1,9 @@
+univention-grub (8.0.4-3) unstable; urgency=low
+
+  * Bug #40509: Allow to select kernel to boot.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Jan 2016 15:51:01 +0100
+
 univention-grub (8.0.4-2) unstable; urgency=low
 
   * Bug #38779: Make title configurable
