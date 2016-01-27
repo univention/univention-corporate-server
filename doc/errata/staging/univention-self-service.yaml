@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-self-service
+fix: 1.0.3-15.61.201601271744
+version: [0]
+desc: |
+  This update addresses the following issue:
+  * It is now possible run the Self-Service-App in a Amazon VM.
+bug: [40158]
