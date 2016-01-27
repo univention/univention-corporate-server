@@ -8,4 +8,4 @@ desc: |
   This update addresses the following issue:
   * The package database was not updated automatically on systems other than
     the database server.
-bug: [38993]
+bug: [33935]
