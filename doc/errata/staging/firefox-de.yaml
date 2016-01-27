@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-8
 src: firefox-de
-fix: 1:38.5.2esr-ucs-3.2.70.201601261147
+fix:
 version: [7,8]
 desc: |
  Firefox ESR 38.5.2 fixes these issues:
@@ -27,6 +27,8 @@ desc: |
    code via unknown vectors (CVE-2015-7201).
  * MD5 signatures accepted within TLS 1.2 ServerKeyExchange in server
    signature (CVE-2015-7575)
+ * Fixes global-buffer-overflow (write) at BufferSubData (CVE-2016-1935).
+ * Several memory safety bugs were fixed (CVE-2016-1930).
 bug:
  - 40274
 cve:
@@ -38,3 +40,5 @@ cve:
  - CVE-2015-7210
  - CVE-2015-7201
  - CVE-2015-7575
+ - CVE-2016-1935
+ - CVE-2016-1930

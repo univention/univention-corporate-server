@@ -1,3 +1,9 @@
+firefox-de (1:38.6.0esr-ucs-3.2) unstable; urgency=low
+
+  * Update to Firefox ESR 38.6.0 (Bug #40274)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 27 Jan 2016 09:47:12 +0100
+
 firefox-de (1:38.5.2esr-ucs-3.2) unstable; urgency=low
 
   * Update to Firefox ESR 38.5.2 (Bug #40274)
