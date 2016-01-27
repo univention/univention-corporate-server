@@ -6,7 +6,8 @@ fix: 2.02~beta2-22+deb8u1.105.201601251600
 version: [0]
 desc: |
  This updates grub2 to 2.02~beta2-22+deb8u1 to fix the following issues:
- * buffer overflow when checking password entered during bootup (CVE-2015-8370)
+ * buffer overflow when checking password entered during bootup
+   (CVE-2015-8370)
  * grub hangs on some hardware when booting via UEFI (Bug #39009)
 bug: [39009, 40280]
 cve:
