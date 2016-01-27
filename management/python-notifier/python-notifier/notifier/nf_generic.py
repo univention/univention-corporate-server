@@ -255,7 +255,10 @@ def step( sleep = True, external = True ):
 		# handle sockets
 		if fds:
 			for fd, condition in fds:
-				sock_obj = __sock_objects[ fd ]
+				try:
+					sock_obj = __sock_objects[ fd ]
+				except KeyError:
+					continue  # ignore recently removed socket (by timer in this step() call)
 				# check for closed pipes/sockets
 				if condition in ( select.POLLHUP, select.POLLNVAL ):
 					socket_remove( sock_obj, IO_ALL )

@@ -1,3 +1,10 @@
+python-notifier (0.9.7-4) unstable; urgency=medium
+
+  * Bug #40510: fix KeyError in step() which was caused by socket removal
+  	in a timer()
+
+ -- Florian Best <best@univention.de>  Wed, 27 Jan 2016 18:12:51 +0100
+
 python-notifier (0.9.7-3) unstable; urgency=low
 
   * Bug #37457: update version
