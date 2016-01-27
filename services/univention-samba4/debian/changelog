@@ -1,5 +1,6 @@
 univention-samba4 (4.0.3-14) unstable; urgency=medium
 
+  * Backport for Bug #40387:
   * Bug #33399: Also fix the check_essential_samba4_dns_records accordingly
   * Bug #33399: Make the check UCS@school specific
   * Bug #33399: Only do the DRS-check when there is more than one S4-Connector
