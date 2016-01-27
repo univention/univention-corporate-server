@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [0]
+scope: ucs_4.1-0-errata4.1-0
+src: 
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * 
+bug: []
+cve:
+ - 
