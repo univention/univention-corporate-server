@@ -1,3 +1,10 @@
+ucs-test (5.0.175-7) unstable; urgency=medium
+
+  * 00_checks/22_ldbsearch_hostaccount: Added dependency to univention-
+    samba4 (Bug #40434)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Jan 2016 06:16:20 +0100
+
 ucs-test (5.0.175-6) unstable; urgency=medium
 
   * Added 00_checks/21_kinit_hostaccount and

@@ -5,6 +5,8 @@
 ##  - basic
 ##  - apptest
 ## bugs: [40434]
+## packages:
+## - univention-samba4
 ## roles-not: [basesystem]
 
 RETVAL=0
