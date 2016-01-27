@@ -303,7 +303,7 @@
 					<listitem>
 						<simpara>
 							A (more exhaustive) description that will be displayed when
-							viewing the details of the application. Since UCS 3.2 this
+							viewing the details of the application. This
 							description needs to be in HTML (this also means that characters
 							like "&amp;" need to be escaped to "&amp;amp;"). Other variables
 							are escaped automatically if not stated otherwise (meaning that
@@ -317,14 +317,8 @@
 						<simpara>
 							The minimal amount of free memory in MB when trying to install the
 							application. The application should work fluently above that limit
-							at least for smaller environments.
-						</simpara>
-						<simpara>
-							In UCS 3.1 an installation was prevented when this test failed. If
-							this limit is set very high many testers will be unable to install
-							this application for UCS 3.1 as there is no easy way to skip this
-							test. Since UCS 3.2 this test only shows a warning that can be
-							overridden by the user.
+							at least for smaller environments. If this requirement is not met,
+							it only shows a warning that can be overridden by the user.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -429,10 +423,13 @@
 							whole LDAP server.
 						</simpara>
 						<simpara>
-							Since UCS 3.2 it is possible (and preferable) to register schema
+							It is possible (and preferable) to register schema
 							extensions via the Join Script (see <xref
 								linkend="app:ucs_registerLDAPExtension" />). In most cases this
 							makes <literal>DefaultPackagesMaster</literal> unnecessary.
+						</simpara>
+						<simpara>
+							<literal>DefaultPackagesMaster</literal> is not allowed in Docker Apps.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -530,11 +527,8 @@
 							roles are <envar>domaincontroller_master</envar>,
 							<envar>domaincontroller_backup</envar>,
 							<envar>domaincontroller_slave</envar>, and
-							<envar>memberserver</envar>. In UCS 3.1 these applications were
-							visible but not installable (an error message was shown). Since UCS
-							3.2 they are completely hidden. This means that
-							<literal>ServerRole</literal> must not change throughout the
-							lifetime of an application (at least not more restrictive).
+							<envar>memberserver</envar>.
+							If not given, every role is allowed.
 						</simpara>
 					</listitem>
 				</varlistentry>
@@ -580,19 +574,11 @@
 				<term>LICENSE_AGREEMENT</term>
 				<listitem>
 					<simpara>
-						A file the user has to accept before the installation starts. As of
-						UCS 3.2 HTML in this file is allowed and it may be localized by
+						A file the user has to accept before the installation starts.
+						HTML is allowed in this file and it may be localized by
 						using the files <literal>LICENSE_AGREEMENT_EN</literal> resp.
 						<literal>LICENSE_AGREEMENT_DE</literal>.
 					</simpara>
-					<important>
-						<para>
-							As stated above HTML in this file is now allowed (and enforced).
-							It was not in UCS 3.1 but received some simple auto formatting.
-							You may have to convert an existing
-							<literal>LICENSE_AGREEMENT</literal>.
-						</para>
-					</important>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
@@ -625,18 +611,10 @@
 						changes. Note that a user may only upgrade to the newest version
 						and does so in one step. Only the latest
 						<literal>README_UPDATE</literal> is shown.
-						As of UCS 3.2 it may be localized by using the files
+						It may be localized by using the files
 						<literal>README_UPDATE_EN</literal> resp.
 						<literal>README_UPDATE_DE</literal>.
 					</simpara>
-					<important>
-						<para>
-							As stated above HTML in this file is now allowed (and enforced).
-							It was not in UCS 3.1 but received some simple auto formatting.
-							You may have to convert an existing
-							<literal>README_UPDATE</literal>.
-						</para>
-					</important>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
