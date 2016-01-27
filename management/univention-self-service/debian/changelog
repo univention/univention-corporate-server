@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-15) unstable; urgency=low
+
+  * fallback to HTTP on SSLError if connection is local (Bug #40158)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 27 Jan 2016 17:23:39 +0100
+
 univention-self-service (1.0.3-14) unstable; urgency=low
 
   * cleanup udm_errors handling (Bug #40433)

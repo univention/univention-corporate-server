@@ -32,9 +32,11 @@
 import json
 import sys
 from functools import wraps
-from httplib import HTTPSConnection, HTTPException
+from httplib import HTTPConnection, HTTPSConnection, HTTPException
 from Cookie import SimpleCookie
 from socket import error as SocketError
+from ssl import SSLError
+import socket
 
 sys.stdout = sys.stderr
 import cherrypy
@@ -101,6 +103,17 @@ class Session(object):
 		data = json.dumps(data or {})
 		try:
 			connection.request('POST', url, data, headers=self._headers)
+		except SSLError as exc:
+			if "SSL23_GET_SERVER_HELLO" in exc.strerror and \
+					(self.hostname == "localhost" or self.hostname == socket.getfqdn()):
+				connection = HTTPConnection("localhost")
+				connection.request('POST', url, data, headers=self._headers)
+			else:
+				return self._handle_exception(*sys.exc_info())
+		except:
+			return self._handle_exception(*sys.exc_info())
+
+		try:
 			response = connection.getresponse()
 		except:
 			return self._handle_exception(*sys.exc_info())
