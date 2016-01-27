@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: python-notifier
+fix: 0.9.7-4.30.201601271815
+version: [0]
+desc: |
+ This update addresses the following issues:
+ * A crash is prevented when a notifier timer removes a socket while there are
+   pending IO events from this socket.
+bug: [40510]
