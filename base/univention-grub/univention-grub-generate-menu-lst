@@ -35,18 +35,7 @@ import sys
 import shutil
 import re
 
-import univention.debug as udbg
 import univention.config_registry as ucr
-from distutils.version import LooseVersion
-
-class kernel:
-	def __init__(self, kversion, uversion, arch, origversion):
-		self.kversion = kversion
-		self.uversion = uversion
-		self.arch = arch
-		self.origversion = origversion
-	def __repr__(self):
-		return repr((self.kversion, self.uversion, self.arch))
 
 configRegistry=ucr.ConfigRegistry()
 configRegistry.load()
