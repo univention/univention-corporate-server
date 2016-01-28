@@ -1,3 +1,9 @@
+univention-pkgdb (9.0.1-5) unstable; urgency=low
+
+  * run pkgdb-scan on all systems when upgrading (Bug #33935)
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 28 Jan 2016 12:59:40 +0100
+
 univention-pkgdb (9.0.1-4) unstable; urgency=low
 
   * move 60invoke to univention-pkgdb-tools (Bug #33935)
