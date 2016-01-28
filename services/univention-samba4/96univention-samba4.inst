@@ -1130,7 +1130,7 @@ fi
 
 # To prevent a DRS replication conflict: 
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32257
-wait_until_dc_was_replicated_to_connector_dc || die
+wait_until_dc_was_replicated_to_connector_dc
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 
