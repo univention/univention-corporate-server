@@ -5,7 +5,7 @@ src: firefox-de
 fix: 1:38.6.0esr-ucs-4.1.73.201601271001
 version: [0]
 desc: |
- Firefox ESR 38.5.2 fixes these issues:
+ Firefox ESR 38.6 fixes these issues:
  * Mozilla Firefox allows remote attackers to bypass the Same Origin
    Policy via data: and view-source: URIs (CVE-2015-7214).
  * Integer underflow allows remote attackers to execute arbitrary code
