@@ -1,0 +1,42 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: libxml2
+fix: 2.7.8.dfsg-2.51.201601281703
+desc: |
+ A remote attacker could provide a specially crafted XML or HTML file
+ that, when processed by an application using libxml2, would cause
+ that application to use an excessive amount of CPU, leak potentially
+ sensitive information, or crash the application.
+ This update addresses the following issue(s):
+ * denial of service processing a crafted XML document (CVE-2015-1819)
+ * out-of-bounds memory access (CVE-2015-7941)
+ * heap-buffer-overflow in xmlParseConditionalSections (CVE-2015-7942)
+ * Denial of service (CPU consumption) in xmlStringLenDecodeEntities
+   when processing specially crafted XML input (CVE-2015-5312)
+ * Denial of service due to heap-based buffer overflow in the
+   xmlDictComputeFastQKey (CVE-2015-7497)
+ * Denial of service due to heap-based buffer overflow in
+   xmlParseXmlDecl (CVE-2015-7498)
+ * Information discosure due to heap-based buffer overflow in the
+   xmlGROW (CVE-2015-7499)
+ * Denial of service due to out-of-bounds heap read in xmlParseMisc
+   (CVE-2015-7500)
+ * Denial of service (heap-based buffer over-read and application
+   crash) via crafted XML data due to Buffer overread with XML parser
+   in xmlNextChar (CVE-2015-8241)
+ * Out-of-bounds heap read when parsing file with unfinished xml
+   declaration (CVE-2015-8317)
+bug: [38908]
+cve:
+ - CVE-2015-1819
+ - CVE-2015-7941
+ - CVE-2015-7942
+ - CVE-2015-5312
+ - CVE-2015-7497
+ - CVE-2015-7498
+ - CVE-2015-7499
+ - CVE-2015-7500
+ - CVE-2015-8241
+ - CVE-2015-8317
