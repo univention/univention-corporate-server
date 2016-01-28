@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-management-console
+fix: 8.0.28-6.909.201601281440
+version: [0]
+desc: |
+ This update addresses the following issue(s):
+ * A UMC Overview Category can now contain links and copies of other modules.
+bug: [40528]
