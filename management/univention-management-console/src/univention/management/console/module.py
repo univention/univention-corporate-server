@@ -161,14 +161,27 @@ class Flavor(JSON_Object):
 		self.translationId = translationId
 		self.categories = categories or []
 
+	def merge(self, other):
+		self.id = self.id or other.id
+		self.name = self.name or other.name
+		self.description = self.description or other.description
+		self.icon = self.icon or other.icon
+		self.overwrites = list(set(self.overwrites + other.overwrites))
+		self.keywords = list(set(self.keywords + other.keywords))
+		self.deactivated = self.deactivated or other.deactivated
+		self.priority = self.priority or other.priority
+		self.translationId = self.translationId or other.translationId
+		self.categories = list(set(self.categories + other.categories))
+
 
 class Module(JSON_Object):
 
 	'''Represents a command attribute'''
 
-	def __init__(self, id='', name='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None):
+	def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None):
 		self.id = id
 		self.name = name
+		self.url = url
 		self.description = description
 		self.keywords = keywords or []
 		self.icon = icon
@@ -206,6 +219,15 @@ class Module(JSON_Object):
 			else:
 				RESOURCES.warn('Duplicated flavor for module %s: %s' % (self.id, flavor.id))
 
+	def merge_flavors(self, other_flavors):
+		for other_flavor in other_flavors:
+			try: # merge other_flavor into self_flavor
+				self_flavor = [iflavor for iflavor in self.flavors if iflavor.id == other_flavor.id][0]
+				self_flavor.merge(other_flavor)
+			except IndexError: # add if other_flavor does not exist
+				RESOURCES.info('Add flavor: %s' % other_flavor.name)
+				self.flavors.append(other_flavor)
+
 	def merge(self, other):
 		''' merge another Module object into current one '''
 		if not self.name:
@@ -219,7 +241,7 @@ class Module(JSON_Object):
 
 		self.keywords = list(set(self.keywords + other.keywords))
 
-		self.append_flavors(other.flavors)
+		self.merge_flavors(other.flavors)
 
 		for category in other.categories:
 			if not category in self.categories:
@@ -236,51 +258,59 @@ class XML_Definition(ET.ElementTree):
 
 	def __init__(self, root=None, filename=None):
 		ET.ElementTree.__init__(self, element=root, file=filename)
+		self.root = self.getroot()
 
 	@property
 	def name(self):
-		return self.findtext('module/name')
+		return self.findtext('name')
+
+	@property
+	def url(self):
+		return self.findtext('url')
 
 	@property
 	def description(self):
-		return self.findtext('module/description')
+		return self.findtext('description')
 
 	@property
 	def keywords(self):
-		return KEYWORD_PATTERN.split(self.findtext('module/keywords', '')) + [self.name]
+		return KEYWORD_PATTERN.split(self.findtext('keywords', '')) + [self.name]
 
 	@property
 	def id(self):
-		return self.find('module').get('id')
+		if self.root.tag == 'link':
+			return '__link-%s' % self.root.get('id')
+		else:
+			return self.root.get('id')
 
 	@property
 	def priority(self):
 		try:
-			return float(self.find('module').get('priority', -1))
+			return float(self.root.get('priority', -1))
 		except ValueError:
-			RESOURCES.warn('No valid number type for property "priority": %s' % self.find('module').get('priority'))
+			RESOURCES.warn('No valid number type for property "priority": %s' % self.root.get('priority'))
 		return None
 
 	@property
 	def translationId(self):
-		return self.find('module').get('translationId', '')
+		return self.root.get('translationId', '')
 
 	@property
 	def notifier(self):
-		return self.find('module').get('notifier')
+		return self.root.get('notifier')
 
 	@property
 	def icon(self):
-		return self.find('module').get('icon')
+		return self.root.get('icon')
 
 	@property
 	def deactivated(self):
-		return self.find('module').get('deactivated', 'no').lower() in ('yes', 'true', '1')
+		return self.root.get('deactivated', 'no').lower() in ('yes', 'true', '1')
 
 	@property
 	def flavors(self):
 		'''Retrieve list of flavor objects'''
-		for elem in self.findall('module/flavor'):
+		for elem in self.findall('flavor'):
 			name = elem.findtext('name')
 			priority = None
 			try:
@@ -302,15 +332,15 @@ class XML_Definition(ET.ElementTree):
 
 	@property
 	def categories(self):
-		return [elem.get('name') for elem in self.findall('module/categories/category')]
+		return [elem.get('name') for elem in self.findall('categories/category')]
 
 	def commands(self):
 		'''Generator to iterate over the commands'''
-		for command in self.findall('module/command'):
+		for command in self.findall('command'):
 			yield command.get('name')
 
 	def get_module(self):
-		return Module(self.id, self.name, self.description, self.icon, self.categories, self.flavors, priority=self.priority, keywords=self.keywords)
+		return Module(self.id, self.name, self.url, self.description, self.icon, self.categories, self.flavors, priority=self.priority, keywords=self.keywords)
 
 	def get_flavor(self, name):
 		'''Retrieves details of a flavor'''
@@ -321,7 +351,7 @@ class XML_Definition(ET.ElementTree):
 
 	def get_command(self, name):
 		'''Retrieves details of a command'''
-		for command in self.findall('module/command'):
+		for command in self.findall('command'):
 			if command.get('name') == name:
 				cmd = Command(name, command.get('function'))
 				return cmd
@@ -356,19 +386,18 @@ class Manager(dict):
 			if not filename.endswith('.xml'):
 				continue
 			try:
-				mod = XML_Definition(filename=os.path.join(Manager.DIRECTORY, filename))
-				if not mod:
-					RESOURCES.info('Empty XML file: %s' % (filename,))
-					continue
-				if mod.deactivated:
-					RESOURCES.info('Module is deactivated: %s' % filename)
-					continue
+				parsed_xml = ET.parse(os.path.join(Manager.DIRECTORY, filename))
 				RESOURCES.info('Loaded module %s' % filename)
+				for mod_tree in parsed_xml.getroot():
+					mod = XML_Definition(root=mod_tree)
+					if mod.deactivated:
+						RESOURCES.info('Module is deactivated: %s' % filename)
+						continue
+					# save list of definitions in self
+					self.setdefault(mod.id, []).append(mod)
 			except (xml.parsers.expat.ExpatError, ET.ParseError) as e:
 				RESOURCES.warn('Failed to load module %s: %s' % (filename, str(e)))
 				continue
-			# save list of definitions in self
-			self.setdefault(mod.id, []).append(mod)
 
 	def permitted_commands(self, hostname, acls):
 		'''Retrieves a list of all modules and commands available
@@ -390,6 +419,12 @@ class Manager(dict):
 
 			if ucr.is_true('umc/module/%s/disabled' % (module_id)):
 				RESOURCES.info('module %s is deactivated by UCR' % (module_id))
+				continue
+
+			# ATM just add a link Element to the module list
+			# TODO: Also control links by acls
+			if '__link' in mod.id:
+				modules[module_id] = mod
 				continue
 
 			if not mod.flavors:

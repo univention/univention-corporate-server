@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-6) unstable; urgency=low
+
+  * Bug #40528: Display links and shallow copies of modules in categories
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 28 Jan 2016 14:36:58 +0100
+
 univention-management-console (8.0.28-5) unstable; urgency=medium
 
   * Bug #40339: fix format string with multiple unnamed arguments
