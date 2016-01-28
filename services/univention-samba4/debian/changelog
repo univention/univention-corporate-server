@@ -1,3 +1,10 @@
+univention-samba4 (4.0.3-15) unstable; urgency=medium
+
+  * Bug #40387: Don't die if wait_until_dc_was_replicated_to_connector_dc
+    fails.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 28 Jan 2016 16:31:49 +0100
+
 univention-samba4 (4.0.3-14) unstable; urgency=medium
 
   * Backport for Bug #40387:
