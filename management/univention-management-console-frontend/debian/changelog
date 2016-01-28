@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-14) unstable; urgency=low
+
+  * Bug #40528: Display links and shallow copies of modules in categories
+
+ -- Alexander Kramer <kramer@univention.de>  Thu, 28 Jan 2016 14:25:03 +0100
+
 univention-management-console-frontend (5.0.63-13) unstable; urgency=medium
 
   * Bug #39861: Prevent download popup in IE11 when accessing UMC
