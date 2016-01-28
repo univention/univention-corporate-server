@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-management-console-frontend
-fix: 5.0.63-13.1200.201601251403
+fix: 5.0.63-14.1201.201601281429
 version: [0]
 desc: |
  This update addresses the following issues:
@@ -12,4 +12,5 @@ desc: |
    adjusted.
  * Internet Explorer 11 doesn't show a download pop up anymore when accessing
    UMC.
-bug: [39815, 40242, 40339, 39861]
+ * A UMC Overview Category can now contain links and copies of other modules.
+bug: [39815, 40242, 40339, 39861, 40528]
