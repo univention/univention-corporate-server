@@ -6,5 +6,5 @@ fix: 4.0.1-2.89.201601191051
 version: [0]
 desc: |
  This update addresses the following issue:
- * The cron job to check libvirtd was removed.
+ * The cron job to check libvirtd is no longer required and was removed.
 bug: [35101]
