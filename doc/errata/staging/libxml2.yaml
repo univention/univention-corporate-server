@@ -10,9 +10,9 @@ desc: |
  that application to use an excessive amount of CPU, leak potentially
  sensitive information, or crash the application.
  This update addresses the following issue(s):
- * denial of service processing a crafted XML document (CVE-2015-1819)
- * out-of-bounds memory access (CVE-2015-7941)
- * heap-buffer-overflow in xmlParseConditionalSections (CVE-2015-7942)
+ * Denial of service processing a crafted XML document (CVE-2015-1819)
+ * Out-of-bounds memory access (CVE-2015-7941)
+ * Heap-buffer-overflow in xmlParseConditionalSections (CVE-2015-7942)
  * Denial of service (CPU consumption) in xmlStringLenDecodeEntities
    when processing specially crafted XML input (CVE-2015-5312)
  * Denial of service due to heap-based buffer overflow in the
