@@ -3,9 +3,3 @@ Description[de]=Mit Leerzeichen getrennte Liste von CIDR-Netzwerken (z.B. 192.16
 Description[en]=List (space separated) of CIDR networks (e.g. 192.168.0.0/24), from which systems may store their software state in the database of the software monitor.
 Type=str
 Categories=system-swmon
-
-[pkgdb/overwrite/joincheck]
-Description[de]=In der Grundeinstellung wird nur der Softwarebestand von Systemen erfasst, die der Domäne beigetreten sind. Wird diese Variable auf 'yes' gesetzt, werden auch ungejointe Systeme erfasst.
-Description[en]=In the standard setting only the software status of systems which have joined the domain are stored in the software monitor. If this variable is set to 'yes', unjoined systems are tracked as well.
-Type=str
-Categories=system-swmon

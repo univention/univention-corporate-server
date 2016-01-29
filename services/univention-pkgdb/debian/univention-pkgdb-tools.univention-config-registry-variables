@@ -9,3 +9,9 @@ Description[de]=Ist die Option aktiviert, werden nur SSL-gesicherte Verbindungen
 Description[en]=If this option is activated only SSL-secured connected are opened to the PostgreSQL database server of the software monitor.
 Type=bool
 Categories=system-swmon
+
+[pkgdb/overwrite/joincheck]
+Description[de]=In der Grundeinstellung wird nur der Softwarebestand von Systemen erfasst, die der Domäne beigetreten sind. Wird diese Variable auf 'yes' gesetzt, werden auch ungejointe Systeme erfasst.
+Description[en]=In the standard setting only the software status of systems which have joined the domain are stored in the software monitor. If this variable is set to 'yes', unjoined systems are tracked as well.
+Type=str
+Categories=system-swmon

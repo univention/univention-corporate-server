@@ -1,3 +1,10 @@
+univention-pkgdb (9.0.1-8) unstable; urgency=low
+
+  * move UCRV description to correct file (Bug #33935)
+  * fix typo
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 29 Jan 2016 12:05:51 +0100
+
 univention-pkgdb (9.0.1-7) unstable; urgency=low
 
   * remove old config file (Bug #33935)
