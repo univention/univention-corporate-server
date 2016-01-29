@@ -1,3 +1,9 @@
+univention-pkgdb (9.0.1-7) unstable; urgency=low
+
+  * remove old config file (Bug #33935)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 29 Jan 2016 12:01:04 +0100
+
 univention-pkgdb (9.0.1-6) unstable; urgency=low
 
   * rename 60invoke, so dpkg won't complain about overwriting a file of
