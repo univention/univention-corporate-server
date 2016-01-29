@@ -147,12 +147,19 @@ define([
 
 		_wipeInMessage: function() {
 			var deferred = new Deferred();
-			setTimeout(function() {
+			setTimeout(lang.hitch(this, function() {
+				// It is possible to get into a race condition where the login message is deleted by
+				// an 401 error after _wipeInMessage was started by a session timeout. If that happens we should not
+				// show #umcLoginMessages because it would be empty.
+				if (!this._text.get('content')) {
+					deferred.resolve();
+					return;
+				}
 				fx.wipeIn({node: 'umcLoginMessages', onEnd: function() {
 					deferred.resolve();
 					query('#umcLoginMessages').style('display', 'block');
 				}}).play();
-			}, 200);
+			}), 200);
 			return deferred.promise;
 		},
 
@@ -192,8 +199,10 @@ define([
 					attr.set(node, 'value', '');
 				});
 			});
-			// username is specified, we need to auto fill the username
-			attr.set('umcLoginUsername', 'value', tools.status('username'));
+			// if username is specified, we need to auto fill the username
+			if (tools.status('username')) {
+				attr.set('umcLoginUsername', 'value', tools.status('username'));
+			};
 		},
 
 		_watchFormSubmits: function() {
@@ -345,6 +354,9 @@ define([
 			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', standby);
 			if (standby && this._text.get('content')) {
 				fx.wipeOut({node: this._text.id, properties: { duration: 500 }}).play();
+			} else if (!standby) {
+				// only non hidden input fields can be focused
+				this._setFocus();
 			}
 		},
 
@@ -383,17 +395,23 @@ define([
 				title = _('Insecure Connection');
 				msg = _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', link);
 			}
-			
-			if (has('ie') < 9 || has('ff') < 24) {
-			// supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
+
+			if (has('ie') < 11 || has('ff') < 38 || has('chrome') < 37 || has('safari') < 9) {
+			// by umc (4.1.0) supported browsers are Chrome >= 33, FF >= 24, IE >=9 and Safari >= 7
 			// they should work with UMC. albeit, they are
 			// VERY slow and escpecially IE 8 may take minutes (!)
 			// to load a heavy UDM object (on a slow computer at least).
 			// IE 8 is also known to cause timeouts when under heavy load
 			// (presumably because of many async requests to the server
-			// during UDM-Form loading)
-				title = _('Your Browser is outdated');
-				msg = _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + msg;
+			// during UDM-Form loading).
+			// By browser vendor supported versions:
+			// The oldest supported Firefox ESR version is 38 (2016-01-27).
+			// Microsoft is ending the support for IE < 11 (2016-01-12).
+			// Chrome has no long term support version. Chromium 37 is supported through
+			// Ubuntu 12.04 LTS (2016-01-27).
+			// Apple has no long term support for safari. The latest version is 9 (2016-01-27)
+				title = _('Your Browser is outdated') + ((title == '') ? title : '<br>' + title);
+				msg = _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + ((msg == '') ? msg : '<br>' + msg);
 			}
 
 			if (tools.status('setupGui')) {
@@ -449,10 +467,10 @@ define([
 			if (has('touch')) {
 				return;
 			}
-			if (!dom.byId('umcLoginPassword').value) {
-				dom.byId('umcLoginPassword').focus();
-			} else {
+			if (!dom.byId('umcLoginUsername').value) {
 				dom.byId('umcLoginUsername').focus();
+			} else {
+				dom.byId('umcLoginPassword').focus();
 			}
 		},
 
