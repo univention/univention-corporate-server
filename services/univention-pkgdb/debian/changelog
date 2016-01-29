@@ -1,3 +1,10 @@
+univention-pkgdb (9.0.1-6) unstable; urgency=low
+
+  * rename 60invoke, so dpkg won't complain about overwriting a file of
+    another package (Bug #33935)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 29 Jan 2016 11:38:26 +0100
+
 univention-pkgdb (9.0.1-5) unstable; urgency=low
 
   * run pkgdb-scan on all systems when upgrading (Bug #33935)
