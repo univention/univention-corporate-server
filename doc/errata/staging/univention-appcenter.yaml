@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-appcenter
-fix: 5.0.19-45.102.201601260812
+fix: 5.0.19-46.103.201601312107
 version: [0]
 desc: |
   This update addresses the following issues:
@@ -28,4 +28,6 @@ desc: |
   * Add attribute 'univentionAppID' to the LDAP equality search index.
   * Translation format strings with multiple unnamed arguments have been
     adjusted.
-bug: [39662,39664,40116,37539,40239,40240,40359,40264,39157,40287,40060,39866, 40339]
+  * joinscript_run_in_container from the Docker Apps Joinscript helper
+    functions now correctly passes its arguments to univention-app shell
+bug: [39662,39664,40116,37539,40239,40240,40359,40264,39157,40287,40060,39866, 40339, 40523]
