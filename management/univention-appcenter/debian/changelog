@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-46) unstable; urgency=medium
+
+  * Bug #40523: Pass arguments in joinscript_run_in_container properly
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 31 Jan 2016 21:05:14 +0100
+
 univention-appcenter (5.0.19-45) unstable; urgency=low
 
   * Bug #39866: Only add univentionAppID to index on install/1st update

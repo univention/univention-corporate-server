@@ -71,7 +71,7 @@ joinscript_container_is_running () {
 
 joinscript_run_in_container () {
 	joinscript_container_is_running 1>/dev/null || die
-	univention-app shell "$APP" $@
+	univention-app shell "$APP" "$@"
 }
 
 joinscript_container_file_touch () {
