@@ -151,6 +151,11 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		struct dn_list *dns;
 
 		dn_count = ldap_count_entries(lp->ld, res );
+		if (dn_count <= 0) {
+			ldap_msgfree(res);
+			continue;
+		}
+
 		if ( dn_count > 0 ) {
 			dns = malloc(dn_count * sizeof(struct dn_list));
 		}
@@ -161,13 +166,13 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 			dns[i].size = strlen(dns[i].dn);
 			i+=1;
 		}
+		ldap_msgfree(res);
 
 		if ( dn_count > 1 ) {
 			qsort(dns, dn_count, sizeof(struct dn_list), &dn_size_compare);
 		}
 
 		if ((rv = change_update_schema(lp)) != LDAP_SUCCESS) {
-			ldap_msgfree(res);
 			return rv;
 		}
 
@@ -214,7 +219,6 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		if ( dn_count > 1) {
 		  free(dns);
 		}
-		ldap_msgfree(res);
 	}
 	cache_free_entry(NULL, &old_cache_entry);
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
