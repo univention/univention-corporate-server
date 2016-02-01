@@ -254,7 +254,7 @@ fi
 # Create kerberos principal for ldap/hostname.domainname
 udm kerberos/kdcentry create "$@" --ignore_exists --position "cn=kerberos,$ldap_base" --set name="ldap/${hostname}.${domainname}" --set generateRandomPassword=1 || die
 
- [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	# Create a LDAP server policy so member server use the LDAP servers of
 	# dc master and all dc backups.
 	univention-directory-manager policies/ldapserver create "$@" \

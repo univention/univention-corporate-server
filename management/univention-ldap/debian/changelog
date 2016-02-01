@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-16) unstable; urgency=low
+
+  * fix accidental deletion (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Feb 2016 13:00:24 +0100
+
 univention-ldap (12.1.6-15) unstable; urgency=low
 
   * add missing $@ (Bug #38091)
