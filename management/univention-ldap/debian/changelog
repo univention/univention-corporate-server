@@ -1,3 +1,10 @@
+univention-ldap (12.1.6-14) unstable; urgency=low
+
+  * When creating/modifying the LDAP server policy and the UCR policy, take
+    into account all DC master and DC backup (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Feb 2016 11:41:35 +0100
+
 univention-ldap (12.1.6-13) unstable; urgency=low
 
   * Add message catalog to LDAP schema of UDM hook and UDM syntax (Bug #35840)
