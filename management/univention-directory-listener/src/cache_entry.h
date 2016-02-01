@@ -39,7 +39,6 @@
 #include <univention/ldap.h>
 
 #include "network.h"
-#include "cache_entry.h"
 
 struct _CacheEntryAttribute {
 	char			 *name;
