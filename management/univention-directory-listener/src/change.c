@@ -67,7 +67,7 @@ static int dn_size_compare(const void *p1, const void *p2)
 }
 
 /* initialize module */
-int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
+static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 {
 	LDAPMessage *res, *cur;
 	char *attrs[]={"*", "+", NULL};
