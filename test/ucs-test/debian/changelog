@@ -1,3 +1,9 @@
+ucs-test (6.0.31-24) unstable; urgency=low
+
+  * add 10_ldap/100_ldapserver_policy (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Feb 2016 18:08:31 +0100
+
 ucs-test (6.0.31-23) unstable; urgency=medium
 
   * 00_checks/22_ldbsearch_hostaccount: Added dependency to univention-
