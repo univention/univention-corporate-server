@@ -101,8 +101,6 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		cache_update_or_deleteifunused_entry(0, dn, &cache_entry);
 		cache_free_entry(&dn, &cache_entry);
 	}
-	if(!dn)
-		free(dn);
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"call cache_free_cursor for module %s", handler->name);
