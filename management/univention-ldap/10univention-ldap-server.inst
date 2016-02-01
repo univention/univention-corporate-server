@@ -257,7 +257,7 @@ udm kerberos/kdcentry create "$@" --ignore_exists --position "cn=kerberos,$ldap_
  [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	# Create a LDAP server policy so member server use the LDAP servers of
 	# dc master and all dc backups.
-	univention-directory-manager policies/ldapserver create  "$@" \
+	univention-directory-manager policies/ldapserver create "$@" \
 		--position="cn=ldap,cn=policies,$ldap_base" \
 		--ignore_exists \
 		--set name=default-settings \
@@ -274,16 +274,16 @@ udm kerberos/kdcentry create "$@" --ignore_exists --position "cn=kerberos,$ldap_
 	for ENTRY in $OLD_ENTRIES; do
 		RMSTR="$RMSTR --remove ldapServer=$ENTRY";
 	done
-	univention-directory-manager policies/ldapserver modify --dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" $RMSTR
+	univention-directory-manager policies/ldapserver modify "$@" --dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" $RMSTR
 
 	# add all DC master and backup
-	MASTERS="$(udm computers/domaincontroller_master list | grep 'fqdn:' | cut -f2 -d':' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+	MASTERS="$(univention-directory-manager computers/domaincontroller_master list "$@" | grep 'fqdn:' | cut -f2 -d':' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 	for MASTER in $MASTERS; do
 		univention-directory-manager policies/ldapserver modify "$@" \
 		--dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" \
 		--append ldapServer="$MASTER";
 	done
-	BACKUPS="$(udm computers/domaincontroller_backup list | grep 'fqdn:' | cut -f2 -d':' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+	BACKUPS="$(univention-directory-manager computers/domaincontroller_backup list "$@" | grep 'fqdn:' | cut -f2 -d':' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 	for BACKUP in $BACKUPS; do
 		univention-directory-manager policies/ldapserver modify "$@" \
 		--dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" \
@@ -293,7 +293,7 @@ udm kerberos/kdcentry create "$@" --ignore_exists --position "cn=kerberos,$ldap_
 	# Slaves currently do not support LDAP server policies, let's create a
 	# UCR policy from the LDAP server policy.
 	# Do no use it automatically, UCS admins can use it if they wish to.
-	univention-directory-manager policies/registry create  "$@" \
+	univention-directory-manager policies/registry create "$@" \
 		--position="cn=config-registry,cn=policies,$ldap_base" \
 		--ignore_exists \
 		--set name=default-ldap-servers \
