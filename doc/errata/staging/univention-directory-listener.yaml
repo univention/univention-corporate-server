@@ -1,0 +1,12 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: univention-directory-listener
+fix: 9.0.2-9.295.201602011148
+version: [4]
+desc: |
+ This update addresses the following issue:
+ * The timeout for the initial LDAP search during domain join was increased to
+   2h, as joining in a large domain can take much longer than the default 5m.
+   The time can be changed through the UCR variable 'listener/timeout/scans'.
+bug: [40230]
