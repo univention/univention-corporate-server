@@ -269,7 +269,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		--policy-reference "cn=default-settings,cn=ldap,cn=policies,$ldap_base"
 
 	# empty policy of old entries
-	OLD_ENTRIES="$(univention-directory-manager policies/ldapserver list "$@" --filter name=default-settings | grep ldapServer | cut -f 2 -d ':');"
+	OLD_ENTRIES="$(univention-directory-manager policies/ldapserver list "$@" --filter name=default-settings | grep ldapServer | cut -f 2 -d ':')"
 	RMSTR=""
 	for ENTRY in $OLD_ENTRIES; do
 		RMSTR="$RMSTR --remove ldapServer=$ENTRY";
@@ -278,17 +278,17 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 
 	# add all DC master and backup
 	MASTERS="$(univention-directory-manager computers/domaincontroller_master list "$@" | grep 'fqdn:' | cut -f2 -d':' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-	for MASTER in $MASTERS; do
-		univention-directory-manager policies/ldapserver modify "$@" \
-		--dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" \
-		--append ldapServer="$MASTER";
-	done
 	BACKUPS="$(univention-directory-manager computers/domaincontroller_backup list "$@" | grep 'fqdn:' | cut -f2 -d':' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
-	for BACKUP in $BACKUPS; do
-		univention-directory-manager policies/ldapserver modify "$@" \
-		--dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" \
-		--append ldapServer="$BACKUP";
+    ADDSTR=""
+	for MASTER in $MASTERS; do
+		ADDSTR="$ADDSTR --append ldapServer=$MASTER";
 	done
+	for BACKUP in $BACKUPS; do
+		ADDSTR="$ADDSTR --append ldapServer=$BACKUP";
+	done
+	univention-directory-manager policies/ldapserver modify "$@" \
+		--dn="cn=default-settings,cn=ldap,cn=policies,$ldap_base" \
+		$ADDSTR
 
 	# Slaves currently do not support LDAP server policies, let's create a
 	# UCR policy from the LDAP server policy.

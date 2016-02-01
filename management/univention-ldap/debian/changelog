@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-17) unstable; urgency=low
+
+  * compact udm call, fix typo (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 01 Feb 2016 18:07:09 +0100
+
 univention-ldap (12.1.6-16) unstable; urgency=low
 
   * fix accidental deletion (Bug #38091)
