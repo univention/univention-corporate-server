@@ -1,3 +1,9 @@
+univention-grub (8.0.4-4) unstable; urgency=low
+
+  * Bug #40509: Evaulate UCRV as boolean.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 01 Feb 2016 09:15:39 +0100
+
 univention-grub (8.0.4-3) unstable; urgency=low
 
   * Bug #40509: Allow to select kernel to boot.
