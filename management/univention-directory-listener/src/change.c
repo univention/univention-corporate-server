@@ -157,8 +157,9 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 			continue;
 		}
 
-		if ( dn_count > 0 ) {
-			dns = malloc(dn_count * sizeof(struct dn_list));
+		if (!(dns = malloc(dn_count * sizeof(struct dn_list)))) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "malloc failed");
+			abort(); // FIXME
 		}
 
 		i=0;
