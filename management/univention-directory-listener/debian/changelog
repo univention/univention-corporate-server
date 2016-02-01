@@ -1,3 +1,9 @@
+univention-directory-listener (9.0.2-9) unstable; urgency=low
+
+  * Bug #40230: Fix long search timeout
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 07 Jan 2016 09:57:04 +0100
+
 univention-directory-listener (9.0.2-8) unstable; urgency=low
 
   * Bug #39958: Disable DB sync while initializing module

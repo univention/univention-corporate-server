@@ -140,7 +140,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		LDAPControl **serverctrls = NULL;
 		LDAPControl **clientctrls = NULL;
 		struct timeval timeout = {
-			.tv_sec = 5*60,
+			.tv_sec = ldap_timeout_scans(),
 			.tv_usec = 0,
 		};
 		int sizelimit0 = 0;

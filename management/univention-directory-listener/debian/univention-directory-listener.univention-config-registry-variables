@@ -33,3 +33,9 @@ Description[de]=LDAP filter string, um das lokale Cachen zu verhindern.
 Description[en]=LDAP filter string to prevent local caching
 Type=str
 Categories=service-ln
+
+[listener/timeout/scans]
+Description[de]=Timeout für lange synchrone LDAP Suchanfragen. Standard: 2h
+Description[en]=Timeout for long running synchronous LDAP search queries. Default: 2h
+Type=int
+Categories=service-ln
