@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
 	CacheEntry	 entry;
 	LDAP		*ld;
 	LDAPMessage	*res;
-	char		*attrs[]={"*", "+", NULL};
+	char		*attrs[] = {LDAP_ALL_USER_ATTRIBUTES, LDAP_ALL_OPERATIONAL_ATTRIBUTES, NULL};
 	int attrsonly0 = 0;
 	LDAPControl **serverctrls = NULL;
 	LDAPControl **clientctrls = NULL;

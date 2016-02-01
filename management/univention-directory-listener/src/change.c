@@ -70,7 +70,7 @@ static int dn_size_compare(const void *p1, const void *p2)
 static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
 {
 	LDAPMessage *res, *cur;
-	char *attrs[]={"*", "+", NULL};
+	char *attrs[] = {LDAP_ALL_USER_ATTRIBUTES, LDAP_ALL_OPERATIONAL_ATTRIBUTES, NULL};
 	struct filter **f;
 	int rv;
 	CacheEntry cache_entry, old_cache_entry;
@@ -135,7 +135,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 		   other handlers that use the entry since it might have changed.
 		   It's not a problem that a newer entry is possibly available;
 		   we'll update it later anyway */
-		char **_attrs = NULL;
+		char *_attrs[] = {LDAP_NO_ATTRS, NULL};
 		int attrsonly1 = 1;
 		LDAPControl **serverctrls = NULL;
 		LDAPControl **clientctrls = NULL;
@@ -334,7 +334,7 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 	NotifierID		 new_id = 0;
 	LDAPMessage		*res,
 				*cur;
-	char			*attrs[]={"*", "+", NULL};
+	char			*attrs[]={LDAP_ALL_USER_ATTRIBUTES, LDAP_ALL_OPERATIONAL_ATTRIBUTES, NULL};
 	int			 rv = 0;
 	int attrsonly0 = 0;
 	LDAPControl **serverctrls = NULL;
@@ -495,7 +495,7 @@ int check_parent_dn(struct transaction *trans, char *dn)
 			*cur;
 	char filter[] = "(objectClass=*)";
 	char *attrs_local[] = {"dn", NULL};
-	char *attrs[] = {"*", "+", NULL};
+	char *attrs[] = {LDAP_ALL_USER_ATTRIBUTES, LDAP_ALL_OPERATIONAL_ATTRIBUTES, NULL};
 	int attrsonly0 = 0;
 	LDAPControl **serverctrls = NULL;
 	LDAPControl **clientctrls = NULL;
@@ -710,7 +710,7 @@ int change_update_dn(struct transaction *trans) {
 	char *base;
 	int scope;
 	char filter[64]; /* "(entryUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)" */
-	char *attrs[] = {"*", "+", NULL};
+	char *attrs[] = {LDAP_ALL_USER_ATTRIBUTES, LDAP_ALL_OPERATIONAL_ATTRIBUTES, NULL};
 	int attrsonly0 = 0;
 	LDAPControl **serverctrls = NULL;
 	LDAPControl **clientctrls = NULL;
