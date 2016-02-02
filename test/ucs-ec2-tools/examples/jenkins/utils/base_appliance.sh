@@ -730,7 +730,7 @@ appliance_basesettings ()
 
 	logo=$(app_get_appliance_logo $app)
 	if [ -n "$logo" ]; then
-		wget http://$(ucr get repository/app_center/server)/meta-inf/$(ucr get version/version)/$logo -O /var/www/icon/$logo
+		wget http://$(ucr get repository/app_center/server)/meta-inf/$(ucr get version/version)/$app/$logo -O /var/www/icon/$logo
 		ucr set umc/web/appliance/logo="/icon/$logo"
 		chmod 644 /var/www/icon/$logo
 	fi
