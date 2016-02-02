@@ -702,6 +702,7 @@ __EOF__
 
 appliance_basesettings ()
 {
+	set -x
 	app=$1
 
 	apps="$app $(app_get_appliance_additional_apps $app)"
