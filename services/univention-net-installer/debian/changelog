@@ -1,3 +1,9 @@
+univention-net-installer (9.0.1-2) unstable; urgency=low
+
+  * Bug #40559: Call setup-join with working chroot
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Feb 2016 08:53:23 +0100
+
 univention-net-installer (9.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

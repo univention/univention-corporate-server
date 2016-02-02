@@ -29,7 +29,6 @@
 
 TARGET='/target'
 PROFILE="${TARGET}/var/cache/univention-system-setup/profile"
-SETUP='/usr/lib/univention-system-setup/scripts/setup-join.sh'
 
 mkdir -p "${PROFILE%/*}"
 debconf-dumpdb -p '^uss/' configdb |
@@ -40,6 +39,33 @@ do
 		echo "$var=\"$(chroot /target ucr get $var)\"" >>"$PROFILE"
 done
 
-in-target "$SETUP" >>"${TARGET}/var/log/univention/setup.log" 2>&1
+CMD="/tmp/run-setup"
+cat >"${TARGET}/${CMD}" <<__SH__
+#!/bin/sh
+exec >>"/var/log/univention/setup-join.log" 2>&1
 
-exit 0
+mv -f /usr/sbin/policy-rc.d /usr/sbin/policy-rc.d.UCS
+if [ -f /sbin/start-stop-daemon.REAL ]
+then
+	mv -f /sbin/start-stop-daemon /sbin/start-stop-daemon.UCS
+	dpkg-divert --quiet --remove --rename /sbin/start-stop-daemon
+fi
+invoke-rc.d univention-runit start
+
+/usr/lib/univention-system-setup/scripts/setup-join.sh
+
+invoke-rc.d univention-runit stop
+if [ -f /sbin/start-stop-daemon.UCS ]
+then
+	dpkg-divert --quiet --add --divert "/sbin/start-stop-daemon.REAL" --rename "/sbin/start-stop-daemon"
+	mv -f /sbin/start-stop-daemon.UCS /sbin/start-stop-daemon
+fi
+mv -f /usr/sbin/policy-rc.d.UCS /usr/sbin/policy-rc.d
+:
+__SH__
+chmod 755 "${TARGET}/${CMD}"
+in-target "$CMD" && :
+ret=$?
+rm -f "${TARGET}/${CMD}"
+
+exit $ret
