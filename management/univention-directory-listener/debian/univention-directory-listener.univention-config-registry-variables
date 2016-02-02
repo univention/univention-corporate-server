@@ -35,7 +35,7 @@ Type=str
 Categories=service-ln
 
 [listener/timeout/scans]
-Description[de]=Timeout für lange synchrone LDAP Suchanfragen. Standard: 2h
-Description[en]=Timeout for long running synchronous LDAP search queries. Default: 2h
+Description[de]=Timeout in Sekunden für lange synchrone LDAP Suchanfragen. Standard: 2h
+Description[en]=Timeout in seconds for long running synchronous LDAP search queries. Default: 2h
 Type=int
 Categories=service-ln

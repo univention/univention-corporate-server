@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-5) unstable; urgency=low
+
+  * Bug #40373: Improve UCR variable description
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 02 Feb 2016 07:06:06 +0100
+
 univention-directory-listener (10.0.0-4) unstable; urgency=low
 
   * Bug #40373: Fix long search timeout
