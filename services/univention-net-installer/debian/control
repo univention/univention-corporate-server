@@ -17,7 +17,7 @@ Depends: ${misc:Depends},
  shell-univention-lib
 Description: UCS - automatic profile-based installation services
  This package contains the packages for the profile-based installation
- of UCS systems.
+ of UCS systems via Preboot Execution Environment (PXE).
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
@@ -54,7 +54,8 @@ Depends: cdebconf-udeb,
  ${misc:Depends},
 Description: UCS - automatic profile-based installation services
  This package contains the integration of profile-based installation
- of UCS systems into the Debian installer.
+ of UCS systems into the Debian installer running in Preboot Execution
+ Environment (PXE).
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
