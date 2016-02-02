@@ -1,3 +1,11 @@
+univention-ldap (12.1.6-18) unstable; urgency=low
+
+  * ignore DCs without FQDN (Bug #38091)
+  * add master to ldap/server/addition
+  * create and attach ldap server policy only once
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Feb 2016 09:15:05 +0100
+
 univention-ldap (12.1.6-17) unstable; urgency=low
 
   * compact udm call, fix typo (Bug #38091)
