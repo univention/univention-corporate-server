@@ -118,7 +118,7 @@ def gen_pxe(new):
 				APPEND %(append)s
 				IPAPPEND %(ipappend)s
 
-			LABEL linux
+			LABEL local
 				LOCALBOOT 0
 			''') % {
 				'kernel': listener.configRegistry.get('pxe/installer/kernel', 'linux'),
