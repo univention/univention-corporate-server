@@ -108,11 +108,10 @@ def processor(options, data_queue):
 
 
 def listener(options, data_queue):
-	local_host_address = socket.gethostbyname(socket.gethostname())
 	size = 1024 # max hostname length
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-	s.bind((local_host_address, options.port, ))
+	s.bind(("0.0.0.0", options.port, ))
 	s.listen(1)
 	while True:
 		(client, _, ) = s.accept()
