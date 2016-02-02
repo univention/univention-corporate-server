@@ -252,6 +252,9 @@ class Module(JSON_Object):
 				self.commands.append(command)
 
 
+class Link(Module):
+	pass
+
 class XML_Definition(ET.ElementTree):
 
 	'''container for the interface description of a module'''
@@ -278,10 +281,7 @@ class XML_Definition(ET.ElementTree):
 
 	@property
 	def id(self):
-		if self.root.tag == 'link':
-			return '__link-%s' % self.root.get('id')
-		else:
-			return self.root.get('id')
+		return self.root.get('id')
 
 	@property
 	def priority(self):
@@ -340,7 +340,11 @@ class XML_Definition(ET.ElementTree):
 			yield command.get('name')
 
 	def get_module(self):
-		return Module(self.id, self.name, self.url, self.description, self.icon, self.categories, self.flavors, priority=self.priority, keywords=self.keywords)
+		cls = {
+			'link': Link,
+			'module': Module
+		}.get(self.root.tag, Module)
+		return cls(self.id, self.name, self.url, self.description, self.icon, self.categories, self.flavors, priority=self.priority, keywords=self.keywords)
 
 	def get_flavor(self, name):
 		'''Retrieves details of a flavor'''
@@ -421,9 +425,7 @@ class Manager(dict):
 				RESOURCES.info('module %s is deactivated by UCR' % (module_id))
 				continue
 
-			# ATM just add a link Element to the module list
-			# TODO: Also control links by acls
-			if '__link' in mod.id:
+			if isinstance(mod, Link):
 				modules[module_id] = mod
 				continue
 

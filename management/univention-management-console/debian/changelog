@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-7) unstable; urgency=low
+
+  * Bug #40528: Code clean up and adapted dtd file
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 02 Feb 2016 09:16:16 +0100
+
 univention-management-console (8.0.28-6) unstable; urgency=low
 
   * Bug #40528: Display links and shallow copies of modules in categories

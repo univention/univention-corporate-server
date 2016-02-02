@@ -4,8 +4,8 @@
 	version (2.0) #FIXED "2.0"
 >
 
-<!ELEMENT module ((name,url,description,keywords?)?,(flavor|categories)*,command+)>
-<!-- priority: order of module (new with UCS-3.1)
+<!ELEMENT module ((name,description,keywords?)?,(flavor|categories)*,command+)>
+<!-- priority: order of module
 	id:       unique module ID
 	icon:     base directory
 	version:  only "1.0"
@@ -18,17 +18,13 @@
 	notifier (qt) #IMPLIED
 >
 <!ELEMENT link ((name,url,description,keywords?)?,(categories)*)>
-<!-- priority: order of link (new with UCS-3.1)
+<!-- priority: order of link
 	id:       unique link ID
-	icon:     base directory
-	version:  only "1.0"
-	notifier: use specific notifier loop 'qt' -->
-<!ATTLIST module
+	icon:     base directory -->
+<!ATTLIST link
 	id CDATA #REQUIRED
 	icon CDATA #IMPLIED
 	priority CDATA #IMPLIED
-	version (1.0) #FIXED "1.0"
-	notifier (qt) #IMPLIED
 >
 <!ELEMENT name (#PCDATA)>
 <!ELEMENT url (#PCDATA)>
