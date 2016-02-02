@@ -1,6 +1,7 @@
 univention-net-installer (9.0.1-2) unstable; urgency=low
 
   * Bug #40559: Call setup-join with working chroot
+  * Bug #39937: Update repository path for UCS-4.1
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 02 Feb 2016 08:53:23 +0100
 
