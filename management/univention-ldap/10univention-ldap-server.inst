@@ -283,12 +283,12 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	BACKUPS="$(univention-directory-manager computers/domaincontroller_backup list "$@" | grep 'fqdn:' | cut -f2 -d':' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 	ADDSTR=""
 	for MASTER in $MASTERS; do
-		if [ "$MASTERS" != "None" ]; then
+		if [ "$MASTER" != "None" ]; then
 			ADDSTR="$ADDSTR --append ldapServer=$MASTER";
 		fi
 	done
 	for BACKUP in $BACKUPS; do
-		if [ "$BACKUPS" != "None" ]; then
+		if [ "$BACKUP" != "None" ]; then
 			ADDSTR="$ADDSTR --append ldapServer=$BACKUP";
 		fi
 	done

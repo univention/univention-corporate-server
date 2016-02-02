@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-20) unstable; urgency=low
+
+  * fix typo (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Feb 2016 10:31:59 +0100
+
 univention-ldap (12.1.6-19) unstable; urgency=low
 
   * add missing $@ (Bug #38091)
