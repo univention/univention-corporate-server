@@ -257,7 +257,7 @@ udm kerberos/kdcentry create "$@" --ignore_exists --position "cn=kerberos,$ldap_
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	# Create a LDAP server policy so member server use the LDAP servers of
 	# dc master and all dc backups.
-	if ! univention-directory-manager policies/ldapserver list --filter cn=default-settings | egrep -q '^DN'; then
+	if ! univention-directory-manager policies/ldapserver list "$@" --filter cn=default-settings | egrep -q '^DN'; then
 		univention-directory-manager policies/ldapserver create "$@" \
 			--position="cn=ldap,cn=policies,$ldap_base" \
 			--ignore_exists \

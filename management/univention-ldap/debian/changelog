@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-19) unstable; urgency=low
+
+  * add missing $@ (Bug #38091)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 02 Feb 2016 09:39:15 +0100
+
 univention-ldap (12.1.6-18) unstable; urgency=low
 
   * ignore DCs without FQDN (Bug #38091)
