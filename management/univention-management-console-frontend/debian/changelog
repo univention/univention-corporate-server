@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-16) unstable; urgency=low
+
+  * Bug #40528: A link is now defined by having a url
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 02 Feb 2016 09:05:32 +0100
+
 univention-management-console-frontend (5.0.63-15) unstable; urgency=low
 
   Bug #40402: 

@@ -356,12 +356,6 @@ define([
 			return modules;
 		},
 
-		_is_link: function(item) {
-			// by convention a link element has to start with '__link'
-			var reg = /^__link/;
-			return reg.test(item.id);
-		},
-
 		_is_shallow_copy: function(category){
 			// to get the origin color of the category, we will ignore each
 			// category that starts && ends with an underscore _
@@ -387,7 +381,8 @@ define([
 				item.categoryPriority = 0;
 			}
 
-			item.is_link = this._is_link(item);
+			// by convention a link element has an url
+			item.is_link = Boolean(item.url);
 			item.is_shallow_copy = this._is_shallow_copy(item.category);
 			item.category_for_color = item.category;
 			if (item.is_shallow_copy && item.categories.length > 1) {
@@ -1249,10 +1244,9 @@ define([
 			});
 
 			var loadedCount = [];
-			var is_link = /^__link/;
 
 			tools.forEachAsync(modules, lang.hitch(this, function(imod) {
-				var is_module = !is_link.test(imod.id);
+				var is_module = !Boolean(imod.url);
 				if (is_module) {
 					loadedCount.push(this._tryLoadingModule(imod));
 				}
