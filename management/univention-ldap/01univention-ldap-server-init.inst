@@ -41,6 +41,20 @@ if [ -z "$ldap_server_type" ]; then
 	exit 1
 fi
 
+start-stop-daemon --stop --name slapd --retry TERM/30/KILL/5 --oknodo --quiet
+
+# slap* needs schema information, which is later fetched by replication.py
+fake_initial_schema () {
+	[ "$ldap_server_type" = master ] && return
+	[ -s /var/lib/univention-ldap/schema.conf ] && return
+	local tmp=$(mktemp)
+	printf '# univention_dummy.conf\n\nldap/server/type: master' >"$tmp"
+	UNIVENTION_BASECONF="$tmp" univention-config-registry filter \
+		</etc/univention/templates/files/etc/ldap/slapd.conf.d/10univention-ldap-server_schema \
+		>/var/lib/univention-ldap/schema.conf
+	rm -f "$tmp"
+}
+fake_initial_schema
 /usr/share/univention-ldap/ldap_setup_index --force-defaults ||
 	[ $? -eq 4 ]
 
@@ -52,10 +66,6 @@ fi
 files=$(find /var/lib/univention-ldap/ldap/ -name "$database_name.*" -type f)
 if [ -z "$files" ]
 then
-	killall slapd >/dev/null 2>&1 || :
-	killall slapd >/dev/null 2>&1 || :
-	killall -9 slapd >/dev/null 2>&1 || :
-
 	rm -f /var/lib/univention-ldap/ldap/*
 
 	if [ -e "/etc/ldap/slapd.d/cn=config.ldif" ]; then
@@ -97,11 +107,12 @@ then
 
 	univention-config-registry set windows/domain?"$sambadomain" \
 		kerberos/realm?"$realm"
-	invoke-rc.d slapd start
 
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
 	test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
 fi
+
+invoke-rc.d slapd start
 
 joinscript_save_current_version
 exit 0

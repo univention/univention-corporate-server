@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-21) unstable; urgency=low
+
+  * Bug #38051: Kill OpenLDAP slapd for initial setup during domain (re-)join
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 03 Feb 2016 13:43:49 +0100
+
 univention-ldap (12.1.6-20) unstable; urgency=low
 
   * fix typo (Bug #38091)
