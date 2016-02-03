@@ -303,22 +303,15 @@ class VM:
 					cmdline = cmdline[len('LOCAL'):]
 					ret = self._exec_local(cmdline)
 				else:
-					ret = self._ssh_exec(cmdline)
+					try:
+						ret = self._ssh_exec(cmdline)
+					except paramiko.ssh_exception.SSHException:
+						self.connect()
+						ret = self._ssh_exec(cmdline)
 				if ret != 0:
 					_print_done('fail: return code %s' % ret)
 				else:
 					_print_done()
-			except paramiko.ssh_exception.SSHException:
-				self.connect()
-				try:
-					ret = self._ssh_exec(cmdline)
-					if ret != 0:
-						_print_done('fail: return code %s' % ret)
-					else:
-						_print_done()
-				except Exception:
-					self._print_exception_to_file()
-					_print_done('fail')
 			except Exception:
 				self._print_exception_to_file()
 				_print_done('fail')
