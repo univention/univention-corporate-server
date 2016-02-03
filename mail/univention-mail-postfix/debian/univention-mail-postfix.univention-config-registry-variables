@@ -156,8 +156,8 @@ Type=int
 Categories=service-mail
 
 [mail/postfix/policy/listfilter/use_sasl_username]
-Description[de]=Ist diese Variable eingeschaltet oder nicht gesetzt, wird zur Erkennung des Absenders einer E-Mail an eine Mailingliste oder eine Mailgruppe der per SMTP Authentifizierte Benutzer verwendet, und nicht die angegebene Absenderadresse. Dies ist sicherer, setzt aber vorraus, dass der Benutzer sich an diesem Server anmeldet und die E-Mail einliefert. Um stattdessen die E-Mail-Adresse zur Absendererkennung zu verwenden muss diese Variable auf "no" gesetzt werden.
-Description[en]=If this variable is enabled or unset, the login name of an SMTP authenticated user is used to determine the sender of emails to a mailinglist or a mail group. This is more secure than using the email address declared by the sender. It does require however, that the sender logs into this server to deliver the email. To use the email address to determine the sender, set this variable to "no".
+Description[de]=Diese Variable beeinflusst die Prüfung von Mails an sender-beschränkte Mailinglisten oder Mailgruppen. Ist diese Variable nicht bzw. auf den Wert "yes" gesetzt, wird der authentifizierte Benutzer aus dem SMTP-Dialog und nicht die angegebene Envelope-Absenderadresse verwendet. Dies ist sicherer, setzt aber vorraus, dass der Benutzer sich bei der Maileinlieferung an diesem Mailserver authentifiziert. Um stattdessen die Envelope-Absenderadresse in der Prüfung zu verwenden, muss diese Variable auf "no" gesetzt werden.
+Description[en]=This variable controls sender-limited mailing lists and mail groups. If this variable is set to "yes" or unset, the authenticated user of the SMTP dialog is used instead of the envelope sender address. This is more secure. It does require however, that the sender authenticates itself against the mail server during mail delivery. To use the envelope sender address, set this variable to "no".
 Type=bool
 Categories=service-mail
 

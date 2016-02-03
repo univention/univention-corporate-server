@@ -1,3 +1,9 @@
+univention-mail-postfix (10.0.0-14) unstable; urgency=low
+
+  * change UCRV wording (Bug #29615)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Feb 2016 14:50:55 +0100
+
 univention-mail-postfix (10.0.0-13) unstable; urgency=low
 
   * Mailinglist / mail groups filter now checks sasl_username instead of
