@@ -274,28 +274,19 @@ define([
 
 		renderRow: function(item, options) {
 			var div = this.inherited(arguments);
-			var category_for_color = item.category_for_color;
-			var className = lang.replace('umcGalleryCategory-{0}', [category_for_color]);
+			var category = item.category;
+			if (category === '_favorites_' && item.categories.length > 1) {
+				category = array.filter(item.categories, function(cat) { return cat != '_favorites_'; })[0];
+			}
+			var className = lang.replace('umcGalleryCategory-{0}', [category]);
 			domClass.add(div.firstElementChild, className);
-			if (item.is_shallow_copy) {
-				var cat = require('umc/app').getCategory(category_for_color);
+			if (isFavorite(item)) {
+				var cat = require('umc/app').getCategory(category);
 				var styleStr = '';
 				if (cat) {
 					styleStr += lang.replace('background-color: {0};', [cat.color]);
 				}
-				if (isFavorite(item)) {
-					this._createFavoriteIcon(cat.color, div.firstElementChild);
-				}
-			}
-
-			// if item is link wrap it inside an a element
-			if (item.is_link) {
-				var a_element = domConstruct.create('a', {
-					href: item.url || '/',
-					target: '_blank'
-				});
-				domConstruct.place(div, a_element);
-				div = a_element;
+				this._createFavoriteIcon(cat.color, div.firstElementChild);
 			}
 			return div;
 		},
@@ -356,20 +347,6 @@ define([
 			return modules;
 		},
 
-		_is_link: function(item) {
-			// by convention a link element has to start with '__link'
-			var reg = /^__link/;
-			return reg.test(item.id);
-		},
-
-		_is_shallow_copy: function(category){
-			// to get the origin color of the category, we will ignore each
-			// category that starts && ends with an underscore _
-			// e.g. returns true for _favorites_ category
-			var re = /^_.*_$/;
-			return re.test(category);
-		},
-
 		_createModuleItem: function(_item, categoryID) {
 			// we need a uniqe ID for the store
 			var item = lang.mixin({
@@ -385,15 +362,6 @@ define([
 			else {
 				item.category = '';
 				item.categoryPriority = 0;
-			}
-
-			item.is_link = this._is_link(item);
-			item.is_shallow_copy = this._is_shallow_copy(item.category);
-			item.category_for_color = item.category;
-			if (item.is_shallow_copy && item.categories.length > 1) {
-				item.category_for_color = array.filter(item.categories, lang.hitch(this, function(cat) {
-					return !this._is_shallow_copy(cat);
-				}))[0];
 			}
 			return item;
 		},
@@ -1249,13 +1217,9 @@ define([
 			});
 
 			var loadedCount = [];
-			var is_link = /^__link/;
 
 			tools.forEachAsync(modules, lang.hitch(this, function(imod) {
-				var is_module = !is_link.test(imod.id);
-				if (is_module) {
-					loadedCount.push(this._tryLoadingModule(imod));
-				}
+				loadedCount.push(this._tryLoadingModule(imod));
 			})).then(lang.hitch(this, function() {
 				all(loadedCount).always(lang.hitch(this, 'onModulesLoaded'));
 			}));
@@ -1479,9 +1443,7 @@ define([
 					label: _('Open module'),
 					isDefaultAction: true,
 					callback: lang.hitch(this, function(id, item) {
-						if (!item.is_link) {
-							this.openModule(item);
-						}
+						this.openModule(item);
 						//this._tabContainer.transition(id, item);
 					})
 				}, {
@@ -1733,7 +1695,10 @@ define([
 
 		__getModuleColor: function(module) {
 			var category = array.filter(this.getCategories(), lang.hitch(this, function(category) {
-				return module.category_for_color === category.id;
+				if (category.id != '_favorites_' && array.indexOf(module.categories, category.id) >= 0) {
+					return true;
+				}
+				return false;
 			}));
 			if (category.length) {
 				return category[0].color;
