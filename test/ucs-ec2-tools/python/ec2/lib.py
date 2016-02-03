@@ -481,8 +481,9 @@ class VM_KVM(VM):
 		server = paramiko.SSHClient()
 		server.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 		kvm_server = self.config.get(self.section, 'kvm_server')
-		kvm_user = self.config.get(self.section, 'kvm_user')
-		if not kvm_user:
+		try:
+			kvm_user = self.config.get(self.section, 'kvm_user')
+		except ConfigParser.NoOptionError:
 			kvm_user = getpass.getuser()
 		try:
 			server.connect(
