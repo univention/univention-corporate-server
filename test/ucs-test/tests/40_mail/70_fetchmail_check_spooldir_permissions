@@ -1,0 +1,37 @@
+#!/usr/share/ucs-test/runner python
+## desc: Fetchmail, check permissions of spool directory
+## tags: [apptest]
+## exposure: safe
+## packages:
+##  - univention-fetchmail
+
+import os
+import grp
+import pwd
+import univention.testing.utils as utils
+
+DIR_SPOOL_DOVECOT = '/var/spool/univention-fetchmail'
+EXPECTED_USER = 'listener'
+EXPECTED_GROUP = 'root'
+EXPECTED_MODE = '0700'
+
+def main():
+	if not os.path.exists(DIR_SPOOL_DOVECOT):
+		utils.fail('%r does not exist' % (DIR_SPOOL_DOVECOT,))
+
+	result = os.stat(DIR_SPOOL_DOVECOT)
+
+	username = pwd.getpwuid(result.st_uid).pw_name
+	if EXPECTED_USER != username:
+		utils.fail('%r is not owned by user %r: currently owned by user %r' % (DIR_SPOOL_DOVECOT, EXPECTED_USER, username))
+
+	grpname = grp.getgrgid(result.st_gid).gr_name
+	if EXPECTED_GROUP != grpname:
+		utils.fail('%r is not owned by user %r; currently owned by group %r' % (DIR_SPOOL_DOVECOT, EXPECTED_USER, grpname))
+
+	mode = oct(result.st_mode)[-4:]
+	if EXPECTED_MODE != mode:
+		utils.fail('%r has wrong permissions: expected=%r  currently=%r' % (DIR_SPOOL_DOVECOT, EXPECTED_MODE, mode))
+
+if __name__ == '__main__':
+	main()
