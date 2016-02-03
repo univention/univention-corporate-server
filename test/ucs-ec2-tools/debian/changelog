@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-12) unstable; urgency=low
+
+  * Bug #40553: Add 'recover' option
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 03 Feb 2016 07:34:55 +0100
+
 ucs-ec2-tools (2.0.0-11) unstable; urgency=medium
 
   * Bug #38984: more verbose error handling

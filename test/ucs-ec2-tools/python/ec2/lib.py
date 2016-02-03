@@ -87,10 +87,12 @@ class TimeoutError(Exception):
 	pass
 
 
-class VM:
+class VM(object):
 	"""
 	Generic instance.
 	"""
+	failed_commands = 0
+
 	def __init__(self, section, config, virtualisation):
 		''' Initialize a VM instance '''
 		self.section = section
@@ -141,6 +143,13 @@ class VM:
 			log.write('Created instance %s at %s\n' % (section, time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 			log.close()
 		self.logfile_fd = None
+
+		for sname in (section, 'Global'):
+			if config.has_option(sname, 'recover'):
+				self.recover = config.getint(sname, 'recover')
+				break
+		else:
+			self.recover = 0
 
 		self.instance = None
 		self.client = None
@@ -296,7 +305,13 @@ class VM:
 		except LookupError:
 			_print_done('fail: phase %s does not exists' % (phase,))
 			return
+		if VM.failed_commands and phase < self.recover:
+			_print_done('skip: phase %d due to previous errors' % (phase,))
+			return
 		for cmdline in commands:
+			if VM.failed_commands and phase < self.recover:
+				_print_done('skip: cmd "%s" due to previous errors' % (cmdline,))
+				continue
 			try:
 				_print_process('  %s' % cmdline)
 				if cmdline.startswith('LOCAL'):
@@ -310,6 +325,7 @@ class VM:
 						ret = self._ssh_exec(cmdline)
 				if ret != 0:
 					_print_done('fail: return code %s' % ret)
+					VM.failed_commands += 1
 				else:
 					_print_done()
 			except Exception:
