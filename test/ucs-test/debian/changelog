@@ -1,3 +1,9 @@
+ucs-test (6.0.31-26) unstable; urgency=low
+
+  * debug failed mail tests in UCS@school S4 (Bug #40565)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Feb 2016 12:48:09 +0100
+
 ucs-test (6.0.31-25) unstable; urgency=low
 
   * fix 10_ldap/100_ldapserver_policy (roles, join user) (Bug #38091)

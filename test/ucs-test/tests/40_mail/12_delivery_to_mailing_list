@@ -8,6 +8,7 @@ from essential.mail import send_mail, check_delivery
 from univention.config_registry import handler_set
 import subprocess
 import time
+from smtplib import SMTPRecipientsRefused
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -47,10 +48,17 @@ def main():
 					'name': list_name,
 					'mailAddress': list_mail,
 					'members': mails[1]
-				}
+				},
+				wait_for_drs_replication=True
 			)
 			token = str(time.time())
-			send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)
+			try:
+				send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)
+			except SMTPRecipientsRefused:
+				print "univention-ldapsearch -LLL '(objectClass=univentionMailList)'"
+				subprocess.call(["univention-ldapsearch", "-LLL", "(objectClass=univentionMailList)"])
+				raise
+
 			for mail in mails:
 				check_delivery(token, mail, True)
 

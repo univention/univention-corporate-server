@@ -19,17 +19,12 @@ def check_sending_mail(username, password, recipient_email, should_be_accepted):
 	try:
 		ret_code = send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
 		if (bool(ret_code) == should_be_accepted):
+			print "univention-ldapsearch -LLL '(&(objectClass=univentionMail)(|(mailAlternativeAddress=*)(mailPrimaryAddress=*))(!(univentionCanonicalRecipientRewriteEnabled=1)))' mailPrimaryAddress mailAlternativeAddress"
+			subprocess.call(["univention-ldapsearch", "-LLL", "(&(objectClass=univentionMail)(|(mailAlternativeAddress=*)(mailPrimaryAddress=*))(!(univentionCanonicalRecipientRewriteEnabled=1)))", "mailPrimaryAddress", "mailAlternativeAddress"])
 			utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
-	except smtplib.SMTPRecipientsRefused as ex:
+	except smtplib.SMTPRecipientsRefused as exc:
 		if should_be_accepted:
-			utils.fail('Mail sent failed with exception: %s' % ex)
-
-
-def restart_postfix():
-	print '\n* restarting postfix'
-	cmd = ['service', 'postfix', 'restart']
-	subprocess.Popen(cmd, stderr=open('/dev/null', 'w')).communicate()
-	time.sleep(5)
+			utils.fail('Mail sent failed with exception: %s' % exc)
 
 
 def main():
@@ -43,12 +38,11 @@ def main():
 					'name'     : maildomain
 				}
 			)
-			udm.stop_cli_server()
 
 			password = 'univention'
 			recipient_email = '%s@%s' % (uts.random_name(), maildomain)
 			unknown_email = '%s@%s' % (uts.random_name(), maildomain)
-			userdn, username = udm.create_user(
+			udm.create_user(
 				set={
 					'password'           : password,
 					'mailHomeServer'     : '%s.%s' % (ucr.get('hostname'), maildomain),
@@ -56,7 +50,6 @@ def main():
 				}
 			)
 
-			restart_postfix()
 			check_sending_mail(recipient_email, password, recipient_email, True)
 			check_sending_mail(recipient_email, password, unknown_email, False)
 

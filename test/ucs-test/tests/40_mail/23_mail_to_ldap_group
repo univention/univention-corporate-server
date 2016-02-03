@@ -6,6 +6,8 @@
 
 from essential.mail import send_mail, check_delivery
 import time
+import subprocess
+from smtplib import SMTPRecipientsRefused
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
@@ -67,7 +69,12 @@ def main():
 						check_for_drs_replication=True
 					)
 					token = str(time.time())
-					send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
+					try:
+						send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
+					except SMTPRecipientsRefused:
+						print "univention-ldapsearch -LLL '(&(mailPrimaryAddress=*)(objectclass=posixGroup))'"
+						subprocess.call(["univention-ldapsearch", "-LLL", "(&(mailPrimaryAddress=*)(objectclass=posixGroup))"])
+						raise
 					for i, mail in enumerate(mails_list):
 						should_be_delivered = False
 						if i in [1, 2]:
@@ -83,7 +90,12 @@ def main():
 						},
 						check_for_drs_replication=True
 					)
-					send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
+					try:
+						send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
+					except SMTPRecipientsRefused:
+						print "univention-ldapsearch -LLL '(&(mailPrimaryAddress=*)(objectclass=posixGroup))'"
+						subprocess.call(["univention-ldapsearch", "-LLL", "(&(mailPrimaryAddress=*)(objectclass=posixGroup))"])
+						raise
 					for i, mail in enumerate(mails_list):
 						should_be_delivered = True
 						if i == 0:
@@ -99,7 +111,12 @@ def main():
 						},
 						check_for_drs_replication=True
 					)
-					send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
+					try:
+						send_mail(recipients=group_mail, msg=token, tls=True, username=mail, password=password)
+					except SMTPRecipientsRefused:
+						print "univention-ldapsearch -LLL '(&(mailPrimaryAddress=*)(objectclass=posixGroup))'"
+						subprocess.call(["univention-ldapsearch", "-LLL", "(&(mailPrimaryAddress=*)(objectclass=posixGroup))"])
+						raise
 					for i, mail in enumerate(mails_list):
 						should_be_delivered = True
 						print 40 * '-', '\nUser Nr.: %d, should be delivered = %r\n' % (i, should_be_delivered)
