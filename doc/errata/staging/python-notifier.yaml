@@ -6,6 +6,7 @@ fix: 0.9.7-4.30.201601271815
 version: [0]
 desc: |
  This update addresses the following issues:
- * A crash is prevented when a notifier timer removes a socket while there are
-   pending IO events from this socket.
+ * A crash is prevented if a notifier timer removes a socket while there are
+   pending IO events from this socket. Univention Management Console was
+   affected by this bug and resulted in faulty behaviour of UMC modules.
 bug: [40510]
