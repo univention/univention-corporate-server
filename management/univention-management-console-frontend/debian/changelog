@@ -1,6 +1,18 @@
+univention-management-console-frontend (5.0.63-17) unstable; urgency=medium
+
+  * Bug #40528: temporarily reverted last changes
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 03 Feb 2016 19:03:00 +0100
+
+univention-management-console-frontend (5.0.63-16) unstable; urgency=low
+
+  * Bug #40528: A link is now defined by having a url
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 02 Feb 2016 09:05:32 +0100
+
 univention-management-console-frontend (5.0.63-15) unstable; urgency=low
 
-  Bug #40402: 
+  Bug #40402:
   * Updated warning for outdated browser versions
   * Fixed focus problems in login dialog
   * Make sure that empty warning messages are not displayed below login dialog
