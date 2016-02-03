@@ -1,3 +1,10 @@
+univention-mail-postfix (10.0.0-15) unstable; urgency=low
+
+  * listfilter.py exists gracefully when told to (Bug #40569)
+  * listfilter.py returns WARN instead of DUNNO in case of error
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 03 Feb 2016 16:32:03 +0100
+
 univention-mail-postfix (10.0.0-14) unstable; urgency=low
 
   * change UCRV wording (Bug #29615)

@@ -135,9 +135,9 @@ def listfilter(attrib):
 					return "DUNNO no restrictions"
 			else:
 				return "DUNNO no group found for %s" % recipient
-		except Exception as exc:
-			syslog.syslog(syslog.LOG_ERR, "Error with attrib={}, check_sasl_username={} traceback={}".format(attrib, check_sasl_username, traceback.format_exc()))
-			return "DUNNO search exception %s" % exc
+		except Exception:
+			return "WARN Error with attrib={}, check_sasl_username={}, traceback={}".format(
+				attrib, check_sasl_username, traceback.format_exc().replace("\n", " "))
 
 # main
 attr = {}
@@ -151,7 +151,7 @@ if options.test:
 	attr["sender"] = options.sender
 	attr["recipient"] = options.recipient
 	action = listfilter(attr)
-	print "action=" + action
+	print "action={}\n".format(action)
 else:
 	# read from stdin python -u is required for unbufferd streams
 	while True:
@@ -165,8 +165,14 @@ else:
 				action = listfilter(attr)
 				sys.stdout.write("action=%s\n\n" % action)
 			else:
-				sys.stderr.write("unknown action in %s" % attr)
+				sys.stderr.write("unknown action in %s\n" % attr)
+				sys.stdout.write("defer_if_permit Service temporarily unavailable\n")
+				syslog.syslog(syslog.LOG_ERR, "unknown action in '{}', exiting.".format(attr))
 				sys.exit(1)
 			attr = {}
+		elif data == "":
+			# Postfix telling us to shutdown (max_idle).
+			sys.exit(0)
 		else:
+			syslog.syslog(syslog.LOG_ERR, "received bad data: '{}', exiting.".format(data))
 			sys.exit(1)
