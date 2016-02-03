@@ -740,6 +740,10 @@ class VM_EC2(VM):
 		for var in env_vars:
 			self.instance.add_tag(var.lower(), os.getenv(var, ''))
 
+	def terminate(self):
+		_print_process('Terminating VM')
+		self.instance.terminate()
+
 	def _wait_instance(self, timeout=600):
 		"""
 		Wait until instance is created.
