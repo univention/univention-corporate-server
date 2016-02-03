@@ -27,5 +27,5 @@ fd = p.stdin.fileno()
 notifier.socket_add(fd, on_read)
 notifier.timer_add(0, on_timer)
 p.communicate('A')
-notifier.step()
+notifier.step()  # if bug 40510 is not fixed, the test crashes here with a KeyError exception
 notifier.step()
