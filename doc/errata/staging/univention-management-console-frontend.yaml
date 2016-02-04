@@ -13,5 +13,6 @@ desc: |
  * Internet Explorer 11 doesn't show a download pop up anymore when accessing
    UMC.
  * The versions of outdated browsers have been updated.
- * Some minor usability adjustments for the login dialog have been implemented.
+ * Some minor usability adjustments for the login dialog have been
+   implemented.
 bug: [39815, 40242, 40339, 39861, 40402]
