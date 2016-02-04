@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-16) unstable; urgency=medium
+
+  * Bug #40581: fix error handling
+
+ -- Florian Best <best@univention.de>  Thu, 04 Feb 2016 13:02:06 +0100
+
 univention-self-service (1.0.3-15) unstable; urgency=low
 
   * fallback to HTTP on SSLError if connection is local (Bug #40158)
