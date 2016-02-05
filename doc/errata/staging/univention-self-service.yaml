@@ -2,9 +2,12 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-self-service
-fix: 1.0.3-17.63.201602041638
+fix: 1.0.3-18.64.201602051136
 version: [0]
 desc: |
   This update addresses the following issue:
   * The error handling during connecting to the UMC server has been improved.
-bug: [40581]
+  * If installed via software selection in the system-setup wizard, the LDAP
+    secret file is now created at the correct time. Before the service was
+    in a non-functional state.
+bug: [40581,40582]
