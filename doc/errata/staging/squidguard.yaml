@@ -1,0 +1,11 @@
+product: ucs
+release: "4.0"
+version: [4]
+scope: ucs_4.0-0-errata4.0-4
+src: squidguard
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * added new config option "dbtemp" that specifies a directory for temporary
+   backing files of squidguard's in-memory databases.
+bug: [40593]
