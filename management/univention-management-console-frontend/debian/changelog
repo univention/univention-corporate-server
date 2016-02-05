@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-18) unstable; urgency=low
+
+  * Bug #40528: Added the changes again
+
+ -- Alexander Kramer <kramer@univention.de>  Fri, 05 Feb 2016 08:43:47 +0100
+
 univention-management-console-frontend (5.0.63-17) unstable; urgency=medium
 
   * Bug #40528: temporarily reverted last changes
