@@ -1,3 +1,9 @@
+univention-printserver (9.0.3-1) unstable; urgency=low
+
+  * restart cups in join script (Bug #40591) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 05 Feb 2016 12:54:27 +0100
+
 univention-printserver (9.0.2-1) unstable; urgency=low
 
   * added cups/policy (Bug #38023)
