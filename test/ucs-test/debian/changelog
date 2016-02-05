@@ -1,3 +1,9 @@
+ucs-test (6.0.31-29) unstable; urgency=medium
+
+  * Skip ad connector tests in AD member mode (Bug #37289)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 05 Feb 2016 16:53:43 +0100
+
 ucs-test (6.0.31-28) unstable; urgency=low
 
   * 64_udm-printers/50_create_printer_for_every_printer_URI (Bug #39112) 

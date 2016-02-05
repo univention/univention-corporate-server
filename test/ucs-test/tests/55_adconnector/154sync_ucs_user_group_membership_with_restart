@@ -5,6 +5,7 @@
 ## - univention-ad-connector
 ## tags:
 ##  - groupsync
+##  - skip_admember
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
