@@ -1,3 +1,10 @@
+univention-self-service (1.0.3-19) unstable; urgency=low
+
+  * Bug #40582: create ldap secret file on update
+  * don't raise join script version
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 05 Feb 2016 12:58:16 +0100
+
 univention-self-service (1.0.3-18) unstable; urgency=low
 
   * move creation of ldap secret file to join script (Bug #40582)
