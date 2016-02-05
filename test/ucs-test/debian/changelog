@@ -1,3 +1,10 @@
+ucs-test (5.0.175-8) unstable; urgency=low
+
+  * 64_udm-printers/50_create_printer_for_every_printer_URI (Bug #39112) 
+  * 51_samba4/59checkPrimaryGroupInPacInfo (Bug #39101)
+
+ -- Felix Botner <botner@univention.de>  Fri, 05 Feb 2016 12:19:52 +0100
+
 ucs-test (5.0.175-7) unstable; urgency=medium
 
   * 00_checks/22_ldbsearch_hostaccount: Added dependency to univention-

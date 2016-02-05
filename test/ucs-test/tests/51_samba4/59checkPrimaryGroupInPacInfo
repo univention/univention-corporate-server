@@ -35,7 +35,7 @@ tshark -a duration:10 -i any -K "$keytab" -O Kerberos -w "$capture_file" >/dev/n
 sleep 2
 
 # get kerberos ticket/pac
-net ads kerberos pac dump -U "$hostname"\$%"$machine_password" >/dev/null || fail_test 110
+kinit --password-file=/etc/machine.secret "$hostname"\$ || fail_test 110
 sleep 10
 
 tshark -K "$keytab" -r "$capture_file" -V  -R 'kerberos.msg.type==11' >"$capture_text" || fail_test 110
