@@ -1,6 +1,12 @@
+ucs-test (6.0.31-28) unstable; urgency=low
+
+  * 64_udm-printers/50_create_printer_for_every_printer_URI (Bug #39112) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 05 Feb 2016 12:17:39 +0100
+
 ucs-test (6.0.31-27) unstable; urgency=low
 
-  * tests/51_samba4/59checkPrimaryGroupInPacInfo (Bug #39101)
+  * 51_samba4/59checkPrimaryGroupInPacInfo (Bug #39101)
 
  -- Felix Botner <botner@univention.de>  Thu, 04 Feb 2016 16:52:17 +0100
 
