@@ -1,10 +1,10 @@
-<!ELEMENT umc (module|link|definitions|categories)>
+<!ELEMENT umc ((module|link)+|categories)>
 <!-- version:  only "2.0" -->
 <!ATTLIST umc
 	version (2.0) #FIXED "2.0"
 >
 
-<!ELEMENT module ((name,description,keywords?)?,(flavor|categories)*,command+)>
+<!ELEMENT module ((name,description,keywords?)?,flavor*,categories?,command*)>
 <!-- priority: order of module
 	id:       unique module ID
 	icon:     base directory
@@ -16,8 +16,9 @@
 	priority CDATA #IMPLIED
 	version (1.0) #FIXED "1.0"
 	notifier (qt) #IMPLIED
+	deactivated  CDATA #IMPLIED
 >
-<!ELEMENT link ((name,url,description,keywords?)?,(categories)*)>
+<!ELEMENT link (name,url,description,keywords?,categories?)>
 <!-- priority: order of link
 	id:       unique link ID
 	icon:     base directory -->
@@ -30,8 +31,8 @@
 <!ELEMENT url (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT keywords (#PCDATA)>
-<!ELEMENT flavor (name,description,keywords?)>
-<!-- priority:   order of flavours (new with UCS-3.1)
+<!ELEMENT flavor (name,description,keywords?,categories?)>
+<!-- priority:   order of flavours
 	icon:       file name without suffix relative to umc/module/@icon
 	id:         unique module ID
 	overwrites: over-write other flavor -->
@@ -40,6 +41,7 @@
 	priority CDATA #IMPLIED
 	id CDATA #REQUIRED
 	overwrites CDATA #IMPLIED
+	deactivated  CDATA #IMPLIED
 >
 <!ELEMENT categories (category+)>
 <!-- domain: ??? -->
@@ -47,10 +49,12 @@
 	domain CDATA #IMPLIED
 >
 <!ELEMENT category (name?)>
-<!-- priority: order of categories (new with UCS-3.1)
+<!-- priority: order of categories
 	name:     usage from umc/module; one of 'favorites'(100) 'system'(3) or a custom one
 	id:       used for definition in umc/categories -->
 <!ATTLIST category
+	icon CDATA #IMPLIED
+	color CDATA #IMPLIED
 	priority CDATA #IMPLIED
 	name CDATA #IMPLIED
 	id CDATA #IMPLIED
