@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-18) unstable; urgency=low
+
+  * move creation of ldap secret file to join script (Bug #40582)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 05 Feb 2016 11:28:23 +0100
+
 univention-self-service (1.0.3-17) unstable; urgency=low
 
   * revert r67025 / 1.0.3-15. Error is in VM image, not this (Bug #40158)

@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=1
+VERSION=2
 
 . /usr/share/univention-join/joinscripthelper.lib
 . /usr/share/univention-lib/ldap.sh
@@ -63,6 +63,8 @@ MASTER=$(ucr get ldap/master)
 univention-config-registry set \
 	"self-service/backend-server?$MASTER" \
 	self-service/web/enabled?yes
+
+/usr/lib/univention-server/server_password_change.d/univention-self-service postchange
 
 a2enmod wsgi
 a2ensite univention-self-service

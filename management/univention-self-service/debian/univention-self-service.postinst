@@ -52,8 +52,6 @@ touch $ACCESS_LOG $ERROR_LOG
 chown self-service:adm $ACCESS_LOG $ERROR_LOG
 chmod 640 $ACCESS_LOG $ERROR_LOG
 
-/usr/lib/univention-server/server_password_change.d/univention-self-service postchange
-
 univention-config-registry set \
 	self-service/passwordreset/web/enabled?yes \
 	"ucs/web/overview/entries/service/passwordreset/description=Reset your password or provide contact information" \
