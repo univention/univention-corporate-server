@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-fetchmail
+fix: 
+desc: |
+ This update addresses the following issue:
+ * A file for the process of handling user renames has been moved to a
+   secure location (Bug 40585).
+bug: [40585]
