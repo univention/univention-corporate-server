@@ -44,18 +44,19 @@ ucs_addServiceToLocalhost "univention-self-service" "$@"
 eval "$(ucr shell)"
 
 udm policies/umc create "$@" \
+	--ignore_exists \
 	--position="cn=UMC,cn=policies,$ldap_base" \
 	--set name=selfservice-umc-servers \
-	--set ldapFilter='(|(objectClass=univentionMemberserver)(objectClass=univentionDomainController))'
+	--set ldapFilter='(|(objectClass=univentionMemberserver)(objectClass=univentionDomainController))' || die
 udm policies/umc modify "$@" \
 	--dn "cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base" \
-	--append "allow=cn=passwordchange-all,cn=operations,cn=UMC,cn=univention,$ldap_base"
+	--append "allow=cn=passwordchange-all,cn=operations,cn=UMC,cn=univention,$ldap_base" || die
 udm container/cn modify "$@" \
 	--dn "cn=dc,cn=computers,$ldap_base" \
-	--policy-reference "cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base"
+	--policy-reference "cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base" || die
 udm container/cn modify "$@" \
 	--dn "cn=memberserver,cn=computers,$ldap_base" \
-	--policy-reference "cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base"
+	--policy-reference "cn=selfservice-umc-servers,cn=UMC,cn=policies,$ldap_base" || die
 
 stop_udm_cli_server
 
@@ -64,7 +65,7 @@ univention-config-registry set \
 	"self-service/backend-server?$MASTER" \
 	self-service/web/enabled?yes
 
-/usr/lib/univention-server/server_password_change.d/univention-self-service postchange
+/usr/lib/univention-server/server_password_change.d/univention-self-service postchange || die
 
 a2enmod wsgi
 a2ensite univention-self-service

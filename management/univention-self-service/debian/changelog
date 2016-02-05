@@ -1,3 +1,9 @@
+univention-self-service (1.0.3-20) unstable; urgency=low
+
+  * Bug #40582: make join script die on error
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 05 Feb 2016 13:37:48 +0100
+
 univention-self-service (1.0.3-19) unstable; urgency=low
 
   * Bug #40582: create ldap secret file on update
