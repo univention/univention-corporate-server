@@ -13,7 +13,7 @@
 # Description:       Init script for dovecot services
 ### END INIT INFO
 
-# Copyright 2015 Univention GmbH
+# Copyright 2015-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
