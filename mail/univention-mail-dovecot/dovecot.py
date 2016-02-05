@@ -45,7 +45,7 @@ filter = '(&(objectClass=univentionMail)(uid=*))'
 attributes = ['mailPrimaryAddress', 'univentionMailHomeServer']
 modrdn = "1"
 
-DOVECOT_OLD_PICKLE = os.path.join("/var/tmp", "dovecot_old_dn")
+DOVECOT_OLD_PICKLE = "/var/spool/univention-mail-dovecot/dovecot_old_dn"
 
 
 class DovecotUserListener(DovecotListener):

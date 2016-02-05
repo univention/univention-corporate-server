@@ -150,6 +150,7 @@ if [ "$1" = "configure" -a -z "$2" ] ; then
 	doveadm reload
 fi
 
+chown listener:root /var/spool/univention-mail-dovecot
 
 if [ -x /etc/init.d/univention-directory-listener ]; then
 	invoke-rc.d univention-directory-listener crestart
