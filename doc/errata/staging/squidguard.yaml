@@ -3,7 +3,7 @@ release: "4.1"
 version: [0]
 scope: ucs_4.1-0-errata4.1-0
 src: squidguard
-fix: 
+fix: 1.5-1.26.201602051325
 desc: |
  This update addresses the following issue(s):
  * added new config option "dbtemp" that specifies a directory for temporary
