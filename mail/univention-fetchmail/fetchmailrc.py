@@ -45,6 +45,8 @@ modrdn="1"
 
 fn_fetchmailrc = '/etc/fetchmailrc'
 __initscript = '/etc/init.d/fetchmail'
+FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
+
 
 REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
 
@@ -152,18 +154,17 @@ def only_password_reset(old, new):
 
 
 def handler(dn, new, old, command):
-	if os.path.exists(os.path.join('/tmp','fetchmail_old_dn')):
-		f=open(os.path.join('/tmp','fetchmail_old_dn'),'r')
-		p=cPickle.Unpickler(f)
-		old=p.load()
+	if os.path.exists(FETCHMAIL_OLD_PICKLE):
+		f = open(FETCHMAIL_OLD_PICKLE, 'r')
+		p = cPickle.Unpickler(f)
+		old = p.load()
 		f.close()
-		os.unlink(os.path.join('/tmp','fetchmail_old_dn'))
+		os.unlink(FETCHMAIL_OLD_PICKLE)
 	if command == 'r':
-		filename=os.path.join('/tmp','fetchmail_old_dn')
-		f=open(filename, 'w+')
-		os.chmod(filename, 0600)
-		p=cPickle.Pickler(f)
-		old=p.dump(old)
+		f = open(FETCHMAIL_OLD_PICKLE, 'w+')
+		os.chmod(FETCHMAIL_OLD_PICKLE, 0600)
+		p = cPickle.Pickler(f)
+		old = p.dump(old)
 		p.clear_memo()
 		f.close()
 
