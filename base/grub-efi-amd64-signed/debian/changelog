@@ -1,8 +1,8 @@
-grub-efi-amd64-signed (2.0-5) unstable; urgency=medium
+grub-efi-amd64-signed (2.0-6) unstable; urgency=medium
 
-  * Update to GRUB 2.02~beta2-22+deb8u1.106.201602041707 (Bug #39009)
+  * Update to GRUB 2.02~beta2-22+deb8u1.107.201602051734 (Bug #39009)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 05 Feb 2016 17:03:46 +0100
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 08 Feb 2016 14:17:56 +0100
 
 grub-efi-amd64-signed (2.0-1) unstable; urgency=medium
 
