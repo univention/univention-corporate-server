@@ -7,7 +7,6 @@ version: [0]
 desc: |
   This update addresses the following issue:
   * The error handling during connecting to the UMC server has been improved.
-  * If installed via software selection in the system-setup wizard, the LDAP
-    secret file is now created at the correct time. Before the service was
-    in a non-functional state.
+  * If the self-service app was installed during the initial system
+    configuration, the service could not connect to the UMC-server.
 bug: [40581,40582]
