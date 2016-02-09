@@ -50,6 +50,10 @@ class ConnectionFailed(Abort):
 	pass
 
 
+class ConnectionFailedServerDown(ConnectionFailed):
+	pass
+
+
 class CredentialsAction(UniventionAppAction):
 	def __init__(self):
 		super(CredentialsAction, self).__init__()
@@ -128,7 +132,7 @@ class CredentialsAction(UniventionAppAction):
 		except ldap.INVALID_CREDENTIALS:
 			raise ConnectionFailed('LDAP server does not accept machine password!')
 		except ldap.SERVER_DOWN:
-			raise ConnectionFailed('LDAP server is not running!')
+			raise ConnectionFailedServerDown('LDAP server is not running!')
 
 	def _get_admin_connection(self):
 		try:
@@ -138,7 +142,7 @@ class CredentialsAction(UniventionAppAction):
 		except ldap.INVALID_CREDENTIALS:
 			raise ConnectionFailed('LDAP server does not accept admin password!')
 		except ldap.SERVER_DOWN:
-			raise ConnectionFailed('LDAP server is not running!')
+			raise ConnectionFailedServerDown('LDAP server is not running!')
 
 	def _get_ldap_connection(self, args, allow_machine_connection=False, allow_admin_connection=True):
 		if allow_admin_connection:
@@ -172,7 +176,7 @@ class CredentialsAction(UniventionAppAction):
 						raise ldap.INVALID_CREDENTIALS()
 					return get_connection(userdn, password)
 				except ldap.SERVER_DOWN:
-					raise ConnectionFailed('LDAP server is not running!')
+					raise ConnectionFailedServerDown('LDAP server is not running!')
 				except ldap.INVALID_CREDENTIALS:
 					time.sleep(0.1)
 					self.warn('Invalid credentials')

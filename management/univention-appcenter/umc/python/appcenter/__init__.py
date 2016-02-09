@@ -61,7 +61,7 @@ from univention.management.console.base import LDAP_ServerDown
 import univention.management.console.modules as umcm
 from univention.appcenter import get_action, AppManager
 from univention.appcenter.actions import Abort
-from univention.appcenter.actions.credentials import ConnectionFailed
+from univention.appcenter.actions.credentials import ConnectionFailedServerDown
 from univention.appcenter.utils import docker_is_running, call_process
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
@@ -163,7 +163,7 @@ class Instance(umcm.Base, ProgressMixin):
 		get_base_logger().getChild('actions.remove.progress').addHandler(percentage)
 
 	def error_handling(self, etype, exc, etraceback):
-		if isinstance(exc, (ConnectionFailed,)):
+		if isinstance(exc, (ConnectionFailedServerDown,)):
 			MODULE.error(str(exc))
 			raise LDAP_ServerDown()
 		if isinstance(exc, (Abort, SystemError, AppcenterServerContactFailed)):

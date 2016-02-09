@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-49) unstable; urgency=medium
+
+  * Bug #40069: Improved handling of ldap.SERVER_DOWN
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Feb 2016 13:21:59 +0100
+
 univention-appcenter (5.0.19-48) unstable; urgency=medium
 
   * Bug #40604: Add environment files for Docker Apps
