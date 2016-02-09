@@ -1,0 +1,13 @@
+product: ucs
+release: "4.1"
+version: [0]
+scope: ucs_4.1-0-errata4.1-0
+src: univention-appcenter
+fix: 5.0.19-48.105.201602091149
+desc: |
+ This update addresses the following issues:
+ * Enhance support for plain Docker images
+ * Remove Screenshot attribute from ini files; Thumbnails supersedes Screenshot
+ * Add support for upgrading conventional Apps to Docker Apps
+ * Handle Abort exceptions correctly for better error messages in UMC
+bug: [40604, 40160, 40561, 40069]
