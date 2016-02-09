@@ -309,7 +309,7 @@ run_appcenter_uninstall_tests ()
 
 run_admember_tests ()
 {
-	run_tests -p skip_admember "$@"
+	run_tests -p skip_admember -p docker "$@"
 }
 
 run_adconnector_tests ()
