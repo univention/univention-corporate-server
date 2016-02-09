@@ -98,6 +98,7 @@ define([
 			this.isMaster = props.is_master;
 			this.isUCSComponent = props.is_ucs_component;
 			this.isDocker = !!props.docker_image;
+			this.candidateIsDocker = !!props.candidate_docker;
 			this.autoStart = props.autostart;
 			this.config = props.config;
 			this.isRunning = props.is_running;
@@ -357,6 +358,10 @@ define([
 			} else if (webInterface) {
 				return _('Open web site');
 			}
+		},
+
+		installsAsDocker: function() {
+			return this.isDocker || this.candidateIsDocker;
 		},
 
 		getHosts: function() {

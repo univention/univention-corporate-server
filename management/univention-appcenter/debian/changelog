@@ -1,3 +1,12 @@
+univention-appcenter (5.0.19-47) unstable; urgency=medium
+
+  * Bug #40069: Handle Abort exceptions correctly
+  * Bug #40561: Support upgrading conventional Apps to Docker Apps
+  * Bug #40160: Remove screenshot attribute; use Thumbnails
+  * Bug #40604: Support plain Docker images
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 08 Feb 2016 17:30:51 +0100
+
 univention-appcenter (5.0.19-46) unstable; urgency=medium
 
   * Bug #40523: Pass arguments in joinscript_run_in_container properly

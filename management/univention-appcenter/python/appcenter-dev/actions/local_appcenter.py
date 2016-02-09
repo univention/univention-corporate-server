@@ -46,10 +46,16 @@ from tempfile import mkdtemp
 from distutils.version import LooseVersion
 
 
-from univention.appcenter.app import App, AppManager, _get_from_parser, _read_ini_file
+from univention.appcenter.app import App, AppManager, AppAttribute, _get_from_parser, _read_ini_file
 from univention.appcenter.actions import UniventionAppAction, get_action, Abort
 from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen
 from univention.appcenter.ucr import ucr_save, ucr_get
+
+
+# re-include Screenshot for ini files targetting UCS < 4.1
+_screenshot_attribute = AppAttribute(localisable=True)
+_screenshot_attribute.set_name('screenshot')
+App._attrs.append(_screenshot_attribute)
 
 
 class LocalAppcenterAction(UniventionAppAction):
@@ -280,16 +286,19 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		meta_inf_dir = os.path.join(args.path, 'meta-inf', args.ucs_version)
 		if LooseVersion(args.ucs_version) >= '4.1':
 			if app_id is None:
-				for root, dirnames, filenames in os.walk(meta_inf_dir):
-					for filename in filenames:
-						if filename == '%s.ini' % component_id:
-							ini_file = os.path.join(root, filename)
-							break
-					else:
-						continue
-					break
+				if args.ini:
+					ini_file = args.ini
 				else:
-					raise Abort('Could not determine app id. Specify an --ini file!')
+					for root, dirnames, filenames in os.walk(meta_inf_dir):
+						for filename in filenames:
+							if filename == '%s.ini' % component_id:
+								ini_file = os.path.join(root, filename)
+								break
+						else:
+							continue
+						break
+					else:
+						raise Abort('Could not determine app id. Specify an --ini file!')
 				app = App.from_ini(ini_file)
 				app_id = app.id
 			meta_inf_dir = os.path.join(meta_inf_dir, app_id)
@@ -352,17 +361,17 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		if not app_en or not app_de:
 			raise Abort('Cannot continue with flawed ini file')
 		if args.logo:
-			parser = ConfigParser()
-			parser.read(ini_file)
-			try:
-				logo_fname = parser.get('Application', 'Logo')
-			except NoOptionError:
-				self.fatal('No Logo specified in ini file!')
-			else:
-				if LooseVersion(args.ucs_version) >= '4.1':
-					self.copy_file(args.logo, os.path.join(meta_inf_dir, logo_fname))
+			if LooseVersion(args.ucs_version) >= '4.1':
+				parser = ConfigParser()
+				parser.read(ini_file)
+				try:
+					logo_fname = parser.get('Application', 'Logo')
+				except NoOptionError:
+					self.fatal('No Logo specified in ini file!')
 				else:
-					self.copy_file(args.logo, os.path.join(meta_inf_dir, '%s.png' % component_id))
+					self.copy_file(args.logo, os.path.join(meta_inf_dir, logo_fname))
+			else:
+				self.copy_file(args.logo, os.path.join(meta_inf_dir, '%s.png' % component_id))
 		if args.logo_detail_page:
 			parser = ConfigParser()
 			parser.read(ini_file)

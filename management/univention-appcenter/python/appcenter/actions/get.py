@@ -102,7 +102,6 @@ class Get(UniventionAppAction):
 		ret = app.attrs_dict()
 		ret['logo_name'] = app.logo_name
 		ret['logo_detail_page_name'] = app.logo_detail_page_name
-		ret['screenshot'] = app.get_screenshot_url()
 		ret['thumbnails'] = app.get_thumbnail_urls()
 		ret['is_installed'] = app.is_installed()
 		ret['is_current'] = app.without_repository or ucr_get('repository/online/component/%s' % app.component_id) == 'enabled'
@@ -115,6 +114,7 @@ class Get(UniventionAppAction):
 		latest = AppManager.find(app.id, latest=True)
 		if latest > app:
 			ret['update_available'] = True
+			ret['candidate_docker'] = latest.docker
 			ret['candidate_version'] = latest.version
 			ret['candidate_component_id'] = latest.component_id
 			ret['candidate_readme_update'] = latest.readme_update

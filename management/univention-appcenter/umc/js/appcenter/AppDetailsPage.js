@@ -853,7 +853,7 @@ define([
 		callInstaller: function(func, host, force, deferred, values) {
 			var isRemoteAction = host && tools.status('hostname') != host;
 			var warningDeferred = new Deferred();
-			if (this.app.isDocker && !force && func != 'uninstall') {
+			if (this.app.installsAsDocker() && !force && func != 'uninstall') {
 				warningDeferred = this._showDockerWarning();
 			} else {
 				warningDeferred.resolve();
@@ -910,7 +910,7 @@ define([
 				if (!force) {
 					command = 'appcenter/invoke_dry_run';
 				}
-				if (this.app.isDocker) {
+				if (this.app.installsAsDocker()) {
 					command = 'appcenter/docker/invoke';
 					if (isRemoteAction) {
 						command = 'appcenter/docker/remote/invoke';
@@ -928,7 +928,7 @@ define([
 				this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
 				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
 				var invokation;
-				if (this.app.isDocker) {
+				if (this.app.installsAsDocker()) {
 					invokation = tools.umcpProgressCommand(this._progressBar, command, commandArguments).then(
 							undefined,
 							undefined,
@@ -965,7 +965,7 @@ define([
 							text = _('The requested action cannot be carried out. Please consider the information listed below in order to resolve the problem and try again.');
 						}
 						this.detailsDialog.reset(mayContinue, title, text, actionLabel);
-						if (this.app.isDocker && mayContinue) {
+						if (this.app.installsAsDocker() && mayContinue) {
 							this.detailsDialog.showConfiguration(func);
 						}
 						this.detailsDialog.showHardRequirements(result.invokation_forbidden_details, this);

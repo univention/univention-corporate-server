@@ -64,8 +64,7 @@ def possible_network_error(func):
 		try:
 			return func(*args, **kwargs)
 		except (urllib2.HTTPError, urllib2.URLError) as exc:
-			args[0].fatal(verbose_http_error(exc))
-			raise NetworkError()
+			raise NetworkError(verbose_http_error(exc))
 	return _func
 
 
@@ -153,7 +152,7 @@ class UniventionAppAction(object):
 		self._progress_percentage = percentage
 		self.progress.debug(str(percentage))
 
-	def _build_namespace(self, **kwargs):
+	def _build_namespace(self, _namespace=None, **kwargs):
 		parser = ArgumentParser()
 		self.setup_parser(parser)
 		namespace = Namespace()
@@ -162,6 +161,8 @@ class UniventionAppAction(object):
 			default = parser._defaults.get(action.dest)
 			if action.default is not None:
 				default = action.default
+			if hasattr(_namespace, action.dest):
+				default = getattr(_namespace, action.dest)
 			args[action.dest] = default
 		args.update(kwargs)
 		for key, value in args.iteritems():
@@ -256,7 +257,7 @@ class UniventionAppAction(object):
 			request = urllib2.Request(url, request_data)
 			urlopen(request)
 		except Exception as exc:
-			self.warn('Error sending app infos to the App Center server')
+			self.log('Error sending app infos to the App Center server')
 			self.log_exception(exc)
 
 

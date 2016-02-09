@@ -39,6 +39,7 @@ from univention.appcenter.actions.configure import StoreConfigAction
 from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions import Abort, get_action
+from univention.appcenter.utils import _
 
 
 class Install(Install, DockerActionMixin):
@@ -57,6 +58,7 @@ class Install(Install, DockerActionMixin):
 			self._start_docker_image(app, hostdn, password, args)
 			self.percentage = 50
 			self._setup_docker_image(app, args)
+			return True
 
 	def _revert(self, app, args):
 		if not args.revert:
@@ -73,6 +75,5 @@ class Install(Install, DockerActionMixin):
 		if app.docker_script_setup:
 			process = self._execute_container_script(app, 'setup', args)
 			if not process or process.returncode != 0:
-				self.fatal('Setup script failed!')
-				raise Abort()
+				raise Abort(_('Setup script failed!'))
 		self._execute_container_script(app, 'restore_data_after_setup', _credentials=False)

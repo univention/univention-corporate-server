@@ -39,13 +39,14 @@ from univention.appcenter.actions.upgrade import Upgrade
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
-from univention.appcenter.actions.configure import Configure
-from univention.appcenter.ucr import ucr_save
+from univention.appcenter.actions.configure import Configure, StoreConfigAction
+from univention.appcenter.ucr import ucr_save, ucr_keys, ucr_get
 
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
 	def setup_parser(self, parser):
 		super(Upgrade, self).setup_parser(parser)
+		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')
 		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')
 
 	def __init__(self):
@@ -64,12 +65,12 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		return Install._do_it(self, app, args)
 
 	def _docker_upgrade_mode(self, app):
+		if not self.old_app.docker:
+			return 'docker'
 		if not Start.call(app=self.old_app):
-			self.fatal('Could not start the app container. It needs to be running to be upgraded!')
-			raise Abort()
-		mode = self._execute_container_script(self.old_app, 'update_available', _credentials=False, _output=True)
-		if mode:
-			mode = mode.strip()
+			raise Abort('Could not start the app container. It needs to be running to be upgraded!')
+		mode = self._execute_container_script(self.old_app, 'update_available', _credentials=False, _output=True) or ''
+		mode = mode.strip()
 		if mode != 'packages' and not mode.startswith('release:'):
 			# packages and release first!
 			if app > self.old_app:
@@ -93,6 +94,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 				self._upgrade_app(app, args)
 			elif mode == 'image':
 				self._upgrade_image(app, args)
+			elif mode == 'docker':
+				self._upgrade_docker(app, args)
 			else:
 				self.warn('Unable to process %r' % (mode,))
 				return
@@ -103,22 +106,26 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 	def _upgrade_packages(self, app):
 		process = self._execute_container_script(app, 'update_packages', _credentials=False)
 		if not process or process.returncode != 0:
-			self.fatal('Package upgrade script failed')
-			raise Abort()
+			raise Abort('Package upgrade script failed')
 
 	def _upgrade_release(self, app, release):
 		process = self._execute_container_script(app, 'update_release', _credentials=False, release=release)
 		if not process or process.returncode != 0:
-			self.fatal('Release upgrade script failed')
-			raise Abort()
+			raise Abort('Release upgrade script failed')
 
 	def _upgrade_app(self, app, args):
 		process = self._execute_container_script(app, 'update_app_version', args)
 		if not process or process.returncode != 0:
-			self.fatal('App upgrade script failed')
-			raise Abort()
+			raise Abort('App upgrade script failed')
 		self._register_app(app, args)
 		self.old_app = app
+
+	def _get_config(self, app, args):
+		config = Configure.list_config(app)
+		set_vars = dict((var['id'], var['value']) for var in config)
+		if args.set_vars:
+			set_vars.update(args.set_vars)
+		return set_vars
 
 	def _upgrade_image(self, app, args):
 		docker = self._get_docker(app)
@@ -130,13 +137,11 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self.log('Saving data from old container (%s)' % self.old_app)
 		old_docker = self._get_docker(self.old_app)
 		old_container = old_docker.container
-		config = Configure.list_config(self.old_app)
 		if self._backup_container(self.old_app, backup_data='copy') is False:
-			self.fatal('Could not backup container!')
-			raise Abort()
+			raise Abort('Could not backup container!')
 		self.log('Setting up new container (%s)' % app)
 		ucr_save({app.ucr_image_key: None})
-		args.set_vars = dict((var['id'], var['value']) for var in config)
+		args.set_vars = self._get_config(self.old_app, args)
 		self._install_new_app(app, args)
 		self.log('Removing old container')
 		if old_container:
@@ -144,6 +149,21 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		self._register_app(app, args)
 		self.old_app = app
 		self._had_image_upgrade = True
+
+	def _upgrade_docker(self, app, args):
+		install = get_action('install')()
+		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_config(app, args), send_info=False, skip_checks=['must_not_be_installed'])
+		install.call_with_namespace(action_args)
+		ucr_app_values = {}
+		for key in ucr_keys():
+			if key.startswith('appcenter/apps/%s/' % app.id):
+				value = ucr_get(key)
+				ucr_app_values[key] = value
+		remove = get_action('remove')()
+		action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False)
+		remove.call_with_namespace(action_args)
+		ucr_save(ucr_app_values)
+		self.old_app = app
 
 	def _revert(self, app, args):
 		if self._had_image_upgrade:

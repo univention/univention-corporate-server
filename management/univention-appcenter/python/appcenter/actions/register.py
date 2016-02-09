@@ -35,6 +35,7 @@
 import os.path
 import shutil
 import time
+from uuid import uuid4
 import re
 
 from ldap.dn import str2dn, dn2str
@@ -43,7 +44,7 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists
 from univention.appcenter.actions import StoreAppAction
 from univention.appcenter.actions.credentials import CredentialsAction
-from univention.appcenter.utils import mkdir, get_md5, app_ports, currently_free_port_in_range
+from univention.appcenter.utils import mkdir, get_sha256, app_ports, currently_free_port_in_range
 from univention.appcenter.log import catch_stdout
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys
 
@@ -194,7 +195,7 @@ class Register(CredentialsAction):
 				self.warn('%s should be the host for %s. But it was not found in LDAP. Creating a new one' % (hostdn, app.id))
 		# quasi unique hostname; make sure it does not exceed 63 chars
 		hostname = '%s-%d' % (app.id[:46], time.time() * 1000000)
-		password = get_md5(time.time())
+		password = get_sha256(str(uuid4()) + str(time.time()))
 		self.log('Registering the container host %s for %s' % (hostname, app.id))
 		if app.docker_server_role == 'memberserver':
 			base = 'cn=memberserver,cn=computers,%s' % ucr_get('ldap/base')

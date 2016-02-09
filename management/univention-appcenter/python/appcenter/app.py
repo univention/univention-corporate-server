@@ -366,7 +366,6 @@ class App(object):
 	description = AppAttribute(localisable=True)
 	long_description = AppAttribute(escape=False, localisable=True)
 	thumbnails = AppListAttribute(localisable=True)
-	screenshot = AppAttribute(localisable=True)  # deprecated, use thumbnails instead
 	categories = AppLocalisedListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], localisable_by_file='categories.ini', strict=False)
 
 	website = AppAttribute(localisable=True)
@@ -641,15 +640,6 @@ class App(object):
 		if self._has_logo_detail_page:
 			return 'apps-%s-detail.svg' % self.component_id
 		return None
-
-	def get_screenshot_url(self):
-		if not self.screenshot:
-			return None
-		app_path = '%s/' % self.id
-		if self.ucs_version == '4.0' or self.ucs_version.startswith('3.'):
-			# since UCS 4.1, each app has a separate subdirectory
-			app_path = ''
-		return '%s/meta-inf/%s/%s%s' % (AppManager.get_server(), self.ucs_version, app_path, self.screenshot)
 
 	def get_thumbnail_urls(self):
 		if not self.thumbnails:
@@ -1039,6 +1029,7 @@ class AppManager(object):
 			for app in apps:
 				if app.version == app_version:
 					return app
+			return None
 		elif not latest:
 			for app in apps:
 				if app.is_installed():

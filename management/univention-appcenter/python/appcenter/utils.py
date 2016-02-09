@@ -211,12 +211,16 @@ def get_md5_from_file(filename):
 			return get_md5(f.read())
 
 
+def get_sha256(content):
+	m = sha256()
+	m.update(str(content))
+	return m.hexdigest()
+
+
 def get_sha256_from_file(filename):
 	if os.path.exists(filename):
 		with open(filename, 'r') as f:
-			m = sha256()
-			m.update(str(f.read()))
-			return m.hexdigest()
+			return get_sha256(f.read())
 
 
 def get_current_ram_available():

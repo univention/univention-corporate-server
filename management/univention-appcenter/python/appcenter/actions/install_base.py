@@ -105,7 +105,10 @@ class InstallRemoveUpgrade(Register):
 					self._show_pre_readme(app, args)
 					try:
 						self._do_it(app, args)
-					except (Abort, KeyboardInterrupt):
+					except (Abort, KeyboardInterrupt) as exc:
+						msg = str(exc)
+						if msg:
+							self.warn(msg)
 						self.warn('Aborting...')
 						status = 401
 					except Exception:
@@ -133,7 +136,7 @@ class InstallRemoveUpgrade(Register):
 					try:
 						self._send_information(app, status)
 					except NetworkError:
-						self.warn('Ignoring this error...')
+						self.log('Ignoring this error...')
 				self._register_installed_apps_in_ucr()
 				upgrade_search = get_action('upgrade-search')
 				upgrade_search.call(app=[app])

@@ -182,7 +182,6 @@ class ApplicationLDAPObject(object):
 			'website': app.get_localised_list('website'),
 			'websiteVendor': app.get_localised_list('website_vendor'),
 			'websiteMaintainer': app.get_localised_list('website_maintainer'),
-			'screenshot': app.screenshot,
 			'icon': base64icon,
 			'category': app.get_localised('categories'),
 			'webInterface': app.web_interface,

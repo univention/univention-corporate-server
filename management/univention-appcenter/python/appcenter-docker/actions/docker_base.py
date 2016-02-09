@@ -57,10 +57,11 @@ class DockerActionMixin(object):
 		return Docker(app, cls.logger)
 
 	def _store_data(self, app):
-		process = self._execute_container_script(app, 'store_data', _credentials=False)
-		if not process or process.returncode != 0:
-			self.warn('Image upgrade script (pre) failed')
-			return False
+		if app.docker_script_store_data:
+			process = self._execute_container_script(app, 'store_data', _credentials=False)
+			if not process or process.returncode != 0:
+				self.warn('Image upgrade script (pre) failed')
+				return False
 		return True
 
 	def _backup_container(self, app, backup_data=False):
@@ -73,9 +74,9 @@ class DockerActionMixin(object):
 				self.warn('Storing data for %s failed' % app)
 				return False
 			image_name = 'appcenter-backup-%s:%d' % (app.id, time())
-			if backup_data in 'copy':
-				shutil.copytree(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
-				shutil.copytree(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
+			if backup_data == 'copy':
+				shutil.copytree(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'), symlinks=True)
+				shutil.copytree(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'), symlinks=True)
 			elif backup_data == 'move':
 				shutil.move(app.get_data_dir(), os.path.join(BACKUP_DIR, image_name, 'data'))
 				shutil.move(app.get_conf_dir(), os.path.join(BACKUP_DIR, image_name, 'conf'))
@@ -174,8 +175,7 @@ class DockerActionMixin(object):
 		self.log('Preconfiguring container %s' % container)
 		autostart = 'yes'
 		if not Start.call(app=app):
-			self.fatal('Unable to start the container!')
-			raise Abort()
+			raise Abort('Unable to start the container!')
 		if password:
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)

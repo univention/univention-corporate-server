@@ -70,21 +70,24 @@ class Install(InstallRemoveUpgrade):
 			self.percentage = 5
 			self._register_app(app, args)
 			self.percentage = 10
-			self._install_app(app, args)
-			self.percentage = 80
-			self._call_join_script(app, args)
+			if self._install_app(app, args):
+				self.percentage = 80
+				self._call_join_script(app, args)
+			else:
+				raise Abort('Failed to install the App packages')
 
 	def _install_packages(self, packages, percentage_end, update=True):
-		self._apt_get('install', packages, percentage_end, update=update)
+		return self._apt_get('install', packages, percentage_end, update=update)
 
 	def _install_master_packages(self, app, percentage_end=100):
 		old_app = AppManager.find(app)
 		was_installed = old_app.is_installed()
 		self._register_component(app)
-		self._install_packages(app.default_packages_master, percentage_end)
+		ret = self._install_packages(app.default_packages_master, percentage_end)
 		if was_installed:
 			server = AppManager.get_server()
 			ucr_save(self._register_component_dict(self, old_app, server))
+		return ret
 
 	def _install_only_master_packages_remotely(self, app, host, is_master, args):
 		if args.install_master_packages_remotely:
@@ -139,7 +142,7 @@ class Install(InstallRemoveUpgrade):
 			if ucr_get('server/role') == 'domaincontroller_backup':
 				self._install_master_packages(app, 30)
 				install_master = True
-		self._install_packages(app.default_packages, 80, update=not install_master)
+		return self._install_packages(app.default_packages, 80, update=not install_master).returncode == 0
 
 	def _revert(self, app, args):
 		try:

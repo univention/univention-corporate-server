@@ -57,8 +57,11 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, M
 from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
+from univention.management.console.base import LDAP_ServerDown
 import univention.management.console.modules as umcm
 from univention.appcenter import get_action, AppManager
+from univention.appcenter.actions import Abort
+from univention.appcenter.actions.credentials import ConnectionFailed
 from univention.appcenter.utils import docker_is_running, call_process
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
@@ -159,10 +162,14 @@ class Instance(umcm.Base, ProgressMixin):
 		get_base_logger().getChild('actions.upgrade.progress').addHandler(percentage)
 		get_base_logger().getChild('actions.remove.progress').addHandler(percentage)
 
-	def error_handling(self, exc, etype, etraceback):
-		if isinstance(exc, (SystemError, AppcenterServerContactFailed)):
+	def error_handling(self, etype, exc, etraceback):
+		if isinstance(exc, (ConnectionFailed,)):
+			MODULE.error(str(exc))
+			raise LDAP_ServerDown()
+		if isinstance(exc, (Abort, SystemError, AppcenterServerContactFailed)):
 			MODULE.error(str(exc))
 			raise umcm.UMC_Error(str(exc), status=500)
+		return super(Instance, self).error_handling(exc, etype, etraceback)
 
 	@simple_response
 	def version(self):
@@ -278,7 +285,7 @@ class Instance(umcm.Base, ProgressMixin):
 							function = 'remove'
 						action = get_action(function)
 						kwargs = {'noninteractive': True}
-						if function == 'install':
+						if function in ['install', 'upgrade']:
 							kwargs['set_vars'] = values
 						if function == 'uninstall':
 							kwargs['keep_data'] = not values.get('dont_keep_data', False)
@@ -338,26 +345,26 @@ class Instance(umcm.Base, ProgressMixin):
 	)
 	@simple_response(with_progress=True)
 	def invoke_docker(self, function, app, force, values, progress):
-		with self.locked():
-			serious_problems = False
-			progress.title = _('%s: Running tests') % (app.name,)
-			errors, warnings = app.check(function)
-			can_continue = force  # "dry_run"
-			if errors:
-				MODULE.process('Cannot %s %s: %r' % (function, app.id, errors))
-				serious_problems = True
-				can_continue = False
-			if warnings:
-				MODULE.process('Warning trying to %s %s: %r' % (function, app.id, warnings))
-			result = {
-				'serious_problems': serious_problems,
-				'invokation_forbidden_details': errors,
-				'invokation_warning_details': warnings,
-				'can_continue': can_continue,
-				'software_changes_computed': False,
-			}
-			if can_continue:
-				kwargs = {'noninteractive': True, 'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service']}
+		serious_problems = False
+		progress.title = _('%s: Running tests') % (app.name,)
+		errors, warnings = app.check(function)
+		can_continue = force  # "dry_run"
+		if errors:
+			MODULE.process('Cannot %s %s: %r' % (function, app.id, errors))
+			serious_problems = True
+			can_continue = False
+		if warnings:
+			MODULE.process('Warning trying to %s %s: %r' % (function, app.id, warnings))
+		result = {
+			'serious_problems': serious_problems,
+			'invokation_forbidden_details': errors,
+			'invokation_warning_details': warnings,
+			'can_continue': can_continue,
+			'software_changes_computed': False,
+		}
+		if can_continue:
+			with self.locked():
+				kwargs = {'noninteractive': True, 'skip_checks': ['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation']}
 				if function == 'install':
 					progress.title = _('Installing %s') % (app.name,)
 					kwargs['set_vars'] = values
@@ -373,7 +380,7 @@ class Instance(umcm.Base, ProgressMixin):
 					result['success'] = action.call(app=app, username=self.username, password=self.password, **kwargs)
 				finally:
 					action.logger.removeHandler(handler)
-			return result
+		return result
 
 	@contextmanager
 	def locked(self):

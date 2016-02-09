@@ -46,6 +46,10 @@ from univention.appcenter.udm import search_objects, get_machine_connection, get
 from univention.appcenter.ucr import ucr_get
 
 
+class ConnectionFailed(Abort):
+	pass
+
+
 class CredentialsAction(UniventionAppAction):
 	def __init__(self):
 		super(CredentialsAction, self).__init__()
@@ -120,27 +124,21 @@ class CredentialsAction(UniventionAppAction):
 		try:
 			return get_machine_connection()
 		except IOError:
-			self.fatal('/etc/machine.secret not readable')
-			raise Abort()
+			raise ConnectionFailed('/etc/machine.secret not readable')
 		except ldap.INVALID_CREDENTIALS:
-			self.fatal('LDAP server does not accept machine password!')
-			raise Abort()
+			raise ConnectionFailed('LDAP server does not accept machine password!')
 		except ldap.SERVER_DOWN:
-			self.fatal('LDAP server is not running!')
-			raise Abort()
+			raise ConnectionFailed('LDAP server is not running!')
 
 	def _get_admin_connection(self):
 		try:
 			return get_admin_connection()
 		except IOError:
-			self.fatal('/etc/machine.secret not readable')
-			raise Abort()
+			raise ConnectionFailed('/etc/machine.secret not readable')
 		except ldap.INVALID_CREDENTIALS:
-			self.fatal('LDAP server does not accept admin password!')
-			raise Abort()
+			raise ConnectionFailed('LDAP server does not accept admin password!')
 		except ldap.SERVER_DOWN:
-			self.fatal('LDAP server is not running!')
-			raise Abort()
+			raise ConnectionFailed('LDAP server is not running!')
 
 	def _get_ldap_connection(self, args, allow_machine_connection=False, allow_admin_connection=True):
 		if allow_admin_connection:
@@ -148,14 +146,20 @@ class CredentialsAction(UniventionAppAction):
 				try:
 					return self._get_admin_connection()
 				except Abort:
-					# let the user try to get a connection
-					pass
+					if allow_machine_connection or args is not None:
+						# try to get another connection
+						pass
+					else:
+						raise
 		if allow_machine_connection:
 			try:
 				return self._get_machine_connection()
 			except Abort:
-				# let the user try to get a connection
-				pass
+				if args is not None:
+					# try to get another connection
+					pass
+				else:
+					raise
 		attempts = 0
 		if args is not None:
 			args = deepcopy(args)
@@ -168,8 +172,7 @@ class CredentialsAction(UniventionAppAction):
 						raise ldap.INVALID_CREDENTIALS()
 					return get_connection(userdn, password)
 				except ldap.SERVER_DOWN:
-					self.fatal('LDAP server is not running!')
-					raise Abort()
+					raise ConnectionFailed('LDAP server is not running!')
 				except ldap.INVALID_CREDENTIALS:
 					time.sleep(0.1)
 					self.warn('Invalid credentials')
@@ -177,5 +180,5 @@ class CredentialsAction(UniventionAppAction):
 					self._username = None
 					args.pwdfile = None
 					self._password = None
-			self.fatal('Too many failed attempts!')
-		raise Abort()
+			raise Abort('Too many failed attempts!')
+		raise Abort('No connection possible')
