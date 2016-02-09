@@ -600,6 +600,105 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 					Erasd.Parent('3'),
 					Erasd.ResourceType('17'),
 				),
+				E.Item(
+					Erasd.Address('1'),
+					Erasd.Caption("usb"),
+					Erasd.Description('USB Controller'),
+					Erasd.ElementName('usb'),
+					Erasd.InstanceID('6'),
+					Erasd.ResourceType('23'),
+				),
+			),
+			Evbox.Machine(
+				E.Hardware(
+					E.CPU(
+						E.HardwareVirtEx(
+							**{
+								'enabled': 'true'
+							}
+						),
+						E.HardwareVirtExNestedPaging(
+							**{
+								'enabled': 'true'
+							}
+						),
+						E.HardwareVirtExVPID(
+							**{
+								'enabled': 'true'
+							}
+						),
+						E.HardwareVirtExUX(
+							**{
+								'enabled': 'true'
+							}
+						),
+						E.PAE(
+							**{
+								'enabled': 'false'
+							}
+						),
+						E.LongMode(
+							**{
+								'enabled': 'true'
+							}
+						),
+						E.HardwareVirtExLargePages(
+							**{
+								'enabled': 'false'
+							}
+						),
+						E.HardwareVirtForce(
+							**{
+								'enabled': 'false'
+							}
+						),
+						**{
+							'count': '1',
+							'hotplug': 'false'
+						}
+					),
+					E.Memory(
+						**{
+							'RAMSize': '%d' % options.memory_size,
+						}
+					),
+					E.HID(
+						**{
+							'Pointing': 'USBTablet',
+							'Keyboard': 'PS2Keyboard',
+						}
+					),
+					**{
+						'version': '2',
+					}
+				),
+				E.StorageControllers(
+					E.StorageController(
+						E.AttachedDevice(
+							E.Image(
+								**{
+									'uuid': '{%s}' % str(image_uuid),
+								}
+							),
+							**{
+								'type': 'HardDisk',
+								'port': '0',
+								'device': '0',
+							}
+						),
+						**{
+							'name': 'IDE Controller',
+							'type': 'PIIX4',
+							'PortCount': '2',
+							'useHostIOCache': 'true',
+							'Bootable': 'true',
+						}
+					),
+				),
+				**{
+					'uuid': '{%s}' % machine_uuid,
+					'name': '%s' % machine_name
+				}
 			),
 			**{
 				OVF + 'id': machine_name,
