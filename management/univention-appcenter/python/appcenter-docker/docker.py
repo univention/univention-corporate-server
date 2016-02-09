@@ -184,7 +184,7 @@ def execute_with_process(container, args, logger=None, tty=None):
 	return call_process(args, logger)
 
 
-def create(image, command, hostname=None, env=None, ports=None, volumes=None):
+def create(image, command, hostname=None, env=None, ports=None, volumes=None, env_file=None):
 	args = []
 	if hostname:
 		args.extend(['--hostname', hostname])
@@ -192,6 +192,8 @@ def create(image, command, hostname=None, env=None, ports=None, volumes=None):
 		for key, value in env.iteritems():
 			args.extend(['-e', '%s=%s' % (shell_safe(key), value)])
 			args.extend(['-e', '%s=%s' % (shell_safe(key).upper(), value)])
+	if env_file:
+		args.extend(['--env-file', env_file])
 	if ports:
 		for port in ports:
 			args.extend(['-p', port])
@@ -290,8 +292,11 @@ class Docker(object):
 			app_volume = '%s:%s' % (app_volume, app_volume)
 			if app_volume not in volumes:
 				volumes.append(app_volume)
+		env_file = None
+		if os.path.exists(self.app.get_cache_file('env')):
+			env_file = self.app.get_cache_file('env')
 		command = shlex.split(self.app.docker_script_init)
-		container = create(self.image, command, hostname, env, ports, volumes)
+		container = create(self.image, command, hostname, env, ports, volumes, env_file)
 		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
 		return container

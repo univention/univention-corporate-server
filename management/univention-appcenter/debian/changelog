@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-48) unstable; urgency=medium
+
+  * Bug #40604: Add environment files for Docker Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 09 Feb 2016 11:40:49 +0100
+
 univention-appcenter (5.0.19-47) unstable; urgency=medium
 
   * Bug #40069: Handle Abort exceptions correctly

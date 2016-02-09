@@ -183,7 +183,7 @@ class AppcenterApp(object):
 			yield self.file_info(basename, url, readme_filename)
 
 		# Adding ucr, schema, (un)joinscript, etc
-		for ext in ['univention-config-registry-variables', 'schema', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version']:
+		for ext in ['univention-config-registry-variables', 'schema', 'preinst', 'inst', 'init', 'prerm', 'uinst', 'setup', 'store_data', 'restore_data_before_setup', 'restore_data_after_setup', 'update_available', 'update_packages', 'update_release', 'update_app_version', 'env']:
 			control_filename = self._components_dir(ext)
 			if os.path.exists(control_filename):
 				basename = os.path.basename(control_filename)
@@ -271,6 +271,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		parser.add_argument('--update-packages', help='Path to a script that updates packages in the container (docker only)')
 		parser.add_argument('--update-release', help='Path to a script that upgrades the operating system in the container (docker only)')
 		parser.add_argument('--update-app-version', help='Path to a script that updates the app within the container (docker only)')
+		parser.add_argument('--env', help='Path to a file containing (a part of) the docker environment (docker only)')
 		parser.add_argument('-r', '--readme', nargs='+', help='Path to (multiple) README files like README_DE, README_POST_INSTALL')
 		parser.add_argument('--license', nargs='+', help='Path to (multiple) LICENSE_AGREEMENT files like LICENSE_AGREEMENT, LICENSE_AGREEMENT_DE')
 		parser.add_argument('-p', '--packages', nargs='+', help='Path to debian packages files for the app', metavar='PACKAGE')
@@ -433,6 +434,8 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			self.copy_file(args.update_release, os.path.join(repo_dir, 'update_release'))
 		if args.update_app_version:
 			self.copy_file(args.update_app_version, os.path.join(repo_dir, 'update_app_version'))
+		if args.env:
+			self.copy_file(args.env, os.path.join(repo_dir, 'env'))
 
 	def _handle_packages(self, app, repo_dir, args):
 		dirname = mkdtemp()
