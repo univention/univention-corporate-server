@@ -31,12 +31,13 @@ def main():
 	account = utils.UCSTestDomainAdminCredentials()
 	with udm_test.UCSTestUDM() as udm:
 		with ucr_test.UCSTestConfigRegistry() as ucr:
+			position = ucr.get('ldap/hostdn').split(',', 1)[1]
 			for uri in get_uirs():
 				printer_name = uts.random_name()
 				udm.create_object(
 						modulename='shares/printer',
 						name=printer_name,
-						position='cn=printers,%(ldap/base)s' % ucr,
+						position='%s' % position,
 						binddn=account.binddn,
 						bindpwd=account.bindpw,
 						set={
