@@ -261,7 +261,7 @@ install_ucs_test_appcenter_uninstall ()
 
 install_ucsschool ()
 {
-	case $ucsschool_release in
+	case "$ucsschool_release" in
 		appcenter.test)
 			switch_to_test_app_center
 			install_apps ucsschool
