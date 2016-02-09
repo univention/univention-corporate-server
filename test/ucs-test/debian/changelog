@@ -1,3 +1,9 @@
+ucs-test (6.0.31-30) unstable; urgency=low
+
+  * 51_samba4/59checkPrimaryGroupInPacInfo (Bug #39101) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 09 Feb 2016 09:42:59 +0100
+
 ucs-test (6.0.31-29) unstable; urgency=medium
 
   * Skip ad connector tests in AD member mode (Bug #37289)

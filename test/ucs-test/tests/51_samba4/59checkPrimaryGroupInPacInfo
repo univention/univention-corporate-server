@@ -31,14 +31,15 @@ echo "kerberos.file: $keytab" >> /root/.wireshark/preferences
 samba-tool domain exportkeytab "$keytab" || fail_test 110
 
 # start network dump, for 10s
-tshark -a duration:10 -i any -K "$keytab" -O Kerberos -w "$capture_file" >/dev/null &
-sleep 2
+tshark -a duration:20 -i any -K "$keytab" -O Kerberos -w "$capture_file" >/dev/null &
+sleep 5
 
 # get kerberos ticket/pac
 kinit --password-file=/etc/machine.secret "$hostname"\$ || fail_test 110
-sleep 10
+sleep 20
 
 tshark -K "$keytab" -r "$capture_file" -V  -R 'kerberos.msg.type==11' >"$capture_text" || fail_test 110
+ls -al "$capture_text"
 
 pac_info=false
 group_membership_array=false
