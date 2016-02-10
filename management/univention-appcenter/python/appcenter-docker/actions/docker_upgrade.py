@@ -157,6 +157,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		remove = get_action('remove')()
 		action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False)
 		remove._remove_app(self.old_app, action_args)
+		if remove._unregister_component(self.old_app):
+			remove._apt_get_update()
 		self.old_app = app
 
 	def _revert(self, app, args):
