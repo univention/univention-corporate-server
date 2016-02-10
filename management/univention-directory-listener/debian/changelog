@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-6) unstable; urgency=low
+
+  * Bug #40460: Retry LDAP queries on LDAP_SERVER_DOWN
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 05 Feb 2016 10:09:45 +0100
+
 univention-directory-listener (10.0.0-5) unstable; urgency=low
 
   * Bug #40373: Improve UCR variable description

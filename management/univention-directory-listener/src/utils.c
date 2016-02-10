@@ -134,3 +134,12 @@ bool same_dn(const char *left, const char *right) {
 
 	return 0 == result;
 }
+
+
+int ldap_retries = -1;
+
+int get_ldap_retries() {
+	const int DEFAULT_RETRIES = 5;
+	int retries = univention_config_get_int("listener/ldap/retries");
+	return retries < 0 ? DEFAULT_RETRIES : retries;
+}

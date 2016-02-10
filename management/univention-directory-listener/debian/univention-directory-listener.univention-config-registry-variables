@@ -39,3 +39,9 @@ Description[de]=Timeout in Sekunden für lange synchrone LDAP Suchanfragen. Stan
 Description[en]=Timeout in seconds for long running synchronous LDAP search queries. Default: 2h
 Type=int
 Categories=service-ln
+
+[listener/ldap/retries]
+Description[de]=Anzahl der Versuche zum Verbindungsaufbau zum LDAP-Server im Fall von Fehlern. Standard: 5
+Description[en]=Number of retried to re-connect the LDAP server in case of errors. Default: 5
+Type=int
+Categories=service-ln
