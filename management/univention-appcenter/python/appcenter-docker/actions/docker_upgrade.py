@@ -40,7 +40,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions.docker_install import Install
 from univention.appcenter.actions.service import Start
 from univention.appcenter.actions.configure import Configure, StoreConfigAction
-from univention.appcenter.ucr import ucr_save, ucr_keys, ucr_get
+from univention.appcenter.ucr import ucr_save
 
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
@@ -154,16 +154,9 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		install = get_action('install')()
 		action_args = install._build_namespace(_namespace=args, app=app, set_vars=self._get_config(app, args), send_info=False, skip_checks=['must_not_be_installed'])
 		install.call_with_namespace(action_args)
-		ucr_app_values = {}
-		for key in ucr_keys():
-			if key.startswith('appcenter/apps/%s/' % app.id):
-				value = ucr_get(key)
-				ucr_app_values[key] = value
 		remove = get_action('remove')()
 		action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False)
-		remove.call_with_namespace(action_args)
-		ucr_save(ucr_app_values)
-		self._register_app(app, args)
+		remove._remove_app(self.old_app, action_args)
 		self.old_app = app
 
 	def _revert(self, app, args):
