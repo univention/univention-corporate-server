@@ -3,7 +3,7 @@ release: "4.1"
 version: [0]
 scope: ucs_4.1-0-errata4.1-0
 src: univention-appcenter
-fix: 5.0.19-51.108.201602101118
+fix: 5.0.19-53.110.201602101300
 desc: |
  This update addresses the following issues:
  * Enhance support for plain Docker images
