@@ -50,6 +50,22 @@ class ConnectionFailed(Abort):
 	pass
 
 
+class ConnectionFailedSecretFile(ConnectionFailed):
+	pass
+
+
+class ConnectionFailedInvalidCredentials(ConnectionFailed):
+	pass
+
+
+class ConnectionFailedInvalidMachineCredentials(ConnectionFailedInvalidCredentials):
+	pass
+
+
+class ConnectionFailedInvalidUserCredentials(ConnectionFailedInvalidCredentials):
+	pass
+
+
 class ConnectionFailedServerDown(ConnectionFailed):
 	pass
 
@@ -128,9 +144,9 @@ class CredentialsAction(UniventionAppAction):
 		try:
 			return get_machine_connection()
 		except IOError:
-			raise ConnectionFailed('/etc/machine.secret not readable')
+			raise ConnectionFailedSecretFile('/etc/machine.secret not readable')
 		except ldap.INVALID_CREDENTIALS:
-			raise ConnectionFailed('LDAP server does not accept machine password!')
+			raise ConnectionFailedInvalidMachineCredentials('LDAP server does not accept machine password!')
 		except ldap.SERVER_DOWN:
 			raise ConnectionFailedServerDown('LDAP server is not running!')
 
@@ -138,9 +154,9 @@ class CredentialsAction(UniventionAppAction):
 		try:
 			return get_admin_connection()
 		except IOError:
-			raise ConnectionFailed('/etc/machine.secret not readable')
+			raise ConnectionFailedSecretFile('/etc/ldap.secret not readable')
 		except ldap.INVALID_CREDENTIALS:
-			raise ConnectionFailed('LDAP server does not accept admin password!')
+			raise ConnectionFailedInvalidMachineCredentials('LDAP server does not accept admin password!')
 		except ldap.SERVER_DOWN:
 			raise ConnectionFailedServerDown('LDAP server is not running!')
 
@@ -184,5 +200,5 @@ class CredentialsAction(UniventionAppAction):
 					self._username = None
 					args.pwdfile = None
 					self._password = None
-			raise Abort('Too many failed attempts!')
-		raise Abort('No connection possible')
+			raise ConnectionFailedInvalidUserCredentials('Too many failed attempts!')
+		raise ConnectionFailed('No connection possible')

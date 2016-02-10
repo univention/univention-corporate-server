@@ -257,8 +257,7 @@ class UniventionAppAction(object):
 			request = urllib2.Request(url, request_data)
 			urlopen(request)
 		except Exception as exc:
-			self.log('Error sending app infos to the App Center server')
-			self.log_exception(exc)
+			self.log('Error sending app infos to the App Center server: %s' % exc)
 
 
 def get_action(action_name):

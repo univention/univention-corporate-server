@@ -163,6 +163,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		action_args = remove._build_namespace(_namespace=args, app=self.old_app, send_info=False)
 		remove.call_with_namespace(action_args)
 		ucr_save(ucr_app_values)
+		self._reload_apache()
 		self.old_app = app
 
 	def _revert(self, app, args):

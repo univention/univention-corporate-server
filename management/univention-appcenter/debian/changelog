@@ -1,3 +1,11 @@
+univention-appcenter (5.0.19-50) unstable; urgency=medium
+
+  * Bug #40069: Improved handling of ldap.INVALID_CREDENTIALS
+  * Bug #40604: Do not require HTTPS connection for mod_proxy
+  * Bug #40561: Reload Apache after Docker App migration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Feb 2016 01:23:24 +0100
+
 univention-appcenter (5.0.19-49) unstable; urgency=medium
 
   * Bug #40069: Improved handling of ldap.SERVER_DOWN

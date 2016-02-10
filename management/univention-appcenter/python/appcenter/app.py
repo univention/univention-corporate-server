@@ -392,6 +392,7 @@ class App(object):
 	web_interface_name = AppAttribute()
 	web_interface_port_http = AppIntAttribute(default=80)
 	web_interface_port_https = AppIntAttribute(default=443)
+	web_interface_proxy_scheme = AppAttribute(default='both', choices=['http', 'https', 'both'])
 	auto_mod_proxy = AppBooleanAttribute(default=True)
 	ucs_overview_category = AppAttributeOrFalseOrNone(default='service', choices=['admin', 'service'])
 

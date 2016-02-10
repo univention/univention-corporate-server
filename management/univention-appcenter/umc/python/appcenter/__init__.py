@@ -61,7 +61,7 @@ from univention.management.console.base import LDAP_ServerDown
 import univention.management.console.modules as umcm
 from univention.appcenter import get_action, AppManager
 from univention.appcenter.actions import Abort
-from univention.appcenter.actions.credentials import ConnectionFailedServerDown
+from univention.appcenter.actions.credentials import ConnectionFailedServerDown, ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile
 from univention.appcenter.utils import docker_is_running, call_process
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
@@ -163,6 +163,18 @@ class Instance(umcm.Base, ProgressMixin):
 		get_base_logger().getChild('actions.remove.progress').addHandler(percentage)
 
 	def error_handling(self, etype, exc, etraceback):
+		if isinstance(exc, (ConnectionFailedSecretFile,)):
+			MODULE.error(str(exc))
+			error_msg = [_('Cannot connect to the LDAP service.'), _('The server seems to be lacking a proper password file.'), _('Please check the join state of the machine.')]
+			raise umcm.UMC_Error('\n'.join(error_msg), status=500)
+		if isinstance(exc, (ConnectionFailedInvalidUserCredentials,)):
+			MODULE.error(str(exc))
+			error_msg = [_('Cannot connect to the LDAP service.'), _('The credentials provided were not accepted.'), _('This may be solved by simply logging out and in again.'), _('Maybe your password changed during the session.')]
+			raise umcm.UMC_Error('\n'.join(error_msg), status=500)
+		if isinstance(exc, (ConnectionFailedInvalidMachineCredentials,)):
+			MODULE.error(str(exc))
+			error_msg = [_('Cannot connect to the LDAP service.'), _('The credentials provided were not accepted.'), _('This may be solved by simply logging out and in again.'), _('Maybe the machine password changed during the session.')]
+			raise umcm.UMC_Error('\n'.join(error_msg), status=500)
 		if isinstance(exc, (ConnectionFailedServerDown,)):
 			MODULE.error(str(exc))
 			raise LDAP_ServerDown()
