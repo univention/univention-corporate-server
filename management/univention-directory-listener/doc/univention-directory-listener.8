@@ -104,6 +104,21 @@ Schema epoch version.
 .I /var/lib/univention-ldap/listener/listener
 File containing pending transactions (id, dn, command) not yet handles by notifier.
 
+.SH SIGNALS
+.TP
+.B SIGHUP
+Forces the Listener to re-load all modules.
+.TP
+.B SIGUSR1
+Increases the debugging level by one.
+.TP
+.B SIGUSR2
+Decreases the debugging level by one.
+.TP
+.BR SIGPIPE ,\  SIGINT ,\  SIGQUIT ,\  SIGTERM ,\  SIGABRT
+Terminates the Listener.
+
+
 .SH UNIVENTION CONFIG REGISTRY VARIABLES
 .TP
 .B server/role
