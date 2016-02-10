@@ -13,6 +13,23 @@ class SambaSelfTest {
       parameters {
         booleanParam('HALT', true, 'Uncheck to disable shutdown of ec2 instances.')
         stringParam('PATCH_LEVEL', "${patch_level}", "Checkout this patch level version of UCS ${version} ucs-ec2-tools.")
+        choiceParam('release_update', ['public', 'testing', 'none'],
+"""
+Performs a release update to
+<dl>
+  <dt>public</dt><dd>the latest publically announced release on http://updates.software-univention.de/</dd>
+  <dt>testing</dt><dd>the latest internal release on http://updates-test.software-univention.de</dd>
+  <dt>none</dt><dd>perform no update and stay with the initial release</dd>
+</dl>""")
+		choiceParam('errata_update', ['testing', 'public', 'none'],
+"""
+Install errata updates from
+<dl>
+  <dt>testing</dt><dd>the latest internal released errata from http://updates-test.software-univention.de</dd>
+  <dt>public</dt><dd>the latest publically announced errata from http://updates.software-univention.de/</dd>
+  <dt>none</dt><dd>perform no errata update and stay with the initial release</dd>
+</dl>
+""")
       }
       // svn
       scm {
@@ -38,6 +55,9 @@ class SambaSelfTest {
       steps {
         shell(
 """
+echo "release_update='$release_update'" >>examples/jenkins/utils/utils.sh
+echo "errata_update='$errata_update'" >>examples/jenkins/utils/utils.sh
+echo "JOB_NAME='$JOB_NAME'" >>examples/jenkins/utils/utils.sh
 exec ./ucs-ec2-create -c examples/jenkins/autotest-500-samba-self-test.cfg
 """
         )
