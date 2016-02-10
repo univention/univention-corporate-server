@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-19) unstable; urgency=low
+
+  * Bug #40528: Allow multiple categories like _favorites_
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Feb 2016 07:40:30 +0100
+
 univention-management-console-frontend (5.0.63-18) unstable; urgency=low
 
   * Bug #40528: Added the changes again

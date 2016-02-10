@@ -282,9 +282,9 @@ define([
 				var styleStr = '';
 				if (cat) {
 					styleStr += lang.replace('background-color: {0};', [cat.color]);
-				}
-				if (isFavorite(item)) {
-					this._createFavoriteIcon(cat.color, div.firstElementChild);
+					if (isFavorite(item)) {
+						this._createFavoriteIcon(cat.color, div.firstElementChild);
+					}
 				}
 			}
 
@@ -386,9 +386,10 @@ define([
 			item.is_shallow_copy = this._is_shallow_copy(item.category);
 			item.category_for_color = item.category;
 			if (item.is_shallow_copy && item.categories.length > 1) {
-				item.category_for_color = array.filter(item.categories, lang.hitch(this, function(cat) {
+				var category_for_color = item.category_for_color = array.filter(item.categories, lang.hitch(this, function(cat) {
 					return !this._is_shallow_copy(cat);
 				}))[0];
+				item.category_for_color = category_for_color || item.category;
 			}
 			return item;
 		},
