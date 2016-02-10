@@ -4,7 +4,7 @@
 # Univention Configuration Registry
 #  build UMC module
 #
-# Copyright 2011-2015 Univention GmbH
+# Copyright 2011-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -252,6 +252,9 @@ def module_xml2po(module, po_file, language):
 		for flavor in tree.findall('module/flavor'):
 			_appendPoEntry(po, flavor.find('name'))
 			_appendPoEntry(po, flavor.find('description'))
+		_appendPoEntry(po, tree.find('link/name'))
+		_appendPoEntry(po, tree.find('link/description'))
+		_appendPoEntry(po, tree.find('link/url'))
 
 	if module.xml_categories and os.path.isfile(module.xml_categories):
 		tree = ET.ElementTree(file=module.xml_categories)

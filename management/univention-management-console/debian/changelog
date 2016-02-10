@@ -1,3 +1,10 @@
+univention-management-console (8.0.28-11) unstable; urgency=low
+
+  * Bug #40528: adjust dh_umc.py to also collect translations of <link>
+  	elements
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Feb 2016 14:21:36 +0100
+
 univention-management-console (8.0.28-10) unstable; urgency=low
 
   * Bug #40528: replaced translationId with id
