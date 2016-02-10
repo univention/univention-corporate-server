@@ -44,7 +44,7 @@ extern int get_ldap_retries();
 			if (_rv != LDAP_SERVER_DOWN) \
 				break; \
 			while (_retry < ldap_retries && univention_ldap_open(lp) != LDAP_SUCCESS) \
-				sleep(1 << _retry++); \
+				sleep((1 << _retry++) & 0x1f); \
 		} while (_retry < ldap_retries); \
 		_rv; \
 	 })

@@ -42,6 +42,6 @@ Categories=service-ln
 
 [listener/ldap/retries]
 Description[de]=Anzahl der Versuche zum Verbindungsaufbau zum LDAP-Server im Fall von Fehlern. Standard: 5
-Description[en]=Number of retried to re-connect the LDAP server in case of errors. Default: 5
+Description[en]=Number of retries to re-connect the LDAP server in case of errors. Default: 5
 Type=int
 Categories=service-ln
