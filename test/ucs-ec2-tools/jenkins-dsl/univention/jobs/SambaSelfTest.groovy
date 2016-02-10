@@ -12,7 +12,6 @@ class SambaSelfTest {
       // build parameters
       parameters {
         booleanParam('HALT', true, 'Uncheck to disable shutdown of ec2 instances.')
-        stringParam('PATCH_LEVEL', "${patch_level}", "Checkout this patch level version of UCS ${version} ucs-ec2-tools.")
         choiceParam('release_update', ['public', 'testing', 'none'],
 """
 Performs a release update to
@@ -35,7 +34,7 @@ Install errata updates from
       scm {
         svn {
           checkoutStrategy(SvnCheckoutStrategy.CHECKOUT)
-          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-\$PATCH_LEVEL/test/ucs-ec2-tools") {
+          location("svn+ssh://svnsync@billy/var/svn/dev/branches/ucs-${version}/ucs-${version}-${patch_level}/test/ucs-ec2-tools") {
             credentials('50021505-442b-438a-8ceb-55ea76d905d3')    
           }
           configure { scmNode ->
