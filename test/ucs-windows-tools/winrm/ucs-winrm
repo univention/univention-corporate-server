@@ -175,6 +175,19 @@ class UcsWin(object):
 	def run_cmd(self):
 		self.run(self.args.cmd, verbose=True)
 
+
+	@wcommand('Copy from windows to share',
+		args={
+			'src':'src in windows (c:\windows)',
+			'dest':'destination on windows (u:\, \\\\server\share)'})
+	def copy_from_windows(self):
+		self.run_predefined_command('copy_from_windows', vars(self.args))
+
+	@wcommand('Run windows powershell script',
+		args={'cmd':'Run powershell command (\'Get-Process *\')'})
+	def run_ps(self):
+		self.run(self.args.cmd, verbose=True, ps=True)
+
 	@wcommand('Set dns server for all non DHCP interfaces',
 		args={'dns-server':'DNS Server to use for join'})
 	def set_dns_server(self):
