@@ -6,5 +6,6 @@ fix: 5.0.63-19.1206.201602100743
 version: [0]
 desc: |
  This update addresses the following issue(s):
- * A UMC Overview Category can now contain links and copies of other modules.
+ * The categories of UMC modules can now be configured more easily. It is
+   also possible to add links to the UMC module overview.
 bug: [40528]
