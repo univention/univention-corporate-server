@@ -55,9 +55,9 @@ Install errata updates from
       steps {
         shell(
 """
-echo "release_update='$release_update'" >>examples/jenkins/utils/utils.sh
-echo "errata_update='$errata_update'" >>examples/jenkins/utils/utils.sh
-echo "JOB_NAME='$JOB_NAME'" >>examples/jenkins/utils/utils.sh
+echo "release_update='\$release_update'" >>examples/jenkins/utils/utils.sh
+echo "errata_update='\$errata_update'" >>examples/jenkins/utils/utils.sh
+echo "JOB_NAME='\$JOB_NAME'" >>examples/jenkins/utils/utils.sh
 exec ./ucs-ec2-create -c examples/jenkins/autotest-500-samba-self-test.cfg
 """
         )
