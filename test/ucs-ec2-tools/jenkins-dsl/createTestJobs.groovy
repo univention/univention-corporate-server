@@ -19,6 +19,7 @@ univention.Constants.VERSIONS.each {
 	}
 
     0.upto(patch_level.toInteger()) { level ->
+        level = level.toString()
 		path = 'UCS-' + version + '/UCS-' + version + '-' + level + '/Specific Tests'
 		// create Tests
 		folder(path)
