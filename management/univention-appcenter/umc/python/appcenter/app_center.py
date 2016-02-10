@@ -187,7 +187,6 @@ class ApplicationLDAPObject(object):
 			'website' : app.get_locale_list('website'),
 			'websiteVendor' : app.get_locale_list('websitevendor'),
 			'websiteMaintainer' : app.get_locale_list('websitemaintainer'),
-			'screenshot' : app.get('screenshot'),
 			'icon' : base64icon,
 			'category' : app.get('unlocalised_categories'),
 			'webInterface' : app.get('webinterface'),

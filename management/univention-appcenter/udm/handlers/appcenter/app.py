@@ -162,17 +162,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'screenshot': univention.admin.property(
-			short_description=_('Screenshot'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			dontsearch=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
 	'icon': univention.admin.property(
 			short_description=_('Icon'),
 			long_description='',
@@ -313,7 +302,6 @@ layout = [
 			["website"],
 			["websiteVendor"],
 			["websiteMaintainer"],
-			["screenshot"],
 		] ),
 		Group( _( 'Metadata' ), layout = [
 			["icon"],
@@ -344,7 +332,6 @@ mapping.register('maintainer', 'univentionAppMaintainer', None, univention.admin
 mapping.register('website', 'univentionAppWebsite')
 mapping.register('websiteVendor', 'univentionAppWebsiteVendor')
 mapping.register('websiteMaintainer', 'univentionAppWebsiteMaintainer')
-mapping.register('screenshot', 'univentionAppScreenshot', None, univention.admin.mapping.ListToString)
 mapping.register('icon', 'univentionAppIcon', None, univention.admin.mapping.ListToString)
 mapping.register('category', 'univentionAppCategory')
 mapping.register('webInterface', 'univentionAppWebInterface', None, univention.admin.mapping.ListToString)
