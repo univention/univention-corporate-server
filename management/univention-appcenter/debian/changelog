@@ -1,3 +1,10 @@
+univention-appcenter (5.0.19-51) unstable; urgency=medium
+
+  * Bug #40561: Correctly reregister Docker App
+  * Bug #40604: Fix webinterface links in AppDetailsPage
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 10 Feb 2016 11:17:39 +0100
+
 univention-appcenter (5.0.19-50) unstable; urgency=medium
 
   * Bug #40069: Improved handling of ldap.INVALID_CREDENTIALS

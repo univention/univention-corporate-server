@@ -209,6 +209,15 @@ define([
 						protocol = 'http:';
 					}
 				}
+				if (this.isDocker && port) {
+					// webinterface of a docker app
+					// lives behind our standard proxy
+					if (protocol == 'http:') {
+						port = 80;
+					} else if (protocol == 'https:') {
+						port = 443;
+					}
+				}
 				if (port == 80) {
 					protocol = 'http:';
 					port = null;
