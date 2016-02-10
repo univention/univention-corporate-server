@@ -3,7 +3,7 @@ release: "4.1"
 version: [0]
 scope: ucs_4.1-0-errata4.1-0
 src: univention-directory-listener
-fix: 10.0.0-6.298.201602100812
+fix: 10.0.0-7.299.201602101726
 desc: |
  This update addresses the following issue:
  * If the connection to the LDAP server is closed, it is now automatically
