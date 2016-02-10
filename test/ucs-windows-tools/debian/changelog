@@ -1,3 +1,9 @@
+ucs-windows-tools (3.0.1-2) unstable; urgency=low
+
+  * Added ucs-winrm (replacment for winexe) (Bug #1234)
+
+ -- Felix Botner <botner@univention.de>  Wed, 10 Feb 2016 12:04:43 +0100
+
 ucs-windows-tools (3.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

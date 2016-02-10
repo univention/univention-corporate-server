@@ -15,8 +15,18 @@ Depends: ${python:Depends},
  ${misc:Depends},
  winexe
 Provides: ${python:Provides}
+Description: windows tool collection for UCS development - DEPRECATED
+ This package contains tools to test UCS installations.
+ .
+ This package is only relevant for development and testing.
+ DEPRECATED
+
+Package: ucs-winrm
+Architecture: all
+Depends: ${python:Depends},
+ ${misc:Depends},
+ python-winrm
 Description: windows tool collection for UCS development
  This package contains tools to test UCS installations.
  .
  This package is only relevant for development and testing.
-

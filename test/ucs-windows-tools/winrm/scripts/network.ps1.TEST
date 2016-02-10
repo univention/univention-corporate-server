@@ -1,0 +1,7 @@
+ip = """
+$wmi = Get-WmiObject win32_networkadapterconfiguration -filter "ipenabled = 'true'"
+$wmi.EnableStatic("10.200.7.61", "255.255.255.0")
+$wmi.SetGateways("10.200.7.1", 1)
+$wmi.SetDNSServerSearchOrder("10.200.7.180")
+"""
+
