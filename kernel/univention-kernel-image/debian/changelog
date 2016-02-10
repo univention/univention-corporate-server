@@ -1,3 +1,9 @@
+univention-kernel-image (9.0.0-7) unstable; urgency=low
+
+  * Bug #40558 kernel: Update to ucs171 (4.1.16-unix)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Feb 2016 14:43:24 +0100
+
 univention-kernel-image (9.0.0-6) unstable; urgency=low
 
   * Bug #40481: Update to linux-4.1.16
