@@ -59,8 +59,11 @@ def wcommand(desc, *args, **kw):
 				env = 'WINRM_' + param.replace('-', '_').upper()
 				help_msg = parameters[param]
 				self.parser.add_argument('--%s' % param, default=os.environ.get(env), help=help_msg)
+			# parse args
 			self.args = self.parser.parse_args()
+			# check args
 			self.check_args()
+			# do it
 			func(self, *args, **kw)
 		return func_wrapper
 	return wrapper
@@ -91,10 +94,11 @@ class UcsWin(object):
 			sys.exit(1)
 
 		# global options
-		self.parser.add_argument('--client', default=os.environ.get('WINRM_CLIENT'), help='The IP of the windows client')
-		self.parser.add_argument('--user', default=os.environ.get('WINRM_USER'), help='username')
-		self.parser.add_argument('--password', default=os.environ.get('WINRM_PASSWORD'), help='password')
+		self.parser.add_argument('--client', help='The IP of the windows client')
+		self.parser.add_argument('--user', help='username')
+		self.parser.add_argument('--password', help='password')
 		self.parser.add_argument('--debug', default=False, action='store_true', help='enable debug')
+		self.parser.add_argument('--krb5', default=False, action='store_true', help='use kerberos authentication')
 
 		# run command
 		getattr(self, args.command)()
@@ -107,13 +111,19 @@ class UcsWin(object):
 	def check_args(self):
 		args = vars(self.args)
 		for i in args:
+			if self.args.krb5 and i == 'password':
+				# password not requierd if kerberos is used
+				continue
 			if args[i] is None:
 				print 'ERR: argument %s required!' % i
 				self.parser.print_help()
 				sys.exit(1)
 
 	def run(self, command, ps=False, verbose=False):
-		s = winrm.Session(self.args.client, auth=(self.args.user, self.args.password), transport='plaintext')
+		if self.args.krb5:
+			s = winrm.Session(self.args.client, auth=(self.args.user, None), transport='kerberos')
+		else:
+			s = winrm.Session(self.args.client, auth=(self.args.user, self.args.password), transport='plaintext')
 		if self.args.debug:
 			print 'running command:\n%s' % command
 		if ps:
