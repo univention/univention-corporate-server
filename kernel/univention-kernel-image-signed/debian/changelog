@@ -1,3 +1,9 @@
+univention-kernel-image-signed (2.0.0-5) unstable; urgency=low
+
+  * Bug #40558: Update to ucs171 (4.1.16-unix)
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 10 Feb 2016 14:39:23 +0100
+
 univention-kernel-image-signed (2.0.0-4) unstable; urgency=low
 
   * Bug #40481: Update to linux-4.1.16
