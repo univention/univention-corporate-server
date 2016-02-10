@@ -1,3 +1,10 @@
+univention-management-console (8.0.29-1) unstable; urgency=low
+
+  * Bug #40528: ignore links without url element
+    make uri translateable
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Feb 2016 07:15:32 +0100
+
 univention-management-console (8.0.28-8) unstable; urgency=low
 
   * Bug #40528: Applied patch for dtd file

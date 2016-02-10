@@ -435,7 +435,7 @@ class Processor(Base):
 							'id': id,
 							'flavor': flavor.id,
 							'name': self.i18n._(flavor.name, translationId),
-							'url': module.url,
+							'url': self.i18n._(module.url, translationId),
 							'description': self.i18n._(flavor.description, translationId),
 							'icon': flavor.icon,
 							'categories': (flavor.categories or module.categories) + favcat,
@@ -449,7 +449,7 @@ class Processor(Base):
 					modules.append({
 						'id': id,
 						'name': self.i18n._(module.name, id),
-						'url': module.url,
+						'url': self.i18n._(module.url, translationId),
 						'description': self.i18n._(module.description, id),
 						'icon': module.icon,
 						'categories': module.categories + favcat,

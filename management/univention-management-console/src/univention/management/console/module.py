@@ -426,7 +426,10 @@ class Manager(dict):
 				continue
 
 			if isinstance(mod, Link):
-				modules[module_id] = mod
+				if mod.url:
+					modules[module_id] = mod
+				else:
+					RESOURCES.info('invalid link %s: no url element' % (module_id))
 				continue
 
 			if not mod.flavors:
