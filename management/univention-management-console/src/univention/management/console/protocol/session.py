@@ -449,7 +449,7 @@ class Processor(Base):
 					modules.append({
 						'id': id,
 						'name': self.i18n._(module.name, id),
-						'url': self.i18n._(module.url, translationId),
+						'url': self.i18n._(module.url, id),
 						'description': self.i18n._(module.description, id),
 						'icon': module.icon,
 						'categories': module.categories + favcat,

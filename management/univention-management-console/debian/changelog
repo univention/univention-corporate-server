@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-10) unstable; urgency=low
+
+  * Bug #40528: replaced translationId with id
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 10 Feb 2016 08:38:07 +0100
+
 univention-management-console (8.0.28-9) unstable; urgency=low
 
   * Bug #40528: ignore links without url element
