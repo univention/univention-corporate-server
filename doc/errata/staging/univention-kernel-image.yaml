@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-kernel-image
+fix: 9.0.0-7.88.201602101444
+version: [0]
+desc: |
+ This update reverts two changes to the UNIX address family which leads
+ to a dead-lock in programs like Samba.
+note: This is the 2nd part of the update.
+bug: [40558]
