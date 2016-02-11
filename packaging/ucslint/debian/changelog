@@ -1,3 +1,9 @@
+ucslint (5.0.2-2) unstable; urgency=low
+
+  * Bug #40386: improved check for unwanted shell glob patterns
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 11 Feb 2016 17:21:48 +0100
+
 ucslint (5.0.2-1) unstable; urgency=low
 
   * Bug #40386: added check for unwanted shell glob patterns
