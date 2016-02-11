@@ -5,7 +5,6 @@ scope: ucs_4.1-0-errata4.1-0
 src: univention-printserver
 fix: 9.0.3-1.668.201602051255
 desc: |
- This update addresses the following issue(s):
- * The univention-printserver join script now
-   restarts the cups daemon.
+ This update addresses the following issue:
+ * The univention-printserver join script now restarts the cups daemon.
 bug: [40591]

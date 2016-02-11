@@ -5,7 +5,7 @@ src: univention-management-console
 fix: 8.0.28-11.915.201602101423
 version: [0]
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * The categories of UMC modules can now be configured more easily. It is
    also possible to add links to the UMC module overview.
 bug: [40528]
