@@ -1,3 +1,9 @@
+ucslint (5.0.3-1) unstable; urgency=low
+
+  * Bug #40639: no not scan all binary files for fuzzy strings
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 11 Feb 2016 17:23:15 +0100
+
 ucslint (5.0.2-2) unstable; urgency=low
 
   * Bug #40386: improved check for unwanted shell glob patterns
