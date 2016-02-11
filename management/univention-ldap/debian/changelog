@@ -1,9 +1,3 @@
-univention-ldap (12.1.6-22) unstable; urgency=low
-
-  * Bug #40575: Kill OpenLDAP slapd during upgrade
-
- -- Philipp Hahn <hahn@univention.de>  Thu, 04 Feb 2016 07:28:44 +0100
-
 univention-ldap (12.1.6-21) unstable; urgency=low
 
   * Bug #38051: Kill OpenLDAP slapd for initial setup during domain (re-)join

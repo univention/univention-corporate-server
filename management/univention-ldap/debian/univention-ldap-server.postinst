@@ -129,7 +129,6 @@ if is_ucr_true "ldap/replog" ; then
 		touch /var/lib/univention-ldap/replog/replog.lock
 fi
 
-stop_slapd
 /usr/share/univention-ldap/ldap_setup_index --add-defaults
 
 test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
