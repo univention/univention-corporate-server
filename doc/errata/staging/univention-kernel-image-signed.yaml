@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: univention-kernel-image-signed
-fix: 2.0.0-5.14.201602101441
+fix: 2.0.0-6.15.201602111457
 version: [0]
 desc: |
  This update reverts two changes to the UNIX address family which leads

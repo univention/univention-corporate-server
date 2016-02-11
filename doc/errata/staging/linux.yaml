@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: linux
-fix: 4.1.6-1.171.201602081336
+fix: 4.1.6-1.174.201602110938
 version: [0]
 desc: |
  This update reverts two changes to the UNIX address family which leads
