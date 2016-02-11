@@ -59,7 +59,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				'0017-1', 'unquoted call of eval "$(ucr shell)"', cntmax=0)
 		self.tester.addTest(re.compile(r'\btr\s+(-[a-zA-Z]+\s+)*\['),
 				'0017-2', 'unquoted argument for tr (e.g. "tr -d [a-z]")', cntmax=0)
-		self.tester.addTest(re.compile(r'''\btr\s+(-[a-zA-Z]+\s+)*["']\[[^\]]+\]["']\s+\['''),
+		self.tester.addTest(re.compile(r'''\btr\s+(-[a-zA-Z]+\s+)*["']\[+[^\]]+\]+["']\s+\['''),
 				'0017-2', 'unquoted argument for tr (e.g. "tr -d [a-z]")', cntmax=0)
 
 	def getMsgIds(self):

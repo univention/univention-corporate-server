@@ -18,3 +18,7 @@ echo Aa | tr -d '[:upper:]'
 ucr_varname="$(echo "$name" | tr '[A-Z]' '[a-z]' | sed 's| ||g')"
 ucr_varname="$(echo "$name" | tr '[A-Z]' "[a-z]" | sed 's| ||g')"
 ucr_varname="$(echo "$name" | tr "[A-Z]" '[a-z]' | sed 's| ||g')"
+date | tr [[:upper:]] [[:lower:]]
+date | tr "[[:upper:]]" [[:lower:]]
+date | tr "[[:upper:]]" "[[:lower:]]"
+date | tr '[[:upper:]]' '[[:lower:]]'
