@@ -1,3 +1,9 @@
+univention-kernel-image (7.0.0-22) unstable; urgency=medium
+
+  * Update to the latest kernel build (Bug #39209)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Feb 2016 09:09:29 +0100
+
 univention-kernel-image (7.0.0-21) unstable; urgency=medium
 
   * Update to the latest kernel build (Bug #39209)
