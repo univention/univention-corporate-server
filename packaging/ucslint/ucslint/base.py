@@ -379,9 +379,8 @@ class FilteredDirWalkGenerator(object):
 
 				# check if filename ends with ignoresuffix
 				if self.ignore_suffixes:
-					for suffix in self.ignore_suffixes:
-						if fn.endswith(suffix):
-							continue
+					if any([fn.endswith(suffix) for suffix in self.ignore_suffixes]):
+						continue
 
 				# check if filename starts with required prefix
 				if self.prefixes:
