@@ -49,10 +49,27 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Der Linux Kernel wurde auf den letzten stabilen 4.1er
-				<foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert. Dieser beinhaltet
-				diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine
-				verbesserte Hardware-Unterstützung.
+				Der Linux Kernel wurde auf 4.1.16 <wordasword>4.1.16</wordasword> aktualisiert.
+				Dieser beinhaltet diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für
+				eine verbesserte Hardware-Unterstützung.
+			</para></listitem>
+			<listitem><para>
+				Mit dem Update auf Samba 4.3.3 wurde die Kompatibilität zu Active Directory weiter ausgebaut.
+				Dies beinhaltet u.a. Verbesserungen in der DRS-Replikation und diverse Sicherheitsaktualisierungen.
+			</para></listitem>
+			<listitem><para>
+				Univention Virtual Machine Manager kann nun auch Virtual Private Clouds (VPC) in
+				Amazon AWS verwalten. Dadurch besteht die Möglichkeit virtuelle Maschinen in der EC2
+				Region eu-central-1 (Frankfurt am Main) zu erstellen.
+			</para></listitem>
+			<listitem><para>
+				Die Performance der Verzeichnisdienst-Replikation wurde deutlich erhöht. Dadurch ist
+				u.a. der Domänenbeitritt in Umgebungen mit mehreren tausend Benutzern deutlich schneller.
+			</para></listitem>
+			<listitem><para>
+				Es gibt zahlreiche Verbesserungen in Design und Usability des Univention App Center so ist
+				es nun bspw. sehr einfach möglich zwischen den unterschiedlichen Apps zu navigieren.
+				Die Ladegeschwindigkeit wurde ebenfalls deutlich erhöht.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
