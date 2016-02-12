@@ -260,7 +260,7 @@ doveadm auth cache flush
 	  </para>
 
 	  <para>
-		In der Grundeinstellungen kann jeder an die Mailingliste schreiben. Um
+		In der Grundeinstellung kann jeder an die Mailingliste schreiben. Um
 		Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis
 		einzuschränken. Dazu muss die &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> auf
 		dem Mailserver auf <literal>yes</literal> gesetzt und Postfix neu gestartet werden.
@@ -292,7 +292,7 @@ doveadm auth cache flush
 	  </para>
 
 	  <para>
-		In der Grundeinstellungen kann jeder an die Mailgruppe schreiben. Um
+		In der Grundeinstellung kann jeder an die Mailgruppe schreiben. Um
 		Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis
 		einzuschränken. Dazu muss die &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> auf
 		dem Mailserver auf <literal>yes</literal> gesetzt und Postfix neu gestartet werden.

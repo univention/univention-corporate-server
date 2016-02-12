@@ -754,7 +754,7 @@ END
 			Mit der &ucsUCRV; <envar>ldap/idletimeout</envar> kann ein Zeitraum in
 			Sekunden konfiguriert werden, nach dessen Ablauf eine LDAP-Verbindung
 			serverseitig geschlossen wird. Wenn der Wert auf 0 gesetzt wird, wird kein
-			Ablaufzeitraum angewendet. Der Ablaufzeitraum
+			Ablaufzeitraum angewendet. Der Ablaufzeitraum beträgt
 			standardmäßig sechs Minuten.
 		</para>
 	</section>
