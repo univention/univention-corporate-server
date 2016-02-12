@@ -18,15 +18,14 @@
 	</section>
 				-->
 
-				<!--
 	<section id="changelog:installer">
 		<title>Univention Installer</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The UUID generation has been moved to the setup process (<u:bug>40640</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-				-->
 
 
 	<section id="changelog:basic">
