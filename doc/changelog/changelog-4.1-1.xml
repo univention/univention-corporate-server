@@ -361,15 +361,14 @@
 		</section>
 				-->
 
-				<!--
 		<section id="changelog:deployment:cli">
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The update scripts have been adjusted to UCS 4.1-1 (<u:bug>40624</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 	</section>
 
 
@@ -505,8 +504,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 	</section>
+				-->
 
 
 				<!--
