@@ -1,9 +1,0 @@
-product: ucs
-release: "4.1"
-scope: ucs_4.1-0-errata4.1-0
-src: tevent
-fix: 0.9.26-1.33.201512111415
-version: [0]
-desc: |
- This tevent update is requried for Samba version 4.3.3
-bug: [40221]
