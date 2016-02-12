@@ -71,7 +71,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for fn in files:
 			try:
 				content = open(fn, 'r').read()
-			except IOError:
+			except (OSError, IOError):
 				self.addmsg( '0002-1', 'failed to open and read file', fn )
 				continue
 

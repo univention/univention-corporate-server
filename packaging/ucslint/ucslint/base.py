@@ -173,7 +173,7 @@ class ParserDebianControl(object):
 
 		try:
 			content = open(self.filename, 'r').read()
-		except IOError:
+		except (IOError, OSError):
 			raise FailedToReadFile(self.filename)
 
 		parts = content.split('\n\n')
@@ -297,7 +297,7 @@ class UPCFileTester(object):
 				if match:
 					# found a match ==> increase counter
 					t.cnt += 1
-					if t.cntmax != None and t.cnt > t.cntmax:
+					if t.cntmax is not None and t.cnt > t.cntmax:
 						# a maximum counter has been defined and maximum has been exceeded
 						startline, startpos = self._getpos( linenum, match.start(0) )
 						endline, endpos = self._getpos( linenum, match.end(0) )
@@ -310,7 +310,7 @@ class UPCFileTester(object):
 
 		# check if mincnt has been reached by counter - if not then add UPCMessage
 		for t in self.tests:
-			if t.cntmin != None and t.cnt < t.cntmin:
+			if t.cntmin is not None and t.cnt < t.cntmin:
 				msg = t.msg
 				if t.formatmsg:
 					msg = msg % { 'basename': self.basename, 'filename': self.filename }
@@ -401,7 +401,8 @@ class FilteredDirWalkGenerator(object):
 				if self.reHashBang:
 					try:
 						content = open(fn,'r').read(self.readSize)
-					except IOError:
+					except (IOError, OSError):
+						self.debug('Unable to read %d bytes from %r' % (self.readSize, fn))
 						continue
 					if not self.reHashBang.search(content):
 						continue

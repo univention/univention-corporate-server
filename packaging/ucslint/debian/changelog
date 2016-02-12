@@ -1,3 +1,9 @@
+ucslint (5.0.3-2) unstable; urgency=low
+
+  * Bug #40647: fix traceback on broken symlinks
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 12 Feb 2016 17:27:06 +0100
+
 ucslint (5.0.3-1) unstable; urgency=low
 
   * Bug #40639: no not scan all binary files for fuzzy strings

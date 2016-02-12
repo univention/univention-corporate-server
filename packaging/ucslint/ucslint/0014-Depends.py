@@ -178,7 +178,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             init_files.add(fn)
                 finally:
                     f.close()
-        except IOError, e:
+        except (IOError, OSError), e:
             self.addmsg('0014-0', 'failed to open and read file', filename=fn)
         for fn in init_files:
             if not os.path.exists(fn):
