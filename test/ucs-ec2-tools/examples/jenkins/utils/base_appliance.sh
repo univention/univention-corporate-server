@@ -792,7 +792,7 @@ appliance_poweroff ()
 	halt -p
 }
 
-appliance_write_ucs410_sources_list ()
+appliance_write_ucs411_sources_list ()
 {
 	# Set initial repository settings
         cat >/etc/apt/sources.list.d/15_ucs-online-version.list <<__EOF__
@@ -818,6 +818,8 @@ deb https://updates.software-univention.de/4.0/maintained/ 4.0-4/all/
 deb https://updates.software-univention.de/4.0/maintained/ 4.0-4/amd64/
 deb https://updates.software-univention.de/4.1/maintained/ 4.1-0/all/
 deb https://updates.software-univention.de/4.1/maintained/ 4.1-0/amd64/
+deb https://updates.software-univention.de/4.1/maintained/ 4.1-1/all/
+deb https://updates.software-univention.de/4.1/maintained/ 4.1-1/amd64/
 __EOF__
 
 	cat >/etc/apt/sources.list.d/20_ucs-online-component.list <<__EOF__
@@ -831,8 +833,8 @@ __EOF__
 #       /etc/univention/templates/files/etc/apt/sources.list.d/20_ucs-online-component.list
 #
  
-deb https://updates.software-univention.de/4.1/maintained/component/ 4.1-0-errata/all/
-deb https://updates.software-univention.de/4.1/maintained/component/ 4.1-0-errata/amd64/
+deb https://updates.software-univention.de/4.1/maintained/component/ 4.1-1-errata/all/
+deb https://updates.software-univention.de/4.1/maintained/component/ 4.1-1-errata/amd64/
 __EOF__
 
 }
