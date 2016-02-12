@@ -8,38 +8,25 @@
 ]>
 <chapter id="relnotes:changelog" lang="en">
 	<title>Changelog</title>
+				<!--
 	<section id="changelog:general">
 		<title>General</title>
 		<itemizedlist>
 			<listitem><simpara>
-				All packages have been adapted to UCS 4.1 (<u:bug>39729</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The codename for UCS 4.1 has been set to <wordasword>Vahr</wordasword> (<u:bug>39223</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The package <package>univention-container-role-common</package> has been added. It
-				is used to strip down the base of installed packages in a Docker image
-				(<u:bug>38283</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The errata level is reset during the upgrade to UCS 4.1 (<u:bug>39312</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+				-->
 
+				<!--
 	<section id="changelog:installer">
 		<title>Univention Installer</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The default inode density for partitions smaller than 4TB has
-				been increased from 1 inode per 16KiB to 1 inode per 8KiB.
-				This adjustment should avoid running out of inodes on system
-				volumes. This only affects creation of new filesystem volumes
-				(<u:bug>39432</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+				-->
 
 
 	<section id="changelog:basic">
@@ -49,7 +36,8 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Linux kernel has been updated to 4.1.12 (<u:bug>38873</u:bug>, <u:bug>38872</u:bug>).
+					The Linux kernel has been updated to <wordasword>4.1.16</wordasword>. It provides many bugfixes and fixes
+                    several vulnerabilities (<u:bug>40481</u:bug>, <u:bug>40059</u:bug>, <u:bug>40558</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -72,11 +60,11 @@
 		</section>
 				-->
 
+				<!--
 		<section id="changelog:basis:boot">
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The boot menu on the installation DVD has been improved. The DHCP request can now be skipped directly (<u:bug>39554</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -85,22 +73,10 @@
 			<title>Other system services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The network registration is now skipped in the init script
-					<filename>univention-network-common</filename> if UCS is running in a Docker
-					container because the network registration for this mode is implemented in
-					the init script <filename>univention-docker-container-mode</filename>
-					(<u:bug>38365</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						<filename>univention-firewall</filename> now creates port forwarding
-						rules for services in Docker containers (<u:bug>38307</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						Prevent an error when logging into a docker container without network interface
-						(<u:bug>38861</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 	</section>
 
 
@@ -108,24 +84,10 @@
 		<title>Domain services</title>
 
 		<section id="changelog:domain:openldap">
+				<!--
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
-					OpenLDAP has been updated to version 2.4.42 (<u:bug>38876</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The directory logger and the <package>ldap_extension</package> listener module now restart the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The OpenLDAP server might be started multiple times during the upgrade. This is no longer a problem for the OpenLDAP package scripts (<u:bug>39683</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <phrase>graceful-restart</phrase> of the OpenLDAP init script
-					has been adjusted to reduce the grace time (<u:bug>39719</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The group access for the LDAPI socket interface has been removed
-					(<u:bug>39811</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -133,14 +95,10 @@
 				<title>LDAP ACL changes</title>
 				<itemizedlist>
 					<listitem><simpara>
-						The permissions for GSSAPI SASL authentication have been fixed (<u:bug>29482</u:bug>, <u:bug>39877</u:bug>).
-					</simpara></listitem>
-					<listitem><simpara>
-						The hosts can now modify their own <property>operatingSystem</property> and
-						<property>operatingSystemVersion</property> attributes (<u:bug>39915</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+				-->
 
 				<!--
 			<section id="changelog:domain:openldap:schema">
@@ -177,44 +135,11 @@
 	<section id="changelog:umc">
 		<title>Univention Management Console</title>
 
+				<!--
 		<section id="changelog:umc:web">
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Support for logging in with the primary email address at UMC has been added (<u:bug>38528</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Unmovable objects are no longer shown as movable (<u:bug>20439</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					All UMC cookies are now restricted to the path <uri>/univention-management-console/</uri>.
-					Therefore, the entry point <uri>/umcp/</uri> has been moved to <uri>/univention-management-console/</uri> (<u:bug>38820</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The session and username cookie are now suffixed with the port to allow multiple parallel UMC session on the same host (<u:bug>38344</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A service entry for Univention Management Console has been added and the
-					<package>univention-management-console-web-server</package> join script adds
-					this service automatically to the LDAP host entry (<u:bug>39553</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The Univention Management Console login now supports authentication via SAML
-					(<u:bug>31943</u:bug>, <u:bug>39549</u:bug>, <u:bug>39552</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The dropdown menu to switch the Univention Management Console uses the SAML single-sign-on process now.
-					The previously used UMC single-sign-on implementation has been replaced with SAML (<u:bug>39227</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The dependency of <package>univention-dojo-dev</package> has changed to
-					<package>OpenJDK 7</package> (<u:bug>39572</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The integration of the browser history into UMC has been improved and added to UDM modules (<u:bug>39033</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The Univention Management Console login is now extensible to support authentication via a one time password (<u:bug>39611</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -223,14 +148,6 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The exception <classname>SystemExit</classname> is now caught by the UMC server and not shown as a traceback to the user (<u:bug>39031</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A memory leak in the UMC webserver has been fixed which could occur when a SSL communication between UMC webserver and UMC server was not possible (<u:bug>38402</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The UMC PAM configuration has been extended. It is now possible to integrate additional
-					services via PAM such as multi factor authentication modules (<u:bug>39612</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -239,48 +156,10 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The App Center is now able to install docker based apps. These apps are installed in a small container (minimal UCS) within the host system
-					(<u:bug>38887</u:bug>, <u:bug>39185</u:bug>, <u:bug>39258</u:bug>, <u:bug>39374</u:bug>, <u:bug>39331</u:bug>, <u:bug>39184</u:bug>, <u:bug>39183</u:bug>, <u:bug>39196</u:bug>, <u:bug>39496</u:bug>, <u:bug>39417</u:bug>, <u:bug>39330</u:bug>, <u:bug>39192</u:bug>, <u:bug>39467</u:bug>, <u:bug>39462</u:bug>, <u:bug>39629</u:bug>, <u:bug>39204</u:bug>, <u:bug>39189</u:bug>, <u:bug>39587</u:bug>, <u:bug>39189</u:bug>, <u:bug>39660</u:bug>, <u:bug>39434</u:bug>, <u:bug>39199</u:bug>, <u:bug>39820</u:bug>, <u:bug>39822</u:bug>, <u:bug>39716</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The variable <envar>UCSOverviewCategory</envar> now accepts the value <wordasword>None</wordasword> in which case any
-					UCR variable once registered will be removed (<u:bug>39718</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The source package has been renamed to <package>univention-appcenter</package> to reflect the fact that the UMC module is
-					a frontend for the Univention App Center (<u:bug>39585</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The design of the UMC App Center module has been adjusted, and some usability aspects have been improved
-					(<u:bug>38894</u:bug>, <u:bug>39653</u:bug>, <u:bug>39665</u:bug>, <u:bug>39651</u:bug>, <u:bug>39835</u:bug>, <u:bug>39668</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					App logos must be in the SVG format from UCS 4.1 on. Logos are referenced in the <wordasword>INI</wordasword> or META files as
-					<classname>Logo</classname> and <classname>LogoDetailPage</classname> where the latter optional entry
-					may define a different logo which is displayed in the app detail view (<u:bug>39525</u:bug>, <u:bug>39656</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The property <classname>Screenshot</classname> has been replaced with the property
-					<classname>Thumbnails</classname> which allows a comma separated list of pictures or
-					<wordasword>youtube</wordasword> URIs (<u:bug>39654</u:bug>, <u:bug>39524</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Apps can be rated. This rating is shown on the detail page of an App (<u:bug>38891</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Every time an app is opened from the Gallery, the session is refreshed silently to prevent logouts (<u:bug>39655</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The App Center now checks a digital signature of the index of app meta files (<u:bug>39591</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The global App Center now only suggests app updates on remote hosts when that's UCS version matches the local version (<u:bug>39912</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The searched keyword in the App Center resets if the category gets changed (<u:bug>39652</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:umc:udmcli">
@@ -292,23 +171,15 @@
 		</section>
 				-->
 
+				<!--
 		<section id="changelog:umc:setup">
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
-					It is now possible to to black list the page for selecting the system role and use a pre-configured role value instead
-					(<u:bug>38315</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <package>System Setup</package> wizard now can have a configurable domain while the hostname itself is fixed. This is needed
-					for Docker based apps (<u:bug>38275</u:bug>, <u:bug>38154</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					During the initial system setup, the restart of the webserver is no longer disabled.
-					This is needed for Docker based apps (<u:bug>39476</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:umc:user">
@@ -330,16 +201,15 @@
 		</section>
 				-->
 
+				<!--
 		<section id="changelog:umc:computers">
 			<title>Computers module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The UDM attributes <property>operatingSystem</property> and
-					<property>operatingSystemVersion</property> can now be set for domain controllers
-					and member servers (<u:bug>39915</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:umc:dns">
@@ -391,14 +261,15 @@
 		</section>
 				-->
 
+				<!--
 		<section id="changelog:umc:policy">
 			<title>Policies</title>
 			<itemizedlist>
 				<listitem><simpara>
-					 When adding an object without policies referenced, no traceback occurs anymore (<u:bug>37667</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:umc:printer">
@@ -450,14 +321,15 @@
 		</section>
 				-->
 
+				<!--
 		<section id="changelog:umc:other">
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Various modules are now able to handle <package>python-psutil</package> API changes (<u:bug>39322</u:bug>, <u:bug>39323</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:umc:development">
@@ -473,45 +345,12 @@
 
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
+				<!--
 		<itemizedlist>
 			<listitem><simpara>
-					The size of the UCS installation DVD has been reduced by removing all packages not strictly required for installation from the DVD.
-					All maintained packages are still available online or through the update DVD (<u:bug>38913</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
-				have been adapted to the needs of UCS 4.1 (<u:bug>39271</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The UDM attributes <property>operatingSystem</property> and
-				<property>operatingSystemVersion</property> of an UCS server are now set during the
-				upgrade (<u:bug>39915</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The updater now uses the protocol <systemitem class="protocol">HTTPS</systemitem> to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39306</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The updater now uses the proxy defined in the &ucsUCRV; <envar>proxy/https</envar> for <systemitem class="protocol">HTTPS</systemitem> connections. If <envar>proxy/https</envar> is not defined, the fallback <envar>proxy/http</envar> is used (<u:bug>39922</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The &ucsUCRV; <envar>proxy/address</envar>, <envar>proxy/port</envar>, <envar>proxy/username</envar> and <envar>proxy/password</envar> are no longer used to configure the package toolkit <literal>apt</literal>. Please use the &ucsUCRV; <envar>proxy/http</envar> or <envar>proxy/https</envar> instead (<u:bug>39922</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The updater now uses the license UUID (&ucsUCRV; <envar>license/uuid</envar>) to access the Univention Software Repository at <uri>https://updates.software-univention.de/</uri> by default (<u:bug>39305</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The updater now skips downloading translation files and differential <filename>Packages</filename> files (<u:bug>28022</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The updater <filename>preup.sh</filename> script now checks if the DC master has already been updated (<u:bug>37260</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The fatal error message in <command>univention-upgrade</command> now references the logfile <filename>/var/log/univention/updater.log</filename> for further details (<u:bug>31006</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					<command>univention-upgrade</command> now uses <option>--enable-app-updates</option> by default (<u:bug>39082</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
+				-->
 
 				<!--
 		<section id="changelog:deployment:pkgdb">
@@ -523,37 +362,30 @@
 		</section>
 				-->
 
+				<!--
 		<section id="changelog:deployment:cli">
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The mount point for CD-ROM images in <command>univention-updater</command> and <command>univention-repository-update</command> has been fixed (<u:bug>36721</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 	</section>
 
 
+				<!--
 	<section id="changelog:lib">
 		<title>Univention base libraries</title>
 		<itemizedlist>
 			<listitem><simpara>
-				The function <function>is_ucr_true</function> has been added to the package <package>shell-univention-lib</package> (<u:bug>27701</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The package <package>OpenSSL</package> has been updated to version <literal>1.0.2d</literal> (<u:bug>39500</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-					The package <package>cURL</package> treated warning alerts as fatal during the
-					TLS handshake, which prevented connecting to some
-					<systemitem class="protocol">https://</systemitem> servers using
-					<acronym lang="">SNI</acronym>. This has been fixed
-					(<u:bug>39603</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+				-->
 
 
+				<!--
 	<section id="changelog:service">
 		<title>System services</title>
 
@@ -561,80 +393,6 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The SAML identity provider app has been integrated into UCS (<u:bug>38881</u:bug>, <u:bug>39468</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The package <package>univention-saml</package> is installed on DC Master and
-					DC Backup systems automatically during the UCS 4.1 upgrade
-					(<u:bug>39313</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Single-sign-on via SAML 2.0 is now possible with Univention Management Console
-					(<u:bug>39171</u:bug>, <u:bug>39178</u:bug>, <u:bug>31943</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A download link for the public certificate of the identity provider has been added to the module (<u:bug>32786</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Every SAML identity provider registers its default IP address via DNS at the
-					host record <property>ucs-sso</property> to provide a failover configuration. The name can be changed before
-					joining the UCS system through the &ucsUCRV; <envar>ucs/server/sso/fqdn</envar>
-					(<u:bug>39386</u:bug>, <u:bug>39574</u:bug>, <u:bug>39399</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <application>SimpleSAMLphp</application> certificate is now created in the joinscript instead of the postinst of the package (<u:bug>39255</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <application>SimpleSAMLphp</application> files <filename>authsources.php</filename> and <filename>saml20-idp-hosted.php</filename> have been changed to a UCR multifile template (<u:bug>39250</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<application>SimpleSAMLphp</application> has been updated to version 1.13.2-1 (<u:bug>38982</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<property>AssertionConsumerService</property> is now a multi-value field (<u:bug>39015</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The ACL evaluation of <application>SimpleSAMLphp</application> has been fixed (<u:bug>38935</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Renaming of a service provider is now prevented as the user references weren't updated when doing so (<u:bug>38934</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Transmitting LDAP attributes from the identity provider is now possible and does not cause exceptions in <application>SimpleSAMLphp</application> anymore (<u:bug>38927</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <property>entityID</property> of the identity provider is now configurable via the &ucsUCRV; <envar>saml/idp/entityID</envar> (<u:bug>33912</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The SAML identity provider now uses a dedicated LDAP user to access the LDAP and a separate user is used to access <acronym>SSO</acronym> specific web-content by <application>apache2</application> (<u:bug>38947</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The App Center module has been adapted to work with single-sign-on (<u:bug>39226</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The UMC server and LDAP server allow authentication with a SAML assertion via the packages <application>pam-saml</application> and <application>cy2-saml</application> (<u:bug>39315</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<package>PHP</package> syntax is now correctly escaped and validated when writing the <package>simplesamlphp</package> service provider configuration (<u:bug>38933</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The SAML join script has been moved from <package>univention-saml-schema</package> to
-					<package>univention-saml</package> (<u:bug>39472</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A required password change, expired passwords, locked and disabled accounts are detected by the SAML login and the user is informed, while login is denied (<u:bug>39181</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					<package>stunnel4</package> has been updated to 5.18, and now supports certificate validation for the connected <application>memcache</application> instances (<u:bug>39479</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						The default <property>NameID</property> identifier format for configured service providers is changed to <property>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</property> (<u:bug>39431</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The SAML schema package now restarts the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Display problems for the <application>Internet Explorer</application> compatibility mode have been corrected (<u:bug>39850</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -643,7 +401,6 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The user can now change or reset her/his password by using the password self-service (<u:bug>39597</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -652,19 +409,10 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Authentication (and thus submitting) has been disabled by default on port 25. Set &ucsUCRV; <envar>mail/postfix/mastercf/options/smtp/smtpd_sasl_auth_enable=yes</envar> to enable the old behavior (<u:bug>39021</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <systemitem class="service">Dovecot Managesieve</systemitem> service is now also available via IPv6 (<u:bug>39702</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A problem with postfix' start script <filename>/etc/init.d/postfix</filename> has been fixed that could lead to the inability to start/stop postfix in docker containers (<u:bug>39542</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-						When installing <package>univention-mail-postfix</package> for the first time, 512 bit DH parameters for Postfix are now generated immediately and 2048 bit DH parameters are scheduled by the join script to be generated on the next day (<u:bug>39482</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:service:virus">
@@ -696,12 +444,11 @@
 		</section>
 				-->
 
+				<!--
 		<section id="changelog:service:kerberos">
 			<title>Kerberos</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The dependency to <package>univention-home-mounter</package> has been removed
-					from the <application>Kerberos rsh daemon</application> (<u:bug>39490</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -710,11 +457,10 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>univention-ssl</package> can now create certificates for FQDNs longer than 64 characters.
-					The OpenSSL extension <property>Subject Alternative Name</property> is used in such a case (<u:bug>38859</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:service:proxy">
@@ -736,11 +482,11 @@
 		</section>
 				-->
 
+				<!--
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>univention-apache</package> now ships expandable <property>VirtualHost</property> configuration files (<u:bug>38807</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -749,9 +495,6 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The dependency on <package>univention-home-mounter</package> has been changed
-					to a recommendation in the <package>univention-pam</package> package
-					(<u:bug>39490</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -760,18 +503,14 @@
 			<title>Other services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>univention-postgresql</package> has been split into multiple packages,
-					one for each PostgreSQL version (<u:bug>39595</u:bug>).
-					<package>univention-bacula</package> does not create the PostgreSQL configuration
-					files for not-installed versions anymore (<u:bug>39595</u:bug>).
-					<package>univention-pkgdb</package> does not create the PostgreSQL configuration
-					files for not-installed versions anymore (<u:bug>39595</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 	</section>
 
 
+				<!--
 	<section id="changelog:virt">
 		<title>Virtualization</title>
 
@@ -779,15 +518,6 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
-					UVMM profiles for Windows 10 have been added (<u:bug>39335</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The description of a virtual machine is dynamically displayed
-					as a grid column (<u:bug>38676</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The user can now select the MAC address inside the interface grid.
-					(<u:bug>33546</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -796,137 +526,31 @@
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The package <package>qemu</package> has been updated and has been re-compiled with support for Xen disabled.
-						The package <package>libvirt</package> has also been re-compiled with support for Xen disabled (<u:bug>39685</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
+				-->
 
 
+				<!--
 	<section id="changelog:container">
 		<title>Container Technologies</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The package <package>docker.io</package> has been updated to
-					<wordasword>1.6</wordasword> (<u:bug>39350</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					OverlayFS has been configured as the Docker storage driver
-					(<u:bug>39412</u:bug>, <u:bug>39418</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The packages <package>univention-docker-container-mode</package> and
-					<package>univention-appliance-docker-container</package> have been added.
-					These packages help to run UCS in a Docker container
-					(<u:bug>39331</u:bug>, <u:bug>38260</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The function <function>ucs_registerLDAPExtension</function>
-					from package <package>shell-univention-lib</package> now supports
-					the options <option>packagename</option> and
-					<option>packageversion</option>
-					(<u:bug>38205</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					When joining a UCS domain, Docker containers do not register their IP
-					and MAC addresses in the computer object (<u:bug>38437</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					UCR can now modify files on a bind-mounted filesystem in a Docker
-					container (<u:bug>38011</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The Heimdal Kerberos installation does not fail anymore in a Docker
-					container (<u:bug>38295</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					No keyboard or console font setup is done inside a Docker container
-					(<u:bug>38763</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A docker repository is now hosted on <uri>docker.software-univention.de</uri>
-					(<u:bug>39188</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A <filename>docker</filename> init script has been added
-					which properly stops and restarts running containers
-					(<u:bug>39474</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Docker images running UCS in container mode now update their
-					IP addresses in LDAP if one is already registered there.
-					This is useful because Docker dynamically assigns IP
-					addresses during container restarts
-					(<u:bug>38334</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Docker images running UCS in container mode now try to
-					register the IP also with a <systemitem class="service">consul</systemitem> and
-					<systemitem class="service">etcd</systemitem> service running on the Docker host
-					(<u:bug>38331</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The Docker log file is now readable only by root and the docker process
-					(<u:bug>39494</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The App Center checks the digital checksum of docker images hosted
-					on <uri>docker.software-univention.de</uri> before downloading them.
-					The integrity of the container maintainer scripts are verified in
-					this manner as well
-					(<u:bug>39194</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The time zone in Docker containers is now set to the same as the host
-					(<u:bug>39483</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					A base image for UCS hosted apps has been created and uploaded
-					to <uri>docker.software-univention.de</uri>
-					(<u:bug>39187</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 	</section>
+				-->
 
 
 	<section id="changelog:win">
 		<title>Services for Windows</title>
+				<!--
 		<section id="changelog:win:samba">
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Samba has been updated to version 4.3.1
-					(<u:bug>38874</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The default domain and forest function level for new installations is now <emphasis>2008 R2</emphasis> (<u:bug>38800</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The &ucsUCRV; <envar>samba/register/exclude/interfaces</envar> has been added.
-					The IP addresses of theses network interfaces are not registered automatically in DNS.
-					By default the variable is set to <option>docker0</option>
-					(<u:bug>39466</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The &ucsUCRV; <envar>samba/max/protocol</envar> doesn't get set any longer for new
-					installations. Additionally, if it was set to the default "SMB2" it will get unset
-					as well during updates. The purpose of this change is to give customers the
-					highest protocol level considered stable by the Samba defaults. Currently this
-					is <option>SMB3_11</option>.
-					(<u:bug>32939</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <filename>IPC$ share</filename> is not explicitly configured any longer
-					in the default configuration where <envar>samba4/service/smb</envar> is <option>s3fs</option>.
-					This change avoids a lot of unnecessary warning messages from samba
-					(<u:bug>29227</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The Samba package now restarts the OpenLDAP server only if it was running (<u:bug>39683</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The in place upgrade of <wordasword>Samba 3/NT4</wordasword> to <wordasword>Samba 4/AD</wordasword> has been fixed (<u:bug>39932</u:bug>, <u:bug>37646</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -935,16 +559,10 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The FSMO roles <wordasword>domaindnsmaster</wordasword> and
-					<wordasword>forestdnsmaster</wordasword> are now seized during
-					the takeover (<u:bug>39222</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Installation of <package>Univention AD Takover</package> now also installs
-					<package>fping</package> (<u:bug>39723</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:win:s4c">
@@ -970,35 +588,12 @@
 
 	<section id="changelog:other">
 		<title>Other changes</title>
+				<!--
 		<itemizedlist>
 			<listitem><simpara>
-				Asterisk has been updated to 11.13.1. It provides many bugfixes and fixes
-				several vulnerabilities (<u:bug>37738</u:bug>, <u:bug>39285</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>univention-join</package> now correctly checks for the existence of <command>nscd</command>. This is needed in a minimal environment (<u:bug>38662</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				<command>nscd</command> terminates its children when stopping (<u:bug>38135</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The packages for the default <classname>settings/packages</classname> &ucsUDM; objects
-				have been updated (<u:bug>32443</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				Several package dependencies in Docker related base packages have been changed (<u:bug>39410</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The response handling in the <classname>univention.lib.umc_connection.UMCConnection</classname> library has been improved (<u:bug>39599</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The <package>iceweasel</package> package has been put into unmaintained
-				status, so it will not be considered any longer for security
-				updates. It has not been used anyway as <package>firefox-en</package>
-				and <package>firefox-de</package> are installed
-				e.g. for the system setup (<u:bug>38281</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
+				-->
 	</section>
 </chapter>
 <!-- vim: set ts=4 sw=4 noet: -->
