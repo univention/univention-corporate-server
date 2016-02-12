@@ -139,8 +139,7 @@ if [ "$1" = "configure" ]; then
 		version/version?4.1 \
 		version/patchlevel?0 \
 		version/erratalevel?0 \
-		version/releasename="$releasename" \
-		uuid/system?"$(cat /proc/sys/kernel/random/uuid)"
+		version/releasename="$releasename"
 
 	if [ -z "$2" ]; then
 		# enable current errata component
