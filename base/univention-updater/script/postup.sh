@@ -88,20 +88,6 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# Install univention-saml on DC Master and DC Backup while updating to UCS 4.1
-#  https://forge.univention.org/bugzilla/show_bug.cgi?id=39313
-if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	# Deactivate app center component if present
-	if is_ucr_true repository/online/component/simplesamlphp_20140304; then
-		ucr set repository/online/component/simplesamlphp_20140304=disabled >>"$UPDATER_LOG" 2>&1
-		/usr/sbin/univention-register-apps >>"$UPDATER_LOG" 2>&1
-	fi
-	install univention-saml
-fi
-
-# Bug #39595: manually upgrade univention-postgresql if it was held back
-check_and_install univention-postgresql
-
 # Update to UCS 4.1 autoremove
 if ! is_ucr_true update41/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
@@ -141,19 +127,19 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.1-0" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.1-1" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.0-3-errata=false \
-	repository/online/component/4.0-3-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.1-0-errata=false \
+	repository/online/component/4.1-0-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 4.1-0
+# Set errata component for UCS 4.1-1
 ucr set \
-	repository/online/component/4.1-0-errata=enabled \
-	repository/online/component/4.1-0-errata/description="Errata updates for UCS 4.1-0" \
-	repository/online/component/4.1-0-errata/version="4.1" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.1-1-errata=enabled \
+	repository/online/component/4.1-1-errata/description="Errata updates for UCS 4.1-0" \
+	repository/online/component/4.1-1-errata/version="4.1" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then

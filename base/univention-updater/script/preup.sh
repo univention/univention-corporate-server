@@ -77,8 +77,8 @@ readcontinue ()
 echo
 echo "HINT:"
 echo "Please check the release notes carefully BEFORE updating to UCS ${UPDATE_NEXT_VERSION}:"
-echo " English version: https://docs.software-univention.de/release-notes-4.1-0-en.html"
-echo " German version:  https://docs.software-univention.de/release-notes-4.1-0-de.html"
+echo " English version: https://docs.software-univention.de/release-notes-4.1-1-en.html"
+echo " German version:  https://docs.software-univention.de/release-notes-4.1-1-de.html"
 echo
 echo "Please also consider documents of following release updates and"
 echo "3rd party components."
@@ -162,23 +162,6 @@ if [ -n "$hold_packages" ]; then
 		exit 1
 	fi
 fi
-
-## Check for PostgreSQL-8.4 (Bug #39366)
-check_for_postgresql84 () {
-	case "$(dpkg-query -W -f '${Status}' postgresql-8.4 2>/dev/null)" in
-	install*) ;;
-	*) return 0 ;;
-	esac
-	echo "WARNING: PostgreSQL-8.4 is no longer supported by UCS-4.1 and must be migrated to"
-	echo "         a newer version of PostgreSQL. See http://sdb.univention.de/1292 for"
-	echo "         more details."
-	if is_ucr_true update41/ignore_postgresql84; then
-		echo "WARNING: update41/ignore_postgresql84 is set to true. Skipped as requested."
-	else
-		exit 1
-	fi
-}
-check_for_postgresql84
 
 #################### Bug #22093
 
