@@ -1,4 +1,4 @@
-univention-system-setup (9.0.3-1) unstable; urgency=medium
+univention-system-setup (9.0.4-1) unstable; urgency=medium
 
   * Move the UUID creation from updater to system setup (Bug #40640)
 
