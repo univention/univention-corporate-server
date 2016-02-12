@@ -505,6 +505,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The packages sysstat, ... have been added to the maintained package repository of UCS (<u:bug>40203</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
