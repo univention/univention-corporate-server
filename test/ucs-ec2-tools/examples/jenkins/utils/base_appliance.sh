@@ -598,6 +598,9 @@ setup_appliance ()
 	# Cleanup apt archive
 	apt-get clean
 	apt-get update
+
+	# set initial system uuid (set to new value in setup-join.sh)
+	ucr set uuid/system="00000000-0000-0000-0000-000000000000"
 }
 
 appliance_cleanup ()
