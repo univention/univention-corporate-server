@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.1-0-en">
+<book lang="en" id="releasenotes-4.1-1-en">
 	<bookinfo>
-		<title>UCS 4.1-0 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.1-0</subtitle>
+		<title>UCS 4.1-1 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.1-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2015 Univention GmbH
+				(c) 2002-2016 Univention GmbH
 			</para>
 
 			<para>
@@ -49,42 +49,9 @@
 
 		<itemizedlist>
 			<listitem><para>
-				The Univention App Center integrates the container technology Docker. With Docker, it is
-				possible to run Apps separately and encapsulated from each other. This
-				increases the security of the UCS domain and reduces the dependencies of the Apps on
-				other software libraries.
-				The integration of Docker is transparent to the users. The App Center will
-				automatically perform the startup and configuration of the Docker containers.
-			</para></listitem>
-			<listitem><para>
-				The Univention App Center's usability has been improved further. Apps are now
-				displayed more clearly. The App detail pages have been cleaned up and supplemented by
-				a rating in the categories Vendor Supported, Popularity's Award and
-				Editor's Award.
-				The classification is based on data such as the installation base of the Apps or
-				the maintenance behavior of the App providers. Thus, the transparency and
-				comparability of Apps are increased.
-			</para></listitem>
-			<listitem><para>
-				Single-sign-on via SAML is a product component from UCS 4.1 and works out of the box
-				with the UCS management system. Once logged in, you can switch between web
-				applications without an additional login.
-			</para></listitem>
-			<listitem><para>
-				Users can independently change their password or reset it in case of a forgotten
-				password via the new Self Service. In this case, a token will be sent to an e-mail
-				address or mobile phone number that has to be defined in advance by the users.
-				The then received token can be used to set a new password.
-			</para></listitem>
-			<listitem><para>
 				The Linux kernel has been updated to the latest stable version of the 4.1 long-term
 				kernel. This includes several security updates as well as new and updated drivers
 				for better hardware support.
-			</para></listitem>
-			<listitem><para>
-				Samba has been updated to version 4.3.1. Besides many detail improvements, Samba 4.3
-				provides support for SMB 3.1.1, which was introduced by Microsoft with Windows
-				10 and provides security improvements and more features.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -107,15 +74,6 @@
 			<para>
 				The authoritative version of the LDAP directory service is maintained on the &ucsMaster; and replicated to all the remaining LDAP servers of the UCS domain.
 				As changes to the LDAP schema can occur during release updates, the &ucsMaster; must always be the first system to be updated during a release update.
-			</para>
-		</section>
-
-		<section id="relnotes:apps">
-			<title>Univention App Center</title>
-			<para>
-				If applications have been installed from the Univention App Center, the update can only be performed once all installed applications are available in a compatible version.
-				Some applications are updated to newer versions during the UCS update.
-				If an application is not yet available for UCS 4.1, a statement about the release date can be obtained from the application provider.
 			</para>
 		</section>
 
@@ -149,20 +107,6 @@
 			If updating should occur over a network connection nevertheless, it must be verified that the update continues in case of disconnection from the network.
 			This can be achieved, e.g., using the tools <command>screen</command> and <command>at</command>.  These tools are installed on all UCS system roles by default.
 		</para>
-		<section id="relnotes:removed">
-			<title>Removed/unsupported Components</title>
-			<para>
-				Some components have been removed and are not shipped any longer with UCS 4.1:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<para>
-						<application>PostgreSQL 8.4</application> is no longer provided in UCS 4.1. The
-						migration of existing databases to PostgreSQL 9.1 is described in <u:sdb>1292</u:sdb>.
-					</para>
-				</listitem>
-			</itemizedlist>
-		</section>
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -178,9 +122,6 @@
 			Subsequently the UCS system needs to be restarted.
 		</para>
 
-		<para>
-			<!-- TODO: translate SAML identity provider paragraph -->
-		</para>
 	</chapter>
 
 	<chapter id="relnotes:packages">
@@ -225,19 +166,19 @@
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome as of version 33</para>
+					<para>Chrome as of version 37</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox as of version 24</para>
+					<para>Firefox as of version 38</para>
 				</listitem>
 
 				<listitem>
-					<para>Internet Explorer as of version 9</para>
+					<para>Internet Explorer as of version 11</para>
 				</listitem>
 
 				<listitem>
-					<para>Safari and Safari Mobile as of version 7</para>
+					<para>Safari and Safari Mobile as of version 9</para>
 				</listitem>
 			</itemizedlist>
 
@@ -246,41 +187,15 @@
 			</para>
 		</section>
 
-		<section id="relnotes:maintained">
-			<title>Handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages</title>
-				<para>
-					With UCS 4.1 the handling of <phrase>maintained</phrase> and <phrase>unmaintained</phrase> packages has been changed.
-				</para>
-				<itemizedlist spacing="compact">
-					<listitem><simpara>
-							The <emphasis>Installation DVD</emphasis> now only contains the packages required to install a new UCS system with all the components provided by Univention.
-							Previously the DVD contained all other <phrase>maintained</phrase> packages too.
-							They have been removed from the DVD to decrease the download size.
-					</simpara></listitem>
-					<listitem><simpara>
-							The full set of <phrase>maintained</phrase> packages is provided through the <emphasis>Update DVD</emphasis>.
-							It can be used to update a local repository.
-					</simpara></listitem>
-					<listitem><simpara>
-							All packages (<phrase>maintained</phrase> and <phrase>unmaintained</phrase>) are available online through <ulink url="https://updates.software-univention.de/"/>.
-					</simpara></listitem>
-				</itemizedlist>
-				<para>
-					With this change the definition of <phrase>maintained</phrase> also changed:
-					<phrase>maintained</phrase> is now defined on the basis of the <emphasis>source package</emphasis>, while previously it was defined on a subset of <emphasis>binary packages</emphasis>.
-					This might lead to an increased space requirement for local repositories, as <phrase>maintained</phrase> now consists of more packages than in previous releases.
-				</para>
-		</section>
-
 	</chapter>
 
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 4.0-4:
+			Listed are the changes since UCS 4.1-0:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

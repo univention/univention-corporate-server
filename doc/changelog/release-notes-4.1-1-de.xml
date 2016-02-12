@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.1-0-de">
+<book lang="de" id="releasenotes-4.1-1-de">
 	<bookinfo>
-		<title>UCS 4.1-0 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.1-0</subtitle>
+		<title>UCS 4.1-1 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.1-1</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2015 Univention GmbH
+				(c) 2002-2016 Univention GmbH
 			</para>
 
 			<para>
@@ -49,52 +49,11 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Das Univention App Center integriert die Containertechnologie Docker. Mittels
-				Docker lassen sich Apps voneinander getrennt und gekapselt betreiben. Dadurch
-				werden die Sicherheit der UCS Umgebung erhöht und die Abhängigkeiten der Apps zu
-				anderen Software-Bibliotheken reduziert. Die Integration von Docker ist für die
-				Benutzer transparent. Das App Center führt die Inbetriebnahme und Konfiguration der
-				Docker-Container automatisch durch.
-			</para></listitem>
-
-			<listitem><para>
-				Die Usability im Univention App Center wurde weiter verbessert. Apps werden nun
-				übersichtlicher dargestellt. Die Detailseiten der Apps wurden aufgeräumt und um ein
-				Rating in den Kategorien <foreignphrase>Vendor Supported</foreignphrase>,
-				<foreignphrase>Popularity's Award</foreignphrase> und <foreignphrase>Editor's
-				Award</foreignphrase> ergänzt. Die Einteilung basiert auf Daten wie zum Beispiel der
-				Installationsbasis der Apps oder Wartungsverhalten der App Anbieter. Dadurch werden
-				Transparenz und Vergleichbarkeit der Apps untereinander gesteigert.
-			</para></listitem>
-
-			<listitem><para>
-				Single-Sign-On via SAML ist ab UCS 4.1 Produktbestandteil und arbeitet
-				<foreignphrase>Out of the box</foreignphrase> mit dem UCS-Managementsystem.  Einmal
-				angemeldet kann ohne Neuanmeldung zwischen Web-Anwendungen gewechselt werden.
-			</para></listitem>
-
-			<listitem><para>
-				Benutzer können über den neuen <foreignphrase>Self Service</foreignphrase>
-				selbstständig ihr Passwort ändern oder im Fall eines vergessenen Passworts dies neu
-				setzen lassen. Dafür können vorab E-Mailadressen oder Mobilfunknummern hinterlegt
-				werden, an die dann ein entsprechendes <foreignphrase>Token</foreignphrase>
-				verschickt wird. Mit dem <foreignphrase>Token</foreignphrase> kann ein neues
-				Passwort gesetzt werden.
-			</para></listitem>
-
-			<listitem><para>
 				Der Linux Kernel wurde auf den letzten stabilen 4.1er
 				<foreignphrase>Longterm-Kernel</foreignphrase> aktualisiert. Dieser beinhaltet
 				diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine
 				verbesserte Hardware-Unterstützung.
 			</para></listitem>
-
-			<listitem><para>
-				Samba wurde auf Version 4.3.1 aktualisiert. Neben sehr vielen Detailverbesserungen bietet
-				Samba 4.3 Unterstützung für SMB 3.1.1, welches Microsoft mit Windows 10
-				eingeführt hat und das eine höhere Sicherheit und mehr Funktionen bietet. 
-			</para></listitem>
-
 		</itemizedlist>
 	</chapter>
 
@@ -117,15 +76,6 @@
 			<para>
 				Auf dem &ucsMaster; wird die maßgebliche (authoritative) Version des LDAP-Verzeichnisdienstes vorgehalten, die an alle übrigen LDAP-Server der UCS-Domäne repliziert wird.
 				Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können, muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
-			</para>
-		</section>
-
-		<section id="relnotes:apps">
-			<title>Univention App Center</title>
-			<para>
-				Sofern Applikationen aus dem App Center installiert sind, ist das Update erst dann möglich, wenn alle lokal installierten Applikationen im App Center verfügbar sind.
-				Einige Applikationen werden beim Update ebenfalls auf neuere Versionen aktualisiert.
-				Sollte eine Applikation noch nicht für UCS 4.1 verfügbar sein, kann der Zeitpunkt der Veröffentlichung beim Applikationsanbieter nachgefragt werden.
 			</para>
 		</section>
 
@@ -159,21 +109,6 @@
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
 			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen UCS Systemrollen installiert sind.
 		</para>
-		<section id="relnotes:removed">
-			<title>Entfernte/nicht mehr unterstützte Komponenten</title>
-			<para>
-				Einige Komponenten sind entfernt worden und werden mit UCS 4.1 nicht mehr ausgeliefert:
-			</para>
-			<itemizedlist>
-				<listitem>
-					<para>
-						<application>PostgreSQL-8.4</application> wurde in UCS 4.1 entfernt.
-						Die Daten müssen von Hand in eine neuere Version migriert werden.
-						Das Vorgehen ist in <u:sdb>1292</u:sdb> beschrieben.
-					</para>
-				</listitem>
-			</itemizedlist>
-		</section>
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -189,12 +124,6 @@
 			Anschließend muss das UCS-System neu gestartet werden.
 		</para>
 
-		<para>
-			Die App <foreignphrase>SAML identity provider</foreignphrase> gehört nun zum Produktumfang von UCS 4.1.
-			Während des Updates auf UCS 4.1 wird der <foreignphrase>SAML identity provider</foreignphrase> automatisch konfiguriert.
-			Wurde die App unter UCS 4.0 genutzt, müssen die Einstellungen der benutzten Service Provider aktualisiert werden.
-			Insbesondere müssen auf den <foreignphrase>Service Providern</foreignphrase> neue Zertifikate und Metadaten verfügbar gemacht werden, um die Funktionalität wieder herzustellen.
-		</para>
 	</chapter>
 
 	<chapter id="relnotes:packages">
@@ -238,19 +167,19 @@
 
 			<itemizedlist>
 				<listitem>
-					<para>Chrome ab Version 33</para>
+					<para>Chrome ab Version 37</para>
 				</listitem>
 
 				<listitem>
-					<para>Firefox ab Version 24</para>
+					<para>Firefox ab Version 38</para>
 				</listitem>
 
 				<listitem>
-					<para>Internet Explorer ab Version 9 </para>
+					<para>Internet Explorer ab Version 11</para>
 				</listitem>
 
 				<listitem>
-					<para>Safari und Safari Mobile ab Version 7</para>
+					<para>Safari und Safari Mobile ab Version 9</para>
 				</listitem>
 			</itemizedlist>
 
@@ -259,42 +188,16 @@
 			</para>
 		</section>
 
-		<section id="relnotes:maintained">
-			<title>Verfahren für <foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>-Pakete</title>
-				<para>
-					Mit UCS 4.1 wurde das Verfahren für <foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>-Pakete geändert.
-				</para>
-				<itemizedlist spacing="compact">
-					<listitem><simpara>
-							Die <emphasis>Installations-DVD</emphasis> beinhaltet nur noch die Pakete, die für die Installation eines neuen UCS-Systems mit allen Komponenten, die von Univention bereitgestellt werden.
-							Frühere DVDs enthielten auch alle anderen <foreignphrase>maintained</foreignphrase>-Pakete.
-							Diese wurden entfernt, um die Größe für den Download zu reduzieren.
-					</simpara></listitem>
-					<listitem><simpara>
-							Die vollständige Menge aller <foreignphrase>maintained</foreignphrase>-Pakete wird über die <emphasis>Update DVD</emphasis> bereitgestellt.
-							Diese kann benutzt werden, um ein lokales Repository zu aktualisieren.
-					</simpara></listitem>
-					<listitem><simpara>
-							Alle Pakete (<foreignphrase>maintained</foreignphrase> und <foreignphrase>unmaintained</foreignphrase>) sind auch online über <ulink url="https://updates.software-univention.de/"/> verfügbar.
-					</simpara></listitem>
-				</itemizedlist>
-				<para>
-					Mit dieser Änderung ändert sich auch die Definition der <foreignphrase>maintained</foreignphrase>-Pakete:
-					<foreignphrase>maintained</foreignphrase> ist nun auf der Basis der <emphasis>Quellpakete</emphasis> definiert, während es früher auf einer Untermenge der <emphasis>Binärpakete</emphasis> definiert war.
-					Diese Änderung kann zu einer erhöhten Nutzung von Speicherplatz auf einem lokalen Repository-Server führen, da <foreignphrase>maintained</foreignphrase> nun mehr Pakete enthält als in früheren Releases.
-				</para>
-		</section>
-
 	</chapter>
 
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 4.0-4:
+			Aufgeführt sind die Änderungen seit UCS 4.1-0:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-0.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-1.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
