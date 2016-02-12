@@ -1,3 +1,9 @@
+univention-system-setup (9.0.3-1) unstable; urgency=medium
+
+  * Move the UUID creation from updater to system setup (Bug #40640)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Feb 2016 06:40:16 +0100
+
 univention-system-setup (9.0.2-28) unstable; urgency=medium
 
   * Bug #39886, #40344: Fixed typos in german translation 
