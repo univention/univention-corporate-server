@@ -345,93 +345,93 @@
 				<listitem><simpara>
 					On touch devices the description of an app is now visible by touching the app once. Touching a
 					second time will open the detail page (<u:bug>39663</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Installed apps are now correctly stored in <envar>repository/app_center/installed</envar> even when
 					bypassing the App Center (<u:bug>40087</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The check whether docker is up and running at the startup of the App Center can now be disabled by
 					setting the &ucsUCRV; <envar>appcenter/docker</envar> to =disabled. In this case, Docker Apps cannot
 					be installed anymore (<u:bug>40074</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The command <command>univention-app shell</command> has been addded. It runs a command within the
 					environment of a Docker App (<u:bug>40119</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Warnings shown before App installations do not show up as errors after a successful installation
 					anymore (<u:bug>39926</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Failed Docker App installations now correctly remove their Docker containers when cleaning up
 					(<u:bug>40135</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Downloading specific files from the App Center server now makes use of ETags, resulting in a speedup
 					of module opening (<u:bug>40136</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The layout of the App Center gallery has been improved (<u:bug>39662</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					On an app details page, it is now possible to navigate to the previous and next app in the search
 					results (<u:bug>39664</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The app details page for small domains has been simplified (<u:bug>40116</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Apps now support <property>RequiredAppsInDomain</property> which can be used to state that a
 					specific App has to be installed somewhere in the domain in order for the current App to work
 					(<u:bug>37539</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Various performance optimizations have been done in the App Center code (<u:bug>40239</u:bug>,
 					<u:bug>40240</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The developer scripts for using a local App Center have been fixed (<u:bug>40359</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					One function of the Docker Apps Joinscript helpers has been fixed when called from within the UMC
 					module (<u:bug>40264</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Uninstalling the last app doesn't cause a Forbidden pop up anymore (<u:bug>39157</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Calling <command>univention-app</command> does not log the complete set of options, instead just the
 					name of the action being called (<u:bug>40287</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The command <command>univention-app upgrade</command> now correctly upgrades all packages for non
 					Docker Apps (<u:bug>40060</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The attribute <property>univentionAppID</property> has been added to the LDAP equality search index
 					(<u:bug>39866</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Translation format strings with multiple unnamed arguments have been adjusted
 					(<u:bug>40339</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The function <command>joinscript_run_in_container</command> from the Docker Apps Joinscript helper
 					functions now correctly passes its arguments to <command>univention-app shell</command>
 					(<u:bug>40523]</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The support for plain Docker images has been enhanced (<u:bug>bug: [40604</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The attribute <property>Screenshot</property> has been replaced by <property>Thumbnails</property>
 					(<u:bug>40160</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					Support for upgrading conventional Apps to Docker Apps has been added (<u:bug>40561</u:bug>).
-				<listitem><simpara>
 				</simpara></listitem>
+				<listitem><simpara>
 					The error handling has been improved. This results in useful error messages especially when a
 					connection to the LDAP service failed (<u:bug>40069</u:bug>).
 				</simpara></listitem>
