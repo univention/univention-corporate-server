@@ -58,9 +58,9 @@
 				Dies beinhaltet u.a. Verbesserungen in der DRS-Replikation und diverse Sicherheitsaktualisierungen.
 			</para></listitem>
 			<listitem><para>
-				Univention Virtual Machine Manager kann nun auch Virtual Private Clouds (VPC) in
-				Amazon AWS verwalten. Dadurch besteht die Möglichkeit virtuelle Maschinen in der EC2
-				Region eu-central-1 (Frankfurt am Main) zu erstellen.
+				Univention Virtual Machine Manager kann nun auch <wordasword>Virtual Private Clouds
+				(VPC)</wordasword> in Amazon AWS verwalten. Dadurch besteht die Möglichkeit virtuelle Maschinen in
+				der EC2 Region <property>eu-central-1</property> (Frankfurt am Main) zu erstellen.
 			</para></listitem>
 			<listitem><para>
 				Die Performance der Verzeichnisdienst-Replikation wurde deutlich erhöht. Dadurch ist

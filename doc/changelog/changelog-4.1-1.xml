@@ -102,7 +102,7 @@
 				Small text and translation adjustments have been done (<u:bug>40140</u:bug>, <u:bug>40053</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The join scripts are now executed in a working chroot environment to allow the installation of a DC
+				The join scripts are now executed in a working <command>chroot</command> environment to allow the installation of a DC
 				Master using the profile based installation (<u:bug>40559</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -926,8 +926,8 @@
 					(<u:bug>39901</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Added new configuration option <property>dbtemp</property> that specifies a directory for temporary backing
-					files of squidGuard's in-memory databases (<u:bug>40592</u:bug>).
+					Added new configuration option <property>dbtemp</property> to squidGuard that specifies a directory for temporary backing
+					files of the in-memory databases (<u:bug>40592</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -956,7 +956,7 @@
 					(<u:bug>40121</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					HTTPS is not enforced for the apache <property>mod_status</property> ressources
+					HTTPS is not enforced for the apache <property>mod_status</property> resources
 					(<u:bug>40173</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
