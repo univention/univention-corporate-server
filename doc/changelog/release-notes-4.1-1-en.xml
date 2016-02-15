@@ -44,14 +44,33 @@
 		<title>Release Highlights</title>
 
 		<para>
-			An overview of the most important changes:
+			With &ucsUCS; 4.1-1, the first point release of &ucsUCS; (UCS) 4.1 is
+			now available.  It provides various improvements and
+			bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				The Linux kernel has been updated to the latest stable version of the 4.1 long-term
-				kernel. This includes several security updates as well as new and updated drivers
-				for better hardware support.
+				The Linux kernel has been updated to <wordasword>4.1.16</wordasword>. This includes several security
+				updates as well as new and updated drivers for better hardware support.
+			</para></listitem>
+			<listitem><para>
+				The compatibility to Active Directory has been improved with the Samba update to 4.3.3.  This
+				includes, among others, improvements in the DRS replication and several security updates.
+			</para></listitem>
+			<listitem><para>
+				Univention Virtual Machine Manager is now able to manage <wordasword>Virtual Private Clouds
+				(VPC)</wordasword> in Amazon AWS. This provides the possibility to administrate virtual machines in
+				the EC2 region <property>eu-central-1</property> (Frankfurt am Main).
+			</para></listitem>
+			<listitem><para>
+				The performance of the directory service replication has been increased significantly. Thus, the
+				join into a domain with thousands of users is much faster.
+			</para></listitem>
+			<listitem><para>
+				Several enhancements in design and usability of the Univention App Center have been implemented. For
+				example, it is now possible to navigate easily between the different Apps. Additionally, the App
+				Center startup performance has been increased significantly.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

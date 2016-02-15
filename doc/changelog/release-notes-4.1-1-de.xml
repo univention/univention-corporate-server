@@ -44,14 +44,16 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Die wichtigsten Änderungen im Überblick:
+			Mit &ucsUCS; 4.1-1 steht das erste Point-Release für &ucsUCS; (UCS) 4.1 zur Verfügung. Es
+			umfasst diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im
+			Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Der Linux Kernel wurde auf 4.1.16 <wordasword>4.1.16</wordasword> aktualisiert.
-				Dieser beinhaltet diverse Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für
-				eine verbesserte Hardware-Unterstützung.
+				Der Linux Kernel wurde auf <wordasword>4.1.16</wordasword> aktualisiert. Dieser beinhaltet diverse
+				Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine verbesserte
+				Hardware-Unterstützung.
 			</para></listitem>
 			<listitem><para>
 				Mit dem Update auf Samba 4.3.3 wurde die Kompatibilität zu Active Directory weiter ausgebaut.
@@ -60,7 +62,7 @@
 			<listitem><para>
 				Univention Virtual Machine Manager kann nun auch <wordasword>Virtual Private Clouds
 				(VPC)</wordasword> in Amazon AWS verwalten. Dadurch besteht die Möglichkeit virtuelle Maschinen in
-				der EC2 Region <property>eu-central-1</property> (Frankfurt am Main) zu erstellen.
+				der EC2 Region <property>eu-central-1</property> (Frankfurt am Main) zu administratieren.
 			</para></listitem>
 			<listitem><para>
 				Die Performance der Verzeichnisdienst-Replikation wurde deutlich erhöht. Dadurch ist
