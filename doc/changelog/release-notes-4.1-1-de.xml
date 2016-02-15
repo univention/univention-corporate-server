@@ -62,7 +62,7 @@
 			<listitem><para>
 				Univention Virtual Machine Manager kann nun auch <wordasword>Virtual Private Clouds
 				(VPC)</wordasword> in Amazon AWS verwalten. Dadurch besteht die Möglichkeit virtuelle Maschinen in
-				der EC2 Region <property>eu-central-1</property> (Frankfurt am Main) zu administratieren.
+				der EC2 Region <property>eu-central-1</property> (Frankfurt am Main) zu administrieren.
 			</para></listitem>
 			<listitem><para>
 				Die Performance der Verzeichnisdienst-Replikation wurde deutlich erhöht. Dadurch ist
