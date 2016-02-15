@@ -7,7 +7,6 @@ version: [8]
 desc: |
  This erratum updates the Linux kernel in UCS 3.2 to 3.10.96. Among
  several further bugfixes, this resolves multiple security issues:
- * unix: properly account for FDs passed over unix sockets (CVE-2013-4312)
  * Use-after-free vulnerability in net/unix/af_unix.c in the Linux kernel
    before 4.3.3 allows local users to bypass intended AF_UNIX socket
    permissions or cause a denial of service (panic) via crafted epoll_ctl
@@ -74,7 +73,6 @@ desc: |
  * KEYS: Fix keyring ref leak in join_session_keyring() (CVE-2016-0728)
 note: This is the first part of the fix, which provides the new kernel package.
 cve:
- - CVE-2013-4312
  - CVE-2013-7446
  - CVE-2015-2925
  - CVE-2015-3212
