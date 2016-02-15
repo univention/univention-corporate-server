@@ -92,6 +92,9 @@
 		<title>Univention Installer</title>
 		<itemizedlist>
 			<listitem><simpara>
+				<package>hw-detect</package> has been updated to add support for missing firmware for newer Linux kernels (<u:bug>40630</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
 				The UUID generation has been moved to the setup process (<u:bug>40640</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
