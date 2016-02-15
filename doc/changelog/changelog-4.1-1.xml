@@ -423,10 +423,10 @@
 				<listitem><simpara>
 					The function <command>joinscript_run_in_container</command> from the Docker Apps join script helper
 					functions now correctly passes its arguments to <command>univention-app shell</command>
-					(<u:bug>40523]</u:bug>).
+					(<u:bug>40523</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The support for plain Docker images has been enhanced (<u:bug>bug: [40604</u:bug>).
+					The support for plain Docker images has been enhanced (<u:bug>40604</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The attribute <property>Screenshot</property> has been replaced by <property>Thumbnails</property>

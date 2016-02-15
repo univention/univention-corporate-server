@@ -69,9 +69,9 @@
 				u.a. der Domänenbeitritt in Umgebungen mit mehreren tausend Benutzern deutlich schneller.
 			</para></listitem>
 			<listitem><para>
-				Es gibt zahlreiche Verbesserungen in Design und Usability des Univention App Center so ist
+				Es gibt zahlreiche Verbesserungen in Design und Usability des Univention App Center. So ist
 				es nun bspw. sehr einfach möglich zwischen den unterschiedlichen Apps zu navigieren.
-				Die Ladegeschwindigkeit wurde ebenfalls deutlich erhöht.
+				Die Ladegeschwindigkeit des App Centers wurde ebenfalls deutlich erhöht.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -101,9 +101,9 @@
 		<section id="relnotes:32bit">
 			<title>UCS-Installations-DVDs nur noch als 64-Bit-Variante</title>
 			<para>
-				UCS-Installations-DVSs werden ab UCS 4 nur noch für 64-Bit-Archtitekturen bereitgestellt.
+				UCS-Installations-DVDs werden ab UCS 4 nur noch für 64-Bit-Architekturen bereitgestellt.
 				Vorhandene 32-Bit UCS 3 Systeme können weiterhin über das Online Repository oder über Update DVDs auf UCS 4 aktualisiert werden.
-				Die 32-Bit-Archtitektur wird für die gesamte UCS 4 Maintenance noch unterstützt.
+				Die 32-Bit-Architektur wird für die gesamte UCS 4 Maintenance noch unterstützt.
 			</para>
 		</section>
 
@@ -158,7 +158,7 @@
 			<para>
 				Diese Protokollierung erfolgt nur bei Verwendung der <phrase>UCS Core Edition</phrase>.
 				Der Lizenzstatus kann überprüft werden durch den Eintrag <guimenu>Lizenz &ar; Lizenzinformation</guimenu> des Benutzermenüs in der rechten, oberen Ecke von &ucsUMC;.
-				Steht hier unter <guimenu>License type</guimenu> der Eintrag <guimenu>UCS Core Edition</guimenu> wird eine solche Edition verwendet.
+				Steht hier unter <guimenu>Lizenztyp</guimenu> der Eintrag <guimenu>UCS Core Edition</guimenu> wird eine solche Edition verwendet.
 				Bei Einsatz einer regulären UCS-Lizenz erfolgt keine Teilnahme an der Nutzungsstatistik.
 			</para>
 			<para>
