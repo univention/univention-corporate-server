@@ -932,6 +932,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:service:systeminfo">
 			<title>Univention System Info</title>
 			<itemizedlist>
@@ -939,6 +940,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:service:apache">
 			<title>Apache</title>
@@ -1163,6 +1165,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
@@ -1170,6 +1173,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 	</section>
 
 
