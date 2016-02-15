@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-				The Linux kernel has been updated to <wordasword>4.1.16</wordasword>. This includes several security
+				The Linux kernel has been updated to 4.1.16. This includes several security
 				updates as well as new and updated drivers for better hardware support.
 			</para></listitem>
 			<listitem><para>
