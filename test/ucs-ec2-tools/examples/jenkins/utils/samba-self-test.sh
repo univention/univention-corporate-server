@@ -9,6 +9,8 @@
 
 RETVAL=100
 IGNORE="
+^ldb.python.*
+^samba.tests.source.*
 ^samba.tests.docs.*
 ^samba3.blackbox.dfree_quota
 ^samba3.blackbox.smbclient_s3.crypt
@@ -39,20 +41,28 @@ IGNORE="
 ^samba.tests.blackbox.samba_tool_drs
 ^samba.tests.kcc
 ^samba4.ntvfs.cifs.krb5.base.deny2
+^samba3.raw.notify.tree
 ^samba4.dlz_bind9.update01"
 
-# setup
 ucr set update/secure_apt='no' repository/online/sources='yes' repository/online/unmaintained='yes'
+
+section "running smbtorture"
+# univention-install -y samba-testsuite
+# smbtorture //"$(hostname -f)"/sysvol -W $(ucr get windows/domain) --option="realm=$(hostname -d)" -UAdministrator%univention ALL
+
+section "running build self tests"
+
+# setup
 univention-install -y build-essential dpkg-dev
 cd /opt
 apt-get -y source samba
 cd samba-*
 apt-get -y build-dep samba
 sed -i 's/$(conf_args)/$(conf_args) --enable-selftest/' debian/rules
-debian/rules override_dh_auto_configure
 for i in $IGNORE; do
 	echo $i >> selftest/skip
 done
+debian/rules override_dh_auto_configure
 
 # tests
 TDB_NO_FSYNC=1 make -j test FAIL_IMMEDIATELY=1 SOCKET_WRAPPER_KEEP_PCAP=1 || fail_test 110
