@@ -1222,6 +1222,9 @@
 				The package <package>sysstat</package> has been added to the maintained package repository of UCS
 				(<u:bug>40203</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The univention welcome screen now uses vt7 (<u:bug>40631</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
