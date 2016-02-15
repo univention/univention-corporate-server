@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Create a valid full appcenter/app object
-## tags: [udm-ldapextensions,apptest]
+## tags: [SKIP-UCSSCHOOL,udm-ldapextensions,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
