@@ -33,25 +33,30 @@
 eval "$(ucr shell)"
 . /usr/share/univention-lib/base.sh
 
-vt="11"
+vt="7"
 
 # no running plymouth, go away
 if ! plymouth --ping; then
+	echo "plymouth not running, exiting"
 	exit 0
 fi
 
 # if no keyboards, go away
 keyboards="$(ls /dev/input/by-path/*-kbd*)"
 if [ -z "$keyboards" ]; then
+	echo "no keyboard found, stopping plymouth and exiting"
 	plymouth quit
 	exit 0
 fi
 
 # no framebuffer device
 if [ ! -e /dev/fb0 ]; then
+	echo "no framebuffer found, stopping plymouth and exiting"
 	plymouth quit
 	exit 0
 fi
+
+echo "starting $0 ($(date))"
 
 # check appliance logo
 appliance=false
@@ -96,7 +101,8 @@ plymouth update --status="univention-welcome:hostname:$hostname"
 plymouth update --status="univention-welcome:address:$address"
 plymouth update --status="univention-welcome:addresses:$addresses"
 plymouth update --status="univention-welcome:console:$console"
-plymouth update --status="univention-welcome:console:$console" # this is not a type, second call flushes screen
+plymouth update --status="univention-welcome:console:$console" # this is not a typo, second call flushes screen
+plymouth update --status=""
 
 # copy framebuffer image, quit plymouth and show framebuffer image
 # on virtual terminal
