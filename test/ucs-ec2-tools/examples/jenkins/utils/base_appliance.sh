@@ -554,6 +554,19 @@ install_haveged ()
     ucr set repository/online/unmaintained="$_unmaintained_setting"
 }
 
+uninstall_packages ()
+{
+	# if upgraded, u-basesystem will be installed by postup.sh
+	state="$(dpkg --get-selections univention-basesystem 2>/dev/null | awk '{print $2}')"
+	if [ "$state" = "install" ]; then
+	       apt-get purge -y --force-yes univention-basesystem
+	       apt-get -y --force-yes autoremove
+	fi
+
+	# Old kernels
+	apt-get purge -y --force-yes linux-image-4.1.0-ucs153-amd64 linux-image-4.1.0-ucs153-amd64-signed
+}
+
 setup_appliance ()
 {
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
@@ -578,12 +591,8 @@ setup_appliance ()
 
 	install_haveged
 	 
-	# if upgraded, u-basesystem will be installed by postup.sh
-	state="$(dpkg --get-selections univention-basesystem 2>/dev/null | awk '{print $2}')"
-	if [ "$state" = "install" ]; then
-		apt-get purge -y --force-yes univention-basesystem
-		apt-get -y --force-yes autoremove
-	fi
+	uninstall_packages
+	
 	univention-install -y --force-yes --reinstall univention-system-setup-boot
 	univention-install -y --no-install-recommends univention-x-core
 
