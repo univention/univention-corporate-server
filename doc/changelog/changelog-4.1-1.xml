@@ -1226,7 +1226,7 @@
 				(<u:bug>40203</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The univention welcome screen now uses <wordasword>vt7</wordasword> (<u:bug>40631</u:bug>).
+				The <package>univention-welcome-screen</package> now uses <wordasword>vt7</wordasword> (<u:bug>40631</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
