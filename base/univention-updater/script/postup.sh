@@ -138,7 +138,7 @@ ucr set \
 # Set errata component for UCS 4.1-1
 ucr set \
 	repository/online/component/4.1-1-errata=enabled \
-	repository/online/component/4.1-1-errata/description="Errata updates for UCS 4.1-0" \
+	repository/online/component/4.1-1-errata/description="Errata updates for UCS 4.1-1" \
 	repository/online/component/4.1-1-errata/version="4.1" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts

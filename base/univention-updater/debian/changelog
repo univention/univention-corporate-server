@@ -1,3 +1,9 @@
+univention-updater (11.0.9-2) unstable; urgency=low
+
+  * Bug #40624: Adapt preup/postup.sh 
+
+ -- Felix Botner <botner@univention.de>  Mon, 15 Feb 2016 10:56:12 +0100
+
 univention-updater (11.0.9-1) unstable; urgency=low
 
   * Bug #40624: Adapt preup/postup.sh 
