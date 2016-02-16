@@ -43,7 +43,9 @@ IGNORE="
 ^samba4.ntvfs.cifs.krb5.base.deny2
 ^samba3.raw.notify.tree
 ^samba4.dlz_bind9.update01
-^samba3.smb2.notify.*"
+^samba3.smb2.notify.*
+^samba3.smb2.oplock.*"
+
 
 ucr set update/secure_apt='no' repository/online/sources='yes' repository/online/unmaintained='yes'
 
@@ -66,7 +68,7 @@ done
 debian/rules override_dh_auto_configure
 
 # tests
-TDB_NO_FSYNC=1 make -j test FAIL_IMMEDIATELY=1 SOCKET_WRAPPER_KEEP_PCAP=1 || fail_fast 110
 TDB_NO_FSYNC=1 make -j test FAIL_IMMEDIATELY=1 SOCKET_WRAPPER_KEEP_PCAP=1 TESTS="samba3.raw.composite" || fail_fast 110
+TDB_NO_FSYNC=1 make -j test FAIL_IMMEDIATELY=1 SOCKET_WRAPPER_KEEP_PCAP=1 || fail_fast 110
 
 exit 100
