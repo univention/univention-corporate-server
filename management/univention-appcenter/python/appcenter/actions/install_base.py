@@ -267,7 +267,7 @@ class InstallRemoveUpgrade(Register):
 		self._call_script('/etc/init.d/apache2', 'reload')
 
 	def _apt_get_update(self):
-		self._subprocess(['apt-get', 'update'])
+		self._subprocess(['/usr/bin/apt-get', 'update'])
 		AppManager.reload_package_manager()
 
 	def _apt_get(self, command, packages, percentage_end=100, update=True):
@@ -277,6 +277,6 @@ class InstallRemoveUpgrade(Register):
 			self._apt_get_update()
 		apt_logger = _AptLogger(self, percentage_end)
 		try:
-			return self._subprocess(['apt-get', '-o', 'APT::Status-Fd=1', '-o', 'DPkg::Options::=--force-confold', '--assume-yes', '--force-yes', '--auto-remove', command] + packages, logger=apt_logger, env=env)
+			return self._subprocess(['/usr/bin/apt-get', '-o', 'APT::Status-Fd=1', '-o', 'DPkg::Options::=--force-confold', '--assume-yes', '--force-yes', '--auto-remove', command] + packages, logger=apt_logger, env=env)
 		finally:
 			AppManager.reload_package_manager()

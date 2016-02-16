@@ -88,9 +88,17 @@ class Upgrade(Install):
 		if app > self.old_app:
 			super(Upgrade, self)._send_information(app, status)
 
+	#def _install_app(self, app, args):
+	#	former_explicit_packages = self.old_app.default_packages + self.old_app.default_packages_master
+	#	future_explicit_packages = app.default_packages + app.default_packages_master
+	#	former_explicit_packages = set(former_explicit_packages).difference(future_explicit_packages)
+	#	if former_explicit_packages:
+	#		self._subprocess(['/usr/bin/apt-mark', 'auto'] + list(former_explicit_packages))
+	#	return super(Upgrade, self)._install_app(app, args)
+
 	def _install_packages(self, packages, percentage_end, update=True):
 		super(Upgrade, self)._install_packages(packages, 0, update=update)
-		self._apt_get('dist-upgrade', [], percentage_end, update=False)
+		return self._apt_get('dist-upgrade', [], percentage_end, update=False)
 
 	@classmethod
 	def iter_upgradable_apps(self):
