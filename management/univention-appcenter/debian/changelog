@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-2) unstable; urgency=medium
+
+  * Bug #40315: Do not unregister Docker App in a Docker container
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Feb 2016 17:29:51 +0100
+
 univention-appcenter (5.0.20-1) unstable; urgency=medium
 
   * Bug #40674: Fix installing packages in upgrade path

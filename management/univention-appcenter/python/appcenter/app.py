@@ -580,7 +580,7 @@ class App(object):
 				return attr
 
 	def is_installed(self):
-		if self.docker:
+		if self.docker and not ucr_get('docker/container/uuid'):
 			return ucr_get(self.ucr_status_key) in ['installed', 'stalled'] and ucr_get(self.ucr_version_key) == self.version
 		else:
 			if not self.without_repository:
