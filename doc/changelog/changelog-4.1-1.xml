@@ -124,6 +124,10 @@
 				The daemon used to wait for successful installations has been changed to listen on all network
 				interfaces by default (<u:bug>34061</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The installer automatically selected the first interface for the installation. If multiple network
+				interfaces are used, an interface selection dialog is now shown (<u:bug>38032</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
