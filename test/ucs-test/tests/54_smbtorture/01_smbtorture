@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner bash
-## desc: "Run smbtorture self test
+## desc: "Run smbtorture self test"
 ## exposure: dangerous
 ## packages:
 ##  - univention-samba4
