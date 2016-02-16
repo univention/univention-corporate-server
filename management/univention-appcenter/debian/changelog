@@ -1,3 +1,9 @@
+univention-appcenter (5.0.19-55) unstable; urgency=medium
+
+  * Bug #40636: Fix installing packages in upgrade path
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Feb 2016 10:33:19 +0100
+
 univention-appcenter (5.0.19-54) unstable; urgency=medium
 
   * Bug #40160: Remove screenshot attribute from UDM handler
