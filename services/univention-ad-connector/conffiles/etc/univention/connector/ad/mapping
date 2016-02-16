@@ -164,6 +164,15 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 						reverse_attribute_check = True,
 					),
 					"""
+if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
+	print """
+					'mailAlternativeAddress': univention.connector.attribute (
+						ucs_attribute='mailAlternativeAddress',
+						ldap_attribute='mailAlternativeAddress',
+						con_attribute='proxyAddresses',
+						reverse_attribute_check = True,
+					),
+					"""
 @!@
 					'description': univention.connector.attribute (
 						ucs_attribute='description',
@@ -302,6 +311,15 @@ if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['
 						ucs_attribute='mailAddress',
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='mail',
+						reverse_attribute_check = True,
+					),
+					"""
+if configRegistry.is_true('connector/ad/mapping/group/alternativemail'):
+	print """
+					'mailAlternativeAddress': univention.connector.attribute (
+						ucs_attribute='mailAlternativeAddress',
+						ldap_attribute='mailAlternativeAddress',
+						con_attribute='proxyAddresses',
 						reverse_attribute_check = True,
 					),
 					"""

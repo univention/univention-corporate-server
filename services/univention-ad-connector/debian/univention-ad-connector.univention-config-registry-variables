@@ -52,6 +52,18 @@ Description[en]=Defines whether the primary e-mail address on group objects in U
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/user/alternativemail]
+Description[de]=Definiert, ob die alternative Mailadressen an Benutzerobjekten in UCS mit dem Attribut 'proxyAddresses' in Active Directory synchronisiert werden soll. Bei der Installation des Pakets univention-ad-connector-exchange wird der Wert auf 'true' gesetzt.
+Description[en]=Defines whether the alternative e-mail addresses of user objects in UCS should be synchronised with the 'proxyAddresses' attribute in Active Directory. During the installation of the univention-ad-connector-exchange package the value is set to 'true'.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/group/alternativemail]
+Description[de]=Definiert, ob die alternative Mailadressen an Gruppenobjekten von UCS mit dem Attribut 'proxyAddresses' in Active Directory synchronisiert werden soll. Active Directory benötigt ggf. die Exchange-Erweiterung für diese Option. Bei der Installation des Pakets univention-ad-connector-exchange wird der Wert auf 'true' gesetzt.
+Description[en]=Defines whether the alternative e-mail addresses on group objects in UCS should be synchronised with the 'proxyAddresses' attribute in Active Directory. Active Directory may require the Exchange expansion for this option. During the installation of the univention-ad-connector-exchange package the value is set to 'true'.
+Type=str
+Categories=service-adcon
+
 [con.*/ad/mapping/group/language]
 Description[de]=Die Variable definiert, welche Abbildung von Standard-Gruppennamen zwischen UCS (Gruppennamen sind dort immer englisch) und Active Directory (Gruppenamen sind lokalisiert) genutzt werden soll. Durch Setzen von 'de' kann ein Mapping für ein deutschsprachiges Active Directory aktiviert werden. Ist die Variable nicht gesetzt, erfolgt kein Mapping.
 Description[en]=Defines which mapping of standard group names should be used between UCS (group names are always English) and Active Directory (group names are localised). A mapping for a Active Directory in German can be set with 'de'. If the variable is unset no mapping is made.
