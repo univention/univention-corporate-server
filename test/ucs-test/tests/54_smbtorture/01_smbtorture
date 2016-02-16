@@ -1,0 +1,17 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Run smbtorture self test
+## exposure: dangerous
+## packages:
+##  - univention-samba4
+##  - samba-testsuite
+## bugs: [40558]
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+smbtorture //"$(hostname -f)"/sysvol -W $(ucr get windows/domain) --option="realm=$(hostname -d)" -UAdministrator%univention raw.composite || fail_fast 110
+
+smbtorture //"$(hostname -f)"/sysvol -W $(ucr get windows/domain) --option="realm=$(hostname -d)" -UAdministrator%univention ALL || fail_fast 110
+
+exit $RETVAL
