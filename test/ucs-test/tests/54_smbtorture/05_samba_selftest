@@ -1,0 +1,25 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "samba selftest"
+## exposure: dangerous
+## bugs: [40558]
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+# setup
+univention-install -y build-essential dpkg-dev
+cd /opt
+apt-get -y source samba
+cd samba-*
+apt-get -y build-dep samba
+sed -i 's/$(conf_args)/$(conf_args) --enable-selftest/' debian/rules
+for i in $IGNORE; do
+    echo $i >> selftest/skip
+done
+debian/rules override_dh_auto_configure
+
+TDB_NO_FSYNC=1 make -j test FAIL_IMMEDIATELY=1 SOCKET_WRAPPER_KEEP_PCAP=1 TESTS="samba3.raw.composite" || fail_fast 110
+
+
+exit $RETVAL
