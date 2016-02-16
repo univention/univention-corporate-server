@@ -1,0 +1,14 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-0
+src: univention-ad-connector
+fix: 10.0.1-3.470.201602161637
+version: [0,1]
+desc: |
+ The following issue have been fixed in univention-ad-connector:
+ * Support for synchronization of the OpenLDAP attribute mailAlternativeAddress
+   with the AD attribute proxyAddresses has been added. This can be switched on
+   for users and groups individually by the new pair of UCR variables
+   connector/ad/mapping/user/alternativemail and
+   connector/ad/mapping/group/alternativemail
+bug: [40357]
