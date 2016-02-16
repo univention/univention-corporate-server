@@ -1,3 +1,9 @@
+ucs-test (6.0.33-1) unstable; urgency=low
+
+  * Bug #40558: tests/54_smbtorture 
+
+ -- Felix Botner <botner@univention.de>  Tue, 16 Feb 2016 16:42:05 +0100
+
 ucs-test (6.0.32-1) unstable; urgency=medium
 
   * Skip 20_appcenter/41_udm_create_full_app (Bug #40636)
