@@ -2,8 +2,8 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: samba
-fix: 2:4.3.3-1.823.201601151012
-version: [0]
+fix: 2:4.3.3-1.826.201602161937
+version: [0,1]
 desc: |
  This update addresses the following issue:
  * In case an account locking password policy has been defined for the domain,
