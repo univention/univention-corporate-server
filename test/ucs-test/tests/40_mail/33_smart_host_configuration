@@ -55,12 +55,12 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'position'            : 'cn=computers,%s' % basedn,
 						'ip'                  : dcslave_ip,
 						'name'                : dcslave,
 						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, dcslave_ip)
 					},
+					position='cn=computers,%s' % basedn,
 					check_for_drs_replication=True
 				)
 				dcslave_fqdn = '%s.%s' % (dcslave, domain)

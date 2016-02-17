@@ -60,12 +60,12 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'position'            : 'cn=computers,%s' % basedn,
 						'ip'                  : ip,
 						'name'                : host,
 						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, ip)
-					}
+					},
+					position='cn=computers,%s' % basedn
 				)
 			mails_list = []
 			for mailHomeServer, _ in hosts:

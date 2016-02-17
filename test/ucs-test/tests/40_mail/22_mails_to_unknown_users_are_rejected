@@ -1,12 +1,11 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Mails to unknown users are rejected
-## tags: [SKIP-UCSSCHOOL,apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
 from essential.mail import send_mail
 import smtplib
-import subprocess
 import time
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
@@ -18,9 +17,7 @@ def check_sending_mail(username, password, recipient_email, should_be_accepted):
 	token = str(time.time())
 	try:
 		ret_code = send_mail(recipients=recipient_email, msg=token, tls=True, username=username, password=password)
-		if (bool(ret_code) == should_be_accepted):
-			print "univention-ldapsearch -LLL '(&(objectClass=univentionMail)(|(mailAlternativeAddress=*)(mailPrimaryAddress=*))(!(univentionCanonicalRecipientRewriteEnabled=1)))' mailPrimaryAddress mailAlternativeAddress"
-			subprocess.call(["univention-ldapsearch", "-LLL", "(&(objectClass=univentionMail)(|(mailAlternativeAddress=*)(mailPrimaryAddress=*))(!(univentionCanonicalRecipientRewriteEnabled=1)))", "mailPrimaryAddress", "mailAlternativeAddress"])
+		if bool(ret_code) == should_be_accepted:
 			utils.fail('Sending should_be_accepted = %r, but return code = %r\n {} means there are no refused recipient' % (should_be_accepted, ret_code))
 	except smtplib.SMTPRecipientsRefused as exc:
 		if should_be_accepted:
@@ -34,9 +31,9 @@ def main():
 			udm.create_object(
 				'mail/domain',
 				set={
-					'position' : 'cn=domain,cn=mail,%s' % ucr.get('ldap/base'),
-					'name'     : maildomain
-				}
+					'name': maildomain
+				},
+				position="cn=domain,cn=mail,{}".format(ucr.get("ldap/base"))
 			)
 
 			password = 'univention'
