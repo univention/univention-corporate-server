@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Delivery to a mailing list
-## tags: [SKIP-UCSSCHOOL,apptest]
+## tags: [apptest]
 ## exposure: dangerous
 ## packages: [univention-mail-server]
 
@@ -8,10 +8,10 @@ from essential.mail import send_mail, check_delivery
 from univention.config_registry import handler_set
 import subprocess
 import time
-from smtplib import SMTPRecipientsRefused
 import univention.testing.strings as uts
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
+
 
 def main():
 	with udm_test.UCSTestUDM() as udm:
@@ -49,15 +49,11 @@ def main():
 					'mailAddress': list_mail,
 					'members': mails[1]
 				},
-				wait_for_drs_replication=True
+				wait_for_drs_replication=True,
+				position="cn=mailinglists,cn=mail,{}".format(ucr.get("ldap/base"))
 			)
 			token = str(time.time())
-			try:
-				send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)
-			except SMTPRecipientsRefused:
-				print "univention-ldapsearch -LLL '(objectClass=univentionMailList)'"
-				subprocess.call(["univention-ldapsearch", "-LLL", "(objectClass=univentionMailList)"])
-				raise
+			send_mail(recipients=list_mail, msg=token, tls=True, username=usermail, password=password)
 
 			for mail in mails:
 				check_delivery(token, mail, True)

@@ -178,12 +178,12 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'position'            : 'cn=computers,%s' % basedn,
 						'ip'                  : ip,
 						'name'                : new_host,
 						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, ip)
-					}
+					},
+					position='cn=computers,%s' % basedn
 				)
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
@@ -215,12 +215,12 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'position'            : 'cn=computers,%s' % basedn,
 						'ip'                  : ip,
 						'name'                : new_host,
 						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, ip)
-					}
+					},
+					position='cn=computers,%s' % basedn
 				)
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
@@ -251,12 +251,12 @@ def main():
 				udm.create_object(
 					'computers/domaincontroller_slave',
 					set={
-						'position'            : 'cn=computers,%s' % basedn,
 						'ip'                  : ip,
 						'name'                : new_host,
 						'dnsEntryZoneForward' : 'zoneName=%s,cn=dns,%s %s' % (
 							domain, basedn, ip)
-					}
+					},
+					position='cn=computers,%s' % basedn
 				)
 				usermail = '%s@%s' % (uts.random_name(), domain)
 				userdn, username = udm.create_user(
