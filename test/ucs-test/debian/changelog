@@ -1,3 +1,9 @@
+ucs-test (6.0.33-6) unstable; urgency=low
+
+  * Bug #40558: 54_smbtorture/05_samba_selftest
+
+ -- Felix Botner <botner@univention.de>  Wed, 17 Feb 2016 09:47:35 +0100
+
 ucs-test (6.0.33-5) unstable; urgency=medium
 
   * Bug #40636: skip 20_appcenter/41_udm_create_full_app
@@ -6,25 +12,25 @@ ucs-test (6.0.33-5) unstable; urgency=medium
 
 ucs-test (6.0.33-4) unstable; urgency=low
 
-  * Bug #40558: 54_smbtorture/05_samba_selftest 
+  * Bug #40558: 54_smbtorture/05_samba_selftest
 
  -- Felix Botner <botner@univention.de>  Wed, 17 Feb 2016 09:41:32 +0100
 
 ucs-test (6.0.33-3) unstable; urgency=low
 
-  * Bug #40558: 54_smbtorture/05_samba_selftest 
+  * Bug #40558: 54_smbtorture/05_samba_selftest
 
  -- Felix Botner <botner@univention.de>  Wed, 17 Feb 2016 09:36:29 +0100
 
 ucs-test (6.0.33-2) unstable; urgency=low
 
-  * Bug #40558: 54_smbtorture/05_samba_selftest 
+  * Bug #40558: 54_smbtorture/05_samba_selftest
 
  -- Felix Botner <botner@univention.de>  Tue, 16 Feb 2016 16:53:57 +0100
 
 ucs-test (6.0.33-1) unstable; urgency=low
 
-  * Bug #40558: tests/54_smbtorture 
+  * Bug #40558: tests/54_smbtorture
 
  -- Felix Botner <botner@univention.de>  Tue, 16 Feb 2016 16:42:05 +0100
 
