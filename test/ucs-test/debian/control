@@ -568,6 +568,6 @@ Depends: ucs-test-libs (= ${source:Version}),
  samba-testsuite,
  ${misc:Depends}
 Recommends: ucs-test-framework
-Provides: ucs-test-module
 Description: Test scripts to run smbtorture
- This package includes test-cases to run smbtorture test
+ This package includes test-cases to run smbtorture
+ samba selftest tests
