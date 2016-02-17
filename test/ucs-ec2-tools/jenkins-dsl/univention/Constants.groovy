@@ -22,7 +22,7 @@ class Constants {
 
     static VERSIONS =  [
         '4.0' : ['patch_level' : '4', 'last_version' : '3.2'],
-        '4.1' : ['patch_level' : '0', 'last_version' : '4.0'],
+        '4.1' : ['patch_level' : '1', 'last_version' : '4.0'],
         '3.2' : ['patch_level' : '7', 'last_version' : '3.1'],
     ]
 }
