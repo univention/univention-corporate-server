@@ -2,8 +2,6 @@
 ## desc: Test the update_available script
 ## tags: [docker]
 ## exposure: dangerous
-## versions:
-##  4.1-0: skip
 ## packages:
 ##   - docker.io
 
