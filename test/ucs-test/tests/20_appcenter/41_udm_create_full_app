@@ -5,8 +5,6 @@
 ## exposure: dangerous
 ## packages:
 ## - univention-management-console-module-appcenter
-## versions:
-##  4.1-0: skip
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
@@ -30,7 +28,6 @@ if __name__ == '__main__':
 		website = [uts.random_name(), uts.random_name()]
 		websiteVendor = [uts.random_name(), uts.random_name()]
 		websiteMaintainer = [uts.random_name(), uts.random_name()]
-		screenshot = uts.random_name()
 		icon = base64.encodestring(uts.random_name())
 		category = uts.random_name()
 		webInterface = uts.random_name()
@@ -56,7 +53,6 @@ if __name__ == '__main__':
 				website = website,
 				websiteVendor = websiteVendor,
 				websiteMaintainer = websiteMaintainer,
-				screenshot = screenshot,
 				icon = icon,
 				category = category,
 				webInterface = webInterface,
@@ -82,7 +78,6 @@ if __name__ == '__main__':
 							'univentionAppWebsite': website,
 							'univentionAppWebsiteVendor': websiteVendor,
 							'univentionAppWebsiteMaintainer': websiteMaintainer,
-							'univentionAppScreenshot': [screenshot],
 							'univentionAppIcon': [icon],
 							'univentionAppCategory': [category],
 							'univentionAppWebInterface': [webInterface],
