@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+. /usr/share/debconf/confmodule.sh
+
 #DEBHELPER#
 
 eval "$(univention-config-registry shell)"
@@ -86,6 +88,125 @@ if [ "$1" = configure -a -z "$2" ];  then
 	grub-mkdevicemap $grub_boot
 
 	update-grub
+fi
+
+if [ "$1" = configure ] && dpkg-query -W -f '${Status}' grub-pc | grep -qs '^install'
+then # Bug 40654
+	mountpoint_to_disk_device () {
+		devicemajor="$(mountpoint -d "$1" | cut -d':' -f1)"
+		devicemajor_hex="$(printf '%x' "$devicemajor")"
+		deviceminor="$(mountpoint -d "$1" | cut -d':' -f2)"
+		deviceminor_hex="$(printf '%x' "$deviceminor")"
+		# disc device is partition device AND 0xf0
+		deviceminor_low16_hex="$(echo "$deviceminor_hex" | sed 's/.$/0/')"
+		find /dev -mindepth 1 -maxdepth 1 -type b -exec stat -c '%n %t %T' {} \; \
+			| grep "^.* $devicemajor_hex $deviceminor_low16_hex$" \
+			| cut -d' ' -f 1
+	}
+
+	echo "Checking grub-pc/install_devices for errors..."
+	boot_device="$(mountpoint_to_disk_device '/boot')"
+	echo "Boot device guessed as '$boot_device'."
+	case "$boot_device" in
+		/dev/md*)
+			echo "Boot device '$boot_device' is a RAID device, detection is wrong."
+			boot_device=""
+		;;
+		/dev/dm-*)
+			echo "Boot device '$boot_device' is a LVM device, detection is wrong."
+			boot_device=""
+		;;
+	esac
+	output_devices=""
+	missing_devices=0 # are any devices in grub-pc/install_devices missing/wrong?
+	have_no_devices=1 # are there no devices in grub-pc/install_devices at all?
+	boot_device_missing=1 # is the $boot_device in grub-pc/install_devices?
+	db_get "grub-pc/install_devices"
+	echo "Currently grub-pc/install_devices is set to '$RET'"
+	for i in `echo $RET | sed -e 's/, / /g'` ; do # from grub-pc.postinst
+	    real_device="$(readlink -f "$i")"         # from grub-pc.postinst
+		echo "Checking '$real_device'..."
+		if [ "$real_device" = "$boot_device" ]
+		then
+			echo "This is the boot device '$boot_device'."
+			boot_device_missing=0
+		fi
+		if [ -b "$real_device" ] # exists and is block special
+		then
+			echo "The device '$real_device' exists."
+			if [ -n "$output_devices" ]
+			then
+				output_devices="$output_devices, $real_device"
+			else
+				output_devices="$real_device"
+			fi
+		else
+			echo "The device '$real_device' is MISSING, removing."
+			missing_devices=1
+		fi
+		have_no_devices=0
+	done
+	if [ "$have_no_devices" -ne 0 ]
+	then
+		echo "There are no devices at all in grub-pc/install_devices."
+	fi
+	if [ "$boot_device" = '' ]
+	then
+		echo "The boot device is unknown."
+	else
+		if [ "$boot_device_missing" -ne 0 ]
+		then
+			echo "The boot device '$boot_device' is NOT in grub-pc/install_devices."
+			if [ "$have_no_devices" -ne 0 ]
+			then
+				echo "Adding boot device '$boot_device' because there are no devices at all."
+				if [ -n "$output_devices" ]
+				then
+					output_devices="$output_devices, $boot_device"
+				else
+					output_devices="$boot_device"
+				fi
+			fi
+			if [ "$missing_devices" -ne 0 ]
+			then
+				echo "Adding boot device '$boot_device' because there were some wrong devices."
+				if [ -n "$output_devices" ]
+				then
+					output_devices="$output_devices, $boot_device"
+				else
+					output_devices="$boot_device"
+				fi
+			fi
+		else
+			echo "The boot device IS in grub-pc/install_devices."
+		fi
+	fi
+	db_get "grub-pc/install_devices"
+	echo "Currently grub-pc/install_devices is set to '$RET'"
+	if [ "$RET" = "$output_devices" ]
+	then
+		echo "No changes were made."
+		echo "grub-pc/install_devices will not be changed."
+		echo "Will not run grub-install."
+	else
+		echo "Some changes were made."
+		if [ "$output_devices" = '' ]
+		then
+			echo "grub-pc/install_devices will NOT be set to '$output_devices'."
+		else
+			echo "grub-pc/install_devices will be set to '$output_devices'."
+			echo "Running grub-install..."
+			db_set "grub-pc/install_devices" "$output_devices"
+			db_get "grub-pc/install_devices"
+			echo "Currently grub-pc/install_devices is set to '$RET'"
+			for i in `echo $RET | sed -e 's/, / /g'` ; do # from grub-pc.postinst
+				real_device="$(readlink -f "$i")"         # from grub-pc.postinst
+				echo "Running grub-install on '$real_device'"
+				grub-install "$real_device"
+			done
+		fi
+	fi
+	echo "Done checking grub-pc/install_devices for errors."
 fi
 
 if ! [ -e /boot/grub/menu.lst ] ; then
