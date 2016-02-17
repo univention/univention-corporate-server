@@ -11,7 +11,8 @@ desc: |
  * getaddrinfo stack-based buffer overflow (CVE-2015-7547)
  * Segmentation fault when passing out-of-range data to strftime()
    (CVE-2015-8776)
- * LD_POINTER_GUARD not ignored for SUID programs, enabling an unintended bypass of a security feature (CVE-2015-8777)
+ * LD_POINTER_GUARD not ignored for SUID programs, enabling an unintended
+   bypass of a security feature (CVE-2015-8777)
  * Integer overflow in hcreate and hcreate_r (CVE-2015-8778)
  * Multiple unbounded stack allocations in catopen() (CVE-2015-8779)
 bug: [40022]
