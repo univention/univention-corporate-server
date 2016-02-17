@@ -18,19 +18,18 @@ univention.Constants.VERSIONS.each {
     last_version = it.getValue()['last_version']
     path = 'UCS-' + version + '/Apps'
 
-    println "${version} ${patch_level}"
-    //// create folder, generic app job and views
-    //folder(path)
-    //AppStatusViews.create(this, path)
-    //AppGenericTest.create(this, 'UCS-' + version, version, patch_level, last_version)
+    // create folder, generic app job and views
+    folder(path)
+    AppStatusViews.create(this, path)
+    AppGenericTest.create(this, 'UCS-' + version, version, patch_level, last_version)
 
-    //// get apps for version and create folder and jobs
-    //apps = Apps.getApps(version, test=true, ucs_components=false)
-    //apps.keySet().sort().each { app ->
-    //    app_path = path + '/' + app
-    //    folder(app_path)
-    //    AppAutotestUpdateMultiEnv.create(this, app_path, version, patch_level, apps[app])
-    //    AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
-    //    AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
-    //}
+    // get apps for version and create folder and jobs
+    apps = Apps.getApps(version, test=true, ucs_components=false)
+    apps.keySet().sort().each { app ->
+        app_path = path + '/' + app
+        folder(app_path)
+        AppAutotestUpdateMultiEnv.create(this, app_path, version, patch_level, apps[app])
+        AppAutotestMultiEnv.create(this, app_path, version, patch_level, apps[app])
+        AppAutotestMultiEnvUpdateFrom.create(this, app_path, version, patch_level, last_version, apps[app])
+    }
 }
