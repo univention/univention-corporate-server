@@ -2,7 +2,7 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-1
 src: ucslint
-fix: 5.0.3-2.75.201602171154
+fix: 5.0.3-3.76.201602181759
 version: [1]
 desc: |
  This update addresses the following issue:
