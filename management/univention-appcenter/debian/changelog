@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-4) unstable; urgency=medium
+
+  * Bug #40713: Remove component after installation of master packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Feb 2016 12:01:07 +0100
+
 univention-appcenter (5.0.20-3) unstable; urgency=medium
 
   * Bug #40713: Fix upgrade of master packages

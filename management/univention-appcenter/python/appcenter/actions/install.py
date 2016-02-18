@@ -36,7 +36,7 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.udm import search_objects
-from univention.appcenter.ucr import ucr_get, ucr_save
+from univention.appcenter.ucr import ucr_get
 
 
 class ControlScriptException(Exception):
@@ -64,7 +64,7 @@ class Install(InstallRemoveUpgrade):
 
 	def _do_it(self, app, args):
 		if self._install_only_master_packages(args):
-			self._install_master_packages(app)
+			self._install_master_packages(app, unregister_if_uninstalled=True)
 		else:
 			self._register_files(app)
 			self.percentage = 5
@@ -79,14 +79,18 @@ class Install(InstallRemoveUpgrade):
 	def _install_packages(self, packages, percentage_end, update=True):
 		return self._apt_get('install', packages, percentage_end, update=update)
 
-	def _install_master_packages(self, app, percentage_end=100):
+	def _install_master_packages(self, app, percentage_end=100, unregister_if_uninstalled=False):
 		old_app = AppManager.find(app)
 		was_installed = old_app.is_installed()
 		self._register_component(app)
 		ret = self._install_packages(app.default_packages_master, percentage_end)
 		if was_installed:
-			server = AppManager.get_server()
-			ucr_save(self._register_component_dict(old_app, server))
+			self.log('Re-registering component for %s' % old_app)
+			self._register_component(old_app)
+			self._apt_get_update()
+		elif unregister_if_uninstalled:
+			self.log('Unregistering component for %s' % app)
+			self._unregister_component(app)
 			self._apt_get_update()
 		return ret
 
