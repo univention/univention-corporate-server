@@ -1,3 +1,10 @@
+ucs-test (6.0.33-10) unstable; urgency=medium
+
+  * Bug #40726: check if univention-samba4 / univention-s4-connector is
+  	installed in univention.testing.ucs_samba utilities
+
+ -- Florian Best <best@univention.de>  Thu, 18 Feb 2016 11:47:16 +0100
+
 ucs-test (6.0.33-9) unstable; urgency=medium
 
   * Bug #40636: Fix 20_appcenter/41_udm_create_full_app

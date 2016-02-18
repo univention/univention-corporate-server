@@ -8,11 +8,17 @@ import socket
 import re
 import sqlite3
 
+from univention.testing.utils import package_installed
+
 CONNECTOR_WAIT_INTERVAL=12
 CONNECTOR_WAIT_SLEEP=5
 CONNECTOR_WAIT_TIME=CONNECTOR_WAIT_SLEEP*CONNECTOR_WAIT_INTERVAL
 
 def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE_SUBTREE, lp=None, timeout=360, delta_t=1, verbose=True):
+	if not package_installed('univention-samba4'):
+		if verbose:
+			print 'wait_for_drs_replication(): skip, univention-samba4 not installed.'
+		return
 	if not lp:
 		lp = LoadParm()
 		lp.load('/etc/samba/smb.conf')
@@ -43,6 +49,9 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
 
 
 def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
+	if not package_installed('univention-samba4'):
+		print 'force_drs_replication(): skip, univention-samba4 not installed.'
+		return
 	if not source_dc:
 		cmd = ("/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=S4 Connector)", "uid")
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
@@ -75,6 +84,9 @@ def _ldap_replication_complete():
 	return subprocess.call('/usr/lib/nagios/plugins/check_univention_replication') == 0
 
 def wait_for_s4connector():
+	if not package_installed('univention-s4-connector'):
+		print 'wait_for_s4connector(): skip, univention-s4-connector not installed.'
+		return
 	conn = sqlite3.connect('/etc/univention/connector/s4internal.sqlite')
 	c = conn.cursor()
 
