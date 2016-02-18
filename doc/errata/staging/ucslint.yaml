@@ -2,8 +2,8 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-0
 src: ucslint
-fix: 5.0.3-1.73.201602111749
-version: [0]
+fix: 5.0.3-2.75.201602171154
+version: [1]
 desc: |
  This update addresses the following issue:
  * A new check for undesired shell globbing patterns in conjunction with
