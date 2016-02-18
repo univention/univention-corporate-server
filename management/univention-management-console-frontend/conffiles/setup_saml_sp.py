@@ -69,10 +69,10 @@ def download_idp_metadata(metadata):
 	for i in range(0,60):
 		print 'Try to download idp metadata (%s/60)' % (i+1)
 		rc = call([
-			'/usr/bin/wget',
-			'--ca-certificate', '/etc/univention/ssl/ucsCA/CAcert.pem',
+			'/usr/bin/curl',
+			'--cacert', '/etc/univention/ssl/ucsCA/CAcert.pem',
+			'-o', filename,
 			metadata,
-			'-O', filename,
 		])
 		if rc and os.path.exists(filename):
 			os.remove(filename)

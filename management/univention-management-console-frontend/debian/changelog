@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-20) unstable; urgency=medium
+
+  * Bug #40658: replace wget with curl
+
+ -- Florian Best <best@univention.de>  Thu, 18 Feb 2016 12:40:56 +0100
+
 univention-management-console-frontend (5.0.63-19) unstable; urgency=low
 
   * Bug #40528: Allow multiple categories like _favorites_
