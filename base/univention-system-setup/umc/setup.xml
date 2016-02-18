@@ -48,5 +48,6 @@
 		<command name="setup/check/credentials" function="check_credentials"/>
 		<command name="setup/set_locale" function="set_locale"/>
 		<command name="setup/net/progress" function="progress"/>
+		<command name="setup/check/license" function="domain_has_activated_license"/>
 	</module>
 </umc>

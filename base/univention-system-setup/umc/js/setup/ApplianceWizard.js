@@ -717,6 +717,7 @@ define([
 					name: 'start/join',
 					label: _('Start join at the end of the installation'),
 					value: true,
+					disabled: !!this.ucr['umc/web/appliance/name'],
 					onChange: lang.hitch(this, function(value) {
 						this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').set('disabled', !value);
 						this.getWidget('credentials-nonmaster', '_ucs_address').set('disabled', !value || this.getWidget('credentials-nonmaster', '_ucs_autosearch_master').get('value'));
@@ -2172,9 +2173,16 @@ define([
 		_checkCredentials: function() {
 			var params = {role: this._getRoleForDomainChecks(true)};
 			lang.mixin(params, this._getCredentials());
-			return this.standbyDuring(this.umcpCommand('setup/check/credentials', params).then(function(data) {
+			return this.umcpCommand('setup/check/credentials', params).then(function(data) {
 				return data.result;
-			}));
+			});
+		},
+
+		_domainHasActivatedLicense: function () {
+			var credentials = this._getCredentials();
+			return this.umcpCommand('setup/check/license', credentials).then(function(data) {
+				return data.result;
+			});
 		},
 
 		_getCredentials: function() {
@@ -2391,11 +2399,22 @@ define([
 			}
 
 			if (pageName == 'credentials-ad' || pageName == 'credentials-nonmaster') {
-				return this._checkCredentials().then(lang.hitch(this, function(domain) {
+				return this.standbyDuring(this._checkCredentials().then(lang.hitch(this, function(domain) {
 					var msg = '';
 					this._domainName = null;
+
 					if (typeof domain == 'string') {
 						this._domainName = domain;
+						if (this.ucr['umc/web/appliance/name'] && pageName == 'credentials-nonmaster') {
+							return this._domainHasActivatedLicense().then(lang.hitch(this, function(activatedLicense) {
+								if (!activatedLicense) {
+									msg = _('App Appliance could not be joined because the license on the DC Master is not activated.');
+									nextPage = pageName;
+									dialog.alert(msg);
+								}
+								return this._forcePageTemporarily(nextPage);
+							}));
+						}
 					} else if (domain === false) {
 						msg = _('Connection refused. Please recheck the password');
 						nextPage = pageName;
@@ -2414,7 +2433,7 @@ define([
 					}
 
 					return this._forcePageTemporarily(nextPage);
-				}));
+				})));
 			}
 
 			if (nextPage == 'software') {

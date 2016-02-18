@@ -41,7 +41,7 @@ import copy
 import subprocess
 import json
 import locale as _locale
-import lxml.etree 
+import lxml.etree
 
 import notifier
 import notifier.threads
@@ -53,7 +53,7 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, S
 from univention.management.console.modules.decorators import sanitize, simple_response
 from univention.lib.i18n import Translation, Locale
 import univention.config_registry
-from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD
+from univention.lib.admember import lookup_adds_dc, connectionFailed, failedADConnect
 from univention.management.console.modules import UMC_Error
 
 import util
@@ -237,7 +237,14 @@ class Instance(Base, ProgressMixin):
 		oldrole = orgValues.get('server/role', '')
 		newrole = values.get('server/role', oldrole)
 		if orgValues.get('joined'):
-			raise Exception(_('Already joined systems cannot be joined.'))
+			raise UMC_Error(_('Already joined systems cannot be joined.'))
+
+		is_appliance = bool(ucr.get('umc/web/appliance/name'))
+		is_nonmaster = newrole != "domaincontroller_master"
+		if is_appliance and is_nonmaster:
+			activated = util.domain_has_activated_license(values.get('nameserver1'), username, password)
+			if not activated:
+				raise UMC_Error(_('App Appliance could not be joined because the license on the DC Master is not activated.'))
 
 		def _thread(obj, username, password):
 			# acquire the lock until the scripts have been executed
@@ -749,35 +756,16 @@ class Instance(Base, ProgressMixin):
 		return result
 
 	@simple_response
+	def domain_has_activated_license(self, nameserver, username, password):
+		return util.domain_has_activated_license(nameserver, username, password)
+
+
+	@simple_response
 	def check_credentials(self, role, dns, nameserver, address, username, password):
 		if role == 'ad':
-			try:
-				ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1' : nameserver})
-				check_connection(ad_domain_info, username, password)
-				do_time_sync(address)
-				check_ad_account(ad_domain_info, username, password)
-			except failedADConnect:
-				# Not checked... no AD!
-				return None
-			except connectionFailed:
-				# checked: failed!
-				return False
-			except notDomainAdminInAD: # check_ad_account()
-				# checked: Not a Domain Administrator!
-				raise UMC_Error(_("The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join."))
-			else:
-				return ad_domain_info['Domain']
+			return util.check_credentials_ad(nameserver, address, username, password)
 		elif role == 'nonmaster':
-			if dns:
-				domain = util.get_ucs_domain(nameserver)
-			else:
-				domain = '.'.join(address.split('.')[1:])
-			if not domain:
-				# Not checked... no UCS domain!
-				return None
-			with util._temporary_password_file(password) as password_file:
-				return_code = subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo', 'WORKS'])
-				return return_code == 0 and domain
+			return util.check_credentials_nonmaster(dns, nameserver, address, username, password)
 		# master? basesystem? no domain check necessary
 		return True
 

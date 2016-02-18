@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-2) unstable; urgency=low
+
+  * Bug #39700: Check for activated UCS license when joining an App Appliance
+
+ -- Eduard Mai <mai@univention.de>  Thu, 18 Feb 2016 16:03:45 +0100
+
 univention-system-setup (9.0.4-1) unstable; urgency=medium
 
   * Move the UUID creation from updater to system setup (Bug #40640)

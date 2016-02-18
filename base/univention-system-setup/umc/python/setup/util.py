@@ -48,12 +48,14 @@ import random
 import urllib2
 import psutil
 from contextlib import contextmanager
+from httplib import HTTPException
 
 from univention.lib.i18n import Translation, Locale
 from univention.lib import atjobs as atjobs
 from univention.management.console.log import MODULE
-from univention.management.console.modules import UMC_CommandError
-from univention.lib.admember import lookup_adds_dc, failedADConnect
+from univention.management.console.modules import UMC_Error
+from univention.lib.admember import lookup_adds_dc, check_connection, check_ad_account, do_time_sync, connectionFailed, failedADConnect, notDomainAdminInAD
+from univention.lib.umc_connection import UMCConnection
 
 try:
 	# execute imports in try/except block as during build test scripts are
@@ -724,7 +726,7 @@ def get_apps(no_cache=False):
 		applications = app_center.Application.all(only_local=True)
 	except (urllib2.HTTPError, urllib2.URLError) as e:
 		# should not happen as we only access cached, local data
-		raise UMC_CommandError(_('Could not query App Center: %s') % e)
+		raise UMC_Error(_('Could not query App Center: %s') % e)
 	_apps = [iapp.to_dict(package_manager) for iapp in applications if iapp.get('withoutrepository')]
 	return _apps
 
@@ -999,3 +1001,47 @@ def get_random_nameserver(country):
 		ipv4_nameserver=random.choice(ipv4_servers),
 		ipv6_nameserver=random.choice(ipv6_servers),
 	)
+
+def domain_has_activated_license(nameserver, username, password):
+	fqdn_master = get_fqdn(nameserver)
+	if not fqdn_master:
+		return False
+
+	try:
+		connection = UMCConnection(fqdn_master, username, password)
+		result = connection.request('udm/license/info')
+	except HTTPException as e:
+		raise UMC_Error(e.message)
+
+	return bool(result.get('keyID'))
+
+def check_credentials_ad(nameserver, address, username, password):
+	try:
+		ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1' : nameserver})
+		check_connection(ad_domain_info, username, password)
+		do_time_sync(address)
+		check_ad_account(ad_domain_info, username, password)
+	except failedADConnect:
+		# Not checked... no AD!
+		return None
+	except connectionFailed:
+		# checked: failed!
+		return False
+	except notDomainAdminInAD: # check_ad_account()
+		# checked: Not a Domain Administrator!
+		raise UMC_Error(_("The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join."))
+	else:
+		return ad_domain_info['Domain']
+
+def check_credentials_nonmaster(dns, nameserver, address, username, password):
+	if dns:
+		domain = get_ucs_domain(nameserver)
+	else:
+		domain = '.'.join(address.split('.')[1:])
+	if not domain:
+		# Not checked... no UCS domain!
+		return None
+	with _temporary_password_file(password) as password_file:
+		return_code = subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo', 'WORKS'])
+		return return_code == 0 and domain
+
