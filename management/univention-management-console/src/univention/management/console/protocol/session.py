@@ -310,7 +310,10 @@ class Processor(Base):
 		if module_name in self.__processes:
 			CORE.process('module %s is still running - purging module out of memory' % module_name)
 			pid = self.__processes[module_name].pid()
-			os.kill(pid, 9)
+			try:
+				os.kill(pid, 9)
+			except OSError as exc:
+				CORE.warn('Failed to kill module %s: %s' % (module_name, exc))
 		return False
 
 	def handle_request_exit(self, msg):
