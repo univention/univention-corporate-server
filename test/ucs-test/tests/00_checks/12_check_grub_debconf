@@ -1,0 +1,30 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check GRUBs debconf settings
+## tags:
+##  - basic
+##  - apptest
+## exposure: safe
+## bug: [40654]
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+RETVAL=100
+
+missing_devices=0 # are any devices in grub-pc/install_devices missing/wrong?
+have_no_devices=1 # are there no devices in grub-pc/install_devices at all?
+boot_device_missing=1 # is the $boot_device in grub-pc/install_devices?
+RET=$(echo "get grub-pc/install_devices" | debconf-communicate | sed -re 's,^[0-9]+ ,,')
+echo "Currently grub-pc/install_devices is set to '$RET'"
+for i in `echo $RET | sed -e 's/, / /g'` ; do # from grub-pc.postinst
+	real_device="$(readlink -f "$i")"		  # from grub-pc.postinst
+	echo "Checking '$real_device'..."
+	if [ -b "$real_device" ] # exists and is block special
+	then
+		echo "The device '$real_device' exists."
+	else
+		echo "The device '$real_device' is MISSING."
+		fail_test 110 "Device '$real_device' is MISSING"
+	fi
+done
+
+exit $RETVAL

@@ -1,3 +1,10 @@
+ucs-test (6.0.33-11) unstable; urgency=low
+
+  * Bug #40654: added 00_checks/12_check_grub_debconf
+    Check debconf var grub-pc/install_devices against /dev
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 18 Feb 2016 17:33:15 +0100
+
 ucs-test (6.0.33-10) unstable; urgency=medium
 
   * Bug #40726: check if univention-samba4 / univention-s4-connector is
