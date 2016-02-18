@@ -39,16 +39,7 @@ case "$1" in
 
 		# Don't change it on a configured system
 		if [ ! -e /var/univention-join/joined ]; then
-			# disallow root login
-			ucr set --force auth/gdm/user/root=no \
-							auth/kdm/user/root=no \
-							auth/login/user/root=no \
-							auth/other/user/root=no \
-							auth/sshd/user/root=no
-
-			# disallow su
-			ucr set --force auth/su/restrict=yes \
-							auth/su/user/root=no
+			/usr/sbin/univention-system-activation restrict-root
 		fi
 		;;
 

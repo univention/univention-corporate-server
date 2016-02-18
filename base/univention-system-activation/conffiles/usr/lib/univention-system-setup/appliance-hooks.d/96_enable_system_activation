@@ -33,8 +33,15 @@ function has_activated_license {
 	/usr/bin/univention-ldapsearch -LLL '(&(objectClass=univentionLicense)(univentionLicenseKeyID=*))' dn | grep -q 'dn:'
 }
 
-if ! has_activated_license; then
+role="$(ucr get server/role)"
+if [ "$role" == "domaincontroller_master" ]; then
 	/usr/sbin/univention-system-activation start
-fi
+elif has_activated_license; then
+	# Installing an App Appliance as non DC Master without activated license in the domain
+	# is restricted by system-setup and not handled here
 
+	# lift root restrictions set by univention-system-activation.postinst on non DC Master
+	# roles because system-activation is not started there
+	/usr/sbin/univention-system-activation allow-root
+fi
 exit 0

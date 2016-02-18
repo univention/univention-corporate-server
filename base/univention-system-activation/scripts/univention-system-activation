@@ -29,6 +29,40 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+function allow_root_login() {
+	ucr unset --force auth/gdm/user/root \
+		auth/kdm/user/root \
+		auth/login/user/root \
+		auth/other/user/root \
+		auth/sshd/user/root
+
+	# reset su restrictions
+	ucr unset --force auth/su/restrict \
+		auth/su/user/root
+
+	# set to the default values, these values are not set
+	# during the pam installation, because they were set
+	# in the force layer
+	ucr set auth/gdm/user/root?yes \
+		auth/kdm/user/root?yes \
+		auth/login/user/root?yes \
+		auth/other/user/root?yes \
+		auth/sshd/user/root?yes
+}
+
+function restrict_root_login() {
+	# disallow root login
+	ucr set --force auth/gdm/user/root=no \
+		auth/kdm/user/root=no \
+		auth/login/user/root=no \
+		auth/other/user/root=no \
+		auth/sshd/user/root=no
+
+	# disallow su
+	ucr set --force auth/su/restrict=yes \
+		auth/su/user/root=no
+}
+
 if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
 	echo
 	echo "When started, deactivates all access to the UCS and enforces the"
@@ -62,6 +96,8 @@ elif [ "$ACTION" = "start" ]; then
 	# disable sites
 	a2dissite ${active_sites[@]}
 
+	restrict_root_login
+
 	# enable system activation site configuration and reload apache
 	a2ensite univention-system-activation
 	/etc/init.d/apache2 reload
@@ -84,32 +120,17 @@ elif [ "$ACTION" = "stop" ]; then
 	# unset previously stored sites
 	ucr unset apache2/system_activation/sites
 
-	# allow root login again
-	ucr unset --force auth/gdm/user/root \
-					auth/kdm/user/root \
-					auth/login/user/root \
-					auth/other/user/root \
-					auth/sshd/user/root
-
-	# reset su restrictions
-	ucr unset --force auth/su/restrict \
-					auth/su/user/root
-
-	# set to the default values, these values are not set
-	# during the pam installation, because they were set
-	# in the force layer
-	ucr set auth/gdm/user/root?yes \
-				auth/kdm/user/root?yes \
-				auth/login/user/root?yes \
-				auth/other/user/root?yes \
-				auth/sshd/user/root?yes
+	allow_root_login
 
 	# apache reload as last step
 	/etc/init.d/apache2 reload
+elif [ "$ACTION" == "allow-root" ]; then
+	allow_root_login
+elif [ "$ACTION" == "restrict-root" ]; then
+	restrict_root_login
 else
 	echo
 	echo "ERROR: Unknown action given"
 	echo
 	exit 1
 fi
-
