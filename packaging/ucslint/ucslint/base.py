@@ -356,6 +356,7 @@ class FilteredDirWalkGenerator(object):
 		self.ignore_debian_subdirs = ignore_debian_subdirs
 		self.reHashBang = reHashBang
 		self.readSize = readSize
+		self.dangling_symlinks = dangling_symlinks
 
 	def __iter__(self):
 		for dirpath, dirnames, filenames in os.walk( self.path ):
@@ -374,7 +375,7 @@ class FilteredDirWalkGenerator(object):
 				fn = os.path.join(dirpath, filename)
 
 				# skip danling symlinks by default
-				if not os.path.exists(fn) and not dangling_symlinks:
+				if not os.path.exists(fn) and not self.dangling_symlinks:
 					continue
 
 				# check if filename is on ignore list
@@ -406,7 +407,6 @@ class FilteredDirWalkGenerator(object):
 					try:
 						content = open(fn,'r').read(self.readSize)
 					except (IOError, OSError):
-						self.debug('Unable to read %d bytes from %r' % (self.readSize, fn))
 						continue
 					if not self.reHashBang.search(content):
 						continue

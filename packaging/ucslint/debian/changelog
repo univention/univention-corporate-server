@@ -1,3 +1,9 @@
+ucslint (5.0.3-4) unstable; urgency=low
+
+  * Bug #40647: fix traceback on broken symlinks
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 18 Feb 2016 18:06:11 +0100
+
 ucslint (5.0.3-3) unstable; urgency=low
 
   * Bug #40647: fix traceback on broken symlinks
