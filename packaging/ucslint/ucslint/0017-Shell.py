@@ -81,6 +81,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		#
 		for fn in uub.FilteredDirWalkGenerator(path):
 			if fn.endswith('.sh') or containsHashBang(fn):
-				self.tester.open(fn)
-				msglist = self.tester.runTests()
-				self.msg.extend(msglist)
+				try:
+					self.tester.open(fn)
+					msglist = self.tester.runTests()
+					self.msg.extend(msglist)
+				except (IOError, OSError):
+					continue

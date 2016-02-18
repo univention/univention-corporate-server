@@ -320,7 +320,7 @@ class UPCFileTester(object):
 
 
 class FilteredDirWalkGenerator(object):
-	def __init__(self, path, ignore_dirs=None, prefixes=None, suffixes=None, ignore_suffixes=None, ignore_files=None, ignore_debian_subdirs=True, reHashBang=None, readSize=2048):
+	def __init__(self, path, ignore_dirs=None, prefixes=None, suffixes=None, ignore_suffixes=None, ignore_files=None, ignore_debian_subdirs=True, reHashBang=None, readSize=2048, dangling_symlinks=False):
 		"""
 		FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
 
@@ -372,6 +372,10 @@ class FilteredDirWalkGenerator(object):
 			# iterate over filenames
 			for filename in filenames:
 				fn = os.path.join(dirpath, filename)
+
+				# skip danling symlinks by default
+				if not os.path.exists(fn) and not dangling_symlinks:
+					continue
 
 				# check if filename is on ignore list
 				if self.ignore_files and filename in self.ignore_files:
