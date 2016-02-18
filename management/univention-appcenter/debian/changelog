@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-3) unstable; urgency=medium
+
+  * Bug #40713: Fix upgrade of master packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Feb 2016 01:12:37 +0100
+
 univention-appcenter (5.0.20-2) unstable; urgency=medium
 
   * Bug #40315: Do not unregister Docker App in a Docker container

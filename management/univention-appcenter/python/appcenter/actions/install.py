@@ -86,7 +86,8 @@ class Install(InstallRemoveUpgrade):
 		ret = self._install_packages(app.default_packages_master, percentage_end)
 		if was_installed:
 			server = AppManager.get_server()
-			ucr_save(self._register_component_dict(self, old_app, server))
+			ucr_save(self._register_component_dict(old_app, server))
+			self._apt_get_update()
 		return ret
 
 	def _install_only_master_packages_remotely(self, app, host, is_master, args):
