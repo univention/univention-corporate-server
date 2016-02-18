@@ -1,0 +1,14 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-appcenter
+fix: 5.0.20-3.114.201602180113
+desc: |
+ This update addresses the following issues:
+ * Docker Apps now do not have their repository removed in the container.
+ * Upgrading Apps now does not lead to an error just after the installation
+   of packages.
+ * Upgrading Apps now does not lead to an error when upgrading its
+   master packages.
+bug: [40315, 40674, 40713]
