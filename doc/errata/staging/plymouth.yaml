@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [0,1]
+scope: ucs_4.1-0-errata4.1-1
+src: plymouth
+fix: 0.8.5.1-5.18.201602181308
+desc: |
+ This update addresses the following issue(s):
+ * Plymouth now uses the framebuffer renderer as default.
+bug: [40715]
