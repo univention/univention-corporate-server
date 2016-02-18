@@ -85,9 +85,10 @@ class Install(InstallRemoveUpgrade):
 		self._register_component(app)
 		ret = self._install_packages(app.default_packages_master, percentage_end)
 		if was_installed:
-			self.log('Re-registering component for %s' % old_app)
-			self._register_component(old_app)
-			self._apt_get_update()
+			if old_app != app:
+				self.log('Re-registering component for %s' % old_app)
+				self._register_component(old_app)
+				self._apt_get_update()
 		elif unregister_if_uninstalled:
 			self.log('Unregistering component for %s' % app)
 			self._unregister_component(app)
