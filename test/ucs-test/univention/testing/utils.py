@@ -130,7 +130,12 @@ def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=Tru
 	if expected_attr is None:
 		expected_attr = {}
 	try:
-		dn, attr = get_ldap_connection().search(filter = '(objectClass=*)', base = baseDn, scope = ldap.SCOPE_BASE, attr = expected_attr.keys())[0]
+		dn, attr = get_ldap_connection().search(
+			filter='(objectClass=*)',
+			base=baseDn,
+			scope=ldap.SCOPE_BASE,
+			attr=expected_attr.keys()
+		)[0]
 	except (ldap.NO_SUCH_OBJECT, IndexError):
 		if should_exist:
 			raise LDAPObjectNotFound('DN: %s' % baseDn)
@@ -162,7 +167,9 @@ def s4connector_present():
 	if ucr.is_false('directory/manager/samba3/legacy', False):
 		return True
 
-	for dn, attr in get_ldap_connection().search(filter = '(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord']):
+	for dn, attr in get_ldap_connection().search(
+		filter='(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))',
+		attr=['aRecord']):
 		if 'aRecord' in attr:
 			return True
 	return False
@@ -187,8 +194,10 @@ def start_listener():
 def restart_listener():
 	subprocess.call((LISTENER_INIT_SCRIPT, 'restart'))
 
+
 def restart_firewall():
 	subprocess.call((FIREWALL_INIT_SCRIPT, 'restart'))
+
 
 class AutomaticListenerRestart(object):
 	"""
@@ -211,8 +220,9 @@ class AutoCallCommand(object):
 		Automatically call the given commands when entering/leaving the "with" block.
 		The keyword arguments enter_cmd and exit_cmd are optional.
 
-		with AutoCallCommand(enter_cmd=['/etc/init.d/dovecot', 'reload'],
-							 exit_cmd=['/etc/init.d/dovecot', 'restart']) as acc:
+		with AutoCallCommand(
+			enter_cmd=['/etc/init.d/dovecot', 'reload'],
+			exit_cmd=['/etc/init.d/dovecot', 'restart']) as acc:
 			with ucr_test.UCSTestConfigRegistry() as ucr:
 				# set some ucr variables, that influence the Univention Directory Listener
 				univention.config_registry.handler_set(['foo/bar=ding/dong'])
@@ -220,9 +230,10 @@ class AutoCallCommand(object):
 		In case some filedescriptors for stdout/stderr have to be passed to the executed
 		command, they may be passed as kwarg:
 
-		with AutoCallCommand(enter_cmd=['/etc/init.d/dovecot', 'reload'],
-							 exit_cmd=['/etc/init.d/dovecot', 'restart'],
-							 stderr=open('/dev/zero', 'w')) as acc:
+		with AutoCallCommand(
+			enter_cmd=['/etc/init.d/dovecot', 'reload'],
+			exit_cmd=['/etc/init.d/dovecot', 'restart'],
+			stderr=open('/dev/zero', 'w')) as acc:
 	"""
 	def __init__(self, enter_cmd=None, exit_cmd=None, stdout=None, stderr=None):
 		self.enter_cmd = None
@@ -242,6 +253,7 @@ class AutoCallCommand(object):
 	def __exit__(self, exc_type, exc_value, traceback):
 		if self.exit_cmd:
 			subprocess.call(self.exit_cmd, stdout=self.pipe_stdout, stderr=self.pipe_stderr)
+
 
 class FollowLogfile(object):
 	"""
@@ -328,7 +340,7 @@ def package_installed(package):
 		return (subprocess.call("dpkg-query -W -f '${Status}' %s | grep -q ^install" % package, stderr=null, shell=True) == 0)
 
 
-def fail(log_message = None, returncode = 1):
+def fail(log_message=None, returncode=1):
 	print '### FAIL ###'
 	if log_message:
 		print '%s\n###      ###' % log_message
