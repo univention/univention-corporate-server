@@ -50,7 +50,7 @@ fi
 udm saml/serviceprovider remove "$@" --dn "SAMLServiceProviderIdentifier=https://$fqdn/univention-management-console/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base" || die
 
 rm /usr/share/univention-management-console/saml/idp/*.xml || die
-ucr unset umc/saml/idp-server ucs/server/sso/fqdn || die
+ucr unset umc/saml/idp-server || die
 
 /etc/init.d/univention-management-console-web-server restart
 /etc/init.d/slapd crestart
