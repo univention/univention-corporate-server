@@ -33,6 +33,7 @@ import subprocess
 import ldap
 import time
 import socket
+import logging
 
 import univention.config_registry
 import univention.uldap as uldap
@@ -335,18 +336,24 @@ def uppercase_in_ldap_base():
 	ucr.load()
 	return not ucr.get('ldap/base').islower()
 
-def is_port_open(port, hosts=[]):
+
+def is_port_open(port, hosts=None, timeout=60):
 	'''
 		check if port is open, if host == None check
 		hostname and 127.0.0.1
 	'''
-	if not hosts :
-		hosts.append(socket.gethostname())
-		hosts.append('127.0.0.1')
+	if hosts is None:
+		hosts = (socket.gethostname(), '127.0.0.1', '::1')
 	for host in hosts:
-		s = socket.socket()
-		s.connect((host, int(port)))
-	return True
+		address = (host, int(port))
+		try:
+			connection = socket.create_connection(address, timeout)
+			connection.close()
+			return True
+		except (EnvironmentError, socket.error) as ex:
+			logging.debug('is_port_open(%r) failed: %s', address, ex, exc_info=True)
+	return False
+
 
 if __name__ == '__main__':
 	import doctest
