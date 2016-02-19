@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Management Console Web Server
-#  postinst script for the debian package
+# Univention Management Console
+#  prerm script for the debian package
 #
-# Copyright 2004-2015 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,35 +32,9 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/base.sh
-
-# add apache modules for redirect to UMC web server
-a2enmod proxy
-a2enmod proxy_connect
-a2enmod proxy_http
-a2enmod headers
-
-# activate site
-a2ensite univention-management-console
-invoke-rc.d apache2 restart
-
-# UCR settings
-# remove old variables
-univention-config-registry unset umc/web/timeout umc/web/language umc/web/response/timeout umc/raw/debug/level umc/raw/response/timeout umc/module/watchdog/timeout >/dev/null || true
-
-# provide new settings
-univention-config-registry set "umc/http/session/timeout?600" \
-	umc/http/autostart?yes \
-	umc/http/port?8090 \
-	umc/http/interface?127.0.0.1 \
-	umc/server/upload/min_free_space?51200
-
-if [ "$1" = "configure" ]
+if [ "$1" = "remove" ]
 then
-	uinst=/usr/lib/univention-install/09univention-management-console-web-server.uinst
-	[ -e "$uinst" ] && rm "$uinst"
+	cp /usr/lib/univention-uninstall/09univention-management-console-web-server.uinst /usr/lib/univention-install/
 fi
-
-call_joinscript 92univention-management-console-web-server.inst
 
 exit 0

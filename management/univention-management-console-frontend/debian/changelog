@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-21) unstable; urgency=medium
+
+  * Bug #40738: create unjoin script
+
+ -- Florian Best <best@univention.de>  Fri, 19 Feb 2016 10:46:40 +0100
+
 univention-management-console-frontend (5.0.63-20) unstable; urgency=medium
 
   * Bug #40658: replace wget with curl
