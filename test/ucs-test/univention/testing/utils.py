@@ -97,7 +97,9 @@ class UCSTestDomainAdminCredentials(object):
 			self.username = None
 
 
-def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
+def get_ldap_connection(pwdfile=False, start_tls=2, decode_ignorelist=None):
+	if decode_ignorelist is None:
+		decode_ignorelist = []
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 
@@ -124,7 +126,9 @@ def get_ldap_connection(pwdfile = False, start_tls = 2, decode_ignorelist = []):
 	raise ldap.SERVER_DOWN()
 
 
-def verify_ldap_object(baseDn, expected_attr = {}, strict = True, should_exist = True):
+def verify_ldap_object(baseDn, expected_attr=None, strict=True, should_exist=True):
+	if expected_attr is None:
+		expected_attr = {}
 	try:
 		dn, attr = get_ldap_connection().search(filter = '(objectClass=*)', base = baseDn, scope = ldap.SCOPE_BASE, attr = expected_attr.keys())[0]
 	except (ldap.NO_SUCH_OBJECT, IndexError):
