@@ -84,7 +84,9 @@ class Errors(LogMessage):
 		'\[!\] Service \[memcached\]: Failed to initialize SSL context', #Bug #39646
 		'failed', #Bug #39646
 		'Failed to process Subfile /etc/univention/templates/files/etc/postgresql/.*/main/pg_hba.conf.d/.*-pg_.*.conf', #39595
-		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.' #Bug #38911
+		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.', #Bug #38911
+		r'Checking grub-pc/install_devices for errors[.]+', #  Bug #40733
+		r'Done checking grub-pc/install_devices for errors[.]', #  Bug #40733
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
