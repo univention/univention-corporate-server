@@ -366,7 +366,7 @@ def is_port_open(port, hosts=None, timeout=60):
 			connection = socket.create_connection(address, timeout)
 			connection.close()
 			return True
-		except (EnvironmentError, socket.error) as ex:
+		except EnvironmentError as ex:
 			logging.debug('is_port_open(%r) failed: %s', address, ex, exc_info=True)
 	return False
 
