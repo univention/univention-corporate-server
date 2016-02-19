@@ -10,4 +10,5 @@ desc: |
    "tr" has been added.
  * Fixed kwarg ignore_suffixes in FilteredDirWalkGenerator
  * Performance improvement by not scaning all binary files for misspellings.
-bug: [40386,40639]
+ * Fixed tracebacks due to dangling symlinks.
+bug: [40386,40639,40647]
