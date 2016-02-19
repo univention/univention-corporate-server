@@ -11,73 +11,24 @@
 	<section id="changelog:general">
 		<title>General</title>
 		<para>
-			All security updates issued for UCS 3.2-7 are included:
+			All security updates issued for UCS 3.2-8 are included:
 		</para>
 		<itemizedlist>
 			<listitem><simpara>
-				<package>acpi-support</package> (<u:cve>2014-0484</u:cve> <u:cve>2014-1419</u:cve>) (<u:bug>35439</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>apache2</package> (<u:cve>2013-6438</u:cve> <u:cve>2014-0226</u:cve> <u:cve>2014-0118</u:cve> <u:cve>2014-0231</u:cve> <u:cve>2014-3581</u:cve> <u:cve>2013-5704</u:cve> <u:cve>2015-3183</u:cve>) (<u:bug>33286</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>file</package> (<u:cve>2014-1943</u:cve> <u:cve>2014-2270</u:cve> <u:cve>2013-7345</u:cve> <u:cve>2014-3487</u:cve> <u:cve>2014-3479</u:cve> <u:cve>2014-3480</u:cve> <u:cve>2014-0207</u:cve> <u:cve>2014-3478</u:cve> <u:cve>2014-3587</u:cve> <u:cve>2014-3710</u:cve> <u:cve>2014-8116</u:cve> <u:cve>2014-8117</u:cve> <u:cve>2014-9653</u:cve> <u:cve>2014-0237</u:cve> <u:cve>2014-0238</u:cve> <u:cve>2014-3538</u:cve>) (<u:bug>34135</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>squid3</package> (<u:cve>2015-5400</u:cve>) (<u:bug>35853</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>qt4-x11</package> (<u:cve>2011-3193</u:cve> <u:cve>2011-3194</u:cve> <u:cve>2013-0254</u:cve> <u:cve>2015-0295</u:cve> <u:cve>2015-1858</u:cve> <u:cve>2015-1859</u:cve> <u:cve>2015-1860</u:cve>) (<u:bug>33269</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>openldap</package> (<u:cve>2015-1545</u:cve> <u:cve>2015-6908</u:cve>) (<u:bug>38424</u:bug> <u:bug>37728</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>postgresql-8.4</package> (<u:cve>2015-3165</u:cve> <u:cve>2015-3166</u:cve> <u:cve>2015-3167</u:cve>) (<u:bug>38607</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>xen-4.1</package> (<u:cve>2012-5511</u:cve> <u:cve>2013-4416</u:cve> <u:cve>2013-4554</u:cve> <u:cve>2013-6885</u:cve> <u:cve>2013-2212</u:cve> <u:cve>2014-1666</u:cve> <u:cve>2015-2752</u:cve> <u:cve>2015-2152</u:cve> <u:cve>2015-3340</u:cve> <u:cve>2015-4103</u:cve> <u:cve>2015-4104</u:cve> <u:cve>2015-4105</u:cve> <u:cve>2015-2756</u:cve> <u:cve>2015-4106</u:cve> <u:cve>2015-3209</u:cve> <u:cve>2015-4164</u:cve> <u:cve>2015-3259</u:cve> <u:cve>2015-5154</u:cve> <u:cve>2015-5165</u:cve>) (<u:bug>35104</u:bug> <u:bug>38565</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>firefox-de</package> (<u:cve>2015-4498</u:cve> <u:cve>2015-4497</u:cve> <u:cve>2015-4517</u:cve> <u:cve>2015-4521</u:cve> <u:cve>2015-4522</u:cve> <u:cve>2015-7174</u:cve> <u:cve>2015-7175</u:cve> <u:cve>2015-7176</u:cve> <u:cve>2015-7177</u:cve> <u:cve>2015-7180</u:cve> <u:cve>2015-4520</u:cve> <u:cve>2015-4519</u:cve> <u:cve>2015-4509</u:cve> <u:cve>2015-4506</u:cve> <u:cve>2015-4500</u:cve> <u:cve>2015-4511</u:cve>) (<u:bug>39338</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>firefox-en</package> (<u:cve>2015-4498</u:cve> <u:cve>2015-4497</u:cve> <u:cve>2015-4517</u:cve> <u:cve>2015-4521</u:cve> <u:cve>2015-4522</u:cve> <u:cve>2015-7174</u:cve> <u:cve>2015-7175</u:cve> <u:cve>2015-7176</u:cve> <u:cve>2015-7177</u:cve> <u:cve>2015-7180</u:cve> <u:cve>2015-4520</u:cve> <u:cve>2015-4519</u:cve> <u:cve>2015-4509</u:cve> <u:cve>2015-4506</u:cve> <u:cve>2015-4500</u:cve> <u:cve>2015-4511</u:cve>) (<u:bug>39338</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>cups</package> (<u:cve>2015-3258</u:cve> <u:cve>2015-3279</u:cve>) (<u:bug>39401</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>subversion</package> (<u:cve>2013-1845</u:cve> <u:cve>2013-1846</u:cve> <u:cve>2013-1847</u:cve> <u:cve>2013-1849</u:cve> <u:cve>2014-0032</u:cve> <u:cve>2014-3580</u:cve> <u:cve>2015-0248</u:cve> <u:cve>2015-0251</u:cve> <u:cve>2015-3187</u:cve>) (<u:bug>33285</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>php5</package> (<u:cve>2015-3307</u:cve> <u:cve>2015-3411</u:cve> <u:cve>2015-3412</u:cve> <u:cve>2015-4021</u:cve> <u:cve>2015-4022</u:cve> <u:cve>2015-4025</u:cve> <u:cve>2015-4026</u:cve> <u:cve>2015-4147</u:cve> <u:cve>2015-4148</u:cve> <u:cve>2015-4598</u:cve> <u:cve>2015-4599</u:cve> <u:cve>2015-4600</u:cve> <u:cve>2015-4601</u:cve> <u:cve>2015-4602</u:cve> <u:cve>2015-4604</u:cve> <u:cve>2015-4605</u:cve> <u:cve>2015-4022</u:cve> <u:cve>2015-4643</u:cve> <u:cve>2015-4644</u:cve> <u:cve>2015-5589</u:cve> <u:cve>2015-5590</u:cve> <u:cve>2015-6831</u:cve> <u:cve>2015-6832</u:cve> <u:cve>2015-6833</u:cve> <u:cve>2015-6834</u:cve> <u:cve>2015-6836</u:cve> <u:cve>2015-6837</u:cve> <u:cve>2015-6838</u:cve> <u:cve>2015-7803</u:cve> <u:cve>2015-7804</u:cve>) (<u:bug>39214</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>openjdk-6</package> (<u:cve>2015-2590</u:cve> <u:cve>2015-2601</u:cve> <u:cve>2015-2613</u:cve> <u:cve>2015-2619</u:cve> <u:cve>2015-2621</u:cve> <u:cve>2015-2625</u:cve> <u:cve>2015-2628</u:cve> <u:cve>2015-2632</u:cve> <u:cve>2015-2637</u:cve> <u:cve>2015-2638</u:cve> <u:cve>2015-2808</u:cve> <u:cve>2015-4000</u:cve> <u:cve>2015-4731</u:cve> <u:cve>2015-4732</u:cve> <u:cve>2015-4733</u:cve> <u:cve>2015-4748</u:cve> <u:cve>2015-4749</u:cve> <u:cve>2015-4760</u:cve>) (<u:bug>38929</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>openssh</package> (<u:cve>2015-5352</u:cve> <u:cve>2015-5600</u:cve>) (<u:bug>39437</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>qemu-kvm</package> (<u:cve>2015-5165</u:cve> <u:cve>2015-5745</u:cve> <u:cve>2015-5278</u:cve> <u:cve>2015-5279</u:cve> <u:cve>2015-6815</u:cve> <u:cve>2015-6855</u:cve>) (<u:bug>39545</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>xen-4.1</package> (<u:cve>2015-7835</u:cve> <u:cve>2015-7969</u:cve> <u:cve>2015-7969</u:cve> <u:cve>2015-7971</u:cve>) (<u:bug>39684</u:bug>)
-			</simpara></listitem>
-		</itemizedlist>
-	</section>
-
-	<section id="changelog:installer">
-		<title>Univention Installer</title>
-		<itemizedlist>
-			<listitem><simpara>
-  				The testing repositories have been renamed (<u:bug>39324</u:bug>).
+				<package>...</package> (<u:cve>2014-0484</u:cve> <u:cve>2014-1419</u:cve>) (<u:bug>35439</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
 	<!--
+	<section id="changelog:installer">
+		<title>Univention Installer</title>
+		<itemizedlist>
+			<listitem><simpara>
+			</simpara></listitem>
+		</itemizedlist>
+	</section>
+
 	<section id="changelog:updater">
 		<title>Univention Updater</title>
 		<itemizedlist>
@@ -165,13 +116,13 @@
 	</section>
 		-->
 
+		<!--
 	<section id="changelog:domain">
 		<title>Domain services</title>
 
 		<section id="changelog:domain:openldap">
 			<title>OpenLDAP</title>
 
-			<!--
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>
@@ -192,7 +143,6 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
-			-->
 
 			<section id="changelog:domain:openldap:replication">
 				<title>Listener/Notifier domain replication</title>
@@ -204,7 +154,6 @@
 			</section>
 		</section>
 
-		<!--
 		<section id="changelog:domain:join">
 			<title>Domain join</title>
 			<itemizedlist>
@@ -212,8 +161,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
+		-->
 
 		<!--
 	<section id="changelog:umc">
@@ -367,6 +316,7 @@
 	</section>
 		-->
 
+		<!--
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
 
@@ -374,12 +324,10 @@
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The update scripts have been adjusted to UCS 3.2-8 (<u:bug>40010</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:deployment:monitor">
 			<title>Software monitor</title>
 			<itemizedlist>
@@ -387,8 +335,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
+		-->
 
 	<!--
 	<section id="changelog:lib">
@@ -400,10 +348,10 @@
 	</section>
 	-->
 
+		<!--
 	<section id="changelog:service">
 		<title>System services</title>
 
-		<!--
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
 			<itemizedlist>
@@ -411,9 +359,7 @@
 				</para></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
-		<!--
 		<section id="changelog:service:virus">
 			<title>Spam/virus detection and countermeasures</title>
 			<itemizedlist>
@@ -421,9 +367,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
-		<!--
 		<section id="changelog:service:print">
 			<title>Printing services</title>
 			<itemizedlist>
@@ -439,9 +383,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
-		<!--
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>
@@ -457,17 +399,14 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 		<section id="changelog:service:dhcp">
 			<title>DHCP</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The default routing policy is only updated for the first created DHCP subnet (<u:bug>39238</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
 			<itemizedlist>
@@ -499,8 +438,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 	</section>
+		-->
 
 	<!--
 	<section id="changelog:virt">

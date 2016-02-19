@@ -7,10 +7,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-3.2-8-de">
+<book lang="de" id="releasenotes-3.3-0-de">
 	<bookinfo>
-		<title>UCS 3.2-8 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 3.2-8</subtitle>
+		<title>UCS 3.3 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 3.3</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -18,7 +18,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2015 Univention GmbH
+				(c) 2002-2016 Univention GmbH
 			</para>
 
 			<para>
@@ -42,13 +42,10 @@
 	</bookinfo>
 
 	<chapter id="relnotes:highlights">
-		<title>&ucsUCS; (UCS) 3.2-8</title>
+		<title>&ucsUCS; (UCS) 3.3</title>
 
 		<para>
-			Mit &ucsUCS; 3.2-8 steht das achte Point-Release für &ucsUCS; (UCS) zur Verfügung.
-			Vorhandene UCS-Systeme können über das von Univention bereitgestellte Online-Repository aktualisiert werden.
-			Alternativ können Updates über eine Update-DVD eingespielt werden.
-			UCS 3.2-8 beinhaltet alle für UCS 3.2-7 veröffentlichten Errata-Updates.
+			Mit &ucsUCS; 3.3 steht das dritte Point-Release für &ucsUCS; (UCS) zur Verfügung.
 		</para>
 
 	</chapter>
@@ -65,9 +62,6 @@
 			Da bei Release-Updates Veränderungen an den LDAP-Schemata auftreten können, muss der &ucsMaster; bei einem Release-Update immer als erstes System aktualisiert werden.
 		</para>
 
-		<para>
-			Generell ist es empfehlenswert, alle UCS-Systeme möglichst in einem Wartungsfenster zu aktualisieren.
-		</para>
 	</chapter>
 
 	<chapter id="relnotes:prepare">
@@ -103,43 +97,6 @@
 		<para>
 			Anschließend muss das UCS-System neu gestartet werden.
 		</para>
-
-		<section id="repo:verify">
-			<title>Betrieb eines lokalen Repository-Servers / Preup- und Postup-Skripte</title>
-			<para>
-				Preup- und Postup-Skripte sind Skripte, die vor und nach Release-Updates aufgerufen werden
-				(z.B. zur Nachbereitung des Updates, etwa die Deinstallation nicht mehr benötigter Pakete).
-				Ab UCS 3.2 werden diese Skripte kryptographisch signiert, um eine unerlaubte Modifikation zu verhindern.
-				Beim Update und Spiegeln der Repository-Inhalte werden diese Signaturen überprüft.
-				Sind diese ungültig oder fehlen, so wird die Aktion abgebrochen.
-			</para>
-
-			<para>
-				Wird ein Repository-Server mit UCS 3.1-x betrieben, muss dieser auf UCS 3.2 aktualisiert werden, bevor weitere Systeme auf UCS 3.2-1 oder neuer aktualisiert werden können.
-			</para>
-
-			<para>
-				Wenn ein Update des Repository-Servers nicht möglich ist, müssen die Dateien mit den Signaturen manuell heruntergeladen werden:
-			</para>
-
-			<programlisting language="sh">
-LOCAL_DIR="/var/lib/univention-repository/mirror"
-SERVER="http://updates.software-univention.de"
-for release in 3.2-0 3.2-1 3.2-2 3.2-3 3.2-4 3.2-5 3.2-6 3.2-7 3.2-8; do
-	for script in preup postup; do
-		file="3.2/maintained/$release/all/$script.sh.gpg"
-		wget -O "$LOCAL_DIR/$file" "$SERVER/$file"
-	done
-done
-			</programlisting>
-
-			<para>
-				Alternativ kann die Prüfung der Signaturen auch deaktiviert werden, was ein Sicherheitsrisiko darstellen kann.
-				Für den Repository-Server kann dazu die &ucsUCRV; <envar>repository/mirror/verify</envar> auf <literal>false</literal> gesetzt werden.
-				Für das Update muss auf allen Systemen die &ucsUCRV; <envar>repository/online/verify</envar> auf <literal>false</literal> gesetzt werden.
-			</para>
-		</section>
-	</chapter>
 
 
 	<chapter id="relnotes:packages">
@@ -215,123 +172,16 @@ done
 			</para>
 		</section>
 
-		<section id="relnotes:s4limits">
-			<title>Einschränkungen im Samba 4-Betrieb</title>
-			<para>
-				In Samba 4 stehen einige Funktionen des <wordasword>Active-Directory</wordasword> nicht vollständig zur Verfügung:
-			</para>
-
-			<itemizedlist>
-				<listitem>
-					<para>
-						Microsoft Windows Domänencontroller dürfen nicht einer Samba 4-Domäne beitreten und umgekehrt.
-					</para>
-				</listitem>
-
-				<listitem>
-					<para>
-						Eine selektive Replikation ist mit Samba 4 nicht möglich, da diese durch Active Directory prinzipiell nicht unterstützt wird (in UCS@school basiert die selektive Replikation auf der Listener/Notifier-Replikation).
-					</para>
-				</listitem>
-
-				<listitem>
-					<para>
-						Samba 4 unterstützt keine Forest-Domänen.
-					</para>
-				</listitem>
-
-				<listitem>
-					<para>
-						Samba 4 unterstützt keine Vertrauensstellungen.
-					</para>
-				</listitem>
-			</itemizedlist>
-
-			<para>
-				Weitere Hinweise finden sich in Kapitel 8 des <biblioref linkend="ucs-handbuch"/>.
-			</para>
-		</section>
-
-		<section id="relnotes:virtualbox">
-			<title>Installation in <wordasword>VirtualBox</wordasword></title>
-			<para>
-				Bei der Installation von UCS in der Virtualisierungslösung <wordasword>VirtualBox</wordasword> vor Version 4.2 kann folgender <wordasword>VirtualBox</wordasword>-Bug auftreten:
-				Wenn von der Installations-DVD gebootet wird, bietet GRUB die Option <guimenu>Boot from first harddisk partition</guimenu> an.
-				Wählt man diese Option aus, friert <wordasword>VirtualBox</wordasword> ein.
-			</para>
-
-			<para>
-				Zur Abhilfe muss vor dem Neustart der virtuellen Maschine entweder die Installations-DVD aus den Laufwerkseinstellungen der <wordasword>VirtualBox</wordasword>-VM entfernt werden oder beim Start der virtuellen Instanz <keycap>F12</keycap> gedrückt und die Festplatte als Bootpartition ausgewählt werden.
-				UCS startet danach dann problemlos.
-			</para>
-		</section>
-
-		<section id="relnotes:xenserver">
-			<title>Installation in <wordasword>Citrix XenServer</wordasword></title>
-			<para>
-				Bei der Installation von UCS in der Virtualisierungslösung <wordasword>Citrix XenServer 6.0 - 6.2</wordasword> wird mit der standardmässig emulierten <wordasword>Cirrus</wordasword>-Grafikkarte das GRUB-Menü des Univention Installers nicht angezeigt.
-				Der Univention Installer kann durch Drücken der <keycap function="enter">ENTER</keycap>-Taste direkt gestartet werden;
-				alternativ startet die Installation automatisch nach sechzig Sekunden.
-				Der dann gestartete Univention Installer wird normal dargestellt.
-			</para>
-
-			<para>
-				Um GRUB korrekt darzustellen, kann die von <wordasword>XenServer</wordasword> emulierte Grafikkarte umkonfiguriert werden.
-				Dazu muss eine Anmeldung als Benutzer <systemitem class="username">root</systemitem> auf dem <wordasword>XenServer</wordasword>-System folgen.
-				Mit dem Befehl <command>xe vm-list</command> muss zuerst die UUID der virtuellen Maschine ermittelt werden.
-				Mit dem folgenden Befehl wird dann die emulierte Grafikkarte auf VGA umkonfiguriert:
-
-				<programlisting language="sh">
-xe vm-param-set uuid=UUIDVM platform:vga=std
-				</programlisting>
-			</para>
-		</section>
-
-		<section id="relnotes:s3tos4">
-			<title>Migration einer Samba 3-Umgebung auf Samba 4</title>
-			<para>
-				Es existieren zwei grundlegende Verfahren zur Migration von Samba 3 auf Samba 4:
-			</para>
-
-			<itemizedlist>
-				<listitem>
-					<para>
-						Aufbau einer parallelen Samba 4-Domäne.
-						Beide Domänen verwenden unterschiedliche NetBIOS-Namen und SIDs.
-						Die Clients treten dann schrittweise der Samba 4-Domäne bei.
-					</para>
-				</listitem>
-
-				<listitem>
-					<para>
-						Migration aller Systeme innerhalb eines Wartungsfensters.
-					</para>
-				</listitem>
-			</itemizedlist>
-
-			<para>
-				Beide Verfahren sind im Univention Wiki ausführlich dokumentiert:
-				<ulink url="http://wiki.univention.de/index.php?title=Migration_from_Samba_3_to_Samba_4"/>.
-			</para>
-		</section>
-
-		<section id="relnotes:xenhopt">
-			<title>Xen</title>
-			<para>
-				Wenn der Xen Hypervisor benutzt wird und das Speicherlimit über die &ucsUCR;-Variable <envar>grub/xenhopt</envar> begrenzt wurde, sollte der Wert aktualisiert und um die <emphasis>,max:</emphasis>-Angabe erweitert werden.
-				Weitere Details finden sich unter <ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart-3.1#Konfiguration_der_Dom0"/>.
-			</para>
-		</section>
 	</chapter>
 
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 3.2-7:
+			Aufgeführt sind die Änderungen seit UCS 3.2-8:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-3.2-8.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-3.3-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<bibliography id="relnotes:bibliography">
