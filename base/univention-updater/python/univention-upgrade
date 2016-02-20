@@ -165,68 +165,67 @@ def do_release_update(options, checkForUpdates, silent):
         current_version=updater.current_version,
         next_version=version_next,
         status='RUNNING')
-    if True:
-                    dprint(silent, 'Starting update to UCS version %s at %s...' % (version_next, time.ctime()), debug=True)
-                    dprint(silent, 'Starting update to UCS version %s' % (version_next))
-                    time.sleep(1)
-                    params = ['--silent']
-                    if options.ignoressh:
-                        params.append('--ignoressh')
-                    if options.ignoreterm:
-                        params.append('--ignoreterm')
-                    retcode = subprocess.call(['/usr/share/univention-updater/univention-updater', 'net', '--updateto', '%s' % (version_next)] + params, shell=False, env=os.environ)
-                    if retcode:
-                        dprint(silent, 'exitcode of univention-updater: %s' % retcode, debug=True)
-                        dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
-                        update_status(status='FAILED', errorsource='UPDATE')
-                        sys.exit(1)
-                    dprint(silent, 'Update to UCS version %s finished at %s...' % (version_next, time.ctime()), debug=True)
-                    return True
+
+    dprint(silent, 'Starting update to UCS version %s at %s...' % (version_next, time.ctime()), debug=True)
+    dprint(silent, 'Starting update to UCS version %s' % (version_next))
+    time.sleep(1)
+    params = ['--silent']
+    if options.ignoressh:
+        params.append('--ignoressh')
+    if options.ignoreterm:
+        params.append('--ignoreterm')
+    retcode = subprocess.call(['/usr/share/univention-updater/univention-updater', 'net', '--updateto', '%s' % (version_next)] + params, shell=False, env=os.environ)
+    if retcode:
+        dprint(silent, 'exitcode of univention-updater: %s' % retcode, debug=True)
+        dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
+        update_status(status='FAILED', errorsource='UPDATE')
+        sys.exit(1)
+    dprint(silent, 'Update to UCS version %s finished at %s...' % (version_next, time.ctime()), debug=True)
+    return True
 
 
 def do_package_updates(options, checkForUpdates, silent):
-        interactive = not (options.noninteractive or checkForUpdates)
-        updater = UniventionUpdater()
-        # check if component updates are available
-        dprint(silent, 'Checking for package updates: ', newline=False)
-        new_packages, upgraded_packages, removed_packages = updater.component_update_get_packages()
-        update_available = bool(new_packages + upgraded_packages + removed_packages)
+    interactive = not (options.noninteractive or checkForUpdates)
+    updater = UniventionUpdater()
+    # check if component updates are available
+    dprint(silent, 'Checking for package updates: ', newline=False)
+    new_packages, upgraded_packages, removed_packages = updater.component_update_get_packages()
+    update_available = bool(new_packages + upgraded_packages + removed_packages)
 
-        if not update_available:
-            dprint(silent, 'none')
-            return False
-        else:
-            # updates available ==> stop here in "check-mode"
-            if checkForUpdates:
-                dprint(silent, 'found')
-                return True
+    if not update_available:
+        dprint(silent, 'none')
+        return False
 
-            dprint(silent, 'found\n')
-            if len(removed_packages) > 0:
-                dprint(silent, 'The following packages will be REMOVED:\n %s' % _package_list(removed_packages))
-            if len(new_packages) > 0:
-                dprint(silent, 'The following packages will be installed:\n %s' % _package_list(new_packages))
-            if len(upgraded_packages) > 0:
-                dprint(silent, 'The following packages will be upgraded:\n %s' % _package_list(upgraded_packages))
-            if interactive and not readcontinue('\nDo you want to continue [Y|n]?'):
-                return False
+    # updates available ==> stop here in "check-mode"
+    if checkForUpdates:
+        dprint(silent, 'found')
+        return True
 
-            if True:
-                time.sleep(1)
-                dprint(silent, 'Starting dist-update at %s...' % (time.ctime()), debug=True)
-                dprint(silent, 'Starting package upgrade', newline=False)
+    dprint(silent, 'found\n')
+    if len(removed_packages) > 0:
+        dprint(silent, 'The following packages will be REMOVED:\n %s' % _package_list(removed_packages))
+    if len(new_packages) > 0:
+        dprint(silent, 'The following packages will be installed:\n %s' % _package_list(new_packages))
+    if len(upgraded_packages) > 0:
+        dprint(silent, 'The following packages will be upgraded:\n %s' % _package_list(upgraded_packages))
+    if interactive and not readcontinue('\nDo you want to continue [Y|n]?'):
+        return False
 
-                returncode, stdout, stderr = updater.run_dist_upgrade()
+    time.sleep(1)
+    dprint(silent, 'Starting dist-update at %s...' % (time.ctime()), debug=True)
+    dprint(silent, 'Starting package upgrade', newline=False)
 
-                if returncode:
-                    dprint(silent, 'exitcode of apt-get dist-upgrade: %s' % returncode, debug=True)
-                    dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
-                    update_status(status='FAILED', errorsource='UPDATE')
-                    sys.exit(1)
-                dprint(silent, 'dist-update finished at %s...' % (time.ctime()), debug=True)
-                dprint(silent, 'done')
-                time.sleep(1)
-                return True
+    returncode, stdout, stderr = updater.run_dist_upgrade()
+
+    if returncode:
+        dprint(silent, 'exitcode of apt-get dist-upgrade: %s' % returncode, debug=True)
+        dprint(silent, 'ERROR: update failed. Please check /var/log/univention/updater.log\n')
+        update_status(status='FAILED', errorsource='UPDATE')
+        sys.exit(1)
+    dprint(silent, 'dist-update finished at %s...' % (time.ctime()), debug=True)
+    dprint(silent, 'done')
+    time.sleep(1)
+    return True
 
 
 def do_app_updates(options, checkForUpdates, silent):
@@ -426,24 +425,23 @@ def update_local_repository(options):
 
 
 def do_update(options):
-    if True:
-        try:
-            update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
-        except ConfigurationError, e:
-            update_status(status='FAILED', errorsource='SETTINGS')
-            print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
-            sys.exit(3)
-        except Exception, e:
-            update_status(status='FAILED')
-            print 'An error occurred - see "%s" for details' % (LOGFN,)
-            print >>logfd, 'Traceback in univention-upgrade:'
-            print >>logfd, traceback.format_exc()
-            sys.exit(2)
-        update_status(status='DONE')
-        if options.setucr and configRegistry.is_true(UCR_UPDATE_AVAILABLE) != update_available:
-            univention.config_registry.handler_set([
-                '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes' if update_available else 'no'),
-            ])
+    try:
+        update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
+    except ConfigurationError, e:
+        update_status(status='FAILED', errorsource='SETTINGS')
+        print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
+        sys.exit(3)
+    except Exception, e:
+        update_status(status='FAILED')
+        print 'An error occurred - see "%s" for details' % (LOGFN,)
+        print >>logfd, 'Traceback in univention-upgrade:'
+        print >>logfd, traceback.format_exc()
+        sys.exit(2)
+    update_status(status='DONE')
+    if options.setucr and configRegistry.is_true(UCR_UPDATE_AVAILABLE) != update_available:
+        univention.config_registry.handler_set([
+            '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes' if update_available else 'no'),
+        ])
 
     if options.check:
         if update_available:
