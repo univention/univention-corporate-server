@@ -490,7 +490,7 @@ def do_update(options):
             print >>logfd, traceback.format_exc()
             sys.exit(2)
         update_status(status='DONE')
-        if options.setucr:
+        if options.setucr and configRegistry.is_true(UCR_UPDATE_AVAILABLE) != update_available:
             univention.config_registry.handler_set([
                 '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes' if update_available else 'no'),
             ])
@@ -502,25 +502,16 @@ def do_update(options):
         else:
             print 'No update available.'
             sys.exit(1)
-    else:
-        # check for new updates after updating ; update UCR variable
-        #
-        # BUG: After an release upgrade this process MUST NOT continue to use old python, ucr, updater, ...
-        try:
-            update_available = performUpdate(options, checkForUpdates=True, silent=True)
-        except ConfigurationError, e:
-            print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
-            sys.exit(3)
-        except Exception, e:
-            print 'An error occurred - see "%s" for details' % (LOGFN,)
-            print >>logfd, 'Traceback in univention-upgrade:'
-            print >>logfd, traceback.format_exc()
-            sys.exit(2)
-        configRegistry.load()
-        if update_available and configRegistry.is_false(UCR_UPDATE_AVAILABLE, True):
-            univention.config_registry.handler_set(['%s=yes' % UCR_UPDATE_AVAILABLE])
-        elif not update_available and configRegistry.is_true(UCR_UPDATE_AVAILABLE, True):
-            univention.config_registry.handler_set(['%s=no' % UCR_UPDATE_AVAILABLE])
+
+    if update_available:
+        do_exec()
+
+
+def do_exec():
+        # The updater/UCR/libs might have been replaced - re-execute!
+        cmd = sys.argv + ['--setucr']
+        print >> logfd, "execv(%r)" % (cmd,)
+        os.execv(sys.argv[0], cmd)
 
 
 if __name__ == '__main__':

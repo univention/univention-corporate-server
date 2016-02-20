@@ -1,3 +1,9 @@
+univention-updater (11.0.9-3) unstable; urgency=low
+
+  * Bug #40338: Re-execute update executable after update
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Jan 2016 15:49:50 +0100
+
 univention-updater (11.0.9-2) unstable; urgency=low
 
   * Bug #40624: Adapt preup/postup.sh 
