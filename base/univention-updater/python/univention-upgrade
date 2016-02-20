@@ -192,8 +192,10 @@ def do_package_updates(options, checkForUpdates, silent):
         new_packages, upgraded_packages, removed_packages = updater.component_update_get_packages()
         update_available = bool(new_packages + upgraded_packages + removed_packages)
 
-        if update_available:
-            run = True
+        if not update_available:
+            dprint(silent, 'none')
+            return False
+        else:
             # updates available ==> stop here in "check-mode"
             if checkForUpdates:
                 dprint(silent, 'found')
@@ -206,10 +208,10 @@ def do_package_updates(options, checkForUpdates, silent):
                 dprint(silent, 'The following packages will be installed:\n %s' % _package_list(new_packages))
             if len(upgraded_packages) > 0:
                 dprint(silent, 'The following packages will be upgraded:\n %s' % _package_list(upgraded_packages))
-            if interactive:
-                run = readcontinue('\nDo you want to continue [Y|n]?')
+            if interactive and not readcontinue('\nDo you want to continue [Y|n]?'):
+                return False
 
-            if run:
+            if True:
                 time.sleep(1)
                 dprint(silent, 'Starting dist-update at %s...' % (time.ctime()), debug=True)
                 dprint(silent, 'Starting package upgrade', newline=False)
@@ -225,9 +227,6 @@ def do_package_updates(options, checkForUpdates, silent):
                 dprint(silent, 'done')
                 time.sleep(1)
                 return True
-        else:
-            dprint(silent, 'none')
-            return False
 
 
 def do_app_updates(options, checkForUpdates, silent):
