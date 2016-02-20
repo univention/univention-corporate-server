@@ -443,6 +443,8 @@ def main():
 
     try:
         logfd = open(LOGFN, 'a+')
+        FORMAT = "%(asctime)-15s " + logging.BASIC_FORMAT
+        logging.basicConfig(format=FORMAT, stream=logfd, level=logging.ERROR)
     except:
         print 'Cannot open %s for writing' % LOGFN
         sys.exit(1)
