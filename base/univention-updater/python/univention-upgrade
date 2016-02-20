@@ -375,7 +375,7 @@ def parse_args():
         action="store_true", help="check if updates are available")
     parser.add_option(
         "--setucr", dest="setucr", default=False, action="store_true",
-        help="if set, variable update/available will be updated if --check is specified too")
+        help="if set, variable update/available will be updated")
     parser.add_option(
         "--ignoressh", dest="ignoressh", default=False,
         action="store_true", help="pass --ignoressh to univention-updater")
@@ -467,30 +467,9 @@ def main():
     else:
         dprint(silent, 'none')
 
-    if options.check:
+    if True:
         try:
-            update_available = performUpdate(options, checkForUpdates=True, silent=False)
-        except ConfigurationError, e:
-            print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
-            sys.exit(3)
-        except Exception, e:
-            print 'An error occurred - see "%s" for details' % (LOGFN,)
-            print >>logfd, 'Traceback in univention-upgrade:'
-            print >>logfd, traceback.format_exc()
-            sys.exit(2)
-        if update_available:
-            dprint(silent, 'Please rerun command without --check argument to install.')
-            if options.setucr:
-                univention.config_registry.handler_set(['%s=yes' % UCR_UPDATE_AVAILABLE])
-            sys.exit(0)
-        else:
-            print 'No update available.'
-            if options.setucr:
-                univention.config_registry.handler_set(['%s=no' % UCR_UPDATE_AVAILABLE])
-            sys.exit(1)
-    else:
-        try:
-            performUpdate(options, silent=False)
+            update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
         except ConfigurationError, e:
             update_status(status='FAILED', errorsource='SETTINGS')
             print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
@@ -502,7 +481,19 @@ def main():
             print >>logfd, traceback.format_exc()
             sys.exit(2)
         update_status(status='DONE')
+        if options.setucr:
+            univention.config_registry.handler_set([
+                '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes' if update_available else 'no'),
+            ])
 
+    if options.check:
+        if update_available:
+            dprint(silent, 'Please rerun command without --check argument to install.')
+            sys.exit(0)
+        else:
+            print 'No update available.'
+            sys.exit(1)
+    else:
         # check for new updates after updating ; update UCR variable
         #
         # BUG: After an release upgrade this process MUST NOT continue to use old python, ucr, updater, ...
