@@ -449,10 +449,17 @@ def main():
 
     dprint(silent, '\nStarting univention-upgrade. Current UCS version is %(version/version)s-%(version/patchlevel)s errata%(version/erratalevel)s\n' % configRegistry)
 
-    dprint(silent, 'Checking for local repository: ', newline=False)
     if options.check:
-        dprint(silent, 'skipped')
-    elif configRegistry.is_true('local/repository', False) and configRegistry.is_true('repository/mirror', False):
+        return do_update(options)
+
+    with UpdaterLock():
+        update_local_repository(options)
+        do_update(options)
+
+
+def update_local_repository(options):
+    dprint(silent, 'Checking for local repository: ', newline=False)
+    if configRegistry.is_true('local/repository', False) and configRegistry.is_true('repository/mirror', False):
         dprint(silent, 'found\n')
         if options.noninteractive or readcontinue('Update the local repository via network [Y|n]?'):
             if options.updateto:
@@ -467,6 +474,8 @@ def main():
     else:
         dprint(silent, 'none')
 
+
+def do_update(options):
     if True:
         try:
             update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
@@ -515,5 +524,4 @@ def main():
 
 
 if __name__ == '__main__':
-    with UpdaterLock():
-        main()
+    main()
