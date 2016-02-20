@@ -173,12 +173,8 @@ def performUpdate(options, checkForUpdates=False, silent=False):
         # continue update as long there's a next version and major/minor version are equal ==> do ONE major/minor update and ALL patchlevel updates
         while run and version_first.major == version_next.major and version_first.minor == version_next.minor:
             # stop release updates
-            # - if no next version is available
             # - if updateto is set and updateto is smaller than next_version
-            if not version_next:
-                run = False
-                dprint(silent, 'none')
-            elif version_updateto and version_updateto < version_next:
+            if version_updateto and version_updateto < version_next:
                 run = False
                 dprint(silent, '%s is available but updater has been instructed to stop at version %s.' % (version_next, options.updateto))
             else:
