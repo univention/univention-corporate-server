@@ -133,62 +133,39 @@ def _package_list(new_packages):
 
 
 def performUpdate(options, checkForUpdates=False, silent=False):
-    interactive = not (options.noninteractive or checkForUpdates)
-    updater = UniventionUpdater()
-    releaseUpdate = True
-
-    if options.updateto:
-        version_updateto = UCS_Version(options.updateto)
-    else:
-        version_updateto = None
-
-    if not checkForUpdates:
-        vv = updater.configRegistry['version/version']
-        vp = updater.configRegistry['version/patchlevel']
-        lastversion = '%s-%s' % (vv, vp)
-        update_status(current_version=lastversion, status='RUNNING')
-
-    run = True
-
-    while run and releaseUpdate:
-        #
-        # RELEASE UPDATE
-        #
-
-        # reinit updater object
-        updater.ucr_reinit()
-
-        # get next release update version
-        dprint(silent, 'Checking for release updates: ', newline=False)
-        next_release_update = updater.release_update_available()
-        if next_release_update:
-            version_next = UCS_Version(next_release_update)
-            # save "first" release version in this run
-            version_first = UCS_Version(next_release_update)
-        else:
-            version_next = None
-            run = False
-            dprint(silent, 'none')
-
-        # continue update as long there's a next version and major/minor version are equal ==> do ONE major/minor update and ALL patchlevel updates
-        while run and version_first.major == version_next.major and version_first.minor == version_next.minor:
-            # stop release updates
-            # - if updateto is set and updateto is smaller than next_version
-            if version_updateto and version_updateto < version_next:
-                run = False
-                dprint(silent, '%s is available but updater has been instructed to stop at version %s.' % (version_next, options.updateto))
+    for func in (do_package_updates, do_app_updates, do_release_update):
+        if func(options, checkForUpdates, silent):
+            if checkForUpdates:
+                return True
             else:
-                dprint(silent, 'found: UCS %s' % version_next)
-                # updates available ==> stop here in "check-mode"
-                if checkForUpdates:
-                    return True
+                do_exec()
 
-                if interactive:
-                    run = readcontinue('Do you want to update to %s [Y|n]?' % version_next)
-                if run:
-                    update_status(next_version=version_next)
 
-                    # perform release update (only one step!)
+def do_release_update(options, checkForUpdates, silent):
+    updater = UniventionUpdater()
+
+    # get next release update version
+    dprint(silent, 'Checking for release updates: ', newline=False)
+    version_next = updater.release_update_available()
+    if not version_next:
+        dprint(silent, 'none')
+        return False
+    if options.updateto and UCS_Version(options.updateto) < version_next:
+        dprint(silent, '%s is available but updater has been instructed to stop at version %s.' % (version_next, options.updateto))
+        return False
+    dprint(silent, 'found: UCS %s' % version_next)
+    if checkForUpdates:
+        return True
+
+    interactive = not (options.noninteractive or checkForUpdates)
+    if interactive and not readcontinue('Do you want to update to %s [Y|n]?' % version_next):
+        return False
+
+    update_status(
+        current_version=updater.current_version,
+        next_version=version_next,
+        status='RUNNING')
+    if True:
                     dprint(silent, 'Starting update to UCS version %s at %s...' % (version_next, time.ctime()), debug=True)
                     dprint(silent, 'Starting update to UCS version %s' % (version_next))
                     time.sleep(1)
@@ -204,32 +181,12 @@ def performUpdate(options, checkForUpdates=False, silent=False):
                         update_status(status='FAILED', errorsource='UPDATE')
                         sys.exit(1)
                     dprint(silent, 'Update to UCS version %s finished at %s...' % (version_next, time.ctime()), debug=True)
-                    time.sleep(1)
-                else:
-                    # The user said: No
-                    # Don't ask for a second time
-                    releaseUpdate = False
+                    return True
 
-            if run and releaseUpdate:
-                # reinit updater object
-                updater.ucr_reinit()
-                dprint(silent, 'Checking for release updates: ', newline=False)
-                # get next release update version
-                next_release_update = updater.release_update_available()
-                if next_release_update:
-                    version_next = UCS_Version(next_release_update)
-                    if version_first.major != version_next.major or version_first.minor != version_next.minor:
-                        dprint(silent, 'found: UCS %s (skip in first iteration)' % version_next)
-                else:
-                    dprint(silent, 'none')
-                    version_next = None
-                    run = False
 
-        #
-        # COMPONENT UPDATE
-        #
-        # reinit updater module
-        updater.ucr_reinit()
+def do_package_updates(options, checkForUpdates, silent):
+        interactive = not (options.noninteractive or checkForUpdates)
+        updater = UniventionUpdater()
         # check if component updates are available
         dprint(silent, 'Checking for package updates: ', newline=False)
         new_packages, upgraded_packages, removed_packages = updater.component_update_get_packages()
@@ -267,16 +224,10 @@ def performUpdate(options, checkForUpdates=False, silent=False):
                 dprint(silent, 'dist-update finished at %s...' % (time.ctime()), debug=True)
                 dprint(silent, 'done')
                 time.sleep(1)
+                return True
         else:
             dprint(silent, 'none')
-
-        if do_app_updates(options, checkForUpdates, silent):
-            if checkForUpdates:
-                return True
-
-    # updates available ==> stop here in "check-mode"
-    if checkForUpdates:
-        return False
+            return False
 
 
 def do_app_updates(options, checkForUpdates, silent):
