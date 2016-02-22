@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-management-console-module-udm
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The PTR-Record entries are now sorted numerical in the overview of a reverse
+   zone.
+bug: [40747]

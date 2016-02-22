@@ -551,7 +551,7 @@ class Instance(Base, ProgressMixin):
 					'$operations$': module.operations,
 					'objectType': module.name,
 					'labelObjectType': module.subtitle,
-					'name': module.obj_description(obj) or udm_objects.description(obj),
+					'name': module.obj_description(obj),
 					'path': ldap_dn2path(obj.dn, include_rdn=False)
 				}
 				if request.options['objectProperty'] not in ('name', 'None'):

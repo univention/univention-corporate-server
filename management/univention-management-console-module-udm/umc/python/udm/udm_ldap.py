@@ -600,11 +600,17 @@ class UDM_Module(object):
 		return ret
 
 	def obj_description(self, obj):
+		description = None
 		description_property_name = ucr.get('directory/manager/web/modules/%s/display' % self.name)
 		if description_property_name:
 			description_property = self.module.property_descriptions.get(description_property_name)
 			if description_property:
-				return description_property.syntax.tostring(obj[description_property_name])
+				description = description_property.syntax.tostring(obj[description_property_name])
+		if description is None:
+			description = udm_objects.description(obj)
+		if description and description.isdigit():
+			description = int(description)
+		return description
 
 	def is_policy_module(self):
 		return self.name.startswith('policies/') and self.name != 'policies/policy'
