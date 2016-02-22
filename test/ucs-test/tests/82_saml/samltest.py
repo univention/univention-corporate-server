@@ -90,7 +90,7 @@ def _login_at_idp_with_credentials(username, password, response):
 
 
 def _extract_saml_msg_from(idp_response_body):
-	print("Extract %s from SAML resonse" % "SAMLResponse")
+	print("Extract SAML message from SAML response")
 	try:
 		return re.search('name="SAMLResponse" value="([^"]+)"', bytes(idp_response_body)).group(1)
 	except AttributeError:
@@ -115,20 +115,29 @@ def _send_saml_response_to_sp(url, saml_msg, cookies):
 
 def test_login(cookies, hostname=HOSTNAME):
 	"""Test login at umc"""
-	print("Test login...")
+	print("Test login at SP...")
 	_request('GET', "https://%s/univention-management-console/get/modules/list" % hostname, 200, "testing login",
 			cookies=cookies)
-	print("Login success")
+	print("Login success at SP")
 
 
 def test_logout(cookies, hostname=HOSTNAME):
 	"""Test logout at umc"""
-	print("Test logout...")
+	print("Test logout at SP...")
 	_request('GET', "https://%s/univention-management-console/get/modules/list" % hostname, 401, "testing logout", cookies=cookies)
-	print("Logout success")
+	print("Logout success at SP")
 
-def _idp_response_is_valid(_IdP_response):
-	"""The Identity Provider has to return a SAML message and a url at the Service Provider to POST it to"""
+
+def test_logout_at_IdP(cookies, hostname=HOSTNAME, IdP_IP=None):
+	"""Test that passwordless login is not possible after logout"""
+	print("Test logout at IdP...")
+	try:
+		cookies = login_with_existing_session_at_IdP(cookies, hostname=HOSTNAME, IdP_IP=None)
+	except SamlError:
+		print("Logout success at IdP")
+		return cookies
+	else:
+		utils.fail("Session not closed at IdP after logout")	
 
 
 def _error_evaluation(idp_response_body):

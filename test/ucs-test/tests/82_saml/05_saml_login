@@ -14,6 +14,7 @@ def main():
 		cookies = samllogin.login_with_new_session_at_IdP(account.username, account.bindpw)
 		samllogin.test_login(cookies)
 		cookies = samllogin.logout_at_IdP(cookies)
+		cookies = samllogin.test_logout_at_IdP(cookies)
 		samllogin.test_logout(cookies)
 	except samllogin.SamlError as exc:
 		utils.fail(exc.message)
