@@ -1,0 +1,10 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: openssh
+fix: 1:6.0p1-4~ucs3.3.56.201602190938
+desc: |
+ This update addresses the following issue(s):
+ * Upgrade OpenSSH to version 6.0.
+bug: [40689]

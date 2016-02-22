@@ -15,7 +15,7 @@
 		</para>
 		<itemizedlist>
 			<listitem><simpara>
-				<package>...</package> (<u:cve>2014-0484</u:cve> <u:cve>2014-1419</u:cve>) (<u:bug>35439</u:bug>)
+				<package>openssh</package> upgraded to 6.0p1 (<u:cve>2010-5107</u:cve> <u:cve>2014-2653</u:cve> <u:cve>2014-2532</u:cve> <u:cve>2016-0778</u:cve> <u:cve>CVE-2016-0777</u:cve>) (<u:bug>40689</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
