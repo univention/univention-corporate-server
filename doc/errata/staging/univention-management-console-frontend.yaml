@@ -3,10 +3,11 @@ release: "4.1"
 version: [0,1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-management-console-frontend
-fix: 5.0.63-23.1210.201602191230
+fix: 5.0.63-25.1212.201602221744
 desc: |
  This update addresses the following issue(s):
  * The joinscript uses curl instead of wget to configure SAML service provider
    setting to prevent conflicts with old SHA1 or MD5 SSL certificates.
  * A unjoinscript has been added which removes the SAML configuration for UMC.
-bug: [40658, 40738]
+ * If error messages contained a "%" they weren't displayed in UMC.
+bug: [40658, 40738, 40749]
