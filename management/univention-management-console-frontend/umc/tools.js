@@ -774,7 +774,7 @@ define([
 
 			return {
 				status: this._parseStatus(status),
-				message: entities.encode(_(String(message).replace(/\%/g, '%(percent)s'), {percent: '%'})).replace(/\n/g, '<br>')
+				message: entities.encode(_(String(message).replace(/\%/g, '%(percent)s'), {percent: '%'})).replace(/\n/g, '<br>'),
 				result: result
 			};
 		},
