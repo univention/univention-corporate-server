@@ -261,7 +261,7 @@ install_ucs_test_appcenter_uninstall ()
 
 install_ucsschool ()
 {
-	case "$ucsschool_release" in
+	case "${ucsschool_release:-scope}" in
 		appcenter.test)
 			switch_to_test_app_center
 			install_apps ucsschool
@@ -269,7 +269,7 @@ install_ucsschool ()
 		public)
 			install_apps ucsschool
 			;;
-		*)
+		scope|*)
 			local component="repository/online/component/ucsschool_DEVEL"
 			ucr set "$component"/description="Development version of UCS@school packages" \
 				"$component"/version="$(ucr get version/version)" \
@@ -489,6 +489,3 @@ set_administrator_password_for_ucs_test ()
 
 
 # vim:set filetype=sh ts=4:
-release_update='public'
-errata_update='testing'
-ucsschool_release='scope'
