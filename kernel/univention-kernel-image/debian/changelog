@@ -1,3 +1,9 @@
+univention-kernel-image (7.100.0-1) unstable; urgency=medium
+
+  * Upgrade to UCS 3.3 and depend on kernel 3.16 (Bug #40687)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 22 Feb 2016 16:27:18 +0100
+
 univention-kernel-image (7.0.0-23) unstable; urgency=medium
 
   * Update to the latest kernel build (Bug #39209)
