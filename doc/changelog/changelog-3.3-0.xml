@@ -348,10 +348,10 @@
 	</section>
 	-->
 
-		<!--
 	<section id="changelog:service">
 		<title>System services</title>
 
+		<!--
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
 			<itemizedlist>
@@ -406,15 +406,18 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
+				<package>openssl</package> upgraded to 1.0.1e-2 (<u:bug>40688</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:service:proxy">
 			<title>Proxy services</title>
 			<itemizedlist>
@@ -438,8 +441,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-	</section>
 		-->
+	</section>
 
 	<!--
 	<section id="changelog:virt">
