@@ -33,57 +33,64 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/query",
+	"dojo/touch",
 	"dojo/dom-class",
 	"put-selector/put",
 	"dijit/TooltipDialog",
 	"dijit/popup",
 	"umc/widgets/ContainerWidget",
+	"umc/widgets/Button",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/setup"
-], function(declare, lang, array, query, domClass, put, TooltipDialog, popup, Container, TextBox, _) {
+], function(declare, lang, array, query, touch, domClass, put, TooltipDialog, popup, Container, Button, TextBox, _) {
 	return declare("umc.modules.setup.VirtualKeyboardBox", [ TextBox ], {
 
 		chars: null,
 		iconNode: null,
 		keyboard: null,
-		keys_per_row: 10,
 
 		_renderKeyboard: function() {
 			var siblingNode = query('.dijitValidationContainer', this.domNode)[0];
 			this.iconNode = put("span.umcKeyboardIcon", {
-				title: _('Virtual keyboard'),
-				onclick: lang.hitch(this, function() {
-					popup.open({
-						popup: this.keyboard,
-						around: this.iconNode
-					});
-				})
+				title: _('Virtual keyboard')
 			});
+			touch.press(this.iconNode, lang.hitch(this, function() {
+				popup.open({
+					parent: this,
+					popup: this.keyboard,
+					around: this.iconNode,
+					orient: ["below-centered"]
+				});
+			}));
 			put(siblingNode, '-', this.iconNode);
 
 			var charNodes = put('div.umcKeyboardRow', {
 				innerHTML: _("Please click on the required character.")
 			});
-			var keyboardRow = null;
+			var keyContainer = put(charNodes, 'div.umcKeyContainer');
 			array.forEach(this.chars, lang.hitch(this, function(ichar, idx) {
-				if (idx % this.keys_per_row === 0) {
-					keyboardRow = put(charNodes, 'div.umcKeyboardRow');
-				}
-				put(keyboardRow, 'div.umcKeyboardKey', {
-					onclick: lang.hitch(this, function() {
+				var key = new Button({
+					label: ichar,
+					'class' : 'umcKeyboardKey',
+					onClick: lang.hitch(this, function() {
 						var oldVal = this.get('value');
 						var newVal = oldVal + ichar;
 						this.set('value', newVal);
-					}),
-					innerHTML: ichar
+					})
 				});
+				put(keyContainer, key.domNode);
 			}));
 			this.keyboard = new TooltipDialog({
-				content: charNodes,
-				onMouseLeave: lang.hitch(this, function() {
-					popup.close(this.keyboard);
-				})
+				content: charNodes
 			});
+			var _focusHandler = lang.hitch(this, function(name, oldVal, newVal) {
+				var isKeyboardVisible = this.keyboard.domNode.offsetParent;
+				if (!newVal && isKeyboardVisible) {
+					popup.close(this.keyboard);
+				}
+			});
+			this.keyboard.watch('focused', _focusHandler);
+			this.watch('focused', _focusHandler);
 		},
 
 		buildRendering: function() {

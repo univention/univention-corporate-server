@@ -309,7 +309,7 @@ define([
 			var errorHeader = _('UCS setup - An error occurred');
 			var creatDomainLabel = _('Create a new UCS domain');
 			var createDomainHelpTextContent = _('Configure this system as first system for the new domain. Additional systems can join the domain later.');
-			var credentialsMasterEmailLabel = _('E-mail address to activate UCS')
+			var credentialsMasterEmailLabel = _('E-mail address to activate UCS');
 			var credentialsMasterHelpText = _('<p>Enter the name of your organization, an e-mail address to activate UCS and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>');
 			if (this.ucr['umc/web/appliance/name']) {
 				applianceName = this.ucr['umc/web/appliance/name'];
@@ -319,14 +319,14 @@ define([
 				errorHeader = _('Setup - An error occurred');
 				creatDomainLabel = _('Manage users and permissions directly on this system');
 				createDomainHelpTextContent = _('A new domain directory is created on this system. User and management data are stored locally.');
-				credentialsMasterEmailLabel = _('E-mail address to activate %s Appliance', applianceName)
+				credentialsMasterEmailLabel = _('E-mail address to activate %s Appliance', applianceName);
 				credentialsMasterHelpText = _('<p>Enter the name of your organization, an e-mail address to activate %s Appliance and a password for your <i>Administrator</i> account.</p><p>The password is mandatory, it will be used for the domain Administrator as well as for the local superuser <i>root</i>.</p>', applianceName);
 			}
 			welcomeMessage += ' ' + _('A few questions are needed to complete the configuration process.');
 			if (this.ucr['umc/web/appliance/logo']) {
 				// override UCS logo with app logo on welcome page
 				var logoURL = this.ucr['umc/web/appliance/logo'];
-				if (logoURL.indexOf('/') != 0) {
+				if (logoURL.indexOf('/') !== 0) {
 					// use path relative to dijit/themes/umc
 					logoURL = require.toUrl('dijit/themes/umc/' + logoURL);
 				}
@@ -662,13 +662,7 @@ define([
 					onChange: lang.hitch(this, '_updateOrganizationName')
 				}, {
 					type: VirtualKeyboardBox,
-					chars: [
-						'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-						'!', '#', '$', '%', '&', '\'', '*', '+', '-', '/',
-						'=', '?', '^', '_', '`', '{', '|', '}', '~', '(',
-						')', '<', '>', '[', ']', ':', ';', '@', '\\', ',',
-						 '.'
-					],
+					chars: ['-', '_', '.', '@'],
 					name: 'email_address',
 					label: credentialsMasterEmailLabel +
 						' (<a href="javascript:void(0);" onclick="require(\'dijit/registry\').byId(\'{id}\').showTooltip(event, \'email\');">' +
@@ -1136,7 +1130,7 @@ define([
 						return _('%s MiB', parseInt(memory));
 					}
 					return _('%s GiB', parseInt(memory / 1024));
-				}
+				};
 				var message = lang.replace(
 					'<p class="umcSetupMemoryWarning">' + _('<b>Warning:</b> At least {memory_min} RAM is required for the installation of {product_name}.') + ' ' +
 					_('This system only has {memory_total} RAM.') + ' ' + _('Continuing the installation might lead to a not functioning or hung up system.') + ' ' +
@@ -1371,7 +1365,7 @@ define([
 
 			// start initial DHCP request... they need a reference to the progress bar
 			if (this.isPageVisible('network') && this._isDHCPPreConfigured() && !this._hasPreconfiguredLinkLocalDHCPAddresses()) {
-				this._initialDHCPQueriesDeferred = this._sendDHCPQueries()
+				this._initialDHCPQueriesDeferred = this._sendDHCPQueries();
 			}
 
 			this._setupCitySearch();
