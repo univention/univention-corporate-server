@@ -441,5 +441,3 @@ set_administrator_password_for_ucs_test ()
 
 
 # vim:set filetype=sh ts=4:
-release_update='public'
-errata_update='testing'
