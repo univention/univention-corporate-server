@@ -101,7 +101,7 @@ upgrade_to_latest_test_errata ()
 upgrade_to_testing ()
 {
 	ucr set repository/online/server=updates-test.software-univention.de
-	upgrade_to_latest --updateto '3.2-99' "$@"
+	upgrade_to_latest --updateto '3.3-99' "$@"
 }
 
 upgrade_to_latest ()
