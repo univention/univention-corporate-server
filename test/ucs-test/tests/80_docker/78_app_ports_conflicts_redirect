@@ -9,7 +9,6 @@ from dockertest import *
 from univention.testing.utils import get_ldap_connection
 from univention.testing.utils import is_port_open
 
-import socket
 import pytest
 import time
 
@@ -25,8 +24,7 @@ if __name__ == '__main__':
 		dummy = App(name='dummy', version=version, build_package=False)
 
 		for port in [21, 23, 40021, 40023]:
-			with pytest.raises(socket.error):
-				is_port_open(port)
+			assert not is_port_open(port)
 
 		try:
 			exclusive.set_ini_parameter(

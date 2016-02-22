@@ -10,8 +10,6 @@ from univention.testing.utils import get_ldap_connection
 from univention.testing.utils import is_port_open
 from univention.testing.utils import restart_firewall
 
-import pytest
-import socket
 
 if __name__ == '__main__':
 	
@@ -27,8 +25,7 @@ if __name__ == '__main__':
 		# check ports are unused
 		for port in ports:
 			host_port, container_port = port.split(':')
-			with pytest.raises(socket.error):
-				is_port_open(host_port)
+			assert not is_port_open(host_port)
 
 		try:
 			# check ports exclusive
@@ -52,7 +49,7 @@ if __name__ == '__main__':
 			# check ports are open
 			for port in ports:
 				host_port, container_port = port.split(':')
-				is_port_open(host_port)
+				assert is_port_open(host_port)
 
 			# restart firewall and check again
 			restart_firewall()
@@ -60,7 +57,7 @@ if __name__ == '__main__':
 			# check ports are open
 			for port in ports:
 				host_port, container_port = port.split(':')
-				is_port_open(host_port)
+				assert is_port_open(host_port)
 		finally:
 			app.uninstall()
 			app.remove()
@@ -68,5 +65,4 @@ if __name__ == '__main__':
 		# check ports are unused
 		for port in ports:
 			host_port, container_port = port.split(':')
-			with pytest.raises(socket.error):
-				is_port_open(host_port)
+			assert not is_port_open(host_port)
