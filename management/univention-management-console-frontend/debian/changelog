@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-24) unstable; urgency=medium
+
+  * Bug #40749: fix error handling if error message contains '%'
+
+ -- Florian Best <best@univention.de>  Mon, 22 Feb 2016 17:29:36 +0100
+
 univention-management-console-frontend (5.0.63-23) unstable; urgency=medium
 
   * Bug #40738: don't unset all UCR variables
