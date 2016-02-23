@@ -60,8 +60,8 @@ jenkins_updates () {
 	echo "Starting from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 
 	case "${release_update:-}" in
-	public) upgrade_to_latest --updateto "$target" ;;
-	testing) upgrade_to_testing --updateto "$target" ;;
+	public) upgrade_to_latest --updateto "$target" "$@" ;;
+	testing) upgrade_to_testing --updateto "$target" "$@" ;;
 	none|"") ;;
 	*) echo "Unknown release_update='$release_update'" >&1 ; exit 1 ;;
 	esac
@@ -70,8 +70,8 @@ jenkins_updates () {
 	echo "Continuing from ${version_version}-${version_patchlevel}+${version_erratalevel} to ${target}..."
 
 	case "${errata_update:-}" in
-	testing) upgrade_to_latest_test_errata ;;
-	public) upgrade_to_latest_errata ;;
+	testing) upgrade_to_latest_test_errata "$@" ;;
+	public) upgrade_to_latest_errata "$@" ;;
 	none|"") ;;
 	*) echo "Unknown errata_update='$errata_update'" >&1 ; exit 1 ;;
 	esac
@@ -84,7 +84,7 @@ upgrade_to_latest_errata ()
 {
 	# Bug #34336: needs further discussion if release or only errata updates are expected
 	local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
-	upgrade_to_latest --updateto "$current"
+	upgrade_to_latest --updateto "$current" "$@"
 }
 
 upgrade_to_latest_test_errata ()
@@ -93,7 +93,7 @@ upgrade_to_latest_test_errata ()
 	while current="$(ucr get version/version)-$(ucr get version/patchlevel)" && [ "$current" != "$prev" ]
 	do
 		/root/activate-3.2-errata-test-scope.sh
-		upgrade_to_latest_errata
+		upgrade_to_latest_errata "$@"
 		prev="$current"
 	done
 }

@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.22-20) unstable; urgency=low
+
+  * Bug #39618: UCS-3.3 tests
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Feb 2016 08:36:17 +0100
+
 ucs-ec2-tools (0.1.22-19) unstable; urgency=low
 
   * Bug #35856: fix Python version for 3.2
