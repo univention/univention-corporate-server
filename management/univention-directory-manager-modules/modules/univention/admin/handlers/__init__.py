@@ -2534,31 +2534,13 @@ class simpleComputer( simpleLdap ):
 			return
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'updating primary groups')
 
-		searchResult=self.lo.search(base=self['primaryGroup'], attr=['gidNumber'])
-		for tmp,number in searchResult:
-			primaryGroupNumber = number['gidNumber']
+		primaryGroupNumber = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)
 		self.newPrimaryGroupDn=self['primaryGroup']
+		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber[0])])
 
 		if 'samba' in self.options:
-			searchResult=self.lo.search(base=self['primaryGroup'], attr=['sambaSID'])
-			for tmp,number in searchResult:
-				primaryGroupSambaNumber = number['sambaSID']
-
-		if self.oldinfo.has_key('primaryGroup'):
-			self.oldPrimaryGroupDn=self.oldinfo['primaryGroup']
-			searchResult=self.lo.search(base=self.oldinfo['primaryGroup'], attr=['gidNumber'])
-			for tmp,number in searchResult:
-				oldPrimaryGroup = number['gidNumber']
-			self.lo.modify(self.dn, [('gidNumber',oldPrimaryGroup[0], primaryGroupNumber[0])])
-			if 'samba' in self.options:
-				self.lo.modify(self.dn, [('sambaPrimaryGroupSID',oldPrimaryGroup[0], primaryGroupSambaNumber[0])])
-		else:
-			searchResult=self.lo.search(base=self.dn, scope='base', attr=['gidNumber'])
-			for tmp,number in searchResult:
-				oldNumber = number['gidNumber']
-			self.lo.modify(self.dn, [('gidNumber',oldNumber, primaryGroupNumber[0])])
-			if 'samba' in self.options:
-				self.lo.modify(self.dn, [('sambaPrimaryGroupSID',oldNumber, primaryGroupSambaNumber[0])])
+			primaryGroupSambaNumber = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)
+			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber[0])])
 
 	def cleanup(self):
 		self.open()

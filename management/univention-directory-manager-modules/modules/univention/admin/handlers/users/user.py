@@ -1698,36 +1698,21 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if not self.hasChanged('primaryGroup'):
 			return
 
-		searchResult=self.lo.search(base=self['primaryGroup'], attr=['gidNumber'])
-		for tmp,number in searchResult:
-			primaryGroupNumber = number['gidNumber']
+		primaryGroupNumber = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)
 		self.newPrimaryGroupDn=self['primaryGroup']
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber')
+		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber[0])])
 
 		if 'samba' in self.options:
-			searchResult=self.lo.search(base=self['primaryGroup'], attr=['sambaSID'])
-			for tmp,number in searchResult:
-				primaryGroupSambaNumber = number['sambaSID']
+			primaryGroupSambaNumber = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
+			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber[0])])
 
-		if self.oldinfo.has_key('primaryGroup'):
-			self.oldPrimaryGroupDn=self.oldinfo['primaryGroup']
-			searchResult=self.lo.search(base=self.oldinfo['primaryGroup'], attr=['gidNumber'])
-			for tmp,number in searchResult:
-				oldPrimaryGroup = number['gidNumber']
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber by oldinfo')
-			self.lo.modify(self.dn, [('gidNumber',oldPrimaryGroup[0], primaryGroupNumber[0])])
-			if 'samba' in self.options:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID by oldinfo')
-				self.lo.modify(self.dn, [('sambaPrimaryGroupSID',oldPrimaryGroup[0], primaryGroupSambaNumber[0])])
-		else:
-			searchResult=self.lo.search(base=self.dn, scope='base', attr=['gidNumber'])
-			for tmp,number in searchResult:
-				oldNumber = number['gidNumber']
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber')
-			self.lo.modify(self.dn, [('gidNumber',oldNumber, primaryGroupNumber[0])])
-			if 'samba' in self.options:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
-				self.lo.modify(self.dn, [('sambaPrimaryGroupSID',oldNumber, primaryGroupSambaNumber[0])])
-
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber')
+		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber[0])])
+		if 'samba' in self.options:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
+			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber[0])])
 
 		if univention.admin.baseConfig.is_true("directory/manager/user/primarygroup/update", True):
 			new_uid = self.info.get('username')
@@ -1771,14 +1756,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					'person',
 					'ldap_pwd')
 
-			if 'samba' in self.options and not self.lo.search(base=self['primaryGroup'], attr=['sambaSID'])[0][1]:
+			if 'samba' in self.options and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
 				raise univention.admin.uexceptions.primaryGroupWithoutSamba
 
 			if 'posix' in self.options or 'samba' in self.options:
 				if self['primaryGroup']:
-					searchResult=self.lo.search(base=self['primaryGroup'], attr=['gidNumber'])
-					for tmp,number in searchResult:
-						gidNum = number['gidNumber'][0]
+					searchResult = self.lo.getAttr(self['primaryGroup'], 'gidNumber')
+					if searchResult:
+						gidNum = searchResult[0]
 					self.newPrimaryGroupDn=self['primaryGroup']
 				else:
 					gidNum='99999'
