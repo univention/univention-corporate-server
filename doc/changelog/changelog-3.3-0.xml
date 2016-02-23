@@ -38,20 +38,29 @@
 	</section>
 	-->
 
-		<!--
 	<section id="changelog:basic">
 		<title>Basic system services</title>
-		-->
 
-		<!--
 		<section id="changelog:basic:kernel">
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Linux kernel has been updated to <wordasword>3.16</wordasword>. It provides a better hardware
+					support and many bugfixes (<u:bug>40687</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+		<section id="changelog:updater">
+			<title>Important package upgrades</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The GNU C Library package <package>eglibc</package> has been updated from <wordasword>2.11</wordasword> to
+					<wordasword>2.13</wordasword> (<u:bug>40685</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
@@ -112,9 +121,7 @@
 			</itemizedlist>
 		</section>
 		-->
-		<!--
 	</section>
-		-->
 
 		<!--
 	<section id="changelog:domain">
