@@ -527,14 +527,13 @@
 	</section>
 		-->
 
-		<!--
 	<section id="changelog:other">
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				<package>libxml2</package> upgraded to 2.8.0 (<u:bug>40696</u:bug>)
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
-		-->
 </chapter>
 <!-- vim: set ts=4 sw=4 noet foldmethod=syntax foldlevel=2: -->
