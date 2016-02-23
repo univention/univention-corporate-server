@@ -406,14 +406,16 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
+
 		<section id="changelog:service:dhcp">
 			<title>DHCP</title>
 			<itemizedlist>
 				<listitem><simpara>
+						<package>isc-dhcp</package> upgraded to 4.2.2 (<u:bug>40694</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
