@@ -184,10 +184,10 @@ class object(univention.admin.handlers.simpleLdap):
 			printergroups=self.lo.searchDn(filter='(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1))')
 			group_cn=[]
 			for pg_dn in printergroups:
-				member_list=self.lo.search(base=pg_dn, attr=['univentionPrinterGroupMember','cn'])
-				for member_cn in member_list[0][1]['univentionPrinterGroupMember']:
+				member_list = self.lo.get(pg_dn, attr=['univentionPrinterGroupMember','cn'])
+				for member_cn in member_list.get('univentionPrinterGroupMember', []):
 					if member_cn == self.info['name']:
-						group_cn.append(member_list[0][1]['cn'][0])
+						group_cn.append(member_list['cn'][0])
 			if len(group_cn) > 0:
 				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
 		elif self.info.get( 'setQuota', None ) == '1':
