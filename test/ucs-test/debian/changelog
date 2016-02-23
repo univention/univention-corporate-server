@@ -1,3 +1,10 @@
+ucs-test (6.0.33-17) unstable; urgency=medium
+
+  * 51_samba4/41samba-tool_user_password_change: set exposure to
+    dangerous (Bug #40185)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Feb 2016 15:50:30 +0100
+
 ucs-test (6.0.33-16) unstable; urgency=low
 
   * Bug #39657: 82_saml/05_saml_login check that SAML session is closed
