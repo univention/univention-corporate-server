@@ -1,3 +1,9 @@
+univention-updater (11.0.9-4) unstable; urgency=low
+
+  * Bug #40338: Remove traceback from default debug output
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 23 Feb 2016 11:46:22 +0100
+
 univention-updater (11.0.9-3) unstable; urgency=low
 
   * Bug #40338: Re-execute update executable after update

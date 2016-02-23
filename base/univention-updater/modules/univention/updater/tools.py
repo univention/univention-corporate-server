@@ -455,7 +455,7 @@ class UCSHttpServer(object):
         # GAI:-2   | HTTP:502/4URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
         # HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
         except urllib2.HTTPError, res:
-            self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), res)
+            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), res, exc_info=True)
             if res.code == httplib.UNAUTHORIZED:  # 401
                 raise ConfigurationError(uri, 'credentials not accepted')
             if res.code == httplib.PROXY_AUTHENTICATION_REQUIRED:  # 407
@@ -465,7 +465,7 @@ class UCSHttpServer(object):
                 raise ConfigurationError(uri, 'host is unresolvable')
             raise DownloadError(uri, res.code)
         except urllib2.URLError, e:
-            self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), e)
+            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), e, exc_info=True)
             if isinstance(e.reason, basestring):
                 reason = e.reason
             elif isinstance(e.reason, socket.timeout):
@@ -489,7 +489,7 @@ class UCSHttpServer(object):
             else:  # proxy
                 raise ProxyError(uri, reason)
         except socket.timeout as ex:
-            self.log.exception("Failed %s %s: %s", req.get_method(), req.get_full_url(), ex)
+            self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), ex, exc_info=True)
             raise ConfigurationError(uri, 'timeout in network connection')
 
 
@@ -660,12 +660,12 @@ class UniventionUpdater:
                 assert self.server.access(None, '')
                 self.log.info('Using configured prefix %s', self.repourl.path)
             except DownloadError, e:
-                self.log.exception('Failed configured prefix %s', self.repourl.path)
+                self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
                 uri, code = e
                 raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
         except ConfigurationError, e:
             if self.check_access:
-                self.log.exception('Failed server detection: %s' % (e,))
+                self.log.fatal('Failed server detection: %s', e, exc_info=True)
                 raise
 
     def get_next_version(self, version, components=[], errorsto='stderr'):
