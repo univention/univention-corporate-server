@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue:
+ * Some ldap search requests have been optimized in the 
+   handler modules (Bug 40652).
+bug: [40652]
