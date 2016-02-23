@@ -3,7 +3,7 @@ release: "4.1"
 version: [0,1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-updater
-fix: 11.0.9-3.1446.201602201639
+fix: 11.0.9-4.1447.201602231153
 desc: |
  This update addresses the following issue:
  * The change from http:// to https:// breaks the old updater from UCS-4.0-4,
