@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-appcenter
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The application information like vendor, description were HTML encoded
+   twice at some places.
+bug: [35324]
