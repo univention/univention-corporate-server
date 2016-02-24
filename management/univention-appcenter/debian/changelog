@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-6) unstable; urgency=medium
+
+  * Bug #35324: Fix HTML encoding
+
+ -- Florian Best <best@univention.de>  Wed, 24 Feb 2016 18:47:21 +0100
+
 univention-appcenter (5.0.20-5) unstable; urgency=medium
 
   * Bug #40713: Optimization of re-registration

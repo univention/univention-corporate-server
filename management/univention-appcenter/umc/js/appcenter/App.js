@@ -244,8 +244,8 @@ define([
 			var webInterfaceName = this.webInterfaceName || this.name;
 			if (webInterface) {
 				return lang.replace('<a href="{webinterface}" target="_blank">{name}</a>', {
-					webinterface: webInterface,
-					name: webInterfaceName
+					webinterface: entities.encode(webInterface),
+					name: entities.encode(webInterfaceName)
 				});
 			}
 		},
@@ -262,7 +262,7 @@ define([
 				return lang.replace("<a href='javascript:void(0)' onclick='require(\"umc/app\").openModule({umcmodulename}, {umcmoduleflavor})'>{name}</a>", {
 					umcmodulename: json.stringify(module.id),
 					umcmoduleflavor: json.stringify(module.flavor),
-					name: module.name
+					name: entities.encode(module.name)
 				});
 			}
 		},

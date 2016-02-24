@@ -34,6 +34,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/kernel",
 	"dojo/_base/event",
+	"dojox/html/entities",
 	"put-selector/put",
 	"dojo/dom-class",
 	"dojo/on",
@@ -44,7 +45,7 @@ define([
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, array, lang, kernel, dojoEvent, put, domClass, on, tools, GalleryPane, Tooltip, query, domGeometry, domStyle, _) {
+], function(declare, array, lang, kernel, dojoEvent, entities, put, domClass, on, tools, GalleryPane, Tooltip, query, domGeometry, domStyle, _) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'main',
 
@@ -95,7 +96,7 @@ define([
 				var tooltipMessage;
 				if (statusIconClass.indexOf("EndOfLife") !== -1) {
 					if (item.is_installed) {
-						tooltipMessage = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: item.name});
+						tooltipMessage = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: entities.encode(item.name)});
 					} else {
 						tooltipMessage = _("This application will not get any further updates.");
 					}

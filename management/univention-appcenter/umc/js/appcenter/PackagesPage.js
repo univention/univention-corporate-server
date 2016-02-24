@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/html/entities",
 	"dojo/promise/all",
 	"umc/dialog",
 	"umc/tools",
@@ -43,7 +44,7 @@ define([
 	"umc/modules/lib/server",
 	"umc/modules/appcenter/SearchForm",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, all, dialog, tools, UMCApplication, Page, Grid, ConfirmDialog, ProgressBar, libServer, SearchForm, _) {
+], function(declare, lang, array, entities, all, dialog, tools, UMCApplication, Page, Grid, ConfirmDialog, ProgressBar, libServer, SearchForm, _) {
 	return declare("umc.modules.appcenter.PackagesPage", [ Page ], {
 
 		moduleStore: null,
@@ -199,8 +200,8 @@ define([
 					var label_style = 'vertical-align:top;text-align:right;padding-left:1em;padding-right:.5em;white-space:nowrap;font-weight:bold;';
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
-					var txt = "<p style='" + head_style + "'>" +
-						_("Details for package '%(package)s'", data.result) +
+					var txt = "<p style='" + entities.encode(head_style) + "'>" +
+						_("Details for package '%(package)s'", entities.encode(data.result)) +
 						"</p>";
 					txt += '<table>\n';
 					var width = 550;	// mimic the default of dialog.confirm
@@ -209,11 +210,11 @@ define([
 							var fl = this._detail_field_label(f);
 							if (fl) {
 								txt += "<tr>\n";
-								txt += "<td style='" + label_style + "'>" + fl + "</td>\n";
+								txt += "<td style='" + entities.encode(label_style) + "'>" + entities.encode(fl) + "</td>\n";
 								// ----------------------------------------------------------------
 								// if you think the following logic is not needed...
 								// just open the 'devscripts' package and see for yourself.
-								var dfv = this._detail_field_value(f, data.result[f]);
+								var dfv = entities.encode(this._detail_field_value(f, data.result[f]));
 								var maxlen = 3000;
 								if (dfv.length > maxlen) {
 									// cut text at 'maxlen' chars, optionally adding a hint.
@@ -224,7 +225,7 @@ define([
 									width = 500 + (dfv.length / 10);
 								}
 								// ----------------------------------------------------------------
-								txt += "<td style='" + data_style + "'>" + dfv + "</td>\n";
+								txt += "<td style='" + entities.encode(data_style) + "'>" + dfv + "</td>\n";
 								txt += "</tr>\n";
 							}
 						}
@@ -399,15 +400,15 @@ define([
 				var label = '';
 				if (result.install.length) {
 					label = _('The following packages will be installed or upgraded:');
-					txt += '<p>' + label + '<ul><li>' + result.install.join('</li><li>') + '</li></ul></p>';
+					txt += '<p>' + label + '<ul><li>' + array.map(result.install, lang.hitch(entities, 'encode')).join('</li><li>') + '</li></ul></p>';
 				}
 				if (result.remove.length) {
 					label = _('The following packages will be removed:');
-					txt += '<p>' + label + '<ul><li>' + result.remove.join('</li><li>') + '</li></ul></p>';
+					txt += '<p>' + label + '<ul><li>' + array.map(result.remove, lang.hitch(entities, 'encode')).join('</li><li>') + '</li></ul></p>';
 				}
 				if (result.broken.length) {
 					label = _('This operation causes problems in the following packages that cannot be resolved:');
-					txt += '<p>' + label + '<ul><li>' + result.broken.join('</li><li>') + '</li></ul></p>';
+					txt += '<p>' + label + '<ul><li>' + array.map(result.broken, lang.hitch(entities, 'encode')).join('</li><li>') + '</li></ul></p>';
 				}
 				var headline = '';
 				var buttons = [];
@@ -421,8 +422,8 @@ define([
 						}
 					];
 				} else {
-					headline = _("Do you really want to %(verb)s %(ids)s?", {verb: verb, ids: ids.join(', ')});
-					var msg = _("%(verb)s %(ids)s", {verb: verb1, ids: ids.join(', ')});
+					headline = _("Do you really want to %(verb)s %(ids)s?", {verb: verb, ids: array.map(ids, lang.hitch(entities, 'encode')).join(', ')});
+					var msg = _("%(verb)s %(ids)s", {verb: verb1, ids: array.map(ids, lang.hitch(entities, 'encode')).join(', ')});
 					buttons = [
 						{
 							name: 'cancel',
@@ -448,7 +449,7 @@ define([
 
 			this.moduleStore.umcpCommand('appcenter/packages/invoke', {'function': func, 'packages': ids}).then(lang.hitch(this, function(data) {
 				if (data.result.not_found.length) {
-					dialog.alert(_('Packages not found: ') + data.result.not_found.join(', '));
+					dialog.alert(_('Packages not found: ') + array.map(data.result.not_found, lang.hitch(entities, 'encode')).join(', '));
 				} else {
 					this._switch_to_progress_bar(msg);
 				}

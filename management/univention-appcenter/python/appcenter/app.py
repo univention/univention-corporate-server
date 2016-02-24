@@ -38,7 +38,6 @@ from glob import glob
 import re
 from ConfigParser import RawConfigParser, NoOptionError, NoSectionError, MissingSectionHeaderError
 from copy import copy
-from cgi import escape as cgi_escape
 from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
@@ -138,13 +137,12 @@ class AppAttribute(UniventionMetaInfo):
 	save_as_list = '_attrs'
 	auto_set_name = True
 
-	def __init__(self, required=False, default=None, regex=None, choices=None, escape=True, localisable=False, localisable_by_file=None, strict=True):
+	def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True):
 		super(AppAttribute, self).__init__()
 		self.regex = regex
 		self.default = default
 		self.required = required
 		self.choices = choices
-		self.escape = escape
 		self.localisable = localisable
 		self.localisable_by_file = localisable_by_file
 		self.strict = strict
@@ -187,8 +185,6 @@ class AppAttribute(UniventionMetaInfo):
 				app_logger.warn(str(e))
 
 	def parse(self, value):
-		if self.escape and value:
-			value = cgi_escape(value)
 		return value
 
 	def get(self, value, ini_file):
@@ -302,10 +298,10 @@ class AppLocalisedListAttribute(AppListAttribute):
 
 
 class AppAttributeOrFalseOrNone(AppBooleanAttribute):
-	def __init__(self, required=False, default=None, regex=None, choices=None, escape=True, localisable=False, localisable_by_file=None, strict=True):
+	def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True):
 		choices = (choices or [])[:]
 		choices.extend([None, False])
-		super(AppAttributeOrFalseOrNone, self).__init__(required, default, regex, choices, escape, localisable, localisable_by_file, strict)
+		super(AppAttributeOrFalseOrNone, self).__init__(required, default, regex, choices, localisable, localisable_by_file, strict)
 
 	def parse(self, value):
 		if value == 'False':
@@ -321,9 +317,9 @@ class AppAttributeOrFalseOrNone(AppBooleanAttribute):
 
 class AppFileAttribute(AppAttribute):
 	# TODO: UCR TOKEN
-	def __init__(self, required=False, default=None, regex=None, choices=None, escape=False, localisable=True):
-		# escape=False, localisable=True !
-		super(AppFileAttribute, self).__init__(required, default, regex, choices, escape, localisable)
+	def __init__(self, required=False, default=None, regex=None, choices=None, localisable=True):
+		# localisable=True !
+		super(AppFileAttribute, self).__init__(required, default, regex, choices, localisable)
 
 	def parse_with_ini_file(self, value, ini_file):
 		filename = self.get_filename(ini_file)
@@ -364,7 +360,7 @@ class App(object):
 	name = AppAttribute(required=True, localisable=True)
 	version = AppAttribute(required=True)
 	description = AppAttribute(localisable=True)
-	long_description = AppAttribute(escape=False, localisable=True)
+	long_description = AppAttribute(localisable=True)
 	thumbnails = AppListAttribute(localisable=True)
 	categories = AppLocalisedListAttribute(choices=['Administration', 'Business', 'Collaboration', 'Education', 'System services', 'UCS components', 'Virtualization', ''], localisable_by_file='categories.ini', strict=False)
 

@@ -276,7 +276,7 @@ define([
 						domStyle.set(metaObj.domNode, 'display', 'block');
 					}
 				});
-			} else { 
+			} else {
 				array.forEach(this.metaCategories, function(metaObj) {
 					domStyle.set(metaObj.domNode, 'display', 'block');
 				});
@@ -290,7 +290,7 @@ define([
 			var category = this._searchSidebar.get('category');
 			array.forEach(this.metaCategories, function(metaObj) {
 				if (metaObj.label === category) {
-					metaObj.showAllApps();	
+					metaObj.showAllApps();
 				} else {
 					metaObj.showOneRowOfApps();
 				}

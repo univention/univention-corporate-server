@@ -31,6 +31,7 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojox/html/entities",
 	"dojo/topic",
 	"dojo/Deferred",
 	"umc/widgets/Form",
@@ -39,7 +40,7 @@ define([
 	"umc/widgets/ComboBox",
 	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, topic, Deferred, Form, Page, Text, ComboBox, _AppDialogMixin, _) {
+], function(declare, lang, entities, topic, Deferred, Form, Page, Text, ComboBox, _AppDialogMixin, _) {
 	return declare("umc.modules.appcenter.AppChooseHostDialog", [ Page, _AppDialogMixin ], {
 		_form: null,
 		_continueDeferred: null,
@@ -59,8 +60,8 @@ define([
 		reset: function(hosts, removedDueToInstalled, removedDueToRole) {
 			this._clearWidget('_form', true);
 
-			this.set('headerText', _('Installation of %s', this.app.name));
-			this.set('helpText', _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', this.app.name));
+			this.set('headerText', _('Installation of %s', entities.encode(this.app.name)));
+			this.set('helpText', _('In order to proceed with the installation of %s, please select the host on which the application is going to be installed.', entities.encode(this.app.name)));
 
 			if (this._continueDeferred) {
 				this._continueDeferred.reject();
@@ -93,12 +94,12 @@ define([
 			}];
 			var removeExplanation = '';
 			if (removedDueToInstalled.length === 1) {
-				removeExplanation += '<p>' + _('%s was removed from the list because the application is installed on this host.', removedDueToInstalled[0]) + '</p>';
+				removeExplanation += '<p>' + _('%s was removed from the list because the application is installed on this host.', entities.encode(removedDueToInstalled[0])) + '</p>';
 			} else if (removedDueToInstalled.length > 1) {
 				removeExplanation += '<p>' + _('%d hosts were removed from the list because the application is installed there.', removedDueToInstalled.length) + '</p>';
 			}
 			if (removedDueToRole.length === 1) {
-				removeExplanation += '<p>' + _('%s was removed from the list because the application requires a different server role than the one this host has.', removedDueToRole[0]) + '</p>';
+				removeExplanation += '<p>' + _('%s was removed from the list because the application requires a different server role than the one this host has.', entities.encode(removedDueToRole[0])) + '</p>';
 			} else if (removedDueToRole.length > 1) {
 				removeExplanation += '<p>' + _('%d hosts were removed from the list because the application requires a different server role than these hosts have.', removedDueToRole.length) + '</p>';
 			}
@@ -130,4 +131,3 @@ define([
 		}
 	});
 });
-

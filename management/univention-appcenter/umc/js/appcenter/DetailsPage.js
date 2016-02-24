@@ -31,12 +31,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojox/html/entities",
 	"umc/widgets/Page",
 	"umc/widgets/Form",
 	"umc/widgets/CheckBox",
 	"umc/widgets/TextBox",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, Page, Form, CheckBox, TextBox, _) {
+], function(declare, lang, entities, Page, Form, CheckBox, TextBox, _) {
 	return declare("umc.modules.appcenter.DetailsPage", [ Page ], {
 		moduleStore: null,
 		standby: null, // parents standby method must be passed. weird IE-Bug (#29587)
@@ -192,7 +193,7 @@ define([
 					name.focus();
 				}
 			} else {
-				this.set('headerText', lang.replace(_("Edit component details [{component}]"), {component:data}));
+				this.set('headerText', lang.replace(_("Edit component details [{component}]"), {component: entities.encode(data)}));
 				this.set('helpText', _("You're editing the details of the component definition."));
 
 				this._form.load(data).then(lang.hitch(this, function() { this.standby(false); }));

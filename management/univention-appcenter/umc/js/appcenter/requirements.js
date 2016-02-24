@@ -33,10 +33,11 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/topic",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/modules/lib/server",
 	"umc/i18n!umc/modules/appcenter"
-], function(kernel, lang, array, topic, tools, libServer, _) {
+], function(kernel, lang, array, topic, entities, tools, libServer, _) {
 	var Requirement = function(args) {
 		this.reasonDescription = args.reasonDescription;
 		this.solutionDescription = args.solutionDescription;
@@ -156,22 +157,22 @@ define([
 		}),
 		must_have_candidate: new Requirement({
 			reasonDescription: function(details) {
-				return _('%s cannot be updated. The application is either not installed or no newer version is available.', details.name);
+				return _('%s cannot be updated. The application is either not installed or no newer version is available.', entities.encode(details.name));
 			}
 		}),
 		must_not_be_installed: new Requirement({
 			reasonDescription: function(details) {
-				return _('%s is already installed.', details.name);
+				return _('%s is already installed.', entities.encode(details.name));
 			}
 		}),
 		must_not_be_end_of_life: new Requirement({
 			reasonDescription: function(details) {
-				return _('%s was discontinued and may not be installed anymore.', details.name);
+				return _('%s was discontinued and may not be installed anymore.', entities.encode(details.name));
 			}
 		}),
 		must_have_supported_architecture: new Requirement({
 			reasonDescription: function(details) {
-				return _('%(name)s only supports %(supported)s as architecture. %(msg)s', details);
+				return _('%(name)s only supports %(supported)s as architecture. %(msg)s', {name: entities.encode(details.name), supported: entities.encode(details.supported), msg: entities.encode(details.msg)});
 			}
 		}),
 		must_be_joined_if_master_packages: new Requirement({
@@ -190,14 +191,15 @@ define([
 		}),
 		must_have_correct_server_role: new Requirement({
 			reasonDescription: function(details) {
+				details = {name: entities.encode(details.name), current_role: entities.encode(details.current_role), allowed_roles: entities.encode(details.allowed_roles)};
 				return _('%(name)s cannot be installed on the current server role (%(current_role)s). In order to install the application, one of the following roles is necessary: %(allowed_roles)s', details);
 			}
 		}),
 		must_have_no_unmet_dependencies: new Requirement({
 			reasonDescription: function(details) {
-				var txt = _('%s requires the following applications.', details.name);
+				var txt = _('%s requires the following applications.', entities.encode(details.name));
 				txt += '<ul><li>' + array.map(details.detail, function(app) {
-					var appTxt = app.name;
+					var appTxt = entities.encode(app.name);
 					if (app.in_domain) {
 						if (app.local_allowed) {
 							appTxt += ' (' + _('this application may be installed on any computer in the domain') + ')';
@@ -213,7 +215,7 @@ define([
 				return _('Install them first.');
 			},
 			solutionLabel: function(details) {
-				return _('Open %s', details.detail[0].name);
+				return _('Open %s', entities.encode(details.detail[0].name));
 			},
 			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
@@ -222,8 +224,8 @@ define([
 		}),
 		must_have_no_conflicts_packages: new Requirement({
 			reasonDescription: function(details) {
-				var txt = _('%s conflicts with the following packages.', details.name);
-				txt += '<ul><li>' + details.detail.join('</li><li>') + '</li></ul>';
+				var txt = _('%s conflicts with the following packages.', entities.encode(details.name));
+				txt += '<ul><li>' + array.map(details.detail, function(detail) { return entities.encode(detail); }).join('</li><li>') + '</li></ul>';
 				return txt;
 			},
 			solutionDescription: function() {
@@ -232,15 +234,15 @@ define([
 		}),
 		must_have_no_conflicts_apps: new Requirement({
 			reasonDescription: function(details) {
-				var txt = _('%s conflicts with the following applications.', details.name);
-				txt += '<ul><li>' + array.map(details.detail, function(app) { return app.name; }).join('</li><li>') + '</li></ul>';
+				var txt = _('%s conflicts with the following applications.', entities.encode(details.name));
+				txt += '<ul><li>' + array.map(details.detail, function(app) { return entities.encode(app.name); }).join('</li><li>') + '</li></ul>';
 				return txt;
 			},
 			solutionDescription: function() {
 				return _('Uninstall them first.');
 			},
 			solutionLabel: function(details) {
-				return _('Open %s', details.detail[0].name);
+				return _('Open %s', entities.encode(details.detail[0].name));
 			},
 			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);
@@ -249,15 +251,15 @@ define([
 		}),
 		must_not_be_depended_on: new Requirement({
 			reasonDescription: function(details) {
-				var txt = _('%s is required for the following applications to work.', details.name);
-				txt += '<ul><li>' + array.map(details.detail, function(app) { return app.name; }).join('</li><li>') + '</li></ul>';
+				var txt = _('%s is required for the following applications to work.', entities.encode(details.name));
+				txt += '<ul><li>' + array.map(details.detail, function(app) { return entities.encode(app.name); }).join('</li><li>') + '</li></ul>';
 				return txt;
 			},
 			solutionDescription: function() {
 				return _('Uninstall them first.');
 			},
 			solutionLabel: function(details) {
-				return _('Open %s', details.detail[0].name);
+				return _('Open %s', entities.encode(details.detail[0].name));
 			},
 			solution: function(opts, details) {
 				opts.appDetailsPage.set('app', details[0]);

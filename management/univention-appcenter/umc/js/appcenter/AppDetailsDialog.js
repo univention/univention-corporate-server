@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/html/entities",
 	"dojo/topic",
 	"dojo/when",
 	"dojo/Deferred",
@@ -48,7 +49,7 @@ define([
 	"umc/modules/appcenter/requirements",
 	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, ComboBox, Form, ContainerWidget, Page, requirements, _AppDialogMixin, _) {
+], function(declare, lang, array, entities, topic, when, Deferred, tools, TitlePane, Button, Text, TextBox, CheckBox, ComboBox, Form, ContainerWidget, Page, requirements, _AppDialogMixin, _) {
 	return declare("umc.modules.appcenter.AppDetailsDialog", [ Page, _AppDialogMixin ], {
 		_container: null,
 		_continueDeferred: null,
@@ -156,7 +157,7 @@ define([
 				});
 				var titlePane = new TitlePane({
 					'class': 'umcAppConfigTitlePane',
-					title: _('Configure %s', this.app.name)
+					title: _('Configure %s', entities.encode(this.app.name))
 				});
 				titlePane.addChild(this._configForm);
 				this._container.addChild(titlePane);
@@ -229,10 +230,10 @@ define([
 			var componentID = this.app.candidateComponentID || this.app.componentID;
 			var label = _('The server tried to connect to the involved systems.') + ' ' + _('The following hosts cannot be reached or do not have access to the App Center server:');
 			this._container.addChild(new Text({
-				content: label + '<ul><li>' + unreachable.join('</li><li>') + '</li></ul>'
+				content: label + '<ul><li>' + array.map(unreachable, dojo.hitch(require('dojox/html/entities'), 'encode')).join('</li><li>') + '</li></ul>'
 			}));
 			if (!masterUnreachable) {
-				var cmdLine = lang.replace('univention-add-app {component_id} -m', {component_id: componentID});
+				var cmdLine = lang.replace('univention-add-app {component_id} -m', {component_id: entities.encode(componentID)});
 				var commandHint = '<strong>' + _('Attention!') + '</strong>' + ' ' + _('This application requires an extension of the LDAP schema.') + ' ' + _('Be sure to execute the following command as root on all of these backup servers <em>after</em> installing the application.') + '</td></tr><tr><td colspan="2"><pre>' + cmdLine + '</pre>';
 				this._container.addChild(new Text({
 					content: commandHint
@@ -248,7 +249,7 @@ define([
 					if (changes === undefined) {
 						details = '<div>' + _('Unknown') + '</div>';
 					} else {
-						details = '<ul><li>' + changes.join('</li><li>') + '</li></ul>';
+						details = '<ul><li>' + array.map(changes, dojo.hitch(require('dojox/html/entities'), 'encode')).join('</li><li>') + '</li></ul>';
 					}
 					txt = '<p>' + label + details + '</p>';
 				}

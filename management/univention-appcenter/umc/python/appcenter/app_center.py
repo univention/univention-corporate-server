@@ -54,7 +54,6 @@ import traceback
 import urllib
 import urllib2
 from glob import glob
-import cgi
 from urlparse import urlsplit, urljoin
 from httplib import HTTPException
 from socket import error as SocketError
@@ -301,8 +300,6 @@ class Application(object):
 
 		self._options['ucsoverviewcategory'] = 'service'
 		def _escape_value(key, value):
-			if key in ['longdescription']:
-				return value
 			if key == 'ucsoverviewcategory':
 				if value == 'False':
 					return ''
@@ -310,7 +307,7 @@ class Application(object):
 					return 'admin'
 				else:
 					return 'service'
-			return cgi.escape(value)
+			return value
 
 		# copy values from config file
 		for k, v in config.items('Application'):

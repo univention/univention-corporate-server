@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/html/entities",
 	"umc/tools",
 	"umc/widgets/Form",
 	"umc/widgets/Text",
@@ -43,7 +44,7 @@ define([
 	"umc/widgets/Page",
 	"./_AppDialogMixin",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, tools, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _AppDialogMixin, _) {
+], function(declare, lang, array, entities, tools, Form, Text, TextBox, CheckBox, ComboBox, ContainerWidget, TitlePane, Page, _AppDialogMixin, _) {
 	var endsWith = function(str, suffix) {
 	    return str.indexOf(suffix, str.length - suffix.length) !== -1;
 	};
@@ -54,7 +55,7 @@ define([
 		showUp: function() {
 			this._clearWidget('_container', true);
 
-			this.set('headerText', _('Configure %s', this.app.name));
+			this.set('headerText', _('Configure %s', entities.encode(this.app.name)));
 			this.set('helpText', _('Here you can set configuration options as well as start and stop the application.'));
 
 			this.set('headerButtons', [{
@@ -99,7 +100,7 @@ define([
 					label: _('Starting is prevented')
 				}]
 			}];
-			buttons = [{
+			var buttons = [{
 				name: 'start',
 				visible: !this.app.isRunning,
 				label: _('Start the application'),

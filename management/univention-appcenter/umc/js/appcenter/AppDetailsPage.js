@@ -35,6 +35,7 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/event",
 	"dojo/promise/all",
+	"dojo/json",
 	"dojo/when",
 	"dojo/query",
 	"dojo/io-query",
@@ -48,6 +49,7 @@ define([
 	"dojo/store/Observable",
 	"dijit/Tooltip",
 	"dojox/image/LightboxNano",
+	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
@@ -63,7 +65,7 @@ define([
 	"umc/modules/appcenter/App",
 	"umc/modules/appcenter/Carousel",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, Carousel, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, entities, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, Carousel, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -448,12 +450,12 @@ define([
 		_renderUsage: function() {
 			var usage = this.app.readme;
 			if (usage) {
-				usage = lang.replace(usage, this.app);
+				usage = lang.replace(usage, lang.hitch(this, function(p, id) { return entities.encode(this.app[id]); }));
 			} else {
 				usage = this._detailFieldCustomUsage();
 			}
 			if (usage) {
-				usageHeader = new Text({
+				var usageHeader = new Text({
 					content: _('First steps'),
 					'class': 'mainHeader'
 				});
@@ -539,7 +541,7 @@ define([
 			});
 			var longDescCSSClass = this._getCSSClass4TextLength(this.app.longDescription);
 			domClass.add(domConstruct.create('div', {
-				innerHTML: this.app.longDescription
+				innerHTML: this.app.longDescription  // no HTML escape!
 			}, descriptionContainer.domNode), longDescCSSClass);
 			this._detailsContainer.addChild(descriptionContainer);
 
@@ -649,7 +651,7 @@ define([
 							onclick: function(evt) {
 								// stolen from system-setup
 								var node = evt.target;
-								Tooltip.show(rating.description, node);
+								Tooltip.show(rating.description, node);  // TODO: html encode?
 								if (evt) {
 									dojoEvent.stop(evt);
 								}
@@ -790,9 +792,9 @@ define([
 						'default': true
 					}];
 				}
-				var content = '<h1>' + title + '</h1>';
+				var content = '<h1>' + title + '</h1>';  //?
 				content += '<div style="max-height:250px; overflow:auto;">' +
-						readme +
+						readme +  // no HTML escape!
 					'</div>';
 				dialog.confirm(content, buttons, title).then(function(response) {
 					if (response == 'yes') {
@@ -869,32 +871,32 @@ define([
 				switch(func) {
 				case 'install':
 					actionLabel = _('Install');
-					title = _('Installation of %s', this.app.name);
-					text = _('Please confirm to install the application %s on this host.', this.app.name);
-					progressMessage = _('Installing %s on this host', this.app.name);
+					title = _('Installation of %s', entities.encode(this.app.name));
+					text = _('Please confirm to install the application %s on this host.', entities.encode(this.app.name));
+					progressMessage = _('Installing %s on this host', entities.encode(this.app.name));
 					if (isRemoteAction) {
-						text = _('Please confirm to install the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
-						progressMessage = _('Installing %(name)s on host %(host)s', {name: this.app.name, host: host});
+						text = _('Please confirm to install the application %(name)s on host %(host)s.', {name: entities.encode(this.app.name), host: entities.encode(host)});
+						progressMessage = _('Installing %(name)s on host %(host)s', {name: entities.encode(this.app.name), host: entities.encode(host)});
 					}
 					break;
 				case 'uninstall':
 					actionLabel = _('Uninstall');
-					title = _('Removal of %s', this.app.name);
-					text = _('Please confirm to uninstall the application %s on this host.', this.app.name);
-					progressMessage = _('Uninstalling %s from this host', this.app.name);
+					title = _('Removal of %s', entities.encode(this.app.name));
+					text = _('Please confirm to uninstall the application %s on this host.', entities.encode(this.app.name));
+					progressMessage = _('Uninstalling %s from this host', entities.encode(this.app.name));
 					if (isRemoteAction) {
-						text = _('Please confirm to uninstall the application %(name)s from host %(host)s.', {name: this.app.name, host: host});
-						progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: this.app.name, host: host});
+						text = _('Please confirm to uninstall the application %(name)s from host %(host)s.', {name: entities.encode(this.app.name), host: entities.encode(host)});
+						progressMessage = _('Uninstalling %(name)s from host %(host)s', {name: entities.encode(this.app.name), host: entities.encode(host)});
 					}
 					break;
 				case 'update':
 					actionLabel = _('Upgrade');
-					title = _('Upgrade of %s', this.app.name);
-					text = _('Please confirm to upgrade the application %s on this host.', this.app.name);
-					progressMessage = _('Upgrading %s on this host', this.app.name);
+					title = _('Upgrade of %s', entities.encode(this.app.name));
+					text = _('Please confirm to upgrade the application %s on this host.', entities.encode(this.app.name));
+					progressMessage = _('Upgrading %s on this host', entities.encode(this.app.name));
 					if (isRemoteAction) {
-						text = _('Please confirm to upgrade the application %(name)s on host %(host)s.', {name: this.app.name, host: host});
-						progressMessage = _('Upgrading %(name)s on host %(host)s', {name: this.app.name, host: host});
+						text = _('Please confirm to upgrade the application %(name)s on host %(host)s.', {name: entities.encode(this.app.name), host: entities.encode(host)});
+						progressMessage = _('Upgrading %(name)s on host %(host)s', {name: entities.encode(this.app.name), host: entities.encode(host)});
 					}
 					break;
 				default:
@@ -925,7 +927,7 @@ define([
 					'values': values || {}
 				};
 
-				this._progressBar.reset(_('%s: Performing software tests on involved systems', this.app.name));
+				this._progressBar.reset(_('%s: Performing software tests on involved systems', entities.encode(this.app.name)));
 				this._progressBar._progressBar.set('value', Infinity); // TODO: Remove when this is done automatically by .reset()
 				var invokation;
 				if (this.app.installsAsDocker()) {
@@ -1024,15 +1026,15 @@ define([
 				} else {
 					var hostLink;
 					if (tools.status('username') == 'Administrator') {
-						hostLink = '<a href="javascript:void(0)" onclick="require(\'umc/tools\').openRemoteSession(\'' + this.app.hostMaster + '\')">' + this.app.hostMaster + '</a>';
+						hostLink = '<a href="javascript:void(0)" onclick="require(\'umc/tools\').openRemoteSession(' + json.stringify(this.app.hostMaster) + ')">' + entities.encode(this.app.hostMaster) + '</a>';
 					} else {
-						hostLink = '<a target="_blank" href="https://' + this.app.hostMaster + '/univention-management-console">' + this.app.hostMaster + '</a>';
+						hostLink = '<a target="_blank" href="https://' + entities.encode(this.app.hostMaster) + '/univention-management-console">' + entities.encode(this.app.hostMaster) + '</a>';
 					}
 					var dialogName = _('Activation of UCS');
 					msg =
 						'<p>' + _('You need to request and install a new license in order to use the Univention App Center.') + '</p>' +
 						'<p>' + _('To do this please log in on %(host)s as an administrator. Click on the gear-wheel symbol in the top right line of the screen and choose "%(dialogName)s". There you can request the new license.', {host: hostLink, dialogName: dialogName}) + '</p>' +
-						'<p>' + _('After that you can "%(action)s" "%(app)s" here on this system.', {action: action, app: this.app.name}) + '</p>';
+						'<p>' + _('After that you can "%(action)s" "%(app)s" here on this system.', {action: action, app: entities.encode(this.app.name)}) + '</p>';  // TODO: html escape action?
 				}
 				dialog.alert(msg);
 			}
@@ -1077,9 +1079,9 @@ define([
 					var component = match[1];
 					var role = match[2];
 					var host = match[3];
-					error = '<p>' + _('Installing the extension of the LDAP schema on %s seems to have failed.', '<strong>' + host + '</strong>') + '</p>';
+					error = '<p>' + _('Installing the extension of the LDAP schema on %s seems to have failed.', '<strong>' + entities.encode(host) + '</strong>') + '</p>';
 					if (role == 'DC Backup') {
-						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that backup system.', '<pre>univention-add-app ' + component + ' -m</pre>') + '</p>';
+						error += '<p>' + _('If everything else went correct and this is just a temporary network problem, you should execute %s as root on that backup system.', '<pre>univention-add-app ' + entities.encode(component) + ' -m</pre>') + '</p>';
 					}
 					error += '<p>' + _('Further information can be found in the following log file on each of the involved systems: %s', '<br /><em>/var/log/univention/management-console-module-appcenter.log</em>') + '</p>';
 				}
@@ -1134,7 +1136,7 @@ define([
 				txts.push(_('The app provides a web interface: %s.', webInterface));
 			}
 			if (this.app.isDocker) {
-				txts.push(_('%s uses a container technology for enhanced security and compatibility.', this.app.name));
+				txts.push(_('%s uses a container technology for enhanced security and compatibility.', entities.encode(this.app.name)));
 			}
 			if (txts.length) {
 				return txts.join(' ');
@@ -1165,7 +1167,7 @@ define([
 			var name = this.app.name;
 			var website = this.app.website;
 			if (name && website) {
-				return '<a href="' + website + '" target="_blank">' + name + '</a>';
+				return '<a href="' + entities.encode(website) + '" target="_blank">' + entities.encode(name) + '</a>';
 			}
 		},
 
@@ -1175,7 +1177,7 @@ define([
 				if (supportURL == 'None') {
 					return _('No support option provided');
 				}
-				return '<a href="' + supportURL + '" target="_blank">' + _('Available support options') + '</a>';
+				return '<a href="' + entities.encode(supportURL) + '" target="_blank">' + _('Available support options') + '</a>';
 			} else {
 				return _('Please contact the provider of the application');
 			}
@@ -1185,9 +1187,9 @@ define([
 			var vendor = this.app.vendor || this.app.maintainer;
 			var website = this.app.websiteVendor;
 			if (vendor && website) {
-				return '<div><a href="' + website + '" target="_blank">' + vendor + '</a></div>';
+				return '<div><a href="' + entities.encode(website) + '" target="_blank">' + entities.encode(vendor) + '</a></div>';
 			} else if (vendor) {
-				return '<div>' + vendor + '</div>';
+				return '<div>' + entities.encode(vendor) + '</div>';
 			}
 		},
 
@@ -1198,7 +1200,7 @@ define([
 			var maintainer = this.app.maintainer;
 			var website = this.app.websiteMaintainer;
 			if (maintainer && website) {
-				return '<a href="' + website + '" target="_blank">' + maintainer + '</a>';
+				return '<a href="' + entities.encode(website) + '" target="_blank">' + entities.encode(maintainer) + '</a>';
 			} else if (maintainer) {
 				return maintainer;
 			}
@@ -1207,7 +1209,7 @@ define([
 		_detailFieldCustomContact: function() {
 			var contact = this.app.contact;
 			if (contact) {
-				return '<a href="mailto:' + contact + '">' + contact + '</a>';
+				return '<a href="mailto:' + entities.encode(contact) + '">' + entities.encode(contact) + '</a>';
 			}
 		},
 
@@ -1228,7 +1230,7 @@ define([
 
 		_detailFieldCustomEndOfLife: function() {
 			if (this.app.endOfLife) {
-				var warning = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: this.app.name});
+				var warning = _('This application will not get any further updates. We suggest to uninstall %(app)s and search for an alternative application.', {app: entities.encode(this.app.name)});
 				if (this.app.isCurrent) {
 					warning += ' ' + _('Click on "%(button)s" if you want to continue running this application at your own risk.', {button: _('Continue using')});
 				}
@@ -1273,7 +1275,7 @@ define([
 				return;
 			}
 			var tr = domConstruct.create('tr', {}, this._detailsTable);
-			domConstruct.create('td', {innerHTML: label, style: {verticalAlign: 'top'}}, tr);
+			domConstruct.create('td', {innerHTML: entities.encode(label), style: {verticalAlign: 'top'}}, tr);
 			if (typeof value == 'string') {
 				domConstruct.create('td', {innerHTML: value}, tr);
 			} else {

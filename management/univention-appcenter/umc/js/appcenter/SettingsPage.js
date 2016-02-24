@@ -32,6 +32,7 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
@@ -40,7 +41,7 @@ define([
 	"umc/widgets/Form",
 	"umc/store",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, array, dialog, tools, Page, Grid, TitlePane, Form, store, _) {
+], function(declare, lang, array, entities, dialog, tools, Page, Grid, TitlePane, Form, store, _) {
 	return declare("umc.modules.appcenter.SettingsPage", [ Page ], {
 
 		moduleStore: null,
@@ -305,7 +306,7 @@ define([
 		// removes a component
 		_delete_components: function(ids) {
 
-			var msg = lang.replace(_("Are you sure you want to delete the following components: [{ids}]"), {ids: ids});
+			var msg = lang.replace(_("Are you sure you want to delete the following components: [{ids}]"), {ids: array.map(ids, function(id) { return entities.encode(id); })});
 			dialog.confirm(msg,
 			[
 				// deleting a component: do we allow this without confirmation if the admin
