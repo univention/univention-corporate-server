@@ -5,7 +5,7 @@ src: ucslint
 fix: 5.0.3-4.77.201602181807
 version: [1]
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * A new check for undesired shell globbing patterns in conjunction with
    "tr" has been added.
  * Fixed kwarg ignore_suffixes in FilteredDirWalkGenerator

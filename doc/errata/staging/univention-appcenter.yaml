@@ -9,6 +9,6 @@ desc: |
  * Docker Apps now do not have their repository removed in the container.
  * Upgrading Apps now does not lead to an error just after the installation
    of packages.
- * Upgrading Apps now does not lead to an error when upgrading its
+ * Upgrading Apps now does not lead to an error when upgrading their 
    master packages.
 bug: [40315, 40674, 40713]
