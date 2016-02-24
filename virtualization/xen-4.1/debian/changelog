@@ -1,3 +1,9 @@
+xen-4.1 (4.1.6.1-1) unstable; urgency=low
+
+  * Bug #40697: Switch to 4.1.6.1 from Ubuntu.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 24 Feb 2016 15:48:52 +0100
+
 xen-4.1 (4.1.3-22) unstable; urgency=medium
 
   [ Jan Beulich ]

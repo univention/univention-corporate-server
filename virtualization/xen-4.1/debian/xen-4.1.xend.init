@@ -8,9 +8,9 @@
 # description: Starts and stops the Xen control daemon.
 ### BEGIN INIT INFO
 # Provides:          xend
-# Required-Start:    $syslog $remote_fs xenstored
+# Required-Start:    $syslog $remote_fs xenstored xenconsoled 
 # Should-Start:
-# Required-Stop:     $syslog $remote_fs xenstored
+# Required-Stop:     $syslog $remote_fs xenstored xenconsoled 
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
@@ -35,6 +35,7 @@ function await_daemons_up
 	xend status
 	while [ $? -ne 0 -a $i -lt $rets ]; do
 	    sleep 1
+	    echo -n .
 	    i=$(($i + 1))
 	    xend status
 	done
@@ -49,7 +50,7 @@ case "$1" in
 	fi
 	
 	if [ -z "`ps -C xenconsoled -o pid=`" ]; then
-		log_failure_msg "xencommons must be started first."
+		log_failure_msg "xencommons should be started first."
 		exit 0
 	fi
 	mkdir -p /var/lock /var/run/xend/boot
