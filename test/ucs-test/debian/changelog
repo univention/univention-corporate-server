@@ -1,3 +1,13 @@
+ucs-test (6.0.33-19) unstable; urgency=medium
+
+  * 51_samba4/60_dns_register_exclude_interfaces: Use a dummy network
+    interface since samba doesn't consider virtual interfaces if one
+    interface is already excluded (Bug #40275)
+  * 51_samba4/60_dns_register_exclude_interfaces: Cleanup old ip
+    addressees (Bug #40275)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Feb 2016 15:21:06 +0100
+
 ucs-test (6.0.33-18) unstable; urgency=medium
 
   * 72_udm-extensions/22_listener_version_change: Removed the apptest

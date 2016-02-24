@@ -19,33 +19,52 @@
 
 RETVAL=100
 
+arecords=$(univention-ldapsearch -x -b relativeDomainName=$(hostname),zoneName=$(dnsdomainname),cn=dns,$(ucr get ldap/base) | grep "^aRecord: ")
 samba_register_exclude_interfaces="$(ucr get samba/register/exclude/interfaces)"
+ucr unset samba/register/exclude/interfaces
+
+lsmod | grep dummy && dummy_loaded=1
+modprobe dummy numdummies=3
+
+ip link set name eth100 dev dummy0
+ip link set name eth101 dev dummy1
+ip link set name eth102 dev dummy2
 
 # Create a dummy interface
-ifconfig eth0:100 1.2.3.100
-ifconfig eth0:101 1.2.3.101
-ifconfig eth0:102 1.2.3.102
+ifconfig eth100 1.2.3.100
+ifconfig eth101 1.2.3.101
+ifconfig eth102 1.2.3.102
 
 /usr/sbin/samba_dnsupdate
 
-host "$(hostname -f)" | grep -F 1.2.3.100 || fail_test "eth0_100 is not registered"
-host "$(hostname -f)" | grep -F 1.2.3.101 || fail_test "eth0_101 is not registered"
-host "$(hostname -f)" | grep -F 1.2.3.102 || fail_test "eth0_102 is not registered"
+host "$(hostname -f)" | grep -F 1.2.3.100 || fail_test "eth100 is not registered"
+host "$(hostname -f)" | grep -F 1.2.3.101 || fail_test "eth101 is not registered"
+host "$(hostname -f)" | grep -F 1.2.3.102 || fail_test "eth102 is not registered"
 
-ucr set samba/register/exclude/interfaces="eth0:100 eth0:102"
+ucr set samba/register/exclude/interfaces="eth100 eth102"
 /usr/sbin/samba_dnsupdate
 
-host "$(hostname -f)" | grep -F 1.2.3.100 && fail_test "samba/register/exclude/interfaces has been set but eth0:100 was registered anyway"
-host "$(hostname -f)" | grep -F 1.2.3.101 || fail_test "eth0_101 is not excluded but the IP has not been registered"
-host "$(hostname -f)" | grep -F 1.2.3.102 && fail_test "samba/register/exclude/interfaces has been set but eth0:100 was registered anyway"
+host "$(hostname -f)" | grep -F 1.2.3.100 && fail_test "samba/register/exclude/interfaces has been set but eth100 was registered anyway"
+host "$(hostname -f)" | grep -F 1.2.3.101 || fail_test "eth101 is not excluded but the IP has not been registered"
+host "$(hostname -f)" | grep -F 1.2.3.102 && fail_test "samba/register/exclude/interfaces has been set but eth102 was registered anyway"
 
-ifconfig eth0:100 down
-ifconfig eth0:101 down
-ifconfig eth0:102 down
+ifconfig eth100 down
+ifconfig eth101 down
+ifconfig eth102 down
+
+ip link delete eth100 type dummy
+ip link delete eth101 type dummy
+ip link delete eth102 type dummy
+if [ "$dummy_loaded" != 1 ]; then
+	rmmod dummy
+fi
 
 test -n "$samba_register_exclude_interfaces" && ucr set samba/register/exclude/interfaces="$samba_register_exclude_interfaces" || ucr unset samba/register/exclude/interfaces
-# Bug #28829: removed IP addresses are *not* unregistered and returned in subsequent DNS queries, which break some Docker tests.
+
 /usr/sbin/samba_dnsupdate
+
+udm dns/host_record modify  --dn=relativeDomainName=$(hostname),zoneName=$(dnsdomainname),cn=dns,$(ucr get ldap/base) $(echo $arecords | sed -e 's|aRecord: |--set a=|g')
+
 host "$(hostname -f)"
 
 exit $RETVAL
