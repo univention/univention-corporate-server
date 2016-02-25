@@ -527,6 +527,21 @@ class base(object):
 
 		return self._remove(remove_childs)
 
+	def get_gid_for_primary_group(self):
+		gidNum = '99999'
+		if self['primaryGroup']:
+			try:
+				gidNum = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)[0]
+			except ldap.NO_SUCH_OBJECT:
+				raise univention.admin.uexceptions.primaryGroup(self['primaryGroup'])
+		return gidNum
+
+	def get_sid_for_primary_group(self):
+		try:
+			sidNum = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)[0]
+		except ldap.NO_SUCH_OBJECT:
+			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
+		return sidNum
 
 class simpleLdap(base):
 
@@ -2528,19 +2543,22 @@ class simpleComputer( simpleLdap ):
 				groupObject['hosts'].remove(self.dn)
 				groupObject.modify(ignore_license=1)
 
-
 	def primary_group(self):
 		if not self.hasChanged('primaryGroup'):
 			return
+
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'updating primary groups')
 
-		primaryGroupNumber = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)
-		self.newPrimaryGroupDn=self['primaryGroup']
-		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber[0])])
+		self.newPrimaryGroupDn = self['primaryGroup']
+		if 'primaryGroup' in self.oldinfo:
+			self.oldPrimaryGroupDn = self.oldinfo['primaryGroup']
+
+		primaryGroupNumber = self.get_gid_for_primary_group()
+		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber)])
 
 		if 'samba' in self.options:
-			primaryGroupSambaNumber = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)
-			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber[0])])
+			primaryGroupSambaNumber = self.get_sid_for_primary_group()
+			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber)])
 
 	def cleanup(self):
 		self.open()
