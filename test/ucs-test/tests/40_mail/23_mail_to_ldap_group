@@ -54,7 +54,7 @@ def main():
 							'mailAddress' : group_mail,
 							'users'       : users_list[0],
 						},
-						position='cn=ucsschool,cn=groups,%s' % ucr.get('ldap/base'),
+						position='cn=groups,%s' % ucr.get('ldap/base'),
 						check_for_drs_replication=True
 					)
 					udm.modify_object(
