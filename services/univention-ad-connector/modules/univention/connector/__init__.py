@@ -113,7 +113,7 @@ def dictonary_lowercase(dict):
 			pass
 
 def compare_lowercase(val1, val2):
-	try: # TODO: failes if conversion to ascii-str raises exception
+	try: # TODO: fails if conversion to ascii-str raises exception
 		if dictonary_lowercase(val1) == dictonary_lowercase(val2):
 			return True
 		else:
@@ -303,13 +303,15 @@ class configsaver:
 		return self.config.has_key(section) and self.config[section].has_key(option)
 
 class attribute:
-	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', mapping=(), reverse_attribute_check=False ):
+	def __init__ ( self, ucs_attribute='', ldap_attribute='', con_attribute='', con_other_attribute='', required=0, compare_function='', con_value_map_function='', ucs_value_map_function='', mapping=(), reverse_attribute_check=False ):
 		self.ucs_attribute=ucs_attribute
 		self.ldap_attribute=ldap_attribute
 		self.con_attribute=con_attribute
 		self.con_other_attribute=con_other_attribute
 		self.required=required
 		self.compare_function=compare_function
+		self.con_value_map_function = con_value_map_function
+		self.ucs_value_map_function = ucs_value_map_function
 		if mapping:
 			self.mapping=mapping
 		# Make a reverse check of this mapping. This is necassary if the attribute is
@@ -1016,8 +1018,6 @@ class ucs:
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has no custom attributes' % ucs_object.module)
 
 					if not detected_ca:					
-						if type(value) == type(types.ListType()) and len(value) == 1:
-							value = value[0]
 						equal = False
 
 						# set encoding
@@ -1033,7 +1033,12 @@ class ucs:
 						else:
 							equal = compare[0] == compare[1]
 						if not equal:
-							ucs_object[ucs_key] = value
+							if attributes.ucs_value_map_function:
+								ucs_object[ucs_key] = attributes.ucs_value_map_function(value)
+							else:
+								if type(value) == type(types.ListType()) and len(value) == 1:
+									value = value[0]
+								ucs_object[ucs_key] = value
 							ud.debug(ud.LDAP, ud.INFO,
 											   "set key in ucs-object: %s" % ucs_key)
 				else:

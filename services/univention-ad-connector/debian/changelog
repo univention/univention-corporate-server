@@ -1,3 +1,11 @@
+univention-ad-connector (10.0.1-6) unstable; urgency=medium
+
+  * Bug #40357: Extend mapping to map proxyAddresses
+  * Add support for ucs_value_map_function and con_value_map_function
+  * New proxyAddresses class with compare, ucs2con and con2ucs methods
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Feb 2016 16:08:04 +0100
+
 univention-ad-connector (10.0.1-5) unstable; urgency=medium
 
   * Bug #40357: sync_from_ucs refactoring to reduce nesting depth

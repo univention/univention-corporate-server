@@ -47,6 +47,65 @@ class kerberosAuthenticationFailed(Exception): pass
 # page results
 PAGE_SIZE = 1000
 
+class proxyAddresses:
+	@classmethod
+	def strip_smtp(cls, val):
+		if val.lower().find('smtp:') == 0:
+			return val[5:]
+		else:
+			return val
+
+	@classmethod
+	def prepend_smtp(cls, val):
+		return 'smtp:' + val
+
+	@classmethod
+	def compare(cls, values1, values2):
+		_d=ud.function('%s.compare' % cls.__name__)
+		ud.debug(ud.LDAP, ud.PROCESS, "%s.compare: values1: %s" %
+			(cls.__name__,
+			values1
+			)
+		)
+		ud.debug(ud.LDAP, ud.PROCESS, "%s.compare: values2: %s" %
+			(cls.__name__,
+			values2
+			)
+		)
+		values1_normalized = map(cls.strip_smtp, values1)
+		values2_normalized = map(cls.strip_smtp, values2)
+		result = univention.connector.compare_lowercase(
+			values1_normalized, values2_normalized)
+		ud.debug(ud.LDAP, ud.PROCESS, "%s.compare: %s" %
+			(cls.__name__, result))
+		return result
+
+	@classmethod
+	def con2ucs(cls, values):
+		_d=ud.function('%s.con2ucs' % cls.__name__)
+		ud.debug(ud.LDAP, ud.PROCESS, "%s.con2ucs: values: %s" %
+			(cls.__name__,
+			values
+			)
+		)
+		result = map(cls.strip_smtp, values)
+		ud.debug(ud.LDAP, ud.PROCESS, "%s.con2ucs: %s" %
+			(cls.__name__, result))
+		return result
+
+	@classmethod
+	def ucs2con(cls, values):
+		_d=ud.function('%s.ucs2con' % cls.__name__)
+		ud.debug(ud.LDAP, ud.PROCESS, "%s.ucs2con: values: %s" %
+			(cls.__name__,
+			values
+			)
+		)
+		result = map(cls.prepend_smtp, values)
+		ud.debug(ud.LDAP, ud.PROCESS, "%s.ucs2con: %s" %
+			(cls.__name__, result))
+		return result
+
 def activate_user (connector, key, object):
         # set userAccountControl to 544
         for i in range(0,10):
@@ -2151,6 +2210,8 @@ class ad(univention.connector.ucs):
 						attribute = self.property[property_type].attributes[attr_key]
 						if not attr in (attribute.con_attribute, attribute.con_other_attribute):
 							continue
+						if attribute.con_value_map_function:
+							value = attribute.con_value_map_function(value)
 						addlist.append((attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
@@ -2163,6 +2224,8 @@ class ad(univention.connector.ucs):
 							continue
 
 						if value:
+							if post_attribute.con_value_map_function:
+								value = post_attribute.con_value_map_function(value)
 							modlist.append((ldap.MOD_REPLACE, attr, value))
 						else:
 							modlist.append((ldap.MOD_DELETE, attr, None))
@@ -2203,9 +2266,18 @@ class ad(univention.connector.ucs):
 
 						if not ad_object.has_key(attr):
 							if value:
+								if attribute.con_value_map_function:
+									value = attribute.con_value_map_function(value)
 								modlist.append((ldap.MOD_ADD, attr, value))
-						elif univention.connector.compare_lowercase(value,ad_object[attr]):
-							modlist.append((ldap.MOD_REPLACE, attr, value))
+						else:
+							if attribute.compare_function:
+								equal = attribute.compare_function(value, ad_object[attr])
+							else:
+								equal = univention.connector.compare_lowercase(value,ad_object[attr])
+							if not equal:
+								if attribute.con_value_map_function:
+									value = attribute.con_value_map_function(value)
+								modlist.append((ldap.MOD_REPLACE, attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
 					attr_list.append(attr)
@@ -2219,9 +2291,18 @@ class ad(univention.connector.ucs):
 								continue
 						if not ad_object.has_key(attr):
 							if value:
+								if post_attribute.con_value_map_function:
+									value = post_attribute.con_value_map_function(value)
 								modlist.append((ldap.MOD_ADD, attr, value))
-						elif equal = univention.connector.compare_lowercase(value,ad_object[attr]):
-							modlist.append((ldap.MOD_REPLACE, attr, value))
+						else:
+							if post_attribute.compare_function:
+								equal = post_attribute.compare_function(value, ad_object[attr])
+							else:
+								equal = univention.connector.compare_lowercase(value,ad_object[attr])
+							if not equal:
+								if post_attribute.con_value_map_function:
+									value = post_attribute.con_value_map_function(value)
+								modlist.append((ldap.MOD_REPLACE, attr, value))
 
 			attrs_in_current_ucs_object = object['attributes'].keys()
 			attrs_which_should_be_mapped = []
