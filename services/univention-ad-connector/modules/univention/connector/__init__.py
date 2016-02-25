@@ -1034,11 +1034,10 @@ class ucs:
 							equal = compare[0] == compare[1]
 						if not equal:
 							if attributes.con_value_map_function:
-								ucs_object[ucs_key] = attributes.con_value_map_function(value)
-							else:
-								if type(value) == type(types.ListType()) and len(value) == 1:
-									value = value[0]
-								ucs_object[ucs_key] = value
+								value = attributes.con_value_map_function(value)
+							if type(value) == type(types.ListType()) and len(value) == 1:
+								value = value[0]
+							ucs_object[ucs_key] = value
 							ud.debug(ud.LDAP, ud.INFO,
 											   "set key in ucs-object: %s" % ucs_key)
 				else:
