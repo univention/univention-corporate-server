@@ -537,7 +537,7 @@ class Instance(umcm.Base, ProgressMixin):
 						result['remove'] = application.uninstall_dry_run(self.package_manager)
 						result['software_changes_computed'] = True
 						can_continue = False
-					can_continue = can_continue and delayed_can_continue
+					can_continue = can_continue and delayed_can_continue and not only_dry_run
 					result['serious_problems'] = serious_problems
 					result['can_continue'] = can_continue
 

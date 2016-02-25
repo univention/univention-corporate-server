@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-7) unstable; urgency=medium
+
+  * Bug #40005: don't stop installation/upgrading if no package changes are
+  	going to happen
+
+ -- Florian Best <best@univention.de>  Thu, 25 Feb 2016 06:51:40 +0100
+
 univention-appcenter (5.0.20-6) unstable; urgency=medium
 
   * Bug #35324: Fix HTML encoding
