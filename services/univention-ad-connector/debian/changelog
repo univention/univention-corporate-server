@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-7) unstable; urgency=medium
+
+  * Bug #40357: Reduce debug logging from proxyAddresses class
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Feb 2016 16:19:11 +0100
+
 univention-ad-connector (10.0.1-6) unstable; urgency=medium
 
   * Bug #40357: Extend mapping to map proxyAddresses

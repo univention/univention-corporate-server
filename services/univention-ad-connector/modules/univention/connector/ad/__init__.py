@@ -62,48 +62,24 @@ class proxyAddresses:
 	@classmethod
 	def compare(cls, values1, values2):
 		_d=ud.function('%s.compare' % cls.__name__)
-		ud.debug(ud.LDAP, ud.PROCESS, "%s.compare: values1: %s" %
-			(cls.__name__,
-			values1
-			)
-		)
-		ud.debug(ud.LDAP, ud.PROCESS, "%s.compare: values2: %s" %
-			(cls.__name__,
-			values2
-			)
-		)
 		values1_normalized = map(cls.strip_smtp, values1)
 		values2_normalized = map(cls.strip_smtp, values2)
 		result = univention.connector.compare_lowercase(
 			values1_normalized, values2_normalized)
-		ud.debug(ud.LDAP, ud.PROCESS, "%s.compare: %s" %
-			(cls.__name__, result))
 		return result
 
 	@classmethod
 	def con2ucs(cls, values):
 		_d=ud.function('%s.con2ucs' % cls.__name__)
-		ud.debug(ud.LDAP, ud.PROCESS, "%s.con2ucs: values: %s" %
-			(cls.__name__,
-			values
-			)
-		)
 		result = map(cls.strip_smtp, values)
-		ud.debug(ud.LDAP, ud.PROCESS, "%s.con2ucs: %s" %
-			(cls.__name__, result))
+		ud.debug(ud.LDAP, ud.ALL, "%s.con2ucs: %s" % (cls.__name__, result))
 		return result
 
 	@classmethod
 	def ucs2con(cls, values):
 		_d=ud.function('%s.ucs2con' % cls.__name__)
-		ud.debug(ud.LDAP, ud.PROCESS, "%s.ucs2con: values: %s" %
-			(cls.__name__,
-			values
-			)
-		)
 		result = map(cls.prepend_smtp, values)
-		ud.debug(ud.LDAP, ud.PROCESS, "%s.ucs2con: %s" %
-			(cls.__name__, result))
+		ud.debug(ud.LDAP, ud.ALL, "%s.ucs2con: %s" % (cls.__name__, result))
 		return result
 
 def activate_user (connector, key, object):
