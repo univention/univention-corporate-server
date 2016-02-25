@@ -1,3 +1,10 @@
+univention-ad-connector (10.0.1-5) unstable; urgency=medium
+
+  * Bug #40357: sync_from_ucs refactoring to reduce nesting depth
+    in preparation for next commit
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Feb 2016 15:50:18 +0100
+
 univention-ad-connector (10.0.1-4) unstable; urgency=medium
 
   * Bug #40357: fix duplicate ldap modify in sync_from_ucs

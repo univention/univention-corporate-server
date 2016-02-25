@@ -2129,6 +2129,9 @@ class ad(univention.connector.ucs):
 
 		ad_object=self.get_object(object['dn'])
 
+		#
+		# ADD
+		#
 		if (object['modtype'] == 'add' and not ad_object) or (object['modtype'] == 'modify' and not ad_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: add object: %s"%object['dn'])
 
@@ -2144,27 +2147,25 @@ class ad(univention.connector.ucs):
 
 			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
 				for attr,value in object['attributes'].items():
-					for attribute in self.property[property_type].attributes.keys():
-						if self.property[property_type].attributes[attribute].con_attribute == attr:
-							addlist.append((attr, value))
-						if self.property[property_type].attributes[attribute].con_other_attribute == attr:
-							addlist.append((attr, value))
+					for attr_key in self.property[property_type].attributes.keys():
+						attribute = self.property[property_type].attributes[attr_key]
+						if not attr in (attribute.con_attribute, attribute.con_other_attribute):
+							continue
+						addlist.append((attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
-					for attribute in self.property[property_type].post_attributes.keys():
-						if self.property[property_type].post_attributes[attribute].reverse_attribute_check:
-							if not object['attributes'].get(self.property[property_type].post_attributes[attribute].ldap_attribute):
+					for attr_key in self.property[property_type].post_attributes.keys():
+						post_attribute = self.property[property_type].post_attributes[attr_key]
+						if post_attribute.reverse_attribute_check:
+							if not object['attributes'].get(post_attribute.ldap_attribute):
 								continue
-						if self.property[property_type].post_attributes[attribute].con_attribute == attr:
-							if value:
-								modlist.append((ldap.MOD_REPLACE, attr, value))
-							else:
-								modlist.append((ldap.MOD_DELETE, attr, None))
-						if self.property[property_type].post_attributes[attribute].con_other_attribute == attr:
-							if value:
-								modlist.append((ldap.MOD_REPLACE, attr, value))
-							else:
-								modlist.append((ldap.MOD_DELETE, attr, None))
+						if not attr in (post_attribute.con_attribute, post_attribute.con_other_attribute):
+							continue
+
+						if value:
+							modlist.append((ldap.MOD_REPLACE, attr, value))
+						else:
+							modlist.append((ldap.MOD_DELETE, attr, None))
 
 			self.lo_ad.lo.add_s(compatible_modstring(object['dn']), compatible_addlist(addlist)) #FIXME encoding
 
@@ -2186,32 +2187,41 @@ class ad(univention.connector.ucs):
 					f(self, property_type, object)
 					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % f)
 
+		#
+		# MODIFY
+		#
 		elif (object['modtype'] == 'modify' and ad_object) or (object['modtype'] == 'add' and ad_object):
 			ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: modify object: %s"%object['dn'])
 			attr_list = []
 			if hasattr(self.property[property_type], 'attributes') and self.property[property_type].attributes != None:
 				for attr,value in object['attributes'].items():
 					attr_list.append(attr)
-					for attribute in self.property[property_type].attributes.keys():
-						if self.property[property_type].attributes[attribute].con_attribute == attr or self.property[property_type].attributes[attribute].con_other_attribute == attr:
-							if not ad_object.has_key(attr):
-								if value:
-									modlist.append((ldap.MOD_ADD, attr, value))
- 							elif not univention.connector.compare_lowercase(value,ad_object[attr]): # FIXME: use defined compare-function from mapping.py
-								modlist.append((ldap.MOD_REPLACE, attr, value))
+					for attr_key in self.property[property_type].attributes.keys():
+						attribute = self.property[property_type].attributes[attr_key]
+						if not attr in (attribute.con_attribute, attribute.con_other_attribute):
+							continue
+
+						if not ad_object.has_key(attr):
+							if value:
+								modlist.append((ldap.MOD_ADD, attr, value))
+						elif univention.connector.compare_lowercase(value,ad_object[attr]):
+							modlist.append((ldap.MOD_REPLACE, attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
 					attr_list.append(attr)
-					for attribute in self.property[property_type].post_attributes.keys():
-						if self.property[property_type].post_attributes[attribute].con_attribute == attr or self.property[property_type].post_attributes[attribute].con_other_attribute == attr:
-							if self.property[property_type].post_attributes[attribute].reverse_attribute_check:
-								if not object['attributes'].get(self.property[property_type].post_attributes[attribute].ldap_attribute):
-									continue
-							if not ad_object.has_key(attr):
-								if value:
-									modlist.append((ldap.MOD_ADD, attr, value))
- 							elif not univention.connector.compare_lowercase(value,ad_object[attr]): # FIXME: use defined compare-function from mapping.py
-								modlist.append((ldap.MOD_REPLACE, attr, value))
+					for attr_key in self.property[property_type].post_attributes.keys():
+						post_attribute = self.property[property_type].post_attributes[attr_key]
+						if not attr in (post_attribute.con_attribute, post_attribute.con_other_attribute):
+							continue
+
+						if post_attribute.reverse_attribute_check:
+							if not object['attributes'].get(post_attribute.ldap_attribute):
+								continue
+						if not ad_object.has_key(attr):
+							if value:
+								modlist.append((ldap.MOD_ADD, attr, value))
+						elif equal = univention.connector.compare_lowercase(value,ad_object[attr]):
+							modlist.append((ldap.MOD_REPLACE, attr, value))
 
 			attrs_in_current_ucs_object = object['attributes'].keys()
 			attrs_which_should_be_mapped = []
@@ -2264,9 +2274,12 @@ class ad(univention.connector.ucs):
 					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s" % f)
 					f(self, property_type, object)
 					ud.debug(ud.LDAP, ud.INFO, "Call post_con_modify_functions: %s (done)" % f)
+		#
+		# DELETE
+		#
 		elif object['modtype'] == 'delete':
 			self.delete_in_ad( object )
-				
+
 		else:
 			ud.debug(ud.LDAP, ud.WARN,
 								   "unknown modtype (%s : %s)" %
