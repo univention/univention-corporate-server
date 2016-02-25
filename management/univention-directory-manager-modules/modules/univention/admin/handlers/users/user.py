@@ -1719,21 +1719,18 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if not self.hasChanged('primaryGroup'):
 			return
 
-		primaryGroupNumber = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)
-		self.newPrimaryGroupDn=self['primaryGroup']
+		self.newPrimaryGroupDn = self['primaryGroup']
+		if 'primaryGroup' in self.oldinfo:
+			self.oldPrimaryGroupDn = self.oldinfo['primaryGroup']
+
+		primaryGroupNumber = self.get_gid_for_primary_group()
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber')
-		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber[0])])
+		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber)])
 
 		if 'samba' in self.options:
-			primaryGroupSambaNumber = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)
+			primaryGroupSambaNumber = self.get_sid_for_primary_group()
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
-			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber[0])])
-
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set gidNumber')
-		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber[0])])
-		if 'samba' in self.options:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: set sambaPrimaryGroupSID')
-			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber[0])])
+			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber)])
 
 		if univention.admin.baseConfig.is_true("directory/manager/user/primarygroup/update", True):
 			new_uid = self.info.get('username')
@@ -1792,13 +1789,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				raise univention.admin.uexceptions.primaryGroupWithoutSamba
 
 			if 'posix' in self.options or 'samba' in self.options:
+				gidNum = self.get_gid_for_primary_group()
 				if self['primaryGroup']:
-					searchResult = self.lo.getAttr(self['primaryGroup'], 'gidNumber')
-					if searchResult:
-						gidNum = searchResult[0]
-					self.newPrimaryGroupDn=self['primaryGroup']
-				else:
-					gidNum='99999'
+					self.newPrimaryGroupDn = self['primaryGroup']
 
 			prohibited_objects=univention.admin.handlers.settings.prohibited_username.lookup(self.co, self.lo, '')
 			if prohibited_objects and len(prohibited_objects) > 0:

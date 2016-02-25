@@ -303,7 +303,7 @@ class object(univention.admin.handlers.simpleLdap):
 		# find the producer
 		univention.admin.handlers.simpleLdap.open(self)
 		models = printermodel.lookup( self.co, self.lo, 'printerModel="%s*' % self[ 'model' ] )
-		ud.debug( ud.ADMIN, ud.ERROR, "printermodel: %s" % str( models ) )
+		ud.debug( ud.ADMIN, ud.INFO, "printermodel: %s" % str( models ) )
 		if not models or len( models ) > 1:
 			self[ 'producer' ] = []
 		else:

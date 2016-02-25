@@ -523,6 +523,21 @@ class base(object):
 
 		return self._remove(remove_childs)
 
+	def get_gid_for_primary_group(self):
+		gidNum = '99999'
+		if self['primaryGroup']:
+			try:
+				gidNum = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)[0]
+			except ldap.NO_SUCH_OBJECT:
+				raise univention.admin.uexceptions.primaryGroup(self['primaryGroup'])
+		return gidNum
+
+	def get_sid_for_primary_group(self):
+		try:
+			sidNum = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)[0]
+		except ldap.NO_SUCH_OBJECT:
+			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
+		return sidNum
 
 def _not_implemented_method(attr):
 	def _not_implemented_error(self, *args, **kwargs):
