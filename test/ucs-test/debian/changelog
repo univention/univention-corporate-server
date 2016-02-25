@@ -1,3 +1,9 @@
+ucs-test (6.0.33-23) unstable; urgency=medium
+
+  * Bug #40357: Test synchronization of proxyAddresses
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Feb 2016 19:00:09 +0100
+
 ucs-test (6.0.33-22) unstable; urgency=medium
 
   * 53_samba-common/49share_local_conf: Added new test case which checks
