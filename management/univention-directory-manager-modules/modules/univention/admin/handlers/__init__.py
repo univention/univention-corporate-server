@@ -1657,7 +1657,7 @@ class simpleComputer( simpleLdap ):
 				subnet = ldap.explode_dn( zoneDn, 1 )[ 0 ].replace( '.in-addr.arpa', '' ).split( '.' )
 				subnet.reverse( )
 				subnet = string.join( subnet, '.' ) + '.'
-				ipPart = ip.replace( subnet, '' )
+				ipPart = re.sub('^%s' % (re.escape(subnet),), '', ip)
 				if ipPart == ip:
 					raise univention.admin.uexceptions.InvalidDNS_Information, _( 'Reverse zone and IP address are incompatible.' )
 				pointer = string.split( ipPart, '.' )
@@ -1752,8 +1752,6 @@ class simpleComputer( simpleLdap ):
 		for dn, attributes in self.lo.search(base=zoneDN, scope='domain', attr=['pTRRecord'], filter=search_filter):
 			self.lo.modify(dn, [('pTRRecord', '', ptrrecord)])
 
-
-
 	def __remove_related_ptrrecords(self, zoneDN, ip):
 		ptrrecord = '%s.%s.' % (self.info['name'], zoneDN.split('=')[1].split(',')[0])
 		ip_split = ip.split('.')
@@ -1763,7 +1761,6 @@ class simpleComputer( simpleLdap ):
 		for dn, attributes in self.lo.search(base=zoneDN, scope='domain', attr=['pTRRecord'], filter=search_filter):
 			if ptrrecord in attributes['pTRRecord']:
 				self.lo.modify(dn, [('pTRRecord', ptrrecord, '')])
-		
 
 	def check_common_name_length(self):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'check_common_name_length with self["ip"] = %r and self["dnsEntryZoneForward"] = %r' % (self['ip'], self['dnsEntryZoneForward'], ))
