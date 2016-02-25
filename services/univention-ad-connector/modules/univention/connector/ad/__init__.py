@@ -49,11 +49,18 @@ PAGE_SIZE = 1000
 
 class proxyAddresses:
 	@classmethod
-	def strip_smtp(cls, val):
-		if val.lower().find('smtp:') == 0:
-			return val[5:]
-		else:
+	def valid_mailaddress(cls, val):
+		## invalid is: <transport>:<address> iff <transport>.lower() != smtp
+		idx = val.find(':')
+		if idx == -1:
 			return val
+		else:
+			## check if the colon is unquoted
+			idx2 = val.find('"')
+			if (idx2 == -1) or (idx2 > idx):
+				if val[0:idx].lower() == 'smtp':
+					return val[5:]
+		return None
 
 	@classmethod
 	def prepend_smtp(cls, val):
@@ -62,25 +69,47 @@ class proxyAddresses:
 	@classmethod
 	def compare(cls, values1, values2):
 		_d=ud.function('%s.compare' % cls.__name__)
-		values1_normalized = map(cls.strip_smtp, values1)
-		values2_normalized = map(cls.strip_smtp, values2)
-		result = univention.connector.compare_lowercase(
-			values1_normalized, values2_normalized)
-		return result
+		## usually this is used as:
+		##   values1 are ucs and values2 are con
+		## but let's not rely on that
+		values1_normalized = filter(lambda v: v,
+								map(cls.valid_mailaddress, values1))
+		values2_normalized = filter(lambda v: v,
+								map(cls.valid_mailaddress, values2))
+		if set(values1_normalized) == set(values2_normalized):
+			return True
+		else:
+			return False
 
 	@classmethod
-	def con2ucs(cls, values):
+	def con2ucs(cls, con_values, old_ucs_values = None):
 		_d=ud.function('%s.con2ucs' % cls.__name__)
-		result = map(cls.strip_smtp, values)
-		ud.debug(ud.LDAP, ud.ALL, "%s.con2ucs: %s" % (cls.__name__, result))
-		return result
+		new_ucs_values = filter(lambda v: v,
+								map(cls.valid_mailaddress, con_values))
+		ud.debug(ud.LDAP, ud.ALL, "%s.con2ucs: %s" % (cls.__name__, new_ucs_values))
+		return new_ucs_values
 
 	@classmethod
-	def ucs2con(cls, values):
+	def ucs2con(cls, ucs_values, old_con_values = None):
 		_d=ud.function('%s.ucs2con' % cls.__name__)
-		result = map(cls.prepend_smtp, values)
-		ud.debug(ud.LDAP, ud.ALL, "%s.ucs2con: %s" % (cls.__name__, result))
-		return result
+		new_con_values = []
+		con_valid_mailaddress = []
+		if old_con_values:
+			## first preserve all non-email-Addresses and those we have in UCS
+			for con_value in old_con_values:
+				valid_mailaddress = cls.valid_mailaddress(con_value)
+				if valid_mailaddress:
+					if valid_mailaddress in ucs_values:
+						con_valid_mailaddress.append(valid_mailaddress)
+						new_con_values.append(con_value)
+				else:
+					new_con_values.append(con_value)
+		## then add the addresses which are only in UCS
+		for ucs_value in ucs_values:
+			if not ucs_value in con_valid_mailaddress:
+				new_con_values.append(cls.prepend_smtp(ucs_value))
+		ud.debug(ud.LDAP, ud.ALL, "%s.ucs2con: %s" % (cls.__name__, new_con_values))
+		return new_con_values
 
 def activate_user (connector, key, object):
         # set userAccountControl to 544
@@ -2243,7 +2272,7 @@ class ad(univention.connector.ucs):
 						if not ad_object.has_key(attr):
 							if value:
 								if attribute.ucs_value_map_function:
-									value = attribute.ucs_value_map_function(value)
+									value = attribute.ucs_value_map_function(value, ad_object[attr])
 								modlist.append((ldap.MOD_ADD, attr, value))
 						else:
 							if attribute.compare_function:
@@ -2252,7 +2281,7 @@ class ad(univention.connector.ucs):
 								equal = univention.connector.compare_lowercase(value,ad_object[attr])
 							if not equal:
 								if attribute.ucs_value_map_function:
-									value = attribute.ucs_value_map_function(value)
+									value = attribute.ucs_value_map_function(value, ad_object[attr])
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
@@ -2268,7 +2297,7 @@ class ad(univention.connector.ucs):
 						if not ad_object.has_key(attr):
 							if value:
 								if post_attribute.ucs_value_map_function:
-									value = post_attribute.ucs_value_map_function(value)
+									value = post_attribute.ucs_value_map_function(value, ad_object[attr])
 								modlist.append((ldap.MOD_ADD, attr, value))
 						else:
 							if post_attribute.compare_function:
@@ -2277,7 +2306,7 @@ class ad(univention.connector.ucs):
 								equal = univention.connector.compare_lowercase(value,ad_object[attr])
 							if not equal:
 								if post_attribute.ucs_value_map_function:
-									value = post_attribute.ucs_value_map_function(value)
+									value = post_attribute.ucs_value_map_function(value, ad_object[attr])
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 
 			attrs_in_current_ucs_object = object['attributes'].keys()

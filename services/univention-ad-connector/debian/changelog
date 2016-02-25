@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-10) unstable; urgency=medium
+
+  * Bug #40357: Preserve non-smtp values in AD proxyAdresses
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Feb 2016 21:31:36 +0100
+
 univention-ad-connector (10.0.1-9) unstable; urgency=medium
 
   * Bug #40357: Fix passing of single mapped value in sync_to_ucs
