@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-directory-manager-modules
-fix: 11.0.2-17.1371.201602251012
+fix: 11.0.2-18.1373.201602251321
 desc: |
  This update addresses the following issue(s):
  * Some ldap search requests have been optimized in the
