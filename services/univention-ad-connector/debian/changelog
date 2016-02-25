@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-4) unstable; urgency=medium
+
+  * Bug #40357: fix duplicate ldap modify in sync_from_ucs
+
+ -- Arvid Requate <requate@univention.de>  Thu, 25 Feb 2016 15:47:52 +0100
+
 univention-ad-connector (10.0.1-3) unstable; urgency=medium
 
   * Bug #40357: Add connector/ad/mapping/user/alternativemail and

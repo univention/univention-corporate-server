@@ -2156,7 +2156,6 @@ class ad(univention.connector.ucs):
 							if not object['attributes'].get(self.property[property_type].post_attributes[attribute].ldap_attribute):
 								continue
 						if self.property[property_type].post_attributes[attribute].con_attribute == attr:
-							modlist.append((ldap.MOD_REPLACE, attr, value))
 							if value:
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 							else:
