@@ -101,9 +101,11 @@ echo ==========Set+Append new preferred proxyAddress in AD==========
 #UDM_users_user_Exchange_homeMDB="$(random_chars)"
 #UDM_users_user_Exchange_Nickname="$(random_chars)"
 UDM_users_user_mailPrimaryAddress="$(random_chars)@${UDM_mail_domain_name}"
+AD_preferred_sip_address="SIP:$(random_chars)@$(random_chars)"
 ad_set_attribute "$AD_DN" "mail" "$UDM_users_user_mailPrimaryAddress" || fail_test 110
 ad_set_attribute "$AD_DN" "proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress" || fail_test 110
 ad_append_to_attribute "$AD_DN" "proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress" || fail_test 110
+ad_append_to_attribute "$AD_DN" "proxyAddresses" "$AD_preferred_sip_address" || fail_test 110
 #ad_set_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
 #ad_set_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
 #ad_set_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
@@ -113,6 +115,8 @@ ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_DN" \
+	"proxyAddresses" "$AD_preferred_sip_address"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "msExchHomeServerName" "$UDM_users_user_Exchange_Homeserver"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "homeMDB" "$UDM_users_user_Exchange_homeMDB"; fail_bool 0 110
 #ad_verify_attribute "$AD_DN" "mailNickname" "$UDM_users_user_Exchange_Nickname"; fail_bool 0 110
@@ -134,6 +138,8 @@ ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "SMTP:$UDM_users_user_mailPrimaryAddress"; fail_bool 0 110
+ad_verify_multi_value_attribute_contains "$AD_DN" \
+	"proxyAddresses" "$AD_preferred_sip_address"; fail_bool 0 110
 ad_verify_multi_value_attribute_contains "$AD_DN" \
 	"proxyAddresses" "smtp:$UDM_users_user_mailAlternativeAddress2"; fail_bool 0 110
 udm_verify_multi_value_udm_attribute_contains "mailAlternativeAddress" \
