@@ -172,8 +172,8 @@ if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
 						con_attribute='proxyAddresses',
 						reverse_attribute_check = True,
 						compare_function = univention.connector.ad.proxyAddresses.compare,
-						con_value_map_function = univention.connector.ad.proxyAddresses.ucs2con,
-						ucs_value_map_function = univention.connector.ad.proxyAddresses.con2ucs,
+						ucs_value_map_function = univention.connector.ad.proxyAddresses.ucs2con,
+						con_value_map_function = univention.connector.ad.proxyAddresses.con2ucs,
 					),
 					"""
 @!@
@@ -325,8 +325,8 @@ if configRegistry.is_true('connector/ad/mapping/group/alternativemail'):
 						con_attribute='proxyAddresses',
 						reverse_attribute_check = True,
 						compare_function = univention.connector.ad.proxyAddresses.compare,
-						con_value_map_function = univention.connector.ad.proxyAddresses.ucs2con,
-						ucs_value_map_function = univention.connector.ad.proxyAddresses.con2ucs,
+						ucs_value_map_function = univention.connector.ad.proxyAddresses.ucs2con,
+						con_value_map_function = univention.connector.ad.proxyAddresses.con2ucs,
 					),
 					"""
 if baseConfig.has_key('connector/ad/mapping/group/exchange') and baseConfig['connector/ad/mapping/group/exchange'] in ['yes','true']:

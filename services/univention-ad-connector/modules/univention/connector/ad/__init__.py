@@ -2186,8 +2186,8 @@ class ad(univention.connector.ucs):
 						attribute = self.property[property_type].attributes[attr_key]
 						if not attr in (attribute.con_attribute, attribute.con_other_attribute):
 							continue
-						if attribute.con_value_map_function:
-							value = attribute.con_value_map_function(value)
+						if attribute.ucs_value_map_function:
+							value = attribute.ucs_value_map_function(value)
 						addlist.append((attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
@@ -2200,8 +2200,8 @@ class ad(univention.connector.ucs):
 							continue
 
 						if value:
-							if post_attribute.con_value_map_function:
-								value = post_attribute.con_value_map_function(value)
+							if post_attribute.ucs_value_map_function:
+								value = post_attribute.ucs_value_map_function(value)
 							modlist.append((ldap.MOD_REPLACE, attr, value))
 						else:
 							modlist.append((ldap.MOD_DELETE, attr, None))
@@ -2242,8 +2242,8 @@ class ad(univention.connector.ucs):
 
 						if not ad_object.has_key(attr):
 							if value:
-								if attribute.con_value_map_function:
-									value = attribute.con_value_map_function(value)
+								if attribute.ucs_value_map_function:
+									value = attribute.ucs_value_map_function(value)
 								modlist.append((ldap.MOD_ADD, attr, value))
 						else:
 							if attribute.compare_function:
@@ -2251,8 +2251,8 @@ class ad(univention.connector.ucs):
 							else:
 								equal = univention.connector.compare_lowercase(value,ad_object[attr])
 							if not equal:
-								if attribute.con_value_map_function:
-									value = attribute.con_value_map_function(value)
+								if attribute.ucs_value_map_function:
+									value = attribute.ucs_value_map_function(value)
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 			if hasattr(self.property[property_type], 'post_attributes') and self.property[property_type].post_attributes != None:
 				for attr,value in object['attributes'].items():
@@ -2267,8 +2267,8 @@ class ad(univention.connector.ucs):
 								continue
 						if not ad_object.has_key(attr):
 							if value:
-								if post_attribute.con_value_map_function:
-									value = post_attribute.con_value_map_function(value)
+								if post_attribute.ucs_value_map_function:
+									value = post_attribute.ucs_value_map_function(value)
 								modlist.append((ldap.MOD_ADD, attr, value))
 						else:
 							if post_attribute.compare_function:
@@ -2276,8 +2276,8 @@ class ad(univention.connector.ucs):
 							else:
 								equal = univention.connector.compare_lowercase(value,ad_object[attr])
 							if not equal:
-								if post_attribute.con_value_map_function:
-									value = post_attribute.con_value_map_function(value)
+								if post_attribute.ucs_value_map_function:
+									value = post_attribute.ucs_value_map_function(value)
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 
 			attrs_in_current_ucs_object = object['attributes'].keys()

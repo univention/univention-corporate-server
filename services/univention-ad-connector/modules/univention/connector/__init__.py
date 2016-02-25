@@ -1033,8 +1033,8 @@ class ucs:
 						else:
 							equal = compare[0] == compare[1]
 						if not equal:
-							if attributes.ucs_value_map_function:
-								ucs_object[ucs_key] = attributes.ucs_value_map_function(value)
+							if attributes.con_value_map_function:
+								ucs_object[ucs_key] = attributes.con_value_map_function(value)
 							else:
 								if type(value) == type(types.ListType()) and len(value) == 1:
 									value = value[0]
