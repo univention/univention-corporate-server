@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-saml
+fix: 3.0.27-2.101.201602251244
+desc: |
+ This update addresses the following issue(s):
+ * The creation of the internal SAML LDAP user ignores extended attributes now.
+bug: [40741]
