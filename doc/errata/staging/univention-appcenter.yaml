@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The application information like vendor, description were HTML encoded
    twice at some places.
-bug: [35324]
+ * If no package changes are detected an application could not be upgraded.
+bug: [35324, 40005]
