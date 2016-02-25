@@ -1,3 +1,9 @@
+univention-saml (3.0.27-2) unstable; urgency=medium
+
+  * Bug #40741: don't fail to create SAML user due to extended attributes
+
+ -- Florian Best <best@univention.de>  Thu, 25 Feb 2016 12:41:24 +0100
+
 univention-saml (3.0.27-1) unstable; urgency=medium
 
   * Bug #39850: Fix internet explorer compatibility
