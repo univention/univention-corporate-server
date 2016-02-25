@@ -535,6 +535,9 @@
 			<listitem><simpara>
 				<package>libxml2</package> upgraded to 2.8.0 (<u:bug>40696</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				<package>mysql</package> has been upgraded to version 5.5.40 (<u:bug>40691</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
