@@ -1,3 +1,10 @@
+ucs-test (6.0.33-20) unstable; urgency=medium
+
+  * 51_samba4/41samba-tool_user_password_change: Ensure the test case
+    fails if the ldapsearch fails (Bug #39052)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Feb 2016 06:21:29 +0100
+
 ucs-test (6.0.33-19) unstable; urgency=medium
 
   * 51_samba4/60_dns_register_exclude_interfaces: Use a dummy network
