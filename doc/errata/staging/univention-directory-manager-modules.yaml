@@ -3,9 +3,11 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-directory-manager-modules
-fix: 11.0.2-16.1370.201602231548
+fix: 11.0.2-17.1371.201602251012
 desc: |
  This update addresses the following issue(s):
  * Some ldap search requests have been optimized in the
    handler modules (Bug 40651).
-bug: [40651]
+ * In situations where the IP address of a created computer contained two
+   equal blocks (e.g. 10.10.20.0/24) invalid pointer records were created.
+bug: [40651, 39030]
