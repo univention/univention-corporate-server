@@ -27,6 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+if [ "${0##*/}" = 'utils.sh' ] && [ -n "$1" ]
+then
+	trap '"$@"' EXIT
+fi
+
 basic_setup () {
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
 		echo "KVM detected"
@@ -142,8 +147,8 @@ run_setup_join_on_non_master () {
 }
 
 wait_for_reboot () {
-	local i
-	for ((i=0;i<100;i++)); do pidof apache2 && break; sleep 1; done
+	local i=0
+	while [ i -lt 100 ]; do pidof apache2 && break; sleep 1; i=$((1+i));done
 }
 
 switch_to_test_app_center ()
@@ -237,10 +242,5 @@ win=univention.winexe.WinExe(argv[2], 'administrator', 'Univention@99', 'testadm
 win.set_gateway(argv[3])
 " "$@"
 }
-
-if [ "${0##*/}" = 'utils.sh' ] && [ -n "$1" ]
-then
-	"$@"
-fi
 
 # vim:set filetype=sh ts=4:
