@@ -1295,7 +1295,7 @@ class dnsSRVName(complex):
 	min_elements = 2
 	all_required = False
 	subsyntaxes = ( ( _( 'Service' ), string ), ( _( 'Protocol' ), ipProtocolSRV ), ( _( 'Extension' ), string ) )
-	size = ( 'TwoThirds', 'TwoThirds', 'TwoThirds' )
+	size = ( 'Half', 'Half', 'One' )
 
 class postalAddress( complex ):
 	delimiter = ', '
@@ -1304,7 +1304,7 @@ class postalAddress( complex ):
 
 class dnsSRVLocation(complex):
 	subsyntaxes=[(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsName)]
-	size = ( 'Half', 'Half', 'Half', 'Half' )
+	size = ( 'OneThird', 'OneThird', 'OneThird', 'One' )
 	all_required=1
 
 class unixTime(simple):

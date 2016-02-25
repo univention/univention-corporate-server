@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-19) unstable; urgency=medium
+
+  * Bug #40775: enhance presentation of SRV and TXT record layout
+
+ -- Florian Best <best@univention.de>  Thu, 25 Feb 2016 13:58:43 +0100
+
 univention-directory-manager-modules (11.0.2-18) unstable; urgency=low
 
   * Bug #40651: replace lo.search(base=...) with lo.get 

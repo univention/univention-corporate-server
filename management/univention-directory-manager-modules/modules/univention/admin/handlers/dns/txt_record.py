@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import string
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -59,7 +57,7 @@ property_descriptions={
 			options = [],
 			required = True,
 			may_change = True,
-			identifies = True
+			identifies = True,
 		),
 	'zonettl': univention.admin.property(
 			short_description = _('Zone time to live'),
@@ -79,7 +77,8 @@ property_descriptions={
 			multivalue = True,
 			options = [],
 			required = False,
-			may_change = True
+			may_change = True,
+			size='Two',
 		)
 }
 
