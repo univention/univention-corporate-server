@@ -1312,6 +1312,9 @@ class simpleComputer( simpleLdap ):
 						results = self.lo.search( base = tmppos.getBase( ),scope = 'domain', attr = [ 'relativeDomainName', 'zoneName' ], filter = searchFilter, unique = 0 )
 						for dn, attr in results:
 							ip = self.__ip_from_ptr( attr[ 'zoneName' ][ 0 ], attr[ 'relativeDomainName' ][ 0 ] )
+							if not self.__is_ip(ip):
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'simpleComputer: dnsEntryZoneReverse: invalid IP address generated: %r' % (ip,))
+								continue
 							entry = [','.join(univention.admin.uldap.explodeDn(dn, 0)[1:]), ip]
 							if entry not in self['dnsEntryZoneReverse']:
 								self[ 'dnsEntryZoneReverse' ].append( entry )
