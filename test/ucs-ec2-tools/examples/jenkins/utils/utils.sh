@@ -27,8 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-basic_setup ()
-{
+basic_setup () {
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
 		echo "KVM detected"
 		ucr set --force updater/identify="UCS (EC2 Test)"
@@ -44,7 +43,8 @@ basic_setup ()
 		fi
 	else
 		echo "Assuming Amazon Cloud"
-		echo -e "#!/bin/sh\nroute del default ; route add default gw 10.210.216.13" >>/etc/network/if-up.d/z_route
+		echo 'supersede routers 10.210.216.13;' >/etc/dhcp/dhclient.conf.local
+		echo -e '#!/bin/sh\nip route replace default via 10.210.216.13' >/etc/network/if-up.d/z_route
 		chmod +x /etc/network/if-up.d/z_route
 		/etc/network/if-up.d/z_route
 		sleep 10 # just wait a few seconds to give the amazone cloud some time
@@ -80,15 +80,13 @@ jenkins_updates () {
 	echo "Finished at ${version_version}-${version_patchlevel}+${version_erratalevel}"
 }
 
-upgrade_to_latest_errata ()
-{
+upgrade_to_latest_errata () {
 	# Bug #34336: needs further discussion if release or only errata updates are expected
 	local current="$(ucr get version/version)-$(ucr get version/patchlevel)"
 	upgrade_to_latest --updateto "$current" "$@"
 }
 
-upgrade_to_latest_test_errata ()
-{
+upgrade_to_latest_test_errata () {
 	local current prev=DUMMY
 	while current="$(ucr get version/version)-$(ucr get version/patchlevel)" && [ "$current" != "$prev" ]
 	do
@@ -98,14 +96,12 @@ upgrade_to_latest_test_errata ()
 	done
 }
 
-upgrade_to_testing ()
-{
+upgrade_to_testing () {
 	ucr set repository/online/server=updates-test.software-univention.de
 	upgrade_to_latest --updateto '3.3-99' "$@"
 }
 
-upgrade_to_latest ()
-{
+upgrade_to_latest () {
 	declare -i remain=300 rv delay=30
 	while true
 	do
@@ -125,8 +121,7 @@ upgrade_to_latest ()
 	done
 }
 
-run_setup_join ()
-{
+run_setup_join () {
 	local srv
 	/usr/lib/univention-system-setup/scripts/setup-join.sh
 	ucr set apache2/startsite='ucs-overview/' # Bug #31682
@@ -135,8 +130,7 @@ run_setup_join ()
 	ucr unset --forced update/available
 }
 
-run_setup_join_on_non_master ()
-{
+run_setup_join_on_non_master () {
 	local srv
 	ucr set nameserver1="$(sed -ne 's|^nameserver=||p' /var/cache/univention-system-setup/profile)"
 	echo -n "univention" >/tmp/univention
@@ -147,8 +141,7 @@ run_setup_join_on_non_master ()
 	ucr unset --forced update/available
 }
 
-wait_for_reboot ()
-{
+wait_for_reboot () {
 	local i
 	for ((i=0;i<100;i++)); do pidof apache2 && break; sleep 1; done
 }
@@ -158,53 +151,45 @@ switch_to_test_app_center ()
 	ucr set repository/app_center/server=appcenter-test.software-univention.de
 }
 
-install_apps ()
-{
+install_apps () {
 	local app
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"; do univention-add-app -a --latest "$app"; done
 }
 
-install_apps_master_packages ()
-{
+install_apps_master_packages () {
 	local app
 	for app in "$@"; do univention-add-app -m --latest "$app"; done
 }
 
-install_ucs_test ()
-{
+install_ucs_test () {
 	ucr set repository/online/unmaintained=yes
 	univention-install --yes ucs-test
 	ucr set repository/online/unmaintained=no
 }
 
-install_apps_test_packages ()
-{
+install_apps_test_packages () {
 	local app
 	ucr set repository/online/unmaintained=yes
 	for app in "$@"; do univention-install --yes "ucs-test-$app" || true; done
 	ucr set repository/online/unmaintained=no
 }
 
-install_ucs_windows_tools ()
-{
+install_ucs_windows_tools () {
 	ucr set repository/online/unmaintained=yes
 	univention-install --yes ucs-windows-tools
 	ucr set repository/online/unmaintained=no
 }
 
-run_apptests ()
-{
+run_apptests () {
 	run_tests -r apptest "$@"
 }
 
-run_tests ()
-{
+run_tests () {
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
-run_join_scripts ()
-{
+run_join_scripts () {
 	if [ "$(ucr get server/role)" = "domaincontroller_master" ]; then
 		univention-run-join-scripts
 	else
@@ -213,60 +198,49 @@ run_join_scripts ()
 	fi
 }
 
-promote_ad_w2k12 ()
-{
-	local HOST="$1"
-	local DOMAIN="$2"
-	if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]]; then
-	python -c "
+promote_ad_w2k12 () {
+	local HOST="${1:?host address}"
+	local DOMAIN="${2:?domain name}"
+	python -c "from sys import argv
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win=univention.winexe.WinExe(argv[2], 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, argv[1])
 win.promote_ad('Win2008R2', 'Win2008R2')
-"
-	else
-		echo "You must specify an host address domain name."
-	fi
+" "$@"
 }
 
-promote_ad_w2k8 ()
-{
-	local HOST="$1"
-	local DOMAIN="$2"
-	if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]]; then
-	python -c "
+promote_ad_w2k8 () {
+	local HOST="${1:?host address}"
+	local DOMAIN="${2:?domain name}"
+	python -c "from sys import argv
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win=univention.winexe.WinExe(argv[2], 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, argv[1])
 win.promote_ad('Win2008', 'Win2008')
-"
-	else
-		echo "You must specify an host address domain name."
-	fi
+" "$@"
 }
 
-shutdown_windows_host ()
-{
-	local HOST="$1"
-	python -c "
+shutdown_windows_host () {
+	local HOST="${1:?host address}"
+	python -c "from sys import argv
 import univention.winexe
-win=univention.winexe.WinExe('dummydomain', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win=univention.winexe.WinExe('dummydomain', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, argv[1])
 win.shutdown_remote_win_host()
-"
+" "$@"
 }
 
-set_gateway ()
-{
-	local HOST="$1"
-	local DOMAIN="$2"
-	local GATEWAY="$3"
-	if [[ ! -z "$HOST" ]] && [[ ! -z "$DOMAIN" ]] && [[ ! -z "$GATEWAY" ]]; then
-	python -c "
+set_gateway () {
+	local HOST="${1:?host address}"
+	local DOMAIN="${2:?domain name}"
+	local GATEWAY="${3:?gateway address}"
+	python -c "from sys import argv
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
-win.set_gateway('$GATEWAY')
-"
-	else
-		echo "You must specify an host address domain name and a gateway."
-	fi
+win=univention.winexe.WinExe(argv[2], 'administrator', 'Univention@99', 'testadmin', 'Univention@99', 445, argv[1])
+win.set_gateway(argv[3])
+" "$@"
 }
+
+if [ "${0##*/}" = 'utils.sh' ] && [ -n "$1" ]
+then
+	"$@"
+fi
 
 # vim:set filetype=sh ts=4:
