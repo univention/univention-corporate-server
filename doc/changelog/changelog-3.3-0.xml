@@ -538,6 +538,9 @@
 			<listitem><simpara>
 				<package>mysql</package> has been upgraded to version 5.5.40 (<u:bug>40691</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				<package>php5</package> has been upgraded to version 5.4.45 (<u:bug>40693</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
