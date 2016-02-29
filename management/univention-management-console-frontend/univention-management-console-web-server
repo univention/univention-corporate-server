@@ -434,7 +434,7 @@ class CPgeneric(object):
 		# force expiration of cookie in 5 years from now on...
 		# IE does not support max-age
 		expiration = datetime.datetime.now()
-		expiration = expiration.replace(year=expiration.year + 5)
+		expiration = expiration.replace(year=expiration.year + 4)
 		expirationStr = expiration.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
 		if sessionid:
 			cherrypy.response.cookie['UMCSessionId'] = sessionid
