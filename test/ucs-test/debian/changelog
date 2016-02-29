@@ -1,3 +1,10 @@
+ucs-test (6.0.33-25) unstable; urgency=medium
+
+  * 55_adconnector/109sync_create_and_modify_ucs_to_ad: Consider UCR
+    variable connector/ad/mapping/user/password/disabled (Bug #37289)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Feb 2016 07:22:14 +0100
+
 ucs-test (6.0.33-24) unstable; urgency=medium
 
   * Bug #40357: Check preservation non-smtp value in proxyAddresses
