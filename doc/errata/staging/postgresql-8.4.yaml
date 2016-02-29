@@ -6,8 +6,10 @@ fix: 8.4_8.4.22lts6-0.29.201602291915
 version: [8]
 desc: |
  This update for postgresql-8.4 fixes the following issues:
- * attackers may cause denial of service (server crash) or read arbitrary server memory via "too-short" crypt salts (CVE-2015-5288)
- * Denial of service and potential execution of arbitrary code due to buffer overrun in PL/Java regular expression processing (CVE-2016-0773)
+ * attackers may cause denial of service (server crash) or read arbitrary
+   server memory via "too-short" crypt salts (CVE-2015-5288)
+ * Denial of service and potential execution of arbitrary code due to buffer
+   overrun in PL/Java regular expression processing (CVE-2016-0773)
 bug:
  - 40358
 cve:
