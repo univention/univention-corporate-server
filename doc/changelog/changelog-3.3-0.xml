@@ -60,15 +60,16 @@
 			</itemizedlist>
 		</section>
 
-		<!--
 		<section id="changelog:basis:ucr">
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The errata level has been reset to <wordasword>0<wordasword> (<u:bug>40764</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
+		<!--
 		<section id="changelog:basic:nfs">
 			<title>NFS</title>
 			<itemizedlist>
