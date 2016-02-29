@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.5-2) unstable; urgency=medium
+
+  * Bug #40688: explicitly pass -llber to linker
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Feb 2016 15:05:06 +0100
+
 univention-directory-listener (8.0.5-1) unstable; urgency=medium
 
   * Bug #40688: explicitly pass -luniventionconfig to linker
