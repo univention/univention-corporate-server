@@ -1,0 +1,28 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-8
+src: ia32-libs-gtk
+fix: 20160228.51.201602291748
+version: [8]
+desc: |
+ This update for the ia32-libs-gtk package fixes several issues in
+ the embedded libraries.
+bug:
+ - 39435
+cve:
+ - CVE-2013-0254
+ - CVE-2013-7439
+ - CVE-2013-7447
+ - CVE-2014-0254
+ - CVE-2014-9766
+ - CVE-2015-0295
+ - CVE-2015-0848
+ - CVE-2015-1858
+ - CVE-2015-1859
+ - CVE-2015-1860
+ - CVE-2015-4491
+ - CVE-2015-4588
+ - CVE-2015-4695
+ - CVE-2015-4696
+ - CVE-2015-7673
+ - CVE-2015-7674
