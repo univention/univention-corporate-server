@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.5-3) unstable; urgency=medium
+
+  * Bug #40688: explicitly pass -llber while linking tests too
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Feb 2016 15:07:58 +0100
+
 univention-directory-listener (8.0.5-2) unstable; urgency=medium
 
   * Bug #40688: explicitly pass -llber to linker
