@@ -79,11 +79,11 @@ user['username'] = 'sys-idp-user'
 user['password'] = sys.argv[1]
 user['lastname'] = 'idp-user'
 try:
-	print 'Creating SAML user'
-	dn = user.create()
+  print 'Creating SAML user'
+  dn = user.create()
 except (univention.admin.uexceptions.objectExists, univention.admin.uexceptions.uidAlreadyUsed):
-	print 'SAML user already exists'
-	sys.exit(0)
+  print 'SAML user already exists'
+  sys.exit(0)
 print 'Make SAML user a sytem user'
 lo.modify(dn, [('univentionObjectFlag', None, ['functional', 'hidden'])])
 EOF
