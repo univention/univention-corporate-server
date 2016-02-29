@@ -675,7 +675,7 @@ class Ressource(object):
 		expires = kwargs.get('expires')
 		if expires is None:
 			expires = datetime.datetime.now()
-			expires = expires.replace(year=expires.year + 5)
+			expires = expires.replace(year=expires.year + 4)
 		cookie = cherrypy.response.cookie
 		for name, value in cookies:
 			name = self.suffixed_cookie_name(name)
