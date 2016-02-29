@@ -1,0 +1,14 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: sudo
+fix: 1.8.5p2-1+nmu2.41.201602292004
+version: [4]
+desc: |
+ This update fixes the following issue:
+ * sudoedit allowed local uses to gain privileges via a symlink attack
+   on a file whose full path is defined using multiple wildcards in
+   /etc/sudoers (CVE-2015-5602)
+bug: [40365]
+cve:
+ - CVE-2015-5602
