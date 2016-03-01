@@ -1,3 +1,10 @@
+ucs-test (6.0.33-26) unstable; urgency=medium
+
+  * 55_adconnector/109sync_create_and_modify_ucs_to_ad: Include ucr
+    shell lib (Bug #37289)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Mar 2016 16:49:29 +0100
+
 ucs-test (6.0.33-25) unstable; urgency=medium
 
   * 55_adconnector/109sync_create_and_modify_ucs_to_ad: Consider UCR
