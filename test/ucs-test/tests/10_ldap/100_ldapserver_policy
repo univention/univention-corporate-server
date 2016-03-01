@@ -7,6 +7,8 @@
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
+## tags:
+##  - skip_admember
 
 import univention.admin.objects
 import univention.admin.modules as udm_modules
