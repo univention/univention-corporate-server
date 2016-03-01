@@ -185,12 +185,7 @@ class Instance(Base):
 			raise UMC_Error(err, status=500)
 
 		self.usersmod = None
-		self.usersmod_rw = None
 		self.groupmod = None
-		self.lo = None
-		self.lo_rw = None
-		self.position = None
-		self.position_rw = None
 
 		self.db = TokenDB(MODULE)
 		self.conn = self.db.conn
@@ -524,9 +519,10 @@ class Instance(Base):
 		else:
 			lo, po = get_machine_connection()
 		univention.admin.modules.update()
-		usersmod = univention.admin.modules.get("users/user")
-		univention.admin.modules.init(lo, po, usersmod)
-		user = usersmod.object(None, lo, po, userdn)
+		if self.usersmod is None:
+			self.usersmod = univention.admin.modules.get("users/user")
+			univention.admin.modules.init(lo, po, self.usersmod)
+		user = self.usersmod.object(None, lo, po, userdn)
 		user.open()
 		return user
 

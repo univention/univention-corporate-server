@@ -54,10 +54,11 @@ class PasswordReset(Ressource):
 		except (OSError, IOError) as exc:
 			self.log('Could not read UMC server credentials: %s' % (exc,))
 			raise cherrypy.HTTPError(503, 'Could not authenticate at Univention Management Console service.')
-		status, response = connection.auth({'username': username, 'password': password})
-		if status != 200:
-			self.log('Authentication failed: %r' % (response,))
-			raise cherrypy.HTTPError(503, 'Could not authenticate at Univention Management Console service: %s' % (format_status(status),))
+		connection._headers['Authorization'] = 'basic %s' % ('%s:%s' % (username, password)).encode('base64').rstrip()
+#		status, response = connection.auth({'username': username, 'password': password})
+#		if status != 200:
+#			self.log('Authentication failed: %r' % (response,))
+#			raise cherrypy.HTTPError(503, 'Could not authenticate at Univention Management Console service: %s' % (format_status(status),))
 		return connection
 
 	def umc_request(self, url, data):
