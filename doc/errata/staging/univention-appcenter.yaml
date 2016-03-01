@@ -9,4 +9,8 @@ desc: |
  * The application information like vendor, description were HTML encoded
    twice at some places.
  * If no package changes are detected an application could not be upgraded.
-bug: [35324, 40005]
+ * The error handling of the apps module has been improved.
+ * The application metadata are ensured to be updated before installing or
+   upgrading an application. This prevents errors when installing applications
+   on remote hosts.
+bug: [35324, 40005, 40797, 40804]
