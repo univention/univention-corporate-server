@@ -148,7 +148,7 @@ define([
 		},
 
 		_setModuleTitleAttr: function(name) {
-			this._set('moduleTitle', name);
+			this._set('moduleTitle', entities.encode(name));
 			this.moduleTitle = name;
 		},
 

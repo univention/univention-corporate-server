@@ -26,11 +26,11 @@ for app in apps:
 				<category name="apps"/>
 			</categories>
 		</flavor>'''.format(
-			id=cgi.escape(app.id),
-			name=cgi.escape(app.name),
-			version=cgi.escape(app.version),
-			description=cgi.escape(app.description),
-			icon=cgi.escape(app.logo_name),
+			id=cgi.escape(app.id or ''),
+			name=cgi.escape(app.name or ''),
+			version=cgi.escape(app.version or ''),
+			description=cgi.escape(app.description or ''),
+			icon=cgi.escape(app.logo_name or ''),
 		)
 	print xml
 @!@

@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-8) unstable; urgency=medium
+
+  * Bug #35324: fix escaping of module title, don't raise if description is
+  	not set
+
+ -- Florian Best <best@univention.de>  Tue, 01 Mar 2016 07:09:02 +0100
+
 univention-appcenter (5.0.20-7) unstable; urgency=medium
 
   * Bug #40005: don't stop installation/upgrading if no package changes are
