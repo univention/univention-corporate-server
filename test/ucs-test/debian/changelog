@@ -1,3 +1,9 @@
+ucs-test (6.0.33-27) unstable; urgency=medium
+
+  * 82_saml/samltest.py: Added more debug (Bug #40787)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Mar 2016 19:29:01 +0100
+
 ucs-test (6.0.33-26) unstable; urgency=medium
 
   * 55_adconnector/109sync_create_and_modify_ucs_to_ad: Include ucr

@@ -71,7 +71,7 @@ def _request(method, url, status_code, position, data=None, cookies=None, IdP_IP
 	# check for an expected status_code as a different would indicate an error
 			# in the current login step.
 	if response.status_code != status_code:
-		raise SamlError("Problem while %s\nWrong status code: %s, expected: %s" % (position, response.status_code, status_code))
+		raise SamlError("Problem while %s\nWrong status code: %s, expected: %s\nServer response was: %s" % (position, response.status_code, status_code, response.text))
 	return response
 
 
