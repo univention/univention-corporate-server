@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-9) unstable; urgency=medium
+
+  * Bug #35324: fixup
+
+ -- Florian Best <best@univention.de>  Tue, 01 Mar 2016 11:10:25 +0100
+
 univention-appcenter (5.0.20-8) unstable; urgency=medium
 
   * Bug #35324: fix escaping of module title, don't raise if description is

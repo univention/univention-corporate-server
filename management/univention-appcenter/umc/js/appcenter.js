@@ -36,6 +36,7 @@ define([
 	"dojo/Deferred",
 	"dojo/topic",
 	"dojo/promise/all",
+	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
@@ -51,7 +52,7 @@ define([
 	"umc/modules/appcenter/DetailsPage",
 	"umc/i18n!umc/modules/appcenter", // not needed atm
 	"xstyle/css!umc/modules/appcenter.css"
-], function(declare, lang, array, when, Deferred, topic, all, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
+], function(declare, lang, array, when, Deferred, topic, all, entities, app, tools, dialog, store, Module, AppCenterPage, AppDetailsPage, AppDetailsDialog, AppConfigDialog, AppChooseHostDialog, PackagesPage, SettingsPage, DetailsPage, _) {
 
 	topic.subscribe('/umc/license/activation', function() {
 		if (!app.getModule('udm', 'navigation'/*FIXME: 'license' Bug #36689*/)) {
@@ -232,10 +233,10 @@ define([
 			this._appDetailsPage.own(appConfigDialog);
 			this._appDetailsPage.watch('moduleTitle', lang.hitch(this, function(attr, oldVal, newVal){
 				if (newVal) {
-					this.set('title', newVal);
+					this.set('title', entities.encode(newVal));
 				}
 			}));
-			this.set('title', app.name || 'App Center');
+			this.set('title', entities.encode(app.name) || 'App Center');
 			this._appDetailsPage.on('back', lang.hitch(this, function(category) {
 				this.set('title', 'App Center');
 				if (category && category.length) {

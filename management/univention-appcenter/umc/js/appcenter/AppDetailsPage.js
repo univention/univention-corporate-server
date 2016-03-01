@@ -148,7 +148,7 @@ define([
 		},
 
 		_setModuleTitleAttr: function(name) {
-			this._set('moduleTitle', entities.encode(name));
+			this._set('moduleTitle', name);
 			this.moduleTitle = name;
 		},
 
@@ -1159,7 +1159,7 @@ define([
 			var version = this.app.version;
 			var is_installed = this.app.isInstalled;
 			if (is_installed) {
-				return version;
+				return entities.encode(version);
 			}
 		},
 
