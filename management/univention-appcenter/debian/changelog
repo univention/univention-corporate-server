@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-10) unstable; urgency=medium
+
+  * Bug #40804: force sync of appcenter for specific actions
+  * Bug #40797: adapt error handling of apps-module
+
+ -- Florian Best <best@univention.de>  Tue, 01 Mar 2016 13:48:07 +0100
+
 univention-appcenter (5.0.20-9) unstable; urgency=medium
 
   * Bug #35324: fixup

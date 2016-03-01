@@ -31,13 +31,40 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.management.console.modules.sanitizers import Sanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
 import univention.config_registry
 import univention.management.console as umc
+import univention.management.console.modules as umcm
+from univention.management.console.log import MODULE
+from univention.management.console.base import LDAP_ServerDown
+from univention.management.console.modules.sanitizers import Sanitizer, StringSanitizer, DictSanitizer, BooleanSanitizer
+from univention.management.console.modules.appcenter.app_center import AppcenterServerContactFailed
+from univention.appcenter.actions.credentials import ConnectionFailedServerDown, ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile
+from univention.appcenter.actions import Abort
 from univention.appcenter.app import AppManager
 
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
+
+
+def error_handling(etype, exc, etraceback):
+	if isinstance(exc, (ConnectionFailedSecretFile,)):
+		MODULE.error(str(exc))
+		error_msg = [_('Cannot connect to the LDAP service.'), _('The server seems to be lacking a proper password file.'), _('Please check the join state of the machine.')]
+		raise umcm.UMC_Error('\n'.join(error_msg), status=500)
+	if isinstance(exc, (ConnectionFailedInvalidUserCredentials,)):
+		MODULE.error(str(exc))
+		error_msg = [_('Cannot connect to the LDAP service.'), _('The credentials provided were not accepted.'), _('This may be solved by simply logging out and in again.'), _('Maybe your password changed during the session.')]
+		raise umcm.UMC_Error('\n'.join(error_msg), status=500)
+	if isinstance(exc, (ConnectionFailedInvalidMachineCredentials,)):
+		MODULE.error(str(exc))
+		error_msg = [_('Cannot connect to the LDAP service.'), _('The credentials provided were not accepted.'), _('This may be solved by simply logging out and in again.'), _('Maybe the machine password changed during the session.')]
+		raise umcm.UMC_Error('\n'.join(error_msg), status=500)
+	if isinstance(exc, (ConnectionFailedServerDown,)):
+		MODULE.error(str(exc))
+		raise LDAP_ServerDown()
+	if isinstance(exc, (Abort, SystemError, AppcenterServerContactFailed)):
+		MODULE.error(str(exc))
+		raise umcm.UMC_Error(str(exc), status=500)
 
 
 class AppSanitizer(Sanitizer):

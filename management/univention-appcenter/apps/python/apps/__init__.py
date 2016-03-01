@@ -38,6 +38,7 @@ import locale
 from univention.management.console.modules.decorators import simple_response
 import univention.management.console as umc
 import univention.management.console.modules as umcm
+from univention.management.console.modules.appcenter.sanitizers import error_handling
 from univention.appcenter.app import AppManager
 from univention.appcenter.log import log_to_logfile
 from univention.appcenter.actions import get_action
@@ -61,3 +62,7 @@ class Instance(umcm.Base):
 		if app is None:
 			return None
 		return domain.to_dict([app])[0]
+
+	def error_handling(self, etype, exc, etraceback):
+		error_handling(etype, exc, etraceback)
+		return super(Instance, self).error_handling(exc, etype, etraceback)

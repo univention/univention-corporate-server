@@ -57,20 +57,17 @@ from univention.management.console.modules.sanitizers import PatternSanitizer, M
 from univention.updater.tools import UniventionUpdater
 from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
-from univention.management.console.base import LDAP_ServerDown
 import univention.management.console.modules as umcm
 from univention.appcenter import get_action, AppManager
-from univention.appcenter.actions import Abort
-from univention.appcenter.actions.credentials import ConnectionFailedServerDown, ConnectionFailedInvalidMachineCredentials, ConnectionFailedInvalidUserCredentials, ConnectionFailedSecretFile
 from univention.appcenter.utils import docker_is_running, call_process
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
 
 # local application
-from app_center import Application, AppcenterServerContactFailed, LICENSE
-from sanitizers import AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
-import constants
-import util
+from univention.management.console.modules.appcenter.app_center import Application, LICENSE
+from univention.management.console.modules.appcenter.sanitizers import error_handling, AppSanitizer, basic_components_sanitizer, advanced_components_sanitizer, add_components_sanitizer
+from univention.management.console.modules.appcenter import constants
+from univention.management.console.modules.appcenter import util
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 
@@ -119,12 +116,21 @@ class ProgressPercentageHandler(ProgressInfoHandler):
 		self.state._finished = percentage >= 100
 
 
+def require_apps_update(func):
+	def _deferred(self, *args, **kwargs):
+		if not self.update_applications_done:
+			self.update_applications()
+		return func(self, *args, **kwargs)
+	return _deferred
+
+
 class Instance(umcm.Base, ProgressMixin):
 
 	def init(self):
 		os.umask(0022)  # umc umask is too restrictive for app center as it creates a lot of files in docker containers
 		self.ucr = ucr_instance()
 
+		self.update_applications_done = False
 		util.install_opener(self.ucr)
 		self._remote_progress = {}
 
@@ -163,24 +169,7 @@ class Instance(umcm.Base, ProgressMixin):
 		get_base_logger().getChild('actions.remove.progress').addHandler(percentage)
 
 	def error_handling(self, etype, exc, etraceback):
-		if isinstance(exc, (ConnectionFailedSecretFile,)):
-			MODULE.error(str(exc))
-			error_msg = [_('Cannot connect to the LDAP service.'), _('The server seems to be lacking a proper password file.'), _('Please check the join state of the machine.')]
-			raise umcm.UMC_Error('\n'.join(error_msg), status=500)
-		if isinstance(exc, (ConnectionFailedInvalidUserCredentials,)):
-			MODULE.error(str(exc))
-			error_msg = [_('Cannot connect to the LDAP service.'), _('The credentials provided were not accepted.'), _('This may be solved by simply logging out and in again.'), _('Maybe your password changed during the session.')]
-			raise umcm.UMC_Error('\n'.join(error_msg), status=500)
-		if isinstance(exc, (ConnectionFailedInvalidMachineCredentials,)):
-			MODULE.error(str(exc))
-			error_msg = [_('Cannot connect to the LDAP service.'), _('The credentials provided were not accepted.'), _('This may be solved by simply logging out and in again.'), _('Maybe the machine password changed during the session.')]
-			raise umcm.UMC_Error('\n'.join(error_msg), status=500)
-		if isinstance(exc, (ConnectionFailedServerDown,)):
-			MODULE.error(str(exc))
-			raise LDAP_ServerDown()
-		if isinstance(exc, (Abort, SystemError, AppcenterServerContactFailed)):
-			MODULE.error(str(exc))
-			raise umcm.UMC_Error(str(exc), status=500)
+		error_handling(etype, exc, etraceback)
 		return super(Instance, self).error_handling(exc, etype, etraceback)
 
 	@simple_response
@@ -190,10 +179,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 	@simple_response
 	def query(self):
-		if self.ucr.is_true('appcenter/umc/update/always', True):
-			update = get_action('update')
-			update.call()
-			Application._all_applications = None
+		self.update_applications()
 		self.ucr.load()
 		AppManager.reload_package_manager()
 		list_apps = get_action('list')
@@ -203,6 +189,13 @@ class Instance(umcm.Base, ProgressMixin):
 			if not self._test_for_docker_service():
 				raise umcm.UMC_CommandError(_('The docker service is not running! The App Center will not work properly.') + ' ' + _('Make sure docker.io is installed, try starting the service with "service docker start".'))
 		return domain.to_dict(apps)
+
+	def update_applications(self):
+		if self.ucr.is_true('appcenter/umc/update/always', True):
+			update = get_action('update')
+			update.call()
+			Application._all_applications = None
+			self.update_applications_done = True
 
 	def _test_for_docker_service(self):
 		if not docker_is_running():
@@ -344,6 +337,7 @@ class Instance(umcm.Base, ProgressMixin):
 		else:
 			return connection.request('appcenter/docker/progress', {'progress_id': remote_progress_id})
 
+	@require_apps_update
 	@require_password
 	@sanitize(
 			function=MappingSanitizer({
@@ -399,6 +393,7 @@ class Instance(umcm.Base, ProgressMixin):
 		with self.package_manager.locked(reset_status=True, set_finished=True):
 			yield
 
+	@require_apps_update
 	@require_password
 	@sanitize(
 		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
@@ -424,6 +419,7 @@ class Instance(umcm.Base, ProgressMixin):
 			function = 'install'
 		if function.startswith('update'):
 			function = 'update'
+
 		application_id = request.options.get('application')
 		Application.all(only_local=True)  # if not yet cached, cache. but use only local inis
 		application = Application.find(application_id)
