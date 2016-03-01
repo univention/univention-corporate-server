@@ -1,3 +1,12 @@
+ucs-test (6.0.33-29) unstable; urgency=medium
+
+  * 61_udm-users/24_ignore_user_with_functional_flag: In AD member mode
+    setups cn=users might be uppercase (Bug #37289)
+  * 66_udm-computers/20_computer_password: Deleted objects are synced
+    back by the AD connector (Bug #40813)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 01 Mar 2016 19:53:09 +0100
+
 ucs-test (6.0.33-28) unstable; urgency=medium
 
   * 10_ldap/100_ldapserver_policy: Skip in AD member setups since
