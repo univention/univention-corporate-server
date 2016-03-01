@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-management-console-frontend
+fix: 5.0.63-27.1217.201603011240
+desc: |
+ This update addresses the following issue(s):
+ * It's now possible to use multiple languages in one session when using HTTP
+   basic authentication (via command line).
+bug: [40806]
