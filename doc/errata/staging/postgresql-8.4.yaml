@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-8
 src: postgresql-8.4
-fix: 8.4_8.4.22lts6-0.29.201602291915
+fix: 8.4.22lts6-0.29.201602291915
 version: [8]
 desc: |
  This update for postgresql-8.4 fixes the following issues:
