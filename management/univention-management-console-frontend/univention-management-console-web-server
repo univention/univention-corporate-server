@@ -85,7 +85,7 @@ except (TypeError, ValueError):
 
 
 def sessionidhash():
-	return hashlib.sha256('%s%s' % (cherrypy.request.headers['Authorization'], sessionidhash.salt)).hexdigest()[:36]
+	return hashlib.sha256('%s%s%s' % (cherrypy.request.headers['Authorization'], cherrypy.request.headers.get('Accept-Language', ''), sessionidhash.salt)).hexdigest()[:36]
 # python 2.7.7 required:
 	#return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', cherrypy.request.headers['Authorization']), sessionidhash.salt, 100000)[:36]
 sessionidhash.salt = rndstr()
@@ -1056,6 +1056,7 @@ class CPAuth(CPgeneric):
 		except ValueError:
 			return
 
+		# authenticate
 		sessionid = sessionidhash()
 		req = umcp.Request('AUTH')
 		req.body = {
@@ -1064,6 +1065,24 @@ class CPAuth(CPgeneric):
 		}
 		self._auth_request(req, sessionid)
 
+		# set language based on Accept-Language header
+		try:
+			languages = cherrypy.request.headers.elements('Accept-Language')
+		except StandardError as exc:
+			CORE.warn('malformed Accept-Language header: %s' % (exc,))
+			return
+		for language in languages:
+			if language.qvalue <= 0:
+				break
+			response_queue = Queue.Queue()
+			CORE.process('Setting language %r' % (language.value,))
+			req = umcp.Request('SET', options={'locale': language.value})
+			request = QueueRequest(sessionid, req, response_queue, get_ip_address(), self.session_validity)
+			UMCP_Dispatcher._queue_send.put(request)
+			response = response_queue.get()
+			CORE.process('response status of setting language is %s' % (response.status,))
+			if response.status == 200:
+				break
 
 class Root(Ressource):
 
