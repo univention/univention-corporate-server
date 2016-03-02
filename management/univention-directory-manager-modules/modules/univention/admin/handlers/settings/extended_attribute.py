@@ -466,6 +466,9 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_pre_create(self):
 		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
+		if 'users/user' in self['module'] and self['valueRequired'] == '1' and not self.info.get('default'):
+			raise univention.admin.uexceptions.valueRequired(_('Extending the users module is only possible if a default value for a required value is given.'))
+
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionUDMProperty'])]
 

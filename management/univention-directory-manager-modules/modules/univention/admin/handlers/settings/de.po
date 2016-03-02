@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules 6.0.100\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-04-10 14:54+0200\n"
+"POT-Creation-Date: 2016-03-02 16:36+0100\n"
 "PO-Revision-Date: 2015-07-19 22:32+0200\n"
 "Last-Translator: Daniel Tröder <troeder@univention.de>\n"
 "Language-Team: Deutsch <German <packages@univention.de>>\n"
@@ -38,293 +38,247 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: cn.py:46
-msgid "Univention Settings"
-msgstr "Univention-Einstellungen"
+#: modules/univention/admin/handlers/settings/sambadomain.py:249
+msgid "A bitfield to indicate complexity and storage restrictions."
+msgstr "Ein Bitfeld um Komplexität und Speicherbeschränkungen anzuzeigen."
 
-#: cn.py:52 default.py:54 directory.py:55 extended_options.py:55
-#: extended_options.py:56 license.py:66 license.py:67 lock.py:55 lock.py:56
-#: packages.py:55 packages.py:56 printermodel.py:57 printermodel.py:58
-#: printeruri.py:55 printeruri.py:56 prohibited_username.py:55
-#: prohibited_username.py:56 umc_operationset.py:56 umc_operationset.py:57
-#: xconfig_choices.py:56
-msgid "Name"
-msgstr "Name"
-
-#: cn.py:65 default.py:144 directory.py:179 extended_attribute.py:373
-#: extended_options.py:152 ldapacl.py:152 ldapschema.py:132 lock.py:78
-#: packages.py:79 printermodel.py:82 printeruri.py:80
-#: prohibited_username.py:79 sambaconfig.py:183 sambadomain.py:260
-#: service.py:65 syntax.py:160 udm_hook.py:152 udm_module.py:181
-#: udm_syntax.py:152 umc_operationset.py:104 usertemplate.py:352
-#: xconfig_choices.py:169
-msgid "General"
-msgstr "Allgemein"
-
-#: cn.py:65 default.py:144 directory.py:179 extended_options.py:152
-#: ldapacl.py:152 ldapschema.py:132 sambaconfig.py:183 sambadomain.py:260
-#: service.py:65 syntax.py:160 udm_hook.py:152 udm_module.py:181
-#: udm_syntax.py:152 usertemplate.py:352
-msgid "Basic values"
-msgstr "Grundeinstellungen"
-
-#: default.py:48
-msgid "Preferences: Default"
-msgstr "Einstellungen: Vorgabe"
-
-#: default.py:66
-msgid "Default Primary Group"
-msgstr "Standard Primärgruppe"
-
-#: default.py:77
-msgid "Default Computer Group"
-msgstr "Standard Rechnergruppe"
-
-#: default.py:88
-msgid "Default DC Slave Computer Group"
-msgstr "Standardgruppe für DC Slave-Rechner"
-
-#: default.py:99
-msgid "Default DC Master & Backup Server Group"
-msgstr "Standardgruppe für DC Master- und DC Backup-Rechner"
-
-#: default.py:110
-msgid "Default Member Server Group"
-msgstr "Standardgruppe für Member-Server"
-
-#: default.py:121
-msgid "Default Client Computer Group"
-msgstr "Standardgruppe für Clients"
-
-#: default.py:132
-msgid "Default KDE Profiles"
-msgstr "Standard KDE-Profile"
-
-#: default.py:145
-msgid "Default settings description"
-msgstr "Bezeichnung - Vorgabe-Einstellungen"
-
-#: default.py:149 default.py:150
-msgid "Primary Groups"
-msgstr "Primäre Gruppen"
-
-#: default.py:159 default.py:160
-msgid "KDE Profiles"
-msgstr "KDE-Profile"
-
-#: directory.py:49
-msgid "Preferences: Default Container"
-msgstr "Einstellungen: Standard-Container"
-
-#: directory.py:67
-msgid "Policy Link"
-msgstr "Richtlinienverweis"
-
-#: directory.py:77
-msgid "DNS Link"
-msgstr "DNS-Verweis"
-
-#: directory.py:87
-msgid "DHCP Link"
-msgstr "DHCP-Verweis"
-
-#: directory.py:97
-msgid "User Link"
-msgstr "Benutzerverweis"
-
-#: directory.py:107
-msgid "Group Link"
-msgstr "Gruppenverweis"
-
-#: directory.py:117
-msgid "Computer Link"
-msgstr "Rechnerverweis"
-
-#: directory.py:127
-msgid "Network Link"
-msgstr "Netzverweis"
-
-#: directory.py:137
-msgid "Share Link"
-msgstr "Freigabenverweis"
-
-#: directory.py:147
-msgid "Printer Link"
-msgstr "Druckerverweis"
-
-#: directory.py:157
-msgid "Mail Link"
-msgstr "Mailverweis"
-
-#: directory.py:167
-msgid "License Link"
-msgstr "Lizenzverweis"
-
-#: directory.py:180
-msgid "Default container description"
-msgstr "Bezeichnung - Standard-Container"
-
-#: directory.py:183
-msgid "User Links"
-msgstr "Benutzerverweise"
-
-#: directory.py:186
-msgid "Group Links"
-msgstr "Gruppenverweise"
-
-#: directory.py:189
-msgid "Computer Links"
-msgstr "Rechnerverweise"
-
-#: directory.py:192
-msgid "Policy Links"
-msgstr "Richtlinienverweise"
-
-#: directory.py:195
-msgid "DNS Links"
-msgstr "DNS-Verweise"
-
-#: directory.py:198
-msgid "DHCP Links"
-msgstr "DHCP-Verweise"
-
-#: directory.py:201
-msgid "Network Links"
-msgstr "Netzverweise"
-
-#: directory.py:204
-msgid "Shares Links"
-msgstr "Freigabenverweise"
-
-#: directory.py:207
-msgid "Printers Links"
-msgstr "Druckerverweise"
-
-#: directory.py:210
-msgid "Mail Links"
-msgstr "Mailverweise"
-
-#: directory.py:213
-msgid "License Links"
-msgstr "Lizenzverweise"
-
-#: extended_attribute.py:46
-msgid "Settings: Extended attribute"
-msgstr "Einstellungen: Erweitertes Attribut"
-
-#: extended_attribute.py:52
-msgid "Unique name"
-msgstr "Eindeutiger Name"
-
-#: extended_attribute.py:53
-msgid ""
-"Name which by default is used by UDM CLI and internally to identify the "
-"extended attribute"
-msgstr ""
-"Name der standardmäßig vom UDM-CLI und intern zur Identifizierung des "
-"erweiterten Attributs verwendet wird"
-
-#: extended_attribute.py:63 extended_attribute.py:377
-msgid "Short description"
-msgstr "Kurzbeschreibung"
-
-#: extended_attribute.py:64
-msgid "A short descriptive text which is used as label in the UMC"
-msgstr "Kurze Beschreibung die in der UMC als Label verwendet wird"
-
-#: extended_attribute.py:74
-msgid "Long description"
-msgstr "Ausführliche Beschreibung"
-
-#: extended_attribute.py:75
+#: modules/univention/admin/handlers/settings/extended_attribute.py:75
 msgid "A longer descriptive text, which is shown as a bubble-help in the UMC"
 msgstr ""
 "Ein längerer Beschreibungstext, der in der UMC als Popup-Hilfe angezeigt wird"
 
-#: extended_attribute.py:85 extended_options.py:88
-msgid "Translations of short description"
-msgstr "Übersetzungen der Kurzbeschreibung"
+#: modules/univention/admin/handlers/settings/extended_attribute.py:64
+msgid "A short descriptive text which is used as label in the UMC"
+msgstr "Kurze Beschreibung die in der UMC als Label verwendet wird"
 
-#: extended_attribute.py:86
-msgid "Translations of the short description for other languages"
-msgstr "Übersetzungen der Kurzbeschreibung in andere Sprachen"
+#: modules/univention/admin/handlers/settings/extended_attribute.py:290
+msgid "A value for this extended attribute is required and must be given"
+msgstr "Wert ist erforderlich und muss eingegeben werden"
 
-#: extended_attribute.py:96 extended_options.py:99
-msgid "Translations of long description"
-msgstr "Übersetzungen der ausführlichen Beschreibung"
+#: modules/univention/admin/handlers/settings/ldapacl.py:79
+msgid "ACL data"
+msgstr "ACL-Daten"
 
-#: extended_attribute.py:97
-msgid "Translations of the long descriptive text for other languages"
-msgstr "Übersetzungen des langen Beschreibungstextes in andere Sprachen "
+#: modules/univention/admin/handlers/settings/ldapacl.py:68
+msgid "ACL file name"
+msgstr "Dateiname der ACL"
 
-#: extended_attribute.py:107
-msgid "Translations of tab name"
-msgstr "Übersetzung des Karteikartennamens"
+#: modules/univention/admin/handlers/settings/ldapacl.py:57
+msgid "ACL name"
+msgstr "Name der ACL"
 
-#: extended_attribute.py:108
-msgid "Translations of the name of the tab for other languages"
-msgstr "Übersetzung des Namens der Karteikarte in andere Sprachen"
+#: modules/univention/admin/handlers/settings/usertemplate.py:360
+msgid "Account Settings"
+msgstr "Kontoeinstellungen"
 
-#: extended_attribute.py:117
-msgid "Translations of group name"
-msgstr "Übersetzung des Gruppennames"
+#: modules/univention/admin/handlers/settings/usertemplate.py:116
+msgid "Account deactivation"
+msgstr "Kontodeaktivierung"
 
-#: extended_attribute.py:118
-msgid "Translations of the group name for other languages"
-msgstr "Übersetzung des Gruppennamens in andere Sprachen"
+#: modules/univention/admin/handlers/settings/ldapacl.py:167
+#: modules/univention/admin/handlers/settings/ldapschema.py:143
+#: modules/univention/admin/handlers/settings/udm_hook.py:179
+#: modules/univention/admin/handlers/settings/udm_module.py:199
+#: modules/univention/admin/handlers/settings/udm_syntax.py:179
+msgid "Activated"
+msgstr "Aktiviert"
 
-#: extended_attribute.py:127
-msgid "Syntax class"
-msgstr "Syntax-Klasse"
+#: modules/univention/admin/handlers/settings/ldapacl.py:89
+#: modules/univention/admin/handlers/settings/ldapschema.py:89
+#: modules/univention/admin/handlers/settings/udm_hook.py:89
+#: modules/univention/admin/handlers/settings/udm_module.py:87
+#: modules/univention/admin/handlers/settings/udm_syntax.py:89
+msgid "Active"
+msgstr "Aktiv"
 
-#: extended_attribute.py:128
-msgid ""
-"When values are entered, the UMC performs a syntax check. Apart from "
-"standard syntax definitions (string) and (integer), there are three "
-"possibilities for expressing a binary condition. The syntax TrueFalse is "
-"represented at LDAP level using the strings true and false, the syntax "
-"TrueFalseUppercorresponds to the OpenLDAP boolean values TRUE and FALSE and "
-"the syntax boolean does not save any value or the string 1"
+#: modules/univention/admin/handlers/settings/syntax.py:126
+msgid "Add an empty value to choicelist"
+msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:325
+msgid "Alternative e-mail address"
+msgstr "Alternative E-Mail-Adresse"
+
+#: modules/univention/admin/handlers/settings/syntax.py:206
+msgid "An LDAP attribute is required of which the information will be stored."
 msgstr ""
-"Bei der Eingabe von Werten nimmt die UMC eine Syntaxprüfung vor. Neben "
-"Standard-Syntaxdefinitionen für Zeichenketten (string), Zahlen (integer) "
-"gibt es drei Möglichkeiten einen binären Zustand auszudrücken: Die Syntax "
-"TrueFalse wird auf LDAP-Ebene durch die Zeichenketten true und false "
-"abgebildet, die Syntax TrueFalseUpper verwendet dagegen die Werte TRUE und "
-"FALSE. Die Syntax boolean dagegen speichert keinen Wert bzw. die "
-"Zeichenkette 1"
+"Ein LDAP-Attribut wird benötigt dessen Information gespeichert werden soll."
 
-#: extended_attribute.py:137
-msgid "Hook class"
-msgstr "Hook-Klasse"
+#: modules/univention/admin/handlers/settings/ldapacl.py:100
+#: modules/univention/admin/handlers/settings/ldapschema.py:100
+#: modules/univention/admin/handlers/settings/udm_hook.py:100
+#: modules/univention/admin/handlers/settings/udm_module.py:98
+#: modules/univention/admin/handlers/settings/udm_syntax.py:100
+msgid "App identifier"
+msgstr "App-Kennung"
 
-#: extended_attribute.py:138
-msgid ""
-"Name of a Python class implementing the univention.admin.hook interface, "
-"which can be used to execute additional actions when an object is created, "
-"modified or deleted"
-msgstr ""
-"Name einer Python-Klasse die das univention.admin.hook interface "
-"implementiert und dazu benutzt werden kann, zusätzliche Aktionen auszuführen "
-"wenn ein Objekt erstellt, modifiziert oder gelöscht wird"
+#: modules/univention/admin/handlers/settings/extended_attribute.py:400
+msgid "Attribute layout"
+msgstr "Attributdarstellung"
 
-#: extended_attribute.py:147
-msgid "Multi value"
-msgstr "Mehrfachwert"
+#: modules/univention/admin/handlers/settings/sambaconfig.py:111
+msgid "Bad Lockout Attempts"
+msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
 
-#: extended_attribute.py:148
-msgid ""
-"This extended attribute can store multiple values instead of only a single "
-"value"
-msgstr ""
-"Dieses erweiterte Attribut kann mehrere Werte anstatt nur eines Wertes "
-"speichern"
+#: modules/univention/admin/handlers/settings/sambadomain.py:158
+msgid "Bad lockout attempts"
+msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
 
-#: extended_attribute.py:158
+#: modules/univention/admin/handlers/settings/license.py:97
+msgid "Base DN"
+msgstr "Basis-DN"
+
+#: modules/univention/admin/handlers/settings/license.py:98
+msgid "Base DN the license is valid for"
+msgstr "Für diesen Basis-DN ist die Lizenz gültig."
+
+#: modules/univention/admin/handlers/settings/cn.py:65
+#: modules/univention/admin/handlers/settings/default.py:144
+#: modules/univention/admin/handlers/settings/directory.py:179
+#: modules/univention/admin/handlers/settings/extended_options.py:152
+#: modules/univention/admin/handlers/settings/ldapacl.py:152
+#: modules/univention/admin/handlers/settings/ldapschema.py:132
+#: modules/univention/admin/handlers/settings/sambaconfig.py:183
+#: modules/univention/admin/handlers/settings/sambadomain.py:260
+#: modules/univention/admin/handlers/settings/service.py:65
+#: modules/univention/admin/handlers/settings/syntax.py:160
+#: modules/univention/admin/handlers/settings/udm_hook.py:163
+#: modules/univention/admin/handlers/settings/udm_module.py:181
+#: modules/univention/admin/handlers/settings/udm_syntax.py:163
+#: modules/univention/admin/handlers/settings/usertemplate.py:352
+msgid "Basic values"
+msgstr "Grundeinstellungen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:105
+#: modules/univention/admin/handlers/settings/usertemplate.py:106
+msgid "Change password on next login"
+msgstr "Passwort bei der nächsten Anmeldung ändern"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:240
+msgid "City"
+msgstr "Stadt"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:77
+msgid "Color Depth"
+msgstr "Farbtiefe"
+
+#: modules/univention/admin/handlers/settings/directory.py:117
+msgid "Computer Link"
+msgstr "Rechnerverweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:189
+msgid "Computer Links"
+msgstr "Rechnerverweise"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:70
+msgid "Configuration Name"
+msgstr "Konfigurationsname"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:391
+msgid "Configuration of LDAP object class and LDAP attribute"
+msgstr "Konfiguration der LDAP-Objektklasse und des LDAP-Attributs"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:386
+msgid "Configuration of the modules to be extended"
+msgstr "Konfiguration der zu erweiternden Module"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:272
+msgid "Connection"
+msgstr "Verbindung"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:371
+msgid "Contact Information"
+msgstr "Kontaktinformationen"
+
+#: modules/univention/admin/handlers/settings/license.py:268
+msgid "Corporate clients"
+msgstr "Corporate Clients"
+
+#: modules/univention/admin/handlers/settings/directory.py:87
+msgid "DHCP Link"
+msgstr "DHCP-Verweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:198
+msgid "DHCP Links"
+msgstr "DHCP-Verweise"
+
+#: modules/univention/admin/handlers/settings/directory.py:77
+msgid "DNS Link"
+msgstr "DNS-Verweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:195
+msgid "DNS Links"
+msgstr "DNS-Verweise"
+
+#: modules/univention/admin/handlers/settings/license.py:258
+msgid "DVS clients"
+msgstr "DVS-Clients"
+
+#: modules/univention/admin/handlers/settings/license.py:248
+msgid "DVS users"
+msgstr "DVS-Benutzerkonten"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:415
+msgid "Data type"
+msgstr "Datentyp"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:415
+msgid "Data type definition"
+msgstr "Datentyp-Definition"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:110
+msgid "Default"
+msgstr "Vorgabewert"
+
+#: modules/univention/admin/handlers/settings/default.py:121
+msgid "Default Client Computer Group"
+msgstr "Standardgruppe für Clients"
+
+#: modules/univention/admin/handlers/settings/default.py:77
+msgid "Default Computer Group"
+msgstr "Standard Rechnergruppe"
+
+#: modules/univention/admin/handlers/settings/default.py:99
+msgid "Default DC Master & Backup Server Group"
+msgstr "Standardgruppe für DC Master- und DC Backup-Rechner"
+
+#: modules/univention/admin/handlers/settings/default.py:88
+msgid "Default DC Slave Computer Group"
+msgstr "Standardgruppe für DC Slave-Rechner"
+
+#: modules/univention/admin/handlers/settings/default.py:132
+msgid "Default KDE Profiles"
+msgstr "Standard KDE-Profile"
+
+#: modules/univention/admin/handlers/settings/default.py:110
+msgid "Default Member Server Group"
+msgstr "Standardgruppe für Member-Server"
+
+#: modules/univention/admin/handlers/settings/default.py:66
+msgid "Default Primary Group"
+msgstr "Standard Primärgruppe"
+
+#: modules/univention/admin/handlers/settings/directory.py:180
+msgid "Default container description"
+msgstr "Bezeichnung - Standard-Container"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:77
+msgid "Default long description"
+msgstr "Ausführliche Beschreibung"
+
+#: modules/univention/admin/handlers/settings/default.py:145
+msgid "Default settings description"
+msgstr "Bezeichnung - Vorgabe-Einstellungen"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:66
+msgid "Default short description"
+msgstr "Kurzbeschreibung"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:158
 msgid "Default value"
 msgstr "Vorgabewert"
 
-#: extended_attribute.py:159
+#: modules/univention/admin/handlers/settings/extended_attribute.py:159
 msgid ""
 "Default value which is set for this extended attribute when a new object is "
 "created"
@@ -332,88 +286,269 @@ msgstr ""
 "Standard Wert der für dieses erweiterte Attribut gesetzt wird wenn ein neues "
 "Objekt erstellt wird"
 
-#: extended_attribute.py:168
+#: modules/univention/admin/handlers/settings/umc_operationset.py:91
+msgid ""
+"Defines a specific flavor of the UMC module. If given the operations are "
+"permitted only if the flavor matches."
+msgstr ""
+"Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist, "
+"müssen Operationen diese setzen, ansonsten werden sie zurückgewiesen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:270
+msgid "Department number"
+msgstr "Abteilungsnummer"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:67
+#: modules/univention/admin/handlers/settings/umc_operationset.py:68
+#: modules/univention/admin/handlers/settings/usertemplate.py:73
+msgid "Description"
+msgstr "Beschreibung"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:161
+msgid "Disconnect Time"
+msgstr "Verbindung trennen nach"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:208
+msgid "Disconnect time"
+msgstr "Verbindung trennen nach"
+
+#: modules/univention/admin/handlers/settings/syntax.py:164
+msgid "Display"
+msgstr "Anzeige"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:157
+msgid "Display Size (mm)"
+msgstr "Bildschirm Größe (mm)"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:84
+msgid "Display name"
+msgstr "Anzeigename"
+
+#: modules/univention/admin/handlers/settings/syntax.py:94
+msgid "Displayed Attributes"
+msgstr "Anzuzeigende Attribute"
+
+#: modules/univention/admin/handlers/settings/syntax.py:106
+msgid "Displayed LDAP Attributes"
+msgstr "Anzuzeigende LDAP-Attribute"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:168
 msgid "Do not show this extended attribute in the UMC"
 msgstr "Dieses erweiterte Attribut nicht in der UMC anzeigen"
 
-#: extended_attribute.py:169
+#: modules/univention/admin/handlers/settings/usertemplate.py:127
+msgid "E-mail address"
+msgstr "E-Mail-Adresse"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:120
+msgid "Editable"
+msgstr "Editierbar"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:268
+msgid "Editable after creation"
+msgstr "Nachträglich modifizierbar"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:378
+#: modules/univention/admin/handlers/settings/usertemplate.py:379
+msgid "Employee"
+msgstr "Mitarbeiter"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:378
+msgid "Employee Information"
+msgstr "Mitarbeiterinformationen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:280
+msgid "Employee type"
+msgstr "Mitarbeiterkategorie"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:111
+msgid "Enable option by default."
+msgstr "Setzt die Option standardmäßig."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:361
+msgid "Exclude from UMC search"
+msgstr "Von der UMC-Suche ausschließen"
+
+#: modules/univention/admin/handlers/settings/license.py:77
+msgid "Expiry date"
+msgstr "Ablaufdatum"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:374
+msgid "Extended attribute description"
+msgstr "Bezeichnung - Erweitertes Attribut"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:470
 msgid ""
-"The extended attribute is not shown in the UMC. It can only be used from the "
-"UDM CLI or the Python interface"
-msgstr ""
-"Dieses erweiterte Attribut wird nicht in der UMC angezeigt. Es kann dann nur "
-"per UDM-CLI  das Python-Interface verwendet werden"
+"Extending the users module is only possible if a default value for a "
+"required value is given."
+msgstr "Um das Benutzer-Modul zu erweitern muss für benötigte Werte ein Vorgabewert gesetzt werden."
 
-#: extended_attribute.py:178
-msgid "Tab name"
-msgstr "Name der Karteikarte"
+#: modules/univention/admin/handlers/settings/umc_operationset.py:90
+msgid "Flavor"
+msgstr "Variante"
 
-#: extended_attribute.py:179
-msgid ""
-"Name of the tab in the UMC on which this extended attribute is be placed. A "
-"new tab is created automatically if no tab with the name exists"
-msgstr ""
-"Name der Karteikarte in der UMC auf der dieses erweiterte Attribut platziert "
-"wird. Eine neue Karteikarte wird erstellt wenn noch keine Karteikarte mit "
-"diesem Namen existiert"
+#: modules/univention/admin/handlers/settings/udm_hook.py:150
+#: modules/univention/admin/handlers/settings/udm_module.py:148
+#: modules/univention/admin/handlers/settings/udm_syntax.py:150
+msgid "GNU message catalog for translations"
+msgstr "GNU Message Catalog für Übersetzungen"
 
-#: extended_attribute.py:188
-msgid "Ordering number"
-msgstr "Ordnungsnummer"
+#: modules/univention/admin/handlers/settings/cn.py:65
+#: modules/univention/admin/handlers/settings/default.py:144
+#: modules/univention/admin/handlers/settings/directory.py:179
+#: modules/univention/admin/handlers/settings/extended_attribute.py:373
+#: modules/univention/admin/handlers/settings/extended_options.py:152
+#: modules/univention/admin/handlers/settings/ldapacl.py:152
+#: modules/univention/admin/handlers/settings/ldapschema.py:132
+#: modules/univention/admin/handlers/settings/lock.py:78
+#: modules/univention/admin/handlers/settings/packages.py:79
+#: modules/univention/admin/handlers/settings/printermodel.py:82
+#: modules/univention/admin/handlers/settings/printeruri.py:80
+#: modules/univention/admin/handlers/settings/prohibited_username.py:79
+#: modules/univention/admin/handlers/settings/sambaconfig.py:183
+#: modules/univention/admin/handlers/settings/sambadomain.py:260
+#: modules/univention/admin/handlers/settings/service.py:65
+#: modules/univention/admin/handlers/settings/syntax.py:160
+#: modules/univention/admin/handlers/settings/udm_hook.py:163
+#: modules/univention/admin/handlers/settings/udm_module.py:181
+#: modules/univention/admin/handlers/settings/udm_syntax.py:163
+#: modules/univention/admin/handlers/settings/umc_operationset.py:104
+#: modules/univention/admin/handlers/settings/usertemplate.py:352
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:169
+msgid "General"
+msgstr "Allgemein"
 
-#: extended_attribute.py:189
-msgid ""
-"This number specifies the position on which this extended attributes is "
-"placed on the tab or in the group. The numeration starts at 1"
-msgstr ""
-"Diese Nummer legt die Position fest an welcher dieses erweiterte Attribut "
-"auf der Karteikarte oder in der Gruppe platziert wird. Die Nummerierung "
-"beginnt bei 1"
+#: modules/univention/admin/handlers/settings/ldapacl.py:153
+msgid "General LDAP ACL extension settings"
+msgstr "Grundeinstellungen - LDAP ACL-Erweiterung"
 
-#: extended_attribute.py:198
+#: modules/univention/admin/handlers/settings/ldapschema.py:133
+msgid "General LDAP schema extension settings"
+msgstr "Grundeinstellungen - LDAP-Schemaerweiterung"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:184
+msgid "General Samba configuration settings"
+msgstr "Grundeinstellungen - Samba-Konfiguration"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:261
+msgid "General Samba domain settings"
+msgstr "Grundeinstellungen - Samba-Domäne"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:164
+msgid "General UDM hook settings"
+msgstr "Grundeinstellungen - UDM-Hook"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:182
+msgid "General UDM module settings"
+msgstr "Grundeinstellungen - UDM-Modul"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:164
+msgid "General UDM syntax settings"
+msgstr "Grundeinstellungen - UDM-Syntax"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:105
+msgid "General UMC operation set settings"
+msgstr "Grundeinstellungen - UMC-Operationen"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:170
+msgid "General X configuration choices settings"
+msgstr "Grundeinstellungen - X-Konfigurationsauswahl"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:396
+msgid "General extended attribute settings"
+msgstr "Grundeinstellungen - Erweiterte Optionen"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:153
+msgid "General extended options settings"
+msgstr "Grundeinstellungen - Erweiterte Optionen"
+
+#: modules/univention/admin/handlers/settings/license.py:292
+msgid "General license settings"
+msgstr "Grundeinstellungen - Lizenz"
+
+#: modules/univention/admin/handlers/settings/lock.py:79
+msgid "General lock settings"
+msgstr "Grundeinstellungen - Sperrung"
+
+#: modules/univention/admin/handlers/settings/packages.py:80
+msgid "General package list settings"
+msgstr "Grundeinstellungen - Paketliste"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:81
+msgid "General printer URI list settings"
+msgstr "Grundeinstellungen - Drucker-URI-Liste"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:83
+msgid "General printer driver list settings"
+msgstr "Grundeinstellungen - Druckertreiberliste"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:80
+msgid "General prohibited user names settings"
+msgstr "Grundeinstellungen - Verbotene Benutzernamen"
+
+#: modules/univention/admin/handlers/settings/service.py:66
+msgid "General service settings"
+msgstr "Grundeinstellungen - Dienst"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:373
+msgid "General settings"
+msgstr "Allgemeine Einstellungen"
+
+#: modules/univention/admin/handlers/settings/syntax.py:161
+msgid "General syntax definition settings"
+msgstr "Grundeinstellungen - Syntax-Definition"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:353
+msgid "General user template settings"
+msgstr "Grundeinstellungen - Benutzervorlage"
+
+#: modules/univention/admin/handlers/settings/directory.py:107
+msgid "Group Link"
+msgstr "Gruppenverweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:186
+msgid "Group Links"
+msgstr "Gruppenverweise"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:397
+msgid "Group Memberships"
+msgstr "Gruppenmitgliedschaften"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:409
+msgid "Group layout"
+msgstr "Gruppendarstellung"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:198
 msgid "Group name"
 msgstr "Gruppenname"
 
-#: extended_attribute.py:199
-msgid ""
-"Related properties can be grouped. This field specifies the name of the "
-"group in which this extended attribute is put in. If no name is given, no "
-"group is used"
-msgstr ""
-"Zusammenhängende Attribute können gruppiert werden. Dieses Feld gibt den "
-"Name der Gruppe an in welcher dieses erweiterte Attribut platziert wird.Wenn "
-"kein Name gegeben wird, wird keine Gruppe verwendet"
-
-#: extended_attribute.py:208
+#: modules/univention/admin/handlers/settings/extended_attribute.py:208
 msgid "Group ordering number"
 msgstr "Gruppen-Ordnungsnummer"
 
-#: extended_attribute.py:209
-msgid ""
-"This number specifies the position on which this group is placed on the tab. "
-"The numbering starts at 1"
-msgstr ""
-"Position an der diese Gruppe auf der Karteikarte platziert wird. Die "
-"Nummerierung beginnt bei 1"
+#: modules/univention/admin/handlers/settings/usertemplate.py:290
+#: modules/univention/admin/handlers/settings/usertemplate.py:397
+#: modules/univention/admin/handlers/settings/usertemplate.py:398
+msgid "Groups"
+msgstr "Gruppen"
 
-#: extended_attribute.py:218
-msgid "Tab with advanced settings"
-msgstr "Karteikarte mit erweiterten Einstellungen"
+#: modules/univention/admin/handlers/settings/usertemplate.py:148
+msgid "Home share"
+msgstr "Benutzerverzeichnis-Freigabe"
 
-#: extended_attribute.py:219
-msgid ""
-"Put this extended attribute under \"Advanced settings\". No autonomous tab "
-"will be created"
-msgstr ""
-"Das erweiterte Attribut wird unter \"Erweiterte Einstellungen\" "
-"untergebracht. Es wird keine eigenständige Karteikarte für das erweiterte "
-"Attribut angelegt"
+#: modules/univention/admin/handlers/settings/usertemplate.py:158
+msgid "Home share path"
+msgstr "Pfad der Benutzerverzeichnis-Freigabe"
 
-#: extended_attribute.py:228
-msgid "Overwrite existing tab"
-msgstr "Existierende Karteikarte überschreiben"
+#: modules/univention/admin/handlers/settings/extended_attribute.py:137
+msgid "Hook class"
+msgstr "Hook-Klasse"
 
-#: extended_attribute.py:229
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:127
+msgid "Horizontal Sync"
+msgstr "Horizontale Synchronisation"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:229
 msgid ""
 "If a tab with the given name already exists, it is replaced by a new tab "
 "only containig extended attributes"
@@ -421,11 +556,15 @@ msgstr ""
 "Wenn bereits eine Karteikarte mit diesem Namen existiert, wird sie durch "
 "eine Karteikarte ersetzt die nur erweiterte Attribute enthält"
 
-#: extended_attribute.py:238
-msgid "Overwrite existing widget"
-msgstr "Existierendes Eingabefeld überschreiben"
+#: modules/univention/admin/handlers/settings/extended_attribute.py:310
+msgid ""
+"If possible, the LDAP object class is removed when this extended attribute "
+"gets unset"
+msgstr ""
+"Entferne die LDAP-Klasse (wenn möglich) wenn dieses erweitere Attribut leer "
+"gesetzt wird"
 
-#: extended_attribute.py:239
+#: modules/univention/admin/handlers/settings/extended_attribute.py:239
 msgid ""
 "In some cases it is useful to overwrite predefined input fields with "
 "extended attributes. If the internal UDM name of an attribute is configured "
@@ -444,11 +583,846 @@ msgstr ""
 "univention.admin.property-Objekten vor dem Doppelpunkt steht, z.B. "
 "roomNumber für die Raumnummer eines Benutzers"
 
-#: extended_attribute.py:248
+#: modules/univention/admin/handlers/settings/sambadomain.py:229
+msgid ""
+"Is not based on the user's account name. Contains at least six characters. "
+"Contains characters from three of the following four categories: Uppercase "
+"alphabet characters (A-Z), Lowercase alphabet characters (a-z), Arabic "
+"numerals (0-9), Nonalphanumeric characters (for example, !$#,%)"
+msgstr ""
+"Es darf weder wesentliche Teile des Kontonamens des Benutzers noch den "
+"vollständigen Kontonamen enthalten. Es muss mindestens sechs Zeichen lang "
+"sein. Es muss Zeichen aus drei der vier folgenden Kategorien enthalten: "
+"Großbuchstaben von A bis Z, Kleinbuchstaben von A bis Z, Ziffern der Basis "
+"10 (0 bis 9), Andere als alphabetische Zeichen (z. B. !, $, #, %)"
+
+#: modules/univention/admin/handlers/settings/default.py:159
+#: modules/univention/admin/handlers/settings/default.py:160
+msgid "KDE Profiles"
+msgstr "KDE-Profile"
+
+#: modules/univention/admin/handlers/settings/license.py:188
+msgid "Key ID"
+msgstr "Key ID"
+
+#: modules/univention/admin/handlers/settings/license.py:189
+msgid "Key ID of this license."
+msgstr "Key ID der Lizenz"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:107
+msgid "Keyboard Layout"
+msgstr "Tastaturlayout"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:117
+msgid "Keyboard Variant"
+msgstr "Tastaturvariante"
+
+#: modules/univention/admin/handlers/settings/syntax.py:84
+msgid "LDAP Base"
+msgstr "LDAP Basis"
+
+#: modules/univention/admin/handlers/settings/syntax.py:74
+msgid "LDAP Search Filter"
+msgstr "LDAP Suchfilter"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:258
+msgid "LDAP attribute"
+msgstr "LDAP-Attribut"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:391
+msgid "LDAP mapping"
+msgstr "LDAP-Abbildung"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:299
+#: modules/univention/admin/handlers/settings/extended_options.py:140
+msgid "LDAP object class"
+msgstr "LDAP-Objektklasse"
+
+#: modules/univention/admin/handlers/settings/license.py:291
+msgid "License"
+msgstr "Lizenz"
+
+#: modules/univention/admin/handlers/settings/license.py:78
+msgid "License Expiration Date"
+msgstr "Lizenz-Ablaufdatum"
+
+#: modules/univention/admin/handlers/settings/directory.py:167
+msgid "License Link"
+msgstr "Lizenzverweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:213
+msgid "License Links"
+msgstr "Lizenzverweise"
+
+#: modules/univention/admin/handlers/settings/license.py:291
+msgid "Licensing Information"
+msgstr "Lizenz-Informationen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:385
+#: modules/univention/admin/handlers/settings/usertemplate.py:386
+msgid "Linux"
+msgstr "Linux/UNIX"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:51
+msgid "List of Operations for UMC"
+msgstr "Liste von UMC-Operationen"
+
+#: modules/univention/admin/handlers/settings/packages.py:50
+msgid "List of Packages for UCS Systems"
+msgstr "Paketliste für UCS-Systeme"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:80
+msgid "List of UMC command names or patterns"
+msgstr "Liste von UMC-Kommando- und Optionenmuster"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:50
+msgid "List of URIs for printers"
+msgstr "Liste von Drucker-URIs"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:52
+msgid "List of drivers for printers"
+msgstr "Druckertreiberliste"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:131
+msgid "List of modules this option applies to."
+msgstr "Liste der Module, auf die diese Option angewandt wird."
+
+#: modules/univention/admin/handlers/settings/lock.py:78
+msgid "Lock Information"
+msgstr "Informationen über die Sperrung"
+
+#: modules/univention/admin/handlers/settings/lock.py:66
+msgid "Lock Time"
+msgstr "Sperrzeit"
+
+#: modules/univention/admin/handlers/settings/lock.py:50
+msgid "Lock objects"
+msgstr "Sperrobjekte"
+
+#: modules/univention/admin/handlers/settings/lock.py:67
+msgid "Locked until"
+msgstr "Gesperrt bis"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:141
+msgid "Lockout Duration Minutes"
+msgstr "Dauer der Aussperrung"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:188
+msgid "Lockout duration minutes"
+msgstr "Dauer der Aussperrung"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:169
+msgid "Login shell"
+msgstr "Login-Shell"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:381
+msgid "Long Description"
+msgstr "Ausführliche Beschreibung"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:74
+msgid "Long description"
+msgstr "Ausführliche Beschreibung"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:78
+msgid "Long description for the option as shown on the Option tab."
+msgstr ""
+"Lange Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:365
+#: modules/univention/admin/handlers/settings/usertemplate.py:366
+msgid "Mail"
+msgstr "Mail"
+
+#: modules/univention/admin/handlers/settings/directory.py:157
+msgid "Mail Link"
+msgstr "Mailverweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:210
+msgid "Mail Links"
+msgstr "Mailverweise"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:365
+msgid "Mail Settings"
+msgstr "Maileinstellungen"
+
+#: modules/univention/admin/handlers/settings/license.py:228
+msgid "Managed Clients"
+msgstr "Managed Clients"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:141
+msgid "Mapping to LDAP objectClasses"
+msgstr "Abbildung auf LDAP-Objektklassen"
+
+#: modules/univention/admin/handlers/settings/license.py:128
+msgid "Max. clients"
+msgstr "Max. Clients"
+
+#: modules/univention/admin/handlers/settings/license.py:148
+msgid "Max. desktops"
+msgstr "Max. Desktops"
+
+#: modules/univention/admin/handlers/settings/license.py:138
+msgid "Max. groupware accounts"
+msgstr "Max. Groupware-Konten"
+
+#: modules/univention/admin/handlers/settings/license.py:118
+msgid "Max. user accounts"
+msgstr "Max. Benutzerkonten"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:140
+#: modules/univention/admin/handlers/settings/udm_hook.py:140
+#: modules/univention/admin/handlers/settings/udm_module.py:138
+#: modules/univention/admin/handlers/settings/udm_syntax.py:140
+msgid "Maximal UCS version"
+msgstr "Maximale UCS-Version"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:131
+msgid "Maximum Password Age"
+msgstr "Maximales Passwortalter"
+
+#: modules/univention/admin/handlers/settings/license.py:259
+msgid "Maximum number of DVS clients this license allows."
+msgstr "Maximale Anzahl von DVS-Clients, die mit dieser Lizenz erlaubt sind."
+
+#: modules/univention/admin/handlers/settings/license.py:249
+msgid "Maximum number of DVS users this license allows."
+msgstr ""
+"Maximale Anzahl von DVS-Benutzerkonten, die mit dieser Lizenz erlaubt sind."
+
+#: modules/univention/admin/handlers/settings/license.py:149
+msgid ""
+"Maximum number of Univention desktop accounts managed with the UCS "
+"infrastructure"
+msgstr ""
+"Maximale Anzahl von Desktop-Rechnern, die mit der UCS Infrastruktur "
+"verwaltet werden."
+
+#: modules/univention/admin/handlers/settings/license.py:129
+msgid "Maximum number of client hosts managed with the UCS infrastructure"
+msgstr ""
+"Maximale Anzahl von Client-Rechnern, die mit der UCS Infrastruktur verwaltet "
+"werden."
+
+#: modules/univention/admin/handlers/settings/license.py:269
+msgid "Maximum number of corporate clients this license allows."
+msgstr ""
+"Maximale Anzahl von Corporate Clients, die mit dieser Lizenz erlaubt sind."
+
+#: modules/univention/admin/handlers/settings/license.py:139
+msgid ""
+"Maximum number of groupware accounts managed with the UCS infrastructure"
+msgstr ""
+"Maximale Anzahl von Groupware-Konten, die mit der UCS Infrastruktur "
+"verwaltet werden."
+
+#: modules/univention/admin/handlers/settings/license.py:229
+msgid "Maximum number of managed clients this license allows."
+msgstr ""
+"Maximale Anzahl von Managed Clients, die mit dieser Lizenz erlaubt sind."
+
+#: modules/univention/admin/handlers/settings/license.py:199
+msgid "Maximum number of servers this license allows."
+msgstr "Maximale Anzahl von Servern, die mit dieser Lizenz erlaubt sind."
+
+#: modules/univention/admin/handlers/settings/license.py:119
+msgid "Maximum number of user accounts managed with the UCS infrastructure"
+msgstr ""
+"Maximale Anzahl von Benutzerkonten, die mit der UCS Infrastruktur verwaltet "
+"werden."
+
+#: modules/univention/admin/handlers/settings/license.py:239
+msgid "Maximum number of users this license allows."
+msgstr ""
+"Maximale Anzahl von Benutzerkonten, die mit dieser Lizenz erlaubt sind."
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:178
+msgid "Maximum password age"
+msgstr "Maximales Passwortalter"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:158
+#: modules/univention/admin/handlers/settings/ldapschema.py:138
+#: modules/univention/admin/handlers/settings/udm_hook.py:170
+#: modules/univention/admin/handlers/settings/udm_module.py:190
+#: modules/univention/admin/handlers/settings/udm_syntax.py:170
+msgid "Metadata"
+msgstr "Metadaten"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:130
+#: modules/univention/admin/handlers/settings/udm_hook.py:130
+#: modules/univention/admin/handlers/settings/udm_module.py:128
+#: modules/univention/admin/handlers/settings/udm_syntax.py:130
+msgid "Minimal UCS version"
+msgstr "Minimale UCS-Version"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:101
+msgid "Minimum Password Age"
+msgstr "Minimales Passwortalter"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:148
+msgid "Minimum password age"
+msgstr "Minimales Passwortalter"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:386
+#: modules/univention/admin/handlers/settings/license.py:87
+msgid "Module"
+msgstr "Modul"
+
+#: modules/univention/admin/handlers/settings/license.py:88
+msgid "Module the license is valid for"
+msgstr "Für dieses Modul ist die Lizenz gültig."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:320
+msgid ""
+"Modules this extended attribute is added to, e.g. \"users/user\" or "
+"\"computers/windows\""
+msgstr ""
+"Module zu denen dieses erweiterte Attribute hinzugefügt wird, z.B \"users/"
+"user\" oder \"computers/windows\""
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:319
+msgid "Modules to be extended"
+msgstr "Zu erweiternde Module"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:97
+msgid "Mouse Device"
+msgstr "Maus-Device"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:87
+msgid "Mouse Protocol"
+msgstr "Mausprotokoll"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:147
+msgid "Multi value"
+msgstr "Mehrfachwert"
+
+#: modules/univention/admin/handlers/settings/cn.py:52
+#: modules/univention/admin/handlers/settings/default.py:54
+#: modules/univention/admin/handlers/settings/directory.py:55
+#: modules/univention/admin/handlers/settings/extended_options.py:55
+#: modules/univention/admin/handlers/settings/extended_options.py:56
+#: modules/univention/admin/handlers/settings/license.py:66
+#: modules/univention/admin/handlers/settings/license.py:67
+#: modules/univention/admin/handlers/settings/lock.py:55
+#: modules/univention/admin/handlers/settings/lock.py:56
+#: modules/univention/admin/handlers/settings/packages.py:55
+#: modules/univention/admin/handlers/settings/packages.py:56
+#: modules/univention/admin/handlers/settings/printermodel.py:57
+#: modules/univention/admin/handlers/settings/printermodel.py:58
+#: modules/univention/admin/handlers/settings/printeruri.py:55
+#: modules/univention/admin/handlers/settings/printeruri.py:56
+#: modules/univention/admin/handlers/settings/prohibited_username.py:55
+#: modules/univention/admin/handlers/settings/prohibited_username.py:56
+#: modules/univention/admin/handlers/settings/umc_operationset.py:56
+#: modules/univention/admin/handlers/settings/umc_operationset.py:57
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:56
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:138
+msgid ""
+"Name of a Python class implementing the univention.admin.hook interface, "
+"which can be used to execute additional actions when an object is created, "
+"modified or deleted"
+msgstr ""
+"Name einer Python-Klasse die das univention.admin.hook interface "
+"implementiert und dazu benutzt werden kann, zusätzliche Aktionen auszuführen "
+"wenn ein Objekt erstellt, modifiziert oder gelöscht wird"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:179
+msgid ""
+"Name of the tab in the UMC on which this extended attribute is be placed. A "
+"new tab is created automatically if no tab with the name exists"
+msgstr ""
+"Name der Karteikarte in der UMC auf der dieses erweiterte Attribut platziert "
+"wird. Eine neue Karteikarte wird erstellt wenn noch keine Karteikarte mit "
+"diesem Namen existiert"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:53
+msgid ""
+"Name which by default is used by UDM CLI and internally to identify the "
+"extended attribute"
+msgstr ""
+"Name der standardmäßig vom UDM-CLI und intern zur Identifizierung des "
+"erweiterten Attributs verwendet wird"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:130
+msgid "Needed module"
+msgstr "Benötigtes Modul"
+
+#: modules/univention/admin/handlers/settings/directory.py:127
+msgid "Network Link"
+msgstr "Netzverweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:201
+msgid "Network Links"
+msgstr "Netzverweise"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:117
+msgid "Next RID"
+msgstr "Nächste RID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:106
+msgid "Next group RID"
+msgstr "Nächste Gruppen-RID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:95
+msgid "Next user RID"
+msgstr "Nächste Benutzer-RID"
+
+#: modules/univention/admin/handlers/settings/license.py:169
+msgid "OEM Product types this license allows."
+msgstr "OEM-Produkttypen, für die die vorliegenden Lizenz gültig ist."
+
+#: modules/univention/admin/handlers/settings/extended_options.py:121
+msgid "Option may be repeatedly turned on and off."
+msgstr "Die Option kann wiederholt gesetzt und entfernt werden."
+
+#: modules/univention/admin/handlers/settings/syntax.py:170
+#: modules/univention/admin/handlers/settings/usertemplate.py:336
+msgid "Options"
+msgstr "Optionen"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:48
+msgid "Options for extended attributes"
+msgstr "Optionen für erweiterte Attribute"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:188
+msgid "Ordering number"
+msgstr "Ordnungsnummer"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:95
+msgid "Organisation"
+msgstr "Organisation"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:228
+msgid "Overwrite existing tab"
+msgstr "Existierende Karteikarte überschreiben"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:238
+msgid "Overwrite existing widget"
+msgstr "Existierendes Eingabefeld überschreiben"
+
+#: modules/univention/admin/handlers/settings/packages.py:66
+#: modules/univention/admin/handlers/settings/packages.py:67
+#: modules/univention/admin/handlers/settings/packages.py:79
+msgid "Package List"
+msgstr "Paketliste"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:265
+msgid "Password"
+msgstr "Passwort"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:91
+msgid "Password History"
+msgstr "Passwort-History"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:81
+msgid "Password Length"
+msgstr "Passwort-Länge"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:138
+msgid "Password history"
+msgstr "Passwort-History"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:128
+msgid "Password length"
+msgstr "Passwort-Länge"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:248
+msgid "Password properties"
+msgstr "Passwort-Eigenschaften"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:228
+msgid "Passwords must meet complexity requirements"
+msgstr "Kennwort muss Komplexitätsvoraussetzungen entsprechen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:159
+msgid "Path to the home directory on the home share"
+msgstr "Relativer Pfad der Benutzerverzeichnis-Freigabe"
+
+#: modules/univention/admin/handlers/settings/directory.py:67
+msgid "Policy Link"
+msgstr "Richtlinienverweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:192
+msgid "Policy Links"
+msgstr "Richtlinienverweise"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:230
+msgid "Postal code"
+msgstr "Postleitzahl"
+
+#: modules/univention/admin/handlers/settings/settings.py:50
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: modules/univention/admin/handlers/settings/default.py:48
+msgid "Preferences: Default"
+msgstr "Einstellungen: Vorgabe"
+
+#: modules/univention/admin/handlers/settings/directory.py:49
+msgid "Preferences: Default Container"
+msgstr "Einstellungen: Standard-Container"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:50
+msgid "Preferences: X Configuration Choices"
+msgstr "Einstellungen: X-Konfigurationsauswahl"
+
+#: modules/univention/admin/handlers/settings/license.py:218
+msgid "Premium Support"
+msgstr "Premiumsupport"
+
+#: modules/univention/admin/handlers/settings/default.py:149
+#: modules/univention/admin/handlers/settings/default.py:150
+msgid "Primary Groups"
+msgstr "Primäre Gruppen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:313
+msgid "Primary e-mail address"
+msgstr "Primäre E-Mail-Adresse"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:300
+msgid "Primary group"
+msgstr "Primäre Gruppe"
+
+#: modules/univention/admin/handlers/settings/directory.py:147
+msgid "Printer Link"
+msgstr "Druckerverweis"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:82
+msgid "Printer List"
+msgstr "Druckerliste"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:68
+#: modules/univention/admin/handlers/settings/printermodel.py:69
+msgid "Printer Model"
+msgstr "Druckermodell"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:66
+#: modules/univention/admin/handlers/settings/printeruri.py:67
+#: modules/univention/admin/handlers/settings/printeruri.py:80
+msgid "Printer URI"
+msgstr "Drucker-URI"
+
+#: modules/univention/admin/handlers/settings/directory.py:207
+msgid "Printers Links"
+msgstr "Druckerverweise"
+
+#: modules/univention/admin/handlers/settings/license.py:178
+msgid "Product type"
+msgstr "Gültige Produkttypen"
+
+#: modules/univention/admin/handlers/settings/license.py:179
+msgid "Product type this license allows."
+msgstr "Produkttypen, für die die vorliegenden Lizenz gültig ist."
+
+#: modules/univention/admin/handlers/settings/license.py:159
+msgid "Product types this license allows."
+msgstr "Produkttypen, für die die vorliegenden Lizenz gültig ist."
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:66
+#: modules/univention/admin/handlers/settings/prohibited_username.py:67
+msgid "Prohibited user name"
+msgstr "Verbotener Benutzername"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:79
+msgid "Prohibited user names"
+msgstr "Verbotene Benutzernamen"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:219
+msgid ""
+"Put this extended attribute under \"Advanced settings\". No autonomous tab "
+"will be created"
+msgstr ""
+"Das erweiterte Attribut wird unter \"Erweiterte Einstellungen\" "
+"untergebracht. Es wird keine eigenständige Karteikarte für das erweiterte "
+"Attribut angelegt"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:171
+msgid "Refuse Machine Password Change"
+msgstr "Änderung des Rechnerpasswortes ablehnen"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:218
+msgid "Refuse machine password change"
+msgstr "Änderung des Rechnerpasswortes ablehnen"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:199
+msgid ""
+"Related properties can be grouped. This field specifies the name of the "
+"group in which this extended attribute is put in. If no name is given, no "
+"group is used"
+msgstr ""
+"Zusammenhängende Attribute können gruppiert werden. Dieses Feld gibt den "
+"Name der Gruppe an in welcher dieses erweiterte Attribut platziert wird.Wenn "
+"kein Name gegeben wird, wird keine Gruppe verwendet"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:309
+msgid "Remove object class if the attribute is removed"
+msgstr "Objektklasse löschen, wenn das Attribut entfernt wird"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:351
+msgid "Required options/object classes"
+msgstr "Benötigte Optionen/Objektklassen"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:151
+msgid "Reset Count Minutes"
+msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:198
+msgid "Reset count minutes"
+msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:67
+msgid "Resolution"
+msgstr "Auflösung"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:84
+msgid "Samba SID"
+msgstr "Samba-SID"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:73
+msgid "Samba domain name"
+msgstr "Samba-Domänenname"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:79
+msgid "Schema data"
+msgstr "Schema-Daten"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:68
+msgid "Schema file name"
+msgstr "Dateiname des LDAP-Schemas"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:57
+msgid "Schema name"
+msgstr "Name des LDAP-Schemas"
+
+#: modules/univention/admin/handlers/settings/license.py:198
+msgid "Servers"
+msgstr "Server"
+
+#: modules/univention/admin/handlers/settings/license.py:219
+msgid "Servers with premium support."
+msgstr "Server mit Premiumsupport"
+
+#: modules/univention/admin/handlers/settings/license.py:208
+msgid "Servers with standard support"
+msgstr "Server mit Standardsupport"
+
+#: modules/univention/admin/handlers/settings/license.py:209
+msgid "Servers with standard support."
+msgstr "Server mit Standardsupport"
+
+#: modules/univention/admin/handlers/settings/service.py:52
+msgid "Service Name"
+msgstr "Dienstname"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:395
+msgid "Settings for UMC"
+msgstr "UMC-spezifische Einstellungen"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:46
+msgid "Settings: Extended attribute"
+msgstr "Einstellungen: Erweitertes Attribut"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:47
+msgid "Settings: Extended options"
+msgstr "Einstellungen: Erweiterte Optionen"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:52
+msgid "Settings: LDAP ACL Extension"
+msgstr "Einstellungen: LDAP ACL Erweiterung"
+
+#: modules/univention/admin/handlers/settings/ldapschema.py:52
+msgid "Settings: LDAP Schema Extension"
+msgstr "Einstellungen: LDAP-Schemaerweiterung"
+
+#: modules/univention/admin/handlers/settings/license.py:50
+msgid "Settings: License"
+msgstr "Einstellungen: Lizenz"
+
+#: modules/univention/admin/handlers/settings/lock.py:49
+msgid "Settings: Lock"
+msgstr "Einstellungen: Sperrung"
+
+#: modules/univention/admin/handlers/settings/packages.py:49
+msgid "Settings: Package List"
+msgstr "Einstellungen: Paketliste"
+
+#: modules/univention/admin/handlers/settings/printermodel.py:51
+msgid "Settings: Printer Driver List"
+msgstr "Einstellungen: Druckertreiberliste"
+
+#: modules/univention/admin/handlers/settings/printeruri.py:49
+msgid "Settings: Printer URI List"
+msgstr "Einstellungen: Drucker-URI-Liste"
+
+#: modules/univention/admin/handlers/settings/prohibited_username.py:49
+msgid "Settings: Prohibited user names"
+msgstr "Einstellungen: Verbotene Benutzernamen"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:65
+msgid "Settings: Samba Configuration"
+msgstr "Einstellungen: Samba-Konfiguration"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:68
+msgid "Settings: Samba Domain"
+msgstr "Einstellungen: Samba-Domäne"
+
+#: modules/univention/admin/handlers/settings/service.py:47
+msgid "Settings: Service"
+msgstr "Einstellungen: Dienst"
+
+#: modules/univention/admin/handlers/settings/syntax.py:47
+msgid "Settings: Syntax Definition"
+msgstr "Einstellungen: Syntax-Definition"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:52
+msgid "Settings: UDM Hook"
+msgstr "Einstellungen: UDM Hook"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:50
+msgid "Settings: UDM Module"
+msgstr "Einstellungen: UDM Modul"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:52
+msgid "Settings: UDM Syntax"
+msgstr "Einstellungen: UDM Syntax"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:50
+msgid "Settings: UMC operation set"
+msgstr "Einstellungen: UMC-Operationen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:46
+msgid "Settings: User Template"
+msgstr "Einstellungen: Benutzervorlage"
+
+#: modules/univention/admin/handlers/settings/directory.py:137
+msgid "Share Link"
+msgstr "Freigabenverweis"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:149
+msgid "Share, the user's home directory resides on"
+msgstr "Freigabe, auf der sich das Heimatverzeichnis des Benutzers befindet"
+
+#: modules/univention/admin/handlers/settings/directory.py:204
+msgid "Shares Links"
+msgstr "Freigabenverweise"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:63
+#: modules/univention/admin/handlers/settings/extended_attribute.py:377
+msgid "Short description"
+msgstr "Kurzbeschreibung"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:67
+msgid "Short description for the option as shown on the Option tab."
+msgstr ""
+"Kurze Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
+
+#: modules/univention/admin/handlers/settings/syntax.py:116
+msgid "Show Only"
+msgstr "Nur anzeigen"
+
+#: modules/univention/admin/handlers/settings/license.py:108
+msgid "Signature"
+msgstr "Signatur"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:110
+#: modules/univention/admin/handlers/settings/ldapschema.py:110
+#: modules/univention/admin/handlers/settings/udm_hook.py:110
+#: modules/univention/admin/handlers/settings/udm_module.py:108
+#: modules/univention/admin/handlers/settings/udm_syntax.py:110
+msgid "Software package"
+msgstr "Softwarepaket"
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:120
+#: modules/univention/admin/handlers/settings/ldapschema.py:120
+#: modules/univention/admin/handlers/settings/udm_hook.py:120
+#: modules/univention/admin/handlers/settings/udm_module.py:118
+#: modules/univention/admin/handlers/settings/udm_syntax.py:120
+msgid "Software package version"
+msgstr "Version des Softwarepakets"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:248
 msgid "Span both columns"
 msgstr "Beide Spalten umfassen"
 
-#: extended_attribute.py:249
+#: modules/univention/admin/handlers/settings/syntax.py:167
+msgid "Storage"
+msgstr "Speicherung"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:238
+msgid "Store plaintext passwords"
+msgstr "Kennwort mit umkehrbarer Verschlüsselung speichern"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:239
+msgid ""
+"Store plaintext passwords where account have \"store passwords with "
+"reversible encryption\" set."
+msgstr ""
+"Klartext Passwörter speichern, falls am Benutzerkonto \"Kennwort mit "
+"umkehrbarer Verschlüsselung speichern\" gesetzt ist."
+
+#: modules/univention/admin/handlers/settings/syntax.py:136
+msgid "Stored Attribute"
+msgstr "Zu speicherndes Attribut"
+
+#: modules/univention/admin/handlers/settings/syntax.py:148
+msgid "Stored LDAP Attribute"
+msgstr "Zu speicherndes LDAP-Attribut"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:220
+msgid "Street"
+msgstr "Straße"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:260
+msgid "Superior"
+msgstr "Vorgesetzter"
+
+#: modules/univention/admin/handlers/settings/syntax.py:63
+msgid "Syntax Description"
+msgstr "Kurzbeschreibung"
+
+#: modules/univention/admin/handlers/settings/syntax.py:52
+msgid "Syntax Name"
+msgstr "Syntax-Name"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:127
+msgid "Syntax class"
+msgstr "Syntax-Klasse"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:404
+msgid "Tab layout"
+msgstr "Karteikartendarstellung"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:178
+msgid "Tab name"
+msgstr "Name der Karteikarte"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:218
+msgid "Tab with advanced settings"
+msgstr "Karteikarte mit erweiterten Einstellungen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:250
+msgid "Telephone number"
+msgstr "Telefonnummer"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:52
+msgid "Template name"
+msgstr "Name der Vorlage"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:330
+msgid "The ABI number used by this extended attribute"
+msgstr "Die von diesem erweiterten Attribut verwendete ABI-Nummer"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:169
+msgid ""
+"The extended attribute is not shown in the UMC. It can only be used from the "
+"UDM CLI or the Python interface"
+msgstr ""
+"Dieses erweiterte Attribut wird nicht in der UMC angezeigt. Es kann dann nur "
+"per UDM-CLI  das Python-Interface verwendet werden"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:249
 msgid ""
 "The layout element used to represent this extended attribute in the UMC "
 "spans both columns"
@@ -456,11 +1430,191 @@ msgstr ""
 "Das Layoutelement welches verwendet wird um dieses erweiterte Attribut "
 "darzustellen erstreckt sich über beide Spalten"
 
-#: extended_attribute.py:258
-msgid "LDAP attribute"
-msgstr "LDAP-Attribut"
+#: modules/univention/admin/handlers/settings/extended_attribute.py:341
+msgid "The name for the extended attribute as used by UDM CLI"
+msgstr "Der vom UDM-CLI zu verwendende Name für dieses erweiterte Attribut"
 
-#: extended_attribute.py:259 extended_attribute.py:300
+#: modules/univention/admin/handlers/settings/license.py:109
+msgid "This Signature is used to verify the authenticity of the license."
+msgstr ""
+"Diese Signatur wird verwendet, um die Authentizität der Lizenz zu überprüfen."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:279
+msgid ""
+"This extended attribute can not be changed through UMC or UDM CLI, but only "
+"through the Python API or by hooks"
+msgstr ""
+"Dieses erweiterte Attribut kann nicht über die UMC oder UDM-CLI geändert "
+"werden, sondern nur über die Python API und Hooks"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:269
+msgid ""
+"This extended attribute can still be modified after the object has been "
+"created"
+msgstr ""
+"Dieses erweiterte Attribute kann noch modifiziert werden nach dem das Objekt "
+"angelegt wurde"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:148
+msgid ""
+"This extended attribute can store multiple values instead of only a single "
+"value"
+msgstr ""
+"Dieses erweiterte Attribut kann mehrere Werte anstatt nur eines Wertes "
+"speichern"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:352
+msgid ""
+"This extended attribute is only used when at least one of these options is "
+"enabled, e.g. \"posix\" or \"samba\""
+msgstr ""
+"Dieses erweiterte Attribut wird nur verwendet wenn eine dieser Optionen "
+"aktiviert ist, z.B. \"posix\" oder \"samba\""
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:189
+msgid ""
+"This number specifies the position on which this extended attributes is "
+"placed on the tab or in the group. The numeration starts at 1"
+msgstr ""
+"Diese Nummer legt die Position fest an welcher dieses erweiterte Attribut "
+"auf der Karteikarte oder in der Gruppe platziert wird. Die Nummerierung "
+"beginnt bei 1"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:209
+msgid ""
+"This number specifies the position on which this group is placed on the tab. "
+"The numbering starts at 1"
+msgstr ""
+"Position an der diese Gruppe auf der Karteikarte platziert wird. Die "
+"Nummerierung beginnt bei 1"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:63
+msgid "Title"
+msgstr "Anrede"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:117
+msgid "Translations of group name"
+msgstr "Übersetzung des Gruppennames"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:96
+#: modules/univention/admin/handlers/settings/extended_options.py:99
+msgid "Translations of long description"
+msgstr "Übersetzungen der ausführlichen Beschreibung"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:85
+#: modules/univention/admin/handlers/settings/extended_options.py:88
+msgid "Translations of short description"
+msgstr "Übersetzungen der Kurzbeschreibung"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:107
+msgid "Translations of tab name"
+msgstr "Übersetzung des Karteikartennamens"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:118
+msgid "Translations of the group name for other languages"
+msgstr "Übersetzung des Gruppennamens in andere Sprachen"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:100
+msgid ""
+"Translations of the long description for the option as shown on the Option "
+"tab"
+msgstr ""
+"Übersetzung der langen Beschreibung, wie sie im Optionen-Reiter angezeigt "
+"wird."
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:97
+msgid "Translations of the long descriptive text for other languages"
+msgstr "Übersetzungen des langen Beschreibungstextes in andere Sprachen "
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:108
+msgid "Translations of the name of the tab for other languages"
+msgstr "Übersetzung des Namens der Karteikarte in andere Sprachen"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:86
+msgid "Translations of the short description for other languages"
+msgstr "Übersetzungen der Kurzbeschreibung in andere Sprachen"
+
+#: modules/univention/admin/handlers/settings/extended_options.py:89
+msgid ""
+"Translations of the short description for the option as shown on the Option "
+"tab"
+msgstr ""
+"Übersetzung der kurzen Beschreibung, wie sie im Optionen-Reiter angezeigt "
+"wird."
+
+#: modules/univention/admin/handlers/settings/ldapacl.py:163
+#: modules/univention/admin/handlers/settings/udm_hook.py:175
+#: modules/univention/admin/handlers/settings/udm_module.py:195
+#: modules/univention/admin/handlers/settings/udm_syntax.py:175
+msgid "UCS Version Dependencies"
+msgstr "UCS-Versionsabhängigkeiten"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:340
+msgid "UDM CLI name"
+msgstr "UDM-CLI Name"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:79
+msgid "UDM hook data"
+msgstr "UDM Hook-Daten"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:68
+msgid "UDM hook file name"
+msgstr "Dateiname des UDM Hooks"
+
+#: modules/univention/admin/handlers/settings/udm_hook.py:57
+msgid "UDM hook name"
+msgstr "Name des UDM Hooks"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:77
+msgid "UDM module data"
+msgstr "UDM Moduldaten"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:66
+msgid "UDM module file name"
+msgstr "Dateiname des UDM Moduls"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:55
+msgid "UDM module name"
+msgstr "Name des UDM Moduls"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:79
+msgid "UDM syntax data"
+msgstr "UDM Syntaxdaten"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:68
+msgid "UDM syntax file name"
+msgstr "Dateiname der UDM Syntax"
+
+#: modules/univention/admin/handlers/settings/udm_syntax.py:57
+msgid "UDM syntax name"
+msgstr "Name der UDM Syntax"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:395
+msgid "UMC"
+msgstr "UMC"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:104
+msgid "UMC Operation Set"
+msgstr "UMC-Befehlssatz"
+
+#: modules/univention/admin/handlers/settings/umc_operationset.py:79
+msgid "UMC commands"
+msgstr "UMC-Kommandos"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:169
+msgid "UMC icon"
+msgstr "UMC-Icon"
+
+#: modules/univention/admin/handlers/settings/udm_module.py:159
+msgid "UMC registration data"
+msgstr "UMC-Registrierungsdaten"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:52
+msgid "Unique name"
+msgstr "Eindeutiger Name"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:259
+#: modules/univention/admin/handlers/settings/extended_attribute.py:300
 msgid ""
 "Univention Corporate Server provides its own LDAP scheme for customer "
 "extensions. The LDAP object class univentionFreeAttributes can be used for "
@@ -475,1242 +1629,164 @@ msgstr ""
 "univentionFreeAttribute20) mit und kann in Verbindung mit jedem beliebigen "
 "LDAP-Objekt (z.B. einem Benutzerobjekt) verwendet werden"
 
-#: extended_attribute.py:268
-msgid "Editable after creation"
-msgstr "Nachträglich modifizierbar"
+#: modules/univention/admin/handlers/settings/license.py:51
+msgid "Univention License"
+msgstr "Univention Lizenz"
 
-#: extended_attribute.py:269
-msgid ""
-"This extended attribute can still be modified after the object has been "
-"created"
-msgstr ""
-"Dieses erweiterte Attribute kann noch modifiziert werden nach dem das Objekt "
-"angelegt wurde"
+#: modules/univention/admin/handlers/settings/prohibited_username.py:50
+msgid "Univention Prohibited user names"
+msgstr "Univention Verbotene Benutzernamen"
 
-#: extended_attribute.py:278
+#: modules/univention/admin/handlers/settings/cn.py:46
+msgid "Univention Settings"
+msgstr "Univention-Einstellungen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:385
+msgid "Unix Account Settings"
+msgstr "UNIX-Kontoeinstellungen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:137
+msgid "Unix home directory"
+msgstr "UNIX-Heimatverzeichnis"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:360
+#: modules/univention/admin/handlers/settings/usertemplate.py:361
+msgid "User Account"
+msgstr "Benutzer-Konto"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:371
+#: modules/univention/admin/handlers/settings/usertemplate.py:372
+msgid "User Contact"
+msgstr "Kontakt"
+
+#: modules/univention/admin/handlers/settings/directory.py:97
+msgid "User Link"
+msgstr "Benutzerverweis"
+
+#: modules/univention/admin/handlers/settings/directory.py:183
+msgid "User Links"
+msgstr "Benutzerverweise"
+
+#: modules/univention/admin/handlers/settings/sambaconfig.py:121
+msgid "User must Logon to Change Password"
+msgstr "Änderung des Passwortes erfordert Anmeldung"
+
+#: modules/univention/admin/handlers/settings/sambadomain.py:168
+msgid "User must logon to change password"
+msgstr "Änderung des Passwortes erfordert Anmeldung"
+
+#: modules/univention/admin/handlers/settings/license.py:238
+msgid "Users"
+msgstr "Benutzer"
+
+#: modules/univention/admin/handlers/settings/license.py:168
+msgid "Valid OEM product types"
+msgstr "Gültige OEM Produkttypen"
+
+#: modules/univention/admin/handlers/settings/license.py:158
+msgid "Valid product types"
+msgstr "Gültige Produkttypen"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:278
 msgid "Value is only managed internally"
 msgstr "Wert wird nur intern verwaltet"
 
-#: extended_attribute.py:279
-msgid ""
-"This extended attribute can not be changed through UMC or UDM CLI, but only "
-"through the Python API or by hooks"
-msgstr ""
-"Dieses erweiterte Attribut kann nicht über die UMC oder UDM-CLI geändert "
-"werden, sondern nur über die Python API und Hooks"
-
-#: extended_attribute.py:289
+#: modules/univention/admin/handlers/settings/extended_attribute.py:289
 msgid "Value required"
 msgstr "Wert wird benötigt"
 
-#: extended_attribute.py:290
-msgid "A value for this extended attribute is required and must be given"
-msgstr "Wert ist erforderlich und muss eingegeben werden"
-
-#: extended_attribute.py:299 extended_options.py:140
-msgid "LDAP object class"
-msgstr "LDAP-Objektklasse"
-
-#: extended_attribute.py:309
-msgid "Remove object class if the attribute is removed"
-msgstr "Objektklasse löschen, wenn das Attribut entfernt wird"
-
-#: extended_attribute.py:310
-msgid ""
-"If possible, the LDAP object class is removed when this extended attribute "
-"gets unset"
-msgstr ""
-"Entferne die LDAP-Klasse (wenn möglich) wenn dieses erweitere Attribut leer "
-"gesetzt wird"
-
-#: extended_attribute.py:319
-msgid "Modules to be extended"
-msgstr "Zu erweiternde Module"
-
-#: extended_attribute.py:320
-msgid ""
-"Modules this extended attribute is added to, e.g. \"users/user\" or "
-"\"computers/windows\""
-msgstr ""
-"Module zu denen dieses erweiterte Attribute hinzugefügt wird, z.B \"users/"
-"user\" oder \"computers/windows\""
-
-#: extended_attribute.py:329
-msgid "Version of extended attribute"
-msgstr "Version des erweiterten Attributs"
-
-#: extended_attribute.py:330
-msgid "The ABI number used by this extended attribute"
-msgstr "Die von diesem erweiterten Attribut verwendete ABI-Nummer"
-
-#: extended_attribute.py:340
-msgid "UDM CLI name"
-msgstr "UDM-CLI Name"
-
-#: extended_attribute.py:341
-msgid "The name for the extended attribute as used by UDM CLI"
-msgstr "Der vom UDM-CLI zu verwendende Name für dieses erweiterte Attribut"
-
-#: extended_attribute.py:351
-msgid "Required options/object classes"
-msgstr "Benötigte Optionen/Objektklassen"
-
-#: extended_attribute.py:352
-msgid ""
-"This extended attribute is only used when at least one of these options is "
-"enabled, e.g. \"posix\" or \"samba\""
-msgstr ""
-"Dieses erweiterte Attribut wird nur verwendet wenn eine dieser Optionen "
-"aktiviert ist, z.B. \"posix\" oder \"samba\""
-
-#: extended_attribute.py:361
-msgid "Exclude from UMC search"
-msgstr "Von der UMC-Suche ausschließen"
-
-#: extended_attribute.py:362
+#: modules/univention/admin/handlers/settings/extended_attribute.py:362
 msgid ""
 "Values of this extended attribute are not available for searching in the UMC"
 msgstr ""
 "Nach Werten dieses erweiterten Attributs kann nicht in der UMC gesucht werden"
 
-#: extended_attribute.py:373
-msgid "General settings"
-msgstr "Allgemeine Einstellungen"
-
-#: extended_attribute.py:374
-msgid "Extended attribute description"
-msgstr "Bezeichnung - Erweitertes Attribut"
-
-#: extended_attribute.py:381
-msgid "Long Description"
-msgstr "Ausführliche Beschreibung"
-
-#: extended_attribute.py:386 license.py:87
-msgid "Module"
-msgstr "Modul"
-
-#: extended_attribute.py:386
-msgid "Configuration of the modules to be extended"
-msgstr "Konfiguration der zu erweiternden Module"
-
-#: extended_attribute.py:391
-msgid "LDAP mapping"
-msgstr "LDAP-Abbildung"
-
-#: extended_attribute.py:391
-msgid "Configuration of LDAP object class and LDAP attribute"
-msgstr "Konfiguration der LDAP-Objektklasse und des LDAP-Attributs"
-
-#: extended_attribute.py:395
-msgid "UMC"
-msgstr "UMC"
-
-#: extended_attribute.py:395
-msgid "Settings for UMC"
-msgstr "UMC-spezifische Einstellungen"
-
-#: extended_attribute.py:396
-msgid "General extended attribute settings"
-msgstr "Grundeinstellungen - Erweiterte Optionen"
-
-#: extended_attribute.py:400
-msgid "Attribute layout"
-msgstr "Attributdarstellung"
-
-#: extended_attribute.py:404
-msgid "Tab layout"
-msgstr "Karteikartendarstellung"
-
-#: extended_attribute.py:409
-msgid "Group layout"
-msgstr "Gruppendarstellung"
-
-#: extended_attribute.py:415
-msgid "Data type"
-msgstr "Datentyp"
-
-#: extended_attribute.py:415
-msgid "Data type definition"
-msgstr "Datentyp-Definition"
-
-#: extended_options.py:47
-msgid "Settings: Extended options"
-msgstr "Einstellungen: Erweiterte Optionen"
-
-#: extended_options.py:48
-msgid "Options for extended attributes"
-msgstr "Optionen für erweiterte Attribute"
-
-#: extended_options.py:66
-msgid "Default short description"
-msgstr "Kurzbeschreibung"
-
-#: extended_options.py:67
-msgid "Short description for the option as shown on the Option tab."
-msgstr ""
-"Kurze Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
-
-#: extended_options.py:77
-msgid "Default long description"
-msgstr "Ausführliche Beschreibung"
-
-#: extended_options.py:78
-msgid "Long description for the option as shown on the Option tab."
-msgstr ""
-"Lange Beschreibung für die Option, wie sie im Optionen-Reiter angezeigt wird."
-
-#: extended_options.py:89
-msgid ""
-"Translations of the short description for the option as shown on the Option "
-"tab"
-msgstr ""
-"Übersetzung der kurzen Beschreibung, wie sie im Optionen-Reiter angezeigt "
-"wird."
-
-#: extended_options.py:100
-msgid ""
-"Translations of the long description for the option as shown on the Option "
-"tab"
-msgstr ""
-"Übersetzung der langen Beschreibung, wie sie im Optionen-Reiter angezeigt "
-"wird."
-
-#: extended_options.py:110
-msgid "Default"
-msgstr "Vorgabewert"
-
-#: extended_options.py:111
-msgid "Enable option by default."
-msgstr "Setzt die Option standardmäßig."
-
-#: extended_options.py:120
-msgid "Editable"
-msgstr "Editierbar"
-
-#: extended_options.py:121
-msgid "Option may be repeatedly turned on and off."
-msgstr "Die Option kann wiederholt gesetzt und entfernt werden."
-
-#: extended_options.py:130
-msgid "Needed module"
-msgstr "Benötigtes Modul"
-
-#: extended_options.py:131
-msgid "List of modules this option applies to."
-msgstr "Liste der Module, auf die diese Option angewandt wird."
-
-#: extended_options.py:141
-msgid "Mapping to LDAP objectClasses"
-msgstr "Abbildung auf LDAP-Objektklassen"
-
-#: extended_options.py:153
-msgid "General extended options settings"
-msgstr "Grundeinstellungen - Erweiterte Optionen"
-
-#: ldapacl.py:52
-msgid "Settings: LDAP ACL Extension"
-msgstr "Einstellungen: LDAP ACL Erweiterung"
-
-#: ldapacl.py:57
-msgid "ACL name"
-msgstr "Name der ACL"
-
-#: ldapacl.py:68
-msgid "ACL file name"
-msgstr "Dateiname der ACL"
-
-#: ldapacl.py:79
-msgid "ACL data"
-msgstr "ACL-Daten"
-
-#: ldapacl.py:89 ldapschema.py:89 udm_hook.py:89 udm_module.py:87
-#: udm_syntax.py:89
-msgid "Active"
-msgstr "Aktiv"
-
-#: ldapacl.py:100 ldapschema.py:100 udm_hook.py:100 udm_module.py:98
-#: udm_syntax.py:100
-msgid "App identifier"
-msgstr "App-Kennung"
-
-#: ldapacl.py:110 ldapschema.py:110 udm_hook.py:110 udm_module.py:108
-#: udm_syntax.py:110
-msgid "Software package"
-msgstr "Softwarepaket"
-
-#: ldapacl.py:120 ldapschema.py:120 udm_hook.py:120 udm_module.py:118
-#: udm_syntax.py:120
-msgid "Software package version"
-msgstr "Version des Softwarepakets"
-
-#: ldapacl.py:130 udm_hook.py:130 udm_module.py:128 udm_syntax.py:130
-msgid "Minimal UCS version"
-msgstr "Minimale UCS-Version"
-
-#: ldapacl.py:140 udm_hook.py:140 udm_module.py:138 udm_syntax.py:140
-msgid "Maximal UCS version"
-msgstr "Maximale UCS-Version"
-
-#: ldapacl.py:153
-msgid "General LDAP ACL extension settings"
-msgstr "Grundeinstellungen - LDAP ACL-Erweiterung"
-
-#: ldapacl.py:158 ldapschema.py:138 udm_hook.py:158 udm_module.py:190
-#: udm_syntax.py:158
-msgid "Metadata"
-msgstr "Metadaten"
-
-#: ldapacl.py:163 udm_hook.py:163 udm_module.py:195 udm_syntax.py:163
-msgid "UCS Version Dependencies"
-msgstr "UCS-Versionsabhängigkeiten"
-
-#: ldapacl.py:167 ldapschema.py:143 udm_hook.py:167 udm_module.py:199
-#: udm_syntax.py:167
-msgid "Activated"
-msgstr "Aktiviert"
-
-#: ldapacl.py:219 ldapschema.py:193 udm_hook.py:219 udm_module.py:255
-#: udm_syntax.py:219
-msgid "packageversion: Version must not be lower than the current one."
-msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."
-
-#: ldapschema.py:52
-msgid "Settings: LDAP Schema Extension"
-msgstr "Einstellungen: LDAP-Schemaerweiterung"
-
-#: ldapschema.py:57
-msgid "Schema name"
-msgstr "Name des LDAP-Schemas"
-
-#: ldapschema.py:68
-msgid "Schema file name"
-msgstr "Dateiname des LDAP-Schemas"
-
-#: ldapschema.py:79
-msgid "Schema data"
-msgstr "Schema-Daten"
-
-#: ldapschema.py:133
-msgid "General LDAP schema extension settings"
-msgstr "Grundeinstellungen - LDAP-Schemaerweiterung"
-
-#: license.py:50
-msgid "Settings: License"
-msgstr "Einstellungen: Lizenz"
-
-#: license.py:51
-msgid "Univention License"
-msgstr "Univention Lizenz"
-
-#: license.py:54
-msgid "Version 1 license"
-msgstr "Univention Lizenz Version 1"
-
-#: license.py:59
-msgid "Version 2 license"
-msgstr "Univention Lizenz Version 2"
-
-#: license.py:77
-msgid "Expiry date"
-msgstr "Ablaufdatum"
-
-#: license.py:78
-msgid "License Expiration Date"
-msgstr "Lizenz-Ablaufdatum"
-
-#: license.py:88
-msgid "Module the license is valid for"
-msgstr "Für dieses Modul ist die Lizenz gültig."
-
-#: license.py:97
-msgid "Base DN"
-msgstr "Basis-DN"
-
-#: license.py:98
-msgid "Base DN the license is valid for"
-msgstr "Für diesen Basis-DN ist die Lizenz gültig."
-
-#: license.py:108
-msgid "Signature"
-msgstr "Signatur"
-
-#: license.py:109
-msgid "This Signature is used to verify the authenticity of the license."
-msgstr ""
-"Diese Signatur wird verwendet, um die Authentizität der Lizenz zu überprüfen."
-
-#: license.py:118
-msgid "Max. user accounts"
-msgstr "Max. Benutzerkonten"
-
-#: license.py:119
-msgid "Maximum number of user accounts managed with the UCS infrastructure"
-msgstr ""
-"Maximale Anzahl von Benutzerkonten, die mit der UCS Infrastruktur verwaltet "
-"werden."
-
-#: license.py:128
-msgid "Max. clients"
-msgstr "Max. Clients"
-
-#: license.py:129
-msgid "Maximum number of client hosts managed with the UCS infrastructure"
-msgstr ""
-"Maximale Anzahl von Client-Rechnern, die mit der UCS Infrastruktur verwaltet "
-"werden."
-
-#: license.py:138
-msgid "Max. groupware accounts"
-msgstr "Max. Groupware-Konten"
-
-#: license.py:139
-msgid ""
-"Maximum number of groupware accounts managed with the UCS infrastructure"
-msgstr ""
-"Maximale Anzahl von Groupware-Konten, die mit der UCS Infrastruktur "
-"verwaltet werden."
-
-#: license.py:148
-msgid "Max. desktops"
-msgstr "Max. Desktops"
-
-#: license.py:149
-msgid ""
-"Maximum number of Univention desktop accounts managed with the UCS "
-"infrastructure"
-msgstr ""
-"Maximale Anzahl von Desktop-Rechnern, die mit der UCS Infrastruktur "
-"verwaltet werden."
-
-#: license.py:158
-msgid "Valid product types"
-msgstr "Gültige Produkttypen"
-
-#: license.py:159
-msgid "Product types this license allows."
-msgstr "Produkttypen, für die die vorliegenden Lizenz gültig ist."
-
-#: license.py:168
-msgid "Valid OEM product types"
-msgstr "Gültige OEM Produkttypen"
-
-#: license.py:169
-msgid "OEM Product types this license allows."
-msgstr "OEM-Produkttypen, für die die vorliegenden Lizenz gültig ist."
-
-#: license.py:178
-msgid "Product type"
-msgstr "Gültige Produkttypen"
-
-#: license.py:179
-msgid "Product type this license allows."
-msgstr "Produkttypen, für die die vorliegenden Lizenz gültig ist."
-
-#: license.py:188
-msgid "Key ID"
-msgstr "Key ID"
-
-#: license.py:189
-msgid "Key ID of this license."
-msgstr "Key ID der Lizenz"
-
-#: license.py:198
-msgid "Servers"
-msgstr "Server"
-
-#: license.py:199
-msgid "Maximum number of servers this license allows."
-msgstr "Maximale Anzahl von Servern, die mit dieser Lizenz erlaubt sind."
-
-#: license.py:208
-msgid "Servers with standard support"
-msgstr "Server mit Standardsupport"
-
-#: license.py:209
-msgid "Servers with standard support."
-msgstr "Server mit Standardsupport"
-
-#: license.py:218
-msgid "Premium Support"
-msgstr "Premiumsupport"
-
-#: license.py:219
-msgid "Servers with premium support."
-msgstr "Server mit Premiumsupport"
-
-#: license.py:228
-msgid "Managed Clients"
-msgstr "Managed Clients"
-
-#: license.py:229
-msgid "Maximum number of managed clients this license allows."
-msgstr ""
-"Maximale Anzahl von Managed Clients, die mit dieser Lizenz erlaubt sind."
-
-#: license.py:238
-msgid "Users"
-msgstr "Benutzer"
-
-#: license.py:239
-msgid "Maximum number of users this license allows."
-msgstr ""
-"Maximale Anzahl von Benutzerkonten, die mit dieser Lizenz erlaubt sind."
-
-#: license.py:248
-msgid "DVS users"
-msgstr "DVS-Benutzerkonten"
-
-#: license.py:249
-msgid "Maximum number of DVS users this license allows."
-msgstr ""
-"Maximale Anzahl von DVS-Benutzerkonten, die mit dieser Lizenz erlaubt sind."
-
-#: license.py:258
-msgid "DVS clients"
-msgstr "DVS-Clients"
-
-#: license.py:259
-msgid "Maximum number of DVS clients this license allows."
-msgstr "Maximale Anzahl von DVS-Clients, die mit dieser Lizenz erlaubt sind."
-
-#: license.py:268
-msgid "Corporate clients"
-msgstr "Corporate Clients"
-
-#: license.py:269
-msgid "Maximum number of corporate clients this license allows."
-msgstr ""
-"Maximale Anzahl von Corporate Clients, die mit dieser Lizenz erlaubt sind."
-
-#: license.py:278
+#: modules/univention/admin/handlers/settings/license.py:278
 msgid "Version"
 msgstr "Version"
 
-#: license.py:279
-msgid "Version format of this license."
-msgstr "Version dieser Lizenz"
+#: modules/univention/admin/handlers/settings/license.py:54
+msgid "Version 1 license"
+msgstr "Univention Lizenz Version 1"
 
-#: license.py:291
-msgid "License"
-msgstr "Lizenz"
-
-#: license.py:291
-msgid "Licensing Information"
-msgstr "Lizenz-Informationen"
-
-#: license.py:292
-msgid "General license settings"
-msgstr "Grundeinstellungen - Lizenz"
-
-#: license.py:300
+#: modules/univention/admin/handlers/settings/license.py:300
 msgid "Version 1 license informations"
 msgstr "Lizenz-Informationen Version 1"
 
-#: license.py:305
+#: modules/univention/admin/handlers/settings/license.py:59
+msgid "Version 2 license"
+msgstr "Univention Lizenz Version 2"
+
+#: modules/univention/admin/handlers/settings/license.py:305
 msgid "Version 2 license informations"
 msgstr "Lizenz-Informationen Version 2"
 
-#: lock.py:49
-msgid "Settings: Lock"
-msgstr "Einstellungen: Sperrung"
-
-#: lock.py:50
-msgid "Lock objects"
-msgstr "Sperrobjekte"
-
-#: lock.py:66
-msgid "Lock Time"
-msgstr "Sperrzeit"
-
-#: lock.py:67
-msgid "Locked until"
-msgstr "Gesperrt bis"
-
-#: lock.py:78
-msgid "Lock Information"
-msgstr "Informationen über die Sperrung"
-
-#: lock.py:79
-msgid "General lock settings"
-msgstr "Grundeinstellungen - Sperrung"
-
-#: packages.py:49
-msgid "Settings: Package List"
-msgstr "Einstellungen: Paketliste"
-
-#: packages.py:50
-msgid "List of Packages for UCS Systems"
-msgstr "Paketliste für UCS-Systeme"
-
-#: packages.py:66 packages.py:67 packages.py:79
-msgid "Package List"
-msgstr "Paketliste"
-
-#: packages.py:80
-msgid "General package list settings"
-msgstr "Grundeinstellungen - Paketliste"
-
-#: printermodel.py:51
-msgid "Settings: Printer Driver List"
-msgstr "Einstellungen: Druckertreiberliste"
-
-#: printermodel.py:52
-msgid "List of drivers for printers"
-msgstr "Druckertreiberliste"
-
-#: printermodel.py:68 printermodel.py:69
-msgid "Printer Model"
-msgstr "Druckermodell"
-
-#: printermodel.py:82
-msgid "Printer List"
-msgstr "Druckerliste"
-
-#: printermodel.py:83
-msgid "General printer driver list settings"
-msgstr "Grundeinstellungen - Druckertreiberliste"
-
-#: printeruri.py:49
-msgid "Settings: Printer URI List"
-msgstr "Einstellungen: Drucker-URI-Liste"
-
-#: printeruri.py:50
-msgid "List of URIs for printers"
-msgstr "Liste von Drucker-URIs"
-
-#: printeruri.py:66 printeruri.py:67 printeruri.py:80
-msgid "Printer URI"
-msgstr "Drucker-URI"
-
-#: printeruri.py:81
-msgid "General printer URI list settings"
-msgstr "Grundeinstellungen - Drucker-URI-Liste"
-
-#: prohibited_username.py:49
-msgid "Settings: Prohibited user names"
-msgstr "Einstellungen: Verbotene Benutzernamen"
-
-#: prohibited_username.py:50
-msgid "Univention Prohibited user names"
-msgstr "Univention Verbotene Benutzernamen"
-
-#: prohibited_username.py:66 prohibited_username.py:67
-msgid "Prohibited user name"
-msgstr "Verbotener Benutzername"
-
-#: prohibited_username.py:79
-msgid "Prohibited user names"
-msgstr "Verbotene Benutzernamen"
-
-#: prohibited_username.py:80
-msgid "General prohibited user names settings"
-msgstr "Grundeinstellungen - Verbotene Benutzernamen"
-
-#: sambaconfig.py:65
-msgid "Settings: Samba Configuration"
-msgstr "Einstellungen: Samba-Konfiguration"
-
-#: sambaconfig.py:70
-msgid "Configuration Name"
-msgstr "Konfigurationsname"
-
-#: sambaconfig.py:81
-msgid "Password Length"
-msgstr "Passwort-Länge"
-
-#: sambaconfig.py:91
-msgid "Password History"
-msgstr "Passwort-History"
-
-#: sambaconfig.py:101
-msgid "Minimum Password Age"
-msgstr "Minimales Passwortalter"
-
-#: sambaconfig.py:111
-msgid "Bad Lockout Attempts"
-msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
-
-#: sambaconfig.py:121
-msgid "User must Logon to Change Password"
-msgstr "Änderung des Passwortes erfordert Anmeldung"
-
-#: sambaconfig.py:131
-msgid "Maximum Password Age"
-msgstr "Maximales Passwortalter"
-
-#: sambaconfig.py:141
-msgid "Lockout Duration Minutes"
-msgstr "Dauer der Aussperrung"
-
-#: sambaconfig.py:151
-msgid "Reset Count Minutes"
-msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
-
-#: sambaconfig.py:161
-msgid "Disconnect Time"
-msgstr "Verbindung trennen nach"
-
-#: sambaconfig.py:171
-msgid "Refuse Machine Password Change"
-msgstr "Änderung des Rechnerpasswortes ablehnen"
-
-#: sambaconfig.py:184
-msgid "General Samba configuration settings"
-msgstr "Grundeinstellungen - Samba-Konfiguration"
-
-#: sambadomain.py:68
-msgid "Settings: Samba Domain"
-msgstr "Einstellungen: Samba-Domäne"
-
-#: sambadomain.py:73
-msgid "Samba domain name"
-msgstr "Samba-Domänenname"
-
-#: sambadomain.py:84
-msgid "Samba SID"
-msgstr "Samba-SID"
-
-#: sambadomain.py:95
-msgid "Next user RID"
-msgstr "Nächste Benutzer-RID"
-
-#: sambadomain.py:106
-msgid "Next group RID"
-msgstr "Nächste Gruppen-RID"
-
-#: sambadomain.py:117
-msgid "Next RID"
-msgstr "Nächste RID"
-
-#: sambadomain.py:128
-msgid "Password length"
-msgstr "Passwort-Länge"
-
-#: sambadomain.py:138
-msgid "Password history"
-msgstr "Passwort-History"
-
-#: sambadomain.py:148
-msgid "Minimum password age"
-msgstr "Minimales Passwortalter"
-
-#: sambadomain.py:158
-msgid "Bad lockout attempts"
-msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
-
-#: sambadomain.py:168
-msgid "User must logon to change password"
-msgstr "Änderung des Passwortes erfordert Anmeldung"
-
-#: sambadomain.py:178
-msgid "Maximum password age"
-msgstr "Maximales Passwortalter"
-
-#: sambadomain.py:188
-msgid "Lockout duration minutes"
-msgstr "Dauer der Aussperrung"
-
-#: sambadomain.py:198
-msgid "Reset count minutes"
-msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
-
-#: sambadomain.py:208
-msgid "Disconnect time"
-msgstr "Verbindung trennen nach"
-
-#: sambadomain.py:218
-msgid "Refuse machine password change"
-msgstr "Änderung des Rechnerpasswortes ablehnen"
-
-#: sambadomain.py:228
-msgid "Passwords must meet complexity requirements"
-msgstr "Kennwort muss Komplexitätsvoraussetzungen entsprechen"
-
-#: sambadomain.py:229
-msgid ""
-"Is not based on the user's account name. Contains at least six characters. "
-"Contains characters from three of the following four categories: Uppercase "
-"alphabet characters (A-Z), Lowercase alphabet characters (a-z), Arabic "
-"numerals (0-9), Nonalphanumeric characters (for example, !$#,%)"
-msgstr ""
-"Es darf weder wesentliche Teile des Kontonamens des Benutzers noch den "
-"vollständigen Kontonamen enthalten. Es muss mindestens sechs Zeichen lang "
-"sein. Es muss Zeichen aus drei der vier folgenden Kategorien enthalten: "
-"Großbuchstaben von A bis Z, Kleinbuchstaben von A bis Z, Ziffern der Basis "
-"10 (0 bis 9), Andere als alphabetische Zeichen (z. B. !, $, #, %)"
-
-#: sambadomain.py:238
-msgid "Store plaintext passwords"
-msgstr "Kennwort mit umkehrbarer Verschlüsselung speichern"
-
-#: sambadomain.py:239
-msgid ""
-"Store plaintext passwords where account have \"store passwords with "
-"reversible encryption\" set."
-msgstr ""
-"Klartext Passwörter speichern, falls am Benutzerkonto \"Kennwort mit "
-"umkehrbarer Verschlüsselung speichern\" gesetzt ist."
-
-#: sambadomain.py:248
-msgid "Password properties"
-msgstr "Passwort-Eigenschaften"
-
-#: sambadomain.py:249
-msgid "A bitfield to indicate complexity and storage restrictions."
-msgstr "Ein Bitfeld um Komplexität und Speicherbeschränkungen anzuzeigen."
-
-#: sambadomain.py:261
-msgid "General Samba domain settings"
-msgstr "Grundeinstellungen - Samba-Domäne"
-
-#: sambadomain.py:265
-msgid "Password"
-msgstr "Passwort"
-
-#: sambadomain.py:272
-msgid "Connection"
-msgstr "Verbindung"
-
-#: service.py:47
-msgid "Settings: Service"
-msgstr "Einstellungen: Dienst"
-
-#: service.py:52
-msgid "Service Name"
-msgstr "Dienstname"
-
-#: service.py:66
-msgid "General service settings"
-msgstr "Grundeinstellungen - Dienst"
-
-#: settings.py:50
-msgid "Preferences"
-msgstr "Einstellungen"
-
-#: syntax.py:47
-msgid "Settings: Syntax Definition"
-msgstr "Einstellungen: Syntax-Definition"
-
-#: syntax.py:52
-msgid "Syntax Name"
-msgstr "Syntax-Name"
-
-#: syntax.py:63
-msgid "Syntax Description"
-msgstr "Kurzbeschreibung"
-
-#: syntax.py:74
-msgid "LDAP Search Filter"
-msgstr "LDAP Suchfilter"
-
-#: syntax.py:84
-msgid "LDAP Base"
-msgstr "LDAP Basis"
-
-#: syntax.py:94
-msgid "Displayed Attributes"
-msgstr "Anzuzeigende Attribute"
-
-#: syntax.py:106
-msgid "Displayed LDAP Attributes"
-msgstr "Anzuzeigende LDAP-Attribute"
-
-#: syntax.py:116
-msgid "Show Only"
-msgstr "Nur anzeigen"
-
-#: syntax.py:126
-msgid "Add an empty value to choicelist"
-msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
-
-#: syntax.py:136
-msgid "Stored Attribute"
-msgstr "Zu speicherndes Attribut"
-
-#: syntax.py:148
-msgid "Stored LDAP Attribute"
-msgstr "Zu speicherndes LDAP-Attribut"
-
-#: syntax.py:161
-msgid "General syntax definition settings"
-msgstr "Grundeinstellungen - Syntax-Definition"
-
-#: syntax.py:164
-msgid "Display"
-msgstr "Anzeige"
-
-#: syntax.py:167
-msgid "Storage"
-msgstr "Speicherung"
-
-#: syntax.py:170 usertemplate.py:336
-msgid "Options"
-msgstr "Optionen"
-
-#: syntax.py:206
-msgid "An LDAP attribute is required of which the information will be stored."
-msgstr ""
-"Ein LDAP-Attribut wird benötigt dessen Information gespeichert werden soll."
-
-#: udm_hook.py:52
-msgid "Settings: UDM Hook"
-msgstr "Einstellungen: UDM Hook"
-
-#: udm_hook.py:57
-msgid "UDM hook name"
-msgstr "Name des UDM Hooks"
-
-#: udm_hook.py:68
-msgid "UDM hook file name"
-msgstr "Dateiname des UDM Hooks"
-
-#: udm_hook.py:79
-msgid "UDM hook data"
-msgstr "UDM Hook-Daten"
-
-#: udm_hook.py:153
-msgid "General UDM hook settings"
-msgstr "Grundeinstellungen - UDM-Hook"
-
-#: udm_module.py:50
-msgid "Settings: UDM Module"
-msgstr "Einstellungen: UDM Modul"
-
-#: udm_module.py:55
-msgid "UDM module name"
-msgstr "Name des UDM Moduls"
-
-#: udm_module.py:66
-msgid "UDM module file name"
-msgstr "Dateiname des UDM Moduls"
-
-#: udm_module.py:77
-msgid "UDM module data"
-msgstr "UDM Moduldaten"
-
-#: udm_module.py:148
-msgid "GNU message catalog for translations"
-msgstr "GNU Message Catalog für Übersetzungen"
-
-#: udm_module.py:159
-msgid "UMC registration data"
-msgstr "UMC-Registrierungsdaten"
-
-#: udm_module.py:169
-msgid "UMC icon"
-msgstr "UMC-Icon"
-
-#: udm_module.py:182
-msgid "General UDM module settings"
-msgstr "Grundeinstellungen - UDM-Modul"
-
-#: udm_syntax.py:52
-msgid "Settings: UDM Syntax"
-msgstr "Einstellungen: UDM Syntax"
-
-#: udm_syntax.py:57
-msgid "UDM syntax name"
-msgstr "Name der UDM Syntax"
-
-#: udm_syntax.py:68
-msgid "UDM syntax file name"
-msgstr "Dateiname der UDM Syntax"
-
-#: udm_syntax.py:79
-msgid "UDM syntax data"
-msgstr "UDM Syntaxdaten"
-
-#: udm_syntax.py:153
-msgid "General UDM syntax settings"
-msgstr "Grundeinstellungen - UDM-Syntax"
-
-#: umc_operationset.py:50
-msgid "Settings: UMC operation set"
-msgstr "Einstellungen: UMC-Operationen"
-
-#: umc_operationset.py:51
-msgid "List of Operations for UMC"
-msgstr "Liste von UMC-Operationen"
-
-#: umc_operationset.py:67 umc_operationset.py:68 usertemplate.py:73
-msgid "Description"
-msgstr "Beschreibung"
-
-#: umc_operationset.py:79
-msgid "UMC commands"
-msgstr "UMC-Kommandos"
-
-#: umc_operationset.py:80
-msgid "List of UMC command names or patterns"
-msgstr "Liste von UMC-Kommando- und Optionenmuster"
-
-#: umc_operationset.py:90
-msgid "Flavor"
-msgstr "Variante"
-
-#: umc_operationset.py:91
-msgid ""
-"Defines a specific flavor of the UMC module. If given the operations are "
-"permitted only if the flavor matches."
-msgstr ""
-"Definiert eine spezielle Variante des UMC-Moduls. Wenn diese angegeben ist, "
-"müssen Operationen diese setzen, ansonsten werden sie zurückgewiesen"
-
-#: umc_operationset.py:104
-msgid "UMC Operation Set"
-msgstr "UMC-Befehlssatz"
-
-#: umc_operationset.py:105
-msgid "General UMC operation set settings"
-msgstr "Grundeinstellungen - UMC-Operationen"
-
-#: usertemplate.py:46
-msgid "Settings: User Template"
-msgstr "Einstellungen: Benutzervorlage"
-
-#: usertemplate.py:52
-msgid "Template name"
-msgstr "Name der Vorlage"
-
-#: usertemplate.py:63
-msgid "Title"
-msgstr "Anrede"
-
-#: usertemplate.py:84
-msgid "Display name"
-msgstr "Anzeigename"
-
-#: usertemplate.py:95
-msgid "Organisation"
-msgstr "Organisation"
-
-#: usertemplate.py:105 usertemplate.py:106
-msgid "Change password on next login"
-msgstr "Passwort bei der nächsten Anmeldung ändern"
-
-#: usertemplate.py:116
-msgid "Account deactivation"
-msgstr "Kontodeaktivierung"
-
-#: usertemplate.py:127
-msgid "E-mail address"
-msgstr "E-Mail-Adresse"
-
-#: usertemplate.py:137
-msgid "Unix home directory"
-msgstr "UNIX-Heimatverzeichnis"
-
-#: usertemplate.py:148
-msgid "Home share"
-msgstr "Benutzerverzeichnis-Freigabe"
-
-#: usertemplate.py:149
-msgid "Share, the user's home directory resides on"
-msgstr "Freigabe, auf der sich das Heimatverzeichnis des Benutzers befindet"
-
-#: usertemplate.py:158
-msgid "Home share path"
-msgstr "Pfad der Benutzerverzeichnis-Freigabe"
-
-#: usertemplate.py:159
-msgid "Path to the home directory on the home share"
-msgstr "Relativer Pfad der Benutzerverzeichnis-Freigabe"
-
-#: usertemplate.py:169
-msgid "Login shell"
-msgstr "Login-Shell"
-
-#: usertemplate.py:180
-msgid "Windows home path"
-msgstr "Windows-Home-Verzeichnis"
-
-#: usertemplate.py:190
-msgid "Windows logon path"
-msgstr "Windows-Logon-Pfad"
-
-#: usertemplate.py:200
-msgid "Windows profile directory"
-msgstr "Profilverzeichnis"
-
-#: usertemplate.py:210
-msgid "Windows home drive"
-msgstr "Laufwerk des Benutzerverzeichnises"
-
-#: usertemplate.py:220
-msgid "Street"
-msgstr "Straße"
-
-#: usertemplate.py:230
-msgid "Postal code"
-msgstr "Postleitzahl"
-
-#: usertemplate.py:240
-msgid "City"
-msgstr "Stadt"
-
-#: usertemplate.py:250
-msgid "Telephone number"
-msgstr "Telefonnummer"
-
-#: usertemplate.py:260
-msgid "Superior"
-msgstr "Vorgesetzter"
-
-#: usertemplate.py:270
-msgid "Department number"
-msgstr "Abteilungsnummer"
-
-#: usertemplate.py:280
-msgid "Employee type"
-msgstr "Mitarbeiterkategorie"
-
-#: usertemplate.py:290 usertemplate.py:397 usertemplate.py:398
-msgid "Groups"
-msgstr "Gruppen"
-
-#: usertemplate.py:300
-msgid "Primary group"
-msgstr "Primäre Gruppe"
-
-#: usertemplate.py:313
-msgid "Primary e-mail address"
-msgstr "Primäre E-Mail-Adresse"
-
-#: usertemplate.py:325
-msgid "Alternative e-mail address"
-msgstr "Alternative E-Mail-Adresse"
-
-#: usertemplate.py:353
-msgid "General user template settings"
-msgstr "Grundeinstellungen - Benutzervorlage"
-
-#: usertemplate.py:360 usertemplate.py:361
-msgid "User Account"
-msgstr "Benutzer-Konto"
-
-#: usertemplate.py:360
-msgid "Account Settings"
-msgstr "Kontoeinstellungen"
-
-#: usertemplate.py:365 usertemplate.py:366
-msgid "Mail"
-msgstr "Mail"
-
-#: usertemplate.py:365
-msgid "Mail Settings"
-msgstr "Maileinstellungen"
-
-#: usertemplate.py:371 usertemplate.py:372
-msgid "User Contact"
-msgstr "Kontakt"
-
-#: usertemplate.py:371
-msgid "Contact Information"
-msgstr "Kontaktinformationen"
-
-#: usertemplate.py:378 usertemplate.py:379
-msgid "Employee"
-msgstr "Mitarbeiter"
-
-#: usertemplate.py:378
-msgid "Employee Information"
-msgstr "Mitarbeiterinformationen"
-
-#: usertemplate.py:385 usertemplate.py:386
-msgid "Linux"
-msgstr "Linux/UNIX"
-
-#: usertemplate.py:385
-msgid "Unix Account Settings"
-msgstr "UNIX-Kontoeinstellungen"
-
-#: usertemplate.py:391 usertemplate.py:392
-msgid "Windows"
-msgstr "Windows"
-
-#: usertemplate.py:391
-msgid "Windows Account Settings"
-msgstr "Windows-Kontoeinstellungen"
-
-#: usertemplate.py:397
-msgid "Group Memberships"
-msgstr "Gruppenmitgliedschaften"
-
-#: xconfig_choices.py:50
-msgid "Preferences: X Configuration Choices"
-msgstr "Einstellungen: X-Konfigurationsauswahl"
-
-#: xconfig_choices.py:67
-msgid "Resolution"
-msgstr "Auflösung"
-
-#: xconfig_choices.py:77
-msgid "Color Depth"
-msgstr "Farbtiefe"
-
-#: xconfig_choices.py:87
-msgid "Mouse Protocol"
-msgstr "Mausprotokoll"
-
-#: xconfig_choices.py:97
-msgid "Mouse Device"
-msgstr "Maus-Device"
-
-#: xconfig_choices.py:107
-msgid "Keyboard Layout"
-msgstr "Tastaturlayout"
-
-#: xconfig_choices.py:117
-msgid "Keyboard Variant"
-msgstr "Tastaturvariante"
-
-#: xconfig_choices.py:127
-msgid "Horizontal Sync"
-msgstr "Horizontale Synchronisation"
-
-#: xconfig_choices.py:137
+#: modules/univention/admin/handlers/settings/license.py:279
+msgid "Version format of this license."
+msgstr "Version dieser Lizenz"
+
+#: modules/univention/admin/handlers/settings/extended_attribute.py:329
+msgid "Version of extended attribute"
+msgstr "Version des erweiterten Attributs"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:137
 msgid "Vertical Refresh"
 msgstr "Vertikale Wiederholungsrate"
 
-#: xconfig_choices.py:147
-msgid "X Module"
-msgstr "X-Modul"
+#: modules/univention/admin/handlers/settings/extended_attribute.py:128
+msgid ""
+"When values are entered, the UMC performs a syntax check. Apart from "
+"standard syntax definitions (string) and (integer), there are three "
+"possibilities for expressing a binary condition. The syntax TrueFalse is "
+"represented at LDAP level using the strings true and false, the syntax "
+"TrueFalseUppercorresponds to the OpenLDAP boolean values TRUE and FALSE and "
+"the syntax boolean does not save any value or the string 1"
+msgstr ""
+"Bei der Eingabe von Werten nimmt die UMC eine Syntaxprüfung vor. Neben "
+"Standard-Syntaxdefinitionen für Zeichenketten (string), Zahlen (integer) "
+"gibt es drei Möglichkeiten einen binären Zustand auszudrücken: Die Syntax "
+"TrueFalse wird auf LDAP-Ebene durch die Zeichenketten true und false "
+"abgebildet, die Syntax TrueFalseUpper verwendet dagegen die Werte TRUE und "
+"FALSE. Die Syntax boolean dagegen speichert keinen Wert bzw. die "
+"Zeichenkette 1"
 
-#: xconfig_choices.py:157
-msgid "Display Size (mm)"
-msgstr "Bildschirm Größe (mm)"
+#: modules/univention/admin/handlers/settings/usertemplate.py:391
+#: modules/univention/admin/handlers/settings/usertemplate.py:392
+msgid "Windows"
+msgstr "Windows"
 
-#: xconfig_choices.py:169
+#: modules/univention/admin/handlers/settings/usertemplate.py:391
+msgid "Windows Account Settings"
+msgstr "Windows-Kontoeinstellungen"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:210
+msgid "Windows home drive"
+msgstr "Laufwerk des Benutzerverzeichnises"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:180
+msgid "Windows home path"
+msgstr "Windows-Home-Verzeichnis"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:190
+msgid "Windows logon path"
+msgstr "Windows-Logon-Pfad"
+
+#: modules/univention/admin/handlers/settings/usertemplate.py:200
+msgid "Windows profile directory"
+msgstr "Profilverzeichnis"
+
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:169
 msgid "X Configuration Choices"
 msgstr "X-Konfiguration Auswahl"
 
-#: xconfig_choices.py:170
-msgid "General X configuration choices settings"
-msgstr "Grundeinstellungen - X-Konfigurationsauswahl"
+#: modules/univention/admin/handlers/settings/xconfig_choices.py:147
+msgid "X Module"
+msgstr "X-Modul"
 
-#~ msgid "User name"
-#~ msgstr "Benutzername"
-
-#~ msgid "Disabled"
-#~ msgstr "Deaktiviert"
-
-#~ msgid "Windows Script Path"
-#~ msgstr "Anmeldeskriptpfad"
-
-#~ msgid "Secretary"
-#~ msgstr "Vorgesetzter"
-
-#~ msgid ""
-#~ "Configuration of the LDAP settings used to store the extended attribute"
-#~ msgstr ""
-#~ "Konfiguration der zur Speicherung des erweiterten Attributs verwendeten "
-#~ "LDAP-Einstellungen"
-
-#~ msgid "Translations of the label text for other languages"
-#~ msgstr "Übersetzungen des Labeltextes in andere Sprachen"
-
-#~ msgid "Long descriptions"
-#~ msgstr "Ausführliche Standardbeschreibung"
-
-#~ msgid "UMC layout"
-#~ msgstr "Karteikartendarstellung"
+#: modules/univention/admin/handlers/settings/ldapacl.py:219
+#: modules/univention/admin/handlers/settings/ldapschema.py:193
+#: modules/univention/admin/handlers/settings/udm_hook.py:232
+#: modules/univention/admin/handlers/settings/udm_module.py:255
+#: modules/univention/admin/handlers/settings/udm_syntax.py:232
+msgid "packageversion: Version must not be lower than the current one."
+msgstr "Paketversion: Der Wert darf nicht geringer sein als der aktuelle."

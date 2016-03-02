@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.2-20) unstable; urgency=medium
+
+  * Bug #40824: prevent to create extended attribute for users/user with
+  	required fields without default value.
+
+ -- Florian Best <best@univention.de>  Wed, 02 Mar 2016 16:41:59 +0100
+
 univention-directory-manager-modules (11.0.2-19) unstable; urgency=medium
 
   * Bug #40775: enhance presentation of SRV and TXT record layout
