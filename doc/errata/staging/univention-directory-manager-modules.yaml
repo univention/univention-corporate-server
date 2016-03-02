@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-directory-manager-modules
-fix: 11.0.2-19.1374.201602251400
+fix: 11.0.2-20.1375.201603021645
 desc: |
  This update addresses the following issue(s):
  * Some ldap search requests have been optimized in the
@@ -12,4 +12,7 @@ desc: |
    equal blocks (e.g. 10.10.20.0/24) invalid pointer records were created.
  * The layout of DNS service and text records have been adjusted to be more
    readable.
-bug: [40651, 39030, 40775]
+ * It is now prevented to create extended attributes for users with required
+   fields without specifying a default value. Those extended attributes caused
+   problems during upgrading to UCS 4.1 or installing various apps.
+bug: [40651, 39030, 40775, 40824]
