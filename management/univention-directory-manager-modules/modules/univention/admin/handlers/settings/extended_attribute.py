@@ -36,18 +36,18 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
-module='settings/extended_attribute'
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
+module = 'settings/extended_attribute'
 
-operations=['add','edit','remove','search','move']
-superordinate='settings/cn'
-childs=0
-short_description=_('Settings: Extended attribute')
-long_description=''
-options={
+operations = ['add', 'edit', 'remove', 'search', 'move']
+superordinate = 'settings/cn'
+childs = 0
+short_description = _('Settings: Extended attribute')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
 			short_description=_('Unique name'),
 			long_description=_('Name which by default is used by UDM CLI and internally to identify the extended attribute'),
@@ -114,14 +114,14 @@ property_descriptions={
 			identifies=0
 		),
 	'translationGroupName': univention.admin.property(
-			short_description = _('Translations of group name'),
+			short_description=_('Translations of group name'),
 			long_description=_('Translations of the group name for other languages'),
-			syntax = univention.admin.syntax.I18N_GroupName,
-			multivalue = True,
-			options = [],
-			required = False,
-			may_change = True,
-			identifies = False
+			syntax=univention.admin.syntax.I18N_GroupName,
+			multivalue=True,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'syntax': univention.admin.property(
 			short_description=_('Syntax class'),
@@ -195,24 +195,24 @@ property_descriptions={
 			identifies=0
 		),
 	'groupName': univention.admin.property(
-			short_description = _( 'Group name' ),
+			short_description=_('Group name'),
 			long_description=_('Related properties can be grouped. This field specifies the name of the group in which this extended attribute is put in. If no name is given, no group is used'),
-			syntax = univention.admin.syntax.string,
-			multivalue = False,
-			options = [],
-			required = False,
-			may_change = True,
-			identifies = False
+			syntax=univention.admin.syntax.string,
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'groupPosition': univention.admin.property(
-			short_description = _( 'Group ordering number' ),
-			long_description = _('This number specifies the position on which this group is placed on the tab. The numbering starts at 1'),
-			syntax = univention.admin.syntax.integer,
-			multivalue = False,
-			options = [],
-			required = False,
-			may_change = True,
-			identifies = False
+			short_description=_('Group ordering number'),
+			long_description=_('This number specifies the position on which this group is placed on the tab. The numbering starts at 1'),
+			syntax=univention.admin.syntax.integer,
+			multivalue=False,
+			options=[],
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'tabAdvanced': univention.admin.property(
 			short_description=_('Tab with advanced settings'),
@@ -316,17 +316,17 @@ property_descriptions={
 			identifies=0
 		),
 	'module': univention.admin.property(
-			short_description=_( 'Modules to be extended' ),
+			short_description=_('Modules to be extended'),
 			long_description=_('Modules this extended attribute is added to, e.g. "users/user" or "computers/windows"'),
-			syntax = univention.admin.syntax.univentionAdminModules,
-			multivalue = True,
-			options = [],
-			required = True,
-			may_change = True,
-			identifies = False
+			syntax=univention.admin.syntax.univentionAdminModules,
+			multivalue=True,
+			options=[],
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'version': univention.admin.property(
-			short_description = _('Version of extended attribute'),
+			short_description=_('Version of extended attribute'),
 			long_description=_('The ABI number used by this extended attribute'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -337,7 +337,7 @@ property_descriptions={
 			default='2',
 		),
 	'CLIName': univention.admin.property(
-			short_description = _('UDM CLI name'),
+			short_description=_('UDM CLI name'),
 			long_description=_('The name for the extended attribute as used by UDM CLI'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots,
 			multivalue=0,
@@ -392,7 +392,7 @@ layout = [
 		["objectClass", "ldapMapping"],
 		["deleteObjectClass"],
 	]),
-	Tab(_('UMC'),_('Settings for UMC'), layout=[
+	Tab(_('UMC'), _('Settings for UMC'), layout=[
 		Group(_('General extended attribute settings'), layout=[
 			"disableUDMWeb",
 			"doNotSearch"
@@ -401,7 +401,7 @@ layout = [
 			["tabPosition", "overwritePosition"],
 			["fullWidth"],
 		]),
-		Group(_( 'Tab layout'), layout=[
+		Group(_('Tab layout'), layout=[
 			["tabName"],
 			["translationTabName"],
 			["overwriteTab", "tabAdvanced"],
@@ -421,7 +421,7 @@ layout = [
 	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('module', 'univentionUDMPropertyModule')
 mapping.register('shortDescription', 'univentionUDMPropertyShortDescription', None, univention.admin.mapping.ListToString)
@@ -450,23 +450,24 @@ mapping.register('version', 'univentionUDMPropertyVersion', None, univention.adm
 mapping.register('CLIName', 'univentionUDMPropertyCLIName', None, univention.admin.mapping.ListToString)
 mapping.register('options', 'univentionUDMPropertyOptions')
 
-class object(univention.admin.handlers.simpleLdap):
-	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+class object(univention.admin.handlers.simpleLdap):
+	module = module
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionUDMProperty'] ) ]
+		return [('objectClass', ['top', 'univentionUDMProperty'])]
 
 	def open(self):
 		# univentionUDMPropertyTranslation;entry-de-de: Meine Kurzbeschreibung 9
@@ -474,17 +475,16 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.open(self)
 
-		if self.dn and self.info.has_key( 'overwritePosition' ) and self.info[ 'overwritePosition' ] == '0':
-			self.info[ 'overwritePosition' ] = ''
+		if self.dn and self.info.get('overwritePosition') == '0':
+			self.info['overwritePosition'] = ''
 
-		for transKey in [ 'ShortDescription', 'LongDescription', 'TabName', 'GroupName' ]:
+		for transKey in ['ShortDescription', 'LongDescription', 'TabName', 'GroupName']:
 			translations = []
-			keys = self.oldattr.keys()
 			for key in self.oldattr.keys():
 				if key.startswith('univentionUDMPropertyTranslation%s;entry-' % transKey):
 					lang = '%s_%s' % (key[-5:-3].lower(), key[-2:].upper())
 					txt = self.oldattr.get(key)[0]
-					translations.append( (lang, txt) )
+					translations.append((lang, txt))
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'extended_attribute: added translations for %s: %s' % (transKey, str(translations)))
 			self['translation%s' % transKey] = translations
@@ -495,22 +495,22 @@ class object(univention.admin.handlers.simpleLdap):
 		# univentionUDMPropertyShortTranslation;entry-de-de: Meine Kurzbeschreibung 9
 		# univentionUDMPropertyShortTranslation;entry-en-gb: This is my short description9
 
-		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		for transKey in [ 'ShortDescription', 'LongDescription', 'TabName', 'GroupName' ]:
-			if self.hasChanged( 'translation%s' % transKey ):
+		for transKey in ['ShortDescription', 'LongDescription', 'TabName', 'GroupName']:
+			if self.hasChanged('translation%s' % transKey):
 				oldlist = {}
 				newlist = {}
 
 				for lang, txt in self.oldinfo.get('translation%s' % transKey, []):
-					lang = lang.replace('_','-')
+					lang = lang.replace('_', '-')
 					oldlist[lang] = txt
 					if not lang in newlist:
 						newlist[lang] = ''
 
 				# duplicate lang entries will be removed due to use of dictionary
 				for lang, txt in self.info.get('translation%s' % transKey, []):
-					lang = lang.replace('_','-')
+					lang = lang.replace('_', '-')
 					newlist[lang] = txt
 					if not lang in oldlist:
 						oldlist[lang] = ''
@@ -518,26 +518,26 @@ class object(univention.admin.handlers.simpleLdap):
 				# modlist for new items
 				for lang, txt in oldlist.items():
 					if txt != newlist[lang]:
-						ml.append( ('univentionUDMPropertyTranslation%s;entry-%s' % (transKey, lang), oldlist[lang], newlist[lang]) )
+						ml.append(('univentionUDMPropertyTranslation%s;entry-%s' % (transKey, lang), oldlist[lang], newlist[lang]))
 
 		return ml
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionUDMProperty'),
 		univention.admin.filter.expression('univentionUDMPropertyVersion', '2'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append(object(co, lo, None, dn, attributes = attrs ))
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
 
