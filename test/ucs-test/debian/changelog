@@ -1,3 +1,9 @@
+ucs-test (6.0.33-33) unstable; urgency=medium
+
+  * Bug #40741: test SAML user exists
+
+ -- Florian Best <best@univention.de>  Wed, 02 Mar 2016 17:37:46 +0100
+
 ucs-test (6.0.33-32) unstable; urgency=medium
 
   * Bug #40824: fixup
