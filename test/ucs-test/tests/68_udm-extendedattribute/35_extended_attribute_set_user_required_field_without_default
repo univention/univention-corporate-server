@@ -1,5 +1,5 @@
 #!/usr/share/ucs-test/runner python
-## desc: settings/extented_attribute LDAP post remove hook
+## desc: settings/extented_attribute
 ## tags: [udm,apptest]
 ## roles: [domaincontroller_master]
 ## exposure: careful
@@ -7,12 +7,12 @@
 ##   - univention-directory-manager-tools
 
 import univention.testing.udm as udm_test
-import univention.testing.ucr as ucr_test
+from univention.config_registry import ConfigRegistry
 import pytest
 
 
 def main():
-	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr = ConfigRegistry()
 	ucr.load()
 	with udm_test.UCSTestUDM() as udm:
 		kwargs = dict(name='test', ldapMapping='foo', objectClass='bar', shortDescription='test', valueRequired='1', CLIName='test', module=['users/user'])
