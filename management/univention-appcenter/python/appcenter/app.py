@@ -444,6 +444,8 @@ class App(object):
 	docker_script_update_release = AppDockerScriptAttribute()
 	docker_script_update_app_version = AppDockerScriptAttribute()
 
+	appliance_category_modules = AppListAttribute()
+
 	def __init__(self, **kwargs):
 		self._is_ucs_component = None
 		for attr in self._attrs:
