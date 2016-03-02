@@ -370,6 +370,7 @@ Package: ucs-test-udm-extendedattribute
 Architecture: all
 Recommends: ucs-test-framework
 Depends: ucs-test-libs (= ${source:Version}),
+ python-pytest,
  ${misc:Depends}
 Provides: ucs-test-module
 Description: Test scripts for the settings/extended_attribute module of UDM.

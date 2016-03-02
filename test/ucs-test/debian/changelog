@@ -1,3 +1,10 @@
+ucs-test (6.0.33-31) unstable; urgency=medium
+
+  * Bug #40824: add
+  	68_udm-extendedattribute/35_extended_attribute_set_user_required_field_without_default
+
+ -- Florian Best <best@univention.de>  Wed, 02 Mar 2016 17:03:46 +0100
+
 ucs-test (6.0.33-30) unstable; urgency=low
 
   * minor fixes in self_service tests (Bug #40799)
