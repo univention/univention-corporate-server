@@ -4,7 +4,7 @@ import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 
-from httplib import HTTPConnection, HTTPException
+from httplib import HTTPSConnection, HTTPException
 from threading import Thread
 from smtpd import SMTPServer
 import subprocess
@@ -39,11 +39,11 @@ class Connection(object):
 			'Accept-Language': 'en-US',
 		}
 		self.base_host = host
-		self.base_uri = 'http://%s/univention-self-service/%%s' % (self.base_host,)
+		self.base_uri = 'https://%s/univention-self-service/%%s' % (self.base_host,)
 
 	def request(self, uri, data):
-		print 'requesting %r with %r' % (uri, data)
-		connection = HTTPConnection(self.base_host)
+		print 'requesting %r with %r' % (self.base_uri % (uri,), data)
+		connection = HTTPSConnection(self.base_host)
 		connection.request('POST', self.base_uri % (uri,), json.dumps(data), headers=self._headers)
 		response = connection.getresponse()
 		content = response.read()

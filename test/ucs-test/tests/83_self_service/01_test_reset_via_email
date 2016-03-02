@@ -12,29 +12,30 @@ import time
 
 from test_self_service import self_service_user, capture_mails
 import univention.testing.strings as uts
-from univention.config_registry import ConfigRegistry
-ucr = ConfigRegistry()
-ucr.load()
+import univention.testing.ucr as ucr_test
+from univention.config_registry import handler_set
 
 
 def main():
-	try:
-		mail = 'selfservice@%s' % (ucr['domainname'],)
-		with self_service_user(mailPrimaryAddress=mail) as user:
-			assert user.get_contact() == {}, 'A newly created user has default values. Might be wrong?!'
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		handler_set(["umc/self-service/passwordreset/limit/per_user/minute=120"])
+		try:
+			mail = 'selfservice@%s' % (ucr['domainname'],)
+			with self_service_user(mailPrimaryAddress=mail) as user:
+				assert user.get_contact() == {}, 'A newly created user has default values. Might be wrong?!'
 
-			print 'test with login per username'
-			test_contact(user)
-			test_reset_method_email(user)
+				print 'test with login per username'
+				test_contact(user)
+				test_reset_method_email(user)
 
-			time.sleep(2)
-			print 'test with login per mail address'
-			user.username = mail
-			test_contact(user)
-			test_reset_method_email(user)
-	finally:
-		# force all module processes to close
-		subprocess.call(['invoke-rc.d', 'univention-management-console-server', 'restart'], close_fds=True)
+				time.sleep(2)
+				print 'test with login per mail address'
+				user.username = mail
+				test_contact(user)
+				test_reset_method_email(user)
+		finally:
+			# force all module processes to close
+			subprocess.call(['invoke-rc.d', 'univention-management-console-server', 'restart'], close_fds=True)
 
 
 def test_contact(user):

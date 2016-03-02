@@ -79,7 +79,7 @@ def fail_after(user, x, retry_after):
 		assert retry_after in exc.content.get('message', ''), '%r not in %r' % (retry_after, exc.content)
 		print 'Yippie, failed!'
 		return True
-	assert False, 'limit not avaluated'
+	assert False, 'limit not evaluated'
 
 
 def dont_fail(user):
