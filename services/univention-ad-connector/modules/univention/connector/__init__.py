@@ -1018,6 +1018,8 @@ class ucs:
 						ud.debug(ud.LDAP, ud.INFO, '__set_values: module %s has no custom attributes' % ucs_object.module)
 
 					if not detected_ca:					
+						if type(value) == type(types.ListType()) and len(value) == 1:
+							value = value[0]
 						equal = False
 
 						# set encoding
@@ -1035,8 +1037,6 @@ class ucs:
 						if not equal:
 							if attributes.con_value_map_function:
 								value = attributes.con_value_map_function(value, ucs_object[ucs_key])
-							if type(value) == type(types.ListType()) and len(value) == 1:
-								value = value[0]
 							ucs_object[ucs_key] = value
 							ud.debug(ud.LDAP, ud.INFO,
 											   "set key in ucs-object: %s" % ucs_key)

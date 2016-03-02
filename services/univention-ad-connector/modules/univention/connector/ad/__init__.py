@@ -67,16 +67,21 @@ class proxyAddresses:
 		return 'smtp:' + val
 
 	@classmethod
-	def compare(cls, values1, values2):
-		_d=ud.function('%s.compare' % cls.__name__)
+	def equal(cls, values1, values2):
+		_d=ud.function('%s.equal' % cls.__name__)
 		## usually this is used as:
 		##   values1 are ucs and values2 are con
 		## but let's not rely on that
-		values1_normalized = filter(lambda v: v,
-								map(cls.valid_mailaddress, values1))
-		values2_normalized = filter(lambda v: v,
-								map(cls.valid_mailaddress, values2))
-		if set(values1_normalized) == set(values2_normalized):
+		values_normalized = []
+		for values in (values1, values2):
+			if type(values) != type(types.ListType()):
+				values = [values]
+			values_normalized.append(
+				filter(lambda v: v,
+					map(cls.valid_mailaddress, values)
+				)
+			)
+		if set(values_normalized[0]) == set(values_normalized[1]):
 			return True
 		else:
 			return False
@@ -84,8 +89,15 @@ class proxyAddresses:
 	@classmethod
 	def con2ucs(cls, con_values, old_ucs_values = None):
 		_d=ud.function('%s.con2ucs' % cls.__name__)
+
+		if type(con_values) != type(types.ListType()):
+			values = [con_values]
+		else:
+			values = con_values
 		new_ucs_values = filter(lambda v: v,
-								map(cls.valid_mailaddress, con_values))
+								map(cls.valid_mailaddress, values))
+		if len(new_ucs_values) == 1:
+			new_ucs_values = new_ucs_values[0]
 		ud.debug(ud.LDAP, ud.ALL, "%s.con2ucs: %s" % (cls.__name__, new_ucs_values))
 		return new_ucs_values
 
