@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-14) unstable; urgency=medium
+
+  * Bug #40827: added css background property for appliances
+    to the from ini file created app object
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 03 Mar 2016 16:40:31 +0100
+
 univention-appcenter (5.0.20-13) unstable; urgency=medium
 
   * Bug #40508: Check PortsExclusive also for non Docker Apps

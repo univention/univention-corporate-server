@@ -447,6 +447,7 @@ class App(object):
 	appliance_category_modules = AppListAttribute()
 	appliance_primary_color = AppAttribute()
 	appliance_secondary_color = AppAttribute()
+	appliance_css_background = AppAttribute()
 
 	def __init__(self, **kwargs):
 		self._is_ucs_component = None
