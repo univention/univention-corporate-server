@@ -231,8 +231,8 @@ register_apps ()
 				${component_prefix}${component}/unmaintained=disabled \
 				${component_prefix}${component}/version=current \
 				${component_prefix}${component}=enabled
-		if [ -e "/var/cache/univention-management-console/appcenter/${component}.LICENSE_AGREEMENT" ]; then
-			ucr set umc/web/appliance/data_path?"/var/cache/univention-management-console/appcenter/${component}."
+		if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
+			ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
 		fi
 	done
 	apt-get update
@@ -388,6 +388,21 @@ if [ -e /usr/share/univention-management-console-frontend/js/umc/modules/udm/wiz
 fi
 __EOF__
 	chmod 755 /usr/lib/univention-install/99_setup_${main_app}.inst
+}
+
+install_app_in_prejoined_setup ()
+{
+	eval "$(ucr shell update/commands/install)"
+	export DEBIAN_FRONTEND=noninteractive
+
+	packages=""
+	for app in $apps; do
+		packages="$packages $(app_get_packages $app)"
+	done
+
+	$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages
+
+	univention-run-join-scripts
 }
 
 appliance_preinstall_non_univention_packages ()
