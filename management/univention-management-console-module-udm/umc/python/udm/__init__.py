@@ -491,7 +491,8 @@ class Instance(Base, ProgressMixin):
 
 	@sanitize(
 		objectPropertyValue=LDAPSearchSanitizer(),
-		objectProperty=ObjectPropertySanitizer(required=True)
+		objectProperty=ObjectPropertySanitizer(required=True),
+		fields=ListSanitizer(),
 	)
 	def query(self, request):
 		"""Searches for LDAP objects and returns a few properties of the found objects
@@ -500,6 +501,7 @@ class Instance(Base, ProgressMixin):
 			'objectType' -- the object type to search for (default: if not given the flavor is used)
 			'objectProperty' -- the object property that should be scaned
 			'objectPropertyValue' -- the filter that should be found in the property
+			'fields' -- the properties which should be returned
 			'container' -- the base container where the search should be started (default: LDAP base)
 			'superordinate' -- the superordinate object for the search (default: None)
 			'scope' -- the search scope (default: sub)
@@ -529,6 +531,7 @@ class Instance(Base, ProgressMixin):
 			objectPropertyValue = request.options['objectPropertyValue']
 			scope = request.options.get('scope', 'sub')
 			hidden = request.options.get('hidden')
+			fields = (set(request.options.get('fields', []) or []) | set([objectProperty])) - set(['name', 'None'])
 			result = module.search(container, objectProperty, objectPropertyValue, superordinate, scope=scope, hidden=hidden)
 			if result is None:
 				return []
@@ -554,8 +557,10 @@ class Instance(Base, ProgressMixin):
 					'name': module.obj_description(obj),
 					'path': ldap_dn2path(obj.dn, include_rdn=False)
 				}
-				if request.options['objectProperty'] not in ('name', 'None'):
-					entry[request.options['objectProperty']] = obj[request.options['objectProperty']]
+				if '$value$' in fields:
+					entry['$value$'] = [module.property_description(obj, column['name']) for column in module.columns]
+				for field in fields - set(module.password_properties) - set(entry.keys()):
+					entry[field] = module.property_description(obj, field)
 				entries.append(entry)
 			return entries
 
@@ -703,6 +708,11 @@ class Instance(Base, ProgressMixin):
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
 		return module.superordinates
+
+	@module_from_request
+	@simple_response
+	def columns(self, module):
+		return module.columns
 
 	@module_from_request
 	@simple_response

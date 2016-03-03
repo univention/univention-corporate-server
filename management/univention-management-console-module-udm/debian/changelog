@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-5) unstable; urgency=medium
+
+  * Bug #38639: add possibility to show specific fields as grid columns
+
+ -- Florian Best <best@univention.de>  Thu, 03 Mar 2016 18:26:11 +0100
+
 univention-management-console-module-udm (6.0.11-4) unstable; urgency=medium
 
   * Bug #40747: sort PTR record (and number based properties) numerically

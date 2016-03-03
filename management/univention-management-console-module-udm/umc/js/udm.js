@@ -177,24 +177,6 @@ define([
 		// set the opacity for the standby to 100%
 		standbyOpacity: 1,
 
-		constructor: function() {
-			this._default_columns = [{
-				name: 'name',
-				label: _( 'Name' ),
-				description: _( 'Name of the LDAP object.' ),
-				formatter: lang.hitch(this, 'iconFormatter')
-			}];
-
-			// we only need the path column for any module except the navigation
-			if ('navigation' != this.moduleFlavor) {
-				this._default_columns.push({
-					name: 'path',
-					label: _('Path'),
-					description: _( 'Path of the LDAP object.' )
-				});
-			}
-		},
-
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
@@ -304,10 +286,13 @@ define([
 			if ('navigation' == this.moduleFlavor) {
 				// for the UDM navigation, we only query the UCR variables
 				this.standby(true);
-				this._loadUCRVariables().then(
-					lang.hitch(this, 'renderSearchPage'),
-					lang.hitch(this, 'standby', false)
-				);
+				all({
+					variables: this._loadUCRVariables(),
+					columns: this.getDefaultColumns(),
+				}).then(lang.hitch(this, function(results) {
+					this._default_columns = results.columns;
+					this.renderSearchPage();
+				}), lang.hitch(this, 'standby', false));
 			} else {
 				// render search page, we first need to query lists of containers/superordinates
 				// in order to correctly render the search form...
@@ -316,6 +301,7 @@ define([
 				var moduleCache = cache.get(this.moduleFlavor);
 				moduleCache.preloadModuleInformation();
 				all({
+					columns: this.getDefaultColumns(),
 					containers: moduleCache.getContainers(),
 					superordinates: moduleCache.getSuperordinates(),
 					reports: moduleCache.getReports(),
@@ -323,6 +309,7 @@ define([
 					ucr: this._loadUCRVariables()
 				}).then(lang.hitch(this, function(results) {
 					this._reports = results.reports;
+					this._default_columns = results.columns;
 					this.renderSearchPage(results.containers, results.superordinates, results.metaInfo);
 					this._pageRenderedDeferred.resolve();
 				}), lang.hitch(this, function() {
@@ -386,7 +373,7 @@ define([
 			if (this.selectedChildWidget != this._detailPage) {
 				// no detail page shown
 				return '';
-			};
+			}
 			return when(this._detailPage && this._detailPage.ldapName).then(lang.hitch(this, function(ldapName) {
 				if ('string' == typeof ldapName) {
 					// only handle single edits and ignore multi edits
@@ -466,7 +453,7 @@ define([
 				tools.status('udm/licenseNote', true);
 				this.umcpCommand('udm/license', {}, false).then(lang.hitch(this, function(data) {
 					if (data.result.message) {
-						msg = _('<p><b>Add and modify are disabled in this session.</b></p><p>You have too many user accounts for your license. Carry out the following steps to re-enable editing:</p><ol><li>Disable or delete user accounts</li><li>Re-login to UMC for changes to take effect</li></ol><p>If a new license is needed, contact your UCS partner.</p>');
+						var msg = _('<p><b>Add and modify are disabled in this session.</b></p><p>You have too many user accounts for your license. Carry out the following steps to re-enable editing:</p><ol><li>Disable or delete user accounts</li><li>Re-login to UMC for changes to take effect</li></ol><p>If a new license is needed, contact your UCS partner.</p>');
 						dialog.alert(msg, _('<b>Warning!</b>'));
 					}
 				}), function() {
@@ -731,6 +718,7 @@ define([
 				widgets.push({
 					type: ComboBox,
 					name: 'container',
+					autoHide: true,
 					label: _('Search in:'),
 					value: containers[0].id || containers[0],
 					staticValues: containers,
@@ -751,6 +739,7 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'objectType',
+				//autoHide: true,
 				label: _('Type'),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
 				staticValues: objTypes,
@@ -777,6 +766,7 @@ define([
 				})
 			}, {
 				type: ComboBox,
+				autoHide: true,
 				name: 'objectProperty',
 				label: _( 'Property' ),
 				staticValues: objProperties,
@@ -1099,7 +1089,7 @@ define([
 				var widgets = this._searchForm._widgets;
 				var toggleButton = this._searchForm._buttons.toggleSearch;
 				if (this._isAdvancedSearch) {
-					widgets.objectType.set('visible', widgets.objectType.getAllItems().length > 2);
+					widgets.objectType.set('visible', widgets.objectType.getAllItems().length > 1 /*2*/); // if 2 we have to select != all object types
 					// now it gets dirty
 					//   we do not have a fluid or dynamic layout
 					//   DNS: we have the tree on the left -> only space for two widgets per row
@@ -1120,8 +1110,10 @@ define([
 					}
 					if ('container' in widgets) {
 						widgets.container.set('visible', true);
+						widgets.container._updateVisibility();
 					}
 					widgets.objectProperty.set('visible', true);
+					widgets.objectProperty._updateVisibility();
 					widgets.hidden.set('visible', true);
 					//widgets.objectPropertyValue.set('visible', true);
 					toggleButton.set('label', _('Simplified options'));
@@ -1358,52 +1350,78 @@ define([
 			return null;
 		},
 
+		getDefaultColumns: function() {
+			var deferred = new Deferred();
+			var objectType = this._searchForm ? this._searchForm._widgets.objectType.get('value') : (this.moduleFlavor == 'navigation' ? 'container/cn' : this.moduleFlavor);
+			return cache.get(this.moduleFlavor).getColumns(objectType).then(lang.hitch(this, function(customColumns) {
+				var nameColumn = {
+					name: 'name',
+					label: _('Name'),
+					description: _('Name of the LDAP object.'),
+					formatter: lang.hitch(this, 'iconFormatter')
+				};
+				var typeColumn = {
+					name: 'labelObjectType',
+					label: _('Type')
+				};
+				var pathColumn = {
+					name: 'path',
+					label: _('Path'),
+					description: _('Path of the LDAP object.')
+				};
+				var valueColumn = {
+					name: '$value$',
+					label: _('Value'),
+					description: _('Value of the LDAP object.')
+				};
+
+				var identifies = this._searchForm ? this.identityProperty() : null;
+				var selected_value = this._searchForm ? this._searchForm._widgets.objectProperty.get('value') : 'None';
+				var numObjTypes = this._searchForm ? this._searchForm._widgets.objectType.getNumItems() : 3;
+				var columns = [nameColumn];
+				// if we are searching for a specific property add it to the columns
+				if ('None' != selected_value && (identifies === null || selected_value != identifies.id)) {
+					columns.push({
+						name: selected_value,
+						label: this._searchForm._widgets.objectProperty.get('displayedValue')
+					});
+				}
+				columns = columns.concat(customColumns);
+				if (~array.indexOf(['dns/dns', 'dhcp/dhcp'], objectType)) {
+					columns.push(valueColumn);
+				}
+				if (numObjTypes > 2 || 'navigation' == this.moduleFlavor) {
+					columns.push(typeColumn);
+				}
+				if (!(~columns.indexOf(valueColumn))) {
+					columns.push(pathColumn);
+				}
+				return columns;
+			}));
+		},
+
 		filter: function() {
 			// summary:
 			//		Send a new query with the given filter options as specified in the search form
 			//		and (for the UDM navigation) the selected container.
 
-			var vals = this._searchForm.get('value');
-			var columns = null;
-			var new_column = null;
-			if ('navigation' == this.moduleFlavor) {
-				var path = this._tree.get('path');
-				if (path.length) {
-					lang.mixin(vals, {
-						container: path[path.length - 1].id
-					});
+			this.getDefaultColumns().then(lang.hitch(this, function(columns) {
+				var vals = this._searchForm.get('value');
+				if ('navigation' == this.moduleFlavor) {
+					// add currently selected container
+					var path = this._tree.get('path');
+					if (path.length) {
+						lang.mixin(vals, {
+							container: path[path.length - 1].id
+						});
+					}
+				}
+				vals.fields = array.map(columns, function(column) { return column.name; });
+				if ('navigation' != this.moduleFlavor || this._tree.get('path').length) {
 					this._grid.filter(vals);
 				}
-				new_column = {
-					name: 'labelObjectType',
-					label: _( 'Type' )
-				};
-				columns = this._default_columns.slice( 0, 1 ).concat( new_column, this._default_columns.slice( 1 ) );
-				this._grid.set( 'columns', columns );
-			} else {
-				var identifies = this.identityProperty();
-				var selected_value = this._searchForm._widgets.objectProperty.get( 'value' );
-				columns = this._default_columns;
-				var objTypeWidget = this._searchForm._widgets.objectType;
-
-				if ( objTypeWidget.getNumItems() > 1 ) {
-					new_column = {
-						name: 'labelObjectType',
-						label: _( 'Type' )
-					};
-					columns = this._default_columns.slice( 0, 1 ).concat( new_column, this._default_columns.slice( 1 ) );
-				}
-				if ( 'None' != selected_value && ( identifies === null || selected_value != identifies.id ) ) {
-					new_column = {
-						name: selected_value,
-						label: this._searchForm._widgets.objectProperty.get( 'displayedValue' )
-					};
-					columns = this._default_columns.slice( 0, 1 ).concat( new_column, this._default_columns.slice( 1 ) );
-				}
-
-				this._grid.filter(vals);
-				this._grid.set( 'columns', columns );
-			}
+				this._grid.set('columns', columns);
+			}));
 		},
 
 		removeObjects: function( /*String|String[]*/ _ids, /*Boolean?*/ isContainer, /*Boolean?*/ cleanup, /*Boolean?*/ recursive ) {

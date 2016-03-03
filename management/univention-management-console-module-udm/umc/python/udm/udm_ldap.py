@@ -541,6 +541,10 @@ class UDM_Module(object):
 		return self.module.module
 
 	@property
+	def columns(self):
+		return [{'name': key, 'label': self.module.property_descriptions[key].short_description} for key in getattr(self.module, 'columns', [])]
+
+	@property
 	def subtitle(self):
 		"""Returns the descriptive name of the UDM module without the part for the module group"""
 		descr = getattr(self.module, 'short_description', getattr(self.module, 'module', ''))
@@ -603,14 +607,22 @@ class UDM_Module(object):
 		description = None
 		description_property_name = ucr.get('directory/manager/web/modules/%s/display' % self.name)
 		if description_property_name:
-			description_property = self.module.property_descriptions.get(description_property_name)
-			if description_property:
-				description = description_property.syntax.tostring(obj[description_property_name])
-		if description is None:
+			description = self.property_description(obj, description_property_name)
+		if not description:
 			description = udm_objects.description(obj)
 		if description and description.isdigit():
 			description = int(description)
 		return description
+
+	def property_description(self, obj, key):
+		try:
+			value = obj[key]
+		except KeyError:
+			return
+		description_property = self.module.property_descriptions[key]
+		if description_property:
+			value = description_property.syntax.tostring(value)
+		return value
 
 	def is_policy_module(self):
 		return self.name.startswith('policies/') and self.name != 'policies/policy'
