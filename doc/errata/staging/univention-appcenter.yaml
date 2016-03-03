@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-appcenter
+fix: 5.0.20-12.123.201603031327
+desc: |
+ This update addresses the following issue(s):
+ * ISVs can now define colors and modules for their appliances.
+bug: [40827]
