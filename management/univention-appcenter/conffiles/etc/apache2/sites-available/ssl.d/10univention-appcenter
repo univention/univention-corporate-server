@@ -4,7 +4,7 @@ from univention.appcenter.utils import app_ports
 
 for app_id, container_port, host_port in app_ports():
 	app = AppManager.find(app_id)
-	if app and app.has_local_web_interface():
+	if app and app.docker and app.has_local_web_interface():
 		web_interface = app.web_interface
 		scheme = app.web_interface_proxy_scheme
 		if scheme == 'both':

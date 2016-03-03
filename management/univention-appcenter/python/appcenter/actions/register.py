@@ -244,6 +244,7 @@ class Register(CredentialsAction):
 		else:
 			status = 'installed'
 		ucr_save({app.ucr_status_key: status, app.ucr_version_key: app.version})
+		self._register_ports(app)
 		updates.update(self._register_docker_variables(app))
 		updates.update(self._register_app_report_variables(app))
 		# Register app in LDAP (cn=...,cn=apps,cn=univention)
@@ -277,57 +278,60 @@ class Register(CredentialsAction):
 					else:
 						self.warn(msg)
 				updates[app.ucr_image_key] = app.get_docker_image_name()
-				port_updates = {}
-				current_port_config = {}
-				for app_id, container_port, host_port in app_ports():
-					if app_id == app.id:
-						current_port_config[app.ucr_ports_key % container_port] = str(host_port)
-						port_updates[app.ucr_ports_key % container_port] = None
-				for port in app.ports_exclusive:
-					port_updates[app.ucr_ports_key % port] = str(port)
-				for port in app.ports_redirection:
-					host_port, container_port = port.split(':')
-					port_updates[app.ucr_ports_key % container_port] = str(host_port)
-				if app.auto_mod_proxy and app.has_local_web_interface():
-					self.log('Setting ports for apache proxy')
-					try:
-						min_port = int(ucr_get('appcenter/ports/min'))
-					except (TypeError, ValueError):
-						min_port = 40000
-					try:
-						max_port = int(ucr_get('appcenter/ports/max'))
-					except (TypeError, ValueError):
-						max_port = 41000
-					ports_taken = set()
-					for app_id, container_port, host_port in app_ports():
-						if host_port < max_port:
-							ports_taken.add(host_port)
-					if app.web_interface_port_http:
-						key = app.ucr_ports_key % app.web_interface_port_http
-						if key in current_port_config:
-							value = current_port_config[key]
-						else:
-							next_port = currently_free_port_in_range(min_port, max_port, ports_taken)
-							ports_taken.add(next_port)
-							value = str(next_port)
-						port_updates[key] = value
-					if app.web_interface_port_https:
-						key = app.ucr_ports_key % app.web_interface_port_https
-						if key in current_port_config:
-							value = current_port_config[key]
-						else:
-							next_port = currently_free_port_in_range(min_port, max_port, ports_taken)
-							ports_taken.add(next_port)
-							value = str(next_port)
-						port_updates[key] = value
-				for container_port, host_port in current_port_config.iteritems():
-					if container_port in port_updates:
-						if port_updates[container_port] == host_port:
-							port_updates.pop(container_port)
-				if port_updates:
-					ucr_save(port_updates)
-					updates.update(port_updates)
 		return updates
+
+	def _register_ports(self, app):
+		updates = {}
+		current_port_config = {}
+		for app_id, container_port, host_port in app_ports():
+			if app_id == app.id:
+				current_port_config[app.ucr_ports_key % container_port] = str(host_port)
+				updates[app.ucr_ports_key % container_port] = None
+		for port in app.ports_exclusive:
+			updates[app.ucr_ports_key % port] = str(port)
+		for port in app.ports_redirection:
+			host_port, container_port = port.split(':')
+			updates[app.ucr_ports_key % container_port] = str(host_port)
+		if app.auto_mod_proxy and app.has_local_web_interface():
+			self.log('Setting ports for apache proxy')
+			try:
+				min_port = int(ucr_get('appcenter/ports/min'))
+			except (TypeError, ValueError):
+				min_port = 40000
+			try:
+				max_port = int(ucr_get('appcenter/ports/max'))
+			except (TypeError, ValueError):
+				max_port = 41000
+			ports_taken = set()
+			for app_id, container_port, host_port in app_ports():
+				if host_port < max_port:
+					ports_taken.add(host_port)
+			if app.web_interface_port_http:
+				key = app.ucr_ports_key % app.web_interface_port_http
+				if key in current_port_config:
+					value = current_port_config[key]
+				else:
+					next_port = currently_free_port_in_range(min_port, max_port, ports_taken)
+					ports_taken.add(next_port)
+					value = str(next_port)
+				updates[key] = value
+			if app.web_interface_port_https:
+				key = app.ucr_ports_key % app.web_interface_port_https
+				if key in current_port_config:
+					value = current_port_config[key]
+				else:
+					next_port = currently_free_port_in_range(min_port, max_port, ports_taken)
+					ports_taken.add(next_port)
+					value = str(next_port)
+				updates[key] = value
+		for container_port, host_port in current_port_config.iteritems():
+			if container_port in updates:
+				if updates[container_port] == host_port:
+					updates.pop(container_port)
+		if updates:
+			# save immediately, no delay: next call needs to know
+			# about the (to be) registered ports
+			ucr_save(updates)
 
 	def _register_app_report_variables(self, app):
 		updates = {}

@@ -385,7 +385,7 @@ class App(object):
 	notification_email = AppAttribute()
 
 	web_interface = AppAttribute()
-	web_interface_name = AppAttribute()
+	web_interface_name = AppAttribute(localisable=True)
 	web_interface_port_http = AppIntAttribute(default=80)
 	web_interface_port_https = AppIntAttribute(default=443)
 	web_interface_proxy_scheme = AppAttribute(default='both', choices=['http', 'https', 'both'])
@@ -454,6 +454,9 @@ class App(object):
 			setattr(self, attr.name, kwargs.get(attr.name))
 		if self.docker:
 			self.supported_architectures = ['amd64']
+		else:
+			self.auto_mod_proxy = False
+			self.ports_redirection = []
 		self._has_logo_detail_page = None
 
 	def attrs_dict(self):
@@ -812,7 +815,7 @@ class App(object):
 	def must_have_no_conflicts_apps(self):
 		'''The application conflicts with the following applications:
 			%r'''
-		conflictedapps = []
+		conflictedapps = set()
 		# check ConflictedApps
 		for app in AppManager.get_all_apps():
 			if not app._allowed_on_local_server():
@@ -820,7 +823,7 @@ class App(object):
 				continue
 			if app.id in self.conflicted_apps or self.id in app.conflicted_apps:
 				if app.is_installed():
-					conflictedapps.append({'id': app.id, 'name': app.name})
+					conflictedapps.add(app.id)
 		# check port conflicts
 		ports = []
 		for i in self.ports_exclusive:
@@ -829,9 +832,10 @@ class App(object):
 			ports.append(i.split(':', 1)[0])
 		for app_id, container_port, host_port in app_ports():
 			if app_id != self.id and str(host_port) in ports:
-				conflictedapps.append({'id': app_id})
+				conflictedapps.add(app_id)
 		if conflictedapps:
-			return conflictedapps
+			conflictedapps = [AppManager.find(app_id) for app_id in conflictedapps]
+			return [{'id': app.id, 'name': app.name} for app in conflictedapps if app]
 		return True
 
 	@hard_requirement('install', 'upgrade')

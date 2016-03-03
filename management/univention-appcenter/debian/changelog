@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-13) unstable; urgency=medium
+
+  * Bug #40508: Check PortsExclusive also for non Docker Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 03 Mar 2016 14:36:04 +0100
+
 univention-appcenter (5.0.20-12) unstable; urgency=medium
 
   * Bug #40827: added primary and secondary color to created app object from

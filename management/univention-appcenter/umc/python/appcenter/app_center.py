@@ -1098,7 +1098,7 @@ class Application(object):
 
 	@HardRequirement('install', 'update')
 	def must_have_no_conflicts_apps(self, package_manager):
-		conflictedapps = []
+		conflictedapps = set()
 		# check ConflictedApps
 		for app in self.all():
 			if not app.allowed_on_local_server():
@@ -1106,7 +1106,7 @@ class Application(object):
 				continue
 			if app.id in self.get('conflictedapps') or self.id in app.get('conflictedapps'):
 				if app.is_installed(package_manager):
-					conflictedapps.append({'id' : app.id, 'name' : app.name})
+					conflictedapps.add(app.id)
 		# check port conflicts
 		ports = []
 		for i in self.get('portsexclusive'):
@@ -1115,9 +1115,10 @@ class Application(object):
 			ports.append(i.split(':', 1)[0])
 		for app_id, container_port, host_port in app_ports():
 			if app_id != self.id and str(host_port) in ports:
-				conflictedapps.append({'id': app_id})
+				conflictedapps.add(app_id)
 		if conflictedapps:
-			return conflictedapps
+			conflictedapps = [self.find(app_id) for app_id in conflictedapps]
+			return [{'id': app.id, 'name': app.name} for app in conflictedapps if app]
 		return True
 
 	@HardRequirement('install', 'update')
