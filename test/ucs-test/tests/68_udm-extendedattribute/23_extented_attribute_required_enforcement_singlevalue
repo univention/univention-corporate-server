@@ -18,7 +18,7 @@ if __name__ == '__main__':
 			name = uts.random_string(),
 			shortDescription = 'Test short description',
 			CLIName = 'univentionUCSTestAttribute',
-			module = 'users/user',
+			module = 'groups/group',
 			objectClass = 'univentionFreeAttributes',
 			ldapMapping = 'univentionFreeAttribute15',
 			valueRequired = '1'
@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
 		# try creating an udm object without the just created extended attribute given (expected to fail)
 		try:
-			udm.create_user()
+			udm.create_group()
 		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
 			sys.exit(0)
-		
+
 		utils.fail('UDM did not report an error while trying to create an object eventhough a required single value extended attribute was not given')

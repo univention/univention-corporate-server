@@ -19,7 +19,7 @@ if __name__ == '__main__':
 			'name': uts.random_name(),
 			'shortDescription': uts.random_string(),
 			'CLIName': uts.random_name(),
-			'module': 'users/user',
+			'module': 'groups/group',
 			'objectClass': 'univentionFreeAttributes',
 			'ldapMapping': 'univentionFreeAttribute15',
 			'valueRequired': '1'
@@ -28,10 +28,10 @@ if __name__ == '__main__':
 		extended_attribute = udm.create_object('settings/extended_attribute', position = udm.UNIVENTION_CONTAINER, **properties)
 
 		extended_attribute_value = uts.random_string()
-		user = udm.create_user(**{properties['CLIName']: extended_attribute_value})[0]
+		group = udm.create_group(**{properties['CLIName']: extended_attribute_value})[0]
 
 		try:
-			udm.modify_object('users/user', dn = user, remove = {properties['CLIName']: [extended_attribute_value]})
+			udm.modify_object('groups/group', dn=group, remove={properties['CLIName']: [extended_attribute_value]})
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			sys.exit(0)
 
