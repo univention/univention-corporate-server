@@ -1,3 +1,9 @@
+ucs-test (6.0.33-34) unstable; urgency=medium
+
+  * Bug #40824: adjust 16_extended_attribute_remove_required_singlevalue
+
+ -- Florian Best <best@univention.de>  Thu, 03 Mar 2016 10:43:07 +0100
+
 ucs-test (6.0.33-33) unstable; urgency=medium
 
   * Bug #40741: test SAML user exists
