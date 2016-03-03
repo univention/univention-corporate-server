@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-12) unstable; urgency=medium
+
+  * Bug #40357: Adjust mapping to renamed compare method
+
+ -- Arvid Requate <requate@univention.de>  Thu, 03 Mar 2016 14:19:10 +0100
+
 univention-ad-connector (10.0.1-11) unstable; urgency=medium
 
   * Bug #40357: Fix general value comparison in sync_to_ucs

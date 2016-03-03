@@ -171,7 +171,7 @@ if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
 						ldap_attribute='mailAlternativeAddress',
 						con_attribute='proxyAddresses',
 						reverse_attribute_check = True,
-						compare_function = univention.connector.ad.proxyAddresses.compare,
+						compare_function = univention.connector.ad.proxyAddresses.equal,
 						ucs_value_map_function = univention.connector.ad.proxyAddresses.ucs2con,
 						con_value_map_function = univention.connector.ad.proxyAddresses.con2ucs,
 					),
