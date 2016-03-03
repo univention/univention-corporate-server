@@ -27,7 +27,7 @@ colors.update({
 	'REGRESSION': '\033[91m',
 	'END': '\033[0m',
 })
-base_url = 'http://jenkins.knut.univention.de:8080/job/UCS-4.1/job/UCS-4.1-0/'
+base_url = 'http://jenkins.knut.univention.de:8080/job/UCS-4.1/job/UCS-4.1-1/'
 
 
 def print_table_header(machines, spacing=4):
