@@ -36,11 +36,6 @@ case "$1" in
 	configure)
 		chmod og+w /var/cache/univention-system-activation
 		/etc/init.d/apache2 reload
-
-		# Don't change it on a configured system
-		if [ ! -e /var/univention-join/joined ]; then
-			/usr/sbin/univention-system-activation restrict-root
-		fi
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
