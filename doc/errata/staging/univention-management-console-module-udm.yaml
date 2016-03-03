@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The PTR-Record entries are now sorted numerical in the overview of a reverse
    zone.
-bug: [40747]
+ * The DNS and DHCP modules now display more information.
+bug: [40747, 38639]

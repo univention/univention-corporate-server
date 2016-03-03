@@ -8,4 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * It's now possible to use multiple languages in one session when using HTTP
    basic authentication (via command line).
-bug: [40806]
+ * The umc.store API allows to contain Arrays in query request now.
+bug: [40806, 38639]
