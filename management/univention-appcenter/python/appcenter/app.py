@@ -445,6 +445,8 @@ class App(object):
 	docker_script_update_app_version = AppDockerScriptAttribute()
 
 	appliance_category_modules = AppListAttribute()
+	appliance_primary_color = AppAttribute()
+	appliance_secondary_color = AppAttribute()
 
 	def __init__(self, **kwargs):
 		self._is_ucs_component = None

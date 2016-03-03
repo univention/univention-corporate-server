@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-12) unstable; urgency=medium
+
+  * Bug #40827: added primary and secondary color to created app object from
+    ini file
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 03 Mar 2016 13:25:36 +0100
+
 univention-appcenter (5.0.20-11) unstable; urgency=medium
 
   * Bug #40827: added attribute to created app object from ini file 
