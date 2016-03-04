@@ -1,3 +1,9 @@
+univention-base-files (3.100.0-1) unstable; urgency=low
+
+  * Set UCS 3.3 codename to Osterholz (Bug #40833)
+
+ -- Felix Botner <botner@univention.de>  Fri, 04 Mar 2016 15:01:49 +0100
+
 univention-base-files (3.0.4-7) unstable; urgency=low
 
   * Adjust description for ldap/client/retry/count
