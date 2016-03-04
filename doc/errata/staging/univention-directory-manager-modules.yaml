@@ -15,4 +15,5 @@ desc: |
  * It is now prevented to create extended attributes for users with required
    fields without specifying a default value. Those extended attributes caused
    problems during upgrading to UCS 4.1 or installing various apps.
-bug: [40651, 39030, 40775, 40824]
+ * The pseudo property "name" has been removed from the dns/dns module.
+bug: [40651, 39030, 40775, 40824, 23804]

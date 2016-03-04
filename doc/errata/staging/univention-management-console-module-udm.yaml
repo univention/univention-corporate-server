@@ -9,4 +9,5 @@ desc: |
  * The PTR-Record entries are now sorted numerical in the overview of a reverse
    zone.
  * The DNS and DHCP modules now display more information.
-bug: [40747, 38639]
+ * Forward zones are now shown before reverse zones.
+bug: [40747, 38639, 40831]
