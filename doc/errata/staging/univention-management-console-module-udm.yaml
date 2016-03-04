@@ -10,4 +10,6 @@ desc: |
    zone.
  * The DNS and DHCP modules now display more information.
  * Forward zones are now shown before reverse zones.
-bug: [40747, 38639, 40831]
+ * Searching for a specific object type underneath of cn=univention in the
+   LDAP directory did not yield results and has been repaired.
+bug: [40747, 38639, 40831, 32843]
