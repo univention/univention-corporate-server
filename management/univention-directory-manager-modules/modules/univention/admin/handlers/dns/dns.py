@@ -43,64 +43,65 @@ import univention.admin.handlers.dns.ptr_record
 import univention.admin.handlers.dns.txt_record
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dns')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dns')
+_ = translation.translate
 
 
-module='dns/dns'
+module = 'dns/dns'
 
-childs=0
-short_description=_('DNS')
-long_description=''
-operations=['search']
-usewizard=1
-wizardmenustring=_("DNS")
-wizarddescription=_("Add, edit and delete DNS objects")
-wizardoperations={"add":[_("Add"), _("Add DNS object")],"find":[_("Search"), _("Search DNS object(s)")]}
-wizardpath="univentionDnsObject"
-wizardsuperordinates=["None","dns/forward_zone","dns/reverse_zone"]
+childs = 0
+short_description = _('DNS')
+long_description = ''
+operations = ['search']
+usewizard = 1
+wizardmenustring = _("DNS")
+wizarddescription = _("Add, edit and delete DNS objects")
+wizardoperations = {"add": [_("Add"), _("Add DNS object")], "find": [_("Search"), _("Search DNS object(s)")]}
+wizardpath = "univentionDnsObject"
+wizardsuperordinates = ["None", "dns/forward_zone", "dns/reverse_zone"]
 wizardtypesforsuper = {
-	'None' : [ 'dns/forward_zone', 'dns/reverse_zone' ],
-	'dns/forward_zone' : [ 'dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/txt_record' ],
-	'dns/reverse_zone' : [ 'dns/ptr_record' ]
-	}
-
-childmodules = [ 'dns/forward_zone', 'dns/reverse_zone', 'dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/ptr_record', 'dns/txt_record' ]
-virtual=1
-options={
+	'None': ['dns/forward_zone', 'dns/reverse_zone'],
+	'dns/forward_zone': ['dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/txt_record'],
+	'dns/reverse_zone': ['dns/ptr_record']
 }
-property_descriptions={}
-mapping=univention.admin.mapping.mapping()
+
+childmodules = ['dns/forward_zone', 'dns/reverse_zone', 'dns/alias', 'dns/host_record', 'dns/srv_record', 'dns/ptr_record', 'dns/txt_record']
+virtual = 1
+options = {
+}
+property_descriptions = {}
+mapping = univention.admin.mapping.mapping()
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-	ret=[]
+	ret = []
 	if superordinate:
-		if superordinate.module=="dns/forward_zone":
-			ret+=univention.admin.handlers.dns.host_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-			ret+= univention.admin.handlers.dns.alias.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-			ret+= univention.admin.handlers.dns.srv_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-			ret+= univention.admin.handlers.dns.txt_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+		if superordinate.module == "dns/forward_zone":
+			ret += univention.admin.handlers.dns.host_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+			ret += univention.admin.handlers.dns.alias.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+			ret += univention.admin.handlers.dns.srv_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+			ret += univention.admin.handlers.dns.txt_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 		else:
-			ret+= univention.admin.handlers.dns.ptr_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+			ret += univention.admin.handlers.dns.ptr_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:
-		ret+=  univention.admin.handlers.dns.forward_zone.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-		ret+= univention.admin.handlers.dns.reverse_zone.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+		ret += univention.admin.handlers.dns.forward_zone.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+		ret += univention.admin.handlers.dns.reverse_zone.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 	return ret
+
 
 def identify(dn, attr, canonical=0):
 	pass
