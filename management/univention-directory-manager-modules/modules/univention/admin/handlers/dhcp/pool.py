@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import copy
-import string
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -229,6 +228,21 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.bootpXORFailover
 		return ml
 
+
+def rewrite(filter, mapping):
+	values = {
+		'known_clients': 'known clients',
+		'unknown_clients': 'unknown clients',
+		'dynamic_bootp_clients': 'dynamic bootp clients',
+		'all_clients': 'all clients'
+	}
+	if filter.variable in values:
+		filter.value = '%s %s' % (filter.value.strip('*'), values[filter.variable])
+		filter.variable = 'dhcpPermitList'
+	else:
+		univention.admin.mapping.mapRewrite(filter, mapping)
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
@@ -237,7 +251,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	if filter_s:
 		filter_p=univention.admin.filter.parse(filter_s)
-		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
 	res=[]

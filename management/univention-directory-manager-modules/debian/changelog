@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-22) unstable; urgency=medium
+
+  * Bug #39343: fix searching for DHCP pool properties
+
+ -- Florian Best <best@univention.de>  Fri, 04 Mar 2016 15:20:07 +0100
+
 univention-directory-manager-modules (11.0.2-21) unstable; urgency=medium
 
   * Bug #38639: add column fields to DNS and DHCP handlers
