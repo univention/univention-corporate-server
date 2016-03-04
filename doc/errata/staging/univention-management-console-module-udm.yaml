@@ -15,4 +15,6 @@ desc: |
  * Searching for properties which require an exact match did not work because
    the LDAP filter was prepended with "*". The search for e.g. the gidNumber
    of a group is now possible again.
-bug: [40747, 38639, 40831, 32843, 37904]
+ * Searching for properties using the LDAPSearch syntax class caused a
+   traceback.
+bug: [40747, 38639, 40831, 32843, 37904, 38635]
