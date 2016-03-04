@@ -275,7 +275,7 @@ class UDM_Module(object):
 			if key == property_name:
 				value = default_value(prop.syntax)
 				if isinstance(value, (list, tuple)):
-					value = read_syntax_choices(prop.syntax.name)
+					value = read_syntax_choices(prop.syntax)
 				return value
 
 	def _map_properties(self, obj, properties):
@@ -1149,16 +1149,12 @@ def _get_syntax(syntax_name):
 	return udm_syntax.__dict__[syntax_name]()
 
 
-def search_syntax_choices_by_key(syntax_name, key):
-	syn = _get_syntax(syntax_name)
-	if syn is None:
-		return None
-
+def search_syntax_choices_by_key(syn, key):
 	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
 		if syn.key == 'dn':
 			module_search_options = {'scope': 'base', 'container': key}
 			try:
-				return read_syntax_choices(syntax_name, {}, module_search_options)
+				return read_syntax_choices(syn, {}, module_search_options)
 			except udm_errors.base:  # TODO: which exception is raised here exactly?
 				# invalid DN
 				return []
@@ -1167,19 +1163,15 @@ def search_syntax_choices_by_key(syntax_name, key):
 			if match:
 				attr = match.groups()[0]
 				options = {'objectProperty': attr, 'objectPropertyValue': key}
-				return read_syntax_choices(syntax_name, options)
+				return read_syntax_choices(syn, options)
 
-	MODULE.warn('Syntax "%s": No fast search function' % syntax_name)
+	MODULE.warn('Syntax %r: No fast search function' % syn.name)
 	# return them all, as there is no reason to filter after everything has loaded
 	# frontend will cache it.
-	return read_syntax_choices(syntax_name)
+	return read_syntax_choices(syn)
 
 
-def info_syntax_choices(syntax_name, options={}):
-	syn = _get_syntax(syntax_name)
-	if syn is None:
-		return None
-
+def info_syntax_choices(syn, options={}):
 	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
 		size = 0
 		if syn.static_values is not None:
@@ -1199,10 +1191,8 @@ def info_syntax_choices(syntax_name, options={}):
 
 
 @LDAP_Connection
-def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_connection=None, ldap_position=None):
-	syn = _get_syntax(syntax_name)
-	if syn is None:
-		return None
+def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connection=None, ldap_position=None):
+	syntax_name = syn.name
 
 	if issubclass(syn.__class__, udm_syntax.UDM_Objects):
 		syn.choices = []
@@ -1373,7 +1363,10 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 			syn.choices.append((dn, dn_list[0].split('=', 1)[1]))
 	elif issubclass(syn.__class__, udm_syntax.LDAP_Search):
 		options = options.get('options', {})
-		syntax = udm_syntax.LDAP_Search(options['syntax'], options['filter'], options['attributes'], options['base'], options['value'], options['viewonly'], options['empty'], options['empty_end'])
+		try:
+			syntax = udm_syntax.LDAP_Search(options['syntax'], options['filter'], options['attributes'], options['base'], options['value'], options['viewonly'], options['empty'], options['empty_end'])
+		except KeyError:
+			syntax = syn
 
 		if '$dn$' in options:
 			filter_mod = get_module(None, options['$dn$'])
@@ -1414,7 +1407,7 @@ def read_syntax_choices(syntax_name, options={}, module_search_options={}, ldap_
 					id = obj.oldattr[store][0]
 				else:
 					# no valid store object, ignore
-					MODULE.warn('LDAP_Search syntax "%s": "%s" is no valid property for object "%s" - ignoring entry.' % (options['syntax'], store, dn))
+					MODULE.warn('LDAP_Search syntax %r: %r is no valid property for object %r - ignoring entry.' % (syntax.name, store, dn))
 					continue
 
 			# find the value to display

@@ -69,7 +69,7 @@ from univention.management.console.protocol.definitions import MODULE_ERR_COMMAN
 
 from .udm_ldap import (
 	UDM_Error, UDM_Module, UDM_Settings,
-	ldap_dn2path, get_module, read_syntax_choices, list_objects,
+	ldap_dn2path, get_module, read_syntax_choices, list_objects, _get_syntax,
 	LDAP_Connection, set_bind_function, container_modules,
 	info_syntax_choices, search_syntax_choices_by_key,
 	UserWithoutDN, ObjectDoesNotExist, SuperordinateDoesNotExist, NoIpLeft,
@@ -904,13 +904,23 @@ class Instance(Base, ProgressMixin):
 		thread = notifier.threads.Simple('Validate', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
-	@sanitize(key=LDAPSearchSanitizer(use_asterisks=False))
+	@sanitize(
+		syntax=StringSanitizer(required=True),
+		key=LDAPSearchSanitizer(use_asterisks=False),
+	)
 	@simple_response
 	def syntax_choices_key(self, syntax, key):
+		syntax = _get_syntax(syntax)
+		if syntax is None:
+			return
 		return search_syntax_choices_by_key(syntax, key)
 
+	@sanitize(syntax=StringSanitizer(required=True))
 	@simple_response
 	def syntax_choices_info(self, syntax):
+		syntax = _get_syntax(syntax)
+		if syntax is None:
+			return
 		return info_syntax_choices(syntax)
 
 	@sanitize(
@@ -928,7 +938,10 @@ class Instance(Base, ProgressMixin):
 		"""
 
 		def _thread(request):
-			return read_syntax_choices(request.options['syntax'], request.options)
+			syntax = _get_syntax(request.options['syntax'])
+			if syntax is None:
+				return
+			return read_syntax_choices(syntax, request.options)
 
 		thread = notifier.threads.Simple('SyntaxChoice', notifier.Callback(_thread, request), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()

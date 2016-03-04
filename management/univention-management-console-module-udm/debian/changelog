@@ -1,5 +1,6 @@
 univention-management-console-module-udm (6.0.11-8) unstable; urgency=medium
 
+  * Bug #38635: fix traceback when searching for specific values
   * Bug #37904: fix searching for caseIgnoreIA5Match values
   * Bug #32843: repair search underneath of cn=univention
 
