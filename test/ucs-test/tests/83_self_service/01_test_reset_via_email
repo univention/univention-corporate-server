@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Tests the Univention Self Service
-## tags: []
+## tags: [apptest]
 ## roles: [domaincontroller_master]
 ## exposure: dangerous
 ## packages:
