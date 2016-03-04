@@ -1,3 +1,9 @@
+ucs-test (6.0.33-39) unstable; urgency=low
+
+  * create package for section 84_crypto (Bug #40188)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 04 Mar 2016 09:17:11 +0100
+
 ucs-test (6.0.33-38) unstable; urgency=medium
 
   * 82_saml/20_ucs_sso: Add domainname to DNS query. This is needed if

@@ -542,7 +542,9 @@ Description: Test scripts to test the SAML integration
 Package: ucs-test-self-service
 Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
- ${misc:Depends}
+ ${misc:Depends},
+ univention-self-service,
+ univention-self-service-passwordreset-umc
 Recommends: ucs-test-framework
 Provides: ucs-test-module
 Description: Test scripts to test the Self Service
@@ -572,3 +574,13 @@ Recommends: ucs-test-framework
 Description: Test scripts to run smbtorture
  This package includes test-cases to run smbtorture
  samba selftest tests
+
+Package: ucs-test-crypto
+Architecture: all
+Depends: ucs-test-libs (= ${source:Version}),
+ openssl,
+ ${misc:Depends}
+Recommends: ucs-test-framework
+Description: Test scripts to check cryptography software in UCS
+ This package includes test-cases to check software and libraries used for
+ cryptography (OpenSSL, GnuTLS, NSS, SSH, python-gnutls, python-ssl etc).
