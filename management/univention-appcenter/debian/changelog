@@ -1,3 +1,11 @@
+univention-appcenter (5.0.20-16) unstable; urgency=medium
+
+  * Bug #40827: removed the properties for app appliances in 
+    univention-appcenter. App appliance specific properties
+    are moved to app-appliance-branding package
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 04 Mar 2016 15:26:28 +0100
+
 univention-appcenter (5.0.20-15) unstable; urgency=medium
 
   * Bug #40827: added bootSplashLogo UmcHeaderLogo and WelcineScreenLogo

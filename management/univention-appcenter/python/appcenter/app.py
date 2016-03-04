@@ -444,14 +444,6 @@ class App(object):
 	docker_script_update_release = AppDockerScriptAttribute()
 	docker_script_update_app_version = AppDockerScriptAttribute()
 
-	appliance_category_modules = AppListAttribute()
-	appliance_primary_color = AppAttribute()
-	appliance_secondary_color = AppAttribute()
-	appliance_css_background = AppAttribute()
-	appliance_bootsplash_logo = AppAttribute()
-	appliance_umc_header_logo = AppAttribute()
-	appliance_welcome_screen_logo = AppAttribute()
-
 	def __init__(self, **kwargs):
 		self._is_ucs_component = None
 		for attr in self._attrs:
@@ -954,6 +946,7 @@ class AppManager(object):
 	_cache = []
 	_package_manager = None
 	_pickle_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.pkl')
+	_AppClass = App
 
 	@classmethod
 	def _invalidate_pickle_cache(cls):
@@ -982,7 +975,7 @@ class AppManager(object):
 					cls._cache = load(fd)
 			except (IOError, PickleError):
 				for ini in glob(os.path.join(CACHE_DIR, '*.ini')):
-					app = App.from_ini(ini, locale=locale)
+					app = cls._AppClass.from_ini(ini, locale=locale)
 					if app is not None:
 						cls._cache.append(app)
 				cls._cache.sort()
@@ -1031,7 +1024,7 @@ class AppManager(object):
 
 	@classmethod
 	def find(cls, app_id, app_version=None, latest=False):
-		if isinstance(app_id, App):
+		if isinstance(app_id, cls._AppClass):
 			app_id = app_id.id
 		apps = cls.get_all_apps_with_id(app_id)
 		if app_version:
