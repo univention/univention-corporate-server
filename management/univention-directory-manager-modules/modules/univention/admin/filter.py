@@ -31,8 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
-import types
 import univention.admin.uexceptions
+
 
 def escapeForLdapFilter(txt):
 	"""Escape LDAP filter value.
@@ -45,6 +45,7 @@ def escapeForLdapFilter(txt):
 	"""
 	# parenthesis mess up ldap filters - they should be escaped
 	return txt.replace('(', '\(').replace(')', '\)').replace('\\', '\\\\')
+
 
 class conjunction:
 	"""LDAP filter conjunction (&) or disjunction (|)."""
@@ -87,6 +88,7 @@ class conjunction:
 			filter_p = parse(filter_s)
 			walk(filter_p, rewrite_function, arg=mapping)
 			self.expressions.append(filter_p)
+
 
 class expression:
 	"""LDAP filter expression."""
@@ -139,6 +141,7 @@ class expression:
 		'''
 		return '%s(%r, %r, %r)' % (self.__class__._type_, self.variable, self.value, self.operator)
 
+
 def parse(filter_s, begin=0, end=-1):
 	"""Parse LDAP filter string.
 
@@ -154,6 +157,10 @@ def parse(filter_s, begin=0, end=-1):
 	>> parse('(&(key=va\\)!\\(ue))')
 	conjunction('&', [expression('key', 'va)!(ue', '=')])
 	"""
+	# filter is already parsed
+	if not isinstance(filter_s, basestring):
+		return filter_s
+
 	def split(str):
 		expressions=[]
 		depth=0
@@ -171,10 +178,6 @@ def parse(filter_s, begin=0, end=-1):
 					begin=-1
 			i+=1
 		return expressions
-
-	# filter is already parsed
-	if type(filter_s) == types.InstanceType:
-		return filter_s
 
 	if end == -1:
 		end=len(filter_s)-1
@@ -206,6 +209,7 @@ def parse(filter_s, begin=0, end=-1):
 		variable, value=filter_s[begin:end+1].split(delim, 1)
 		return expression(variable, value, operator=delim)
 
+
 def walk(filter, expression_walk_function=None, conjunction_walk_function=None, arg=None):
 	"""Walk LDAP filter expression tree.
 
@@ -230,31 +234,37 @@ def walk(filter, expression_walk_function=None, conjunction_walk_function=None, 
 		if expression_walk_function:
 			expression_walk_function(filter, arg)
 
-FQDN_REGEX = re.compile( '^(.*?)\(?fqdn=([^)]+)\)?(.*)$' )
-def replace_fqdn_filter( filter_s ):
+
+FQDN_REGEX = re.compile(r'(?:^|\()fqdn=([^)]+)(?:\)|$)')
+def replace_fqdn_filter(filter_s):
 	'''
 	Replaces a filter expression for the read-only attribute fqdn. If no
 	such expression can be found the unmodified filter is returned.
 
-	fqdn=host.doain.tld -> (&(cn=host)(associatedDomain=domain.tld))
+	>>> replace_fqdn_filter('fqdn=host.domain.tld')
+	'(&(cn=host)(associatedDomain=domain.tld))'
+	>>> replace_fqdn_filter('(fqdn=host.domain.tld)')
+	'(&(cn=host)(associatedDomain=domain.tld))'
+	>>> replace_fqdn_filter('fqdn=domain')
+	'(|(cn=domain)(associatedDomain=domain))'
+	>>> replace_fqdn_filter('(|(fqdn=host.domain.tld)(fqdn=other.domain.tld2))')
+	'(|(&(cn=host)(associatedDomain=domain.tld))(&(cn=other)(associatedDomain=domain.tld2)))'
 	'''
-	if not isinstance( filter_s, basestring ):
+	if not isinstance(filter_s, basestring):
 		return filter_s
-	if filter_s.find( 'fqdn=' ) != -1:
-		match = FQDN_REGEX.match( str( filter_s ) )
-		if match:
-			prefix, value, suffix = match.groups()
-			if value.find( '.' ) >= 0:
-				host, domain = value.split( '.', 1 )
-				operator = '&'
-			else:
-				host = value
-				domain = value
-				operator = '|'
-			fqdn_filter = '(%s(cn=%s)(associatedDomain=%s))' % ( operator, host, domain )
-			return prefix + fqdn_filter + suffix
+	return FQDN_REGEX.sub(_replace_fqdn_filter, filter_s)
 
-	return filter_s
+
+def _replace_fqdn_filter(match):
+	value, = match.groups()
+	try:
+		host, domain = value.split('.', 1)
+		operator = '&'
+	except ValueError:
+		host = domain = value
+		operator = '|'
+	return '(%s(cn=%s)(associatedDomain=%s))' % (operator, host, domain)
+
 
 if __name__ == '__main__':
 	import doctest
