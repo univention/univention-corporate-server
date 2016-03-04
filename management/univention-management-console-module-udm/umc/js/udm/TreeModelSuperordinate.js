@@ -61,9 +61,9 @@ define([
 			cache.get(this.moduleFlavor).getSuperordinates(undefined, true).then(lang.hitch(this, function(data) {
 				// sort items alphabetically
 				var superordinates = data instanceof Array ? lang.clone(data) : [];
-				superordinates.sort(tools.cmpObjects('label'));
 				// remove None superordinate
 				superordinates = array.filter(superordinates, function(item) { return item.id !== 'None'; });
+				superordinates.sort(tools.cmpObjects('objectType', 'label'));
 
 				try {
 					onComplete(superordinates);

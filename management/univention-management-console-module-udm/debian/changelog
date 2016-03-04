@@ -1,3 +1,10 @@
+univention-management-console-module-udm (6.0.11-7) unstable; urgency=medium
+
+  * Bug #40831: display forward zones first, remove superordinate root from
+  	tree
+
+ -- Florian Best <best@univention.de>  Fri, 04 Mar 2016 11:59:07 +0100
+
 univention-management-console-module-udm (6.0.11-6) unstable; urgency=medium
 
   * Bug #38639: fix fuzzy
