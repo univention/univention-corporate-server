@@ -8,6 +8,9 @@
 ## exposure: safe
 ## packages:
 ##  - python-requests
+## tags:
+##  - skip_admember
+
 import time
 
 import univention.config_registry as configRegistry

@@ -7,6 +7,9 @@
 ## exposure: dangerous
 ## packages:
 ##  - python-requests
+## tags:
+##  - skip_admember
+
 from datetime import date, timedelta
 
 import univention.testing.udm as udm_test

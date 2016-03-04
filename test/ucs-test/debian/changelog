@@ -1,3 +1,9 @@
+ucs-test (6.0.33-37) unstable; urgency=medium
+
+  * 82_saml/*: Skip various tests in AD member mode (Bug #40787)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2016 07:27:57 +0100
+
 ucs-test (6.0.33-36) unstable; urgency=low
 
   * add test for openssl version support (Bug #40188)

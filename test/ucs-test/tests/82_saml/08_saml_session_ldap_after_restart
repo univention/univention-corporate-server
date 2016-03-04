@@ -5,6 +5,9 @@
 ## exposure: dangerous
 ## packages:
 ##  - python-requests
+## tags:
+##  - skip_admember
+
 import subprocess
 import univention.testing.utils as utils
 import samltest

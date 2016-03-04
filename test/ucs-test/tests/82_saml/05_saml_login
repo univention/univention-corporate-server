@@ -5,6 +5,9 @@
 ## exposure: safe
 ## packages:
 ##   - python-requests
+## tags:
+##  - skip_admember
+
 import samltest as samllogin
 import univention.testing.utils as utils
 
