@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-15) unstable; urgency=medium
+
+  * Bug #40827: added bootSplashLogo UmcHeaderLogo and WelcineScreenLogo
+    properties for app appliances
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 04 Mar 2016 13:54:41 +0100
+
 univention-appcenter (5.0.20-14) unstable; urgency=medium
 
   * Bug #40827: added css background property for appliances

@@ -448,6 +448,9 @@ class App(object):
 	appliance_primary_color = AppAttribute()
 	appliance_secondary_color = AppAttribute()
 	appliance_css_background = AppAttribute()
+	appliance_bootsplash_logo = AppAttribute()
+	appliance_umc_header_logo = AppAttribute()
+	appliance_welcome_screen_logo = AppAttribute()
 
 	def __init__(self, **kwargs):
 		self._is_ucs_component = None
