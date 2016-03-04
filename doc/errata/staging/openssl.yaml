@@ -1,0 +1,27 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-1
+src: openssl
+fix: 1.0.2g-1.109.201603040915
+version: [0,1]
+desc: |
+ Multiple vulnerabilities have been discovered in the
+ OpenSSL libraries:
+ * SLOTH: Security Losses from Obsolete and Truncated Transcript Hashes
+   (CVE-2015-7575)
+ * Side channel attack on modular exponentiation (CVE-2016-0702)
+ * Double-free in DSA code (CVE-2016-0705)
+ * BN_hex2bn/BN_dec2bn NULL pointer deref/heap corruption (CVE-2016-0797)
+ * Memory leak in SRP database lookups (CVE-2016-0798)
+ * Memory issues in BIO_*printf functions (CVE-2016-0799)
+ * OpenSSL in UCS 4.x is not vulnerable to CVE-2016-0800 because is is
+   built without support for SSLv2.
+bug: [40187]
+cve:
+ - CVE-2015-7575
+ - CVE-2016-0702
+ - CVE-2016-0705
+ - CVE-2016-0797
+ - CVE-2016-0798
+ - CVE-2016-0799
+ - CVE-2016-0800
