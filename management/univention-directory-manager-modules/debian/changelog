@@ -1,5 +1,6 @@
 univention-directory-manager-modules (11.0.2-21) unstable; urgency=medium
 
+  * Bug #38639: add column fields to DNS and DHCP handlers
   * Bug #23804: prevent to search for name=* in dns/dns as it has no results
 
  -- Florian Best <best@univention.de>  Fri, 04 Mar 2016 11:05:43 +0100

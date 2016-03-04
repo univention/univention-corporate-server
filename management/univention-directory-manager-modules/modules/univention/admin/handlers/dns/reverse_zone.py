@@ -43,6 +43,7 @@ _=translation.translate
 
 module='dns/reverse_zone'
 operations=['add','edit','remove','search']
+columns = ['nameserver']
 usewizard=1
 childs=1
 short_description=_('DNS: Reverse lookup zone')

@@ -43,6 +43,7 @@ _=translation.translate
 
 module='dns/srv_record'
 operations=['add','edit','remove','search']
+columns = ['location']
 superordinate='dns/forward_zone'
 usewizard=1
 childs=0

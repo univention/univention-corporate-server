@@ -45,6 +45,7 @@ _=translation.translate
 
 module='dns/forward_zone'
 operations=['add','edit','remove','search']
+columns = ['nameserver', 'a', 'mx', 'txt']
 usewizard=1
 childs=1
 short_description=_('DNS: Forward lookup zone')

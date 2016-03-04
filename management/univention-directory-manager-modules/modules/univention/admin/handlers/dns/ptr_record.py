@@ -40,6 +40,7 @@ _=translation.translate
 
 module='dns/ptr_record'
 operations=['add','edit','remove','search']
+columns = ['ptr_record']
 superordinate='dns/reverse_zone'
 usewizard=1
 childs=0

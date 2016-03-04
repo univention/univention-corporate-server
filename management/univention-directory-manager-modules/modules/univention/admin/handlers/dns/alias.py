@@ -44,6 +44,7 @@ _=translation.translate
 
 module='dns/alias'
 operations=['add','edit','remove','search']
+columns = ['cname']
 superordinate='dns/forward_zone'
 usewizard=1
 childs=0
