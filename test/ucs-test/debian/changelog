@@ -1,3 +1,9 @@
+ucs-test (4.0.215-13) unstable; urgency=low
+
+  * add test for UCRV to switch SSL ciphers supported by Cyrus (Bug #40810)
+
+ -- Daniel Troeder <troeder@univention.de>  Fri, 04 Mar 2016 10:16:40 +0100
+
 ucs-test (4.0.215-12) unstable; urgency=low
 
   * workaround Bug #37649 in test for UCR cronjobs (Bug #19317)
