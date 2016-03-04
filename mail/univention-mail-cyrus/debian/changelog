@@ -1,3 +1,10 @@
+univention-mail-cyrus (6.0.6-2) unstable; urgency=low
+
+  * Disable SSLv2 and SSLv3 in Cyrus IMAPD (Bug #40810)
+    Adds UCRV mail/cyrus/ssl/cipher_list to change list of ciphers.
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 03 Mar 2016 17:40:03 +0100
+
 univention-mail-cyrus (6.0.6-1) unstable; urgency=low
 
   * honour mail/cyrus/mailbox/delete when removing

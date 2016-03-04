@@ -190,6 +190,12 @@ Description[en]=The path to a directory containing several certificate files of 
 Type=str
 Categories=service-mail
 
+[mail/cyrus/ssl/cipher_list]
+Description[de]=Dies konfiguriert die kryptographischen Verfahren, die ein Client in der SSL-Handshake-Phase angeboten bekommt. Ist die Variable nicht gesetzt, wird 'TLSv1+HIGH:!aNULL:@STRENGTH' verwendet.
+Description[en]=This configures the cryptographic algorithms which are offered to clients during a SSL handshake. If the variable is unset, 'TLSv1+HIGH:!aNULL:@STRENGTH' is used.
+Type=str
+Categories=service-mail
+
 [mail/cyrus/mailnotifier]
 Description[de]=Die Benachrichtigungsmethode für 'mail/cyrus/notifyd'. Mögliche Werte sind 'null', 'log' oder 'zephyr'.
 Description[en]=The notification method for 'mail/cyrus/notifyd'. Possible values are 'null', 'log' or 'zephyr'.
