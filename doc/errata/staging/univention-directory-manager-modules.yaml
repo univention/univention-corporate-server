@@ -18,4 +18,6 @@ desc: |
  * The pseudo property "name" has been removed from the dns/dns module.
  * The search filter for "dhcpPermitList" in the dhcp/pool lookup function has
    been fixed.
-bug: [40651, 39030, 40775, 40824, 23804, 39343]
+ * The search filter for "fqdn" has been adapted so it can be used to search
+   for multiple computers.
+bug: [40651, 39030, 40775, 40824, 23804, 39343, 34327]
