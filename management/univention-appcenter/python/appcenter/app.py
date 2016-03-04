@@ -78,8 +78,8 @@ def _get_from_parser(parser, section, attr):
 
 
 def _get_rating_items():
-	if _get_rating_items._items is None:
-		_get_rating_items._items = []
+	if _get_rating_items._cache is None:
+		_get_rating_items._cache = []
 		rating_parser = _read_ini_file(os.path.join(CACHE_DIR, '.rating.ini'))
 		locale = get_locale()
 		for section in rating_parser.sections():
@@ -90,9 +90,23 @@ def _get_rating_items():
 			if locale:
 				description = _get_from_parser(rating_parser, section, 'Description[%s]' % locale) or description
 			item = {'name': section, 'description': description, 'label': label}
-			_get_rating_items._items.append(item)
-	return [itm.copy() for itm in _get_rating_items._items]
-_get_rating_items._items = None
+			_get_rating_items._cache.append(item)
+	return [itm.copy() for itm in _get_rating_items._cache]
+_get_rating_items._cache = None
+
+
+def _get_license_descriptions():
+	if _get_license_descriptions._cache is None:
+		_get_license_descriptions._cache = {}
+		license_parser = _read_ini_file(os.path.join(CACHE_DIR, '.license_types.ini'))
+		locale = get_locale()
+		for section in license_parser.sections():
+			description = _get_from_parser(license_parser, section, 'Description')
+			if locale:
+				description = _get_from_parser(license_parser, section, 'Description[%s]' % locale) or description
+			_get_license_descriptions._cache[section] = description
+	return _get_license_descriptions._cache
+_get_license_descriptions._cache = None
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
@@ -371,6 +385,7 @@ class App(object):
 	website_vendor = AppAttribute(localisable=True)
 	maintainer = AppAttribute()
 	website_maintainer = AppAttribute(localisable=True)
+	license_description = AppAttribute()
 
 	license_agreement = AppFileAttribute()
 	readme = AppFileAttribute()
@@ -512,6 +527,9 @@ class App(object):
 					else:
 						item['value'] = val
 						value.append(item)
+			elif attr.name == 'license_description':
+				license_description_section = _get_from_parser(ini_parser, 'Application', 'License')
+				value = _get_license_descriptions().get(license_description_section)
 			else:
 				ini_attr_name = attr.name.replace('_', '')
 				priority_sections = [(meta_parser, 'Application'), (ini_parser, 'Application')]
@@ -963,7 +981,8 @@ class AppManager(object):
 		cls._cache[:] = []
 		cls.reload_package_manager()
 		cls._invalidate_pickle_cache()
-		_get_rating_items._items = None
+		_get_rating_items._cache = None
+		_get_license_descriptions._cache = None
 
 	@classmethod
 	def _get_every_single_app(cls):

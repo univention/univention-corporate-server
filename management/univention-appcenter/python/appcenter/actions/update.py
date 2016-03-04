@@ -143,6 +143,7 @@ class Update(UniventionAppAction):
 			_download_supra_file('index.json.gz.gpg', version_specific=True)
 		_download_supra_file('categories.ini', version_specific=False)
 		_download_supra_file('rating.ini', version_specific=False)
+		_download_supra_file('license_types.ini', version_specific=False)
 		with open(etags_file, 'wb') as f:
 			for fname, etag in present_etags.iteritems():
 				f.write('%s\t%s\n' % (fname, etag))

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-17) unstable; urgency=medium
+
+  * Bug #40428: Add licence categories to the App Center
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 04 Mar 2016 23:10:07 +0100
+
 univention-appcenter (5.0.20-16) unstable; urgency=medium
 
   * Bug #40827: removed the properties for app appliances in 

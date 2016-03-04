@@ -57,6 +57,7 @@ define([
 			this.logoDetailPageName = props.logo_detail_page_name;
 			this.version = props.version;
 			this.candidateVersion = props.candidate_version;
+			this.licenseDescription = props.license_description;
 			this.categories = props.categories;
 			this.website = props.website;
 			this.description = props.description;

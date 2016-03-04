@@ -618,6 +618,7 @@ define([
 			this.addToDetails(_('Support'), 'SupportURL');
 			this.addToDetails(_('Installed version'), 'Version');
 			this.addToDetails(_('Candidate version'), 'CandidateVersion');
+			this.addToDetails(_('License'), 'License');
 			this.addToDetails(_('Categories'), 'Categories');
 			this.addToDetails(_('End of life'), 'EndOfLife');
 			this.addToDetails(_('Notification'), 'NotifyVendor');
@@ -805,6 +806,10 @@ define([
 				});
 			}
 			return readmeDeferred;
+		},
+
+		showLicenseAgreement: function() {
+			return this.showReadme(this.app.licenseAgreement, _('License agreement'));
 		},
 
 		_showDockerWarning: function() {
@@ -1161,6 +1166,28 @@ define([
 			if (is_installed) {
 				return entities.encode(version);
 			}
+		},
+
+		_detailFieldCustomLicense: function() {
+			var licenseAgreement = this.app.licenseAgreement;
+			var license = this.app.licenseDescription;
+			if (license) {
+				license = entities.encode(license);
+				if (licenseAgreement) {
+					license += lang.replace(' (<a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'{id}\').showLicenseAgreement();">' + _('Read') + '</a>)', {
+						id: this.id
+					});
+				}
+			} else {
+				if (licenseAgreement) {
+					license = lang.replace('<a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'{id}\').showLicenseAgreement();">' + _('Read') + '</a>', {
+						id: this.id
+					});
+				} else {
+					license = _('The App does not provide any information about the license. Please contact the App provider for further details.');
+				}
+			}
+			return license;
 		},
 
 		_detailFieldCustomWebsite: function() {
