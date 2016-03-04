@@ -1,5 +1,6 @@
 univention-management-console-module-udm (6.0.11-7) unstable; urgency=medium
 
+  * Bug #38639: enhance display of DNS attributes in the grid
   * Bug #40831: display forward zones first, remove superordinate root from
   	tree
 

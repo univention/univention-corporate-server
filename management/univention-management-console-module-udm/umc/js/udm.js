@@ -288,7 +288,7 @@ define([
 				this.standby(true);
 				all({
 					variables: this._loadUCRVariables(),
-					columns: this.getDefaultColumns(),
+					columns: this.getDefaultColumns()
 				}).then(lang.hitch(this, function(results) {
 					this._default_columns = results.columns;
 					this.renderSearchPage();
@@ -1086,6 +1086,7 @@ define([
 		},
 
 		_updateSearch: function() {
+			// TODO: if we have "only" 2 object types and one is the virtual flavor we should select the other one!
 			if ('navigation' != this.moduleFlavor) {
 				var widgets = this._searchForm._widgets;
 				var toggleButton = this._searchForm._buttons.toggleSearch;
@@ -1381,17 +1382,18 @@ define([
 				var numObjTypes = this._searchForm ? this._searchForm._widgets.objectType.getNumItems() : 3;
 				var columns = [nameColumn];
 				// if we are searching for a specific property add it to the columns
-				if ('None' != selected_value && (identifies === null || selected_value != identifies.id)) {
+				if ('None' != selected_value && (identifies === null || selected_value != identifies.id) && array.every(customColumns, function(column) { return column['name'] != selected_value; })) {
 					columns.push({
 						name: selected_value,
 						label: this._searchForm._widgets.objectProperty.get('displayedValue')
 					});
 				}
 				columns = columns.concat(customColumns);
-				if (~array.indexOf(['dns/dns', 'dhcp/dhcp'], objectType)) {
+				if (~array.indexOf(['dns/dns'/*, 'dhcp/dhcp'*/], objectType)) {
+//				if (customColumns.length) {
 					columns.push(valueColumn);
 				}
-				if (numObjTypes > 2 || 'navigation' == this.moduleFlavor) {
+				if ((numObjTypes > 2 || 'navigation' == this.moduleFlavor) && (this._searchForm ? (this._searchForm._widgets.objectType.get('value') == this.moduleFlavor) : true)) {
 					columns.push(typeColumn);
 				}
 				if (!(~columns.indexOf(valueColumn))) {

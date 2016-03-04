@@ -621,7 +621,10 @@ class UDM_Module(object):
 			return
 		description_property = self.module.property_descriptions[key]
 		if description_property:
-			value = description_property.syntax.tostring(value)
+			if description_property.multivalue:
+				value = [description_property.syntax.tostring(x) for x in value]
+			else:
+				value = description_property.syntax.tostring(value)
 		return value
 
 	def is_policy_module(self):
