@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-mail-cyrus
+fix: 6.0.6-2.209.201603041021
+desc: |
+ This update addresses the following issue(s):
+ * SSLv2 has been disabled by default in Cyrus IMAP. To reenable the previous
+   settings set the new UCR variable mail/cyrus/ssl/cipher_list to
+   'TLSv1:SSLv3:SSLv2:!NULL:!EXPORT:!DES:!LOW:@STRENGTH'.
+bug: [40810]
