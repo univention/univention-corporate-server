@@ -12,4 +12,7 @@ desc: |
  * Forward zones are now shown before reverse zones.
  * Searching for a specific object type underneath of cn=univention in the
    LDAP directory did not yield results and has been repaired.
-bug: [40747, 38639, 40831, 32843]
+ * Searching for properties which require an exact match did not work because
+   the LDAP filter was prepended with "*". The search for e.g. the gidNumber
+   of a group is now possible again.
+bug: [40747, 38639, 40831, 32843, 37904]
