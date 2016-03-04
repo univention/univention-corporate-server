@@ -520,7 +520,7 @@ class Instance(Base, ProgressMixin):
 				MODULE.info('Query defines a superordinate %s' % superordinate)
 				mod = get_module(request.flavor, superordinate)
 				if mod is not None:
-					MODULE.info('Found UDM module for superordinate')
+					MODULE.info('Found UDM module %r for superordinate %s' % (mod.name, superordinate))
 					superordinate = mod.get(superordinate)
 					request.options['container'] = superordinate.dn
 				else:
@@ -1010,6 +1010,9 @@ class Instance(Base, ProgressMixin):
 			# we need to search for a specific objectType, then we should call the standard query
 			# we also need to get the correct superordinate
 			superordinate = udm_objects.get_superordinate(object_type, None, ldap_connection, request.options['container'])
+			if superordinate and superordinate.module == 'settings/cn':
+				# false positive detected superordinate; Bug #32843
+				superordinate = None
 			if superordinate:
 				superordinate = superordinate.dn
 			request.options['superordinate'] = superordinate
