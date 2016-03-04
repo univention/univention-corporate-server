@@ -1,3 +1,10 @@
+ucs-test (6.0.33-38) unstable; urgency=medium
+
+  * 82_saml/20_ucs_sso: Add domainname to DNS query. This is needed if
+    AD is used as DNS server (Bug #40787)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 04 Mar 2016 07:34:12 +0100
+
 ucs-test (6.0.33-37) unstable; urgency=medium
 
   * 82_saml/*: Skip various tests in AD member mode (Bug #40787)

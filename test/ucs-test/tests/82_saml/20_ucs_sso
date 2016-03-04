@@ -7,10 +7,14 @@
 
 import dns.resolver
 from univention.testing.utils import get_ldap_connection, fail
+import univention.testing.ucr as ucr_test
 
 if __name__ == '__main__':
+	ucr = ucr_test.UCSTestConfigRegistry()
+	ucr.load()
+
 	dns_entries = set()
-	for addr in dns.resolver.query('ucs-sso', 'A'):
+	for addr in dns.resolver.query('ucs-sso.%s' % ucr.get('domainname'), 'A'):
 		dns_entries.add(addr.address)
 	print dns_entries
 
