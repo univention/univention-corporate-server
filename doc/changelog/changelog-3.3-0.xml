@@ -17,6 +17,9 @@
 			<listitem><simpara>
 				<package>openssh</package> upgraded to 6.0p1 (<u:cve>2010-5107</u:cve> <u:cve>2014-2653</u:cve> <u:cve>2014-2532</u:cve> <u:cve>2016-0778</u:cve> <u:cve>CVE-2016-0777</u:cve>) (<u:bug>40689</u:bug>)
 			</simpara></listitem>
+			<listitem><simpara>
+				The codename for UCS 3.3 is Osterholz (<u:bug>40833</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 
