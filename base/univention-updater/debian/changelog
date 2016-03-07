@@ -1,3 +1,10 @@
+univention-updater (9.100.1-1) unstable; urgency=medium
+
+  * Switch to OpenJDK-7 (Bug #40692)
+  * Update copytight to 2016
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Mar 2016 21:30:02 +0100
+
 univention-updater (9.0.49-1) unstable; urgency=medium
 
   * Adjust pre- and postup.sh to UCS 3.2-8 (Bug #40010)

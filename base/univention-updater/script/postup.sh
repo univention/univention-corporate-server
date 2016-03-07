@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (C) 2010-2015 Univention GmbH
+# Copyright (C) 2010-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -60,6 +60,51 @@ echo >> "$UPDATER_LOG"
 date >>"$UPDATER_LOG" 2>&1
 
 eval "$(univention-config-registry shell)" >>"$UPDATER_LOG" 2>&1
+
+switch_to_openjdk7 ()
+{
+	for p in openjdk-6-dbg \
+            openjdk-6-demo \
+            openjdk-6-doc \
+            openjdk-6-jdk \
+            openjdk-6-jre-headless \
+            openjdk-6-jre-lib \
+            openjdk-6-jre-zero \
+            openjdk-6-jre \
+            openjdk-6-source \
+            icedtea6-plugin \
+			icedtea-6-jre-jamvm \
+			icedtea-6-jre-cacao \
+			icedtea-6-plugin; do
+		state="$(dpkg --get-selections "$p" 2>/dev/null | awk '{print $2}')"
+		if [ "$state" = "install" ]; then
+			if [ "$p" = icedtea6-plugin ]; then	
+				 install --no-install-recommends icedtea-7-plugin
+			else
+				install --no-install-recommends "$(echo $p | sed -e 's|6|7|')"
+			fi
+		fi
+	done
+
+	dpkg -r openjdk-6-dbg \
+            openjdk-6-demo \
+            openjdk-6-doc \
+            openjdk-6-jdk \
+            openjdk-6-jre-headless \
+            openjdk-6-jre-lib \
+            openjdk-6-jre-zero \
+            openjdk-6-jre \
+            openjdk-6-source \
+            icedtea6-plugin \
+			icedtea-6-jre-jamvm \
+			icedtea-6-jre-cacao \
+			icedtea-6-plugin >>"$UPDATER_LOG" 2>&1
+}
+
+if ! is_ucr_true update40/skip/openjdk7
+then
+	switch_to_openjdk7
+fi
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	install univention-basesystem
