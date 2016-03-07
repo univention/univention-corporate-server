@@ -1,3 +1,9 @@
+univention-updater (9.100.1-2) unstable; urgency=medium
+
+  * Rename the UCR variable to update33/skip/openjdk7 (Bug #40692)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 07 Mar 2016 21:34:14 +0100
+
 univention-updater (9.100.1-1) unstable; urgency=medium
 
   * Switch to OpenJDK-7 (Bug #40692)

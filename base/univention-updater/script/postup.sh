@@ -101,7 +101,7 @@ switch_to_openjdk7 ()
 			icedtea-6-plugin >>"$UPDATER_LOG" 2>&1
 }
 
-if ! is_ucr_true update40/skip/openjdk7
+if ! is_ucr_true update33/skip/openjdk7
 then
 	switch_to_openjdk7
 fi
