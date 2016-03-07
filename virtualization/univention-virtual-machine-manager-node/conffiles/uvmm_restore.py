@@ -4,7 +4,7 @@
 # UCS Virtual Machine Manager Node Common
 #  script to link restore documentation in backup directory
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
