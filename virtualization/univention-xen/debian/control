@@ -13,6 +13,7 @@ Depends: ${misc:Depends}, ${perl:Depends},
  xen-utils-4.1,
  libc6-xen [i386],
  bridge-utils,
+ blktap-dkms,
 Description: UCS - Xen configuration and management subsystem
  This packages provides the basic configuration for the
  Xen virtualisation technology.
