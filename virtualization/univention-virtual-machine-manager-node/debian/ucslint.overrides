@@ -1,4 +1,6 @@
+# Claim no copyright on foreign work
 0010-2: debian/univention-virtual-machine-manager-node-kvm.init
+0010-2: debian/univention-virtual-machine-manager-node-xen.init
 # Just divert
 0004-14: conffiles/etc/runit/univention-libvirt/run
 0004-14: conffiles/etc/modprobe.d/loop.conf
