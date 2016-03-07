@@ -771,21 +771,28 @@ define([
 			}));
 		},
 
-		showReadme: function(readme, title, acceptButtonLabel) {
+		showReadme: function(readme, title, acceptButtonLabel, cancelButtonLabel) {
 			var readmeDeferred = new Deferred();
+			if (cancelButtonLabel === undefined) {
+				cancelButtonLabel = _('Cancel');
+			}
 			if (!readme) {
 				readmeDeferred.resolve();
 			} else {
 				var buttons;
 				if (acceptButtonLabel) {
-					buttons = [{
-						name: 'no',
-						label: _('Cancel'),
-						'default': true
-					}, {
+					buttons = [];
+					if (cancelButtonLabel) {
+						buttons.push({
+							name: 'no',
+							label: cancelButtonLabel,
+							'default': true
+						});
+					}
+					buttons.push({
 						name: 'yes',
 						label: acceptButtonLabel
-					}];
+					});
 				} else {
 					buttons = [{
 						name: 'yes',
@@ -809,7 +816,7 @@ define([
 		},
 
 		showLicenseAgreement: function() {
-			return this.showReadme(this.app.licenseAgreement, _('License agreement'));
+			return this.showReadme(this.app.licenseAgreement, _('License agreement'), _('Close'), null);
 		},
 
 		_showDockerWarning: function() {
@@ -1174,13 +1181,13 @@ define([
 			if (license) {
 				license = entities.encode(license);
 				if (licenseAgreement) {
-					license += lang.replace(' (<a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'{id}\').showLicenseAgreement();">' + _('Read') + '</a>)', {
+					license += lang.replace(' (<a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'{id}\').showLicenseAgreement();">' + _('Read license agreement') + '</a>)', {
 						id: this.id
 					});
 				}
 			} else {
 				if (licenseAgreement) {
-					license = lang.replace('<a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'{id}\').showLicenseAgreement();">' + _('Read') + '</a>', {
+					license = lang.replace('<a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'{id}\').showLicenseAgreement();">' + _('Read license agreement') + '</a>', {
 						id: this.id
 					});
 				} else {

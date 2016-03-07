@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-18) unstable; urgency=medium
+
+  * Bug #40428: Wording in dialog for LICENSE_AGREEMENT
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 07 Mar 2016 11:48:50 +0100
+
 univention-appcenter (5.0.20-17) unstable; urgency=medium
 
   * Bug #40428: Add licence categories to the App Center
