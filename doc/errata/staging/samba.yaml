@@ -1,0 +1,13 @@
+product: ucs
+release: "3.2"
+scope: ucs_3.2-0-errata3.2-8
+src: samba
+fix: 2:4.1.0-1.837.201603072147
+version: [8]
+desc: |
+ This update addresses the following security issue:
+ * Getting and setting Windows ACLs on symlinks could change permissions
+   on the link target (CVE-2015-7560)
+bug: [40853]
+cve:
+ - CVE-2015-7560
