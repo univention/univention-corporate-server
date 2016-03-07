@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue(s):
  * The PTR-Record entries are now sorted numerical in the overview of a reverse
    zone.
- * The DNS and DHCP modules now display more information.
+ * The DNS module now displays more information in the grid columns.
  * Forward zones are now shown before reverse zones.
  * Searching for a specific object type underneath of cn=univention in the
    LDAP directory did not yield results and has been repaired.
