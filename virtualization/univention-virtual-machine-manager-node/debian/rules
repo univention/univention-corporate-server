@@ -38,17 +38,20 @@ override_dh_auto_install:
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info
-	touch debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/down
 	dh_auto_install
 
 override_dh_auto_clean:
-	$(RM) debian/univention-virtual-machine-manager-node-*{pre,post}{inst,rm}.debhelper
 	$(RM) debian/univention-virtual-machine-manager-node-*.conffiles
 	dh_auto_clean
 
 override_dh_auto_test:
 	ucslint
 
+override_dh_install:
+	dh_install
+	touch debian/univention-virtual-machine-manager-node-common/etc/runit/univention-libvirt/down
+
 override_dh_installinit:
 	dh_installinit -punivention-virtual-machine-manager-node-kvm --no-restart-on-upgrade
+	dh_installinit -punivention-virtual-machine-manager-node-xen --no-restart-on-upgrade
 	dh_installinit --remaining-packages

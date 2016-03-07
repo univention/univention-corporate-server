@@ -5,3 +5,4 @@ univention-virtual-machine-manager-restore.py usr/sbin/univention-virtual-machin
 conffiles/etc/runit/univention-libvirt/run etc/runit/univention-libvirt/
 conffiles/etc/modprobe.d/loop.conf etc/modprobe.d/
 libvirt-check.sh usr/lib/univention-virtual-machine-manager-node
+ucs-reconnect-bridge    usr/lib/univention-virtual-machine-manager-node-common/

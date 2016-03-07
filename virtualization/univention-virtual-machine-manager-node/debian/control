@@ -3,7 +3,6 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Uploaders: Philipp Hahn <hahn@univention.de>,
- Andreas Büsching <buesching@univention.de>,
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
  univention-config-dev
@@ -16,11 +15,16 @@ Pre-Depends: dpkg (>= 1.15.7.2)
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-base-files,
- libvirt-bin,
+ libvirt-bin (>= 1.2.7),
  dnsmasq-base,
  univention-runit,
  univention-ssl,
- univention-virtual-machine-manager-schema
+ univention-virtual-machine-manager-schema,
+ bridge-utils,
+ iproute,
+ shell-univention-lib,
+ python-libvirt,
+ python-libxml2,
 Recommends: univention-virtual-machine-manager-node-xen | univention-virtual-machine-manager-node
 Description: UCS Virtual Machine Manager node
  This meta-package provides basic configuration for virtualization nodes.
@@ -28,8 +32,8 @@ Description: UCS Virtual Machine Manager node
 Package: univention-virtual-machine-manager-node-xen
 Architecture: all
 Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
- univention-virtual-machine-manager-node-common,
+ univention-virtual-machine-manager-node-common (= ${source:Version}),
+ univention-base-files,
  univention-xen,
 Recommends: univention-nagios-libvirtd-xen, univention-xen-gplpv
 Provides: univention-virtual-machine-manager-node
@@ -40,16 +44,9 @@ Description: UCS Virtual Machine Manager node using Xen
 Package: univention-virtual-machine-manager-node-kvm
 Architecture: all
 Depends: ${misc:Depends},
- univention-directory-manager-tools (>> 7.0.147),
- libvirt-bin (>= 0.8.7),
- univention-virtual-machine-manager-node-common,
+ univention-virtual-machine-manager-node-common (= ${source:Version}),
  univention-base-files,
  qemu-kvm,
- bridge-utils,
- iproute,
- shell-univention-lib,
- python-libvirt,
- python-libxml2
 Recommends: univention-nagios-libvirtd-kvm, univention-kvm-virtio
 Provides: univention-virtual-machine-manager-node
 Description: UCS Virtual Machine Manager node using kvm
