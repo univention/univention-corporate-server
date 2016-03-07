@@ -3,10 +3,14 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-management-console-frontend
-fix: 5.0.63-27.1217.201603011240
+fix: 
 desc: |
  This update addresses the following issue(s):
  * It's now possible to use multiple languages in one session when using HTTP
    basic authentication (via command line).
  * The umc.store API allows to contain Arrays in query requests now.
-bug: [40806, 38639]
+ * An error in the comparision function umc.tools.cmpObjects which could cause
+   that e.g. sorting the grid header wasn't possible anymore has been fixed.
+ * The location where UMC redirects after logout is now configurable via the
+   UCR variable "umc/logout/location".
+bug: [40806, 38639, 35407, 40613]
