@@ -1,7 +1,0 @@
-#!/bin/sh
-
-#DEBHELPER#
-
-/usr/sbin/update-grub
-
-exit 0

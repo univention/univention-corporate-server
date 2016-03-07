@@ -1,3 +1,9 @@
+xen-4.1 (4.1.6.1-2) unstable; urgency=low
+
+  * Bug #40697: Add transition packages
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 03 Mar 2016 13:52:47 +0100
+
 xen-4.1 (4.1.6.1-1) unstable; urgency=low
 
   * Bug #40697: Switch to 4.1.6.1 from Ubuntu.
