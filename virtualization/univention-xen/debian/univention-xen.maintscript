@@ -1,0 +1,2 @@
+rm_conffile /etc/univention/templates/files/usr/lib/xen-tools/univention.d/20-setup-apt 5.0.1-8~
+rm_conffile /etc/univention/templates/files/etc/xen-tools/xen-tools.conf 5.0.1-8~

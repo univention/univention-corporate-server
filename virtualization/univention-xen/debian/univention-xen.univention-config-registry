@@ -1,13 +1,4 @@
 Type: file
-File: etc/xen-tools/xen-tools.conf
-Variables: xen/repository
-
-Type: file
-File: usr/lib/xen-tools/univention.d/20-setup-apt
-Variables: xen/repository
-Variables: xen/repository/aptsource
-
-Type: file
 File: etc/xen/xend-config.sxp
 Variables: xen/bridge/interface
 Variables: xen/relocation/hosts_allow

@@ -1,3 +1,10 @@
+univention-xen (5.0.1-8) unstable; urgency=low
+
+  * Bug #40697: Fix dependency on xen-utils-4.1
+  * Remove support for xen-tools.
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 Mar 2016 10:50:17 +0100
+
 univention-xen (5.0.1-7) unstable; urgency=low
 
   * Bug #40697: Update dependecies for xen-4.1.6.1

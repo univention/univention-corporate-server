@@ -1,6 +1,6 @@
 [xend]
-description[de]=Xen Hypervisor 
-description[en]=Xen Hypervisor
+description[de]=Xen Management Daemon
+description[en]=Xen Management Daemon
 icon=virtualization/xen
 programs=/usr/sbin/xend
 start_type=xen/xend/autostart
