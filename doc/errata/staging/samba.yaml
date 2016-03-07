@@ -12,7 +12,7 @@ desc: |
  * Getting and setting Windows ACLs on symlinks could change permissions
    on the link target (CVE-2015-7560)
  * The patch for CVE-2015-5252 caused a regression for the special share
-   path "/",
-bug: [40328, 40680]
+   path "/".
+bug: [40328, 40680, 40847]
 cve:
  - CVE-2015-7560
