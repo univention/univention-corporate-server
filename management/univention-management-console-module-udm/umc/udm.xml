@@ -95,7 +95,6 @@
 		<command name="udm/license/import" function="license_import" />
 		<command name="udm/query" function="query" />
 		<command name="udm/containers" function="containers" />
-		<command name="udm/columns" function="columns" />
 		<command name="udm/superordinates" function="superordinates" />
 		<command name="udm/types" function="types" />
 		<command name="udm/network" function="network" />

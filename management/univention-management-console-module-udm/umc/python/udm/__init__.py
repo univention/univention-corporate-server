@@ -443,6 +443,7 @@ class Instance(Base, ProgressMixin):
 			return {
 				'help_link': module.help_link,
 				'help_text': module.help_text,
+				'columns': module.columns
 			}
 
 	def get(self, request):
@@ -708,11 +709,6 @@ class Instance(Base, ProgressMixin):
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
 		return module.superordinates
-
-	@module_from_request
-	@simple_response
-	def columns(self, module):
-		return module.columns
 
 	@module_from_request
 	@simple_response

@@ -214,10 +214,6 @@ define([
 			return this._getInfo('templates', {}, this.superModule, module, forceLoad);
 		},
 
-		getColumns: function(module, forceLoad) {
-			return this._getInfo('columns', {}, this.superModule, module, forceLoad);
-		},
-
 		_getInfos: function(infoType, modules, objDN, forceLoad) {
 			// see whether information for all modules have already been cached
 			var allInfo = array.map(modules, function(imodule) {

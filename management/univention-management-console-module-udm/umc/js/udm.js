@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require console*/
+/*global define require console window*/
 
 define([
 	"dojo/_base/declare",
@@ -739,13 +739,23 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'objectType',
-				//autoHide: true,
+				autoHide: true,
 				label: _('Type'),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
-				staticValues: objTypes,
+				// ComboBox.set('staticValues') seems broken. We need to remove 'All types' from the values in case there is only one object type (e.g. dns/ptr_record in a dns/reverse_zone).
+//				staticValues: objTypes,
+				sortDynamicValues: false,
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
-					return moduleCache.getChildModules(options.superordinate, null, true);
+					return moduleCache.getChildModules(options.superordinate, null, true).then(function(result) {
+						result.sort(tools.cmpObjects({
+							attribute: 'label',
+							ignoreCase: true
+						}));
+						return array.filter(objTypes, function(value) {
+							return (result.length == 1) ? value.id !== this.moduleFlavor : true;
+						}).concat(result);
+					});
 				}),
 				umcpCommand: umcpCmd,
 				depends: objTypeDependencies,
@@ -1355,7 +1365,8 @@ define([
 		getDefaultColumns: function() {
 			var deferred = new Deferred();
 			var objectType = this._searchForm ? this._searchForm._widgets.objectType.get('value') : (this.moduleFlavor == 'navigation' ? 'container/cn' : this.moduleFlavor);
-			return cache.get(this.moduleFlavor).getColumns(objectType).then(lang.hitch(this, function(customColumns) {
+			return cache.get(this.moduleFlavor).getMetaInfo(objectType).then(lang.hitch(this, function(metaInfo) {
+				var customColumns = (metaInfo ? metaInfo.columns : []) || [];
 				var nameColumn = {
 					name: 'name',
 					label: _('Name'),
@@ -1382,7 +1393,7 @@ define([
 				var numObjTypes = this._searchForm ? this._searchForm._widgets.objectType.getNumItems() : 3;
 				var columns = [nameColumn];
 				// if we are searching for a specific property add it to the columns
-				if ('None' != selected_value && (identifies === null || selected_value != identifies.id) && array.every(customColumns, function(column) { return column['name'] != selected_value; })) {
+				if ('None' != selected_value && (identifies === null || selected_value != identifies.id) && array.every(customColumns, function(column) { return column.name != selected_value; })) {
 					columns.push({
 						name: selected_value,
 						label: this._searchForm._widgets.objectProperty.get('displayedValue')
@@ -1393,7 +1404,7 @@ define([
 //				if (customColumns.length) {
 					columns.push(valueColumn);
 				}
-				if ((numObjTypes > 2 || 'navigation' == this.moduleFlavor) && (this._searchForm ? (this._searchForm._widgets.objectType.get('value') == this.moduleFlavor) : true)) {
+				if ((numObjTypes > 2 || 'navigation' == this.moduleFlavor) && (this._searchForm ? (~array.indexOf(['None', '$containers$', this.moduleFlavor], this._searchForm._widgets.objectType.get('value'))) : true)) {
 					columns.push(typeColumn);
 				}
 				if (!(~columns.indexOf(valueColumn))) {
