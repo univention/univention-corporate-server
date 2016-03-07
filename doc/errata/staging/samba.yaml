@@ -1,12 +1,18 @@
 product: ucs
 release: "4.1"
-scope: ucs_4.1-0-errata4.1-0
+scope: ucs_4.1-0-errata4.1-1
 src: samba
-fix: 2:4.3.3-1.826.201602161937
+fix: 2:4.3.3-1.829.201603071306
 version: [0,1]
 desc: |
- This update addresses the following issue:
+ This update addresses the following security related issues:
  * In case an account locking password policy has been defined for the domain,
    e.g. via samba-tool domain passwordsettings, the badPwdCount increased
    in steps of two for each failed login attempt at a windows client.
-bug: [40328]
+ * Getting and setting Windows ACLs on symlinks could change permissions
+   on the link target (CVE-2015-7560)
+ * The patch for CVE-2015-5252 caused a regression for the special share
+   path "/",
+bug: [40328, 40680]
+cve:
+ - CVE-2015-7560
