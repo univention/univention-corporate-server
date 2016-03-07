@@ -1,3 +1,9 @@
+univention-updater (9.100.1-3) unstable; urgency=low
+
+  * Added update33/skip/ucs3.3 (Bug #40700)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Mon, 07 Mar 2016 21:54:05 +0100
+
 univention-updater (9.100.1-2) unstable; urgency=medium
 
   * Rename the UCR variable to update33/skip/openjdk7 (Bug #40692)
