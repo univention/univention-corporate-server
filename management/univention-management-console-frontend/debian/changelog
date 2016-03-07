@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-29) unstable; urgency=medium
+
+  * Bug #40613: make the logout redirect location configurable
+
+ -- Florian Best <best@univention.de>  Mon, 07 Mar 2016 10:45:55 +0100
+
 univention-management-console-frontend (5.0.63-28) unstable; urgency=medium
 
   * Bug #38639: allow arrays to be query()-d in the umc.store() request data

@@ -57,3 +57,9 @@ Description[de]=Definiert die nach Gültigkeitsende der SAML-Assertion akzeptier
 Description[en]=Defines the accepted time difference (in seconds) of the SAML assertion validity time for PAM and LDAP authentication.
 Type=int
 Categories=management-umc,saml
+
+[umc/logout/location]
+Description[de]=Definiert den Pfad der Weiterleitung nach einem erfolgreichen Abmelden von UMC.
+Description[en]=Defines the redirection path after a successful logout from UMC.
+Type=str
+Categories=management-umc
