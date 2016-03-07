@@ -791,7 +791,8 @@ define([
 					}
 					buttons.push({
 						name: 'yes',
-						label: acceptButtonLabel
+						label: acceptButtonLabel,
+						'default': !cancelButtonLabel
 					});
 				} else {
 					buttons = [{
@@ -1190,7 +1191,7 @@ define([
 					license = lang.replace('<a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'{id}\').showLicenseAgreement();">' + _('Read license agreement') + '</a>', {
 						id: this.id
 					});
-				} else {
+				} else if (license === null) {
 					license = _('The App does not provide any information about the license. Please contact the App provider for further details.');
 				}
 			}
