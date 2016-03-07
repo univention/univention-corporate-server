@@ -9,7 +9,8 @@ Standards-Version: 3.6.2
 Package: univention-xen
 Architecture: i386 amd64
 Depends: ${misc:Depends}, ${perl:Depends},
- xen-4.1,
+ xen-hypervisor-4.1-${Arch} (>= 4.1.6.1) | xen-hypervisor-4.1-amd64 (>= 4.1.6.1) | xen-hypervisor-4.1-i386 (>= 4.1.6.1),,
+ xen-utils-4.4,
  libc6-xen [i386],
  bridge-utils
 Suggests: xen-tools,
