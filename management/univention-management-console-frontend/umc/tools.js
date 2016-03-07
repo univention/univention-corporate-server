@@ -1065,15 +1065,10 @@ define([
 				for (var i = 0; i < order.length; ++i) {
 					var o = order[i];
 
-					// make sure the attribute is specified in both objects
-					if (!(o.attr in _a) || !(o.attr in _b)) {
-						return 0;
-					}
-
-					// check for lowercase
+					// check for lowercase (ignore not existing values!)
 					var a = _a[o.attr];
 					var b = _b[o.attr];
-					if (o.ignCase && a.toLowerCase && b.toLowerCase) {
+					if (o.ignCase && a && a.toLowerCase && b && b.toLowerCase) {
 						a = a.toLowerCase();
 						b = b.toLowerCase();
 					}

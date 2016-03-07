@@ -1,6 +1,8 @@
 univention-management-console-frontend (5.0.63-29) unstable; urgency=medium
 
   * Bug #40613: make the logout redirect location configurable
+  * Bug #35407: fixed a typo in umc.tools.cmpObjects which caused that in some
+  	situations e.g. the grid header weren't sortable
 
  -- Florian Best <best@univention.de>  Mon, 07 Mar 2016 10:45:55 +0100
 
