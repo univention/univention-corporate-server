@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (2.0.5-9) unstable; urgency=low
+
+  * Bug #40697: xen-4.1.6.1
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 07 Mar 2016 09:33:21 +0100
+
 univention-virtual-machine-manager-node (2.0.5-8) unstable; urgency=low
 
   * Revert URL update until new manual is published (Bug #33444)

@@ -1,5 +1,1 @@
-usr/lib/univention-directory-listener/system
-usr/lib/univention-install
 etc/runit/univention-libvirt
-etc/modprobe.d
-usr/sbin
