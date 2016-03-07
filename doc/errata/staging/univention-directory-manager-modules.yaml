@@ -20,4 +20,6 @@ desc: |
    been fixed.
  * The search filter for "fqdn" has been adapted so it can be used to search
    for multiple computers.
-bug: [40651, 39030, 40775, 40824, 23804, 39343, 34327]
+ * Some columns which show more information in the grid of UMC have been added
+   to the DNS handler modules.
+bug: [40651, 39030, 40775, 40824, 23804, 39343, 34327, 38639]
