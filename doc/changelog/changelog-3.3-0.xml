@@ -60,6 +60,10 @@
 					The GNU C Library package <package>eglibc</package> has been updated from <wordasword>2.11</wordasword> to
 					<wordasword>2.13</wordasword> (<u:bug>40695</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The Linux Standard Base support package <package>lsb</package> has been updated to <wordasword>3.2-28.1</wordasword>
+					(<u:bug>40695</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
