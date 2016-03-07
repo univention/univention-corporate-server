@@ -549,6 +549,9 @@
 			<listitem><simpara>
 				<package>php5</package> has been upgraded to version 5.4.45 (<u:bug>40693</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The package manager for RPM <package>rpm</package> has been upgraded to version 4.10.0 (<u:bug>40695</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>
