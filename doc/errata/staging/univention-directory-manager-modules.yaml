@@ -15,7 +15,8 @@ desc: |
  * It is now prevented to create extended attributes for users with required
    fields without specifying a default value. Those extended attributes caused
    problems during upgrading to UCS 4.1 or installing various apps.
- * The pseudo property "name" has been removed from the dns/dns module.
+ * The search filter for "name" in the dns/dns module now also finds zones and
+   pointer records.
  * The search filter for "dhcpPermitList" in the dhcp/pool lookup function has
    been fixed.
  * The search filter for "fqdn" has been adapted so it can be used to search
