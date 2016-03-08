@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-10) unstable; urgency=medium
+
+  * Bug #38639: show overlong text in grid with … and split entries into newlines
+
+ -- Florian Best <best@univention.de>  Tue, 08 Mar 2016 09:24:05 +0100
+
 univention-management-console-module-udm (6.0.11-9) unstable; urgency=medium
 
   * Bug #38639: fix displaying of type column in LDAP directory

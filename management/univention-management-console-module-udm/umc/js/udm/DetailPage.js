@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define,setTimeout,dijit,window,console*/
+/*global require,define,setTimeout,dijit,window,console*/
 
 define([
 	"dojo/_base/declare",
@@ -1340,7 +1340,7 @@ define([
 						if (iwidget.$orgLabel$ instanceof Array) {
 							label = array.map(iwidget.$orgLabel$, function(ilabel, i) {
 								// only add the edit link to the first entry
-								return i == 0 ? labelFunc(ilabel, dn) : ilabel;
+								return i === 0 ? labelFunc(ilabel, dn) : ilabel;
 							});
 						}
 						else {
@@ -1795,7 +1795,7 @@ define([
 					this._setWidgetInvalid(iprop.property);
 					var _msg = iprop.details || _('Error');
 					if (_msg instanceof Array) {
-						_msg = '<ul><li>' + iprop.details.join('</li><li>') + '</li></ul>';
+						_msg = '<ul><li>' + array.filter(iprop.details, function(value) { return value; }).join('</li><li>') + '</li></ul>';
 					}
 
 					// update the global error message

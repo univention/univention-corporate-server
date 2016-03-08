@@ -77,3 +77,9 @@
 	width: 27px;
 	padding: 3px;
 }
+
+.umc .umcUDMSearchForm+.umcGrid .dojoxGridCell {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

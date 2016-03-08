@@ -47,6 +47,7 @@ define([
 	"dijit/form/_TextBoxMixin",
 	"dijit/Dialog",
 	"dojox/string/sprintf",
+	"dojox/html/entities",
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
@@ -77,7 +78,7 @@ define([
 	"umc/modules/udm/CertificateUploader",
 	"xstyle/css!./udm.css"
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
-	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, sprintf, app, tools, dialog,
+	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, sprintf, entities, app, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
 	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, TreeModel,
 	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, udmStartup, _)
@@ -1353,20 +1354,21 @@ define([
 		},
 
 		identityProperty: function() {
-			var items = this._searchForm._widgets.objectProperty.getAllItems();
-			for ( var i in items ) {
-				if ( items[ i ].identifies ) {
-					return items[ i ];
-				}
-			}
-			return null;
+			return array.filter(this._searchForm._widgets.objectProperty.getAllItems(), function(item) {
+				return item.identifies;
+			})[0] || null;
 		},
 
 		getDefaultColumns: function() {
-			var deferred = new Deferred();
 			var objectType = this._searchForm ? this._searchForm._widgets.objectType.get('value') : (this.moduleFlavor == 'navigation' ? 'container/cn' : this.moduleFlavor);
 			return cache.get(this.moduleFlavor).getMetaInfo(objectType).then(lang.hitch(this, function(metaInfo) {
 				var customColumns = (metaInfo ? metaInfo.columns : []) || [];
+				var defaultFormatter = function(value) {
+					if (value instanceof Array) {
+						value = array.map(value, function(v) { return entities.encode(String(v)); }).join('<br>');
+					}
+					return value;
+				};
 				var nameColumn = {
 					name: 'name',
 					label: _('Name'),
@@ -1385,6 +1387,12 @@ define([
 				var valueColumn = {
 					name: '$value$',
 					label: _('Value'),
+					formatter: function(value) {
+						if (value instanceof Array && value[0] instanceof Array) {
+							value = array.map(value[0], function(v) { return entities.encode(v); }).join('<br>');
+						}
+						return value;
+					},
 					description: _('Value of the LDAP object.')
 				};
 
@@ -1399,7 +1407,7 @@ define([
 						label: this._searchForm._widgets.objectProperty.get('displayedValue')
 					});
 				}
-				columns = columns.concat(customColumns);
+				columns = columns.concat(array.map(customColumns, function(col) { return lang.mixin({formatter: defaultFormatter}, col); }));
 				if (~array.indexOf(['dns/dns'/*, 'dhcp/dhcp'*/], objectType)) {
 //				if (customColumns.length) {
 					columns.push(valueColumn);
