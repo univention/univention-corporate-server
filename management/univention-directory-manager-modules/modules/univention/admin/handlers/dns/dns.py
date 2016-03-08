@@ -32,6 +32,7 @@
 
 import univention.admin.filter
 import univention.admin.localization
+from univention.admin.layout import Tab
 
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
@@ -69,7 +70,20 @@ childmodules = ['dns/forward_zone', 'dns/reverse_zone', 'dns/alias', 'dns/host_r
 virtual = 1
 options = {
 }
-property_descriptions = {}
+property_descriptions={
+	'name': univention.admin.property(
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True,
+		)
+}
+layout = [Tab(_('General'), _('Basic settings'), layout=["name"])]
 mapping = univention.admin.mapping.mapping()
 
 
@@ -86,7 +100,21 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
 
+def rewrite(filter_s, **args):
+	if not filter_s:
+		return filter_s
+	filter_p = univention.admin.filter.parse(filter_s)
+	mapping = univention.admin.mapping.mapping()
+	for key, value in args.iteritems():
+		mapping.register(key, value)
+	univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
+	return unicode(filter_p)
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+	ptr_filter = rewrite(filter_s, name='address')
+	fw_zone_filter = rewrite(filter_s, name='zone')
+	rv_zone_filter = rewrite(filter_s, name='subnet')
 	ret = []
 	if superordinate:
 		if superordinate.module == "dns/forward_zone":
@@ -95,10 +123,10 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 			ret += univention.admin.handlers.dns.srv_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 			ret += univention.admin.handlers.dns.txt_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 		else:
-			ret += univention.admin.handlers.dns.ptr_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+			ret += univention.admin.handlers.dns.ptr_record.lookup(co, lo, ptr_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:
-		ret += univention.admin.handlers.dns.forward_zone.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-		ret += univention.admin.handlers.dns.reverse_zone.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+		ret += univention.admin.handlers.dns.forward_zone.lookup(co, lo, fw_zone_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
+		ret += univention.admin.handlers.dns.reverse_zone.lookup(co, lo, rv_zone_filter, base, superordinate, scope, unique, required, timeout, sizelimit)
 
 	return ret
 

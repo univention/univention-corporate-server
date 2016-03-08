@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-23) unstable; urgency=medium
+
+  * Bug #23804: fix search for name in dns/dns handler
+
+ -- Florian Best <best@univention.de>  Tue, 08 Mar 2016 15:41:26 +0100
+
 univention-directory-manager-modules (11.0.2-22) unstable; urgency=medium
 
   * Bug #34327: fix fqdn search filter
