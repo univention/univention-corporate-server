@@ -1,3 +1,9 @@
+ucs-test (6.0.33-41) unstable; urgency=medium
+
+  * Bug #40428: Add license_types.ini
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 08 Mar 2016 09:20:55 +0100
+
 ucs-test (6.0.33-40) unstable; urgency=low
 
   * run self-service tests in jenkins App test (Bug #40799)

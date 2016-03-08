@@ -21,7 +21,7 @@ from univention.management.console.modules.appcenter.app_center import Applicati
 APPCENTER_FILE = "/var/cache/appcenter-installed.txt"
 check_installed_apps = []
 
-IGNORE_FILES = ('categories.ini', '.categories.ini', '.rating.ini')
+IGNORE_FILES = ('categories.ini', '.categories.ini', '.rating.ini', '.license_types.ini')
 IGNORE_DIRS = ('REMOVED',)
 
 failures = 0

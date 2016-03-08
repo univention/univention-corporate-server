@@ -337,6 +337,9 @@ Virtualization=Virtualisierung''')
 			f = open('/var/www/meta-inf/rating.ini', 'w')
 			f.write('# rating stuff\n')
 			f.close()
+			f = open('/var/www/meta-inf/license_types.ini', 'w')
+			f.write('# license stuff')
+			f.close()
 
 		handler_set([
 			'update/secure_apt=no',
@@ -351,7 +354,7 @@ Virtualization=Virtualisierung''')
 				continue
 			print 'create_appcenter_json.py for %s' % vv
 			subprocess.call('create_appcenter_json.py -u %(version)s -d /var/www -o /var/www/meta-inf/%(version)s/index.json.gz -s http://%(fqdn)s' %
-				 {'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
+				{'version': vv, 'fqdn': '%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])}, shell=True)
 
 	def cleanup(self):
 		if self.meta_inf_created:
