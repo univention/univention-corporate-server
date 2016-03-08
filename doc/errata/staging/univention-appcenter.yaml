@@ -6,7 +6,6 @@ src: univention-appcenter
 fix: 5.0.20-20.131.201603081510
 desc: |
  This update addresses the following issue(s):
- * Extends functionality for the use of App Appliances.
  * Apps may define ports they want to occupy exclusively. Docker Apps checked
    before installation whether an already installed App excepts exclusive
    access to one of these ports. This check has been extended to Non-Docker
@@ -14,4 +13,6 @@ desc: |
  * Apps now show general information about the terms under which the software
    may be used. If the App ships a license file, it may be read before and
    after installation.
-bug: [40827, 40508, 40428]
+ * Internal adaptations have been added to allow for extending App Center
+   functionalities.
+bug: [40508, 40428, 40827]
