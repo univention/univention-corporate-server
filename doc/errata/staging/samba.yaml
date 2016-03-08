@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-8
 src: samba
-fix: 2:4.1.0-1.838.201603072217
+fix: 2:4.1.0-1.839.201603081133
 version: [8]
 desc: |
  This update addresses the following security issue:
