@@ -3,10 +3,10 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-appcenter
-fix: 5.0.20-19.130.201603071222
+fix: 5.0.20-20.131.201603081510
 desc: |
  This update addresses the following issue(s):
- * ISVs can now define colors and modules for their appliances.
+ * Extends functionality for the use of App Appliances.
  * Apps may define ports they want to occupy exclusively. Docker Apps checked
    before installation whether an already installed App excepts exclusive
    access to one of these ports. This check has been extended to Non-Docker
