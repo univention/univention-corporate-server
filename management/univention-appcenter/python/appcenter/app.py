@@ -961,6 +961,7 @@ class App(object):
 
 
 class AppManager(object):
+	_locale = None
 	_cache = []
 	_package_manager = None
 	_pickle_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.pkl')
@@ -968,12 +969,48 @@ class AppManager(object):
 
 	@classmethod
 	def _invalidate_pickle_cache(cls):
-		pickle_pattern = re.sub(r'%\(.*?\).', '*', cls._pickle_file)
-		for pickle_file in glob(os.path.join(CACHE_DIR, pickle_pattern)):
+		if cls._pickle_file:
+			pickle_pattern = re.sub(r'%\(.*?\).', '*', cls._pickle_file)
+			for pickle_file in glob(pickle_pattern):
+				try:
+					os.unlink(pickle_file)
+				except OSError:
+					pass
+
+	@classmethod
+	def _get_pickle_cache_file(cls):
+		if cls._pickle_file:
+			return cls._pickle_file % {'locale': cls._locale}
+
+	@classmethod
+	def _save_pickle_cache(cls, cache):
+		pickle_file = cls._get_pickle_cache_file()
+		if pickle_file:
 			try:
-				os.unlink(pickle_file)
-			except OSError:
-				pass
+				with open(pickle_file, 'wb') as fd:
+					dump(cache, fd, 2)
+			except (IOError, PickleError):
+				return False
+			else:
+				return True
+
+	@classmethod
+	def _load_pickle_cache(cls):
+		pickle_file = cls._get_pickle_cache_file()
+		if pickle_file:
+			try:
+				with open(pickle_file, 'rb') as fd:
+					return load(fd)
+			except (IOError, PickleError):
+				return None
+
+	@classmethod
+	def _relevant_ini_files(cls):
+		return glob(os.path.join(CACHE_DIR, '*.ini'))
+
+	@classmethod
+	def _build_app_from_ini(cls, ini):
+		return cls._AppClass.from_ini(ini, locale=cls._locale)
 
 	@classmethod
 	def clear_cache(cls):
@@ -987,26 +1024,24 @@ class AppManager(object):
 	@classmethod
 	def _get_every_single_app(cls):
 		if not cls._cache:
-			locale = get_locale() or 'en'
-			pickle_file = cls._pickle_file % {'locale': locale}
+			cls._locale = get_locale() or 'en'
 			try:
-				with open(pickle_file, 'rb') as fd:
-					cls._cache = load(fd)
-			except (IOError, PickleError):
-				for ini in glob(os.path.join(CACHE_DIR, '*.ini')):
-					app = cls._AppClass.from_ini(ini, locale=locale)
-					if app is not None:
-						cls._cache.append(app)
-				cls._cache.sort()
-				try:
-					with open(pickle_file, 'wb') as fd:
-						dump(cls._cache, fd, 2)
-				except (IOError, PickleError):
-					app_logger.warn('Unable to cache apps')
+				cached_apps = cls._load_pickle_cache()
+				if cached_apps is not None:
+					cls._cache = cached_apps
+					app_logger.debug('Loaded %d apps from cache' % len(cls._cache))
 				else:
-					app_logger.debug('Saved %d apps into cache' % len(cls._cache))
-			else:
-				app_logger.debug('Loaded %d apps from cache' % len(cls._cache))
+					for ini in cls._relevant_ini_files():
+						app = cls._build_app_from_ini(ini)
+						if app is not None:
+							cls._cache.append(app)
+					cls._cache.sort()
+					if cls._save_pickle_cache(cls._cache):
+						app_logger.debug('Saved %d apps into cache' % len(cls._cache))
+					else:
+						app_logger.warn('Unable to cache apps')
+			finally:
+				cls._locale = None
 		return cls._cache
 
 	@classmethod

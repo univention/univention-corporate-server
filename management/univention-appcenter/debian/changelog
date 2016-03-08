@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-20) unstable; urgency=medium
+
+  * Bug #40827: Support the use of no pickle file for app appliances
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 08 Mar 2016 15:00:14 +0100
+
 univention-appcenter (5.0.20-19) unstable; urgency=medium
 
   * Bug #40428: Support empty license category
