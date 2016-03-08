@@ -1,3 +1,9 @@
+univention-kernel-image (7.100.0-4) unstable; urgency=medium
+
+  * Update to the latest kernel build (Bug #40687)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 08 Mar 2016 05:51:33 +0100
+
 univention-kernel-image (7.100.0-3) unstable; urgency=low
 
   * Bug #40687: Fix linux-source-3.16 dependency
