@@ -64,6 +64,10 @@
 					The Linux Standard Base support package <package>lsb</package> has been updated to <wordasword>3.2-28.1</wordasword>
 					(<u:bug>40695</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The package <package>OpenSSH</package> has been updated to <wordasword>6.0</wordasword>
+					(<u:bug>40689</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
