@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Postgresql
-#  postrm
+#  postinst
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2004-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,22 +32,40 @@
 
 #DEBHELPER#
 
-for conf in \
-	/etc/univention/templates/files/etc/postgresql/8.4/main/pg_hba.conf.d/00-pg_hba.conf \
-	/etc/univention/templates/files/etc/postgresql/8.4/main/pg_hba.conf.d/99-pg_hba.conf \
-	/etc/univention/templates/files/etc/postgresql/8.4/main/pg_ident.conf.d/00-pg_ident.conf \
-	/etc/univention/templates/files/etc/postgresql/8.4/main/postgresql.conf \
-	/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/00-pg_hba.conf \
-	/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/99-pg_hba.conf \
-	/etc/univention/templates/files/etc/postgresql/9.1/main/pg_ident.conf.d/00-pg_ident.conf \
-	/etc/univention/templates/files/etc/postgresql/9.1/main/postgresql.conf
-do
-	# only rm_conffile $conf if it is still owned by univention-postgresql,
-	# otherwise we could rm_conffile it from e.g. univention-postgresql-9.1
-	if out=$(dpkg-query --search "$conf" 2>/dev/null) && [ "${out%%:*}" = 'univention-postgresql' ]
-	then
-		dpkg-maintscript-helper rm_conffile "$conf" '8.0.0-5~' -- "$@"
-	fi
-done
+. /usr/share/univention-lib/all.sh
+
+case "$1" in
+	configure)
+		if [ -z "$2" ] # installation
+		then
+			# configure firewall
+			ucr set security/packetfilter/package/univention-postgresql-9.1/tcp/5432/all="ACCEPT" \
+				security/packetfilter/package/univention-postgresql-9.1/tcp/5432/all/en="postgresql"
+			if [ -x "/etc/init.d/univention-firewall" ]
+			then
+				invoke-rc.d univention-firewall restart
+			fi
+		fi
+
+		# if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1 # upgrade
+		# then
+		# fi
+
+		# restart postgresql to load correct configfiles (Bug #27786)
+		if [ -x "/etc/init.d/postgresql" ]
+		then
+			invoke-rc.d postgresql restart
+		fi
+
+		;;
+
+	abort-upgrade|abort-remove|abort-deconfigure)
+		;;
+
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+		;;
+esac
 
 exit 0

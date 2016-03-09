@@ -3,7 +3,7 @@
 # Univention Postgresql
 #  join script
 #
-# Copyright 2010-2013 Univention GmbH
+# Copyright 2010-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -40,4 +40,3 @@ univention-config-registry commit /etc/postgresql/pam_ldap.conf
 
 joinscript_save_current_version
 exit 0
-

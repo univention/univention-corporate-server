@@ -1,5 +1,6 @@
 Source: univention-postgresql
 Section: univention
+Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 Build-Depends: debhelper,
@@ -8,13 +9,52 @@ Build-Depends: debhelper,
 
 Package: univention-postgresql
 Architecture: all
-Pre-Depends: postgresql-8.4 | postgresql-8.3 | postgresql-7.4
+Pre-Depends: ${misc:Pre-Depends},
+Depends: ${misc:Depends},
+ univention-postgresql-8.4 | univention-postgresql-9.1,
+ shell-univention-lib (>= 3.0.4-1),
+ univention-config,
+Description: UCS - PostgreSQL configuration
+ This meta-package depends on the package with the configuration for
+ the specific postgresql-*.* package.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-postgresql-9.1
+Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
- univention-config-registry
-Description: UCS - postgresql configuration
+ postgresql-9.1,
+ univention-config,
+Breaks: univention-postgresql (< 8),
+ univention-bacula (<< 7.0.1-2),
+ univention-pkgdb (<< 9.0.1-2),
+Replaces: univention-postgresql (< 8),
+Description: UCS - PostgreSQL 9.1 configuration
  This package contains the configuration for the
- postgresql package.
+ postgresql-9.1 package.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-postgresql-8.4
+Architecture: all
+Depends: ${misc:Depends},
+ shell-univention-lib (>= 3.0.4-1),
+ postgresql-8.4,
+ univention-config,
+Breaks: univention-postgresql (< 8),
+ univention-bacula (<< 7.0.1-2),
+ univention-pkgdb (<< 9.0.1-2),
+Replaces: univention-postgresql (< 8),
+Description: UCS - PostgreSQL 8.4 configuration
+ This package contains the configuration for the
+ postgresql-8.4 package.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -1,3 +1,39 @@
+univention-postgresql (8.0.0-10) unstable; urgency=medium
+
+  * Update for UCS 4.1 (Bug #39595)
+  * Split into multiple binary packages for different PostgreSQL versions (Bug #39595)
+  * Remove support for old PostgreSQL versions (Bug #39595)
+  * do not use Pre-Depends for postgresql depedency (Bug #39595)
+  * do not create empty pg_hba.conf on remove (Bug #39595)
+  * remove empty pg_hba.conf on installation or upgrade (Bug #39595)
+  * remove stashed template file on installation (Bug #39595)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 13 Nov 2015 14:39:53 +0100
+
+univention-postgresql (7.0.0-4) unstable; urgency=low
+
+  * changed postgres9/maxconnections default to 100 (Bug #35147)
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 11:10:45 +0200
+
+univention-postgresql (7.0.0-3) unstable; urgency=low
+
+  * added postgresql-9.1 support (Bug #35147)
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 10:51:52 +0200
+
+univention-postgresql (7.0.0-2) unstable; urgency=low
+
+  * added postgresql-9.1 support (Bug #35147)
+
+ -- Felix Botner <botner@univention.de>  Mon, 21 Jul 2014 10:46:06 +0200
+
+univention-postgresql (7.0.0-1) unstable; urgency=low
+
+  * Update to UCS 4.0 (Bug #35147)
+
+ -- Felix Botner <botner@univention.de>  Thu, 10 Jul 2014 15:59:19 +0200
+
 univention-postgresql (6.0.1-4) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
@@ -31,7 +67,7 @@ univention-postgresql (6.0.0-1) unstable; urgency=low
 
 univention-postgresql (5.0.2-1) unstable; urgency=low
 
-  * Create empty postgresql config files in during postrm so that 
+  * Create empty postgresql config files in during postrm so that
     postgresql can be reinstalled (Bug #27786)
   * Restart postgresql server in postinst (Bug #27786)
 
@@ -52,7 +88,7 @@ univention-postgresql (5.0.0-1) unstable; urgency=low
 
 univention-postgresql (4.0.6-1) unstable; urgency=low
 
-  * added server password change hook script (Bug #25085) 
+  * added server password change hook script (Bug #25085)
 
  -- Felix Botner <botner@univention.de>  Wed, 04 Jan 2012 11:04:32 +0100
 
@@ -276,4 +312,3 @@ univention-postgresql (0.1) unstable; urgency=low
   * Initial release.
 
  -- Thomas Kaminski <thomas@anton.knut.univention.de>  Thu, 11 Nov 2004 17:23:07 +0100
-
