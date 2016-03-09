@@ -17,4 +17,6 @@ desc: |
    of a group is now possible again.
  * Searching for properties using the LDAPSearch syntax class caused a
    traceback.
-bug: [40747, 38639, 40831, 32843, 37904, 38635]
+ * The users/self module can now be activated again via setting the UCR
+   variable umc/module/udm/users/self/disabled to false.
+bug: [40747, 38639, 40831, 32843, 37904, 38635, 39016]
