@@ -165,6 +165,22 @@ fi
 
 ##
 
+## Check for PostgreSQL-8.4 (Bug #40690)
+check_for_postgresql84 () {
+	case "$(dpkg-query -W -f '${Status}' postgresql-8.4 2>/dev/null)" in
+	install*) ;;
+	*) return 0 ;;
+	esac
+	echo "WARNING: PostgreSQL-8.4 is no longer supported by UCS 3.3 and must be migrated to"
+	echo "         a newer version of PostgreSQL, AFTER the update to UCS 3.3."
+	echo "         See http://sdb.univention.de/1292 for more details."
+	echo
+	echo "         The update can continue, but to get security updates it is important"
+	echo "         that you migrate to PostgreSQL 9.1 after the update to UCS 3.3."
+	readcontinue || exit 1
+}
+check_for_postgresql84
+
 #################### Bug #22093
 
 list_passive_kernels () {
