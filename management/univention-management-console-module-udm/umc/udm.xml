@@ -79,7 +79,7 @@
 			<description>Browsing and managing the LDAP tree</description>
 			<keywords>ldap,directory,udm</keywords>
 		</flavor>
-		<flavor priority="50" id="users/self" deactivated="True">
+		<flavor priority="50" id="users/self">
 			<name>User settings</name>
 			<description>Change settings for the user currently logged in</description>
 			<keywords>user,password</keywords>

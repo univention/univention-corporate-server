@@ -49,6 +49,8 @@ univention-config-registry set directory/manager/web/modules/computers/computer/
 
 univention-config-registry set directory/manager/web/modules/groups/group/checks/circular_dependency?"yes"
 
+univention-config-registry set umc/module/udm/users/self/disabled?true
+
 # activate new sites
 #a2ensite univention-directory-manager
 #invoke-rc.d apache2 restart
