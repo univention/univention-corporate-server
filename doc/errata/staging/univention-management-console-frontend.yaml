@@ -13,4 +13,4 @@ desc: |
    that e.g. sorting the grid header wasn't possible anymore has been fixed.
  * The location where UMC redirects after logout is now configurable via the
    UCR variable "umc/logout/location".
-bug: [40806, 38639, 35407, 40613]
+bug: [40806, 40799, 38639, 35407, 40613]
