@@ -459,6 +459,10 @@
 			<title>Other services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					<package>univention-postgresql</package> has been split into multiple packages,
+					one for each PostgreSQL version (<u:bug>40690</u:bug>).
+					<package>postgresql-9.1</package> has been added which fixes several security
+					issues (<u:bug>40690</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
