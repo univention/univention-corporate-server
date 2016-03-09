@@ -748,15 +748,15 @@ define([
 				sortDynamicValues: false,
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
-					return moduleCache.getChildModules(options.superordinate, null, true).then(function(result) {
+					return moduleCache.getChildModules(options.superordinate, null, true).then(lang.hitch(this, function(result) {
 						result.sort(tools.cmpObjects({
 							attribute: 'label',
 							ignoreCase: true
 						}));
-						return array.filter(objTypes, function(value) {
+						return array.filter(objTypes, lang.hitch(this, function(value) {
 							return (result.length == 1) ? value.id !== this.moduleFlavor : true;
-						}).concat(result);
-					});
+						})).concat(result);
+					}));
 				}),
 				umcpCommand: umcpCmd,
 				depends: objTypeDependencies,
@@ -1365,7 +1365,11 @@ define([
 				var customColumns = (metaInfo ? metaInfo.columns : []) || [];
 				var defaultFormatter = function(value) {
 					if (value instanceof Array) {
-						value = array.map(value, function(v) { return entities.encode(String(v)); }).join('<br>');
+						var tooMuch = value.length > 3;
+						value = array.map(value.slice(0, 3), function(v) { return entities.encode(String(v)); }).join('<br>');
+						if (tooMuch) {
+							value += ', …';
+						}
 					}
 					return value;
 				};
@@ -1388,8 +1392,8 @@ define([
 					name: '$value$',
 					label: _('Value'),
 					formatter: function(value) {
-						if (value instanceof Array && value[0] instanceof Array) {
-							value = array.map(value[0], function(v) { return entities.encode(v); }).join('<br>');
+						if (value instanceof Array) {
+							value = array.map(value, defaultFormatter);
 						}
 						return value;
 					},
