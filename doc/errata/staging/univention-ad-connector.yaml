@@ -5,7 +5,7 @@ src: univention-ad-connector
 fix: 10.0.1-12.475.201603031420
 version: [0,1]
 desc: |
- The following issue have been fixed in univention-ad-connector:
+ The following issue has been fixed in univention-ad-connector:
  * Support for synchronization of the OpenLDAP attribute
    mailAlternativeAddress with the AD attribute proxyAddresses has been added.
    This can be switched on for users and groups individually by the new pair
