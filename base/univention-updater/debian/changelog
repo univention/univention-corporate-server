@@ -1,3 +1,10 @@
+univention-updater (9.100.3-1) unstable; urgency=medium
+
+  * preup.sh: Replace update32 with update33 otherwise the upgrade in
+    Jenkins fails (Bug #40704)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Mar 2016 08:45:07 +0100
+
 univention-updater (9.100.2-1) unstable; urgency=medium
 
   * Add warning for PostgreSQL migration (Bug #40690)

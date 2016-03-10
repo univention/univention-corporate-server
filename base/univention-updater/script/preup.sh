@@ -98,7 +98,7 @@ echo ""
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update32_ignoressh" != "yes" ]; then
+	if [ "$update33_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoressh\" to ignore it."
 		exit 1
@@ -106,7 +106,7 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update32_ignoreterm" != "yes" ]; then
+	if [ "$update33_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
 		echo "Please log in under the console or re-run with \"--ignoreterm\" to ignore it."
 		exit 1
@@ -152,12 +152,12 @@ hold_packages=$(LC_ALL=C dpkg -l | grep ^h | awk '{print $2}')
 if [ -n "$hold_packages" ]; then
 	echo "WARNING: Some packages are marked as hold -- this may interrupt the update and result in an inconsistent"
 	echo "system!"
-	echo "Please check the following packages and unmark them or set the UCR variable update32/ignore_hold to yes"
+	echo "Please check the following packages and unmark them or set the UCR variable update33/ignore_hold to yes"
 	for hp in $hold_packages; do
 		echo " - $hp"
 	done
-	if is_ucr_true update32/ignore_hold; then
-		echo "WARNING: update32/ignore_hold is set to true. Skipped as requested."
+	if is_ucr_true update33/ignore_hold; then
+		echo "WARNING: update33/ignore_hold is set to true. Skipped as requested."
 	else
 		exit 1
 	fi
@@ -218,7 +218,7 @@ pruneOldKernel () {
 		DEBIAN_FRONTEND=noninteractive xargs -r apt-get -o DPkg::Options::=--force-confold -y --force-yes purge
 }
 
-if [ "$update32_pruneoldkernel" = "yes" ]; then
+if [ "$update33_pruneoldkernel" = "yes" ]; then
 	echo "Purging old kernel..." | tee -a /var/log/univention/updater.log
 	pruneOldKernel "2.6.*"
 	pruneOldKernel "3.2.0"
@@ -240,12 +240,12 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
 		echo "         This may interrupt the update and result in an inconsistent system!"
 		echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         config registry variable update32/checkfilesystems to \"no\"."
+		echo "         config registry variable update33/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
-		if [ "$partition" = "/boot" -a ! "$update32_pruneoldkernel" = "yes" ] ; then
+		if [ "$partition" = "/boot" -a ! "$update33_pruneoldkernel" = "yes" ] ; then
 			echo "         Old kernel versions on /boot can be pruned automatically during"
 			echo "         next update attempt by setting config registry variable"
-			echo "         update32/pruneoldkernel to \"yes\"."
+			echo "         update33/pruneoldkernel to \"yes\"."
 		fi
 		echo ""
 		# kill the running univention-updater process
@@ -262,7 +262,7 @@ fi
 mv /boot/*.bak /var/backups/univention-initrd.bak/ >/dev/null 2>&1
 
 # check space on filesystems
-if [ ! "$update32_checkfilesystems" = "no" ]
+if [ ! "$update33_checkfilesystems" = "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "250000" "250 MB"
