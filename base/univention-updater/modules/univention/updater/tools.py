@@ -662,7 +662,7 @@ class UniventionUpdater:
 			if patchlevel < 99:
 				yield {'major':major,   'minor':minor,   'patchlevel':patchlevel+1}
 			if minor < 99:
-				if major == 3 and minor == 2 and self.configRegistry.is_false('update33/skip/ucs3.3', False):
+				if major == 3 and minor == 2 and self.configRegistry.is_false('update33/skip/ucs3.3', True):
 					yield {'major':major,   'minor':minor+1, 'patchlevel':0}
 			if major < 99:
 				yield {'major':major+1, 'minor':0,       'patchlevel':0}
