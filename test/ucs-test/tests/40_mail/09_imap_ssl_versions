@@ -1,0 +1,78 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check ssl_client support
+## bugs: [40810]
+## tags:
+##  - basic
+##  - apptest
+## packages:
+##   - univention-mail-cyrus
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/ucr.sh" || exit 137
+
+UCR=ucr
+
+function finish {
+    ucr_restore
+    invoke-rc.d cyrus-imapd stop
+    invoke-rc.d cyrus-imapd start
+}
+trap finish EXIT
+
+ucr unset mail/cyrus/ssl/cipher_list
+invoke-rc.d cyrus-imapd stop
+invoke-rc.d cyrus-imapd start
+
+RETVAL=100
+
+echo "*** ucr unset mail/cyrus/ssl/cipher_list -> only SSLv3 and TLS1 allowed"
+#for PROTO in ssl2 ssl3 tls1 tls1_1 tls1_2; do
+for PROTO in ssl2 ssl3 tls1; do
+    echo "*** testing $PROTO..."
+    echo "A LOGOUT" | openssl s_client \
+        -connect $(hostname -f):993 \
+        -CAfile /etc/univention/ssl/ucsCA/CAcert.pem \
+        -quiet \
+        "-${PROTO}" 2>&1 | grep -q "A OK Completed"
+    res=$?
+
+    if [ "$PROTO" = ssl2 ] && [ $res = 0 ]; then
+	    fail_test 110 "$PROTO supported (res=$res)."
+    fi
+    if [ "$PROTO" == tls3 ] && [ $res != 0 ]; then
+	    fail_test 110 "$PROTO not supported (res=$res)."
+    fi
+    if [[ "$PROTO" == tls* ]] && [ $res != 0 ]; then
+	    fail_test 110 "$PROTO not supported (res=$res)."
+    fi
+done
+
+echo "*** ucr set mail/cyrus/ssl/cipher_list='TLSv1:SSLv3:SSLv2:!NULL:!EXPORT:!DES:!LOW:@STRENGTH'"
+echo "*** -> still only SSLv3 and TLS1 allowed, as SSLv2 has been disabled at"
+echo "***    compile time (import from UCS 4)"
+ucr set mail/cyrus/ssl/cipher_list='TLSv1:SSLv3:SSLv2:!NULL:!EXPORT:!DES:!LOW:@STRENGTH'
+invoke-rc.d cyrus-imapd stop
+invoke-rc.d cyrus-imapd start
+
+for PROTO in ssl2 ssl3 tls1; do
+    echo "*** testing $PROTO..."
+    echo "A LOGOUT" | openssl s_client \
+        -connect $(hostname -f):993 \
+        -CAfile /etc/univention/ssl/ucsCA/CAcert.pem \
+        -quiet \
+        "-${PROTO}" 2>&1 | grep -q "A OK Completed"
+    res=$?
+
+    if [ "$PROTO" = ssl2 ] && [ $res = 0 ]; then
+	    fail_test 110 "$PROTO supported (res=$res)."
+    fi
+    if [ "$PROTO" == tls3 ] && [ $res != 0 ]; then
+	    fail_test 110 "$PROTO not supported (res=$res)."
+    fi
+    if [[ "$PROTO" == tls* ]] && [ $res != 0 ]; then
+	    fail_test 110 "$PROTO not supported (res=$res)."
+    fi
+done
+
+exit $RETVAL
