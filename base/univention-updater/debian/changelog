@@ -1,3 +1,9 @@
+univention-updater (9.100.4-2) unstable; urgency=low
+
+  * Reverted last change (Bug #40700)
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Thu, 10 Mar 2016 17:44:13 +0100
+
 univention-updater (9.100.4-1) unstable; urgency=low
 
   * Fixed wrong default value of update33/skip/ucs3.3 (Bug #40700)
