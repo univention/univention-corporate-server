@@ -469,10 +469,10 @@
 		-->
 	</section>
 
-	<!--
 	<section id="changelog:virt">
 		<title>Virtualisation</title>
 
+	<!--
 		<section id="changelog:virt:uvmm">
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
@@ -480,11 +480,13 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+	-->
 
 		<section id="changelog:virt:xen">
 			<title>Xen</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The Xen hypervisor and related support packages have been updates to version 4.1.6.1 (<u:bug>40697</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -493,11 +495,11 @@
 			<title>Libvirt</title>
 			<itemizedlist>
 				<listitem><simpara>
+						The <package>libvirt</package> management tools for virtualization environments has been updated to version 1.2.9 (<u:bug>32744</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 	</section>
-	-->
 
 		<!--
 	<section id="changelog:win">
