@@ -1111,8 +1111,9 @@ def _object_property_filter(module, object_property, object_property_value, show
 			ret = ''
 	else:
 		ret = '%s=%s' % (object_property, object_property_value)
-		if object_property_value.strip('*') != object_property_value:
-			ret = '(|(%s=%s)(%s=%s))' % (object_property, object_property_value, object_property, object_property_value.strip('*'))
+		no_substring_value = object_property_value.strip('*')
+		if no_substring_value and no_substring_value != object_property_value:
+			ret = '(|(%s)(%s=%s))' % (ret, object_property, no_substring_value)
 	if module is not None:
 		hidden_flag_attribute = 'objectFlag'
 		has_hidden_flag = module.get_property(hidden_flag_attribute) is not None
