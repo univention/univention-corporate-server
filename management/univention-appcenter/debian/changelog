@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-21) unstable; urgency=medium
+
+  * Bug #40875: fix EOFError if pickle cache file is empty
+
+ -- Florian Best <best@univention.de>  Fri, 11 Mar 2016 06:43:48 +0100
+
 univention-appcenter (5.0.20-20) unstable; urgency=medium
 
   * Bug #40827: Support the use of no pickle file for app appliances

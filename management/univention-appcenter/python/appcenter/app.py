@@ -1001,7 +1001,7 @@ class AppManager(object):
 			try:
 				with open(pickle_file, 'rb') as fd:
 					return load(fd)
-			except (IOError, PickleError):
+			except (EOFError, EnvironmentError, PickleError):
 				return None
 
 	@classmethod
