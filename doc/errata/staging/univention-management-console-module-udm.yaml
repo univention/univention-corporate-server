@@ -3,13 +3,13 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-management-console-module-udm
-fix: 
+fix: 6.0.11-13.643.201603110737
 desc: |
  This update addresses the following issue(s):
  * The PTR-Record entries are now sorted numerical in the overview of a reverse
    zone.
- * The DNS module now displays more information in the grid columns.
- * Forward zones are now shown before reverse zones.
+ * The DNS module now displays more information in the grid columns and
+   forward zones are now shown before reverse zones in the tree view.
  * Searching for a specific object type underneath of cn=univention in the
    LDAP directory did not yield results and has been repaired.
  * Searching for properties which require an exact match did not work because
@@ -19,4 +19,4 @@ desc: |
    traceback.
  * The users/self module can now be activated again via setting the UCR
    variable umc/module/udm/users/self/disabled to false.
-bug: [40747, 38639, 40831, 32843, 37904, 38635, 39016]
+bug: [40747, 38639, 32843, 37904, 38635, 39016]
