@@ -1,0 +1,13 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-appcenter
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * univention-register-apps now uses the new appcenter API and has been
+   deprecated.
+ * An error during loading the appcenter cache has been fixed which prevented
+   using the appcenter when the cache file was corrupted.
+bug: [40754, 40875]
