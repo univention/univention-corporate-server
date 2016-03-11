@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-13) unstable; urgency=medium
+
+  * Bug #38639: show tree root again (revert Bug #40831)
+
+ -- Florian Best <best@univention.de>  Fri, 11 Mar 2016 07:22:02 +0100
+
 univention-management-console-module-udm (6.0.11-12) unstable; urgency=medium
 
   * Bug #38639: show only at maximum 3 entries in the value columns

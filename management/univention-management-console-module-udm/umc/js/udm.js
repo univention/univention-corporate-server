@@ -917,7 +917,7 @@ define([
 				model: model,
 				persist: false,
 				region: 'nav',
-				showRoot: 'navigation' == this.moduleFlavor,
+//				showRoot: 'navigation' == this.moduleFlavor,
 				// customize the method getIconClass()
 				getIconClass: function(/*dojo.data.Item*/ item, /*Boolean*/ opened) {
 					return tools.getIconClass((item.icon || 'udm-container-cn') + '.png');

@@ -1067,14 +1067,20 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 	for dn, attrs in result:
 		modules = udm_modules.objectType(None, ldap_connection, dn, attrs)
 		if not modules:
-			MODULE.warn('Could not identify LDAP object %s' % dn)
+			MODULE.warn('Could not identify LDAP object %r' % (dn,))
 			continue
 		if object_type == '$containers$' and not udm_modules.childs(modules[0]):
 			continue
-		module = UDM_Module(modules[0])
+		if len(modules) > 1:
+			MODULE.warn('Found multiple object types for %r: %r' % (dn, modules))
+			MODULE.info('dn: %r, attrs: %r' % (dn, attrs))
+		for mod in modules:
+			module = UDM_Module(mod)
+			if module.module:
+				break
 
 		if not module.module:
-			MODULE.process('The UDM module %s could not be found. Ignoring LDAP object %s' % (modules[0], dn))
+			MODULE.process('The UDM module %r could not be found. Ignoring LDAP object %r' % (modules[0], dn))
 			continue
 		if module.superordinate:
 			so_module = UDM_Module(module.superordinate)
@@ -1091,7 +1097,7 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 
 
 def split_module_attr(value):
-	if value.find(':') > 0:
+	if ': ' in value:
 		return value.split(': ', 1)
 	return (None, value)
 
