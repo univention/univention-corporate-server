@@ -1,5 +1,6 @@
 univention-appcenter (5.0.20-21) unstable; urgency=medium
 
+  * Bug #40754: use the new python code in univention-register-apps
   * Bug #40875: fix EOFError if pickle cache file is empty
 
  -- Florian Best <best@univention.de>  Fri, 11 Mar 2016 06:43:48 +0100

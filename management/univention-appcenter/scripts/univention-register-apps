@@ -1,5 +1,4 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8 -*-
+#!/bin/bash
 #
 # Univention App Center
 #  univention-register-apps
@@ -32,42 +31,13 @@
 # <http://www.gnu.org/licenses/>.
 #
 
-import sys
-from optparse import OptionParser
+echo "univention-register-app is deprecated. Please use univention-app update; univention-app register instead." >&2
+for i; do
+	case "$i" in -h|--help)
+		univention-app register --help
+		exit $?
+	;; esac
+done
 
-from univention.lib.package_manager import PackageManager
-from univention.updater.tools import UniventionUpdater
-from univention.config_registry import ConfigRegistry
-from univention.management.console.modules.appcenter.util import ComponentManager, install_opener
-from univention.management.console.modules.appcenter.app_center import Application
-
-ucr = ConfigRegistry()
-ucr.load()
-
-def register_all_installed():
-	uu = UniventionUpdater(False)
-	component_manager = ComponentManager(ucr, uu)
-	package_manager = PackageManager(lock=False)
-
-	install_opener(ucr)
-	for app in Application.all_installed(package_manager):
-		app.register(component_manager, package_manager)
-		app.tell_ldap(ucr, package_manager, inform_about_error=False)
-	Application._set_ucr_codes_variable(component_manager.ucr, package_manager)
-
-if __name__ == '__main__':
-	args = ucr.get('hostname'), ucr.get('domainname'), Application.get_server(with_scheme=True)
-	usage = '%prog'
-	description = '%%prog registers all installed apps. The installation status is written to LDAP and some apps change the overview site at "https://%s.%s/ucs-overview". The Univention App Center server (%s) needs to be reachable' % args
-	parser = OptionParser(usage=usage, description=description)
-	parser.parse_args()
-
-	try:
-		register_all_installed()
-	except Exception as exc:
-		sys.stderr.write('univention-register-apps did not succeed. Check the internet connection and try again.\n')
-		sys.exit(1)
-	else:
-		sys.stdout.write('All applications have been registered.\n')
-		sys.exit(0)
-
+univention-app update
+univention-app register "$@"
