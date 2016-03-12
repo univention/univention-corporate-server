@@ -55,6 +55,17 @@ check_and_reinstall ()
 	fi
 }
 
+# shell-univention-lib is proberly not installed, so use a local function
+is_ucr_true () {
+    local value
+    value="$(/usr/sbin/univention-config-registry get "$1")"
+    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+        1|yes|on|true|enable|enabled) return 0 ;;
+        0|no|off|false|disable|disabled) return 1 ;;
+        *) return 2 ;;
+    esac
+}
+
 echo -n "Running postup.sh script:"
 echo >> "$UPDATER_LOG"
 date >>"$UPDATER_LOG" 2>&1
