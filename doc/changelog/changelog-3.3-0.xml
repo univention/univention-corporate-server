@@ -51,6 +51,10 @@
 					The Linux kernel has been updated to <wordasword>3.16</wordasword>. It provides a better hardware
 					support and many bugfixes (<u:bug>40687</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The <package>open-vm-tools</package> package has been updated to <wordasword>9.4.6</wordasword>
+					in order to be compatible with the updated Linux kernel (<u:bug>40687</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 		<section id="changelog:updater">
