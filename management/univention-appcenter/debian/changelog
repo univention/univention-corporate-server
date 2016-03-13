@@ -1,3 +1,12 @@
+univention-appcenter (5.0.20-22) unstable; urgency=medium
+
+  * Bug #40874: AppCenter is unable to load if syntax error in
+    license_types.ini
+  * Bug #40882: TypeError: appcenter.app.AppAttribute is not JSON
+    serializable
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Mar 2016 00:21:47 +0100
+
 univention-appcenter (5.0.20-21) unstable; urgency=medium
 
   * Bug #40754: use the new python code in univention-register-apps

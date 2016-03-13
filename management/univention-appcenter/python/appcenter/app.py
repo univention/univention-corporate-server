@@ -32,16 +32,17 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+import sys
 import os
 import os.path
 from glob import glob
 import re
-from ConfigParser import RawConfigParser, NoOptionError, NoSectionError, MissingSectionHeaderError
+from ConfigParser import RawConfigParser, NoOptionError, NoSectionError, ParsingError
 from copy import copy
 from distutils.version import LooseVersion
 import platform
 from inspect import getargspec
-from cPickle import load, dump, PickleError
+from json import dumps, loads
 
 from univention.lib.package_manager import PackageManager
 
@@ -65,7 +66,7 @@ def _read_ini_file(filename):
 	try:
 		with open(filename, 'rb') as f:
 			parser.readfp(f)
-	except (IOError, MissingSectionHeaderError):
+	except (IOError, ParsingError):
 		pass
 	return parser
 
@@ -964,49 +965,86 @@ class AppManager(object):
 	_locale = None
 	_cache = []
 	_package_manager = None
-	_pickle_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.pkl')
+	_cache_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.json')
 	_AppClass = App
 
 	@classmethod
-	def _invalidate_pickle_cache(cls):
-		if cls._pickle_file:
-			pickle_pattern = re.sub(r'%\(.*?\).', '*', cls._pickle_file)
-			for pickle_file in glob(pickle_pattern):
+	def _invalidate_cache_file(cls):
+		if cls._cache_file:
+			cache_pattern = re.sub(r'%\(.*?\).', '*', cls._cache_file)
+			for cache_file in glob(cache_pattern):
 				try:
-					os.unlink(pickle_file)
+					os.unlink(cache_file)
 				except OSError:
 					pass
 
 	@classmethod
-	def _get_pickle_cache_file(cls):
-		if cls._pickle_file:
-			return cls._pickle_file % {'locale': cls._locale}
+	def _get_cache_file(cls):
+		if cls._cache_file:
+			return cls._cache_file % {'locale': cls._locale}
 
 	@classmethod
-	def _save_pickle_cache(cls, cache):
-		pickle_file = cls._get_pickle_cache_file()
-		if pickle_file:
+	def _save_cache(cls, cache):
+		cache_file = cls._get_cache_file()
+		if cache_file:
 			try:
-				with open(pickle_file, 'wb') as fd:
-					dump(cache, fd, 2)
-			except (IOError, PickleError):
+				cache_obj = dumps([app.attrs_dict() for app in cache], indent=2)
+				with open(cache_file, 'wb') as fd:
+					fd.write(cache_obj)
+			except (IOError, TypeError):
 				return False
 			else:
 				return True
 
 	@classmethod
-	def _load_pickle_cache(cls):
-		pickle_file = cls._get_pickle_cache_file()
-		if pickle_file:
+	def _load_cache(cls):
+		cache_file = cls._get_cache_file()
+		if cache_file:
 			try:
-				with open(pickle_file, 'rb') as fd:
-					return load(fd)
-			except (EOFError, EnvironmentError, PickleError):
+				cache_modified = os.stat(cache_file).st_mtime
+				for master_file in cls._relevant_master_files():
+					master_file_modified = os.stat(master_file).st_mtime
+					if cache_modified < master_file_modified:
+						return None
+				with open(cache_file, 'rb') as fd:
+					json = fd.read()
+				cache = loads(json)
+			except (OSError, IOError, ValueError):
 				return None
+			else:
+				return [cls._build_app_from_attrs(attrs) for attrs in cache]
+
+	@classmethod
+	def _relevant_master_files(cls):
+		ret = set()
+		ret.add(os.path.join(CACHE_DIR, '.index.json.gz'))
+		classes_visited = set()
+
+		def add_class(klass):
+			if klass in classes_visited:
+				return
+			classes_visited.add(klass)
+			try:
+				module = sys.modules[klass.__module__]
+				ret.add(module.__file__)
+			except (AttributeError, KeyError):
+				pass
+			if hasattr(klass, '__bases__'):
+				for base in klass.__bases__:
+					add_class(base)
+			if hasattr(klass, '__metaclass__'):
+				add_class(klass.__metaclass__)
+
+		add_class(cls._AppClass)
+		return ret
 
 	@classmethod
 	def _relevant_ini_files(cls):
 		return glob(os.path.join(CACHE_DIR, '*.ini'))
+
+	@classmethod
+	def _build_app_from_attrs(cls, attrs):
+		return cls._AppClass(**attrs)
 
 	@classmethod
 	def _build_app_from_ini(cls, ini):
@@ -1017,7 +1055,7 @@ class AppManager(object):
 		ucr_load()
 		cls._cache[:] = []
 		cls.reload_package_manager()
-		cls._invalidate_pickle_cache()
+		cls._invalidate_cache_file()
 		_get_rating_items._cache = None
 		_get_license_descriptions._cache = None
 
@@ -1026,7 +1064,7 @@ class AppManager(object):
 		if not cls._cache:
 			cls._locale = get_locale() or 'en'
 			try:
-				cached_apps = cls._load_pickle_cache()
+				cached_apps = cls._load_cache()
 				if cached_apps is not None:
 					cls._cache = cached_apps
 					app_logger.debug('Loaded %d apps from cache' % len(cls._cache))
@@ -1036,7 +1074,7 @@ class AppManager(object):
 						if app is not None:
 							cls._cache.append(app)
 					cls._cache.sort()
-					if cls._save_pickle_cache(cls._cache):
+					if cls._save_cache(cls._cache):
 						app_logger.debug('Saved %d apps into cache' % len(cls._cache))
 					else:
 						app_logger.warn('Unable to cache apps')

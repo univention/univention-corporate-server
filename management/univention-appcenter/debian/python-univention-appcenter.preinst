@@ -36,8 +36,8 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 5.0.19-43; then
 	ln -s /usr/share/pyshared/univention/appcenter/ucr.py /usr/lib/pymodules/python2.7/univention/appcenter/ucr.py
 fi
 
-for pkl in $(ls /var/cache/univention-appcenter/.apps.*.pkl); do
-	rm "$pkl"
-done
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt 5.0.20-22; then
+	rm /var/cache/univention-appcenter/.apps.*.pkl
+fi
 
 exit 0
