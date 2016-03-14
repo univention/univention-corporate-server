@@ -1,3 +1,9 @@
+ucs-test (6.0.33-43) unstable; urgency=low
+
+  * Bug #40558: tests/54_smbtorture
+
+ -- Felix Botner <botner@univention.de>  Mon, 14 Mar 2016 16:47:56 +0100
+
 ucs-test (6.0.33-42) unstable; urgency=medium
 
   * 20_appcenter/60_check_appcenter_performance: Update Appcenter before 
