@@ -3,9 +3,12 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-system-setup
-fix: 9.0.4-3.947.201602221329
+fix: 9.0.4-4.949.201603141605
 desc: |
  This update addresses the following issue(s):
  * App Appliances now ensure that the UCS domain they join has an activated license.
  * The virtual keyboard to enter special characters now supports touch devices.
-bug: [39700, 40572]
+ * The initial setup used a script to update the App Center files that failed
+   under certain circumstances. Now a script is called that works in unjoined
+   environments.
+bug: [39700, 40572, 40897]
