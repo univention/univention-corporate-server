@@ -522,12 +522,10 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 		else:
 			mkdir(meta_inf_dir)
 			mkdir(os.path.join(repo_dir, 'maintained', 'component'))
-			with open(os.path.join(meta_inf_dir, '..', 'categories.ini'), 'wb') as f:
-				categories = urlopen('%s/meta-inf/categories.ini' % AppManager.get_server()).read()
-				f.write(categories)
-			with open(os.path.join(meta_inf_dir, '..', 'rating.ini'), 'wb') as f:
-				rating = urlopen('%s/meta-inf/rating.ini' % AppManager.get_server()).read()
-				f.write(rating)
+			for supra_file in ['categories.ini', 'rating.ini', 'license_types.ini']:
+				with open(os.path.join(meta_inf_dir, '..', supra_file), 'wb') as f:
+					categories = urlopen('%s/meta-inf/%s' % (AppManager.get_server(), supra_file)).read()
+					f.write(categories)
 			server = 'http://%s' % args.appcenter_host
 			ucr_save({'repository/app_center/server': server, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
 			DevRegenerateMetaInf.call(ucs_version=args.ucs_version, path=args.path, appcenter_host=server)
