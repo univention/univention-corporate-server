@@ -7,26 +7,39 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
-## tags: [appcenter, performance, SKIP]
+## tags: [appcenter, performance]
 
 import univention.lib.umc_connection as UMCC
 import univention.testing.utils as utils
+from univention.appcenter import actions
 import time
 
 def main():
+	print("Appcenter update starting")
+	appcenter_update = actions.update.Update()
+	appcenter_update.call()
+	
+	print("Appcenter update done")
 	max_time = 5
 	account = utils.UCSTestDomainAdminCredentials()
 	request_query = ('appcenter/query', {}, )
-	c = UMCC.UMCConnection('localhost')
 	
+	print("Getting umc_connection")
+	c = UMCC.UMCConnection('localhost')
 	c.auth(account.username, account.bindpw)
+
+	print("Start request to appcenter")
+	# To get the best performance result, appcenter_update.call() is called again.
+	appcenter_update.call()
 	start_time = time.time()
 	c.request(*request_query)
 	end_time = time.time()
-	#print end_time - start_time # What would be a good value?
+	print("Request finished")
 	
 	if end_time - start_time > max_time:
 		utils.fail("The appcenter answered too slow\nThreshold is %s sec; Appcenter replied in %s sec." % (max_time, end_time - start_time, ))
+	else:
+		print("Success: The appcenter answered in %s sec." % (end_time - start_time, ))
 
 if __name__ == '__main__':
 	main()
