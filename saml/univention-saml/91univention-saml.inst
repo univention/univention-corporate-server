@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION="4"
+VERSION="5"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -156,6 +156,7 @@ udm settings/extended_attribute create "$@" \
 	--set name="serviceprovider" \
 	--set CLIName="serviceprovider" \
 	--set module="users/user" \
+	--set module="settings/usertemplate" \
 	--set tabName="Account" \
 	--set translationTabName='"de_DE" "Konto"' \
 	--set tabPosition=4 \
@@ -171,6 +172,12 @@ udm settings/extended_attribute create "$@" \
 	--set tabAdvanced=0 \
 	--set mayChange=1 \
 	--set multivalue=1 || die
+
+if joinscript_check_version_in_range_executed "1" "4"; then
+	udm settings/extended_attribute modify "$@" \
+		--dn "cn=serviceprovider,cn=custom attributes,cn=univention,$ldap_base" \
+		--append module="settings/usertemplate"
+fi
 
 udm saml/serviceprovider create "$@" \
 	--ignore_exists \
