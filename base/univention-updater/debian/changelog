@@ -1,3 +1,9 @@
+univention-updater (9.100.4-5) unstable; urgency=medium
+
+  * script/postup.sh: Fix shell escaping (Bug #40692)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Mar 2016 08:34:40 +0100
+
 univention-updater (9.100.4-4) unstable; urgency=medium
 
   * Added is_ucr_true to postup.sh (Bug #40692)
