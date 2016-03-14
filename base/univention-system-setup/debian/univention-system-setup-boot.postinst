@@ -73,7 +73,7 @@ if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
 	fi
 
 	# make sure that the App Center cache is up-to-date
-	/usr/sbin/univention-register-apps
+	[ -x /usr/bin/univention-app ] && univention-app update
 fi
 
 #DEBHELPER#

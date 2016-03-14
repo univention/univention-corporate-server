@@ -1,3 +1,10 @@
+univention-system-setup (9.0.4-4) unstable; urgency=medium
+
+  * Bug #40897: Do not call univention-register-apps when you want to call
+    univention-app update
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Mar 2016 16:03:25 +0100
+
 univention-system-setup (9.0.4-3) unstable; urgency=low
 
   * Bug #40572: Adapt virtual keyboard for touch devices
