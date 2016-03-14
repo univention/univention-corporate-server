@@ -12,6 +12,8 @@ RETVAL=100
 
 smbtorture //"$(hostname -f)"/sysvol -W $(ucr get windows/domain) --option="realm=$(hostname -d)" -UAdministrator%univention raw.composite || fail_fast 110
 
-smbtorture //"$(hostname -f)"/sysvol -W $(ucr get windows/domain) --option="realm=$(hostname -d)" -UAdministrator%univention ALL || fail_fast 110
+# TODO
+# add more tests
+#smbtorture //"$(hostname -f)"/sysvol -W $(ucr get windows/domain) --option="realm=$(hostname -d)" -UAdministrator%univention ALL || fail_fast 110
 
 exit $RETVAL
