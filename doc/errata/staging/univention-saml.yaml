@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [0,1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-saml
+fix: 3.0.27-4.103.201603141359
+desc: |
+ This update addresses the following issue(s):
+ * The extended attribute for the SAML serviceprovider can now be used
+   in user templates
+bug: [40895]
