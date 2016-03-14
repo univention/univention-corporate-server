@@ -88,8 +88,8 @@ class List(UniventionAppAction):
 			whitelist = re.split('\s*,\s*', whitelist)
 		for app in apps:
 			if blacklist or whitelist:
-				app = App.from_ini(app.get_ini_file(), locale=False)
-				if cls._blacklist_includes_app(blacklist, app) and not cls._blacklist_includes_app(whitelist, app):
+				unlocalised_app = App.from_ini(app.get_ini_file(), locale=False)
+				if cls._blacklist_includes_app(blacklist, unlocalised_app) and not cls._blacklist_includes_app(whitelist, unlocalised_app):
 					continue
 			if app.end_of_life and not app.is_installed():
 				continue

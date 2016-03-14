@@ -61,14 +61,15 @@ CONTAINER_SCRIPTS_PATH = '/usr/share/univention-docker-container-mode/'
 app_logger = get_base_logger().getChild('apps')
 
 
-def _read_ini_file(filename):
-	parser = RawConfigParser()
+def _read_ini_file(filename, parser_class=RawConfigParser):
+	parser = parser_class()
 	try:
 		with open(filename, 'rb') as f:
 			parser.readfp(f)
 	except (IOError, ParsingError):
-		pass
-	return parser
+		return parser_class()
+	else:
+		return parser
 
 
 def _get_from_parser(parser, section, attr):
@@ -274,16 +275,10 @@ class AppLocalisedListAttribute(AppListAttribute):
 	def _translate(cls, fname, locale, value, reverse=False):
 		if fname not in cls._cache:
 			cls._cache[fname] = translations = {}
-			localiser = CaseSensitiveConfigParser()
 			cached_file = os.path.join(CACHE_DIR, '.%s' % fname)
-			try:
-				with open(cached_file, 'rb') as f:
-					localiser.readfp(f)
-			except IOError:
-				pass
-			else:
-				for section in localiser.sections():
-					translations[section] = dict(localiser.items(section))
+			localiser = _read_ini_file(cached_file, CaseSensitiveConfigParser)
+			for section in localiser.sections():
+				translations[section] = dict(localiser.items(section))
 		translations = cls._cache[fname].get(locale)
 		if translations:
 			if reverse:
@@ -504,11 +499,7 @@ class App(object):
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
 		meta_file = os.path.join(CACHE_DIR, '%s.meta' % component_id)
 		ini_parser = _read_ini_file(ini_file)
-		if os.path.exists(meta_file):
-			#app_logger.debug('Using additional %s' % meta_file)
-			meta_parser = _read_ini_file(meta_file)
-		else:
-			meta_parser = RawConfigParser()  # empty
+		meta_parser = _read_ini_file(meta_file)
 		attr_values = {}
 		for attr in cls._attrs:
 			value = None

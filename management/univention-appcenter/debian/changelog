@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-23) unstable; urgency=medium
+
+  * Bug #40874: Fix inconsistent behaviour when there is a syntax error in
+    license_types.ini (and similar)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 14 Mar 2016 10:40:46 +0100
+
 univention-appcenter (5.0.20-22) unstable; urgency=medium
 
   * Bug #40874: AppCenter is unable to load if syntax error in
