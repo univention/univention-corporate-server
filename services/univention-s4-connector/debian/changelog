@@ -1,3 +1,9 @@
+univention-s4-connector (8.100.1-1) unstable; urgency=medium
+
+  * Bug #40698: Adjust package dependency
+
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Mar 2016 15:50:26 +0100
+
 univention-s4-connector (8.0.33-93) unstable; urgency=medium
 
   * Adjust version check in postinst (Bug #39365)
