@@ -6,8 +6,10 @@ src: univention-system-setup
 fix: 9.0.4-5.950.201603150804
 desc: |
  This update addresses the following issue(s):
- * App Appliances now ensure that the UCS domain they join has an activated license.
- * The virtual keyboard to enter special characters now supports touch devices.
+ * App Appliances now ensure that the UCS domain they join has an activated
+   license.
+ * The virtual keyboard to enter special characters now supports touch
+   devices.
  * The initial setup used a script to update the App Center files that failed
    under certain circumstances. Now a script is called that works in unjoined
    environments.

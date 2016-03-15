@@ -6,8 +6,8 @@ src: univention-management-console-module-udm
 fix: 6.0.11-14.644.201603111219
 desc: |
  This update addresses the following issue(s):
- * The PTR-Record entries are now sorted numerical in the overview of a reverse
-   zone.
+ * The PTR-Record entries are now sorted numerical in the overview of a
+   reverse zone.
  * The DNS module now displays more information in the grid columns and
    forward zones are now shown before reverse zones in the tree view.
  * Searching for a specific object type underneath of cn=univention in the
