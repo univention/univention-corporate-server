@@ -117,6 +117,12 @@ then
 	switch_to_openjdk7
 fi
 
+# reinstall apps
+for app in $update_ucs33_installedapps; do
+	install "$app"
+done
+ucr unset update/ucs33/installedapps  >>"$UPDATER_LOG" 2>&1
+
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	install univention-basesystem
 elif [ "$server_role" = "domaincontroller_master" ]; then
@@ -168,11 +174,11 @@ fi
 ###	repository/online/component/3.2-6-errata=false \
 ###	repository/online/component/3.2-6-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
 
-# Set errata component for UCS 3.2-8
+# Set errata component for UCS 3.3.0
 ucr set \
-	repository/online/component/3.2-8-errata=enabled \
-	repository/online/component/3.2-8-errata/description="Errata updates for UCS 3.2-8" \
-	repository/online/component/3.2-8-errata/version="3.2" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/3.3-0-errata=enabled \
+	repository/online/component/3.3-0-errata/description="Errata updates for UCS 3.3-0" \
+	repository/online/component/3.3-0-errata/version="3.3" >>"$UPDATER_LOG" 2>&1
 
 # make sure that UMC server is restarted (Bug #33426)
 echo "

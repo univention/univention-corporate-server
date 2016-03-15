@@ -1,3 +1,18 @@
+univention-updater (9.100.4-6) unstable; urgency=low
+
+  * Bug #40704:
+  script/postup.sh:
+   - enable 3.3-0-errata
+   - reinstall apps in update/ucs33/installedapps
+  script/preup.sh:
+   - added check_for_minimum_errata
+   - save packages status
+   - save auto installed packages
+   - mark known apps as installed
+   - added apt-get dist-upgrade Debug::pkgProblemResolver=yes dry run
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Mar 2016 18:01:44 +0100
+
 univention-updater (9.100.4-5) unstable; urgency=medium
 
   * script/postup.sh: Fix shell escaping (Bug #40692)
