@@ -339,10 +339,15 @@
 	</section>
 		-->
 
-		<!--
 	<section id="changelog:deployment">
 		<title>Software deployment</title>
-
+		<itemizedlist>
+			<listitem><simpara>
+				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
+				have been adapted to the needs of UCS 3.3 (<u:bug>40704</u:bug>).
+			</simpara></listitem>
+		</itemizedlist>
+		<!--
 		<section id="changelog:deployment:cli">
 			<title>Software deployment command line tools</title>
 			<itemizedlist>
@@ -358,8 +363,8 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-	</section>
 		-->
+	</section>
 
 	<!--
 	<section id="changelog:lib">
