@@ -29,12 +29,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+function ucr_string(){
+	string=""
+	for service in "gdm" "kdm" "login" "other" "sshd"; do
+		for user in "group/Administrators" "group/Domain_Admins" "user/root"; do
+			string="$string auth/$service/$user$1"
+		done
+	done
+	string="$string auth/sudo$1"
+	echo $string > /root/log
+	echo $string
+}
+
 function allow_root_login() {
-	ucr unset --force auth/gdm/user/root \
-		auth/kdm/user/root \
-		auth/login/user/root \
-		auth/other/user/root \
-		auth/sshd/user/root
+	ucr unset --force $(ucr_string "")
 
 	# reset su restrictions
 	ucr unset --force auth/su/restrict \
@@ -43,20 +51,12 @@ function allow_root_login() {
 	# set to the default values, these values are not set
 	# during the pam installation, because they were set
 	# in the force layer
-	ucr set auth/gdm/user/root?yes \
-		auth/kdm/user/root?yes \
-		auth/login/user/root?yes \
-		auth/other/user/root?yes \
-		auth/sshd/user/root?yes
+	ucr set $(ucr_string "?yes")
 }
 
 function restrict_root_login() {
 	# disallow root login
-	ucr set --force auth/gdm/user/root=no \
-		auth/kdm/user/root=no \
-		auth/login/user/root=no \
-		auth/other/user/root=no \
-		auth/sshd/user/root=no
+	ucr set --force $(ucr_string "=no")
 
 	# disallow su
 	ucr set --force auth/su/restrict=yes \

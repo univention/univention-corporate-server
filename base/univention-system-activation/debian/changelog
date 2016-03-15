@@ -1,3 +1,9 @@
+univention-system-activation (1.0.1-6) unstable; urgency=medium
+
+  * Bug #39700: more restrictions like auth/sudo=no
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 15 Mar 2016 18:07:26 +0100
+
 univention-system-activation (1.0.1-5) unstable; urgency=medium
 
   * Bug #39700: Changed help text 
