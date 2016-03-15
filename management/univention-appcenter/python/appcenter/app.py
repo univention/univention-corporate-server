@@ -1003,7 +1003,15 @@ class AppManager(object):
 			except (OSError, IOError, ValueError):
 				return None
 			else:
-				return [cls._build_app_from_attrs(attrs) for attrs in cache]
+				try:
+					cache_attributes = set(cache[0].keys())
+				except (TypeError, AttributeError, IndexError, KeyError):
+					return None
+				else:
+					code_attributes = set(attr.name for attr in cls._AppClass._attrs)
+					if cache_attributes != code_attributes:
+						return None
+					return [cls._build_app_from_attrs(attrs) for attrs in cache]
 
 	@classmethod
 	def _relevant_master_files(cls):
