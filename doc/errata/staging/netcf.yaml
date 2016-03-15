@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: netcf
+fix: 0.1.9-2.5.201603151048
+desc: |
+ The package was re-built and re-published to satisfy the runtime dependency
+ of libvirt.
+bug: [40317]
