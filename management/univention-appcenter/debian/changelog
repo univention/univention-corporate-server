@@ -1,6 +1,12 @@
+univention-appcenter (5.0.20-26) unstable; urgency=medium
+
+  * Bug #40874: Log broken ini files
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Mar 2016 11:35:36 +0100
+
 univention-appcenter (5.0.20-25) unstable; urgency=medium
 
-  * Bug #40874: Further checks against outdated cache
+  * Bug #40882: Further checks against outdated cache
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 15 Mar 2016 11:18:07 +0100
 

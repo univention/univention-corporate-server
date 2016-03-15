@@ -67,6 +67,7 @@ def _read_ini_file(filename, parser_class=RawConfigParser):
 		with open(filename, 'rb') as f:
 			parser.readfp(f)
 	except (IOError, ParsingError):
+		app_logger.warn('Could not read %s' % filename)
 		return parser_class()
 	else:
 		return parser
