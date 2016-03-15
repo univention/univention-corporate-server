@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-system-setup
-fix: 9.0.4-4.949.201603141605
+fix: 9.0.4-5.950.201603150804
 desc: |
  This update addresses the following issue(s):
  * App Appliances now ensure that the UCS domain they join has an activated license.
