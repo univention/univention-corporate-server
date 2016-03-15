@@ -65,12 +65,16 @@ function restrict_root_login() {
 
 if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
 	echo
-	echo "When started, deactivates all access to the UCS and enforces the"
-	echo "redirection to a system activation web service. This service will be"
+	echo "When called with 'start', deactivates all access to the UCS and enforces"
+	echo "the redirection to a system activation web service. This service will be"
 	echo "disabled and previous apache sites will be re-activated after an"
 	echo "activated license has been imported successfully."
 	echo
-	echo "usage: $(basename $0) [start|stop]"
+	echo "The action 'restrict-root' disables root access to the machine and"
+	echo "'allow-root' reverts these restrictions. Both will also be called along"
+	echo "with the actions 'start'/'stop', respectively."
+	echo
+	echo "usage: $(basename $0) [start|stop|allow-root|restrict-root]"
 	echo
 	exit 0
 fi

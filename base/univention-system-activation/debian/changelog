@@ -1,3 +1,9 @@
+univention-system-activation (1.0.1-5) unstable; urgency=medium
+
+  * Bug #39700: Changed help text 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 15 Mar 2016 11:28:24 +0100
+
 univention-system-activation (1.0.1-4) unstable; urgency=low
 
   * Bug #39700: removed the setup of root restrictions in postinst file
