@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-14) unstable; urgency=low
+
+  * Bug #40621: New 4.1-1r2 AMI image
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 15 Mar 2016 09:58:15 +0100
+
 ucs-ec2-tools (2.0.0-13) unstable; urgency=low
 
   * Bug #40611: disabled docker test in run_admember_tests
