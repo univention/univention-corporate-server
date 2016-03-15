@@ -139,6 +139,10 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
+# Update to UCS 3.3-0 remove php5-suhosin
+dpkg --purge php5-suhosin >>"$UPDATER_LOG" 2>&1
+# End Update to UCS 3.3-0 remove php5-suhosin, can be removed after 3.3.0
+
 # removes temporary sources list (always required)
 if [ -e "/etc/apt/sources.list.d/00_ucs_temporary_installation.list" ]; then
 	rm -f /etc/apt/sources.list.d/00_ucs_temporary_installation.list

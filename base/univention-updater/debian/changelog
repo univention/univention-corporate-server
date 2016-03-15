@@ -1,3 +1,9 @@
+univention-updater (9.100.4-7) unstable; urgency=low
+
+  * Bug #40704: purge php5-suhosin in postup
+
+ -- Felix Botner <botner@univention.de>  Tue, 15 Mar 2016 18:21:04 +0100
+
 univention-updater (9.100.4-6) unstable; urgency=low
 
   * Bug #40704:
