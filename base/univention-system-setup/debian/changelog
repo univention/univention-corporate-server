@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-6) unstable; urgency=medium
+
+  * Bug #39700: Call the appliance by its name 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 15 Mar 2016 18:34:11 +0100
+
 univention-system-setup (9.0.4-5) unstable; urgency=low
 
   * Bug #40572: Adapt style for virtual keyboard

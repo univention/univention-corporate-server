@@ -244,7 +244,7 @@ class Instance(Base, ProgressMixin):
 		if is_appliance and is_nonmaster:
 			activated = util.domain_has_activated_license(values.get('nameserver1'), username, password)
 			if not activated:
-				raise UMC_Error(_('App Appliance could not be joined because the license on the DC Master is not activated.'))
+				raise UMC_Error(_('%s Appliance could not be joined because the license on the DC Master is not activated.') % (ucr.get('umc/web/appliance/name'),))
 
 		def _thread(obj, username, password):
 			# acquire the lock until the scripts have been executed

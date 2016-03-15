@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-02-01 14:24-0500\n"
+"POT-Creation-Date: 2016-03-15 18:14+0100\n"
 "PO-Revision-Date: 2015-07-01 12:23+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -11,6 +11,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: umc/python/setup/__init__.py:247
+#, python-format
+msgid ""
+"%s Appliance could not be joined because the license on the DC Master is not "
+"activated."
+msgstr ""
+"%s Appliance kann nicht gejoined werden. Es liegt keine aktivierte Lizenz "
+"auf dem DC Master vor."
 
 #: umc/python/setup/__init__.py:493
 msgid "A domain name server needs to be specified."
@@ -24,19 +33,11 @@ msgstr ""
 "Ein gültiger NetBIOS Name darf nicht länger als 13 Zeichen sein. Wenn Samba "
 "installiert wird, sollte der Rechnername gekürzt werden."
 
-#: umc/python/setup/__init__.py:241
+#: umc/python/setup/__init__.py:240
 msgid "Already joined systems cannot be joined."
 msgstr ""
 "System, die bereits einer Domäne beigetreten sind können nicht erneut "
 "beitreten."
-
-#: umc/python/setup/__init__.py:247
-msgid ""
-"App Appliance could not be joined because the license on the DC Master is "
-"not activated."
-msgstr ""
-"App Appliance kann nicht gejoined werden. Es liegt keine aktivierte "
-"Lizenz auf dem DC Master vor."
 
 #: umc/python/setup/network.py:693
 msgid "Bond-primary must exist in bond-slaves"
@@ -46,7 +47,7 @@ msgstr "Bond-primary muss in bond-slaves enthalten sein"
 msgid "Business unit"
 msgstr "Abteilung"
 
-#: umc/python/setup/__init__.py:510 umc/python/setup/util.py:173
+#: umc/python/setup/__init__.py:510 umc/python/setup/util.py:175
 msgid ""
 "Cannot automatically determine the domain. Please specify the server's fully "
 "qualified domain name."
@@ -68,7 +69,7 @@ msgstr "Kann Gerät %s nicht verwenden: Gerät muss unkonfiguriert sein"
 msgid "Common name for the root SSL certificate"
 msgstr "Allgemeiner Name (common name) für das Root-SSL-Zertifikat"
 
-#: umc/python/setup/util.py:727
+#: umc/python/setup/util.py:729
 #, python-format
 msgid "Could not query App Center: %s"
 msgstr "App-Center-Daten konnten nicht abgefragt werden: %s"
@@ -106,7 +107,7 @@ msgstr "Duplizierte IP-Addresse: %r"
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: umc/python/setup/__init__.py:219 umc/python/setup/__init__.py:294
+#: umc/python/setup/__init__.py:218 umc/python/setup/__init__.py:294
 #, python-format
 msgid "Encountered unexpected error during setup process: %s"
 msgstr "Ein unerwarteter Fehler trat während des Einrichtungsprozesses auf: %s"
@@ -247,7 +248,7 @@ msgid ""
 msgstr ""
 "Der folgende Wert ist zu lang, es sind nur %(max)s Zeichen erlaubt: %(name)s"
 
-#: umc/python/setup/__init__.py:789
+#: umc/python/setup/util.py:1032
 msgid ""
 "The given user is not member of the Domain Admins group in Active Directory. "
 "This is a requirement for the Active Directory domain join."

@@ -2402,7 +2402,7 @@ define([
 						if (this.ucr['umc/web/appliance/name'] && pageName == 'credentials-nonmaster') {
 							return this._domainHasActivatedLicense().then(lang.hitch(this, function(activatedLicense) {
 								if (!activatedLicense) {
-									msg = _('App Appliance could not be joined because the license on the DC Master is not activated.');
+									msg = _('%s Appliance could not be joined because the license on the DC Master is not activated.', this.ucr['umc/web/appliance/name']);
 									nextPage = pageName;
 									dialog.alert(msg);
 								}
