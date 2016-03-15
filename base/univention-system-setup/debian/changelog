@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-5) unstable; urgency=low
+
+  * Bug #40572: Adapt style for virtual keyboard
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 15 Mar 2016 08:01:08 +0100
+
 univention-system-setup (9.0.4-4) unstable; urgency=medium
 
   * Bug #40897: Do not call univention-register-apps when you want to call
