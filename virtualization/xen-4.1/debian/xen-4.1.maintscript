@@ -1,0 +1,18 @@
+# Provided by xend
+rm_conffile /etc/init.d/xencommons 4.1.6.1~
+rm_conffile /etc/default/xencommons 4.1.6.1~
+# XenLight is disabled
+rm_conffile /etc/bash_completion.d/xl.sh 4.1.6.1~
+# Moved to /usr/share/doc/xen-utils-common/examples/
+rm_conffile /etc/xen/README 4.1.6.1~
+rm_conffile /etc/xen/README.incompatibilities 4.1.6.1~
+rm_conffile /etc/xen/cpupool 4.1.6.1~
+rm_conffile /etc/xen/xm-config.xml 4.1.6.1~
+rm_conffile /etc/xen/xmexample.hvm 4.1.6.1~
+rm_conffile /etc/xen/xmexample.hvm-stubdom 4.1.6.1~
+rm_conffile /etc/xen/xmexample.nbd 4.1.6.1~
+rm_conffile /etc/xen/xmexample.pv-grub 4.1.6.1~
+rm_conffile /etc/xen/xmexample.vti 4.1.6.1~
+rm_conffile /etc/xen/xmexample1 4.1.6.1~
+rm_conffile /etc/xen/xmexample2 4.1.6.1~
+rm_conffile /etc/xen/xmexample3 4.1.6.1~
