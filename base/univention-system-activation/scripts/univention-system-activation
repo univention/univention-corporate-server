@@ -33,16 +33,17 @@ UCR_ARRRAY=()
 
 function ucr_build_array(){
 	for service in "gdm" "kdm" "login" "other" "sshd"; do
-		for user in "group/Administrators" "group/Domain Admins" "user/root"; do
+		for user in "group/Administrators" "group/Domain Admins" "group/Computers" "group/DC Backup Hosts" "group/DC Slave Hosts" "user/root"; do
 			UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/$service/$user$1")
 		done
+		UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/$service/restrict$2")
 	done
-	UCR_ARRAY=("${UCR_ARRAY[@]}" "string auth/sudo$1")
+	UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/sudo$1")
 }
 
 function allow_root_login() {
-	ucr_build_array ""
-	ucr unset --force "${UCR_ARRAY[@]}"
+	ucr_build_array "" ""
+	ucr unset --force "${UCR_ARRAY[@]}" 
 
 	# reset su restrictions
 	ucr unset --force auth/su/restrict \
@@ -51,13 +52,13 @@ function allow_root_login() {
 	# set to the default values, these values are not set
 	# during the pam installation, because they were set
 	# in the force layer
-	ucr_build_array "?yes"
+	ucr_build_array "?yes" "?yes"
 	ucr set "${UCR_ARRAY[@]}"
 }
 
 function restrict_root_login() {
 	# disallow root login
-	ucr_build_array "=no"
+	ucr_build_array "=no" "=yes"
 	ucr set --force "${UCR_ARRAY[@]}"
 
 	# disallow su

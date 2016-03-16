@@ -1,3 +1,9 @@
+univention-system-activation (1.0.1-8) unstable; urgency=medium
+
+  * Bug #39700: more restrictions, make sure auth/$service/restrict=yes is set 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 16 Mar 2016 13:20:35 +0100
+
 univention-system-activation (1.0.1-7) unstable; urgency=medium
 
   Bug #39700:
