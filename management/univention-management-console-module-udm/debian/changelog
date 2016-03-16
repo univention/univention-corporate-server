@@ -1,3 +1,10 @@
+univention-management-console-module-udm (6.0.11-15) unstable; urgency=medium
+
+  * Bug #40747: fix sorting also in the tree view
+  * Bug #38639: enhance formatter
+
+ -- Florian Best <best@univention.de>  Wed, 16 Mar 2016 11:17:09 +0100
+
 univention-management-console-module-udm (6.0.11-14) unstable; urgency=medium
 
   * Bug #37904: fix Bad search filter exception if searching for '*'

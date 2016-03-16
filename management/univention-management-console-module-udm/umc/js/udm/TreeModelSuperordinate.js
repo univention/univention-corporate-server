@@ -32,10 +32,11 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
+	"dojox/string/sprintf",
 	"umc/tools",
 	"umc/modules/udm/TreeModel",
 	"umc/modules/udm/cache"
-], function(declare, lang, array, tools, TreeModel, cache) {
+], function(declare, lang, array, sprintf, tools, TreeModel, cache) {
 	return declare('umc.modules.udm.TreeModelSuperordinate', [TreeModel], {
 
 		rootName: null,
@@ -63,7 +64,14 @@ define([
 				var superordinates = data instanceof Array ? lang.clone(data) : [];
 				// remove None superordinate
 				superordinates = array.filter(superordinates, function(item) { return item.id !== 'None'; });
-				superordinates.sort(tools.cmpObjects('objectType', 'label'));
+				superordinates = array.map(superordinates, lang.hitch(this, function(obj) {
+					obj.pseudolabel = obj.label;
+					if (obj.objectType == 'dns/reverse_zone') {
+						obj.pseudolabel = array.map(obj.label.split('.'), function(v) { return sprintf('%03d', v); }).join('.');
+					}
+					return obj;
+				}));
+				superordinates.sort(tools.cmpObjects('objectType', 'pseudolabel'));
 
 				try {
 					onComplete(superordinates);

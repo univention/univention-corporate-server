@@ -1393,7 +1393,8 @@ define([
 					label: _('Value'),
 					formatter: function(value) {
 						if (value instanceof Array) {
-							value = array.map(value, defaultFormatter);
+							value = array.map(array.filter(value, function(v) { return v; }), function(v) { return defaultFormatter(v).replace(/<br>/g, ', '); });
+							value = array.filter(value, function(v) { return v; }).join('<br>');
 						}
 						return value;
 					},
