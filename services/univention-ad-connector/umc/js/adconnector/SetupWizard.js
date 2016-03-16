@@ -46,9 +46,8 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/widgets/Wizard",
 	"./RadioButtons",
-	"./DownloadInfo",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, domClass, topic, styles, timing, dialog, ProgressBar, tools, server, Text, TextBox, Uploader, PasswordBox, Wizard, RadioButtons, DownloadInfo, _) {
+], function(declare, lang, array, domClass, topic, styles, timing, dialog, ProgressBar, tools, server, Text, TextBox, Uploader, PasswordBox, Wizard, RadioButtons, _) {
 	var modulePath = require.toUrl('umc/modules/adconnector');
 	styles.insertCssRule('.umc-adconnector-page .umcPageNav > .umcPageHelpText', 'background-repeat: no-repeat; background-position: 10px 0px; padding-top: 180px; min-height: 180px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
