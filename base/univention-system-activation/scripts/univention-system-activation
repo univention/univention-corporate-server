@@ -29,20 +29,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-function ucr_string(){
-	string=""
+UCR_ARRRAY=()
+
+function ucr_build_array(){
 	for service in "gdm" "kdm" "login" "other" "sshd"; do
-		for user in "group/Administrators" "group/Domain_Admins" "user/root"; do
-			string="$string auth/$service/$user$1"
+		for user in "group/Administrators" "group/Domain Admins" "user/root"; do
+			UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/$service/$user$1")
 		done
 	done
-	string="$string auth/sudo$1"
-	echo $string > /root/log
-	echo $string
+	UCR_ARRAY=("${UCR_ARRAY[@]}" "string auth/sudo$1")
 }
 
 function allow_root_login() {
-	ucr unset --force $(ucr_string "")
+	ucr_build_array ""
+	ucr unset --force "${UCR_ARRAY[@]}"
 
 	# reset su restrictions
 	ucr unset --force auth/su/restrict \
@@ -51,12 +51,14 @@ function allow_root_login() {
 	# set to the default values, these values are not set
 	# during the pam installation, because they were set
 	# in the force layer
-	ucr set $(ucr_string "?yes")
+	ucr_build_array "?yes"
+	ucr set "${UCR_ARRAY[@]}"
 }
 
 function restrict_root_login() {
 	# disallow root login
-	ucr set --force $(ucr_string "=no")
+	ucr_build_array "=no"
+	ucr set --force "${UCR_ARRAY[@]}"
 
 	# disallow su
 	ucr set --force auth/su/restrict=yes \

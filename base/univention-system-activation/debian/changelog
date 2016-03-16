@@ -1,3 +1,11 @@
+univention-system-activation (1.0.1-7) unstable; urgency=medium
+
+  Bug #39700:
+  * use array for ucr parameters
+  * catch IOError in entries.json ucr template
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 16 Mar 2016 11:56:37 +0100
+
 univention-system-activation (1.0.1-6) unstable; urgency=medium
 
   * Bug #39700: more restrictions like auth/sudo=no

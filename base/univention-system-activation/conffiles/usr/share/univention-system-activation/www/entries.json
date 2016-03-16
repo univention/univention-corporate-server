@@ -13,12 +13,15 @@ data = dict(
 
 # read given email address from system setup profile file
 reg_exp_email_line = re.compile(r'^email_address="(?P<email>[^"]*)"\s*$')
-with open('/var/cache/univention-system-setup/profile') as profile_file:
-	for line in profile_file:
-		m = reg_exp_email_line.match(line)
-		if m:
-			data['email'] = m.group('email')
-			break
+try:
+	with open('/var/cache/univention-system-setup/profile') as profile_file:
+		for line in profile_file:
+			m = reg_exp_email_line.match(line)
+			if m:
+				data['email'] = m.group('email')
+				break
+except IOError:
+	pass
 
 print json.dumps(data, indent=2)
 @!@
