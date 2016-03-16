@@ -33,6 +33,11 @@ check () {
 		protocol=${check%=*} result=${check#*=}
 		case "$protocol/$OPENSSL" in
 		ssl2/1.*) continue ;; # SSLv2 is completely disabled in OpenSSL-1.x
+		ssl3/1.*)
+			if ! dpkg --compare-versions "$OPENSSL" lt 1.0.2g-1; then
+				continue
+			fi
+			;;
 		tls1_?/0.*) continue ;; # OpenSSL-0.x does not yet support TLSv1_x
 		esac
 		info "$check"

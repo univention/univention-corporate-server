@@ -1,3 +1,9 @@
+ucs-test (6.0.33-45) unstable; urgency=medium
+
+  * Bug #40187: New openssl version in errata4.1-1 doesn't support ssl3
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 Mar 2016 17:10:57 +0100
+
 ucs-test (6.0.33-44) unstable; urgency=medium
 
   * 55_adconnector/050sync_password_sync: Added a test to check the
