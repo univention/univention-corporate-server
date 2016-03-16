@@ -274,17 +274,6 @@ define([
 					})
 				}]
 			}, {
-				'class': 'umc-adconnector-page-msi umc-adconnector-page',
-				name: 'msi-adconnector',
-				headerText: _('Installation of password service'),
-				helpText: ' ',
-				widgets: [{
-					type: DownloadInfo,
-					name: 'download',
-					// when reaching this site, the AD connector will be configured
-					configured: true
-				}]
-			}, {
 				'class': 'umc-adconnector-page-finished umc-adconnector-page',
 				name: 'finished-adconnector',
 				headerText: _('Completion of Active Directory Connection'),

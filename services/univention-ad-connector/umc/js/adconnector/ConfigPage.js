@@ -40,9 +40,8 @@ define([
 	"umc/widgets/StandbyMixin",
 	"umc/widgets/Text",
 	"umc/widgets/InfoUploader",
-	"./DownloadInfo",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, when, dialog, tools, render, Page, StandbyMixin, Text, InfoUploader, DownloadInfo, _) {
+], function(declare, lang, array, when, dialog, tools, render, Page, StandbyMixin, Text, InfoUploader,  _) {
 
 	var makeParagraphs = function(sentences) {
 		return array.map(sentences, function(para) {
@@ -107,15 +106,8 @@ define([
 				type: Text,
 				content: makeParagraphs([
 					_('By default the Active Directory connection does not transfer encrypted password data into the UCS directory service. The system uses the Active Directory Kerberos infrastructure for authentication.'),
-					_('However, in some scenarios it may be reasonable to transfer encrypted password hashes. In this case, The password service should be installed on the Active Directory server.')
+					_('However, in some scenarios it may be reasonable to transfer encrypted password hashes. Please refer the UCS manual in order to activate the password synchronization.')
 				])
-			}, {
-				name: 'download',
-				type: DownloadInfo
-			}, {
-				name: 'downloadNextStepADMember',
-				type: Text,
-				content: _('After the installation the replication of password hashes has to be activated.')
 			}];
 
 			var buttons = [{
@@ -150,15 +142,10 @@ define([
 				label: _('Active Directory connection SSL configuration'),
 				layout: ['certificateUpload', 'unencryptedActivateSSL', 'activate']
 			}];
-			if (this.initialState.mode_adconnector) {
-				layout.push({
-					label: _('Download the password service for Windows and the UCS certificate'),
-					layout: ['download']
-				});
-			} else {
+			if (this.initialState.mode_admember) {
 				layout.push({
 					label: _('Password service'),
-					layout: ['downloadInfoADMember', 'download', 'downloadNextStepADMember']
+					layout: ['downloadInfoADMember'']
 				});
 			}
 			var _container = render.layout(layout, this._widgets, this._buttons);
@@ -183,7 +170,6 @@ define([
 			}
 			when(state, lang.hitch(this, function(state) {
 				this._setHelpText(state);
-				this._widgets.download.set('configured', state.configured);
 
 				if (state.running) {
 					this._widgets.running.set('content', _('Active Directory connection service is currently running.'));
