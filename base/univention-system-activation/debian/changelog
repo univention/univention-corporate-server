@@ -1,3 +1,9 @@
+univention-system-activation (1.0.1-10) unstable; urgency=medium
+
+  * Bug #39700: Fix for prerm & postrm
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 16 Mar 2016 16:02:26 +0100
+
 univention-system-activation (1.0.1-9) unstable; urgency=medium
 
   * Bug #39700: reconfigure pam instead of setting UCR values manually to default

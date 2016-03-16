@@ -39,29 +39,25 @@ function ucr_build_array(){
 		UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/$service/restrict$2")
 	done
 	UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/sudo$1")
+	UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/su/restrict$2")
+	UCR_ARRAY=("${UCR_ARRAY[@]}" "auth/su/user/root$1")
 }
 
 function allow_root_login() {
 	ucr_build_array "" ""
-	ucr unset --force "${UCR_ARRAY[@]}" 
-
-	# reset su restrictions
-	ucr unset --force auth/su/restrict \
-		auth/su/user/root
+	ucr unset --force "${UCR_ARRAY[@]}"
 
 	# some values were not set during the pam installation, because they were set
-	# in the force layer. Reconfigure pam
-	dpkg -l univention-pam > /dev/null 2>&1 && dpkg-reconfigure univention-pam
+	# in the force layer. Reconfigure PAM if no other dpkg process is running
+	# (e.g., when "stop" is called in the postrm script).
+	fuser /var/lib/dpkg/lock >/dev/null 2>&1 \
+		|| dpkg -l univention-pam > /dev/null 2>&1 \
+		&& dpkg-reconfigure univention-pam
 }
 
 function restrict_root_login() {
-	# disallow root login
 	ucr_build_array "=no" "=yes"
 	ucr set --force "${UCR_ARRAY[@]}"
-
-	# disallow su
-	ucr set --force auth/su/restrict=yes \
-		auth/su/user/root=no
 }
 
 if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
