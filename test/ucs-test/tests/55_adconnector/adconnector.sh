@@ -541,6 +541,7 @@ sys.exit (42)
 }
 
 function ad_reset_password () {
+	# SSL must be activated for this otherwise samba-tool can be used, see tests/55_adconnector/050sync_password_sync
 	local userdn="$1"
 	local new_password="$2"
 	local configbase="${3:-connector}"

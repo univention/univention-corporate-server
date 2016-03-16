@@ -1,3 +1,12 @@
+ucs-test (6.0.33-46) unstable; urgency=medium
+
+  * 55_adconnector/050sync_password_sync: SSL is required if the
+    password is changed via ldapmodify. In our Jenkins setup we test
+    without SSL. Switching to samba-tool user password which was
+    recommended by Arvid (Bug #40745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2016 20:02:05 +0100
+
 ucs-test (6.0.33-45) unstable; urgency=medium
 
   * Bug #40187: New openssl version in errata4.1-1 doesn't support ssl3
