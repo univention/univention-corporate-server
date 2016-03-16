@@ -1,3 +1,10 @@
+univention-system-activation (1.0.1-9) unstable; urgency=medium
+
+  * Bug #39700: reconfigure pam instead of setting UCR values manually to default
+  	values
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 16 Mar 2016 14:17:00 +0100
+
 univention-system-activation (1.0.1-8) unstable; urgency=medium
 
   * Bug #39700: more restrictions, make sure auth/$service/restrict=yes is set 

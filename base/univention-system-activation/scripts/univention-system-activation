@@ -49,11 +49,9 @@ function allow_root_login() {
 	ucr unset --force auth/su/restrict \
 		auth/su/user/root
 
-	# set to the default values, these values are not set
-	# during the pam installation, because they were set
-	# in the force layer
-	ucr_build_array "?yes" "?yes"
-	ucr set "${UCR_ARRAY[@]}"
+	# some values were not set during the pam installation, because they were set
+	# in the force layer. Reconfigure pam
+	dpkg -l univention-pam > /dev/null 2>&1 && dpkg-reconfigure univention-pam
 }
 
 function restrict_root_login() {
