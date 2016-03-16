@@ -1,3 +1,10 @@
+ucs-test (6.0.33-44) unstable; urgency=medium
+
+  * 55_adconnector/050sync_password_sync: Added a test to check the
+    password synchronisation in both ways (Bug #40745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2016 08:20:38 +0100
+
 ucs-test (6.0.33-43) unstable; urgency=low
 
   * Bug #40558: tests/54_smbtorture

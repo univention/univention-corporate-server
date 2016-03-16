@@ -110,3 +110,10 @@ class ADConnection(ldap_glue.LDAPConnection):
 			attrs['description'] = description
 
 		self.create('ou=%s,%s' % (name, position), attrs)
+
+	def resetpassword_in_ad(self, userdn, new_password):
+		encoded_new_password = ('"%s"' % new_password).encode("utf-16-le")
+	
+		mod_attrs = [( ldap.MOD_REPLACE, 'unicodePwd', encoded_new_password)]
+		print 'mod_list: %s'%mod_attrs
+		self.lo.modify_s(userdn, mod_attrs)

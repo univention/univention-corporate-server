@@ -540,6 +540,28 @@ sys.exit (42)
 	fi
 }
 
+function ad_reset_password () {
+	local userdn="$1"
+	local new_password="$2"
+	local configbase="${3:-connector}"
+
+python2.7 -c "
+import sys
+sys.path.append('$TESTLIBPATH')
+import adconnector
+adconnection = adconnector.ADConnection ('$configbase')
+adconnection.resetpassword_in_ad('$userdn', '$new_password' )
+sys.exit (42)
+"
+	local retval="$?"
+	if [ "$retval" == 42 ]; then
+		return 0
+	else
+		scriptlet_error "changepassword_in_ad"
+		return 2
+	fi
+}
+
 function ad_verify_user_primary_group_attribute () {
 	local primarygroup_dn="$1"
 	local user_dn="$2"
