@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-updater
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The UCR variable update33/skip/ucs3.3 has been added. If set to
+   true, the updater skips UCS 3.3 and directly updates from UCS 3.2
+   to UCS 4.0.
+bug: [40909]
