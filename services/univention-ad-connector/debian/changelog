@@ -1,3 +1,12 @@
+univention-ad-connector (10.0.1-13) unstable; urgency=medium
+
+  * Replace the password synchronisation by using
+    drsuapi.DsGetNCChangesRequest8 and samr.SetUserInfo. Felix and Arvid
+    did a lot of research and provide patches it. This will replace our
+    own password service (Bug #40745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2016 08:44:05 +0100
+
 univention-ad-connector (10.0.1-12) unstable; urgency=medium
 
   * Bug #40357: Adjust mapping to renamed compare method

@@ -31,13 +31,25 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
 import os, time
 import array, socket, ldap
 import univention.debug2 as ud
 import univention.connector.ad
 
-import M2Crypto
+import hashlib
+import binascii
+
+from struct import pack
+from Crypto.Cipher import DES, ARC4
+
+from samba.credentials import Credentials, DONT_USE_KERBEROS
+from samba.param import LoadParm
+from samba import drs_utils
+from samba.dcerpc import drsuapi, lsa, misc, security
+from samba.ndr import ndr_unpack
+from samba.net import Net
+import samba.dcerpc.samr
+
 
 def nt_password_to_arcfour_hmac_md5(nt_password):
 	# all arcfour-hmac-md5 keys begin this way
@@ -48,97 +60,202 @@ def nt_password_to_arcfour_hmac_md5(nt_password):
 		key+=chr(int(o, 16))
 	return key
 	
-def _append_length(a, str):
-	l = len(str)
-	a.append(chr((l & 0xff)))
-	a.append(chr((l & 0xff00) >> 8))
-	a.append(chr((l & 0xff0000) >> 16))
-	a.append(chr((l & 0xff000000) >> 24))
 
-def _append_string(a, strstr):
-	for i in range(0,len(strstr)):
-		a.append(strstr[i])
-
-def _append(a, strstr):
-	_append_length(a, str(strstr))
-	_append_string(a, str(strstr))
-
-def _append_array(a, strstr):
-	_append_length(a, strstr)
-	_append_string(a, strstr)
+def transformKey(InputKey):
+	# Section 5.1.3
+	OutputKey = []
+	OutputKey.append( chr(ord(InputKey[0]) >> 0x01) )
+	OutputKey.append( chr(((ord(InputKey[0])&0x01)<<6) | (ord(InputKey[1])>>2)) )
+	OutputKey.append( chr(((ord(InputKey[1])&0x03)<<5) | (ord(InputKey[2])>>3)) )
+	OutputKey.append( chr(((ord(InputKey[2])&0x07)<<4) | (ord(InputKey[3])>>4)) )
+	OutputKey.append( chr(((ord(InputKey[3])&0x0F)<<3) | (ord(InputKey[4])>>5)) )
+	OutputKey.append( chr(((ord(InputKey[4])&0x1F)<<2) | (ord(InputKey[5])>>6)) )
+	OutputKey.append( chr(((ord(InputKey[5])&0x3F)<<1) | (ord(InputKey[6])>>7)) )
+	OutputKey.append( chr(ord(InputKey[6]) & 0x7F) )
+	for i in range(8):
+		OutputKey[i] = chr((ord(OutputKey[i]) << 1) & 0xfe)
+	return "".join(OutputKey)
 
 
-def _get_integer(str):
-	res=ord(str[0]) + (ord(str[1]) << 8) + (ord(str[2]) << 16) + (ord(str[3]) << 24)
-	return res
+def mySamEncryptNTLMHash(hash, key):
+	# [MS-SAMR] Section 2.2.11.1.1
+	Block1 = hash[:8]
+	Block2 = hash[8:]
+	Key1 = key[:7]
+	Key1 = transformKey(Key1)
+	Key2 = key[7:14]
+	Key2 = transformKey(Key2)
+	Crypt1 = DES.new(Key1, DES.MODE_ECB)
+	Crypt2 = DES.new(Key2, DES.MODE_ECB)
+	plain1 = Crypt1.encrypt(Block1)
+	plain2 = Crypt2.encrypt(Block2)
+	return plain1 + plain2
 
-def ssl_init(sd):
-	meth = M2Crypto.__m2crypto.sslv3_method();
-	ctx = M2Crypto.__m2crypto.ssl_ctx_new (meth);
-	ssl = M2Crypto.__m2crypto.ssl_new (ctx);
-	M2Crypto.__m2crypto.ssl_set_fd (ssl, sd);
-	err = M2Crypto.__m2crypto.ssl_connect (ssl);
-	return ssl
+def deriveKey(baseKey):
+	# 2.2.11.1.3 Deriving Key1 and Key2 from a Little-Endian, Unsigned Integer Key
+	# Let I be the little-endian, unsigned integer.
+	# Let I[X] be the Xth byte of I, where I is interpreted as a zero-base-index array of bytes.
+	# Note that because I is in little-endian byte order, I[0] is the least significant byte.
+	# Key1 is a concatenation of the following values: I[0], I[1], I[2], I[3], I[0], I[1], I[2].
+	# Key2 is a concatenation of the following values: I[3], I[0], I[1], I[2], I[3], I[0], I[1]
+	key = pack('<L',baseKey)
+	key1 = key[0] + key[1] + key[2] + key[3] + key[0] + key[1] + key[2]
+	key2 = key[3] + key[0] + key[1] + key[2] + key[3] + key[0] + key[1]
+	return transformKey(key1),transformKey(key2)
+
+
+def removeDESLayer(cryptedHash, rid):
+	Key1,Key2 = deriveKey(rid)
+	Crypt1 = DES.new(Key1, DES.MODE_ECB)
+	Crypt2 = DES.new(Key2, DES.MODE_ECB)
+	decryptedHash = Crypt1.decrypt(cryptedHash[:8]) + Crypt2.decrypt(cryptedHash[8:])
+	return decryptedHash
+
+
+def decrypt(key, data, rid):
+	salt = data[0:16]
+	check_sum = data[16:]
+	md5 = hashlib.new('md5')
+	md5.update(key)
+	md5.update(salt)
+	finalMD5 = md5.digest()
+	cipher = ARC4.new(finalMD5)
+	plainText = cipher.decrypt(data[16:])
+	hash = removeDESLayer(plainText[4:], rid)
+	return binascii.hexlify(hash)
+
 
 def set_password_in_ad(connector, samaccountname, pwd):
 	_d=ud.function('ldap.ad.set_password_in_ad')
-	compatible_modstring = univention.connector.ad.compatible_modstring
 
-	a = array.array('c')
-	
+	lp = LoadParm()
+	lp.load('/dev/null')
+
+	creds = Credentials()
+	creds.guess(lp)
+	creds.set_kerberos_state(DONT_USE_KERBEROS)
+
 	if connector.lo_ad.binddn:
 		bind_username = univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0]
 	else:
 		bind_username = connector.baseConfig['%s/ad/ldap/binddn' % connector.CONFIGBASENAME]
-	
-	_append ( a, bind_username )
-	_append ( a, connector.lo_ad.bindpw )
-	a.append ( 'S' )
 
-	# The copypwd utility on the windows side needs the
-	# username as iso8859 string. See Bug #8516
-	# _append ( a, compatible_modstring(samaccountname) )
-	_append ( a, samaccountname.encode(connector.baseConfig.get('connector/password/service/encoding', 'iso8859-15')))
+	creds.set_username(bind_username)
+	creds.set_password(connector.lo_ad.bindpw)
 
-	_append ( a, str(pwd) )
-	package = array.array('c')
-	_append_array( package, a)
+	binding_options = "\pipe\samr"
+	binding= "ncacn_np:%s[%s]" % (connector.ad_ldap_host, binding_options)
 
-	# Create Socket and send package
-	s = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
-	s.connect ( (connector.lo_ad.host, 6670) )
-	ssl=ssl_init(s.fileno())
-	M2Crypto.__m2crypto.ssl_write(ssl, package)
+	samr = samba.dcerpc.samr.samr(binding, lp, creds)
+	handle = samr.Connect2(None, security.SEC_FLAG_MAXIMUM_ALLOWED)
+	# print "Static Session Key: %s" % (samr.session_key,)
 
-	return M2Crypto.__m2crypto.ssl_read(ssl, 8192)
+	sam_domain = lsa.String()
+	sam_domain.string = connector.ad_netbios_domainname
+	sid = samr.LookupDomain(handle, sam_domain)
+	dom_handle = samr.OpenDomain(handle, security.SEC_FLAG_MAXIMUM_ALLOWED, sid)
+
+	sam_accountname = lsa.String()
+	sam_accountname.string = samaccountname
+	(rids, types) = samr.LookupNames(dom_handle, [sam_accountname,])
+
+	rid=rids.ids[0]
+	user_handle = samr.OpenUser(dom_handle, security.SEC_FLAG_MAXIMUM_ALLOWED, rid)
+
+	userinfo18 = samba.dcerpc.samr.UserInfo18()
+	bin_hash = binascii.a2b_hex(pwd)
+	enc_hash = mySamEncryptNTLMHash(bin_hash, samr.session_key)
+
+	samr_Password = samba.dcerpc.samr.Password()
+	samr_Password.hash = map(ord, enc_hash)
+
+	userinfo18.nt_pwd = samr_Password
+	userinfo18.nt_pwd_active = 1
+	userinfo18.password_expired = 0
+	info = samr.SetUserInfo(user_handle, 18, userinfo18)
+
+	return info
 
 
-def get_password_from_ad(connector, rid):
+def get_password_from_ad(connector, user_dn):
 	_d=ud.function('ldap.ad.get_password_from_ad')
-	a = array.array('c')
+	ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Read password from AD: %s" % user_dn)
+
+	nt_hash = None
 
 	if connector.lo_ad.binddn:
 		bind_username = univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0]
 	else:
 		bind_username = connector.baseConfig['%s/ad/ldap/binddn' % connector.CONFIGBASENAME]
-	
-	_append ( a, bind_username )
-	_append ( a, connector.lo_ad.bindpw )
-	a.append ( 'G' )
 
-	_append(a, rid)
+	lp = LoadParm()
+	net = Net(creds=None, lp=lp)
+
+	repl_creds = Credentials()
+	repl_creds.guess(lp)
+	repl_creds.set_kerberos_state(DONT_USE_KERBEROS)
+	repl_creds.set_username(bind_username)
+	repl_creds.set_password(connector.lo_ad.bindpw)
+
+	binding_options = "seal,print"
+	drs, drsuapi_handle, bind_supported_extensions = drs_utils.drsuapi_connect(connector.ad_ldap_host, lp, repl_creds)
+
+
+	dcinfo = drsuapi.DsGetDCInfoRequest1()
+	dcinfo.level = 1
+	dcinfo.domain_name = connector.ad_netbios_domainname
+	i, o = drs.DsGetDomainControllerInfo(drsuapi_handle, 1, dcinfo)
+	computer_dn = o.array[0].computer_dn
+
+	req = drsuapi.DsNameRequest1()
+	names = drsuapi.DsNameString()
+	names.str = computer_dn
+	req.format_offered = drsuapi.DRSUAPI_DS_NAME_FORMAT_FQDN_1779
+	req.format_desired = drsuapi.DRSUAPI_DS_NAME_FORMAT_GUID
+	req.count = 1
+	req.names = [names]
+	i, o = drs.DsCrackNames(drsuapi_handle, 1, req)
+	source_dsa_guid = o.array[0].result_name
+	guid = source_dsa_guid.replace('{', '').replace('}', '').encode('utf8')
+
+	req8 = drsuapi.DsGetNCChangesRequest8()
+	req8.destination_dsa_guid = misc.GUID(guid)
+	req8.source_dsa_invocation_id = misc.GUID(guid)
+	req8.naming_context = drsuapi.DsReplicaObjectIdentifier()
+	req8.naming_context.dn = user_dn
+	req8.replica_flags = 0
+	req8.max_object_count = 402
+	req8.max_ndr_size = 402116
+	req8.extended_op = drsuapi.DRSUAPI_EXOP_REPL_SECRET
+	req8.fsmo_info = 0
+	while True:
+		(level, ctr) = drs.DsGetNCChanges(drsuapi_handle, 8, req8)
+		rid = None
+		unicode_blob = None
+		if ctr.first_object is None:
+			break
+		for i in ctr.first_object.object.attribute_ctr.attributes:
+			if str(i.attid) == "589970":
+			# DRSUAPI_ATTID_objectSid
+				if i.value_ctr.values:
+					for j in i.value_ctr.values:
+						sid = ndr_unpack(security.dom_sid, j.blob)
+						_tmp, rid = sid.split()
+			if str(i.attid) == "589914":
+			# DRSUAPI_ATTID_unicodePwd
+				if i.value_ctr.values:
+					for j in i.value_ctr.values:
+						unicode_blob = j.blob
+						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found unicodePwd blob")
+		if rid and unicode_blob:
+			nt_hash = decrypt(drs.user_session_key, unicode_blob, rid).upper()
 		
-	package = array.array('c')
-	_append_array( package, a)
+		if ctr.more_data == 0:
+			break
+	
+	ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: AD Hash: %s" % nt_hash)
 
-	# Create Socket and send package
-	s = socket.socket( socket.AF_INET, socket.SOCK_STREAM );
-
-	s.connect ( (connector.lo_ad.host, 6670) )
-	ssl=ssl_init(s.fileno())
-	M2Crypto.__m2crypto.ssl_write(ssl, package)
-
-	return M2Crypto.__m2crypto.ssl_read(ssl, 8192)
+	return nt_hash
 
 
 def password_sync_ucs(connector, key, object):
@@ -181,13 +298,6 @@ def password_sync_ucs(connector, key, object):
 		ud.debug(ud.LDAP, ud.PROCESS, "The sambaNTPassword hash is set to %s. Skip the synchronisation of this hash to AD." % pwd)
 		
 
-	if res[0][1].has_key('sambaLMPassword'):
-		pwd+=res[0][1]['sambaLMPassword'][0]
-	else:
-		pwd+='NO PASSWORDXXXXX'
-		if connector.baseConfig.is_true('password/samba/lmhash'):
-			ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get LM Hash from UCS")
-
 	res=connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet','objectSid'])
 	pwdLastSet = None
 	if res[0][1].has_key('pwdLastSet'):
@@ -220,20 +330,18 @@ def password_sync_ucs(connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
 	
 	pwd_set = False
-	pwd_ad_res = get_password_from_ad(connector, rid)
-	pwd_ad = ''
-	if len(pwd_ad_res) >3 and _get_integer(pwd_ad_res[4:]) == 0:
-		pwd_ad = pwd_ad_res[12:].split(':')[1].strip().upper()
-	else:
-		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get Password-Hash from AD")
+	pwd_ad = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
+	if not pwd_ad:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Failed to get Password-Hash from AD")
 	res = ''
 
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s"%(pwd_ad,pwd))
 	if not pwd == pwd_ad:
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD and Hash UCS differ")
 		pwd_set = True
 		res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
 
-	if not pwd_set or len(res) >3 and _get_integer(res[4:]) == 0 :
+	if not pwd_set or pwd_ad:
 		newpwdlastset = "-1" # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0		
 		#if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
 		#	# password expired, must be changed on next login
@@ -250,11 +358,6 @@ def password_sync_ucs(connector, key, object):
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
 	else:
 		ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
-
-		#if res and len(res) >3 and _get_integer(res[4:]) == 0:
-		#	connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', "-1")])
-		#else:
-		#	ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
 
 def password_sync_kinit(connector, key, ucs_object):
 	_d=ud.function('ldap.ad.password_sync_kinit')
@@ -298,7 +401,7 @@ def password_sync(connector, key, ucs_object):
 	if res[0][1].has_key('objectSid'):
 		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
 
-	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet','sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
+	ucs_result=connector.lo.search(base=ucs_object['dn'], attr=['sambaPwdLastSet','sambaNTPassword', 'krb5PrincipalName', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd'])
 
 	sambaPwdLastSet = None
 	if ucs_result[0][1].has_key('sambaPwdLastSet'):
@@ -328,21 +431,16 @@ def password_sync(connector, key, ucs_object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync:  AD pwdlastset: %s (original (%s))" % (ad_password_last_set, pwdLastSet))
 		ud.debug(ud.LDAP, ud.INFO, "password_sync: UCS pwdlastset: %s" % (sambaPwdLastSet))
 
-	res = get_password_from_ad(connector, rid)
+	res = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
 
-	if len(res) >3 and _get_integer(res[4:]) == 0:
+	if res:
 		ntPwd_ucs = ''
-		lmPwd_ucs = ''
 		krb5Principal = ''
 		userPassword = ''
 
-		data = res[12:].split(':')[1].strip()
-		ntPwd = data[:32]
-		lmPwd = data[32:]
+		ntPwd = res
 		modlist=[]
 
-		if ucs_result[0][1].has_key('sambaLMPassword'):
-			lmPwd_ucs = ucs_result[0][1]['sambaLMPassword'][0]
 		if ucs_result[0][1].has_key('sambaNTPassword'):
 			ntPwd_ucs = ucs_result[0][1]['sambaNTPassword'][0]
 		if ucs_result[0][1].has_key('krb5PrincipalName'):
@@ -352,10 +450,6 @@ def password_sync(connector, key, ucs_object):
 
 		pwd_changed = False
 
- 		if lmPwd.upper() != lmPwd_ucs.upper():
-			if not lmPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
-				pwd_changed = True
-				modlist.append(('sambaLMPassword', lmPwd_ucs, str(lmPwd.upper())))
 		if ntPwd.upper() != ntPwd_ucs.upper():
 			if ntPwd in ['00000000000000000000000000000000', 'NO PASSWORD*********************']:
 				ud.debug(ud.LDAP, ud.WARN, "password_sync: AD connector password daemon retured 0 for the nt hash. Please check the AD settings.")

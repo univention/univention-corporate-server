@@ -41,6 +41,9 @@ import univention.connector
 import univention.debug2 as ud
 from ldap.controls import LDAPControl
 from ldap.controls import SimplePagedResultsControl
+from samba.dcerpc import nbt
+from samba.param import LoadParm
+from samba.net import Net
 
 class kerberosAuthenticationFailed(Exception): pass
 
@@ -760,6 +763,18 @@ class ad(univention.connector.ucs):
 		except Exception, msg:
 			print "Failed to get SID from AD: %s" % msg
 			sys.exit(1)
+
+		# Get NetBios Domain Name
+		self.ad_netbios_domainname = self.baseConfig.get('%s/ad/netbiosdomainname' % self.CONFIGBASENAME, None)
+		if not self.ad_netbios_domainname:
+			lp = LoadParm()
+			net = Net(creds=None, lp=lp)
+			cldap_res = net.finddc(address=self.ad_ldap_host, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+			self.ad_netbios_domainname = cldap_res.domain_name
+		if not self.ad_netbios_domainname:
+			print 'Failed to find netbiosdomainname from AD server. Please configure it manually: "ucr set %s/ad/netbiosdomainname=<AD NetBIOS Domainname>"' % self.CONFIGBASENAME
+			sys.exit(1)
+		ud.debug(ud.LDAP, ud.PROCESS, 'Using %s as AD Netbios domain name' % self.ad_netbios_domainname)
 
 	def get_kerberos_ticket(self):
 		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]

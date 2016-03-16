@@ -38,7 +38,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
  python-univention-connector (= ${binary:Version}),
- python-m2crypto,
  python-pysqlite2
 Pre-Depends: univention-config-registry
 Provides: ${python:Provides}
