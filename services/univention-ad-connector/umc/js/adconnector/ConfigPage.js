@@ -145,7 +145,7 @@ define([
 			if (this.initialState.mode_admember) {
 				layout.push({
 					label: _('Password service'),
-					layout: ['downloadInfoADMember'']
+					layout: ['downloadInfoADMember']
 				});
 			}
 			var _container = render.layout(layout, this._widgets, this._buttons);
@@ -210,7 +210,6 @@ define([
 				this._buttons.activate.set('visible', showEnableSSL);
 
 				this._widgets.downloadInfoADMember.set('visible', state.mode_admember);
-				this._widgets.downloadNextStepADMember.set('visible', state.mode_admember);
 //				this._buttons.password_sync.set('visible', state.mode_admember && !state.password_sync_enabled);
 //				this._buttons.password_sync_stop.set('visible', state.mode_admember && state.password_sync_enabled);
 			}));
