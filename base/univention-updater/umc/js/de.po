@@ -441,6 +441,17 @@ msgstr "{count} Pakete werden NEU installiert"
 msgid "{count} packages to be updated"
 msgstr "{count} Pakete werden aktualisiert"
 
+#: umc/js/updater/UpdatesPage.js
+msgid ""
+"But it is possible to skip UCS 3.3 and update to UCS 4.0 directly by "
+"setting the UCR variable update33/skip/ucs3.3 to true using the %(ucr)s. "
+"Afterwards, the software update can be restarted."
+msgstr ""
+"Alternativ ist es aber auch möglich das Update auf UCS 3.3 zu überspringen und direkt auf UCS 4.0 "
+"zu aktualisieren. Hierfür muss die UCR Variable update33/skip/ucs3.3 auf true gesetzt werden, z.B. über das %(ucr)s. "
+"Anschließend kann die Software-Aktualisierung nochmals gestartet werden."
+
+
 #~ msgid "... loading job data ..."
 #~ msgstr "... Daten werden geladen ..."
 

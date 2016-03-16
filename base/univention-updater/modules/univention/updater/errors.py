@@ -50,12 +50,16 @@ class RequiredComponentError(UpdaterException):
 		>>> '%s' % RequiredComponentError('4.0-0', set(('a', 'b'))) #doctest: +ELLIPSIS
 		"The update to UCS 4.0-0 is blocked because the components '...', '...' are marked as required."
 		"""
-		return (
-			"The update to UCS %s is blocked because the component %s is marked as required."
-			if len(self.components) == 1
-			else "The update to UCS %s is blocked because the components %s are marked as required."
-		) % (self.version, ', '.join("'%s'" % (_,) for _ in self.components))
 
+		msg = "The update to UCS %s is blocked because the component %s is marked as required."
+		if len(self.components) > 1:
+			msg = "The update to UCS %s is blocked because the components %s are marked as required."
+		msg = msg % (self.version, ', '.join("'%s'" % (_,) for _ in self.components))
+
+		if self.version == "3.3":
+			msg = msg + " But it is possible to skip UCS 3.3 and update to UCS 4.0 directly by setting the UCR variable update33/skip/ucs3.3 to true (ucr set update33/skip/ucs3.3=true) and restart the update!"
+
+		return msg
 
 class PreconditionError(UpdaterException):
 	"""Signal abort by release or component pre-/post-update script.

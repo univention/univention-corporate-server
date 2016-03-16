@@ -1,3 +1,9 @@
+univention-updater (9.100.4-8) unstable; urgency=low
+
+  * Added update33/skip/ucs3.3 message (Bug #40700)
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Mar 2016 16:32:04 +0100
+
 univention-updater (9.100.4-7) unstable; urgency=low
 
   * Bug #40704: purge php5-suhosin in postup
