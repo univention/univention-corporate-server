@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-system-activation
-fix: 1.0.1-8.56.201603161322
+fix: 1.0.1-9.57.201603161421
 desc: |
  This update addresses the following issue(s):
  * Access restrictions on non DC master App Appliances have been corrected.
