@@ -4,7 +4,7 @@
 # Univention Management Console
 #  module: manages updates
 #
-# Copyright 2008-2015 Univention GmbH
+# Copyright 2008-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -662,7 +662,12 @@ class UniventionUpdater:
 			if patchlevel < 99:
 				yield {'major':major,   'minor':minor,   'patchlevel':patchlevel+1}
 			if minor < 99:
-				yield {'major':major,   'minor':minor+1, 'patchlevel':0}
+				if major == 3 and minor == 2:
+					# Special treatment for UCS 3.3
+					if self.configRegistry.is_false('update33/skip/ucs3.3', True):
+						yield {'major':major,   'minor':minor+1, 'patchlevel':0}
+				else:
+					yield {'major':major,   'minor':minor+1, 'patchlevel':0}
 			if major < 99:
 				yield {'major':major+1, 'minor':0,       'patchlevel':0}
 

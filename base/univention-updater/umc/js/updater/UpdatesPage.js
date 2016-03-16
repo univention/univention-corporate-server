@@ -200,6 +200,9 @@ define([
 											updatesTextComponentsApps += ' ' + _('An update for the app is available which may solve this issue.');
 										} else {
 											updatesTextComponentsApps += ' ' + _('You may wait for the app to be released for the new UCS version.');
+											if (theoreticalReleaseUpdate == '3.3') {
+												updatesTextComponentsApps += ' <p>' + _('But it is possible to skip UCS 3.3 and update to UCS 4.0 directly by setting the UCR variable update33/skip/ucs3.3 to true using the %(ucr)s. Afterwards, the software update can be restarted.', {ucr: UMCApplication.linkToModule('ucr')}) + '</p>';
+											}
 										}
 										updatesTextComponentsApps += ' ' + _('Using the %(app_center)s, you may also search for alternative apps or uninstall the application.', {app_center: UMCApplication.linkToModule('appcenter')});
 										if (otherApps.length) {

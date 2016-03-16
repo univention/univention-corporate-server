@@ -1,3 +1,9 @@
+univention-updater (9.0.49-2) unstable; urgency=low
+
+  * Merged "update33/skip/ucs3.3" changes from 3.3 (Bug #40909)
+
+ -- Felix Botner <botner@univention.de>  Wed, 16 Mar 2016 17:05:12 +0100
+
 univention-updater (9.0.49-1) unstable; urgency=medium
 
   * Adjust pre- and postup.sh to UCS 3.2-8 (Bug #40010)
