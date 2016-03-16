@@ -10,10 +10,10 @@ Package: univention-xen
 Architecture: i386 amd64
 Depends: ${misc:Depends}, ${perl:Depends},
  xen-hypervisor-4.1-${Arch} (>= 4.1.6.1) | xen-hypervisor-4.1-amd64 (>= 4.1.6.1) | xen-hypervisor-4.1-i386 (>= 4.1.6.1),,
- xen-utils-4.1,
  libc6-xen [i386],
+ xen-utils-4.1,
+ blktap-utils,
  bridge-utils,
- blktap-dkms,
 Description: UCS - Xen configuration and management subsystem
  This packages provides the basic configuration for the
  Xen virtualisation technology.
