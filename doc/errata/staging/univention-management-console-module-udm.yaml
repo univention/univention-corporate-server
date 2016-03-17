@@ -18,5 +18,5 @@ desc: |
  * Searching for properties using the LDAPSearch syntax class caused a
    traceback.
  * The users/self module can now be activated again via setting the UCR
-   variable umc/module/udm/users/self/disabled to false.
+   variable "umc/module/udm/users/self/disabled" to "false".
 bug: [40747, 38639, 32843, 37904, 38635, 39016]
