@@ -442,7 +442,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-				<package>openssl</package> upgraded to 1.0.1e-2 (<u:bug>40688</u:bug>)
+				<package>openssl</package> has been upgraded to version 1.0.1e-2 (<u:bug>40688</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -515,16 +515,17 @@
 		<title>Services for Windows</title>
 		-->
 
-		<!--
 		<section id="changelog:win:ad">
 			<title>Samba</title>
 			<itemizedlist>
+				<listitem><simpara>
+					<package>samba</package> has been upgraded to version 2:4.1.17 (<u:bug>40698</u:bug>)
+				</simpara></listitem>
 				<listitem><simpara>
 
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 
 		<!--
 		<section id="changelog:win:takeover">
@@ -560,7 +561,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				<package>libxml2</package> upgraded to 2.8.0 (<u:bug>40696</u:bug>)
+				<package>libxml2</package> has been upgraded to version 2.8.0 (<u:bug>40696</u:bug>)
 			</simpara></listitem>
 			<listitem><simpara>
 				<package>mysql</package> has been upgraded to version 5.5.40 (<u:bug>40691</u:bug>).
