@@ -478,14 +478,14 @@ define([
 				return 'config-adconnector';
 			}
 			if (pageName == 'config-adconnector') {
-				return this.adConnectorSaveValues(this._adDomainInfo).then(function(success) {
-					return success ? 'msi-adconnector' : pageName;
-				});
-			}
-			if (pageName == 'msi-adconnector') {
-				return this.adConnectorStart().then(function(success) {
-					return success ? 'finished-adconnector' : pageName;
-				});
+				return this.adConnectorSaveValues(this._adDomainInfo).then(lang.hitch(this, function(success) {
+						if (success) {
+							this.adConnectorStart();
+							return 'finished-adconnector';
+						} else {
+							return pageName;
+						}
+				}));
 			}
 		},
 
