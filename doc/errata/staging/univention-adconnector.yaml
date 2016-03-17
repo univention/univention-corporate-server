@@ -1,0 +1,15 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-ad-connector
+fix: 10.0.1-17.479.201603160924
+desc: |
+ This update addresses the following issue(s):
+ * The synchronization of the password hashes was implemented by using a 
+   service which was installed on the Microsoft Active Directory server. The
+   Univention AD Connector now uses different interfaces of the Active
+   Directory for reading and writing the password hashes. That means, the UCS
+   AD Connector service which is installed on the Microsoft Active Directory
+   server can be stopped after installing this update.
+bug: [40745]
