@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-19) unstable; urgency=medium
+
+  * Remove the password service: Part VI (Bug #40745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Mar 2016 08:24:48 +0100
+
 univention-ad-connector (10.0.1-18) unstable; urgency=medium
 
   * Remove the password service: Part V (Bug #40745)
