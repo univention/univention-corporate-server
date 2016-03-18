@@ -894,7 +894,6 @@ define([
 				//set transition duration based on distance
 				this._setSliderTransitionDuration(newOffsetWithNavButtons, _oldOffset);
 
-				console.log("rpreffk");
 				domStyle.set(this.contentSlider.domNode, 'transform', lang.replace('translate3d({0}px, 0, 0)', [(newOffsetWithNavButtons * (-1))]));
 				domStyle.set(this.contentSlider.domNode, '-webkit-transform', lang.replace('translate3d({0}px, 0, 0)', [(newOffsetWithNavButtons * (-1))]));
 				this.contentSliderOffset = newOffsetIgnoringNavButtons;

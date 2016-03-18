@@ -569,21 +569,23 @@ define([
 				'class': 'appDetailsPane'
 			});
 
-			//handle behaviour of the thumbnailGallery based on wether
-			//the titlepane is closed or not
-			if (!detailsPane.open) {
-				this.thumbnailGallery._stopFirstResize = true;
-			}
-			detailsPane.watch('open', lang.hitch(this, function(variable, oldVal, titlePaneIsOpen) {
-				if (titlePaneIsOpen) {
-					this.thumbnailGallery._handleResize();
-				} else {
-					if (this.thumbnailGallery.isBigThumbnails) {
-						this.thumbnailGallery.toggleThumbSize();
-					}
-					this.thumbnailGallery.pauseAllVideos();
+			if (this.thumbnailGallery) {
+				//handle behaviour of the thumbnailGallery based on wether
+				//the titlepane is closed or not
+				if (!detailsPane.open) {
+					this.thumbnailGallery._stopFirstResize = true;
 				}
-			}));
+				detailsPane.watch('open', lang.hitch(this, function(variable, oldVal, titlePaneIsOpen) {
+					if (titlePaneIsOpen) {
+						this.thumbnailGallery._handleResize();
+					} else {
+						if (this.thumbnailGallery.isBigThumbnails) {
+							this.thumbnailGallery.toggleThumbSize();
+						}
+						this.thumbnailGallery.pauseAllVideos();
+					}
+				}));
+			}
 			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
 		},
 

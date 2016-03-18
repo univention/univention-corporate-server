@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-30) unstable; urgency=medium
+
+  * Bug #39794: fixed error opening app when it has no gallery
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 18 Mar 2016 12:54:55 +0100
+
 univention-appcenter (5.0.20-29) unstable; urgency=medium
 
   Bug #39794:
