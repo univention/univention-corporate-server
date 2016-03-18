@@ -275,7 +275,11 @@ install_ucsschool ()
 				"$component"/version="$(ucr get version/version)" \
 				"$component"/server=updates-test.software-univention.de \
 				"$component"=enabled
+			echo "install_ucsschool - DEBUG1"
+			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			univention-install --yes ucs-school-umc-installer
+			echo "install_ucsschool - DEBUG2"
+			cat /etc/apt/sources.list.d/20_ucs-online-component.list
 			;;
 	esac
 
