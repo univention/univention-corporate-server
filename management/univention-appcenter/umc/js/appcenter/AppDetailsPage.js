@@ -63,9 +63,9 @@ define([
 	"umc/widgets/Grid",
 	"umc/modules/appcenter/AppCenterGallery",
 	"umc/modules/appcenter/App",
-	"umc/modules/appcenter/Carousel",
+	"umc/modules/appcenter/ThumbnailGallery",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, entities, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, Carousel, _) {
+], function(declare, lang, kernel, array, dojoEvent, all, json, when, query, ioQuery, topic, Deferred, domConstruct, domClass, on, domStyle, Memory, Observable, Tooltip, Lightbox, entities, UMCApplication, tools, dialog, TitlePane, ContainerWidget, ProgressBar, Page, Text, Button, CheckBox, Grid, AppCenterGallery, App, ThumbnailGallery, _) {
 
 	var adaptedGrid = declare([Grid], {
 		_updateContextActions: function() {
@@ -554,10 +554,10 @@ define([
 						src: ithumb
 					};
 				});
-				this.carousel = new Carousel({
+				this.thumbnailGallery = new ThumbnailGallery({
 					items: urls
 				});
-				styleContainer.addChild(this.carousel);
+				styleContainer.addChild(this.thumbnailGallery);
 				this._detailsContainer.addChild(styleContainer);
 			}
 
@@ -568,6 +568,22 @@ define([
 				content: this._detailsContainer,
 				'class': 'appDetailsPane'
 			});
+
+			//handle behaviour of the thumbnailGallery based on wether
+			//the titlepane is closed or not
+			if (!detailsPane.open) {
+				this.thumbnailGallery._stopFirstResize = true;
+			}
+			detailsPane.watch('open', lang.hitch(this, function(variable, oldVal, titlePaneIsOpen) {
+				if (titlePaneIsOpen) {
+					this.thumbnailGallery._handleResize();
+				} else {
+					if (this.thumbnailGallery.isBigThumbnails) {
+						this.thumbnailGallery.toggleThumbSize();
+					}
+					this.thumbnailGallery.pauseAllVideos();
+				}
+			}));
 			this._mainRegionContainer.addChild(detailsPane, isAppInstalled ? null : 0);
 		},
 

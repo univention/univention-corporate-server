@@ -1,3 +1,13 @@
+univention-appcenter (5.0.20-29) unstable; urgency=medium
+
+  Bug #39794:
+  * removed Carousel.js added ThumbnailGallery.js
+  * added loading animation for gallery
+  * fixed problems with youtube videos
+  * styling changes
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 18 Mar 2016 10:34:06 +0100
+
 univention-appcenter (5.0.20-28) unstable; urgency=medium
 
   * Bug #40874: Log broken ini files (3)

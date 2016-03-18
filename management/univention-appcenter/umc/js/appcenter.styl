@@ -123,7 +123,7 @@ column-count(count)
 
 .umcAppCenterGallery
 	.umcGalleryItem.appInnerWrapper
-		background-image: linear-gradient(to bottom, #f0f0f0 0%, #eaeaea 100%)
+		background-image: url("appcenter/app-vignette.svg"), linear-gradient(to bottom, #f0f0f0 0%, #eaeaea 100%)
 		width:155px
 		height: 165px
 		padding: 0
@@ -445,61 +445,116 @@ column-count(count)
 		@media screen and (max-width: 549px)
 			width: 100%
 
-	.umcCarouselWidget
+	.umcThumbnailGallery
 		position: relative
+		line-height: 0
 
-		.carouselOuterContainer
-			margin: auto
+		.galleryLoadingOverlay
+			position: absolute
+			width: 100%
+			height: 100%
+			z-index: 1
+			background-image: url(../../dijit/themes/umc/images/standbyAnimation.svg)
+			background-repeat: no-repeat
+			background-position: center center
+			background-color: #f0f0f0
+			opacity: 1
+
+			&.loaded
+				opacity: 0
+				pointer-events: none
+
+		.galleryOuterContainer
 			position: relative
-			transition: height 0.5s
 
 			.contentSliderWrapper
-				float: left
+				display: inline-block
+
 				white-space: nowrap
 				overflow: hidden
-				position: relative
-				height: 100%
 
+				width: 100%
 				.contentSlider
-					position: absolute
-					left: 0
-					transition: left 0.5s
-
-					div
-						margin: 0 10px
-						display: inline-block
-						/*border: 2px solid darkgrey;*/
-						/*box-sizing: content-box;*/
-
+					display: inline-block
+					transform: translate3d(0, 0, 0)
+					transition-property: transform
 
 					&.noTransition
-						transition: none !important
+						transition: none
 
-					.carouselScreenshot
-						cursor: pointer
-						display: block
-						margin: auto
+					.galleryThumb
+						display: inline-block
+						vertical-align: middle
+						transition-property: width, height
+
+						&.galleryImgThumb
+							background-size: contain
+							background-position: center center
+							background-repeat: no-repeat
+							cursor: pointer
+
+						&.brokenImg
+							width: 150px
+							box-shadow: inset 0px 0px 6px #5a5a5a
+							background: url("appcenter/thumbnailError.svg") no-repeat, #e6e6e6
+							background-position: center center
+							background-size: 30% auto
+
+						&.verticalAlignHelper
+							margin: 0 !important
+							height: 0
+
+					.galleryVideoThumb
 						position: relative
-						top: 50%
-						transform: translateY(-50%)
-						-ms-transform: translateY(-50%)
-						-webkit-transform: translateY(-50%)
-						transition: max-height 0.5s, max-width 0.5s
 
-		.carouselButton
-			float: left
+						.galleryVideo
+							width: 100%
+							height: 100%
+							background-color: black
 
+						.galleryVideoThumbnailWrapper
+								width: 100%
+								height: 100%
+
+							.galleryVideoThumbnail
+								width: 100%
+								height: 100%
+								background-size: cover
+								background-position: center center
+								background-repeat: no-repeat
+								cursor: pointer
+
+							.galleryVideoPlayButtonIcon
+								width: 100%
+								height: 100%
+								background: url("appcenter/videoPlayButton.svg") no-repeat;
+								background-size: auto 30%
+								background-position: center center
+								position: absolute
+								top: 0
+
+						&:after
+							content: ''
+							height: 100%
+							display: inline-block
+							vertical-align: middle
+
+		.galleryNavButton
 			cursor: pointer
 			width: 40px
-			height: 100%
 			opacity: 1
-			transition: opacity 0.5s
+			transition-property: opacity, height
+			position: absolute
+			z-index: 1
+			background-color: #f0f0f0
 
 			&.disabled
 				opacity: 0
 				cursor: default
+				pointer-events: none
+				height: 0
 
-			.carouselButtonImage
+			.galleryNavButtonImage
 				background-image: url("appcenter/carouselArrowRight.svg")
 				background-size: contain
 				background-repeat: no-repeat
@@ -511,15 +566,16 @@ column-count(count)
 				&:hover
 					opacity: 1
 
-			&.rightCarouselButton
+			&.rightGalleryNavButton
 				margin-left: 5px
+				right: 0
+				top: 0
 
-			&.leftCarouselButton
+			&.leftGalleryNavButton
 				margin-right: 5px
 
-				.carouselButtonImage
+				.galleryNavButtonImage
 					transform: rotateY(180deg)
-					-ms-transform: rotateY(180deg)
 					-webkit-transform: rotateY(180deg)
 
 		.scaleButton
@@ -542,5 +598,7 @@ column-count(count)
 
 .umc .umcModule[id^=umc_modules_appcenter_],
 .umc .umcModule[id^=umc_modules_apps_]
+	overflow: hidden
+
 	.umcModuleContent
 		overflow: visible
