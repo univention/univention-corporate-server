@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-appcenter
-fix: 5.0.20-29.140.201603181039
+fix: 5.0.20-30.141.201603181256
 desc: |
  This update addresses the following issue(s):
  * Improved the image gallery in the details page of an app. The handling
