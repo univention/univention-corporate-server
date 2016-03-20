@@ -44,7 +44,6 @@ from Crypto.Cipher import DES, ARC4
 
 from samba.credentials import Credentials, DONT_USE_KERBEROS
 from samba.param import LoadParm
-from samba import drs_utils
 from samba.dcerpc import drsuapi, lsa, misc, security
 from samba.ndr import ndr_unpack
 from samba.net import Net
@@ -128,43 +127,20 @@ def decrypt(key, data, rid):
 def set_password_in_ad(connector, samaccountname, pwd):
 	_d=ud.function('ldap.ad.set_password_in_ad')
 
-	lp = LoadParm()
-	lp.load('/dev/null')
-
-	creds = Credentials()
-	creds.guess(lp)
-	creds.set_kerberos_state(DONT_USE_KERBEROS)
-
-	if connector.lo_ad.binddn:
-		bind_username = univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0]
-	else:
-		bind_username = connector.baseConfig['%s/ad/ldap/binddn' % connector.CONFIGBASENAME]
-
-	creds.set_username(bind_username)
-	creds.set_password(connector.lo_ad.bindpw)
-
-	binding_options = "\pipe\samr"
-	binding= "ncacn_np:%s[%s]" % (connector.ad_ldap_host, binding_options)
-
-	samr = samba.dcerpc.samr.samr(binding, lp, creds)
-	handle = samr.Connect2(None, security.SEC_FLAG_MAXIMUM_ALLOWED)
 	# print "Static Session Key: %s" % (samr.session_key,)
-
-	sam_domain = lsa.String()
-	sam_domain.string = connector.ad_netbios_domainname
-	sid = samr.LookupDomain(handle, sam_domain)
-	dom_handle = samr.OpenDomain(handle, security.SEC_FLAG_MAXIMUM_ALLOWED, sid)
+	if not connector.samr:
+		connector.open_samr()
 
 	sam_accountname = lsa.String()
 	sam_accountname.string = samaccountname
-	(rids, types) = samr.LookupNames(dom_handle, [sam_accountname,])
+	(rids, types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname,])
 
 	rid=rids.ids[0]
-	user_handle = samr.OpenUser(dom_handle, security.SEC_FLAG_MAXIMUM_ALLOWED, rid)
+	user_handle = connector.samr.OpenUser(connector.dom_handle, security.SEC_FLAG_MAXIMUM_ALLOWED, rid)
 
 	userinfo18 = samba.dcerpc.samr.UserInfo18()
 	bin_hash = binascii.a2b_hex(pwd)
-	enc_hash = mySamEncryptNTLMHash(bin_hash, samr.session_key)
+	enc_hash = mySamEncryptNTLMHash(bin_hash, connector.samr.session_key)
 
 	samr_Password = samba.dcerpc.samr.Password()
 	samr_Password.hash = map(ord, enc_hash)
@@ -172,7 +148,7 @@ def set_password_in_ad(connector, samaccountname, pwd):
 	userinfo18.nt_pwd = samr_Password
 	userinfo18.nt_pwd_active = 1
 	userinfo18.password_expired = 0
-	info = samr.SetUserInfo(user_handle, 18, userinfo18)
+	info = connector.samr.SetUserInfo(user_handle, 18, userinfo18)
 
 	return info
 
@@ -183,44 +159,12 @@ def get_password_from_ad(connector, user_dn):
 
 	nt_hash = None
 
-	if connector.lo_ad.binddn:
-		bind_username = univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0]
-	else:
-		bind_username = connector.baseConfig['%s/ad/ldap/binddn' % connector.CONFIGBASENAME]
-
-	lp = LoadParm()
-	net = Net(creds=None, lp=lp)
-
-	repl_creds = Credentials()
-	repl_creds.guess(lp)
-	repl_creds.set_kerberos_state(DONT_USE_KERBEROS)
-	repl_creds.set_username(bind_username)
-	repl_creds.set_password(connector.lo_ad.bindpw)
-
-	binding_options = "seal,print"
-	drs, drsuapi_handle, bind_supported_extensions = drs_utils.drsuapi_connect(connector.ad_ldap_host, lp, repl_creds)
-
-
-	dcinfo = drsuapi.DsGetDCInfoRequest1()
-	dcinfo.level = 1
-	dcinfo.domain_name = connector.ad_netbios_domainname
-	i, o = drs.DsGetDomainControllerInfo(drsuapi_handle, 1, dcinfo)
-	computer_dn = o.array[0].computer_dn
-
-	req = drsuapi.DsNameRequest1()
-	names = drsuapi.DsNameString()
-	names.str = computer_dn
-	req.format_offered = drsuapi.DRSUAPI_DS_NAME_FORMAT_FQDN_1779
-	req.format_desired = drsuapi.DRSUAPI_DS_NAME_FORMAT_GUID
-	req.count = 1
-	req.names = [names]
-	i, o = drs.DsCrackNames(drsuapi_handle, 1, req)
-	source_dsa_guid = o.array[0].result_name
-	guid = source_dsa_guid.replace('{', '').replace('}', '').encode('utf8')
+	if not connector.drs:
+		connector.open_drs_connection()
 
 	req8 = drsuapi.DsGetNCChangesRequest8()
-	req8.destination_dsa_guid = misc.GUID(guid)
-	req8.source_dsa_invocation_id = misc.GUID(guid)
+	req8.destination_dsa_guid = misc.GUID(connector.computer_guid)
+	req8.source_dsa_invocation_id = misc.GUID(connector.computer_guid)
 	req8.naming_context = drsuapi.DsReplicaObjectIdentifier()
 	req8.naming_context.dn = user_dn
 	req8.replica_flags = 0
@@ -228,8 +172,9 @@ def get_password_from_ad(connector, user_dn):
 	req8.max_ndr_size = 402116
 	req8.extended_op = drsuapi.DRSUAPI_EXOP_REPL_SECRET
 	req8.fsmo_info = 0
+
 	while True:
-		(level, ctr) = drs.DsGetNCChanges(drsuapi_handle, 8, req8)
+		(level, ctr) = connector.drs.DsGetNCChanges(connector.drsuapi_handle, 8, req8)
 		rid = None
 		unicode_blob = None
 		if ctr.first_object is None:
@@ -248,7 +193,7 @@ def get_password_from_ad(connector, user_dn):
 						unicode_blob = j.blob
 						ud.debug(ud.LDAP, ud.INFO, "get_password_from_ad: Found unicodePwd blob")
 		if rid and unicode_blob:
-			nt_hash = decrypt(drs.user_session_key, unicode_blob, rid).upper()
+			nt_hash = decrypt(connector.drs.user_session_key, unicode_blob, rid).upper()
 		
 		if ctr.more_data == 0:
 			break

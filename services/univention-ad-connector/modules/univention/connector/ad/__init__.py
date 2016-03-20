@@ -44,8 +44,13 @@ from ldap.controls import SimplePagedResultsControl
 from samba.dcerpc import nbt
 from samba.param import LoadParm
 from samba.net import Net
+from samba.credentials import Credentials, DONT_USE_KERBEROS
+from samba import drs_utils
+from samba.dcerpc import drsuapi, lsa, misc, security
+import samba.dcerpc.samr
 
 class kerberosAuthenticationFailed(Exception): pass
+class netbiosDomainnameNotFound(Exception): pass
 
 # page results
 PAGE_SIZE = 1000
@@ -769,12 +774,83 @@ class ad(univention.connector.ucs):
 		if not self.ad_netbios_domainname:
 			lp = LoadParm()
 			net = Net(creds=None, lp=lp)
-			cldap_res = net.finddc(address=self.ad_ldap_host, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
-			self.ad_netbios_domainname = cldap_res.domain_name
+			try:
+				cldap_res = net.finddc(address=self.ad_ldap_host, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
+				self.ad_netbios_domainname = cldap_res.domain_name
+			except RuntimeError:
+				ud.debug( ud.LDAP, ud.WARN, 'Failed to find Netbios domain name from AD server. Maybe the Windows Active Directory server is rebooting. Othwise please configure the NetBIOS setting  manually: "ucr set %s/ad/netbiosdomainname=<AD NetBIOS Domainname>"' % self.CONFIGBASENAME)
+				raise
 		if not self.ad_netbios_domainname:
-			print 'Failed to find netbiosdomainname from AD server. Please configure it manually: "ucr set %s/ad/netbiosdomainname=<AD NetBIOS Domainname>"' % self.CONFIGBASENAME
-			sys.exit(1)
+			raise netbiosDomainnameNotFound('Failed to find Netbios domain name from AD server. Please configure it manually: "ucr set %s/ad/netbiosdomainname=<AD NetBIOS Domainname>"' % self.CONFIGBASENAME)
+
 		ud.debug(ud.LDAP, ud.PROCESS, 'Using %s as AD Netbios domain name' % self.ad_netbios_domainname)
+
+		self.drs = None
+		self.samr = None
+
+
+	def open_drs_connection(self):
+
+		if self.lo_ad.binddn:
+			bind_username = explode_unicode_dn(self.lo_ad.binddn,1)[0]
+		else:
+			bind_username = self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
+
+		lp = LoadParm()
+		net = Net(creds=None, lp=lp)
+
+		repl_creds = Credentials()
+		repl_creds.guess(lp)
+		repl_creds.set_kerberos_state(DONT_USE_KERBEROS)
+		repl_creds.set_username(bind_username)
+		repl_creds.set_password(self.lo_ad.bindpw)
+
+		binding_options = "seal,print"
+		self.drs, self.drsuapi_handle, bind_supported_extensions = drs_utils.drsuapi_connect(self.ad_ldap_host, lp, repl_creds)
+
+		dcinfo = drsuapi.DsGetDCInfoRequest1()
+		dcinfo.level = 1
+		dcinfo.domain_name = self.ad_netbios_domainname
+		i, o = self.drs.DsGetDomainControllerInfo(self.drsuapi_handle, 1, dcinfo)
+		computer_dn = o.array[0].computer_dn
+
+		req = drsuapi.DsNameRequest1()
+		names = drsuapi.DsNameString()
+		names.str = computer_dn
+		req.format_offered = drsuapi.DRSUAPI_DS_NAME_FORMAT_FQDN_1779
+		req.format_desired = drsuapi.DRSUAPI_DS_NAME_FORMAT_GUID
+		req.count = 1
+		req.names = [names]
+		i, o = self.drs.DsCrackNames(self.drsuapi_handle, 1, req)
+		source_dsa_guid = o.array[0].result_name
+		self.computer_guid = source_dsa_guid.replace('{', '').replace('}', '').encode('utf8')
+
+	def open_samr(self):
+		lp = LoadParm()
+		lp.load('/dev/null')
+
+		creds = Credentials()
+		creds.guess(lp)
+		creds.set_kerberos_state(DONT_USE_KERBEROS)
+
+		if self.lo_ad.binddn:
+			bind_username = explode_unicode_dn(self.lo_ad.binddn,1)[0]
+		else:
+			bind_username = self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]
+
+		creds.set_username(bind_username)
+		creds.set_password(self.lo_ad.bindpw)
+
+		binding_options = "\pipe\samr"
+		binding= "ncacn_np:%s[%s]" % (self.ad_ldap_host, binding_options)
+
+		self.samr = samba.dcerpc.samr.samr(binding, lp, creds)
+		handle = self.samr.Connect2(None, security.SEC_FLAG_MAXIMUM_ALLOWED)
+
+		sam_domain = lsa.String()
+		sam_domain.string = self.ad_netbios_domainname
+		sid = self.samr.LookupDomain(handle, sam_domain)
+		self.dom_handle = self.samr.OpenDomain(handle, security.SEC_FLAG_MAXIMUM_ALLOWED, sid)
 
 	def get_kerberos_ticket(self):
 		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]

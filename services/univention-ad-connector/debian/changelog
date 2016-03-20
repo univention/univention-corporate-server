@@ -1,3 +1,10 @@
+univention-ad-connector (10.0.1-20) unstable; urgency=medium
+
+  * Create only one drs and samr connection per connector instance
+    instead of creating a connection for every password sync (Bug #40745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 20 Mar 2016 11:07:50 +0100
+
 univention-ad-connector (10.0.1-19) unstable; urgency=medium
 
   * Remove the password service: Part VI (Bug #40745)
