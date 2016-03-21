@@ -1,3 +1,11 @@
+univention-bind (8.100.1-2) unstable; urgency=medium
+
+  [ Stefan Gohmann ]
+  * Also consider multiarch changes for LDB_MODULES_PATH (Bug #35320)
+  * Better use a new dict to make ucslint happy (Bug #35320)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2016 13:39:01 +0100
+
 univention-bind (8.100.1-1) unstable; urgency=medium
 
   [ Stefan Gohmann ]
