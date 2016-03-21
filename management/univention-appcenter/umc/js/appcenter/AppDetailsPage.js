@@ -103,7 +103,7 @@ define([
 					'<li>' + _('Registered email address') + '</li>' +
 				'</ul>' +
 			_('The description of every application includes a respective indication for such cases.') + '</p>' +
-			'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Free-for-personal-Use Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
+			'<p>' + _('If your UCS environment does not have such a key at it\'s disposal (e.g. UCS Core Edition) and the vendor requires a Key ID, you will be asked to request an updated license key directly from Univention. Afterwards the new key can be applied.') + '</p>' +
 			'<p>' + _('The sale of licenses, maintenance or support for the applications uses the default processes of the respective vendor and is not part of Univention App Center.') + '</p>',
 
 		postMixInProperties: function() {
