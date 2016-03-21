@@ -9,6 +9,11 @@ desc: |
   * HTTP request smuggling attack against chunked request parser, allowing
     cache poisoning or credential hijacking if an intermediary proxy is in
     use (CVE-2015-3183)
+  * Don't limit default DH parameters to 1024 bits. This may cause problems
+    with some Java based clients. A work-around is to configure these client
+    not to use DHE key exchange but use ECDHE or RSA instead. A server-side
+    work-around that limits the DH parameters to 1024 bits for all clients is
+    described at http://httpd.apache.org/docs/trunk/ssl/ssl_faq.html#javadh
   * Backport support for adding DH parameters to the SSLCertificateFile
 bug:
  - 39066
