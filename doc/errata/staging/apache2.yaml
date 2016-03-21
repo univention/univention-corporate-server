@@ -1,0 +1,29 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-1
+src: apache2
+fix: 2.2.22-13.95.201603212007
+version: [0,1]
+desc: |
+ The following issues have been fixed in apache2:
+  * HTTP request smuggling attack against chunked request parser, allowing
+    cache poisoning or credential hijacking if an intermediary proxy is in
+    use (CVE-2015-3183)
+  * Don't limit default DH parameters to 1024 bits. This may cause problems
+    with some Java based clients. A work-around is to configure these client
+    not to use DHE key exchange but use ECDHE or RSA instead. A server-side
+    work-around that limits the DH parameters to 1024 bits for all clients is
+    described at http://httpd.apache.org/docs/trunk/ssl/ssl_faq.html#javadh
+  * Backport support for adding DH parameters to the SSLCertificateFile
+    Custom DH parameters and an EC curve name for ephemeral keys,
+    can be added to end of the first file configured using the
+    SSLCertificateFile. Such parameters can be generated using the commands
+    openssl dhparam and openssl ecparam. The parameters can be added as-is
+    to the end of the first certificate file. Only the first file can be used
+    for custom parameters, as they are applied independently of the
+    authentication algorithm type. The package apache-doc provides more
+    information about mod_ssl.
+bug:
+ - 40929
+cve:
+ - CVE-2015-3183
