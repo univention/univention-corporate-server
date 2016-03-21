@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-management-console-frontend
+fix: 5.0.63-30.1220.201603211732
+desc: |
+ This update addresses the following issue(s):
+ * The UMC login page does not warn about an insecure connection when logging in from the same machine the UMC runs on.
+ * Error dialogs concerning Piwik are now suppressed.
+bug: [40638, 30822]
