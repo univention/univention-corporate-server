@@ -1,3 +1,10 @@
+univention-samba (8.100.1-1) unstable; urgency=medium
+
+  * Remove conflict against samba-dsdb-modules (Bug #40698)
+    (This has been introduced for UCS@school Bug 27370).
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2016 12:50:37 +0100
+
 univention-samba (8.0.19-13) unstable; urgency=medium
 
   * Create default.V3, .V4 and .V5 directories in windows-profiles
