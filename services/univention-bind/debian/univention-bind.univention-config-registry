@@ -33,6 +33,7 @@ Variables: dns/forwarder3
 Variables: dns/fakeroot
 Variables: dns/ipv6
 Variables: dns/dlz/debug/level
+Variables: dns/dlz/module
 
 Type: file
 Mode: 755

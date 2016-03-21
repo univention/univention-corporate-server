@@ -1,3 +1,9 @@
+univention-bind (8.100.1-4) unstable; urgency=medium
+
+  * Register UCR variable dns/dlz/module (Bug #40698)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2016 14:16:07 +0100
+
 univention-bind (8.100.1-3) unstable; urgency=medium
 
   * Fix ConfigRegistry traceback (Bug #40698)
