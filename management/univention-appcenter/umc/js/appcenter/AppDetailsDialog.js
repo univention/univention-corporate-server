@@ -111,7 +111,8 @@ define([
 			this.addChild(this._container);
 
 			this._confirmForm = new Form({
-				buttons: buttons
+				buttons: buttons,
+				style: 'margin-top: 1.5em;'
 			});
 			this.addChild(this._confirmForm);
 		},

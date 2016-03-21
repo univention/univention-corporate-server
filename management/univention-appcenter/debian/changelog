@@ -1,5 +1,6 @@
 univention-appcenter (5.0.20-31) unstable; urgency=medium
 
+  * Bug #39907: add small margin to footer buttons
   * Bug #40563: exclude docker instances in ssh connections
   * Bug #39896: enhance description of software changes overview
   * Bug #38530: replacce FFPU-Edition with Core Edition
