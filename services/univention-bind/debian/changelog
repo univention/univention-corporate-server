@@ -1,8 +1,14 @@
+univention-bind (8.100.1-3) unstable; urgency=medium
+
+  * Fix ConfigRegistry traceback (Bug #40698)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2016 13:54:17 +0100
+
 univention-bind (8.100.1-2) unstable; urgency=medium
 
   [ Stefan Gohmann ]
-  * Also consider multiarch changes for LDB_MODULES_PATH (Bug #35320)
-  * Better use a new dict to make ucslint happy (Bug #35320)
+  * Also consider multiarch changes for LDB_MODULES_PATH (Bug #40698)
+  * Better use a new dict to make ucslint happy
 
  -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2016 13:39:01 +0100
 
