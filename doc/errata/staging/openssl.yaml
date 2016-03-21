@@ -2,13 +2,20 @@ product: ucs
 release: "4.1"
 scope: ucs_4.1-0-errata4.1-1
 src: openssl
-fix: 1.0.2g-1.109.201603040915
+fix: 1.0.2d-1.117.201603211844
 version: [0,1]
 desc: |
  Multiple vulnerabilities have been discovered in the
  OpenSSL libraries:
- * SLOTH: Security Losses from Obsolete and Truncated Transcript Hashes
-   (CVE-2015-7575)
+ * Denial of service via a zero p value in an anonymous Diffie-Hellman (DH)
+   ServerKeyExchange message (CVE-2015-1794)
+ * BN_mod_exp may produce incorrect results on x86_64 (CVE-2015-3193)
+ * Certificate verify crash with missing PSS parameter (CVE-2015-3194)
+ * Memory leak in PKCS#7 and CMS routines (CVE-2015-3195)
+ * The DH_check_pub_key function does not ensure that prime numbers are
+   appropriate for Diffie-Hellman (DH) key exchange, which makes it easier
+   for remote attackers to discover a private DH exponent by making multiple
+   handshakes with a peer that chose an inappropriate number (CVE-2016-0701)
  * Side channel attack on modular exponentiation (CVE-2016-0702)
  * Double-free in DSA code (CVE-2016-0705)
  * BN_hex2bn/BN_dec2bn NULL pointer deref/heap corruption (CVE-2016-0797)
@@ -18,7 +25,11 @@ desc: |
    built without support for SSLv2.
 bug: [40187]
 cve:
- - CVE-2015-7575
+ - CVE-2015-1794
+ - CVE-2015-3193
+ - CVE-2015-3194
+ - CVE-2015-3195
+ - CVE-2016-0701
  - CVE-2016-0702
  - CVE-2016-0705
  - CVE-2016-0797
