@@ -15,6 +15,14 @@ desc: |
     work-around that limits the DH parameters to 1024 bits for all clients is
     described at http://httpd.apache.org/docs/trunk/ssl/ssl_faq.html#javadh
   * Backport support for adding DH parameters to the SSLCertificateFile
+    Custom DH parameters and an EC curve name for ephemeral keys,
+    can be added to end of the first file configured using the
+    SSLCertificateFile. Such parameters can be generated using the commands
+    openssl dhparam and openssl ecparam. The parameters can be added as-is
+    to the end of the first certificate file. Only the first file can be used
+    for custom parameters, as they are applied independently of the
+    authentication algorithm type. The package apache-doc provides more
+    information about mod_ssl.
 bug:
  - 39066
 cve:
