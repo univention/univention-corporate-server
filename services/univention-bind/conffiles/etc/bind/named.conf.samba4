@@ -68,8 +68,13 @@ else:
 include "/etc/bind/local-predlz.conf.samba4";
 
 @!@
+import platform
+if '32bit' in platform.architecture()[0]:
+	configRegistry['dns/dlz/module'] = '/usr/lib/i386-linux-gnu/samba/bind9/dlz_bind9.so'
+else:
+	configRegistry['dns/dlz/module'] = '/usr/lib/x86_64-linux-gnu/samba/bind9/dlz_bind9.so'
 print '''dlz "samba4.zone" {
-	database "dlopen /usr/lib/samba/bind9/dlz_bind9.so -d %(dns/dlz/debug/level)s {
+	database "dlopen %(dns/dlz/module)s -d %(dns/dlz/debug/level)s {
 			/*
 			 * update-policy {
 			 * 		grant %(kerberos/realm)s ms-self * A AAAA;
