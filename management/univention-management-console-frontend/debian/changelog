@@ -1,3 +1,11 @@
+univention-management-console-frontend (5.0.63-30) unstable; urgency=low
+
+  * Bug #30822: Error dialogs concerning Piwik are now suppressed
+  * Bug #40638: Removed insecure connection warning when logging in on
+    localhost. Language selection not shown anymore on login via query string.
+
+ -- Eduard Mai <mai@univention.de>  Mon, 21 Mar 2016 17:22:13 +0100
+
 univention-management-console-frontend (5.0.63-29) unstable; urgency=medium
 
   * Bug #40613: make the logout redirect location configurable

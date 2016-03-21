@@ -390,7 +390,7 @@ define([
 			var title = '';
 
 			// Show warning if connection is unsecured
-			if (window.location.protocol === 'http:') {
+			if (window.location.protocol === 'http:' && window.location.host !== 'localhost') {
 				var link = '<a href="https://' + window.location.href.slice(7) + '">';
 				title = _('Insecure Connection');
 				msg = _('This network connection is not encrypted. All personal or sensitive data will be transmitted in plain text. Please follow %s this link</a> to use a secure SSL connection.', link);

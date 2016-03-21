@@ -1238,7 +1238,7 @@ define([
 		_loadJavascriptModules: function(modules) {
 			// register error handler
 			require.on('error', function(err) {
-				if (err.message == 'scriptError') {
+				if (err.message == 'scriptError' && err.info[0].split("/").pop(-1) != 'piwik.js') {
 					dialog.warn(_('Could not load module "%s".', err.info[0]));
 					console.log('scriptError:', err);
 				}
