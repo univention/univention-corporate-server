@@ -1,3 +1,9 @@
+ucs-test (6.0.33-47) unstable; urgency=medium
+
+  * Bug #40187: Reenable ssl3 checks
+
+ -- Arvid Requate <requate@univention.de>  Mon, 21 Mar 2016 19:01:49 +0100
+
 ucs-test (6.0.33-46) unstable; urgency=medium
 
   * 55_adconnector/050sync_password_sync: SSL is required if the
