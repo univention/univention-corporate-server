@@ -230,7 +230,7 @@ define([
 			var componentID = this.app.candidateComponentID || this.app.componentID;
 			var label = _('The server tried to connect to the involved systems.') + ' ' + _('The following hosts cannot be reached or do not have access to the App Center server:');
 			this._container.addChild(new Text({
-				content: label + '<ul><li>' + array.map(unreachable, dojo.hitch(require('dojox/html/entities'), 'encode')).join('</li><li>') + '</li></ul>'
+				content: label + '<ul><li>' + array.map(unreachable, function(v) { return entities.encode(v); }).join('</li><li>') + '</li></ul>'
 			}));
 			if (!masterUnreachable) {
 				var cmdLine = lang.replace('univention-add-app {component_id} -m', {component_id: entities.encode(componentID)});
@@ -249,7 +249,7 @@ define([
 					if (changes === undefined) {
 						details = '<div>' + _('Unknown') + '</div>';
 					} else {
-						details = '<ul><li>' + array.map(changes, dojo.hitch(require('dojox/html/entities'), 'encode')).join('</li><li>') + '</li></ul>';
+						details = '<ul><li>' + array.map(changes, function(v) { return entities.encode(v); }).join('</li><li>') + '</li></ul>';
 					}
 					txt = '<p>' + label + details + '</p>';
 				}
@@ -275,14 +275,16 @@ define([
 			}
 
 			var changeLabels = [];
-			_packageChangeLabel(install, _('1 installed/upgraded package'), _('{0} installed/upgraded packages'), changeLabels);
-			_packageChangeLabel(remove, '<strong>' + _('1 removed package') + '</strong>', '<strong>' + _('{0} removed packages') + '</strong>', changeLabels);
-			_packageChangeLabel(broken, '<strong>' + _('1 erroneous package') + '</strong>', '<strong>' + _('{0} erroneous packages') + '</strong>', changeLabels);
+			_packageChangeLabel(install, _('1 package will be installed / upgraded'), _('{0} packages will be installed / upgraded'), changeLabels);
+			_packageChangeLabel(remove, '<strong>' + _('1 package will be removed') + '</strong>', '<strong>' + _('{0} packages will be removed') + '</strong>', changeLabels);
+			_packageChangeLabel(broken, '<strong>' + _('1 package is erroneous') + '</strong>', '<strong>' + _('{0} packages are erroneous') + '</strong>', changeLabels);
 			if (!changeLabels.length) {
-				changeLabels = [_('No changes')];
+				changeLabels = '<p>' + _('No software changes on %s are necessary.', host || _('this host')) + '</p>';
+			} else {
+				changeLabels = '<p>' + _('The following software changes on %s will be applied: ', host || _('this host')) + changeLabels.join(', ') + '</p>';
 			}
 			this._container.addChild(new Text({
-				content: '<p>' + _('The software changes on %s consist of: ', host || _('this host')) + changeLabels.join(', ') + '</p>'
+				content: changeLabels
 			}));
 
 			var txt = '';
@@ -290,7 +292,7 @@ define([
 			txt += _packageChangesList(remove, _('The following packages will be removed:'));
 			txt += _packageChangesList(broken, _('This operation causes problems in the following packages that cannot be resolved:'));
 			if (txt === '') {
-				txt = '<p>' + _('No changes') + '</p>';
+				txt = '<p>' + _('No software changes are necessary.') + '</p>';
 			}
 			this._container.addChild(new TitlePane({
 				'class': 'umcAppMoreTitlePane',

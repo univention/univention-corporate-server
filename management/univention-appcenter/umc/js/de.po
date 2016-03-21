@@ -3,10 +3,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-03-21 06:06+0100\n"
+"POT-Creation-Date: 2016-03-21 07:21+0100\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
-"Last-Translator: Frank Greif <fg@it25.de>\n"
-"Language-Team: German <de_DE@li.org>\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
 "Language: German\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -131,16 +131,16 @@ msgid "...<br>[%d more chars]"
 msgstr "...<br>[weitere %d Zeichen]"
 
 #: umc/js/appcenter/AppDetailsDialog.js:280
-msgid "1 erroneous package"
-msgstr "1 fehlerhaftes Paket"
+msgid "1 package is erroneous"
+msgstr "1 Paket ist fehlerhaft"
 
 #: umc/js/appcenter/AppDetailsDialog.js:278
-msgid "1 installed/upgraded package"
-msgstr "1 installiertes/aktualisiertes Paket"
+msgid "1 package will be installed / upgraded"
+msgstr "1 Paket wird installiert / aktualisiert"
 
 #: umc/js/appcenter/AppDetailsDialog.js:279
-msgid "1 removed package"
-msgstr "1 entferntes Paket"
+msgid "1 package will be removed"
+msgstr "1 Paket wird deinstalliert"
 
 #: umc/js/appcenter/AppDetailsPage.js:1163
 #, python-format
@@ -211,8 +211,8 @@ msgstr "App-Installationshinweise"
 #: umc/js/appcenter/AppCenterPage.js:63
 #: umc/js/appcenter/AppChooseHostDialog.js:47
 #: umc/js/appcenter/AppConfigDialog.js:53
-#: umc/js/appcenter/AppDetailsDialog.js:59
 #: umc/js/appcenter/AppDetailsPage.js:83
+#: umc/js/appcenter/AppDetailsDialog.js:59
 msgid "App management"
 msgstr "App-Verwaltung"
 
@@ -272,9 +272,9 @@ msgid "Buy"
 msgstr "Kaufen"
 
 #: umc/js/appcenter/AppChooseHostDialog.js:80
-#: umc/js/appcenter/AppDetailsDialog.js:92
 #: umc/js/appcenter/PackagesPage.js:421 umc/js/appcenter/PackagesPage.js:430
 #: umc/js/appcenter/SettingsPage.js:315 umc/js/appcenter/AppDetailsPage.js:795
+#: umc/js/appcenter/AppDetailsDialog.js:92
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -508,10 +508,9 @@ msgid ""
 "be applied."
 msgstr ""
 "Sollte Ihre UCS-Umgebung nicht über einen solchen Schlüssel verfügen (z.B. "
-"UCS Core Edition) und der Hersteller eine Key-ID "
-"voraussetzen, werden Sie aufgefordert, einen aktualisierten Lizenzschlüssel "
-"direkt bei Univention anzufordern. Anschließend kann der neue Schlüssel "
-"eingespielt werden."
+"UCS Core Edition) und der Hersteller eine Key-ID voraussetzen, werden Sie "
+"aufgefordert, einen aktualisierten Lizenzschlüssel direkt bei Univention "
+"anzufordern. Anschließend kann der neue Schlüssel eingespielt werden."
 
 #: umc/js/appcenter/AppChooseHostDialog.js:64
 #, python-format
@@ -638,7 +637,7 @@ msgstr "Mehr"
 msgid "More information"
 msgstr "Weitere Informationen"
 
-#: umc/js/appcenter/AppDetailsDialog.js:297
+#: umc/js/appcenter/AppDetailsDialog.js:299
 msgid "More information..."
 msgstr "Weitere Informationen..."
 
@@ -658,10 +657,13 @@ msgstr "Nächste App"
 msgid "No"
 msgstr "Nein"
 
+#: umc/js/appcenter/AppDetailsDialog.js:295
+msgid "No software changes are necessary."
+msgstr "Keine Software-Änderungen sind notwendig."
+
 #: umc/js/appcenter/AppDetailsDialog.js:282
-#: umc/js/appcenter/AppDetailsDialog.js:293
-msgid "No changes"
-msgstr "Keine Änderungen"
+msgid "No software changes on %s are necessary."
+msgstr "Keine Software-Änderungen auf %s sind notwendig."
 
 #: umc/js/appcenter/AppDetailsPage.js:1231
 msgid "No support option provided"
@@ -863,8 +865,8 @@ msgstr ""
 msgid "Removal of %s"
 msgstr "Deinstallation von %s"
 
-#: umc/js/appcenter/AppDetailsDialog.js:222
 #: umc/js/appcenter/SettingsPage.js:56
+#: umc/js/appcenter/AppDetailsDialog.js:222
 msgid "Repository Settings"
 msgstr "Repository-Einstellungen"
 
@@ -1053,15 +1055,19 @@ msgstr ""
 "Folgende Hosts konnten nicht erreicht werden oder haben ihrerseits keinen "
 "Zugriff auf den App Center-Server:"
 
-#: umc/js/appcenter/AppDetailsDialog.js:289
 #: umc/js/appcenter/PackagesPage.js:402
+#: umc/js/appcenter/AppDetailsDialog.js:291
 msgid "The following packages will be installed or upgraded:"
 msgstr "Folgende Pakete werden installiert bzw. aktualisiert:"
 
-#: umc/js/appcenter/AppDetailsDialog.js:290
 #: umc/js/appcenter/PackagesPage.js:406
+#: umc/js/appcenter/AppDetailsDialog.js:292
 msgid "The following packages will be removed:"
 msgstr "Folgende Pakete werden deinstalliert:"
+
+#: umc/js/appcenter/AppDetailsDialog.js:284
+msgid "The following software changes on %s will be applied: "
+msgstr "Die folgenden Software-Änderungen auf %s werden angewendet: "
 
 #: umc/js/appcenter/AppDetailsPage.js:998
 msgid ""
@@ -1085,11 +1091,6 @@ msgstr ""
 msgid "The server tried to connect to the involved systems."
 msgstr ""
 "Der Server hat versucht, sich mit den beteiligten Systemen zu verbinden."
-
-#: umc/js/appcenter/AppDetailsDialog.js:285
-#, python-format
-msgid "The software changes on %s consist of: "
-msgstr "Die Software-Änderungen auf %s bestehen aus: "
 
 #: umc/js/appcenter/requirements.js:275
 msgid ""
@@ -1140,8 +1141,8 @@ msgstr ""
 "Diese App verwendet eine Container-Technologie. Container müssen einmalig "
 "heruntergeladen werden. Danach können sie beliebig oft genutzt werden."
 
-#: umc/js/appcenter/AppDetailsDialog.js:237
 #: umc/js/appcenter/requirements.js:180
+#: umc/js/appcenter/AppDetailsDialog.js:237
 msgid "This application requires an extension of the LDAP schema."
 msgstr "Diese Applikation erfordert eine Erweiterung des LDAP Schemas."
 
@@ -1183,8 +1184,8 @@ msgstr ""
 "Aktualisierung. Ein Neustart kann dazu führen, dass ein neuerer Kernel "
 "verwendet wird."
 
-#: umc/js/appcenter/AppDetailsDialog.js:291
 #: umc/js/appcenter/PackagesPage.js:410
+#: umc/js/appcenter/AppDetailsDialog.js:293
 msgid ""
 "This operation causes problems in the following packages that cannot be "
 "resolved:"
@@ -1267,8 +1268,8 @@ msgstr ""
 "anonymisierte Benachrichtigung, die nur bei Univention zur Datenverarbeitung "
 "gespeichert und nicht an Dritte weiter gegeben wird."
 
-#: umc/js/appcenter/AppDetailsDialog.js:250
 #: umc/js/appcenter/SettingsPage.js:252
+#: umc/js/appcenter/AppDetailsDialog.js:250
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -1422,7 +1423,8 @@ msgstr ""
 msgid "this computer"
 msgstr "dieser Rechner"
 
-#: umc/js/appcenter/AppDetailsDialog.js:285
+#: umc/js/appcenter/AppDetailsDialog.js:282
+#: umc/js/appcenter/AppDetailsDialog.js:284
 msgid "this host"
 msgstr "diesem Rechner"
 
@@ -1440,307 +1442,14 @@ msgstr "aktualisieren"
 
 #: umc/js/appcenter/AppDetailsDialog.js:280
 #, python-brace-format
-msgid "{0} erroneous packages"
-msgstr "{0} fehlerhafte Pakete"
+msgid "{0} packages are erroneous"
+msgstr "{0} Pakete sind fehlerhaft"
 
 #: umc/js/appcenter/AppDetailsDialog.js:278
-#, python-brace-format
-msgid "{0} installed/upgraded packages"
-msgstr "{0} installierte/aktualisierte Pakete"
+msgid "{0} packages will be installed / upgraded"
+msgstr "{0] Pakete werden installiert / aktualisiert"
 
 #: umc/js/appcenter/AppDetailsDialog.js:279
 #, python-brace-format
-msgid "{0} removed packages"
-msgstr "{0} entfernte Paket"
-
-#~ msgid ""
-#~ "%(name)s cannot be installed on the current server role "
-#~ "(%(reason_detail)s). In order to install the application, one of the "
-#~ "following roles is necessary: %(server_roles)s"
-#~ msgstr ""
-#~ "%(name)s kann nicht für die aktuelle Serverrolle (%(reason_detail)s) "
-#~ "installiert werden. Um die Applikation zu installieren, ist eine der "
-#~ "folgenden Serverrollen notwendig: %(server_roles)s"
-
-#~ msgid "%(verb)s %(ids)s on %(host)s"
-#~ msgstr "%(verb)s %(ids)s auf %(host)s"
-
-#~ msgid ""
-#~ "%s has to be installed anywhere in the domain for the following "
-#~ "applications to work."
-#~ msgstr ""
-#~ "%s muss in der Domäne installiert sein, damit die folgenden Applikationen "
-#~ "funktionieren."
-
-#~ msgid ""
-#~ "A restart of the UMC server components may be necessary for the software "
-#~ "changes to take effect."
-#~ msgstr ""
-#~ "Ein Neustart der UMC-Server-Komponenten kann notwendig sein, damit die "
-#~ "Softwareänderungen wirksam werden."
-
-#~ msgid "Actions"
-#~ msgstr "Aktionen"
-
-#~ msgid ""
-#~ "After the installation the backup servers must be prepared as described "
-#~ "in the dialog before. Continue?"
-#~ msgstr ""
-#~ "Nach der Installation müssen die Backup Server wie zuvor beschrieben "
-#~ "vorbereitet werden. Fortfahren?"
-
-#~ msgid "Also delete any data the app stored"
-#~ msgstr "Daten, die die App gespeichert hat ebenfalls löschen"
-
-#~ msgid "Application details"
-#~ msgstr "Details zur Applikation"
-
-#~ msgid "Apply"
-#~ msgstr "Anwenden"
-
-#~ msgid "Available Applications"
-#~ msgstr "Verfügbare Applikationen"
-
-#~ msgid "Back"
-#~ msgstr "Zurück"
-
-#~ msgid ""
-#~ "Be sure to execute the following commands as root <em>first</em> on your "
-#~ "DC master and <em>then</em> on all of your backup servers <em>prior</em> "
-#~ "to installing the application on this system."
-#~ msgstr ""
-#~ "Führen Sie die folgenden Befehle als root <em>zuerst</em> auf Ihrem "
-#~ "Master-System und <em>danach</em> auf all Ihren Backup-Servern aus, "
-#~ "<em>bevor</em> Sie die Applikation auf diesem System installieren."
-
-#~ msgid ""
-#~ "Be sure to execute the following commands as root on all of your backup "
-#~ "servers <em>after</em> installing the application on this DC master."
-#~ msgstr ""
-#~ "Führen Sie die folgenden Befehle als root auf all Ihren Backup-Servern "
-#~ "aus, <em>nachdem</em> Sie die Applikation auf diesem System installiert "
-#~ "haben."
-
-#~ msgid "Beschreibung"
-#~ msgstr "Beschreibung"
-
-#~ msgid ""
-#~ "Changes on %(host)s (installed/upgraded: %(installed)s, removed: "
-#~ "%(removed)s, erroneous: %(erroneous)s%(incompatible)s)"
-#~ msgstr ""
-#~ "Änderungen auf %(host)s (installiert/aktualisiert: %(installed)s, "
-#~ "entfernt: %(removed)s, fehlerhaft: %(erroneous)s%(incompatible)s)"
-
-#~ msgid "Charged"
-#~ msgstr "Kostenpflichtig"
-
-#~ msgid "Details for Application '%(name)s'"
-#~ msgstr "Details zur Applikation '%(name)s'"
-
-#~ msgid "Email address"
-#~ msgstr "E-Mail-Adresse"
-
-#~ msgid "Free"
-#~ msgstr "Kostenlos"
-
-#~ msgid "Install %s"
-#~ msgstr "Installiere %s"
-
-#~ msgid "Install on another server"
-#~ msgstr "Auf einem anderen Server installieren"
-
-#~ msgid "Installations throughout the domain"
-#~ msgstr "Installationen in der Domäne"
-
-#~ msgid "Installed Applications"
-#~ msgstr "Installierte Applikationen"
-
-#~ msgid "Maintainer"
-#~ msgstr "Betreuer"
-
-#~ msgid "Manage Applications for UCS"
-#~ msgstr "Applikationen für UCS verwalten"
-
-#~ msgid "More Information"
-#~ msgstr "Weitere Informationen"
-
-#~ msgid "Name"
-#~ msgstr "Name"
-
-#~ msgid "Notes on using"
-#~ msgstr "Anmerkungen"
-
-#~ msgid "Open the App Center of this server"
-#~ msgstr "Das App Center dieses Servers öffnen"
-
-#~ msgid "Packages for master system"
-#~ msgstr "Pakete für den Master"
-
-#~ msgid ""
-#~ "Please provide a valid email address such that an updated license can be "
-#~ "sent to you. This may take a few minutes. You can then upload the updated "
-#~ "license key directly in the following license dialog."
-#~ msgstr ""
-#~ "Bitte geben Sie eine gültige E-Mail-Adresse an, an die eine aktualisierte "
-#~ "Lizenz geschickt werden kann. Das kann ein paar Minuten dauern. "
-#~ "Anschließend können Sie den aktualisierten Lizenzschlüssel direkt im "
-#~ "folgenden Lizenzdialog hochladen."
-
-#~ msgid "Provision of an updated UCS license key"
-#~ msgstr "Bereitstellung eines aktualisierten UCS-Lizenzschlüssels"
-
-#~ msgid "Read"
-#~ msgstr "Lesen"
-
-#~ msgid "Repository components"
-#~ msgstr "Repository-Komponenten"
-
-#~ msgid "Request a new license"
-#~ msgstr "Neue Lizenz anfordern"
-
-#~ msgid "Request updated license key with identification"
-#~ msgstr "Aktualisierten Lizenzschlüssel mit Identifikation anfordern"
-
-#~ msgid ""
-#~ "Right after this form, you will see another dialog where you can upload "
-#~ "your new license."
-#~ msgstr ""
-#~ "Direkt nach diesem Formular wird ein weiterer Dialog angezeigt werden, in "
-#~ "welchem Sie die neue Lizenz hochladen können."
-
-#~ msgid "Screenshot"
-#~ msgstr "Screenshot"
-
-#~ msgid "Select the host where you want to install the application"
-#~ msgstr ""
-#~ "Wählen Sie den Rechner, auf dem die Applikation installiert werden soll"
-
-#~ msgid "Show this message again"
-#~ msgstr "Diese Nachricht nicht wieder anzeigen"
-
-#~ msgid ""
-#~ "Software changes on %(host)s (installed/upgraded: %(installed)s, removed: "
-#~ "%(removed)s, erroneous: %(erroneous)s%(incompatible)s)"
-#~ msgstr ""
-#~ "Software-Änderungen auf %(host)s (installiert/aktualisiert: "
-#~ "%(installed)s, entfernt: %(removed)s, fehlerhaft: %(erroneous)s"
-#~ "%(incompatible)s)"
-
-#~ msgid ""
-#~ "The UCS system sends your current license key to Univention. The key will "
-#~ "be extended by the identification and will be sent back to the provided "
-#~ "email address. The license scope remains unchanged."
-#~ msgstr ""
-#~ "Ihr aktueller Lizenzschlüssel wird dabei an Univention geschickt. Der "
-#~ "Schlüssel wird um die Identifikation ergänzt und per E-Mail an die "
-#~ "angegebene E-Mail-Adresse zurück geschickt. Der Lizenzumfang bleibt "
-#~ "unverändert."
-
-#~ msgid ""
-#~ "The installation of applications with Univention App Center requires an "
-#~ "individually issued license key with a unique key identification. You are "
-#~ "currently using a license key without identification. Please fill in the "
-#~ "form and provide a valid email address. Afterwards an updated license "
-#~ "will be sent to you in a couple of minutes that can be applied and "
-#~ "updated directly in the license dialog."
-#~ msgstr ""
-#~ "Die Installation von Anwendungen mit Univention App Center erfordert "
-#~ "einen individuell ausgestellten Lizenzschlüssel mit eindeutiger "
-#~ "Schlüsselidentifikation. Sie verwenden derzeit einen Lizenzschlüssel ohne "
-#~ "Identifikation. Bitte füllen Sie das Formular aus und geben eine gültige "
-#~ "E-Mail-Adresse an. Anschließend wird Ihnen in ein paar Minuten eine "
-#~ "aktualisierte Lizenz an die angegebene E-Mail-Adresse gesendet, die Sie "
-#~ "direkt im Lizenzdialog einspielen und aktualisieren können."
-
-#~ msgid "The server tried to connect to DC Master and DC Backups."
-#~ msgstr ""
-#~ "Der Server hat versucht, sich mit dem DC Master und den DC Backups zu "
-#~ "verbinden."
-
-#~ msgid ""
-#~ "This app provides the following features (<a href=\"javascript:"
-#~ "void(0)\">more information</a>):"
-#~ msgstr ""
-#~ "Diese App bietet folgende Merkmale (<a href=\"javascript:void(0)\">more "
-#~ "information</a>):"
-
-#~ msgid ""
-#~ "This application will not inform the maintainer if you (un)install it."
-#~ msgstr ""
-#~ "Diese Applikation setzt den Betreuer nicht über eine (De)Installation in "
-#~ "Kenntnis."
-
-#~ msgid ""
-#~ "This page lets you install and remove applications that enhance your UCS "
-#~ "installation."
-#~ msgstr ""
-#~ "Diese Seite dient dazu, Ihrer UCS-Installation weitere Applikationen "
-#~ "hinzuzufügen oder diese zu entfernen."
-
-#~ msgid ""
-#~ "To do this please log in on %(host)s. Open the App Center there and click "
-#~ "on \"%(app)s\" and \"%(action)s\". The process will not start, instead "
-#~ "you will be guided through the steps of installing a license."
-#~ msgstr ""
-#~ "Melden Sie sich dazu bitte auf %(host)s an. Öffnen Sie dort das App "
-#~ "Center und klicken Sie auf \"%(app)s\" und \"%(action)s\". Der Vorgang "
-#~ "wird nicht starten, sondern Sie werden durch die Installation einer neuen "
-#~ "Lizenz geführt werden."
-
-#~ msgid "Update available."
-#~ msgstr "Aktualisierung verfügbar."
-
-#~ msgid "Upgrade not possible"
-#~ msgstr "Aktualisierung nicht möglich"
-
-#~ msgid "Use maintained repositories"
-#~ msgstr "'Maintained' Repositories benutzen"
-
-#~ msgid "Version: "
-#~ msgstr "Version: "
-
-#~ msgid "Was the domain prepared as asked in the dialog before?"
-#~ msgstr "Wurde die Domäne wie zuvor beschrieben vorbereitet?"
-
-#~ msgid ""
-#~ "Which container is to be used is controlled by the App. It may be "
-#~ "necessary to download a new container with another container based App or "
-#~ "with an update of the App. But most Apps base on the same container."
-#~ msgstr ""
-#~ "Welcher Container tatsächlich verwendet wird, hängt von der App ab. "
-#~ "Möglicherweise müssen noch weitere Container für andere Apps "
-#~ "heruntergeladen werden, oder Updates dieser App werden neue Container "
-#~ "benötigen. Die meisten Apps aber basieren auf demselben Container."
-
-#~ msgid ""
-#~ "You need to have access to the Univention Directory Manager (UDM) module "
-#~ "to fully use the App Center."
-#~ msgstr ""
-#~ "Sie benötigen Zugriff auf das Univention Directory Manager (UDM) Modul, "
-#~ "um das App Center umfänglich zu nutzen."
-
-#~ msgid "back to overview"
-#~ msgstr "zurück zur Übersicht"
-
-#~ msgid "incompatible"
-#~ msgstr "inkompatibel"
-
-#~ msgid "installed in domain"
-#~ msgstr "installiert in der Domäne"
-
-#~ msgid "installed locally"
-#~ msgstr "lokal installiert"
-
-#~ msgid "read"
-#~ msgstr "lesen"
-
-#~ msgid "this application may not be installed on the same system"
-#~ msgstr "diese Applikation darf nicht auf demselben System installiert sein"
-
-#~ msgid ""
-#~ "this application must be installed somewhere in the domain, not on this "
-#~ "computer"
-#~ msgstr "diese Applikation kann irgendwo in der Domäne installiert werden"
-
-#~ msgid "this server"
-#~ msgstr "diesem Server"
+msgid "{0} packages will be removed"
+msgstr "{0} Pakete werden deinstalliert"

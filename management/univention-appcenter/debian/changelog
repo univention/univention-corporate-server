@@ -1,5 +1,6 @@
 univention-appcenter (5.0.20-31) unstable; urgency=medium
 
+  * Bug #39896: enhance description of software changes overview
   * Bug #38530: replacce FFPU-Edition with Core Edition
 
  -- Florian Best <best@univention.de>  Mon, 21 Mar 2016 06:07:19 +0100
