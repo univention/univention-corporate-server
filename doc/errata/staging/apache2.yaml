@@ -1,0 +1,16 @@
+product: ucs
+release: "4.0"
+scope: ucs_4.0-0-errata4.0-4
+src: apache2
+fix: 2.2.22-13.87.201603211937
+version: [4]
+desc: |
+ The following issues have been fixed in apache2:
+  * HTTP request smuggling attack against chunked request parser, allowing
+    cache poisoning or credential hijacking if an intermediary proxy is in
+    use (CVE-2015-3183)
+  * Backport support for adding DH parameters to the SSLCertificateFile
+bug:
+ - 39066
+cve:
+ - CVE-2015-3183
