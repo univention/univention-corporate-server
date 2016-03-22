@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-management-console
-fix: 
+fix: 8.0.28-13.917.201603221221
 desc: |
  This update addresses the following issue(s):
  * The property translationId for UMC XML files was previously only evaluated
