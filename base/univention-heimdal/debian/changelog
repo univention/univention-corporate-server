@@ -1,3 +1,9 @@
+univention-heimdal (9.0.1-3) unstable; urgency=medium
+
+  * Bug #40383: Updated description of kerberos/autostart
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Mar 2016 20:50:30 +0100
+
 univention-heimdal (9.0.1-2) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping
