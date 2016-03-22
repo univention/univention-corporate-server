@@ -181,8 +181,8 @@ ucr set security/packetfilter/package/univention-samba4/tcp/389/all="ACCEPT" \
 divert_univention_heimdal_service_cfg() {
 	univention_heimdal_service_cfg='/etc/univention/service.info/services/univention-heimdal-kdc.cfg'
 	dpkg-divert --local --rename \
-		--add "$univention_heimdal_service_cfg" \
-		--divert "$univention_heimdal_service_cfg".disabled || true
+		--divert "$univention_heimdal_service_cfg".disabled \
+		--add "$univention_heimdal_service_cfg" || true
 }
 
 if [ "$1" = "configure" ]; then
@@ -309,7 +309,7 @@ secret: $machine_secret
 		fi
 
 		### The following block of code may be removed after ucs4.1-2
-		if dpkg --compare-versions "$2" lt-nl "5.0.1-26"; then
+		if dpkg --compare-versions "$2" lt-nl "5.0.1-27"; then
 			divert_univention_heimdal_service_cfg
 		fi
 
