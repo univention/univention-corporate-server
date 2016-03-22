@@ -449,15 +449,18 @@ class Processor(Base):
 					favcat = []
 					if id in favorites:
 						favcat.append('_favorites_')
+					translationId = module.translationId
+					if not translationId:
+						translationId = id
 					modules.append({
 						'id': id,
-						'name': self.i18n._(module.name, id),
-						'url': self.i18n._(module.url, id),
-						'description': self.i18n._(module.description, id),
+						'name': self.i18n._(module.name, translationId),
+						'url': self.i18n._(module.url, translationId),
+						'description': self.i18n._(module.description, translationId),
 						'icon': module.icon,
 						'categories': module.categories + favcat,
 						'priority': module.priority,
-						'keywords': list(set(module.keywords + [self.i18n._(keyword, id) for keyword in module.keywords]))
+						'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords]))
 					})
 			res.body['modules'] = modules
 			CORE.info('Modules: %s' % (modules,))

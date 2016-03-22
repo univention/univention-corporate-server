@@ -178,7 +178,7 @@ class Module(JSON_Object):
 
 	'''Represents a command attribute'''
 
-	def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None):
+	def __init__(self, id='', name='', url='', description='', icon='', categories=None, flavors=None, commands=None, priority=-1, keywords=None, translationId=None):
 		self.id = id
 		self.name = name
 		self.url = url
@@ -187,6 +187,7 @@ class Module(JSON_Object):
 		self.icon = icon
 		self.priority = priority
 		self.flavors = JSON_List()
+		self.translationId = translationId
 		if flavors is not None:
 			self.append_flavors(flavors)
 
@@ -344,7 +345,7 @@ class XML_Definition(ET.ElementTree):
 			'link': Link,
 			'module': Module
 		}.get(self.root.tag, Module)
-		return cls(self.id, self.name, self.url, self.description, self.icon, self.categories, self.flavors, priority=self.priority, keywords=self.keywords)
+		return cls(self.id, self.name, self.url, self.description, self.icon, self.categories, self.flavors, priority=self.priority, keywords=self.keywords, translationId=self.translationId)
 
 	def get_flavor(self, name):
 		'''Retrieves details of a flavor'''
