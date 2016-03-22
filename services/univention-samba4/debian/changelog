@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-26) unstable; urgency=medium
+
+  * Bug #40383: Divert the univention-heimdal service definition file
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Mar 2016 20:44:08 +0100
+
 univention-samba4 (5.0.1-25) unstable; urgency=medium
 
   * Bug #33399: Don't die if wait_until_dc_was_replicated_to_connector_dc
