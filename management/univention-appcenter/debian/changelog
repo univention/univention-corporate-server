@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-32) unstable; urgency=medium
+
+  * Bug #40879: Remove join scripts and unjoin scripts when necessary
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 22 Mar 2016 10:42:59 +0100
+
 univention-appcenter (5.0.20-31) unstable; urgency=medium
 
   * Bug #39907: add small margin to footer buttons
