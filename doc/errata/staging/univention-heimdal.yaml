@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-1
+src: univention-heimdal
+fix: 9.0.1-3.160.201603222053
+version: [0,1]
+desc: |
+ The following issue has been fixed in univention-heimdal:
+ * The UCR variable description for "kerberos/autostart" did not clearly
+   explain that this variable needs to remain set to "no" on Samba4/AD DCs.
+bug: [40383]

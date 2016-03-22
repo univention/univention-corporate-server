@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-1
+src: univention-config-registry
+fix: 11.0.0-2.492.201603222052
+version: [0,1]
+desc: |
+ The following issue has been fixed in univention-config-registry:
+ * Service information files in /etc/univention/service.info/services
+   are now only considered if they carry the filename suffix ".cfg".
+   The behaviour is now similar to the treatment of UCR info files.
+bug: [40383]

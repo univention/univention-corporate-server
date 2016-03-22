@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+scope: ucs_4.1-0-errata4.1-1
+src: univention-samba4
+fix: 5.0.1-26.650.201603222053
+version: [0,1]
+desc: |
+ The following issue has been fixed in univention-samba4:
+ * It was possible to start the Heimdal KDC manually via the UMC services
+   module on Samba4/AD DCs.
+bug: [40383]
