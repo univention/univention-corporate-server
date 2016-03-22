@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-management-console
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The property translationId for UMC XML files was previously only evaluated
+   for UMC module flavors. With this erratum, translationId is also correctly
+   evaluated for module and link entries.
+bug: [40930]
