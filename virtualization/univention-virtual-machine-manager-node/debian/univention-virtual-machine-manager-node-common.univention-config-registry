@@ -9,10 +9,10 @@ Variables: libvirt/log/filters
 Variables: libvirt/log/outputs
 
 Type: file
-File: etc/default/libvirt-bin
+File: etc/default/libvirtd
 
 Type: file
-File: etc/init.d/libvirt-bin
+File: etc/init.d/libvirtd
 Mode: 755
 
 Type: module

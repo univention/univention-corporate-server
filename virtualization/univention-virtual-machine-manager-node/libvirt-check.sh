@@ -55,7 +55,7 @@ if sv status /etc/runit/univention-libvirt | grep ^run: > /dev/null 2>&1; then
 		wait $pid >/dev/null 2>&1
 
 		echo "libvirt-check.sh: libvirt does not response like expected. Restarting libvirt now." >>"$logfile"
-		invoke-rc.d libvirt-bin restart >>"$logfile" 2>&1
+		invoke-rc.d libvirtd restart >>"$logfile" 2>&1
 	fi
 fi
 

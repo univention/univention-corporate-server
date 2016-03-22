@@ -33,7 +33,7 @@ set -e
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-. /etc/default/libvirt-bin
+. /etc/default/libvirtd
 
 PID=/var/run/libvirtd.pid
 if [ -r "$PID" ]; then

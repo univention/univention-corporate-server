@@ -36,6 +36,14 @@ eval "$(univention-config-registry shell server/role)"
 
 case "$1" in
 configure)
+	if dpkg --compare-versions "$2" lt 2.0.6~
+	then
+		univention-config-registry update
+		[ -L /etc/init.d/univention-virtual-machine-manager-node-common ] &&
+			[ "$(readlink /etc/init.d/univention-virtual-machine-manager-node-common)" = libvirt-bin ] &&
+			rm -f /etc/init.d/univention-virtual-machine-manager-node-common
+		update-rc.d -f libvirt-bin remove || :
+	fi
 	# Setup firewall and backup directory
 	univention-config-registry set \
 		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all="ACCEPT" \
@@ -44,6 +52,7 @@ configure)
 		libvirt/check/interval?2 \
 		libvirt/check/timeout?5 \
 		libvirt/log/level?4
+	univention-config-registry update
 
 	[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
@@ -55,11 +64,10 @@ configure)
 	esac
 
 	# Setup runit
+	[ -x /etc/init.d/libvirtd.debian ] && invoke-rc.d libvirtd.debian stop
 	test -e /etc/runit/univention/univention-libvirt ||
 		ln -s ../univention-libvirt /etc/runit/univention/univention-libvirt
-
-	invoke-rc.d libvirt-bin restart
-	invoke-rc.d univention-directory-listener restart
+	invoke-rc.d libvirtd restart
 	;;
 
 abort-upgrade|abort-remove|abort-deconfigure)
