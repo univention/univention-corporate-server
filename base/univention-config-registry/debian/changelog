@@ -1,3 +1,11 @@
+univention-config-registry (11.0.0-2) unstable; urgency=medium
+
+  * For Bug #40383:
+    Consider only /etc/univention/service.info/services/*.cfg files 
+    ignore files with other suffixes (same as in config_registry_info.py)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Mar 2016 20:21:49 +0100
+
 univention-config-registry (11.0.0-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #38011)

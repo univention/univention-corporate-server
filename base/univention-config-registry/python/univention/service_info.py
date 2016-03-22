@@ -200,7 +200,7 @@ class ServiceInfo( object ):
 			if entry == ServiceInfo.CUSTOMIZED:
 				continue
 			cfgfile = os.path.join( path, entry )
-			if os.path.isfile( cfgfile ):
+			if os.path.isfile( cfgfile ) and cfgfile[-len(ServiceInfo.FILE_SUFFIX):] == ServiceInfo.FILE_SUFFIX:
 				self.read_services( cfgfile )
 		# read modified/added service descriptions
 		self.read_customized()
