@@ -775,6 +775,7 @@ class AD_Takeover():
 		self.ad_server_ip = self.AD.domain_info["ad_ip"]
 		self.ad_server_fqdn = self.AD.domain_info["ad_hostname"]
 		self.ad_server_name = self.AD.domain_info["ad_netbios_name"]
+		self.ad_netbios_domain = self.AD.domain_info["ad_netbios_domain"]
 
 		self.lp = LoadParm()
 		try:
@@ -1018,7 +1019,7 @@ class AD_Takeover():
 		self.lo = _connect_ucs(self.ucr)
 		ldap_result = self.lo.search(filter="(&(objectClass=sambaDomain)(sambaDomainName=%s))" % self.ucr["windows/domain"], attr=["sambaSID"])
 		if len(ldap_result) == 1:
-			ucs_object_dn = ldap_result[0][0]
+			sambadomain_object_dn = ldap_result[0][0]
 
 			old_ucs_sambasid_backup_file = "%s/old_sambasid" % BACKUP_DIR
 			if os.path.exists(old_ucs_sambasid_backup_file):
@@ -1035,12 +1036,54 @@ class AD_Takeover():
 			# FIXME: probably sys.exit()?
 		else:
 			log.error('Error: Did not find a sambaDomain object with sambaDomainName=%s' % self.ucr["windows/domain"])
+			sambadomain_object_dn = None
 			# FIXME: probably sys.exit()?
 
-		log.debug("Replacing old UCS sambaSID (%s) by AD domain SID (%s)." % (self.old_domainsid, self.ad_domainsid))
-		if self.old_domainsid != self.ad_domainsid:
-			ml = [("sambaSID", self.old_domainsid, self.ad_domainsid)]
-			self.lo.modify(ucs_object_dn, ml)
+		if self.ucr["windows/domain"] != self.ad_netbios_domain or not sambadomain_object_dn:
+			ldap_result = self.lo.search(filter="(&(objectClass=sambaDomain)(sambaDomainName=%s))" % self.ad_netbios_domain, attr=["sambaSID"])
+			if len(ldap_result) == 1:
+				sambadomain_object_dn = ldap_result[0][0]
+			elif len(ldap_result) > 0:
+				log.error('Error: Found more than one sambaDomain object with sambaDomainName=%s' % self.ad_netbios_domain)
+				# FIXME: probably sys.exit()?
+			else:
+				if sambadomain_object_dn:
+					position = univention.admin.uldap.position(self.lo.base)
+					module_settings_sambadomain = udm_modules.get('settings/sambadomain')
+					udm_modules.init(self.lo, position, module_settings_sambadomain)
+
+					try:
+						sambadomain_object = module_settings_sambadomain.object(None, self.lo, position, sambadomain_object_dn)
+						sambadomain_object.open()
+					except uexceptions.ldapError as exc:
+						log.debug("Opening '%s' failed: %s." % (sambadomain_object_dn, exc,))
+
+					try:
+						log.debug("Renaming '%s' to '%s' in UCS LDAP." % (sambadomain_object_dn, self.ad_netbios_domain))
+						sambadomain_object['name'] = self.ad_netbios_domain
+						sambadomain_object.modify()
+					except uexceptions.ldapError as exc:
+						log.debug("Renaming of '%s' failed: %s." % (sambadomain_object_dn, exc,))
+					else:
+						dnparts = ldap.explode_dn(sambadomain_object_dn)
+						rdn = dnparts[0].split('=', 1)
+						dnparts[0] = '='.join((rdn[0], self.ad_netbios_domain))
+						sambadomain_object_dn = ",".join(dnparts)
+				else:
+					## FIXME: in this peculiar case we should create one.
+					pass
+
+			run_and_output_to_log(["univention-config-registry", "set",
+							"windows/domain=%s" % self.ad_netbios_domain,
+							], log.debug)
+
+		if sambadomain_object_dn:
+			log.debug("Replacing old UCS sambaSID (%s) by AD domain SID (%s)." % (self.old_domainsid, self.ad_domainsid))
+			if self.old_domainsid != self.ad_domainsid:
+				ml = [("sambaSID", self.old_domainsid, self.ad_domainsid)]
+				self.lo.modify(sambadomain_object_dn, ml)
+		else:
+			log.error("Error: Identification of Samba domain object failed")
 
 		## Fix some attributes in local SamDB
 		operatingSystem_attribute(self.ucr, self.samdb)
