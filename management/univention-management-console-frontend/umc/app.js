@@ -1552,7 +1552,7 @@ define([
 			domClass.toggle(favoritesCategory._button.domNode, 'favoritesHidden', emptyFavorites);
 
 			// take the first visible category as fallback for the last selected one
-			this._lastCategory = emptyFavorites ? this.getCategories()[1] : favoritesCategory;
+			this._lastCategory = emptyFavorites ? array.filter(this.getCategories(), function(category) {return category.id != '_favorites_'; })[0] : this.getCategories()[0];
 
 			// spread category buttons over whole width
 			styles.insertCssRule('.umc .umcCategoryBar .dijitButton', lang.replace('width: {0}%', [100.0 / this.getCategories().length]));
