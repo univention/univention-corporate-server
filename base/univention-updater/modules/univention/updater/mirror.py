@@ -39,6 +39,7 @@ import itertools
 import logging
 from operator import itemgetter
 from debian.deb822 import Packages
+from apt import apt_pkg
 
 from tools import UniventionUpdater, NullHandler
 from ucs_version import UCS_Version
@@ -240,8 +241,8 @@ class UniventionMirror(UniventionUpdater):
                 self.log.debug('Generating %s and %s ...', main_name, inst_name)
                 makedirs(os.path.dirname(main_name))
                 makedirs(os.path.dirname(inst_name))
-                main = open(main_name, 'w')
-                inst = open(inst_name, 'w')
+                main = open(main_name + '.tmp', 'w')
+                inst = open(inst_name + '.tmp', 'w')
                 try:
                     for dir2, src_name in prev:
                         self.log.debug('Appending %s ...', src_name)
@@ -275,11 +276,35 @@ class UniventionMirror(UniventionUpdater):
 
     def _compress(self, filename):
         self.log.debug('Compressing %s ...', filename)
-        subprocess.call(
+        sorter = subprocess.Popen(
+            ('apt-sortpkgs', filename + '.tmp'),
+            stdout=subprocess.PIPE,
+        )
+        tee = subprocess.Popen(
+            ('tee', filename),
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+        )
+        gzip = subprocess.Popen(
             ('gzip',),
-            stdin=open(filename, 'rb'),
+            stdin=tee.stdout,
             stdout=open(filename + '.gz', 'wb'),
         )
+        tee.stdout.close()
+        prev = None
+        for pkg in Packages.iter_paragraphs(sorter.stdout):
+            if prev:
+                if prev["Package"] != pkg["Package"]:
+                    tee.stdin.write("%s\n" % prev)
+                elif apt_pkg.version_compare(prev["Version"], pkg["Version"]) >= 0:
+                    continue
+            prev = pkg
+        if prev:
+            tee.stdin.write("%s\n" % prev)
+        tee.stdin.close()
+        rc_sorter, rc_tee, rc_gzip = sorter.wait(), tee.wait(), gzip.wait()
+        self.log.debug('sorter=%d tee=%d gzip=%d', rc_sorter, rc_tee, rc_gzip)
+        os.remove(filename + '.tmp')
 
     def _release(self, outdir, dist, archs, version):
         rel_name = os.path.join(outdir, 'dists', dist, 'Release')
