@@ -1,3 +1,9 @@
+univention-config-registry (11.0.0-3) unstable; urgency=medium
+
+  * For Bug #40383: Improve code readability
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Mar 2016 15:53:12 +0100
+
 univention-config-registry (11.0.0-2) unstable; urgency=medium
 
   * For Bug #40383:

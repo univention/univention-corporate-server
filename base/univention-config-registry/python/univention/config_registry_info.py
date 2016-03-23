@@ -267,7 +267,7 @@ class ConfigRegistryInfo( object ):
 		if os.path.exists ( path ):
 			for entry in os.listdir( path ):
 				cfgfile = os.path.join( path, entry )
-				if os.path.isfile( cfgfile ) and cfgfile[-len(ConfigRegistryInfo.FILE_SUFFIX):] == ConfigRegistryInfo.FILE_SUFFIX and entry != ConfigRegistryInfo.CUSTOMIZED:
+				if os.path.isfile( cfgfile ) and cfgfile.endswith(ConfigRegistryInfo.FILE_SUFFIX) and entry != ConfigRegistryInfo.CUSTOMIZED:
 					self.read_variables( cfgfile )
 			self.check_patterns()
 			if not registered_only:
