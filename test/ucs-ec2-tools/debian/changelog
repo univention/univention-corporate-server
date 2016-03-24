@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-15) unstable; urgency=medium
+
+  * Bug #40942: Install Docker Apps via univention-app
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 24 Mar 2016 16:42:50 +0100
+
 ucs-ec2-tools (2.0.0-14) unstable; urgency=low
 
   * Bug #40621: New 4.1-1r2 AMI image

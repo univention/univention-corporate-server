@@ -203,7 +203,15 @@ install_apps ()
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
 	do
-		univention-add-app -a --latest "$app" || rv=$?
+		if [ -n "$(univention-app get "$app" DockerImage 2>/dev/null)" ]; then
+			if [ -n "$(ucr get "appcenter/apps/$app/status")" ]; then
+				univention-app install "$app" --noninteractive --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
+			else
+				univention-app upgrade "$app" --noninteractive --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
+			fi
+		else
+			univention-add-app -a --latest "$app" || rv=$?
+		fi
 	done
 	return $rv
 }
@@ -214,7 +222,11 @@ uninstall_apps ()
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-uninstalled.txt; done
 	for app in "$@"
 	do
-		/root/uninstall-app.py -a "$app" || rv=$?
+		if [ -n "$(univention-app get "$app" DockerImage 2>/dev/null)" ]; then
+			univention-app remove "$app" --noninteractive --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
+		else
+			/root/uninstall-app.py -a "$app" || rv=$?
+		fi
 	done
 	return $rv
 }
