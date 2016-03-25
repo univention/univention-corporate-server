@@ -1,3 +1,9 @@
+ucs-test (6.0.33-49) unstable; urgency=medium
+
+  * Bug #39165: Fix URL regex, only use current ini file (2)
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 25 Mar 2016 01:48:42 +0100
+
 ucs-test (6.0.33-48) unstable; urgency=medium
 
   * Bug #39165: Fix URL regex, only use current ini file

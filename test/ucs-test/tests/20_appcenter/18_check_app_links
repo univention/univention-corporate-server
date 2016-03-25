@@ -172,9 +172,6 @@ def check_ini_files():
 
 if __name__ == '__main__':
     # skip the test if there are no Apps (in 'APPCENTER_FILE'):
-    get_installed_apps()
-    Application.sync_with_server()
-
     check_ini_files()
 
     if failures_counter:
