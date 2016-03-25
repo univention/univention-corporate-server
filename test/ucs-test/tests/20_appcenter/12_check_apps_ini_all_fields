@@ -146,9 +146,6 @@ class Value(object):
     def is_90c(self):
         return self.is_n_chars_long(90)
 
-    def is_2000c(self):
-        return self.is_n_chars_long(2000)
-
     def is_email(self):
         if self.RE_EMAIL.match(self.value):
             return
@@ -212,7 +209,7 @@ class Section(object):
         'EndOfLife': ('optional', 'is_bool',),
         'ID': ('required',),
         'LicenseFile': ('optional',),
-        'LongDescription': ('required', 'is_2000c'),
+        'LongDescription': ('required',),
         'Maintainer': ('optional',),
         'MinPhysicalRAM': ('optional', 'is_capacity',),
         'Name': ('required',),
