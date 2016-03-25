@@ -14,14 +14,40 @@ from multiprocessing import Process, Pipe as m_Pipe
 
 import univention.testing.utils as utils
 from univention.testing.codes import TestCodes
-from univention.management.console.modules.appcenter.app_center import Application, CACHE_DIR
 
 import re
 
-APPCENTER_FILE = "/var/cache/appcenter-installed.txt"  # installed apps
-check_installed_apps = []  # list of installed apps (from APPCENTER_FILE)
+from appcentertest import *
 
-re_pattern = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'  # link extraction pattern
+# taken from https://mail.python.org/pipermail/tutor/2002-September/017228.html
+urls = '(?: %s)' % '|'.join("http https telnet gopher file wais ftp".split())
+ltrs = r'\w'
+gunk = r'/#~:.?+=&%@!\-'
+punc = r'.:?\-'
+any = "%(ltrs)s%(gunk)s%(punc)s" % { 'ltrs' : ltrs,
+                                     'gunk' : gunk,
+                                     'punc' : punc }
+
+url = r"""
+    \b                            # start at word boundary
+        %(urls)s    :             # need resource and a colon
+        [%(any)s]  +?             # followed by one or more
+                                  #  of any valid character, but
+                                  #  be conservative and take only
+                                  #  what you need to....
+    (?=                           # look-ahead non-consumptive assertion
+            [%(punc)s]*           # either 0 or more punctuation
+            (?:   [^%(any)s]      #  followed by a non-url char
+                |                 #   or end of the string
+                  $
+            )
+    )
+    """ % {'urls' : urls,
+           'any' : any,
+           'punc' : punc }
+
+url_re = re.compile(url, re.VERBOSE | re.MULTILINE)
+
 failures_counter = 0  # errors counter
 bad_links = []  # list of problematic links
 
@@ -41,29 +67,6 @@ def fail_the_test(bad_link):
     global failures_counter, bad_links
     failures_counter += 1
     bad_links.append(bad_link)
-
-
-def get_installed_apps():
-    """
-    Populates the global 'check_installed_apps' with ids from the
-    'APPCENTER_FILE'. Skips when the 'APPCENTER_FILE' does not exist.
-    """
-    try:
-        if not path.exists(APPCENTER_FILE):
-            print("The '%s' file with a list of installed Apps cannot "
-                  "be found." % APPCENTER_FILE)
-            exit(TestCodes.RESULT_SKIP)
-
-        AppsFile = open(APPCENTER_FILE)
-        global check_installed_apps
-        for app_id in AppsFile:
-            check_installed_apps.append(app_id.strip())
-
-        AppsFile.close()
-        print "Installed Apps are:", check_installed_apps
-    except (IOError, OSError) as exc:
-        utils.fail("An error occured while trying to open the '%s' file: %r"
-                   % (APPCENTER_FILE, exc))
 
 
 def check_link_by_request(proc_connection, link):
@@ -87,18 +90,19 @@ def check_link_by_request(proc_connection, link):
     proc_connection.close()
 
 
-def findall_urls(filename):
+def findall_urls(app):
     """
-    Returns a set of 'http:' and 'https:' URLs found in the given 'filename'.
-    Lines starting with '#' are ignored.
+    Returns a set of 'http:' and 'https:' URLs found in the given app.
     """
     all_urls = []
 
+    filename = app.get_ini_file()
+    print "\nChecking file:", filename
     try:
         with open(filename, 'r') as ini_file:
             for line in ini_file:
                 if not line.startswith('#'):
-                    url = findall(re_pattern, line)
+                    url = url_re.findall(line)
                     for u in url:
                         all_urls.append(re.sub(r'<[^>]+>', '', u))
 
@@ -111,22 +115,15 @@ def findall_urls(filename):
 
 def collect_links():
     """
-    Looks for all .ini files in CACHE_DIR;
-    Opens the .inis of installed Apps and looks for links;
+    Looks for all links in the installed Apps
     Adds links found to a set and returns it when done.
     """
-    test_path = [fname for fname in glob(path.join(CACHE_DIR, '*.ini')) if not path.basename(fname).startswith('.')]
     links_to_check = set()
 
-    for app in check_installed_apps:
+    for app in get_requested_apps():
         print "\nChecking App:", app
-        app = "/" + app  # .ini filename starts with Application name
-
-        for filename in test_path:
-            if app in filename:
-                print "\nGetting links from file '%s':" % filename
-                # determine links to be checked (duplicates are ignored):
-                links_to_check.update(findall_urls(filename))
+        # determine links to be checked (duplicates are ignored):
+        links_to_check.update(findall_urls(app))
 
     return links_to_check
 
@@ -136,10 +133,6 @@ def check_ini_files():
     Collects all links from .inis of installed Apps;
     Tries to open each URL found using urlopen with a timeout.
     """
-    print "\nThe path to Appcenter .ini files is:", CACHE_DIR
-    if not path.exists(CACHE_DIR):
-        utils.fail("The path to App center .ini files does not exist.")
-
     for link in collect_links():
         print "\nChecking link:", link
 
@@ -182,7 +175,6 @@ if __name__ == '__main__':
     get_installed_apps()
     Application.sync_with_server()
 
-    # find and check only .ini files of the 'check_installed_apps':
     check_ini_files()
 
     if failures_counter:
