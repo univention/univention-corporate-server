@@ -9,7 +9,7 @@
 from os import path
 from glob import glob
 from re import findall
-from urllib2 import urlopen, URLError, HTTPError
+from urllib2 import urlopen, URLError, HTTPError, Request
 from multiprocessing import Process, Pipe as m_Pipe
 
 import univention.testing.utils as utils
@@ -75,7 +75,8 @@ def check_link_by_request(proc_connection, link):
     """
     response_code = reason = ''
     try:
-        url = urlopen(link, timeout=60)
+        req = Request(link, headers={'User-Agent': 'Mozilla/5.0'})
+        url = urlopen(req, timeout=60)
         response_code = url.getcode()
 
     except (URLError, HTTPError, ValueError) as exc:
