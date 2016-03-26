@@ -72,6 +72,8 @@ define([
 
 		baseClass: 'appcenterMetaCategory',
 
+		galleryClass: AppCenterGallery,
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -96,7 +98,7 @@ define([
 				}
 			});
 
-			this.grid = new AppCenterGallery({
+			this.grid = new this.galleryClass({
 				actions: [{
 					name: 'open',
 					isDefaultAction: true,

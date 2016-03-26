@@ -116,6 +116,16 @@ def underscore(value):
 		return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()
 
 
+def capfirst(value):
+	if value:
+		return value[0].upper() + value[1:]
+
+
+def camelcase(value):
+	if value:
+		return ''.join(capfirst(part) for part in value.split('_'))
+
+
 def shell_safe(value):
 	return underscore(key_shell_escape(value))
 

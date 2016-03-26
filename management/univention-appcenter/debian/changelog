@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-33) unstable; urgency=medium
+
+  * Bug #40943: Prepare App Center for Self Service
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 26 Mar 2016 22:14:00 +0100
+
 univention-appcenter (5.0.20-32) unstable; urgency=medium
 
   * Bug #40879: Remove join scripts and unjoin scripts when necessary

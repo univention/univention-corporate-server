@@ -365,9 +365,270 @@ class AppDockerScriptAttribute(AppAttribute):
 
 
 class App(object):
+	"""
+	This is the main App class. It represents *one version* of the App in
+	the Univention App Center. It is mainly a container for a parsed ini
+	file.
+
+	The attributes are described below. Technically they are added to the
+	class by the metaclass UniventionMetaClass. The magical parsing stuff
+	happens in from_ini(). In __init__ you can pass any value you want and
+	the App will just accept it.
+
+	Real work with the App class is done in the actions, not this class
+	itself.
+
+	Attributes:
+		id: A unique ID for the App. Different versions of the same
+			App have the same ID, though.
+		code: An internal ID like 2-char value that has no meaning
+			other than some internal reporting processing.
+			Univention handles this, not the App Vendor.
+		component_id: The internal name of the repository on the App
+			Center server. Not necessarily (but often) named after
+			the ID. Not part of the ini file.
+		ucs_version: Not part of the ini file.
+		name: The displayed name of the App.
+		version: Version of the App. Needs to be unique together with
+			with the ID.
+		description: A short description of the App. Should not exceed
+			90 chars, otherwise it gets unreadable in the App
+			Center.
+		long_description: A more complete description of the App. HTML
+			allowed and required! Shown before installation.
+		thumbnails: A list of screenshots and / or YouTube video URLs.
+		categories: Categories this App shall be filed under.
+		website: Website for more information about the product (e.g.
+			landing page)
+		support_url: Website for getting support (or information about
+			how to buy a license)
+		contact: Contact email address for the customer
+		vendor: Display name of the vendor. The actual creator of the
+			Software. See also maintainer.
+		website_vendor: Website of the vendor itself for more
+			information.
+		maintainer: Display name of the maintainer, who actually put
+			the App into the App Center. Often, but not necessarily
+			the vendor. If vendor and maintainer are the same,
+			maintainer does not needs to be specified again.
+		website_maintainer: Website of the maintainer itself for more
+			information.
+		license: An abbreviation of a license category. See also
+			license_agreement. Not part of the App class.
+		license_description: A human readable version of the License
+			attribute of the ini file. Not part of the the ini
+			file.
+		license_agreement: A file containing the license text the end
+			user has to agree to. The file is shipped along with
+			the ini file. Not part of the ini file.
+		readme: A file containing information about first steps for
+			the end user. E.g., which UCS users have access to the
+			App. Shown in the App Center if the App is installed.
+			The file is shipped along with the ini file. Not part
+			of the ini file.
+		readme_install: A file containing important information for
+			the end user which is shown _just before_ the
+			installation starts. The file is shipped along with
+			the ini file. Not part of the ini file.
+		readme_post_install: A file containing important information
+			for the end user which is shown _just after_ the
+			installation is completed. The file is shipped along
+			with the ini file. Not part of the ini file.
+		readme_update: A file containing important information for the
+			end user which is shown _just before_ the update
+			starts. Use case: Changelog. The file is shipped along
+			with the ini file. Not part of the ini file.
+		readme_post_update: A file containing important information
+			for the end user which is shown _just after_ the update
+			is completed. The file is shipped along with the ini
+			file. Not part of the ini file.
+		readme_uninstall: A file containing important information for
+			the end user which is shown _just before_ the
+			uninstallation starts. Use case: Warning about broken
+			services. The file is shipped along with the ini
+			file. Not part of the ini file.
+		readme_post_uninstall: A file containing important information
+			for the end user which is shown _just after_ the
+			uninstallation is completed. Use case: Instructions how
+			to clean up if the App was unable to do it
+			automatically. The file is shipped along with the ini
+			file. Not part of the ini file.
+		notify_vendor: Whether the App provider shall be informed
+			about (un)installation of the App by Univention via
+			email.
+		notification_email: Email address that should be used to send
+			notifications. If none is provided the address from
+			contact	will be used. Note: An empty email
+			(NotificationEmail=) is not valid! Remove the line (or
+			put in comments) in this case.
+		web_interface: The path of the App's web interface.
+		web_interface_name: A name for the App's web interface. If not
+			given, "name" is used.
+		web_interface_port_http: The port to the web interface (HTTP).
+		web_interface_port_https: The port to the web interface (HTTPS).
+		web_interface_proxy_scheme: Docker Apps only. Whether the web
+			interface in the container only supports HTTP, HTTPS
+			or both.
+		auto_mod_proxy: Docker Apps only. Whether the web interface
+			should be included in the host's apache configuration.
+			If yes, the web interface ports of the container are
+			used for a proxy configuration, so that the web
+			interface is again available on 80/443. In this case
+			the "web_interface" itself needs to have a distinct
+			path even inside the container (like "/myapp" instead
+			of "/" inside).
+			If "web_interface_proxy_scheme" is set to http, both
+		ucs_overview_category: Whether and if where on the start site
+			the web_interface should be registered.
+		conflicted_apps: List of App IDs that may not be installed
+			together with this App. Works in both ways, one only
+			needs to specify it on one App.
+		required_apps: List of App IDs that need to be installed along
+			with this App.
+		required_apps_in_domain: Like required_apps, but the Apps may
+			be installed anywhere in the domain, not necessarily
+			on this very server.
+		conflicted_system_packages: List of debian package names that
+			cannot be installed along with the App.
+		required_ucs_version: The UCS version that is required for the
+			App to work (because a specific feature was added or
+			a bug was fixed after the initial release of this UCS
+			version). Examples: 4.1-1, 4.1-1 errata200.
+		end_of_life: If specified, this App does no longer show up in
+			the App Center when not installed. For old
+			installations, a warning is shown that the user needs
+			to find an alternative for the App. Should be
+			supported by an exhaustive "readme" file how to
+			migrate the App data.
+		without_repository: Whether this App can be installed without
+			adding a dedicated repository on the App Center
+			server.
+		default_packages: List of debian package names that shall be
+			installed (probably living in the App Center server's
+			repository).
+		default_packages_master: List of package names that shall be
+			installed on Domaincontroller Master and Backup
+			systems while this App is installed. Deprecated. Not
+			supported for Docker Apps.
+		rating: Positive rating on specific categories regarding the
+			App. Controlled by Univention. Not part of the ini
+			file.
+		umc_module_name: If the App installs a UMC module, the ID can
+			specified so that a link may be generated by the App
+			Center.
+		umc_module_flavor: If the App installs a UMC module with
+			flavors, it can	specified so that a link may be
+			generated by the App Center.
+		user_activation_required: If domain users have to be somehow
+			modified ("activated") to use the application, the App
+			Center may generate a link to point the the Users
+			module of UMC.
+		ports_exclusive: A list of ports the App requires to acquire
+			exclusively. Implicitly builds "conflicted_apps".
+			Docker Apps will have these exact ports forwarded. The
+			App Center will also change the firewall rules.
+		ports_redirection: Docker Apps only. A list of ports the App
+			wants to get forwarded from the host to the container.
+			Example: 2222:22 will enable an SSH connection to the
+			container when the user is doing "ssh docker-host -p
+			2222".
+		server_role: List of UCS roles the App may be installed on.
+		supported_architectures: Non-Docker Apps only. List of
+			architectures the App supports. Docker Apps always
+			require amd64.
+		min_physical_ram: The minimal amount of memory in MB. This
+			value is compared with the currently available memory
+			(without Swap) when trying to install the application.
+			When the test fails, the user may still override it
+			and install it.
+		shop_url: If given, a button is added to the App Center which
+			users can click to buy a license.
+		ad_member_issue_hide: When UCS is not managing the domain but
+			instead is only part of a Windows
+			controlled Active Directory domain, the environment in
+			which the App runs is different and certain services
+			that this App relies on may not not be running. Thus,
+			the App should not be shown at all in the App Center.
+		ad_member_issue_password: Like "ad_member_issue_hide" but only
+			shows a warning: The App needs a password service
+			running on the Windows domain controller, e.g. because
+			it needs the samba hashes to authenticate users. This
+			can be set up, but nor automatically. A link to the
+			documentation how to set up that service in such
+			environments is shown.
+		app_report_object_type: In some environments, App reports are
+			automatically generated by a metering tool. This tool
+			counts a specific amount of LDAP objects.
+			"app_report_object_type" is the object type of these
+			objects. Example: users/user
+		app_report_object_filter: Part of the App reporting. The
+			filter for "app_report_object_type". Example:
+			(myAppActivated=1).
+		app_report_object_attribute: Part of the App reporting. If
+			specified, not 1 is counted per object, but the number
+			of values in this "app_report_object_attribute".
+			Useful for "app_report_attribute_type" = groups/group
+			and "app_report_object_attribute" = uniqueMember.
+		app_report_attribute_type: Same as "app_report_object_type"
+			but regarding the list of DNs in
+			"app_report_object_attribute".
+		app_report_attribute_filter: Same as
+			"app_report_object_filter" but regarding
+			"app_report_object_type".
+		docker_image: Docker Image for the container. If specified the
+			App implicitly becomes a Docker App.
+		docker_allowed_images: List of other Docker Images. Used for
+			updates. If the new version has a new "docker_image"
+			but the old App runs on an older image specified in
+			this list, the image is not exchanged.
+		docker_shell_command: Default command when running
+			"univention-app APP shell".
+		docker_volumes: List of volumes that shall be mounted from
+			the host to the container. Example:
+			/var/lib/host/MYAPP/:/var/lib/container/MYAPP/ mounts
+			the first directory in the container under the name
+			of the second directory.
+		docker_server_role: Which computer object type shall be
+			created in LDAP as the docker container.
+		docker_script_init: The entrypoint for the Docker App. An
+			empty value will use the container's entrypoint, but
+			this needs an exlicit "DockerScriptInit=".
+		docker_script_setup: Path to the setup script in the container
+			run after the start of the container. If the App comes
+			with a setup script living on the App Center server,
+			this script is copied to this very path before being
+			executed.
+		docker_script_store_data: Like docker_script_setup, but for a
+			script that is run to backup the data just before
+			destroying the old container.
+		docker_script_restore_data_before_setup: Like
+			docker_script_setup, but for a script that is run to
+			restore backuped data just before running the setup
+			script.
+		docker_script_restore_data_after_setup: Like
+			docker_script_setup, but for a script that is run to
+			restore backuped data just after running the setup
+			script.
+		docker_script_update_available: Like docker_script_setup, but
+			for a script that is run to check whether an update is
+			available (packag or distribution upgrade).
+		docker_script_update_packages: Like docker_script_setup, but
+			for a script that is run to install package updates
+			(like security updates) in the container without
+			destroying it.
+		docker_script_update_release: Like docker_script_setup, but for
+			a script that is run to install distribution updates
+			(like new major releases of the OS) in the container
+			without destroying it.
+		docker_script_update_app_version: Like docker_script_setup, but
+			for a script that is run to specifically install App
+			package updates in the container without destroying it.
+	"""
 	__metaclass__ = UniventionMetaClass
 
 	id = AppAttribute(regex='^[a-zA-Z0-9]+(([a-zA-Z0-9-_]+)?[a-zA-Z0-9])?$', required=True)
+	"""The required ID"""
+
 	code = AppAttribute(regex='^[A-Za-z0-9]{2}$', required=True)
 	component_id = AppAttribute(required=True)
 	ucs_version = AppAttribute(required=True)
@@ -433,7 +694,6 @@ class App(object):
 	supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
 	min_physical_ram = AppIntAttribute(default=0)
 
-	#use_shop = AppBooleanAttribute(localisable=True)
 	shop_url = AppAttribute(localisable=True)
 
 	ad_member_issue_hide = AppBooleanAttribute()
@@ -588,8 +848,9 @@ class App(object):
 	def ucr_component_key(self):
 		return 'repository/online/component/%s' % self.component_id
 
-	def get_attr(self, attr_name):
-		for attr in self._attrs:
+	@classmethod
+	def get_attr(cls, attr_name):
+		for attr in cls._attrs:
 			if attr.name == attr_name:
 				return attr
 

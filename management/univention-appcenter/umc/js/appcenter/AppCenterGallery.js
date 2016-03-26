@@ -73,11 +73,12 @@ define([
 
 			var text = put(innerWrapper, 'div.appContent');
 			put(text, 'div.umcGalleryName', this.getItemName(item));
-			put(text, 'div.umcGalleryVendor', item.vendor || item.maintainer || '');
+			put(text, 'div.umcGalleryVendor', this.getMore(item));
 
 			var hover = put(innerWrapper, 'div.appHover');
-			if (item.description) {
-				put(hover, 'div', item.description);
+			var description = this.getItemDescription(item);
+			if (description) {
+				put(hover, 'div', description);
 			}
 
 			innerWrapper.onmouseover = function() {
@@ -127,6 +128,10 @@ define([
 					fontSize *= 0.95;
 				}
 			}));
+		},
+
+		getMore: function(item) {
+			return item.vendor || item.maintainer || '';
 		},
 
 		getStatusIconClass: function(item) {
