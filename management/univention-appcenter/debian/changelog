@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-35) unstable; urgency=medium
+
+  * Bug #40861: Do not install unsigned packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 27 Mar 2016 00:04:39 +0100
+
 univention-appcenter (5.0.20-34) unstable; urgency=medium
 
   * Bug #40550: univention-app shell exits with the exit code of the command
