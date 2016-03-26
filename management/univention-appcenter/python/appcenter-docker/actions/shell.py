@@ -64,4 +64,4 @@ class Shell(UniventionAppAction, DockerActionMixin):
 		tty = sys.stdin.isatty()
 		if tty:
 			docker_exec.append('-it')
-		subprocess.call(docker_exec + [docker.container] + commands)
+		return subprocess.call(docker_exec + [docker.container] + commands)

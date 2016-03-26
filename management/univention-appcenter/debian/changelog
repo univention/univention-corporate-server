@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-34) unstable; urgency=medium
+
+  * Bug #40550: univention-app shell exits with the exit code of the command
+    invoked
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 26 Mar 2016 22:51:04 +0100
+
 univention-appcenter (5.0.20-33) unstable; urgency=medium
 
   * Bug #40943: Prepare App Center for Self Service
