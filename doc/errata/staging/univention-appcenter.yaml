@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-appcenter
-fix: 5.0.20-33.144.201603262216
+fix: 5.0.20-35.146.201603270006
 desc: |
  This update addresses the following issue(s):
  * Improved the image gallery in the details page of an app. The handling
@@ -17,4 +17,7 @@ desc: |
  * Join scripts and unjoin scripts are now correctly removed while installing
    and uninstalling an App.
  * Minor code changes make other projects easier that rely on the App Center.
-bug: [39794, 38530, 39896, 40563, 39907, 40879, 40943]
+ * univention-app shell now correctly exits with the exit code of the called
+   command.
+ * univention-app installed unsigned packages.
+bug: [39794, 38530, 39896, 40563, 39907, 40879, 40943, 40550, 40861]
