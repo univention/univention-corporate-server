@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-appcenter
-fix: 5.0.20-31.142.201603211600
+fix: 5.0.20-33.144.201603262216
 desc: |
  This update addresses the following issue(s):
  * Improved the image gallery in the details page of an app. The handling
@@ -14,4 +14,7 @@ desc: |
  * No SSH connection to docker apps/hosts is done anymore when trying to
    install master packages.
  * A margin has been added to the footer buttons of the installation error page.
-bug: [39794, 38530, 39896, 40563, 39907]
+ * Join scripts and unjoin scripts are now correctly removed while installing
+   and uninstalling an App.
+ * Minor code changes make other projects easier that rely on the App Center.
+bug: [39794, 38530, 39896, 40563, 39907, 40879, 40943]
