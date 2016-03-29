@@ -63,6 +63,10 @@ __SH__
 	fi
 }
 
+rotate_logfiles () {
+	test -x /usr/sbin/logrotate && logrotate -f /etc/logrotate.conf
+}
+
 jenkins_updates () {
 	local version_version version_patchlevel version_erratalevel target
 	target="$(echo "${JOB_NAME:-}"|sed -rne 's,.*/UCS-([0-9]+\.[0-9]+-[0-9]+)/.*,\1,p')"
