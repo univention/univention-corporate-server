@@ -1,3 +1,9 @@
+univention-mail-postfix (8.100.1-1) unstable; urgency=low
+
+  * version bump (Bug #40693)
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 29 Mar 2016 15:09:42 +0200
+
 univention-mail-postfix (8.0.13-13) unstable; urgency=low
 
   * reorder checks to allow empty sender for all recipients except restricted
