@@ -236,7 +236,7 @@ register_apps ()
 		fi
 	done
 
-	ucr set umc/web/appliance/id=${app}
+	ucr set umc/web/appliance/id?${app}
 	univention-install -y univention-app-appliance-branding
 
 	apt-get update
@@ -841,9 +841,9 @@ appliance_reset_servers ()
 {
 	ucr set repository/online/server="https://updates.software-univention.de/"
 
-	ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
-		ucr set "$key=appcenter.software-univention.de"
-	done
+	# ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
+	# 	ucr set "$key=appcenter.software-univention.de"
+	# done
 }
 
 disable_root_login_and_poweroff ()
