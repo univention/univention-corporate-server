@@ -148,7 +148,7 @@ run_setup_join_on_non_master () {
 
 wait_for_reboot () {
 	local i=0
-	while [ i -lt 100 ]; do pidof apache2 && break; sleep 1; i=$((1+i));done
+	while [ $i -lt 100 ]; do pidof apache2 && break; sleep 1; i=$((1+i));done
 }
 
 switch_to_test_app_center ()

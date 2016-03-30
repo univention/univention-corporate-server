@@ -1,3 +1,9 @@
+ucs-ec2-tools (0.1.22-21) unstable; urgency=low
+
+  * Bug #40699: Fix variable de-reference
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 30 Mar 2016 08:49:30 +0200
+
 ucs-ec2-tools (0.1.22-20) unstable; urgency=low
 
   * Bug #39618: UCS-3.3 tests
