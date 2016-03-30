@@ -221,9 +221,9 @@ register_apps ()
 	app=$1
 	apps="$app $(app_get_appliance_additional_apps $app)"
 
-	for app in $apps; do
-		name=$(app_get_name $app)
-		component=$(app_get_component $app)
+	for the_app in $apps; do
+		name=$(app_get_name $the_app)
+		component=$(app_get_component $the_app)
 		component_prefix="repository/online/component/"
 		ucr set ${component_prefix}${component}description="$name" \
 				${component_prefix}${component}/localmirror=false \
