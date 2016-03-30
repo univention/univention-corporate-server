@@ -8,7 +8,14 @@ set -e -u
 
 . "$TESTLIBPATH/base.sh" || exit 137
 
-for cipher in LOW EXPORT aNULL MD5 RC4
+OPENSSL="$(dpkg-query -W -f '${Version}' openssl)"
+if dpkg --compare-versions "$OPENSSL" lt 1.0.1e-2.107.201603011735; then
+	cipher_families=(LOW EXPORT aNULL MD5 RC4)
+else
+	cipher_families=(aNULL MD5 RC4)
+fi
+
+for cipher in "${cipher_families[@]}"
 do
 	info "$cipher"
 	ciphers="$(openssl ciphers "$cipher")"
