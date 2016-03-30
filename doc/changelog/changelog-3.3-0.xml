@@ -442,7 +442,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-				<package>openssl</package> has been upgraded to version 1.0.1e-2 (<u:bug>40688</u:bug>)
+				<package>openssl</package> has been upgraded to version 1.0.1e-2 (<u:bug>40688</u:bug>). Dependend packages have been rebuilt to use the new version.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
