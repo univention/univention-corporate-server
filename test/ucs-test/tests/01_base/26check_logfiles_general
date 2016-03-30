@@ -81,6 +81,7 @@ find /var/log \
 		-o -path "/var/log/user.log" \
 		-o -path "/var/log/uucp.log" \
 		-o -path "/var/log/wtmp" \
+		-o -path "/var/log/wtmp.*" \
 		-o -path "/var/log/Xorg*log*" \
 		-o -path "/var/log/ntpstats/*" \
 		-o -path "/var/log/dpkg.log" \

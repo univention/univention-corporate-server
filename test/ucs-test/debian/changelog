@@ -1,3 +1,10 @@
+ucs-test (6.0.33-52) unstable; urgency=medium
+
+  * 01_base/26check_logfiles_general: Ignore wtmp.* as well since we are
+    running logrotate at the test start (Bug #40948)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Mar 2016 06:01:59 +0200
+
 ucs-test (6.0.33-51) unstable; urgency=medium
 
   * Bug #38798: Remove char limit on LongDescription
