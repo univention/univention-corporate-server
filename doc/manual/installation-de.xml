@@ -136,7 +136,7 @@
 		<listitem>
 			<simpara>
 			<emphasis>Univention Installer</emphasis> startet die interaktive Installation
-			auf Grundlage des Linux-Kernels in Version 3.2. Bei der
+			auf Grundlage des Linux-Kernels in Version 3.16. Bei der
 			Installation fragt das System nach einigen Parametern wie
 			Netzwerkeinstellungen, Festplattenpartitionierung, Systemrolle und ggf.
 			Komponentenauswahl für den zu installierenden Rechner und führt anschließend

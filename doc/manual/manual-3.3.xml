@@ -24,7 +24,7 @@
 
   %entities;
 ]>
-<book lang="en" id="ucs-3.2-8">
+<book lang="en" id="ucs-3.3-0">
   <bookinfo>
     <title>
       Univention Corporate Server
@@ -34,13 +34,13 @@
     </subtitle>
     <legalnotice>
       <literallayout>
-Version 3.2-8
-Date: Nov 24, 2015
+Version 3.3-0
+Date: April 1, 2016
       </literallayout>
 
       <literallayout>
 Alle Rechte vorbehalten./ All rights reserved.
-(c) 2002-2015
+(c) 2002-2016
 Univention GmbH
 Mary-Somerville-Straße 1
 28359 Bremen

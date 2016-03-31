@@ -67,7 +67,7 @@ cd work/
 						<para>Checkout example package from Univention Subversion</para>
 						<programlisting><![CDATA[
 SERVER=http://forge.univention.org
-svn co $SERVER/svn/dev/branches/ucs-3.2/ucs-3.2-0/base/univention-ssh
+svn co $SERVER/svn/dev/branches/ucs-3.3/ucs-3.3-0/base/univention-ssh
 cd univention-ssh/
 							]]></programlisting>
 					</step>
@@ -382,7 +382,7 @@ dpkg-buildpackage: full upload; Debian-native package (full source is included)
 			The following example commands create a repository for UCS version 3.1 with the component name <replaceable>testcomp</replaceable>:
 		</para>
 		<programlisting><![CDATA[
-WWW_BASE="/var/www/repository/3.2/maintained/component"
+WWW_BASE="/var/www/repository/3.3/maintained/component"
 TESTCOMP="testcomp/all"
 install -m755 -d "$WWW_BASE/$TESTCOMP"
 install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
@@ -395,7 +395,7 @@ install -m644 -t "$WWW_BASE/$TESTCOMP" *.deb
 		<para>
 			This repository can be included on any UCS system by appending the following line to <filename>/etc/apt/sources.list</filename>, assuming the <acronym>FQDN</acronym> of the host providing the repository is named <replaceable>repository.server</replaceable>:
 		</para>
-		<programlisting>deb http://repository.server/repository/3.2/maintained/component testcomp/all/</programlisting>
+		<programlisting>deb http://repository.server/repository/3.3/maintained/component testcomp/all/</programlisting>
 		<note>
 			<para>
 				It is important that the directory, from were the <command>apt-ftparchive</command> command is invoked, matches the first string given in the <filename>sources.list</filename> file after the <literal>deb</literal> prefix.

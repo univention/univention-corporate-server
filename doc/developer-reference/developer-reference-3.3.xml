@@ -4,7 +4,7 @@
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
 	%entities;
 ]>
-<book lang="en" id="developer-reference-3.2">
+<book lang="en" id="developer-reference-3.3">
 	<bookinfo>
 		<title>Univention Developer Reference</title>
 		<subtitle>Manual for developers</subtitle>

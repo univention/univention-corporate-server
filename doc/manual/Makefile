@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
-MAIN_de := handbuch-3.2
-MAIN_en := manual-3.2
+MAIN_de := handbuch-3.3
+MAIN_en := manual-3.3
 MAIN := $(MAIN_de) $(MAIN_en)
 STYLESHEET := univention
 handbuch%: lang := de

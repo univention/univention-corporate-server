@@ -6,7 +6,7 @@
 
   %entities;
 ]>
-<book lang="en" id="windows-3.2">
+<book lang="en" id="windows-3.3">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended Windows integration documentation</subtitle>

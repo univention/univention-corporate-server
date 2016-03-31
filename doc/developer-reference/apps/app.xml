@@ -143,7 +143,7 @@
 			application! To workaround this issue, the vendor has to do the
 			following: In a first step he has to grab the packages from the
 			unmaintained repository (see for example <ulink
-				url="http://apt.software-univention.de/3.2/unmaintained/" />) and
+				url="http://apt.software-univention.de/3.3/unmaintained/" />) and
 			bundle it with his own packages so that they are put into the app's own
 			repository. In a second step he should inform Univention about these
 			packages. We will probably move them into maintained so that this
@@ -430,7 +430,7 @@
 									key_id (Key ID of the License)
 							</simpara></listitem>
 							<listitem><simpara>
-									ucs_version (major and minor version of UCS, e.g. 3.2)
+									ucs_version (major and minor version of UCS, e.g. 3.3)
 							</simpara></listitem>
 							<listitem><simpara>
 									app_id (internal ID of the Application)

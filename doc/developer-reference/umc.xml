@@ -100,7 +100,7 @@ Icons: umc/icons
 			</para>
 			<programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<!--DOCTYPE umc SYSTEM "branches/ucs-3.2/ucs/management/univention-management-console/doc/module.dtd"-->
+<!--DOCTYPE umc SYSTEM "branches/ucs-3.3/ucs-3.3-0/management/univention-management-console/data/umc-module.dtd"-->
 <umc version="2.0">
 	<module id="udm" icon="udm-MODULE" version="1.0" translationId="MODULE">
 		<name>...</name>

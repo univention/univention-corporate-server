@@ -140,7 +140,7 @@
 		<listitem>
 			<simpara>
 			<emphasis>Univention Installer</emphasis> starts the interactive installation routine
-			on the basis of the Linux kernel in version 3.2. During installation, the installer requests a number of parameters such as
+			on the basis of the Linux kernel in version 3.16. During installation, the installer requests a number of parameters such as
 			network settings, hard drive partitions, system role, and the selection of
 			software components for the computer to be installed. Then the installation is
 			performed.
