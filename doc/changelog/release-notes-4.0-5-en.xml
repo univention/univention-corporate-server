@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.0-4-en">
+<book lang="en" id="releasenotes-4.0-5-en">
 	<bookinfo>
-		<title>UCS 4.0-4 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.0-4</subtitle>
+		<title>UCS 4.0-5 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.0-5</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2015 Univention GmbH
+				(c) 2002-2016 Univention GmbH
 			</para>
 
 			<para>
@@ -44,10 +44,10 @@
 		<title>Release highlights</title>
 
 		<para>
-			With &ucsUCS; 4.0-4, the fourth point release of &ucsUCS; (UCS) 4.0 is now available.
+			With &ucsUCS; 4.0-5, the fives point release of &ucsUCS; (UCS) 4.0 is now available.
 			It provides various improvements and bugfixes especially in the areas of Active
 			Directory compatibility, and the UCS management system. All security updates released
-			for UCS 4.0-3 are included in this update.
+			for UCS 4.0-4 are included in this update.
 		</para>
 
 	</chapter>
@@ -187,10 +187,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 4.0-3:
+			Listed are the changes since UCS 4.0-4:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-4.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-5.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<!--

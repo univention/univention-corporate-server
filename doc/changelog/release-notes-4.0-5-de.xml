@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.0-4-de">
+<book lang="de" id="releasenotes-4.0-5-de">
 	<bookinfo>
-		<title>UCS 4.0-4 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.0-4</subtitle>
+		<title>UCS 4.0-5 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.0-5</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -17,7 +17,7 @@
 			</para>
 
 			<para>
-				(c) 2002-2015 Univention GmbH
+				(c) 2002-2016 Univention GmbH
 			</para>
 
 			<para>
@@ -43,10 +43,10 @@
 	<chapter id="relnotes:highlights">
 		<title>Release-Highlights</title>
 		<para>
-			Mit &ucsUCS; 4.0-4 steht das vierte Point-Release für &ucsUCS; (UCS) 4.0 zur Verfügung.
+			Mit &ucsUCS; 4.0-5 steht das fünfte Point-Release für &ucsUCS; (UCS) 4.0 zur Verfügung.
 			Es umfasst diverse Detailverbesserungen und Fehlerkorrekturen vor allem in den Bereichen
-			Active Directory Kompatibilität und dem UCS-Managementsystem.  Sämtliche für UCS 4.0-3
-			veröffentlichten Sicherheitsupdates sind in diesem Update enthalten. 
+			Active Directory Kompatibilität und dem UCS-Managementsystem.  Sämtliche für UCS 4.0-4
+			veröffentlichten Sicherheitsupdates sind in diesem Update enthalten.
 		</para>
 	</chapter>
 
@@ -167,7 +167,7 @@
 				</listitem>
 
 				<listitem>
-					<para>Internet Explorer ab Version 9 </para>
+					<para>Internet Explorer ab Version 9</para>
 				</listitem>
 
 				<listitem>
@@ -186,10 +186,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 4.0-3:
+			Aufgeführt sind die Änderungen seit UCS 4.0-4:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-4.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.0-5.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 
 	<!--
