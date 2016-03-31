@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.63-32) unstable; urgency=medium
+
+  * Bug #40118: Add empty hook.js module to accomodate changes in
+    univention-demo-configuration
+
+ -- Eduard Mai <mai@univention.de>  Thu, 31 Mar 2016 18:01:48 +0200
+
 univention-management-console-frontend (5.0.63-31) unstable; urgency=medium
 
   * Bug #40923: make sure the fallback for an empty favorites category isn't
