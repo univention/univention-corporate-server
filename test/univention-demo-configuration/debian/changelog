@@ -1,3 +1,10 @@
+univention-demo-configuration (4.0.3-1) unstable; urgency=medium
+
+  * Bug #40118: Overwrite _resetForm() from umc/dialog/LoginDialog to
+    fill in the login credentials
+
+ -- Eduard Mai <mai@univention.de>  Thu, 31 Mar 2016 18:04:50 +0200
+
 univention-demo-configuration (4.0.2-2) unstable; urgency=medium
 
   * Bug #39738: update again index.html
