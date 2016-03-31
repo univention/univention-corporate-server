@@ -848,7 +848,7 @@ appliance_reset_servers ()
 
 disable_root_login_and_poweroff ()
 {
-	ucr set --force auth/sshd/user/root=no
+	# ucr set --force auth/sshd/user/root=no
 	rm /root/*
 	rm /root/.bash_history
 	history -c
