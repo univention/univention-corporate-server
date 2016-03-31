@@ -267,13 +267,13 @@ def setdata(key, value): pass
 				<term><function>setdata(key, value)</function> (optional)</term>
 				<listitem>
 					<para>
-						This function is called several times by the &ucsUDL; main process to pass configuration data into the modules.
-						The following <varname>key</varname>s are supplied:
+						This function is called up to four times by the &ucsUDL; main process to pass configuration data into the modules.
+						The following <varname>key</varname>s are supplied in the following order:
 					</para>
 					<variablelist>
 						<varlistentry>
-							<term><literal>ldapserver</literal></term>
-							<listitem><simpara>The hostname of the <abbrev>LDAP</abbrev> server the &ucsUDL; is currently reading from.</simpara></listitem>
+							<term><literal>basedn</literal></term>
+							<listitem><simpara>The base distinguished name the &ucsUDL; is using.</simpara></listitem>
 						</varlistentry>
 						<varlistentry>
 							<term><literal>binddn</literal></term>
@@ -284,8 +284,8 @@ def setdata(key, value): pass
 							<listitem><simpara>The password the &ucsUDL; is using to authenticate to the <abbrev>LDAP</abbrev> server.</simpara></listitem>
 						</varlistentry>
 						<varlistentry>
-							<term><literal>basedn</literal></term>
-							<listitem><simpara>The base distinguished name the &ucsUDL; is using.</simpara></listitem>
+							<term><literal>ldapserver</literal></term>
+							<listitem><simpara>The hostname of the <abbrev>LDAP</abbrev> server the &ucsUDL; is currently reading from.</simpara></listitem>
 						</varlistentry>
 					</variablelist>
 					<note>
