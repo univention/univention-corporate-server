@@ -1,3 +1,9 @@
+univention-dvd (0.2.29-18) unstable; urgency=medium
+
+  * Bug #40955: UCS-4.0-5 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 31 Mar 2016 12:18:26 +0200
+
 univention-dvd (0.2.29-17) unstable; urgency=medium
 
   * Added libunivention-ldb-modules to maintained list (Bug #39277)
