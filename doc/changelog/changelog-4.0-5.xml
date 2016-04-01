@@ -18,7 +18,96 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
-						<package>package</package> (<u:cve>0000-0000</u:cve>).
+						<package>firefox</package> (<u:cve>2015-7181</u:cve> <u:cve>2015-7182</u:cve>
+						<u:cve>2015-7183</u:cve> <u:cve>2015-7197</u:cve> <u:cve>2015-7198</u:cve> <u:cve>2015-7199</u:cve>
+						<u:cve>2015-7200</u:cve> <u:cve>2015-7196</u:cve> <u:cve>2015-7194</u:cve> <u:cve>2015-7193</u:cve>
+						<u:cve>2015-7189</u:cve> <u:cve>2015-7188</u:cve> <u:cve>2015-4513</u:cve>) (<u:bug>39785</u:bug>)..
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ntp</package> (<u:cve>2014-9750</u:cve> <u:cve>2014-9751</u:cve> <u:cve>2015-3405</u:cve>
+						<u:cve>2015-5146</u:cve> <u:cve>2015-5194</u:cve> <u:cve>2015-5195</u:cve> <u:cve>2015-5219</u:cve>
+						<u:cve>2015-5300</u:cve> <u:cve>2015-7691</u:cve> <u:cve>2015-7692</u:cve> <u:cve>2015-7701</u:cve>
+						<u:cve>2015-7702</u:cve> <u:cve>2015-7703</u:cve> <u:cve>2015-7704</u:cve> <u:cve>2015-7850</u:cve>
+						<u:cve>2015-7851</u:cve> <u:cve>2015-7852</u:cve> <u:cve>2015-7855</u:cve> <u:cve>2015-7871</u:cve>)
+						(<u:bug>39628</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>rpcbind</package> (<u:cve>2015-7236</u:cve>) (<u:bug>39548</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>ldb</package> (<u:cve>2015-3223</u:cve> <u:cve>2015-5330</u:cve>) (<u:bug>40222</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2015-2535</u:cve> <u:cve>2015-3223</u:cve> <u:cve>2015-5252</u:cve>
+						<u:cve>2015-5296</u:cve> <u:cve>2015-5299</u:cve> <u:cve>2015-5330</u:cve>) (<u:bug>39217</u:bug>
+						<u:bug>39276</u:bug> <u:bug>40222</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>mysql-5.5</package> (<u:cve>2015-4792</u:cve> <u:cve>2015-4802</u:cve>
+						<u:cve>2015-4815</u:cve> <u:cve>2015-4816</u:cve> <u:cve>2015-4819</u:cve> <u:cve>2015-4826</u:cve>
+						<u:cve>2015-4830</u:cve> <u:cve>2015-4836</u:cve> <u:cve>2015-4858</u:cve> <u:cve>2015-4861</u:cve>
+						<u:cve>2015-4870</u:cve> <u:cve>2015-4879</u:cve> <u:cve>2015-4913</u:cve>) (<u:bug>40184</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openjdk-7</package> (<u:cve>2015-4734</u:cve> <u:cve>2015-4803</u:cve>
+						<u:cve>2015-4805</u:cve> <u:cve>2015-4806</u:cve> <u:cve>2015-4835</u:cve> <u:cve>2015-4840</u:cve>
+						<u:cve>2015-4842</u:cve> <u:cve>2015-4843</u:cve> <u:cve>2015-4844</u:cve> <u:cve>2015-4860</u:cve>
+						<u:cve>2015-4868</u:cve> <u:cve>2015-4871</u:cve> <u:cve>2015-4872</u:cve> <u:cve>2015-4881</u:cve>
+						<u:cve>2015-4882</u:cve> <u:cve>2015-4883</u:cve> <u:cve>2015-4893</u:cve> <u:cve>2015-4903</u:cve>
+						<u:cve>2015-4911</u:cve>) (<u:bug>40042</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssh</package> (<u:cve>2016-0777</u:cve> <u:cve>2016-0778</u:cve>)
+						(<u:bug>40439</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>linux</package> (<u:cve>2013-4312</u:cve> <u:cve>2013-7446</u:cve> <u:cve>2015-0272</u:cve>
+						<u:cve>2015-1333</u:cve> <u:cve>2015-1420</u:cve> <u:cve>2015-2925</u:cve> <u:cve>2015-3212</u:cve>
+						<u:cve>2015-3290</u:cve> <u:cve>2015-3291</u:cve> <u:cve>2015-4167</u:cve> <u:cve>2015-4692</u:cve>
+						<u:cve>2015-4700</u:cve> <u:cve>2015-5156</u:cve> <u:cve>2015-5157</u:cve> <u:cve>2015-5257</u:cve>
+						<u:cve>2015-5283</u:cve> <u:cve>2015-5307</u:cve> <u:cve>2015-5364</u:cve> <u:cve>2015-5366</u:cve>
+						<u:cve>2015-5697</u:cve> <u:cve>2015-5706</u:cve> <u:cve>2015-5707</u:cve> <u:cve>2015-6252</u:cve>
+						<u:cve>2015-6937</u:cve> <u:cve>2015-7513</u:cve> <u:cve>2015-7550</u:cve> <u:cve>2015-7566</u:cve>
+						<u:cve>2015-7613</u:cve> <u:cve>2015-7799</u:cve> <u:cve>2015-7833</u:cve> <u:cve>2015-7872</u:cve>
+						<u:cve>2015-7990</u:cve> <u:cve>2015-8104</u:cve> <u:cve>2015-8374</u:cve> <u:cve>2015-8543</u:cve>
+						<u:cve>2015-8550</u:cve> <u:cve>2015-8551</u:cve> <u:cve>2015-8552</u:cve> <u:cve>2015-8569</u:cve>
+						<u:cve>2015-8575</u:cve> <u:cve>2015-8709</u:cve> <u:cve>2015-8767</u:cve> <u:cve>2016-0723</u:cve>
+						<u:cve>2016-0728</u:cve>) (<u:bug>38764</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>firefox</package> (<u:cve>2015-7214</u:cve> <u:cve>2015-7222</u:cve>
+						<u:cve>2015-7213</u:cve> <u:cve>2015-7205</u:cve> <u:cve>2015-7212</u:cve> <u:cve>2015-7210</u:cve>
+						<u:cve>2015-7201</u:cve> <u:cve>2015-7575</u:cve> <u:cve>2016-1935</u:cve> <u:cve>2016-1930</u:cve>)
+						(<u:bug>40273</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>gnutls26</package> (<u:cve>2015-7575</u:cve> <u:cve>2015-8313</u:cve>)
+						(<u:bug>40411</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>libxml2</package> (<u:cve>2015-1819</u:cve> <u:cve>2015-7941</u:cve>
+						<u:cve>2015-7942</u:cve> <u:cve>2015-8035</u:cve> <u:cve>2015-5312</u:cve> <u:cve>2015-7497</u:cve>
+						<u:cve>2015-7498</u:cve> <u:cve>2015-7499</u:cve> <u:cve>2015-7500</u:cve> <u:cve>2015-8241</u:cve>
+						<u:cve>2015-8317</u:cve>) (<u:bug>38907</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>eglibc</package> (<u:cve>2014-8121</u:cve> <u:cve>2015-1781</u:cve>
+						<u:cve>2015-7547</u:cve> <u:cve>2015-8776</u:cve> <u:cve>2015-8777</u:cve> <u:cve>2015-8778</u:cve>
+						<u:cve>2015-8779</u:cve>) (<u:bug>38407</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2015-7560</u:cve>) (<u:bug>40679</u:bug> <u:bug>40850</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>sudo</package> (<u:cve>2015-5602</u:cve>) (<u:bug>40365</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl</package> (<u:cve>2015-3194</u:cve> <u:cve>2015-3195</u:cve>
+						<u:cve>2015-3196</u:cve> <u:cve>2015-7575</u:cve> <u:cve>2016-0705</u:cve> <u:cve>2016-0798</u:cve>
+						<u:cve>2016-0797</u:cve> <u:cve>2016-0799</u:cve> <u:cve>2016-0702</u:cve>) (<u:bug>40188</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>apache2</package> (<u:cve>2015-3183</u:cve>) (<u:bug>39066</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -41,6 +130,8 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Linux kernel has been updated to <wordasword>3.16.7-ckt20</wordasword>. It provides many
+					bugfixes and fixes several vulnerabilities (<u:bug>38764</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -64,6 +155,8 @@
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Two new &ucsUCRV; <envar>grub/default</envar> and <envar>grub/savedefault</envar> are added, which
+					allow the selection of the next kernel to boot (<u:bug>40509</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -85,6 +178,9 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Under certain circumstances the ldapi interface socket was writable for the group
+					<wordasword>nogroup</wordasword> after installation and before the first slapd restart
+					(<u:bug>39812</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -108,6 +204,17 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
+						The flushing of the listener cache has been disabled during module initialization
+						(<u:bug>39958</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						Some replicated objects were not deleted, when the LDAP server closed its side of the LDAP
+						connection. This issue has been fixed (<u:bug>40066</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						The timeout for the initial LDAP search during domain join has been increased to two hours, as
+						joining in a large domain can take much longer than the default five minutes. The time can be
+						changed through the &ucsUCRV; <envar>listener/timeout/scans</envar> (<u:bug>40230</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -116,6 +223,9 @@
 				<title>DNS server</title>
 				<itemizedlist>
 					<listitem><simpara>
+						The Univention Configuration variables <envar>dns/nameserver/registration/forward_zone</envar> and
+						<envar>dns/nameserver/registration/reverse_zone</envar> have been added that allow to disable the
+						automatic registration as additional nameserver (<u:bug>39384</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -130,6 +240,8 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The expiration date has been increased by 5 years. This results in a traceback during the login on
+					the 29th of Feburary. This issue has been fixed (<u:bug>40791</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -250,6 +362,7 @@
 			<title>Mail</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Domain names for mail domains are now lowercased (<u:bug>40108</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -339,6 +452,27 @@
 			<title>Mail services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A bug in the mailing list filter policy server allowed senders with an empty email address to send
+					to restricted mailing lists. This issue has been fixed (<u:bug>40352</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					An error in the dovecot listener could lead to the unintended deletion of a shared folder if the
+					corresponding LDAP objects was changed. This issue has been fixed (<u:bug>40018</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UMC permissions <property>write</property> and <property>all</property> for shared folders did
+					not contain the IMAP permission for expunge. A removal of mails or moving mails was not possible.
+					This problem has been fixed and the permission will be updated automatically if the join script of
+					univention-mail-dovecot is called (<u:bug>40037</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A problem regarding IMAP ACLs at shared folders with primary mail address has been fixed. ACLs that
+					have been removed via Univention Management Console or CLI have not been removed on the IMAP server
+					(<u:bug>40195</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A file for the process of handling user renames has been moved to a secure location
+					(<u:bug>40583</u:bug>, <u:bug>40584</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -379,6 +513,12 @@
 			<title>Proxy services</title>
 			<itemizedlist>
 				<listitem><simpara>
+					This update adds the possibility to define the number of squid's rewrite helper processes via the
+					new &ucsUCRV; <envar>squid/rewrite/children</envar> (<u:bug>40094</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A new config option <property>dbtemp</property> has been added that specifies a directory for
+					temporary backing files of squidguard's in-memory databases (<u:bug>40593</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -448,6 +588,9 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Some unused helper code has been removed to fix an import error of the Python libvirt module from
+					the UVMM Univention Directory Listener module handling the dynamic addition and removal of
+					virtualization hosts (<u:bug>40255</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -478,6 +621,22 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The ACL check in the sysvol sync script is now limited to the Policies directory
+					(<u:bug>40267</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					There are two new Univention Configuration Registry variables
+					<envar>samba4/sysvol/sync/from_upstream</envar> and
+					<envar>samba4/sysvol/sync/from_downstream</envar> which can be used to deactivate copying files from
+					other domain controllers (<u:bug>40314</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The sysvol-sync script now checks if any changes need to be synchronized at all and it uses file
+					locking to coordinate concurrent read and write processes (<u:bug>40346</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					On UCS@school Samba AD DC Slaves the <package>univention-samba4</package> joinscript could take a
+					long time to wait in vain for an object to get synchronized to the DC Master (<u:bug>40387</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -494,6 +653,26 @@
 			<title>Univention S4 Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The synchronization failed if a removed user was recreated at a different position. This issue has
+					been fixed (<u:bug>40234</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The new package <package>univention-nagios-s4-connector</package> provides a nagios plugin to check
+					the state of the Univention S4 Connector (<u:bug>40345</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<property>msPrint-ConnectionPolicy</property> objects are now synced if the &ucsUCRV;
+					<envar>connector/s4/mapping/msprintconnectionpolicy</envar> is set to true. The Univention S4
+					Connector has to be restarted after changing this variable). This is required for UCS@school and
+					will be set there accordingly (<u:bug>40299</u:bug>, <u:bug>40466</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Univention S4 Connector was still running during re-joins. This issue has been fixed
+					(<u:bug>40389</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Wildcard DNS records didn't get synchronized any more. This issue has been fixed
+					(<u:bug>40381</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -513,6 +692,8 @@
 
 		<itemizedlist>
 			<listitem><simpara>
+				The package <package>lksctp-tools</package> has been added as a new dependency of OpenJDK-7
+				(<u:bug>40042</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
