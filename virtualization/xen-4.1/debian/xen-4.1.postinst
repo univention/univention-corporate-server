@@ -29,14 +29,15 @@
 
 #DEBHELPER#
 
-if [ "$1" = configure ] && dpkg --compare-versions "${2:-}" lt-nl 4.1.6.1-5~ && [ -d /usr/lib/xen ]
+dir='/usr/lib/xen'
+if [ "$1" = configure ] && dpkg --compare-versions "${2:-}" lt-nl 4.1.6.1-6~ && [ ! -L "$dir" ]
 then
-	if ! rmdir /usr/lib/xen
+	if [ -d "$dir" ] && ! rmdir "$dir"
 	then
-		echo "Failed to remove (empty) directory '/usr/lib/xen/'; renaming"
-		mv /usr/lib/xen /usr/lib/xen-${2:-4.1+$$}
+		echo "Failed to remove (empty) directory '${dir}/'; renaming"
+		mv "$dir" "${dir}-${2:-4.1+$$}"
 	fi
-	ln -sn xen-default /usr/lib/xen
+	ln -snf xen-default "$dir"
 fi
 
 :
