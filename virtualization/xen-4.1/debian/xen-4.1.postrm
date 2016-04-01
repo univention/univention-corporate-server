@@ -30,14 +30,10 @@
 #DEBHELPER#
 
 dir='/usr/lib/xen'
-if [ "$1" = configure ] && [ ! -L "$dir" ]
-then
-	if dpkg --compare-versions "${2:-}" lt-nl 4.1.6.1-7~ && [ -d "$dir" ] && ! rmdir "$dir"
-	then
-		echo "Failed to remove (empty) directory '${dir}/'; renaming"
-		mv "$dir" "${dir}-${2:-4.1+$$}"
-	fi
-	ln -snf xen-default "$dir"
-fi
+case "$1" in
+remove|purge|disappear)
+	[ -L "$dir" ] && rm -f "$dir"
+	;;
+esac
 
 :

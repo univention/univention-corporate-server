@@ -1,3 +1,9 @@
+xen-4.1 (4.1.6.1-7) unstable; urgency=low
+
+  * Bug #40697: Create transition symlinks manually
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 01 Apr 2016 16:38:27 +0200
+
 xen-4.1 (4.1.6.1-6) unstable; urgency=low
 
   * Bug #40697: Create transition symlinks manually
