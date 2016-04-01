@@ -191,6 +191,7 @@ wait_for_reboot ()
 switch_to_test_app_center ()
 {
 	ucr set repository/app_center/server=appcenter-test.software-univention.de
+	univention-app update
 }
 
 switch_components_to_test_app_center ()
