@@ -1,3 +1,9 @@
+univention-updater (10.0.57-1) unstable; urgency=medium
+
+  * Update copyright (Bug #40956)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 01 Apr 2016 06:47:37 +0200
+
 univention-updater (10.0.56-3) unstable; urgency=medium
 
   * Bug #40955: Adapt links and components for 4.0-5
