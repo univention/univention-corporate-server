@@ -209,10 +209,11 @@ install_apps ()
 	for app in "$@"
 	do
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+			username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
-				univention-app install "$app" --noninteractive --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
+				univention-app install "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			else
-				univention-app upgrade "$app" --noninteractive --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
+				univention-app upgrade "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			fi
 		else
 			univention-add-app -a --latest "$app" || rv=$?
@@ -228,7 +229,8 @@ uninstall_apps ()
 	for app in "$@"
 	do
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-			univention-app remove "$app" --noninteractive --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
+			username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
+			univention-app remove "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 		else
 			/root/uninstall-app.py -a "$app" || rv=$?
 		fi
