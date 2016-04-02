@@ -209,7 +209,7 @@ install_apps ()
 	for app in "$@"
 	do
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-			if [ -n "$(ucr get "appcenter/apps/$app/status")" ]; then
+			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
 				univention-app install "$app" --noninteractive --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			else
 				univention-app upgrade "$app" --noninteractive --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
