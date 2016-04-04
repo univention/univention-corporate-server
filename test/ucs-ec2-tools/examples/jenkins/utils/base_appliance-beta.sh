@@ -392,6 +392,39 @@ if [ -e /usr/share/univention-management-console-frontend/js/umc/modules/udm/wiz
 fi
 __EOF__
 	chmod 755 /usr/lib/univention-install/99_setup_${main_app}.inst
+
+	# Fixes for BETA appliances
+	if [ "$main_app" = "zarafa" ]; then
+		sed -i 's|ucr set zarafa/webapp/config/DEFAULT_SERVER?|ucr set zarafa/webapp/config/DEFAULT_SERVER=|' /usr/lib/univention-install/71zarafa4ucs-webapp.inst
+		. /usr/share/univention-join/joinscripthelper.lib
+		joinscript_remove_script_from_status_file zarafa4ucs-webapp
+	fi
+	if [ "$main_app" = "owncloud82" ]; then
+		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains <<__EOF__
+#!/bin/bash
+
+ips="\$(python  -c "
+from univention.config_registry.interfaces import Interfaces
+for name, iface in Interfaces().all_interfaces: print iface.get('address')")"
+
+HOSTS="'\$(ucr get hostname).\$(ucr get domainname)',"
+
+for ip in \$ips; do
+	HOSTS="\${HOSTS}'\${ip}',"
+done
+
+cd /var/www/owncloud/config
+(
+echo '<?php'
+echo -ne '\$CONFIG = '
+php -r "include('config.php'); \\\$CONFIG['trusted_domains'] = array(\$HOSTS); var_export(\\\$CONFIG);"
+echo ';'
+) > config.php.updated
+mv -f config.php.updated config.php
+chown www-data:www-data config.php
+__EOF__
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains
+	fi
 }
 
 install_app_in_prejoined_setup ()
