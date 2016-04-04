@@ -844,6 +844,12 @@ appliance_reset_servers ()
 	# ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
 	# 	ucr set "$key=appcenter.software-univention.de"
 	# done
+
+	# Cleanup /etc/apt/sources.list in case any modifications were done
+	cat >/etc/apt/sources.list <<__EOF__
+# This file is not maintained via Univention Configuration Registry
+# and can be used to add further package repositories manually
+__EOF__
 }
 
 disable_root_login_and_poweroff ()
