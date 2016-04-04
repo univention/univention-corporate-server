@@ -1,0 +1,9 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.0-0-errata4.0-5
+src: ldb
+fix: 2:1.1.25-1.90.201604041640
+desc: |
+ This erratum installs an updated version of the ldb library.
+bug: [40988]

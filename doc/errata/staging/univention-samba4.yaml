@@ -1,11 +1,10 @@
 product: ucs
 release: "4.1"
-scope: ucs_4.1-0-errata4.1-1
+version: [1]
+scope: ucs_4.0-0-errata4.0-5
 src: univention-samba4
-fix: 5.0.1-27.651.201603222117
-version: [0,1]
+fix: 5.0.1-28.653.201604041801
 desc: |
- The following issue has been fixed in univention-samba4:
- * It was possible to start the Heimdal KDC manually via the UMC services
-   module on Samba4/AD DCs.
-bug: [40383]
+ This update sets the new smb.conf option 'ldap server require strong auth'
+ to 'allow_sasl_over_tls'. Additionally it configures 'tls crlfile'.
+bug: [40988]
