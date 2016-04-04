@@ -48,7 +48,7 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Linux kernel has been updated to <wordasword>3.16</wordasword>. It provides a better hardware
+					The Linux kernel has been updated to <wordasword>3.16</wordasword>. It provides better hardware
 					support and many bugfixes (<u:bug>40687</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -433,7 +433,7 @@
 			<title>DHCP</title>
 			<itemizedlist>
 				<listitem><simpara>
-						<package>isc-dhcp</package> upgraded to 4.2.2 (<u:bug>40694</u:bug>)
+						The DHCP package <package>isc-dhcp</package> has been upgraded to version 4.2.2 (<u:bug>40694</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -442,7 +442,8 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-				<package>openssl</package> has been upgraded to version 1.0.1e-2 (<u:bug>40688</u:bug>). Dependend packages have been rebuilt to use the new version.
+						<package>openssl</package> has been upgraded to version 1.0.1e-2 (<u:bug>40688</u:bug>).
+						Dependent packages have been rebuilt to use the new version.
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -504,7 +505,7 @@
 			<title>Libvirt</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The <package>libvirt</package> management tools for virtualization environments has been updated to version 1.2.9 (<u:bug>32744</u:bug>).
+						The <package>libvirt</package> management tool for virtualization environments has been updated to version 1.2.9 (<u:bug>32744</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
