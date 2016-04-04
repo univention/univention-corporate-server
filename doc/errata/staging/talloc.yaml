@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+version: [4,5]
+scope: ucs_4.0-0-errata4.0-5
+src: talloc
+fix: 2.1.5-1.51.201604041348
+desc: |
+ This erratum installs an updated version of the talloc library.
+bug: [40989]

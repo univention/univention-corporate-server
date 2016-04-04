@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+version: [4,5]
+scope: ucs_4.0-0-errata4.0-5
+src: tevent
+fix: 0.9.26-1.43.201604041350
+desc: |
+ This erratum installs an updated version of the tevent library.
+bug: [40989]

@@ -1,0 +1,9 @@
+product: ucs
+release: "4.0"
+version: [4,5]
+scope: ucs_4.0-0-errata4.0-5
+src: tdb
+fix: 1.3.8-1.66.201604041353
+desc: |
+ This erratum installs an updated version of the tdb library.
+bug: [40989]
