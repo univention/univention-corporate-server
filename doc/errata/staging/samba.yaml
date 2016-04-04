@@ -1,7 +1,7 @@
 product: ucs
 release: "4.1"
 version: [1]
-scope: ucs_4.0-0-errata4.0-5
+scope: ucs_4.1-0-errata4.1-1
 src: samba
 fix: 2:4.3.7-1.876.201604041359
 desc: |
