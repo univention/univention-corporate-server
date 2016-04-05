@@ -44,6 +44,7 @@ if [ -e /var/lib/samba/private/secrets.ldb ]; then
 	%EOF
 
 	sleep 2
+	rm /etc/krb5.keytab
 
 	ldbmodify -H /var/lib/samba/private/secrets.ldb <<-%EOF
 	dn: flatname=$windows_domain,cn=Primary Domains

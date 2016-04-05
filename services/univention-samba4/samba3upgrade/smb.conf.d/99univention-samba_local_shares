@@ -1,3 +1,6 @@
-
-    include = /etc/samba/local.conf
-
+@!@
+import os
+for includefilepath in ('/etc/samba/local.conf', ):
+	if os.path.exists(includefilepath):
+		print "\tinclude =", includefilepath
+@!@

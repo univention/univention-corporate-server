@@ -118,7 +118,7 @@ def rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, xidNumber, type_str
 		if not res:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
 					"%s: rename_or_modify_idmap_entry: no mapping for objectSid %s, treating as add", (name, old_sambaSID))
-			add_or_modify_idmap_entry(new_sambaSID, xidNumber, type_string)
+			add_or_modify_idmap_entry(new_sambaSID, xidNumber, type_string, idmap)
 		else:
 			record = res.msgs[0]
 
@@ -237,6 +237,7 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 
 def handler(dn, new, old, operation):
 
+	idmap = open_idmap()
 	if new:
 		try:
 			if 'sambaSamAccount' in new['objectClass']:
@@ -259,15 +260,15 @@ def handler(dn, new, old, operation):
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account '%s' has no attribute '%s', cannot update" % (samaccountname, sidAttribute))
 						return
 					if new_sambaSID != old_sambaSID:
-						rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, new_xid, xid_type)
+						rename_or_modify_idmap_entry(old_sambaSID, new_sambaSID, new_xid, xid_type, idmap)
 					old_xid = old.get(xid_attr, [''] )[0]
 					if new_xid != old_xid:
-						add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type)
+						add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type, idmap)
 				else:
 					if not new_sambaSID:
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, "Samba account '%s' has no attribute '%s', cannot add" % (samaccountname, sidAttribute))
 						return
-					add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type)
+					add_or_modify_idmap_entry(new_sambaSID, new_xid, xid_type, idmap)
 		except ldb.LdbError, (enum, estr):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 				"%s: entry for %s could not be updated" % (name, new['sambaSID'][0]) )
@@ -293,7 +294,7 @@ def handler(dn, new, old, operation):
 					return
 				if xid_type == 'ID_TYPE_GID' and old_sambaSID in __SPECIAL_SIDS:
 					xid_type = 'ID_TYPE_BOTH'
-				remove_idmap_entry(old_sambaSID, old_xid, xid_type)
+				remove_idmap_entry(old_sambaSID, old_xid, xid_type, idmap)
 		except ldb.LdbError, (enum, estr):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 				"%s: entry for %s could not be updated" % (name, old[sidAttribute][0]) )

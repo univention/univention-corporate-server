@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-37) unstable; urgency=medium
+
+  * Bug #40990 Selective backport from UCS 4.1-1 for Samba 4.3.7
+
+ -- Arvid Requate <requate@univention.de>  Tue, 05 Apr 2016 17:51:50 +0200
+
 univention-samba4 (3.0.39-36) unstable; urgency=medium
 
   * Create default.V3, .V4 and .V5 directories in windows-profiles
