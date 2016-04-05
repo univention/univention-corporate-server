@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-samba4
+fix: 
+desc: |
+ This update sets the new smb.conf option 'ldap server require strong auth'
+ to 'allow_sasl_over_tls'. Additionally it configures 'tls verify peer' to
+ 'ca_and_name'
+bug: [40990]
