@@ -36,11 +36,9 @@ SOURCEVERSION := 4.1
 amd64_VERSION := ${SOURCEVERSION}.0-${ABI}-amd64
 i386_VERSION := ${SOURCEVERSION}.0-${ABI}-686-pae
 
-DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 
 KERNELVERSION := ${${DEB_BUILD_ARCH}_VERSION}
-KERNELVERSION486 := ${SOURCEVERSION}.0-${ABI}-486
 
 %:
 	dh $@
@@ -53,7 +51,3 @@ override_dh_gencontrol:
 	dh_gencontrol -punivention-kernel-image -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_gencontrol -punivention-kernel-headers -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_gencontrol -punivention-kernel-source -u-VF:KernelVersion="${SOURCEVERSION}"
-ifeq ($(DEB_BUILD_GNU_TYPE), i486-linux-gnu)
-	dh_gencontrol -punivention-kernel-image-486 -u-VF:KernelVersion486="${KERNELVERSION486}"
-	dh_gencontrol -punivention-kernel-headers-486 -u-VF:KernelVersion486="${KERNELVERSION486}"
-endif
