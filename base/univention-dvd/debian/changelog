@@ -1,3 +1,9 @@
+univention-dvd (0.2.29-19) unstable; urgency=medium
+
+  * Add univention-nagios-s4-connector to tasks list (Bug #40955)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 05 Apr 2016 07:03:47 +0200
+
 univention-dvd (0.2.29-18) unstable; urgency=medium
 
   * Bug #40955: UCS-4.0-5 DVD
