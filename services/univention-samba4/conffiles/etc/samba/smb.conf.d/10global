@@ -4,7 +4,7 @@
 [global]
 @!@
 print '\tdebug level\t= %s' % configRegistry.get('samba/debug/level', 1)
-print '\tsyslog\t\t= 0'
+print '\tlogging\t\t= file'
 print '\tmax log size\t= %s\n' % configRegistry.get('samba/max_log_size', 0)
 
 if configRegistry.get('samba/netbios/name'):
