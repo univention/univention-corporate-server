@@ -45,7 +45,7 @@
 		<para>
 			Mit &ucsUCS; 4.0-5 steht das fünfte Point-Release für &ucsUCS; (UCS) 4.0 zur Verfügung.
 			Es umfasst diverse Detailverbesserungen und Fehlerkorrekturen vor allem in den Bereichen
-			Active Directory Kompatibilität und dem UCS-Managementsystem.  Sämtliche für UCS 4.0-4
+			Active Directory Kompatibilität und UCS-Managementsystem. Die für UCS 4.0-4
 			veröffentlichten Sicherheitsupdates sind in diesem Update enthalten.
 		</para>
 	</chapter>
