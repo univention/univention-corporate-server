@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: samba
-fix: 2:4.3.7-1.882.201604042049
+fix: 2:4.3.7-1.830.201604062051
 desc: |
  This update addresses the following issues:
  * TODO
