@@ -4,17 +4,13 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
 	python,
-	libldb-dev (>= 1.1.2-2.20.201204121532),
+	libldb-dev (>= 2:1.1.25-1),
 	libtalloc-dev,
 	libtevent-dev,
 	libunivention-config-dev,
 	libunivention-policy-dev,
 	ldb-tools,
 	samba-dev,
-	libndr-standard-dev,
-	libndr-dev,
-	libsamba-util-dev,
-	libdcerpc-dev,
 	univention-config-dev
 Standards-Version: 3.9.1
 X-Python-Version: 2.6
@@ -27,7 +23,7 @@ Depends: ${misc:Depends},
 	libldb1,
 	libunivention-config0,
 	libunivention-policy0,
-	python-samba4,
+	python-samba,
 	ldb-tools,
 	univention-samba4 (>= 2.0.44-3)
 Description: Univention LDB modules
