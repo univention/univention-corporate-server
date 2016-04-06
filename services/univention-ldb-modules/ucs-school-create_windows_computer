@@ -1,0 +1,6 @@
+#!/bin/sh
+samba4_addmachine=$(/usr/sbin/univention-config-registry get "samba4/addmachine")
+/usr/bin/test "$samba4_addmachine" = "deny" && exit 2
+/usr/sbin/umc-command "$@" || exit 1
+/usr/bin/test "$samba4_addmachine" = "dummy" && exit 3
+exit 0
