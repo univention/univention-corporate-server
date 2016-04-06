@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-ldb-modules
+fix: 2.0.5-1.78.201604061344
+desc: |
+ This update is just a rebuilt of the package against the most recent ldb
+ version.
+bug: [40990]
