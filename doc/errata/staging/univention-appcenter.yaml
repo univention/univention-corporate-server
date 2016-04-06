@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-appcenter
-fix: 5.0.20-35.146.201603270006
+fix: 5.0.20-36.147.201604060807
 desc: |
  This update addresses the following issue(s):
  * Improved the image gallery in the details page of an app. The handling
@@ -20,4 +20,6 @@ desc: |
  * univention-app shell now correctly exits with the exit code of the called
    command.
  * univention-app installed unsigned packages.
-bug: [39794, 38530, 39896, 40563, 39907, 40879, 40943, 40550, 40861]
+ * The "Package Management" module can be opened via hash again.
+ * Details of software packages can be shown again.
+bug: [39794, 38530, 39896, 40563, 39907, 40879, 40943, 40550, 40861, 40991, 40992]
