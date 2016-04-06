@@ -1,0 +1,91 @@
+#!/usr/bin/make -f
+#
+# Univention License
+#  rules file for the debian package
+#
+# Copyright 2004-2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+CFLAGS = -g -Wall -I/usr/include/samba-4.0
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+CFLAGS += -O0
+else
+CFLAGS += -O2
+endif
+
+LDFLAGS += -Wl,--as-needed
+
+DESTDIR=$(CURDIR)/debian/tmp
+WAF=buildtools/bin/waf
+
+export PYTHON=$(shell which `pyversions -r`)
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+
+%:
+	dh $@ --with python_support
+
+override_dh_auto_configure:
+	dh_testdir
+	CFLAGS="$(CFLAGS)" ./configure \
+		--prefix=/usr \
+		--disable-rpath-install \
+		--libdir=/usr/lib/$(DEB_HOST_MULTIARCH) \
+		--with-modulesdir=/usr/lib/$(DEB_HOST_MULTIARCH)/samba
+
+override_dh_auto_build:
+	dh_auto_build --buildsystem=makefile
+
+ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
+override_dh_auto_test:
+	$(MAKE) check
+endif
+
+override_dh_auto_install:
+	$(MAKE) install DESTDIR=$(DESTDIR)
+
+override_dh_install:
+	## put the following to files into dh_install sourcedir
+	install register_ldb_module.py $(DESTDIR)
+	install 97libunivention-ldb-modules.inst $(DESTDIR)
+	install 96univention-samba4slavepdc.inst $(DESTDIR)
+	install 98univention-samba4slavepdc-dns.inst $(DESTDIR)
+	install 03libunivention-ldb-modules.uinst $(DESTDIR)
+	install ucs-school-create_windows_computer $(DESTDIR)
+	dh_install --fail-missing --list-missing --sourcedir=$(DESTDIR)
+	univention-install-config-registry
+
+override_dh_strip:
+	dh_strip -a --dbg-package=libunivention-ldb-modules-dbg
+
+override_dh_auto_clean:
+	dh_testdir
+	dh_testroot
+	-$(WAF) clean
+	rm -rf buildtools/bin/.waf-*
+	rm -f buildtools/wafsamba/*.pyc
+	dh_clean

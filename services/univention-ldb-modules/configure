@@ -1,0 +1,16 @@
+#!/bin/sh
+
+PREVPATH=`dirname $0`
+
+if [ -f $PREVPATH/../../buildtools/bin/waf ]; then
+	WAF=../../buildtools/bin/waf
+elif [ -f $PREVPATH/buildtools/bin/waf ]; then
+	WAF=./buildtools/bin/waf
+else
+	echo "ldb: Unable to find waf"
+	exit 1
+fi
+
+cd . || exit 1
+$WAF configure "$@" || exit 1
+cd $PREVPATH

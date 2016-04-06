@@ -1,0 +1,101 @@
+#!/usr/bin/env python
+
+APPNAME = 'univention-ldb-modules'
+VERSION = '0.0.1'
+
+blddir = 'bin'
+
+import sys, os
+
+# find the buildtools directory
+srcdir = '.'
+while not os.path.exists(srcdir+'/buildtools') and len(srcdir.split('/')) < 5:
+    srcdir = '../' + srcdir
+sys.path.insert(0, srcdir + '/buildtools/wafsamba')
+
+import wafsamba, samba_dist, Options
+
+
+samba_dist.DIST_DIRS('''lib/ldb:.
+                        buildtools:buildtools''')
+
+def set_options(opt):
+    opt.BUILTIN_DEFAULT('NONE')
+    opt.PRIVATE_EXTENSION_DEFAULT('ldb', noextension='ldb')
+    opt.RECURSE('buildtools/wafsamba')
+
+def configure(conf):
+    conf.RECURSE('buildtools/wafsamba')
+
+    conf.CONFIG_PATH('LDB_MODULESDIR', conf.SUBST_ENV_VAR('MODULESDIR') + '/ldb')
+
+    conf.CHECK_LIB('ldb')
+    conf.CHECK_HEADERS('ldb.h')
+    conf.CHECK_LIB('talloc')
+    conf.CHECK_HEADERS('talloc.h')
+    conf.CHECK_HEADERS('tevent.h')
+    conf.CHECK_LIB('ldap')
+    conf.CHECK_HEADERS('ldap.h')
+    conf.CHECK_LIB('univentionpolicy')
+    conf.CHECK_HEADERS('univention/ldap.h')
+    conf.CHECK_LIB('univentionconfig')
+    conf.CHECK_HEADERS('univention/config.h')
+    # conf.CHECK_LIB('univentiondebug')
+    # conf.CHECK_HEADERS('univention/debug.h')
+    # conf.CHECK_FUNCS_IN('univention_config_get_string', 'univentionconfig', headers='univention/config.h')
+    # conf.CHECK_FUNCS_IN('univention_ldap_open', 'univentionpolicy', headers='univention/ldap.h')
+    # conf.CHECK_FUNCS_IN('ldap_search_ext_s ldap_msgfree ldap_unbind_ext', 'ldap', headers='univention/ldap.h')
+
+def build(bld):
+    bld.RECURSE('buildtools/wafsamba')
+
+    if Options.is_install:
+        modules_dir = bld.EXPAND_VARIABLES('${LDB_MODULESDIR}')
+    else:
+        # when we run from the source directory, we want to use
+        # the current modules, not the installed ones
+        modules_dir = os.path.join(os.getcwd(), 'bin/modules/ldb')
+
+    bld.SAMBA_MODULE('ldb_univention_samaccountname_ldap_check',
+                     'modules/univention_samaccountname_ldap_check.c modules/base64.c',
+                     init_function='ldb_univention_samaccountname_ldap_check_init',
+                     internal_module=False,
+                     module_init_name='ldb_init_module',
+                     deps='ldb talloc univentionpolicy univentionconfig ldap',
+                     subsystem='ldb')
+
+    bld.SAMBA_MODULE('ldb_univention_ldb_log',
+                     'modules/univention_ldb_log.c',
+                     init_function='ldb_univention_ldb_log_init',
+                     internal_module=False,
+                     module_init_name='ldb_init_module',
+                     deps='ldb talloc',
+                     subsystem='ldb')
+
+    # have a separate subsystem for this subsystem, so it can rebuild
+    # for install with a different -DLDB_MODULESDIR=
+    bld.SAMBA_SUBSYSTEM('LIBLDB_MAIN',
+                        None,
+                        cflags=['-DLDB_MODULESDIR=\"%s\"' % modules_dir])
+
+
+def test(ctx):
+    '''run testsuite'''
+    import Utils, samba_utils, shutil
+    test_prefix = "%s/st" % (Utils.g_module.blddir)
+    shutil.rmtree(test_prefix, ignore_errors=True)
+    os.makedirs(test_prefix)
+    os.environ['TEST_DATA_PREFIX'] = test_prefix
+    cmd = 'tests/test-soloading.sh'
+    ret = samba_utils.RUN_COMMAND(cmd)
+    print("testsuite returned %d" % ret)
+    # FIXME: Run python testsuite
+    sys.exit(ret)
+
+def dist():
+    '''makes a tarball for distribution'''
+    samba_dist.dist()
+
+def reconfigure(ctx):
+    import samba_utils
+    samba_utils.reconfigure(ctx)

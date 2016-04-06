@@ -1,0 +1,425 @@
+univention-ldb-modules (4.0.0-2) unstable; urgency=medium
+
+  * Bug #40437: relax strict version checks in ldb modules,
+    let shlibs:Depends take care of that.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Jan 2016 15:19:39 +0100
+
+univention-ldb-modules (4.0.0-1) unstable; urgency=medium
+
+  * Bug #39534: Start UCS@school 4.1 development
+
+ -- Florian Best <best@univention.de>  Wed, 14 Oct 2015 15:30:00 +0200
+
+univention-ldb-modules (3.0.3-1) unstable; urgency=medium
+
+  * Switch from samba4 init script to samba (Bug #36811)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Nov 2014 21:20:25 +0100
+
+univention-ldb-modules (3.0.2-2) unstable; urgency=medium
+
+  * Bug #36811: Adjust installation directory
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Nov 2014 14:49:45 +0100
+
+univention-ldb-modules (3.0.2-1) unstable; urgency=medium
+
+  * Bug #36811: Added multiarch support
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Nov 2014 14:25:14 +0100
+
+univention-ldb-modules (3.0.1-1) unstable; urgency=medium
+
+  * Depend on python-samba instead of python-samba4 (Bug #35892)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 Nov 2014 11:46:50 +0100
+
+univention-ldb-modules (3.0.0-2) unstable; urgency=medium
+
+  * Bug #35892: Fix build dependencies
+
+ -- Florian Best <best@univention.de>  Wed, 05 Nov 2014 22:12:55 +0100
+
+univention-ldb-modules (3.0.0-1) unstable; urgency=medium
+
+  * Bug #35892: Start UCS 4.0 development
+
+ -- Florian Best <best@univention.de>  Wed, 05 Nov 2014 14:59:54 +0100
+
+univention-ldb-modules (2.0.4-1) unstable; urgency=low
+
+  * Bug #35004: unregister ldb modules in unjoin script
+
+ -- Florian Best <best@univention.de>  Tue, 19 Aug 2014 15:03:25 +0200
+
+univention-ldb-modules (2.0.3-3) unstable; urgency=medium
+
+  * New UCR variable samba4/addmachine (Bug #32187)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 May 2014 17:30:55 +0200
+
+univention-ldb-modules (2.0.3-2) unstable; urgency=medium
+
+  * Revert last change: despite its name 98univention-samba4slavepdc-dns.inst
+    also runs on a ucs-school-singlemaster (Bug #32187)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 May 2014 21:23:01 +0200
+
+univention-ldb-modules (2.0.3-1) unstable; urgency=medium
+
+  * depend on functionality implemented by ucsschool-s4-branch-site
+    (Bug #32187)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 19 May 2014 21:14:27 +0200
+
+univention-ldb-modules (2.0.2-2) unstable; urgency=low
+
+  * Fixed typo in group creation (Bug #32894)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Oct 2013 19:17:47 +0200
+
+univention-ldb-modules (2.0.2-1) unstable; urgency=low
+
+  * Create default S4 groups in slave pdc join script (Bug #32894)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Oct 2013 23:58:37 +0200
+
+univention-ldb-modules (2.0.1-2) unstable; urgency=low
+
+  * Build against samba-dev instead of samba4-dev since we use the
+    combined samba package in UCS 3.2 (Bug #31698)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Sep 2013 07:09:30 +0200
+
+univention-ldb-modules (2.0.1-1) unstable; urgency=low
+
+  * Add S4 SlavePDC service to all Samba 4 Slave PDCs. The S4 connctor
+    will not synchronize the password for these Slave PDCs from S4 to
+    UCS (Bug #32522)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Sep 2013 06:28:35 +0200
+
+univention-ldb-modules (1.0.5-10) unstable; urgency=low
+
+  * Restart S4 on upgrade (Bug #32249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Sep 2013 15:20:49 +0200
+
+univention-ldb-modules (1.0.5-9) unstable; urgency=low
+
+  * Added libdcerpc-dev as build dependency (Bug #32249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Sep 2013 15:03:46 +0200
+
+univention-ldb-modules (1.0.5-8) unstable; urgency=low
+
+  * Added build dependencies libsamba-util-dev and libndr-dev
+    (Bug #32249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Sep 2013 14:50:22 +0200
+
+univention-ldb-modules (1.0.5-7) unstable; urgency=low
+
+  * Transfer the sid of the user requesting the ldb command to the UMC
+    module. Thus the UMC module can check the permissions of the user
+    (Bug #32249)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 04 Sep 2013 10:37:25 +0200
+
+univention-ldb-modules (1.0.5-6) unstable; urgency=low
+
+  * Restart samba4 after registering the ldb module (Bug #31443)
+
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Jul 2013 12:20:14 +0200
+
+univention-ldb-modules (1.0.5-5) unstable; urgency=low
+
+  * Handle "ignore" setting in connector/s4/mapping/dns/srv_record/...
+    (Bug #31651)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 12 Jul 2013 11:53:07 +0200
+
+univention-ldb-modules (1.0.5-4) unstable; urgency=low
+
+  * only crestart univention-s4-connector and only if init scipt exists
+  * Make 98univention-samba4slavepdc-dns.inst wait for
+    98univention-samba4-dns.inst (Bug #31443)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Jul 2013 21:21:04 +0200
+
+univention-ldb-modules (1.0.5-3) unstable; urgency=low
+
+  * Fix joinscript names run in call_joinscript (Bug #31443)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Jul 2013 15:03:00 +0200
+
+univention-ldb-modules (1.0.5-2) unstable; urgency=low
+
+  * Ensure that nameserver2 and nameserver3 are not advertising
+    different SRV records if an S4 Connector override has been defined.
+    (Bug #31651)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Jul 2013 13:34:51 +0200
+
+univention-ldb-modules (1.0.5-1) unstable; urgency=low
+
+  * make the sysvol readable for the group "Enterprise Domain Controllers"
+    (Bug #31438)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 23 May 2013 23:28:22 +0200
+
+univention-ldb-modules (1.0.4-3) unstable; urgency=low
+
+  * yet again, also in rules (Bug #30105)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jan 2013 20:03:51 +0100
+
+univention-ldb-modules (1.0.4-2) unstable; urgency=low
+
+  * adjust install file to renamed joinscripts (Bug #30105)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jan 2013 20:01:46 +0100
+
+univention-ldb-modules (1.0.4-1) unstable; urgency=low
+
+  * Make joinscript order invariant to LC_COLLATE (Bug #30105)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jan 2013 16:53:33 +0100
+
+univention-ldb-modules (1.0.3-1) unstable; urgency=low
+
+  * update Copyright; Bug #30123
+
+ -- Florian Best <best@univention.de>  Wed, 23 Jan 2013 13:43:37 +0100
+
+univention-ldb-modules (1.0.2-2) unstable; urgency=low
+
+  * Install the new joinscript (Bug #28754)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jan 2013 10:52:07 +0100
+
+univention-ldb-modules (1.0.2-1) unstable; urgency=low
+
+  * Call samba_dnsupdate on a S4 "Slave PDC" (Bug #28754)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jan 2013 10:47:25 +0100
+
+univention-ldb-modules (1.0.1-2) unstable; urgency=low
+
+  * Install the new joinscript.. (Bug #30105)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Jan 2013 17:26:43 +0100
+
+univention-ldb-modules (1.0.1-1) unstable; urgency=low
+
+  * Add 96univention-samba4-slavepdc.inst as workaround for Bug #30105:
+    Create dns-<hostname> before univention_samaccountname_ldap_check
+    is registered by 97libunivention-ldb-modules.inst.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Jan 2013 17:23:28 +0100
+
+univention-ldb-modules (1.0.0-1) unstable; urgency=low
+
+  * real Version Bump (Bug #29840)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 17 Dec 2012 12:38:06 +0100
+
+univention-ldb-modules (0.0.4-2.1) unstable; urgency=low
+
+  * Version Bump (Bug #29840)
+
+ -- Tobias Peters <peters@univention.de>  Mon, 17 Dec 2012 12:25:01 +0100
+
+univention-ldb-modules (0.0.4-2) unstable; urgency=low
+
+  * updated copyright (Bug #26882)
+
+ -- Florian Best <best@univention.de>  Tue, 29 May 2012 08:39:56 +0200
+
+univention-ldb-modules (0.0.4-1) unstable; urgency=low
+
+  * updated copyright (Bug #26882)
+
+ -- Florian Best <best@univention.de>  Fri, 25 May 2012 10:48:56 +0200
+
+univention-ldb-modules (0.0.3-3) unstable; urgency=low
+
+  * version bump (Bug #26569)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 May 2012 15:32:00 +0200
+
+univention-ldb-modules (0.0.3-2) unstable; urgency=low
+
+  * add module univention_ldb_log
+    logging to /tmp/univention_ldb_log_module.log (Bug #26569)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 16 May 2012 15:16:42 +0200
+
+univention-ldb-modules (0.0.3-1) unstable; urgency=low
+
+  * Enable handling of SIG_CHLD to determine umc-command return status
+  * Allow missing unicodePwd (Bug #26569)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 02 May 2012 17:02:14 +0200
+
+univention-ldb-modules (0.0.2-3) unstable; urgency=low
+
+  * supply proper samaccountnames to umc-command
+  * add -dbg package (Bug #26069)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 18 Apr 2012 16:56:50 +0200
+
+univention-ldb-modules (0.0.2-2) unstable; urgency=low
+
+  * add IBM and ISC copyright notes for base64 code (Bug #26069)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 17 Apr 2012 15:00:17 +0200
+
+univention-ldb-modules (0.0.2-1) unstable; urgency=low
+
+  * replace ldap check by umc-command create_windows_computer
+  * deny creation of user and group objects
+  * remove modify handler
+  * don't register module init handler
+  * remove check for samba4/ldb/sam/module/test (Bug #26569)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 17 Apr 2012 13:44:54 +0200
+
+univention-ldb-modules (0.0.1-22) unstable; urgency=low
+
+  * revert last change, segfault fixed differently (Bug #26569)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 13 Apr 2012 00:06:46 +0200
+
+univention-ldb-modules (0.0.1-21) unstable; urgency=low
+
+  * fix segfault due to invalid debug message parameter (Bug #26569)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Apr 2012 19:02:11 +0200
+
+univention-ldb-modules (0.0.1-20) unstable; urgency=low
+
+  * test script should also use bypass_samaccountname_ldap_check
+    (Bug #26569)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Apr 2012 18:59:16 +0200
+
+univention-ldb-modules (0.0.1-19) unstable; urgency=low
+
+  * build-depend on recent libldb-dev (Bug #26569)
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Apr 2012 18:44:04 +0200
+
+univention-ldb-modules (0.0.1-18) unstable; urgency=low
+
+  * Use LDB control 'bypass_samaccountname_ldap_check' instead of
+    'permissive_modify' (Bug #26569).
+  * restart univention-s4-connector in the joinscript if the LDB module
+    'univention_samaccountname_ldap_check' gets activated (Bug #26769).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 12 Apr 2012 18:21:09 +0200
+
+univention-ldb-modules (0.0.1-17) unstable; urgency=low
+
+  * improved connection and talloc handling (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Mar 2012 12:31:47 +0200
+
+univention-ldb-modules (0.0.1-16) unstable; urgency=low
+
+  * make joinscript fail if samba4/ldb/sam/module/test!=yes
+    (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2012 17:45:23 +0100
+
+univention-ldb-modules (0.0.1-15) unstable; urgency=low
+
+  * add some build-/dependencies (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2012 17:34:42 +0100
+
+univention-ldb-modules (0.0.1-14) unstable; urgency=low
+
+  * add temporary samba4/ldb/sam/module/test check to avoid problems
+    with univention-s4-connector during test phase (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2012 17:31:13 +0100
+
+univention-ldb-modules (0.0.1-13) unstable; urgency=low
+
+  * add univention-install-config-registry (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2012 17:13:29 +0100
+
+univention-ldb-modules (0.0.1-12) unstable; urgency=low
+
+  * add configuration option samba4/ldb/sam/module/prepend (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2012 17:09:22 +0100
+
+univention-ldb-modules (0.0.1-11) unstable; urgency=low
+
+  * reduce noise of failing control registration (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2012 16:43:40 +0100
+
+univention-ldb-modules (0.0.1-10) unstable; urgency=low
+
+  * fix dh_install handling (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2012 16:21:30 +0100
+
+univention-ldb-modules (0.0.1-9) unstable; urgency=low
+
+  * register LDB Module in sam.ldb during join (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 22 Mar 2012 16:02:04 +0100
+
+univention-ldb-modules (0.0.1-8) unstable; urgency=low
+
+  * remove irritating copy+paste log message (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2012 21:16:17 +0100
+
+univention-ldb-modules (0.0.1-7) unstable; urgency=low
+
+  * use ldb_module_get_name (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2012 21:11:27 +0100
+
+univention-ldb-modules (0.0.1-6) unstable; urgency=low
+
+  * talloc target missing in wscript (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2012 16:37:56 +0100
+
+univention-ldb-modules (0.0.1-5) unstable; urgency=low
+
+  * build-depend on tevent (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2012 16:29:55 +0100
+
+univention-ldb-modules (0.0.1-4) unstable; urgency=low
+
+  * waf needs python, obviously (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2012 16:21:39 +0100
+
+univention-ldb-modules (0.0.1-3) unstable; urgency=low
+
+  * build-depends on debhelper (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2012 16:14:36 +0100
+
+univention-ldb-modules (0.0.1-2) unstable; urgency=low
+
+  * remove references to python (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Wed, 21 Mar 2012 16:10:56 +0100
+
+univention-ldb-modules (0.0.1-1) unstable; urgency=low
+
+  * Initial version (Bug #26569).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 17 Feb 2012 10:33:44 +0100
