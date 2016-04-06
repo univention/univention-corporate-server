@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper,
 	python,
-	libldb-dev (>= 1.1.2-2.20.201204121532),
+	libldb-dev (>= 2:1.1.25-1),
 	libtalloc-dev,
 	libtevent-dev,
 	libunivention-config-dev,

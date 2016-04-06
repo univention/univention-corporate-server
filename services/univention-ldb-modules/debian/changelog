@@ -1,3 +1,9 @@
+univention-ldb-modules (3.0.4-1) unstable; urgency=medium
+
+  * Bug #40989: Dependencies updated for rebuild against Samba 4.3.7
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Apr 2016 14:53:25 +0200
+
 univention-ldb-modules (3.0.3-1) unstable; urgency=medium
 
   * Switch from samba4 init script to samba (Bug #36811)
