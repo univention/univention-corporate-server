@@ -1,6 +1,6 @@
 product: ucs
 release: "4.0"
-version: [4]
+version: [4,5]
 scope: ucs_4.0-0-errata4.0-4
 src: isc-dhcp
 fix: 4.2.2.dfsg.1-5+deb70u8.36.201602231227
