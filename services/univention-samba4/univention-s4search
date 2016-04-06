@@ -29,8 +29,6 @@
 
 eval "$(univention-config-registry shell ldap/server/name windows/domain hostname connector/s4/ldap/.*)"
 
-LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
-
 ## check for option -U to avoid letting --simple-bind-dn taking precedence
 optspec=":-:d:k:A:PU:"
 while getopts "$optspec" option; do

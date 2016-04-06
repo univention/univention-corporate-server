@@ -36,7 +36,7 @@
 local_is_ucr_false () { # test if UCS variable is "true" or "false"
     local value
     value="$(univention-config-registry get "$1")"
-    case "$(echo -n "$value" | tr [:upper:] [:lower:])" in
+    case "$(echo -n "$value" | tr '[:upper:]' '[:lower:]')" in
         1|yes|on|true|enable|enabled) return 1 ;;
         0|no|off|false|disable|disabled) return 0 ;;
         *) return 2 ;;
@@ -101,8 +101,6 @@ fi
 
 ## The DNS-entries recommended by Samba4 provision in /var/lib/samba/private/dns/samba4.qa.zone
 ## need to be created in the UCS directory service for univention-bind
-
-LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
 
 eval "$(univention-config-registry shell)"
 

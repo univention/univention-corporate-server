@@ -37,8 +37,6 @@ joinscript_init
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-samba4/lib/all.sh
 
-LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
-
 eval "$(univention-config-registry shell)"
 
 # samba4 allowd on this system?
@@ -181,6 +179,8 @@ stop_conflicting_services() {
 	if [ -x /etc/init.d/samba ]; then
 		if [ -n "$(pgrep -f '/usr/sbin/(smbd|nmbd)')" ]; then
 			/etc/init.d/samba stop
+			## the smbd init script might refuse to run if it detects ADDC config in smb.conf
+			start-stop-daemon --stop --quiet --retry 2 --exec /usr/sbin/smbd
 		fi
 	fi
 	if [ -x /etc/init.d/winbind ]; then
@@ -405,6 +405,9 @@ sysvol_fixup() {
 	set_samba4_sysvol_sync_host
 	/usr/share/univention-samba4/scripts/sysvol-sync.sh
 
+	## flush cached SIDs, useful e.g. for sysvol problem solving via re-join
+	net cache flush
+
 	## set the default sysvol and GPO NTACLs
 	samba-tool ntacl sysvolreset
 
@@ -436,6 +439,9 @@ wait_until_dc_was_replicated_to_connector_dc () {
 }
 
 ### --- END helper functions ---
+
+# lp.load('/dev'null') might have exported SMB_CONF_PATH, explicitly unset it here
+unset SMB_CONF_PATH
 
 extract_binddn_and_bindpwd_from_args "$@"
 if [ -n "$binddn" ]; then

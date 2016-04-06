@@ -27,8 +27,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
-
 eval "$(univention-config-registry shell windows/domain samba4/ldap/base ldap/hostdn)"
 
 Domain_GUID="$(ldbsearch -H /var/lib/samba/private/sam.ldb -s base objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')"
@@ -58,6 +56,9 @@ samba4servicedcs=$(ldapsearch -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret 
 for s4dc in $samba4servicedcs; do
 	server_object_dn=$(ldbsearch -H /var/lib/samba/private/sam.ldb samAccountName="${s4dc}\$" \
 							serverReferenceBL | ldapsearch-wrapper | sed -n 's/^serverReferenceBL: \(.*\)/\1/p')
+	if [ -z "$server_object_dn" ]; then
+		continue
+	fi
 	NTDS_objectGUID=$(ldbsearch -H /var/lib/samba/private/sam.ldb -b "$server_object_dn" \
 							"CN=NTDS Settings" objectGUID | sed -n 's/^objectGUID: \(.*\)/\1/p')
 	NTDS_objectGUIDs+=($NTDS_objectGUID)

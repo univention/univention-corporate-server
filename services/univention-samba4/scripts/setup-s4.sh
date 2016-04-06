@@ -29,8 +29,6 @@
 
 . /usr/share/univention-lib/all.sh
 
-LDB_MODULES_PATH=/usr/lib/ldb; export LDB_MODULES_PATH;		## currently necessary for ldbtools
-
 eval "$(univention-config-registry shell)"
 
 samba_private_dir="/var/lib/samba/private"
@@ -216,7 +214,7 @@ if [ -z "$S3_DCS" ] || [ -z "$DOMAIN_SID" ] || is_ucr_true samba4/provision/seco
 		samba-tool domain provision --realm="$kerberos_realm" --domain="$windows_domain" --domain-sid="$DOMAIN_SID" \
 							--function-level="$samba4_function_level" \
 							--adminpass="$adminpw" --server-role='domain controller'	\
-							--sitename="$sitename" \
+							--site="$sitename" \
 							--machinepass="$(</etc/machine.secret)" 2>&1 | tee -a "$LOGFILE"
 	fi
 
@@ -323,7 +321,6 @@ else
 	cat /usr/share/univention-samba4/samba3upgrade/smb.conf.d/* | ucr filter > /var/lib/samba3/etc/samba/smb.conf
 	## fix up /var/lib/samba3/smb.conf for samba-tool
 	touch /etc/samba/base.conf /etc/samba/installs.conf /etc/samba/printers.conf /etc/samba/shares.conf
-	echo -e "[global]\n\trealm = $kerberos_realm" >> /var/lib/samba3/etc/samba/smb.conf
 
 	## move  univention-samba4 default smb.conf out of the way
 	mv /etc/samba/smb.conf /var/tmp/univention-samba4_smb.conf

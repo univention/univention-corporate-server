@@ -1,3 +1,9 @@
+univention-samba4 (2.0.44-36) unstable; urgency=medium
+
+  * Bug #41012: Selective backport for Samba 4.3.7
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Apr 2016 20:35:37 +0200
+
 univention-samba4 (2.0.44-35) unstable; urgency=low
 
   * Restart Samba 4 after changing the server password (Bug #32468)
