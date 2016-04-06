@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-s4-connector
-fix: 
+fix: 8.0.33-94.607.201604051934
 desc: |
  This update adjusts a dependency for the Samba 4.3.7 binary package
 bug: [40990]

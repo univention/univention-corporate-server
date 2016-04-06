@@ -1,0 +1,9 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-samba
+fix: 8.0.19-14.506.201604061940
+desc: |
+ Adjusted for Samba 4.3.7.
+bug: [40990]
