@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-ldb-modules
+fix: 
+desc: |
+ This update is just a rebuilt of the package against the most recent ldb
+ version.
+bug: [40988]
