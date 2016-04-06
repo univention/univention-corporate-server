@@ -912,7 +912,7 @@ override_dh_auto_install:
 		<para>
 			This invocation copies the referenced files to the right location in the binary package staging area <filename>debian/<replaceable>package</replaceable>/etc/univention/</filename>.
 			Internally <command>univention-install-config-registry-info</command> and <command>univention-install-service-info</command> are invoked, which should not be called explicitly anymore.
-			The calls also insert code into the files <filename>debian/<replaceable>package</replaceable>.preinst.debhelper</filename>, <filename>debian/<replaceable>package</replaceable>.postinst.debhelper</filename> and <filename>debian/<replaceable>package</replaceable>.peerm.debhelper</filename> to register and un-register the templates.
+			The calls also insert code into the files <filename>debian/<replaceable>package</replaceable>.preinst.debhelper</filename>, <filename>debian/<replaceable>package</replaceable>.postinst.debhelper</filename> and <filename>debian/<replaceable>package</replaceable>.prerm.debhelper</filename> to register and un-register the templates.
 			Therefore it's important that customized maintainer scripts use the <literal>#DEBHELPER#</literal> marker, so that the generated code gets inserted into the corresponding <filename>preinst</filename>, <filename>postinst</filename> and <filename>prerm</filename> files of the generated binary package.
 		</para>
 		<para>
