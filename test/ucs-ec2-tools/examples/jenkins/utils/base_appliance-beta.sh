@@ -829,7 +829,7 @@ __EOF__
 		sed -i 's|ucr set zarafa/webapp/config/DEFAULT_SERVER?|ucr set zarafa/webapp/config/DEFAULT_SERVER=|' /usr/lib/univention-install/71zarafa4ucs-webapp.inst
 		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_set_webapp_server <<__EOF__
 #!/bin/bash
-ucr set zarafa/webapp/config/DEFAULT_SERVER="https://$(ucr get hostname).$(ucr get domainname):237/zarafa"
+ucr set zarafa/webapp/config/DEFAULT_SERVER=\"https://\$(ucr get hostname).\$(ucr get domainname):237/zarafa\"
 __EOF__
 		
 		chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_set_webapp_server
