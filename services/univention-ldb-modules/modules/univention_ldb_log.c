@@ -173,6 +173,8 @@ static struct ldb_module_ops ldb_univention_ldb_log_module_ops = {
 
 int ldb_univention_ldb_log_init(const char *version)
 {
-	LDB_MODULE_CHECK_VERSION(version);
+	if (strcmp(version, LDB_VERSION) != 0) {
+		fprintf(stderr, "ldb: WARNING: module version mismatch in %s : ldb_version=%s module_version=%s\n", __FILE__, version, LDB_VERSION);
+	}
 	return ldb_register_module(&ldb_univention_ldb_log_module_ops);
 }
