@@ -73,6 +73,9 @@ case "$1" in
 		# in UCS 3.x login.html was diverted, not anymore in UCS 4.0
 		_undivert /usr/share/univention-management-console-frontend/js/umc/app/login.html
 
+		# since version 4.0.3-1 this package doesn't provide its own index.html
+		_undivert /usr/share/univention-management-console-frontend/index.html
+
 		# reload services
 		umc_frontend_new_hash
 		invoke-rc.d apache2 reload

@@ -1,3 +1,9 @@
+univention-demo-configuration (4.0.3-2) unstable; urgency=medium
+
+  * Bug #40118: Remove diversion of index.html on upgrade
+
+ -- Eduard Mai <mai@univention.de>  Wed, 06 Apr 2016 12:15:53 +0200
+
 univention-demo-configuration (4.0.3-1) unstable; urgency=medium
 
   * Bug #40118: Overwrite _resetForm() from umc/dialog/LoginDialog to
