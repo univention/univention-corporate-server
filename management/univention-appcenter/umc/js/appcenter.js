@@ -137,11 +137,13 @@ define([
 		_getModuleStateAttr: function() {
 			var state = [];
 			var _selectedWidget = lang.getObject('selectedChildWidget', false, this);
-			var _app = lang.getObject('selectedChildWidget.app', false, this);
-			if (_selectedWidget == this._appCenterPage) {
-				state = ['category', this._appCenterPage._searchSidebar.get('category')];
-			} else if (_app) {
-				state = ['id', _app.id];
+			if (this.moduleFlavor == 'appcenter') {
+				var _app = lang.getObject('selectedChildWidget.app', false, this);
+				if (_selectedWidget == this._appCenterPage) {
+					state = ['category', this._appCenterPage._searchSidebar.get('category')];
+				} else if (_app) {
+					state = ['id', _app.id];
+				}
 			}
 			return state.join(':');
 		},

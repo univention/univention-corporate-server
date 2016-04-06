@@ -201,7 +201,7 @@ define([
 					var data_style	= 'vertical-align:top;padding-bottom:.25em;';
 
 					var txt = "<p style='" + entities.encode(head_style) + "'>" +
-						_("Details for package '%(package)s'", entities.encode(data.result)) +
+						_("Details for package '%(package)s'", {package: entities.encode(data.result.package)}) +
 						"</p>";
 					txt += '<table>\n';
 					var width = 550;	// mimic the default of dialog.confirm
