@@ -827,8 +827,12 @@ __EOF__
 	# Fixes for BETA appliances
 	if [ "$app" = "zarafa" ]; then
 		sed -i 's|ucr set zarafa/webapp/config/DEFAULT_SERVER?|ucr set zarafa/webapp/config/DEFAULT_SERVER=|' /usr/lib/univention-install/71zarafa4ucs-webapp.inst
-		. /usr/share/univention-join/joinscripthelper.lib
-		joinscript_remove_script_from_status_file zarafa4ucs-webapp
+		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_set_webapp_server <<__EOF__
+#!/bin/bash
+ucr set zarafa/webapp/config/DEFAULT_SERVER="https://$(ucr get hostname).$(ucr get domainname):237/zarafa"
+__EOF__
+		
+		chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_set_webapp_server
 	fi
 	if [ "$app" = "owncloud82" ]; then
 		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains <<__EOF__
