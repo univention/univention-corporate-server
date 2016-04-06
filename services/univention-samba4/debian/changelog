@@ -1,3 +1,9 @@
+univention-samba4 (4.0.3-19) unstable; urgency=medium
+
+  * Bug #40989: Fix dependency on Samba 4.3.7 package version
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Apr 2016 20:40:09 +0200
+
 univention-samba4 (4.0.3-18) unstable; urgency=medium
 
   * Bug #40989: Selective backport from UCS 4.1-1 for Samba 4.3.7
