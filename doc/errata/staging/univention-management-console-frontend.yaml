@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The UMC login page does not warn about an insecure connection when logging in from the same machine the UMC runs on.
  * Error dialogs concerning Piwik are now suppressed.
- * Always show a non empty category at startup.
+ * Ensure that the first non-empty UMC category is shown at startup.
  * Add a hook interface for other packages for extending the behavior of UMC.
 bug: [40638, 30822, 40923, 40118]
