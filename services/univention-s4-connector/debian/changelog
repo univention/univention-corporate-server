@@ -1,3 +1,9 @@
+univention-s4-connector (7.0.33-9) unstable; urgency=medium
+
+  * Bug #41012: Adjust dependency for Samba 4.3.7 binary package
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Apr 2016 20:55:08 +0200
+
 univention-s4-connector (7.0.33-8) unstable; urgency=medium
 
   * WMI filter: Fix case of initial installation on first UCS@school DC
