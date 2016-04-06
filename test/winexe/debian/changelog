@@ -1,3 +1,9 @@
+winexe (1.1.0-13) unstable; urgency=medium
+
+  * Bug #40990: Version bump
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Apr 2016 14:13:05 +0200
+
 winexe (1.1.0-10) unstable; urgency=medium
 
   * Bug #40990: Version bump
