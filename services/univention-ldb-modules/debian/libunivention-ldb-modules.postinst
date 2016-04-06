@@ -1,0 +1,83 @@
+#!/bin/sh
+#
+# UCS@School
+#  postinst script
+#
+# Copyright 2006-2015 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+. /usr/share/univention-lib/all.sh
+
+case "$1" in
+	configure)
+		uinst=/usr/lib/univention-install/03libunivention-ldb-modules.uinst
+		[ -e "$uinst" ] && rm "$uinst"
+
+		if [ -z "$2" ]; then
+			:
+		else
+			if dpkg --compare-versions "$2" le-nl 1.0.5-1.41.201305241523 ; then
+				## errata update code, copied from 98univention-samba4-dns-slavepdc.inst
+				## On UCS@school Slave PDCs the S4 Connector filters some SRV records.
+				kerberos_tcp_override=$(univention-config-registry get "connector/s4/mapping/dns/srv_record/_kerberos._tcp.$domainname/location")
+				if [ -n "$kerberos_tcp_override" ]; then
+					eval "$(univention-config-registry shell)"
+					if [ -n "$nameserver1" ]; then
+						if [ -n "$nameserver2" ] && [ "$nameserver2" != get_default_ip_address ]; then
+							if [ -n "$(dig +short @"$nameserver2" "_kerberos._tcp.$domainname" SRV | grep -v "$kerberos_tcp_override")" ]; then
+								## if nameserver2 advertises something other than the local system, then we must not use it.
+								ucr unset nameserver2
+							fi
+						fi
+						if [ -n "$nameserver3" ] && [ "$nameserver3" != get_default_ip_address ]; then
+							if [ -n "$(dig +short @"$nameserver3" "_kerberos._tcp.$domainname" SRV | grep -v "$kerberos_tcp_override")" ]; then
+								ucr unset nameserver3
+							fi
+						fi
+					fi
+				fi
+			fi
+			test -x /etc/init.d/samba4 && invoke-rc.d samba4 restart
+		fi
+		;;
+	abort-upgrade|abort-remove|abort-deconfigure)
+		:
+		;;
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+		;;
+esac
+
+call_joinscript 96univention-samba4slavepdc.inst
+call_joinscript 97libunivention-ldb-modules.inst
+call_joinscript 98univention-samba4slavepdc-dns.inst
+
+exit 0
+
