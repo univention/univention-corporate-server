@@ -1,3 +1,11 @@
+univention-ldb-modules (2.0.5-2) unstable; urgency=medium
+
+  * Bug #40990: Backport from ucs-school-4.1 package version 4.0.0-2:
+    relax strict version checks in ldb modules, let shlibs:Depends take
+    care of that.
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Apr 2016 14:40:57 +0200
+
 univention-ldb-modules (2.0.5-1) unstable; urgency=medium
 
   * Bug #40990: Dependencies updated for rebuild against Samba 4.3.7
