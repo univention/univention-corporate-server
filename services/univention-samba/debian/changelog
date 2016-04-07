@@ -1,3 +1,11 @@
+univention-samba (8.0.19-15) unstable; urgency=medium
+
+  * Bug #40990: Backport additional patch:
+  * Remove conflict against samba-dsdb-modules (Bug #35320)
+    (This has been introduced for UCS@school Bug 27370).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Apr 2016 16:10:29 +0200
+
 univention-samba (8.0.19-14) unstable; urgency=medium
 
   * Bug #40990 Selective backport from UCS 4.1-1 for Samba 4.3.7
