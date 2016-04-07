@@ -1,3 +1,9 @@
+univention-samba (7.0.17-9) unstable; urgency=medium
+
+  * Bug #41012: Version bump
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Apr 2016 16:20:03 +0200
+
 univention-samba (7.0.17-7) unstable; urgency=medium
 
   * Bug #41012: Add conflict to samba-ad-dc (replaced samba4)
