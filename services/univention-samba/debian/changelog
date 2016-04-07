@@ -1,3 +1,12 @@
+univention-samba (7.0.17-7) unstable; urgency=medium
+
+  * Bug #41012: Add conflict to samba-ad-dc (replaced samba4)
+  * Bug #41012: Backport additional patch:
+  * Remove conflict against samba-dsdb-modules (Bug #35320)
+    (This has been introduced for UCS@school Bug 27370).
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Apr 2016 16:14:18 +0200
+
 univention-samba (7.0.17-6) unstable; urgency=medium
 
   * Bug #41012: Selective backport for Samba 4.3.7
