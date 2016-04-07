@@ -1,3 +1,9 @@
+univention-samba (8.0.19-16) unstable; urgency=medium
+
+  * Bug #40990: Workaround for apt conflict resolver issue
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Apr 2016 19:12:31 +0200
+
 univention-samba (8.0.19-15) unstable; urgency=medium
 
   * Bug #40990: Backport additional patch:
