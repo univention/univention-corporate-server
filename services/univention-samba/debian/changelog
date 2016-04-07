@@ -1,3 +1,11 @@
+univention-samba (8.0.19-17) unstable; urgency=medium
+
+  * Bug #40990: Revert last change, it triggers Bug #27370
+  * Replace Pre-Depends on samba by normal Depends to avoid
+    dependency cycle error on package update.
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Apr 2016 21:59:01 +0200
+
 univention-samba (8.0.19-16) unstable; urgency=medium
 
   * Bug #40990: Workaround for apt conflict resolver issue
