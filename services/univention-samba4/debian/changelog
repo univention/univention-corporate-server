@@ -1,3 +1,9 @@
+univention-samba4 (3.0.39-39) unstable; urgency=medium
+
+  * Bug #40990: Workaround for apt conflict resolver issue
+
+ -- Arvid Requate <requate@univention.de>  Thu, 07 Apr 2016 19:12:05 +0200
+
 univention-samba4 (3.0.39-38) unstable; urgency=medium
 
   * Bug #40990: Fix dependency on Samba 4.3.7 package version
