@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-samba
-fix: 8.0.19-14.506.201604061940
+fix: 8.0.19-15.509.201604071611
 desc: |
  Adjusted for Samba 4.3.7.
 bug: [40990]
