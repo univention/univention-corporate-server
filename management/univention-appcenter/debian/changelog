@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-38) unstable; urgency=medium
+
+  * Bug #41009: Repairing repository/app_center/installed
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 08 Apr 2016 13:03:22 +0200
+
 univention-appcenter (5.0.20-37) unstable; urgency=medium
 
   * Bug #41009: Fix evaluation of installation status

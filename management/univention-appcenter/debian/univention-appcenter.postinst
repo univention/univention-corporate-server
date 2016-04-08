@@ -60,4 +60,8 @@ if dpkg --compare-versions "$2" lt-nl 5.0.19-7; then
 	univention-app register --noninteractive --component
 fi
 
+if dpkg --compare-versions "$2" lt-nl 5.0.20-37; then
+	univention-app register --noninteractive --files
+fi
+
 exit 0
