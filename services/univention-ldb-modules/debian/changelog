@@ -1,3 +1,9 @@
+univention-ldb-modules (4.0.3-1) unstable; urgency=low
+
+  * Bug #40990: Dependency updated for rebuild against Samba 4.3.7 
+
+ -- Felix Botner <botner@univention.de>  Fri, 08 Apr 2016 12:51:53 +0200
+
 univention-ldb-modules (2.0.5-2) unstable; urgency=medium
 
   * Bug #40990: Backport from ucs-school-4.1 package version 4.0.0-2:
