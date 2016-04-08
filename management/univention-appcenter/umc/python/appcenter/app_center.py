@@ -1213,6 +1213,8 @@ class Application(object):
 		return _check(True), _check(False)
 
 	def is_installed(self, package_manager, strict=True):
+		if self.get('dockerimage') and not ucr.get('docker/container/uuid'):
+			return ucr.get('appcenter/apps/%s/status' % self.id) in ['installed', 'stalled'] and ucr.get('appcenter/apps/%s/version' % self.id) == self.version
 		default_packages = self.get('defaultpackages')
 		if strict:
 			return all(package_manager.is_installed(package) for package in default_packages)
