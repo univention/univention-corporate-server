@@ -1,0 +1,57 @@
+#!/usr/share/ucs-test/runner python
+## desc: Test repository/app_center/installed with Docker/NonDocker Apps
+## tags: [docker]
+## exposure: dangerous
+## packages:
+##   - docker.io
+
+from dockertest import *
+from univention.config_registry import ConfigRegistry
+from univention.testing.utils import get_ldap_connection
+
+if __name__ == '__main__':
+	
+	with Appcenter() as appcenter:
+		app_name = get_app_name()
+		app_version = get_app_version()
+
+		try:
+			app_docker1 = App(name=get_app_name(), version=get_app_version())
+			app_docker1.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0', Code='D1')
+			app_docker1.add_to_local_appcenter()
+
+			app_docker2 = App(name=get_app_name(), version=get_app_version(), build_package=False)
+			app_docker2.set_ini_parameter(DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0', Code='D2')
+			app_docker2.add_to_local_appcenter()
+
+			app_nondocker = App(name=get_app_name(), version=get_app_version(), build_package=False)
+			app_nondocker.set_ini_parameter(Code='ND')
+			app_nondocker.add_to_local_appcenter()
+
+			appcenter.update()
+
+			ucr = ConfigRegistry()
+			ucr.load()
+			codes_old = ucr.get('repository/app_center/installed').split('-')
+			assert 'D1' not in codes_old, 'Wrong old Codes: %r' % codes_old
+			assert 'D2' not in codes_old, 'Wrong old Codes: %r' % codes_old
+			assert 'ND' not in codes_old, 'Wrong old Codes: %r' % codes_old
+
+			app_docker1.install()
+			subprocess.call(['univention-add-app', '-la', app_nondocker.app_name])
+
+			ucr.load()
+			codes_new = ucr.get('repository/app_center/installed').split('-')
+
+			assert 'D1' in codes_new, 'Wrong new Codes: %r' % codes_new
+			assert 'D2' not in codes_new, 'Wrong new Codes: %r' % codes_new
+			assert 'ND' in codes_new, 'Wrong new Codes: %r' % codes_new
+
+		finally:
+			app_docker1.uninstall()
+			app_docker1.remove()
+			app_docker2.uninstall()
+			app_docker2.remove()
+			app_nondocker.uninstall()
+			app_nondocker.remove()
+

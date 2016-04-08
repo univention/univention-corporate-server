@@ -1,3 +1,10 @@
+ucs-test (6.0.33-53) unstable; urgency=medium
+
+  * Bug #41009: Test repository/app_center/installed with Docker/NonDocker
+    Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 08 Apr 2016 12:13:32 +0200
+
 ucs-test (6.0.33-52) unstable; urgency=medium
 
   * 01_base/26check_logfiles_general: Ignore wtmp.* as well since we are
