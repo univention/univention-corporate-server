@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-ldb-modules
-fix: 4.0.1-1.81.201604061900
+fix: 4.0.7-1.82.201604081245
 desc: |
  This update is just a rebuilt of the package against the most recent ldb
  version.
