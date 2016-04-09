@@ -87,6 +87,7 @@ class Errors(LogMessage):
 		'/usr/sbin/grub-probe: error: cannot find a GRUB drive for /dev/vda.  Check your device.map.', #Bug #38911
 		r'Checking grub-pc/install_devices for errors[.]+', #  Bug #40733
 		r'Done checking grub-pc/install_devices for errors[.]', #  Bug #40733
+		'.*failed to receive current ID.*', #Bug 40962
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
