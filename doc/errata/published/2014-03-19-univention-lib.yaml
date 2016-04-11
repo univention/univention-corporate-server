@@ -9,3 +9,4 @@ desc: |
     os.rename to support different partitions for source and
     destination file.
 bug: [34104]
+erratum: 80

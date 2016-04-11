@@ -10,3 +10,4 @@ desc: |
 note: This update fixes this vulnerability.
 cve:
  - CVE-2014-2525
+erratum: 94

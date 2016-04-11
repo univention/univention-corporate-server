@@ -11,3 +11,4 @@ desc: |
     requests is now configured by the UCR variable umc/http/session/timeout.
   * The detection of Internet Explorer 11 has been fixed.
 bug: [34288, 34005, 33990]
+erratum: 100

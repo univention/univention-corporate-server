@@ -8,3 +8,4 @@ desc: |
   Fixed a regression from the last version. The account for the
   service principal is created via udm not via samba-tool.
 bug: [34575]
+erratum: 96

@@ -19,3 +19,4 @@ desc: |
     containers, because cn=univention is ignored by the S4 connector and the S4
     connector does not recognize the move.
 bug: [34395, 34421, 23765, 34201, 34266]
+erratum: 97

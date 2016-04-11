@@ -14,3 +14,4 @@ desc: |
     provision directory. This tool is periodically executed by
     cron (configurable via the UCR variable samba4/backup/cron).
 bug: [34326,34113]
+erratum: 84

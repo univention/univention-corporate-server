@@ -9,3 +9,4 @@ desc: |
     avoids certificate problems with https connections while using
     Internet Explorer.
 bug: [33968]
+erratum: 91

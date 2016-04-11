@@ -8,3 +8,4 @@ desc: |
   The service start of FreeRADIUS can now be managed through the
   freeradius/autostart UCR setting.
 bug: [29465]
+erratum: 108

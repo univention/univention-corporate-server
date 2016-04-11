@@ -12,3 +12,4 @@ desc: |
   * Added libvirtd logging functionality with new UCR variables:
     libvirt/log/level, libvirt/log/filters, libvirt/log/outputs
 bug: [33966,34170]
+erratum: 79

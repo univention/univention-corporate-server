@@ -14,3 +14,4 @@ desc: |
     to reconnect to the LDAP server. The count can be configured via the UCR
     variable ldap/client/retry/count; the value is set by default to 10.
 bug: [34241,24010,34293]
+erratum: 72

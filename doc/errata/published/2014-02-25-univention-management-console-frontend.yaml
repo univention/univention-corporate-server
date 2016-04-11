@@ -8,3 +8,4 @@ desc: |
   The progress bar does not have a transition anymore if the value is
   "Infinity".
 bug: [34181]
+erratum: 64

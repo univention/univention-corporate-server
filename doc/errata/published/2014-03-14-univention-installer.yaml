@@ -11,3 +11,4 @@ desc: |
   * The warning about the missing BIOS Grub partition is now displayed again
     after modifying the partition table.
 bug: [34329,34334]
+erratum: 73

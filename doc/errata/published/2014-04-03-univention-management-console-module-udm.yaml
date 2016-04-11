@@ -11,3 +11,4 @@ desc: |
   * The labels for widgets regarding the type of LDAP objects have been changed
     as the old ones could not reflect the grammatical case.
 bug: [34367, 34038]
+erratum: 92

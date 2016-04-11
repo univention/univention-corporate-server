@@ -17,3 +17,4 @@ desc: |
     have been introduced to define whether and how the postfix should use
     TLS for LDAP lookups.
 bug: [26910,34198]
+erratum: 99

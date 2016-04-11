@@ -14,3 +14,4 @@ desc: |
   * Applications may now specify supported architectures. If an application
     only supports 64 bit, a 32 bit operating system will refuse to install it.
 bug: [33728, 34278, 34320]
+erratum: 86

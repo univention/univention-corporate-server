@@ -10,3 +10,4 @@ desc: |
  * Joining Windows clients without pre-synchronized clocks is now
    possible.
 bug: [34443, 34439]
+erratum: 85

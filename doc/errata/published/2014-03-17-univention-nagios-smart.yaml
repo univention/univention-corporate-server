@@ -7,3 +7,4 @@ version: [1]
 desc: |
   * A buffer overflow in the setuid wrapper has been fixed.
 bug: [34041]
+erratum: 83

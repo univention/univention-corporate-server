@@ -2,7 +2,7 @@ product: ucs
 release: "3.2"
 scope: ucs_3.2-0-errata3.2-1
 src: univention-s4-connector
-fix:  8.0.33-46.472.201405062002
+fix: 8.0.33-46.472.201405062002
 version: [1]
 desc: |
   This update fixes the following issues:
@@ -18,3 +18,4 @@ desc: |
   * During the group membership synchronization from Samba 4 to
     OpenLDAP an object mapping problem has been fixed.
 bug: [31320,34394,34410,34478,33858,34197]
+erratum: 107

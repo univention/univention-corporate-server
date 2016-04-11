@@ -9,3 +9,4 @@ desc: |
   * LDAP schema extensions are now included sorted by their file name to
     guarantee stable ordering.
 bug: [34406]
+erratum: 103

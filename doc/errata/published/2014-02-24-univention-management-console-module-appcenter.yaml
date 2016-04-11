@@ -10,3 +10,4 @@ desc: |
   * Whitelisting and blacklisting now works with the applications' ID and on
     unlocalised data.
 bug: [34183,34145]
+erratum: 63

@@ -11,3 +11,4 @@ desc: |
     issue, when objects in LDAP are modified and moved in short order, or while
     the listener is not running.
 bug: [32605, 34355]
+erratum: 104

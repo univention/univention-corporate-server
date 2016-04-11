@@ -7,3 +7,4 @@ version: [0, 1]
 desc: |
   This update adds the package univention-radius to UCS.
 bug: [29465]
+erratum: 98

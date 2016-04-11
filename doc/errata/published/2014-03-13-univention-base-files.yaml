@@ -11,3 +11,4 @@ desc: |
     controllers and member servers.
   * The UCR variable ldap/client/retry/count is now set to 10 by default.
 bug: [34330,34292]
+erratum: 70

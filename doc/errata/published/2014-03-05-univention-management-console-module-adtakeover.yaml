@@ -7,3 +7,4 @@ version: [0, 1]
 desc: |
   This update adds a UMC module for the Active Directory takeover.
 bug: [34019, 34139]
+erratum: 88

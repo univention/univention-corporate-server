@@ -13,3 +13,4 @@ desc: |
     "/usr/bin/squidGuard -c /etc/squid/squidGuard.conf" is used
     for "url_rewrite_program".
 bug: [33332,32429]
+erratum: 87

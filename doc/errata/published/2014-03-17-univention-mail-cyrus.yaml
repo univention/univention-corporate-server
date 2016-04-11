@@ -9,3 +9,4 @@ desc: |
     the UCR variable mail/cyrus/mailbox/delete when deleting
     IMAP folders.
 bug: [34165]
+erratum: 82

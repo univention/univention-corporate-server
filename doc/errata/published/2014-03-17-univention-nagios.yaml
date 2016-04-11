@@ -9,3 +9,4 @@ desc: |
     Remote Plugin Executor (NRPE) have been modified to use the PID file
     /var/run/nagios/nrpe.pid.
 bug: [34063]
+erratum: 101

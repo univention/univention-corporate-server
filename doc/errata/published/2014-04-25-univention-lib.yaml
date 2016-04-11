@@ -9,3 +9,4 @@ desc: |
  path to work regardless of the current PATH setting, especially for
  cases where /usr/sbin is not in PATH.
 bug: [29241]
+erratum: 105
