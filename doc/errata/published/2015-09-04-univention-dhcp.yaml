@@ -9,3 +9,4 @@ desc: |
   * The default routing policy is only updated for the first created DHCP
     subnet.
 bug: [39238]
+erratum: 367

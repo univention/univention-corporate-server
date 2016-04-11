@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * The testing repositories were renamed.
 bug: [39324]
+erratum: 370
