@@ -9,3 +9,4 @@ desc: |
  * A UMC server crash is prevented which might happen during session timeout.
 bug: [40627]
 erratum: 121
+announced: 2016-02-24

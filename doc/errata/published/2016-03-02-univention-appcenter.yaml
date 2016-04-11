@@ -15,3 +15,4 @@ desc: |
    on remote hosts.
 bug: [35324, 40005, 40797, 40804]
 erratum: 123
+announced: 2016-03-02

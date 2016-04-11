@@ -15,3 +15,4 @@ desc: |
    UCR variable "umc/logout/location".
 bug: [40806, 40799, 38639, 35407, 40613]
 erratum: 132
+announced: 2016-03-17

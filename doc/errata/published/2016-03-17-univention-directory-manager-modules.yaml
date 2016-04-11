@@ -24,3 +24,4 @@ desc: |
    to the DNS handler modules.
 bug: [40651, 39030, 40775, 40824, 23804, 39343, 34327, 38639]
 erratum: 131
+announced: 2016-03-17

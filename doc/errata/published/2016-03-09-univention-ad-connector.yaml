@@ -13,3 +13,4 @@ desc: |
    connector/ad/mapping/group/alternativemail
 bug: [40357]
 erratum: 126
+announced: 2016-03-09

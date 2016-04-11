@@ -10,3 +10,4 @@ desc: |
    each HTTP request.
 bug: [40799]
 erratum: 134
+announced: 2016-03-17

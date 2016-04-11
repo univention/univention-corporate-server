@@ -13,3 +13,4 @@ desc: |
  * Fixed tracebacks due to dangling symlinks.
 bug: [40386,40639,40647]
 erratum: 117
+announced: 2016-02-24

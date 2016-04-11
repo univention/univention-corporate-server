@@ -12,3 +12,4 @@ desc: |
  * If error messages contained a "%" they weren't displayed in UMC.
 bug: [40658, 40738, 40749]
 erratum: 120
+announced: 2016-02-24

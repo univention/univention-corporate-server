@@ -9,3 +9,4 @@ desc: |
  * Access restrictions on non DC master App Appliances have been corrected.
 bug: [39700]
 erratum: 135
+announced: 2016-03-17

@@ -16,3 +16,4 @@ desc: |
    outdated. This caused an error in the App Center in some cases.
 bug: [40754, 40875, 40874, 40882]
 erratum: 130
+announced: 2016-03-17
