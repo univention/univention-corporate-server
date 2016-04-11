@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * The PID file is no longer created world-writable.
 bug: [25162]
+erratum: 344

@@ -16,3 +16,4 @@ desc: |
    the TLS client.
  Please refer to the UCR variable descriptions for additional details.
 bug: [38632]
+erratum: 345

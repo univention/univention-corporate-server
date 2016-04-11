@@ -8,3 +8,4 @@ desc: |
   The mapping of syntax classes to UMC widgets is now extendable via the
   UCR variable group "directory/manager/web/widget/.*/".
 bug: [38743]
+erratum: 341
