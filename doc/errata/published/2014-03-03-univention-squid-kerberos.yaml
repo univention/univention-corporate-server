@@ -12,3 +12,4 @@ desc: |
     for the proxy service principal.
 bug: [33779, 32292]
 erratum: 90
+announced: 2014-04-16

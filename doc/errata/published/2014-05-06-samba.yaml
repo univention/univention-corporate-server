@@ -8,3 +8,4 @@ desc: |
  Several possible deadlock situations in the DRS replication have been fixed.
 bug: [34545]
 erratum: 106
+announced: 2014-05-07

@@ -15,3 +15,4 @@ desc: |
     cron (configurable via the UCR variable samba4/backup/cron).
 bug: [34326,34113]
 erratum: 84
+announced: 2014-04-09

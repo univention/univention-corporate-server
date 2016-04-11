@@ -10,3 +10,4 @@ desc: |
  cases where /usr/sbin is not in PATH.
 bug: [29241]
 erratum: 105
+announced: 2014-05-07

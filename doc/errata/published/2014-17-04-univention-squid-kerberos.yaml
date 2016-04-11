@@ -9,3 +9,4 @@ desc: |
   service principal is created via udm not via samba-tool.
 bug: [34575]
 erratum: 96
+announced: 2014-04-17

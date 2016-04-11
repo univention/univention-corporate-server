@@ -15,3 +15,4 @@ desc: |
     only supports 64 bit, a 32 bit operating system will refuse to install it.
 bug: [33728, 34278, 34320]
 erratum: 86
+announced: 2014-04-09

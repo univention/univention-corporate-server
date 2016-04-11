@@ -10,3 +10,4 @@ desc: |
     /var/run/nagios/nrpe.pid.
 bug: [34063]
 erratum: 101
+announced: 2014-04-30

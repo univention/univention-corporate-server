@@ -8,3 +8,4 @@ desc: |
   This update adds the package univention-radius to UCS.
 bug: [29465]
 erratum: 98
+announced: 2014-04-25

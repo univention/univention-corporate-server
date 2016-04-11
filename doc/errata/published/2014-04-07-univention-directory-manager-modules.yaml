@@ -20,3 +20,4 @@ desc: |
     connector does not recognize the move.
 bug: [34395, 34421, 23765, 34201, 34266]
 erratum: 97
+announced: 2014-04-22

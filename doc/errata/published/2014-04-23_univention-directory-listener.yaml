@@ -12,3 +12,4 @@ desc: |
     the listener is not running.
 bug: [32605, 34355]
 erratum: 104
+announced: 2014-05-07

@@ -13,3 +13,4 @@ desc: |
     libvirt/log/level, libvirt/log/filters, libvirt/log/outputs
 bug: [33966,34170]
 erratum: 79
+announced: 2014-04-03

@@ -10,3 +10,4 @@ desc: |
     guarantee stable ordering.
 bug: [34406]
 erratum: 103
+announced: 2014-05-07

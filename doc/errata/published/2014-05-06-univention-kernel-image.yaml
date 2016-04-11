@@ -11,3 +11,4 @@ note: This is the second part of the fix, which updates the new kernel meta pack
 cve:
  - CVE-2014-0196
 erratum: 111
+announced: 2014-05-08

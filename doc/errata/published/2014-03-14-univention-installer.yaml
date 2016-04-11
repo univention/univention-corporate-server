@@ -12,3 +12,4 @@ desc: |
     after modifying the partition table.
 bug: [34329,34334]
 erratum: 73
+announced: 2014-03-17

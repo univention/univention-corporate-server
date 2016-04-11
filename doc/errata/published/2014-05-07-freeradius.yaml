@@ -9,3 +9,4 @@ desc: |
   freeradius/autostart UCR setting.
 bug: [29465]
 erratum: 108
+announced: 2014-05-07

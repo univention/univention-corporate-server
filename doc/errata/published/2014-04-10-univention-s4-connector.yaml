@@ -19,3 +19,4 @@ desc: |
     OpenLDAP an object mapping problem has been fixed.
 bug: [31320,34394,34410,34478,33858,34197]
 erratum: 107
+announced: 2014-05-07

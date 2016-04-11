@@ -14,3 +14,4 @@ desc: |
     for "url_rewrite_program".
 bug: [33332,32429]
 erratum: 87
+announced: 2014-04-09

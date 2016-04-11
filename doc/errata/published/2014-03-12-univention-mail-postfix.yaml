@@ -18,3 +18,4 @@ desc: |
     TLS for LDAP lookups.
 bug: [26910,34198]
 erratum: 99
+announced: 2014-04-30

@@ -12,3 +12,4 @@ desc: |
   * The UCR variable ldap/client/retry/count is now set to 10 by default.
 bug: [34330,34292]
 erratum: 70
+announced: 2014-03-17

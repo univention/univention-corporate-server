@@ -10,3 +10,4 @@ desc: |
     Virtual Machine Manager to handle blocked UVMMd processes.
 bug: [34321]
 erratum: 71
+announced: 2014-03-17

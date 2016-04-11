@@ -10,3 +10,4 @@ desc: |
   ldap/client/retry/count; the value is set to 10 by default.
 bug: [34292]
 erratum: 74
+announced: 2014-03-17

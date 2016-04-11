@@ -9,3 +9,4 @@ desc: |
   used by the Univention Directory Listener to track moved objects.
 bug: [34813]
 erratum: 114
+announced: 2014-05-20
