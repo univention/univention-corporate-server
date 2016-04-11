@@ -10,3 +10,4 @@ desc: |
    side of the LDAP connection.
 bug: [40066]
 erratum: 370
+announced: 2015-12-09

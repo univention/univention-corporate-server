@@ -19,3 +19,4 @@ desc: |
    Console or CLI have not been removed on the IMAP server (Bug 40195).
 bug: [40018,40037,40195]
 erratum: 388
+announced: 2016-01-20

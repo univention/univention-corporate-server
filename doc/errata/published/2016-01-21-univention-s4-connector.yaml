@@ -15,3 +15,4 @@ desc: |
    which comprises UCS@school Samba AD DC Slave systems.
 bug: [40381, 40466]
 erratum: 389
+announced: 2016-01-21

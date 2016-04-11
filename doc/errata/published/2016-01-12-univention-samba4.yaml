@@ -16,3 +16,4 @@ desc: |
    concurrent read and write processes.
 bug: [40267, 40314, 40346]
 erratum: 381
+announced: 2016-01-12

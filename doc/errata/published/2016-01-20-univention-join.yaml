@@ -9,3 +9,4 @@ desc: |
  * Univention S4 Connector was still running during re-joins.
 bug: [40389]
 erratum: 387
+announced: 2016-01-20

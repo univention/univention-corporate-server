@@ -9,3 +9,4 @@ desc: |
  * Domain names for mail domains are now lowercased (Bug 40108).
 bug: [40108]
 erratum: 365
+announced: 2015-12-09

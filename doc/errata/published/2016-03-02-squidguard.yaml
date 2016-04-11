@@ -10,3 +10,4 @@ desc: |
    backing files of squidguard's in-memory databases.
 bug: [40593]
 erratum: 404
+announced: 2016-03-02

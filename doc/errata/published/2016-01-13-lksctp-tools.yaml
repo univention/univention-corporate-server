@@ -9,3 +9,4 @@ desc: |
  * Package is added as a new dependency of OpenJDK-7.
 bug: [40042]
 erratum: 382
+announced: 2016-01-13

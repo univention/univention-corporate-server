@@ -10,3 +10,4 @@ desc: |
   the automatic registration as additional nameserver (Bug 39384).
 bug: [39384]
 erratum: 378
+announced: 2016-01-12
