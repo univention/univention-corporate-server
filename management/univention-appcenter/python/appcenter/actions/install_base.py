@@ -255,16 +255,12 @@ class InstallRemoveUpgrade(Register):
 			# change to UCS umask + +x:      -rwxr-xr-x
 			os.chmod(dest, 0755)
 			if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
-				ret = self._call_script(dest)
+				ret = self._call_script('/usr/sbin/univention-run-join-scripts')
 			else:
 				with self._get_password_file(args) as password_file:
-					joinargs = []
 					if password_file:
-						joinargs.extend(['-dcname', self._get_username(args)])
-						joinargs.extend(['-dcpwd', password_file])
-					ret = self._call_script(dest, *joinargs)
-		if ret is True and dest and unjoin:
-			os.unlink(dest)
+						username = self._get_username(args)
+						ret = self._call_script('/usr/sbin/univention-run-join-scripts', '-dcaccount', username, '-dcpwd', password_file)
 		return ret
 
 	def _reload_apache(self):

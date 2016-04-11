@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-39) unstable; urgency=medium
+
+  * Bug #40984: Use univention-register-apps for calling join scripts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 12 Apr 2016 01:19:45 +0200
+
 univention-appcenter (5.0.20-38) unstable; urgency=medium
 
   * Bug #41009: Repairing repository/app_center/installed

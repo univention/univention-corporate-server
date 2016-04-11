@@ -74,7 +74,7 @@ class Install(InstallRemoveUpgrade):
 				self.percentage = 80
 				self._call_join_script(app, args)
 			else:
-				raise Abort('Failed to install the App packages')
+				raise Abort('Failed to install the App')
 
 	def _install_packages(self, packages, percentage_end, update=True):
 		return self._apt_get('install', packages, percentage_end, update=update)
