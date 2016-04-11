@@ -8,3 +8,4 @@ desc: |
   A traceback in the pkgdb listener has been fixed.
 bug: [35367]
 erratum: 229
+announced: 2014-10-30

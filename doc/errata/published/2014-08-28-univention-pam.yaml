@@ -10,3 +10,4 @@ desc: |
     "max open files" has been fixed (now 32768)
 bug: [35362]
 erratum: 192
+announced: 2014-09-10

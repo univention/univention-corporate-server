@@ -10,3 +10,4 @@ desc: |
     on domaincontroller_slave's
 bug: [34909]
 erratum: 190
+announced: 2014-09-10

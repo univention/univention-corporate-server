@@ -13,3 +13,4 @@ desc: |
       sysvol share.
 bug: [35564,35769]
 erratum: 203
+announced: 2014-09-10

@@ -10,3 +10,4 @@ desc: |
     call signals.
 bug: [35757,31319]
 erratum: 191
+announced: 2014-09-10

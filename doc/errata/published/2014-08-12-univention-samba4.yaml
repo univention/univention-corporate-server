@@ -10,3 +10,4 @@ desc: |
     in 96univention-samba4.inst
 bug: [35600]
 erratum: 180
+announced: 2014-08-14

@@ -10,3 +10,4 @@ desc: |
  This prevents a possible double registration.
 bug: [35711]
 erratum: 206
+announced: 2014-09-10

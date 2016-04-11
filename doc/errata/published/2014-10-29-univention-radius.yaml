@@ -8,3 +8,4 @@ desc: |
   This update fixes access for clients in Samba AD domains.
 bug: [35516]
 erratum: 239
+announced: 2014-11-07

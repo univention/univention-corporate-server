@@ -10,3 +10,4 @@ desc: |
     LDAP attributes which may be found on a UCS 4.0 master.
 bug: [36353]
 erratum: 240
+announced: 2014-11-07

@@ -11,3 +11,4 @@ desc: |
    with enabled recycle bin.
 bug: [32771,35443]
 erratum: 205
+announced: 2014-09-10

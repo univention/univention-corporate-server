@@ -12,3 +12,4 @@ desc: |
       dies, the UMC module shuts down immediately
 bug: [32818]
 erratum: 238
+announced: 2014-11-07

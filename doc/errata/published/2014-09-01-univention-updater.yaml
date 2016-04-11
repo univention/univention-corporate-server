@@ -12,3 +12,4 @@ desc: |
    return codes.
 bug: [35645,34781,34972]
 erratum: 196
+announced: 2014-09-10

@@ -8,4 +8,6 @@ desc: |
   * Fix an error introduced by errata 238 regarding the error handling of
     closed UMC module process sockets.
 bug: [37167]
+2014-12-11
 erratum: 248
+announced: 2014-12-03

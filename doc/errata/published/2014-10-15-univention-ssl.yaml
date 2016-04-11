@@ -11,3 +11,4 @@ desc: |
     (configurable via the UCR variable ssl/default/bits).
 bug: [35836,30545]
 erratum: 227
+announced: 2014-10-30

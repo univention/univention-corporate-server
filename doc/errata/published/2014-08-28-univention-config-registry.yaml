@@ -12,3 +12,4 @@ desc: |
     conffiles with spaces.
 bug: [35368,35202]
 erratum: 189
+announced: 2014-09-10

@@ -10,3 +10,4 @@ desc: |
  In specific setups this could have led to installation errors.
 bug: [35078]
 erratum: 198
+announced: 2014-09-10

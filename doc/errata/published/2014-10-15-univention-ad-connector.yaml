@@ -11,3 +11,4 @@ desc: |
   * A connection traceback has been fixed in the AD member mode wizard.
 bug: [35895,35701]
 erratum: 223
+announced: 2014-10-22

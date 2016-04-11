@@ -11,3 +11,4 @@ bug: [33265]
 cve:
  - CVE-2010-5110
 erratum: 194
+announced: 2014-09-10

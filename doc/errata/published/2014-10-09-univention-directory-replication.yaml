@@ -10,3 +10,4 @@ desc: |
     LDAP attributes which will be activated in UCS 4.0.
 bug: [36113]
 erratum: 222
+announced: 2014-10-22

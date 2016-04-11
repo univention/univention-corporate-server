@@ -11,3 +11,4 @@ desc: |
     ignored the static network configuration.
 bug: [35601]
 erratum: 179
+announced: 2014-08-14

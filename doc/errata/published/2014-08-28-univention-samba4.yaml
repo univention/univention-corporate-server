@@ -10,3 +10,4 @@ desc: |
     ignores the tar "file changed as we read it" warning.
 bug: [35392]
 erratum: 193
+announced: 2014-09-10

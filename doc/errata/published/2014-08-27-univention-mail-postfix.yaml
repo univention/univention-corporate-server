@@ -10,3 +10,4 @@ desc: |
     univention-mail-server to univention-mail-postfix.
 bug: [35232]
 erratum: 188
+announced: 2014-09-10

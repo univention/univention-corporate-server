@@ -18,3 +18,4 @@ desc: |
       univention-directory-listener-ctrl resync cups-printers
 bug: [33505]
 erratum: 202
+announced: 2014-09-10

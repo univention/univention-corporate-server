@@ -9,3 +9,4 @@ desc: |
   while installing Apps, which lead to the installation getting stuck.
 bug: [35729]
 erratum: 235
+announced: 2014-11-07
