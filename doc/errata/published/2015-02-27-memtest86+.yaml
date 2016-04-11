@@ -9,3 +9,4 @@ desc: |
   memory test 7 "Random number sequence" to always fail.
 bug: [37638]
 erratum: 108
+announced: 2015-03-11

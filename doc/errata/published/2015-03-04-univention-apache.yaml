@@ -26,3 +26,4 @@ desc: |
  ucs/web/overview/entries/*/*/port_http and .../port_https.
 bug: [35456, 37566]
 erratum: 103
+announced: 2015-03-11

@@ -14,3 +14,4 @@ desc: |
   * Add support for WebInterfacePortHTTP and HTTPS in the ini file of an app.
 bug: [36822,37347,35456]
 erratum: 96
+announced: 2015-03-11

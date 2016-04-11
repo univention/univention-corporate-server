@@ -9,3 +9,4 @@ desc: |
   * It is now possible to request a single-sign-on login token for localhost.
 bug: [37347]
 erratum: 92
+announced: 2015-02-24

@@ -9,3 +9,4 @@ desc: |
   * Fixed an endless loop when invalid values for certificates are supplied.
 bug: [38125]
 erratum: 187
+announced: 2015-05-07

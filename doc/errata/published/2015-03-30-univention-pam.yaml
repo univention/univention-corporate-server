@@ -10,3 +10,4 @@ desc: |
     join scripts, as those restrictions were not applied in all cases.
 bug: [37971]
 erratum: 146
+announced: 2015-04-08

@@ -12,3 +12,4 @@ desc: |
     server crash. The attribute handling in the server has been improved.
 bug: [37399, 37447]
 erratum: 125
+announced: 2015-03-25

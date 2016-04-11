@@ -13,3 +13,4 @@ desc: |
   * Policy labels are now correctly displayed with an edit link.
 bug: [36539, 37892, 37899, 36708]
 erratum: 107
+announced: 2015-03-11

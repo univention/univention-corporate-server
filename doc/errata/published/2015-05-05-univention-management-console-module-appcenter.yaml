@@ -12,3 +12,4 @@ desc: |
     "Package Management" module.
 bug: [38042, 38446]
 erratum: 189
+announced: 2015-05-07

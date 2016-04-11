@@ -11,3 +11,4 @@ desc: |
     only one of the involved packages.
 bug: [37908, 35661]
 erratum: 120
+announced: 2015-03-25

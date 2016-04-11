@@ -15,3 +15,4 @@ desc: |
    * Fix hostname comparison with SNI to be case insensitive
 bug: [37792]
 erratum: 84
+announced: 2015-02-16

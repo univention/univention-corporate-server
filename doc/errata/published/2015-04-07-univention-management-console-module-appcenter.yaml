@@ -10,3 +10,4 @@ desc: |
     to avoid idle times in UMC.
 bug: [37616]
 erratum: 148
+announced: 2015-04-16

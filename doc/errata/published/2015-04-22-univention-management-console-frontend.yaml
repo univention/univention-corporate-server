@@ -10,3 +10,4 @@ desc: |
     handle uploading several files at once and are capable of drag and drop.
 bug: [38276]
 erratum: 162
+announced: 2015-04-30

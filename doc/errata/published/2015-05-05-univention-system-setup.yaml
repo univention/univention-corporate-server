@@ -16,3 +16,4 @@ desc: |
     join process.
 bug: [38332,38393,38455]
 erratum: 190
+announced: 2015-05-07

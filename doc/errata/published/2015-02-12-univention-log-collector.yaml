@@ -9,3 +9,4 @@ desc: |
   * Limit collection of files to the set up basepath.
 bug: [36452]
 erratum: 114
+announced: 2015-03-25

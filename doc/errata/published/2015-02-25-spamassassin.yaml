@@ -9,3 +9,4 @@ desc: |
   * Remove references to ahbl.org DNSBL, which has ceased operation.
 bug: [37471]
 erratum: 115
+announced: 2015-03-25

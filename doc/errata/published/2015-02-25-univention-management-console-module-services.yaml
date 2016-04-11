@@ -11,3 +11,4 @@ desc: |
   * The rendering of the list view has been optimized.
 bug: [36564,36569]
 erratum: 99
+announced: 2015-03-11

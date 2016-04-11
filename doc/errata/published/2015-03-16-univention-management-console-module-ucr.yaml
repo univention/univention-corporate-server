@@ -10,3 +10,4 @@ desc: |
     are now properly escaped.
 bug: [38036]
 erratum: 127
+announced: 2015-03-25

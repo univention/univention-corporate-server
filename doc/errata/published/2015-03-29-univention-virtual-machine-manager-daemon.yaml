@@ -18,3 +18,4 @@ desc: |
     join script to use en-us as default keyboard layout. This has been fixed.
 bug: [36640,36635,36678,38010,36615,37551]
 erratum: 147
+announced: 2015-04-16

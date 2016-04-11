@@ -10,3 +10,4 @@ desc: |
     policies to interact with EC2.
 bug: [37099]
 erratum: 105
+announced: 2015-03-11

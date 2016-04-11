@@ -10,3 +10,4 @@ desc: |
   AD LDAP directory.
 bug: [37596]
 erratum: 132
+announced: 2015-03-25

@@ -16,3 +16,4 @@ desc: |
   * Fixed wrong URL for advanced UVMM network setup.
 bug: [37771,35550,38293,38314]
 erratum: 161
+announced: 2015-04-30

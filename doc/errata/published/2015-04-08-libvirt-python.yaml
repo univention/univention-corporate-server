@@ -9,3 +9,4 @@ desc: |
   * A memory leak caused by parsing XML documents has been fixed.
 bug: [36640]
 erratum: 150
+announced: 2015-04-16

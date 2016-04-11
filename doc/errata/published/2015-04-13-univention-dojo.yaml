@@ -10,3 +10,4 @@ desc: |
   * Support for IE11 in the Dojo module dojo/uacss has been added.
 bug: [38225]
 erratum: 159
+announced: 2015-04-21

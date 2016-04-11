@@ -10,3 +10,4 @@ desc: |
     the password has been changed in Active Directory/Samba 4.
 bug: [36317]
 erratum: 97
+announced: 2015-03-11

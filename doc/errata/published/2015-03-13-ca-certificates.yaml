@@ -8,3 +8,4 @@ desc: |
  The list of public SSL root certificates has been updated.
 bug: [37885]
 erratum: 121
+announced: 2015-03-25

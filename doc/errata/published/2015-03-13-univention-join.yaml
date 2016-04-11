@@ -9,3 +9,4 @@ desc: |
  logged into "/var/log/univention/join.log".
 bug: [37489]
 erratum: 123
+announced: 2015-03-25

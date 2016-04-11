@@ -9,3 +9,4 @@ desc: |
   * Hide the "Back" button during upgrading the system.
 bug: [37741]
 erratum: 83
+announced: 2015-02-16

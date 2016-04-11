@@ -11,3 +11,4 @@ desc: |
     classless routes not being applied.
 bug: [37689]
 erratum: 184
+announced: 2015-05-07

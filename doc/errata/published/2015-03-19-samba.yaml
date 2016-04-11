@@ -10,3 +10,4 @@ desc: |
     due to an issue in negotiating strong encryption for server authentication.
 bug: [37874]
 erratum: 138
+announced: 2015-03-25

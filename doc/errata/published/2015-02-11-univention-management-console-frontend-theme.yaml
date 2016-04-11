@@ -19,3 +19,4 @@ desc: |
   * Changed the cursor to a pointer when hovering grid row actions.
 bug: [37780, 37197]
 erratum: 95
+announced: 2015-02-24

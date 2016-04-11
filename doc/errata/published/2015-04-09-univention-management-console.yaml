@@ -10,3 +10,4 @@ desc: |
     the LDAP under specific circumstances. This behaviour has been adjusted.
 bug: [38222]
 erratum: 152
+announced: 2015-04-16

@@ -10,3 +10,4 @@ desc: |
     in Samba/AD domains.
 bug: [37687]
 erratum: 104
+announced: 2015-03-11

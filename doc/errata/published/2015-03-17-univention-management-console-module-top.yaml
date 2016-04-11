@@ -12,3 +12,4 @@ desc: |
     an error message is shown.
 bug: [33923, 33193, 25305]
 erratum: 133
+announced: 2015-03-25
