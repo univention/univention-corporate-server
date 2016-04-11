@@ -562,7 +562,7 @@ fi
 egrep -q '^supported-versions.*python2.7' /usr/share/python/debian_defaults ||\
 	sed -i 's|\(^supported-versions.*\)|\1, python2.7|' /usr/share/python/debian_defaults
 # Pre-upgrade
-preups="gcc-4.4-base univention-ldap-config python-support python-univention univention-config univention-samba mysql-server univention-ssl shell-univention-lib univention-ldap-acl-master python-univention-connector"
+preups="gcc-4.4-base univention-ldap-config python-support python-univention univention-config univention-samba univention-ssl shell-univention-lib univention-ldap-acl-master python-univention-connector"
 $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
@@ -589,15 +589,9 @@ if dpkg -l "wamerican-large" 2>&3 | grep ^ii  >&3 ; then ## Bug 36619
 	echo "done."
 fi
 
-if dpkg -l "mysql-server-5.1" 2>&3 | grep ^ii  >&3 ; then ## Bug 36618
-	echo -n "Starting pre-upgrade of mysql-server: "
-	if ! $update_commands_install "mysql-server" >&3 2>&3
-	then
-		echo "failed."
-		echo "ERROR: Failed to upgrade mysql-server."
-        exit 1
-	fi
-	echo "done."
+# update mysql-server-5.1 to mysql-server-5.5
+if dpkg -l "mysql-server-5.1" 2>&3 | grep ^ii  >&3 ; then ## Bug 36618 40506
+	mark_app_as_installed mysql-server
 fi
 
 ## firefox pre update
