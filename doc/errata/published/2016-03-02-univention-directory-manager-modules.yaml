@@ -10,3 +10,4 @@ desc: |
    handler modules (Bug 40652).
 bug: [40652]
 erratum: 406
+announced: 2016-03-02

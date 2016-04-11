@@ -10,3 +10,4 @@ desc: |
  squid/rewrite/children.
 bug: [40093]
 erratum: 387
+announced: 2015-12-08

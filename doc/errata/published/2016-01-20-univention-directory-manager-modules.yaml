@@ -9,3 +9,4 @@ desc: |
  * The birthday of a user can be unset now.
 bug: [40431]
 erratum: 394
+announced: 2016-01-20

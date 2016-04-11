@@ -9,3 +9,4 @@ desc: |
  * Some GPO and WMI attributes have not been treated as single-value.
 bug: [39365]
 erratum: 386
+announced: 2015-12-08

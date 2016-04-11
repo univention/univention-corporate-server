@@ -9,3 +9,4 @@ desc: |
  * The account expiry date of a user can be unset now.
 bug: [40325]
 erratum: 391
+announced: 2016-01-13
