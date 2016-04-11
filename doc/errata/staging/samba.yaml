@@ -3,10 +3,29 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: samba
-fix: 2:4.3.7-1.830.201604062051
+fix: 2:4.3.7-1.830.201604110947
 desc: |
  This update addresses the following issues:
- * TODO
+ * Man in the middle downgrade attacks possible with NTLMSSP.
+   For details see https://www.samba.org/samba/security/CVE-2016-2110.html
+ * NETLOGON computer name spoofing vulnerability.
+   For details see https://www.samba.org/samba/security/CVE-2016-2111.html
+ * The LDAP client and server don't enforce integrity protection.
+   For details see https://www.samba.org/samba/security/CVE-2016-2112.html
+ * Missing TLS certificate validation allows man in the middle attacks.
+   For details see https://www.samba.org/samba/security/CVE-2016-2113.html
+ * The setting "server signing = mandatory" was not enforced.
+   For details see https://www.samba.org/samba/security/CVE-2016-2114.html
+ * SMB client connections for IPC traffic are not integrity protected.
+   For details see https://www.samba.org/samba/security/CVE-2016-2115.html
+ * SAMR and LSA man in the middle attacks possible.
+   For details see https://www.samba.org/samba/security/CVE-2016-2118.html
 bug: [40988]
 cve:
- - TODO
+ - CVE-2016-2110
+ - CVE-2016-2111
+ - CVE-2016-2112
+ - CVE-2016-2113
+ - CVE-2016-2114
+ - CVE-2016-2115
+ - CVE-2016-2118
