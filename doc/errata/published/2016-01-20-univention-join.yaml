@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Univention S4 Connector was still running during re-joins.
 bug: [40389]
+erratum: 387

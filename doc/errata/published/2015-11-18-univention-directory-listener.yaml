@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Disable flushing the listener cache during module initialization.
 bug: [39958]
+erratum: 364

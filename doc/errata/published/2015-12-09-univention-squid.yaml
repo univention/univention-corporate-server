@@ -9,3 +9,4 @@ desc: |
  rewrite helper processes via the new UCR variable
  squid/rewrite/children.
 bug: [40094]
+erratum: 371

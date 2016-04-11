@@ -15,3 +15,4 @@ desc: |
    synchronized at all and it uses file locking to coordinate
    concurrent read and write processes.
 bug: [40267, 40314, 40346]
+erratum: 381

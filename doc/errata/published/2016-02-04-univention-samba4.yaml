@@ -10,3 +10,4 @@ desc: |
     take a long time to wait in vain for an object to get synchronized to
     the DC Master.
 bug: [40387]
+erratum: 397

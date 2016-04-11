@@ -11,3 +11,4 @@ desc: |
 bug: [40546]
 cve:
  - CVE-2015-8605
+erratum: 409

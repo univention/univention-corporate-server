@@ -9,3 +9,4 @@ desc: |
  * The synchronization failed if a removed user was recreated at a
    different position. This issue has been fixed.
 bug: [40234]
+erratum: 377

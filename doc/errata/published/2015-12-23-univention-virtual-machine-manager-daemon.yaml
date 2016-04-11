@@ -10,3 +10,4 @@ desc: |
    Python libvirt module from the UVMM Univention Directory Listener module
    handling the dynamic addition and removal of virtualization hosts.
 bug: [40255]
+erratum: 376

@@ -10,3 +10,4 @@ desc: |
    for the group "nogroup" after installation and before the first slapd
    restart.
 bug: [39812]
+erratum: 368

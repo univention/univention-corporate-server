@@ -9,3 +9,4 @@ desc: |
   dns/nameserver/registration/reverse_zone that allow to disable
   the automatic registration as additional nameserver (Bug 39384).
 bug: [39384]
+erratum: 378

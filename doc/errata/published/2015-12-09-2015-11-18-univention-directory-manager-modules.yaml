@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Domain names for mail domains are now lowercased (Bug 40108).
 bug: [40108]
+erratum: 365
