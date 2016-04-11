@@ -8,3 +8,4 @@ desc: |
  This errata update addresses the following issue:
  * Some GPO and WMI attributes have not been treated as single-value.
 bug: [39365]
+erratum: 386

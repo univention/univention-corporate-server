@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * The account expiry date of a user can be unset now.
 bug: [40325]
+erratum: 391

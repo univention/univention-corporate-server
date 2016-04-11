@@ -9,3 +9,4 @@ desc: |
  * A file for the process of handling user renames has been moved to a
    secure location (Bug 40585).
 bug: [40585]
+erratum: 402

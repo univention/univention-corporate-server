@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * The birthday of a user can be unset now.
 bug: [40431]
+erratum: 394
