@@ -11,3 +11,4 @@ desc: |
   object from the listener cache, which is used to track objects being moved.
 bug: [35261]
 erratum: 136
+announced: 2014-07-08

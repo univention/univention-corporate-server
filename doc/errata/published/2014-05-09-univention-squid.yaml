@@ -10,3 +10,4 @@ desc: |
     Squid's 'forwarded_for' configuration directive
 bug: [34025]
 erratum: 157
+announced: 2014-08-07

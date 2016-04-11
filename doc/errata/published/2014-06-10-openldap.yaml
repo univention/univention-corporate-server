@@ -14,3 +14,4 @@ desc: |
    the authentication to a kerberos server.
 bug: [35329,35092]
 erratum: 147
+announced: 2014-07-14

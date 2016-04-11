@@ -8,3 +8,4 @@ desc: |
   This update fixes a bug in the procps package for users with many groups.
 bug: [34596]
 erratum: 113
+announced: 2014-05-20

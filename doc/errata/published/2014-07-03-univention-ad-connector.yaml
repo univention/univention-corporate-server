@@ -19,3 +19,4 @@ desc: |
     container in Active Directory. This is only required for the AD Member mode.
 bug: [35091,35234,35253,35349,35507,35566]
 erratum: 162
+announced: 2014-08-07

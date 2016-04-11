@@ -12,3 +12,4 @@ note: This is the second part of the fix, which updates the new kernel meta pack
 cve:
  - CVE-2014-3153
 erratum: 123
+announced: 2014-06-06

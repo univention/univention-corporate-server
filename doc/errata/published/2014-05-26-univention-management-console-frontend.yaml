@@ -21,3 +21,4 @@ desc: |
   * A timeout problem in the UMC web server has been fixed.
 bug: [34965, 34243, 34317, 33615, 35052]
 erratum: 149
+announced: 2014-07-14

@@ -15,3 +15,4 @@ desc: |
   * Issues with the NetApp join have been fixed.
 bug: [34431,34777,34868,34886]
 erratum: 117
+announced: 2014-05-27

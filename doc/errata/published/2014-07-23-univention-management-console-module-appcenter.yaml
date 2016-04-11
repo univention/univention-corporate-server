@@ -16,3 +16,4 @@ desc: |
     showing up in "Installed Apps" after the initial setup of the server.
 bug: [35454, 35453, 35565]
 erratum: 166
+announced: 2014-08-07

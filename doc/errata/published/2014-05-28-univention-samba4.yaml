@@ -14,3 +14,4 @@ desc: |
     * Preserve /var/lib/samba/*, only clear private subdir before re-join
 bug: [32246,33751,34754,35000]
 erratum: 119
+announced: 2014-06-05

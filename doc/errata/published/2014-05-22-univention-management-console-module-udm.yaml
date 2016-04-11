@@ -16,3 +16,4 @@ desc: |
     server failed.
 bug: [34200, 34092, 34093, 34244]
 erratum: 169
+announced: 2014-08-07

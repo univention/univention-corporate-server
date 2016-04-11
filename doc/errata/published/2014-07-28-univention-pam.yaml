@@ -8,3 +8,4 @@ desc: |
     * The listener module well-known-sid-name-mapping now recognizes SID changes.
 bug: [35501]
 erratum: 173
+announced: 2014-08-07

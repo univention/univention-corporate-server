@@ -21,3 +21,4 @@ desc: |
     before accessing the setup wizard for EC2 setups
 bug: [34484,34105,34388]
 erratum: 160
+announced: 2014-08-07

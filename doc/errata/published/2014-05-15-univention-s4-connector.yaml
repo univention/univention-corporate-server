@@ -18,3 +18,4 @@ desc: |
      /usr/share/univention-s4-connector/remove_s4_rejected.py
 bug: [32263,33621,35238,34865,32194]
 erratum: 153
+announced: 2014-07-24

@@ -10,3 +10,4 @@ desc: |
    /etc/ldap/ldap.conf.
 bug: [35513]
 erratum: 176
+announced: 2014-08-07

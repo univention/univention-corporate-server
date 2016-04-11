@@ -14,3 +14,4 @@ desc: |
   * The component installation status is now transferred via the apt user agent.
 bug: [34809, 35022, 33807]
 erratum: 137
+announced: 2014-07-08

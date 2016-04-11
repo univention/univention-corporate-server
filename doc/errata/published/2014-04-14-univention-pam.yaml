@@ -13,3 +13,4 @@ desc: |
     not updated in all cases. This has been fixed.
 bug: [34315, 34742]
 erratum: 132
+announced: 2014-07-02

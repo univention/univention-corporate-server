@@ -8,3 +8,4 @@ desc: |
   This update fixes a bug in the NFS utils package for users with many groups.
 bug: [34597]
 erratum: 112
+announced: 2014-05-20

@@ -9,3 +9,4 @@ desc: |
   restarted with the old object from the directory listener.
 bug: [34759]
 erratum: 141
+announced: 2014-07-10

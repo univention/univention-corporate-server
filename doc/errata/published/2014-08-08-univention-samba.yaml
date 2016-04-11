@@ -9,3 +9,4 @@ desc: |
       has been added to the postinst script of univention-samba.
 bug: [35584]
 erratum: 178
+announced: 2014-08-08

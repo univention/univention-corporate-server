@@ -11,3 +11,4 @@ desc: |
   key when updating from UCS 3.2-3 to UCS 4.0 at a later point.
 bug: [35213]
 erratum: 138
+announced: 2014-07-08

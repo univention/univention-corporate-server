@@ -19,3 +19,4 @@ desc: |
       options for the univention-samba4-backup script started by cron.
 bug: [35137, 34422, 35084, 35085]
 erratum: 142
+announced: 2014-07-10

@@ -17,3 +17,4 @@ desc: |
   * The error handling of requests have been improved.
 bug: [34243, 34723, 34105, 25196, 34244]
 erratum: 159
+announced: 2014-08-07

@@ -10,3 +10,4 @@ desc: |
   the local system as part of the AD domain.
 bug: [35470,35446]
 erratum: 161
+announced: 2014-08-07

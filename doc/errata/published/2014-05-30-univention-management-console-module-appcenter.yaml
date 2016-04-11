@@ -23,3 +23,4 @@ desc: |
     sends information to the vendor or not if it is a UCS component.
 bug: [31915, 32935, 34867, 35177, 35176]
 erratum: 133
+announced: 2014-07-02

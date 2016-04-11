@@ -8,3 +8,4 @@ desc: |
     * AD member mode has been added to univention-heimdal.
 bug: [35470]
 erratum: 167
+announced: 2014-08-07

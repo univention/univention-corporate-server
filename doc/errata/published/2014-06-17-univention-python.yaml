@@ -13,3 +13,4 @@ desc: |
   values as well, as all other code paths already do so.
 bug: [34971]
 erratum: 130
+announced: 2014-07-02

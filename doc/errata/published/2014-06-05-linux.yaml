@@ -12,3 +12,4 @@ note: This is the first part of the fix, which provides the new kernel package.
 cve:
  - CVE-2014-3153
 erratum: 122
+announced: 2014-06-06

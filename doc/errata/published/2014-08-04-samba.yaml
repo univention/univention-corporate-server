@@ -16,3 +16,4 @@ bug: [35546]
 cve:
  - CVE-2014-3560
 erratum: 156
+announced: 2014-08-04
