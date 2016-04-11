@@ -8,3 +8,4 @@ desc: |
   * A backslash in the 'home share path' value of a user no longer results in a
     traceback.
 bug: [35953]
+erratum: 237

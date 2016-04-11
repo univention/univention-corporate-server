@@ -9,3 +9,4 @@ desc: |
   * The backup script univention-samba4-backup now
     ignores the tar "file changed as we read it" warning.
 bug: [35392]
+erratum: 193

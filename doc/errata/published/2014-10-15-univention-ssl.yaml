@@ -10,3 +10,4 @@ desc: |
   * The default key size has been changed to 2048 bits
     (configurable via the UCR variable ssl/default/bits).
 bug: [35836,30545]
+erratum: 227

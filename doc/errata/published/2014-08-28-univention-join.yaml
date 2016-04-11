@@ -9,3 +9,4 @@ desc: |
   * univention-join no longer overwrites the join.log
     on domaincontroller_slave's
 bug: [34909]
+erratum: 190

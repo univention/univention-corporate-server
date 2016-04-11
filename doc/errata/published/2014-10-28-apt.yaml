@@ -10,3 +10,4 @@ desc: |
  handling of the HTTP-Range header.
 bug:
  - 36277
+erratum: 230

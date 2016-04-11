@@ -13,10 +13,11 @@ desc: |
   * mail/postfix/smtpd/tls/loglevel
   * mail/postfix/smtp/tls/loglevel
   * mail/postfix/cron/recreate/dh/parameter
-  During installation and this update univention-mail-postfix creates 
+  During installation and this update univention-mail-postfix creates
   a set of DH parameter files for EDH ciphers to use instead of the built-in
   parameters. Also, a cronjob /etc/cron.d/univention-mail-postfix has been
   added to weekly recreate the DH parameter files (creating/recreating
   these parameter files can take a while, depending on the quality of
   the systems random source).
 bug: [35923]
+erratum: 236

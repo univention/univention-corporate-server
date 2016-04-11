@@ -9,3 +9,4 @@ desc: |
  the startup wizard won't ask for an activation address.
  This prevents a possible double registration.
 bug: [35711]
+erratum: 206

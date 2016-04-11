@@ -7,3 +7,4 @@ version: [3]
 desc: |
   A traceback in the pkgdb listener has been fixed.
 bug: [35367]
+erratum: 229

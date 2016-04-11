@@ -17,3 +17,4 @@ desc: |
       server to set the option for all print shares hosted locally:
       univention-directory-listener-ctrl resync cups-printers
 bug: [33505]
+erratum: 202

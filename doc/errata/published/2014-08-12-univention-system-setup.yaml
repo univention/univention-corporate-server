@@ -10,3 +10,4 @@ desc: |
     network configuration, the network interface remained in DHCP mode and
     ignored the static network configuration.
 bug: [35601]
+erratum: 179

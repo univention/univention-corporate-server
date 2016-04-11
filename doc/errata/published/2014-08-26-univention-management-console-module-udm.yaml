@@ -11,4 +11,4 @@ desc: |
   * A possible double registration is now prevented by a new ucr
     variable.
 bug: [34333,35580,35711]
-
+erratum: 187

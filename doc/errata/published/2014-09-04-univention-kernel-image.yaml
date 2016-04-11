@@ -13,3 +13,4 @@ note: This is the second part of the fix, which updates the meta package.
 bug:
  - 35808
  - 35826
+erratum: 220

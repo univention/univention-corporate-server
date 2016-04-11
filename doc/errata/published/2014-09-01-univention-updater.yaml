@@ -11,3 +11,4 @@ desc: |
  * The postup.sh script was adapted to the univention-check-templates
    return codes.
 bug: [35645,34781,34972]
+erratum: 196

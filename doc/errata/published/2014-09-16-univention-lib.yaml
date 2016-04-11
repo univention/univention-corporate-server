@@ -8,3 +8,4 @@ desc: |
   This update fixes a problem with reading progress report lines from 'dpkg'
   while installing Apps, which lead to the installation getting stuck.
 bug: [35729]
+erratum: 235

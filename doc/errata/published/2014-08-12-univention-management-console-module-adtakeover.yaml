@@ -12,3 +12,4 @@ desc: |
       This get's fixed now by renaming the domain specific directory in the
       sysvol share.
 bug: [35564,35769]
+erratum: 203

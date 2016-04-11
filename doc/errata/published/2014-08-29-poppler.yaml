@@ -10,3 +10,4 @@ desc: |
 bug: [33265]
 cve:
  - CVE-2010-5110
+erratum: 194

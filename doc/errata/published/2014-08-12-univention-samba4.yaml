@@ -9,3 +9,4 @@ desc: |
   * All winbind processes are stopped correctly during samba4 join
     in 96univention-samba4.inst
 bug: [35600]
+erratum: 180

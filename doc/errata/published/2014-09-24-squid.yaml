@@ -9,3 +9,4 @@ desc: |
  This update restores the SSL functionality.
 bug:
  - 35980
+erratum: 214

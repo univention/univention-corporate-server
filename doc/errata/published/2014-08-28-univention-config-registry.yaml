@@ -11,3 +11,4 @@ desc: |
   * univention-check-templates has been fixed to correctly handle
     conffiles with spaces.
 bug: [35368,35202]
+erratum: 189

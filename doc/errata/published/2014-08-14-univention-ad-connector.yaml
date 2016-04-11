@@ -9,3 +9,4 @@ desc: |
   * The determination of the Active Directory language has been fixed. This
     is needed for the group name mapping.
 bug: [35602,35572]
+erratum: 186

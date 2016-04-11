@@ -11,3 +11,4 @@ desc: |
     - if the connection between UMC server and UMC module
       dies, the UMC module shuts down immediately
 bug: [32818]
+erratum: 238

@@ -9,3 +9,4 @@ desc: |
   * The python module atjobs is now EINTR-safe, i.e., for interrupted function
     call signals.
 bug: [35757,31319]
+erratum: 191

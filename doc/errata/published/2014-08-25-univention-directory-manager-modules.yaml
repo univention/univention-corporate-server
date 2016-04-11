@@ -8,3 +8,4 @@ desc: |
     * In AD/member mode users and clients syncronized from Active Directroy
       are now ignored in the license count.
 bug: [35647]
+erratum: 183

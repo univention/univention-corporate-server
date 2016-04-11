@@ -9,3 +9,4 @@ desc: |
   * Object replication needs to filter out operational ppolicy
     LDAP attributes which may be found on a UCS 4.0 master.
 bug: [36353]
+erratum: 240

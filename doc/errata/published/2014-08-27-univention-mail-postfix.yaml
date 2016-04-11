@@ -9,4 +9,4 @@ desc: |
   * The listener module hosteddomains.py has been moved from
     univention-mail-server to univention-mail-postfix.
 bug: [35232]
-
+erratum: 188

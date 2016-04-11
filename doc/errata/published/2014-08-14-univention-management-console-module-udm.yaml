@@ -8,3 +8,4 @@ desc: |
   This update fixes some displaying issues in UMC related to the new
   AD member mode.
 bug: [35610]
+erratum: 181

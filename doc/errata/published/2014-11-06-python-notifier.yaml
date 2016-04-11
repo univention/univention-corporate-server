@@ -9,3 +9,4 @@ desc: |
     has been fixed. This problem could lead e.g. to never stopping
     UMC modules.
 bug: [36472]
+erratum: 241

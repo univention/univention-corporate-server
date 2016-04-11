@@ -9,3 +9,4 @@ desc: |
   * The UCR default for the security limit
     "max open files" has been fixed (now 32768)
 bug: [35362]
+erratum: 192

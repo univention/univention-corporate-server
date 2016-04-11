@@ -9,3 +9,4 @@ desc: |
  due to a dead symlink during the package installation process.
  In specific setups this could have led to installation errors.
 bug: [35078]
+erratum: 198
