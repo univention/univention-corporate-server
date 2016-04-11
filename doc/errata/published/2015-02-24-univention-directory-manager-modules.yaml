@@ -14,3 +14,4 @@ desc: |
     modules.
   * Improved error message format.
 bug: [37607, 36711, 36539, 36401, 37740]
+erratum: 98

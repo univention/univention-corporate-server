@@ -9,3 +9,4 @@ desc: |
   * The Apache web server does not close all inherited file descriptors by
     itself, which can lead to other processes being block indefinitely.
 bug: [37952]
+erratum: 109

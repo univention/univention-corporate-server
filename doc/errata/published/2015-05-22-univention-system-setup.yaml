@@ -8,3 +8,4 @@ desc: |
   This errata update addresses the following issue:
   * Re-write all pam.d config files after using pam-auth-update
 bug: [38511]
+erratum: 195

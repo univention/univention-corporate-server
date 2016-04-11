@@ -9,3 +9,4 @@ desc: |
   built-in accounts where positioned in an non-default location in the
   AD LDAP directory.
 bug: [37596]
+erratum: 132

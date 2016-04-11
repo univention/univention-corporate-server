@@ -11,3 +11,4 @@ desc: |
   * Apache may now be restarted by packages during installation via the
     "Package Management" module.
 bug: [38042, 38446]
+erratum: 189

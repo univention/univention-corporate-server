@@ -15,3 +15,4 @@ desc: |
   * Output written into /var/log/univention/setup.log is now regularly flushed.
   * Fixed wrong URL for advanced UVMM network setup.
 bug: [37771,35550,38293,38314]
+erratum: 161

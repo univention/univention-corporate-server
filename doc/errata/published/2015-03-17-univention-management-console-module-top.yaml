@@ -11,3 +11,4 @@ desc: |
   * If a process is being killed that is not running anymore
     an error message is shown.
 bug: [33923, 33193, 25305]
+erratum: 133

@@ -10,3 +10,4 @@ desc: |
     added for the module actions.
   * The rendering of the list view has been optimized.
 bug: [36564,36569]
+erratum: 99

@@ -9,3 +9,4 @@ desc: |
     error due to a blocked account, incorrect server time or missing IAM
     policies to interact with EC2.
 bug: [37099]
+erratum: 105

@@ -10,3 +10,4 @@ desc: |
   The new version requires LLVM, which has been added to the maintained
   section of the Univention archive.
 bug: [36966]
+erratum: 118

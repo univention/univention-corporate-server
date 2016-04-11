@@ -9,3 +9,4 @@ desc: |
   * The process of loading license information from the LDAP has been improved
     to avoid idle times in UMC.
 bug: [37616]
+erratum: 148

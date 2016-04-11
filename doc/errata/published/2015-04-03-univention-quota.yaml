@@ -11,3 +11,4 @@ desc: |
     to the share uses this cache directory. This improves the login
     performance.
 bug: [36989]
+erratum: 164

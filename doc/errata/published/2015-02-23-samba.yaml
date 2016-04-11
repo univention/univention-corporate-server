@@ -12,3 +12,4 @@ desc: |
 bug: [37735]
 cve:
  - CVE-2015-0240
+erratum: 86

@@ -9,3 +9,4 @@ desc: |
   * univention-printquota now copies the /etc/machine.secret file for LDAP
     lookups in the join script.
 bug: [36861]
+erratum: 143

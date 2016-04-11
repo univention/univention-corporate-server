@@ -11,3 +11,4 @@ desc: |
   * The Packages files required for profile based installations are now
     generated locally.
 bug: [38248,35537]
+erratum: 186

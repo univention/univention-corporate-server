@@ -8,3 +8,4 @@ desc: |
   This errata update addresses the following issues:
   * Fixed an endless loop when invalid values for certificates are supplied.
 bug: [38125]
+erratum: 187

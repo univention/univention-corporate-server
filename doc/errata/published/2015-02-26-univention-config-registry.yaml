@@ -8,3 +8,4 @@ desc: |
   Fixed a race condition in the univention-ldapsearch wrapper, which prevented proper
   error detection.
 bug: [37631]
+erratum: 100

@@ -8,3 +8,4 @@ desc: |
   The following issues are addressed by this update:
   * It is now possible to request a single-sign-on login token for localhost.
 bug: [37347]
+erratum: 92

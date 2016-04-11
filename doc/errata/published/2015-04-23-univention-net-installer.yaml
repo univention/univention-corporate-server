@@ -9,3 +9,4 @@ desc: |
   * The Univention Net Installer has been adapted to allow profile based
     installations of UCS-4.0-1.
 bug: [35537]
+erratum: 185

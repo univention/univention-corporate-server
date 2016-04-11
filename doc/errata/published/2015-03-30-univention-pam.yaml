@@ -9,3 +9,4 @@ desc: |
   * The setup to deny ssh logins on Domaincontrollers has been moved into the
     join scripts, as those restrictions were not applied in all cases.
 bug: [37971]
+erratum: 146

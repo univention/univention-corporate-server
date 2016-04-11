@@ -9,3 +9,4 @@ desc: |
  * The squid configuration can now be extended with custom ACLs
    via UCR variables.
 bug: [37543]
+erratum: 163

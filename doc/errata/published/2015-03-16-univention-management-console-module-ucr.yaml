@@ -9,3 +9,4 @@ desc: |
   * HTML entities in Univention Configuration Registry variable descriptions
     are now properly escaped.
 bug: [38036]
+erratum: 127

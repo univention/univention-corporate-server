@@ -11,3 +11,4 @@ desc: |
     match the style of the UMC.
   * The display of the modules has been slightly adjusted.
 bug: [37780]
+erratum: 85

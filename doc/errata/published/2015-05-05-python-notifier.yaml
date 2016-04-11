@@ -9,3 +9,4 @@ desc: |
     This fixes a bug which could cause a UMC server crash in specific
     circumstances.
 bug: [37457]
+erratum: 188

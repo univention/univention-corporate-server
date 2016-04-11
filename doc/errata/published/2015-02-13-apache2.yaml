@@ -14,3 +14,4 @@ desc: |
      mod_headers restrictions [CVE-2013-5704]
    * Fix hostname comparison with SNI to be case insensitive
 bug: [37792]
+erratum: 84

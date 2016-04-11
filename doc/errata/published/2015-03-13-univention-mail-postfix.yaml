@@ -19,3 +19,4 @@ desc: |
     a custom restriction rule set via UCR variables for Postfix' smtps
     port (465). There is currently no change in Postfix behaviour.
 bug: [38061,37442,38049]
+erratum: 124

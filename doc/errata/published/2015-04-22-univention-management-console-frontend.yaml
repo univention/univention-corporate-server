@@ -9,3 +9,4 @@ desc: |
   * The Univention management console web server and the upload widgets can now
     handle uploading several files at once and are capable of drag and drop.
 bug: [38276]
+erratum: 162

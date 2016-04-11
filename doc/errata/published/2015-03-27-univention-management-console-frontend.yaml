@@ -9,3 +9,4 @@ desc: |
   * The activation of UCS with a personalized license key as well as the import
     process of a new license file has been improved w.r.t. the usability.
 bug: [38132]
+erratum: 144

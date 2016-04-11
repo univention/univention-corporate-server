@@ -9,3 +9,4 @@ desc: |
   * The Windows Server 2008 R2 Foundation member server license check failed
     in Samba/AD domains.
 bug: [37687]
+erratum: 104

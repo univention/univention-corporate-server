@@ -14,3 +14,4 @@ desc: |
     ucr set \
     directory/manager/web/modules/mail/domain/properties/name/syntax='string'
 bug: [37504,21585,34552]
+erratum: 122

@@ -8,3 +8,4 @@ desc: |
  When joining a system into a domain, the Kerberos password is no longer
  logged into "/var/log/univention/join.log".
 bug: [37489]
+erratum: 123

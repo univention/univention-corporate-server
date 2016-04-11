@@ -21,3 +21,4 @@ desc: |
   * The number of parallel and open request in the UMC webserver has been
     raised and can now be configured via the UCR variable umc/http/maxthreads
 bug: [37565,33199,37780,37347,37851]
+erratum: 90

@@ -9,3 +9,4 @@ desc: |
   the UCS target object is now checked. If the UCS object should
   be ignored, the UCS object will not be modified or moved.
 bug: [37351]
+erratum: 131

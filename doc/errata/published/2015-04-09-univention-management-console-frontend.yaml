@@ -10,3 +10,4 @@ desc: |
     that could lead to a growing memory consumption in the browser (particular
     in UVMM).
 bug: [36615]
+erratum: 151

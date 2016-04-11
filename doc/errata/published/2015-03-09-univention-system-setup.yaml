@@ -14,3 +14,4 @@ desc: |
   * The instructions how to access Univention Management Console for the first
     time has been enhanced.
 bug: [37129, 36843, 36460, 37804]
+erratum: 116

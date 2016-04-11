@@ -7,3 +7,4 @@ version: [1]
 desc: |
  The list of public SSL root certificates has been updated.
 bug: [37885]
+erratum: 121

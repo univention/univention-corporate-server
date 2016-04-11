@@ -10,3 +10,4 @@ desc: |
   * Conflicts between apps are now calculated based on actual installation, not
     only one of the involved packages.
 bug: [37908, 35661]
+erratum: 120

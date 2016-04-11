@@ -10,3 +10,4 @@ desc: |
     in the "Software update" module is now limited in its maximum height.
   * The styling for the updater dialogue has been slightly adjusted.
 bug: [37573]
+erratum: 93

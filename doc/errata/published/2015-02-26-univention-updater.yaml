@@ -13,3 +13,4 @@ desc: |
   * univention-add-app now prevents the installation of apps on the wrong
     server role
 bug: [36044,37033,32543]
+erratum: 106

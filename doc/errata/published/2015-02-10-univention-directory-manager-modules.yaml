@@ -10,3 +10,4 @@ desc: |
     computer modules
   * Fix tracebacks due to incorrect checks whether an object exists
 bug: [37560, 37119]
+erratum: 89

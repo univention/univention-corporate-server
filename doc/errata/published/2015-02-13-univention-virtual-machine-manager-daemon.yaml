@@ -7,3 +7,4 @@ version: [1]
 desc: |
   * Added missing translation.
 bug: [36567]
+erratum: 91

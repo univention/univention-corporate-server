@@ -9,3 +9,4 @@ desc: |
   * Fix the calculation of the CIDR when displaying network interface settings.
   * The positioning of page icons on small screens has been optimized.
 bug: [37326,37824]
+erratum: 88

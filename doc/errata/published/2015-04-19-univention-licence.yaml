@@ -9,5 +9,6 @@ desc: |
   * Support for the UCS Core Edition license has been added.
     Every "Free for personal use" license can easily be migrated
     to the UCS Core Edition. Details can be found in the SDB:
-    http://sdb.univention.de/1324 
+    http://sdb.univention.de/1324
 bug: [38102]
+erratum: 157

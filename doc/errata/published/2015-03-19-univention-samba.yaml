@@ -9,3 +9,4 @@ desc: |
   could occur during the share access on a member server. This has
   been fixed.
 bug: [36805]
+erratum: 140

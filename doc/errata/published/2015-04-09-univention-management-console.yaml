@@ -9,3 +9,4 @@ desc: |
   * User preferences as well as favourite UMC modules could not be saved into
     the LDAP under specific circumstances. This behaviour has been adjusted.
 bug: [38222]
+erratum: 152

@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issues:
   * Limit collection of files to the set up basepath.
 bug: [36452]
+erratum: 114

@@ -8,3 +8,4 @@ desc: |
   If the first configured LDAP server was not reachable, timeouts
   could occur during the login. This has been fixed.
 bug: [36805]
+erratum: 134

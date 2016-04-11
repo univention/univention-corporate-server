@@ -13,3 +13,4 @@ desc: |
   * DVS and support information has been removed from the license information
     dialogue.
 bug: [38103,38203]
+erratum: 158

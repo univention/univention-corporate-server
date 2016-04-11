@@ -8,3 +8,4 @@ desc: |
   This update fixes the following issue:
   * A memory leak caused by parsing XML documents has been fixed.
 bug: [36640]
+erratum: 150

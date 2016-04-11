@@ -9,3 +9,4 @@ desc: |
   * Update references to www.univention.de.
   * A help icon has been added to the login dialogue.
 bug: [37908, 37804]
+erratum: 119

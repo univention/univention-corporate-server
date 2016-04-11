@@ -12,3 +12,4 @@ desc: |
   * An error message about an unbound variable has been removed from
     the script univention-group-quota.
 bug: [36805, 37134]
+erratum: 136

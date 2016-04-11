@@ -12,3 +12,4 @@ desc: |
  - Network interfaces other then ethX are now also added to the access control
    list.
 bug: [37752,36623]
+erratum: 126

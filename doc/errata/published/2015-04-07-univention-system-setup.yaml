@@ -2,7 +2,7 @@ product: ucs
 release: "4.0"
 scope: ucs_4.0-0-errata4.0-1
 src: univention-system-setup
-fix: 8.1.66-33.861.201504141216 
+fix: 8.1.66-33.861.201504141216
 version: [1]
 desc: |
   This update addresses the following issues:
@@ -12,3 +12,4 @@ desc: |
   * The UCR variable system/setup/boot/fields/blacklist has been extended to
     disabling the selection of particular server roles
 bug: [37616,38148,38116]
+erratum: 149

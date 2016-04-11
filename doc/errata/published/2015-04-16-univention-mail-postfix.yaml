@@ -21,3 +21,4 @@ desc: |
       mail/postfix/tls/client/protocols
     Thanks to Lutz Willek.
 bug: [30043,38043,38044]
+erratum: 183

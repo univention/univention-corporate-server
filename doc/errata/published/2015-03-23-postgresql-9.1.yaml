@@ -9,7 +9,7 @@ desc: |
  * Buffer overflows in "to_char" functions (CVE-2015-0241)
  * Memory errors in functions in the pgcrypto extension (CVE-2015-0243)
  * An error in extended protocol message reading (CVE-2015-0244)
- * Constraint violation errors can cause display of values in columns 
+ * Constraint violation errors can cause display of values in columns
    which the user would not normally have rights to see (CVE-2014-8161)
 bug: [37701]
 cve:
@@ -17,4 +17,4 @@ cve:
  - CVE-2015-0243
  - CVE-2015-0244
  - CVE-2014-8161
-
+erratum: 112

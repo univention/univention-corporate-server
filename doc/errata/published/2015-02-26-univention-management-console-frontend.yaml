@@ -12,3 +12,4 @@ desc: |
   * An animation has been added for opening and hiding modules.
   * Policy labels are now correctly displayed with an edit link.
 bug: [36539, 37892, 37899, 36708]
+erratum: 107

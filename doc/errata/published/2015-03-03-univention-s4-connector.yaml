@@ -9,3 +9,4 @@ desc: |
   * The password expiry attributes are now set in OpenLDAP if
     the password has been changed in Active Directory/Samba 4.
 bug: [36317]
+erratum: 97

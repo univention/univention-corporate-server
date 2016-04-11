@@ -12,3 +12,4 @@ desc: |
   * Changes on a UDM object can now be saved by pressing 'Return' on the
     keyboard.
 bug: [36711, 37740, 36708]
+erratum: 102

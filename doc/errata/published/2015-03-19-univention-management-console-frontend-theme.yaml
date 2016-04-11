@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issues:
   * A help icon has been added to the login dialogue.
 bug: [37804]
+erratum: 139

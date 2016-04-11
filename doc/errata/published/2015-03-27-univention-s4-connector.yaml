@@ -7,3 +7,4 @@ version: [1]
 desc: |
   Synchronisation of the domain password properties has been added.
 bug: [28331]
+erratum: 160

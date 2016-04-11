@@ -8,3 +8,4 @@ desc: |
   This update fixes the following issue:
   * Remove references to ahbl.org DNSBL, which has ceased operation.
 bug: [37471]
+erratum: 115
