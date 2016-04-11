@@ -88,6 +88,7 @@ class Errors(LogMessage):
 		r'Checking grub-pc/install_devices for errors[.]+', #  Bug #40733
 		r'Done checking grub-pc/install_devices for errors[.]', #  Bug #40733
 		'.*failed to receive current ID.*', #Bug 40962
+		'.*error 104: Connection reset by peer while receiving from notifier.*', #Bug 40962
 	]
 
 	# extra ignore patterns for case when line == 'failed.'
