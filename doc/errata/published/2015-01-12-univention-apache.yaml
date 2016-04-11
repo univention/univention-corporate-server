@@ -11,3 +11,4 @@ desc: |
  apache2/ssl/v3 to "true" before or after the update.
 bug: [36232]
 erratum: 31
+announced: 2015-01-13

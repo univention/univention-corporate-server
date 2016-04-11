@@ -10,3 +10,4 @@ desc: |
   * Update of the license check: internal "hidden" users are now ignored
 bug: [37654]
 erratum: 71
+announced: 2015-02-04

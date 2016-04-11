@@ -9,3 +9,4 @@ desc: |
   * Fix displaying the content of the logfile during package updates.
 bug: [37564]
 erratum: 81
+announced: 2015-02-09

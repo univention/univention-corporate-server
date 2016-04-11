@@ -10,3 +10,4 @@ desc: |
     current time from a NTP time server, as this sometimes stalls endlessly.
 bug: [36934]
 erratum: 1
+announced: 2014-12-04

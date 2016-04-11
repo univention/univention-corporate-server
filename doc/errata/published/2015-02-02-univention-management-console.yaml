@@ -9,3 +9,4 @@ desc: |
   * Fix a UMC-server crash if a translation file is corrupt.
 bug: [36658]
 erratum: 73
+announced: 2015-02-04

@@ -12,3 +12,4 @@ desc: |
    a new password will be automatically set during the update.
 bug: [37686]
 erratum: 78
+announced: 2015-02-05

@@ -12,3 +12,4 @@ desc: |
   * Fix uploading of archive for specific dmidecode versions.
 bug: [36923, 31192, 33092, 37384]
 erratum: 11
+announced: 2014-12-19

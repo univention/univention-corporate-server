@@ -18,3 +18,4 @@ desc: |
     This caused a UMC server crash due to max open file limits.
 bug: [34353, 37178, 37317, 37367, 37169, 37453]
 erratum: 44
+announced: 2015-01-22

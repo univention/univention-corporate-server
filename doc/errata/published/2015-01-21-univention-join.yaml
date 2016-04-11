@@ -11,3 +11,4 @@ desc: |
     when developing packages for UCS that ship with a join script.
 bug: [34238, 32525]
 erratum: 69
+announced: 2015-02-04

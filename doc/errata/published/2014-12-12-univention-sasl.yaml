@@ -11,3 +11,4 @@ desc: |
     authentication cache (in seconds).
 bug: [36949]
 erratum: 67
+announced: 2015-02-04

@@ -8,3 +8,4 @@ desc: |
   * Added a plugin which checks the package status.
 bug: [35861]
 erratum: 72
+announced: 2015-02-04

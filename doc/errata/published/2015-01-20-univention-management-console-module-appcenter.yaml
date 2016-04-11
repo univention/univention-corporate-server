@@ -13,3 +13,4 @@ desc: |
     (needed for updater module).
 bug: [37403, 37571, 37364]
 erratum: 48
+announced: 2015-01-22

@@ -12,3 +12,4 @@ desc: |
   * Enhance the look of error messages.
 bug: [36700, 36591, 35280, 30088, 36291]
 erratum: 62
+announced: 2015-01-29

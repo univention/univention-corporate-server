@@ -12,3 +12,4 @@ desc: |
     module process at the same time
 bug: [37036, 35231]
 erratum: 3
+announced: 2014-12-04

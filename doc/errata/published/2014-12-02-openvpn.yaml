@@ -12,3 +12,4 @@ bug: [37139]
 cve:
  - CVE-2014-8104
 erratum: 6
+announced: 2014-12-04
