@@ -26,3 +26,4 @@ desc: |
  See also <http://sdb.univention.de/1356> and
  <http://sdb.univention.de/1357>.
 bug: [40654, 40660]
+erratum: 116

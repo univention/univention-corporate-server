@@ -12,3 +12,4 @@ desc: |
    of UCR variables connector/ad/mapping/user/alternativemail and
    connector/ad/mapping/group/alternativemail
 bug: [40357]
+erratum: 126

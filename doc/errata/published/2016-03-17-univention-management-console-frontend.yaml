@@ -14,3 +14,4 @@ desc: |
  * The location where UMC redirects after logout is now configurable via the
    UCR variable "umc/logout/location".
 bug: [40806, 40799, 38639, 35407, 40613]
+erratum: 132

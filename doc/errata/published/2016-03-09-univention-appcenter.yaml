@@ -16,3 +16,4 @@ desc: |
  * Internal adaptations have been added to allow for extending App Center
    functionalities.
 bug: [40508, 40428, 40827]
+erratum: 127

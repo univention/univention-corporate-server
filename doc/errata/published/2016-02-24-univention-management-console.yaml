@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * A UMC server crash is prevented which might happen during session timeout.
 bug: [40627]
+erratum: 121

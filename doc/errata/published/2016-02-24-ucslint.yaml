@@ -12,3 +12,4 @@ desc: |
  * Performance improvement by not scaning all binary files for misspellings.
  * Fixed tracebacks due to dangling symlinks.
 bug: [40386,40639,40647]
+erratum: 117

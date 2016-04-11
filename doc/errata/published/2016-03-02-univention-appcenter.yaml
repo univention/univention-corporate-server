@@ -14,3 +14,4 @@ desc: |
    upgrading an application. This prevents errors when installing applications
    on remote hosts.
 bug: [35324, 40005, 40797, 40804]
+erratum: 123

@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Access restrictions on non DC master App Appliances have been corrected.
 bug: [39700]
+erratum: 135

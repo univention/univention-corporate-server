@@ -9,3 +9,4 @@ desc: |
  * Increased robustness and performance by not forking a UMC module process on
    each HTTP request.
 bug: [40799]
+erratum: 134

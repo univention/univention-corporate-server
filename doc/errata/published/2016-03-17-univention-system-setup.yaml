@@ -14,3 +14,4 @@ desc: |
    under certain circumstances. Now a script is called that works in unjoined
    environments.
 bug: [39700, 40572, 40897]
+erratum: 136

@@ -9,3 +9,4 @@ desc: |
  * The creation of the internal SAML LDAP user ignores extended attributes
    now.
 bug: [40741]
+erratum: 128

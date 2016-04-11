@@ -10,3 +10,4 @@ desc: |
    for UMC module flavors. With this erratum, translationId is also correctly
    evaluated for module and link entries.
 bug: [40930]
+erratum: 137
