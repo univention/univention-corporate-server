@@ -17,3 +17,4 @@ desc: |
  * The layout in the UMC software update module has been adjusted to be
    responsive.
 bug: [39991,40142,36444]
+erratum: 14

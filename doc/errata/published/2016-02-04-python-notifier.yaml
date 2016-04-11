@@ -10,3 +10,4 @@ desc: |
    pending IO events from this socket. Univention Management Console was
    affected by this bug and it resulted in faulty behaviour of UMC modules.
 bug: [40510]
+erratum: 77

@@ -10,3 +10,4 @@ desc: |
     auth/sudo is turned on, users in the group "Domain Administrators"
     are allowed to run arbitrary commands with root privileges.
 bug: [37995]
+erratum: 42

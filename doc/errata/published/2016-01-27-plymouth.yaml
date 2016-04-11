@@ -9,3 +9,4 @@ desc: |
  * Some changes have been made to the Plymouth init script to support
    univention-welcome-screen.
 bug: [39241]
+erratum: 61

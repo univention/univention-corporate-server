@@ -9,3 +9,4 @@ desc: |
   * A premature scheduling of the DH parameter generation caused an atd
     process to hang in Docker containers. (Bug 40134).
 bug: [40134]
+erratum: 43

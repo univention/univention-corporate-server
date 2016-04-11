@@ -9,3 +9,4 @@ desc: |
  * Some replicated objects were not deleted, when the LDAP server closed its
    side of the LDAP connection.
 bug: [40067]
+erratum: 12

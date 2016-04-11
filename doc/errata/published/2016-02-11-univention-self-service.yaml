@@ -10,3 +10,4 @@ desc: |
   * If the self-service app was installed during the initial system
     configuration, the service could not connect to the UMC-server.
 bug: [40581,40582]
+erratum: 110

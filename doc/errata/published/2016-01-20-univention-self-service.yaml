@@ -9,3 +9,4 @@ desc: |
   * When a password policy checking password quality was activated, the
     password reset module would crash on a bad password.
 bug: [40433]
+erratum: 57

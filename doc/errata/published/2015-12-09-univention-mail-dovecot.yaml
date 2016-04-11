@@ -15,3 +15,4 @@ desc: |
    will be updated automatically if the join script of
    univention-mail-dovecot is called.
 bug: [40014,40038]
+erratum: 18

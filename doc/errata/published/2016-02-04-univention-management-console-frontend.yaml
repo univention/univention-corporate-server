@@ -16,3 +16,4 @@ desc: |
  * Some minor usability adjustments for the login dialog have been
    implemented.
 bug: [39815, 40242, 40339, 39861, 40402]
+erratum: 88

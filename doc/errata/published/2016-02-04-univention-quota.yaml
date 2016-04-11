@@ -9,3 +9,4 @@ desc: |
  * Translation format strings with multiple unnamed arguments have been
    adjusted.
 bug: [40339]
+erratum: 94

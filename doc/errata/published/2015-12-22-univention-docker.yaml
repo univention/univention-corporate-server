@@ -9,3 +9,4 @@ desc: |
  * The Docker engine now uses a HTTP proxy for downloading of images, if
    the UCR variable "proxy/http" is configured.
 bug: [40030]
+erratum: 41

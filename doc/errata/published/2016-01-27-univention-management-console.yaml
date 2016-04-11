@@ -13,3 +13,4 @@ desc: |
  * The file permissions of files installed by the 'dh_umc' debhelper have been
    adjusted.
 bug: [40341, 40339, 30520]
+erratum: 66

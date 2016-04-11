@@ -9,3 +9,4 @@ desc: |
  * Added new config option "dbtemp" that specifies a directory for temporary
    backing files of squidguard's in-memory databases.
 bug: [40592]
+erratum: 103

@@ -7,3 +7,4 @@ version: [0]
 desc: |
  This update is requried for the ldb erratum update
 bug: [40221]
+erratum: 36

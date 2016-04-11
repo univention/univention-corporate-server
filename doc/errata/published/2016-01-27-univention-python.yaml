@@ -10,3 +10,4 @@ desc: |
     attribute values. This prevents errors when modifying objects in case the
     permissions of the executor aren't sufficient.
 bug: [40120]
+erratum: 69

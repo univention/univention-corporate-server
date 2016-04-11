@@ -9,3 +9,4 @@ desc: |
  * The categories of UMC modules can now be configured more easily. It is
    also possible to add links to the UMC module overview.
 bug: [40528]
+erratum: 107

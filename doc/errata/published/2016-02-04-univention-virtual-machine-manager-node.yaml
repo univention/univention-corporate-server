@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * The cron job to check libvirtd is no longer required and was removed.
 bug: [35101]
+erratum: 99

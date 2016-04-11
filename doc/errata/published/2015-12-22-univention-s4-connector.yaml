@@ -14,3 +14,4 @@ desc: |
    (the s4 connector has to be restarted after changing this UCR variable).
    This is required for UCS@school and will be set there accordingly.
 bug: [37006,40233,40298]
+erratum: 39

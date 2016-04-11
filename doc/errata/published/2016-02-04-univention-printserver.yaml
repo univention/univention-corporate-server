@@ -9,3 +9,4 @@ desc: |
  * The default CUPS policy has been fixed and is now configurable via the
    'cups/policy/.*' UCR variables.
 bug: [38023]
+erratum: 93

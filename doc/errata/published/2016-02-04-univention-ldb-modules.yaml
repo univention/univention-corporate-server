@@ -8,3 +8,4 @@ desc: |
  This fixes an issue where libunivention-ldb-modules would
  refuse to load due to an updated ldb library.
 bug: [40437]
+erratum: 85

@@ -10,3 +10,4 @@ desc: |
    2h, as joining in a large domain can take much longer than the default 5m.
    The time can be changed through the UCR variable 'listener/timeout/scans'.
 bug: [40373]
+erratum: 80

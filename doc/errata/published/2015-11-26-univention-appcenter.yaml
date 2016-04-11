@@ -11,3 +11,4 @@ desc: |
  * Installed apps are now correctly stored in repository/app_center/installed
    even when bypassing the App Center
 bug: [39663, 40087]
+erratum: 3

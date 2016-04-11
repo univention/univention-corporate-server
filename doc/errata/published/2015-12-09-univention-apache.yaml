@@ -9,3 +9,4 @@ desc: |
  * A warning about unencrypted HTTP connections has been added to the UCS
    overview page.
 bug: [39361]
+erratum: 19

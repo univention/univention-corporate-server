@@ -6,6 +6,7 @@ fix: 1.0.0-3.3.201512090901
 version: [0]
 desc: |
  This update addresses the following issue:
- * The new package univention-nagios-s4-connector provides a 
+ * The new package univention-nagios-s4-connector provides a
    nagios plugin to check the state of the univention-s4-connector.
 bug: [37006]
+erratum: 38

@@ -9,3 +9,4 @@ desc: |
  to a dead-lock in multi-threaded programs calling getaddrinfo().
 note: This is the 3rd part of the update.
 bug: [40059]
+erratum: 10

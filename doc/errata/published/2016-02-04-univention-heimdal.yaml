@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * Some shell quoting errors were fixed.
 bug: [40031]
+erratum: 83

@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Package is added as a new dependency of OpenJDK-7.
 bug: [40043]
+erratum: 47

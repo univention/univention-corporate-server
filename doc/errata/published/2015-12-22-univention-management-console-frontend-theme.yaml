@@ -8,3 +8,4 @@ desc: |
  This updated corrects a display problems in the grid header when using
  Internet Explorer.
 bug: [39498]
+erratum: 44

@@ -9,3 +9,4 @@ desc: |
     rules are not automatically activated on updating systems, only on
     new installations.
 bug: [37995]
+erratum: 37

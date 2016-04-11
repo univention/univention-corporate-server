@@ -17,3 +17,4 @@ desc: |
  * The daemon used to wait for successful installations has been changed to
    listen on all network interfaces by default.
 bug: [40559,39937,38821,33361,34061]
+erratum: 108

@@ -10,3 +10,4 @@ desc: |
    consumes a lot of memory, which can lead to it being killed by the Linux
    kernel.
 bug: [39940]
+erratum: 59

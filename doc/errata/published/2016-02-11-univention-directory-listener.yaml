@@ -12,3 +12,4 @@ desc: |
    The number of re-tries can be configured through the new UCR variable
    'listener/ldap/retries'.
 bug: [40460]
+erratum: 105

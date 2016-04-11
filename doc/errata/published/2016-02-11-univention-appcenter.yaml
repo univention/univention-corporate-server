@@ -13,3 +13,4 @@ desc: |
  * The error handling has been improved. This results in useful error messages
    especially when a connection to the LDAP service failed.
 bug: [40604, 40160, 40561, 40069]
+erratum: 104

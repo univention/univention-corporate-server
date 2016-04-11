@@ -9,3 +9,4 @@ desc: |
  * The package has been rebuild with all intended changes for UCS 4.1. This
    fixes a bug with system setup not being able to finish correctly.
 bug: [40019]
+erratum: 4

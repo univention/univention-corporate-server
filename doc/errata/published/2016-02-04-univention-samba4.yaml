@@ -14,3 +14,4 @@ desc: |
     krb5.keytab containing differing Kerberos key hashes for the same key
     version number.
 bug: [33399,40031,40434]
+erratum: 95

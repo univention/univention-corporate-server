@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * The username field in the login dialog doesn't get cleared anymore.
 bug: [39898]
+erratum: 2

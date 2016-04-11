@@ -12,3 +12,4 @@ desc: |
   * A file for the process of handling user renames has been moved to a
     secure location (Bug 40246).
 bug: [40194,40246]
+erratum: 86

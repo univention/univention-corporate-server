@@ -9,3 +9,4 @@ desc: |
  * Support the new AWS API for EC2 region eu-central-1 (Frankfurt am Main).
  * Add support for Virtual Pricate Clouds (VPC) with AWS EC2.
 bug: [36141,36289]
+erratum: 46

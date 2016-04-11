@@ -16,3 +16,4 @@ desc: |
   * It is now possible to ship translations for UDM hooks and UDM syntax
     settings.
 bug: [40348, 32321, 40031, 40339, 34556]
+erratum: 68

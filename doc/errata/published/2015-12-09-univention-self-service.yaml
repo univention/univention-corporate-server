@@ -26,3 +26,4 @@ desc: |
    (Bug 39939).
  * The postrm script has been modified to correctly restart apache2.
 bug: [39720,39939,39980,39996,39981,40033,40048,40049,40107,40061]
+erratum: 24

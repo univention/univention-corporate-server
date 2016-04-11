@@ -9,3 +9,4 @@ desc: |
  * Some shell quoting errors were fixed.
  * Atjob comments are now properly encoded.
 bug: [40031,39993]
+erratum: 50

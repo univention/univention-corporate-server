@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Fixed typos in german translation
 bug: [39886,40344]
+erratum: 111

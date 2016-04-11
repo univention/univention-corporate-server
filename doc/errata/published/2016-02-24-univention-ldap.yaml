@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Stop the LDAP server to be able to re-create the index files.
 bug: [40575]
+erratum: 119

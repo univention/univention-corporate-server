@@ -9,3 +9,4 @@ desc: |
  * A German wordlist was added, so that passwords can be checked to not
    include German words.
 bug: [24840]
+erratum: 28

@@ -12,3 +12,4 @@ desc: |
  * Links on the UCS overview preserve the port if accessed through a non
    default port.
 bug: [40121, 40173, 40070]
+erratum: 48

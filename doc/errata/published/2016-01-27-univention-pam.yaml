@@ -9,3 +9,4 @@ desc: |
   * Create the user 'messagebus' as the owner for '/etc/libnss-ldap.conf'.
     Thanks to Lutz Willek.
 bug: [38993]
+erratum: 67

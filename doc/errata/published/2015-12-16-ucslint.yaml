@@ -9,3 +9,4 @@ desc: |
     case, when issues don't include a file name or reference a not existing
     file.
 bug: [36456]
+erratum: 34

@@ -9,3 +9,4 @@ desc: |
  to a dead-lock in programs like Samba.
 note: This is the 2nd part of the update.
 bug: [40558]
+erratum: 113

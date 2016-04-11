@@ -11,3 +11,4 @@ desc: |
    the automatic registration as additional nameserver (Bug 40139).
  * Some shell quoting errors were fixed.
 bug: [40139,40031]
+erratum: 49

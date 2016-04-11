@@ -9,3 +9,4 @@ desc: |
   * It is now possible to ship translations for UDM hooks and UDM syntax
     settings.
 bug: [34556]
+erratum: 65

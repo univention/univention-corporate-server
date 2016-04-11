@@ -7,3 +7,4 @@ version: [0]
 desc: |
  This talloc update is requried for Samba version 4.3.3
 bug: [40221]
+erratum: 31

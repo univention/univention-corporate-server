@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Wildcard DNS records didn't get synchronized any more.
 bug: [40380]
+erratum: 52

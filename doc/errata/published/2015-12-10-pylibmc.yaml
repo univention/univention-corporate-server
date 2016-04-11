@@ -9,3 +9,4 @@ desc: |
  * Protect against denial of service attacks (Bug 39720),
  it needs pylibmc. This update releases pylibmc to maintained.
 bug: [39720, 40209]
+erratum: 29

@@ -31,3 +31,4 @@ desc: |
   * joinscript_run_in_container from the Docker Apps Joinscript helper
     functions now correctly passes its arguments to univention-app shell
 bug: [39662,39664,40116,37539,40239,40240,40359,40264,39157,40287,40060,39866, 40339, 40523]
+erratum: 79

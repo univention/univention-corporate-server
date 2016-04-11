@@ -9,3 +9,4 @@ desc: |
   * The backend of univention-welcome-screen has been changed from Firefox to
     Plymouth.
 bug: [39241]
+erratum: 63

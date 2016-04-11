@@ -10,3 +10,4 @@ desc: |
    added to configure samba to ignore certain network interfaces
    (docker0 by default).
 bug: [39601]
+erratum: 13

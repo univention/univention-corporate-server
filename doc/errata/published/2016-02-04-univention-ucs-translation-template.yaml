@@ -10,3 +10,4 @@ desc: |
     script.
   * No fuzzy PO file header entries are created anymore.
 bug: [40340, 40341]
+erratum: 98

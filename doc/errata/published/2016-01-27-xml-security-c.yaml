@@ -8,3 +8,4 @@ desc: |
  The package "xml-security-c" was re-built to satisfy the dependency of
  "open-vm-tools".
 bug: [40244]
+erratum: 62

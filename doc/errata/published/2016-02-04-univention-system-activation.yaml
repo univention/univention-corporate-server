@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * The term 'Univention App' has been replaced by 'Appliance'
 bug: [40304]
+erratum: 96

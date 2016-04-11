@@ -8,3 +8,4 @@ desc: |
  This update adds an updated SSL implementation for Python, which is required
  to support the new AWS API for EC2 region eu-central-1 (Frankfurt am Main).
 bug: [36141]
+erratum: 45

@@ -9,3 +9,4 @@ desc: |
   * The package database was not updated automatically on systems other than
     the database server.
 bug: [33935]
+erratum: 92

@@ -12,3 +12,4 @@ desc: |
   * When basic auth is enabled, disabled user accounts cannot use the
     proxy anymore (Bug 39901).
 bug: [39901,40095]
+erratum: 25

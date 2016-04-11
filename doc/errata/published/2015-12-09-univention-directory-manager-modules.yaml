@@ -15,3 +15,4 @@ desc: |
    when they are modified. Mixed case domain names caused inconsistent
    behaviour with Dovecot and shared folders (Bug 39721).
 bug: [39146,39721]
+erratum: 16
