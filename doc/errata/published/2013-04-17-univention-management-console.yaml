@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console
 fix: 5.0.62-3.732.201305221419
-note:
 version: [1]
 desc: |
   This update fixes several issues:
@@ -15,3 +14,4 @@ desc: |
   * A problem which caused to crash the UMC server when setting an invalid
     locale has been corrected.
 bug: [30605, 29603, 28657]
+erratum: 103

@@ -3,10 +3,10 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-system-setup
 fix: 6.0.76-18.466.201306061324
-note:
 version: [1]
 desc: |
   Fixed setting of ucrv apache2/startsite during postinst. The variable
   will not be changed when updating univention-system-setup-boot on a joined
   system.
 bug: [31643]
+erratum: 121

@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-samba4
 fix: 2.0.30-2.416.201301281429
-note:
 version: [0]
 desc: |
   This errata update fixes several bugs in the package univention-samba4:
@@ -28,3 +27,4 @@ desc: |
   * Missing default for samba/debug/level in smb.conf template
   * Netlogon path adjustable via samba/share/netlogon/path
 bug: [29083,29504,29537,29335,29688,29865,24868,29961,29801]
+erratum: 27

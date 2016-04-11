@@ -14,3 +14,4 @@ desc: |
   also fixes an issue to prevent the override of libnss-ldap.secret in postinst if
   it is a link.
 bug: [30779]
+erratum: 106

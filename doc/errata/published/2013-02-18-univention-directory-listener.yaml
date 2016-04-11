@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-directory-listener
 fix: 7.0.4-2.198.201302201418
-note:
 version: [0]
 desc: |
   This errata update fixes four bugs in the package univention-directory-listener:
@@ -12,3 +11,4 @@ desc: |
   * lower debug level for some INFO messages
   * always run the replication handler
 bug: [30165,30408,30521,29475]
+erratum: 55

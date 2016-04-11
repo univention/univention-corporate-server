@@ -3,13 +3,13 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-squid
 fix: 6.0.8-4.198.201307241606
-note:
 version: [1]
 desc: |
   This errata update adds NEGOTIATE authentication support.
   In this mode the authenticator squid_ldap_ntlm_auth
   is a negotiate wrapper for either Kerberos or NTLM over negotiate.
   The previous negotiate authenticator setting can be restored by
-  setting the UCR variable squid/krb5auth/tool to 
+  setting the UCR variable squid/krb5auth/tool to
   /usr/lib/squid3/squid_kerb_auth.
 bug: [31967]
+erratum: 152

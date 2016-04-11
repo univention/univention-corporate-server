@@ -3,8 +3,8 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-samba4
 fix: 2.0.44-35.516.201309250626
-note:
 version: [1]
 desc: |
   The Samba 4 daemon will now be restarted during the server password rotation.
 bug: [32468]
+erratum: 189

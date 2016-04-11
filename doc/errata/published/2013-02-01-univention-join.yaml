@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-join
 fix: 5.0.20-1.406.201302011010
-note:
 version: [0]
 desc: |
   The tool univention-run-join-scripts now closes the redirected file
@@ -11,3 +10,4 @@ desc: |
   that a running python parent process of univention-run-join-scripts
   won't come back.
 bug: [30245]
+erratum: 32

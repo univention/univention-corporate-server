@@ -3,10 +3,10 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-config-registry
 fix: 8.0.7-5.430.201306171642
-note:
 version: [1]
 desc: |
   UCR now writes the changes to a temporary file first and moves the file
   in a second step, otherwise the file might be not completly written if UCR
   tries to read a variable.
 bug: [31725]
+erratum: 130

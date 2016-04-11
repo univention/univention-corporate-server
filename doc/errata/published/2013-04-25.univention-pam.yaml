@@ -12,3 +12,4 @@ desc: |
   to specify whether or not libnss-ldap is allowed to perform dns srv record
   lookups (default: true)
 bug: [30779]
+erratum: 107

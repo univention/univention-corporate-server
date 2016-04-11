@@ -3,10 +3,10 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-module-udm
 fix: 3.0.78-2.316.201305142005
-note:
 version: [1]
 desc: |
   This errata fixes a problem especially in larger environments: Several syntax
   classes received lookup optimizations that result in faster opening of
   objects in the UDM frontend.
 bug: [30991]
+erratum: 111

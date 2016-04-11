@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: mysql-5.1
 fix: 5.1.66-0.28.201307110918
-note:
 version: [1]
 desc: |
   In some installations the mysql server package did not set a
@@ -12,3 +11,4 @@ desc: |
   and writes the password to /etc/mysql.secret. This file can be
   read by root. If a password is already set, nothing will be done.
 bug: [19354]
+erratum: 156

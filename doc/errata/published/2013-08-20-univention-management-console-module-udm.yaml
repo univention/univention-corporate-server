@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-module-udm
 fix: 3.0.78-5.334.201308201803
-note:
 version: [1]
 desc: |
   This erratum update corrects an erroneous evaluation of policies as shown in
   the detail view of UDM objects in UMC.
 bug: [31916]
+erratum: 175

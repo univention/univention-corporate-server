@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-manager-modules
 fix: 8.0.143-32.1163.201312101241
-note:
 version: [1]
 desc: |
   Moving objects now also supports mixed-case scenarios. This is relevant when
   moving organizational units or containers in Samba 4/Active Directory.
 bug: [33566]
+erratum: 203

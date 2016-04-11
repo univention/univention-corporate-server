@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: openldap
 fix: 2.4.31-1.82.201305141904
-note:
 version: [0,1]
 desc: |
   This update fixes two bugs in the package openldap:
@@ -11,3 +10,4 @@ desc: |
     non-UTF-8 passwords were used for LDAP bind against the {K5KEY} scheme.
   * slapcat output could get truncated during univention-ldap-backup
 bug: [31352, 31170]
+erratum: 98

@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-quota
 fix: 7.0.5-9.110.201305061604
-note:
 version: [1]
 desc: |
   This update fixes several issues:
@@ -14,3 +13,4 @@ desc: |
   * Enables support of ext4 partitions in the UMC filesystem
     quota module.
 bug: [30636, 28377, 24357]
+erratum: 105

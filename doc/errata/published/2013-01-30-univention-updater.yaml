@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-updater
 fix: 8.0.58-1.1142.201301302231
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
@@ -13,3 +12,4 @@ desc: |
   * The updater now uses an individual user agent string for the interaction
     via HTTP.
 bug: [30171,25489]
+erratum: 31

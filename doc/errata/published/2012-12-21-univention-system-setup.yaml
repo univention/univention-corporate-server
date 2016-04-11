@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-system-setup
 fix: 6.0.56-1.435.201301111806
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
@@ -16,3 +15,4 @@ desc: |
   * Committing UCR Variables in script 10software caused newly registered
     Variables (via packages installation) to not be saved.
 bug: [29759,29569,29771,29722,29970]
+erratum: 10

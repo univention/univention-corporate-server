@@ -7,3 +7,4 @@ version: [1]
 desc: |
   Issues with the NetApp join have been fixed.
 bug: [35002]
+erratum: 232

@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: open-vm-tools
 fix: 2:8.8.0+2012.05.21-724730-1+nmu2.2.201301160904
-note:
 version: [0]
 desc: |
  This is a backport of the newer version of the Open VMware tools,
@@ -17,7 +16,8 @@ desc: |
  This will automatically compile the modules for the current and all
  future kernel versions on the local host.
 
- This package is provided in the unmaintained section of the 
- repository and thus requires the UCR setting 
+ This package is provided in the unmaintained section of the
+ repository and thus requires the UCR setting
  repository/online/unmaintained=yes.
 bug: [29991]
+erratum: 23

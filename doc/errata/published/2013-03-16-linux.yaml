@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: linux
 fix: 3.2.39-2.27.201303061719
-note:
 version: [0]
 desc: |
   This update updates the Linux kernel to version 3.2.39, which
@@ -47,3 +46,4 @@ cve:
  - CVE-2013-1772
  - CVE-2013-1773
  - CVE-2013-1774
+erratum: 81

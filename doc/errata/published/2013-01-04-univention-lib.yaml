@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-lib
 fix: 2.0.17-1.116.201301031745
-note:
 version: [0]
 desc: |
   This errata update fixes several issues, all of them related to the
@@ -15,3 +14,4 @@ desc: |
   * Added option to not prevent restart of the apache web server while
     (un)installing packages.
 bug: [29805,29797,29239,29810]
+erratum: 12

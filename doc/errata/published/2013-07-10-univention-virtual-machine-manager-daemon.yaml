@@ -3,10 +3,10 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-virtual-machine-manager-daemon
 fix: 2.0.36-11.454.201307110830
-note:
 version: [1]
 desc: |
   This update fixes the following issues:
   * Creating snapshots of suspended virtual machines is now prevented.
   * The option to enable VNC for a virtual machine has been renamed.
 bug: [23436, 31947]
+erratum: 155

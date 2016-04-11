@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: libx11
 fix: 2:1.3.3-4.37.201308011707
-note:
 version: [1]
 desc: |
   Ilja van Sprundel of IOActive discovered several security issues in
@@ -15,3 +14,4 @@ cve:
  - CVE-2013-1981
  - CVE-2013-1997
  - CVE-2013-2004
+erratum: 163

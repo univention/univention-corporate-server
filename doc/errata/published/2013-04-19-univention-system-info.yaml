@@ -3,8 +3,8 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-system-info
 fix: 3.0.9-2.42.201304191353
-note:
 version: [1]
 desc: |
   The english and german texts of the UMC module have been adapted.
 bug: [30797]
+erratum: 124

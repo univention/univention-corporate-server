@@ -9,3 +9,4 @@ desc: |
   The password expiry field wasn't correctly evaluated.
 cve:
  - CVE-2011-4966
+erratum: 118

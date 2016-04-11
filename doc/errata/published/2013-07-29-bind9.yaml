@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: bind9
 fix: 1:9.8.0.P4-1.102.201307290920
-note:
 version: [1]
 desc: |
   This errata update addresses a denial of service vulnerability
@@ -12,3 +11,4 @@ desc: |
   not affected by this vulnerability.
 cve:
  - CVE-2013-4854
+erratum: 157

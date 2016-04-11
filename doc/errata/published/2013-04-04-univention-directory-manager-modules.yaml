@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-manager-modules
 fix: 8.0.143-11.1002.201304110808
-note:
 version: [1]
 desc: |
   This update fixes several issues:
@@ -24,3 +23,4 @@ desc: |
     have been removed from the advanced search as they are not searchable
     in the UMC.
 bug: [30905,29676,28945,29681,28667,28803]
+erratum: 87

@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-xen
 fix: 4.0.0-4.66.201305271359
-note:
 version: [1]
 desc: |
  The loop-back kernel module is now loaded again to allow media changes for
  Xen-HVM domains.
 bug: [23394]
+erratum: 126

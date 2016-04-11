@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-virtual-machine-manager-daemon
 fix: 2.0.36-10.450.201306041745
-note:
 version: [1]
 desc: |
  This erratum implements the following changes:
@@ -17,3 +16,4 @@ desc: |
  * To fix the ordering of snapshots their creation time is now display in
    ISO 8601 format.
 bug: [21397, 23394, 30897, 29261, 22377, 29901]
+erratum: 125

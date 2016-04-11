@@ -3,8 +3,8 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-manager-modules
 fix: 8.0.143-12.1005.201304182046
-note:
 version: [1]
 desc: |
   univention-dnsedit now supports the pTRRecord as multivalue
 bug: [31103]
+erratum: 91

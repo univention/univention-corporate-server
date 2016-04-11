@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: samba
 fix: 2:3.6.8-1.568.201307221104
-note:
 version: [1]
 desc: |
   This errata update fixes a vulnerability in the package samba:
@@ -14,3 +13,4 @@ desc: |
     if guest connections are allowed.
 cve:
  - CVE-2013-4124
+erratum: 159

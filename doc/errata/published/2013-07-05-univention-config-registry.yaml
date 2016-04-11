@@ -3,10 +3,10 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-config-registry
 fix: 8.0.7-7.433.201307081613
-note:
 version: [1]
 desc: |
   Since erratum 130 UCR writes all changes to a temporary file first. Now
   the file permissions are copied from the original file. This prevents
   errors while joining via UMC.
 bug: [31853]
+erratum: 140

@@ -3,8 +3,8 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-listener
 fix: 7.0.9-1.203.201306250914
-note:
 version: [1]
 desc: |
   The password is hidden from the logfile on high debug levels.
 bug: [31053]
+erratum: 132

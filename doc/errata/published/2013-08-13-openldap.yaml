@@ -3,8 +3,8 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: openldap
 fix: 2.4.31-1.95.201308130946
-note:
 version: [1]
 desc: |
   This errata update fixes a database cache hang under high load.
 bug: [32220]
+erratum: 169

@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-management-console-frontend
 fix: 2.0.180-1.550.201301141527
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
@@ -18,3 +17,4 @@ desc: |
   * Added apache rewrite rule for images to stay compatible with UMC modules
     built against UCS 3.0.
 bug: [29435,29622,29951,29957,29960,29861]
+erratum: 9

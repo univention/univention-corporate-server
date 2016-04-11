@@ -11,3 +11,4 @@ desc: |
 cve:
  - CVE-2013-0338
  - CVE-2013-0339
+erratum: 101

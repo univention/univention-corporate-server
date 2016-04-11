@@ -3,7 +3,7 @@ release: "3.1"
 version: [1]
 scope: ucs_3.1-0-errata3.1-1
 src: univention-kernel-image
-fix:  6.0.1-3.38.201306251330
+fix: 6.0.1-3.38.201306251330
 desc: |
   The Linux kernel has been updated to 3.2.46, which provides many
   bugfixes. In addition this update fixes multiple security issues:
@@ -54,3 +54,4 @@ cve:
  - CVE-2013-2635
  - CVE-2013-2850
 bug: [31366,30812]
+erratum: 137

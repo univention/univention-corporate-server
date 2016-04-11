@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-updater
 fix: 8.0.78-7.1188.201307110854
-note:
 version: [1]
 desc: |
   This update fixes several issues with local repositories:
@@ -18,3 +17,4 @@ desc: |
   * On a local repository server a repository policy no longer sets the source
     server to itself.
 bug: [24808, 31060, 30756, 31426]
+erratum: 172

@@ -12,3 +12,4 @@ desc: |
 note: This update fixes this vulnerability.
 cve:
  - CVE-2014-0004
+erratum: 224

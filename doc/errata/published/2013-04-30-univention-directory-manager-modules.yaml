@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-manager-modules
 fix: 8.0.143-16.1014.201305221243
-note:
 version: [1]
 desc: |
   This errata fixes several problems:
@@ -13,3 +12,4 @@ desc: |
     opening of objects in the UDM frontend especially in larger environments.
   * During license check temporary user objects are no longer taken into account.
 bug: [31154, 30991, 31167]
+erratum: 109

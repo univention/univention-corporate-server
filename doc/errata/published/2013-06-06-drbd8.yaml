@@ -3,8 +3,8 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: drbd8
 fix: 2:8.3.11-3~bpo60+1.34.201306060929
-note:
 version: [1]
 desc: |
   This erratum updates the drbd userland tools to version 8.3.11
 bug: [31321]
+erratum: 122

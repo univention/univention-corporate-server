@@ -10,3 +10,4 @@ desc: |
   has been fixed in PHP5.
 cve:
  - CVE-2013-4248
+erratum: 178

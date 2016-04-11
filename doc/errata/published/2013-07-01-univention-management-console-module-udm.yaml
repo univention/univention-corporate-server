@@ -3,13 +3,13 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-module-udm
 fix: 3.0.78-4.322.201307021551
-note:
 version: [1]
 desc: |
   This errata addresses the following issues:
-  * Five syntax classes received lookup optimizations that result in faster opening 
-    of objects in the UDM frontend. This addresses performance problems in large 
+  * Five syntax classes received lookup optimizations that result in faster opening
+    of objects in the UDM frontend. This addresses performance problems in large
     environments.
-  * The actions for saving and canceling the editing of UDM objects are published 
+  * The actions for saving and canceling the editing of UDM objects are published
     now for the Piwik system.
 bug: [31560,31161]
+erratum: 142

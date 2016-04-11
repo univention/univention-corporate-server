@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-updater
 fix: 8.0.78-5.1179.201305031538
-note:
 version: [1]
 desc: |
   This errata update fixes severeal issues in univention-add-app:
@@ -13,3 +12,4 @@ desc: |
     outdated app version.
   * Added --latest switch to always use the latest version of an app.
 bug: [31278, 31279, 31157]
+erratum: 95

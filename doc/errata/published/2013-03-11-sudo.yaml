@@ -13,3 +13,4 @@ desc: |
 cve:
  - CVE-2013-1775
  - CVE-2013-1776
+erratum: 72

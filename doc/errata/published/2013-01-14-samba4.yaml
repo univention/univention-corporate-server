@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: samba4
 fix: 4.0.0~rc6-1.355.201301141447
-note:
 version: [0]
 desc: |
  This errata update fixes the following issues:
@@ -18,3 +17,4 @@ desc: |
 bug: [30013,29665,29526]
 cve:
  - CVE-2013-0172
+erratum: 7

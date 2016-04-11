@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-module-lib
 fix: 1.0.4-4.13.201307041619
-note:
 version: [1]
 desc: |
   The UMC session is now kept active during the dialog for restarting the UMC
   server.
 bug: [31642]
+erratum: 143

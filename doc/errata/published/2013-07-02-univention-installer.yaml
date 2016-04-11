@@ -3,10 +3,10 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-installer
 fix: 8.0.46-2.1067.201307021042
-note:
 version: [1]
 desc: |
   The horde groupware solution has been removed from the installers package
-  list and from the list of software components in the UMC basic settings. 
+  list and from the list of software components in the UMC basic settings.
   From now on, horde is available in the Univention App Center.
 bug: [31866]
+erratum: 141

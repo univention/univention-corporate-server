@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-s4-connector
 fix: 7.0.32-4.378.201305291256
-note:
 version: [1]
 desc: |
   This errata update fixes two issues in the package univention-s4-connector:
@@ -12,3 +11,4 @@ desc: |
   * The attribute sambaMaxPwdAge can be set to -1 in OpenLDAP. This will now
     be mapped to 0 in Samba 4.
 bug: [31437, 29775]
+erratum: 115

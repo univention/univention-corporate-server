@@ -11,3 +11,4 @@ note: This update downloads the new release 11.2.202.327, which fixes these vuln
 cve:
  - CVE-2013-5329
  - CVE-2013-5330
+erratum: 199

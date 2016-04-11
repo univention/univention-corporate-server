@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-base-files
 fix: 2.0.15-3.142.201308271124
-note:
 version: [1]
 desc: |
   * During the update from UCS-3.0 to UCS-3.1 the template for
@@ -22,13 +21,14 @@ desc: |
 
   * This errata enables the kernel inotify parameters to be controlled by
     Univention Config Registry variables. The default values have been
-    increased to improve support of large environments. The following 
+    increased to improve support of large environments. The following
     Univention Config Registry variables are available:
      * kernel/fs/inotify/max_user_instances (default:   512)
      * kernel/fs/inotify/max_user_watches   (default: 32768)
      * kernel/fs/inotify/max_queued_events  (default: 16384)
     IMPORTANT:
-    If these parameters have been manually defined in a local file below 
-    /etc/sysctl.d/ the file should be removed and the configured values 
+    If these parameters have been manually defined in a local file below
+    /etc/sysctl.d/ the file should be removed and the configured values
     transfered to the respective Univention Config Registry variables.
 bug: [32297,31844,32327]
+erratum: 176

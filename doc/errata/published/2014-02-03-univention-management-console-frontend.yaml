@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-frontend
 fix: 2.0.244-19.818.201402031407
-note:
 version: [1]
 desc: |
   The MultiSelect widget was setting its values too early which could break page
   rendering. This issue has been fixed.
 bug: [34022]
+erratum: 213

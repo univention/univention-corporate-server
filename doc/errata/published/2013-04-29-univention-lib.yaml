@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-lib
 fix: 2.0.26-3.132.201305151315
-note:
 version: [1]
 desc: |
   This errata addresses several issues:
@@ -13,3 +12,4 @@ desc: |
     could be marked as automatically installed and thus be autoremoved. This
     has been corrected.
 bug: [31055, 31155]
+erratum: 108

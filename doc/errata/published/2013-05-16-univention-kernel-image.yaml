@@ -13,3 +13,4 @@ note: |
 cve:
  - CVE-2013-2094
 bug: [31366]
+erratum: 97

@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: libgcrypt11
 fix: 1.4.5-2.15.201308011654
-note:
 version: [1]
 desc: |
   A side channel attack against shared memory pages allows to expose parts of the private key.
 cve:
  - CVE-2013-4242
+erratum: 162

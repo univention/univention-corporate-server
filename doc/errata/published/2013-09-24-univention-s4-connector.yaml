@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-s4-connector
 fix: 7.0.32-10.412.201310071024
-note:
 version: [1]
 desc: |
   This errata update fixes the following issues in the package univention-s4-connector:
@@ -15,3 +14,4 @@ desc: |
     Samba 4 to OpenLDAP. This prevents a synchronization loop in some selective
     replication scenarios.
 bug: [32529,32542,32690]
+erratum: 188

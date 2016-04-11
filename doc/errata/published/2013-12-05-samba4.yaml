@@ -11,3 +11,4 @@ desc: |
  the execution of arbitrary code through buffer overflows.
 cve:
  - CVE-2013-4408
+erratum: 200

@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-join
 fix: 5.0.20-1.442.201304160803
-note:
 version: [0]
 desc: |
   Unjoin scripts are now also called on DC slaves and memberservers
   in univention-join.
 bug: [30926]
+erratum: 113

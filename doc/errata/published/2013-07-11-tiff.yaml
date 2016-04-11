@@ -11,3 +11,4 @@ note: This update fixes these vulnerabilities
 cve:
  - CVE-2013-1960
  - CVE-2013-1961
+erratum: 148

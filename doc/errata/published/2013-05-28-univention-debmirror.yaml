@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-debmirror
 fix: 5.0.5-2.68.201305280846
-note:
 version: [1]
 desc: |
   An update for the Univention Debmirror package was missed for UCS-3.1-1,
@@ -15,3 +14,4 @@ desc: |
   used, the Univention Config Registry variable repository/online/server must
   be changed manually, best through a Repository Policy.
 bug: [30990, 30409]
+erratum: 171

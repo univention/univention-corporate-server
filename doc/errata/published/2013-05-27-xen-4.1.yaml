@@ -3,10 +3,10 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: xen-4.1
 fix: 4.1.3-10~1.35.201305291528
-note:
 version: [1]
 desc: |
  This erratum implements the following changes:
  * Media change is now also possible for Xen-HVM domains.
  * A logic bug prevented the xenstore database from being cleared on reboots.
 bug: [23394, 28309]
+erratum: 127

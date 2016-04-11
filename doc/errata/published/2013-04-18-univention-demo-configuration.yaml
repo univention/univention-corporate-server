@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-demo-configuration
 fix: 1.0.4-3.11.201304181235
-note:
 version: [1]
 desc: |
   This update fixes UMC login problems with demo configuration package
   installed.
 bug: [31091]
+erratum: 104

@@ -9,7 +9,6 @@ desc: |
  Since Oracle does not disclose sufficient information to
  provide backported patches, we needed to update MySQL
  to the new release.
-note:
 cve:
  - CVE-2013-1861
  - CVE-2012-0553
@@ -42,3 +41,4 @@ cve:
  - CVE-2013-3802
  - CVE-2013-3804
  - CVE-2013-3808
+erratum: 190

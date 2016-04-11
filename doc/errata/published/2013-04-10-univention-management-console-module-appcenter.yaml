@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-module-appcenter
 fix: 2.0.139-13.139.201305171736
-note:
 version: [1]
 desc: |
   This update fixes several issues:
@@ -27,3 +26,4 @@ desc: |
     cache.
   * Prevent concurrent package operations in the same session.
 bug: [30611, 30798, 30659, 30796, 31184, 31166, 31129, 31282, 31382]
+erratum: 102

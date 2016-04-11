@@ -13,3 +13,4 @@ note: This update fixes these vulnerabilities
 cve:
  - CVE-2013-1944
  - CVE-2013-2174
+erratum: 138

@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console
 fix: 5.0.62-6.738.201306121615
-note:
 version: [1]
 desc: |
   This erratum addresses the following problems:
@@ -11,3 +10,4 @@ desc: |
     missing lines in the log file.
   * UMC server and module crashs will now be logged.
 bug: [31421,31130]
+erratum: 128

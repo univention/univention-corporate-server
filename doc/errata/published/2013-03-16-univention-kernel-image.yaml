@@ -13,3 +13,4 @@ desc: |
   automatically install the new kernel package provided by the previous errata
   update.
 bug: [30505]
+erratum: 82

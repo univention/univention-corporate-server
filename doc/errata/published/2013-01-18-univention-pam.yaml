@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-pam
 fix: 6.0.10-2.204.201301241621
-note:
 version: [0]
 desc: |
  This errata fixes to issues:
@@ -15,3 +14,4 @@ desc: |
    needed to check group membership in large environments. The maximum
    is increased to 4 MiB.
 bug: [29916,29393]
+erratum: 21

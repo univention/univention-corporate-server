@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-management-console-frontend
 fix: 2.0.244-17.656.201307081557
-note:
 version: [1]
 desc: |
   This update addresses the following issues:
@@ -14,3 +13,4 @@ desc: |
   * Problems with standby overlay animations not covering the full underlying
     area
 bug: [31318,30961,31308,31581]
+erratum: 144

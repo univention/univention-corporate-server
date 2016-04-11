@@ -3,10 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: samba4
 fix: 4.0.3-1.376.201304300818
-note:
 version: [1]
 desc: |
   The current Samba 4 build does not support quota on XFS file systems. This
   erratum enables XFS quota in Samba 4.
 bug: [31234]
-
+erratum: 110

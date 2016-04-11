@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: samba4
 fix: 4.0.0~rc6-1.368.201303131315
-note:
 version: [0]
 desc: |
   This errata update fixes a security bug in the package samba4:
@@ -16,3 +15,4 @@ desc: |
     (744) by default.
 cve:
  - CVE-2013-1863
+erratum: 75

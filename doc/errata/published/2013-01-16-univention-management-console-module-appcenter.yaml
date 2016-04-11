@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-management-console-module-appcenter
 fix: 2.0.91-1.61.201302061804
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
@@ -21,3 +20,4 @@ desc: |
   * Added hardware requirements for an app: Check if enough memory is currently
     available.
 bug: [30037,29638,30169,29899,29113]
+erratum: 33

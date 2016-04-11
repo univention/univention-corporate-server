@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-ldb-modules
 fix: 1.0.4-3.39.201304151710
-note:
 version: [1]
 desc: |
   This errata update fixes a bug in the package univention-ldb-modules
@@ -11,3 +10,4 @@ desc: |
   * The package was not build against the ldb library version shipped
     with ucs3.1-1
 bug: [31062]
+erratum: 89

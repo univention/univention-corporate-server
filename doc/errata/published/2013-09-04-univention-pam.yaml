@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-pam
 fix: 6.0.13-5.215.201309041034
-note:
 version: [1]
 desc: |
   This update modifies the PAM configuration required for
@@ -11,3 +10,4 @@ desc: |
   when logging in via SSH and locally through /etc/issue.
   This is the second part of the update.
 bug: [32432]
+erratum: 182

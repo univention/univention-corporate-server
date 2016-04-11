@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-samba4
 fix: 2.0.44-21.462.201306121221
-note:
 version: [1]
 desc: |
   This errata update fixes two bugs in the package univention-samba4:
@@ -14,3 +13,4 @@ desc: |
     account was too low. A more suitable algorithm is use now for
     password generation in this case.
 bug: [31109, 31649]
+erratum: 129

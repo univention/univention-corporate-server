@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: samba4
 fix: 4.0.3-1.386.201401301130
-note:
 version: [1]
 desc: |
  This update fixes two issues in Samba 4:
@@ -12,3 +11,4 @@ desc: |
  * Logon failures accompanied by log messages in the samba log files:
    "auth_generic_prepare failed: NT_STATUS_INVALID_SERVER_STATE".
 bug: [33758, 34015]
+erratum: 211

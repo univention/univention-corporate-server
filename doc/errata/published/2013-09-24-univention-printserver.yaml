@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-printserver
 fix: 6.0.21-4.626.201309241657
-note:
 version: [1]
 desc: |
   This errata update fixes the handling of the univentionPrinterUseClientDriver
@@ -11,3 +10,4 @@ desc: |
   objects without univentionPrinterUseClientDriver could lead to an empty
   samba config file for this printer)
 bug: [32669]
+erratum: 187

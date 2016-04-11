@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-samba4
 fix: 2.0.44-34.501.201308191704
-note:
 version: [1]
 desc: |
   In some cases the join of a Samba DC results in a conflicted host
@@ -11,3 +10,4 @@ desc: |
   waits until the host account was replicated to the S4 connector host
   through the DRS replication.
 bug: [32257]
+erratum: 170

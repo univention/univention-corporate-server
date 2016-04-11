@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-management-console-module-appcenter
 fix: 2.0.91-1.115.201303151337
-note:
 version: [0]
 desc: |
   This erratum fixed several issues:
@@ -21,3 +20,4 @@ desc: |
   * The App Center now removes all default packages during the uninstallation
     even if the packages are part of the default master packages.
 bug: [30663,30172,30662,30787]
+erratum: 76

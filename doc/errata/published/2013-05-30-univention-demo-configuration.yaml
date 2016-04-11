@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-demo-configuration
 fix: 1.0.4-4.13.201305301038
-note:
 version: [1]
 desc: |
   The "univention-demo-configuration" package has been updated in
@@ -11,3 +10,4 @@ desc: |
   leads to an error message when opening the "App Center" or the
   "Online Updater" UMC module. This issue has been fixed.
 bug: [31567]
+erratum: 120

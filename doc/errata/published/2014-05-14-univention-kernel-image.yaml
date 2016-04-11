@@ -2,7 +2,7 @@ product: ucs
 release: "3.1"
 version: [1]
 scope: ucs_3.1-0-errata3.1-1
-src: linux
+src: univention-kernel-image
 fix: 6.0.1-5.51.201405140616
 desc: |
  This update fixes a race condition in the tty driver of the Linux kernel, which
@@ -14,4 +14,4 @@ cve:
  - CVE-2014-0196
  - CVE-2014-1737
  - CVE-2014-1738
-
+erratum: 231

@@ -26,7 +26,7 @@ desc: |
  * Use-after-free in XML serialization and listener manager (CVE-2013-0753,
    CVE-2013-0754)
  * Privilege escalation in the plugin interface (CVE-2013-0758)
- * XBL objects leak information, which allows ALSR bypass (CVE-2013-0748)  
+ * XBL objects leak information, which allows ALSR bypass (CVE-2013-0748)
  * Buffer overflow in Javascript string handling (CVE-2013-0750)
  * Memory corruption in quickstubs handling (CVE-2013-0746)
  * Use-after-free in table rendering (CVE-2013-0744)
@@ -80,3 +80,4 @@ cve:
  - CVE-2013-0782
  - CVE-2013-0783
  - CVE-2013-0787
+erratum: 69

@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-samba4
 fix: 2.0.44-18.455.201305291905
-note:
 version: [1]
 desc: |
   This errata update fixes several bugs in the package univention-samba4:
@@ -26,3 +25,4 @@ desc: |
     /usr/lib/univention-directory-listener/system/samba4-idmap.py \
         --direct-resync
 bug: [30792, 30823, 31186, 31271, 31437, 31538]
+erratum: 114

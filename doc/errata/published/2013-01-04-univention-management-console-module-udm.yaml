@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-management-console-module-udm
 fix: 3.0.61-1.298.201301101155
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
@@ -14,3 +13,4 @@ desc: |
     chosen as changes and add the option to append empty values at the end of
     an LDAP_Search-style syntax.
 bug: [26062,29635]
+erratum: 14

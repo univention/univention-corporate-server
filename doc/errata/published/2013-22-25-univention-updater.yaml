@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-updater
 fix: 8.0.58-1.1160.201302280947
-note:
 version: [0]
 desc: |
   This erratum fixes several issues:
@@ -11,3 +10,4 @@ desc: |
   * Applications installed with univention-add-app are now tracked.
   * 'univention-upgrade --check' no longer updates a local repository.
 bug: [30384,30433,30315]
+erratum: 58

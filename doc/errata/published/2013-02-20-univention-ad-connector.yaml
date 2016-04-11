@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-0
 src: univention-ad-connector
 fix: 7.0.11-3.329.201303061510
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
@@ -16,3 +15,4 @@ desc: |
   * a too fast import could overwrite the changes just made to an object
     due to concurrent processes.
 bug: [30150,18125,29874,30652]
+erratum: 68

@@ -26,17 +26,17 @@ desc: |
  * Use-after-free in XML serialization and listener manager (CVE-2013-0753,
    CVE-2013-0754)
  * Privilege escalation in the plugin interface (CVE-2013-0758)
- * XBL objects leak information, which allows ALSR bypass (CVE-2013-0748)  
+ * XBL objects leak information, which allows ALSR bypass (CVE-2013-0748)
  * Buffer overflow in Javascript string handling (CVE-2013-0750)
  * Memory corruption in quickstubs handling (CVE-2013-0746)
  * Use-after-free in table rendering (CVE-2013-0744)
- * The address bar can be spoofed (CVE-2013-0759)  
+ * The address bar can be spoofed (CVE-2013-0759)
  * Memory corruption in the rendering engine with the potential for code injection
    (CVE-2013-0762, CVE-2013-0766, CVE-2013-0767, CVE-2013-0769)
  * Revocation of two mis-issued SSL certificates for Google (issued by TurkTrust)
    (CVE-2013-0743)
- * Memory safety bugs may result in code injection (CVE-2013-0783) 
- * Two security wrappers could be bypassed (CVE-2013-0773) 
+ * Memory safety bugs may result in code injection (CVE-2013-0783)
+ * Two security wrappers could be bypassed (CVE-2013-0773)
  * Privacy leak in Javascript workers (CVE-2013-0774)
  * Use after frees and buffer overflows (CVE-2013-0775, CVE-2013-0780, CVE-2013-0782)
  * Phishing attack through malicious proxies (CVE-2013-0776)
@@ -80,3 +80,4 @@ cve:
  - CVE-2013-0782
  - CVE-2013-0783
  - CVE-2013-0787
+erratum: 70

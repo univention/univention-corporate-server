@@ -3,10 +3,10 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-base-files
 fix: 2.0.14-9.136.201306251235
-note:
 version: [1]
 desc: |
-  When logging into a UCS system locally on the Linux console or 
-  remotely via SSH an information message pointing the user to the 
+  When logging into a UCS system locally on the Linux console or
+  remotely via SSH an information message pointing the user to the
   Univention Management Console is now displayed.
 bug: [31094, 31096]
+erratum: 131

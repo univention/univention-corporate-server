@@ -3,9 +3,9 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-dojo
 fix: 6.0.15-3.77.201307041034
-note:
 version: [1]
 desc: |
   This erratum fixes problems with standby overlay animations not covering the
   full underlying area.
 bug: [31581]
+erratum: 145

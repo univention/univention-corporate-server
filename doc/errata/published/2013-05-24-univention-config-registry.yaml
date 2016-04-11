@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-config-registry
 fix: 8.0.7-3.426.201305241137
-note:
 version: [1]
 desc: |
   The Univention Config Registry layers were processed in the wrong order when
@@ -11,3 +10,4 @@ desc: |
   from the layer with the highest priority, which are 'force', 'schedule',
   'ldap' and 'normal'.
 bug: [29632]
+erratum: 116

@@ -8,6 +8,6 @@ desc: |
  It was discovered that a use-after-free in the handling of ImageText
  requests in the Xorg Xserverh could result in denial of service
  or privilege escalation.
-note:
 cve:
  - CVE-2013-4396
+erratum: 193

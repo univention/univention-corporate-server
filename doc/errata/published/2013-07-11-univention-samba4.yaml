@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-samba4
 fix: 2.0.44-33.498.201308141845
-note:
 version: [1]
 desc: |
   This errata update fixes three bugs in the package univention-samba4:
@@ -17,3 +16,4 @@ desc: |
     any system in the UCS@school domain was still offing the service
     "Samba 3".
 bug: [31640, 31887, 32184]
+erratum: 166

@@ -3,7 +3,7 @@ release: "3.1"
 version: [1]
 scope: ucs_3.1-0-errata3.1-1
 src: linux
-fix:3.2.46-1.61.201405131129
+fix: 3.2.46-1.61.201405131129
 desc: |
  This update fixes a race condition in the tty driver of the Linux kernel, which
  could result in denial of service or privilege escalation. In addition two
@@ -14,4 +14,4 @@ cve:
  - CVE-2014-0196
  - CVE-2014-1737
  - CVE-2014-1738
-
+erratum: 230

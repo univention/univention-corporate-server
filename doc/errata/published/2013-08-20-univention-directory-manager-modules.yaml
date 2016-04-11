@@ -3,7 +3,6 @@ release: "3.1"
 scope: ucs_3.1-0-errata3.1-1
 src: univention-directory-manager-modules
 fix: 8.0.143-25.1046.201308272045
-note:
 version: [1]
 desc: |
   This update changes the following issues:
@@ -12,3 +11,4 @@ desc: |
   * The license is now loaded and displayed in the UMC license info
     dialog even if the license is invalid or expired.
 bug: [31916,31673]
+erratum: 174

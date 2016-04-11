@@ -11,3 +11,4 @@ desc: |
  via crafted entities in an XML document.
 cve:
  - CVE-2012-5134
+erratum: 4

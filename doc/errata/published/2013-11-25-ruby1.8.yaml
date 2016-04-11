@@ -9,8 +9,8 @@ desc: |
  * The expansion of XML entities in isn't limited, allowing DoS(CVE-2013-1821)
  * Incorrect validation of SSL certificates with NULL bytes in the hostname (CVE-2013-4073)
  * Buffer overflow in the floating point parsing code for strtod() (CVE-2013-4164)
-note:
 cve:
  - CVE-2013-1821
  - CVE-2013-4073
  - CVE-2013-4164
+erratum: 194
