@@ -13,3 +13,4 @@ desc: |
     example for nested groups.
 bug: [37259, 36532, 38645]
 erratum: 211
+announced: 2015-06-17

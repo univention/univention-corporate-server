@@ -10,3 +10,4 @@ desc: |
     restart when the network interfaces are re-configured.
 bug: [36532]
 erratum: 223
+announced: 2015-07-03

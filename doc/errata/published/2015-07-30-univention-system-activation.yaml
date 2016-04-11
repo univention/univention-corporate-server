@@ -10,3 +10,4 @@ desc: |
    * The loading animation is now visible in Firefox.
 bug: [39019, 38918]
 erratum: 276
+announced: 2015-08-06

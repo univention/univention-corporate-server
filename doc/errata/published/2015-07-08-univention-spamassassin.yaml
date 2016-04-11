@@ -10,3 +10,4 @@ desc: |
     dovecot in the UCS mail stack (Bug #34839, Bug #38759).
 bug: [34839, 38759]
 erratum: 239
+announced: 2015-07-09

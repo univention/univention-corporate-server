@@ -10,3 +10,4 @@ desc: |
     expired password in the UMC login.
 bug: [38826]
 erratum: 245
+announced: 2015-07-16

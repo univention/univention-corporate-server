@@ -14,3 +14,4 @@ desc: |
   * The DHCP policies are no longer linked to the LDAP base.
 bug: [38685, 38584]
 erratum: 270
+announced: 2015-08-06

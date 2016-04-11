@@ -10,3 +10,4 @@ desc: |
  * Ignore unknown Samba4 DNS objects instead of creating a dns/host_record.
 bug: [37709, 39077]
 erratum: 275
+announced: 2015-08-06

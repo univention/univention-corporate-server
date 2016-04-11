@@ -21,3 +21,4 @@ desc: |
     Registry' is not recommended and will clash with the 'LDAP server' policy.
 bug: [38094]
 erratum: 201
+announced: 2015-05-28

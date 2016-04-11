@@ -9,3 +9,4 @@ desc: |
  Manager during system setup. The issue has been fixed.
 bug: [39131]
 erratum: 284
+announced: 2015-08-10

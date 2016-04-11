@@ -8,3 +8,4 @@ desc: |
  System Setup now always creates german and english locales
 bug: [39136]
 erratum: 285
+announced: 2015-08-10

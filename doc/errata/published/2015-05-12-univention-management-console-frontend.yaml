@@ -13,3 +13,4 @@ desc: |
   * Scrolling in the appcenter on mobile devices is now more responsive.
 bug: [37280, 38335, 38127, 38050]
 erratum: 197
+announced: 2015-05-28

@@ -18,3 +18,4 @@ desc: |
   * The wording for app maintainer has been adjusted to app provider.
 bug: [33627, 36794, 35678, 38112, 38129, 37230, 37591]
 erratum: 203
+announced: 2015-05-28

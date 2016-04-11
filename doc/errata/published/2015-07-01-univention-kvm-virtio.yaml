@@ -9,3 +9,4 @@ desc: |
  a problem with broken driver signatures in Windows 2012 server.
 bug: [38655]
 erratum: 230
+announced: 2015-07-03

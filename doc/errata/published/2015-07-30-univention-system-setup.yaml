@@ -11,3 +11,4 @@ desc: |
   * The network settings module can now also be executed on unjoined systems.
 bug: [39048, 39044]
 erratum: 274
+announced: 2015-08-06

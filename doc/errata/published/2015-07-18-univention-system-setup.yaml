@@ -10,3 +10,4 @@ desc: |
     the UCS system joins into an Active Directory domain.
 bug: [37460]
 erratum: 251
+announced: 2015-07-20

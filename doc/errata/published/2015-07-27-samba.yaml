@@ -11,3 +11,4 @@ desc: |
    passwords on Windows clients (DPAPI).
 bug: [39025]
 erratum: 262
+announced: 2015-07-28

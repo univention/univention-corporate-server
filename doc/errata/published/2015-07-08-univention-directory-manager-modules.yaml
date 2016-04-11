@@ -15,3 +15,4 @@ desc: |
      variable expects the DN or the label of a user template.
 bug: [38473, 38832]
 erratum: 235
+announced: 2015-07-09

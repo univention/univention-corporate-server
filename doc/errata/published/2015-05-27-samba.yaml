@@ -14,3 +14,4 @@ desc: |
    Samba AD domains.
 bug: [37939, 37101, 38827]
 erratum: 253
+announced: 2015-07-20

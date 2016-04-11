@@ -15,3 +15,4 @@ desc: |
      most specific policy in all cases. This has been fixed.
 bug: [36255, 38663, 38712]
 erratum: 222
+announced: 2015-07-03

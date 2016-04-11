@@ -12,3 +12,4 @@ desc: |
     used to force using encryption by re-directing to <https://>.
 bug: [38391, 38016]
 erratum: 218
+announced: 2015-07-03

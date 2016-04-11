@@ -13,3 +13,4 @@ desc: |
   * Added a transition when a UMC-module-header reaches the top of the screen.
 bug: [38658, 36771, 38491]
 erratum: 268
+announced: 2015-08-06

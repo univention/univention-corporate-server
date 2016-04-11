@@ -12,3 +12,4 @@ desc: |
   * The attribute "ldapFilter" has been added to policy UDM modules.
 bug: [32146, 38297, 38616, 36255]
 erratum: 217
+announced: 2015-07-03

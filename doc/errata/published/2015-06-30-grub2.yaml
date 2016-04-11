@@ -10,3 +10,4 @@ desc: |
 note: This update consists of two parts. 'univention-grub' needs to be updated, too.
 bug: [38779]
 erratum: 228
+announced: 2015-07-03

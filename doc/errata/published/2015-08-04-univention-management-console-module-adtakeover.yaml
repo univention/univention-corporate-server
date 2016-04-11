@@ -10,3 +10,4 @@ desc: |
  * Fix time synchronization to german UCS
 bug: [39069,38729]
 erratum: 279
+announced: 2015-08-06
