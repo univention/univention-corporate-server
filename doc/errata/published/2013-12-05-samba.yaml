@@ -12,3 +12,4 @@ desc: |
 note: This update fixes these vulnerabilities.
 cve:
  - CVE-2013-4408
+erratum: 5

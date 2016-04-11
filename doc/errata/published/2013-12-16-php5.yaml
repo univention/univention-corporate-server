@@ -12,3 +12,4 @@ note: This update fixes these vulnerabilities.
 cve:
  - CVE-2013-6712
  - CVE-2013-6420
+erratum: 17

@@ -9,3 +9,4 @@ desc: |
   default group names via the new UCR variable family
   "groups/default/.*".
 bug: [33645]
+erratum: 13

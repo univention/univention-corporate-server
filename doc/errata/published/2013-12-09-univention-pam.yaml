@@ -18,3 +18,4 @@ desc: |
     "security/limits/default/user/soft/nofile" and
     "security/limits/default/user/hard/nofile".
 bug: [33897, 33710, 33650, 32415]
+erratum: 30

@@ -17,3 +17,4 @@ desc: |
   * The progress bar does not have a transition anymore if the value is
     "indeterminate".
 bug: [29588,33133,33447,32649]
+erratum: 10

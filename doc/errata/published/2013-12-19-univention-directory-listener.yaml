@@ -8,3 +8,4 @@ desc: |
   This update improves the reliability of the Univention Directory Listener
   replication handling.
 bug: [33732]
+erratum: 26

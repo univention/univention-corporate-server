@@ -13,3 +13,4 @@ desc: |
     host and domain identifiers match the current settings in case of
     a rejoin and after completing the appliance setup.
 bug: [33130,33447]
+erratum: 9

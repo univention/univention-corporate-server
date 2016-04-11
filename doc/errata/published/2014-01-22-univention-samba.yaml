@@ -8,3 +8,4 @@ desc: |
   This update fixes a bug in the handling of the "samba/global/options/.*"
   UCR variables.
 bug: [28722]
+erratum: 44

@@ -9,3 +9,4 @@ desc: |
   the default domain group policy object and the domain controller group
   policy object. This issue has been fixed.
 bug: [33881]
+erratum: 35

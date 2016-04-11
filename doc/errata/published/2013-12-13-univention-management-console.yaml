@@ -8,3 +8,4 @@ desc: |
  This updates improves the error handling of UMC modules. A feedback is sent to
  the client when the initializing of a module failed.
 bug: [33673]
+erratum: 40

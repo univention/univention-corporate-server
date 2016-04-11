@@ -9,3 +9,4 @@ desc: |
  The UCS@school computerroom module triggered a crash when responding
  with an empty message body.
 bug: [33622]
+erratum: 49

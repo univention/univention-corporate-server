@@ -14,3 +14,4 @@ desc: |
   * After adding a new standard container the container was not selectable as a
     position for new objects.
 bug: [33004, 33329, 33554, 33651]
+erratum: 38

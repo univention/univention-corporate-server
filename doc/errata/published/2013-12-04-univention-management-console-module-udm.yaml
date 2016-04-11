@@ -3,7 +3,6 @@ release: "3.2"
 scope: ucs_3.2-0-errata3.2-0
 src: univention-management-console-module-udm
 fix: 4.0.97-11.427.201312051248
-note:
 version: [0]
 desc: |
   This errata update fixes several issues:
@@ -14,3 +13,4 @@ desc: |
     value was not any searchable attribute, it caused LDAP errors. Now the
     module falls back to search for "Default properties".
 bug: [32845, 33556]
+erratum: 14

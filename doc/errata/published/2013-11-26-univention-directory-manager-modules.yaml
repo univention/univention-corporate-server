@@ -8,3 +8,4 @@ desc: |
   Moving objects now also supports mixed-case scenarios. This is relevant when
   moving organizational units or containers in Samba 4/Active Directory.
 bug: [33482]
+erratum: 12

@@ -7,3 +7,4 @@ version: [0]
 desc: |
   This update fixes two typos in the German translation
 bug: [33118, 32971]
+erratum: 41

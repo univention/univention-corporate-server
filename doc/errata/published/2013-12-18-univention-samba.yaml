@@ -13,3 +13,4 @@ desc: |
   In UCS 3.2 Samba NT domains this needs to be set to "yes" to allow
   trusts relations to Microsoft Windows AD domains.
 bug: [33303]
+erratum: 25

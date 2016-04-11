@@ -11,3 +11,4 @@ desc: |
   * The automatic check script now restarts UVMMd in case the daemon is
     no longer responding to the cyclic liveness check.
 bug: [33166,33741]
+erratum: 28

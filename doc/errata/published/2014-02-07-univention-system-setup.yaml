@@ -8,3 +8,4 @@ desc: |
   This update hides the tab bar of Mozilla Firefox in appliance mode to enhance
   the user experience.
 bug: [33640]
+erratum: 58

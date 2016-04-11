@@ -11,3 +11,4 @@ desc: |
   * Fix the translation of some error messages if Univention Corporate Client was
     installed.
 bug: [33850]
+erratum: 59

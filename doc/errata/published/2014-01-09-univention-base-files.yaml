@@ -17,3 +17,4 @@ desc: |
  UCS systems that exposes the NTP service to the internet.
 cve:
  - CVE-2013-5211
+erratum: 20

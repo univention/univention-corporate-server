@@ -8,3 +8,4 @@ desc: |
   This update removes a misleading status message printed during
   the update of virus signature definitions in Freshclam.
 bug: [33683]
+erratum: 24

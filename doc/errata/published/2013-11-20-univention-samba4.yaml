@@ -15,3 +15,4 @@ desc: |
     in samba4 related setup scripts to prevent line wrapping of
     search results.
 bug: [33250, 33529, 33583]
+erratum: 6

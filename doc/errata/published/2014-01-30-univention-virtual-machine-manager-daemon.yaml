@@ -12,3 +12,4 @@ desc: |
  * The title of noVNC tabs/windows now includes the name of the virtual machine
    and the name of the host.
 bug: [33458,33164]
+erratum: 51

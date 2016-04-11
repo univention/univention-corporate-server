@@ -9,3 +9,4 @@ desc: |
   if client-side printer drivers were used. This errata update fixes
   this issue.
 bug: [33197]
+erratum: 7

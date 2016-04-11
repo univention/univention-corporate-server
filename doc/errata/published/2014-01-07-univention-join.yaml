@@ -8,3 +8,4 @@ desc: |
   This errata update disables the execution of join scripts via the UMC module
   while software is being installed or uninstalled.
 bug: [33793]
+erratum: 27

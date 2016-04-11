@@ -11,3 +11,4 @@ desc: |
     command line options --binddn, --bindpwd and
     --bindpwdfile for authentiaction.
 bug: [32560]
+erratum: 23

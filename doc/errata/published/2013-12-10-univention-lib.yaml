@@ -18,3 +18,4 @@ desc: |
     to the actual name.
   * A new python lib (s4) has been added for Samba-related operations.
 bug: [33582,33649,33710,33893]
+erratum: 29

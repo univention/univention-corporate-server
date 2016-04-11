@@ -12,3 +12,4 @@ desc: |
     this container was selected.
   * Display a correct error message if an invalid license has been imported.
 bug: [33244, 33343, 30156]
+erratum: 3

@@ -17,3 +17,4 @@ desc: |
     for the UCRV update/available.
   * Restart amavis in cleanup hook script.
 bug: [30034,33592,33437,33729,33762,33765]
+erratum: 18

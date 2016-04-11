@@ -24,3 +24,4 @@ desc: |
     used to find all applications. This is done by reading from the
     updater.status file.
 bug: [33946,33947,34028,33548]
+erratum: 60

@@ -8,3 +8,4 @@ desc: |
   * The script create_spn_account.sh failed in case the generated random password
     started with a dash. This has been fixed.
 bug: [32938]
+erratum: 56

@@ -10,3 +10,4 @@ desc: |
    (CVE-2013-4576)
 cve:
  - CVE-2013-4576
+erratum: 19

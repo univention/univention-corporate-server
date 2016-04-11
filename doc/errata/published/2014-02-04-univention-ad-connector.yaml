@@ -8,3 +8,4 @@ desc: |
   * Added a note on Univention AD Takeover is now displayed the UMC module for
     the Univention AD Connector.
 bug: [33657]
+erratum: 57

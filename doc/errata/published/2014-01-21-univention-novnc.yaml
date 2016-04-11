@@ -9,3 +9,4 @@ desc: |
   machines in UVMM) is now served on TCP port 6080. This fixes HTTPS connection
   problems with newer Firefox browsers.
 bug: [33587]
+erratum: 31

@@ -17,3 +17,4 @@ desc: |
   * The internal connector status database is now removed when re-joining
     the system.
 bug: [31731, 33711, 33644, 33936, 33940]
+erratum: 48

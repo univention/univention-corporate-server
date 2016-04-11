@@ -10,3 +10,4 @@ desc: |
    rendering in browsers.
  * Support UMC modules that may be opened only once at the same time.
 bug: [32655,31855]
+erratum: 61

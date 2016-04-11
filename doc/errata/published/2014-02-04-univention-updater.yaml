@@ -11,3 +11,4 @@ desc: |
  * The Univention updater is now called in non-interactive-mode when invoked
    from the maintenance Cron job and init script.
 bug: [33189,33194]
+erratum: 55

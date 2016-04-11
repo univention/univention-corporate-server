@@ -15,3 +15,4 @@ desc: |
   * Show an error message when application registration fails after
     installation. Register applications upon each opening of the module.
 bug: [33484, 33362, 33535, 33341, 33573]
+erratum: 8

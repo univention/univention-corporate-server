@@ -12,3 +12,4 @@ desc: |
  This update fixes these issues, making sure that the group "DC Backup Hosts"
  has access to the certificates.
 bug: [31941]
+erratum: 52

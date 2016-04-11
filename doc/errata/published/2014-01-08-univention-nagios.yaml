@@ -10,3 +10,4 @@ desc: |
   * Support for the customisation of standard user and group names has been
     added.
 bug: [33593, 33646]
+erratum: 36
