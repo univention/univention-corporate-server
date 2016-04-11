@@ -9,3 +9,4 @@ desc: |
  * The PID file is no longer created world-writable.
 bug: [25162]
 erratum: 344
+announced: 2015-07-16

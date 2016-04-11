@@ -9,3 +9,4 @@ desc: |
   UCR variable group "directory/manager/web/widget/.*/".
 bug: [38743]
 erratum: 341
+announced: 2015-06-30

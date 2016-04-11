@@ -10,3 +10,4 @@ desc: |
   automatically on first logon.
 bug: [38644]
 erratum: 338
+announced: 2015-06-17
