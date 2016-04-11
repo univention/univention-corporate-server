@@ -9,3 +9,4 @@ desc: |
  * Remove confirmation prompt in non-interactive script
    univention-backup2master.
 bug: [38774]
+erratum: 306

@@ -9,3 +9,4 @@ desc: |
   * The long waiting for the DH parameter generation on the first install was
   removed.
 bug: [38990]
+erratum: 291

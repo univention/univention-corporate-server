@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * The ACL check in the sysvol sync script has been fixed.
 bug: [39511]
+erratum: 348

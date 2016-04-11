@@ -17,3 +17,4 @@ desc: |
  * A link to the manual section about extended attributes has been
    added in the UMC users, groups and computers modules.
 bug: [39041, 38346, 38834, 38190, 39234]
+erratum: 354

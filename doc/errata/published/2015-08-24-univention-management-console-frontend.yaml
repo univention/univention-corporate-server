@@ -11,3 +11,4 @@ desc: |
  * UMC modules with long descriptions might overlap the borders of the box in
    the Gallery. Now the text is cut at some point.
 bug: [37799, 39319]
+erratum: 353

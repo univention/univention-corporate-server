@@ -11,3 +11,4 @@ desc: |
  * The number of bits used when re-creating new host keys can be over-written
    through the UCR variables like 'sshd/HostKey/rsa'.
 bug: [38710,38711]
+erratum: 294

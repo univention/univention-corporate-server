@@ -12,3 +12,4 @@ desc: |
  * A filter mechanism was added to the Univention Directory Listener to
    prevent certain objects from being stored to the local cache.
 bug: [34763,38823]
+erratum: 336

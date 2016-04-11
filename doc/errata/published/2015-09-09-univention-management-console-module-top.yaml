@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * An error has been fixed which could occur during querying the process list.
 bug: [39302]
+erratum: 318

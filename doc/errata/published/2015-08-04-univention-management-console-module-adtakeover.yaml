@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Synchronize DC=DomainDnsZones and DC=ForestDnsZones
 bug: [34184]
+erratum: 344

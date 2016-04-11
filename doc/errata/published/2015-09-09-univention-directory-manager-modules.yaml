@@ -13,3 +13,4 @@ desc: |
    tracebacks in S4 connector. The UDM module users/user has been updated to
    fix this traceback.
 bug: [38796,25356,39409]
+erratum: 357

@@ -11,3 +11,4 @@ desc: |
  * Fix logrotate configuration (Bug 39130).
  * Dovecot now works internally with lowercase email addresses (Bug 39346).
 bug: [39148,39130,39346]
+erratum: 333

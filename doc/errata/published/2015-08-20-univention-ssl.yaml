@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Deleted SSL certificates are also deleted on DC backups.
 bug: [33870]
+erratum: 314

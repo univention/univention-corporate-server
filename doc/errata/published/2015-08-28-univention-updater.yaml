@@ -9,3 +9,4 @@ desc: |
  * The command line tool 'univention-upgrade' is now able to perform
    App updates.
 bug: [30417]
+erratum: 345

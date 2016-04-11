@@ -10,3 +10,4 @@ desc: |
    in AD Takeover scenarios. For updated domains, this is not activated.
  * Fix sync of SOA record changes back to UDM
 bug: [34184, 39040]
+erratum: 343

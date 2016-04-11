@@ -21,3 +21,4 @@ desc: |
  * The unattended Windows sysprep join failed against Samba 4. This issue
    has been fixed.
 bug: [39139, 39254, 39263, 39244, 39079]
+erratum: 289

@@ -10,3 +10,4 @@ desc: |
    failed with a Python traceback because of an unexpected reply to an
    LDAP search request.
 bug: [37626]
+erratum: 347

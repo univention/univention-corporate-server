@@ -22,7 +22,7 @@ desc: |
   * Memory safety bug due to bad test in nsZipArchive.cpp (CVE-2015-2735)
   * nsZipArchive::BuildFileList has memory-safety bug (CVE-2015-2736)
   * rx::d3d11::SetBufferData using uninitialized memory (CVE-2015-2737)
-  * YCbCrImageDataDeserializer::ToDataSourceSurface using uninitialized 
+  * YCbCrImageDataDeserializer::ToDataSourceSurface using uninitialized
     memory (CVE-2015-2738)
   * Memory safety problem in ArrayBufferBuilder::append (CVE-2015-2739)
   * Overflow in nsXMLHttpRequest::AppendToResponseText causes memory-safety
@@ -33,7 +33,7 @@ desc: |
   * ECC correctness issues (CVE-2015-2730)
   * Type Confusion mozilla::dom::indexedDB::IndexedDatabaseManager
     (CVE-2015-2728)
-  * Memory safety bugs fixed in Firefox ESR 31.8, Firefox 38.1, and 
+  * Memory safety bugs fixed in Firefox ESR 31.8, Firefox 38.1, and
     Firefox 39. (CVE-2015-2724)
   * Memory safety bugs fixed in Firefox 38.1 and Firefox 39. (CVE-2015-2725)
   * Memory safety bugs fixed in Firefox 39. (CVE-2015-2726)
@@ -55,7 +55,7 @@ desc: |
   * Self-assignment in nsTArray_Impl causes memory-safety bug (CVE-2015-4489)
   * gdk-pixbuf heap overflow and DoS (CVE-2015-4491)
   * Use After Free in XMLHttpRequest::Open() (CVE-2015-4492)
-  * Stagefright: heap-buffer-overflow crash 
+  * Stagefright: heap-buffer-overflow crash
     [@stagefright::ESDS::parseESDescriptor] (CVE-2015-4493)
   * use-after-free (& crash) after style flush in CanvasRenderingContext2D
     (CVE-2015-4497)
@@ -104,3 +104,4 @@ cve:
  - CVE-2015-4493
  - CVE-2015-4497
  - CVE-2015-4498
+erratum: 326

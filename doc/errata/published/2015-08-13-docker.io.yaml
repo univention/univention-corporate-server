@@ -9,3 +9,4 @@ desc: |
  * Package upgrade will not fail anymore if server was not running.
  * The docker server automatically starts when booting.
 bug: [38549]
+erratum: 303

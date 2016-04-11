@@ -13,3 +13,4 @@ bug:
 cve:
  - CVE-2014-1829
  - CVE-2014-1830
+erratum: 308

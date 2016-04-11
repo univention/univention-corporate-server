@@ -17,3 +17,4 @@ bug:
 cve:
  - CVE-2015-5522
  - CVE-2015-5523
+erratum: 310

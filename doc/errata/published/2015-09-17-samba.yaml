@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Under certain circumstances the Samba dlz_bind9 module segfaulted.
 bug: [39362]
+erratum: 329

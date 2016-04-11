@@ -9,3 +9,4 @@ desc: |
  * Any running Univention Directory Listener and Univention Directory
    Notifier are forcefully terminated before the domain is joined.
 bug: [38756]
+erratum: 304

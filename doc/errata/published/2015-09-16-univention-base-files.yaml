@@ -9,3 +9,4 @@ desc: |
  * ntpd and ntpdate won't collide with each other, when started in short
    succession (e.g. while booting).
 bug: [39299]
+erratum: 339

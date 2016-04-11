@@ -9,3 +9,4 @@ desc: |
  * A new diagnostic plugin has been added to check ssh connections
    to other UCS servers.
 bug: [38137]
+erratum: 335

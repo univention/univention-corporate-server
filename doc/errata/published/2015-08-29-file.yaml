@@ -13,3 +13,4 @@ bug:
 cve:
  - CVE-2014-9653
  - CVE-2014-9652
+erratum: 300

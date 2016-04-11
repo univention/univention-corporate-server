@@ -14,3 +14,4 @@ desc: |
    'sshd/HostKey'.
  * Fix handling of UCR variable 'sshd/banner'.
 bug: [38609,38709,39166]
+erratum: 293

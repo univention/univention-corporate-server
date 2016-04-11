@@ -9,3 +9,4 @@ desc: |
  * The welcome-screen initscript will now detect running instances and
    it will not be started when debian-installer is running
 bug: [39137]
+erratum: 356

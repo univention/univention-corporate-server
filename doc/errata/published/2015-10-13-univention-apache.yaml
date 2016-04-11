@@ -10,3 +10,4 @@ desc: |
    the UCR variables 'apache2/hsts', 'apache2/hsts/max-age', and
    'apache2/hsts/includeSubDomains'. See their description for more details.
 bug: [37637]
+erratum: 349

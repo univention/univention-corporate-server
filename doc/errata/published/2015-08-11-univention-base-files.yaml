@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Remove incorrect quotation marks from /etc/lsb-release.
 bug: [37725]
+erratum: 286

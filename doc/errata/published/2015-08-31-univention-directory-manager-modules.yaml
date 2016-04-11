@@ -9,3 +9,4 @@ desc: |
  * A user's display name will only be set automatically if first or last name
    were changed.
 bug: [39292]
+erratum: 295

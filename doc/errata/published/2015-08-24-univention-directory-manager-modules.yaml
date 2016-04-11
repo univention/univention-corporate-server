@@ -15,3 +15,4 @@ desc: |
    altered manually and does not match the "default value", no automatic
    update is performed.
 bug: [38385]
+erratum: 290

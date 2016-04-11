@@ -9,3 +9,4 @@ desc: |
  * A testparm error message about the UCS default for winbind separator
    has been relaxed to only issue a warning message.
 bug: [36581]
+erratum: 346

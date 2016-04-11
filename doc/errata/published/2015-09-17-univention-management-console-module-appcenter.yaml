@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Added support for UCR variable templates in AppCenter readme files.
 bug: [38233]
+erratum: 341

@@ -9,3 +9,4 @@ desc: |
  * Error handling and logging has been improved in the sysvol sync
    script.
 bug: [38868]
+erratum: 330

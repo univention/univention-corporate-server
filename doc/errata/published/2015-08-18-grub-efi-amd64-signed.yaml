@@ -10,3 +10,4 @@ desc: |
  at one go with this erratum to ensure a successful boot on EFI
  systems.
 bug: [39027]
+erratum: 288

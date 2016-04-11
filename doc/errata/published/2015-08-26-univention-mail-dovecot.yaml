@@ -11,3 +11,4 @@ desc: |
  In some cases postfix' authentication timeout has been reached and
  resulted in authentication failure.
 bug: [39267]
+erratum: 291

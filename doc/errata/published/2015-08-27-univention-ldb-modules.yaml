@@ -7,3 +7,4 @@ version: [3]
 desc: |
  The package has been rebuilt to match the new Samba version.
 bug: [39275]
+erratum: 292

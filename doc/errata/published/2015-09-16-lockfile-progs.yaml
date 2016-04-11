@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Move package to "maintained", as univention-base-files depends on it.
 bug: [39357]
+erratum: 338

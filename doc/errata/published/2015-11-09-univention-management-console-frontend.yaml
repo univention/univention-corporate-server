@@ -9,3 +9,4 @@ desc: |
   * If a restart of the UMC components is required the dialog to ask for a
     page reload doesn't pop up.
 bug: [39578]
+erratum: 361

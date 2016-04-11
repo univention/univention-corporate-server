@@ -11,3 +11,4 @@ desc: |
  * The UCR variable mail/antivir/amavis/debug/level can be used to set Amavis'
    log level.
 bug: [38915]
+erratum: 305

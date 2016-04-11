@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Fixed a timing issue that could occur when uploading a license.
 bug: [39159]
+erratum: 287
