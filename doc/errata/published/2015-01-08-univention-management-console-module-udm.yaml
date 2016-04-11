@@ -11,3 +11,4 @@ desc: |
   * Fixed error handling when renaming the currently logged in user.
   * Enhance the look of error messages.
 bug: [36700, 36591, 35280, 30088, 36291]
+erratum: 62

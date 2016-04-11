@@ -17,3 +17,4 @@ desc: |
   * Add more detailed error messages if no connection to UMC server
     components is possible.
 bug: [37518, 36445, 36636,36680, 36400]
+erratum: 76

@@ -9,3 +9,4 @@ desc: |
   of individual join scripts in join.log
 bug:
  - 36290
+erratum: 24

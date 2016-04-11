@@ -10,3 +10,4 @@ desc: |
     attributes from person, organizationalPerson and inetOrgPerson.
 bug:
  - 35775
+erratum: 46

@@ -9,3 +9,4 @@ desc: |
   * The permissions for the pykotadmin.conf UCR template
     have been fixed.
 bug: [36859]
+erratum: 45

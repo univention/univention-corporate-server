@@ -12,3 +12,4 @@ desc: |
   * Extended one command to allow searching for multiple components at once
     (needed for updater module).
 bug: [37403, 37571, 37364]
+erratum: 48

@@ -15,3 +15,4 @@ desc: |
     systems this UCR variable is maintained to keep the old default.
 bug:
  - 37476
+erratum: 61

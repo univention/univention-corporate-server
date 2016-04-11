@@ -11,3 +11,4 @@ desc: |
     module a white page occurred which prevented installation.
   * An internal function now sorts apps based on their ID.
 bug: [36457, 36868, 37153]
+erratum: 22

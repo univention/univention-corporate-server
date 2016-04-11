@@ -10,3 +10,4 @@ desc: |
  emails containing error messages every 30 minutes.
 bug:
  - 36621
+erratum: 70

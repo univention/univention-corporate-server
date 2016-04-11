@@ -34,3 +34,4 @@ desc: |
   * Error handling has been improved in case a UDM module could not be
     identified.
 bug: [36732, 35719, 29231, 35273, 32979, 34353, 28383, 37178, 31828, 34246, 33527, 35350, 37449, 34680]
+erratum: 18

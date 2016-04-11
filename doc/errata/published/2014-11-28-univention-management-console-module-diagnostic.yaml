@@ -8,3 +8,4 @@ desc: |
   * Fixed the timeout value for pinging the gateway. It blocked the diagnose
     when the gateway was not reachable.
 bug: [37032]
+erratum: 12

@@ -9,3 +9,4 @@ desc: |
   * Added syntax support for the UDM object flag "functional"
   * Update of the license check: internal "hidden" users are now ignored
 bug: [37654]
+erratum: 71

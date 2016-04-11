@@ -9,3 +9,4 @@ desc: |
   * Fix shutdown of univention-directory-listener if failed.ldif exists.
 bug:
  - 37291
+erratum: 23

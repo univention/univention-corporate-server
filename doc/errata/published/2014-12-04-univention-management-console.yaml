@@ -17,3 +17,4 @@ desc: |
   * Connections to the LDAP server weren't closed after the session timeout.
     This caused a UMC server crash due to max open file limits.
 bug: [34353, 37178, 37317, 37367, 37169, 37453]
+erratum: 44

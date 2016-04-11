@@ -9,3 +9,4 @@ desc: |
   * Do not complain about join scripts when using the new build script
     univention-install-joinscript.
 bug: [32525]
+erratum: 68

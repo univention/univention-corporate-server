@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * Fix displaying the content of the logfile during package updates.
 bug: [37564]
+erratum: 81

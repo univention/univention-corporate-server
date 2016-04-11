@@ -11,3 +11,4 @@ desc: |
   * The reconnection to the Postgresql server is now done in any case after
     a failure.
 bug: [35700]
+erratum: 5

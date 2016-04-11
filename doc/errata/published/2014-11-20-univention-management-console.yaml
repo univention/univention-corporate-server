@@ -11,3 +11,4 @@ desc: |
   * Fix error when the UMC server and the UMC module try to close the
     module process at the same time
 bug: [37036, 35231]
+erratum: 3

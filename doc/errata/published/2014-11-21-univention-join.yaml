@@ -10,3 +10,4 @@ desc: |
     current time from the server used for joining, as this sometimes stalls
     endlessly.
 bug: [36935]
+erratum: 4

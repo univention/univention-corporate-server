@@ -8,3 +8,4 @@ desc: |
  Re-release the latest version of this package due to an error in the release
  announcement process.
 bug: [37192]
+erratum: 9

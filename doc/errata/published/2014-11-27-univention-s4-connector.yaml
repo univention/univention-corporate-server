@@ -12,3 +12,4 @@ desc: |
     errata update for UCS@school 4.0 will make use of this feature.
   * Ignore cn=Subschema and warn if listener didn't pass entryUUID
 bug: [33110, 36980, 36981]
+erratum: 42

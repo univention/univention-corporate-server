@@ -7,7 +7,8 @@ version: [0]
 desc: |
  - Since erratum #64 the automatic password setup for the MySQL user "root"
    was missing. This erratum reenables the automatic passwort setup.
-   
+
    The root password is written to /etc/mysql.secret. If the file is missing,
    a new password will be automatically set during the update.
 bug: [37686]
+erratum: 78

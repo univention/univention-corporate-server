@@ -7,6 +7,7 @@ version: [0]
 desc: |
  This update addresses the following issues:
   * The new UCR variable mail/saslauthd/cache/timeout (default 1800)
-    has been added to define the saslauthd expiration time of the 
+    has been added to define the saslauthd expiration time of the
     authentication cache (in seconds).
 bug: [36949]
+erratum: 67

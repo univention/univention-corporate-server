@@ -8,3 +8,4 @@ desc: |
   * Close the progress bar for server shutdown if no permission exists to
     shutdown the server.
 bug: [36992]
+erratum: 13

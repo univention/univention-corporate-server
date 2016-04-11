@@ -17,3 +17,4 @@ desc: |
   This change gets only applied for newly installed Domaincontrollers.
   See <http://sdb.univention.de/1298> for additional details.
 bug: [37553]
+erratum: 66

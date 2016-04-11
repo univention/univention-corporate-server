@@ -5,7 +5,7 @@ src: xorg-server
 fix: 2:1.12.4-6.102.201501151154
 version: [0]
 desc: |
- Multiple out of bounds accesses and integer overflows in the Xorg 
+ Multiple out of bounds accesses and integer overflows in the Xorg
  X-Server may result in denial of service or privilege escalation.
 bug:
  - 37274
@@ -22,3 +22,4 @@ cve:
  - CVE-2014-8100
  - CVE-2014-8101
  - CVE-2014-8102
+erratum: 40

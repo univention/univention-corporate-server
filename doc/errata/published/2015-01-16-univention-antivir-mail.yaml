@@ -9,3 +9,4 @@ desc: |
   * The amavis service was always listed as stopped in UMC.
 bug:
  - 36998
+erratum: 47

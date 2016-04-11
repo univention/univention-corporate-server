@@ -10,3 +10,4 @@ desc: |
     there were problems while reading the join scripts of the
     source package.
 bug: [37688]
+erratum: 80

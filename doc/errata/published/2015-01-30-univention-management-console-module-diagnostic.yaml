@@ -7,3 +7,4 @@ version: [0]
 desc: |
   * Added a plugin which checks the package status.
 bug: [35861]
+erratum: 72

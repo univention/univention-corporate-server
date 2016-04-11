@@ -9,3 +9,4 @@ desc: |
    mysql/autostart.
 bug:
  - 13811
+erratum: 64

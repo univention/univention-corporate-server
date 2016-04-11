@@ -8,3 +8,4 @@ desc: |
   * Fixed a problem which caused that in some circumstances no reports
     could be created.
 bug: [36234]
+erratum: 77

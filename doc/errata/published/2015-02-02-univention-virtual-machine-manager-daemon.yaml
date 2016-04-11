@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * If no connection to the UVMM daemon is possible show a error message.
 bug: [33963]
+erratum: 74
