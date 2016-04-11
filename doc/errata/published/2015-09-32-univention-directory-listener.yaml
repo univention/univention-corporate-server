@@ -13,3 +13,4 @@ desc: |
    prevent certain objects from being stored to the local cache.
 bug: [34763,38823]
 erratum: 336
+announced: 2015-09-30

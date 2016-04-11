@@ -9,3 +9,4 @@ desc: |
  * Move package to "maintained", as univention-base-files depends on it.
 bug: [39357]
 erratum: 338
+announced: 2015-10-14

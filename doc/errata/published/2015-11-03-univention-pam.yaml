@@ -11,3 +11,4 @@ desc: |
    invalid HOME directories.
 bug: [39369]
 erratum: 360
+announced: 2015-11-04

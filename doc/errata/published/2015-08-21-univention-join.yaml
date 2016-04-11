@@ -10,3 +10,4 @@ desc: |
    Notifier are forcefully terminated before the domain is joined.
 bug: [38756]
 erratum: 304
+announced: 2015-09-09

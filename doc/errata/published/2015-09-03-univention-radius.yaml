@@ -11,3 +11,4 @@ desc: |
  * Raise fault tolerance by trying all available LDAP servers (#39039).
 bug: [38785,38786,39039]
 erratum: 337
+announced: 2015-10-14

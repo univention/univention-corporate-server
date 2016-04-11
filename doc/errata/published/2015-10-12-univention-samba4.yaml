@@ -9,3 +9,4 @@ desc: |
  * The ACL check in the sysvol sync script has been fixed.
 bug: [39511]
 erratum: 348
+announced: 2015-10-28

@@ -10,3 +10,4 @@ desc: |
    it will not be started when debian-installer is running
 bug: [39137]
 erratum: 356
+announced: 2015-11-04

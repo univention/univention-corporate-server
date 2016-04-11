@@ -12,3 +12,4 @@ desc: |
    through the UCR variables like 'sshd/HostKey/rsa'.
 bug: [38710,38711]
 erratum: 294
+announced: 2015-09-01

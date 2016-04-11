@@ -10,3 +10,4 @@ desc: |
    were returned by Samba 4.
 bug: [39673]
 erratum: 352
+announced: 2015-10-30

@@ -13,3 +13,4 @@ desc: |
   * The AppCenter notification has been fixed.
 bug: [39153, 39154, 39395]
 erratum: 334
+announced: 2015-09-24

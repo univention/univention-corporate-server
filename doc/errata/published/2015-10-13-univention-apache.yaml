@@ -11,3 +11,4 @@ desc: |
    'apache2/hsts/includeSubDomains'. See their description for more details.
 bug: [37637]
 erratum: 349
+announced: 2015-10-28

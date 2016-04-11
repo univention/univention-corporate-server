@@ -10,3 +10,4 @@ desc: |
     page reload doesn't pop up.
 bug: [39578]
 erratum: 362
+announced: 2015-11-09

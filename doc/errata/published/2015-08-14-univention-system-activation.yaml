@@ -9,3 +9,4 @@ desc: |
  * Fixed a timing issue that could occur when uploading a license.
 bug: [39159]
 erratum: 287
+announced: 2015-08-20

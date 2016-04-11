@@ -9,3 +9,4 @@ desc: |
  * An error has been fixed which could occur during querying the process list.
 bug: [39302]
 erratum: 318
+announced: 2015-09-15

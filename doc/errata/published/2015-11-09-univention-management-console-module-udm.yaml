@@ -9,3 +9,4 @@ desc: |
   edit operations for UCS systems that have joined an existing AD domain.
 bug: [39779]
 erratum: 363
+announced: 2015-11-09

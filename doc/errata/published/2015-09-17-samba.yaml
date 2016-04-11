@@ -9,3 +9,4 @@ desc: |
  * Under certain circumstances the Samba dlz_bind9 module segfaulted.
 bug: [39362]
 erratum: 329
+announced: 2015-09-23

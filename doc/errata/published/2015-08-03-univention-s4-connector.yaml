@@ -11,3 +11,4 @@ desc: |
  * Fix sync of SOA record changes back to UDM
 bug: [34184, 39040]
 erratum: 343
+announced: 2015-10-28

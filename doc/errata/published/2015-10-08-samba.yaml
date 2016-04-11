@@ -10,3 +10,4 @@ desc: |
    has been relaxed to only issue a warning message.
 bug: [36581]
 erratum: 346
+announced: 2015-10-28

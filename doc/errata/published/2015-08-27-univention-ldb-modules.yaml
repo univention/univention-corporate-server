@@ -8,3 +8,4 @@ desc: |
  The package has been rebuilt to match the new Samba version.
 bug: [39275]
 erratum: 292
+announced: 2015-08-27

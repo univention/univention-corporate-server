@@ -11,3 +11,4 @@ desc: |
    LDAP search request.
 bug: [37626]
 erratum: 347
+announced: 2015-10-28

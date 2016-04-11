@@ -9,3 +9,4 @@ desc: |
  * Remove incorrect quotation marks from /etc/lsb-release.
 bug: [37725]
 erratum: 286
+announced: 2015-08-20

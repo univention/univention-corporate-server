@@ -9,3 +9,4 @@ desc: |
  * Synchronize DC=DomainDnsZones and DC=ForestDnsZones
 bug: [34184]
 erratum: 344
+announced: 2015-10-28

@@ -12,3 +12,4 @@ desc: |
  * Dovecot now works internally with lowercase email addresses (Bug 39346).
 bug: [39148,39130,39346]
 erratum: 333
+announced: 2015-09-24

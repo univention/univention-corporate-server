@@ -10,3 +10,4 @@ desc: |
  * The docker server automatically starts when booting.
 bug: [38549]
 erratum: 303
+announced: 2015-09-09
