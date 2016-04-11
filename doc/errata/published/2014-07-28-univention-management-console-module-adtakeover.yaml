@@ -11,3 +11,4 @@ desc: |
     * The UMC module for AD Takeover has been adjusted to support UCS domains
       in AD member mode.
 bug: [34776, 35346]
+erratum: 172

@@ -6,7 +6,7 @@ fix: 9.0.32-8.1113.201407221106
 version: [2]
 desc: |
     * The component Active Directory Connector has been renamed
-      to Active Directory Connection in the software selection 
+      to Active Directory Connection in the software selection
       of the installer.
 bug: [35414]
-
+erratum: 154

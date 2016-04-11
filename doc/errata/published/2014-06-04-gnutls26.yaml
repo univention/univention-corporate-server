@@ -11,3 +11,4 @@ desc: |
  of service.
 cve:
  - CVE-2014-3466
+erratum: 118

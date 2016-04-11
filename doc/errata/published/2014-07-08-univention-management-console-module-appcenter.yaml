@@ -11,3 +11,4 @@ desc: |
   * The UCR variable repository/app_center/installed is initially set during
     installation/update of this package.
 bug: [35136, 35271]
+erratum: 139

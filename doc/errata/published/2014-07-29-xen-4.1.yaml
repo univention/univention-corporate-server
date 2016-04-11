@@ -9,3 +9,4 @@ desc: |
   prevent the log-file from growing by 50 MiB/s after a virtual machine has
   been migrated.
 bug: [35488]
+erratum: 155

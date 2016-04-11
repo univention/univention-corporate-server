@@ -11,3 +11,4 @@ desc: |
   * New share-userquota binary attribute: Reapply quota on every login
   * Support for the overlay module pwd_scheme_kinit has been added
 bug: [34554, 33174, 35093]
+erratum: 150

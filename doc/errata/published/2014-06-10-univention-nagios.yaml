@@ -11,3 +11,4 @@ desc: |
  this check and, since UCS 3.2 errata 20, are not allowed to be queried
  from external sources.
 bug: [34570]
+erratum: 129

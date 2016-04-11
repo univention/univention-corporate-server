@@ -6,7 +6,7 @@ src: firefox-de
 fix: 1:24.6.0esr-1.42.201406111236
 desc: |
  Several vulnerabilities have been fixed with the update to Firefox ESR 24.6:
- * Memory corruption in the rendering engine allows the execution of 
+ * Memory corruption in the rendering engine allows the execution of
    arbitrary code
  * Out of bounds read when processing malformed JPEG images
  * Buffer overflow in XML bindings
@@ -31,7 +31,4 @@ cve:
  - CVE-2014-1538
  - CVE-2014-1541
  - CVE-2014-1545
-
-
-
-
+erratum: 126

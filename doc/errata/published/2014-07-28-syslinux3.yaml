@@ -15,3 +15,4 @@ desc: |
   "univention-install" as the user "root" or as an Administrator through the
   UMC web interface by using the App-center module.
 bug: [33531]
+erratum: 168

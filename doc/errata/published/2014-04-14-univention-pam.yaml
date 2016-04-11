@@ -12,3 +12,4 @@ desc: |
   * The mapping of user and group names in the UCR templates was
     not updated in all cases. This has been fixed.
 bug: [34315, 34742]
+erratum: 132

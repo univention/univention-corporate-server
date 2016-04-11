@@ -10,3 +10,4 @@ desc: |
     * The command line script univention-ad-takeover has been removed since
       the UMC module is more recent.
 bug: [35500,35514]
+erratum: 174

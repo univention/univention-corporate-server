@@ -22,3 +22,4 @@ desc: |
   * The details of an application do not show the note whether this application
     sends information to the vendor or not if it is a UCS component.
 bug: [31915, 32935, 34867, 35177, 35176]
+erratum: 133

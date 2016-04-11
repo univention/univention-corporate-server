@@ -7,3 +7,4 @@ version: [1,2]
 desc: |
     This update adds a new option --dirs-update to rsync
 bug: [34430]
+erratum: 121

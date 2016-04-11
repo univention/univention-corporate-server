@@ -8,3 +8,4 @@ desc: |
   This update adds 'entryUUID' to the list of indexed LDAP attributes, which is
   used by the Univention Directory Listener to track moved objects.
 bug: [34815]
+erratum: 115

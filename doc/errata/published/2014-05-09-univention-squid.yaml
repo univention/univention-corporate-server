@@ -9,3 +9,4 @@ desc: |
   * The UCR variable 'squid/forwardedfor' has been added to configure
     Squid's 'forwarded_for' configuration directive
 bug: [34025]
+erratum: 157

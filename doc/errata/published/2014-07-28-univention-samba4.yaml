@@ -8,3 +8,4 @@ desc: |
     * The joinscript of univention-samba4 was adjusted to abort if the domain
       is in AD member mode.
 bug: [35252]
+erratum: 175

@@ -15,3 +15,4 @@ desc: |
     certain UMC module definition files. This fixes issues with modules not
     showing up in "Installed Apps" after the initial setup of the server.
 bug: [35454, 35453, 35565]
+erratum: 166

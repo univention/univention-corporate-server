@@ -14,3 +14,4 @@ desc: |
   * DNS updates of records with existing IPv6 addresses have been fixed.
   * Issues with the NetApp join have been fixed.
 bug: [34431,34777,34868,34886]
+erratum: 117

@@ -13,3 +13,4 @@ desc: |
     to Samba. The listener now implements delold=1 and removes all old RDNs to
     just keep the new RDN.
 bug: [34835, 34802]
+erratum: 116

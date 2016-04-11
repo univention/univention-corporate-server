@@ -13,3 +13,4 @@ desc: |
    allows to set the userPassword attribute to {KINIT} which redirects
    the authentication to a kerberos server.
 bug: [35329,35092]
+erratum: 147

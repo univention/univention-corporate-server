@@ -12,3 +12,4 @@ desc: |
   This erratum changes the low-level Univention LDAP code to remove the old RDN
   values as well, as all other code paths already do so.
 bug: [34971]
+erratum: 130

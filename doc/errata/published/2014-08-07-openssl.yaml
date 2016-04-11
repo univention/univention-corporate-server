@@ -14,7 +14,6 @@ desc: |
  * Fix CVE-2012-4929 (CRiME) by disabling zlib compression by default.
    It can be enabled again by setting the environment variable
    OPENSSL_NO_DEFAULT_ZLIB.
-note:
 cve:
  - CVE-2014-3505
  - CVE-2014-3506
@@ -22,3 +21,4 @@ cve:
  - CVE-2014-3508
  - CVE-2014-3510
  - CVE-2012-4929
+erratum: 177

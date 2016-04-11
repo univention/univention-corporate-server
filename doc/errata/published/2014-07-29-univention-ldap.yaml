@@ -6,6 +6,7 @@ fix: 10.0.17-41.701.201407311212
 version: [2]
 desc: |
    The UCR variable ldap/sasl/secprops/maxssf has been added
-   to configure the sasl_secprops_maxssf value in 
+   to configure the sasl_secprops_maxssf value in
    /etc/ldap/ldap.conf.
 bug: [35513]
+erratum: 176

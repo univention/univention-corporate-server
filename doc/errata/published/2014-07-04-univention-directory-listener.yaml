@@ -10,3 +10,4 @@ desc: |
   This happened when a failing listener module prevents the removal of the
   object from the listener cache, which is used to track objects being moved.
 bug: [35261]
+erratum: 136

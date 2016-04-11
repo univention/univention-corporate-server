@@ -10,3 +10,4 @@ desc: |
   a user friendly error message will be shown instead of debug
   information in a feedback dialog.
 bug: [34723]
+erratum: 171

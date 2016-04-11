@@ -6,10 +6,11 @@ fix: 3.0.39-23.577.201406041610
 version: [1,2]
 desc: |
     This updates fixes the following issues in univention-samba4:
-    * Clean up /var/lib/samba/private before new provision (relevant for 
+    * Clean up /var/lib/samba/private before new provision (relevant for
       UCS@school Slave PDCs)
     * Modifications of access rights of GPOs could get reset by the sysvol
       replication. This affected directories in the sysvol share.
     * Preserve rIDNextRID during re-join and provision
     * Preserve /var/lib/samba/*, only clear private subdir before re-join
 bug: [32246,33751,34754,35000]
+erratum: 119

@@ -11,3 +11,4 @@ note: This update fixes this vulnerability.
 bug: [35190]
 cve:
  - CVE-2014-4617
+erratum: 143

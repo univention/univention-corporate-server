@@ -12,3 +12,4 @@ desc: |
       UCS overview page if no priority was specified via UCR. They will now be
       positioned at the end.
 bug: [34864, 33750]
+erratum: 131

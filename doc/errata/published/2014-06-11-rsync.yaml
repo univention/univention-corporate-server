@@ -9,3 +9,4 @@ desc: |
     parameter it could happen that the permissions were not transferred as
     expected. This error has been fixed.
 bug: [35105]
+erratum: 125

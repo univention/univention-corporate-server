@@ -10,3 +10,4 @@ desc: |
     the listener fails to follow the rename. This has been fixed by creating a
     fake temporary container.
 bug: [34833]
+erratum: 120

@@ -8,3 +8,4 @@ desc: |
     * Missing initialization of the UCR variable samba/role
       has been added to the postinst script of univention-samba.
 bug: [35584]
+erratum: 178
