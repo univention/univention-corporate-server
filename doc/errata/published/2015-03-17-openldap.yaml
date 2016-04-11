@@ -9,3 +9,4 @@ desc: |
   setting was not always considered. This has been fixed.
 bug:
  - 31429
+erratum: 301

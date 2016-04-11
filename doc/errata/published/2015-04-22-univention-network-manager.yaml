@@ -10,3 +10,4 @@ desc: |
     updating the network configuration too early, which lead to RFC3442
     classless routes not being applied.
 bug: [38316]
+erratum: 326

@@ -8,3 +8,4 @@ desc: |
   This erratum provides the package lib32v4l-0 for amd64 as a maintained
   package. It is required by the updated ia32-libs package.
 bug: [38533]
+erratum: 333

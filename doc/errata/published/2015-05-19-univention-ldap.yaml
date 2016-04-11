@@ -11,3 +11,4 @@ desc: |
     avoids this by implementing a dpkg diversion for that file, which will
     get removed again in an erratum for UCS 4.0-2.
 bug: [38488]
+erratum: 335

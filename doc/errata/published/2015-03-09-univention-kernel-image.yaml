@@ -13,7 +13,7 @@ desc: |
  * espfix can be bypassed (CVE-2014-8133)
  * espfix not available for KVM paravirtualised guests (CVE-2014-8134)
  * Information leak in isofs (CVE-2014-9584)
- * Memory corruption in garbage collector for unused security 
+ * Memory corruption in garbage collector for unused security
    keys (CVE-2014-9529)
  * Insufficient randomisation of the vdso segment (CVE-2014-9585)
  * Crypto userspace API allows loading of arbitrary kernel modules
@@ -22,7 +22,7 @@ desc: |
  * Denial of service in VMX handling in KVM (CVE-2014-3646)
  * Use-after-free in SCTP (CVE-2015-1421)
  * ecryptfs 1-byte overwrite (CVE-2014-9683)
- * ASLR integer overflow: Reducing stack entropy by four 
+ * ASLR integer overflow: Reducing stack entropy by four
    (CVE-2015-1593)
 note: This is the second part of the fix, which updates the meta package.
 bug:
@@ -43,3 +43,4 @@ cve:
  - CVE-2015-1421
  - CVE-2014-9683
  - CVE-2015-1593
+erratum: 297
