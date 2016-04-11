@@ -5,23 +5,32 @@ scope: ucs_4.0-0-errata4.0-5
 src: samba
 fix: 2:4.3.7-1.829.201604110946
 desc: |
- This update addresses the following issues:
- * Man in the middle downgrade attacks possible with NTLMSSP.
+ This update to Samba 4.3.7 addresses a couple of security issues identified
+ in the Samba implementation as well as in the Microsoft Windows MS-SAMR and
+ MS-LDAD protocols. The latter has been referred to publicly as BADLOCK.
+ * Errors in Samba DCE-RPC code could potentially lead to denial of service
+   (crashes and high CPU consumption) and man in the middle attacks.
+   It was unlikely but not impossible to trigger remote code execution,
+   which could result in an impersonation on the client side.
+   For details see https://www.samba.org/samba/security/CVE-2015-5370.html
+ * Man in the middle downgrade attacks have been possible with NTLMSSP.
    For details see https://www.samba.org/samba/security/CVE-2016-2110.html
- * NETLOGON computer name spoofing vulnerability.
+ * There has been a NETLOGON computer name spoofing vulnerability.
    For details see https://www.samba.org/samba/security/CVE-2016-2111.html
- * The LDAP client and server don't enforce integrity protection.
+ * The LDAP client and server didn't enforce integrity protection.
    For details see https://www.samba.org/samba/security/CVE-2016-2112.html
  * Missing TLS certificate validation allows man in the middle attacks.
    For details see https://www.samba.org/samba/security/CVE-2016-2113.html
  * The setting "server signing = mandatory" was not enforced.
    For details see https://www.samba.org/samba/security/CVE-2016-2114.html
- * SMB client connections for IPC traffic are not integrity protected.
+ * SMB client connections for IPC traffic have not been integrity protected.
    For details see https://www.samba.org/samba/security/CVE-2016-2115.html
- * SAMR and LSA man in the middle attacks possible.
+ * SAMR and LSA man in the middle attacks have been possible (BADLOCK).
    For details see https://www.samba.org/samba/security/CVE-2016-2118.html
+ * The regression patch from Samba 4.3.8 is included in this update.
 bug: [40989]
 cve:
+ - CVE-2015-5370
  - CVE-2016-2110
  - CVE-2016-2111
  - CVE-2016-2112
