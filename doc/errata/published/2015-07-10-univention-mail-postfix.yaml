@@ -10,3 +10,4 @@ desc: |
    that led to an incorrect postfix configuration. This problem was
    introduced with erratum 238.
 bug: [38884]
+erratum: 240

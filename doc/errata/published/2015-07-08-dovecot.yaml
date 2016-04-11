@@ -11,3 +11,4 @@ note: |
   The new version requires an updated version of libclucene-dev that is
   provided by a separate erratum.
 bug: [34839, 38475]
+erratum: 233

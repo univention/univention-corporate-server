@@ -7,3 +7,4 @@ version: [2]
 desc: |
  The package has been rebuilt to match the new Samba version 4.2.3.
 bug: [37939]
+erratum: 257

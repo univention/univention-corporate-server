@@ -9,3 +9,4 @@ desc: |
   * The configuration files and scripts have been optimized to allow a faster
     restart when the network interfaces are re-configured.
 bug: [36532]
+erratum: 223

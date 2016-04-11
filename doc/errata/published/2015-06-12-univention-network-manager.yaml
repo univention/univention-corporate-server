@@ -9,3 +9,4 @@ desc: |
   * Several scripts have been optimized and fixed to allow a faster restart
     when the network interfaces are re-configured.
 bug: [36532]
+erratum: 247

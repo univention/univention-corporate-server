@@ -7,3 +7,4 @@ version: [2]
 desc: |
  The talloc library has been upgraded to version 2.1.2.
 bug: [37939]
+erratum: 254

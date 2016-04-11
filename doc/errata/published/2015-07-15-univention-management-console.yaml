@@ -9,3 +9,4 @@ desc: |
   * The username is not treated case sensitive anymore when changing an
     expired password in the UMC login.
 bug: [38826]
+erratum: 245

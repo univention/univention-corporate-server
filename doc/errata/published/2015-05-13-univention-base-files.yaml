@@ -14,3 +14,4 @@ desc: |
   * The handling of the 'prefix' for secondary IPv6 addresses has been
     corrected.
 bug: [38094, 35694, 33986]
+erratum: 206

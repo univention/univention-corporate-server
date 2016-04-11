@@ -9,3 +9,4 @@ desc: |
   * The UMC user wizard was not always terminated after creating a
     user. This issue has been fixed.
 bug: [39109]
+erratum: 283

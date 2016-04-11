@@ -9,3 +9,4 @@ desc: |
    * The wording on the activation page has been improved.
    * The loading animation is now visible in Firefox.
 bug: [39019, 38918]
+erratum: 276

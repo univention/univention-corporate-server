@@ -9,3 +9,4 @@ desc: |
   After booting the system, the package shows an informative screen which
   indicates how the system can be accessed via a web browser.
 bug: [37537]
+erratum: 227

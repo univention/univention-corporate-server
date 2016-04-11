@@ -17,3 +17,4 @@ desc: |
   * Changed the wording in the Univention System Setup to suit
     Univention App Appliances.
 bug: [38391, 37816, 37537, 38382, 38780, 38781]
+erratum: 220

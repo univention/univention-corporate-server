@@ -20,3 +20,4 @@ desc: |
     Setting the UCR variable through a UMC policy 'Univention Configuration
     Registry' is not recommended and will clash with the 'LDAP server' policy.
 bug: [38094]
+erratum: 201

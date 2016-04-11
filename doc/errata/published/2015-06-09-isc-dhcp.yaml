@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  - A broken configuration was generated for named DHCP host entries.
 bug: [38675]
+erratum: 215

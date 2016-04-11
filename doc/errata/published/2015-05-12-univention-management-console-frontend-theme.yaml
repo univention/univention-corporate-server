@@ -9,3 +9,4 @@ desc: |
   * The "clear input" and "view password" icons are now diplayed correctly
     in the login dialog with Internet Explorer 10 and above.
 bug: [38127]
+erratum: 202

@@ -14,3 +14,4 @@ desc: |
      variable "directory/manager/web/modules/users/user/add/default". The
      variable expects the DN or the label of a user template.
 bug: [38473, 38832]
+erratum: 235

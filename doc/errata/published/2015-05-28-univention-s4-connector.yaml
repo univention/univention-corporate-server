@@ -11,3 +11,4 @@ desc: |
   * The Samba 4/Active Directory lockout attributes are now
     reset while synchronizing the password from UCS to Samba 4.
 bug: [38614,38557]
+erratum: 204

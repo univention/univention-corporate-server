@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
    * A typo in the german translation has been corrected.
 bug: [38216]
+erratum: 208

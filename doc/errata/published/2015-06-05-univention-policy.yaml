@@ -11,3 +11,4 @@ desc: |
    * The evaluation of "requiredObjectClass", "prohibitedObjectClasses",
      "fixedAttributes" and "emptyAttributes" is now case insensitive.
 bug: [36255, 38663]
+erratum: 221

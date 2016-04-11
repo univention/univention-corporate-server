@@ -18,3 +18,4 @@ desc: |
   * A information is shown during domain setup that the process might take a
     while.
 bug: [38593, 38593, 38215, 38330, 38850, 38522, 38833]
+erratum: 243

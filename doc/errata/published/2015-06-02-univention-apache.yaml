@@ -11,3 +11,4 @@ desc: |
   * The Univention Configuration Registry variable 'apache2/force_https' can be
     used to force using encryption by re-directing to <https://>.
 bug: [38391, 38016]
+erratum: 218

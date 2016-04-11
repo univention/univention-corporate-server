@@ -12,3 +12,4 @@ desc: |
     has been adapted.
   * Added a transition when a UMC-module-header reaches the top of the screen.
 bug: [38658, 36771, 38491]
+erratum: 268

@@ -9,3 +9,4 @@ desc: |
   * Extended the list of default language settings to include Switzerland,
     Austria and the United Kingdom.
 bug: [38512]
+erratum: 200

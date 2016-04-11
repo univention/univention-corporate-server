@@ -15,3 +15,4 @@ desc: |
    variable is introduced: mail/antivir/max_servers. When unset, the
    current default "2" is used.
 bug: [37653, 38292]
+erratum: 263

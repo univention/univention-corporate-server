@@ -7,3 +7,4 @@ version: [2]
 desc: |
  The tevent library has been upgraded to version 0.9.25.
 bug: [37939]
+erratum: 256

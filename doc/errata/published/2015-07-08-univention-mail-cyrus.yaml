@@ -20,3 +20,4 @@ desc: |
      UCS mail stack with cyrus is installed. No change in behaviour
      (Bug #38473).
 bug: [38479,38473,38500,38707]
+erratum: 236

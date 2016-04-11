@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
    * The old printer model list is no longer deleted during the join.
 bug: [38117]
+erratum: 269

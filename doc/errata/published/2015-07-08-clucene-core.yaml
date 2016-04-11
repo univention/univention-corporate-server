@@ -10,3 +10,4 @@ note: |
   Some binary packages of clucene-core are required by a separate
   dovecot erratum.
 bug: [34839]
+erratum: 232

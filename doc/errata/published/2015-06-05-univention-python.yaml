@@ -14,3 +14,4 @@ desc: |
    * The Python implementation of univention-policy-result did not return the
      most specific policy in all cases. This has been fixed.
 bug: [36255, 38663, 38712]
+erratum: 222

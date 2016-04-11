@@ -1,5 +1,5 @@
 product: ucs
-release: "4.0" 
+release: "4.0"
 version: [2]
 scope: ucs_4.0-0-errata4.0-2
 src: univention-directory-manager-modules
@@ -8,3 +8,4 @@ desc: |
  A missing language file could crash the Univention Directory
  Manager during system setup. The issue has been fixed.
 bug: [39131]
+erratum: 284

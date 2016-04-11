@@ -10,3 +10,4 @@ desc: |
     redirection at the end of the setup wizard. This has been corrected.
   * The network settings module can now also be executed on unjoined systems.
 bug: [39048, 39044]
+erratum: 274

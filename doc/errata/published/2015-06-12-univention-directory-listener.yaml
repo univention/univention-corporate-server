@@ -12,3 +12,4 @@ desc: |
   * The Listener is now restarted asynchronously when the network interfaces
     are reconfigured.
 bug: [35334, 32819, 36532]
+erratum: 224

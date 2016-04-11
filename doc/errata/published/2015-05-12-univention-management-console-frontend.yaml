@@ -12,3 +12,4 @@ desc: |
     Internet Explorer 9.
   * Scrolling in the appcenter on mobile devices is now more responsive.
 bug: [37280, 38335, 38127, 38050]
+erratum: 197

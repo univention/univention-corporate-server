@@ -8,3 +8,4 @@ desc: |
   This errata update addresses the following issue:
   * Wrong links that lead to an old manual have been adjusted.
 bug: [38147]
+erratum: 277

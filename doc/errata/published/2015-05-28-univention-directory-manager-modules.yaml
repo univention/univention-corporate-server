@@ -11,3 +11,4 @@ desc: |
   * An exception when handling LDAP exceptions is prevented now.
   * The attribute "ldapFilter" has been added to policy UDM modules.
 bug: [32146, 38297, 38616, 36255]
+erratum: 217

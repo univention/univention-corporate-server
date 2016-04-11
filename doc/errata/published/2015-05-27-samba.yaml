@@ -13,3 +13,4 @@ desc: |
  * Huawei Unified Storage System S5500 V3 failed to join
    Samba AD domains.
 bug: [37939, 37101, 38827]
+erratum: 253

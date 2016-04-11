@@ -10,3 +10,4 @@ desc: |
    serverwrap protocol may cause problems with retrieving saved
    passwords on Windows clients (DPAPI).
 bug: [39025]
+erratum: 262

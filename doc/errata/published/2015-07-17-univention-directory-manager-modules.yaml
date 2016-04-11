@@ -10,3 +10,4 @@ desc: |
   * Renaming of domain controller or memberserver computers is prevented now.
   * User accounts can now be disabled if the license count is exceeded.
 bug: [18512, 38364, 38835]
+erratum: 278

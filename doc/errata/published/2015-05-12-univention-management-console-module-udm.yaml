@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
    * Move code for error handling into UMC server core
 bug: [36794]
+erratum: 198

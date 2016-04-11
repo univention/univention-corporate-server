@@ -9,3 +9,4 @@ desc: |
   * The NETBIOS domain name of the Active Directory domain is used when
     the UCS system joins into an Active Directory domain.
 bug: [37460]
+erratum: 251

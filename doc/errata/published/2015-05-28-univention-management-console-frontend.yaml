@@ -9,3 +9,4 @@ desc: |
    * A missing pre dependency to python-univention-management-console has been
      added.
 bug: [38617]
+erratum: 205

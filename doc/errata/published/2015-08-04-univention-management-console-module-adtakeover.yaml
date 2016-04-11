@@ -9,3 +9,4 @@ desc: |
  * A bug in the network device detection has been fixed.
  * Fix time synchronization to german UCS
 bug: [39069,38729]
+erratum: 279

@@ -12,3 +12,4 @@ desc: |
     handing them over to amavis for content scanning if an archive folder
     has been defined (Bug #14619)
 bug: [14619, 34839, 38471]
+erratum: 238

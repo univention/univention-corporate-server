@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * The UCR variable 'ipv6/gateway' now supports a zone index.
 bug: [35694]
+erratum: 207

@@ -11,3 +11,4 @@ desc: |
   * The attribute "ldapFilter" has been added to the schema for
     univentionPolicy objects.
 bug: [38566,36255]
+erratum: 216

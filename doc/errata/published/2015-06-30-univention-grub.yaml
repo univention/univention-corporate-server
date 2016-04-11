@@ -9,3 +9,4 @@ desc: |
  through the Univention Configuration Registry variable 'grub/title'.
 note: This update consists of two parts. 'grub2' needs to be updated, too.
 bug: [38779]
+erratum: 229

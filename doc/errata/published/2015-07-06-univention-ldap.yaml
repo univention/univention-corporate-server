@@ -13,3 +13,4 @@ desc: |
     several new UCR variables starting with 'ldap/tls/dh/...'.
   * The DHCP policies are no longer linked to the LDAP base.
 bug: [38685, 38584]
+erratum: 270

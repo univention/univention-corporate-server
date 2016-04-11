@@ -12,3 +12,4 @@ desc: |
   * It is now possible to create a core dump of the UMC server and
     UMC module processes.
 bug: [37366, 36794, 37280]
+erratum: 199

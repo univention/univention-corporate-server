@@ -9,3 +9,4 @@ desc: |
   * The Notifier is now restarted asynchronously when the network interfaces
     are reconfigured.
 bug: [36532]
+erratum: 225

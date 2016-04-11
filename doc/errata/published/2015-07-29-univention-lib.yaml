@@ -9,3 +9,4 @@ desc: |
  * Two new internal functions for UCS license checks have been added
    to the package univention-lib.
 bug: [38951]
+erratum: 264

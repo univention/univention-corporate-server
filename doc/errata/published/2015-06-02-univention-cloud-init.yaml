@@ -9,3 +9,4 @@ desc: |
   * Show server address in Univention System Setup welcome screen in EC2 and
     other cloud environments.
 bug: [38391]
+erratum: 219

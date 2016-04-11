@@ -9,3 +9,4 @@ desc: |
   * The activation service is started within the scope of the setup-join
     script as appliance hook.
 bug: [38850]
+erratum: 244

@@ -12,3 +12,4 @@ desc: |
    The UDM module policies/mailquota is now able to use the old and
    the new API.
 bug: [39004]
+erratum: 261

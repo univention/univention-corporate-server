@@ -9,3 +9,4 @@ desc: |
   * The size of the UMC installer header was too big. This issue has been
     fixed.
 bug: [39105]
+erratum: 282
