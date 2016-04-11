@@ -10,3 +10,4 @@ desc: |
     process to hang in Docker containers. (Bug 40134).
 bug: [40134]
 erratum: 43
+announced: 2015-12-22

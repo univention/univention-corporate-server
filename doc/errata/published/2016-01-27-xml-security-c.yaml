@@ -9,3 +9,4 @@ desc: |
  "open-vm-tools".
 bug: [40244]
 erratum: 62
+announced: 2016-01-27

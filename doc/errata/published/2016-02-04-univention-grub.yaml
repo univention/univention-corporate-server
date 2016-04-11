@@ -10,3 +10,4 @@ desc: |
    which allow the selection of the next kernel to boot.
 bug: [26763]
 erratum: 82
+announced: 2016-02-04

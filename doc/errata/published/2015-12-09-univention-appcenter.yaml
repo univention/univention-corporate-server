@@ -20,3 +20,4 @@ desc: |
    ETags, resulting in a speedup of module opening.
 bug: [40074, 40119, 39926, 40135, 40136]
 erratum: 27
+announced: 2015-12-09

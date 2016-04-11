@@ -8,3 +8,4 @@ desc: |
  This update is requried for the ldb erratum update
 bug: [40221]
 erratum: 36
+announced: 2015-12-16

@@ -10,3 +10,4 @@ desc: |
    reload crashes the apache process.
 bug: [40061]
 erratum: 20
+announced: 2015-12-09

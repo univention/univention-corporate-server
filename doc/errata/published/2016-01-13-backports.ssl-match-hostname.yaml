@@ -9,3 +9,4 @@ desc: |
  to support the new AWS API for EC2 region eu-central-1 (Frankfurt am Main).
 bug: [36141]
 erratum: 45
+announced: 2016-01-13

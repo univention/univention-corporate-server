@@ -10,3 +10,4 @@ desc: |
     configuration file before creating new certificates.
 bug: [39376]
 erratum: 70
+announced: 2016-01-27

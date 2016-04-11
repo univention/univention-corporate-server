@@ -18,3 +18,4 @@ desc: |
    handling the dynamic addition and removal of virtualization hosts.
 bug: [36141,36289,40180,40181,40182,40133]
 erratum: 53
+announced: 2016-01-13

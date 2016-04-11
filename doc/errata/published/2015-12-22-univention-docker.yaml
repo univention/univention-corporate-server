@@ -10,3 +10,4 @@ desc: |
    the UCR variable "proxy/http" is configured.
 bug: [40030]
 erratum: 41
+announced: 2015-12-22

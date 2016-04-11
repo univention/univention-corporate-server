@@ -10,3 +10,4 @@ desc: |
     password reset module would crash on a bad password.
 bug: [40433]
 erratum: 57
+announced: 2016-01-20

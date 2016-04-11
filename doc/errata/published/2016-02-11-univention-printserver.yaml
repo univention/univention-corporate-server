@@ -9,3 +9,4 @@ desc: |
  * The univention-printserver join script now restarts the cups daemon.
 bug: [40591]
 erratum: 109
+announced: 2016-02-11

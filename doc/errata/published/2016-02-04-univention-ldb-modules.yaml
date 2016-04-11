@@ -9,3 +9,4 @@ desc: |
  refuse to load due to an updated ldb library.
 bug: [40437]
 erratum: 85
+announced: 2016-02-04

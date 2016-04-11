@@ -10,3 +10,4 @@ desc: |
  * Add support for Virtual Pricate Clouds (VPC) with AWS EC2.
 bug: [36141,36289]
 erratum: 46
+announced: 2016-01-13

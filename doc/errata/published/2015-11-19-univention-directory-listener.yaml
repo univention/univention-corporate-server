@@ -9,3 +9,4 @@ desc: |
  * Disable flushing the listener cache during module initialization.
 bug: [39957]
 erratum: 1
+announced: 2015-11-19

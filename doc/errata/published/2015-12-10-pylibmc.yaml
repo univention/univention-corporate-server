@@ -10,3 +10,4 @@ desc: |
  it needs pylibmc. This update releases pylibmc to maintained.
 bug: [39720, 40209]
 erratum: 29
+announced: 2015-12-10

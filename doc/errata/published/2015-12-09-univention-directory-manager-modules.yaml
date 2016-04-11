@@ -16,3 +16,4 @@ desc: |
    behaviour with Dovecot and shared folders (Bug 39721).
 bug: [39146,39721]
 erratum: 16
+announced: 2015-12-09

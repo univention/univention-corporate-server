@@ -13,3 +13,4 @@ desc: |
    'listener/ldap/retries'.
 bug: [40460]
 erratum: 105
+announced: 2016-02-11

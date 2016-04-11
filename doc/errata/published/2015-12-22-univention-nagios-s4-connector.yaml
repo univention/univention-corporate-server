@@ -10,3 +10,4 @@ desc: |
    nagios plugin to check the state of the univention-s4-connector.
 bug: [37006]
 erratum: 38
+announced: 2015-12-22

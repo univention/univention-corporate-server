@@ -9,3 +9,4 @@ desc: |
   * Some shell quoting errors were fixed.
 bug: [40031]
 erratum: 83
+announced: 2016-02-04

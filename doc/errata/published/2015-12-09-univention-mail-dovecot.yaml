@@ -16,3 +16,4 @@ desc: |
    univention-mail-dovecot is called.
 bug: [40014,40038]
 erratum: 18
+announced: 2015-12-09

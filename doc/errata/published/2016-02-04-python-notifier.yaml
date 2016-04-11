@@ -11,3 +11,4 @@ desc: |
    affected by this bug and it resulted in faulty behaviour of UMC modules.
 bug: [40510]
 erratum: 77
+announced: 2016-02-04

@@ -11,3 +11,4 @@ desc: |
     are allowed to run arbitrary commands with root privileges.
 bug: [37995]
 erratum: 42
+announced: 2015-12-22

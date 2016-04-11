@@ -12,3 +12,4 @@ desc: |
  * Some shell quoting errors were fixed.
 bug: [40139,40031]
 erratum: 49
+announced: 2016-01-13

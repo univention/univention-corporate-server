@@ -11,3 +11,4 @@ desc: |
    The time can be changed through the UCR variable 'listener/timeout/scans'.
 bug: [40373]
 erratum: 80
+announced: 2016-02-04

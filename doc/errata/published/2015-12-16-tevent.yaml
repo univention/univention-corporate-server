@@ -8,3 +8,4 @@ desc: |
  This tevent update is requried for Samba version 4.3.3
 bug: [40221]
 erratum: 33
+announced: 2015-12-16

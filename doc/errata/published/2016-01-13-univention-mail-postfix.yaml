@@ -10,3 +10,4 @@ desc: |
    empty envelope email address to send to restricted mailing lists.
 bug: [40353]
 erratum: 51
+announced: 2016-01-13

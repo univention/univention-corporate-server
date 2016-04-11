@@ -13,3 +13,4 @@ desc: |
     proxy anymore (Bug 39901).
 bug: [39901,40095]
 erratum: 25
+announced: 2015-12-09

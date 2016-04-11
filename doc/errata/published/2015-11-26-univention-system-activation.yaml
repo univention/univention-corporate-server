@@ -10,3 +10,4 @@ desc: |
    fixes a bug with system setup not being able to finish correctly.
 bug: [40019]
 erratum: 4
+announced: 2015-11-26

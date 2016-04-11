@@ -10,3 +10,4 @@ desc: |
    'cups/policy/.*' UCR variables.
 bug: [38023]
 erratum: 93
+announced: 2016-02-04

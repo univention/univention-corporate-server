@@ -13,3 +13,4 @@ desc: |
     secure location (Bug 40246).
 bug: [40194,40246]
 erratum: 86
+announced: 2016-02-04

@@ -18,3 +18,4 @@ desc: |
  * A progressbar is now shown while rebooting the system.
 bug: [29633,40148,39780,40051,39954,40031,39993,40343]
 erratum: 58
+announced: 2016-01-20

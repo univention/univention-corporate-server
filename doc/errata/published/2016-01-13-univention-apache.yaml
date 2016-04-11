@@ -13,3 +13,4 @@ desc: |
    default port.
 bug: [40121, 40173, 40070]
 erratum: 48
+announced: 2016-01-13

@@ -16,3 +16,4 @@ desc: |
    copying files from other DCs.
 bug: [40186, 40266, 40313]
 erratum: 40
+announced: 2015-12-22

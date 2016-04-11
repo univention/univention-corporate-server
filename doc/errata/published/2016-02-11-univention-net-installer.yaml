@@ -18,3 +18,4 @@ desc: |
    listen on all network interfaces by default.
 bug: [40559,39937,38821,33361,34061]
 erratum: 108
+announced: 2016-02-11

@@ -9,3 +9,4 @@ desc: |
  * The cron job to check libvirtd is no longer required and was removed.
 bug: [35101]
 erratum: 99
+announced: 2016-02-04

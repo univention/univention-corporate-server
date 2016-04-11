@@ -9,3 +9,4 @@ desc: |
  * Wildcard DNS records didn't get synchronized any more.
 bug: [40380]
 erratum: 52
+announced: 2016-01-13

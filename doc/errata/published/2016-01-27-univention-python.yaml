@@ -11,3 +11,4 @@ desc: |
     permissions of the executor aren't sufficient.
 bug: [40120]
 erratum: 69
+announced: 2016-01-27

@@ -11,3 +11,4 @@ desc: |
  * Fix tool-tip of VNC button.
 bug: [39825,39242,33982]
 erratum: 7
+announced: 2015-11-26

@@ -11,3 +11,4 @@ desc: |
    (docker0 by default).
 bug: [39601]
 erratum: 13
+announced: 2015-12-02

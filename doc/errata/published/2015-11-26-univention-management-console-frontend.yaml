@@ -9,3 +9,4 @@ desc: |
  * The username field in the login dialog doesn't get cleared anymore.
 bug: [39898]
 erratum: 2
+announced: 2015-11-26

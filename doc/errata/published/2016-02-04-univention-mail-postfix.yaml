@@ -17,3 +17,4 @@ desc: |
     without error, when told to by Postfix (Bug 40569).
 bug: [29615,40376,40569]
 erratum: 87
+announced: 2016-02-04

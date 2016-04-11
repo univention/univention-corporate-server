@@ -23,3 +23,4 @@ desc: |
     for the univentionUDMHook and univentionUDMSyntax object classes.
 bug: [38091,39884,39866,40031,38051,35840]
 erratum: 84
+announced: 2016-02-04

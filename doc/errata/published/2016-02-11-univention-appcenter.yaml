@@ -14,3 +14,4 @@ desc: |
    especially when a connection to the LDAP service failed.
 bug: [40604, 40160, 40561, 40069]
 erratum: 104
+announced: 2016-02-11

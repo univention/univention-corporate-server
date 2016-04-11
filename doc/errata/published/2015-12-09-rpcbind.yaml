@@ -14,3 +14,4 @@ bug: [40023]
 cve:
  - CVE-2015-7236
 erratum: 21
+announced: 2015-12-09
