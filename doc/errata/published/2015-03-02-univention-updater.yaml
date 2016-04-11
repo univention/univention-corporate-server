@@ -10,3 +10,4 @@ desc: |
     stalled HTTP connections are aborted.
 bug: [37901]
 erratum: 292
+announced: 2015-03-11

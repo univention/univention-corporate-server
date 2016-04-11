@@ -17,3 +17,4 @@ desc: |
     port (465). There is currently no change in postfix behaviour.
 bug: [31738,38062]
 erratum: 300
+announced: 2015-03-25

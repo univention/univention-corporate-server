@@ -13,3 +13,4 @@ desc: |
     the script univention-group-quota.
 bug: [38078,38079]
 erratum: 306
+announced: 2015-03-25

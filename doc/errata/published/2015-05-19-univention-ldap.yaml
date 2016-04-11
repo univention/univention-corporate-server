@@ -12,3 +12,4 @@ desc: |
     get removed again in an erratum for UCS 4.0-2.
 bug: [38488]
 erratum: 335
+announced: 2015-05-21

@@ -9,3 +9,4 @@ desc: |
   * The navigation arrow is now shown again when multiple tabs are opened.
 bug: [37618]
 erratum: 324
+announced: 2015-05-07

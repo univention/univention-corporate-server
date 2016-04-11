@@ -9,3 +9,4 @@ desc: |
   could occur during the login. This has been fixed.
 bug: [38078]
 erratum: 305
+announced: 2015-03-25
