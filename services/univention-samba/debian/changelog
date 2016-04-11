@@ -1,3 +1,11 @@
+univention-samba (8.0.19-18) unstable; urgency=medium
+
+  * Bug #41012: Major version bump to make the changes survive the update
+    up to errata3.2-8. In between this package would conflict with the
+    samba-dsdb-modules the package.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 11 Apr 2016 16:49:28 +0200
+
 univention-samba (7.0.17-10) unstable; urgency=medium
 
   * Bug #41012: 
