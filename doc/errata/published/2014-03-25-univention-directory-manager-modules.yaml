@@ -11,3 +11,4 @@ desc: |
   * Python UDM extensions are now installed with update-python-support.
 bug: [34513,34559]
 erratum: 89
+announced: 2014-04-16

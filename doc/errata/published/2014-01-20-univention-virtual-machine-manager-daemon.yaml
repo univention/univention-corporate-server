@@ -12,3 +12,4 @@ desc: |
     no longer responding to the cyclic liveness check.
 bug: [33166,33741]
 erratum: 28
+announced: 2014-01-22

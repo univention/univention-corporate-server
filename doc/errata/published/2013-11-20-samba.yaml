@@ -9,4 +9,6 @@ desc: |
   if client-side printer drivers were used. This errata update fixes
   this issue.
 bug: [33197]
+2013-12-12
 erratum: 7
+announced: 2013-12-09

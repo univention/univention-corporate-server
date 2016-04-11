@@ -8,3 +8,4 @@ desc: |
   Enforce UTF-8 encoding when setting the locale in Univention Installer.
 bug: [33916]
 erratum: 34
+announced: 2014-01-29

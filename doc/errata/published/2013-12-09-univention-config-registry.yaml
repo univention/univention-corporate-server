@@ -12,3 +12,4 @@ desc: |
     --bindpwdfile for authentiaction.
 bug: [32560]
 erratum: 23
+announced: 2014-01-21

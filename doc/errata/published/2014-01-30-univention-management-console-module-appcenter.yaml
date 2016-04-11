@@ -25,3 +25,4 @@ desc: |
     updater.status file.
 bug: [33946,33947,34028,33548]
 erratum: 60
+announced: 2014-02-12

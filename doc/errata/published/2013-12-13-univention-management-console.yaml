@@ -9,3 +9,4 @@ desc: |
  the client when the initializing of a module failed.
 bug: [33673]
 erratum: 40
+announced: 2014-01-29

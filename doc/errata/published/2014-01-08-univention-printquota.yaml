@@ -8,3 +8,4 @@ desc: |
   This update fixes the password rotation script in univention-printquota.
 bug: [33791]
 erratum: 50
+announced: 2014-02-06

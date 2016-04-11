@@ -16,3 +16,4 @@ desc: |
     installation. Register applications upon each opening of the module.
 bug: [33484, 33362, 33535, 33341, 33573]
 erratum: 8
+announced: 2013-12-12

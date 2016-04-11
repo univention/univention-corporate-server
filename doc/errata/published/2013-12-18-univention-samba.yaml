@@ -14,3 +14,4 @@ desc: |
   trusts relations to Microsoft Windows AD domains.
 bug: [33303]
 erratum: 25
+announced: 2014-01-22

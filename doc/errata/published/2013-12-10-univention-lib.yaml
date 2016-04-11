@@ -19,3 +19,4 @@ desc: |
   * A new python lib (s4) has been added for Samba-related operations.
 bug: [33582,33649,33710,33893]
 erratum: 29
+announced: 2014-01-29

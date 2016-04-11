@@ -13,3 +13,4 @@ desc: |
   * Display a correct error message if an invalid license has been imported.
 bug: [33244, 33343, 30156]
 erratum: 3
+announced: 2013-11-29

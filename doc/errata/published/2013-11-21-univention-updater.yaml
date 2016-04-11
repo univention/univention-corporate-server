@@ -17,3 +17,4 @@ desc: |
     univention-add-app.
 bug: [33721, 33443, 33408, 33553, 33542, 31410]
 erratum: 39
+announced: 2014-01-29

@@ -14,3 +14,4 @@ desc: |
     module falls back to search for "Default properties".
 bug: [32845, 33556]
 erratum: 14
+announced: 2013-12-12

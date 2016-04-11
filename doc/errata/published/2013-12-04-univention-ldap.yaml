@@ -10,3 +10,4 @@ desc: |
   "groups/default/.*".
 bug: [33645]
 erratum: 13
+announced: 2013-12-12

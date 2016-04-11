@@ -15,3 +15,4 @@ desc: |
     position for new objects.
 bug: [33004, 33329, 33554, 33651]
 erratum: 38
+announced: 2014-01-29

@@ -20,3 +20,4 @@ desc: |
     template subfiles.
 bug: [33430, 33704, 33890, 33961, 33962]
 erratum: 37
+announced: 2014-01-29

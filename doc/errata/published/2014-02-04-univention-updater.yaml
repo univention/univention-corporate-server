@@ -12,3 +12,4 @@ desc: |
    from the maintenance Cron job and init script.
 bug: [33189,33194]
 erratum: 55
+announced: 2014-02-12

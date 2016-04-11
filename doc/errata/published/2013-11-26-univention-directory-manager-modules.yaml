@@ -9,3 +9,4 @@ desc: |
   moving organizational units or containers in Samba 4/Active Directory.
 bug: [33482]
 erratum: 12
+announced: 2013-12-12
