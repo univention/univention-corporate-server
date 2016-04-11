@@ -10,3 +10,4 @@ desc: |
     to support the new attribute msNTSecurityDescriptor
 bug: [36978]
 erratum: 269
+announced: 2015-01-13

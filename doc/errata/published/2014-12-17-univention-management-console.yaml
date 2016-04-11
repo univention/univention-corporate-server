@@ -8,3 +8,4 @@ desc: |
   * Fixed handling of crashed UMC module processes.
 bug: [37379, 37380]
 erratum: 260
+announced: 2014-12-19

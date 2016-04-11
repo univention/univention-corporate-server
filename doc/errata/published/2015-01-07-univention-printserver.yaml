@@ -12,3 +12,4 @@ desc: |
       is not set to "no" or "false".
 bug: [37475]
 erratum: 283
+announced: 2015-02-09

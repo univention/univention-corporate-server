@@ -9,3 +9,4 @@ desc: |
   * Added support for the following operators in a UDM filter: <, >, <=, >=
 bug: [36439]
 erratum: 268
+announced: 2015-01-13

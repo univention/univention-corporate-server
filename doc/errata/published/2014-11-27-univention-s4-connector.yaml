@@ -12,3 +12,4 @@ desc: |
   * Ignore cn=Subschema and warn if the listener didn't pass entryUUID
 bug: [33768,35973]
 erratum: 276
+announced: 2015-01-21

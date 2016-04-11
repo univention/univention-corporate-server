@@ -10,3 +10,4 @@ desc: |
     disabling uidNumber locking.
 bug: [34811]
 erratum: 280
+announced: 2015-02-09

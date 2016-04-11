@@ -15,3 +15,4 @@ desc: |
   interval (new UCR variable uvmm/umc/autoupdate/interval).
 bug: [35122]
 erratum: 287
+announced: 2015-02-18

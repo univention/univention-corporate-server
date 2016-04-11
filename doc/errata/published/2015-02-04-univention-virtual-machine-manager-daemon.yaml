@@ -9,3 +9,4 @@ desc: |
   * Handle failure to stop UVMMd during update more gracefully.
 bug: [37609]
 erratum: 284
+announced: 2015-02-09

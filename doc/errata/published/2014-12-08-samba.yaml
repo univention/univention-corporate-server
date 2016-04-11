@@ -15,3 +15,4 @@ bug: [37205,37497]
 cve:
  - CVE-2014-8143
 erratum: 273
+announced: 2015-01-15

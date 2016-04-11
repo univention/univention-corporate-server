@@ -9,3 +9,4 @@ desc: |
   * Remove references to the network object when deleting it.
 bug: [37377]
 erratum: 277
+announced: 2015-01-21

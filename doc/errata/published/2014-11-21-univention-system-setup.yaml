@@ -10,3 +10,4 @@ desc: |
     network devices.
 bug: [36339, 36341]
 erratum: 246
+announced: 2014-12-03
