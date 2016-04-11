@@ -7,3 +7,4 @@ version: [3,4]
 desc: |
   * Fixed handling of crashed UMC module processes.
 bug: [37379, 37380]
+erratum: 260

@@ -9,3 +9,4 @@ desc: |
   apps modules. It may have been corrupted during a release update.
 bug:
  - 36657
+erratum: 281

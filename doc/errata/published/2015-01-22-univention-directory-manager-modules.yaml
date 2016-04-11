@@ -9,3 +9,4 @@ desc: |
   * Improving time to create a simple authentication account considerably by
     disabling uidNumber locking.
 bug: [34811]
+erratum: 280

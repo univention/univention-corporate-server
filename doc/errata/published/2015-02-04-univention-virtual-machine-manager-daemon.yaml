@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * Handle failure to stop UVMMd during update more gracefully.
 bug: [37609]
+erratum: 284

@@ -9,3 +9,4 @@ desc: |
   * Fix the configuration of primary devices and MII monitoring in bonding
     network devices.
 bug: [36339, 36341]
+erratum: 246

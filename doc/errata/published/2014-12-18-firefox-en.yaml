@@ -11,7 +11,7 @@ desc: |
  * Denial of service in XMLHTTPRequest parsing (CVE-2014-1590)
  * Use-after-free in HTML5 parsing (CVE-2014-1592)
  * Buffer overflow in parsing media content (CVE-2014-1593)
- * Incorrect casting might potentially result in the execution of 
+ * Incorrect casting might potentially result in the execution of
    arbitrary code (CVE-2014-1594)
 note: This update consists of two updates for firefox-en and firefox-de.
 cve:
@@ -23,3 +23,4 @@ cve:
  - CVE-2014-1594
 bug:
  - 37140
+erratum: 263

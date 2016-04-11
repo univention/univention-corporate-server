@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * Added support for the following operators in a UDM filter: <, >, <=, >=
 bug: [36439]
+erratum: 268

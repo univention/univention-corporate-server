@@ -8,3 +8,4 @@ desc: |
   This update addresses the following issue:
   * Remove references to the network object when deleting it.
 bug: [37377]
+erratum: 277

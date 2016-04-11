@@ -14,3 +14,4 @@ desc: |
   Additionally, the grid is updated non-invasively at a configurable
   interval (new UCR variable uvmm/umc/autoupdate/interval).
 bug: [35122]
+erratum: 287

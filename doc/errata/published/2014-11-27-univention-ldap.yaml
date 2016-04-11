@@ -9,3 +9,4 @@ desc: |
   * The objecclass msGPOContainer has been extended
     to support the new attribute msNTSecurityDescriptor
 bug: [36978]
+erratum: 269

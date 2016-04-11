@@ -9,3 +9,4 @@ desc: |
   components at once (needed for updater module)
 bug:
  - 37029
+erratum: 252

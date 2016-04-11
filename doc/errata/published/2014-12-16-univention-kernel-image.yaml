@@ -5,7 +5,7 @@ src: univention-kernel-image
 fix: 7.0.0-17.68.201412161304
 version: [4]
 desc: |
- The Linux kernel in Univention Corporate Server 3.2 has been updated to 
+ The Linux kernel in Univention Corporate Server 3.2 has been updated to
  3.10.62. This fixes a security issue in amd64 register handling which
  might result in denial of service or privilege escalation. In addition
  a regression in filesystem quota on ext2 filesystems has been fixed.
@@ -16,3 +16,4 @@ cve:
 bug:
  - 37143
  - 37250
+erratum: 255

@@ -11,3 +11,4 @@ desc: |
       on new print shares and if the UCR variable samba/force_printername
       is not set to "no" or "false".
 bug: [37475]
+erratum: 283

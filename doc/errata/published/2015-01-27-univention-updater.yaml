@@ -9,3 +9,4 @@ desc: |
   - Delay requested reboot until all updates have been performed.
 bug:
  - 37298
+erratum: 279
