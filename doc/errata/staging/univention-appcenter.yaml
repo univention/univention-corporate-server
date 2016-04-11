@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-appcenter
-fix: 5.0.20-38.149.201604081305
+fix: 5.0.20-39.152.201604120121
 desc: |
  This update addresses the following issue(s):
  * Improved the image gallery in the details page of an app. The handling
@@ -24,4 +24,6 @@ desc: |
  * Details of software packages can be shown again.
  * The installation status of Docker Apps was determined incorrectly by certain
    functions of the App Center. This has been fixed.
-bug: [39794, 38530, 39896, 40563, 39907, 40879, 40943, 40550, 40861, 40991, 40992, 41009]
+ * Joinscripts of Docker Apps are run via univention-run-join-scripts instead
+   of being called directly.
+bug: [39794, 38530, 39896, 40563, 39907, 40879, 40943, 40550, 40861, 40991, 40992, 41009, 40984]
