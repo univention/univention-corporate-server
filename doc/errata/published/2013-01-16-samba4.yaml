@@ -10,3 +10,4 @@ desc: |
   Samba 4 DNS server backend.
 bug: [29985]
 erratum: 18
+announced: 2013-01-16

@@ -9,3 +9,4 @@ desc: |
   on printers with printer quotas.
 bug: [29715]
 erratum: 40
+announced: 2013-02-25

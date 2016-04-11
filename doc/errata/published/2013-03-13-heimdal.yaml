@@ -9,3 +9,4 @@ desc: |
   * A default password lifetime of one year was enforced, overriding krb5PasswordEnd.
 bug: [30755]
 erratum: 74
+announced: 2013-03-19

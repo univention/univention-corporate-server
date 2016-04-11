@@ -11,3 +11,4 @@ note: This update fixes this vulnerability.
 cve:
  - CVE-2013-6393
 erratum: 219
+announced: 2014-02-18

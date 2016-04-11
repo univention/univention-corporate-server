@@ -8,3 +8,4 @@ desc: |
   The Samba 4 daemon will now be restarted during the server password rotation.
 bug: [32468]
 erratum: 189
+announced: 2013-10-07

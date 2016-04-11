@@ -13,3 +13,4 @@ desc: |
   * Topic publishing for umc actions has been added to support user statistics.
 bug: [30318,30355,30563]
 erratum: 50
+announced: 2013-02-25

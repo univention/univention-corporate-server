@@ -13,3 +13,4 @@ desc: |
   * Added --latest switch to always use the latest version of an app.
 bug: [31278, 31279, 31157]
 erratum: 95
+announced: 2013-05-16

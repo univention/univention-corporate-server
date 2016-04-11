@@ -55,3 +55,4 @@ cve:
  - CVE-2013-2850
 bug: [31366,30812]
 erratum: 137
+announced: 2013-07-04

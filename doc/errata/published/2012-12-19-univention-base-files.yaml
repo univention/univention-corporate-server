@@ -8,3 +8,4 @@ desc: |
   This errata update fixes the ntpsigndsocket path in ntp.conf.
 bug: [29688]
 erratum: 25
+announced: 2013-01-29

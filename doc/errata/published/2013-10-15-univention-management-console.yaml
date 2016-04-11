@@ -8,3 +8,4 @@ desc: |
   The wildcard evaluation of hostnames in UMC ACLs has been re-enabled.
 bug: [32850]
 erratum: 191
+announced: 2013-10-28

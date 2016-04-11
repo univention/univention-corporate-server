@@ -9,3 +9,4 @@ desc: |
   * disable limitation of default password lifetime.
 bug: [27281]
 erratum: 48
+announced: 2013-02-25

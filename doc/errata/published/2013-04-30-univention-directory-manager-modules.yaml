@@ -13,3 +13,4 @@ desc: |
   * During license check temporary user objects are no longer taken into account.
 bug: [31154, 30991, 31167]
 erratum: 109
+announced: 2013-05-22

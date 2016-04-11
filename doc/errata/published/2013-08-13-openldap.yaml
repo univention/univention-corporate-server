@@ -8,3 +8,4 @@ desc: |
   This errata update fixes a database cache hang under high load.
 bug: [32220]
 erratum: 169
+announced: 2013-08-22

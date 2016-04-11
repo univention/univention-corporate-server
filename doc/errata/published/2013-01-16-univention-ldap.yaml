@@ -12,3 +12,4 @@ desc: |
     of Samba 4 FSMO roles.
 bug: [29242,29508]
 erratum: 24
+announced: 2013-01-29

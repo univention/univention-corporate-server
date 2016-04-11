@@ -9,3 +9,4 @@ desc: |
  caused groups to disappear from the cached LDAP data
 bug: [29915]
 erratum: 22
+announced: 2013-01-25

@@ -9,3 +9,4 @@ desc: |
   erratum 48. This update reverts the changes of erratum 48.
 bug: [30588]
 erratum: 54
+announced: 2013-02-26

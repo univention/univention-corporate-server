@@ -11,3 +11,4 @@ desc: |
   * Add option to not prevent restart of the apache web server.
 bug: [29367,29626,29808]
 erratum: 16
+announced: 2013-01-15

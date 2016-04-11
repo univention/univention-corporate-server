@@ -14,3 +14,4 @@ desc: |
  * Disabled Firefox update popups during appliance setup.
 bug: [31385, 30896, 30980]
 erratum: 117
+announced: 2013-05-30

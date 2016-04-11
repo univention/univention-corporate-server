@@ -10,3 +10,4 @@ desc: |
   * The option to enable VNC for a virtual machine has been renamed.
 bug: [23436, 31947]
 erratum: 155
+announced: 2013-07-25

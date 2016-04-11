@@ -9,3 +9,4 @@ desc: |
   an LDAP_Search-style syntax.
 bug: [29635]
 erratum: 11
+announced: 2013-01-15

@@ -12,3 +12,4 @@ desc: |
   it load the updated library.
 bug: [31088]
 erratum: 90
+announced: 2013-04-19

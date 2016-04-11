@@ -12,3 +12,4 @@ desc: |
     in recent MacOS X clients causing target file corruption.
 bug: [29553,29983,30007]
 erratum: 26
+announced: 2013-01-29

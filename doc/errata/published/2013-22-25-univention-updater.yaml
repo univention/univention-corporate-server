@@ -11,3 +11,4 @@ desc: |
   * 'univention-upgrade --check' no longer updates a local repository.
 bug: [30384,30433,30315]
 erratum: 58
+announced: 2013-02-28

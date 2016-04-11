@@ -28,3 +28,4 @@ desc: |
   * Netlogon path adjustable via samba/share/netlogon/path
 bug: [29083,29504,29537,29335,29688,29865,24868,29961,29801]
 erratum: 27
+announced: 2013-01-29

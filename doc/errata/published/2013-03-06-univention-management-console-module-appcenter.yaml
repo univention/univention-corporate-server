@@ -21,3 +21,4 @@ desc: |
     even if the packages are part of the default master packages.
 bug: [30663,30172,30662,30787]
 erratum: 76
+announced: 2013-03-25

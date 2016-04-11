@@ -19,3 +19,4 @@ desc: |
     no exclamation mark has been displayed when a widget had an invalid value.
 bug: [30889, 28810, 29555, 27989, 30796, 31510, 31337]
 erratum: 123
+announced: 2013-06-13

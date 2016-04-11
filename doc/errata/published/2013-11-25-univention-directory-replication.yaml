@@ -9,3 +9,4 @@ desc: |
   duplication of LDAP objects when moving objects.
 bug: [33555]
 erratum: 204
+announced: 2013-12-12

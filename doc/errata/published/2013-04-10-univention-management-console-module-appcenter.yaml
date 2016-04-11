@@ -27,3 +27,4 @@ desc: |
   * Prevent concurrent package operations in the same session.
 bug: [30611, 30798, 30659, 30796, 31184, 31166, 31129, 31282, 31382]
 erratum: 102
+announced: 2013-05-22

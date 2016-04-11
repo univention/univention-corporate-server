@@ -17,3 +17,4 @@ desc: |
     "Samba 3".
 bug: [31640, 31887, 32184]
 erratum: 166
+announced: 2013-08-15

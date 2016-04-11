@@ -10,3 +10,4 @@ desc: |
   tries to read a variable.
 bug: [31725]
 erratum: 130
+announced: 2013-06-19

@@ -12,3 +12,4 @@ desc: |
     if the user account is locked or disabled
 bug: [30969,29492]
 erratum: 84
+announced: 2013-04-09

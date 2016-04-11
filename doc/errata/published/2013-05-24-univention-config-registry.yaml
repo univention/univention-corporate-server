@@ -11,3 +11,4 @@ desc: |
   'ldap' and 'normal'.
 bug: [29632]
 erratum: 116
+announced: 2013-05-30

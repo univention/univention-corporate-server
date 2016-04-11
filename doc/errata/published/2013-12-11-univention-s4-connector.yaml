@@ -9,3 +9,4 @@ desc: |
   as users, groups, containers through UCR, e.g. connector/s4/mapping/group/syncmode
 bug: [33712]
 erratum: 205
+announced: 2013-12-12

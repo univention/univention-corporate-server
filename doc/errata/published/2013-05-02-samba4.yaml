@@ -9,3 +9,4 @@ desc: |
   erratum enables XFS quota in Samba 4.
 bug: [31234]
 erratum: 110
+announced: 2013-05-22

@@ -9,3 +9,4 @@ desc: |
   reinstalling postgresql.
 bug: [27786]
 erratum: 94
+announced: 2013-05-15

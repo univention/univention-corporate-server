@@ -9,3 +9,4 @@ desc: |
  Xen-HVM domains.
 bug: [23394]
 erratum: 126
+announced: 2013-06-13

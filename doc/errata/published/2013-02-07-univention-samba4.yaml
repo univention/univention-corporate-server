@@ -17,3 +17,4 @@ desc: |
   * Make s4search-decode output AD timestamps in a human parseable format
 bug: [28814,29953,29542,28014,28426,28891,29460,28931,29992]
 erratum: 44
+announced: 2013-02-25

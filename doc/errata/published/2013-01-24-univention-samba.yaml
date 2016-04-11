@@ -9,3 +9,4 @@ desc: |
   * Netlogon path adjustable via samba/share/netlogon/path
 bug: [29801]
 erratum: 28
+announced: 2013-01-29

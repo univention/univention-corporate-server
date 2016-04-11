@@ -9,3 +9,5 @@ desc: |
   * If Samba4 DCs are detected during join, port 7389 of the local system
     is not added but removed from the _ldap._tcp SRV DNS record.
 bug: [31887]
+erratum: 
+announced: 

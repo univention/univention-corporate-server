@@ -8,3 +8,4 @@ desc: |
   * Adjusted fetchmail prerm script to stop fetchmail without errors.
 bug: [31007]
 erratum: 85
+announced: 2013-04-12

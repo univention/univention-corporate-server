@@ -10,3 +10,4 @@ desc: |
     during server_password_change
 bug: [31052]
 erratum: 88
+announced: 2013-04-15

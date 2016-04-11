@@ -10,3 +10,4 @@ desc: |
   file handles which could lead to performance problems in large environments.
 bug: [34020]
 erratum: 210
+announced: 2014-02-06

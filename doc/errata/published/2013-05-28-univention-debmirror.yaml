@@ -15,3 +15,4 @@ desc: |
   be changed manually, best through a Repository Policy.
 bug: [30990, 30409]
 erratum: 171
+announced: 2013-08-28

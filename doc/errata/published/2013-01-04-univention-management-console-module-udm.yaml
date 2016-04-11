@@ -14,3 +14,4 @@ desc: |
     an LDAP_Search-style syntax.
 bug: [26062,29635]
 erratum: 14
+announced: 2013-01-15

@@ -32,3 +32,4 @@ desc: |
     transfered to the respective Univention Config Registry variables.
 bug: [32297,31844,32327]
 erratum: 176
+announced: 2013-08-28

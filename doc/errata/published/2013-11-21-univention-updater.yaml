@@ -14,3 +14,4 @@ desc: |
   * The updater now uses the individual user agent string for more HTTP requests
 bug: [33484, 33503, 33552]
 erratum: 196
+announced: 2013-11-28

@@ -14,3 +14,4 @@ desc: |
     password generation in this case.
 bug: [31109, 31649]
 erratum: 129
+announced: 2013-06-19

@@ -12,3 +12,4 @@ desc: |
   * change default cups/server to localhost
 bug: [17549,29742,29699]
 erratum: 52
+announced: 2013-02-25

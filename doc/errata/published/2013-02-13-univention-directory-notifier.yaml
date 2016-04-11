@@ -9,3 +9,4 @@ desc: |
   * notifier blocks in appliance setup when changing from DHCP to a fixed IP address
 bug: [30412]
 erratum: 47
+announced: 2013-02-25

@@ -9,3 +9,4 @@ desc: |
   unjoin scripts which will be used by several App Center apps.
 bug: [30596]
 erratum: 80
+announced: 2013-03-25

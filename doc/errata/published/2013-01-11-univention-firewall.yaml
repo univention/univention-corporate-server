@@ -8,4 +8,6 @@ desc: |
   Firewall scripts in /etc/security/packetfilter.d/ may not contain a "." in
   their name, however, they may end on ".sh".
 bug: [29706]
+2013-01-15
 erratum: 15
+announced: 2013-01-15

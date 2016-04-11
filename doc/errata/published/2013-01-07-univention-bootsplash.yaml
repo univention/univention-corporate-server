@@ -9,3 +9,4 @@ desc: |
    This fix avoids black lines during the boot.
 bug: [29768]
 erratum: 6
+announced: 2013-01-14

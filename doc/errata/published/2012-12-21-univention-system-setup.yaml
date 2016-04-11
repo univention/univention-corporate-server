@@ -16,3 +16,4 @@ desc: |
     Variables (via packages installation) to not be saved.
 bug: [29759,29569,29771,29722,29970]
 erratum: 10
+announced: 2013-01-15

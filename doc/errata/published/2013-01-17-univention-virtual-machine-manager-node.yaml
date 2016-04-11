@@ -9,3 +9,4 @@ desc: |
   which prevented 'libvirtd' from being automatically restarted.
 bug: [29667]
 erratum: 39
+announced: 2013-02-25

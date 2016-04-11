@@ -10,3 +10,4 @@ desc: |
  * A logic bug prevented the xenstore database from being cleared on reboots.
 bug: [23394, 28309]
 erratum: 127
+announced: 2013-06-13

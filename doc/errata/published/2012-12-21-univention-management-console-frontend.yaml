@@ -18,3 +18,4 @@ desc: |
     built against UCS 3.0.
 bug: [29435,29622,29951,29957,29960,29861]
 erratum: 9
+announced: 2013-01-15

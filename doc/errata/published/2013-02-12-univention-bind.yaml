@@ -9,3 +9,4 @@ desc: |
   * enable rndc control in named.conf.samba4 and restart bind9 if dns/backend is samba4 and rnds reload fails
 bug: [30321]
 erratum: 46
+announced: 2013-02-25

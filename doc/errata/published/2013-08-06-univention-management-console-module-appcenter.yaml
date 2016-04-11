@@ -11,3 +11,4 @@ desc: |
   * String formatting of one error message was broken.
 bug: [32117, 32193]
 erratum: 173
+announced: 2013-08-28

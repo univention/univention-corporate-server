@@ -10,3 +10,4 @@ note: This update fixes these vulnerabilities
 cve:
  - CVE-2012-5667
 erratum: 139
+announced: 2013-07-04

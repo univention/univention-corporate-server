@@ -12,3 +12,4 @@ desc: |
     be mapped to 0 in Samba 4.
 bug: [31437, 29775]
 erratum: 115
+announced: 2013-05-30

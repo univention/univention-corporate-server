@@ -8,3 +8,4 @@ desc: |
   Output redirection in the CUPS init script has been fixed.
 bug: [17663]
 erratum: 51
+announced: 2013-02-25

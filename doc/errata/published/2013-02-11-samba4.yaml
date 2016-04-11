@@ -9,3 +9,4 @@ desc: |
   * nmbd process not stopped reliably
 bug: [30135]
 erratum: 45
+announced: 2013-02-25

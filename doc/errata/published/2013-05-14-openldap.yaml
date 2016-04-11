@@ -11,3 +11,4 @@ desc: |
   * slapcat output could get truncated during univention-ldap-backup
 bug: [31352, 31170]
 erratum: 98
+announced: 2013-05-17

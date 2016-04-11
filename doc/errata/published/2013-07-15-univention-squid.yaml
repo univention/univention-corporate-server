@@ -13,3 +13,4 @@ desc: |
   /usr/lib/squid3/squid_kerb_auth.
 bug: [31967]
 erratum: 152
+announced: 2013-07-25

@@ -9,3 +9,4 @@ desc: |
     whether the smtpd should be started in debug mode (default: false).
 bug: [33201]
 erratum: 202
+announced: 2013-12-12

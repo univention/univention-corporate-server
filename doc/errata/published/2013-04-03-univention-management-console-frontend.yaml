@@ -10,3 +10,4 @@ desc: |
   * Fixed width of ConfirmDialog in Firefox.
 bug: [30965,30102]
 erratum: 83
+announced: 2013-04-09

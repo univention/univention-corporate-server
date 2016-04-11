@@ -22,7 +22,7 @@ desc: |
     In case "Unable to load file" is found in /var/log/univention/listener.log
     and users report a denial of access to their home share, the following
     command can be run on each DC where the problem is found:
-    /usr/lib/univention-directory-listener/system/samba4-idmap.py \
-        --direct-resync
+    /usr/lib/univention-directory-listener/system/samba4-idmap.py         --direct-resync
 bug: [30792, 30823, 31186, 31271, 31437, 31538]
 erratum: 114
+announced: 2013-05-30

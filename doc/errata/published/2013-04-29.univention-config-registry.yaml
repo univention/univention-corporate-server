@@ -9,3 +9,4 @@ desc: |
   signals during system calls
 bug: [31140]
 erratum: 93
+announced: 2013-05-08

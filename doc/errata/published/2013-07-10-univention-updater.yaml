@@ -18,3 +18,4 @@ desc: |
     server to itself.
 bug: [24808, 31060, 30756, 31426]
 erratum: 172
+announced: 2013-08-28

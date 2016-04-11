@@ -11,3 +11,4 @@ desc: |
   the UCR variable cups/printmode/hosts/none.
 bug: [32055]
 erratum: 153
+announced: 2013-07-25

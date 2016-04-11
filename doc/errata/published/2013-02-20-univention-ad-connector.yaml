@@ -16,3 +16,4 @@ desc: |
     due to concurrent processes.
 bug: [30150,18125,29874,30652]
 erratum: 68
+announced: 2013-03-07

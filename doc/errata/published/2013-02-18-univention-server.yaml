@@ -9,3 +9,4 @@ desc: |
   * Samba 3 idmap secret was not updated properly after server password rotation
 bug: [30170]
 erratum: 53
+announced: 2013-02-25

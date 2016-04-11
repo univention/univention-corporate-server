@@ -12,3 +12,4 @@ desc: |
    "auth_generic_prepare failed: NT_STATUS_INVALID_SERVER_STATE".
 bug: [33758, 34015]
 erratum: 211
+announced: 2014-02-06

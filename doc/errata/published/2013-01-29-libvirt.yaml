@@ -14,3 +14,4 @@ desc: |
     storage pool.
 bug: [30052,30213,30472,29380]
 erratum: 41
+announced: 2013-02-25

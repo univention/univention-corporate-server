@@ -12,3 +12,4 @@ desc: |
   * always run the replication handler
 bug: [30165,30408,30521,29475]
 erratum: 55
+announced: 2013-02-27

@@ -14,3 +14,4 @@ desc: |
   * Duplicate UCRWARNING header removed in smb.conf template subfile
 bug: [30271,28814,29953,29542,28014,28426]
 erratum: 42
+announced: 2013-02-25

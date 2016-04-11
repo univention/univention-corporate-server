@@ -11,3 +11,4 @@ desc: |
  Too few memory was allocated for the reference count table.
 bug: [29355]
 erratum: 3
+announced: 2012-12-21

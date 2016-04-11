@@ -9,3 +9,4 @@ desc: |
   through the UCR variable 'ldap/server/addition'.
 bug: [30436]
 erratum: 49
+announced: 2013-02-25

@@ -8,3 +8,4 @@ desc: |
   univention-dnsedit now supports the pTRRecord as multivalue
 bug: [31103]
 erratum: 91
+announced: 2013-04-19

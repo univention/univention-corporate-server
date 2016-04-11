@@ -9,3 +9,4 @@ desc: |
   was only performed on start of Cyrus imapd but not on restart.
 bug: [32099]
 erratum: 167
+announced: 2013-08-15

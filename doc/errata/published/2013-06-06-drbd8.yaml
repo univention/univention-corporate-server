@@ -8,3 +8,4 @@ desc: |
   This erratum updates the drbd userland tools to version 8.3.11
 bug: [31321]
 erratum: 122
+announced: 2013-06-06

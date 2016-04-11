@@ -8,3 +8,4 @@ desc: |
   The password is hidden from the logfile on high debug levels.
 bug: [31053]
 erratum: 132
+announced: 2013-06-27

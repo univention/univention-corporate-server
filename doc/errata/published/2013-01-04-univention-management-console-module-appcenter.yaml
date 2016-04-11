@@ -15,3 +15,4 @@ desc: |
   * Talking to the remote app center over HTTPS.
 bug: [29734,29273,29598,29809,29875,29446]
 erratum: 13
+announced: 2013-01-15

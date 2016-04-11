@@ -12,3 +12,4 @@ desc: |
   read by root. If a password is already set, nothing will be done.
 bug: [19354]
 erratum: 156
+announced: 2013-07-25

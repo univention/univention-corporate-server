@@ -17,3 +17,4 @@ desc: |
     Master and DC Backups by connecting to them via HTTPS.
 bug: [30204,30249,30027,30385,30406,30503]
 erratum: 60
+announced: 2013-02-28

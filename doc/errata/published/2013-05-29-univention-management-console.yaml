@@ -11,3 +11,4 @@ desc: |
   * UMC server and module crashs will now be logged.
 bug: [31421,31130]
 erratum: 128
+announced: 2013-06-13
