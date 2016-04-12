@@ -1592,9 +1592,9 @@ class Application(object):
 		lo = lo.lo
 		hosts = []
 		if not is_master:
-			hosts.append((get_master(lo, exclude_docker=True), True))
+			hosts.append((get_master(lo), True))
 		# use ucr to not find oneself!
-		hosts.extend([(host, False) for host in get_all_backups(lo, ucr, exclude_docker=True)])
+		hosts.extend([(host, False) for host in get_all_backups(lo, ucr)])
 		return hosts
 
 	def install_master_packages_on_hosts(self, package_manager, remote_function, username, password, is_master, hosts=None):

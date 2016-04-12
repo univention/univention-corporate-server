@@ -77,9 +77,8 @@ def rename_app(old_id, new_id, component_manager, package_manager):
 	app.register(component_manager, package_manager)
 	app.tell_ldap(component_manager.ucr, package_manager, inform_about_error=False)
 
-def get_hosts(module, lo, ucr=None, exclude_docker=False):
-	filter_s = '(!(univentionObjectFlag=docker))' if exclude_docker else ''
-	_hosts = module.lookup(None, lo, filter_s)
+def get_hosts(module, lo, ucr=None):
+	_hosts = module.lookup(None, lo, None)
 	hosts = []
 	if ucr is not None:
 		local_hostname = ucr.get('hostname')
@@ -98,24 +97,24 @@ def get_hosts(module, lo, ucr=None, exclude_docker=False):
 	MODULE.process('Found hosts: %r' % [host.info.get('name') for host in hosts])
 	return hosts
 
-def get_master(lo, exclude_docker=False):
+def get_master(lo):
 	MODULE.process('Searching DC Master')
-	return get_hosts(domaincontroller_master, lo, exclude_docker=exclude_docker)[0].info['fqdn']
+	return get_hosts(domaincontroller_master, lo)[0].info['fqdn']
 
-def get_all_backups(lo, ucr=None, exclude_docker=False):
+def get_all_backups(lo, ucr=None):
 	MODULE.process('Searching DC Backup')
-	return [host.info['fqdn'] for host in get_hosts(domaincontroller_backup, lo, ucr, exclude_docker=exclude_docker)]
+	return [host.info['fqdn'] for host in get_hosts(domaincontroller_backup, lo, ucr)]
 
-def get_all_hosts(lo=None, ucr=None, exclude_docker=False):
+def get_all_hosts(lo=None, ucr=None):
 	if lo is None:
 		lo = get_machine_connection(write=False)[0]
 		if lo is None:
 			return []
 		lo = lo.lo
-	return get_hosts(domaincontroller_master, lo, ucr, exclude_docker=exclude_docker) + \
-			get_hosts(domaincontroller_backup, lo, ucr, exclude_docker=exclude_docker) + \
-			get_hosts(domaincontroller_slave, lo, ucr, exclude_docker=exclude_docker) + \
-			get_hosts(memberserver, lo, ucr, exclude_docker=exclude_docker)
+	return get_hosts(domaincontroller_master, lo, ucr) + \
+			get_hosts(domaincontroller_backup, lo, ucr) + \
+			get_hosts(domaincontroller_slave, lo, ucr) + \
+			get_hosts(memberserver, lo, ucr)
 
 def get_md5(filename):
 	m = md5()

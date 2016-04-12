@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-40) unstable; urgency=medium
+
+  * Bug #40563: revert
+
+ -- Florian Best <best@univention.de>  Tue, 12 Apr 2016 08:17:22 +0200
+
 univention-appcenter (5.0.20-39) unstable; urgency=medium
 
   * Bug #40984: Use univention-register-apps for calling join scripts
