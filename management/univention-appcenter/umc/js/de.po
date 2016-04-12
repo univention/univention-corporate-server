@@ -1067,7 +1067,7 @@ msgstr "Folgende Pakete werden deinstalliert:"
 
 #: umc/js/appcenter/AppDetailsDialog.js:284
 msgid "The following software changes on %s will be applied: "
-msgstr "Die folgenden Software-Änderungen auf %s werden angewendet: "
+msgstr "Die folgenden Software-Änderungen werden auf %s angewendet: "
 
 #: umc/js/appcenter/AppDetailsPage.js:998
 msgid ""
@@ -1447,7 +1447,7 @@ msgstr "{0} Pakete sind fehlerhaft"
 
 #: umc/js/appcenter/AppDetailsDialog.js:278
 msgid "{0} packages will be installed / upgraded"
-msgstr "{0] Pakete werden installiert / aktualisiert"
+msgstr "{0} Pakete werden installiert / aktualisiert"
 
 #: umc/js/appcenter/AppDetailsDialog.js:279
 #, python-brace-format
