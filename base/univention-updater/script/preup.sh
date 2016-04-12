@@ -167,6 +167,53 @@ if ! is_ucr_true update40/ignore_horde4; then
 	fi
 fi
 
+##
+## Include transition component
+##
+
+univention-config-registry set \
+	repository/online/component/transition/description="Transition packages for the update from UCS 3.2 to UCS 4.0" \
+	repository/online/component/transition/version="3.2" \
+	repository/online/component/transition=enabled
+
+# check if transition component is available in UCS 3.2
+updateError=$(mktemp)
+scope=$(python2.6 -c '
+from univention.updater import UniventionUpdater, UCS_Version
+from univention.updater.tools import LocalUpdater
+import univention.config_registry
+import sys
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+scope = "transition"
+version = "3.2"
+
+available = []
+updater = UniventionUpdater()
+available += updater.get_component_repositories(scope, [version])
+updater = LocalUpdater()
+available += updater.get_component_repositories(scope, [version])
+if not available:
+	sys.exit(1)
+
+sys.exit(0)
+' 2>"$updateError")
+res=$?
+
+# component transition in 3.2 not found, -> abort the update
+if ! [ $res -eq 0 ]; then
+	echo "ERROR: The repository scope 'transition' is not accessible"
+        echo "       from this machine. This is required for the update."
+	exit 1
+elif [ -s $updateError ]; then
+	echo "Error: Traceback in UniventionUpdater() python module:"
+	cat "$updateError"
+	exit 1
+else
+	rm "$updateError"
+fi
+
 # save ucr settings
 updateLogDir="/var/univention-backup/update-to-$UPDATE_NEXT_VERSION"
 if [ ! -d "$updateLogDir" ]; then
