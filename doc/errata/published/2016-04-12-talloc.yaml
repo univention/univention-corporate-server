@@ -7,3 +7,5 @@ fix: 2.1.5-1.40.201604061653
 desc: |
  This erratum installs an updated version of the talloc library.
 bug: [40989]
+erratum: 412
+announced: 2016-04-12
