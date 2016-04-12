@@ -19,3 +19,5 @@ desc: |
 
  UCC 2.x clients (i.e. Linux kernel above 3.8) don't require this adjustment.
 bug: [40989]
+erratum: 416
+announced: 2016-04-12
