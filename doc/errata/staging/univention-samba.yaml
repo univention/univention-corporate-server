@@ -6,4 +6,14 @@ src: univention-samba
 fix: 8.0.19-19.515.201604111655
 desc: |
  Adjusted for Samba 4.3.7.
+
+ The raised security requirements of Samba server components may require
+ config adjustments for older clients. Univention Corporate Client (UCC) 1.0
+ running a Linux kernel version prior to 3.8 for example require an adjustment
+ of the mount.cifs options. In that case the value for mount option "sec"
+ needs to be adjusted to "ntlmsspi", e.g. by setting
+
+ ucr set ucc/mount/cifshome/options="serverino,sec=ntlmsspi"
+
+ UCC 2.x clients (i.e. Linux kernel above 3.8) don't require this adjustement.
 bug: [40990]
