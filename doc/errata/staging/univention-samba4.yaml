@@ -17,5 +17,5 @@ desc: |
 
  ucr set ucc/mount/cifshome/options="serverino,sec=ntlmsspi"
 
- UCC 2.x clients (i.e. Linux kernel above 3.8) don't require this adjustement.
+ UCC 2.x clients (i.e. Linux kernel above 3.8) don't require this adjustment.
 bug: [40988]
