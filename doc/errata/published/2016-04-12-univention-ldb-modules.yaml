@@ -8,3 +8,5 @@ desc: |
  This update is just a rebuilt of the package against the most recent ldb
  version.
 bug: [40988]
+erratum: 143
+announced: 2016-04-12
