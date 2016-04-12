@@ -7,3 +7,5 @@ fix: 0.9.26-1.30.201604061703
 desc: |
  This erratum installs an updated version of the tevent library.
 bug: [40990]
+erratum: 416
+announced: 2016-04-12
