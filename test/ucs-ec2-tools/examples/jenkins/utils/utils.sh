@@ -211,6 +211,8 @@ install_apps ()
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
 			username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
+				echo "$username"
+				cat "$(ucr get tests/domainadmin/pwdfile)"
 				univention-app install "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			else
 				univention-app upgrade "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
@@ -243,6 +245,9 @@ install_apps_master_packages ()
 	local app rv=0
 	for app in "$@"
 	do
+		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+			continue
+		fi
 		univention-add-app -m --latest "$app" || rv=$?
 	done
 	return $rv

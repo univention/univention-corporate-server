@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-19) unstable; urgency=medium
+
+  * Bug #40942: Fix install_apps_master_packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Apr 2016 01:19:26 +0200
+
 ucs-ec2-tools (2.0.0-18) unstable; urgency=medium
 
   * Bug #40942: Use --username in univention-app
