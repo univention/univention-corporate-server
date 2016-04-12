@@ -8,6 +8,18 @@ desc: |
  This update to Samba 4.3.7 addresses a couple of security issues identified
  in the Samba implementation as well as in the Microsoft Windows MS-SAMR and
  MS-LDAD protocols. The latter has been referred to publicly as BADLOCK.
+ The raised security requirements of Samba server components may require
+ config adjustments for older clients. Univention Corporate Client (UCC) 1.0
+ running a Linux kernel version prior to 3.8 for example require an adjustment
+ of the mount.cifs options. In that case the value for mount option "sec"
+ needs to be adjusted to "ntlmsspi", e.g. by setting
+
+ ucr set ucc/mount/cifshome/options="serverino,sec=ntlmsspi"
+
+ UCC 2.x clients (i.e. Linux kernel above 3.8) don't require this adjustement.
+ 
+ Details of the vulnerabilities fixed in this update:
+
  * Errors in Samba DCE-RPC code could potentially lead to denial of service
    (crashes and high CPU consumption) and man in the middle attacks.
    It was unlikely but not impossible to trigger remote code execution,
