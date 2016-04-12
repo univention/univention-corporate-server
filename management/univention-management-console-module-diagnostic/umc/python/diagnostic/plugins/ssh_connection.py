@@ -37,12 +37,13 @@ def run():
 		udm_obj = modules.get(role)
 		modules.init(lo, position, udm_obj)
 		for host in udm_obj.lookup(None, lo, 'cn=*'):
+			if 'docker' in host.oldattr.get('univentionObjectFlag', []):
+				continue
 			host.open()
 			ucs_hosts.append(host['name'])
 
-	password = open('/etc/machine.secret').read()
-	if password[-1] == '\n':
-		password = password[0:-1]
+	with open('/etc/machine.secret', 'rb') as fd:
+		password = fd.read().strip()
 
 	gen_msg = _('The ssh connection to at least one other UCS server failed. ')
 	gen_msg += _('The following list shows the affected remote servers and the reason for the failed ssh connection:')
