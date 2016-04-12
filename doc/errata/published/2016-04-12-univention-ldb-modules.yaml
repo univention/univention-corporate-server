@@ -11,3 +11,5 @@ desc: |
  version. This is just a pre-caution against issues related to package update
  oder on UCS@school Slave "PDCs" running Samba AD.
 bug: [40989]
+erratum: 415
+announced: 2016-04-12
