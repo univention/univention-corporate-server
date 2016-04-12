@@ -7,3 +7,5 @@ fix: 8.0.33-94.607.201604051934
 desc: |
  This update adjusts a dependency for the Samba 4.3.7 binary package
 bug: [40990]
+erratum: 418
+announced: 2016-04-12
