@@ -7,3 +7,5 @@ fix: 1.3.8-1.51.201604061726
 desc: |
  This erratum installs an updated version of the tdb library.
 bug: [40990]
+erratum: 415
+announced: 2016-04-12
