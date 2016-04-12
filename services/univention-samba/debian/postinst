@@ -104,6 +104,24 @@ if [ "$1" = "configure" ]; then
 				univention-config-registry set windows/wins-server?$ldap_master
 			fi
 		fi
+	else
+		# Set default samba/role on updates (Bug #34091), may be removed after ucs3.x
+		if dpkg --compare-versions "$2" lt-nl '8.0.19-11'; then
+			case "${server_role}" in
+				domaincontroller_*)
+					univention-config-registry set samba/role?"domaincontroller"
+					;;
+				*)
+					univention-config-registry set samba/role?"memberserver"
+					;;
+			esac
+		fi
+
+		if dpkg --compare-versions "$2" lt 8.0.19-13; then
+			for dname in default.V3 default.V4 default.V5; do
+				mkdir -p "/etc/univention/skel/windows-profiles/$dname"
+			done
+		fi
 	fi
 fi
 

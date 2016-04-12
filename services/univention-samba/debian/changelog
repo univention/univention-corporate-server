@@ -1,3 +1,9 @@
+univention-samba (8.0.19-18.1) unstable; urgency=medium
+
+  * Bug #41012: Backport version specific postinst update actions
+
+ -- Arvid Requate <requate@univention.de>  Tue, 12 Apr 2016 15:09:38 +0200
+
 univention-samba (8.0.19-18) unstable; urgency=medium
 
   * Bug #41012: Major version bump to make the changes survive the update
