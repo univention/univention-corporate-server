@@ -259,7 +259,7 @@ define([
 
 			var _packageChangeLabel = function(changes, labelSingular, labelPlural, resultList) {
 				if (!changes) {
-					resultList.push(lang.replace(labelPlural, [_('unknown')]));
+					resultList.push(lang.replace(labelPlural, [_('an unknown amount of')]));
 				}
 				else if (changes.length === 1) {
 					resultList.push(labelSingular);

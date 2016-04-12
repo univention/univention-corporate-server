@@ -1433,8 +1433,8 @@ msgid "uninstall"
 msgstr "deinstallieren"
 
 #: umc/js/appcenter/AppDetailsDialog.js:261
-msgid "unknown"
-msgstr "unbekannt"
+msgid "an unknown amount of"
+msgstr "eine unbekannte Menge von"
 
 #: umc/js/appcenter/PackagesPage.js:387
 msgid "upgrade"
