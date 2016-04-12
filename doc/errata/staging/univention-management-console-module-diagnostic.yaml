@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-management-console-module-diagnostic
+fix: 2.0.0-5.28.201604120834
+desc: |
+ This update addresses the following issue(s):
+ * Hosts which are docker containers are now excluded from the check if the
+   SSH connection to these hosts is possible.
+bug: [40563]
