@@ -7,3 +7,5 @@ fix: 2:1.1.25-1.69.201604061731
 desc: |
  This erratum installs an updated version of the ldb library.
 bug: [40990]
+erratum: 412
+announced: 2016-04-12
