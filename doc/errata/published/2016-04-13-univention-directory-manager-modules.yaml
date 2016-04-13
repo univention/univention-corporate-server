@@ -11,3 +11,5 @@ desc: |
    to choosing a computer object. This option has been removed as it makes no
    sense.
 bug: [41040, 41041]
+erratum: 148
+announced: 2016-04-13
