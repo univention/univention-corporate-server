@@ -208,12 +208,9 @@ install_apps ()
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
 	do
-		univention-app get "$app" DockerImage
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
 			username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
-				echo "$username"
-				cat "$(ucr get tests/domainadmin/pwdfile)"
 				univention-app install "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
 			else
 				univention-app upgrade "$app" --noninteractive --username="$username" --pwdfile="$(ucr get tests/domainadmin/pwdfile)" || rv=$?
