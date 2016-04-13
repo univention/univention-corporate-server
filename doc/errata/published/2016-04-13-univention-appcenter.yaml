@@ -28,3 +28,5 @@ desc: |
  * Joinscripts of Docker Apps are run via univention-run-join-scripts
    instead of being called directly.
 bug: [39794, 38530, 39896, 39907, 40879, 40943, 40550, 40861, 40991, 40992, 41009, 40984]
+erratum: 146
+announced: 2016-04-13
