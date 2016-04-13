@@ -1,0 +1,15 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-samba4
+fix: 5.0.1-32.664.201604131409
+desc: |
+ This update makes additional smb.conf options configurable via UCR:
+ * samba/ntlm/auth
+ * samba/server/signing
+ * samba/tls/verify/peer
+ * samba/tls/priority
+ * samba/tls/dh/params/file
+ * samba/ldap/server/require/strong/auth
+bug: [41034]
