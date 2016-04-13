@@ -9,3 +9,5 @@ desc: |
  * The installation status of Docker Apps was determined incorrectly
    by certain functions of the App Center. This has been fixed.
 bug: [41023]
+erratum: 145
+announced: 2016-04-13
