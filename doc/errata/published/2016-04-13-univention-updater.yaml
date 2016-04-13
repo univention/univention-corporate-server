@@ -18,3 +18,5 @@ desc: |
    APT. A filter has been added to filter out old versions and duplicate
    entries.
 bug: [40338,40932]
+erratum: 152
+announced: 2016-04-13
