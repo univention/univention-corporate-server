@@ -1,0 +1,13 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-directory-manager-modules
+fix: 11.0.2-25.1380.201604130322
+desc: |
+ This update addresses the following issue(s):
+ * The error message for malformed paths in shares has been improved.
+ * Multiple modules allowed to select special Docker host objects when it came
+   to choosing a computer object. This option has been removed as it makes no
+   sense.
+bug: [41040, 41041]
