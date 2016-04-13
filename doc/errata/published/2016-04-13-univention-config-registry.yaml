@@ -10,3 +10,5 @@ desc: |
    are now only considered if they carry the filename suffix ".cfg".
    The behaviour is now similar to the treatment of UCR info files.
 bug: [40383]
+erratum: 147
+announced: 2016-04-13
