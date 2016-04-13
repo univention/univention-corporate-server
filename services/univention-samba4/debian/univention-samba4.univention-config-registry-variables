@@ -469,3 +469,38 @@ Description[de]=Diese Variable definiert Netzwerk Interfaces  die von Samba igno
 Description[en]=This variable defines network interfaces which are ignored by samba (e.g. eth0). Multiple values need to be separated by blanks.
 Type=str
 Categories=service-samba
+
+[samba/tls/verify/peer]
+Description[de]=Über diese Variable lässt sich die Samba Option "tls verify peer" anpassen (siehe man smb.conf). UCS default ist "ca_and_name".
+Description[en]=This variable can be used to adjust the Samba option "tls verify peer" (see man smb.conf). UCS default is "ca_and_name".
+Type=str
+Categories=service-samba
+
+[samba/tls/priority]
+Description[de]=Über diese Variable lässt sich festlegen, welche TLS Protokolle durch die Teile von Samba unterstützt werden sollen, die GnuTLS verwenden, spezifisch der AD DC. Der Wert der Variable muss ein von GnuTLS unterstützter priority string sein (siehe man smb.conf)
+Description[en]=This variable can be set to a string describing the TLS protocols to be supported in the parts of Samba that use GnuTLS, specifically the AD DC. The string must be in the format of a GnuTLS supported priority string (see man smb.conf)
+Type=str
+Categories=service-samba
+
+[samba/tls/dh/params/file]
+Description[de]=Über diese Variable lässt sich der Name einer Datei mit Diffie-Hellman Parametern definieren (PEM format), die für EDH Chiffren verwendet werden sollen (siehe man dhparam).
+Description[en]=This variable can be set to the name of a file with Diffie-Hellman parameters (PEM format) which will be used with EDH ciphers (see man dhparam).
+Type=str
+Categories=service-samba
+
+[samba/ldap/server/require/strong/auth]
+Description[de]=Über diese Variable lässt sich die Samba Option "ldap server require strong auth" anpassen (siehe man smb.conf). UCS default ist "allow_sasl_over_tls".
+Description[en]=This variable can be used to adjust the Samba option "ldap server require strong auth" (see man smb.conf). UCS default is "allow_sasl_over_tls".
+Type=str
+Categories=service-samba
+
+[samba/ntlm/auth]
+Description[de]=Über diese Variable lässt sich die Samba Option "ntlm auth" anpassen (siehe man smb.conf).
+Description[en]=This variable can be used to adjust the Samba option "ntlm auth" (see man smb.conf).
+Type=str
+
+[samba/server/signing]
+Description[de]=Über diese Variable lässt sich die Samba Option "server signing" anpassen (siehe man smb.conf).
+Description[en]=This variable can be used to adjust the Samba option "server signing" (see man smb.conf).
+Type=str
+Categories=service-samba

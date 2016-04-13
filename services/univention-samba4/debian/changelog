@@ -1,3 +1,15 @@
+univention-samba4 (5.0.1-32) unstable; urgency=medium
+
+  * Bug #41034: Expose additional Samba parameters as UCR variables:
+    samba/ntlm/auth
+    samba/server/signing
+    samba/tls/verify/peer
+    samba/tls/priority
+    samba/tls/dh/params/file
+    samba/ldap/server/require/strong/auth
+
+ -- Arvid Requate <requate@univention.de>  Wed, 13 Apr 2016 13:38:31 +0200
+
 univention-samba4 (5.0.1-31) unstable; urgency=medium
 
   * Bug #40988: Fix dependency on Samba 4.3.7 package version

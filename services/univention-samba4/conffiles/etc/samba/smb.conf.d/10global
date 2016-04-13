@@ -48,10 +48,22 @@ print '\ttls enabled\t= yes'
 print '\ttls keyfile\t= /etc/univention/ssl/%s/private.key' % fqdn
 print '\ttls certfile\t= /etc/univention/ssl/%s/cert.pem' % fqdn
 print '\ttls cafile\t= /etc/univention/ssl/ucsCA/CAcert.pem'
-print '\ttls verify peer\t= ca_and_name'
-print
-print '\tldap server require strong auth\t= allow_sasl_over_tls'
-print
+for key, smbstring in [('samba/tls/dh/params/file','tls dh params file'),
+		       ('samba/tls/priority', 'tls priority'),
+		      ]:
+	ucrvalue = configRegistry.get(key)
+	if ucrvalue:
+		print '\t%s\t= %s' % (smbstring, ucrvalue)
+
+for key, smbstring, ucsdefault in [
+	('samba/tls/verify/peer', 'tls verify peer', 'ca_and_name'),
+	('samba/ldap/server/require/strong/auth', 'ldap server require strong auth', 'allow_sasl_over_tls'),
+	]:
+	ucrvalue = configRegistry.get(key)
+	if ucrvalue:
+		print '\t%s\t= %s' % (smbstring, ucrvalue)
+	else:
+		print '\t%s\t= %s' % (smbstring, ucsdefault)
 
 if configRegistry.is_true('samba4/schema/update/allowed'):
 	print '\tdsdb:schema update allowed = yes'
@@ -63,11 +75,13 @@ if max_open_files:
 	print '\tmax open files = %s' % max_open_files
 
 for key, smbstring in [('samba/interfaces','interfaces'),
+		       ('samba/interfaces/bindonly', 'bind interfaces only'),
+		       ('samba/ntlm/auth', 'ntlm auth'),
+		       ('samba/server/signing', 'server signing'),
 		       ('samba/charset/dos', 'dos charset'),
 		       ('samba/charset/unix', 'unix charset'),
 		       ('samba/socket_options', 'socket options'),
-		       ('samba/netbios/aliases', 'netbios aliases'),
-		       ('samba/interfaces/bindonly', 'bind interfaces only'),]:
+		       ('samba/netbios/aliases', 'netbios aliases'),]:
 	if configRegistry.get(key):
 		print '\t%s\t= %s' % (smbstring, configRegistry[key])
 
