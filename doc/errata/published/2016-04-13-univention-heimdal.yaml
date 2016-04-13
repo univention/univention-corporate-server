@@ -9,3 +9,5 @@ desc: |
  * The UCR variable description for "kerberos/autostart" did not clearly
    explain that this variable needs to remain set to "no" on Samba4/AD DCs.
 bug: [40383]
+erratum: 149
+announced: 2016-04-13
