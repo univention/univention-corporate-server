@@ -6,6 +6,6 @@ src: univention-appcenter
 fix: 5.0.19-57.151.201604112359
 desc: |
  This update addresses the following issue(s):
- * The installation status of Docker Apps was determined incorrectly by certain
-   functions of the App Center. This has been fixed.
+ * The installation status of Docker Apps was determined incorrectly
+   by certain functions of the App Center. This has been fixed.
 bug: [41023]
