@@ -903,7 +903,7 @@ class sharePath( simple ):
 	@classmethod
 	def parse(self, text):
 		if not text[0] == '/':
-			raise univention.admin.uexceptions.valueInvalidSyntax, _(', a path must begin with "/"!')
+			raise univention.admin.uexceptions.valueInvalidSyntax, _('A path must begin with "/"!')
 		for path in ["tmp", "root", "proc", "dev", "sys"]:
 			if re.match("(^/%s$)|(^/%s/)" % (path, path), os.path.realpath(text)):
 				raise univention.admin.uexceptions.valueError, _('Path may not start with "%s" !') % path
@@ -1848,6 +1848,7 @@ class IComputer_FQDN( UDM_Objects ):
 	label = '%(name)s.%(domain)s' # '%(fqdn)s'
 	regex = re.compile( '(?=^.{1,254}$)(^(?:(?!\d+\.)[a-zA-Z0-9_\-]{1,63}\.?)+(?:[a-zA-Z0-9]{2,})$)' ) #'(^[a-zA-Z])(([a-zA-Z0-9-_]*)([a-zA-Z0-9]$))?$' )
 	error_message = _( 'Not a valid FQDN' )
+	udm_filter = '!(univentionObjectFlag=docker)'
 	simple = True
 
 class DomainController( IComputer_FQDN ):
@@ -1863,11 +1864,11 @@ class UCS_Server( IComputer_FQDN ):
 
 class ServicePrint_FQDN( IComputer_FQDN ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
-	udm_filter = 'service=Print'
+	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
 
 class MailHomeServer( IComputer_FQDN ):
 	udm_modules = ( 'computers/computer', )
-	udm_filter = '(&(objectClass=univentionHost)(service=IMAP))'
+	udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(service=IMAP))'
 	empty_value = True
 
 class KDE_Profile( UDM_Attribute ):

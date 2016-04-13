@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.2-24) unstable; urgency=medium
+
+  * Bug #41041: UCS_Server syntax excludes Docker hosts
+  * Bug #41040: The error message of a share's path has been improved
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Apr 2016 03:09:07 +0200
+
 univention-directory-manager-modules (11.0.2-23) unstable; urgency=medium
 
   * Bug #23804: fix search for name in dns/dns handler

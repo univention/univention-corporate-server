@@ -49,8 +49,8 @@ msgid "%(name)s (%(path)s on %(host)s)"
 msgstr "%(name)s (%(path)s auf %(host)s)"
 
 #: modules/univention/admin/syntax.py:906
-msgid ", a path must begin with \"/\"!"
-msgstr ", eine Pfadangabe muss mit \\\"/\\\" beginnen."
+msgid "A path must begin with \"/\"!"
+msgstr "Eine Pfadangabe muss mit \"/\" beginnen."
 
 #: modules/univention/admin/allocators.py:152
 #: modules/univention/admin/allocators.py:183
