@@ -7,7 +7,7 @@
 ## packages:
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
-## tags: [appcenter, performance]
+## tags: [appcenter, performance, SKIP]
 
 import univention.lib.umc_connection as UMCC
 import univention.testing.utils as utils
