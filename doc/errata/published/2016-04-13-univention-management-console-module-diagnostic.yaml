@@ -9,3 +9,5 @@ desc: |
  * Hosts which are docker containers are now excluded from the check if the
    SSH connection to these hosts is possible.
 bug: [40563]
+erratum: 151
+announced: 2016-04-13
