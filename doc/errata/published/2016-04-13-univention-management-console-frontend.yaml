@@ -13,3 +13,5 @@ desc: |
  * Add a hook interface for other packages for extending the behavior
    of UMC.
 bug: [40638, 30822, 40923, 40118]
+erratum: 150
+announced: 2016-04-13
