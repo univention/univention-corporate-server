@@ -1406,6 +1406,7 @@ class UMC_CommandPattern( complex ):
 
 class LDAP_Server( UDM_Objects ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave' )
+	udm_filter = '!(univentionObjectFlag=docker)'
 	label = '%(fqdn)s'
 	simple = True
 
@@ -1825,6 +1826,7 @@ class UserDN( UDM_Objects ):
 
 class HostDN( UDM_Objects ):
 	udm_modules = ( 'computers/computer', )
+	udm_filter = '!(univentionObjectFlag=docker)'
 
 class UserID( UDM_Objects ):
 	udm_modules = ( 'users/user', )
@@ -2585,11 +2587,11 @@ class UCSServerRole( select ):
 
 class ServiceMail( UDM_Objects ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
-	udm_filter = 'service=SMTP'
+	udm_filter = '(&(!(univentionObjectFlag=docker))(service=SMTP))'
 
 class ServicePrint( UDM_Objects ):
 	udm_modules = ( 'computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver' )
-	udm_filter = 'service=Print'
+	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
 
 class Service( UDM_Objects ):
 	udm_modules = ( 'settings/service', )
@@ -2696,7 +2698,7 @@ class CTX_RASDialin( select ):
 
 class nagiosHostsEnabledDn( UDM_Objects ):
 	udm_modules = ( 'computers/computer', )
-	udm_filter = '(&(objectClass=univentionNagiosHostClass)(univentionNagiosEnabled=1)(aRecord=*))'
+	udm_filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionNagiosHostClass)(univentionNagiosEnabled=1)(aRecord=*))'
 
 class nagiosServiceDn( UDM_Objects ):
 	udm_modules = ( 'nagios/service', )
@@ -2989,7 +2991,7 @@ class mailHomeServer(LDAP_Search):
 	def __init__(self):
 		LDAP_Search.__init__(
 			self,
-			filter = '(&(objectClass=univentionHost)(univentionService=IMAP))',
+			filter = '(&(!(univentionObjectFlag=docker))(objectClass=univentionHost)(univentionService=IMAP))',
 			attribute = [ 'computers/computer: fqdn' ],
 			value = 'computers/computer: fqdn',
 			appendEmptyValue = True

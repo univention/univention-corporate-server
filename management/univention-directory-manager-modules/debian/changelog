@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-25) unstable; urgency=medium
+
+  * Bug #41041: More syntax classes exclude Docker hosts
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 13 Apr 2016 03:22:22 +0200
+
 univention-directory-manager-modules (11.0.2-24) unstable; urgency=medium
 
   * Bug #41041: UCS_Server syntax excludes Docker hosts
