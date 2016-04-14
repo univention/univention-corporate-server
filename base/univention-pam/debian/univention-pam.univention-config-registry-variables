@@ -148,6 +148,18 @@ Description[en]=Configures whether the NSS LDAP module looks up DNS service reco
 Type=bool
 Categories=system-base
 
+[nssldap/idle/timelimit]
+Description[de]=Specifies the time (in seconds) after which nss_ldap will close connections to the directory server. The default is not to time out connections.
+Description[en]=Konfiguriert die Zeit (in Sekunden) nachdem nss_ldap die Verbindung zum Directory-Server schließt. Standardmäßig werden keine Verbindungen durch eine Zeitüberschreitung geschlossen.
+Type=int
+Categories=system-base
+
+[nssldap/timelimit]
+Description[de]=Specifies the time limit (in seconds) to use when performing searches. A value of zero (0), which is the default, is to wait indefinitely for searches to be completed.
+Description[en]=Konfiguriert das Zeitlimit (in Sekunden) für die Ausführung von Suchen. Bei einem Wert von Null (0), was der Standardwert ist, wird unendlich lange auf den Abschluss der Suche gewartet.
+Type=int
+Categories=system-base
+
 [pamldap/auth]
 Description[de]=Konfiguriert, ob das LDAP-PAM-Modul eine Authentifizierung gegenüber dem LDAP-Server durchführt. Ist die Variable nicht gesetzt, erfolgt eine Authentifizierung.
 Description[en]=Configures whether the LDAP PAM module authenticates against the LDAP server. If the variable isn't set, an authentication is performed.

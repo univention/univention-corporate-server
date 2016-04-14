@@ -100,6 +100,7 @@ univention-config-registry set \
 	auth/screen/group/Administrators?"yes" \
 	auth/screen/user/root?"yes" \
 	nssldap/tls/checkpeer?no \
+	nssldap/timelimit?30 \
 	auth/faillog?no \
 	nssldap/auth?yes \
 	pamldap/auth?yes \

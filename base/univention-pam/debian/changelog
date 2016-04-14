@@ -1,3 +1,10 @@
+univention-pam (9.0.0-6) unstable; urgency=medium
+
+  * Bug #40968: Make timelimit for ldap searches in nss-ldap configurable
+   via the UCR variable nssldap/timelimit
+
+ -- Florian Best <best@univention.de>  Thu, 14 Apr 2016 08:26:58 +0200
+
 univention-pam (9.0.0-5) unstable; urgency=low
 
   * Bug #38993: Create user 'messagebus'
