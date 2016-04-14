@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-samba4
-fix: 5.0.1-32.664.201604131409
+fix: 5.0.1-33.665.201604141703
 desc: |
  This update makes additional smb.conf options configurable via UCR:
  * samba/ntlm/auth
