@@ -1,0 +1,13 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-pam
+fix: 9.0.0-6.268.201604140831
+desc: |
+ This update addresses the following issue(s):
+ * The timelimit of ldap searches in libnss-ldap is now configurable via the
+   UCR variable "nssldap/timelimit" and defaults to 30 seconds. This prevents
+   hanging UMC server processes when changing network and IP settings in certain
+   circumstances.
+bug: [40968]
