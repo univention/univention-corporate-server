@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: samba
+fix: 2:4.3.7-1.827.201604141315
+desc: |
+ This update for Samba fixes an issue with the Samba 4.3.7 update, where
+ the installation of the samba-libs package could stop due to legacy tdb
+ files in /var/lib/samba which are now located in /var/lib/samba/private.
+bug: [41049]
