@@ -1,9 +1,9 @@
 product: ucs
-release: "4.1"
-version: [1]
-scope: ucs_4.1-0-errata4.1-1
+release: "4.0"
+version: [5]
+scope: ucs_4.0-0-errata4.0-5
 src: univention-grub
-fix: 9.0.1-5.131.201604151656
+fix: 8.0.4-5.133.201604151716
 desc: |
  This update addresses the following issues:
  * Localization has been disabled.
@@ -11,4 +11,4 @@ desc: |
  * Quote menu title.
  * Disable saving the selection by default as it is not supported on all file
    systems.
-bug: [41046, 40586, 25157, 40557]
+bug: [41047, 40586, 25157, 40557]
