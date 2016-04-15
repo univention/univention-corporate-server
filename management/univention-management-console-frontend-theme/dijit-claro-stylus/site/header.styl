@@ -1,5 +1,573 @@
 @import "../variables";
 
+_transform() 
+	transform: arguments
+	-webkit-transform: arguments
+
+	//replace translate3d with translate for ie
+	newArgs = '';
+	for arg in arguments
+		argString = s('%s ', arg)
+		if match('translate3d', argString)
+			newArgString = replace('3d', '', argString)
+			newArgString = replace(',\s*\d*(px)?\s*\)', ')', newArgString)
+			argString = newArgString
+
+		newArgs += argString
+	-ms-transform: unquote(newArgs)
+
+insertBorder() {
+	content: '';
+	display: block;
+	position: absolute;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	border-bottom: arguments;
+}
+
+/* mobile view */
+.umc.umcMobileView {
+	.umcHeader {
+		min-height: 55px;
+		height: @min-height;
+		overflow: hidden;
+		transition: height 0.5s;
+		_transform: scale(1, 1) translate3d(3px, 0, 25px);
+
+		&.moduleSearchActive {
+			height: 96px;
+		}
+
+		.umcHeaderCenter {
+			@media (max-width: 410px) {
+				width: 100px;
+				margin-left: -50px;
+
+				.dijitButtonText {
+					width: 150px;
+					margin-left: -27px;
+				}
+			}
+			@media (max-width: 360px) {
+				width: 60px;
+				margin-left: -30px;
+
+				.dijitButtonText {
+					margin-left: -47px;
+				}
+			}
+			@media (max-width: 320px) {
+				margin: 0;
+				left: auto;
+				right: 120px;
+			}
+		}
+
+		.moduleSearchToggleButton {
+			@media (max-width: 549px) {
+				margin-top: -50px;
+			}
+
+			position: absolute;
+			top: 0;
+			right: 60px;
+			width: parentWidth = 60px;
+			height: parentHeight = 45px;
+
+			.moduleSearchToggleButtonIcon {
+				position: absolute;
+				transition: top 0.5s, left 0.5s, opacity 0.5s;
+				top: 12.5px
+				left: 20px;
+			}
+			.moduleSearchToggleButtonSearchIcon {
+				icon-image(-260, -40, '../');
+			}
+			.moduleSearchToggleButtonOpenIcon {
+				opacity: 0;
+				icon-image(-160, -60, '../');
+				_transform: rotate(90deg);
+			}
+			.moduleSearchToggleButtonCloseIcon {
+				opacity: 0;
+				icon-image(-160, -40, '../');
+				_transform: rotate(45deg);
+			}
+			.moduleSearchToggleButtonTouchStyle {
+				width: w = 2px;
+				height: h = 2px;
+				position: absolute;
+				top: ((parentHeight - h) / 2);
+				left: ((parentWidth - w) /2);
+				color = rgba(0, 0, 0, 0.2);
+				background-color: color;
+				box-shadow: 0 0 15px 27px color;
+				border-radius: 100%;
+				opacity: 0;
+				transition: opacity 0.4s;
+			}
+
+			&.moduleSearchToggleButtonTouched {
+				.moduleSearchToggleButtonTouchStyle {
+					opacity: 1;
+				}
+			}
+
+			&.moduleSearchToggleButtonHover {
+				.moduleSearchToggleButtonSearchIcon {
+					left: 10px;
+				}
+				.moduleSearchToggleButtonOpenIcon {
+					opacity: 1;
+					left: 30px;
+				}
+				.moduleSearchToggleButtonCloseIcon {
+					left: 30px;
+					top: -7.5px;
+				}
+			}
+
+			&.moduleSearchToggleButtonActive {
+				.moduleSearchToggleButtonSearchIcon {
+					left: 10px;
+				}
+				.moduleSearchToggleButtonOpenIcon {
+					opacity: 0;
+					left: 30px;
+					top: 32.5px;
+				}
+				.moduleSearchToggleButtonCloseIcon {
+					opacity: 1;
+					left: 30px;
+					top: 12.5px;
+				}
+			}
+		}
+
+		.umcLiveSearchSidebar {
+			position: absolute;
+			right: 0;
+			padding-right: 15px;
+			
+			@media (min-width: 550px) {
+				margin-top: 50px;
+			}
+
+			@media (max-width: 549px) {
+				margin-top: 0;
+				max-width: none;
+			}
+
+			@media (max-width: 400px) {
+				width: 100%;
+			}
+		}
+	}
+
+	.umcMobileMenuToggleButton {
+		@media (max-width: 549px) {
+			margin-top: -50px;
+		}
+
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: parentWidth = 60px;
+		height: parentHeight = 45px;
+		
+		div {
+			position: absolute;
+			width: 25px;
+			height: 5px;
+			right: ((parentWidth - @width) / 2);
+			background-color: $text-color;
+
+			//for firefox mobile
+			pointer-events: none;
+
+			transition: transform 0.5s, width 0.5s, right 0.5s;
+			//for mobile(chrome)
+			-webkit-transition: -webkit-transform 0.5s, width 0.5s, right 0.5s;
+		}
+
+		div:nth-child(1) {
+			top: 12px;
+		}
+		div:nth-child(2) {
+			top: 20px;
+		}
+		div:nth-child(3) {
+			top: 28px;
+		}
+
+		.umcMobileMenuToggleButtonTouchStyle {
+			width: w = 2px;
+			height: h = 2px;
+			position: absolute;
+			top: ((parentHeight - h) / 2);
+			left: ((parentWidth - w) /2);
+			color = rgba(0, 0, 0, 0.2);
+			background-color: color;
+			box-shadow: 0 0 15px 27px color;
+			border-radius: 100%;
+			opacity: 0;
+			transition: opacity 0.4s;
+		}
+
+		&.umcMobileMenuToggleButtonTouched {
+			.umcMobileMenuToggleButtonTouchStyle {
+				opacity: 1;
+			}
+		}
+
+		&.umcMobileMenuToggleButtonHover {
+			div:nth-child(1) {
+				width: 18px;
+				right: 24.5px;
+				_transform: translate(0, 2px) rotate(-38deg);
+			}
+			div:nth-child(2) {
+				top: 20px;
+			}
+			div:nth-child(3) {
+				width: 18px;
+				right: 24.5px;
+				_transform: translate(0, -2px) rotate(38deg);
+			}
+		}
+
+		&.umcMobileMenuToggleButtonActive {
+			div:nth-child(1) {
+				_transform: translate3d(0, 8px, 0) rotate(45deg);
+			}
+			div:nth-child(2) {
+				_transform: rotate(45deg);
+			}
+			div:nth-child(3) {
+				_transform: translate3d(0, -8px, 0) rotate(-45deg);
+			}
+		}
+	}
+
+	.umcTopContainer {
+		transition: transform 0.5s;
+		-webkit-transition: -webkit-transform 0.5s;
+	}
+
+	.mobileMenu {
+		overflow: hidden;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: 80%;
+		max-width: 360px;
+		background: url("http://demo.univention.de/univention-management-console/js_$20162001042724$/dijit/themes/umc/images/background-tile.png") repeat, $primary-color; //#5a5a5a
+		box-shadow: 0px 0px 10px 3px $grey-dark;
+		transition: _transform 0.5s;
+		-webkit-transition: -webkit-transform 0.5s;
+		z-index: 2;
+		display: none;
+
+		.umcMobileMenuToggleButton {
+			z-index: 10;
+			margin: 0 !important;
+
+			div {
+				background-color: white;
+			}
+
+			&.umcMobileMenuToggleButtonTouchStyle {
+				box-shadow: 0 0 15px 27px rgba(255, 255, 255, 0.2)
+			}
+
+			&.umcMobileMenuToggleButtonHover {
+				div:nth-child(1) {
+					width: 18px;
+					right: 17px;
+					_transform: translate(0, 2px) rotate(38deg) !important;
+				}
+				div:nth-child(2) {
+					top: 20px;
+					_transform: none !important;
+				}
+				div:nth-child(3) {
+					width: 18px;
+					right: 17px;
+					_transform: translate(0, -2px) rotate(-38deg) !important;
+				}
+			}
+		}
+
+		.umcText.fullWidthTile {
+			color: $text-color-dark-background;
+			position: relative;
+			height: 50px;
+			line-height: 20px;
+			padding: ((@height - @line-height) / 2) 0;
+		}
+
+		.menuSlideHeader {
+			text-align: center;
+			font-size: 20px;
+			cursor: default;
+
+			&.subMenu {
+				cursor: pointer;
+
+				&:before {
+					content: '';
+					icon-image(-200, -20, '../', '-white');
+					position: absolute;
+					left: 0;
+					margin-left: 20px;
+				}
+			}
+
+			&.permaHeader {
+				display: none;
+			}
+
+			&:after {
+				insertBorder(2px solid #b4b4b4);
+			}
+		}
+
+		&.hasPermaHeader {
+			$top = 0;
+			$height = 50px;
+			.menuSlideHeader.permaHeader {
+				display: block;
+				position: absolute;
+				top: $top;
+				left: 0;
+				right: 0;
+				height: $height;
+				background-color: rgba(0, 0, 0, 0.3);
+			}
+
+			.menuSlides {
+				top: $height + $top;
+				.menuSlide .menuSlideHeader {
+					display: none;
+				}
+			}
+		}
+
+		.menuSlides,
+		.menuSlide {
+			position: absolute;
+			z-index: 0;
+			background: inherit;
+		}
+
+		.menuSlides {
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+
+			.menuSlide {
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+
+				transition: transform 0.4s;
+				-webkit-transition: -webkit-transform 0.4s;
+
+				.menuSlideItemsContainer {
+					.menuItem {
+						$freeLeftSpace = 20px;
+
+						cursor: pointer;
+						padding-left: $freeLeftSpace;
+
+						&:after {
+							insertBorder(1px solid #c8c8c8);
+							left: $freeLeftSpace;
+						}
+
+						&:before {
+							insertBorder(1px solid #c8c8c8);
+							bottom: 50px;
+							opacity: 0;
+						}
+
+						&:hover,
+						&.menuItemActive {
+							color: #282828;
+							background-color: rgba(255, 255, 255, 0.4);
+
+							.popupMenuItemArrowActive {
+								opacity: 1;
+							}
+
+							&:before {
+								opacity: 1;
+							}
+							&:after {
+								left: 0;
+							}
+						}
+
+						&.menuItemActive {
+							color: #282828;
+							background-color: rgba(255, 255, 255, 0.7);
+						}
+						&.menuItemActiveTransition {
+							$transitionDur = 0.4s;
+
+							transition: background-color $transitionDur, color $transitionDur;
+							.popupMenuItemArrow,
+							.popupMenuItemArrowActive {
+								transition: opacity $transitionDur;
+							}
+							&:before {
+								transition: opacity $transitionDur;
+							}
+						}
+					}
+
+					.popupMenuItem {
+						.childItemsCounter {
+							position: absolute;
+							right: 0;
+							margin-right: 40px;
+							display: inline;
+						}
+
+						.popupMenuItemArrow,
+						.popupMenuItemArrowActive {
+							content: '';
+							position: absolute;
+							right: 0;
+							margin-right: 12px;
+							display: inline;
+							margin-top: 1px;
+						}
+
+						.popupMenuItemArrow {
+							opacity: 1;
+							icon-image(-220, -20, '../', '-white');
+						}
+						.popupMenuItemArrowActive {
+							opacity: 0;
+							icon-image(-220, -20, '../');
+						}
+					}
+
+					.separator {
+						display: none;
+
+						padding: 0;
+						height: 0;
+						border-width: 2px;
+
+						&:after {
+							insertBorder(3px solid #c8c8c8);
+							left: 20px;
+							bottom: -2px;
+						}
+					}
+				}
+			}
+
+			&.popupSlideNormalTransition .menuSlide {
+				_transform: translate3d(100%, 0, 0);
+			}
+
+			.hiddenSlide {
+				display: none !important;
+			}
+
+			.topLevelSlide {
+				z-index: 1;
+			}
+
+			.menuSlide.visibleSlide {
+				_transform: translate3d(0, 0, 0) scale(1, 1);
+			}
+		}
+	}
+
+	.mobileMenuCloseOverlay {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: inherit;
+		opacity: 0;
+		display: none;
+		z-index: 1;
+		transition: transform 0.5s, opacity 0.5s;
+		-webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
+	}
+
+	//class thats get added shortly before mobileMenuActive
+	//gives the posibility to set spicific styles before the transition
+	&.mobileMenuBeforeTransition {
+		overflow: inherit;
+
+		.umcTopContainer {
+			position: inherit;
+			background: initial;
+			height: 100%;
+			width: 100%;
+			z-index: 1;
+		}
+
+		.umcMainTabContainer {
+			background: inherit !important;
+		}
+
+		&.umcOverviewNotShown .umcMainTabContainer {
+			height: 100%;
+			background: $container-background-color;
+		}
+
+		.mobileMenu {
+			display: block;
+			_transform: translate3d(100%, 0, 0);
+		}
+
+		.mobileMenuCloseOverlay {
+			display: block;
+		}
+	}
+
+	&.mobileMenuActive {
+		.umcTopContainer,
+		.mobileMenuCloseOverlay {
+			_transform: translate3d(0, 0, 0);
+		}
+
+		.mobileMenuCloseOverlay {
+			opacity: 0.7;
+		}
+
+		.mobileMenu {
+			_transform: translate3d(0, 0, 0) !important;
+		}
+	}
+
+	&.mobileMenuToggleButtonActive {
+		.umcMobileMenuToggleButton {
+			div:nth-child(1) {
+				_transform: translate3d(0, 8px, 0) rotate(45deg);
+			}
+			div:nth-child(2) {
+				_transform: rotate(45deg);
+			}
+			div:nth-child(3) {
+				_transform: translate3d(0, -8px, 0) rotate(-45deg);
+			}
+		}
+	}
+}
+
 /* Header elements */
 
 .umc .umcHeader {
@@ -17,6 +585,9 @@
 	}
 
 	.umcHeaderLeft {
+		@media (max-width: 400px) {
+			background: url(../images/univention_u.svg) no-repeat 12px 12px;
+		}
 		background: url(../images/univention.svg) no-repeat 10px 12px;
 		height: 50px;
 		padding-right: 25px;
@@ -252,4 +823,3 @@
 .umc .umcTopContainer .dijitTabContainerTop {
 	clear: both;
 }
-

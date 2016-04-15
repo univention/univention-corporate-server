@@ -1,3 +1,13 @@
+univention-management-console-frontend-theme (1.0.4-2) unstable; urgency=medium
+
+  Bug #38622
+  * Added univention_u logo for small crenns
+  * Currently selected category stands out more
+  * Added styles for the mobile menu and module search,
+    displayed on small screens and touch devices
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 15 Apr 2016 13:46:37 +0200
+
 univention-management-console-frontend-theme (1.0.4-1) unstable; urgency=medium
 
   * Bug #39498: fix grid header checkbox rule for Internet Explorer

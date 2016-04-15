@@ -1,5 +1,21 @@
 @import "../variables";
 
+_transform() 
+	transform: arguments
+	-webkit-transform: arguments
+
+	//replace translate3d with translate for ie
+	newArgs = '';
+	for arg in arguments
+		argString = s('%s ', arg)
+		if match('translate3d', argString)
+			newArgString = replace('3d', '', argString)
+			newArgString = replace(',\s*\d*(px)?\s*\)', ')', newArgString)
+			argString = newArgString
+
+		newArgs += argString
+	-ms-transform: unquote(newArgs)
+
 .umc .umcOverviewContainer {
 	padding: 0;
 }
@@ -12,6 +28,9 @@
 
 .umc .umcCategoryBar .dijitButton {
 	min-width: 95px;
+	@media (max-width: 400px) {
+		min-width: 70px;
+	}
 	max-width: 160px;
 	margin: 5px 0;
 	position: relative;
@@ -25,6 +44,15 @@
 		filter: none;
 		box-shadow: none;
 		display: block;
+
+		.dijitButtonContents {
+			.umcCategoryButtonBackgroundWrapper {
+				transition: transform 0.3s, opacity 0.3s;
+				-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+				opacity: 0.75;
+				_transform: scale(0.8, 0.8);
+			}
+		}
 	}
 
 	.dijitButtonText {
@@ -39,8 +67,25 @@
 		position: absolute;
 		width: 100%;
 		background-position: center top;
+		transition: transform 0.3s 0.0s;
+		-webkit-transition: -webkit-transform 0.3s 0.0s;
+		_transform: scale(0.8, 0.8);
 	}
 
+	&.dijitButtonSelected {
+		.dijitButtonNode {
+			.dijitButtonContents {
+				.umcCategoryButtonBackgroundWrapper {
+					opacity: 1;
+					_transform: scale(1, 1);
+
+					.dijitIcon {
+						_transform: scale(1, 1);
+					}
+				}
+			}
+		}
+	}
 
 //		.dijitButtonContents {
 //			width: 65px;
@@ -156,11 +201,10 @@
 	opacity: 0;
 	max-width: 0 !important;
 	min-width: 0;
-	transform: translate(30%, 0);
-	transition: max-width 2s, min-width 2s, opacity 0.8s ease-in-out, transform 2s;
+	transition: opacity 0.5s, max-width 0.7s 0.2s, min-width 0.7s 0.2s;
 }
 
 .umcCategory-_favorites_ {
 	opacity: 1;
-	transition: max-width 2s, min-width 2s, opacity 1s ease-in 0.4s, transform 2s;
+	transition: opacity 0.7s 0.3s, max-width 0.7s, min-width 0.7s;
 }
