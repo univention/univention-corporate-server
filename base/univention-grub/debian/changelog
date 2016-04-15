@@ -1,3 +1,11 @@
+univention-grub (9.0.1-5) unstable; urgency=low
+
+  * Bug #40586: Disable localizaion
+  * Bug #25157: Remove unneeded argument to grub-mkdevicemap
+  * Bug #40557: Quote title
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 15 Apr 2016 16:36:39 +0200
+
 univention-grub (9.0.1-4) unstable; urgency=medium
 
   * Check grub-pc/install_devices (Bug #40654)
