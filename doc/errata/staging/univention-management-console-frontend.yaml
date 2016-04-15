@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-management-console-frontend
+fix: 5.0.63-33.1224.201604151341
+desc: |
+ This update addresses the following issue(s):
+ * The user menu in the UMC is now more touch-friendly for small screens
+   and the use on mobile devices.
+bug: [38622]
