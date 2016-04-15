@@ -204,7 +204,9 @@ res=$?
 # component transition in 3.2 not found, -> abort the update
 if ! [ $res -eq 0 ]; then
 	echo "ERROR: The repository scope 'transition' is not accessible"
-        echo "       from this machine. This is required for the update."
+	echo "       from this machine. This is required for the update."
+	echo "       See http://sdb.univention.de/1365 for more"
+	echo "       information."
 	exit 1
 elif [ -s $updateError ]; then
 	echo "Error: Traceback in UniventionUpdater() python module:"
