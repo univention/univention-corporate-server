@@ -9,3 +9,5 @@ desc: |
  the installation of the samba-libs package could stop due to legacy tdb
  files in /var/lib/samba which are now located in /var/lib/samba/private.
 bug: [41049]
+erratum: 421
+announced: 2016-04-15
