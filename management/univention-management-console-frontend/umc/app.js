@@ -37,6 +37,8 @@ define([
 	"dojo/_base/window",
 	"dojo/window",
 	"dojo/on",
+	"dojo/mouse",
+	"dojo/touch",
 	"dojo/aspect",
 	"dojo/has",
 	"dojo/Evented",
@@ -54,6 +56,7 @@ define([
 	"dojo/dom-class",
 	"dojo/dom-geometry",
 	"dojo/dom-construct",
+	"put-selector/put",
 	"dojo/hash",
 	"dojox/html/styles",
 	"dojox/html/entities",
@@ -84,9 +87,9 @@ define([
 	"./i18n!",
 	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseFx, baseWin, win, on, aspect, has,
+], function(declare, lang, kernel, array, baseFx, baseWin, win, on, mouse, touch, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, fxEasing, Memory, Observable,
-		dom, style, domAttr, domClass, domGeometry, domConstruct, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
+		dom, style, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
 		TabController, LiveSearchSidebar, GalleryPane, ContainerWidget, Page, Form, Button, Text, Module, CategoryButton,
 		i18nTools, _
@@ -589,9 +592,14 @@ define([
 
 	var UmcHeader = declare([ContainerWidget], {
 
+		// top tap bar (handed over upon instantiation)
+		tabContainer: null,
+		tabController: null,
+
 		_headerLeft: null,
 		_headerRight: null,
 		_headerCenter: null,
+		_mobileMenu: null,
 		_hostInfo: null,
 		_hostMenu: null,
 		_menuMap: null,
@@ -628,58 +636,7 @@ define([
 				style.set(this._headerRight.domNode, 'display', 'block');
 				style.set(this._headerCenter.domNode, 'display', 'block');
 
-				// the host info and menu
-				this._hostMenu = new Menu({});
-				this._hostInfo = new DropDownButton({
-					id: 'umcMenuHost',
-					iconClass: 'umcServerIcon',
-					label: tools.status('fqdn'),
-					disabled: true,
-					dropDown: this._hostMenu
-				});
-				this._headerRight.addChild(this._hostInfo);
-
-				// display the username
-				this._usernameButton = new DropDownButton({
-					id: 'umcMenuUsername',
-					'class': 'umcHeaderText',
-					iconClass: 'umcUserIcon',
-					label: tools.status('username'),
-					dropDown: new Menu({})
-				});
-				this._headerRight.addChild(this._usernameButton);
-
-				array.forEach([this._hostInfo, this._usernameButton], lang.hitch(this, function(menu) {
-					this._menuMap[menu.id] = menu.dropDown;
-				}));
-
-				// the settings context menu
-				this.addMenuEntry(new PopupMenuItem({
-					$parentMenu$: 'umcMenuUsername',
-					$priority$: 60,
-					label: _('Settings'),
-					id: 'umcMenuSettings',
-					popup: new Menu({}),
-					'class': 'dijitHidden'
-				}));
-
-				// the help context menu
-				this.addMenuEntry(new PopupMenuItem({
-					$parentMenu$: 'umcMenuUsername',
-					$priority$: 50,
-					label: _('Help'),
-					id: 'umcMenuHelp',
-					popup: new Menu({})
-				}));
-
-				// the logout button
-				this.addMenuEntry(new MenuItem({
-					$parentMenu$: 'umcMenuUsername',
-					$priority$: -1,
-					id: 'umcMenuLogout',
-					label: _('Logout'),
-					onClick: function() { require('umc/app').logout(); }
-				}));
+				this._setupMenu();
 			}
 
 			if (tools.status('overview') && !tools.status('singleModule')) {
@@ -688,39 +645,564 @@ define([
 			}
 		},
 
-		addMenuEntry: function(item) {
-			if (tools.status('overview')) {
-				var menu = this._menuMap[item.$parentMenu$ || 'umcMenuUsername'];
-				if (item.isInstanceOf(Menu)) {
-					this._menuMap[item.id] = item;
-				} else if (item.isInstanceOf(PopupMenuItem)) {
-					this._menuMap[item.id] = item.popup;
-				} else if (item.isInstanceOf(DropDownButton)) {
-					this._menuMap[item.id] = item.dropDown;
-				}
+		_setupMenu: function() {
+			if (tools.status('mobileView')) {
+				this._setupMobileMenuToggleButton();
+				this._setupMobileMenu();
+			} else {
+				this._setupDesktopMenu();
+			}
+		},
 
-				// unhide the parent menu in case it is hidden
-				var parentMenu = registry.byId(item.$parentMenu$);
-				if (parentMenu) {
-					domClass.remove(parentMenu.domNode, 'dijitHidden');
+		_setupMobileMenu: function() {
+			// function definitions (jump to 'start')
+			var createBase = lang.hitch(this, function() {
+				this._mobileMenu = new ContainerWidget({
+					'class': 'mobileMenu hasPermaHeader',
+					menuSlides: null,
+					permaHeader: null,
+					popupHistory: []
+				});
+			});
+
+			var addMenuSlides = lang.hitch(this, function() {
+				var menuSlides = new ContainerWidget({
+					'class': 'menuSlides popupSlideNormalTransition'
+				});
+				this._mobileMenu.menuSlides = menuSlides;
+				this._mobileMenu.addChild(menuSlides);
+			});
+
+			var addMobileMenuToggleButton = lang.hitch(this, function() {
+				var mobileMenuToggleButton = this._createMobileMenuToggleButton();
+				this._mobileMenu.addChild(mobileMenuToggleButton);
+			});
+
+			var addUserMenu = lang.hitch(this, function() {
+				var userMenu = this._buildMenuSlide('umcMenuUsername', 'Menu');
+				domClass.replace(userMenu.domNode, 'visibleSlide', 'hiddenSlide');
+				this._mobileMenu.menuSlides.addChild(userMenu);
+				this._menuMap[userMenu.id] = userMenu.menuSlideItemsContainer;
+			});
+
+			var addPermaHeader = lang.hitch(this, function() {
+				//create permaHeader
+				var permaHeader = new Text({
+					content: 'Menu',
+					'class': 'menuSlideHeader permaHeader fullWidthTile'
+				});
+				this._mobileMenu.permaHeader = permaHeader;
+				this._mobileMenu.addChild(permaHeader);
+
+				//add listeners
+				this._mobileMenu.permaHeader.on('click', lang.hitch(this, function() {
+					var lastClickedPopupMenuItem = this._mobileMenu.popupHistory.pop();
+
+					this._updateMobileMenuPermaHeaderForClosing(lastClickedPopupMenuItem);
+					this._closeMobileMenuPopupFor(lastClickedPopupMenuItem);
+				}));
+			});
+
+			var addCloseOverlay = lang.hitch(this, function() {
+				this._mobileMenuCloseOverlay = new ContainerWidget({
+					'class': 'mobileMenuCloseOverlay'
+				});
+				this._mobileMenuCloseOverlay.on('click', lang.hitch(this, function() {
+					this.closeMobileMenu();
+				}));
+				dojo.body().appendChild(this._mobileMenuCloseOverlay.domNode);
+			});
+
+			// start: building mobile menu
+			createBase();
+			addMenuSlides();
+			addMobileMenuToggleButton();
+			addUserMenu();
+			addPermaHeader();
+			addCloseOverlay();
+
+			dojo.body().appendChild(this._mobileMenu.domNode);
+		},
+
+		_setupDesktopMenu: function() {
+			// the host info and menu
+			this._hostMenu = new Menu({});
+			this._hostInfo = new DropDownButton({
+				id: 'umcMenuHost',
+				iconClass: 'umcServerIcon',
+				label: tools.status('fqdn'),
+				disabled: true,
+				dropDown: this._hostMenu
+			});
+			this._headerRight.addChild(this._hostInfo);
+
+			// display the username
+			this._usernameButton = new DropDownButton({
+				id: 'umcMenuUsername',
+				'class': 'umcHeaderText',
+				iconClass: 'umcUserIcon',
+				label: tools.status('username'),
+				dropDown: new Menu({})
+			});
+			this._headerRight.addChild(this._usernameButton);
+
+			this._menuMap[this._usernameButton.id] = this._usernameButton.dropDown;
+		},
+
+		_buildMenuSlide: function(id, label, isSubMenu) {
+			var headerClass = isSubMenu ? 'menuSlideHeader subMenu fullWidthTile' : 'menuSlideHeader fullWidthTile';
+			var menuSlideHeader = new Text({
+				content: label,
+				'class': headerClass
+			});
+			var menuSlideItemsContainer = new ContainerWidget({
+				'class': 'menuSlideItemsContainer'
+			});
+
+			var menuSlide = new ContainerWidget({
+				id: id,
+				'class': 'menuSlide hiddenSlide',
+				menuSlideHeader: menuSlideHeader,
+				menuSlideItemsContainer: menuSlideItemsContainer,
+				popupMenuItem: null
+			});
+			menuSlide.addChild(menuSlideHeader);
+			menuSlide.addChild(menuSlideItemsContainer);
+
+			return menuSlide;
+		},
+
+		_handleDeprecatedMenuInstances: function(item) {
+			if (item.isInstanceOf(PopupMenuItem)) {
+				//create submneu
+				var newSubmenu = {
+					parentMenuId: item.$parentMenu$,
+					priority: item.$priority$,
+					label: item.label,
+					popup: [],
+					id: item.id
+				};
+				//add menu entries to submenu
+				if (item.popup && item.popup.getChildren().length > 0) {
+					menuEntries = item.popup.getChildren();
+					array.forEach(menuEntries, function(menuEntry) {
+						var newEntry = {
+							priority: menuEntry.$priority$ || 0,
+							label: menuEntry.label,
+							onClick: menuEntry.onClick
+						};
+						newSubmenu.popup.push(newEntry);
+					});
 				}
+				//destroy deprecated menu instance
+				item.destroyRecursive();
+				this.addSubMenu(newSubmenu);
+			} else if (item.isInstanceOf(MenuItem)) {
+				var newEntry = {
+					parentMenuId: item.$parentMenu$ || "",
+					priority: item.$priority$ || 0,
+					id: item.id,
+					label: item.label,
+					onClick: item.onClick
+				};
+				item.destroyRecursive();
+				this.addMenuEntry(newEntry);
+			} else if (item.isInstanceOf(MenuSeparator)) {
+				var newSeperator = {
+					parentMenuId: item.$parentMenu$,
+					priority: item.$priority$ || 0,
+					id: item.id
+				};
+				item.destroyRecursive();
+				this.addMenuEntry(newSeperator);
+			}
+		},
+
+		addSubMenu: function(/*Object*/ item) {
+			// adds a menu entry that when clicked opens a submenu.
+			// Menu entries or other sub-menus can be added to this sub-menu.
+			//
+			// takes an object as paramter with the following properties:
+			// 	Required:
+			// 		label: String
+			// 		popup: Object[]
+			// 			Array of objects. Each object defines a menu entry that will be a child of
+			// 			this sub-menu.
+			// 			The objects needs to be in the format described at the 'addMenuEntry' method.
+			// 			Can be empty.
+			//  Optional:
+			//  	priority: Number
+			//  		The priority affects at which position the MenuItem will be placed in the parent menu.
+			//  		The highest number is the first Menu entry, the lowest number the last.
+			//  		Defaults to 0.
+			//  	parentMenuId: String
+			//  		The id of the parentMenu as String. The Menu entry will be the child of that parent if it exists.
+			//  		Defaults to 'umcMenuUsername'.
+			//  	id: String
+
+
+			//function definitions (jump to 'start')
+			var _createPopupMenuItem = function() {
+				// create the correct widget for either mobile or desktop
+				if (tools.status('mobileView')) {
+					_createPopupMenuItemMobile();
+				} else {
+					_createPopupMenuItemDesktop();
+				}
+			};
+
+			var _createPopupMenuItemMobile = lang.hitch(this, function() {
+				var _menuSlide = this._buildMenuSlide(item.id, item.label, true);
+				var _parentSlide = registry.byId(item.parentMenuId || defaultParentMenu);
+				var childItemsCounterNode = domConstruct.create('div', {
+					'class': 'childItemsCounter'
+				});
+				popupMenuItem = new Text({
+					priority: item.priority || 0,
+					content: _(item.label),
+					popup: _menuSlide,
+					parentSlide: _parentSlide,
+					childItemsCounter: 0,
+					childItemsCounterNode: childItemsCounterNode,
+					'class': 'dijitHidden menuItem popupMenuItem fullWidthTile'
+				});
+				//store a reference to the popupMenuItem in its popup
+				popupMenuItem.popup.popupMenuItem = popupMenuItem;
+
+				put(popupMenuItem.domNode,
+						childItemsCounterNode,
+						'+ div.popupMenuItemArrow' +
+						'+ div.popupMenuItemArrowActive'
+				);
+
+				this._mobileMenu.menuSlides.addChild(popupMenuItem.popup);
+				this._menuMap[popupMenuItem.popup.id] = popupMenuItem.popup.menuSlideItemsContainer;
+
+				_addClickListeners();
+			});
+
+			var _addClickListeners = lang.hitch(this, function() {
+				//open the popup of the popupMenuItem
+				popupMenuItem.on('click', lang.hitch(this, function() {
+					this._updateMobileMenuPermaHeaderForOpening(popupMenuItem);
+					this._openMobileMenuPopupFor(popupMenuItem);
+				}));
+
+				//close the popup of the popupMenuItem
+				popupMenuItem.popup.menuSlideHeader.on('click', lang.hitch(this, function() {
+					var lastClickedPopupMenuItem = this._mobileMenu.popupHistory.pop();
+
+					this._updateMobileMenuPermaHeaderForClosing(popupMenuItem);
+					this._closeMobileMenuPopupFor(lastClickedPopupMenuItem);
+				}));
+			});
+
+			var _createPopupMenuItemDesktop = lang.hitch(this, function() {
+				popupMenuItem = new PopupMenuItem({
+					priority: item.priority || 0,
+					id: item.id,
+					label: _(item.label),
+					popup: new Menu({}),
+					'class': 'dijitHidden'
+				});
+				this._menuMap[popupMenuItem.id] = popupMenuItem.popup;
+			});
+
+			var _addChildEntries = lang.hitch(this, function() {
+				// add MenuEntries to the subMenu
+				var subMenuTitleId = tools.status('mobileView') ? popupMenuItem.popup.id : popupMenuItem.id;
+				if (item.popup && item.popup.length > 0) {
+					array.forEach(item.popup, lang.hitch(this, function(menuEntry) {
+						menuEntry.parentMenuId = subMenuTitleId;
+						if (menuEntry.popup) {
+							this.addSubMenu(menuEntry);
+						} else {
+							this.addMenuEntry(menuEntry);
+						}
+					}));
+				}
+			});
+
+			var _inserPopupMenuItem = lang.hitch(this, function() {
+				// add the submenu at the correct position
+				var menu = this._menuMap[item.parentMenuId || defaultParentMenu];
 
 				// find the correct position for the entry
 				var priorities = array.map(menu.getChildren(), function(ichild) {
-					return ichild.$priority$ || 0;
+					return ichild.priority || 0;
 				});
-				var itemPriority = item.$priority$ || 0;
+				var itemPriority = item.priority || 0;
 				var pos = 0;
 				for (; pos < priorities.length; ++pos) {
 					if (itemPriority > priorities[pos]) {
 						break;
 					}
 				}
-				menu.addChild(item, pos);
+				menu.addChild(popupMenuItem, pos);
+			});
+
+			var _incrementPopupMenuItemCounter = function() {
+				if (tools.status('mobileView')) {
+					var parentMenu = registry.byId(item.parentMenuId || defaultParentMenu);
+					if (parentMenu && parentMenu.popupMenuItem) {
+						parentMenu.popupMenuItem.childItemsCounter++;
+						parentMenu.popupMenuItem.childItemsCounterNode.innerHTML = parentMenu.popupMenuItem.childItemsCounter;
+					}
+				}
+			};
+
+			//start: creating sub menu
+			var defaultParentMenu = 'umcMenuUsername';
+			var popupMenuItem;
+
+			_createPopupMenuItem();
+			_addChildEntries();
+			_inserPopupMenuItem();
+			_incrementPopupMenuItemCounter();
+		},
+
+		addMenuEntry: function(/*Object*/ item) {
+			// takes an object as parameter with the following properties:
+			// 	Required:
+			// 		label: String
+			// 		onClick: Function
+			// 	Optional:
+			// 		priority: Number
+			//  		The priority affects at which position the MenuItem will be placed in the parent menu.
+			//  		The highest number is the first Menu entry, the lowest number the last.
+			//  		Defaults to 0.
+			// 		parentMenuId: String
+			//  		The id of the parentMenu as String. The Menu entry will be the
+			//  		child of that parent if it exists.
+			//  		Defaults to 'umcMenuUsername'
+			//  	id: String
+			//
+			//  To insert a Menu separator leave out the required parameters. Any or none optional parameters can still be passed.
+
+			if (!tools.status('overview')) {
+				return;
 			}
+
+			// handle old uses of addMenuEntry
+			if (item.isInstanceOf &&
+					(item.isInstanceOf(MenuItem) ||
+					item.isInstanceOf(PopupMenuItem) ||
+					item.isInstanceOf(MenuSeparator)) ) {
+				this._handleDeprecatedMenuInstances(item);
+				return;
+			}
+
+			//function definitions (jump to 'start')
+			var _unhideParent = function() {
+				// unhide the parent menu in case it is hidden
+				if (parentMenu) {
+					if (tools.status('mobileView') && parentMenu.popupMenuItem) {
+						domClass.remove(parentMenu.popupMenuItem.domNode, 'dijitHidden');
+					} else {
+						domClass.remove(parentMenu.domNode, 'dijitHidden');
+					}
+				}
+			};
+
+			var _createMenuEntry = function() {
+				// create the correct widget for either mobile or desktop
+				if (tools.status('mobileView')) {
+					_createMenuEntryMobile();
+				} else {
+					_createMenuEntryDesktop();
+				}
+			};
+
+			var _createMenuEntryMobile = function() {
+				if (!item.onClick && !item.label) {
+					menuEntry = new Text({
+						id: item.id,
+						'class': 'menuItem separator fullWidthTile'
+					});
+				} else {
+					menuEntry = new Text({
+						priority: item.priority || 0,
+						content: _(item.label),
+						id: item.id,
+						'class': 'menuItem fullWidthTile'
+
+					});
+					menuEntry.domNode.onclick = function() {
+						item.onClick();
+					};
+				}
+			};
+
+			var _createMenuEntryDesktop = function() {
+				if (!item.onClick && !item.label) {
+					menuEntry = new MenuSeparator({
+						id: item.id
+					});
+				} else {
+					menuEntry = new MenuItem({
+						priority: item.priority || 0,
+						label: _(item.label),
+						id: item.id,
+						onClick: item.onClick
+					});
+				}
+			};
+
+			var _insertMenuEntry = lang.hitch(this, function() {
+				// add the menuEntry to the correct menu
+				var menu = this._menuMap[item.parentMenuId || defaultParentMenu];
+
+				// find the correct position for the entry
+				var priorities = array.map(menu.getChildren(), function(ichild) {
+					return ichild.priority || 0;
+				});
+				var itemPriority = item.priority || 0;
+				var pos = 0;
+				for (; pos < priorities.length; ++pos) {
+					if (itemPriority > priorities[pos]) {
+						break;
+					}
+				}
+
+				menu.addChild(menuEntry, pos);
+			});
+
+			var _incrementPopupMenuItemCounter = function() {
+				if (tools.status('mobileView')) {
+					//increase counter of the popupMenuItem
+					if (!domClass.contains(menuEntry.domNode, 'separator')) {
+						if (parentMenu && parentMenu.popupMenuItem) {
+							parentMenu.popupMenuItem.childItemsCounter++;
+							parentMenu.popupMenuItem.childItemsCounterNode.innerHTML = parentMenu.popupMenuItem.childItemsCounter;
+						}
+					}
+				}
+			};
+
+			//start: creating menu entry
+			var defaultParentMenu = 'umcMenuUsername';
+			var parentMenu = registry.byId(item.parentMenuId);
+			var menuEntry;
+
+			_unhideParent();
+			_createMenuEntry();
+			_insertMenuEntry();
+			_incrementPopupMenuItemCounter();
+		},
+
+		addMenuSeparator: function(/*Object*/ item) {
+			// takes an object as parameter with the following properties:
+			// 	Optional:
+			// 		priority: Number
+			//  		The priority affects at which position the MenuItem will be placed in the parent menu.
+			//  		The highest number is the first Menu entry, the lowest number the last.
+			//  		Defaults to 0.
+			// 		parentMenuId: String
+			//  		The id of the parentMenu as String. The Menu entry will be the
+			//  		child of that parent if it exists.
+			//  		Defaults to 'umcMenuUsername'
+			//  	id: String
+
+			var _item = {
+				priority: item ? item.priority : undefined,
+				parentMenuId: item ? item.parentMenuId : undefined,
+				id: item ? item.id : undefined
+			};
+			this.addMenuEntry(_item);
+		},
+
+		_openMobileMenuPopupFor: function(popupMenuItem) {
+			domClass.remove(popupMenuItem.popup.domNode, 'hiddenSlide');
+			domClass.add(popupMenuItem.domNode, 'menuItemActive menuItemActiveTransition');
+			setTimeout(function() {
+				domClass.replace(popupMenuItem.parentSlide.domNode, 'overlappedSlide', 'topLevelSlide');
+				domClass.add(popupMenuItem.popup.domNode, 'visibleSlide topLevelSlide');
+			}, 10);
+		},
+
+		_closeMobileMenuPopupFor: function(popupMenuItem) {
+			if (!popupMenuItem) {
+				return;
+			}
+			domClass.remove(popupMenuItem.popup.domNode, 'visibleSlide');
+			domClass.remove(popupMenuItem.parentSlide.domNode, 'overlappedSlide');
+			setTimeout(function() {
+				domClass.replace(popupMenuItem.popup.domNode, 'hiddenSlide', 'topLevelSlide');
+				domClass.add(popupMenuItem.parentSlide.domNode, 'topLevelSlide');
+			}, 510);
+			setTimeout(function() {
+				domClass.remove(popupMenuItem.domNode, 'menuItemActive');
+				setTimeout(function() {
+					domClass.remove(popupMenuItem.domNode, 'menuItemActiveTransition');
+				}, 400);
+			}, 250);
+		},
+
+		_updateMobileMenuPermaHeaderForOpening: function(popupMenuItem) {
+			this._mobileMenu.permaHeader.set('content', popupMenuItem.popup.menuSlideHeader.content);
+			this._mobileMenu.popupHistory.push(popupMenuItem);
+			domClass.toggle(this._mobileMenu.permaHeader.domNode, 'subMenu', domClass.contains(popupMenuItem.popup.menuSlideHeader.domNode, 'subMenu'));
+		},
+
+		_updateMobileMenuPermaHeaderForClosing: function(popupMenuItem) {
+			if (!popupMenuItem) {
+				return;
+			}
+			this._mobileMenu.permaHeader.set('content', popupMenuItem.parentSlide.menuSlideHeader.content);
+			var isSubMenu = domClass.contains(popupMenuItem.parentSlide.menuSlideHeader.domNode, 'subMenu');
+			domClass.toggle(this._mobileMenu.permaHeader.domNode, 'subMenu', isSubMenu);
 		},
 
 		setupSearchField: function() {
+			this._searchSidebar = new LiveSearchSidebar({
+				searchLabel: _('Module search')
+			});
+
+			if (tools.status('mobileView')) {
+				this._setupMobileSearchField();
+			} else {
+				this._setupDesktopSearchField();
+			}
+
+			this._headerRight.addChild(this._searchSidebar);
+		},
+
+		_setupMobileSearchField: function() {
+			var moduleSearchToggleButton = domConstruct.create('div', {
+				'class': 'moduleSearchToggleButton'
+			}, this._headerRight.domNode);
+
+			//create icon divs
+			put(moduleSearchToggleButton, 
+					'div.moduleSearchToggleButtonTouchStyle' +
+					'+ div.moduleSearchToggleButtonIcon.moduleSearchToggleButtonSearchIcon' +
+					'+ div.moduleSearchToggleButtonIcon.moduleSearchToggleButtonOpenIcon' +
+					'+ div.moduleSearchToggleButtonIcon.moduleSearchToggleButtonCloseIcon'
+			);
+
+			//add listeners
+			if (has('touch')) {
+				on(moduleSearchToggleButton, touch.press, function() {
+					domClass.add(this, 'moduleSearchToggleButtonTouched');
+				});
+				on(moduleSearchToggleButton, [touch.leave, touch.release], function() {
+					tools.defer(lang.hitch(this, function() {
+						domClass.remove(this, 'moduleSearchToggleButtonTouched');
+					}), 200);
+				});
+			} else {
+				on(moduleSearchToggleButton, mouse.enter, function() {
+					domClass.add(this, 'moduleSearchToggleButtonHover');
+				});
+				on(moduleSearchToggleButton, mouse.leave, function() {
+					domClass.remove(this, 'moduleSearchToggleButtonHover');
+				});
+			}
+
+			this._searchSidebar.toggleButton = moduleSearchToggleButton;
+		},
+
+		_setupDesktopSearchField: function() {
 			// add an empty element to force a line break
 			this._headerRight.addChild(new Text({
 				'class': 'clearfix'
@@ -729,11 +1211,7 @@ define([
 			// enforce same width as username button
 			var usernameButtonPos = domGeometry.position(this._usernameButton.domNode);
 			usernameButtonPos.w = Math.max(usernameButtonPos.w, 165);
-			this._searchSidebar = new LiveSearchSidebar({
-				searchLabel: _('Module search'),
-				style: lang.replace('width: {w}px', usernameButtonPos)
-			});
-			this._headerRight.addChild(this._searchSidebar);
+			style.set(this._searchSidebar.domNode, 'width', usernameButtonPos.w + 'px');
 		},
 
 		setupBackToOverview: function() {
@@ -754,9 +1232,118 @@ define([
 			}
 		},
 
+		_setupMobileMenuToggleButton: function() {
+			var mobileMenuToggleButton = this._createMobileMenuToggleButton();
+			this._headerRight.addChild(mobileMenuToggleButton);
+		},
+
+		_createMobileMenuToggleButton: function() {
+			var mobileMenuToggleButton = new ContainerWidget({
+				'class': 'umcMobileMenuToggleButton'
+			});
+
+			//create hamburger stripes
+			var hamburgerStripes = domConstruct.toDom("<div class='hamburgerStripe'></div><div class='hamburgerStripe'></div><div class='hamburgerStripe'></div>");
+			domConstruct.place(hamburgerStripes, mobileMenuToggleButton.domNode);
+
+			domConstruct.create('div', {
+				'class': 'umcMobileMenuToggleButtonTouchStyle'
+			}, mobileMenuToggleButton.domNode);
+
+			// add listeners
+			if (has('touch')) {
+				mobileMenuToggleButton.on(touch.press, function() {
+					domClass.add(this, 'umcMobileMenuToggleButtonTouched');
+				});
+				mobileMenuToggleButton.on([touch.leave, touch.release], function() {
+					tools.defer(lang.hitch(this, function() {
+						domClass.remove(this, 'umcMobileMenuToggleButtonTouched');
+					}), 300);
+				});
+			} else {
+				mobileMenuToggleButton.on(mouse.enter, function() {
+					domClass.add(this, 'umcMobileMenuToggleButtonHover');
+				});
+				var mobileToggleMouseLeave = on.pausable(mobileMenuToggleButton.domNode, mouse.leave, function() {
+					domClass.remove(this, 'umcMobileMenuToggleButtonHover');
+				});
+			}
+			mobileMenuToggleButton.on('click', lang.hitch(this, function() {
+				if (typeof mobileToggleMouseLeave !== 'undefined') {
+					mobileToggleMouseLeave.pause();
+				}
+				tools.defer(function() {
+					domClass.remove(mobileMenuToggleButton.domNode, 'umcMobileMenuToggleButtonHover');
+				}, 510).then(function() {
+					if (typeof mobileToggleMouseLeave !== 'undefined') {
+						mobileToggleMouseLeave.resume();
+					}
+				});
+				if (domClass.contains(dojo.body(), 'mobileMenuActive')) {
+					this.closeMobileMenu();
+				} else {
+					this.openMobileMenu();
+				}
+			}));
+
+			return mobileMenuToggleButton;
+		},
+
+		openMobileMenu: function() {
+			domClass.toggle(dojo.body(), 'mobileMenuBeforeTransition');
+			setTimeout(function() {
+				domClass.toggle(dojo.body(), 'mobileMenuActive');
+			}, 10);
+			tools.defer(function() {
+				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
+			}, 510);
+			this._moduleOpeningListener = this.tabController.on('selectChild', lang.hitch(this, function() {
+				this.closeMobileMenu();
+			}));
+		},
+
+		closeMobileMenu: function() {
+			domClass.toggle(dojo.body(), 'mobileMenuActive');
+			setTimeout(function() {
+				domClass.toggle(dojo.body(), 'mobileMenuBeforeTransition');
+				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
+			}, 510);
+			this._moduleOpeningListener.remove();
+		},
+
 		setupMenus: function() {
+			// the settings context menu
+			this.addMenuEntry(new PopupMenuItem({
+				$parentMenu$: 'umcMenuUsername',
+				$priority$: 60,
+				label: _('Settings'),
+				id: 'umcMenuSettings',
+				popup: new Menu({}),
+				'class': 'dijitHidden'
+			}));
+
+			// the help context menu
+			this.addMenuEntry(new PopupMenuItem({
+				$parentMenu$: 'umcMenuUsername',
+				$priority$: 50,
+				label: _('Help'),
+				id: 'umcMenuHelp',
+				popup: new Menu({})
+			}));
+
+			// the logout button
+			this.addMenuEntry(new MenuItem({
+				$parentMenu$: 'umcMenuUsername',
+				$priority$: -1,
+				id: 'umcMenuLogout',
+				label: _('Logout'),
+				onClick: function() { require('umc/app').logout(); }
+			}));
+
 			this._setupHelpMenu();
-			this._setupHostInfoMenu();
+			if (!tools.status('mobileView')) {
+				this._setupHostInfoMenu();
+			}
 		},
 
 		_setupHelpMenu: function() {
@@ -953,6 +1540,12 @@ define([
 			// password has been given in the query string... in this case we may cache it, as well
 			tools.status('password', props.password);
 
+			// check for mobile view
+			if (win.getBox().w <= 550 || has('touch')) {
+				tools.status('mobileView', true);
+				domClass.add(dojo.body(), 'umcMobileView');
+			}
+
 			tools.status('app.loaded', new Deferred());
 
 			if (typeof props.module == "string") {
@@ -1019,12 +1612,6 @@ define([
 				'class': 'umcTopContainer'
 			});
 
-			// the header
-			this._header = new UmcHeader({
-				id: 'umcHeader',
-				'class': 'umcHeader'
-			});
-
 			// module (and overview) container
 			this._tabContainer = new _StackContainer({
 				'class': 'umcMainTabContainer dijitTabContainer dijitTabContainerTop'
@@ -1034,6 +1621,15 @@ define([
 			this._tabController = new TabController({
 				'class': 'umcMainTabController dijitTabContainer dijitTabContainerTop-tabs dijitHidden',
 				containerId: this._tabContainer.id
+			});
+			domClass.toggle(this._tabController.domNode, 'dijitHidden', tools.status('mobileView'));
+
+			// the header
+			this._header = new UmcHeader({
+				id: 'umcHeader',
+				'class': 'umcHeader',
+				tabController: this._tabController,
+				tabContainer: this._tabContainer
 			});
 
 			this.registerTabSwitchHandling();
@@ -1087,7 +1683,9 @@ define([
 				this._header.toggleBackToOverviewVisibility(!overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewShown', overviewShown);
 				domClass.toggle(baseWin.body(), 'umcOverviewNotShown', !overviewShown);
-				domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
+				if (!tools.status('mobileView')) {
+					domClass.toggle(this._tabController.domNode, 'dijitHidden', (this._tabContainer.getChildren().length <= 1)); // hide/show tabbar
+				}
 				if (newModule.selectedChildWidget && newModule.selectedChildWidget._onShow) {
 					this._tabContainer.ready().then(lang.hitch(newModule.selectedChildWidget, '_onShow'));
 				}
@@ -1339,12 +1937,61 @@ define([
 
 			// setup menus
 			this._header.setupGui();
+			if (tools.status('mobileView')) {
+				this._registerMobileModuleSearchListeners();
+			}
 			this._setupOverviewPage();
 			this._setupStateHashing();
 
 			// set a flag that GUI has been build up
 			tools.status('setupGui', true);
 			this.onGuiDone();
+		},
+
+		_registerMobileModuleSearchListeners: function() {
+			var moduleSearchToggleButton = this._header._searchSidebar.toggleButton;
+			var hideModuleSearch = lang.hitch(this, function() {
+				if (this._hideDeferred) {
+					return;
+				}
+
+				domClass.remove(this._header.domNode, 'moduleSearchActive');
+				domClass.remove(moduleSearchToggleButton, 'moduleSearchToggleButtonActive');
+				this._hideDeferred = tools.defer(function() {
+					//stub
+				}, 300).then(lang.hitch(this, function() {
+					this._hideDeferred = null;
+				}));
+			});
+
+			on(moduleSearchToggleButton, 'click', lang.hitch(this, function(evt) {
+				if (this._focusDeferred && !this._focusDeferred.isFulfilled()) {
+					this._focusDeferred.cancel();
+				}
+				if (domClass.contains(this._header.domNode, 'moduleSearchActive')) {
+					this._header._searchSidebar.set('value', '');
+					this._updateQuery();
+				} else if (!this._hideDeferred) {
+					domClass.add(this._header.domNode, 'moduleSearchActive');
+					domClass.add(moduleSearchToggleButton, 'moduleSearchToggleButtonActive');
+					this._focusDeferred = tools.defer(lang.hitch(this, function() {
+						this._header._searchSidebar.focus();
+					}), 510);
+				}
+			}));
+			this._header._searchSidebar._searchTextBox.on('blur', lang.hitch(this, function() {
+				if (this._header._searchSidebar.get('value') === "") {
+					on.emit(moduleSearchToggleButton, 'click', {
+						bubbles: true,
+						cancelable: true
+					});
+				}
+			}));
+			aspect.after(this._header._searchSidebar, '_setValueAttr', function(obj) {
+				if (obj.value === "") {
+					hideModuleSearch();
+				}
+			});
 		},
 
 		// return the index for the given module tab, i.e., the index regarding other
@@ -1562,7 +2209,7 @@ define([
 			if (!this._header._searchSidebar) {
 				return;
 			}
-			if (!has('touch')) {
+			if (!has('touch') && !tools.status('mobileView')) {
 				setTimeout(lang.hitch(this, function() {
 					this._header._searchSidebar.focus();
 				}, 0));
@@ -1650,7 +2297,7 @@ define([
 
 				// create a new tab
 				var tab = null; // will be the module
-				if (BaseClass.prototype.unique) {
+				if (BaseClass.prototype.unique || tools.status('mobileView')) {
 					var sameModules = array.filter(this._tabContainer.getChildren(), function(i) {
 						return i.moduleID == module.id && i.moduleFlavor == module.flavor;
 					});
@@ -1819,9 +2466,21 @@ define([
 			topic.publish('/umc/piwik/disable', disable);
 		},
 
+		addSubMenu: function(item) {
+			if (this._header) {
+				this._header.addSubMenu(item);
+			}
+		},
+
 		addMenuEntry: function(item) {
 			if (this._header) {
 				this._header.addMenuEntry(item);
+			}
+		},
+
+		addMenuSeparator: function(item) {
+			if (this._header) {
+				this._header.addMenuSeparator(item);
 			}
 		},
 

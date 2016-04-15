@@ -1,3 +1,12 @@
+univention-management-console-frontend (5.0.63-33) unstable; urgency=medium
+
+  Bug #38622:
+  * Instantiate mobile view on small screens and touch devices
+  * mobile view does not have module tabs
+  * Usermenu replacd by more touch-friendly menu in mobile view
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 15 Apr 2016 13:25:28 +0200
+
 univention-management-console-frontend (5.0.63-32) unstable; urgency=medium
 
   * Bug #40118: Add empty hook.js module to accomodate changes in

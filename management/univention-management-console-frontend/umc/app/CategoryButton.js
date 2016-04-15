@@ -51,8 +51,13 @@ define([
 
 		_createSurface: function() {
 			this._surface = gfx.createSurface(this.focusNode, 70, 82);
-			domConstruct.place(this._surface.rawNode, this.iconNode, 'after');
-			this.color = this.color || '#fff';
+            var nodeContainer = domConstruct.create("div", {
+                'class': 'umcCategoryButtonBackgroundWrapper'
+            });
+            domConstruct.place(nodeContainer, this.iconNode, 'before');
+            domConstruct.place(this.iconNode, nodeContainer);
+            domConstruct.place(this._surface.rawNode, this.iconNode, 'after');
+            this.color = this.color || '#fff';
 		},
 
 		_createCircle: function() {
