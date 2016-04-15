@@ -13,3 +13,5 @@ desc: |
  * samba/tls/dh/params/file
  * samba/ldap/server/require/strong/auth
 bug: [41034]
+erratum: 153
+announced: 2016-04-15
