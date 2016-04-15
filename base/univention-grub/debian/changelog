@@ -1,3 +1,11 @@
+univention-grub (8.0.4-5) unstable; urgency=low
+
+  * Bug #40586,Bug #41047: Disable localizaion
+  * Bug #25157: Remove unneeded argument to grub-mkdevicemap
+  * Bug #40557: Quote title
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 15 Apr 2016 17:09:50 +0200
+
 univention-grub (8.0.4-4) unstable; urgency=low
 
   * Bug #40509: Evaulate UCRV as boolean.

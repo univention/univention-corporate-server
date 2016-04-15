@@ -83,7 +83,7 @@ cp -f /usr/share/univention-grub/uniboot.png /boot/grub/
 # Install grub on new installation
 if [ "$1" = configure -a -z "$2" ];  then
 	# invoke grub-mkdevicemap (required for KVM machines)
-	grub-mkdevicemap $grub_boot
+	grub-mkdevicemap
 
 	update-grub
 fi

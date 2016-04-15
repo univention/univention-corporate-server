@@ -1,0 +1,14 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-grub
+fix: 9.0.1-5.131.201604151656
+desc: |
+ This update addresses the following issues:
+ * Localization has been disabled.
+ * Remove extra argument to `grub-mkdevicemap`.
+ * Quote menu title.
+ * Disable saving the selection by default as it is not supported on all file
+   systems.
+bug: [41046, 40586, 25157, 40557]
