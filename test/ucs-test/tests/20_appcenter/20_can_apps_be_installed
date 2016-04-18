@@ -12,6 +12,14 @@ import subprocess
 import univention.config_registry
 from univention.testing.ucr import UCSTestConfigRegistry
 
+from appcentertest import get_requested_apps
+
+requested_apps = get_requested_apps()
+if requested_apps and all(app.docker for app in requested_apps):
+	# test runs for an hour or so...
+	print 'Only testing Docker Apps. No need to check other Apps'
+	sys.exit(0)
+
 with UCSTestConfigRegistry() as ucr:
 
 	univention.config_registry.handler_set(['repository/app_center/server=appcenter.software-univention.de'])
@@ -80,6 +88,9 @@ with UCSTestConfigRegistry() as ucr:
 
 	failed = []
 	for app in all_apps:
+		if app.get('dockerimage'):
+			print 'Ignoring app %r: Docker App' % app
+			continue
 		forbidden, warning = app.check_invokation('install', pm)
 		if forbidden:
 			print 'Ignoring app %r: requirements not met -> %s' % (app, forbidden)

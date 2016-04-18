@@ -1,3 +1,9 @@
+ucs-test (6.0.33-58) unstable; urgency=medium
+
+  * Bug #40942: Test Docker App uninstall; optimizations
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Apr 2016 12:51:56 +0200
+
 ucs-test (6.0.33-57) unstable; urgency=medium
 
   * Bug #40942: Test Docker App install, uninstall

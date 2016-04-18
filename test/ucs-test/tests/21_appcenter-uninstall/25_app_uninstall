@@ -9,11 +9,12 @@
 
 
 import subprocess
+import re
 
 import univention.testing.utils as utils
 
 from appcenteruninstalltest import get_requested_apps
-from univention.appcenter.ucr import ucr_get, ucr_keys
+from univention.appcenter.ucr import ucr_get, ucr_keys, ucr_is_true
 
 
 def check_status(app):
@@ -23,20 +24,29 @@ def check_status(app):
 	else:
 		packages = app.default_packages
 		print '    Checking packages', ', '.join(packages)
-		output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT)
-		for line in output.splitlines():
-			if line.startswith('Status: '):
-				if line != 'Status: deinstall ok config-files':
-					print output
-					utils.fail('ERROR: A package is not uninstalled!')
+		for package in packages:
+			try:
+				output = subprocess.check_output(['dpkg', '-s', package], stderr=subprocess.STDOUT)
+			except subprocess.CalledProcessError:
+				pass
+			else:
+				for line in output.splitlines():
+					if line.startswith('Status: '):
+						if line != 'Status: deinstall ok config-files':
+							print output
+							utils.fail('ERROR: A package is not uninstalled!')
 		if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
 			packages = app.default_packages_master
-			output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT)
-			for line in output.splitlines():
-				if line.startswith('Status: '):
-					if line != 'Status: install ok installed':
-						print output
-						utils.fail('ERROR: A package is not installed!')
+			try:
+				output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT)
+			except subprocess.CalledProcessError:
+				utils.fail('ERROR: MasterPackages are not installed!')
+			else:
+				for line in output.splitlines():
+					if line.startswith('Status: '):
+						if line != 'Status: install ok installed':
+							print output
+							utils.fail('ERROR: A package is not installed!')
 		print '    Checking component'
 		if ucr_is_true('repository/online/component/%s' % app.component_id):
 			utils.fail('FAIL: component %s still active' % app.component)
