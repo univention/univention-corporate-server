@@ -1,263 +1,127 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Checks if Apps are installed correctly
 ## tags: [SKIP-UCSSCHOOL, basic, apptest]
-## bugs: [32546, 35652]
 ## roles-not: [basesystem]
 ## packages:
 ##   - univention-directory-manager-tools
 ##   - univention-management-console-module-appcenter
 ## exposure: safe
 
-from os import path
-from sys import exit
+import subprocess
 
 import univention.testing.utils as utils
-from univention.testing.codes import TestCodes
+from appcentertest import get_requested_apps
 
-from univention.config_registry import ConfigRegistry
-from univention.lib.package_manager import PackageManager, LockError
-from univention.management.console.modules.appcenter.app_center import Application
+from univention.appcenter.app import App, AppManager
+from univention.appcenter.ucr import ucr_get
 
 import requests
 import lxml.html
 
-APPCENTER_FILE = "/var/cache/appcenter-installed.txt"
+def check_status(app):
+	if app.docker:
+		print '    Checking running Docker Container'
+		assert ucr_get('appcenter/apps/%s/status' % app.id) == 'installed'
+		container = ucr_get('appcenter/apps/%s/container' % app.id)
+		output = subprocess.check_output(['docker', 'inspect', '-f', '{{.State.Running}}', container]).rstrip('\n')
+		if output != 'true':
+			utils.fail('ERROR: Container not running!')
+		if app.docker_image.startswith('docker.software-univention.de/ucs-appbox-amd64:'):
+			print '    Within container, checking packages', ', '.join(app.default_packages)
+			output = subprocess.check_output(['univention-app', 'shell', app.id, 'dpkg', '-s'] + app.default_packages, stderr=subprocess.STDOUT)
+			for line in output.splitlines():
+				if line.startswith('Status: '):
+					if line != 'Status: install ok installed':
+						print output
+						utils.fail('ERROR: A package is not installed!')
+		else:
+			print '    No appbox image, not checking packages'
+	else:
+		packages = app.default_packages
+		if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
+			packages.extend(app.default_packages_master)
+		print '    Checking packages', ', '.join(packages)
+		output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT)
+		for line in output.splitlines():
+			if line.startswith('Status: '):
+				if line != 'Status: install ok installed':
+					print output
+					utils.fail('ERROR: A package is not installed!')
 
-returncode = 0
-PacMan = None
-UCR = None
+def check_ldap(app):
+	dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app.id, app.version, app.id, ucr_get('ldap/base'))
+	try:
+		english_name = App.from_ini(app.get_ini_file(), locale=False).name
+		utils.verify_ldap_object(dn, {'univentionAppVersion': [app.version]})
+		utils.verify_ldap_object(dn, {'univentionAppName': ['[en] %s' % english_name], 'univentionAppInstalledOnServer': ['%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))]}, strict=False)
 
+		for app_version in AppManager.get_all_apps_with_id(app.id):
+			if app_version == app:
+				continue
+			dn = 'univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s' % (app_version.id, app_version.version, app_version.id, ucr_get('ldap/base'))
+			utils.verify_ldap_object(dn, should_exist=False)
 
-def check_if_any_apps_installed():
-    """
-    Skips the test if 'APPCENTER_FILE' does not exist.
-    """
-    if not path.exists(APPCENTER_FILE):
-        print "The '%s' file does not exist, skipping test." % APPCENTER_FILE
-        exit(TestCodes.RESULT_SKIP)
+	except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound,
+			utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue) as exc:
+			utils.fail('FAIL: An error occured while verifying %s: %s' % (dn, exc))
 
+def check_webinterface(app):
+	if not app.web_interface:
+		print '    Skipping Webinterface check'
+		return
+	print '    Webinterface for', app
+	if app.has_local_web_interface():
+		fqdn = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+		if app.web_interface_port_http:
+			port = app.web_interface_port_http
+			if app.auto_mod_proxy:
+				port = 80
+			if port != 80:
+				port = ':%d' % port
+			else:
+				port = ''
+			url = 'http://%s%s%s' % (fqdn, port, app.web_interface)
+			_check_url(url)
+		if app.web_interface_port_https:
+			port = app.web_interface_port_https
+			if app.auto_mod_proxy:
+				port = 443
+			if port != 443:
+				port = ':%d' % port
+			else:
+				port = ''
+			url = 'https://%s%s%s' % (fqdn, port, app.web_interface)
+			_check_url(url)
+	else:
+		_check_url(app.web_interface)
 
-def set_test_return_code_failure():
-    """
-    Modifies the global 'returncode' to 'RESULT_FAIL' value.
-    """
-    global returncode
-    returncode = TestCodes.RESULT_FAIL
+def _check_url(url):
+	print '       Checking', url
+	requests_timeout = 30
+	r = requests.get(url, timeout=requests_timeout, verify=False)
+	print '       ...', r.status_code
+	assert not str(r.status_code).startswith(('4', '5'))
 
+	# check meta refresh
+	soup = lxml.html.fromstring(r.text)
+	refresh = soup.cssselect('meta[http-equiv="refresh"]')
+	if refresh:
+		refresh_url = refresh[0].get('content')
+		if refresh_url:
+			print 'Found meta refresh: %s' % refresh_url
+			# e.g., 0;URL=controller.pl?action=LoginScreen/user_login
+			index = refresh_url.lower().find('url=')
+			if index > 0:
+				refresh_url = refresh_url[index+4:]
+				if not refresh_url.lower().startswith('http'):
+					refresh_url = '%s%s' % (url, refresh_url)
+				_check_url(refresh_url)
 
-def get_app_dn(App):
-    """
-    Returns the given 'App' DN.
-    """
-    app_dn = ("univentionAppID=%s_%s,cn=%s,cn=apps,cn=univention,%s"
-              % (App.id, App.version, App.id, UCR.get('ldap/base')))
-    return app_dn
-
-def check_app_webinterface_registration(App):
-    """
-    Checks if the 'App' registered its web interface in UCR.
-    """
-    app_webinterface = App.get('webinterface')
-    requests_timeout = 30
-
-    if App.get('ucsoverviewcategory') and app_webinterface:
-        print "\nChecking if '%s' app registered its web interface" % App.id
-        ucr_web_entry = UCR.get('ucs/web/overview/entries/%s/%s/link'
-                                % (App.get('ucsoverviewcategory'), App.id))
-
-        if ucr_web_entry != app_webinterface:
-            print "FAIL: the '%s' did not register its webinterface." % App.id
-            set_test_return_code_failure()
-
-    # check if webinterface is reachable
-    if app_webinterface:
-        if app_webinterface.startswith('http'):
-            url = app_webinterface
-        else:
-            port = App.get('WebInterfacePortHTTP')
-            if port == 0:
-                port = 80
-            fqdn = UCR['hostname'] + '.' + UCR['domainname']
-            url = 'http://%s:%s/%s' % (fqdn, port, app_webinterface)
-        print 'Checking webinterface %s' % url,
-        r = requests.get(url, timeout=requests_timeout, verify=False)
-        print r.status_code
-        assert not str(r.status_code).startswith(('4', '5'))
-
-        # check meta refresh
-        soup = lxml.html.fromstring(r.text)
-        refresh = soup.cssselect('meta[http-equiv="refresh"]')
-        if refresh:
-            refresh_url = refresh[0].get('content')
-            if refresh_url:
-                print 'Found meta refresh: %s' % refresh_url
-                # e.g., 0;URL=controller.pl?action=LoginScreen/user_login
-                index = refresh_url.lower().find('url=')
-                if index > 0:
-                    refresh_url = refresh_url[index+4:]
-                    if not refresh_url.lower().startswith('http'):
-                        refresh_url = '%s%s' % (url, refresh_url)
-                    print 'Checking webinterface %s' % refresh_url,
-                    rr = requests.get(refresh_url, timeout=requests_timeout, verify=False)
-                    print rr.status_code
-                    assert not str(rr.status_code).startswith(('4', '5'))
-
-def verify_app_ldap_objects(App):
-    """
-    Verifies the given 'App' ldap objects.
-    """
-    print "\nVerifing '%s' app ldap objects" % App.id
-    app_dn = get_app_dn(App)
-
-    try:
-        # strict check for app id and version:
-        utils.verify_ldap_object(app_dn,
-                                 {'univentionAppID': [App.ldap_id],
-                                  'univentionAppVersion': [App.version]})
-
-        # non-strict check for servers 'univentionAppInstalledOnServer' is
-        # performed as in UCS@School apps can be installed on all servers in
-        # the domain at the same time (Bug #35652);
-        # non-strict check for the 'univentionAppName' is performed as some
-        # .ini(s) have 'Name' in one language only, while others have 'Name'
-        # in both English and Deutsch:
-        utils.verify_ldap_object(app_dn,
-                                 {'univentionAppName': ['[en] %s'
-                                                % App.get('unlocalised_name')],
-                                  'univentionAppInstalledOnServer': ['%s.%s'
-                                  % (UCR.get('hostname'), UCR.get('domainname'))]},
-                                 strict=False)
-
-        for version in App.versions:
-            if version.version == App.version:
-                continue
-            utils.verify_ldap_object(get_app_dn(version), should_exist=False)
-
-    except (utils.LDAPObjectNotFound, utils.LDAPUnexpectedObjectFound,
-            utils.LDAPObjectValueMissing, utils.LDAPObjectUnexpectedValue) as exc:
-            print("FAIL: An error occured while verifying an '%s' App LDAP "
-                  "objects. Error: %r" % (App.id, exc))
-            set_test_return_code_failure()
-
-
-def check_package_installed(package):
-    """
-    Informs if given 'package' is not installed while should be.
-    """
-    print "Checking if package '%s' is installed" % package
-    if not PacMan.is_installed(package):
-        print("FAIL: The package '%s' is not installed but requested."
-              % package)
-        set_test_return_code_failure()
-
-
-def check_app_packages(App, server_role):
-    """
-    Checks if for the given 'App' default packages are installed.
-    On DC-Master and DC-Backup additionally checks the
-    'default packages master'.
-    """
-    print "\nChecking if '%s' app packages are installed:" % App.id
-
-    for package in App.get('defaultpackages'):
-        check_package_installed(package)
-
-    if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
-        for package in App.get('defaultpackagesmaster'):
-            check_package_installed(package)
-
-def is_app_allowed_on_server_role(App, server_role):
-    '''
-    True if app is allowed on current server role
-    False if not
-    '''
-    if App.allowed_on_local_server():
-        return True
-    return False
-
-def find_an_application(app_id):
-    """
-    Looks for an App by given 'app_id'.
-    """
-    try:
-        return Application.find(app_id)
-    except (IOError, OSError, KeyError, IndexError) as exc:
-        print("FAIL: an error occured while looking for an App with id "
-              "'%s'. Error: %r" % (app_id, exc))
-        set_test_return_code_failure()
-
-
-def open_apps_file():
-    """
-    Returns an opened apps file.
-    """
-    try:
-        AppsFile = open(APPCENTER_FILE)
-        return AppsFile
-    except (IOError, OSError) as exc:
-        utils.fail("An error occured while trying to open the '%s' file: %r"
-                   % (APPCENTER_FILE, exc))
-
-
-def check_installed_apps():
-    """
-    Checks all the apps listed in the 'APPCENTER_FILE':
-     - checks if App is allowed for use on the current DC;
-     - checks App's packages;
-     - checks App's ldap objects;
-     - checks if App registered its web interface.
-    """
-    server_role = UCR.get('server/role')
-    AppsFile = open_apps_file()
-
-    for app_id in AppsFile:
-        app_id = app_id.strip()
-        if not app_id:
-            continue
-
-        print "\nChecking App with id '%s':" % app_id
-        App = find_an_application(app_id)
-
-        if not App:
-            print "FAIL: Requested App '%s' was not found." % app_id
-            set_test_return_code_failure()
-            continue
-
-        print "App is allowed on: %s, current: %s" % (App.get('serverrole'), server_role)
-        if is_app_allowed_on_server_role(App, server_role):
-            print "App %s is allowed on current server role" % app_id
-            check_app_packages(App, server_role)
-            verify_app_ldap_objects(App)
-            check_app_webinterface_registration(App)
-        else:
-            print "App %s is not allowed on current server role" % app_id
-
-    try:
-        AppsFile.close()
-    except IOError as exc:
-        utils.fail("An error occured while trying to close the '%s' file: %r"
-                   % (APPCENTER_FILE, exc))
-
-
-if __name__ == '__main__':
-    # skip the test if there are no Apps (in 'APPCENTER_FILE'):
-    check_if_any_apps_installed()
-
-    # load UCR, prepare PackageManager:
-    returncode = TestCodes.RESULT_OKAY
-    UCR = ConfigRegistry()
-    UCR.load()
-
-    try:
-        PacMan = PackageManager()
-        PacMan.update()
-    except LockError as exc:
-        utils.fail("An error occured while initializing Package Manager and "
-                   "performing an update: %r" % exc)
-
-    # perform checks for all installed apps:
-    check_installed_apps()
-
-    if returncode != TestCodes.RESULT_OKAY:
-        utils.fail("There were error(-s) detected during the test execution. "
-                   "Please check complete test output.")
+for app in get_requested_apps():
+	print 'Checking', app
+	if not app._allowed_on_local_server():
+		print '    Not allowed ... skipping'
+		continue
+	check_status(app)
+	check_ldap(app)
+	check_webinterface(app)
