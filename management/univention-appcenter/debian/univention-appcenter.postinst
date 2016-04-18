@@ -64,4 +64,9 @@ if dpkg --compare-versions "$2" lt-nl 5.0.20-37; then
 	univention-app register --noninteractive --files
 fi
 
+if dpkg --compare-versions "$2" lt-nl 5.0.20-44; then
+	chown root:root /var/cache/univention-appcenter/*
+	chmod 664 /var/cache/univention-appcenter/*
+fi
+
 exit 0

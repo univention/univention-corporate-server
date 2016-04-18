@@ -168,7 +168,10 @@ class Update(UniventionAppAction):
 					self.debug('Extracting %s' % filename)
 					try:
 						archive.extract(filename, path=CACHE_DIR)
-						local_md5sum = get_md5_from_file(os.path.join(CACHE_DIR, filename))
+						absolute_filename = os.path.join(CACHE_DIR, filename)
+						os.chown(absolute_filename, 0, 0)
+						os.chmod(absolute_filename, 0664)
+						local_md5sum = get_md5_from_file(absolute_filename)
 						if local_md5sum != remote_md5sum:
 							self.warn('Checksum for %s should be %r but was %r! Download manually' % (filename, remote_md5sum, local_md5sum))
 							raise KeyError(filename)
