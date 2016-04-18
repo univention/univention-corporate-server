@@ -1,3 +1,15 @@
+winexe (1.1.0-14) unstable; urgency=medium
+
+  * Bug #40698: Version Bump
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Apr 2016 21:29:35 +0200
+
+winexe (1.1.0-9) unstable; urgency=medium
+
+  * Bug #40698: Updated dependencies for rebuild against Samba 4.3.7
+
+ -- Arvid Requate <requate@univention.de>  Wed, 06 Apr 2016 13:53:34 +0200
+
 winexe (1.1.0-8) unstable; urgency=low
 
   * fixed dependencies (Bug #35999)
