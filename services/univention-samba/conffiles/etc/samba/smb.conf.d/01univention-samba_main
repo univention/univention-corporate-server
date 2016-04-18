@@ -3,7 +3,7 @@
 [global]
 @!@
 print '\tdebug level\t= %s' % configRegistry.get('samba/debug/level', 0)
-print '\tsyslog\t\t= 0'
+print '\tlogging\t\t= file'
 print '\tmax log size\t= %s\n' % configRegistry.get('samba/max_log_size', 0)
 
 max_open_files = configRegistry.get('samba/max_open_files')

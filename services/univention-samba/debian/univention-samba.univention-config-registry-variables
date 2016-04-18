@@ -299,8 +299,8 @@ Type=str
 Categories=service-samba
 
 [samba/max/protocol]
-Description[de]=Diese Variable konfiguriert das höchste Protokoll, welches dieser Server unterstützt (gültige Werte: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2). Ist die Variable nicht gesetzt, gilt 'NT1'.
-Description[en]=This variable configures the highest protocol level that will be supported by this server (valid values: CORE, COREPLUS, LANMAN1, LANMAN2, NT1, SMB2). If the variable is unset, 'NT1' applies.
+Description[de]=Diese Variable konfiguriert das höchste Protokoll, welches dieser Server unterstützt (gültige Werte sind in "man smb.conf" dokumentiert). Ist die Variable nicht gesetzt, so gilt der Standardwert, der in der Manual-Seite zu smb.conf dokumentiert ist.
+Description[en]=This variable configures the highest protocol level that will be supported by this server (valid values may be found in "man smb.conf"). If the variable is unset, the default given in the smb.conf manual page applies.
 Type=str
 Categories=service-samba
 
