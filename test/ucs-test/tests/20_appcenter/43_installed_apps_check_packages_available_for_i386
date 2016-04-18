@@ -51,6 +51,8 @@ class Test():
 		apps = app.Application.all()
 
 		for application in apps:
+			if application.get('dockerimage'):
+				continue
 			packages = []
 			pkgs = []
 			if (application.is_installed(self.package_manager)):
