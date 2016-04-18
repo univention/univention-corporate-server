@@ -18,8 +18,7 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.22-1),
  python-univention-lib (>= 1.0.45),
  python-univention (>= 6.0.9-3),
- samba (>= 4.1),
- samba-dsdb-modules,
+ samba (>= 2:4.3.7),
  samba-vfs-modules,
  ldb-tools,
  winbind,
@@ -39,7 +38,9 @@ Package: univention-samba4-sysvol-sync
 Architecture: all
 Depends: ${misc:Depends},
  univention-config-registry,
- rsync (>=3.0.7-2)
+ rsync (>=3.0.7-2),
+ util-linux,
+ shell-univention-lib
 Breaks: univention-samba4 ( << 1.0.139-2)
 Description: UCS - Samba4 sysvol synchronization
  This package contains the scripts and configuration

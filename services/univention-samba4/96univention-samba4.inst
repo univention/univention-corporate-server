@@ -192,6 +192,8 @@ stop_conflicting_services() {
 	if [ -x /etc/init.d/samba ]; then
 		if [ -n "$(pgrep -f '/usr/sbin/(smbd|nmbd)')" ]; then
 			/etc/init.d/samba stop
+			## the smbd init script might refuse to run if it detects ADDC config in smb.conf
+			start-stop-daemon --stop --quiet --retry 2 --exec /usr/sbin/smbd
 		fi
 	fi
 	if [ -x /etc/init.d/winbind ]; then
@@ -491,6 +493,9 @@ sysvol_fixup() {
 		/usr/share/univention-samba4/scripts/sysvol-sync.sh
 	fi
 
+	## flush cached SIDs, useful e.g. for sysvol problem solving via re-join
+	net cache flush
+
 	## set the default sysvol and GPO NTACLs
 	samba-tool ntacl sysvolreset
 
@@ -743,6 +748,9 @@ update_pseudo_groups ()
 
 ### --- END helper functions ---
 
+# lp.load('/dev'null') might have exported SMB_CONF_PATH, explicitly unset it here
+unset SMB_CONF_PATH
+
 extract_binddn_and_bindpwd_from_args "$@"
 if [ -n "$binddn" ]; then
 	dcaccount=$(ldapsearch -xLLL -ZZ -D "$ldap_hostdn" -y /etc/machine.secret \
@@ -811,7 +819,7 @@ if [ "$samba4_role" = 'DC' ]; then
 	                   "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn \
 					   | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
-	/etc/init.d/samba-ad-dc stop
+	/etc/init.d/samba stop
 
 	univention-config-registry set \
 		kerberos/kdc=127.0.0.1 \
@@ -839,7 +847,7 @@ if [ "$samba4_role" = 'DC' ]; then
 		operatingSystem_attribute replace
 
 		## Start samba daemon
-		/etc/init.d/samba-ad-dc start
+		/etc/init.d/samba start
 
 	else	## otherwise we will simply join the new DC
 
@@ -925,7 +933,7 @@ if [ "$samba4_role" = 'DC' ]; then
 		fi
 
 		## Start samba daemon
-		/etc/init.d/samba-ad-dc start
+		/etc/init.d/samba start
 
 	fi
 
@@ -970,7 +978,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 		exit 1
 	fi
 
-	/etc/init.d/samba-ad-dc stop
+	/etc/init.d/samba stop
 
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
@@ -992,6 +1000,9 @@ elif [ "$samba4_role" = "RODC" ]; then
 
 		samba_domain_join "${samba_join_options[@]}"
 
+		## write UCS posix IDs into the idmap.ldb
+		/usr/lib/univention-directory-listener/system/samba4-idmap.py --direct-resync 2>/dev/null
+
 		sysvol_fixup --overwrite-local
 
 		## if the key version number increased, merge the old keys into the new keytab
@@ -1004,7 +1015,7 @@ elif [ "$samba4_role" = "RODC" ]; then
 	operatingSystem_attribute add
 
 	## Start samba daemon
-	/etc/init.d/samba-ad-dc start
+	/etc/init.d/samba start
 
 	## activate sysvol replication
 	univention-config-registry set samba4/sysvol/sync/cron?"*/5 * * * *"
@@ -1083,7 +1094,7 @@ if ! [ -r "/etc/krb5.keytab" ]; then
 	echo "WARNING: /etc/krb5.keytab not created."
 fi
 
-/etc/init.d/samba-ad-dc restart
+/etc/init.d/samba restart
 
 # To prevent a DRS replication conflict: 
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=32257
