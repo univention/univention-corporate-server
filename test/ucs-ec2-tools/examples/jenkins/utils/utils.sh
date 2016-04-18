@@ -208,7 +208,7 @@ install_apps ()
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
 	do
-		latestversion="$(univention-app list "$app" | egrep '    \w+' | sed 's/^\s*//g' | tail -n1")
+		latestversion="$(univention-app list "$app" | egrep '    \w+' | sed 's/^\s*//g' | tail -n1)"
 		if [ -n "$(univention-app get "$app=$latestversion" DockerImage)" ]; then
 			username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
