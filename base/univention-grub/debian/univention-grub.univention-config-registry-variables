@@ -82,6 +82,18 @@ Description[en]=The colour scheme for selected entries in the Grub menu. An over
 Type=str
 Categories=system-base
 
+[grub/terminal]
+Description[de]=Konfiguration des Terminalgerätes. Default: <empty> (Erlaubt grafische Ausgabe). Setzen der Variable auf "console" um grafische Ausgabe abzuschalten, "console serial" um gleichzeitig auch die serielle Ausgabe zu erlauben. Dokumentation: <http://www.gnu.org/software/grub/manual/grub.html>
+Description[en]=Select the terminal device. Default: <empty> (graphical terminal is allowed). Set to "console" to disable graphical terminal. Set to "console serial" to also enable serial output. Documentation: <http://www.gnu.org/software/grub/manual/grub.html>
+Type=str
+Categories=system-base
+
+[grub/serialcommand]
+Description[de]=Konfiguriert den seriellen Port wenn eine serielle Konsole benutzt wird. Standard: <empty>. Beispieleintrag: "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1". Hinweis: Der serielle Port wird nicht genutzt wenn keine serielle Konsole konfiguriert ist, siehe auch "grub/terminal". Dokumentation: <http://www.gnu.org/software/grub/manual/grub.html>
+Description[en]=Configures the serial port when using the serial console. Default: <empty>. Example: "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1". Note: The serial port is not used as a communication channel unless the terminal is configured (see "grub/terminal"). Documentation: <http://www.gnu.org/software/grub/manual/grub.html>
+Type=str
+Categories=system-base
+
 [grub/rootdelay]
 Description[de]=Diese Variable konfiguriert eine Zeitspanne in Sekunden, die gewartet wird, bevor die Initial Ramdisk das Root-Device einbindet. Durch Setzen der Variable auf '0' kann die Wartezeit deaktiviert werden. Ist die Variable nicht gesetzt, gelten fünf Sekunden.
 Description[en]=This variable configures a time span in seconds, which is being waited until the initial ramdisk mounts the root device. Setting the variable to '0' deactivates the delay. If the variable is unset, five seconds are waited.
