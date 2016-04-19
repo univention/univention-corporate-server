@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-grub
-fix: 9.0.1-5.131.201604151656
+fix: 9.0.1-7.135.201604190607
 desc: |
  This update addresses the following issues:
  * Localization has been disabled.
@@ -11,4 +11,6 @@ desc: |
  * Quote menu title.
  * Disable saving the selection by default as it is not supported on all file
    systems.
-bug: [41046, 40586, 25157, 40557]
+ * Add support to configure serial console through UCR variables. Thanks to
+   Lutz Willek for the patch.
+bug: [41046, 40586, 25157, 40557, 40596]
