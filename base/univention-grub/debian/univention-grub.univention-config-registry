@@ -18,3 +18,5 @@ Variables: grub/rootdelay
 Variables: grub/title
 Variables: grub/default
 Variables: grub/savedefault
+Variables: grub/terminal
+Variables: grub/serialcommand

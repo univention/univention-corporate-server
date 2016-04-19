@@ -1,3 +1,9 @@
+univention-grub (9.0.1-7) unstable; urgency=low
+
+  * Bug #40596: Fix UCR variable registration
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Apr 2016 17:55:01 +0200
+
 univention-grub (9.0.1-6) unstable; urgency=low
 
   * Bug #40596: Add support for serial terminal
