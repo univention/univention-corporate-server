@@ -3,7 +3,7 @@
 # Univention kernel image
 #  rules file for the debian package
 #
-# Copyright 2006-2014 Univention GmbH
+# Copyright 2006-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,20 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ABI := ucs165
+ABI := ucs194
 
 SOURCEVERSION := 3.16
 amd64_VERSION := ${SOURCEVERSION}.0-${ABI}-amd64
-amd64_VERSION_64 := ${SOURCEVERSION}.0-${ABI}-amd64
 i386_VERSION := ${SOURCEVERSION}.0-${ABI}-686-pae
-i386_VERSION_64 := ${SOURCEVERSION}.0-${ABI}-pae
 
-DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_BUILD_ARCH ?= $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 
 KERNELVERSION := ${${DEB_BUILD_ARCH}_VERSION}
-KERNELVERSION64 := ${${DEB_BUILD_ARCH}_VERSION_64}
-KERNELVERSION486 := ${SOURCEVERSION}.0-${ABI}-486
 
 configure:
 
@@ -85,16 +80,6 @@ binary-arch: build install
 	dh_gencontrol -punivention-kernel-source -u-VF:KernelVersion="${SOURCEVERSION}"
 	dh_md5sums -punivention-kernel-source
 	dh_builddeb -punivention-kernel-source
-
-ifeq ($(DEB_BUILD_GNU_TYPE), i486-linux-gnu)
-	dh_gencontrol -punivention-kernel-image-486 -u-VF:KernelVersion486="${KERNELVERSION486}"
-	dh_md5sums -punivention-kernel-image-486
-	dh_builddeb -punivention-kernel-image-486
-
-	dh_gencontrol -punivention-kernel-headers-486 -u-VF:KernelVersion486="${KERNELVERSION486}"
-	dh_md5sums -punivention-kernel-headers-486
-	dh_builddeb -punivention-kernel-headers-486
-endif
 
 
 binary: binary-indep binary-arch
