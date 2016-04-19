@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-45) unstable; urgency=medium
+
+  * Bug #30620: make sure the HTTPS connection to the appcenter server is
+  	always verified by a valid certificate
+
+ -- Florian Best <best@univention.de>  Tue, 19 Apr 2016 07:50:38 +0200
+
 univention-appcenter (5.0.20-44) unstable; urgency=medium
 
   * Bug #41029: Adjust UID/GID in cache dir

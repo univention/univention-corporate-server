@@ -148,9 +148,9 @@ msgstr ""
 #: umc/python/appcenter/util.py:155
 #, python-format
 msgid ""
-"This may be a problem with the proxy of your system. You may find help at %s."
+"This may be a problem with the firewall or proxy of your system. You may find help at %s."
 msgstr ""
-"Dies kann auf ein Problem mit einem auf Ihrem System eingerichteten Proxy "
+"Dies kann auf ein Problem mit einer auf Ihrem System eingerichteten Firewall oder Proxy "
 "hindeuten. Sie finden Hilfe unter %s."
 
 #: umc/python/appcenter/sanitizers.py:56 umc/python/appcenter/sanitizers.py:60

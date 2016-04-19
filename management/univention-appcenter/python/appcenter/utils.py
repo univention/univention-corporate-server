@@ -41,6 +41,8 @@ import pipes
 from threading import Thread
 import time
 import urllib2
+import httplib
+import ssl
 from hashlib import md5, sha256
 import socket
 import tempfile
@@ -186,9 +188,9 @@ def verbose_http_error(exc):
 		version = ucr_get('version/version')
 		errno = exc.errno
 		strerror += getattr(exc, 'strerror', '') or ''
-		if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')
+		if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')  SSLError(1, '_ssl.c:504: error:14090086:SSL routines:ssl3_get_server_certificate:certificate verify failed')
 			link_to_doc = _('https://docs.software-univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
-			strerror += '. ' + _('This may be a problem with the proxy of your system. You may find help at %s.') % link_to_doc
+			strerror += '. ' + _('This may be a problem with the firewall or proxy of your system. You may find help at %s.') % link_to_doc
 		if errno == -2:  # gaierror(-2, 'Name or service not known')
 			link_to_doc = _('https://docs.software-univention.de/manual-%s.html#networks:dns') % version
 			strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
@@ -197,13 +199,30 @@ def verbose_http_error(exc):
 	return strerror
 
 
+class HTTPSConnection(httplib.HTTPSConnection):
+	def connect(self):
+		sock = socket.create_connection((self.host, self.port), self.timeout, self.source_address)
+		if self._tunnel_host:
+			self.sock = sock
+			self._tunnel()
+		self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, cert_reqs=ssl.CERT_REQUIRED, ca_certs="/etc/ssl/certs/ca-certificates.crt")
+
+
+class HTTPSHandler(urllib2.HTTPSHandler):
+
+	def https_open(self, req):
+		return self.do_open(HTTPSConnection, req)
+
+
 def urlopen(request):
 	if not urlopen._opener_installed:
+		handler = []
 		proxy_http = ucr_get('proxy/http')
 		if proxy_http:
-			proxy = urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http})
-			opener = urllib2.build_opener(proxy)
-			urllib2.install_opener(opener)
+			handler.append(urllib2.ProxyHandler({'http': proxy_http, 'https': proxy_http}))
+		handler.append(HTTPSHandler())
+		opener = urllib2.build_opener(*handler)
+		urllib2.install_opener(opener)
 		urlopen._opener_installed = True
 	return urllib2.urlopen(request, timeout=60)
 urlopen._opener_installed = False
