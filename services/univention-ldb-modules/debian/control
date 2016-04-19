@@ -1,0 +1,51 @@
+Source: univention-ldb-modules
+Section: devel
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+	python,
+	libldb-dev (>= 2:1.1.25-1),
+	libtalloc-dev,
+	libtevent-dev,
+	libunivention-config-dev,
+	libunivention-policy-dev,
+	ldb-tools,
+	samba-dev,
+	univention-config-dev
+Standards-Version: 3.9.1
+X-Python-Version: 2.6
+
+Package: libunivention-ldb-modules
+Architecture: any
+Section: libs
+Depends: ${misc:Depends},
+	${shlibs:Depends},
+	libldb1,
+	libunivention-config0,
+	libunivention-policy0,
+	python-samba,
+	ldb-tools,
+	univention-samba4 (>= 2.0.44-3)
+Description: Univention LDB modules
+ This package provides UCS specific LDB modules
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: libunivention-ldb-modules-dbg
+Architecture: any
+Section: libs
+Depends: libunivention-ldb-modules (= ${binary:Version}),
+	${misc:Depends},
+Description: Univention LDB modules
+ This package provides debugging symbols for UCS specific LDB modules
+ .
+ This package provides debugging information for the UCS specific
+ LDB modules. Install it to get a better backtrace in the event of a
+ crash.
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

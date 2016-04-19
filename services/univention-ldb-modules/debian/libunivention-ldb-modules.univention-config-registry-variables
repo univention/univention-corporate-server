@@ -1,0 +1,11 @@
+[samba4/ldb/sam/module/*]
+Description[de]=LDB Module die mit sam.ldb registriert werden sollen
+Description[en]=LDB Modules to register with sam.ldb
+Type=str
+Categories=samba4
+
+[samba4/addmachine]
+Description[de]=Das Anlegen von Maschinenkonten durch das lokale Samba4 erlauben (default: nicht gesetzt, d.h. erlaubt. Andere mögliche Werte: "deny" oder "dummy"). Nur zum internen Gebrauch in UCS.
+Description[en]=Allow creation of machine accounts by the local Samba4 (default: not set, i.e. allowed. Other possible values: "deny" or "dummy"). For internal UCS use only.
+Type=str
+Categories=samba4
