@@ -1,3 +1,10 @@
+univention-kernel-image (7.100.0-5) unstable; urgency=low
+
+  * Bug #41051: Update to 3.16.7-ckt25-2~bpo70+1
+  * Bug #40912: Remove deprecated i486 packaes
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Apr 2016 08:45:18 +0200
+
 univention-kernel-image (7.100.0-4) unstable; urgency=medium
 
   * Update to the latest kernel build (Bug #40687)

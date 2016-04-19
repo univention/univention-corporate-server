@@ -44,68 +44,11 @@ Description: UCS - Linux kernel (standard)
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-image-486
-Architecture: i386
-Pre-Depends: univention-initrd, module-init-tools
-Depends: linux-image-${F:KernelVersion486},
- univention-initrd (>= 6.0.0-2),
- xfsprogs,
- libc6-i686 [i386],
- univention-config,
-Recommends:
- firmware-adi,
- firmware-atheros,
- firmware-bnx2,
- firmware-bnx2x,
- firmware-brcm80211,
- firmware-intelwimax,
- firmware-iwlwifi,
- firmware-libertas,
- firmware-linux,
- firmware-linux-free,
- firmware-linux-nonfree,
- firmware-myricom,
- firmware-netxen,
- firmware-qlogic,
- firmware-ralink,
- firmware-realtek,
- zd1211-firmware,
- amd64-microcode,
- intel-microcode,
-Description: UCS - Linux kernel (for old systems)
- This meta-package depends on the latest UCS kernel image compatible
- with older 32 bit CPUs. The standard kernel in UCS for i386 requires
- PAE, which is not available on 486/Pentium CPUs.
- .
- This kernel should only be used if your system does not support
- PAE.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
 Package: univention-kernel-headers
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers (standard)
  This meta-package depends on the latest UCS kernel headers.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kernel-headers-486
-Architecture: i386
-Depends: linux-headers-${F:KernelVersion486}
-Description: UCS - Linux kernel headers (PAE)
- This meta-package depends on the latest UCS kernel headers compatible
- with older 32 bit CPUs. The standard kernel in UCS for i386 requires
- PAE, which is not available on 486/Pentium CPUs.
- .
- These headers should only be used if your system does not support
- PAE.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
