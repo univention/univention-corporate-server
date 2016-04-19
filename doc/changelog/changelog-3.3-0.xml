@@ -520,7 +520,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>samba</package> has been upgraded to version 2:4.1.17 (<u:bug>40698</u:bug>)
+					<package>samba</package> has been upgraded to version 2:4.3.7 (<u:bug>40698</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
 
@@ -572,6 +572,9 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The package manager for RPM <package>rpm</package> has been upgraded to version 4.10.0 (<u:bug>40695</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				<package>tomcat6</package> has been upgraded to version 6.0.45 (<u:bug>40947</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
