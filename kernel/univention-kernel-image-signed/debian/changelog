@@ -1,3 +1,9 @@
+univention-kernel-image-signed (1.0.3-4) unstable; urgency=low
+
+  * Bug #40838: Update to 3.16.7-ckt25-2~bpo70+1
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 19 Apr 2016 09:09:14 +0200
+
 univention-kernel-image-signed (1.0.3-3) unstable; urgency=medium
 
   * Update to ucs165 (Bug #38764)
