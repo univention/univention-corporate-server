@@ -7,6 +7,6 @@ fix: 9.0.49-2.1462.201603161706
 desc: |
  This update addresses the following issue(s):
  * The UCR variable update33/skip/ucs3.3 has been added. If set to
-   true, the updater skips UCS 3.3 and directly updates from UCS 3.2
+   true, the updater skips UCS 3.3 and updates directly from UCS 3.2
    to UCS 4.0.
 bug: [40909]
