@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.2-26) unstable; urgency=medium
+
+  * Bug #33359: importing univention.admin modules doesn't depend on previous
+  	imports anymore
+
+ -- Florian Best <best@univention.de>  Tue, 19 Apr 2016 14:56:41 +0200
+
 univention-directory-manager-modules (11.0.2-25) unstable; urgency=medium
 
   * Bug #41041: More syntax classes exclude Docker hosts

@@ -30,8 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
-import socket, struct
+import socket
+import struct
 
 
 def dotted2int(ds):
@@ -102,4 +102,3 @@ def is_range_overlapping(range1, range2):
 	if is_ip_in_range(range2[0], range1) or is_ip_in_range(range2[1], range1):
 		return 1
 	return 0
-

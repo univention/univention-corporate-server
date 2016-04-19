@@ -32,12 +32,12 @@
 
 import univention.debug
 import univention.admin.locking
-import univention.admin.localization
 import univention.admin.uexceptions
+from univention.admin import localization
 from univention.admin import configRegistry
 
-translation=univention.admin.localization.translation('univention/admin')
-_=translation.translate
+translation = localization.translation('univention/admin')
+_ = translation.translate
 
 _type2attr = {	'uidNumber':			'uidNumber',
 				'gidNumber':			'gidNumber',
@@ -197,4 +197,3 @@ def confirm(lo, position, type, value):
 
 def release(lo, position, type, value):
 	univention.admin.locking.unlock(lo, position, type, value, _type2scope[type])
-

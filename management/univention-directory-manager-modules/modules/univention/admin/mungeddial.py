@@ -35,10 +35,8 @@ import base64
 from univention.admin.layout import Tab, Group
 import univention.admin.localization
 
-import univention.debug as ud
-
-translation=univention.admin.localization.translation('univention.admin')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin')
+_ = translation.translate
 
 properties = {
 	'CtxCfgPresent': univention.admin.property(

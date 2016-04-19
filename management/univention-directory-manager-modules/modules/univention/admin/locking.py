@@ -30,9 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import ldap, time
+import ldap
+import time
 import univention.debug
 import univention.admin.uexceptions
+from univention.admin import localization
+
+translation = localization.translation('univention/admin')
+_ = translation.translate
+
 
 def lockDn(lo, position, type, value, scope):
 	dn = [ [('cn', value,        ldap.AVA_STRING)],

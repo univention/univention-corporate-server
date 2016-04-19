@@ -30,17 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re, string, types, math, time, operator
 import univention.debug
 import univention.admin.modules
 import univention.admin.uexceptions
-import univention.admin.localization
-import base64
-import copy
-import sys, os
+from univention.admin import localization
+import sys
+import os
+import traceback
 
-translation=univention.admin.localization.translation('univention/admin')
-_=translation.translate
+translation = localization.translation('univention/admin')
+_ = translation.translate
 
 #
 # load all additional hook files from */site-packages/univention/admin/hooks.d/*.py
@@ -53,14 +52,12 @@ def import_hook_files():
 					if f.endswith('.py'):
 						fn = os.path.join( dir, 'univention/admin/hooks.d/', f )
 						try:
-							fd = open( fn, 'r' )
-							exec fd in univention.admin.hook.__dict__
+							with open(fn, 'r') as fd:
+								exec fd in sys.modules[__name__].__dict__
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_hook_files: importing "%s"' % fn)
 						except:
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_hook_files: loading %s failed' % fn )
-							import traceback
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc() )
-
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc() )
 
 
 class simpleHook(object):

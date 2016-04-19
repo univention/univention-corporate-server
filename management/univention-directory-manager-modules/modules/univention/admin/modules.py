@@ -33,7 +33,6 @@
 
 import os
 import sys
-import ldap # CLEANUP: unneeded
 import types
 import copy
 import locale
@@ -43,11 +42,11 @@ import univention.admin
 import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.hook
-import univention.admin.localization
+from univention.admin import localization
 from univention.admin.layout import Tab, Group, ILayoutElement
 
-translation=univention.admin.localization.translation('univention/admin')
-_=translation.translate
+translation = localization.translation('univention/admin')
+_ = translation.translate
 
 modules={}
 superordinates=set()  # list of all module names (strings) that are superordinates
@@ -977,10 +976,4 @@ def childModules(module_name):
 	'''return child modules if module is a super module'''
 	module = get(module_name)
 	return copy.deepcopy( getattr(module, 'childmodules', []) )
-
-univention.admin.syntax.import_syntax_files()
-univention.admin.hook.import_hook_files()
-
-# The update will cause in a recursion, see https://forge.univention.org/bugzilla/show_bug.cgi?id=22439
-# update()
 

@@ -30,8 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import copy, types, string, re
-import mapping
+import types
+import sys
+import re
 import univention.config_registry
 import univention.debug
 
@@ -470,6 +471,11 @@ class policiesGroup:
 			self.short_description=short_description
 		self.long_description=long_description
 		self.members=members
+
+univention.admin = sys.modules[__name__]
+from univention.admin import modules, objects, syntax, hook, mapping
+syntax.import_syntax_files()
+hook.import_hook_files()
 
 if __name__ == '__main__':
 	prop = property( '_replace' )

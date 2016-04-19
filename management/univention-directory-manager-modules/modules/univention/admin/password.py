@@ -30,12 +30,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, heimdal, codecs, types, string, sys
+import heimdal
+import types
 import smbpasswd
 import univention.config_registry
 
 configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
+
 
 def crypt(password, method_id = None, salt = None):
 	"""return crypt hash"""
@@ -69,8 +71,6 @@ def crypt(password, method_id = None, salt = None):
 	return crypt.crypt(password.encode('utf-8'), '$%s$%s$' % (method_id, salt, ))
 
 
-
-
 def ntlm(password):
 	"""return tuple with NT and LanMan hash"""
 
@@ -82,6 +82,7 @@ def ntlm(password):
 		lm = ''
 
 	return (nt, lm)
+
 
 def krb5_asn1(principal, password, krb5_context=None):
 	list=[]

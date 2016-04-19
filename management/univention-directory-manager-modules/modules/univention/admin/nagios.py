@@ -30,18 +30,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import re
 import copy
 
-from univention.admin.layout import Tab, Group
+from univention.admin.layout import Tab
 import univention.admin
 import univention.admin.localization
 import univention.admin.syntax
 from univention.admin import configRegistry
 
-import re
-
-translation=univention.admin.localization.translation('univention.admin')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin')
+_ = translation.translate
 
 
 

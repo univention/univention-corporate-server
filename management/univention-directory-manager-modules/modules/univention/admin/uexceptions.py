@@ -30,11 +30,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.admin.localization
+from univention.admin import localization
 from univention.admin import configRegistry
 
-translation=univention.admin.localization.translation('univention/admin')
-_=translation.translate
+translation = localization.translation('univention/admin')
+_ = translation.translate
 
 
 class base(Exception):

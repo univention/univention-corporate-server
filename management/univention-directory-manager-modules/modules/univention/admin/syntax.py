@@ -38,12 +38,9 @@ import inspect
 import univention.debug
 import univention.admin.modules
 import univention.admin.uexceptions
-import univention.admin.localization
-try:
-	from univention.lib.ucs import UCS_Version
-	from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
-except ImportError:
-	pass	## workaround for delayed pysupport call during update. Should be removed after UCS 3.2-0
+from univention.admin import localization
+from univention.lib.ucs import UCS_Version
+from univention.lib.umc_module import get_mime_type, get_mime_description, image_mime_type_of_buffer
 import base64
 import zlib
 import bz2
@@ -58,13 +55,14 @@ from io import BytesIO
 import locale
 from operator import itemgetter
 
-translation=univention.admin.localization.translation('univention/admin')
-_=translation.translate
+translation = localization.translation('univention/admin')
+_ = translation.translate
 
 #
 # load all additional syntax files from */site-packages/univention/admin/syntax.d/*.py
 #
 def import_syntax_files():
+	global _  # don't allow syntax to overwrite our global _ function.
 	gettext = _
 	for dir_ in sys.path:
 		syntax_py = os.path.join(dir_, 'univention/admin/syntax.py')
@@ -75,12 +73,15 @@ def import_syntax_files():
 
 			for fn in syntax_files:
 				try:
-					fd = open( fn, 'r' )
-					exec fd in univention.admin.syntax.__dict__
+					with open(fn, 'r') as fd:
+						exec fd in sys.modules[__name__].__dict__
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
 				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
-	univention.admin.syntax.__dict__['_'] = gettext
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: TRACEBACK:\n%s' % traceback.format_exc() )
+				finally:
+					_ = gettext
+
 
 choice_update_functions = []
 def __register_choice_update_function(func):
@@ -3050,7 +3051,7 @@ class Country(select):
 
 	@classmethod
 	def update_choices(cls):
-		iso_3166 = univention.admin.localization.translation('iso_3166')
+		iso_3166 = localization.translation('iso_3166')
 		iso_3166.set_language(str(translation.locale))
 		_iso_3166 = iso_3166.translate
 

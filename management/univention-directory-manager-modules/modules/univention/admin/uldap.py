@@ -34,7 +34,7 @@ import ldap
 import univention.uldap
 import string
 import time
-import univention.admin.localization
+from univention.admin import localization
 import univention.config_registry
 
 try:
@@ -43,8 +43,8 @@ try:
 except:
 	GPLversion=True
 
-translation=univention.admin.localization.translation('univention/admin')
-_=translation.translate
+translation = localization.translation('univention/admin')
+_ = translation.translate
 
 configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
