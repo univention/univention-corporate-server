@@ -1,0 +1,50 @@
+product: ucs
+release: "4.0"
+version: [4,5]
+scope: ucs_4.0-0-errata4.0-5
+src: linux
+fix: 3.16.7-ckt25-2~bpo70+1.194.201604181018
+desc: |
+ This update addresses the following issues:
+ * unix: properly account for FDs passed over unix sockets (CVE-2013-4312)
+ * The fuse_fill_write_pages function in fs/fuse/file.c in the Linux kernel
+   before 4.4 allows local users to cause a denial of service (infinite loop)
+   via a writev system call that triggers a zero length for the first segment
+   of an iov. (CVE-2015-8785)
+ * Flaw in CXGB3 driver (CVE-2015-8812)
+ * USB hub invalid memory access in hub_activate() (CVE-2015-8816)
+ * aio write triggers integer overflow in some network protocols
+   (CVE-2015-8830)
+ * x86 Linux TLB flush bug (CVE-2016-2069)
+ * Double-free in snd-usbmidi-lib triggered by invalid USB descriptor
+   (CVE-2016-2384)
+ * ALSA: seq: Fix missing NULL check at remove_events ioctl (CVE-2016-2543)
+ * ALSA: seq: Fix race at timer setup and close (CVE-2016-2544)
+ * ALSA: timer: Fix double unlink of active_list (CVE-2016-2545)
+ * ALSA: timer: Fix race among timer ioctls (CVE-2016-2546)
+ * ALSA: use-after-free in snd_timer_user_ioctl (CVE-2016-2547)
+ * ALSA: linked lists of slave instances not unlinked immediately
+   (CVE-2016-2548)
+ * ALSA: hrtimer: Fix stall by hrtimer_cancel() (CVE-2016-2549)
+ * unix: correctly track in-flight fds in sending process user_struct
+   (CVE-2016-2550
+ * pipe: limit the per-user amount of pages allocated in pipes (CVE-2016-2847)
+note: This is the first part of the fix, which provides the new kernel package.
+bug: [40838]
+cve:
+ - CVE-2013-4312
+ - CVE-2015-8785
+ - CVE-2015-8812
+ - CVE-2015-8816
+ - CVE-2015-8830
+ - CVE-2016-2069
+ - CVE-2016-2384
+ - CVE-2016-2543
+ - CVE-2016-2544
+ - CVE-2016-2545
+ - CVE-2016-2546
+ - CVE-2016-2547
+ - CVE-2016-2548
+ - CVE-2016-2549
+ - CVE-2016-2550
+ - CVE-2016-2847
