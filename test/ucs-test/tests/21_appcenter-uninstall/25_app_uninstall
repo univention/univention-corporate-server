@@ -37,16 +37,17 @@ def check_status(app):
 							utils.fail('ERROR: A package is not uninstalled!')
 		if ucr_get('server/role') in ['domaincontroller_master', 'domaincontroller_backup']:
 			packages = app.default_packages_master
-			try:
-				output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT)
-			except subprocess.CalledProcessError:
-				utils.fail('ERROR: MasterPackages are not installed!')
-			else:
-				for line in output.splitlines():
-					if line.startswith('Status: '):
-						if line != 'Status: install ok installed':
-							print output
-							utils.fail('ERROR: A package is not installed!')
+			if packages:
+				try:
+					output = subprocess.check_output(['dpkg', '-s'] + packages, stderr=subprocess.STDOUT)
+				except subprocess.CalledProcessError:
+					utils.fail('ERROR: MasterPackages are not installed!')
+				else:
+					for line in output.splitlines():
+						if line.startswith('Status: '):
+							if line != 'Status: install ok installed':
+								print output
+								utils.fail('ERROR: A package is not installed!')
 		print '    Checking component'
 		if ucr_is_true('repository/online/component/%s' % app.component_id):
 			utils.fail('FAIL: component %s still active' % app.component)
