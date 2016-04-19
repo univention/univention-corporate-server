@@ -8,4 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The certificate of the appcenter server is now always validated in HTTPS
    connections.
-bug: [30620]
+ * When extracting new App meta data, the UID / GID / permissions are set
+   explicitely for these files instead of relying on the archive.
+bug: [30620, 41029]
