@@ -48,6 +48,13 @@
 			The third point release for &ucsUCS; (UCS) is now available in the form of &ucsUCS; 3.3.
 		</para>
 
+		<itemizedlist>
+		  <listitem><para>
+				  The Linux kernel was updated to version 3.16.7-ckt25.
+				  32 bit systems without <abbrev>PAE</abbrev> support (physical address extension) are no longer supported.
+		  </para></listitem>
+		</itemizedlist>
+
 	</chapter>
 
 	<chapter id="relnotes:order">

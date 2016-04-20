@@ -51,11 +51,6 @@ fi
 
 kernel_package="univention-kernel-image"
 
-# 486 legacy kernel
-if [ "486" = "$(uname -r | awk -F - '{print $NF}')" ]; then
-	kernel_package="univention-kernel-image-486"
-fi
-
 cat >/instmnt/install_kernel.sh <<__EOT__
 #!/bin/sh
 export DEBIAN_FRONTEND=noninteractive

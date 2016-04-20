@@ -504,11 +504,6 @@
 				univention-kernel-image - Standard kernel with support up to 64 GB RAM
 				</simpara>
 			</listitem>
-			<listitem>
-				<simpara>
-				univention-kernel-image-486 - Kernel for systems without PAE support (max. 4 GB RAM)
-				</simpara>
-			</listitem>
 		</itemizedlist>
 		<para>
 			The following meta packages are available under amd64 / 64 bit:

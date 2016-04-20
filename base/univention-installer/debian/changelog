@@ -1,3 +1,9 @@
+univention-installer (9.0.32-10) unstable; urgency=low
+
+  * Bug #40686: Remove univention-kernel-image-486
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 20 Apr 2016 08:33:15 +0200
+
 univention-installer (9.0.32-9) unstable; urgency=low
 
   * Bug #39324: rename testing repositories
