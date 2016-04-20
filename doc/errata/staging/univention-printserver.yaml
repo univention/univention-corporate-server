@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-printserver
-fix: 9.0.3-3.671.201604201829
+fix: 9.0.3-4.672.201604201833
 desc: |
  This update addresses the following issue(s):
  * Performance of the UMC print quota overview has been improved.  
