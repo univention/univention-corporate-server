@@ -10,13 +10,7 @@
 	<title>Changelog</title>
 	<section id="changelog:general">
 		<title>General</title>
-		<para>
-			All security updates issued for UCS 3.2-8 are included:
-		</para>
 		<itemizedlist>
-			<listitem><simpara>
-				<package>openssh</package> upgraded to 6.0p1 (<u:cve>2010-5107</u:cve> <u:cve>2014-2653</u:cve> <u:cve>2014-2532</u:cve> <u:cve>2016-0778</u:cve> <u:cve>CVE-2016-0777</u:cve>) (<u:bug>40689</u:bug>)
-			</simpara></listitem>
 			<listitem><simpara>
 				The codename for UCS 3.3 is Osterholz (<u:bug>40833</u:bug>).
 			</simpara></listitem>
@@ -71,6 +65,26 @@
 				<listitem><simpara>
 					The package <package>OpenSSH</package> has been updated to <wordasword>6.0</wordasword>
 					(<u:bug>40689</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The Apache Tomcat package <package>tomcat6</package> has been upgraded to version 6.0.45 (<u:bug>40947</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The SQL server <package>MySQL</package> has been upgraded to version 5.5.40 (<u:bug>40691</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The PHP package <package>php5</package> has been upgraded to version 5.4.45 (<u:bug>40693</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The maintained Java version in UCS 4.0 is OpenJDK 7. If OpenJDK 6 is installed, the upgrade process replaces
+					it with OpenJDK 7. The migration can be skipped by setting the &ucsUCRV; <envar>update33/skip/openjdk7</envar> to
+					true (<u:bug>40692</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The <package>libxml2</package> library has been upgraded to version 2.8.0 (<u:bug>40696</u:bug>)
+				</simpara></listitem>
+				<listitem><simpara>
+					The package manager for RPM <package>rpm</package> has been upgraded to version 4.10.0 (<u:bug>40695</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -442,7 +456,7 @@
 			<title>SSL</title>
 			<itemizedlist>
 				<listitem><simpara>
-						<package>openssl</package> has been upgraded to version 1.0.1e-2 (<u:bug>40688</u:bug>).
+						The <package>openssl</package> package has been upgraded to version 1.0.1e-2 (<u:bug>40688</u:bug>).
 						Dependent packages have been rebuilt to use the new version.
 				</simpara></listitem>
 			</itemizedlist>
@@ -520,7 +534,7 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>samba</package> has been upgraded to version 2:4.3.7 (<u:bug>40698</u:bug>)
+					<package>Samba</package> has been upgraded to version 2:4.3.7 (<u:bug>40698</u:bug>)
 					<package>ldb</package> has been upgraded to version 2:1.1.25-1 (<u:bug>40698</u:bug>)
 					<package>tdb</package> has been upgraded to version 1.3.8-1 (<u:bug>40698</u:bug>)
 					<package>tevent</package> has been upgraded to version 0.9.26-1 (<u:bug>40698</u:bug>)
@@ -561,27 +575,12 @@
 		-->
 		<!--
 	</section>
-		-->
 
 	<section id="changelog:other">
 		<title>Other changes</title>
 		<itemizedlist>
-			<listitem><simpara>
-				<package>libxml2</package> has been upgraded to version 2.8.0 (<u:bug>40696</u:bug>)
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>mysql</package> has been upgraded to version 5.5.40 (<u:bug>40691</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>php5</package> has been upgraded to version 5.4.45 (<u:bug>40693</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				The package manager for RPM <package>rpm</package> has been upgraded to version 4.10.0 (<u:bug>40695</u:bug>).
-			</simpara></listitem>
-			<listitem><simpara>
-				<package>tomcat6</package> has been upgraded to version 6.0.45 (<u:bug>40947</u:bug>).
-			</simpara></listitem>
 		</itemizedlist>
 	</section>
+		-->
 </chapter>
 <!-- vim: set ts=4 sw=4 noet foldmethod=syntax foldlevel=2: -->
