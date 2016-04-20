@@ -61,7 +61,6 @@
 		  <listitem><para>
 				Viele Systemdienste wurden aktualisiert, wie beispielsweise der DHCP Server, der Xen Hypervisor oder die SQL-Server
 				MySQL oder PostgreSQL.
-				aktualisiert.
 		  </para></listitem>
 		  <listitem><para>
 				Diverse Systembibliotheken wurden aktualisiert, u.a. die GNU C-Bibliothek, OpenSSL oder PHP5.
