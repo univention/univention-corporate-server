@@ -14,29 +14,27 @@
 . "$TESTLIBPATH/base.sh" || exit 137
 
 testldif () {
-	echo -n "testing $1"
+	[ -f "$1" ] || continue
 
 	declare -i PERM="$(stat -c %a "$1")"
-	OWNER="$(stat -c %U "$1")"
+	local OWNER="$(stat -c %U "$1")"
 	declare -i GROUP_PERM="${PERM:1:1}"
 	declare -i OTHERS_PERM="${PERM:2:1}"
 
-	if [ "$GROUP_PERM" -gt 0 ]; then
-		fail_test 1 "Wrong group permissions $PERM on file $1"
-	elif [ "$OTHERS_PERM" -gt 0 ]; then
-		fail_test 1 "Wrong other users permissions $PERM on file $1"
-	elif [ "$OWNER" != "root" ]; then
-		echo "... Wrong owner $OWNER (not root) on file $1"
-		fail_test 1
-	else
-		echo " ... was ok."
-	fi
+	[ "$GROUP_PERM" -eq 0 ] ||
+		fail_test 1 "File '$1' has group permissions: $PERM"
+	[ "$OTHERS_PERM" -eq 0 ] ||
+		fail_test 1 "File '$1' has world permissions: $PERM"
+	[ "$OWNER" = "root" ] ||
+		fail_test 1 "File '$1' not owned by root: $OWNER"
 }
 
 #check if master ldap-server can be reached
 univention-ldapsearch -h "$ldap_master" -p "$ldap_master_port" -x uid=Administrator |
 	grep -q "# numEntries: 1" ||
 	exit 120
+
+wait_for_replication
 
 #START TEST
 ldif_path="/var/lib/univention-directory-replication"
@@ -70,6 +68,8 @@ fi
 
 /etc/init.d/slapd start
 
+wait_for_replication
+
 for replayed in "$ldif_path"/replayed.ldif_*
 do
 	testldif "$replayed"
@@ -78,8 +78,10 @@ done
 # Workaround for Bug #33050
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=33050
 ucr commit /etc/samba/smb.conf
-for srv in samba smaba4 winbind; do
-	test -x /etc/init.d/$srv && invoke-rc.d $srv restart
+for srv in samba winbind; do
+	if [ -x /etc/init.d/$srv ]; then
+		invoke-rc.d $srv restart
+	fi
 done
 
 exit "$RETVAL"

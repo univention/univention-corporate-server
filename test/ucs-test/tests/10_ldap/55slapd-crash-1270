@@ -5,6 +5,8 @@
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
 ##  - domaincontroller_slave
+## tags:
+##  - skip_admember
 ## packages:
 ##  - univention-config
 ##  - univention-directory-manager-tools
@@ -24,6 +26,14 @@ if [ -z "$(pidof slapd)" ]; then
 	exit 120
 fi
 
+if [ "$ldap_base" != "${ldap_base,,}" ]; then
+	# https://forge.univention.org/bugzilla/show_bug.cgi?id=38088
+	echo "CamelCase ldap/base"
+	exit 137
+fi
+
+undo wait_for_replication # wait at end
+
 create_mail_domain "$domainname" && undo delete_mail_domain "$domainname"
 
 echo -e "\n\n***Create a test user with UDM CLI"
@@ -35,10 +45,10 @@ create_localprinter "$PRINTERNAME" &&
 USERNAME=$(user_randomname)
 user_create "$USERNAME" &&
 	undo user_remove "$USERNAME" ||
-		fail_test 1
+	fail_test 1
 
 echo -e "\n\n***Create a test group with UDM CLI and add the specified user"
-GROUPNAME="$(group_randomnameme)"
+GROUPNAME="$(group_randomname)"
 group_create "$GROUPNAME" &&
 	undo group_remove "$GROUPNAME" ||
 	fail_test 1
@@ -52,6 +62,8 @@ echo -e "\n\n***Adding the new group to \"Domain Admins\""
 group_addgroup "$GROUPNAME" "Domain Admins" &&
 	undo group_removegroup "$GROUPNAME" "Domain Admins" ||
 	fail_test 1
+
+wait_for_replication
 
 echo -e "\n\n***Displaying the created printer, using the account of the created user:"
 if ! ldapsearch -x -D "uid=$USERNAME,cn=users,$ldap_base" -w univention "cn=$PRINTERNAME"

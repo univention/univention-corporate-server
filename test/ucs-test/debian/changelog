@@ -1,3 +1,10 @@
+ucs-test (4.100.1-2) unstable; urgency=medium
+
+  * 10_ldap/60failedldif and 10_ldap/55slapd-crash-1270: Merge current
+    state from UCS 4.1-1 (Bug #40863)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Apr 2016 07:16:56 +0200
+
 ucs-test (4.100.1-1) unstable; urgency=low
 
   * Bug #40810: adapt test to fail with SSLv2, as OpenSSL has been imported
