@@ -776,38 +776,9 @@ appliance_basesettings ()
 {
 	set -x
 	app=$1
-
-	apps="$app $(app_get_appliance_additional_apps $app)"
-
-	pages_blacklist="$(app_get_appliance_pages_blacklist $app)"
-	ucr set system/setup/boot/pages/blacklist="$pages_blacklist"
-
-	fields_blacklist="$(app_get_appliance_fields_blacklist $app)"
-	ucr set system/setup/boot/fields/blacklist="$fields_blacklist"
-
-	blacklist="$(app_get_appliance_blacklist $app)"
-	whitelist="$(app_get_appliance_whitelist $app)"
-	ucr set repository/app_center/blacklist="$blacklist"
-	ucr set repository/app_center/whitelist="$whitelist"
-
-	name=$(app_get_appliance_name $app)
-	ucr set umc/web/appliance/name="$name"
-	ucr set grub/title="Start $name Univention App"
-
-	version=$(app_get_version $app)
-	ucr set appliance/apps/$app/version="$version"
-
-	notify=$(app_get_notifyVendor $app)
-	ucr set appliance/apps/$app/notifyVendor="$notify"
-
-	logo=$(app_get_appliance_logo $app)
-	if [ -n "$logo" ]; then
-		wget http://$(ucr get repository/app_center/server)/meta-inf/$(ucr get version/version)/$app/$logo -O /var/www/icon/$logo
-		ucr set umc/web/appliance/logo="/icon/$logo"
-		chmod 644 /var/www/icon/$logo
-	fi
-
 	
+	/usr/sbin/univention-app-appliance-branding $app
+
 	app_fav_list=""
 	for a in $apps; do
 		app_fav_list="$app_fav_list,apps:$a"
