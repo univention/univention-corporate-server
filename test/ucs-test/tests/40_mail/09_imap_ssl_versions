@@ -40,10 +40,10 @@ for PROTO in ssl2 ssl3 tls1; do
     if [ "$PROTO" = ssl2 ] && [ $res = 0 ]; then
 	    fail_test 110 "$PROTO supported (res=$res)."
     fi
-    if [ "$PROTO" == tls3 ] && [ $res != 0 ]; then
+    if [ "$PROTO" = ssl3 ] && [ $res != 0 ]; then
 	    fail_test 110 "$PROTO not supported (res=$res)."
     fi
-    if [[ "$PROTO" == tls* ]] && [ $res != 0 ]; then
+    if [[ "$PROTO" = tls* ]] && [ $res != 0 ]; then
 	    fail_test 110 "$PROTO not supported (res=$res)."
     fi
 done
@@ -67,10 +67,10 @@ for PROTO in ssl2 ssl3 tls1; do
     if [ "$PROTO" = ssl2 ] && [ $res = 0 ]; then
 	    fail_test 110 "$PROTO supported (res=$res)."
     fi
-    if [ "$PROTO" == tls3 ] && [ $res != 0 ]; then
+    if [ "$PROTO" = ssl3 ] && [ $res != 0 ]; then
 	    fail_test 110 "$PROTO not supported (res=$res)."
     fi
-    if [[ "$PROTO" == tls* ]] && [ $res != 0 ]; then
+    if [[ "$PROTO" = tls* ]] && [ $res != 0 ]; then
 	    fail_test 110 "$PROTO not supported (res=$res)."
     fi
 done
