@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Plymouth now uses the framebuffer renderer as default.
 bug: [40715]
+erratum: 154
+announced: 2016-04-20
