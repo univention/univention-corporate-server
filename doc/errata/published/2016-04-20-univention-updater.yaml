@@ -10,3 +10,5 @@ desc: |
    true, the updater skips UCS 3.3 and updates directly from UCS 3.2
    to UCS 4.0.
 bug: [40909]
+erratum: 422
+announced: 2016-04-20
