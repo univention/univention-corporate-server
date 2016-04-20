@@ -50,8 +50,21 @@
 
 		<itemizedlist>
 		  <listitem><para>
-				  Der Linux Kernel wurde auf Version 3.16.7-ckt25 aktualisiert.
-				  32-Bit-Systeme ohne <abbrev>PAE</abbrev>-Unterstützung (Physical Address Extension) werden nicht länger unterstützt.
+				Der Linux Kernel wurde Version 3.16 aktualisiert. Dieser beinhaltet diverse Sicherheitsaktualisierungen
+				sowie neuere und aktualisierte Treiber für eine verbesserte Hardware-Unterstützung. 
+		  </para></listitem>
+		  <listitem><para>
+				Samba wurde auf Version 4.3.7 aktualisiert. Neben sehr vielen Detailverbesserungen bietet Samba 4.3
+				Unterstützung für SMB 3.1.1, welches Microsoft mit Windows 10 eingeführt hat und das eine höhere Sicherheit
+				und mehr Funktionen bietet. 
+		  </para></listitem>
+		  <listitem><para>
+				Viele Systemdienste wurden aktualisiert, wie beispielsweise der DHCP Server, der Xen Hypervisor oder die SQL-Server
+				MySQL oder PostgreSQL.
+				aktualisiert.
+		  </para></listitem>
+		  <listitem><para>
+				Diverse Systembibliotheken wurden aktualisiert, u.a. die GNU C-Bibliothek, OpenSSL oder PHP5.
 		  </para></listitem>
 		</itemizedlist>
 
@@ -90,6 +103,11 @@
 			Sollte dennoch eine Aktualisierung über eine Netzverbindung durchgeführt werden, ist sicherzustellen, dass das Update bei Unterbrechung der Netzverbindung trotzdem weiterläuft.
 			Hierfür können beispielsweise die Tools <command>screen</command> oder <command>at</command> eingesetzt werden, die auf allen Systemrollen installiert sind.
 		</para>
+
+		<para>
+			Es ist möglich das Update auf UCS 3.3 zu überspringen. Sofern das System direkt von UCS 3.2 auf UCS 4 aktualisiert werden soll, so kann die &ucsUCRV; <envar>update33/skip/ucs3.3</envar> auf
+			<literal>true</literal> gesetzt werden.
+		</para>
 	</chapter>
 
 	<chapter id="relnotes:post">
@@ -110,6 +128,13 @@
 	<chapter id="relnotes:packages">
 		<title>Hinweise zum Einsatz einzelner Pakete</title>
 
+		<section id="relnotes:kernel">
+			<title>Physical Address Extension</title>
+			<para>
+				  Der Linux Kernel wurde auf Version 3.16.7-ckt25 aktualisiert.
+				  32-Bit-Systeme ohne <abbrev>PAE</abbrev>-Unterstützung (Physical Address Extension) werden nicht länger unterstützt.
+			</para>
+		</section>
 		<section id="relnotes:usage">
 			<title>Erfassung von Nutzungsstatistiken bei Verwendung der <phrase>Free-For-Personal-Use</phrase>-Version</title>
 			<para>
