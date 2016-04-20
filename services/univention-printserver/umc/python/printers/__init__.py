@@ -123,7 +123,7 @@ class Instance(umcm.Base):
 			reportingtool = reporter.openReporter(reportTool, 'html', printers, '*', 0)
 			status = reportingtool.generateReport()
 		except PGError as err:
-			raise UMC_Error(_('The connection to the print quota postgres database failed: %s' % str(err)))
+			raise UMC_Error(_('The connection to the print quota postgres database failed: %s', % str(err)))
 
 		if status:
 			tree = lxml.html.fromstring(status)

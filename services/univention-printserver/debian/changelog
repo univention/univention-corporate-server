@@ -1,3 +1,9 @@
+univention-printserver (9.0.3-3) unstable; urgency=low
+
+  * Fixed translation (Bug #33792)
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Apr 2016 18:28:21 +0200
+
 univention-printserver (9.0.3-2) unstable; urgency=low
 
   * UMC print quota performance (Bug #33792)
@@ -6,7 +12,7 @@ univention-printserver (9.0.3-2) unstable; urgency=low
 
 univention-printserver (9.0.3-1) unstable; urgency=low
 
-  * restart cups in join script (Bug #40591) 
+  * restart cups in join script (Bug #40591)
 
  -- Felix Botner <botner@univention.de>  Fri, 05 Feb 2016 12:54:27 +0100
 
@@ -340,7 +346,7 @@ univention-printserver (6.0.25-3) unstable; urgency=low
 
 univention-printserver (6.0.25-2) unstable; urgency=low
 
-  * Removed erroneous "uid=Administrator" from univentin-ldapsearch request (Bug #19101)
+  * Removed erroneous "uid=Administrator" from univention-ldapsearch request (Bug #19101)
 
  -- Liam Schwez <lschwez@micke.knut.univention.de>  Fri, 31 May 2013 15:56:09 +0200
 
