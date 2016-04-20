@@ -1,6 +1,6 @@
 #!/usr/share/ucs-test/runner bash
 ## desc: Check ssl_client support
-## bugs: [40810]
+## bugs: [40189,40810]
 ## tags:
 ##  - basic
 ##  - apptest
@@ -37,19 +37,20 @@ for PROTO in ssl2 ssl3 tls1; do
         "-${PROTO}" 2>&1 | grep -q "A OK Completed"
     res=$?
 
-    if [ "$PROTO" = ssl2 ] && [ $res = 0 ]; then
+    if [ "$PROTO" = ssl2 ] && [ $res = 0 ] && [ $(ucr get version/erratalevel) -gt 410 ]; then
 	    fail_test 110 "$PROTO supported (res=$res)."
     fi
-    if [ "$PROTO" == tls3 ] && [ $res != 0 ]; then
+    if [ "$PROTO" = ssl3 ] && [ $res != 0 ]; then
 	    fail_test 110 "$PROTO not supported (res=$res)."
     fi
-    if [[ "$PROTO" == tls* ]] && [ $res != 0 ]; then
+    if [[ "$PROTO" = tls* ]] && [ $res != 0 ]; then
 	    fail_test 110 "$PROTO not supported (res=$res)."
     fi
 done
 
 echo "*** ucr set mail/cyrus/ssl/cipher_list='TLSv1:SSLv3:SSLv2:!NULL:!EXPORT:!DES:!LOW:@STRENGTH'"
-echo "*** -> SSLv2, SSLv3 and TLS1 allowed"
+# disabled in errata410
+echo "*** -> SSLv3 and TLS1 allowed"
 ucr set mail/cyrus/ssl/cipher_list='TLSv1:SSLv3:SSLv2:!NULL:!EXPORT:!DES:!LOW:@STRENGTH'
 invoke-rc.d cyrus-imapd stop
 invoke-rc.d cyrus-imapd start
@@ -60,7 +61,18 @@ for PROTO in ssl2 ssl3 tls1; do
         -connect $(hostname -f):993 \
         -CAfile /etc/univention/ssl/ucsCA/CAcert.pem \
         -quiet \
-        "-${PROTO}" 2>&1 | grep -q "A OK Completed" || fail_test 110 "$PROTO not supported."
+        "-${PROTO}" 2>&1 | grep -q "A OK Completed"
+    res=$?
+
+    if [ "$PROTO" = ssl2 ] && [ $res = 0 ] && [ $(ucr get version/erratalevel) -gt 410 ]; then
+	    fail_test 110 "$PROTO supported (res=$res)."
+    fi
+    if [ "$PROTO" = ssl3 ] && [ $res != 0 ]; then
+	    fail_test 110 "$PROTO not supported (res=$res)."
+    fi
+    if [[ "$PROTO" = tls* ]] && [ $res != 0 ]; then
+	    fail_test 110 "$PROTO not supported (res=$res)."
+    fi
 done
 
 exit $RETVAL
