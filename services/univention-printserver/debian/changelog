@@ -1,3 +1,9 @@
+univention-printserver (9.0.3-2) unstable; urgency=low
+
+  * UMC print quota performance (Bug #33792)
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Apr 2016 18:13:39 +0200
+
 univention-printserver (9.0.3-1) unstable; urgency=low
 
   * restart cups in join script (Bug #40591) 

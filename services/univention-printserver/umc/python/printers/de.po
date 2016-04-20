@@ -19,3 +19,7 @@ msgid ""
 msgstr ""
 "Die Quota-Einstellungen sind momentan nicht verfügbar. Bitte installieren "
 "Sie das Paket univention-printquota, um diese zu aktivieren."
+
+#: umc/python/printers/__init__.py
+msgid "The connection to the print quota postgres database failed: %s"
+msgstr "Die Verbindung zur Print-Quota Postgres Datenbank konnte nicht hergestellt werden: %s"

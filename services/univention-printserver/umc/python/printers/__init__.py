@@ -37,11 +37,13 @@ import os
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.management.console.modules import UMC_CommandError
+from univention.management.console.modules import UMC_Error
 
 import univention.config_registry
 import univention.admin.uldap
 
 import re
+import lxml.html
 
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
@@ -105,43 +107,52 @@ class Instance(umcm.Base):
 		""" lists all quota entries related to this printer. """
 
 		result = []
+		status = None
 
-		if not os.path.exists('/usr/bin/pkusers'):
-			raise UMC_CommandError(_('The print quota settings are currently disabled. Please install the package univention-printquota to enable them.'))
+		try:
+			from pykota.tool import PyKotaTool
+			from pykota import reporter
+			from pykota.storages.pgstorage import PGError
+		except ImportError as err:
+			raise UMC_Error(_('The print quota settings are currently disabled. Please install the package univention-printquota to enable them.'))
 
-		(stdout, stderr, status) = self._shell_command(['/usr/bin/pkusers', '--list'], {'LANG':'C'})
-		users = []
-		expr = re.compile('^\s*(.*?)\s+\-\s\<')
-		if status == 0:
-			for line in stdout.split("\n"):
-				match = expr.match(line)
-				if match:
-					users.append(match.group(1))
+		try:
+			reportTool = PyKotaTool()
+			reportTool.deferredInit()
+			printers = reportTool.storage.getMatchingPrinters(printer)
+			reportingtool = reporter.openReporter(reportTool, 'html', printers, '*', 0)
+			status = reportingtool.generateReport()
+		except PGError as err:
+			raise UMC_Error(_('The connection to the print quota postgres database failed: %s' % str(err)))
 
-		result = []
-		for user in users:
-			if not os.path.exists('/usr/bin/repykota'):
-				raise UMC_CommandError(_('The print quota settings are currently disabled. Please install the package univention-printquota to enable them.'))
+		if status:
+			tree = lxml.html.fromstring(status)
+			table = tree.find_class('pykotatable')
+			for i in table:
+				for a in i.iterchildren(tag='tr'):
+					data = list()
+					for b in a.iterchildren(tag='td'):
+						data.append(b.text_content().strip())
+					if data and len(data) >= 11:
+						user = data[0]
+						limitby = data[1]
+						overcharge = data[2]
+						used = data[3]
+						soft = data[4]
+						hard = data[5]
+						balance = data[6]
+						grace = data[7]
+						total = data[8]
+						paid = data[9]
+						warn = data[10]
+						result.append(dict(
+							user=user,
+							used=used,
+							soft=soft,
+							hard=hard,
+							total=total,
+						))
 
-			(stdout, stderr, status) = self._shell_command(['/usr/bin/repykota', '-P', printer, user], {'LANG':'C'})
-			if status == 0:
-				for line in stdout.split("\n"):
-					data = line[16:].split()		# ignore possibly truncated user name
-					if len(data) >= 7:
-						ok = True
-						for n in (2, 3,4, len(data)-3):
-							if not data[n].isdigit():
-								ok = False
-						if ok:
-							MODULE.info("      -> user='%s' used=%s soft=%s hard=%s total=%s" % (user, data[2], data[3], data[4], data[len(data)-3]))
-							entry = {
-								'user':		user,
-								'used':		data[2],
-								'soft':		data[3],
-								'hard':		data[4],
-								'total':	data[len(data)-3]
-							}
-							result.append(entry)
 		return result
 
 	@simple_response
