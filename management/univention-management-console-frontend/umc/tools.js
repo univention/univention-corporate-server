@@ -854,7 +854,7 @@ define([
 					'default': true,
 					label: _('Inform vendor'),
 					callback: lang.hitch(this, function() {
-						systemInfoLib.traceback(message, feedbackLink);
+						systemInfoLib.traceback(entities.decode(message), feedbackLink);
 					})
 				});
 			} else {

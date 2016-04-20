@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define*/
+/*global define,window*/
 
 define([
 	"dojo/_base/declare",
@@ -39,7 +39,6 @@ define([
 	"dojo/when",
 	"dojo/json",
 	"dojox/html/styles",
-	"dijit/registry",
 	"dijit/layout/StackContainer",
 	"../tools",
 	"./Form",
@@ -47,7 +46,7 @@ define([
 	"./StandbyMixin",
 	"./_RegisterOnShowMixin",
 	"../i18n!"
-], function(declare, lang, array, event, domClass, geometry, aspect, when, json, styles, registry, StackContainer, tools, Form, Page, StandbyMixin, _RegisterOnShowMixin, _) {
+], function(declare, lang, array, event, domClass, geometry, aspect, when, json, styles, StackContainer, tools, Form, Page, StandbyMixin, _RegisterOnShowMixin, _) {
 	return declare("umc.widgets.Wizard", [ StackContainer, StandbyMixin, _RegisterOnShowMixin ], {
 		// summary:
 		//		This wizard class allows to specify a list of pages which will be
@@ -234,23 +233,23 @@ define([
 
 		getWidget: function(pageName, _widgetName) {
 			var widgetName = _widgetName;
-			if ( arguments.length >= 2 && pageName ) {
+			if (arguments.length >= 2 && pageName) {
 				return lang.getObject('_pages.' + pageName + '._form._widgets.' + widgetName, false, this);
 			}
 
 			// if no page name is given search on all pages
-			if ( arguments.length == 1 ) {
+			if (arguments.length == 1) {
 				// in case only one parameter has been specified, it indicates the widget name
 				widgetName = arguments[0];
 			}
 			var widget = false;
-			array.forEach( this.pages, lang.hitch( this, function( page ) {
-				var w = this.getWidget( page.name, widgetName );
-				if ( undefined !== w ) {
+			array.forEach(this.pages, lang.hitch(this, function(page) {
+				var w = this.getWidget(page.name, widgetName);
+				if (undefined !== w) {
 					widget = w;
 					return true; // FIXME
 				}
-			} ) );
+			}));
 
 			return widget;
 		},
@@ -299,10 +298,14 @@ define([
 				if (!nextPage) {
 					throw new Error('ERROR: received invalid page name [' + json.stringify(nextPage) + '] for Wizard.next(' + json.stringify(currentPage) + ')');
 				}
-				this._updateButtons(nextPage);
-				var page = this._pages[nextPage];
-				this.selectChild(page);
+				this.switchPage(nextPage);
 			}));
+		},
+
+		switchPage: function(pageName) {
+			window.scrollTo(0, 0);
+			this._updateButtons(pageName);
+			this.selectChild(this._pages[pageName]);
 		},
 
 		focusFirstWidget: function(pageName) {
@@ -373,8 +376,7 @@ define([
 		_previous: function(/*String*/ currentPage) {
 			// update visibilty of buttons and show previous page
 			when(this.previous(currentPage), lang.hitch(this, function(previousPage) {
-				this._updateButtons(previousPage);
-				this.selectChild(this._pages[previousPage]);
+				this.switchPage(previousPage);
 			}));
 		},
 

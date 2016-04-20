@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-34) unstable; urgency=medium
+
+  * Bug #41081: scroll to the top when switching pages in wizards
+
+ -- Florian Best <best@univention.de>  Wed, 20 Apr 2016 08:03:27 +0200
+
 univention-management-console-frontend (5.0.63-33) unstable; urgency=medium
 
   Bug #38622:
