@@ -9,3 +9,5 @@ desc: |
  * importing the python modules of "univention.admin" doesn't depend on the
    order or previous imports anymore.
 bug: [33359]
+erratum: 156
+announced: 2016-04-20
