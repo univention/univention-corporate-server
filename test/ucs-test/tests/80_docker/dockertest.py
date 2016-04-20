@@ -344,7 +344,7 @@ Virtualization=Virtualisierung''')
 		handler_set([
 			'update/secure_apt=no',
 			'appcenter/index/verify=false',
-			'repository/app_center/server=%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+			'repository/app_center/server=http://%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
 		])
 
 	def update(self):
