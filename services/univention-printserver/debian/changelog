@@ -1,3 +1,9 @@
+univention-printserver (9.0.3-4) unstable; urgency=low
+
+  * Fixed translation (Bug #33792) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 20 Apr 2016 18:33:35 +0200
+
 univention-printserver (9.0.3-3) unstable; urgency=low
 
   * Fixed translation (Bug #33792)
