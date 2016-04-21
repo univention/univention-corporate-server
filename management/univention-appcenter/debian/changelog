@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-46) unstable; urgency=medium
+
+  * Bug #39927: fixed some svgs not showing up on IE
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 21 Apr 2016 15:53:41 +0200
+
 univention-appcenter (5.0.20-45) unstable; urgency=medium
 
   * Bug #30620: make sure the HTTPS connection to the appcenter server is

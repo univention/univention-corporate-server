@@ -37,6 +37,7 @@ define([
 	"dojox/html/entities",
 	"put-selector/put",
 	"dojo/dom-class",
+	"dojo/dom-construct",
 	"dojo/on",
 	"umc/tools",
 	"umc/widgets/GalleryPane",
@@ -45,7 +46,7 @@ define([
 	"dojo/dom-geometry",
 	"dojo/dom-style",
 	"umc/i18n!umc/modules/appcenter"
-], function(declare, array, lang, kernel, dojoEvent, entities, put, domClass, on, tools, GalleryPane, Tooltip, query, domGeometry, domStyle, _) {
+], function(declare, array, lang, kernel, dojoEvent, entities, put, domClass, domConstruct, on, tools, GalleryPane, Tooltip, query, domGeometry, domStyle, _) {
 	return declare("umc.modules.appcenter.AppCenterGallery", [ GalleryPane ], {
 		region: 'main',
 
@@ -55,6 +56,13 @@ define([
 
 		getIconClass: function(iconName) {
 			return tools.getIconClass(iconName, 'scalable', 'umcAppCenter');
+		},
+
+		getIconUrl: function(iconName) {
+			return lang.replace('{url}/umc/icons/scalable/{icon}', {
+				url: require.toUrl('dijit/themes'),
+				icon: iconName || ''
+			});
 		},
 
 		renderRow: function(item) {
@@ -69,6 +77,15 @@ define([
 			var iconClass = this.getIconClass(item.logo_name);
 			if (iconClass) {
 				put(innerWrapper, 'div.appIcon.umcGalleryIcon.' + iconClass);
+
+				//IE specific
+				//on IE some svgs are not shown. this fixes the problem
+				if (navigator.userAgent.indexOf('Trident/') !== -1) {
+					var iconUrl = this.getIconUrl(item.logo_name);
+					domConstruct.create('img', {
+						src: iconUrl
+					});
+				}
 			}
 
 			var text = put(innerWrapper, 'div.appContent');
