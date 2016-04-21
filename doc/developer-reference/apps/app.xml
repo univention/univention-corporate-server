@@ -298,6 +298,21 @@
 						</simpara>
 					</listitem>
 				</varlistentry>
+				<varlistentry><term>Logo</term>
+					<listitem><simpara>
+						The file name of the logo of the App. It is used in the App Center
+						overview when all Apps are shown in a gallery. As the gallery items
+						are squared, the logo should be squared, too.
+					</simpara></listitem>
+				</varlistentry>
+				<varlistentry><term>LogoDetailPage</term>
+					<listitem><simpara>
+						The file name of a "bigger" logo. It is shown in the detail page of
+						the App Center. Useful when there is a stretched version with the
+						logo, the name, maybe a claim. If not given, the
+						<literal>Logo</literal> is used on the detail page, too.
+					</simpara></listitem>
+				</varlistentry>
 				<varlistentry>
 					<term>LongDescription</term>
 					<listitem>
@@ -339,13 +354,36 @@
 						</note>
 					</listitem>
 				</varlistentry>
+				<varlistentry><term>RequiredAppsInDomain</term>
+					<listitem>
+						<simpara>
+							Like <literal>RequiredApps</literal>, but the Apps may be installed
+							anywhere in the domain, not necessarily on this very server. Uses
+							Application IDs, multiple IDs may be split by comma.
+						</simpara>
+						<note>
+							<para>
+								Application IDs are the <literal>ID</literal> values in the ini file.
+								To find the ID, use <command>univention-app list</command>. The command
+								is new in UCS 4.1.
+							</para>
+						</note>
+					</listitem>
+				</varlistentry>
 				<varlistentry>
 					<term>ConflictedApps</term>
 					<listitem>
 						<simpara>
-							Application IDs for apps that may to be installed along with this
+							Application IDs for apps that not may to be installed along with this
 							App on the same server. Multiple IDs may be split by comma.
 						</simpara>
+						<note>
+							<para>
+								Application IDs are the <literal>ID</literal> values in the ini file.
+								To find the ID, use <command>univention-app list</command>. The command
+								is new in UCS 4.1.
+							</para>
+						</note>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
