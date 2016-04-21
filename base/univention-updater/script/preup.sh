@@ -186,14 +186,14 @@ check_for_minimum_errata () {
 	local minimum_errata=$1
 	if ! is_ucr_true update33/ignore_errata_check; then
 		if [ $minimum_errata -gt $version_erratalevel ]; then
-			echo "WARNING: The patchlevel version of this system is ${version_erratalevel}."
+			echo "WARNING: The erratalevel version of this system is ${version_erratalevel}."
 			echo "         In order to install the UCS 3.3 release update please"
 			echo "         upgrade the system to at least errata level ${minimum_errata}!"
 			exit 1
 		fi
 	fi
 }
-check_for_minimum_errata "0" # TODO, replace "0" with real value for minimum errata
+check_for_minimum_errata "422" # http://errata.software-univention.de/ucs/3.2/422.html
 
 #################### Bug #22093
 

@@ -1,3 +1,9 @@
+univention-updater (9.100.4-9) unstable; urgency=low
+
+  * Errataversion check (Bug #41068)
+
+ -- Felix Botner <botner@univention.de>  Thu, 21 Apr 2016 10:07:03 +0200
+
 univention-updater (9.100.4-8) unstable; urgency=low
 
   * Added update33/skip/ucs3.3 message (Bug #40700)
