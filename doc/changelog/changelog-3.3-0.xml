@@ -358,7 +358,7 @@
 		<itemizedlist>
 			<listitem><simpara>
 				The updater scripts <filename>preup.sh</filename> and <filename>postup.sh</filename>
-				have been adapted to the needs of UCS 3.3 (<u:bug>40704</u:bug>).
+				have been adapted to the needs of UCS 3.3 (<u:bug>40704</u:bug>, <u:bug>41068</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 		<!--
