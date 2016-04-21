@@ -103,43 +103,6 @@ app_get_name ()
 				print app.name;"
 }
 
-app_get_version ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.version;"
-}
-
-app_get_notifyVendor ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('notifyvendor');"
-}
-
-app_get_appliance_name ()
-{
-	local app="$1"
-	python -c "
-from univention.management.console.modules.appcenter.app_center import Application
-app = Application.find('$app')
-appliance_name = app.get('ApplianceName')
-if appliance_name:
-	print appliance_name
-else:
-	print app.name;"
-}
-
-app_get_appliance_logo ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('ApplianceLogo');"
-}
-
 app_get_pre_installed_packages ()
 {
 	local app="$1"
@@ -148,29 +111,6 @@ app_get_pre_installed_packages ()
 				print app.get('AppliancePreInstalledPackages').replace(',',' ');"
 }
 
-app_get_appliance_blacklist ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('ApplianceBlackList');"
-}
-
-app_get_appliance_whitelist ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('ApplianceWhiteList');"
-}
-
-app_get_appliance_pages_blacklist ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('AppliancePagesBlackList');"
-}
 app_appliance_is_software_blacklisted ()
 {
 	local app="$1"
@@ -185,14 +125,6 @@ if bl and 'software' in bl.split(','):
 else:
 	sys.exit(1)
 "
-}
-
-app_get_appliance_fields_blacklist ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('ApplianceFieldsBlackList').replace(',',' ');"
 }
 
 app_get_appliance_additional_apps ()
