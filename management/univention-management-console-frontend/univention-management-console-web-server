@@ -1107,7 +1107,7 @@ class Root(Ressource):
 		if user and user.saml is not None:
 			raise HTTPRedirect('/univention-management-console/saml/logout')
 		self.expire_session()
-		raise HTTPRedirect(ucr.get('umc/logout/location', '/univention-management-console/'))
+		raise HTTPRedirect(ucr.get('umc/logout/location') or '/univention-management-console/')
 
 
 def get_ip_address():

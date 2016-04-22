@@ -1,6 +1,12 @@
+univention-management-console-frontend (5.0.63-36) unstable; urgency=medium
+
+  * Bug #41081: fixup, scroll after switching the page
+
+ -- Florian Best <best@univention.de>  Fri, 22 Apr 2016 21:20:01 +0200
+
 univention-management-console-frontend (5.0.63-35) unstable; urgency=medium
 
-  * Bug #38622: fixed umc not loading wen umc has no overview and the
+  * Bug #38622: fixed umc not loading when umc has no overview and the
     mobile view is active
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 22 Apr 2016 16:02:15 +0200

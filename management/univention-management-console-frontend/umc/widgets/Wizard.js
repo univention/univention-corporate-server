@@ -303,9 +303,9 @@ define([
 		},
 
 		switchPage: function(pageName) {
-			window.scrollTo(0, 0);
 			this._updateButtons(pageName);
 			this.selectChild(this._pages[pageName]);
+			window.scrollTo(0, 0);
 		},
 
 		focusFirstWidget: function(pageName) {
