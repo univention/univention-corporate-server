@@ -1937,7 +1937,7 @@ define([
 
 			// setup menus
 			this._header.setupGui();
-			if (tools.status('mobileView')) {
+			if (tools.status('mobileView') && tools.status('overview') && !tools.status('singleModule')) {
 				this._registerMobileModuleSearchListeners();
 			}
 			this._setupOverviewPage();

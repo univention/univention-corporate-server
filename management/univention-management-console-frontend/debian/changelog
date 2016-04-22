@@ -1,3 +1,10 @@
+univention-management-console-frontend (5.0.64-1) unstable; urgency=medium
+
+  * Bug #38622: fixed umc not loading wen umc has no overview and the
+    mobile view is active
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 22 Apr 2016 16:02:15 +0200
+
 univention-management-console-frontend (5.0.63-34) unstable; urgency=medium
 
   * Bug #41081: scroll to the top when switching pages in wizards
