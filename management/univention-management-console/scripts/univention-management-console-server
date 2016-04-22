@@ -44,7 +44,7 @@ from optparse import OptionParser
 
 import notifier
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
-#from daemon.daemon import set_signal_handlers
+# from daemon.daemon import set_signal_handlers
 
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr
@@ -52,45 +52,44 @@ from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr
 
 server = None
 
-class UMC_Daemon( DaemonRunner ):
-	def __init__( self ):
+
+class UMC_Daemon(DaemonRunner):
+
+	def __init__(self):
 		default_debug = SERVER_DEBUG_LEVEL
-		default_locale = ucr.get( 'locale/default', 'C' )
-		colon = default_locale.find( ':' )
-		if colon > 0:
-			default_locale = default_locale[ : colon ]
+		default_locale = ucr.get('locale/default', 'C').split(':', 1)[0]
 		self.parser = OptionParser()
-		self.parser.add_option( '-n', '--no-daemon', action = 'store_false',
-						   dest = 'daemon_mode', default = True,
-						   help = 'if set the process will not fork into the background' )
-		self.parser.add_option( '-p', '--port', action = 'store', type = 'int',
-						   dest = 'port', default = 6670,
-						   help = 'defines an alternative port number [default %default]' )
-		self.parser.add_option( '-l', '--language', type = 'string', action = 'store',
-						   dest = 'language', default = default_locale,
-						   help = 'defines the language to use [default: %default]' )
-		self.parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
-						   help = 'if given than debugging is activated and set to the specified level [default: %default]' )
-		self.parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-server',
-						   help = 'specifies an alternative log file [default: %default]' )
-		( self.options, self.arguments ) = self.parser.parse_args()
+		self.parser.add_option('-n', '--no-daemon', action='store_false',
+								dest='daemon_mode', default=True,
+								help='if set the process will not fork into the background')
+		self.parser.add_option('-p', '--port', action='store', type='int',
+								dest='port', default=6670,
+								help='defines an alternative port number [default %default]')
+		self.parser.add_option('-l', '--language', type='string', action='store',
+								dest='language', default=default_locale,
+								help='defines the language to use [default: %default]')
+		self.parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
+								help='if given than debugging is activated and set to the specified level [default: %default]')
+		self.parser.add_option('-L', '--log-file', action='store', dest='logfile', default='management-console-server',
+								help='specifies an alternative log file [default: %default]')
+		(self.options, self.arguments) = self.parser.parse_args()
 
 		# cleanup environment
-		os.environ.clear() # supported since python 2.6
-		os.environ[ 'PATH' ] = '/bin:/sbin:/usr/bin:/usr/sbin'
-		os.environ[ 'LANG' ] = default_locale
+		os.environ.clear()
+		os.environ['PATH'] = '/bin:/sbin:/usr/bin:/usr/sbin'
+		os.environ['LANG'] = default_locale
 
 		# init logging
 		if not self.options.daemon_mode:
-			debug_fd = log_init( '/dev/stderr', self.options.debug )
+			debug_fd = log_init('/dev/stderr', self.options.debug)
 		else:
-			debug_fd = log_init( self.options.logfile, self.options.debug )
+			debug_fd = log_init(self.options.logfile, self.options.debug)
 
 		# default action: start
 		if not self.arguments:
 			sys.argv[1:] = ['start']
 		elif self.arguments:
-			sys.argv[ 1 ] = self.arguments[ 0 ]
+			sys.argv[1] = self.arguments[0]
 
 		# for daemon runner
 		if self.options.daemon_mode:
@@ -105,29 +104,29 @@ class UMC_Daemon( DaemonRunner ):
 		self.pidfile_timeout = 3
 
 		# init daemon runner
-		DaemonRunner.__init__( self, self )
+		DaemonRunner.__init__(self, self)
 		self.daemon_context.prevent_core = False
 		self.daemon_context.detach_process = self.options.daemon_mode
-		self.daemon_context.umask = 0077
-		self.daemon_context.files_preserve = [ debug_fd ]
+		self.daemon_context.umask = 0o077
+		self.daemon_context.files_preserve = [debug_fd]
 		self.daemon_context.signal_map = {
-			signal.SIGHUP : self.signal_hang_up,
-			signal.SIGUSR1 : self.signal_user1,
+			signal.SIGHUP: self.signal_hang_up,
+			signal.SIGUSR1: self.signal_user1,
 			signal.SIGTERM: self.signal_terminate,
-#			signal.SIGSEGV: self.signal_segfault,
-			}
+			# signal.SIGSEGV: self.signal_segfault,
+		}
 		# set_signal_handlers( signal_map )
 
 		# set locale
 		try:
-			locale.setlocale( locale.LC_MESSAGES, locale.normalize( self.options.language ) )
+			locale.setlocale(locale.LC_MESSAGES, locale.normalize(self.options.language))
 		except:
-			CORE.process( 'Specified locale is not available (%s)' % self.options.language )
+			CORE.process('Specified locale is not available (%s)' % self.options.language)
 
-	def _reload( self ):
+	def _reload(self):
 		"""Handler for the reload action"""
 		if self.pidfile.is_locked():
-			CORE.process( 'Reloading configuration ...' )
+			CORE.process('Reloading configuration ...')
 			pid = self.pidfile.read_pid()
 			try:
 				os.kill(pid, signal.SIGUSR1)
@@ -137,75 +136,75 @@ class UMC_Daemon( DaemonRunner ):
 					return
 				raise
 		else:
-			CORE.process( 'Reload failed: server ist not running' )
+			CORE.process('Reload failed: server ist not running')
 
-	DaemonRunner.action_funcs[ 'reload' ] = _reload
+	DaemonRunner.action_funcs['reload'] = _reload
 
-	def _restart( self ):
+	def _restart(self):
 		"""Handler for the restart action. """
 		if self.pidfile.is_locked():
-			CORE.process( 'Stopping UMC server ...' )
+			CORE.process('Stopping UMC server ...')
 			self._stop()
 
-		CORE.process( 'Starting UMC server ...' )
+		CORE.process('Starting UMC server ...')
 		self._start()
 
-	def _crestart( self ):
+	def _crestart(self):
 		"""Handler for the crestart action. """
 		if not self.pidfile.is_locked():
-			CORE.process( 'The UMC server will not be restarted as it is not running currently' )
+			CORE.process('The UMC server will not be restarted as it is not running currently')
 			return
 
-		CORE.process( 'Stopping UMC server ...' )
+		CORE.process('Stopping UMC server ...')
 		self._stop()
-		CORE.process( 'Starting UMC server ...' )
+		CORE.process('Starting UMC server ...')
 		self._start()
 
-	def _terminate_daemon_process( self ):
+	def _terminate_daemon_process(self):
 		""" Terminate the daemon process specified in the current PID file.
-			"""
+				"""
 		pid = self.pidfile.read_pid()
 		try:
-			os.kill( pid, signal.SIGTERM )
+			os.kill(pid, signal.SIGTERM)
 		except OSError as exc:
 			raise DaemonRunnerStopFailureError("Failed to terminate %(pid)d: %(exc)s" % dict(pid=pid, exc=exc))
 
 		if self.pidfile.is_locked():
-			CORE.process( 'The UMC server is still running. Will wait for 5 seconds' )
+			CORE.process('The UMC server is still running. Will wait for 5 seconds')
 			count = 10
 			while count:
-				time.sleep( 0.5 )
+				time.sleep(0.5)
 				if not self.pidfile.is_locked():
 					break
 				count -= 1
 			if self.pidfile.is_locked():
-				CORE.process( 'The UMC server is still running. Kill it!' )
-				os.kill( pid, signal.SIGKILL )
+				CORE.process('The UMC server is still running. Kill it!')
+				os.kill(pid, signal.SIGKILL)
 				self.pidfile.break_lock()
 
-	DaemonRunner.action_funcs[ 'restart' ] = _restart
-	DaemonRunner.action_funcs[ 'crestart' ] = _crestart
+	DaemonRunner.action_funcs['restart'] = _restart
+	DaemonRunner.action_funcs['crestart'] = _crestart
 
-	def _usage_exit( self, argv ):
-		self.parser.error( 'invalid action' )
-		sys.exit( 1 )
+	def _usage_exit(self, argv):
+		self.parser.error('invalid action')
+		sys.exit(1)
 
-	def run( self ):
+	def run(self):
 		from univention.management.console.protocol.server import Server
 
 		try:
 			resource.setrlimit(resource.RLIMIT_NOFILE, (4096, 64512))
 		except (ValueError, resource.error) as exc:
 			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
-		notifier.init( notifier.GENERIC )
+		notifier.init(notifier.GENERIC)
 
-		self.server = Server( port = self.options.port )
+		self.server = Server(port=self.options.port)
 
-		CORE.process( 'Server started' )
+		CORE.process('Server started')
 		notifier.loop()
 
-	def signal_hang_up( self, signal, frame ):
-		if hasattr( self, 'server' ):
+	def signal_hang_up(self, signal, frame):
+		if hasattr(self, 'server'):
 			try:
 				self.server.reload()
 			except EnvironmentError as exc:
@@ -215,30 +214,30 @@ class UMC_Daemon( DaemonRunner ):
 		except EnvironmentError as exc:
 			CORE.error('Could not reopen logfile: %s' % (exc,))
 
-	def signal_user1( self, signal, frame ):
-		if hasattr( self, 'server' ):
+	def signal_user1(self, signal, frame):
+		if hasattr(self, 'server'):
 			try:
 				self.server.reload()
 			except EnvironmentError as exc:
 				CORE.error('Could not reload server: %s' % (exc,))
 
-	def signal_terminate( self, signal, frame ):
+	def signal_terminate(self, signal, frame):
 		self.server.exit()
-		raise SystemExit( 'Shutting down UMC server' )
+		raise SystemExit('Shutting down UMC server')
 
 	def signal_segfault(self, signal, frame):
 		CORE.error('SEGFAULT! %s' % (''.join(traceback.format_stack(frame),)))
-		signal.signal(signal.SIGSEGV,  signal.SIG_DFL)
+		signal.signal(signal.SIGSEGV, signal.SIG_DFL)
 		os.kill(os.getpid(), signal.SIGSEGV)
 
 if __name__ == "__main__":
 	try:
 		umc_daemon = UMC_Daemon()
 		umc_daemon.do_action()
-	except DaemonRunnerStopFailureError, e:
-		CORE.process( 'Failed to shutdown server gracefully (may be its already dead): %s' % str( e ) )
-	except DaemonRunnerStartFailureError, e:
-		CORE.process( 'Failed to start server: %s' % str( e ) )
+	except DaemonRunnerStopFailureError as exc:
+		CORE.process('Failed to shutdown server gracefully (may be its already dead): %s' % (exc,))
+	except DaemonRunnerStartFailureError as exc:
+		CORE.process('Failed to start server: %s' % (exc,))
 	except (SystemExit, KeyboardInterrupt):
 		raise
 	except:
