@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-management-console-frontend
-fix: 5.0.63-34.1225.201604200805
+fix: 5.0.63-35.1227.201604221613
 desc: |
  This update addresses the following issue(s):
  * The user menu in the UMC is now more touch-friendly for small screens
