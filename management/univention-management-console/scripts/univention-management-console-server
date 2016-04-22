@@ -34,19 +34,17 @@
 import locale
 import os
 import sys
-import string
-import socket
 import signal
 import traceback
 import time
+import resource
 from errno import ESRCH
 
 from optparse import OptionParser
 
 import notifier
-import notifier.signals as signals
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
-from daemon.daemon import set_signal_handlers
+#from daemon.daemon import set_signal_handlers
 
 from univention.management.console.log import CORE, log_init, log_reopen
 from univention.management.console.config import SERVER_DEBUG_LEVEL, ucr
@@ -169,8 +167,8 @@ class UMC_Daemon( DaemonRunner ):
 		pid = self.pidfile.read_pid()
 		try:
 			os.kill( pid, signal.SIGTERM )
-		except OSError, exc:
-			raise DaemonRunnerStopFailureError(	"Failed to terminate %(pid)d: %(exc)s" % vars() )
+		except OSError as exc:
+			raise DaemonRunnerStopFailureError("Failed to terminate %(pid)d: %(exc)s" % dict(pid=pid, exc=exc))
 
 		if self.pidfile.is_locked():
 			CORE.process( 'The UMC server is still running. Will wait for 5 seconds' )
@@ -195,6 +193,10 @@ class UMC_Daemon( DaemonRunner ):
 	def run( self ):
 		from univention.management.console.protocol.server import Server
 
+		try:
+			resource.setrlimit(resource.RLIMIT_NOFILE, (4096, 64512))
+		except (ValueError, resource.error) as exc:
+			CORE.error('Could not raise NOFILE resource limits: %s' % (exc,))
 		notifier.init( notifier.GENERIC )
 
 		self.server = Server( port = self.options.port )
@@ -204,12 +206,21 @@ class UMC_Daemon( DaemonRunner ):
 
 	def signal_hang_up( self, signal, frame ):
 		if hasattr( self, 'server' ):
-			self.server.reload()
-		log_reopen()
+			try:
+				self.server.reload()
+			except EnvironmentError as exc:
+				CORE.error('Could not reload server: %s' % (exc,))
+		try:
+			log_reopen()
+		except EnvironmentError as exc:
+			CORE.error('Could not reopen logfile: %s' % (exc,))
 
 	def signal_user1( self, signal, frame ):
 		if hasattr( self, 'server' ):
-			self.server.reload()
+			try:
+				self.server.reload()
+			except EnvironmentError as exc:
+				CORE.error('Could not reload server: %s' % (exc,))
 
 	def signal_terminate( self, signal, frame ):
 		self.server.exit()

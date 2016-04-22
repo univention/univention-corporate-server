@@ -1,3 +1,10 @@
+univention-management-console (8.0.28-14) unstable; urgency=medium
+
+  * Bug #39909: enhance robustness of UMC-Server during request handling.
+  	Raise limit of max open files to a higher value.
+
+ -- Florian Best <best@univention.de>  Fri, 22 Apr 2016 10:05:34 +0200
+
 univention-management-console (8.0.28-13) unstable; urgency=medium
 
   * Bug #40930: allow translationId property also for modules/links

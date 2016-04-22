@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-18 11:31+0100\n"
+"POT-Creation-Date: 2016-04-22 09:57+0200\n"
 "PO-Revision-Date: 2011-10-25 20:29+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -35,6 +35,11 @@ msgstr "'%s' ist kein gültiges UMCP-Kommando"
 #, python-format
 msgid "An option passed to %(method)s has the wrong type: %(exc)s"
 msgstr "Eine Option für %(method)s hat den falschen Typ: %(exc)s"
+
+#: univention/management/console/protocol/session.py:823
+#, python-format
+msgid "An unkown operating system error occurred (%s)."
+msgstr "Ein unbekannter Betriebssystemfehler ist aufgetreten (%s)."
 
 #: univention/management/console/modules/sanitizers.py:172
 msgid "Argument required"
@@ -80,13 +85,11 @@ msgstr ""
 msgid "Connection to module process failed"
 msgstr "Verbindung zum Modulprozess ist fehlgeschlagen"
 
-#: univention/management/console/protocol/session.py:810
-msgid ""
-"Could not open the module. There is not enough memory available on the "
-"server. Please try again later."
+#: univention/management/console/protocol/session.py:818
+#, python-format
+msgid "Could not open the module. %s Please try again later."
 msgstr ""
-"Konnte das Modul nicht öffnen. Auf dem Server ist nicht genügend freier "
-"Arbeitsspeicher verfügbar. Bitte später erneut versuchen."
+"Konnte das Modul nicht öffnen. %s Bitte später erneut versuchen."
 
 #: univention/management/console/protocol/definitions.py:130
 msgid "Error occurred during command processing"
@@ -137,7 +140,7 @@ msgstr "Installieren Sie alle Softwareaktualisierungen"
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: univention/management/console/protocol/session.py:394
+#: univention/management/console/protocol/session.py:398
 #, python-format
 msgid "Invalid UCR variable requested: %s"
 msgstr "Ungültige UCR-Variable: %s"
@@ -201,7 +204,7 @@ msgstr "Modulprozess hat sich unerwartet beendet"
 msgid "Must have at least %(min_elements)d element(s)"
 msgstr "Muss mindestens %(min_elements)d Element(e) haben"
 
-#: univention/management/console/protocol/session.py:648
+#: univention/management/console/protocol/session.py:657
 msgid ""
 "Nevertheless an error occured while updating the password for running "
 "modules. Please relogin to UMC to solve this problem."
@@ -210,14 +213,14 @@ msgstr ""
 "laufenden UMC-Modulen aufgetreten. Bitte erneut an UMC anmelden, um dieses "
 "Problem zu lösen."
 
-#: univention/management/console/modules/sanitizers.py:257
 #: univention/management/console/modules/decorators.py:303
 #: univention/management/console/modules/decorators.py:415
+#: univention/management/console/modules/sanitizers.py:257
 msgid "Not a \"dict\""
 msgstr "Ist kein \"dict\""
 
-#: univention/management/console/modules/sanitizers.py:303
 #: univention/management/console/modules/decorators.py:398
+#: univention/management/console/modules/sanitizers.py:303
 msgid "Not a \"list\""
 msgstr "Ist keine \"list\""
 
@@ -246,7 +249,7 @@ msgstr "OK, Partielle Antwort"
 msgid "One or more options to %(method)s are missing: %(exc)s"
 msgstr "Eine oder mehrere Optionen für %(method)s fehlen: %(exc)s"
 
-#: univention/management/console/protocol/session.py:639
+#: univention/management/console/protocol/session.py:648
 msgid "Password successfully changed."
 msgstr "Passwort erfolgreich geändert."
 
@@ -405,6 +408,21 @@ msgstr "Der Grund konnte nicht festgestellt werden"
 msgid "The requested module %r does not exists."
 msgstr "Das angefragte Modul %r existiert nicht."
 
+#: univention/management/console/protocol/session.py:820
+#: univention/management/console/protocol/session.py:821
+msgid "There are too many opened files on the server."
+msgstr "Auf dem Server sind zu viele offene Dateien."
+
+#: univention/management/console/protocol/session.py:822
+msgid "There is not enough free space on the server."
+msgstr "Auf dem Server ist nicht genügt freier Speicherplatz."
+
+#: univention/management/console/protocol/session.py:819
+msgid "There is not enough memory available on the server."
+msgstr ""
+"Auf dem Server ist nicht genügend freier "
+"Arbeitsspeicher verfügbar."
+
 #: univention/management/console/base.py:155
 msgid "This action requires you to supply your password."
 msgstr "Diese Aktion erfordert die Eingabe Ihres Passwortes."
@@ -435,8 +453,8 @@ msgstr "Unbekannter Status-Code"
 msgid "Unparsable message body"
 msgstr "Unverständlicher nachrichtenrumpf"
 
-#: univention/management/console/protocol/message.py:211
 #: univention/management/console/protocol/definitions.py:124
+#: univention/management/console/protocol/message.py:211
 msgid "Unparsable message header"
 msgstr "Unverständlicher nachrichtenkopf"
 

@@ -43,6 +43,7 @@ import json
 import traceback
 import gzip
 import re
+import errno
 
 import ldap.filter
 
@@ -813,10 +814,14 @@ class Processor(Base):
 				CORE.info('Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)))
 				try:
 					mod_proc = ModuleProcess(module_name, debug=MODULE_DEBUG_LEVEL, locale=self.i18n.locale)
-				except OSError as exc:
-					if exc.errno == 12:  # cannot allocate Memory
-						raise UMC_Error(self._('Could not open the module. There is not enough memory available on the server. Please try again later.'), status=503)
-					raise
+				except EnvironmentError as exc:
+					message = self._('Could not open the module. %s Please try again later.') % {
+						errno.ENOMEM: self._('There is not enough memory available on the server.'),
+						errno.EMFILE: self._('There are too many opened files on the server.'),
+						errno.ENFILE: self._('There are too many opened files on the server.'),
+						errno.ENOSPC: self._('There is not enough free space on the server.')
+					}.get(exc.errno, self._('An unkown operating system error occurred (%s).' % (exc,)))
+					raise UMC_Error(message, status=503)
 				mod_proc.signal_connect('result', self.result)
 
 				cb = notifier.Callback(self._socket_died, module_name)

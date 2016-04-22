@@ -39,6 +39,8 @@ Defines the basic class for an UMC server.
 import fcntl
 import os
 import socket
+import traceback
+import resource
 
 # external packages
 import notifier
@@ -148,6 +150,8 @@ class MagicBucket(object):
 				msg = Message()
 				state.buffer = msg.parse(state.buffer)
 				self._handle(state, msg)
+		except (KeyboardInterrupt, SystemExit, SyntaxError):
+			raise
 		except IncompleteMessageError as e:
 			CORE.info('MagicBucket: incomplete message: %s' % str(e))
 		except (ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError) as e:
@@ -168,6 +172,12 @@ class MagicBucket(object):
 			else:
 				res.status = SERVER_ERR
 			res.message = status_description(res.status)
+			self._response(res, state)
+		except:
+			CORE.error('Error during handling a request: %s' % (traceback.format_exc(),))
+			res = Response(msg)
+			res.status = 500
+			res.message = traceback.format_exc()
 			self._response(res, state)
 
 		return True
@@ -360,7 +370,7 @@ class Server(signals.Provider):
 					self.__realsocket.bind(self.__unix)
 					# restore old umask
 					os.umask(old_umask)
-				except:
+				except EnvironmentError:
 					os.unlink(self.__unix)
 			else:
 				self.__realsocket.bind(('', self.__port))
@@ -383,6 +393,7 @@ class Server(signals.Provider):
 	def __del__(self):
 		if self.__bucket:
 			del self.__bucket
+			self.__bucket = None
 
 	def __verify_cert_cb(self, conn, cert, errnum, depth, ok):
 		CORE.info('__verify_cert_cb: Got certificate: %s' % cert.get_subject())
@@ -392,7 +403,20 @@ class Server(signals.Provider):
 
 	def _connection(self, socket):
 		'''Signal callback: Invoked on incoming connections.'''
-		socket, addr = socket.accept()
+		try:
+			socket, addr = socket.accept()
+		except EnvironmentError as exc:
+			CORE.error('Cannot accept new connection: %s' % (exc,))
+			soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+			resource.setrlimit(resource.RLIMIT_NOFILE, (soft+2, hard+2))
+			try:
+				socket, addr = socket.accept()
+				socket.close()
+			except EnvironmentError:
+				pass
+			finally:
+				resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
+			return True
 		socket.setblocking(0)
 		if addr:
 			client = '%s:%d' % (addr[0], addr[1])

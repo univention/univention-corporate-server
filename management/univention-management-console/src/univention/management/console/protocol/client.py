@@ -40,7 +40,7 @@ import fcntl
 from univention.lib.i18n import Translation
 
 from .message import Request, Response, IncompleteMessageError, UnknownCommandError, ParseError
-from .definitions import RECV_BUFFER_SIZE, BAD_REQUEST_AUTH_FAILED, SERVER_ERR_MODULE_DIED, SUCCESS, status_get, status_description
+from .definitions import RECV_BUFFER_SIZE, BAD_REQUEST_AUTH_FAILED, SERVER_ERR_MODULE_DIED, SUCCESS, status_description
 from ..log import CORE, PROTOCOL
 from OpenSSL import SSL
 
