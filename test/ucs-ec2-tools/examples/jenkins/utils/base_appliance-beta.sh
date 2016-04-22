@@ -169,7 +169,7 @@ register_apps ()
 	done
 
 	ucr set umc/web/appliance/id?${app}
-	univention-install -y univention-app-appliance-branding
+	univention-install -y univention-app-appliance
 
 	apt-get update
 }
@@ -709,7 +709,7 @@ appliance_basesettings ()
 	set -x
 	app=$1
 	
-	/usr/sbin/univention-app-appliance-branding $app
+	/usr/sbin/univention-app-appliance $app
 
 	app_fav_list=""
 	for a in $apps; do
