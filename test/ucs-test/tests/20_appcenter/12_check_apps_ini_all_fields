@@ -203,7 +203,7 @@ class Section(object):
         'ConflictedSystemPackages': ('optional',),
         'Contact': ('required', 'is_email',),
         'DefaultPackagesMaster': ('optional', 'deprecated_master_packages',),
-        'DefaultPackages': ('required',),
+        'DefaultPackages': ('optional',),
         'Description': ('required', 'is_90c',),
         'EmailRequired': ('optional',),
         'EndOfLife': ('optional', 'is_bool',),
