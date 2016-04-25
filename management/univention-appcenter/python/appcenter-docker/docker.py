@@ -184,22 +184,24 @@ def execute_with_process(container, args, logger=None, tty=None):
 	return call_process(args, logger)
 
 
-def create(image, command, hostname=None, env=None, ports=None, volumes=None, env_file=None):
-	args = []
+def create(image, command, hostname=None, env=None, ports=None, volumes=None, env_file=None, args=None):
+	_args = []
 	if hostname:
-		args.extend(['--hostname', hostname])
+		_args.extend(['--hostname', hostname])
 	if env:
 		for key, value in env.iteritems():
-			args.extend(['-e', '%s=%s' % (shell_safe(key), value)])
-			args.extend(['-e', '%s=%s' % (shell_safe(key).upper(), value)])
+			_args.extend(['-e', '%s=%s' % (shell_safe(key), value)])
+			_args.extend(['-e', '%s=%s' % (shell_safe(key).upper(), value)])
 	if env_file:
-		args.extend(['--env-file', env_file])
+		_args.extend(['--env-file', env_file])
 	if ports:
 		for port in ports:
-			args.extend(['-p', port])
+			_args.extend(['-p', port])
 	for volume in volumes:
-		args.extend(['-v', volume])
-	return check_output(['docker', 'create'] + args + [image] + command).strip()
+		_args.extend(['-v', volume])
+	if args:
+		_args.extend(args)
+	return check_output(['docker', 'create'] + _args + [image] + command).strip()
 
 
 def rm(container):
@@ -296,7 +298,8 @@ class Docker(object):
 		if os.path.exists(self.app.get_cache_file('env')):
 			env_file = self.app.get_cache_file('env')
 		command = shlex.split(self.app.docker_script_init)
-		container = create(self.image, command, hostname, env, ports, volumes, env_file)
+		args = shlex.split(ucr_get(self.app.ucr_docker_params_key))
+		container = create(self.image, command, hostname, env, ports, volumes, env_file, args)
 		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
 		return container

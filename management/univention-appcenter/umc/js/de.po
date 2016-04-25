@@ -771,14 +771,14 @@ msgstr "Zugriff verweigert"
 #, python-format
 msgid "Please confirm to install the application %(name)s on host %(host)s."
 msgstr ""
-"Bitte bestätigen Sie die installation der Applikation %(name)s auf Rechner "
+"Bitte bestätigen Sie die Installation der Applikation %(name)s auf Rechner "
 "%(host)s"
 
 #: umc/js/appcenter/AppDetailsPage.js:906
 #, python-format
 msgid "Please confirm to install the application %s on this host."
 msgstr ""
-"Bitte bestätigen Sie die installation der Applikation %s auf diesem Rechner."
+"Bitte bestätigen Sie die Installation der Applikation %s auf diesem Rechner."
 
 #: umc/js/appcenter/AppDetailsPage.js:919
 #, python-format

@@ -391,6 +391,15 @@ class App(object):
 		name: The displayed name of the App.
 		version: Version of the App. Needs to be unique together with
 			with the ID.
+		logo: The file name of the logo of the App. It is used in the
+			App Center overview when all Apps are shown in a
+			gallery. As the gallery items are squared, the logo
+			should be squared, too. Not part of the App class.
+		logo_detail_page: The file name of a "bigger" logo. It is shown
+			in the detail page of the App Center. Useful when there
+			is a stretched version with the logo, the name, maybe a
+			claim. If not given, the "logo" is used on the detail
+			page, too. Not part of the App class.
 		description: A short description of the App. Should not exceed
 			90 chars, otherwise it gets unreadable in the App
 			Center.
@@ -835,6 +844,10 @@ class App(object):
 	@property
 	def ucr_image_key(self):
 		return 'appcenter/apps/%s/image' % self.id
+
+	@property
+	def ucr_docker_params_key(self):
+		return 'appcenter/apps/%s/docker/params' % self.id
 
 	@property
 	def ucr_ip_key(self):

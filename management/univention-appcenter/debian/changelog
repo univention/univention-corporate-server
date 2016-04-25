@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-47) unstable; urgency=medium
+
+  * Bug #41062: Support appcenter/apps/$app/docker/params
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Apr 2016 12:19:05 +0200
+
 univention-appcenter (5.0.20-46) unstable; urgency=medium
 
   * Bug #39927: fixed some svgs not showing up on IE
