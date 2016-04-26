@@ -58,7 +58,7 @@ define([
 		postCreate: function() {
 			this.inherited(arguments);
 
-			this.on('dynamicValuesLoaded', lang.hitch(this, function(items) {
+			this.on('valuesLoaded', lang.hitch(this, function(items) {
 				array.forEach( items, lang.hitch( this, function( item ) {
 					//  make sure that the item has all necessary properties
 					if (!array.every(['module', 'id', 'objectType'], function(ikey) {

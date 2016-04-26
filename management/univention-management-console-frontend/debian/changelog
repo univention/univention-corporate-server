@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-37) unstable; urgency=medium
+
+  * Bug #41087: the LinkList widget now accepts staticValues
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 26 Apr 2016 16:54:43 +0200
+
 univention-management-console-frontend (5.0.63-36) unstable; urgency=medium
 
   * Bug #41081: fixup, scroll after switching the page
