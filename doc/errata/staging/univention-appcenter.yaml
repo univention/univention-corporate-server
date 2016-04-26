@@ -3,9 +3,11 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-appcenter
-fix: 5.0.20-46.159.201604211557
+fix: 5.0.20-48.161.201604261100
 desc: |
  This update addresses the following issue(s):
- * Some images were not shown in Internet Explorer. This issue
-   has been resolved.
-bug: [39927]
+ * Some images were not shown in Internet Explorer. This issue has been
+   resolved.
+ * The parameter for creating a Docker Container can now be adjusted by the
+   App.
+bug: [39927, 41062]
