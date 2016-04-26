@@ -55,6 +55,7 @@ import univention.admin.uexceptions as udm_errors
 from .syntax import widget, default_value
 
 from ldap import LDAPError, NO_SUCH_OBJECT
+from ldap.filter import filter_format
 
 try:
 	import univention.admin.license
@@ -637,9 +638,7 @@ class UDM_Module(object):
 			mod = get_module(None, ldap_dn)
 			if mod is not None and self.name == mod.name and self.is_policy_module():
 				layout = copy.copy(layout)
-				tab = udm_layout.Tab(_('Referencing objects'), _('Objects referencing this policy object'),
-					layout=['_view_referencing_objects']
-				)
+				tab = udm_layout.Tab(_('Referencing objects'), _('Objects referencing this policy object'), layout=['$references$'])
 				layout.append(tab)
 
 		if layout and isinstance(layout[0], udm.tab):
@@ -695,34 +694,6 @@ class UDM_Module(object):
 			if iprop['id'] in inLayout:
 				properties.append(iprop)
 
-		if ldap_dn:
-			# hack reference list for policies into items
-			if self.is_policy_module():
-				# create syntax object
-				syntax = udm_syntax.LDAP_Search(
-					filter='(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))' % ldap_dn,
-					viewonly=True)
-
-				# create item
-				item = {
-					'id': '_view_referencing_objects',
-					'label': '',
-					'description': '',
-					'syntax': syntax.name,
-					'size': syntax.size,
-					'required': False,
-					'editable': False,
-					'options': [],
-					'readonly': False,
-					'searchable': False,
-					'multivalue': True,
-					'identifies': False,
-				}
-
-				# read UCR configuration
-				item.update(widget(syntax, item))
-				properties.append(item)
-
 		return properties
 
 	@property
@@ -771,6 +742,7 @@ class UDM_Module(object):
 			item.update(widget(prop.syntax, item))
 			props.append(item)
 		props.append({'id': '$options$', 'type': 'WidgetGroup', 'widgets': self.get_options()})
+		props.append({'id': '$references$', 'type': 'umc/modules/udm/ReferencingObjects', 'readonly': True})
 
 		return props
 
@@ -873,6 +845,12 @@ class UDM_Module(object):
 			policies.append({'objectType': policy, 'label': module.title, 'description': module.description})
 
 		return policies
+
+	def get_references(self, dn):
+		if self.is_policy_module():  # TODO: move into the handlers/policies/*.py
+			search_filter = filter_format("(&(objectClass=univentionPolicyReference)(univentionPolicyReference=%s))", (dn,))
+			return read_syntax_choices(udm_syntax.LDAP_Search(filter=search_filter, viewonly=True))
+		return []
 
 	def types4superordinate(self, flavor, superordinate):
 		"""List of object types for the given superordinate"""

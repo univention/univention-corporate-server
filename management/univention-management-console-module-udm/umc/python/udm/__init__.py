@@ -481,6 +481,7 @@ class Instance(Base, ProgressMixin):
 						props['$labelObjectType$'] = module.title
 						props['$flags$'] = obj.oldattr.get('univentionObjectFlag', [])
 						props['$operations$'] = module.operations
+						props['$references$'] = module.get_references(ldap_dn)
 						result.append(props)
 					else:
 						MODULE.process('The LDAP object for the LDAP DN %s could not be found' % ldap_dn)
