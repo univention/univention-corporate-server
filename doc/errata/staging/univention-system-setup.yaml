@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-system-setup
+fix: 9.0.4-7.960.201604261714
+desc: |
+ This update addresses the following issue(s):
+ * updated list of supported browser versions
+bug: [40580]
