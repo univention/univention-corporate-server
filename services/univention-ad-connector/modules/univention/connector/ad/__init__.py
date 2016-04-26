@@ -1499,7 +1499,7 @@ class ad(univention.connector.ucs):
 		# map members from UCS to AD and check if they exist
 		for member_dn in ucs_members:
 			ad_dn = self.group_mapping_cache_ucs.get(member_dn.lower())
-			if ad_dn:
+			if ad_dn and self.lo_ad.get(ad_dn,attr=['cn']):
 				ud.debug(ud.LDAP, ud.INFO, "Found %s in group cache ucs" % member_dn)
 				ad_members_from_ucs.append(ad_dn.lower())
 				self.__group_cache_ucs_append_member(object_ucs['dn'], member_dn)
