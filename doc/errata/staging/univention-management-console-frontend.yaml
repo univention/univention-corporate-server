@@ -3,10 +3,11 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-management-console-frontend
-fix: 5.0.63-36.1228.201604222123
+fix: 5.0.63-37.1229.201604261658
 desc: |
  This update addresses the following issue(s):
  * The user menu in the UMC is now more touch-friendly for small screens
    and the use on mobile devices.
  * Wizards are now scrolling to the top when switching the page.
-bug: [38622, 41081]
+ * Small bugfix
+bug: [38622, 41081, 41087]
