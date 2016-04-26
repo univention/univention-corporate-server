@@ -1,3 +1,10 @@
+univention-appcenter (5.0.20-48) unstable; urgency=medium
+
+  * Bug #41062: Fix reading from stdin when appcenter/apps/$app/docker/params
+    is not set
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 26 Apr 2016 10:59:31 +0200
+
 univention-appcenter (5.0.20-47) unstable; urgency=medium
 
   * Bug #41062: Support appcenter/apps/$app/docker/params

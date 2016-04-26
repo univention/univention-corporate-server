@@ -298,7 +298,7 @@ class Docker(object):
 		if os.path.exists(self.app.get_cache_file('env')):
 			env_file = self.app.get_cache_file('env')
 		command = shlex.split(self.app.docker_script_init)
-		args = shlex.split(ucr_get(self.app.ucr_docker_params_key))
+		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
 		container = create(self.image, command, hostname, env, ports, volumes, env_file, args)
 		ucr_save({self.app.ucr_container_key: container})
 		self.container = container
