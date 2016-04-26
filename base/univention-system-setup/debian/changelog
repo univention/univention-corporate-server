@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-7) unstable; urgency=medium
+
+  * Bug #40580: updated supported browser versions
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 26 Apr 2016 17:11:31 +0200
+
 univention-system-setup (9.0.4-6) unstable; urgency=medium
 
   * Bug #39700: Call the appliance by its name 
