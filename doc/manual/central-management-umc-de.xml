@@ -59,10 +59,10 @@
 			Die folgenden Browser werden unterstützt:
 		</para>
 		<itemizedlist>
-			<listitem><simpara><application>Chrome</application> ab Version 33</simpara></listitem>
-			<listitem><simpara><application>Firefox</application> ab Version 24</simpara></listitem>
-			<listitem><simpara><application>Internet Explorer</application> ab Version 9</simpara></listitem>
-			<listitem><simpara><application>Safari</application> und <application>Safari Mobile</application> ab Version 7</simpara></listitem>
+			<listitem><simpara><application>Chrome</application> ab Version 37</simpara></listitem>
+			<listitem><simpara><application>Firefox</application> ab Version 38</simpara></listitem>
+			<listitem><simpara><application>Internet Explorer</application> ab Version 11</simpara></listitem>
+			<listitem><simpara><application>Safari</application> und <application>Safari Mobile</application> ab Version 9</simpara></listitem>
 		</itemizedlist>
 		<para>
 			Auf älteren Browsern können Darstellungsprobleme auftreten.
