@@ -31,35 +31,27 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import pprint
-import subprocess
-import os
-import univention.management.console as umc
-import univention.management.console.modules as umcm
-from univention.management.console.modules import UMC_CommandError
-from univention.management.console.modules import UMC_Error
-
-import univention.config_registry
-import univention.admin.uldap
-
 import re
+import subprocess
 import lxml.html
 
+from univention.lib.i18n import Translation
+
+import univention.admin.uldap
+
+from univention.management.console.base import Base
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
+from univention.management.console.config import ucr
+from univention.management.console.modules import UMC_Error
 from univention.management.console.modules.decorators import simple_response, log, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer
 
-_ = umc.Translation('univention-management-console-module-printers').translate
+_ = Translation('univention-management-console-module-printers').translate
 
-class Instance(umcm.Base):
+class Instance(Base):
 
 	def init(self):
-
-		self.ucr = univention.config_registry.ConfigRegistry()
-		self.ucr.load()
-
-		self._hostname = self.ucr.get('hostname')
+		self._hostname = ucr.get('hostname')
 
 	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(choices=['printer', 'description', 'location'], required=True))
 	@simple_response
@@ -113,17 +105,20 @@ class Instance(umcm.Base):
 			from pykota.tool import PyKotaTool
 			from pykota import reporter
 			from pykota.storages.pgstorage import PGError
-		except ImportError as err:
+		except ImportError:
 			raise UMC_Error(_('The print quota settings are currently disabled. Please install the package univention-printquota to enable them.'))
 
+		reportTool = PyKotaTool()
 		try:
-			reportTool = PyKotaTool()
 			reportTool.deferredInit()
 			printers = reportTool.storage.getMatchingPrinters(printer)
 			reportingtool = reporter.openReporter(reportTool, 'html', printers, '*', 0)
 			status = reportingtool.generateReport()
-		except PGError as err:
-			raise UMC_Error(_('The connection to the print quota postgres database failed: %s') % str(err))
+		except PGError as exc:
+			MODULE.error('Cannot connect to postgres: %s' % (exc,))
+			raise UMC_Error(_('The connection to the print quota postgres database failed. Please make sure the postgres service is running and reachable.'))
+		finally:
+			reportTool.regainPriv()
 
 		if status:
 			tree = lxml.html.fromstring(status)
@@ -135,16 +130,16 @@ class Instance(umcm.Base):
 						data.append(b.text_content().strip())
 					if data and len(data) >= 11:
 						user = data[0]
-						limitby = data[1]
-						overcharge = data[2]
+						#limitby = data[1]
+						#overcharge = data[2]
 						used = data[3]
 						soft = data[4]
 						hard = data[5]
-						balance = data[6]
-						grace = data[7]
+						#balance = data[6]
+						#grace = data[7]
 						total = data[8]
-						paid = data[9]
-						warn = data[10]
+						#paid = data[9]
+						#warn = data[10]
 						result.append(dict(
 							user=user,
 							used=used,
@@ -189,7 +184,6 @@ class Instance(umcm.Base):
 		"""
 
 		return self._cancel_jobs(printer, jobs)
-
 
 	@simple_response
 	@log
@@ -335,7 +329,7 @@ class Instance(umcm.Base):
 			cmd.append(user)
 		(stdout, stderr, status) = self._shell_command(cmd, {'LANG':'C'})
 
-		if status or len(stderr):
+		if status or stderr:
 			return stderr
 
 		return ''
@@ -361,9 +355,7 @@ class Instance(umcm.Base):
 			return result
 
 		# Printer specified: return its quota value or False if not found.
-		if printer in result:
-			return result[printer]
-		return False
+		return result.get(printer, False)
 
 	def _cancel_jobs(self, printer, jobs):
 		""" internal function that cancels a list of jobs.
@@ -386,4 +378,3 @@ class Instance(umcm.Base):
 		outputs = proc.communicate()
 
 		return (outputs[0], outputs[1], proc.returncode)
-

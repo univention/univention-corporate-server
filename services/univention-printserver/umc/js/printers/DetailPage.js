@@ -230,8 +230,6 @@ define([
 				this._show_button('activate',res['status'] == 'disabled');
 				this._show_button('deactivate',res['status'] == 'enabled');
 				this._show_button('editquota',res['quota']);
-
-				this.layout();		// whenever you change a non-center region of a BorderLayout...
 			}), lang.hitch(this, function(data) {
 				this._grid.filter();		// clears stale grid data
 			}));
