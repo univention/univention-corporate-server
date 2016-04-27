@@ -11,3 +11,5 @@ desc: |
  * The parameter for creating a Docker Container can now be adjusted by the
    App.
 bug: [39927, 41062]
+erratum: 157
+announced: 2016-04-27
