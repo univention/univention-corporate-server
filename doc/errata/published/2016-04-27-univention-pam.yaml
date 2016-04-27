@@ -11,3 +11,5 @@ desc: |
    seconds. This prevents hanging UMC server processes when changing
    network and IP settings in certain circumstances.
 bug: [40968]
+erratum: 159
+announced: 2016-04-27
