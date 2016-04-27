@@ -296,6 +296,8 @@ class UniventionMirror(UniventionUpdater):
             if prev:
                 if prev["Package"] != pkg["Package"]:
                     tee.stdin.write("%s\n" % prev)
+                elif not prev["Filename"].startswith('../') and pkg["Filename"].startswith('../'):
+                    continue
                 elif apt_pkg.version_compare(prev["Version"], pkg["Version"]) >= 0:
                     continue
             prev = pkg
