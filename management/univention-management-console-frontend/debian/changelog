@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-38) unstable; urgency=medium
+
+  * Bug #40939: fixed the context menu for links
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 27 Apr 2016 12:54:13 +0200
+
 univention-management-console-frontend (5.0.63-37) unstable; urgency=medium
 
   * Bug #41087: the LinkList widget now accepts staticValues

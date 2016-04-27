@@ -290,16 +290,6 @@ define([
 					}
 				}
 			}
-
-			// if item is link wrap it inside an a element
-			if (item.is_link) {
-				var a_element = domConstruct.create('a', {
-					href: item.url || '/',
-					target: '_blank'
-				});
-				domConstruct.place(div, a_element);
-				div = a_element;
-			}
 			return div;
 		},
 
@@ -359,12 +349,16 @@ define([
 			return modules;
 		},
 
-		_is_shallow_copy: function(category){
+		_isNotShallowCopy: function(category){
 			// to get the origin color of the category, we will ignore each
 			// category that starts && ends with an underscore _
-			// e.g. returns true for _favorites_ category
+			// e.g. returns false for _favorites_ category
 			var re = /^_.*_$/;
-			return re.test(category);
+			return !re.test(category);
+		},
+
+		_isNotFavorites: function(cat) {
+			return cat !== '_favorites_';
 		},
 
 		_createModuleItem: function(_item, categoryID) {
@@ -386,13 +380,11 @@ define([
 
 			// by convention a link element has an url
 			item.is_link = Boolean(item.url);
-			item.is_shallow_copy = this._is_shallow_copy(item.category);
+			item.is_shallow_copy = !this._isNotShallowCopy(item.category);
 			item.category_for_color = item.category;
 			if (item.is_shallow_copy && item.categories.length > 1) {
-				var category_for_color = item.category_for_color = array.filter(item.categories, lang.hitch(this, function(cat) {
-					return !this._is_shallow_copy(cat);
-				}))[0];
-				item.category_for_color = category_for_color || item.category;
+				item.category_for_color = array.filter(item.categories, this._isNotShallowCopy)[0] || 
+					array.filter(item.categories, this._isNotFavorites)[0];
 			}
 			return item;
 		},
@@ -2121,9 +2113,7 @@ define([
 					label: _('Open module'),
 					isDefaultAction: true,
 					callback: lang.hitch(this, function(id, item) {
-						if (!item.is_link) {
-							this.openModule(item);
-						}
+						this.openModule(item);
 						//this._tabContainer.transition(id, item);
 					})
 				}, {

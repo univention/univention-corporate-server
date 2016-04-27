@@ -181,6 +181,11 @@ define([
 				menuItem.set('disabled', disabled);
 				menuItem.set('label', label);
 				menuItem.set('iconClass', iconClass);
+				if (item.is_link && action.name === 'open'){
+					domStyle.set(menuItem.domNode, "display", "none");
+				} else {
+					domStyle.set(menuItem.domNode, "display", "");
+				}
 			}, this);
 
 			domClass.add(node, 'umcGalleryItemActive');
@@ -415,14 +420,17 @@ define([
 			var div = put(wrapperDiv, lang.replace('div.umcGalleryItem', item));
 			var description = this.getItemDescription(item);
 			var iconClass = this.getIconClass(item);
+			if (this._contextMenu) {
+				put(div, 'div.umcGalleryContextIcon');
+			}
+			if (item.is_link) {
+				div = put(div, lang.replace('a[href="{link}"][target="_blank"]', {link: item.url}));
+			}
 			if (iconClass) {
 				put(div, 'div.umcGalleryIcon.' + iconClass);
 			}
 			put(div, 'div.umcGalleryName', this.getItemName(item));
 			put(div, 'div.umcGalleryDescription', description);
-			if (this._contextMenu) {
-				put(div, 'div.umcGalleryContextIcon');
-			}
 
 			// create status icon
 			var statusIconClass = this.getStatusIconClass(item);
