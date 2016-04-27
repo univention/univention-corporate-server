@@ -1,3 +1,9 @@
+univention-kernel-image (9.0.0-10) unstable; urgency=low
+
+  * Bug #41054: Add option to disable mbcache
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Apr 2016 17:58:22 +0200
+
 univention-kernel-image (9.0.0-9) unstable; urgency=low
 
   * Bug #40912: Remove deprecated i486 packages
