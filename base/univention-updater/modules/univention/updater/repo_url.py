@@ -44,7 +44,7 @@ class UcsRepoUrl(object):
     def __init__(self, ucr, prefix, default=None):
         '''
         >>> UcsRepoUrl({'_/server': 'hostname'}, '_').path
-        '/'
+        ''
         >>> UcsRepoUrl({'_/server': 'hostname', '_/prefix': '/p'}, '_').path
         '/p/'
         >>> UcsRepoUrl({'_/server': 'hostname', '_/prefix': 'path'}, '_').path
@@ -78,11 +78,12 @@ class UcsRepoUrl(object):
                 self.hostname = server
                 port = ucrv('port', 80)
                 self.scheme = 'https' if port == 443 else 'http'
+                prefix = ucrv('prefix', None)
             else:
                 self.hostname = default.hostname
                 port = ucrv('port', default.port)
                 self.scheme = default.scheme
-            prefix = ucrv('prefix', default.path)
+                prefix = ucrv('prefix', default.path)
         self.port = int(port if port else 443 if self.scheme == 'https' else 80)
         if prefix:
             prefix = prefix.strip('/')
