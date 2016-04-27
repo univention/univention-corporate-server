@@ -10,3 +10,5 @@ desc: |
    settings set the new UCR variable mail/cyrus/ssl/cipher_list to
    'TLSv1:SSLv3:SSLv2:!NULL:!EXPORT:!DES:!LOW:@STRENGTH'.
 bug: [40810]
+erratum: 423
+announced: 2016-04-27
