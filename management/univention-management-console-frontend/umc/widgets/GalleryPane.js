@@ -424,7 +424,7 @@ define([
 				put(div, 'div.umcGalleryContextIcon');
 			}
 			if (item.is_link) {
-				div = put(div, lang.replace('a[href="{link}"][target="_blank"]', {link: item.url}));
+				div = domConstruct.create('a', {href: item.url, target: '_blank'}, div);
 			}
 			if (iconClass) {
 				put(div, 'div.umcGalleryIcon.' + iconClass);
