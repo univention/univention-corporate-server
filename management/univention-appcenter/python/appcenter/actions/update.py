@@ -34,6 +34,7 @@
 
 import os
 import os.path
+import shutil
 from math import ceil
 from argparse import SUPPRESS
 import time
@@ -255,8 +256,33 @@ class Update(UniventionAppAction):
 	#		shutil.copy2(filename, uinst_filename)
 
 	def _update_local_files(self):
-		# overwritten when UMC is installed
-		pass
+		self.debug('Updating app files...')
+		update_files = {
+			'uinst' : lambda x: self._get_joinscript_path(x, unjoin=True),
+			'inst' : lambda x: self._get_joinscript_path(x, unjoin=False),
+			'schema' : lambda x: x.get_share_file('schema'),
+			'univention-config-registry-variables' : lambda x: x.get_share_file('univention-config-registry-variables'),
+		}
+		for app in AppManager.get_all_locally_installed_apps():
+			for file in update_files:
+				src = app.get_cache_file(file)
+				dest = update_files[file](app)
+				if not os.path.exists(src):
+					# remove files that do not exist on server anymore
+					if os.path.exists(dest):
+						self.log('Deleting obsolete app file %s' % dest)
+						os.unlink(dest)
+				else:
+					# update local files if changed
+					src_md5 = get_md5_from_file(src)
+					dest_md5 = ''
+					if os.path.exists(dest):
+						dest_md5 = get_md5_from_file(dest) 
+					if src_md5 != dest_md5:
+						self.log('Copying %s to %s' % (src, dest))
+						shutil.copy2(src, dest)
+						if file == 'inst' or file == 'uinst':
+							os.chmod(dest, 0755)
 
 	def _extract_local_archive(self):
 		if any(not fname.startswith('.') for fname in os.listdir(CACHE_DIR)):
