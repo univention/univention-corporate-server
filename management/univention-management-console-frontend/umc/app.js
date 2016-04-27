@@ -280,14 +280,10 @@ define([
 			var category_for_color = item.category_for_color;
 			var className = lang.replace('umcGalleryCategory-{0}', [category_for_color]);
 			domClass.add(div.firstElementChild, className);
-			if (item.is_shallow_copy) {
+			if (isFavorite(item)) {
 				var cat = require('umc/app').getCategory(category_for_color);
-				var styleStr = '';
 				if (cat) {
-					styleStr += lang.replace('background-color: {0};', [cat.color]);
-					if (isFavorite(item)) {
-						this._createFavoriteIcon(cat.color, div.firstElementChild);
-					}
+					this._createFavoriteIcon(cat.color, div.firstElementChild);
 				}
 			}
 			return div;
