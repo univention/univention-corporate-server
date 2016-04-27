@@ -1,6 +1,7 @@
 univention-updater (11.0.9-6) unstable; urgency=low
 
   * Bug #41166: Fix local repository prefix detection
+  * Bug #41165: Set patchlevel=1 for UCS-4.1-1
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 27 Apr 2016 16:32:34 +0200
 

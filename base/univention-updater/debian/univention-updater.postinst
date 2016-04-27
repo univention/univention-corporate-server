@@ -137,7 +137,7 @@ if [ "$1" = "configure" ]; then
 		update/check/boot/debug?no \
 		update/available?no \
 		version/version?4.1 \
-		version/patchlevel?0 \
+		version/patchlevel?1 \
 		version/erratalevel?0 \
 		version/releasename="$releasename"
 
