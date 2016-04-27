@@ -76,7 +76,7 @@
 					The PHP package <package>php5</package> has been upgraded to version 5.4.45 (<u:bug>40693</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The maintained Java version in UCS 4.0 is OpenJDK 7. If OpenJDK 6 is installed, the upgrade process replaces
+					The maintained Java version in UCS 3.3 is OpenJDK 7. If OpenJDK 6 is installed, the upgrade process tries to replace
 					it with OpenJDK 7. The migration can be skipped by setting the &ucsUCRV; <envar>update33/skip/openjdk7</envar> to
 					true (<u:bug>40692</u:bug>).
 				</simpara></listitem>

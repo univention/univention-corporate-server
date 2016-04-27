@@ -113,6 +113,11 @@
 		<title>Nachbereitung des Updates</title>
 
 		<para>
+			Die unterstützte Java Version in UCS 3.3 ist OpenJDK 7. Der Update-Prozess versucht OpenJDK 6 durch OpenJDK 7 zu 
+			ersetzten. Falls die automatische Ersetzung fehlschlägt, muss die Ersetzung manuell erfolgen.
+		</para>
+
+		<para>
 			Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden.
 			Dies kann auf zwei Wegen erfolgen:
 			Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls <command>univention-run-join-scripts</command> als Benutzer <systemitem class="username">root</systemitem>.

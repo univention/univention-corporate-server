@@ -117,6 +117,11 @@
 		<title>Postprocessing of the update</title>
 
 		<para>
+			The maintained Java version in UCS 3.3 is OpenJDK 7. If OpenJDK 6 is installed, the upgrade process tries to replace
+			it with OpenJDK 7. If the automatic replacement fails, it has do be done manually.
+		</para>
+
+		<para>
 			Following the update, new or updated join scripts need to be executed.
 			This can be done in two ways:
 			Either using the UMC module  <guimenu>Domain join</guimenu> or by running the command <command>univention-run-join-scripts</command> as user <systemitem class="username">root</systemitem>.
