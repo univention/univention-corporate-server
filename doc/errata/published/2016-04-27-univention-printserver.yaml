@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Performance of the UMC print quota overview has been improved.  
 bug: [33792]
+erratum: 160
+announced: 2016-04-27
