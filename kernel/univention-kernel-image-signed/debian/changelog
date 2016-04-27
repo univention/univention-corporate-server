@@ -1,3 +1,9 @@
+univention-kernel-image-signed (2.0.0-7) unstable; urgency=low
+
+  * Bug #41054: Update to ucs190
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Apr 2016 17:32:12 +0200
+
 univention-kernel-image-signed (2.0.0-6) unstable; urgency=low
 
   * Bug #40558: Update to ucs174 (4.1.16-unix)
