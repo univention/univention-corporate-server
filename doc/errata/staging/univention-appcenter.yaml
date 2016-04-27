@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-appcenter
-fix: 5.0.20-48.161.201604261100
+fix: 5.0.20-49.162.201604271814
 desc: |
  This update addresses the following issue(s):
  * Additional app files of installed apps are now also updated.
