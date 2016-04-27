@@ -3,9 +3,11 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-kernel-image
-fix: 9.0.0-9.97.201604050810
+fix: 9.0.0-10.101.201604271859
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * The meta packages for the non-PAE i486 kernel image and header files were
    removed.
-bug: [40912]
+ * The mount-point option "no_mbcache" was added for ext4 file systems.
+note: This is the 3rd part of the update.
+bug: [40912,41054]

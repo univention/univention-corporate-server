@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-kernel-image-signed
+fix: 2.0.0-7.18.201604271902
+desc: |
+ This update addresses the following issue:
+ * The mount-point option "no_mbcache" was added for ext4 file systems.
+note: This is the 2nd part of the update.
+bug: [41054]

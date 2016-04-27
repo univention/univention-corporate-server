@@ -1,0 +1,21 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: linux
+fix: 4.1.6-1.190.201604142226
+desc: |
+ This update addresses the following issue:
+ * The mount-point option "no_mbcache" was added for ext4 file systems to
+   disable the "Filesystem Meta Information Block Cache (mbcache)". The cache
+   is used to manage shared Extended Attributes (EAs), which are also used to
+   store Access Control Lists (ACLs) for files and directories. For some
+   work-loads which use EAs with many different values the cache has
+   performance issues and can dead-lock the system in certain cases. Samba is
+   one example which uses EAs to store the DOS attributes and NT-ACLs.
+   The cache can be disabled by re-mounting the file system using
+     mount -o remount,no_mbcache "$fs"
+   or by adding the option "no_mbcache" in '/etc/fstab' and rebooting the
+   system.
+note: This is the 1st part of the update.
+bug: [41054]
