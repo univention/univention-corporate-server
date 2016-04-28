@@ -1,0 +1,28 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Check UCR setting
+## bugs: [41165]
+## versions:
+##  4.1-1: found
+##  4.1-2: fixed
+## tags: [basic]
+## exposure: dangerous
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+tmp="$(mktemp)"
+trap "rm -f '$tmp'" EXIT
+UNIVENTION_BASECONF="$tmp" dpkg-reconfigure univention-updater || :
+dpkg-reconfigure univention-updater
+
+result=0
+for var in version patchlevel # erratalevel
+do
+	var="version/$var"
+	cur="$(ucr get "$var")"
+	new="$(UNIVENTION_BASECONF="$tmp" ucr get "$var")"
+	verify_value "$var" "$new" "$cur" || result=$?
+done
+exit $result
+
+# vim:set ft=sh:
