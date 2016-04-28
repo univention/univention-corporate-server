@@ -5,7 +5,7 @@ scope: ucs_4.1-0-errata4.1-1
 src: univention-management-console-module-udm
 fix: 6.0.11-16.646.201604261629
 desc: |
- The following issue has been fixed in the UDM UMC module:
- * Fixed an issue that caused the wrong objects to be shown under the
-   referencing objects tab for policies.
+ The following issue has been fixed in the udm UMC module:
+ * The correct referencing objects are now shown in a policy. Previously
+   caching caused wrong objects to be shown.
 bug: [33344]
