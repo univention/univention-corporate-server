@@ -3,7 +3,7 @@ release: "4.1"
 version: [1]
 scope: ucs_4.1-0-errata4.1-1
 src: univention-updater
-fix: 11.0.9-6.1468.201604271907
+fix: 11.0.9-7.1469.201604281433
 desc: |
  This update addresses the following issues:
  * Software package versions from the current release are preferred over
