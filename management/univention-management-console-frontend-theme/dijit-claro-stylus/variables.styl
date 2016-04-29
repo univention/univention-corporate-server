@@ -230,6 +230,26 @@ box-shadow() {
 	box-shadow: arguments;
 }
 
+transform() {
+	transform: arguments;
+	-webkit-transform: arguments;
+
+	//replace translate3d with translate for ie
+	newArgs = '';
+	for arg in arguments {
+		argString = s('%s ', arg)
+		if match('translate3d', argString) {
+			//delete '3d' from 'translate3d'
+			newArgString = replace('3d', '', argString);
+			//remove the z index parameter
+			newArgString = replace(',\s*\d*(px)?\s*\)', ')', newArgString);
+			argString = newArgString;
+		}
+		newArgs += argString;
+	}
+	-ms-transform: unquote(newArgs);
+}
+
 transition() {
 	-webkit-transition: arguments;
 	-moz-transition: arguments;

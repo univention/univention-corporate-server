@@ -1,21 +1,5 @@
 @import "../variables";
 
-_transform() 
-	transform: arguments
-	-webkit-transform: arguments
-
-	//replace translate3d with translate for ie
-	newArgs = '';
-	for arg in arguments
-		argString = s('%s ', arg)
-		if match('translate3d', argString)
-			newArgString = replace('3d', '', argString)
-			newArgString = replace(',\s*\d*(px)?\s*\)', ')', newArgString)
-			argString = newArgString
-
-		newArgs += argString
-	-ms-transform: unquote(newArgs)
-
 .umc .umcOverviewContainer {
 	padding: 0;
 }
@@ -50,7 +34,7 @@ _transform()
 				transition: transform 0.3s, opacity 0.3s;
 				-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
 				opacity: 0.75;
-				_transform: scale(0.8, 0.8);
+				transform: scale(0.8, 0.8);
 			}
 		}
 	}
@@ -69,7 +53,7 @@ _transform()
 		background-position: center top;
 		transition: transform 0.3s 0.0s;
 		-webkit-transition: -webkit-transform 0.3s 0.0s;
-		_transform: scale(0.8, 0.8);
+		transform: scale(0.8, 0.8);
 	}
 
 	&.dijitButtonSelected {
@@ -77,10 +61,10 @@ _transform()
 			.dijitButtonContents {
 				.umcCategoryButtonBackgroundWrapper {
 					opacity: 1;
-					_transform: scale(1, 1);
+					transform: scale(1, 1);
 
 					.dijitIcon {
-						_transform: scale(1, 1);
+						transform: scale(1, 1);
 					}
 				}
 			}

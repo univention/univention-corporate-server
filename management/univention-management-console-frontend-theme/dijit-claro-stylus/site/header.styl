@@ -1,21 +1,5 @@
 @import "../variables";
 
-_transform() 
-	transform: arguments
-	-webkit-transform: arguments
-
-	//replace translate3d with translate for ie
-	newArgs = '';
-	for arg in arguments
-		argString = s('%s ', arg)
-		if match('translate3d', argString)
-			newArgString = replace('3d', '', argString)
-			newArgString = replace(',\s*\d*(px)?\s*\)', ')', newArgString)
-			argString = newArgString
-
-		newArgs += argString
-	-ms-transform: unquote(newArgs)
-
 insertBorder() {
 	content: '';
 	display: block;
@@ -33,7 +17,7 @@ insertBorder() {
 		height: @min-height;
 		overflow: hidden;
 		transition: height 0.5s;
-		_transform: scale(1, 1) translate3d(3px, 0, 25px);
+		transform: scale(1, 1) translate3d(3px, 0, 25px);
 
 		&.moduleSearchActive {
 			height: 96px;
@@ -87,12 +71,12 @@ insertBorder() {
 			.moduleSearchToggleButtonOpenIcon {
 				opacity: 0;
 				icon-image(-160, -60, '../');
-				_transform: rotate(90deg);
+				transform: rotate(90deg);
 			}
 			.moduleSearchToggleButtonCloseIcon {
 				opacity: 0;
 				icon-image(-160, -40, '../');
-				_transform: rotate(45deg);
+				transform: rotate(45deg);
 			}
 			.moduleSearchToggleButtonTouchStyle {
 				width: w = 2px;
@@ -225,7 +209,7 @@ insertBorder() {
 			div:nth-child(1) {
 				width: 18px;
 				right: 24.5px;
-				_transform: translate(0, 2px) rotate(-38deg);
+				transform: translate(0, 2px) rotate(-38deg);
 			}
 			div:nth-child(2) {
 				top: 20px;
@@ -233,19 +217,19 @@ insertBorder() {
 			div:nth-child(3) {
 				width: 18px;
 				right: 24.5px;
-				_transform: translate(0, -2px) rotate(38deg);
+				transform: translate(0, -2px) rotate(38deg);
 			}
 		}
 
 		&.umcMobileMenuToggleButtonActive {
 			div:nth-child(1) {
-				_transform: translate3d(0, 8px, 0) rotate(45deg);
+				transform: translate3d(0, 8px, 0) rotate(45deg);
 			}
 			div:nth-child(2) {
-				_transform: rotate(45deg);
+				transform: rotate(45deg);
 			}
 			div:nth-child(3) {
-				_transform: translate3d(0, -8px, 0) rotate(-45deg);
+				transform: translate3d(0, -8px, 0) rotate(-45deg);
 			}
 		}
 	}
@@ -265,9 +249,9 @@ insertBorder() {
 		max-width: 360px;
 		background: url("http://demo.univention.de/univention-management-console/js_$20162001042724$/dijit/themes/umc/images/background-tile.png") repeat, $primary-color; //#5a5a5a
 		box-shadow: 0px 0px 10px 3px $grey-dark;
-		transition: _transform 0.5s;
+		transition: transform 0.5s;
 		-webkit-transition: -webkit-transform 0.5s;
-		z-index: 2;
+		z-index: 30;
 		display: none;
 
 		.umcMobileMenuToggleButton {
@@ -286,16 +270,16 @@ insertBorder() {
 				div:nth-child(1) {
 					width: 18px;
 					right: 17px;
-					_transform: translate(0, 2px) rotate(38deg) !important;
+					transform: translate(0, 2px) rotate(38deg) !important;
 				}
 				div:nth-child(2) {
 					top: 20px;
-					_transform: none !important;
+					transform: none !important;
 				}
 				div:nth-child(3) {
 					width: 18px;
 					right: 17px;
-					_transform: translate(0, -2px) rotate(-38deg) !important;
+					transform: translate(0, -2px) rotate(-38deg) !important;
 				}
 			}
 		}
@@ -364,15 +348,19 @@ insertBorder() {
 
 		.menuSlides {
 			top: 0;
-			bottom: 0;
+			bottom: 0px;
 			left: 0;
 			right: 0;
+
+			overflow: hidden;
 
 			.menuSlide {
 				top: 0;
 				bottom: 0;
 				left: 0;
 				right: 0;
+
+				overflow: auto;
 
 				transition: transform 0.4s;
 				-webkit-transition: -webkit-transform 0.4s;
@@ -475,7 +463,7 @@ insertBorder() {
 			}
 
 			&.popupSlideNormalTransition .menuSlide {
-				_transform: translate3d(100%, 0, 0);
+				transform: translate3d(100%, 0, 0);
 			}
 
 			.hiddenSlide {
@@ -487,7 +475,7 @@ insertBorder() {
 			}
 
 			.menuSlide.visibleSlide {
-				_transform: translate3d(0, 0, 0) scale(1, 1);
+				transform: translate3d(0, 0, 0) scale(1, 1);
 			}
 		}
 	}
@@ -509,28 +497,9 @@ insertBorder() {
 	//class thats get added shortly before mobileMenuActive
 	//gives the posibility to set spicific styles before the transition
 	&.mobileMenuBeforeTransition {
-		overflow: inherit;
-
-		.umcTopContainer {
-			position: inherit;
-			background: initial;
-			height: 100%;
-			width: 100%;
-			z-index: 1;
-		}
-
-		.umcMainTabContainer {
-			background: inherit !important;
-		}
-
-		&.umcOverviewNotShown .umcMainTabContainer {
-			height: 100%;
-			background: $container-background-color;
-		}
-
 		.mobileMenu {
 			display: block;
-			_transform: translate3d(100%, 0, 0);
+			transform: translate3d(100%, 0, 0);
 		}
 
 		.mobileMenuCloseOverlay {
@@ -539,30 +508,27 @@ insertBorder() {
 	}
 
 	&.mobileMenuActive {
-		.umcTopContainer,
-		.mobileMenuCloseOverlay {
-			_transform: translate3d(0, 0, 0);
-		}
+		overflow: hidden !important;
 
 		.mobileMenuCloseOverlay {
 			opacity: 0.7;
 		}
 
 		.mobileMenu {
-			_transform: translate3d(0, 0, 0) !important;
+			transform: translate3d(0, 0, 0) !important;
 		}
 	}
 
 	&.mobileMenuToggleButtonActive {
 		.umcMobileMenuToggleButton {
 			div:nth-child(1) {
-				_transform: translate3d(0, 8px, 0) rotate(45deg);
+				transform: translate3d(0, 8px, 0) rotate(45deg);
 			}
 			div:nth-child(2) {
-				_transform: rotate(45deg);
+				transform: rotate(45deg);
 			}
 			div:nth-child(3) {
-				_transform: translate3d(0, -8px, 0) rotate(-45deg);
+				transform: translate3d(0, -8px, 0) rotate(-45deg);
 			}
 		}
 	}
