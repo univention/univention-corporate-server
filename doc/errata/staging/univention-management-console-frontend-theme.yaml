@@ -9,5 +9,5 @@ desc: |
  * The currently selected category stands out more.
  * The univention logo just shows the univention 'u' on small screens.
  * Module headers are thinner on small screens to not take up to much space.
- * The context menu for links is now working.
+ * The context menu for links is now working as expected.
 bug: [38622, 40939]
