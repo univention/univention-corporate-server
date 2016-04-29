@@ -6,5 +6,6 @@ src: univention-system-setup
 fix: 9.0.4-7.960.201604261714
 desc: |
  This update addresses the following issue(s):
- * updated list of supported browser versions
+ * The list of supported browser versions which is displayed on the console
+   upon login to a UCS system (message of the day) has been updated.
 bug: [40580]
