@@ -277,7 +277,7 @@ def password_sync_ucs(connector, key, object):
 	pwd_set = False
 	pwd_ad = get_password_from_ad(connector, univention.connector.ad.compatible_modstring(object['dn']))
 	if not pwd_ad:
-		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Failed to get Password-Hash from AD")
+		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: No password hash could be read from AD")
 	res = ''
 
 	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s"%(pwd_ad,pwd))
@@ -301,8 +301,6 @@ def password_sync_ucs(connector, key, object):
 			connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
-	else:
-		ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
 
 def password_sync_kinit(connector, key, ucs_object):
 	_d=ud.function('ldap.ad.password_sync_kinit')

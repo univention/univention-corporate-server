@@ -1,3 +1,11 @@
+univention-ad-connector (10.0.1-22) unstable; urgency=medium
+
+  * In case the user was just created in AD, the connector can't read a
+    password hash for the new user in AD. An irritating debug message
+    has been removed for this case (Bug #40745)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Apr 2016 06:14:48 +0200
+
 univention-ad-connector (10.0.1-21) unstable; urgency=medium
 
   * Check if the chached group members really exist (Bug #41028)
