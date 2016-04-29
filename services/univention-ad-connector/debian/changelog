@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-75) unstable; urgency=medium
+
+  * Check if the chached group members really exist (Bug #41141)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Apr 2016 06:26:53 +0200
+
 univention-ad-connector (8.0.17-74) unstable; urgency=medium
 
   * Catch ADNotAvailable in connection testing (Bug #35701)
