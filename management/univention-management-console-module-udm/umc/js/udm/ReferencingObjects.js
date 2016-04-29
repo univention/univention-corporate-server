@@ -32,14 +32,13 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
 	"dojo/topic",
 	"umc/widgets/Button",
 	"umc/tools",
 	"umc/app",
-	"umc/widgets/ContainerWidget",
-], function(declare, lang, array, on, topic, Button, tools, app, ContainerWidget) {
-	return declare("umc.modules.udm.ReferencingObjects", [ ContainerWidget, ], {
+	"umc/widgets/ContainerWidget"
+], function(declare, lang, array, topic, Button, tools, app, ContainerWidget) {
+	return declare("umc.modules.udm.ReferencingObjects", [ ContainerWidget ], {
 		// summary:
 		//		Provides a list of buttons opening a given object
 
@@ -56,12 +55,12 @@ define([
 			if (value instanceof Object) {
 				this._set('value', value);
 				this.destroyDescendants();
-				array.forEach( value, lang.hitch( this, function( item ) {
+				array.forEach(value, lang.hitch(this, function(item) {
 					this._addReferencingObjectLink(item);
 				}));
 			} else {
 				console.log('ReferencingObjects: not an object');
-			};
+			}
 		},
 
 		_addReferencingObjectLink: function(item) {
@@ -80,19 +79,19 @@ define([
 
 			// perpare information to open the referenced UDM object
 			var moduleProps = {
-				flavor : item.flavor,
-				module : item.module,
+				flavor: item.flavor,
+				module: item.module,
 				openObject: {
-					objectDN : item.id,
-					objectType : item.objectType
+					objectDN: item.id,
+					objectType: item.objectType
 				}
 			};
 
 			// create new button
-			var btn = new Button( {
-				name : 'close',
-				label : item.label,
-				iconClass: tools.getIconClass( item.icon, 20, null, "background-size: contain" ),
+			var btn = new Button({
+				name: 'close',
+				label: item.label,
+				iconClass: tools.getIconClass(item.icon, 20, null, "background-size: contain"),
 				callback: function() {
 					// open referenced UDM object
 					if (app.getModule(moduleProps.module, moduleProps.flavor)) {
@@ -103,9 +102,9 @@ define([
 						topic.publish("/umc/modules/open", moduleProps.module, moduleProps.flavor, moduleProps);
 					}
 				}
-			} );
+			});
 
-			this.addChild( btn );
+			this.addChild(btn);
 		},
 
 		isValid: function() {
