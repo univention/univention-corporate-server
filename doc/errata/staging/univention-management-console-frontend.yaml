@@ -9,7 +9,7 @@ desc: |
  * The user menu in the UMC is now more touch-friendly for small screens
    and the use on mobile devices.
  * Wizards are now scrolling to the top when switching the page.
- * Small bugfix.
- * The context menu for links is now working.
- * Modules are correctly flagged favorites again.
+ * Minor bugfixes for the widget LinkList to accept static values.
+ * The context menu for link tiles in the UMC overview is now correctly displayed.
+ * Module tiles in the UMC overview are now correctly flagged favorites.
 bug: [38622, 40939, 41081, 41087, 41161]
