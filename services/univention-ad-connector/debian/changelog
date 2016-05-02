@@ -1,3 +1,9 @@
+univention-ad-connector (8.0.17-76) unstable; urgency=low
+
+  * restart connector after rotating log files (Bug #32265) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 02 May 2016 13:27:47 +0200
+
 univention-ad-connector (8.0.17-75) unstable; urgency=medium
 
   * Check if the chached group members really exist (Bug #41141)
