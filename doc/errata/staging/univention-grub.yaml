@@ -6,11 +6,15 @@ src: univention-grub
 fix: 9.0.1-7.135.201604190607
 desc: |
  This update addresses the following issues:
- * Localization has been disabled.
- * Remove extra argument to `grub-mkdevicemap`.
- * Quote menu title.
+ * Localization of the GRUB boot menu has been disabled. The title string gets
+   translated to the preferred language of the user triggering menu generation
+   process. This breaks selecting a boot kernel through the UCR variable
+   'grub/default', as it doesn't work on systems using a different language.
+ * Remove extra argument to `grub-mkdevicemap` as it is not needed.
+ * Quote menu title to allow strings containing blanks.
  * Disable saving the selection by default as it is not supported on all file
    systems.
- * Add support to configure serial console through UCR variables. Thanks to
-   Lutz Willek for the patch.
+ * Add support to configure serial console support through the UCR variables
+   'grub/terminal' and 'grub/serialcommand'. Thanks to Lutz Willek for the
+   patch.
 bug: [41046, 40586, 25157, 40557, 40596]
