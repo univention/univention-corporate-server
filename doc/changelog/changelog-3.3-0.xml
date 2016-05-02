@@ -582,12 +582,13 @@
 		-->
 		<!--
 	</section>
+		-->
 
 	<section id="changelog:other">
 		<title>Other changes</title>
 		<itemizedlist>
+			The package <package>OpenOffice.org</package> has been rebuilt without Java support (<u:bug>40692</u:bug>).
 		</itemizedlist>
 	</section>
-		-->
 </chapter>
 <!-- vim: set ts=4 sw=4 noet foldmethod=syntax foldlevel=2: -->
