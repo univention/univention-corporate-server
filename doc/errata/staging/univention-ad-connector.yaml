@@ -3,9 +3,10 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-ad-connector
-fix: 8.0.17-75.485.201604290628
+fix: 8.0.17-76.487.201605021329
 desc: |
  This update addresses the following issue(s):
  * If a user was moved on UCS side, the group cache wasn't always updated and
    an error occurred. This issue has been fixed.
-bug: [41141]
+ * The AD Connector is now restarted after rotating the connector's log files.
+bug: [41141,41142]
