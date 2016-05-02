@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-23) unstable; urgency=low
+
+  * restart connector after rotating log files (Bug #32265) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 02 May 2016 12:52:07 +0200
+
 univention-ad-connector (10.0.1-22) unstable; urgency=medium
 
   * In case the user was just created in AD, the connector can't read a
