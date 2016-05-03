@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.1-1-en">
+<book lang="en" id="releasenotes-4.1-2-en">
 	<bookinfo>
-		<title>UCS 4.1-1 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.1-1</subtitle>
+		<title>UCS 4.1-2 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.1-2</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,33 +44,13 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.1-1, the first point release of &ucsUCS; (UCS) 4.1 is
+			With &ucsUCS; 4.1-2, the second point release of &ucsUCS; (UCS) 4.1 is
 			now available.  It provides various improvements and
 			bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				The Linux kernel has been updated to 4.1.16. This includes several security
-				updates as well as new and updated drivers for better hardware support.
-			</para></listitem>
-			<listitem><para>
-				The compatibility to Active Directory has been improved with the Samba update to 4.3.3.  This
-				includes, among others, improvements in the DRS replication and several security updates.
-			</para></listitem>
-			<listitem><para>
-				Univention Virtual Machine Manager is now able to manage <wordasword>Virtual Private Clouds
-				(VPC)</wordasword> in Amazon AWS. This provides the possibility to administrate virtual machines in
-				the EC2 region <property>eu-central-1</property> (Frankfurt am Main).
-			</para></listitem>
-			<listitem><para>
-				The performance of the directory service replication has been increased significantly. Thus, the
-				join into a domain with thousands of users is much faster.
-			</para></listitem>
-			<listitem><para>
-				Several enhancements in design and usability of the Univention App Center have been implemented. For
-				example, it is now possible to navigate easily between the different Apps. Additionally, the App
-				Center startup performance has been increased significantly.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -211,10 +191,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 4.1-0:
+			Listed are the changes since UCS 4.1-1:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-1.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-2.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

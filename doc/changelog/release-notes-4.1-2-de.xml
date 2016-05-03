@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.1-1-de">
+<book lang="de" id="releasenotes-4.1-2-de">
 	<bookinfo>
-		<title>UCS 4.1-1 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.1-1</subtitle>
+		<title>UCS 4.1-2 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.1-2</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,34 +44,13 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.1-1 steht das erste Point-Release für &ucsUCS; (UCS) 4.1 zur Verfügung. Es
+			Mit &ucsUCS; 4.1-2 steht das zweite Point-Release für &ucsUCS; (UCS) 4.1 zur Verfügung. Es
 			umfasst diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im
 			Überblick:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Der Linux Kernel wurde auf <wordasword>4.1.16</wordasword> aktualisiert. Dieser beinhaltet diverse
-				Sicherheitsaktualisierungen sowie neuere und aktualisierte Treiber für eine verbesserte
-				Hardware-Unterstützung.
-			</para></listitem>
-			<listitem><para>
-				Mit dem Update auf Samba 4.3.3 wurde die Kompatibilität zu Active Directory weiter ausgebaut.
-				Dies beinhaltet u.a. Verbesserungen in der DRS-Replikation und diverse Sicherheitsaktualisierungen.
-			</para></listitem>
-			<listitem><para>
-				Univention Virtual Machine Manager kann nun auch <wordasword>Virtual Private Clouds
-				(VPC)</wordasword> in Amazon AWS verwalten. Dadurch besteht die Möglichkeit virtuelle Maschinen in
-				der EC2 Region <property>eu-central-1</property> (Frankfurt am Main) zu administrieren.
-			</para></listitem>
-			<listitem><para>
-				Die Performance der Verzeichnisdienst-Replikation wurde deutlich erhöht. Dadurch ist
-				u.a. der Domänenbeitritt in Umgebungen mit mehreren tausend Benutzern deutlich schneller.
-			</para></listitem>
-			<listitem><para>
-				Es gibt zahlreiche Verbesserungen in Design und Usability des Univention App Center. So ist
-				es nun bspw. sehr einfach möglich zwischen den unterschiedlichen Apps zu navigieren.
-				Die Ladegeschwindigkeit des App Centers wurde ebenfalls deutlich erhöht.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -213,10 +192,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 4.1-0:
+			Aufgeführt sind die Änderungen seit UCS 4.1-1:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-1.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-2.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
