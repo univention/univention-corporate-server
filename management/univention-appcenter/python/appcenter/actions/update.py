@@ -61,6 +61,7 @@ class Update(UniventionAppAction):
 		super(Update, self).__init__()
 		self._ucs_version = None
 		self._appcenter_server = None
+		self._files_downloaded = dict()
 
 	def setup_parser(self, parser):
 		parser.add_argument('--ucs-version', help=SUPPRESS)
@@ -176,6 +177,7 @@ class Update(UniventionAppAction):
 						if local_md5sum != remote_md5sum:
 							self.warn('Checksum for %s should be %r but was %r! Download manually' % (filename, remote_md5sum, local_md5sum))
 							raise KeyError(filename)
+						self._files_downloaded[filename] = remote_md5sum
 					except KeyError:
 						self.warn('%s not found in archive!' % filename)
 						files_still_to_download.append((filename_url, filename, remote_md5sum))
@@ -209,6 +211,7 @@ class Update(UniventionAppAction):
 				if local_md5sum != remote_md5sum:
 					self.fatal('Checksum for %s should be %r but was %r! Rather removing this file...' % (filename, remote_md5sum, local_md5sum))
 					os.unlink(cached_filename)
+				self._files_downloaded[filename] = remote_md5sum
 
 	#def _process_new_file(self, filename):
 	#	self.log('Installing %s' % os.path.basename(filename))
@@ -258,7 +261,6 @@ class Update(UniventionAppAction):
 	def _update_local_files(self):
 		self.debug('Updating app files...')
 		update_files = {
-			'uinst' : lambda x: self._get_joinscript_path(x, unjoin=True),
 			'inst' : lambda x: self._get_joinscript_path(x, unjoin=False),
 			'schema' : lambda x: x.get_share_file('schema'),
 			'univention-config-registry-variables' : lambda x: x.get_share_file('univention-config-registry-variables'),
@@ -273,15 +275,18 @@ class Update(UniventionAppAction):
 						self.log('Deleting obsolete app file %s' % dest)
 						os.unlink(dest)
 				else:
-					# update local files if changed
-					src_md5 = get_md5_from_file(src)
-					dest_md5 = ''
+					# update local files if downloaded
+					component_file = '%s.%s' % (app.component_id, file)
+					if not component_file in self._files_downloaded:
+						continue
+					src_md5 = self._files_downloaded[component_file]
+					dest_md5 = None
 					if os.path.exists(dest):
 						dest_md5 = get_md5_from_file(dest) 
-					if src_md5 != dest_md5:
+					if dest_md5 is None or src_md5 != dest_md5:
 						self.log('Copying %s to %s' % (src, dest))
 						shutil.copy2(src, dest)
-						if file == 'inst' or file == 'uinst':
+						if file == 'inst':
 							os.chmod(dest, 0755)
 
 	def _extract_local_archive(self):
@@ -305,6 +310,7 @@ class Update(UniventionAppAction):
 					continue
 				self.debug('Extracting %s' % filename)
 				archive.extract(filename, path=CACHE_DIR)
+				self._files_downloaded[filename] = get_md5_from_file(os.path.join(CACHE_DIR, filename))
 		finally:
 			self._update_local_files()
 			archive.close()
