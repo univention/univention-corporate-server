@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-42) unstable; urgency=medium
+
+  * Bug #38622: changed on listener for mobile
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 03 May 2016 20:15:48 +0200
+
 univention-management-console-frontend (5.0.63-41) unstable; urgency=medium
 
   Bug #38622:

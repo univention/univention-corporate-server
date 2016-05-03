@@ -39,6 +39,7 @@ define([
 	"dojo/on",
 	"dojo/mouse",
 	"dojo/touch",
+	"dojox/gesture/tap",
 	"dojo/aspect",
 	"dojo/has",
 	"dojo/Evented",
@@ -87,7 +88,7 @@ define([
 	"./i18n!",
 	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseFx, baseWin, win, on, mouse, touch, aspect, has,
+], function(declare, lang, kernel, array, baseFx, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, fxEasing, Memory, Observable,
 		dom, style, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
@@ -683,7 +684,7 @@ define([
 				this._mobileMenu.addChild(permaHeader);
 
 				//add listeners
-				this._mobileMenu.permaHeader.on(touch.release, lang.hitch(this, function() {
+				this._mobileMenu.permaHeader.on(tap, lang.hitch(this, function() {
 					var lastClickedPopupMenuItem = this._mobileMenu.popupHistory.pop();
 
 					this._updateMobileMenuPermaHeaderForClosing(lastClickedPopupMenuItem);
@@ -695,7 +696,7 @@ define([
 				this._mobileMenuCloseOverlay = new ContainerWidget({
 					'class': 'mobileMenuCloseOverlay'
 				});
-				this._mobileMenuCloseOverlay.on(touch.release, lang.hitch(this, function() {
+				this._mobileMenuCloseOverlay.on(tap, lang.hitch(this, function() {
 					this.closeMobileMenu();
 				}));
 				dojo.body().appendChild(this._mobileMenuCloseOverlay.domNode);
@@ -871,13 +872,13 @@ define([
 
 			var _addClickListeners = lang.hitch(this, function() {
 				//open the popup of the popupMenuItem
-				popupMenuItem.on(touch.release , lang.hitch(this, function() {
+				popupMenuItem.on(tap , lang.hitch(this, function() {
 					this._openMobileMenuPopupFor(popupMenuItem);
 					this._updateMobileMenuPermaHeaderForOpening(popupMenuItem);
 				}));
 
 				//close the popup of the popupMenuItem
-				popupMenuItem.popup.menuSlideHeader.on(touch.release , lang.hitch(this, function() {
+				popupMenuItem.popup.menuSlideHeader.on(tap , lang.hitch(this, function() {
 					var lastClickedPopupMenuItem = this._mobileMenu.popupHistory.pop();
 
 					this._closeMobileMenuPopupFor(lastClickedPopupMenuItem);
@@ -1256,7 +1257,7 @@ define([
 					domClass.remove(this, 'umcMobileMenuToggleButtonHover');
 				});
 			}
-			mobileMenuToggleButton.on(touch.release, lang.hitch(this, function() {
+			mobileMenuToggleButton.on(tap, lang.hitch(this, function() {
 				if (typeof mobileToggleMouseLeave !== 'undefined') {
 					mobileToggleMouseLeave.pause();
 				}
@@ -1969,7 +1970,7 @@ define([
 			});
 
 			//add listeners
-			on(moduleSearchToggleButton, touch.release, lang.hitch(this, function(evt) {
+			on(moduleSearchToggleButton, tap, lang.hitch(this, function(evt) {
 				_mobileModuleSearchClick();
 			}));
 			this._header._searchSidebar._searchTextBox.on('blur', lang.hitch(this, function() {
