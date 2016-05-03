@@ -1,3 +1,9 @@
+univention-dvd (1.0.1-2) unstable; urgency=medium
+
+  * Bug #41154: UCS-4.1-2 DVD
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 03 May 2016 14:20:30 +0200
+
 univention-dvd (1.0.1-1) unstable; urgency=low
 
   * Bug #40623: UCS-4.1-1 DVD
