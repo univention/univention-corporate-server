@@ -1,8 +1,8 @@
-univention-postgresql (8.0.0-10~ucs3.3) unstable; urgency=medium
+univention-postgresql (8.0.0-10~ucs3.3-1) unstable; urgency=medium
 
   * Backport to UCS 3.3 (Bug #40690)
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 09 Mar 2016 19:52:09 +0100
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 03 May 2016 18:51:31 +0200
 
 univention-postgresql (8.0.0-10) unstable; urgency=medium
 
