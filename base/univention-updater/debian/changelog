@@ -1,6 +1,7 @@
 univention-updater (11.0.9-8) unstable; urgency=medium
 
   * Bug #41157: Adapt links and components for UCS-4.1-2
+  * Bug #40748: Remove old kernel packages
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 03 May 2016 14:01:54 +0200
 
