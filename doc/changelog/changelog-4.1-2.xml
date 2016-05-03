@@ -298,6 +298,10 @@
 		<title>Software deployment</title>
 		<itemizedlist>
 			<listitem><simpara>
+					The <filename>preup.sh</filename> and <filename>postup.sh</filename> scripts have been updated to match UCS-4.1-2 (<u:bug>41157</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+					Linux 4.1 kernel package are now also considered for removal an upgrades (<u:bug>40748</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 
