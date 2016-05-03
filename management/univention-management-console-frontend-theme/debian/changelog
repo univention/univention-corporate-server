@@ -1,3 +1,11 @@
+univention-management-console-frontend-theme (1.0.4-5) unstable; urgency=medium
+
+  Bug #38622:
+  * Some css cleanup
+  * Show just the univention 'u' on small screens for the login screen
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 03 May 2016 20:17:51 +0200
+
 univention-management-console-frontend-theme (1.0.4-4) unstable; urgency=medium
 
   * Bug #38622: fixed mobile menu transition not playing on firefox
