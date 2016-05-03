@@ -1,3 +1,11 @@
+univention-management-console-module-adtakeover (1.100.0-1) unstable; urgency=low
+
+  * Bug #41079:
+    - claim_FSMO_roles before Removing ad server/dns takeover  
+    - added FSMO roles 'domaindnsmaster' and 'forestdnsmaster' 
+
+ -- Felix Botner <botner@univention.de>  Tue, 03 May 2016 19:58:00 +0200
+
 univention-management-console-module-adtakeover (1.0.10-51) unstable; urgency=medium
 
   * Rename sysvol domain directory to AD spelling (Bug #35769)
