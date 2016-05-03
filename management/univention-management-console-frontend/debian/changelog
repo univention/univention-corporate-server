@@ -1,3 +1,11 @@
+univention-management-console-frontend (5.0.63-41) unstable; urgency=medium
+
+  Bug #38622:
+  * imrpoved responsiveness of the mobile menu on mobile devices
+  * fixed a visual bug of the mobile menu on mobile devices
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 03 May 2016 19:57:45 +0200
+
 univention-management-console-frontend (5.0.63-40) unstable; urgency=medium
 
   * Bug #40939: escape the link 
