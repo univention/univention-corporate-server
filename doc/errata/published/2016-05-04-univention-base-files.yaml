@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * The detection of a docker environment caused the PXE installation to fail.
 bug: [41143]
+erratum: 161
+announced: 2016-05-04
