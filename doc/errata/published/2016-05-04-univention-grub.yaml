@@ -12,3 +12,5 @@ desc: |
  * Disable saving the selection by default as it is not supported on all file
    systems.
 bug: [41047, 40586, 25157, 40557]
+erratum: 418
+announced: 2016-05-04
