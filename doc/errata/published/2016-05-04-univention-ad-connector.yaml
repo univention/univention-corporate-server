@@ -16,5 +16,5 @@ desc: |
    an error occurred. This issue has been fixed.
  * The AD Connector is now restarted after rotating the connector's log files.
 bug: [40745,41028,32265]
-erratum: 175
+erratum: 173
 announced: 2016-05-04
