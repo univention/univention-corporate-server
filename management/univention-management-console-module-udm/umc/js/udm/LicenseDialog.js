@@ -124,7 +124,7 @@ define([
 					product = this.licenseInfo.oemProductTypes.join(', ');
 				}
 
-				var ucsBuyText = _('<a href="https://www.univention.com/enterprise-subscriptions" target="_blank">Buy UCS.</a>');
+				var ucsBuyText = _('<a href="https://www.univention.com/enterprise-subscriptions" target="_blank">More information about UCS Enterprise Subscriptions can be found here.</a>');
 
 				var additionalInfo = {
 					'ffpu': _('The license type "Free for personal use" can be upgraded to the latest <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">UCS Core Edition license</a> allowing an unlimited amount of user and computer accounts. To upgrade, follow the instructions in the <a href="http://sdb.univention.de/1324" target="_blank">Univention Support Database</a>.'),
