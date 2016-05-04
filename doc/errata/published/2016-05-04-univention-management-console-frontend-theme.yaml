@@ -11,3 +11,5 @@ desc: |
  * Module headers are thinner on small screens to not take up to much space.
  * The context menu for links is now working as expected.
 bug: [38622, 40939]
+erratum: 165
+announced: 2016-05-04
