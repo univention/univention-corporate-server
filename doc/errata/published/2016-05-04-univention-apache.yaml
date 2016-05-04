@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Some links in the footer of the UCS overview have been changed.
 bug: [41175]
+erratum: 163
+announced: 2016-05-04
