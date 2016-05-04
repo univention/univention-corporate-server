@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issue(s):
  * The correct referencing objects are now shown in a policy. Previously
    caching caused wrong objects to be shown.
- * A link that redirects to the subscription prices for ucs on the univention
-   website has been added to the license dialog of ucs core editions.
+ * A link that redirects to the subscription prices for UCS on the univention
+   website has been added to the license dialog of UCS core editions.
 bug: [33344, 41174]
