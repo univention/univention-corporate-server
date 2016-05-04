@@ -9,3 +9,5 @@ desc: |
  * The list of supported browser versions which is displayed on the console
    upon login to a UCS system (message of the day) has been updated.
 bug: [40580]
+erratum: 164
+announced: 2016-05-04
