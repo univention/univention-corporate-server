@@ -1,3 +1,11 @@
+univention-management-console-module-udm (6.0.11-18) unstable; urgency=medium
+
+  * Bug #41174: A link that directs to the enterprise subscriptions
+    on the univention website has been added to the license dialog
+    of a core edition
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 04 May 2016 11:29:20 +0200
+
 univention-management-console-module-udm (6.0.11-17) unstable; urgency=medium
 
   * Bug #33344: code cleanup 

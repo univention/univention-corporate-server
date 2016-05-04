@@ -116,7 +116,6 @@ define([
 					[_('You are using a GPL license which is not eligible for maintenance or support claims.')]
 				];
 			} else {
-
 				// content: license info and upload widgets
 				var product = '';
 				if (this.licenseInfo.oemProductTypes.length === 0) {
@@ -125,9 +124,11 @@ define([
 					product = this.licenseInfo.oemProductTypes.join(', ');
 				}
 
+				var ucsBuyText = _('<a href="https://www.univention.com/enterprise-subscriptions" target="_blank">Buy UCS.</a>');
+
 				var additionalInfo = {
 					'ffpu': _('The license type "Free for personal use" can be upgraded to the latest <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">UCS Core Edition license</a> allowing an unlimited amount of user and computer accounts. To upgrade, follow the instructions in the <a href="http://sdb.univention.de/1324" target="_blank">Univention Support Database</a>.'),
-					'core': _('Detailed information about the terms of use for this free license can be found on the <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">Univention website</a>.'),
+					'core': _('Detailed information about the terms of use for this free license can be found on the <a href="https://www.univention.com/downloads/license-models/ucs-core-edition" target="_blank">Univention website</a>. ') + ucsBuyText,
 					'': ''
 				}[this.licenseInfo.freeLicense];
 				this._additionalInfoWidget.set('content', additionalInfo);
@@ -187,7 +188,7 @@ define([
 			this._messageWidget.set('content', html);
 
 			// show and recenter dialog
-			this.show().then(lang.hitch(this, function() {;
+			this.show().then(lang.hitch(this, function() {
 				this._position();
 			}));
 		},
