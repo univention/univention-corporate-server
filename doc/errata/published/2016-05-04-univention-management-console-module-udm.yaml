@@ -11,3 +11,5 @@ desc: |
  * A link that redirects to the subscription prices for UCS on the univention
    website has been added to the license dialog of UCS core editions.
 bug: [33344, 41174]
+erratum: 167
+announced: 2016-05-04
