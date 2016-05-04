@@ -11,5 +11,5 @@ desc: |
  * The version-patchlevel is set to 1 for UCS-4.1-1.
  * The detection of the local repository prefix was fixed.
 bug: [41083,41165,41166]
-erratum: 175
+erratum: 172
 announced: 2016-05-04
