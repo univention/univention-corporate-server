@@ -11,3 +11,5 @@ desc: |
  * The mount-point option "no_mbcache" was added for ext4 file systems.
 note: This is the 3rd part of the update.
 bug: [40912,41054]
+erratum: 162
+announced: 2016-05-04
