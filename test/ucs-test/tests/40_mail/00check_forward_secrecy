@@ -21,8 +21,8 @@ PFS_CIPHERS = ('DHE-RSA-AES256-SHA',
                'DHE-RSA-AES128-SHA',
                'DHE-DSS-AES128-SHA',
                'ADH-AES128-SHA',
+               'DHE-RSA-AES256-GCM-SHA384',
                'ADH-RC4-MD5')
-
 
 def check_pfs_cipher():
     """

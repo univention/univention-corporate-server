@@ -1,3 +1,9 @@
+ucs-test (4.100.1-4) unstable; urgency=low
+
+  * 40_mail/00check_forward_secrecy: added chiphers (Bug #41075) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 04 May 2016 16:53:18 +0200
+
 ucs-test (4.100.1-3) unstable; urgency=low
 
   * 72_udm-extensions/22_listener_version_change: Merge current
