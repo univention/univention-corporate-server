@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Additional app files of installed apps are now also updated.
 bug: [39368]
+erratum: 168
+announced: 2016-05-04
