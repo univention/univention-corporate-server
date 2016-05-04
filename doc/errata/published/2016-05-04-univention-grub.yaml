@@ -18,3 +18,5 @@ desc: |
    'grub/terminal' and 'grub/serialcommand'. Thanks to Lutz Willek for the
    patch.
 bug: [41046, 40586, 25157, 40557, 40596]
+erratum: 175
+announced: 2016-05-04
