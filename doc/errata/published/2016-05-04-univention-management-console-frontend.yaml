@@ -15,3 +15,5 @@ desc: |
  * Module tiles in the UMC overview are now correctly flagged
    favorites.
 bug: [38622, 40939, 41081, 41087, 41161]
+erratum: 174
+announced: 2016-05-04
