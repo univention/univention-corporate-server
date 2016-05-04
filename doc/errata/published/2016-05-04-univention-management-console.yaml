@@ -9,3 +9,5 @@ desc: |
  * The UMC-Server process now runs with 64512 maximum number of opened files.
    The robustness of the UMC Server has been enhanced.
 bug: [39909]
+erratum: 170
+announced: 2016-05-04
