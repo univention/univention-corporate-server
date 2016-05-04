@@ -39,6 +39,7 @@ define([
 	"dojo/on",
 	"dojo/mouse",
 	"dojo/touch",
+	"dojox/gesture/tap",
 	"dojo/aspect",
 	"dojo/has",
 	"dojo/Evented",
@@ -87,7 +88,7 @@ define([
 	"./i18n!",
 	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
-], function(declare, lang, kernel, array, baseFx, baseWin, win, on, mouse, touch, aspect, has,
+], function(declare, lang, kernel, array, baseFx, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, fxEasing, Memory, Observable,
 		dom, style, domAttr, domClass, domGeometry, domConstruct, put, hash, styles, entities, gfx, registry, tools, auth, dialog, store,
 		Menu, MenuItem, PopupMenuItem, MenuSeparator, Tooltip, DropDownButton, StackContainer,
@@ -683,7 +684,7 @@ define([
 				this._mobileMenu.addChild(permaHeader);
 
 				//add listeners
-				this._mobileMenu.permaHeader.on('click', lang.hitch(this, function() {
+				this._mobileMenu.permaHeader.on(tap, lang.hitch(this, function() {
 					var lastClickedPopupMenuItem = this._mobileMenu.popupHistory.pop();
 
 					this._updateMobileMenuPermaHeaderForClosing(lastClickedPopupMenuItem);
@@ -695,7 +696,7 @@ define([
 				this._mobileMenuCloseOverlay = new ContainerWidget({
 					'class': 'mobileMenuCloseOverlay'
 				});
-				this._mobileMenuCloseOverlay.on('click', lang.hitch(this, function() {
+				this._mobileMenuCloseOverlay.on(tap, lang.hitch(this, function() {
 					this.closeMobileMenu();
 				}));
 				dojo.body().appendChild(this._mobileMenuCloseOverlay.domNode);
@@ -871,17 +872,17 @@ define([
 
 			var _addClickListeners = lang.hitch(this, function() {
 				//open the popup of the popupMenuItem
-				popupMenuItem.on('click', lang.hitch(this, function() {
-					this._updateMobileMenuPermaHeaderForOpening(popupMenuItem);
+				popupMenuItem.on(tap , lang.hitch(this, function() {
 					this._openMobileMenuPopupFor(popupMenuItem);
+					this._updateMobileMenuPermaHeaderForOpening(popupMenuItem);
 				}));
 
 				//close the popup of the popupMenuItem
-				popupMenuItem.popup.menuSlideHeader.on('click', lang.hitch(this, function() {
+				popupMenuItem.popup.menuSlideHeader.on(tap , lang.hitch(this, function() {
 					var lastClickedPopupMenuItem = this._mobileMenu.popupHistory.pop();
 
-					this._updateMobileMenuPermaHeaderForClosing(popupMenuItem);
 					this._closeMobileMenuPopupFor(lastClickedPopupMenuItem);
+					this._updateMobileMenuPermaHeaderForClosing(popupMenuItem);
 				}));
 			});
 
@@ -1102,7 +1103,7 @@ define([
 		_openMobileMenuPopupFor: function(popupMenuItem) {
 			domClass.remove(popupMenuItem.popup.domNode, 'hiddenSlide');
 			domClass.add(popupMenuItem.domNode, 'menuItemActive menuItemActiveTransition');
-			setTimeout(function() {
+			tools.defer(function() {
 				domClass.replace(popupMenuItem.parentSlide.domNode, 'overlappedSlide', 'topLevelSlide');
 				domClass.add(popupMenuItem.popup.domNode, 'visibleSlide topLevelSlide');
 			}, 10);
@@ -1114,13 +1115,13 @@ define([
 			}
 			domClass.remove(popupMenuItem.popup.domNode, 'visibleSlide');
 			domClass.remove(popupMenuItem.parentSlide.domNode, 'overlappedSlide');
-			setTimeout(function() {
+			tools.defer(function() {
 				domClass.replace(popupMenuItem.popup.domNode, 'hiddenSlide', 'topLevelSlide');
 				domClass.add(popupMenuItem.parentSlide.domNode, 'topLevelSlide');
 			}, 510);
-			setTimeout(function() {
+			tools.defer(function() {
 				domClass.remove(popupMenuItem.domNode, 'menuItemActive');
-				setTimeout(function() {
+				tools.defer(function() {
 					domClass.remove(popupMenuItem.domNode, 'menuItemActiveTransition');
 				}, 400);
 			}, 250);
@@ -1256,7 +1257,7 @@ define([
 					domClass.remove(this, 'umcMobileMenuToggleButtonHover');
 				});
 			}
-			mobileMenuToggleButton.on('click', lang.hitch(this, function() {
+			mobileMenuToggleButton.on(tap, lang.hitch(this, function() {
 				if (typeof mobileToggleMouseLeave !== 'undefined') {
 					mobileToggleMouseLeave.pause();
 				}
@@ -1278,10 +1279,7 @@ define([
 		},
 
 		openMobileMenu: function() {
-			domClass.toggle(dojo.body(), 'mobileMenuBeforeTransition');
-			setTimeout(function() {
-				domClass.toggle(dojo.body(), 'mobileMenuActive');
-			}, 10);
+			domClass.toggle(dojo.body(), 'mobileMenuActive');
 			tools.defer(function() {
 				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
 			}, 510);
@@ -1291,9 +1289,11 @@ define([
 		},
 
 		closeMobileMenu: function() {
-			domClass.toggle(dojo.body(), 'mobileMenuActive');
-			setTimeout(function() {
-				domClass.toggle(dojo.body(), 'mobileMenuBeforeTransition');
+			if (!domClass.contains(dojo.body(), 'mobileMenuActive')) {
+				return;
+			}
+			domClass.remove(dojo.body(), 'mobileMenuActive');
+			tools.defer(function() {
 				domClass.toggle(dojo.body(), 'mobileMenuToggleButtonActive');
 			}, 510);
 			this._moduleOpeningListener.remove();
@@ -1938,6 +1938,8 @@ define([
 
 		_registerMobileModuleSearchListeners: function() {
 			var moduleSearchToggleButton = this._header._searchSidebar.toggleButton;
+
+			//add inner functions
 			var hideModuleSearch = lang.hitch(this, function() {
 				if (this._hideDeferred) {
 					return;
@@ -1951,8 +1953,7 @@ define([
 					this._hideDeferred = null;
 				}));
 			});
-
-			on(moduleSearchToggleButton, 'click', lang.hitch(this, function(evt) {
+			var _mobileModuleSearchClick = lang.hitch(this, function() {
 				if (this._focusDeferred && !this._focusDeferred.isFulfilled()) {
 					this._focusDeferred.cancel();
 				}
@@ -1964,15 +1965,17 @@ define([
 					domClass.add(moduleSearchToggleButton, 'moduleSearchToggleButtonActive');
 					this._focusDeferred = tools.defer(lang.hitch(this, function() {
 						this._header._searchSidebar.focus();
-					}), 510);
+					}), 530);
 				}
+			});
+
+			//add listeners
+			on(moduleSearchToggleButton, tap, lang.hitch(this, function(evt) {
+				_mobileModuleSearchClick();
 			}));
 			this._header._searchSidebar._searchTextBox.on('blur', lang.hitch(this, function() {
 				if (this._header._searchSidebar.get('value') === "") {
-					on.emit(moduleSearchToggleButton, 'click', {
-						bubbles: true,
-						cancelable: true
-					});
+					_mobileModuleSearchClick();
 				}
 			}));
 			aspect.after(this._header._searchSidebar, '_setValueAttr', function(obj) {
