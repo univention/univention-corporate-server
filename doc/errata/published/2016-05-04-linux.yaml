@@ -19,3 +19,5 @@ desc: |
    system.
 note: This is the 1st part of the update.
 bug: [41054]
+erratum: 166
+announced: 2016-05-04
