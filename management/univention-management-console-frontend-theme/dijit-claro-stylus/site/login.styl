@@ -179,11 +179,14 @@
 	opacity: 1;
 }
 
-#umcFakeLoginLogo {
+body #umcFakeLoginLogo {
+	@media (max-width: 400px) {
+		background: url("../images/univention_u.svg") no-repeat 12px 12px;
+	}
+	background: url("../images/univention.svg") no-repeat 10px 12px;
 	position: absolute;
 	width: 200px;
 	height: 40px;
-	background: url("../images/univention.svg") no-repeat 10px 12px;
 }
 
 /* do not show the dark underlay during the login screen */

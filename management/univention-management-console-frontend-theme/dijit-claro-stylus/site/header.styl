@@ -17,7 +17,6 @@ insertBorder() {
 		height: @min-height;
 		overflow: hidden;
 		transition: height 0.5s;
-		transform: scale(1, 1) translate3d(3px, 0, 25px);
 
 		&.moduleSearchActive {
 			height: 96px;
@@ -248,11 +247,10 @@ insertBorder() {
 		width: 80%;
 		max-width: 360px;
 		background: url("http://demo.univention.de/univention-management-console/js_$20162001042724$/dijit/themes/umc/images/background-tile.png") repeat, $primary-color; //#5a5a5a
-		box-shadow: 0px 0px 10px 3px $grey-dark;
 		transition: transform 0.5s;
 		-webkit-transition: -webkit-transform 0.5s;
 		z-index: 30;
-		display: none;
+		transform: translate3d(100%, 0, 0);
 
 		.umcMobileMenuToggleButton {
 			z-index: 10;
@@ -488,34 +486,25 @@ insertBorder() {
 		right: 0;
 		background: inherit;
 		opacity: 0;
-		display: none;
 		z-index: 1;
-		transition: transform 0.5s, opacity 0.5s;
-		-webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
-	}
-
-	//class thats get added shortly before mobileMenuActive
-	//gives the posibility to set spicific styles before the transition
-	&.mobileMenuBeforeTransition {
-		.mobileMenu {
-			display: block;
-			transform: translate3d(100%, 0, 0);
-		}
-
-		.mobileMenuCloseOverlay {
-			display: block;
-		}
+		visibility: hidden;
+		transition: opacity 0.5s, visibility 0.5s;
+		-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0.5s;
 	}
 
 	&.mobileMenuActive {
 		overflow: hidden !important;
 
 		.mobileMenuCloseOverlay {
+			visibility: visible;
 			opacity: 0.7;
+			transition: opacity 0.5s, visibility 0s;
+			-webkit-transition: opacity 0.5s, visibility 0.5s, visibility 0s;
 		}
 
 		.mobileMenu {
 			transform: translate3d(0, 0, 0) !important;
+			box-shadow: 0px 0px 10px 3px $grey-dark;
 		}
 	}
 
