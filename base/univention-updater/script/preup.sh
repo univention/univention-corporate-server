@@ -165,6 +165,19 @@ fi
 
 ##
 
+## Check for PostgreSQL-8.3 (Bug #40690)
+check_for_postgresql83 () {
+	case "$(dpkg-query -W -f '${Status}' postgresql-8.3 2>/dev/null)" in
+	install*) ;;
+	*) return 0 ;;
+	esac
+	echo "WARNING: PostgreSQL-8.3 is no longer supported by UCS-4 and must be migrated to"
+	echo "         a newer version of PostgreSQL. See http://sdb.univention.de/1249 for"
+	echo "         more details."
+	exit 1
+}
+check_for_postgresql83
+
 ## Check for PostgreSQL-8.4 (Bug #40690)
 check_for_postgresql84 () {
 	case "$(dpkg-query -W -f '${Status}' postgresql-8.4 2>/dev/null)" in

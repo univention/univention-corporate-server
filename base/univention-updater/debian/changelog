@@ -1,3 +1,9 @@
+univention-updater (9.100.5-1) unstable; urgency=medium
+
+  * Add warning for PostgreSQL migration (Bug #40690)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 04 May 2016 18:43:22 +0200
+
 univention-updater (9.100.4-9) unstable; urgency=low
 
   * Errataversion check (Bug #41068)
