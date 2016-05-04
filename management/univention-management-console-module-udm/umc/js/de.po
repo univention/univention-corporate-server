@@ -68,7 +68,7 @@ msgid ""
 "\"_blank\">Buy UCS.</a>"
 msgstr ""
 "<a href=\"https://www.univention.de/enterprise-subskriptionen\" target="
-"\"_blank\">Kaufe UCS.</a>"
+"\"_blank\">UCS kaufen.</a>"
 
 #: umc/js/udm/DetailPage.js:842
 #, python-format

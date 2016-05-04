@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-19) unstable; urgency=medium
+
+  * Bug #41174: changed german translation
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 04 May 2016 12:15:45 +0200
+
 univention-management-console-module-udm (6.0.11-18) unstable; urgency=medium
 
   * Bug #41174: A link that directs to the enterprise subscriptions
