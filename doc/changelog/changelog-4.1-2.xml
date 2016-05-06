@@ -67,9 +67,9 @@
 				<listitem><simpara>
 					The mount-point option <property>no_mbcache</property> has been added for ext4 file systems to disable the
 					<wordasword>Filesystem Meta Information Block Cache (mbcache)</wordasword>. The cache is used to manage shared Extended
-					Attributes (EAs), which are also used to store Access Control Lists (ACLs) for files and directories. For some
-					work-loads which use EAs with many different values the cache has performance issues and can dead-lock the system in
-					certain cases. Samba is one example which uses EAs to store the DOS attributes and NT-ACLs. The cache can be disabled by
+					Attributes (<wordasword>EAs</wordasword>), which are also used to store Access Control Lists (ACLs) for files and directories. For some
+					work-loads which use <wordasword>EAs</wordasword> with many different values the cache has performance issues and can dead-lock the system in
+					certain cases. Samba is one example which uses <wordasword>EAs</wordasword> to store the DOS attributes and NT ACLs. The cache can be disabled by
 					re-mounting the file system using <command>mount -o remount,no_mbcache "$fs"</command> or by adding the option
 					<property>no_mbcache</property> in <filename>/etc/fstab</filename> and rebooting the system (<u:bug>41054</u:bug>).
 				</simpara></listitem>
@@ -130,7 +130,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Add support to configure serial console support through the Univention Configuration Registry variables
-					<envar>grub/terminal</envar> and <envar>grub/serialcommand</envar>. Thanks to Lutz Willek for the patch (<u:bug>40596</u:bug>).
+					<envar>grub/terminal</envar> and <envar>grub/serialcommand</envar>. Thanks to <wordasword>Lutz Willek</wordasword> for the patch (<u:bug>40596</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -240,7 +240,7 @@
 					Wizards are now scrolling to the top when switching the page (<u:bug>40939</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Minor bugfixes for the widget LinkList to accept static values (<u:bug>41081</u:bug>).
+					Minor bugfixes for the widget <property>LinkList</property> to accept static values (<u:bug>41081</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The context menu for link tiles in the UMC overview is now correctly displayed (<u:bug>41087</u:bug>).
@@ -647,7 +647,7 @@
 				(<u:bug>41165</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The detection of the local repository prefix has beend fixed (<u:bug>41166</u:bug>).
+				The detection of the local repository prefix has been fixed (<u:bug>41166</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 
