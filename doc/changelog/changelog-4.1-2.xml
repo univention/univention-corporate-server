@@ -49,6 +49,7 @@
 		</itemizedlist>
 	</section>
 
+				<!--
 	<section id="changelog:installer">
 		<title>Univention Installer</title>
 		<itemizedlist>
@@ -56,6 +57,7 @@
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
+				-->
 
 
 	<section id="changelog:basic">
