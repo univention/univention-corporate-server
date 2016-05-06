@@ -1,9 +1,9 @@
 product: ucs
 release: "4.1"
-version: [0]
-scope: ucs_4.1-0-errata4.1-0
+version: [0,1]
+scope: ucs_4.1-0-errata4.1-1
 src: openjdk-7
-fix: 7u95-2.6.4-1.22.201602051241
+fix: 7u101-2.6.6-2.31.201605041712
 desc: |
  Multiple vulnerabilities have been discovered in the implementation
  of the Java platform. In Univention Corporate Server OpenJDK is
@@ -23,6 +23,13 @@ desc: |
  * Update splashscreen displays (CVE-2015-8126, CVE-2015-8472)
  * Very difficult to exploit vulnerability allows successful unauthenticated
    network attacks via multiple protocols. (CVE-2015-7575)
+ * Ensure thread consistency (CVE-2016-0686, S8129952)
+ * Better byte behavior (CVE-2016-0687, S8132051)
+ * Make DSA more fair (CVE-2016-0695, S8138593)
+ * Better state table management (S8139008)
+ * Better buffering of XML strings (CVE-2016-3425, S8143167)
+ * Improve JMX connections (CVE-2016-3427, S8144430)
+ * Improve MethodHandle consistency (CVE-2016-0636, S8152335)
 bug: [40483]
 cve:
  - CVE-2016-0402
@@ -33,3 +40,9 @@ cve:
  - CVE-2015-8126
  - CVE-2015-8472
  - CVE-2015-7575
+ - CVE-2016-0686
+ - CVE-2016-0687
+ - CVE-2016-0695
+ - CVE-2016-3425
+ - CVE-2016-3427
+ - CVE-2016-0636
