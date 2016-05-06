@@ -75,7 +75,7 @@
 				<listitem><simpara>
 					Service information files in <filename>/etc/univention/service.info/services</filename>
 					are now only considered if they carry the filename suffix <filename>.cfg</filename>.
-					The behaviour is now similar to the treatment of UCR info files.
+					The behavior is now similar to the treatment of UCR info files.
 					(<u:bug>40383</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -94,16 +94,16 @@
 			<itemizedlist>
 				<listitem><simpara>
 					This update addresses the following issue(s): On UCS systems booting via BIOS, an error would happen if debconf
-					grub-pc/install_devices contains a wrong device.  If it contains a wrong device the GRUB installation happens but fails,
+					<property>grub-pc/install_devices</property> contains a wrong device. If it contains a wrong device the GRUB installation happens but fails,
 					leading to an inconsistent installation between /boot/grub and the GRUB directly on the disk.  This makes the system
-					unbootable.
+					not bootable.
 
-					This update checks all devices in grub-pc/install_devices, removing invalid devices.
+					This update checks all devices in <property>grub-pc/install_devices</property>, removing invalid devices.
 
-					Additionally a guess is made for the correct boot device which will be added to grub-pc/install_devices if
-					grub-pc/install_devices is currently empty or there were invalid devices.
+					Additionally a guess is made for the correct boot device which will be added to <property>grub-pc/install_devices</property> if
+					<property>grub-pc/install_devices</property> is currently empty or there were invalid devices.
 
-					If any changes were made, grub-install is run on all devices in grub-pc/install_devices.
+					If any changes were made, grub-install is run on all devices in <property>grub-pc/install_devices</property>.
 
 					See also <u:sdb>1356</u:sdb> and <u:sdb>1357</u:sdb>.  (<u:bug>40654</u:bug>, <u:bug>40660</u:bug>).
 				</simpara></listitem>
@@ -174,7 +174,7 @@
 					If error messages contained a "%" they weren't displayed in UMC. This issue has been fixed (<u:bug>40749</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The expiration date has been increased by 5 years. This results in a traceback during the login on the 29th of Feburary.
+					The expiration date has been increased by 5 years. This results in a traceback during the login on the 29th of February.
 					This issue has been fixed (<u:bug>40790</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -182,14 +182,14 @@
 					(<u:bug>40806</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The umc.store API allows to contain Arrays in query requests now (<u:bug>38639</u:bug>).
+					The <property>umc.store</property> API allows to contain Arrays in query requests now (<u:bug>38639</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					An error in the comparision function umc.tools.cmpObjects which could cause that e.g. sorting the grid header wasn't
+					An error in the comparsion function <property>umc.tools.cmpObjects</property> which could cause that e.g. sorting the grid header wasn't
 					possible anymore has been fixed (<u:bug>35407</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The location where UMC redirects after logout is now configurable via the UCR variable "umc/logout/location"
+					The location where UMC redirects after logout is now configurable via the &ucsUCRV; <envar>umc/logout/location</envar>
 					(<u:bug>40613</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -259,10 +259,10 @@
 					Internal adaptations have been added to allow for extending App Center functionalities (<u:bug>40827</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					univention-register-apps now uses the new appcenter API and has been deprecated (<u:bug>40754</u:bug>).
+					<command>univention-register-apps</command> now uses the new appcenter API and has been deprecated (<u:bug>40754</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					An error during loading the appcenter cache has been fixed which prevented using the appcenter when the cache file was
+					An error during loading the App Center cache has been fixed which prevented using the App Center when the cache file was
 					corrupted (<u:bug>40875</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -278,7 +278,7 @@
 					thumbnails is smoother (<u:bug>39794</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A helptext still mentioned the Free-for-personal-Use Edition. This has been replaced with the UCS Core Edition
+					A help text still mentioned the Free-for-personal-Use Edition. This has been replaced with the UCS Core Edition
 					(<u:bug>38530</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -295,13 +295,13 @@
 					Minor code changes make other projects easier that rely on the App Center (<u:bug>40943</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					univention-app shell now correctly exits with the exit code of the called command (<u:bug>40550</u:bug>).
+					<command>univention-app</command> shell now correctly exits with the exit code of the called command (<u:bug>40550</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					univention-app installed unsigned packages (<u:bug>40861</u:bug>).
+					<command>univention-app</command> installed unsigned packages. This issue has been fixed (<u:bug>40861</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The "Package Management" module can be opened via hash again (<u:bug>40991</u:bug>).
+					The Package Management module can be opened via hash again (<u:bug>40991</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Details of software packages can be shown again (<u:bug>40992</u:bug>).
@@ -311,14 +311,14 @@
 					fixed (<u:bug>41009</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Joinscripts of Docker Apps are run via univention-run-join-scripts instead of being called directly
+					Join scripts of Docker Apps are run via <command>univention-run-join-scripts</command> instead of being called directly
 					(<u:bug>40984</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The certificate of the appcenter server is now always validated in HTTPS connections (<u:bug>30620</u:bug>).
+					The certificate of the App Center server is now always validated in HTTPS connections (<u:bug>30620</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					When extracting new App meta data, the UID / GID / permissions are set explicitely for these files instead of relying on
+					When extracting new App meta data, the permissions are set explicitly for these files instead of relying on
 					the archive (<u:bug>41029</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -368,10 +368,11 @@
 					The error message for malformed paths in shares has been improved (<u:bug>41040</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-Multiple modules allowed to select special Docker host objects when it came to choosing a computer object. This option has been removed as it makes no sense (<u:bug>41041</u:bug>).
+					Multiple modules allowed to select special Docker host objects when it came to choosing a computer object. This option
+					has been removed as it makes no sense (<u:bug>41041</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-importing the python modules of "univention.admin" doesn't depend on the order or previous imports anymore (<u:bug>33359</u:bug>).
+					importing the python modules of <property>univention.admin</property> doesn't depend on the order or previous imports anymore (<u:bug>33359</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -424,7 +425,7 @@ importing the python modules of "univention.admin" doesn't depend on the order o
 			<title>DNS module</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The PTR-Record entries are now sorted numerical in the overview of a reverse zone (<u:bug>40747</u:bug>).
+					The PTR record entries are now sorted numerical in the overview of a reverse zone (<u:bug>40747</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The DNS module now displays more information in the grid columns and forward zones are now shown before reverse zones in
@@ -440,7 +441,7 @@ importing the python modules of "univention.admin" doesn't depend on the order o
 					(<u:bug>37904</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Searching for properties using the LDAPSearch syntax class caused a traceback. This issue has been fixed
+					Searching for properties using the <property>LDAPSearch</property> syntax class caused a traceback. This issue has been fixed
 					(<u:bug>38635</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -607,17 +608,17 @@ importing the python modules of "univention.admin" doesn't depend on the order o
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The joinscript uses cURL instead of wget to configure SAML service provider setting to prevent conflicts with old SHA1
+					The joinscript uses cURL instead of wget to configure SAML service provider setting to prevent conflicts with old SHA-1
 					or MD5 SSL certificates (<u:bug>40658</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A unjoinscript has been added which removes the SAML configuration for UMC (<u:bug>40738</u:bug>).
+					A unjoin-script has been added which removes the SAML configuration for UMC (<u:bug>40738</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The creation of the internal SAML LDAP user ignores extended attributes now (<u:bug>40741</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-				The extended attribute for the SAML serviceprovider can now be used in user templates (<u:bug>40895</u:bug>).
+				The extended attribute for the SAML service provider can now be used in user templates (<u:bug>40895</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -710,7 +711,7 @@ importing the python modules of "univention.admin" doesn't depend on the order o
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The timelimit of ldap searches in <package>libnss-ldap</package> is now configurable via the &ucsUCRV;
+					The time limit of ldap searches in <package>libnss-ldap</package> is now configurable via the &ucsUCRV;
 					<envar>nssldap/timelimit</envar> and defaults to 30 seconds. This prevents hanging UMC server processes when changing
 					network and IP settings in certain circumstances (<u:bug>40968</u:bug>).
 				</simpara></listitem>
@@ -774,7 +775,7 @@ importing the python modules of "univention.admin" doesn't depend on the order o
 				<listitem><simpara>
 					This update sets the new <filename>smb.conf</filename> option <property>ldap server require strong auth</property> to
 					<property>allow_sasl_over_tls</property>. Additionally it configures <property>tls verify peer</property> to
-					<property>ca_and_name</property>.  The raised security requirements of Samba server components may require config
+					<property>ca_and_name</property>.  The raised security requirements of Samba server components may require configuration
 					adjustments for older clients. Univention Corporate Client (UCC) 1.0 running a Linux kernel version prior to 3.8 for
 					example require an adjustment of the <property>mount.cifs options</property>. In that case the value for mount option
 					<property>sec</property> needs to be adjusted to <property>ntlmsspi</property>, e.g. by setting <command>ucr set
@@ -794,7 +795,7 @@ importing the python modules of "univention.admin" doesn't depend on the order o
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The Active Directory takeover fails if the AD NETBIOS domain name is unusual. This issue has been fixed
+					The Active Directory takeover fails if the Active Directory NetBIOS domain name is unusual. This issue has been fixed
 					(<u:bug>39070</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
