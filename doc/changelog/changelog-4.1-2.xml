@@ -185,7 +185,7 @@
 					The <property>umc.store</property> API allows to contain Arrays in query requests now (<u:bug>38639</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					An error in the comparsion function <property>umc.tools.cmpObjects</property> which could cause that e.g. sorting the grid header wasn't
+					An error in the comparison function <property>umc.tools.cmpObjects</property> which could cause that e.g. sorting the grid header wasn't
 					possible anymore has been fixed (<u:bug>35407</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -215,8 +215,8 @@
 					A UMC server crash is prevented which might happen during session timeout (<u:bug>40627</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The property translationId for UMC XML files was previously only evaluated for UMC module flavors. With this update,
-					translationId is also correctly evaluated for module and link entries (<u:bug>40930</u:bug>).
+					The property <property>translationId</property> for UMC XML files was previously only evaluated for UMC module flavors. With this update,
+					<property>translationId</property> is also correctly evaluated for module and link entries (<u:bug>40930</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -259,7 +259,7 @@
 					Internal adaptations have been added to allow for extending App Center functionalities (<u:bug>40827</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					<command>univention-register-apps</command> now uses the new appcenter API and has been deprecated (<u:bug>40754</u:bug>).
+					<command>univention-register-apps</command> now uses the new App Center API and has been deprecated (<u:bug>40754</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					An error during loading the App Center cache has been fixed which prevented using the App Center when the cache file was
@@ -569,7 +569,7 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The <filename>dists/**/Packages*</filename> files created for local repositories did contain multiple entries for the
-				same package. This breaks the Debian installer and other tools like debootstrap, which use a simpler implementation than
+				same package. This breaks the Debian installer and other tools like <command>debootstrap</command>, which use a simpler implementation than
 				APT. A filter has been added to filter out old versions and duplicate entries (<u:bug>40932</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
