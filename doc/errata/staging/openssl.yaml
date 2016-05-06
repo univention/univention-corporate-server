@@ -1,0 +1,21 @@
+product: ucs
+release: "4.1"
+version: [1,2]
+scope: ucs_4.1-0-errata4.1-2
+src: openssl
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * EVP_EncodeUpdate overflow (CVE-2016-2105)
+ * EVP_EncryptUpdate overflow (CVE-2016-2106)
+ * Padding oracle in AES-NI CBC MAC check (CVE-2016-2107)
+ * Memory corruption in the ASN.1 encoder (CVE-2016-2108)
+ * ASN.1 BIO excessive memory allocation (CVE-2016-2109)
+ * EBCDIC overread (CVE-2016-2176)
+bug: [41197]
+cve:
+ - CVE-2016-2105
+ - CVE-2016-2106
+ - CVE-2016-2107
+ - CVE-2016-2108
+ - CVE-2016-2109
