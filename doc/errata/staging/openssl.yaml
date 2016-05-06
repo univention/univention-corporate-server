@@ -3,7 +3,7 @@ release: "4.1"
 version: [1,2]
 scope: ucs_4.1-0-errata4.1-2
 src: openssl
-fix: 
+fix: 1.0.2d-1.118.201605062014
 desc: |
  This update addresses the following issue(s):
  * EVP_EncodeUpdate overflow (CVE-2016-2105)
