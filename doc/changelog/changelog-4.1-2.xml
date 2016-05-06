@@ -65,6 +65,13 @@
 			<title>Linux kernel and firmware packages</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The mount-point option <property>no_mbcache</property> has been added for ext4 file systems to disable the
+					<wordasword>Filesystem Meta Information Block Cache (mbcache)</wordasword>. The cache is used to manage shared Extended
+					Attributes (EAs), which are also used to store Access Control Lists (ACLs) for files and directories. For some
+					work-loads which use EAs with many different values the cache has performance issues and can dead-lock the system in
+					certain cases. Samba is one example which uses EAs to store the DOS attributes and NT-ACLs. The cache can be disabled by
+					re-mounting the file system using <command>mount -o remount,no_mbcache "$fs"</command> or by adding the option
+					<property>no_mbcache</property> in <filename>/etc/fstab</filename> and rebooting the system (<u:bug>41054</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -106,6 +113,24 @@
 					If any changes were made, grub-install is run on all devices in <property>grub-pc/install_devices</property>.
 
 					See also <u:sdb>1356</u:sdb> and <u:sdb>1357</u:sdb>.  (<u:bug>40654</u:bug>, <u:bug>40660</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Localization of the GRUB boot menu has been disabled. The title string gets translated to the preferred language of the
+					user triggering menu generation process. This breaks selecting a boot kernel through the &ucsUCRV;
+					<envar>grub/default</envar>, as it doesn't work on systems using a different language (<u:bug>41046</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Remove extra argument to <command>grub-mkdevicemap</command> as it is not needed (<u:bug>40586</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The menu titles are now quoted to allow strings containing blanks (<u:bug>25157</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Disable saving the selection by default as it is not supported on all file systems (<u:bug>40557</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Add support to configure serial console support through the Univention Configuration Registry variables
+					<envar>grub/terminal</envar> and <envar>grub/serialcommand</envar>. Thanks to Lutz Willek for the patch (<u:bug>40596</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -205,6 +230,24 @@
 				<listitem><simpara>
 					Add a hook interface for other packages for extending the behavior of UMC (<u:bug>40118</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The user menu in the UMC is now more touch-friendly for small screens and the use on mobile devices (<u:bug>38622</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The context menu for links is now working as expected (<u:bug>40939</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Wizards are now scrolling to the top when switching the page (<u:bug>40939</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Minor bugfixes for the widget LinkList to accept static values (<u:bug>41081</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The context menu for link tiles in the UMC overview is now correctly displayed (<u:bug>41087</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Module tiles in the UMC overview are now correctly flagged favorites (<u:bug>41161</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -217,6 +260,10 @@
 				<listitem><simpara>
 					The property <property>translationId</property> for UMC XML files was previously only evaluated for UMC module flavors. With this update,
 					<property>translationId</property> is also correctly evaluated for module and link entries (<u:bug>40930</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UMC server process now runs with 64512 maximum number of opened files. The robustness of the UMC server has been
+					enhanced (<u:bug>39909</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -327,6 +374,9 @@
 				<listitem><simpara>
 					The parameter for creating a Docker Container can now be adjusted by the App (<u:bug>41062</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Additional App files of installed Apps are now also updated (<u:bug>39368</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -374,6 +424,14 @@
 				<listitem><simpara>
 					importing the python modules of <property>univention.admin</property> doesn't depend on the order or previous imports anymore (<u:bug>33359</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The correct referencing objects are now shown in a policy. Previously caching caused wrong objects to be shown
+					(<u:bug>33344</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A link that redirects to the subscription prices for UCS on the Univention website has been added to the license dialog
+					of UCS core editions (<u:bug>41174</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -393,6 +451,14 @@
  				<listitem><simpara>
 					The initial setup used a script to update the App Center files that failed under certain circumstances. Now a script is
 					called that works in unjoined environments (<u:bug>40897</u:bug>).
+				</simpara></listitem>
+ 				<listitem><simpara>
+					The detection of a docker environment caused the PXE installation to fail. This issue has been fixed
+					(<u:bug>41143</u:bug>).
+				</simpara></listitem>
+ 				<listitem><simpara>
+					The list of supported browser versions which is displayed on the console upon login to a UCS system (message of the day)
+					has been updated (<u:bug>40580</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -572,6 +638,17 @@
 				same package. This breaks the Debian installer and other tools like <command>debootstrap</command>, which use a simpler implementation than
 				APT. A filter has been added to filter out old versions and duplicate entries (<u:bug>40932</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				Software package versions from the current release are preferred over packages from previous releases even when they are
+				newer (<u:bug>41083</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The version patchlevel is now set to the correct value in the package <package>univention-updater</package>
+				(<u:bug>41165</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The detection of the local repository prefix has beend fixed (<u:bug>41166</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 
 		<section id="changelog:deployment:pkgdb">
@@ -703,6 +780,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Some links in the footer of the UCS overview site have been changed (<u:bug>41175</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -817,6 +895,19 @@
 					<property>proxyAddresses</property> has been added. This can be switched on for users and groups individually by the new
 					pair of Univention Configuration Registry variables <envar>connector/ad/mapping/user/alternativemail</envar> and
 					<envar>connector/ad/mapping/group/alternativemail</envar> (<u:bug>40357</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The synchronization of the password hashes was implemented by using a service which was installed on the Microsoft
+					Active Directory server. The Univention AD Connector now uses different interfaces of the Active Directory for reading
+					and writing the password hashes. That means, the UCS AD Connector service which is installed on the Microsoft Active
+					Directory server can be stopped after installing this update (<u:bug>40745</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					If a user was moved on UCS side, the group cache wasn't always updated and an error occurred. This issue has been fixed
+					(<u:bug>41028</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The AD Connector is now restarted after rotating the AD Connector log files (<u:bug>32265</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
