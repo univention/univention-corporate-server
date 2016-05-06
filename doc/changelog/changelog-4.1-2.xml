@@ -17,6 +17,32 @@
 				</para>
 				<itemizedlist>
 					<listitem><simpara>
+						<package>eglibc</package> (<u:cve>2014-8121</u:cve> <u:cve>2015-1781</u:cve> <u:cve>2015-7547</u:cve>
+						<u:cve>2015-8776</u:cve> <u:cve>2015-8777</u:cve> <u:cve>2015-8778</u:cve> <u:cve>2015-8779</u:cve>)
+						(<u:bug>40022</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2015-7560</u:cve>) (<u:bug>40680</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>sudo</package> (<u:cve>2015-5602</u:cve>) (<u:bug>40364</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>apache2</package> (<u:cve>2015-3183</u:cve>) (<u:bug>40929</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>isc-dhcp</package> (<u:cve>2015-8605</u:cve>) (<u:bug>40545</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>openssl</package> (<u:cve>2015-1794</u:cve> <u:cve>2015-3193</u:cve> <u:cve>2015-3194</u:cve>
+						<u:cve>2015-3195</u:cve> <u:cve>2016-0701</u:cve> <u:cve>2016-0702</u:cve> <u:cve>2016-0705</u:cve>
+						<u:cve>2016-0797</u:cve> <u:cve>2016-0798</u:cve> <u:cve>2016-0799</u:cve> <u:cve>2016-0800</u:cve>)
+						(<u:bug>40187</u:bug>).
+					</simpara></listitem>
+					<listitem><simpara>
+						<package>samba</package> (<u:cve>2015-5370</u:cve> <u:cve>2016-2110</u:cve> <u:cve>2016-2111</u:cve>
+						<u:cve>2016-2112</u:cve> <u:cve>2016-2113</u:cve> <u:cve>2016-2114</u:cve> <u:cve>2016-2115</u:cve>
+						<u:cve>2016-2118</u:cve>) (<u:bug>40988</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</listitem>
@@ -47,6 +73,10 @@
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Service information files in <filename>/etc/univention/service.info/services</filename>
+					are now only considered if they carry the filename suffix <filename>.cfg</filename>.
+					The behaviour is now similar to the treatment of UCR info files.
+					(<u:bug>40383</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -63,6 +93,19 @@
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
+					This update addresses the following issue(s): On UCS systems booting via BIOS, an error would happen if debconf
+					grub-pc/install_devices contains a wrong device.  If it contains a wrong device the GRUB installation happens but fails,
+					leading to an inconsistent installation between /boot/grub and the GRUB directly on the disk.  This makes the system
+					unbootable.
+
+					This update checks all devices in grub-pc/install_devices, removing invalid devices.
+
+					Additionally a guess is made for the correct boot device which will be added to grub-pc/install_devices if
+					grub-pc/install_devices is currently empty or there were invalid devices.
+
+					If any changes were made, grub-install is run on all devices in grub-pc/install_devices.
+
+					See also <u:sdb>1356</u:sdb> and <u:sdb>1357</u:sdb>.  (<u:bug>40654</u:bug>, <u:bug>40660</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -128,6 +171,39 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					If error messages contained a "%" they weren't displayed in UMC. This issue has been fixed (<u:bug>40749</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The expiration date has been increased by 5 years. This results in a traceback during the login on the 29th of Feburary.
+					This issue has been fixed (<u:bug>40790</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					It's now possible to use multiple languages in one session when using HTTP basic authentication (via command line)
+					(<u:bug>40806</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The umc.store API allows to contain Arrays in query requests now (<u:bug>38639</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					An error in the comparision function umc.tools.cmpObjects which could cause that e.g. sorting the grid header wasn't
+					possible anymore has been fixed (<u:bug>35407</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The location where UMC redirects after logout is now configurable via the UCR variable "umc/logout/location"
+					(<u:bug>40613</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The UMC login page does not warn about an insecure connection when logging in from the same machine the UMC runs on
+					(<u:bug>40638</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Error dialogs concerning Piwik are now suppressed (<u:bug>30822</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Ensure that the first non-empty UMC category is shown at startup (<u:bug>40923</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Add a hook interface for other packages for extending the behavior of UMC (<u:bug>40118</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -136,6 +212,11 @@
 			<title>Univention Management Console server</title>
 			<itemizedlist>
 				<listitem><simpara>
+					A UMC server crash is prevented which might happen during session timeout (<u:bug>40627</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The property translationId for UMC XML files was previously only evaluated for UMC module flavors. With this update,
+					translationId is also correctly evaluated for module and link entries (<u:bug>40930</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -144,6 +225,107 @@
 			<title>Univention App Center</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Docker Apps now do not have their repository removed in the container (<u:bug>40315</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Upgrading Apps now does not lead to an error just after the installation of packages (<u:bug>40674</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Upgrading Apps now does not lead to an error when upgrading their master packages (<u:bug>40713</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The application information like vendor, description were HTML encoded twice at some places (<u:bug>35324</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					If no package changes are detected an application could not be upgraded (<u:bug>40005</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The error handling of the apps module has been improved (<u:bug>40797</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The application metadata are ensured to be updated before installing or upgrading an application. This prevents errors
+					when installing applications on remote hosts (<u:bug>40804</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Apps may define ports they want to occupy exclusively. Docker Apps checked before installation whether an already
+					installed App excepts exclusive access to one of these ports. This check has been extended to Non-Docker Apps
+					(<u:bug>40508</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Apps now show general information about the terms under which the software may be used. If the App ships a license file,
+					it may be read before and after installation (<u:bug>40428</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Internal adaptations have been added to allow for extending App Center functionalities (<u:bug>40827</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					univention-register-apps now uses the new appcenter API and has been deprecated (<u:bug>40754</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					An error during loading the appcenter cache has been fixed which prevented using the appcenter when the cache file was
+					corrupted (<u:bug>40875</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Malformed files for meta information could cause the App Center to show a traceback. This has been fixed, those files
+					are ignored now (<u:bug>40874</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Upon upgrading the App Center software package, the App cache could get outdated. This caused an error in the App Center
+					in some cases (<u:bug>40882</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Improved the image gallery in the details page of an app. The handling of YouTube videos has been improved and enlarging
+					thumbnails is smoother (<u:bug>39794</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A helptext still mentioned the Free-for-personal-Use Edition. This has been replaced with the UCS Core Edition
+					(<u:bug>38530</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The overview of software changes has been enhanced (<u:bug>39896</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A margin has been added to the footer buttons of the installation error page (<u:bug>39907</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Join scripts and unjoin scripts are now correctly removed while installing and uninstalling an App
+					(<u:bug>40879</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Minor code changes make other projects easier that rely on the App Center (<u:bug>40943</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					univention-app shell now correctly exits with the exit code of the called command (<u:bug>40550</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					univention-app installed unsigned packages (<u:bug>40861</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The "Package Management" module can be opened via hash again (<u:bug>40991</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Details of software packages can be shown again (<u:bug>40992</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The installation status of Docker Apps was determined incorrectly by certain functions of the App Center. This has been
+					fixed (<u:bug>41009</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Joinscripts of Docker Apps are run via univention-run-join-scripts instead of being called directly
+					(<u:bug>40984</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The certificate of the appcenter server is now always validated in HTTPS connections (<u:bug>30620</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					When extracting new App meta data, the UID / GID / permissions are set explicitely for these files instead of relying on
+					the archive (<u:bug>41029</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some images were not shown in Internet Explorer. This issue has been resolved (<u:bug>39927</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The parameter for creating a Docker Container can now be adjusted by the App (<u:bug>41062</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -152,6 +334,44 @@
 			<title>&ucsUDM; UMC modules and command line interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Some LDAP search requests have been optimized in the handler modules (<u:bug>40651</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					In situations where the IP address of a created computer contained two equal blocks (e.g. 10.10.20.0/24) invalid pointer
+					records were created. This issue has been fixed (<u:bug>39030</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The layout of DNS service and text records have been adjusted to be more readable (<u:bug>40775</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					It is now prevented to create extended attributes for users with required fields without specifying a default value.
+					Those extended attributes caused problems during upgrading to UCS 4.1 or installing various apps
+					(<u:bug>40824</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The search filter for <property>name</property> in the <property>dns/dns</property> module now also finds zones and
+					pointer records (<u:bug>23804</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The search filter for <property>dhcpPermitList</property> in the <property>dhcp/pool</property> lookup function has been
+					fixed (<u:bug>39343</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The search filter for <property>fqdn</property> has been adapted so it can be used to search for multiple computers
+					(<u:bug>34327</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Some columns which show more information in the grid of UMC have been added to the DNS handler modules
+					(<u:bug>38639</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The error message for malformed paths in shares has been improved (<u:bug>41040</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+Multiple modules allowed to select special Docker host objects when it came to choosing a computer object. This option has been removed as it makes no sense (<u:bug>41041</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+importing the python modules of "univention.admin" doesn't depend on the order or previous imports anymore (<u:bug>33359</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -160,6 +380,18 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Access restrictions on non DC master App Appliances have been corrected in the system activation package
+					(<u:bug>39700</u:bug>).
+ 				</simpara></listitem>
+ 				<listitem><simpara>
+					App Appliances now ensure that the UCS domain they join has an activated license (<u:bug>39700</u:bug>).
+ 				</simpara></listitem>
+ 				<listitem><simpara>
+					The virtual keyboard to enter special characters now supports touch devices (<u:bug>40572</u:bug>).
+ 				</simpara></listitem>
+ 				<listitem><simpara>
+					The initial setup used a script to update the App Center files that failed under certain circumstances. Now a script is
+					called that works in unjoined environments (<u:bug>40897</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -192,6 +424,28 @@
 			<title>DNS module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The PTR-Record entries are now sorted numerical in the overview of a reverse zone (<u:bug>40747</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The DNS module now displays more information in the grid columns and forward zones are now shown before reverse zones in
+					the tree view (<u:bug>38639</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Searching for a specific object type underneath of <property>cn=univention</property> in the LDAP directory did not
+					yield results and has been repaired (<u:bug>32843</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Searching for properties which require an exact match did not work because the LDAP filter was prepended with
+					<property>*</property>. The search for e.g. the <property>gidNumber</property> of a group is now possible again
+					(<u:bug>37904</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Searching for properties using the LDAPSearch syntax class caused a traceback. This issue has been fixed
+					(<u:bug>38635</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The <property>users/self</property> module can now be activated again via setting the &ucsUCRV;
+					<envar>umc/module/udm/users/self/disabled</envar> to <envar>false</envar> (<u:bug>39016</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -240,6 +494,7 @@
 			<title>Printers module</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Performance of the UMC print quota overview has been improved (<u:bug>33792</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -280,6 +535,8 @@
 			<title>Other modules</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Hosts which are docker containers are now excluded from the check in the diagnostic module if the SSH connection to
+					these hosts is possible (<u:bug>40563</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -298,10 +555,21 @@
 		<title>Software deployment</title>
 		<itemizedlist>
 			<listitem><simpara>
-					The <filename>preup.sh</filename> and <filename>postup.sh</filename> scripts have been updated to match UCS-4.1-2 (<u:bug>41157</u:bug>).
+				The <filename>preup.sh</filename> and <filename>postup.sh</filename> scripts have been updated to match UCS-4.1-2 (<u:bug>41157</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-					Linux 4.1 kernel package are now also considered for removal an upgrades (<u:bug>40748</u:bug>).
+				Linux 4.1 kernel package are now also considered for removal an upgrades (<u:bug>40748</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The change from HTTP to HTTPS breaks the old updater from UCS-4.0-4, which is still running after the update to 4.1-0.
+				As such all updates stop there. Running the same command again continues installing updates, as then the new updater is
+				used.  This update fixes this problem by re-executing the updater after each update to guarantee, that the latest
+				version is always used (<u:bug>40338</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The <filename>dists/**/Packages*</filename> files created for local repositories did contain multiple entries for the
+				same package. This breaks the Debian installer and other tools like debootstrap, which use a simpler implementation than
+				APT. A filter has been added to filter out old versions and duplicate entries (<u:bug>40932</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 
@@ -339,6 +607,17 @@
 			<title>SAML</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The joinscript uses cURL instead of wget to configure SAML service provider setting to prevent conflicts with old SHA1
+					or MD5 SSL certificates (<u:bug>40658</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					A unjoinscript has been added which removes the SAML configuration for UMC (<u:bug>40738</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The creation of the internal SAML LDAP user ignores extended attributes now (<u:bug>40741</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+				The extended attribute for the SAML serviceprovider can now be used in user templates (<u:bug>40895</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -347,6 +626,8 @@
 			<title>Univention self service</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The robustness and performance have been increased by not forking a UMC module process on each HTTP request
+					(<u:bug>40799</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -387,6 +668,8 @@
 			<title>Kerberos</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Univention Configuration Registry variable description for <envar>kerberos/autostart</envar> did not clearly explain
+					that this variable needs to remain set to <property>no</property> on Samba4/AD DCs (<u:bug>40383</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -427,6 +710,9 @@
 			<title>PAM / Local group cache</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The timelimit of ldap searches in <package>libnss-ldap</package> is now configurable via the &ucsUCRV;
+					<envar>nssldap/timelimit</envar> and defaults to 30 seconds. This prevents hanging UMC server processes when changing
+					network and IP settings in certain circumstances (<u:bug>40968</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -477,6 +763,29 @@
 			<title>Samba</title>
 			<itemizedlist>
 				<listitem><simpara>
+					In case an account locking password policy has been defined for the domain, e.g. via <command>samba-tool domain
+					passwordsettings</command>, the <property>badPwdCount</property> increased in steps of two for each failed login attempt
+					at a Windows client (<u:bug>40328</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The patch for <u:cve>2015-5252</u:cve> caused a regression for the special share path <filename>/</filename>. This issue
+					has been fixed (<u:bug>40847</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					This update sets the new <filename>smb.conf</filename> option <property>ldap server require strong auth</property> to
+					<property>allow_sasl_over_tls</property>. Additionally it configures <property>tls verify peer</property> to
+					<property>ca_and_name</property>.  The raised security requirements of Samba server components may require config
+					adjustments for older clients. Univention Corporate Client (UCC) 1.0 running a Linux kernel version prior to 3.8 for
+					example require an adjustment of the <property>mount.cifs options</property>. In that case the value for mount option
+					<property>sec</property> needs to be adjusted to <property>ntlmsspi</property>, e.g. by setting <command>ucr set
+					ucc/mount/cifshome/options="serverino,sec=ntlmsspi"</command>.  UCC 2.x clients (i.e. Linux kernel above 3.8) don't
+					require this adjustment (<u:bug>40988</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					This update makes additional <filename>smb.conf</filename> options configurable via Univention Configuration Registry:
+					<envar>samba/ntlm/auth</envar>, <envar>samba/server/signing</envar> <envar>samba/tls/verify/peer</envar>
+					<envar>samba/tls/priority</envar> <envar>samba/tls/dh/params/file</envar> and
+					<envar>samba/ldap/server/require/strong/auth</envar> (<u:bug>41034</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -485,6 +794,8 @@
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Active Directory takeover fails if the AD NETBIOS domain name is unusual. This issue has been fixed
+					(<u:bug>39070</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -501,6 +812,10 @@
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Support for synchronization of the OpenLDAP attribute <property>mailAlternativeAddress</property> with the AD attribute
+					<property>proxyAddresses</property> has been added. This can be switched on for users and groups individually by the new
+					pair of Univention Configuration Registry variables <envar>connector/ad/mapping/user/alternativemail</envar> and
+					<envar>connector/ad/mapping/group/alternativemail</envar> (<u:bug>40357</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -511,6 +826,11 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				Various issues have been fixed in <package>ucslint</package> which checks a source package for errors
+				(<u:bug>40386</u:bug>, <u:bug>40639</u:bug>, <u:bug>40647</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				Plymouth now uses the framebuffer renderer as default (<u:bug>40715</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
