@@ -1,3 +1,11 @@
+univention-ldb-modules (2.100.0-1) unstable; urgency=medium
+
+  * Bug #40698: Backport for UCS 3.3:
+  * Bug #36811: Added multiarch support
+  * Bug #36811: Adjust installation directory
+
+ -- Arvid Requate <requate@univention.de>  Mon, 09 May 2016 13:32:46 +0200
+
 univention-ldb-modules (2.0.5-2) unstable; urgency=medium
 
   * Bug #40990: Backport from ucs-school-4.1 package version 4.0.0-2:
