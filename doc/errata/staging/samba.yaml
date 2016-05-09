@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: samba
-fix: 2:4.3.7-1.827.201605091938
+fix: 2:4.3.7-1.827.201605092025
 desc: |
  This update fixes regressions from Errata update 411 (Bug #40990).
 bug: [41196]
