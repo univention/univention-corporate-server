@@ -76,7 +76,7 @@
 					<property>no_mbcache</property> in <filename>/etc/fstab</filename> and rebooting the system (<u:bug>41054</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The meta packages for the non-PAE i486 kernel image and header files have been removed (<u:bug>40912</u:bug>).
+					The meta packages for the <wordasword>non-PAE i486</wordasword> kernel image and header files have been removed (<u:bug>40912</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
