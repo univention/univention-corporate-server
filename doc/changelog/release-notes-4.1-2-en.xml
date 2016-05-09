@@ -51,7 +51,7 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Several important security updates have been integrated in UCS 4.1-2, among others al for Samba, Apache, OpenSSL and the
+				Several important security updates have been integrated in UCS 4.1-2, among others for Samba, Apache, OpenSSL and the
 				GNU C Library (glibc).
 			</para></listitem>
 			<listitem><para>
