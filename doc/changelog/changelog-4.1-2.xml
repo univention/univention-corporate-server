@@ -104,7 +104,7 @@
 			<title>Boot Loader</title>
 			<itemizedlist>
 				<listitem><simpara>
-					This update addresses the following issue(s): On UCS systems booting via BIOS, an error would happen if debconf
+					On UCS systems booting via BIOS, an error would happen if debconf
 					<property>grub-pc/install_devices</property> contains a wrong device. If it contains a wrong device the GRUB installation happens but fails,
 					leading to an inconsistent installation between /boot/grub and the GRUB directly on the disk.  This makes the system
 					not bootable.
