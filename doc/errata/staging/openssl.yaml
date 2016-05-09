@@ -11,7 +11,8 @@ desc: |
  * Padding oracle in AES-NI CBC MAC check (CVE-2016-2107)
  * Memory corruption in the ASN.1 encoder (CVE-2016-2108)
  * ASN.1 BIO excessive memory allocation (CVE-2016-2109)
- * EBCDIC overread (CVE-2016-2176)
+ * Additionally the minimum DH key size has been increased
+   from 768 to 1024 to prevent downgrade attacks
 bug: [41197]
 cve:
  - CVE-2016-2105
