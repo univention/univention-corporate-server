@@ -1,3 +1,9 @@
+univention-ldb-modules (4.0.3-2) unstable; urgency=medium
+
+  * Bug #40698: Version bump
+
+ -- Arvid Requate <requate@univention.de>  Mon, 09 May 2016 14:05:39 +0200
+
 univention-ldb-modules (4.0.3-1) unstable; urgency=low
 
   [ Felix Botner ]
