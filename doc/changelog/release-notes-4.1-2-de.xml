@@ -51,6 +51,20 @@
 
 		<itemizedlist>
 			<listitem><para>
+				Several important security updates have been integrated in UCS 4.1-2, among others al for Samba, Apache, OpenSSL and the
+				GNU C Library (glibc).
+			</para></listitem>
+			<listitem><para>
+				The update to Samba 4.3.7 includes various security updates. In addition, several issues have been fixed, for example,
+				failed login attempts are now counted correctly.
+			</para></listitem>
+			<listitem><para>
+				The Active Directory Connector now uses Active Directory standard interfaces for synchronizing the password hashes.
+				Thus, the Windows password synchronization service is no longer needed.
+			</para></listitem>
+			<listitem><para>
+				The presentation of the apps in the Univention App Center has been improved, among others the App license terms are now
+				displayed.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>

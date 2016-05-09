@@ -439,6 +439,23 @@
 					A link that redirects to the subscription prices for UCS on the Univention website has been added to the license dialog
 					of UCS core editions (<u:bug>41174</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Searching for a specific object type underneath of <property>cn=univention</property> in the LDAP directory did not
+					yield results and has been repaired (<u:bug>32843</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Searching for properties which require an exact match did not work because the LDAP filter was prepended with
+					<property>*</property>. The search for e.g. the <property>gidNumber</property> of a group is now possible again
+					(<u:bug>37904</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					Searching for properties using the <property>LDAPSearch</property> syntax class caused a traceback. This issue has been fixed
+					(<u:bug>38635</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					The <property>users/self</property> module can now be activated again via setting the &ucsUCRV;
+					<envar>umc/module/udm/users/self/disabled</envar> to <envar>false</envar> (<u:bug>39016</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -505,23 +522,6 @@
 				<listitem><simpara>
 					The DNS module now displays more information in the grid columns and forward zones are now shown before reverse zones in
 					the tree view (<u:bug>38639</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Searching for a specific object type underneath of <property>cn=univention</property> in the LDAP directory did not
-					yield results and has been repaired (<u:bug>32843</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Searching for properties which require an exact match did not work because the LDAP filter was prepended with
-					<property>*</property>. The search for e.g. the <property>gidNumber</property> of a group is now possible again
-					(<u:bug>37904</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					Searching for properties using the <property>LDAPSearch</property> syntax class caused a traceback. This issue has been fixed
-					(<u:bug>38635</u:bug>).
-				</simpara></listitem>
-				<listitem><simpara>
-					The <property>users/self</property> module can now be activated again via setting the &ucsUCRV;
-					<envar>umc/module/udm/users/self/disabled</envar> to <envar>false</envar> (<u:bug>39016</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
