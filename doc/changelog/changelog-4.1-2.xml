@@ -75,6 +75,9 @@
 					re-mounting the file system using <command>mount -o remount,no_mbcache "$fs"</command> or by adding the option
 					<property>no_mbcache</property> in <filename>/etc/fstab</filename> and rebooting the system (<u:bug>41054</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The meta packages for the non-PAE i486 kernel image and header files have been removed (<u:bug>40912</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
