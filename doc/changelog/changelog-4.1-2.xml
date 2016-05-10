@@ -649,7 +649,7 @@
 				The change from HTTP to HTTPS breaks the old updater from UCS-4.0-4, which is still running after the update to 4.1-0.
 				As such all updates stop there. Running the same command again continues installing updates, as then the new updater is
 				used.  This update fixes this problem by re-executing the updater after each update to guarantee, that the latest
-				version is always used (<u:bug>40338</u:bug>).
+				version is always used (<u:bug>40338</u:bug>, <u:bug>41237</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The <filename>dists/**/Packages*</filename> files created for local repositories did contain multiple entries for the
