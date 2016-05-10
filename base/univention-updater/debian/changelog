@@ -1,3 +1,9 @@
+univention-updater (11.0.9-10) unstable; urgency=low
+
+  * Bug #41238: Fix comparison of --updateto
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 May 2016 13:20:37 +0200
+
 univention-updater (11.0.9-7) unstable; urgency=low
 
   * Bug #41083: Filter out previous releases
