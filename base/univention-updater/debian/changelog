@@ -1,3 +1,9 @@
+univention-updater (11.0.9-9) unstable; urgency=low
+
+  * Bug #41237: Fix comparison of --updateto
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 10 May 2016 13:20:37 +0200
+
 univention-updater (11.0.9-8) unstable; urgency=medium
 
   * Bug #41157: Adapt links and components for UCS-4.1-2

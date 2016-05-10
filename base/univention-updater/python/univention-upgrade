@@ -150,7 +150,7 @@ def do_release_update(options, checkForUpdates, silent):
     if not version_next:
         dprint(silent, 'none')
         return False
-    if options.updateto and UCS_Version(options.updateto) < version_next:
+    if options.updateto and UCS_Version(options.updateto) < UCS_Version(version_next):
         dprint(silent, '%s is available but updater has been instructed to stop at version %s.' % (version_next, options.updateto))
         return False
     dprint(silent, 'found: UCS %s' % version_next)
