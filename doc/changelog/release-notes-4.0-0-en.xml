@@ -148,7 +148,7 @@ univention-upgrade --updateto $version_version-$version_patchlevel
 			</programlisting>
 
 			A detailed overview of the changes can be found in the UCC 1.0 rev3 release notes:
-			<ulink url="http://download.univention.de/doc/release-notes-ucc-1.0-rev3.pdf"/>.
+			<ulink url="http://updates.software-univention.de/doc/release-notes-ucc-1.0-rev3.pdf"/>.
 		  </para>
 		</section>
 
