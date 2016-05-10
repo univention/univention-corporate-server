@@ -3,7 +3,10 @@ release: "4.1"
 version: [1,2]
 scope: ucs_4.1-0-errata4.1-1
 src: samba
-fix: 2:4.3.7-1.830.201605091946
+fix: 2:4.3.7-1.830.201605101118
 desc: |
- This update fixes regressions from Errata update 411 (Bug #40988).
+ This update fixes regressions from Errata update 411 (Bug #40988):
+ * https://bugzilla.samba.org/show_bug.cgi?id=11849
+ * https://bugzilla.samba.org/show_bug.cgi?id=11852
+ * https://bugzilla.samba.org/show_bug.cgi?id=11912
 bug: [41193]
