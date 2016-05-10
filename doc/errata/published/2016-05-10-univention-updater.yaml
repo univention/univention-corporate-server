@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * Fix regression from erratum 152 breaking `univention-upgrade --updateto`
 bug: [41238]
+erratum: 175
+announced: 2016-05-10
