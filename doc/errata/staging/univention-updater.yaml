@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [1]
+scope: ucs_4.1-0-errata4.1-1
+src: univention-updater
+fix: 11.0.9-10.1474.201605101346
+desc: |
+ This update addresses the following issue:
+ * Fix regression from erratum 152 breaking `univention-upgrade --updateto`
+bug: [41238]
