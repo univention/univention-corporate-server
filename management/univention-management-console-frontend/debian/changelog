@@ -1,4 +1,4 @@
-univention-management-console-frontend (5.0.63-42) unstable; urgency=medium
+univention-management-console-frontend (5.0.63-43) unstable; urgency=medium
 
   * Bug #41224: version dump due to rebuild
 
