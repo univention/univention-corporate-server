@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [1,2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-dojo
+fix: 9.0.1-2.96.201605111416
+desc: |
+ This update addresses the following issue(s):
+ * Added a fix for xstyle which makes it usable in Chrome 51.
+bug: [41224]
