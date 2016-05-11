@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-22) unstable; urgency=low
+
+  * Bug #41253: Switch to UCS-4.1-2 AMI
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 11 May 2016 17:30:50 +0200
+
 ucs-ec2-tools (2.0.0-21) unstable; urgency=medium
 
   * Bug #40942: Support upgrade Non-Docker->Docker
