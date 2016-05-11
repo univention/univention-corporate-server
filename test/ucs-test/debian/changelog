@@ -1,3 +1,10 @@
+ucs-test (4.100.1-5) unstable; urgency=medium
+
+  * 50_samba/41password_change: added a sleep workaround for the S4
+    Connector replication (Bug #41073)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 May 2016 20:48:17 +0200
+
 ucs-test (4.100.1-4) unstable; urgency=low
 
   * 40_mail/00check_forward_secrecy: added chiphers (Bug #41075) 
