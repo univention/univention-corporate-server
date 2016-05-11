@@ -38,7 +38,6 @@ import copy
 import time
 import types
 import struct
-import tempfile
 from M2Crypto import X509
 import ldap
 import base64
@@ -1355,8 +1354,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		self.options=[]
 		if 'objectClass' in self.oldattr:
 			ocs = set(self.oldattr['objectClass'])
-			for opt in ('posix', 'samba', 'person', 'kerberos', 'mail', 'pki', 'ldap_pwd'):
-				if options[opt].matches(ocs):
+			for opt, option in options.iteritems():
+				if not option.disabled and option.matches(ocs):
 					self.options.append(opt)
 		else:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user.py: reset options to default by _define_options' )

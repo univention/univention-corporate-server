@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-27) unstable; urgency=medium
+
+  * Bug #41017: extended options of users are evaluated again
+
+ -- Florian Best <best@univention.de>  Wed, 11 May 2016 14:10:51 +0200
+
 univention-directory-manager-modules (11.0.2-26) unstable; urgency=medium
 
   * Bug #33359: importing univention.admin modules doesn't depend on previous
