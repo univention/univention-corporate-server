@@ -1,0 +1,42 @@
+product: ucs
+release: "4.1"
+version: [1,2]
+scope: ucs_4.1-0-errata4.1-2
+src: qemu
+fix: 1.1.2+dfsg-6a.49.201605111538
+desc: |
+ This update addresses the following issues:
+ * pcnet: heap overflow vulnerability in loopback mode (CVE-2015-7504)
+   (XSA-162)
+ * net: pcnet: heap overflow vulnerability in loopback mode (CVE-2015-7504)
+ * Buffer overflow in the pcnet_receive function in hw/net/pcnet.c in QEMU,
+   when a guest NIC has a larger MTU, allows remote attackers to cause a
+   denial of service (guest OS crash) or execute arbitrary code via a large
+   packet.  (CVE-2015-7512)
+ * Qemu: net: eepro100: infinite loop in processing command block list
+   (CVE-2015-8345)
+ * vnc: avoid floating point exception (CVE-2015-8504)
+ * usb: infinite loop in ehci_advance_state results in DoS (CVE-2015-8558)
+ * net: ne2000: OOB r/w in ioport operations (CVE-2015-8743)
+ * ide: ahci use-after-free vulnerability in aio port commands (CVE-2016-1568)
+ * nvram: OOB r/w access in processing firmware configurations (CVE-2016-1714)
+ * i386: null pointer dereference in vapic_write() (CVE-2016-1922)
+ * virtio-net: possible remote DoS (CVE-2015-7295)
+ * vga: incorrect banked access bounds checking in vga module (CVE-2016-3710)
+ * vga: Out-of-bounds read when creating weird vga screen surface
+   (CVE-2016-3712)
+bug: [40634]
+cve:
+ - CVE-2015-7504
+ - CVE-2015-7504
+ - CVE-2015-7512
+ - CVE-2015-8345
+ - CVE-2015-8504
+ - CVE-2015-8558
+ - CVE-2015-8743
+ - CVE-2016-1568
+ - CVE-2016-1714
+ - CVE-2016-1922
+ - CVE-2015-7295
+ - CVE-2016-3710
+ - CVE-2016-3712
