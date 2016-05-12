@@ -1,3 +1,9 @@
+univention-appcenter (5.0.20-51) unstable; urgency=medium
+
+  * Bug #40757: Align German and English text regarding maintanance channels
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 May 2016 15:28:00 +0200
+
 univention-appcenter (5.0.20-50) unstable; urgency=low
 
   * Bug #39368: Update local app files
