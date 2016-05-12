@@ -327,6 +327,9 @@ def take_over_domain(progress):
 	progress.percentage(5)
 	takeover_final.post_join_fix_samDB()
 	takeover_final.fix_sysvol_acls()
+	progress.message(_('Claiming FSMO roles'))
+	progress.percentage(15)
+	takeover_final.claim_FSMO_roles()
 	progress.message(_('Removing the previous AD server account'))
 	progress.percentage(20)
 	takeover_final.remove_AD_server_account_from_samdb()
@@ -346,9 +349,6 @@ def take_over_domain(progress):
 	progress.message(_('Reconfiguring nameserver'))
 	progress.percentage(52)
 	takeover_final.reconfigure_nameserver_for_samba_backend()
-	progress.message(_('Claiming FSMO roles'))
-	progress.percentage(53)
-	takeover_final.claim_FSMO_roles()
 	progress.message(_('Finalizing'))
 	progress.percentage(69)
 	takeover_final.create_DNS_SPN()
@@ -1692,7 +1692,7 @@ class AD_Takeover_Finalize():
 		## Claim FSMO roles
 		log.info("Claiming FSMO roles")
 		takeover_hasMasterNCs(self.ucr, self.samdb, self.sitename, self.partitions)
-		for fsmo_role in ('pdc', 'rid', 'infrastructure', 'schema', 'naming'):
+		for fsmo_role in ('pdc', 'rid', 'infrastructure', 'schema', 'naming', 'domaindns', 'forestdns'):
 			for attempt in xrange(3):
 				if attempt > 0:
 					time.sleep(1)
