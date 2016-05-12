@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-management-console-module-adtakeover
-fix: 8.0.17-77.489.201605121425
+fix: 1.0.10-52.74.201605121844
 desc: |
  This update addresses the following issue(s):
  * "Claiming FSMO roles" during the ad takeover has been fixed.
