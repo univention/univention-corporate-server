@@ -1,6 +1,7 @@
 univention-appcenter (5.0.20-51) unstable; urgency=medium
 
   * Bug #40757: Align German and English text regarding maintanance channels
+  * Bug #40842: Do not set defined port for overview if auto_mod_proxy is used
 
  -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 12 May 2016 15:28:00 +0200
 

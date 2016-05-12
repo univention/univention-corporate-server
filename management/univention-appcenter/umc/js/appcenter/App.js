@@ -101,6 +101,7 @@ define([
 			this.isDocker = !!props.docker_image;
 			this.candidateIsDocker = !!props.candidate_docker;
 			this.autoStart = props.autostart;
+			this.autoModProxy = props.auto_mod_proxy;
 			this.config = props.config;
 			this.isRunning = props.is_running;
 			this.hostMaster = props.host_master;
@@ -210,7 +211,7 @@ define([
 						protocol = 'http:';
 					}
 				}
-				if (this.isDocker && port) {
+				if (this.autoModProxy && port) {
 					// webinterface of a docker app
 					// lives behind our standard proxy
 					if (protocol == 'http:') {

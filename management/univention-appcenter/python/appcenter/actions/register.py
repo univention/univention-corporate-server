@@ -358,10 +358,17 @@ class Register(CredentialsAction):
 		if app.ucs_overview_category and app.web_interface:
 			self.log('Setting overview variables')
 			registry_key = 'ucs/web/overview/entries/%s/%s/%%s' % (app.ucs_overview_category, app.id)
+			port_http = app.web_interface_port_http
+			port_https = app.web_interface_port_https
+			if app.auto_mod_proxy:
+				# the port in the ini is not the "public" port!
+				# the web interface lives behind our apache with its
+				# default ports
+				port_http = port_https = None
 			variables = {
 				'icon': os.path.join('/univention-management-console/js/dijit/themes/umc/icons/scalable', app.logo_name),
-				'port_http': str(app.web_interface_port_http or ''),
-				'port_https': str(app.web_interface_port_https or ''),
+				'port_http': str(port_http or ''),
+				'port_https': str(port_https or ''),
 				'label': app.get_localised('name'),
 				'label/de': app.get_localised('name', 'de'),
 				'description': app.get_localised('description'),
