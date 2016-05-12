@@ -510,7 +510,7 @@
 			<title>Xen</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The Xen hypervisor and related support packages have been updates to version 4.1.6.1 (<u:bug>40697</u:bug>).
+						The Xen hypervisor and related support packages have been updates to version 4.1.6.1 (<u:bug>40697</u:bug>, <u:bug>39689</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
