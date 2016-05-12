@@ -1,3 +1,10 @@
+univention-system-setup (9.0.4-8) unstable; urgency=medium
+
+  * Bug #40673: removed repitition od "Univention Corporate Server"
+    in the header of the initial setup site for Amazon EC2 instances
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 12 May 2016 14:54:48 +0200
+
 univention-system-setup (9.0.4-7) unstable; urgency=medium
 
   * Bug #40580: updated supported browser versions
