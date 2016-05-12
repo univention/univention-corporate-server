@@ -243,28 +243,6 @@ class Instance(Base, ProgressMixin):
 		proc.signal_connect( 'finished', cb )
 		proc.start()
 
-	def private_key(self, request):
-		self._serve_file(request, 'private.key')
-
-	def cert_pem(self, request):
-		self._serve_file(request, 'cert.pem')
-
-	def _serve_file(self, request, filename):
-		ucr.load()
-
-		host = ucr.get('connector/ad/ldap/host')
-		if not host:
-			raise UMC_CommandError('Not configured yet')
-
-		host = host.replace('/', '')
-		filepath = '/etc/univention/ssl/%s/%s' % (host, filename)
-
-		if not os.path.exists(filepath):
-			raise UMC_CommandError('File does not exists')
-
-		with open(filepath, 'rb') as fd:
-			self.finished(request.id, fd.read(), mimetype='application/octet-stream')
-
 	@file_upload
 	def upload_certificate( self, request ):
 		def _return( pid, status, bufstdout, bufstderr, request, fn ):

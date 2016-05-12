@@ -1,3 +1,12 @@
+univention-ad-connector (8.0.17-77) unstable; urgency=medium
+
+  * Backport from UCS 4.1: Replace the password synchronisation by using
+    drsuapi.DsGetNCChangesRequest8 and samr.SetUserInfo. Felix and Arvid
+    did a lot of research and provide patches it. This will replace our
+    own password service (Bug #41220)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 May 2016 14:21:33 +0200
+
 univention-ad-connector (8.0.17-76) unstable; urgency=low
 
   * restart connector after rotating log files (Bug #32265) 

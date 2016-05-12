@@ -245,12 +245,12 @@ msgstr "Der Import des Zertifikats ist fehlgeschlagen"
 #: umc/js/adconnector/ConfigPage.js:111
 msgid ""
 "However, in some scenarios it may be reasonable to transfer encrypted "
-"password hashes. In this case, The password service should be installed on "
-"the Active Directory server."
+"password hashes. Please refer the UCS manual in order to activate the "
+"password synchronization."
 msgstr ""
 "In einigen Szenarien kann es dennoch sinnvoll sein, die verschlüsselten "
-"Passwortdaten zu übertragen. In diesem Fall sollte der Passwortdienst auf "
-"dem Active Directory-Server installiert werden."
+"Passwortdaten zu übertragen. Die Aktivierung der Passwortsynchronisation "
+"ist im UCS Handbuch beschrieben."
 
 #: umc/js/adconnector/ConfigPage.js:219
 msgid ""

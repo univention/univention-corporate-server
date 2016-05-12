@@ -46,9 +46,8 @@ define([
 	"umc/widgets/PasswordBox",
 	"umc/widgets/Wizard",
 	"./RadioButtons",
-	"./DownloadInfo",
 	"umc/i18n!umc/modules/adconnector"
-], function(declare, lang, array, domClass, topic, styles, timing, dialog, ProgressBar, tools, server, Text, TextBox, Uploader, PasswordBox, Wizard, RadioButtons, DownloadInfo, _) {
+], function(declare, lang, array, domClass, topic, styles, timing, dialog, ProgressBar, tools, server, Text, TextBox, Uploader, PasswordBox, Wizard, RadioButtons, _) {
 	var modulePath = require.toUrl('umc/modules/adconnector');
 	styles.insertCssRule('.umc-adconnector-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 	styles.insertCssRule('.umc-adconnector-page .umcLabelPaneCheckBox', 'display: block !important;');
@@ -267,16 +266,6 @@ define([
 					})
 				}]
 			}, {
-				'class': 'umc-adconnector-page-msi umc-adconnector-page',
-				name: 'msi-adconnector',
-				headerText: _('Installation of password service'),
-				widgets: [{
-					type: DownloadInfo,
-					name: 'download',
-					// when reaching this site, the AD connector will be configured
-					configured: true
-				}]
-			}, {
 				'class': 'umc-adconnector-page-finished umc-adconnector-page',
 				name: 'finished-adconnector',
 				headerText: _('Completion of Active Directory Connection'),
@@ -481,14 +470,14 @@ define([
 				return 'config-adconnector';
 			}
 			if (pageName == 'config-adconnector') {
-				return this.adConnectorSaveValues(this._adDomainInfo).then(function(success) {
-					return success ? 'msi-adconnector' : pageName;
-				});
-			}
-			if (pageName == 'msi-adconnector') {
-				return this.adConnectorStart().then(function(success) {
-					return success ? 'finished-adconnector' : pageName;
-				});
+				return this.adConnectorSaveValues(this._adDomainInfo).then(lang.hitch(this, function(success) {
+						if (success) {
+							this.adConnectorStart();
+							return 'finished-adconnector';
+						} else {
+							return pageName;
+						}
+				}));
 			}
 		},
 
