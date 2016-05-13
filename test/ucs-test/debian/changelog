@@ -1,3 +1,9 @@
+ucs-test (4.100.1-6) unstable; urgency=medium
+
+  * Depend on build-essential (Bug #41073)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 May 2016 06:08:30 +0200
+
 ucs-test (4.100.1-5) unstable; urgency=medium
 
   * 50_samba/41password_change: added a sleep workaround for the S4
