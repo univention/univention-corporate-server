@@ -199,7 +199,7 @@ run_apptests () {
 }
 
 run_tests () {
-	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
+	[ ! -e /DONT_START_UCS_TEST ] && LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
 }
 
 run_join_scripts () {
@@ -208,6 +208,29 @@ run_join_scripts () {
 	else
  		echo -n "univention" >/tmp/univention
 		univention-run-join-scripts -dcaccount Administrator -dcpwd /tmp/univention
+	fi
+}
+
+assert_version () {
+	local requested_version="$1"
+	local version
+
+	eval "$(ucr shell '^version/(version|patchlevel)$')"
+	version="$version_version-$version_patchlevel"
+	echo "Requested version $requested_version"
+	echo "Current version $version"
+	if [ "$requested_version" != "$version" ]; then
+		echo "Creating /DONT_START_UCS_TEST"
+		touch /DONT_START_UCS_TEST
+		exit 1
+	fi
+}
+
+assert_join () {
+	if ! univention-check-join-status; then
+		echo "Creating /DONT_START_UCS_TEST"
+		touch /DONT_START_UCS_TEST
+		exit 1
 	fi
 }
 
