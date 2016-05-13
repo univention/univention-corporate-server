@@ -33,6 +33,7 @@
 #ifndef _HANDLERS_H_
 #define _HANDLERS_H_
 
+#include <stdbool.h>
 #include <sys/types.h>
 #include <ldap.h>
 #include <python2.7/Python.h>
@@ -64,6 +65,7 @@ struct _Handler {
 	struct filter **filters;
 	char **attributes;
 	char *modrdn;
+	bool handle_every_delete;
 	PyObject *handler;
 	PyObject *initialize;
 	PyObject *clean;

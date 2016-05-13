@@ -211,6 +211,15 @@ static int handler_import(char *filename) {
 	}
 	PyErr_Clear();  // Silent error when attribute is not set
 
+	do { /* optional */
+		PyObject *var = PyObject_GetAttrString(handler->module, "handle_every_delete");
+		if (!var)
+			break;
+		handler->handle_every_delete = PyObject_IsTrue(var);
+		Py_XDECREF(var);
+	} while(0);
+	PyErr_Clear(); // Silent error when attribute is not set
+
 	handler->description = module_get_string(handler->module, "description"); /* required */
 	if (handler->description == NULL) {
 		error_msg = "module_get_string(\"description\")";
@@ -811,7 +820,7 @@ int handlers_delete(const char *dn, CacheEntry *old, char command) {
 
 	for (handler = handlers; handler != NULL; handler = handler->next) {
 		/* run the replication handler in any case, see Bug #29475 */
-		if (!cache_entry_module_present(old, handler->name) && strcmp(handler->name, "replication")) {
+		if (!cache_entry_module_present(old, handler->name) && strcmp(handler->name, "replication") && !handler->handle_every_delete) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (skipped)", handler->name);
 			continue;
 		}

@@ -1,6 +1,7 @@
 univention-directory-listener (12.0.0-20) unstable; urgency=low
 
   * Bug #47783: Add fake initialization mode
+  * Bug #47783: Always call delete handler for selected modules
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 13 Sep 2018 14:15:39 +0200
 
