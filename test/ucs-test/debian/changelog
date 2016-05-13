@@ -1,3 +1,10 @@
+ucs-test (4.100.1-7) unstable; urgency=medium
+
+  * 50_samba/41password_change: Don't pass the -S parameter in case net
+    ads is used (Bug #32382)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 May 2016 07:15:15 +0200
+
 ucs-test (4.100.1-6) unstable; urgency=medium
 
   * Depend on build-essential (Bug #41073)
