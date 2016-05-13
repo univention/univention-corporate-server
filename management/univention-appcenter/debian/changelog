@@ -1,5 +1,7 @@
 univention-appcenter (5.0.20-51) unstable; urgency=medium
 
+  * Bug #41178: The newest installed version is the officially installed
+    version
   * Bug #40757: Align German and English text regarding maintanance channels
   * Bug #40842: Do not set defined port for overview if auto_mod_proxy is used
 

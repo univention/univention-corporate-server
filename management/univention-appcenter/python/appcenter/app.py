@@ -1396,7 +1396,7 @@ class AppManager(object):
 	def find(cls, app_id, app_version=None, latest=False):
 		if isinstance(app_id, cls._AppClass):
 			app_id = app_id.id
-		apps = cls.get_all_apps_with_id(app_id)
+		apps = list(reversed(cls.get_all_apps_with_id(app_id)))
 		if app_version:
 			for app in apps:
 				if app.version == app_version:
@@ -1407,7 +1407,7 @@ class AppManager(object):
 				if app.is_installed():
 					return app
 		if apps:
-			return apps[-1]
+			return apps[0]
 
 	@classmethod
 	def reload_package_manager(cls):
