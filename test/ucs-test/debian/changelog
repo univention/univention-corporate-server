@@ -1,3 +1,16 @@
+ucs-test (4.100.1-8) unstable; urgency=medium
+
+  * Merge 50_samba/40password-policies changes from UCS 4.1:
+
+    * run net rpc info against localhost (Bug #36208)
+    * Adjust python implementation wait_for_drs_replication to skip
+      if the local system is not a DC (Bug #35319)
+    * Use Administrator in case tests/domainadmin/account is unset
+    [ Arvid Requate ]
+
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 May 2016 10:31:10 +0200
+
 ucs-test (4.100.1-7) unstable; urgency=medium
 
   * 50_samba/41password_change: Don't pass the -S parameter in case net
