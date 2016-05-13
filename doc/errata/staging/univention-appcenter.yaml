@@ -1,0 +1,15 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-appcenter
+fix: 5.0.21-1.165.201605131210
+desc: |
+ This update addresses the following issue(s):
+ * When upgrading a regular App to a Docker App, the Apache proxy settings were
+   not written correctly. This has been fixed.
+ * Aligned German and English description about the sale of licenses and
+   support in the Univention App Center.
+ * Docker Apps did not register their web interface correctly in the UCS
+   overview site. This has been fixed.
+bug: [41178, 40757, 40842]
