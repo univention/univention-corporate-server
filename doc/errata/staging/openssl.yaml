@@ -1,0 +1,18 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: openssl
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * EVP_EncodeUpdate overflow (CVE-2016-2105)
+ * EVP_EncryptUpdate overflow (CVE-2016-2106)
+ * Memory corruption in the ASN.1 encoder (CVE-2016-2108)
+ * ASN.1 BIO excessive memory allocation (CVE-2016-2109)
+bug: [41225]
+cve:
+ - CVE-2016-2105
+ - CVE-2016-2106
+ - CVE-2016-2108
+ - CVE-2016-2109
