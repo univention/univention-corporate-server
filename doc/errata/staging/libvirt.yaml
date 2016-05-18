@@ -1,6 +1,6 @@
 product: ucs
 release: "4.0"
-version: [5]
+version: [4,5]
 scope: ucs_4.0-0-errata4.0-4
 src: libvirt
 fix: 1.2.9-9+deb8u2.140.201605091238
