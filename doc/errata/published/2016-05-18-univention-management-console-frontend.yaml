@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * UMC is now also usable in Chrome 51.
 bug: [41224]
+erratum: 184
+announced: 2016-05-18
