@@ -40,4 +40,15 @@ then
 	ln -snf xen-default "$dir"
 fi
 
+dir='/usr/lib64'
+if [ "$1" = configure ] && [ ! -L "$dir" ]
+then
+	if dpkg --compare-versions "${2:-}" lt-nl 4.1.6.1-8~ && [ -d "$dir" ] && ! rmdir "$dir"
+	then
+		echo "Failed to remove (empty) directory '${dir}/'; renaming"
+		mv "$dir" "${dir}-xen-${2:-4.1+$$}"
+	fi
+	ln -snf lib "$dir"
+fi
+
 :
