@@ -1297,25 +1297,25 @@ def read_syntax_choices(syn, options={}, module_search_options={}, ldap_connecti
 		def map_choice(obj):
 			obj.open()
 			MODULE.info('Loading choices from %s: %s' % (obj.dn, obj.info))
+			try:
+				values = obj.info[syn.attribute]
+			except KeyError:
+				MODULE.warn('Object has no attribute %r' % (syn.attribute,))
+				# this happens for example in PrinterDriverList
+				# if the ldap schema is not installed
+				# and thus no 'printmodel' attribute is known.
+				return []
+			if not isinstance(values, (list, tuple)):  # single value
+				values = [values]
 			if syn.is_complex:
-				try:
-					return map(lambda x: (x[syn.key_index], x[syn.label_index]), obj.info[syn.attribute])
-				except KeyError:
-					# probably syn.attribute not in obj.info
-					# this happens for example in PrinterDriverList
-					# if the ldap schema is not installed
-					# and thus no 'printmodel' attribute is known.
-					return []
+				return [(x[syn.key_index], x[syn.label_index]) for x in values]
 			if syn.label_format is not None:
 				choices = []
-				for value in obj.info[syn.attribute]:
+				for value in values:
 					obj.info['$attribute$'] = value
 					choices.append((value, syn.label_format % obj.info))
 				return choices
-			try:
-				return map(lambda x: (x, x), obj.info[syn.attribute])
-			except KeyError:
-				return []
+			return [(x, x) for x in values]
 
 		module = UDM_Module(syn.udm_module)
 		if module.module is None:

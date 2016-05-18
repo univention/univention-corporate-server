@@ -1,3 +1,10 @@
+univention-management-console-module-udm (6.0.11-18) unstable; urgency=medium
+
+  * Bug #41290: make UDM_Attribute based syntax classes compatible with
+  	single-value fields
+
+ -- Florian Best <best@univention.de>  Wed, 18 May 2016 13:19:38 +0200
+
 univention-management-console-module-udm (6.0.11-17) unstable; urgency=medium
 
   * Bug #33344: code cleanup 
