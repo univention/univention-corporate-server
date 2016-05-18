@@ -565,6 +565,8 @@ obsolete_packages="
          gcc-3.2-base gcc-3.3-base gcc-3.4-base gcc-4.1-base cpp-3.2 cpp-3.3
          cpp-4.1 univention-server-installer python2.1 libsasl7 sasl-bin
          libsasl-modules-plain libunivention-chkpwhistory0
+         ia32-sun-java6-bin sun-java6-jre sun-java6-bin sun-java6-jre sun-java6-plugin
+         sun-j2re1.5 sun-java5-bin sun-java5-jre sun-java5-plugin
 "
 # autoremove before the update
 if ! is_ucr_true update40/skip/obsolete_packages; then
@@ -607,6 +609,13 @@ if ! is_ucr_true update40/skip/autoremove; then
     DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
+# commit sources list in case we have a 4.0-0 ucr Bug #41215
+ucr_version="$(dpkg-query -W -f '${Version}' univention-config)"
+if [ -n "$ucr_version" -a "$ucr_version" = "10.0.1-6.476.201409011607" ]; then
+	python2.6 /usr/sbin/ucr commit /etc/apt/sources.list.d/* >&3
+	apt-get update >&3
+fi
+
 # Added python2.7 to the supported versions
 egrep -q '^supported-versions.*python2.7' /usr/share/python/debian_defaults ||\
 	sed -i 's|\(^supported-versions.*\)|\1, python2.7|' /usr/share/python/debian_defaults
@@ -616,6 +625,19 @@ $update_commands_update >&3 2>&3
 for pkg in $preups; do
 	if dpkg -l "$pkg" 2>&3 | grep ^ii  >&3 ; then
 		echo -n "Starting pre-upgrade of $pkg: "
+		# Bug 39026, update of basesystem fails during shell-univention-lib
+		# preup, works if python-magic is updated as well
+		if [ "$pkg" = "shell-univention-lib" ]; then
+			if [ -n "$server_role" -a "$server_role" = "basesystem" ]; then
+				if ! $update_commands_install "$pkg" python-magic >&3 2>&3
+				then
+					echo "failed."
+					echo "ERROR: Failed to upgrade $pkg."
+					exit 1
+				fi
+				continue
+			fi
+		fi
 		if ! $update_commands_install "$pkg" >&3 2>&3
 		then
 			echo "failed."
@@ -675,6 +697,38 @@ elif [ "true" == "$firefox_en" ]; then
 		exit 1
 	fi
 	echo "done."
+fi
+
+# Bug #41215
+# mysql stop fails during the update (mysql postinst)
+[ -x /etc/init.d/mysql ] && /etc/init.d/mysql stop >&3 2>&3 || true
+
+# Bug #41215
+# new open-xchange-core needs java 7, so we have to preupdate openjdk
+# otherwise open-xchange-core postinst fails
+openxchangecore="$(dpkg --get-selections "open-xchange-core" 2>/dev/null | awk '{print $2}')"
+openjdk6jre="$(dpkg --get-selections "openjdk-6-jre" 2>/dev/null | awk '{print $2}')"
+openjdk6jreheadless="$(dpkg --get-selections "openjdk-6-jre-headless" 2>/dev/null | awk '{print $2}')"
+icedtea6plugin="$(dpkg --get-selections "icedtea6-plugin" 2>/dev/null | awk '{print $2}')"
+icedtea6jrecacao="$(dpkg --get-selections "icedtea-6-jre-cacao" 2>/dev/null | awk '{print $2}')" 
+if [ "install" = "$openxchangecore" ]; then                  
+	if [ "install" = "$openjdk6jre" -o "install" = "$openjdk6jreheadless" ]; then
+		echo -n "Starting pre-upgrade of openjdk: "
+		if ! $update_commands_install openjdk-7-jre openjdk-7-jre-headless >&3 2>&3; then
+			echo "ERROR: Failed to upgrade openjdk-7-jre openjdk-7-jre-headless"
+			exit 1
+		fi
+		echo "done."
+		update-alternatives --auto java >&3 2>&3
+	fi
+	if [ "install" = "$icedtea6plugin" -o "install" = "$icedtea6jrecacao" ]; then
+		echo -n "Starting pre-upgrade of icedtea plugin: "
+		if ! $update_commands_install icedtea-7-plugin >&3 2>&3; then
+			echo "ERROR: Failed to upgrade icedtea-7-plugin"
+			exit 1
+		fi
+		echo "done."
+	fi
 fi
 
 # Bug #37534
