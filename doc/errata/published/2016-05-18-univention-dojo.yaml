@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * Added a fix for xstyle which makes it usable in Chrome 51.
 bug: [41224]
-erratum: 184
+erratum: 183
 announced: 2016-05-18
