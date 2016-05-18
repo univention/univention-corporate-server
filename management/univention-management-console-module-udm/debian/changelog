@@ -1,4 +1,4 @@
-univention-management-console-module-udm (6.0.11-18) unstable; urgency=medium
+univention-management-console-module-udm (6.0.11-19) unstable; urgency=medium
 
   * Bug #41290: make UDM_Attribute based syntax classes compatible with
   	single-value fields
