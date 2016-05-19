@@ -297,7 +297,9 @@ def object_input(module, object, input, append=None, remove=None):
 							out.append('E: Invalid Syntax: %s' % str(errmsg))
 	if remove:
 		for key, value in remove.items():
-			if univention.admin.syntax.is_syntax( module.property_descriptions[key].syntax, univention.admin.syntax.complex ):
+			if not module.property_descriptions[key].multivalue:
+				object[key] = []
+			elif univention.admin.syntax.is_syntax( module.property_descriptions[key].syntax, univention.admin.syntax.complex ):
 				if value:
 					for i in range(0,len(value)):
 						test_val=value[i].split('"')
