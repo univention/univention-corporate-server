@@ -1,3 +1,10 @@
+ucs-test (4.100.1-9) unstable; urgency=medium
+
+  * 52_s4connector and 60_umc-system: merge changes from UCS 4
+    (Bug #41076)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 May 2016 15:19:23 +0200
+
 ucs-test (4.100.1-8) unstable; urgency=medium
 
   * Merge 50_samba/40password-policies changes from UCS 4.1:

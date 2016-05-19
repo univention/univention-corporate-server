@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, '.')
 from TestUMCSystemModule import TestUMCSystem
 
-import simplejson as json
+import json
 from time import sleep, time, localtime, strftime
 
 import univention.testing.utils as utils
@@ -220,7 +220,7 @@ class TestUMCUserAuthentication(TestUMCSystem):
         self.UDM.remove_object('users/user',
                                dn=self.test_user_dn)
 
-        sleep(90)  # should be changed after Bug #35634 is resolved
+        sleep(50)  # should be changed after Bug #35634 is resolved
         if self.authenticate_to_umc(self.test_username,
                                     self.test_password_unicode):
             utils.fail("Authentication with a removed user account "
