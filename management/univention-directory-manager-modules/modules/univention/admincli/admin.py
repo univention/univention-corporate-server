@@ -1,3 +1,4 @@
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
@@ -323,17 +324,23 @@ def object_input(module, object, input, append=None, remove=None):
 					object[key]=[]
 
 			else:
-				if type(object[key]) is str:
-					object[key] = [ object[key] ]
-				vallist = value
-				if type(value) is str:
-					vallist = [ value ]
+				current_values = [object[key]] if isinstance(object[key], basestring) else list(object[key])
+				if value is None:
+					current_values = []
+				else:
+					vallist = [value] if isinstance(value, basestring) else value
 
-				for val in vallist:
-					if val in object[key]:
-						object[key].remove(val)
-					else:
-						out.append("WARNING: cannot remove %s from %s, value does not exist"%(val,key))
+					for val in vallist:
+						if val in current_values:
+							current_values.remove(val)
+						else:
+							out.append("WARNING: cannot remove %s from %s, value does not exist"%(val,key))
+				if not module.property_descriptions[key].multivalue:
+					try:
+						current_values = current_values[0]
+					except IndexError:
+						current_values = None
+				object[key] = current_values
 	if input:
 		for key, value in input.items():
 			if module.property_descriptions[key].syntax.name == 'binaryfile':
@@ -1260,3 +1267,7 @@ def _doit(arglist):
 		return out + ["OPERATION FAILED"]
 
 	return out # nearly the only successfull return
+
+if __name__ == '__main__':
+	import sys
+	print '\n'.join(doit(sys.argv))
