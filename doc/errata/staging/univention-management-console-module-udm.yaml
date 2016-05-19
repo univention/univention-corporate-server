@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Syntax classes based on UDM_Attribute with single value attributes has been
    fixed to correctly detect the possible field values.
-bug: [41290]
+bug: [41290,41291]
