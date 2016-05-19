@@ -359,6 +359,10 @@ then
 	fi
 fi
 
+# Bug #41203: Fix broken "disable-apche2-umc" preventing Apache2 from being restarted
+dpkg-statoverride --quiet --remove "/usr/sbin/apache2"
+chmod a+x "/usr/sbin/apache2"
+
 # Mark all installed apps and components as installed and reinstall them
 # in postup.sh if necessary
 

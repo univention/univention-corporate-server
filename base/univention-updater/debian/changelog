@@ -1,3 +1,9 @@
+univention-updater (9.100.5-3) unstable; urgency=low
+
+  * Bug #41203: Re-enable apache restart in preup.sh
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 19 May 2016 15:42:11 +0200
+
 univention-updater (9.100.5-2) unstable; urgency=low
 
   * Bug #41203: Remove broken disabling of apache2 restart
