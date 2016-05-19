@@ -35,14 +35,7 @@ if [ "$1" = "-h" -o "$1" = "--help" ] ; then
 	exit 1
 fi
 
-if [ "$1" = "--exclude-apache" ] ; then
-	EXCLUDEAPACHE="exclude-apache"
-fi
-
 PROGS="univention-management-console-web-server univention-management-console-server"
-if [ -z "$EXCLUDEAPACHE" ]; then
-        PROGS="apache2 $PROGS"
-fi
 
 for prog in $PROGS; do
 	if [ -x "/usr/sbin/$prog" ]; then

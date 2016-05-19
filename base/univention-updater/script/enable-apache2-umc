@@ -43,7 +43,6 @@ fi
 
 for prog in univention-management-console-server \
 			univention-management-console-web-server \
-			apache2 \
             ; do
 	if [ -f "/usr/sbin/$prog" ] && [ ! -x "/usr/sbin/$prog" ]; then
 		/usr/sbin/dpkg-statoverride --remove "/usr/sbin/$prog" >/dev/null 2>&1
