@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+version: [5]
+scope: ucs_4.0-0-errata4.0-5
+src: univention-s4-connector
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The mapping for msPrintConnectionPolicy has been fixed.
+bug: [41310]
