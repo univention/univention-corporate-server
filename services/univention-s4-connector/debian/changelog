@@ -1,3 +1,9 @@
+univention-s4-connector (9.0.16-59) unstable; urgency=low
+
+  * Bug #41309: compare cn lowercase for msPrintConnectionPolicy 
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 May 2016 12:54:24 +0200
+
 univention-s4-connector (9.0.16-58) unstable; urgency=medium
 
   * Escape ldap search attribute values in dns.py (Bug #40381)

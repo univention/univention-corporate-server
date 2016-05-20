@@ -925,6 +925,7 @@ if configRegistry.is_true('connector/s4/mapping/msprintconnectionpolicy', False)
 							con_attribute='cn',
 							required=1,
 							single_value=True,
+							compare_function=univention.s4connector.compare_lowercase,
 						),
 					'description': univention.s4connector.attribute (
 							ucs_attribute='description',
