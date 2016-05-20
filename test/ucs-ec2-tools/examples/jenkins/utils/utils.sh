@@ -234,6 +234,19 @@ assert_join () {
 	fi
 }
 
+assert_packages () {
+	local packages="$@"
+	for package in $packages; do
+		local installed=$(dpkg-query -W -f '${status}' "$package")
+    	if [ "$installed" != "install ok installed" ]; then
+			echo "Failed: package status of $package is $installed"
+			echo "Creating /DONT_START_UCS_TEST"
+			touch /DONT_START_UCS_TEST
+			exit 1
+		fi
+	done
+}
+
 promote_ad_w2k12 () {
 	local HOST="${1:?host address}"
 	local DOMAIN="${2:?domain name}"
