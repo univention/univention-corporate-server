@@ -174,7 +174,7 @@ fi
 univention-config-registry set \
 	repository/online/component/transition/description="Transition packages for the update from UCS 3.2 to UCS 4.0" \
 	repository/online/component/transition/version="3.2" \
-	repository/online/component/transition=enabled
+	repository/online/component/transition=enabled >&3 2>&3
 
 # check if transition component is available in UCS 3.2
 updateError=$(mktemp)
@@ -198,7 +198,7 @@ if not available:
 	sys.exit(1)
 
 sys.exit(0)
-' 2>"$updateError")
+' >&3 2>"$updateError")
 res=$?
 
 # component transition in 3.2 not found, -> abort the update
@@ -612,8 +612,10 @@ fi
 # commit sources list in case we have a 4.0-0 ucr Bug #41215
 ucr_version="$(dpkg-query -W -f '${Version}' univention-config)"
 if [ -n "$ucr_version" -a "$ucr_version" = "10.0.1-6.476.201409011607" ]; then
-	python2.6 /usr/sbin/ucr commit /etc/apt/sources.list.d/* >&3
-	apt-get update >&3
+	if [ -x "$(which python2.6)" ]; then
+		python2.6 /usr/sbin/ucr commit /etc/apt/sources.list.d/* >&3 2>&3
+		apt-get update >&3 2>&3
+	fi
 fi
 
 # Added python2.7 to the supported versions
