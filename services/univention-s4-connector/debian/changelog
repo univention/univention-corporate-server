@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-11) unstable; urgency=low
+
+  * Bug #41309: compare cn lowercase for msPrintConnectionPolicy 
+
+ -- Felix Botner <botner@univention.de>  Fri, 20 May 2016 12:45:13 +0200
+
 univention-s4-connector (10.0.1-10) unstable; urgency=medium
 
   * Bug #40467: Make ucs-lint happy
