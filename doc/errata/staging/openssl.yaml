@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: openssl
-fix: 
+fix: 0.9.8o-4.120.201605171940
 desc: |
  This update addresses the following issue(s):
  * EVP_EncodeUpdate overflow (CVE-2016-2105)
