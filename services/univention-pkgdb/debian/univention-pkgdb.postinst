@@ -68,11 +68,6 @@ case "$1" in
 					su - postgres -c "psql -v ON_ERROR_STOP= -qf /usr/share/univention-pkgdb/sql/convert_to_${version}.sql"
 				fi
 			done
-			if dpkg --compare-versions "$2" lt '7.100.1-1'
-			then
-				# let UCR remove the generated files for the multifile templates
-				univention-config-registry update
-			fi
 		fi
 
 		invoke-rc.d postgresql restart # TODO why?

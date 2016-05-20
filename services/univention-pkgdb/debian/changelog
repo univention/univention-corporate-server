@@ -1,3 +1,9 @@
+univention-pkgdb (7.100.2-1) unstable; urgency=medium
+
+  * Revert r68912 and add changes from UCS 4.0 (Bug #40690)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 May 2016 15:58:15 +0200
+
 univention-pkgdb (7.100.1-1) unstable; urgency=medium
 
   * remove multifile entry from UCR specification, to only generate
