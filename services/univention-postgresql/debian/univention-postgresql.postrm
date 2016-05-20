@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Postgresql
-#  postrm
+#  postinst
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2004-2013 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,22 +32,10 @@
 
 #DEBHELPER#
 
-for conf in \
-	/etc/univention/templates/files/etc/postgresql/8.4/main/pg_hba.conf.d/00-pg_hba.conf \
-	/etc/univention/templates/files/etc/postgresql/8.4/main/pg_hba.conf.d/99-pg_hba.conf \
-	/etc/univention/templates/files/etc/postgresql/8.4/main/pg_ident.conf.d/00-pg_ident.conf \
-	/etc/univention/templates/files/etc/postgresql/8.4/main/postgresql.conf \
-	/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/00-pg_hba.conf \
-	/etc/univention/templates/files/etc/postgresql/9.1/main/pg_hba.conf.d/99-pg_hba.conf \
-	/etc/univention/templates/files/etc/postgresql/9.1/main/pg_ident.conf.d/00-pg_ident.conf \
-	/etc/univention/templates/files/etc/postgresql/9.1/main/postgresql.conf
-do
-	# only rm_conffile $conf if it is still owned by univention-postgresql,
-	# otherwise we could rm_conffile it from e.g. univention-postgresql-9.1
-	if out=$(dpkg-query --search "$conf" 2>/dev/null) && [ "${out%%:*}" = 'univention-postgresql' ]
-	then
-		dpkg-maintscript-helper rm_conffile "$conf" '8.0.0-5~' -- "$@"
-	fi
-done
+# Due to Bug #27786 dummy config files have to be created, otherwise
+# postgresql is not reinstallable
+touch /etc/postgresql/8.4/main/pg_hba.conf
+touch /etc/postgresql/8.3/main/pg_hba.conf
+touch /etc/postgresql/7.4/main/pg_hba.conf
 
 exit 0

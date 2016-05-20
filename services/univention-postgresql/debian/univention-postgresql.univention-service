@@ -1,6 +1,19 @@
-[postgresql]
-Description[de]=PostgreSQL 9.1 Server
-Description[en]=PostgreSQL 9.1 Server
+[postgresql-7.4]
+Description[de]=PostgreSQL-7.4-Server
+Description[en]=PostgreSQL 7.4 Server
 icon=service/postgres
-programs=/usr/lib/postgresql/9.1/bin/postgres
+programs=/usr/lib/postgresql/7.4/bin/postmaster
+start_type=postgres/autostart
+
+[postgresql-8.3]
+Description[de]=PostgreSQL-8.3-Server
+Description[en]=PostgreSQL 8.3 Server
+icon=service/postgres
+programs=/usr/lib/postgresql/8.3/bin/postgres
 start_type=postgres8/autostart
+
+[postgresql]
+Description[de]=PostgreSQL-8.4-Server
+Description[en]=PostgreSQL 8.4 Server
+icon=service/postgres
+programs=/usr/lib/postgresql/8.4/bin/postgres
