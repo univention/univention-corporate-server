@@ -8,7 +8,7 @@ Build-Depends: debhelper,
 
 Package: univention-postgresql
 Architecture: all
-Pre-Depends: postgresql-8.4 | postgresql-8.3 | postgresql-7.4
+Pre-Depends: postgresql-9.1 | postgresql-8.4 | postgresql-8.3 | postgresql-7.4
 Depends: ${misc:Depends},
  shell-univention-lib (>= 3.0.4-1),
  univention-config-registry
