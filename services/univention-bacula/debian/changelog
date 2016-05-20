@@ -1,3 +1,11 @@
+univention-bacula (5.100.1-1) unstable; urgency=medium
+
+  * Merge UCS 4.0 changes (Bug #40690)
+    [ Felix Botner ]
+    * Update to UCS 4.0 (Bug #36114) 
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 May 2016 16:06:27 +0200
+
 univention-bacula (5.0.0-2) unstable; urgency=low
 
   * Update/review UCR variable descriptions (Bug #30948)
