@@ -287,4 +287,23 @@ win.set_gateway(argv[3])
 " "$@"
 }
 
+migrate_postgres84_to_91 ()
+{
+	# http://sdb.univention.de/1292
+	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod -x /usr/sbin/univention-pkgdb-scan
+	service postgresql stop
+	rm -rf /etc/postgresql/9.1
+	apt-get install --reinstall postgresql-9.1
+	pg_dropcluster 9.1 main --stop
+	service postgresql start
+	test -e /var/lib/postgresql/9.1/main && mv /var/lib/postgresql/9.1/main /var/lib/postgresql/9.1/main.old
+	pg_upgradecluster 8.4 main
+	ucr commit /etc/postgresql/9.1/main/*
+	chown -R postgres:postgres /var/lib/postgresql/9.1
+	service postgresql restart
+	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x /usr/sbin/univention-pkgdb-scan
+	pg_dropcluster 8.4 main --stop
+	dpkg -P postgresql-8.4
+}
+
 # vim:set filetype=sh ts=4:
