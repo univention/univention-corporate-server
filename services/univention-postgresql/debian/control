@@ -20,3 +20,15 @@ Description: UCS - postgresql configuration
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-postgresql-9.1
+Architecture: all
+Depends: ${misc:Depends}
+Description: UCS - postgresql transition package
+ This package contains the configuration for the
+ postgresql package.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
