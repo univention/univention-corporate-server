@@ -304,6 +304,7 @@ migrate_postgres84_to_91 ()
 	[ -f /usr/sbin/univention-pkgdb-scan ] && chmod +x /usr/sbin/univention-pkgdb-scan
 	pg_dropcluster 8.4 main --stop
 	dpkg -P postgresql-8.4
+	univention-install --yes univention-postgresql-9.1
 }
 
 # vim:set filetype=sh ts=4:
