@@ -120,7 +120,7 @@
 		<para>
 			Mit UCS 3.3 werden PostgreSQL 9.1 Pakete ausgeliefert. Für PostgreSQL 8.4 wird es UCS 3.3 keine Security
 			Updates geben. Nach dem Update auf UCS 3.3 sollte die Migration von PostgreSQL 8.4 auf PostgreSQL 9.1 erfolgen.
-			In <ulink url=http://sdb.univention.de/1292/> ist das Vorgehen beschrieben.
+			In <ulink url="http://sdb.univention.de/1292"/> ist das Vorgehen beschrieben.
 		</para>
 
 		<para>

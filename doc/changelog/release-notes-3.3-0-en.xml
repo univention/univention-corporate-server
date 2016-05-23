@@ -124,7 +124,7 @@
 		<para>
 			PostgreSQL 9.1 is delivered with UCS 3.3. Security Updates for PostgreSQL 8.4 won't be provided with UCS 3.3.
 			The migration from PostgreSQL 8.4 to PostgreSQL 9.1 should be done after the migration to UCS 3.3. See
-			<ulink url=http://sdb.univention.de/1292/> for more details.
+			<ulink url="http://sdb.univention.de/1292"/> for more details.
 		</para>
 
 		<para>
