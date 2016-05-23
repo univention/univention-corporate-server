@@ -308,6 +308,25 @@ check_for_postgresql83 () {
 }
 check_for_postgresql83
 
+## Check for PostgreSQL-8.4 (Bug #41315)
+check_for_postgresql84 () {
+	case "$(dpkg-query -W -f '${Status}' postgresql-8.4 2>/dev/null)" in
+	install*) ;;
+	*) return 0 ;;
+	esac
+	echo "WARNING: PostgreSQL-8.4 is no longer supported by UCS-4 and must be migrated to"
+	echo "         a newer version of PostgreSQL. See http://sdb.univention.de/1292 for"
+	echo "         more details."
+	if is_ucr_true update40/ignore_postgresql84; then
+		echo "WARNING: update40/ignore_postgresql84 is set to true. Skipped as requested."
+	else
+		exit 1
+	fi
+}
+if [ "3.3" = "$version_version" ]; then
+	check_for_postgresql84
+fi
+
 ## Check for Cyrus-2.2 (Bug #36372)
 check_for_cyrus22 () {
 	case "$(dpkg-query -W -f '${Status}' cyrus-common-2.2 2>/dev/null)" in
