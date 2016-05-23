@@ -1,0 +1,15 @@
+product: ucs
+release: "4.0"
+version: [5]
+scope: ucs_4.0-0-errata4.0-5
+src: imagemagick
+fix: 8:6.7.7.10-5.56.201605231640
+desc: |
+ This update fixes several vulnerabilities in ImageMagick. These
+ vulnerabilities, collectively known as ImageTragick, are the consequence of
+ lack of sanitization of untrusted input. An attacker with control on the
+ image input could, with the privileges of the user running the application,
+ execute code (CVE-2016-3714), make HTTP GET or FTP requests (CVE-2016-3718),
+ or delete (CVE-2016-3715), move (CVE-2016-3716), or read (CVE-2016-3717)
+ local files.
+bug: [37077]
