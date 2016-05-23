@@ -86,6 +86,10 @@
 				<listitem><simpara>
 					The package manager for RPM <package>rpm</package> has been upgraded to version 4.10.0 (<u:bug>40695</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The SQL server <package>PostgreSQL 9.1</package> has been added. The migration from PostgreSQL 8.4 should be done
+					after the upgrade to UCS 3.3 (<u:bug>40690</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
@@ -483,10 +487,6 @@
 			<title>Other services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					<package>univention-postgresql</package> has been split into multiple packages,
-					one for each PostgreSQL version (<u:bug>40690</u:bug>).
-					<package>postgresql-9.1</package> has been added which fixes several security
-					issues (<u:bug>40690</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>

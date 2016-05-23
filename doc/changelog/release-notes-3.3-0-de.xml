@@ -118,6 +118,12 @@
 		</para>
 
 		<para>
+			Mit UCS 3.3 werden PostgreSQL 9.1 Pakete ausgeliefert. Für PostgreSQL 8.4 wird es UCS 3.3 keine Security
+			Updates geben. Nach dem Update auf UCS 3.3 sollte die Migration von PostgreSQL 8.4 auf PostgreSQL 9.1 erfolgen.
+			In <ulink url=http://sdb.univention.de/1292/> ist das Vorgehen beschrieben.
+		</para>
+
+		<para>
 			Nach dem Update müssen die neuen oder aktualisierten Join-Skripte ausgeführt werden.
 			Dies kann auf zwei Wegen erfolgen:
 			Entweder über das UMC-Modul <guimenu>Domänenbeitritt</guimenu> oder durch Aufruf des Befehls <command>univention-run-join-scripts</command> als Benutzer <systemitem class="username">root</systemitem>.
