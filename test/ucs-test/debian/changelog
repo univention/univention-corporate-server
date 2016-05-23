@@ -1,3 +1,9 @@
+ucs-test (6.0.33-65) unstable; urgency=low
+
+  * fix login and listener related mail bus (Bug #41324)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 23 May 2016 17:17:22 +0200
+
 ucs-test (6.0.33-64) unstable; urgency=low
 
   * Bug #41165: Add test for version/patchlevel

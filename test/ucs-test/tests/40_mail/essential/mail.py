@@ -175,7 +175,7 @@ class PopMail(Mail):
 
 	def login_OK(self, username, password):
 		hostname = socket.gethostname()
-		con = poplib.POP3(hostname)
+		con = poplib.POP3_SSL(hostname)
 		con.set_debuglevel(2)
 		con.user(username)
 		try:
