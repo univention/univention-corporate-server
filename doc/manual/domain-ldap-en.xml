@@ -226,7 +226,7 @@
 	  <title>Windows domain joins</title>
 	  <para>
 		The procedure for joining a Windows system to a UCS domain made available via Samba is now
-		described for Windows 7/8 and Windows 2012. The process is similar for other
+		described for Windows 7/8/10 and Windows 2012. The process is similar for other
 		Windows versions. In addition to the client versions, Windows server systems can also join
 		the domain. Windows servers join the domain as member servers; joining a Windows systems as
 		a domain controller is not supported.

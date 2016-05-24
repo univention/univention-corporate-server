@@ -234,7 +234,7 @@
 		<title>Windows-Domänenbeitritt</title>
 		<para>
 			Der Domänenbeitritt von Microsoft Windows-Systemen zu einer durch Samba
-			bereitgestellten UCS-Domäne wird nachfolgend für Windows 7/8 und Windows 2012
+			bereitgestellten UCS-Domäne wird nachfolgend für Windows 7/8/10 und Windows 2012
 			beschrieben. Bei anderen Windows-Versionen funktioniert der
 			Beitritt ähnlich. Neben den Client-Versionen können auch Windows Server-Systeme der
 			Domäne beitreten. Windows-Server treten der Domäne als Memberserver bei, ein Beitritt
