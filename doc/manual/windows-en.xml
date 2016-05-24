@@ -1339,7 +1339,7 @@ system:
 </programlisting>
 <para>
 The status notifications of the password service on the AD side are
-logged in the <filename>C:\\Windows\\UCS-AD-Connector\\UCS-AD-Connector.log</filename> file.
+logged in the <filename>C:\Windows\UCS-AD-Connector\UCS-AD-Connector.log</filename> file.
 </para>
 </section>
 </section>
