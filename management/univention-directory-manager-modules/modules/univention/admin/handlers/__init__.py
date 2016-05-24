@@ -641,43 +641,35 @@ class simpleLdap(base):
 	def _ldap_modlist(self):
 		self.exceptions=[]
 
-		# remove all properties which do not belong to chosen options
-
-		chosen_options = None
-		descriptions = None
-
-		try:
-			# these might not be set by an inheriting module
-			chosen_options = self.options
-			descriptions = self.descriptions
-		except:
-			pass
-
-		if chosen_options and descriptions:
-			for desc in descriptions:
-				propoptions = descriptions[desc].options
-
-				if (propoptions==[]):
-					# property applies to all options
-					continue
-
-				shortcut = False
-
-				for i in propoptions:
-					if i in chosen_options:
-						# this property applies to one of the chosen options,
-						# jump to next option
-						shortcut = True
-						continue
-				if shortcut:
-					continue
-
-				# if we've come here, we found a property that does not apply
-				# to the chosen options and may cause harm when writing to
-				# the LDAP.
-				# see Bug #8386, if we remove this value from the mapping table,
-				# we can't modify this value during the session.
-				#self.mapping.unregister(desc)
+#		chosen_options = getattr(self, 'options', None)
+#		descriptions = getattr(self, 'descriptions', None)
+#
+#		# remove all properties which do not belong to chosen options
+#		if chosen_options and descriptions:
+#			for desc in descriptions:
+#				propoptions = descriptions[desc].options
+#
+#				if (propoptions==[]):
+#					# property applies to all options
+#					continue
+#
+#				shortcut = False
+#
+#				for i in propoptions:
+#					if i in chosen_options:
+#						# this property applies to one of the chosen options,
+#						# jump to next option
+#						shortcut = True
+#						continue
+#				if shortcut:
+#					continue
+#
+#				# if we've come here, we found a property that does not apply
+#				# to the chosen options and may cause harm when writing to
+#				# the LDAP.
+#				# see Bug #8386, if we remove this value from the mapping table,
+#				# we can't modify this value during the session.
+#				#self.mapping.unregister(desc)
 
 		diff_ml = self.diff()
 		ml = univention.admin.mapping.mapDiff(self.mapping, diff_ml)
@@ -727,34 +719,6 @@ class simpleLdap(base):
 		# FIXME: fails if same objectClass is used for more than one attribute
 		# I'm not sure if it still fails (must be tested)
 		m=univention.admin.modules.get(self.module)
-		if hasattr(m, 'ldap_extra_objectclasses'):
-			seen={}
-			for oc, pname, syntax, ldapMapping, deleteValues, deleteObjectClass in m.ldap_extra_objectclasses:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'oc = %s, pname = %s'% (oc,pname))
-				if self.info.get(pname):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'pname: info[%s] = %s'% (pname,self.info[pname]))
-					if syntax == 'boolean' and self.info[pname] == '0':
-						pos=-1
-						for i in range(0,len(al)):
-							if al[i][0] == ldapMapping:
-								pos=i
-						if pos != -1:
-							al.remove(al[pos])
-						continue
-
-					objectClasses=[]
-					for i in al:
-						if i[0] == 'objectClass':
-							if i[-1]:
-								for objectClass in range(0,len(i[-1])):
-									objectClasses.append(i[-1][objectClass])
-					if oc in objectClasses:
-						continue
-					if seen.get(oc):
-						continue
-					seen[oc]=1
-					#objectClasses.append(oc)
-					al.append(('objectClass', [oc]))
 
 		# UDM PROPERTIES
 		if hasattr(m, 'extended_udm_attributes'):
@@ -851,59 +815,7 @@ class simpleLdap(base):
 #+++# MODLIST #+++#
 		ml=self._ldap_modlist()
 		# custom attributes
-		m=univention.admin.modules.get(self.module)
-		if hasattr(m, 'ldap_extra_objectclasses'):
-			seen={}
-			for oc, pname, syntax, ldapMapping, deleteValues, deleteObjectClass in m.ldap_extra_objectclasses:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: oc = %s, pname = %s'% (oc,pname))
-				if self.info.get(pname) and not (syntax == 'boolean' and self.info[pname] == '0'):
-					if oc in self.oldattr.get('objectClass', []):
-						continue
-					if seen.get(oc):
-						continue
-					seen[oc]=1
-					current_ocs=self.oldattr.get('objectClass')
-					for i in ml:
-						if i[0] == 'objectClass' and i[2]:
-							if type(i[2]) == type(''):
-								current_ocs = [ i[2] ]
-							elif type(i[2]) == type([]):
-								current_ocs = i[2]
-							else:
-								univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in simpleLDAP._modify: i=%s'%i)
-					ml.append(('objectClass',self.oldattr.get('objectClass'), current_ocs+[oc]))
-
-				else:
-					if syntax == 'boolean' and self.info.get(pname) == '0':
-						dellist = []
-						addlist = []
-						for i in ml:
-							if i[0] == ldapMapping:
-								dellist.append(i)
-								addlist.append((i[0],i[1],''))
-						for i in dellist:
-							ml.remove(i)
-						ml.extend( addlist )
-
-
-					else:
-						if deleteObjectClass == '1' and pname not in self.info:
-							# value is empty, should delete objectClass and Values
-							if oc in self.oldattr.get('objectClass', []):
-								current_ocs=self.oldattr.get('objectClass')[0:]
-								for i in ml:
-									if i[0] == 'objectClass' and i[2]:
-										current_ocs=i[2]
-								current_ocs.remove(oc)
-								ml.append(('objectClass',self.oldattr.get('objectClass'), current_ocs))
-								# delete value entry, may be part of ml if it changed
-								found_entry = 0
-								for i in ml:
-									if i[0] == ldapMapping:
-										i=(ldapMapping,i[1],0)
-										found_entry=1
-								if not found_entry:
-									ml.append((ldapMapping,['not_important'],0))
+		m = univention.admin.modules.get(self.module)
 
 		# UDM PROPERTIES
 		if hasattr(m, 'extended_udm_attributes'):
