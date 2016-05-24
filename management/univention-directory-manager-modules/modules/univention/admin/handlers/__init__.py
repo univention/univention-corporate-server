@@ -36,6 +36,7 @@ import re
 import time
 import ldap
 import ipaddr
+from itertools import chain
 
 import univention.debug
 
@@ -66,9 +67,6 @@ else:
 	s4connector_present = None
 
 s4connector_search = False
-
-# FIXME: What is the use of the following line?
-# __path__.append("users")
 
 
 def disable_ad_restrictions(disable=True):
@@ -289,7 +287,7 @@ class base(object):
 			self.info[key]=p
 
 	def __getitem__(self, key):
-		_d=univention.debug.function('admin.handlers.base.__getitem__ key = %s'%key)
+		univention.debug.function('admin.handlers.base.__getitem__ key = %s'%key)
 		if not key:
 			return None
 
@@ -677,15 +675,14 @@ class simpleLdap(base):
 
 		# policies
 		if self.policies != self.oldpolicies:
-			classes=self.oldattr.get('objectClass', [])
-			if not classes or not 'univentionPolicyReference' in classes:
-				ml.append(('objectClass', self.oldattr.get('objectClass', []), self.oldattr.get('objectClass', [])+['univentionPolicyReference']))
+			if 'univentionPolicyReference' not in self.oldattr.get('objectClass', []):
+				ml.append(('objectClass', '', ['univentionPolicyReference']))
 			ml.append(('univentionPolicyReference', self.oldpolicies, self.policies))
 
 		return ml
 
 	def _create(self):
-		self.exceptions=[]
+		self.exceptions = []
 		if hasattr(self,"_ldap_pre_create"):
 			self._ldap_pre_create()
 
@@ -694,71 +691,61 @@ class simpleLdap(base):
 
 		self.call_udm_property_hook('hook_ldap_pre_create', self)
 
-		# Make sure all default values are set...
+		# Make sure all default values are set ...
 		for name, p in self.descriptions.items():
-			# check if this property is present in the current option set,
-			# skip otherwise
-			if hasattr(self, 'options') and self.options and p.options:
-				has_option = 0
-				for o in p.options:
-					if o in self.options:
-						if self.descriptions[name].default(self):
-							has_option = 1
-				if has_option:
-					self[name]
-			else: # items without options should be touched also
-				if self.descriptions[name].default(self):
-					self[name]
+			# ... if property has no option or any required option is currently enabled
+			options_match = bool(set(p.options) & set(self.options)) if getattr(self, 'options', []) and p.options else True
+			if options_match and self.descriptions[name].default(self):
+				self[name]
 
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
 
-		al=self._ldap_addlist()
+		al = self._ldap_addlist()
 		al.extend(self._ldap_modlist())
-		# custom attributes
-		# FIXME: fails if same objectClass is used for more than one attribute
-		# I'm not sure if it still fails (must be tested)
-		m=univention.admin.modules.get(self.module)
+		m = univention.admin.modules.get(self.module)
 
-		# UDM PROPERTIES
-		if hasattr(m, 'extended_udm_attributes'):
-			seen={}
-			for prop in m.extended_udm_attributes:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.objClass = %s, prop.name = %s'% (prop.objClass, prop.name))
-				if self.info.get(prop.name):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.name: info[%s] = %s'% (prop.name, self.info.get(prop.name)))
+		# evaluate extended attributes
+		ocs = set()
+		for prop in getattr(m, 'extended_udm_attributes', []):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.objClass = %s, prop.name = %s'% (prop.objClass, prop.name))
+			if not self.info.get(prop.name):
+				continue
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.name: info[%s] = %s'% (prop.name, self.info.get(prop.name)))
 
-					# do not add object class and value if syntax is boolean and checkbox is disabled
-					if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
-						dellist = []
-						for i in range(0,len(al)):
-							if al[i][0] == prop.ldapMapping:
-								dellist.append( al[i] )
-						for item in dellist:
-							al.remove(item)
-						continue
+			# do not add object class and value if syntax is boolean and checkbox is disabled
+			if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
+				al = [x for x in al if x[0].lower() != prop.ldapMapping.lower()]
+				continue
 
-					# in all other cases add object class
-					if seen.get(prop.objClass):
-						continue
-					objectClasses=[]
-					for i in al:
-						if i[0] == 'objectClass' and i[1]:
-							objectClasses.extend( i[1] )
-					if prop.objClass in objectClasses:
-						continue
-					seen[prop.objClass]=1
-					al.append(('objectClass', [prop.objClass]))
+			# in all other cases add object class
+			ocs.add(prop.objClass)
+
+		# add object classes of (especially extended) options
+		for option in getattr(self, 'options', []):
+			try:
+				opt = m.options[option]
+			except KeyError:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '%r does not specify option %r' % (m.module, option))
+				continue
+			ocs |= set(opt.objectClasses)
+
+		# remove duplicated object classes
+		for i in al:
+			key, val = i[0], i[-1]  # might be a triple
+			if val and key.lower() == 'objectClass'.lower():
+				ocs -= set([val] if isinstance(val, basestring) else val)
+		if ocs:
+			al.append(('objectClass', list(ocs)))
 
 		al = self.call_udm_property_hook('hook_ldap_addlist', self, al)
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "trying to add object at: %s" % self.dn)
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "dn: %s" % (self.dn))
-
 		# ensure univentionObject is set
-		al.append( ( 'objectClass', [ 'univentionObject', ] ) )
-		al.append( ( 'univentionObjectType', [ self.module, ] ) )
+		al.append(('objectClass', ['univentionObject',]))
+		al.append(('univentionObjectType', [self.module,]))
 
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "create object with dn: %s" % (self.dn,))
+		univention.debug.debug(univention.debug.ADMIN, 99, 'Create dn=%r;\naddlist=%r;' % (self.dn, al))
 		self.lo.add(self.dn, al)
 
 		if hasattr(self,'_ldap_post_create'):
@@ -785,9 +772,8 @@ class simpleLdap(base):
 		self.save()
 		return self.dn
 
-#+++# MODIFY #+++#
 	def _modify(self, modify_childs=1, ignore_license=0):
-		self.exceptions=[]
+		self.exceptions = []
 
 		self.__prevent_ad_property_change()
 
@@ -802,85 +788,54 @@ class simpleLdap(base):
 		for name, p in self.descriptions.items():
 			# check if this property is present in the current option set,
 			# skip otherwise
-			if hasattr(self, 'options') and self.options and p.options:
-				for o in p.options:
-					if o in self.options:
-						if self.descriptions[name].default(self):
-							self[name]
-							break
+			if getattr(self, 'options', []) and p.options and (set(p.options) & set(self.options)):
+				if self.descriptions[name].default(self):
+					self[name]
 
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
 
-#+++# MODLIST #+++#
-		ml=self._ldap_modlist()
-		# custom attributes
+		ml = self._ldap_modlist()
 		m = univention.admin.modules.get(self.module)
 
-		# UDM PROPERTIES
-		if hasattr(m, 'extended_udm_attributes'):
-			seen={}
+		# evaluate extended attributes
+		object_classes_to_remove = set()
+		for prop in getattr(m, 'extended_udm_attributes', []):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r'% (prop.name, prop.objClass))
 
-			for prop in m.extended_udm_attributes:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: c_u_p: pname = "%s"  oc = "%s"'% (prop.name, prop.objClass))
+			if not self.info.get(prop.name) or (prop.syntax == 'boolean' and self.info.get(prop.name) == '0'):
+				if prop.deleteObjClass:
+					object_classes_to_remove.add(prop.objClass)
 
-				# if value is set then add object class if neccessary
-				# exception is syntax==boolean ==> remove attribute and object class if value==0
-				if self.info.get(prop.name) and not (prop.syntax == 'boolean' and self.info.get(prop.name) == '0'):
+				# if the value is unset (or a boolean attribute with value == 0) we need to remove the attribute completely
+				if any(x[0].lower() == prop.ldapMapping.lower() for x in ml):
+					ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
+					ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
+			elif self.info.get(prop.name):  # if value is set then add the object class if neccessary
+				ml.append(('objectClass', '', prop.objClass))
 
-					if prop.objClass.lower() in map(lambda x:x.lower(), self.oldattr.get('objectClass', [])):
-						continue
-					if seen.get(prop.objClass):
-						continue
-					seen[prop.objClass] = 1
-					current_ocs = self.oldattr.get('objectClass')
-					for i in ml:
-						if i[0] == 'objectClass' and i[2]:
-							if type(i[2]) == type(''):
-								current_ocs = [ i[2] ]
-							elif type(i[2]) == type([]):
-								current_ocs = i[2]
-							else:
-								univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in simpleLDAP._modify: i=%s'%i)
-					ml.append( ('objectClass', self.oldattr.get('objectClass'), current_ocs+[prop.objClass]) )
+		# evaluate (extended) options
+		available_options = set(getattr(m, 'options', {}).keys())
+		options = set(getattr(self, 'options', []))
+		old_options = set(getattr(self, 'old_options', []))
+		unavailable_options = (options - available_options) | (old_options - available_options)
+		if unavailable_options:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '%r does not provide options: %r' % (self.module, unavailable_options))
+		added_options = options - old_options - unavailable_options
+		removed_options = old_options - options - unavailable_options
 
-				else:
-
-					if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
-						# syntax is boolean and value == 0 ==> remove
-						dellist = []
-						addlist = []
-						for i in ml:
-							if i[0] == prop.ldapMapping:
-								dellist.append(i)
-								addlist.append((i[0],i[1],''))
-						for i in dellist:
-							ml.remove(i)
-						ml.extend( addlist )
-
-					else:
-						# no value is set
-						if prop.deleteObjClass == '1' and prop.name not in self.info:
-							# value is empty, should delete objectClass and Values
-							if prop.objClass in self.oldattr.get('objectClass', []):
-								current_ocs = self.oldattr.get('objectClass')[0:]
-								for i in ml:
-									if i[0] == 'objectClass' and i[2]:
-										current_ocs = i[2]
-								current_ocs.remove( prop.objClass )
-								ml.append( ('objectClass', self.oldattr.get('objectClass'), current_ocs) )
-								# delete value entry, may be part of ml if it changed
-								found_entry = 0
-								for i in ml:
-									if i[0] == prop.ldapMapping:
-										i = (prop.ldapMapping, i[1], 0)
-										found_entry = 1
-								if not found_entry:
-									ml.append( (prop.ldapMapping, ['not_important'], 0) )
+		ocs = set(_MergedAttributes(self, ml).get_attribute('objectClass'))
+#		ocs -= object_classes_to_remove  # FIXME: Bug #41207; check which attributes still need it
+		ocs -= set(chain.from_iterable(m.options[option].objectClasses for option in removed_options))
+		ocs |= set(chain.from_iterable(m.options[option].objectClasses for option in added_options))
+		if set(self.oldattr.get('objectClass', [])) != ocs:
+			ml = [x for x in ml if x[0].lower() != 'objectClass'.lower()]
+			ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
 
 		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
 
 		#FIXME: timeout without exception if objectClass of Object is not exsistant !!
+		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
 		self.lo.modify(self.dn, ml, ignore_license=ignore_license)
 
 		if hasattr(self,'_ldap_post_modify'):
@@ -990,7 +945,7 @@ class simpleLdap(base):
 					self.lo.searchDn(base=i, scope='base')
 					pathlist.append(i)
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "loadPolicyObject: added path %s" % i)
-				except Exception, e:
+				except Exception:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "loadPolicyObject: invalid path setting: %s does not exist in LDAP" % i)
 					continue  # looking for next policy container
 				break # at least one item has been found; so we can stop here since only pathlist[0] is used
@@ -1045,7 +1000,7 @@ class simpleLdap(base):
 					policy.mapping.unregister( pname )
 
 	def _update_policies(self):
-		_d=univention.debug.function('admin.handlers.simpleLdap._update_policies')
+		univention.debug.function('admin.handlers.simpleLdap._update_policies')
 		for policy_type, policy_object in self.policyObjects.items():
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "simpleLdap._update_policies: processing policy of type: %s" % policy_type)
 			if policy_object.changes:
@@ -1138,7 +1093,7 @@ class simpleComputer( simpleLdap ):
 			while not machineSid or machineSid == 'None':
 				try:
 					machineSid = univention.admin.allocators.requestUserSid(lo, position, num)
-				except univention.admin.uexceptions.noLock, e:
+				except univention.admin.uexceptions.noLock:
 					num = str(int(num)+1)
 			return machineSid
 
@@ -1431,7 +1386,7 @@ class simpleComputer( simpleLdap ):
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: filter [ dhcpHWAddress = %s ]; results: %s' % ( ethernet, results ) )
 
 			for result in results:
-				object = univention.admin.objects.get( univention.admin.modules.get( 'dhcp/host' ), self.co, self.lo, position = self.position, dn = result )
+				object = univention.admin.objects.get(module, self.co, self.lo, position = self.position, dn = result)
 				object.open( )
 				object[ 'host' ] = object[ 'host' ].replace( old_name, new_name )
 				object.modify( )
@@ -2682,7 +2637,7 @@ class simplePolicy(simpleLdap):
 				return key
 
 	def __makeUnique(self):
-		_d=univention.debug.function('admin.handlers.simplePolicy.__makeUnique')
+		univention.debug.function('admin.handlers.simplePolicy.__makeUnique')
 		identifier=self.getIdentifier()
 		components=self.info[identifier].split("_uv")
 		if len(components) > 1:
@@ -2706,7 +2661,7 @@ class simplePolicy(simpleLdap):
 			self.oldinfo={}
 			simpleLdap.create(self)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simplePolicy.create: created object: info=%s' % (self.info))
-		except univention.admin.uexceptions.objectExists, dn:
+		except univention.admin.uexceptions.objectExists:
 			self.__makeUnique()
 			self.create()
 
@@ -2761,7 +2716,6 @@ class simplePolicy(simpleLdap):
 					return ''
 			return simpleLdap.__getitem__(self, key)
 
-		dict={}
 		self.policy_result()
 
 		if ( key in self.polinfo and not ( key in self.info or key in self.oldinfo ) ) or ( key in self.polinfo_more and 'fixed' in self.polinfo_more[ key ] and self.polinfo_more[ key ][ 'fixed' ] ):
@@ -2815,7 +2769,6 @@ class simplePolicy(simpleLdap):
 			simpleLdap.__setitem__(self, key, newvalue)
 			return
 
-		dict={}
 		self.policy_result()
 
 		if self.polinfo.has_key(key):
@@ -2846,3 +2799,36 @@ class simplePolicy(simpleLdap):
 		simpleLdap.__setitem__(self, key, newvalue)
 		if self.hasChanged(key):
 			self.changes=1
+
+
+class _MergedAttributes(object):
+	"""Evaluates old attributes and the modlist to get a new representation of the object."""
+
+	def __init__(self, obj, modlist):
+		self.obj = obj
+		self.modlist = modlist
+		self.case_insensitive_attributes = ['objectClass']
+
+	def get_attributes(self):
+		attributes = set(self.obj.oldattr.keys()) | set(x[0] for x in self.modlist)
+		return dict((attr, self.get_attribute(attr)) for attr in attributes)
+
+	def get_attribute(self, attr):
+		value = set(self.obj.oldattr.get(attr, []))
+		# evaluate the modlist and apply all changes to the current values
+		for old, new in [(y, z) for x, y, z in self.modlist if x.lower() == attr.lower()]:
+			if not new:
+				new = []
+			if not old:
+				old = []
+			if isinstance(new, basestring):
+				new = [new]
+			if isinstance(old, basestring):
+				old = [old]
+			if not old and new:  # MOD_ADD
+				value |= set(new)
+			elif not new and old:  # MOD_DELETE
+				value -= set(old)
+			elif old and new:  # MOD_REPLACE
+				value = set(new)
+		return list(value)

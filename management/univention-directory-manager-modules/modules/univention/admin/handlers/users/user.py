@@ -1954,14 +1954,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
+		old_object_classes = self.oldattr.get('objectClass', [])
+		new_object_classes = set(old_object_classes)
 
 		# samba privileges
-		if self.hasChanged( 'sambaPrivileges' ) and 'samba' in self.options:
-			o = self.oldattr.get( 'objectClass', [] )
+		if self.hasChanged('sambaPrivileges') and 'samba' in self.options:
 			# add univentionSambaPrivileges objectclass
-			if self[ 'sambaPrivileges'] and not "univentionSambaPrivileges" in o:
-				ml.insert( 0, ( 'objectClass', '', 'univentionSambaPrivileges' ) )
-
+			if self['sambaPrivileges']:
+				new_object_classes |= {'univentionSambaPrivileges',}
 
 		shadowLastChangeValue = ''	# if is filled, it will be added to ml in the end
 		sambaPwdLastSetValue = ''	# if is filled, it will be added to ml in the end
@@ -1972,29 +1972,20 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			# pki option add / remove
 			if 'pki' in self.options and not 'pki' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added pki option')
-				ocs=self.oldattr.get('objectClass', [])
-				if not 'pkiUser' in ocs:
-					ml.insert(0, ('objectClass', '', 'pkiUser'))
+				new_object_classes |= {'pkiUser',}
 			if not 'pki' in self.options and 'pki' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove pki option')
-				ocs=self.oldattr.get('objectClass', [])
-				if 'pkiUser' in ocs:
-					ml.insert(0, ('objectClass', 'pkiUser', ''))
+				if 'pkiUser' in old_object_classes:
+					new_object_classes -= {'pkiUser',}
 					for attr in ['userCertificate;binary']:
 						ml=self._remove_attr(ml,attr)
 			# ldap_pwd option add / remove
 			if 'ldap_pwd' in self.options and not 'ldap_pwd' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added ldap_pwd option')
-				ocs=self.oldattr.get('objectClass', [])
-				if not 'simpleSecurityObject' in ocs:
-					ml.insert(0, ('objectClass', '', 'simpleSecurityObject'))
-					ml.insert(0, ('objectClass', '', 'uidObject'))
+				new_object_classes |= {'simpleSecurityObject', 'uidObject'}
 			if not 'ldap_pwd' in self.options and 'ldap_pwd' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove ldap_pwd option')
-				ocs=self.oldattr.get('objectClass', [])
-				if 'simpleSecurityObject' in ocs:
-					ml.insert(0, ('objectClass', 'simpleSecurityObject', ''))
-					ml.insert(0, ('objectClass', 'uidObject', ''))
+				new_object_classes -= {'simpleSecurityObject', 'uidObject'}
 
 		# set cn
 		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
@@ -2044,9 +2035,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		if self.modifypassword:
 			# if the password is going to be changed in ldap check password-history
-			ocs=self.oldattr.get('objectClass', [])
-			if not 'univentionPWHistory' in ocs and not self.pwhistory_active:
-				ml.insert(0, ('objectClass', '', 'univentionPWHistory'))
+			if not self.pwhistory_active:
+				new_object_classes |= {'univentionPWHistory',}
 
 			pwhistory=self.oldattr.get('pwhistory',[''])[0]
 			#read policy
@@ -2076,7 +2066,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					pwdCheck.enableQualityCheck = True
 					try:
 						pwdCheck.check(self['password'])
-					except ValueError, e:
+					except ValueError as e:
 						raise univention.admin.uexceptions.pwQuality, str(e).replace('W?rterbucheintrag','Wörterbucheintrag').replace('enth?lt', 'enthält')
 						
 					
@@ -2180,14 +2170,14 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				ml.append(('krb5KDCFlags', self.oldattr.get('krb5KDCFlags', []), krb_kdcflags))
 				ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 
-				if not 'krb5KDCEntry' in ocs and not self.kerberos_active:
+				if 'krb5KDCEntry' not in old_object_classes and not self.kerberos_active:
 					domain=univention.admin.uldap.domain(self.lo, self.position)
 					realm=domain.getKerberosRealm()
 					if realm:
 						ml.append(('krb5PrincipalName', '', [self['username']+'@'+realm]))
 						ml.append(('krb5MaxLife', '', '86400'))
 						ml.append(('krb5MaxRenew', '', '604800'))
-						ml.insert(0, ('objectClass', '', ['krb5Principal', 'krb5KDCEntry']))
+						new_object_classes |= {'krb5Principal', 'krb5KDCEntry'}
 
 		if self.hasChanged('disabled'):
 			if 'kerberos' in self.options:
@@ -2368,9 +2358,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		if (self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']) or (self.hasChanged('mailAlternativeAddress') and self['mailAlternativeAddress']):
 			if 'mail' in self.options and not self.mail_active:
-				ocs=self.oldattr.get('objectClass', [])
-				if not 'univentionMail' in ocs:
-					ml.insert(0, ('objectClass', '', 'univentionMail'))
+				new_object_classes |= {'univentionMail',}
 		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']:
 			for i, j in self.alloc:
 				if i == 'mailPrimaryAddress': break
@@ -2385,8 +2373,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					raise univention.admin.uexceptions.mailAddressUsed
 
 		# make sure that univentionPerson is set as objectClass when needed
-		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')) and not 'univentionPerson' in self.oldattr.get('objectClass', []):
-			ml.insert(0, ('objectClass', self.oldattr.get('objectClass', []), self.oldattr.get('objectClass', []) + ['univentionPerson']))
+		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')):
+			new_object_classes |= {'univentionPerson',}
 
 		if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
 			if self['homeShare']:
@@ -2398,8 +2386,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					raise univention.admin.uexceptions.noObject, _('DN given as share is not valid.')
 
 				if share['host'] and share['path']:
-					if not 'automount' in self.oldattr.get('objectClass', []):
-						ml.insert(0, ('objectClass', '', 'automount'))
+					new_object_classes |= {'automount',}
 
 					am_host=share['host']
 					if not self['homeSharePath'] or type(self['homeSharePath']) not in [types.StringType, types.UnicodeType]:
@@ -2416,11 +2403,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					raise univention.admin.uexceptions.noObject, _('Given DN is no share.')
 
 			if not self['homeShare'] or not share['host'] or not share['path']:
-					if 'automount' in self.oldattr.get('objectClass', []):
-						ml.insert(0, ('objectClass', 'automount', ''))
-					am_old = self.oldattr.get('automountInformation', [''])[0]
-					if am_old:
-						ml.append(('automountInformation', am_old, ''))
+				new_object_classes |= {'automount',}
+				am_old = self.oldattr.get('automountInformation', [''])[0]
+				if am_old:
+					ml.append(('automountInformation', am_old, ''))
 		if 'samba' in self.options:
 			sambaMunged=self.sambaMungedDialMap()
 			if sambaMunged:
@@ -2429,13 +2415,15 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if self.hasChanged('sambaRID') and not hasattr(self, 'userSid'):
 				self.userSid = self.__generate_user_sid(self.oldattr['uidNumber'][0])
 				ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.userSid]))
-			pass
 
 		if sambaPwdLastSetValue:
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
 		if shadowLastChangeValue:
 			ml.append(('shadowLastChange',self.oldattr.get('shadowLastChange', [''])[0], shadowLastChangeValue))
+
+		if set(old_object_classes) != new_object_classes:
+			ml.insert(0, ('objectClass', old_object_classes, list(new_object_classes)))
 
 		return ml
 

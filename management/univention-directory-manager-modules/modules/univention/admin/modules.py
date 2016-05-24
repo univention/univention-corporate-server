@@ -416,12 +416,25 @@ def update_extended_attributes(lo, module, position):
 						except:
 							ud.debug(ud.ADMIN, ud.WARN, 'modules update_extended_attributes: custom field for tab %s: failed to set tabPosition' % tabname)
 
-				properties4tabs[ tabname ].append( EA_Layout( name = pname, tabName = tabname, position = tabPosition, advanced = tabAdvanced, overwrite = overwriteProp, fullWidth = fullWidth, groupName = groupname, groupPosition = groupPosition ) )
+				properties4tabs[tabname].append(EA_Layout(
+					name=pname,
+					tabName=tabname,
+					position=tabPosition,
+					advanced=tabAdvanced,
+					overwrite=overwriteProp,
+					fullWidth=fullWidth,
+					groupName=groupname,
+					groupPosition=groupPosition,
+				))
 
-			module.extended_udm_attributes.extend( [ univention.admin.extended_attribute( pname, attrs.get('univentionUDMPropertyObjectClass', [])[0],
-																				  attrs['univentionUDMPropertyLdapMapping'][0], deleteObjectClass,
-																				  propertySyntaxString,
-																				  propertyHook ) ] )
+			module.extended_udm_attributes.append(univention.admin.extended_attribute(
+				name=pname,
+				objClass=attrs.get('univentionUDMPropertyObjectClass', [])[0],
+				ldapMapping=attrs['univentionUDMPropertyLdapMapping'][0],
+				deleteObjClass=deleteObjectClass,
+				syntax=propertySyntaxString,
+				hook=propertyHook
+			))
 
 	# overwrite tabs that have been added by UDM extended attributes
 	for tab in module.extended_attribute_tabnames:

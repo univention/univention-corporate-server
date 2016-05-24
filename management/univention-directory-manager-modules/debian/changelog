@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.2-30) unstable; urgency=medium
+
+  * Bug #25240: fix object class generation; add object classes of options
+  * Bug #41266: remove unused code which handlded custom-attributes
+
+ -- Florian Best <best@univention.de>  Mon, 23 May 2016 21:14:29 +0200
+
 univention-directory-manager-modules (11.0.2-29) unstable; urgency=low
 
   * Bug #41172: respect '--remove foo=bar'
