@@ -13,3 +13,9 @@ desc: |
  or delete (CVE-2016-3715), move (CVE-2016-3716), or read (CVE-2016-3717)
  local files.
 bug: [41331]
+cve:
+ - CVE-2016-3714
+ - CVE-2016-3715
+ - CVE-2016-3716
+ - CVE-2016-3717
+ - CVE-2016-3718
