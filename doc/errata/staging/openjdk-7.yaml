@@ -3,7 +3,7 @@ release: "4.0"
 scope: ucs_4.0-0-errata4.0-5
 src: openjdk-7
 fix: 7u101-2.6.6-2.29.201605040859
-version: [4,5]
+version: [5]
 desc: |
  Multiple vulnerabilities have been discovered in the implementation
  of the Java platform. In Univention Corporate Server OpenJDK is

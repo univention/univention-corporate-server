@@ -1,6 +1,6 @@
 product: ucs
 release: "4.0"
-version: [4,5]
+version: [5]
 scope: ucs_4.0-0-errata4.0-5
 src: linux
 fix: 3.16.7-ckt25-2~bpo70+1.194.201604181018
