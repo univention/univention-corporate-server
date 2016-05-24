@@ -655,14 +655,16 @@ def ucs_srv_record_create(s4connector, object):
 		newRecord= univention.admin.handlers.dns.srv_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
 		newRecord.open()
 		# Make syntax UDM compatible
-		service=string.join(relativeDomainName.split('.')[:-1], '.')
-		if service.startswith('_'):
-			service=service[1:] 
-		protocol=relativeDomainName.split('.')[-1]
-		if protocol.startswith('_'):
-			protocol=protocol[1:] 
-		ud.debug(ud.LDAP, ud.INFO, 'SRV create: service="%s" protocol="%s"' % (service, protocol))
-		newRecord['name']=[service, protocol]
+		parts = univention.admin.handlers.dns.srv_record.unmapName([relativeDomainName])
+		if len( parts ) == 3 and parts[ 2 ]:
+			msg='SRV create: service="%s" protocol="%s" extension="%s"' % (parts[0], parts[1], parts[2])
+		if len( parts ) == 2:
+			msg='SRV create: service="%s" protocol="%s"' % (parts[0], parts[1])
+		else:
+			msg='SRV create: unexpected format, parts: %s' % (parts,)
+
+		ud.debug(ud.LDAP, ud.INFO, msg)
+		newRecord['name']=parts
 		newRecord['location']=srv
 		newRecord.create()
 	
