@@ -922,11 +922,11 @@ echo -n "Administrator password" > /etc/univention/connector/password
   </para>
 
   <para>
-    Following the initial sync, additional changes are requested at a set interval. This value is set to five seconds and can be adjusted manually using the &ucsUCR; variable <envar>connector/s4/poll/sleep</envar>.
+    Following the initial sync, additional changes are requested at a set interval. This value is set to five seconds and can be adjusted manually using the &ucsUCR; variable <envar>connector/ad/poll/sleep</envar>.
   </para>
 
   <para>
-    If an object cannot be synchronized, it is firstly reset (“rejected”). Following a configurable number of cycles – the interval can be adjusted using the &ucsUCR; variable <envar>connector/s4/retryrejected</envar> – another attempt is made to import the changes. The standard value is ten cycles. In addition, when the UCS AD Connector is restarted, an attempt is also made to synchronize the previously rejected changes again.
+    If an object cannot be synchronized, it is firstly reset (“rejected”). Following a configurable number of cycles – the interval can be adjusted using the &ucsUCR; variable <envar>connector/ad/retryrejected</envar> – another attempt is made to import the changes. The standard value is ten cycles. In addition, when the UCS AD Connector is restarted, an attempt is also made to synchronize the previously rejected changes again.
   </para>
 
   <para>

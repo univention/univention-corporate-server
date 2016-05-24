@@ -994,14 +994,14 @@ echo -n "Administrator password" > /etc/univention/connector/password
 
   <para>
     Nach dem initialen Sync werden weitere Änderungen in einem festen Intervall abfragt. Dieser
-		Wert ist auf fünf Sekunden eingestellt und kann manuell per &ucsUCR;-Variable <envar>connector/s4/poll/sleep</envar>
+		Wert ist auf fünf Sekunden eingestellt und kann manuell per &ucsUCR;-Variable <envar>connector/ad/poll/sleep</envar>
 		angepasst werden.
   </para>
 
   <para>
     Sollte ein Objekt nicht synchronisiert werden können, so wird dieses Objekt zunächst
     zurückgestellt ("rejected"). Nach einer konfigurierbaren Anzahl von Durchläufen - das
-    Intervall kann im per &ucsUCR;-Variable <envar>connector/s4/retryrejected</envar> angepasst werden - wird erneut versucht diese Änderungen wieder
+    Intervall kann im per &ucsUCR;-Variable <envar>connector/ad/retryrejected</envar> angepasst werden - wird erneut versucht diese Änderungen wieder
     einzuspielen. Der Standardwert beträgt zehn Durchläufe. Außerdem wird bei einem Neustart des
     UCS AD-Connectors ebenfalls versucht, die zuvor zurückgewiesenen Änderungen erneut zu
     synchronisieren.
