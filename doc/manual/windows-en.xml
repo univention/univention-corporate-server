@@ -24,7 +24,6 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		Domain controller function / authentication services
-
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -35,6 +34,7 @@
 		Print services
 	  </simpara></listitem>
 	</itemizedlist>
+
 	<para>
 	  In UCS all these services are provided by Samba.
 	</para>
@@ -675,6 +675,7 @@ END CATEGORY
 		  The logon scripts are stored in
 		  <filename class="directory">/var/lib/samba/sysvol/<replaceable>Domainname</replaceable>/scripts/</filename> and provided under
 		  the share name <emphasis>NETLOGON</emphasis>.
+		  The file name of the script must be given relative to that directory.
 		</para>
 
 		<para>
