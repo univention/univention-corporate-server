@@ -1,12 +1,14 @@
 product: ucs
 release: "4.1"
 version: [1,2]
-scope: ucs_4.1-0-errata4.1-1
+scope: ucs_4.1-0-errata4.1-2
 src: libgd2
-fix: 2.0.36~rc1~dfsg-6.1.35.201605091028
+fix: 2.0.36~rc1~dfsg-6.1.39.201605240918
 desc: |
  This update addresses the following issue:
+ * Stack consumption vulnerability allows a denial of service attack (CVE-2015-8874).
  * Integer signedness vulnerability causing heap overflow (CVE-2016-3074).
 bug: [41209]
 cve:
+ - CVE-2015-8874
  - CVE-2016-3074
