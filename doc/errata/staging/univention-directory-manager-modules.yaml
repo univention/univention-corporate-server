@@ -3,10 +3,13 @@ release: "4.1"
 version: [1,2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-directory-manager-modules
-fix: 11.0.2-29.1385.201605191248
+fix: 11.0.2-30.1386.201605241939
 desc: |
  This update addresses the following issue(s):
  * Extended options are now also evaluated for users/user objects.
  * The UDM command line tool now supports the use of '--remove' on single
    value attributes. Before '--set attribute=' had to be used.
-bug: [41017,41172]
+ * Some old code which handled custom attributes has been removed.
+ * The object class of extended options is now always added or removed to the
+   object without the need to change an attribute.
+bug: [41017,41172,41266,25240]
