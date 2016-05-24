@@ -5,8 +5,9 @@ scope: ucs_4.0-0-errata4.0-5
 src: libgd2
 fix: 2.0.36~rc1~dfsg-6.1.38.201605240916
 desc: |
- This update addresses the following issue:
- * Stack consumption vulnerability allows a denial of service attack (CVE-2015-8874).
+ This update addresses the following issues:
+ * Stack consumption vulnerability allows a denial of service attack
+   (CVE-2015-8874).
  * Integer signedness vulnerability causing heap overflow (CVE-2016-3074).
 bug: [41208]
 cve:
