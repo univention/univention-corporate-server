@@ -97,3 +97,7 @@ Type: file
 File: etc/cron.d/univention-samba4-backup
 Variables: samba4/backup/cron
 Variables: samba4/backup/cron/options
+
+Type: file
+File: var/lib/samba/private/krb5.conf
+Variables: kerberos/realm

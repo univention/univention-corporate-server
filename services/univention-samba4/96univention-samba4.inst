@@ -969,6 +969,8 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	fi
 
+	ucr commit /var/lib/samba/private/krb5.conf
+
 	if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
 		## add server to Enterprise Domain Controllers group if it exists
 		if univention-ldapsearch -x sambaSID='S-1-5-9' cn | ldapsearch-wrapper | grep -q '^cn:'; then
