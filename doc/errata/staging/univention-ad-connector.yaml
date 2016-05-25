@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-ad-connector
+fix: 10.0.1-25.492.201605252010
+desc: |
+ This update addresses the following issue(s):
+ * traceback due to empty proxyAddresses in AD during sync_from_ucs
+bug: [41246]
