@@ -119,6 +119,7 @@
 		<para>
 			The maintained Java version in UCS 3.3 is OpenJDK 7. If OpenJDK 6 is installed, the upgrade process tries to replace
 			it with OpenJDK 7. If the automatic replacement fails, it has do be done manually.
+			The automatic migration can be skipped by setting the &ucsUCRV; <envar>update33/skip/openjdk7</envar> to <literal>true</literal> before the update.
 		</para>
 
 		<para>

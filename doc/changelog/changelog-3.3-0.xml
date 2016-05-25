@@ -78,7 +78,7 @@
 				<listitem><simpara>
 					The maintained Java version in UCS 3.3 is OpenJDK 7. If OpenJDK 6 is installed, the upgrade process tries to replace
 					it with OpenJDK 7. The migration can be skipped by setting the &ucsUCRV; <envar>update33/skip/openjdk7</envar> to
-					true (<u:bug>40692</u:bug>).
+					<literal>true</literal> (<u:bug>40692</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					The <package>libxml2</package> library has been upgraded to version 2.8.0 (<u:bug>40696</u:bug>)
@@ -516,7 +516,7 @@
 			<title>Xen</title>
 			<itemizedlist>
 				<listitem><simpara>
-						The Xen hypervisor and related support packages have been updates to version 4.1.6.1 (<u:bug>40697</u:bug>, <u:bug>39689</u:bug>).
+						The Xen hypervisor and related support packages have been updated to version 4.1.6.1 (<u:bug>40697</u:bug>, <u:bug>39689</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
