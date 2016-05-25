@@ -2375,7 +2375,7 @@ class ad(univention.connector.ucs):
 						if not ad_object.has_key(attr):
 							if value:
 								if attribute.ucs_value_map_function:
-									value = attribute.ucs_value_map_function(value, ad_object[attr])
+									value = attribute.ucs_value_map_function(value)
 								modlist.append((ldap.MOD_ADD, attr, value))
 						else:
 							if attribute.compare_function:
@@ -2400,7 +2400,7 @@ class ad(univention.connector.ucs):
 						if not ad_object.has_key(attr):
 							if value:
 								if post_attribute.ucs_value_map_function:
-									value = post_attribute.ucs_value_map_function(value, ad_object[attr])
+									value = post_attribute.ucs_value_map_function(value)
 								modlist.append((ldap.MOD_ADD, attr, value))
 						else:
 							if post_attribute.compare_function:
