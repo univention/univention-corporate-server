@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-31) unstable; urgency=medium
+
+  * Bug #25240: fix typo and python2.6 syntax compatibility
+
+ -- Florian Best <best@univention.de>  Wed, 25 May 2016 15:06:32 +0200
+
 univention-directory-manager-modules (11.0.2-30) unstable; urgency=medium
 
   * Bug #25240: fix object class generation; add object classes of options

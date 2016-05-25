@@ -798,6 +798,8 @@ class simpleLdap(base):
 		ml = self._ldap_modlist()
 		m = univention.admin.modules.get(self.module)
 
+		ocs = set(_MergedAttributes(self, ml).get_attribute('objectClass'))
+
 		# evaluate extended attributes
 		object_classes_to_remove = set()
 		for prop in getattr(m, 'extended_udm_attributes', []):
@@ -812,7 +814,7 @@ class simpleLdap(base):
 					ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
 					ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
 			elif self.info.get(prop.name):  # if value is set then add the object class if neccessary
-				ml.append(('objectClass', '', prop.objClass))
+				ocs |= set([prop.objClass])
 
 		# evaluate (extended) options
 		available_options = set(getattr(m, 'options', {}).keys())
@@ -824,7 +826,6 @@ class simpleLdap(base):
 		added_options = options - old_options - unavailable_options
 		removed_options = old_options - options - unavailable_options
 
-		ocs = set(_MergedAttributes(self, ml).get_attribute('objectClass'))
 #		ocs -= object_classes_to_remove  # FIXME: Bug #41207; check which attributes still need it
 		ocs -= set(chain.from_iterable(m.options[option].objectClasses for option in removed_options))
 		ocs |= set(chain.from_iterable(m.options[option].objectClasses for option in added_options))

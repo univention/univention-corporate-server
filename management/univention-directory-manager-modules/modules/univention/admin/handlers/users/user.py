@@ -1842,7 +1842,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				al.append(('uidNumber', [self.uidNum]))
 				al.append(('gidNumber', [gidNum]))
 			if 'mail' in self.options:
-				if not 'posix' in self.options:
+				if 'posix' not in self.options:
 					ocs.extend(['shadowAccount','univentionMail'])
 				else:
 					ocs.extend(['univentionMail'])
@@ -1961,7 +1961,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if self.hasChanged('sambaPrivileges') and 'samba' in self.options:
 			# add univentionSambaPrivileges objectclass
 			if self['sambaPrivileges']:
-				new_object_classes |= {'univentionSambaPrivileges',}
+				new_object_classes |= set(['univentionSambaPrivileges'])
 
 		shadowLastChangeValue = ''	# if is filled, it will be added to ml in the end
 		sambaPwdLastSetValue = ''	# if is filled, it will be added to ml in the end
@@ -1972,20 +1972,20 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			# pki option add / remove
 			if 'pki' in self.options and not 'pki' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added pki option')
-				new_object_classes |= {'pkiUser',}
+				new_object_classes |= set(['pkiUser',])
 			if not 'pki' in self.options and 'pki' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove pki option')
 				if 'pkiUser' in old_object_classes:
-					new_object_classes -= {'pkiUser',}
+					new_object_classes -= set(['pkiUser',])
 					for attr in ['userCertificate;binary']:
 						ml=self._remove_attr(ml,attr)
 			# ldap_pwd option add / remove
 			if 'ldap_pwd' in self.options and not 'ldap_pwd' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added ldap_pwd option')
-				new_object_classes |= {'simpleSecurityObject', 'uidObject'}
+				new_object_classes |= set(['simpleSecurityObject', 'uidObject'])
 			if not 'ldap_pwd' in self.options and 'ldap_pwd' in self.old_options:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove ldap_pwd option')
-				new_object_classes -= {'simpleSecurityObject', 'uidObject'}
+				new_object_classes -= set(['simpleSecurityObject', 'uidObject'])
 
 		# set cn
 		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
@@ -2036,7 +2036,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if self.modifypassword:
 			# if the password is going to be changed in ldap check password-history
 			if not self.pwhistory_active:
-				new_object_classes |= {'univentionPWHistory',}
+				new_object_classes |= set(['univentionPWHistory',])
 
 			pwhistory=self.oldattr.get('pwhistory',[''])[0]
 			#read policy
@@ -2177,7 +2177,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						ml.append(('krb5PrincipalName', '', [self['username']+'@'+realm]))
 						ml.append(('krb5MaxLife', '', '86400'))
 						ml.append(('krb5MaxRenew', '', '604800'))
-						new_object_classes |= {'krb5Principal', 'krb5KDCEntry'}
+						new_object_classes |= set(['krb5Principal', 'krb5KDCEntry'])
 
 		if self.hasChanged('disabled'):
 			if 'kerberos' in self.options:
@@ -2358,10 +2358,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		if (self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']) or (self.hasChanged('mailAlternativeAddress') and self['mailAlternativeAddress']):
 			if 'mail' in self.options and not self.mail_active:
-				new_object_classes |= {'univentionMail',}
+				new_object_classes |= set(['univentionMail',])
 		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']:
 			for i, j in self.alloc:
-				if i == 'mailPrimaryAddress': break
+				if i == 'mailPrimaryAddress':
+					break
 			else:
 				try:
 					self.alloc.append( ( 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] ) )
@@ -2374,7 +2375,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		# make sure that univentionPerson is set as objectClass when needed
 		if any(self.hasChanged(ikey) and self[ikey] for ikey in ('umcProperty', 'birthday')):
-			new_object_classes |= {'univentionPerson',}
+			new_object_classes |= set(['univentionPerson',])
 
 		if self.hasChanged('homeShare') or self.hasChanged('homeSharePath'):
 			if self['homeShare']:
@@ -2386,7 +2387,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					raise univention.admin.uexceptions.noObject, _('DN given as share is not valid.')
 
 				if share['host'] and share['path']:
-					new_object_classes |= {'automount',}
+					new_object_classes |= set(['automount',])
 
 					am_host=share['host']
 					if not self['homeSharePath'] or type(self['homeSharePath']) not in [types.StringType, types.UnicodeType]:
@@ -2403,7 +2404,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					raise univention.admin.uexceptions.noObject, _('Given DN is no share.')
 
 			if not self['homeShare'] or not share['host'] or not share['path']:
-				new_object_classes |= {'automount',}
+				new_object_classes |= set(['automount',])
 				am_old = self.oldattr.get('automountInformation', [''])[0]
 				if am_old:
 					ml.append(('automountInformation', am_old, ''))
