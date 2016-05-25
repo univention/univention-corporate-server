@@ -73,7 +73,7 @@ def _get_integer(str):
 	return res
 
 def ssl_init(sd):
-	meth = M2Crypto.__m2crypto.sslv2_method();
+	meth = M2Crypto.__m2crypto.sslv3_method();
 	ctx = M2Crypto.__m2crypto.ssl_ctx_new (meth);
 	ssl = M2Crypto.__m2crypto.ssl_new (ctx);
 	M2Crypto.__m2crypto.ssl_set_fd (ssl, sd);
