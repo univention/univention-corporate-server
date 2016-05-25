@@ -1,0 +1,27 @@
+A new update is available for Univention Corporate Server 3.1 as
+part of the extended security maintenance.
+It addresses the following problem:
+
+Program component:  libssh
+Reference:          CVE-2014-0017 CVE-2016-0739
+Fixed version:      0.4.5-3.17.201605251207
+
+The following issues were fixed:
+* The PRNG is not always correctly reseeding when a new process is forked
+  (CVE-2014-0017).
+* Weak Diffie-Hellman secret generation in libssh (CVE-2016-0739).
+
+-- 
+Univention GmbH
+be open.
+Mary-Somerville-Str.1
+28359 Bremen
+Tel. : +49 421 22232-0
+Fax  : +49 421 22232-99
+
+<info@univention.de>
+http://www.univention.de/
+
+Geschäftsführer: Peter H. Ganten
+HRB 20755 Amtsgericht Bremen
+Steuer-Nr.: 71-597-02876

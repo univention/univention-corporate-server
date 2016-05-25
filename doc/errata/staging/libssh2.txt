@@ -1,0 +1,26 @@
+A new update is available for Univention Corporate Server 3.1 as
+part of the extended security maintenance.
+It addresses the following problem:
+
+Program component:  libssh2
+Reference:          CVE-2015-1782
+Fixed version:      1.2.6-1.11.201605251206
+
+The following issue was fixed:
+* Denial of service and memory disclosure due to insufficient range checks
+  during SSH_MSG_KEXINIT (CVE-2015-1782)
+
+-- 
+Univention GmbH
+be open.
+Mary-Somerville-Str.1
+28359 Bremen
+Tel. : +49 421 22232-0
+Fax  : +49 421 22232-99
+
+<info@univention.de>
+http://www.univention.de/
+
+Geschäftsführer: Peter H. Ganten
+HRB 20755 Amtsgericht Bremen
+Steuer-Nr.: 71-597-02876

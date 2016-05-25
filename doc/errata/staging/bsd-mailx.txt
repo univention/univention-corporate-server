@@ -1,0 +1,27 @@
+A new update is available for Univention Corporate Server 3.1 as
+part of the extended security maintenance.
+It addresses the following problem:
+
+Program component:  bsd-mailx
+Reference:          CVE-2014-7844
+Fixed version:      8.1.2-0.20100314cvs-1.10.201605251209
+
+The following issue was fixed:
+* An undocumented feature in mailx (the implementation of the mail command)
+  allows the execution of arbitrary commands if the email address is obtained
+  from a remote source (CVE-2014-7844)
+
+-- 
+Univention GmbH
+be open.
+Mary-Somerville-Str.1
+28359 Bremen
+Tel. : +49 421 22232-0
+Fax  : +49 421 22232-99
+
+<info@univention.de>
+http://www.univention.de/
+
+Geschäftsführer: Peter H. Ganten
+HRB 20755 Amtsgericht Bremen
+Steuer-Nr.: 71-597-02876
