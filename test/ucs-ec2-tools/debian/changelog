@@ -1,3 +1,9 @@
+ucs-ec2-tools (1.0.14-4) unstable; urgency=low
+
+  * Bug #41339: Switch to "UCS 4.0 rev. 9"
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 25 May 2016 12:28:20 +0200
+
 ucs-ec2-tools (1.0.14-3) unstable; urgency=low
 
   * Bug #39818: Stop upgrade_to_latest_test_errata performg releas updates
