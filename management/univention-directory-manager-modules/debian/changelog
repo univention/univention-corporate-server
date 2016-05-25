@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.2-32) unstable; urgency=medium
+
+  * Bug #41266: removed some more unused custom-attributes code
+
+ -- Florian Best <best@univention.de>  Wed, 25 May 2016 15:59:47 +0200
+
 univention-directory-manager-modules (11.0.2-31) unstable; urgency=medium
 
   * Bug #25240: fix typo and python2.6 syntax compatibility

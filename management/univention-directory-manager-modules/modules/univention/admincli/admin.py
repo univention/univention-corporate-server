@@ -46,7 +46,7 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
-from univention.admin.layout import Tab, Group
+from univention.admin.layout import Group
 import univention.config_registry
 import univention.admin.ipaddress
 
@@ -86,7 +86,6 @@ def usage():
 	out.append('  --%-30s %s' % ('set', 'Set variable to value, e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('superordinate', 'Use superordinate module'))
 	out.append('  --%-30s %s' % ('option', 'Use only given module options'))
-	out.append('  --%-30s %s' % ('customattribute', 'Set custom attribute foo=bar'))
 	out.append('  --%-30s %s' % ('policy-reference', 'Reference to policy given by DN'))
 	out.append('  --%-30s %s' % ('tls', '0 (no); 1 (try); 2 (must)'))
 	out.append('  --%-30s   ' % ('ignore_exists'))
@@ -96,14 +95,11 @@ def usage():
 	out.append('  --%-30s %s' % ('bindpwd', 'bind password'))
 	out.append('  --%-30s %s' % ('bindpwdfile', 'file containing bind password'))
 	out.append('  --%-30s %s' % ('dn', 'Edit object with DN'))
-	out.append('  --%-30s %s' % ('arg', 'Edit object with ARG'))
 	out.append('  --%-30s %s' % ('set', 'Set variable to value, e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('append', 'Append value to variable, e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('remove', 'Remove value from variable, e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('option', 'Use only given module options'))
 	out.append('  --%-30s %s' % ('append-option', 'Append the module options'))
-	out.append('  --%-30s %s' % ('customattribute', 'Set custom attribute foo=bar'))
-	out.append('  --%-30s %s' % ('customattribute-remove', 'Remove custom attribute'))
 	out.append('  --%-30s %s' % ('policy-reference', 'Reference to policy given by DN'))
 	out.append('  --%-30s %s' % ('policy-dereference', 'Remove reference to policy given by DN'))
 	out.append('  --%-30s %s' % ('tls', '0 (no); 1 (try); 2 (must)'))
@@ -114,7 +110,6 @@ def usage():
 	out.append('  --%-30s %s' % ('bindpwdfile', 'file containing bind password'))
 	out.append('  --%-30s %s' % ('dn', 'Remove object with DN'))
 	out.append('  --%-30s %s' % ('superordinate', 'Use superordinate module'))
-	out.append('  --%-30s %s' % ('arg', 'Remove object with ARG'))
 	out.append('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('tls', '0 (no); 1 (try); 2 (must)'))
 	out.append('  --%-30s %s' % ('remove_referring', 'remove referring objects'))
@@ -444,7 +439,7 @@ def _doit(arglist):
 	remove_referring=0
 	recursive=1
 	# parse options
-	longopts=['position=', 'dn=', 'arg=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'filter=', 'tls=', 'ignore_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'customattribute=', 'customattribute-remove=','policy-reference=','policy-dereference=','remove_referring','recursive']
+	longopts=['position=', 'dn=', 'set=', 'append=', 'remove=', 'superordinate=', 'option=', 'append-option=', 'filter=', 'tls=', 'ignore_exists', 'logfile=', 'policies=', 'binddn=', 'bindpwd=', 'bindpwdfile=', 'policy-reference=','policy-dereference=','remove_referring','recursive']
 	try:
 		opts, args=getopt.getopt(arglist[3:], '', longopts)
 	except getopt.error, msg:
@@ -459,7 +454,6 @@ def _doit(arglist):
 
 	position_dn=''
 	dn=''
-	arg=None
 	binddn=None
 	bindpwd=None
 	list_policies=False
@@ -475,8 +469,6 @@ def _doit(arglist):
 	input={}
 	append={}
 	remove={}
-	customattribute={}
-	customattribute_remove=[]
 	policy_reference=[]
 	policy_dereference=[]
 	for opt, val in opts:
@@ -503,8 +495,6 @@ def _doit(arglist):
 				return out + ['OPERATION FAILED']
 		elif opt == '--dn':
 			dn = _2utf8( val )
-		elif opt == '--arg':
-			arg=val
 		elif opt == '--tls':
 			tls=val
 		elif opt == '--ignore_exists':
@@ -517,21 +507,6 @@ def _doit(arglist):
 			parsed_append_options.append(val)
 		elif opt == '--filter':
 			filter=val
-		elif opt == '--customattribute':
-			pos=val.find('=')
-			name=val[:pos]
-			value= _2utf8( val[ pos + 1 : ] )
-			if not customattribute.has_key(name):
-				customattribute[name]=[]
-			customattribute[name].append(value)
-		elif opt == '--customattribute-remove':
-			pos=val.find('=')
-			if pos == -1:
-				customattribute_remove.append((val,None))
-			else:
-				name=val[:pos]
-				value = _2utf8( val[ pos + 1 : ] )
-				customattribute_remove.append((name,value))
 		elif opt == '--policy-reference':
 			policy_reference.append(val)
 		elif opt == '--policy-dereference':
@@ -715,54 +690,7 @@ def _doit(arglist):
 		elif opt == '--recursive':
 			recursive=1
 
-
-	extraOC=[]
-	extraAttributes=[]
-	customattributes_set =[]
-	if hasattr(module, 'ldap_extra_objectclasses') and action in ['modify','edit','create','new']:
-		for oc, pname, syntax, ldapMapping, deleteValues, deleteObjectClass in module.ldap_extra_objectclasses:
-			if customattribute.has_key(module.property_descriptions[pname].short_description):
-				customattributes_set.append(module.property_descriptions[pname].short_description)
-				extraOC.append(oc);
-				# check multivalue
-				if module.property_descriptions[pname].multivalue:
-					if action in ['create','new'] or not dn or dn == '':
-						values_found=[]
-					else:
-						values_found=lo.search(base=dn, attr=[ldapMapping])
-					for i in customattribute[module.property_descriptions[pname].short_description]:
-						value_already_set=0
-						for tmp,val in values_found:
-							if val.has_key(ldapMapping):
-								if i in val[ldapMapping]:
-									value_already_set=1
-						if value_already_set:
-							out.append('WARNING: customattribute %s is already set to %s'%(module.property_descriptions[pname].short_description,i))
-						else:
-							extraAttributes.append((ldapMapping,'',[i]))
-				else:
-					if len(customattribute[module.property_descriptions[pname].short_description])>1:
-						out.append('WARNING: cannot set singlevalue customattribute "%s" with more than one entry'%module.property_descriptions[pname].short_description)
-					else:
-						replaced=0
-						if action in ['create','new'] or not dn or dn == '':
-							values_found=[]
-						else:
-							values_found=lo.search(base=dn, attr=[ldapMapping])
-						for tmp,val in values_found:
-							if val.has_key(ldapMapping):
-								extraAttributes.append((ldapMapping,val[ldapMapping][0],[customattribute[module.property_descriptions[pname].short_description][0]]))
-								replaced = 1
-								if len(val[ldapMapping]) > 1:
-									out.append("WARNING: singlevalue customattribute %s has more than one value set, replace first"%customattribute[module.property_descriptions[pname].short_description])
-						if not replaced:
-							extraAttributes.append((ldapMapping,'',[customattribute[module.property_descriptions[pname].short_description][0]]))
-
 	if action in ['modify','edit','create','new']:
-		for i in customattribute.keys():
-			if not i in customattributes_set:
-				out.append("WARNING: customattribute %s not found, value not set"%i)
-
 		if policy_reference:
 			for el in policy_reference:
 				oc = lo.get(el,['objectClass'])
@@ -876,24 +804,6 @@ def _doit(arglist):
 				out.append('E: circular group dependency detected: %s' % e)
 				return out + ["OPERATION FAILED"]
 
-			if extraOC or extraAttributes:
-				if extraOC:
-					oc=lo.search(base=dn, scope='base', attr=['objectClass'])
-
-					noc=[]
-					for i in range(len(oc[0][1]['objectClass'])):
-						noc.append(oc[0][1]['objectClass'][i])
-
-					for i in range(len(extraOC)):
-						if extraOC[i] not in noc:
-							noc.append(extraOC[i])
-
-					if oc != noc:
-						extraAttributes.append(('objectClass',oc,noc))
-
-				if extraAttributes:
-					lo.modify(dn,extraAttributes)
-
 			if policy_reference:
 				lo.modify(dn,[('objectClass','','univentionPolicyReference')])
 				modlist=[]
@@ -1000,52 +910,6 @@ def _doit(arglist):
 					except univention.admin.uexceptions.valueInvalidSyntax, e:
 						out.append('E: Invalid Syntax: %s' % e)
 						return out + ["OPERATION FAILED"]
-
-			if extraOC or extraAttributes:
-				if extraOC:
-					oc=lo.search(base=dn, scope='base', attr=['objectClass'])
-
-					noc=[]
-					for i in range(len(oc[0][1]['objectClass'])):
-						noc.append(oc[0][1]['objectClass'][i])
-
-					for i in range(len(extraOC)):
-						if not extraOC[i] in noc:
-							noc.append(extraOC[i])
-
-					if noc != oc[0][1]['objectClass']:
-						extraAttributes.append(('objectClass',oc[0][1]['objectClass'],noc))
-				if extraAttributes:
-					try:
-						lo.modify(dn,extraAttributes)
-						object_modified+=1
-					except univention.admin.uexceptions.ldapError, msg:
-						out.append("ldap Error: %s"%msg)
-
-			if customattribute_remove:
-				extraAttributes=[]
-				removed_attributes=[]
-				if hasattr(module, 'ldap_extra_objectclasses'):
-					for oc, pname, syntax, ldapMapping, deleteValues, deleteObjectClass in module.ldap_extra_objectclasses:
-						for index in range(0,len(customattribute_remove)):
-							if customattribute_remove[index][0] == module.property_descriptions[pname].short_description:
-								for tmp,val in lo.search(base=dn, attr=[ldapMapping]):
-									if val.has_key(ldapMapping):
-										for i in range(0, len(val[ldapMapping])):
-											if (not customattribute_remove[index][1]) or customattribute_remove[index][1] == val[ldapMapping][i]:
-												extraAttributes.append((ldapMapping,val[ldapMapping][i],''))
-												removed_attributes.append(module.property_descriptions[pname].short_description)
-									else:
-										out.append("customattribute %s not set"%module.property_descriptions[pname].short_description)
-										removed_attributes.append(module.property_descriptions[pname].short_description)
-
-				if extraAttributes:
-					lo.modify(dn,extraAttributes)
-					object_modified+=1
-
-				for n,v in customattribute_remove:
-					if not n in removed_attributes:
-						out.append("WARNING: customattribute %s not found"%n)
 
 			if policy_reference:
 				if 'univentionPolicyReference' not in lo.get(dn,['objectClass'])['objectClass']:
