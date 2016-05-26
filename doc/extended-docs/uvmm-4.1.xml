@@ -464,6 +464,11 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 														If you converted the image file as mentioned above, use <literal>qcow2</literal> instead.
 													</para>
 												</step>
+												<step performance="optional">
+													<para>
+														If live-migration is used, make sure to change <literal>@cache='none'</literal> or add it if it is missing.
+													</para>
+												</step>
 											</substeps>
 										</step>
 										<step>
