@@ -69,6 +69,19 @@ def wcommand(desc, *args, **kw):
 		return func_wrapper
 	return wrapper
 
+class RedirectStdOut(object):
+	def __init__(self, stdout=None):
+		self._stdout = stdout or sys.stdout
+
+	def __enter__(self):
+		self.old_stdout = sys.stdout
+		self.old_stdout.flush()
+		sys.stdout = self._stdout
+	
+	def __exit__(self, exc_type, exc_value, traceback):
+	    self._stdout.flush()
+	    sys.stdout = self.old_stdout
+
 class UcsWin(object):
 
 	def __init__(self):
@@ -157,13 +170,14 @@ class UcsWin(object):
 				_r = s.run_ps('[System.IO.File]::AppendAllText("%s", "%s")' % (w_file, _b64[i:i+_chunks]))
 				if _r.status_code != 0:
 					raise UcsWinFail('failed to copy command \ncode: %s\nout: %s\nerr: %s' % (_r.status_code, _r.std_out, _r.std_err))
-			# run script
-			r = s.run_ps('''
-				$ErrorActionPreference = "Stop"	
-				$content = [IO.File]::ReadAllText("%s")
-				$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
-				Invoke-Expression $code
-			''' % w_file)
+			# run script, ignore some winrm warngins on stdout
+			with RedirectStdOut(stdout=open(os.devnull, 'w')):
+				r = s.run_ps('''
+					$ErrorActionPreference = "Stop"	
+					$content = [IO.File]::ReadAllText("%s")
+					$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
+					[Threading.Thread]::CurrentThread.CurrentUICulture = 'en-US'; Invoke-Expression $code
+				''' % w_file)
 			s.run_ps('If (Test-Path "%s") { Remove-Item "%s" }' % (w_file, w_file))
 		else:
 			r = s.run_cmd(command)
