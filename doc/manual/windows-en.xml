@@ -14,7 +14,6 @@
 	<title>Introduction</title>
 	<para>
 	  UCS can offer Active Directory (AD) services, be a member of an Active Directory domain or synchronize objects between Active Directory domains and a UCS domain.
-#or function as an NT domain controller.
 	</para>
 
 	<para>
