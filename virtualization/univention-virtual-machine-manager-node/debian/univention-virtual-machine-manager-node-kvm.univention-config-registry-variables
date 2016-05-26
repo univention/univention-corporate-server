@@ -9,3 +9,9 @@ Description[de]=Das Netzwerk-Interface, das für die KVM-Netzwerk-Bridge verwend
 Description[en]=The network interface to be used for the KVM network bridge. Otherwise the network interface is used, over which the standard gateway is reached.
 Type=str
 Categories=uvmm
+
+[uvmm/kvm/vnc/password]
+Description[de]=Hier kann ein globales Passwort für VNC-Verbindungen konfiguriert werden. Ist die Variable nicht gesetzt, erfolgt die Konfiguration individuell pro virtueller Maschine. Maximal 8 Zeichen werden ausgewertet!
+Description[en]=A global password for VNC connections can be configured here. If the variable is unset, the password is configured individually on a per virtual machine basis. A maximum of 8 characters are used!
+Type=str
+Categories=uvmm
