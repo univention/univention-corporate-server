@@ -1,0 +1,77 @@
+product: ucs
+release: "4.0"
+version: [5]
+scope: ucs_4.0-0-errata4.0-5
+src: tomcat6
+fix: 6.0.45+dfsg-1.52.201604191550
+desc: |
+ This update addresses the following issues:
+ * CVE-2014-0033: prevent remote attackers from conducting session
+   fixation attacks via crafted URLs.
+ * CVE-2014-0119: Fix not properly constraining class loader that accesses
+   the XML parser used with an XSLT stylesheet which allowed remote
+   attackers to read arbitrary files via crafted web applications.
+ * CVE-2014-0099: Fix integer overflow in
+   java/org/apache/tomcat/util/buf/Ascii.java.
+ * CVE-2014-0096: Properly restrict XSLT stylesheets that allowed remote
+   attackers to bypass security-manager restrictions.
+ * CVE-2014-0075: Fix integer overflow in the parseChunkHeader function in
+   java/org/apache/coyote/http11/filters/ChunkedInputFilter.java.
+ * CVE-2013-4590: prevent "Tomcat internals" information leaks.
+ * CVE-2013-4322: prevent remote attackers from doing denial of service
+   attacks.
+ * CVE-2013-4286: reject requests with multiple content-length headers or
+   with a content-length header when chunked encoding is being used.
+ * Avoid CVE-2013-1571 when generating Javadoc.
+ * CVE-2014-0227: Add error flag to allow subsequent attempts at reading after
+   an error to fail fast.
+ * CVE-2014-0230: Add support for maxSwallowSize.
+ * CVE-2014-7810: Fix potential BeanELResolver issue when running under a
+   security manager.  Some classes may not be accessible but may have
+   accessible interfaces.
+ * CVE-2015-5174: Directory traversal vulnerability in RequestUtil.java.
+ * CVE-2015-5345: The Mapper component in Apache Tomcat before 6.0.45
+   processes redirects before considering security constraints and Filters.
+ * CVE-2016-0706: Apache Tomcat before 6.0.45 does not place
+   org.apache.catalina.manager.StatusManagerServlet on the
+   org/apache/catalina/core/RestrictedServlets.properties list which allows
+   remote authenticated users to bypass intended SecurityManager
+   restrictions.
+ * CVE-2016-0714: The session-persistence implementation in Apache Tomcat
+   before 6.0.45 mishandles session attributes, which allows remote
+   authenticated users to bypass intended SecurityManager restrictions.
+ * CVE-2016-0763: The setGlobalContext method in
+   org/apache/naming/factory/ResourceLinkFactory.java in Apache Tomcat does
+   not consider whether ResourceLinkFactory.setGlobalContext callers are
+   authorized, which allows remote authenticated users to bypass intended
+   SecurityManager restrictions and read or write to arbitrary application
+   data, or cause a denial of service (application disruption), via a web
+   application that sets a crafted global context.
+ * CVE-2015-5351: The Manager and Host Manager applications in
+   Apache Tomcat establish sessions and send CSRF tokens for arbitrary new
+   requests, which allows remote attackers to bypass a CSRF protection
+   mechanism by using a token.
+
+ The full list of changes between 6.0.35 and 6.0.45 can be seen in the
+ upstream changelog, which is available online at
+ <http://tomcat.apache.org/tomcat-6.0-doc/changelog.html>.
+bug: [37004]
+cve:
+ - CVE-2014-0033
+ - CVE-2014-0119
+ - CVE-2014-0099
+ - CVE-2014-0096
+ - CVE-2014-0075
+ - CVE-2013-4590
+ - CVE-2013-4322
+ - CVE-2013-4286
+ - CVE-2013-1571
+ - CVE-2014-0227
+ - CVE-2014-0230
+ - CVE-2014-7810
+ - CVE-2015-5174
+ - CVE-2015-5345
+ - CVE-2016-0706
+ - CVE-2016-0714
+ - CVE-2016-0763
+ - CVE-2015-5351
