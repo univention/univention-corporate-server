@@ -577,15 +577,16 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+		-->
 
 		<section id="changelog:win:adc">
 			<title>Univention Active Directory Connector</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The Univention AD-Connector has been rebuilt with SSLv3 support (<u:bug>41079</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-		-->
 		<!--
 	</section>
 		-->
