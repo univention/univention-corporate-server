@@ -34,7 +34,7 @@
 
 	<!-- Convert Xen block-tap2 devices -->
 	<xsl:template match="/domain/devices/disk/driver[@name='tap2']">
-		<driver name="qemu" type="raw">
+		<driver name="qemu" type="raw" cache="none">
 			<xsl:copy-of select="@*[name()!='type' and name()!='name']"/>
 		</driver>
 	</xsl:template>
