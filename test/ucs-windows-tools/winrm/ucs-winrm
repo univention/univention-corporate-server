@@ -152,7 +152,7 @@ class UcsWin(object):
 			val = default
 		return val
 
-	def run(self, command, ps=False, verbose=False):
+	def run(self, command, ps=False, verbose=False, winrm_quiet=False):
 		if self.args.krb5:
 			s = winrm.Session(self.args.client, auth=(self.args.user, None), transport='kerberos')
 		else:
@@ -171,13 +171,17 @@ class UcsWin(object):
 				if _r.status_code != 0:
 					raise UcsWinFail('failed to copy command \ncode: %s\nout: %s\nerr: %s' % (_r.status_code, _r.std_out, _r.std_err))
 			# run script, ignore some winrm warngins on stdout
-			with RedirectStdOut(stdout=open(os.devnull, 'w')):
-				r = s.run_ps('''
-					$ErrorActionPreference = "Stop"	
-					$content = [IO.File]::ReadAllText("%s")
-					$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
-					[Threading.Thread]::CurrentThread.CurrentUICulture = 'en-US'; Invoke-Expression $code
-				''' % w_file)
+			_cmd = '''
+				$ErrorActionPreference = "Stop"
+				$content = [IO.File]::ReadAllText("%s")
+				$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
+				[Threading.Thread]::CurrentThread.CurrentUICulture = 'en-US'; Invoke-Expression $code
+			''' % w_file
+			if winrm_quiet:
+				with RedirectStdOut(stdout=open(os.devnull, 'w')):
+					r = s.run_ps(_cmd)
+			else:
+				r = s.run_ps(_cmd)
 			s.run_ps('If (Test-Path "%s") { Remove-Item "%s" }' % (w_file, w_file))
 		else:
 			r = s.run_cmd(command)
@@ -191,7 +195,7 @@ class UcsWin(object):
 		command = "".join(open(command_file, 'r').readlines())
 		if len(args) > 1:
 			command = command % args[1]
-		self.run(command, verbose=True, ps=True)
+		self.run(command, verbose=True, ps=True, **kwargs)
 
 	def client_reachable(self):
 		try:
@@ -269,7 +273,7 @@ class UcsWin(object):
 
 	@wcommand('check if system is part of domain and return domain name')
 	def get_domain_name(self):
-		self.run_predefined_command('get_domain_name', vars(self.args))
+		self.run_predefined_command('get_domain_name', vars(self.args), winrm_quiet=True)
 
 	@wcommand('update the windows system')
 	def windows_update(self):
