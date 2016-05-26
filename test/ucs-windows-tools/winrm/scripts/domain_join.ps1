@@ -1,3 +1,5 @@
+$ErrorActionPreference = "Stop"
+
 $password =  "%(domain_password)s"| ConvertTo-SecureString -asPlainText -Force
 $domain = "%(domain)s"
 $username = "%(domain)s\%(domain_user)s" 

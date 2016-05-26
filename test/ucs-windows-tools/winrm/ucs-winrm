@@ -36,11 +36,14 @@ import inspect
 import socket
 import time
 import functools
+import ConfigParser
+import glob
+import base64
 
 COMMAND_DIR = '/usr/share/ucs-winrm/scripts'
 
-if os.path.exists('./lib'):
-	COMMAND_DIR= './lib'
+if os.path.exists('./scripts'):
+	COMMAND_DIR= './scripts'
 
 class UcsWinFail(Exception):
 	pass
@@ -54,11 +57,9 @@ def wcommand(desc, *args, **kw):
 		func._desc = desc
 		@functools.wraps(func)
 		def func_wrapper(self, *args, **kw):
-			# setup parameters, default is WINRM_PARAMETERNAME
+			# get parameter defaults
 			for param in parameters:
-				env = 'WINRM_' + param.replace('-', '_').upper()
-				help_msg = parameters[param]
-				self.parser.add_argument('--%s' % param, default=os.environ.get(env), help=help_msg)
+				self.parser.add_argument('--%s' % param, default=self.get_param_default(param), help=parameters[param])
 			# parse args
 			self.args = self.parser.parse_args()
 			# check args
@@ -93,16 +94,24 @@ class UcsWin(object):
 			self.parser.print_help()
 			sys.exit(1)
 
+		# config file
+		self.config = ConfigParser.ConfigParser()
+		self.config.read(os.path.join(os.environ['HOME'], '.ucs-winrm.ini'))
+
 		# global options
-		self.parser.add_argument('--client', help='The IP of the windows client')
-		self.parser.add_argument('--user', help='username')
-		self.parser.add_argument('--password', help='password')
-		self.parser.add_argument('--debug', default=False, action='store_true', help='enable debug')
-		self.parser.add_argument('--krb5', default=False, action='store_true', help='use kerberos authentication')
+		self.parser.add_argument('--client',
+			default=self.get_param_default('client'), help='The IP of the windows client')
+		self.parser.add_argument('--user',
+			default=self.get_param_default('user'), help='username')
+		self.parser.add_argument('--password',
+			default=self.get_param_default('password'), help='password')
+		self.parser.add_argument('--debug', action='store_true',
+			default=self.get_param_default('debug', default=False), help='enable debug')
+		self.parser.add_argument('--krb5', action='store_true',
+			default=self.get_param_default('krb5', default=False), help='use kerberos authentication')
 
 		# run command
 		getattr(self, args.command)()
-
 
 	##########
 	# helper #
@@ -119,6 +128,17 @@ class UcsWin(object):
 				self.parser.print_help()
 				sys.exit(1)
 
+	def get_param_default(self, parameter, default=None):
+		val = None
+		# check env variable
+		env = 'WINRM_' + parameter.replace('-', '_').upper()
+		val = os.environ.get(env)
+		if self.config.has_section('default') and self.config.has_option('default', parameter):
+			val = self.config.get('default', parameter)
+		if val is None:
+			val = default
+		return val
+
 	def run(self, command, ps=False, verbose=False):
 		if self.args.krb5:
 			s = winrm.Session(self.args.client, auth=(self.args.user, None), transport='kerberos')
@@ -127,11 +147,28 @@ class UcsWin(object):
 		if self.args.debug:
 			print 'running command:\n%s' % command
 		if ps:
-			r = s.run_ps(command)
+			# run_ps hits the windows Maximum Length of Command Line String
+			w_file = 'c:\\.tmp.winrm-ucs.ps1'
+			s.run_ps('If (Test-Path "%s") { Remove-Item "%s" }' % (w_file, w_file))
+			# copy script
+			_chunks = 2500
+			_b64 = command.encode('base64').replace('\n', '')
+			for i in range(0, len(_b64), _chunks):
+				_r = s.run_ps('[System.IO.File]::AppendAllText("%s", "%s")' % (w_file, _b64[i:i+_chunks]))
+				if _r.status_code != 0:
+					raise UcsWinFail('failed to copy command \ncode: %s\nout: %s\nerr: %s' % (_r.status_code, _r.std_out, _r.std_err))
+			# run script
+			r = s.run_ps('''
+				$ErrorActionPreference = "Stop"	
+				$content = [IO.File]::ReadAllText("%s")
+				$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
+				Invoke-Expression $code
+			''' % w_file)
+			s.run_ps('If (Test-Path "%s") { Remove-Item "%s" }' % (w_file, w_file))
 		else:
 			r = s.run_cmd(command)
 		if r.status_code != 0:
-			raise UcsWinFail('command %s failed with %s:\n%s' % (command, r.status_code, r.std_out))
+			raise UcsWinFail('command %s failed with\ncode: %s\nout: %s\nerr: %s' % (command, r.status_code, r.std_out, r.std_err))
 		if verbose is True or self.args.debug:
 			print r.std_out
 
@@ -140,7 +177,7 @@ class UcsWin(object):
 		command = "".join(open(command_file, 'r').readlines())
 		if len(args) > 1:
 			command = command % args[1]
-		self.run(command, ps=True)
+		self.run(command, verbose=True, ps=True)
 
 	def client_reachable(self):
 		try:
@@ -169,6 +206,10 @@ class UcsWin(object):
 	############
 	# commands #
 	############
+
+	@wcommand('Wait for client', args={'timeout':'timeout before fail'})
+	def wait_for_windows(self):
+		self.wait_for_client(timeout=int(self.args.timeout))
 
 	@wcommand('Run windows batch command',
 		args={'cmd':'Run batch command'})
@@ -212,10 +253,29 @@ class UcsWin(object):
 		self.wait_for_client()
 		self.run_predefined_command('domain_user_validate_password', vars(self.args))
 
+	@wcommand('check if system is part of domain and return domain name')
+	def get_domain_name(self):
+		self.run_predefined_command('get_domain_name', vars(self.args))
+
+	@wcommand('update the windows system')
+	def windows_update(self):
+		raise NotImplementedError
+		self.run_predefined_command('windows_update', vars(self.args))
+
 	@wcommand('Shut down windows client')
 	def shutdown(self):
 		self.run_predefined_command('shutdown')
 		self.wait_until_client_is_gone()
+
+	@wcommand('Change user password',
+		args={
+			'domain':'The windows domain name',
+			'domain-user':'Username to use for the join',
+			'domain-password':'Username to use for the join',
+			'user-name':'change password for this userr',
+			'user-password':'The password string'})
+	def change_user_password(self):
+		self.run_predefined_command('change_user_password', vars(self.args))
 
 if __name__ == '__main__':
 	UcsWin()
