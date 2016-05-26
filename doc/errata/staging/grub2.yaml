@@ -1,6 +1,6 @@
 product: ucs
 release: "4.0"
-version: [4,5]
+version: [5]
 scope: ucs_4.0-0-errata4.0-5
 src: grub2
 fix: 
