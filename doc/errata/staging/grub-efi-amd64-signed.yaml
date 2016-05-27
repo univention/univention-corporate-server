@@ -1,0 +1,13 @@
+product: ucs
+release: "4.0"
+version: [5]
+scope: ucs_4.0-0-errata4.0-5
+src: grub-efi-amd64-signed
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * buffer overflow when checking password entered during bootup
+   (CVE-2015-8370)
+bug: [40281]
+cve:
+ - CVE-2015-8370

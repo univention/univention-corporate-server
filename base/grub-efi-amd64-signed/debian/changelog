@@ -1,3 +1,9 @@
+grub-efi-amd64-signed (1.1-7) unstable; urgency=medium
+
+  * Update to GRUB 2.00-18.108.201605261835 (Bug #40281)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Fri, 27 May 2016 18:39:51 +0200
+
 grub-efi-amd64-signed (1.1-6) unstable; urgency=low
 
   * Update to GRUB 2.00-18.92.201506300903 (Bug #39027)
