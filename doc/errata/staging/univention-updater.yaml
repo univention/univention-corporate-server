@@ -1,0 +1,10 @@
+product: ucs
+release: "4.0"
+version: [5]
+scope: ucs_4.0-0-errata4.0-5
+src: univention-updater
+fix: 10.0.57-2.1477.201605271222
+desc: |
+ This update shows a warning message in the UMC updater module that the current
+ UCS version is out of maintenance.
+bug: [41353]
