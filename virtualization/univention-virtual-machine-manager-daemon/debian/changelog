@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (5.0.1-10) unstable; urgency=low
+
+  * Bug #35581: Remove snapshot limit for RAM < 4 GiB
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 27 May 2016 13:18:29 +0200
+
 univention-virtual-machine-manager-daemon (5.0.1-9) unstable; urgency=low
 
   * Bug #40182: Use usage of uvmm CLI tool

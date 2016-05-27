@@ -123,17 +123,6 @@ define([
 				return;
 			}
 
-			if (this.domain.state != 'SHUTOFF') {
-				var mem = this.domain.maxMem;
-				if (mem === null) {
-					return null;
-				}
-				if (mem >= 4000000000) { // 4 GiB - epsilon for qemu internal data
-					dialog.alert(_('Snapshots are not supported for running domains with 4 GB or more of RAM!'));
-					return;
-				}
-			}
-
 			var _cleanup = function() {
 				_dialog.hide();
 				_dialog.destroyRecursive();

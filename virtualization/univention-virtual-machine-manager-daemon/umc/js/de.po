@@ -1257,13 +1257,6 @@ msgstr "Slowenisch"
 msgid "Snapshots"
 msgstr "Sicherungspunkte"
 
-#: uvmm/SnapshotGrid.js:132
-msgid ""
-"Snapshots are not supported for running domains with 4 GB or more of RAM!"
-msgstr ""
-"Sicherungspunkte für laufende Domains mit 4 GB oder mehr RAM werden nicht "
-"unterstützt!"
-
 #: uvmm/DomainPage.js:326
 msgid "Snapshots settings"
 msgstr "Einstellungen für Sicherungspunkte"
