@@ -77,6 +77,14 @@ define([
 				},
 				{
 					type:			'Text',
+					name:			'version_out_of_maintenance_text',
+					'class':		'umcUpdaterWarningText',
+					visible:		false,
+					label:			'',
+					content:		'', // will be set bellow as soon as the UCS version is known
+				},
+				{
+					type:			'Text',
 					name:			'reboot_progress_text',
 					label:			'',
 					content:		_("The computer is now rebooting. ") +
@@ -399,6 +407,7 @@ define([
 
 			var layout =
 			[
+				'version_out_of_maintenance_text',
 				{
 					label:		_("Reboot required"),
 					layout:
@@ -521,6 +530,10 @@ define([
 
 					this._show_reboot_pane(values.reboot_required);
 
+					// show warning for out of maintenance
+					var outOfMaintenanceWidget = this._form.getWidget('version_out_of_maintenance_text');
+					outOfMaintenanceWidget.set('content', _("<b>Warning:</b> You are using UCS %(ucs_version)s. This version is outdated and no more security updates will be released for it. Please upgrade this system to a newer UCS version!", values));
+					outOfMaintenanceWidget.set('visible', true);
 				}
 				catch(error)
 				{

@@ -1,3 +1,11 @@
+univention-updater (10.0.57-2) unstable; urgency=medium
+
+  Bug #41353:
+  * Add out-of-maintenance warning in the UMC updater module
+  * ignore ucslint warnings for unquoted tr commands in preup/postup
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 27 May 2016 12:16:58 +0200
+
 univention-updater (10.0.57-1) unstable; urgency=medium
 
   * Update copyright (Bug #40956)
