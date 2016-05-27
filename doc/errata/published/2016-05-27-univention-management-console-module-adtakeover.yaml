@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * "Claiming FSMO roles" during the ad takeover has been fixed.
 bug: [41192]
+erratum: 425
+announced: 2016-05-27
