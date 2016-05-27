@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-virtual-machine-manager-daemon
+fix: 5.0.1-10.614.201605271321
+desc: |
+ This update addresses the following issue:
+ * Allow creating snapshots of VMs with more than 4 GiB RAM which is supported
+   with Qemu since version 1.1.
+bug: [35581]
