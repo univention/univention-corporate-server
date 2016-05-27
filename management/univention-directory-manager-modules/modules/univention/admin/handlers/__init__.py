@@ -826,12 +826,43 @@ class simpleLdap(base):
 		added_options = options - old_options - unavailable_options
 		removed_options = old_options - options - unavailable_options
 
-#		ocs -= object_classes_to_remove  # FIXME: Bug #41207; check which attributes still need it
 		ocs -= set(chain.from_iterable(m.options[option].objectClasses for option in removed_options))
 		ocs |= set(chain.from_iterable(m.options[option].objectClasses for option in added_options))
 		if set(self.oldattr.get('objectClass', [])) != ocs:
 			ml = [x for x in ml if x[0].lower() != 'objectClass'.lower()]
 			ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
+
+		# parse LDAP schema
+		schema = ldap.schema.SubSchema(self.lo.lo.lo.read_subschemasubentry_s(self.lo.lo.lo.search_subschemasubentry_s()), 0)
+		newattr = ldap.cidict.cidict(_MergedAttributes(self, ml).get_attributes())
+		ocs_afterwards = set(newattr.get('objectClass', [])) - object_classes_to_remove
+
+		# make sure we still have a structural object class
+		if not schema.get_structural_oc(ocs_afterwards):
+			structural_ocs = schema.get_structural_oc(object_classes_to_remove)
+			if structural_ocs:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Preventing to remove last structural object class %r' % (structural_ocs,))
+				object_classes_to_remove -= set(schema.get_obj(ldap.schema.models.ObjectClass, structural_ocs).names)
+				ocs_afterwards = set(newattr.get('objectClass', [])) - object_classes_to_remove
+			else:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'missing structural object class. Modify will fail.')
+
+		# validate removal of object classes
+		do_removal = True
+		must, may = schema.attribute_types(ocs_afterwards)
+		must = ldap.cidict.cidict(dict((x, x) for x in list(chain.from_iterable(x.names for x in must.values()))))
+		may = ldap.cidict.cidict(dict((x, x) for x in list(chain.from_iterable(x.names for x in may.values()))))
+		for attr in must.keys():
+			if not newattr.get(attr):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'The attribute %r is required in the current object classes.' % (attr,))
+				do_removal = False
+		for attr, val in newattr.items():
+			if val and not must.get(attr) and not may.get(attr):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'The attribute %r has is now known by any object class.' % (attr,))
+				do_removal = False
+		if do_removal:
+			ml = [x for x in ml if x[0].lower() != 'objectClass'.lower()]
+			ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs - object_classes_to_remove)))
 
 		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
 
@@ -2833,3 +2864,7 @@ class _MergedAttributes(object):
 			elif old and new:  # MOD_REPLACE
 				value = set(new)
 		return list(value)
+
+#	def to_ldap_modlist(self):  # TODO: use; Bug #41267
+#		from ldap.modlist import modifyModlist, addModlist
+#		return modifyModlist(self.obj.oldattr, self.get_attributes(), case_ignore_attr_types=self.case_insensitive_attributes)
