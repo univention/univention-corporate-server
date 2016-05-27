@@ -1,12 +1,14 @@
 product: ucs
 release: "4.1"
 version: [1,2]
-scope: ucs_4.1-0-errata4.1-1
+scope: ucs_4.1-0-errata4.1-2
 src: samba
-fix: 2:4.3.7-1.830.201604110947
+fix: 2:4.3.7-1.831.201605270653
 desc: |
- This update fixes regressions from Errata update 411 (Bug #40988):
- * https://bugzilla.samba.org/show_bug.cgi?id=11849
- * https://bugzilla.samba.org/show_bug.cgi?id=11852
- * https://bugzilla.samba.org/show_bug.cgi?id=11912
-bug: [41193]
+ * This update fixes regressions from Errata update 411 (Bug #40988):
+   * https://bugzilla.samba.org/show_bug.cgi?id=11849
+   * https://bugzilla.samba.org/show_bug.cgi?id=11852
+   * https://bugzilla.samba.org/show_bug.cgi?id=11912
+ * The default RPC timeout has been increased from 60 to 480 seconds.
+   Thus, a join with more than 100.000 objects will work.
+bug: [41193,41021]
