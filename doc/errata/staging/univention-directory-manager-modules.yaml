@@ -3,7 +3,7 @@ release: "4.1"
 version: [1,2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-directory-manager-modules
-fix: 11.0.2-30.1386.201605241939
+fix: 11.0.3-1.1389.201605271303
 desc: |
  This update addresses the following issue(s):
  * Extended options are now also evaluated for users/user objects.
@@ -12,4 +12,6 @@ desc: |
  * Some old code which handled custom attributes has been removed.
  * The object class of extended options is now always added or removed to the
    object without the need to change an attribute.
-bug: [41017,41172,41266,25240]
+ * The extended attribute option to remove the objectclass if it is no longer
+   needed has been reenabled.
+bug: [41017,41172,41266,25240,41207]
