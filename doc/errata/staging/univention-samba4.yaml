@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-samba4
+fix: 5.0.1-35.667.201605301820
+desc: |
+ This update addresses the following issue(s):
+ * Reliability of samba_dnsupdate has been improved on UCS@school DC Slaves
+   by using localhost for dns-related Kerberos operations. This fixes an
+   intermittend error in the 98univention-samba4slavepdc-dns.inst joinscript.
+bug: [34908]
