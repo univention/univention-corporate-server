@@ -1,3 +1,10 @@
+ucs-test (6.0.33-66) unstable; urgency=medium
+
+  * Bug #40842: Test Docker Apps register their WebInterfacePortHTTP for
+    /ucs-overview
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 30 May 2016 23:13:08 +0200
+
 ucs-test (6.0.33-65) unstable; urgency=low
 
   * fix login and listener related mail bus (Bug #41324)
