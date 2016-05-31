@@ -3,7 +3,7 @@ release: "4.0"
 version: [5]
 scope: ucs_4.0-0-errata4.0-5
 src: linux
-fix: 3.16.7-ckt25-2~bpo70+1.194.201604181018
+fix: 3.16.7-ckt25-2~bpo70+1.195.201605301151
 desc: |
  This update addresses the following issues:
  * unix: properly account for FDs passed over unix sockets (CVE-2013-4312)
@@ -29,6 +29,26 @@ desc: |
  * unix: correctly track in-flight fds in sending process user_struct
    (CVE-2016-2550
  * pipe: limit the per-user amount of pages allocated in pipes (CVE-2016-2847)
+ * aiptek: crash on invalid USB device descriptors (CVE-2015-7515)
+ * aio write triggers integer overflow in some network protocols
+   (CVE-2015-8830)
+ * Too big poison pointer space (CVE-2016-0821)
+ * Kernel panic on invalid USB device descriptor (snd_usb_audio driver)
+   (CVE-2016-2184)
+ * Kernel panic on invalid USB device descriptor (ati_remote2 driver)
+   (CVE-2016-2185)
+ * Kernel panic on invalid USB device descriptor (powermate driver)
+   (CVE-2016-2186)
+ * Kernel panic on invalid USB device descriptor (iowarrior driver)
+   (CVE-2016-2188)
+ * crash on invalid USB device descriptors (cdc_acm driver) (CVE-2016-3138)
+ * ipv4: Don't do expensive useless work during inetdev destroy
+   (CVE-2016-3156)
+ * I/O port access privilege escalation in x86-64 Linux under Xen
+   (CVE-2016-3157)
+ * usbnet: memory corruption triggered by invalid USB descriptor
+   (CVE-2016-3951)
+ * Partial SMAP bypass on 64-bit Linux kernels (CVE-2016-partial-SMAP-bypass)
 note: This is the first part of the fix, which provides the new kernel package.
 bug: [40838]
 cve:
@@ -48,3 +68,14 @@ cve:
  - CVE-2016-2549
  - CVE-2016-2550
  - CVE-2016-2847
+ - CVE-2015-7515
+ - CVE-2015-8830
+ - CVE-2016-0821
+ - CVE-2016-2184
+ - CVE-2016-2185
+ - CVE-2016-2186
+ - CVE-2016-2188
+ - CVE-2016-3138
+ - CVE-2016-3156
+ - CVE-2016-3157
+ - CVE-2016-3951
