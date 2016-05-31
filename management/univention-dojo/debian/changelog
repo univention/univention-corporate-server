@@ -1,6 +1,6 @@
 univention-dojo (7.100.1-1) unstable; urgency=medium
 
-  * Bug #41391: fix an error in xstyle which prevents using xstyle with Chrome 51
+  * Bug #41395: fix an error in xstyle which prevents using xstyle with Chrome 51
 
  -- Alexander Kläser <klaeser@univention.de>  Tue, 31 May 2016 14:35:22 +0200
 
