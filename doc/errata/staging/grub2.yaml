@@ -5,7 +5,7 @@ scope: ucs_4.0-0-errata4.0-5
 src: grub2
 fix: 2.00-18.108.201605261835
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * buffer overflow when checking password entered during bootup
    (CVE-2015-8370)
 bug: [40281]
