@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="introduction:Einfuehrung"><title>Einführung</title>
 
 <section id="introduction:Was_ist_Univention_Corporate_Server"><title>Was ist Univention Corporate Server?</title>
@@ -118,7 +128,7 @@ Clients zur Auswahl.
 </para>
 
 <figure><title>UCS-Domänenkonzept</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/domainconcept.jpg"/>
+ <graphic scalefit="1" width="80%" fileref="illustrations33/domainconcept.jpg"/>
 </figure>
 
 <para>
@@ -201,7 +211,7 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 
 <para>
 <figure><title>Univention Management Console</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/umc-overview.png"/>
+ <graphic scalefit="1" width="80%" fileref="illustrations33/umc-overview.png"/>
 </figure>
 </para>
 

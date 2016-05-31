@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="domaenenkonzept"><title>Domain services / LDAP directory</title>
 
 <section id="domain-ldap:Introduction">
@@ -85,7 +95,7 @@
 			<filename>/var/log/univention/join.log</filename> log file, which can be used
 			for reference in error analysis. Actions run on the domain controller master
 			are stored in the
-			<filename>/home/&lt;Join-Account&gt;/.univention-server-join.log</filename> log
+			<filename>/home/<replaceable>Join-Account</replaceable>/.univention-server-join.log</filename> log
 			file.
 		</para>
 		<para>
@@ -95,7 +105,7 @@
 		</para>
 
 		<section id="domain-ldap:Subsequent_domain_joins_with_univention-join">
-			<title>Subsequent domain joins with univention-join</title>
+			<title>Subsequent domain joins with <command>univention-join</command></title>
 			<para>
 				<command>univention-join</command> retrieves a number of essential parameters
 				interactively; however, it can also be configured using a number of parameters:
@@ -106,29 +116,29 @@
 					The &ucsMaster; is usually detected via a DNS request. If that is not
 					possible (e.g., a DC slave server with a different DNS domain is set to join),
 					the computer name of the DC master can also be entered directly using the
-					<command>-dcname HOSTNAME</command> parameter. The computer name must then be
+					<option>-dcname <replaceable>HOSTNAME</replaceable></option> parameter. The computer name must then be
 					entered as a fully qualified name, e.g.,
-					<emphasis>master.company.com</emphasis>.
+					<systemitem class="fqdomainname">master.company.com</systemitem>.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
 					A user account which is authorised to add systems to the UCS domains
 					is called a join account. By default, this is the
-					<emphasis>Administrator</emphasis> user or a member of the <emphasis>Domain
-					Admins</emphasis> group. The join account can be assigned using the
-					<command>-dcaccount ACCOUNTNAME</command> parameter.
+					<systemitem class="username">Administrator</systemitem> user or a member of the <systemitem class="groupname">Domain
+					Admins</systemitem> group. The join account can be assigned using the
+					<option>-dcaccount <replaceable>ACCOUNTNAME</replaceable></option> parameter.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-					The password can be set using the <command>-dcpwd FILE</command>
+					The password can be set using the <option>-dcpwd <replaceable>FILE</replaceable></option>
 					parameter. The password is then read out of the specified file.
 					</simpara>
 				</listitem>
 				<listitem>
 					<simpara>
-				  The <emphasis>-verbose</emphasis> parameter is used to add additional debug
+				  The <option>-verbose</option> parameter is used to add additional debug
 				  output to the log files, which simplify the analysis in case of errors.
 					</simpara>
 				</listitem>
@@ -143,8 +153,7 @@
 			</para>
 			<para>
 				As the Administrator user does not yet exist on a system which has yet to join
-				the domain, the login to &ucsUMC; is done as the <emphasis>root</emphasis>
-				user.
+				the domain, the login to &ucsUMC; is done as user <systemitem class="username">root</systemitem>.
 			</para>
 			<para>
 				The username and password of a user authorised to add computers to a domain
@@ -173,8 +182,8 @@
 		  </para>
 			
 		  <para>
-			Join scripts are stored in the <filename>/usr/lib/univention-install</filename>
-			directory and unjoin scripts in <filename>/usr/lib/univention-uninstall</filename>. Each
+			Join scripts are stored in the <filename class="directory">/usr/lib/univention-install/</filename>
+			directory and unjoin scripts in <filename class="directory">/usr/lib/univention-uninstall/</filename>. Each
 			join/unjoin script has a version. An example: A package has already been installed and
 			the join script already run. The new version of the package now requires additional
 			changes and the version number of the join script is increased.
@@ -195,7 +204,7 @@
 
 			<para>
 			  Join scripts that have not been run can be executed via the
-			  <guimenu>Domain join</guimenu> module in the &ucsUMC; by clicking on the menu entry
+			  UMC module <guimenu>Domain join</guimenu> by clicking on the menu entry
 			  <guimenu>Execute all pending join scripts</guimenu>.
 			</para>
 
@@ -212,7 +221,7 @@
 				If <command>univention-run-join-scripts</command> is run on another system role
 				than the &ucsMaster;, the user will be asked to input a username and
 				password. This can be performed on the &ucsMaster; via the
-				<emphasis>--ask-pass</emphasis> option.
+				<option>--ask-pass</option> option.
 			</para>
 		  </section>
 		</section>
@@ -252,14 +261,14 @@
 	  <para>
 		Joining the domain takes some time and the process must not be cancelled prematurely. After
 		successful joining a small window appears with the message <guimenu>Welcome to the domain
-		&lt;domain name&gt;</guimenu>. This should be confirmed with
+		<replaceable>domain name</replaceable></guimenu>. This should be confirmed with
 		<mousebutton>OK</mousebutton>. The computer must then be restarted for the changes to take
 		effect.
 	  </para>
 
-	  <figure>
+	  <figure id="domain-ldap:join:win7">
 		<title>Domain join of a Windows 7 system</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/win7-join_2-en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/win7-join_2-en.png"/>
 	  </figure>
 
 	  <para>
@@ -289,7 +298,7 @@
 			<para>
 			  When using Windows 8 to a domain based on Samba 3, certain settings must be
 			  made in the Windows registry before joining the domain. A corresponding REG
-			  file can be downloaded from <ulink url="http://sdb.univention.de/1102"/>. The
+			  file can be downloaded from <u:sdb>1102</u:sdb>. The
 			  system must then be restarted. This step is not necessary with Samba 4.
 			</para>
 			<para>
@@ -302,9 +311,9 @@
 			  The <guimenu>Domain</guimenu> option field must be ticked and the name of the
 			  Samba domain entered in the input field for the domain join. After clicking on
 			  the <mousebutton>OK</mousebutton> button, the
-			  <emphasis>Administrator</emphasis> must be entered in the input field
+			  <systemitem class="username">Administrator</systemitem> must be entered in the input field
 			  <guimenu>Name</guimenu> and the password from
-			  <emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> transferred to
+			  <uri>uid=Administrator,cn=users,<replaceable>base DN</replaceable></uri> transferred to
 			  the <guimenu>Password</guimenu> input field. The process for joining the domain
 			  can then be started by clicking on <mousebutton>OK</mousebutton>.
 			</para>
@@ -319,7 +328,7 @@
 			<para>
 				When using Windows 7 to a domain based on Samba 3, certain settings must be
 				made in the Windows registry before joining the domain. A corresponding REG
-				file can be downloaded from <ulink url="http://sdb.univention.de/1102"/>. The
+				file can be downloaded from <u:sdb>1102</u:sdb>. The
 				system must then be restarted. This step is not necessary with Samba 4.
 			</para>
 			<para>
@@ -333,9 +342,9 @@
 				The <guimenu>Domain</guimenu> option field must be ticked and the name of the
 				Samba domain entered in the input field for the domain join. After clicking on
 				the <mousebutton>OK</mousebutton> button, the
-				<emphasis>Administrator</emphasis> must be entered in the input field
+				<systemitem class="username">Administrator</systemitem> must be entered in the input field
 				<guimenu>Name</guimenu> and the password from
-				<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> transferred to
+				<uri>uid=Administrator,cn=users,<replaceable>base DN</replaceable></uri> transferred to
 				the <guimenu>Password</guimenu> input field. The process for joining the domain
 				can then be started by clicking on <mousebutton>OK</mousebutton>.
 			</para>
@@ -347,7 +356,7 @@
 		  <para>
 			When using Windows 8 to a domain based on Samba 3, certain settings must be made in the
 			Windows registry before joining the domain. A corresponding REG file can be downloaded
-			from <ulink url="http://sdb.univention.de/1102"/>. The system must then be restarted. This step is not necessary with Samba 4.
+			from <u:sdb>1102</u:sdb>. The system must then be restarted. This step is not necessary with Samba 4.
 		  </para>
 
 		  <para>
@@ -360,9 +369,9 @@
 		  <para>
 			The <guimenu>Domain</guimenu> option field must be ticked and the name of the Samba
 			domain entered in the input field for the domain join. After clicking on the
-			<mousebutton>OK</mousebutton> button, the <emphasis>Administrator</emphasis> must be
+			<mousebutton>OK</mousebutton> button, the <systemitem class="username">Administrator</systemitem> must be
 			entered in the input field <guimenu>Name</guimenu> and the password from
-			<emphasis>uid=Administrator,cn=users,&lt;Basis-DN&gt;</emphasis> transferred to the
+			<uri>uid=Administrator,cn=users,<replaceable>base DN</replaceable></uri> transferred to the
 			<guimenu>Password</guimenu> input field. The process for joining the domain can then be
 			started by clicking on <mousebutton>OK</mousebutton>.
 		  </para>
@@ -421,7 +430,7 @@
 		  shares which should be mounted have to be listed in it in the following way:
 		</para>
 	  <programlisting>
-&lt;subfolder name&gt;    -fstype=smbfs    ://&lt;fqdn&gt;/&lt;sharename&gt;
+<replaceable>subfolder name</replaceable>    -fstype=smbfs    ://<replaceable>fqdn</replaceable>/<replaceable>sharename</replaceable>
 	  </programlisting>
 		<para>
 	       Note that the automounted shares are not displayed in the finder's sidebar.
@@ -437,9 +446,9 @@
 			that menu it is possible to open the <guimenu>Directory Utility</guimenu>.
 		  </para>
 
-		<figure>
+		<figure id="domain-ldap:join:osx">
 			<title>Domain join of a Mac OS X system</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations/macosx-bind_en.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations33/macosx-bind_en.png"/>
 		</figure>
 
 		  <para>
@@ -450,11 +459,11 @@
 		  </para>
 
 		  <para>
-			After filling in the domainname in the field <guimenu>Active Directory Domain</guimenu>
+			After filling in the domain name in the field <guimenu>Active Directory Domain</guimenu>
 			and the hostname of the Mac OS X client in the field <guimenu>Computer ID</guimenu>, the
 			join process is initiated after clicking the button <guimenu>Bind...</guimenu>. The
-			username and password of an account in the <emphasis>Domain Admins</emphasis> group
-			needs to be entered, e.g. <emphasis>Administrator</emphasis>.
+			username and password of an account in the <systemitem class="groupname">Domain Admins</systemitem> group
+			needs to be entered, e.g., <systemitem class="username">Administrator</systemitem>.
 		  </para>
 		</section>
 
@@ -464,8 +473,8 @@
 			The domain join can also be performed on the command line using <command>dsconfigad</command>:
 		  </para>
 	    <programlisting language="sh">
-dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ldap_base&gt;" \
-  -u &lt;Domain Administrator&gt; -mobile enable
+dsconfigad -a <replaceable>mac hostname</replaceable> -domain <replaceable>fqdn</replaceable> -ou "CN=Computers,<replaceable>ldap_base</replaceable>" \
+  -u <replaceable>Domain Administrator</replaceable> -mobile enable
 	    </programlisting>
 		  <para>
 	    Additional configuration options are available through <command>dsconfigad -help</command>.
@@ -643,10 +652,10 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 			<para>
 				To keep the efforts required for small extensions in LDAP as low as possible,
 				&ucsUCS; provides its own LDAP scheme for customer extensions. The LDAP object
-				class <emphasis>univentionFreeAttributes</emphasis> can be used for extended
+				class <classname>univentionFreeAttributes</classname> can be used for extended
 				attributes without restrictions. It offers 20 freely usable attributes
-				(<emphasis>univentionFreeAttribute1</emphasis> to
-				<emphasis>univentionFreeAttribute20</emphasis>) and can be used in connection
+				(<property>univentionFreeAttribute1</property> to
+				<property>univentionFreeAttribute20</property>) and can be used in connection
 				with any LDAP object (e.g., a user object).
 			</para>
 
@@ -702,12 +711,11 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		  uncovered.
 		</para>
 
-		  
 		<para>
 		  Individual areas of the directory service can be excluded from the logging. These branches
 		  can be configured using the &ucsUCR; variables <envar>ldap/logging/exclude1</envar>,
 		  <envar>ldap/logging/exclude2</envar>, etc.  As standard, the container is excluded in
-		  which the temporary objects are stored (cn=temporary,cn=univention). The LDAP changes are
+		  which the temporary objects are stored (<uri>cn=temporary,cn=univention</uri>). The LDAP changes are
 		  logged by a Univention directory listener module. The Univention directory listener
 		  service must be restarted if changes are made to the &ucsUCR; variables.
 		</para>
@@ -716,7 +724,7 @@ dsconfigad -a &lt;mac hostname&gt; -domain &lt;fqdn&gt; -ou "CN=Computers,&lt;ld
 		  The logging is made in the <filename>/var/log/univention/directory-logger.log</filename>
 		  file in the following format:
 
-		<programlisting language="sh">
+		  <screen>
 START
 Old Hash: Hash sum of the previous data record
 DN: DN of the LDAP object
@@ -730,10 +738,10 @@ Old Values:
 New Values:
  List of new attributes, empty when an object is deleted
 END
-		</programlisting>
+		</screen>
 
 		A hash sum is calculated for each logged data record and also logged in the
-		<emphasis>daemon.info</emphasis> section of the Syslog service.
+		<wordasword>daemon.info</wordasword> section of the Syslog service.
 		</para>
 	</section>
 
@@ -780,7 +788,7 @@ slapcat &gt; ldapdata.txt
 			central configuration file <filename>/etc/ldap/slapd.conf</filename> and
 			managed using &ucsUCR;. The <filename>slapd.conf</filename> is managed using a
 			multifile template; further ACL elements can be added below
-			<filename>/etc/univention/templates/files/etc/ldap/slapd.conf.d/</filename>
+			<filename class="directory">/etc/univention/templates/files/etc/ldap/slapd.conf.d/</filename>
 			between the <filename>60univention-ldap-server_acl-master</filename> and
 			<filename>70univention-ldap-server_acl-master-end</filename> files or the
 			existing templates expanded upon.
@@ -812,7 +820,7 @@ slapcat &gt; ldapdata.txt
 			suppress access to sensitive files (e.g., the user password) and establish
 			rules which are necessary for operation (e.g., necessary accesses to computer
 			accounts for log-ins). The read and write access to this sensitive information
-			if only intended for members of the <emphasis>Domain Admins</emphasis>
+			if only intended for members of the <systemitem class="groupname">Domain Admins</systemitem>
 			group. Nested groups are also supported. The &ucsUCRV;
 			<envar>ldap/acl/nestedgroups</envar> can be used to deactivate the nested
 			groups function for LDAP ACLs, which will result in a speed increase for
@@ -824,14 +832,14 @@ slapcat &gt; ldapdata.txt
 			<para>
 				To facilitate the delegation of the privilege to reset user passwords, the
 				<package>univention-admingrp-user-passwordreset</package> package can be
-				installed. It uses a join script to create the <emphasis>User Password
-				Admins</emphasis> user group, in so far as this does not already exist.
+				installed. It uses a join script to create the <systemitem class="groupname">User Password
+				Admins</systemitem> user group, in so far as this does not already exist.
 			</para>
 			<para>
 				Members of this group receive the permission via additional LDAP ACLs to reset
 				the passwords of other users. These LDAP ACLs are activated automatically
 				during the package installation. To use another group, or a group that already
-				exists, instead of the <emphasis>User Password Admins</emphasis> group, the DN
+				exists, instead of the <systemitem class="groupname">User Password Admins</systemitem> group, the DN
 				of the group to be used can be entered in the &ucsUCRV;
 				<envar>ldap/acl/user/passwordreset/accesslist/groups/dn</envar>. The LDAP
 				server must be restarted after making changes.
@@ -839,11 +847,11 @@ slapcat &gt; ldapdata.txt
 
 			<para>
 			  Passwords can be reset via the &ucsUMC;. In the default setting, the &ucsUMC; only
-			  offers the user wizard to the <emphasis>Administrator</emphasis> user, which
+			  offers the user wizard to the <systemitem class="username">Administrator</systemitem> user, which
 			  allows the setting of new passwords. During the installation a new
-			  <emphasis>default-user-password-admins</emphasis> policy is created
-			  automatically, which is linked to the members of the <emphasis>User
-			  Password Admins</emphasis> group and can be assigned to a corresponding 
+			  <uri>default-user-password-admins</uri> policy is created
+			  automatically, which is linked to the members of the <systemitem class="groupname">User
+			  Password Admins</systemitem> group and can be assigned to a corresponding
 			  container in the LDAP directory. Further information on the configuration of UMC
 			  policies can be found in Section <xref linkend="delegated-administration"/>.
 			</para>
@@ -865,13 +873,13 @@ slapcat &gt; ldapdata.txt
 			</caution>
 			<para>
 			  Password resets via the password group can be prevented for sensitive users or groups
-			  (e.g., domain admins). The &ucsUCR; variables
+			  (e.g., domain administrators). The &ucsUCR; variables
 			  <envar>ldap/acl/user/passwordreset/protected/uid</envar> and
 			  <envar>ldap/acl/user/passwordreset/protected/gid</envar> can be used to configure
 			  users and groups. Multiple values must be separated by commas.
 			  After changes to the variables, it is necessary to restart the LDAP server using the
 			  <command>/etc/init.d/slapd restart</command> command. In the default setting, the
-			  members of the <emphasis>Domain Admins</emphasis> group are protected against having
+			  members of the <systemitem class="groupname">Domain Admins</systemitem> group are protected against having
 			  theirs password changed.
 			</para>
 
@@ -889,7 +897,7 @@ slapcat &gt; ldapdata.txt
 		<title>Name Service Switch / LDAP NSS module</title>
 		<para>
 			With the <emphasis>Name Service Switch</emphasis>, the GNU C standard library
-			(glibc) used in Univention Corporate Server offers a modular interface for
+			(<systemitem class="library">glibc</systemitem>) used in Univention Corporate Server offers a modular interface for
 			resolving the names of users, groups and hosts.
 		</para>
 		<para>
@@ -902,7 +910,7 @@ slapcat &gt; ldapdata.txt
 			What measures should be taken if the LDAP server cannot be reached can be
 			specified by the &ucsUCRV; <envar>nssldap/bindpolicy</envar>. As standard, if
 			the server cannot be reached, a new connection attempt is made. If the variable
-			is set to <emphasis>soft</emphasis>, then no new attempt is made to
+			is set to <literal>soft</literal>, then no new attempt is made to
 			connect. This can considerably accelerate the boot of a system if the LDAP
 			server cannot be reached, e.g., in an isolated test environment.
 		</para>
@@ -911,7 +919,7 @@ slapcat &gt; ldapdata.txt
 	<section id="domain:ldap:syncrepl">
 		<title>Syncrepl for synchronisation with non-UCS OpenLDAP servers</title>
 		<para>
-			The Syncrepl replication service can also be activated parallel to the notifier
+			The syncrepl replication service can also be activated parallel to the notifier
 			service for the synchronisation of OpenLDAP servers not installed on UCS
 			systems. Syncrepl is a component of OpenLDAP, monitors changes in the local
 			directory service and transmits them to other OpenLDAP servers.
@@ -920,7 +928,7 @@ slapcat &gt; ldapdata.txt
 		<!-- Can be re-integrated once the article has been updated to UCS 3.x -->
 		<!-- <para> -->
 		<!--	The setup is described in the Univention support database at -->
-		<!--	<ulink url="http://sdb.univention.de/1120"/> (currently only available in German). -->
+		<!--	<u:sdb>1120</u:sdb> (currently only available in German). -->
 		<!-- </para> -->
 	</section>
 
@@ -935,7 +943,7 @@ slapcat &gt; ldapdata.txt
 			If Samba 4 is used, the Samba domain controller service occupies the ports 389
 			and 636. In this case, OpenLDAP is automatically reconfigured so that only
 			ports 7389 and 7636 are used. This must be taken into account during the
-			configuration of Syncrepl in particular (see <xref
+			configuration of syncrepl in particular (see <xref
 			linkend="domain:ldap:syncrepl"/>). <command>univention-ldapsearch</command>
 			uses the standard port automatically.
 		</para>
@@ -954,9 +962,9 @@ slapcat &gt; ldapdata.txt
 	  </para>
 
 	  <para>
-		The LDAP data are stored in the <filename>/var/univention-backup/</filename> directory in
+		The LDAP data are stored in the <filename class="directory">/var/univention-backup/</filename> directory in
 		the naming scheme <filename>ldap-backup_DATE.ldif.gz</filename> in LDIF format. They can
-		only be read by the <emphasis>root</emphasis> user.
+		only be read by the <systemitem class="username">root</systemitem> user.
 	  </para>
 	</section>
 
@@ -970,7 +978,7 @@ slapcat &gt; ldapdata.txt
 
 	<para>
 	  Replication of the directory data within a UCS domain occurs via the Univention
-	  Directory Listener/Notifier mechanism: 
+	  Directory Listener/Notifier mechanism:
 
 	  <itemizedlist>
 		<listitem> <simpara>
@@ -986,9 +994,9 @@ slapcat &gt; ldapdata.txt
 
 	</para>
 
-	<figure>
+	<figure id="domain-join:listener-notifier">
 	  <title>Listener/Notifier mechanism</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/administration-overview_en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/administration-overview_en.png"/>
 	</figure>
 
 	<para>
@@ -1038,7 +1046,6 @@ slapcat &gt; ldapdata.txt
 
   <section id="domain:listenernotifier:erroranalysis">
 	<title>Analysis of listener/notifier problems</title>
-	  
 	  <section id="domain:listenernotifier:erroranalysis:debug">
 		<title>Log files/debug level of replication</title>
 
@@ -1052,7 +1059,7 @@ slapcat &gt; ldapdata.txt
 
 		<para>
 		  Status messages from the &ucsUDN; service are logged in the
-		  <filename>/var/log/univention/listener.log</filename> file. The debug level can be
+		  <filename>/var/log/univention/notifier.log</filename> file. The debug level can be
 		  configured using the <envar>notifier/debug/level</envar> variable (also from 0-4).
 		  Once the debug level has been changed, the &ucsUDN; must be restarted.
 		</para>
@@ -1075,21 +1082,21 @@ slapcat &gt; ldapdata.txt
 		  on the &ucsMaster;. An example:
 
 
-		  <programlisting language="sh">
+		  <screen>
 root@dcmaster:~# tail -1 /var/lib/univention-ldap/notify/transaction
 836 cn=dcslave3,cn=dc,cn=computers,dc=firma,dc=de m
-		  </programlisting>
+		  </screen>
 
 		  The last transaction received by the listener system is stored in the
 		  <filename>/var/lib/univention-directory-listener/notifier_id</filename> file:
 
-		  <programlisting language="sh">
+		  <screen>
 root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 836
-		  </programlisting>
+		  </screen>
 
 		  This check can also be performed automatically by the Nagios service
-		  UNIVENTION_REPLICATION (see <xref linkend="nagios:preconfiguredchecks"/>).
+		  <systemitem class="service">UNIVENTION_REPLICATION</systemitem> (see <xref linkend="nagios:preconfiguredchecks"/>).
 
 		</para>
 	  </section>
@@ -1107,7 +1114,7 @@ root@dcslave1:~# cat /var/lib/univention-directory-listener/notifier_id
 		<para>
 		  The name of the listener module must be supplied to the command for the renewed
 		  initialisation. The installed listener modules can be found in the
-		  <filename>/var/lib/univention-directory-listener/handlers/system</filename> directory.
+		  <filename class="directory">/var/lib/univention-directory-listener/handlers/</filename> directory.
 		</para>
 
 		<para>
@@ -1161,7 +1168,7 @@ univention-directory-listener-ctrl resync cups-printers
 		<para>
 	  If the UCS domain contains more than one system, all other host certificates need to be
 	  reissued after changing the root certificate! The procedure required for this is documented in
-	  <biblioref linkend="sdb-sslchange"/>.
+	  <u:sdb>1183</u:sdb>.
 		</para>
 	</caution>
 
@@ -1206,7 +1213,7 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<para>
 	  The renewal of the root certificate and the other host certificates is documented in
-	  <biblioref linkend="sdb-sslchange"/>.
+	  <u:sdb>1183</u:sdb>.
 	</para>
 
 	<para>
@@ -1286,7 +1293,6 @@ univention-directory-listener-ctrl resync cups-printers
 	  individual users is described under <xref linkend="wiki-saml"/>.
 	</para>
 </section>
-
 
 <section id="domain:backup2master">
 	<title>Converting a DC backup to the new DC master</title>

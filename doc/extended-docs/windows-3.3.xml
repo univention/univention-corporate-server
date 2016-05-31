@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-
-  %entities;
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
 ]>
 <book lang="en" id="windows-3.3">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended Windows integration documentation</subtitle>
-
     </bookinfo>
 
-    <chapter>
+    <chapter id="samba">
         <title>Advanced Samba documentation</title>
-        <section>
+        <section id="samba:doc">
             <title>Operating Samba 4 as a read-only domain controller</title>
 			<para>
 			  Active Directory offers an operating mode called <emphasis>read-only domain
@@ -37,8 +38,8 @@
 
 			<para>
 			  A Samba 4 domain controller can be operated in RODC mode (on a &ucsSlave; for
-			  example). Prior to the installation of <emphasis>univention-samba4</emphasis>, the
-			  &ucsUCRV; <envar>samba4/role</envar> must be set to <emphasis>RODC</emphasis>:
+			  example). Prior to the installation of <package>univention-samba4</package>, the
+			  &ucsUCRV; <envar>samba4/role</envar> must be set to <literal>RODC</literal>:
 			</para>
 <programlisting language="sh">
 ucr set samba4/role=RODC
@@ -57,7 +58,7 @@ univention-run-join-scripts
 
 		  <para>
 			If the domain should continue to be provide Active Directory-compatible services, the
-			<emphasis>univention-samba4</emphasis> package must remain installed on the &ucsMaster;
+			<package>univention-samba4</package> package must remain installed on the &ucsMaster;
 			or a &ucsBackup; system.
 		  </para>
 
@@ -71,7 +72,7 @@ univention-run-join-scripts
 			e.g:
 		  </para>
 
-<programlisting language="sh">
+<screen>
 root@backup:~# /usr/share/univention-samba4/scripts/purge_s4_computer.py --computername=master
 Really remove master from Samba 4? [y/N]: Yes
 If you are really sure type YES and hit enter: YES
@@ -83,7 +84,7 @@ Really remove master from UDM as well? [y/N]: No
 Ok, stopping as requested.
 
 root@backup:~#
-</programlisting>
+</screen>
 
 			<para>
 			  The Univention S4 connector must be run on the &ucsMaster; or a &ucsBackup; in the
@@ -95,14 +96,14 @@ root@backup:~#
 
 			<figure id="s4connector-rejoin">
 			  <title>Re-execute S4 connector join script</title>
-			  <graphic scalefit="1" width="80%" fileref="illustrations/s4connector-re-execute.png"/>
+			  <graphic scalefit="1" width="80%" fileref="illustrations33/s4connector-re-execute.png"/>
 			</figure>
 
 			<para>
 			  The FSMO (Flexible Single Master Operations) roles should be checked. In case the
 			  roles were provided by the removed DC, they must be transfered, for example:
 			</para>
-<programlisting language="sh">
+<screen>
 root@backup:~# samba-tool fsmo show
 InfrastructureMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
 RidAllocationMasterRole owner: CN=NTDS Settings,CN=MASTER,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=dom
@@ -121,14 +122,14 @@ Will not attempt transfer, seizing...
 FSMO transfer of 'infrastructure' role successful
 Will not attempt transfer, seizing...
 FSMO transfer of 'schema' role successful
-root@backup:~# 
-</programlisting>
+root@backup:~#
+</screen>
         </section>
     </chapter>
 
-    <chapter>
+    <chapter id="ad">
 	  <title>Advanced Active Directory connector documentation</title>
-	  <section>
+	  <section id="ad:multiple">
 		<title>Synchronisation of several Active Directory domains with one UCS directory service</title>
 		<para>
 		  It is possible to synchronise several separate Active Directory domains with one UCS
@@ -174,15 +175,13 @@ univention-directory-listener-ctrl resync ad-connector
 		<para>
 		  The command line tools which belong to the AD Connector such as
 		  <command>univention-adsearch</command> support selecting the connector instance with the
-		  parameter <emphasis>-c</emphasis>.
+		  parameter <option>-c</option>.
 		</para>
 	  </section>
 	</chapter>
 
 
-	<bibliography>
+	<bibliography id="bibliography">
 		<bibliomixed id="technet-rodc"/>
 	</bibliography>
-
-    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

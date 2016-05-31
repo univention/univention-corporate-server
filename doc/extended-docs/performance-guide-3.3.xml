@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-
-  %entities;
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
 ]>
 <book lang="en" id="performance-guide-3.3">
-
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Performance guide</subtitle>
@@ -194,7 +195,7 @@
 	</para>
 	<para>
 		A script can be downloaded from
-		<ulink url="http://download.univention.de/download/scripts/nscdCachesize.sh"/>
+		<ulink url="https://updates.software-univention.de/download/scripts/nscdCachesize.sh"/>
 		which suggests corresponding values based on the objects currently included in
 		the system.
 	</para>
@@ -267,9 +268,9 @@
 	</section>
 
 	<section id="bind">
-		<title>Bind</title>
+		<title>BIND</title>
 		<para>
-		  Bind can use two different backends for its configuration: OpenLDAP or the internal LDB
+		  BIND can use two different backends for its configuration: OpenLDAP or the internal LDB
 		  database of Samba 4. The backend is configured via the &ucsUCRV;
 		  <envar>dns/backend</envar>.
 		</para>
@@ -291,7 +292,7 @@
 		</para>
 		<para>
 			The maximum number of open files can be configured on a per-user or per-group basis.
-			The default for all users can set through the following &ucsUCRV;s:
+			The default for all users can be set through the following &ucsUCRV;s:
 		</para>
 		<variablelist>
 			<varlistentry>
@@ -321,7 +322,7 @@
 				<term><envar>kernel/fs/inotify/max_user_instances</envar></term>
 				<listitem>
 					<simpara>
-						The upper limit of Inotify services per user ID.
+						The upper limit of inotify services per user ID.
 						The default is 511.
 					</simpara>
 				</listitem>
@@ -330,7 +331,7 @@
 				<term><envar>kernel/fs/inotify/max_user_watches</envar></term>
 				<listitem>
 					<simpara>
-						The upper limit of files per user which can be watched by the Inotify service.
+						The upper limit of files per user which can be watched by the inotify service.
 						The default is 32767.
 					</simpara>
 				</listitem>
@@ -339,7 +340,7 @@
 				<term><envar>kernel/fs/inotify/max_queued_events</envar></term>
 				<listitem>
 					<simpara>
-						The upper limit of queued events per Inotify instance.
+						The upper limit of queued events per inotify instance.
 						The default is 16384.
 					</simpara>
 				</listitem>
@@ -364,6 +365,4 @@
 	<bibliography id="bibliography">
 		<bibliomixed id="ucs-manual"/>
 	</bibliography>
-
-<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

@@ -1,6 +1,11 @@
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
 	%entities;
 ]>
 <chapter id="chap:app">
@@ -92,7 +97,7 @@
 				</simpara></listitem>
 				<listitem><simpara>
 					Recommended: The application is integrated in UCS and the UCS
-					management system (see <xref linkend="app:integration"/>). 
+					management system (see <xref linkend="app:integration"/>).
 				</simpara></listitem>
 			</itemizedlist>
 		</para>
@@ -100,7 +105,7 @@
 			<para>
 				The software vendor is responsible for the maintenance of his
 				application(s). Package updates are provided for Univention App Center
-				in a contemporary way (see also <xref linkend="app:update" />). 
+				in a contemporary way (see also <xref linkend="app:update" />).
 			</para>
 		</note>
 	</section>
@@ -112,7 +117,7 @@
 			consists roughly of two steps: (1) adding a new repository to the system
 			which resides on the App Center server and (2) <command>apt-get</command>
 			which installs the required package. This means that 3rd party vendors
-			need to package their application as a <literal>.deb</literal> file and
+			need to package their application as a <filename class="extension">.deb</filename> file and
 			send that to Univention.
 		</para>
 		<para>
@@ -121,7 +126,7 @@
 			This file can be included in the core package of the application or in a
 			dedicated package for &ucsUCS; integration, say,
 			<package>univention-<replaceable>appname</replaceable></package> and have
-			a dependency on the core application (on <literal>dpkg</literal> level).
+			a dependency on the core application (on <application>dpkg</application> level).
 		</para>
 		<para>
 			See <xref linkend="chap:debian"/> for further details on how to build
@@ -131,7 +136,7 @@
 			In most cases the core application depends on several other packages,
 			e.g. <package>apache</package>, <package>python</package>, etc. Those
 			packages are automatically installed by the App Center (via
-			<literal>apt</literal>). All packages (except games) from Debian were
+			<application>apt</application>). All packages (except games) from Debian were
 			rebuilt for &ucsUCS;, but not all packages are maintained by Univention.
 			The maintained repository for &ucsUCS; contains the most common packages,
 			but it may be that the application needs some specific packages not found
@@ -143,7 +148,7 @@
 			application! To workaround this issue, the vendor has to do the
 			following: In a first step he has to grab the packages from the
 			unmaintained repository (see for example <ulink
-				url="http://apt.software-univention.de/3.3/unmaintained/" />) and
+				url="https://updates.software-univention.de/4.1/unmaintained/" />) and
 			bundle it with his own packages so that they are put into the app's own
 			repository. In a second step he should inform Univention about these
 			packages. We will probably move them into maintained so that this
@@ -151,7 +156,7 @@
 		</para>
 	</section>
 	<section id="app:nextsteps">
-		<title>Next Steps</title>
+		<title>Next steps</title>
 		<para>
 			As soon as the software complies to the requirements the following steps
 			are to be taken:
@@ -191,7 +196,7 @@
 			</itemizedlist>
 		</para>
 		<para>
-			See also <xref linkend="app:update" /> for how to procede if an update is
+			See also <xref linkend="app:update" /> for how to proceed if an update is
 			to be released.
 		</para>
 	</section>
@@ -200,7 +205,7 @@
 		<para>
 			The App Center needs some meta information about the application to
 			handle the installation and to present information to the user. The
-			application needs a so-called <literal>.ini</literal> file for that. The
+			application needs a so-called <filename class="extension">.ini</filename> file for that. The
 			particulars in the meta data have to be in English at least.
 		</para>
 		<para>
@@ -210,7 +215,7 @@
 		<para>
 			This file needs to be shipped with the application and should be updated
 			with each new version of the application at least changing
-			<literal>Version</literal>.
+			<property>Version</property>.
 		</para>
 		<para>
 			Besides the text file and the above mentioned statements, a product logo and a screenshot, if given, are needed:
@@ -229,7 +234,7 @@
 			A few variables of the ini file need further explanation:
 			<variablelist>
 				<varlistentry>
-					<term>ID</term>
+					<term><property>ID</property></term>
 					<listitem>
 						<simpara>
 							Needs to stay the same all the time. It is used to connect
@@ -238,7 +243,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Categories</term>
+					<term><property>Categories</property></term>
 					<listitem>
 						<para>
 							Comma separated list of categories. In order to keep the overall
@@ -271,7 +276,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Version</term>
+					<term><property>Version</property></term>
 					<listitem>
 						<simpara>
 							Has to rise every time. Needs to be comparable, i.e. versions
@@ -284,7 +289,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>LongDescription</term>
+					<term><property>LongDescription</property></term>
 					<listitem>
 						<simpara>
 							A (more exhaustive) description that will be displayed when
@@ -297,7 +302,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>MinPhysicalRAM</term>
+					<term><property>MinPhysicalRAM</property></term>
 					<listitem>
 						<simpara>
 							The minimal amount of free memory in MB when trying to install the
@@ -314,7 +319,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>RequiredApps</term>
+					<term><property>RequiredApps</property></term>
 					<listitem>
 						<simpara>
 							Application IDs for apps that need to be installed in order to run
@@ -324,22 +329,22 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>ConflictedSystemPackages</term>
+					<term><property>ConflictedSystemPackages</property></term>
 					<listitem>
 						<simpara>
 							Package names that may not be installed along with the application.
 							It is highly recommended that this list is reflected on
-							<literal>dpkg</literal> level in some other package of the
+							<application>dpkg</application> level in some other package of the
 							application. This list is just to show the user conflicts
 							<emphasis>before</emphasis> the application is to be installed.
 							Conflicts on package level are resolved automatically and the user
 							has to confirm if some packages will be uninstalled. Same for
-							<literal>ConflictedApps</literal>.
+							<property>ConflictedApps</property>.
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>DefaultPackages</term>
+					<term><property>DefaultPackages</property></term>
 					<listitem>
 						<simpara>
 							A list of packages that will be installed. It is recommended to
@@ -352,7 +357,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>DefaultPackagesMaster</term>
+					<term><property>DefaultPackagesMaster</property></term>
 					<listitem>
 						<simpara>
 							Installing an application may require an extension of the LDAP
@@ -360,7 +365,7 @@
 							schema file and install it on the &ucsMaster; (and all &ucsBackup;
 							servers). The App Center will install these packages automatically
 							throughout the domain — in opposite to the
-							<literal>DefaultPackages</literal> which are only installed
+							<property>DefaultPackages</property> which are only installed
 							locally. Another difference is that these packages will not be
 							uninstalled even when the whole application is removed because a
 							schema that was used before it is removed again will break the
@@ -370,12 +375,12 @@
 							Since UCS 3.2 it is possible (and preferable) to register schema
 							extensions via the Join Script (see <xref
 								linkend="app:ucs_registerLDAPExtension" />). In most cases this
-							makes <literal>DefaultPackagesMaster</literal> unnecessary.
+							makes <property>DefaultPackagesMaster</property> unnecessary.
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>Screenshot</term>
+					<term><property>Screenshot</property></term>
 					<listitem>
 						<simpara>
 							In contrast to the product logo, the screenshot has to be given
@@ -385,7 +390,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>NotifyVendor</term>
+					<term><property>NotifyVendor</property></term>
 					<listitem>
 						<simpara>
 							See <xref linkend="app:notification" /> for further explanation.
@@ -394,7 +399,7 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>UseShop</term>
+					<term><property>UseShop</property></term>
 					<listitem>
 						<simpara>
 							New in UCS 3.2: Boolean value whether a link shall be displayed
@@ -412,13 +417,13 @@
 							New in UCS 3.2: Points to a website where the user can get/buy
 							support for the app. If not set, the user will instead be
 							encouraged to contact the app vendor
-							(<literal>Contact</literal>). If set to <envar>None</envar>,
+							(<property>Contact</property>). If set to <literal>None</literal>,
 							the user will see something like "No support option provided".
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>ShopURL</term>
+					<term><property>ShopURL</property></term>
 					<listitem>
 						<simpara>
 							New in UCS 3.2: Only makes sense in combination with
@@ -439,13 +444,13 @@
 									app_version (current version of the Application)
 							</simpara></listitem>
 							<listitem><simpara>
-									locale (locale used in the frontend, e.g. de)
+									locale (locale used in the frontend, e.g. <literal>de</literal>)
 							</simpara></listitem>
 						</itemizedlist>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>WebInterface</term>
+					<term><property>WebInterface</property></term>
 					<listitem>
 						<simpara>
 							If a web frontend is installed by the application, one may state
@@ -454,32 +459,32 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>UCSOverviewCategory</term>
+					<term><property>UCSOverviewCategory</property></term>
 					<listitem>
 						<simpara>
-							New in UCS 3.2: If there is a <literal>WebInterface</literal> the
+							New in UCS 3.2: If there is a <property>WebInterface</property> the
 							App Center automatically registers a link in the overview page of
 							the UCS server. By default these are added in the
-							<envar>services</envar> section of the overview page. If
-							<literal>UCSOverviewCategory</literal> is set to
-							<envar>admin</envar> the link will be generated there. Can be
-							disabled completely if set to <envar>False</envar>. See also
+							<quote>service</quote> section of the overview page. If
+							<property>UCSOverviewCategory</property> is set to
+							<literal>admin</literal> the link will be generated there. Can be
+							disabled completely if set to <literal>False</literal>. See also
 							<xref linkend="app:integration-by-app-center" />.
 						</simpara>
 					</listitem>
 				</varlistentry>
 				<varlistentry>
-					<term>ServerRole</term>
+					<term><property>ServerRole</property></term>
 					<listitem>
 						<simpara>
 							Roles that may use this application, separate by comma. Possible
-							roles are <envar>domaincontroller_master</envar>,
-							<envar>domaincontroller_backup</envar>,
-							<envar>domaincontroller_slave</envar>, and
-							<envar>memberserver</envar>. In UCS 3.1 these applications were
+							roles are <literal>domaincontroller_master</literal>,
+							<literal>domaincontroller_backup</literal>,
+							<literal>domaincontroller_slave</literal>, and
+							<literal>memberserver</literal>. In UCS 3.1 these applications were
 							visible but not installable (an error message was shown). Since UCS
 							3.2 they are completely hidden. This means that
-							<literal>ServerRole</literal> must not change throughout the
+							<property>ServerRole</property> must not change throughout the
 							lifetime of an application (at least not more restrictive).
 						</simpara>
 					</listitem>
@@ -490,119 +495,119 @@
 	<section id="app:optionalFiles">
 		<title>Optional application files</title>
 		<para>
-			Along with the <literal>.ini</literal> file, there are more files that
+			Along with the <filename class="extension">.ini</filename> file, there are more files that
 			can be shipped along with the Application, each of them optionally (at
 			least in English if given):
 		</para>
 		<variablelist>
 			<varlistentry>
-				<term>LICENSE_AGREEMENT</term>
+				<term><filename>LICENSE_AGREEMENT</filename></term>
 				<listitem>
 					<simpara>
 						A file the user has to accept before the installation starts. As of
 						UCS 3.2 HTML in this file is allowed and it may be localised by
-						using the files <literal>LICENSE_AGREEMENT_EN</literal> resp.
-						<literal>LICENSE_AGREEMENT_DE</literal>.
+						using the files <filename>LICENSE_AGREEMENT_EN</filename> resp.
+						<filename>LICENSE_AGREEMENT_DE</filename>.
 					</simpara>
 					<important>
 						<para>
 							As stated above HTML in this file is now allowed (and enforced).
 							It was not in UCS 3.1 but received some simple auto formatting.
 							You may have to convert an existing
-							<literal>LICENSE_AGREEMENT</literal>.
+							<filename>LICENSE_AGREEMENT</filename>.
 						</para>
 					</important>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README_INSTALL</term>
+				<term><filename>README_INSTALL</filename></term>
 				<listitem>
 					<simpara>
 						A file that is presented to the user before installation (but after
-						<literal>LICENSE_AGREEMENT</literal>). HTML is allowed. It may be
-						localised by using the files <literal>README_INSTALL_EN</literal>
-						resp. <literal>README_INSTALL_DE</literal>.
+						<filename>LICENSE_AGREEMENT</filename>). HTML is allowed. It may be
+						localised by using the files <filename>README_INSTALL_EN</filename>
+						resp. <filename>README_INSTALL_DE</filename>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README_POST_INSTALL</term>
+				<term><filename>README_POST_INSTALL</filename></term>
 				<listitem>
 					<simpara>
 						A file that is presented to the user after installation. HTML is
 						allowed. It may be localised by using the files
-						<literal>README_POST_INSTALL_EN</literal> resp.
-						<literal>README_POST_INSTALL_DE</literal>.
+						<filename>README_POST_INSTALL_EN</filename> resp.
+						<filename>README_POST_INSTALL_DE</filename>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README_UPDATE</term>
+				<term><filename>README_UPDATE</filename></term>
 				<listitem>
 					<simpara>
 						A file that is presented to the user before upgrading, listing
 						changes. Note that a user may only upgrade to the newest version
 						and does so in one step. Only the latest
-						<literal>README_UPDATE</literal> is shown.
+						<filename>README_UPDATE</filename> is shown.
 						As of UCS 3.2 it may be localised by using the files
-						<literal>README_UPDATE_EN</literal> resp.
-						<literal>README_UPDATE_DE</literal>.
+						<filename>README_UPDATE_EN</filename> resp.
+						<filename>README_UPDATE_DE</filename>.
 					</simpara>
 					<important>
 						<para>
 							As stated above HTML in this file is now allowed (and enforced).
 							It was not in UCS 3.1 but received some simple auto formatting.
 							You may have to convert an existing
-							<literal>README_UPDATE</literal>.
+							<filename>README_UPDATE</filename>.
 						</para>
 					</important>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README_POST_UPDATE</term>
+				<term><filename>README_POST_UPDATE</filename></term>
 				<listitem>
 					<simpara>
 						A file that is presented to the user after upgrading. Note that a
 						user may only upgrade to the newest version and does so in one
-						step. Only the latest <literal>README_POST_UPDATE</literal> is
+						step. Only the latest <filename>README_POST_UPDATE</filename> is
 						shown. HTML is allowed. It may be localised by using the files
-						<literal>README_POST_UPDATE_EN</literal> resp.
-						<literal>README_POST_UPDATE_DE</literal>.
+						<filename>README_POST_UPDATE_EN</filename> resp.
+						<filename>README_POST_UPDATE_DE</filename>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README</term>
+				<term><filename>README</filename></term>
 				<listitem>
 					<simpara>
 						A README file that the user may see in a dedicated &ucsUMC; module
 						for the installed application. Should contain something like first
 						steps with the installed application and explain what can be done
 						with it and how. HTML is allowed. It may be localised by using the
-						files <literal>README_EN</literal> resp
-						<literal>README_DE</literal>.
+						files <filename>README_EN</filename> resp
+						<filename>README_DE</filename>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README_UNINSTALL</term>
+				<term><filename>README_UNINSTALL</filename></term>
 				<listitem>
 					<simpara>
 						A file that is presented to the user before uninstallation. HTML is
 						allowed. It may be localised by using the files
-						<literal>README_UNINSTALL_EN</literal> resp.
-						<literal>README_UNINSTALL_DE</literal>.
+						<filename>README_UNINSTALL_EN</filename> resp.
+						<filename>README_UNINSTALL_DE</filename>.
 					</simpara>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>README_POST_UNINSTALL</term>
+				<term><filename>README_POST_UNINSTALL</filename></term>
 				<listitem>
 					<simpara>
 						A file that is presented to the user after uninstallation. HTML is
 						allowed. It may be localised by using the files
-						<literal>README_POST_UNINSTALL_EN</literal> resp.
-						<literal>README_POST_UNINSTALL_DE</literal>.
+						<filename>README_POST_UNINSTALL_EN</filename> resp.
+						<filename>README_POST_UNINSTALL_DE</filename>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -612,20 +617,20 @@
 		<title>Uploading the application</title>
 		<para>
 			If the meta data (text file, logo and screenshot) and the packages are
-			ready for upload, they can be put into a file archive (.zip or
-			(preferably) .tar.gz) and uploaded to <ulink
-				url="http://upload.univention.de">http://upload.univention.de</ulink>.
+			ready for upload, they can be put into a file archive (<filename class="extension">.zip</filename> or
+			(preferably) <filename class="extension">.tar.gz</filename>) and uploaded to <ulink
+				url="http://upload.univention.de/"/>.
 			If the archive is larger than 150 MB it has to be split into single parts
 			not larger than 150 MB.
 		</para>
 		<para>
 			A unique upload ID will be displayed after the download that has to be
 			forwarded to Univention. Please send the following information via e-mail
-			to <ulink url="mailto:appcenter@univention.de"><email>appcenter@univention.de</email></ulink>:
+			to <email>appcenter@univention.de</email>:
 			<itemizedlist>
 				<listitem><simpara>
 					Upload ID for the file archive. Please provide all upload IDs if the
-					archive had to be splitted.
+					archive had to be split.
 				</simpara></listitem>
 				<listitem><simpara>
 					Grant permission to Univention to distribute the software through
@@ -635,7 +640,7 @@
 		</para>
 		<para>
 			All further communication will be done through the ticket system after
-			the upload. 
+			the upload.
 		</para>
 	</section>
 	<section id="app:notification">
@@ -705,17 +710,17 @@
 			other. In this case the <literal>ID</literal> in the ini file needs to be
 			changed and the application somehow needs to make sure that they cannot
 			both be installed in parallel (e.g. a version dependency on
-			<literal>dpkg</literal> level of some meta package). Univention may help
+			<application>dpkg</application> level of some meta package). Univention may help
 			you with the details.
 		</para>
 		<para>
 			Updates for the application description (.ini file), the product logo,
 			the screenshot, readme files (especially
-			<literal>README_UPDATE</literal>) and the packages are all submitted to
-			<ulink url="mailto:appcenter@univention.de"><email>appcenter@univention.de</email></ulink>.
+			<filename>README_UPDATE</filename>) and the packages are all submitted to
+			<email>appcenter@univention.de</email>.
 			Only those files that changed need to be uploaded again, everything else
 			can be copied by Univention. The ini file needs to change every time,
-			because the <literal>Version</literal> has to be increased. If this is
+			because the <property>Version</property> has to be increased. If this is
 			the only change in the ini file, this may be stated in the email instead
 			of shipping the file and we will take care of that during copying. Please
 			use the upload if a higher amount of data has to be transfered (see <xref
@@ -741,9 +746,9 @@
 				New in UCS 3.2: The overview of any UCS system (i.e. plain
 				https://<replaceable>IP</replaceable>/) can link to various web
 				frontends, e.g. the &ucsUMC;. If the application provides a
-				<literal>WebInterface</literal> in the ini file, a link is built
-				automatically, with the ini's <literal>Name</literal> and
-				<literal>Description</literal> as text.
+				<property>WebInterface</property> in the ini file, a link is built
+				automatically, with the ini's <property>Name</property> and
+				<property>Description</property> as text.
 			</para>
 			<para>
 				This feature can be disabled by stating
@@ -754,7 +759,7 @@
 				<filename>postrm</filename> (see also <xref linkend="www:overview" />):
 				<variablelist>
 					<varlistentry>
-						<term>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/icon</term>
+						<term><envar>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/icon</envar></term>
 						<listitem>
 							<simpara>
 								Path to the icon for the link.
@@ -762,30 +767,30 @@
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/label</term>
+						<term><envar>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/label</envar></term>
 						<listitem>
 							<simpara>
 								English version of the headline. German version is
-								<literal>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/label/de</literal>
+								<envar>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/label/de</envar>
 							</simpara>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/description</term>
+						<term><envar>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/description</envar></term>
 						<listitem>
 							<simpara>
 								English version of the short text below the headline. German
 								version is
-								<literal>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/description/de</literal>
+								<envar>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/description/de</envar>
 							</simpara>
 						</listitem>
 					</varlistentry>
 					<varlistentry>
-						<term>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/link</term>
+						<term><envar>ucs/web/overview/entries/service/<replaceable>appid</replaceable>/link</envar></term>
 						<listitem>
 							<simpara>
 								Link to the web interface. Probably something like
-								<literal>/<replaceable>appid</replaceable></literal>.
+								<uri>/<replaceable>appid</replaceable></uri>.
 							</simpara>
 						</listitem>
 					</varlistentry>
@@ -794,9 +799,9 @@
 			<para>
 				New in UCS 3.2: Each application registers itself in the LDAP directory
 				and sets the hosts on which it is installed automatically. These
-				information can be accessed by any <literal>machine
-					connection</literal>. The path is
-				<literal>univentionAppID=<replaceable>appid</replaceable>_<replaceable>appversion</replaceable>,cn=<replaceable>appid</replaceable>,cn=apps,cn=univention,<replaceable>ldap_base</replaceable></literal>.
+				information can be accessed by any <emphasis>machine
+					connection</emphasis>. The path is
+				<uri>univentionAppID=<replaceable>appid</replaceable>_<replaceable>appversion</replaceable>,cn=<replaceable>appid</replaceable>,cn=apps,cn=univention,<replaceable>ldap_base</replaceable></uri>.
 				See also <xref linkend="chap:udm" /> if this data shall be accessed.
 			</para>
 		</section>
@@ -814,10 +819,10 @@
 					app</emphasis>. For this it needs to add Extended Attributes (see
 				<xref linkend="udm:ea"/>) in a Join Script (see <xref
 					linkend="chap:join"/>) in a package from
-				<literal>DefaultPackages</literal>. It will also have to extend the
+				<property>DefaultPackages</property>. It will also have to extend the
 				LDAP schema. This can also be done in the Join Script (see <xref
 					linkend="app:ucs_registerLDAPExtension" />) or, alternatively, in a
-				package of <literal>DefaultPackagesMaster</literal>.
+				package of <property>DefaultPackagesMaster</property>.
 			</para>
 			<para>
 				If the application wants to sync certain attributes (for example
@@ -835,7 +840,7 @@
 	  <section id="app:ucs_registerLDAPExtension">
 		  <title>Registration of LDAP and UDM Extensions</title>
 			<para>
-				<acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules can be installed via the library function <literal>ucs_registerLDAPExtension</literal>, see <xref linkend="join:libraries:shell"/>.
+				<acronym>LDAP</acronym> schema and ACL extensions as well as UDM syntax, UDM hook and UDM extension modules can be installed via the library function <function>ucs_registerLDAPExtension</function>, see <xref linkend="join:libraries:shell"/>.
 			</para>
 		</section>
 	</section>

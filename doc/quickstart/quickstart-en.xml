@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
-
-  %entities;
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
 ]>
 <book lang="en" id="quickstart-en-3.3">
 <bookinfo>
@@ -14,18 +15,18 @@
 </bookinfo>
 
 <chapter id="quickstart:intro">
-  <title>Introduction</title> 
+  <title>Introduction</title>
 
   <para>
-	Univention Corporate Server (UCS) is a server operating system based on Debian with
+	Univention Corporate Server (UCS) is a server operating system based on Debian GNU/Linux with
 	integrated management system for the central administration of servers, services, clients,
-	desktops and users. 
+	desktops and users.
   </para>
-  
+
   <para>
 	This quickstart guide offers a short introduction on how to get started with UCS. Several
-	featues of UCS are only mentioned briefly with a reference to further documentation. The
-	documention on UCS is available at <ulink url="http://docs.univention.de"/>.
+	features of UCS are only mentioned briefly with a reference to further documentation. The
+	documentation on UCS is available at <ulink url="https://docs.software-univention.de/"/>.
   </para>
 
   <para>
@@ -35,7 +36,7 @@
   </para>
 
   <para>
-	Alternatively preinstalled images for VMWare and VirtualBox can be used. These are available for
+	Alternatively preinstalled images for VMware and VirtualBox can be used. These are available for
 	download at <ulink
 	url="https://www.univention.com/downloads/ucs-download/preinstalled-vm-images/"/>..
   </para>
@@ -68,9 +69,10 @@
 
   <figure id="quick-systemrole">
 	<title>Selecting the system role</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/systemrole-en.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations33/systemrole-en.png"/>
   </figure>
-  
+
+
   <para>
 	The &ucsMaster; is always the first system of a UCS domain, it should be selected as the system role.
 	All other system join the UCS domain during
@@ -155,7 +157,7 @@
 
 	<figure id="quick-umclogin">
 	  <title>Modules in the UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/umc-modules-en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/umc-modules-en.png"/>
 	</figure>
 
 	<para>
@@ -189,13 +191,13 @@
 
 	  <listitem><simpara>
 		Third-party software (e.g. various groupware solutions) and UCS-compatible addon products
-		(e.g. UCS@school for school deployment can also be installed through the App Center. 
+		(e.g. UCS@school for school deployment can also be installed through the App Center.
 	  </simpara></listitem>
 	</itemizedlist>
 
 	<figure id="quick-appcenter">
 	  <title>Subsequent installation of UCS components</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/appcenter-en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/appcenter-en.png"/>
 	</figure>
 
   </para>
@@ -211,7 +213,7 @@
 	configuration files used effectively by the services/programs. Direct editing of the
 	configuration files is only needed in exceptional cases.
   </para>
-  
+
   <para>
 	&ucsUCR; variables are managed via the &ucsUMC; module <guimenu>Univention Configuration
 	Registry</guimenu>. Configuration files are automatically updated when the UCR variables
@@ -220,7 +222,7 @@
 
   <figure id="quick-ucr">
 	<title>Managing &ucsUCR; variables</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/ucr-en.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations33/ucr-en.png"/>
   </figure>
 
 </chapter>
@@ -254,7 +256,7 @@
 
 		<listitem><simpara>
 		  Ubuntu systems <biblioref linkend="ubuntu-join"/> and other Linux distributions like
-		  Debian, SuSE or Red Hat can also be integrated into the domain <biblioref linkend="integrate-other-linux"/>.
+		  Debian, SUSE or Red Hat can also be integrated into the domain <biblioref linkend="integrate-other-linux"/>.
 		</simpara></listitem>
 
 
@@ -279,19 +281,19 @@
 	  <listitem><simpara>
 		Single-sign-on with web services using a SAML identity provider <biblioref linkend="wiki-saml"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		IP management using DHCP <biblioref linkend="ucs-dhcp"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Web proxy for caching and policy management / virus scan <biblioref linkend="ucs-proxy"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Service monitoring with Nagios <biblioref linkend="ucs-nagios"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Virtualisation with KVM / Xen <biblioref linkend="ucs-uvmm"/>
 	  </simpara></listitem>
@@ -313,11 +315,11 @@
 
 	  <listitem><simpara>
 		Further documentation for advanced scenarios can be found in the extended documentation. The
-		various documents are linked at <ulink url="http://docs.univention.de/"/>.
+		various documents are linked at <ulink url="https://docs.software-univention.de/"/>.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		TheUnivention Wiki (<ulink url="http://wiki.univention.de/"/>) contains several HOWTOs and
+		The Univention Wiki (<ulink url="http://wiki.univention.de/"/>) contains several HOWTOs and
 		hands-on tips.
 	  </simpara></listitem>
 
@@ -335,7 +337,7 @@
 
 </chapter>
 
-<bibliography>
+<bibliography id="bibliography">
   <bibliomixed id="ucs-handbuch"/>
   <bibliomixed id="ucs-systemrole"/>
   <bibliomixed id="ucs-winjoin"/>
@@ -352,6 +354,4 @@
   <bibliomixed id="wiki-saml"/>
   <bibliomixed id="integrate-other-linux"/>
 </bibliography>
-
-<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

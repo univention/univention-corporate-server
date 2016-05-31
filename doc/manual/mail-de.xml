@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="mail::general">
   <title>Maildienste</title>
 
@@ -106,7 +116,7 @@
 	</para>
 
 	<para>
-	  Die Laufzeitdaten des Cyrus-Servers werden im Verzeichnis <filename>/var/spool/cyrus</filename>
+	  Die Laufzeitdaten des Cyrus-Servers werden im Verzeichnis <filename class="directory">/var/spool/cyrus</filename>
 	  abgelegt. Dieses Verzeichnis sollte nicht auf einer NFS-Freigabe betrieben werden.
 	</para>
 
@@ -129,13 +139,11 @@
 		zwischen lokalen und externen Domänen. Nur für E-Mail-Adressen lokaler Domänen
 		wird die Mailzustellung vorgenommen.
 	  </para>
-
 	  <para>
 		Mit UCS lassen sich mehrere Mail-Domänen verwalten. Die verwalteten Mail-Domänen
 		müssen dabei nicht der DNS-Domäne des Servers entsprechen, sondern sind
 		frei wählbar.
 	  </para>
-
 	  <para>
 		Damit auch externe Absender E-Mails an die Mitglieder der Domäne versenden
 		können, müssen in der Konfiguration der autoritativen DNS-Nameserver MX-Records
@@ -181,9 +189,8 @@
 	  </para>
 
 	  <para>
-		Einem Benutzer können zwei verschiedene Arten von E-Mail-Adressen zugeordnet werden.
+		Einem Benutzer können zwei verschiedene Arten von E-Mail-Adressen zugeordnet werden:
 	  </para>
-
 	  <para>
 		<itemizedlist>
 		  <listitem>
@@ -202,8 +209,8 @@
 		  <listitem>
 			<simpara>
 			  E-Mails an <emphasis>alternative E-Mail-Adressen</emphasis> werden
-			  ebenfalls in das Postfach des Benutzers zugestellt werden. Es können beliebig
-			  viele Adressen angegeben werden. Die alternativen E-Mail-Adressen müssen auch
+			  ebenfalls in das Postfach des Benutzers zugestellt. Es können beliebig
+			  viele Adressen angegeben werden. Die alternativen E-Mail-Adressen müssen
 			  nicht eindeutig sein; besitzen zwei Benutzer die gleiche Adresse, erhalten
 			  beide Benutzer alle E-Mails, die an diese Adresse gesandt werden. Der
 			  Domänenanteil der E-Mail-Adresse muss in der &ucsUMC; registriert sein (siehe
@@ -247,7 +254,7 @@
 	  <para>
 		<figure id="mail-mailinglist">
 		  <title>Einrichtung einer Mailingliste</title>
-		  <graphic scalefit="1" width="90%" fileref="illustrations/mail_mailinglist_de.png"/>
+		  <graphic scalefit="1" width="90%" fileref="illustrations33/mail_mailinglist_de.png"/>
 		</figure>
 	  </para>
 
@@ -285,10 +292,10 @@
 	  </para>
 
 	  <para>
-		In der Grundeinstellungen kann jeder Benutzer an die Mailingliste schreiben. Um
+		In der Grundeinstellung kann jeder an die Mailingliste schreiben. Um
 		Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis
 		einzuschränken. Dazu muss die &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> auf
-		dem Mailserver auf <emphasis>yes</emphasis> gesetzt und Postfix neu gestartet werden.
+		dem Mailserver auf <literal>yes</literal> gesetzt und Postfix neu gestartet werden.
 	  </para>
 
 	  <para>
@@ -325,10 +332,10 @@
 	  </para>
 
 	  <para>
-		In der Grundeinstellungen kann jeder an die Mailgruppe schreiben. Um
+		In der Grundeinstellung kann jeder an die Mailgruppe schreiben. Um
 		Missbrauch zu verhindern, besteht die Möglichkeit den Senderkreis
 		einzuschränken. Dazu muss die &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> auf
-		dem Mailserver auf <emphasis>yes</emphasis> gesetzt und Postfix neu gestartet werden.
+		dem Mailserver auf <literal>yes</literal> gesetzt und Postfix neu gestartet werden.
 	  </para>
 
 	  <para>
@@ -359,7 +366,7 @@
 	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Einrichtung eines globalen IMAP-Ordners</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/mail_imapfolder_de.png"/>
+		  <graphic scalefit="1" width="80%" fileref="illustrations33/mail_imapfolder_de.png"/>
 		</figure>
 	  </para>
 
@@ -635,10 +642,10 @@
 	</para>
 
 	<para>
-	  Der in die SIEVE-Skripte eingetragene Schwellwert, ab der E-Mails als Spam
+	  Der in die Sieve-Skripte eingetragene Schwellwert, ab der E-Mails als Spam
 	  deklariert werden, ist mit der &ucsUCRV;
 	  <envar>mail/antispam/requiredhits</envar> konfigurierbar. Die Voreinstellung
-	  (5) muss in der Regel nicht angepasst werden. Je nach Erfahrung im eigenen
+	  (<literal>5</literal>) muss in der Regel nicht angepasst werden. Je nach Erfahrung im eigenen
 	  Umfeld kann dieser Wert aber auch niedriger angesetzt werden. Es muss dann
 	  jedoch mit mehr E-Mails gerechnet werden, die fälschlich als Spam erkannt
 	  wurden. Die Änderung des Schwellwerts wirkt sich nicht auf bestehende Benutzer
@@ -662,13 +669,13 @@
 
 	<para>
 	  Die Spam-Filterung kann durch Setzen der &ucsUCRV;
-	  <envar>mail/antivir/spam</envar> auf <emphasis>no</emphasis> deaktiviert
+	  <envar>mail/antivir/spam</envar> auf <literal>no</literal> deaktiviert
 	  werden.
 	</para>
 
 	<para>
 	  Bei Änderungen an Univention Configuration Registry-Variablen, die die
-	  Spamerkennung betreffen, muss der Amavis-Dienst und Postfix neu gestartet
+	  Spamerkennung betreffen, muss der AMaViS-Dienst und Postfix neu gestartet
 	  werden.
 	</para>
   </section>
@@ -688,12 +695,12 @@
 	  unerreichbar für den Benutzer abgelegt. Der ursprüngliche Empfänger erhält eine
 	  Benachrichtigung per E-Mail über diese Maßnahme. Bei Bedarf kann der
 	  Administrator die E-Mail aus dem Verzeichnis
-	  <filename>/var/lib/amavis/virusmails</filename> wiederherstellen oder
+	  <filename class="directory">/var/lib/amavis/virusmails/</filename> wiederherstellen oder
 	  löschen. Eine automatische Löschung erfolgt nicht.
 	</para>
 
 	<para>
-	  Die Software Amavisd-new dient als Schnittstelle zwischen dem Mailserver und
+	  Die Software <application>AMaViSd-new</application> dient als Schnittstelle zwischen dem Mailserver und
 	  verschiedenen Virenscannern. Der freie Virenscanner ClamAV ist im Paket
 	  enthalten und nach der Installation sofort einsatzbereit. Die für die
 	  Virenerkennung nötigen Signaturen werden automatisch und kostenfrei durch den
@@ -701,13 +708,13 @@
 	</para>
 
 	<para>
-	  Alternativ oder zusätzlich können andere Virenscanner in Amavis eingebunden
+	  Alternativ oder zusätzlich können andere Virenscanner in AMaViS eingebunden
 	  werden.
 	</para>
 
 	<para>
-	  Nach Änderungen an der Amavis- oder ClamAV-Konfiguration müssen Postfix und
-	  Amavis neu gestartet werden.
+	  Nach Änderungen an der AMaViS- oder ClamAV-Konfiguration müssen Postfix und
+	  AMaViS neu gestartet werden.
 	</para>
   </section>
 
@@ -814,13 +821,13 @@
 
 	  <para>
 		Ist für den Versand die Authentifizierung gegenüber dem Relay-Host notwendig,
-		muss die &ucsUCRV; <envar>mail/relayauth</envar> auf <emphasis>yes</emphasis>
+		muss die &ucsUCRV; <envar>mail/relayauth</envar> auf <literal>yes</literal>
 		gesetzt und die Datei <filename>/etc/postfix/smtp_auth</filename> bearbeitet
 		werden. In dieser Datei muss der Relay-Host, der Benutzername und das Passwort
 		in einer Zeile hinterlegt werden:
 	  </para>
 		<programlisting>
-&lt;FQDN-Relayhost&gt;			&lt;Benutzername&gt;:&lt;Passwort&gt;
+<replaceable>FQDN-Relayhost</replaceable>	<replaceable>Benutzername</replaceable>:<replaceable>Passwort</replaceable>
 		</programlisting>
 		<para>
 		Anschließend muss für diese Datei
@@ -842,7 +849,7 @@ postmap /etc/postfix/smtp_auth
 		Mit der &ucsUCRV; <envar>mail/messagesizelimit</envar> kann die maximale Größe
 		in Byte für ein- und ausgehende E-Mails festgelegt werden. Die voreingestellte
 		Maximalgröße beträgt 10240000 Byte. Nach Änderung der Einstellung muss Postfix neu gestartet werden.
-		Wird <emphasis>0</emphasis> als Wert konfiguriert, so wird die Begrenzung aufgehoben. Es ist
+		Wird <literal>0</literal> als Wert konfiguriert, so wird die Begrenzung aufgehoben. Es ist
 		zu beachten, dass Emailanhänge durch die Base64-Kodierung um ca. ein Drittel vergrössert
 		werden.
 	  </para>
@@ -878,7 +885,7 @@ postmap /etc/postfix/smtp_auth
 		Bei einer Reihe von Fehlersituationen (z.B. bei nicht vorhandenen
 		Benutzern) kann es zu einem Bounce der betroffenen Mail kommen, d.h. die Mail
 		wird an den Absender zurückgesendet. Mit dem Setzen der &ucsUCRV;
-		<envar>mail/postfix/softbounce</envar> auf <emphasis>yes</emphasis> werden
+		<envar>mail/postfix/softbounce</envar> auf <literal>yes</literal> werden
 		Mails nie mit einem Bounce zurückgesendet, sondern immer weiterhin in der Queue
 		vorgehalten. Diese Einstellung ist insbesondere für Konfigurationsarbeiten am
 		Mailserver sehr nützlich.
@@ -899,14 +906,14 @@ postmap /etc/postfix/smtp_auth
 		<itemizedlist>
 		  <listitem>
 			<simpara>
-			  Ist die Variable auf <emphasis>yes</emphasis> gesetzt, wird das
+			  Ist die Variable auf <literal>yes</literal> gesetzt, wird das
 			  IMAP-Postfach des Benutzers umbenannt. Dies ist seit UCS 3.0 die
 			  Standardeinstellung.
 			</simpara>
 		  </listitem>
 		  <listitem>
 			<simpara>
-			  Bei der Einstellung <emphasis>no</emphasis>, sind nach dem
+			  Bei der Einstellung <literal>no</literal>, sind nach dem
 			  Ändern der primären E-Mail-Adresse eines Benutzers seine bisherigen E-Mails
 			  nicht mehr erreichbar! Wird einem anderen Benutzer eine ehemals vergebene
 			  primäre E-Mail-Adresse zugewiesen, bekommt dieser Zugriff auf die alte
@@ -964,7 +971,7 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  <figure id="mail:clients:thunderbird">
 		<title>Einrichtung von Mozilla Thunderbird</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/thunderbird_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/thunderbird_de.png"/>
 	  </figure>
 	</para>
   </section>
@@ -976,7 +983,7 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  UCS integriert mehrere Applikationen des Horde-Frameworks für den Webzugriff
 	  auf E-Mails und zur webbasierten Verwaltung von serverseitigen
-	  E-Mail-Filterregeln auf Basis von SIEVE. Horde kann über das Univention App Center installiert
+	  E-Mail-Filterregeln auf Basis von Sieve. Horde kann über das Univention App Center installiert
 	  werden (siehe <xref linkend="software:appcenter"/>).
 	</para>
 
@@ -985,13 +992,13 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		Die Horde-Anmeldemaske ist auf der Übersichtswebseite (siehe <xref linkend="central-management-umc:login"/>) unter
 		<guimenu>Horde Webclient</guimenu> verlinkt und kann auch direkt unter
-		<uri>http://SERVERNAME/horde/login.php</uri> erreicht werden.
+		<uri>http://SERVERNAME/horde/</uri> erreicht werden.
 	  </para>
 
 	  <para>
 		<figure id="horde-login">
 		  <title>Anmeldung an Horde</title>
-		  <graphic scalefit="1" width="35%" fileref="illustrations/login_de.png"/>
+		  <graphic scalefit="1" width="35%" fileref="illustrations33/login_de.png"/>
 		</figure>
 	  </para>
 
@@ -1031,7 +1038,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-inbox">
 		  <title>Webmail (Posteingang)</title>
-		  <graphic scalefit="1" width="95%" fileref="illustrations/inbox_de.png"/>
+		  <graphic scalefit="1" width="95%" fileref="illustrations33/inbox_de.png"/>
 		</figure>
 	  </para>
 
@@ -1055,7 +1062,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-address">
 		  <title>Adressbuch für Webmail</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations/addressbook_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations33/addressbook_de.png"/>
 		</figure>
 	  </para>
 
@@ -1085,7 +1092,7 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Cyrus unterstützt serverseitige Filterskripte, die in einer eigenen
-		Skriptsprache namens SIEVE geschrieben werden. Das Filter-Modul erlaubt die
+		Skriptsprache namens Sieve geschrieben werden. Das Filter-Modul erlaubt die
 		Generierung dieser Filterskripte. Sie gelten allgemein, greifen also auch für
 		Benutzer, die über einen Standard-Mail-Client auf ihre Postfächer zugreifen.
 	  </para>
@@ -1093,7 +1100,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-filter">
 		  <title>Filterverwaltung in Horde</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations/filter_de.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations33/filter_de.png"/>
 		</figure>
 	  </para>
 
@@ -1127,8 +1134,9 @@ postmap /etc/postfix/smtp_auth
 
 	  <para>
 		Ein Klick auf <guimenu>Skript</guimenu> zeigt den Quelltext des generierten
-		SIEVE-Skripts an.
+		Sieve-Skripts an.
 	  </para>
 	</section>
   </section>
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

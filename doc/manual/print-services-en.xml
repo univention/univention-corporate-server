@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="print::general">
 <title>Print services</title>
 
@@ -27,12 +37,12 @@
 		files. These files include for example whether a printer can print in
 		colour, whether duplex printing is possible, whether there are several
 		paper trays, which resolutions are supported and which printer control
-		languages are supported (e.g., PCL or Postscript).
+		languages are supported (e.g., PCL or PostScript).
 	</para>
 	<para>
 		Print jobs are transformed by CUPS with the help of filters into a
 		format that the respective printer can interpret, for example into
-		Postscript for a Postscript-compatible printer.
+		PostScript for a PostScript-compatible printer.
 	</para>
 	<para>
 		UCS already includes a wide variety of filters and PPD
@@ -43,8 +53,8 @@
 	<para>
 		A printer can either be connected directly to the print server
 		locally (e.g., via the USB port or a parallel port) or communicate
-		with a printer via remote protocols (e.g., TCP/IP-compatible printers,
-		which are connected via IPP or LPD).
+		with a printer via remote protocols (e.g., TCP/IP compatible printers,
+		which are connected via <systemitem class="protocol">IPP</systemitem> or <systemitem class="protocol">LPD</systemitem>).
 	</para>
 	<para>
 		Network printers with their own IP address should be registered in the
@@ -86,7 +96,7 @@
   <para>
 	The configuration of the CUPS print server is performed via settings from the LDAP directory
 	service and &ucsUCR;. If the &ucsUCRV; <envar>cups/include/local</envar> is set to
-	<emphasis>true</emphasis>, the <filename>/etc/cups/cupsd.local.conf</filename> file is included,
+	<literal>true</literal>, the <filename>/etc/cups/cupsd.local.conf</filename> file is included,
 	in which arbitrary options can be defined.
   </para>
 
@@ -114,7 +124,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Creating a printer share</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/create_printershare_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/create_printershare_en.png"/>
 	</figure>
 	<para>
 		When adding/deleting/editing a printer share, the printer is
@@ -178,15 +188,15 @@
 						</para>
 						<itemizedlist>
 							<listitem>
-								<para><uri>parallel://<replaceable>&lt;devicefile&gt;</replaceable></uri></para>
+								<para><uri>parallel://<replaceable>devicefile</replaceable></uri></para>
 								<para>Example: <uri>parallel://dev/lp0</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>socket://<replaceable>&lt;server&gt;</replaceable>:<replaceable>&lt;port&gt;</replaceable></uri></para>
+								<para><uri>socket://<replaceable>server</replaceable>:<replaceable>port</replaceable></uri></para>
 								<para>Example: <uri>socket://printer_03:9100</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>usb://<replaceable>&lt;devicefile&gt;</replaceable></uri></para>
+								<para><uri>usb://<replaceable>devicefile</replaceable></uri></para>
 								<para>Example: <uri>usb://dev/usb/lp0</uri></para>
 							</listitem>
 						</itemizedlist>
@@ -196,15 +206,15 @@
 						</para>
 						<itemizedlist>
 							<listitem>
-								<para><uri>http://<replaceable>&lt;server&gt;</replaceable>[:<replaceable>&lt;port&gt;</replaceable>]/<replaceable>&lt;path&gt;</replaceable></uri></para>
+								<para><uri>http://<replaceable>server</replaceable>[:<replaceable>port</replaceable>]/<replaceable>path</replaceable></uri></para>
 								<para>Example: <uri>http://192.168.0.10:631/printers/remote</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>ipp://<replaceable>&lt;server&gt;</replaceable>/printers/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para><uri>ipp://<replaceable>server</replaceable>/printers/<replaceable>queue</replaceable></uri></para>
 								<para>Example: <uri>ipp://printer_01/printers/xerox</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>lpd://<replaceable>&lt;server&gt;</replaceable>/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para><uri>lpd://<replaceable>server</replaceable>/<replaceable>queue</replaceable></uri></para>
 								<para>Example: <uri>lpd://10.200.18.30/bwdraft</uri></para>
 							</listitem>
 						</itemizedlist>
@@ -221,15 +231,15 @@
 						</para>
 						<para>
 							The <uri>smb://</uri> protocol can be used to mount a Windows print share.
-							For example, to integrate the <emphasis>laser01</emphasis> printer share from Windows
-							system <emphasis>win01</emphasis>, <emphasis>win01/laser01</emphasis> must be specified as destination.
+							For example, to integrate the <systemitem class="resource">laser01</systemitem> printer share from Windows
+							system <systemitem class="server">win01</systemitem>, <literal>win01/laser01</literal> must be specified as destination.
 							The manufacturer and model must be selected according to the printer in question.
 							The print server uses the printer model settings to convert the print
 							jobs where necessary and send these directly to the URI
 							<uri>smb://win01/laser01</uri>. No Windows drivers are used in this.
 						</para>
 						<para>
-							Independant of these settings, the printer share can be mounted by other
+							Independent of these settings, the printer share can be mounted by other
 							Windows systems with the corresponding printer drivers.
 						</para>
 					</entry>
@@ -384,7 +394,7 @@
 	</para>
 	<figure id="printergroup">
 	<title>Configuring a printer group</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/printer_group-en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/printer_group-en.png"/>
 	</figure>
 	<para>
 		A printer group must have at least one printer as a member. Only
@@ -515,7 +525,7 @@
 	</para>
 	<figure id="printer-admin">
 	<title>Printer administration</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc-printer_administration-en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/umc-printer_administration-en.png"/>
 	</figure>
 	<para>
 		The start page of the module contains a search mask with which the available
@@ -557,25 +567,25 @@
 
 	<para>
 	  <emphasis>PDF</emphasis> must be selected as <guimenu>Printer
-	  producer</guimenu> and <emphasis>Generic CUPS-PDF
-	  Printer</emphasis> as <guimenu>Printer model</guimenu>.
+	  producer</guimenu> and <guimenuitem>Generic CUPS-PDF
+	  Printer</guimenuitem> as <guimenu>Printer model</guimenu>.
 	</para>
 
 	<para>
 		The target directory for the generated PDF documents is set using
 		the &ucsUCRV; <envar>cups/cups-pdf/directory</envar>. As standard it is set
-		to <filename>/var/spool/cups-pdf/%U</filename> so that <emphasis>cups-pdf</emphasis> uses a
+		to <filename>/var/spool/cups-pdf/%U</filename> so that <application>cups-pdf</application> uses a
 		different directory for each user.
 	</para>
 	<para>
 		Print jobs coming in anonymously are printed in the directory
 		specified by the &ucsUCRV; <envar>cups/cups-pdf/anonymous</envar> (standard setting:
-		<filename>/var/spool/cups-pdf</filename>).
+		<filename class="directory">/var/spool/cups-pdf/</filename>).
 	</para>
 
 	<para>
 	  In the default setting, generated PDF documents are kept without any restrictions. If the
-	  &ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> is set to <emphasis>true</emphasis>,
+	  &ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> is set to <literal>true</literal>,
 	  old PDF print jobs are deleted via a Cron job. The storage time in days can be configured
 	  using the &ucsUCRV; <envar>cups/cups-pdf/cleanup/keep</envar>.
 	</para>
@@ -595,10 +605,10 @@
   <para>
 	Printer shares are usually operated using the Windows printer drivers
 	provided. The network printer can alternatively be set up on the
-	Windows side with a standard Postscript printer driver. If a colour
-	printer should be accessed, a driver for a Postscript-compatible
-	colour printer should be used on the Windows side, e.g., HP Color
-	Laserjet 8550.
+	Windows side with a standard PostScript printer driver. If a colour
+	printer should be accessed, a driver for a PostScript-compatible
+	colour printer should be used on the Windows side, e.g., <wordasword>HP Color
+	LaserJet 8550</wordasword>.
   </para>
 
   <caution>
@@ -674,7 +684,7 @@
 
   		<figure>
   		  <title>Error message during first access</title>
-  		  <graphic scalefit="1" width="40%" fileref="illustrations/windows-printerdriver-en.png"/>
+  		  <graphic scalefit="1" width="40%" fileref="illustrations33/windows-printerdriver-en.png"/>
   		</figure>
   	  </simpara></listitem>
 
@@ -711,19 +721,19 @@
 		files. These files include for example whether a printer can print in
 		colour, whether duplex printing is possible, whether there are several
 		paper trays, which resolutions are supported and which printer control
-		languages are supported (e.g., PCL or Postscript).
+		languages are supported (e.g., PCL or PostScript).
 	</para>
 	<para>
 		In addition to the PPD files already included in the standard scope,
 		additional ones can be added via the &ucsUMC;. The PPDs are generally
 		provided by the printer manufacturer and need to be copied into
-		the <filename>/usr/share/ppd</filename> directory on the print servers.
+		the <filename class="directory">/usr/share/ppd/</filename> directory on the print servers.
 	</para>
 	<para>
 		The printer driver lists are administrated in
 		the <guimenu>LDAP directory</guimenu> module of the &ucsUMC;. There you need
-		to switch to the <emphasis>univention</emphasis> container and then to
-		the <emphasis>cups</emphasis> subcontainer. Printer driver lists already exist
+		to switch to the <uri>univention</uri> container and then to
+		the <uri>cups</uri> subcontainer. Printer driver lists already exist
 		for the majority of printer manufacturers. These can be expanded or
 		new ones can be added.
 	</para>
@@ -751,10 +761,10 @@
 				<row>
 					<entry>Driver</entry>
 					<entry>
-						The path to the ppd file or to the <filename>/usr/share/ppd/</filename>
+						The path to the <filename class="extension">ppd</filename> file or to the <filename class="directory">/usr/share/ppd/</filename>
 						directory. For example, if the <filename>/usr/share/ppd/laserjet.ppd</filename>
-						should be used, <filename>laserjet.ppd</filename> must be entered here. gzip
-						compressed files (file ending .gz) can also be entered here.
+						should be used, <filename>laserjet.ppd</filename> must be entered here. <command>gzip</command>
+						compressed files (file ending <filename class="extension">.gz</filename>) can also be entered here.
 					</entry>
 				</row>
 				<row>
@@ -770,3 +780,4 @@
 	</table>
 </section>
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=0 noet ft=docbk:-->

@@ -1,6 +1,11 @@
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
 	%entities;
 ]>
 <chapter id="chap:ucr">
@@ -49,7 +54,7 @@
 							Set &ucsUCRV; <varname>key</varname> to the given <varname>value</varname>.
 							Using <literal>=</literal> forces an assignment, while <literal>?</literal> only sets the value if the variable is unset.
 						</para>
-						<example>
+						<example id="ucr:set">
 							<title>Use of <command>ucr set</command></title>
 							<programlisting><![CDATA[
 ucr set print/papersize?a4 \
@@ -72,7 +77,7 @@ ucr set print/papersize?a4 \
 						<para>
 							Return the current value of the &ucsUCRV; <varname>key</varname>.
 						</para>
-						<example>
+						<example id="ucr:get">
 							<title>Use of <command>ucr get</command></title>
 							<programlisting><![CDATA[
 case "$(ucr get system/role)" in
@@ -87,7 +92,7 @@ esac
 							It returns 0 (success) for the values <simplelist type="inline"><member>"1"</member><member>"yes"</member><member>"on"</member><member>"true"</member><member>"enable"</member><member>"enabled"</member></simplelist>, 1 for the negated values <simplelist type="inline"><member>"0"</member><member>"no"</member><member>"off"</member><member>"false"</member><member>"disable"</member><member>"disabled"</member></simplelist>.
 							For all other values it returns a value of 2 to indicate inappropriate usage.
 						</para>
-						<example>
+						<example id="ucr:true">
 							<title>Use of <command>is_ucr_true</command></title>
 							<programlisting><![CDATA[
 . /usr/share/univention-lib/ucr.sh
@@ -113,7 +118,7 @@ fi
 						<para>
 							Unset the &ucsUCRV; <varname>key</varname>.
 						</para>
-						<example>
+						<example id="ucr:unset">
 							<title>Use of <command>ucr unset</command></title>
 							<programlisting><![CDATA[
 ucr unset print/papersize variable/namme
@@ -136,7 +141,7 @@ ucr unset print/papersize variable/namme
 							Export some or all &ucsUCRV;s in a shell compatible manner as environment variables.
 							All shell-incompatible characters in variable names are substituted by underscores (<literal>_</literal>).
 						</para>
-						<example>
+						<example id="ucr:shell">
 							<title>Use of <command>ucr shell</command></title>
 							<programlisting><![CDATA[
 eval "$(ucr shell)"
@@ -173,7 +178,7 @@ esac
 				An instance of <classname>univention.config_registry.ConfigRegistry</classname> needs to be crated first.
 				After loading the current database state with <methodname>load()</methodname> the values can be accessed by using the instance like a Python dictionary:
 			</para>
-			<example>
+			<example id="ucr:python:read">
 				<title>Reading a &ucsUCRV; in Python</title>
 				<programlisting><![CDATA[
 from univention.config_registry import ConfigRegistry
@@ -188,7 +193,7 @@ print ucr.get('variable/name', '<not set>')
 				The former returns <literal>True</literal> for the values <simplelist type="inline"><member>"1"</member><member>"yes"</member><member>"on"</member><member>"true"</member><member>"enable"</member><member>"enabled"</member></simplelist>, while the later one returns <literal>True</literal> for the negated values <simplelist type="inline"><member>"0"</member><member>"no"</member><member>"off"</member><member>"false"</member><member>"disable"</member><member>"disabled"</member></simplelist>.
 				Both methods accept an optional argument <option>default</option>, which is returned as-is when the variable is not set.
 			</para>
-			<example>
+			<example id="ucr:python:bool">
 				<title>Reading boolean &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 if ucr.is_true('repository/online/unmaintained'):
@@ -205,7 +210,7 @@ if ucr.is_false('repository/online/unmaintained', True):
 				Modifying variables requires a different approach.
 				The function <function>ucr_update()</function> should be used to set and unset variables.
 			</para>
-			<example>
+			<example id="ucr:python:change">
 				<title>Changing &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 from univention.config_registry.frontend import ucr_update
@@ -229,7 +234,7 @@ ucr_update(ucr, {
 				Both functions expect an array of strings with the same syntax as used with the command line tool <command>ucr</command>.
 				As the functions <function>handler_set()</function> and <function>handler_unset()</function> don't automatically update any instance of <classname>ConfigRegistry</classname>, the method <methodname>load()</methodname> has to be called manually afterwards to reflect the updated values.
 			</para>
-			<example>
+			<example id="ucr:python:unset">
 				<title>Setting and unsetting &ucsUCRV;s in Python</title>
 				<programlisting><![CDATA[
 from univention.config_registry import handler_set, handler_unset
@@ -240,7 +245,8 @@ handler_unset(['foo', 'bar'])
 		</section>
 	</section>
 
-	<section><title>Configuration files</title>
+	<section id="ucr:conf">
+		<title>Configuration files</title>
 		<para>
 			Packages can use the <acronym>UCR</acronym> functionality to create customized configuration files themselves.
 			<acronym>UCR</acronym> <firstterm>diverts</firstterm> files shipped by Debian packages and replaces them by generated files.
@@ -263,7 +269,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>debian/<replaceable>package</replaceable>.univention-config-registry</term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename></term>
 				<listitem>
 					<simpara>
 						This mandatory information file describes the each template file.
@@ -273,7 +279,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>debian/<replaceable>package</replaceable>.univention-config-registry-variables</term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry-variables</filename></term>
 				<listitem>
 					<simpara>
 						This optional file can add descriptions to <acronym>UCR</acronym> variables, which should describe the use of the variable, its default and allowed values.
@@ -282,7 +288,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>debian/<replaceable>package</replaceable>.univention-config-registry-categories</term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry-categories</filename></term>
 				<listitem>
 					<simpara>
 						This optional file can add additional categories to group <acronym>UCR</acronym> variables.
@@ -291,7 +297,7 @@ handler_unset(['foo', 'bar'])
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>debian/<replaceable>package</replaceable>.univention-config-registry-services</term>
+				<term><filename>debian/<replaceable>package</replaceable>.univention-config-registry-services</filename></term>
 				<listitem>
 					<simpara>
 						This optional file is used to define long running services.
@@ -307,7 +313,7 @@ handler_unset(['foo', 'bar'])
 		</para>
 
 		<section id="ucr:info">
-			<title>debian/<replaceable>package</replaceable>.univention-config-registry
+			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Configuration files</secondary></indexterm>
 			</title>
 			<para>
@@ -588,7 +594,7 @@ def handler(config_registry, changes):
 		</section>
 
 		<section id="ucr:variables">
-			<title>debian/<replaceable>package</replaceable>.univention-config-registry-variables
+			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry-variables</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Descriptions</secondary></indexterm>
 			</title>
 			<para>
@@ -669,7 +675,7 @@ Categories=<category,...>]]></programlisting>
 		</section>
 
 		<section id="ucr:categories">
-			<title>debian/<replaceable>package</replaceable>.univention-config-registry-categories
+			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry-categories</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Categories</secondary></indexterm>
 			</title>
 			<para>
@@ -721,7 +727,7 @@ icon=<file-name>]]></programlisting>
 		</section>
 
 		<section id="ucr:services">
-			<title>debian/<replaceable>package</replaceable>.univention-config-registry-services
+			<title><filename>debian/<replaceable>package</replaceable>.univention-config-registry-services</filename>
 				<indexterm><primary>Config Registry</primary><secondary>Services</secondary></indexterm>
 			</title>
 			<para>
@@ -861,11 +867,11 @@ programs=<executable>]]></programlisting>
 # Warnung: Diese Datei wurde automatisch generiert und kann durch
 #          univention-config-registry überschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):
-# 
+#
 #       /etc/univention/templates/files/etc/hosts.d/00-base
 #       /etc/univention/templates/files/etc/hosts.d/20-static
 #       /etc/univention/templates/files/etc/hosts.d/90-ipv6defaults
-# 
+#
 					]]></screen>
 					<para>
 						It should be inserted once at the top to prevent the user from editing the generated file.
@@ -898,7 +904,7 @@ programs=<executable>]]></programlisting>
 			During package build time <command>univention-install-config-registry</command> needs to be called.
 			This should be done by overriding the <literal>dh_auto_install_target</literal> in <filename>debian/rules</filename>:
 		</para>
-		<programlisting><![CDATA[
+		<programlisting language="make"><![CDATA[
 override_dh_auto_install:
 	univention-install-config-registry
 	dh_auto_install
@@ -906,8 +912,8 @@ override_dh_auto_install:
 		<para>
 			This invocation copies the referenced files to the right location in the binary package staging area <filename>debian/<replaceable>package</replaceable>/etc/univention/</filename>.
 			Internally <command>univention-install-config-registry-info</command> and <command>univention-install-service-info</command> are invoked, which should not be called explicitly anymore.
-			The calls also insert code into the files <filename>debian/<replaceable>package</replaceable>.preinst.subst</filename>, <filename>debian/<replaceable>package</replaceable>.postinst.subst</filename> and <filename>debian/<replaceable>package</replaceable>.postrm.subst</filename> to register and un-register the templates.
-			Therefore it's important that customized maintainer scripts use the <literal>#DEBHELPER#</literal> marker, so that the generated code gets inserted into the corresponding <filename>preinst</filename>, <filename>postinst</filename> and <filename>postrm</filename> files of the generated binary package.
+			The calls also insert code into the files <filename>debian/<replaceable>package</replaceable>.preinst.debhelper</filename>, <filename>debian/<replaceable>package</replaceable>.postinst.debhelper</filename> and <filename>debian/<replaceable>package</replaceable>.prerm.debhelper</filename> to register and un-register the templates.
+			Therefore it's important that customized maintainer scripts use the <literal>#DEBHELPER#</literal> marker, so that the generated code gets inserted into the corresponding <filename>preinst</filename>, <filename>postinst</filename> and <filename>prerm</filename> files of the generated binary package.
 		</para>
 		<para>
 			The invocation also adds <package>univention-config</package> to <varname>misc:Depends</varname> to ensure that the package is available during package configuration time.

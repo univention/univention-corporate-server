@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="print::general">
 <title>Druckdienste</title>
 <section id="print-services:Einfuehrung">
@@ -25,12 +35,12 @@
 		festgehalten, ob ein Drucker farbig drucken kann, ob ein beidseitiger
 		Druck möglich ist, welche Papierschächte vorhanden sind, welche
 		Auflösungen unterstützt und welche Druckerbefehlssprachen unterstützt
-		werden (z.B. PCL oder Postscript).
+		werden (z.B. PCL oder PostScript).
 	</para>
 	<para>
 		Druckaufträge werden von CUPS mit Hilfe von Filtern in ein Format
 		umgewandelt, das der jeweilige Drucker interpretieren kann, also
-		z.B. in Postscript für einen Postscript-fähigen Drucker.
+		z.B. in PostScript für einen PostScript-fähigen Drucker.
 	</para>
 	<para>
 		UCS bringt eine Vielzahl von Filtern und PPD-Dateien direkt mit, so
@@ -85,7 +95,7 @@
   <para>
 	Die Konfiguration von CUPS als Druckserver erfolgt über Einstellungen aus dem
 	LDAP-Verzeichnisdienst und &ucsUCR;. Wird die &ucsUCRV; <envar>cups/include/local</envar> auf
-	<emphasis>true</emphasis> gesetzt, wird zusätzlich die Datei
+	<literal>true</literal> gesetzt, wird zusätzlich die Datei
 	<filename>/etc/cups/cupsd.local.conf</filename> eingebunden, in der beliebige weitere Optionen
 	hinterlegt werden können.
   </para>
@@ -113,7 +123,7 @@
 	</para>
 	<figure id="create-printershare">
 	<title>Anlegen einer Druckerfreigabe</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/create_printershare_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/create_printershare_de.png"/>
 	</figure>
 	<para>
 		Beim Hinzufügen, Entfernen oder Bearbeiten einer Druckerfreigabe wird der
@@ -160,7 +170,7 @@
 						</para>
 						<para>
 							Nur Domänencontroller und &ucsMember;, auf denen das
-							Paket <emphasis>univention-printserver</emphasis> installiert wurde, werden in
+							Paket <package>univention-printserver</package> installiert wurde, werden in
 							der Liste angezeigt.
 						</para>
 					</entry>
@@ -178,15 +188,15 @@
 						</para>
 						<itemizedlist>
 							<listitem>
-								<para><uri>parallel://<replaceable>&lt;devicedatei&gt;</replaceable></uri></para>
+								<para><uri>parallel://<replaceable>devicedatei</replaceable></uri></para>
 								<para>Beispiel: <uri>parallel://dev/lp0</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>socket://<replaceable>&lt;server&gt;</replaceable>:<replaceable>&lt;port&gt;</replaceable></uri></para>
+								<para><uri>socket://<replaceable>server</replaceable>:<replaceable>port</replaceable></uri></para>
 								<para>Beispiel: <uri>socket://printer_03:9100</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>usb://<replaceable>&lt;devicedatei&gt;</replaceable></uri></para>
+								<para><uri>usb://<replaceable>devicedatei</replaceable></uri></para>
 								<para>Beispiel: <uri>usb://dev/usb/lp0</uri></para>
 							</listitem>
 						</itemizedlist>
@@ -196,15 +206,15 @@
 						</para>
 						<itemizedlist>
 							<listitem>
-								<para><uri>http://<replaceable>&lt;server&gt;</replaceable>[:<replaceable>&lt;port&gt;</replaceable>]/<replaceable>&lt;pfad&gt;</replaceable></uri></para>
+								<para><uri>http://<replaceable>server</replaceable>[:<replaceable>port</replaceable>]/<replaceable>pfad</replaceable></uri></para>
 								<para>Beispiel: <uri>http://192.168.0.10:631/printers/remote</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>ipp://<replaceable>&lt;server&gt;</replaceable>/printers/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para><uri>ipp://<replaceable>server</replaceable>/printers/<replaceable>queue</replaceable></uri></para>
 								<para>Beispiel: <uri>ipp://printer_01/printers/kopierer</uri></para>
 							</listitem>
 							<listitem>
-								<para><uri>lpd://<replaceable>&lt;server&gt;</replaceable>/<replaceable>&lt;queue&gt;</replaceable></uri></para>
+								<para><uri>lpd://<replaceable>server</replaceable>/<replaceable>queue</replaceable></uri></para>
 								<para>Beispiel: <uri>lpd://10.200.18.30/bwdraft</uri></para>
 							</listitem>
 						</itemizedlist>
@@ -385,7 +395,7 @@
 	</para>
 	<figure id="printergroup">
 	<title>Konfiguration einer Druckergruppe</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/printer_group-de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/printer_group-de.png"/>
 	</figure>
 	<para>
 		Eine Druckergruppe muss mindestens einen Drucker als Mitglied
@@ -524,7 +534,7 @@
 	</para>
 	<figure id="printer-admin">
 	<title>Drucker-Administration</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc-printer_administration-de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/umc-printer_administration-de.png"/>
 	</figure>
 	<para>
 		Auf der Startseite des Moduls befindet sich eine Suchmaske, mit der die
@@ -560,7 +570,7 @@
 	Verzeichnis auf dem Druckserver ausgibt. Nach der Installation des Pakets sollte
 	<command>univention-run-join-scripts</command> aufgerufen werden.
   </para>
-  
+
   <para>
 	Beim Anlegen eines PDF-Druckers in der &ucsUMC; (siehe <xref linkend="print::shares"/>) muss als
 	Protokoll <guimenu>cups-pdf:/</guimenu> ausgewählt werden, das Ziel-Feld bleibt leer.
@@ -568,26 +578,26 @@
 
   <para>
 	Als <guimenu>Drucker-Hersteller</guimenu> muss <emphasis>PDF</emphasis> und als
-	<guimenu>Drucker-Modell</guimenu> <emphasis>Generic CUPS-PDF Printer</emphasis> ausgewählt
+	<guimenu>Drucker-Modell</guimenu> <guimenuitem>Generic CUPS-PDF Printer</guimenuitem> ausgewählt
 	werden.
   </para>
 
   <para>
 	Das Zielverzeichnis für die generierten PDF-Dokumente wird über die &ucsUCRV;
 	<envar>cups/cups-pdf/directory</envar> festgelegt. Standardmäßig wird es auf
-	<filename>/var/spool/cups-pdf/%U</filename> gesetzt, so dass <emphasis>cups-pdf</emphasis> für
+	<filename>/var/spool/cups-pdf/%U</filename> gesetzt, so dass <application>cups-pdf</application> für
 	jeden Benutzer ein eigenes Verzeichnis verwendet.
   </para>
-  
+
   <para>
 	Anonym eingegangene Druckaufträge werden in das durch die &ucsUCRV;
 	<envar>cups/cups-pdf/anonymous</envar> vorgegebene Verzeichnis ausgegeben (Standardeinstellung:
-	<filename>/var/spool/cups-pdf</filename>).
+	<filename class="directory">/var/spool/cups-pdf/</filename>).
   </para>
 
   <para>
 	In der Grundeinstellung werden die generierten PDF-Dokumente unbegrenzt aufbewahrt. Wird die
-	&ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> auf <emphasis>true</emphasis> gesetzt
+	&ucsUCRV; <envar>cups/cups-pdf/cleanup/enabled</envar> auf <literal>true</literal> gesetzt
 	werden alte PDF-Druckaufträge über einen Cron-Job gelöscht. Die Aufbewahrungszeit in Tagen kann
 	mit der &ucsUCRV; <envar>cups/cups-pdf/cleanup/keep</envar> konfiguriert werden.
   </para>
@@ -608,7 +618,7 @@
 	betrieben. Der Netzwerkdrucker kann auf Windows-Seite alternativ mit einem
 	Standard-PostScript-Druckertreiber eingerichtet werden. Wenn auf einen Farbdrucker zugegriffen
 	werden soll, sollte auf Windows-Seite ein Treiber für einen PostScript-fähigen Farbdrucker
-	verwendet werden, z.B. HP Color Laserjet 8550.
+	verwendet werden, z.B. <wordasword>HP Color LaserJet 8550</wordasword>.
   </para>
 
   <caution>
@@ -637,7 +647,7 @@
 		Zuerst müssen die Druckertreiber von der Webseite des Herstellers heruntergeladen
 		werden. Wird eine Umgebung verwendet, in der die 64 Bit-Versionen von Windows
 		eingesetzt werden, müssen die Treiber unbedingt in beiden Versionen bezogen werden (32 und 64 Bit).
-		Benötigt werden die INF-Dateien.
+		Benötigt werden die <filename class="extension">INF</filename>-Dateien.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -659,7 +669,7 @@
 	  </simpara></listitem> 
 
  	  <listitem><simpara>
-		Nach diesen Schritten sind die Treiber auf dem Druckserver im Verzeichnis <filename>/var/lib/samba/drivers</filename> gespeichert.
+		Nach diesen Schritten sind die Treiber auf dem UCS Druckserver im Verzeichnis <filename class="directory">/var/lib/samba/drivers/</filename> gespeichert.
  	  </simpara></listitem>
 
 	</orderedlist>
@@ -684,7 +694,7 @@
 
 		<figure>
 		  <title>Fehlermeldung beim ersten Zugriff</title>
-		  <graphic scalefit="1" width="40%" fileref="illustrations/windows-printerdriver-de.png"/>
+		  <graphic scalefit="1" width="40%" fileref="illustrations33/windows-printerdriver-de.png"/>
 		</figure>
 	  </simpara></listitem>
 
@@ -725,19 +735,19 @@
 		festgehalten, ob ein Drucker farbig drucken kann, ob ein beidseitiger
 		Druck möglich ist, welche Papierschächte vorhanden sind, welche
 		Auflösungen unterstützt und welche Druckerbefehlssprachen unterstützt
-		werden (z.B. PCL oder Postscript).
+		werden (z.B. PCL oder PostScript).
 	</para>
 	<para>
 		Neben den bereits im Standardumfang enthaltenen PPD-Dateien können
 		weitere über die &ucsUMC; hinzugefügt werden. Die PPD wird in der
 		Regel vom Hersteller des Druckers bereitgestellt und muss auf den
-		Druckservern in das Verzeichnis <filename>/usr/share/ppd</filename> kopiert werden.
+		Druckservern in das Verzeichnis <filename class="directory">/usr/share/ppd/</filename> kopiert werden.
 	</para>
 	<para>
 		Die Druckertreiberlisten werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
 		der &ucsUMC; verwaltet. Dort muss in den
-		Container <emphasis>univention</emphasis> und dort in den
-		Untercontainer <emphasis>cups</emphasis> gewechselt werden. Für die meisten
+		Container <uri>univention</uri> und dort in den
+		Untercontainer <uri>cups</uri> gewechselt werden. Für die meisten
 		Druckerhersteller existieren bereits Druckertreiberlisten. Diese
 		können ergänzt werden oder eine neue hinzugefügt werden.
 	</para>
@@ -765,10 +775,10 @@
 					<entry>Treiber</entry>
 					<entry>
 						Der Pfad zur PPD-Datei, relativ zu dem Verzeichnis
-						<filename>/usr/share/ppd/</filename>. Soll beispielweise die Datei
+						<filename class="directory">/usr/share/ppd/</filename>. Soll beispielweise die Datei
 						<filename>/usr/share/ppd/laserjet.ppd</filename> verwendet werden, so ist
-						hier <emphasis>laserjet.ppd</emphasis> einzutragen. Es können auch gzip-komprimierte
-						Dateien (Dateiendung .gz) angegeben werden.
+						hier <filename>laserjet.ppd</filename> einzutragen. Es können auch <command>gzip</command>-komprimierte
+						Dateien (Dateiendung <filename class="extension">.gz</filename>) angegeben werden.
 					</entry>
 				</row>
 				<row>
@@ -784,3 +794,4 @@
 	</table>
 </section>
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=0 noet ft=docbk:-->

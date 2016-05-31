@@ -1,6 +1,15 @@
-<chapter>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	<!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+	%extensions;
+	%entities;
+]>
+<chapter id='intro'>
   <title>Introduction</title>
-  <section>
+  <section id='plan'>
 	<title>Planning</title>
 	<para>
 	  There are various approaches for the deployment of &ucsUCS;:

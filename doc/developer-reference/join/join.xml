@@ -1,6 +1,11 @@
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
 	%entities;
 ]>
 <chapter id="chap:join">
@@ -28,6 +33,7 @@
 			The name of each join script is normally derived from the name of the binary package containing it.
 			It is prefixed with a two-digit number, which is used to order the scripts lexicographically.
 			The filename either ends in <filename class="extension">.inst</filename> or <filename class="extension">.uinst</filename>, which distinguishes between join script and unjoin script (see <xref linkend="join:unjoin"/>).
+			The file must have the executable permission bits set.
 		</para>
 	</section>
 
@@ -37,7 +43,7 @@
 		</title>
 		<para>
 			For each join script a version number is tracked.
-			This is used to skip re-executing join scrips, which already have been executed.
+			This is used to skip re-executing join scripts, which already have been executed.
 			This is mostly a performance optimization, but is also used to find join scripts which need to be run.
 		</para>
 		<para>
@@ -196,7 +202,7 @@
 							Both packages providing them must be added as additional runtime dependencies.
 						</para>
 						<para>
-							The unjoin functions were added to UCS 3.1-0 only as <ulink url="http://errata.univention.de/ucs/3.1/80.html">erratum update 81</ulink>.
+							The unjoin functions were added to UCS 3.1-0 only as <ulink url="https://errata.software-univention.de/ucs/3.1/80.html">erratum update 81</ulink>.
 							Because of this the minimum versions must be specified explicitly.
 						</para>
 						<programlisting language="debcontrol"><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="join-template/debian/control" parse="text"/></programlisting>
@@ -516,7 +522,7 @@ VERSION="3"
 								Registers the additional service <option>servicename</option> in the LDAP object representing the local host.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</para>
-							<example>
+							<example id="join:addService">
 								<title>Service registration in join script</title>
 							<programlisting language="sh">
 ucs_addServiceToLocalhost "MyService" "$@"
@@ -535,7 +541,7 @@ ucs_addServiceToLocalhost "MyService" "$@"
 								Removes the service <option>servicename</option> from the LDAP object representing the local host, effectively reverting an <command>ucs_addServiceToLocalhost</command> call.
 								The optional LDAP credentials <option>bind-dn</option> and <option>bind-password</option> are passed on as-is.
 							</para>
-							<example>
+							<example id="join:removeService">
 								<title>Service unregistration in unjoin script</title>
 							<programlisting language="sh">
 ucs_removeServiceFromLocalhost "MyService" "$@"
@@ -553,7 +559,7 @@ ucs_removeServiceFromLocalhost "MyService" "$@"
 							<para>
 								Returns <literal>0</literal> if no LDAP host object exists where the service <option>servicename</option> is registered with.
 							</para>
-							<example>
+							<example id="join:unusedService">
 								<title>Check for unused service in unjoin script</title>
 							<programlisting language="sh">
 if ucs_isServiceUnused "MyService" "$@"
@@ -637,7 +643,7 @@ fi
 							</variablelist>
 							<para>
 								The modes can be combined.
-								If more than one mode is used in one call of the function, the modes are always processed in the order as listed abobe.
+								If more than one mode is used in one call of the function, the modes are always processed in the order as listed above.
 								Each of these options expects a filename as an required argument.
 							</para>
 							<para>
@@ -665,7 +671,7 @@ fi
 									<term><option>--icon</option> <filename><replaceable>filename</replaceable></filename></term>
 									<listitem>
 										<para>
-											The option can be used to supply icon files (png or jpeg, in 16x16 or 50x50, or svgz).
+											The option can be used to supply icon files (<filename class="extension">png</filename> or <filename class="extension">jpeg</filename>, in 16×16 or 50×50, or <filename class="extension">svgz</filename>).
 										</para>
 									</listitem>
 								</varlistentry>
@@ -676,7 +682,7 @@ fi
 								required for the creation of the corresponding object. After creation of the object the function waits
 								up to 3 minutes for the &ucsMaster; to signal availability of the new extension and reports success or failure.
 								For UDM extensions it additionally checks that the corresponding file has been made available in the local filesystem.
-								Failure conditions may occurr e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
+								Failure conditions may occur e.g. in case the new <acronym>LDAP</acronym> schema extension collides with the schema currently active.
 								The &ucsMaster; only activates a new <acronym>LDAP</acronym> schema or ACL extension if the configuration check succeeded.
 							</para>
 							<note>
@@ -706,7 +712,7 @@ fi
 								in the <acronym>LDAP</acronym> directory which make use of it.
 							</para>
 
-							<example>
+							<example id="join:registerExtensions">
 								<title>Extension registration in join script</title>
 							<programlisting language="sh">
 export UNIVENTION_APP_IDENTIFIER="appID-appVersion"	## example
@@ -747,9 +753,9 @@ ucs_registerLDAPExtension "$@" \
 						</cmdsynopsis></term>
 						<listitem>
 							<para>
-								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it schould generally not be called in unjoin scripts.
+								There is a corresponding <command>ucs_unregisterLDAPExtension</command> function, which can be used to unregister extension objects. This only works if no App is registered any longer for the object. It must not be called unless it has been verified that no object in <acronym>LDAP</acronym>  still requires this schema extension. For this reason it should generally not be called in unjoin scripts.
 							</para>
-							<example>
+							<example id="join:unregisterExtensions">
 								<title>Schema unregistration in unjoin script</title>
 							<programlisting language="sh">
 . /usr/share/univention-lib/ldap.sh

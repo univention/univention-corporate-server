@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="shares::general">
   <title>Freigaben-Verwaltung</title>
   <para>
@@ -20,10 +30,10 @@
 
   <para>
 	Um auf einer Freigabe Access Control Lists einzusetzen, muss das unterliegende Linux-Dateisystem
-	POSIX-ACLs unterstützen. In UCS unterstützen die Dateisysteme ext3, ext4 und XFS POSIX-ACLs. Die
+	POSIX-ACLs unterstützen. In UCS unterstützen die Dateisysteme <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">XFS</systemitem> POSIX-ACLs. Die
 	Samba-Konfiguration erlaubt außerdem die Speicherung von DOS-Datei-Attributen in erweiterten
 	Attributen des Unix-Dateisystems. Um erweiterte Attribute zu nutzen, muss die Partition mit der
-	Mount-Option <emphasis>user_xattr</emphasis> eingebunden werden.
+	Mount-Option <option>user_xattr</option> eingebunden werden.
   </para>
 
   <section id="shares::permissions"><title>Zugriffsrechte auf Daten in Freigaben</title>
@@ -63,11 +73,10 @@
 
   <para>
 	Mit Access Control Lists sind noch mächtigere Berechtigungsmodelle
-	möglich. Die Konfiguration von ACLs ist in der Univention SDB
-	beschrieben <biblioref linkend="sdb-acls"/>.
+	möglich. Die Konfiguration von ACLs ist in <u:sdb>1042</u:sdb> beschrieben.
   </para>
   <para>
-	Im Unix-Berechtigungsmodell - und somit unter UCS - reicht das Schreibreicht
+	Im Unix-Berechtigungsmodell - und somit unter UCS - reicht das Schreibrecht
 	auf eine Datei nicht aus, um die Berechtigungen einer Datei zu verändern. Dies
 	bleibt den Besitzern/der Besitzergruppe einer Datei vorbehalten.
 	Unter Microsoft Windows hingegen verfügen alle Benutzer mit Schreibrechten
@@ -116,8 +125,8 @@ Datei <filename>/etc/exports</filename>, bzw. in die Samba-Konfigurationsdatei
 eingetragen/modifiziert oder entfernt.
 </para>
 
-<figure><title>Anlegen einer Freigabe in UMC</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/projekt-freigabe_DE.png"/>
+<figure id="shares:create"><title>Anlegen einer Freigabe in UMC</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations33/projekt-freigabe_DE.png"/>
 </figure>
 
 <table>
@@ -163,12 +172,12 @@ eingetragen/modifiziert oder entfernt.
 		  </para>
 
 		  <para>
-			Ist die &ucsUCRV; <envar>listener/shares/rename</envar> auf <emphasis>yes</emphasis> gesetzt, wird
-			bei der Änderung des Pfads der Inhalt eines bestehenden Verzeichnises verschoben.
+			Ist die &ucsUCRV; <envar>listener/shares/rename</envar> auf <literal>yes</literal> gesetzt, wird
+			bei der Änderung des Pfads der Inhalt eines bestehenden Verzeichnisses verschoben.
 		  </para>
 		  <para>
-			Auf und unterhalb von <filename>/proc</filename>, <filename>/tmp</filename>, <filename>/root</filename>, <filename>/dev</filename>
-			und <filename>/sys</filename> können keine Freigaben angelegt oder dorthin
+			Auf und unterhalb von <filename class="directory">/proc</filename>, <filename class="directory">/tmp</filename>, <filename class="directory">/root</filename>, <filename class="directory">/dev</filename>
+			und <filename class="directory">/sys</filename> können keine Freigaben angelegt oder dorthin
 			verschoben werden.
 		  </para>
 		</entry>
@@ -181,7 +190,7 @@ eingetragen/modifiziert oder entfernt.
 		  <xref linkend="shares::permissions"/>.
 		</entry>
 	  </row>
-	  
+	
 	  <row>
 		<entry>Besitzergruppe für das Wurzelverzeichnis der Freigabe</entry>
 		<entry>
@@ -197,7 +206,7 @@ eingetragen/modifiziert oder entfernt.
 		  siehe <xref linkend="shares::permissions"/>.
 		</entry>
 	  </row>
-	  
+	
 	</tbody>
   </tgroup>
 </table>
@@ -222,12 +231,12 @@ eingetragen/modifiziert oder entfernt.
 		  Freigabe nur lesend verwendet werden.
 		</entry>
 	  </row>
-	  
+	
 	  <row>
 		<entry>Subtree-Überprüfung</entry>
 		<entry>
 		  Wird nur ein Unterverzeichnis eines Dateisystems exportiert, muss der
-		  NFS-Server bei jedem Zugriff überprüfen, ob die zugriffene Datei auf dem
+		  NFS-Server bei jedem Zugriff überprüfen, ob die zugegriffene Datei auf dem
 		  exportierten Dateisystem und in dem exportierten Pfad liegt. Für diese Prüfung
 		  werden Pfad-Informationen an den Client übergeben. Die Aktivierung dieser
 		  Funktion kann zu Problemen führen, wenn eine auf dem Client geöffnete Datei
@@ -246,8 +255,8 @@ eingetragen/modifiziert oder entfernt.
 		  </para>
 
 		  <para>
-			Die standardmäßig leere lokale Gruppe <emphasis>staff</emphasis> verfügt über Privilegien, die
-			<emphasis>root</emphasis>-Rechten recht nahe kommen, wird aber vom Umlenkungs-Mechanismus
+			Die standardmäßig leere lokale Gruppe <systemitem class="groupname">staff</systemitem> verfügt über Privilegien, die
+			<systemitem class="username">root</systemitem>-Rechten recht nahe kommen, wird aber vom Umlenkungs-Mechanismus
 			nicht berücksichtigt. Dies sollte bei der Aufnahme von Nutzern in diese Gruppe
 			berücksichtigt werden!
 		  </para>
@@ -257,14 +266,14 @@ eingetragen/modifiziert oder entfernt.
 	  <row>
 		<entry>NFS-Synchronisation</entry>
 		<entry>
-		  Der Synchronisations-Modus für die Freigabe. Mit der Einstellung <emphasis>sync</emphasis>
+		  Der Synchronisations-Modus für die Freigabe. Mit der Einstellung <option>sync</option>
 		  werden Daten direkt auf das unterliegende Speichermedium geschrieben. Die
-		  gegenteilige Einstellung - <emphasis>async</emphasis> - kann die Performance verbessern,
+		  gegenteilige Einstellung - <option>async</option> - kann die Performance verbessern,
 		  birgt aber auch das Risiko von Datenverlusten wenn der Server ohne
 		  kontrolliertes Herunterfahren abgeschaltet wird.
 		</entry>
 	  </row>
-	  
+	
 	  <row>
 		<entry>Zugriff nur für diese Rechner, IP-Adressen oder Netze erlauben</entry>
 		<entry>
@@ -323,7 +332,7 @@ eingetragen/modifiziert oder entfernt.
 		<entry>Anonymen Nur-Lese-Zugriff mit Gastbenutzer erlauben</entry>
 		<entry>
 		  Erlaubt den Zugriff auf diese Freigabe ohne Passwortabfrage. Alle Zugriffe
-		  werden dabei über einen gemeinsamen Gast-Nutzer <emphasis>nobody</emphasis> durchgeführt.
+		  werden dabei über einen gemeinsamen Gast-Nutzer <systemitem class="username">nobody</systemitem> durchgeführt.
 		</entry>
 	  </row>
 
@@ -380,8 +389,8 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 	</thead>
 	<tbody>
-	  
-	  
+
+
 	  <row>
 		<entry>Erzwungener Benutzer</entry>
 		<entry>
@@ -481,7 +490,7 @@ eingetragen/modifiziert oder entfernt.
 		  Namen von Rechnern, die auf diese Samba-Freigabe zugreifen dürfen. Allen
 		  anderen Rechnern wird der Zugriff verweigert.
 		  Neben Rechnernamen können auch IP- oder Netzwerkadressen angegeben werden, bspw.
-		  <command>192.168.0.0/255.255.255.0</command>.
+		  <userinput>192.168.0.0/255.255.255.0</userinput>.
 		</entry>
 	  </row>
 
@@ -517,7 +526,7 @@ eingetragen/modifiziert oder entfernt.
 		  (Access Control List) des Verzeichnisses, in dem sie angelegt wird.
 		</entry>
 	  </row>
-	  
+
 	  <row>
 		<entry>Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten Verzeichnisses</entry>
 		<entry>
@@ -535,7 +544,7 @@ eingetragen/modifiziert oder entfernt.
 		  übergeordneten Verzeichnisses übernommen.
 		</entry>
 	  </row>
-	  
+
 	</tbody>
   </tgroup>
 </table>
@@ -1010,19 +1019,19 @@ angezeigt, andernfalls werden diese ausgeblendet.
 </para>
 <para>
 Um die Funktionen eines verteilten Dateisystem nutzen zu können, muss auf dem
-Fileserver die &ucsUCRV; <envar>samba/enable-msdfs</envar> auf <emphasis>yes</emphasis> gesetzt
+Fileserver die &ucsUCRV; <envar>samba/enable-msdfs</envar> auf <literal>yes</literal> gesetzt
 werden. Anschließend muss der Samba-Dienst neu gestartet werden.
 </para>
 <para>
-Um einen Verweis mit dem Namen <emphasis>zufb</emphasis> von Server <emphasis>sa</emphasis> in der Freigabe <emphasis>fa</emphasis> auf die
-Freigabe <emphasis>fb</emphasis> des Servers <emphasis>sb</emphasis> anzulegen muss im Ordner <emphasis>fa</emphasis>
+Um einen Verweis mit dem Namen <filename class="symlink">zufb</filename> von Server <systemitem class="server">sa</systemitem> in der Freigabe <filename class="directory">fa</filename> auf die
+Freigabe <filename class="directory">fb</filename> des Servers <systemitem class="server">sb</systemitem> anzulegen muss im Ordner <filename class="directory">fa</filename>
 folgender Befehl ausgeführt werden.
 </para>
 <programlisting language="sh">
 ln -s msdfs:sb\\fb zufb
 </programlisting>
 <para>
-Dieser Verweis wird in jedem MSDFS fähigem Client (z.B. Windows 2000 und XP) als
+Dieser Verweis wird in jedem <acronym>MSDFS</acronym> fähigem Client (z.B. <systemitem class="osname">Windows 2000</systemitem> und <systemitem class="osname">Windows XP</systemitem>) als
 regulärer Ordner angezeigt.
 </para>
 <caution>
@@ -1083,7 +1092,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
   </para>
 
   <para>
-	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen ext2, ext3, ext4 und xfs
+	Dateisystem-Quota können nur auf Partitionen mit den Dateisystemen <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> und <systemitem class="filesystem">xfs</systemitem>
 	angelegt werden. Bevor Dateisystem-Quota konfiguriert werden, muss der Quota-Support pro
 	Partition aktiviert werden, siehe <xref linkend="shares::quota::umc"/>.
   </para>
@@ -1096,9 +1105,9 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	  einem Mount Point eingebunden sind.
 	</para>
 
-	<figure>
+	<figure id="shares:quota">
 	  <title>Aktivierung von Quota</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/quota-overview-en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/quota-overview-en.png"/>
 	</figure>
 
 	<para>
@@ -1139,7 +1148,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 	<para>
 	  Über eine Freigabe-Richtlinie gesetzte Quotaeinstellungen werden standardmäßig nur einmal
 	  ausgewertet und auf das Dateisystem angewendet. Sollte sich die Einstellung ändern, wird
-	  dies nicht automatisch bei der nächsten Anmeldung des Benutzers angewendet. Um geänderte 
+	  dies nicht automatisch bei der nächsten Anmeldung des Benutzers angewendet. Um geänderte
 	  Quota-Werte zu übernehmen, kann an der Freigabe-Richtlinie der Punkt <emphasis>Einstellungen
 	  bei jedem Login anwenden</emphasis> aktiviert werden.
 	</para>
@@ -1154,7 +1163,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 		Dateisystem-Quotas können immer nur auf vollständige Partitionen angewendet werden.
 		Auch wenn die Richtlinien für Freigaben definiert werden, werden sie auf vollständige
 		Partitionen angewendet. Wenn also beispielsweise auf einem Server drei Freigaben
-		bereitgestellt werden, die alle auf der separaten <filename>/var</filename>-Partition abgelegt werden und werden
+		bereitgestellt werden, die alle auf der separaten <filename class="directory">/var/</filename>-Partition abgelegt werden und werden
 		drei verschiedene Richtlinien konfiguriert und angewendet, so gilt die restriktivste
 		Einstellung für die komplette Partition. Wenn unterschiedliche Quota verwendet werden
 		sollen, wird empfohlen die Daten auf individuelle Partitionen zu verteilen.
@@ -1172,7 +1181,7 @@ Weitere Informationen dazu befinden sich in der Samba Dokumentation
 
 	<para>
 	  Wenn keine Quota eingesetzt werden soll, kann die Auswertung durch Setzen der &ucsUCRV;
-	  <envar>quota/userdefault</envar> auf <emphasis>no</emphasis> deaktiviert werden.
+	  <envar>quota/userdefault</envar> auf <literal>no</literal> deaktiviert werden.
 	</para>
 
 	<para>

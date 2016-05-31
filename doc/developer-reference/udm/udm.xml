@@ -1,6 +1,11 @@
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
 	%entities;
 ]>
 <chapter id="chap:udm">
@@ -17,7 +22,8 @@
 		Modifying entries is slightly complicated, as there are no high-level operations to add or remove values from multi-valued attributes, or to keep the password used by different authentication schemes such as Windows <acronym>NTLM</acronym>-hashes, UNIX <acronym>MD5</acronym> hashes, or Kerberos tickets in sync.
 	</para>
 
-	<section><title>Introduction</title>
+	<section id="udm:intro">
+		<title>Introduction</title>
 		<para>
 			The command line client <command>udm</command> provides different modes of operation.
 			<cmdsynopsis>
@@ -155,12 +161,12 @@ udm container/ou delete --dn "cn=xxx,$ldap_base"
 		</para>
 		<para>
 			An Extended Attribute is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
-			The module is called <literal>settings/extended_attribute</literal>.
+			The module is called <classname>settings/extended_attribute</classname>.
 			Extended Attributes can be stored anywhere in the <acronym>LDAP</acronym>, but the default location would be <literal>cn=custom attributes,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The module <literal>settings/extended_attribute</literal> requires many parameters.
+			The module <classname>settings/extended_attribute</classname> requires many parameters.
 			They are described in <olink targetdoc="ucs-3.3-0" targetptr="central:extendedattrs"/>.
 		</para>
 		<variablelist>
@@ -470,7 +476,7 @@ class StaticSelection(select):
 					For performance reason it is recommended to implement a class derived from <classname>UDM_Attribute</classname> or <classname>UDM_Objects</classname> instead of using <classname>LDAP_Search</classname>.
 					The file <filename>/usr/share/pyshared/univention/admin/syntax.py</filename> contains several examples.
 				</para>
-				<example>
+				<example id="udm:ea:select:dynamic:example">
 					<title>Dynamic selection list for Extended Attributes</title>
 					<para>
 						The idea is to create a container with sub-entries for each selection.
@@ -582,12 +588,12 @@ udm settings/extended_attribute create --position "cn=custom attributes,$base" \
 			</para>
 			<para>
 				Similar to Extended Attributes an Extended Option is created by using the <acronym>UDM</acronym> command line interface <command>univention-directory-manager</command> or its alias <command>udm</command>.
-				The module is called <literal>settings/extended_options</literal>.
+				The module is called <classname>settings/extended_options</classname>.
 				Extended Options can be stored anywhere in the <acronym>LDAP</acronym>, but the default location would be <literal>cn=custom attributes,cn=univention,</literal> below the <acronym>LDAP</acronym> base.
 				Since the join script creating the option may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 			</para>
 			<para>
-				The module <literal>settings/extended_options</literal> has the following properties:
+				The module <classname>settings/extended_options</classname> has the following properties:
 			</para>
 			<variablelist>
 				<varlistentry><term><literal>name</literal> (required)</term>
@@ -890,15 +896,15 @@ udm settings/extended_attribute modify \
 		</para>
 		<variablelist>
 			<varlistentry>
-				<term>string</term>
-				<term>string64</term>
-				<term>OneThirdString</term>
-				<term>HalfString</term>
-				<term>TwoThirdsString</term>
-				<term>FourThirdsString</term>
-				<term>OneAndAHalfString</term>
-				<term>FiveThirdsString</term>
-				<term>TextArea</term>
+				<term><classname>string</classname></term>
+				<term><classname>string64</classname></term>
+				<term><classname>OneThirdString</classname></term>
+				<term><classname>HalfString</classname></term>
+				<term><classname>TwoThirdsString</classname></term>
+				<term><classname>FourThirdsString</classname></term>
+				<term><classname>OneAndAHalfString</classname></term>
+				<term><classname>FiveThirdsString</classname></term>
+				<term><classname>TextArea</classname></term>
 				<listitem>
 					<simpara>
 						Different string classes, which are mapped in &ucsUMC; to text input widgets with different widths and heights.
@@ -906,9 +912,9 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>string_numbers_letters_dots</term>
-				<term>string_numbers_letters_dots_spaces</term>
-				<term>IA5string</term>
+				<term><classname>string_numbers_letters_dots</classname></term>
+				<term><classname>string_numbers_letters_dots_spaces</classname></term>
+				<term><classname>IA5string</classname></term>
 				<term>...</term>
 				<listitem>
 					<simpara>
@@ -917,16 +923,16 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Upload</term>
-				<term>Base64Upload</term>
-				<term>jpegPhoto</term>
+				<term><classname>Upload</classname></term>
+				<term><classname>Base64Upload</classname></term>
+				<term><classname>jpegPhoto</classname></term>
 				<listitem>
 					<simpara>
 						Binary data.
 					</simpara>
 				</listitem>
 			</varlistentry>
-			<varlistentry><term>integer</term>
+			<varlistentry><term><classname>integer</classname></term>
 				<listitem>
 					<simpara>
 						Positive integers.
@@ -934,11 +940,11 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>boolean</term>
-				<term>booleanNone</term>
-				<term>TrueFalse</term>
-				<term>TrueFalseUpper</term>
-				<term>TrueFalseUp</term>
+				<term><classname>boolean</classname></term>
+				<term><classname>booleanNone</classname></term>
+				<term><classname>TrueFalse</classname></term>
+				<term><classname>TrueFalseUpper</classname></term>
+				<term><classname>TrueFalseUp</classname></term>
 				<listitem>
 					<simpara>
 						Different boolean types which map to <literal>yes</literal> and <literal>no</literal> or <literal>true</literal> and <literal>false</literal>.
@@ -946,16 +952,16 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>hostName</term>
-				<term>DNS_Name</term>
-				<term>windowsHostName</term>
-				<term>ipv4Address</term>
-				<term>ipAddress</term>
-				<term>hostOrIP</term>
-				<term>v4netmask</term>
-				<term>netmask</term>
-				<term>IPv4_AddressRange</term>
-				<term>IP_AddressRange</term>
+				<term><classname>hostName</classname></term>
+				<term><classname>DNS_Name</classname></term>
+				<term><classname>windowsHostName</classname></term>
+				<term><classname>ipv4Address</classname></term>
+				<term><classname>ipAddress</classname></term>
+				<term><classname>hostOrIP</classname></term>
+				<term><classname>v4netmask</classname></term>
+				<term><classname>netmask</classname></term>
+				<term><classname>IPv4_AddressRange</classname></term>
+				<term><classname>IP_AddressRange</classname></term>
 				<term>...</term>
 				<listitem>
 					<simpara>
@@ -964,10 +970,10 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>unixTime</term>
-				<term>TimeString</term>
-				<term>iso8601Date</term>
-				<term>date</term>
+				<term><classname>unixTime</classname></term>
+				<term><classname>TimeString</classname></term>
+				<term><classname>iso8601Date</classname></term>
+				<term><classname>date</classname></term>
 				<listitem>
 					<simpara>
 						Date and time.
@@ -975,13 +981,13 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>GroupDN</term>
-				<term>UserDN</term>
-				<term>UserID</term>
-				<term>HostDN</term>
-				<term>DomainController</term>
-				<term>Windows_Server</term>
-				<term>UCS_Server</term>
+				<term><classname>GroupDN</classname></term>
+				<term><classname>UserDN</classname></term>
+				<term><classname>UserID</classname></term>
+				<term><classname>HostDN</classname></term>
+				<term><classname>DomainController</classname></term>
+				<term><classname>Windows_Server</classname></term>
+				<term><classname>UCS_Server</classname></term>
 				<term>...</term>
 				<listitem>
 					<simpara>
@@ -990,9 +996,9 @@ udm settings/extended_attribute modify \
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>LDAP_Search</term>
-				<term>UDM_Objects</term>
-				<term>UDM_Attribute</term>
+				<term><classname>LDAP_Search</classname></term>
+				<term><classname>UDM_Objects</classname></term>
+				<term><classname>UDM_Attribute</classname></term>
 				<listitem>
 					<simpara>
 						These syntaxes do an <acronym>LDAP</acronym> search and display the result as a list.
@@ -1011,7 +1017,7 @@ udm settings/extended_attribute modify \
 				<indexterm><primary>Directory Manager</primary><secondary>Syntax override</secondary></indexterm>
 			</title>
 			<para>
-				Sometimes the pre-defined syntax is inappropriate in some scenarios.
+				Sometimes the predefined syntax is inappropriate in some scenarios.
 				This can be because of performance problems with <acronym>LDAP</acronym> searches or the need for more restrictive or lenient value checking.
 				The latter case might require a change to the <acronym>LDAP</acronym> schema, since <command>slapd</command> also checks the provided values for correctness.
 			</para>
@@ -1254,7 +1260,7 @@ class MyServers(UDM_Objects):
 								<term><firstterm>UDM API</firstterm></term>
 								<listitem>
 									<simpara>
-										By creating a <acronym>UDM</acronym> object in <acronym>LDAP</acronym> using the module <literal>settings/syntax</literal>.
+										By creating a <acronym>UDM</acronym> object in <acronym>LDAP</acronym> using the module <classname>settings/syntax</classname>.
 									</simpara>
 								</listitem>
 							</varlistentry>
@@ -1420,7 +1426,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		<para>
 			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> hook in the UCS domain
 			from any system in the domain. For this purpose, a UDM hook can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <literal>settings/udm_hook</literal>. As these objects are replicated throughout the
+			The module responsible for this type of objects is called <classname>settings/udm_hook</classname>. As these objects are replicated throughout the
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
@@ -1430,7 +1436,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The module <literal>settings/udm_hook</literal> requires several parameters.
+			The module <classname>settings/udm_hook</classname> requires several parameters.
 			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
 		<variablelist>
@@ -1506,7 +1512,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		<para>
 			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> module in the UCS domain
 			from any system in the domain. For this purpose, a UDM module can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <literal>settings/udm_module</literal>. As these objects are replicated throughout the
+			The module responsible for this type of objects is called <classname>settings/udm_module</classname>. As these objects are replicated throughout the
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
@@ -1516,14 +1522,14 @@ udm settings/syntax create "$@" --ignore_exists \
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The module <literal>settings/udm_module</literal> requires several parameters.
+			The module <classname>settings/udm_module</classname> requires several parameters.
 			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
 		<variablelist>
 			<varlistentry><term><literal>name</literal> (required)</term>
 				<listitem>
 					<simpara>
-						Name of the UDM module, e.g. <literal>newapp/someobject</literal>.
+						Name of the UDM module, e.g. <classname>newapp/someobject</classname>.
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1544,7 +1550,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>messagecatalog</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Multivalued property to supply message translation files (syntax: &lt;language tag&gt; &lt;Base64 encoded GNU message catalog&gt;).
+						Multivalued property to supply message translation files (syntax: &lt;language tag&gt; &lt;base64 encoded GNU message catalog&gt;).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1558,7 +1564,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			<varlistentry><term><literal>icon</literal> (optional)</term>
 				<listitem>
 					<simpara>
-						Multivalued property to supply icons for the Univention Management Console (base64 encoded png, jpeg or svgz).
+						Multivalued property to supply icons for the Univention Management Console (base64 encoded <filename class="extension">png</filename>, <filename class="extension">jpeg</filename> or <filename class="extension">svgz</filename>).
 					</simpara>
 				</listitem>
 			</varlistentry>
@@ -1613,7 +1619,7 @@ udm settings/syntax create "$@" --ignore_exists \
 		<para>
 			For some purposes, e.g. for app installation, it is convenient to be able to deploy a new <acronym>UDM</acronym> syntax in the UCS domain
 			from any system in the domain. For this purpose, a UDM syntax can be stored as a special type of UDM object.
-			The module responsible for this type of objects is called <literal>settings/udm_syntax</literal>. As these objects are replicated throughout the
+			The module responsible for this type of objects is called <classname>settings/udm_syntax</classname>. As these objects are replicated throughout the
 			UCS domain, the UCS servers listen for modifications on these objects and integrate them into the local <acronym>UDM</acronym>.
 		</para>
 		<para>
@@ -1623,7 +1629,7 @@ udm settings/syntax create "$@" --ignore_exists \
 			Since the join script creating the attribute may be called on multiple hosts, it is a good idea to add the <option>--ignore_exists</option> option, which suppresses the error exit code in case the object already exists in <acronym>LDAP</acronym>.
 		</para>
 		<para>
-			The module <literal>settings/udm_syntax</literal> requires several parameters.
+			The module <classname>settings/udm_syntax</classname> requires several parameters.
 			Since many of these are determined automatically by the <emphasis>ucs_registerLDAPExtension</emphasis> shell library function, it is recommended to use the shell library function to create these objects (see <xref linkend="app:ucs_registerLDAPExtension"/>).
 		</para>
 		<variablelist>

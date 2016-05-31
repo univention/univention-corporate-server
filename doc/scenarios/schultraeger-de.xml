@@ -1,9 +1,19 @@
-<chapter>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
+<chapter id="school">
   <title>Schulträger</title>
-  <section>
+  <section id="school:start">
 	<title>Ausgangslage</title>
 	<para>
-	  Der Landkreis Rechtwede ist Schulträger für insgesamt acht
+	  Der Landkreis <wordasword>Rechtwede</wordasword> ist Schulträger für insgesamt acht
 	  Grundschulen, Gesamtschulen, Berufsschulen und Gymnasien.
 	</para>
 
@@ -29,8 +39,8 @@
 	</para>
 
 	<para>
-	  An den meisten PCs - die mit Microsoft Windows XP oder Microsoft
-	  Windows 7 betrieben werden - gibt es nur ein gemeinsames
+	  An den meisten PCs - die mit <systemitem class="osname">Microsoft Windows XP</systemitem> oder <systemitem class="osname">Microsoft
+	  Windows 7</systemitem> betrieben werden - gibt es nur ein gemeinsames
 	  Benutzerkonto. Die Rechner werden nicht zentral
 	  verwaltet.
 	</para>
@@ -53,7 +63,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:impl">
 	<title>Umsetzung</title>
 	<para>
 	  Der Schulträger implementiert eine Umgebung auf Basis von &ucsUAS;, einer
@@ -93,12 +103,12 @@
 	<para>
 	  <figure id="schule-schema">
 		<title>Schematischer Aufbau der Schul-Domäne</title>
-		<graphic scalefit="1" width="88%" fileref="illustrations/schultraeger.png"/>
+		<graphic scalefit="1" width="88%" fileref="illustrations33/schultraeger.png"/>
 	  </figure>
 	</para>
   </section>
 
-  <section>
+  <section id="school:user">
 	<title>Verwaltung der Benutzerdaten</title>
 	<para>
 	  Alle Schulanmeldungen, -wechsel und Versetzungen werden
@@ -128,7 +138,7 @@
 		</itemizedlist>
   </section>
 
-  <section>
+  <section id="school:services">
 	<title>Dienste auf den Schulservern</title>
 	<para>
 	  Auf allen Schulservern wird ein lokaler LDAP-Verzeichnisdienst betrieben, auf den
@@ -185,7 +195,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:modules">
 	<title>Werkzeuge für den pädagogischen EDV-Betrieb</title>
 	<para>
 	  &ucsUAS; stellt eine Reihe von Modulen für die &ucsUMC; bereit, die
@@ -195,7 +205,7 @@
 	<para>
 	  <figure id="schule-module">
 		<title>Schulspezifische Anwendungen</title>
-		<graphic scalefit="1" width="88%" fileref="illustrations/schule-module.png"/>
+		<graphic scalefit="1" width="88%" fileref="illustrations33/schule-module.png"/>
 	  </figure>
 	</para>
 
@@ -213,7 +223,7 @@
 	<para>
 	  <figure id="schule-passwoerter">
 		<title>Zurücksetzen von Passwörtern</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations/schule-benutzer.png"/>
+		<graphic scalefit="1" width="60%" fileref="illustrations33/schule-benutzer.png"/>
 	  </figure>
 	</para>
 
@@ -267,7 +277,7 @@
 	<para>
 	  <figure id="schule-gruppen">
 		<title>Arbeitsgruppenverwaltung</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations/schule-gruppen.png"/>
+		<graphic scalefit="1" width="60%" fileref="illustrations33/schule-gruppen.png"/>
 	  </figure>
 	</para>
 
@@ -281,7 +291,7 @@
 	<para>
 	  <figure id="schule-drucker">
 		<title>Druckermoderation</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations/schule-drucker.png"/>
+		<graphic scalefit="1" width="60%" fileref="illustrations33/schule-drucker.png"/>
 	  </figure>
 	</para>
 
@@ -298,7 +308,7 @@
 	<para>
 	  <figure id="schule-material">
 		<title>Materialverteilung</title>
-		<graphic scalefit="1" width="60%" fileref="illustrations/schule-material.png"/>
+		<graphic scalefit="1" width="60%" fileref="illustrations33/schule-material.png"/>
 	  </figure>
 	</para>
 
@@ -329,7 +339,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="school:italc">
 	<title>Management von Schüler-Desktops mit iTALC</title>
 	<para>
 	  iTALC ist eine didaktische Software für den Zugriff auf
@@ -384,7 +394,7 @@
 	  </para>
   </section>
 
-  <section>
+  <section id="school:groupware">
 	<title>Groupware</title>
 	<para>
 	  Der Schulträger verwendet die Groupwarelösung Kolab zur Abstimmung von
@@ -395,7 +405,7 @@
 	<para>
 	  Die Verwaltung der Groupware-relavanten Attribute integriert sich
 	  nahtlos in die &ucsUMC;. Die Mitarbeiter greifen auf die Groupware
-	  über den Webclient Roundcube zu.
+	  über den Webclient RoundCube zu.
 	</para>
 
 	<para>
@@ -404,13 +414,13 @@
 	</para>
   </section>
 
-	  <section>
+	  <section id="school:ref">
 		<title>Referenzen</title>
 		  <itemizedlist>
-			<listitem><simpara><ulink url="http://docs.univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
-			<listitem><simpara><ulink url="http://docs.univention.de/ucsschool-manual.html"/> (UCS@School-Handbuch für Administratoren)</simpara></listitem>
-			<listitem><simpara><ulink url="http://docs.univention.de/ucsschool-teacher-manual.html"/> (UCS@School-Handbuch für Lehrer)</simpara></listitem>
-			<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/app-katalog/kolab-enterprise/"/> (Kolab)</simpara></listitem>
+			<listitem><simpara><ulink url="https://docs.software-univention.de/handbuch.html"/> (UCS-Handbuch)</simpara></listitem>
+			<listitem><simpara><ulink url="https://docs.software-univention.de/ucsschool-manual.html"/> (UCS@school-Handbuch für Administratoren)</simpara></listitem>
+			<listitem><simpara><ulink url="https://docs.software-univention.de/ucsschool-teacher-manual.html"/> (UCS@school-Handbuch für Lehrer)</simpara></listitem>
+			<listitem><simpara><ulink url="https://www.univention.de/produkte/univention-app-center/kolab-enterprise/"/> (Kolab Enterprise)</simpara></listitem>
 		  </itemizedlist>
 	  </section>
 </chapter>

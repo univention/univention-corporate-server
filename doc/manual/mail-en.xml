@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="mail::general">
   <title>Mail services</title>
 
@@ -105,7 +115,7 @@
 
 	<para>
 	  The runtime data of the Cyrus server are stored in the
-	  <filename>/var/spool/cyrus</filename> directory. This directory
+	  <filename class="directory">/var/spool/cyrus</filename> directory. This directory
 	  should not be operated on a NFS share.
 	</para>
 
@@ -176,9 +186,9 @@
 		<itemizedlist>
 		  <listitem>
 			<para>
-			  The <emphasis>primay e-mail address</emphasis> is used for authentication on Postfix
+			  The <emphasis>primary e-mail address</emphasis> is used for authentication on Postfix
 			  and Cyrus. Primary e-mail addresses must always be unique. Only one primary e-mail
-			  address can be configured for every user. It also defines the user's IMAP mailbox. 
+			  address can be configured for every user. It also defines the user's IMAP mailbox.
 			  If a mail home server is assigned to a user (see <xref linkend="mail::homeserver"/>),
 			  the IMAP inbox is automatically created by a Univention directory listener module.
 			  The domain part of the e-mail address must be registered in the &ucsUMC; (see
@@ -226,7 +236,7 @@
 	  <para>
 		<figure id="mail-mailinglist">
 		  <title>Creating a mailing list</title>
-		  <graphic scalefit="1" width="90%" fileref="illustrations/mail_mailinglist_en.png"/>
+		  <graphic scalefit="1" width="90%" fileref="illustrations33/mail_mailinglist_en.png"/>
 		</figure>
 	  </para>
 	  <para>
@@ -262,7 +272,7 @@
 		prevent misuse, there is the possibility of restricting the circle of
 		people who can send mails. To do so,
 		the &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> on the mail server must
-		be set to <emphasis>yes</emphasis> and Postfix restarted.
+		be set to <literal>yes</literal> and Postfix restarted.
 	  </para>
 	  <para>
 		<guimenu>Users that are allowed to send e-mails to the list</guimenu>
@@ -299,7 +309,7 @@
 		prevent misuse, there is the possibility of restricting the circle of
 		people who can send mails. To do so,
 		the &ucsUCRV; <envar>mail/postfix/policy/listfilter</envar> on the mail server must
-		be set to <emphasis>yes</emphasis> and Postfix restarted.
+		be set to <literal>yes</literal> and Postfix restarted.
 	  </para>
 	  <para>
 		<guimenu>Users that are allowed to send e-mails to the group</guimenu>
@@ -324,7 +334,7 @@
 	  <para>
 		<figure id="mail-sharedfolder">
 		  <title>Creating a shared IMAP folder</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/mail_imapfolder_en.png"/>
+		  <graphic scalefit="1" width="80%" fileref="illustrations33/mail_imapfolder_en.png"/>
 		</figure>
 	  </para>
 	  <para>
@@ -555,9 +565,9 @@
   <section id="mail::spam">
 	<title>Spam detection and filtering</title>
 	<para>
-	  Undesirable and unsolicited e-mails are designated as spam. The software
+	  Undesirable and unsolicited e-mails are designated as Spam. The software
 	  SpamAssassin is integrated in UCS for the automatic identification of these
-	  e-mails. Spamassassin attempts to identify whether an e-mail is desirable or
+	  e-mails. SpamAssassin attempts to identify whether an e-mail is desirable or
 	  not based on heuristics concerning its origin, form and content.
 	</para>
 	<para>
@@ -568,7 +578,7 @@
 	<para>
 	  SpamAssassin operates a point system, which uses an increasing number
 	  of points to express a high probability of the e-mail being
-	  spam. Points are awarded according to different criteria, for example,
+	  Spam. Points are awarded according to different criteria, for example,
 	  keywords within the e-mail or incorrect encodings.
 	</para>
 	<para>
@@ -580,16 +590,16 @@
 	  E-mails which are classified as spam - because they exceed a certain
 	  number of points - are not delivered to the recipient's inbox by
 	  Cyrus, but rather in the <emphasis>Spam</emphasis> folder below it.
-	  The filtering is performed by a SIEVE script, which is automatically generated when
+	  The filtering is performed by a Sieve script, which is automatically generated when
 	  the user is created.
 	</para>
 	<para>
-	  The threshold in these scripts as of which e-mails are declared to be spam can be
+	  The threshold in these scripts as of which e-mails are declared to be Spam can be
 	  configured with the &ucsUCRV; <envar>mail/antispam/requiredhits</envar>.
-	  The presetting (5) generally does not need to be adjusted.
+	  The presetting (<literal>5</literal>) generally does not need to be adjusted.
 	  However, depending on experience in the local environment, this
 	  value can also be set lower. This will, however, result in more
-	  e-mails being incorrectly designated as spam.
+	  e-mails being incorrectly designated as Spam.
 	  Changes to the threshold do not apply to existing users, but the users
 	  can change the value themselves in the Horde web client (see
 	  <xref linkend="mail::horde::filter"/>).
@@ -600,7 +610,7 @@
 	  already gathered from processed e-mails and uses this to adapt it's
 	  evaluation to the user's e-mail.
 	  The Bayes classification is controlled by the user himself, whereby
-	  e-mails not identified as spam can be placed in the <emphasis>Spam</emphasis>
+	  e-mails not identified as Spam can be placed in the <emphasis>Spam</emphasis>
 	  subfolder and a selection of legitimate e-mails copied into
 	  the <emphasis>Ham</emphasis> subfolder. This folder is evaluated daily and data
 	  which have not yet been collected or were previously classified
@@ -609,8 +619,8 @@
 	  the &ucsUCRV; <envar>mail/antispam/learndaily</envar>.
 	</para>
 	<para>
-	  The spam filtering can be deactivated by setting
-	  the &ucsUCRV; <envar>mail/antivir/spam</envar> to <emphasis>no</emphasis>.
+	  The Spam filtering can be deactivated by setting
+	  the &ucsUCRV; <envar>mail/antivir/spam</envar> to <literal>no</literal>.
 	</para>
 	<para>
 	  When modifying Univention Configuration Registry variables concerning spam
@@ -633,11 +643,11 @@
 	  it is not accessible to the user. The original recipient receives a
 	  message per e-mail stating that this measure has been taken. If
 	  necessary, the administrator can restore or delete this from
-	  the <filename>/var/lib/amavis/virusmails</filename> directory. Automatic deletion
+	  the <filename class="directory">/var/lib/amavis/virusmails</filename> directory. Automatic deletion
 	  is not performed.
 	</para>
 	<para>
-	  The Amavisd-new software serves as an interface between the mail server and
+	  The <application>AMaViSd-new</application> software serves as an interface between the mail server and
 	  different virus scanners. The free virus scanner ClamAV is included in
 	  the package and enters operation immediately after installation. The
 	  signatures required for virus identification are procured and updated
@@ -645,7 +655,7 @@
 	</para>
 	<para>
 	  Alternatively or in addition, other virus scanners can also be integrated
-	  in Amavis.
+	  in AMaViS.
 	</para>
 	<para>
 	  Postfix and Amavis need to be restarted following changes to the
@@ -737,7 +747,7 @@
 	  <title>Configuration of a relay host for sending the e-mails</title>
 
 	  <para>
-		In the default setting, Postfix creates a direct STMP connection to
+		In the default setting, Postfix creates a direct SMTP connection to
 		the mail server responsible for the domain when an e-mail is sent to
 		a non-local address. This server is determined by querying the MX
 		record in the DNS.
@@ -747,17 +757,17 @@
 		which receives the mails and takes over their further sending. This
 		type of mail relay server can be provided by a superordinate corporate
 		headquarters or the Internet provider, for example. To set a relay
-		host, it must be entered as a fully qualified domain name(FQDN) in
+		host, it must be entered as a fully qualified domain name (FQDN) in
 		the &ucsUCRV; <envar>mail/relayhost</envar>.
 	  </para>
 	  <para>
 		If authentication is necessary on the relay host for sending,
-		the &ucsUCRV; <envar>mail/relayauth</envar> must be set to <emphasis>yes</emphasis> and
+		the &ucsUCRV; <envar>mail/relayauth</envar> must be set to <literal>yes</literal> and
 		the <filename>/etc/postfix/smtp_auth</filename> file edited. The relay host,
 		user name and password must be saved in this file in one line.
 	  </para>
 		<programlisting>
-&lt;FQDN-Relayhost&gt;			&lt;username&gt;:&lt;password&gt;
+<replaceable>FQDN-Relayhost</replaceable>	<replaceable>username</replaceable>:<replaceable>password</replaceable>
 		</programlisting>
 	  <para>
 		The command
@@ -777,7 +787,7 @@ postmap /etc/postfix/smtp_auth
 		The &ucsUCRV; <envar>mail/messagesizelimit</envar> can be used to set the maximum
 		size in bytes for incoming and outgoing e-mails. Postfix must be restarted after modifying the setting.
 		The preset maximum size is 10240000 bytes. If the value is configured to
-		<emphasis>0</emphasis> the limit is effectively removed.
+		<literal>0</literal> the limit is effectively removed.
 		Please note that e-mail attachments are enlarged by approximately a third due to the base64
 		encoding.
 	  </para>
@@ -812,7 +822,7 @@ postmap /etc/postfix/smtp_auth
 		If a number of error situations (e.g., for non-existent users) the
 		result may be a mail bounce, i.e., the mail cannot be delivered and is
 		returned to the sender. When &ucsUCRV; <envar>mail/postfix/softbounce</envar> is set
-		to <emphasis>yes</emphasis> e-mails are never returned after a bounce, but instead
+		to <literal>yes</literal> e-mails are never returned after a bounce, but instead
 		are held in the queue. This setting is particularly useful during
 		configuration work on the mail server.
 	  </para>
@@ -828,13 +838,13 @@ postmap /etc/postfix/smtp_auth
 		<itemizedlist>
 		  <listitem>
 			<para>
-			  If the variable is set to <emphasis>yes</emphasis>, the name of
+			  If the variable is set to <literal>yes</literal>, the name of
 			  the user's IMAP mailbox is changed. This is the standard setting since UCS 3.0.
 			</para>
 		  </listitem>
 		  <listitem>
 			<para>
-			  If the setting is <emphasis>no</emphasis>, it will not be
+			  If the setting is <literal>no</literal>, it will not be
 			  possible to read previous e-mails any more once the user's primary e-mail
 			  address is changed! If another user is assigned a previously used primary
 			  e-mail address, she receives access to the old IMAP structure of this mailbox.
@@ -870,7 +880,7 @@ postmap /etc/postfix/smtp_auth
 
   <section id="mail:clients">
   	<title>Configuration of mail clients for the mail server</title>
-	
+
 	<para>
 	  The use of IMAP is recommended for using a mail client with the UCS mail server. STARTTLS is
 	  used to switch to a TLS-secured connection after an initial negotiation phase when using SMTP
@@ -884,7 +894,7 @@ postmap /etc/postfix/smtp_auth
   	<para>
   	  <figure id="mail:clients:thunderbird">
   		<title>Setup of Mozilla Thunderbird</title>
-  		<graphic scalefit="1" width="80%" fileref="illustrations/thunderbird_en.png"/>
+  		<graphic scalefit="1" width="80%" fileref="illustrations33/thunderbird_en.png"/>
   	  </figure>
   	</para>
   </section>
@@ -894,7 +904,7 @@ postmap /etc/postfix/smtp_auth
 	<para>
 	  UCS integrates a number of applications from the Horde framework for
 	  web access to e-mails and web-based administration of server-side e-mail filter
-	  rules based on SIEVE. Horde can be installed via the Univention App Center (see <xref
+	  rules based on Sieve. Horde can be installed via the Univention App Center (see <xref
 	  linkend="software:appcenter"/>).
 	</para>
 	<section id="mail:Login_and_overview">
@@ -902,12 +912,12 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		The Horde login mask is linked on the system overview page (see <xref
 		linkend="central-management-umc:login"/>) under <guimenu>Horde web client</guimenu> and can
-		be opened directly at <uri>http://SERVERNAME/horde/login.php</uri>.
+		be opened directly at <uri>http://SERVERNAME/horde/</uri>.
 	  </para>
 	  <para>
 		<figure id="horde-login">
 		  <title>Login on Horde</title>
-		  <graphic scalefit="1" width="35%" fileref="illustrations/login_en.png"/>
+		  <graphic scalefit="1" width="35%" fileref="illustrations33/login_en.png"/>
 		  </figure>
 	  </para>
 	  <para>
@@ -939,7 +949,7 @@ postmap /etc/postfix/smtp_auth
 	  <para>
 		<figure id="horde-inbox">
 		  <title>Web mail (Inbox)</title>
-		  <graphic scalefit="1" width="95%" fileref="illustrations/inbox_en.png"/>
+		  <graphic scalefit="1" width="95%" fileref="illustrations33/inbox_en.png"/>
 		  </figure>
 	  </para>
 	  <para>
@@ -959,7 +969,7 @@ postmap /etc/postfix/smtp_auth
 	  </para>
 	  <figure id="horde-address">
 		<title>Address book for webmail</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/addressbook_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/addressbook_en.png"/>
 	  </figure>
 	  <para>
 		Contact information found using the simple or advanced search can then be
@@ -983,13 +993,13 @@ postmap /etc/postfix/smtp_auth
 	  <title>E-mail filters</title>
 	  <para>
 		Cyrus supports server-side filter scripts written in an individual
-		script language called SIEVE. The filter module allows the generation
+		script language called Sieve. The filter module allows the generation
 		of these filter scripts. They apply generally and thus also apply for
 		users accessing their inboxes via a standard mail client.
 	  </para>
 	  <figure id="horde-filter">
 		<title>Filter management in Horde</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/filter_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/filter_en.png"/>
 	  </figure>
 	  <para>
 		Filters can be edited and expanded
@@ -1000,9 +1010,9 @@ postmap /etc/postfix/smtp_auth
 		switched on and off in the <command>Enabled</command> column.
 	  </para>
 	  <para>
-		The <guimenu>Spam</guimenu> filter can be used user-specifically to set which spam
+		The <guimenu>Spam</guimenu> filter can be used user-specifically to set which Spam
 		threshold should apply. The specified <guimenu>Spam Level</guimenu> is the
-		SpamAssassin threshhold. An e-mail which returns this value will be sent to
+		SpamAssassin threshold. An e-mail which returns this value will be sent to
 		the specified folder.
 	  </para>
 	  <para>
@@ -1016,9 +1026,9 @@ postmap /etc/postfix/smtp_auth
 	  </para>
 	  <para>
 		Clicking on <guimenu>Script</guimenu> displays the source text of the generated
-		SIEVE script.
+		Sieve script.
 	  </para>
 	</section>
   </section>
-
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

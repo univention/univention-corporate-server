@@ -1,10 +1,20 @@
-<chapter>
-  <title>Heterogenous enterprise environment in an insurance company</title>
-  <section>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
+<chapter id="insurance">
+  <title>Heterogeneous enterprise environment in an insurance company</title>
+  <section id="insurance:start">
 	<title>Initial situation</title>
 	<para>
-	  <emphasis>Hanseatische Marineversicherung</emphasis> (HMV) is an insurance company with
-	  1800 employees specialised in the logistics sector. HMV is a subsidiary
+		<foreignphrase>Hanseatische Marineversicherung</foreignphrase> (<acronym>HMV</acronym>) is an insurance company with
+		1800 employees specialized in the logistics sector. <acronym>HMV</acronym> is a subsidiary
 	  of the Vigil Insurances parent company.
 	</para>
 
@@ -59,7 +69,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:impl">
 	<title>Implementation</title>
 	<para>
 	  The company implements an infrastructure composed of a &ucsMaster;
@@ -87,7 +97,7 @@
 	<para>
 	  <figure id="versicherung-gesamt">
 		<title>General overview (excluded: storage, DNS, DHCP, print services, virtualization, backup)</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/versicherung_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/versicherung_en.png"/>
 	  </figure>
 	</para>
 
@@ -100,12 +110,12 @@
 	<para>
 	  <figure id="versicherung-standort">
 		<title>Structure of a location</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/versicherung-standort_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/versicherung-standort_en.png"/>
 	  </figure>
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:virt">
 	<title>Virtualization</title>
 	<para>
 	  All server systems in the HMV environment are virtualized with
@@ -115,7 +125,7 @@
 	<para>
 	  <figure id="uvmm2">
 		<title>Managing virtual machines with UVMM</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/uvmm_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/uvmm_en.png"/>
 	  </figure>
 	</para>
 
@@ -141,7 +151,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:software">
 	<title>Software distribution of UCS systems</title>
 	<para>
 	  Installation profiles have been created for the UCS domain
@@ -174,7 +184,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:windows">
 	<title>Connecting Windows clients and Windows software deployment</title>
 	<para>
 	  Samba 4 is used in the HMV for the integration of Microsoft Windows
@@ -238,7 +248,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:groupware">
 	<title>Groupware</title>
 	<para>
 	  The groupware is provided in the form of Exchange Server
@@ -261,7 +271,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:complianc3">
 	<title>Compliance requirements</title>
 	<para>
 	  HMV must satisfy a range of insurance industry compliance
@@ -273,7 +283,7 @@
 		  <simpara>All LDAP write accesses must be verifiable. This is
 		  done by means of the Univention Directory Logger. This
 		  transcribes each LDAP change in a secure transaction log
-		  file, which is protocolled audit-compliantly with
+		  file, which is protocoled audit-compliantly with
 		  checksums.</simpara></listitem>
 
 		<listitem><simpara>The user data must be available immediately
@@ -291,7 +301,7 @@
 	  </itemizedlist>
   </section>
 
-  <section>
+  <section id="insurance:monitoring">
 	<title>System monitoring with Nagios</title>
 	<para>
 	  UCS integrates the system monitoring software Nagios, which allows the
@@ -314,7 +324,7 @@
 	<para>
 	  <figure id="nagios">
 		<title>System monitoring of a server</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/nagios_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/nagios_en.png"/>
 	  </figure>
 	</para>
 
@@ -324,7 +334,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:aix">
 	<title>Integration of the AIX system</title>
 	<para>
 	  The insurance policies are administrated with an application which can
@@ -333,13 +343,13 @@
 
 	<para>
 	  In the past, all users working on the system were maintained doubly in
-	  the local user database of the AIX system. Now only the secldapclntd
+	  the local user database of the AIX system. Now only the <systemitem class="service">secldapclntd</systemitem>
 	  service runs on the AIX system; it performs all the authentication
 	  processes against the UCS LDAP directory.
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:terminal">
 	<title>Citrix terminal services</title>
 	<para>
 	  In the headquarters 150 users work with terminal services based on
@@ -358,7 +368,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:backup">
 	<title>Backup</title>
 	<para>
 	  SEP sesam is used for file backup. It offers a distributed backup
@@ -382,7 +392,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:crm">
 	<title>Integration of SugarCRM</title>
 	<para>
 	  SugarCRM is employed as the CRM solution for sales personnel. The
@@ -398,17 +408,17 @@
 	</para>
   </section>
 
-  <section>
+  <section id="insurance:rev">
 	<title>References</title>
 	  <itemizedlist>
-		<listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>
+		<listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
 		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=UVMM_Quickstart"/></simpara></listitem>
 		<listitem><simpara><ulink url="http://wiki.univention.de/index.php?title=Opsi_%28open_pc_server_integration%29"/> (currently only available in German)</simpara></listitem>
-		<listitem><simpara><ulink url="http://docs.univention.de/ucc-manual-1.0.html"/> (Univention Corporate Client manual)</simpara></listitem>
-		<listitem><simpara><ulink url="http://docs.univention.de/installation.html"/> (Extended installation documentation)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/drbd/"/> (DRBD)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/sep-sesam/"/> (SEP sesam Backup)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/sugarcrm/"/> (SugarCRM)</simpara></listitem>
+		<listitem><simpara><ulink url="https://docs.software-univention.de/ucc-manual-1.0.html"/> (Univention Corporate Client manual)</simpara></listitem>
+		<listitem><simpara><ulink url="https://docs.software-univention.de/installation.html"/> (Extended installation documentation)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/drbd/"/> (DRBD)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/sep-sesam/"/> (SEP sesam Backup)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/sugarcrm/"/> (SugarCRM)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

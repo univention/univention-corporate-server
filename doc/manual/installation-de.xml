@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="installation:chapter">
 <title>Installation</title>
 <section id="installation:einfuerung">
@@ -127,7 +137,7 @@
 	</para>
 	<figure id="installation-grub">
 	<title>Bootprompt der Installation</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/grub.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/grub.png"/>
 	</figure>
 	<para>
 		Hier kann zwischen verschiedenen Installationsverfahren gewählt werden.
@@ -229,7 +239,7 @@
 	</para>
 	<figure id="installation-languageeselection">
 	<title>Auswahl der Installationssprache</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/language.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/language.png"/>
 	</figure>
 	<para>
 		Wenn Univention Installer in die ausgewählte Sprache übersetzt ist (momentan
@@ -263,7 +273,7 @@
 	</para>
 	<figure id="installation-timezoneselection">
 	<title>Auswahl der Zeitzone</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/timezone_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/timezone_de.png"/>
 	</figure>
 </section>
 <section id="installation:Auswahl_der_Tastaturbelegung">
@@ -276,7 +286,7 @@
 	</para>
 	<figure id="installation-keyboardselection">
 	<title>Auswahl der Tastaturbelegung</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/keyboard_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/keyboard_de.png"/>
 	</figure>
 </section>
 <section id="installation:Auswahl_der_Systemrolle">
@@ -287,7 +297,7 @@
 	</para>
 	<figure id="installation-systemroleselection">
 	<title>Auswahl der Systemrolle</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/systemrole_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/systemrole_de.png"/>
 	</figure>
 	<para>
 		Zur Auswahl stehen:
@@ -350,7 +360,7 @@
 	</para>
 	<figure id="installation-domainsettings">
 	<title>Domäneneinstellungen</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/domainsettings_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/domainsettings_de.png"/>
 	</figure>
 </section>
 
@@ -466,7 +476,7 @@
 </para>
 <figure id="installation-partition">
   <title>Partitionierung der Festplatten</title>
-  <graphic scalefit="1" width="80%" fileref="illustrations/autopartitioning_de.png"/>
+  <graphic scalefit="1" width="80%" fileref="illustrations33/autopartitioning_de.png"/>
 </figure>
 <para>
   Um Partitionen aus vorherigen Installationen einzubinden oder beim Anlegen neuer
@@ -544,7 +554,7 @@
 
   <figure id="installation-networksettings">
 	<title>Netzwerkkonfiguration</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/network_de.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations33/network_de.png"/>
   </figure>
 
   <para>
@@ -584,7 +594,6 @@
 	Unter <guimenu>Globale Netzwerk-Einstellungen</guimenu> können weitere netzwerkbezogene
 	Einstellungen vorgenommen werden.
   </para>
-
   <para>
 	Unter <guimenu>IPv4-Gateway</guimenu> und <guimenu>IPv6-Gateway</guimenu> können die für die
 	IP-Adresse im Subnetz eingesetzten Standard-Gateways für IPv4 und IPv6 eingegeben werden. Für
@@ -592,7 +601,6 @@
 	Konfiguration ist diese optional, wird jedoch empfohlen. Ein hier konfiguriertes IPv6-Gateway
 	hat Vorrang vor Router Advertisements, die ansonsten die Route ändern könnten.
   </para>
-
   <para>
 	Zwei Typen von DNS-Servern werden unterschieden:
   </para>
@@ -619,7 +627,6 @@
 	kann dann von den anderen Systemen der Domäne verwendet werden. Über die Schaltfläche
 	<mousebutton>Mehr</mousebutton> können weitere Nameserver aufgenommen werden.
   </para>
-
   <para>
 	Auch auf den Systemrollen &ucsBackup; und &ucsSlave; wird jeweils ein lokaler DNS-Server
 	eingerichtet. Hier kann durch Angabe von <guimenu>Domänen-DNS-Server</guimenu> konfiguriert
@@ -627,7 +634,6 @@
 	muss hier der Domänen-DNS-Server eines bereits installierten Systems angegeben werden, z.B. den
 	des &ucsMaster;.
   </para>
-
   <para>
 	Auf &ucsMember;n und Basissystemen kann nur ein Domänen-DNS-Server angegeben werden.
   </para>
@@ -639,7 +645,6 @@
 	Univention Installer angegeben, sondern erst nach erfolgter Installation konfiguriert
 	werden. Dies vermeidet längere Timeouts während der Installation.
   </para>
-
   <para>
 	Wenn das UCS-System keinen unmittelbaren Zugang zum Internet besitzt, kann unter <guimenu>HTTP-Proxy</guimenu> die
 	URL eines Proxy-Servers angegeben werden. Über diesen Proxy erfolgen die Downloads
@@ -690,7 +695,7 @@
 	</para>
 	<figure id="installation-softwareselection">
 	<title>Softwareauswahl</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/software_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/software_de.png"/>
 	</figure>
 	<itemizedlist>
 		<listitem>
@@ -812,7 +817,7 @@
 	</para>
 	<figure id="installation-overview">
 	<title>Installationsüberblick</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/overview_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/overview_de.png"/>
 	</figure>
 	<para>
 		Während der Installation zeigt ein Fortschrittsbalken den Verlauf der
@@ -821,7 +826,7 @@
 	</para>
 	<figure id="installation-progress">
 	<title>Installationsfortschritt</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/installationprogress_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/installationprogress_de.png"/>
 	</figure>
 	<para>
 		Das System bindet die Partitionen in den Verzeichnisbaum ein und installiert
@@ -895,7 +900,7 @@
 
   <para>
 	Der in UCS verwendete Linux-Kernel bringt alle nötigen Unterstützungstreiber für den Betrieb in
-	VMware direkt mit (vmw_balloon, vmw_pvsci, vmw_vmci, vmwgfx und vmxnet3).
+	VMware direkt mit (<filename>vmw_balloon</filename>, <filename>vmw_pvsci</filename>, <filename>vmw_vmci</filename>, <filename>vmwgfx</filename> und <filename>vmxnet3</filename>).
   </para>
 
   <para>

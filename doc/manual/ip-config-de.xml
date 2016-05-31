@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="networks::general">
   <title>IP- und Netzverwaltung</title>
   <para>
@@ -16,13 +26,13 @@
   </para>
   <para>
 	Ein- und ausgehende Netzwerkverbindungen können über die in UCS
-	integrierte <emphasis>Univention Firewall</emphasis> auf Basis von iptables
-	begrenzt werden.
+	integrierte <emphasis>Univention Firewall</emphasis> auf Basis von <command>iptable</command>
+	begrenzt werden (<xref linkend="ip-config:Paketfilter_mit_Univention_Firewall"/>).
   </para>
   <para>
 	Die Integration des Proxy-Servers Squid ermöglicht das Zwischenspeichern von
-	Web-Inhalten und die Umsetzung inhaltlicher Richtlinien für den
-	Web-Zugriff.
+	Web-Inhalten und die Umsetzung inhaltlicher Richtlinien für den Web-Zugriff
+	(<xref linkend="ip-config:Web-Proxy_fuer_Caching_und_Policy_Management_Virenscan"/>).
   </para>
   <section id="networks::introduction">
 	<title>Netzwerk-Objekte</title>
@@ -33,12 +43,12 @@
 	</para>
 	<figure id="net-networks">
 	  <title>Erstellen eines Netzwerk-Objekts</title>
-	  <graphic scalefit="1" width="100%" fileref="illustrations/create-network_DE.png"/>
+	  <graphic scalefit="1" width="100%" fileref="illustrations33/create-network_DE.png"/>
 	</figure>
 	<para>
 	  So kann beispielsweise ein Netzwerk-Objekt <emphasis>Produktivnetz</emphasis>
-	  definiert werden, das sich über die IP-Adressen von 192.168.2.0 bis
-	  192.168.2.254 erstreckt. Wird nun ein Windows-Rechnerobjekt angelegt, muss nun nur
+	  definiert werden, das sich über die IP-Adressen von <systemitem class="ipaddress">192.168.2.0</systemitem> bis
+	  <systemitem class="ipaddress">192.168.2.254</systemitem> erstreckt. Wird nun ein Windows-Rechnerobjekt angelegt, muss nun nur
 	  das Netzwerk-Objekt ausgewählt werden. Es wird dann intern
 	  geprüft, welche der IP-Adressen des Netzes bereits vergeben sind und die nächste
 	  freie ausgewählt. Wird ein Rechnerobjekt entfernt, wird die Adresse
@@ -81,7 +91,7 @@
 			<entry>Netzwerk</entry>
 			<entry>
 			  In diesem Eingabefeld muss die Netzwerk-Adresse in Oktettschreibweise
-			  eingetragen werden, z.B. <emphasis>192.168.1.0</emphasis>
+			  eingetragen werden, z.B. <systemitem class="ipaddress">192.168.1.0</systemitem>
 			</entry>
 		  </row>
 		  <row>
@@ -165,15 +175,15 @@
   </section>
 
   <section id="networks:dns">
-	<title>Verwaltung von DNS-Daten mit Bind</title>
+	<title>Verwaltung von DNS-Daten mit BIND</title>
 	<para>
-	  UCS integriert Bind für die Namensauflösung über das Domain Name
+	  UCS integriert BIND für die Namensauflösung über das Domain Name
 	  System (DNS). Die meisten DNS-Funktionen werden für die DNS-Auflösung in
-	  der lokalen Domäne verwendet, die UCS-Bind-Integration kann aber
+	  der lokalen Domäne verwendet, die UCS-BIND-Integration kann aber
 	  prinzipiell auch für einen öffentlichen Nameserver eingesetzt werden.
 	</para>
 	<para>
-	  Auf allen Domänencontroller-Systemrollen ist Bind immer
+	  Auf allen Domänencontroller-Systemrollen ist BIND immer
 	  verfügbar, eine Installation auf anderen Systemrollen wird nicht
 	  unterstützt.
 	</para>
@@ -190,7 +200,7 @@
 		  Eine <emphasis>Forward Lookup Zone</emphasis> enthält Informationen, die zum Auflösen
 		  von DNS-Namen in IP-Adressen herangezogen werden. Jede DNS-Zone
 		  verfügt über mindestens einen authoritativen, primären Nameserver,
-		  dessen Informationen für eine Zone massgeblich sind. Untergeordnete
+		  dessen Informationen für eine Zone maßgeblich sind. Untergeordnete
 		  Server synchronisieren sich mit dem authoritativen Server über
 		  Zonentransfers. Der Eintrag, der eine solche Zone auszeichnet, ist
 		  der <emphasis>SOA-Record</emphasis>.
@@ -258,12 +268,12 @@
 	  </itemizedlist>
 
 	<section id="ip-config:Konfiguration_des_Bind-Dienstes">
-	  <title>Konfiguration des Bind-Dienstes</title>
+	  <title>Konfiguration des BIND-Dienstes</title>
 
 	  <section id="ip-config:bind-debug">
-		<title>Konfiguration der Debug-Ausgaben von Bind</title>
+		<title>Konfiguration der Debug-Ausgaben von BIND</title>
 		<para>
-		  Der Detailgrad der Debugausgaben von Bind kann über die &ucsUCR;-Variablen
+		  Der Detailgrad der Debugausgaben von BIND kann über die &ucsUCR;-Variablen
 		  <envar>dns/debug/level</envar> und <envar>dns/dlz/debug/level</envar> (für das
 		  Samba-Backend, siehe <xref linkend="ip-config:dns:backend"/>) konfiguriert
 		  werden. Die möglichen Werte reichen von 0 (keine Debug-Ausgaben) bis 11. Eine komplette
@@ -274,24 +284,24 @@
 	  <section id="ip-config:dns:backend">
 		<title>Konfiguration des Daten-Backends des Nameservers</title>
 		<para>
-		  In einer typischen Bind-Installation auf einem Nicht-UCS-System
+		  In einer typischen BIND-Installation auf einem Nicht-UCS-System
 		  wird die Konfiguration durch das Bearbeiten von Zonen-Dateien
-		  durchgeführt. In UCS wird Bind komplett über die &ucsUMC;
+		  durchgeführt. In UCS wird BIND komplett über &ucsUMC;
 		  konfiguriert, das seine Daten im LDAP-Verzeichnis speichert.
 		</para>
 		<para>
-		  Bind kann zwei verschiedene Backends für seine Konfigurationsdateien verwenden:
+		  BIND kann zwei verschiedene Backends für seine Konfigurationsdateien verwenden:
 		</para>
 		  <itemizedlist>
 			<listitem>
 				<simpara>
 				  Das <emphasis>LDAP-Backend</emphasis> greift auf die Daten im OpenLDAP-Verzeichnis
 				  zu. Dieses Backend ist der Standard. Der DNS-Dienst ist in diesem Fall
-				  zweigeteilt: Der <emphasis>Bind-Proxy</emphasis> ist der primäre Nameserver und
+				  zweigeteilt: Der <emphasis>BIND-Proxy</emphasis> ist der primäre Nameserver und
 				  bedient den DNS-Standard-Port 53. Ein zweiter Server im Hintergrund arbeitet auf
 				  Port 7777. Werden Daten der internen DNS-Zonen im LDAP bearbeitet, wird die
 				  Zonendatei auf dem zweiten Server basierend auf den LDAP-Informationen
-				  aktualisiert und durch einen Zonentransfer an den Bind-Proxy übertragen. 
+				  aktualisiert und durch einen Zonentransfer an den BIND-Proxy übertragen.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -301,9 +311,9 @@
 			  Windows-Clients oder für die Lokalisierung des Netlogon-Shares. Wird
 			  Samba 4 eingesetzt, wird der betreffende Domänencontroller auf die
 			  Verwendung des <emphasis>Samba-Backend</emphasis>s umgestellt. Die DNS-Datenbank
-			  wird dabei in der Samba-internen LDB-Datenbank vorgehalten, die
-			  direkt von Samba aktualisiert wird. Bind greift dann über die
-			  DLZ-Schnittstelle auf die Samba-DNS-Daten zu.
+			  wird dabei in der Samba-internen <acronym>LDB</acronym>-Datenbank vorgehalten, die
+			  direkt von Samba aktualisiert wird. BIND greift dann über die
+			  <acronym>DLZ</acronym>-Schnittstelle auf die Samba-DNS-Daten zu.
 				</simpara>
 			</listitem>
 		  </itemizedlist>
@@ -328,7 +338,7 @@
 		  In der Grundeinstellung erlaubt der UCS-Nameserver Zonentransfers
 		  der DNS-Daten. Ist der UCS-Server aus dem Internet erreichbar, kann dadurch eine Liste
 		  aller Rechnernamen und IP-Adressen abgefragt werden. Der Zonentransfer kann bei Verwendung des OpenLDAP-Backends durch Setzen
-		  der &ucsUCRV; <envar>dns/allow/transfer</envar> auf <emphasis>none</emphasis> deaktiviert
+		  der &ucsUCRV; <envar>dns/allow/transfer</envar> auf <literal>none</literal> deaktiviert
 		  werden.
 		</para>
 	  </section>
@@ -338,7 +348,7 @@
 	<section id="ip-config:dns:umc">
 	  <title>Konfiguration der DNS-Daten in der Univention Management Console</title>
 	  <para>
-		DNS-Daten werden standardmäßig im Container <emphasis>cn=dns,&lt;Basis-DN></emphasis>
+		DNS-Daten werden standardmäßig im Container <uri>cn=dns,<replaceable>Basis-DN</replaceable></uri>
 		abgelegt. Forward- und Reverse-Lookup-Zonen werden direkt in dem
 		Container abgelegt. In den jeweiligen Zonen können
 		zusätzliche DNS-Objekte wie z.B. Pointer-Records angelegt werden.
@@ -374,7 +384,7 @@
 		</para>
 		  <figure id="net-dns-forward">
 			<title>Konfiguration einer Forward Lookup Zone in UMC</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/forward-lookup-zone_DE.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations33/forward-lookup-zone_DE.png"/>
 		  </figure>
 		  <para>
 			Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
@@ -459,8 +469,8 @@
 						</listitem>
 						<listitem>
 							<simpara>
-						  Unter Einbeziehung des Datums kann die Zahl im Format JJJJMMTTNN
-						  eingegeben werden, wobei J für Jahr, M für Monat, T für Tag und N
+						  Unter Einbeziehung des Datums kann die Zahl im Format <userinput><replaceable>JJJJMMTTNN</replaceable></userinput>
+						  eingegeben werden, wobei <replaceable>J</replaceable> für Jahr, <replaceable>M</replaceable> für Monat, <replaceable>T</replaceable> für Tag und <replaceable>N</replaceable>
 						  für die Nummer der Änderung an diesem Tag steht.
 							</simpara>
 						</listitem>
@@ -509,7 +519,7 @@
 				  <entry>Minimum Time-to-Live</entry>
 				  <entry>
 					Die Minimum Time-to-Live gibt in Sekunden an, wie lange andere Server
-					No-such-Domain-Antworten (NXDOMAIN) im Cache behalten dürfen. Der Wert
+					<foreignphrase>No-such-Domain</foreignphrase>-Antworten (<acronym>NXDOMAIN</acronym>) im Cache behalten dürfen. Der Wert
 					darf nicht mehr als 3 Stunden betragen.
 				  </entry>
 				</row>
@@ -710,7 +720,7 @@
 		</para>
 		<figure id="net-srv-record">
 		  <title>Konfiguration eines Service Records</title>
-		  <graphic scalefit="1" width="100%" fileref="illustrations/srv-record_DE.png"/>
+		  <graphic scalefit="1" width="100%" fileref="illustrations33/srv-record_DE.png"/>
 		</figure>
 		<para>
 		  Allgemeine Hinweise zur Bedienung der Domänen-Management-Module
@@ -738,8 +748,7 @@
 			  <row>
 				<entry>Protokoll</entry>
 				<entry>
-				  Der Protokoll, über das der Record erreichbar ist (TCP, UDP, MSDCS
-				  oder SITES).
+					Der Protokoll, über das der Record erreichbar ist (<systemitem class="protocol">TCP</systemitem>, <systemitem class="protocol">UDP</systemitem>, <systemitem class="protocol">MSDCS</systemitem> oder <systemitem class="protocol">SITES</systemitem>).
 				</entry>
 			  </row>
 			  <row>
@@ -768,10 +777,10 @@
 					die Server verteilt.
 				  </para>
 				  <para>
-					Beispiel: <emphasis>Server1</emphasis> hat eine Priorität von 1 und eine Gewichtung
-					von 1, während <emphasis>Server2</emphasis> ebenfalls eine Priorität von 1, aber
-					eine Gewichtung von 3 hat. In diesem Fall wird <emphasis>Server2</emphasis> dreimal
-					so oft verwendet wie <emphasis>Server1</emphasis>. Die Belastung wird abhängig vom
+					Beispiel: <systemitem class="server">Server1</systemitem> hat eine Priorität von 1 und eine Gewichtung
+					von 1, während <systemitem class="server">Server2</systemitem> ebenfalls eine Priorität von 1, aber
+					eine Gewichtung von 3 hat. In diesem Fall wird <systemitem class="server">Server2</systemitem> dreimal
+					so oft verwendet wie <systemitem class="server">Server1</systemitem>. Die Belastung wird abhängig vom
 					Dienst beispielsweise als Anzahl der Anfragen oder Verbindungen
 					gemessen.
 				  </para>
@@ -840,8 +849,8 @@
 				<entry>
 				  Die IP-Adresse des Netzwerkes, für das die Reverse Lookup Zone gültig
 				  sein soll. Wenn beispielsweise das betreffende Netz aus den
-				  IP-Adressen <emphasis>192.168.1.0</emphasis> bis <emphasis>192.168.1.255</emphasis> besteht, wäre
-				  <emphasis>192.168.1</emphasis> einzutragen.
+				  IP-Adressen <systemitem class="ipaddress">192.168.1.0</systemitem> bis <systemitem class="ipaddress">192.168.1.255</systemitem> besteht, wäre
+				  <systemitem class="ipaddress">192.168.1</systemitem> einzutragen.
 				</entry>
 			  </row>
 			  <row>
@@ -950,7 +959,7 @@
 			  <row>
 				<entry>Adresse</entry>
 				<entry>
-				  Die letzten Oktette der IP-Adresse des Rechners (abhängig vom Netz-Präfix, siehe unten).
+				  Die letzten Oktett der IP-Adresse des Rechners (abhängig vom Netz-Präfix, siehe unten).
 				</entry>
 			  </row>
 			  <row>
@@ -961,16 +970,16 @@
 				  </para>
 				  <para>
 					Ein Beispiel: In einem Netzwerk mit 24 Bit langem Netz-Präfix (Netzmaske
-					255.255.255.0) soll für den Rechner <emphasis>client001</emphasis> mit der
-					IP-Adresse 192.168.1.101 ein Pointer angelegt werden. In das Feld
-					<guimenu>Adresse</guimenu> ist dann <emphasis>101</emphasis> und in
-					<guimenu>Pointer</guimenu> <emphasis>client001.firma.com.</emphasis> einzutragen.
+					<systemitem class="netmask">255.255.255.0</systemitem>) soll für den Rechner <systemitem class="systemname">client001</systemitem> mit der
+					IP-Adresse <systemitem class="ipaddress">192.168.1.101</systemitem> ein Pointer angelegt werden. In das Feld
+					<guimenu>Adresse</guimenu> ist dann <userinput>101</userinput> und in
+					<guimenu>Pointer</guimenu> <userinput>client001.firma.com.</userinput> einzutragen.
 				  </para>
 				  <para>
 					Bei einem Netzwerk mit 16 Bit langem Netz-Präfix (Netzmaske
-					255.255.0.0) müssten für diesen Rechner die letzten zwei Oktette in
-					umgekehrter Reihenfolge (hier <emphasis>101.1</emphasis>) eingetragen werden. In das
-					Feld <guimenu>Pointer</guimenu> wäre auch hier <emphasis>client001.firma.com.</emphasis>
+					<systemitem class="netmask">255.255.0.0</systemitem>) müssten für diesen Rechner die letzten zwei Oktette in
+					umgekehrter Reihenfolge (hier <userinput>101.1</userinput>) eingetragen werden. In das
+					Feld <guimenu>Pointer</guimenu> wäre auch hier <userinput>client001.firma.com.</userinput>
 					einzutragen.
 				  </para>
 				</entry>
@@ -987,7 +996,7 @@
 	<section id="ip-config:Einfuehrung">
 	  <title>Einführung</title>
 	  <para>
-		Das <emphasis>Dynamic Host Configuration Protocol</emphasis> (DHCP) weist Rechnern eine
+		Das <firstterm>Dynamic Host Configuration Protocol</firstterm> (<acronym>DHCP</acronym>) weist Rechnern eine
 		IP-Adresse, die Subnetz-Maske und gegebenenfalls weitere Einstellungen
 		wie Gateway oder NetBIOS-Server zu. Die IP-Adresse kann fest oder
 		dynamisch vergeben werden.
@@ -1139,7 +1148,7 @@
 				<entry>Service-Name</entry>
 				<entry>
 				  In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den
-				  DHCP-Service eingetragen werden, z.B. <emphasis>firma.com</emphasis>.
+				  DHCP-Service eingetragen werden, z.B. <userinput>firma.com</userinput>.
 				</entry>
 			  </row>
 			</tbody>
@@ -1183,7 +1192,7 @@
 				<entry>
 				  <para>
 					In diesem Eingabefeld ist der Rechnername, der den DHCP-Dienst anbieten soll,
-					einzutragen, z.B. <emphasis>ucs-master</emphasis>.
+					einzutragen, z.B. <systemitem class="systemname">ucs-master</systemitem>.
 				  </para>
 				  <para>
 					Ein Server kann immer nur einen einzigen DHCP-Dienst anbieten und kann deshalb nicht gleichzeitig in mehreren DHCP-Services eingetragen sein.
@@ -1240,7 +1249,7 @@
 				<entry>Subnetz-Adresse</entry>
 				<entry>
 				  In diesem Eingabefeld ist die IP-Adresse des Subnetzes in
-				  Oktettschreibweise einzutragen, z.B. <emphasis>192.168.1.0</emphasis>.
+				  Oktettschreibweise einzutragen, z.B. <systemitem class="ipaddress">192.168.1.0</systemitem>.
 				</entry>
 			  </row>
 			  <row>
@@ -1313,7 +1322,7 @@
 				<entry>Name</entry>
 				<entry>
 				  In dieses Eingabefeld muss ein beliebiger, aber eindeutiger Name für den
-				  DHCP-Pool eingetragen werden, z.B. <emphasis>testnetz.firma.com</emphasis>.
+				  DHCP-Pool eingetragen werden, z.B. <uri>testnetz.firma.com</uri>.
 				</entry>
 			  </row>
 			  <row>
@@ -1473,8 +1482,8 @@
 				<entry>Adresse</entry>
 				<entry>
 				  In diesem Eingabefeld ist die MAC-Adresse der Netzwerkkarte
-				  einzutragen, z.B. <emphasis>2e:44:56:3f:12:32</emphasis> oder
-				  <emphasis>2e-44-56-3f-12-32</emphasis>.
+				  einzutragen, z.B. <systemitem class="etheraddress">2e:44:56:3f:12:32</systemitem> oder
+				  <systemitem class="etheraddress">2e-44-56-3f-12-32</systemitem>.
 				</entry>
 			  </row>
 			  <row>
@@ -1675,7 +1684,7 @@
 				<entry>NetBIOS Scope</entry>
 				<entry>
 				  Der NetBIOS over TCP/IP-Scope für den Client nach der Spezifikation
-				  in <ulink url="http://www.ietf.org/rfc/rfc1001.txt">RFC1001</ulink> und <ulink url="http://www.ietf.org/rfc/rfc1002.txt">RFC1002</ulink>. Bei der Angabe des NetBIOS Scopes ist die
+				  in <u:rfc>1001</u:rfc> und <u:rfc>1002</u:rfc>. Bei der Angabe des NetBIOS Scopes ist die
 				  Groß- und Kleinschreibung zu beachten.
 				</entry>
 			  </row>
@@ -1686,22 +1695,22 @@
 				  <itemizedlist>
 					<listitem>
 						<simpara>
-					  1 B-node (Broadcast: kein WINS)
+							<guimenuitem>1 B-node</guimenuitem> (Broadcast: kein WINS)
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-					  2 P-node (Peer: ausschließlich WINS)
+							<guimenuitem>2 P-node</guimenuitem> (Peer: ausschließlich WINS)
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-					  4 M-node (Mixed: erst Broadcast, dann WINS)
+							<guimenuitem>4 M-node</guimenuitem> (Mixed: erst Broadcast, dann WINS)
 						</simpara>
 					</listitem>
 					<listitem>
 						<simpara>
-					  8 H-node (Hybrid: erst WINS, dann Broadcast)
+							<guimenuitem>8 H-node</guimenuitem> (Hybrid: erst WINS, dann Broadcast)
 						</simpara>
 					</listitem>
 				  </itemizedlist>
@@ -1863,7 +1872,7 @@
 	</para>
 	<para>
 	  Darüber hinaus werden die im Verzeichnis
-	  <filename>/etc/security/packetfilter.d/</filename> liegenden
+	  <filename class="directory">/etc/security/packetfilter.d/</filename> liegenden
 	  Konfigurations-Skripte in alphabetischer Reihenfolge
 	  ausgeführt. Standardmäßig sind alle Skripte mit zwei führenden Ziffern
 	  benannt, so dass eine einfache Festlegung der Reihenfolge möglich
@@ -1875,7 +1884,7 @@
 	</para>
 	<para>
 	  Die Univention Firewall kann durch Setzen der
-	  &ucsUCRV; <envar>security/packetfilter/disabled</envar> auf <emphasis>true</emphasis> deaktiviert werden.
+	  &ucsUCRV; <envar>security/packetfilter/disabled</envar> auf <literal>true</literal> deaktiviert werden.
 	</para>
   </section>
 
@@ -1897,7 +1906,7 @@
 	  Internetzugang verringert werden.
 	</para>
 	<para>
-	  Als zusätzliche Komponente kann die Software Dansguardian
+	  Als zusätzliche Komponente kann die Software DansGuardian
 	  installiert werden. Damit ist es möglich,
 	  dass Internetinhalte vor der Auslieferung an den Anwender überprüft und gefiltert
 	  werden, um so Dateien auf Viren zu scannen oder den Zugriff auf unerwünschte
@@ -1937,7 +1946,7 @@
 		weitere Squid-Optionen gesetzt werden.
 	  </para>
 	  <para>
-		<emphasis>Dansguardian</emphasis> kann über das Paket
+		<emphasis>DansGuardian</emphasis> kann über das Paket
 		<package>univention-dansguardian</package> installiert werden, siehe
 		<xref linkend="proxy:contentfilter"/>.
 	  </para>
@@ -1962,7 +1971,7 @@
 		In manchen Umgebungen ist diese Caching-Funktionalität allerdings nicht
 		notwendig bzw. muss bei kaskadierten Proxys nicht bei allen aktiviert
 		sein. Für diese Szenarien kann die Caching-Funktion des Squid mit der
-		&ucsUCRV; <envar>squid/cache</envar> deaktiviert werden, indem diese auf den Wert <emphasis>no</emphasis>
+		&ucsUCRV; <envar>squid/cache</envar> deaktiviert werden, indem diese auf den Wert <literal>no</literal>
 		gesetzt wird. Anschließend muss Squid neu gestartet werden.
 	  </para>
 	</section>
@@ -1976,7 +1985,7 @@
 		zugegriffen wurde.
 	  </para>
 	  <para>
-		Bei Verwendung von Dansguardian werden sämtliche Zugriffe
+		Bei Verwendung von DansGuardian werden sämtliche Zugriffe
 		in der Datei <filename>/var/log/dansguardian/access.log</filename> protokolliert.
 	  </para>
 	</section>
@@ -1986,8 +1995,8 @@
 	  <para>
 		Standardmäßig darf nur aus lokalen Netzwerken auf den Proxy-Server zugegriffen
 		werden. Ist z.B. an dem Rechner, auf dem Squid installiert wurde, ein
-		Netzwerkinterface mit der Adresse 192.168.1.10 und der Netzmaske 255.255.255.0
-		vorhanden, dürfen nur Rechner aus dem Netzwerk 192.168.1.0/24 auf den
+		Netzwerkinterface mit der Adresse <systemitem class="ipaddress">192.168.1.10</systemitem> und der Netzmaske <systemitem class="netmask">255.255.255.0</systemitem>
+		vorhanden, dürfen nur Rechner aus dem Netzwerk <systemitem class="ipaddress">192.168.1.0/24</systemitem> auf den
 		Proxy-Server zugreifen. Weitere Netzwerke können über die
 		&ucsUCRV; <envar>squid/allowfrom</envar> angegeben werden. Dabei muss die CIDR-Notation
 		verwendet werden, mehrere Netzwerke sind durch Leerzeichen zu trennen.
@@ -1995,13 +2004,13 @@
 univention-config-registry set squid/allowfrom="192.168.2.0/24 192.168.3.0/24"
 		</programlisting>
 		Nach einem Neustart von Squid ist jetzt der Zugriff aus den Netzwerken
-		192.168.2.0/24 und 192.168.3.0/24 erlaubt. Durch Angabe von <emphasis>all</emphasis> kann der Zugriff auch aus allen Netzen erlaubt werden.
+		<systemitem class="ipaddress">192.168.2.0/24</systemitem> und <systemitem class="ipaddress">192.168.3.0/24</systemitem> erlaubt. Durch Angabe von <literal>all</literal> kann der Zugriff auch aus allen Netzen erlaubt werden.
 	  </para>
 	  <para>
-		Wenn Squid zusammen mit Dansguardian eingesetzt wird, d.h. die Viren- oder
+		Wenn Squid zusammen mit DansGuardian eingesetzt wird, d.h. die Viren- oder
 		Webinhaltsfilterung aktiviert wird, kann Squid den Zugriff nicht prüfen,
-		da die Verbindungen über Dansguardian erfolgen. In diesem Fall kann der
-		Zugriff über Dansguardian eingeschränkt werden.
+		da die Verbindungen über DansGuardian erfolgen. In diesem Fall kann der
+		Zugriff über DansGuardian eingeschränkt werden.
 	  </para>
 	</section>
 
@@ -2054,7 +2063,7 @@ univention-config-registry set squid/webports="80 443"
 
 	  <caution>
 		  <para>
-		Um zur verhindern, dass nicht authorisierte Benutzer trotzdem Webseiten abrufen können,
+		Um zur verhindern, dass nicht autorisierte Benutzer trotzdem Webseiten abrufen können,
 		sind weitere Maßnahmen erforderlich, damit diese Benutzer nicht am Proxy-Server vorbei auf
 		das Internet zugreifen können. Dies kann z.B. erreicht werden,
 		in dem in der Firewall alle HTTP-Anfragen mit Ausnahme des Proxys unterbunden werden.
@@ -2063,31 +2072,31 @@ univention-config-registry set squid/webports="80 443"
 
 	  <para>
 		Proxy-Authentifizierung und die damit erst mögliche Überprüfung der Gruppenzugehörigkeiten
-		muss zuerst aktiviert werden. Dafür werden drei verschiedene Mechanismen angeboten: 
+		muss zuerst aktiviert werden. Dafür werden drei verschiedene Mechanismen angeboten:
 
 		<itemizedlist>
 		  <listitem><simpara>
 			Die Authentifizierung erfolgt direkt gegen den LDAP-Server. Dazu muss die
-			&ucsUCRV; <envar>squid/basicauth</envar> auf <emphasis>yes</emphasis> gesetzt werden und
+			&ucsUCRV; <envar>squid/basicauth</envar> auf <literal>yes</literal> gesetzt werden und
 			Squid neu gestartet werden.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			Die Authentifizierung wird über die NTLM-Schnittstelle durchgeführt. Benutzer, die an
 			einem Windows-Client angemeldet sind, müssen dann beim Zugriff auf den Proxy keine
-			weitere Authentifizierung durchführen. Um NTLM-Authentifizierung zu aktivieren muss die 
-			&ucsUCRV; <envar>squid/ntlmauth</envar> auf <emphasis>yes</emphasis> gesetzt werden und
+			weitere Authentifizierung durchführen. Um NTLM-Authentifizierung zu aktivieren muss die
+			&ucsUCRV; <envar>squid/ntlmauth</envar> auf <literal>yes</literal> gesetzt werden und
 			Squid neu gestartet werden.
 		  </simpara></listitem>
 
 		  <listitem><simpara>
 			Die Authentifizierung erfolgt über Kerberos. Benutzer, die an einem Windows-Client
-			angemeldet sind, der Mitglied einer Samba 4-Domäne ist, authentifzieren sich am Proxy mit
+			angemeldet sind, der Mitglied einer Samba 4-Domäne ist, authentifizieren sich am Proxy mit
 			dem Ticket, das sie im Rahmen der Domänenanmeldung erhalten haben. Um
 			Kerberos-Authentifizierung zu aktivieren muss das Paket
-			<emphasis>univention-squid-kerberos</emphasis> auf jedem Proxyserver installiert
+			<package>univention-squid-kerberos</package> auf jedem Proxyserver installiert
 			werden. Anschließend muss die &ucsUCRV; <envar>squid/krb5auth</envar> auf
-			<emphasis>yes</emphasis> gesetzt werden und Squid neu gestartet werden.
+			<literal>yes</literal> gesetzt werden und Squid neu gestartet werden.
 		  </simpara></listitem>
 		</itemizedlist>
 	  </para>
@@ -2095,9 +2104,9 @@ univention-config-registry set squid/webports="80 443"
 	  <para>
 		Bei Verwendung von NTLM-Authentifizierung wird standardmäßig für jede HTTP-Anfrage eine NTLM-Authentifizierung durchgeführt. Wird beispielsweise die
 		Webseite <uri>http://www.univention.de</uri> aufgerufen, werden neben der eigentlichen
-		HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifierung kann
+		HTML-Seite auch weitere Unterseiten und Bilder nachgeladen. Die NTLM-Authentifizierung kann
 		domänenbezogenen zwischengespeichert werden: Wird die &ucsUCRV;
-		<envar>squid/ntlmauth/keepalive</envar> auf <emphasis>yes</emphasis> gesetzt, wird für
+		<envar>squid/ntlmauth/keepalive</envar> auf <literal>yes</literal> gesetzt, wird für
 		nachgelagerte HTTP-Anfragen derselben Domäne keine weitere NTLM-Authentifizierung
 		durchgeführt.
 	  </para>
@@ -2110,21 +2119,21 @@ univention-config-registry set squid/webports="80 443"
 	</section>
 
 	<section id="proxy:contentfilter">
-	  <title>Filterung/Prüfung von Webinhalten mit Dansguardian</title>
+	  <title>Filterung/Prüfung von Webinhalten mit DansGuardian</title>
 	  <para>
-		Dansguardian nimmt Webseiten-Anforderungen aus dem Netzwerk entgegen und
+		DansGuardian nimmt Webseiten-Anforderungen aus dem Netzwerk entgegen und
 		prüft, ob diese Zugriffe erlaubt sind. Falls ja, wird die
-		Anfrage an den Proxy-Server Squid weitergeleitet. Dansguardian erlaubt
+		Anfrage an den Proxy-Server Squid weitergeleitet. DansGuardian erlaubt
 		beispielsweise die Sperrung einzelner Dateiarten und -endungen oder des
 		Zugriffs auf Webseiten oder Domains.
 	  </para>
 	  <figure id="net-dansguardian">
-		<title>Sperrung einer Web-Seite durch Dansguardian</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/dansguardian_DE.png"/>
+		<title>Sperrung einer Web-Seite durch DansGuardian</title>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/dansguardian_DE.png"/>
 	  </figure>
 	  <para>
 		Angeforderte Dateien können außerdem auf Viren überprüft werden. Dabei kommt
-		in der Standardeinstellung der freie Virenscanner <emphasis>Clamav</emphasis> zum
+		in der Standardeinstellung der freie Virenscanner <application>ClamAV</application> zum
 		Einsatz. Die Integration weiterer Virenscanner ist möglich. Dies ist in der
 		erweiterten Netzwerk-Dokumentation beschrieben <biblioref linkend="ext-doc-net"/>.
 	  </para>
@@ -2133,9 +2142,9 @@ univention-config-registry set squid/webports="80 443"
 		  Der direkte Zugriff auf den Proxy-Server Squid
 		  ist hierbei auf Zugriffe vom lokalen Rechner ('localhost')
 		  eingeschränkt. Anwender, die auf dem System arbeiten, auf dem Squid und
-		  Dansguardian installiert sind, haben so die Möglichkeit, die
+		  DansGuardian installiert sind, haben so die Möglichkeit, die
 		  Filterfunktionen zu umgehen, indem Sie direkt auf Squid zugreifen. Der
-		  Web-Proxy und Dansguardian sollten deshalb nur auf
+		  Web-Proxy und DansGuardian sollten deshalb nur auf
 		  dedizierten Systemen installiert werden, auf denen Anwender sich nicht
 		  anmelden können.
 		  </para>
@@ -2147,16 +2156,16 @@ univention-config-registry set squid/webports="80 443"
 	  <para>
 		Das Filtern von Web-Inhalten und der Virenscanner können getrennt voneinander
 		konfiguriert werden. Um den Inhaltsfilter zu deaktivieren, muss die
-		&ucsUCRV; <envar>squid/contentscan</envar> auf <emphasis>no</emphasis> gesetzt und Squid neu gestartet
+		&ucsUCRV; <envar>squid/contentscan</envar> auf <literal>no</literal> gesetzt und Squid neu gestartet
 		werden. Um den Virenscanner abzuschalten, ist
-		&ucsUCRV; <envar>squid/virusscan</envar> auf <emphasis>no</emphasis> zu setzen. Ist keine
-		der beiden Variablen auf <emphasis>yes</emphasis> gesetzt, wird Dansguardian nicht
-		verwendet. Nach Änderungen an den Variablen muss Squid und - sofern installiert - Dansguardian neu gestartet werden.
+		&ucsUCRV; <envar>squid/virusscan</envar> auf <literal>no</literal> zu setzen. Ist keine
+		der beiden Variablen auf <literal>yes</literal> gesetzt, wird DansGuardian nicht
+		verwendet. Nach Änderungen an den Variablen muss Squid und - sofern installiert - DansGuardian neu gestartet werden.
 	  </para>
 	</section>
 
 	<section id="proxy:contentfilter-configuration">
-	  <title>Definition von Inhaltsfiltern für Dansguardian</title>
+	  <title>Definition von Inhaltsfiltern für DansGuardian</title>
 	  <para>
 		Webinhalte können anhand von Dateiendungen, MIME-Typen, Webseiten sowie einzelnen URLs
 		gefiltert werden. Es ist dabei möglich, einzelne Rechner oder Nutzer aus der Filterung
@@ -2166,10 +2175,10 @@ univention-config-registry set squid/webports="80 443"
 	  <para>
 		Die Filterfunktion kann über die folgenden &ucsUCR;-Variablen konfiguriert
 		werden. Sollen dabei mehrere Werte angegeben werden, sind diese jeweils durch
-		Leerzeichen zu trennen. Die Filterung wird bei Dansguardian auf Basis von
+		Leerzeichen zu trennen. Die Filterung wird bei DansGuardian auf Basis von
 		Gruppenzugehörigkeiten durchgeführt, d.h. es können pro Gruppe verschiedene
 		Regeln definiert und dadurch verschiedene Berechtigungen beim Zugriff auf das Web
-		realisiert werden. Welche Gruppen von Dansguardian betrachtet werden,
+		realisiert werden. Welche Gruppen von DansGuardian betrachtet werden,
 		wird in der &ucsUCRV; <envar>dansguardian/groups</envar> definiert.
 	  </para>
 
@@ -2181,7 +2190,7 @@ univention-config-registry set squid/webports="80 443"
 	  </para>
 
 	  <para>
-		Gruppenänderungen werden erst nach einem Neustart von Dansguardian wirksam, entweder durch
+		Gruppenänderungen werden erst nach einem Neustart von DansGuardian wirksam, entweder durch
 		das <guimenu>Systemdienste</guimenu>-Modul der &ucsUMC; oder auf der Kommandozeile durch den
 		Befehl:
 	  </para>
@@ -2199,7 +2208,7 @@ dansguardian -g
 
 	  <para>
 		Die Variablen zur Definition der Filterregeln enthalten den
-		Gruppennamen, welcher in der folgenden Liste durch <emphasis>&lt;group&gt;</emphasis> ersetzt
+		Gruppennamen, welcher in der folgenden Liste durch <emphasis><replaceable>group</replaceable></emphasis> ersetzt
 		wird.
 	  </para>
 
@@ -2218,20 +2227,20 @@ dansguardian -g
 			<tbody>
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/extensions</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/extensions</envar>
 				</entry>
 				<entry>
 				  Dateien mit den angegebenen Dateiendungen dürfen nicht heruntergeladen werden. Der
 				  Trennpunkt muss dabei mit angegeben werden. Ist diese Variable leer, werden
 				  Standardwerte verwendet. Um alle Dateiendungen zu erlauben, muss die Variable auf
 				  ' ' gesetzt werden (Zeichenkette mit einem Leerzeichen). Beispiel:
-				  <emphasis>'.doc .xls .exe'</emphasis>.
+				  <userinput>'.doc .xls .exe'</userinput>.
 				</entry>
 			  </row>
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/mimetypes</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/mimetypes</envar>
 				</entry>
 				<entry>
 				  Dateien mit dem angegebenen MIME-Type dürfen nicht heruntergeladen werden. Der
@@ -2246,17 +2255,17 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/sites</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/sites</envar>
 				</entry>
 				<entry>
 				  Hiermit können komplette Webseiten gesperrt werden. Beispiel:
-				  <emphasis>illegal-example-website.com</emphasis>
+				  <uri>illegal-example-website.com</uri>
 				</entry>
 			  </row>
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/groups/&lt;group&gt;/banned/urls</envar>
+				  <envar>dansguardian/groups/<replaceable>group</replaceable>/banned/urls</envar>
 				</entry>
 				<entry>
 				  Im Gegensatz zum vorherigen Parameter können hiermit einzelne URLs von Webseiten
@@ -2266,19 +2275,19 @@ dansguardian -g
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/&lt;group&gt;/exception/urls</envar>
+				  <envar>dansguardian/<replaceable>group</replaceable>/exception/urls</envar>
 				</entry>
 				<entry>
-				  Der Zugriff auf die hier angegebenen URLs wird nicht durch Dansguardian geprüft.
+				  Der Zugriff auf die hier angegebenen URLs wird nicht durch DansGuardian geprüft.
 				</entry>
 			  </row>
 
 			  <row>
 				<entry>
-				  <envar>dansguardian/&lt;group&gt;/exception/sites</envar>
+				  <envar>dansguardian/<replaceable>group</replaceable>/exception/sites</envar>
 				</entry>
 				<entry>
-				  Der Zugriff auf die hier angegebenen Webseiten wird nicht durch Dansguardian geprüft.
+				  Der Zugriff auf die hier angegebenen Webseiten wird nicht durch DansGuardian geprüft.
 				</entry>
 			  </row>
 
@@ -2312,7 +2321,7 @@ dansguardian -g
 	  <caution>
 		  <para>
 		Die Definition einer Ausnahmeregel bei Inhaltsfiltern mit
-		<envar>dansguardian/&lt;group&gt;/exception/*</envar> führt dazu, dass diese auch von einem
+		<envar>dansguardian/<replaceable>group</replaceable>/exception/*</envar> führt dazu, dass diese auch von einem
 		Virenscan ausgenommen werden.
 		  </para>
 	  </caution>

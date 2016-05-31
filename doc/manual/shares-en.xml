@@ -1,5 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="shares::general">
-  <title>Fileshare management</title>
+  <title>File share management</title>
   <para>
 	UCS supports the central management of directory shares. A share registered in the &ucsUMC; is
 	created on an arbitrary UCS server system as part of the UCS domain replication.
@@ -17,10 +27,10 @@
 
   <para>
 	To be able to use access control lists on a share, the underlying Linux file system must support
-	POSIX ACLs. In UCS the file systems ext3, ext4 and XFS support POSIX ACLs. The Samba
+	POSIX ACLs. In UCS the file systems <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and <systemitem class="filesystem">XFS</systemitem> support POSIX ACLs. The Samba
 	configuration also allows storing DOS file attributes in extended attributes of the Unix file
 	system. To use extended attributes, the partition must be mounted using the mount option
-	<emphasis>user_xattr</emphasis>.
+	<option>user_xattr</option>.
   </para>
 
   <section id="shares::permissions"><title>Access rights to data in shares</title>
@@ -59,11 +69,11 @@
 
   <para>
 	Access control lists allow even more complex permission models.
-	The configuration of ACLs is described in the Univention SDB <biblioref linkend="sdb-acls"/>.
+	The configuration of ACLs is described in <u:sdb>1042</u:sdb>.
   </para>
   <para>
 	In the Unix permission model - and thus under UCS - write permission
-	is not sufficient to change the permissions of a file. Tis iss limited
+	is not sufficient to change the permissions of a file. This is limited
 	to the owner/owner group of a file. In contrast, under Microsoft Windows
 	all users with write permissions also have the permission to change
 	the permissions. This scheme can be adjusted for CIFS shares (see
@@ -107,8 +117,8 @@ When adding/editing/deleting a share, it is entered, modified or removed
 in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 </para>
 
-<figure><title>Creating a share in UMC</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/projekt-freigabe_EN.png"/>
+<figure id="shares:umc"><title>Creating a share in UMC</title>
+ <graphic scalefit="1" width="80%" fileref="illustrations33/projekt-freigabe_EN.png"/>
 </figure>
 
 <table>
@@ -136,7 +146,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>Host</entry>
 		<entry>
-		  The server where the share is located. 
+		  The server where the share is located.
 		  All of the domain controller master/backup/slave computers and &ucsMember;s
 		  entered in the LDAP directory for the domain are available for selection which
 		  are entered in a DNS forward lookup zone in the LDAP directory. This setting
@@ -154,13 +164,13 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 			server.
 		  </para>
 		  <para>
-			If the &ucsUCRV; <envar>listener/shares/rename</envar> is set to <emphasis>yes</emphasis>, the
+			If the &ucsUCRV; <envar>listener/shares/rename</envar> is set to <literal>yes</literal>, the
 			contents of the existing directory are moved when the path is
 			modified.
 		  </para>
 		  <para>
-			No shares can be created in and below <filename>/proc</filename>, <filename>/tmp</filename>,
-			<filename>/root</filename>, <filename>/dev</filename> and <filename>/sys</filename> and no files can be moved there.
+			No shares can be created in and below <filename class="directory">/proc</filename>, <filename class="directory">/tmp</filename>,
+			<filename class="directory">/root</filename>, <filename class="directory">/dev</filename> and <filename class="directory">/sys</filename> and no files can be moved there.
 		  </para>
 		</entry>
 	  </row>
@@ -233,12 +243,12 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 			In the NFS standard procedure, identification of users is achieved via user
 			IDs. To prevent a local root user from working with root permissions on
 			other shares, root access can be redirected. If this option is activated,
-			access operations are executed as user <emphasis>nobody</emphasis>.
+			access operations are executed as user <systemitem class="username">nobody</systemitem>.
 		  </para>
 
 		  <para>
-			The local group <emphasis>staff</emphasis>, which is by default empty, owns privileges which come
-			quite close to <emphasis>root</emphasis> permissions, yet this group is not considered by the
+			The local group <systemitem class="groupname">staff</systemitem>, which is by default empty, owns privileges which come
+			quite close to <systemitem class="username">root</systemitem> permissions, yet this group is not considered by the
 			redirection mechanism. This fact should be borne in mind when adding users to
 			this group.
 		  </para>
@@ -248,9 +258,9 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  <row>
 		<entry>NFS synchronisation</entry>
 		<entry>
-		  The synchronisation mode for the share. The <emphasis>sync</emphasis> setting is
+		  The synchronisation mode for the share. The <option>sync</option> setting is
 		  used to write data directly on the underlying storage device. The
-		  opposite setting - <emphasis>async</emphasis> - can improve performance but also
+		  opposite setting - <option>async</option> - can improve performance but also
 		  involves the risk of data loss if the server is shut down incorrectly.
 		</entry>
 	  </row>
@@ -316,7 +326,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>Allow anonymous read-only access with a guest user</entry>
 		<entry>
 		  Permits access to this share without a password. Every access is carried out
-		  by means of the common guest user <emphasis>nobody</emphasis>.
+		  by means of the common guest user <systemitem class="username">nobody</systemitem>.
 		</entry>
 	  </row>
 
@@ -455,7 +465,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		<entry>
 		  Names of computers which are authorised to access this Samba share. All other computers are denied
 		  access. In addition to computer names, it is also possible to specify IP or network addresses, e.g.,
-		  <command>192.168.0.0/255.255.255.0</command>.
+		  <userinput>192.168.0.0/255.255.255.0</userinput>.
 		</entry>
 	  </row>
 
@@ -726,7 +736,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Level 2 oplocks</entry>
+		<entry>Level 2 Oplocks</entry>
 		<entry>
 		  <para>When activating this option, Samba will support an extended form of Oplocks,
 		  the so-called <emphasis>opportunistic read-only locks</emphasis> or <emphasis>Level 2 Oplocks</emphasis>. Windows
@@ -752,7 +762,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 	  </row>
 
 	  <row>
-		<entry>Fake oplocks</entry>
+		<entry>Fake Oplocks</entry>
 		<entry>
 		  <para>
 			When activating this option, Samba will allow all Oplock requests irrespective
@@ -963,21 +973,21 @@ elsewhere they are hidden.
 </para>
 <para>
 To be able to utilise the functions of a distributed file system, the
-&ucsUCRV; <envar>samba/enable-msdfs</envar> has to be set to <emphasis>yes</emphasis> on a file
+&ucsUCRV; <envar>samba/enable-msdfs</envar> has to be set to <literal>yes</literal> on a file
 server. Afterwards Samba has to be restarted.
 </para>
 <para>
-For creating a reference named <emphasis>zufb</emphasis> from server <emphasis>sa</emphasis>
-within the share <emphasis>fa</emphasis> to share <emphasis>fb</emphasis> on the server
-<emphasis>sb</emphasis>, the following command has to be
-executed in directory <emphasis>fa</emphasis>:
+For creating a reference named <filename class="symlink">tofb</filename> from server <systemitem class="server">sa</systemitem>
+within the share <filename class="directory">fa</filename> to share <filename class="directory">fb</filename> on the server
+<systemitem class="server">sb</systemitem>, the following command has to be
+executed in directory <filename class="directory">fa</filename>:
 </para>
 <programlisting language="sh">
-ln -s msdfs:sb\\fb zufb
+ln -s msdfs:sb\\fb tofb
 </programlisting>
 <para>
-This reference will be displayed on every client capable of MSDFS
-(e.g. Windows 2000 and XP) as a regular directory.
+	This reference will be displayed on every client capable of <acronym>MSDFS</acronym>
+	(e.g. <systemitem class="osname">Windows 2000</systemitem> and <systemitem class="osname">Windows XP</systemitem>) as a regular directory.
 </para>
 <caution>
 	<para>
@@ -1035,8 +1045,8 @@ Microsoft Distributed File System Tree'.
   </para>
 
   <para>
-	File system quotas can only be applied on partitions with the file systems ext2, ext3, ext4 and
-	xfs. Before filesystem quotas can be configured, the use of file system quotas needs to be
+	File system quotas can only be applied on partitions with the file systems <systemitem class="filesystem">ext2</systemitem>, <systemitem class="filesystem">ext3</systemitem>, <systemitem class="filesystem">ext4</systemitem> and
+	<systemitem class="filesystem">XFS</systemitem>. Before filesystem quotas can be configured, the use of file system quotas needs to be
 	activated per partition, see <xref linkend="shares::quota::umc"/>.
   </para>
 
@@ -1048,18 +1058,18 @@ Microsoft Distributed File System Tree'.
 	  point.
 	</para>
 
-	<figure>
+	<figure id="shares:quota">
 	  <title>Managing quota in the UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/quota-overview-en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/quota-overview-en.png"/>
 	</figure>
 
 	<para>
 	  The current quota status (activated/deactivated) is shown and can be changed with
-	  <guimenu>Activate</guimenu> and <guimenu>Deactivate</guimenu>. 
+	  <guimenu>Activate</guimenu> and <guimenu>Deactivate</guimenu>.
 	</para>
 
 	<para>
-	  If quota has been activated on a xfs root-partition, the system has to be rebooted.
+		If quota has been activated on a <systemitem class="filesystem">XFS</systemitem> root-partition, the system has to be rebooted.
 	</para>
 
   </section>
@@ -1106,7 +1116,7 @@ Microsoft Distributed File System Tree'.
 		Filesystem quotas always apply to a full partition.
 		Even if the policies are defined for shares, they are used on complete partitions. If, for
 		example, three shares are provided on one server which are all saved on the separate
-		<filename>/var</filename> partition and three different policies are configured and used,
+		<filename class="directory">/var/</filename> partition and three different policies are configured and used,
 		the most restrictive setting applies for the complete partition. If different quotas are used, it
 		is recommended to distribute the data over individual partitions.
 	  </para>
@@ -1122,7 +1132,7 @@ Microsoft Distributed File System Tree'.
 
 	<para>
 	  If no quota are needed, the evaluation can be disabled by setting the &ucsUCRV;
-	  <envar>quota/userdefault</envar> to <emphasis>no</emphasis>.
+	  <envar>quota/userdefault</envar> to <literal>no</literal>.
 	</para>
 
 	<para>

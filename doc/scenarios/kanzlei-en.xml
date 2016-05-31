@@ -1,6 +1,16 @@
-<chapter>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
+<chapter id="lawyer">
   <title>Lawyer's office</title>
-  <section>
+  <section id="lawyer:start">
 	<title>Initial situation</title>
 	<para>
 	  Hemmerlein &amp; Sons lawyer's office has a total of ten employees. The employees work
@@ -20,7 +30,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:services">
 	<title>Systems and services</title>
 	<para>
 	  UCS offers the required services and applications ``out of the box'' as a complete solution. A
@@ -31,12 +41,12 @@
 	<para>
 	  <figure id="kanzlei">
 		<title>System overview of the lawyer's office Hemmerlein and Sons</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/kanzlei_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/kanzlei_en.png"/>
 	  </figure>
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:users">
 	<title>Management of user accounts</title>
 	<para>
 	  User accounts for the ten employees are created in the &ucsUMC; web interface. Each employee
@@ -47,12 +57,12 @@
 	<para>
 	  <figure id="umc-anlegen">
 		<title>Creating a user in Univention Directory Manager</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc-benutzeranlegen_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/umc-benutzeranlegen_en.png"/>
 	  </figure>
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:windows">
 	<title>Managing the Windows computers</title>
 	<para>
 	  Samba 4 is used on the UCS system for the integration of Microsoft Windows clients. Samba 4
@@ -68,7 +78,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:storage">
 	<title>Storage management</title>
 	<para>
 	  Samba provides every user with a home directory on the UCS system as a file share via the CIFS
@@ -85,7 +95,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:sso">
   	<title>Single sign-on with a specialist legal application</title>
   	<para>
 	  The chambers access a web-based legal service. This service has its own user administration
@@ -99,7 +109,7 @@
   	</para>
   </section>
 
-  <section>
+  <section id="lawyer:print">
 	<title>Printer services</title>
 	<para>
 	  The UCS system provides print services via the CUPS software. Both network-capable printers
@@ -117,7 +127,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:groupware">
 	<title>Groupware</title>
 	<para>
 	  Zarafa4UCS, an integration of the groupware <emphasis>Zarafa Collaboration
@@ -127,22 +137,22 @@
 	</para>
 
 	<para>
-	  Virus detection including signature updates and spam filters are integrated at no additional
+	  Virus detection including signature updates and Spam filters are integrated at no additional
 	  cost.
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:proxy">
 	<title>Web proxy/web filter</title>
 	<para>
-	  UCS has an integrated web filter based on Squid and Dansguardian, which checks web traffic for
-	  viruses using the integrated virus scanner ClamAV. In this way, trojans and viruses on websites
+	  UCS has an integrated web filter based on Squid and DansGuardian, which checks web traffic for
+	  viruses using the integrated virus scanner ClamAV. In this way, Trojans and viruses on websites
 	  are identified and filtered out. Potentially dangerous files such as executable files can also
 	  be blocked.
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:backup">
 	<title>Backup</title>
 	<para>
 	  All files (both the users' files in the home directory and the legal literature files in the
@@ -152,7 +162,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="lawyer:outlook">
 	<title>Outlook</title>
 	<para>
 	  With regard to a planned merger of another office in Munich, it will be simple to install a
@@ -168,12 +178,12 @@
 
   </section>
 
-  <section>
+  <section id="lawyer:ref">
 	<title>References</title>
 	<itemizedlist>
-	  <listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-	  <listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/zarafa/"/> (Zarafa Collaboration Platform)</simpara></listitem>
-	  <listitem><simpara><ulink url="http://docs.univention.de/manual.html#windows:adtakeover"/></simpara></listitem>
+	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
+	  <listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/zarafa/"/> (Zarafa Collaboration Platform)</simpara></listitem>
+	  <listitem><simpara><ulink url="https://docs.software-univention.de/manual.html#windows:adtakeover"/></simpara></listitem>
 	</itemizedlist>
   </section>
 </chapter>

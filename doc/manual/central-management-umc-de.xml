@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="central:general">
 <title>Univention Management Console</title>
 
@@ -49,15 +59,15 @@
 		<title>Anmeldung</title>
 		<para>
 			&ucsUMC; verwendet für die Darstellung der Web-Oberfläche zahlreiche
-			Javascript- und CSS-Funktionen. Cookies müssen im Browser zugelassen sein.
+			JavaScript- und CSS-Funktionen. Cookies müssen im Browser zugelassen sein.
 			Die folgenden Browser werden unterstützt:
 		</para>
 		<itemizedlist>
-			<listitem><simpara>Chrome ab Version 14</simpara></listitem>
-			<listitem><simpara>Firefox ab Version 3.6 (die Verwendung von Version 10 oder höher wird aus Performancegründen empfohlen)</simpara></listitem>
-			<listitem><simpara>Internet Explorer ab Version 8 (die Verwendung von Version 9 oder höher wird aus Performancegründen empfohlen)</simpara></listitem>
-			<listitem><simpara>Safari (auf dem iPad 2, iOS Version 6.1.2)</simpara></listitem>
-			<listitem><simpara>Android-Browser (ab Version 4.1)</simpara></listitem>
+			<listitem><simpara><application>Chrome</application> ab Version 14</simpara></listitem>
+			<listitem><simpara><application>Firefox</application> ab Version 3.6 (die Verwendung von Version 10 oder höher wird aus Performancegründen empfohlen)</simpara></listitem>
+			<listitem><simpara><application>Internet Explorer</application> ab Version 8 (die Verwendung von Version 9 oder höher wird aus Performancegründen empfohlen)</simpara></listitem>
+			<listitem><simpara><application>Safari</application> (auf dem iPad 2, iOS Version 6.1.2)</simpara></listitem>
+			<listitem><simpara><application>Android-Browser</application> (ab Version 4.1)</simpara></listitem>
 		</itemizedlist>
 		<para>
 			Auf älteren Browsern können Darstellungsprobleme auftreten.
@@ -87,7 +97,7 @@
 		</para>
 		<figure id="umc-login">
 			<title>UMC-Anmeldemaske</title>
-			<graphic scalefit="1" width="50%" fileref="illustrations/umc_login_de.png"/>
+			<graphic scalefit="1" width="50%" fileref="illustrations33/umc_login_de.png"/>
 		</figure>
 		<para>
 			Nach Aufruf der URL erscheint die Anmeldemaske, in der
@@ -96,7 +106,7 @@
 		</para>
 		<itemizedlist>
 		  <listitem><simpara>
-			Bei Anmeldung mit dem lokalen <emphasis>root</emphasis>-Konto des Systems (siehe <xref
+			Bei Anmeldung mit dem lokalen <systemitem class="username">root</systemitem>-Konto des Systems (siehe <xref
 			linkend="computers:rootaccount"/>) werden nur die System-Module der &ucsUMC; angezeigt.
 		  </simpara></listitem>
 
@@ -142,7 +152,7 @@
 		</para>
 		<figure id="umc-license">
 			<title>Anzeige der UCS-Lizenz</title>
-			<graphic scalefit="1" width="40%" fileref="illustrations/umc_ffpu_de.png"/>
+			<graphic scalefit="1" width="40%" fileref="illustrations33/umc_ffpu_de.png"/>
 		</figure>
 
 		<para>
@@ -184,7 +194,7 @@
 
 		<figure id="umc-modules">
 			<title>Modulübersicht</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/umc_modules_de.png"/>
+			<graphic scalefit="1" width="80%" fileref="illustrations33/umc_modules_de.png"/>
 		</figure>
 		<para>
 			Die inhaltlichen Eigenschaften/Konfigurationsmöglichkeiten der
@@ -251,7 +261,7 @@
 			</para>
 			<figure id="umc-search">
 			<title>Suche nach Benutzern</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations/umc_user_de.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations33/umc_user_de.png"/>
 			</figure>
 		</section>
 
@@ -334,7 +344,7 @@
 		werden.
 	  </para>
 	</section>
-	
+
 	<section id="central-management-umc:feedback">
 		<title>Feedback zur UMC und zu UCS</title>
 	<para>
@@ -392,7 +402,7 @@
 	</para>
 	<figure id="umc-navigation">
 		<title>Navigation im LDAP-Verzeichnis</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/umc_navigation_de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/umc_navigation_de.png"/>
 	</figure>
 	<para>
 		In der linken Bildschirmhälfte ist das LDAP-Verzeichnis in einer
@@ -414,7 +424,7 @@
 	</para>
 	<figure id="umc-container-edit">
 		<title>Bearbeiten von LDAP-Container-Einstellungen</title>
-		<graphic scalefit="1" width="20%" fileref="illustrations/umc_navigation_edit_de.png"/>
+		<graphic scalefit="1" width="20%" fileref="illustrations33/umc_navigation_edit_de.png"/>
 	</figure>
 	<para>
 		Durch Rechtsklick auf ein Element der Baumstruktur können über
@@ -493,7 +503,7 @@
 				 <guimenu>Benötigte Objektklassen</guimenu>: Hier können LDAP-Objektklassen
 				 angegeben werden, die ein Objekt besitzen muss, damit die Richtlinie auf dieses
 				 Objekt greift. Wenn etwa eine Benutzerrichtlinie nur für Windows-Umgebungen
-				 relevant ist, könnte hier die Objektklasse <emphasis>sambaSamAccount</emphasis>
+				 relevant ist, könnte hier die Objektklasse <classname>sambaSamAccount</classname>
 				 erzwungen werden.
 				</simpara>
 			   </listitem>
@@ -616,7 +626,7 @@
 
 	<figure id="umc-extended-attr">
 	  <title>Erweitertes Attribut zur Verwaltung von KFZ-Kennzeichen</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/umc_extended_attribute_de.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/umc_extended_attribute_de.png"/>
 	</figure>
 
 	<para>
@@ -650,7 +660,7 @@
 			  Der angegebene Attributname ist bei der Verwendung der Kommandozeilenschnittstelle
 			  &ucsUDM; zu verwenden. Beim Anlegen des erweiterten Attributs wird hier automatisch
 			  <emphasis>Eindeutiger Name</emphasis> von der Karteikarte <emphasis>Allgemein</emphasis>
-			übernommen und kann nachträglich modifiziert werden. 
+			übernommen und kann nachträglich modifiziert werden.
 			</entry>
 		  </row>
 		  <row>
@@ -709,7 +719,7 @@
 			  erweitertes Attribut kann auch für mehrere Module gelten.
 			</entry>
 		  </row>
-		  
+
 		  <row>
 			<entry>Benötigte Optionen/Objektklassen</entry>
 			<entry>
@@ -720,7 +730,7 @@
 			  Attribut angezeigt bzw. editierbar ist.
 			</entry>
 		  </row>
-		  
+
 		  <row>
 			<entry>Hook-Klasse</entry>
 			<entry>
@@ -757,7 +767,7 @@
 
 				<para>
 				  Für erweiterte Attribute stehen mit der Objektklasse
-				  <emphasis>univentionFreeAttributes</emphasis> vordefinierte
+				  <classname>univentionFreeAttributes</classname> vordefinierte
 				  LDAP-Schema-Erweiterungen zur Verfügung. Weitere Hinweise finden sich in <xref
 				  linkend="domain:ldap:extensions"/>.
 				</para>
@@ -821,7 +831,7 @@
 				  werden können, kann diese Option aktiviert werden, um das erweiterte Attribut aus
 				  der Liste der möglichen Sucheigenschaften zu entfernen.
 				</para>
-			  
+
 				<para>
 				  Dies ist nur in Sonderfällen nötig.
 				</para>
@@ -842,7 +852,7 @@
 				<para>
 				  Fortlaufend vergebene Positionsnummern führen dazu, dass die Attribute jeweils
 				  abwechselnd links und rechts zweispaltig angeordnet werden. Ansonsten beginnt die
-				  Plazierung in der linken Spalte. Weisen erweiterte Attribute die gleiche
+				  Platzierung in der linken Spalte. Weisen erweiterte Attribute die gleiche
 				  Positionsnummer auf, ist deren Reihenfolge zufällig.
 				</para>
 			  </entry>
@@ -856,7 +866,7 @@
 				konfiguriert, wird dessen Eingabefeld von diesem erweiterten Attribut
 				überschrieben. Der UDM-Attributname kann mit dem Befehl
 				<command>univention-directory-manager</command> ermittelt werden (siehe <xref
-				linkend="central:udm"/>). Es ist zu beachten, daß diese Option bei Pflichtfeldern zu
+				linkend="central:udm"/>). Es ist zu beachten, dass diese Option bei Pflichtfeldern zu
 				Problemen führen kann.
 			  </entry>
 			</row>
@@ -873,7 +883,7 @@
 			<row>
 			  <entry>Name der Karteikarte</entry>
 			  <entry>
-				<para> 
+				<para>
 				  Der Name der Karteikarte in der &ucsUMC;, auf der das erweiterte Attribut
 				  angezeigt werden soll. Hier können auch neue Karteikarten hinzugefügt werden.
 				</para>
@@ -889,8 +899,8 @@
 			  <entry>Übersetzung des Karteikartennamens</entry>
 			  <entry>
 				Um den Namen der Karteikarte zu übersetzen, können in diesem Eingabefeld übersetzte
-				Karteikartennamen zum entsprechenden Sprachcode (z.B. <emphasis>de_DE</emphasis>
-				oder <emphasis>fr_FR</emphasis>) hinterlegt werden.
+				Karteikartennamen zum entsprechenden Sprachcode (z.B. <literal>de_DE</literal>
+				oder <literal>fr_FR</literal>) hinterlegt werden.
 			  </entry>
 			</row>
 
@@ -900,7 +910,7 @@
 				Ist diese Option aktiviert, wird die betreffende Karteikarte überschrieben, bevor
 				erweiterte Attribute darauf platziert werden. Mit Hilfe dieser Option können alle
 				vorhandenen Eingabefelder auf einer vorgegebenen Karteikarte ausgeblendet werden. Es
-				ist zu beachten, daß diese Option bei Pflichtfeldern zu Problemen führen
+				ist zu beachten, dass diese Option bei Pflichtfeldern zu Problemen führen
 				kann. Verwendet die zu überschreibende Karteikarte Übersetzungen muss die
 				überschreibende Karteikarte ebenfalls identische Übersetzungen mitbringen.
 			  </entry>
@@ -924,7 +934,7 @@
 
 				<para>
 				  Wird bei einem erweiterten Attribute kein Gruppenname angegeben, wird das
-				  erweiterte Attribut oberhalb der ersten Gruppe plaziert.
+				  erweiterte Attribut oberhalb der ersten Gruppe platziert.
 				</para>
 			  </entry>
 			</row>
@@ -933,13 +943,13 @@
 			  <entry>Übersetzung des Gruppennamens</entry>
 			  <entry>
 				Um den Namen der Gruppe zu übersetzen, können in diesem Eingabefeld übersetzte
-				Gruppennamen zum entsprechenden Sprachcode (z.B. <emphasis>de_DE</emphasis> oder
-				<emphasis>fr_FR</emphasis>) hinterlegt werden.
+				Gruppennamen zum entsprechenden Sprachcode (z.B. <literal>de_DE</literal> oder
+				<literal>fr_FR</literal>) hinterlegt werden.
 			  </entry>
 			</row>
 
 			<row>
-			  <entry>Gruppen-Ordnungsnnummer</entry>
+			  <entry>Gruppen-Ordnungsnummer</entry>
 			  <entry>
 				Sollen mehrere Gruppen auf einer Karteikarte verwaltet werden, kann anhand dieser
 				Positionsnummer die Darstellungsreihenfolge beeinflusst werden. Sie werden in
@@ -970,19 +980,19 @@
 				</para>
 
 				<para>
-				  Neben Standard-Syntaxdefinitionen für Zeichenketten (<emphasis>string</emphasis>),
-				  Zahlen (<emphasis>integer</emphasis>) gibt es drei Möglichkeiten einen binären
-				  Zustand auszudrücken: Die Syntax <emphasis>TrueFalse</emphasis> wird auf
-				  LDAP-Ebene durch die Zeichenketten <emphasis>true</emphasis> und
-				  <emphasis>false</emphasis> abgebildet, die Syntax
-				  <emphasis>TrueFalseUpper</emphasis> verwendet dagegen die Werte
-				  <emphasis>TRUE</emphasis> und <emphasis>FALSE</emphasis>. Die Syntax
-				  <emphasis>boolean</emphasis> dagegen speichert keinen Wert bzw. die Zeichenkette
-				  <emphasis>1</emphasis>.
+				  Neben Standard-Syntaxdefinitionen für Zeichenketten (<classname>string</classname>),
+				  Zahlen (<classname>integer</classname>) gibt es drei Möglichkeiten einen binären
+				  Zustand auszudrücken: Die Syntax <classname>TrueFalse</classname> wird auf
+				  LDAP-Ebene durch die Zeichenketten <literal>true</literal> und
+				  <literal>false</literal> abgebildet, die Syntax
+				  <classname>TrueFalseUpper</classname> verwendet dagegen die Werte
+				  <literal>TRUE</literal> und <literal>FALSE</literal>. Die Syntax
+				  <classname>boolean</classname> dagegen speichert keinen Wert bzw. die Zeichenkette
+				  <literal>1</literal>.
 				</para>
 
 				<para>
-				  Standardmäßig wird die Syntax <emphasis>string</emphasis> verwendet. Eine
+				  Standardmäßig wird die Syntax <classname>string</classname> verwendet. Eine
 				  Übersicht über die weiteren verfügbaren Syntax-Definitionen und eine Anleitung zur
 				  Integration eigener Syntaxen sind in <xref linkend="developer-reference"/> zu
 				  finden.
@@ -1003,7 +1013,7 @@
 			  <entry>Mehrfachwert</entry>
 			  <entry>
 				Diese Option legt fest, ob ein einzelner Wert oder mehrere Werte in der Eingabemaske
-				eingetragen werden können. Die Einstellung muß zur Schema-Definition passen, in der
+				eingetragen werden können. Die Einstellung muss zur Schema-Definition passen, in der
 				für das verwendete LDAP-Attributes festgelegt ist, ob nur eine oder mehrere
 				Instanzen des Attributs an einem LDAP-Objekt verwendet werden dürfen.
 			  </entry>
@@ -1115,7 +1125,7 @@
 			</thead>
 			<tbody>
 				<row>
-					<entry>Zu Standard-&lt;Objekttyp&gt;-Container hinzufügen</entry>
+					<entry>Zu Standard-<replaceable>Objekttyp</replaceable>-Container hinzufügen</entry>
 					<entry>
 						Ist diese Option aktiviert, wird der Container/die
 						Organisationseinheit als Standard-Container für einen bestimmten
@@ -1244,7 +1254,7 @@
 		Skripten und zur Integration in andere Programme.
 	</para>
 	<para>
-		&ucsUDM; wird als Benutzer <emphasis>root</emphasis> auf dem &ucsMaster; mit dem
+		&ucsUDM; wird als Benutzer <systemitem class="username">root</systemitem> auf dem &ucsMaster; mit dem
 		Befehl <command>univention-directory-manager</command> (Kurzform <command>udm</command>)
 		aufgerufen
 	</para>
@@ -1274,11 +1284,11 @@ Available Modules are:
 		Für jedes Modul existieren bis zu fünf Operationen:
 	</para>
 	<itemizedlist>
-		<listitem><simpara><emphasis>list</emphasis> führt alle existierenden Objekte dieses Typs auf</simpara></listitem>
-		<listitem><simpara><emphasis>create</emphasis> legt ein neues Objekt an</simpara></listitem>
-		<listitem><simpara><emphasis>modify</emphasis> zum Bearbeiten existierender Objekte</simpara></listitem>
-		<listitem><simpara><emphasis>remove</emphasis> löscht ein Objekt</simpara></listitem>
-		<listitem><simpara><emphasis>move</emphasis> zum Verschieben an eine andere Position im LDAP-Verzeichnis</simpara></listitem>
+		<listitem><simpara><option>list</option> führt alle existierenden Objekte dieses Typs auf</simpara></listitem>
+		<listitem><simpara><option>create</option> legt ein neues Objekt an</simpara></listitem>
+		<listitem><simpara><option>modify</option> zum Bearbeiten existierender Objekte</simpara></listitem>
+		<listitem><simpara><option>remove</option> löscht ein Objekt</simpara></listitem>
+		<listitem><simpara><option>move</option> zum Verschieben an eine andere Position im LDAP-Verzeichnis</simpara></listitem>
 	</itemizedlist>
 	<para>
 		Die mögliche Optionen eines UDM-Moduls und den darauf anwendbaren Operationen können
@@ -1315,11 +1325,11 @@ move options:
 		folgende Befehl aus:
 	</para>
 	<programlisting language="sh">
-univention-directory-manager &lt;Kategorie/Modulname&gt;
+univention-directory-manager <replaceable>Kategorie/Modulname</replaceable>
 	</programlisting>
 	<para>
 		Dabei werden auch die Attribute des Moduls angezeigt. Bei der Operation
-		<emphasis>create</emphasis> werden mit <command>(*)</command> die Attribute markiert, die beim
+		<option>create</option> werden mit <command>(*)</command> die Attribute markiert, die beim
 		Anlegen eines neuen Objektes zwingend angegeben werden müssen.
 	</para>
 	<para>
@@ -1364,7 +1374,7 @@ univention-directory-manager users/user remove \
 				Um anzugeben, an welcher LDAP-Position ein Objekt angelegt werden
 				soll, wird der <option>--position</option>-Parameter verwendet. Ohne den
 				<option>--position</option>-Parameter wird das Objekt unterhalb der LDAP-Basis
-				angelegt! Bei der Operation <emphasis>move</emphasis> wird mit diesem Parameter
+				angelegt! Bei der Operation <option>move</option> wird mit diesem Parameter
 				angegeben, an welche Stelle ein Objekt verschoben werden soll, z.B:
 			</para>
 			<programlisting language="sh">
@@ -1392,9 +1402,9 @@ univention-directory-manager users/user create \
 			<para>
 				<option>--option</option> definiert die LDAP-Objektklassen eines Objekts.
 				Wird bei einem Benutzerobjekt beispielsweise
-				nur <emphasis>posix</emphasis> und <emphasis>person</emphasis> als Option übergeben, so kann für
-				diesen Benutzer keine <emphasis>mailPrimaryAddress</emphasis> angegeben werden, da dieses
-				Attribut Teil der Option <emphasis>mail</emphasis> ist:
+				nur <classname>posix</classname> und <classname>person</classname> als Option übergeben, so kann für
+				diesen Benutzer keine <property>mailPrimaryAddress</property> angegeben werden, da dieses
+				Attribut Teil der Option <classname>mail</classname> ist:
 			</para>
 			<programlisting language="sh">
 univention-directory-manager users/user modify \
@@ -1417,7 +1427,7 @@ univention-directory-manager users/user modify \
 				Einstellungen aus der Richtlinie für das Objekt angewendet, z.B:
 			</para>
 			<programlisting language="sh">
-univention-directory-manager &lt;Kategorie/Modulname&gt; &lt;Operation&gt; \
+univention-directory-manager <replaceable>Kategorie/Modulname</replaceable> <replaceable>Operation</replaceable> \
     --policy-reference="cn=vertrieb,cn=pwhistory,"\
 "cn=users,cn=policies,dc=firma,dc=de"
 			</programlisting>
@@ -1491,7 +1501,7 @@ univention-directory-manager users/user list \
 		<para>
 		  Die Suche nach Objekten mit <option>--filter</option> kann auch auf eine Position im LDAP-Verzeichnis
 		  eingeschränkt werden, in diesem Fall auf alle Benutzer im Container
-		  <emphasis>cn=bremen,cn=users,dc=example,dc=com</emphasis>:
+		  <uri>cn=bremen,cn=users,dc=example,dc=com</uri>:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user list \
@@ -1500,7 +1510,7 @@ univention-directory-manager users/user list \
 </programlisting>
 
 		<para>
-		  Dieser Aufruf entfernt einen Benutzer <emphasis>user04</emphasis>:
+			Dieser Aufruf entfernt einen Benutzer <systemitem class="username">user04</systemitem>:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user remove \
@@ -1510,7 +1520,7 @@ univention-directory-manager users/user remove \
 		<para>
 		  Eine Firma hat zwei Standorte mit eigens dafür angelegten Containern. Mit dem folgenden
 		  Befehl wird ein Benutzer aus dem Container für den Standort "Hamburg" in den Container für
-		  den Standort "Bremen" verschoeben:
+		  den Standort "Bremen" verschoben:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager users/user move \
@@ -1522,8 +1532,8 @@ univention-directory-manager users/user move \
 	  <section id="central:udm:example:groups">
 		<title>Gruppen</title>
 		<para>
-		  Anlegen einer Gruppe <emphasis>Example Users</emphasis> und Hinzufügen des Benutzers
-		  <emphasis>user01</emphasis> in diese Gruppe:
+			Anlegen einer Gruppe <systemitem class="groupname">Example Users</systemitem> und Hinzufügen des Benutzers
+		  <systemitem class="username">user01</systemitem> in diese Gruppe:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager groups/group create \
@@ -1533,7 +1543,7 @@ univention-directory-manager groups/group create \
 </programlisting>
 
 		<para>
-		  Nachträgliches Hinzufügen des Benutzers <emphasis>user02</emphasis> zur gerade angelegten
+			Nachträgliches Hinzufügen des Benutzers <systemitem class="username">user02</systemitem> zur gerade angelegten
 		  Gruppe:
 		</para>
 		<programlisting language="sh">
@@ -1550,7 +1560,7 @@ univention-directory-manager groups/group modify \
 		</caution>
 
 		<para>
-		  Nachträgliches Entfernen des Benutzers <emphasis>user01</emphasis> aus der Gruppe:
+			Nachträgliches Entfernen des Benutzers <systemitem class="username">user01</systemitem> aus der Gruppe:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager groups/group modify \
@@ -1562,9 +1572,9 @@ univention-directory-manager groups/group modify \
 	  <section id="central:udm:example:cn-policies">
 		<title>Container / Richtlinien</title>
 		<para>
-		  Dieser Aufruf legt unterhalb des Standard-Containers <emphasis>cn=computers</emphasis>
-		  einen Container <emphasis>cn=Bremen</emphasis> für die Rechnerobjekte am Firmenstandort
-		  Bremen an. Durch die zusätzliche Option <emphasis>computerPath</emphasis> wird dieser
+		  Dieser Aufruf legt unterhalb des Standard-Containers <uri>cn=computers</uri>
+		  einen Container <uri>cn=Bremen</uri> für die Rechnerobjekte am Firmenstandort
+		  Bremen an. Durch die zusätzliche Option <property>computerPath</property> wird dieser
 		  Container auch direkt als Standardcontainer für Rechnerobjekte registriert (siehe
 		  <xref linkend="central:cn-and-ous"/>):
 		</para>
@@ -1587,7 +1597,7 @@ univention-directory-manager policies/mailquota create \
 </programlisting>
 
 		<para>
-		  Diese Richtlinie wird nun an den Benutzer-Container <emphasis>cn=users</emphasis> gebunden:
+		  Diese Richtlinie wird nun an den Benutzer-Container <uri>cn=users</uri> gebunden:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager container/cn modify \
@@ -1638,7 +1648,7 @@ univention-directory-manager computers/windows create \
 		<title>Freigaben</title>
 		<para>
 		  Der folgende Befehl legt eine Freigabe <emphasis>Documentation</emphasis> auf dem Server
-		  <emphasis>fileserver.example.com</emphasis> an. Sofern
+		  <systemitem class="server">fileserver.example.com</systemitem> an. Sofern
 		  <filename class="directory">/var/shares/documentation/</filename> auf dem Server noch nicht existiert, wird
 		  es durch diesen Aufruf auch gleich angelegt.
 		</para>
@@ -1654,8 +1664,8 @@ univention-directory-manager shares/share create \
 	  <section id="central:udm:example:printer">
 		<title>Drucker</title>
 		<para>
-		  Anlegen einer Druckerfreigabe <emphasis>LaserPrinter01</emphasis> auf dem Druckserver
-		  <emphasis>printserver.example.com</emphasis>. Die Eigenschaften des Druckers sind in der
+		  Anlegen einer Druckerfreigabe <systemitem class="resource">LaserPrinter01</systemitem> auf dem Druckserver
+		  <systemitem class="server">printserver.example.com</systemitem>. Die Eigenschaften des Druckers sind in der
 		  PPD-Datei spezifiziert, deren Name relativ zum Verzeichnis
 		  <filename class="directory">/usr/share/ppd/</filename> angegeben wird. Der angebundene Drucker ist
 		  netzwerkfähig und wird über das IPP-Protokoll angebunden.
@@ -1674,8 +1684,8 @@ univention-directory-manager shares/printer create \
 
 		<note>
 			<para>
-				Im Parameter <emphasis>uri</emphasis> muss ein Leerzeichen zwischen dem Druckprotokoll
-				und dem URL-Zielpfad verwendet werden. Eine Auftstellung der Druckprotokolle findet sich
+				Im Parameter <parameter class="option">uri</parameter> muss ein Leerzeichen zwischen dem Druckprotokoll
+				und dem URL-Zielpfad verwendet werden. Eine Aufstellung der Druckprotokolle findet sich
 				in <xref linkend="print::shares"/>
 			</para>
 		</note>
@@ -1708,11 +1718,10 @@ univention-directory-manager dhcp/host create \
     --set fixedaddress="192.168.0.110" \
     --set hwaddress="ethernet 00:11:22:33:44:55"
 </programlisting>
-	  </section>
 
 		<para>
 		  Soll ein Rechnername über DNS auflösbar sein, kann mit den folgenden Befehlen eine
-		  Vorwärts- (host record) und Reverse-Auflösung (ptr record) konfiguriert werden:
+		  Vorwärts- (host record) und Reverse-Auflösung (PTR record) konfiguriert werden:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager dns/host_record create \
@@ -1727,9 +1736,9 @@ univention-directory-manager dns/ptr_record create \
     --set ptr_record="Client222.example.com."
 </programlisting>
 		<para>
-		Weitere Informationn zu DNS finden sich in <xref linkend="networks:dns"/>.
+		Weitere Informationen zu DNS finden sich in <xref linkend="networks:dns"/>.
 		</para>
-	</section>
+	  </section>
 
 	  <section id="central:udm:example:extendedattr">
 		<title>Erweiterte Attribute</title>
@@ -1738,7 +1747,7 @@ univention-directory-manager dns/ptr_record create \
 		  erweitern, siehe <xref linkend="central:extendedattrs"/>. Im folgenden Beispiel wird ein
 		  neues Attribut eingefügt, an dem pro Benutzer das KFZ-Kennzeichen des Dienstwagens
 		  gespeichert wird. Die Werte werden in einer extra für diesen Zweck vorgesehenen Objektklasse
-		  <emphasis>univentionFreeAttributes</emphasis> verwaltet:
+		  <classname>univentionFreeAttributes</classname> verwaltet:
 		</para>
 		<programlisting language="sh">
 univention-directory-manager settings/extended_attribute create \
@@ -1754,6 +1763,7 @@ univention-directory-manager settings/extended_attribute create \
     --set shortDescription="Car license"
 </programlisting>
 	  </section>
+	</section>
 </section>
 
 <section id="central:reports">
@@ -1802,7 +1812,7 @@ univention-directory-manager settings/extended_attribute create \
 
 	  <figure id="umc-report">
 		<title>Erstellen eines Reports</title>
-		<graphic scalefit="1" width="30%" fileref="illustrations/umc_report_de2.png"/>
+		<graphic scalefit="1" width="30%" fileref="illustrations33/umc_report_de2.png"/>
 	  </figure>
 
 	  <para>
@@ -1829,7 +1839,7 @@ univention-directory-manager settings/extended_attribute create \
 			Reports können auch über die Kommandozeile mit dem Programm
 			<command>univention-directory-reports</command> erstellt werden.
 			Informationen zur Verwendung des Programm können über die Option
-			<command>--help</command> abgefragt werden.
+			<option>--help</option> abgefragt werden.
 		</para>
 		<para>
 			Mit dem folgenden Befehl können beispielsweise die verfügbaren Reportvorlagen für Benutzer

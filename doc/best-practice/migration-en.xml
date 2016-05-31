@@ -1,3 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	<!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
+	%extensions;
+	%entities;
+]>
 <chapter id="bestpractice:migration">
   <title>Migration of an Active Directory domain to &ucsUCS;</title>
   <section>
@@ -324,7 +333,7 @@
 
 		<figure id="bestpractice-migrate-cifs">
 		  <title>The file share to migrate</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/cifs-migrate-en.png"/>
+		  <graphic scalefit="1" width="80%" fileref="illustrations33/cifs-migrate-en.png"/>
 		</figure>
 
 		A share is now created in the share management of the &ucsUMC;. The share module offers a
@@ -399,7 +408,7 @@
 
 	  <figure id="bestpractice-migrate-print">
 		<title>Printer to migrate</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/printer-migrate-en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/printer-migrate-en.png"/>
 	  </figure>
 
 	  A printer share is now created in &ucsUMC;'s printer management. The print module offers a

@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="computers::softwaremanagement">
   <title>Software deployment</title>
 
@@ -84,6 +94,7 @@
 		the new version is published.
 	  </simpara></listitem>
 
+
 	  <listitem><simpara>
 		<emphasis>Patchlevel releases</emphasis> include fewer changes than a
 		minor release. The focus here is exclusively on correcting
@@ -102,7 +113,7 @@
 		corrections for security vulnerabilities or critical program errors which need
 		to be resolved quickly prior to the release of the next patch level update. A
 		list of the errata updates can be found at
-		<ulink url="http://errata.univention.de/"/>. Errata updates can also be provided
+		<ulink url="https://errata.software-univention.de/"/>. Errata updates can also be provided
 		for components.
 	  </simpara></listitem>
 	</itemizedlist>
@@ -140,7 +151,7 @@
 
 	<para>
 	  An overview of all the errata updates can be found under
-	  <ulink url="http://errata.univention.de/"/>.
+	  <ulink url="https://errata.software-univention.de/"/>.
 	</para>
 
 	<para>
@@ -155,12 +166,12 @@
 	<para>
 	  The Univention App Center allows simple integration of software components in a UCS
 	  installation. The applications are provided both by third parties and by Univention itself
-	  (e.g., ucs@School). The maintenance and support for the applications are provided by the
+	  (e.g., UCS@school). The maintenance and support for the applications are provided by the
 	  respective manufacturer.
 	</para>
 
 	<figure id="appcenter-overview"><title>Overview of applications available in the App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_overview_en.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations33/appcenter_overview_en.png"/>
 	</figure>
 
 	<para>
@@ -182,7 +193,7 @@
 	</para>
 
 	<figure id="appcenter-details"><title>Details for an application in the App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_details_en.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations33/appcenter_details_en.png"/>
 	</figure>
 
 	<para>
@@ -271,7 +282,7 @@
 		security updates or ulterior maintenance. In the default setting,
 		<emphasis>unmaintained</emphasis> is not mounted, but can be integrated by
 		setting the &ucsUCRV; <envar>repository/online/unmaintained</envar> to
-		<emphasis>yes</emphasis>.
+		<literal>yes</literal>.
 	  </simpara></listitem>
 	</itemizedlist>
 
@@ -449,7 +460,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcupdate"><title>Updating a UCS system in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_onlineupdate_en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/software_onlineupdate_en.png"/>
 	  </figure>
 
 	  <para>
@@ -482,7 +493,7 @@ univention-repository-update -h
 	<section id="computers:Updating_individual_systems_via_the_command_line">
 	  <title>Updating individual systems via the command line</title>
 	  <para>
-		The following steps must be performed with <emphasis>root</emphasis> rights.
+		The following steps must be performed with <systemitem class="username">root</systemitem> rights.
 	  </para>
 
 	  <para>
@@ -502,8 +513,8 @@ univention-repository-update -h
 
 	  <para>
 		This is done by running <command>univention-upgrade</command> with the
-		parameters <command>--iso=ISOIMAGEFILE</command> or
-		<command>--cdrom=DRIVE</command>.
+		parameters <option>--iso=<replaceable>ISOIMAGEFILE</replaceable></option> or
+		<option>--cdrom=<replaceable>DRIVE</replaceable></option>.
 	  </para>
 
 	  <para>
@@ -536,7 +547,7 @@ univention-repository-update -h
 
 	  <figure id="software-policyupdate">
 		<title>Updating UCS systems using a release policy</title>
-		<graphic scalefit="1" width="50%" fileref="illustrations/software_policy_en.png"/>
+		<graphic scalefit="1" width="50%" fileref="illustrations33/software_policy_en.png"/>
 	  </figure>
 
 	  <para>
@@ -553,13 +564,13 @@ univention-repository-update -h
 
 	  <para>
 		The point at which the update should be performed is configured via a
-		<guimenu>Paketpflege</guimenu> policy (see <xref
+		<guimenu>Maintenance</guimenu> policy (see <xref
 		linkend="computers::softwaremanagement::maintenancepolicy"/>).
 	  </para>
 
 	  <para>
 		The messages created during the update are written to the file
-		<filename>/var/log/univention/updater.log</filename>
+		<filename>/var/log/univention/updater.log</filename>.
 	  </para>
 	</section>
 
@@ -588,7 +599,7 @@ univention-repository-update -h
 
 	  <para>
 		The status of the &ucsUCR; variables before the release update is saved in the
-		<filename>/var/univention-backup/update-to-TARGETRELEASEVERSION</filename>
+		<filename class="directory">/var/univention-backup/update-to-TARGETRELEASEVERSION/</filename>
 		directory. This can then be used to check whether and which variables have been changed
 		during the update.
 	  </para>
@@ -623,7 +634,7 @@ univention-repository-update -h
 
 	<para>
 	  Software which is not available in the Debian package format should be
-	  installed into the <filename>/opt</filename> or <filename>/usr/local</filename>
+	  installed into the <filename class="directory">/opt/</filename> or <filename class="directory">/usr/local/</filename>
 	  directories. These directories are not used for installing UCS packages, thus a
 	  clean separation between UCS packages and other software is ensured.
 	</para>
@@ -645,7 +656,7 @@ univention-repository-update -h
 
 	  <figure id="appcenter-ucscomponents">
 		<title>Selection of UCS components in the App Center</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/appcenter-ucs-en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/appcenter-ucs-en.png"/>
 	  </figure>
 
 	</section>
@@ -660,7 +671,7 @@ univention-repository-update -h
 
 	  <figure id="software-umcinstall">
 		<title>Installing the package univention-squid in the Univention Management Console</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/software_install_en1.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/software_install_en1.png"/>
 	  </figure>
 
 	  <para>
@@ -693,7 +704,7 @@ univention-repository-update -h
 	<section id="computers:Installation_removal_of_individual_packages_in_the_command_line">
 	  <title>Installation/removal of individual packages in the command line</title>
 	  <para>
-		The following steps must be performed with <emphasis>root</emphasis> rights.
+		The following steps must be performed with <systemitem class="username">root</systemitem> rights.
 	  </para>
 
 	  <para>
@@ -785,7 +796,7 @@ apt-cache search fax
 	  </para>
 
 	  <para>
-		The softwares assignable in the package policies are also registered in the
+		The software assignable in the package policies are also registered in the
 		LDAP.
 	  </para>
 	  <!-- This is documented in Univention Wiki under WIKIREF-24368. -->
@@ -952,7 +963,7 @@ apt-cache search fax
 
 	  <figure id="software-repocomponent">
 		<title>Configuring a repository component in UMC</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/software_repository_en2.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/software_repository_en2.png"/>
 	  </figure>
 
 	  <para>
@@ -1137,27 +1148,27 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 
 	  <listitem><simpara>
 		The <emphasis>Selection state</emphasis> influences the action taken
-		when updating a package. <emphasis>Install</emphasis> is used to select a
+		when updating a package. <literal>Install</literal> is used to select a
 		package for installation. If a package is configured to
-		<emphasis>Hold</emphasis> it will be excluded from further updates. There are
+		<literal>Hold</literal> it will be excluded from further updates. There are
 		two possibilities for uninstalling a package: A package removed with
-		<emphasis>DeInstall</emphasis> keeps locally created configuration data, whilst
-		a package removed with <emphasis>Purge</emphasis><emphasis>Purge</emphasis> is
+		<literal>DeInstall</literal> keeps locally created configuration data, whilst
+		a package removed with <literal>Purge</literal> is
 		completely deleted.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		The <emphasis>Installation state</emphasis> describes the status of
 		an installed package in relation to upcoming updates. The normal status is
-		<emphasis>Ok</emphasis>, which leads to a package being updated when a newer
-		version exists. If a package is configured to <emphasis>Hold</emphasis> it will
+		<literal>Ok</literal>, which leads to a package being updated when a newer
+		version exists. If a package is configured to <literal>Hold</literal> it will
 		be excluded from the update.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		The <emphasis>Package state</emphasis> describes the status of a
-		set-up package. The normal status here is <emphasis>Installed</emphasis> for
-		installed packages and <emphasis>ConfigFiles</emphasis> for removed
+		set-up package. The normal status here is <literal>Installed</literal> for
+		installed packages and <literal>ConfigFiles</literal> for removed
 		packages. All other statuses appear when the package's installation was
 		cancelled in different phases.
 	  </simpara> </listitem>
@@ -1165,14 +1176,14 @@ ucr set repository/online/component/ucsschool/description="UCS@School packages" 
 
 	<figure id="software-monitor">
 	  <title>Searching for packages in the software monitor</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/software_softwaremonitor_en.png"/>
 	</figure>
 
 	<para>
 	  If you do not wish UCS systems to store installation processes in the software
 	  monitor (e.g., when there is no network connection to the database), this can
 	  be arranged by setting the &ucsUCRV; <envar>pkgdb/scan</envar> to
-	  <emphasis>no</emphasis>.
+	  <literal>no</literal>.
 	</para>
 
 	<para>
@@ -1190,3 +1201,4 @@ univention-pkgdb-scan --remove-system RECHNERNAME
   </section>
 
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

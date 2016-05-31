@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-
-  %entities;
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
 ]>
 <book lang="en" id="uvmm-3.3">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended virtualization documentation</subtitle>
-
     </bookinfo>
 
     <chapter id="uvmmext:iscsi">
@@ -147,5 +148,4 @@ virsh pool-refresh iscsi
 		</para>
 	  </section>
 	</chapter>
-    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

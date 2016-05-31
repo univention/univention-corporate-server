@@ -1,6 +1,11 @@
-<!DOCTYPE preface PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE preface [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
 	%entities;
 ]>
 <preface id="intro:foreword">
@@ -13,7 +18,7 @@
 
   <para>
 	Feedback is very welcome! Please either file a bug (see <xref linkend="chap:bug"/>) or send an
-	e-mail to <ulink url="mailto:feedback@univention.de"><email>feedback@univention.de</email></ulink>.
+	e-mail to <email>feedback@univention.de</email>.
   </para>
 
 </preface>

@@ -121,7 +121,7 @@
 		<para>
 			Mit UCS 3.3 werden PostgreSQL 9.1 Pakete ausgeliefert. Für PostgreSQL 8.4 wird es UCS 3.3 keine Security
 			Updates geben. Nach dem Update auf UCS 3.3 sollte die Migration von PostgreSQL 8.4 auf PostgreSQL 9.1 erfolgen.
-			In <ulink url="http://sdb.univention.de/1292"/> ist das Vorgehen beschrieben.
+			In <u:sdb>1292</u:sdb> ist das Vorgehen beschrieben.
 		</para>
 
 		<para>
@@ -203,7 +203,7 @@
 				</listitem>
 
 				<listitem>
-					<para>Internet Explorer ab Version 9 </para>
+					<para>Internet Explorer ab Version 9</para>
 				</listitem>
 
 				<listitem>
@@ -227,11 +227,5 @@
 
 		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-3.3-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
-
-	<bibliography id="relnotes:bibliography">
-		<bibliomixed id="ucs-handbuch"/>
-	</bibliography>
-
-	<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

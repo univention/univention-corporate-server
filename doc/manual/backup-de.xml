@@ -1,10 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="backup:Datensicherung_mit_Bacula"><title>Datensicherung mit Bacula</title>
 
 	<section id="backup:Einfuehrung"><title>Einführung</title>
 		<para>
 Bacula ist ein netzwerkfähiges Datensicherungsprogramm mit
 einer Client/Server-Architektur. Es erlaubt die Datensicherung und
--wiederherstellung in heterogenen Umgebungen
+-wiederherstellung in heterogenen Umgebungen.
 		</para>
 		<para>
 Bacula besteht aus einer Reihe von einzelnen Diensten und
@@ -77,8 +87,8 @@ für die Speicherung der Daten auf physikalischen Medien sorgt.
 Zusätzlich werden Meta-Information zu den Backups über den
 <emphasis>Catalog</emphasis> in einer Datenbank gesichert.
 		</para>
-		<figure><title>Bacula Schema</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations/bacula.png"/>
+		<figure id="backup:bacula"><title>Bacula Schema</title>
+			<graphic scalefit="1" width="60%" fileref="illustrations33/bacula.png"/>
 		</figure>
 	</section>
 
@@ -98,27 +108,27 @@ Zusätzlich werden Meta-Information zu den Backups über den
 	  </para>
 
 	  <para>
-		Die Verzeichnisse <filename>/dev/</filename>, <filename>/proc/</filename> und <filename>/sys/</filename> enthalten nur
+		Die Verzeichnisse <filename class="directory">/dev/</filename>, <filename class="directory">/proc/</filename> und <filename class="directory">/sys/</filename> enthalten nur
 		Dateien, die vom Kernel automatisch generiert werden, sie brauchen nicht gesichert werden.
 	  </para>
 
 	  <para>
 		Diese Daten sollten in der Regel immer gesichert werden: Die Verzeichnisse
-		<filename>/home</filename> und <filename>/root</filename> enthalten Benutzerdaten, in
-		<filename>/etc/</filename> wird die Konfiguration des UCS-Systems gespeichert und das
-		Verzeichnis <filename>/var</filename> enthält Laufzeitdaten wie etwa die Mails eines
+		<filename class="directory">/home/</filename> und <filename class="directory">/root/</filename> enthalten Benutzerdaten, in
+		<filename class="directory">/etc/</filename> wird die Konfiguration des UCS-Systems gespeichert und das
+		Verzeichnis <filename class="directory">/var/</filename> enthält Laufzeitdaten wie etwa die Mails eines
 		Mailservers.
 	  </para>
 
 	  <para>
-		Die Verzeichnisse <filename>/bin/</filename>, <filename>/boot</filename>,
-		<filename>/lib/</filename>, <filename>/usr/</filename> und <filename>/sbin</filename>
+		Die Verzeichnisse <filename class="directory">/bin/</filename>, <filename class="directory">/boot</filename>,
+		<filename class="directory">/lib/</filename>, <filename class="directory">/usr/</filename> und <filename class="directory">/sbin/</filename>
 		enthalten im Normalfall nur Programme/Daten, die durch die UCS-Installation mitgeliefert
 		werden.
 	  </para>
 
 	</section>
-	
+
 
 	<section id="backup:Installation"><title>Installation</title>
 		<para>
@@ -139,8 +149,8 @@ die während der Installation angelegt und eingerichtet wird. Die
 Zugriffsinformationen dieser Datenbank (Datenbankname, Name/Passwort des
 Datenbankbenutzers) stehen anschließend in der Datei
 <filename>/etc/dbconfig-common/bacula-director-pgsql.conf</filename> in
-den Feldern <emphasis>dbc_dbpass</emphasis> und
-<emphasis>dbc_dbuser</emphasis>.
+den Feldern <varname>dbc_dbpass</varname> und
+<varname>dbc_dbuser</varname>.
 		</para>
 	</section>
 
@@ -159,10 +169,10 @@ Der Directory Daemon wird über den Abschnitt
 			</para>
 			<para>
 Die Standardwerte können beibehalten werden, lediglich die Option
-<emphasis>DirAddress</emphasis> sollte von
-<emphasis>127.0.0.1</emphasis>, also localhost, auf die IP-Adresse des
+<varname>DirAddress</varname> sollte von
+<systemitem class="ipaddress">127.0.0.1</systemitem>, also <systemitem class="systemname">localhost</systemitem>, auf die IP-Adresse des
 Bacula-Servers geändert werden. Außerdem sollte das
-<emphasis>Password</emphasis>-Feld gesetzt werden:
+<varname>Password</varname>-Feld gesetzt werden:
 			</para>
 			<programlisting>
 Director {
@@ -186,7 +196,7 @@ verwaltet.
 			</para>
 			<para>
 Hier können die Vorgabewerte weitgehend beibehalten werden; nur die
-Option <emphasis>SDAddress</emphasis> sollte auf die IP-Adresse des
+Option <varname>SDAddress</varname> sollte auf die IP-Adresse des
 Storage Daemons angepasst werden.
 			</para>
 			<programlisting>
@@ -219,11 +229,11 @@ allen Systemen eingerichtet werden, die gesichert werden sollen.
 			</para>
 			<para>
 Im Abschnitt <emphasis>Director</emphasis> muss die Option
-<emphasis>Name</emphasis> auf den Namen des
+<varname>Name</varname> auf den Namen des
 <emphasis>Directors</emphasis> gesetzt werden (siehe <xref
 linkend="bacula:directory"/>). Pro System muss ein Client-Passwort
 festgelegt werden. Außerdem muss hier die Option
-<emphasis>FDAddress</emphasis> im Abschnitt
+<varname>FDAddress</varname> im Abschnitt
 <emphasis>FileDaemon</emphasis> auf die IP-Adresse des Rechners gesetzt
 werden.
 			</para>
@@ -288,7 +298,7 @@ Die für Bacula verwendeten Ports müssen entsprechend freigegeben werden.
 Auf allen Systemen muss der Zugriff auf den Filedaemon freigegeben
 werden. Dies erfolgt durch Setzen der &ucsUCRV;
 <envar>security/packetfilter/package/bacula/tcp/9102/all</envar> auf
-<emphasis>ACCEPT</emphasis> und einen anschließenden Neustart von
+<literal>ACCEPT</literal> und einen anschließenden Neustart von
 Univention Firewall.
 			</para>
 			<para>
@@ -404,7 +414,7 @@ werden. Es wird daraufhin ein Liste der verfügbaren Jobs angezeigt, aus
 denen der gewünschte Job ausgewählt werden muss. Mit dem Kommando
 <command>mod</command> können Optionen wie der Sicherungstyp für den
 Job gesetzt bzw. geändert werden. Nach Bestätigung durch
-<emphasis>yes</emphasis> wird der Job gestartet.
+<userinput>yes</userinput> wird der Job gestartet.
 				</simpara>
 			</listitem>
 			<listitem>
@@ -413,15 +423,15 @@ Mit dem Kommando <command>restore</command> können Daten
 zurückgesichert werden. Nun kann mit <command>3 (Enter list of comma
 separated JobIds to select)</command> ein Backup-Job ausgewählt werden,
 von dem Daten zurückgesichert werden sollen. Dann erscheint ein
-Dateibrowser, in dem mit den Standardkommdos <command>cd</command> und
+Dateibrowser, in dem mit den Standardkommandos <command>cd</command> und
 <command>ls</command> navigiert werden kann. Hier können mittels
 <command>mark FILE</command> bzw. <command>mark -r DIR</command>
 Dateien bzw. Verzeichnisse für die Rücksicherung markiert werden. Sind
 alle gewünschten Daten markiert, wird der Dateibrowser mit
 <command>done</command> beendet. Nach der Angabe des Clients und der
 Bestätigung einiger Optionen für den Restore-Job (z.B. wohin die Daten
-kopiert werden sollen) kann der Restore-Job mit <command>yes</command>
-gestartet werden. Nach Abschluß befinden sich die ausgewählten Daten im
+kopiert werden sollen) kann der Restore-Job mit <userinput>yes</userinput>
+gestartet werden. Nach Abschluss befinden sich die ausgewählten Daten im
 konfigurierten Rücksicherungsverzeichnis. Falls für ein Backup oder
 Restore ein Tape benötigt wird, das sich nicht im Laufwerk befindet,
 fordert Bacula dieses Tape explizit an.
@@ -483,17 +493,17 @@ FileSet {
 }
 		</programlisting>
 		<para>
-Über die Anweisungen <emphasis>RunBeforeJob</emphasis> und
-<emphasis>RunAfterJob</emphasis> werden vor bzw. nach der eigentlichen
+Über die Anweisungen <varname>RunBeforeJob</varname> und
+<varname>RunAfterJob</varname> werden vor bzw. nach der eigentlichen
 Sicherung Skripte ausgeführt. Im Falle des Catalogs wird mit
-<filename>make_catalog_backup</filename> vor der Sicherung ein SQL-Dump
+<command>make_catalog_backup</command> vor der Sicherung ein SQL-Dump
 der Catalog-Datenbank erzeugt und unter
 <filename>/var/lib/bacula/bacula.sql</filename> gespeichert. Nach
 erfolgter Sicherung wird diese Datei wieder entfernt.
 		</para>
 		<para>
-Zusätzlich wird für das Backup des Catalogs mit <emphasis>Write
-Bootstrap</emphasis> eine Bootstrap-Datei erzeugt. In dieser Datei wird
+Zusätzlich wird für das Backup des Catalogs mit <varname>Write
+Bootstrap</varname> eine Bootstrap-Datei erzeugt. In dieser Datei wird
 protokolliert, wie die Daten wiederhergestellt werden können, d.h. auf
 welchem Volume sie gespeichert sind und wo auf dem Volume sie sich
 befinden. Normalerweise übernimmt dies der Catalog selbst, für den Fall
@@ -514,7 +524,7 @@ Weitere Informationen zur Bacula-Einrichtung sind unter anderem auf den
 folgenden Webseiten zu finden:
 		</para>
 		<itemizedlist>
-			<listitem><simpara><ulink url="http://www.bacula.org"/></simpara></listitem>
+			<listitem><simpara><ulink url="http://www.bacula.org/"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://wiki.bacula.org/doku.php"/></simpara></listitem>
 			<listitem><simpara><ulink url="http://www.bacula.org/5.0.x-manuals/en/main/main.pdf"/></simpara></listitem>
 			<listitem><simpara><ulink url="https://de.wikipedia.org/wiki/Bacula"/></simpara></listitem>

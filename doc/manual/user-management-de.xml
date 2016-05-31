@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="users:general">
     <title>Benutzerverwaltung</title>
     <para>
@@ -25,7 +35,7 @@
         </para>
         <figure id="user-create">
       	  <title>Anlegen eines Benutzers in UMC</title>
-          <graphic scalefit="1" width="80%" fileref="illustrations/users_user_de.png"/>
+          <graphic scalefit="1" width="80%" fileref="illustrations33/users_user_de.png"/>
         </figure>
 
         <para>
@@ -34,7 +44,7 @@
           <guimenu>Erweitert</guimenu> werden alle Attribute angezeigt. Der vereinfachte Assistent
           kann deaktiviert werden, indem die &ucsUCRV;
           <envar>directory/manager/web/modules/users/user/wizard/disabled</envar> auf
-          <emphasis>true</emphasis> gesetzt wird.
+          <literal>true</literal> gesetzt wird.
         </para>
 
         <para>
@@ -66,13 +76,13 @@
                             <para>
                                 Um die Kompatibilität mit Nicht-UCS-Systemen zu gewährleisten, wird
                                 das Anlegen von Benutzern, die sich lediglich in der Groß- und Kleinschreibung
-                                unterscheiden, verhindert. Wenn beispielsweise der Benutzername <emphasis>meier</emphasis>
-                                bereits existiert, wird der Benutzername <emphasis>Meier</emphasis> nicht mehr zugelassen.
+                                unterscheiden, verhindert. Wenn beispielsweise der Benutzername <wordasword>meier</wordasword>
+                                bereits existiert, wird der Benutzername <wordasword>Meier</wordasword> nicht mehr zugelassen.
                             </para>
                             <para>
 							  In der Grundeinstellung kann kein Benutzer mit dem Namen einer existierenden
 							  Gruppe angelegt werden. Wird die &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar>
-							  auf <emphasis>false</emphasis> gesetzt, wird diese Prüfung aufgehoben.
+							  auf <literal>false</literal> gesetzt, wird diese Prüfung aufgehoben.
 							</para>
                         </entry>
                     </row>
@@ -206,7 +216,7 @@
                         <entry>
                             In dieser Auswahlliste kann die primäre Gruppe für den Benutzer festgelegt
                             werden. Zur Auswahl stehen alle in der Domäne eingetragenen Gruppen.
-                            Standardmäßig ist die Gruppe <emphasis>Domain Users</emphasis> als Vorgabe eingestellt.
+                            Standardmäßig ist die Gruppe <systemitem class="groupname">Domain Users</systemitem> als Vorgabe eingestellt.
                         </entry>
                     </row>
                     <row>
@@ -293,7 +303,7 @@
                                 <itemizedlist>
                                     <listitem>
 										<simpara>
-                                        Die Linux-Anmeldung (z.B. an GDM oder einem tty) wird nur deaktiviert,
+											Die Linux-Anmeldung (z.B. an <systemitem class="service">GDM</systemitem> oder einem <systemitem class="service">tty</systemitem>) wird nur deaktiviert,
                                         wenn alle Anmeldeverfahren deaktiviert werden; ein deaktiviertes POSIX-Konto
                                         reicht dazu nicht aus.
 										</simpara>
@@ -398,7 +408,7 @@
                         <entry>
                             Wenn das Windows-Heimatverzeichnis bei diesem Benutzer auf einem anderen
                             Windows-Laufwerk erscheinen soll, als in der Samba-Konfiguration vorgegeben,
-                            so kann hier ein Laufwerksbuchstabe eingetragen werden, z.B. <emphasis>M:</emphasis>.
+                            so kann hier ein Laufwerksbuchstabe eingetragen werden, z.B. <filename class="partition">M:</filename>.
                         </entry>
                     </row>
                     <row>
@@ -406,21 +416,21 @@
                         <entry>
                             Hier wird der Pfad zu dem Verzeichnis angegeben, das als
                             Windows-Heimatverzeichnis für den Benutzer dienen soll,
-                            z.B. <emphasis>\\ucs-file-server\meier</emphasis>.
+                            z.B. <filename class="directory">\\ucs-file-server\meier</filename>.
                         </entry>
                     </row>
                     <row>
                         <entry>Anmeldeskript</entry>
                         <entry>
                             Hier wird das benutzerspezifische Anmeldeskript relativ zur Netlogon-Freigabe
-                            eingetragen, z.B. <emphasis>scripts\user.bat</emphasis>.
+                            eingetragen, z.B. <filename>user.bat</filename>.
                         </entry>
                     </row>
                     <row>
                         <entry>Profilverzeichnis</entry>
                         <entry>
                             Das Profilverzeichnis für den Benutzer kann hier angegeben werden,
-                            e.g. <emphasis>\\ucs-file-server\user\profile</emphasis>.
+                            e.g. <filename class="directory">\\ucs-file-server\user\profile</filename>.
                         </entry>
                     </row>
                     <row>
@@ -532,11 +542,11 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>E-Mail-Adresse(n)</entry>
+                        <entry lang="">E-Mail-Adresse(n)</entry>
                         <entry>
                             Hier können weitere E-Mail-Adressen hinterlegt werden. Diese werden
                             nicht vom Mailserver ausgewertet. Die Werte werden im LDAP-Attribut
-                            <emphasis>mail</emphasis> gespeichert. Die meisten Adressbuch-Applikationen suchen
+                            <property>mail</property> gespeichert. Die meisten Adressbuch-Applikationen suchen
                             im LDAP nach diesem Attribut.
                         </entry>
                     </row>
@@ -644,7 +654,7 @@
                         <entry>
                             Hier kann der Pfad zu einem Verzeichnis angegeben werden, das als
                             Windows-Heimatverzeichnis für den Benutzer am Terminalserver dienen
-                            soll, z.B <emphasis>\\ucs-file-server\ts\user</emphasis>.
+                            soll, z.B <filename class="directory">\\ucs-file-server\ts\user</filename>.
                         </entry>
                     </row>
                     <row>
@@ -653,7 +663,7 @@
                             Wenn das Windows-Heimatverzeichnis bei diesem Benutzer auf einem anderen
                             Windows-Laufwerk erscheinen soll, als in der Samba-Konfiguration vorgegeben,
                             so kann der entsprechende Laufwerksbuchstabe mit anschließendem Doppelpunkt
-                            hier eingetragen werden, z.B: <emphasis>M:</emphasis>.
+                            hier eingetragen werden, z.B: <filename class="partition">M:</filename>.
                         </entry>
                     </row>
                     <row>
@@ -730,7 +740,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>CTX RAS Dialin</entry>
+                        <entry lang="">CTX RAS Dialin</entry>
                         <entry>
                             <para>
                                 Diese Option konfiguriert die Callback-Funktion eines Remote Access
@@ -781,42 +791,42 @@
                         <entry>Mail-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklasse <emphasis>univentionMail</emphasis> nicht.
+                            Objektklasse <classname>univentionMail</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Kerberos Prinzipal</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <emphasis>krb5Principal</emphasis> und <emphasis>krb5KDCEntry</emphasis> nicht.
+                            Objektklassen <classname>krb5Principal</classname> und <classname>krb5KDCEntry</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Samba-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklasse <emphasis>sambaSamAccount</emphasis> nicht.
+                            Objektklasse <classname>sambaSamAccount</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>POSIX-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <emphasis>posixAccount</emphasis> und <emphasis>shadowAccount</emphasis> nicht.
+                            Objektklassen <classname>posixAccount</classname> und <classname>shadowAccount</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Persönliche Informationen</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklassen <emphasis>organizationalPerson</emphasis> und <emphasis>inetOrgPerson</emphasis> nicht.
+                            Objektklassen <classname>organizationalPerson</classname> und <classname>inetOrgPerson</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Public Key Infrastruktur-Konto</entry>
                         <entry>
                             Wenn dieses Auswahlkästchen nicht markiert ist, erhält der Benutzer die
-                            Objektklasse <emphasis>pkiUser</emphasis> nicht.
+                            Objektklasse <classname>pkiUser</classname> nicht.
                         </entry>
                     </row>
                     <row>
@@ -826,8 +836,8 @@
                             ausschließlich einen Benutzernamen und ein Passwort haben. Mit diesen
                             Benutzern ist ausschließlich eine Authentisierung gegen den LDAP-Verzeichnisdienst
                             möglich, aber keine Anmeldung an UCS- oder Windows-Systemen. Wird diese
-                            Option gesetzt, dann werden die Objektklassen <emphasis>uidObject</emphasis> und
-                            <emphasis>simpleSecurityObject</emphasis> verwendet.
+                            Option gesetzt, dann werden die Objektklassen <classname>uidObject</classname> und
+                            <classname>simpleSecurityObject</classname> verwendet.
                         </entry>
                     </row>
                 </tbody>
@@ -846,7 +856,7 @@
 			Samba-Domänenobjekts (siehe <xref
 			linkend="users:password:samba"/>). Die Einstellungen des
 			Samba-Domänenobjekts und der Richtlinie sollten identisch
-			gesetzt werden, sonst greifen für Anmeldungen 
+			gesetzt werden, sonst greifen für Anmeldungen
 			an Windows- und UCS-Systemen unterschiedliche
 			Passwortanforderungen.
 		</para>
@@ -857,20 +867,20 @@
 		  <itemizedlist>
 			<listitem>
 				<simpara>
-					Das Attribut <emphasis>krb5Key</emphasis> speichert das
+					Das Attribut <property>krb5Key</property> speichert das
 					Kerberos-Passwort
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			Das Attribut <emphasis>userPassword</emphasis> speichert das
+			Das Attribut <property>userPassword</property> speichert das
 			Unix-Passwort (das in anderen Linux-Distributionen in <filename>/etc/shadow</filename>
 			gespeichert wird
 				</simpara>
 			</listitem>
 			<listitem>
 				<simpara>
-			Das Attribut <emphasis>sambaNTPassword</emphasis> enthält den von Samba
+			Das Attribut <property>sambaNTPassword</property> enthält den von Samba
 			verwendeten NT-Passwort-Hash
 				</simpara>
 			</listitem>
@@ -880,7 +890,7 @@
 		</para>
             <figure id="password-policy">
                 <title>Konfiguration einer Passwort-Richtlinie</title>
-                <graphic scalefit="1" width="80%" fileref="illustrations/users_policy_password_de.png"/>
+                <graphic scalefit="1" width="80%" fileref="illustrations33/users_policy_password_de.png"/>
             </figure>
             <itemizedlist>
                 <listitem>
@@ -991,7 +1001,7 @@
 	  <para>
 		Das Samba-Domänenobjekt wird über das Modul
 		<emphasis>LDAP-Verzeichnis</emphasis> der &ucsUMC; verwaltet. Es
-		befindet sich im Container <emphasis>samba</emphasis>
+		befindet sich im Container <uri>samba</uri>
 		unterhalb der LDAP-Basis und trägt den NetBIOS-Namen der Domäne.
 	  </para>
 
@@ -1104,15 +1114,15 @@
         </caution>
         <para>
             Das automatische Sperren von Benutzern nach fehlgeschlagenen Anmeldungen kann
-            durch Setzen der &ucsUCRV; <envar>auth/faillog</envar> auf <emphasis>yes</emphasis> aktiviert werden.
+            durch Setzen der &ucsUCRV; <envar>auth/faillog</envar> auf <literal>yes</literal> aktiviert werden.
             Die Obergrenze an fehlerhaften Passworteingaben, bei der eine Kontosperre
             aktiviert wird, wird in der &ucsUCRV; <envar>auth/faillog/limit</envar> konfiguriert.
             Nach einer korrekten Passworteingabe wird der Zähler jedesmal wieder
             zurückgesetzt.
         </para>
         <para>
-            Der <emphasis>root</emphasis>-Benutzer ist standardmäßig von der Passwort-Sperre ausgenommen, kann
-            aber durch Setzen der &ucsUCRV; <envar>auth/faillog/root</envar> auf <emphasis>yes</emphasis> ebenfalls
+            Der <systemitem class="username">root</systemitem>-Benutzer ist standardmäßig von der Passwort-Sperre ausgenommen, kann
+            aber durch Setzen der &ucsUCRV; <envar>auth/faillog/root</envar> auf <literal>yes</literal> ebenfalls
             aufgenommen werden.
         </para>
         <para>
@@ -1143,12 +1153,12 @@
         </para>
         <figure id="user-create-template">
             <title>Auswahl einer Benutzervorlage</title>
-            <graphic scalefit="1" width="40%" fileref="illustrations/users_usertemplate_de.png"/>
+            <graphic scalefit="1" width="40%" fileref="illustrations33/users_usertemplate_de.png"/>
         </figure>
         <para>
             Benutzervorlagen werden im Modul <guimenu>LDAP-Verzeichnis</guimenu>
-            der &ucsUMC; verwaltet. Dort muss in den Container <emphasis>univention</emphasis> und dort in den
-            Untercontainer <emphasis>templates</emphasis> gewechselt werden. Hier kann
+            der &ucsUMC; verwaltet. Dort muss in den Container <uri>univention</uri> und dort in den
+            Untercontainer <uri>templates</uri> gewechselt werden. Hier kann
             über <guimenu>Hinzufügen</guimenu> mit dem
             Objekt-Typ <guimenu>Einstellungen: Benutzervorlage</guimenu> eine neue
             Benutzervorlage angelegt werden.
@@ -1181,8 +1191,8 @@ univention-directory-manager users/user
 
         <para>
 		  So kann beispielsweise das UNIX-Heimatverzeichnis unter
-		  <filename>/home/&lt;title&gt;.&lt;lastname&gt;</filename> angelegt werden oder die primäre
-		  E-Mail-Adresse mit <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@firma.com</emphasis>
+		  <filename class="directory">/home/&lt;title&gt;.&lt;lastname&gt;</filename> angelegt werden oder die primäre
+		  E-Mail-Adresse mit <userinput>&lt;firstname&gt;.&lt;lastname&gt;@firma.com</userinput>
 		  vordefiniert werden. Ersetzungen sind grundsätzlich für beliebige Werte möglich, eine
 		  syntaktische oder semantische Überprüfung erfolgt jedoch nicht. Wird beispielsweise beim
 		  Anlegen des Benutzers kein Vorname angegeben, würde die obige E-Mail-Adresse mit einem
@@ -1196,7 +1206,7 @@ univention-directory-manager users/user
 		  benötigt, kann in der Benutzervorlage nach dem Attributnamen der Index des benötigten
 		  Zeichens in eckigen Klammern angegeben werden. Die Zählung der Zeichen des Attributs
 		  beginnt bei 0, so dass z.B. der Index 1 dem zweiten Zeichen des Attributwertes
-		  entspricht. Mit <emphasis>&lt;firstname&gt;[0].&lt;lastname&gt;@firma.com</emphasis> wird
+		  entspricht. Mit <userinput>&lt;firstname&gt;[0].&lt;lastname&gt;@firma.com</userinput> wird
 		  beispielsweise eine E-Mail-Adresse aus dem ersten Buchstaben des Vornamens sowie dem
 		  Nachnamen gebildet.
 		</para>
@@ -1204,26 +1214,26 @@ univention-directory-manager users/user
         <para>
 		  Eine Teilzeichenkette des Attributwerts kann über die Angabe eines Bereichs in eckigen
 		  Klammern erreicht werden. Dabei ist der Index des ersten benötigten Zeichens sowie der
-		  Index des letzten benötigten Zeichnis plus 1 anzugeben. Die Angabe
-		  <emphasis>&lt;firstname&gt;[2:5]</emphasis> gibt z.B. das dritte bis fünfte Zeichen des
+		  Index des letzten benötigten Zeichens plus 1 anzugeben. Die Angabe
+		  <userinput>&lt;firstname&gt;[2:5]</userinput> gibt z.B. das dritte bis fünfte Zeichen des
 		  Vornamens zurück.
 		</para>
 
         <para>
-		  Das Anhängen von <emphasis>&lt;:lower&gt;</emphasis> oder <emphasis>&lt;:upper&gt;</emphasis> an den
+		  Das Anhängen von <literal>:lower</literal> oder <literal>:upper</literal> an den
 		  Attributnamen führt dazu, dass der Attributwert in Klein- oder Großschreibung
-		  umgewandelt wird, z.B. <emphasis>&lt;firstname:lower&gt;</emphasis>. Wird ein
-		  Modifikator wie <emphasis>&lt;:lower&gt;</emphasis> an das Ende des Feldes angehängt, wird
-		  der komplette Wert umgewandelt, z.B. <emphasis>&lt;lastname&gt;@company.com&lt;:lower&gt;</emphasis>.
+		  umgewandelt wird, z.B. <userinput>&lt;firstname:lower&gt;</userinput>. Wird ein
+		  Modifikator wie <literal>:lower</literal> an das Ende des Feldes angehängt, wird
+		  der komplette Wert umgewandelt, z.B. <userinput>&lt;lastname&gt;@company.com&lt;:lower&gt;</userinput>.
 		</para>
 
         <para>
-		  Durch die Option <emphasis>&lt;:umlauts&gt;</emphasis> werden Sonderzeichen wie è,
+		  Durch die Option <literal>:umlauts</literal> werden Sonderzeichen wie è,
 		  ä oder ß in entsprechende ASCII-Zeichen umgewandelt.
 		</para>
 
         <para>
-		  Optionen können auch kombiniert werden, z.B: <emphasis>&lt;:umlauts,upper&gt;</emphasis>.
+		  Optionen können auch kombiniert werden, z.B: <literal>:umlauts,upper</literal>.
 		</para>
 
     </section>

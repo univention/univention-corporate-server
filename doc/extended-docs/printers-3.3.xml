@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-
-  %entities;
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
 ]>
 <book lang="en" id="printers-3.3">
   <bookinfo>
 	<title>Univention Corporate Server</title>
 	<subtitle>Extended print services documentation</subtitle>
-
   </bookinfo>
 
-  <chapter>
+  <chapter id="quota">
 	<title>Print quota configuration</title>
-	<section>
+	<section id="quota:intro">
 
 	  <title>Introduction</title>
 	  <para>
@@ -24,9 +25,9 @@
 	  </para>
 
 	  <para>
-		Print quotas are implemented using the component Pykota. It creates an interface between the
+		Print quotas are implemented using the component PyKota. It creates an interface between the
 		print server CUPS and the connected printer. Before the print job is sent to
-		the printer, the system checks whether the user is authorised to print. In addition, every
+		the printer, the system checks whether the user is authorized to print. In addition, every
 		print job is logged, which allows cost evaluations.
 	  </para>
 
@@ -40,7 +41,7 @@
 		  </simpara></listitem>
 
 		  <listitem><simpara>
-			Once the <emphasis>soft limit</emphasis> is reached, an e-mail can be sent 
+			Once the <emphasis>soft limit</emphasis> is reached, an e-mail can be sent
 			warning the user that the hard limit will soon be reached. This is done by
 			setting the &ucsUCRV; <envar>cups/quota/inform</envar> to <emphasis>yes</emphasis>. This
 			notification is disabled in the standard setting.
@@ -48,31 +49,31 @@
 		</itemizedlist>
 
 	  <para>
-		Pykota interprets print jobs in the following print formats: PostScript, PDF, PCL1, PCL2,
-		PCL3, PCL4, PCL5, PCLXL, PCL6 and ESC/P2.
+		  PyKota interprets print jobs in the following print formats: <systemitem class="protocol">PostScript</systemitem>, <systemitem class="protocol">PDF</systemitem>, <systemitem class="protocol">PCL1</systemitem>, <systemitem class="protocol">PCL2</systemitem>,
+		  <systemitem class="protocol">PCL3</systemitem>, <systemitem class="protocol">PCL4</systemitem>, <systemitem class="protocol">PCL5</systemitem>, <systemitem class="protocol">PCLXL</systemitem>, <systemitem class="protocol">PCL6</systemitem> and <systemitem class="protocol">ESC/P2</systemitem>.
 	  </para>
 
 	  <para>
 		The print quota status is not saved in the LDAP directory service, but rather in a separate
-		Postgres SQL database set up automatically via the
-		<emphasis>univention-printquotadb</emphasis> package on the print server.
+		PostgreSQL database set up automatically via the
+		<package>univention-printquotadb</package> package on the print server.
 	  </para>
 	</section>
 
-	<section>
+	<section id="quota:install">
 	  <title>Installation</title>
 	  <para>
 		Print quota support is disabled as standard. It must be subsequently set up by installing
-		the <emphasis>univention-printquota</emphasis> package.
+		the <package>univention-printquota</package> package.
 	  </para>
 
 	  <para>
 		Enabling the print quotas results in an internal change to the printer management. For this
-		reason, <emphasis>univention-printquota</emphasis> must be installed on all print servers.
+		reason, <package>univention-printquota</package> must be installed on all print servers.
 	  </para>
 	</section>
 
-	<section>
+	<section id="quota:config">
 	  <title>Configuration of print quotas</title>
 
 	  <section id="quota:config:activate">
@@ -84,28 +85,28 @@
 
 		<figure id="printquota-enable">
 		  <title>Enabling quota support</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/enable-print-quota-support.png"/>
+		  <graphic scalefit="1" width="80%" fileref="illustrations33/enable-print-quota-support.png"/>
 		</figure>
 
 		<note>
 		  <para>
 			Print quotas can only be used for printers connected via the protocols
-			<emphasis>lpd</emphasis>, <emphasis>ipp</emphasis>, <emphasis>http</emphasis>,
-			<emphasis>socket</emphasis> and <emphasis>smb</emphasis>. It is not possible to set up
-			print quotas for printers connected via <emphasis>usb</emphasis>,
-			<emphasis>parallel</emphasis> and <emphasis>file</emphasis> URIs.
+			<systemitem class="protocol">lpd</systemitem>, <systemitem class="protocol">ipp</systemitem>, <systemitem class="protocol">http</systemitem>,
+			<systemitem class="protocol">socket</systemitem> and <systemitem class="protocol">smb</systemitem>. It is not possible to set up
+			print quotas for printers connected via <uri>usb</uri>,
+			<uri>parallel</uri> and <uri>file</uri> URIs.
 		  </para>
 		</note>
 	  </section>
 
-	  <section>
+	  <section id="quota:assign">
 		<title>Assigning quota limits to users and groups</title>
 		<para>
 		  The printer quotas can then be assigned in two ways; via a policy or specifically for each
 		  user in the UMC module <guimenu>Printer administration</guimenu>.
 		</para>
 
-		<section>
+		<section id="quota:assign:policy">
 		  <title>Assignment via a policy</title>
 		  <para>
 			The quota can be configured as a soft limit (warning threshold) and a hard limit (maximum
@@ -151,7 +152,7 @@
 
 		  <figure id="printquota-listprinters">
 			<title>List of available printers</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/printquota-umc1.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations33/printquota-umc1.png"/>
 		  </figure>
 
 		  <para>
@@ -166,19 +167,19 @@
 
 		  <figure id="printquota-listquota">
 			<title>List of configured print quotas</title>
-			<graphic scalefit="1" width="100%" fileref="illustrations/printquota-umc2.png"/>
+			<graphic scalefit="1" width="100%" fileref="illustrations33/printquota-umc2.png"/>
 		  </figure>
 
 		</section>
 	  </section>
 	</section>
 
-	<section>
+	<section id="quota:query">
 	  <title>Querying the printer quotas</title>
 	  <para>
 		The quota data can only be queried if print quota is enabled on at least one printer
-		share; otherwise, repykota delivers an error message: <command>/usr/bin/repykota : There's
-		no printer matching *</command>.
+		share; otherwise, <command>repykota</command> delivers an error message: <computeroutput>/usr/bin/repykota : There's
+		no printer matching *</computeroutput>.
 	  </para>
 
 	  <para>
@@ -186,7 +187,7 @@
 		or alternatively for a single user with  <command>repykota USERNAME</command>:
 
 <screen>
-:~# repykota 
+:~# repykota
 Report for user quota on printer HP ()
 Pages grace time: 7 days
 Price per job: 0.000
@@ -201,7 +202,7 @@ user            -Q   1.0    20   100   200     0.00             20
 	  </para>
 	</section>
 
-	<section>
+	<section id="quota:reset">
 	  <title>Resetting the printer quotas</title>
 	  <para>
 		The page counter for a user can be reset either with the UMC module <guimenu>Printer
@@ -219,17 +220,16 @@ Done.
 	  <para>
 		The following command removes the print quota for a user on all printer shares:
 
-<screen>
-edpykota --delete user01 
-</screen>
+<programlisting language="sh">
+edpykota --delete user01
+</programlisting>
 		or on a specific printer:
-<screen>
+<programlisting language="sh">
 edpykota --delete user01 --printer labelprinter
-</screen>
+</programlisting>
 	  </para>
 
 	</section>
 
   </chapter>
-  <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

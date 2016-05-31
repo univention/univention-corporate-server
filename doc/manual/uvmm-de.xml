@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="uvmm:chapter">
 	<title>Virtualisierung</title>
 	<section id="uvmm::introduction">
@@ -398,7 +408,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</itemizedlist>
 		<figure id="uvmm-network">
 			<title>Hinzufügen einer virtuellen Netzwerkkarte</title>
-			<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_network_de.png"/>
+			<graphic scalefit="1" width="40%" fileref="illustrations33/uvmm_network_de.png"/>
 		</figure>
 		<para>
 			Die UVMM-Server sind für NAT und Bridging vorkonfiguriert.
@@ -586,7 +596,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</para>
 		<figure id="uvmm-migrate">
 			<title>Migrieren einer virtuellen Maschine</title>
-			<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_migrate_de.png"/>
+			<graphic scalefit="1" width="40%" fileref="illustrations33/uvmm_migrate_de.png"/>
 		</figure>
 
 		<para>
@@ -633,7 +643,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<title>Operationen (Starten/Stoppen/Pausieren/Löschen/Migrieren/Klonen von virtuellen Maschinen)</title>
 			<figure id="uvmm-overview">
 				<title>Übersicht über die virtuellen Maschinen</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations/uvmm_overview1_de.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations33/uvmm_overview1_de.png"/>
 			</figure>
 			<para>
 				Im Hauptdialog des UMC-Moduls wird auf der linken Seite eine Liste angezeigt, die einen Überblick über die vorhandenen Virtualisierungsserver anzeigt.
@@ -700,7 +710,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				</varlistentry>
 			</variablelist>
 			<para>
-				Folgende Operationen stehen auf gespeicherten oder ausgeschaltenen Maschinen zur Verfügung:
+				Folgende Operationen stehen auf gespeicherten oder ausgeschalteten Maschinen zur Verfügung:
 			</para>
 			<variablelist>
 				<varlistentry>
@@ -755,7 +765,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			</para>
 			<para>
 				Nun werden die Laufwerke der virtuellen Maschine konfiguriert.
-				Die Verwaltung Laufwerke ist in <xref linkend="uvmm::imagefiles"/> dokumentiert.
+				Die Verwaltung von Laufwerken ist in <xref linkend="uvmm::imagefiles"/> dokumentiert.
 			</para>
 			<para>
 				Ein Klick auf <guimenu>Fertigstellen</guimenu> schließt das Anlegen der virtuellen Maschine ab.
@@ -768,7 +778,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			</para>
 			<figure id="uvmm-drive">
 				<title>Bearbeiten der Laufwerkseinstellung eines DVD-Laufwerks</title>
-				<graphic scalefit="1" width="30%" fileref="illustrations/uvmm_dvd_de.png"/>
+				<graphic scalefit="1" width="30%" fileref="illustrations33/uvmm_dvd_de.png"/>
 			</figure>
 			<table>
 				<title>Reiter 'Allgemein'</title>
@@ -907,7 +917,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 						<row>
 							<entry>RTC Referenz</entry>
 							<entry>
-								Bei vollvirtualisierten Systemen wird pro virtueller Maschine eine Rechneruhr emuliert (paravirtualisierte Systeme greifen direkt die Uhr des Virtualisierungsservers zurück).
+								Bei vollvirtualisierten Systemen wird pro virtueller Maschine eine Rechneruhr emuliert (paravirtualisierte Systeme greifen direkt auf die Uhr des Virtualisierungsservers zurück).
 								Diese Option speichert die Zeitzone der emulierten Uhr;
 								sie kann entweder die <guimenu>Koordinierte Weltzeit (UTC)</guimenu> oder die <guimenu>lokalen Zeitzone</guimenu> verwenden.
 								Für Linux-Systeme wird die Verwendung von UTC empfohlen, für Microsoft Windows-Systeme die Verwendung der lokalen Zeitzone.

@@ -1,9 +1,19 @@
-<chapter>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
+<chapter id="engineering">
   <title>Medium-sized mechanical engineering company</title>
-  <section>
+  <section id="engineering:start">
 	<title>Initial situation</title>
 	<para>
-	  Gunapa Technologies is one of the leading manufacturers of rolled steel mills. At the company
+	  Ganupa Technologies is one of the leading manufacturers of rolled steel mills. At the company
 	  headquarters in Germany, 260 people are employed in Production, Administration, Design and
 	  Sales. In addition, there are also local offices in the USA, Argentina and India, each with
 	  5-10 employees.
@@ -61,25 +71,25 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:impl">
 	<title>Implementation</title>
 
 	<para>
 	  <figure id="mittelstand">
 		<title>System overview of Ganupa Technologies headquarters (virtualization is not considered)</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/mittelstand_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/mittelstand_en.png"/>
 	  </figure>
 	</para>
 
 	<para>
 	  <figure id="mittelstand-ueberblick">
 		<title>Global organisation scheme of Ganupa Technologies</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/mittelstand-ueberblick_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/mittelstand-ueberblick_en.png"/>
 	  </figure>
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:dc">
 	<title>Domain controller / LDAP directory</title>
 	<para>
 	  The company implements an infrastructure composed of a UCS domain
@@ -115,7 +125,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:virt">
 	<title>Virtualization</title>
 	<para>
 	  All server systems of Ganupa Technologies are virtualized with
@@ -134,7 +144,7 @@
 	<para>
 	  <figure id="uvmm">
 		<title>Managing virtual machines with UVMM</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/uvmm_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/uvmm_en.png"/>
 	  </figure>
 	</para>
 
@@ -155,7 +165,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:ucc">
 	<title>Linux terminal services</title>
 	<para>
 	  Four domain controller slave systems are installed in the company
@@ -166,8 +176,8 @@
 	<para>
 	  The users' applications are run on the terminal servers, while the
 	  thin clients merely display the applications and transmit the user
-	  inputs to the terminal servers. The screen content is provided by the RDP server xrdp,
-	  allowing a low-bandwith access using the Remote Desktop Protocol (RDP).
+	  inputs to the terminal servers. The screen content is provided by the RDP server <application>xrdp</application>,
+	  allowing a low-bandwidth access using the Remote Desktop Protocol (RDP).
 	</para>
 
 	<para>
@@ -180,15 +190,15 @@
 	  terminal servers. All of the applications required for office duties
 	  are supplied as standard (word processing, databases, presentations
 	  and spreadsheet analysis with LibreOffice, image processing with
-	  Gimp, Mozilla Firefox as web browser, Mozilla Thunderbird as groupware and
+	  GIMP, Mozilla Firefox as web browser, Mozilla Thunderbird as groupware and
 	  e-mail client, multimedia applications for playing music and videos
-	  and burning DVDs/CDs).
+	  and burning DVD/CD).
 	</para>
 
 	<para>
 	  <figure id="ucc">
 		<title>Centrally managed Univention Corporate Client</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/ucc.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/ucc.png"/>
 	  </figure>
 	</para>
 
@@ -202,7 +212,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:print">
 	<title>Print services</title>
 	<para>
 	  Print jobs are forwarded to the requested printer via a print
@@ -225,7 +235,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:terminal">
 	<title>Microsoft Windows terminal services</title>
 	<para>
 	  Samba 4 is used to create a Windows domain in which a Microsoft Windows terminal
@@ -237,7 +247,7 @@
 	<para>
 	  <figure id="windowsts">
 		<title>Integrating a Windows application in the Univention desktop client</title>
-		<graphic scalefit="1" width="100%" fileref="illustrations/windows-ts_en.png"/>
+		<graphic scalefit="1" width="100%" fileref="illustrations33/windows-ts_en.png"/>
 	  </figure>
 	</para>
 
@@ -247,7 +257,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:db">
 	<title>Integration of Oracle Solaris systems</title>
 	<para>
 	  A specialist application for CAD design is only available for
@@ -265,7 +275,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:storage">
 	<title>Data management</title>
 	<para>
 	  All user data is stored on a central Storage Area Network (SAN) system. The different shares
@@ -275,7 +285,7 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:groupware">
 	<title>Groupware</title>
 	<para>
 	  Ganupa Technologies uses the groupware solution Open-Xchange Server
@@ -301,12 +311,12 @@
 	</para>
 
 	<para>
-	  Virus detection including signature updates and spam filters are
+	  Virus detection including signature updates and Spam filters are
 	  integrated at no additional cost.
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:outlook">
 	<title>Outlook</title>
 	<para>
 	  At a later point in time, the plan is to monitor the Internet access
@@ -320,11 +330,11 @@
 	</para>
   </section>
 
-  <section>
+  <section id="engineering:ref">
 	<title>References</title>
 	  <itemizedlist>
-		<listitem><simpara><ulink url="http://docs.univention.de/manual.html"/> (UCS manual)</simpara></listitem>
-		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/app-catalog/oxseforucs/"/> (Open-Xchange Server Edition)</simpara></listitem>
+		<listitem><simpara><ulink url="https://docs.software-univention.de/manual.html"/> (UCS manual)</simpara></listitem>
+		<listitem><simpara><ulink url="https://www.univention.com/products/univention-app-center/oxseforucs/"/> (<application>OX App Suite</application>)</simpara></listitem>
 	  </itemizedlist>
   </section>
 </chapter>

@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="uvmm:chapter">
 	<title>Virtualization</title>
 	<section id="uvmm::introduction">
@@ -388,7 +398,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</itemizedlist>
 		<figure id="uvmm-network">
 			<title>Adding a virtual network interface</title>
-			<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_network_en.png"/>
+			<graphic scalefit="1" width="40%" fileref="illustrations33/uvmm_network_en.png"/>
 		</figure>
 		<para>
 			The UVMM servers are already preconfigured for bridging and NAT.
@@ -577,7 +587,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</para>
 		<figure id="uvmm-migrate">
 			<title>Migrating a virtual instance</title>
-			<graphic scalefit="1" width="40%" fileref="illustrations/uvmm_migrate_en.png"/>
+			<graphic scalefit="1" width="40%" fileref="illustrations33/uvmm_migrate_en.png"/>
 		</figure>
 		<para>
 			During the migration it must be noted that the images of the mounted hard drives and CD-ROM drive must be accesible by both virtualization servers.
@@ -622,7 +632,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 			<title>Operations (Starting/stopping/suspending/deleting/migrating/cloning virtual machines)</title>
 			<figure id="uvmm-overview">
 				<title>Overview of virtual machines</title>
-				<graphic scalefit="1" width="80%" fileref="illustrations/uvmm_overview1_en.png"/>
+				<graphic scalefit="1" width="80%" fileref="illustrations33/uvmm_overview1_en.png"/>
 			</figure>
 			<para>
 				In the main dialog of the UMC module, a tree structure is displayed on the left-hand side, which gives an overview of the existing virtualization servers.
@@ -725,7 +735,6 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 				</varlistentry>
 			</variablelist>
 		</section>
-
 		<section id="uvmm::instanz::erstellen">
 			<title>Creating a virtual instance</title>
 			<para>
@@ -757,7 +766,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</para>
 		<figure id="uvmm-drive">
 			<title>Modifying the settings of a DVD drive</title>
-			<graphic scalefit="1" width="30%" fileref="illustrations/uvmm_dvd_en.png"/>
+			<graphic scalefit="1" width="30%" fileref="illustrations33/uvmm_dvd_en.png"/>
 		</figure>
 			<table>
 				<title>'General' tab</title>
@@ -766,7 +775,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					<colspec colnum="2" colname="col2" colwidth="2*"/>
 					<thead>
 						<row>
-							<entry>Attribut</entry>
+							<entry>Attribute</entry>
 							<entry>Description</entry>
 						</row>
 					</thead>
@@ -868,7 +877,7 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 					<thead>
 						<row>
 							<entry>Attribute</entry>
-							<entry>Descrition</entry>
+							<entry>Description</entry>
 						</row>
 					</thead>
 					<tbody>
@@ -968,15 +977,15 @@ invoke-rc.d univention-virtual-machine-manager-node-common restart
 		</itemizedlist>
 		<para>
 			The existing UVMM profiles are stored in the <acronym>LDAP</acronym> directory and can also be edited there.
-			The profiles can be found in the <guimenu>LDAP directory</guimenu> section of the &ucsUMC; in the container <emphasis>cn=Profiles,cn=Virtual Machine Manager</emphasis>.
+			The profiles can be found in the <guimenu>LDAP directory</guimenu> section of the &ucsUMC; in the container <uri>cn=Profiles,cn=Virtual Machine Manager</uri>.
 			Additional profiles can also be added there.
 		</para>
 		<section id="uvmm::profile::network">
 			<title>Changing default network</title>
 			<para>
 				The name of the bridge used as the default network interface is stored in <acronym>UVMM</acronym> profiles.
-				If the default interface <filename class="device">eth0</filename> is changed, the name should be updated as well.
-				The following command updates all profiles currently using interface <filename class="device">eth0</filename> to use the bridge <filename class="device">br0</filename>:
+				If the default interface <filename class="devicefile">eth0</filename> is changed, the name should be updated as well.
+				The following command updates all profiles currently using interface <filename class="devicefile">eth0</filename> to use the bridge <filename class="devicefile">br0</filename>:
 			</para>
 			<programlisting language="sh">
 udm uvmm/profile list --filter interface=eth0 |

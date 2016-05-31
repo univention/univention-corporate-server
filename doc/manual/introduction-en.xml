@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="introduction:Introduction"><title>Introduction</title>
 
 <section id="introduction:What_is_Univention_Corporate_Server"><title>What is Univention Corporate Server?</title>
@@ -59,7 +69,7 @@ print services for Windows), Kerberos (authentication and single sign
 on), DNS (network name resolution) and SSL/TLS (secure transmission
 of data between systems). It can be used either via a web interface
 or in the command line and in individual scripts. The UCS management
-system can be extended with APIs (application programmers interfaces)
+system can be extended with APIs (application programming interfaces)
 and provides a flexible client-server architecture which allows
 changes to be transferred to the involved systems and be activated
 there.
@@ -119,7 +129,7 @@ the system roles (domain controllers, &ucsMember;s and clients) are available.
 </para>
 <para>
 <figure><title>UCS domain concept</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/domainconcept.jpg"/>
+ <graphic scalefit="1" width="80%" fileref="illustrations33/domainconcept.jpg"/>
  </figure>
 </para>
 <para>
@@ -200,7 +210,7 @@ Further information can be found in <xref linkend="domain:ldap"/>.
 <section id="introduction:Domain_administration"><title>Domain administration</title>
 <para>
 <figure><title>Univention Management Console</title>
- <graphic scalefit="1" width="80%" fileref="illustrations/umc-overview_en.png"/>
+ <graphic scalefit="1" width="80%" fileref="illustrations33/umc-overview_en.png"/>
 </figure>
 </para>
 <para>
@@ -408,7 +418,7 @@ Names are in <emphasis>bold</emphasis>.
 
 <para>
 <emphasis>Computer names, LDAP DNs</emphasis>, <command>program names</command>, <filename>file names, file paths</filename>,
-<uri>internet addresses</uri> und <emphasis>options</emphasis> are also optically accented.
+<uri>internet addresses</uri> and <emphasis>options</emphasis> are also optically accented.
 </para>
 
 <para>

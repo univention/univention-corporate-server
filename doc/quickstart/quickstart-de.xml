@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
-
-  %entities;
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
 ]>
 <book lang="de" id="quickstart-de-3.3">
 <bookinfo>
@@ -17,16 +18,16 @@
   <title>Einleitung</title>
 
   <para>
-	Univention Corporate Server (UCS) ist ein auf Debian basierendes Serverbetriebssystem
+	Univention Corporate Server (UCS) ist ein auf Debian GNU/Linux basierendes Serverbetriebssystem
 	mit integriertem Managementsystem für die zentrale Verwaltung von Servern, Diensten, Clients,
-	Desktops und Benutzern. 
+	Desktops und Benutzern.
   </para>
 
   <para>
 	Dieser Quickstart-Guide stellt eine Kurzanleitung zur Inbetriebnahme und für erste Schritte mit
 	UCS dar. Einige Funktionen von UCS werden hier nur kurz erwähnt und dann in weiterer
 	Dokumentation beschrieben. Die Dokumentation zu UCS kann unter <ulink
-	url="http://docs.univention.de"/> abgerufen werden.
+	url="https://docs.software-univention.de/"/> abgerufen werden.
   </para>
 
   <para>
@@ -37,7 +38,7 @@
   </para>
 
   <para>
-	Alternativ können auch vorinstallierte VMWare und VirtualBox-Images verwendet werden. Diese
+	Alternativ können auch vorinstallierte VMware und VirtualBox-Images verwendet werden. Diese
 	stehen unter <ulink
 	url="https://www.univention.de/download/ucs-download/vorinstallierte-vm-images/"/>
 	zum Download bereit.
@@ -61,7 +62,7 @@
 
   <para>
 	Die Installation erfolgt per menügeführtem Text-Installer und kann sowohl interaktiv, als auch
-	vollständig profilbasiert <biblioref linkend="ext-doc-inst"/> durchgeführt werden. 
+	vollständig profilbasiert <biblioref linkend="ext-doc-inst"/> durchgeführt werden.
   </para>
 
   <para>
@@ -71,9 +72,9 @@
 
   <figure id="quick-systemrole">
 	<title>Auswahl der Systemrolle</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/systemrole-de.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations33/systemrole-de.png"/>
   </figure>
-  
+
   <para>
 	Das erste System einer UCS-Umgebung ist immer der &ucsMaster;, dieser sollte als Systemrolle
 	ausgewählt werden. Alle anderen System treten dann bei ihrer Installation der UCS-Domäne bei.
@@ -98,7 +99,7 @@
 	Der Root-Passwort muss min. acht Zeichen umfassen und wird bei der Installation des ersten
 	UCS-Servers (&ucsMaster;) auch als Passwort für den <emphasis>Administrator</emphasis>-Benutzer gesetzt.
   </para>
-  
+
   <para>
 	Während der Installation kann eine Autopartitionierung verwendet werden, die standardmäßig die
 	erste Festplatte im System als LVM erzeugt.
@@ -123,7 +124,7 @@
   </para>
 
   <para>
-	Nach Bestätigung der Einstellungen startet die Installation. Nach Abschluß der
+	Nach Bestätigung der Einstellungen startet die Installation. Nach Abschluss der
 	Installation muss das System neu gestartet werden. Anschließend erfolgt die weitere
 	Konfiguration über die &ucsUMC; (UMC). Sie wird im folgenden Kapitel beschrieben.
   </para>
@@ -134,10 +135,10 @@
 
   <para>
 	Die Konfiguration des installierten UCS-Systems erfolgt über die web-basierte &ucsUMC;
-	(erreichbar unter https://server_ip oder http://server_ip, HTTPS wird empfohlen).
+	(erreichbar unter <uri>https://<replaceable>server_ip</replaceable></uri> oder <uri>http://<replaceable>server_ip</replaceable></uri>, HTTPS wird empfohlen).
 	Die Anmeldung an der &ucsUMC; erfolgt über die Option <guimenu>System- und
-	Domäneneinstellungen</guimenu> als <emphasis>Administrator</emphasis> mit dem während der
-	Installation vergebenen Passwort für den Benutzer <emphasis>root</emphasis>.
+	Domäneneinstellungen</guimenu> als <systemitem class="username">Administrator</systemitem> mit dem während der
+	Installation vergebenen Passwort für den Benutzer <systemitem class="username">root</systemitem>.
   </para>
 
   <para>
@@ -162,10 +163,9 @@
 	</itemizedlist>
   </para>
 
-
   <figure id="quick-umclogin">
 	<title>Module in der UMC</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/umc-modules-de.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations33/umc-modules-de.png"/>
   </figure>
 
 </chapter>
@@ -175,7 +175,7 @@
 
   <para>
 	UCS-Updates (Sicherheits-Updates und kritische Bugfixes) können über das
-	&ucsUMC;-Modul <guimenu>Software Aktualisierung</guimenu> installiert werden.
+	&ucsUMC;-Modul <guimenu>Software-Aktualisierung</guimenu> installiert werden.
   </para>
 
   <para>
@@ -185,19 +185,19 @@
 	<itemizedlist>
 	  <listitem><simpara>
 		Weitere UCS-Software kann über die Kategorie <guimenu>UCS-Komponenten</guimenu>
-		nachträglich installiert und entfernt werden. 
+		nachträglich installiert oder entfernt werden.
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
-		Lösungen von Drittanbietern (z.B. verschiedene Groupwarelösungen) und UCS-kompatibe
+		Lösungen von Drittanbietern (z.B. verschiedene Groupwarelösungen) und UCS-kompatible
 		Zusatzprodukte (z.B. UCS@school für den Schuleinsatz) können ebenfalls über das App Center
-		installiert werden. 
+		installiert werden.
 	  </simpara></listitem>
 	</itemizedlist>
 
 	<figure id="quick-appcenter">
 	  <title>Nachträgliche Installation von UCS-Komponenten</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/appcenter-de.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/appcenter-de.png"/>
 	</figure>
 
   </para>
@@ -205,7 +205,7 @@
 
 <chapter id="quickstart:ucr">
   <title>Konfigurationsmanagement mit Univention Configuration Registry</title>
-  
+
   <para>
 	Univention Configuration Registry ist das zentrale Werkzeug zur Verwaltung der lokalen
 	Systemkonfiguration eines UCS-Systems. Einstellungen werden in einem einheitlichen Format
@@ -222,7 +222,7 @@
 
   <figure id="quick-ucr">
 	<title>Verwaltung von &ucsUCR;-Variablen</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/ucr-de.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations33/ucr-de.png"/>
   </figure>
 
 </chapter>
@@ -236,13 +236,13 @@
 
 	<itemizedlist>
 	  <listitem><simpara>
-		Windows-Clients können einer AD-kompatible Windows-Domäne beitreten, die durch die
+		Windows-Clients können einer AD-kompatiblen Windows-Domäne beitreten, die durch die
 		Komponente <emphasis>Active Directory-kompatibler Domänencontroller</emphasis> (umgesetzt
 		durch die Software Samba) bereitgestellt wird. Weitere Informationen zur Einrichtung von
 		Samba und dem Domänenbeitritt von Windows-Clients findet sich im UCS-Handbuch <biblioref
 		linkend="ucs-winjoin"/>.
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Mac OS X-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf Basis von
 		Samba integriert. Weitere Informationen zur Einrichtung von Samba und dem Domänenbeitritt
@@ -257,7 +257,7 @@
 
 	  <listitem><simpara>
 		Ubuntu-Systeme <biblioref linkend="ubuntu-join"/> und andere Linux-Distributionen wie
-		Debian, SuSE oder Red Hat können ebenfalls in die Domäne integriert werden <biblioref
+		Debian, SUSE oder Red Hat können ebenfalls in die Domäne integriert werden <biblioref
 		linkend="integrate-other-linux"/>.
 	  </simpara></listitem>
 
@@ -276,26 +276,26 @@
   </para>
 
   <para>
-	Darüberhinaus bietet UCS eine Vielfalt von weiteren Komponenten, die durch die UCS-Lizenz
+	Darüber hinaus bietet UCS eine Vielfalt von weiteren Komponenten, die durch die UCS-Lizenz
 	bereits abgedeckt sind und zu einem späteren Zeitpunkt integriert werden können, z.B.
 
 	<itemizedlist>
 	  <listitem><simpara>
 		Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="wiki-saml"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		IP-Management mit DHCP <biblioref linkend="ucs-dhcp"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Web-Proxy für Caching und Policy Management/Virenscan <biblioref linkend="ucs-proxy"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Service-Überwachung mit Nagios <biblioref linkend="ucs-nagios"/>
 	  </simpara></listitem>
-	  
+	
 	  <listitem><simpara>
 		Virtualisierung mit KVM/Xen <biblioref linkend="ucs-uvmm"/>
 	  </simpara></listitem>
@@ -317,13 +317,13 @@
 
 	  <listitem><simpara>
 		Weiterführende Dokumentation für besondere Szenarien ist in der erweiterten Dokumentation zu
-		finden. Die verschiedenen Dokumente sind unter <ulink url="http://docs.univention.de/"/>
+		finden. Die verschiedenen Dokumente sind unter <ulink url="https://docs.software-univention.de/"/>
 		verlinkt.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
 		Im Univention Wiki (<ulink url="http://wiki.univention.de/"/>) finden sich u.a. verschiedene
-		HOWTOs und Praxis-Tips.
+		HOWTOs und Praxis-Tipps.
 	  </simpara></listitem>
 
 	  <listitem><simpara>
@@ -332,7 +332,7 @@
 	  </simpara></listitem>
 
 	  <listitem><simpara>
-		Fragen zu UCS können auch im Univention Forum <ulink url="http://forum.univention.de/"/>
+		Fragen zu UCS können auch im Univention-Forum <ulink url="http://forum.univention.de/"/>
 		gestellt werden.
 	  </simpara></listitem>
 	</itemizedlist>
@@ -340,7 +340,7 @@
 
 </chapter>
 
-<bibliography id="relnotes:bibliography">
+<bibliography id="bibliography">
   <bibliomixed id="ucs-handbuch"/>
   <bibliomixed id="ucs-systemrole"/>
   <bibliomixed id="ucs-winjoin"/>
@@ -357,6 +357,4 @@
   <bibliomixed id="wiki-saml"/>
   <bibliomixed id="integrate-other-linux"/>
 </bibliography>
-
-<?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

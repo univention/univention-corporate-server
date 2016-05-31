@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="computers::softwaremanagement">
   <title>Softwareverteilung</title>
   <section id="computers:Einfuehrung">
@@ -102,7 +112,7 @@
 		Korrekturen für Sicherheitslücken oder kritische Programmfehler,
 		die zeitnah noch vor dem nächsten Patchlevel-Update behoben werden müssen.
 		Eine Aufstellung der Errata-Updates findet sich unter
-		<ulink url="http://errata.univention.de"/>. Errata-Updates können auch für
+		<ulink url="https://errata.software-univention.de/"/>. Errata-Updates können auch für
 		Komponenten bereitgestellt werden.
 	  </simpara></listitem>
 	</itemizedlist>
@@ -139,7 +149,7 @@
 	</para>
 
 	<para>
-	  Unter <ulink url="http://errata.univention.de/"/> wird zusätzlich eine
+	  Unter <ulink url="https://errata.software-univention.de/"/> wird zusätzlich eine
 	  Übersicht aller Errata-Updates bereitgestellt.
 	</para>
 
@@ -160,7 +170,7 @@
 	</para>
 
 	<figure id="appcenter-overview"><title>Überblick der verfügbaren Applikationen im App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_overview_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations33/appcenter_overview_de.png"/>
 	</figure>
 
 	<para>
@@ -179,11 +189,11 @@
 	  Informationen zur Lizenzierung können bei einigen Applikationen direkt über einen
 	  <guimenu>Kaufen</guimenu> Button in der unteren Bildleiste bezogen werden.
 	  Für alle anderen Applikationen muss der Hersteller der Applikation über die unter
-	  <guimenu>Kontakt</guimenu> angezeigt E-Mail-Adresse kontaktiert werden.
+	  <guimenu>Kontakt</guimenu> angezeigte E-Mail-Adresse kontaktiert werden.
 	</para>
 
 	<figure id="appcenter-details"><title>Details einer Applikation im App Center</title>
-	<graphic scalefit="1" width="100%" fileref="illustrations/appcenter_details_de.png"/>
+	<graphic scalefit="1" width="100%" fileref="illustrations33/appcenter_details_de.png"/>
 	</figure>
 
 	<para>
@@ -454,7 +464,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcupdate"><title>Aktualisierung eines UCS-Systems über UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_onlineupdate_de.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/software_onlineupdate_de.png"/>
 	  </figure>
 
 	  <para>
@@ -486,7 +496,7 @@ univention-repository-update -h
 	<section id="computers:Aktualisierung_eines_einzelnen_Systems_auf_der_Kommandozeile">
 	  <title>Aktualisierung eines einzelnen Systems auf der Kommandozeile</title>
 	  <para>
-		Die folgenden Schritte müssen mit <emphasis>root</emphasis>-Rechten durchgeführt werden.
+		Die folgenden Schritte müssen mit <systemitem class="username">root</systemitem>-Rechten durchgeführt werden.
 	  </para>
 
 	  <para>
@@ -507,8 +517,8 @@ univention-repository-update -h
 
 	  <para>
 		Dazu muss <command>univention-upgrade</command> mit den Parametern
-		<command>--iso=ISOIMAGEDATEI</command> oder
-		<command>--cdrom=LAUFWERK</command> aufgerufen werden.
+		<option>--iso=<replaceable>ISOIMAGEDATEI</replaceable></option> oder
+		<option>--cdrom=<replaceable>LAUFWERK</replaceable></option> aufgerufen werden.
 	  </para>
 
 	  <para>
@@ -540,7 +550,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-policyupdate"><title>Aktualisierung eines UCS-Systems über eine Release-Richtlinie</title>
-	  <graphic scalefit="1" width="50%" fileref="illustrations/software_policy_de.png"/>
+	  <graphic scalefit="1" width="50%" fileref="illustrations33/software_policy_de.png"/>
 	  </figure>
 
 	  <para>
@@ -590,7 +600,7 @@ univention-repository-update -h
 
 	  <para>
 		Der Stand der &ucsUCR;-Variablen vor der Release-Aktualisierung wird in dem Verzeichnis
-		<filename>/var/univention-backup/update-to-ZIELRELEASEVERSION</filename>
+		<filename class="directory">/var/univention-backup/update-to-ZIELRELEASEVERSION/</filename>
 		gesichert. Damit kann geprüft werden, ob und welche Variablen im Rahmen des Updates
 		verändert wurden.
 	  </para>
@@ -623,7 +633,7 @@ univention-repository-update -h
 
 	<para>
 	  Fremdsoftware, die nicht im Debian-Paketformat vorliegt, sollte in
-	  die Verzeichnisse <filename>/opt</filename> oder <filename>/usr/local</filename> installiert
+	  die Verzeichnisse <filename class="directory">/opt/</filename> oder <filename class="directory">/usr/local/</filename> installiert
 	  werden. UCS-Pakete nutzen diese Verzeichnisse nicht, so dass eine
 	  saubere Trennung von UCS- und Fremdsoftware gewährleistet ist.
 	</para>
@@ -644,7 +654,7 @@ univention-repository-update -h
 
 	  <figure id="appcenter-ucscomponents">
 		<title>Auswahl von UCS-Komponenten im App Center</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/appcenter-ucs-de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/appcenter-ucs-de.png"/>
 	  </figure>
 
 	</section>
@@ -659,7 +669,7 @@ univention-repository-update -h
 	  </para>
 
 	  <figure id="software-umcinstall"><title>Installation des Pakets univention-squid in der Univention Management Console</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_install_de1.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/software_install_de1.png"/>
 	  </figure>
 
 	  <para>
@@ -693,7 +703,7 @@ univention-repository-update -h
 	<section id="computers:Installation_Deinstallation_von_einzelnen_Paketen_auf_der_Kommandozeile">
 	  <title>Installation/Deinstallation von einzelnen Paketen auf der Kommandozeile</title>
 	  <para>
-		Die folgenden Schritte müssen mit <emphasis>root</emphasis>-Rechten durchgeführt werden.
+		Die folgenden Schritte müssen mit <systemitem class="username">root</systemitem>-Rechten durchgeführt werden.
 	  </para>
 
 	  <para>
@@ -727,8 +737,8 @@ apt-cache search fax
 	<section id="computers::softwaremanagement::packagelists"><title>Richtlinienbasierte Installation/Deinstallation von einzelnen Paketen über Paketlisten</title>
 	<para>
 	  Mit Paketlisten kann richtlinienbasiert Software installiert und
-	  entfernt werden. Dadurch lassen sich auf große Stückzahlen an
-	  Rechnersystemen zentral mit neuer Software bestücken.
+	  entfernt werden. Dadurch lassen sich auch große Stückzahlen an
+	  Rechnersystemen zentral mit neuer Software versehen.
 	</para>
 
 	<para>
@@ -958,7 +968,7 @@ apt-cache search fax
 	  </para>
 
 	  <figure id="software-repocomponent"><title>Konfiguration einer Repository-Komponente in UMC</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations/software_repository_de2.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations33/software_repository_de2.png"/>
 	  </figure>
 
 	  <para>
@@ -1130,8 +1140,8 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 	  Die webbasierte Abfrageschnittstelle des Software-Monitors integriert sich in die
 	  &ucsUMC; und kann über das Modul <guimenu>Software-Monitor</guimenu> erreicht
 	  werden. Folgende Funktionen stehen zur Verfügung:
-
 	</para>
+
 	<itemizedlist>
 	  <listitem><simpara>
 		<emphasis>Systeme</emphasis> erlaubt die Suche nach den installierten Versionsständen
@@ -1147,26 +1157,26 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 	  <itemizedlist>
 		<listitem> <simpara>
 		  Der <emphasis>Selektionsstatus</emphasis> beeinflusst das Verhalten bei der
-		  Aktualisierung eines Pakets. Durch <emphasis>Install</emphasis> wird ein Paket zur
-		  Installation ausgewählt. Ist ein Paket auf <emphasis>Hold</emphasis> konfiguriert,
+		  Aktualisierung eines Pakets. Durch <literal>Install</literal> wird ein Paket zur
+		  Installation ausgewählt. Ist ein Paket auf <literal>Hold</literal> konfiguriert,
 		  so wird es von weiterer Aktualisierung ausgenommen. Es existieren zwei Möglichkeiten
-		  ein Paket zu deinstallieren: Ein mit <emphasis>DeInstall</emphasis> entferntes Paket
+		  ein Paket zu deinstallieren: Ein mit <literal>DeInstall</literal> entferntes Paket
 		  hält lokal erzeugte Konfigurations-Daten weiterhin vor, während ein mit
-		  <emphasis>Purge</emphasis> entferntesPaket komplett gelöscht wird.
+		  <literal>Purge</literal> entferntes Paket komplett gelöscht wird.
 		</simpara></listitem>
 
 		<listitem><simpara>
 		  Der <emphasis>Installationsstatus</emphasis> beschreibt den Status eines
 		  installierten Pakets im Hinblick auf kommende Aktualisierungen. Der Normalfall ist
-		  <emphasis>Ok</emphasis>, was dazu führt, dass ein Paket bei Vorhandensein einer
-		  aktuelleren Version aktualisiert würde. Ist ein Paket auf <emphasis>Hold</emphasis>
+		  <literal>Ok</literal>, was dazu führt, dass ein Paket bei Vorhandensein einer
+		  aktuelleren Version aktualisiert würde. Ist ein Paket auf <literal>Hold</literal>
 		  konfiguriert, so wird es von der Aktualisierung ausgenommen.
 		</simpara> </listitem>
 
 		<listitem><simpara>
 		  Der <emphasis>Paketstatus</emphasis> beschreibt den Zustand eines eingerichteten
-		  Pakets. Der Normalfall ist <emphasis>Installed</emphasis> für installierte und
-		  <emphasis>ConfigFiles</emphasis> für entfernte Pakete, alle übrigen Zustände
+		  Pakets. Der Normalfall ist <literal>Installed</literal> für installierte und
+		  <literal>ConfigFiles</literal> für entfernte Pakete, alle übrigen Zustände
 		  entstehen, wenn die Installation des Pakets in verschiedenen Phasen abgebrochen wurde.
 		</simpara></listitem>
 
@@ -1175,13 +1185,13 @@ ucr set repository/online/component/ucsschool/description="UCS@school-Pakete" \
 
 	</itemizedlist>
 	<figure id="software-monitor"><title>Suche nach Paketen im Software-Monitor</title>
-	<graphic scalefit="1" width="80%" fileref="illustrations/software_softwaremonitor_de.png"/>
+	<graphic scalefit="1" width="80%" fileref="illustrations33/software_softwaremonitor_de.png"/>
 	</figure>
 
 	<para>
 	  Wenn verhindert werden soll, dass UCS-Systeme Installations-Vorgänge im Software-Monitor
 	  aufzeichnen (etwa weil keine Netzwerkverbindung zur Datenbank besteht), kann dies durch
-	  Setzen der &ucsUCRV; <envar>pkgdb/scan</envar> auf <emphasis>no</emphasis> abgeschaltet
+	  Setzen der &ucsUCRV; <envar>pkgdb/scan</envar> auf <literal>no</literal> abgeschaltet
 	  werden. Wenn die Aufzeichnungen danach wieder aktiviert werden, muss das Kommando
 	  <command>univention-pkgdb-scan</command> ausgeführt werden, damit die in der
 	  Zwischenzeit installierten Paketversionen in die Datenbank übernommen werden.
@@ -1195,3 +1205,4 @@ univention-pkgdb-scan --remove-system RECHNERNAME
 	</programlisting>
   </section>
 </chapter>
+<!-- vim:set ts=2 sw=2 tw=100 noet ft=docbk:-->

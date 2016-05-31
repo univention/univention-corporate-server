@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="installation:chapter">
 <title>Installation</title>
 <section id="installation:einfuehrung">
@@ -131,7 +141,7 @@
 	</para>
 	<figure id="installation-grub">
 	<title>Selecting the boot prompt</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/grub.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/grub.png"/>
 	</figure>
 	<para>
 		Now you can choose between several installation procedures.
@@ -232,7 +242,7 @@
 	</para>
 	<figure id="installation-languageeselection">
 	<title>Selecting the system language</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/language.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/language.png"/>
 	</figure>
 	<para>
 		If Univention Installer has already been translated into the selected language
@@ -271,7 +281,7 @@
 	</para>
 	<figure id="installation-timezoneselection">
 	<title>Time zone selection</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/timezone_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/timezone_en.png"/>
 	</figure>
 </section>
 
@@ -285,7 +295,7 @@
 	</para>
 	<figure id="installation-keyboardeselection">
 	<title>Keyboard layout selection</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/keyboard_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/keyboard_en.png"/>
 	</figure>
 </section>
 
@@ -293,7 +303,7 @@
 <title>Selecting the system role</title>
 	<figure id="installation-systemroleselection">
 	<title>System role selection</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/systemrole_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/systemrole_en.png"/>
 	</figure>
 	<para>
 		The system role for the system to be installed is selected here. The
@@ -361,7 +371,7 @@
 	</para>
 	<figure id="installation-domainsettings">
 	<title>Domain settings</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/domainsettings_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/domainsettings_en.png"/>
 	</figure>
 </section>
 
@@ -472,7 +482,7 @@
 </para>
 <figure id="installation-partition">
   <title>Partitioning hard drives</title>
-  <graphic scalefit="1" width="80%" fileref="illustrations/autopartitioning_en.png"/>
+  <graphic scalefit="1" width="80%" fileref="illustrations33/autopartitioning_en.png"/>
 </figure>
 <para>
   If you wish to include a partition from a former installation, or to correct
@@ -540,7 +550,7 @@
 	</para>
 	<figure id="installation-networksettings">
 	<title>Network interface configuration</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/network_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/network_en.png"/>
 	</figure>
 
 	  <para>
@@ -690,7 +700,7 @@
 	</para>
 	<figure id="installation-softwareselection">
 	<title>Software selection</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/software_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/software_en.png"/>
 	</figure>
 	<itemizedlist>
 			<listitem>
@@ -803,7 +813,7 @@
 	</para>
 	<figure id="installation-overview">
 	<title>Installation overview</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/overview_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/overview_en.png"/>
 	</figure>
 	<para>
 		The <guimenu>Update system after installation</guimenu> option allows
@@ -816,7 +826,7 @@
 	</para>
 	<figure id="installation-progress">
 	<title>Installation progress</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/installationprogress_en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/installationprogress_en.png"/>
 	</figure>
 	<para>
 		During the installation, a progress bar displays the progress of the
@@ -890,14 +900,14 @@
 <section id="installation:vmware">
   <title>Installation in VMware</title>
   <para>
-	If UCS is installed as a guest in Vmware, the <guimenu>Linux &ar; Other Linux system</guimenu>
+	If UCS is installed as a guest in VMware, the <guimenu>Linux &ar; Other Linux system</guimenu>
 	option must be selected as the <guimenu>Guest operating system</guimenu> (UCS is based on Debian but
 	the templates for Debian cannot be used).
   </para>
 
   <para>
 	The Linux kernel used in UCS includes all the support drivers necessary for operation in VMware
-	(vmw_balloon, vmw_pvsci, vmw_vmci, vmwgfx and vmxnet3).
+	(<filename>vmw_balloon</filename>, <filename>vmw_pvsci</filename>, <filename>vmw_vmci</filename>, <filename>vmwgfx</filename> and <filename>vmxnet3</filename>).
   </para>
 
   <para>
@@ -908,7 +918,6 @@
   </para>
 </section>
 
-
 <section id="installation:xenserver">
 <title>Installation in Citrix XenServer</title>
 	<para>
@@ -917,10 +926,8 @@
 	</para>
 
 	<para>
-	  To display the Grub menu correctly, an adaption to the XenServer configuration is necessary;
+	  To display the GRUB menu correctly, an adaption to the XenServer configuration is necessary;
 	  this is described in <xref linkend="release-notes"/>.
 	</para>
-
-
 </section>
 </chapter>

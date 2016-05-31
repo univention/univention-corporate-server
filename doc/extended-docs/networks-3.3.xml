@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-          "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-
-  %entities;
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
 ]>
 <book lang="en" id="networks-3.3">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended IP and network management documentation</subtitle>
-
     </bookinfo>
 
-    <chapter>
+    <chapter id="proxy">
         <title>Advanced proxy configuration</title>
-        <section>
+        <section id="proxy:cascading">
             <title>Cascading of proxies</title>
 			<para>
 			  In some scenarios, cascading of proxy servers may be required. In such a setup,
@@ -42,7 +43,7 @@
 			</para>
         </section>
 
-        <section>
+        <section id="proxy:transparent">
             <title>Operation as a transparent proxy</title>
 			<para>
 			  It is possible to configure Squid as a transparent proxy to avoid configuring the
@@ -54,7 +55,6 @@
 			  The following configuration steps need to be made:
 
 			  <itemizedlist>
-
 				<listitem><para>
 				  The proxy server must be configured as the default gateway on all clients.
 				</para></listitem>
@@ -72,7 +72,7 @@ cron/IPFORWARDING/time=@reboot
 				<listitem><para>
 				  The &ucsUCRV; <envar>squid/transparentproxy</envar> must be set to
 				  <emphasis>yes</emphasis> on the proxy server. After that Univention Firewall and Squid need to be restarted:
-				  <programlisting>
+				  <programlisting lang="sh">
 /etc/init.d/univention-firewall restart
 /etc/init.d/squid restart
 				  </programlisting>
@@ -83,7 +83,7 @@ cron/IPFORWARDING/time=@reboot
 			</para>
 		</section>
 
-        <section>
+        <section id="proxy:scanner">
             <title>Integration of a virus scanner in the proxy</title>
 
 			<para>
@@ -98,7 +98,7 @@ cron/IPFORWARDING/time=@reboot
 			  restarted. To disable the virus scanner, the
 			  &ucsUCRV; <envar>squid/virusscan</envar> must be set to <emphasis>no</emphasis>.
 			  If neither of the two variables is set to <emphasis>yes</emphasis>,
-			  Dansguardian is not used. After changes to the variables Squid and Dansguardian
+			  DansGuardian is not used. After changes to the variables Squid and DansGuardian
 			  must be restarted.
 			</para>
 
@@ -176,5 +176,4 @@ cron/IPFORWARDING/time=@reboot
 		</section>
 
     </chapter>
-    <?dbhtml-include href="../stylesheets/piwik.html"?>
 </book>

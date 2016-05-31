@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-           "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-
-  <!ENTITY introduction SYSTEM "introduction-en.xml">
-  <!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
-  <!ENTITY installation SYSTEM "installation-en.xml">
-  <!ENTITY domain-ldap SYSTEM "domain-ldap-en.xml">
-  <!ENTITY central-management-umc SYSTEM "central-management-umc-en.xml">
-  <!ENTITY software SYSTEM "software-en.xml">
-  <!ENTITY user-management SYSTEM "user-management-en.xml">
-  <!ENTITY groups SYSTEM "groups-en.xml">
-  <!ENTITY computers SYSTEM "computers-en.xml">
-  <!ENTITY windows SYSTEM "windows-en.xml">
-  <!ENTITY ip-config SYSTEM "ip-config-en.xml">
-  <!ENTITY shares SYSTEM "shares-en.xml">
-  <!ENTITY print-services SYSTEM "print-services-en.xml">
-  <!ENTITY nagios SYSTEM "nagios-en.xml">
-  <!ENTITY uvmm SYSTEM "uvmm-en.xml">
-  <!ENTITY backup SYSTEM "backup-en.xml">
-  <!ENTITY mail SYSTEM "mail-en.xml">
-
-  <!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
-
-  %entities;
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
 ]>
 <book lang="en" id="ucs-3.3-0">
   <bookinfo>
@@ -35,10 +19,10 @@
     <legalnotice>
       <literallayout>
 Version 3.3-0
-Date: April 1, 2016
+Date: June 1, 2016
       </literallayout>
 
-      <literallayout>
+      <literallayout lang="">
 Alle Rechte vorbehalten./ All rights reserved.
 (c) 2002-2016
 Univention GmbH
@@ -48,7 +32,7 @@ Deutschland
 feedback@univention.de
       </literallayout>
 
-      <para>
+      <para lang="de">
 	Jede aufgeführte Marke und jedes Warenzeichen steht im Eigentum ihrer jeweiligen eingetragenen Rechtsinhaber.
 	Linux ist ein eingetragenes Warenzeichen von Linus Torvalds.
       </para>
@@ -60,23 +44,21 @@ feedback@univention.de
     </legalnotice>
   </bookinfo>
 
-  &introduction;
-  &installation;
-  &domain-ldap;
-  &central-management-umc;
-  &software;
-  &user-management;
-  &groups;
-  &computers;
-  &windows;
-  &ip-config;
-  &shares;
-  &print-services;
-  &mail;
-  &nagios;
-  &uvmm;
-  &backup;
-  &bibliography;
-
-  <?dbhtml-include href="../stylesheets/piwik.html"?>
+  <xi:include href="introduction-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="installation-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="domain-ldap-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="central-management-umc-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="software-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="user-management-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="groups-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="computers-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="windows-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="ip-config-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="shares-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="print-services-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="mail-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="nagios-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="uvmm-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="backup-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+  <xi:include href="../stylesheets/bibliography-en.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 </book>

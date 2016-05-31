@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!DOCTYPE book [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
 	%entities;
 ]>
 <book lang="en" id="developer-reference-3.3">
 	<bookinfo>
 		<title>Univention Developer Reference</title>
 		<subtitle>Manual for developers</subtitle>
-		<address>
+		<address lang="">
 			Univention GmbH
 			<street>Mary-Somerville-Straße 1</street>
 			<postcode>28359</postcode> <city>Bremen</city>
@@ -17,9 +21,10 @@
 		</address>
 		<copyright>
 			<year>2013</year>
+			<year>2016</year>
 		</copyright>
 		<legalnotice>
-			<para>
+			<para lang="">
 				Alle Rechte vorbehalten./ All rights reserved.
 			</para>
 
@@ -52,34 +57,8 @@
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="appendix-qa.xml"/>
 	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../stylesheets/bibliography-en.xml"/>
 	-->
-	<bibliography>
+	<bibliography id="bibliography">
 		<bibliomixed id="ucs-handbuch"/>
-		<biblioentry id="RFC2254">
-			<abbrev>RFC2254</abbrev>
-			<title><ulink url="http://www.ietf.org/rfc/rfc2254.txt">The String Representation of LDAP Search Filters</ulink></title>
-			<publisher>
-				<publishername>Internet Engineering Task Force</publishername>
-			</publisher>
-			<author><firstname>T.</firstname><surname>Howes</surname></author>
-			<date>December 1997</date>
-			<biblioset>
-				<title>IETF RFC</title>
-				<volumenum>2254</volumenum>
-			</biblioset>
-		</biblioentry>
-		<biblioentry id="RFC2822">
-			<abbrev>RFC2822</abbrev>
-			<title><ulink url="http://www.ietf.org/rfc/rfc2822.txt">Internet Message Format</ulink></title>
-			<publisher>
-				<publishername>Internet Engineering Task Force</publishername>
-			</publisher>
-			<editor><firstname>P.</firstname><surname>Resnick</surname></editor>
-			<date>April 2001</date>
-			<biblioset>
-				<title>IETF RFC</title>
-				<volumenum>2822</volumenum>
-			</biblioset>
-		</biblioentry>
 		<biblioentry id="make">
 			<publishername>Free Software Foundation</publishername>
 			<pubdate>2010</pubdate>
@@ -123,12 +102,7 @@
 			<title><ulink url="http://www.univention.de/fileadmin/download/whitepaper/Univention_App_Center_Summary_en.pdf">App Center White Paper</ulink></title>
 		</biblioentry>
 		-->
-
-
 	</bibliography>
-	<!--
-	<?dbhtml-include href="../stylesheets/piwik.html"?>
-	-->
-	<index/>
+	<index id="index"/>
 </book>
 <!-- vim:set ts=2 sw=2 noet ft=docbk:-->

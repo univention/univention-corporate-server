@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="computers:general"><title>Rechnerverwaltung</title>
 
     <section id="computers::hostaccounts"><title>Verwaltung der Rechnerkonten in der Univention Management Console</title>
@@ -47,7 +57,7 @@
 		<para>
 		  Der vereinfachte Assistent kann für alle Systemrollen deaktiviert werden, indem die &ucsUCRV;
 		  <envar>directory/manager/web/modules/computers/computer/wizard/disabled</envar> auf
-		  <emphasis>true</emphasis> gesetzt wird.
+		  <literal>true</literal> gesetzt wird.
 		</para>
 
         <table>
@@ -117,7 +127,7 @@
                         <entry>MAC-Adresse</entry>
                         <entry>
                             An dieser Stelle kann die MAC-Adresse des Rechners eingetragen
-                            werden, z.B. <emphasis>2e:44:56:3f:12:32</emphasis>. Soll der Rechner einen
+                            werden, z.B. <systemitem class="etheraddress">2e:44:56:3f:12:32</systemitem>. Soll der Rechner einen
                             DHCP-Eintrag erhalten, ist die Angabe der MAC-Adresse zwingend
                             erforderlich.
                         </entry>
@@ -224,8 +234,8 @@
                             In diesem Auswahlfeld kann die primäre Gruppe des Rechners selektiert
                             werden. Das ist nur notwendig, wenn von den automatisch eingestellten
                             Vorgabewerten abgewichen werden soll. Der Vorgabewert für einen
-                            DC Master oder DC Backup lautet <emphasis>DC Backup Hosts</emphasis>, für einen
-                            DC Slave <emphasis>DC Slave Hosts</emphasis> und für &ucsMember; <emphasis>Computers</emphasis>.
+                            DC Master oder DC Backup lautet <systemitem class="groupname">DC Backup Hosts</systemitem>, für einen
+                            DC Slave <systemitem class="groupname">DC Slave Hosts</systemitem> und für &ucsMember; <systemitem class="groupname">Computers</systemitem>.
                         </entry>
                     </row>
                 </tbody>
@@ -248,7 +258,7 @@
                         <entry>
                             In diesem Eingabefeld kann ein abweichendes Heimatverzeichnis für das
                             Rechner-Konto eingetragen werden. Der automatisch eingestellte
-                            Vorgabewert für das Heimatverzeichnis lautet <filename>/dev/null</filename>.
+                            Vorgabewert für das Heimatverzeichnis lautet <filename class="devicefile">/dev/null</filename>.
                         </entry>
                     </row>
                     <row>
@@ -408,21 +418,21 @@
                         <entry>Kerberos Prinzipal</entry>
                         <entry>
                             Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
-                            Objektklassen <emphasis>krb5Principal</emphasis> und <emphasis>krb5KDCEntry</emphasis> nicht.
+                            Objektklassen <classname>krb5Principal</classname> und <classname>krb5KDCEntry</classname> nicht.
                         </entry>
                     </row>
                     <row>
-                        <entry>Posix Konto</entry>
+                        <entry>POSIX Konto</entry>
                         <entry>
                             Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
-                            Objektklasse <emphasis>posixAccount</emphasis> nicht.
+                            Objektklasse <classname>posixAccount</classname> nicht.
                         </entry>
                     </row>
                     <row>
                         <entry>Samba-Konto</entry>
                         <entry>
                             Ist dieses Auswahlkästchen nicht markiert, erhält der Rechner die
-                            Objektklasse <emphasis>sambaSamAccount</emphasis> nicht.
+                            Objektklasse <classname>sambaSamAccount</classname> nicht.
                         </entry>
                     </row>
                     <row>
@@ -486,7 +496,7 @@
                 Kernel-Image-Paketes notwendig.
             </para>
             <para>
-                Der Standard-Kernel in UCS für i386-basierte Systeme ist der sogenannte <emphasis>bigmem-Kernel</emphasis> für Prozessoren mit PAE-Unterstützung, der 64 GB RAM unterstützt.
+                Der Standard-Kernel in UCS für i386-basierte Systeme ist der sogenannte <wordasword>bigmem-Kernel</wordasword> für Prozessoren mit PAE-Unterstützung, der 64 GB RAM unterstützt.
                 Für ältere i386-basierte Systeme wird ein zweiter Kernel ohne PAE-Unterstützung bereitgestellt, der maximal 4 GB Arbeitsspeicher unterstützt.
                 Der Standard-Kernel für amd64-Systeme besitzt keine solchen Einschränkungen.
             </para>
@@ -502,13 +512,14 @@
                 Die folgenden Meta-Pakete stehen unter i386 / 32 Bit zur Verfügung:
             </para>
 			<itemizedlist>
-				<listitem><simpara>univention-kernel-image - Standard-Kernel (max. 64 GB RAM)</simpara></listitem>
+				<listitem><simpara><package>univention-kernel-image</package> - Standard-Kernel (max. 64 GB RAM)</simpara></listitem>
+				<listitem><simpara><package>univention-kernel-image-486</package> - Kernel für Systeme ohne PAE-Support (max. 4 GB RAM)</simpara></listitem>
 			</itemizedlist>
             <para>
                 Die folgenden Meta-Pakete stehen unter amd64 / 64 Bit zur Verfügung:
             </para>
 			<itemizedlist>
-				<listitem><simpara>univention-kernel-image - Standard-Kernel</simpara></listitem>
+				<listitem><simpara><package>univention-kernel-image</package> - Standard-Kernel</simpara></listitem>
 			</itemizedlist>
         </section>
 
@@ -524,8 +535,8 @@
             </para>
             <para>
                 Die zu verwendenden Treiber werden beim Systemstart automatisch erkannt und
-                durch den Device Manager udev geladen. Dabei werden außerdem die notwendigen
-                System-Verknüpfungen unter <filename>/dev/</filename> angelegt. Wenn Treiber nicht erkannt
+				durch den Device Manager <application>udev</application> geladen. Dabei werden außerdem die notwendigen
+                System-Verknüpfungen unter <filename class="directory">/dev/</filename> angelegt. Wenn Treiber nicht erkannt
                 werden (was vorkommen kann, wenn keine entsprechenden Hardware-IDs registriert
                 sind oder Hardware verwendet wird, die nicht automatisch erkannt werden
                 kann, etwa ISA-Steckkarten), so können zu ladende Kernel-Module
@@ -546,8 +557,8 @@
             <para>
                 Wenn doch externe Treiber oder Kernelmodule benötigt werden, können diese über <emphasis>Dynamic Kernel Module Support</emphasis> (DKMS) eingebunden werden.
                 Es stellt eine standardisierte Schnittstelle für Kernelquellen bereit und erlaubt es, Module automatisch für jeden installierten Kernel zu übersetzen.
-                Dazu müssen neben dem Paket <emphasis>dkms</emphasis> auch die Kernel-Header-Pakete <emphasis>univention-kernel-headers</emphasis> für die gewünschten Kernel installiert werden.
-                Zu beachten ist, dass nicht alle externen Kernelmodule mit allen Kerneln kompatibel sind.
+                Dazu müssen neben dem Paket <package>dkms</package> auch die Kernel-Header-Pakete <package>univention-kernel-headers</package> für die gewünschten Kernel installiert werden.
+                Zu beachten ist, dass nicht alle externen Kernelmodule mit allen Kernel kompatibel sind.
             </para>
         </section>
 
@@ -561,7 +572,7 @@
             </para>
             <para>
                 <figure id="grub-selection"><title>GRUB-Auswahlmenü</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations/computers_grub.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations33/computers_grub.png"/>
                 </figure>
             </para>
             <para>
@@ -575,7 +586,7 @@
                 <filename>/boot/grub/grub.cfg</filename> abgelegt. Diese Datei wird automatisch generiert,
                 es stehen alle installierten Kernel-Pakete zur Auswahl.
                 Durch Auswahl der Option <guimenu>Memory test</guimenu> kann das
-                Speicher-Testprogramm Memtest86+ gestartet werden, das Konsistenzprüfungen auf
+                Speicher-Testprogramm <command>Memtest86+</command> gestartet werden, das Konsistenzprüfungen auf
                 dem Arbeitsspeicher durchführt.
             </para>
             <para>
@@ -584,13 +595,13 @@
                 konfiguriert werden.
             </para>
             <para>
-                In der Grundeinstellung wird in einen 800x600 Pixel großen Bildschirm unter
+				In der Grundeinstellung wird in einen <wordasword>800x600</wordasword> Pixel großen Bildschirm unter
                 16 Bit Farbtiefe gewechselt. Durch die &ucsUCRV; <envar>grub/gfxmode</envar> kann ein anderer Modus ausgewählt
-                werden. Es werden nur Auflösungen unterstützt, die über VESA Bios Extentions
+                werden. Es werden nur Auflösungen unterstützt, die über VESA BIOS Extentions
                 gesetzte werden können. Eine Liste der verfügbaren Modi findet sich unter
                 <ulink url="https://en.wikipedia.org/wiki/VESA_BIOS_Extensions"/>. Die Eingabe
-                erfolgt im Format <emphasis>HORIZONTALxVERTIKAL@FARBTIEFEBIT</emphasis>, also
-                z.B. <emphasis>1024x768@16</emphasis>.
+				erfolgt im Format <userinput><replaceable>HORIZONTAL</replaceable>x<replaceable>VERTIKAL</replaceable>@<replaceable>FARBTIEFEBIT</replaceable></userinput>, also
+                z.B. <literal>1024x768@16</literal>.
             </para>
             <para>
                 Kernel-Optionen für die gestarteten Linux-Kernel können mit
@@ -600,15 +611,15 @@
             <para>
                 Die grafische Darstellung während des Bootvorgangs - der sogenannte
                 Splash-Screen - kann durch Setzen der &ucsUCRV; <envar>grub/bootsplash</envar> auf
-                <emphasis>nosplash</emphasis> deaktiviert werden.
+                <literal>nosplash</literal> deaktiviert werden.
             </para>
             <para>
                 In älteren Xen-Umgebungen wird zum Booten paravirtualisierter Systeme
                 noch eine Version von PyGrub verwendet, die
-                auf die ältere GRUB 1-Konfigurationsdatei <filename>/goot/grub/menu.lst</filename>
+                auf die ältere GRUB 1-Konfigurationsdatei <filename>/boot/grub/menu.lst</filename>
                 angewiesen ist. Diese wird automatisch erzeugt, sofern sie noch nicht existiert.
                 Dieses Verhalten kann durch Setzen der
-                &ucsUCRV; <envar>grub/generate-menu-lst</envar> auf <emphasis>no</emphasis> deaktiviert werden.
+                &ucsUCRV; <envar>grub/generate-menu-lst</envar> auf <literal>no</literal> deaktiviert werden.
             </para>
         </section>
 
@@ -623,19 +634,19 @@
                     direkt gesetzt werden können. Die Variablen sind in den einzelnen Abschnitten
                     zusätzlich in Klammern aufgeführt.
                     <figure id="network-settings"><title>Konfiguration der Netzwerkeinstellungen</title>
-                        <graphic scalefit="1" width="80%" fileref="illustrations/computers_network_de.png"/>
+                        <graphic scalefit="1" width="80%" fileref="illustrations33/computers_network_de.png"/>
                     </figure>
                     Unter <guimenu>IPv4-Netzwerkgeräte</guimenu> und
                     <guimenu>IPv6-Netzwerkgeräte</guimenu> werden alle im System verfügbaren
                     Netzwerkkarten aufgeführt (es werden nur Netzwerkinterfaces im Schema
-                    <emphasis>ethX</emphasis> dargestellt).
+                    <filename class="devicefile">ethX</filename> dargestellt).
                 </para>
                 <para>
                     Netzwerkschnittstellen können für IPv4 und/oder IPv6 konfiguriert
                     werden. IPv4-Adressen haben 32 Bit Länge und werden in der Regel in vier
-                    Blöcken in Dezimalschrebweise dargestellt (z.B. 192.168.0.10), während
+					Blöcken in Dezimalschreibweise dargestellt (z.B. <systemitem class="ipaddress">192.168.0.10</systemitem>), während
                     IPv6-Adressen vier Mal so lang sind und typischerweise hexadezimal dargestellt
-                    werden (z.B. 2222:0DFE:FE29:DE27:0000:0000:0000:0000).
+					werden (z.B. <systemitem class="ipaddress">2222:0DFE:FE29:DE27:0000:0000:0000:0000</systemitem>).
                 </para>
 
                 <section id="computers:ipv4"><title>Konfiguration von IPv4-Adressen</title>
@@ -654,7 +665,7 @@
                     </para>
                     <para>
                         Schlägt die Vergabe einer IP-Adresse für einen Server fehl, wird
-                        ersatzweise eine zufällige Link-Local-Adresse (169.254.x.y) konfiguriert.
+                        ersatzweise eine zufällige Link-Local-Adresse (<systemitem class="ipaddress">169.254.<replaceable>x</replaceable>.<replaceable>y</replaceable></systemitem>) konfiguriert.
                     </para>
                     <para>
                         Die über DHCP erhaltene Adresse wird für UCS-Serversysteme auch in das
@@ -723,7 +734,7 @@
 							<simpara>
 							Ein <guimenu>externer DNS-Server</guimenu> wird für die Auflösung von
                             Rechnernamen und Adressen außerhalb der UCS-Domäne verwendet,
-                            z.B. <emphasis>univention.de</emphasis>. Dies ist typischerweise ein Nameserver, der vom
+                            z.B. <systemitem class="domainname">univention.de</systemitem>. Dies ist typischerweise ein Nameserver, der vom
 							Internet Provider betrieben wird.
 							</simpara>
 						</listitem>
@@ -785,7 +796,7 @@
 					<title>Voraussetzungen bei Verwendung von &ucsUVMM;</title>
 					<para>
 						Falls Xen oder <acronym>KVM</acronym> installiert sind, sind die Einstellungen für die Netzwerkkonfiguration deaktiviert, weil zwei Init-Skripte standardmäßig aktiv sind:
-						Diese benennen die physische Netzwerkkarte <filename class="device">eth0</filename> in <filename class="device">peth0</filename> um und ersetzen diese durch eine Bridge mit dem Namen <filename class="device">eth0</filename>, in die die umbenannte physische Netzwerkkarte eingehängt wird.
+						Diese benennen die physische Netzwerkkarte <filename class="devicefile">eth0</filename> in <filename class="devicefile">peth0</filename> um und ersetzen diese durch eine Bridge mit dem Namen <filename class="device">eth0</filename>, in die die umbenannte physische Netzwerkkarte eingehängt wird.
 						Zusätzliche Netzwerkkarten werden nicht adaptiert.
 					</para>
 					<para>
@@ -801,7 +812,7 @@ ucr set xen/bridge/interface=none
 ucr unset umc/modules/setup/network/disabled/by
 					</programlisting>
 					<para>
-						Danach muß der Server neu gestartet werden.
+						Danach muss der Server neu gestartet werden.
 						Bei existierenden virtuellen Maschinen müssen danach die Namen der Netzwerkinterfaces angepasst werden, was in <xref linkend="uvmm:networkinterfaces"/> beschrieben ist.
 						Weiterhin wird empfohlen, die <acronym>UVMM</acronym>-Profile für neue virtuelle Maschinen anzupassen, was in  <xref linkend="uvmm::profile::network"/> beschrieben ist.
 					</para>
@@ -897,7 +908,7 @@ ucr unset umc/modules/setup/network/disabled/by
 
 					  <itemizedlist>
 						<listitem><simpara>
-						  <emphasis>balance-rr (0)</emphasis> verteilt die Pakete der Reihe nach
+						  <guimenuitem>balance-rr (0)</guimenuitem> verteilt die Pakete der Reihe nach
 						  gleichmässig auf die verfügbaren Netzwerkschnittstellen innerhalb des
 						  Bondings. Dies erhöht den Durchsatz und verbessert die Ausfallsicherheit.
 						  Zur Verwendung dieser Variante müssen die verwendeten Netzwerk-Switches
@@ -905,7 +916,7 @@ ucr unset umc/modules/setup/network/disabled/by
 						</simpara></listitem>
 
 						<listitem><simpara>
-						  Bei Verwendung von <emphasis>active-backup (1)</emphasis> ist nur jeweils
+						  Bei Verwendung von <guimenuitem>active-backup (1)</guimenuitem> ist nur jeweils
 						  eine Netzwerkkarte des Bonding-Interfaces aktiv (in der Grundeinstellung
 						  die Netzwerkschnittstelle aus <guimenu>Bond primary</guimenu>). Fällt die
 						  primäre Netzwerkkarte aus, wird dies durch den Linux-Kernel erkannt und
@@ -914,7 +925,7 @@ ucr unset umc/modules/setup/network/disabled/by
 						</simpara></listitem>
 					  </itemizedlist>
 
-					  Darüberhinaus existieren noch weitere Bonding-Methoden. Diese sind in der
+					  Darüber hinaus existieren noch weitere Bonding-Methoden. Diese sind in der
 					  Regel nur für Sonderfälle relevant und sind unter <xref linkend="bonding"/>
 					  beschrieben.
 					</para>
@@ -968,7 +979,7 @@ ucr unset umc/modules/setup/network/disabled/by
 						  <para>
 							Dies ist typischerweise der Fall, wenn nur ein einzelnes Endgerät über diese Netzwerkverbindung angebunden wird.
 						  </para>
-						</listitem> 
+						</listitem>
 
 						<listitem>
 						  <para>
@@ -1008,7 +1019,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					  Nach einem Klick auf <guimenu>Weiter</guimenu> kann dem VLAN-Interface eine
 					  IP-Adresse zugewiesen werden. Die Einstellungsmöglichkeiten sind dieselben wie in <xref
 					  linkend="computers:ipv4"/> und <xref linkend="computers:ipv6"/> beschrieben.
-					  Bei der Vergabe einer IP-Adresse muß darauf geachtet werden, daß die Adresse zum zugeordneten VLAN-Adressbereich passt.
+					  Bei der Vergabe einer IP-Adresse muss darauf geachtet werden, dass die Adresse zum zugeordneten VLAN-Adressbereich passt.
 					</para>
 				  </section>
 				</section>
@@ -1044,8 +1055,8 @@ ucr unset umc/modules/setup/network/disabled/by
                 <para>
                     Einzelne Domänen können von der Verwendung des Proxys ausgenommen werden, in
                     dem sie kommasepariert in die &ucsUCRV; <envar>proxy/no_proxy</envar> aufgenommen werden.
-                    Unterdomänen werden dabei berücksichtigt; eine Ausnahme für <uri>univention.de</uri>
-                    wirkt sich also auch auf <uri>apt.univention.de</uri> aus.
+                    Unterdomänen werden dabei berücksichtigt; eine Ausnahme für <uri>software-univention.de</uri>
+                    wirkt sich also auch auf <uri>updates.software-univention.de</uri> aus.
                 </para>
             </section>
         </section>
@@ -1061,7 +1072,7 @@ ucr unset umc/modules/setup/network/disabled/by
             </para>
             <para>
                 Die Einstellungen können auch über eine &ucsUCR;-Richtlinie gesetzt werden.
-                Die manuelle Konfguration ist auch nötig, wenn ein Dual-Monitor-Betrieb verwendet
+                Die manuelle Konfiguration ist auch nötig, wenn ein Dual-Monitor-Betrieb verwendet
                 werden soll. Im folgenden eine Auswahl der wichtigen Einstellungen
                 und die dazugehörigen UCR-Variablen in Klammern:
             </para>
@@ -1077,7 +1088,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					Unter <guimenu>Auflösung des primären Monitors</guimenu> ist die
                     Bildschirmauflösung des Hauptmonitors einzutragen. Die Angabe von
                     Breite und Höhe in Pixeln ist durch ein "x" zu trennen,
-					z.B. <emphasis>1024x768</emphasis> (<envar>xorg/resolution</envar>).
+					z.B. <literal>1024x768</literal> (<envar>xorg/resolution</envar>).
 					</simpara>
 				</listitem>
 				<listitem>
@@ -1113,7 +1124,7 @@ ucr unset umc/modules/setup/network/disabled/by
             <guimenu>NFS-Freigabe</guimenu>, die unter dem in <guimenu>Mount
             point</guimenu> angegebenen Dateipfad eingehängt wird.
             <figure id="nfs-mount"><title>Einbinden einer NFS-Freigabe</title>
-                <graphic scalefit="1" width="60%" fileref="illustrations/computers_policy_nfsshare_de.png"/>
+                <graphic scalefit="1" width="60%" fileref="illustrations33/computers_policy_nfsshare_de.png"/>
             </figure>
 			</para>
         </section>
@@ -1226,7 +1237,7 @@ ucr unset umc/modules/setup/network/disabled/by
             <para>
                 Die Benennung der Variablen folgt einer baumartigen Struktur, wobei
                 ein Schrägstrich als Trennzeichen von Namensbestandteilen verwendet
-                wird. Beispielsweise handelt es sich bei allen mit <emphasis>ldap</emphasis>
+                wird. Beispielsweise handelt es sich bei allen mit <literal>ldap</literal>
                 beginnenden &ucsUCR;-Variablen um Einstellungen, die den lokalen
                 Verzeichnisdienst betreffen.
             </para>
@@ -1269,7 +1280,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					</listitem>
 					<listitem>
 						<simpara>
-						Die Option <emphasis>--schedule</emphasis> dient zum Setzen lokaler
+						Die Option <option>--schedule</option> dient zum Setzen lokaler
                         Variablen, die nur für einen gewissen Zeitraum gelten sollen. Diese
                         Ebene der &ucsUCR; ist reserviert für lokale Einstellungen, die
                         durch zeitgesteuerte Mechanismen in &ucsUCS; automatisiert
@@ -1278,7 +1289,7 @@ ucr unset umc/modules/setup/network/disabled/by
 					</listitem>
 					<listitem>
 						<para>
-						Durch Verwendung der Option <emphasis>--force</emphasis> beim Setzen einer
+						Durch Verwendung der Option <option>--force</option> beim Setzen einer
                         lokalen Variable werden aus den Verzeichnisdienst übernommene
                         Einstellung ebenso wie Variablen der Schedule-Ebene überstimmt und
                         statt dessen der angegebene Wert für das lokale System festgelegt. Beispiel:
@@ -1344,13 +1355,13 @@ univention-config-registry set --force mail/messagesizelimit=1000000
             <section id="computers:Abfrage_einer_UCR-Variable"><title>Abfrage einer UCR-Variable</title>
                 <para>
                     Eine einzelne &ucsUCR;-Variable kann mit dem Aufrufparameter
-                    <emphasis>get</emphasis> ausgelesen werden:
+                    <option>get</option> ausgelesen werden:
                 </para>
                     <programlisting language="sh">
 univention-config-registry get ldap/server/ip
                     </programlisting>
                 <para>
-                    Mit dem Aufrufparameter <emphasis>dump</emphasis> können auch alle aktuell
+                    Mit dem Aufrufparameter <option>dump</option> können auch alle aktuell
                     gesetzten Variablen ausgegeben werden:
                 </para>
                     <programlisting language="sh">
@@ -1360,7 +1371,7 @@ univention-config-registry dump
 
             <section id="computers:Setzen_von_UCR-Variablen"><title>Setzen von UCR-Variablen</title>
                 <para>
-                    Mit dem Aufrufparameter <emphasis>set</emphasis> kann eine Variable gesetzt
+                    Mit dem Aufrufparameter <option>set</option> kann eine Variable gesetzt
                     werden. Der Name der Variable kann frei gewählt werden, darf aber
                     ausschließlich aus Buchstaben, Punkten, Zahlen, Binde- und
                     Schrägstrichen bestehen.
@@ -1408,9 +1419,9 @@ univention-config-registry set dns/forwarder1?192.168.0.2
 
             <section id="computers:Suche_nach_Variablen_und_gesetzten_Werten"><title>Suche nach Variablen und gesetzten Werten</title>
                 <para>
-                    Mit dem Parameter <emphasis>search</emphasis> kann nach einer Variable gesucht
+                    Mit dem Parameter <parameter class="command">search</parameter> kann nach einer Variable gesucht
                     werden. Dieser Befehl sucht nach Variablennamen, welche die Zeichenkette
-                    <emphasis>nscd</emphasis> enthalten und gibt diese mit den aktuellen Belegungen aus:
+                    <wordasword>nscd</wordasword> enthalten und gibt diese mit den aktuellen Belegungen aus:
                 </para>
                     <programlisting language="sh">
 univention-config-registry search nscd
@@ -1418,7 +1429,7 @@ univention-config-registry search nscd
                 <para>
                     Es kann alternativ auch nach gesetzten Variablen-Werten gesucht
                     werden. Dieser Aufruf sucht nach allen Variablen, die auf
-                    <emphasis>master.example.com</emphasis> gesetzt sind:
+                    <literal>master.example.com</literal> gesetzt sind:
                 </para>
                     <programlisting language="sh">
 univention-config-registry search --value master.example.com
@@ -1432,8 +1443,8 @@ univention-config-registry search --value master.example.com
 
             <section id="computers:Loeschen_von_UCR-Variablen"><title>Löschen von UCR-Variablen</title>
                 <para>
-                    Mit dem Aufrufparameter <emphasis>unset</emphasis> kann eine Variable entfernt werden.
-                    Das folgende Beispiel löscht die Variable <emphasis>dns/forwarder2</emphasis>. Auch hier
+                    Mit dem Aufrufparameter <parameter class="command">unset</parameter> kann eine Variable entfernt werden.
+                    Das folgende Beispiel löscht die Variable <envar>dns/forwarder2</envar>. Auch hier
                     können mehrere zu löschende Variablen übergeben werden:
                 </para>
                     <programlisting language="sh">
@@ -1443,7 +1454,7 @@ univention-config-registry unset dns/forwarder2
 
             <section id="computers:Neuerzeugung_von_Konfigurationsdateien_aus_ihrem_Template"><title>Neuerzeugung von Konfigurationsdateien aus ihrem Template</title>
                 <para>
-                    Mit dem Aufrufparameter <emphasis>commit</emphasis> wird eine Konfigurationsdatei
+                    Mit dem Aufrufparameter <parameter class="command">commit</parameter> wird eine Konfigurationsdatei
                     aus ihrem Template neu erzeugt. Der Name der Konfigurationsdatei ist
                     als Parameter anzugeben, z.B.:
                 </para>
@@ -1464,7 +1475,7 @@ univention-config-registry commit /etc/samba/smb.conf
 
             <section id="computers:Übernahme_von_Variablen_in_Shell-Skripte"><title>Übernahme von Variablen in Shell-Skripte</title>
                 <para>
-                    Über den Aufrufparameter <emphasis>shell</emphasis> werden &ucsUCR;-Variablen
+                    Über den Aufrufparameter <option>shell</option> werden &ucsUCR;-Variablen
                     und ihre aktuellen Belegungen in einem Format ausgegeben, das in
                     Shell-Skripten verwendet werden kann:
                 </para>
@@ -1480,7 +1491,7 @@ univention-config-registry shell ldap/server/name
                 <para>
                     Damit &ucsUCR;-Variablen als Umgebungsvariablen in einem
                     Shell-Skript eingelesen werden, muss die Ausgabe von &ucsUCR;
-                    durch den Befehl <emphasis>eval</emphasis> ausgeführt werden:
+                    durch den Befehl <command>eval</command> ausgeführt werden:
                 </para>
                     <programlisting language="sh">
 # eval "$(univention-config-registry shell ldap/server/name)"
@@ -1501,7 +1512,7 @@ master.firma.de
                 werden.
             </para>
                 <figure id="policy-mailsize"><title>Konfiguration der maximalen Mailgröße über eine Richtlinie</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations/computers_policy_mailsize_de.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations33/computers_policy_mailsize_de.png"/>
                 </figure>
             <para>
                 Zuerst muss für die anzulegende Richtlinie ein <guimenu>Name</guimenu>
@@ -1542,18 +1553,18 @@ master.firma.de
                     vorgenommen wurden. Wenn Konfigurationsdateien nicht mehr im
                     Auslieferungszustand vorliegen, werden diese nicht
                     überschrieben. Stattdessen wird eine neue Version im selben
-                    Verzeichnis mit der Endung <emphasis>.debian.dpkg-new</emphasis> abgelegt. Sollen
+                    Verzeichnis mit der Endung <filename class="extension">.debian.dpkg-new</filename> abgelegt. Sollen
                     Änderungen an &ucsUCR;-Templates vorgenommen werden, werden diese
                     Templates bei der Aktualisierung ebenfalls nicht überschrieben und im
-                    selben Verzeichnis mit der Endung <emphasis>.dpkg-new</emphasis> oder
-                    <emphasis>.dpkg-dist</emphasis> abgelegt. Entsprechenden Hinweise werden in die
+                    selben Verzeichnis mit der Endung <filename class="extension">.dpkg-new</filename> oder
+                    <filename class="extension">.dpkg-dist</filename> abgelegt. Entsprechenden Hinweise werden in die
                     Log-Datei <filename>/var/log/univention/updater.log</filename> geschrieben.
                     Dies tritt nur auf, wenn UCR-Templates lokal angepasst werden.
 				</para>
 			</note>
             <para>
                 Die UCR-Templates werden im Verzeichnis
-                <filename>/etc/univention/templates/files</filename> abgelegt. Der Pfad zu den
+				<filename class="directory">/etc/univention/templates/files/</filename> abgelegt. Der Pfad zu den
                 Vorlagen entspricht dem absoluten Pfad zu der Konfigurationsdatei mit
                 vorangestelltem Pfad zum Vorlagenverzeichnis. So findet sich zum Beispiel
                 die Vorlage für die Konfigurationsdatei <filename>/etc/issue</filename> unter
@@ -1571,7 +1582,7 @@ master.firma.de
                 <para>
                     Im einfachsten Fall kann eine UCR-Variable im Template direkt
                     referenziert werden. Als Platzhalter dient der Variablenname, der von der
-                    Zeichenkette <emphasis>@%@</emphasis> eingefasst wird. Als Beispiel die Option für
+                    Zeichenkette <literal>@%@</literal> eingefasst wird. Als Beispiel die Option für
                     die Aktivierung von X11-Forwarding in der Konfigurationsdatei
                     <filename>/etc/ssh/sshd_config</filename> des OpenSSH-Servers:
                 </para>
@@ -1588,7 +1599,7 @@ X11Forwarding @%@sshd/xforwarding@%@
             <section id="ucr::templates::extend::python"><title>Integration von Inline-Python-Code in Templates</title>
                 <para>
                     In UCR-Templates kann beliebiger Python-Code eingebettet werden, in
-                    dem ein von der Zeichenkette <emphasis>@!@</emphasis> eingefasster Codeblock
+                    dem ein von der Zeichenkette <literal>@!@</literal> eingefasster Codeblock
                     eingefügt wird. Mit solchen Blöcken können z.B. bedingte Abfragen
                     umgesetzt werden, so dass beim Ändern eines Parameters über eine
                     Variable weitere abhängige Einstellungen automatisch in die
@@ -1606,7 +1617,7 @@ if configRegistry.get('apache2/ssl/certificate'):
                 <para>
                     Alle mit der print-Funktion ausgegebenen Daten werden dabei in die
                     generierte Konfigurationsdatei geschrieben. Die in &ucsUCR;
-                    gespeicherten Daten können über das configRegistry-Objekt abgefragt
+                    gespeicherten Daten können über das <classname>ConfigRegistry</classname>-Objekt abgefragt
                     werden, z.B.:
                 </para>
                     <programlisting>
@@ -1625,15 +1636,15 @@ if configRegistry.get('version/version') and \
                 <para>
                     Die in Konfigurationsdateien verwendeten &ucsUCR;-Variablen werden
                     unterhalb des Verzeichnisses
-                    <filename>/etc/univention/templates/info</filename> in <emphasis>info</emphasis>-Dateien
+					<filename class="directory">/etc/univention/templates/info/</filename> in <emphasis>info</emphasis>-Dateien
                     registriert, die in der Regel nach dem Paketnamen mit der
-                    Dateiendung <emphasis>.info</emphasis> benannt werden. Wird neuer Python-Code in die Vorlagen eingefügt oder bestehender Code
+                    Dateiendung <filename class="extension">.info</filename> benannt werden. Wird neuer Python-Code in die Vorlagen eingefügt oder bestehender Code
                     so verändert, dass er zusätzliche oder andere Variablen nutzt, so muss
-                    einer der bestehenden <emphasis>.info</emphasis>-Dateien modifiziert oder eine neue
+                    einer der bestehenden <filename class="extension">.info</filename>-Dateien modifiziert oder eine neue
                     hinzugefügt werden.
                 </para>
                 <para>
-                    Nach der Änderung von <emphasis>.info</emphasis>-Dateien muss der Befehl
+                    Nach der Änderung von <filename class="extension">.info</filename>-Dateien muss der Befehl
                     <command>ucr update</command> aufgerufen werden.
                 </para>
             </section>
@@ -1650,7 +1661,7 @@ if configRegistry.get('version/version') and \
         <section id="computers:rootaccount"><title>Administrativer Zugriff mit dem Root-Konto</title>
             <para>
                 Für den administrativen Vollzugriff existiert auf jedem UCS-System
-                das <emphasis>root</emphasis>-Konto. Das Passwort wird beim Installieren des Systems
+                das <systemitem class="username">root</systemitem>-Konto. Das Passwort wird beim Installieren des Systems
                 festgelegt. Der root-Benutzer wird nicht im LDAP-Verzeichnis
                 gespeichert, sondern in den lokalen Benutzerkonten.
             </para>
@@ -1680,7 +1691,7 @@ if configRegistry.get('version/version') and \
                 festgelegt.
             </para>
                 <figure id="language-settings"><title>Konfiguration der Spracheinstellungen</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations/computers_timezone_de.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations33/computers_timezone_de.png"/>
                 </figure>
             <para>
                 Das <guimenu>Tastaturlayout</guimenu> im Menüpunkt
@@ -1696,7 +1707,7 @@ if configRegistry.get('version/version') and \
                 gestoppt werden.
             </para>
                 <figure id="umc-services"><title>Übersicht der Systemdienste</title>
-                    <graphic scalefit="1" width="80%" fileref="illustrations/umc-systemservices.png"/>
+                    <graphic scalefit="1" width="80%" fileref="illustrations33/umc-systemservices.png"/>
                 </figure>
             <para>
                 In der Liste aller auf dem System installierten Dienste ist unter
@@ -1726,22 +1737,27 @@ if configRegistry.get('version/version') and \
 
             <section id="computers:Anmeldebeschraenkungen_fuer_ausgewaehlte_Benutzer"><title>Anmeldebeschränkungen für ausgewählte Benutzer</title>
                 <para>
-                    In der Grundeinstellung können sich nur der <emphasis>root</emphasis>-Benutzer und Mitglieder der
-                    Gruppe <emphasis>Domain Admins</emphasis> remote über SSH und lokal auf einem
-                    tty anmelden.
+                    In der Grundeinstellung können sich nur der <systemitem class="username">root</systemitem>-Benutzer und Mitglieder der
+                    Gruppe <systemitem class="groupname">Domain Admins</systemitem> remote über SSH und lokal auf einem
+					<systemitem class="service">tty</systemitem> anmelden.
                 </para>
                 <para>
                     Diese Einschränkung kann mit der &ucsUCRV; <envar>auth/DIENST/restrict</envar>
                     konfiguriert werden. Der Zugriff auf diesen Dienst kann durch Setzen
                     der Variablen <envar>auth/DIENST/user/BENUTZERNAME</envar> und
-                    <envar>auth/DIENST/group/GRUPPENNAME</envar> auf <emphasis>yes</emphasis> freigegeben
+                    <envar>auth/DIENST/group/GRUPPENNAME</envar> auf <literal>yes</literal> freigegeben
                     werden.
                 </para>
                 <para>
-                    Anmeldebeschränkungen werden unterstützt für SSH (<emphasis>sshd</emphasis>), FTP
-                    (<emphasis>ftp</emphasis>), die Anmeldung am Login-Manager GDM (<emphasis>gdm</emphasis>), die
-                    Anmeldung an einem tty (<emphasis>login</emphasis>), rlogin (<emphasis>rlogin</emphasis>), PPP
-                    (<emphasis>ppp</emphasis>) und andere Dienste (<emphasis>other</emphasis>). Ein Beispiel für SSH:
+					Anmeldebeschränkungen werden unterstützt für
+					<systemitem class="service">SSH</systemitem> (<literal>sshd</literal>),
+					<systemitem class="service">FTP</systemitem> (<literal>ftp</literal>),
+					die Anmeldung am Login-Manager <systemitem class="service">KDM</systemitem> (<literal>kdm</literal>),
+					Anmeldung an einem <systemitem class="service">tty</systemitem> (<literal>login</literal>),
+					<systemitem class="service">rlogin</systemitem> (<literal>rlogin</literal>),
+					<systemitem class="service">PPP</systemitem> (<literal>ppp</literal>)
+					und andere Dienste (<literal>other</literal>).
+					Ein Beispiel für <systemitem class="service">SSH</systemitem>:
                 </para>
                     <programlisting>
 auth/sshd/group/Administrators: yes
@@ -1795,12 +1811,12 @@ auth/sshd/restrict: yes
             <section id="computers:Logdateien"><title>Logdateien</title>
                 <para>
                     Alle UCS-spezifischen Logdateien (z.B. für die Listener/Notifier-Replikation)
-                    werden im Verzeichnis <filename>/var/log/univention</filename> abgelegt. Serverdienste
+					werden im Verzeichnis <filename class="directory">/var/log/univention/</filename> abgelegt. Serverdienste
                     protokollieren in ihre jeweilige Standard-Logdateien; Apache beispielsweise in
                     die Datei <filename>/var/log/apache2/error.log</filename>.
                 </para>
                 <para>
-                    Die Logdateien werden durch Logrotate verwaltet. Es sorgt dafür, dass
+					Die Logdateien werden durch <application>logrotate</application> verwaltet. Es sorgt dafür, dass
                     Logdateien in einem Intervall (konfigurierbar in Wochen über
                     die &ucsUCRV; <envar>log/rotate/weeks</envar>, standardmäßig 12) fortlaufend benannt werden
                     und ältere Logdateien anschließend gelöscht werden. Die aktuelle Logdatei für
@@ -1810,12 +1826,12 @@ auth/sshd/restrict: yes
                 <para>
                     Alternativ können Logdateien auch erst beim Erreichen einer bestimmten Größe rotiert
                     werden. Soll beispielsweise erst ab einer Größe von 50 MB rotiert werden, kann dazu
-                    die &ucsUCRV; <envar>logrotate/rotates</envar> auf <emphasis>size 50M</emphasis>
+                    die &ucsUCRV; <envar>logrotate/rotates</envar> auf <literal>size 50M</literal>
                     gesetzt werden.
                 </para>
                 <para>
                     Über die &ucsUCRV; <envar>logrotate/compress</envar> kann konfiguriert werden, ob
-                    die älteren Logdateien zusätzlich mit Gzip komprimiert werden sollen.
+                    die älteren Logdateien zusätzlich mit <command>gzip</command> komprimiert werden sollen.
                 </para>
             </section><!-- Logdateien -->
 
@@ -1827,19 +1843,19 @@ auth/sshd/restrict: yes
                 </para>
                     <itemizedlist>
 						<listitem><simpara>Der freie Speicherplatz auf den Systempartitionen (<command>df -lhT</command>)</simpara></listitem>
-						<listitem><simpara>Die aktuelle Prozeßliste (<command>ps auxf</command>)</simpara></listitem>
+						<listitem><simpara>Die aktuelle Prozessliste (<command>ps auxf</command>)</simpara></listitem>
 						<listitem><simpara>Zwei <command>top</command>-Aufstellungen der aktuellen Prozesse und Auslastung (<command>top -b -n2</command>)</simpara></listitem>
 						<listitem><simpara>Den aktuell freien Arbeitsspeicher (<command>free</command>)</simpara></listitem>
 						<listitem><simpara>Die Zeit, die seit dem Start des Systems vergangen ist (<command>uptime</command>)</simpara></listitem>
-						<listitem><simpara>Temperatur-, Lüfter- und Spannungskennzahlen aus LM-Sensors (<command>sensors</command>)</simpara></listitem>
+						<listitem><simpara>Temperatur-, Lüfter- und Spannungskennzahlen aus <application>lm-sensors</application> (<command>sensors</command>)</simpara></listitem>
 						<listitem><simpara>Eine Aufstellung der aktuellen Samba-Verbindungen (<command>smbstatus</command>)</simpara></listitem>
                     </itemizedlist>
                 <para>
                     Die Laufzeiten in denen der Systemzustand protokolliert werden soll, können
                     durch die &ucsUCRV; <envar>system/stats/cron</envar> in Cron-Syntax definiert werden,
-                    z.B. <emphasis>0,30 * * * *</emphasis> für eine Protokollierung jeweils zu jeder vollen und
+                    z.B. <literal>0,30 * * * *</literal> für eine Protokollierung jeweils zu jeder vollen und
                     halben Stunde. Die Protokollierung wird durch Setzen
-                    der &ucsUCRV; <envar>system/stats</envar> auf <emphasis>yes</emphasis> aktiviert und ist bei
+                    der &ucsUCRV; <envar>system/stats</envar> auf <literal>yes</literal> aktiviert und ist bei
                     Neuinstallationen ab UCS 3.0 die Grundeinstellung.
                 </para>
             </section><!-- Protokollierung des Systemzustands -->
@@ -1888,7 +1904,7 @@ auth/sshd/restrict: yes
 						<listitem>
 							<simpara>
 							Die Aktion <guimenu>Beenden</guimenu> schickt dem Prozess eine
-                            Benachrichtigung vom Typ SIGTERM, dies ist der Regelfall bei der
+							Benachrichtigung vom Typ <systemitem class="event">SIGTERM</systemitem>, dies ist der Regelfall bei der
 							kontrollierten Beendigung von Programmen.
 							</simpara>
 						</listitem>
@@ -1897,13 +1913,13 @@ auth/sshd/restrict: yes
 							In Einzelfällen kann es vorkommen, dass sich ein Programm
                             - z.B. nach einem Absturz - nicht
                             mehr über dieses Verfahren beenden lässt. In diesem Fall kann mit der Aktion
-                            <guimenu>Beenden erzwingen</guimenu> das Signal SIGKILL geschickt werden
+							<guimenu>Beenden erzwingen</guimenu> das Signal <systemitem class="event">SIGKILL</systemitem> geschickt werden
 							um den Prozess forciert zu beenden.
 							</simpara>
 						</listitem>
                     </itemizedlist>
                 <para>
-                    Das Beenden über SIGTERM ist in der Regel vorzuziehen, da viele
+					Das Beenden über <systemitem class="event">SIGTERM</systemitem> ist in der Regel vorzuziehen, da viele
                     Programme dann einen kontrollierten Programmabbruch einleiten und
                     z.B. ein Speichern von Dateien o.ä. durchführen.
                 </para>
@@ -1920,14 +1936,14 @@ auth/sshd/restrict: yes
             <section id="computers:Stündliches_tägliches_wöchentliches_monatliches_Ausführen_von_Skripten"><title>Stündliches/tägliches/wöchentliches/monatliches Ausführen von Skripten</title>
                 <para>
                     Auf jedem UCS-System sind vier Verzeichnisse
-                    vordefiniert, <filename>/etc/cron.hourly/</filename>, <filename>/etc/cron.daily/</filename>, <filename>/etc/cron.weekly/</filename>
-                    und <filename>/etc/cron.monthly/</filename>. Shell-Skripte, die in diesen Verzeichnissen
+                    vordefiniert, <filename class="directory">/etc/cron.hourly/</filename>, <filename class="directory">/etc/cron.daily/</filename>, <filename class="directory">/etc/cron.weekly/</filename>
+                    und <filename class="directory">/etc/cron.monthly/</filename>. Shell-Skripte, die in diesen Verzeichnissen
                     abgelegt werden und als ausführbar markiert sind, werden automatisch
                     stündlich, täglich, wöchentlich oder monatlich ausgeführt.
                 </para>
             </section>
 
-            <section id="cron:local"><title>Definition eigener Cron-Jobs in /etc/cron.d</title>
+            <section id="cron:local"><title>Definition eigener Cron-Jobs in <filename class="directory">/etc/cron.d/</filename></title>
                 <para>
                     Ein Cron-Job wird in einer Zeile definiert, die aus insgesamt sieben Spalten aufgebaut ist:
                 </para>
@@ -1963,7 +1979,7 @@ auth/sshd/restrict: yes
                 </para>
                 <para>
                     Jeder Cron-Job setzt sich dabei aus min. zwei &ucsUCR;-Variablen
-                    zusammen. JOBNAME ist dabei ein allgemeiner Bezeichner.
+					zusammen. <replaceable>JOBNAME</replaceable> ist dabei ein allgemeiner Bezeichner.
                 </para>
                     <itemizedlist>
 						<listitem>
@@ -1980,7 +1996,7 @@ auth/sshd/restrict: yes
 						</listitem>
 						<listitem>
 							<simpara>
-							Standardmäßig wird der Crob-Job als Benutzer <emphasis>root</emphasis> ausgeführt. Mit
+							Standardmäßig wird der Cron-Job als Benutzer <systemitem class="username">root</systemitem> ausgeführt. Mit
                             <command>cron/JOBNAME/user</command> kann ein abweichender Benutzer
 							angegeben werden.
 							</simpara>
@@ -2001,10 +2017,10 @@ auth/sshd/restrict: yes
             </section>
         </section>
 
-        <section id="computers:nscd"><title>Name Server Cache Daemon</title>
+        <section id="computers:nscd"><title>Name Service Cache Daemon</title>
             <para>
                 Um häufige Anfragen unveränderter Daten zu beschleunigen, werden Namensauflösungen
-                durch den <emphasis>Name Server Cache Daemon</emphasis> (NSCD) zwischengespeichert. Werden diese erneut angefragt, muss so nicht eine
+                durch den <emphasis>Name Service Cache Daemon</emphasis> (NSCD) zwischengespeichert. Werden diese erneut angefragt, muss so nicht eine
                 vollständige neue LDAP-Anfrage durchgeführt werden, sondern die Daten können
                 direkt aus dem Cache bezogen werden.
             </para>
@@ -2028,7 +2044,7 @@ auth/sshd/restrict: yes
                 führt die Standardwerte der Variablen auf:
             </para>
                 <table>
-                    <title>Standardgrößen der NSCD Hash-Tablellen</title>
+                    <title>Standardgrößen der NSCD Hash-Tabellen</title>
                     <tgroup cols="2">
                         <colspec colnum="1" colname="col1" colwidth="1*"/>
                         <colspec colnum="2" colname="col2" colwidth="2*"/>
@@ -2082,7 +2098,7 @@ nscd -i hosts
                 Der Detailgrad der Logmeldungen kann mit der &ucsUCRV; <envar>nscd/debug/level</envar>
                 konfiguriert werden.
             </para>
-        </section><!-- Name Server Cache Daemon -->
+        </section><!-- Name Service Cache Daemon -->
 
         <section id="computers:SSH-Zugriff_auf_Systeme"><title>SSH-Zugriff auf Systeme</title>
             <para>
@@ -2093,15 +2109,15 @@ nscd -i hosts
                 des SSH-Servers lassen sich über &ucsUCR; anpassen:
             </para>
             <para>
-                Standardmäßig ist der Login des privilegierten <emphasis>root</emphasis>-Benutzers per SSH
+                Standardmäßig ist der Login des privilegierten <systemitem class="username">root</systemitem>-Benutzers per SSH
                 erlaubt (etwa um ein neu installiertes System an einem entfernten Standort zu
                 konfigurieren, auf dem noch keine weiteren Benutzer angelegt wurden).
             </para>
             <itemizedlist>
 				<listitem>
 					<simpara>
-					Wird die &ucsUCRV; <envar>sshd/permitroot</envar> auf <emphasis>without-password</emphasis>
-                    gesetzt, so wird für den <emphasis>root</emphasis>-Benutzer keine interaktive
+					Wird die &ucsUCRV; <envar>sshd/permitroot</envar> auf <literal>without-password</literal>
+                    gesetzt, so wird für den <systemitem class="username">root</systemitem>-Benutzer keine interaktive
                     Passwort-Abfrage mehr durchgeführt, sondern beispielsweise nur eine
                     Public-Key-basierte Anmeldung, was Brute-Force-Attacken auf
 					Passwörter vermeidet.
@@ -2109,8 +2125,8 @@ nscd -i hosts
 				</listitem>
 				<listitem>
 					<simpara>
-					Soll für den <emphasis>root</emphasis>-Benutzer überhaupt keine SSH-Anmeldung mehr möglich sein, kann dies
-                    durch Setzen der &ucsUCRV; <envar>auth/sshd/user/root</envar> auf <emphasis>no</emphasis>
+					Soll für den <systemitem class="username">root</systemitem>-Benutzer überhaupt keine SSH-Anmeldung mehr möglich sein, kann dies
+                    durch Setzen der &ucsUCRV; <envar>auth/sshd/user/root</envar> auf <literal>no</literal>
 					deaktiviert werden.
 					</simpara>
 				</listitem>
@@ -2121,7 +2137,7 @@ nscd -i hosts
                 soll. Dies ist u.a. nötig, um einem Benutzer die Möglichkeit zu geben durch
                 einen Login mit <command>ssh -X ZIELRECHNER</command> ein Programm mit grafischer
                 Ausgabe auf einem entfernten Rechner zu starten. Die möglichen Einstellungen
-                sind <emphasis>yes</emphasis> und <emphasis>no</emphasis>.
+                sind <literal>yes</literal> und <literal>no</literal>.
             </para>
             <para>
                 Der Standard-Port für SSH-Verbindungen ist Port 22 über TCP. Wenn ein
@@ -2138,7 +2154,7 @@ nscd -i hosts
             </para>
             <para>
                 Asynchrone Systemzeiten zwischen den einzelnen Rechnern einer Domäne
-                können die Quelle vielfältiger Fehler bedeuten: Sie verringern beispielweise die
+                können die Quelle vielfältiger Fehler bedeuten: Sie verringern beispielsweise die
                 Verlässlichkeit von Log-Dateien, stören den Kerberos-Betrieb und können die
                 korrekte Auswertung von Passwortablaufintervallen stören.
             </para>
@@ -2155,7 +2171,7 @@ nscd -i hosts
             <para>
                 Windows-Clients, die in eine Samba 4-Domäne gejoint wurden,
                 akzeptieren nur signierte NTP-Zeitanfragen. Wird die
-                &ucsUCRV; <envar>ntp/signed</envar> auf <emphasis>yes</emphasis> gesetzt, werden die NTP-Pakete
+                &ucsUCRV; <envar>ntp/signed</envar> auf <literal>yes</literal> gesetzt, werden die NTP-Pakete
                 durch Samba 4 signiert.
             </para>
         </section>

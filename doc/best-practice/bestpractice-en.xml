@@ -2,18 +2,18 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
-	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
-	<!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	<!ENTITY bibliography SYSTEM "../stylesheets/bibliography-en.xml">
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id='bestpractice'>
+<book lang="en" id='bestpractice'>
 <bookinfo>
-  <title>Empfehlungen/"Best practices" für den Einsatz von Univention Corporate Server</title>
+  <title>Best practices for Univention Corporate Server</title>
 </bookinfo>
 
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="planning-de.xml" xpointer="xpointer(/chapter)"/>
-	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="migration-de.xml" xpointer="xpointer(/chapter)"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="planning-en.xml" xpointer="xpointer(/chapter)"/>
+	<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="migration-en.xml" xpointer="xpointer(/chapter)"/>
 
   <bibliography id="bibliography">
 	<bibliomixed id="ad-takeover"/>

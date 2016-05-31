@@ -1,3 +1,11 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-de.ent" >
+	<!ENTITY bibliography SYSTEM "../stylesheets/bibliography-de.xml">
+	%extensions;
+	%entities;
+]>
 <chapter id="bestpractice:migration">
   <title>Migration einer Active Directory-Domäne nach &ucsUCS;</title>
   <section>
@@ -328,7 +336,7 @@
 
 		<figure id="bestpractice-migrate-cifs">
 		  <title>Zu migrierende Freigabe</title>
-		  <graphic scalefit="1" width="80%" fileref="illustrations/cifs-migrate-de.png"/>
+		  <graphic scalefit="1" width="80%" fileref="illustrations33/cifs-migrate-de.png"/>
 		</figure>
 
 		Für diese Freigabe wird nun in der Freigabenverwaltung der &ucsUMC; eine Freigabe
@@ -408,7 +416,7 @@
 
 	  <figure id="bestpractice-migrate-print">
 		<title>Zu migrierender Drucker</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations/printer-migrate-de.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations33/printer-migrate-de.png"/>
 	  </figure>
 
 		Für diese Druckerfreigabe wird nun in der Druckerverwaltung der &ucsUMC; ein Drucker

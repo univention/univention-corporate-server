@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="groups">
 	<title>Group management</title>
 
@@ -33,11 +43,12 @@
 	<section id="groups::management">
 		<title>Managing groups in the Univention Management Console</title>
 		<para>
-			Groups are managed in the module <emphasis>Groups</emphasis> of the &ucsUMC;.
+			Groups are managed in the module <emphasis>Groups</emphasis> of the &ucsUMC;
+			(see <xref linkend="central:user-interface"/>).
 		</para>
 		<figure id="create-group">
 			<title>Creating a group in UMC</title>
-			<graphic scalefit="1" width="80%" fileref="illustrations/create-group_EN.png"/>
+			<graphic scalefit="1" width="80%" fileref="illustrations33/create-group_EN.png"/>
 		</figure>
 		<para>
 			General information on the operation of the domain management modules
@@ -66,7 +77,7 @@
 							</para>
                             <para>
 							  In the default setting, it is not possible to create a group with the same name as an existing user.
-							  If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar> is set to <emphasis>false</emphasis>,
+							  If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar> is set to <literal>false</literal>,
 							  this check is removed.
 							</para>
 						</entry>
@@ -189,7 +200,7 @@
 						  <listitem><simpara>
 							<emphasis>Well-known group</emphasis>: This group type covers groups
 							preconfigured by Samba/Windows servers which generally have special
-							privileges, e.g., <emphasis>Power Users</emphasis>.
+							privileges, e.g., <systemitem class="groupname">Power Users</systemitem>.
 						  </simpara> </listitem>
 						</itemizedlist>
 					  </entry>
@@ -239,14 +250,14 @@
 						<entry>Samba group</entry>
 						<entry>
 							This checkbox indicates whether the group contains the object class
-							<emphasis>sambaGroupMapping</emphasis>.
+							<classname>sambaGroupMapping</classname>.
 						</entry>
 					</row>
 					<row>
-						<entry>Posix group</entry>
+						<entry>POSIX group</entry>
 						<entry>
 							This checkbox indicates whether the group contains the object class
-							<emphasis>posixGroup</emphasis>.
+							<classname>posixGroup</classname>.
 						</entry>
 					</row>
 				</tbody>
@@ -259,13 +270,13 @@
 		<para>
 			UCS supports group nesting (also known as "groups in groups"). This
 			simplifies the management of the groups. For example, if two locations
-			are managed in one domain, two groups can be formed <emphasis>IT staff location A</emphasis>
-			and <emphasis>IT staff location B</emphasis>), to which the user
+			are managed in one domain, two groups can be formed <systemitem class="groupname">IT staff location A</systemitem>
+			and <systemitem class="groupname">IT staff location B</systemitem>), to which the user
 			accounts of the location's IT staff can be assigned respectively.
 		</para>
 		<para>
 			To create a cross-location group, it is then sufficient to
-			define the groups <emphasis>IT staff location A</emphasis> and <emphasis>IT staff location B</emphasis>
+			define the groups <systemitem class="groupname">IT staff location A</systemitem> and <systemitem class="groupname">IT staff location B</systemitem>
 			as members.
 		</para>
 		<para>
@@ -292,7 +303,7 @@
 		<para>
 		  Since UCS 3.1, the groups are no longer cached via the NSCD for performance and
 		  stability reasons; instead they are now cached by the NSS module
-		  <emphasis>libnss-extrausers</emphasis>. The group information is automatically exported to
+		  <package>libnss-extrausers</package>. The group information is automatically exported to
 		  the <filename>/var/lib/extrausers/group</filename> file by the
 		  <filename>/usr/lib/univention-pam/ldap-group-to-file.py</filename> script and read
 		  from there by the NSS module.
@@ -305,7 +316,7 @@
 		  linkend="cron:local"/>) by the &ucsUCRV;
 		  <envar>nss/group/cachefile/invalidate_interval</envar>. This listener module can be
 		  activated/deactivated via the &ucsUCRV;
-		  <envar>nss/group/invalidate_cache_on_changes</envar> (<emphasis>true/false</emphasis>).
+		  <envar>nss/group/invalidate_cache_on_changes</envar> (<literal>true</literal>/<literal>false</literal>).
 		</para>
 
 		<para>
@@ -313,7 +324,7 @@
 		  members are still present in the LDAP directory. If only the &ucsUMC; is used for user
 		  management, this additional check is not necessary and can be
 		  disabled by setting the &ucsUCRV; <envar>nss/group/cachefile/check_member</envar> to
-		  <emphasis>false</emphasis>.
+		  <literal>false</literal>.
 		</para>
 	</section>
 
@@ -329,20 +340,20 @@
 	  <para>
 		Some exceptions are formed by the <emphasis>pseudo groups</emphasis> (sometimes also called
 		system groups). These are only managed internally by Active Directory/Samba 4, e.g., the
-		<emphasis>Authenticated Users</emphasis> group includes a list of all the users currently
+		<systemitem class="groupname">Authenticated Users</systemitem> group includes a list of all the users currently
 		logged on to the system. Pseudo groups are stored in the UCS directory service, but they are
 		not synchronised by the Univention S4 connector and should usually not be edited. This
 		applies to the following groups:
 
 		<itemizedlist>
-		  <listitem><simpara>Anonymous Logon, Authenticated Users, Batch, Creator Group</simpara></listitem>
-		  <listitem><simpara>Creator Owner, Dialup, Digest Authentication</simpara></listitem>
-		  <listitem><simpara>Enterprise Domain Controllers, Everyone, IUSR, Interactive</simpara></listitem>
-		  <listitem><simpara>Local Service, NTLM Authentication, Network Service, Network</simpara></listitem>
-		  <listitem><simpara>Nobody, Null Authority, Other Organization, Owner Rights</simpara></listitem>
-		  <listitem><simpara>Proxy, Remote Interactive Logon, Restricted, SChannel Authentication</simpara></listitem>
-		  <listitem><simpara>Self, Service, System, Terminal Server User, This Organization</simpara></listitem>
-		  <listitem><simpara>World Authority</simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Anonymous Logon</systemitem>, <systemitem class="groupname">Authenticated Users</systemitem>, <systemitem class="groupname">Batch</systemitem>, <systemitem class="groupname">Creator Group</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Creator Owner</systemitem>, <systemitem class="groupname">Dialup</systemitem>, <systemitem class="groupname">Digest Authentication</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Enterprise Domain Controllers</systemitem>, <systemitem class="groupname">Everyone</systemitem>, <systemitem class="groupname">IUSR</systemitem>, <systemitem class="groupname">Interactive</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Local Service</systemitem>, <systemitem class="groupname">NTLM Authentication</systemitem>, <systemitem class="groupname">Network Service</systemitem>, <systemitem class="groupname">Network</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Nobody</systemitem>, <systemitem class="groupname">Null Authority</systemitem>, <systemitem class="groupname">Other Organization</systemitem>, <systemitem class="groupname">Owner Rights</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Proxy</systemitem>, <systemitem class="groupname">Remote Interactive Logon</systemitem>, <systemitem class="groupname">Restricted</systemitem>, <systemitem class="groupname">SChannel Authentication</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">Self</systemitem>, <systemitem class="groupname">Service</systemitem>, <systemitem class="groupname">System</systemitem>, <systemitem class="groupname">Terminal Server User</systemitem>, <systemitem class="groupname">This Organization</systemitem></simpara></listitem>
+		  <listitem><simpara><systemitem class="groupname">World Authority</systemitem></simpara></listitem>
 		</itemizedlist>
 	  </para>
 
@@ -391,19 +402,19 @@
 		In the UCS directory service, group membership properties are only saved in the group
 		objects and not in the respective user objects. However, some applications expect group
 		membership properties at the user objects (e.g., in the attribute
-		<emphasis>memberOf</emphasis>). An optional overlay module in the LDAP server makes it
+		<property>memberOf</property>). An optional overlay module in the LDAP server makes it
 		possible to present these attributes automatically based on the group information. The
 		additional attributes are not written to the LDAP, but displayed on the fly by the
 		overlay module if a user object is queried.
 	  </para>
 
 	  <para>
-		To this end, the <emphasis>univention-ldap-overlay-memberof</emphasis> package must be
+		To this end, the <package>univention-ldap-overlay-memberof</package> package must be
 		installed on all LDAP servers.
 	  </para>
 
 	  <para>
-		In the default setting, the user attribute <emphasis>memberOf</emphasis> is shown. The
+		In the default setting, the user attribute <property>memberOf</property> is shown. The
 		&ucsUCRV; <envar>ldap/overlay/memberof/memberof</envar> can be used to configure
 		a different attribute.
 	  </para>

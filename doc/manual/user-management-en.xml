@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE chapter [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
+	%entities;
+]>
 <chapter id="users:general">
     <title>User management</title>
     <para>
@@ -25,7 +35,7 @@
         </para>
         <figure id="user-create">
             <title>Creating a user in UMC</title>
-            <graphic scalefit="1" width="80%" fileref="illustrations/users_user_en.png"/>
+            <graphic scalefit="1" width="80%" fileref="illustrations33/users_user_en.png"/>
         </figure>
 
         <para>
@@ -70,7 +80,7 @@
                             <para>
 							  In the default setting, it is not possible to create a user with the same name as an
 							  existing group. If the &ucsUCRV; <envar>directory/manager/user_group/uniqueness</envar>
-							  is set to <emphasis>false</emphasis>, this check is removed.
+							  is set to <literal>false</literal>, this check is removed.
 							</para>
                         </entry>
                     </row>
@@ -203,7 +213,7 @@
                         <entry>
                             This select list can be used for specifying the user's primary
                             group. All the groups registered in the domain are open for selection. By
-                            default, the group <emphasis>Domain Users</emphasis> is preset.
+                            default, the group <systemitem class="groupname">Domain Users</systemitem> is preset.
                         </entry>
                     </row>
                     <row>
@@ -269,17 +279,17 @@
                                     </listitem>
                                     <listitem>
 										<simpara>
-                                        <guimenu>Windows und POSIX disabled</guimenu>
+                                        <guimenu>Windows and POSIX disabled</guimenu>
 										</simpara>
                                     </listitem>
                                     <listitem>
 										<simpara>
-                                        <guimenu>Windows und Kerberos disabled</guimenu>
+                                        <guimenu>Windows and Kerberos disabled</guimenu>
 										</simpara>
                                     </listitem>
                                     <listitem>
 										<simpara>
-                                        <guimenu>POSIX und Kerberos disabled</guimenu>
+                                        <guimenu>POSIX and Kerberos disabled</guimenu>
 										</simpara>
                                     </listitem>
                                 </itemizedlist>
@@ -290,7 +300,7 @@
                                 <itemizedlist>
                                     <listitem>
 										<simpara>
-                                        The Linux login (e.g., on GDM or a tty) is only deactivated if all
+											The Linux login (e.g., on <systemitem class="service">GDM</systemitem> or a <systemitem class="service">tty</systemitem>) is only deactivated if all
                                         login methods are deactivated; a deactivated POSIX account alone is not enough.
 										</simpara>
                                     </listitem>
@@ -393,28 +403,28 @@
                         <entry>
                             If the Windows home directory for this user is to show up on a different
                             Windows drive than that specified by the Samba configuration, then the
-                            corresponding drive letter can be entered here, e.g. <emphasis>M:</emphasis>.
+                            corresponding drive letter can be entered here, e.g. <filename class="partition">M:</filename>.
                         </entry>
                     </row>
                     <row>
                         <entry>Windows home path</entry>
                         <entry>
                             The path of the directory which is to be the user's Windows home directory, is
-                            to be entered here, e.g. <emphasis>\\ucs-file-server\smith</emphasis>
+                            to be entered here, e.g. <filename class="directory">\\ucs-file-server\smith</filename>
                         </entry>
                     </row>
                     <row>
                         <entry>Windows logon script</entry>
                         <entry>
-                            The user-specific logon script relative to the Netlogon share is entered here, e.g.
-                            <emphasis>scripts\user.bat</emphasis>.
+                            The user-specific logon script relative to the NETLOGON share is entered here, e.g.
+                            <filename>user.bat</filename>.
                         </entry>
                     </row>
                     <row>
                         <entry>Windows profile directory</entry>
                         <entry>
                             The profile directory for the user can be entered here, e.g.
-                            <emphasis>\\ucs-file-server\user\profile</emphasis>.
+                            <filename class="directory">\\ucs-file-server\user\profile</filename>.
                         </entry>
                     </row>
                     <row>
@@ -520,14 +530,14 @@
                 </thead>
                 <tbody>
                     <row>
-                        <entry>E-mail address(es)</entry>
+                        <entry lang="">E-mail address(es)</entry>
                         <entry>
                             <para>
                                 Additional e-mail addresses can be saved here. These are not evaluated
                                 by the mail server.
                             </para>
                             <para>
-                                The values of this attribute are stored in the LDAP attribute <emphasis>mail</emphasis>.
+                                The values of this attribute are stored in the LDAP attribute <property>mail</property>.
                                 Most address books applications using an LDAP search function will search for
                                 an e-mail address by this attribute.
                             </para>
@@ -637,7 +647,7 @@
                         <entry>
                             The directory path which is to be the user's Windows home directory on
                             the terminal server can be entered here, e.g.
-                            <emphasis>\\ucs-file-server\ts\user</emphasis>.
+                            <filename class="directory">\\ucs-file-server\ts\user</filename>.
                         </entry>
                     </row>
                     <row>
@@ -645,7 +655,7 @@
                         <entry>
                             If the Windows home directory for this user is to appear on a different Windows
                             drive than specified in the Samba configuration, the respective letter of
-                            the drive can be entered here followed by a colon, e.g. <emphasis>M:</emphasis>.
+                            the drive can be entered here followed by a colon, e.g. <filename class="partition">M:</filename>.
                         </entry>
                     </row>
                     <row>
@@ -707,7 +717,7 @@
                         <entry>Terminated or timed-out sessions</entry>
                         <entry>
                             In this selection list one can select whether ended or expired connections
-                            should be <guimenu>Disconnected</guimenu>ed or <guimenu>Reset</guimenu>.
+                            should be <guimenu>Disconnected</guimenu> or <guimenu>Reset</guimenu>.
                         </entry>
                     </row>
                     <row>
@@ -718,7 +728,7 @@
                         </entry>
                     </row>
                     <row>
-                        <entry>CTX RAS Dialin</entry>
+                        <entry lang="">CTX RAS Dialin</entry>
                         <entry>
                             <para>
                                 This option configures the callback function of a remote access server.
@@ -771,42 +781,42 @@
                         <entry>Mail account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object class
-                            <emphasis>univentionMail</emphasis>.
+                            <classname>univentionMail</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>Kerberos principal</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object
-                            classes <emphasis>krb5Principal</emphasis> and <emphasis>krb5KDCEntry</emphasis>.
+                            classes <classname>krb5Principal</classname> and <classname>krb5KDCEntry</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>Samba account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object class
-                            <emphasis>sambaSamAccount</emphasis>.
+                            <classname>sambaSamAccount</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>POSIX account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object
-                            classes <emphasis>posixAccount</emphasis> and <emphasis>shadowAccount</emphasis>.
+                            classes <classname>posixAccount</classname> and <classname>shadowAccount</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>Personal information</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object
-                            classes <emphasis>organizationalPerson</emphasis> and <emphasis>inetOrgPerson</emphasis>.
+                            classes <classname>organizationalPerson</classname> and <classname>inetOrgPerson</classname>.
                         </entry>
                     </row>
                     <row>
                         <entry>Public key infrastructure account</entry>
                         <entry>
                             If this checkbox is not ticked, the user will not be assigned the object class
-                            <emphasis>pkiUser</emphasis>.
+                            <classname>pkiUser</classname>.
                         </entry>
                     </row>
                     <row>
@@ -815,8 +825,8 @@
                             This option can be used for creating user objects which have only a username
                             and a password. With these users, authentication is possible against the
                             LDAP directory service exclusively; logging into UCS or Windows systems is not
-                            possible. If this option is activated, the object classes <emphasis>uidObject</emphasis> and
-                            <emphasis>simpleSecurityObject</emphasis> will be used.
+                            possible. If this option is activated, the object classes <classname>uidObject</classname> and
+                            <classname>simpleSecurityObject</classname> will be used.
                         </entry>
                     </row>
                 </tbody>
@@ -842,11 +852,11 @@
 		  system:
 		</para>
 		  <itemizedlist>
-			<listitem><simpara>The <emphasis>krb5Key</emphasis> attribute stores the Kerberos
+			<listitem><simpara>The <property>krb5Key</property> attribute stores the Kerberos
 			password.</simpara></listitem>
-			<listitem><simpara>The <emphasis>userPassword</emphasis> attribute stores the Unix password
+			<listitem><simpara>The <property>userPassword</property> attribute stores the Unix password
 			(In other Linux distributions present in <filename>/etc/shadow</filename>).</simpara></listitem>
-			<listitem><simpara>The <emphasis>sambaNTPassword</emphasis> attribute stores the NT
+			<listitem><simpara>The <property>sambaNTPassword</property> attribute stores the NT
 			password hash used by Samba.</simpara></listitem>
 		  </itemizedlist>
         <para>
@@ -855,10 +865,10 @@
 
             <figure id="password-policy">
                 <title>Configuring a password policy</title>
-                <graphic scalefit="1" width="80%" fileref="illustrations/users_policy_password_en.png"/>
+                <graphic scalefit="1" width="80%" fileref="illustrations33/users_policy_password_en.png"/>
             </figure>
             <itemizedlist>
-			  <listitem> 
+			  <listitem>
 				<para>
 				  The <emphasis>history length</emphasis> saves the last password hashes. These
 				  passwords can then not be used by the user as a new password when setting a new
@@ -961,8 +971,8 @@
 
 	  <para>
 		The Samba domain object is managed via the
-		<emphasis>LDAP directory</emphasis> module of the &ucsUMC;. It can
-		be found in the <emphasis>samba</emphasis> container below
+		UMC module <emphasis>LDAP directory</emphasis>. It can
+		be found in the <uri>samba</uri> container below
 		the LDAP base and carries the domain's NetBIOS name.
 	  </para>
 
@@ -994,7 +1004,7 @@
 			  </row>
 
 			  <row>
-				<entry>Passwort history</entry>
+				<entry>Password history</entry>
 				<entry>
 				  The latest password changes are saved in the form of
 				  hashes. These passwords can then not be used by the
@@ -1076,14 +1086,14 @@
         </caution>
         <para>
             The automatic lockout of users following failed logins can be activated by
-            setting the &ucsUCRV; <envar>auth/faillog</envar> to <emphasis>yes</emphasis>. The upper limit of failed log-in
+            setting the &ucsUCRV; <envar>auth/faillog</envar> to <literal>yes</literal>. The upper limit of failed log-in
             attempts at which an account lockout is activated is configured
             in the &ucsUCRV; <envar>auth/faillog/limit</envar>. The counter is reset each time the password
             is entered correctly.
         </para>
         <para>
-            As standard, the <emphasis>root</emphasis> user is excluded from the password lock, but can also be
-            subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <emphasis>yes</emphasis>.
+            As standard, the <systemitem class="username">root</systemitem> user is excluded from the password lock, but can also be
+            subjected to it by setting the &ucsUCRV; <envar>auth/faillog/root</envar> to <literal>yes</literal>.
         </para>
         <para>
             As standard, the lockout is not subject to time limitations and must be reset by
@@ -1110,12 +1120,12 @@
         </para>
         <figure id="user-create-template">
             <title>Selecting a user template</title>
-            <graphic scalefit="1" width="40%" fileref="illustrations/users_usertemplate_en.png"/>
+            <graphic scalefit="1" width="40%" fileref="illustrations33/users_usertemplate_en.png"/>
         </figure>
         <para>
             User templates are administrated in the <guimenu>LDAP directory</guimenu>
             module of the &ucsUMC;. There one needs to switch to the
-            <emphasis>univention</emphasis> container and then to the <emphasis>templates</emphasis>
+            <uri>univention</uri> container and then to the <uri>templates</uri>
             subcontainer. A new user template can be created here via the
             <guimenu>Add</guimenu> with the object type
             <guimenu>Settings: User template</guimenu>.
@@ -1146,9 +1156,9 @@ univention-director-manager users/user
 
         <para>
 		  For example, the UNIX home directory can be stored under
-		  <filename>/home/&lt;title&gt;.&lt;lastname&gt;</filename> or the primary e-mail address
+		  <filename class="directory">/home/&lt;title&gt;.&lt;lastname&gt;</filename> or the primary e-mail address
 		  can be predefined with
-		  <emphasis>&lt;firstname&gt;.&lt;lastname&gt;@firma.com</emphasis>. Substitutions are
+		  <userinput>&lt;firstname&gt;.&lt;lastname&gt;@company.com</userinput>. Substitutions are
 		  generally possibly for any value, but there is no syntax or semantics check. So, if no
 		  first name is specified when creating a user, the above e-mail address would begin with a
 		  dot and would thus be invalid according to the e-mail standard. Similar sources of error
@@ -1161,7 +1171,7 @@ univention-director-manager users/user
 		  value, the index of the required character can be entered in the user template in square
 		  brackets after the name of the attribute. The count of characters of the attribute begins
 		  with 0, so that index 1 corresponds to the second character of the attribute
-		  value. Accordingly, <emphasis>&lt;firstname&gt;[0].&lt;lastname&gt;@firma.com</emphasis>
+		  value. Accordingly, <userinput>&lt;firstname&gt;[0].&lt;lastname&gt;@company.com</userinput>
 		  means an e-mail address will consist of the first letter of the first name plus the lastname.
 		</para>
 
@@ -1169,25 +1179,25 @@ univention-director-manager users/user
 		  A substring of the attribute value can be defined by entering a range in square
 		  brackets. In doing so, the index of the first required character and the index of the last
 		  required character plus one are to be entered. For example, the input
-		  <emphasis>&lt;firstname&gt;[2:5]</emphasis> returns the third to fifth character of the
+		  <userinput>&lt;firstname&gt;[2:5]</userinput> returns the third to fifth character of the
 		  first name.
 		</para>
 
         <para>
-		  Adding <emphasis>&lt;:lower&gt;</emphasis> or <emphasis>&lt;:upper&gt;</emphasis> to the
+		  Adding <literal>:lower</literal> or <literal>:upper</literal> to the
 		  attribute name converts the attribute value to lowercase or uppercase, e.g.,
-		  <emphasis>&lt;firstname:lower&gt;</emphasis>. If a modificator like
-		  <emphasis>&lt;:lower&gt;</emphasis> is appended to the entire field, the complete value is
-		  transformed, e.g. <emphasis>&lt;lastname&gt;@company.com&lt;:lower&gt;</emphasis>.
+		  <userinput>&lt;firstname:lower&gt;</userinput>. If a modifier like
+		  <literal>:lower</literal> is appended to the entire field, the complete value is
+		  transformed, e.g. <userinput>&lt;lastname&gt;@company.com&lt;:lower&gt;</userinput>.
 		</para>
 
         <para>
-		  The option <emphasis>&lt;:umlauts&gt;</emphasis> can be used to convert special characters
+		  The option <literal>:umlauts</literal> can be used to convert special characters
 		  such as è, ä or ß into the corresponding ASCII characters.
 		</para>
 
         <para>
-		  It is also possible to combine options, e.g: <emphasis>&lt;:umlauts,upper&gt;</emphasis>.
+		  It is also possible to combine options, e.g: <literal>:umlauts,upper</literal>.
 		</para>
 
     </section>

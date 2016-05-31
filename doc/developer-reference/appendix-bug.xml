@@ -1,6 +1,11 @@
-<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE appendix [
+	<!ENTITY % extensions SYSTEM "../stylesheets/macros.ent" >
+	<!ENTITY % DocBookDTD PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+	"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 	<!ENTITY % entities SYSTEM "../stylesheets/macros-en.ent" >
+	%extensions;
+	%DocBookDTD;
 	%entities;
 ]>
 <appendix id="chap:bug">
@@ -12,7 +17,7 @@
 	<para>Create an account.</para>
 	<para>Search for existing entries before opening new reports.</para>
 	<para>Include the version info: <command>ucr search --brief ^version/</command>.</para>
-	<para>Provide enough information to help us reproduct the bug.</para>
+	<para>Provide enough information to help us reproduce the bug.</para>
 	<para>Search <ulink url="http://sdb.univention.de/"/></para>
 	<para>Search <ulink url="http://wiki.univention.de/"/></para>
 	<para>Search <ulink url="http://forum.univention.de/"/> and ask for help. In addition to our support team many of our partners are also present there. Your questions might also help other users while you may profit from issues already solved for other users.</para>
