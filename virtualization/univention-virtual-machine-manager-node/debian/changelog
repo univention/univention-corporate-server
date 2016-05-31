@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (4.0.1-4) unstable; urgency=low
+
+  * Bug #41340: Improve description for global VNC password
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 31 May 2016 09:33:10 +0200
+
 univention-virtual-machine-manager-node (4.0.1-3) unstable; urgency=low
 
   * Bug #41340: Add support for global VNC password

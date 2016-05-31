@@ -2,6 +2,9 @@ Type: file
 File: etc/libvirt/qemu.conf
 Variables: uvmm/kvm/qemu/.*
 Variables: uvmm/kvm/vnc/password
+User: root
+Group: root
+Mode: 0600
 
 Type: file
 File: etc/udev/rules.d/99-uvmm-node-kvm.rules

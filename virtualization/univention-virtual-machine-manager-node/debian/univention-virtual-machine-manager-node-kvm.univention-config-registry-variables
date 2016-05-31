@@ -11,7 +11,7 @@ Type=str
 Categories=uvmm
 
 [uvmm/kvm/vnc/password]
-Description[de]=Hier kann ein globales Passwort für VNC-Verbindungen konfiguriert werden. Ist die Variable nicht gesetzt, erfolgt die Konfiguration individuell pro virtueller Maschine. Maximal 8 Zeichen werden ausgewertet!
-Description[en]=A global password for VNC connections can be configured here. If the variable is unset, the password is configured individually on a per virtual machine basis. A maximum of 8 characters are used!
+Description[de]=Konfiguriert ein Standard-Passwort für VNC-Verbindungen, sofern nicht ein Passwort individuell für eine virtueller Maschine gesetzt ist. Ist die Variable nicht gesetzt, erfolgt die Konfiguration individuell pro virtueller Maschine. Maximal 8 Zeichen werden ausgewertet! Je nach Qemu-Version verhindert die leere Zeichenkette die Verwendung von VNC. Dass Passwort wird im Klartext gespeichert und übertragen!
+Description[en]=Configures a default password for VNC connections, unless a password is configured individually for a virtual machine. A maximum of 8 characters are used! Depending on the version of Qemu the empty string prevents the use of VNC. The password is stored and transmitted in clear-text!
 Type=str
 Categories=uvmm
