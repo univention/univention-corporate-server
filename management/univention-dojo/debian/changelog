@@ -1,3 +1,9 @@
+univention-dojo (7.0.6-3) unstable; urgency=medium
+
+  * Bug #41391: fix an error in xstyle which prevents using xstyle with Chrome 51
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 31 May 2016 14:35:22 +0200
+
 univention-dojo (7.0.6-2) unstable; urgency=low
 
   * Bug #33990: update to Dojo 1.9.3

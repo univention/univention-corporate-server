@@ -66,4 +66,7 @@ libs/%: %-*.tar.gz
 	mkdir -p libs
 	tar -C libs --no-same-owner -xzf $<
 	if [ ! -d $@ ]; then mv $@*/ $@; fi
+	if echo "$<" | grep -q xstyle; then \
+		patch -p0 < fix_xstyle.patch; \
+	fi
 
