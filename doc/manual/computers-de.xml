@@ -796,7 +796,7 @@
 					<title>Voraussetzungen bei Verwendung von &ucsUVMM;</title>
 					<para>
 						Falls Xen oder <acronym>KVM</acronym> installiert sind, sind die Einstellungen für die Netzwerkkonfiguration deaktiviert, weil zwei Init-Skripte standardmäßig aktiv sind:
-						Diese benennen die physische Netzwerkkarte <filename class="devicefile">eth0</filename> in <filename class="devicefile">peth0</filename> um und ersetzen diese durch eine Bridge mit dem Namen <filename class="device">eth0</filename>, in die die umbenannte physische Netzwerkkarte eingehängt wird.
+						Diese benennen die physische Netzwerkkarte <filename class="devicefile">eth0</filename> in <filename class="devicefile">peth0</filename> um und ersetzen diese durch eine Bridge mit dem Namen <filename class="devicefile">eth0</filename>, in die die umbenannte physische Netzwerkkarte eingehängt wird.
 						Zusätzliche Netzwerkkarten werden nicht adaptiert.
 					</para>
 					<para>

@@ -291,26 +291,30 @@
 
 			<listitem><simpara>
 			  The following command is used to create the new <emphasis>Testpool</emphasis> storage pool:
+			</simpara>
 			  <programlisting language="sh">
 virsh pool-define-as Testpool dir - - - - "/mnt/storage"
 			  </programlisting>
-			</simpara></listitem>
+			</listitem>
 
 			<listitem><simpara>
 			  The libvirt library used by UVMM differentiates between active and inactive storage
 			  pools. To be able to use the storage pool directly, it must be activated:
+			</simpara>
 
 			  <programlisting language="sh">
 virsh pool-start Testpool
 			  </programlisting>
 
+			<simpara>
 			  The following command ensures that the pool is activated automatically the next time
 			  the system is started:
+			</simpara>
 
 			  <programlisting language="sh">
 virsh pool-autostart Testpool
 			  </programlisting>
-			</simpara></listitem>
+			</listitem>
 		  </itemizedlist>
 		</para>
 	  </section>
@@ -330,13 +334,14 @@ virsh pool-autostart Testpool
 			<listitem><simpara>
 			  The following commands remove the old storage pool; the pool is changed over to the
 			  new path the next time the UVMM is restarted:
+			</simpara>
 			  <programlisting language="sh">
 virsh pool-destroy default
 virsh pool-undefine default
 invoke-rc.d univention-virtual-machine-manager-daemon restart
 invoke-rc.d univention-virtual-machine-manager-node-common restart
 			  </programlisting>
-			</simpara></listitem>
+			</listitem>
 		  </itemizedlist>
 		</para>
 	  </section>

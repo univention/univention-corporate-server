@@ -542,6 +542,7 @@ instanceType: 4
 				Policy. Sind OUs weiter verschachtelt, greifen im Konfliktfall die jeweils "untersten"
 				Richtlinien, d.h. die, die näher am Zielobjekt verknüpft sind. Es gilt folgende
 				Auswertungsreihenfolge:
+			  </simpara>
 
 				<itemizedlist>
 				  <listitem><simpara>
@@ -557,7 +558,7 @@ instanceType: 4
 					unterliegende OU überstimmt wiederum Richtlinien aus übergeordneten OUs)
 				  </simpara></listitem>
 				</itemizedlist>
-			  </simpara></listitem>
+			  </listitem>
 			</itemizedlist>
 		  </para>
 
@@ -1363,11 +1364,11 @@ echo -n "Administrator password" > /etc/univention/connector/password
   <para>
     Falls gewünscht, kann zu einem späteren Zeitpunkt der AD-Domänencontroller auch durch den &ucsMaster; abgelöst werden. Dies ist über die Applikation <emphasis>Active Directory Takeover</emphasis> möglich (siehe <xref linkend="windows:adtakeover"/>).
   </para>
-  </section>
 
     <figure><title>Administrationsdialog für die Active Directory-Verbindung</title>
       <graphic scalefit="1" width="80%" fileref="illustrations33/admember_3-de.png"/>
     </figure>
+  </section>
 
   <section id="ad-connector:ad-connector-einrichtung">
   <title>Einrichtung des UCS AD-Connectors</title>
