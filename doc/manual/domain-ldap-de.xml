@@ -999,7 +999,7 @@ slapcat &gt; ldapdaten.txt
 		  </simpara></listitem>
 		</itemizedlist>
 	  </para>
-	
+
 	  <figure id="domain-join:listener-notifier">
 		<title>Listener/Notifier-Mechanismus</title>
 		<graphic scalefit="1" width="80%" fileref="illustrations41/administration-overview.png"/>
@@ -1053,7 +1053,7 @@ slapcat &gt; ldapdaten.txt
 
 	<section id="domain:listenernotifier:erroranalysis">
 	  <title>Analyse von Listener/Notifier-Problemen</title>
-	
+
 	  <section id="domain:listenernotifier:erroranalysis:debug">
 		<title>Logdateien/Debug-Level der Replikation</title>
 

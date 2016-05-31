@@ -185,7 +185,7 @@ eingetragen/modifiziert oder entfernt.
 		  <xref linkend="shares::permissions"/>.
 		</entry>
 	  </row>
-	
+
 	  <row>
 		<entry>Besitzergruppe für das Wurzelverzeichnis der Freigabe</entry>
 		<entry>
@@ -201,7 +201,7 @@ eingetragen/modifiziert oder entfernt.
 		  siehe <xref linkend="shares::permissions"/>.
 		</entry>
 	  </row>
-	
+
 	</tbody>
   </tgroup>
 </table>
@@ -226,7 +226,7 @@ eingetragen/modifiziert oder entfernt.
 		  Freigabe nur lesend verwendet werden.
 		</entry>
 	  </row>
-	
+
 	  <row>
 		<entry>Subtree-Überprüfung</entry>
 		<entry>
@@ -268,7 +268,7 @@ eingetragen/modifiziert oder entfernt.
 		  kontrolliertes Herunterfahren abgeschaltet wird.
 		</entry>
 	  </row>
-	
+
 	  <row>
 		<entry>Zugriff nur für diese Rechner, IP-Adressen oder Netze erlauben</entry>
 		<entry>
@@ -384,8 +384,8 @@ eingetragen/modifiziert oder entfernt.
 	  </row>
 	</thead>
 	<tbody>
-	
-	
+
+
 	  <row>
 		<entry>Erzwungener Benutzer</entry>
 		<entry>
@@ -521,7 +521,7 @@ eingetragen/modifiziert oder entfernt.
 		  (Access Control List) des Verzeichnisses, in dem sie angelegt wird.
 		</entry>
 	  </row>
-	
+
 	  <row>
 		<entry>Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten Verzeichnisses</entry>
 		<entry>
@@ -539,7 +539,7 @@ eingetragen/modifiziert oder entfernt.
 		  übergeordneten Verzeichnisses übernommen.
 		</entry>
 	  </row>
-	
+
 	</tbody>
   </tgroup>
 </table>
@@ -1026,7 +1026,7 @@ folgender Befehl ausgeführt werden.
 ln -s msdfs:sb\\fb zufb
 </programlisting>
 <para>
-	Dieser Verweis wird in jedem <acronym>MSDFS</acronym> fähigem Client (z.B. <systemitem class="osname">Windows 2000</systemitem> und <systemitem class="osname">Windows XP</systemitem>) als
+Dieser Verweis wird in jedem <acronym>MSDFS</acronym> fähigem Client (z.B. <systemitem class="osname">Windows 2000</systemitem> und <systemitem class="osname">Windows XP</systemitem>) als
 regulärer Ordner angezeigt.
 </para>
 <caution>

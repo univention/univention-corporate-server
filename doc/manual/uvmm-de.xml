@@ -834,7 +834,7 @@ ssh -i [pfad/zum/privaten/schluessel] root@[ip-adresse-der-instanz]
 			lokal auf dem Virtualisierungsserver oder auf einer Freigabe abgelegt werden. Die Anbindung
 			eines Speicherbereichs über iSCSI ist in <xref linkend="ext-doc-uvmm"/> beschrieben.
 		  </para>
-		
+
 		  <section id="uvmm::defaultpool">
 			<title>Zugriff auf den Standard-Speicherbereich über eine Freigabe</title>
 			<para>

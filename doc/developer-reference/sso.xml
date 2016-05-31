@@ -9,7 +9,7 @@
 	%entities;
 ]>
 <chapter id="chap:sso">
-	<title><foreignphrase>Single Sign-On</foreignphrase>: Integrating a service provider into UCS 
+	<title><foreignphrase>Single Sign-On</foreignphrase>: Integrating a service provider into UCS
 		<indexterm><primary>Single Sign-On</primary><secondary>SAML</secondary></indexterm>
 		<indexterm><primary>SSO</primary><see>Single Sign-On</see></indexterm>
 	</title>

@@ -27,7 +27,7 @@
 	Dieser Quickstart-Guide stellt eine Kurzanleitung zur Inbetriebnahme und für erste Schritte mit
 	UCS dar. Einige Funktionen von UCS werden hier nur kurz erwähnt und dann in weiterer
 	Dokumentation beschrieben. Die Dokumentation zu UCS kann unter <ulink
-	url="https://docs.software-univention.de"/> abgerufen werden.
+	url="https://docs.software-univention.de/"/> abgerufen werden.
   </para>
 
   <para>
@@ -171,7 +171,7 @@
 		Weitere UCS-Software kann über die Kategorie <guimenu>UCS-Komponenten</guimenu>
 		nachträglich installiert oder entfernt werden.
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		Lösungen von Drittanbietern (z.B. verschiedene Groupwarelösungen) und UCS-kompatible
 		Zusatzprodukte (z.B. UCS@school für den Schuleinsatz) können ebenfalls über das App Center
@@ -226,7 +226,7 @@
 		Samba und dem Domänenbeitritt von Windows-Clients findet sich im UCS-Handbuch <biblioref
 		linkend="ucs-winjoin"/>.
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		Mac OS X-Systeme werden ebenfalls über eine AD-kompatible Windows-Domäne auf Basis von
 		Samba integriert. Weitere Informationen zur Einrichtung von Samba und dem Domänenbeitritt
@@ -246,7 +246,7 @@
 	  </simpara></listitem>
 
 	</itemizedlist>
-	
+
   </para>
 </chapter>
 
@@ -267,19 +267,19 @@
 	  <listitem><simpara>
 		Single Sign On mit Webdiensten über einen SAML Identity Providers <biblioref linkend="wiki-saml"/>
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		IP-Management mit DHCP <biblioref linkend="ucs-dhcp"/>
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		Web-Proxy für Caching und Policy Management/Virenscan <biblioref linkend="ucs-proxy"/>
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		Service-Überwachung mit Nagios <biblioref linkend="ucs-nagios"/>
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		Hybride Cloudumgebungen <biblioref linkend="ucs-uvmm"/>
 	  </simpara></listitem>

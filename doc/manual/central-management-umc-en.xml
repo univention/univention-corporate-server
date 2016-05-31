@@ -738,7 +738,7 @@
 				Object class to which the attribute entered under <emphasis>LDAP attribute</emphasis>
 				belongs.
 			  </para>
-			
+
 			  <para>
 				Predefined LDAP schema extensions for extended attributes are provided with the
 				object class <classname>univentionFreeAttributes</classname>. Further information can
@@ -805,7 +805,7 @@
 				window of a wizard, this option can be activated to remove the extended attribute
 				from the list of possible search criteria.
 			  </para>
-			
+
 			  <para>
 				This is only needed in exceptional cases.
 			  </para>
@@ -1751,7 +1751,7 @@ univention-directory-manager settings/extended_attribute create \
 		<title>Creating a report</title>
 			<graphic width="45%" align="center" fileref="illustrations41/umc_report_en2.png"/>
 	  </figure>
-	
+
 	  <para>
 		The reports created via &ucsUMC; are stored for 12 hours and then deleted by a cron job. The
 		settings for when the cron job should run and how long the reports should be stored for can

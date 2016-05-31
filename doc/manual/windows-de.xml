@@ -306,7 +306,7 @@ instanceType: 4
 			Samba-AD-Domänen unterstützt. Die Richtlinien greifen nur auf Windows-Clients; Linux- oder
 			Mac OS-Systeme werten die Richtlinien nicht aus.
 		  </para>
-		
+
 		  <para>
 			Gruppenrichtlinien werden ausgehend von der englischen Bezeichnung <emphasis>Group policy
 			objects</emphasis> auch oft als GPOs bezeichnet. Genauer gesagt kann ein
@@ -358,7 +358,7 @@ instanceType: 4
 
 		  <para>
 			Es existieren zwei Arten von Richtlinien:
-			
+
 			<itemizedlist>
 			  <listitem><simpara>
 				<emphasis>Benutzerrichtlinien</emphasis> konfigurieren die Einstellungen eines
@@ -791,7 +791,7 @@ END CATEGORY
 	    </simpara></listitem>
 	  </itemizedlist>
 	</para>
-	
+
 	<para>
 	  In beiden Modi wird unter UCS der Active Directory-Verbindungsdienst verwendet (kurz UCS AD-Connector), der Verzeichnisdienstobjekte zwischen einem
 	  Windows 2003/2008/2012-Server mit Active Directory (AD) und dem OpenLDAP-Verzeichnis aus &ucsUCS; synchronisieren kann.
@@ -1810,7 +1810,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 		</simpara></listitem>
 	  </itemizedlist>
 	</para>
-	
+
 	<para>
 	  Nun enthält der UCS-Domänencontroller  alle Benutzer, Gruppen und
 	  Rechner aus der Active Directory-Domäne. Im nächsten Schritt wird die SYSVOL-Freigabe kopiert,
@@ -1831,7 +1831,7 @@ ucr set connector/s4/mapping/group/grouptype=false
 		<title>Kopieren der Sysvol-Freigabe</title>
 		<graphic scalefit="1" width="100%" align="center" fileref="illustrations41/takeover3-de.png"/>
 	  </figure>
-	
+
 	  Wenn <command>robocopy</command> nicht vorhanden ist, kann es mit den Windows Server 2003
 	  Resource Kit Tools nachinstalliert werden. Ab Windows 2008 ist es vorinstalliert.
 	</para>

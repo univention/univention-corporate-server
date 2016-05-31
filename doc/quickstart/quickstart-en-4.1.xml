@@ -260,19 +260,19 @@
 	  <listitem><simpara>
 		Single-sign-on with web services using a SAML identity provider <biblioref linkend="wiki-saml"/>
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		IP management using DHCP <biblioref linkend="ucs-dhcp"/>
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		Web proxy for caching and policy management / virus scan <biblioref linkend="ucs-proxy"/>
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		Service monitoring with Nagios <biblioref linkend="ucs-nagios"/>
 	  </simpara></listitem>
-	
+
 	  <listitem><simpara>
 		Hybrid cloud setups <biblioref linkend="ucs-uvmm"/>
 	  </simpara></listitem>

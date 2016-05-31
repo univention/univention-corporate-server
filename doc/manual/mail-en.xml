@@ -74,7 +74,7 @@
 	  Optionally, e-mails received via Postfix can be checked for Spam content
 	  and viruses before further processing by Dovecot.
 	  Spam e-mails are detected by the classification software SpamAssassin
-	  (<xref linkend="mail::Spam"/>); ClamAV is used for the detection of
+	  (<xref linkend="mail::spam"/>); ClamAV is used for the detection of
 	  viruses and other malware (<xref linkend="mail::viren"/>).
     </para>
 
@@ -542,7 +542,7 @@ doveadm auth cache flush
 	</section>
   </section>
 
-  <section id="mail::Spam">
+  <section id="mail::spam">
 	<title>Spam detection and filtering</title>
 	<para>
 	  Undesirable and unsolicited e-mails are designated as Spam. The software
@@ -599,7 +599,7 @@ doveadm auth cache flush
 	</para>
 	<para>
 	  The Spam filtering can be deactivated by setting
-	  the &ucsUCRV; <envar>mail/antivir/Spam</envar> to <literal>no</literal>.
+	  the &ucsUCRV; <envar>mail/antivir/spam</envar> to <literal>no</literal>.
 	  When modifying Univention Configuration Registry variables concerning Spam
 	  detection, the AMaViS service and Postfix must be restarted subsequently.
 	</para>

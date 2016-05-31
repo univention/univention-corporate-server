@@ -623,7 +623,7 @@
 		<orderedlist>
 			<listitem><simpara>
 					Firstly, the printer drivers must be downloaded from the manufacturer's website. If you
-					are using an environment in which 64-bit installations of Windows are used, you will need 
+					are using an environment in which 64-bit installations of Windows are used, you will need
 					both versions of the drivers (32 and 64 bit). The <filename class="extension">INF</filename> files are required.
 			</simpara></listitem>
 

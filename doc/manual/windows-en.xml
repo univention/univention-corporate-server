@@ -177,11 +177,11 @@
 			<listitem><simpara>
 					<literal>NT1</literal> configures <systemitem class="protocol">CIFS</systemitem> (supported by all Windows versions)
 			</simpara></listitem>
-			
+
 			<listitem><simpara>
 					<literal>SMB2</literal> configures <systemitem class="protocol">SMB2</systemitem> (supported as of <systemitem class="osname">Windows Vista</systemitem>/<systemitem class="osname">Windows 7</systemitem>)
 			</simpara></listitem>
-			
+
 			<listitem><simpara>
 					<literal>SMB3</literal> configures <systemitem class="protocol">SMB3</systemitem> (supported as of <systemitem class="osname">Windows 8</systemitem>)
 			</simpara></listitem>
@@ -306,7 +306,7 @@ instanceType: 4
 			domains. The policies only apply to Windows clients; Linux or Mac OS systems cannot
 			evaluate the policies.
 		  </para>
-		
+
 		  <para>
 			Group policies are often referred to as GPOs (<emphasis>group policy
 			objects</emphasis>). Put more precisely, a GPO can contain a series of policies. Despite
@@ -354,7 +354,7 @@ instanceType: 4
 
 		  <para>
 			There are two types of policies:
-			
+
 			<itemizedlist>
 			  <listitem><simpara>
 				<emphasis>User policies</emphasis> configure a user's settings, e.g., the
@@ -729,7 +729,7 @@ END CATEGORY
 		  configuration &ar; Policies &ar; Administrative templates &ar; System &ar; User profiles
 		  &ar; Set roaming profile path for all users logging onto this computer</guimenu>.
 		</para>
-	
+
 		<note>
 		  <para>
 			As standard, the Administrator accesses shares with root rights. If as a result the
@@ -1078,11 +1078,11 @@ ucr set hosts/static/192.168.0.100=w2k8-32.ad.example.com
 	  select Enterprise root CA &ar; Next,
 	  Enter domain name &ar; Next &ar; Next</guimenu>.
 	</para>
-	
+
 	<para>
 	  The AD server should be rebooted after the installation.
 	</para>
-	
+
 	<para>
 	  This certificate must now be exported and copied onto the UCS system:
 	  <guimenu>Root CA &ar; AD domain &ar;
