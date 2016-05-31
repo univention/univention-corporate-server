@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.0.153-11) unstable; urgency=medium
+
+  * Bug #41391: version bump for rebuild
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 31 May 2016 14:49:51 +0200
+
 univention-management-console-frontend (3.0.153-10) unstable; urgency=medium
 
   * The expiration date has been increased by 5 years. This results in a
