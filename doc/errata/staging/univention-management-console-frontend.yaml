@@ -3,7 +3,7 @@ release: "3.3"
 version: [0]
 scope: ucs_3.3-0-errata3.3-0
 src: univention-management-console-frontend
-fix: 
+fix: 3.100.1-1~ucs3.3.1236.201605311543
 desc: |
  This update fixes problems with Chrome 51.
 bug: [41395]
