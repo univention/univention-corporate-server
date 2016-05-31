@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-2) unstable; urgency=medium
+
+  * Bug #40757: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 31 May 2016 09:37:21 +0200
+
 univention-appcenter (5.0.21-1) unstable; urgency=medium
 
   * Bug #41178: The newest installed version is the officially installed

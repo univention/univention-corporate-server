@@ -763,7 +763,7 @@ class App(object):
 		return '%s=%s' % (self.id, self.version)
 
 	def __repr__(self):
-		return 'App(id="%s" version="%s")' % (self.id, self.version)
+		return 'App(id="%s", version="%s")' % (self.id, self.version)
 
 	@classmethod
 	def from_ini(cls, ini_file, locale=True):

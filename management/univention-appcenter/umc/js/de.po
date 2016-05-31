@@ -1084,8 +1084,8 @@ msgid ""
 "default processes of the respective vendor and is not part of Univention App "
 "Center."
 msgstr ""
-"Der Kauf von Lizenzen, Maintenance oder Support läuft über die normalen Wege "
-"des jeweiligen Anbieters und ist nicht Teil von Univention App Center."
+"Der Kauf von Lizenzen, Maintenance oder Support wird über die normalen Wege "
+"des jeweiligen Anbieters abgewickelt und ist nicht Teil von Univention App Center."
 
 #: umc/js/appcenter/AppDetailsDialog.js:231
 msgid "The server tried to connect to the involved systems."
