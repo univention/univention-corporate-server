@@ -1,3 +1,9 @@
+univention-management-console-frontend (3.100.1-1) unstable; urgency=medium
+
+  * Bug #41395: version bump for package rebuild with UCS 3.3-0
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 31 May 2016 15:42:08 +0200
+
 univention-management-console-frontend (3.0.153-9) unstable; urgency=low
 
   * Bug #25162: Make PID files not world-writable.
