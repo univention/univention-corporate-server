@@ -39,35 +39,18 @@ import functools
 import ConfigParser
 import glob
 import base64
+import pkgutil
+
+from functools import partial
 
 COMMAND_DIR = '/usr/share/ucs-winrm/scripts'
 
 if os.path.exists('./scripts'):
+	sys.path.append('./scripts')
 	COMMAND_DIR= './scripts'
 
 class UcsWinFail(Exception):
 	pass
-
-# command decorator
-def wcommand(desc, *args, **kw):
-	parameters = kw.get('args', [])
-	def wrapper(func):
-		# indicate that this is a command
-		func._command = True
-		func._desc = desc
-		@functools.wraps(func)
-		def func_wrapper(self, *args, **kw):
-			# get parameter defaults
-			for param in parameters:
-				self.parser.add_argument('--%s' % param, default=self.get_param_default(param), help=parameters[param])
-			# parse args
-			self.args = self.parser.parse_args()
-			# check args
-			self.check_args()
-			# do it
-			func(self, *args, **kw)
-		return func_wrapper
-	return wrapper
 
 class RedirectStdOut(object):
 	def __init__(self, stdout=None):
@@ -88,16 +71,20 @@ class UcsWin(object):
 
 		# get commands
 		self.commands = dict()
-		for name, fn in inspect.getmembers(self, predicate=inspect.ismethod):
-			if hasattr(fn, '_command') and hasattr(fn, '_desc'):
-				self.commands[fn.__name__] = fn._desc
+		for importer, package_name, _ in pkgutil.iter_modules([COMMAND_DIR]):
+			full_package_name = '%s.%s' % (COMMAND_DIR, package_name)
+			if full_package_name not in sys.modules:
+				module = importer.find_module(package_name).load_module(full_package_name)
+				if not hasattr(module, 'name') or not hasattr(module, 'description'):
+					continue
+				self.commands[module.name] = dict(description=module.description, module=module)
 
 		# parser
 		self.parser = argparse.ArgumentParser( description='Run various commands on windows clients')
 		self.parser.usage = '%(prog)s COMMAND [OPTIONS]\n'
 		self.parser.usage += 'Known commands are:\n'
 		for i in self.commands:
-			self.parser.usage += '\t%s - %s\n' % (i, self.commands[i])
+			self.parser.usage += '\t%s - %s\n' % (i, self.commands[i]['description'])
 		self.parser.add_argument('command', help='Subcommand to run')
 
 		# command?
@@ -123,14 +110,38 @@ class UcsWin(object):
 		self.parser.add_argument('--krb5', action='store_true',
 			default=self.get_param_default('krb5', default=False), help='use kerberos authentication')
 
+		# make module a method of myself
+		for name in self.commands:
+			module = self.commands[name]['module']
+			setattr(self.__class__, module.name, partial(self.__run_module, module))
+	
 		# run command
 		getattr(self, args.command)()
 
-	##########
-	# helper #
-	##########
+	def __run_module(self, module, **kwargs):
+		if not kwargs:
+			if hasattr(module, 'args'):
+				for arg in module.args:
+					default = self.get_param_default(arg)
+					if not 'default' in module.args[arg]:
+						 module.args[arg]['default'] = self.get_param_default(arg)
+					self.parser.add_argument('--' + arg, **module.args[arg])
+			self.args = self.parser.parse_args()
+			self.__check_args()
 
-	def check_args(self):
+		# execute pre hook
+		if hasattr(module, 'pre'):
+			module.pre(self)
+
+		if hasattr(module, 'ps'):
+			cmd = module.ps % kwargs if kwargs else module.ps % vars(self.args)
+			self.run(cmd, ps=True, verbose=True)
+
+		# execute post hook
+		if hasattr(module, 'post'):
+			module.post(self)
+
+	def __check_args(self):
 		args = vars(self.args)
 		for i in args:
 			if self.args.krb5 and i == 'password':
@@ -152,7 +163,11 @@ class UcsWin(object):
 			val = default
 		return val
 
-	def run(self, command, ps=False, verbose=False, winrm_quiet=False):
+	##########
+	# helper #
+	##########
+
+	def run(self, command, ps=False, verbose=False, winrm_warnings=False):
 		if self.args.krb5:
 			s = winrm.Session(self.args.client, auth=(self.args.user, None), transport='kerberos')
 		else:
@@ -177,7 +192,7 @@ class UcsWin(object):
 				$code = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($content))
 				[Threading.Thread]::CurrentThread.CurrentUICulture = 'en-US'; Invoke-Expression $code
 			''' % w_file
-			if winrm_quiet:
+			if winrm_warnings:
 				with RedirectStdOut(stdout=open(os.devnull, 'w')):
 					r = s.run_ps(_cmd)
 			else:
@@ -190,13 +205,6 @@ class UcsWin(object):
 		if verbose is True or self.args.debug:
 			print r.std_out
 
-	def run_predefined_command(self, *args, **kwargs):
-		command_file = os.path.join(COMMAND_DIR, args[0] + '.ps1')
-		command = "".join(open(command_file, 'r').readlines())
-		if len(args) > 1:
-			command = command % args[1]
-		self.run(command, verbose=True, ps=True, **kwargs)
-
 	def client_reachable(self):
 		try:
 			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -204,8 +212,7 @@ class UcsWin(object):
 			s.connect((self.args.client, 5985))
 			return True
 		except socket.error, e:
-			pass
-        	return False
+			return False
 
 	def wait_until_client_is_gone(self, timeout=120):
 		for i in range(timeout):
@@ -220,80 +227,6 @@ class UcsWin(object):
 				return True
 			time.sleep(1)
 		raise UcsWinFail('wait_for_client for %s failed (timeout=%s)' % (self.args.client, timeout))
-
-	############
-	# commands #
-	############
-
-	@wcommand('Wait for client', args={'timeout':'timeout before fail'})
-	def wait_for_windows(self):
-		self.wait_for_client(timeout=int(self.args.timeout))
-
-	@wcommand('Run windows batch command',
-		args={'cmd':'Run batch command'})
-	def run_cmd(self):
-		self.run(self.args.cmd, verbose=True)
-
-
-	@wcommand('Copy from windows to share',
-		args={
-			'src':'src in windows (c:\windows)',
-			'dest':'destination on windows (u:\, \\\\server\share)'})
-	def copy_from_windows(self):
-		self.run_predefined_command('copy_from_windows', vars(self.args))
-
-	@wcommand('Run windows powershell script',
-		args={'cmd':'Run powershell command (\'Get-Process *\')'})
-	def run_ps(self):
-		self.run(self.args.cmd, verbose=True, ps=True)
-
-	@wcommand('Set dns server for all non DHCP interfaces',
-		args={'dns-server':'DNS Server to use for join'})
-	def set_dns_server(self):
-		self.run_predefined_command('set_dns_server', vars(self.args))
-
-	@wcommand('Disable firewall')
-	def disable_firewall(self):
-		self.run_predefined_command('disable_firewall', dict(state=off))
-
-	@wcommand('Join windows client into domain',
-		args={
-			'dns-server':'DNS Server to use for join',
-			'domain':'The windows domain name',
-			'domain-user':'Username to use for the join',
-			'domain-password':'Username to use for the join'})
-	def domain_join(self):
-		self.run_predefined_command('set_dns_server', vars(self.args))
-		self.run_predefined_command('disable_firewall', dict(state='off'))
-		self.run_predefined_command('domain_join', vars(self.args))
-		self.run_predefined_command('reboot')
-		self.wait_until_client_is_gone()
-		self.wait_for_client()
-		self.run_predefined_command('domain_user_validate_password', vars(self.args))
-
-	@wcommand('check if system is part of domain and return domain name')
-	def get_domain_name(self):
-		self.run_predefined_command('get_domain_name', vars(self.args), winrm_quiet=True)
-
-	@wcommand('update the windows system')
-	def windows_update(self):
-		raise NotImplementedError
-		self.run_predefined_command('windows_update', vars(self.args))
-
-	@wcommand('Shut down windows client')
-	def shutdown(self):
-		self.run_predefined_command('shutdown')
-		self.wait_until_client_is_gone()
-
-	@wcommand('Change user password',
-		args={
-			'domain':'The windows domain name',
-			'domain-user':'Username to use for the join',
-			'domain-password':'Username to use for the join',
-			'user-name':'change password for this userr',
-			'user-password':'The password string'})
-	def change_user_password(self):
-		self.run_predefined_command('change_user_password', vars(self.args))
 
 if __name__ == '__main__':
 	UcsWin()
