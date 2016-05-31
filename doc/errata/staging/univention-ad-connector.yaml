@@ -10,6 +10,6 @@ desc: |
    service which was installed on the Microsoft Active Directory server. The
    Univention AD Connector now uses different interfaces of the Active
    Directory for reading and writing the password hashes. That means, the UCS
-   AD Connector service which is installed on the Microsoft Active Directory                                                                                                                    
-   server can be stopped after installing this update.                                                                                                                                          
+   AD Connector service which is installed on the Microsoft Active Directory
+   server can be stopped after installing this update.
 bug: [41220]
