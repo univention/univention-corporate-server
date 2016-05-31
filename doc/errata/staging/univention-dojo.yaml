@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-dojo
-fix: 
+fix: 7.0.6-3.97.201605311445
 desc: |
  This update fixes problems in xstyle with Chrome 51.
 bug: [41391]
