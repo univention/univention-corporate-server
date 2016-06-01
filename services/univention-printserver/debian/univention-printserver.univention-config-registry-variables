@@ -87,15 +87,3 @@ Description[de]=Über diese Variable lässt sich die Voreinstellung für die Sam
 Description[en]=This variable configures the default for the Samba printer option "force printername". Adjustments of this variable only affect new or modified printer shares.
 Type=str
 Categories=service-cups
-
-[cups/access/limit]
-Description[de]=Ist diese Variable auf 'false' gesetzt, werden die cups/policy/.* Variablen und cups/printmode/hosts/none nicht ausgewertet.
-Description[en]=If this variable is set to 'false' the cups/policy/.* variables and cups/printmode/hosts/none are ignored.
-Type=bool
-Categories=service-cups
-
-[cups/policy/.*]
-Description[de]=Mit diesen Variablen können Policy Limits für cups definiert werden.
-Description[en]=These variables can be used to configure cups policy limits.
-Type=str
-Categories=service-cups
