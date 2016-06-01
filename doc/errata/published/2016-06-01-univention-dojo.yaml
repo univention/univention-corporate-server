@@ -7,3 +7,5 @@ fix: 7.0.6-3.97.201605311445
 desc: |
  This update fixes problems in xstyle with Chrome 51.
 bug: [41391]
+erratum: 430
+announced: 2016-06-01
