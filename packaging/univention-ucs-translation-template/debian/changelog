@@ -1,3 +1,10 @@
+univention-ucs-translation-template (3.0.1-5) unstable; urgency=medium
+
+  * Bug #40936: Tested and applied patch which fixes wrong source files being
+    used for po file generation. 
+
+ -- Eduard Mai <mai@univention.de>  Wed, 01 Jun 2016 16:13:57 +0200
+
 univention-ucs-translation-template (3.0.1-4) unstable; urgency=medium
 
   * Bug #40341: Bug #38155: be more error tolerant
