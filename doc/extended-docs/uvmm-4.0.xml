@@ -30,7 +30,7 @@
 				<itemizedlist>
 					<listitem><simpara>
 							The <package>open-iscsi</package> package must be installed on the virtualization
-							servers. 
+							servers.
 					</simpara></listitem>
 
 					<listitem><simpara>
@@ -44,7 +44,7 @@
 					<listitem><simpara>
 							The libvirt interface used by UVMM does not currently support any authentication. If
 							CHAP is used, the <filename>/etc/iscsi/iscsid.conf</filename> file must be
-							adjusted by hand. 
+							adjusted by hand.
 					</simpara></listitem>
 				</itemizedlist>
 			</para>
@@ -79,7 +79,7 @@
 					<listitem><simpara>
 							The <property>target</property> element is used to define the path to the device
 							files. The <filename class="directory">/dev/disk/by-path</filename> should be used there for stable
-							names. 
+							names.
 					</simpara></listitem>
 				</itemizedlist>
 			</para>
@@ -87,7 +87,7 @@
 			<para>
 				In the following example, a storage pool is defined, which mounts the
 				<systemitem class="resource">iqn.2010-08.local.ucs:sdb</systemitem> iSCSI target from the
-				<systemitem class="server">xen6.ucs.local</systemitem> server: 
+				<systemitem class="server">xen6.ucs.local</systemitem> server:
 
 				<programlisting language="xml"><![CDATA[
 <pool type='iscsi'>
@@ -133,7 +133,7 @@ virsh pool-autostart iscsi
 			</para>
 
 			<para>
-				If new iSCSI LUNs are set up, the iSCSI storage pool must still be reimported manually at
+				If new iSCSI LUNs are set up, the iSCSI storage pool must still be re-imported manually at
 				present. This can be done using the following command:
 
 				<programlisting language="sh">
@@ -157,7 +157,7 @@ virsh pool-refresh iscsi
 		</para>
 		<para>
 			Managing Xen virtual machines in no longer possible using &ucsUVMM; from UCS-4.
-			Customers using <application>Xen</application> can continue using existing UCS-3 virtualization servers with UVMM from UCS-3 by not updating them, but should consider one of the following options longterm:
+			Customers using <application>Xen</application> can continue using existing UCS-3 virtualization servers with UVMM from UCS-3 by not updating them, but should consider one of the following options long-term:
 		</para>
 		<itemizedlist>
 			<listitem><simpara>switch to the hypervisor <application>QEMU/KVM</application>, which requires updating all virtual machines.</simpara></listitem>
@@ -176,7 +176,7 @@ virsh pool-refresh iscsi
 			</para>
 			<para>
 				Univention recommends to setup a new virtualization server using <application>KVM</application> and to copy over the exiting image files to the new server.
-				This has the advantage that the new setup can be tested thoroughly and a fall-back to the old hypervisor using <application>Xen</application> is possible.
+				This has the advantage that the new setup can be tested thoroughly and a fallback to the old hypervisor using <application>Xen</application> is possible.
 			</para>
 			<procedure id="uvmm:xen2kvm">
 				<title>Convert virtual machines from Xen to KVM</title>
@@ -431,6 +431,19 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 												Remove the elements <literal>/domain/bootloader</literal> and <literal>/domain/bootloader_args</literal>.
 											</para>
 										</step>
+										<step performance="optional">
+											<para>
+												Make sure there is an element <literal>/domain/features</literal> enabling <phrase>Advanced Configuration and Power Interface</phrase> (<acronym>ACPI</acronym>) and <phrase>Advanced Programmable Interrupt Controller</phrase> (<acronym>APIC</acronym>).
+												They are required for shutdown via <acronym>ACPI</acronym> power button event and for interrupt handling on multi-processor systems.
+												If not insert the following <abbrev>XML</abbrev> fragment just after <literal>/domain/os</literal>:
+											</para>
+											<programlisting language="xml"><![CDATA[
+<features>
+	<acpi/>
+	<apic/>
+</features>
+]]></programlisting>
+										</step>
 									</substeps>
 								</step>
 								<step>
@@ -561,7 +574,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<term>Different Xen patch set</term>
 					<listitem>
 						<simpara>
-							The UCS version contained several patches on top of the Debian version, which fixed several issues (<ulink url="&ucsbug;18357">Bug 18357</ulink>, <ulink url="&ucsbug;23394">Bug 23394</ulink>, <ulink url="&ucsbug;23812">Bug 23812</ulink>, <ulink url="&ucsbug;36098">Bug 36098</ulink>).
+							The UCS version contained several patches on top of the Debian version, which fixed several issues (<u:bug>>18357</u:bug>, <u:bug>23394</u:bug>, <u:bug>23812</u:bug>, <u:bug>36098</u:bug>).
 							Their status in Debian is unknown.
 						</simpara>
 					</listitem>
@@ -570,7 +583,7 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 					<term>Different libvirt patch set</term>
 					<listitem>
 						<simpara>
-							The UCS version of <package>libvirt</package> contained several patches specifically for <application>Xen</application>, which are no longer applied (<ulink url="&ucsbug;20024">Bug 20024</ulink>, <ulink url="&ucsbug;29532">Bug 29532</ulink>).
+							The UCS version of <package>libvirt</package> contained several patches specifically for <application>Xen</application>, which are no longer applied (<u:bug>20024</u:bug>, <u:bug>29532</u:bug>).
 						</simpara>
 					</listitem>
 				</varlistentry>
