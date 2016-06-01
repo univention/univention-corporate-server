@@ -22,6 +22,6 @@ def pre(winrm):
 
 def post(winrm):
 	winrm.reboot()
-	#winrm.wait_until_client_is_gone()
-	#winrm.wait_for_client()
+	winrm._wait_until_client_is_gone()
+	winrm._wait_for_client()
 	winrm.domain_user_validate_password(**vars(winrm.args))

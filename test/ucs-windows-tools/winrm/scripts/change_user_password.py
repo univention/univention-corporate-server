@@ -17,7 +17,7 @@ If ($Result -ne $Null) {
 
 exit 1
 '''
-name = 'cange_user_password'
+name = 'change_user_password'
 description = 'change user password'
 args = dict(
 	username = dict(help='change password for this user'),
