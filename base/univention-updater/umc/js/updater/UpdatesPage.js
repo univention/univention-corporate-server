@@ -36,6 +36,7 @@ define([
 	"dojo/dom-class",
 	"dojo/topic",
 	"dojo/Deferred",
+	"dijit/registry",
 	"dojox/string/sprintf",
 	"umc/dialog",
 	"umc/app",
@@ -45,7 +46,16 @@ define([
 	"umc/modules/updater/Page",
 	"umc/modules/updater/Form",
 	"umc/i18n!umc/modules/updater"
-], function(declare, lang, array, all, domClass, topic, Deferred, sprintf, dialog, UMCApplication, tools, store, TitlePane, Page, Form, _) {
+], function(declare, lang, array, all, domClass, topic, Deferred, dijitRegistry, sprintf, dialog, UMCApplication, tools, store, TitlePane, Page, Form, _) {
+	var _getParentWidget = function(widget) {
+		try {
+			return dijitRegistry.getEnclosingWidget(widget.domNode.parentNode)
+		} catch(e) {
+			// could not access _widget.domNode.parentNode
+			return null;
+		}
+	};
+
 	return declare("umc.modules.updater.UpdatesPage", Page, {
 
 		_last_reboot:	false,
@@ -62,6 +72,21 @@ define([
 				headerText:		_("Available system updates"),
 				helpText:		_("Overview of all updates that affect the system as a whole.")
 			});
+		},
+
+		_getEnclosingTitlePane: function(widgetName) {
+			var _widget = this._form.getWidget(widgetName) || this._form.getButton(widgetName);
+			while (_widget != null) {
+				if (_widget.isInstanceOf(TitlePane)) {
+					// we successfully found the enclosing TitlePane of the given widget
+					return _widget;
+				}
+				if (_widget.isInstanceOf(Form)) {
+					// do not search beyond the form widget
+					return null;
+				}
+				_widget = _getParentWidget(_widget);
+			}
 		},
 
 		buildRendering: function() {
@@ -81,7 +106,7 @@ define([
 					'class':		'umcUpdaterWarningText',
 					visible:		false,
 					label:			'',
-					content:		'', // will be set bellow as soon as the UCS version is known
+					content:		'', // will be set below as soon as the UCS version is known
 				},
 				{
 					type:			'Text',
@@ -469,10 +494,10 @@ define([
 			// fetch all known/initial titlepanes and save them with their name
 			// so they can be used later on
 			this._titlepanes = {
-				reboot: this._form._container.getChildren()[0],
-				easymode: this._form._container.getChildren()[1],
-				release: this._form._container.getChildren()[2],
-				packages: this._form._container.getChildren()[3]
+				reboot: this._getEnclosingTitlePane('reboot'),
+				easymode: this._getEnclosingTitlePane('easy_upgrade'),
+				release: this._getEnclosingTitlePane('run_release_update'),
+				packages: this._getEnclosingTitlePane('run_packages_update')
 			};
 
 			// Before we attach the form to our page, just switch off all title panes.
