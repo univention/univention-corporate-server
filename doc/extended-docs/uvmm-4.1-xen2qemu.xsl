@@ -12,6 +12,13 @@
 	<xsl:template match="/domain">
 		<domain type="kvm">
 			<xsl:apply-templates select="*"/>
+			<!-- Make sure ACPI is enabled -->
+			<xsl:if test="not(features)">
+				<features>
+					<acpi/>
+					<apic/>
+				</features>
+			</xsl:if>
 		</domain>
 	</xsl:template>
 

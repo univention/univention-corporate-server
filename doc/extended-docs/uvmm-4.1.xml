@@ -431,6 +431,19 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 												Remove the elements <literal>/domain/bootloader</literal> and <literal>/domain/bootloader_args</literal>.
 											</para>
 										</step>
+										<step performance="optional">
+											<para>
+												Make sure there is an element <literal>/domain/features</literal> enabling <phrase>Advanced Configuration and Power Interface</phrase> (<acronym>ACPI</acronym> and <phrase>Advanced Programmable Interrupt Controller</phrase> (<acronym>APIC</acronym>).
+												They are required for shutdown via <acronym>ACPI</acronym> power button event and for interrupt handling on multi-processor systems.
+												If not insert the following <abbrev>XML</abbrev> fragment just after <literal>/domain/os</literal>:
+											</para>
+											<programlisting language="xml"><![CDATA[
+	<features>
+		<acpi/>
+		<apic/>
+	</features>
+]]></programlisting>
+										</step>
 									</substeps>
 								</step>
 								<step>
