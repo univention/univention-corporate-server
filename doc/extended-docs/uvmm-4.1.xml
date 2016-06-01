@@ -438,10 +438,10 @@ ucr search --value '^(/dev/)?xvd[a-z]+[0-9]*$'
 												If not insert the following <abbrev>XML</abbrev> fragment just after <literal>/domain/os</literal>:
 											</para>
 											<programlisting language="xml"><![CDATA[
-	<features>
-		<acpi/>
-		<apic/>
-	</features>
+<features>
+	<acpi/>
+	<apic/>
+</features>
 ]]></programlisting>
 										</step>
 									</substeps>
