@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := quickstart-de quickstart-en
+MAIN := quickstart-de-3.3 quickstart-en-3.3
 STYLESHEET := univention_extdocs
 
 COMMON_DIR := ../../../doc-common/docbook
