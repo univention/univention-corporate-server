@@ -62,19 +62,19 @@ def update_package_translation_files(module, modulename, packagedir, source_dir,
 		p = os.path.join(source_dir, packagedir)
 		os.chdir(p)
 		if not module['core']:
-			def _create_po_files(po_files):
+			def _create_po_files(po_files, src_files):
 				for po_file in po_files:
 					po_file_full_path = os.path.join(translated_package_dir_absolute, po_file)
 					if not os.path.exists(os.path.dirname(po_file_full_path)):
 						os.makedirs(os.path.dirname(po_file_full_path))
 					try:
-						dh_umc.create_po_file(po_file_full_path, modulename, module.python_files)
+						dh_umc.create_po_file(po_file_full_path, modulename, src_files)
 					except dh_umc.Error as exc:
 						print str(exc)
 
 			# build python po files
-			_create_po_files(module.python_po_files)
-			_create_po_files(module.js_po_files)
+			_create_po_files(module.python_po_files, module.python_files)
+			_create_po_files(module.js_po_files, module.js_files)
 
 		# xml always has to be present
 		for lang, po_file in module.xml_po_files:
