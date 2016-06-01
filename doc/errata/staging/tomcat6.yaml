@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: tomcat6
-fix: 6.0.45+dfsg-1.52.201604191550
+fix: 6.0.45+dfsg-1.51.201606010944
 desc: |
  This update addresses the following issues:
  * CVE-2014-0033: prevent remote attackers from conducting session
