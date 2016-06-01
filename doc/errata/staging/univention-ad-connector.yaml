@@ -6,5 +6,6 @@ src: univention-ad-connector
 fix: 10.0.1-25.492.201605252010
 desc: |
  This update addresses the following issue(s):
- * traceback due to empty proxyAddresses in AD during sync_from_ucs
+ * A traceback due to empty proxyAddresses in AD during the synchronisation
+   has been fixed.
 bug: [41246]
