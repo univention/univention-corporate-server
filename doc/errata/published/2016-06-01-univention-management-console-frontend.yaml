@@ -7,3 +7,5 @@ fix: 3.0.153-11.1235.201605311451
 desc: |
  This update fixes problems with Chrome 51.
 bug: [41391]
+erratum: 431
+announced: 2016-06-01
