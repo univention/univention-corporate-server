@@ -10,3 +10,5 @@ desc: |
  * https://bugzilla.samba.org/show_bug.cgi?id=11852
  * https://bugzilla.samba.org/show_bug.cgi?id=11912
 bug: [41196]
+erratum: 427
+announced: 2016-06-01
