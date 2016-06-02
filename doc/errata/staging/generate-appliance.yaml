@@ -1,7 +1,0 @@
-product: ucs
-release: "4.1"
-version: [0]
-scope: ucs_4.1-0-errata4.1-0
-src: generate-appliance
-fix: 2.0.2-2.20.201602091538
-note: 
