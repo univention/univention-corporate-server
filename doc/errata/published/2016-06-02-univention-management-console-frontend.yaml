@@ -7,3 +7,5 @@ fix: 3.100.1-1~ucs3.3.1236.201605311543
 desc: |
  This update fixes problems with Chrome 51.
 bug: [41395]
+erratum: 2
+announced: 2016-06-02
