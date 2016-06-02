@@ -300,6 +300,21 @@
         "target": "mo"
     },
     {
+        "action": "update-po",
+        "inputfiles": "*/modules/univention/admin/handlers/saml/*.py",
+        "packagedir": "saml/univention-saml",
+	"po_subdir": "modules/univention/admin/handlers/saml",
+        "packagename": "univention-admin-handlers-saml"
+    },
+    {
+        "action": "install-mo/json",
+        "outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
+        "packagedir": "saml/univention-saml",
+	"po_subdir": "modules/univention/admin/handlers/saml",
+        "packagename": "univention-admin-handlers-saml",
+        "target": "mo"
+    },
+    {
         "action": "get-template",
         "inputfile": "umc/help/en.json",
         "packagedir": "management/univention-management-console-frontend",

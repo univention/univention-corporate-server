@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.0.1-7) unstable; urgency=medium
+
+  * Bug #41222: Add univention/saml to specialcases.json 
+
+ -- Eduard Mai <mai@univention.de>  Thu, 02 Jun 2016 16:25:34 +0200
+
 univention-ucs-translation-template (3.0.1-6) unstable; urgency=medium
 
   * Bug #40917: Locale territory is now written correctly to UCR. 
