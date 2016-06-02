@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue(s):
  * The mapping for msPrintConnectionPolicy has been fixed.
 bug: [41309]
+erratum: 190
+announced: 2016-06-02
