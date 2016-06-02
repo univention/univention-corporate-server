@@ -375,9 +375,9 @@ case "${locale}" in
 	*)	ucr set locale="${locale} ${new_locale}" ;;
 esac
 
-ucr set umc/server/languages/%s_%s?"%s"
+ucr set ucs/server/languages/%s?"%s"
 
-exit 0""" % (target_locale, target_language.lower(), target_language.upper(), language_name))
+exit 0""" % (target_locale, target_locale.split('.')[0], language_name))
 
 	language_dict = {"lang": target_language}
 	with open(os.path.join(new_package_dir_debian, '%s.install' % translation_package_name), 'w') as f:

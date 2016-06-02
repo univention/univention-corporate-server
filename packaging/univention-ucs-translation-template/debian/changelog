@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.0.1-6) unstable; urgency=medium
+
+  * Bug #40917: Locale territory is now written correctly to UCR. 
+
+ -- Eduard Mai <mai@univention.de>  Thu, 02 Jun 2016 14:03:02 +0200
+
 univention-ucs-translation-template (3.0.1-5) unstable; urgency=medium
 
   * Bug #40936: Tested and applied patch which fixes wrong source files being
