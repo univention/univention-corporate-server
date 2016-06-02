@@ -25,7 +25,7 @@
 	</para>
 
         <para>
-		  This configuration has been tested with Ubuntu 14.04 LTS as well as Kubuntu 14.04 LTS.
+		  This configuration has been tested with Ubuntu 14.04 LTS, Ubuntu 16.04 LTS as well as Kubuntu 14.04 LTS.
 	</para>
 
 	<caution><para>
@@ -44,22 +44,20 @@
 			</para>
 			<programlisting language="sh">
 # Become root
-sudo bash
+sudo bash <<"EOF"
 
 # Set the IP address of the UCS DC Master, 192.168.0.3 in this example
 export MASTER_IP=192.168.0.3
 
 mkdir /etc/univention
-ssh root@${MASTER_IP} ucr shell |
- grep -v ^hostname= >/etc/univention/ucr_master
+ssh -n root@${MASTER_IP} 'ucr shell | grep -v ^hostname=' >/etc/univention/ucr_master
 echo "master_ip=${MASTER_IP}" >>/etc/univention/ucr_master
 chmod 660 /etc/univention/ucr_master
 . /etc/univention/ucr_master
 
 echo "${MASTER_IP} ${ldap_master}" >>/etc/hosts
 
-# Exit sudo bash
-exit
+EOF
 </programlisting>
 
             <para>
@@ -69,7 +67,7 @@ exit
 			</para>
             <programlisting language="sh"><![CDATA[
 # Become root
-sudo bash
+sudo bash <<"EOF"
 
 # Set some environment variables
 . /etc/univention/ucr_master
@@ -81,7 +79,7 @@ wget -O /etc/univention/ssl/ucsCA/CAcert.pem \
 
 # Create an account and save the password
 password="$(tr -dc A-Za-z0-9_ </dev/urandom | head -c20)"
-ssh root@${ldap_master} udm computers/ubuntu create \
+ssh -n root@${ldap_master} udm computers/ubuntu create \
     --position "cn=computers,${ldap_base}" \
     --set name=$(hostname) --set password="${password}" \
     --set operatingSystem="$(lsb_release -is)" \
@@ -96,8 +94,7 @@ URI ldap://$ldap_master:7389
 BASE $ldap_base
 __EOF__
 
-# Exit sudo bash
-exit
+EOF
 ]]></programlisting>
 		</section>
 
@@ -109,7 +106,7 @@ exit
             </para>
             <programlisting language="sh"><![CDATA[
 # Become root
-sudo bash
+sudo bash <<"EOF"
 
 # Set some environment variables
 . /etc/univention/ucr_master
@@ -191,10 +188,9 @@ __EOF__
 auth-client-config -a -p sss
 
 # Restart sssd
-restart sssd
+service sssd restart
 
-# Exit sudo bash
-exit
+EOF
 ]]></programlisting>
 
 			<para>
@@ -210,7 +206,7 @@ exit
             </para>
             <programlisting language="sh"><![CDATA[
 # Become root
-sudo bash
+sudo bash <<"EOF"
 
 cat >/usr/share/pam-configs/ucs_mkhomedir <<__EOF__
 Name: activate mkhomedir
@@ -221,10 +217,9 @@ Session:
     required    pam_mkhomedir.so umask=0022 skel=/etc/skel
 __EOF__
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update
+DEBIAN_FRONTEND=noninteractive pam-auth-update --force
 
-# Exit sudo bash
-exit
+EOF
 ]]></programlisting>
 
             <para>
@@ -232,7 +227,7 @@ exit
             </para>
             <programlisting language="sh"><![CDATA[
 # Become root
-sudo bash
+sudo bash <<"EOF"
 
 echo '*;*;*;Al0000-2400;audio,cdrom,dialout,floppy,plugdev,adm' \
    >>/etc/security/group.conf
@@ -246,10 +241,9 @@ Auth:
     required    pam_group.so use_first_pass
 __EOF__
 
-DEBIAN_FRONTEND=noninteractive pam-auth-update
+DEBIAN_FRONTEND=noninteractive pam-auth-update --force
 
-# Exit sudo bash
-exit
+EOF
 ]]></programlisting>
 
             <para>
@@ -258,7 +252,7 @@ exit
             </para>
             <programlisting language="sh"><![CDATA[
 # Become root
-sudo bash
+sudo bash <<"EOF"
 
 # Add a field for a user name, disable user selection at the login screen
 mkdir /etc/lightdm/lightdm.conf.d
@@ -268,8 +262,7 @@ greeter-show-manual-login=true
 greeter-hide-users=true
 __EOF__
 
-# Exit sudo bash
-exit
+EOF
 ]]></programlisting>
 
             <para>
@@ -294,13 +287,13 @@ exit
             </para>
             <programlisting language="sh"><![CDATA[
 # Become root
-sudo bash
+sudo bash <<"EOF"
 
 # Set some environment variables
 . /etc/univention/ucr_master
 
 # Install required packages
-DEBIAN_FRONTEND=noninteractive apt-get install -y heimdal-clients
+DEBIAN_FRONTEND=noninteractive apt-get install -y heimdal-clients ntpdate
 
 # Default krb5.conf
 cat >/etc/krb5.conf <<__EOF__
@@ -318,22 +311,17 @@ $kerberos_realm = {
 }
 __EOF__
 
-# Stop and disable the avahi daemon
-stop avahi-daemon
-sed -i 's|start on (|start on (never and |' /etc/init/avahi-daemon.conf
-
 # Synchronize the time with the UCS system
 ntpdate -bu $ldap_master
 
 # Test Kerberos: kinit will ask you for a ticket and the SSH login to the master should work with ticket authentication:
 kinit Administrator
-ssh Administrator@$ldap_master ls /etc/univention
+ssh -n Administrator@$ldap_master ls /etc/univention
 
 # Destroy the kerberos ticket
 kdestroy
 
-# Exit sudo bash
-exit
+EOF
 ]]></programlisting>
 		</section>
 
