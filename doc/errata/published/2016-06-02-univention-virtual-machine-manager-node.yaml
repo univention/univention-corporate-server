@@ -9,3 +9,5 @@ desc: |
  * A default password for all VNC sessions can be configured through the new
    UCR variable 'uvmm/kvm/vnc/password'.
 bug: [41340]
+erratum: 189
+announced: 2016-06-02
