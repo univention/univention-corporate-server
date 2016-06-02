@@ -9,3 +9,5 @@ desc: |
  * A traceback due to empty proxyAddresses in AD during the synchronisation
    has been fixed.
 bug: [41246]
+erratum: 191
+announced: 2016-06-02
