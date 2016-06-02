@@ -1,0 +1,49 @@
+A new update is available for Univention Corporate Server 3.1 as
+part of the extended security maintenance.
+It addresses the following problem:
+
+Program component:  cups
+Reference:          CVE-2015-3279
+                    CVE-2015-3258
+                    CVE-2015-1159
+                    CVE-2015-1158
+                    CVE-2014-5031
+                    CVE-2014-5030
+                    CVE-2014-5029
+                    CVE-2014-3537
+                    CVE-2014-2856
+                    CVE-2014-2679
+Fixed version:      1.4.4-7.111.201606021225
+
+The following issue was fixed:
+* CVE-2014-2856
+  XSS in the CUPS webinterface
+* CVE-2014-5031, CVE-2014-5030, CVE-2014-5029
+  insufficient checking when allowing files download from the webinterface
+* CVE-2015-1158
+  Improper Update of Reference Count
+* CVE-2015-1159
+  Cross-Site Scripting
+* CVE-2014-2679
+  Buffer overflow in cupsRasterReadPixels
+* CVE-2014-3537
+  privilege escalation through the CUPS webinterface
+* CVE-2015-3258
+  Heap-based buffer overflow in the WriteProlog function.
+* CVE-2015-3279
+  Integer overflow.
+
+-- 
+Univention GmbH
+be open.
+Mary-Somerville-Str.1
+28359 Bremen
+Tel. : +49 421 22232-0
+Fax  : +49 421 22232-99
+
+<info@univention.de>
+http://www.univention.de/
+
+Geschäftsführer: Peter H. Ganten
+HRB 20755 Amtsgericht Bremen
+Steuer-Nr.: 71-597-02876
