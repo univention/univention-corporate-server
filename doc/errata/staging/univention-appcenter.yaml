@@ -6,8 +6,8 @@ src: univention-appcenter
 fix: 5.0.21-2.166.201605310938
 desc: |
  This update addresses the following issue(s):
- * When upgrading a regular App to a Docker App, the Apache proxy settings were
-   not written correctly. This has been fixed.
+ * When upgrading a regular App to a Docker App, the Apache proxy settings
+   were not written correctly. This has been fixed.
  * Aligned German and English description about the sale of licenses and
    support in the Univention App Center.
  * Docker Apps did not register their web interface correctly in the UCS
