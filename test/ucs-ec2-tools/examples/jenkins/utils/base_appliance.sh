@@ -361,7 +361,8 @@ if [ "$close_fds" = "TRUE" ]; then
 fi
 \$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
 joinscript_save_current_version
-univention-register-apps
+univention-app register --component --do-it $apps
+univention-app register $apps
 if [ \$# -gt 1 ]; then
 	. /usr/share/univention-lib/ldap.sh
 
@@ -695,6 +696,34 @@ __EOF__
 	sed -i 's|msgid "Domain join"|msgid "Domain setup (this might take a while)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 	sed -i 's|msgstr "Domänenbeitritt"|msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 	msgfmt -o /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.mo /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
+
+	# Hotfix for Bug #41392
+	echo 'Index: univention-system-activation
+===================================================================
+--- univention-system-activation        (Revision 69737)
++++ univention-system-activation        (Arbeitskopie)
+@@ -53,6 +53,21 @@
+        fuser /var/lib/dpkg/lock >/dev/null 2>&1 \
+                || dpkg -l univention-pam > /dev/null 2>&1 \
+                && dpkg-reconfigure univention-pam
++
++       # Copied from the univention-pam join script
++       # 11univention-pam.inst
++       . /usr/share/univention-lib/base.sh
++       if is_domain_controller; then
++               univention-config-registry set \
++                       auth/sshd/restrict?"yes" \
++                       "auth/sshd/group/Domain Admins?yes" \
++                       auth/sshd/group/Computers?"yes" \
++                       "auth/sshd/group/DC Slave Hosts?yes" \
++                       "auth/sshd/group/DC Backup Hosts?yes" \
++                       auth/sshd/group/Administrators?"yes" \
++                       auth/sshd/user/root?"yes"
++       fi
++
+ }
+ 
+ function restrict_root_login() {' | patch -p0 -l -d /usr/sbin/
 
 	# re-create dh parameter as background job (Bug #37459)
 	cat >/root/dh-parameter-background.patch <<'__EOF__'
