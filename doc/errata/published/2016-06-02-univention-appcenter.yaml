@@ -13,3 +13,5 @@ desc: |
  * Docker Apps did not register their web interface correctly in the UCS
    overview site. This has been fixed.
 bug: [41178, 40757, 40842]
+erratum: 187
+announced: 2016-06-02
