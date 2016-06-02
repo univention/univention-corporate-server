@@ -42,7 +42,7 @@
 			  modified. To simplify the setup, the default configuration of the UCS master domain
 			  controller should be copied to the Ubuntu system, for example:
 			</para>
-			<programlisting language="sh">
+			<programlisting language="sh"><![CDATA[
 # Become root
 sudo bash <<"EOF"
 
@@ -58,7 +58,7 @@ chmod 660 /etc/univention/ucr_master
 echo "${MASTER_IP} ${ldap_master}" >>/etc/hosts
 
 EOF
-</programlisting>
+]]></programlisting>
 
             <para>
 			  In the default configuration of UCS only authenticated users can search in the LDAP
