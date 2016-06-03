@@ -154,19 +154,13 @@ register_apps ()
 	apps="$app $(app_get_appliance_additional_apps $app)"
 
 	for the_app in $apps; do
-		name=$(app_get_name $the_app)
-		component=$(app_get_component $the_app)
-		component_prefix="repository/online/component/"
-		ucr set ${component_prefix}${component}description="$name" \
-				${component_prefix}${component}/localmirror=false \
-				${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
-				${component_prefix}${component}/unmaintained=disabled \
-				${component_prefix}${component}/version=current \
-				${component_prefix}${component}=enabled
-		if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
-			ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
-		fi
+		univention-app register ${the_app} --component --do-it
 	done
+
+	component=$(app_get_component $app)
+	if [ -e "/var/cache/univention-appcenter/${component}.LICENSE_AGREEMENT" ]; then
+		ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
+	fi
 
 	ucr set umc/web/appliance/id?${app}
 	univention-install -y univention-app-appliance

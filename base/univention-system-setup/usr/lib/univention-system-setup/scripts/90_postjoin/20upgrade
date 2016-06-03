@@ -34,6 +34,9 @@
 
 info_header "$0" "$(gettext "Upgrading the system")"
 
+# Activate the online repository
+/usr/sbin/ucr set repository/online=yes
+
 is_profile_var_true "update/system/after/setup"
 
 if [ $? -ne 0 ]; then
@@ -43,9 +46,6 @@ fi
 progress_msg "$(gettext "This might take a while depending on the number of pending updates.")"
 
 eval "$(ucr shell)"
-
-# Activate the online repository
-/usr/sbin/ucr set repository/online=yes
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	# Update to latest patchlevel

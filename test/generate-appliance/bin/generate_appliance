@@ -668,6 +668,26 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 							'Keyboard': 'PS2Keyboard',
 						}
 					),
+					E.Display(
+						**{
+							'VRAMSize': '12',
+							'monitorCound': '1',
+						}
+					),
+					E.RemoteDisplay(
+						**{
+							'enabled': 'false',
+						}
+					),
+					E.Network(
+						E.Adapter(
+							E.BridgedInterface(),
+							**{
+								'slot': '0',
+								'enabled': 'true',
+							}
+						),
+					),
 					**{
 						'version': '2',
 					}
