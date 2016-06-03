@@ -15,7 +15,8 @@ Package: univention-management-console-module-udm
 Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>= 9.0.16-1),
- univention-management-console-server
+ univention-management-console-server,
+ univention-directory-reports
 Provides: univention-directory-manager
 Replaces: univention-directory-manager (<< 9.0.0)
 Description: UMC module for UCS Directory Manager
