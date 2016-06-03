@@ -225,12 +225,12 @@ register_apps ()
 		name=$(app_get_name $app)
 		component=$(app_get_component $app)
 		component_prefix="repository/online/component/"
-		ucr set $component_prefix$component/description="$name" \
-				$component_prefix$component/localmirror=false \
-				$component_prefix$component/server="$(ucr get repository/app_center/server)" \
-				$component_prefix$component/unmaintained=disabled \
-				$component_prefix$component/version=current \
-				$component_prefix$component=enabled
+		ucr set ${component_prefix}${component}description="$name" \
+				${component_prefix}${component}/localmirror=false \
+				${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
+				${component_prefix}${component}/unmaintained=disabled \
+				${component_prefix}${component}/version=current \
+				${component_prefix}${component}=enabled
 		if [ -e "/var/cache/univention-management-console/appcenter/${component}.LICENSE_AGREEMENT" ]; then
 			ucr set umc/web/appliance/data_path?"/var/cache/univention-management-console/appcenter/${component}."
 		fi
@@ -315,12 +315,12 @@ download_system_setup_packages ()
 			apt-get update
 		done
 
-		for package in firefox-de firefox-en; do
-			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
-			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+		#for package in firefox-en; do
+		#	LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
+		#	apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
-			check_returnvalue $? "Failed to download required packages for ${package}"
-		done
+		#	check_returnvalue $? "Failed to download required packages for ${package}"
+		#done
 
 		apt-ftparchive packages . >Packages
 		check_returnvalue $? "Failed to create ftparchive directory"
@@ -449,14 +449,10 @@ appliance_preinstall_non_univention_packages ()
 			libfsplib0
 			elinks-data
 			elinks
-			emacsen-common
-			emacs23-common
-			emacs23-bin-common
 			libotf0
 			m17n-db
 			m17n-contrib
 			libm17n-0
-			emacs23
 			fonts-liberation
 			fping
 			gnuplot-nox
@@ -554,6 +550,19 @@ install_haveged ()
     ucr set repository/online/unmaintained="$_unmaintained_setting"
 }
 
+uninstall_packages ()
+{
+	# if upgraded, u-basesystem will be installed by postup.sh
+	state="$(dpkg --get-selections univention-basesystem 2>/dev/null | awk '{print $2}')"
+	if [ "$state" = "install" ]; then
+		apt-get purge -y --force-yes univention-basesystem
+		apt-get -y --force-yes autoremove
+	fi
+
+	# Old kernels
+	apt-get purge -y --force-yes linux-image-4.1.0-ucs153-amd64 linux-image-4.1.0-ucs153-amd64-signed
+}
+
 setup_appliance ()
 {
 	# Stop firefox. Not required to run, and resets some UCRv (e.g. system/setup/boot/start)
@@ -577,13 +586,9 @@ setup_appliance ()
 	ucr set locale/default="en_US.UTF-8:UTF-8" locale="en_US.UTF-8:UTF-8 de_DE.UTF-8:UTF-8"; locale-gen
 
 	install_haveged
-	 
-	# if upgraded, u-basesystem will be installed by postup.sh
-	state="$(dpkg --get-selections univention-basesystem 2>/dev/null | awk '{print $2}')"
-	if [ "$state" = "install" ]; then
-		apt-get purge -y --force-yes univention-basesystem
-		apt-get -y --force-yes autoremove
-	fi
+
+	uninstall_packages
+
 	univention-install -y --force-yes --reinstall univention-system-setup-boot
 	univention-install -y --no-install-recommends univention-x-core
 
@@ -689,7 +694,15 @@ __EOF__
 	ucr unset nameserver2 nameserver3
 	ucr unset dns/forwarder2 dns/forwarder3
 
+	# Manual cleanup
+	rm -rf /tmp/*
+	rm /var/log/installer/cdebconf/*
+	for dir in "python-cherrypy3 libwibble-dev texlive-base texlive-lang-german texmf texlive-latex-recommended groff-base libept-dev"; do
+		rm -rf /usr/share/doc/$dir
+	done
+
 	# fill up HDD with ZEROs to maximize possible compression
+	# PLEASE no more large writes to HDD after this step
 	dd if=/dev/zero of=/fill-it-up bs=1M; rm /fill-it-up
 
 	# Remove persistent net rule
