@@ -118,6 +118,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		if not process or process.returncode != 0:
 			raise Abort('App upgrade script failed')
 		self._register_app(app, args)
+		self._call_join_script(app, args)
 		self.old_app = app
 
 	def _get_config(self, app, args):
@@ -147,6 +148,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		if old_container:
 			docker_rm(old_container)
 		self._register_app(app, args)
+		self._call_join_script(app, args)
 		self.old_app = app
 		self._had_image_upgrade = True
 

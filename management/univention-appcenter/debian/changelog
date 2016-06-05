@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-3) unstable; urgency=medium
+
+  * Bug #41452: Call join scripts after updating a Docker App
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jun 2016 01:16:05 +0200
+
 univention-appcenter (5.0.21-2) unstable; urgency=medium
 
   * Bug #40757: Wording
