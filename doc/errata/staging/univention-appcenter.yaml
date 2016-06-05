@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-appcenter
+fix: 5.0.21-3.167.201606060134
+desc: |
+ This update addresses the following issue(s):
+ * When Docker Apps were updated, a new version of the shipped join script was
+   not recognized. This has been fixed, the join script is now correctly
+   installed and executed.
+bug: [41452]
