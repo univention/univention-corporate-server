@@ -1,3 +1,9 @@
+ucs-test (6.0.33-67) unstable; urgency=medium
+
+  * Bug #41452: Test join scripts after Docker App upgrades
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jun 2016 01:30:21 +0200
+
 ucs-test (6.0.33-66) unstable; urgency=medium
 
   * Bug #40842: Test Docker Apps register their WebInterfacePortHTTP for

@@ -166,7 +166,7 @@ class App:
 		self._update()
 		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
 		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
-		cmd = 'univention-app install --noninteractive --username=%s --pwdfile=%s %s' % (admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name)
+		cmd = 'univention-app install --noninteractive --username=%s --pwdfile=%s %s=%s' % (admin_user, self.ucr.get('tests/domainadmin/pwdfile'), self.app_name, self.app_version)
 		print cmd
 		ret = subprocess.call(cmd, shell=True)
 		if ret != 0:
@@ -184,8 +184,8 @@ class App:
 
 	def upgrade(self):
 		self._update()
-		ret = subprocess.call('univention-app upgrade --noninteractive --username=%s --pwdfile=%s %s' %
-					(self.admin_user, self.admin_pwdfile, self.app_name), shell=True)
+		ret = subprocess.call('univention-app upgrade --noninteractive --username=%s --pwdfile=%s %s=%s' %
+					(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_UpgradeFailed()
 		self.ucr.load()
@@ -193,7 +193,7 @@ class App:
 		self.installed = True
 
 	def verify(self, joined=True):
-		ret = subprocess.call('univention-app status %s' % (self.app_name), shell=True)
+		ret = subprocess.call('univention-app status %s=%s' % (self.app_name, self.app_version), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_VerifyFailed()
 
@@ -202,10 +202,18 @@ class App:
 			if ret != 0:
 				raise UCSTest_DockerApp_VerifyFailed()
 
+		if self.package:
+			try:
+				output = subprocess.check_output('univention-app shell %s=%s dpkg-query -W %s' % (self.app_name, self.app_version, self.package_name), shell=True)
+				if output != '%s\t%s\r\n' % (self.package_name, self.package_version):
+					raise UCSTest_DockerApp_VerifyFailed()
+			except subprocess.CalledProcessError:
+				raise UCSTest_DockerApp_VerifyFailed()
+
 	def uninstall(self):
 		if self.installed:
-			ret = subprocess.call('univention-app remove --noninteractive --username=%s --pwdfile=%s %s' %
-						(self.admin_user, self.admin_pwdfile, self.app_name), shell=True)
+			ret = subprocess.call('univention-app remove --noninteractive --username=%s --pwdfile=%s %s=%s' %
+						(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
 			if ret != 0:
 				raise UCSTest_DockerApp_RemoveFailed()
 
