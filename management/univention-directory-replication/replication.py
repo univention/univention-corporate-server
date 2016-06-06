@@ -645,18 +645,18 @@ def getOldValues(ldapconn, dn):
         try:
             res = ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
         except ldap.NO_SUCH_OBJECT as ex:
-            ud.debug(ud.LISTENER, ud.ALL, "LOCAL not found: %s %s" % (dn, ex))
+            ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL not found: %s %s" % (dn, ex))
             old = {}
         else:
             try:
                 ((_dn, old),) = res
                 entryCSN = old.get('entryCSN', None)
-                ud.debug(ud.LISTENER, ud.ALL, "LOCAL found result: %s %s" % (dn, entryCSN))
+                ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL found result: %s %s" % (dn, entryCSN))
             except (TypeError, ValueError) as ex:
-                ud.debug(ud.LISTENER, ud.ALL, "LOCAL empty result: %s" % (dn,))
+                ud.debug(ud.LISTENER, ud.ALL, "replication: LOCAL empty result: %s" % (dn,))
                 old = {}
     else:
-        ud.debug(ud.LISTENER, ud.ALL, "LDIF empty result: %s" % (dn,))
+        ud.debug(ud.LISTENER, ud.ALL, "replication: LDIF empty result: %s" % (dn,))
         old = {}
 
     return old
@@ -666,7 +666,7 @@ def _delete_dn_recursive(l, dn):
     try:
         l.delete_s(dn)
     except ldap.NOT_ALLOWED_ON_NONLEAF:
-        ud.debug(ud.LISTENER, ud.WARN, 'Failed to delete non leaf object: dn=[%s];' % dn)
+        ud.debug(ud.LISTENER, ud.WARN, 'replication: Failed to delete non leaf object: dn=[%s];' % dn)
         dns = [dn2 for dn2, _attr in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['dn'], attrsonly=1)]
         dns.reverse()
         for dn in dns:
@@ -744,7 +744,7 @@ def check_file_system_space():
         return
 
     fqdn = '%(hostname)s.%(domainname)s' % listener.baseConfig
-    ud.debug(ud.LISTENER, ud.ERROR, 'Critical disk space. The Univention LDAP Listener was stopped')
+    ud.debug(ud.LISTENER, ud.ERROR, 'replication: Critical disk space. The Univention LDAP Listener was stopped')
     msg = MIMEText(
         'The Univention LDAP Listener process was stopped on %s.\n\n\n'
         'The result of statvfs(%s):\n'
@@ -773,7 +773,7 @@ def handler(dn, new, listener_old, operation):
 
     check_file_system_space()
 
-    ud.debug(ud.LISTENER, ud.INFO, 'replication: Running handler for: %s' % dn)
+    ud.debug(ud.LISTENER, ud.INFO, 'replication: Running handler %s for: %s' % (operation, dn))
     if dn == 'cn=Subschema':
         return update_schema(new)
 
@@ -783,22 +783,14 @@ def handler(dn, new, listener_old, operation):
     while connect_count < 31 and not connected:
         try:
             l = connect()
-        except ldap.LDAPError, msg:
+        except ldap.LDAPError as ex:
             connect_count += 1
             if connect_count >= 30:
-                ud.debug(ud.LISTENER, ud.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
-                if 'info' in msg[0]:
-                    ud.debug(ud.LISTENER, ud.ERROR, '\tadditional info: %s' % msg[0]['info'])
-                if 'matched' in msg[0]:
-                    ud.debug(ud.LISTENER, ud.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
+                log_ldap(ud.ERROR, 'going into LDIF mode', ex)
                 reconnect = 1
                 l = connect(ldif=1)
             else:
-                ud.debug(ud.LISTENER, ud.WARN, 'Can not connect LDAP Server (%s), retry in 10 seconds' % msg[0]['desc'])
-                if 'info' in msg[0]:
-                    ud.debug(ud.LISTENER, ud.ERROR, '\tadditional info: %s' % msg[0]['info'])
-                if 'matched' in msg[0]:
-                    ud.debug(ud.LISTENER, ud.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
+                log_ldap(ud.WARN, 'Can not connect LDAP Server, retry in 10 seconds', ex)
                 time.sleep(10)
         else:
             connected = 1
@@ -815,23 +807,23 @@ def handler(dn, new, listener_old, operation):
             # Check if both entries really match
             match = 1
             if len(old) != len(listener_old):
-                ud.debug(ud.LISTENER, ud.INFO, 'LDAP keys=%s; listener keys=%s' % (old.keys(), listener_old.keys()))
+                ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP keys=%s; listener keys=%s' % (old.keys(), listener_old.keys()))
                 match = 0
             else:
                 for k in old.keys():
                     if k in EXCLUDE_ATTRIBUTES:
                         continue
                     if k not in listener_old:
-                        ud.debug(ud.LISTENER, ud.INFO, 'listener does not have key %s' % (k,))
+                        ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have key %s' % (k,))
                         match = 0
                         break
                     if len(old[k]) != len(listener_old[k]):
-                        ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP values and listener values diff' % (k,))
+                        ud.debug(ud.LISTENER, ud.INFO, 'replication: LDAP and listener values diff for %s' % (k,))
                         match = 0
                         break
                     for v in old[k]:
                         if v not in listener_old[k]:
-                            ud.debug(ud.LISTENER, ud.INFO, 'listener does not have value for key %s' % (k,))
+                            ud.debug(ud.LISTENER, ud.INFO, 'replication: listener does not have value for key %s' % (k,))
                             match = 0
                             break
             if not match:
@@ -933,43 +925,27 @@ def handler(dn, new, listener_old, operation):
 
             ud.debug(ud.LISTENER, ud.ALL, 'replication: delete: %s' % dn)
             _delete_dn_recursive(l, dn)
-    except ldap.SERVER_DOWN, msg:
-        ud.debug(ud.LISTENER, ud.WARN, '%s: retrying' % msg[0]['desc'])
-        if 'info' in msg[0]:
-            ud.debug(ud.LISTENER, ud.WARN, '\tadditional info: %s' % msg[0]['info'])
-        if 'matched' in msg[0]:
-            ud.debug(ud.LISTENER, ud.WARN, '\tmachted dn: %s' % msg[0]['matched'])
+    except ldap.SERVER_DOWN as ex:
+        log_ldap(ud.WARN, 'retrying', ex)
         reconnect = 1
         handler(dn, new, listener_old, operation)
-    except ldap.ALREADY_EXISTS, msg:
-        ud.debug(ud.LISTENER, ud.WARN, '%s: %s; trying to apply changes' % (msg[0]['desc'], dn))
-        if 'info' in msg[0]:
-            ud.debug(ud.LISTENER, ud.WARN, '\tadditional info: %s' % msg[0]['info'])
-        if 'matched' in msg[0]:
-            ud.debug(ud.LISTENER, ud.WARN, '\tmachted dn: %s' % msg[0]['matched'])
+    except ldap.ALREADY_EXISTS as ex:
+        log_ldap(ud.WARN, 'trying to apply changes', ex, dn=dn)
         try:
             cur = l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)')[0][1]
-        except ldap.LDAPError, msg:
-            ud.debug(ud.LISTENER, ud.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
-            if 'info' in msg[0]:
-                ud.debug(ud.LISTENER, ud.ERROR, '\tadditional info: %s' % msg[0]['info'])
-            if 'matched' in msg[0]:
-                ud.debug(ud.LISTENER, ud.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
+        except ldap.LDAPError as ex:
+            log_ldap(ud.ERROR, 'going into LDIF mode', ex)
             reconnect = 1
             connect(ldif=1)
             handler(dn, new, listener_old, operation)
         else:
             handler(dn, new, cur, operation)
-    except ldap.CONSTRAINT_VIOLATION, msg:
-        ud.debug(ud.LISTENER, ud.ERROR, 'Constraint violation: dn=%s: %s' % (dn, msg[0]['desc']))
-    except ldap.LDAPError, msg:
-        ud.debug(ud.LISTENER, ud.ERROR, 'dn=%s: %s' % (dn, msg[0]['desc']))
-        if 'info' in msg[0]:
-            ud.debug(ud.LISTENER, ud.ERROR, '\tadditional info: %s' % msg[0]['info'])
-        if 'matched' in msg[0]:
-            ud.debug(ud.LISTENER, ud.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
+    except ldap.CONSTRAINT_VIOLATION as ex:
+        log_ldap(ud.ERROR, 'Constraint violation', ex, dn=dn)
+    except ldap.LDAPError as ex:
+        log_ldap(ud.ERROR, 'Error', ex, dn=dn)
         if listener.baseConfig.get('ldap/replication/fallback', 'ldif') == 'restart':
-            ud.debug(ud.LISTENER, ud.ERROR, 'Uncaught LDAPError exception during modify operation. Exiting Univention Directory Listener to retry replication with an updated copy of the current upstream object.')
+            ud.debug(ud.LISTENER, ud.ERROR, 'replication: Uncaught LDAPError. Exiting Univention Directory Listener to retry replication with an updated copy of the current upstream object.')
             sys.exit(1)  # retry a bit later after restart via runsv
         else:
             reconnect = 1
@@ -977,11 +953,23 @@ def handler(dn, new, listener_old, operation):
             handler(dn, new, listener_old, operation)
 
 
+def log_ldap(severity, msg, ex, dn=None):
+    ud.debug(ud.LISTENER, severity, 'replication: %s%s: %s' % (ex[0]['desc'], '; dn="%s"' % (dn,) if dn else '', msg))
+    try:
+        ud.debug(ud.LISTENER, severity, '\tadditional info: %s' % ex[0]['info'])
+    except LookupError:
+        pass
+    try:
+        ud.debug(ud.LISTENER, severity, '\tmachted dn: %s' % ex[0]['matched'])
+    except LookupError:
+        pass
+
+
 def clean():
     global slave
     if not slave:
         return 1
-    ud.debug(ud.LISTENER, ud.INFO, 'removing replica\'s cache')
+    ud.debug(ud.LISTENER, ud.INFO, 'replication: removing cache')
     # init_slapd('stop')
 
     # FIXME
@@ -1005,12 +993,12 @@ def clean():
 
 
 def initialize():
-    ud.debug(ud.LISTENER, ud.INFO, 'REPLICATION:  initialize')
+    ud.debug(ud.LISTENER, ud.INFO, 'replication: initialize')
     if not slave:
-        ud.debug(ud.LISTENER, ud.INFO, 'REPLICATION:  not slave')
+        ud.debug(ud.LISTENER, ud.INFO, 'replication: not slave')
         return 1
     clean()
-    ud.debug(ud.LISTENER, ud.INFO, 'initializing replica\'s cache')
+    ud.debug(ud.LISTENER, ud.INFO, 'replication: initializing cache')
     new_password()
     init_slapd('start')
 
