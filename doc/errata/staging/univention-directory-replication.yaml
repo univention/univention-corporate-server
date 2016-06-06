@@ -1,0 +1,16 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-directory-replication
+fix: 9.0.1-3.104.201606061133
+desc: |
+ This update addresses the following issues:
+ * The code for "flat-mode" replication has been removed.
+ * The check for a full filesystem was inverted and has been fixed.
+ * LDAP objects having a multi-valued RDNs are now handled correctly during a
+   rename and move.
+ * A traceback in failed-LDIF-mode has been fixed.
+ * The replication module now logs more information in case of an object class
+   violation.
+bug: [30489,28232,33594,41347,31757]
