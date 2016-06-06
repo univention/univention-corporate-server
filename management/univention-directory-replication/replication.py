@@ -3,7 +3,7 @@
 # Univention Directory Replication
 #  listener module for Directory replication
 #
-# Copyright 2004-2015 Univention GmbH
+# Copyright 2004-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
