@@ -47,7 +47,6 @@ import ldif as ldifparser
 import re
 import time
 import base64
-import univention.debug
 import univention.debug as ud
 import smtplib
 from email.MIMEText import MIMEText
@@ -644,7 +643,7 @@ def _delete_dn_recursive(l, dn):
 	try:
 		l.delete_s(dn)
 	except ldap.NOT_ALLOWED_ON_NONLEAF, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'Failed to delete non leaf object: dn=[%s];' % dn)
+		ud.debug(ud.LISTENER, ud.WARN, 'Failed to delete non leaf object: dn=[%s];' % dn)
 		dns=[]
 		for dn,attr in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)'):
 			dns.append(dn)
@@ -664,7 +663,7 @@ def _backup_dn_recursive(l, dn):
 	fd = open(backup_file, 'w+')
 	fd.close()
 	os.chmod(backup_file, 0600)
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: dump %s to %s' % (dn, backup_file))
+	ud.debug(ud.LISTENER, ud.PROCESS, 'replication: dump %s to %s' % (dn, backup_file))
 
 	fd = open(backup_file, 'w+')
 	ldif_writer = ldifparser.LDIFWriter(fd)
@@ -680,19 +679,19 @@ def _remove_current_modrdn_link():
 	try:
 		os.remove(current_modrdn_link)
 	except Exception, e:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to remove current_modrdn file %s: %s' % (current_modrdn_link, str(e)))
+		ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove current_modrdn file %s: %s' % (current_modrdn_link, str(e)))
 
 def _add_object_from_new(l, dn, new):
 	al=addlist(new)
 	try:
 		l.add_s(dn, al)
 	except ldap.OBJECT_CLASS_VIOLATION, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % dn)
+		ud.debug(ud.LISTENER, ud.ERROR, 'replication: object class violation while adding %s' % dn)
 
 def _modify_object_from_old_and_new(l, dn, old, new):
 	ml=modlist(old, new)
 	if ml:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: modify: %s' % dn)
+		ud.debug(ud.LISTENER, ud.ALL, 'replication: modify: %s' % dn)
 		l.modify_s(dn, ml)
 
 def _read_dn_from_file(filename):
@@ -702,7 +701,7 @@ def _read_dn_from_file(filename):
 		with open(filename,'r') as f:
 			old_dn = f.read()
 	except Exception, e:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, str(e)))
+		ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, str(e)))
 
 	return old_dn
 
@@ -748,7 +747,7 @@ def handler(dn, new, listener_old, operation):
 
 	check_file_system_space()
 
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'replication: Running handler for: %s' % dn)
+	ud.debug(ud.LISTENER, ud.INFO, 'replication: Running handler for: %s' % dn)
 	if dn == 'cn=Subschema':
 		return update_schema(new)
 
@@ -761,19 +760,19 @@ def handler(dn, new, listener_old, operation):
 		except ldap.LDAPError, msg:
 			connect_count=connect_count+1
 			if connect_count >= 30:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
+				ud.debug(ud.LISTENER, ud.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
 				if 'info' in msg[0]:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % msg[0]['info'])
+					ud.debug(ud.LISTENER, ud.ERROR, '\tadditional info: %s' % msg[0]['info'])
 				if 'matched' in msg[0]:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
+					ud.debug(ud.LISTENER, ud.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 				reconnect=1
 				l=connect(ldif=1)
 			else:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'Can not connect LDAP Server (%s), retry in 10 seconds' % msg[0]['desc'])
+				ud.debug(ud.LISTENER, ud.WARN, 'Can not connect LDAP Server (%s), retry in 10 seconds' % msg[0]['desc'])
 				if 'info' in msg[0]:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % msg[0]['info'])
+					ud.debug(ud.LISTENER, ud.ERROR, '\tadditional info: %s' % msg[0]['info'])
 				if 'matched' in msg[0]:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
+					ud.debug(ud.LISTENER, ud.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 				time.sleep(10)
 		else:
 			connected=1
@@ -790,7 +789,7 @@ def handler(dn, new, listener_old, operation):
 			# Check if both entries really match
 			match=1
 			if len(old) != len(listener_old):
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
+				ud.debug(ud.LISTENER, ud.INFO,
 					'LDAP keys=%s; listener keys=%s' % (str(old.keys()), str(listener_old.keys())))
 				match=0
 			else:
@@ -798,22 +797,22 @@ def handler(dn, new, listener_old, operation):
 					if k in EXCLUDE_ATTRIBUTES:
 						continue
 					if k not in listener_old:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
+						ud.debug(ud.LISTENER, ud.INFO,
 							'listener does not have key %s' % k)
 						match=0
 						break
 					if len(old[k]) != len(listener_old[k]):
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
+						ud.debug(ud.LISTENER, ud.INFO,
 							'%s: LDAP values and listener values diff' % (k))
 						match=0
 						break
 					for v in old[k]:
 						if not v in listener_old[k]:
-							univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'listener does not have value for key %s' % (k))
+							ud.debug(ud.LISTENER, ud.INFO, 'listener does not have value for key %s' % (k))
 							match=0
 							break
 			if not match:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,
+				ud.debug(ud.LISTENER, ud.INFO,
 						'replication: old entries from LDAP server and Listener do not match')
 		else:
 			old=listener_old
@@ -827,7 +826,7 @@ def handler(dn, new, listener_old, operation):
 			if os.path.exists(current_modrdn_link):
 				target_uuid_file = os.readlink(current_modrdn_link)
 				if modrdn_cache == target_uuid_file and os.path.exists(modrdn_cache):
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
+					ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
 					listener.setuid(0)
 
 					old_dn = _read_dn_from_file(modrdn_cache)
@@ -837,32 +836,32 @@ def handler(dn, new, listener_old, operation):
 
 					if old:
 						# this means the target already exists, we have to delete this old object
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn))
+						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn))
 						_backup_dn_recursive(l, dn)
 						_delete_dn_recursive(l, dn)
 
 					if getOldValues(l, old_dn):
 						# the normal rename is possible
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename from %s to %s,%s' % (old_dn, new_rdn, new_parent))
+						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename from %s to %s,%s' % (old_dn, new_rdn, new_parent))
 						l.rename_s(old_dn, new_rdn, new_parent)
 					else:
 						# the old object does not exists, so we have to re-create the new object
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
+						ud.debug(ud.LISTENER, ud.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
 						_add_object_from_new(l, dn, new)
 					try:
 						os.remove(modrdn_cache)
 					except Exception, e:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, str(e)))
+						ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, str(e)))
 					_remove_current_modrdn_link()
 					listener.unsetuid()
 				else: #current_modrdn points to a different file
 					listener.setuid(0)
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % os.readlink(current_modrdn_link))
+					ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % os.readlink(current_modrdn_link))
 
 					old_dn = _read_dn_from_file(current_modrdn_link)
 
 					if old_dn:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: the DN %s from the current_modrdn_link has to be backuped and removed' % (old_dn))
+						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the DN %s from the current_modrdn_link has to be backuped and removed' % (old_dn))
 						try:
 							_backup_dn_recursive(l, old_dn)
 						except AttributeError:
@@ -870,7 +869,7 @@ def handler(dn, new, listener_old, operation):
 							pass
 						_delete_dn_recursive(l, old_dn)
 					else:
-						univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, 'replication: no old dn has been found')
+						ud.debug(ud.LISTENER, ud.WARN, 'replication: no old dn has been found')
 
 					if not old:
 						_add_object_from_new(l, dn, new)
@@ -891,7 +890,7 @@ def handler(dn, new, listener_old, operation):
 		elif old and not new:
 			if operation == 'r':	## check for modrdn phase 1
 				old_entryUUID = old['entryUUID'][0]
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
+				ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
 				modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
 				listener.setuid(0)
 				try:
@@ -907,33 +906,33 @@ def handler(dn, new, listener_old, operation):
 					return
 				except Exception, e:
 					## d'oh! output some message and continue doing a delete+add instead
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, str(e)))
+					ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, str(e)))
 				listener.unsetuid()
 
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'replication: delete: %s' % dn)
+			ud.debug(ud.LISTENER, ud.ALL, 'replication: delete: %s' % dn)
 			_delete_dn_recursive(l, dn)
 	except ldap.SERVER_DOWN, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: retrying' % msg[0]['desc'])
+		ud.debug(ud.LISTENER, ud.WARN, '%s: retrying' % msg[0]['desc'])
 		if 'info' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tadditional info: %s' % msg[0]['info'])
+			ud.debug(ud.LISTENER, ud.WARN, '\tadditional info: %s' % msg[0]['info'])
 		if 'matched' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % msg[0]['matched'])
+			ud.debug(ud.LISTENER, ud.WARN, '\tmachted dn: %s' % msg[0]['matched'])
 		reconnect=1
 		handler(dn, new, listener_old, operation)
 	except ldap.ALREADY_EXISTS, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: %s; trying to apply changes' % (msg[0]['desc'], dn))
+		ud.debug(ud.LISTENER, ud.WARN, '%s: %s; trying to apply changes' % (msg[0]['desc'], dn))
 		if 'info' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tadditional info: %s' % msg[0]['info'])
+			ud.debug(ud.LISTENER, ud.WARN, '\tadditional info: %s' % msg[0]['info'])
 		if 'matched' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '\tmachted dn: %s' % msg[0]['matched'])
+			ud.debug(ud.LISTENER, ud.WARN, '\tmachted dn: %s' % msg[0]['matched'])
 		try:
 			cur = l.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)')[0][1]
 		except ldap.LDAPError, msg:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
+			ud.debug(ud.LISTENER, ud.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
 			if 'info' in msg[0]:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % msg[0]['info'])
+				ud.debug(ud.LISTENER, ud.ERROR, '\tadditional info: %s' % msg[0]['info'])
 			if 'matched' in msg[0]:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
+				ud.debug(ud.LISTENER, ud.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 			reconnect=1
 			connect(ldif=1)
 			handler(dn, new, listener_old, operation)
@@ -941,15 +940,15 @@ def handler(dn, new, listener_old, operation):
 			handler(dn, new, cur, operation)
 
 	except ldap.CONSTRAINT_VIOLATION, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Constraint violation: dn=%s: %s' % (dn,msg[0]['desc']))
+		ud.debug(ud.LISTENER, ud.ERROR, 'Constraint violation: dn=%s: %s' % (dn,msg[0]['desc']))
 	except ldap.LDAPError, msg:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'dn=%s: %s' % (dn,msg[0]['desc']))
+		ud.debug(ud.LISTENER, ud.ERROR, 'dn=%s: %s' % (dn,msg[0]['desc']))
 		if 'info' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tadditional info: %s' % msg[0]['info'])
+			ud.debug(ud.LISTENER, ud.ERROR, '\tadditional info: %s' % msg[0]['info'])
 		if 'matched' in msg[0]:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
+			ud.debug(ud.LISTENER, ud.ERROR, '\tmachted dn: %s' % msg[0]['matched'])
 		if listener.baseConfig.get('ldap/replication/fallback', 'ldif') == 'restart':
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Uncaught LDAPError exception during modify operation. Exiting Univention Directory Listener to retry replication with an updated copy of the current upstream object.')
+			ud.debug(ud.LISTENER, ud.ERROR, 'Uncaught LDAPError exception during modify operation. Exiting Univention Directory Listener to retry replication with an updated copy of the current upstream object.')
 			sys.exit(1)	## retry a bit later after restart via runsv
 		else:
 			reconnect=1
@@ -960,7 +959,7 @@ def clean():
 	global slave
 	if not slave:
 		return 1
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'removing replica\'s cache')
+	ud.debug(ud.LISTENER, ud.INFO, 'removing replica\'s cache')
 	#init_slapd('stop')
 
 	#FIXME
@@ -983,13 +982,13 @@ def clean():
 	listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','commit', '/var/lib/univention-ldap/ldap/DB_CONFIG'], uid=0)
 
 def initialize():
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'REPLICATION:  initialize')
+	ud.debug(ud.LISTENER, ud.INFO, 'REPLICATION:  initialize')
 	global slave
 	if not slave:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'REPLICATION:  not slave')
+		ud.debug(ud.LISTENER, ud.INFO, 'REPLICATION:  not slave')
 		return 1
 	clean()
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'initializing replica\'s cache')
+	ud.debug(ud.LISTENER, ud.INFO, 'initializing replica\'s cache')
 	new_password()
 	init_slapd('start')
 
