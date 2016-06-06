@@ -45,6 +45,7 @@ univention-config-registry set	ldap/replication/filesystem/check?false \
 
 install -d -o listener -g root -m 0700 /var/lib/univention-directory-replication
 chown -R listener:root /var/lib/univention-directory-replication
+install -d -o listener -g root -m 0700 /var/univention-backup/replication
 
 #DEBHELPER#
 

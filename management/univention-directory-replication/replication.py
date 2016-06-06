@@ -51,6 +51,7 @@ import univention.debug as ud
 import smtplib
 from email.MIMEText import MIMEText
 import sys
+from errno import ENOENT
 
 
 name = 'replication'
@@ -66,7 +67,9 @@ if listener.baseConfig['ldap/slave/filter']:
 
 LDAP_DIR = '/var/lib/univention-ldap/'
 STATE_DIR = '/var/lib/univention-directory-replication'
+BACKUP_DIR = '/var/univention-backup/replication'
 LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')
+CURRENT_MODRDN = os.path.join(STATE_DIR, 'current_modrdn')
 
 EXCLUDE_ATTRIBUTES = [
     'subschemaSubentry',
@@ -667,34 +670,24 @@ def _delete_dn_recursive(l, dn):
 
 
 def _backup_dn_recursive(l, dn):
-    backup_directory = '/var/univention-backup/replication'
-    if not os.path.exists(backup_directory):
-        os.makedirs(backup_directory)
-        os.chmod(backup_directory, 0700)
+    if isinstance(l, LDIFObject):
+        return
 
-    backup_file = os.path.join(backup_directory, str(time.time()))
-    fd = open(backup_file, 'w+')
-    fd.close()
-    os.chmod(backup_file, 0600)
+    backup_file = os.path.join(BACKUP_DIR, str(time.time()))
     ud.debug(ud.LISTENER, ud.PROCESS, 'replication: dump %s to %s' % (dn, backup_file))
-
-    fd = open(backup_file, 'w+')
-    ldif_writer = ldifparser.LDIFWriter(fd)
-    for dn, entry in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
-        ldif_writer.unparse(dn, entry)
-    fd.close()
-
-
-def _get_current_modrdn_link():
-    return os.path.join(STATE_DIR, 'current_modrdn')
+    with open(backup_file, 'w+') as fd:
+        os.fchmod(fd.fileno(), 0600)
+        ldif_writer = ldifparser.LDIFWriter(fd)
+        for dn, entry in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
+            ldif_writer.unparse(dn, entry)
 
 
-def _remove_current_modrdn_link():
-    current_modrdn_link = _get_current_modrdn_link()
+def _remove_file(pathname):
     try:
-        os.remove(current_modrdn_link)
+        os.remove(pathname)
     except EnvironmentError as ex:
-        ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove current_modrdn file %s: %s' % (current_modrdn_link, ex))
+        if ex.errno != ENOENT:
+            ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove %s: %s' % (pathname, ex))
 
 
 def _add_object_from_new(l, dn, new):
@@ -827,9 +820,8 @@ def handler(dn, new, listener_old, operation):
             new_entryUUID = new['entryUUID'][0]
             modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
 
-            current_modrdn_link = _get_current_modrdn_link()
-            if os.path.exists(current_modrdn_link):
-                target_uuid_file = os.readlink(current_modrdn_link)
+            if os.path.exists(CURRENT_MODRDN):
+                target_uuid_file = os.readlink(CURRENT_MODRDN)
                 if modrdn_cache == target_uuid_file and os.path.exists(modrdn_cache):
                     ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
 
@@ -852,23 +844,14 @@ def handler(dn, new, listener_old, operation):
                         # the old object does not exists, so we have to re-create the new object
                         ud.debug(ud.LISTENER, ud.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
                         _add_object_from_new(l, dn, new)
-                    try:
-                        os.remove(modrdn_cache)
-                    except EnvironmentError as ex:
-                        ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, ex))
-                    _remove_current_modrdn_link()
+                    _remove_file(modrdn_cache)
                 else:  # current_modrdn points to a different file
-                    ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % os.readlink(current_modrdn_link))
+                    ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % (target_uuid_file,))
 
-                    old_dn = _read_dn_from_file(current_modrdn_link)
-
+                    old_dn = _read_dn_from_file(CURRENT_MODRDN)
                     if old_dn:
-                        ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the DN %s from the current_modrdn_link has to be backuped and removed' % (old_dn))
-                        try:
-                            _backup_dn_recursive(l, old_dn)
-                        except AttributeError:
-                            # The backup will fail in LDIF mode
-                            pass
+                        ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the DN %s from the %s has to be backuped and removed' % (old_dn, CURRENT_MODRDN))
+                        _backup_dn_recursive(l, old_dn)
                         _delete_dn_recursive(l, old_dn)
                     else:
                         ud.debug(ud.LISTENER, ud.WARN, 'replication: no old dn has been found')
@@ -878,7 +861,7 @@ def handler(dn, new, listener_old, operation):
                     elif old:
                         _modify_object_from_old_and_new(l, dn, old, new)
 
-                    _remove_current_modrdn_link()
+                _remove_file(CURRENT_MODRDN)
 
             elif old:  # modify: new and old
                 _modify_object_from_old_and_new(l, dn, old, new)
@@ -894,12 +877,10 @@ def handler(dn, new, listener_old, operation):
                 modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
                 try:
                     with open(modrdn_cache, 'w') as f:
-                        os.chmod(modrdn_cache, 0600)
+                        os.fchmod(f.fileno(), 0600)
                         f.write(dn)
-                    current_modrdn_link = os.path.join(STATE_DIR, 'current_modrdn')
-                    if os.path.exists(current_modrdn_link):
-                        os.remove(current_modrdn_link)
-                    os.symlink(modrdn_cache, current_modrdn_link)
+                    _remove_file(CURRENT_MODRDN)
+                    os.symlink(modrdn_cache, CURRENT_MODRDN)
                     # that's it for now for command 'r' ==> modrdn will follow in the next step
                     return
                 except EnvironmentError as ex:
