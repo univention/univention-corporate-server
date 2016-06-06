@@ -1049,9 +1049,3 @@ def get_password():
 def init_slapd(arg):
 	listener.run('/etc/init.d/slapd', ['slapd', arg], uid=0)
 	time.sleep(1)
-
-
-if __name__ == '__main__':
-	handler('foo', {'foo': 'bar'}, {'foo': 'baz'})
-	handler('foo', {}, {'foo': 'baz'})
-	handler('foo', {'foo': 'baz'}, {})
