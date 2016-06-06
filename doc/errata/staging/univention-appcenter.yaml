@@ -3,10 +3,15 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-appcenter
-fix: 5.0.21-3.167.201606060134
+fix: 5.0.21-4.168.201606061732
 desc: |
  This update addresses the following issue(s):
  * When Docker Apps were updated, a new version of the shipped join script was
    not recognized. This has been fixed, the join script is now correctly
    installed and executed.
-bug: [41452]
+ * The button on the App page which read "Open module" or "Open Website" has
+   been relabeled to just "Open".
+ * One could not uninstall Apps that other Apps required to be installed
+   somewhere in the domain, even if this App was installed several times. This
+   has been fixed.
+bug: [41452,41227,41217]
