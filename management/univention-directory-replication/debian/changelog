@@ -25,8 +25,8 @@ univention-directory-replication (8.0.2-5) unstable; urgency=low
 
 univention-directory-replication (8.0.2-4) unstable; urgency=medium
 
-  * Bug #36353: Update replication.py to filter out ppolicy attributes         
-    during object replication. 
+  * Bug #36353: Update replication.py to filter out ppolicy attributes
+    during object replication.
 
  -- Arvid Requate <requate@univention.de>  Thu, 30 Oct 2014 14:32:38 +0100
 
@@ -63,26 +63,26 @@ univention-directory-replication (8.0.1-1) unstable; urgency=medium
 
 univention-directory-replication (8.0.0-3) unstable; urgency=low
 
-  * fixed BUILTIN_OIDS (Bug #35144) 
+  * fixed BUILTIN_OIDS (Bug #35144)
 
  -- Felix Botner <botner@univention.de>  Mon, 01 Sep 2014 13:28:44 +0200
 
 univention-directory-replication (8.0.0-2) unstable; urgency=low
 
-  * more BUILTIN_OIDS (Bug #35144) 
+  * more BUILTIN_OIDS (Bug #35144)
 
  -- Felix Botner <botner@univention.de>  Fri, 29 Aug 2014 11:17:42 +0200
 
 univention-directory-replication (8.0.0-1) unstable; urgency=low
 
   * Update to UCS 4.0 (Bug #35144)
-  * added olcMdbConfig OID to BUILTIN_OIDS in replication.py 
+  * added olcMdbConfig OID to BUILTIN_OIDS in replication.py
 
  -- Felix Botner <botner@univention.de>  Tue, 19 Aug 2014 11:15:28 +0200
 
 univention-directory-replication (7.0.1-7) unstable; urgency=low
 
-  * rerun listener handler with listener_old (Bug #34759) 
+  * rerun listener handler with listener_old (Bug #34759)
 
  -- Felix Botner <botner@univention.de>  Tue, 08 Jul 2014 10:37:17 +0200
 
@@ -134,7 +134,7 @@ univention-directory-replication (7.0.1-1) unstable; urgency=low
 
 univention-directory-replication (6.0.6-1) unstable; urgency=low
 
-  * removed unnecessary log messages in replication.py (Bug #15567) 
+  * removed unnecessary log messages in replication.py (Bug #15567)
 
  -- Felix Botner <botner@univention.de>  Tue, 05 Mar 2013 17:16:29 +0100
 
@@ -165,7 +165,7 @@ univention-directory-replication (6.0.3-1) unstable; urgency=low
 
 univention-directory-replication (6.0.2-3) unstable; urgency=low
 
-  * Removed unused tool univention-directory-replicate-one. 
+  * Removed unused tool univention-directory-replicate-one.
     univention-replicate-one from univention-directory-notifier should be
     used (Bug #27625)
 
@@ -211,7 +211,7 @@ univention-directory-replication (5.0.4-2) unstable; urgency=low
 
 univention-directory-replication (5.0.4-1) unstable; urgency=low
 
-  * added logrotate configuration (Bug #18002) 
+  * added logrotate configuration (Bug #18002)
 
  -- Felix Botner <botner@univention.de>  Wed, 12 Oct 2011 09:27:08 +0200
 
@@ -593,7 +593,7 @@ univention-ldap-replication (0.4) unstable; urgency=low
 
 univention-ldap-replication (0.03) unstable; urgency=low
 
-  * Import univention.utf8. 
+  * Import univention.utf8.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 20 Feb 2004 16:43:38 +0100
 
@@ -608,4 +608,3 @@ univention-ldap-replication (0.01) unstable; urgency=low
   * Initial release.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 11 Sep 2003 16:31:24 +0200
-
