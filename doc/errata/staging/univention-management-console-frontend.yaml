@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [1,2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-management-console-frontend
+fix: 5.0.63-44.1237.201606061440
+desc: |
+ This update addresses the following issue(s):
+ * Show a warning message if browser cookies are disabled and ask the user to enable them.
+bug: [28665]
