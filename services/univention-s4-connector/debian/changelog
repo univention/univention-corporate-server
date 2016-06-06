@@ -1,3 +1,10 @@
+univention-s4-connector (10.0.1-12) unstable; urgency=low
+
+  * Bug #41288: reopen ucs and s4 connection on
+    ldap.SERVER_DOWN in s4.poll() 
+
+ -- Felix Botner <botner@univention.de>  Mon, 06 Jun 2016 10:24:48 +0200
+
 univention-s4-connector (10.0.1-11) unstable; urgency=low
 
   * Bug #41309: compare cn lowercase for msPrintConnectionPolicy 

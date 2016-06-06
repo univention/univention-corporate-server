@@ -2220,7 +2220,12 @@ class s4(univention.s4connector.ucs):
 							sync_successfull = self.sync_to_ucs(property_key, mapped_object, object['dn'], object)
 						else:
 							sync_successfull = True
-					except (ldap.SERVER_DOWN, SystemExit):
+					except ldap.SERVER_DOWN:
+						ud.debug(ud.LDAP, ud.ERROR, "Got server downn during sync, re-open ucs and s4 the connection")
+						time.sleep(1)
+						self.open_ucs()
+						self.open_s4()
+					except SystemExit:
 						raise
 					except univention.admin.uexceptions.ldapError, msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (1) %s"%msg)
