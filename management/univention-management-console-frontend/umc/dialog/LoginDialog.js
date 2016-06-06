@@ -74,6 +74,11 @@ define([
 
 		open: false,
 
+		noCookieMsg: {
+			title: _('Please enable cookies'),
+			msg: _('Browser cookies are necessary for working with Univention Management Console. Please activate cookies in your browser.')
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 			this._currentResult = {};
@@ -202,7 +207,7 @@ define([
 			// if username is specified, we need to auto fill the username
 			if (tools.status('username')) {
 				attr.set('umcLoginUsername', 'value', tools.status('username'));
-			};
+			}
 		},
 
 		_watchFormSubmits: function() {
@@ -210,6 +215,12 @@ define([
 				var form = dom.byId(name);
 				on(form, 'submit', lang.hitch(this, function(evt) {
 					evt.preventDefault();
+					if (!navigator.cookieEnabled) {
+						require(['umc/dialog'], lang.hitch(this, function(umcDialog) {
+							umcDialog.alert(this.noCookieMsg.msg, this.noCookieMsg.title);
+						}));
+						return;
+					}
 					if (name == 'umcLoginForm') {
 						this._submitFakeForm();
 					}
@@ -410,8 +421,13 @@ define([
 			// Chrome has no long term support version. Chromium 37 is supported through
 			// Ubuntu 12.04 LTS (2016-01-27).
 			// Apple has no long term support for safari. The latest version is 9 (2016-01-27)
-				title = _('Your Browser is outdated') + ((title == '') ? title : '<br>' + title);
-				msg = _('Your Browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + ((msg == '') ? msg : '<br>' + msg);
+				title = _('Your browser is outdated') + ((title === '') ? title : '<br>' + title);
+				msg = _('Your browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + ((msg === '') ? msg : '<br>' + msg);
+			}
+
+			if (!navigator.cookieEnabled) {
+				title = this.noCookieMsg.title;
+				msg = this.noCookieMsg.msg;
 			}
 
 			if (tools.status('setupGui')) {

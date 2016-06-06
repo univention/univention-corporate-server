@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-44) unstable; urgency=medium
+
+  * Bug #28665: Show a warning on the login page if cookies are disabled
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 06 Jun 2016 13:42:08 +0200
+
 univention-management-console-frontend (5.0.63-43) unstable; urgency=medium
 
   * Bug #41224: version dump due to rebuild

@@ -946,18 +946,30 @@ msgstr ""
 "Benutzermenü oben rechts importieren."
 
 #: umc/dialog/LoginDialog.js:395
-msgid "Your Browser is outdated"
+msgid "Your browser is outdated"
 msgstr "Ihr Browser ist veraltet"
 
 #: umc/dialog/LoginDialog.js:396
 msgid ""
-"Your Browser is outdated and should be updated. You may continue to use "
+"Your browser is outdated and should be updated. You may continue to use "
 "Univention Management Console but you may experience performance issues and "
 "other problems."
 msgstr ""
 "Ihr Browser ist veraltet und sollte aktualisiert werden. Sie können die "
 "Univention Management Console benutzen, aber es kann zu Geschwindigkeits- "
 "und anderen Problemen kommen."
+
+#: umc/dialog/LoginDialog.js:418
+msgid "Please enable cookies"
+msgstr "Bitte Cookies aktivieren"
+
+#: umc/dialog/LoginDialog.js:419
+msgid ""
+"Browser cookies are necessary for working with Univention Management Console."
+" Please activate cookies in your browser."
+msgstr ""
+"Browser-Cookies sind notwendig für die Arbeit mit Univention Management Console."
+" Bitte aktivieren sie Cookies in Ihrem Browser."
 
 #: umc/dialog/LoginDialog.js:402
 msgid "Your session has been closed due to inactivity. Please login again."
