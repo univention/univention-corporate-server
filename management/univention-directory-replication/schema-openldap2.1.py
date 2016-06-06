@@ -82,21 +82,21 @@ BUILTIN_OIDS=[
 	'2.5.6.0',			# top
 ]
 
-def subschema_oids_with_sup(subschema, type, oid, result):
+def subschema_oids_with_sup(subschema, ldap_type, oid, result):
 	if oid in BUILTIN_OIDS or oid in result:
 		return
 
-	obj = subschema.get_obj(type, oid)
+	obj = subschema.get_obj(ldap_type, oid)
 	for i in obj.sup:
-		sup_obj = subschema.get_obj(type, i)
-		subschema_oids_with_sup(subschema, type, sup_obj.oid, result)
+		sup_obj = subschema.get_obj(ldap_type, i)
+		subschema_oids_with_sup(subschema, ldap_type, sup_obj.oid, result)
 	result.append(oid)
 
-def subschema_sort(subschema, type):
+def subschema_sort(subschema, ldap_type):
 
 	result = []
-	for oid in subschema.listall(type):
-		subschema_oids_with_sup(subschema, type, oid, result)
+	for oid in subschema.listall(ldap_type):
+		subschema_oids_with_sup(subschema, ldap_type, oid, result)
 	return result
 
 def update_schema(attr):
@@ -112,13 +112,13 @@ def update_schema(attr):
 		if oid in BUILTIN_OIDS:
 			continue
 		obj = subschema.get_obj(ldap.schema.AttributeType, oid)
-		print >>fp, 'attributetype', str(obj)
+		print >>fp, 'attributetype %s' % (obj,)
 
 	for oid in subschema_sort(subschema, ldap.schema.ObjectClass):
 		if oid in BUILTIN_OIDS:
 			continue
 		obj = subschema.get_obj(ldap.schema.ObjectClass, oid)
-		print >>fp, 'objectclass', str(obj)
+		print >>fp, 'objectclass %s' % (obj,)
 
 	fp.close()
 

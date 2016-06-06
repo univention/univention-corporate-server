@@ -60,9 +60,7 @@ filter='(objectClass=*)' # default filter - may be overwritten later
 attributes=[]
 modrdn='1'
 
-slave=0
-if listener.baseConfig['ldap/server/type'] == 'slave':
-	slave=1
+slave = listener.baseConfig['ldap/server/type'] == 'slave'
 
 if listener.baseConfig['ldap/slave/filter']:
 	filter=listener.baseConfig['ldap/slave/filter']
@@ -425,9 +423,9 @@ BUILTIN_OIDS=[
 ]
 
 class LDIFObject:
-	def __init__(self, file):
-		self.fp = open(file, 'a')
-		os.chmod(file, 0600)
+	def __init__(self, filename):
+		self.fp = open(filename, 'a')
+		os.chmod(filename, 0600)
 
 	def __print_attribute(self, attribute, value):
 		pos = len(attribute)+2 # +colon+space
@@ -435,7 +433,7 @@ class LDIFObject:
 		if '\n' in value:
 			encode = 1
 		try:
-			if type(value) == type(()):
+			if isinstance(value, tuple):
 				(newval,leng)=value
 			else:
 				newval=value
@@ -481,13 +479,13 @@ class LDIFObject:
 	def modify_s(self, dn, ml):
 		self.__new_entry(dn)
 		self.__print_attribute('changetype', 'modify')
-		for type, attr, vals in ml:
+		for ldap_op, attr, vals in ml:
 			self.__new_section()
-			if type == ldap.MOD_REPLACE:
+			if ldap_op == ldap.MOD_REPLACE:
 				op = 'replace'
-			elif type == ldap.MOD_ADD:
+			elif ldap_op == ldap.MOD_ADD:
 				op = 'add'
-			elif type == ldap.MOD_DELETE:
+			elif ldap_op == ldap.MOD_DELETE:
 				op = 'delete'
 			self.__print_attribute(op, attr)
 			for val in vals:
@@ -502,6 +500,7 @@ class LDIFObject:
 
 reconnect=0
 connection=None
+
 def connect(ldif=0):
 	global connection
 	global reconnect
@@ -564,21 +563,21 @@ def modlist(old, new):
 			ml.append((ldap.MOD_DELETE, key, []))
 	return ml
 
-def subschema_oids_with_sup(subschema, type, oid, result):
+def subschema_oids_with_sup(subschema, ldap_type, oid, result):
 	if oid in BUILTIN_OIDS or oid in result:
 		return
 
-	obj = subschema.get_obj(type, oid)
+	obj = subschema.get_obj(ldap_type, oid)
 	for i in obj.sup:
-		sup_obj = subschema.get_obj(type, i)
-		subschema_oids_with_sup(subschema, type, sup_obj.oid, result)
+		sup_obj = subschema.get_obj(ldap_type, i)
+		subschema_oids_with_sup(subschema, ldap_type, sup_obj.oid, result)
 	result.append(oid)
 
-def subschema_sort(subschema, type):
+def subschema_sort(subschema, ldap_type):
 
 	result = []
-	for oid in subschema.listall(type):
-		subschema_oids_with_sup(subschema, type, oid, result)
+	for oid in subschema.listall(ldap_type):
+		subschema_oids_with_sup(subschema, ldap_type, oid, result)
 	return result
 
 def update_schema(attr):
@@ -596,13 +595,13 @@ def update_schema(attr):
 		if oid in BUILTIN_OIDS:
 			continue
 		obj = subschema.get_obj(ldap.schema.AttributeType, oid)
-		print >>fp, 'attributetype', str(obj)
+		print >>fp, 'attributetype %s' % (obj,)
 
 	for oid in subschema_sort(subschema, ldap.schema.ObjectClass):
 		if oid in BUILTIN_OIDS:
 			continue
 		obj = subschema.get_obj(ldap.schema.ObjectClass, oid)
-		print >>fp, 'objectclass', str(obj)
+		print >>fp, 'objectclass %s' % (obj,)
 
 	fp.close()
 
@@ -615,9 +614,11 @@ def update_schema(attr):
 
 	init_slapd('restart')
 
-# get "old" from local ldap server
-# "ldapconn": connection to local ldap server
 def getOldValues( ldapconn, dn ):
+	"""
+	get "old" from local ldap server
+	"ldapconn": connection to local ldap server
+	"""
 	if not isinstance(ldapconn, LDIFObject):
 		try:
 			res=ldapconn.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['*', '+'])
@@ -642,16 +643,15 @@ def getOldValues( ldapconn, dn ):
 def _delete_dn_recursive(l, dn):
 	try:
 		l.delete_s(dn)
-	except ldap.NOT_ALLOWED_ON_NONLEAF, msg:
+	except ldap.NOT_ALLOWED_ON_NONLEAF:
 		ud.debug(ud.LISTENER, ud.WARN, 'Failed to delete non leaf object: dn=[%s];' % dn)
-		dns=[]
-		for dn,attr in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)'):
-			dns.append(dn)
+		dns = [dn2 for dn2, _attr in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['dn'], attrsonly=1)]
 		dns.reverse()
 		for dn in dns:
 			l.delete_s(dn)
-	except ldap.NO_SUCH_OBJECT, msg:
+	except ldap.NO_SUCH_OBJECT:
 		pass
+
 
 def _backup_dn_recursive(l, dn):
 	backup_directory = '/var/univention-backup/replication'
@@ -678,14 +678,14 @@ def _remove_current_modrdn_link():
 	current_modrdn_link = _get_current_modrdn_link()
 	try:
 		os.remove(current_modrdn_link)
-	except Exception, e:
-		ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove current_modrdn file %s: %s' % (current_modrdn_link, str(e)))
+	except EnvironmentError as ex:
+		ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove current_modrdn file %s: %s' % (current_modrdn_link, ex))
 
 def _add_object_from_new(l, dn, new):
 	al=addlist(new)
 	try:
 		l.add_s(dn, al)
-	except ldap.OBJECT_CLASS_VIOLATION, msg:
+	except ldap.OBJECT_CLASS_VIOLATION:
 		ud.debug(ud.LISTENER, ud.ERROR, 'replication: object class violation while adding %s' % dn)
 
 def _modify_object_from_old_and_new(l, dn, old, new):
@@ -700,8 +700,8 @@ def _read_dn_from_file(filename):
 	try:
 		with open(filename,'r') as f:
 			old_dn = f.read()
-	except Exception, e:
-		ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, str(e)))
+	except EnvironmentError as ex:
+		ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/read modrdn file %s: %s' % (filename, ex))
 
 	return old_dn
 
@@ -741,7 +741,6 @@ def check_file_system_space():
 
 def handler(dn, new, listener_old, operation):
 	global reconnect
-	global slave
 	if not slave:
 		return 1
 
@@ -758,7 +757,7 @@ def handler(dn, new, listener_old, operation):
 		try:
 			l=connect()
 		except ldap.LDAPError, msg:
-			connect_count=connect_count+1
+			connect_count += 1
 			if connect_count >= 30:
 				ud.debug(ud.LISTENER, ud.ERROR, '%s: going into LDIF mode' % msg[0]['desc'])
 				if 'info' in msg[0]:
@@ -789,31 +788,27 @@ def handler(dn, new, listener_old, operation):
 			# Check if both entries really match
 			match=1
 			if len(old) != len(listener_old):
-				ud.debug(ud.LISTENER, ud.INFO,
-					'LDAP keys=%s; listener keys=%s' % (str(old.keys()), str(listener_old.keys())))
+				ud.debug(ud.LISTENER, ud.INFO, 'LDAP keys=%s; listener keys=%s' % (old.keys(), listener_old.keys()))
 				match=0
 			else:
 				for k in old.keys():
 					if k in EXCLUDE_ATTRIBUTES:
 						continue
 					if k not in listener_old:
-						ud.debug(ud.LISTENER, ud.INFO,
-							'listener does not have key %s' % k)
+						ud.debug(ud.LISTENER, ud.INFO, 'listener does not have key %s' % (k,))
 						match=0
 						break
 					if len(old[k]) != len(listener_old[k]):
-						ud.debug(ud.LISTENER, ud.INFO,
-							'%s: LDAP values and listener values diff' % (k))
+						ud.debug(ud.LISTENER, ud.INFO, '%s: LDAP values and listener values diff' % (k,))
 						match=0
 						break
 					for v in old[k]:
-						if not v in listener_old[k]:
-							ud.debug(ud.LISTENER, ud.INFO, 'listener does not have value for key %s' % (k))
+						if v not in listener_old[k]:
+							ud.debug(ud.LISTENER, ud.INFO, 'listener does not have value for key %s' % (k,))
 							match=0
 							break
 			if not match:
-				ud.debug(ud.LISTENER, ud.INFO,
-						'replication: old entries from LDAP server and Listener do not match')
+				ud.debug(ud.LISTENER, ud.INFO, 'replication: old entries from LDAP server and Listener do not match')
 		else:
 			old=listener_old
 
@@ -836,7 +831,7 @@ def handler(dn, new, listener_old, operation):
 
 					if old:
 						# this means the target already exists, we have to delete this old object
-						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn))
+						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the rename target already exists in the local LDAP, backup and remove the dn: %s' % (dn,))
 						_backup_dn_recursive(l, dn)
 						_delete_dn_recursive(l, dn)
 
@@ -850,8 +845,8 @@ def handler(dn, new, listener_old, operation):
 						_add_object_from_new(l, dn, new)
 					try:
 						os.remove(modrdn_cache)
-					except Exception, e:
-						ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, str(e)))
+					except EnvironmentError as ex:
+						ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, ex))
 					_remove_current_modrdn_link()
 					listener.unsetuid()
 				else: #current_modrdn points to a different file
@@ -904,9 +899,9 @@ def handler(dn, new, listener_old, operation):
 					listener.unsetuid()
 					## that's it for now for command 'r' ==> modrdn will follow in the next step
 					return
-				except Exception, e:
+				except EnvironmentError as ex:
 					## d'oh! output some message and continue doing a delete+add instead
-					ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, str(e)))
+					ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, ex))
 				listener.unsetuid()
 
 			ud.debug(ud.LISTENER, ud.ALL, 'replication: delete: %s' % dn)
@@ -966,13 +961,13 @@ def clean():
 	listener.run('/usr/bin/killall', ['killall', '-9', 'slapd'], uid=0)
 	time.sleep(1) #FIXME
 
-	dir='/var/lib/univention-ldap/ldap'
+	dirname = '/var/lib/univention-ldap/ldap'
 	listener.setuid(0)
 	try:
-		for f in os.listdir(dir):
-			file=os.path.join(dir, f)
+		for f in os.listdir(dirname):
+			filename = os.path.join(dirname, f)
 			try:
-				os.unlink(file)
+				os.unlink(filename)
 			except OSError:
 				pass
 		if os.path.exists(LDIF_FILE):
@@ -983,7 +978,6 @@ def clean():
 
 def initialize():
 	ud.debug(ud.LISTENER, ud.INFO, 'REPLICATION:  initialize')
-	global slave
 	if not slave:
 		ud.debug(ud.LISTENER, ud.INFO, 'REPLICATION:  not slave')
 		return 1
