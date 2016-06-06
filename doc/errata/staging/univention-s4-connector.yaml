@@ -3,8 +3,10 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-s4-connector
-fix: 10.0.1-11.609.201605201246
+fix: 10.0.1-12.612.201606061027
 desc: |
  This update addresses the following issue(s):
- * 
+ * A restart of the samba ldap server during the initialization 
+   phase of the connector could lead to a endless loop in the 
+   the initialization. This has been fixed.
 bug: [41288]
