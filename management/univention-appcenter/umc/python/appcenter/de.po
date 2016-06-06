@@ -2,8 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-appcenter\n"
-"Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-03-21 06:06+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-06 14:08+0200\n"
 "PO-Revision-Date: 2011-10-25 14:38+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/python/appcenter/util.py:142
+#: umc/python/appcenter/util.py:160
 #, python-format
 msgid ""
 "%s could not be downloaded. This seems to be a problem with the App Center "
@@ -56,7 +56,7 @@ msgstr "Fehler bei der Kontaktaufnahme mit dem App Center-Server. %s"
 msgid "Installing %s"
 msgstr "Installiere %s"
 
-#: umc/python/appcenter/app_center.py:1609
+#: umc/python/appcenter/app_center.py:1611
 #, python-format
 msgid "Installing LDAP packages on %s"
 msgstr "Installiere LDAP Pakete auf %s"
@@ -86,7 +86,7 @@ msgstr "Paket wurde in keinem Repository gefunden"
 msgid "Please check the join state of the machine."
 msgstr "Bitte überprüfen Sie den Status des Domänenbeitritts."
 
-#: umc/python/appcenter/app_center.py:1523
+#: umc/python/appcenter/app_center.py:1525
 msgid ""
 "Registration of the application in LDAP failed. It will be retried every "
 "time the App Center module is opened."
@@ -130,13 +130,13 @@ msgstr ""
 "Auf dem Server befindet sich kein Repository (oder zumindest keins für die "
 "aktuelle UCS Version)"
 
-#: umc/python/appcenter/util.py:144
+#: umc/python/appcenter/util.py:162
 msgid "This is a problem with the App Center server. Please try again later."
 msgstr ""
 "Das ist ein Problem auf dem App Center-Server. Bitte versuchen Sie es später "
 "noch einmal."
 
-#: umc/python/appcenter/util.py:158
+#: umc/python/appcenter/util.py:176
 #, python-format
 msgid ""
 "This is probably due to the DNS settings of your server. You may find help "
@@ -145,13 +145,14 @@ msgstr ""
 "Grund sind wahrscheinlich die DNS-Einstellungen Ihres Servers. Sie finden "
 "Hilfe unter %s."
 
-#: umc/python/appcenter/util.py:155
+#: umc/python/appcenter/util.py:173
 #, python-format
 msgid ""
-"This may be a problem with the firewall or proxy of your system. You may find help at %s."
+"This may be a problem with the firewall or proxy of your system. You may "
+"find help at %s."
 msgstr ""
-"Dies kann auf ein Problem mit einer auf Ihrem System eingerichteten Firewall oder Proxy "
-"hindeuten. Sie finden Hilfe unter %s."
+"Dies kann auf ein Problem mit einer auf Ihrem System eingerichteten Firewall "
+"oder Proxy hindeuten. Sie finden Hilfe unter %s."
 
 #: umc/python/appcenter/sanitizers.py:56 umc/python/appcenter/sanitizers.py:60
 msgid "This may be solved by simply logging out and in again."
@@ -173,7 +174,7 @@ msgstr "Deinstalliere %s"
 msgid "Upgrading %s"
 msgstr "Aktualisiere %s"
 
-#: umc/python/appcenter/util.py:154
+#: umc/python/appcenter/util.py:172
 #, python-format
 msgid ""
 "https://docs.software-univention.de/manual-%s.html#ip-config:"
@@ -182,7 +183,7 @@ msgstr ""
 "https://docs.software-univention.de/handbuch-%s.html#ip-config:Web-"
 "Proxy_fuer_Caching_und_Policy_Management_Virenscan"
 
-#: umc/python/appcenter/util.py:157
+#: umc/python/appcenter/util.py:175
 #, python-format
 msgid "https://docs.software-univention.de/manual-%s.html#networks:dns"
 msgstr "https://docs.software-univention.de/handbuch-%s.html#networks:dns"

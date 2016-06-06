@@ -1,3 +1,10 @@
+univention-appcenter (5.0.21-4) unstable; urgency=medium
+
+  * Bug #41217: Fixed RequiredAppsInDomain
+  * Bug #41227: Rename "Open Website / Module" to "Open"
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 06 Jun 2016 17:27:47 +0200
+
 univention-appcenter (5.0.21-3) unstable; urgency=medium
 
   * Bug #41452: Call join scripts after updating a Docker App

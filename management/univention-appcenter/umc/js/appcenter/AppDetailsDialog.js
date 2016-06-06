@@ -280,7 +280,7 @@ define([
 			_packageChangeLabel(remove, '<strong>' + _('1 package will be removed') + '</strong>', '<strong>' + _('{0} packages will be removed') + '</strong>', changeLabels);
 			_packageChangeLabel(broken, '<strong>' + _('1 package is erroneous') + '</strong>', '<strong>' + _('{0} packages are erroneous') + '</strong>', changeLabels);
 			if (!changeLabels.length) {
-				changeLabels = '<p>' + _('No software changes on %s are necessary.', host || _('this host')) + '</p>';
+				changeLabels = '<p>' + _('No software changes on %s necessary.', host || _('this host')) + '</p>';
 			} else {
 				changeLabels = '<p>' + _('The following software changes on %s will be applied: ', host || _('this host')) + changeLabels.join(', ') + '</p>';
 			}
@@ -293,7 +293,7 @@ define([
 			txt += _packageChangesList(remove, _('The following packages will be removed:'));
 			txt += _packageChangesList(broken, _('This operation causes problems in the following packages that cannot be resolved:'));
 			if (txt === '') {
-				txt = '<p>' + _('No software changes are necessary.') + '</p>';
+				txt = '<p>' + _('No software changes necessary.') + '</p>';
 			}
 			this._container.addChild(new TitlePane({
 				'class': 'umcAppMoreTitlePane',

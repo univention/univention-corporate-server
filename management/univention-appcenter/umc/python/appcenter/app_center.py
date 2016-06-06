@@ -1155,11 +1155,13 @@ class Application(object):
 				depending_apps.append({'id': app.id, 'name': app.name})
 
 		# RequiredAppsInDomain
-		apps = [app for app in Application.all() if self.id in app.get('requiredappsindomain')]
-		for app in apps:
-			app = app.to_dict(package_manager, domainwide_managed=True)
-			if app['is_installed_anywhere']:
-				depending_apps.append({'id': app['id'], 'name': app['name']})
+		ldap_object = self.get_ldap_object()
+		if ldap_object._udm_obj and len(ldap_object._udm_obj.info.get('server', [])) <= 1:
+			apps = [app for app in Application.all() if self.id in app.get('requiredappsindomain')]
+			for app in apps:
+				app = app.to_dict(package_manager, domainwide_managed=True)
+				if app['is_installed_anywhere']:
+					depending_apps.append({'id': app['id'], 'name': app['name']})
 
 		if depending_apps:
 			return depending_apps

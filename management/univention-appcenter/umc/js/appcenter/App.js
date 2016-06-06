@@ -27,7 +27,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-/*global define window*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -364,10 +364,8 @@ define([
 			var webInterface = array.some(this.installationData, function(app) {
 				return app.getWebInterfaceURL();
 			});
-			if (module) {
-				return _('Open module');
-			} else if (webInterface) {
-				return _('Open web site');
+			if (module || webInterface) {
+				return _('Open');
 			}
 		},
 
