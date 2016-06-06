@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-squid-kerberos
+fix: 10.0.1-12.612.201606061027
+desc: |
+ This update addresses the following issue(s):
+ * The timeout for the spn-account samba search in the
+   join script has been increased (and is now configurable
+   via the UCR variable squid/kerberos/join/timeout).
+bug: [41443]
