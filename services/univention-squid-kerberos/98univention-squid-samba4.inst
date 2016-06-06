@@ -89,11 +89,12 @@ cn=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret "(&(univent
 if [ "$cn" = "$hostname" -a "$samba4_role" != "RODC" ]; then
 
 	## wait for S4 Connector and possibly DRS until the service_accountname is available
-	count=0
-	while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
-		sleep 1
+	timeout=${squid_kerberos_join_timeout:-300}
+	for i in $(seq 1 $timeout); do
+		echo "looking for spn account \"$service_accountname\" in local samba"
 		service_account_dn=$(ldbsearch -H $samba_private_dir/sam.ldb samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
-		count=$((count+1))
+		[ -n "$service_account_dn" ] && break
+		sleep 10
 	done
 
 	if [ -z "$service_account_dn" ]; then
@@ -209,11 +210,12 @@ else
 	fi
 
 	## wait for S4 Connector and possibly DRS
-	count=0
-	while [ -z "$service_account_dn" ] && [ $count -le 300 ]; do
-		sleep 1
+	timeout=${squid_kerberos_join_timeout:-300}
+	for i in $(seq 1 $timeout); do
+		echo "looking for spn account \"$service_accountname\" on $s4dc_fqdn"
 		service_account_dn=$(ldapsearch -x -LL -H "ldaps://$s4dc_fqdn" -D"$samba4_bind_dn" -w "$bindpwd" samAccountName="$service_accountname" dn | sed -n 's/^dn: \(.*\)/\1/p')
-		count=$((count+1))
+		[ -n "$service_account_dn" ] && break
+		sleep 10
 	done
 
 	if [ -z "$service_account_dn" ]; then
