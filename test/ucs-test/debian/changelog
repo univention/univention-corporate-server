@@ -1,3 +1,9 @@
+ucs-test (6.0.33-68) unstable; urgency=low
+
+  * Bug #34324 repl: failed.ldif is owned by 'listener' now
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Jun 2016 08:25:03 +0200
+
 ucs-test (6.0.33-67) unstable; urgency=medium
 
   * Bug #41452: Test join scripts after Docker App upgrades

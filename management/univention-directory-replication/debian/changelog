@@ -3,6 +3,7 @@ univention-directory-replication (9.0.1-3) unstable; urgency=low
   * Bug #30489: Remove deprecated "flat-mode" replication
   * Bug #28232: Fix filesystem full check
   * Bug #31757: Log object class violation
+  * Bug #34324: Stop using setuid()
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Jun 2016 15:13:41 +0200
 

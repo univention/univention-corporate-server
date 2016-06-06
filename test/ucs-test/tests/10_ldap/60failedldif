@@ -26,7 +26,8 @@ testldif () {
 	[ "$OTHERS_PERM" -eq 0 ] ||
 		fail_test 1 "File '$1' has world permissions: $PERM"
 	[ "$OWNER" = "root" ] ||
-		fail_test 1 "File '$1' not owned by root: $OWNER"
+		[ "$OWNER" = "listener" ] ||
+		fail_test 1 "File '$1' not owned by root or listener: $OWNER"
 }
 
 #check if master ldap-server can be reached

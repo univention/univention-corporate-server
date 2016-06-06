@@ -536,22 +536,13 @@ def connect(ldif=0):
                 pw = new_password()
                 init_slapd('restart')
 
-        listener.setuid(0)
-
         local_ip = '127.0.0.1'
         local_port = listener.baseConfig.get('slapd/port', '7389').split(',')[0]
 
-        try:
-            connection = ldap.open(local_ip, int(local_port))
-            connection.simple_bind_s('cn=update,' + listener.baseConfig['ldap/base'], pw)
-        finally:
-            listener.unsetuid()
+        connection = ldap.open(local_ip, int(local_port))
+        connection.simple_bind_s('cn=update,' + listener.baseConfig['ldap/base'], pw)
     else:
-        listener.setuid(0)
-        try:
-            connection = LDIFObject(LDIF_FILE)
-        finally:
-            listener.unsetuid()
+        connection = LDIFObject(LDIF_FILE)
 
     reconnect = 0
     return connection
@@ -841,7 +832,6 @@ def handler(dn, new, listener_old, operation):
                 target_uuid_file = os.readlink(current_modrdn_link)
                 if modrdn_cache == target_uuid_file and os.path.exists(modrdn_cache):
                     ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
-                    listener.setuid(0)
 
                     old_dn = _read_dn_from_file(modrdn_cache)
 
@@ -867,9 +857,7 @@ def handler(dn, new, listener_old, operation):
                     except EnvironmentError as ex:
                         ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to remove modrdn file %s: %s' % (modrdn_cache, ex))
                     _remove_current_modrdn_link()
-                    listener.unsetuid()
                 else:  # current_modrdn points to a different file
-                    listener.setuid(0)
                     ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % os.readlink(current_modrdn_link))
 
                     old_dn = _read_dn_from_file(current_modrdn_link)
@@ -892,8 +880,6 @@ def handler(dn, new, listener_old, operation):
 
                     _remove_current_modrdn_link()
 
-                    listener.unsetuid()
-
             elif old:  # modify: new and old
                 _modify_object_from_old_and_new(l, dn, old, new)
 
@@ -906,7 +892,6 @@ def handler(dn, new, listener_old, operation):
                 old_entryUUID = old['entryUUID'][0]
                 ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase I: %s (entryUUID=%s)' % (dn, old_entryUUID))
                 modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
-                listener.setuid(0)
                 try:
                     with open(modrdn_cache, 'w') as f:
                         os.chmod(modrdn_cache, 0600)
@@ -915,13 +900,11 @@ def handler(dn, new, listener_old, operation):
                     if os.path.exists(current_modrdn_link):
                         os.remove(current_modrdn_link)
                     os.symlink(modrdn_cache, current_modrdn_link)
-                    listener.unsetuid()
                     # that's it for now for command 'r' ==> modrdn will follow in the next step
                     return
                 except EnvironmentError as ex:
                     # d'oh! output some message and continue doing a delete+add instead
                     ud.debug(ud.LISTENER, ud.ERROR, 'replication: failed to open/write modrdn file %s: %s' % (modrdn_cache, ex))
-                listener.unsetuid()
 
             ud.debug(ud.LISTENER, ud.ALL, 'replication: delete: %s' % dn)
             _delete_dn_recursive(l, dn)

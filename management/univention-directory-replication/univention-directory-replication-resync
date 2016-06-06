@@ -123,9 +123,6 @@ then
 	dst="/var/lib/univention-directory-replication/replayed.ldif_$(date +%F-%X)"
 	echo "Restored modifications successfully, the LDIF file will be moved to $dst"
 	rm "${faileddns}"
-	if [ ! -d /var/lib/univention-directory-replication ]; then
-		mkdir -p /var/lib/univention-directory-replication; chmod -R 700 /var/lib/univention-directory-replication
-	fi
 	mv "$1" "$dst"
 	chmod 600 "$dst"
 	/etc/init.d/univention-directory-listener start
