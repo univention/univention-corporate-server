@@ -69,6 +69,7 @@ LDAP_DIR = '/var/lib/univention-ldap/'
 STATE_DIR = '/var/lib/univention-directory-replication'
 BACKUP_DIR = '/var/univention-backup/replication'
 LDIF_FILE = os.path.join(STATE_DIR, 'failed.ldif')
+ROOTPW_FILE = '/etc/ldap/rootpw.conf'
 CURRENT_MODRDN = os.path.join(STATE_DIR, 'current_modrdn')
 
 EXCLUDE_ATTRIBUTES = [
@@ -993,12 +994,9 @@ def new_password():
 
     listener.setuid(0)
     try:
-        f = open('/etc/ldap/rootpw.conf', 'w')
-        f.close()
-        os.chmod('/etc/ldap/rootpw.conf', 0600)
-        f = open('/etc/ldap/rootpw.conf', 'w')
-        print >>f, 'rootpw "%s"' % pw
-        f.close()
+        with open(ROOTPW_FILE, 'w') as fd:
+            os.fchmod(fd.fileno(), 0600)
+            print >>fd, 'rootpw "%s"' % (pw.replace('\\', '\\\\').replace('"', '\\"'),)
     finally:
         listener.unsetuid()
 
@@ -1006,20 +1004,18 @@ def new_password():
 
 
 def get_password():
-    pwd = ''
     listener.setuid(0)
     try:
-        f = open('/etc/ldap/rootpw.conf', 'r')
-        rootdn_pattern = re.compile('^rootpw[ \t]+"([^"]+)"')
-        for line in f.readlines():
-            line = line[0:-1]
-            if rootdn_pattern.match(line):
-                pwd = rootdn_pattern.findall(line)[0]
-                break
-        f.close()
+        with open(ROOTPW_FILE, 'r') as fd:
+            for line in fd:
+                match = get_password.RE_ROOTDN.match(line)
+                if match:
+                    return match.group(1).replace('\\"', '"').replace('\\\\', '\\')
+            else:
+                return ''
     finally:
         listener.unsetuid()
-    return pwd
+get_password.RE_ROOTDN = re.compile(r'^rootpw[ \t]+"((?:[^"\\]|\\["\\])+)"')
 
 
 def init_slapd(arg):
