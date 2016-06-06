@@ -518,6 +518,15 @@ class LDIFObject:
         self.__print_attribute('changetype', 'delete')
         self.__end_entry()
 
+    def rename_s(self, dn, newrdn, newsuperior=None, delold=1, serverctrls=None, clientctrls=None):
+        self.__new_entry(dn)
+        self.__print_attribute('changetype', 'modrdn')
+        self.__print_attribute('newrdn', newrdn)
+        if newsuperior:
+            self.__print_attribute('newsuperior', newsuperior)
+        self.__print_attribute('deleteoldrdn', '1' if delold else '0')
+        self.__end_entry()
+
 reconnect = 0
 connection = None
 
@@ -835,16 +844,20 @@ def handler(dn, new, listener_old, operation):
 
                     if getOldValues(l, old_dn):
                         # the normal rename is possible
-                        rdn = ldap.dn.str2dn(dn)
-                        new_parent = ldap.dn.dn2str(rdn[1:])
-                        new_rdn = ldap.dn.dn2str([rdn[0]])
+                        new_dn = ldap.dn.str2dn(dn)
+                        new_parent = ldap.dn.dn2str(new_dn[1:])
+                        new_rdn = ldap.dn.dn2str([new_dn[0]])
                         ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename from %s to %s' % (old_dn, dn))
-                        l.rename_s(old_dn, new_rdn, new_parent)
+                        l.rename_s(old_dn, new_rdn, new_parent, delold=1)
+                        _remove_file(modrdn_cache)
+                        if not isinstance(l, LDIFObject):
+                            old = getOldValues(l, dn)
+                            _modify_object_from_old_and_new(l, dn, old, new)
                     else:
                         # the old object does not exists, so we have to re-create the new object
                         ud.debug(ud.LISTENER, ud.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
                         _add_object_from_new(l, dn, new)
-                    _remove_file(modrdn_cache)
+                        _remove_file(modrdn_cache)
                 else:  # current_modrdn points to a different file
                     ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % (target_uuid_file,))
 

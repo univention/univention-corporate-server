@@ -5,6 +5,7 @@ univention-directory-replication (9.0.1-3) unstable; urgency=low
   * Bug #31757: Log object class violation
   * Bug #34324: Stop using setuid()
   * Bug #41347: Disable backup in failed-LDIF-mode
+  * Bug #33594: Fix multi-valued RDN handling
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 02 Jun 2016 15:13:41 +0200
 
