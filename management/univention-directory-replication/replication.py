@@ -818,18 +818,14 @@ def handler(dn, new, listener_old, operation):
 
         # add
         if new:
-            new_entryUUID = new['entryUUID'][0]
-            modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
-
             if os.path.exists(CURRENT_MODRDN):
                 target_uuid_file = os.readlink(CURRENT_MODRDN)
-                if modrdn_cache == target_uuid_file and os.path.exists(modrdn_cache):
+                old_dn = _read_dn_from_file(CURRENT_MODRDN)
+
+                new_entryUUID = new['entryUUID'][0]
+                modrdn_cache = os.path.join(STATE_DIR, new_entryUUID)
+                if modrdn_cache == target_uuid_file:
                     ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename phase II: %s (entryUUID=%s)' % (dn, new_entryUUID))
-
-                    old_dn = _read_dn_from_file(modrdn_cache)
-
-                    new_parent = ','.join(ldap.explode_dn(dn)[1:])
-                    new_rdn = ldap.explode_rdn(dn)[0]
 
                     if old:
                         # this means the target already exists, we have to delete this old object
@@ -839,7 +835,10 @@ def handler(dn, new, listener_old, operation):
 
                     if getOldValues(l, old_dn):
                         # the normal rename is possible
-                        ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename from %s to %s,%s' % (old_dn, new_rdn, new_parent))
+                        rdn = ldap.dn.str2dn(dn)
+                        new_parent = ldap.dn.dn2str(rdn[1:])
+                        new_rdn = ldap.dn.dn2str([rdn[0]])
+                        ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename from %s to %s' % (old_dn, dn))
                         l.rename_s(old_dn, new_rdn, new_parent)
                     else:
                         # the old object does not exists, so we have to re-create the new object
@@ -849,7 +848,6 @@ def handler(dn, new, listener_old, operation):
                 else:  # current_modrdn points to a different file
                     ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the current modrdn points to a different entryUUID: %s' % (target_uuid_file,))
 
-                    old_dn = _read_dn_from_file(CURRENT_MODRDN)
                     if old_dn:
                         ud.debug(ud.LISTENER, ud.PROCESS, 'replication: the DN %s from the %s has to be backuped and removed' % (old_dn, CURRENT_MODRDN))
                         _backup_dn_recursive(l, old_dn)
