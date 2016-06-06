@@ -127,7 +127,7 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.1-1" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.1-2" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
