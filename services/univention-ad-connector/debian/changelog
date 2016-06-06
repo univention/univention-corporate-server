@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.1-26) unstable; urgency=low
+
+  * connector.samr.Close(user_handle) after password sync to ad (Bug #41247) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 06 Jun 2016 12:59:19 +0200
+
 univention-ad-connector (10.0.1-25) unstable; urgency=medium
 
   * Handle sync_from_ucs modify with unset con proxyAddresses (Bug #41246)
