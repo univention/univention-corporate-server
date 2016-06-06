@@ -49,32 +49,15 @@ display_header() {
 		exit ${1:-0}
 }
 
-
-base64decode()
-{
-	export IFS=''
-	cat << EOF | python - $1
-import base64,sys
-x=sys.argv[1]
-print base64.decodestring(x)
-EOF
-}
-
-getdns()
-{
-	export IFS=''
-	cat $1 | ldapsearch-wrapper | grep '^dn:' | sort -u | {
-		while
-			read i
-		do
-			if echo $i | grep '^dn:: '>/dev/null
-			then
-				base64decode `echo "$i"| sed 's/^dn:: //g'`
-			else
-				echo "$i"| sed 's/^dn: //g'
-			fi
-		done
-	}
+getdns () {
+	ldapsearch-wrapper <"$1" |
+	while IFS=' ' read k v
+	do
+		case "$k" in
+		dn::) echo "$v" | base64 -d ;;
+		dn:) echo "$v"
+		esac
+	done | sort -u
 }
 
 case "${1:-}" in
