@@ -248,9 +248,8 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "realloc failed");
 				abort(); // FIXME
 			}
-			// TODO: stdndup() copies until the first \0, which would be incorrect if data is binary!
 			if (!(c_attr->values[c_attr->value_count] = malloc(data_size))) {
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "strndup failed");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "malloc() failed");
 				abort(); // FIXME
 			}
 			c_attr->length[c_attr->value_count] = data_size;
