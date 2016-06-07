@@ -1,0 +1,25 @@
+A new update is available for Univention Corporate Server 3.1 as
+part of the extended security maintenance.
+It addresses the following problem:
+
+Program component:  samba
+Reference:          Bug 41228
+Fixed version:      2:4.3.7-1.826.201605191435
+
+The update fixes a couple of regressions introduced by the initial
+Badlock update.
+
+-- 
+Univention GmbH
+be open.
+Mary-Somerville-Str.1
+28359 Bremen
+Tel. : +49 421 22232-0
+Fax  : +49 421 22232-99
+
+<info@univention.de>
+http://www.univention.de/
+
+Geschäftsführer: Peter H. Ganten
+HRB 20755 Amtsgericht Bremen
+Steuer-Nr.: 71-597-02876
