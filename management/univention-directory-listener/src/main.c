@@ -522,6 +522,10 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	univention_debug_set_level(UV_DEBUG_LISTENER, debugging);
+	univention_debug_set_level(UV_DEBUG_LDAP, debugging);
+	univention_debug_set_level(UV_DEBUG_KERBEROS, debugging);
+
 	{
 		char filename[PATH_MAX];
 		rv = snprintf(filename, PATH_MAX, "%s/bad_cache", cache_dir);
@@ -532,11 +536,6 @@ int main(int argc, char* argv[])
 			exit(3);
 		}
 	}
-
-
-	univention_debug_set_level(UV_DEBUG_LISTENER, debugging);
-	univention_debug_set_level(UV_DEBUG_LDAP, debugging);
-	univention_debug_set_level(UV_DEBUG_KERBEROS, debugging);
 
 	rv = snprintf(pidfile, PATH_MAX, "%s/pid", cache_dir);
 	if (rv < 0 || rv >= PATH_MAX)
