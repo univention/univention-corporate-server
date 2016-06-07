@@ -29,43 +29,50 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-import os, pwd, types
+
+import os
+import pwd
 import univention.config_registry
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-baseConfig=configRegistry
+baseConfig = configRegistry
+
 
 def setuid(uid):
-	if type(uid) == types.StringType:
-		uid = pwd.getpwnam(uid)[2]
-	os.seteuid(uid)
+    if isinstance(uid, basestring):
+        uid = pwd.getpwnam(uid)[2]
+    os.seteuid(uid)
 
-__listener_uid=-1
+
+__listener_uid = -1
+
+
 def unsetuid():
-	global __listener_uid
-	if __listener_uid == -1:
-		try:
-			__listener_uid = pwd.getpwnam('listener')[2]
-		except KeyError:
-			__listener_uid = 0
-	os.seteuid(__listener_uid)
+    global __listener_uid
+    if __listener_uid == -1:
+        try:
+            __listener_uid = pwd.getpwnam('listener')[2]
+        except KeyError:
+            __listener_uid = 0
+    os.seteuid(__listener_uid)
+
 
 def run(file, argv, uid=-1, wait=1):
-	if uid > -1:
-		olduid=os.getuid()
-		setuid(uid)
-	try:
-		if wait:
-			waitp = os.P_WAIT
-		else:
-			waitp = os.P_NOWAIT
-		rc = os.spawnv(waitp, file, argv)
-	except:
-		rc = 100
-		if uid > -1:
-			setuid(olduid)
-	if uid > -1:
-		setuid(olduid)
-	return rc
+    if uid > -1:
+        olduid = os.getuid()
+        setuid(uid)
+    try:
+        if wait:
+            waitp = os.P_WAIT
+        else:
+            waitp = os.P_NOWAIT
+        rc = os.spawnv(waitp, file, argv)
+    except:
+        rc = 100
+        if uid > -1:
+            setuid(olduid)
+    if uid > -1:
+        setuid(olduid)
+    return rc
