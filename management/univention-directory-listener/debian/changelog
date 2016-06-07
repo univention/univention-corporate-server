@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-10) unstable; urgency=low
+
+  * Bug #39509: Add IPv6 support for get_notifier_id.py
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 06 Jun 2016 13:50:36 +0200
+
 univention-directory-listener (10.0.0-9) unstable; urgency=low
 
   * Bug #40460: Retry LDAP queries on LDAP_SERVER_DOWN
