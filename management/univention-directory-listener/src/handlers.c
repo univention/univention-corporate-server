@@ -315,22 +315,17 @@ error:
    to the same handler until the postrun handler is run */
 static int handler_prerun(Handler *handler)
 {
-	PyObject *result;
-
-	if (handler->prerun == NULL || handler->prepared) {
-		handler->prepared = 1;
-		return 0;
-	}
-	if ((result = PyObject_CallObject(handler->prerun, NULL)) == NULL) {
-		PyErr_Print();
+	if (handler->prerun && !handler->prepared) {
+		PyObject *result = PyObject_CallObject(handler->prerun, NULL);
 		drop_privileges();
-		return 1;
+		if (result == NULL) {
+			PyErr_Print();
+			return 1;
+		}
+		Py_XDECREF(result);
 	}
-
-	drop_privileges();
 	handler->prepared=1;
 
-	Py_XDECREF(result);
 	return 0;
 }
 
@@ -338,22 +333,21 @@ static int handler_prerun(Handler *handler)
 /* run postrun handler */
 static int handler_postrun(Handler *handler)
 {
-	PyObject *result;
-
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "postrun handler: %s (prepared=%d)",
 			handler->name, handler->prepared);
-	if (handler->postrun == NULL || !handler->prepared)
+	if (!handler->prepared)
 		return 0;
-	if ((result = PyObject_CallObject(handler->postrun, NULL)) == NULL) {
-		PyErr_Print();
+	if (handler->postrun) {
+		PyObject *result = PyObject_CallObject(handler->postrun, NULL);
 		drop_privileges();
-		return 1;
+		if (result == NULL) {
+			PyErr_Print();
+			return 1;
+		}
+		Py_XDECREF(result);
 	}
-
-	drop_privileges();
 	handler->prepared=0;
 
-	Py_XDECREF(result);
 	return 0;
 }
 
@@ -396,22 +390,17 @@ static int handler_exec(Handler *handler, const char *dn, CacheEntry *new, Cache
 	handler_prerun(handler);
 
 	result = PyObject_CallObject(handler->handler, argtuple);
-	Py_XDECREF(argtuple);
-
-	if (result == NULL) {
-		PyErr_Print();
-		return -1;
-	}
 	/* make sure that privileges are properly dropped in case the handler
 	   does setuid() */
 	drop_privileges();
-
-	if (result != Py_None)
-		rv=1;
-	else
-		rv=0;
-
-	Py_XDECREF(result);
+	Py_XDECREF(argtuple);
+	if (result == NULL) {
+		PyErr_Print();
+		rv = -1;
+	} else {
+		rv = result == Py_None ? 0 : 1;
+		Py_XDECREF(result);
+	}
 
 	return rv;
 }
