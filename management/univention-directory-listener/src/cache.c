@@ -243,14 +243,21 @@ int cache_get_schema_id(char *key, NotifierID *value, const long def)
 
 int cache_set_int(char *key, const NotifierID value)
 {
+	int rv;
 	FILE *fp;
-	char file[PATH_MAX];
+	char file[PATH_MAX], tmpfile[PATH_MAX];
 
-	snprintf(file, PATH_MAX, "%s/%s", cache_dir, key);
-	if ((fp = fopen(file, "w")) == NULL)
+	snprintf(tmpfile, PATH_MAX, "%s/%s.tmp", cache_dir, key);
+	if ((fp = fopen(tmpfile, "w")) == NULL)
 		return 1;
 	fprintf(fp, "%ld", value);
-	return fclose(fp);
+	rv = fclose(fp);
+	if (rv != 0)
+		return rv;
+
+	snprintf(file, PATH_MAX, "%s/%s", cache_dir, key);
+	rv = rename(tmpfile, file);
+	return rv;
 }
 
 int cache_get_int(char *key, NotifierID *value, const long def)
