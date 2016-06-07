@@ -653,7 +653,7 @@ int cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 		return cache_next_entry(cur, dn, entry);
 	}
 
-	if (!*dn)
+	if (*dn)
 		free(*dn);
 	*dn = strdup(key.data);
 

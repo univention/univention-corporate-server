@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	FILE *fp;
 	int rv;
 	DBC *cur;
-	char *dn;
+	char *dn = NULL;
 	CacheEntry entry;
 
 	univention_debug_init("stderr", 1, 1);
