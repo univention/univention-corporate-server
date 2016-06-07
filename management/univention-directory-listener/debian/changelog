@@ -1,3 +1,9 @@
+univention-directory-listener (8.0.4-2) unstable; urgency=low
+
+  * Bug #41261: Write notifier ID atomically
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Jun 2016 17:56:26 +0200
+
 univention-directory-listener (8.0.4-1) unstable; urgency=medium
 
   * Do atomic locking on the cache (Bug #34013)
