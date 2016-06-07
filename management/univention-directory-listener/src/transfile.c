@@ -58,7 +58,7 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 	snprintf( buf, sizeof(buf), "%s.lock", name );
 
 	if ((*l_file = fopen(buf, "a")) == NULL) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open lock file [%s]\n", buf);
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open lock file [%s]", buf);
 		return NULL;
 	}
 
@@ -67,17 +67,17 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 		int rc = lockf(l_fd, F_TLOCK, 0);
 		if (!rc)
 			break;
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d\n", buf, count);
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "Could not get lock for file [%s]; count=%d", buf, count);
 		count++;
 		if (count > listener_lock_count) {
-			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit\n", buf);
+			univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not get lock for file [%s]; exit", buf);
 			exit(0);
 		}
 		usleep(1000);
 	}
 
 	if ((file = fopen(name, type)) == NULL) {
-		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open file [%s]\n", name);
+		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open file [%s]", name);
 
 		lockf(l_fd, F_ULOCK, 0);
 		fclose(*l_file);
@@ -123,7 +123,7 @@ int notifier_write_transaction_file(NotifierEntry entry)
 	 */
 	if (stat(failed_ldif_file, &stat_buf) != 0) {
 		if ((file = fopen_lock(transaction_file, "a+", &l_file)) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open %s\n", transaction_file);
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open %s", transaction_file);
 			return res;
 		}
 
@@ -133,7 +133,7 @@ int notifier_write_transaction_file(NotifierEntry entry)
 		if (res != 0)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to write to transaction file %s: %d", transaction_file, res);
 	} else {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not write to transaction file %s. Check for %s\n", transaction_file, failed_ldif_file);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not write to transaction file %s. Check for %s", transaction_file, failed_ldif_file);
 	}
 
 	return res;

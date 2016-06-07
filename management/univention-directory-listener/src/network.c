@@ -112,7 +112,7 @@ static int parse_entry(const char *line, NotifierEntry *entry)
 /* Send buffer in blocking mode. */
 static int send_block(NotifierClient *client, const char *buf, size_t len)
 {
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, ">>>\n%s", buf);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, ">>>%s", buf);
 	return write(client->fd, buf, len);
 }
 
@@ -174,7 +174,7 @@ static int recv_block(NotifierClient *client, char **back, time_t timeout)
 		client->buf = NULL;
 	}
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "<<<\n%s", *back);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "<<<%s", *back);
 	return strlen(*back);
 }
 
@@ -415,27 +415,27 @@ int notifier_client_new(NotifierClient *client,
 			int ret;
 			ret = setsockopt(client->fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_RCVTIMEO\n");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_RCVTIMEO");
 			ret = setsockopt(client->fd, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_SNDTIMEO\n");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set SO_SNDTIMEO");
 
 			const int enable = 1;
 			ret = setsockopt(client->fd, SOL_SOCKET, SO_KEEPALIVE, &enable, sizeof(enable));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to enable TCP KEEPALIVE\n");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to enable TCP KEEPALIVE");
 			const int idle = 60;
 			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPIDLE, &idle, sizeof(idle));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPIDLE\n");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPIDLE");
 			const int probes = 12;
 			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPCNT, &probes, sizeof(probes));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPCNT\n");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPCNT");
 			const int interval = 5;
 			ret = setsockopt(client->fd, SOL_TCP, TCP_KEEPINTVL, &interval, sizeof(interval));
 			if (ret < 0)
-				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPINTVL\n");
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Failed to set TCP_KEEPINTVL");
 		}
 
 		if (connect(client->fd, address, addrlen) == -1) {
