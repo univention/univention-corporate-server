@@ -30,42 +30,106 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-usage()
-{
+STATE_DIR='/var/lib/univention-directory-listener/handlers'
+MODULE_DIR='/usr/lib/univention-directory-listener/system'
+
+main () {
+	local cmd="${1:-}"
+	shift || usage 1
+	case "${cmd#--}" in
+	resync) resync "$@" ;;
+	status) state ;;
+	modules) modules 0 ;;
+	help|-h) usage 0 ;;
+	*) usage 1 ;;
+	esac
+}
+
+usage () {
 	echo "$0: command [args]"
 	echo "Commands:"
 	echo "  resync module1...     Resyncronize modules"
-	exit 1
+	echo "  status                Show listener status"
+	echo "  modules               Show modules and their status"
+	exit ${1:-1}
 }
 
-case "$1" in
-	resync)
-		shift
-		[ -z "$1" ] && usage
-		sv down univention-directory-listener
-		i=0
-		while ! sv status univention-directory-listener | grep -q '^down:'
-		do
-			i=$((i+1))
-			if [ $i -gt 300 ]; then
-				echo "Sending SIGKILL"
-				pids=`pidof univention-directory-listener`
-				if [ -n "$pids" ]; then
-					kill -9 $pids
-					i=0
-				fi
+resync () {
+	[ -n "${1:-}" ] || modules 2
+	local i
+	for i in "$@"
+	do
+		[ -f "$STATE_DIR/$i" ] || modules 2
+	done
+
+	sv down univention-directory-listener
+	i=0
+	while ! sv status univention-directory-listener | grep -q '^down:'
+	do
+		i=$((i+1))
+		if [ $i -gt 300 ]; then
+			echo "Sending SIGKILL"
+			pids=`pidof univention-directory-listener`
+			if [ -n "$pids" ]; then
+				kill -9 $pids
+				i=0
 			fi
-			sleep 1
-			echo "waiting for listener modules to finish"
-		done
-		echo "listener shutdown done"
-		for i in "$@"
-		do
-			rm "/var/lib/univention-directory-listener/handlers/$i" 2>/dev/null || echo "W: handler \"$i\" is unknown"
-		done
-		sv up univention-directory-listener
-		;;
-	*)
-		usage
-		;;
-esac
+		fi
+		sleep 1
+		echo "waiting for listener modules to finish"
+	done
+	echo "listener shutdown done"
+	for i in "$@"
+	do
+		rm -f "$STATE_DIR/$i"
+	done
+	sv up univention-directory-listener
+}
+
+state () {
+	local rc state master_id local_id last_trans rv module_name module_file module_state
+
+	rv= state=$(sv status univention-directory-listener) || rv="$FAIL"
+	printf 'Listener status:\n %s%s%s\n\n' "${rv:-$OKAY}" "$state" "$RSET"
+
+	rv= master_id=$(/usr/share/univention-directory-listener/get_notifier_id.py) || rv="$FAIL"
+	printf 'Current Notifier ID on "%s"\n %s%s%s\n\n' "$(ucr get ldap/master)" "${rv:-$OKAY}" "$master_id" "$RSET"
+
+	rv= local_id=$(cat /var/lib/univention-directory-listener/notifier_id) &&
+		[ -n "$local_id" ] &&
+		[ "$master_id" -eq "$local_id" ] ||
+		rv="$FAIL"
+	printf 'Last Notifier ID processed by local Listener:\n %s%s%s\n\n' "${rv:-$OKAY}" "$local_id" "$RSET"
+
+	rv= last_trans=$(tail -n1 /var/lib/univention-ldap/notify/transaction) &&
+		[ -n "$last_trans" ] &&
+		[ "${last_trans%% *}" -eq "$local_id" ] ||
+		rv="$FAIL"
+	printf 'Last transaction processed:\n %s%s%s\n\n' "${rv:-$OKAY}" "$last_trans" "$RSET"
+
+	modules 0
+}
+
+modules () {
+	echo "Modules:"
+	for module_file in "$MODULE_DIR"/*.py
+	do
+		[ -f "$module_file" ] || continue
+		rv=
+		module_name=$(sed -rne "s/^name\s*=\s*['\"]([^'\"]+)['\"]\s*(#.*)?$/\1/p;T;q" "$module_file") || rv="$FAIL"
+		module_state=$(cat "$STATE_DIR/$module_name") &&
+			[ "$module_state" -eq 3 ] ||
+			rv="$FAIL"
+		printf '%d\t%s\t%s%s%s\n' "$module_state" "$module_name" "${rv:-$OKAY}" "$module_file" "$RSET"
+	done
+	exit ${1:-0}
+}
+
+if [ -t 1 ] && [ -n "${TERM:-}" ]
+then
+	RSET=$(tput op) FAIL=$(tput setaf 1) OKAY=$(tput setaf 2)
+else
+	RSET= FAIL= OKAY=
+fi
+
+main "$@"

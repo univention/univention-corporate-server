@@ -4,7 +4,7 @@
 univention\-directory\-listener\-ctrl \- control UCS listener cache
 .SH SYNOPSIS
 .B univention\-directory\-listener\-ctrl
-.B resync
+.BR help | resync | status | modules
 .I modules
 .SH DESCRIPTION
 This manual page documents briefly the
@@ -13,8 +13,14 @@ command, which controls the listener cache.
 .SH OPTIONS
 A summary of options is included below.
 .TP
-.BI resync\  modules
+.BI resync\  modules...
 Remove state of the given modules and re-run them to synchronize them again.
+.TP
+.B status
+Show status of UCS listener.
+.TP
+.B modules
+Show installed modules and their state.
 .SH FILES
 .TP
 .I /var/lib/univention\-directory\-listener/handlers/
