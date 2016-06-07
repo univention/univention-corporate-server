@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-13) unstable; urgency=medium
+
+  * Bug #41482: Make host_record overridable
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Jun 2016 11:24:53 +0200
+
 univention-s4-connector (10.0.1-12) unstable; urgency=low
 
   * Bug #41288: reopen ucs and s4 connection on

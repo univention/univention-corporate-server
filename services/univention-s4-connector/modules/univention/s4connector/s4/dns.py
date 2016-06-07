@@ -848,7 +848,27 @@ def s4_host_record_create(s4connector, object):
 
 	dnsRecords=[]
 
-	__pack_aRecord(object, dnsRecords)
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
+
+	aRecords = s4connector.configRegistry.get('connector/s4/mapping/dns/host_record/%s.%s/static/ipv4' % (relativeDomainName.lower(), zoneName.lower()))
+	aAAARecords = s4connector.configRegistry.get('connector/s4/mapping/dns/host_record/%s.%s/static/ipv6' % (relativeDomainName.lower(), zoneName.lower()))
+	if aRecords or aAAARecords:
+		#IPv4
+		if aRecords:
+			for a in aRecords.split(' '):
+				a=univention.s4connector.s4.compatible_modstring(a)
+				a_record=ARecord(a)
+				dnsRecords.append(ndr_pack(a_record))
+
+		#IPv6
+		if aAAARecords:
+			for a in aAAARecords.split(' '):
+				a=univention.s4connector.s4.compatible_modstring(a)
+				a_record=AAAARecord(a)
+				dnsRecords.append(ndr_pack(a_record))
+	else:
+		__pack_aRecord(object, dnsRecords)
 
 	dnsNodeDn=s4_dns_node_base_create(s4connector, object, dnsRecords)
 
@@ -860,6 +880,15 @@ def ucs_host_record_create(s4connector, object):
 
 	zoneName = object['attributes']['zoneName'][0]
 	relativeDomainName = object['attributes']['relativeDomainName'][0]
+
+	aRecords = s4connector.configRegistry.get('connector/s4/mapping/dns/host_record/%s.%s/static/ipv4' % (relativeDomainName.lower(), zoneName.lower()))
+	if aRecords:
+		ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: do not write host record back from S4 to UCS because location of A record has been overwritten by UCR')
+		return
+	aAAARecords = s4connector.configRegistry.get('connector/s4/mapping/dns/host_record/%s.%s/static/ipv6' % (relativeDomainName.lower(), zoneName.lower()))
+	if aAAARecords:
+		ud.debug(ud.LDAP, ud.INFO, 'ucs_host_record_create: do not write host record back from S4 to UCS because location of AAAA record has been overwritten by UCR')
+		return
 
 	# unpack the host record
 	a=__unpack_aRecord(object)
