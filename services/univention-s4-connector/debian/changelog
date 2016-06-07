@@ -1,3 +1,9 @@
+univention-s4-connector (8.0.33-95) unstable; urgency=medium
+
+  * Bug #41406: Use udm.handlers.src_record.unmapName
+
+ -- Arvid Requate <requate@univention.de>  Tue, 07 Jun 2016 11:54:21 +0200
+
 univention-s4-connector (8.0.33-94) unstable; urgency=medium
 
   * Bug #40990: Adjust dependency for Samba 4.3.7 binary package
