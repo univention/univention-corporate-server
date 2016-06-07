@@ -119,7 +119,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 	} else if (rv == 0) {
 		signals_block();
 		cache_update_entry(0, "cn=subschema", &cache_entry);
-		handler_update("cn=Subschema", &cache_entry, &old_cache_entry, handler, 'n', NULL);
+		handler_update("cn=Subschema", &cache_entry, &old_cache_entry, handler, 'n');
 		signals_unblock();
 		cache_free_entry(NULL, &cache_entry);
 	}
@@ -208,15 +208,8 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 			}
 
 			signals_block();
-
-			/* First copy the entry for the local cache to be sure the entry in the cache is untouched. Bug #21914 */
-			CacheEntry updated_cache_entry;
-			copy_cache_entry(&cache_entry, &updated_cache_entry);
-			handler_update(dns[i].dn, &cache_entry, &old_cache_entry, handler, 'n', &updated_cache_entry);
-			//compare_cache_entries(&cache_entry, &updated_cache_entry);
-			cache_update_entry_lower(0, dns[i].dn, &updated_cache_entry);
-			cache_free_entry(NULL, &updated_cache_entry);
-
+			handler_update(dns[i].dn, &cache_entry, &old_cache_entry, handler, 'n');
+			cache_update_entry_lower(0, dns[i].dn, &cache_entry);
 			signals_unblock();
 			cache_free_entry(NULL, &cache_entry);
 		}
@@ -261,12 +254,11 @@ int change_new_modules(univention_ldap_parameters_t *lp)
 int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMessage *ldap_entry, char command)
 {
 	char *dn=NULL;
-	CacheEntry cache_entry, old_cache_entry, updated_cache_entry;
+	CacheEntry cache_entry, old_cache_entry;
 	int rv = 0;
 
 	memset(&cache_entry, 0, sizeof(CacheEntry));
 	memset(&old_cache_entry, 0, sizeof(CacheEntry));
-	memset(&updated_cache_entry, 0, sizeof(CacheEntry));
 
 	if ((rv=cache_new_entry_from_ldap(&dn, &cache_entry, lp->ld, ldap_entry)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while converting LDAP entry to cache entry");
@@ -277,11 +269,8 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 		rv = LDAP_OTHER;
 	} else {
 		signals_block();
-		/* First copy the entry for the local cache to be sure the entry in the cache is untouched. Bug #21914 */
-		copy_cache_entry(&cache_entry, &updated_cache_entry);
-		handlers_update(dn, &cache_entry, &old_cache_entry, command, &updated_cache_entry);
-		//compare_cache_entries(&cache_entry, &updated_cache_entry);
-		if ((rv=cache_update_entry_lower(id, dn, &updated_cache_entry)) != 0) {
+		handlers_update(dn, &cache_entry, &old_cache_entry, command);
+		if ((rv=cache_update_entry_lower(id, dn, &cache_entry)) != 0) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
 		}
 		rv=0;
@@ -291,7 +280,6 @@ int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMes
 result:
 	cache_free_entry(&dn, &cache_entry);
 	cache_free_entry(NULL, &old_cache_entry);
-	cache_free_entry(NULL, &updated_cache_entry);
 
 	return rv;
 }
@@ -456,7 +444,7 @@ static int fake_container(struct transaction *trans, char *dn) {
 
 	// 4. Call handlers for add
 	signals_block();
-	rv = handlers_update(dn, &cache_entry, &dummy, 'n', NULL);
+	rv = handlers_update(dn, &cache_entry, &dummy, 'n');
 	signals_unblock();
 
 	// 5. Store cache entry at intermediate location
@@ -629,7 +617,7 @@ static int process_move(struct transaction *trans) {
 	if (same_dn(trans->prev.notify.dn, current_dn))
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "move_same_dn(%s)", current_dn);
 	rv = handlers_delete(trans->prev.notify.dn, &trans->prev.cache, 'r');
-	rv = handlers_update(current_dn, &trans->cur.cache, &dummy, 'a', NULL);
+	rv = handlers_update(current_dn, &trans->cur.cache, &dummy, 'a');
 	signals_unblock();
 
 	// 5. Store cache entry at new location

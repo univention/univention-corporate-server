@@ -88,9 +88,6 @@ char**	cache_entry_changed_attributes	(CacheEntry	 *new,
 int	copy_cache_entry		(CacheEntry *cache_entry,
 					 CacheEntry *backup_cache_entry);
 
-void	compare_cache_entries		(CacheEntry *lentry,
-					 CacheEntry *rentry);
-
 extern const char *cache_entry_get1(CacheEntry *entry, const char *key);
 extern void cache_entry_set1(CacheEntry *entry, const char *key, const char *value);
 extern CacheEntryAttribute *cache_entry_add1(CacheEntry *entry, const char *key, const char *value);

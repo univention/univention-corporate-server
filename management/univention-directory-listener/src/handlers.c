@@ -747,7 +747,7 @@ int attribute_has_changed(char** changes, char* attribute)
 
 
 /* a little more low-level interface than handler_update */
-static int handler__update(Handler *handler, const char *dn, CacheEntry *new, CacheEntry *old, char command, char **changes, CacheEntry *scratch)
+static int handler__update(Handler *handler, const char *dn, CacheEntry *new, CacheEntry *old, char command, char **changes)
 {
 	int matched;
 	int rv = 0;
@@ -780,9 +780,6 @@ static int handler__update(Handler *handler, const char *dn, CacheEntry *new, Ca
 		if (uptodate) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (up-to-date)", handler->name);
 			cache_entry_module_add(new, handler->name);
-			if ( scratch != NULL ) {
-				cache_entry_module_add(scratch, handler->name);
-			}
 			return 0;
 		}
 	}
@@ -797,9 +794,6 @@ static int handler__update(Handler *handler, const char *dn, CacheEntry *new, Ca
 	/* run handler */
 	if (handler_exec(handler, dn, new, old, command) == 0) {
 		cache_entry_module_add(new, handler->name);
-		if ( scratch != NULL ) {
-			cache_entry_module_add(scratch, handler->name);
-		}
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "handler: %s (successful)", handler->name);
 	} else {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "handler: %s (failed)", handler->name);
@@ -811,7 +805,7 @@ static int handler__update(Handler *handler, const char *dn, CacheEntry *new, Ca
 
 
 /* run all handlers if object has changed */
-int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char command, CacheEntry *scratch)
+int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char command)
 {
 	Handler *handler;
 	char** changes;
@@ -823,12 +817,12 @@ int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char comma
 
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		if (!strcmp(handler->name, "replication")) {
-			handler__update(handler, dn, new, old, command, changes, scratch);
+			handler__update(handler, dn, new, old, command, changes);
 		}
 	}
 	for (handler=handlers; handler != NULL; handler=handler->next) {
 		if (strcmp(handler->name, "replication")) {
-			handler__update(handler, dn, new, old, command, changes, scratch);
+			handler__update(handler, dn, new, old, command, changes);
 		}
 	}
 	free(changes);
@@ -838,7 +832,7 @@ int handlers_update(const char *dn, CacheEntry *new, CacheEntry *old, char comma
 
 
 /* run given handler if object has changed */
-int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command, CacheEntry *scratch)
+int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *handler, char command)
 {
 	char** changes;
 	int rv = 0;
@@ -847,7 +841,7 @@ int handler_update(const char *dn, CacheEntry *new, CacheEntry *old, Handler *ha
 
 	changes = cache_entry_changed_attributes(new, old);
 
-	rv = handler__update(handler, dn, new, old, command, changes, scratch);
+	rv = handler__update(handler, dn, new, old, command, changes);
 
 	free(changes);
 
