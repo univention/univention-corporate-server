@@ -205,10 +205,12 @@ class App:
 		if self.package:
 			try:
 				output = subprocess.check_output('univention-app shell %s=%s dpkg-query -W %s' % (self.app_name, self.app_version, self.package_name), shell=True)
-				if output != '%s\t%s\r\n' % (self.package_name, self.package_version):
-					raise UCSTest_DockerApp_VerifyFailed()
+				expected_output1 = '%s\t%s\r\n' % (self.package_name, self.package_version)
+				expected_output2 = '%s\t%s\n' % (self.package_name, self.package_version)
+				if output not in [expected_output1, expected_output2]:
+					raise UCSTest_DockerApp_VerifyFailed('%r != %r' % (output, expected_output2))
 			except subprocess.CalledProcessError:
-				raise UCSTest_DockerApp_VerifyFailed()
+				raise UCSTest_DockerApp_VerifyFailed('univention-app shell failed')
 
 	def uninstall(self):
 		if self.installed:
