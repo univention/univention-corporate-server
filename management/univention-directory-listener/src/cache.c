@@ -212,21 +212,6 @@ void cache_sync(void) {
 	}
 }
 
-int cache_set_schema_id(char *key, const NotifierID value)
-{
-	FILE *fp;
-	char file[PATH_MAX];
-
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Set Schema ID to %ld", value);
-	snprintf(file, PATH_MAX, "%s/schema/id/id", ldap_dir);
-	if ((fp = fopen(file, "w")) == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Failed to open file %s", file);
-		return 1;
-	}
-	fprintf(fp, "%ld", value);
-	return fclose(fp);
-}
-
 int cache_get_schema_id(char *key, NotifierID *value, const long def)
 {
 	FILE *fp;
@@ -274,7 +259,6 @@ int cache_get_int(char *key, NotifierID *value, const long def)
 	return fclose(fp);
 }
 
-#ifdef WITH_DB42
 int cache_get_master_entry(CacheMasterEntry *master_entry)
 {
 	DBT key, data;
@@ -341,7 +325,6 @@ int cache_update_master_entry(CacheMasterEntry *master_entry, DB_TXN *dbtxnp)
 
 	return 0;
 }
-#endif
 
 DB_TXN* cache_new_transaction(NotifierID id, char *dn)
 {
@@ -647,7 +630,7 @@ int cache_next_entry(DBC **cur, char **dn, CacheEntry *entry)
 	}
 
 	/* skip master entry */
-	if (strcmp(key.data, "__master__") == 0) {
+	if (strcmp(key.data, MASTER_KEY) == 0) {
 		free(key.data);
 		free(data.data);
 		return cache_next_entry(cur, dn, entry);

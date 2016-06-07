@@ -348,11 +348,7 @@ int main(int argc, char* argv[])
 	bool write_transaction_file = false;
 	int				 rv;
 	NotifierID			 id = -1;
-#ifndef WITH_DB42
-	NotifierID			 old_id = -1;
-#else
 	CacheMasterEntry		 master_entry;
-#endif
 	struct stat			 stbuf;
 
 	univention_debug_init("stderr", 1, 1);
@@ -597,6 +593,26 @@ int main(int argc, char* argv[])
 		INIT_ONLY=1;
 	}
 
+	/* if no ID is set, assume the database has just been initialized */
+	if ((rv = cache_get_master_entry(&master_entry)) == DB_NOTFOUND) {
+		cache_get_int("notifier_id", &master_entry.id, -1);
+		if (master_entry.id == -1) {
+			rv = notifier_get_id_s(NULL, &master_entry.id);
+			if (rv != 0) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to receive current ID");
+				return 1;
+			}
+		}
+
+		cache_get_schema_id("notifier_schema_id", &master_entry.schema_id, 0);
+
+		rv = cache_update_master_entry(&master_entry, NULL);
+		if (rv != 0)
+			return rv;
+	}
+	/* Legacy file for Nagios et al. */
+	cache_set_int("notifier_id", master_entry.id);
+
 	/* update schema */
 	if ((rv=change_update_schema(lp)) != LDAP_SUCCESS)
 		return rv;
@@ -607,22 +623,6 @@ int main(int argc, char* argv[])
 		return rv;
 	}
 	signals_unblock();
-
-	/* if no ID is set, assume the database has just been initialized */
-#ifdef WITH_DB42
-	if ((rv=cache_get_master_entry(&master_entry)) == DB_NOTFOUND) {
-		master_entry.id = id;
-		if ((rv=cache_update_master_entry(&master_entry, NULL)) != 0)
-			exit(1);
-	} else if (rv != 0)
-		exit(1);
-
-#else
-	cache_get_int("notifier_id", &old_id, -1);
-	if ((long)old_id == -1) {
-		cache_set_int("notifier_id", id);
-	}
-#endif
 
 	if (!initialize_only) {
 		rv = notifier_listen(lp, kp, write_transaction_file, lp_local);

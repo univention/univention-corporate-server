@@ -56,18 +56,14 @@ static void usage(void)
 	fprintf(stderr, "   -c   Listener cache path\n");
 	fprintf(stderr, "   -r   print broken entries only (as far as that's possible)\n");
 	fprintf(stderr, "   -O   dump cache to file (default is stdout)\n");
-#ifdef WITH_DB42
 	fprintf(stderr, "   -i   ID only\n");
-#endif
 }
 
 
 int main(int argc, char* argv[])
 {
 	int debugging = 0, broken_only = 0;
-#ifdef WITH_DB42
 	int id_only = 0;
-#endif
 	char *output_file = NULL;
 	FILE *fp;
 	int rv;
@@ -81,11 +77,7 @@ int main(int argc, char* argv[])
 	for (;;) {
 		int c;
 
-#ifdef WITH_DB42
 		c = getopt(argc, argv, "d:c:O:ri");
-#else
-		c = getopt(argc, argv, "d:c:O:r");
-#endif
 		if (c < 0)
 			break;
 		switch (c) {
@@ -102,11 +94,9 @@ int main(int argc, char* argv[])
 		case 'r':
 			broken_only=1;
 			break;
-#ifdef WITH_DB42
 		case 'i':
 			id_only=1;
 			break;
-#endif
 		default:
 			usage();
 			exit(1);
@@ -140,16 +130,12 @@ int main(int argc, char* argv[])
 	if (cache_init() != 0)
 		exit(1);
 
-#ifdef WITH_DB42
 	if (id_only) {
-		CacheMasterEntry master_entry;
+		CacheMasterEntry master_entry = {0, 0};
 		cache_get_master_entry(&master_entry);
 
 		printf("%ld %ld\n", master_entry.id, master_entry.schema_id);
-
 	} else {
-		exit(0);
-#endif
 
 	for (rv=cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND;
 			rv=cache_next_entry(&cur, &dn, &entry)) {
@@ -162,9 +148,7 @@ int main(int argc, char* argv[])
 	}
 	cache_free_cursor(cur);
 
-#ifdef WITH_DB42
 	}
-#endif
 
 	cache_close();
 

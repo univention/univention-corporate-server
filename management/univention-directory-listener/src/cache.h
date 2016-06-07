@@ -42,21 +42,17 @@ extern int INIT_ONLY;
 extern char *cache_dir;
 extern char *ldap_dir;
 
-#ifdef WITH_DB42
-struct _CacheMasterEntry {
+typedef struct _CacheMasterEntry {
 	NotifierID id;
 	NotifierID schema_id;
 } CacheMasterEntry;
-#endif
 
 int	cache_lock(void);
 int	cache_init				(void);
 void	cache_sync(void);
-#ifdef WITH_DB42
 int	cache_get_master_entry			(CacheMasterEntry	 *master_entry);
 int	cache_update_master_entry		(CacheMasterEntry	 *master_entry,
 						 DB_TXN			 *dptxnp);
-#endif
 int	cache_update_entry			(NotifierID		  id,
 						 char			 *dn,
 						 CacheEntry		 *entry);
@@ -93,6 +89,5 @@ int	cache_get_int				(char		 *key,
 						 const long		  def);
 
 int cache_get_schema_id(char *key, NotifierID *value, const long def);
-int cache_set_schema_id(char *key, const NotifierID value);
 
 #endif /* _CACHE_H_ */
