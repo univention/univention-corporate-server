@@ -1,0 +1,12 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-s4-connector
+fix: 8.0.33-95.614.201606071155
+desc: |
+ This update addresses the following issue(s):
+ * The new Samba version creates additional DNS records in DomainDnsZones
+ and ForestDnsZones. The S4-Connector failed to parse these new types of
+ records.
+bug: [41406]
