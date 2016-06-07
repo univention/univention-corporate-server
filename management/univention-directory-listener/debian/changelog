@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-11) unstable; urgency=low
+
+  * Bug #40600: Fix ucslint
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 07 Jun 2016 17:17:29 +0200
+
 univention-directory-listener (10.0.0-10) unstable; urgency=low
 
   * Bug #39509: Add IPv6 support for get_notifier_id.py
