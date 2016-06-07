@@ -30,8 +30,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#define _GNU_SOURCE /* asprintf */
-
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdbool.h>

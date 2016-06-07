@@ -261,20 +261,25 @@ static void purge_cache(const char *cache_dir)
 {
 	DIR* dir;
 	struct dirent *dirent;
-	char *dirname;
+	char dirname[PATH_MAX];
+	int rv;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "purging cache");
 	if ((dir = opendir(cache_dir)) != NULL) {
 		while ((dirent = readdir(dir))) {
 			char path[PATH_MAX];
-			snprintf(path, PATH_MAX, "%s/%s", cache_dir, dirent->d_name);
+			rv = snprintf(path, PATH_MAX, "%s/%s", cache_dir, dirent->d_name);
+			if (rv < 0 || rv >= PATH_MAX)
+				abort();
 			unlink(path);
 		}
 		closedir(dir);
 	}
 	handlers_clean_all();
 
-	asprintf(&dirname, "%s/handlers", cache_dir);
+	rv = snprintf(dirname, PATH_MAX,"%s/handlers", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
 	if ((dir = opendir(dirname)) != NULL) {
 		while ((dirent = readdir(dir))) {
 			char path[PATH_MAX];
@@ -283,20 +288,21 @@ static void purge_cache(const char *cache_dir)
 		}
 		closedir(dir);
 	}
-	free(dirname);
 }
 
 
 static void prepare_cache(const char *cache_dir)
 {
-	char *dirname;
+	char dirname[PATH_MAX];
 	struct stat stbuf;
+	int rv;
 
-	asprintf(&dirname, "%s/handlers", cache_dir);
+	rv = snprintf(dirname, PATH_MAX, "%s/handlers", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
 	if (stat(dirname, &stbuf) != 0) {
 		mkdir(dirname, 0700);
 	}
-	free(dirname);
 }
 
 
@@ -373,7 +379,6 @@ int main(int argc, char* argv[])
 	CacheMasterEntry		 master_entry;
 #endif
 	struct stat			 stbuf;
-	char *f = NULL;
 
 	univention_debug_init("stderr", 1, 1);
 
@@ -484,7 +489,7 @@ int main(int argc, char* argv[])
 			lp->sasl_mech=strdup(optarg);
 			break;
 		case 'U':
-			asprintf(&lp->sasl_authzid, "u:%s", optarg);
+			if (asprintf(&lp->sasl_authzid, "u:%s", optarg) < 0) abort();
 			/* kp->username=strdup(optarg); */
 		case 'R':
 			lp->sasl_realm=strdup(optarg);
@@ -517,17 +522,25 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	if (asprintf(&f, "%s/bad_cache", cache_dir) < 0) abort();
-	if (stat(f, &stbuf) == 0) {
-		exit(3);
+	{
+		char filename[PATH_MAX];
+		rv = snprintf(filename, PATH_MAX, "%s/bad_cache", cache_dir);
+		if (rv < 0 || rv >= PATH_MAX)
+			abort();
+		if (stat(filename, &stbuf) == 0) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Corrupt cache");
+			exit(3);
+		}
 	}
-	free(f);
+
 
 	univention_debug_set_level(UV_DEBUG_LISTENER, debugging);
 	univention_debug_set_level(UV_DEBUG_LDAP, debugging);
 	univention_debug_set_level(UV_DEBUG_KERBEROS, debugging);
 
-	snprintf(pidfile, PATH_MAX, "%s/pid", cache_dir);
+	rv = snprintf(pidfile, PATH_MAX, "%s/pid", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
 	signals_init();
 
 	if (!foreground && daemonize() != 0)

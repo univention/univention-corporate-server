@@ -35,12 +35,11 @@
  * are initialized and run here.
  */
 
-#define _GNU_SOURCE /* asprintf */
-
 #include <dirent.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 #include <sys/types.h>
 #include <python2.7/Python.h>
 #include <python2.7/compile.h>
@@ -185,9 +184,10 @@ static int handler_import(char* filename)
 {
 	char *filter, *error_msg = NULL;
 	int num_filters = 0;
-	char *state_filename;
+	char state_filename[PATH_MAX];
 	FILE *state_fp;
 	Handler *handler;
+	int rv;
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "importing handler %s", filename);
 
@@ -255,7 +255,9 @@ static int handler_import(char* filename)
 	handler->setdata = module_get_object(handler->module, "setdata");
 
 	/* read handler state */
-	asprintf(&state_filename, "%s/handlers/%s", cache_dir, handler->name);
+	rv = snprintf(state_filename, PATH_MAX, "%s/handlers/%s", cache_dir, handler->name);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
 	state_fp = fopen(state_filename, "r");
 	if (state_fp == NULL) {
 		handler->state = 0;
@@ -263,7 +265,6 @@ static int handler_import(char* filename)
 		fscanf(state_fp, "%d", &handler->state);
 		fclose(state_fp);
 	}
-	free(state_filename);
 
 	/* insert into list */
 	if ( handlers == NULL ) {
@@ -521,10 +522,11 @@ int handlers_load_path(char *path)
 		dir = opendir(path);
 		while ((de = readdir(dir))) {
 			if (strcmp(de->d_name, "replication.py") == 0) {
-				char *filename;
-				asprintf(&filename, "%s/%s", path, de->d_name);
+				char filename[PATH_MAX];
+				rv = snprintf(filename, PATH_MAX, "%s/%s", path, de->d_name);
+				if (rv < 0 || rv >= PATH_MAX)
+					abort();
 				rv = handler_import(filename);
-				free(filename);
 			}
 		}
 		closedir(dir);
@@ -536,10 +538,11 @@ int handlers_load_path(char *path)
 				char *s = strrchr(de->d_name, '.');
 				/* Only load *.py files */
 				if ((s != NULL) && (strcmp(s, ".py") == 0)) {
-				 	char *filename;
-				 	asprintf(&filename, "%s/%s", path, de->d_name);
-				 	rv = handler_import(filename);
-				 	free(filename);
+					char filename[PATH_MAX];
+					rv = snprintf(filename, PATH_MAX,"%s/%s", path, de->d_name);
+					if (rv < 0 || rv >= PATH_MAX)
+						abort();
+					rv = handler_import(filename);
 				}
 			}
 		}
@@ -572,8 +575,9 @@ int handler_free(Handler *handler)
 {
 	char **a;
 	struct filter **f;
-	char *state_filename;
+	char state_filename[PATH_MAX];
 	FILE *state_fp;
+	int rv;
 
 	if ( handler == NULL || handler->name == NULL ) {
 		return 0;
@@ -581,7 +585,9 @@ int handler_free(Handler *handler)
 
 	/* write handler state */
 	/* XXX: can be removed, once we use a database for this */
-	asprintf(&state_filename, "%s/handlers/%s", cache_dir, handler->name);
+	rv = snprintf(state_filename, PATH_MAX, "%s/handlers/%s", cache_dir, handler->name);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
 	state_fp = fopen(state_filename, "w");
 	if (state_fp == NULL) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not open %s", state_filename);
@@ -589,7 +595,6 @@ int handler_free(Handler *handler)
 		fprintf(state_fp, "%d", handler->state);
 		fclose(state_fp);
 	}
-	free(state_filename);
 
 	/* free list node */
 	free(handler->name);

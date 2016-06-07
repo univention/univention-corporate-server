@@ -31,8 +31,6 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#define _GNU_SOURCE /* asprintf */
-
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>

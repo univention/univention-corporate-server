@@ -36,6 +36,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <limits.h>
 #include <sys/types.h>
 
 #include <univention/debug.h>
@@ -192,12 +193,10 @@ static int read_header(void *data, u_int32_t size, u_int32_t *pos, void **key_da
 
 int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 {
-	FILE *file;
 	u_int16_t type;
 	void *key_data, *data_data;
 	u_int32_t key_size, data_size;
 	u_int32_t pos=0;
-	char *f;
 
 	entry->attributes=NULL;
 	entry->attribute_count=0;
@@ -264,7 +263,11 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			}
 			entry->modules[++entry->module_count] = NULL;
 		} else {
+			char filename[PATH_MAX];
+			FILE *file;
 			u_int32_t len;
+			int rv;
+
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "bad data block at position %d:", pos);
 			len = pos < 1000 ? pos : 1000;
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "last %d bytes of previous entry:", len);
@@ -273,12 +276,13 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "first %d bytes of current entry:", len);
 			hex_dump(UV_DEBUG_ERROR, data, pos, len);
 
-			if (asprintf(&f, "%s/bad_cache", cache_dir) < 0) abort();
-			if ((file = fopen(f, "w")) != NULL) {
+			rv = snprintf(filename, PATH_MAX, "%s/bad_cache", cache_dir);
+			if (rv < 0 || rv >= PATH_MAX)
+				abort();
+			if ((file = fopen(filename, "w")) != NULL) {
 				fprintf(file, "Check log file");
 				fclose(file);
 			}
-			free(f);
 
 			return -1;
 		}
