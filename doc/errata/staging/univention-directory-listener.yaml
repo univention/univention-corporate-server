@@ -9,4 +9,4 @@ desc: |
  * A bug in handling the notifier ID was fixed: If the Listener was restarted
    multiple times, the last processed transaction ID could be lost. This lead
    to all transaction being skipped which happened in between.
-bug: [41261]
+bug: [41486]
