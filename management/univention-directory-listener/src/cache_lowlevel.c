@@ -265,11 +265,14 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			}
 			entry->modules[++entry->module_count] = NULL;
 		} else {
+			u_int32_t len;
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "bad data block at position %d:", pos);
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "last 100 bytes of previous entry:");
-			hex_dump(UV_DEBUG_ERROR, data, pos-1000 < 0 ? 0 : pos-1000, pos-1000 < 0 ? pos : 1000);
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "first 100 bytes of current entry:");
-			hex_dump(UV_DEBUG_ERROR, data, pos, pos+1000 > size ? size-pos : 1000);
+			len = pos < 1000 ? pos : 1000;
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "last %d bytes of previous entry:", len);
+			hex_dump(UV_DEBUG_ERROR, data, pos < 1000 ? 0 : pos-1000, len);
+			len = pos + 1000 > size ? size-pos : 1000;
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "first %d bytes of current entry:", len);
+			hex_dump(UV_DEBUG_ERROR, data, pos, len);
 
 			if (asprintf(&f, "%s/bad_cache", cache_dir) < 0) abort();
 			if ((file = fopen(f, "w")) != NULL) {

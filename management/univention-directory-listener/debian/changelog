@@ -4,6 +4,7 @@ univention-directory-listener (10.0.0-10) unstable; urgency=low
   * Bug #3490: Improve listener-ctrl
   * Bug #30227: Fix string prefix comparison
   * Bug #34324: Drop privileges after calling handler functions
+  * Bug #38696: Fix comparison of signed values
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 06 Jun 2016 13:50:36 +0200
 
