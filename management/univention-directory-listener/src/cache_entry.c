@@ -214,7 +214,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 		cache_entry->attributes[cache_entry->attribute_count+1]=NULL;
 
 		memberUidMode = false;
-		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid", strlen("memberUid")) ) {
+		if (!strcmp(cache_entry->attributes[cache_entry->attribute_count]->name, "memberUid")) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/memberuid/skip");
 
@@ -224,7 +224,7 @@ int cache_new_entry_from_ldap(char **dn, CacheEntry *cache_entry, LDAP *ld, LDAP
 			}
 		}
 		uniqueMemberMode = false;
-		if ( !strncmp(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember", strlen("uniqueMember")) ) {
+		if (!strcmp(cache_entry->attributes[cache_entry->attribute_count]->name, "uniqueMember")) {
 			char *ucrval;
 			ucrval = univention_config_get_string("listener/uniquemember/skip");
 
