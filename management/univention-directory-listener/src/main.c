@@ -93,11 +93,15 @@ static char* read_pwd_from_file(char *filename)
 }
 
 
-static int daemonize(void)
+static void daemonize(int lock_fd)
 {
 	pid_t pid;
 	int null, log;
-	int fd;
+	int fd, rv;
+
+	rv = snprintf(pidfile, PATH_MAX, "%s/pid", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
 
 	fd = open(pidfile, O_WRONLY|O_CREAT|O_EXCL);
 	if (fd < 0) {
@@ -105,33 +109,74 @@ static int daemonize(void)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "pidfile %s exists, aborting...%d %s", pidfile, errno, strerror(errno));
 		else
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Can not create pidfile %s: %s, aborting...", pidfile, strerror(errno));
-		return 1;
+		exit(EXIT_FAILURE);
 	}
 
+	// fork off the parent process
 	pid = fork();
-	if (pid == -1)
-		return 1;
-	else if (pid > 0) {
+
+	// An error occurred
+	if (pid < 0)
+		exit(EXIT_FAILURE);
+
+	// Success: Let the parent terminate
+	if (pid > 0)
+		exit(EXIT_SUCCESS);
+
+	// On success: The child process becomes session leader
+	if (setsid() < 0)
+		exit(EXIT_FAILURE);
+
+	// Catch, ignore and handle signals
+	signals_init();
+
+	// Fork off for the second time
+	pid = fork();
+
+	// An error occurred
+	if (pid < 0)
+		exit(EXIT_FAILURE);
+
+	// Success: Let the parent terminate
+	if (pid > 0)
+		exit(EXIT_SUCCESS);
+
+	// write pid file
+	{
 		char buf[15];
-		snprintf(buf, 15, "%d", pid);
-		write(fd, buf, strlen(buf));
-		close(fd);
-		_exit(EXIT_SUCCESS);
+
+		pid = getpid();
+		rv = snprintf(buf, sizeof buf, "%d", pid);
+		if (rv < 0 || rv >= sizeof buf)
+			abort();
+		write(fd, buf, rv);
 	}
 	close(fd);
 
-	if ((null=open("/dev/null", O_RDWR)) == -1) {
+	// Set new file permissions
+	umask(0);
+
+	// Change the working directory to the root directory
+	chdir("/");
+
+	if ((null = open("/dev/null", O_RDWR)) == -1) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not open /dev/null");
-		return 1;
+		exit(EXIT_FAILURE);
 	}
 	dup2(null, STDIN_FILENO);
 	dup2(null, STDOUT_FILENO);
-	if ((log=open("/var/log/univention/listener.log", O_WRONLY | O_CREAT | O_APPEND)) == -1)
-		log=null;
-	dup2(log, STDERR_FILENO);
+	if ((log = open("/var/log/univention/listener.log", O_WRONLY | O_CREAT | O_APPEND)) >= 0) {
+		dup2(log, STDERR_FILENO);
+		close(log);
+	} else {
+		dup2(null, STDERR_FILENO);
+	}
+	close(null);
 
-	setsid();
-	return 0;
+	// Close all open file descriptors
+	for (fd = sysconf(_SC_OPEN_MAX); fd > STDERR_FILENO; fd--)
+		if (fd != lock_fd)
+			close(fd);
 }
 
 
@@ -467,15 +512,12 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	cache_lock();
+	rv = cache_lock();
 
-	rv = snprintf(pidfile, PATH_MAX, "%s/pid", cache_dir);
-	if (rv < 0 || rv >= PATH_MAX)
-		abort();
-	signals_init();
-
-	if (!foreground && daemonize() != 0)
-		exit(EXIT_FAILURE);
+	if (foreground)
+		signals_init();
+	else
+		daemonize(rv);
 
 	drop_privileges();
 

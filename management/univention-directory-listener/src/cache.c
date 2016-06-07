@@ -687,10 +687,7 @@ int cache_close(void)
 	}
 #endif
 	if (lock_fp != NULL) {
-		int rc=lockf(fileno(lock_fp), F_ULOCK, 0);
-		if (rc == 0) {
-			fclose(lock_fp);
-		}
+		fclose(lock_fp);
 		lock_fp = NULL;
 	}
 	return rv;
