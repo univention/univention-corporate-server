@@ -187,76 +187,6 @@ static void usage(void)
 }
 
 
-static void convert_cookie(void)
-{
-#ifndef WITH_DB42
-	char *f;
-	struct stat stbuf;
-
-	asprintf(&f, "%s/notifier_id", cache_dir);
-	if (stat(f, &stbuf) != 0) {
-		free(f);
-		asprintf(&f, "%s/cookie", cache_dir);
-		FILE *fp = fopen(f, "r");
-		if (fp != NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "converting cookie file");
-			char buf[1024];
-			int  i;
-			fgets(buf, 1024, fp);
-			fgets(buf, 1024, fp);
-			i = atoi(buf);
-			if (i > 0)
-				cache_set_int("notifier_id", i);
-			fclose(fp);
-		}
-	}
-	free(f);
-#else
-	char *filename;
-	FILE *fp;
-	CacheMasterEntry master_entry;
-	int rv;
-
-	if ((rv=cache_get_master_entry(&master_entry)) == 0)
-		return; /* nothing to be done */
-	else if (rv != DB_NOTFOUND)
-		exit(1); /* XXX */
-
-	asprintf(&filename, "%s/notifier_id", cache_dir);
-	if ((fp = fopen(filename, "r")) != NULL) {
-		fscanf(fp, "%ld", &master_entry.id);
-		fclose(fp);
-	} else
-		master_entry.id = 0;
-	free(filename);
-
-	if (master_entry.id == 0) {
-		asprintf(&filename, "%s/cookie", cache_dir);
-		if ((fp = fopen(filename, "r")) != NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "converting cookie file");
-			char buf[1024];
-			fgets(buf, 1024, fp);
-			fgets(buf, 1024, fp);
-			master_entry.id = atoi(buf);
-			fclose(fp);
-		}
-		free(filename);
-	}
-
-	if (asprintf(&filename, "%s/schema/id/id", ldap_dir) < 0) abort();
-	if ((fp = fopen(filename, "r")) != NULL) {
-		fscanf(fp, "%ld", &master_entry.schema_id);
-		fclose(fp);
-	} else
-		master_entry.schema_id = 0;
-	free(filename);
-
-	if ((rv=cache_update_master_entry(&master_entry, NULL)) != 0)
-		exit(1); /* XXX */
-#endif
-}
-
-
 static void purge_cache(const char *cache_dir)
 {
 	DIR* dir;
@@ -613,8 +543,6 @@ int main(int argc, char* argv[])
 		handlers_set_data_all("bindpw", lp->bindpw);
 	if (lp->host != NULL)
 		handlers_set_data_all("ldapserver", lp->host);
-
-	convert_cookie();
 
 	if (notifier_get_id_s(NULL, &id) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to receive current ID");
