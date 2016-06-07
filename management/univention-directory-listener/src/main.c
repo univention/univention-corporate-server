@@ -467,6 +467,8 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	cache_lock();
+
 	rv = snprintf(pidfile, PATH_MAX, "%s/pid", cache_dir);
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();

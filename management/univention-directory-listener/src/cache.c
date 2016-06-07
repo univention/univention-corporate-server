@@ -121,28 +121,41 @@ static void cache_error_message(const char *errpfx, char *msg)
 			"database error: %s", msg);
 }
 
-int cache_init(void)
+int cache_lock(void)
 {
-	int rv;
-	char file[PATH_MAX];
+	int rv, fd;
 	char lock_file[PATH_MAX];
 
-	snprintf(file, PATH_MAX, "%s/cache.db", cache_dir);
-	snprintf(lock_file, PATH_MAX, "%s/cache.db.lock", cache_dir);
+	assert(!lock_fp);
 
-	if ((lock_fp = fopen(lock_file, "a+")) == NULL) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
+	rv = snprintf(lock_file, PATH_MAX, "%s/cache.db.lock", cache_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		abort();
+
+	if ((lock_fp = fopen(lock_file, "a+e")) == NULL) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"Could not open lock file [%s]", lock_file);
-		return -1 ;
+		exit(EXIT_FAILURE);
 	}
+	fd = fileno(lock_fp);
 
-	if (lockf(fileno(lock_fp), F_TLOCK, 0) != 0) {
+	if (lockf(fd, F_TLOCK, 0) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
 				"Could not get lock for database [%s]; "
 				"Is another listener processs running?\n",
 				lock_file);
-		exit(0);
+		exit(EXIT_FAILURE);
 	}
+
+	return fd;
+}
+
+int cache_init(void)
+{
+	int rv;
+	char file[PATH_MAX];
+
+	snprintf(file, PATH_MAX, "%s/cache.db", cache_dir);
 
 #ifdef WITH_DB42
 	if ((rv = db_env_create(&dbenvp, 0)) != 0) {

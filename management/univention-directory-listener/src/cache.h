@@ -49,6 +49,7 @@ struct _CacheMasterEntry {
 } CacheMasterEntry;
 #endif
 
+int	cache_lock(void);
 int	cache_init				(void);
 void	cache_sync(void);
 #ifdef WITH_DB42

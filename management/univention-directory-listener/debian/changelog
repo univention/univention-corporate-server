@@ -7,6 +7,7 @@ univention-directory-listener (10.0.0-10) unstable; urgency=low
   * Bug #38696: Fix comparison of signed values
   * Bug #34507: Remove 'security-copy'
   * Bug #34738: Remove empty lines from debug output
+  * Bug #22383: Prevent starting multiple listeners
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 06 Jun 2016 13:50:36 +0200
 
