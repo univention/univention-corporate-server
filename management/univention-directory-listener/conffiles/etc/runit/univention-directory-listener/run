@@ -40,11 +40,8 @@ done
 
 eval "$(univention-config-registry shell)"
 
-if [ "$server_role" != "domaincontroller_master" ]; then
-	if [ -e "/var/lib/univention-ldap/notify/transaction" ]; then
-		chown listener /var/lib/univention-ldap/notify/transaction
+if [ "$server_role" != "domaincontroller_master" ] && command -v univention-directory-notifier >/dev/null 2>&1 ; then
 		options="-o"
-	fi
 fi
 
 

@@ -33,6 +33,7 @@
 #ifndef _NOTIFIER_H_
 #define _NOTIFIER_H_
 
+#include <stdbool.h>
 #include <univention/ldap.h>
 #ifdef WITH_KRB5
 #include <univention/krb5.h>
@@ -42,7 +43,7 @@ typedef void univention_krb5_parameters_t;
 
 int	notifier_listen	(univention_ldap_parameters_t	*lp,
 			 univention_krb5_parameters_t	*kp,
-			 int				 write_transaction_file,
+			 bool write_transaction_file,
 			 univention_ldap_parameters_t *lp_local);
 
 #endif /* _NOTIFIER_H_ */
