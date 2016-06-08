@@ -23,6 +23,7 @@ ucr.load()
 package_name = get_package_name()
 schema_name = get_schema_name()
 join_script_name = '66%s.inst' % package_name
+unjoin_script_name = '66%s.uinst' % package_name
 attribute_id = get_schema_attribute_id()
 attribute_id_update = get_schema_attribute_id()
 
@@ -48,6 +49,22 @@ joinscript_save_current_version
 exit 0
 ''' % {'package_name': package_name, 'schema_name': schema_name}
 
+unjoinscript_buffer = '''#!/bin/sh
+VERSION=1
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterLDAPExtension "$@" --schema %(schema_name)s || die
+exit 0
+''' % {'package_name': package_name, 'schema_name': schema_name}
+
+unjoinscript_buffer2 = '''#!/bin/sh
+VERSION=2
+. /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/ldap.sh
+ucs_unregisterLDAPExtension "$@" --schema %(schema_name)s || die
+exit 0
+''' % {'package_name': package_name, 'schema_name': schema_name}
+
 schema_buffer = '''
 attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s'
 	DESC ' unused custom attribute %(attribute_id)s '
@@ -65,51 +82,49 @@ attributetype ( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFre
 ''' % {'attribute_id': attribute_id_update}
 
 
-success = False
-
 package = DebianPackage(name=package_name, version='1.0')
 package.create_join_script_from_buffer(join_script_name, joinscript_buffer)
+package.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer)
 package.create_usr_share_file_from_buffer(schema_name, schema_buffer)
 package.build()
-package.install()
-
-call_join_script(join_script_name)
-
-schema = fetch_schema_from_ldap_master()
-attribute_identifier = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id}
-
-for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
-	if attribute_entry.startswith(attribute_identifier):
-		print 'The schema entry was found: %s' % attribute_entry
-		success = True
-
-if not success:
-	fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
-	sys.exit(100)
-
-success = False
 
 package2 = DebianPackage(name=package_name, version='1.1')
 package2.create_join_script_from_buffer(join_script_name, joinscript_buffer2)
+package2.create_unjoin_script_from_buffer(unjoin_script_name, unjoinscript_buffer2)
 package2.create_usr_share_file_from_buffer(schema_name, schema_buffer2)
 package2.build()
-package2.install()
 
-call_join_script(join_script_name)
+package.install()
+try:
+    call_join_script(join_script_name)
 
-schema = fetch_schema_from_ldap_master()
-attribute_identifier_update = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id_update}
+    schema = fetch_schema_from_ldap_master()
+    attribute_identifier = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id}
 
-for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
-	if attribute_entry.startswith(attribute_identifier_update):
-		print 'The schema entry was found: %s' % attribute_entry
-		success = True
+    for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
+        if attribute_entry.startswith(attribute_identifier):
+            print 'The schema entry was found: %s' % attribute_entry
+            break
+    else:
+        fail('The attribue was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id})
 
-package2.uninstall()
-package2.remove()
+    package2.install()
 
-if not success:
-	fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id_update})
-	sys.exit(100)
+    call_join_script(join_script_name)
+
+    schema = fetch_schema_from_ldap_master()
+    attribute_identifier_update = "( 1.3.6.1.4.1.10176.200.10999.%(attribute_id)s NAME 'univentionFreeAttribute%(attribute_id)s" % {'attribute_id': attribute_id_update}
+
+    for attribute_entry in schema[1].ldap_entry().get('attributeTypes'):
+        if attribute_entry.startswith(attribute_identifier_update):
+            print 'The schema entry was found: %s' % attribute_entry
+            break
+    else:
+        fail('The attribute was not found: univentionFreeAttribute%(attribute_id)s' % {'attribute_id': attribute_id_update})
+finally:
+    call_unjoin_script(unjoin_script_name)
+    package.remove()
+    package2.remove()
+    package.uninstall()
 
 # vim: set ft=python :
