@@ -11,17 +11,17 @@ _uniudm () {
 		case "${COMP_WORDS[2]}" in
 		create)
 			if [ $COMP_CWORD -gt 2 ] ; then
-				COMPREPLY=($(compgen -W "--binddn --bindpwd --position --set --superordinate --option --customattribute --policy-reference --tls --ignore_exists" -- ${cur}))
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --position --set --superordinate --option --policy-reference --tls --ignore_exists" -- ${cur}))
 			fi ;;
 
 		modify)
 			if [ $COMP_CWORD -gt 2 ] ; then
-				COMPREPLY=($(compgen -W "--binddn --bindpwd --dn --arg --set --append --remove --append-option --customattribute --customattribute-remove --policy-reference --policy-dereference --tls" -- ${cur}))
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --dn --set --append --remove --append-option --policy-reference --policy-dereference --tls" -- ${cur}))
 			fi ;;
 
 		remove)
 			if [ $COMP_CWORD -gt 2 ] ; then
-				COMPREPLY=($(compgen -W "--binddn --bindpwd --dn --superordinate --arg  --filter --tls --remove_referring --recursive" -- ${cur}))
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --dn --superordinate --filter --tls --remove_referring --recursive" -- ${cur}))
 			fi ;;
 
 		list)

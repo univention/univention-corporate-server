@@ -530,7 +530,6 @@ then
 	module_list_superordinate dhcp/service dhcp/server $LINENO
 	module_list_superordinate dhcp/service dhcp/subnet $LINENO
 	module_list settings/cn $LINENO
-	module_list settings/customattribute $LINENO
 	module_list settings/default $LINENO
 	module_list settings/directory $LINENO
 	module_list settings/license $LINENO
@@ -636,15 +635,15 @@ EOF
 	echo '/^schemacheck		onOinclude			/etc/ldap/schema/testolb.schemainclude			/etc/ldap/schema/testolbperson.schema:wq' | vim /etc/ldap/slapd.conf >/dev/null 2>/dev/null
 	/etc/init.d/slapd restart
 
-	adminwrap $LINENO settings/customattribute create --set module=users/user --set objectClass=testfiliale --set syntax=string --set ldapMapping=testfilialbereich --set shortDescription=\"testFilial bereich\" --set longDescription=testFilialbereich --set name=testfiliale --set multivalue=1 --position \"cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute create --set module=users/user --set objectClass=testfiliale --set syntax=string --set ldapMapping=testfilialbereich --set shortDescription=\"testFilial bereich\" --set longDescription=testFilialbereich --set name=testfiliale --set multivalue=1 --position \"cn=custom attributes,cn=univention,$ldap_base\"
 
-	adminwrap $LINENO settings/customattribute create --append module=users/user --append module=computers/windows --set objectClass=testinternetAccount --set syntax=boolean --set ldapMapping=testisInternetAccount --set shortDescription=testisInternet --set longDescription\"testInternet user und Computer\" --set name=testinternetAccount --set multivalue=0 --position \"cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute create --append module=users/user --append module=computers/windows --set objectClass=testinternetAccount --set syntax=boolean --set ldapMapping=testisInternetAccount --set shortDescription=testisInternet --set longDescription\"testInternet user und Computer\" --set name=testinternetAccount --set multivalue=0 --position \"cn=custom attributes,cn=univention,$ldap_base\"
 
-	adminwrap $LINENO settings/customattribute create --set module=users/user --set objectClass=testolbPermission --set syntax=string --set ldapMapping=testolbaccess --set shortDescription=testOLBACCESS --set longDescription=ÖLBtestaccess --set name=testolbaccess --set multivalue=1  --position \"cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute create --set module=users/user --set objectClass=testolbPermission --set syntax=string --set ldapMapping=testolbaccess --set shortDescription=testOLBACCESS --set longDescription=ÖLBtestaccess --set name=testolbaccess --set multivalue=1  --position \"cn=custom attributes,cn=univention,$ldap_base\"
 
-	adminwrap $LINENO settings/customattribute create --set module=users/user --set objectClass=organizationalPerson --set syntax=string --set ldapMapping=ou --set shortDescription=testou --set longDescription=\"testOrganisationseinheit\" --set name=testou --position \"cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute create --set module=users/user --set objectClass=organizationalPerson --set syntax=string --set ldapMapping=ou --set shortDescription=testou --set longDescription=\"testOrganisationseinheit\" --set name=testou --position \"cn=custom attributes,cn=univention,$ldap_base\"
 	
-	adminwrap $LINENO settings/customattribute create --set module=computers/windows --set objectClass=testolbPc --set syntax=string --set ldapMapping=testpctyp --set shortDescription=testpctyp --set longDescription=\"TESTPCTYP\" --set name=testpctyp --position \"cn=custom attributes,cn=univention,$ldap_base\" --set multivalue=0
+	adminwrap $LINENO settings/extended_attribute create --set module=computers/windows --set objectClass=testolbPc --set syntax=string --set ldapMapping=testpctyp --set shortDescription=testpctyp --set longDescription=\"TESTPCTYP\" --set name=testpctyp --position \"cn=custom attributes,cn=univention,$ldap_base\" --set multivalue=0
 	endnum=511
 
 fi
@@ -654,8 +653,8 @@ then
 	adminwrap $LINENO policies/pwhistory modify --dn \"cn=default-settings,cn=pwhistory,cn=users,cn=policies,$ldap_base\" --set expiryInterval="7"
 	if [ -n "$doextended" ]
 	then # test for bug #1594
-		adminwrap $LINENO users/user create --position \"cn=users,$ldap_base\" $optionstring --set username=foobar --set lastname=Bar --set description=Testuser --set password=babudabidu --customattribute \"testFilial bereich\"=whereever
-		adminwrap $LINENO users/user create --position \"cn=users,$ldap_base\" $optionstring --set username=foobar2 --set lastname=Bar --set description=Testuser --set password=babudabidu --customattribute \"testFilial bereich\"=whereever
+		adminwrap $LINENO users/user create --position \"cn=users,$ldap_base\" $optionstring --set username=foobar --set lastname=Bar --set description=Testuser --set password=babudabidu --set \"testFilial bereich\"=whereever
+		adminwrap $LINENO users/user create --position \"cn=users,$ldap_base\" $optionstring --set username=foobar2 --set lastname=Bar --set description=Testuser --set password=babudabidu --set \"testFilial bereich\"=whereever
 		ckthere "uid=foobar2,cn=users" "base" "(testfilialbereich=whereever)" "foobar" "extended attribute testuser" $LINENO
 		adminwrap $LINENO users/user remove --dn \"uid=foobar,cn=users,$ldap_base\"
 		adminwrap $LINENO users/user remove --dn \"uid=foobar2,cn=users,$ldap_base\"
@@ -700,7 +699,7 @@ for i in `seq 1 $endnum`;do
 		customattsettings=""
 	else 
 		customattopt="1"
-		customattsettings=" --customattribute \"testFilial bereich\"=bremen "
+		customattsettings=" --set \"testFilial bereich\"=bremen "
 	fi
 	if [ "0" -eq $(( (i/32)%2 )) ]
 	then 
@@ -708,7 +707,7 @@ for i in `seq 1 $endnum`;do
 		customattsettings2=""
 	else 
 		customatt2opt="1"
-		customattsettings2=" --customattribute testou=whatever "
+		customattsettings2=" --set testou=whatever "
 	fi
 	if [ "0" -eq $(( (i/64)%2 )) ]
 	then 
@@ -716,7 +715,7 @@ for i in `seq 1 $endnum`;do
 		customattsettings3=""
 	else 
 		customatt3opt="1"
-		customattsettings3=" --customattribute testisInternet=1 --customattribute testOLBACCESS=gogogo "
+		customattsettings3=" --set testisInternet=1 --set testOLBACCESS=gogogo "
 	fi
 	if [ "0" -eq $(( (i/128)%2 )) -o "$customatt3opt" = "1" ]	# prevent setting testisInternet twice
 	then 
@@ -724,7 +723,7 @@ for i in `seq 1 $endnum`;do
 		customattsettings4=""
 	else 
 		customatt4opt="1"
-		customattsettings4=" --customattribute testisInternet=0 "
+		customattsettings4=" --set testisInternet=0 "
 	fi
 	if [ "0" -eq $(( (i/256)%2 )) ]
 	then
@@ -990,7 +989,7 @@ for i in `seq 1 $endnum`;do
 		customattsettings=""
 	else 
 		customattopt="1"
-		customattsettings=" --customattribute \"testFilial bereich\"=bonn "
+		customattsettings=" --set \"testFilial bereich\"=bonn "
 	fi
 	if [ "0" -eq $(( (i/32)%2 )) ]
 	then 
@@ -998,7 +997,7 @@ for i in `seq 1 $endnum`;do
 		customattsettings2=""
 	else 
 		customatt2opt="1"
-		customattsettings2=" --customattribute testou=whereever "
+		customattsettings2=" --set testou=whereever "
 	fi
 	if [ "0" -eq $(( (i/64)%2 )) ]
 	then 
@@ -1006,7 +1005,7 @@ for i in `seq 1 $endnum`;do
 		customattsettings3=""
 	else 
 		customatt3opt="1"
-		customattsettings3=" --customattribute testOLBACCESS=stop --customattribute testisInternet=0 "
+		customattsettings3=" --set testOLBACCESS=stop --set testisInternet=0 "
 	fi
 	if [ "0" -eq $(( (i/128)%2 )) -o "$customatt3opt" = "1" ]	# prevent setting testisInternet twice
 	then 
@@ -1014,7 +1013,7 @@ for i in `seq 1 $endnum`;do
 		customattsettings4=""
 	else 
 		customatt4opt="1"
-		customattsettings4=" --customattribute testisInternet=1 "
+		customattsettings4=" --set testisInternet=1 "
 	fi
         if [ "0" -eq $(( (i/256)%2 )) ]
         then
@@ -2373,7 +2372,7 @@ then
 					then
 						if [ "$hosttype" = "windows" ]
 						then
-							extopts=" --customattribute testpctyp=gurke "
+							extopts=" --set testpctyp=gurke "
 						fi
 					fi
 					############################################################################
@@ -2450,7 +2449,7 @@ then
 					then
 						if [ "$hosttype" = "windows" ]
 						then
-							extopts=" --customattribute testpctyp=banane "
+							extopts=" --set testpctyp=banane "
 						fi
 					fi
 					
@@ -5125,11 +5124,11 @@ then
 fi
 if [ -n "$doextended" ]
 then
-	adminwrap $LINENO settings/customattribute remove --dn \"cn=testOLBACCESS,cn=custom attributes,cn=univention,$ldap_base\"
-	adminwrap $LINENO settings/customattribute remove --dn \"cn=testou,cn=custom attributes,cn=univention,$ldap_base\"
-	adminwrap $LINENO settings/customattribute remove --dn \"cn=testinternetAccount,cn=custom attributes,cn=univention,$ldap_base\"
-	adminwrap $LINENO settings/customattribute remove --dn \"cn=testfiliale,cn=custom attributes,cn=univention,$ldap_base\"
-	adminwrap $LINENO settings/customattribute remove --dn \"cn=testpctyp,cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute remove --dn \"cn=testOLBACCESS,cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute remove --dn \"cn=testou,cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute remove --dn \"cn=testinternetAccount,cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute remove --dn \"cn=testfiliale,cn=custom attributes,cn=univention,$ldap_base\"
+	adminwrap $LINENO settings/extended_attribute remove --dn \"cn=testpctyp,cn=custom attributes,cn=univention,$ldap_base\"
 	mv /etc/ldap/slapd.conf.testbackup /etc/ldap/slapd.conf
 	/etc/init.d/slapd restart
 fi
@@ -5628,7 +5627,7 @@ checksettings_cn()
 createsettings_customattribute()
 {
 	pos=$1
-	adminwrap $LINENO settings/customattribute create --set name=testcustomattributesettings --position \"$pos,$ldap_base\" --set shortDescription="someAttribute" --set objectClass="hopeThisDoesNotMatchAnything" --set ldapMapping="novalue" --set module=users/user
+	adminwrap $LINENO settings/extended_attribute create --set name=testcustomattributesettings --position \"$pos,$ldap_base\" --set shortDescription="someAttribute" --set objectClass="hopeThisDoesNotMatchAnything" --set ldapMapping="novalue" --set module=users/user
 }
 checksettings_customattribute()
 {
@@ -5808,7 +5807,7 @@ then
 			"policies sound" \
 			"policies thinclient" \
 			"policies xfree" \
-			settings_customattribute \
+			settings_extended_attribute \
 			settings_packages \
 			settings_printermodel \
 			settings_prohibited_username \

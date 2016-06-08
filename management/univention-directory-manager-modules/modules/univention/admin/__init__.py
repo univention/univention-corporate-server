@@ -241,14 +241,14 @@ class property:
 			for i in range(0,len(self.base_default)):
 				if isinstance(self.base_default[i], (types.StringType, types.UnicodeType)):
 					self.base_default[i]=self._replace(self.base_default[i],object)
-				else: # must be a list of loaded custom attributes then, so we return it if it has content
+				else: # must be a list of loaded extended attributes then, so we return it if it has content
 					if len(self.base_default[i])>0:
 						if self.multivalue and type(self.base_default[i]) != types.ListType:
 							return [self.base_default[i]]
 						else:
 							return self.base_default[i]
 					else:
-						# return the first element, this is only related to empty custom attributes which are loaded wrong, needs to be fixed elsewhere
+						# return the first element, this is only related to empty extended attributes which are loaded wrong, needs to be fixed elsewhere
 						if i>0:
 							if self.multivalue and not isinstance(self.base_default[0], types.ListType):
 								return [self.base_default[0]]

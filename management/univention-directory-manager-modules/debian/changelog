@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-2) unstable; urgency=medium
+
+  * Bug #41266: remove more custom attribute related code
+
+ -- Florian Best <best@univention.de>  Wed, 08 Jun 2016 16:14:17 +0200
+
 univention-directory-manager-modules (11.0.3-1) unstable; urgency=medium
 
   * Bug #41207: reenable object class removal for extended attributes
