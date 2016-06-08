@@ -1,0 +1,14 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: imagemagick
+fix: 8:6.7.7.10-5~ucs3.3.61.201606071541
+desc: |
+ This update addresses the following issue(s):
+ * Command injection vulnerability: An attacker with control on input image
+   or the input filename can execute arbitrary commands with the privileges
+   of the user running the application (CVE-2016-5118)
+bug: [41440]
+cve:
+ - CVE-2016-5118
