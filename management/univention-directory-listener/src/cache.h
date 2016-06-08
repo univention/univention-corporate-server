@@ -46,6 +46,7 @@ typedef struct _CacheMasterEntry {
 	NotifierID id;
 	NotifierID schema_id;
 } CacheMasterEntry;
+extern CacheMasterEntry cache_master_entry;
 
 int	cache_lock(void);
 int	cache_init				(void);

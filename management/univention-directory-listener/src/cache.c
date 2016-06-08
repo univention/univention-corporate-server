@@ -89,6 +89,8 @@
 char *cache_dir = "/var/lib/univention-directory-listener";
 char *ldap_dir = "/var/lib/univention-ldap";
 
+CacheMasterEntry cache_master_entry;
+
 DB *dbp;
 #ifdef WITH_DB42
 DB_ENV *dbenvp;

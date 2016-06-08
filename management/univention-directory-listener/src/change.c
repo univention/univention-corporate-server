@@ -322,7 +322,6 @@ int change_delete_dn(NotifierID id, char *dn, char command)
 /* Make sure schema is up-to-date */
 int change_update_schema(univention_ldap_parameters_t *lp)
 {
-	CacheMasterEntry	 master_entry;
 	NotifierID		 new_id = 0;
 	LDAPMessage		*res,
 				*cur;
@@ -347,14 +346,12 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 
 	free(server_role);
 
-	if ((rv=cache_get_master_entry(&master_entry)) != 0)
-		return rv;
 	if ((notifier_get_schema_id_s(NULL, &new_id)) != 0) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get schema DN");
 		return LDAP_OTHER;
 	}
 
-	if (new_id > master_entry.schema_id)
+	if (new_id > cache_master_entry.schema_id)
 	{
 		rv = LDAP_RETRY(lp, ldap_search_ext_s(lp->ld, "cn=Subschema", LDAP_SCOPE_BASE, "(objectClass=*)", attrs, attrsonly0, serverctrls, clientctrls, &timeout, sizelimit0, &res));
 		if (rv == LDAP_SUCCESS) {
@@ -368,8 +365,8 @@ int change_update_schema(univention_ldap_parameters_t *lp)
 		} else {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not receive schema (%s)", ldap_err2string(rv));
 		}
-		master_entry.schema_id = new_id;
-		rv = cache_update_master_entry(&master_entry, NULL);
+		cache_master_entry.schema_id = new_id;
+		rv = cache_update_master_entry(&cache_master_entry, NULL);
 	}
 
 	return rv;

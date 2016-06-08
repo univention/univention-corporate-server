@@ -131,10 +131,9 @@ int main(int argc, char* argv[])
 		exit(1);
 
 	if (id_only) {
-		CacheMasterEntry master_entry = {0, 0};
-		cache_get_master_entry(&master_entry);
+		cache_get_master_entry(&cache_master_entry);
 
-		printf("%ld %ld\n", master_entry.id, master_entry.schema_id);
+		printf("%ld %ld\n", cache_master_entry.id, cache_master_entry.schema_id);
 	} else {
 
 	for (rv=cache_first_entry(&cur, &dn, &entry); rv != DB_NOTFOUND;

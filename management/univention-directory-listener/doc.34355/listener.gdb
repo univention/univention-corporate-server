@@ -15,4 +15,7 @@ document udl_print_cache
 Dump UDL cache entry at base §arg0
 end
 
+# Internal use within LDAP
+handle SIGPIPE pass nostop norpint
+
 # vim:set ft=gdb:

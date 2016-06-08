@@ -91,25 +91,17 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		univention_ldap_parameters_t *lp_local)
 {
 	int rv = 0;
-	CacheMasterEntry master_entry;
 	struct transaction trans = {
 		.lp = lp,
 		.lp_local = lp_local,
 	};
 
-	/* we should only get here, if the cache has previously been
-	   initialized; thus, *some* ID should've been stored in the
-	   cache */
-	if ((rv = cache_get_master_entry(&master_entry)) != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get last transaction ID from cache; possibly, it hasn't been initialized yet");
-		return 1;
-	}
-
 	for (;;) {
 		int		msgid;
 		time_t		timeout = DELAY_LDAP_CLOSE;
+		NotifierID id = cache_master_entry.id;
 
-		if ((msgid = notifier_get_dn(NULL, master_entry.id + 1)) < 1)
+		if ((msgid = notifier_get_dn(NULL, id + 1)) < 1)
 			break;
 
 		/* wait for data; on timeouts, do maintenance stuff
@@ -123,7 +115,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 						univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get alive answer");
 						return 1;
 					}
-					notifier_resend_get_dn(NULL, msgid, master_entry.id + 1);
+					notifier_resend_get_dn(NULL, msgid, id + 1);
 				} else {
 					if (trans.lp->ld != NULL) {
 						ldap_unbind_ext(trans.lp->ld, NULL, NULL);
@@ -153,12 +145,12 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		}
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "notifier returned = id: %ld\tdn: %s\tcmd: %c", trans.cur.notify.id, trans.cur.notify.dn, trans.cur.notify.command);
 
-		if (trans.cur.notify.id != master_entry.id + 1) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "notifier returned transaction id %ld (%ld expected)", trans.cur.notify.id, master_entry.id + 1);
+		if (trans.cur.notify.id != id + 1) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "notifier returned transaction id %ld (%ld expected)", trans.cur.notify.id, id + 1);
 			rv = 1;
 			goto out;
 		}
-		master_entry.id = trans.cur.notify.id;
+		id = trans.cur.notify.id;
 
 		/* ensure that LDAP connection is open */
 		if (trans.lp->ld == NULL) {
@@ -193,8 +185,9 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		if (write_transaction_file && (rv = notifier_write_transaction_file(trans.cur.notify)) != 0)
 			goto out;
 
-		cache_update_master_entry(&master_entry, NULL);
-		cache_set_int("notifier_id", master_entry.id);
+		cache_master_entry.id = id;
+		cache_update_master_entry(&cache_master_entry, NULL);
+		cache_set_int("notifier_id", id);
 		change_free_transaction_op(&trans.cur);
 	}
 

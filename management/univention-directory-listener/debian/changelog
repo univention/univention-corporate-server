@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-12) unstable; urgency=low
+
+  * Bug #41261: Use only one master cache entry
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 08 Jun 2016 12:34:47 +0200
+
 univention-directory-listener (10.0.0-11) unstable; urgency=low
 
   * Bug #40600: Fix ucslint

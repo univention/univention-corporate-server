@@ -348,7 +348,6 @@ int main(int argc, char* argv[])
 	bool write_transaction_file = false;
 	int				 rv;
 	NotifierID			 id = -1;
-	CacheMasterEntry		 master_entry;
 	struct stat			 stbuf;
 
 	univention_debug_init("stderr", 1, 1);
@@ -594,24 +593,25 @@ int main(int argc, char* argv[])
 	}
 
 	/* if no ID is set, assume the database has just been initialized */
-	if ((rv = cache_get_master_entry(&master_entry)) == DB_NOTFOUND) {
-		cache_get_int("notifier_id", &master_entry.id, -1);
-		if (master_entry.id == -1) {
-			rv = notifier_get_id_s(NULL, &master_entry.id);
+	rv = cache_get_master_entry(&cache_master_entry);
+	if (rv == DB_NOTFOUND) {
+		cache_get_int("notifier_id", &cache_master_entry.id, -1);
+		if (cache_master_entry.id == -1) {
+			rv = notifier_get_id_s(NULL, &cache_master_entry.id);
 			if (rv != 0) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to receive current ID");
 				return 1;
 			}
 		}
 
-		cache_get_schema_id("notifier_schema_id", &master_entry.schema_id, 0);
+		cache_get_schema_id("notifier_schema_id", &cache_master_entry.schema_id, 0);
 
-		rv = cache_update_master_entry(&master_entry, NULL);
-		if (rv != 0)
-			return rv;
+		rv = cache_update_master_entry(&cache_master_entry, NULL);
 	}
+	if (rv != 0)
+		return rv;
 	/* Legacy file for Nagios et al. */
-	cache_set_int("notifier_id", master_entry.id);
+	cache_set_int("notifier_id", cache_master_entry.id);
 
 	/* update schema */
 	if ((rv=change_update_schema(lp)) != LDAP_SUCCESS)
