@@ -10,3 +10,5 @@ desc: |
    and ForestDnsZones. The S4-Connector failed to parse these new types of
    records. This issue has been fixed.
 bug: [41406]
+erratum: 433
+announced: 2016-06-08
