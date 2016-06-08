@@ -1,3 +1,9 @@
+univention-squid-kerberos (5.0.1-3) unstable; urgency=low
+
+  * Longer timeout for spn account samba search (Bug #41443) 
+
+ -- Felix Botner <botner@univention.de>  Wed, 08 Jun 2016 09:13:25 +0200
+
 univention-squid-kerberos (5.0.1-2) unstable; urgency=low
 
   * Longer timeout for spn account samba search (Bug #41443) 

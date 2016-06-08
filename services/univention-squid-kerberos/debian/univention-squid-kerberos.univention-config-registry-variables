@@ -1,0 +1,5 @@
+[squid/kerberos/join/timeout]
+Description[de]=Timeout in Sekunden bevor das Join-Script abbricht wenn das Anlegen des Serice Account fehlschlägt (default 1200). 
+Description[en]=Timeout in seconds before the join script fails if the service account could not be created (default 1200).
+Type=int
+Categories=service-webproxy
