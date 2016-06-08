@@ -214,6 +214,18 @@ Description[en]=A static list of SRV locations, which will always be set at the 
 Type=str
 Categories=service-s4con
 
+[connector/s4/mapping/dns/host_record/.*/static/ipv4]
+Description[de]=Nach dem Schema 'connector/s4/mapping/dns/FQDN/static/ipv4=ADRESSEN' kann eine Liste von IPv4-Adressen konfiguriert werden, die im Samba/AD dem Hostnamen FQDN zugewiesen werden. Mehrere Adressen werden durch Leerzeichen getrennt. Diese Einstellung muss nur in UCS@school-Setups mit selektiver Replikation verwendet werden, um auf einem Schulserver im DNS-Dienst speziellen Hostnamen Adressen zuweisen zu können, die für den Standort spezifisch sind.
+Description[en]=Following the scheme 'connector/s4/mapping/dns/FQDN/static/ipv4=ADDRESSES' a list of IPv4 addresses can be configured, which are assigned to the FQDN in Samba/AD. Multiple addresses are separated by blanks. This setting is only needed in UCS@school setups using selective replication, to override addresses of special hostnames that are specific to the school server.
+Type=str
+Categories=service-s4con
+
+[connector/s4/mapping/dns/host_record/.*/static/ipv6]
+Description[de]=Nach dem Schema 'connector/s4/mapping/dns/FQDN/static/ipv6=ADRESSEN' kann eine Liste von IPv6-Adressen konfiguriert werden, die im Samba/AD dem Hostnamen FQDN zugewiesen werden. Mehrere Adressen werden durch Leerzeichen getrennt. Diese Einstellung muss nur in UCS@school-Setups mit selektiver Replikation verwendet werden, um auf einem Schulserver im DNS-Dienst speziellen Hostnamen Adressen zuweisen zu können, die für den Standort spezifisch sind.
+Description[en]=Following the scheme 'connector/s4/mapping/dns/FQDN/static/ipv6=ADDRESSES' a list of IPv6 addresses can be configured, which are assigned to the FQDN in Samba/AD. Multiple addresses are separated by blanks. This setting is only needed in UCS@school setups using selective replication, to override addresses of special hostnames that are specific to the school server.
+Type=str
+Categories=service-s4con
+
 [connector/ldap/server]
 Description[de]=Der vollständige Rechnername (FQDN) des UCS LDAP-Servers, den der Connector verwendet. Ist die Variable nicht gesetzt, wird der Domänencontroller Master verwendet. Der Wert sollte nur angepasst werden, wenn 'connector/s4/mapping/syncmode' auf 'write' gesetzt ist.
 Description[en]=The fully qualified domain name of the UCS LDAP server used by the connector. If the variable is not set, the master domain controller will be used. This value should only by changed if 'connector/s4/mapping/syncmode' is set to 'write'.
