@@ -9,3 +9,5 @@ desc: |
  * Close the samr user connection during password sync to Active
    Directory.
 bug: [41247]
+erratum: 197
+announced: 2016-06-08
