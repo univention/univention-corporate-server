@@ -7,6 +7,6 @@ fix: 8.0.33-95.614.201606071155
 desc: |
  This update addresses the following issue(s):
  * The new Samba version creates additional DNS records in DomainDnsZones
- and ForestDnsZones. The S4-Connector failed to parse these new types of
- records.
+   and ForestDnsZones. The S4-Connector failed to parse these new types of
+   records. This issue has been fixed.
 bug: [41406]
