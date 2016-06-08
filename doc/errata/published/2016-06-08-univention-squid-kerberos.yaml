@@ -10,3 +10,5 @@ desc: |
    join script has been increased (and is now configurable
    via the UCR variable squid/kerberos/join/timeout).
 bug: [41443]
+erratum: 192
+announced: 2016-06-08
