@@ -604,14 +604,15 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		cache_get_schema_id("notifier_schema_id", &cache_master_entry.schema_id, 0);
+		cache_get_schema_id(&cache_master_entry.schema_id, 0);
 
 		rv = cache_update_master_entry(&cache_master_entry, NULL);
 	}
 	if (rv != 0)
 		return rv;
 	/* Legacy file for Nagios et al. */
-	cache_set_int("notifier_id", cache_master_entry.id);
+	if (cache_set_int("notifier_id", cache_master_entry.id))
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "failed to write notifier ID");
 
 	/* update schema */
 	if ((rv=change_update_schema(lp)) != LDAP_SUCCESS)

@@ -89,6 +89,7 @@ int	cache_get_int				(char		 *key,
 						 NotifierID			 *value,
 						 const long		  def);
 
-int cache_get_schema_id(char *key, NotifierID *value, const long def);
+int cache_get_schema_id(NotifierID *value, const long def);
+int cache_set_schema_id(const NotifierID value);
 
 #endif /* _CACHE_H_ */

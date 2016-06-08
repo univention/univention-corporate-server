@@ -214,7 +214,37 @@ void cache_sync(void) {
 	}
 }
 
-int cache_get_schema_id(char *key, NotifierID *value, const long def)
+int cache_set_schema_id(const NotifierID value)
+{
+	int rv, fd, len;
+	char file[PATH_MAX], buf[15];
+
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "Set Schema ID to %ld", value);
+	len = snprintf(buf, sizeof buf, "%ld", value);
+	if (len < 0 || len >= sizeof buf)
+		return len;
+
+	rv = snprintf(file, PATH_MAX, "%s/schema/id/id", ldap_dir);
+	if (rv < 0 || rv >= PATH_MAX)
+		return rv;
+	fd = open(file, O_WRONLY | O_CREAT, 0644);
+	if (fd < 0)
+		return fd;
+	rv = write(fd, buf, len);
+	if (rv != len) {
+		close(fd);
+		return 1;
+	}
+	rv = ftruncate(fd, len);
+	if (rv != 0)
+		return rv;
+	rv = close(fd);
+	if (rv != 0)
+		return rv;
+	return 0;
+}
+
+int cache_get_schema_id(NotifierID *value, const long def)
 {
 	FILE *fp;
 	char file[PATH_MAX];
@@ -234,7 +264,9 @@ int cache_set_int(char *key, const NotifierID value)
 	FILE *fp;
 	char file[PATH_MAX], tmpfile[PATH_MAX];
 
-	snprintf(tmpfile, PATH_MAX, "%s/%s.tmp", cache_dir, key);
+	rv = snprintf(tmpfile, PATH_MAX, "%s/%s.tmp", cache_dir, key);
+	if (rv < 0 || rv >= PATH_MAX)
+		return rv;
 	if ((fp = fopen(tmpfile, "w")) == NULL)
 		return 1;
 	fprintf(fp, "%ld", value);
@@ -242,7 +274,9 @@ int cache_set_int(char *key, const NotifierID value)
 	if (rv != 0)
 		return rv;
 
-	snprintf(file, PATH_MAX, "%s/%s", cache_dir, key);
+	rv = snprintf(file, PATH_MAX, "%s/%s", cache_dir, key);
+	if (rv < 0 || rv >= PATH_MAX)
+		return rv;
 	rv = rename(tmpfile, file);
 	return rv;
 }
