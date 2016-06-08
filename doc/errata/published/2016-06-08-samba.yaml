@@ -12,3 +12,5 @@ desc: |
  * The default RPC timeout has been increased from 60 to 480 seconds.
    Thus, a join with more than 100.000 objects will work.
 bug: [41193,41021]
+erratum: 193
+announced: 2016-06-08
