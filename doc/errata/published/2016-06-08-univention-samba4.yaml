@@ -10,3 +10,5 @@ desc: |
    by using localhost for dns-related Kerberos operations. This fixes an
    intermittend error in the 98univention-samba4slavepdc-dns.inst joinscript.
 bug: [34908]
+erratum: 195
+announced: 2016-06-08
