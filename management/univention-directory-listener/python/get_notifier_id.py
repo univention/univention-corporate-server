@@ -32,27 +32,52 @@
 # <http://www.gnu.org/licenses/>.
 
 import socket
-from univention.config_registry import ConfigRegistry
+from optparse import OptionParser
 import sys
+
+
+def parse_args():
+    usage = '%prog [options] [master]'
+    desc = sys.modules[__name__].__doc__
+    parser = OptionParser(usage=usage, description=desc)
+    parser.add_option(
+        '-m', '--master',
+        dest='master',
+        help='LDAP Server address')
+    parser.add_option(
+        '-s', '--shema',
+        dest='cmd',
+        action='store_const',
+        const='GET_SCHEMA_ID',
+        default='GET_ID',
+        help='Fetch LDAP Schema ID')
+    (options, args) = parser.parse_args()
+
+    if not options.master:
+        if args:
+            options.master, = args
+        else:
+            from univention.config_registry import ConfigRegistry
+            configRegistry = ConfigRegistry()
+            configRegistry.load()
+            options.master = configRegistry.get('ldap/master')
+
+    if not options.master:
+        parser.error('ldap/master or --host not set')
+
+    return options
 
 
 def main():
     """Retrive current Univention Directory Notifier transaction ID."""
-    configRegistry = ConfigRegistry()
-    configRegistry.load()
-
-    master = configRegistry.get('ldap/master')
-    if not master:
-        print >> sys.stderr, 'Error: ldap/master not set'
-        sys.exit(1)
-
+    options = parse_args()
     try:
-        sock = socket.create_connection((master, 6669))
+        sock = socket.create_connection((options.master, 6669))
 
         sock.send('Version: 2\nCapabilities: \n\n')
         sock.recv(100)
 
-        sock.send('MSGID: 1\nGET_ID\n\n')
+        sock.send('MSGID: 1\n%s\n\n' % (options.cmd,))
         notifier_result = sock.recv(100)
 
         if notifier_result:
@@ -60,6 +85,7 @@ def main():
     except socket.error as ex:
         print >> sys.stderr, 'Error: %s' % (ex,)
         sys.exit(1)
+
 
 if __name__ == '__main__':
     main()
