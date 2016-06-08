@@ -3,7 +3,7 @@ release: "3.3"
 version: [0]
 scope: ucs_3.3-0-errata3.3-0
 src: qemu
-fix: 
+fix: 1.1.2+dfsg-1~ucs3.3.50.201606081531
 desc: |
  This update addresses the following issue:
  * qemu needs to be rebuilt due to the update to Xen 4.1
