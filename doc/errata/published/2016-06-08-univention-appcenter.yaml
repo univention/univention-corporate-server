@@ -15,3 +15,5 @@ desc: |
    somewhere in the domain, even if this App was installed several times. This
    has been fixed.
 bug: [41452,41227,41217]
+erratum: 194
+announced: 2016-06-08
