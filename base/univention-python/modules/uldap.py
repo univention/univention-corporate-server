@@ -222,6 +222,9 @@ class access:
 		if self.follow_referral:
 			self.lo.set_option(ldap.OPT_REFERRALS,0)
 
+		self.__schema = None
+		self.__reconnects_done = 0L
+
 	def __encode( self, value ):
 		if value == None:
 			return value
@@ -429,6 +432,15 @@ class access:
 					'value': value,
 					'fixed': 1 if key in fixed else 0,
 				}
+
+	def get_schema(self):
+		if self.reconnect and self.lo._reconnects_done > self.__reconnects_done:
+			# the schema might differ after reconnecting (e.g. slapd restart)
+			self.__schema = None
+			self.__reconnects_done = self.lo._reconnects_done
+		if not self.__schema:
+			self.__schema = ldap.schema.SubSchema(self.lo.read_subschemasubentry_s(self.lo.search_subschemasubentry_s()), 0)
+		return self.__schema
 
 	def add(self, dn, al):
 		"""Add LDAP entry with dn and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values)."""
