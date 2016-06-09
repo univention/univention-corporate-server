@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-appcenter
+fix: 5.0.21-5.169.201606091029
+desc: |
+ This update addresses the following issue(s):
+ * Minor code changes make other projects easier that rely on the App
+   Center.
+bug: [41360]
