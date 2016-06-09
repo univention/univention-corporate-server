@@ -135,9 +135,10 @@ def shell_safe(value):
 def mkdir(directory):
 	if os.path.exists(directory):
 		return
-	parent = os.path.split(directory)[0]
+	parent, child = os.path.split(directory)
 	mkdir(parent)
-	os.mkdir(directory)
+	if child:
+		os.mkdir(directory)
 
 
 def rmdir(directory):

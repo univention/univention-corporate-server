@@ -113,7 +113,7 @@ class Domain(CredentialsAction):
 	def _get_installations(self, app, hosts, app_ldap_objects, lo, pos):
 		ret = {}
 		local_ucs_version = ucr_get('version/version')
-		candidate_version = AppManager.find(app.id, latest=True).version
+		candidate_version = self._find_latest_app_version(app).version
 		for host in hosts:
 			role = host.info.get('serverRole')[0]
 			description = host.info.get('description')
@@ -145,3 +145,6 @@ class Domain(CredentialsAction):
 				'role': role,
 			}
 		return ret
+
+	def _find_latest_app_version(self, app):
+		return AppManager.find(app.id, latest=True)

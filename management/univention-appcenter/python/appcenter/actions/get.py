@@ -110,7 +110,12 @@ class Get(UniventionAppAction):
 		ret['host_master'] = ucr_get('ldap/master')
 		ret['autostart'] = ucr_get('%s/autostart' % app.id, 'yes')
 		ret['is_ucs_component'] = app.is_ucs_component()
-		ret['update_available'] = False  # TODO: ucr.is_true(app.ucr_upgrade_key); Bug#39916
+		ret.update(cls._candidate_dict(app))
+		return ret
+
+	@classmethod
+	def _candidate_dict(cls, app):
+		ret = {}
 		latest = AppManager.find(app.id, latest=True)
 		if latest > app:
 			ret['update_available'] = True
@@ -119,6 +124,8 @@ class Get(UniventionAppAction):
 			ret['candidate_component_id'] = latest.component_id
 			ret['candidate_readme_update'] = latest.readme_update
 			ret['candidate_readme_post_update'] = latest.readme_post_update
+		else:
+			ret['update_available'] = False  # TODO: ucr.is_true(app.ucr_upgrade_key); Bug#39916
 		return ret
 
 	@classmethod

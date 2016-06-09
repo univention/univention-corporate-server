@@ -64,11 +64,16 @@ class LocalAppcenterAction(UniventionAppAction):
 		parser.add_argument('--ucs-version', default=ucr_get('version/version'), help='App Center is used for UCS_VERSION. Default: %(default)s')
 
 	def copy_file(self, src, dst):
+		result_file = dst
+		if os.path.isdir(result_file):
+			result_file = os.path.join(result_file, os.path.basename(src))
 		if src == dst:
+			os.chmod(result_file, 0644)
 			return True
 		try:
 			shutil.copy2(src, dst)
-		except IOError as exc:
+			os.chmod(result_file, 0644)
+		except EnvironmentError as exc:
 			self.warn(exc)
 			return False
 		else:
@@ -480,7 +485,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			for fname in glob('%s*' % filename):
 				os.unlink(fname)
 			with open(filename, 'wb') as packages:
-				process = subprocess.Popen(['apt-ftparchive', mode, repo_dir], stdout=subprocess.PIPE)
+				process = subprocess.Popen(['apt-ftparchive', mode, os.path.dirname(filename)], stdout=subprocess.PIPE)
 				stdout, stderr = process.communicate()
 				for line in stdout.splitlines():
 					if line.startswith('Filename:'):

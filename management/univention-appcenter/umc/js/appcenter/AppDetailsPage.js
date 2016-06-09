@@ -138,13 +138,17 @@ define([
 				}
 				var app = new App(loadedApp, this);
 				this._set('app', app);
-				this.hostDialog.set('app', app);
-				this.detailsDialog.set('app', app);
-				this.configDialog.set('app', app);
+				this._configureDialogs();
 				this.renderPage();
 				this.set('moduleTitle', app.name);
 				this.appLoadingDeferred.resolve();
 			}));
+		},
+
+		_configureDialogs: function(app) {
+			this.hostDialog.set('app', app);
+			this.detailsDialog.set('app', app);
+			this.configDialog.set('app', app);
 		},
 
 		_setModuleTitleAttr: function(name) {

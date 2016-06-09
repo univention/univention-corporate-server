@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-5) unstable; urgency=medium
+
+  * Bug #41360: Prepare App Center for Self Service
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 09 Jun 2016 10:27:24 +0200
+
 univention-appcenter (5.0.21-4) unstable; urgency=medium
 
   * Bug #41217: Fixed RequiredAppsInDomain

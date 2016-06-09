@@ -67,6 +67,8 @@ define([
 		mainBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
 		_initialBootstrapClasses: 'col-xs-12 col-sm-12 col-md-12 col-lg-12',
 
+		metaCategoryClass: AppCenterMetaCategory,
+
 		buildRendering: function() {
 			this.inherited(arguments);
 
@@ -142,7 +144,22 @@ define([
 
 		createMetaCategories: function() {
 			this.metaCategories = [];
-			var assumedMetaCategories = [
+
+			var assumedMetaCategories = this.getMetaCategoryDefinition();
+			array.forEach(assumedMetaCategories, lang.hitch(this, function(metaObj){
+				var metaCategory = new this.metaCategoryClass(metaObj);
+				metaCategory.on('showApp', lang.hitch(this, 'onShowApp'));
+				this.metaCategories.push(metaCategory);
+				this.addChild(metaCategory);
+				this.own(metaCategory);
+				this.watch('appQuery', function(attr, oldval, newval) {
+					metaCategory.set('filterQuery', newval);
+				});
+			}));
+		},
+
+		getMetaCategoryDefinition: function() {
+			return [
 			{
 				label: _('Installed'),
 				query: function(app) {
@@ -155,17 +172,6 @@ define([
 					return !app.is_installed_anywhere;
 				}
 			}];
-
-			array.forEach(assumedMetaCategories, lang.hitch(this, function(metaObj){
-				var metaCategory = new AppCenterMetaCategory(metaObj);
-				metaCategory.on('showApp', lang.hitch(this, 'onShowApp'));
-				this.metaCategories.push(metaCategory);
-				this.addChild(metaCategory);
-				this.own(metaCategory);
-				this.watch('appQuery', function(attr, oldval, newval) {
-					metaCategory.set('filterQuery', newval);
-				});
-			}));
 		},
 
 		getAppCenterSeen: function() {

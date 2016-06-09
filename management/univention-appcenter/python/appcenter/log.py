@@ -89,11 +89,11 @@ class UMCHandler(logging.Handler):
 			pass
 		else:
 			msg = str(self.format(record))
-			if record.level <= logging.DEBUG:
+			if record.levelno <= logging.DEBUG:
 				MODULE.info(msg)
-			elif record.level <= logging.INFO:
+			elif record.levelno <= logging.INFO:
 				MODULE.process(msg)
-			elif record.level <= logging.WARN:
+			elif record.levelno <= logging.WARN:
 				MODULE.warn(msg)
 			else:
 				MODULE.error(msg)
