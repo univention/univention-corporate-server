@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-5) unstable; urgency=medium
+
+  * Bug #41207: cache schema
+
+ -- Florian Best <best@univention.de>  Thu, 09 Jun 2016 17:19:07 +0200
+
 univention-directory-manager-modules (11.0.3-4) unstable; urgency=medium
 
   * Bug #25240: restore univention.debug.function() functionality

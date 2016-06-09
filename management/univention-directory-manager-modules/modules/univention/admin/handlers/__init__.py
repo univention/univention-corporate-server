@@ -802,37 +802,39 @@ class simpleLdap(base):
 			ml = [x for x in ml if x[0].lower() != 'objectClass'.lower()]
 			ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
 
-		# parse LDAP schema
-		schema = ldap.schema.SubSchema(self.lo.lo.lo.read_subschemasubentry_s(self.lo.lo.lo.search_subschemasubentry_s()), 0)
-		newattr = ldap.cidict.cidict(_MergedAttributes(self, ml).get_attributes())
-		ocs_afterwards = set(newattr.get('objectClass', [])) - object_classes_to_remove
+		if object_classes_to_remove or set(self.oldattr.get('objectClass', [])) != ocs:
+			# parse LDAP schema
+			schema = self.lo.get_schema()
+			newattr = ldap.cidict.cidict(_MergedAttributes(self, ml).get_attributes())
+			ocs_afterwards = set(newattr.get('objectClass', [])) - object_classes_to_remove
 
-		# make sure we still have a structural object class
-		if not schema.get_structural_oc(ocs_afterwards):
-			structural_ocs = schema.get_structural_oc(object_classes_to_remove)
-			if structural_ocs:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Preventing to remove last structural object class %r' % (structural_ocs,))
-				object_classes_to_remove -= set(schema.get_obj(ldap.schema.models.ObjectClass, structural_ocs).names)
-				ocs_afterwards = set(newattr.get('objectClass', [])) - object_classes_to_remove
+			# make sure we still have a structural object class
+			if not schema.get_structural_oc(ocs_afterwards):
+				structural_ocs = schema.get_structural_oc(object_classes_to_remove)
+				if structural_ocs:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Preventing to remove last structural object class %r' % (structural_ocs,))
+					object_classes_to_remove -= set(schema.get_obj(ldap.schema.models.ObjectClass, structural_ocs).names)
+					ocs_afterwards = set(newattr.get('objectClass', [])) - object_classes_to_remove
+				else:
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'missing structural object class. Modify will fail.')
+
+			# validate removal of object classes
+			must, may = schema.attribute_types(ocs_afterwards)
+			must = ldap.cidict.cidict(dict((x, x) for x in list(chain.from_iterable(x.names for x in must.values()))))
+			may = ldap.cidict.cidict(dict((x, x) for x in list(chain.from_iterable(x.names for x in may.values()))))
+			for attr in must.keys():
+				if not newattr.get(attr):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'The attribute %r is required by the current object classes.' % (attr,))
+					break
 			else:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'missing structural object class. Modify will fail.')
-
-		# validate removal of object classes
-		do_removal = True
-		must, may = schema.attribute_types(ocs_afterwards)
-		must = ldap.cidict.cidict(dict((x, x) for x in list(chain.from_iterable(x.names for x in must.values()))))
-		may = ldap.cidict.cidict(dict((x, x) for x in list(chain.from_iterable(x.names for x in may.values()))))
-		for attr in must.keys():
-			if not newattr.get(attr):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'The attribute %r is required in the current object classes.' % (attr,))
-				do_removal = False
-		for attr, val in newattr.items():
-			if val and not must.get(attr) and not may.get(attr):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'The attribute %r has is now known by any object class.' % (attr,))
-				do_removal = False
-		if do_removal:
-			ml = [x for x in ml if x[0].lower() != 'objectClass'.lower()]
-			ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs - object_classes_to_remove)))
+				for attr, val in newattr.items():
+					if val and not must.get(attr) and not may.get(attr):
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'The attribute %r is not allowed by any object class.' % (attr,))
+						# ml.append((attr, val, [])) # TODO: Remove the now invalid attribute instead
+						break
+				else:
+					ml = [x for x in ml if x[0].lower() != 'objectclass']
+					ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs - object_classes_to_remove)))
 
 		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
 
@@ -1399,7 +1401,7 @@ class simpleComputer( simpleLdap ):
 		# if we only got the ip addres, we remove the ip address
 
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dhcp object: position="%s", name="%s", oldname="%s", mac="%s", ip="%s"' % ( position, name, oldname, mac, ip ) )
-		
+
 		dn = None
 
 		tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
@@ -1479,7 +1481,7 @@ class simpleComputer( simpleLdap ):
 					for dn2, attributes2 in self.lo.search(scope='domain', attr=[ 'zoneName' ], filter='(&(relativeDomainName=%s)(objectClass=dNSZone))' %  name, unique=0 ):
 						self.lo.modify( dn, [('pTRRecord', '%s.%s.' % (name, attributes2['zoneName'][0]), '')] )
 
-				zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, zoneDN) 
+				zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, zoneDN)
 				zone.open()
 				zone.modify()
 
@@ -2082,9 +2084,9 @@ class simpleComputer( simpleLdap ):
 			if len(self.info.get('ip', [])) == 1 and len(self.info.get('mac', [])) == 1 and len(self.info.get('dhcpEntryZone', [])):
 				# In this special case, we assume the mapping between ip/mac address to be
 				# unique. The dhcp entry needs to contain the mac address (as sepcified by
-				# the ldap search for dhcp entries), the ip address may not correspond to 
-				# the ip address associated with the computer ldap object, but this would 
-				# be erroneous anyway. We therefore update the dhcp entry to correspond to 
+				# the ldap search for dhcp entries), the ip address may not correspond to
+				# the ip address associated with the computer ldap object, but this would
+				# be erroneous anyway. We therefore update the dhcp entry to correspond to
 				# the current ip and mac address. (Bug #20315)
 				dn, ip, mac = self.__split_dhcp_line( self.info['dhcpEntryZone'][0] )
 
@@ -2816,25 +2818,17 @@ class _MergedAttributes(object):
 		return dict((attr, self.get_attribute(attr)) for attr in attributes)
 
 	def get_attribute(self, attr):
-		value = set(self.obj.oldattr.get(attr, []))
+		values = set(self.obj.oldattr.get(attr, []))
 		# evaluate the modlist and apply all changes to the current values
-		for old, new in [(y, z) for x, y, z in self.modlist if x.lower() == attr.lower()]:
-			if not new:
-				new = []
-			if not old:
-				old = []
-			if isinstance(new, basestring):
-				new = [new]
-			if isinstance(old, basestring):
-				old = [old]
+		for (att, old, new) in self.modlist:
+			if att.lower() != attr.lower():
+				continue
+			new = [] if not new else [new] if isinstance(new, basestring) else new
+			old = [] if not old else [old] if isinstance(old, basestring) else old
 			if not old and new:  # MOD_ADD
-				value |= set(new)
+				values |= set(new)
 			elif not new and old:  # MOD_DELETE
-				value -= set(old)
+				values -= set(old)
 			elif old and new:  # MOD_REPLACE
-				value = set(new)
-		return list(value)
-
-#	def to_ldap_modlist(self):  # TODO: use; Bug #41267
-#		from ldap.modlist import modifyModlist, addModlist
-#		return modifyModlist(self.obj.oldattr, self.get_attributes(), case_ignore_attr_types=self.case_insensitive_attributes)
+				values = set(new)
+		return list(values)

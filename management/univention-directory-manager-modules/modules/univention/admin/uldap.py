@@ -277,7 +277,6 @@ class access:
 		self.allow_modify=1
 		self.licensetypes = [ 'UCS' ]
 
-
 	def bind(self, binddn, bindpw):
 		try:
 			self.lo.bind(binddn, bindpw)
@@ -337,6 +336,11 @@ class access:
 	def _validateLicense(self):
 		if self.require_license and not GPLversion:
 			univention.admin.license.select('admin')
+
+	def get_schema(self):
+		if not hasattr(self.lo, 'get_schema'):  # introduced in UCS 4.1-2 erratum. can be removed in the future
+			return ldap.schema.SubSchema(self.lo.lo.read_subschemasubentry_s(self.lo.lo.search_subschemasubentry_s()), 0)
+		return self.lo.get_schema()
 
 	def get(self, dn, attr=[], required=0, exceptions=0):
 		return self.lo.get(dn, attr, required)
