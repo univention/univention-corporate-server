@@ -7,7 +7,7 @@ fix: 9.0.1-3.104.201606061133
 desc: |
  This update addresses the following issues:
  * The code for "flat-mode" replication has been removed.
- * The check for a full filesystem was inverted and has been fixed.
+ * The check for a full file system was inverted and has been fixed.
  * LDAP objects having a multi-valued RDNs are now handled correctly during a
    rename and move.
  * A traceback in failed-LDIF-mode has been fixed.

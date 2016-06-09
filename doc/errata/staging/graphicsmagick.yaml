@@ -5,7 +5,7 @@ scope: ucs_4.1-0-errata4.1-2
 src: graphicsmagick
 fix: 1.3.16-1.1.26.201606071534
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * Command injection vulnerability: An attacker with control on input image
    or the input filename can execute arbitrary commands with the privileges
    of the user running the application (CVE-2016-5118)
