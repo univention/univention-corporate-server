@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-4) unstable; urgency=medium
+
+  * Bug #25240: restore univention.debug.function() functionality
+
+ -- Florian Best <best@univention.de>  Thu, 09 Jun 2016 12:40:31 +0200
+
 univention-directory-manager-modules (11.0.3-3) unstable; urgency=medium
 
   * Bug #41266: remove commented out code

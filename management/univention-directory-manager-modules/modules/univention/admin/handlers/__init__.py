@@ -287,7 +287,7 @@ class base(object):
 			self.info[key]=p
 
 	def __getitem__(self, key):
-		univention.debug.function('admin.handlers.base.__getitem__ key = %s'%key)
+		_d = univention.debug.function('admin.handlers.base.__getitem__ key = %s'%key)
 		if not key:
 			return None
 
@@ -1002,7 +1002,7 @@ class simpleLdap(base):
 					policy.mapping.unregister( pname )
 
 	def _update_policies(self):
-		univention.debug.function('admin.handlers.simpleLdap._update_policies')
+		_d = univention.debug.function('admin.handlers.simpleLdap._update_policies')
 		for policy_type, policy_object in self.policyObjects.items():
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "simpleLdap._update_policies: processing policy of type: %s" % policy_type)
 			if policy_object.changes:
@@ -2639,7 +2639,7 @@ class simplePolicy(simpleLdap):
 				return key
 
 	def __makeUnique(self):
-		univention.debug.function('admin.handlers.simplePolicy.__makeUnique')
+		_d = univention.debug.function('admin.handlers.simplePolicy.__makeUnique')
 		identifier=self.getIdentifier()
 		components=self.info[identifier].split("_uv")
 		if len(components) > 1:

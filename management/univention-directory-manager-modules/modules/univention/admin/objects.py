@@ -84,7 +84,7 @@ def open(object):
 		object.open()
 
 def default(module, co, lo, position):
-	univention.debug.function('admin.objects.default')
+	_d = univention.debug.function('admin.objects.default')
 	module=univention.admin.modules.get(module)
 	object=module.object(co, lo, position)
 	for name, property in module.property_descriptions.items():

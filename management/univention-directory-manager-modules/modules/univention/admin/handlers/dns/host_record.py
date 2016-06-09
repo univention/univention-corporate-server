@@ -121,14 +121,14 @@ layout = [
 
 
 def unmapMX(old):
-	univention.debug.function('admin.handlers.dns.host_record.unmapMX old=%s' % str(old))
+	_d = univention.debug.function('admin.handlers.dns.host_record.unmapMX old=%s' % str(old))
 	new=[]
 	for i in old:
 		new.append(i.split(' '))
 	return new
 
 def mapMX(old):
-	univention.debug.function('admin.handlers.dns.host_record.mapMX old=%s' % str(old))
+	_d = univention.debug.function('admin.handlers.dns.host_record.mapMX old=%s' % str(old))
 	new=[]
 	for i in old:
 		new.append(string.join(i, ' '))
