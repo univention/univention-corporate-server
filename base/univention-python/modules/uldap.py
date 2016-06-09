@@ -37,11 +37,6 @@ from univention.config_registry import ConfigRegistry
 from ldapurl import LDAPUrl
 from ldapurl import isLDAPUrl
 
-def _extend_uniq(list1, list2):
-	for item in list2:
-		if item not in list1:
-			list1.append(item)
-
 def parentDn(dn, base=''):
 	_d=univention.debug.function('uldap.parentDn dn=%s base=%s' % (dn, base))
 	if dn == base:
@@ -232,8 +227,6 @@ class access:
 			return str( value )
 		elif isinstance(value, (list, tuple)):
 			return map(self.__encode, value)
-		elif isinstance(value, dict):
-			return dict(map(lambda (k, v): (k, encode(v)), value.items()))
 		else:
 			return value
 
@@ -446,28 +439,25 @@ class access:
 		"""Add LDAP entry with dn and attributes in add_list=(attribute-name, old-values. new-values) or (attribute-name, new-values)."""
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.add dn=%s' % dn)
-		nal={}
+		nal = {}
 		for i in al:
-			if len(i) == 3 and i[2]:
-				v=i[2]
-			elif len(i) == 2 and i[1]:
-				v=i[1]
-			else:
+			key, val = i[0], i[-1]
+			if not val:
 				continue
-			if not isinstance(v, list):
-				v=[v]
-			templist = nal.setdefault(i[0], [])
-			_extend_uniq(templist, v)
-		nal = self.__encode_entry(nal.items())
+			if isinstance(val, basestring):
+				val = [val]
+			nal.setdefault(key, set())
+			nal[key] |= set(val)
+
+		nal = self.__encode_entry([(k, list(v)) for k, v in nal.items()])
 		try:
 			self.lo.add_s(dn, nal)
 		except ldap.REFERRAL, e:
-			if self.follow_referral:
-				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
-				lo_ref = self._handle_referral(e)
-				lo_ref.add_s(dn, nal)
-			else:
+			if not self.follow_referral:
 				raise
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
+			lo_ref = self._handle_referral(e)
+			lo_ref.add_s(dn, nal)
 
 	def modify(self, dn, changes, atomic=0):
 		"""Modify LDAP entry dn with attributes in changes=(attribute-name, old-values, new-values)."""
@@ -540,7 +530,6 @@ class access:
 
 	def rename(self, dn, newdn):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn,newdn))
-		oldrdn = dn[:dn.find(',')]
 		oldsdn = dn[dn.find(',')+1:]
 		newrdn = newdn[:newdn.find(',')]
 		newsdn = newdn[newdn.find(',')+1:]
@@ -648,8 +637,6 @@ class access:
 	def needed_objectclasses(self, entry):
 
 		dont_remove=['organizationalPerson', 'univentionPerson']
-
-		schema_attrs = ldap.schema.SCHEMA_ATTRS
 
 		ldap.set_option(ldap.OPT_DEBUG_LEVEL,0)
 
