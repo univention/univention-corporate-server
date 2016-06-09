@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-13) unstable; urgency=low
+
+  * Bug #41261: Fix notifier ID not incrementing
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 09 Jun 2016 08:14:26 +0200
+
 univention-directory-listener (10.0.0-12) unstable; urgency=low
 
   * Bug #41261: Use only one master cache entry

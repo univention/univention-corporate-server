@@ -91,6 +91,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		univention_ldap_parameters_t *lp_local)
 {
 	int rv = 0;
+	NotifierID id = cache_master_entry.id;
 	struct transaction trans = {
 		.lp = lp,
 		.lp_local = lp_local,
@@ -99,7 +100,6 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 	for (;;) {
 		int		msgid;
 		time_t		timeout = DELAY_LDAP_CLOSE;
-		NotifierID id = cache_master_entry.id;
 
 		if ((msgid = notifier_get_dn(NULL, id + 1)) < 1)
 			break;
