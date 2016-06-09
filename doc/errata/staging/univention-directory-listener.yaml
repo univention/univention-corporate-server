@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-directory-listener
-fix: 10.0.0-12.319.201606081733
+fix: 10.0.0-13.320.201606090821
 desc: |
  This update addresses the following issues:
  * IPv6 support was added to "get_notifier_id.py".
