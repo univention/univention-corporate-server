@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-3) unstable; urgency=medium
+
+  * Bug #41266: remove commented out code
+
+ -- Florian Best <best@univention.de>  Thu, 09 Jun 2016 11:39:20 +0200
+
 univention-directory-manager-modules (11.0.3-2) unstable; urgency=medium
 
   * Bug #41266: remove more custom attribute related code

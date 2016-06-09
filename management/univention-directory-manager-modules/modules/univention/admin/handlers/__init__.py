@@ -637,37 +637,7 @@ class simpleLdap(base):
 		return modlist
 
 	def _ldap_modlist(self):
-		self.exceptions=[]
-
-#		chosen_options = getattr(self, 'options', None)
-#		descriptions = getattr(self, 'descriptions', None)
-#
-#		# remove all properties which do not belong to chosen options
-#		if chosen_options and descriptions:
-#			for desc in descriptions:
-#				propoptions = descriptions[desc].options
-#
-#				if (propoptions==[]):
-#					# property applies to all options
-#					continue
-#
-#				shortcut = False
-#
-#				for i in propoptions:
-#					if i in chosen_options:
-#						# this property applies to one of the chosen options,
-#						# jump to next option
-#						shortcut = True
-#						continue
-#				if shortcut:
-#					continue
-#
-#				# if we've come here, we found a property that does not apply
-#				# to the chosen options and may cause harm when writing to
-#				# the LDAP.
-#				# see Bug #8386, if we remove this value from the mapping table,
-#				# we can't modify this value during the session.
-#				#self.mapping.unregister(desc)
+		self.exceptions = []
 
 		diff_ml = self.diff()
 		ml = univention.admin.mapping.mapDiff(self.mapping, diff_ml)
