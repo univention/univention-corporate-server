@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-python
+fix: 9.0.1-3.161.201606091857
+desc: |
+ This update addresses the following issue(s):
+ * A method get_schema() has been added to the univention.access() class
+   which returns LDAP schema information.
+bug: [41207]
