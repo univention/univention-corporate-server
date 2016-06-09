@@ -4,7 +4,7 @@ It addresses the following problem:
 
 Program component:  libssh
 Reference:          CVE-2014-0017 CVE-2016-0739
-Fixed version:      0.4.5-3.17.201605251207
+Fixed version:      0.4.5-3.15.201606090935
 
 The following issues were fixed:
 * The PRNG is not always correctly reseeding when a new process is forked
