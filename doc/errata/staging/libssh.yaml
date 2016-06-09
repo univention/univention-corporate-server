@@ -1,0 +1,15 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: libssh
+fix: 0.4.5-3.18.201606090958
+desc: |
+ This update addresses the following issues:
+ * The PRNG is not always correctly reseeding when a new process is forked
+   (CVE-2014-0017).
+ * Weak Diffie-Hellman secret generation in libssh (CVE-2016-0739).
+bug: [34269]
+cve:
+ - CVE-2014-0017
+ - CVE-2016-0739
