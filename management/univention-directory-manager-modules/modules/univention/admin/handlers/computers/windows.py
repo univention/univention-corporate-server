@@ -42,6 +42,7 @@ import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.groups.group
 import univention.admin.handlers.networks.network
+import time
 
 translation=univention.admin.localization.translation('univention.admin.handlers.computers')
 _=translation.translate
@@ -484,7 +485,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 				al.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 				al.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
-
+				sambaPwdLastSetValue = str(long(time.time()))
+				al.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 			self.modifypassword=0
 		if 'samba' in self.options:
 			acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
@@ -612,6 +614,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 				ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
+				sambaPwdLastSetValue = str(long(time.time()))
+				ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
 		# add samba option
 		if 'samba' in self.options and not self.old_samba_option:
@@ -627,6 +631,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ml.append(('sambaSID', '', [self.machineSid]))
 			ml.append(('sambaAcctFlags', '', [acctFlags.decode()]))
 			ml.append(('displayName', '', self.info['name']))
+			sambaPwdLastSetValue = str(long(time.time()))
+			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 		if not 'samba' in self.options and self.old_samba_option:
 			ocs=self.oldattr.get('objectClass', [])
 			if 'sambaSamAccount' in ocs:
