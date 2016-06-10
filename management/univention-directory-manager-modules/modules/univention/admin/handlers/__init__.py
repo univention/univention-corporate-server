@@ -527,6 +527,21 @@ class base(object):
 
 		return self._remove(remove_childs)
 
+	def get_gid_for_primary_group(self):
+		gidNum = '99999'
+		if self['primaryGroup']:
+			try:
+				gidNum = self.lo.getAttr(self['primaryGroup'], 'gidNumber', required=True)[0]
+			except ldap.NO_SUCH_OBJECT:
+				raise univention.admin.uexceptions.primaryGroup(self['primaryGroup'])
+		return gidNum
+
+	def get_sid_for_primary_group(self):
+		try:
+			sidNum = self.lo.getAttr(self['primaryGroup'], 'sambaSID', required=True)[0]
+		except ldap.NO_SUCH_OBJECT:
+			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
+		return sidNum
 
 class simpleLdap(base):
 
@@ -2528,37 +2543,22 @@ class simpleComputer( simpleLdap ):
 				groupObject['hosts'].remove(self.dn)
 				groupObject.modify(ignore_license=1)
 
-
 	def primary_group(self):
 		if not self.hasChanged('primaryGroup'):
 			return
+
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'updating primary groups')
 
-		searchResult=self.lo.search(base=self['primaryGroup'], attr=['gidNumber'])
-		for tmp,number in searchResult:
-			primaryGroupNumber = number['gidNumber']
-		self.newPrimaryGroupDn=self['primaryGroup']
+		self.newPrimaryGroupDn = self['primaryGroup']
+		if 'primaryGroup' in self.oldinfo:
+			self.oldPrimaryGroupDn = self.oldinfo['primaryGroup']
+
+		primaryGroupNumber = self.get_gid_for_primary_group()
+		self.lo.modify(self.dn, [('gidNumber', 'None', primaryGroupNumber)])
 
 		if 'samba' in self.options:
-			searchResult=self.lo.search(base=self['primaryGroup'], attr=['sambaSID'])
-			for tmp,number in searchResult:
-				primaryGroupSambaNumber = number['sambaSID']
-
-		if self.oldinfo.has_key('primaryGroup'):
-			self.oldPrimaryGroupDn=self.oldinfo['primaryGroup']
-			searchResult=self.lo.search(base=self.oldinfo['primaryGroup'], attr=['gidNumber'])
-			for tmp,number in searchResult:
-				oldPrimaryGroup = number['gidNumber']
-			self.lo.modify(self.dn, [('gidNumber',oldPrimaryGroup[0], primaryGroupNumber[0])])
-			if 'samba' in self.options:
-				self.lo.modify(self.dn, [('sambaPrimaryGroupSID',oldPrimaryGroup[0], primaryGroupSambaNumber[0])])
-		else:
-			searchResult=self.lo.search(base=self.dn, scope='base', attr=['gidNumber'])
-			for tmp,number in searchResult:
-				oldNumber = number['gidNumber']
-			self.lo.modify(self.dn, [('gidNumber',oldNumber, primaryGroupNumber[0])])
-			if 'samba' in self.options:
-				self.lo.modify(self.dn, [('sambaPrimaryGroupSID',oldNumber, primaryGroupSambaNumber[0])])
+			primaryGroupSambaNumber = self.get_sid_for_primary_group()
+			self.lo.modify(self.dn, [('sambaPrimaryGroupSID', 'None', primaryGroupSambaNumber)])
 
 	def cleanup(self):
 		self.open()

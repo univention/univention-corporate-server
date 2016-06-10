@@ -493,12 +493,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		if 'posix' in self.options:
 			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 			self.alloc.append(('uidNumber',self.uidNum))
-			if self['primaryGroup']:
-				searchResult=self.lo.search(base=self['primaryGroup'], attr=['gidNumber'])
-				for tmp,number in searchResult:
-					gidNum = number['gidNumber'][0]
-			else:
-				gidNum='99999'
+			gidNum = self.get_gid_for_primary_group()
 			ocs.extend(['posixAccount','shadowAccount'])
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))

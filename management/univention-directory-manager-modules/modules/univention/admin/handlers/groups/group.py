@@ -457,10 +457,10 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = []
 		uids = []
 		members = []
-		searchResult = self.lo.search(base=self.dn, attr=['uniqueMember','memberUid'])
+		searchResult = self.lo.get(self.dn, attr=['uniqueMember','memberUid'])
 		if searchResult:
-			uids = searchResult[0][1].get('memberUid',[])
-			members = searchResult[0][1].get('uniqueMember',[])
+			uids = searchResult.get('memberUid',[])
+			members = searchResult.get('uniqueMember',[])
 
 		add_uidlist = []
 		for uid in uidlist:
@@ -493,10 +493,10 @@ class object(univention.admin.handlers.simpleLdap):
 		ml = []
 		uids = []
 		members = []
-		searchResult = self.lo.search(base=self.dn, attr=['uniqueMember','memberUid'])
+		searchResult = self.lo.get(self.dn, attr=['uniqueMember','memberUid'])
 		if searchResult:
-			uids = searchResult[0][1].get('memberUid',[])
-			members = searchResult[0][1].get('uniqueMember',[])
+			uids = searchResult.get('memberUid',[])
+			members = searchResult.get('uniqueMember',[])
 
 		remove_uidlist = []
 		for uid in uidlist:
@@ -966,19 +966,17 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _has_domain_local_member(self):
 		for member_dn in self.oldattr.get('uniqueMember', []):
-			searchResult = self.lo.search(base=member_dn, attr=['univentionGroupType'])
-			for (dn,attr) in searchResult:
-				groupType = attr.get('univentionGroupType', [None])[0]
-				if self.__is_groupType_domain_local(groupType):
+			searchResult = self.lo.getAttr(member_dn, 'univentionGroupType')
+			if searchResult:
+				if self.__is_groupType_domain_local(searchResult[0]):
 					return True
 		return False
 
 	def _has_universal_member(self):
 		for member_dn in self.oldattr.get('uniqueMember', []):
-			searchResult = self.lo.search(base=member_dn, attr=['univentionGroupType'])
-			for (dn,attr) in searchResult:
-				groupType = attr.get('univentionGroupType', [None])[0]
-				if self.__is_groupType_universal(groupType):
+			searchResult = self.lo.getAttr(member_dn, 'univentionGroupType')
+			if searchResult:
+				if self.__is_groupType_universal(searchResult[0]):
 					return True
 		return False
 
