@@ -1,7 +1,13 @@
+univention-directory-manager-modules (9.0.76-143) unstable; urgency=medium
+
+  * Fixed bug number in changelog entry of last commit (Bug #41516)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Jun 2016 07:41:27 +0200
+
 univention-directory-manager-modules (9.0.76-142) unstable; urgency=medium
 
   * Reset sambaPwdLastSet on password changes for samba computer
-    accounts and initialize it while creating the object (Bug #41367)
+    accounts and initialize it while creating the object (Bug #41516)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Jun 2016 07:06:03 +0200
 
