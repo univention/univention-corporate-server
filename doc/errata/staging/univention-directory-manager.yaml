@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-directory-manager-modules
+fix: 9.0.76-43.1398.201606100742
+desc: |
+ This update addresses the following issue(s):
+ * The attribute sambaPwdLastSet is now set for computer objects while
+   changing the password.
+bug: [41517]
