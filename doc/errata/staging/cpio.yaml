@@ -1,0 +1,15 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: cpio
+fix: TODO
+desc: |
+ This update addresses the following issues:
+ * A buffer overflow in cpio allows the execution of arbitrary code or denial   
+   of service if a malformed CPIO archive is opened (CVE-2014-9112)             
+ * Out-of-bounds write (CVE-2016-2037) 
+bug: [37294]
+cve:
+ - CVE-2014-9112
+ - CVE-2016-2037
