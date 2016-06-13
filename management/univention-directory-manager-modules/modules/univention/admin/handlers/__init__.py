@@ -766,6 +766,22 @@ class simpleLdap(base):
 		self._call_checkLdap_on_all_property_syntaxes()
 
 		ml = self._ldap_modlist()
+		ml = self._ldap_object_classes(ml)
+		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
+
+		#FIXME: timeout without exception if objectClass of Object is not exsistant !!
+		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
+		self.lo.modify(self.dn, ml, ignore_license=ignore_license)
+
+		if hasattr(self,'_ldap_post_modify'):
+			self._ldap_post_modify()
+
+		self.call_udm_property_hook('hook_ldap_post_modify', self)
+
+		self.save()
+		return self.dn
+
+	def _ldap_object_classes(self, ml):
 		m = univention.admin.modules.get(self.module)
 
 		ocs = set(_MergedAttributes(self, ml).get_attribute('objectClass'))
@@ -835,20 +851,7 @@ class simpleLdap(base):
 				else:
 					ml = [x for x in ml if x[0].lower() != 'objectclass']
 					ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs - object_classes_to_remove)))
-
-		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
-
-		#FIXME: timeout without exception if objectClass of Object is not exsistant !!
-		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
-		self.lo.modify(self.dn, ml, ignore_license=ignore_license)
-
-		if hasattr(self,'_ldap_post_modify'):
-			self._ldap_post_modify()
-
-		self.call_udm_property_hook('hook_ldap_post_modify', self)
-
-		self.save()
-		return self.dn
+		return ml
 
 	def _move_in_subordinates(self, olddn):
 		searchFilter='(&(objectclass=person)(secretary=%s))'% univention.admin.filter.escapeForLdapFilter(olddn)

@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, getopt, codecs, string, re
+import os, getopt
 import univention.debug
 import univention.misc
 
@@ -93,8 +93,11 @@ def doit(arglist):
 		object=univention.admin.objects.get(module, co, lo, position=position, dn=dn[0])
 		object.open()
 
+		# hack, to prevent that attributes belonging to the samba option are changed; Bug #41530
 		if 'samba' in object.options:
 			object.options.remove('samba')
+			object.old_options.remove('samba')
+		object._ldap_object_classes = lambda ml: ml
 
 		if not configRegistry.has_key('samba/charset/unix'):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'univention-passwd: no unix-charset given')
