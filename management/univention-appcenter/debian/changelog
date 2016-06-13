@@ -1,3 +1,10 @@
+univention-appcenter (5.0.21-6) unstable; urgency=medium
+
+  * Bug #41532: Tests run before upgrading an App used the installed version,
+    not the to-be-installed version.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 13 Jun 2016 10:57:05 +0200
+
 univention-appcenter (5.0.21-5) unstable; urgency=medium
 
   * Bug #41360: Prepare App Center for Self Service

@@ -1204,18 +1204,16 @@ class App(object):
 		package_manager = AppManager.get_package_manager()
 		hard_problems = {}
 		soft_problems = {}
+		if function == 'upgrade':
+			app = AppManager.find(self)
+			if app > self:
+				# upgrade is not possible,
+				#   special handling
+				hard_problems['must_have_candidate'] = False
 		for requirement in self._requirements:
 			if function not in requirement.actions:
 				continue
-			app = self
-			if function == 'upgrade':
-				app = AppManager.find(self)
-				if app > self:
-					# upgrade is not possible,
-					#   special handling
-					hard_problems['must_have_candidate'] = False
-					continue
-			result = requirement.test(app, function, package_manager)
+			result = requirement.test(self, function, package_manager)
 			if result is not True:
 				if requirement.hard:
 					hard_problems[requirement.name] = result
