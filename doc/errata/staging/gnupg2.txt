@@ -1,0 +1,30 @@
+A new update is available for Univention Corporate Server 3.1 as
+part of the extended security maintenance.
+It addresses the following problem:
+
+Program component:  gnupg2
+Reference:          CVE-2014-4617 CVE-2013-4402 CVE-2013-4351
+Fixed version:      2.0.14-2.50.201606131320
+
+This update fixes the following issues:
+
+ * Infinite loop when decompressing data packets (CVE-2014-4617)
+ * Infinite recursion in the compressed packet (CVE-2013-4402)
+ * GnuPG  treats no-usage-permitted keys as all-usages-permitted,
+   which might allow remote attackers to bypass intended cryptographic
+   protection mechanisms by leveraging the subkey (CVE-2013-4351)
+
+-- 
+Univention GmbH
+be open.
+Mary-Somerville-Str.1
+28359 Bremen
+Tel. : +49 421 22232-0
+Fax  : +49 421 22232-99
+
+<info@univention.de>
+http://www.univention.de/
+
+Geschäftsführer: Peter H. Ganten
+HRB 20755 Amtsgericht Bremen
+Steuer-Nr.: 71-597-02876
