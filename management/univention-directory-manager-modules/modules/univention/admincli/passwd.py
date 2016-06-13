@@ -97,7 +97,7 @@ def doit(arglist):
 		if 'samba' in object.options:
 			object.options.remove('samba')
 			object.old_options.remove('samba')
-		object._ldap_object_classes = lambda ml: ml
+			object._ldap_object_classes = lambda ml: ml
 
 		if not configRegistry.has_key('samba/charset/unix'):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'univention-passwd: no unix-charset given')
