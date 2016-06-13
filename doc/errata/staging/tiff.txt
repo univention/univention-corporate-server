@@ -1,0 +1,39 @@
+A new update is available for Univention Corporate Server 3.1 as
+part of the extended security maintenance.
+It addresses the following problem:
+
+Program component:  tiff
+Reference:          CVE-2015-8784 CVE-2015-8783 CVE-2015-8782 CVE-2015-8781
+                    CVE-2015-8683 CVE-2015-8665 CVE-2014-9655 CVE-2014-9330
+                    CVE-2014-8129 CVE-2014-8128 CVE-2014-8127 CVE-2013-4243
+Fixed version:      3.9.4-5.55.201606131352
+
+This update fixes the following issues:
+ * Potential out-of-bound write in NeXTDecode() (CVE-2015-8784)
+ * Out-of-band read/write when decoding invalid data (CVE-2015-8781, CVE-2015-8782,
+   CVE-2015-8783)
+ * Out-of-bounds read in CIE Lab image format (CVE-2015-8683)
+ * Out-of-bounds read in TIFFRGBAImage interface (CVE-2015-8665)
+ * Out-of-bounds reads in NeXT 2-bit Grey Scale Compression Algorithm decoder
+   and YCbCr-RGB converters (CVE-2014-9655)
+ * Out-of-bounds read in bmp2tiff (CVE-2014-9330)
+ * Out-of-bounds read and write in NeXT 2-bit Grey Scale Compression Algorithm decoder
+   (CVE-2014-8129)
+ * Out-of-bounds writes (CVE-2014-8128)
+ * Out-of-bounds reads (CVE-2014-8127)
+ * Validation for gif2tiff (CVE-2013-4243)
+
+-- 
+Univention GmbH
+be open.
+Mary-Somerville-Str.1
+28359 Bremen
+Tel. : +49 421 22232-0
+Fax  : +49 421 22232-99
+
+<info@univention.de>
+http://www.univention.de/
+
+Geschäftsführer: Peter H. Ganten
+HRB 20755 Amtsgericht Bremen
+Steuer-Nr.: 71-597-02876
