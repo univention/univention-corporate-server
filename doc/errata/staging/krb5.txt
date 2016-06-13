@@ -3,12 +3,46 @@ part of the extended security maintenance.
 It addresses the following problem:
 
 Program component:  krb5
-Reference:          Bug #37277
-Fixed version:      TODO
+Reference:          CVE-2015-8631 CVE-2015-8629 CVE-2015-2697 CVE-2015-2695
+                    CVE-2014-9423 CVE-2014-9422 CVE-2014-9421 CVE-2014-5352
+                    CVE-2014-4345 CVE-2014-4344 CVE-2014-4343 CVE-2014-4342
+                    CVE-2014-4341 CVE-2002-2443
+Fixed version:      1.8.3+dfsg-4.49.201606131246
 
-This update fixes the following issues:
- * TODO
+This update fixes the following issues. Please note that issues affecting
+the MIT Kerberos kadmind, and the MIT Kerberos KDC are not relevant for UCS
+by default, as UCS uses the Heimdal Kerberos implementation. For completeness
+they are listed here as well:
 
+ * An authenticated attacker can cause kadmind to leak memory by supplying
+   a null principal name in a request which uses one. Repeating these requests
+   will eventually cause kadmind to exhaust all available memory
+   (CVE-2015-8631).
+ * kadmind in MIT Kerberos 5 does not verify whether '\0' characters exist
+   as expected, which allows remote authenticated users to obtain sensitive
+   information or cause a denial of service (out-of-bounds read) via
+   a crafted string (CVE-2015-8629).
+ * An authenticated remote attacker can cause a denial of service on the KDC
+   (out-of-bounds read and KDC crash) via an initial '\0' character in a long
+   realm field within a TGS request (CVE-2015-2697). 
+ * Remote attackers to cause a denial of service via a crafted SPNEGO packet
+   (incorrect pointer read and process crash) on applications using the GSSAPI
+   implementation of MIT Kerberos 5 (CVE-2015-2695)
+ * Remote attackers may obtain sensitive information from process heap memory
+   by sniffing the network for data in a handle field. This affects
+   applications using libgssrpc (CVE-2014-9423)
+ * kadmind incorrectly validates server principal name (CVE-2014-9422)
+ * kadmind doubly frees partial deserialization results (CVE-2014-9421)
+ * gss_process_context_token() incorrectly frees context (CVE-2014-5352)
+ * Buffer overrun in kadmind with LDAP backend (CVE-2014-4345)
+ * NULL dereference in SPNEGO acceptor (CVE-2014-4344)
+ * Double-free in SPNEGO initiator during renegotiation (CVE-2014-4343)
+ * Denial of service due to improper GSSAPI message validation
+   (CVE-2014-4341, CVE-2014-4342)
+ * The kpasswd service in kadmind in MIT Kerberos 5 does not properly validate
+   UDP packets before sending responses, which allows remote attackers to
+   cause a denial of service (CPU and bandwidth consumption) via a forged
+   packet that triggers a communication loop (CVE-2002-2443)
 
 -- 
 Univention GmbH
