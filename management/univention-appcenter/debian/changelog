@@ -1,3 +1,10 @@
+univention-appcenter (5.0.21-7) unstable; urgency=medium
+
+  * Bug #41542: Uninstalling an App failed when the App was not properly
+    registered before.
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 13 Jun 2016 11:06:09 +0200
+
 univention-appcenter (5.0.21-6) unstable; urgency=medium
 
   * Bug #41532: Tests run before upgrading an App used the installed version,

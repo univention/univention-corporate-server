@@ -1161,17 +1161,18 @@ class App(object):
 				depending_apps.append({'id': app.id, 'name': app.name})
 
 		# RequiredAppsInDomain
-		from univention.appcenter.actions import get_action
-		domain = get_action('domain')
-		self_info = domain.to_dict([self])[0]
-		hostname = ucr_get('hostname')
-		if not any(inst['version'] for host, inst in self_info['installations'].iteritems() if host != hostname):
-			# this is the only installation
-			apps = [app for app in AppManager.get_all_apps() if self.id in app.required_apps_in_domain]
-			apps_info = domain.to_dict(apps)
-			for app in apps_info:
-				if app['is_installed_anywhere']:
-					depending_apps.append({'id': app['id'], 'name': app['name']})
+		apps = [app for app in AppManager.get_all_apps() if self.id in app.required_apps_in_domain]
+		if apps:
+			from univention.appcenter.actions import get_action
+			domain = get_action('domain')
+			self_info = domain.to_dict([self])[0]
+			hostname = ucr_get('hostname')
+			if not any(inst['version'] for host, inst in self_info['installations'].iteritems() if host != hostname):
+				# this is the only installation
+				apps_info = domain.to_dict(apps)
+				for app in apps_info:
+					if app['is_installed_anywhere']:
+						depending_apps.append({'id': app['id'], 'name': app['name']})
 
 		if depending_apps:
 			return depending_apps
