@@ -6,5 +6,5 @@ src: qemu
 fix: 1.1.2+dfsg-1.51.201606081623
 desc: |
  This update addresses the following issue:
- * qemu needs to be rebuilt due to the update to Xen 4.1
+ * QEMU was rebuilt due to the update to Xen 4.1
 bug: [41492]

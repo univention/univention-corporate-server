@@ -1,0 +1,11 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: device-tree-compiler
+fix: 1.3.0-2.4.201209051921
+desc: |
+ This update addresses the following issue:
+ * The package was moved to maintained due to QEMU being rebuilt due to the
+    update to Xen 4.1
+bug: [41492]
