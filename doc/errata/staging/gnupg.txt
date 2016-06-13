@@ -3,7 +3,8 @@ part of the extended security maintenance.
 It addresses the following problem:
 
 Program component:  gnupg
-Reference:          Bug 37190
+Reference:          CVE-2015-1606 CVE-2015-0837 CVE-2014-5270 CVE-2014-4617
+                    CVE-2014-3591 CVE-2013-4576
 Fixed version:      1.4.10-4.55.201606131133
 
 This update fixes the following issues:
