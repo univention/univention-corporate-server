@@ -1,0 +1,15 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: cpio
+fix: 2.11-4.24.201606131200
+desc: |
+ This update fixes the following issues:
+ * Out-of-bounds write (CVE-2016-2037)
+ * A buffer overflow in cpio allows the execution of arbitrary code or denial
+   of service if a malformed CPIO archive is opened (CVE-2014-9112)
+bug: [37296]
+cve:
+ - CVE-2016-2037
+ - CVE-2014-9112
