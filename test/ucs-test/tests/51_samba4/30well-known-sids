@@ -20,48 +20,43 @@ domainSid="$(univention-s4search -s base objectSid | sed -ne 's|^objectSid: ||p'
 
 test -z "$domainSid" && fail_test 110 "domainSid not found"
 
-test_group_sid_openldap()
-{
+test_group_sid_openldap () {
 	group="$1"
 	expected_sid="$2"
 	sid_ldap=$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$group))" sambaSID | sed -ne 's|^sambaSID: ||p')
 	if [ "$sid_ldap" != "$expected_sid" ]; then
-		echo "Expeted sid for $group: $expected_sid; found in LDAP: $sid_ldap"
+		echo "Expected sid for $group: $expected_sid; found in LDAP: $sid_ldap"
 		fail_test 110
 	fi
 }
-test_group_sid_s4()
-{
+test_group_sid_s4 () {
 	group="$1"
 	expected_sid="$2"
 	sid_ad=$(univention-s4search "(&(objectClass=group)(cn=$group))" objectSid | sed -ne 's|^objectSid: ||p')
 	if [ "$sid_ad" != "$expected_sid" ]; then
-		echo "Expeted sid for $group: $expected_sid; found in S4: $sid_ad"
+		echo "Expected sid for $group: $expected_sid; found in S4: $sid_ad"
 		fail_test 110
 	fi
 }
 
-test_group_sid()
-{
+test_group_sid () {
 	test_group_sid_s4 "$@"
 	test_group_sid_openldap "$@"
 	
 }
-test_user_sid()
-{
+test_user_sid () {
 	user="$1"
 	expected_sid="$2"
 	sid_ad=$(univention-s4search "(&(objectClass=user)(cn=$user))" objectSid | sed -ne 's|^objectSid: ||p')
 	sid_ldap=$(univention-ldapsearch "(uid=$user)" sambaSID | sed -ne 's|^sambaSID: ||p')
 	if [ "$sid_ad" != "$expected_sid" ]; then
-		echo "Expeted sid for $user: $expected_sid; found in S4: $sid_ad"
+		echo "Expected sid for $user: $expected_sid; found in S4: $sid_ad"
 		fail_test 110
 	fi
 	if [ "$sid_ldap" != "$expected_sid" ]; then
-		echo "Expeted sid for $user: $expected_sid; found in LDAP: $sid_ldap"
+		echo "Expected sid for $user: $expected_sid; found in LDAP: $sid_ldap"
 		fail_test 110
 	fi
-	
 }
 
 test_user_sid "Administrator" "$domainSid-500"
@@ -97,4 +92,3 @@ test_group_sid_s4 "Print Operators" S-1-5-32-550
 test_group_sid_openldap "Printer-Admins" S-1-5-32-550
 
 exit $RETVAL
-
