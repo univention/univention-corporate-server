@@ -6,9 +6,9 @@ src: cpio
 fix: 2.11-4.25.201606131210
 desc: |
  This update addresses the following issues:
- * A buffer overflow in cpio allows the execution of arbitrary code or denial   
-   of service if a malformed CPIO archive is opened (CVE-2014-9112)             
- * Out-of-bounds write (CVE-2016-2037) 
+ * A buffer overflow in cpio allows the execution of arbitrary code or denial
+   of service if a malformed CPIO archive is opened (CVE-2014-9112)
+ * Out-of-bounds write (CVE-2016-2037)
 bug: [37294]
 cve:
  - CVE-2014-9112
