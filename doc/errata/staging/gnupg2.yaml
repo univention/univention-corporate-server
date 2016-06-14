@@ -1,0 +1,18 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: gnupg2
+fix: 2.0.14-2.50.201606131320
+desc: |
+ This update fixes the following issues:
+ * Infinite loop when decompressing data packets (CVE-2014-4617)
+ * Infinite recursion in the compressed packet (CVE-2013-4402)
+ * GnuPG  treats no-usage-permitted keys as all-usages-permitted,
+   which might allow remote attackers to bypass intended cryptographic
+   protection mechanisms by leveraging the subkey (CVE-2013-4351)
+bug: [32597]
+cve:
+ - CVE-2014-4617
+ - CVE-2013-4402
+ - CVE-2013-4351
