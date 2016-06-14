@@ -7,15 +7,15 @@ fix: 3.9.4-5.55.201606131352
 desc: |
  This update fixes the following issues:
  * Potential out-of-bound write in NeXTDecode() (CVE-2015-8784)
- * Out-of-band read/write when decoding invalid data (CVE-2015-8781, CVE-2015-8782,
-   CVE-2015-8783)
+ * Out-of-band read/write when decoding invalid data (CVE-2015-8781,
+   CVE-2015-8782, CVE-2015-8783)
  * Out-of-bounds read in CIE Lab image format (CVE-2015-8683)
  * Out-of-bounds read in TIFFRGBAImage interface (CVE-2015-8665)
  * Out-of-bounds reads in NeXT 2-bit Grey Scale Compression Algorithm decoder
    and YCbCr-RGB converters (CVE-2014-9655)
  * Out-of-bounds read in bmp2tiff (CVE-2014-9330)
- * Out-of-bounds read and write in NeXT 2-bit Grey Scale Compression Algorithm decoder
-   (CVE-2014-8129)
+ * Out-of-bounds read and write in NeXT 2-bit Grey Scale Compression Algorithm
+   decoder (CVE-2014-8129)
  * Out-of-bounds writes (CVE-2014-8128)
  * Out-of-bounds reads (CVE-2014-8127)
  * Validation for gif2tiff (CVE-2013-4243)
