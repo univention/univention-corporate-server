@@ -669,18 +669,19 @@ def _doit(arglist):
 			else:
 				name=val[:pos]
 				value = _2utf8( val[ pos + 1 : ] )
-			was_set=0
+			was_set = False
 			for mod, (properties,options) in information.items():
 				if properties.has_key(name):
+					was_set = True
 					if properties[name].multivalue:
-						if not remove.has_key(name):
-							remove[name]=[]
-						if value:
-							remove[name].append(value)
-							was_set=1
+						if value is None:
+							remove[name] = value
+						elif value:
+							remove.setdefault(name, [])
+							if remove[name] is not None:
+								remove[name].append(value)
 					else:
-						remove[name]=value
-						was_set=1
+						remove[name] = value
 			if not was_set:
 				out.append("WARNING: No attribute with name %s in this module, value not removed."%name)
 		elif opt == '--remove_referring':

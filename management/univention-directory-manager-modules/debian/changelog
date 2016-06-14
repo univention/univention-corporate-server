@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-10) unstable; urgency=low
+
+  * Bug #41172: support cli option --remove on multivalue properties
+    without '=value' to remove complete list of values
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 14 Jun 2016 14:54:26 +0200
+
 univention-directory-manager-modules (11.0.3-9) unstable; urgency=medium
 
   * Bug #41207, Bug #41530: fix univention-passwd to not remove samba
