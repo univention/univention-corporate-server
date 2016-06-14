@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-grub
-fix: 
+fix: 7.0.5-2.138.201606141914
 desc: |
  This update addresses the following issue(s):
  On UCS systems booting via BIOS, GRUB would not be correctly
