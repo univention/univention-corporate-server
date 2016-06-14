@@ -1,4 +1,4 @@
-univention-grub (7.100.5-2) unstable; urgency=medium
+univention-grub (7.100.5-3) unstable; urgency=medium
 
   * Check grub-pc/install_devices (Bug #41497)
 
