@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-directory-manager-modules
-fix: 11.0.3-9.1401.201606130723
+fix: 11.0.3-10.1402.201606141456
 desc: |
  This update addresses the following issues:
  * Extended options are now also evaluated for users/user objects.
