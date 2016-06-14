@@ -1,19 +1,14 @@
-A new update is available for Univention Corporate Server 3.1 as
-part of the extended security maintenance.
-It addresses the following problem:
-
-Program component:  krb5
-Reference:          CVE-2015-8631 CVE-2015-8629 CVE-2015-2697 CVE-2015-2695
-                    CVE-2014-9423 CVE-2014-9422 CVE-2014-9421 CVE-2014-5352
-                    CVE-2014-4345 CVE-2014-4344 CVE-2014-4343 CVE-2014-4342
-                    CVE-2014-4341 CVE-2002-2443
-Fixed version:      1.8.3+dfsg-4.49.201606131246
-
-This update fixes the following issues. Please note that issues affecting
-the MIT Kerberos kadmind, and the MIT Kerberos KDC are not relevant for UCS
-by default, as UCS uses the Heimdal Kerberos implementation. For completeness
-they are listed here as well:
-
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: krb5
+fix: 1.8.3+dfsg-4.49.201606131246
+desc: |
+ This update fixes the following issues. Please note that issues affecting
+ the MIT Kerberos kadmind, and the MIT Kerberos KDC are not relevant for UCS
+ by default, as UCS uses the Heimdal Kerberos implementation. For completeness
+ they are listed here as well:
  * An authenticated attacker can cause kadmind to leak memory by supplying
    a null principal name in a request which uses one. Repeating these requests
    will eventually cause kadmind to exhaust all available memory
@@ -43,18 +38,19 @@ they are listed here as well:
    UDP packets before sending responses, which allows remote attackers to
    cause a denial of service (CPU and bandwidth consumption) via a forged
    packet that triggers a communication loop (CVE-2002-2443)
-
--- 
-Univention GmbH
-be open.
-Mary-Somerville-Str.1
-28359 Bremen
-Tel. : +49 421 22232-0
-Fax  : +49 421 22232-99
-
-<info@univention.de>
-http://www.univention.de/
-
-Geschäftsführer: Peter H. Ganten
-HRB 20755 Amtsgericht Bremen
-Steuer-Nr.: 71-597-02876
+bug: [37277]
+cve:
+ - CVE-2015-8631
+ - CVE-2015-8629
+ - CVE-2015-2697
+ - CVE-2015-2695
+ - CVE-2014-9423
+ - CVE-2014-9422
+ - CVE-2014-9421
+ - CVE-2014-5352
+ - CVE-2014-4345
+ - CVE-2014-4344
+ - CVE-2014-4343
+ - CVE-2014-4342
+ - CVE-2014-4341
+ - CVE-2002-2443
