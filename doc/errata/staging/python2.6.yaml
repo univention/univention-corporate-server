@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: python2.6
-fix: 3.9.4-5.56.201606131354
+fix: 2.6.6-8.37.201606131808
 desc: |
  This update addresses the following issues:
  * Unicode handling in SyslogHandler has been fixed
