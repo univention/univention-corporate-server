@@ -9,3 +9,5 @@ desc: |
  * Unicode handling in SyslogHandler has been fixed
    (https://bugs.python.org/issue14452).
 bug: [41313]
+erratum: 435
+announced: 2016-06-15
