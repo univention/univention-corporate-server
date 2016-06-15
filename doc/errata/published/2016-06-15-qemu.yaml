@@ -8,3 +8,5 @@ desc: |
  This update addresses the following issue:
  * QEMU was rebuilt due to the update to Xen 4.1
 bug: [41492]
+erratum: 6
+announced: 2016-06-15
