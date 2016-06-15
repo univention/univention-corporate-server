@@ -333,9 +333,11 @@ create_install_script ()
 
 	apps="$main_app $(app_get_appliance_additional_apps $main_app)"
 
-	packages=""
-	for app in $apps; do
-		packages="$packages $(app_get_packages $app)"
+	main_app_packages="$(app_get_packages $main_app)"
+
+	additional_app_packages=""
+	for app in $(app_get_appliance_additional_apps $main_app); do
+		additional_app_packages="$additional_app_packages $(app_get_packages $app)"
 	done
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
 	if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "egroupware" ] || [ "$main_app" = "horde" ] || [ "$main_app" = "tine20" ] || [ "$main_app" = "fortnox" ]; then
@@ -364,7 +366,8 @@ if [ "$close_fds" = "TRUE" ]; then
 	exec 1> /dev/null
 	exec 2> /dev/null
 fi
-\$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $packages || die
+\$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $main_app_packages || die
+\$update_commands_install -y --force-yes -o="APT::Get::AllowUnauthenticated=1;" $additional_app_packages || die
 joinscript_save_current_version
 univention-app register --component --do-it $apps
 univention-app register $apps
