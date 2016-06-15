@@ -9,3 +9,5 @@ desc: |
  * The method "get_schema()" has been added to the class
    "univention.uldap.access" which returns LDAP schema information.
 bug: [41207]
+erratum: 198
+announced: 2016-06-15
