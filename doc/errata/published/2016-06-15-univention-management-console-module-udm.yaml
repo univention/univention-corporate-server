@@ -9,3 +9,5 @@ desc: |
  * Syntax classes based on UDM_Attribute with single value attributes has been
    fixed to correctly detect the possible field values.
 bug: [41290]
+erratum: 201
+announced: 2016-06-15
