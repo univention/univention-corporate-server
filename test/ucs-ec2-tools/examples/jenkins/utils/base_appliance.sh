@@ -762,7 +762,35 @@ __EOF__
 __EOF__
 	patch -d/ -p0 </root/dh-parameter-background.patch
 	rm /root/dh-parameter-background.patch
- 
+
+	# Set repository/online=yes in any case. Remove when #40710 is released
+	cat >/root/set_online_repository.patch <<'__EOF__'
+--- /usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade.o    2016-06-15 10:14:52.292000000 -0400
++++ /usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade      2016-06-15 10:15:30.892000000 -0400
+@@ -34,6 +34,9 @@
+
+ info_header "$0" "$(gettext "Upgrading the system")"
+
++# Activate the online repository
++/usr/sbin/ucr set repository/online=yes
++
+ is_profile_var_true "update/system/after/setup"
+
+ if [ $? -ne 0 ]; then
+@@ -44,9 +47,6 @@
+
+ eval "$(ucr shell)"
+
+-# Activate the online repository
+-/usr/sbin/ucr set repository/online=yes
+-
+ if [ "$server_role" = "domaincontroller_master" ]; then
+ 	# Update to latest patchlevel
+ 	echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
+__EOF__
+	patch -d/ -p0 </root/set_online_repository.patch
+	rm /root/set_online_repository.patch
+
  # Do network stuff
 
 	# set initial values for UCR ssl variables
