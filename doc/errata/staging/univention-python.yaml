@@ -6,6 +6,6 @@ src: univention-python
 fix: 9.0.1-3.161.201606091857
 desc: |
  This update addresses the following issue:
- * The method "get_schema()" has been added to the class "univention.access"
-   which returns LDAP schema information.
+ * The method "get_schema()" has been added to the class
+   "univention.uldap.access" which returns LDAP schema information.
 bug: [41207]
