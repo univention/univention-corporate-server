@@ -859,7 +859,7 @@ __EOF__
 install_appreport ()
 {
 	ucr set repository/online/component/appreport=yes \
-		repository/online/component/appreport/version="current"
+		repository/online/component/appreport/version="4.0"
 	cat >/usr/lib/univention-system-setup/appliance-hooks.d/install-appreport <<__EOF__
 #!/bin/sh
 univention-install -y --force-yes univention-appreport
