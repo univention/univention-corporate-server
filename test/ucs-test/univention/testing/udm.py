@@ -193,8 +193,7 @@ class UCSTestUDM(object):
 
         dn = None
         cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
-
-        print 'Creating %s object with %r' % (modulename, kwargs)
+        print 'Creating %s object with %r' % (modulename, cmd)
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -236,7 +235,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
-        print 'Modifying %s object with %r' % (modulename, kwargs)
+        print 'Modifying %s object with %r' % (modulename, cmd)
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -274,7 +273,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
-        print 'Moving %s object %r' % (modulename, kwargs)
+        print 'Moving %s object %r' % (modulename, cmd)
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -307,7 +306,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
-        print 'Removing %s object %r' % (modulename, kwargs)
+        print 'Removing %s object %r' % (modulename, cmd)
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
