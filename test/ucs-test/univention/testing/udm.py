@@ -144,31 +144,22 @@ class UCSTestUDM(object):
 
         for arg in ('binddn', 'bindpwd', 'bindpwdfile', 'dn', 'position', 'superordinate', 'policy_reference', 'policy_dereference'):
             if arg in args:
-                cmd.extend(['--%s' % arg.replace('_', '-'), args[arg]])
-                del args[arg]
+                cmd.extend(['--%s' % arg.replace('_', '-'), args.pop(arg)])
 
-        if 'options' in args:
-            for option in args['options']:
-                cmd.extend(['--option', option])
-            del args['options']
+        for option in args.pop('options', ()):
+            cmd.extend(['--option', option])
 
-        if 'set' in args:
-            for key, value in args['set'].items():
-                cmd.extend(['--set', '%s=%s' % (key, value)])
-            del args['set']
+        for key, value in args.pop('set', {}).items():
+            cmd.extend(['--set', '%s=%s' % (key, value)])
 
         for operation in ('append', 'remove'):
-            if operation in args:
-                for key, values in args[operation].items():
-                    for value in values:
-                        cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
-                del args[operation]
+            for key, values in args.pop(operation, {}).items():
+                for value in values:
+                    cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
 
-        if action == 'remove':
-            if args.get('remove_referring', True):
+        if args.pop('remove_referring', True):
+            if action == 'remove':
                 cmd.append('--remove_referring')
-                if 'remove_referring' in args:
-                    del args['remove_referring']
 
         # set all other remaining properties
         for key, value in args.items():
