@@ -138,7 +138,7 @@ define([
 				}
 				var app = new App(loadedApp, this);
 				this._set('app', app);
-				this._configureDialogs();
+				this._configureDialogs(app);
 				this.renderPage();
 				this.set('moduleTitle', app.name);
 				this.appLoadingDeferred.resolve();
