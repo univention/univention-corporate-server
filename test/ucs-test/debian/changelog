@@ -1,3 +1,9 @@
+ucs-test (6.0.33-70) unstable; urgency=medium
+
+  * Bug #41416: Test existance of Appliance Logo
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 15 Jun 2016 11:43:08 +0200
+
 ucs-test (6.0.33-69) unstable; urgency=medium
 
   * Bug #41452: Fix tests failing because of incorrect output check

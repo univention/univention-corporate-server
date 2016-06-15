@@ -5,6 +5,7 @@
 ## exposure: safe
 
 import sys
+import subprocess
 
 from univention.management.console.modules.appcenter.app_center import Application
 
@@ -19,6 +20,7 @@ CATEGORIES = set((
 ))
 
 returncode = 100
+meta_inf = Application.get_metainf_url()
 
 codes = {}
 for app in Application.all():
@@ -38,5 +40,18 @@ for app in Application.all():
 		for category in unsupported:
 			print ' FAIL: Unsupported category: %s!' % category
 			returncode = 1
+		# logo files
+		for logo_attr in ['ApplianceLogo',
+			'ApplianceBootsplashLogo',
+			'ApplianceUmcHeaderLogo',
+			'ApplianceWelcomeScreenLogo',
+			'ApplianceUmcCategoryLogo']:
+			logo_name = ver.get(logo_attr)
+			if logo_name:
+				url = '%s/%s/%s' % (meta_inf, ver.id, logo_name)
+				stdout = subprocess.check_output(['curl', '-Is', url])
+				if 'HTTP/1.1 200 OK' not in stdout.splitlines():
+					print 'FAIL: Could not find %s' % url
+					returncode = 1
 
 sys.exit(returncode)
