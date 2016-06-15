@@ -9,3 +9,5 @@ desc: |
  * The package was moved to maintained due to QEMU being rebuilt due to the
     update to Xen 4.1
 bug: [41492]
+erratum: 9
+announced: 2016-06-15
