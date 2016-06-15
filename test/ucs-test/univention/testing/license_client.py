@@ -46,6 +46,7 @@ from HTMLParser import HTMLParser, HTMLParseError
 
 
 class CredentialsMissing(Exception):
+
     """
     A custom exception to be raised when a 'license.secret' file is not found
     """
@@ -71,19 +72,21 @@ class TestLicenseClient(HTMLParser):
         self.cookie = ''
         self.link_to_license = None
 
-        self.license_params = {"kundeUnternehmen": "Univention",
-                               "kundeEmail": "umc-test@univention.de",
-                               "BaseDN": "",
-                               "EndDate": "",
-                               "Servers": 50,
-                               "Support": 0,
-                               "PremiumSupport": 0,
-                               "Users": 50,
-                               "ManagedClients": 50,
-                               "CorporateClients": 50,
-                               "VirtualDesktopUsers": 0,
-                               "VirtualDesktopClients": 0,
-                               "Type": "UCS"}
+        self.license_params = {
+            "kundeUnternehmen": "Univention",
+            "kundeEmail": "umc-test@univention.de",
+            "BaseDN": "",
+            "EndDate": "",
+            "Servers": 50,
+            "Support": 0,
+            "PremiumSupport": 0,
+            "Users": 50,
+            "ManagedClients": 50,
+            "CorporateClients": 50,
+            "VirtualDesktopUsers": 0,
+            "VirtualDesktopClients": 0,
+            "Type": "UCS",
+        }
 
     def setup_logging(self):
         """
@@ -149,17 +152,21 @@ class TestLicenseClient(HTMLParser):
         cookie from the response received.
         """
         self.log.debug("In 'get_cookie' method")
-        body = {"username": self.server_username,
-                "password": self.server_password}
-        headers = {"Content-type": "application/x-www-form-urlencoded",
-                   "Accept": "text/plain"}
+        body = {
+            "username": self.server_username,
+            "password": self.server_password,
+        }
+        headers = {
+            "Content-type": "application/x-www-form-urlencoded",
+            "Accept": "text/plain",
+        }
 
         response = self.make_post_request('/shop/testing/',
                                           urlencode(body),
                                           headers)
         self.log.debug("The response status is '%s', reason is '%s', "
                        "headers are '%s'" % (response.status, response.reason,
-                       response.getheaders()))
+                                             response.getheaders()))
 
         self.cookie = response.getheader('set-cookie')
         if not ('sessionid' in self.cookie):
@@ -245,15 +252,17 @@ class TestLicenseClient(HTMLParser):
         """
         self.log.debug("In 'order_a_license' method")
         body = self.license_params
-        headers = {"Cookie": self.cookie,
-                   "Content-type": "application/x-www-form-urlencoded"}
+        headers = {
+            "Cookie": self.cookie,
+            "Content-type": "application/x-www-form-urlencoded",
+        }
 
         response = self.make_post_request('/shop/testing/order',
                                           urlencode(body),
                                           headers)
         self.log.debug("The response status is '%s', reason is '%s', "
                        "headers are '%s'" % (response.status, response.reason,
-                       response.getheaders()))
+                                             response.getheaders()))
         return response.read()
 
     def download_license_file(self):
@@ -262,14 +271,16 @@ class TestLicenseClient(HTMLParser):
         to the file with a 'self.license_filename'
         """
         self.log.debug("In 'download_license_file' method")
-        headers = {"Cookie": self.cookie,
-                   "Accept": "text/plain"}
+        headers = {
+            "Cookie": self.cookie,
+            "Accept": "text/plain",
+        }
         response = self.make_get_request('/shop/testing/' +
                                          self.link_to_license,
                                          headers)
         self.log.debug("The response status is '%s', reason is '%s', "
                        "headers are '%s'" % (response.status, response.reason,
-                       response.getheaders()))
+                                             response.getheaders()))
         try:
             with open(self.license_filename, 'w') as license_file:
                 license_file.write(response.read())
@@ -318,7 +329,7 @@ class TestLicenseClient(HTMLParser):
 
         # merging parsed args with the default values:
         self.license_params.update((key, val) for key, val in args.iteritems()
-                                                            if val is not None)
+                                   if val is not None)
         self.log.info("Requested license parameters are: '%s'"
                       % self.license_params)
 
@@ -367,7 +378,7 @@ class TestLicenseClient(HTMLParser):
         """
         self.log.debug("In 'main' method: server_url='%s', license_file='%s',"
                        " base_dn='%s', end_date='%s'" % (server_url,
-                       license_file, base_dn, end_date))
+                                                         license_file, base_dn, end_date))
         if self.Parser:
             self.process_cmd_arguments()
         elif (base_dn and end_date):

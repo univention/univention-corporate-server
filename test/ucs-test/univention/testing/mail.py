@@ -36,84 +36,86 @@ from smtpd import SMTPServer
 
 
 class UCSTest_Mail_Exception(Exception):
-	""" Generic ucstest mail error """
-	pass
+
+    """ Generic ucstest mail error """
+    pass
 
 
 class MailSink(object):
-	"""
-	This class starts an SMTP sink on the specified address/port.
-	Each incoming mail will be written to a si
 
-	>>> ms = MailSink('127.0.0.1', 12345, target_dir='/tmp/')
-	>>> ms.start()
-	<do some stuff>
-	>>> ms.stop()
+    """
+    This class starts an SMTP sink on the specified address/port.
+    Each incoming mail will be written to a si
 
-	>>> ms = MailSink('127.0.0.1', 12345, filename='/tmp/sinkfile.eml')
-	>>> ms.start()
-	<do some stuff>
-	>>> ms.stop()
-	"""
-	class EmlServer(SMTPServer):
-		target_dir = '.'
-		number = 0
-		filename = None
+    >>> ms = MailSink('127.0.0.1', 12345, target_dir='/tmp/')
+    >>> ms.start()
+    <do some stuff>
+    >>> ms.stop()
 
-		def process_message(self, peer, mailfrom, rcpttos, data):
-			if not self.filename:
-				filename = os.path.join(self.target_dir, '%s-%d.eml' % (time.strftime('%Y%m%d-%H%M%S'), self.number))
-			else:
-				filename = self.filename
-			with open(filename, 'a') as f:
-				f.write('X-SmtpSink-Peer: %s\n' % repr(peer))
-				f.write('X-SmtpSink-From: %s\n' % repr(mailfrom))
-				f.write('X-SmptSink-To: %s\n' % repr(rcpttos))
-				f.write(data)
-				if self.filename:
-					f.write('\n\n')
-			self.number += 1
+    >>> ms = MailSink('127.0.0.1', 12345, filename='/tmp/sinkfile.eml')
+    >>> ms.start()
+    <do some stuff>
+    >>> ms.stop()
+    """
+    class EmlServer(SMTPServer):
+        target_dir = '.'
+        number = 0
+        filename = None
 
-	def __init__(self, address, port, filename=None, target_dir=None):
-		self.address = address
-		self.port = port
-		self.filename = filename
-		if not target_dir:
-			self.target_dir = '.'
-		else:
-			self.target_dir = target_dir
-		self.thread = None
-		self.do_run = False
+        def process_message(self, peer, mailfrom, rcpttos, data):
+            if not self.filename:
+                filename = os.path.join(self.target_dir, '%s-%d.eml' % (time.strftime('%Y%m%d-%H%M%S'), self.number))
+            else:
+                filename = self.filename
+            with open(filename, 'a') as f:
+                f.write('X-SmtpSink-Peer: %s\n' % repr(peer))
+                f.write('X-SmtpSink-From: %s\n' % repr(mailfrom))
+                f.write('X-SmptSink-To: %s\n' % repr(rcpttos))
+                f.write(data)
+                if self.filename:
+                    f.write('\n\n')
+            self.number += 1
 
-	def start(self):
-		self.do_run = True
-		self.thread = threading.Thread(target=self.runner)
-		self.thread.daemon = True
-		self.thread.start()
+    def __init__(self, address, port, filename=None, target_dir=None):
+        self.address = address
+        self.port = port
+        self.filename = filename
+        if not target_dir:
+            self.target_dir = '.'
+        else:
+            self.target_dir = target_dir
+        self.thread = None
+        self.do_run = False
 
-	def stop(self):
-		self.do_run = False
-		self.thread.join()
+    def start(self):
+        self.do_run = True
+        self.thread = threading.Thread(target=self.runner)
+        self.thread.daemon = True
+        self.thread.start()
 
-	def runner(self):
-		print '*** Starting SMTPSink at %s:%s' % (self.address, self.port)
-		sink = self.EmlServer((self.address, self.port), None)
-		sink.target_dir = self.target_dir
-		sink.filename = self.filename
-		while self.do_run:
-			asyncore.loop(count=1, timeout=1)
-		sink.close()
-		print '*** SMTPSink at %s:%s stopped' % (self.address, self.port)
+    def stop(self):
+        self.do_run = False
+        self.thread.join()
+
+    def runner(self):
+        print '*** Starting SMTPSink at %s:%s' % (self.address, self.port)
+        sink = self.EmlServer((self.address, self.port), None)
+        sink.target_dir = self.target_dir
+        sink.filename = self.filename
+        while self.do_run:
+            asyncore.loop(count=1, timeout=1)
+        sink.close()
+        print '*** SMTPSink at %s:%s stopped' % (self.address, self.port)
 
 if __name__ == '__main__':
-	import time
-	#ms = MailSink('127.0.0.1', 12345, target_dir='/tmp/')
-	ms = MailSink('127.0.0.1', 12345, filename='/tmp/sink.eml')
-	print 'Starting sink'
-	ms.start()
-	print 'Waiting'
-	time.sleep(45)
-	print 'Stopping sink'
-	ms.stop()
-	print 'Waiting'
-	time.sleep(10)
+    import time
+    # ms = MailSink('127.0.0.1', 12345, target_dir='/tmp/')
+    ms = MailSink('127.0.0.1', 12345, filename='/tmp/sink.eml')
+    print 'Starting sink'
+    ms.start()
+    print 'Waiting'
+    time.sleep(45)
+    print 'Stopping sink'
+    ms.stop()
+    print 'Waiting'
+    time.sleep(10)

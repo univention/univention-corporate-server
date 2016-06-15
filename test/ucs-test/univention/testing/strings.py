@@ -40,96 +40,107 @@ STR_UMLAUTNUM = STR_UMLAUT + STR_NUMERIC
 
 import random
 
+
 def random_string(length=10, alpha=True, numeric=True, charset=None, encoding='utf-8'):
-	"""
-	Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
-	Default is an alphanumeric string of 10 characters length. A custom character set
-	may be defined via "charset" as string. The default encoding is UTF-8.
-	If length is 0 or negative, an empty string is returned.
-	"""
-	result = u''
-	for _ in xrange(length):
-		if charset:
-			result += random.choice(charset)
-		elif alpha and numeric:
-			result += random.choice(STR_ALPHANUM)
-		elif alpha:
-			result += random.choice(STR_ALPHA)
-		elif numeric:
-			result += random.choice(STR_NUMERIC)
-	return result.encode(encoding)
+    """
+    Get specified number of random characters (ALPHA, NUMERIC or ALPHANUMERIC).
+    Default is an alphanumeric string of 10 characters length. A custom character set
+    may be defined via "charset" as string. The default encoding is UTF-8.
+    If length is 0 or negative, an empty string is returned.
+    """
+    result = u''
+    for _ in xrange(length):
+        if charset:
+            result += random.choice(charset)
+        elif alpha and numeric:
+            result += random.choice(STR_ALPHANUM)
+        elif alpha:
+            result += random.choice(STR_ALPHA)
+        elif numeric:
+            result += random.choice(STR_NUMERIC)
+    return result.encode(encoding)
 
 
 def random_name(length=10):
-	"""
-	create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
-	"""
-	return random_string(length=1, alpha=True, numeric=False) + random_string(length=(length-2), alpha=True, numeric=True) + random_string(length=1, alpha=True, numeric=False)
+    """
+    create random name (1 ALPHA, 8 ALPHANUM, 1 ALPHA)
+    """
+    return random_string(length=1, alpha=True, numeric=False) + random_string(length=(length - 2), alpha=True, numeric=True) + random_string(length=1, alpha=True, numeric=False)
+
 
 def random_name_special_characters(length=10):
-	"""
-	create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)
-	"""
-	return '%s%s%s%s' % (
-			random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
-			random_string(length=2, alpha=True, numeric=False),
-			random_string(length=(length-4), alpha=False, numeric=False, charset=STR_SPECIAL_CHARACTER + STR_UMLAUT),
-			random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM)
-			)
+    """
+    create random name (1 UMLAUT, 2 ALPHA, 6 SPECIAL_CHARACTERS + UMLAUT, 1 UMLAUTNUM)
+    """
+    return '%s%s%s%s' % (
+        random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUT),
+        random_string(length=2, alpha=True, numeric=False),
+        random_string(length=(length - 4), alpha=False, numeric=False, charset=STR_SPECIAL_CHARACTER + STR_UMLAUT),
+        random_string(length=1, alpha=False, numeric=False, charset=STR_UMLAUTNUM)
+    )
+
 
 def random_username(length=10):
-	return random_name(length)
+    return random_name(length)
+
 
 def random_groupname(length=10):
-	return random_name(length)
+    return random_name(length)
 
-def random_int(bottom_end = 0, top_end = 9):
-	return str(random.randint(bottom_end, top_end))
+
+def random_int(bottom_end=0, top_end=9):
+    return str(random.randint(bottom_end, top_end))
+
 
 def random_version(elements=3):
-	version = []
-	for i in xrange(elements):
-		version.append(random_int(0, 9))
-	return '.'.join(version)
+    version = []
+    for i in xrange(elements):
+        version.append(random_int(0, 9))
+    return '.'.join(version)
+
 
 def random_ucs_version(min_major=1, max_major=9, min_minor=0, max_minor=99, min_patchlevel=0, max_patchlevel=99):
-	return '%s.%s-%s' % (random_int(min_major, max_major), random_int(min_minor, max_minor), random_int(min_patchlevel, max_patchlevel))
+    return '%s.%s-%s' % (random_int(min_major, max_major), random_int(min_minor, max_minor), random_int(min_patchlevel, max_patchlevel))
+
 
 def random_mac():
-	mac = [
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0x7f),
-		random.randint(0x00, 0xff),
-		random.randint(0x00, 0xff)
-	]
+    mac = [
+        random.randint(0x00, 0x7f),
+        random.randint(0x00, 0x7f),
+        random.randint(0x00, 0x7f),
+        random.randint(0x00, 0x7f),
+        random.randint(0x00, 0xff),
+        random.randint(0x00, 0xff)
+    ]
 
-	return ':'.join(map(lambda x: "%02x" % x, mac))
+    return ':'.join(map(lambda x: "%02x" % x, mac))
 
 # Generate 110 different ip addresses in the range 11.x.x.x-120.x.x.x
+
+
 class IP_Iter(object):
 
-	def __init__(self):
-		self.max_range = 120
-		self.index = 11
+    def __init__(self):
+        self.max_range = 120
+        self.index = 11
 
-	def __iter__(self):
-		return self
+    def __iter__(self):
+        return self
 
-	def next(self):
-		if self.index < self.max_range:
-			ip_list = [
-					self.index,
-					random.randint(1, 254),
-					random.randint(1, 254),
-					random.randint(1, 254)
-					]
-			ip = ".".join(map(str, ip_list))
-			self.index += 1
-			return ip
-		else:
-			raise StopIteration()
+    def next(self):
+        if self.index < self.max_range:
+            ip_list = [
+                self.index,
+                random.randint(1, 254),
+                random.randint(1, 254),
+                random.randint(1, 254)
+            ]
+            ip = ".".join(map(str, ip_list))
+            self.index += 1
+            return ip
+        else:
+            raise StopIteration()
+
 
 def random_ip(ip_iter=IP_Iter()):
-	return ip_iter.next()
+    return ip_iter.next()
