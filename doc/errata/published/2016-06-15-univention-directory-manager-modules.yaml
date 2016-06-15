@@ -9,3 +9,5 @@ desc: |
  * The attribute sambaPwdLastSet is now set for computer objects while
    changing the password.
 bug: [41517]
+erratum: 434
+announced: 2016-06-15
