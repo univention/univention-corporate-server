@@ -1,3 +1,9 @@
+ucs-test (6.0.33-71) unstable; urgency=low
+
+  * Bug #41207: Add tests for EA/EO removal
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 15 Jun 2016 14:03:23 +0200
+
 ucs-test (6.0.33-70) unstable; urgency=medium
 
   * Bug #41416: Test existance of Appliance Logo

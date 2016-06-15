@@ -1,0 +1,37 @@
+#!/usr/share/ucs-test/runner python
+## desc: |
+##  Test settings/extended_options removal
+##  PMH-2016-06-15: The test currently does not work because of UDM not having a global "enable-option-if-objectclass-foud" logic (Bug #21608 2)
+## tags: [udm,WIP]
+## roles: [domaincontroller_master]
+## exposure: careful
+## bugs: [25240,21608]
+## packages:
+##   - univention-config
+##   - univention-directory-manager-tools
+
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+if __name__ == '__main__':
+    with udm_test.UCSTestUDM() as udm:
+        eo_name = uts.random_name()
+        eo_properties = {
+            'name': eo_name,
+            'shortDescription': eo_name,
+            'module': 'groups/group',
+            'objectClass': 'univentionFreeAttributes',
+            'editable': '1',
+        }
+        eo = udm.create_object('settings/extended_options', position=udm.UNIVENTION_CONTAINER, **eo_properties)
+
+        group_dn, group_name = udm.create_group(options=['posix', eo_name])
+        utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
+
+        udm.modify_object('groups/group', dn=group_dn, options=['posix'])
+        try:
+            utils.verify_ldap_object(group_dn, expected_attr={'objectClass': ['univentionFreeAttributes']}, strict=False)
+            utils.fail('objectClass was not removed from group %r @ %r' % (group_name, group_dn))
+        except utils.LDAPObjectValueMissing:
+            pass
