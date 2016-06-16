@@ -96,6 +96,18 @@ case "$1" in
 			ulimit -p 1048576
 		fi
 
+		# check if docker bridge network overlaps with my networks
+		if docker_bridge_network_conflict; then
+			docker0_ip=$(ucr get docker/daemon/default/opts/bip)
+			log_failure_msg "$DOCKER_DESC: docker network bridge ${docker0_ip:-172.17.42.1/16} conflicts with existing network"
+			exit 1
+		fi
+
+		# TODO remove docker bridge, otherwise a new --bip config may be ignored
+		# for now system has to be restarted
+		# ifconfig docker0 down
+		# brctl delbr docker0
+
 		log_begin_msg "Starting $DOCKER_DESC: engine... "
 		output=$(start-stop-daemon --start --background \
 			--exec "$DOCKER" \

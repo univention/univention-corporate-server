@@ -1,6 +1,7 @@
 Type: file
 File: etc/default/docker
 Variables: proxy/http
+Variables: docker/daemon/default/opts/.*
 
 Type: file
 File: etc/init.d/docker

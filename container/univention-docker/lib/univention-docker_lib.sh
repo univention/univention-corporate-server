@@ -201,3 +201,14 @@ containers_running() {
 	done
 }
 
+docker_bridge_network_conflict() {
+	python -c "
+from univention.appcenter.utils import docker_bridge_network_conflict
+import sys
+if docker_bridge_network_conflict():
+	sys.exit(1)
+sys.exit(0)
+"
+	[ ! $? -eq 0 ] && return 0
+	return 1
+}

@@ -32,7 +32,10 @@
 
 #DEBHELPER#
 
-univention-config-registry set docker/autostart?yes
+univention-config-registry set \
+	docker/autostart?"yes" \
+	docker/daemon/default/opts/bip?"172.17.42.1/16" \
+	docker/daemon/default/opts/storage-driver?"overlay"
 
 eval "$(univention-config-registry shell)"
 
