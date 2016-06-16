@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-9) unstable; urgency=low
+
+  * Bug #41596: added docker_bridge_network_conflict()
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Jun 2016 14:36:31 +0200
+
 univention-appcenter (5.0.21-8) unstable; urgency=medium
 
   * Bug #41360: Fix typo

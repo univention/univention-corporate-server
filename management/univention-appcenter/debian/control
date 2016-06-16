@@ -64,6 +64,7 @@ Depends: univention-ssh,
  python-univention-config-registry,
  python-univention-directory-manager,
  gnupg,
+ python-ipaddr,
  ${misc:Depends},
  ${python:Depends},
 Recommends: univention-appcenter

@@ -42,6 +42,7 @@ from threading import Thread
 import time
 import urllib2
 import httplib
+import ipaddr
 import ssl
 from hashlib import md5, sha256
 import socket
@@ -50,13 +51,21 @@ from locale import getlocale
 
 from univention.lib.i18n import Translation
 from univention.config_registry.misc import key_shell_escape
-
+from univention.config_registry import interfaces
 from univention.appcenter.ucr import ucr_get, ucr_keys
 
 # "global" translation for univention-appcenter
 # also provides translation for univention-appcenter-docker etc
 _ = Translation('univention-appcenter').translate
 
+def docker_bridge_network_conflict():
+	docker0_net = ipaddr.IPv4Network(ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16'))
+	for name, iface in interfaces.Interfaces().ipv4_interfaces:
+		if 'network' in iface and 'netmask' in iface:
+			my_net = ipaddr.IPv4Network('%s/%s' % (iface['network'], iface['netmask']))
+			if my_net.overlaps(docker0_net):
+				return True
+	return False
 
 def app_is_running(app):
 	from univention.appcenter.app import AppManager
