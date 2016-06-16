@@ -32,7 +32,11 @@ nat_core_rules() {
 	iptables -L DOCKER > /dev/null 2> /dev/null || iptables -N DOCKER  # create docker queue if missing
 	iptables -t nat -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER
 	iptables -t nat -A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER
-	iptables -t nat -A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE
+@!@
+import ipaddr
+docker0_net = ipaddr.IPv4Network(configRegistry.get('docker/daemon/default/opts/bip', '172.17.42.1/16'))
+print '\tiptables -t nat -A POSTROUTING -s %s/%s ! -o docker0 -j MASQUERADE' % (str(docker0_net.network), str(docker0_net.prefixlen))
+@!@
 	iptables -A FORWARD -o docker0 -j DOCKER
 	iptables -A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 	iptables -A FORWARD -i docker0 ! -o docker0 -j ACCEPT

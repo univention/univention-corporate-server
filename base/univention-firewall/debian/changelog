@@ -1,3 +1,10 @@
+univention-firewall (8.0.1-2) unstable; urgency=low
+
+  * Use docker bip default for iptables settings in
+    20_docker.sh (Bug #40515)
+
+ -- Felix Botner <botner@univention.de>  Thu, 16 Jun 2016 15:41:50 +0200
+
 univention-firewall (8.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

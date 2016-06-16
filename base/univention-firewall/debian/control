@@ -15,6 +15,7 @@ Package: univention-firewall
 Architecture: all
 Depends: ${misc:Depends},
  univention-config-registry,
+ python-ipaddr,
  iptables
 Description: UCS - firewall integration
  This package contains scripts to combine iptables with
