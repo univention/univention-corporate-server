@@ -1,0 +1,25 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: apt
+fix: 0.8.10.3.71.201505261154
+desc: |
+ This update fixed the following issues:
+ * fix potential buffer overflow (CVE-2014-6273)
+ * incorrect invalidating of unauthenticated data (CVE-2014-0488)
+ * incorrect verification of 304 reply (CVE-2014-0487)
+ * incorrect verification of Acquire::Gzip indexes (CVE-2014-0489)
+ * apt-get source validation (CVE-2014-0478)
+ * sensitive information disclosure via incorrect hostname validation
+   (CVE-2011-3634)
+bug: [37196]
+cve:
+ - CVE-2014-6273
+ - CVE-2014-0488
+ - CVE-2014-0487
+ - CVE-2014-0489
+ - CVE-2014-0478
+ - CVE-2011-3634
+announced: 2015-05-29
+erratum: 248

@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: libssh2
+fix: 1.2.6-1.11.201605251206
+desc: |
+ This update addresses the following issues:
+ * Denial of service and memory disclosure due to insufficient range checks
+   during SSH_MSG_KEXINIT (CVE-2015-1782)
+bug: [38015]
+cve:
+ - CVE-2015-1782

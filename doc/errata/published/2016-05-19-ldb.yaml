@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: ldb
+fix: 2:1.1.25-1.68.201604061731
+desc: |
+ The package ldb has been updated for Samba 4.3.7.
+bug: [41012]
+announced: 2016-05-19
+erratum: 274

@@ -1,0 +1,18 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: sqlite3
+fix: 3.7.13-1~bpo60+1.25.201507071158
+desc: |
+ The sqlite3VXPrintf function in printf.c in SQLite before 3.8.9 does not
+ properly handle precision and width values during floating-point conversions,
+ which allows context-dependent attackers to cause a denial of service
+ (integer overflow and stack-based buffer overflow) or possibly have
+ unspecified other impact via large integers in a crafted printf function call
+ in a SELECT statement.
+bug: [37999]
+cve:
+ - CVE-2015-3416
+announced: 2015-08-07
+erratum: 257

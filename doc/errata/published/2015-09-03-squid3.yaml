@@ -1,0 +1,23 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: squid3
+fix: 3.1.6-1.2.12.201509010801
+desc: |
+ More details about the issues:
+ * Do not blindly forward cache peer CONNECT responses (CVE-2015-5400)
+ * Denial of service through malformed Range: headers (CVE-2014-3609)
+ * Denial of service (memory consumption) via (1) invalid Content-Length
+   headers, (2) long POST requests, or (3) crafted authentication
+   credentials (CVE-2012-5643)
+ * Denial of service (resource consumption) via a crafted request
+   (CVE-2013-0189)
+bug: [37240]
+cve:
+ - CVE-2015-5400
+ - CVE-2014-3609
+ - CVE-2012-5643
+ - CVE-2013-0189
+announced: 2015-09-03
+erratum: 264

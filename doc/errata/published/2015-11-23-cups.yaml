@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: cups
+fix: 1.4.4-7.101.201511181626
+desc: |
+ This update addresses the following issues:
+ * cups-filters: texttopdf heap-based buffer overflow (CVE-2015-3258)
+ * integer overflow leading to a heap-based buffer overflow (CVE-2015-3279)
+bug: [39402]
+cve:
+ - CVE-2015-3258
+ - CVE-2015-3279
+announced: 2015-11-23
+erratum: 268

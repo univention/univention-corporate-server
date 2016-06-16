@@ -1,0 +1,21 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: gnutls26
+fix: 2.8.6-1.23.201509021706
+desc: |
+ The following issues have been fixed:
+ * A buffer overflow in the read_server_hello function in GnuTLS has
+   been fixed (CVE-2014-3466).
+ * Missing date checks on CA certificates (CVE-2014-8155)
+ * Certificate algorithm consistency checking issue (CVE-2015-0294)
+ * Signature forgery (CVE-2015-0282)
+bug: [35016]
+cve:
+ - CVE-2014-3466 
+ - CVE-2014-8155
+ - CVE-2015-0282
+ - CVE-2015-0294
+announced: 2015-09-03
+erratum: 261

@@ -1,0 +1,27 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: postgresql-8.4
+fix: 8.4.22lts6-0.28.201602291913
+desc: |
+ Several vulnerabilities have been fixed in PostgreSQL 8.4:
+ * Denial of service due to double-free after authentication timeout
+   (CVE-2015-3165)
+ * Information disclosure due to missing checks of return codes from
+   the standard library (CVE-2015-3166)
+ * Inconsistent error messages from contrib/pgcrypto (CVE-2015-3167)
+ * Fix rare failure to invalidate relation cache init file (No CVE)
+ * attackers may cause denial of service (server crash) or read arbitrary
+   server memory via "too-short" crypt salts (CVE-2015-5288)
+ * Denial of service and potential execution of arbitrary code due to buffer
+   overrun in PL/Java regular expression processing (CVE-2016-0773)
+bug: [40800]
+cve:
+ - CVE-2015-3165
+ - CVE-2015-3166
+ - CVE-2015-3167
+ - CVE-2015-5288
+ - CVE-2016-0773
+announced: 2016-04-12
+erratum: 273

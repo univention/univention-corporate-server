@@ -19,7 +19,7 @@ desc: |
    a crafted string (CVE-2015-8629).
  * An authenticated remote attacker can cause a denial of service on the KDC
    (out-of-bounds read and KDC crash) via an initial '\0' character in a long
-   realm field within a TGS request (CVE-2015-2697). 
+   realm field within a TGS request (CVE-2015-2697).
  * Remote attackers to cause a denial of service via a crafted SPNEGO packet
    (incorrect pointer read and process crash) on applications using the GSSAPI
    implementation of MIT Kerberos 5 (CVE-2015-2695)

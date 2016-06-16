@@ -1,0 +1,25 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: eglibc
+fix: 2.11.3-4.31.201602161814
+desc: |
+ Multiple vulnerabilities have been fixed in eglibc:
+ * Denial of service in nss_files (CVE-2014-8121)
+ * nan function unbounded stack allocation (CVE-2014-9761)
+ * getaddrinfo stack-based buffer overflow (CVE-2015-7547)
+ * Segmentation fault when passing out-of-range data to strftime()
+   (CVE-2015-8776)
+ * Integer overflow in hcreate and hcreate_r (CVE-2015-8778)
+ * Multiple unbounded stack allocations in catopen() (CVE-2015-8779)
+bug: [37999]
+cve:
+ - CVE-2014-8121
+ - CVE-2014-9761
+ - CVE-2015-7547
+ - CVE-2015-8776
+ - CVE-2015-8778
+ - CVE-2015-8779
+announced: 2016-02-17
+erratum: 269

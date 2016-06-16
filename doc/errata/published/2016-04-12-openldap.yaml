@@ -1,0 +1,19 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: openldap
+fix: 2.4.31-1.214.201602162058
+desc: |
+ The following vulnerabilities have been fixed:
+ * Denial of service by unauthenticated remote attackers
+   (reachable assertion and application crash) via crafted BER data
+   (CVE-2015-6908)
+ * Under certain circumstances the ldapi interface socket was writable
+   for the group "nogroup" after installation and before the first slapd
+   restart (Bug #39341)
+bug: [39341]
+cve:
+ - CVE-2015-6908
+announced: 2016-02-17
+erratum: 272

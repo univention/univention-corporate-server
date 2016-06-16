@@ -1,0 +1,18 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: sudo
+fix: 1.7.4p4-2.squeeze.5.38.201504082027
+desc: |
+ Two vulnerabilities have been found in sudo:
+ * env_delete ignored for environment variables specified
+   on the command line when env_reset is disabled (CVE-2014-0106)
+ * Arbitrary file access via user defined TZ environment variable
+   (CVE-2014-9680)
+bug: [34270]
+cve:
+ - CVE-2014-0106
+ - CVE-2014-9680
+announced: 2015-05-04
+erratum: 244

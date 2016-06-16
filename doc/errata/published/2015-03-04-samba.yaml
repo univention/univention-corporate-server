@@ -1,0 +1,22 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: samba
+fix: 3.6.8-1.726.201502231215
+desc: |
+ These vulnerabilities have been fixed:
+ * Denial of service (infinite CPU loop) in nmbd (CVE-2014-0244)
+ * Denial of service (daemon crash) in the smbd file server daemon
+   (CVE-2014-3493)
+ * Information leak in shadow_copy VFS module (CVE-2014-0178)
+ * Incorrect parsing of the require_membership_of option in Winbind
+   (CVE-2012-6150)
+bug: [37193]
+cve:
+ - CVE-2014-0244
+ - CVE-2014-3493
+ - CVE-2014-0178
+ - CVE-2012-6150
+announced: 2015-03-04
+erratum: 238

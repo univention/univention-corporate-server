@@ -1,0 +1,35 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: apache2
+fix: 2.2.16-6.74.201509010839
+desc: |
+ More details about the issues:
+ * Denial of service in mod_dav (CVE-2013-6438)
+ * Heap overflow in mod_status scoreboard handling (CVE-2014-0226)
+ * Denial of service in mod_deflate (CVE-2014-0118)
+ * Denial of service in mod_cgid (CVE-2014-0231)
+ * Denial of service in mod_cache (CVE-2014-3581)
+ * Incorrect handling of chunked trailer fields in mod_headers
+   (CVE-2013-5704)
+ * HTTP request smuggling attack against chunked request parser, allowing
+   cache poisoning or credential hijacking if an intermediary proxy is in
+   use (CVE-2015-3183)
+ * mod_rewrite: Ensure that client data written to the RewriteLog is escaped
+   to prevent terminal escape sequences from entering the log file
+   (CVE-2013-1862)
+ * mod_dav: denial of service via MERGE request (CVE-2013-1896)
+bug: [37268]
+cve:
+ - CVE-2013-6438
+ - CVE-2014-0226
+ - CVE-2014-0118
+ - CVE-2014-0231
+ - CVE-2014-3581
+ - CVE-2013-5704
+ - CVE-2015-3183
+ - CVE-2013-1862
+ - CVE-2013-1896
+announced: 2015-09-03
+erratum: 259

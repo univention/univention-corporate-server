@@ -1,0 +1,10 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src:  samba
+bug: [41228]
+fix: 2:4.3.7-1.826.201605191435
+desc: |
+ The update fixes a couple of regressions introduced by the initial
+ Badlock update.

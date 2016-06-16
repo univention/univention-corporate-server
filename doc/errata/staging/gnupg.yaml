@@ -6,11 +6,11 @@ src: gnupg
 fix: 1.4.10-4.55.201606131133
 desc: |
  This update fixes the following issues:
- * Denial of service through malformed keyrings (CVE-2015-1606)                 
- * Side-channel attack in the mpi_pow() function (CVE-2015-0837)                
- * Side channel attack on ElGamal subkeys (CVE-2014-5270)                       
- * Denial of service through malformed packets (CVE-2014-4617)                  
- * Side-channel attack on El-Gamal keys (CVE-2014-3591)                         
+ * Denial of service through malformed keyrings (CVE-2015-1606)
+ * Side-channel attack in the mpi_pow() function (CVE-2015-0837)
+ * Side channel attack on ElGamal subkeys (CVE-2014-5270)
+ * Denial of service through malformed packets (CVE-2014-4617)
+ * Side-channel attack on El-Gamal keys (CVE-2014-3591)
  * RSA key extraction via low bandwidth acoustic cryptanalysis attack
    (CVE-2013-4576)
 bug: [37190]

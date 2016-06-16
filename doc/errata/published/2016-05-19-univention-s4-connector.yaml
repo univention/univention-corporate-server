@@ -1,0 +1,12 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: univention-s4-connector
+fix: 7.0.33-9.608.201604062056
+desc: |
+ The package univention-s4-connector has been rebuilt with updated
+ dependency on the Samba 4.3.7 samba-common-bin package.
+bug: [41012]
+announced: 2016-05-19
+erratum: 279

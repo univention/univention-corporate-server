@@ -1,0 +1,40 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: file
+fix: 5.04-5.35.201506221826
+desc: |
+ Multiple denial of service vulnerabilities in file have been fixed:
+ * CPU consumption (CVE-2013-7345)
+ * assertion failure and application exit (CVE-2014-0207)
+ * performance degradation (CVE-2014-0237)
+ * infinite loop or out-of-bounds memory access (CVE-2014-0238)
+ * infinite recursion, CPU consumption, and crash (CVE-2014-1943)
+ * out-of-bounds memory access and crash (CVE-2014-2270)
+ * application crash (CVE-2014-3478)
+ * application crash (CVE-2014-3479)
+ * application crash (CVE-2014-3480)
+ * application crash (CVE-2014-3487)
+ * CPU consumption (CVE-2014-3538)
+ * application crash (CVE-2014-3587)
+ * out-of-bounds read and application crash (CVE-2014-3710)
+ * uninitialized memory access (CVE-2014-9653)
+bug: [37266]
+cve:
+ - CVE-2013-7345
+ - CVE-2014-0207
+ - CVE-2014-0237
+ - CVE-2014-0238
+ - CVE-2014-1943
+ - CVE-2014-2270
+ - CVE-2014-3478
+ - CVE-2014-3479
+ - CVE-2014-3480
+ - CVE-2014-3487
+ - CVE-2014-3538
+ - CVE-2014-3587
+ - CVE-2014-3710
+ - CVE-2014-9653
+announced: 2015-06-30
+erratum: 254

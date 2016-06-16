@@ -1,0 +1,14 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: procmail
+fix: 3.22-19.13.201506191522
+desc: |
+ A heap-based buffer overflow in the formail tool of procmail allows the
+ execution of arbitrary code when processing a malformed mail.
+bug: [37196]
+cve:
+ - CVE-2014-3618
+announced: 2015-06-30
+erratum: 255

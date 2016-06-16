@@ -1,0 +1,18 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: bind9
+fix: 9.8.4.dfsg.P1-6+nmu2.112.201507311408
+desc: |
+ These vulnerabilities have been fixed:
+ * Denial of service in delegation handling could lead to denial of service
+   against named (CVE-2014-8500)
+ * Denial of service via crafted packet due to error in handling TKEY queries
+   triggering a REQUIRE assertion failure (CVE-2015-5477)
+bug: [37249]
+cve:
+ - CVE-2014-8500
+ - CVE-2015-5477
+announced: 2015-08-07
+erratum: 258

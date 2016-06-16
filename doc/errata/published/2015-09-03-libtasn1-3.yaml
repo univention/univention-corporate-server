@@ -1,0 +1,21 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: libtasn1-3
+fix: 2.7-1.13.201509010828
+desc: |
+ More details about the issues:
+ * Memory overreads in ASN1 parsing (CVE-2014-3467)
+ * NULL dereferences in ASN1 parsing (CVE-2014-3468, CVE-2014-3469)
+ * Stack-based buffer overflow in asn1_der_decoding in libtasn1 allows
+   remote attackers to have unspecified impact via unknown vectors
+   (CVE-2015-2806)
+bug: [37264]
+cve:
+ - CVE-2014-3467
+ - CVE-2014-3468
+ - CVE-2014-3469
+ - CVE-2015-2806
+announced: 2015-09-03
+erratum: 260

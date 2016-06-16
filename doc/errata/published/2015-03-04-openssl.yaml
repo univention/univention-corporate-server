@@ -1,0 +1,23 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: openssl
+fix: 0.9.8o-4.87.201503041316
+desc: |
+ These vulnerabilities have been fixed:
+ * Denial of service in DTLS (2014-3571)
+ * ECDHE can be downgraded to ECDH, resulting in a loss of forward secrecy
+   (CVE-2014-3572)
+ * Weaker RSA keys can be negotiated (CVE-2015-0204)
+ * Certificate fingerprints can be modified (CVE-2014-8275)
+ * Bignum squaring may produce incorrect results (CVE-2014-3570)
+bug: [37492]
+cve:
+ - CVE-2014-3571
+ - CVE-2014-3572
+ - CVE-2015-0204
+ - CVE-2014-8275
+ - CVE-2014-3570
+announced: 2015-03-04
+erratum: 240

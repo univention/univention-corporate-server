@@ -1,0 +1,112 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: linux
+fix: 3.2.73-2.166.201601251425
+desc: |
+ These vulnerabilities have been fixed:
+ * ipv6: addrconf: validate new MTU before applying it (CVE-2015-0272)
+   [Original reference is incorrect; should be CVE-2015-8215.]
+ * virtio-net: drop NETIF_F_FRAGLIST (CVE-2015-5156)
+ * vhost: actually track log eventfd file (CVE-2015-6252)
+ * RDS: verify the underlying transport exists before creating a connection
+   (CVE-2015-6937)
+ * USB: whiteheat: fix potential null-deref at probe (CVE-2015-5257)
+ * ipc/sem.c: fully initialize sem_array before making it visible
+ * ipc: Initialize msg/shm IPC objects before doing ipc_addid()
+   (CVE-2015-7613)
+ * vfs: Fix possible escape from mount namespace or chroot (CVE-2015-2925):
+   - dcache: Handle escaped paths in prepend_path
+   - vfs: Test for and handle paths that are unreachable from their mnt_root
+ * KEYS: Fix crash when attempt to garbage collect an uninstantiated keyring
+   (CVE-2015-7872)
+ * usbvision: fix overflow of interfaces array (CVE-2015-7833)
+ * RDS: fix race condition when sending a message on unbound socket
+   (CVE-2015-7990)
+ * [x86] KVM: Intercept #AC to avoid guest->host denial-of-service
+   (CVE-2015-5307)
+ * CVE-2013-7446
+   Dmitry Vyukov discovered that a particular sequence of valid
+   operations on local (AF_UNIX) sockets can result in a
+   use-after-free. This may be used to cause a denial of service
+   (crash) or possibly for privilege escalation.
+ * CVE-2015-7799
+   It was discovered that a user granted access to /dev/ppp can cause a
+   denial of service (crash) by passing invalid parameters to the
+   PPPIOCSMAXCID ioctl. This also applies to ISDN PPP device nodes.
+ * CVE-2015-8104
+   Jan Beulich reported a guest to host denial-of-service flaw
+   affecting the KVM hypervisor running on AMD processors. A malicious
+   guest can trigger an infinite stream of "debug" (#DB) exceptions
+   causing the processor microcode to enter an infinite loop where the
+   core never receives another interrupt. This leads to a panic of the
+   host kernel.
+ * CVE-2015-8374
+   It was discovered that Btrfs did not correctly implement truncation
+   of compressed inline extents. This could lead to an information
+   leak, if a file is truncated and later made readable by other users.
+   Additionally, it could cause data loss.
+ * CVE-2015-8543
+   It was discovered that a local user permitted to create raw sockets
+   could cause a denial-of-service by specifying an invalid protocol
+   number for the socket. The attacker must have the CAP_NET_RAW
+   capability in their user namespace.
+ * CVE-2015-7513
+   It was discovered that a local user permitted to use the x86 KVM
+   subsystem could configure the PIT emulation to cause a denial of
+   service (crash).
+ * CVE-2015-7550
+   Dmitry Vyukov discovered a race condition in the keyring subsystem
+   that allows a local user to cause a denial of service (crash).
+ * CVE-2015-8543
+   It was discovered that a local user permitted to create raw sockets
+   could cause a denial-of-service by specifying an invalid protocol
+   number for the socket. The attacker must have the CAP_NET_RAW
+   capability.
+ * CVE-2015-8550
+   Felix Wilhelm of ERNW discovered that the Xen PV backend drivers
+   may read critical data from shared memory multiple times. This
+   flaw can be used by a guest kernel to cause a denial of service
+   (crash) on the host, or possibly for privilege escalation.
+ * CVE-2015-8551 / CVE-2015-8552
+   Konrad Rzeszutek Wilk of Oracle discovered that the Xen PCI
+   backend driver does not adequately validate the device state when
+   a guest configures MSIs. This flaw can be used by a guest kernel
+   to cause a denial of service (crash or disk space exhaustion) on
+   the host.
+ * CVE-2015-8569
+   Dmitry Vyukov discovered a flaw in the PPTP sockets implementation
+   that leads to an information leak to local users.
+ * CVE-2015-8575
+   David Miller discovered a flaw in the Bluetooth SCO sockets
+   implementation that leads to an information leak to local users.
+bug: [39333]
+cve:
+ - CVE-2015-0272
+ - CVE-2015-8215
+ - CVE-2015-5156
+ - CVE-2015-6252
+ - CVE-2015-6937
+ - CVE-2015-5257
+ - CVE-2015-7613
+ - CVE-2015-2925
+ - CVE-2015-7872
+ - CVE-2015-7833
+ - CVE-2015-7990
+ - CVE-2015-5307
+ - CVE-2013-7446
+ - CVE-2015-7799
+ - CVE-2015-8552
+ - CVE-2015-8104
+ - CVE-2015-8374
+ - CVE-2015-8543
+ - CVE-2015-7513
+ - CVE-2015-7550
+ - CVE-2015-8543
+ - CVE-2015-8550
+ - CVE-2015-8551
+ - CVE-2015-8569
+ - CVE-2015-8575
+announced: 2016-02-17
+erratum: 270

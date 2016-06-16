@@ -1,0 +1,13 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: lxml
+fix: 2.2.8-2.20.201507061954
+desc: |
+ The function clean_html() misses some multibyte characters.
+bug: [37264]
+cve:
+ - CVE-2014-3146
+announced: 2015-08-07
+erratum: 256

@@ -1,0 +1,16 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: univention-apache
+fix: 5.0.14-2.245.201508251219
+desc: |
+ This update disables the insecure protocols SSL 2.0 and SSL 3.0 for the
+ Apache Webserver.
+ It is possible to override this by setting the UCR variable
+ apache2/ssl/v2 and/or apache2/ssl/v3 to "true" before or after the update.
+bug: [37906]
+cve:
+ - CVE-2014-3566
+announced: 2015-09-03
+erratum: 265

@@ -1,0 +1,43 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: openssl
+fix: 0.9.8o-4.82.201412100736
+desc: |
+ These vulnerabilities have been fixed:
+ * Carefully crafted handshakes can force the use of weak keys, resulting in
+   potential man-in-the-middle attacks. This requires a vulnerable TLS client
+   and TLS server. The OpenSSL release used in UCS 3.1 is not only affected
+   when acting as a TLS client (CVE-2014-0224)
+ * Fix CVE-2012-4929 (CRiME) by disabling zlib compression by default. It can
+   be enabled again by setting the environment variable
+   OPENSSL_NO_DEFAULT_ZLIB.
+ * ECSDA nonces can be retrieved through side channel attacks on cache timings
+   (CVE-2014-0076)
+ * A buffer overflow in processing DTLS fragments could lead to the execution
+   of arbitrary code or denial of service (CVE-2014-0195)
+ * The processing of DTLS hello packets is susceptible to denial of service
+   (CVE-2014-0221)
+ * The implementation of anonymous ECDH ciphersuites is susceptible to denial
+   of service (CVE-2014-3470)
+ * Information leak in pretty printing functions (CVE-2014-3508)
+ * Double Free when processing DTLS packets (CVE-2014-3505)
+ * DTLS memory exhaustion (CVE-2014-3506)
+ * DTLS memory leak from zero-length fragments (CVE-2014-3507)
+ * OpenSSL DTLS anonymous EC(DH) denial of service (CVE-2014-3510)
+bug: [37189]
+cve:
+ - CVE-2014-0224
+ - CVE-2012-4929
+ - CVE-2014-0076
+ - CVE-2014-0195
+ - CVE-2014-0221
+ - CVE-2014-3470
+ - CVE-2014-3508
+ - CVE-2014-3505
+ - CVE-2014-3506
+ - CVE-2014-3507
+ - CVE-2014-3510
+announced: 2015-01-09
+erratum: 237

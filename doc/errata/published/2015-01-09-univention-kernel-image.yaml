@@ -1,0 +1,219 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: univention-kernel-image
+fix: 6.0.1-6.70.201412190912
+desc: |
+ These vulnerabilities have been fixed:
+ * Insufficient access checks on ping sockets (CVE-2014-2851)
+ * Format string vulnerability in b43 driver (CVE-2013-2852)
+ * Arbitrary kernel heap write in HID driver core (CVE-2013-2888)
+ * Local DoS in HID Zeroplus driver (CVE-2013-2889)
+ * Local DoS in HID Pantherlord driver (CVE-2013-2892)
+ * Local DoS in HID Logitech driver (CVE-2013-2893)
+ * Local DoS in HID Logitech driver (CVE-2013-2895)
+ * Local DoS in HID NTRIG driver (CVE-2013-2896)
+ * Local DoS in HID Multitouch driver (CVE-2013-2897)
+ * Local DoS in HID PicoLCD driver (CVE-2013-2899)
+ * Denial of Service in RDS (CVE-2012-2372)
+ * Minor IPv6 DoS (CVE-2013-0343)
+ * Denial of service in ceph (CVE-2013-1059)
+ * Local denial of service in rds (CVE-2013-7339)
+ * Denial of service in vhost_net (CVE-2014-0055, CVE-2014-0077)
+ * Missing check during hugepage migration (CVE-2014-3940)
+ * Denial of service in CIFS (CVE-2014-0069)
+ * SCTP denial of service (CVE-2014-0101)
+ * Local denial of service in fpu handling (CVE-2014-1438)
+ * Information leaks in hamradio network ioctl (CVE-2014-1446)
+ * Information leak in ioctl media_enum_entities() (CVE-2014-1739)
+ * Denial of service in selinux (CVE-2014-1874)
+ * Ipv6 routing denial of service (CVE-2014-2309)
+ * Denial of service in the atk9k driver (CVE-2014-2672)
+ * Denial of service in RDS (CVE-2014-2678)
+ * Denial of service in mac80211 (CVE-2014-2706)
+ * Insufficient access checks on ping sockets (CVE-2014-2851)
+ * Local denial of service in memory management (CVE-2014-3122)
+ * Out of bounds read in BPF filters (CVE-2014-3144, CVE-2014-3145)
+ * Denial of service in audit system (CVE-2014-3917)
+ * Integer overflow when processing lz4 compressed kernel images
+   (CVE-2014-4608)
+ * Various information disclosure, use-after-frees and integer overflows in
+   ALSA user controls (CVE-2014-4656, CVE-2014-4655, CVE-2014-4654,
+   CVE-2014-4653, CVE-2014-4652)
+ * Information leak in vhost-net zerocopy support (CVE-2014-0131)
+ * Information leak in rc backend of target SCSI (CVE-2014-4027)
+ * Denial of service in the audit subsystem (CVE-2014-4508)
+ * Denial of service in memory management (CVE-2014-4171)
+ * Information leak in cpqarray and cciss drivers (CVE-2013-2147)
+ * Information leak in fanotify (CVE-2013-2148)
+ * Information leak in CDROM driver (CVE-2013-2164)
+ * Denial of service in Ipv6 (CVE-2013-2232)
+ * Information leaks in PF_KEYv2 sockets (CVE-2013-2234, CVE-2013-2237)
+ * Incorrect checks on dumpability of a process in ptrace() (CVE-2013-2929)
+ * Denial of service in ipv6 socket handling (CVE-2013-4162)
+ * Denial of service in ipv6 socket handling (CVE-2013-4163)
+ * Denial of service in device mapper (CVE-2013-4299)
+ * Denial of service in IPv6 (CVE-2013-4387)
+ * Denial of service in skb_flow_dissect() (CVE-2013-4348)
+ * Race condition in semaphore handling (CVE-2013-4483)
+ * Incorrect memory mapping in uio (CVE-2013-4511)
+ * Array overwrite in UML proc handling (only exploitable with root-equivalent
+   privileges) (CVE-2013-4512)
+ * KVM: DoS through unreclaimable memory (CVE-2013-4592)
+ * Privacy leak in ath9k_htc driver (CVE-2013-4579)
+ * Memory corruption in UFO support (CVE-2013-4470)
+ * Denial of service in libertas driver (CVE-2013-6378)
+ * Denial of service in aacraid driver (CVE-2013-6380)
+ * Memory corruption in XFS (CVE-2013-6382) (only exploitable with root
+   privileges)
+ * Missing capability check in aacraid ioctl (CVE-2013-6383)
+ * Missing input sanitising in kvm_vm_ioctl_create_vcpu() (CVE-2013-4587)
+ * Denial of service in KVM (CVE-2013-6367, CVE-2013-6376)
+ * Buffer overflow in radiotap wireless driver (CVE-2013-7027)
+ * Various memory leaks in socket handling (CVE-2013-7266, CVE-2013-7267,
+   CVE-2013-7268, CVE-2013-7269, CVE-2013-7270, CVE-2013-7271)
+ * Information leak in network sockets (CVE-2013-7263, CVE-2013-7264,
+   CVE-2013-7265)
+ * Off-by-one in ansi cprng (CVE-2013-4345)
+ * If SCTP is transferred over Ipv6 in some configurations IPsec doesn't work
+   correctly (CVE-2013-4350)
+ * Memory corruption in nf_conntrack_proto_dccp (CVE-2014-2523)
+ * Incorrect queueing of futex events may lead to local privilege escalation
+   (CVE-2014-3153)
+ * Privilege escalation in special HID drivers (CVE-2014-3181, CVE-2014-3182,
+   CVE-2014-3183, CVE-2014-3184, CVE-2014-3185, CVE-2014-3186)
+ * Denial of service in KVM (CVE-2014-3601)
+ * Race condition in PIT handler in KVM (CVE-2014-3611)
+ * Denial of service in SCTP (CVE-2014-4667)
+ * Denial of service in isofs (CVE-2014-5471, CVE-2014-5472)
+ * Denial of service in SCTP (CVE-2014-5077)
+ * Denial of service in the ceph cluster filesystem (CVE-2014-6416,
+   CVE-2014-6417,CVE-2014-6418)
+ * Denial of service in the UDF filesystem (CVE-2014-6410)
+ * Three denial of service vulnerabilities in SCTP (CVE-2014-3673,
+   CVE-2014-3687, CVE-2014-3688)
+ * Denial of service in SCTP (CVE-2014-7841)
+ * Buffer overflow in ttusb-dec (CVE-2014-8884)
+ * Denial of service in VMX handling in KVM (CVE-2014-3645, CVE-2014-3646)
+ * Denial of service in KVM instruction emulation (CVE-2014-3647)
+ * Denial of service in the VMX handling in KVM (CVE-2014-3690)
+ * Missing input validation in the ptrace syscall allows privilege escalation
+   (CVE-2014-4699) (This is limited to amd64)
+ * Privilege escalation using L2TP sockets (CVE-2014-4943)
+ * Denial of service in amd64 register handling (CVE-2014-9090)
+ * Denial of serrvice in handling of MSR registers in KVM (CVE-2014-3610)
+bug: [37284]
+cve:
+ - CVE-2014-2851
+ - CVE-2013-2852
+ - CVE-2013-2888
+ - CVE-2013-2889
+ - CVE-2013-2892
+ - CVE-2013-2893
+ - CVE-2013-2895
+ - CVE-2013-2896
+ - CVE-2013-2897
+ - CVE-2013-2899
+ - CVE-2012-2372
+ - CVE-2013-0343
+ - CVE-2013-1059
+ - CVE-2013-7339
+ - CVE-2014-0055
+ - CVE-2014-0077
+ - CVE-2014-3940
+ - CVE-2014-0069
+ - CVE-2014-0101
+ - CVE-2014-1438
+ - CVE-2014-1446
+ - CVE-2014-1739
+ - CVE-2014-1874
+ - CVE-2014-2309
+ - CVE-2014-2672
+ - CVE-2014-2678
+ - CVE-2014-2706
+ - CVE-2014-2851
+ - CVE-2014-3122
+ - CVE-2014-3144
+ - CVE-2014-3145
+ - CVE-2014-3917
+ - CVE-2014-4608
+ - CVE-2014-4656
+ - CVE-2014-4655
+ - CVE-2014-4654
+ - CVE-2014-4653
+ - CVE-2014-4652
+ - CVE-2014-0131
+ - CVE-2014-4027
+ - CVE-2014-4508
+ - CVE-2014-4171
+ - CVE-2013-2147
+ - CVE-2013-2148
+ - CVE-2013-2164
+ - CVE-2013-2232
+ - CVE-2013-2234
+ - CVE-2013-2237
+ - CVE-2013-2929
+ - CVE-2013-4162
+ - CVE-2013-4163
+ - CVE-2013-4299
+ - CVE-2013-4387
+ - CVE-2013-4348
+ - CVE-2013-4483
+ - CVE-2013-4511
+ - CVE-2013-4512
+ - CVE-2013-4592
+ - CVE-2013-4579
+ - CVE-2013-4470
+ - CVE-2013-6378
+ - CVE-2013-6380
+ - CVE-2013-6382
+ - CVE-2013-6383
+ - CVE-2013-4587
+ - CVE-2013-6367
+ - CVE-2013-6376
+ - CVE-2013-7027
+ - CVE-2013-7266
+ - CVE-2013-7267
+ - CVE-2013-7268
+ - CVE-2013-7269
+ - CVE-2013-7270
+ - CVE-2013-7271
+ - CVE-2013-7263
+ - CVE-2013-7264
+ - CVE-2013-7265
+ - CVE-2013-4345
+ - CVE-2013-4350
+ - CVE-2014-2523
+ - CVE-2014-3153
+ - CVE-2014-3181
+ - CVE-2014-3182
+ - CVE-2014-3183
+ - CVE-2014-3184
+ - CVE-2014-3185
+ - CVE-2014-3186
+ - CVE-2014-3601
+ - CVE-2014-3611
+ - CVE-2014-4667
+ - CVE-2014-5471
+ - CVE-2014-5472
+ - CVE-2014-5077
+ - CVE-2014-6416
+ - CVE-2014-6417
+ - CVE-2014-6418
+ - CVE-2014-6410
+ - CVE-2014-3673
+ - CVE-2014-3687
+ - CVE-2014-3688
+ - CVE-2014-7841
+ - CVE-2014-8884
+ - CVE-2014-3645
+ - CVE-2014-3646
+ - CVE-2014-3647
+ - CVE-2014-3690
+ - CVE-2014-4699
+ - CVE-2014-4943
+ - CVE-2014-9090
+ - CVE-2014-3610
+announced: 2015-01-09
+erratum: 235

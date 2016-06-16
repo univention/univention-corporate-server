@@ -1,0 +1,22 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: curl
+fix: 7.21.0-7.52.201506031400
+desc: |
+ These vulnerabilities have been fixed:
+ * Information leak in cookie handling (CVE-2014-3613)
+ * Information leak in curl_easy_duphandle() (CVE-2014-3707)
+ * Re-using authenticated connection when unauthenticated (CVE-2015-3143)
+ * Negotiate not treated as connection-oriented (CVE-2015-3148)
+ * Fix URL request injection (CVE-2014-8150)
+bug: [37257]
+cve:
+ - CVE-2014-3613
+ - CVE-2014-3707
+ - CVE-2015-3143
+ - CVE-2015-3148
+ - CVE-2014-8150
+announced: 2015-06-05
+erratum: 250

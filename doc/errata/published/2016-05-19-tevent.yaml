@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: tevent
+fix: 0.9.26-1.29.201604061703
+desc: |
+ The package tevent has been updated for Samba 4.3.7.
+bug: [41012]
+announced: 2016-05-19
+erratum: 278

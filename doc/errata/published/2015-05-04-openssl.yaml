@@ -1,0 +1,26 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: openssl
+fix: 0.9.8o-4.97.201503231742
+desc: |
+ Several vulnerabilities have been found in OpenSSL:
+ * NULL pointer dereference in elliptic curves (CVE-2015-0209)
+ * Denial of service during certificate signature algorithm verification
+   in ASN1_TYPE_cmp function (CVE-2015-0286)
+ * Memory corruption in ASN.1 parsing (CVE-2015-0287)
+ * NULL pointer dereference in X509 parsing (CVE-2015-0288)
+ * Denial of service due to NULL pointer dereference in PKCS#7 parsing code
+   (CVE-2015-0289)
+ * Memory corruption due to missing input sanitising in base64 decoding
+   (CVE-2015-0292)
+bug: [37958]
+cve:
+ - CVE-2015-0209
+ - CVE-2015-0286
+ - CVE-2015-0289
+ - CVE-2015-0289
+ - CVE-2015-0292
+announced: 2015-05-04
+erratum: 242

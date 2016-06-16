@@ -1,0 +1,11 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: talloc
+fix: 2.1.5-1.37.201604061642
+desc: |
+ The package talloc has been updated for Samba 4.3.7.
+bug: [41012]
+announced: 2016-05-19
+erratum: 276
