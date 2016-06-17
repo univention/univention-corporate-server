@@ -35,7 +35,10 @@ from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response
 from univention.appcenter import get_action, AppManager
 from univention.appcenter.ucr import ucr_instance
+from univention.lib.i18n import Translation
 import univention.management.console.modules as umcm
+
+_ = Translation('univention-app-appliance-branding').translate
 
 class Instance(Base):
 
@@ -43,7 +46,7 @@ class Instance(Base):
     def get(self):
 		domain = get_action('domain')
 		ucr = ucr_instance()
-		application = ucr['umc/web/appliance/id']
+		application = ucr.get('umc/web/appliance/id', '')
 		app = AppManager.find(application)
 		if app is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))

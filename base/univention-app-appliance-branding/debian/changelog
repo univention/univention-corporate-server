@@ -1,3 +1,10 @@
+univention-app-appliance-branding (0.2.2-6) unstable; urgency=medium
+
+  * Bug #39465: Add import for translation module
+  * use ucr.get()
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 04 Mar 2016 13:02:46 +0100
+
 univention-app-appliance-branding (0.2.2-5) unstable; urgency=medium
 
   Bug #39465:
