@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# restricted configuration for demo.univention.de
+# Univention branding package for App Appliances
 #  postrm script
 #
-# Copyright 2012-2016 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,10 +32,6 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/umc.sh
-
-eval "$(ucr shell)"
-
 _undivert() {
 	[ -e "$1" -a -e "$1" ] && rm -f "$1"  # make sure that also config files are removed
 	dpkg-divert --package univention-app-appliance-branding --remove --rename "$1"
@@ -54,6 +50,7 @@ case "$1" in
 			_undivert "$file"
 		done
 
+		# rebuild plymouth theme
 		univention-config-registry set bootsplash/theme='ucs'
 		;;
 	purge)

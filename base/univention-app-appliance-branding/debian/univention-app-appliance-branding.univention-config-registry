@@ -1,3 +1,11 @@
 Type: file
 File: usr/share/univention-management-console/modules/appliance.xml
 Variables: umc/web/appliance/.*
+
+Type: file
+File: usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css
+Variables: system/setup/boot/start
+
+Type: file
+File: usr/share/univention-system-activation/www/css/ucs.css
+Variables: system/setup/boot/start

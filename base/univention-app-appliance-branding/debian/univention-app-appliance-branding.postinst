@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# restricted configuration for demo.univention.de
+# Univention branding package for App Appliances
 #  postinst script
 #
-# Copyright 2012-2016 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,18 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 #DEBHELPER#
-
-. /usr/share/univention-lib/all.sh
-. /usr/share/univention-lib/umc.sh
-
-ucr set umc/web/appliance/id?owncloud82
-
-eval "$(ucr shell)"
-
-_undivert() {
-	[ -e "$1" -a -e "$1.real" ] && rm -f "$1"  # make sure that also config files are removed
-	dpkg-divert --package univention-demo-configuration --remove --rename "$1"
-}
 
 case "$1" in
 	configure)
