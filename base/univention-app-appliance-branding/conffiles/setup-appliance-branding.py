@@ -50,10 +50,10 @@ def handler(config_registry, changes):
 	css_background = app.appliance_css_background or '#eeeeee'
 	primary_color = app.appliance_primary_color or '#5a5a5a'
 	secondary_color = app.appliance_secondary_color or '#7db523'
-	if get_luminance(primary_color) > .5:
-		plymouth_theme = 'dark'
+	if get_luminance(primary_color) < .5:
+		theme = 'dark'
 	else:
-		plymouth_theme = 'light'
+		theme = 'light'
 
 	# adjust colors in SVG images via search and replace
 	for src_path in glob('/usr/share/univention-app-appliance-branding/images/*.svg'):
@@ -65,7 +65,7 @@ def handler(config_registry, changes):
 					out_file.write(line.replace('#ff00ff', secondary_color))
 
 	# create background image for plymouth theme
-	call(['/usr/share/univention-app-appliance-branding/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % plymouth_theme])
+	call(['/usr/share/univention-app-appliance-branding/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
 
 	def _download(filename, dest_path):
 		url = 'https://{server}/meta-inf/{version}/{app}/{file}'.format(
@@ -87,12 +87,12 @@ def handler(config_registry, changes):
 
 
 	def set_grub_theme():
-		if plymouth_theme == 'dark':
+		if theme == 'dark':
 			grub_color = 'white/black'
-		elif plymouth_theme == 'light':
+		elif theme == 'light':
 			grub_color = 'black/white'
 		ucr_update(config_registry, {
-			'grub/backgroundimage':  '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % (plymouth_theme,),
+			'grub/backgroundimage':  '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % (theme,),
 			'grub/color/highlight': grub_color,
 			'grub/color/normal': grub_color,
 			'grub/menu/color/highlight': grub_color,
@@ -112,24 +112,24 @@ def handler(config_registry, changes):
 		_download(app.appliance_umc_header_logo, '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo%s' % _ext)
 	if app.appliance_umc_header_logo:
 		_stem, _ext = os.path.splitext(app.appliance_umc_header_logo)
-		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen%s' % (plymouth_theme, _ext)
+		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen%s' % (theme, _ext)
 		_download(app.appliance_umc_header_logo, _img)
 		_params = 'no-repeat; background-size: auto 28px; background-position: left center;'
 		_svg_to_png(_img, _img + '.png', _params, '400x30')
 		_download(app.appliance_umc_header_logo, '/usr/share/univention-system-activation/www/css/icons/appliance_umc_header_logo%s' % _ext)
 	if app.appliance_welcome_screen_logo:
 		_stem, _ext = os.path.splitext(app.appliance_welcome_screen_logo)
-		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen%s' % (plymouth_theme, _ext)
+		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen%s' % (theme, _ext)
 		_download(app.appliance_welcome_screen_logo, _img)
 		_params = 'no-repeat; background-size: contain; background-position: center center;'
 		_svg_to_png(_img, _img + '.png', _params, '120x120')
 	if app.appliance_bootsplash_logo:
 		_stem, _ext = os.path.splitext(app.appliance_bootsplash_logo)
-		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash%s' % (plymouth_theme, _ext)
+		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash%s' % (theme, _ext)
 		_download(app.appliance_bootsplash_logo, _img)
 		_params = 'no-repeat; background-size: contain; background-position: center center;'
 		_svg_to_png(_img, _img + '.png', _params)
 
 	# set plymouth appliance theme
-	ucr_update(config_registry, {'bootsplash/theme': 'ucs-appliance-%s' % plymouth_theme})
+	ucr_update(config_registry, {'bootsplash/theme': 'ucs-appliance-%s' % theme})
 	set_grub_theme()

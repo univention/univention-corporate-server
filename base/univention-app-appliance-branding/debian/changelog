@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-19) unstable; urgency=medium
+
+  * Bug #39465: invert luminance check for plymouth
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Mar 2016 18:00:03 +0100
+
 univention-app-appliance-branding (0.2.2-18) unstable; urgency=medium
 
   * Bug #39465: speed up download of SVG images
