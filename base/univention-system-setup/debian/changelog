@@ -4,6 +4,7 @@ univention-system-setup (9.0.4-9) unstable; urgency=medium
   * Allow to make use of a pre-configured system instead of a join
   * Close the browser via JavaScript instead of killing the process
   * Call clean-up scripts + appliance hooks via setup-join.sh
+  * Also change Administrator password in 10_basis/18root_password
   * Run create-dh-parameter-files.sh in the background in setup-join.sh
   * Pre-compute city-data JSON files to improve build time
 
