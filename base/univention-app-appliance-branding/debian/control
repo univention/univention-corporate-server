@@ -1,0 +1,20 @@
+Source: univention-app-appliance-branding
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint-univention,
+ univention-config-dev
+
+Package: univention-app-appliance-branding
+Architecture: all
+Description: UCS - app appliance branding
+ This package provides app appliance branding.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+Depends: ${misc:Depends},
+ univention-welcome-screen

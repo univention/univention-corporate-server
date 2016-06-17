@@ -1,0 +1,5 @@
+univention-welcome-screen	usr/bin
+univention-bootsplash-owncloud-theme/*	usr/share/plymouth/themes
+univention-overview/categories/* usr/share/univention-management-console/categories
+univention-overview/modules/* usr/share/univention-management-console/modules
+univention-overview/icon/* usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable

@@ -1,0 +1,5 @@
+univention-app-appliance-branding (0.01-1) unstable; urgency=low
+
+  * Bug #39465: Initial release.
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 23 Feb 2016 15:00:33 +0100

@@ -1,0 +1,119 @@
+#!/bin/bash
+#
+# Univention Welcome Screen
+#  start welcome screen
+#
+# Copyright 2015-2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+eval "$(ucr shell)"
+. /usr/share/univention-lib/base.sh
+
+vt="7"
+
+# no running plymouth, go away
+if ! plymouth --ping; then
+	echo "plymouth not running, exiting"
+	exit 0
+fi
+
+# if no keyboards, go away
+keyboards="$(ls /dev/input/by-path/*-kbd*)"
+if [ -z "$keyboards" ]; then
+	echo "no keyboard found, stopping plymouth and exiting"
+	plymouth quit
+	exit 0
+fi
+
+# no framebuffer device
+if [ ! -e /dev/fb0 ]; then
+	echo "no framebuffer found, stopping plymouth and exiting"
+	plymouth quit
+	exit 0
+fi
+
+echo "starting $0 ($(date))"
+
+appliance=false
+if [ -n "$umc_web_appliance_name" -a -e /usr/share/plymouth/themes/ucs/appliance.png ]; then
+	appliance=true
+fi
+
+lang="${locale_default%%:*}"
+if [ -n "$lang" ]; then
+	export LC_ALL="$lang"
+fi
+export TEXTDOMAINDIR=/usr/share/plymouth/themes/ucs/
+
+console="$(gettext -d univention-welcome-screen "[ Press any key to open text console ]")"
+message1="$(gettext -d univention-welcome-screen "Open a browser window")"
+message2="$(gettext -d univention-welcome-screen "Navigate to one of the following addresses:")"
+message3="$(gettext -d univention-welcome-screen "Open the web management interface")"
+hostname="$hostname.$domainname"
+address="https://$(get_default_ip_address)"
+addresses="$address https://$hostname"
+
+# show welcome screen
+plymouth update --status=univention-welcome
+plymouth display-message --text="$console"
+if $appliance; then
+	plymouth update --status="univention-welcome:appliance"
+	header="Welcome to Owncloud Appliance"
+else
+	header="$(gettext -d univention-welcome-screen "Welcome to Univention Corporate Server")"
+fi
+plymouth update --status="univention-welcome:header:$header"
+plymouth update --status="univention-welcome:message1:$message1"
+plymouth update --status="univention-welcome:message2:$message2"
+plymouth update --status="univention-welcome:message3:$message3"
+plymouth update --status="univention-welcome:hostname:$hostname"
+plymouth update --status="univention-welcome:address:$address"
+plymouth update --status="univention-welcome:addresses:$addresses"
+plymouth update --status="univention-welcome:console:$console"
+plymouth update --status="univention-welcome:console:$console" # this is not a typo, second call flushes screen
+plymouth update --status=""
+
+# copy framebuffer image, quit plymouth and show framebuffer image
+# on virtual terminal
+data=$(mktemp)
+cp /dev/fb0 "$data"
+plymouth quit
+chvt "$vt"
+echo -e '\033[?17;0;0c' > "/dev/tty$vt"
+dd if="$data" of=/dev/fb0
+
+# grab the ANY key, this blocks
+hexdump -n 96 $keyboards &
+echo $! > /var/run/univention-welcome-screen.pid
+wait
+
+if [ "N 2" = "$(runlevel)" ]; then
+	rm "$data"
+	chvt 1
+fi
+
+exit 0
