@@ -1673,6 +1673,8 @@ define([
 			var role = vals['server/role'];
 			if (role == 'domaincontroller_master' && !this._isAdMember()) {
 				msg += _('A new UCS domain will be created.');
+			} else if (this._setUpPreconfiguredDomain()) {
+				msg += _('A preconfigured test domain will be instantiated.');
 			} else if (role == 'basesystem') {
 				msg += _('This system will be a base system without domain integration and without the capabilities to join one in the future.');
 			} else {

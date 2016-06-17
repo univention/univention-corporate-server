@@ -241,7 +241,11 @@ msgstr ""
 "Ein neues Domänenverzeichnis wird auf diesem System erstellt. Benutzer- und "
 "Verwaltungsdaten werden lokal gespeichert."
 
-#: umc/js/setup/ApplianceWizard.js:1118
+#: umc/js/setup/ApplianceWizard.js:1682
+msgid "A preconfigured test domain will be instantiated."
+msgstr "Eine vorkonfigurierte UCS-Test-Domäne wird instanziiert."
+
+#: umc/js/setup/ApplianceWizard.js:1134
 msgid ""
 "A proxy address needs to be specified in the format: <i>http://proxy."
 "mydomain.intranet:3128</i><br/>Proxy access with username and password may "
