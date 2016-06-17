@@ -1,3 +1,14 @@
+univention-system-setup (9.0.4-9) unstable; urgency=medium
+
+  Bug #40046
+  * Allow to make use of a pre-configured system instead of a join
+  * Close the browser via JavaScript instead of killing the process
+  * Call clean-up scripts + appliance hooks via setup-join.sh
+  * Run create-dh-parameter-files.sh in the background in setup-join.sh
+  * Pre-compute city-data JSON files to improve build time
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Feb 2016 13:56:04 +0100
+
 univention-system-setup (9.0.4-8) unstable; urgency=medium
 
   * Bug #40673: removed repitition od "Univention Corporate Server"

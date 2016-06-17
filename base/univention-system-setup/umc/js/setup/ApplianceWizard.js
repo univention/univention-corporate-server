@@ -919,6 +919,10 @@ define([
 			}
 		},
 
+		_getNewIpAddress: function(interfaces, primary_interface) {
+			// passed over from setup.js
+		},
+
 		_adjustWizardHeight: function() {
 			var _setVisibility = lang.hitch(this, function(visible) {
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
@@ -1362,12 +1366,24 @@ define([
 			// timer to check the setup status file in order to detect a join
 			// process which has been initiated from an external setup instance
 			// ... if so, window.close() needs to be called after the cleanup
-			this._checkStatusFileTimer = new timing.Timer(1000 * 10);
+			this._checkStatusFileTimer = new timing.Timer(1000 * 5);
 			this._checkStatusFileTimer.onStart = lang.hitch(this, function() {
 				this.set('statusCheckResult', 'unknown');
 			});
 			this._checkStatusFileTimer.onTick = lang.hitch(this, function() {
-				request('/ucs_setup_process_pending').then(lang.hitch(this, function() {
+				var _statusFileURI = '/ucs_setup_process_pending';
+				if (!this.local_mode) {
+					// take into account that the IP address might have been changed
+					// this is only of interest for external browsers
+					var _values = this.getValues();
+					var _interfaceSpecified = !tools.isEqual(_values.interfaces, {});
+					if (_interfaceSpecified) {
+						var newIp = this._getNewIpAddress(_values.interfaces, _values['interfaces/primary'] || 'eth0');
+						_statusFileURI = '//' + newIp + _statusFileURI;
+					}
+				}
+
+				request(_statusFileURI).then(lang.hitch(this, function() {
 					// file exists -> setup process has been triggered
 					this.set('statusCheckResult', 'joining');
 				}), lang.hitch(this, function(err) {
@@ -2172,7 +2188,6 @@ define([
 				}));
 
 				// start timer for status check
-				this._checkStatusFileTimer.setInterval(2 * 1000);
 				if (!this._checkStatusFileTimer.isRunning) {
 					this._checkStatusFileTimer.start();
 				}

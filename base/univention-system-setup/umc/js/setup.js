@@ -226,7 +226,8 @@ define([
 				umcpProgressCommand: lang.hitch(this, 'umcpProgressCommand'),
 				partOfInstaller: partOfInstaller,
 				values: values,
-				ucr: ucr
+				ucr: ucr,
+				_getNewIpAddress: lang.hitch(this, '_getNewIpAddress')
 			});
 			this.addChild(this.wizard);
 			if (!tools.status('overview')) {
