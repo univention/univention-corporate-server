@@ -12,7 +12,7 @@ load-source:
 	cd phantomjs/ && git checkout $(VERSION) && sed -i 's\url = https://\url = git://\g' .gitmodules && git submodule init && git submodule update
 
 override_dh_auto_build: load-source
-	cd phantomjs && python build.py --confirm --release --jobs 2
+	cd phantomjs && python build.py --confirm --release
 
 override_dh_auto_clean:
 	rm -rf phantomjs/
