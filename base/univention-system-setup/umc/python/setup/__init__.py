@@ -41,7 +41,8 @@ import copy
 import subprocess
 import json
 import locale as _locale
-import lxml.etree
+import lxml.etree 
+import psutil
 
 import notifier
 import notifier.threads
@@ -128,6 +129,21 @@ class Instance(Base, ProgressMixin):
 			self.__keep_alive_request = request
 			return
 		self.finished(request.id, None)
+
+	def close_firefox(self, request):
+		PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
+		try:
+			fpid = open(PATH_BROWSER_PID)
+			strpid = fpid.readline().strip()
+			pid = int(strpid)
+			p = psutil.Process(pid)
+			p.kill()
+		except IOError:
+			print 'WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID
+		except ValueError:
+			print 'ERROR: browser PID is not a number: "%s"' % strpid
+		except psutil.NoSuchProcess:
+			print 'ERROR: cannot kill process with PID: %s' % pid
 
 	@simple_response
 	def load(self):

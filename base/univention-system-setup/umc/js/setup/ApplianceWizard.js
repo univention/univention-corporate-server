@@ -1422,7 +1422,7 @@ define([
 						return;
 					}
 					if (newVal == 'joined') {
-						window.close();
+						this.umcpCommand('setup/closefirefox', {keep_alive: true}, false);
 					}
 					else if (newVal != 'unknown') {
 						// show progress bar
