@@ -2177,7 +2177,10 @@ define([
 					var requestDeferred = null;
 					var watchHandler = this.watch('statusCheckResult', function(attr, oldVal, newVal) {
 						if (!_areSetupScriptsRunning(newVal)) {
-							requestDeferred.cancel();
+							watchHandler.remove();
+							if (!requestDeferred.isFulfilled()) {
+								requestDeferred.cancel();
+							}
 						}
 					});
 
