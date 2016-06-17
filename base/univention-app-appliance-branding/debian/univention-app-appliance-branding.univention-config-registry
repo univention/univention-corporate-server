@@ -23,7 +23,3 @@ Variables: umc/web/appliance/.*
 Type: file
 File: var/www/ucs-overview/css/ucs.css
 Variables: umc/web/appliance/.*
-
-Type: module
-Module: setup-appliance-branding.py
-Variables: umc/web/appliance/.*
