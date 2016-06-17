@@ -1,3 +1,9 @@
+univention-phantomjs (0.2.1.1-10) unstable; urgency=low
+
+  * Bug #40934: Added "ca-certificates" to build-depends for git clone 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 06 Apr 2016 10:29:54 +0200
+
 univention-phantomjs (0.2.1.1-9) unstable; urgency=low
 
   * Bug #40934: Depends on binutils-gold to work-around out-of-memory
