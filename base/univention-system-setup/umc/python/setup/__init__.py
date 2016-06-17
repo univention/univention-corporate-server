@@ -130,20 +130,20 @@ class Instance(Base, ProgressMixin):
 			return
 		self.finished(request.id, None)
 
-	def close_firefox(self, request):
+	@simple_response
+	def close_firefox(self):
 		PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
 		try:
-			fpid = open(PATH_BROWSER_PID)
-			strpid = fpid.readline().strip()
-			pid = int(strpid)
-			p = psutil.Process(pid)
-			p.kill()
+			with open(PATH_BROWSER_PID, 'rb') as fd:
+				pid = int(fd.readline().strip())
+				process = psutil.Process(pid)
+				process.kill()
 		except IOError:
-			print 'WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID
+			MODULE.error('WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID)
 		except ValueError:
-			print 'ERROR: browser PID is not a number: "%s"' % strpid
+			MODULE.error('ERROR: browser PID is not a number: "%s"' % pid)
 		except psutil.NoSuchProcess:
-			print 'ERROR: cannot kill process with PID: %s' % pid
+			MODULE.error('ERROR: cannot kill process with PID: %s' % pid)
 
 	@simple_response
 	def load(self):
@@ -181,6 +181,7 @@ class Instance(Base, ProgressMixin):
 			script_args = ['--appliance-mode', '--force-recreate']
 
 		def _thread(request, obj):
+		
 			# acquire the lock until the scripts have been executed
 			self._finishedResult = False
 			obj._finishedLock.acquire()

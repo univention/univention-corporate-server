@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-13) unstable; urgency=medium
+
+  * Bug #40985: Code cleanup
+
+ -- Eduard Mai <mai@univention.de>  Wed, 06 Apr 2016 18:30:11 +0200
+
 univention-system-setup (9.0.4-12) unstable; urgency=medium
 
   * Bug #40985: Closing Firefox by umcp command instead of window.close
