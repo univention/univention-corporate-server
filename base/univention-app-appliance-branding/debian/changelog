@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.1-4) unstable; urgency=medium
+
+  * Bug #39465: adjust build dependencies
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 01 Mar 2016 18:53:32 +0100
+
 univention-app-appliance-branding (0.2.1-3) unstable; urgency=medium
 
   Bug #39465:
