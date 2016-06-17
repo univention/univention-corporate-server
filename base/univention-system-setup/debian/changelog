@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-20) unstable; urgency=medium
+
+  * Bug #41283: Set --demo-modus in fast demo modus
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 18 May 2016 13:20:39 +0200
+
 univention-system-setup (9.0.4-19) unstable; urgency=medium
 
   * Bug #41283: Set --demo-modus in fast demo modus

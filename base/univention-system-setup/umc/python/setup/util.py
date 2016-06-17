@@ -480,6 +480,7 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 			# launch script
 			icmd = [scriptpath] + args;
 			MODULE.info('Running script %s\n' % icmd)
+			f.write('== script: %s\n' % icmd)
 			p = subprocess.Popen(icmd, stdout = f, stderr = subprocess.STDOUT, env = {
 				'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
 				'LANG': lang,
