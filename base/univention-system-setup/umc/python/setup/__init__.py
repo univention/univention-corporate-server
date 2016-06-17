@@ -81,7 +81,6 @@ class Instance(Base, ProgressMixin):
 		self._finishedLock = threading.Lock()
 		self._finishedResult = True
 		self._progressParser = util.ProgressParser()
-		self._cleanup_required = False
 		self._very_first_locale = None
 		self.__keep_alive_request = None
 		# reset umask to default
@@ -102,16 +101,6 @@ class Instance(Base, ProgressMixin):
 	def _get_localized_label(self, label_dict):
 		# return the correctly loca
 		return label_dict.get(self.locale.language) or label_dict.get('en', '') or label_dict.get('', '')
-
-	def destroy(self):
-		if self._cleanup_required:
-			MODULE.info('Appliance mode: cleanup by timeout')
-			# cleanup restarts umc, so MODULE.info will never
-			# be called. but leave it that way, maybe it can
-			# be called in the future.
-			util.cleanup()
-			MODULE.info('... cleanup done')
-		return super(Instance, self).destroy()
 
 	def _check_thread_error( self, thread, result, request ):
 		"""Checks if the thread returned an exception. In that case in
@@ -165,6 +154,11 @@ class Instance(Base, ProgressMixin):
 
 		# get new values
 		values = request.options.get('values', {})
+		run_hooks = request.options.get('run_hooks', False)
+
+		if run_hooks:
+			# create a status file that indicates that save has been triggered
+			util.create_status_file()
 
 		def _thread(request, obj):
 			# acquire the lock until the scripts have been executed
@@ -201,6 +195,10 @@ class Instance(Base, ProgressMixin):
 
 				util.run_scripts(self._progressParser, restart, subfolders, lang=str(self.locale))
 
+				# run cleanup scripts and appliance hooks if needed
+				if run_hooks:
+					util.cleanup(with_appliance_hooks=True)
+
 				# done :)
 				self._finishedResult = True
 				return True
@@ -236,8 +234,6 @@ class Instance(Base, ProgressMixin):
 		# determine new system role
 		oldrole = orgValues.get('server/role', '')
 		newrole = values.get('server/role', oldrole)
-		if orgValues.get('joined'):
-			raise UMC_Error(_('Already joined systems cannot be joined.'))
 
 		is_appliance = bool(ucr.get('umc/web/appliance/name'))
 		is_nonmaster = newrole != "domaincontroller_master"
@@ -245,6 +241,9 @@ class Instance(Base, ProgressMixin):
 			activated = util.domain_has_activated_license(values.get('nameserver1'), username, password)
 			if not activated:
 				raise UMC_Error(_('%s Appliance could not be joined because the license on the DC Master is not activated.') % (ucr.get('umc/web/appliance/name'),))
+
+		# create a status file that indicates that save has been triggered
+		util.create_status_file()
 
 		def _thread(obj, username, password):
 			# acquire the lock until the scripts have been executed
@@ -276,9 +275,6 @@ class Instance(Base, ProgressMixin):
 
 				# done :)
 				self._finishedResult = True
-
-				# we should do a cleanup now
-				self._cleanup_required = True
 
 				return True
 			finally:
@@ -337,17 +333,6 @@ class Instance(Base, ProgressMixin):
 			notifier.Callback( _thread, request, self ),
 			notifier.Callback( self._thread_finished, request ) )
 		thread.run()
-
-	def cleanup(self, request):
-		# shut down the browser in appliance mode
-		# call finished() directly, so the browser will get the response in any case
-		# (see Bug #27632)
-		MODULE.info('Appliance mode: cleanup')
-		self.finished(request.id, True)
-		# put it here just in case destroy gets called during util
-		self._cleanup_required = False
-		util.cleanup()
-		MODULE.info('... cleanup done')
 
 	@simple_response(with_flavor=True)
 	def validate(self, values=None, flavor=None):

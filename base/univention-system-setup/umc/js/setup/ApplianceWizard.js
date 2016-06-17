@@ -41,6 +41,7 @@ define([
 	"dojo/Deferred",
 	"dojo/promise/all",
 	"dojo/store/Memory",
+	"dojo/request",
 	"dijit/form/Select",
 	"dijit/Tooltip",
 	"dijit/focus",
@@ -66,7 +67,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -275,9 +276,9 @@ define([
 
 		autoHeight: true,
 
-		// a timer used it in _cleanup
-		// to make sure the session does not expire
-		_keepAlive: null,
+		_checkStatusFileTimer: null,
+		statusCheckResult: 'unknown',
+		_joinTriggered: false,
 
 		autoValidate: false,
 		autoFocus: true,
@@ -1358,15 +1359,36 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// make the session not expire before the user can confirm the
-			// cleanup dialog started (and stopped) in _cleanup
-			this._keepAlive = new timing.Timer(1000 * 30);
-			this._keepAlive.onTick = lang.hitch(this, function() {
-				// dont do anything important here, just
-				// make sure that umc does not forget us
-				// dont even handle errors
-				this.umcpCommand('setup/ping', {}, false);
+			// timer to check the setup status file in order to detect a join
+			// process which has been initiated from an external setup instance
+			// ... if so, window.close() needs to be called after the cleanup
+			this._checkStatusFileTimer = new timing.Timer(1000 * 10);
+			this._checkStatusFileTimer.onStart = lang.hitch(this, function() {
+				this.set('statusCheckResult', 'unknown');
 			});
+			this._checkStatusFileTimer.onTick = lang.hitch(this, function() {
+				request('/ucs_setup_process_pending').then(lang.hitch(this, function() {
+					// file exists -> setup process has been triggered
+					this.set('statusCheckResult', 'joining');
+				}), lang.hitch(this, function(err) {
+					// file does not exist...
+					if (this.statusCheckResult == 'joining') {
+						// ... but existed before -> setup process is finished
+						this.set('statusCheckResult', 'joined');
+						this._checkStatusFileTimer.stop();
+
+						if (!this._joinTriggered) {
+							// quit the browser if the join has been triggered from outside
+							window.close();
+						}
+					}
+
+				}));
+			});
+			if (this.local_mode) {
+				// only monitor the status file during the wizard session in a local VM
+				this._checkStatusFileTimer.start();
+			}
 
 			// setup the progress bar
 			this._progressBar = new ProgressBar({
@@ -2078,23 +2100,28 @@ define([
 				// make sure no page reload is requested
 				tools.status('ignorePageReload', true);
 
-				// send save command to server
-				var backendCmd = 'setup/join';
-				if (this._setUpPreconfiguredDomain()) {
-					// in the pre-configured setup, we do not need a real
-					// join process, only the standard setup save command
-					// which triggers the setup scripts
-					backendCmd = 'setup/save';
-				}
+				// join system
 				this._progressBar.reset(_('Initialize the configuration process ...'));
 				this.standby(true, this._progressBar);
-				this.umcpCommand(backendCmd, {
-					values: values,
-					// make sure that the username/password are null and not undefined
-					// ... server cannot handle "undefined"
-					username: username || null,
-					password: password || null
-				}, false).then(lang.hitch(this, function() {
+				var joinDeferred = null;
+				if (this._setUpPreconfiguredDomain()) {
+					// in the pre-configured setup, we do not need a real join process,
+					// only the standard setup save command which triggers the setup scripts
+					joinDeferred = this.umcpCommand('setup/save', {
+						values: values,
+						run_hooks: true
+					}, false);
+				}
+				else {
+					joinDeferred = this.umcpCommand('setup/join', {
+						values: values,
+						// make sure that the username/password are null and not undefined
+						// ... server cannot handle "undefined"
+						username: username || null,
+						password: password || null,
+					}, false);
+				}
+				joinDeferred.then(lang.hitch(this, function() {
 					// make sure the server process cannot die
 					this.umcpCommand('setup/ping', {keep_alive: true}, false);
 
@@ -2116,14 +2143,41 @@ define([
 				}));
 			});
 
-			var _hasJoinErrors = lang.hitch(this, function() {
-				this.standby(false);
+			var _checkJoinSuccessful = lang.hitch(this, function() {
 				var errors = this._progressBar.getErrors();
 				if (errors.errors.length) {
 					this._updateErrorPage(errors.errors, errors.critical);
+					this.standby(false);
 					return false;
 				}
 				return true;
+			});
+
+			var _waitForCleanup = lang.hitch(this, function(joinSuccessful) {
+				if (!joinSuccessful) {
+					return false;
+				}
+
+				// update progress bar
+				this._progressBar.reset();
+				this._progressBar.setInfo(_('Waiting for restart of server components...'), null, Infinity);
+
+				// monitor join status
+				var deferred = new Deferred();
+				this.watch('statusCheckResult', lang.hitch(this, function(attr, oldVal, newVal) {
+					if (newVal == 'joined') {
+						deferred.resolve(true);
+						this.standby(false);
+					}
+				}));
+
+				// start timer for status check
+				this._checkStatusFileTimer.setInterval(2 * 1000);
+				if (!this._checkStatusFileTimer.isRunning) {
+					this._checkStatusFileTimer.start();
+				}
+
+				return deferred;
 			});
 
 			// chain all methods together
@@ -2137,7 +2191,8 @@ define([
 				var credentials = this._getCredentials();
 				deferred = _join(values, credentials.username, credentials.password);
 			}
-			deferred = deferred.then(_hasJoinErrors);
+			deferred = deferred.then(_checkJoinSuccessful);
+			deferred = deferred.then(_waitForCleanup);
 			return deferred;
 		},
 
@@ -2252,16 +2307,6 @@ define([
 			}
 
 			var nextPage = this.inherited(arguments);
-
-			// start/stop timer
-			var keepSessionAlive = (nextPage == 'error' || nextPage == 'done');
-			if (keepSessionAlive && !this._keepAlive.isRunning) {
-				this._keepAlive.start();
-			}
-			if (!keepSessionAlive && this._keepAlive.isRunning) {
-				this._keepAlive.stop();
-			}
-
 			if (nextPage == 'network' && this._initialDHCPQueriesDeferred) {
 				// process the initial dhcp queries
 				this._processDHCPQueries(this._initialDHCPQueriesDeferred);
@@ -2512,6 +2557,7 @@ define([
 				return _validationFunction();
 			}
 			if (pageName == 'summary') {
+				this._joinTriggered = true;
 				return this.join().then(lang.hitch(this, function(success) {
 					this._updateDonePage();
 					return success ? 'done' : 'error';
@@ -2528,11 +2574,6 @@ define([
 			topic.publish('/umc/actions', this.moduleID, 'wizard', pageName, 'previous');
 
 			var previousPage = this.inherited(arguments);
-
-			// stop timer
-			if (this._keepAlive.isRunning) {
-				this._keepAlive.stop();
-			}
 
 			if (previousPage == 'warning-basesystem') {
 				previousPage = this.previous(previousPage);
@@ -2714,8 +2755,8 @@ define([
 		},
 
 		destroy: function() {
-			if (this._keepAlive.isRunning) {
-				this._keepAlive.stop();
+			if (this._checkStatusFileTimer.isRunning) {
+				this._checkStatusFileTimer.stop();
 			}
 			this.inherited(arguments);
 		}

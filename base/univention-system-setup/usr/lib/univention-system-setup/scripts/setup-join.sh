@@ -49,6 +49,10 @@ while [ "$#" -gt 0 ]; do
 			runcleanup=false
 			shift 1
 			;;
+		--run_cleanup_as_atjob)
+			runcleanup=atjob
+			shift 1
+			;;
 		--help)
 			echo "Usage: $0 [--dcaccount <dcaccount> --password_file <passwordfile>] [--do_not_run_cleanup]"
 			exit 1
@@ -296,9 +300,7 @@ ucr set system/setup/showloginmessage=false
 
 # call appliance hooks
 info_header "appliance-hooks.d" "$(gettext "Running appliance scripts")"
-if [ -d /usr/lib/univention-system-setup/appliance-hooks.d ]; then
-	run-parts -v /usr/lib/univention-system-setup/appliance-hooks.d
-fi
+/usr/lib/univention-system-setup/scripts/appliance_hooks.py
 
 # allow a restart of server components without actually restarting them
 /usr/share/univention-updater/enable-apache2-umc --no-restart
@@ -306,6 +308,10 @@ fi
 if [ "$runcleanup" = true ]; then
 	echo "=== Running cleanup scripts $(date --rfc-3339=seconds)"
 	/usr/lib/univention-system-setup/scripts/cleanup.py
+elif [ "$runcleanup" = atjob ]; then
+	# run cleanup scripts via at with a delay of 1sec
+	echo "=== Cleanup scripts will be run as at job $(date --rfc-3339=seconds)"
+	echo "sleep 1; /usr/lib/univention-system-setup/scripts/cleanup.py" | at now
 else
 	echo "== Cleanup scripts will not be run now, option --do_not_run_cleanup was given $(date --rfc-3339=seconds)"
 fi

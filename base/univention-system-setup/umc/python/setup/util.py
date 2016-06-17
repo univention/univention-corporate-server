@@ -80,10 +80,12 @@ PATH_JOIN_SCRIPT = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
 PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
 PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
+PATH_STATUS_FILE = '/var/www/ucs_setup_process_pending'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 CMD_CLEANUP_SCRIPT = '/usr/lib/univention-system-setup/scripts/cleanup.py >>/var/log/univention/setup.log 2>&1'
+CMD_APPLIANCE_HOOKS = '/usr/lib/univention-system-setup/scripts/appliance_hooks.py >>/var/log/univention/setup.log 2>&1'
 CITY_DATA_PATH = '/usr/share/univention-system-setup/city_data.json'
 COUNTRY_DATA_PATH = '/usr/share/univention-system-setup/country_data.json'
 
@@ -576,20 +578,27 @@ def run_joinscript( progressParser, values, _username, password, lang='C'):
 			reg = re.compile('[^ a-zA-Z_1-9-]')
 			username = reg.sub('_', _username)
 
-			# run join scripts
-			runit( cmd + [ '--dcaccount', username, '--password_file', password_file, '--do_not_run_cleanup' ] )
+			# run join scripts without the cleanup scripts
+			runit( cmd + [ '--dcaccount', username, '--password_file', password_file, '--run_cleanup_as_atjob' ] )
 
 	else:
-		# run join scripts
-		runit(cmd + ['--do_not_run_cleanup'])
+		# run join scripts without the cleanup scripts
+		runit(cmd + ['--run_cleanup_as_atjob'])
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
-	cleanup()
 
-def cleanup():
-	# start an at job in the background that will do the cleanup
-	atjobs.add(CMD_CLEANUP_SCRIPT)
+def cleanup(with_appliance_hooks=False):
+	# add delay of 1sec before actually executing the commands
+	# in order to avoid problems with restarting the UMC server
+	# and thus killing the setup module process
+	cmd = 'sleep 1; '
+	if with_appliance_hooks:
+		cmd += CMD_APPLIANCE_HOOKS + '; '
+ 	cmd += CMD_CLEANUP_SCRIPT
+
+	# start an at job in the background
+	atjobs.add(cmd)
 
 def run_scripts_in_path(path, logfile, category_name=""):
 	logfile.write('\n=== Running %s scripts (%s) ===\n' % (category_name, timestamp()))
@@ -608,6 +617,10 @@ def run_scripts_in_path(path, logfile, category_name=""):
 
 	logfile.write('\n=== done (%s) ===\n' % timestamp())
 	logfile.flush()
+
+def create_status_file():
+	with open(PATH_STATUS_FILE, 'w') as status_file:
+		status_file.write('');
 
 def detect_interfaces():
 	"""

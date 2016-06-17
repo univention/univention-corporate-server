@@ -1,6 +1,8 @@
 #!/bin/sh
 #
-# Copyright 2013-2016 Univention GmbH
+# Remove univention-system-setup-boot package
+#
+# Copyright 2014-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,6 +29,14 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ucr unset --forced update/available
+if [ ! -s /var/cache/univention-system-setup/profile ]; then
+	exit 0
+fi
 
-exit 0
+# Remove univention-system-setup-boot after successful run
+role=$(ucr get server/role)
+if [ "${role}" = "basesystem" ]
+then
+	apt-mark manual python-psutil
+fi
+aptitude -q -y markauto univention-system-setup-boot- univention-management-console-web-server univention-management-console-module-setup </dev/null

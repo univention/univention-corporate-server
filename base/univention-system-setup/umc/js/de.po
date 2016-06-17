@@ -1604,9 +1604,13 @@ msgstr "Virtuelles LAN"
 msgid "Virtual keyboard"
 msgstr "Virtuelle Tastatur"
 
-#: umc/js/setup/ApplianceWizard.js:1142 umc/js/setup/ApplianceWizard.js:2267
-#: umc/js/setup/ApplianceWizard.js:2283 umc/js/setup/ApplianceWizard.js:2345
-#: umc/js/setup/ApplianceWizard.js:2473
+#: umc/js/setup/ApplianceWizard.js:2168
+msgid "Waiting for restart of server components..."
+msgstr "Warten auf den Neustart der Server-Komponenten ..."
+
+#: umc/js/setup/ApplianceWizard.js:1158 umc/js/setup/ApplianceWizard.js:2292
+#: umc/js/setup/ApplianceWizard.js:2308 umc/js/setup/ApplianceWizard.js:2370
+#: umc/js/setup/ApplianceWizard.js:2487
 msgid "Warning"
 msgstr "Warnung"
 

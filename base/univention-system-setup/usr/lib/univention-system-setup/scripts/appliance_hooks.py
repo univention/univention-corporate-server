@@ -1,8 +1,10 @@
-#!/bin/sh
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
 #
-# Remove univention-system-setup-boot package
+# Univention System Setup
+# appliance hook script called at the end of appliance wizard setup
 #
-# Copyright 2014-2016 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,15 +31,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# Package removal on basesystems is handled in cleanup-post
-role=$(ucr get server/role)
-if [ "${role}" = "basesystem" ]
-then
-	exit 0
-fi
+import sys
+import shutil
+import os.path
+from tempfile import mkdtemp
+from univention.management.console.modules.setup import util
 
-# Remove univention-system-setup-boot after successful run
-if [ -s /var/cache/univention-system-setup/profile ]
-then
-	aptitude -q -y markauto univention-system-setup-boot- univention-management-console-web-server univention-management-console-module-setup </dev/null
-fi
+PATH_APPLIANCE_HOOKS = '/usr/lib/univention-system-setup/appliance-hooks.d/'
+
+
+def appliance_hooks():
+	temp_dir = os.path.join(mkdtemp(), 'pre')
+	shutil.copytree(PATH_APPLIANCE_HOOKS, temp_dir)
+	util.run_scripts_in_path(temp_dir, sys.stdout, "appliance hook")
+	shutil.rmtree(temp_dir)
+	sys.exit(0)
+
+if __name__ == "__main__":
+	appliance_hooks()
+
