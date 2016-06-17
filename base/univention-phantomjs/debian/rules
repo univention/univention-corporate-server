@@ -2,20 +2,22 @@
 
 VERSION = 2.1.1
 URL = git://github.com/ariya/phantomjs.git
+DIR := phantomjs
+TAR := univention-phantomjs_$(VERSION).orig.tar.gz
 
-get-orig-source: load-source
-	tar cfz univention-phantomjs-$(VERSION).orig.tar.gz phantomjs/
-	rm -rf phantomjs/
+get-orig-source: $(TAR)
+$(TAR): $(DIR)
+	tar -c -z -f $@ --exclude .git $<
 
-load-source:
-	git clone $(URL)
-	cd phantomjs/ && git checkout $(VERSION) && sed -i 's\url = https://\url = git://\g' .gitmodules && git submodule init && git submodule update
+$(DIR):
+	git clone --recursive --branch $(VERSION) $(URL) $@
 
-override_dh_auto_build: load-source
-	cd phantomjs && python build.py --confirm --release
+override_dh_auto_build: $(DIR)
+	cd $(DIR) && python build.py --confirm --release
 
-override_dh_auto_clean:
-	rm -rf phantomjs/
+override_dh_auto_clean: $(DIR)
+	cd $(DIR) && git clean -d -f -x
+	cd $(DIR) && git submodule foreach 'git clean -d -f -x'
 
 %:
 	dh $@

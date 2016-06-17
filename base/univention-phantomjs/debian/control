@@ -4,18 +4,40 @@ Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 XS-Python-Version: 2.7
+Homepage: http://www.phantomjs.org/
 Build-Depends: debhelper (>= 7.0.50~),
- build-essential, g++ (>=4.7), flex, bison, gperf, ruby, perl, git,
- libsqlite3-dev, libfontconfig1-dev, libicu-dev, libfreetype6,
- libssl-dev, libpng-dev, libjpeg-dev, python, libx11-dev, libxext-dev
+ g++-4.7,
+ binutils-gold,
+ flex,
+ bison,
+ gperf,
+ ruby,
+ git,
+ libsqlite3-dev,
+ libfontconfig1-dev,
+ libicu-dev,
+ libfreetype6-dev,
+ libssl-dev,
+ libpng-dev,
+ libjpeg-dev,
+ python,
+ libx11-dev,
+ libxext-dev,
 
 Package: univention-phantomjs
-Architecture: all
-Description: PhantomJS headless browser
- This package provides PhantomJS a headless browser
+Architecture: any
+Description: minimalistic headless WebKit-based with JavaScript API
+ PhantomJS is a headless WebKit with JavaScript API. It has fast and native
+ support for various web standards: DOM handling, CSS selector, JSON, Canvas,
+ and SVG.
+ .
+ PhantomJS is an optimal solution for headless testing of web-based
+ applications, site scraping, pages capture, SVG renderer, PDF converter and
+ many other use cases.
  .
  This is a statical linked version of PhantomJS for Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
  coporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 Depends: ${misc:Depends},
+ ${shlibs:Depends},
