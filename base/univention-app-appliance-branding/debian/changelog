@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-15) unstable; urgency=medium
+
+  * Bug #40826: Download images for plymouth theme.
+
+ -- Eduard Mai <mai@univention.de>  Thu, 24 Mar 2016 16:46:16 +0100
+
 univention-app-appliance-branding (0.2.2-14) unstable; urgency=medium
 
   Bug #39465:

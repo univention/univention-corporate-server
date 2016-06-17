@@ -106,6 +106,10 @@ def handler(config_registry, changes):
 			'grub/menu/color/normal': grub_color,
 			'grub/title': config_registry.get('umc/web/appliance/name', 'App') + ' Appliance'
 		})
+	
+	def _svg_to_png(source, dest, params, res='800x600'):
+		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
+		call(['/usr/share/univention-app-appliance-branding/render-css-background', res,  css_background, dest])
 
 	# download image files for the app appliance
 	if app.appliance_logo:
@@ -113,12 +117,24 @@ def handler(config_registry, changes):
 	if app.appliance_umc_header_logo:
 		_stem, _ext = os.path.splitext(app.appliance_umc_header_logo)
 		_download(app.appliance_umc_header_logo, '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo%s' % _ext)
+	if app.appliance_umc_header_logo:
+		_stem, _ext = os.path.splitext(app.appliance_umc_header_logo)
+		_img ='/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen%s' % (plymouth_theme, _ext)
+		_download(app.appliance_umc_header_logo, _img)
+		_params = 'no-repeat; background-size: auto 84%; background-position: left center;'
+		_svg_to_png(_img, _img + '.png', _params,'1250x150')
 	if app.appliance_welcome_screen_logo:
 		_stem, _ext = os.path.splitext(app.appliance_welcome_screen_logo)
-		_download(app.appliance_welcome_screen_logo, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen%s' % (plymouth_theme, _ext))
+		_img ='/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen%s' % (plymouth_theme, _ext)
+		_download(app.appliance_welcome_screen_logo, _img)
+		_params = 'no-repeat; background-size: contain; background-position: center center;'
+		_svg_to_png(_img, _img + '.png', _params)
 	if app.appliance_bootsplash_logo:
 		_stem, _ext = os.path.splitext(app.appliance_bootsplash_logo)
-		_download(app.appliance_bootsplash_logo, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash%s' % (plymouth_theme, _ext))
+		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash%s' % (plymouth_theme, _ext)
+		_download(app.appliance_bootsplash_logo, _img)
+		_params = 'no-repeat; background-size: contain; background-position: center center;'
+		_svg_to_png(_img, _img + '.png', _params)
 
 	# set plymouth appliance theme
 	ucr_update(config_registry, {'bootsplash/theme': 'ucs-appliance-%s' % plymouth_theme})

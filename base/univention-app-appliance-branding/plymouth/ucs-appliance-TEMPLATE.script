@@ -26,7 +26,7 @@ fun scaleHalf(xSize, ySize) {
 	}
 }
 
-bl.image = Image("oc_splash_logo.png");
+bl.image = Image("logo_bootsplash.svg.png");
 size = scaleHalf(bl.image.GetWidth(), bl.image.GetHeight());
 bl.image = bl.image.Scale(size[0], size[1]);
 bl.sprite = Sprite(bl.image);
@@ -394,9 +394,10 @@ fun welcome_screen_setup() {
 	normal_opacity(0);
 
 	# corner logo
-	cl.image = Image("logo_long.png");
+	cl.image = Image("logo_header_welcome_screen.svg.png");
+	cl.image = cl.image.Scale(cl.image.GetWidth() * height_percent(14) / cl.image.GetHeight(), height_percent(14));
 	cl.sprite = Sprite(cl.image);
-	cl.sprite.SetX(Window.GetX() + 10);                         
+	cl.sprite.SetX(Window.GetX() + 10);
 	cl.sprite.SetY(Window.GetY() + 10);
 	global.welcome.cl = cl;
 
@@ -500,7 +501,7 @@ fun welcome_screen_setup() {
 	global.welcome.addresses = addresses;
 
 	# logo step3
-	logo3.image = Image("oc_splash_logo.png");
+	logo3.image = Image("logo_welcome_screen.svg.png");
 	logo3.image = logo3.image.Scale(120, logo3.image.GetHeight() * 120 / logo3.image.GetWidth());
 	logo3.sprite = Sprite(logo3.image);
 	logo3.sprite.SetOpacity(1);

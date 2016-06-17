@@ -61,7 +61,8 @@ page.viewportSize = {
 	width: width,
 	height: height
 };
-page.content = '<html><body style="background:' + cssBackground + ';"></body></html>';
-page.render(outImage);
-phantom.exit();
-
+page.content = '<html><body style="background:' + cssBackground + '; width: 100%; height: 100%;"></body></html>';
+page.onLoadFinished = function(resp) {
+	page.render(outImage);
+	phantom.exit();
+};
