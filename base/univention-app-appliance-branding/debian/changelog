@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-28) unstable; urgency=medium
+
+  * Bug #40826: Fixed appliance/name ucr value not being set
+
+ -- Eduard Mai <mai@univention.de>  Thu, 21 Apr 2016 13:24:19 +0200
+
 univention-app-appliance-branding (0.2.2-27) unstable; urgency=medium
 
   * Bug #40826: Adjust univention-app-appliance-branding so it can be used by

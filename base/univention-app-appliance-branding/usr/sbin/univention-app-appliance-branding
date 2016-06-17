@@ -78,25 +78,16 @@ def set_appliance_ucr_values(app_id):
 
 	app = Application.find(app_id)
 
-	pages_blacklist = app.get('AppliancePagesBlackList')
-	fields_blacklist = app.get('ApplianceFieldsBlackList')
-
-	blacklisted_appcenter_apps = app.get('ApplianceBlackList')
-	whitelisted_appcenter_apps = app.get('ApplianceWhiteList')
-
-	appliance_name = app.get('ApplianceName')
-
-	notify_vendor = app.get('notifyVendor');
-
+	appliance_name = app.get('name')
 	ucr_update(UCR, {
-		'system/setup/boot/pages/blacklist': pages_blacklist,
-		'system/setup/boot/fields/blacklist': fields_blacklist,
-		'repository/app_center/blacklist': blacklisted_appcenter_apps,
-		'repository/app_center/whitelist': whitelisted_appcenter_apps,
+		'system/setup/boot/pages/blacklist': app.get('AppliancePagesBlackList'),
+		'system/setup/boot/fields/blacklist': app.get('ApplianceFieldsBlackList'),
+		'repository/app_center/blacklist': app.get('ApplianceBlackList'),
+		'repository/app_center/whitelist': app.get('ApplianceWhiteList'),
 		'umc/web/appliance/name': appliance_name,
 		'grub/title': "Start %s Univention App" % appliance_name,
 		'appliance/apps/%s/version' % app.id: app.version,
-		'appliance/apps/%s/notifyVendor' % app.id: str(notify_vendor),
+		'appliance/apps/%s/notifyVendor' % app.id: str(app.get('notifyVendor')),
 	})
 
 def main(app_id):
@@ -152,7 +143,6 @@ def main(app_id):
 			'grub/color/normal': grub_color,
 			'grub/menu/color/highlight': grub_color,
 			'grub/menu/color/normal': grub_color,
-			'grub/title': UCR.get('umc/web/appliance/name', 'App') + ' Appliance'
 		})
 
 	def _svg_to_png(source, dest, params, res='800x600'):
@@ -170,6 +160,7 @@ def main(app_id):
 		logo_copy = '/var/www/icon/%s' % app.appliance_logo
 		shutil.copy(logo, logo_copy)
 		os.chmod(logo_copy, 0644)
+		ucr_update(UCR, {'umc/web/appliance/logo': '/icon/%s' % app.appliance_logo})
 
 	if app.appliance_umc_header_logo:
 		#UMC
