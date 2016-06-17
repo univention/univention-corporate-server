@@ -57,7 +57,9 @@ if [ "$ACTION" = "start" ]; then
 	univention-config-registry set \
 		'system/setup/boot/start=true' \
 		'system/setup/boot/select/role=true'
-	univention-config-registry unset 'umc/module/setup/wizard/disabled'
+	univention-config-registry unset \
+		'umc/module/setup/wizard/disabled' \
+		'umc/web/startupdialog'
 
 	# set apache2/startsite
 	if ! _has_system_setup_boot_startsite; then
