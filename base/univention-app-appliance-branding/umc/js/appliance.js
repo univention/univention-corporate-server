@@ -37,6 +37,7 @@ define([
 	"dojo/topic",
 	"dojo/hash",
 	"dojo/io-query",
+	"dojo/request",
 	"put-selector/put",
 	"umc/app",
 	"umc/tools",
@@ -46,20 +47,21 @@ define([
 	"umc/widgets/CheckBox",
 	"umc/i18n!umc/modules/appliance",
 	"xstyle/css!./appliance.css"
-], function(when, all, domClass, lang, store, topic, hash, ioQuery, put, app, tools, TitlePane, LabelPane, Text, CheckBox, _) {
+], function(when, all, domClass, lang, store, topic, hash, ioQuery, request, put, app, tools, TitlePane, LabelPane, Text, CheckBox, _) {
 
 	var promiseFirstStepsOpen = tools.ucr('umc/web/appliance/close_first_steps');
-	var promiseAppAppliance = tools.umcpCommand('appliance/get');
+	var readMePath = dojo.moduleUrl("umc/modules/appliance")
+	var promiseReadme = request(readMePath + _('appliance_first_steps.README'));
 	var ucrStore = store('key', 'ucr');
 	var firstSteps = null;
 	var checkBoxShowContentOfFirstSteps = null;
 
 	all({
 		isFirstStepsClosed: promiseFirstStepsOpen,
-		app: promiseAppAppliance
+		readme: promiseReadme
 	}).then(function(result) {
 		var isFirstStepsClosed = tools.isTrue(result.isFirstStepsClosed['umc/web/appliance/close_first_steps']);
-		var readme_text = result.app.result.readme;
+		var readme_text = result.readme;
 
 		var readme = new Text({
 			content: readme_text

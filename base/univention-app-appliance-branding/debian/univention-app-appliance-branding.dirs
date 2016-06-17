@@ -1,3 +1,4 @@
 usr/share/univention-system-activation/www/css/
 usr/share/univention-app-appliance-branding/images/
 usr/share/pyshared/univention/app_appliance
+var/www/univention-management-console/js/umc/modules/appliance

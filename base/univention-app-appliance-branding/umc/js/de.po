@@ -19,3 +19,6 @@ msgstr "Erste Schritte"
 #: umc/js/appliance.js:94
 msgid "Hide content next time."
 msgstr "Diesen Inhalt das nächste Mal ausblenden."
+
+msgid "appliance_first_steps.README"
+msgstr "appliance_first_steps.README_DE"

@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import os.path
+from os import symlink
 import requests
 from glob import glob
 from subprocess import call
@@ -63,6 +64,9 @@ def handler(config_registry, changes):
 			with open(dest_path, 'w') as out_file:
 				for line in in_file:
 					out_file.write(line.replace('#ff00ff', secondary_color))
+
+	for lang in ['', '_DE']:
+		os.symlink('/var/cache/univention-appcenter/%s.README%s' % (app.component_id, lang), '/var/www/univention-management-console/js/umc/modules/appliance/appliance_first_steps.README%s' % (lang,))
 
 	# create background image for plymouth theme
 	call(['/usr/share/univention-app-appliance-branding/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
