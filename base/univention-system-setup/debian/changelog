@@ -9,6 +9,8 @@ univention-system-setup (9.0.4-9) unstable; urgency=medium
   * Update App Center cache via cleanup script
   * Pre-compute city-data JSON files to improve build time
   * Adjust checks for /var/univention-join/joined and refactor config logic
+  Bug #40751:
+  * Make sure that the setup wizard is accessible within startxwithfirefox
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Feb 2016 13:56:04 +0100
 
