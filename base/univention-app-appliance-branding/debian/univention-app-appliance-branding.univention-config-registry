@@ -9,7 +9,17 @@ Variables: umc/web/appliance/.*
 Type: file
 File: usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css
 Variables: system/setup/boot/start
+Variables: umc/web/appliance/.*
 
 Type: file
 File: usr/share/univention-system-activation/www/css/ucs.css
 Variables: system/setup/boot/start
+Variables: umc/web/appliance/.*
+
+Type: file
+File: var/www/ucs-overview/css/ucs.css
+Variables: umc/web/appliance/.*
+
+Type: module
+Module: setup-appliance-branding.py
+Variables: umc/web/appliance/.*

@@ -1,3 +1,13 @@
+univention-app-appliance-branding (0.2.2-4) unstable; urgency=medium
+
+  Bug #39465:
+  * Automatically generate branded setup wizard graphics
+  * Automatically generate plymouth bootsplash/welcome screen background
+  * Integreate phantomJS for rendering of CSS background definition
+  * Rename directory univention-bootsplash-owncloud-theme to plymouth
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Mar 2016 19:38:28 +0100
+
 univention-app-appliance-branding (0.2.2-3) unstable; urgency=medium
 
   * Bug #39465: Added template for categories/appliance.xml

@@ -4,17 +4,17 @@
 
 @import url("umc.real.css");
 @!@
-if configRegistry.is_true('system/setup/boot/start'):
+from univention.appcenter.app import AppManager
+app = AppManager.find(configRegistry.get('umc/web/appliance/id', ''))
+
+if configRegistry.is_true('system/setup/boot/start') and app:
 	# only print these CSS rules when appliance mode is enabled
+	css_background = app.appliance_css_background or '#eeeeee'
 	print '''
 /* style UMC for the app appliance branding during the setup process */
 
 body.umc {
-	background: #345279; /* Old browsers */
-	background: -moz-linear-gradient(top, #345279 0%, #1d2c41 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top, #345279 0%,#1d2c41 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom, #345279 0%,#1d2c41 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#345279', endColorstr='#1d2c41',GradientType=0 ); /* IE6-9 */
+	background: %(css_background)s;
 }
 
 .umc #umcFakeLoginLogo,
@@ -45,5 +45,7 @@ body.umc.umcHeadless .umcTopContainer {
 #umcLoginDialog.umcLoginLoading, .umcLoginDialog.umcLoginLoading {
 	/*background-image: none;*/
 }
-'''
+''' % {
+	'css_background': css_background
+}
 @!@
