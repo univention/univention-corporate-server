@@ -1,6 +1,12 @@
+univention-system-setup (9.0.4-18) unstable; urgency=medium
+
+  * Bug #41283: Reset UCR variables
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 17 May 2016 15:03:57 +0200
+
 univention-system-setup (9.0.4-17) unstable; urgency=medium
 
-  * Bug #40673: removed repitition od "Univention Corporate Server"
+  * Bug #40673: removed repitition of "Univention Corporate Server"
     in the header of the initial setup site for Amazon EC2 instances
 
  -- Johannes Keiser <keiser@univention.de>  Thu, 12 May 2016 16:50:17 +0200
