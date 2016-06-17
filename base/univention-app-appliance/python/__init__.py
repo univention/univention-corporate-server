@@ -35,6 +35,7 @@
 import univention.appcenter.app as app
 import struct
 
+
 class App(app.App):
 	appliance_category_modules = app.AppListAttribute()
 	appliance_primary_color = app.AppAttribute()
@@ -46,15 +47,21 @@ class App(app.App):
 	appliance_umc_category_logo = app.AppAttribute()
 	appliance_logo = app.AppAttribute()
 	appliance_links = app.AppAttribute()
+	appliance_pages_blacklist = app.AppAttribute()
+	appliance_fields_blacklist = app.AppAttribute()
+	appliance_blacklist = app.AppAttribute()
+	appliance_whitelist = app.AppAttribute()
+	appliance_notify_vendor = app.AppAttribute()
+
 
 class AppManager(app.AppManager):
 	_AppClass = App
 	_cache = []
 	_cache_file = None
 
+
 def get_luminance(hexcolor):
 	hexcolor = hexcolor.strip(' #')
 	red, green, blue = struct.unpack('BBB', hexcolor.decode('hex'))
 	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
-	return (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
-
+	return (0.299 * red + 0.587 * green + 0.114 * blue) / 255

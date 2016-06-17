@@ -40,7 +40,6 @@ from subprocess import call
 from univention.app_appliance import AppManager, get_luminance
 from univention.config_registry.frontend import ucr_update
 from univention.config_registry import ConfigRegistry
-from univention.management.console.modules.appcenter.app_center import Application
 
 UCR = ConfigRegistry()
 
@@ -73,21 +72,17 @@ def print_status(message):
 	print('univention-app-appliance: %s' % message)
 
 
-def set_appliance_ucr_values(app_id):
+def set_appliance_ucr_values(app):
 	UCR.load()
-
-	app = Application.find(app_id)
-
-	appliance_name = app.get('name')
 	ucr_update(UCR, {
-		'system/setup/boot/pages/blacklist': app.get('AppliancePagesBlackList'),
-		'system/setup/boot/fields/blacklist': app.get('ApplianceFieldsBlackList'),
-		'repository/app_center/blacklist': app.get('ApplianceBlackList'),
-		'repository/app_center/whitelist': app.get('ApplianceWhiteList'),
-		'umc/web/appliance/name': appliance_name,
-		'grub/title': "Start %s Univention App" % appliance_name,
+		'system/setup/boot/pages/blacklist': app.appliance_pages_blacklist,
+		'system/setup/boot/fields/blacklist': app.appliance_fields_blacklist,
+		'repository/app_center/blacklist': app.appliance_blacklist,
+		'repository/app_center/whitelist': app.appliance_whitelist,
+		'umc/web/appliance/name': app.name,
+		'grub/title': "Start %s Univention App" % app.name,
 		'appliance/apps/%s/version' % app.id: app.version,
-		'appliance/apps/%s/notifyVendor' % app.id: str(app.get('notifyVendor')),
+		'appliance/apps/%s/notifyVendor' % app.id: str(app.appliance_notify_vendor),
 	})
 
 
@@ -97,7 +92,7 @@ def main(app_id):
 	if not app:
 		return
 
-	set_appliance_ucr_values(app_id)
+	set_appliance_ucr_values(app)
 
 	# query color information
 	css_background = app.appliance_css_background or '#eeeeee'
