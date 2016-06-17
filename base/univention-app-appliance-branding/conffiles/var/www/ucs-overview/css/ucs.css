@@ -34,6 +34,10 @@ body {
 	background: %(css_background)s;
 }
 
+body #header-left {
+	background-image: url(/univention-management-console/js/dijit/themes/umc/images/appliance_header_logo.svg);
+}
+
 body #header-right {
 	color: %(font_color)s;
 }

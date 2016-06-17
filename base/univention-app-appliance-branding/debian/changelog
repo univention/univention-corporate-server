@@ -1,3 +1,10 @@
+univention-app-appliance-branding (0.2.2-11) unstable; urgency=medium
+
+  Bug #39465:
+  * Style changes for ucs-overview, system-activation, frontend
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 09 Mar 2016 17:06:09 +0100
+
 univention-app-appliance-branding (0.2.2-10) unstable; urgency=medium
 
   Bug #39465:

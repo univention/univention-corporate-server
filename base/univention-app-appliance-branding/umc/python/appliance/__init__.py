@@ -51,4 +51,6 @@ class Instance(Base):
 		app = AppManager.find(application)
 		if app is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
+		if not app.appliance_primary_color[0] == '#':
+			app.appliance_primary_color = '#' + app.appliance_primary_color
 		return domain.to_dict([app])[0]

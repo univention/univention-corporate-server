@@ -1,6 +1,8 @@
 plymouth/*	usr/share/plymouth/themes
 umc/js/appliance.css usr/share/univention-management-console-frontend/js/umc/modules
-usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/app-logo-umc-header.png	usr/share/univention-management-console-frontend/js/dijit/themes/umc/images
+usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/*	usr/share/univention-management-console-frontend/js/dijit/themes/umc/images
 images/*	usr/share/univention-app-appliance-branding/images
 tools/*	usr/share/univention-app-appliance-branding/
 python/*	usr/share/pyshared/univention/app_appliance
+usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo.svg usr/share/univention-system-activation/www/css/icons
+images/icons-white.svg usr/share/univention-system-activation/www/css/icons

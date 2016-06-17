@@ -19,9 +19,13 @@ category = '''
 '''
 
 if app:
+	if not app.appliance_primary_color[0] == '#':
+		color = '#' + app.appliance_primary_color
+	else:
+		color = app.appliance_primary_color
 	print category.format(
 		name=app.name,
-		color=app.appliance_primary_color
+		color=color
 	)
 @!@
 
