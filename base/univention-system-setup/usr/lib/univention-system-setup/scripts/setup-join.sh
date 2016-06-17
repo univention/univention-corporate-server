@@ -172,20 +172,10 @@ if [ "$system_setup_boot_installer" != "true" ]; then
 	fi
 	progress_next_step 3
 
-	(
 	test -x /usr/share/univention-mail-postfix/create-dh-parameter-files.sh && \
-		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh
-	) | (
-		nsteps=3
-		while read line; do
-			if [ "This is going to take a long time" == "$line" ]; then
-				# one of 2 SSH keys is generated
-				progress_next_step $nsteps
-				nsteps+=2
-			fi
-		done
-	)
-	progress_next_step 10
+		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >>/var/log/univention/dh-parameter-files-creation.log 2>&1 &
+
+	progress_next_step 15
 fi
 
 # Do network stuff
