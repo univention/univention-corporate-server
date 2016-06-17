@@ -1,4 +1,4 @@
 univention-bootsplash-owncloud-theme/*	usr/share/plymouth/themes
 umc/js/appliance.css usr/share/univention-management-console-frontend/js/umc/modules
 var/www/ucs-overview/css/ucs.css	var/www/ucs-overview/css
-usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/owncloud-logo.png	usr/share/univention-management-console-frontend/js/dijit/themes/umc/images
+usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/app-logo-umc-header.png	usr/share/univention-management-console-frontend/js/dijit/themes/umc/images
