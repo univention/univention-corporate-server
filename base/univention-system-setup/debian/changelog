@@ -1,3 +1,10 @@
+univention-system-setup (9.0.4-19) unstable; urgency=medium
+
+  * Bug #41283: Set --demo-modus in fast demo modus
+  * Catch --demo-modus switch and set administrator password
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 17 May 2016 16:34:41 +0200
+
 univention-system-setup (9.0.4-18) unstable; urgency=medium
 
   * Bug #41283: Reset UCR variables

@@ -69,7 +69,7 @@ SETUP_LOG="/var/log/univention/setup.log"
 . /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 echo "Reset UCR variables"
-run-parts -v /usr/lib/univention-system-setup/scripts/00_system_setup
+run-parts -v /usr/lib/univention-system-setup/scripts/00_system_setup "$@"
 
 echo "no-ldap" > /var/run/univention-system-setup.ldap
 
@@ -140,7 +140,7 @@ else
 	univention-config-registry unset ldap/translogfile
 fi
 # set root password
-/usr/lib/univention-system-setup/scripts/10_basis/18root_password
+/usr/lib/univention-system-setup/scripts/10_basis/18root_password "$@"
 
 # set init-script configuration
 /usr/lib/univention-system-setup/scripts/10_basis/20initscripts
