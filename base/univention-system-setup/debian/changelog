@@ -11,6 +11,8 @@ univention-system-setup (9.0.4-9) unstable; urgency=medium
   * Adjust checks for /var/univention-join/joined and refactor config logic
   Bug #40751:
   * Make sure that the setup wizard is accessible within startxwithfirefox
+  Bug #40710:
+  * Enable the online repository even if no update is done after system setup
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Feb 2016 13:56:04 +0100
 
