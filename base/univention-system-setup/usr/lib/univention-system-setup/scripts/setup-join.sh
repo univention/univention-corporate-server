@@ -311,7 +311,7 @@ if [ "$runcleanup" = true ]; then
 elif [ "$runcleanup" = atjob ]; then
 	# run cleanup scripts via at with a delay of 1sec
 	echo "=== Cleanup scripts will be run as at job $(date --rfc-3339=seconds)"
-	echo "sleep 1; /usr/lib/univention-system-setup/scripts/cleanup.py" | at now
+	echo "sleep 1; /usr/lib/univention-system-setup/scripts/cleanup.py >> $SETUP_LOG 2>&1" | at now
 else
 	echo "== Cleanup scripts will not be run now, option --do_not_run_cleanup was given $(date --rfc-3339=seconds)"
 fi
