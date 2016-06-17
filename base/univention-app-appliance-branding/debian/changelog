@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.01-3) unstable; urgency=low
+
+  * Bug #40096: Do not show again checkbox added. 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 26 Feb 2016 17:46:15 +0100
+
 univention-app-appliance-branding (0.01-2) unstable; urgency=low
 
   * Bug #40096: Show first steps readme.

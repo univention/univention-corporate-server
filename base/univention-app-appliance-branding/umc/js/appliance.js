@@ -32,51 +32,88 @@ define([
 	"dojo/when",
 	"dojo/dom-class",
 	"dojo/_base/lang",
+	"umc/store",
 	"dojo/topic",
 	"put-selector/put",
 	"umc/app",
 	"umc/tools",
-	"umc/widgets/TitlePane"
-], function(when, domClass, lang, topic, put, app, tools, TitlePane) {
+	"umc/widgets/TitlePane",
+	"umc/widgets/LabelPane",
+	"umc/widgets/Text",
+	"umc/widgets/CheckBox",
+	"umc/i18n!umc/modules/appliance"
+], function(when, domClass, lang, store, topic, put, app, tools, TitlePane, LabelPane, Text, CheckBox, _) {
 
-	var detailsPane = null
-	var load_first_steps = function(){
-		var app = tools.umcpCommand('appcenter/get', {'application': 'owncloud82'}).then(function(data) {
-			return data.result;
-		});
-		when(app).then(lang.hitch(this, function(loadedApp) {
+	var ucrStore = store('key', 'ucr');
+	var detailsPane = null;
+	var notShowAgainCheckBox = null;
+	var loadFirstSteps = function(){
+		tools.umcpCommand('appcenter/get', {'application': 'owncloud82'}).then( function(data) {
+			var loadedApp = data.result
 			if (loadedApp === null) {
 				console.warn('Error: Empty response');
 			}
-			var readme_as_html = put('div', {
-				innerHTML: loadedApp.readme
+			notShowAgainCheckBox = new CheckBox({
+				name: 'close_first_steps',
+				value: false,
+				checked: false,
+				onChange: function() {notShowAgainChange()}
+			});
+			var notShowAgainLabel = new LabelPane({
+				content: notShowAgainCheckBox,
+				label: _('Do not show again.'),
+			})
+			var readme = new Text({
+				content: loadedApp.readme
 			});
 			detailsPane = new TitlePane({
-				title: "First Steps",
-				content: readme_as_html
+				title: _("First Steps"),
+				open: false
 			});
-			var overviewNode = document.getElementsByClassName("umcOverviewPane")[0];
+			detailsPane.addChild(readme);
+			detailsPane.addChild(notShowAgainLabel);
 
 			// app.js uses its subscription to /dojo/hashchange to show the right category
 			// after a page reload. But this script is loaded after that event trigert.
 			// So we have to manually check if we should show the first steps after
 			// a page reload
-			var hide_first_steps = window.location.hash !== "#category=_appliance_";
-			domClass.toggle(detailsPane.domNode, 'dijitHidden', hide_first_steps);
-			put(overviewNode, '-', detailsPane.domNode);
-		}));
+			var hideFirstSteps = window.location.hash !== "#category=_appliance_";
+			domClass.toggle(detailsPane.domNode, 'dijitHidden', hideFirstSteps);
+			toggleDetailsPane().then(put(app._grid.domNode, '-', detailsPane.domNode));
+		});
 	};
-	
-	topic.subscribe('/dojo/hashchange', function(_hash) {
-		// /dojo/hashchange publishes category and module changes
-		var hash = decodeURIComponent(_hash);
-		if (hash.length > 7 && hash.substr(0,8) === 'category') {
-			var hide_first_steps = hash !== 'category=_appliance_';
-			domClass.toggle(detailsPane.domNode, 'dijitHidden', hide_first_steps);
-		}
-	});
 
-	load_first_steps();
+	var firstStepsToggleSubscription = function(){
+		topic.subscribe('/dojo/hashchange', function(_hash) {
+			// /dojo/hashchange publishes category and module changes
+			var hash = decodeURIComponent(_hash);
+			if (hash.length > 7 && hash.substr(0,8) === 'category') {
+				var hideFirstSteps = hash !== 'category=_appliance_';
+				domClass.toggle(detailsPane.domNode, 'dijitHidden', hideFirstSteps);
+			};
+		});
+	};
+
+	var toggleDetailsPane = function(){
+		// ucrStore.get doesn't like empty ucr variables
+		return tools.ucr('umc/web/appliance/close_first_steps').then(function(res){
+			detailsPane.set('open', !tools.isTrue(res['umc/web/appliance/close_first_steps']));
+		});
+	};
+
+	var notShowAgainChange = function(){
+		ucrStore.add({
+			key: 'umc/web/appliance/close_first_steps',
+			value: notShowAgainCheckBox.get('checked').toString()
+		}).then(function(){
+			toggleDetailsPane();
+		});
+	};
+
+	//app.registerOnStartup(function() {
+		loadFirstSteps();
+		firstStepsToggleSubscription();
+	//});
 
 	return null;
 });
