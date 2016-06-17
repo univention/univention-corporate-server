@@ -1694,7 +1694,7 @@ define([
 			var role = vals['server/role'];
 			if (role == 'domaincontroller_master' && !this._isAdMember()) {
 				msg += _('A new UCS domain will be created.');
-			} else if (this._setUpPreconfiguredDomain()) {
+			} else if (this._isUsingPreconfiguredSetup()) {
 				msg += _('A preconfigured test domain will be instantiated.');
 			} else if (role == 'basesystem') {
 				msg += _('This system will be a base system without domain integration and without the capabilities to join one in the future.');
@@ -1962,14 +1962,14 @@ define([
 				return this.ucr['server/role'] == 'domaincontroller_master';
 			}
 			var createNewDomain = this.getWidget('_createDomain').get('value');
-			return createNewDomain || this._setUpPreconfiguredDomain();
+			return createNewDomain || this._isUsingPreconfiguredSetup();
 		},
 
 		_isRoleNonMaster: function() {
 			return !this._isRoleMaster() && !this._isRoleBaseSystem() && !this._isAdMember();
 		},
 
-		_setUpPreconfiguredDomain: function() {
+		_isUsingPreconfiguredSetup: function() {
 			return this.getWidget('_preconfiguredDomain').get('value');
 		},
 
@@ -2018,7 +2018,7 @@ define([
 			if (!this._isPageForRole(pageName)) {
 				return false;
 			}
-			if (pageName == 'fqdn-master' && this._setUpPreconfiguredDomain()) {
+			if (pageName == 'fqdn-master' && this._isUsingPreconfiguredSetup()) {
 				// host and domain name are pre-configured and cannot be changed
 				// in this setup
 				return false;
@@ -2161,7 +2161,7 @@ define([
 
 				// join system
 				var joinDeferred = null;
-				if (this._setUpPreconfiguredDomain()) {
+				if (this._isUsingPreconfiguredSetup()) {
 					// in the pre-configured setup, we do not need a real join process,
 					// only the standard setup save command which triggers the setup scripts
 					joinDeferred = this.umcpCommand('setup/save', {
@@ -2240,7 +2240,7 @@ define([
 					deferred.resolve();
 				}));
 
-				return deferred
+				return deferred;
 			});
 
 			var _checkJoinSuccessful = lang.hitch(this, function() {
@@ -2862,6 +2862,14 @@ define([
 						vals['ldap/base'] = this._computeLDAPBase(this._domainName);
 					}
 				}
+			}
+			if (this._isUsingPreconfiguredSetup()) {
+				// explicitely register specified nameserver as forwarder in pre-configured setup
+				// (usually this is done by the join scripts when setting up a DC master)
+				vals.nameserver1 = _vals._ip0;
+				delete vals.nameserver2;
+				vals['dns/forwarder1'] = _vals.nameserver1;
+				vals['dns/forwarder2'] = _vals.nameserver2;
 			}
 			return vals;
 		},

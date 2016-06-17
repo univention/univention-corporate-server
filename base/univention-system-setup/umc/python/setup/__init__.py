@@ -41,7 +41,7 @@ import copy
 import subprocess
 import json
 import locale as _locale
-import lxml.etree 
+import lxml.etree
 import psutil
 
 import notifier
@@ -193,6 +193,15 @@ class Instance(Base, ProgressMixin):
 				}.get(request.flavor)
 
 				self._progressParser.reset(subfolders)
+
+				if request.flavor == 'setup':
+					# adjust progress fractions for setup wizard with pre-configurred settings
+					fractions = self._progressParser.fractions
+					fractions['05_role/10role'] = 0
+					fractions['10_basis/12domainname'] = 0
+					fractions['10_basis/14ldap_basis'] = 0
+					fractions['90_postjoin/10admember'] = 0
+					self._progressParser.calculateFractions()
 
 				MODULE.info('saving profile values')
 				util.write_profile(values)
@@ -399,9 +408,6 @@ class Instance(Base, ProgressMixin):
 				'valid': False,
 				'message': message
 			})
-
-		# system role
-		_check('server/role', lambda x: not(orgValues.get('joined')) or (orgValues.get('server/role') == values.get('server/role')), _('The system role may not change on a system that has already joined to domain.'))
 
 		# host and domain name
 		packages = set(values.get('components', []))
