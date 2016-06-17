@@ -1,14 +1,19 @@
 .umc .umcOverviewContainer .umcPageMain .firstSteps
 	color: #fff
-	background: #5a5a5a
-	vertical-gradient-and-filter($text-color-lighter, $text-color)
 	opacity: 0.8
-	box-shadow: 0 0px 10px rgba(0,0,0,0.3)
 	padding: 20px
 	height: auto
 	width: 100%
 	max-width: 950px
 	margin: 0 auto 30px
+
+	background: #5a5a5a
+	background-image: -moz-linear-gradient(to bottom, #5a5a5a 0%, #282828 100%)
+	background-image: -webkit-linear-gradient(to bottom, #5a5a5a 0%, #282828 100%)
+	background-image: -o-linear-gradient(to bottom, #5a5a5a 0%, #282828 100%)
+	background-image: linear-gradient(to bottom, #5a5a5a 0%, #282828 100%)
+	-webkit-box-shadow: 0 0px 10px rgba(0,0,0,0.3)
+	box-shadow: 0 0px 10px rgba(0,0,0,0.3)
 
 	.dijitTitlePaneTitle
 		color: #fff
@@ -32,11 +37,3 @@
 
 	a
 		color: white
-
-
-vertical-gradient-and-filter($color-top, $color-bottom) {
-	background: $color-top; /* old browsers */
-	linear-gradient(to bottom, $color-top 0%, $color-bottom 100%); /* W3C */
-	filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=%s, endColorstr=%s, gradientType=0)" % ($color-top $color-bottom); /* IE6-9 */
-}
-

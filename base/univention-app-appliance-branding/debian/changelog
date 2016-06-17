@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2-1) unstable; urgency=medium
+
+  * Bug #38957: Adjusted styling 
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 01 Mar 2016 18:13:14 +0100
+
 univention-app-appliance-branding (0.01-5) unstable; urgency=medium
 
   * Bug #38957: Added stylus file and adapted template
