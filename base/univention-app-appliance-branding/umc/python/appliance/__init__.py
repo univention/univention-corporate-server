@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import locale
 from univention.management.console.modules import Base
 from univention.management.console.modules.decorators import simple_response
 from univention.appcenter import get_action
@@ -41,16 +42,17 @@ import univention.management.console.modules as umcm
 
 _ = Translation('univention-app-appliance-branding').translate
 
-class Instance(Base):
+class Instance(umcm.Base):
 
-    @simple_response
-    def get(self):
+	def init(self):
+		locale.setlocale(locale.LC_ALL, str(self.locale))
+
+	@simple_response
+	def get(self):
 		domain = get_action('domain')
 		ucr = ucr_instance()
 		application = ucr.get('umc/web/appliance/id', '')
 		app = AppManager.find(application)
 		if app is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
-		if not app.appliance_primary_color[0] == '#':
-			app.appliance_primary_color = '#' + app.appliance_primary_color
 		return domain.to_dict([app])[0]

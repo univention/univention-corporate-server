@@ -1,3 +1,11 @@
+univention-app-appliance-branding (0.2.2-14) unstable; urgency=medium
+
+  Bug #39465:
+  * translations
+  * "#" for colors in ini files is now mandatory
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 23 Mar 2016 10:19:28 +0100
+
 univention-app-appliance-branding (0.2.2-13) unstable; urgency=medium
 
   Bug #39465:

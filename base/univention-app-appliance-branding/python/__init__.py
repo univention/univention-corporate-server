@@ -43,8 +43,9 @@ class App(app.App):
 	appliance_umc_header_logo = app.AppAttribute()
 	appliance_welcome_screen_logo = app.AppAttribute()
 	appliance_logo = app.AppAttribute()
+	appliance_links = app.AppAttribute()
 
 class AppManager(app.AppManager):
 	_AppClass = App
 	_cache = []
-	_pickle_file = None
+	_cache_file = None

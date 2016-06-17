@@ -1,36 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
-	<module id="appliance" priority="50" version="1.0">
-		<name>Appliance</name>
-		<description>Inserts first steps</description>
-		<keywords></keywords>
-		<categories>
-		</categories>
-		<command name="appliance/get" function="get" />
-	</module>
-
 	<!-- WARNING!!! This is just a dummy file.
 		Modules, Flavors, Links are added/removed automatically via ucr commit.
-		Example:
-			<module id="udm">
-				<flavor id="users/user">
-					<categories>
-						<category name="_appliance_"/>
-					</categories>
-				</flavor>
-				<flavor id="groups/group">
-					<categories>
-						<category name="_appliance_"/>
-					</categories>
-				</flavor>
-			</module>
-			<link priority="50" id="link-ucs-startsite">
-				<url>/owncloud</url>
-				<name>ownCloud Login</name>
-				<description>Link to the ownCloud webinterface</description>
-				<categories>
-					<category name="_appliance_"/>
-				</categories>
-			</link>
 	-->
 </umc>

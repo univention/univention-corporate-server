@@ -41,11 +41,11 @@ from univention.config_registry.frontend import ucr_update
 
 
 def get_plymouth_theme(hexcolor):
-	red = int(hexcolor[2:4], 16)
-	green = int(hexcolor[4:6], 16)
-	blue = int(hexcolor[6:8], 16)
+	red = int(hexcolor[1:3], 16)
+	green = int(hexcolor[3:5], 16)
+	blue = int(hexcolor[5:7], 16)
 	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
-	perceptive_luminance = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
+	perceptive_luminance = 1 - (0.299 * red + 0.587 * green + 0.114 * blue)/255
 	if perceptive_luminance < .5:
 		return 'light'
 	else:
@@ -61,8 +61,8 @@ def handler(config_registry, changes):
 
 	# query color information
 	css_background = app.appliance_css_background or '#eeeeee'
-	primary_color = '#' + (app.appliance_primary_color or '5a5a5a')
-	secondary_color = '#' + (app.appliance_secondary_color or '7db523')
+	primary_color = app.appliance_primary_color or '#5a5a5a'
+	secondary_color = app.appliance_secondary_color or '#7db523'
 	plymouth_theme = get_plymouth_theme(primary_color)
 
 	# adjust colors in SVG images via search and replace
@@ -92,7 +92,7 @@ def handler(config_registry, changes):
 		except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout) as err:
 			print 'WARNING: Failed to download %s' % url
 
-	
+
 	def set_grub_theme():
 		if plymouth_theme == 'dark':
 			grub_color = 'white/black'
@@ -106,7 +106,7 @@ def handler(config_registry, changes):
 			'grub/menu/color/normal': grub_color,
 			'grub/title': config_registry.get('umc/web/appliance/name', 'App') + ' Appliance'
 		})
-	
+
 	# download image files for the app appliance
 	if app.appliance_logo:
 		_download(app.appliance_logo, '/usr/share/univention-management-console-frontend/js/umc/modules/setup/welcome.svg')
