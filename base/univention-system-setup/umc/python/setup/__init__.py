@@ -181,7 +181,6 @@ class Instance(Base, ProgressMixin):
 			script_args = ['--appliance-mode', '--force-recreate']
 
 		def _thread(request, obj):
-		
 			# acquire the lock until the scripts have been executed
 			self._finishedResult = False
 			obj._finishedLock.acquire()

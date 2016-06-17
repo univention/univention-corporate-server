@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-14) unstable; urgency=medium
+
+  * Bug #40985: Corrected typo
+
+ -- Eduard Mai <mai@univention.de>  Wed, 06 Apr 2016 18:39:17 +0200
+
 univention-system-setup (9.0.4-13) unstable; urgency=medium
 
   * Bug #40985: Code cleanup
