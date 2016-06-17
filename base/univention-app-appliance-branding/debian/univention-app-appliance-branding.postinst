@@ -32,10 +32,13 @@
 
 #DEBHELPER#
 
+. /usr/share/univention-lib/umc.sh
+
 case "$1" in
 	configure)
 		# rebuild plymouth theme
 		univention-config-registry set bootsplash/theme='ucs'
+		umc_frontend_new_hash
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;

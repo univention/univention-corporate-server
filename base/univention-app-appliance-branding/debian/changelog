@@ -1,3 +1,11 @@
+univention-app-appliance-branding (0.2.2-5) unstable; urgency=medium
+
+  Bug #39465:
+  * Update frontend hash of js dir to avoid caching problems
+  * Update missing translations
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 03 Mar 2016 20:00:28 +0100
+
 univention-app-appliance-branding (0.2.2-4) unstable; urgency=medium
 
   Bug #39465:
