@@ -8,24 +8,29 @@
 		</categories>
 		<command name="appcenter/get" function="get" />
 	</module>
-	<module id="udm">
-		<flavor id="users/user">
-			<categories>
-				<category name="_appliance_"/>
-			</categories>
-		</flavor>
-		<flavor id="groups/group">
-			<categories>
-				<category name="_appliance_"/>
-			</categories>
-		</flavor>
-	</module>
-	<link priority="50" id="link-ucs-startsite">
-		<url>/owncloud</url>
-		<name>ownCloud Login</name>
-		<description>Link to the ownCloud webinterface</description>
-		<categories>
-			<category name="_appliance_"/>
-		</categories>
-	</link>
+
+	<!-- WARNING!!! This is just a dummy file.
+		     Modules, Flavors, Links are added/removed automatically via ucr commit.
+		Example:
+			<module id="udm">
+				<flavor id="users/user">
+					<categories>
+						<category name="_appliance_"/>
+					</categories>
+				</flavor>
+				<flavor id="groups/group">
+					<categories>
+						<category name="_appliance_"/>
+					</categories>
+				</flavor>
+			</module>
+			<link priority="50" id="link-ucs-startsite">
+				<url>/owncloud</url>
+				<name>ownCloud Login</name>
+				<description>Link to the ownCloud webinterface</description>
+				<categories>
+					<category name="_appliance_"/>
+				</categories>
+			</link>
+	-->
 </umc>

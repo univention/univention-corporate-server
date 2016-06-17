@@ -1,0 +1,5 @@
+[umc/web/appliance/id]
+Description[en]=App id of the appliance.
+Description[de]=App id der der Appliance.
+Type=str
+Categories=appliance

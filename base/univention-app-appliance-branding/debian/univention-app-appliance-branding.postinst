@@ -35,6 +35,8 @@
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-lib/umc.sh
 
+ucr set umc/web/appliance/id?owncloud82
+
 eval "$(ucr shell)"
 
 _undivert() {

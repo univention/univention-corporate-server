@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<!--
+@%@UCRWARNING=# @%@
+	-->
+	<module id="appliance" priority="50" version="1.0">
+		<name>Appliance</name>
+		<description>Inserts first steps</description>
+		<keywords></keywords>
+		<categories>
+		</categories>
+		<command name="appcenter/get" function="get" />
+	</module>
+
+@!@
+import cgi
+from univention.appcenter.app import AppManager
+
+appId = configRegistry['umc/web/appliance/id']
+app = AppManager.find(appId)
+
+if app.web_interface:
+	link_web_interface = '''
+	<link priority="50" id="link-{id}-web-interface">
+		<url>{web_interface}</url>
+		<name>{name} Login</name>
+		<description>Link to the {name} webinterface</description>
+		<categories>
+			<category name="_appliance_" />
+		<categories>
+	</link>
+	'''.format(
+		id=cgi.escape(app.id or ''),
+		web_interface=cgi.escape(app.web_interface),
+		name=cgi.escape(app.name or '')
+	)
+	print link_web_interface
+@!@
+
+</umc>

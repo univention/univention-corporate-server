@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.01-4) unstable; urgency=low
+
+  * Bug #38957: Added conffile for modules/appliance.xml
+
+ -- Alexander Kramer <kramer@univention.de>  Tue, 01 Mar 2016 11:44:56 +0100
+
 univention-app-appliance-branding (0.01-3) unstable; urgency=low
 
   * Bug #40096: Do not show again checkbox added. 
