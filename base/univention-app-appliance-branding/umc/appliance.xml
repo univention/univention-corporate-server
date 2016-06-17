@@ -6,7 +6,7 @@
 		<keywords></keywords>
 		<categories>
 		</categories>
-		<command name="appcenter/get" function="get" />
+		<command name="appliamce/get" function="get" />
 	</module>
 
 	<!-- WARNING!!! This is just a dummy file.

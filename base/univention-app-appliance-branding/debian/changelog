@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.1-5) unstable; urgency=low
+
+  * Bug #39465: add route appliance/get to simplify appliance.js
+
+ -- Alexander Kramer <kramer@univention.de>  Wed, 02 Mar 2016 10:42:01 +0100
+
 univention-app-appliance-branding (0.2.1-4) unstable; urgency=medium
 
   * Bug #39465: adjust build dependencies

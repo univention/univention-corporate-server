@@ -48,11 +48,11 @@ define([
 	"xstyle/css!./appliance.css"
 ], function(when, all, domClass, lang, store, topic, hash, ioQuery, put, app, tools, TitlePane, LabelPane, Text, CheckBox, _) {
 
-	var promiseAppId = tools.ucr('umc/web/appliance/id');
 	var promiseFirstStepsOpen = tools.ucr('umc/web/appliance/close_first_steps');
+	var promiseAppAppliance = tools.umcpCommand('appliance/get');
 	var ucrStore = store('key', 'ucr');
 	var firstSteps = null;
-	var notShowAgainCheckBox = null;
+	var checkBoxShowContentOfFirstSteps = null;
 
 	var selectApplianceCategory = function() {
 		hash(ioQuery.objectToQuery({
@@ -63,64 +63,60 @@ define([
 
 
 	all({
-		appId: promiseAppId,
-		isFirstStepsClosed: promiseFirstStepsOpen
+		isFirstStepsClosed: promiseFirstStepsOpen,
+		app: promiseAppAppliance
 	}).then(function(result) {
-		var appId = result.appId['umc/web/appliance/id'];
 		var isFirstStepsClosed = tools.isTrue(result.isFirstStepsClosed['umc/web/appliance/close_first_steps']);
+		var readme_text = result.app.result.readme;
 
-		tools.umcpCommand('appcenter/get', {'application': appId}).then(function(data) {
-
-			var readme = new Text({
-				content: data.result.readme
-			});
-
-			firstSteps = new TitlePane({
-				'class': 'firstSteps',
-				title: _("First Steps"),
-				open: !isFirstStepsClosed
-			});
-			firstSteps.addChild(readme);
-
-			put(firstSteps.titleBarNode.firstElementChild, 'div.firstStepsIcon');
-
-			notShowAgainCheckBox = new CheckBox({
-				name: 'close_first_steps',
-				value: isFirstStepsClosed,
-				checked: isFirstStepsClosed,
-				onChange: function() {
-					notShowAgainChange();
-				}
-			});
-			var notShowAgainLabel = new LabelPane({
-				content: notShowAgainCheckBox,
-				label: _('Do not show again.'),
-			});
-			firstSteps.addChild(notShowAgainLabel);
-
-			// app.js uses its subscription to /dojo/hashchange to show the right category
-			// after a page reload. But this script is loaded after that event trigert.
-			// So we have to manually check if we should show the first steps after
-			// a page reload
-			put(app._grid.domNode, '-', firstSteps.domNode);
-			var isFirstStepsHidden = hash().indexOf("category=_appliance_") === -1;
-			domClass.toggle(firstSteps.domNode, 'dijitHidden', isFirstStepsHidden);
-			firstStepsToggleSubscription();
+		var readme = new Text({
+			content: readme_text
 		});
+
+		firstSteps = new TitlePane({
+			'class': 'firstSteps',
+			title: _("First Steps"),
+			open: !isFirstStepsClosed
+		});
+		firstSteps.addChild(readme);
+
+		put(firstSteps.titleBarNode.firstElementChild, 'div.firstStepsIcon');
+
+		
+		checkBoxShowContentOfFirstSteps = new CheckBox({
+			name: 'hide_first_steps',
+			value: isFirstStepsClosed,
+			checked: isFirstStepsClosed,
+			onChange: saveStateOfFirstSteps
+		});
+		var labelHideContent = new LabelPane({
+			content: checkBoxShowContentOfFirstSteps,
+			label: _('Hide content next time.')
+		});
+		firstSteps.addChild(labelHideContent);
+
+		put(app._grid.domNode, '-', firstSteps.domNode);
+
+		checkVisbilityOfFirstSteps();
+		subscripeVisibilityCheckOnHashChange(checkVisbilityOfFirstSteps);
 	});
 
-	var firstStepsToggleSubscription = function() {
+	var checkVisbilityOfFirstSteps = function(_hash) {
+		var hash = _hash || hash();
+		var isFirstStepsHidden = hash.indexOf("category=_appliance_") === -1;
+		domClass.toggle(firstSteps.domNode, 'dijitHidden', isFirstStepsHidden);
+	};
+
+	var subscripeVisibilityCheckOnHashChange = function(callback) {
 		topic.subscribe('/dojo/hashchange', function(hash) {
-			// /dojo/hashchange publishes category and module changes
-			var isFirstStepsHidden = hash.indexOf('category=_appliance_') === -1;
-			domClass.toggle(firstSteps.domNode, 'dijitHidden', isFirstStepsHidden);
+			callback(hash);
 		});
 	};
 
-	var notShowAgainChange = function() {
+	var saveStateOfFirstSteps = function() {
 		ucrStore.add({
 			key: 'umc/web/appliance/close_first_steps',
-			value: notShowAgainCheckBox.get('checked').toString()
+			value: checkBoxShowContentOfFirstSteps.get('checked').toString()
 		});
 	};
 
