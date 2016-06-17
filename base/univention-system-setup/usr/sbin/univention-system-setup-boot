@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# Univention System Setup Boot
+#
+# Copyright 2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
+	echo
+	echo "When started, all UCR variables and configurations will be set to prepare the"
+	echo "VM for an appliance mode. At next boot, a configuration wizard will be started."
+	echo
+	echo "usage: $(basename $0) [start|stop]"
+	echo
+	exit 0
+fi
+
+ACTION=$1
+
+eval "$(univention-config-registry shell)"
+
+SITE_INITIALSETUP="ucs-overview/initialsetup.html"
+SITE_SYSTEM_SETUP='univention-management-console/?module=setup\&flavor=wizard\&overview=false\&username=root'
+
+_has_system_setup_boot_startsite() {
+	if [ "$apache2_startsite" = "$SITE_SYSTEM_SETUP" -o "$apache2_startsite" = "$SITE_INITIALSETUP" ]; then
+		return 0
+	fi
+	return 1
+}
+
+if [ "$ACTION" = "start" ]; then
+	univention-config-registry set \
+		'system/setup/boot/start=true' \
+		'system/setup/boot/select/role=true'
+	univention-config-registry unset 'umc/module/setup/wizard/disabled'
+
+	# set apache2/startsite
+	if ! _has_system_setup_boot_startsite; then
+		# store old value
+		univention-config-registry set system/setup/prev/apache2/startsite="$apache2_startsite"
+
+		# set default start site for appliance mode
+		if is_ucr_true server/amazon; then
+			# welcome page on EC2 systems
+			univention-config-registry set apache2/startsite="$SITE_INITIALSETUP"
+		else
+			univention-config-registry set apache2/startsite="$SITE_SYSTEM_SETUP"
+		fi
+	fi
+	univention-config-registry commit /var/www/ucs-overview/entries.json >/dev/null 2>&1
+	[ -x /etc/init.d/apache2 ] && /etc/init.d/apache2 reload
+elif [ "$ACTION" = "stop" ]; then
+	univention-config-registry set \
+		'system/setup/boot/start=false' \
+		'umc/module/setup/wizard/disabled=true'
+
+	# reset apache2/startsite
+	if _has_system_setup_boot_startsite; then
+		univention-config-registry set apache2/startsite="${system_setup_prev_apache2_startsite:-ucs-overview/}"
+		univention-config-registry unset system/setup/prev/apache2/startsite
+		[ -x /etc/init.d/apache2 ] && /etc/init.d/apache2 reload
+	fi
+else
+	echo
+	echo "ERROR: Unknown action given"
+	echo
+	exit 1
+fi

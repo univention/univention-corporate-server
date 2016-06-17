@@ -7,6 +7,7 @@ univention-system-setup (9.0.4-9) unstable; urgency=medium
   * Also change Administrator password in 10_basis/18root_password
   * Run create-dh-parameter-files.sh in the background in setup-join.sh
   * Pre-compute city-data JSON files to improve build time
+  * Adjust checks for /var/univention-join/joined and refactor config logic
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Feb 2016 13:56:04 +0100
 

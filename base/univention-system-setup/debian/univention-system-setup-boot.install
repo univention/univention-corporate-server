@@ -5,3 +5,4 @@ etc/init.d
 usr/lib/univention-system-setup/addons
 var/www
 etc/xdg/openbox/rc_no_shortcuts.xml
+usr/sbin

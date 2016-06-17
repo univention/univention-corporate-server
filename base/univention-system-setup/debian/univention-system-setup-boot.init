@@ -70,7 +70,7 @@ case "$1" in
 			echo "Save dhclient result in UCR (done)" >>/var/log/univention/setup.log
 		fi
 
-		if [ "$system_setup_boot_start" = "yes" -o "$system_setup_boot_start" = "true" ]; then
+		if is_ucr_true system/setup/boot/start; then
 			/usr/share/univention-system-setup/startxwithfirefox > "/var/log/univention/system-setup-boot.log" 2>&1
 		fi
 		log_action_end_msg 0

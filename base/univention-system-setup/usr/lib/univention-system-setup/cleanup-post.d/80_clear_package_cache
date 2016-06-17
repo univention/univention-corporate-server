@@ -1,9 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 #
-# Univention System Setup preparations
-#  boot init script for univention system setup
+# Clear univention-system-setup-boot package cache
 #
-# Copyright 2013-2016 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,35 +29,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /lib/lsb/init-functions
-
-. /usr/share/univention-lib/ucr.sh
-
-case "$1" in
-	start)
-		log_action_msg "Starting univention-system setup preparations"
-
-		# recreate openssh-hostkeys if they are missing
-		host_key_missing=0
-		for line in $(grep HostKey /etc/ssh/sshd_config | awk '{print $2}')
-		do
-			[ ! -f "$line" ] && host_key_missing=1 && break
-		done
-
-		[ "$host_key_missing" -eq "1" ] && dpkg-reconfigure openssh-server
-
-		# recreate ssl certificates if they are missing
-		[ ! -d /etc/univention/ssl ] && dpkg-reconfigure univention-ssl
-
-		log_action_end_msg 0
-		;;
-	stop)
-		log_action_end_msg 0
-		;;
-	*)
-		log_action_msg "Usage: /etc/init.d/univention-system-setup-boot-prepare {start|stop}."
-		exit 1
-		;;
-esac
-
+# clear package cache via cleanup script in order to avoid re-downloading
+# all packages again when univention-system-setup-boot is updated
+if [ -s /var/cache/univention-system-setup/profile ]; then
+	rm -f /var/cache/univention-system-setup/packages/*.deb
+	rm -f /var/cache/univention-system-setup/packages/Packages
+	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
+fi
 

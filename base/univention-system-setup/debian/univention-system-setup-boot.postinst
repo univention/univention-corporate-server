@@ -45,32 +45,17 @@ eval "$(univention-config-registry shell)"
 
 . /usr/share/univention-lib/all.sh
 
-univention-config-registry set 'system/setup/boot/start?true' \
-							   'system/setup/boot/select/role?true'
-
 create_logfile /var/log/univention/system-setup-boot.log "root:adm" 640
 
-# Show login message on an unjoined system
-if [ ! -e /var/univention-join/joined ] && [ -z "$server_role" ]; then
-	univention-config-registry set 'system/setup/showloginmessage?true'
-fi
-
 # prepare the server role selection
-if [ "$1" = "configure" ] && [ -n "$2" ] && [ ! -e /var/univention-join/joined ]; then
-	# download packages in update mode only
-	/usr/share/univention-system-setup/download-packages
-fi
-
-if [ "$1" = "configure" ] && [ ! -e /var/univention-join/joined ]; then
-	initialsetup_startsite="ucs-overview/initialsetup.html"
-	system_setup_boot_startsite='univention-management-console/?module=setup\&flavor=wizard\&overview=false\&username=root'
-	if [ "$apache2_startsite" != "$system_setup_boot_startsite" -a "$apache2_startsite" != "$initialsetup_startsite" ]; then
-		ucr set system/setup/prev/apache2/startsite="$apache2_startsite"
-		ucr set apache2/startsite="$system_setup_boot_startsite"
-		if [ -x /etc/init.d/apache2 ]; then
-			/etc/init.d/apache2 restart
-		fi
+if [ "$1" = "configure" ]; then
+	# download packages when package is updated
+	if [ -n "$2" ]; then
+		/usr/share/univention-system-setup/download-packages
 	fi
+
+	# set UCR variables for appliance mode
+	/usr/sbin/univention-system-setup-boot start
 
 	# make sure that the App Center cache is up-to-date
 	[ -x /usr/bin/univention-app ] && univention-app update
@@ -78,24 +63,18 @@ fi
 
 #DEBHELPER#
 
-update-rc.d univention-system-setup-boot-prepare defaults 15
-# Remove urandom init-script from runlevels (Bug #30034). Will be reactivated by scripts/10_basis/20initscripts
-update-rc.d -f urandom remove
-rm /var/lib/urandom/random-seed
+if [ "$1" = "configure" ]; then
+	# add init script univention-system-setup-boot-prepare manually to default run-level
+	update-rc.d univention-system-setup-boot-prepare defaults 15
 
-# generate package removal appliance hook
-cat >/usr/lib/univention-system-setup/appliance-hooks.d/95_remove_package_cache <<__EOF__
-#!/bin/sh
-if [ -s /var/cache/univention-system-setup/profile ]; then
-	rm -f /var/cache/univention-system-setup/packages/*.deb
-	rm -f /var/cache/univention-system-setup/packages/Packages
-	rm -f /etc/apt/sources.list.d/05univention-system-setup.list
+	# Remove urandom init-script from runlevels (Bug #30034). Will be reactivated by scripts/10_basis/20initscripts
+	update-rc.d -f urandom remove
+	rm /var/lib/urandom/random-seed
+
+	# Show motd on unjoined systems (Bug #37129)
+	univention-config-registry set 'system/setup/showloginmessage=true'
+	pam-auth-update --package univention-system-setup-boot
+	ucr commit /etc/pam.d/*
 fi
-__EOF__
-chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/95_remove_package_cache
-
-# Show motd on unjoined systems (Bug #37129)
-pam-auth-update --package univention-system-setup-boot
-ucr commit /etc/pam.d/*
 
 exit 0

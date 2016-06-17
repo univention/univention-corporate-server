@@ -29,10 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-if [ ! -s /var/cache/univention-system-setup/profile ]; then
-	exit 0
-fi
-
 # Remove univention-system-setup-boot after successful run
 role=$(ucr get server/role)
 if [ "${role}" = "basesystem" ]
