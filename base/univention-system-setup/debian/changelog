@@ -6,6 +6,7 @@ univention-system-setup (9.0.4-9) unstable; urgency=medium
   * Call clean-up scripts + appliance hooks via setup-join.sh
   * Also change Administrator password in 10_basis/18root_password
   * Run create-dh-parameter-files.sh in the background in setup-join.sh
+  * Update App Center cache via cleanup script
   * Pre-compute city-data JSON files to improve build time
   * Adjust checks for /var/univention-join/joined and refactor config logic
 
