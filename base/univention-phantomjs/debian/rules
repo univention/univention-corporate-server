@@ -1,0 +1,15 @@
+#!/usr/bin/make -f
+
+VERSION = 2.1.1
+URL = git://github.com/ariya/phantomjs.git
+
+get-orig-source:
+	git clone $(URL)
+	cd phantomjs/ && git checkout $(VERSION) && git submodule init && git submodule update
+	tar cfz univention-phantomjs-$(VERSION).orig.tar.gz phantomjs/
+	rm -rf phantomjs/
+
+override_dh_auto_build: get-orig-source
+	cd phantomjs && python build.py --confirm --release
+%:
+	dh $@
