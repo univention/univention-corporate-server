@@ -3,3 +3,4 @@ umc/js/appliance.css usr/share/univention-management-console-frontend/js/umc/mod
 usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/app-logo-umc-header.png	usr/share/univention-management-console-frontend/js/dijit/themes/umc/images
 images/*	usr/share/univention-app-appliance-branding/images
 tools/*	usr/share/univention-app-appliance-branding/
+python/*	usr/share/pyshared/univention/app_appliance

@@ -5,7 +5,7 @@
 	-->
 
 @!@
-from univention.appcenter.app import AppManager
+from univention.app_appliance import AppManager
 
 appId = configRegistry['umc/web/appliance/id']
 app = AppManager.find(appId)

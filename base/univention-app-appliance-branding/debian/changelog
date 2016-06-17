@@ -1,3 +1,11 @@
+univention-app-appliance-branding (0.2.2-7) unstable; urgency=medium
+
+  Bug #39465:
+  * Download app images from App Center server
+  * Extend python App class with appliance properties
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 04 Mar 2016 16:29:30 +0100
+
 univention-app-appliance-branding (0.2.2-6) unstable; urgency=medium
 
   * Bug #39465: Add import for translation module

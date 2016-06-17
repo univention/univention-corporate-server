@@ -32,9 +32,11 @@
 # <http://www.gnu.org/licenses/>.
 
 import os.path
+import urllib
 from glob import glob
 from subprocess import call
-from univention.appcenter.app import AppManager
+from univention.app_appliance import AppManager
+
 
 def handler(config_registry, changes):
 	# query app information
@@ -57,8 +59,32 @@ def handler(config_registry, changes):
 				for line in in_file:
 					out_file.write(line.replace('#ff00ff', secondary_color))
 
-	# create background image for plymout theme
+	# create background image for plymouth theme
 	call(['/usr/share/univention-app-appliance-branding/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance/bg.png'])
 
+	def _download(filename, dest_path):
+		url = 'https://{server}/meta-inf/{version}/{app}/{file}'.format(
+			server=config_registry.get('repository/app_center/server'),
+			version=config_registry.get('version/version'),
+			app=app.id,
+			file=filename,
+		)
+		try:
+			urllib.urlretrieve(url, dest_path)
+			print 'Successfully dowloaded %s' % url
+		except IOError as err:
+			print 'WARNING: Failed to download %s' % url
 
+	# download image files for the app appliance
+	if app.appliance_logo:
+		_download(app.appliance_logo, '/usr/share/univention-management-console-frontend/js/umc/modules/setup/welcome.svg')
+	if app.appliance_umc_header_logo:
+		_stem, _ext = os.path.splitext(app.appliance_umc_header_logo)
+		_download(app.appliance_umc_header_logo, '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo%s' % _ext)
+	if app.appliance_welcome_screen_logo:
+		_stem, _ext = os.path.splitext(app.appliance_welcome_screen_logo)
+		_download(app.appliance_welcome_screen_logo, '/usr/share/plymouth/themes/ucs-appliance/logo_welcome_screen%s' % _ext)
+	if app.appliance_bootsplash_logo:
+		_stem, _ext = os.path.splitext(app.appliance_bootsplash_logo)
+		_download(app.appliance_bootsplash_logo, '/usr/share/plymouth/themes/ucs-appliance/logo_bootsplash%s' % _ext)
 

@@ -1,10 +1,10 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Management Console
-#  module: univention-app-appliance-branding
+# Univention App Appliance Branding
+#  Application class
 #
-# Copyright 2015-2016 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,25 +30,20 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+#
 
-from univention.management.console.modules import Base
-from univention.management.console.modules.decorators import simple_response
-from univention.appcenter import get_action
-from univention.app_appliance import AppManager
-from univention.appcenter.ucr import ucr_instance
-from univention.lib.i18n import Translation
-import univention.management.console.modules as umcm
+import univention.appcenter.app as app
 
-_ = Translation('univention-app-appliance-branding').translate
+class App(app.App):
+	appliance_category_modules = app.AppListAttribute()
+	appliance_primary_color = app.AppAttribute()
+	appliance_secondary_color = app.AppAttribute()
+	appliance_css_background = app.AppAttribute()
+	appliance_bootsplash_logo = app.AppAttribute()
+	appliance_umc_header_logo = app.AppAttribute()
+	appliance_welcome_screen_logo = app.AppAttribute()
+	appliance_logo = app.AppAttribute()
 
-class Instance(Base):
+class AppManager(app.AppManager):
+	_AppClass = App
 
-    @simple_response
-    def get(self):
-		domain = get_action('domain')
-		ucr = ucr_instance()
-		application = ucr.get('umc/web/appliance/id', '')
-		app = AppManager.find(application)
-		if app is None:
-			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
-		return domain.to_dict([app])[0]
