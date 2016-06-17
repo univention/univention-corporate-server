@@ -108,10 +108,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if 'univention-admin ' in line or 'univention-directory-manager ' in line or 'udm ' in line:
 					if 'univention-admin ' in line:
 						cnt['old_cmd_name'] += 1
-					if not ' $@ ' in line and not ' "$@" ' in line:
+					if ' $@ ' not in line and ' "$@" ' not in line and ' "${@}" ' not in line:
 						cnt['credential_arg_missing'] += 1
 						self.debug('line contains no $@:\n%s' % line)
-			if ' $@ ' in line:
+			if ' $@ ' in line or ' ${@} ' in line:
 				cnt['unquoted_credential_arg'] += 1
 				self.debug('line contains unquoted $@:\n%s' % line)
 
