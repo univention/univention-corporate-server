@@ -56,7 +56,10 @@ _has_system_setup_boot_startsite() {
 if [ "$ACTION" = "start" ]; then
 	univention-config-registry set \
 		'system/setup/boot/start=true' \
-		'system/setup/boot/select/role=true'
+		'system/setup/boot/select/role=true' \
+		"system/setup/boot/nssldaptimeout=$nssldap_timelimit" \
+		'nssldap/timelimit=10'
+
 	univention-config-registry unset \
 		'umc/module/setup/wizard/disabled' \
 		'umc/web/startupdialog'
@@ -79,7 +82,8 @@ if [ "$ACTION" = "start" ]; then
 elif [ "$ACTION" = "stop" ]; then
 	univention-config-registry set \
 		'system/setup/boot/start=false' \
-		'umc/module/setup/wizard/disabled=true'
+		'umc/module/setup/wizard/disabled=true' \
+		"nssldap/timelimit=${system_setup_boot_nssldaptimeout:-30}"
 
 	# reset apache2/startsite
 	if _has_system_setup_boot_startsite; then
