@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-21) unstable; urgency=medium
+
+  * Bug #41026: prevent output getting written over the welcome screen
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 25 May 2016 18:30:04 +0200
+
 univention-system-setup (9.0.4-20) unstable; urgency=medium
 
   * Bug #41283: Set --demo-modus in fast demo modus

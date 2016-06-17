@@ -119,7 +119,6 @@ then # call self in xinit as nobody, then start gdm
 	# when called along with the Debian installer, a reboot is performed
 	if [ "$mode" = "init" -a -x /etc/init.d/plymouth -a -x /etc/init.d/univention-welcome-screen ]; then
 		/etc/init.d/plymouth stop
-		/etc/init.d/univention-welcome-screen start
 	fi
 
 	# remove pidfile
