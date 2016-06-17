@@ -37,6 +37,21 @@ import requests
 from glob import glob
 from subprocess import call
 from univention.app_appliance import AppManager
+from univention.config_registry.frontend import ucr_update
+
+
+def get_plymouth_theme(hexcolor):
+	if hexcolor[0] == '#':
+		hexcolor = hexcolor[1:]
+	red = int(hexcolor[0:2], 16)
+	green = int(hexcolor[2:4], 16)
+	blue = int(hexcolor[4:6], 16)
+	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
+	perceptive_luminance = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
+	if perceptive_luminance < .5:
+		return 'light'
+	else:
+		return 'dark'
 
 
 def handler(config_registry, changes):
@@ -50,6 +65,7 @@ def handler(config_registry, changes):
 	css_background = app.appliance_css_background or '#eeeeee'
 	primary_color = '#' + (app.appliance_primary_color or '5a5a5a')
 	secondary_color = '#' + (app.appliance_secondary_color or '7db523')
+	plymouth_theme = get_plymouth_theme(primary_color)
 
 	# adjust colors in SVG images via search and replace
 	for src_path in glob('/usr/share/univention-app-appliance-branding/images/*.svg'):
@@ -61,7 +77,7 @@ def handler(config_registry, changes):
 					out_file.write(line.replace('#ff00ff', secondary_color))
 
 	# create background image for plymouth theme
-	call(['/usr/share/univention-app-appliance-branding/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance/bg.png'])
+	call(['/usr/share/univention-app-appliance-branding/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % plymouth_theme])
 
 	def _download(filename, dest_path):
 		url = 'https://{server}/meta-inf/{version}/{app}/{file}'.format(
@@ -86,8 +102,10 @@ def handler(config_registry, changes):
 		_download(app.appliance_umc_header_logo, '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo%s' % _ext)
 	if app.appliance_welcome_screen_logo:
 		_stem, _ext = os.path.splitext(app.appliance_welcome_screen_logo)
-		_download(app.appliance_welcome_screen_logo, '/usr/share/plymouth/themes/ucs-appliance/logo_welcome_screen%s' % _ext)
+		_download(app.appliance_welcome_screen_logo, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen%s' % (plymouth_theme, _ext))
 	if app.appliance_bootsplash_logo:
 		_stem, _ext = os.path.splitext(app.appliance_bootsplash_logo)
-		_download(app.appliance_bootsplash_logo, '/usr/share/plymouth/themes/ucs-appliance/logo_bootsplash%s' % _ext)
+		_download(app.appliance_bootsplash_logo, '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash%s' % (plymouth_theme, _ext))
 
+	# set plymouth appliance theme
+	ucr_update(config_registry, {'bootsplash/theme': 'ucs-appliance-%s' % plymouth_theme})

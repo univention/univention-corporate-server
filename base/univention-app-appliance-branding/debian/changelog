@@ -1,3 +1,11 @@
+univention-app-appliance-branding (0.2.2-10) unstable; urgency=medium
+
+  Bug #39465:
+  * Added plymouth the for light backgrounds
+  * Theme is chosen depending on primary color
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 09 Mar 2016 12:00:59 +0100
+
 univention-app-appliance-branding (0.2.2-9) unstable; urgency=medium
 
   Bug #39465:

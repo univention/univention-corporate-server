@@ -1,0 +1,11 @@
+[Plymouth Theme]
+Name=ucs-appliance-light
+Description=app appliance branding with light background
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ucs-appliance-light
+ScriptFile=/usr/share/plymouth/themes/ucs-appliance-light/ucs-appliance-light.script
+
+[script-env-vars]
+example_env_var=example env var value
