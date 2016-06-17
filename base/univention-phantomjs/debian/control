@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 XS-Python-Version: 2.7
 Build-Depends: debhelper (>= 7.0.50~),
- build-essential, g++, flex, bison, gperf, ruby, perl,
+ build-essential, g++, flex, bison, gperf, ruby, perl, git
  libsqlite3-dev, libfontconfig1-dev, libicu-dev, libfreetype6,
  libssl-dev, libpng-dev, libjpeg-dev, python, libx11-dev, libxext-dev
 

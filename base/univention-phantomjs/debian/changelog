@@ -1,3 +1,9 @@
+univention-phantomjs (0.2.1.1-2) unstable; urgency=medium
+
+  * Bug #40934: Added git to build-depends
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 04 Apr 2016 15:32:11 +0200
+
 univention-phantomjs (0.2.1.1-1) unstable; urgency=medium
 
   * Bug #40934: Initial release of univention-phantomjs
