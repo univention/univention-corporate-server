@@ -66,11 +66,19 @@ body #footer ul a {
 	color: %(font_color)s;
 }
 
+body #footer ul a:hover {
+	color: %(font_color)s;
+}
+
 body #footer ul li {
 	border-color: %(font_color)s;
 }
 
 body .container a {
+	color: %(font_color)s;
+}
+
+body .container a:hover {
 	color: %(font_color)s;
 }
 ''' % {

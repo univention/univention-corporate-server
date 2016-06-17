@@ -43,6 +43,7 @@ class App(app.App):
 	appliance_bootsplash_logo = app.AppAttribute()
 	appliance_umc_header_logo = app.AppAttribute()
 	appliance_welcome_screen_logo = app.AppAttribute()
+	appliance_umc_category_logo = app.AppAttribute()
 	appliance_logo = app.AppAttribute()
 	appliance_links = app.AppAttribute()
 

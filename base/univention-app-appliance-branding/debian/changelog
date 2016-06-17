@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-21) unstable; urgency=medium
+
+  * Bug #39465: fix app logo in system activation mode + adjust CSS link color
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Mar 2016 15:43:10 +0200
+
 univention-app-appliance-branding (0.2.2-20) unstable; urgency=medium
 
   * Bug #39465: fix luminance function (wrong indices)
@@ -18,7 +24,7 @@ univention-app-appliance-branding (0.2.2-18) unstable; urgency=medium
 
 univention-app-appliance-branding (0.2.2-17) unstable; urgency=medium
 
-  * Bug #40826: Better image scaling for plymouth  
+  * Bug #40826: Better image scaling for plymouth
 
  -- Jürn Brodersen <brodersen@univention.de>  Thu, 24 Mar 2016 17:30:07 +0100
 
@@ -47,7 +53,7 @@ univention-app-appliance-branding (0.2.2-13) unstable; urgency=medium
   Bug #39465:
   * plymouth script template
   * grub branding
-  * first steps shown in the wrong category 
+  * first steps shown in the wrong category
 
  -- Jürn Brodersen <brodersen@univention.de>  Fri, 18 Mar 2016 10:49:45 +0100
 
