@@ -1,3 +1,9 @@
+univention-phantomjs (0.2.1.1-5) unstable; urgency=medium
+
+  * Bug #40934: Don't delete the source folder before building
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 04 Apr 2016 16:14:18 +0200
+
 univention-phantomjs (0.2.1.1-4) unstable; urgency=medium
 
   * Bug #40934: Replace https with git in .gitmodules for local build-system
