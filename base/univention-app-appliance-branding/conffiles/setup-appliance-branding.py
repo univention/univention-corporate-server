@@ -31,8 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os.path
-from os import symlink
+import os
 import requests
 from glob import glob
 from subprocess import call
@@ -65,11 +64,20 @@ def handler(config_registry, changes):
 				for line in in_file:
 					out_file.write(line.replace('#ff00ff', secondary_color))
 
-	for lang in ['', '_DE']:
-		os.symlink('/var/cache/univention-appcenter/%s.README%s' % (app.component_id, lang), '/var/www/univention-management-console/js/umc/modules/appliance/appliance_first_steps.README%s' % (lang,))
-
 	# create background image for plymouth theme
 	call(['/usr/share/univention-app-appliance-branding/render-css-background', '1600x1200', css_background, '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % theme])
+
+	def symlink_first_steps():
+		for lang in ['', '_DE']:
+			source = '/var/cache/univention-appcenter/%s.README%s' % (app.component_id, lang)
+			target = '/var/www/univention-management-console/js/umc/modules/appliance/appliance_first_steps.README%s' % (lang,)
+			try:
+				print("Remove old first steps symlink")
+				os.remove(target)
+			except OSError:
+				pass
+			print("Symlink first steps from %s to %s" % (source, target,))
+			os.symlink(source, target)
 
 	def _download(filename, dest_path):
 		url = 'https://{server}/meta-inf/{version}/{app}/{file}'.format(
@@ -107,6 +115,8 @@ def handler(config_registry, changes):
 	def _svg_to_png(source, dest, params, res='800x600'):
 		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
 		call(['/usr/share/univention-app-appliance-branding/render-css-background', res,  css_background, dest])
+
+	symlink_first_steps()
 
 	# download image files for the app appliance
 	if app.appliance_logo:

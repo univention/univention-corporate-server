@@ -49,22 +49,26 @@ define([
 	"xstyle/css!./appliance.css"
 ], function(when, all, domClass, lang, store, topic, hash, ioQuery, request, put, app, tools, TitlePane, LabelPane, Text, CheckBox, _) {
 
-	var promiseFirstStepsOpen = tools.ucr('umc/web/appliance/close_first_steps');
-	var readMePath = dojo.moduleUrl("umc/modules/appliance")
-	var promiseReadme = request(readMePath + _('appliance_first_steps.README'));
+	var promiseUcrValues = tools.ucr(['umc/web/appliance/close_first_steps', 'umc/web/appliance/name']);
+	var readmePath = dojo.moduleUrl("umc/modules/appliance")
+	var promiseReadme = request(readmePath + _('appliance_first_steps.README'));
 	var ucrStore = store('key', 'ucr');
 	var firstSteps = null;
 	var checkBoxShowContentOfFirstSteps = null;
 
 	all({
-		isFirstStepsClosed: promiseFirstStepsOpen,
-		readme: promiseReadme
+		ucrValues: promiseUcrValues,
+		readme: promiseReadme,
 	}).then(function(result) {
-		var isFirstStepsClosed = tools.isTrue(result.isFirstStepsClosed['umc/web/appliance/close_first_steps']);
-		var readme_text = result.readme;
+		var isFirstStepsClosed = tools.isTrue(result.ucrValues['umc/web/appliance/close_first_steps']);
+		var readmeHeader = _("Welcome to Univention Management Console (UMC)! " + 
+							"It is the web interface to manage this appliance. " + 
+							"UMC is provided by Univention Corporate Server, " + 
+							"the platform on which %s is running on.", result.ucrValues['umc/web/appliance/name'])
+		var readmeText = '<p>' + readmeHeader + '</p>' + result.readme;
 
 		var readme = new Text({
-			content: readme_text
+			content: readmeText
 		});
 
 		firstSteps = new TitlePane({
