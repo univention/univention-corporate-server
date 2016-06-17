@@ -97,8 +97,8 @@ define([
 
 		put(app._grid.domNode, '-', firstSteps.domNode);
 
-		checkVisbilityOfFirstSteps();
 		subscripeVisibilityCheckOnHashChange(checkVisbilityOfFirstSteps);
+		checkVisbilityOfFirstSteps();
 	});
 
 	var checkVisbilityOfFirstSteps = function(_hash) {

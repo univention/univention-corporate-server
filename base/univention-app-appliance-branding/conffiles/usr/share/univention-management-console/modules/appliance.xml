@@ -9,7 +9,7 @@
 		<keywords></keywords>
 		<categories>
 		</categories>
-		<command name="appcenter/get" function="get" />
+		<command name="appliance/get" function="get" />
 	</module>
 
 @!@
@@ -19,8 +19,27 @@ from univention.appcenter.app import AppManager
 appId = configRegistry['umc/web/appliance/id']
 app = AppManager.find(appId)
 
-if app and app.web_interface:
-	link_web_interface = '''
+if app:
+	link_appcenter_detailspage = '''
+	<module id="apps">
+		<flavor icon="{icon}" priority="-100" id="{id}">
+			<name>{name}</name>
+			<description>{description}</description>
+			<categories>
+				<category name="_appliance_"/>
+			</categories>
+		</flavor>
+	</module>'''.format(
+			id=cgi.escape(app.id or ''),
+			name=cgi.escape(app.name or ''),
+			version=cgi.escape(app.version or ''),
+			description=cgi.escape(app.description or ''),
+			icon=cgi.escape(app.logo_name or ''),
+		)
+	print link_appcenter_detailspage
+	
+	if app.web_interface:
+		link_web_interface = '''
 	<link priority="50" id="link-{id}-web-interface">
 		<url>{web_interface}</url>
 		<name>{name} Login</name>
@@ -28,13 +47,31 @@ if app and app.web_interface:
 		<categories>
 			<category name="_appliance_" />
 		</categories>
-	</link>
-	'''.format(
-		id=cgi.escape(app.id or ''),
-		web_interface=cgi.escape(app.web_interface),
-		name=cgi.escape(app.name or '')
-	)
-	print link_web_interface
-@!@
+	</link>'''.format(
+			id=cgi.escape(app.id or ''),
+			web_interface=cgi.escape(app.web_interface),
+			name=cgi.escape(app.name or '')
+		)
+		print link_web_interface
 
+	if app.appliance_category_modules:
+		print '''
+	<module id="udm">'''
+		for module in app.appliance_category_modules:
+			_module = module.split(':')
+			moduleId = _module[0]
+			flavor = _module[1]
+
+			print '''
+		<flavor id="{flavor}">
+			<categories>
+				<category name="_appliance_" />
+			</categories>
+		</flavor>'''.format(
+					flavor=cgi.escape(flavor)
+					)
+
+		print '''
+	</module>'''
+@!@
 </umc>

@@ -1,3 +1,10 @@
+univention-app-appliance-branding (0.2.2-1) unstable; urgency=medium
+
+  * Bug #39465: added possibility to specify modules that should be
+    displayed in the appliance category
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 02 Mar 2016 19:03:23 +0100
+
 univention-app-appliance-branding (0.2.1-5) unstable; urgency=low
 
   * Bug #39465: add route appliance/get to simplify appliance.js
