@@ -146,13 +146,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'conffiles', # dh_installdeb
 			'config', # dh_installdebconf
 			'copyright', # dh_installdocs
-			'cron.daily', # dh_installcron
-			'cron.d', # dh_installcron
-			'cron.hourly', # dh_installcron
-			'cron.monthly', # dh_installcron
-			'cron.weekly', # dh_installcron
 			'debhelper.log', # dh
-			'default', # dh_installinit
 			'dirs', # dh_installdirs
 			'doc-base', # dh_installdocs
 			'docs', # dh_installdocs
@@ -163,36 +157,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'files', # dh_movefiles
 			'gconf-defaults', # dh_gconf
 			'gconf-mandatory', # dh_gconf
-			'if-down', # dh_installifupdown
-			'if-pre-down', # dh_installifupdown
-			'if-pre-up', # dh_installifupdown
-			'if-up', # dh_installifupdown
 			'info', # dh_installinfo
-			'init', # dh_installinit
 			'install', # dh_install
 			'links', # dh_link
 			'lintian-overrides', # dh_lintian
-			'logcheck.cracking', # dh_installlogcheck
-			'logcheck.ignore.paranoid', # dh_installlogcheck
-			'logcheck.ignore.server', # dh_installlogcheck
-			'logcheck.ignore.workstation', # dh_installlogcheck
-			'logcheck.violations', # dh_installlogcheck
-			'logcheck.violations.ignore', # dh_installlogcheck
 			'maintscript', # dh_installdeb
 			'manpages', # dh_installman
 			'menu', # dh_installmenu
 			'menu-method', # dh_installmenu
 			'mine', # dh_installmime
-			'modprobe', # dh_installmodules
-			'modules', # dh_installmodules
 			'NEWS', # dh_installchangelogs
-			'pam', # dh_installpam
 			'postinst', # dh_installdeb
 			'postinst.debhelper', # dh_installdeb
 			'postrm', # dh_installdeb
 			'postrm.debhelper', # dh_installdeb
-			'ppp.ip-down', # dh_installppp
-			'ppp.ip-up', # dh_installppp
 			'preinst', # dh_installdeb
 			'preinst.debhelper', # dh_installdeb
 			'prerm', # dh_installdeb
@@ -207,16 +185,42 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'templates', # dh_installdebconf
 			'TODO', # dh_installdocs
 			'triggers', # dh_installdeb
-			'udev', # dh_installudev
 			'umc-modules', # dh-umc-modules-install
 			'univention-config-registry-categories', # univention-install-config-registry-info
 			'univention-config-registry-mapping', # univention-install-config-registry-info
 			'univention-config-registry', # univention-install-config-registry
 			'univention-config-registry-variables', # univention-install-config-registry-info
 			'univention-service', # univention-install-service-info
-			'upstart', # dh_installinit
 			'wm', # dh_installwm
 			))
+
+	NAMED_DH_FILES = set((
+		'cron.daily',  # dh_installcron
+		'cron.d',  # dh_installcron
+		'cron.hourly',  # dh_installcron
+		'cron.monthly',  # dh_installcron
+		'cron.weekly',  # dh_installcron
+		'default',  # dh_installinit
+		'if-down',  # dh_installifupdown
+		'if-pre-down',  # dh_installifupdown
+		'if-pre-up',  # dh_installifupdown
+		'if-up',  # dh_installifupdown
+		'init',  # dh_installinit
+		'logcheck.cracking',  # dh_installlogcheck
+		'logcheck.ignore.paranoid',  # dh_installlogcheck
+		'logcheck.ignore.server',  # dh_installlogcheck
+		'logcheck.ignore.workstation',  # dh_installlogcheck
+		'logcheck.violations',  # dh_installlogcheck
+		'logcheck.violations.ignore',  # dh_installlogcheck
+		'logrotate',  # dh_installlogrotate
+		'modprobe',  # dh_installmodules
+		'modules',  # dh_installmodules
+		'pam',  # dh_installpam
+		'ppp.ip-down',  # dh_installppp
+		'ppp.ip-up',  # dh_installppp
+		'udev',  # dh_installudev
+		'upstart',  # dh_installinit
+	))
 
 	def check_debhelper(self, path, parser):
 		"""Check for debhelper package files."""
@@ -229,12 +233,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		debianpath = os.path.join(path, 'debian')
 		files = os.listdir(debianpath)
 
-		for pkg, suffix in product(pkgs, UniventionPackageCheck.KNOWN_DH_FILES):
-			fn = '%s.%s' % (pkg, suffix)
-			try:
-				files.remove(fn)
-			except ValueError:
-				continue
+		regexp = re.compile(
+			r'^(?:%s)[.](?:%s|.+[.](?:%s))$' % (
+				'|'.join(re.escape(pkg) for pkg in pkgs),
+				'|'.join(re.escape(suffix) for suffix in UniventionPackageCheck.KNOWN_DH_FILES | UniventionPackageCheck.NAMED_DH_FILES),
+				'|'.join(re.escape(suffix) for suffix in UniventionPackageCheck.NAMED_DH_FILES),
+			))
 
 		for rel_name in files:
 			fn = os.path.join(debianpath, rel_name)
@@ -243,6 +247,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 
 			if not os.path.isfile(fn):
+				continue
+
+			if regexp.match(rel_name):
 				continue
 
 			for suffix in UniventionPackageCheck.KNOWN_DH_FILES:
