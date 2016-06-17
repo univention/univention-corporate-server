@@ -1,0 +1,37 @@
+Source: univention-app-appliance
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+XS-Python-Version: 2.6, 2.7
+Build-Depends: debhelper (>= 7.0.50~),
+ ucslint-univention,
+ univention-config-dev,
+ stylus,
+ univention-management-console-dev
+
+Package: univention-app-appliance
+Architecture: all
+Description: UCS - app appliance configuration
+ This package provides UCS App Appliances with configuration and branding.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+Pre-Depends: python-univention-app-appliance (= ${binary:Version})
+Depends: ${misc:Depends},
+ univention-welcome-screen,
+ python-requests,
+ univention-phantomjs
+
+Package: python-univention-app-appliance
+Architecture: all
+Description: UCS - python modules for app appliance configuration
+ This package provides the python modules for setting up UCS App Appliances.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+Depends: ${python:Depends}
