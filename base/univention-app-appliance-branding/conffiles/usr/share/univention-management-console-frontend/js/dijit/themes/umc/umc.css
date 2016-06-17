@@ -4,14 +4,24 @@
 
 @import url("umc.real.css");
 @!@
-from univention.app_appliance import AppManager
+from univention.app_appliance import AppManager, get_luminance
 app = AppManager.find(configRegistry.get('umc/web/appliance/id', ''))
+
+# get app color values
+css_background = app.appliance_css_background or '#eeeeee'
+secondary_color = app.appliance_secondary_color or '#000000'
+primary_color = app.appliance_primary_color or '#eeeeee'
+
+# decide which font/icon colors to take
+if get_luminance(primary_color) > .5:
+	font_color = '#000'
+	icon_color = ''
+else:
+	font_color = '#fff'
+	icon_color = '-white'
 
 if configRegistry.is_true('system/setup/boot/start') and app:
 	# only print these CSS rules when appliance mode is enabled
-	css_background = app.appliance_css_background or '#eeeeee'
-	appliance_secondary_color = app.appliance_secondary_color or '#000000'
-	appliance_primary_color = app.appliance_primary_color or '#eeeeee'
 	print '''
 /* style UMC for the app appliance branding during the setup process */
 
@@ -21,19 +31,20 @@ body.umc {
 
 .umc #umcFakeLoginLogo,
 .umc .umcHeader .umcHeaderLeft {
-	background-image: url("images/app-logo-umc-header.png");
+	background-image: url(images/appliance_header_logo.svg);
+	background-size: auto 50%%;
 }
 
 body.umc.umcHeadless #umcHeader {
-	border-bottom-color: %(appliance_secondary_color)s;
+	border-bottom-color: %(secondary_color)s;
 }
 
 .umc #umcLanguageSwitch .dijitButtonNode .dijitArrowButtonInner {
-	background-image: url("images/icons-white.svg");
+	background-image: url("images/icons%(icon_color)s.svg");
 }
 
 .umc #umcLanguageSwitch .dijitButtonText {
-	color: white;
+	color: %(font_color)s;
 }
 
 .umc #umcSingleSignOn {
@@ -41,7 +52,7 @@ body.umc.umcHeadless #umcHeader {
 }
 
 body.umc.umcHeadless .umcTopContainer {
-	background: %(appliance_primary_color)s;
+	background: %(primary_color)s;
 }
 
 #umcLoginDialog.umcLoginLoading, .umcLoginDialog.umcLoginLoading {
@@ -49,7 +60,9 @@ body.umc.umcHeadless .umcTopContainer {
 }
 ''' % {
 	'css_background': css_background,
-	'appliance_primary_color': '#' + appliance_primary_color,
-	'appliance_secondary_color': '#' + appliance_secondary_color
+	'icon_color': icon_color,
+	'font_color': font_color,
+	'primary_color': primary_color,
+	'secondary_color': secondary_color
 }
 @!@

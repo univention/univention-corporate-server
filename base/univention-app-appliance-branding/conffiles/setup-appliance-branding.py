@@ -36,20 +36,8 @@ import urllib
 import requests
 from glob import glob
 from subprocess import call
-from univention.app_appliance import AppManager
+from univention.app_appliance import AppManager, get_luminance
 from univention.config_registry.frontend import ucr_update
-
-
-def get_plymouth_theme(hexcolor):
-	red = int(hexcolor[1:3], 16)
-	green = int(hexcolor[3:5], 16)
-	blue = int(hexcolor[5:7], 16)
-	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
-	perceptive_luminance = 1 - (0.299 * red + 0.587 * green + 0.114 * blue)/255
-	if perceptive_luminance < .5:
-		return 'light'
-	else:
-		return 'dark'
 
 
 def handler(config_registry, changes):
@@ -63,7 +51,10 @@ def handler(config_registry, changes):
 	css_background = app.appliance_css_background or '#eeeeee'
 	primary_color = app.appliance_primary_color or '#5a5a5a'
 	secondary_color = app.appliance_secondary_color or '#7db523'
-	plymouth_theme = get_plymouth_theme(primary_color)
+	if get_luminance(primary_color) > .5:
+		plymouth_theme = 'dark'
+	else:
+		plymouth_theme = 'light'
 
 	# adjust colors in SVG images via search and replace
 	for src_path in glob('/usr/share/univention-app-appliance-branding/images/*.svg'):
@@ -106,7 +97,7 @@ def handler(config_registry, changes):
 			'grub/menu/color/normal': grub_color,
 			'grub/title': config_registry.get('umc/web/appliance/name', 'App') + ' Appliance'
 		})
-	
+
 	def _svg_to_png(source, dest, params, res='800x600'):
 		css_background = 'url(file:///{source}) {params}'.format(source=source, params=params)
 		call(['/usr/share/univention-app-appliance-branding/render-css-background', res,  css_background, dest])
@@ -123,6 +114,7 @@ def handler(config_registry, changes):
 		_download(app.appliance_umc_header_logo, _img)
 		_params = 'no-repeat; background-size: auto 84%; background-position: left center;'
 		_svg_to_png(_img, _img + '.png', _params,'1250x150')
+		_download(app.appliance_umc_header_logo, '/usr/share/univention-system-activation/www/css/icons/appliance_umc_header_logo%s' % _ext)
 	if app.appliance_welcome_screen_logo:
 		_stem, _ext = os.path.splitext(app.appliance_welcome_screen_logo)
 		_img ='/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen%s' % (plymouth_theme, _ext)

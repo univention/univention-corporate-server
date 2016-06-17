@@ -49,3 +49,12 @@ class AppManager(app.AppManager):
 	_AppClass = App
 	_cache = []
 	_cache_file = None
+
+def get_luminance(hexcolor):
+	hexcolor = hexcolor.strip(' #')
+	red = int(hexcolor[1:3], 16)
+	green = int(hexcolor[3:5], 16)
+	blue = int(hexcolor[5:7], 16)
+	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
+	return 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
+

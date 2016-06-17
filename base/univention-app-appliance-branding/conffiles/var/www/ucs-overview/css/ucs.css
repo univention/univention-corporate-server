@@ -4,29 +4,22 @@
 
 @import url("ucs.real.css");
 @!@
-from univention.app_appliance import AppManager
-
-def get_font_color(hexcolor):
-	red = int(hexcolor[1:3], 16)
-	green = int(hexcolor[3:5], 16)
-	blue = int(hexcolor[5:7], 16)
-	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
-	perceptive_luminance = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
-	if perceptive_luminance < .5:
-		return '#000'
-	else:
-		return '#fff'
-
+from univention.app_appliance import AppManager, get_luminance
 
 app = AppManager.find(configRegistry.get('umc/web/appliance/id', ''))
 
+# get app color values
 css_background = app.appliance_css_background or '#eeeeee'
 appliance_primary_color = app.appliance_primary_color or '#eeeeee'
-font_color = get_font_color(appliance_primary_color)
-if font_color == '#000':
+
+# decide which font/icon colors to take
+if get_luminance(appliance_primary_color) > .5:
+	font_color = '#000'
 	icon_color = ''
 else:
+	font_color = '#fff'
 	icon_color = '-white'
+
 print '''
 body {
 	background: %(css_background)s;
@@ -34,6 +27,7 @@ body {
 
 body #header-left {
 	background-image: url(/univention-management-console/js/dijit/themes/umc/images/appliance_header_logo.svg);
+	background-size: auto 50%%;
 }
 
 body #header-right {
