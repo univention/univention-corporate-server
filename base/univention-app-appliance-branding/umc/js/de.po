@@ -23,13 +23,13 @@ msgstr "Diesen Inhalt das nächste Mal ausblenden."
 #: umc/js/appliance.js:66
 #, python-format
 msgid ""
-"Welcome to Univention Management Console (UMC)! It is the web interface to "
-"manage this appliance. UMC is provided by Univention Corporate Server, the "
+"Welcome to Univention Management Console (UMC), the administration interface "
+"for your appliance. UMC is provided by Univention Corporate Server, the "
 "platform on which %s is running on."
 msgstr ""
-"Willkommen auf der Univention Management Console (UMC)! Dies ist das Webinterface "
-"zum Administrieren Ihrer Appliance. UMC wird zur Verfügung gestellt vom Univention "
-"Corporate Server, der Plattform auf der %s läuft."
+"Willkommen auf Univention Management Console (UMC), die Administrationsoberfläche "
+"Ihrer Appliance. UMC wird zur Verfügung gestellt von Univention Corporate Server, der "
+"Plattform auf der %s läuft."
 
 #: umc/js/appliance.js:55
 msgid "appliance_first_steps.README"

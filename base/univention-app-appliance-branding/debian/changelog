@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-25) unstable; urgency=medium
+
+  * Bug #38957: changed text in the first steps header
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 08 Apr 2016 14:18:18 +0200
+
 univention-app-appliance-branding (0.2.2-24) unstable; urgency=medium
 
   * Bug #40934: Moved phantomjs binary into its own package; fixed typo in makefile

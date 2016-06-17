@@ -61,8 +61,8 @@ define([
 		readme: promiseReadme,
 	}).then(function(result) {
 		var isFirstStepsClosed = tools.isTrue(result.ucrValues['umc/web/appliance/close_first_steps']);
-		var readmeHeader = _("Welcome to Univention Management Console (UMC)! " + 
-							"It is the web interface to manage this appliance. " + 
+		var readmeHeader = _("Welcome to Univention Management Console (UMC), " + 
+							"the administration interface for your appliance. " + 
 							"UMC is provided by Univention Corporate Server, " + 
 							"the platform on which %s is running on.", result.ucrValues['umc/web/appliance/name'])
 		var readmeText = '<p>' + readmeHeader + '</p>' + result.readme;
