@@ -1337,10 +1337,11 @@ msgstr "Domänencontroller Master im DNS suchen"
 
 #: umc/js/setup/ApplianceWizard.js:567
 msgid ""
-"Set up an already preconfigured domain. This allows a very fast test "
-"scenario. However, domain and host name <b>cannot</b> be changed later on."
+"Quick setup of a system for testing purposes. Several system configurations "
+"are predefined and cannot be changed at a later point."
 msgstr ""
-"Stellt ein bereits vorkonfiguriertes System zur Verfügung. Das ermöglicht den schnellen Aufbau eines Test-Szenarios. Allerdings können Domänenname und Rechnername im Nachhinein <b>nicht</b> mehr geändert werden."
+"Schnelle Einrichtung eines Systems zu Testzwecken. Einige Systemeinstellungen "
+"sind vorgegeben und können im Nachhinein nicht mehr geändert werden"
 
 #: umc/js/setup/ApplianceWizard.js:319
 msgid "Setup - An error occurred"
@@ -1576,8 +1577,8 @@ msgid "Update system after setup"
 msgstr "System nach der Einrichtung aktualisieren"
 
 #: umc/js/setup/ApplianceWizard.js:561
-msgid "Use a preconfigured test system"
-msgstr "Verwenden eines vorkonfigurierten Systems"
+msgid "Fast demo configuration"
+msgstr "Schnelle Demo-Konfiguration"
 
 #: umc/js/setup/ApplianceWizard.js:601
 msgid "Use this option if you already have one or more UCS systems."

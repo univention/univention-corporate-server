@@ -560,13 +560,13 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_preconfiguredDomain',
-					label: '<strong>' + _('Use a preconfigured test system') + '</strong>',
+					label: '<strong>' + _('Fast demo configuration') + '</strong>',
 					checked: true,
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
 				}, {
 					type: Text,
 					name: 'preconfiguredDomainHelpText',
-					content: _('Set up an already preconfigured domain. This allows a very fast test scenario. However, domain and host name <b>cannot</b> be changed later on.'),
+					content: _('Quick setup of a system for testing purposes. Several system configurations are predefined and cannot be changed at a later point.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
 				}, {
 					type: RadioButton,
