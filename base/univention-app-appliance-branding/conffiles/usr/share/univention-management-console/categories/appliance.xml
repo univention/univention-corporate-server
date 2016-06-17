@@ -12,7 +12,7 @@ app = AppManager.find(appId)
 
 category = ''' 
 	<categories>
-		<category priority="100000" id="_appliance_" icon="category-appliance.svg" color="#{color}">
+		<category priority="100000" id="_appliance_" icon="category-appliance.svg" color="{color}">
 			<name>{name}</name>
 		</category>
 	</categories>

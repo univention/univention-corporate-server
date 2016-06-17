@@ -54,14 +54,6 @@ define([
 	var firstSteps = null;
 	var checkBoxShowContentOfFirstSteps = null;
 
-	var selectApplianceCategory = function() {
-		hash(ioQuery.objectToQuery({
-			category: '_appliance_'
-		}));
-	};
-	selectApplianceCategory();
-
-
 	all({
 		isFirstStepsClosed: promiseFirstStepsOpen,
 		app: promiseAppAppliance
@@ -98,12 +90,11 @@ define([
 		put(app._grid.domNode, '-', firstSteps.domNode);
 
 		subscripeVisibilityCheckOnHashChange(checkVisbilityOfFirstSteps);
-		checkVisbilityOfFirstSteps();
+		checkVisbilityOfFirstSteps(hash());
 	});
 
 	var checkVisbilityOfFirstSteps = function(_hash) {
-		var hash = _hash || hash();
-		var isFirstStepsHidden = hash.indexOf("category=_appliance_") === -1;
+		var isFirstStepsHidden = _hash.indexOf("category=_appliance_") === -1;
 		domClass.toggle(firstSteps.domNode, 'dijitHidden', isFirstStepsHidden);
 	};
 

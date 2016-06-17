@@ -41,11 +41,9 @@ from univention.config_registry.frontend import ucr_update
 
 
 def get_plymouth_theme(hexcolor):
-	if hexcolor[0] == '#':
-		hexcolor = hexcolor[1:]
-	red = int(hexcolor[0:2], 16)
-	green = int(hexcolor[2:4], 16)
-	blue = int(hexcolor[4:6], 16)
+	red = int(hexcolor[2:4], 16)
+	green = int(hexcolor[4:6], 16)
+	blue = int(hexcolor[6:8], 16)
 	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
 	perceptive_luminance = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
 	if perceptive_luminance < .5:
@@ -94,6 +92,21 @@ def handler(config_registry, changes):
 		except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout) as err:
 			print 'WARNING: Failed to download %s' % url
 
+	
+	def set_grub_theme():
+		if plymouth_theme == 'dark':
+			grub_color = 'white/black'
+		elif plymouth_theme == 'light':
+			grub_color = 'black/white'
+		ucr_update(config_registry, {
+			'grub/backgroundimage':  '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % (plymouth_theme,),
+			'grub/color/highlight': grub_color,
+			'grub/color/normal': grub_color,
+			'grub/menu/color/highlight': grub_color,
+			'grub/menu/color/normal': grub_color,
+			'grub/title': config_registry.get('umc/web/appliance/name', 'App') + ' Appliance'
+		})
+	
 	# download image files for the app appliance
 	if app.appliance_logo:
 		_download(app.appliance_logo, '/usr/share/univention-management-console-frontend/js/umc/modules/setup/welcome.svg')
@@ -109,3 +122,4 @@ def handler(config_registry, changes):
 
 	# set plymouth appliance theme
 	ucr_update(config_registry, {'bootsplash/theme': 'ucs-appliance-%s' % plymouth_theme})
+	set_grub_theme()

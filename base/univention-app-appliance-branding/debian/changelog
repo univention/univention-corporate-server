@@ -1,3 +1,12 @@
+univention-app-appliance-branding (0.2.2-13) unstable; urgency=medium
+
+  Bug #39465:
+  * plymouth script template
+  * grub branding
+  * first steps shown in the wrong category 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 18 Mar 2016 10:49:45 +0100
+
 univention-app-appliance-branding (0.2.2-12) unstable; urgency=medium
 
   * Bug #39465: added python pre dependency for app appliance branding
