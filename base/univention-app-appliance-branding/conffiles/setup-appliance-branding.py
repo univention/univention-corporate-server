@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import os.path
-import urllib
 import requests
 from glob import glob
 from subprocess import call
@@ -78,7 +77,10 @@ def handler(config_registry, changes):
 		try:
 			req = requests.head(url, timeout=5)
 			if req.status_code < 400:
-				urllib.urlretrieve(url, dest_path)
+				req = requests.get(url)
+				with open(dest_path, 'wb') as handle:
+					for block in req.iter_content(8192):
+						handle.write(block)
 				print 'Successfully downloaded %s' % url
 		except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout) as err:
 			print 'WARNING: Failed to download %s' % url
