@@ -131,19 +131,20 @@ class Instance(Base, ProgressMixin):
 		self.finished(request.id, None)
 
 	@simple_response
-	def close_firefox(self):
-		PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
+	def close_browser(self):
 		try:
-			with open(PATH_BROWSER_PID, 'rb') as fd:
+			with open('/var/cache/univention-system-setup/browser.pid', 'rb') as fd:
 				pid = int(fd.readline().strip())
 				process = psutil.Process(pid)
 				process.kill()
-		except IOError:
-			MODULE.error('WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID)
-		except ValueError:
-			MODULE.error('ERROR: browser PID is not a number: "%s"' % pid)
-		except psutil.NoSuchProcess:
-			MODULE.error('ERROR: cannot kill process with PID: %s' % pid)
+				return True
+		except IOError as exc:
+			MODULE.warn('cannot open browser PID file: %s' % (exc,))
+		except ValueError as exc:
+			MODULE.error('browser PID is not a number: %s' % (exc,))
+		except psutil.NoSuchProcess as exc:
+			MODULE.error('cannot kill process with PID: %s' % (exc,))
+		return False
 
 	@simple_response
 	def load(self):

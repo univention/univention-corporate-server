@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-15) unstable; urgency=medium
+
+  * Bug #40985: Added error handling to for request to setup/closebrowser
+
+ -- Eduard Mai <mai@univention.de>  Fri, 08 Apr 2016 13:53:38 +0200
+
 univention-system-setup (9.0.4-14) unstable; urgency=medium
 
   * Bug #40985: Corrected typo

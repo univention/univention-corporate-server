@@ -242,7 +242,13 @@ define([
 				tools.checkSession(false);
 				if (this.wizard.local_mode) {
 					this._showDummyProgressbar();
-					this.umcpCommand('setup/closefirefox', {}, false);
+					this.umcpCommand('setup/closebrowser').then(function(data) {
+						if (!data.result) {
+							window.close();
+						}
+					}, function(error) {
+						window.close();
+					});
 				} else {
 					this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
 				}
