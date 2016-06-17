@@ -457,7 +457,7 @@ def sorted_files_in_subdirs(directory, allowed_subdirs=None):
 			for filename in sorted(os.listdir(path)):
 				yield os.path.join(path, filename)
 
-def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang='C'):
+def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang='C', args=[]):
 	# write header before executing scripts
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP SCRIPTS (%s) ===\n\n' % timestamp())
@@ -478,8 +478,9 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 
 	for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs):
 			# launch script
-			MODULE.info('Running script %s\n' % scriptpath)
-			p = subprocess.Popen( scriptpath, stdout = f, stderr = subprocess.STDOUT, env = {
+			icmd = [scriptpath] + args;
+			MODULE.info('Running script %s\n' % icmd)
+			p = subprocess.Popen(icmd, stdout = f, stderr = subprocess.STDOUT, env = {
 				'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
 				'LANG': lang,
 			})

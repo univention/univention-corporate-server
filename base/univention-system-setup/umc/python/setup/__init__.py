@@ -156,9 +156,13 @@ class Instance(Base, ProgressMixin):
 		values = request.options.get('values', {})
 		run_hooks = request.options.get('run_hooks', False)
 
+		script_args = []
 		if run_hooks:
 			# create a status file that indicates that save has been triggered
 			util.create_status_file()
+
+			# enforce particular arguments for setup scripts
+			script_args = ['--appliance-mode', '--force-recreate']
 
 		def _thread(request, obj):
 			# acquire the lock until the scripts have been executed
@@ -182,18 +186,20 @@ class Instance(Base, ProgressMixin):
 
 				# in case of changes of the IP address, restart UMC server and web server
 				# for this we ignore changes of virtual or non-default devices
-				MODULE.info('Check whether ip addresses have been changed')
+				# ... no need to restart the UMC server if cleanup scripts are run anyway
 				restart = False
-				for ikey, ival in values.iteritems():
-					if RE_IPV4.match(ikey) or RE_IPV6_DEFAULT.match(ikey) or RE_SSL.match(ikey):
-						restart = True
-						break
-				MODULE.info('Restart servers: %s' % restart)
+				if not run_hooks:
+					MODULE.info('Check whether ip addresses have been changed')
+					for ikey, ival in values.iteritems():
+						if RE_IPV4.match(ikey) or RE_IPV6_DEFAULT.match(ikey) or RE_SSL.match(ikey):
+							restart = True
+							break
+					MODULE.info('Restart servers: %s' % restart)
 
 				# on a joined system or on a basesystem, we can run the setup scripts
 				MODULE.info('runnning system setup scripts (flavor %r)' % (request.flavor,))
 
-				util.run_scripts(self._progressParser, restart, subfolders, lang=str(self.locale))
+				util.run_scripts(self._progressParser, restart, subfolders, lang=str(self.locale), args=script_args)
 
 				# run cleanup scripts and appliance hooks if needed
 				if run_hooks:

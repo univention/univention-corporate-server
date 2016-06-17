@@ -1379,22 +1379,30 @@ define([
 					if (reqStatus == 404 && this.statusCheckResult != 'unknown') {
 						// ... but existed before -> setup process is finished
 						this.set('statusCheckResult', 'joined');
-						this._checkStatusFileTimer.stop();
 					}
 					if (!reqStatus && !this.local_mode) {
-						// request timed out -> assume that IP address has changed
+						// request timed out as IP address has changed
+						// try to make some sensible guesses concerning the current status
 						this._checksTimedOut += 1;
 						if (this._checksTimedOut > 20) {
-							// after 20 sec, assume that UMC has restarted
+							this.set('statusCheckResult', 'joined');
+						}
+						else if (this._checksTimedOut > 10 && this.statusCheckResult == 'cleanup-scripts') {
 							this.set('statusCheckResult', 'joined');
 						}
 						else if (this._checksTimedOut > 10) {
-							// after 10 sec, assume that cleanup scripts are running
 							this.set('statusCheckResult', 'cleanup-scripts');
 						}
 					}
 				}));
 			});
+
+			// once the status 'joined' has been reached, this timer can be stopped
+			this.watch('statusCheckResult', lang.hitch(this, function(attr, oldVal, newVal) {
+				if (newVal == 'joined') {
+					this._checkStatusFileTimer.stop();
+				}
+			}));
 
 			if (this.local_mode) {
 				// only monitor the status file during the wizard session in a local VM
@@ -2209,7 +2217,10 @@ define([
 				joinDeferred.then(lang.hitch(this, function() {
 					// make sure the server process cannot die
 					this.umcpCommand('setup/ping', {keep_alive: true}, false);
+
 					// start polling for progress information
+					// (force value 0 to avoid an animated progress bar from right to left)
+					this._progressBar._progressBar.set('value', 0);
 					_pollProgressInfo();
 				}), lang.hitch(this, function(error) {
 					this._progressBar.setInfo(undefined, undefined, undefined, [tools.parseError(error).message], true);
