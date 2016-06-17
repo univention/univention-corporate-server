@@ -554,8 +554,19 @@ define([
 				name: 'role',
 				headerText: _('Domain setup'),
 				helpText: _('Please select your domain settings.'),
-				
 				widgets: [{
+					type: RadioButton,
+					radioButtonGroup: 'role',
+					name: '_preconfiguredDomain',
+					label: '<strong>' + _('Use a preconfigured test system') + '</strong>',
+					checked: true,
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+				}, {
+					type: Text,
+					name: 'preconfiguredDomainHelpText',
+					content: _('Set up an already preconfigured domain. This allows a very fast test scenario. However, domain and host name <b>cannot</b> be changed later on.'),
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
 					name: '_createDomain',
@@ -1872,11 +1883,15 @@ define([
 				return this.ucr['server/role'] == 'domaincontroller_master';
 			}
 			var createNewDomain = this.getWidget('_createDomain').get('value');
-			return createNewDomain;
+			return createNewDomain || this._setUpPreconfiguredDomain();
 		},
 
 		_isRoleNonMaster: function() {
 			return !this._isRoleMaster() && !this._isRoleBaseSystem() && !this._isAdMember();
+		},
+
+		_setUpPreconfiguredDomain: function() {
+			return this.getWidget('_preconfiguredDomain').get('value');
 		},
 
 		_isAdMember: function() {
@@ -1922,6 +1937,11 @@ define([
 
 		isPageVisible: function(pageName) {
 			if (!this._isPageForRole(pageName)) {
+				return false;
+			}
+			if (pageName == 'fqdn-master' && this._setUpPreconfiguredDomain()) {
+				// host and domain name are pre-configured and cannot be changed
+				// in this setup
 				return false;
 			}
 			if (pageName == 'locale' && this._nLocaleSettingsConfigured == 3) {
@@ -2059,9 +2079,16 @@ define([
 				tools.status('ignorePageReload', true);
 
 				// send save command to server
+				var backendCmd = 'setup/join';
+				if (this._setUpPreconfiguredDomain()) {
+					// in the pre-configured setup, we do not need a real
+					// join process, only the standard setup save command
+					// which triggers the setup scripts
+					backendCmd = 'setup/save';
+				}
 				this._progressBar.reset(_('Initialize the configuration process ...'));
 				this.standby(true, this._progressBar);
-				this.umcpCommand('setup/join', {
+				this.umcpCommand(backendCmd, {
 					values: values,
 					// make sure that the username/password are null and not undefined
 					// ... server cannot handle "undefined"

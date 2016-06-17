@@ -215,7 +215,7 @@ msgstr "<tr><td>Tastaturlayout:</td><td>%s</td></tr>"
 msgid "<tr><td>Timezone:</td><td>%s</td></tr>"
 msgstr "<tr><td>Zeitzone:</td><td>%s</td></tr>"
 
-#: umc/js/setup/ApplianceWizard.js:623
+#: umc/js/setup/ApplianceWizard.js:634
 msgid ""
 "A DC backup is the fallback system for the UCS DC master and can take over "
 "the role of the DC master permanently. It is recommended to use at least one "
@@ -477,7 +477,7 @@ msgstr ""
 "zur Folge haben. Dies kann ernsthafte Auswirkungen haben, sollte sich das "
 "System im Produktiveinsatz befinden."
 
-#: umc/js/setup.js:293
+#: umc/js/setup.js:289
 #, python-format
 msgid ""
 "Changing network settings is disabled due to specific UVMM settings. See %s "
@@ -486,7 +486,7 @@ msgstr ""
 "Ändern von Netzwerkeinstellungen ist durch spezifische UVMM Einstellungen "
 "deaktiviert. Für weitere Informationen siehe %s."
 
-#: umc/js/setup.js:297
+#: umc/js/setup.js:293
 msgid ""
 "Changing network settings is disabled. It can be re enabled by unsetting the "
 "UCR variable \"umc/modules/setup/network/disabled/by\"."
@@ -623,7 +623,7 @@ msgstr "DC Master"
 msgid "DC Slave"
 msgstr "DC Slave"
 
-#: umc/js/setup/ApplianceWizard.js:634
+#: umc/js/setup/ApplianceWizard.js:645
 msgid ""
 "DC slave systems are ideal for site servers, they provide authentication "
 "services for the domain. Local services running on a DC slave can access the "
@@ -655,7 +655,7 @@ msgstr "Standard-System-Sprachdefinition"
 msgid "Delete"
 msgstr "Löschen"
 
-#: umc/js/setup/ApplianceWizard.js:596
+#: umc/js/setup/ApplianceWizard.js:607
 msgid "Do not use any domain"
 msgstr "Keine Domäne benutzen"
 
@@ -667,11 +667,11 @@ msgstr "Domänen- und Rechnereinstellung"
 msgid "Domain and network configuration"
 msgstr "Domänen- und Netzwerkeinstellung"
 
-#: umc/js/setup/ApplianceWizard.js:617
+#: umc/js/setup/ApplianceWizard.js:628
 msgid "Domain controller backup"
 msgstr "Domänencontroller Backup"
 
-#: umc/js/setup/ApplianceWizard.js:629
+#: umc/js/setup/ApplianceWizard.js:640
 msgid "Domain controller slave"
 msgstr "Domänencontroller Slave"
 
@@ -911,7 +911,7 @@ msgstr "IPv6-Präfix"
 msgid "Identifier"
 msgstr "Bezeichner"
 
-#: umc/js/setup/ApplianceWizard.js:606
+#: umc/js/setup/ApplianceWizard.js:617
 #, python-format
 msgid "If unsure, select <i>%s</i>."
 msgstr "Wenn unsicher, wählen Sie <i>%s</i>."
@@ -1041,11 +1041,11 @@ msgstr ""
 "beigetreten ist. Bitte wählen Sie eine andere Option, da weitere "
 "Systemrollen für den Joinvorgang nicht zur Verfügung stehen."
 
-#: umc/js/setup/ApplianceWizard.js:574
+#: umc/js/setup/ApplianceWizard.js:585
 msgid "Join into an existing Active Directory domain"
 msgstr "Einer bestehenden Active-Directory-Domäne beitreten"
 
-#: umc/js/setup/ApplianceWizard.js:585
+#: umc/js/setup/ApplianceWizard.js:596
 msgid "Join into an existing UCS domain"
 msgstr "Einer bestehenden UCS-Domäne beitreten"
 
@@ -1115,7 +1115,7 @@ msgstr "Verwalten von Benutzern und Rechten direkt auf diesem System"
 msgid "Member server"
 msgstr "Member-Server"
 
-#: umc/js/setup/ApplianceWizard.js:645
+#: umc/js/setup/ApplianceWizard.js:656
 msgid ""
 "Member servers should be used for services which do not need a local "
 "authentication database, for example for file or print servers."
@@ -1183,7 +1183,7 @@ msgstr "Keine zusätzliche Software-Komponente wird installiert."
 msgid "No additional software components will be installed."
 msgstr "Keine zusätzliche Software-Komponenten werden installiert."
 
-#: umc/js/setup.js:444
+#: umc/js/setup.js:440
 msgid "No changes have been made."
 msgstr "Es wurden keine Änderungen durchgeführt."
 
@@ -1224,7 +1224,7 @@ msgstr ""
 msgid "None"
 msgstr "Kein"
 
-#: umc/js/setup.js:598
+#: umc/js/setup.js:594
 msgid "Not all changes could be applied successfully:"
 msgstr "Nicht alle Änderungen konnten erfolgreich übernommen werden:"
 
@@ -1232,7 +1232,7 @@ msgstr "Nicht alle Änderungen konnten erfolgreich übernommen werden:"
 msgid "Obtain IP address automatically (DHCP)"
 msgstr "IP-Adresse automatisch beziehen (DHCP)"
 
-#: umc/js/setup.js:602
+#: umc/js/setup.js:598
 msgid "Ok"
 msgstr "Ok"
 
@@ -1274,7 +1274,7 @@ msgstr ""
 "Bitte bestätigen Sie die gewählten Einstellungen, die nachstehend "
 "zusammengefasst sind."
 
-#: umc/js/setup.js:499
+#: umc/js/setup.js:495
 msgid ""
 "Please confirm to apply these changes to the system. This may take some time."
 msgstr ""
@@ -1315,7 +1315,7 @@ msgstr "Erneut konfigurieren"
 msgid "Removed:"
 msgstr "Gelöscht:"
 
-#: umc/js/setup.js:372 umc/js/setup.js:379
+#: umc/js/setup.js:368 umc/js/setup.js:375
 msgid "Restarting server components..."
 msgstr "Neustart der Server-Komponenten..."
 
@@ -1331,11 +1331,18 @@ msgstr "SSL-Root-Zertifikat"
 msgid "Search Domain controller master in DNS"
 msgstr "Domänencontroller Master im DNS suchen"
 
+#: umc/js/setup/ApplianceWizard.js:567
+msgid ""
+"Set up an already preconfigured domain. This allows a very fast test "
+"scenario. However, domain and host name <b>cannot</b> be changed later on."
+msgstr ""
+"Stellt ein bereits vorkonfiguriertes System zur Verfügung. Das ermöglicht den schnellen Aufbau eines Test-Szenarios. Allerdings können Domänenname und Rechnername im Nachhinein <b>nicht</b> mehr geändert werden."
+
 #: umc/js/setup/ApplianceWizard.js:319
 msgid "Setup - An error occurred"
 msgstr "Einrichtung - Ein Fehler ist aufgetreten"
 
-#: umc/js/setup.js:292
+#: umc/js/setup.js:288
 msgid "Setup for UCS Virtual Machine Manager"
 msgstr "Einrichtung für UCS Virtual Machine Manager"
 
@@ -1378,7 +1385,7 @@ msgstr "Eingabe des Namens dieses Systems."
 msgid "Specify the network settings for this system."
 msgstr "Eingabe der Netzwerkeinstellungen dieses Systems."
 
-#: umc/js/setup/ApplianceWizard.js:612
+#: umc/js/setup/ApplianceWizard.js:623
 msgid "Specify the type of this system."
 msgstr "Eingabe des Typs dieses Systems."
 
@@ -1398,11 +1405,11 @@ msgstr "Statisch"
 msgid "Static (IPv6)"
 msgstr "Statisch (IPv6)"
 
-#: umc/js/setup/ApplianceWizard.js:611
+#: umc/js/setup/ApplianceWizard.js:622
 msgid "System role"
 msgstr "Systemrolle"
 
-#: umc/js/setup.js:586 umc/js/setup.js:592
+#: umc/js/setup.js:582 umc/js/setup.js:588
 msgid "The changes have been applied successfully."
 msgstr "Die Änderungen wurden erfolgreich übernommen."
 
@@ -1418,7 +1425,7 @@ msgstr ""
 "führen sein. Loggen Sie sich in diesem Fall erneut auf Univention Management "
 "Console unter der {linkStart}neuen Adresse{linkEnd} ein."
 
-#: umc/js/setup.js:493
+#: umc/js/setup.js:489
 msgid "The following changes will be applied to the system:"
 msgstr "Die folgenden Änderungen werden auf das System übertragen:"
 
@@ -1480,11 +1487,11 @@ msgstr ""
 msgid "There are no more physical interfaces to create."
 msgstr "Es gibt keine weiteren physikalischen Netzwerkgeräte zum Hinzufügen."
 
-#: umc/js/setup.js:372 umc/js/setup.js:379
+#: umc/js/setup.js:368 umc/js/setup.js:375
 msgid "This may take a few seconds..."
 msgstr "Dies kann einige Sekunden in Anspruch nehmen..."
 
-#: umc/js/setup/ApplianceWizard.js:601
+#: umc/js/setup/ApplianceWizard.js:612
 msgid ""
 "This should only be used in rare use cases, for example as firewall systems."
 msgstr ""
@@ -1503,7 +1510,7 @@ msgstr ""
 "Dieses System wird ein Basissystem ohne jegliche Domänenintegration und ohne "
 "Möglichkeit, später einer Domäne beizutreten."
 
-#: umc/js/setup/ApplianceWizard.js:579
+#: umc/js/setup/ApplianceWizard.js:590
 msgid "This system will become part of an existing Active Directory domain."
 msgstr "Dieses System wird Teil einer existierenden Active-Directory-Domäne."
 
@@ -1564,7 +1571,11 @@ msgstr "Univention Corporate Server"
 msgid "Update system after setup"
 msgstr "System nach der Einrichtung aktualisieren"
 
-#: umc/js/setup/ApplianceWizard.js:590
+#: umc/js/setup/ApplianceWizard.js:561
+msgid "Use a preconfigured test system"
+msgstr "Verwenden eines vorkonfigurierten Systems"
+
+#: umc/js/setup/ApplianceWizard.js:601
 msgid "Use this option if you already have one or more UCS systems."
 msgstr ""
 "Wählen Sie diese Option, falls bereits mindestens ein UCS-System existiert."
@@ -1622,7 +1633,7 @@ msgstr "nicht setzen"
 msgid "e.g., Boston..."
 msgstr "bspw. Bremen..."
 
-#: umc/js/setup.js:292
+#: umc/js/setup.js:288
 #, python-format
 msgid "http://docs.univention.de/manual-%s.html#computers:networkcomplex:uvmm"
 msgstr ""

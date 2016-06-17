@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-09 17:14+0100\n"
+"POT-Creation-Date: 2016-02-02 15:04+0100\n"
 "PO-Revision-Date: 2012-02-20 14:41+0100\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -106,11 +106,21 @@ msgstr "Sichern der alten SSL-Zertifikate"
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:115
 msgid ""
 "The SSL certificate creation failed. The old certificates have been restored."
-msgstr "Die Erstellung der SSL-Zertifikate ist fehlgeschlagen. Die alten Zertifikate wurden wiederhergestellt."
+msgstr ""
+"Die Erstellung der SSL-Zertifikate ist fehlgeschlagen. Die alten Zertifikate "
+"wurden wiederhergestellt."
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:121
 msgid "Generating SSL CA certificate."
 msgstr "Erstellen des SSL CA-Zertifikates."
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:142
+msgid "Recreate SSL certificate for %s"
+msgstr "Erstellen von SSL-Zertifikate für %s"
+
+#: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:144
+msgid "Could not recreate SSL certificate for %s."
+msgstr "Konnte keine SSL-Zertifikate für %s erstellen."
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade:35
 msgid "Upgrading the system"

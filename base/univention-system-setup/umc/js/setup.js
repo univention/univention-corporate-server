@@ -239,17 +239,13 @@ define([
 			this.wizard.on('Finished', lang.hitch(this, function(newValues) {
 				// wizard is done -> call cleanup command and redirect browser to new web address
 				topic.publish('/umc/actions', this.moduleID, 'wizard', 'done');
-				this.umcpCommand('setup/cleanup', {}, undefined, undefined, {
-					// long polling options
-					messageInterval: 30,
-					xhrTimeout: 40
-				}).then(lang.hitch(this, function() {
-					if (this.wizard.local_mode) {
-						this._showDummyProgressbar();
-					} else {
-						this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
-					}
-				}));
+				tools.checkSession(false);
+				if (this.wizard.local_mode) {
+					this._showDummyProgressbar();
+					window.close();
+				} else {
+					this._redirectBrowser(newValues.interfaces, newValues['interfaces/primary']);
+				}
 			}));
 			this.wizard.on('Reload', lang.hitch(this, '_reloadWizard', values, ucr));
 		},

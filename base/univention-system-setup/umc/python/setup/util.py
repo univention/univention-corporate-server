@@ -189,7 +189,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 						newValues['windows/domain'] = ad_domain_info['Netbios Domain']
 						MODULE.process('Setting NETBIOS domain to AD value: %s' % newValues['windows/domain'])
 						break
-				
+
 	if 'windows/domain' not in newValues and 'domainname' in newValues:
 		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
 		MODULE.process('Setting NETBIOS domain to default: %s' % newValues['windows/domain'])
@@ -585,6 +585,7 @@ def run_joinscript( progressParser, values, _username, password, lang='C'):
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
+	cleanup()
 
 def cleanup():
 	# start an at job in the background that will do the cleanup

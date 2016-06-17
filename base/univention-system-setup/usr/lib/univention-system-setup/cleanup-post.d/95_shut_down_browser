@@ -66,4 +66,4 @@ def shut_down_browser():
 				p.kill()
 
 if __name__ == "__main__":
-	shut_down_browser()
+	#shut_down_browser()
