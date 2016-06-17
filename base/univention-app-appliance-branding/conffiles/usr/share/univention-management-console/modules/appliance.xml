@@ -15,12 +15,12 @@
 @!@
 import cgi
 from univention.appcenter.app import AppManager
+from uuid import uuid4
 
 appId = configRegistry['umc/web/appliance/id']
 app = AppManager.find(appId)
 
-if app:
-	link_appcenter_detailspage = '''
+link_appcenter_detailspage = '''
 	<module id="apps">
 		<flavor icon="{icon}" priority="-100" id="{id}">
 			<name>{name}</name>
@@ -29,17 +29,9 @@ if app:
 				<category name="_appliance_"/>
 			</categories>
 		</flavor>
-	</module>'''.format(
-			id=cgi.escape(app.id or ''),
-			name=cgi.escape(app.name or ''),
-			version=cgi.escape(app.version or ''),
-			description=cgi.escape(app.description or ''),
-			icon=cgi.escape(app.logo_name or ''),
-		)
-	print link_appcenter_detailspage
-	
-	if app.web_interface:
-		link_web_interface = '''
+	</module>'''
+
+link_web_interface = '''
 	<link priority="50" id="link-{id}-web-interface">
 		<url>{web_interface}</url>
 		<name>{name} Login</name>
@@ -47,31 +39,62 @@ if app:
 		<categories>
 			<category name="_appliance_" />
 		</categories>
-	</link>'''.format(
-			id=cgi.escape(app.id or ''),
-			web_interface=cgi.escape(app.web_interface),
-			name=cgi.escape(app.name or '')
-		)
-		print link_web_interface
+	</link>'''
 
-	if app.appliance_category_modules:
-		print '''
-	<module id="udm">'''
-		for module in app.appliance_category_modules:
-			_module = module.split(':')
-			moduleId = _module[0]
-			flavor = _module[1]
+link_generic = '''
+	<link priority="50" id="link-{uuid}">
+		<url>{url}</url>
+		<name>{name}</name>
+		<description>{desc}</description>
+		<categories>
+			<category name="_appliance_" />
+		</categories>
+	</link>'''
 
-			print '''
+module_with_flavor = '''
+	<module id="{moduleId}">
 		<flavor id="{flavor}">
 			<categories>
 				<category name="_appliance_" />
 			</categories>
-		</flavor>'''.format(
-					flavor=cgi.escape(flavor)
-					)
-
-		print '''
+		</flavor>
 	</module>'''
+
+module_without_flavor = '''
+	<module id="{moduleId}">
+		<categories>
+			<category name="_appliance_" />
+		</categories>
+	</module>'''
+
+if app:
+	print link_appcenter_detailspage.format(
+		id=cgi.escape(app.id or ''),
+		name=cgi.escape(app.name or ''),
+		version=cgi.escape(app.version or ''),
+		description=cgi.escape(app.description or ''),
+		icon=cgi.escape(app.logo_name or ''),
+	)
+	
+	if app.web_interface:
+		print link_web_interface.format(
+			id=cgi.escape(app.id or ''),
+			web_interface=cgi.escape(app.web_interface),
+			name=cgi.escape(app.name or '')
+		)
+
+	if app.appliance_category_modules:
+		for module in app.appliance_category_modules:
+			module = module.split(':')
+			if len(module) == 2:
+				moduleId, flavor = module
+				print module_with_flavor.format(
+					moduleId=cgi.escape(moduleId),
+					flavor=cgi.escape(flavor)
+				)
+			else:
+				print module_without_flavor.format(
+					moduleId=cgi.escape(module[0])
+				)
 @!@
 </umc>
