@@ -985,6 +985,9 @@ define([
 				} else if (field == 'ad') {
 					disable.push(['role', '_adDomain']);
 					disable.push(['role', 'adDomainHelpText']);
+				} else if (field == 'preconfigured_system') {
+					disable.push(['role', '_preconfiguredDomain']);
+					disable.push(['role', 'preconfiguredDomainHelpText']);
 				} else if (field == 'domaincontroller_backup') {
 					disable.push(['role-nonmaster-ad', '_roleBackup']);
 					disable.push(['role-nonmaster-ad', 'helpBackup']);
