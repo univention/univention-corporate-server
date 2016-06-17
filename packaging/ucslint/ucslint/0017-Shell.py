@@ -61,11 +61,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				'0017-2', 'unquoted argument for tr (e.g. "tr -d [a-z]")', cntmax=0)
 		self.tester.addTest(re.compile(r'''\btr\s+(-[a-zA-Z]+\s+)*["']\[+[^\]]+\]+["']\s+\['''),
 				'0017-2', 'unquoted argument for tr (e.g. "tr -d [a-z]")', cntmax=0)
+		self.tester.addTest(re.compile(r'\bunivention-ldapsearch\b.*\s-[a-wyzA-Z]*x[a-wyzA-Z]*\b'),
+				'0017-3', 'use of univention-ldapsearch -x', cntmax=0)
 
 	def getMsgIds(self):
 		return {
 			'0017-1': [ uub.RESULT_WARN,  'script contains unquoted calls of eval "$(ucr shell)"' ],
 			'0017-2': [ uub.RESULT_ERROR,  'script contains unquoted arguments of tr' ],
+			'0017-3': [uub.RESULT_WARN, 'LDAP simple bind is an internal detail of "univention-ldapsearch"'],
 		}
 
 	def postinit(self, path):
