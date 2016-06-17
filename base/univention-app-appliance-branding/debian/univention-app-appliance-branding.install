@@ -6,3 +6,4 @@ images/*	usr/share/univention-app-appliance-branding/images
 tools/*	usr/share/univention-app-appliance-branding/
 usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo.svg usr/share/univention-system-activation/www/css/icons
 images/icons-white.svg usr/share/univention-system-activation/www/css/icons
+usr/sbin/univention-app-appliance-branding	usr/sbin

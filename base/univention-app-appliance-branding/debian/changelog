@@ -1,3 +1,11 @@
+univention-app-appliance-branding (0.2.2-26) unstable; urgency=medium
+
+  * Bug #40826: Move branding process from ucr template to
+    /usr/sbin/univention-app-appliance-branding
+  * Add some verbosity to the branding script
+
+ -- Eduard Mai <mai@univention.de>  Fri, 08 Apr 2016 17:36:08 +0200
+
 univention-app-appliance-branding (0.2.2-25) unstable; urgency=medium
 
   * Bug #38957: changed text in the first steps header
