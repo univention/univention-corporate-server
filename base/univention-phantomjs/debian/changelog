@@ -1,3 +1,9 @@
+univention-phantomjs (0.2.1.1-11) unstable; urgency=medium
+
+  * Bug #40934: Added license information
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 07 Apr 2016 12:12:37 +0200
+
 univention-phantomjs (0.2.1.1-10) unstable; urgency=low
 
   * Bug #40934: Added "ca-certificates" to build-depends for git clone 
