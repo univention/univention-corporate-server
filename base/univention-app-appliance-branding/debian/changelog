@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-20) unstable; urgency=medium
+
+  * Bug #39465: fix luminance function (wrong indices)
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 24 Mar 2016 19:15:08 +0100
+
 univention-app-appliance-branding (0.2.2-19) unstable; urgency=medium
 
   * Bug #39465: invert luminance check for plymouth
