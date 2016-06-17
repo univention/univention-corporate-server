@@ -12,20 +12,16 @@ app = AppManager.find(appId)
 
 category = ''' 
 	<categories>
-		<category priority="100000" id="_appliance_" icon="category-appliance.svg" color="{color}">
+		<category priority="100000" id="_appliance_" icon="category-appliance.svg" color="#{color}">
 			<name>{name}</name>
 		</category>
 	</categories>
 '''
 
 if app:
-	if not app.appliance_primary_color[0] == '#':
-		color = '#' + app.appliance_primary_color
-	else:
-		color = app.appliance_primary_color
 	print category.format(
 		name=app.name,
-		color=color
+		color=app.appliance_primary_color
 	)
 @!@
 

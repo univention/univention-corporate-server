@@ -19,6 +19,17 @@ Description: UCS - app appliance branding
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+Pre-Depends: python-univention-app-appliance-branding (= ${binary:Version})
 Depends: ${misc:Depends},
- ${python:Depends},
  univention-welcome-screen
+
+Package: python-univention-app-appliance-branding
+Architecture: all
+Description: UCS - python modules for app appliance branding
+ This package provides the python modules for app appliance branding.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+Depends: ${python:Depends}

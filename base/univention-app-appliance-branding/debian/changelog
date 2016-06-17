@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-12) unstable; urgency=medium
+
+  * Bug #39465: added python pre dependency for app appliance branding
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 10 Mar 2016 15:43:53 +0100
+
 univention-app-appliance-branding (0.2.2-11) unstable; urgency=medium
 
   Bug #39465:
