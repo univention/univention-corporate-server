@@ -1,3 +1,9 @@
+univention-bootsplash (7.1.2-13) unstable; urgency=medium
+
+  * Bug #40046: bump package version
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 17 Feb 2016 13:53:31 +0100
+
 univention-bootsplash (7.0.2-12) unstable; urgency=low
 
   * use tty7 in univention-welcome-screen (Bug #40631) 
