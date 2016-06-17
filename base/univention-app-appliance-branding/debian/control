@@ -22,7 +22,8 @@ Description: UCS - app appliance branding
 Pre-Depends: python-univention-app-appliance-branding (= ${binary:Version})
 Depends: ${misc:Depends},
  univention-welcome-screen,
- python-requests
+ python-requests,
+ univention-phantomjs
 
 Package: python-univention-app-appliance-branding
 Architecture: all

@@ -36,7 +36,7 @@ ucs-appliance-dark.script:
 	sed "s/\$${FONT_COLOR}/ 1, 1, 1,/g" plymouth/ucs-appliance-TEMPLATE.script > plymouth/ucs-appliance-dark/ucs-appliance-dark.script
 
 ucs-appliance-light.script:
-	sed "s/\$${FONT_COLOR}/ 0, 0, 0,/g" plymouth/ucs-appliance-TEMPLATE.script > plymouth/ucs-appliance-light/ucs-appliance-dark.script
+	sed "s/\$${FONT_COLOR}/ 0, 0, 0,/g" plymouth/ucs-appliance-TEMPLATE.script > plymouth/ucs-appliance-light/ucs-appliance-light.script
 
 clean:
 	rm -f umc/js/appliance.css

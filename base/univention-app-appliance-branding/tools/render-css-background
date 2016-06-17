@@ -1,4 +1,4 @@
-#!/usr/share/univention-app-appliance-branding/phantomjs/bin/phantomjs
+#!/usr/bin/phantomjs
 //
 // Univention App Appliance Branding
 //   Tool for rendering a CSS background value into an image file
