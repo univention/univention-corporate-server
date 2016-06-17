@@ -80,7 +80,7 @@ PATH_JOIN_SCRIPT = '/usr/lib/univention-system-setup/scripts/setup-join.sh'
 PATH_PROFILE = '/var/cache/univention-system-setup/profile'
 LOG_FILE = '/var/log/univention/setup.log'
 PATH_PASSWORD_FILE = '/var/cache/univention-system-setup/secret'
-PATH_STATUS_FILE = '/var/www/ucs_setup_process_pending'
+PATH_STATUS_FILE = '/var/www/ucs_setup_process_status.json'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 CMD_ENABLE_EXEC_WITH_RESTART = '/usr/share/univention-updater/enable-apache2-umc'
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
@@ -589,7 +589,7 @@ def run_joinscript( progressParser, values, _username, password, lang='C'):
 	f.close()
 
 def cleanup(with_appliance_hooks=False):
-	# add delay of 1sec before actually executing the commands
+	# add delay of 1 sec before actually executing the commands
 	# in order to avoid problems with restarting the UMC server
 	# and thus killing the setup module process
 	cmd = 'sleep 1; '
@@ -620,7 +620,7 @@ def run_scripts_in_path(path, logfile, category_name=""):
 
 def create_status_file():
 	with open(PATH_STATUS_FILE, 'w') as status_file:
-		status_file.write('');
+		status_file.write('"setup-scripts"');
 
 def detect_interfaces():
 	"""
@@ -669,7 +669,7 @@ def dhclient(interface, timeout=None):
 		'nameserver_3': '',
 		'netmask': '255.255.255.0'
 	}
-	"""
+"""
 	tempfilename = tempfile.mkstemp( '.out', 'dhclient.', '/tmp' )[1]
 	pidfilename = tempfile.mkstemp( '.pid', 'dhclient.', '/tmp' )[1]
 	cmd = ('/sbin/dhclient',

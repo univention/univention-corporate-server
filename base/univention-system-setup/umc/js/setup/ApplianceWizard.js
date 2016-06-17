@@ -277,6 +277,7 @@ define([
 		autoHeight: true,
 
 		_checkStatusFileTimer: null,
+		_checksTimedOut: 0,
 		statusCheckResult: 'unknown',
 		_joinTriggered: false,
 
@@ -919,10 +920,6 @@ define([
 			}
 		},
 
-		_getNewIpAddress: function(interfaces, primary_interface) {
-			// passed over from setup.js
-		},
-
 		_adjustWizardHeight: function() {
 			var _setVisibility = lang.hitch(this, function(visible) {
 				array.forEach(this._getNetworkDevices(), function(idev, i) {
@@ -1360,51 +1357,72 @@ define([
 			this._setLocaleValues(defaults[i18nTools.defaultLang()] || {});
 		},
 
-		buildRendering: function() {
-			this.inherited(arguments);
-
-			// timer to check the setup status file in order to detect a join
-			// process which has been initiated from an external setup instance
-			// ... if so, window.close() needs to be called after the cleanup
-			this._checkStatusFileTimer = new timing.Timer(1000 * 5);
+		_initStatusCheck: function() {
+			// timer to check the join status via existence of status file
+			this._checkStatusFileTimer = new timing.Timer(1000 * 10);
 			this._checkStatusFileTimer.onStart = lang.hitch(this, function() {
 				this.set('statusCheckResult', 'unknown');
+				this._checksTimedOut = 0;
 			});
 			this._checkStatusFileTimer.onTick = lang.hitch(this, function() {
-				var _statusFileURI = '/ucs_setup_process_pending';
-				if (!this.local_mode) {
-					// take into account that the IP address might have been changed
-					// this is only of interest for external browsers
-					var _values = this.getValues();
-					var _interfaceSpecified = !tools.isEqual(_values.interfaces, {});
-					if (_interfaceSpecified) {
-						var newIp = this._getNewIpAddress(_values.interfaces, _values['interfaces/primary'] || 'eth0');
-						_statusFileURI = '//' + newIp + _statusFileURI;
-					}
-				}
-
-				request(_statusFileURI).then(lang.hitch(this, function() {
+				var _statusFileURI = '/ucs_setup_process_status.json';
+				request(_statusFileURI, {
+					timeout: 1000,
+					handleAs: 'json'
+				}).then(lang.hitch(this, function(text) {
 					// file exists -> setup process has been triggered
-					this.set('statusCheckResult', 'joining');
+					this.set('statusCheckResult', text);
+					this._checksTimedOut = 0;
 				}), lang.hitch(this, function(err) {
 					// file does not exist...
-					if (this.statusCheckResult == 'joining') {
+					var reqStatus = lang.getObject('response.status', false, err) || 0;
+					if (reqStatus == 404 && this.statusCheckResult != 'unknown') {
 						// ... but existed before -> setup process is finished
 						this.set('statusCheckResult', 'joined');
 						this._checkStatusFileTimer.stop();
-
-						if (!this._joinTriggered) {
-							// quit the browser if the join has been triggered from outside
-							window.close();
+					}
+					if (!reqStatus && !this.local_mode) {
+						// request timed out -> assume that IP address has changed
+						this._checksTimedOut += 1;
+						if (this._checksTimedOut > 20) {
+							// after 20 sec, assume that UMC has restarted
+							this.set('statusCheckResult', 'joined');
+						}
+						else if (this._checksTimedOut > 10) {
+							// after 10 sec, assume that cleanup scripts are running
+							this.set('statusCheckResult', 'cleanup-scripts');
 						}
 					}
-
 				}));
 			});
+
 			if (this.local_mode) {
 				// only monitor the status file during the wizard session in a local VM
+				// from the beginning on and quit the browser automatically if join has
+				// been initiated from outside
 				this._checkStatusFileTimer.start();
+				this.watch('statusCheckResult', lang.hitch(this, function(attr, oldVal, newVal) {
+					if (this._joinTriggered) {
+						// join has been triggered within this session... nothing more to do
+						return;
+					}
+					if (newVal == 'joined') {
+						window.close();
+					}
+					else if (newVal != 'unknown') {
+						// show progress bar
+						this._progressBar.reset();
+						this._progressBar.setInfo(_('Waiting for restart of server components...'), null, Infinity);
+						this.standby(true, this._progressBar);
+					}
+				}));
 			}
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+
+			this._initStatusCheck();
 
 			// setup the progress bar
 			this._progressBar = new ProgressBar({
@@ -2105,20 +2123,20 @@ define([
 		},
 
 		join: function() {
+			// initialize and show the progress bar
+			this._progressBar.reset();
+			this._progressBar.setInfo(_('Initialize the configuration process ...'), null, Infinity);
+			this.standby(true, this._progressBar);
+
 			// function to save data
 			var _join = lang.hitch(this, function(values, username, password) {
-				var deferred = new Deferred();
-
 				// make sure that no re-login is tried/required due to the server time
 				// being adjusted in 40_ssl/10ssl (cf., Bug #38455)
+				// and make sure no page reload is requested
 				tools.checkSession(false);
-
-				// make sure no page reload is requested
 				tools.status('ignorePageReload', true);
 
 				// join system
-				this._progressBar.reset(_('Initialize the configuration process ...'));
-				this.standby(true, this._progressBar);
 				var joinDeferred = null;
 				if (this._setUpPreconfiguredDomain()) {
 					// in the pre-configured setup, we do not need a real join process,
@@ -2137,57 +2155,93 @@ define([
 						password: password || null,
 					}, false);
 				}
+
+				// we need to fetch progress information manually in order to be able to
+				// react on timeouts due to IP address changes (detected by the status check)
+				var deferred = new Deferred();
+				var _pollProgressInfo = lang.hitch(this, function() {
+					var _areSetupScriptsRunning = lang.hitch(this, function(value) {
+						return value == 'setup-scripts' || value == 'unknown';
+					});
+					if (!_areSetupScriptsRunning(this.statusCheckResult)) {
+						// stop polling as setup scripts have been passed and
+						// clean up scripts/appliance hooks are running now
+						deferred.resolve();
+						return;
+					}
+					var _schedulePoll = function() {
+						tools.defer(_pollProgressInfo, 500);
+					};
+
+					// in case the join process is about to finish, cancel the command
+					var requestDeferred = null;
+					var watchHandler = this.watch('statusCheckResult', function(attr, oldVal, newVal) {
+						if (!_areSetupScriptsRunning(newVal)) {
+							requestDeferred.cancel();
+						}
+					});
+
+					// query finished request
+					requestDeferred = this.umcpCommand('setup/finished', {}, false).then(lang.hitch(this, function(response) {
+						var result = response.result;
+						if (!result) {
+							// not finished yet... retry again
+							_schedulePoll();
+						} else {
+							this._progressBar.setInfo(result.component, result.info, result.steps, result.errors, result.critical);
+							if (result.finished) {
+								// finished :)
+								deferred.resolve();
+							} else {
+								// not finished yet...
+								_schedulePoll();
+							}
+						}
+					}), _schedulePoll);
+
+				});
+
 				joinDeferred.then(lang.hitch(this, function() {
 					// make sure the server process cannot die
 					this.umcpCommand('setup/ping', {keep_alive: true}, false);
-
-					this._progressBar.auto(
-						'setup/finished',
-						{},
-						lang.hitch(deferred, 'resolve'),
-						null,
-						_('Configuration finished'),
-						true
-					);
+					// start polling for progress information
+					_pollProgressInfo();
 				}), lang.hitch(this, function(error) {
 					this._progressBar.setInfo(undefined, undefined, undefined, [tools.parseError(error).message], true);
 					deferred.resolve();
 				}));
 
-				return deferred.then(lang.hitch(this, function() {
-					this.standby(false);
-				}));
+				return deferred
 			});
 
 			var _checkJoinSuccessful = lang.hitch(this, function() {
 				var errors = this._progressBar.getErrors();
 				if (errors.errors.length) {
 					this._updateErrorPage(errors.errors, errors.critical);
-					this.standby(false);
-					return false;
+					this._checkStatusFileTimer.stop();
+					this.set('statusCheckResult', 'error');
+					throw new Error('Join process failed!');
 				}
-				return true;
+				else {
+					this._updateDonePage();
+				}
 			});
 
 			var _waitForCleanup = lang.hitch(this, function(joinSuccessful) {
-				if (!joinSuccessful) {
-					return false;
-				}
-
-				// update progress bar
-				this._progressBar.reset();
-				this._progressBar.setInfo(_('Waiting for restart of server components...'), null, Infinity);
-
-				// monitor join status
+				// monitor join process via status file
 				var deferred = new Deferred();
 				this.watch('statusCheckResult', lang.hitch(this, function(attr, oldVal, newVal) {
-					if (newVal == 'joined') {
-						deferred.resolve(true);
-						this.standby(false);
+					if (newVal == 'joined' || newVal == 'error') {
+						deferred.resolve();
+					}
+					else if (newVal != 'unknown' && newVal != 'setup-scripts') {
+						// setup process passed setup-scripts -> update the progress bar
+						this._progressBar.setInfo(_('Waiting for restart of server components...'), null, Infinity);
 					}
 				}));
 
 				// start timer for status check
+				this._checkStatusFileTimer.setInterval(2000);
 				if (!this._checkStatusFileTimer.isRunning) {
 					this._checkStatusFileTimer.start();
 				}
@@ -2196,19 +2250,34 @@ define([
 			});
 
 			// chain all methods together
-			var deferred = null;
+			var joinDeferred = null;
 			var values = this.getValues();
 			var role = values['server/role'];
 			if (role == 'domaincontroller_master' || role == 'basesystem') {
-				deferred = _join(values);
+				joinDeferred = _join(values);
 			} else {
 				// for any other role, we need domain admin credentials
 				var credentials = this._getCredentials();
-				deferred = _join(values, credentials.username, credentials.password);
+				joinDeferred = _join(values, credentials.username, credentials.password);
 			}
-			deferred = deferred.then(_checkJoinSuccessful);
-			deferred = deferred.then(_waitForCleanup);
-			return deferred;
+			joinDeferred = joinDeferred.then(_checkJoinSuccessful);
+
+			// We have two sources of information:
+ 			// (a) progress information via the setup/finished
+			// (b) setup status information via /ucs_setup_process_status.json
+			// In case the network interface has been changed, (a) will fail at
+			// a certain point, and (b) will be able to provide additional extra
+			// information to recover from this case.
+			return all({
+				cleanup: _waitForCleanup(),
+				join: joinDeferred
+			}).then(lang.hitch(this, function() {
+				this.standby(false);
+				return true;
+			}), lang.hitch(this, function() {
+				this.standby(false);
+				return false;
+			}));
 		},
 
 		_forcePageTemporarily: function(pageName) {
@@ -2574,7 +2643,6 @@ define([
 			if (pageName == 'summary') {
 				this._joinTriggered = true;
 				return this.join().then(lang.hitch(this, function(success) {
-					this._updateDonePage();
 					return success ? 'done' : 'error';
 				}));
 			}

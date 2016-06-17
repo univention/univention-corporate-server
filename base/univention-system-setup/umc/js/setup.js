@@ -226,8 +226,7 @@ define([
 				umcpProgressCommand: lang.hitch(this, 'umcpProgressCommand'),
 				partOfInstaller: partOfInstaller,
 				values: values,
-				ucr: ucr,
-				_getNewIpAddress: lang.hitch(this, '_getNewIpAddress')
+				ucr: ucr
 			});
 			this.addChild(this.wizard);
 			if (!tools.status('overview')) {
@@ -372,10 +371,7 @@ define([
 
 		_redirectBrowser: function(interfaces, primary_interface) {
 			// redirect to new UMC address and set username to Administrator
-			this._progressBar.reset();
-			this._progressBar.setInfo(_('Restarting server components...'), _('This may take a few seconds...'), Number.POSITIVE_INFINITY);
-			this.standby(true, this._progressBar);
-
+			this.standby(true);
 			var username = 'Administrator';
 			var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
 
@@ -389,7 +385,7 @@ define([
 			// give the restart/services function 10 seconds time to restart the services
 			setTimeout(function () {
 				window.location.replace(target);
-			}, 15000);
+			}, 2000);
 		},
 
 		save: function() {

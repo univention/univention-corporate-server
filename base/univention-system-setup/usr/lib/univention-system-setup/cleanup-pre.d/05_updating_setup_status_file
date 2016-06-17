@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Remove status file of Univention System Setup
+# Update status file of Univention System Setup
 #
 # Copyright 2016 Univention GmbH
 #
@@ -29,6 +29,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-rm -f /var/www/ucs_setup_process_status.json
+echo -n '"cleanup-scripts"' > /var/www/ucs_setup_process_status.json
 
 exit 0
