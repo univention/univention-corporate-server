@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <umc version="2.0">
+	<module id="appliance" priority="50" version="1.0">
+		<name>Appliance</name>
+		<description>Inserts first steps</description>
+		<keywords></keywords>
+		<categories>
+		</categories>
+		<command name="appcenter/get" function="get" />
+	</module>
 	<module id="udm">
 		<flavor id="users/user">
 			<categories>

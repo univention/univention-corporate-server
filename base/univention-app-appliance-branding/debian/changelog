@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.01-2) unstable; urgency=low
+
+  * Bug #40096: Show first steps readme.
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 25 Feb 2016 17:52:57 +0100
+
 univention-app-appliance-branding (0.01-1) unstable; urgency=low
 
   * Bug #39465: Initial release.

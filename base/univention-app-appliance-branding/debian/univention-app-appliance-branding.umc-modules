@@ -1,0 +1,6 @@
+Module: branding
+Definition: umc/appliance.xml
+Javascript: umc/js
+Python: umc/python
+Category: umc/categories/appliance.xml
+Icons: umc/icons

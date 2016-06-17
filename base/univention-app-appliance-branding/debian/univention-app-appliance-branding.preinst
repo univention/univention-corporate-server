@@ -40,7 +40,6 @@ case "$1" in
 	install|upgrade)
 		# create necessary diversions
 		for file in \
-			/usr/bin/univention-welcome-screen \
 			/usr/share/plymouth/themes/ucs/ucs.plymouth
 		do
 			_divert  $file
