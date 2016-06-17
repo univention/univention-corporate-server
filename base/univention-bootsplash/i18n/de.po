@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Welcome to Univention Corporate Server"
-msgstr "Willkommen auf Univention Corporate Server"
+msgid "Welcome to "
+msgstr "Willkommen auf "
 
 msgid "[ Press any key to open text console ]"
 msgstr "[ Drücken Sie eine beliebige Taste, um eine Text-Konsole zu öffnen ]"

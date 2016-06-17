@@ -78,7 +78,11 @@ if [ -n "$lang" ]; then
 fi
 export TEXTDOMAINDIR=/usr/share/plymouth/themes/ucs/
 
-header="$(gettext -d univention-welcome-screen "Welcome to Univention Corporate Server")"
+if [ -n "$umc_web_appliance_name" ]; then
+	header="$(gettext -d univention-welcome-screen "Welcome to ")$umc_web_appliance_name"
+else
+	header="$(gettext -d univention-welcome-screen "Welcome to ")Univention Corporate Server"
+fi
 console="$(gettext -d univention-welcome-screen "[ Press any key to open text console ]")"
 message1="$(gettext -d univention-welcome-screen "Open a browser window")"
 message2="$(gettext -d univention-welcome-screen "Navigate to one of the following addresses:")"
