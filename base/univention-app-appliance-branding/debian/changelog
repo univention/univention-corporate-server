@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-3) unstable; urgency=medium
+
+  * Bug #39465: Added template for categories/appliance.xml
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 03 Mar 2016 13:40:28 +0100
+
 univention-app-appliance-branding (0.2.2-2) unstable; urgency=low
 
   * Bug #39465: Adapted template for modules/appliance.xml

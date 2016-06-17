@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<!--
+@%@UCRWARNING=# @%@
+	-->
+
+@!@
+from univention.appcenter.app import AppManager
+
+appId = configRegistry['umc/web/appliance/id']
+app = AppManager.find(appId)
+
+category = ''' 
+	<categories>
+		<category priority="100000" id="_appliance_" icon="category-appliance.svg" color="{color}">
+			<name>{name}</name>
+		</category>
+	</categories>
+'''
+
+if app:
+	print category.format(
+		name=app.name,
+		color=app.appliance_primary_color
+	)
+@!@
+
+</umc>

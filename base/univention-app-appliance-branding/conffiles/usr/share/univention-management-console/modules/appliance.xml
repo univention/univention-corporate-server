@@ -15,7 +15,6 @@
 @!@
 import cgi
 from univention.appcenter.app import AppManager
-from uuid import uuid4
 
 appId = configRegistry['umc/web/appliance/id']
 app = AppManager.find(appId)
