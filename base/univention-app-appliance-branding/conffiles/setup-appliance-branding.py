@@ -110,17 +110,17 @@ def handler(config_registry, changes):
 		_download(app.appliance_umc_header_logo, '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo%s' % _ext)
 	if app.appliance_umc_header_logo:
 		_stem, _ext = os.path.splitext(app.appliance_umc_header_logo)
-		_img ='/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen%s' % (plymouth_theme, _ext)
+		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_header_welcome_screen%s' % (plymouth_theme, _ext)
 		_download(app.appliance_umc_header_logo, _img)
-		_params = 'no-repeat; background-size: auto 84%; background-position: left center;'
-		_svg_to_png(_img, _img + '.png', _params,'1250x150')
+		_params = 'no-repeat; background-size: auto 28px; background-position: left center;'
+		_svg_to_png(_img, _img + '.png', _params, '400x30')
 		_download(app.appliance_umc_header_logo, '/usr/share/univention-system-activation/www/css/icons/appliance_umc_header_logo%s' % _ext)
 	if app.appliance_welcome_screen_logo:
 		_stem, _ext = os.path.splitext(app.appliance_welcome_screen_logo)
-		_img ='/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen%s' % (plymouth_theme, _ext)
+		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_welcome_screen%s' % (plymouth_theme, _ext)
 		_download(app.appliance_welcome_screen_logo, _img)
 		_params = 'no-repeat; background-size: contain; background-position: center center;'
-		_svg_to_png(_img, _img + '.png', _params)
+		_svg_to_png(_img, _img + '.png', _params, '120x120')
 	if app.appliance_bootsplash_logo:
 		_stem, _ext = os.path.splitext(app.appliance_bootsplash_logo)
 		_img = '/usr/share/plymouth/themes/ucs-appliance-%s/logo_bootsplash%s' % (plymouth_theme, _ext)

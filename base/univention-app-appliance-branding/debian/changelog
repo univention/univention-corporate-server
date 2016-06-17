@@ -1,3 +1,9 @@
+univention-app-appliance-branding (0.2.2-17) unstable; urgency=medium
+
+  * Bug #40826: Better image scaling for plymouth  
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 24 Mar 2016 17:30:07 +0100
+
 univention-app-appliance-branding (0.2.2-16) unstable; urgency=medium
 
   * Bug #39465: refactor UCR templates and correctly include SVG logos
