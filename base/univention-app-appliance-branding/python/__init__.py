@@ -46,4 +46,5 @@ class App(app.App):
 
 class AppManager(app.AppManager):
 	_AppClass = App
-
+	_cache = []
+	_pickle_file = None
