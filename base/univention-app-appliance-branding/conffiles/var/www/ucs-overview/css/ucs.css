@@ -3,4 +3,83 @@
  */
 
 @import url("ucs.real.css");
+@!@
+from univention.app_appliance import AppManager
 
+def get_font_color(hexcolor):
+	if hexcolor[0] == '#':
+		hexcolor = hexcolor[1:]
+	red = int(hexcolor[0:2], 16)
+	green = int(hexcolor[2:4], 16)
+	blue = int(hexcolor[4:6], 16)
+	# Taken from: http://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color
+	perceptive_luminance = 1 - ( 0.299 * red + 0.587 * green + 0.114 * blue)/255;
+	if perceptive_luminance < .5:
+		return '#000'
+	else:
+		return '#fff'
+
+
+app = AppManager.find(configRegistry.get('umc/web/appliance/id', ''))
+
+css_background = app.appliance_css_background or '#eeeeee'
+appliance_primary_color = app.appliance_primary_color or '#eeeeee'
+font_color = get_font_color(appliance_primary_color)
+if font_color == '#000':
+	icon_color = ''
+else:
+	icon_color = '-white'
+print '''
+body {
+	background: %(css_background)s;
+}
+
+body #header-right {
+	color: %(font_color)s;
+}
+
+body #header-right .dijitArrowButtonInner {
+	background-image: url(/univention-management-console/js/dijit/themes/umc/images/icons%(icon_color)s.svg);
+}
+
+body .container #title {
+	color: %(font_color)s;
+}
+
+body .container #title h1 {
+	border-color: %(font_color)s;
+}
+
+body .container #category-bar {
+	color: %(font_color)s;
+}
+
+body .container #content {
+	color: %(font_color)s;
+}
+
+body .container #content .galleryTab .umcGalleryItem .umcGalleryName {
+	color: %(font_color)s;
+}
+
+body .container #content .galleryTab .umcGalleryItem .umcGalleryDescription {
+	color: %(font_color)s;
+}
+
+body #footer ul a {
+	color: %(font_color)s;
+}
+
+body #footer ul li {
+	border-color: %(font_color)s;
+}
+
+body .container a {
+	color: %(font_color)s;
+}
+''' % {
+	'font_color': font_color,
+	'icon_color': icon_color,
+	'css_background': css_background
+}
+@!@

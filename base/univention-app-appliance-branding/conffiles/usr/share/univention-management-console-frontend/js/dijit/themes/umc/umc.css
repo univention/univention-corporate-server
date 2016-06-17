@@ -10,6 +10,8 @@ app = AppManager.find(configRegistry.get('umc/web/appliance/id', ''))
 if configRegistry.is_true('system/setup/boot/start') and app:
 	# only print these CSS rules when appliance mode is enabled
 	css_background = app.appliance_css_background or '#eeeeee'
+	appliance_secondary_color = app.appliance_secondary_color or '#000000'
+	appliance_primary_color = app.appliance_primary_color or '#eeeeee'
 	print '''
 /* style UMC for the app appliance branding during the setup process */
 
@@ -23,7 +25,7 @@ body.umc {
 }
 
 body.umc.umcHeadless #umcHeader {
-	border-bottom-color: #428bca;
+	border-bottom-color: %(appliance_secondary_color)s;
 }
 
 .umc #umcLanguageSwitch .dijitButtonNode .dijitArrowButtonInner {
@@ -39,13 +41,15 @@ body.umc.umcHeadless #umcHeader {
 }
 
 body.umc.umcHeadless .umcTopContainer {
-	background: #1D2D44;
+	background: %(appliance_primary_color)s;
 }
 
 #umcLoginDialog.umcLoginLoading, .umcLoginDialog.umcLoginLoading {
 	/*background-image: none;*/
 }
 ''' % {
-	'css_background': css_background
+	'css_background': css_background,
+	'appliance_primary_color': appliance_primary_color,
+	'appliance_secondary_color': appliance_secondary_color
 }
 @!@

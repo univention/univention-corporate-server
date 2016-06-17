@@ -1,0 +1,11 @@
+[Plymouth Theme]
+Name=ucs-appliance
+Description=app appliance branding
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ucs-appliance
+ScriptFile=/usr/share/plymouth/themes/ucs-appliance/ucs-appliance.script
+
+[script-env-vars]
+example_env_var=example env var value

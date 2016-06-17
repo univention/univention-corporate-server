@@ -6,6 +6,37 @@ bg.sprite = Sprite(bg.image);
 resized.bg.image = bg.image.Scale(Window.GetWidth(), Window.GetHeight());
 bg.sprite.SetImage(resized.bg.image);
 
+# background logo
+
+# scale to half the window size
+fun scaleHalf(xSize, ySize) {
+
+	size[0] = 0;
+	size[1] = 0;
+	if (xSize > ySize) {
+		size[0] = Window.GetWidth() / 2;
+		size[1] = ySize * size[0] / xSize;
+		return size;
+	} else {
+		size[1] = Window.GetHeight() / 2;
+		size[0] = xSize * size[1] / ySize;
+		return size;
+	}
+}
+
+bl.image = Image("oc_splash_logo.png");
+size = scaleHalf(bl.image.GetWidth(), bl.image.GetHeight());
+bl.image = bl.image.Scale(size[0], size[1]);
+bl.sprite = Sprite(bl.image);
+bl.sprite.SetX(Window.GetX() + Window.GetWidth()  / 2 - bl.image.GetWidth()  / 2);
+bl.sprite.SetY(Window.GetY() + Window.GetHeight() /2 - bl.image.GetHeight() / 2);
+
+# powered by univention
+pbu.image = Image("powered-by-univention.png");
+pbu.sprite = Sprite(pbu.image);
+pbu.sprite.SetX(Window.GetX() + 10);
+pbu.sprite.SetY(Window.GetY() + Window.GetHeight() - 10 - pbu.image.GetHeight());
+
 # animantion
 for (i=0; i<12; i++) {
 	logo[i].image = Image("logo" + i + ".png").Scale(32, 32);
@@ -29,6 +60,8 @@ line_height = Image.Text("AfpqtM").GetHeight();
 ##########
 # helper #
 ##########
+
+
 
 # remove spaces on the beginning of string
 fun trim(string) {
@@ -309,6 +342,7 @@ fun ask_opacity(opacity) {
 }
 
 fun normal_opacity(opacity) {
+	global.bl.sprite.SetOpacity(opacity);
 	global.logo.sprite.SetOpacity(opacity);
 	global.message.sprite.SetOpacity(opacity);
 	global.message_action.sprite.SetOpacity(opacity);
@@ -330,7 +364,7 @@ fun normal_setup() {
 ##################
 
 fun welcome_screen_opacity(opacity) {
-	global.welcome.bg2.sprite.SetOpacity(opacity);
+	global.welcome.cl.sprite.SetOpacity(opacity);
 	global.welcome.header.sprite.SetOpacity(opacity);
 	global.welcome.line.sprite.SetOpacity(opacity);
 	global.welcome.hostname.sprite.SetOpacity(opacity);
@@ -357,13 +391,13 @@ fun welcome_screen_setup() {
 	if (global.ask) ask_opacity (0);
 	normal_opacity(0);
 
-	# welcome screen background
-	bg2.image = Image("bg2.png");
-	resized.bg2.image = bg2.image.Scale(Window.GetWidth(), Window.GetHeight());
-	bg2.sprite = Sprite(resized.bg2.image);
-	bg2.sprite.SetOpacity(0);
-	global.welcome.bg2 = bg2;
-	
+	# corner logo
+	cl.image = Image("logo_long.png");
+	cl.sprite = Sprite(cl.image);
+	cl.sprite.SetX(Window.GetX() + 10);                         
+	cl.sprite.SetY(Window.GetY() + 10);
+	global.welcome.cl = cl;
+
 	# line
 	line.sprite = Sprite();
 	line.image = Image.Text("_", 1, 1, 1, 1, "Sans 1");
@@ -464,19 +498,12 @@ fun welcome_screen_setup() {
 	global.welcome.addresses = addresses;
 
 	# logo step3
-	logo3.image = Image("logo-step3.png");
+	logo3.image = Image("oc_splash_logo.png");
+	logo3.image = logo3.image.Scale(120, logo3.image.GetHeight() * 120 / logo3.image.GetWidth());
 	logo3.sprite = Sprite(logo3.image);
 	logo3.sprite.SetOpacity(1);
 	logo3.sprite.SetX(logo2.sprite.GetX() + logo2.image.GetWidth() + 102);
 	logo3.sprite.SetY(logo2.sprite.GetY() - logo3.image.GetHeight() / 2 + logo2.image.GetHeight() / 2);
-	logo3.setImage = fun (string) {
-		local.new = Image(string);
-		local.scale_factor = global.welcome.logo3.image.GetWidth() / new.GetWidth();
-		global.welcome.logo3.image = new.Scale(new.GetWidth() * scale_factor, new.GetHeight() * scale_factor);
-		global.welcome.logo3.sprite.SetY(
-			global.welcome.logo2.sprite.GetY() - global.welcome.logo3.image.GetHeight() / 2 + global.welcome.logo2.image.GetHeight() / 2);
-		global.welcome.logo3.sprite.SetImage(global.welcome.logo3.image);
-	};
 	global.welcome.logo3 = logo3;
 
 	# number step3

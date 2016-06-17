@@ -37,7 +37,7 @@
 case "$1" in
 	configure)
 		# rebuild plymouth theme
-		univention-config-registry set bootsplash/theme='ucs'
+		univention-config-registry set bootsplash/theme='ucs-appliance'
 		umc_frontend_new_hash
 		;;
 	abort-upgrade|abort-remove|abort-deconfigure)

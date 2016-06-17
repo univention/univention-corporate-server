@@ -33,6 +33,7 @@
 
 import os.path
 import urllib
+import requests
 from glob import glob
 from subprocess import call
 from univention.app_appliance import AppManager
@@ -70,9 +71,11 @@ def handler(config_registry, changes):
 			file=filename,
 		)
 		try:
-			urllib.urlretrieve(url, dest_path)
-			print 'Successfully dowloaded %s' % url
-		except IOError as err:
+			req = requests.head(url, timeout=5)
+			if req.status_code < 400:
+				urllib.urlretrieve(url, dest_path)
+				print 'Successfully downloaded %s' % url
+		except (IOError, requests.HTTPError, requests.ConnectionError, requests.Timeout) as err:
 			print 'WARNING: Failed to download %s' % url
 
 	# download image files for the app appliance

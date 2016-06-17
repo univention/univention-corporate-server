@@ -1,3 +1,12 @@
+univention-app-appliance-branding (0.2.2-9) unstable; urgency=medium
+
+  Bug #39465:
+  * Renamed plymouth owncloud theme to ucs-appliance
+  * Use automatically generated background in plymouth
+  * Generate css files from app ini values
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 08 Mar 2016 17:38:09 +0100
+
 univention-app-appliance-branding (0.2.2-8) unstable; urgency=medium
 
   * Bug #39465: always load new ini file. ignore possible caches from
