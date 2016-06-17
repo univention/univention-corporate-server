@@ -1,4 +1,10 @@
-univention-system-setup (9.1.4-10) unstable; urgency=medium
+univention-system-setup (9.0.4-11) unstable; urgency=medium
+
+  * Bug #40046: make sure that requests for the status file are not cached
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 30 Mar 2016 12:34:23 +0200
+
+univention-system-setup (9.0.4-10) unstable; urgency=medium
 
   * Bug #40046: ensure that fast setup is only available on a joined system
 

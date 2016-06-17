@@ -1374,7 +1374,8 @@ define([
 				var _statusFileURI = '/ucs_setup_process_status.json';
 				request(_statusFileURI, {
 					timeout: 1000,
-					handleAs: 'json'
+					handleAs: 'json',
+					preventCache: true
 				}).then(lang.hitch(this, function(text) {
 					// file exists -> setup process has been triggered
 					this.set('statusCheckResult', text);
