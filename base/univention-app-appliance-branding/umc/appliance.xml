@@ -10,7 +10,7 @@
 	</module>
 
 	<!-- WARNING!!! This is just a dummy file.
-		     Modules, Flavors, Links are added/removed automatically via ucr commit.
+		Modules, Flavors, Links are added/removed automatically via ucr commit.
 		Example:
 			<module id="udm">
 				<flavor id="users/user">

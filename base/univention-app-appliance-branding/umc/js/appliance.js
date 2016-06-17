@@ -30,10 +30,13 @@
 
 define([
 	"dojo/when",
+	"dojo/promise/all",
 	"dojo/dom-class",
 	"dojo/_base/lang",
 	"umc/store",
 	"dojo/topic",
+	"dojo/hash",
+	"dojo/io-query",
 	"put-selector/put",
 	"umc/app",
 	"umc/tools",
@@ -41,79 +44,85 @@ define([
 	"umc/widgets/LabelPane",
 	"umc/widgets/Text",
 	"umc/widgets/CheckBox",
-	"umc/i18n!umc/modules/appliance"
-], function(when, domClass, lang, store, topic, put, app, tools, TitlePane, LabelPane, Text, CheckBox, _) {
+	"umc/i18n!umc/modules/appliance",
+	"xstyle/css!./appliance.css"
+], function(when, all, domClass, lang, store, topic, hash, ioQuery, put, app, tools, TitlePane, LabelPane, Text, CheckBox, _) {
 
+	var promiseAppId = tools.ucr('umc/web/appliance/id');
+	var promiseFirstStepsOpen = tools.ucr('umc/web/appliance/close_first_steps');
 	var ucrStore = store('key', 'ucr');
-	var detailsPane = null;
+	var firstSteps = null;
 	var notShowAgainCheckBox = null;
-	var loadFirstSteps = function(){
-		tools.umcpCommand('appcenter/get', {'application': 'owncloud82'}).then( function(data) {
-			var loadedApp = data.result
-			if (loadedApp === null) {
-				console.warn('Error: Empty response');
-			}
+
+	var selectApplianceCategory = function() {
+		hash(ioQuery.objectToQuery({
+			category: '_appliance_'
+		}));
+	};
+	selectApplianceCategory();
+
+
+	all({
+		appId: promiseAppId,
+		isFirstStepsClosed: promiseFirstStepsOpen
+	}).then(function(result) {
+		var appId = result.appId['umc/web/appliance/id'];
+		var isFirstStepsClosed = tools.isTrue(result.isFirstStepsClosed['umc/web/appliance/close_first_steps']);
+
+		tools.umcpCommand('appcenter/get', {'application': appId}).then(function(data) {
+
+			var readme = new Text({
+				content: data.result.readme
+			});
+
+			firstSteps = new TitlePane({
+				'class': 'firstSteps',
+				title: _("First Steps"),
+				open: !isFirstStepsClosed
+			});
+			firstSteps.addChild(readme);
+
+			put(firstSteps.titleBarNode.firstElementChild, 'div.firstStepsIcon');
+
 			notShowAgainCheckBox = new CheckBox({
 				name: 'close_first_steps',
-				value: false,
-				checked: false,
-				onChange: function() {notShowAgainChange()}
+				value: isFirstStepsClosed,
+				checked: isFirstStepsClosed,
+				onChange: function() {
+					notShowAgainChange();
+				}
 			});
 			var notShowAgainLabel = new LabelPane({
 				content: notShowAgainCheckBox,
 				label: _('Do not show again.'),
-			})
-			var readme = new Text({
-				content: loadedApp.readme
 			});
-			detailsPane = new TitlePane({
-				title: _("First Steps"),
-				open: false
-			});
-			detailsPane.addChild(readme);
-			detailsPane.addChild(notShowAgainLabel);
+			firstSteps.addChild(notShowAgainLabel);
 
 			// app.js uses its subscription to /dojo/hashchange to show the right category
 			// after a page reload. But this script is loaded after that event trigert.
 			// So we have to manually check if we should show the first steps after
 			// a page reload
-			var hideFirstSteps = window.location.hash !== "#category=_appliance_";
-			domClass.toggle(detailsPane.domNode, 'dijitHidden', hideFirstSteps);
-			toggleDetailsPane().then(put(app._grid.domNode, '-', detailsPane.domNode));
+			put(app._grid.domNode, '-', firstSteps.domNode);
+			var isFirstStepsHidden = hash().indexOf("category=_appliance_") === -1;
+			domClass.toggle(firstSteps.domNode, 'dijitHidden', isFirstStepsHidden);
+			firstStepsToggleSubscription();
 		});
-	};
+	});
 
-	var firstStepsToggleSubscription = function(){
-		topic.subscribe('/dojo/hashchange', function(_hash) {
+	var firstStepsToggleSubscription = function() {
+		topic.subscribe('/dojo/hashchange', function(hash) {
 			// /dojo/hashchange publishes category and module changes
-			var hash = decodeURIComponent(_hash);
-			if (hash.length > 7 && hash.substr(0,8) === 'category') {
-				var hideFirstSteps = hash !== 'category=_appliance_';
-				domClass.toggle(detailsPane.domNode, 'dijitHidden', hideFirstSteps);
-			};
+			var isFirstStepsHidden = hash.indexOf('category=_appliance_') === -1;
+			domClass.toggle(firstSteps.domNode, 'dijitHidden', isFirstStepsHidden);
 		});
 	};
 
-	var toggleDetailsPane = function(){
-		// ucrStore.get doesn't like empty ucr variables
-		return tools.ucr('umc/web/appliance/close_first_steps').then(function(res){
-			detailsPane.set('open', !tools.isTrue(res['umc/web/appliance/close_first_steps']));
-		});
-	};
-
-	var notShowAgainChange = function(){
+	var notShowAgainChange = function() {
 		ucrStore.add({
 			key: 'umc/web/appliance/close_first_steps',
 			value: notShowAgainCheckBox.get('checked').toString()
-		}).then(function(){
-			toggleDetailsPane();
 		});
 	};
-
-	//app.registerOnStartup(function() {
-		loadFirstSteps();
-		firstStepsToggleSubscription();
-	//});
 
 	return null;
 });

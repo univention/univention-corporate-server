@@ -1,1 +1,2 @@
 univention-bootsplash-owncloud-theme/*	usr/share/plymouth/themes
+umc/js/appliance.css usr/share/univention-management-console-frontend/js/umc/modules

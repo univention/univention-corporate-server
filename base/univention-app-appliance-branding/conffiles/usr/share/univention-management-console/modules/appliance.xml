@@ -19,7 +19,7 @@ from univention.appcenter.app import AppManager
 appId = configRegistry['umc/web/appliance/id']
 app = AppManager.find(appId)
 
-if app.web_interface:
+if app and app.web_interface:
 	link_web_interface = '''
 	<link priority="50" id="link-{id}-web-interface">
 		<url>{web_interface}</url>
@@ -27,7 +27,7 @@ if app.web_interface:
 		<description>Link to the {name} webinterface</description>
 		<categories>
 			<category name="_appliance_" />
-		<categories>
+		</categories>
 	</link>
 	'''.format(
 		id=cgi.escape(app.id or ''),

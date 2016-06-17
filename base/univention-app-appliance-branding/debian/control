@@ -5,7 +5,8 @@ Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.8.2
 Build-Depends: debhelper (>= 7.0.50~),
  ucslint-univention,
- univention-config-dev
+ univention-config-dev,
+ stylus
 
 Package: univention-app-appliance-branding
 Architecture: all
