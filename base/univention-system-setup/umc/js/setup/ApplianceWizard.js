@@ -562,12 +562,15 @@ define([
 					name: '_preconfiguredDomain',
 					label: '<strong>' + _('Fast demo configuration') + '</strong>',
 					checked: true,
-					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'}
+					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'},
+					visible: this.values.joined,
+					disabled: !this.values.joined
 				}, {
 					type: Text,
 					name: 'preconfiguredDomainHelpText',
 					content: _('Quick setup of a system for testing purposes. Several system configurations are predefined and cannot be changed at a later point.'),
-					labelConf: {'class': 'umc-ucssetup-wizard-indent'}
+					labelConf: {'class': 'umc-ucssetup-wizard-indent'},
+					visible: this.values.joined
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',
