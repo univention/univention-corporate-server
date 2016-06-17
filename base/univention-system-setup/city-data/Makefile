@@ -29,16 +29,26 @@
 
 .PHONY: build install clean
 
-INITIALSETUP_DE_JSON := var/www/ucs-overview/js/initialsetup/de.json
+# NOTE:
+#   In order to update json data files, run 'make clean; make'
+#   In order to support l10n for other languages, extend the list LANGUAGES
+LANGUAGES := de en
+JSON_FILES := country_data.json city_data.json
 
-build: $(INITIALSETUP_DE_JSON)
+build: $(JSON_FILES)
 
 clean:
-	rm -f $(INITIALSETUP_DE_JSON)
+	rm -f alternateNames.txt cities15000.txt $(JSON_FILES)
 
 install: build
 	@echo "Nothing to install"
 
-%.json: %.po
-	dh-umc-po2json "$<"
+%.txt: %.zip
+	unzip -u -d "$(*D)" $<
+
+country_data.json: countryInfo.txt alternateNames.txt
+	./create_country_data.py "$@" $(LANGUAGES)
+
+city_data.json: cities15000.txt alternateNames.txt
+	./create_city_data.py "$@" $(LANGUAGES)
 
