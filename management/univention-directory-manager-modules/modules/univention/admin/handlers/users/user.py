@@ -1332,7 +1332,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		self.kerberos_active=0
 		self.pwhistory_active=0
-		self.mail_active=0
 		self.groupsLoaded=1
 		self.password_length=8
 		self.old_username = None
@@ -1647,7 +1646,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		new_groups = self.info.get('groups', [])
 
 		# change memberUid if we have a new username
-		if not old_uid == new_uid and self.exists():
+		if old_uid and old_uid != new_uid and self.exists():
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: rewrite memberuid after rename')
 			for group in new_groups:
 				self.__rewrite_member_uid( group )
@@ -1815,7 +1814,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			al=[('uid', [uid])]
 			if 'posix' in self.options:
 				ocs.extend(['posixAccount', 'shadowAccount'])
-				self.mail_active=1
 				al.append(('uidNumber', [self.uidNum]))
 				al.append(('gidNumber', [gidNum]))
 			if 'mail' in self.options:
@@ -1823,7 +1821,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ocs.extend(['shadowAccount','univentionMail'])
 				else:
 					ocs.extend(['univentionMail'])
-				self.mail_active=1
 				if self[ 'mailPrimaryAddress' ]:
 					try:
 						self.alloc.append( ( 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] ) )
@@ -1942,27 +1939,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		shadowLastChangeValue = ''	# if is filled, it will be added to ml in the end
 		sambaPwdLastSetValue = ''	# if is filled, it will be added to ml in the end
-
-		if self.options != self.old_options:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old_options: %s' % self.old_options)
-			# pki option add / remove
-			if 'pki' in self.options and not 'pki' in self.old_options:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added pki option')
-				new_object_classes |= set(['pkiUser',])
-			if not 'pki' in self.options and 'pki' in self.old_options:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove pki option')
-				if 'pkiUser' in old_object_classes:
-					new_object_classes -= set(['pkiUser',])
-					for attr in ['userCertificate;binary']:
-						ml=self._remove_attr(ml,attr)
-			# ldap_pwd option add / remove
-			if 'ldap_pwd' in self.options and not 'ldap_pwd' in self.old_options:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added ldap_pwd option')
-				new_object_classes |= set(['simpleSecurityObject', 'uidObject'])
-			if not 'ldap_pwd' in self.options and 'ldap_pwd' in self.old_options:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove ldap_pwd option')
-				new_object_classes -= set(['simpleSecurityObject', 'uidObject'])
 
 		# set cn
 		cnAtts = univention.admin.baseConfig.get('directory/manager/usercn/attributes', "<firstname> <lastname>")
@@ -2154,7 +2130,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						ml.append(('krb5PrincipalName', '', [self['username']+'@'+realm]))
 						ml.append(('krb5MaxLife', '', '86400'))
 						ml.append(('krb5MaxRenew', '', '604800'))
-						new_object_classes |= set(['krb5Principal', 'krb5KDCEntry'])
 
 		if self.hasChanged('disabled'):
 			if 'kerberos' in self.options:
@@ -2333,9 +2308,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ml.append(('krb5PasswordEnd',old_krb5PasswordEnd, krb5PasswordEnd))
 
 
-		if (self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']) or (self.hasChanged('mailAlternativeAddress') and self['mailAlternativeAddress']):
-			if 'mail' in self.options and not self.mail_active:
-				new_object_classes |= set(['univentionMail',])
 		if self.hasChanged('mailPrimaryAddress') and self['mailPrimaryAddress']:
 			for i, j in self.alloc:
 				if i == 'mailPrimaryAddress':

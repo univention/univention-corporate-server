@@ -343,7 +343,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		global options
 		if self.oldattr.get('univentionLicenseVersion', []) == ['2']:
 			self.options = ['Version 2']
 		else:

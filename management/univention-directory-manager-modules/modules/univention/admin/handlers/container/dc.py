@@ -59,6 +59,7 @@ long_description=''
 options={
 	'kerberos': univention.admin.option(
 			short_description=_('Kerberos realm'),
+			objectClasses=['krb5Realm',],
 			default=1
 		)
 }
@@ -185,7 +186,6 @@ class object(univention.admin.handlers.simpleLdap):
 		if self.exists():
 			self['name']=ldap.explode_dn(self.dn,1)[0]
 
-			
 			self['dnsForwardZone']=''
 			self['dnsReverseZone']=''
 			forward=self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(!(zoneName=*.in-addr.arpa)))')
@@ -195,18 +195,12 @@ class object(univention.admin.handlers.simpleLdap):
 			for r in reverse:
 				self['dnsReverseZone'].append(r)
 
-			if not 'krb5Realm' in self.oldattr.get('objectClass', []):
-				iself._remove_option('kerberos')
-
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		ocs=['top', 'domain', 'sambaDomain', 'univentionDomain', 'univentionBase']
-		if 'kerberos' in self.options:
-			ocs.append('krb5Realm')
 		return [
-			('objectClass', ocs)
+			('objectClass', ['top', 'domain', 'sambaDomain', 'univentionDomain', 'univentionBase'])
 		]
 
 	def _ldap_post_create(self):

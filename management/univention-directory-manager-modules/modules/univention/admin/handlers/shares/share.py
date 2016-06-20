@@ -67,12 +67,14 @@ options={
 	'samba': univention.admin.option(
 			short_description=_('Export for Samba clients'),
 			editable=1,
-			default=1
+			default=1,
+			objectClasses=('univentionShareSamba',),
 		),
 	'nfs': univention.admin.option(
 			short_description=_('Export for NFS clients (NFSv3 and NFSv4)'),
 			editable=1,
-			default=1
+			default=1,
+			objectClasses=('univentionShareNFS',),
 		),
 }
 property_descriptions={
@@ -814,12 +816,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-		# copy the mapping table, we need this for the option handling
-		self.mapping_list = {}
-		for key in self.descriptions.keys():
-			self.mapping_list[key] = mapping.mapName(key)
-
-		if self.oldattr.has_key('objectClass'):
+		if 'objectClass' in self.oldattr:
 			try:
 				# Attention: Because of performance reasons, the syntax
 				#   class nfsShare uses '%(name)s (%(host)s)' as label, not
@@ -836,60 +833,23 @@ class object(univention.admin.handlers.simpleLdap):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-
+		# TODO: move this validation into a syntax class
 		dirBlackList = ["sys", "proc", "dev"]
 		for dir in dirBlackList:
 			if re.match("^/%s$|^/%s/" % (dir, dir), self['path']):
 				raise univention.admin.uexceptions.invalidOperation, _('It is not valid to set %s as a share.')%self['path']
 
-		ocs = ['top', 'univentionShare']
-
-		self.check_options_for_validity()
-
-		if 'samba' in self.options:
-			ocs.append('univentionShareSamba')
-		if 'nfs' in self.options:
-			ocs.append('univentionShareNFS')
 		return [
-			('objectClass', ocs)
+			('objectClass', ['top', 'univentionShare'])
 		]
 
-	def _remove_attr(self, ml, attr):
-		for m in ml:
-			if m[0] == attr:
-				ml.remove(m)
-		if self.oldattr.get(attr, []):
-			ml.insert(0, (attr, self.oldattr.get(attr, []), ''))
-		return ml
-
 	def _ldap_modlist(self):
-
-		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
-
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		self.check_options_for_validity()
-		
-		if self.options != self.old_options:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old_options: %s' % self.old_options)
-			for option,objectClass in [ ('samba','univentionShareSamba'), ('nfs','univentionShareNFS') ]:
-
-				if option in self.options and not option in self.old_options:
-					ocs=self.oldattr.get('objectClass', [])
-					if not objectClass in ocs:
-						ml.insert(0, ('objectClass', '', objectClass))
-
-				if not option in self.options and option in self.old_options:
-					ocs=self.oldattr.get('objectClass', [])
-					if objectClass in ocs:
-						ml.insert(0, ('objectClass', objectClass, ''))
-					for key in self.descriptions.keys():
-						if self.descriptions[key].options == [option]:
-							ml = self._remove_attr(ml, self.mapping_list[key] )
-
 		return ml
 
 	def _ldap_pre_remove(self):
-		if not hasattr(self,"options"):
+		if not self.options:
 			self.open()
 		if 'nfs' in self.options:
 			searchstring="*"+self['host']+":"+self['path']+"*"
@@ -923,7 +883,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return _('%(name)s (%(path)s on %(host)s)') % {'name': self['name'], 'path': self['path'], 'host': self['host']}
 
 	def check_options_for_validity(self):
-		if not ( 'samba' in self.options or 'nfs' in self.options):
+		if not set(self.options) & set(['samba', 'nfs']):
 			raise univention.admin.uexceptions.invalidOptions(_('Need %(samba)s or %(nfs)s in options to create a share.') % {
 				'samba': options['samba'].short_description,
 				'nfs': options['nfs'].short_description})
@@ -946,6 +906,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		res.append(object(co, lo, None, dn))
 	return res
 
-def identify(dn, attr, canonical=0):
 
+def identify(dn, attr, canonical=0):
 	return 'univentionShare' in attr.get('objectClass', [])
