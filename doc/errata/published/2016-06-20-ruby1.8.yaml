@@ -41,3 +41,5 @@ desc: |
  * OpenSSL extension hostname matching implementation violates RFC 6125
    (CVE-2015-1855)
 bug: [38556]
+erratum: 282
+announced: 2016-06-20
