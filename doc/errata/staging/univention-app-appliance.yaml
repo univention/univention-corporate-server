@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-app-appliance
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Apps may now provide design information for branding UCS appliances.
+ * Apps may now provide more detailed information on the first steps to
+   take after their initial installation/setup.
+bug: [40826,38957]
