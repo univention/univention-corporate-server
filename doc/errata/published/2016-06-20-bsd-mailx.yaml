@@ -12,3 +12,5 @@ desc: |
 bug: [37371]
 cve:
  - CVE-2014-7844
+erratum: 284
+announced: 2016-06-20
