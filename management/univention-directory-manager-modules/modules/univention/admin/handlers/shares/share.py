@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
-import copy
 
 from univention.admin.layout import Tab, Group
 import univention.admin.uldap
@@ -812,16 +811,6 @@ mapping.register('nfsCustomSettings', 'univentionShareNFSCustomSetting')
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-		global options
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
@@ -948,6 +937,7 @@ def lookup_filter(filter_s=None, lo=None):
 		])
 	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
 	return lookup_filter_obj
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	filter=lookup_filter(filter_s)

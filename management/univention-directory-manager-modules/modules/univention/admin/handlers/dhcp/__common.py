@@ -33,7 +33,6 @@
 import copy
 
 import univention.admin.localization
-from univention.admin.layout import Tab, Group
 
 translation = univention.admin.localization.translation( 'univention.admin.handlers.dhcp' )
 _ = translation.translate

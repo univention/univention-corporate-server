@@ -367,20 +367,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global options
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		self.ipRequest=0
-
-		self.alloc=[]
-
-		self.newPrimaryGroupDn=0
-		self.oldPrimaryGroupDn=0
-
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 		nagios.Support.__init__(self)
 		self.old_samba_option = 'sambaSamAccount' in self.oldattr.get('objectClass', [])
@@ -395,9 +381,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if userPassword:
 				self.info['password']=userPassword
 				self.modifypassword=0
-
-		self.newPrimaryGroupDn=0
-		self.oldPrimaryGroupDn=0
 
 		tmppos=univention.admin.uldap.position(self.position.getDomain())
 

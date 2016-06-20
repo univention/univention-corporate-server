@@ -35,7 +35,6 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import copy
 
 import univention.debug
 
@@ -340,16 +339,6 @@ mapping.register('version', 'univentionLicenseVersion', None, univention.admin.m
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-		global options
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)

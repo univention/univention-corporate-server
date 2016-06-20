@@ -443,12 +443,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 		mungeddial.Support.__init__( self )
 

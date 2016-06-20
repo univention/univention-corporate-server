@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import string
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -126,13 +124,6 @@ class object(univention.admin.handlers.simpleLdap):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.superordinate=superordinate
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
 		if not superordinate:
 			raise univention.admin.uexceptions.insufficientInformation, 'superordinate object not present'
 		if not dn and not position:

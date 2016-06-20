@@ -36,7 +36,6 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import string
 import ldap
 
 translation=univention.admin.localization.translation('univention.admin.handlers.container')
@@ -208,18 +207,6 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-		self.default_dn=''
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
-		self.save()
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)

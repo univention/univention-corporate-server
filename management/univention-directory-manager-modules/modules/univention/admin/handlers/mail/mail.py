@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from univention.admin.layout import Tab, Group
+from univention.admin.layout import Tab
 import univention.admin.filter
 import univention.admin.localization
 
@@ -81,15 +81,6 @@ mapping=univention.admin.mapping.mapping()
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	ret=[]
@@ -100,5 +91,3 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 def identify(dn, attr, canonical=0):
 	pass
-
-

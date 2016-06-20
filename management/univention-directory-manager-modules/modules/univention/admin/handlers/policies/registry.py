@@ -116,18 +116,6 @@ register_policy_mapping(mapping)
 class object(univention.admin.handlers.simplePolicy):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-		global layout
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
-
-		self.save()
-
 	def _post_unmap(self, info, values):
 		info['registry'] = []
 		for key, value in values.items():

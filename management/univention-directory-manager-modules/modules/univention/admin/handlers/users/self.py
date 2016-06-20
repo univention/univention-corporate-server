@@ -57,6 +57,3 @@ long_description = ''
 
 class object(univention.admin.handlers.users.user.object):
 	module=module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		univention.admin.handlers.users.user.object.__init__(self, co, lo, position, dn, superordinate, attributes)

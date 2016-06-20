@@ -134,8 +134,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self.superordinate.modify()
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [], update_zone = True ):
-		self.mapping=mapping
-		self.descriptions=property_descriptions
 		self.update_zone = update_zone
 
 		if not superordinate:

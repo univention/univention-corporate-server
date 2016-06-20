@@ -107,6 +107,7 @@ class base(object):
 		self._open = 0
 		self.options = []
 		self.old_options = []
+		self.alloc = []
 
 	def open(self):
 		self._open = 1
@@ -578,6 +579,11 @@ class simpleLdap(base):
 				if not [ddn for (ddn, attr) in searchResult if 'aRecord' in attr]:
 					s4connector_present = False
 		self.s4connector_present = s4connector_present
+		m = univention.admin.modules.get(self.module)
+		if not hasattr(self, 'mapping'):
+			self.mapping = m.mapping
+		if not hasattr(self, 'descriptions'):
+			self.descriptions = m.property_descriptions
 
 		if attributes:
 			self.oldattr = attributes
@@ -1111,11 +1117,14 @@ class simpleComputer( simpleLdap ):
 	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
 		simpleLdap.__init__( self, co, lo, position, dn, superordinate, attributes )
 
+		self.newPrimaryGroupDn=0
+		self.oldPrimaryGroupDn=0
 		self.ip = [ ]
 		self.network_object = False
 		self.old_network = 'None'
 		self.__saved_dhcp_entry = None
 		self.macRequest = 0
+		self.ipRequest = 0
 		# read-only attribute containing the FQDN of the host
 		self.descriptions[ 'fqdn' ] = univention.admin.property(
 			short_description = 'FQDN',
@@ -1190,6 +1199,8 @@ class simpleComputer( simpleLdap ):
 	def open( self ):
 		simpleLdap.open( self )
 
+		self.newPrimaryGroupDn=0
+		self.oldPrimaryGroupDn=0
 		self.ip_alredy_requested = 0
 		self.ip_freshly_set = False
 

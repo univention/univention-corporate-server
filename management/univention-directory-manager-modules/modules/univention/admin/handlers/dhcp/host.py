@@ -118,12 +118,6 @@ class object(univention.admin.handlers.simpleLdap):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
 		if not superordinate:
 			raise univention.admin.uexceptions.insufficientInformation, 'superordinate object not present'
 		if not dn and not position:

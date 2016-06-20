@@ -144,16 +144,6 @@ register_policy_mapping(mapping)
 class object(univention.admin.handlers.simplePolicy):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
-
-
 	def __setitem__(self, key, value):
 		if value and value[0]:
 			if not ((key=='lease_time_min' or key=='lease_time_max' or key=='lease_time_default') and value[0] == ''):

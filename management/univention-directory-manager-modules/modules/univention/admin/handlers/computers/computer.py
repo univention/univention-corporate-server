@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -145,15 +144,6 @@ mapping.register('mac', 'macAddress' )
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
 
 	def open( self ):
 		super( object, self ).open()

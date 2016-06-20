@@ -103,17 +103,6 @@ mapping.register('description', 'description', None, univention.admin.mapping.Li
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		self.alloc=[]
-
-		super(object, self).__init__(co, lo, position, dn, superordinate, attributes)
-
 	def open(self):
 		super(object, self).open()
 

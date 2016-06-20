@@ -131,15 +131,6 @@ mapping.register( 'flavor', 'umcOperationSetFlavor', None, udm_mapping.ListToStr
 class object( simpleLdap ):
 	module = module
 
-	def __init__( self, co, lo, position, dn = '', superordinate = None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping = mapping
-		self.descriptions = property_descriptions
-
-		simpleLdap.__init__( self, co, lo, position, dn, superordinate, attributes = attributes )
-
 	def _ldap_pre_create( self ):
 		self.dn='%s=%s,%s' % ( mapping.mapName( 'name' ), mapping.mapValue( 'name', self.info[ 'name' ] ), self.position.getDn() )
 

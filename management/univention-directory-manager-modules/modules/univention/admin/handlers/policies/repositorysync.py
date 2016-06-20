@@ -161,12 +161,6 @@ class object(univention.admin.handlers.simplePolicy):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
 		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
 
 		self.cron_parsed=0

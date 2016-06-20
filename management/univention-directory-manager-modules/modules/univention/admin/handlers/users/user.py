@@ -1322,11 +1322,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		return 'no'
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = []):
-		global options
-		global mapping
-		global property_descriptions
-		global default_property_descriptions
-
 		# homePostalAddress backward compatibility
 		# change mapping only if new syntax is used (via ucr)
 		if property_descriptions.get("homePostalAddress", False):
@@ -1335,17 +1330,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					if property_descriptions['homePostalAddress'].syntax.name == "postalAddress":
 						mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
 		self.kerberos_active=0
 		self.pwhistory_active=0
 		self.mail_active=0
 		self.groupsLoaded=1
-
 		self.password_length=8
-
-		self.alloc=[]
-
 		self.old_username = None
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )

@@ -284,8 +284,6 @@ class object(univention.admin.handlers.simpleLdap):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
 		global _AVAILABLE_PRINTER_SCHEMAS
 		# find the printer uris
 		if not _AVAILABLE_PRINTER_SCHEMAS:
@@ -294,10 +292,7 @@ class object(univention.admin.handlers.simpleLdap):
 			for uri in printer_uris:
 				_AVAILABLE_PRINTER_SCHEMAS.extend( uri[ 'printeruri' ] )
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-		self.save()
 
 	def open(self):
 		# find the producer

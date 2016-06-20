@@ -75,17 +75,6 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		self.alloc=[]
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo,  position, dn, superordinate, attributes = attributes )
-
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 

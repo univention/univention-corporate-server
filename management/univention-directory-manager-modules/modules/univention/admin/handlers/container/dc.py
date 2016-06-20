@@ -179,18 +179,6 @@ mapping.register('kerberosRealm', 'krb5RealmName', None, univention.admin.mappin
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global options
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		self.alloc=[]
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo,  position, dn, superordinate, attributes = attributes )
-
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 

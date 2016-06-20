@@ -357,7 +357,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		global s4connector_present
-		self.alloc = []
 
 		# s4connector_present is a global caching variable than can be
 		# None ==> ldap has not been checked for servers with service "S4 Connector"
