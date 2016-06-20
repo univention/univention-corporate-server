@@ -59,6 +59,7 @@ class Update(UniventionAppAction):
 
 	def __init__(self):
 		super(Update, self).__init__()
+		self._cache_dir = None
 		self._ucs_version = None
 		self._appcenter_server = None
 		self._files_downloaded = dict()
@@ -66,8 +67,10 @@ class Update(UniventionAppAction):
 	def setup_parser(self, parser):
 		parser.add_argument('--ucs-version', help=SUPPRESS)
 		parser.add_argument('--appcenter-server', help=SUPPRESS)
+		parser.add_argument('--cache-dir', help=SUPPRESS)
 
 	def main(self, args):
+		self._cache_dir = args.cache_dir
 		self._ucs_version = args.ucs_version
 		self._appcenter_server = args.appcenter_server
 		something_changed_locally = self._extract_local_archive()
@@ -105,7 +108,7 @@ class Update(UniventionAppAction):
 	@possible_network_error
 	def _download_supra_files(self):
 		present_etags = {}
-		etags_file = os.path.join(CACHE_DIR, '.etags')
+		etags_file = os.path.join(self._get_cache_dir(), '.etags')
 		if os.path.exists(etags_file):
 			with open(etags_file, 'rb') as f:
 				for line in f:
@@ -136,7 +139,7 @@ class Update(UniventionAppAction):
 			etag = response.headers.get('etag')
 			present_etags[filename] = etag
 			content = response.read()
-			with open(os.path.join(CACHE_DIR, '.%s' % filename), 'wb') as f:
+			with open(os.path.join(self._get_cache_dir(), '.%s' % filename), 'wb') as f:
 				f.write(content)
 			AppManager.clear_cache()
 
@@ -162,15 +165,15 @@ class Update(UniventionAppAction):
 			# using StringIO and GZip objects has issues
 			# with "empty" files in tar.gz archives, i.e.
 			# doublets like .png logos
-			with open(os.path.join(CACHE_DIR, 'all.tar.gz'), 'wb') as f:
+			with open(os.path.join(self._get_cache_dir(), 'all.tar.gz'), 'wb') as f:
 				f.write(urlopen(archive_url).read())
 			archive = tarfile.open(f.name, 'r:*')
 			try:
 				for filename_url, filename, remote_md5sum in files_to_download:
 					self.debug('Extracting %s' % filename)
 					try:
-						archive.extract(filename, path=CACHE_DIR)
-						absolute_filename = os.path.join(CACHE_DIR, filename)
+						archive.extract(filename, path=self._get_cache_dir())
+						absolute_filename = os.path.join(self._get_cache_dir(), filename)
 						os.chown(absolute_filename, 0, 0)
 						os.chmod(absolute_filename, 0664)
 						local_md5sum = get_md5_from_file(absolute_filename)
@@ -197,7 +200,7 @@ class Update(UniventionAppAction):
 			path = quote(urlsplit(filename_url).path)
 			filename_url = '%s%s' % (self._get_server(), path)
 
-			cached_filename = os.path.join(CACHE_DIR, filename)
+			cached_filename = os.path.join(self._get_cache_dir(), filename)
 
 			self.debug('Downloading %s' % filename_url)
 			try:
@@ -218,7 +221,7 @@ class Update(UniventionAppAction):
 	#	component, ext = os.path.splitext(os.path.basename(filename))
 	#	ret = None
 	#	if hasattr(self, '_process_new_file_%s' % ext):
-	#		ini_file = os.path.join(CACHE_DIR, '%s.ini' % component)
+	#		ini_file = os.path.join(self._get_cache_dir(), '%s.ini' % component)
 	#		try:
 	#			local_app = App.from_ini(ini_file)
 	#		except IOError:
@@ -226,7 +229,7 @@ class Update(UniventionAppAction):
 	#		else:
 	#			ret = self.getattr('_process_new_file_%s' % ext)(filename, local_app)
 	#	if ret != 'reject':
-	#		shutil.copy2(filename, CACHE_DIR)
+	#		shutil.copy2(filename, self._get_cache_dir())
 	#	return ret
 
 	#def _process_new_file_ini(self, filename, local_app):
@@ -261,9 +264,9 @@ class Update(UniventionAppAction):
 	def _update_local_files(self):
 		self.debug('Updating app files...')
 		update_files = {
-			'inst' : lambda x: self._get_joinscript_path(x, unjoin=False),
-			'schema' : lambda x: x.get_share_file('schema'),
-			'univention-config-registry-variables' : lambda x: x.get_share_file('univention-config-registry-variables'),
+			'inst': lambda x: self._get_joinscript_path(x, unjoin=False),
+			'schema': lambda x: x.get_share_file('schema'),
+			'univention-config-registry-variables': lambda x: x.get_share_file('univention-config-registry-variables'),
 		}
 		for app in AppManager.get_all_locally_installed_apps():
 			for file in update_files:
@@ -282,7 +285,7 @@ class Update(UniventionAppAction):
 					src_md5 = self._files_downloaded[component_file]
 					dest_md5 = None
 					if os.path.exists(dest):
-						dest_md5 = get_md5_from_file(dest) 
+						dest_md5 = get_md5_from_file(dest)
 					if dest_md5 is None or src_md5 != dest_md5:
 						self.log('Copying %s to %s' % (src, dest))
 						shutil.copy2(src, dest)
@@ -290,7 +293,7 @@ class Update(UniventionAppAction):
 							os.chmod(dest, 0755)
 
 	def _extract_local_archive(self):
-		if any(not fname.startswith('.') for fname in os.listdir(CACHE_DIR)):
+		if any(not fname.startswith('.') for fname in os.listdir(self._get_cache_dir())):
 			# we already have a cache. our archive is just outdated...
 			return False
 		if not os.path.exists(LOCAL_ARCHIVE):
@@ -309,8 +312,8 @@ class Update(UniventionAppAction):
 					# just some paranoia
 					continue
 				self.debug('Extracting %s' % filename)
-				archive.extract(filename, path=CACHE_DIR)
-				self._files_downloaded[filename] = get_md5_from_file(os.path.join(CACHE_DIR, filename))
+				archive.extract(filename, path=self._get_cache_dir())
+				self._files_downloaded[filename] = get_md5_from_file(os.path.join(self._get_cache_dir(), filename))
 		finally:
 			self._update_local_files()
 			archive.close()
@@ -318,6 +321,11 @@ class Update(UniventionAppAction):
 
 	def _get_metainf_url(self):
 		return '%s/meta-inf/%s' % (self._get_server(), self._get_ucs_version())
+
+	def _get_cache_dir(self):
+		if self._cache_dir is None:
+			self._cache_dir = CACHE_DIR
+		return self._cache_dir
 
 	def _get_server(self):
 		if self._appcenter_server is None:
@@ -328,7 +336,7 @@ class Update(UniventionAppAction):
 		return self._appcenter_server
 
 	def _load_index_json(self):
-		index_json_gz_filename = os.path.join(CACHE_DIR, '.index.json.gz')
+		index_json_gz_filename = os.path.join(self._get_cache_dir(), '.index.json.gz')
 		if not ucr_is_false('appcenter/index/verify'):
 			detached_sig_path = index_json_gz_filename + '.gpg'
 			(rc, gpg_error) = gpg_verify(index_json_gz_filename, detached_sig_path)
@@ -350,7 +358,7 @@ class Update(UniventionAppAction):
 				remote_md5sum = appfileinfo['md5']
 				remote_url = appfileinfo['url']
 				# compare with local cache
-				cached_filename = os.path.join(CACHE_DIR, filename)
+				cached_filename = os.path.join(self._get_cache_dir(), filename)
 				files_in_json_file.append(cached_filename)
 				local_md5sum = get_md5_from_file(cached_filename)
 				if remote_md5sum != local_md5sum:
@@ -358,8 +366,10 @@ class Update(UniventionAppAction):
 					files_to_download.append((remote_url, filename, remote_md5sum))
 					something_changed = True
 		# remove those files that apparently do not exist on server anymore
-		for cached_filename in glob(os.path.join(CACHE_DIR, '*')):
+		for cached_filename in glob(os.path.join(self._get_cache_dir(), '*')):
 			if os.path.basename(cached_filename).startswith('.'):
+				continue
+			if os.path.isdir(cached_filename):
 				continue
 			if cached_filename not in files_in_json_file:
 				self.log('Deleting obsolete %s' % cached_filename)
