@@ -738,7 +738,6 @@ class App(object):
 		else:
 			self.auto_mod_proxy = False
 			self.ports_redirection = []
-		self._has_logo_detail_page = None
 
 	def attrs_dict(self):
 		ret = {}
@@ -771,7 +770,7 @@ class App(object):
 		if locale is True:
 			locale = get_locale()
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]
-		meta_file = os.path.join(CACHE_DIR, '%s.meta' % component_id)
+		meta_file = os.path.join(os.path.dirname(ini_file), '%s.meta' % component_id)
 		ini_parser = _read_ini_file(ini_file)
 		meta_parser = _read_ini_file(meta_file)
 		attr_values = {}
@@ -911,8 +910,17 @@ class App(object):
 			mkdir(os.path.dirname(fname))
 		return fname
 
+	def get_ucs_version(self):
+		return self.ucs_version
+
+	def get_server(self):
+		return AppManager.get_server()
+
+	def get_cache_dir(self):
+		return CACHE_DIR
+
 	def get_cache_file(self, ext):
-		return os.path.join(CACHE_DIR, '%s.%s' % (self.component_id, ext))
+		return os.path.join(self.get_cache_dir(), '%s.%s' % (self.component_id, ext))
 
 	def get_ini_file(self):
 		return self.get_cache_file('ini')
@@ -923,12 +931,8 @@ class App(object):
 
 	@property
 	def logo_detail_page_name(self):
-		if self._has_logo_detail_page is None:
-			# cache value
-			self._has_logo_detail_page = os.path.exists(self.get_cache_file('logodetailpage'))
-		if self._has_logo_detail_page:
+		if os.path.exists(self.get_cache_file('logodetailpage')):
 			return 'apps-%s-detail.svg' % self.component_id
-		return None
 
 	def get_thumbnail_urls(self):
 		if not self.thumbnails:
@@ -941,10 +945,11 @@ class App(object):
 				continue
 
 			app_path = '%s/' % self.id
-			if self.ucs_version == '4.0' or self.ucs_version.startswith('3.'):
+			ucs_version = self.get_ucs_version()
+			if ucs_version == '4.0' or ucs_version.startswith('3.'):
 				# since UCS 4.1, each app has a separate subdirectory
 				app_path = ''
-			thumbnails.append('%s/meta-inf/%s/%s%s' % (AppManager.get_server(), self.ucs_version, app_path, ithumb))
+			thumbnails.append('%s/meta-inf/%s/%s%s' % (self.get_server(), ucs_version, app_path, ithumb))
 		return thumbnails
 
 	def get_localised(self, key, loc=None):
