@@ -180,6 +180,45 @@ check_for_postgresql84 () {
 }
 check_for_postgresql84
 
+## Check docker network and disable docker if necessary
+check_docker_network () {
+	python -c "
+import sys
+try:
+	import univention.config_registry
+	from univention.config_registry import interfaces
+	import ipaddr
+except ImportError:
+	sys.exit(0)
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+docker0_net = ipaddr.IPv4Network(ucr.get('docker/daemon/default/opts/bip', '172.17.42.1/16'))
+for name, iface in interfaces.Interfaces().ipv4_interfaces:
+	if 'network' in iface and 'netmask' in iface:
+		my_net = ipaddr.IPv4Network('%s/%s' % (iface['network'], iface['netmask']))
+		if my_net.overlaps(docker0_net):
+			sys.exit(1)
+sys.exit(0) "
+
+	if [ $? -ne 0 ]; then
+		echo "disable docker" >&3
+		# during update docker.io starts docker and autostart/docker is not yet known,
+		# so remove the docker binary
+		dpkg-divert --package univention --rename --divert "/usr/bin/docker.disabled" --add "/usr/bin/docker" >&3 || true
+		echo -e '#!/bin/bash\nexit 0' > /usr/bin/docker
+		chmod 755 /usr/bin/docker
+		md5="$(md5sum /usr/bin/docker | awk '{print $1}')"
+		ucr set docker/update41/md5sum="$md5" >&3
+		ucr set appcenter/docker=no >&3
+		ucr set appcenter/docker/update41/disabled=yes >&3
+		ucr set docker/autostart=no >&3
+		ucr set docker/autostart/update41/disabled=yes >&3
+	fi
+}
+if ! is_ucr_true update41/skip/dockertest; then
+	check_docker_network
+fi
+
 #################### Bug #22093
 
 list_passive_kernels () {

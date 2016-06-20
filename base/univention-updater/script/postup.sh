@@ -135,6 +135,15 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 	fi
 fi
 
+# remove docker divert
+if [ -n "$(dpkg-divert --list /usr/bin/docker)" ]; then
+	if [ "$(ucr get docker/update41/md5sum)" = "$(md5sum /usr/bin/docker | awk '{print $1}')" ]; then
+		ucr unset docker/update41/md5sum >&3
+		rm /usr/bin/docker
+	fi
+	dpkg-divert --package univention --rename --divert "/usr/bin/docker.disabled" --remove "/usr/bin/docker" >&3 || true
+fi
+
 if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 	udm computers/$server_role modify \
 		--binddn "$ldap_hostdn" \
