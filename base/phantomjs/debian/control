@@ -1,4 +1,4 @@
-Source: univention-phantomjs
+Source: phantomjs
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -25,7 +25,7 @@ Build-Depends: debhelper (>= 7.0.50~),
  libxext-dev,
  ca-certificates,
 
-Package: univention-phantomjs
+Package: phantomjs
 Architecture: any
 Description: minimalistic headless WebKit-based with JavaScript API
  PhantomJS is a headless WebKit with JavaScript API. It has fast and native

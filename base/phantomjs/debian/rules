@@ -3,7 +3,7 @@
 VERSION = 2.1.1
 URL = git://github.com/ariya/phantomjs.git
 DIR := phantomjs
-TAR := univention-phantomjs_$(VERSION).orig.tar.gz
+TAR := phantomjs_$(VERSION).orig.tar.gz
 
 get-orig-source: $(TAR)
 $(TAR): $(DIR)
