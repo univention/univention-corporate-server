@@ -1,3 +1,9 @@
+phantomjs (0.2.1.1-13) unstable; urgency=medium
+
+  * Bug #40934: Renamed package univention-phantomjs -> phantomjs fixes
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 20 Jun 2016 18:20:43 +0200
+
 phantomjs (0.2.1.1-12) unstable; urgency=medium
 
   * Bug #40934: Renamed package univention-phantomjs -> phantomjs
