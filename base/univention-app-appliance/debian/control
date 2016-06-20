@@ -23,7 +23,7 @@ Pre-Depends: python-univention-app-appliance (= ${binary:Version})
 Depends: ${misc:Depends},
  univention-welcome-screen,
  python-requests,
- univention-phantomjs
+ phantomjs
 
 Package: python-univention-app-appliance
 Architecture: all

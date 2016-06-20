@@ -1,3 +1,9 @@
+univention-app-appliance (0.2.2-32) unstable; urgency=medium
+
+  * Bug #40934: Renamed package univention-phantomjs -> phantomjs 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 20 Jun 2016 16:54:52 +0200
+
 univention-app-appliance (0.2.2-31) unstable; urgency=medium
 
   * Bug #39465: bump package version
