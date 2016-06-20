@@ -1,3 +1,9 @@
+univention-bootsplash (7.0.2-15) unstable; urgency=medium
+
+  * Bug #40046: bump package version
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Jun 2016 15:57:35 +0200
+
 univention-bootsplash (7.0.2-14) unstable; urgency=medium
 
   * Bug #40826: Changed header message
