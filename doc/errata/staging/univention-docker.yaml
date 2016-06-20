@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-docker
-fix: 1.0.1-4.13.201606201144
+fix: 1.0.1-5.14.201606201333
 desc: |
  This update addresses the following issue(s):
  * The docker daemon options are now configurable via the
