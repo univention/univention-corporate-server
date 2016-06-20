@@ -72,8 +72,8 @@ def disable_ad_restrictions(disable=True):
 	_prevent_to_change_ad_properties = disable
 
 
-# manages properties
 class base(object):
+
 	def __init__(self, co, lo, position, dn='', superordinate = None ):
 		self.co = co
 		self.lo = lo
@@ -141,49 +141,35 @@ class base(object):
 		'''checks if the given attribute(s) was (were) changed; key can either be a
 		string (scalar) or a list'''
 
-		if type(key) == types.StringType or type(key) == types.UnicodeType:
-			if (not self.oldinfo.get(key, '') or self.oldinfo[key] == [''] or self.oldinfo[key] == []) \
-				and (not self.info.get(key, '') or self.info[key] == [''] or self.info[key] == []):
-				return False
-			else:
-				return not univention.admin.mapping.mapCmp(self.mapping, key, self.oldinfo.get(key, ''), self.info.get(key, ''))
-		elif type(key) == types.ListType:
-			for i in key:
-				if self.hasChanged(i):
-					return True
-		return False
+		if isinstance(key, (list, tuple)):
+			return any(self.hasChanged(i) for i in key)
+		if (not self.oldinfo.get(key, '') or self.oldinfo[key] == [''] or self.oldinfo[key] == []) \
+			and (not self.info.get(key, '') or self.info[key] == [''] or self.info[key] == []):
+			return False
+
+		return not univention.admin.mapping.mapCmp(self.mapping, key, self.oldinfo.get(key, ''), self.info.get(key, ''))
 
 	def ready(self):
 		'''checks if all properties marked required are set'''
 
 		for name, p in self.descriptions.items():
+			# skip if this property is not present in the current option set
+			if p.options and not set(p.options) & set(self.options):
+				continue
 
-			# check if this property is present in the current option set,
-			# skip otherwise
-			if hasattr(self, 'options') and p.options:
-				in_options=0
-				for o in p.options:
-					if o in self.options:
-						in_options=1
-						break
-				if not in_options:
-					continue
-
-			if p.required and (not self[name] or (type(self[name]) == list and self[name]==[''])):
+			if p.required and (not self[name] or (isinstance(self[name], list) and self[name] == [''])):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "property %s is required but not set." % name)
-				return 0
-		return 1
+				return False
+		return True
 
 	def has_key(self, key):
-		if not self.descriptions.has_key(key):
-			return 0
-		p=self.descriptions[key]
-		if hasattr(self, 'options') and p.options:
-			for o in p.options:
-				if o in self.options:
-					return 1
-			return 0
-		return 1
+		try:
+			p = self.descriptions[key]
+		except KeyError:
+			return False
+		if p.options:
+			return bool(set(p.options) & set(self.options))
+		return True
 
 	def __setitem__(self, key, value):
 		def _changeable():
@@ -194,17 +180,14 @@ class base(object):
 			#	yield not (self.descriptions[key].readonly_when_synced and self._is_synced_object() and self.exists())
 
 		# property does not exist
-		options=0
 		if not self.has_key(key):
-			if self.descriptions[key].options:
-				if hasattr(self, 'options'):
-					options=1
-					for o in self.descriptions[key].options:
-						if o in self.options:
-							raise univention.admin.uexceptions.noProperty, key
-			if options:
-				return
-			raise univention.admin.uexceptions.noProperty, key
+			# don't set value if the option is not enabled
+			try:
+				self.descriptions[key]
+			except KeyError:
+				#raise univention.admin.uexceptions.noProperty(key)
+				raise
+			return
 		# attribute may not be changed
 		elif not all(_changeable()):
 			raise univention.admin.uexceptions.valueMayNotChange(_('key=%(key)s old=%(old)s new=%(new)s') % {'key': key, 'old': self[key], 'new':value})
@@ -222,10 +205,10 @@ class base(object):
 		if self.descriptions[key].multivalue:
 
 			# make sure value is list
-			if type(value) == types.StringType or type(value) == types.UnicodeType:
+			if isinstance(value, basestring):
 				value=[value]
-			elif not type(value) == types.ListType:
-				raise univention.admin.uexceptions.valueInvalidSyntax, key
+			elif not isinstance(value, list):
+				raise univention.admin.uexceptions.valueInvalidSyntax(key)
 
 			self.info[key]=[]
 			for v in value:
@@ -274,7 +257,7 @@ class base(object):
 			return None
 
 		if key in self.info:
-			if self.descriptions[key].multivalue and not type(self.info[key]) == types.ListType:
+			if self.descriptions[key].multivalue and not isinstance(self.info[key], list):
 				# why isn't this correct in the first place?
 				self.info[ key ] = [ self.info[ key ] ]
 			return self.info[ key ]
@@ -286,45 +269,26 @@ class base(object):
 		else:
 			return None
 
-	def get( self, key, default = None ):
-		if key in self.info:
-			return self.info[ key ]
-		return default
+	def get(self, key, default=None):
+		return self.info.get(key, default)
 
-	def __contains__( self, key ):
+	def __contains__(self, key):
 		return key in self.descriptions
 
 	def keys(self):
 		return self.descriptions.keys()
 
 	def items(self):
-
-		# this returns emtpy strings resp. empty lists for attributes not set
-		r=[]
-		for key in self.keys():
-			if not self.has_key(key): # may happen if key is disabled by option, i.e. if share is no samba-share or user is no samba-user
-				if self.descriptions.has_key(key) and hasattr(self.descriptions[key],'options'):
-					option_set=0
-					for o in self.descriptions[key].options:
-						if o in self.options:
-							option_set=1
-					if option_set:
-						raise univention.admin.uexceptions.noProperty, key # because key is enabled but not in self
-					else:
-						pass # because key is disabled by option
-				else: raise univention.admin.uexceptions.noProperty, key # because given key is either in self nor in options
-			else: # key is OK
-				r.append((key, self[key]))
-		return r
+		# return all items which belong to the current options - even if they are empty
+		return [(key, self[key]) for key in self.keys() if self.has_key(key)]
 
 	def create(self):
 		'''create object'''
 
 		if self.exists():
-			raise univention.admin.uexceptions.objectExists, self.dn
-		if hasattr(self,"_ldap_pre_ready"):
-			self._ldap_pre_ready()
+			raise univention.admin.uexceptions.objectExists(self.dn)
 
+		self._ldap_pre_ready()
 		if not self.ready():
 			raise univention.admin.uexceptions.insufficientInformation
 
@@ -334,12 +298,12 @@ class base(object):
 		'''modify object'''
 
 		if not self.exists():
-			raise univention.admin.uexceptions.noObject
-		if hasattr(self,"_ldap_pre_ready"):
-			self._ldap_pre_ready()
+			raise univention.admin.uexceptions.noObject(self.dn)
 
+		self._ldap_pre_ready()
 		if not self.ready():
 			raise univention.admin.uexceptions.insufficientInformation
+
 		return self._modify(modify_childs,ignore_license=ignore_license)
 
 	def _create_temporary_ou(self):
@@ -519,6 +483,27 @@ class base(object):
 			raise univention.admin.uexceptions.primaryGroupWithoutSamba(self['primaryGroup'])
 		return sidNum
 
+	def _update_policies(self):
+		pass
+	def _ldap_pre_ready(self):
+		pass
+	def _ldap_pre_create(self):
+		pass
+	def _ldap_post_create(self):
+		pass
+	def _ldap_pre_modify(self):
+		pass
+	def _ldap_post_modify(self):
+		pass
+	def _ldap_pre_move(self):
+		pass
+	def _ldap_post_move(self):
+		pass
+	def _ldap_pre_remove(self):
+		pass
+	def _ldap_post_remove(self):
+		pass
+
 def _not_implemented_method(attr):
 	def _not_implemented_error(self, *args, **kwargs):
 		raise NotImplementedError('%s() not implemented by %s.%s().' % (attr, self.__module__, self.__class__.__name__))
@@ -660,12 +645,8 @@ class simpleLdap(base):
 
 	def _create(self):
 		self.exceptions = []
-		if hasattr(self,"_ldap_pre_create"):
-			self._ldap_pre_create()
-
-		if hasattr(self,"_update_policies"):
-			self._update_policies()
-
+		self._ldap_pre_create()
+		self._update_policies()
 		self.call_udm_property_hook('hook_ldap_pre_create', self)
 
 		# Make sure all default values are set ...
@@ -726,24 +707,23 @@ class simpleLdap(base):
 		self.lo.add(self.dn, al)
 		self._exists = True
 
-		if hasattr(self,'_ldap_post_create'):
-			# if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
+		# if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
+		try:
+			self._ldap_post_create()
+		except:
+			# ensure that there is no lock left
+			import traceback, sys
+			exc = sys.exc_info()
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-Create operation failed: %s" % (traceback.format_exc(),))
 			try:
-				self._ldap_post_create()
+				self.cancel()
 			except:
-				# ensure that there is no lock left
-				import traceback, sys
-				exc = sys.exc_info()
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-Create operation failed: %s" % (traceback.format_exc(),))
-				try:
-					self.cancel()
-				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
-				try:
-					self.remove()
-				except:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
-				raise exc[0], exc[1], exc[2]
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: cancel() failed: %s" % (traceback.format_exc(),))
+			try:
+				self.remove()
+			except:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "Post-create: remove() failed: %s" % (traceback.format_exc(),))
+			raise exc[0], exc[1], exc[2]
 
 		self.call_udm_property_hook('hook_ldap_post_create', self)
 
@@ -755,11 +735,8 @@ class simpleLdap(base):
 
 		self.__prevent_ad_property_change()
 
-		if hasattr(self,"_ldap_pre_modify"):
-			self._ldap_pre_modify()
-		if hasattr(self,'_update_policies'):
-			self._update_policies()
-
+		self._ldap_pre_modify()
+		self._update_policies()
 		self.call_udm_property_hook('hook_ldap_pre_modify', self)
 
 		# Make sure all default values are set...
@@ -779,9 +756,7 @@ class simpleLdap(base):
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))
 		self.lo.modify(self.dn, ml, ignore_license=ignore_license)
 
-		if hasattr(self,'_ldap_post_modify'):
-			self._ldap_post_modify()
-
+		self._ldap_post_modify()
 		self.call_udm_property_hook('hook_ldap_post_modify', self)
 
 		self.save()
@@ -898,8 +873,7 @@ class simpleLdap(base):
 				self.lo.modify(group, [('uniqueMember', members, newmembers)])
 
 	def _move(self, newdn, modify_childs=1, ignore_license=0):
-		if hasattr(self,'_ldap_pre_move'):
-			self._ldap_pre_move(newdn)
+		self._ldap_pre_move(newdn)
 
 		olddn = self.dn
 		self.lo.rename(self.dn, newdn)
@@ -908,8 +882,7 @@ class simpleLdap(base):
 		try:
 			self._move_in_groups(olddn) # can be done always, will do nothing if oldinfo has no attribute 'groups'
 			self._move_in_subordinates(olddn)
-			if hasattr(self,'_ldap_post_move'):
-				self._ldap_post_move(olddn)
+			self._ldap_post_move(olddn)
 		except:
 			# move back
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN,
@@ -925,10 +898,7 @@ class simpleLdap(base):
 		if _prevent_to_change_ad_properties and self._is_synced_object():
 			raise univention.admin.uexceptions.invalidOperation(_('Objects from Active Directory can not be removed.'))
 
-		if hasattr(self,"_ldap_pre_remove"):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL,'_ldap_pre_remove() called')
-			self._ldap_pre_remove()
-
+		self._ldap_pre_remove()
 		self.call_udm_property_hook('hook_ldap_pre_remove', self)
 
 		if remove_childs:
@@ -948,8 +918,7 @@ class simpleLdap(base):
 		self.lo.delete(self.dn)
 		self._exists = False
 
-		if hasattr(self,"_ldap_post_remove"):
-			self._ldap_post_remove()
+		self._ldap_post_remove()
 
 		self.call_udm_property_hook('hook_ldap_post_remove', self)
 		self.save()
@@ -2620,15 +2589,12 @@ class simpleLdapSub(simpleLdap):
 
 	def _remove(self, remove_childs=0):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'_remove() called')
-		if hasattr(self,"_ldap_pre_remove"):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'_ldap_pre_remove() called')
-			self._ldap_pre_remove()
+		self._ldap_pre_remove()
 
 		ml=self._ldap_dellist()
 		self.lo.modify(self.dn, ml)
 
-		if hasattr(self,"_ldap_post_remove"):
-			self._ldap_post_remove()
+		self._ldap_post_remove()
 
 class simplePolicy(simpleLdap):
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
