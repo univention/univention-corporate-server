@@ -122,41 +122,18 @@ class base(object):
 
 	def diff(self):
 		'''returns differences between old and current state'''
+		changes = []
 
-		changes=[]
-		for key, value in self.oldinfo.items():
-			# FIXME: should be method of class property
-			if self.descriptions[key].multivalue:
-				null=[]
-			else:
-				null=None
-			if key not in self.info:
-				changes.append((key, value, null))
-			elif self.info[key] != value:
-				changes.append((key, value, self.info[key]))
-		for key, value in self.info.items():
-			# FIXME: should be method of class property
-			if self.descriptions[key].multivalue:
-				null=[]
-			else:
-				null=None
-			if key not in self.oldinfo:
-				changes.append((key, null, value))
-
-		# verify that no key is listed that requires an disabled option (Bug #13964)
-		if hasattr( self, 'options' ):
-			for item in changes[ : ]:
-				key, old, new = item
-				# removing a key is ok
-				if new in (None, []):
-					continue
-				if self.descriptions[ key ].options:
-					for opt in self.descriptions[ key ].options:
-						if opt in self.options:
-							break
-					else:
-						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, "simpleLdap.diff: key %s not valid (option not set)" % key )
-						changes.remove( item )
+		for key, prop in self.descriptions.items():
+			null = [] if prop.multivalue else None
+			# remove properties which are disabled by options
+			if prop.options and not set(prop.options) & set(self.options):
+				if self.oldinfo.get(key, null) not in (null, None):
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "simpleLdap.diff: key %s not valid (option not set)" % key)
+					changes.append((key, self.oldinfo[key], null))
+				continue
+			if (self.oldinfo.get(key) or self.info.get(key)) and self.oldinfo.get(key, null) != self.info.get(key, null):
+				changes.append((key, self.oldinfo.get(key, null), self.info.get(key, null)))
 
 		return changes
 
