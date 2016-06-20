@@ -1,3 +1,9 @@
+univention-app-appliance (0.2.2-31) unstable; urgency=medium
+
+  * Bug #39465: bump package version
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 20 Jun 2016 15:58:48 +0200
+
 univention-app-appliance (0.2.2-30) unstable; urgency=medium
 
   * Bug #40826: Use new Appcenter interface
