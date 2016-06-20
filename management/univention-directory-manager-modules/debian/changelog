@@ -1,3 +1,12 @@
+univention-directory-manager-modules (11.0.3-11) unstable; urgency=medium
+
+  * Bug #41580: consider attribute name aliases
+  * adjust logic for adding/removing object classes
+  * evaluate the set of options when instanciating a object
+  * fix logic of diff() to remove attributes of unset options
+
+ -- Florian Best <best@univention.de>  Wed, 15 Jun 2016 23:38:30 +0200
+
 univention-directory-manager-modules (11.0.3-10) unstable; urgency=low
 
   * Bug #41172: support cli option --remove on multivalue properties

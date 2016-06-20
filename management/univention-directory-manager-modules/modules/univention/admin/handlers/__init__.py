@@ -703,7 +703,7 @@ class simpleLdap(base):
 		# remove duplicated object classes
 		for i in al:
 			key, val = i[0], i[-1]  # might be a triple
-			if val and key.lower() == 'objectClass'.lower():
+			if val and key.lower() == 'objectclass':
 				ocs -= set([val] if isinstance(val, basestring) else val)
 		if ocs:
 			al.append(('objectClass', list(ocs)))
@@ -785,73 +785,94 @@ class simpleLdap(base):
 		m = univention.admin.modules.get(self.module)
 
 		ocs = set(_MergedAttributes(self, ml).get_attribute('objectClass'))
-
-		# evaluate extended attributes
-		object_classes_to_remove = set()
-		for prop in getattr(m, 'extended_udm_attributes', []):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r'% (prop.name, prop.objClass))
-
-			if not self.info.get(prop.name) or (prop.syntax == 'boolean' and self.info.get(prop.name) == '0'):
-				if prop.deleteObjClass:
-					object_classes_to_remove.add(prop.objClass)
-
-				# if the value is unset (or a boolean attribute with value == 0) we need to remove the attribute completely
-				if any(x[0].lower() == prop.ldapMapping.lower() for x in ml):
-					ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
-					ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
-			elif self.info.get(prop.name):  # if value is set then add the object class if neccessary
-				ocs |= set([prop.objClass])
+		unneeded_ocs = set()
+		required_ocs = set()
 
 		# evaluate (extended) options
-		available_options = set(getattr(m, 'options', {}).keys())
-		options = set(getattr(self, 'options', []))
-		old_options = set(getattr(self, 'old_options', []))
+		module_options = univention.admin.modules.options(self.module)
+		available_options = set(module_options.keys())
+		options = set(self.options)
+		old_options = set(self.old_options)
+		if options != old_options:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options=%r; old_options=%r' % (options, old_options))
 		unavailable_options = (options - available_options) | (old_options - available_options)
 		if unavailable_options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, '%r does not provide options: %r' % (self.module, unavailable_options))
 		added_options = options - old_options - unavailable_options
 		removed_options = old_options - options - unavailable_options
 
-		ocs -= set(chain.from_iterable(m.options[option].objectClasses for option in removed_options))
-		ocs |= set(chain.from_iterable(m.options[option].objectClasses for option in added_options))
-		if set(self.oldattr.get('objectClass', [])) != ocs:
-			ml = [x for x in ml if x[0].lower() != 'objectClass'.lower()]
-			ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
+		# evaluate extended attributes
+		for prop in getattr(m, 'extended_udm_attributes', []):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r'% (prop.name, prop.objClass))
 
-		if object_classes_to_remove or set(self.oldattr.get('objectClass', [])) != ocs:
-			# parse LDAP schema
-			schema = self.lo.get_schema()
-			newattr = ldap.cidict.cidict(_MergedAttributes(self, ml).get_attributes())
-			ocs_afterwards = set(newattr.get('objectClass', [])) - object_classes_to_remove
+			if self.__ea_value_is_set(prop.name):
+				required_ocs |= set([prop.objClass])
+				continue
 
-			# make sure we still have a structural object class
-			if not schema.get_structural_oc(ocs_afterwards):
-				structural_ocs = schema.get_structural_oc(object_classes_to_remove)
-				if structural_ocs:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Preventing to remove last structural object class %r' % (structural_ocs,))
-					object_classes_to_remove -= set(schema.get_obj(ldap.schema.models.ObjectClass, structural_ocs).names)
-					ocs_afterwards = set(newattr.get('objectClass', [])) - object_classes_to_remove
-				else:
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'missing structural object class. Modify will fail.')
+			if prop.deleteObjClass:
+				unneeded_ocs |= set([prop.objClass])
+			#else:
+			#	required_ocs |= set([prop.objClass])
 
-			# validate removal of object classes
-			must, may = schema.attribute_types(ocs_afterwards)
-			must = ldap.cidict.cidict(dict((x, x) for x in list(chain.from_iterable(x.names for x in must.values()))))
-			may = ldap.cidict.cidict(dict((x, x) for x in list(chain.from_iterable(x.names for x in may.values()))))
-			for attr in must.keys():
-				if not newattr.get(attr):
-					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'The attribute %r is required by the current object classes.' % (attr,))
-					break
-			else:
-				for attr, val in newattr.items():
-					if val and not must.get(attr) and not may.get(attr):
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'The attribute %r is not allowed by any object class.' % (attr,))
-						# ml.append((attr, val, [])) # TODO: Remove the now invalid attribute instead
-						break
-				else:
-					ml = [x for x in ml if x[0].lower() != 'objectclass']
-					ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs - object_classes_to_remove)))
+			# if the value is unset (or a boolean attribute with value == 0) we need to remove the attribute completely
+			if self.oldattr.get(prop.ldapMapping):
+				ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
+				ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
+
+		unneeded_ocs |= set(chain.from_iterable(module_options[option].objectClasses for option in removed_options))
+		required_ocs |= set(chain.from_iterable(module_options[option].objectClasses for option in added_options))
+
+		ocs -= unneeded_ocs
+		ocs |= required_ocs
+		if set(self.oldattr.get('objectClass', [])) == ocs:
+			return ml
+
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'OCS=%r; required=%r; removed: %r' % (ocs, required_ocs, unneeded_ocs))
+		schema = self.lo.get_schema()
+
+		# make sure we still have a structural object class
+		if not schema.get_structural_oc(ocs):
+			structural_ocs = schema.get_structural_oc(unneeded_ocs)
+			if not structural_ocs:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'missing structural object class. Modify will fail.')
+				return ml
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Preventing to remove last structural object class %r' % (structural_ocs,))
+			ocs -= set(schema.get_obj(ldap.schema.models.ObjectClass, structural_ocs).names)
+
+		# validate removal of object classes
+		must, may = schema.attribute_types(ocs)
+		allowed = set(name.lower() for attr in may.values() for name in attr.names) | set(name.lower() for attr in must.values() for name in attr.names)
+
+		_ml = [x for x in ml if x[0].lower() != 'objectclass']
+		_ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
+		newattr = ldap.cidict.cidict(_MergedAttributes(self, _ml).get_attributes())
+
+		# make sure only attributes known by the object classes are set
+		for attr, val in newattr.items():
+			if not val:
+				continue
+			if attr.lower() not in allowed:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'The attribute %r is not allowed by any object class.' % (attr,))
+				# ml.append((attr, val, [])) # TODO: Remove the now invalid attribute instead
+				return ml
+
+		# require all MUST attributes to be set
+		for attr in must.values():
+			if not any(newattr.get(name) for name in attr.names):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'The attribute %r is required by the current object classes.' % (attr.names,))
+				return ml
+
+		ml = [x for x in ml if x[0].lower() != 'objectclass']
+		ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
+
 		return ml
+
+	def __ea_value_is_set(self, name):
+		if not self.has_key(name):
+			return False
+		if self.descriptions[name].syntax == 'boolean' and self.info.get(name) == '0':
+			return False
+		return self.info.get(name)
 
 	def _move_in_subordinates(self, olddn):
 		searchFilter='(&(objectclass=person)(secretary=%s))'% univention.admin.filter.escapeForLdapFilter(olddn)
