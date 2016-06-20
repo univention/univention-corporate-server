@@ -68,15 +68,6 @@ options={
 		)
 }
 
-# global caching variable
-if configRegistry.is_true('directory/manager/samba3/legacy', False):
-	s4connector_present = False
-elif configRegistry.is_false('directory/manager/samba3/legacy', False):
-	s4connector_present = True
-else:
-	s4connector_present = None
-
-
 module_search_filter=univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionGroup'),
 	])
@@ -354,21 +345,6 @@ cache_uniqueMember = AgingCache()
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global s4connector_present
-
-		# s4connector_present is a global caching variable than can be
-		# None ==> ldap has not been checked for servers with service "S4 Connector"
-		# True ==> at least one server with IP address (aRecord) is present
-		# False ==> no server is present
-		if s4connector_present == None:
-			searchResult = lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr = ['aRecord'])
-			s4connector_present = True
-			if not [ ddn for (ddn, attr) in searchResult if attr.has_key('aRecord') ]:
-				s4connector_present = False
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
 	def open(self):
 		global options
@@ -1038,7 +1014,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.alloc.append(('sid', groupSid))
 		else:
 			num = self.gidNum
-			if s4connector_present and not self.__is_groupType_local(new_groupType):
+			if self.s4connector_present and not self.__is_groupType_local(new_groupType):
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
 				# new sambaSID back from Samba 4.
 				groupSid='S-1-4-%s' % num
