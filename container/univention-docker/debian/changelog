@@ -1,3 +1,11 @@
+univention-docker (1.0.1-5) unstable; urgency=low
+
+  * remove ...update41/disabled during this update
+    and restore default for appcenter/docker and
+    docker/autostart (Bug #40515)
+
+ -- Felix Botner <botner@univention.de>  Mon, 20 Jun 2016 13:31:53 +0200
+
 univention-docker (1.0.1-4) unstable; urgency=low
 
   * ignore missing docker_bridge_network_conflict (Bug #40515)

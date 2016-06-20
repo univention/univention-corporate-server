@@ -45,7 +45,19 @@ if [ "$1" = "configure" ]; then
 	if [ -z "$2" ]; then	# New installation
 		:		# Nothing to do
 	else			# Update installation
-		:		# Nothing to do
+
+		# remove docker/autostart[appcenter] variables set during
+		# 4.1-0 update
+		if dpkg --compare-versions "$2" lt 1.0.1-5; then
+			if is_ucr_true docker/autostart/update41/disabled; then
+				ucr unset docker/autostart/update41/disabled
+				ucr set docker/autostart=yes
+			fi
+			if is_ucr_true appcenter/docker/update41/disabled; then
+				ucr unset appcenter/docker/update41/disabled
+				ucr set appcenter/docker=enabled
+			fi
+		fi
 	fi
 
 	# fix docker start/stop order if not modified from defaults
