@@ -211,3 +211,5 @@ desc: |
  * CVE-2015-3330
    PHP potential remote code execution with apache 2.4 apache2handler
 bug: [38590]
+erratum: 283
+announced: 2016-06-20
