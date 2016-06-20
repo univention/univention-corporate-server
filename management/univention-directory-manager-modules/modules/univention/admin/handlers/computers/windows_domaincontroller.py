@@ -369,7 +369,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 		nagios.Support.__init__(self)
-		self.old_samba_option = 'sambaSamAccount' in self.oldattr.get('objectClass', [])
 
 	def open(self):
 		univention.admin.handlers.simpleComputer.open( self )
@@ -473,7 +472,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			al.append(('sambaSID', [self.machineSid]))
 			al.append(('sambaAcctFlags', [acctFlags.decode()]))
 			al.append(('displayName', self.info['name']))
-			self.old_samba_option = True
 
 		al.insert(0, ('objectClass', ocs))
 		al.append(('univentionServerRole', '', 'windows_domaincontroller'))
@@ -585,7 +583,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
 		# add samba option
-		if 'samba' in self.options and not self.old_samba_option:
+		if self.exists() and self.option_toggled('samba') and self.option_is_enabled('samba'):
 			acctFlags=univention.admin.samba.acctFlags(flags={'S':1})
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
@@ -600,7 +598,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ml.append(('displayName', '', self.info['name']))
 			sambaPwdLastSetValue = str(long(time.time()))
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
-		if not 'samba' in self.options and self.old_samba_option:
+		if self.exists() and self.option_toggled('samba') and not self.option_is_enabled('samba'):
 			ocs=self.oldattr.get('objectClass', [])
 			if 'sambaSamAccount' in ocs:
 				ml.insert(0, ('objectClass', 'sambaSamAccount', ''))
@@ -613,8 +611,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ml.append(('sambaSID', self.oldattr.get('sambaSID', ['']), [self.machineSid]))
 
 		return ml
-
-
 
 	def cleanup(self):
 		self.open()
