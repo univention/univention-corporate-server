@@ -246,14 +246,12 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.descriptions=property_descriptions
 
 		self.alloc=[]
-		self.options = []
 
 		self.ipRequest=0
 
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 		nagios.Support.__init__(self)
-
 		self.save( )
 
 	def open(self):

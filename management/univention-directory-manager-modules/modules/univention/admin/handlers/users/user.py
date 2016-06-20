@@ -1351,16 +1351,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 		mungeddial.Support.__init__( self )
 
-		self.options=[]
-		if 'objectClass' in self.oldattr:
-			ocs = set(self.oldattr['objectClass'])
-			for opt, option in options.iteritems():
-				if not option.disabled and option.matches(ocs):
-					self.options.append(opt)
-		else:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user.py: reset options to default by _define_options' )
-			self._define_options( options )
-
 		if 'posix' in self.options:
 
 			# The shadowLastChange attribute is the amount of days between 1/1/1970 upto the day that password was modified,
@@ -1556,8 +1546,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						if primaryGroupResult:
 							self['primaryGroup']=primaryGroupResult[0]
 							self.newPrimaryGroupDn=primaryGroupResult[0]
-
-		self.old_options= copy.deepcopy( self.options )
 
 	def modify(self, *args, **kwargs):
 		try:

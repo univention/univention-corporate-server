@@ -356,15 +356,8 @@ class object(univention.admin.handlers.simpleLdap):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global options
-		global mapping
-		global property_descriptions
 		global s4connector_present
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-
-		self.alloc=[]
+		self.alloc = []
 
 		# s4connector_present is a global caching variable than can be
 		# None ==> ldap has not been checked for servers with service "S4 Connector"
@@ -377,16 +370,6 @@ class object(univention.admin.handlers.simpleLdap):
 				s4connector_present = False
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
-		self.options=[]
-		if 'objectClass' in self.oldattr:
-			ocs=self.oldattr['objectClass']
-			if 'posixGroup' in ocs:
-				self.options.append( 'posix' )
-			if 'sambaGroupMapping' in ocs:
-				self.options.append( 'samba' )
-		else:
-			self._define_options( options )
 
 	def open(self):
 		global options

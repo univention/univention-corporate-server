@@ -364,21 +364,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.oldPrimaryGroupDn=0
 
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
-
-		self.options = []
-		if self.oldattr.has_key('objectClass'):
-			ocs=self.oldattr['objectClass']
-			if 'krb5Principal' in ocs and 'krb5KDCEntry' in ocs:
-				self.options.append( 'kerberos' )
-			if 'posixAccount' in ocs:
-				self.options.append( 'posix' )
-		else:
-			self._define_options( options )
-
 		self.modifypassword=0
-
 		nagios.Support.__init__(self)
-
 		self.save( )
 
 	def open(self):

@@ -117,7 +117,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		super(object, self).open()
 
-		self.options=['samba']
+		self.options=['samba']  # FIXME/TODO
 		self.modifypassword=1
 		if self.exists():
 			self['password']='********'

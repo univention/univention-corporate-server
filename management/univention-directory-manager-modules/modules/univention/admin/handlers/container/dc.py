@@ -186,8 +186,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.mapping=mapping
 		self.descriptions=property_descriptions
-		self.options = []
-		self._define_options( options )
 
 		self.alloc=[]
 

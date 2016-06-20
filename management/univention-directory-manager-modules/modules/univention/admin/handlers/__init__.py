@@ -105,6 +105,8 @@ class base(object):
 			if dn:
 				self.position.setDn(dn)
 		self._open = 0
+		self.options = []
+		self.old_options = []
 
 	def open(self):
 		self._open = 1
@@ -112,8 +114,12 @@ class base(object):
 	def save(self):
 		'''saves current state as old state'''
 
-		self.oldinfo=copy.deepcopy(self.info)
-		self.oldpolicies=copy.deepcopy(self.policies)
+		self.oldinfo = copy.deepcopy(self.info)
+		self.oldpolicies = copy.deepcopy(self.policies)
+		self.options = list(set(self.options))
+		self.old_options = []
+		if self.exists():
+			self.old_options = copy.deepcopy(self.options)
 
 	def diff(self):
 		'''returns differences between old and current state'''
@@ -556,7 +562,7 @@ class simpleLdap(base):
 		global s4connector_search
 
 		self._exists = False
-		self.exceptions=[]
+		self.exceptions = []
 		base.__init__(self, co, lo, position, dn, superordinate )
 		base.open(self)
 
@@ -587,6 +593,8 @@ class simpleLdap(base):
 			oldinfo={}
 		self.info=oldinfo
 
+		self.__set_options()
+
 		self.save()
 
 	def exists( self ):
@@ -613,11 +621,32 @@ class simpleLdap(base):
 		if name in self.options:
 			self.options.remove( name )
 
+	def __set_options(self):
+		self.options = []
+		options = univention.admin.modules.options(self.module)
+		if 'objectClass' in self.oldattr:
+			ocs = set(self.oldattr['objectClass'])
+			for opt, option in options.iteritems():
+				if not option.disabled and option.matches(ocs):
+					self.options.append(opt)
+		else:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'reset options to default by _define_options')
+			self._define_options(options)
+
 	def _define_options( self, module_options ):
+		# enable all default options
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'modules/__init__.py _define_options: reset to default options')
 		for name, opt in module_options.items():
 			if not opt.disabled and opt.default:
 				self.options.append( name )
+
+	def option_toggled(self, option):
+		'''Checks if an option was changed. This does not work for not yet existing objects.'''
+		return option in set(self.options) ^ set(self.old_options)
+
+	def option_is_enabled(self, option):
+		'''Checks if an option is enabled'''
+		return option in self.options
 
 	def description(self):
 		if self.dn:
@@ -664,9 +693,8 @@ class simpleLdap(base):
 		# Make sure all default values are set ...
 		for name, p in self.descriptions.items():
 			# ... if property has no option or any required option is currently enabled
-			options_match = bool(set(p.options) & set(self.options)) if getattr(self, 'options', []) and p.options else True
-			if options_match and self.descriptions[name].default(self):
-				self[name]
+			if self.has_key(name) and self.descriptions[name].default(self):
+				self[name]  # __getitem__ sets default value
 
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
@@ -689,10 +717,11 @@ class simpleLdap(base):
 				continue
 
 			# in all other cases add object class
-			ocs.add(prop.objClass)
+			if self.has_key(prop.name):
+				ocs.add(prop.objClass)
 
 		# add object classes of (especially extended) options
-		for option in getattr(self, 'options', []):
+		for option in self.options:
 			try:
 				opt = m.options[option]
 			except KeyError:
@@ -717,6 +746,7 @@ class simpleLdap(base):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "create object with dn: %s" % (self.dn,))
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Create dn=%r;\naddlist=%r;' % (self.dn, al))
 		self.lo.add(self.dn, al)
+		self._exists = True
 
 		if hasattr(self,'_ldap_post_create'):
 			# if anything goes wrong we need to remove the already created object, otherwise we run into 'already exists' errors
@@ -756,11 +786,9 @@ class simpleLdap(base):
 
 		# Make sure all default values are set...
 		for name, p in self.descriptions.items():
-			# check if this property is present in the current option set,
-			# skip otherwise
-			if getattr(self, 'options', []) and p.options and (set(p.options) & set(self.options)):
-				if self.descriptions[name].default(self):
-					self[name]
+			# ... if property has no option or any required option is currently enabled
+			if self.has_key(name) and self.descriptions[name].default(self):
+				self[name]  # __getitem__ sets default value
 
 		# iterate over all properties and call checkLdap() of corresponding syntax
 		self._call_checkLdap_on_all_property_syntaxes()
@@ -940,11 +968,13 @@ class simpleLdap(base):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove: could not remove subelements')
 
 		self.lo.delete(self.dn)
+		self._exists = False
 
 		if hasattr(self,"_ldap_post_remove"):
 			self._ldap_post_remove()
 
 		self.call_udm_property_hook('hook_ldap_post_remove', self)
+		self.save()
 
 	def loadPolicyObject(self, policy_type, reset=0):
 		pathlist=[]

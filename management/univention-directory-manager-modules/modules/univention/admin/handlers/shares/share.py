@@ -822,10 +822,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
-		self.options = []
-		self._define_options( options )
-
-
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
@@ -835,12 +831,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self.mapping_list[key] = mapping.mapName(key)
 
 		if self.oldattr.has_key('objectClass'):
-			global options
-			self.options = []
-			if 'univentionShareSamba' in self.oldattr['objectClass']:
-				self.options.append( 'samba' )
-			if 'univentionShareNFS' in self.oldattr['objectClass']:
-				self.options.append( 'nfs' )
 			try:
 				# Attention: Because of performance reasons, the syntax
 				#   class nfsShare uses '%(name)s (%(host)s)' as label, not
@@ -850,8 +840,6 @@ class object(univention.admin.handlers.simpleLdap):
 				self['printablename'] = "%s (%s)" % (self['name'], self['host'])
 			except:
 				pass
-
-		self.old_options = copy.deepcopy( self.options )
 
 		self.save()
 

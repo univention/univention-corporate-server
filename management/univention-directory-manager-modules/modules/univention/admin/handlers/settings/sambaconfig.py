@@ -215,7 +215,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.mapping=mapping
 		self.descriptions=property_descriptions
- 		self.options=[]
 
 		self.alloc=[]
 
@@ -224,11 +223,11 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
-	def _ldap_pre_create(self):		
+	def _ldap_pre_create(self):
 		self.dn='cn=%s,%s' % ( mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		ocs=['top', 'univentionSambaConfig']		
+		ocs=['top', 'univentionSambaConfig']
 
 		
 		return [

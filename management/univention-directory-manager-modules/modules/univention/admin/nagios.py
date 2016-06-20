@@ -126,17 +126,7 @@ class Support( object ):
 
 	def __init__( self ):
 		self.nagiosRemoveFromServices = False
-
-		if self.oldattr.has_key('objectClass'):
-			ocs = set(self.oldattr['objectClass'])
-			for opt in [ 'nagios' ]:
-				if nagios_options[opt].matches(ocs):
-					self.options.append(opt)
-
-		if 'nagios' in self.options:
-			self.old_nagios_option = True
-		else:
-			self.old_nagios_option = False
+		self.old_nagios_option = 'nagios' in self.options
 
 	def __getFQDN(self):
 		hostname = self.oldattr.get("cn", [None])[0]

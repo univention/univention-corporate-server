@@ -244,7 +244,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.descriptions=property_descriptions
 
 		self.alloc=[]
-		self.options = []
 
 		self.ipRequest=0
 

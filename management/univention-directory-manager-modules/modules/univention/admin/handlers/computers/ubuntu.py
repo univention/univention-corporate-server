@@ -350,30 +350,16 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		self.ipRequest=0
 
-		self.old_samba_option = False
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
-		self.options = []
 		nagios.Support.__init__(self)
 
 	def open(self):
 		global options
 		univention.admin.handlers.simpleComputer.open( self )
 		self.nagios_open()
-
-		if self.oldattr.has_key('objectClass'):
-			ocs=self.oldattr['objectClass']
-			if 'krb5Principal' in ocs and 'krb5KDCEntry' in ocs:
-				self.options.append( 'kerberos' )
-			if 'posixAccount' in ocs:
-				self.options.append( 'posix' )
-			if 'sambaSamAccount' in ocs:
-				self.old_samba_option = True
-				self.options.append( 'samba' )
-		else:
-			self._define_options( options )
+		self.old_samba_option = 'sambaSamAccount' in self.oldattr.get('objectClass', [])
 
 		self.modifypassword=0
-
 
 		if self.exists():
 
@@ -619,8 +605,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		return ml
 
-
-
 	def cleanup(self):
 		self.open()
 		self.nagios_cleanup()
@@ -669,5 +653,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-		
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionUbuntuClient' in attr.get('objectClass', []) and ( 'posixAccount' in attr.get('objectClass', []) or ( 'krb5KDCEntry' in attr.get('objectClass', []) and 'krb5Principal' in attr.get('objectClass', []) ) )

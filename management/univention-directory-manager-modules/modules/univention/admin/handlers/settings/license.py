@@ -351,9 +351,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
-		self.options = []
-		self._define_options( options )
-
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
@@ -362,8 +359,6 @@ class object(univention.admin.handlers.simpleLdap):
 			self.options = ['Version 2']
 		else:
 			self.options = ['Version 1']
-
-		self.old_options = copy.deepcopy( self.options )
 
 		self.save()
 

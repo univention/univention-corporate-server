@@ -355,24 +355,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.newPrimaryGroupDn=0
 		self.oldPrimaryGroupDn=0
 
-		self.old_samba_option = False
-
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes )
 
-		self.options = []
-		if self.oldattr.has_key('objectClass'):
-			ocs=self.oldattr['objectClass']
-			if 'krb5Principal' in ocs and 'krb5KDCEntry' in ocs:
-				self.options.append( 'kerberos' )
-			if 'posixAccount' in ocs:
-				self.options.append( 'posix' )
-			if 'sambaSamAccount' in ocs:
-				self.old_samba_option = True
-				self.options.append( 'samba' )
-		else:
-			self._define_options( options )
-
 		nagios.Support.__init__(self)
+		self.old_samba_option = 'sambaSamAccount' in self.oldattr.get('objectClass', [])
 
 	def open(self):
 		univention.admin.handlers.simpleComputer.open( self )
