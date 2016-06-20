@@ -8,3 +8,5 @@ fix: 2:4.3.7-1.826.201605191435
 desc: |
  The update fixes a couple of regressions introduced by the initial
  Badlock update.
+erratum: 286
+announced: 2016-06-20
