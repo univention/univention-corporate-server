@@ -3,9 +3,22 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-system-setup
-fix: 9.0.4-8.961.201605121459
+fix: 
 desc: |
  This update addresses the following issue:
+ * A new option for setting up a UCS system has been added which allows a
+   fast instantiation for demo purposes. Some more aspects of the setup
+   process have been improved w.r.t. realiability and speed.
+ * Some more corrections have been applied for the fast UCS instantiation.
+ * Problems with a hanging setup process when finishing have been
+   corrected.
+ * The timeout for internal LDAP queries during changes of network
+   configurations has been adjusted for the UCS setup process.
+ * The rendering of the welcome screen after booting a UCS system has been
+   improved and overlaying log messages have been removed.
+ * Problems with a disabled repository after setup have been corrected.
+ * An error dialog has been corrected which eventually showed up during
+   the setup process stating that no module would be available.
  * A typo in the header for the initial setup of UCS on an
    Amazon EC2 instance has been corrected.
-bug: [40673]
+bug: [40046,41283,40985,40968,41026,40701,40751,40673]
