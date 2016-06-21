@@ -1,11 +1,10 @@
 #!/usr/share/ucs-test/runner python
 ## desc: |
 ##  Test settings/extended_options removal
-##  PMH-2016-06-15: The test currently does not work because of UDM not having a global "enable-option-if-objectclass-foud" logic (Bug #21608 2)
-## tags: [udm,WIP]
+## tags: [udm]
 ## roles: [domaincontroller_master]
 ## exposure: careful
-## bugs: [25240,21608]
+## bugs: [25240,21608,41580]
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
