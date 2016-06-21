@@ -1,0 +1,59 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test Univention Config Registry conditional set
+## bugs: [40728]
+## tags:
+##  - basic
+##  - apptest
+## exposure: careful
+
+. "$TESTLIBPATH/base.sh" || exit 137
+KEY="test/40728"
+
+Assert () { # Assert $1 = $2, optional error message $3
+	if [ "$1" != "$2" ]; then
+		echo "Test failed. ${3:-Got \"$1\" Expected \"$2\"}"
+		exit 110
+	fi
+}
+cleanup () {
+	local layer
+	for layer in "" --force --schedule --ldap-policy
+	do
+		ucr unset ${layer:+"$layer"} "$KEY" >/dev/null 2>&1 || :
+	done
+}
+trap cleanup EXIT
+
+##### Beginning #####
+cleanup
+
+##### Test conditional set #####
+debug Create "$KEY"
+ucr set "$KEY"?conditional >/dev/null 2>&1
+Assert "$(ucr get "$KEY")" "conditional"
+
+debug Unconditional overwrite
+ucr set "$KEY"=unconditional >/dev/null 2>&1
+Assert "$(ucr get "$KEY")" "unconditional"
+
+debug Conditional overwrite
+ucr set "$KEY"?conditional >/dev/null 2>&1
+Assert "$(ucr get "$KEY")" "unconditional"
+
+debug Unset "$KEY"
+ucr unset "$KEY" >/dev/null 2>&1
+
+debug Force layer create "$KEY"
+ucr set --force "$KEY"?conditional-force >/dev/null 2>&1
+Assert "$(ucr get "$KEY")" "conditional-force"
+
+debug Create "$KEY"
+ucr set "$KEY"?conditional >/dev/null 2>&1
+Assert "$(ucr get "$KEY")" "conditional-force"
+
+debug Unset force layer "$KEY"
+ucr unset --force "$KEY" >/dev/null 2>&1
+Assert "$(ucr get "$KEY")" "conditional"
+
+debug Cleanup
+exit 0

@@ -11,6 +11,12 @@ ucr () { # (get|set|unset) name[=value]...
 	case "${mode}" in
 		set|unset)
 			shift
+			case "${1:-}" in
+			--force) echo "$0: UCR layer '$1' not supported" >&2 ;;
+			--schedule) echo "$0: UCR layer '$1' not supported" >&2 ;;
+			--ldap-policy) echo "$0: UCR layer '$1' not supported" >&2 ;;
+			--*) echo "$0: Unknown UCR argument '$*'" >&2 ;;
+			esac
 			local name_value
 			for name_value in "$@"
 			do
