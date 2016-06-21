@@ -40,7 +40,7 @@ adduser --system --no-create-home --disabled-password --force-badname '__systems
 # ACL will be defined in the UMC package and can be removed here after UCS 3.0-2
 /usr/sbin/univention-management-console-acls allow -u "root" -c "setup/*" -c "lib/server/*" -H "*"
 
-ucr umc/web/appliance/fast_setup_mode?true
+ucr set umc/web/appliance/fast_setup_mode?true
 
 #DEBHELPER#
 
