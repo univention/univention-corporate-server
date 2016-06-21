@@ -179,7 +179,7 @@ class Instance(Base, ProgressMixin):
 			util.create_status_file()
 
 			# enforce particular arguments for setup scripts
-			script_args = ['--appliance-mode', '--force-recreate' , '--demo-modus']
+			script_args = ['--appliance-mode', '--force-recreate' , '--demo-mode']
 
 		def _thread(request, obj):
 			# acquire the lock until the scripts have been executed

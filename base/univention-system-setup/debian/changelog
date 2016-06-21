@@ -1,3 +1,10 @@
+univention-system-setup (9.0.4-23) unstable; urgency=medium
+
+  * Bug #41283: Use DEMO_MODE variable as flag to improve readability
+  * Rename parameter demo-modus to demo-mode
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 21 Jun 2016 11:34:32 +0200
+
 univention-system-setup (9.0.4-22) unstable; urgency=medium
 
   Bug #40046:
