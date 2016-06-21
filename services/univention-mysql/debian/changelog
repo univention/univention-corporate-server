@@ -1,3 +1,9 @@
+univention-mysql (3.0.0-2) unstable; urgency=medium
+
+  * Bug #40216: Set mysqld default settings based on feedback
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 21 Jun 2016 15:54:55 +0200
+
 univention-mysql (3.0.0-1) unstable; urgency=low
 
   * Bug #39471: Allow options without value.
