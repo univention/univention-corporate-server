@@ -79,7 +79,7 @@ Package: univention-appcenter-dev
 Architecture: all
 Replaces: python-univention-appcenter-dev
 Depends: univention-appcenter,
- dpkg-dev,
+ dpkg,
  apt-utils,
  ${misc:Depends},
  ${python:Depends},

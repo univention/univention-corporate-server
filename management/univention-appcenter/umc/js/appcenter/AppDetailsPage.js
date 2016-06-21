@@ -543,7 +543,7 @@ define([
 			var descriptionContainer = new ContainerWidget({
 				'class': 'descriptionContainer'
 			});
-			var longDescCSSClass = this._getCSSClass4TextLength(this.app.longDescription);
+			var longDescCSSClass = this._getCSSClass4TextLength(this.app.longDescription || '');
 			domClass.add(domConstruct.create('div', {
 				innerHTML: this.app.longDescription  // no HTML escape!
 			}, descriptionContainer.domNode), longDescCSSClass);

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-11) unstable; urgency=medium
+
+  * Bug #41360: Remove dpkg-dev dependency
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 21 Jun 2016 03:08:10 +0200
+
 univention-appcenter (5.0.21-10) unstable; urgency=medium
 
   * Bug #41360: Add cache dir parameter to univention-app update.

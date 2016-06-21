@@ -445,7 +445,16 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 	def _handle_packages(self, app, repo_dir, args):
 		dirname = mkdtemp()
 		try:
-			self._subprocess(['dpkg-name', '-k', '-s', dirname] + [os.path.abspath(pkg) for pkg in args.packages])
+			for pkg in args.packages:
+				try:
+					output = subprocess.check_output(['dpkg', '-f', pkg, 'Package', 'Version', 'Architecture'])
+				except subprocess.CalledProcessError:
+					self.debug('%s is not a package' % pkg)
+				else:
+					pkg_name, pkg_version, pkg_arch = output.split()[1::2]
+					fname = '%s_%s_%s.deb' % (pkg_name, pkg_version, pkg_arch)
+					self.debug('%s -> %s' % (pkg, fname))
+					shutil.copy2(pkg, os.path.join(dirname, fname))
 			args.packages = glob(os.path.join(dirname, '*.deb'))
 			self._copy_packages(repo_dir, args)
 		finally:
