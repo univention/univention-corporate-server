@@ -142,17 +142,17 @@ def handler_set(args, opts=dict(), quiet=False):
 					sep = min(sep_set, sep_def)
 			key = arg[0:sep]
 			value = arg[sep + 1:]
-			old = ucr.get(key)
-			if (old is None or sep == sep_set) and validate_key(key):
+			key_exists = ucr.has_key(key, write_registry_only=True)
+			if (not key_exists or sep == sep_set) and validate_key(key):
 				if not quiet:
-					if ucr.has_key(key, write_registry_only=True):
+					if key_exists:
 						print 'Setting %s' % key
 					else:
 						print 'Create %s' % key
 				changes[key] = value
 			else:
 				if not quiet:
-					if old is not None:
+					if key_exists:
 						print 'Not updating %s' % key
 					else:
 						print 'Not setting %s' % key
