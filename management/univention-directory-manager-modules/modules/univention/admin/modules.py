@@ -203,6 +203,8 @@ def update_extended_options(lo, module, position):
 		editable = attrs.get('univentionUDMOptionEditable', ['0'])[0] == '1'
 		classes = attrs.get('univentionUDMOptionObjectClass', [])
 
+		if not hasattr(module, 'options'):
+			module.options = {}
 		module.options[oname] = univention.admin.option(
 				short_description=shortdesc,
 				long_description=longdesc,

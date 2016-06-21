@@ -495,9 +495,9 @@ class base(object):
 		pass
 	def _ldap_post_modify(self):
 		pass
-	def _ldap_pre_move(self):
+	def _ldap_pre_move(self, newdn):
 		pass
-	def _ldap_post_move(self):
+	def _ldap_post_move(self, olddn):
 		pass
 	def _ldap_pre_remove(self):
 		pass

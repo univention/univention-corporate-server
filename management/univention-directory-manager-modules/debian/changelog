@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-12) unstable; urgency=medium
+
+  * Bug #41580: fixup svn r70452
+  * Bug #29034: add options to module if not exists
+
+ -- Florian Best <best@univention.de>  Tue, 21 Jun 2016 11:43:50 +0200
+
 univention-directory-manager-modules (11.0.3-11) unstable; urgency=medium
 
   * Bug #41580: consider attribute name aliases
