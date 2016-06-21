@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-12) unstable; urgency=medium
+
+  * Bug #41360: Error handling for copy_file in univention-appcenter-dev
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 21 Jun 2016 13:52:22 +0200
+
 univention-appcenter (5.0.21-11) unstable; urgency=medium
 
   * Bug #41360: Remove dpkg-dev dependency

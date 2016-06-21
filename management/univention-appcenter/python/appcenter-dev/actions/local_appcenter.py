@@ -68,8 +68,13 @@ class LocalAppcenterAction(UniventionAppAction):
 		if os.path.isdir(result_file):
 			result_file = os.path.join(result_file, os.path.basename(src))
 		if src == dst:
-			os.chmod(result_file, 0644)
-			return True
+			try:
+				os.chmod(result_file, 0644)
+			except EnvironmentError as exc:
+				self.warn(exc)
+				return False
+			else:
+				return True
 		try:
 			shutil.copy2(src, dst)
 			os.chmod(result_file, 0644)
