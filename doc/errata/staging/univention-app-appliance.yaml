@@ -9,4 +9,4 @@ desc: |
  * Apps may now provide design information for branding UCS appliances.
  * Apps may now provide more detailed information on the first steps to
    take after their initial installation/setup.
-bug: [40826,38957]
+bug: [40826,38957,40934]
