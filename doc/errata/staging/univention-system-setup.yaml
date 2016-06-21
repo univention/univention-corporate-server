@@ -10,6 +10,8 @@ desc: |
    fast instantiation for demo purposes. Some more aspects of the setup
    process have been improved w.r.t. realiability and speed.
  * Some more corrections have been applied for the fast UCS instantiation.
+ * A UCR variable for enabling/disabling the fast instantiation has been
+   added.
  * Problems with a hanging setup process when finishing have been
    corrected.
  * The timeout for internal LDAP queries during changes of network
@@ -21,4 +23,4 @@ desc: |
    the setup process stating that no module would be available.
  * A typo in the header for the initial setup of UCS on an
    Amazon EC2 instance has been corrected.
-bug: [40046,41283,40985,40968,41026,40701,40751,40673]
+bug: [40046,41283,41622,40985,40968,41026,40701,40751,40673]

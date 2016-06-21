@@ -304,6 +304,7 @@ define([
 			lang.mixin(this, props);
 
 			// customize some texts for an app appliance case
+			var showPreconfiguredSetupOption = tools.isTrue(this.ucr['umc/web/appliance/fast_setup_mode']) && this.values.joined;
 			var applianceName = '';
 			var welcomeMessage = _('Welcome to Univention Corporate Server (UCS).');
 			var welcomeHeader = _('UCS setup');
@@ -563,14 +564,14 @@ define([
 					label: '<strong>' + _('Fast demo configuration') + '</strong>',
 					checked: true,
 					labelConf: {'class': 'umc-ucssetup-wizard-radio-button-label'},
-					visible: this.values.joined,
-					disabled: !this.values.joined
+					visible: showPreconfiguredSetupOption,
+					disabled: !showPreconfiguredSetupOption
 				}, {
 					type: Text,
 					name: 'preconfiguredDomainHelpText',
 					content: _('Quick setup of a system for testing purposes. Several system configurations are predefined and cannot be changed at a later point.'),
 					labelConf: {'class': 'umc-ucssetup-wizard-indent'},
-					visible: this.values.joined
+					visible: showPreconfiguredSetupOption
 				}, {
 					type: RadioButton,
 					radioButtonGroup: 'role',

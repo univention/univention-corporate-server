@@ -16,3 +16,9 @@ Description[en]=Specifies the prefix for the data path to further app appliance 
 Type=string
 Categories=management-umc
 
+[umc/web/appliance/fast_setup_mode]
+Description[de]=Gibt an, ob die Option für das schnelle Einrichten eines vorkonfigurierten UCS dem Benutzer angezeigt wird (default=true).
+Description[en]=Specifies whether the option for the fast setup of a pre-configured UCS is shown to the user (default=true).
+Type=string
+Categories=management-umc
+
