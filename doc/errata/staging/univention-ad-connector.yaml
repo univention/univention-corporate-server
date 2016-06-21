@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-ad-connector
-fix: 8.0.17-77.489.201605121425
+fix: 8.0.17-78.497.201606211503
 desc: |
  This update addresses the following issue(s):
  * The synchronization of the password hashes was implemented by using a 
