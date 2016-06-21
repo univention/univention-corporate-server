@@ -2713,11 +2713,11 @@ class LDAP_Search( select ):
 	Searches can be either defined dynamically via a UDM settings/syntax
 	definition and using
 
-	>>> LDAP_Search( syntax_name = '<NAME>' )
+	> LDAP_Search( syntax_name = '<NAME>' )
 
-	or programmatically	by directly instantiating
+	or programmatically by directly instantiating
 
-	>>> LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
+	> LDAP_Search( filter = '<LDAP-Search-Filter>', attribute = [ '<LDAP attributes>', ... ], value = '<LDAP attribute>', base = '<LDAP base>' )
 	"""
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 

@@ -381,8 +381,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self.info['password']=userPassword
 				self.modifypassword=0
 
-		tmppos=univention.admin.uldap.position(self.position.getDomain())
-
 		if self.exists():
 
 			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
@@ -551,7 +549,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				requested_uid="%s$" % self['name']
 				try:
 					self.uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
-				except Exception, e:
+				except Exception:
 					self.cancel()
 					raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
 					return []
@@ -583,7 +581,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
 		# add samba option
-		if self.exists() and self.option_toggled('samba') and self.option_is_enabled('samba'):
+		if self.exists() and self.option_toggled('samba') and 'samba' in self.options:
 			acctFlags=univention.admin.samba.acctFlags(flags={'S':1})
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
@@ -598,7 +596,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ml.append(('displayName', '', self.info['name']))
 			sambaPwdLastSetValue = str(long(time.time()))
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
-		if self.exists() and self.option_toggled('samba') and not self.option_is_enabled('samba'):
+		if self.exists() and self.option_toggled('samba') and 'samba' not in self.options:
 			ocs=self.oldattr.get('objectClass', [])
 			if 'sambaSamAccount' in ocs:
 				ml.insert(0, ('objectClass', 'sambaSamAccount', ''))

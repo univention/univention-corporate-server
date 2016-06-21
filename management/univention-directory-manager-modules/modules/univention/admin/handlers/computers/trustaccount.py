@@ -172,7 +172,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.uid=None
 			try:
 				self.uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
-			except Exception, e:
+			except Exception:
 				error=1
 				
 			if not self.uid or error:

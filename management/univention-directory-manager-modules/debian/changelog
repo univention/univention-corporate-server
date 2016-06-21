@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-13) unstable; urgency=medium
+
+  * Bug #41580: use generic option parsing/composing for computers/*
+
+ -- Florian Best <best@univention.de>  Tue, 21 Jun 2016 15:44:24 +0200
+
 univention-directory-manager-modules (11.0.3-12) unstable; urgency=medium
 
   * Bug #41580: fixup svn r70452

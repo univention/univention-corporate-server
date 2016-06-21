@@ -1139,23 +1139,13 @@ def GMTOffset():
 	# returns the difference in hours between local time and GMT (is -1 for CET and CEST)
 	return time.timezone/3600
 
-def shift(string, offset):
-	# shifts the string #offset chars to the left
-	if offset<0:
-		for i in range(0, abs(offset)):
-			string=string[-1:]+string[:-1]
-	else:
-		for i in range(0, offset):
-			string=string[1:]+string[:1]
-	return string
-
 def load_certificate(user_certificate):
 	"""Import a certificate in DER format"""
 	if not user_certificate:
 		return {}
 	try:
 		certificate = base64.decodestring( user_certificate )
-	except base64.binascii.Error, ex:
+	except base64.binascii.Error:
 		return {}
 	try:
 		x509 = X509.load_cert_string(certificate, X509.FORMAT_DER)
@@ -1174,7 +1164,7 @@ def load_certificate(user_certificate):
 			for key, attr in load_certificate.ATTR.items():
 				value = getattr(entity, key)
 				values[prefix + attr] = value
-	except (X509.X509Error, AttributeError), ex:
+	except (X509.X509Error, AttributeError):
 		return {}
 
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'value=%s' % values)
@@ -1231,7 +1221,7 @@ mapping.register('departmentNumber', 'departmentNumber', None, univention.admin.
 mapping.register('mobileTelephoneNumber', 'mobile')
 mapping.register('pagerTelephoneNumber', 'pager')
 mapping.register('homeTelephoneNumber', 'homePhone')
-mapping.register('homePostalAddress', 'homePostalAddress')
+mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
 mapping.register('sambahome', 'sambaHomePath', None, univention.admin.mapping.ListToString)
@@ -1304,17 +1294,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			self['disabled']='all'
 
 	def __is_kerberos_disabled(self):
-		if self['disabled'] in ['all', 'kerberos', 'posix_kerberos', 'windows_kerberos']:
-			return True
-		return False
+		return self['disabled'] in ('all', 'kerberos', 'posix_kerberos', 'windows_kerberos')
+
 	def __is_windows_disabled(self):
-		if self['disabled'] in ['all', 'windows', 'windows_posix', 'windows_kerberos']:
-			return True
-		return False
+		return self['disabled'] in ('all', 'windows', 'windows_posix', 'windows_kerberos')
+
 	def __is_posix_disabled(self):
-		if self['disabled'] in ( 'all', 'posix', 'posix_kerberos', 'windows_posix' ):
-			return True
-		return False
+		return self['disabled'] in ('all', 'posix', 'posix_kerberos', 'windows_posix')
 
 	def __pwd_is_auth_saslpassthrough(self, password):
 		if password.startswith('{SASL}') and univention.admin.baseConfig.get('directory/manager/web/modules/users/user/auth/saslpassthrough','no').lower() == 'keep':
@@ -1322,14 +1308,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		return 'no'
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = []):
-		# homePostalAddress backward compatibility
-		# change mapping only if new syntax is used (via ucr)
-		if property_descriptions.get("homePostalAddress", False):
-			if hasattr(property_descriptions['homePostalAddress'], "syntax"):
-				if hasattr(property_descriptions['homePostalAddress'].syntax, "name"):
-					if property_descriptions['homePostalAddress'].syntax.name == "postalAddress":
-						mapping.register('homePostalAddress', 'homePostalAddress', mapHomePostalAddress, unmapHomePostalAddress)
-
 		self.kerberos_active=0
 		self.pwhistory_active=0
 		self.groupsLoaded=1
@@ -1538,7 +1516,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	def modify(self, *args, **kwargs):
 		try:
 			return super(object, self).modify(*args, **kwargs)
-		except univention.admin.uexceptions.licenseDisableModify as exc:
+		except univention.admin.uexceptions.licenseDisableModify:
 			if 'all' not in self['disabled'] or not self.hasChanged('disabled'):
 				raise
 			kwargs['ignore_license'] = True
@@ -1749,16 +1727,16 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	def _ldap_addlist(self):
 
 		try:
-			error=0
 			uid=None
 
-			if not ( 'posix' in self.options or 'samba' in self.options or 'person' in self.options or 'ldap_pwd' in self.options):
+			if not set(self.options) & set(['posix', 'samba', 'person', 'ldap_pwd']):
 				#no objectClass which provides uid...
 				raise univention.admin.uexceptions.invalidOptions(_('Need one of %(posix)s, %(samba)s, %(person)s or %(ldap)s in options to create user.') % {
-					'posix': 'posix',
-					'samba': 'samba',
-					'person': 'person',
-					'ldap': 'ldap_pwd'})
+					'posix': options['posix'].short_description,
+					'samba': options['samba'].short_description,
+					'person': options['person'].short_description,
+					'ldap': options['ldap_pwd'].short_description
+				})
 
 			if 'samba' in self.options and not self.lo.getAttr(self['primaryGroup'], 'sambaSID'):
 				raise univention.admin.uexceptions.primaryGroupWithoutSamba
@@ -1779,7 +1757,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				if 'posix' in self.options:
 					if self['unixhome'] == '/home/%s' % self.old_username:
 						self['unixhome'] = '/home/%s' % self['username']
-			except univention.admin.uexceptions.noLock, e:
+			except univention.admin.uexceptions.noLock:
 				username=self['username']
 				del(self.info['username'])
 				self.oldinfo={}
@@ -1889,7 +1867,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if self.hasChanged('username'):
 			try:
 				uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
-			except univention.admin.uexceptions.noLock, e:
+			except univention.admin.uexceptions.noLock:
 				username=self['username']
 				del(self.info['username'])
 				self.oldinfo={}
@@ -2570,7 +2548,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			try:
 				userSid = univention.admin.allocators.request(self.lo, self.position, 'sid', sid)
 				self.alloc.append(('sid', userSid))
-			except univention.admin.uexceptions.noLock, e:
+			except univention.admin.uexceptions.noLock:
 				raise univention.admin.uexceptions.sidAlreadyUsed, ': %s' % self['sambaRID']
 		
 		else:
@@ -2589,7 +2567,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					num = str(int(num)+1)
 					try:
 						userSid=univention.admin.allocators.requestUserSid(self.lo, self.position, num)
-					except univention.admin.uexceptions.noLock, e:
+					except univention.admin.uexceptions.noLock:
 						num = str(int(num)+1)
 				self.alloc.append(('sid', userSid))
 
@@ -2603,11 +2581,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	def cancel(self):
 		for i,j in self.alloc:
 			univention.admin.allocators.release(self.lo, self.position, i, j)
-
-
-	def setPassword(newPassword):
-		self.open(loadGroups=0)
-		self['password']=newPassword
 
 def rewrite(filter, mapping):
 	if filter.variable == 'username':

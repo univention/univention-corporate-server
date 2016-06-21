@@ -210,20 +210,14 @@ class Support( object ):
 					raise univention.admin.uexceptions.nagiosDNSForwardZoneEntryRequired
 
 		#	add nagios option
-		if self.option_toggled('nagios') and self.option_is_enabled('nagios'):
+		if self.option_toggled('nagios') and 'nagios' in self.options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added nagios option')
-			ocs=self.oldattr.get('objectClass', [])
-			if not 'univentionNagiosHostClass' in ocs:
-				ml.insert(0, ('objectClass', '', 'univentionNagiosHostClass'))
+			if 'univentionNagiosHostClass' not in self.oldattr.get('objectClass', []):
 				ml.insert(0, ('univentionNagiosEnabled', '', '1'))
 
 		#	remove nagios option
-		if self.option_toggled('nagios') and not self.option_is_enabled('nagios'):
+		if self.option_toggled('nagios') and 'nagios' not in self.options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove nagios option')
-			ocs=self.oldattr.get('objectClass', [])
-			if 'univentionNagiosHostClass' in ocs:
-				ml.insert(0, ('objectClass', 'univentionNagiosHostClass', ''))
-
 			for key in [ 'univentionNagiosParent', 'univentionNagiosEmail', 'univentionNagiosEnabled' ]:
 				if self.oldattr.get(key, []):
 					ml.insert(0, (key, self.oldattr.get(key, []), ''))

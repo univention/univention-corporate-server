@@ -57,16 +57,19 @@ long_description=''
 options={
 	'posix': univention.admin.option(
 			short_description=_('Posix account'),
-			default=1
+			default=1,
+			objectClasses=('posixAccount', 'shadowAccount'),
 		),
 	'kerberos': univention.admin.option(
 			short_description=_('Kerberos principal'),
-			default=1
+			default=1,
+			objectClasses=('krb5Principal', 'krb5KDCEntry'),
 		),
 	'samba': univention.admin.option(
 			short_description=_('Samba account'),
 			editable=1,
-			default=1
+			default=1,
+			objectClasses=('sambaSamAccount',),
 		)
 }
 property_descriptions={
@@ -396,19 +399,16 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		univention.admin.handlers.simpleComputer._ldap_pre_create( self )
 
 	def _ldap_addlist(self):
-		if not 'posix' in self.options and not 'kerberos' in self.options:
+		if not set(self.options) & set(['posix', 'kerberos']):
 			raise univention.admin.uexceptions.invalidOptions(_(' At least posix or kerberos is required.'))
-		
 		
 		ocs=['top', 'person', 'univentionHost', 'univentionUbuntuClient']
 		al=[]
 		if 'kerberos' in self.options:
 			domain=univention.admin.uldap.domain(self.lo, self.position)
 			realm=domain.getKerberosRealm()
-			tmppos=univention.admin.uldap.position(self.position.getDomain())
 
 			if realm:
-				ocs.extend(['krb5Principal', 'krb5KDCEntry'])
 				al.append(('krb5MaxLife', '86400'))
 				al.append(('krb5MaxRenew', '604800'))
 				al.append(('krb5KDCFlags', '126'))
@@ -421,7 +421,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 			self.alloc.append(('uidNumber',self.uidNum))
 			gidNum = self.get_gid_for_primary_group()
-			ocs.extend(['posixAccount','shadowAccount'])
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))
 
@@ -448,13 +447,11 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			else:
 				self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum, self.get('sambaRID'))
 				self.alloc.append(('sid',self.machineSid))
-			ocs.append('sambaSamAccount')
 			al.append(('sambaSID', [self.machineSid]))
 			al.append(('sambaAcctFlags', [acctFlags.decode()]))
 			al.append(('displayName', self.info['name']))
 
 		al.insert(0, ('objectClass', ocs))
-		al.append(('univentionObjectType', 'computers/ubuntu'))
 
 		return al
 
@@ -532,7 +529,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				requested_uid="%s$" % self['name']
 				try:
 					self.uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
-				except Exception, e:
+				except Exception:
 					self.cancel()
 					raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
 					return []
@@ -564,7 +561,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
 		# add samba option
-		if self.exists() and self.option_toggled('samba') and self.option_is_enabled('samba'):
+		if self.exists() and self.option_toggled('samba') and 'samba' in self.options:
 			acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
@@ -573,16 +570,12 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			else:
 				self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0], self.get('sambaRID'))
 				self.alloc.append(('sid',self.machineSid))
-			ml.insert(0, ('objectClass', '', 'sambaSamAccount'))
 			ml.append(('sambaSID', '', [self.machineSid]))
 			ml.append(('sambaAcctFlags', '', [acctFlags.decode()]))
 			ml.append(('displayName', '', self.info['name']))
 			sambaPwdLastSetValue = str(long(time.time()))
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
-		if self.exists() and self.option_toggled('samba') and not self.option_is_enabled('samba'):
-			ocs=self.oldattr.get('objectClass', [])
-			if 'sambaSamAccount' in ocs:
-				ml.insert(0, ('objectClass', 'sambaSamAccount', ''))
+		if self.exists() and self.option_toggled('samba') and 'samba' not in self.options:
 			for key in [ 'sambaSID', 'sambaAcctFlags', 'sambaNTPassword', 'sambaLMPassword', 'sambaPwdLastSet', 'displayName' ]:
 				if self.oldattr.get(key, []):
 					ml.insert(0, (key, self.oldattr.get(key, []), ''))

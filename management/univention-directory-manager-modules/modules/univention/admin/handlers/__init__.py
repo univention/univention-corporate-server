@@ -607,10 +607,6 @@ class simpleLdap(base):
 		'''Checks if an option was changed. This does not work for not yet existing objects.'''
 		return option in set(self.options) ^ set(self.old_options)
 
-	def option_is_enabled(self, option):
-		'''Checks if an option is enabled'''
-		return option in self.options
-
 	def description(self):
 		if self.dn:
 			rdn = self.lo.explodeDn(self.dn)[0]
