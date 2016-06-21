@@ -1,3 +1,9 @@
+ucs-test (6.0.33-72) unstable; urgency=low
+
+  * Bug #39056: enable 40_mail/39_postfix_accepts_mails_on_ports_25_465_587
+
+ -- Daniel Troeder <troeder@univention.de>  Tue, 21 Jun 2016 11:00:39 +0200
+
 ucs-test (6.0.33-71) unstable; urgency=low
 
   * Bug #41207: Add tests for EA/EO removal
