@@ -1,0 +1,123 @@
+product: ucs
+release: "3.1"
+version: [1]
+scope: ucs_3.1-0-extsec3.1
+src: univention-kernel-image
+fix: 6.0.1-9.103.201606211746
+desc: |
+ These vulnerabilities have been fixed:
+ * unix: properly account for FDs passed over unix sockets (CVE-2013-4312,
+   CVE-2016-2847)
+ * usb: serial: visor: fix crash on detecting device without write_urbs
+   (CVE-2015-7566)
+ * An SCTP denial-of-service was discovered which can be triggered by a local
+   attacker during a heartbeat timeout event after the 4-way handshake
+   (CVE-2015-8767)
+ * The fuse_fill_write_pages function in fs/fuse/file.c in the Linux kernel
+   before 4.4 allows local users to cause a denial of service (infinite loop)
+   via a writev system call that triggers a zero length for the first segment
+   of an iov. (CVE-2015-8785)
+ * Flaw in CXGB3 driver (CVE-2015-8812)
+ * USB hub invalid memory access in hub_activate() (CVE-2015-8816)
+ * tty: Fix unsafe ldisc reference via ioctl(TIOCGETD) (CVE-2016-0723)
+ * Incomplete fix for CVE-2015-1805 for kernel versions < 3.16 (CVE-2016-0774)
+ * x86 Linux TLB flush bug (CVE-2016-2069)
+ * Double-free in snd-usbmidi-lib triggered by invalid USB descriptor
+   (CVE-2016-2384)
+ * ALSA: seq: Fix missing NULL check at remove_events ioctl (CVE-2016-2543)
+ * ALSA: seq: Fix race at timer setup and close (CVE-2016-2544)
+ * ALSA: timer: Fix double unlink of active_list (CVE-2016-2545)
+ * ALSA: timer: Fix race among timer ioctls (CVE-2016-2546)
+ * Bug 1311566 – CVE-2016-2547 kernel: sound: use-after-free in
+   snd_timer_user_ioctl (CVE-2016-2547)
+ * Bug 1311568 – CVE-2016-2548 kernel: sound: linked lists of slave instances
+   not unlinked immediately (CVE-2016-2548)
+ * ALSA: hrtimer: Fix stall by hrtimer_cancel() (CVE-2016-2549)
+ * unix: correctly track in-flight fds in sending process user_struct
+   (CVE-2016-2550)
+ * include/linux/poison.h: fix LIST_POISON{1,2} offset (CVE-2016-0821)
+ * ecryptfs: forbid opening files without mmap handler (CVE-2016-1583)
+ * ALSA: usb-audio: Fix NULL dereference in create_fixed_stream_quirk
+   (CVE-2016-2184)
+ * Input: ati_remote2 - fix crashes on detecting device with invalid
+   descriptor (CVE-2016-2185)
+ * Input: powermate - fix oops with malicious USB descriptors (CVE-2016-2186)
+ * Input: gtco - fix crash on detecting device without endpoints
+   (CVE-2016-2187)
+ * netfilter: x_tables: Fix parsing of IPT_SO_SET_REPLACE blobs
+   (CVE-2016-3134)
+ * USB: mct_u232: add sanity checking in probe (CVE-2016-3136)
+ * USB: cypress_m8: add endpoint sanity check (CVE-2016-3137)
+ * USB: cdc-acm: more sanity checking (CVE-2016-3138)
+ * USB: digi_acceleport: do sanity checking for the number of ports
+   (CVE-2016-3140)
+ * [amd64] iopl: Properly context-switch IOPL on Xen PV (CVE-2016-3157 /
+   XSA-171)
+ * [x86] mm/32: Enable full randomization on i386 and X86_32 (CVE-2016-3672)
+ * usbnet: cleanup after bind() in probe() (CVE-2016-3951)
+ * USB: usbip: fix potential out-of-bounds write (CVE-2016-3955)
+ * ipv4: Don't do expensive useless work during inetdev destroy
+   (CVE-2016-3156)
+ * [x86] mm/xen: Suppress hugetlbfs in PV guests (CVE-2016-3961 / XSA-174)
+ * USB: usbfs: fix potential infoleak in devio (CVE-2016-4482)
+ * net: fix infoleak in llc (CVE-2016-4485)
+ * net: fix infoleak in rtnetlink (CVE-2016-4486)
+ * ALSA: timer: Fix leak in SNDRV_TIMER_IOCTL_PARAMS (CVE-2016-4569)
+ * ALSA: timer: Fix leak in events via snd_timer_user_ccallback or
+   snd_timer_user_tinterrupt (CVE-2016-4578)
+ * net: fix a kernel infoleak in x25 module (CVE-2016-4580)
+ * tipc: fix an infoleak in tipc_node_get_links (CVE-2016-5243)
+ * rds: fix an infoleak in rds_inc_info_copy (CVE-2016-5244)
+ * InfiniBand: Restrict use of the write() interface (CVE-2016-4565)
+ * get_rock_ridge_filename(): handle malformed NM entries (CVE-2016-4913)
+ * [s390*] mm: four page table levels vs. fork (CVE-2016-2143)
+bug: [40521]
+cve:
+ - CVE-2013-4312
+ - CVE-2015-1805
+ - CVE-2015-7566
+ - CVE-2015-8767
+ - CVE-2015-8785
+ - CVE-2015-8812
+ - CVE-2015-8816
+ - CVE-2016-0723
+ - CVE-2016-0774
+ - CVE-2016-0821
+ - CVE-2016-1583
+ - CVE-2016-2069
+ - CVE-2016-2184
+ - CVE-2016-2185
+ - CVE-2016-2186
+ - CVE-2016-2187
+ - CVE-2016-2384
+ - CVE-2016-2543
+ - CVE-2016-2544
+ - CVE-2016-2545
+ - CVE-2016-2546
+ - CVE-2016-2547
+ - CVE-2016-2548
+ - CVE-2016-2549
+ - CVE-2016-2550
+ - CVE-2016-3134
+ - CVE-2016-3136
+ - CVE-2016-3137
+ - CVE-2016-3138
+ - CVE-2016-3140
+ - CVE-2016-3156
+ - CVE-2016-3157
+ - CVE-2016-3672
+ - CVE-2016-3951
+ - CVE-2016-3955
+ - CVE-2016-3961
+ - CVE-2016-4482
+ - CVE-2016-4485
+ - CVE-2016-4486
+ - CVE-2016-4565
+ - CVE-2016-4569
+ - CVE-2016-4578
+ - CVE-2016-4580
+ - CVE-2016-4913
+ - CVE-2016-5243
+ - CVE-2016-5244
+ - CVE-2016-2143
+ - CVE-2016-2847
