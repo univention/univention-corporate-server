@@ -131,24 +131,30 @@ def set_password_in_ad(connector, samaccountname, pwd):
 	if not connector.samr:
 		connector.open_samr()
 
-	sam_accountname = lsa.String()
-	sam_accountname.string = samaccountname
-	(rids, types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname,])
+	user_handle = None
+	info = None
+	try:
+		sam_accountname = lsa.String()
+		sam_accountname.string = samaccountname
+		(rids, types) = connector.samr.LookupNames(connector.dom_handle, [sam_accountname,])
 
-	rid=rids.ids[0]
-	user_handle = connector.samr.OpenUser(connector.dom_handle, security.SEC_FLAG_MAXIMUM_ALLOWED, rid)
+		rid=rids.ids[0]
+		user_handle = connector.samr.OpenUser(connector.dom_handle, security.SEC_FLAG_MAXIMUM_ALLOWED, rid)
 
-	userinfo18 = samba.dcerpc.samr.UserInfo18()
-	bin_hash = binascii.a2b_hex(pwd)
-	enc_hash = mySamEncryptNTLMHash(bin_hash, connector.samr.session_key)
+		userinfo18 = samba.dcerpc.samr.UserInfo18()
+		bin_hash = binascii.a2b_hex(pwd)
+		enc_hash = mySamEncryptNTLMHash(bin_hash, connector.samr.session_key)
 
-	samr_Password = samba.dcerpc.samr.Password()
-	samr_Password.hash = map(ord, enc_hash)
+		samr_Password = samba.dcerpc.samr.Password()
+		samr_Password.hash = map(ord, enc_hash)
 
-	userinfo18.nt_pwd = samr_Password
-	userinfo18.nt_pwd_active = 1
-	userinfo18.password_expired = 0
-	info = connector.samr.SetUserInfo(user_handle, 18, userinfo18)
+		userinfo18.nt_pwd = samr_Password
+		userinfo18.nt_pwd_active = 1
+		userinfo18.password_expired = 0
+		info = connector.samr.SetUserInfo(user_handle, 18, userinfo18)
+	finally:
+		if user_handle:
+			connector.samr.Close(user_handle)
 
 	return info
 
