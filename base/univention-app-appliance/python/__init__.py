@@ -52,6 +52,7 @@ class App(app.App):
 	appliance_blacklist = app.AppAttribute()
 	appliance_whitelist = app.AppAttribute()
 	appliance_notify_vendor = app.AppAttribute()
+	appliance_allow_preconfigured_setup = app.AppBooleanAttribute(default=False)
 
 
 class AppManager(app.AppManager):

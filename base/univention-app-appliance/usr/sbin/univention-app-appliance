@@ -80,6 +80,7 @@ def set_appliance_ucr_values(app):
 		'repository/app_center/blacklist': app.appliance_blacklist,
 		'repository/app_center/whitelist': app.appliance_whitelist,
 		'umc/web/appliance/name': app.name,
+		'umc/web/appliance/fast_setup_mode': str(app.appliance_allow_preconfigured_setup).lower(), # convert bool value to ('true', 'false')
 		'grub/title': "Start %s Univention App" % app.name,
 		'appliance/apps/%s/version' % app.id: app.version,
 		'appliance/apps/%s/notifyVendor' % app.id: str(app.appliance_notify_vendor),
@@ -163,7 +164,7 @@ def main(app_id):
 		# UMC
 		umc_header = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/images/appliance_header_logo.svg'
 		download_resource(app, app.appliance_umc_header_logo, umc_header)
-		
+
 		# system-activation needs that resource too
 		shutil.copy(umc_header, '/usr/share/univention-system-activation/www/css/icons/appliance_header_logo.svg')
 
