@@ -5,8 +5,8 @@ scope: ucs_4.1-0-errata4.1-2
 src: univention-config-registry
 fix: 11.0.0-4.498.201606211603
 desc: |
- This update addresses the following issue(s):
- * Setting an ucr variable with the conditional "?" operator didn't set the variable
-   if it already existed in another scope. This is changed to only check if the variable
-   already exists in the scope it should be set in.
+ This update addresses the following issue:
+ * Setting an UCR variable with the conditional "?" operator didn't set the
+   variable if it already existed in another scope. This is changed to only
+   check the scope the variable is set in.
 bug: [40728]
