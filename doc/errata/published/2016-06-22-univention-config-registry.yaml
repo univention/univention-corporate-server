@@ -10,3 +10,4 @@ desc: |
    variable if it already existed in another scope. This is changed to only
    check the scope the variable is set in.
 bug: [40728]
+announced: 2016-06-22
