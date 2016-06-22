@@ -11,3 +11,4 @@ desc: |
  * ucslint now also accepts "${@}" for padding join credentials.
  * ucslint warns when "univention-ldapsearch -x" is used.
 bug: [41603,34253,38853]
+announced: 2016-06-22
