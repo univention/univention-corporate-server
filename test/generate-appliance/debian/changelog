@@ -1,3 +1,10 @@
+generate-appliance (2.1.0-1) unstable; urgency=medium
+
+  * Add "Amazon AWS EC2 AMI (EBS based) (HVM x64_64)" target
+  * Make --help output deterministic
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 22 Jun 2016 18:00:42 +0200
+
 generate-appliance (2.0.2-2) unstable; urgency=medium
 
   * Bug #39140: Add support for seamless mouse integration for VirtualBox by

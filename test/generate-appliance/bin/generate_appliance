@@ -34,9 +34,12 @@
 from __future__ import unicode_literals
 from cStringIO import StringIO
 import VMDKstream
+import boto
+import boto.ec2
 import hashlib
 import lxml.builder
 import lxml.etree
+import math
 import optparse
 import os
 import shutil
@@ -45,6 +48,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 import uuid
 
 WORKDIR = TEMPDIR = STOREDIR = None
@@ -1137,6 +1141,200 @@ ddb.virtualHWVersion = "7"
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 ESXi = ESXi()
 
+def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime):
+	# <http://docs.aws.amazon.com/AWSEC2/latest/APIReference/manifest.html>
+	E = lxml.builder.ElementMaker()
+	part_count = int(math.ceil(float(vmdk.size()) / part_size))
+	parts = []
+	for index, offset in enumerate(map(lambda x: x * part_size, range(part_count))):
+		key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, )) # TODO: redundant code
+		parts.append(
+			E.part(
+				# Complex type defining the starting and ending byte count of a part.
+				E('byte-range',
+					# Offset of a part's first byte in the disk image.
+					start='%d' % (offset, ),
+					# Offset of a part's last byte in the disk image.
+					end='%d' % (min(offset + part_size, vmdk.size()) - 1, ),
+				),
+				# The S3 object name of the part.
+				E.key(key.name),
+				# Signed URLs for issuing a HEAD request on the S3 object containing this part.
+				E('head-url', key.generate_url(url_lifetime, 'HEAD')),
+				# Signed URLs for issuing a GET request on the S3 object containing this part.
+				E('get-url', key.generate_url(url_lifetime, 'GET')),
+				# Signed URLs for issuing a DELETE request on the S3 object containing this part.
+				E('delete-url', key.generate_url(url_lifetime, 'DELETE')),
+				# Index number of this part.
+				index='%d' % (index, ),
+			),
+		)
+	manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, )) # TODO: redundant code
+	manifest = E.manifest(
+		# Version designator for the manifest file,
+		E.version('2010-11-15'),
+		# File format of volume to be imported, with value RAW, VHD, or VMDK.
+		E('file-format', 'VMDK'),
+		# Complex type describing the software that created the manifest.
+		E.importer(
+			# Name of the software that created the manifest.
+			E.name('generate_appliance'),
+			# Version of the software that created the manifest.
+			E.version('2.1'),
+			# Release number of the software that created the manifest.
+			E.release('1'),
+		),
+		# Signed URL used to delete the stored manifest file.
+		E('self-destruct-url', manifest_key.generate_url(url_lifetime, 'DELETE')),
+		# Complex type describing the size and chunking of the volume file.
+		E('import',
+			# Exact size of the file to be imported (bytes on disk).
+			E.size('%d' % (vmdk.size(), )),
+			# Rounded size in gigabytes of volume to be imported.
+			# - assumed meaning: size of the volume in GiB, because EC2 EBS volumes are provisioned in GiB
+			E('volume-size', '%d' % (volume_size, )),
+			# Complex type describing and counting the parts into which the file is split.
+			E.parts(
+				# Definition of a particular part. Any number of parts may be defined.
+				*parts,
+				# Total count of the parts.
+				count='%d' % (part_count, )
+			),
+		),
+	)
+	return lxml.etree.tostring(manifest, encoding='UTF-8', xml_declaration=False, pretty_print=True)
+
+def chunks(imagefile, chunksize):
+	handle = open(imagefile.path(), 'rb')
+	while True:
+		chunk = handle.read(chunksize)
+		yield chunk
+		if len(chunk) < chunksize:
+			break
+
+class EC2(Target):
+	def __str__(self):
+		return 'Amazon AWS EC2 AMI (EBS based) (HVM x64_64)'
+
+	def __repr__(self):
+		return 'ec2-ebs'
+
+	@property
+	def is_default(self):
+		return False
+
+	def create(self, image, options):
+		machine_name = options.product
+		if options.version is not None:
+			machine_name += ' ' + options.version
+		image_name = '%s-disk1.vmdk' % (options.filename, )
+		part_size = 10 * 1000 * 1000 # 10 MB
+		url_lifetime = 24 * 60 * 60 # 1 day
+		volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024)) # GiB
+		folder_name = uuid.uuid4()
+		s3 = boto.s3.connect_to_region(boto.connect_s3().get_bucket(options.bucket).get_location())
+		ec2 = boto.ec2.connect_to_region(options.region)
+		bucket = s3.get_bucket(options.bucket)
+		vmdk = Vmdk(image)
+		keys_to_delete = []
+		manifest = create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime)
+		log('Uploading manifest…')
+		manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, )) # TODO: redundant code
+		manifest_key.storage_class = 'REDUCED_REDUNDANCY'
+		manifest_key.set_contents_from_string(manifest)
+		keys_to_delete.append(manifest_key)
+		log('  OK')
+		part_count = int(math.ceil(float(vmdk.size()) / part_size))
+		for index, part in enumerate(chunks(vmdk, part_size)):
+			log('Uploading part %d/%d…' % (index, part_count, ))
+			key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, )) # TODO: redundant code
+			key.storage_class = 'REDUCED_REDUNDANCY'
+			key.set_contents_from_string(part)
+			keys_to_delete.append(key)
+			log('  OK')
+		log('Generating volume ', False)
+		manifest_url = manifest_key.generate_url(url_lifetime, 'GET')
+		zone = ec2.get_all_zones()[0]
+		task = ec2.import_volume(
+			volume_size,
+			zone,
+			description=image_name,
+			image_size=vmdk.size(),
+			manifest_url=manifest_url
+		)
+		# wait for volume
+		while True:
+			for task in ec2.get_all_conversion_tasks(task_ids=[task.id]):
+				pass # just fill <task> variable
+			if task.state != 'active':
+				log(' done')
+				break
+			time.sleep(32) # TODO adaptive and jittery
+			# TODO: abort if no progress after some time?
+			log('.', False)
+		if task.state == 'completed':
+			log('  %s' % (task.volume_id, ))
+		else:
+			log('  Failed (%r, %r, %r, %r)' % (task.id, task.bytes_converted, task.state, getattr(task, 'statusMessage', None), ))
+		for index, key in enumerate(keys_to_delete):
+			log('Deleting part %d/%d… ' % (index, len(keys_to_delete), ), False)
+			if key.delete():
+				log('OK')
+			else:
+				log('Failed')
+		if task.state != 'completed':
+			return # abort
+		log('Generating snapshot ', False)
+		snapshot = ec2.create_snapshot(task.volume_id, description=image_name)
+		# wait for snapshot
+		while True:
+			snapshot.update()
+			if snapshot.status != 'pending':
+				log(' done')
+				break
+			time.sleep(32) # TODO adaptive and jittery
+			# TODO: abort if no progress after some time?
+			log('.', False)
+		if snapshot.status == 'completed':
+			log('  %s' % (snapshot.id, ))
+		else:
+			log('  Failed (%, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress, ))
+			return # abort
+		if ec2.delete_volume(task.volume_id):
+			log('Deleted volume %s' % (task.volume_id, ))
+		else:
+			log('Could not delete volume %s' % (task.volume_id, ))
+		log('Generating image', False)
+		ami_id = ec2.register_image(
+			name=machine_name,
+			description='%s %s <%s>\n%s <%s>' % (
+				options.product,
+				options.version if options.version is not None else '',
+				options.product_url,
+				options.vendor,
+				options.vendor_url,
+			),
+			architecture='x86_64',
+			root_device_name='/dev/xvda',
+			virtualization_type='hvm',
+			snapshot_id=snapshot.id,
+			delete_root_volume_on_termination=True,
+		)
+		# wait for image
+		amis = []
+		while not amis:
+			amis = [ami for ami in ec2.get_all_images(image_ids=[ami_id]) if ami.state != 'pending']
+			time.sleep(32) # TODO adaptive and jittery
+			# TODO: abort if no progress after some time?
+			log('.', False)
+		log(' done')
+		for ami in amis:
+			if ami.state == 'available':
+				log('Generated "%s" appliance as\n  %s' % (self, ami.id, ))
+			else:
+				log('Could not generate image (%r, %r)' % (self, ami.id, ami.state, ))
+EC2 = EC2()
+
 class Docker(Target):
 	def __str__(self):
 		return 'Docker Image (tgz)'
@@ -1197,6 +1395,8 @@ def parse_options():
 	parser.add_option('--vendor-url', help='vendor URL of appliance (default: %default)',
 					  default='http://www.univention.com/')
 	parser.add_option('-t', '--tempdir', help='temporary directory to use')
+	parser.add_option('--region', help='EC2 region to use (default %default)', default='eu-west-1')
+	parser.add_option('--bucket', help='S3 bucket to use (default %default)', default='generate-appliance')
 	parser.add_option(
 		'-o', '--only', action='store_const', dest='choices', const=[],
 		help='ignore default selections, only create selected targets (must be the first option)',
@@ -1243,8 +1443,10 @@ def parse_options():
 		parser.error(e)
 	return options
 
-def log(text):
-	sys.stderr.write(text + '\n')
+def log(text, newline=True):
+	sys.stderr.write(text)
+	if newline:
+		sys.stderr.write('\n')
 	sys.stderr.flush()
 
 def main():
