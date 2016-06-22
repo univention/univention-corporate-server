@@ -55,14 +55,11 @@ override_dh_auto_install:
 		install -m 644 "$$i" "$$o";\
 	done
 	dh_auto_install
-	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector/out/installscript.mm/MSI/setup.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector.msi
-	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector\ 64bit/out/installscript.mm/MSI/setup.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector-64bit.msi
 
 override_dh_installinit:
 	dh_installinit --no-start -u"defaults 97"
 
 override_dh_fixperms:
-	dh_fixperms -X/var/www/univention-ad-connector
 	chmod 755 debian/univention-ad-connector/usr/share/univention-ad-connector/scripts/prepare-new-instance
 	chmod 755 debian/univention-ad-connector/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename
 	chmod 755 debian/univention-ad-connector/usr/lib/univention-uninstall/19univention-ad-connector.uinst
