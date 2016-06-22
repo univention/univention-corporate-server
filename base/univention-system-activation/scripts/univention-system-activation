@@ -46,13 +46,6 @@ function ucr_build_array(){
 function allow_root_login() {
 	ucr_build_array "" ""
 	ucr unset --force "${UCR_ARRAY[@]}"
-
-	# some values were not set during the pam installation, because they were set
-	# in the force layer. Reconfigure PAM if no other dpkg process is running
-	# (e.g., when "stop" is called in the postrm script).
-	fuser /var/lib/dpkg/lock >/dev/null 2>&1 \
-		|| dpkg -l univention-pam > /dev/null 2>&1 \
-		&& dpkg-reconfigure univention-pam
 }
 
 function restrict_root_login() {

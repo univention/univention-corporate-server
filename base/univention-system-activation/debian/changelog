@@ -1,3 +1,9 @@
+univention-system-activation (1.0.1-11) unstable; urgency=medium
+
+  * Bug #40913: "dpkg-reconfigure univention-pam" not necessary anymore
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 22 Jun 2016 10:14:05 +0200
+
 univention-system-activation (1.0.1-10) unstable; urgency=medium
 
   * Bug #39700: Fix for prerm & postrm
