@@ -1172,7 +1172,7 @@ class Docker(Target):
 Docker = Docker()
 
 
-TARGETS = frozenset((VMware, Virtualbox, ESXi, Docker))
+TARGETS = (VMware, Virtualbox, ESXi, Docker, EC2)
 assert len(frozenset(map(repr, TARGETS))) == len(TARGETS), 'target names not unique'
 
 
