@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-appcenter
-fix: 5.0.21-11.174.201606210308
+fix: 5.0.21-12.175.201606211353
 desc: |
  This update addresses the following issue(s):
  * Minor code changes make other projects easier that rely on the App
@@ -11,6 +11,5 @@ desc: |
  * Uninstalling an App failed when the App was not properly registered before.
  * Tests run before upgrading an App used the installed version, not the
    to-be-installed version.
- * docker_bridge_network_conflict() has been added to appcenter.utils to
-   detect a docker bridge network conflict.
+ * A function to detect a docker bridge network conflict has been added.
 bug: [41360, 41542, 41532, 41596]
