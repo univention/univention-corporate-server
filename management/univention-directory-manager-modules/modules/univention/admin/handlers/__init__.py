@@ -536,11 +536,14 @@ class simpleLdap(base):
 			s4connector_present = any(ddn for (ddn, attr) in searchResult if 'aRecord' in attr)
 		self.s4connector_present = s4connector_present
 
+		if not univention.admin.modules.modules:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'univention.admin.modules.update() was not called')
+			univention.admin.modules.update()
 		m = univention.admin.modules.get(self.module)
 		if not hasattr(self, 'mapping'):
-			self.mapping = m.mapping
+			self.mapping = getattr(m, 'mapping', None)
 		if not hasattr(self, 'descriptions'):
-			self.descriptions = m.property_descriptions
+			self.descriptions = getattr(m, 'property_descriptions', None)
 
 		if attributes:
 			self.oldattr = attributes

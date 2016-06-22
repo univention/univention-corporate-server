@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-14) unstable; urgency=medium
+
+  * Bug #41580: fixup svn r70447; make sure modules are loaded
+
+ -- Florian Best <best@univention.de>  Wed, 22 Jun 2016 09:35:40 +0200
+
 univention-directory-manager-modules (11.0.3-13) unstable; urgency=medium
 
   * Bug #41580: use generic option parsing/composing for computers/*
