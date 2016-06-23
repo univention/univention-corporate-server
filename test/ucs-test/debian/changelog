@@ -1,3 +1,9 @@
+ucs-test (6.0.33-74) unstable; urgency=medium
+
+  * Bug #41580: fix options when creating nagios computers
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jun 2016 16:13:29 +0200
+
 ucs-test (6.0.33-73) unstable; urgency=low
 
   * Bug #40728: Add 03/53ucs_set_layer

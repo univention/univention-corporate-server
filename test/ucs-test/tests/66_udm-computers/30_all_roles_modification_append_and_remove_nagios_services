@@ -33,7 +33,7 @@ if __name__ == '__main__':
 			# create computer, appending the first two nagiosServices
 			computer = udm.create_object(
 				role,
-				options = ['nagios'],
+				options = ['posix', 'nagios'],
 				dnsEntryZoneForward = udm.create_object('dns/forward_zone', zone = '%s.%s' % (uts.random_name(), uts.random_name()), nameserver = uts.random_string()),	
 				name = computerName,
 				ip = computerIp,

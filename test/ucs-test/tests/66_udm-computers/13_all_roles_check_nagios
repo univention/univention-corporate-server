@@ -35,7 +35,7 @@ if __name__ == '__main__':
 				'nagiosParents': udm.create_object('computers/domaincontroller_backup', dnsEntryZoneForward = forwardZone, **nagiosParentProperties),
 				'name': uts.random_name(),
 				'ip': '10.20.30.3',
-				'options': ['nagios']
+				'options': ['posix', 'nagios']
 			}
 			# FIXME: workaround for remaining locks
 			udm.addCleanupLock('aRecord', computerProperties['ip'])

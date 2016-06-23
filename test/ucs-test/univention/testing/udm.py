@@ -46,6 +46,7 @@ The API is currently under heavy development and may/will change before next UCS
 
 import subprocess
 import os
+import pipes
 import psutil
 import copy
 import univention.testing.ucr
@@ -184,7 +185,7 @@ class UCSTestUDM(object):
 
         dn = None
         cmd = self._build_udm_cmdline(modulename, 'create', kwargs)
-        print 'Creating %s object with %r' % (modulename, cmd)
+        print 'Creating %s object with %s' % (modulename, _prettify_cmd(cmd))
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -226,7 +227,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'modify', kwargs)
-        print 'Modifying %s object with %r' % (modulename, cmd)
+        print 'Modifying %s object with %s' % (modulename, _prettify_cmd(cmd))
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -264,7 +265,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'move', kwargs)
-        print 'Moving %s object %r' % (modulename, cmd)
+        print 'Moving %s object %s' % (modulename, _prettify_cmd(cmd))
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -297,7 +298,7 @@ class UCSTestUDM(object):
             raise UCSTestUDM_CannotModifyExistingObject(dn)
 
         cmd = self._build_udm_cmdline(modulename, 'remove', kwargs)
-        print 'Removing %s object %r' % (modulename, cmd)
+        print 'Removing %s object %s' % (modulename, _prettify_cmd(cmd))
         child = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         (stdout, stderr) = child.communicate()
 
@@ -422,6 +423,13 @@ class UCSTestUDM(object):
         if exc_type:
             print 'Cleanup after exception: %s %s' % (exc_type, exc_value)
         self.cleanup()
+
+
+def _prettify_cmd(cmd):
+	cmd = ' '.join(pipes.quote(x) for x in cmd)
+	if set(cmd) & set(['\x00', '\n']):
+		cmd = repr(cmd)
+	return cmd
 
 
 if __name__ == '__main__':
