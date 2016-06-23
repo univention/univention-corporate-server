@@ -12,3 +12,4 @@
 0010-2: tests/test_init_invalid_st
 0010-2: tests/test_init_valid
 0010-2: tests/test_role
+0010-2: tests/test_defaults

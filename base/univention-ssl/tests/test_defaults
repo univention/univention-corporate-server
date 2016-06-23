@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e -u
+. ${0%/*}/common.sh
+
+run () {
+	local id="$1" name="$2" pem="${SSLBASE}/${2}/cert.pem"
+	gencert "${name}" "${name}"
+	[ "$id" = "$(has_valid_cert "${name}")" ]
+	openssl x509 -noout -in "$pem" -checkend $((DEFAULT_DAYS * 24 * 60 * 60 - 42)) || return 1
+	openssl x509 -noout -in "$pem" -checkend $((DEFAULT_DAYS * 24 * 60 * 60 + 42)) && return 1
+	openssl x509 -noout -in "$pem" -text | grep -F "Signature Algorithm: $DEFAULT_MD"
+}
+
+init
+
+run 01 "${R64%?}1"
+export DEFAULT_DAYS=10 DEFAULT_MD=sha1 DEFAULT_BITS=1024
+run 02 "${R64%?}2"
+
+:
