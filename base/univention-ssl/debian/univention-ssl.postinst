@@ -47,6 +47,8 @@ univention-config-registry set ssl/country?"${country:-DE}" \
 	ssl/default/days?1825 \
 	ssl/validity/warning?30 \
 	ssl/validity/check?yes \
+	ssl/crl/interval?7 \
+	ssl/crl/validity?10 \
 	ssl/default/hashfunction?sha256 \
 	ssl/default/bits?2048
 
@@ -80,6 +82,7 @@ then
 		find /etc/univention/ssl -name openssl.cnf -exec sed -r \
 			-e 's/^(default_bits\s*=\s*)\d+$/\1$ENV::DEFAULT_BITS/' \
 			-e 's/^(default_md\s*=\s*)\S+$/\1$ENV::DEFAULT_MD/' \
+			-e 's/^(default_crl_days\s*=\s*)\S+$/\1$ENV::DEFAULT_CRL_DAYS/' \
 			-i {} +
 	fi
 	if dpkg --compare-versions "$2" lt-nl 10.0.0-5

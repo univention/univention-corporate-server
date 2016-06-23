@@ -39,13 +39,15 @@ case "$SSLBASE" in /*) ;; *) echo "$0: FATAL: Invalid SSLBASE=$SSLBASE" >&2 ; ex
 CA=ucsCA
 case "$CA" in /*) echo "$0: FATAL: Invalid CA=$CA" >&2 ; exit 2 ;; esac
 
+DEFAULT_CRL_DAYS="$(/usr/sbin/univention-config-registry get ssl/crl/validity)"
+: ${DEFAULT_CRL_DAYS:=10}
 DEFAULT_DAYS="$(/usr/sbin/univention-config-registry get ssl/default/days)"
 : ${DEFAULT_DAYS:=1825}
 DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
 : ${DEFAULT_MD:=sha256}
 DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
 : ${DEFAULT_BITS:=2048}
-export DEFAULT_MD DEFAULT_BITS
+export DEFAULT_MD DEFAULT_BITS DEFAULT_CRL_DAYS
 
 if test -e "$SSLBASE/password"; then
 	PASSWD=`cat "$SSLBASE/password"`
@@ -125,7 +127,7 @@ x509_extensions     = ${CA}_ext
 crl_extensions     = crl_ext
 copy_extensions     = copy
 default_days        = $days
-default_crl_days    = 30
+default_crl_days    = \$ENV::DEFAULT_CRL_DAYS
 default_md          = \$ENV::DEFAULT_MD
 preserve            = no
 

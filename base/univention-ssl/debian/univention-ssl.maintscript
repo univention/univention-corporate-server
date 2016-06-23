@@ -1,0 +1,1 @@
+rm_conffile /etc/univention/templates/files/etc/cron.daily/univention-ssl-validity 10.0.0-12

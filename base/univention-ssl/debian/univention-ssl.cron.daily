@@ -1,6 +1,4 @@
 #!/bin/sh
-@%@UCRWARNING=# @%@
-
 # Copyright 2004-2016 Univention GmbH
 #
 # http://www.univention.de/
@@ -30,9 +28,26 @@
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-# store SSL certificate validity information in Univention Baseconfig
-@!@
-if configRegistry.is_true('ssl/validity/check', True):
-        print '/usr/sbin/univention-certificate-check-validity'
-@!@
+rv=0 tmp=$(mktemp)
+trap "rm -f '$tmp'" EXIT
+exec >"$tmp" 2>&1
 
+. /usr/share/univention-lib/ucr.sh
+if ! is_ucr_false ssl/validity/check
+then
+	univention-certificate-check-validity || rv=$?
+fi
+
+check_gen_crl () {
+	local interval crl='/etc/univention/ssl/ucsCA/crl/crl.pem'
+	[ "$(ucr get server/role)" = domaincontroller_master ] || return 0
+	interval=$(ucr get ssl/crl/interval)
+	[ "${interval:-0}" -ge 1 ] || return 0
+	[ -f "$crl" ] && [ -n "$(find "$crl" -mtime "-$interval")" ] && return 0
+	. /usr/share/univention-ssl/make-certificates.sh
+	gencrl
+}
+check_gen_crl || rv=$?
+
+[ 0 -eq $rv ] || cat "$tmp"
+exit $rv
