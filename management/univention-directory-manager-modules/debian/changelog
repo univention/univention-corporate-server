@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-17) unstable; urgency=medium
+
+  * Bug #40422: fix local root code execution and MITM vulnerability
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jun 2016 18:40:00 +0200
+
 univention-directory-manager-modules (11.0.3-16) unstable; urgency=medium
 
   * Bug #38110: raise noObject exception when passing a dn to

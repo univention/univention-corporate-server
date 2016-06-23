@@ -34,6 +34,7 @@ import SocketServer
 import socket
 from select import select
 import os
+import ast
 import sys
 import errno
 import traceback
@@ -43,6 +44,7 @@ import univention.admincli.adduser
 import univention.admincli.admin
 import univention.admincli.passwd
 import signal
+from argparse import ArgumentParser
 try:
 	import univention.admincli.license_check
 	licenseImportError = False
@@ -51,8 +53,11 @@ except ImportError:
 
 logfile = ''
 
+
 class MyRequestHandler(SocketServer.BaseRequestHandler):
+
 	"""Handle request on listeneing socket to open new connection."""
+
 	def handle(self):
 		ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] new connection [%s]' % (os.getppid(), os.getpid()))
 		sarglist = ''
@@ -72,28 +77,26 @@ class MyRequestHandler(SocketServer.BaseRequestHandler):
 
 
 class ForkingTCPServer(SocketServer.ForkingTCPServer):
+
 	"""UDM server listening on UNIX socket."""
 	address_family = socket.AF_UNIX
 	allow_reuse_address = 1
+
 	def server_bind(self):
 		SocketServer.TCPServer.server_bind(self)
 		_host, port = self.socket.getsockname()[:2]
-		self.server_name = 'localhost' #socket.getfqdn(host)
+		self.server_name = 'localhost'  # socket.getfqdn(host)
 		self.server_port = port
 
 
-def server_main():
+def server_main(args):
 	"""UDM command line server."""
+
+	socket_path = args.socket
+	socket_dir = os.path.dirname(socket_path)
+
 	global logfile
-	try:
-		logfile = sys.argv[1]
-	except IndexError:
-		logfile = '/var/log/univention/directory-manager-cmd.log'
-
-	socket_dir = '/tmp/admincli_%s/' % os.getuid()
-	socket_filename = 'sock'
-	socket_path = (socket_dir+socket_filename)
-
+	logfile = args.logfile
 	ud.init(logfile, ud.FLUSH, ud.NO_FUNCTION)
 
 	runfilename = '%s.run' % socket_path
@@ -113,23 +116,20 @@ def server_main():
 			print >> sys.stderr, 'E: Server already running [Pid: %s]' % pid
 			sys.exit(1)
 
-	configRegistry = ConfigRegistry()
-	configRegistry.load()
-	debug_level = configRegistry.get('directory/manager/cmd/debug/level', 1)
-	ud.set_level(ud.ADMIN, int(debug_level))
+	ud.set_level(ud.ADMIN, args.debug_level)
 	ud.debug(ud.ADMIN, ud.INFO, 'daemon [%s] forked to background' % os.getpid())
 
 	try:
 		os.mkdir(socket_dir)
-		os.chmod(socket_dir, 0700)
-	except OSError, ex:
+		os.chmod(socket_dir, 0o700)
+	except OSError as ex:
 		if ex.errno != errno.EEXIST:
 			print >> sys.stderr, 'E: %s %s' % (socket_dir, ex)
 			sys.exit(1)
 		else:
 			print >> sys.stderr, 'E: socket directory exists (%s)' % socket_dir
 
-	timeout = configRegistry.get('directory/manager/cmd/timeout')
+	timeout = args.timeout
 	if timeout:
 		if int(timeout) > 2147483647:
 			timeout = 2147483647
@@ -139,10 +139,10 @@ def server_main():
 
 	try:
 		sock = ForkingTCPServer(socket_path, MyRequestHandler)
-		os.chmod(socket_path, 0600)
+		os.chmod(socket_path, 0o600)
 	except:
 		print >> sys.stderr, 'E: Failed creating socket (%s). Daemon stopped.' % socket_path
-		ud.debug(ud.ADMIN, ud.ERROR, 'daemon [%s] Failed creating socket (%s). Daemon stopped.' % (os.getpid(), socket_filename))
+		ud.debug(ud.ADMIN, ud.ERROR, 'daemon [%s] Failed creating socket (%s). Daemon stopped.' % (os.getpid(), socket_path))
 		sys.exit(1)
 
 	#sock.listen(2)
@@ -179,7 +179,7 @@ def doit(sarglist, conn):
 		conn.close()
 
 	global logfile
-	arglist = eval(sarglist)
+	arglist = ast.literal_eval(sarglist)
 
 	next_is_logfile = False
 	secret = False
@@ -249,13 +249,31 @@ def doit(sarglist, conn):
 
 
 def main():
-	pid = os.fork()
-	if pid == 0:  # child
-		os.setsid()
-		server_main()
-		sys.exit(0)
-	else:  # parent
-		os.waitpid(pid, os.P_NOWAIT)
+	ucr = ConfigRegistry()
+	ucr.load()
+	debug_level = int(ucr.get('directory/manager/cmd/debug/level', 1))
+	timeout = int(ucr.get('directory/manager/cmd/timeout', 300))
+	default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
+
+	argparser = ArgumentParser()
+	argparser.add_argument('-n', dest='daemonize', action='store_false', default=True, help='Run in foreground without daemonizing')
+	argparser.add_argument('-L', dest='logfile', action='store', default='/var/log/univention/directory-manager-cmd.log', help='logfile: %(default)s')
+	argparser.add_argument('-d', dest='debug_level', action='store', type=int, default=debug_level, help='debug level: %(default)s')
+	argparser.add_argument('-t', dest='timeout', action='store', type=int, default=timeout, help='timeout: %(default)s')
+	argparser.add_argument('-s', dest='socket', action='store', default=default_socket_path)
+	args = argparser.parse_args()
+
+	if args.daemonize:
+		pid = os.fork()
+		if pid == 0:  # child
+			os.setsid()
+			server_main(args)
+			sys.exit(0)
+		else:  # parent
+			os.waitpid(pid, os.P_NOWAIT)
+	else:
+		server_main(args)
+
 
 if __name__ == "__main__":
 	main()

@@ -32,10 +32,15 @@
 
 import locale
 import socket
+import stat
 import time
+import ast
 import os
 import sys
 from univention.config_registry import ConfigRegistry
+
+
+default_socket_path = '/tmp/admincli_%d/sock' % os.getuid()
 
 
 def get_logfile():
@@ -65,11 +70,10 @@ def fork_server(sock, socket_path):
 		argv = ['univention-cli-server']
 		logfile = get_logfile()
 		if logfile:
-			argv.append(logfile)
-		os.execv(
-				'/usr/share/univention-directory-manager-tools/univention-cli-server',
-				argv
-				)
+			argv.extend(['-L', logfile])
+		if socket_path != default_socket_path:
+			argv.extend(['-s', socket_path])
+		os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', argv)
 	else:  # parent
 		os.waitpid(pid, os.P_NOWAIT)
 
@@ -141,30 +145,34 @@ def process_output(output, cmdfile):
 	else:
 		if output[-1] == "OPERATION FAILED":
 			result = 3
-			output = output [:-1]
+			output = output[:-1]
 		for line in output:
 			if isinstance(line, unicode):
 				line = line.encode(locale.getpreferredencoding(), 'replace')
 			print line
 	return result
 
-def _create_socket():
-	socket_path = '/tmp/admincli_%d/sock' % os.getuid()
+
+def _create_socket(socket_path=default_socket_path):
 	sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 	try:
+		if os.path.exists(socket_path) and os.stat(socket_path)[stat.ST_UID] != os.getuid():
+			raise EnvironmentError('Hacking attempt')
 		# connect to already running server
 		sock.connect(socket_path)
-	except socket.error:
+	except EnvironmentError:
 		fork_server(sock, socket_path)
 	return sock
 
+
 def _re_create_socket():
 	try:
-		sock = _create_socket()
-	except socket.error:
+		socket_path = '/tmp/admincli-%s-%s-%s/socket' % (os.getpid(), os.getuid(), sum(map(ord, os.urandom(12))))
+		return _create_socket(socket_path)
+	except EnvironmentError:
 		print >> sys.stderr, 'E: Can`t connect daemon. Giving up.'
 		sys.exit(1)
-	return sock
+
 
 def main():
 	"""Forward request to udm-cli-server."""
@@ -184,7 +192,7 @@ def main():
 	data = receive_answer(sock)
 	sock.close()
 
-	output = eval(data)
+	output = ast.literal_eval(data)
 	result = process_output(output, cmdfile)
 	sys.exit(result)
 
