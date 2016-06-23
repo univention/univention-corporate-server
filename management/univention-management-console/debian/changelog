@@ -1,5 +1,6 @@
 univention-management-console (8.0.28-15) unstable; urgency=medium
 
+  * Bug #41423: add DNSanitizer
   * Bug #41424: add allow_none parameter to Sanitizer
 
  -- Florian Best <best@univention.de>  Wed, 22 Jun 2016 15:55:08 +0200

@@ -594,6 +594,20 @@ class StringSanitizer(Sanitizer):
 		return value
 
 
+class DNSanitizer(StringSanitizer):
+
+	''' DNSanitizer is a sanitizer that checks if the value has correct LDAP
+	Distinguished Name syntax '''
+
+	def _sanitize(self, value, name, further_args):
+		value = super(DNSanitizer, self)._sanitize(value, name, further_args)
+		try:
+			ldap.dn.str2dn(value)
+		except ldap.DECODING_ERROR:
+			self.raise_validation_error(_('Value is not a LDAP DN.'))
+		return value
+
+
 class EmailSanitizer(StringSanitizer):
 
 	''' EmailSanitizer is a very simple sanitizer that checks
