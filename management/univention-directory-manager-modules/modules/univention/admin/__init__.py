@@ -33,8 +33,11 @@
 import types
 import sys
 import re
+from ldap.filter import filter_format
+
 import univention.config_registry
 import univention.debug
+
 
 configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -86,7 +89,7 @@ def ucr_overwrite_properties( module, lo ):
 							syntax = getattr( univention.admin.syntax, new_prop_val )
 							setattr( prop, attr, syntax() )
 						else:
-							if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % new_prop_val ):
+							if lo.search(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [new_prop_val])):
 								syntax = univention.admin.syntax.LDAP_Search( new_prop_val )
 								syntax._load( lo )
 								setattr( prop, attr, syntax )

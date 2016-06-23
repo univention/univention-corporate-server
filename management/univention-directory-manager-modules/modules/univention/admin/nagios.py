@@ -32,6 +32,7 @@
 
 import re
 import copy
+from ldap.filter import filter_format
 
 from univention.admin.layout import Tab
 import univention.admin
@@ -144,7 +145,7 @@ class Support( object ):
 
 		if fqdn:
 			searchResult=self.lo.search(
-				filter = '(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % fqdn,
+				filter = filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn]),
 				base = self.position.getDomain(), attr = [])
 			dnlist = []
 			for (dn, attrs) in searchResult:
@@ -163,15 +164,15 @@ class Support( object ):
 			if parent and _re.match(parent) != None:
 				(relDomainName, zoneName) = _re.match(parent).groups()
 
-				res=self.lo.search('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))' % (zoneName, relDomainName))
+				res=self.lo.search(filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
 				if not res:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'nagios.py: NGPH: couldn''t find dNSZone of %s' % parent)
 				else:
 					# found dNSZone
 					filter='(&(objectClass=univentionHost)'
 					for aRecord in res[0][1]['aRecord']:
-						filter += '(aRecord=%s)' % aRecord
-					filter += '(cn=%s))' % relDomainName
+						filter += filter_format('(aRecord=%s)', [aRecord])
+					filter += filter_format('(cn=%s))', [relDomainName])
 					res=self.lo.search(filter)
 					if res:
 						parentlist.append( res[0][0] )
@@ -299,7 +300,7 @@ class Support( object ):
 
 		if fqdn:
 			searchResult=self.lo.search(
-				filter = '(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % fqdn,
+				filter = filter_format('(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))', [fqdn]),
 				base = self.position.getDomain(), attr = [ 'univentionNagiosHostname' ] )
 
 			for (dn, attrs) in searchResult:
@@ -315,7 +316,7 @@ class Support( object ):
 
 		if fqdn:
 			searchResult=self.lo.search(
-				filter = '(&(objectClass=univentionNagiosHostClass)(univentionNagiosParent=%s))' % fqdn,
+				filter = filter_format('(&(objectClass=univentionNagiosHostClass)(univentionNagiosParent=%s))', [fqdn]),
 				base = self.position.getDomain(), attr = [ 'univentionNagiosParent' ] )
 
 			for (dn, attrs) in searchResult:

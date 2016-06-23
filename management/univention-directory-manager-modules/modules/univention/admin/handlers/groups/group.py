@@ -33,6 +33,7 @@
 import copy
 import time
 import ldap
+from ldap.filter import filter_format
 
 import univention.admin
 from univention.admin.layout import Tab, Group
@@ -362,7 +363,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.info['sambaRID'] = sid[pos+1:]
 
 		if self.exists():
-			self['memberOf']=self.lo.searchDn(filter='(&(objectClass=posixGroup)(uniqueMember=%s))' % univention.admin.filter.escapeForLdapFilter(self.dn))
+			self['memberOf']=self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(uniqueMember=%s))', [self.dn]))
 
 			time_start = time.time()
 
@@ -691,12 +692,12 @@ class object(univention.admin.handlers.simpleLdap):
 			self.gidNum=self.oldattr['gidNumber'][0]
 		if 'samba' in self.options:
 			self.groupSid=self.oldattr['sambaSID'][0]
-		if hasattr(self,'gidNum'):
-			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=person)(gidNumber=%s))'%self.gidNum, scope='domain')
+		if getattr(self, 'gidNum', None):
+			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(gidNumber=%s))', [self.gidNum]), scope='domain')
 			if searchResult:
 				raise univention.admin.uexceptions.primaryGroupUsed
-		if hasattr(self,'groupSid'):
-			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=person)(sambaPrimaryGroupSID=%s))'%self.groupSid, scope='domain')
+		if getattr(self, 'groupSid', None):
+			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(sambaPrimaryGroupSID=%s))', [self.groupSid]), scope='domain')
 			if searchResult:
 				raise univention.admin.uexceptions.primaryGroupUsed
 
@@ -919,7 +920,7 @@ class object(univention.admin.handlers.simpleLdap):
 			return False
 
 	def _is_global_member(self):
-		searchResult = self.lo.search(base=self.position.getDomain(), filter='(uniqueMember=%s)' % self.dn, attr=['univentionGroupType'])
+		searchResult = self.lo.search(base=self.position.getDomain(), filter=filter_format('(uniqueMember=%s)', [self.dn]), attr=['univentionGroupType'])
 		for (dn,attr) in searchResult:
 			groupType = attr.get('univentionGroupType', [None])[0]
 			if self.__is_groupType_global(groupType):

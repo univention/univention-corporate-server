@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.filter import filter_format
+
 import univention.debug
 import univention.admin.locking
 import univention.admin.uexceptions
@@ -132,7 +134,7 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 				continue
 
 			if atype in ('uidNumber', 'gidNumber'):
-				_filter = '(|(uidNumber=%d)(gidNumber=%d))' % (startID, startID)
+				_filter = filter_format('(|(uidNumber=%s)(gidNumber=%s))', (str(startID), str(startID)))
 			else:
 				_filter = '(%s=%d)' % (attr, startID)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: searchfor %r' % _filter)
@@ -161,16 +163,16 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 
 	if type=="aRecord": # uniqueness is only relevant among hosts (one or more dns entrys having the same aRecord as a host are allowed)
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
-		if not lo.searchDn(base=searchBase, filter='(&(objectClass=univentionHost)(%s=%s))' % (attr, value)):
+		if not lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=univentionHost)(%s=%s))', (attr, value))):
 			return value
 	elif type in ['groupName', 'uid'] and configRegistry.is_true('directory/manager/user_group/uniqueness', True):
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
-		if not lo.searchDn(base=searchBase, filter='(|(&(cn=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))(uid=%s))' % (value, value)):
+		if not lo.searchDn(base=searchBase, filter=filter_format('(|(&(cn=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))(uid=%s))', (value, value))):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s'% value)
 			return value
 	elif type == "groupName": # search filter is more complex then in general case
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
-		if not lo.searchDn(base=searchBase, filter='(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))' % (attr, value)):
+		if not lo.searchDn(base=searchBase, filter=filter_format('(&(%s=%s)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping)(objectClass=posixGroup)))', (attr, value))):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s'% value)
 			return value
 	else:

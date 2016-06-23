@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -217,7 +218,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_remove(self):
 		# refuse deletion if there is still a reference
-		searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=univentionNagiosServiceClass)(|(univentionNagiosCheckPeriod=%s)(univentionNagiosNotificationPeriod=%s)))' % (self['name'], self['name']), scope='sub')
+		searchResult=self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(|(univentionNagiosCheckPeriod=%s)(univentionNagiosNotificationPeriod=%s)))', [self['name'], self['name']]), scope='sub')
 		if searchResult:
 			raise univention.admin.uexceptions.nagiosTimeperiodUsed
 

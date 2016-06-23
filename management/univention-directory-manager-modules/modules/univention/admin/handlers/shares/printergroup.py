@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.filter import filter_format, escape_filter_chars
+
 from univention.admin.layout import Tab, Group
 import univention.admin.uldap
 import univention.admin.syntax
@@ -177,7 +179,7 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.leavePrinterGroup(_('%(name)s is member of the following quota printer groups %(groups)s') % {'name': self.info['name'], 'groups': ', '.join(group_cn)})
 		elif self.info.get( 'setQuota', None ) == '1':
 			for member_cn in self.info['groupMember']:
-				member_dn=self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(univentionPrinterSpoolHost=%s)(cn=%s)(univentionPrinterQuotaSupport=1))' % (self.info['spoolHost'][0], member_cn))
+				member_dn=self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPrinter)(univentionPrinterSpoolHost=%s)(cn=%s)(univentionPrinterQuotaSupport=1))', [self.info['spoolHost'][0], member_cn]))
 				if len(member_dn) < 1:
 					raise univention.admin.uexceptions.leavePrinterGroup, _('%s is disabled for quota support. ') % member_cn
 		if self.hasChanged('groupMember'):
@@ -185,7 +187,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 	def _ldap_pre_remove(self): # check for last member in printerclass on same spoolhost
-		printergroups=self.lo.searchDn(filter='(&(objectClass=univentionPrinterGroup)(univentionPrinterSpoolHost=%s))' % self.info['spoolHost'])
+		printergroups=self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPrinterGroup)(univentionPrinterSpoolHost=%s))', [self.info['spoolHost']]))
 		rm_attrib=[]
 		for pg_dn in printergroups:
 			member_list=self.lo.search( base=pg_dn, attr=['univentionPrinterGroupMember','cn'])
@@ -205,10 +207,10 @@ class object(univention.admin.handlers.simpleLdap):
 		for member in self.info['groupMember']:
 			spoolhosts = '(|'
 			for host in self.info[ 'spoolHost' ]:
-				spoolhosts += "(univentionPrinterSpoolHost=%s)" % host
+				spoolhosts += filter_format("(univentionPrinterSpoolHost=%s)", [host])
 			spoolhosts += ')'
 
-			test=self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(cn=%s)%s)' % ( member, spoolhosts ) )
+			test=self.lo.searchDn(filter='(&(objectClass=univentionPrinter)(cn=%s)%s)' % (escape_filter_chars(member), spoolhosts))
 			if len(test) < 1:
 				raise univention.admin.uexceptions.notValidPrinter(_('%(name)s is not a valid printer on Spoolhost %(host)s.') % {'name': member, 'host': self.info['spoolHost']})
 

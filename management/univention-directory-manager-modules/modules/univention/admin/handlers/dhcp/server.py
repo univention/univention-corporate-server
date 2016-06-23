@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.filter import filter_format
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -91,7 +93,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		searchBase=self.position.getDomain()
-		if self.lo.searchDn(base=searchBase, filter='(&(objectClass=dhcpServer)(cn=%s))' % (self.info['server'])):
+		if self.lo.searchDn(base=searchBase, filter=filter_format('(&(objectClass=dhcpServer)(cn=%s))', [self.info['server']])):
 			raise univention.admin.uexceptions.dhcpServerAlreadyUsed, self.info['server']
 
 		return [

@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -311,18 +312,18 @@ class object(univention.admin.handlers.simpleLdap):
 			if host and _re.match(host) != None:
 				(relDomainName, zoneName) = _re.match(host).groups()
 				# find correct dNSZone entry
-				res=self.lo.search('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))' % (zoneName, relDomainName))
+				res=self.lo.search(filter=filter_format('(&(objectClass=dNSZone)(zoneName=%s)(relativeDomainName=%s)(aRecord=*))', (zoneName, relDomainName)))
 				if not res:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'service.py: open: couldn''t find dNSZone of %s' % host)
 				else:
 					# found dNSZone
 					filter='(&(objectClass=univentionHost)'
 					for aRecord in res[0][1]['aRecord']:
-						filter += '(aRecord=%s)' % aRecord
-					filter += '(cn=%s))' % relDomainName
+						filter += filter_format('(aRecord=%s)', [aRecord])
+					filter += filter_format('(cn=%s))', [relDomainName])
 
 					# find dn of host that is related to given aRecords
-					res=self.lo.search(filter)
+					res=self.lo.search(filter=filter)
 					if res:
 						hostlist.append(res[0][0])
 

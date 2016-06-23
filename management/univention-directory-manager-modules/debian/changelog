@@ -1,5 +1,6 @@
 univention-directory-manager-modules (11.0.3-15) unstable; urgency=medium
 
+  * Bug #40129: escape ldap filters
   * Bug #40041: escape special chars in DN's when creating objects
 
  -- Florian Best <best@univention.de>  Wed, 22 Jun 2016 12:41:48 +0200

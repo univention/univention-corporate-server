@@ -32,6 +32,7 @@
 
 import re
 import string
+from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -184,7 +185,7 @@ def lookup_alias_filter(lo, filter_s):
 		alias_base = unicode(lo.base)					# std dns container might be a better choice
 		for dn, attrs in lo.search(base=alias_base, scope='sub', filter=alias_filter_s, attr=['cNAMERecord']):
 			cname=attrs['cNAMERecord'][0]
-			cn_filter='(cn=%s)' % cname.split('.', 1)[0]
+			cn_filter=filter_format('(cn=%s)', [cname.split('.', 1)[0]])
 			if cn_filter not in filterlist:
 				filterlist.append(cn_filter)
 		if len(filterlist) > 0:

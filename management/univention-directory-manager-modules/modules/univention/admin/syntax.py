@@ -54,6 +54,7 @@ import traceback
 from io import BytesIO
 import locale
 from operator import itemgetter
+from ldap.filter import filter_format
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
@@ -2778,7 +2779,7 @@ class LDAP_Search( select ):
 
 		# get values from UDM settings/syntax
 		try:
-			filter = LDAP_Search.FILTER_PATTERN % self.syntax
+			filter = filter_format(LDAP_Search.FILTER_PATTERN, [self.syntax])
 			dn, attrs = lo.search( filter = filter )[ 0 ]
 		except:
 			return

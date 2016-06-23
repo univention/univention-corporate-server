@@ -41,6 +41,7 @@ import struct
 from M2Crypto import X509
 import ldap
 import base64
+from ldap.filter import filter_format
 
 import univention.admin
 from univention.admin.layout import Tab, Group
@@ -1395,13 +1396,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 					if loadGroups: # this is optional because it can take much time on larger installations, default is true
 						self.groupsLoaded=1
-						self['groups']=self.lo.searchDn(filter='(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))' % univention.admin.filter.escapeForLdapFilter(self.dn))
+						self['groups']=self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))', [self.dn]))
 					else:
 						self.groupsLoaded=0
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: open with loadGroups=false for user %s'%self['username'])
 					primaryGroupNumber=self.oldattr.get('gidNumber',[''])[0]
 					if primaryGroupNumber:
-						primaryGroupResult=self.lo.searchDn('(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber='+primaryGroupNumber+'))')
+						primaryGroupResult=self.lo.searchDn(filter=filter_format('(&(cn=*)(|(objectClass=posixGroup)(objectClass=sambaGroupMapping))(gidNumber=%s))', [primaryGroupNumber]))
 						if primaryGroupResult:
 							self['primaryGroup']=primaryGroupResult[0]
 						else:
@@ -1478,8 +1479,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					host, path = unc.split(':',1)
 					sharepath=path
 					while len(sharepath) > 1:
-						escaped_sharepath_filter = univention.admin.filter.escapeForLdapFilter('path=%s' % sharepath)
-						res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter='(&(host=%s)(%s))' % (host, escaped_sharepath_filter), scope='domain')
+						res = univention.admin.modules.lookup(univention.admin.modules.get('shares/share'), None, self.lo, filter=filter_format('(&(host=%s)(path=%s))', [host, sharepath]), scope='domain')
 						if len(res) == 1:
 							self['homeShare']=res[0].dn
 							relpath=path.replace(sharepath, '')
@@ -1491,7 +1491,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 							break
 						elif len(res) < 1:
 							sharepath=os.path.split(sharepath)[0]
-
 
 			if 'pki' in self.options:
 				self.reload_certificate()
@@ -1508,7 +1507,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						raise univention.admin.uexceptions.primaryGroup
 
 					for tmp,number in searchResult:
-						primaryGroupResult=self.lo.searchDn('(&(objectClass=posixGroup)(cn=%s))' % (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0]), base=self.position.getDomain(), scope='domain')
+						primaryGroupResult=self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', (univention.admin.uldap.explodeDn(number['univentionDefaultGroup'][0], 1)[0],)), base=self.position.getDomain(), scope='domain')
 						if primaryGroupResult:
 							self['primaryGroup']=primaryGroupResult[0]
 							self.newPrimaryGroupDn=primaryGroupResult[0]

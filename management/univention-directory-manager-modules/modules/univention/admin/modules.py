@@ -37,6 +37,8 @@ import types
 import copy
 import locale
 import imp
+from ldap.filter import filter_format
+
 import univention.debug as ud
 import univention.admin
 import univention.admin.uldap
@@ -195,7 +197,7 @@ def update_extended_options(lo, module, position):
 		lang = 'xxxxx'
 
 	# append UDM extended options
-	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)(univentionUDMOptionModule=%s))' % name(module)):
+	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter=filter_format('(&(objectClass=univentionUDMOption)(univentionUDMOptionModule=%s))', [name(module)])):
 		oname = attrs['cn'][0]
 		shortdesc = attrs.get('univentionUDMOptionTranslationShortDescription;entry-%s' % lang, attrs['univentionUDMOptionShortDescription'])[0]
 		longdesc = attrs.get('univentionUDMOptionTranslationLongDescription;entry-%s' % lang, attrs.get('univentionUDMOptionLongDescription', ['']))[0]
@@ -270,7 +272,7 @@ def update_extended_attributes(lo, module, position):
 	overwriteTabList = []
 	module.extended_udm_attributes = []
 	for dn, attrs in lo.search( base = position.getDomainConfigBase(),
-								filter='(&(objectClass=univentionUDMProperty)(univentionUDMPropertyModule=%s)(univentionUDMPropertyVersion=2))' % name(module) ):
+								filter=filter_format('(&(objectClass=univentionUDMProperty)(univentionUDMPropertyModule=%s)(univentionUDMPropertyVersion=2))', [name(module)])):
 		# get CLI name
 		pname=attrs['univentionUDMPropertyCLIName'][0]
 
@@ -279,7 +281,7 @@ def update_extended_attributes(lo, module, position):
 		if propertySyntaxString and hasattr(univention.admin.syntax, propertySyntaxString):
 			propertySyntax = getattr(univention.admin.syntax, propertySyntaxString)
 		else:
-			if lo.search( filter = univention.admin.syntax.LDAP_Search.FILTER_PATTERN % propertySyntaxString ):
+			if lo.search(filter=filter_format(univention.admin.syntax.LDAP_Search.FILTER_PATTERN, [propertySyntaxString])):
 				propertySyntax = univention.admin.syntax.LDAP_Search( propertySyntaxString )
 			else:
 				propertySyntax = univention.admin.syntax.string()

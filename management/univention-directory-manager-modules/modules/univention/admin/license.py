@@ -30,7 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.filter import filter_format
 import operator
+
 import univention.license
 import univention.debug
 import univention.admin.modules
@@ -58,7 +60,7 @@ LDAP_FILTER_managedclients = '(|(objectClass=univentionThinClient)(&(objectClass
 def ldap_filter_not_objectflag(flag_string_list):
 	ldap_filter_parts = []
 	for flag_string in flag_string_list:
-		ldap_filter_parts.append('(univentionObjectFlag=%s)' % flag_string)
+		ldap_filter_parts.append(filter_format('(univentionObjectFlag=%s)', [flag_string]))
 	if not ldap_filter_parts:
 		return ''
 	elif len(ldap_filter_parts) == 1:
@@ -184,7 +186,7 @@ class License( object ):
 
 	def _load_license_via_python(self, module, lo):
 		# Try to set the version even if the license load was not successful
-		self.searchResult = lo.search( filter='(&(objectClass=univentionLicense)(univentionLicenseModule=%s))' % module)
+		self.searchResult = lo.search(filter=filter_format('(&(objectClass=univentionLicense)(univentionLicenseModule=%s))', [module]))
 		if self.searchResult:
 			self.version = self.searchResult[0][1].get('univentionLicenseVersion', ['1'])[0]
 

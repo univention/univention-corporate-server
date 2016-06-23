@@ -33,6 +33,7 @@
 import ipaddr
 import string
 import ldap
+from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
@@ -224,7 +225,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def refreshNextIp(self):
 		start_ip = self['nextIp']
-		while self.lo.search(scope='domain', attr=['aRecord'], filter='(&(aRecord=%s))' % self['nextIp']) or self['nextIp'].split('.')[-1] in ['0', '1', '254']:
+		while self.lo.search(scope='domain', attr=['aRecord'], filter=filter_format('(&(aRecord=%s))', [self['nextIp']])) or self['nextIp'].split('.')[-1] in ['0', '1', '254']:
 			self.stepIp()
 			if self['nextIp'] == start_ip:
 				raise univention.admin.uexceptions.nextFreeIp

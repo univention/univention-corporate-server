@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.filter import filter_format
+
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
@@ -170,13 +172,13 @@ class object(univention.admin.handlers.simplePolicy):
 	def check_entries(self):
 		if self.hasChanged('quotaGroups') and self.info.get('quotaGroups'):
 			for entry in self.info.get('quotaGroups'):
-				group_dn=self.lo.searchDn(filter='(&(objectClass=posixGroup)(cn=%s))' % entry[2])
+				group_dn=self.lo.searchDn(filter=filter_format('(&(objectClass=posixGroup)(cn=%s))', [entry[2]]))
 				if len(group_dn) < 1 and entry[2] != 'root':
 					raise univention.admin.uexceptions.notValidGroup,_('%s is not valid. ') % entry[2]
 
 		if self.hasChanged('quotaUsers') and self.info.get('quotaUsers'):
 			for entry in self.info.get('quotaUsers'):
-				user_dn=self.lo.searchDn(filter='(&(objectClass=posixAccount)(uid=%s))' % entry[2])
+				user_dn=self.lo.searchDn(filter=filter_format('(&(objectClass=posixAccount)(uid=%s))', [entry[2]]))
 				if len(user_dn) < 1 and entry[2] != 'root':
 					raise univention.admin.uexceptions.notValidUser,_('%s is not valid. ') % entry[2]
 

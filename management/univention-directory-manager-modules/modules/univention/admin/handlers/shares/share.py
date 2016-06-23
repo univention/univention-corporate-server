@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import re
+from ldap.filter import filter_format
 
 from univention.admin.layout import Tab, Group
 import univention.admin.uldap
@@ -849,8 +850,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if not self.options:
 			self.open()
 		if 'nfs' in self.options:
-			searchstring="*"+self['host']+":"+self['path']+"*"
-			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=person)(automountInformation=%s))'%searchstring, scope='domain')
+			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=person)(automountInformation=*%s:%s*))', [self['host'], self['path']]), scope='domain')
 			if searchResult:
 				numstring=""
 				userstring=""
