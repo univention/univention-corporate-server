@@ -53,6 +53,24 @@ usage () {
 
 	[ -n "$1" ] && exit 2 || exit 0
 }
+die () {
+	echo "${0##/*}: $*" >&2
+	exit 1
+}
+run_only () {
+	local role="$1" mode="$2"
+	case "$role/$(ucr get server/role)" in
+	master/domaincontroller_master) ;;
+	backup/domaincontroller_master) ;;
+	backup/domaincontroller_backup) ;;
+	*) die "Works only on the DC $1" ;;
+	esac
+	[ 0 -eq "$(id -u)" ] ||
+		die "Only user 'root' can use this"
+	exec 3<"$SSLBASE"
+	flock -n --"$mode" 3 ||
+		die "Failed to get $mode lock"
+}
 
 while [ $# -ge 1 ]
 do
@@ -75,32 +93,35 @@ done
 [ -n "$command" ] || usage "Missing command"
 : ${name:?Missing argument '-name'}
 
-cd /etc/univention/ssl
-
 . /usr/share/univention-ssl/make-certificates.sh
+cd "$SSLBASE"
 
 new () {
+		run_only master exclusive
 		echo "Creating certificate: $name"
-		gencert "/etc/univention/ssl/$name" "$name"
+		gencert "$SSLBASE/$name" "$name"
 		if getent group "DC Backup Hosts" 2>&1 >/dev/null
 		then
-			chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$name"
-			chmod -R g+rX "/etc/univention/ssl/$name"
+			chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
+			chmod -R g+rX "$SSLBASE/$name"
 		fi
 }
 
 revoke () {
+		run_only master exclusive
 		echo "Revoke certificate: $name"
 		revoke_cert "$name"
 }
 
 renew () {
+		run_only master exclusive
 		: ${days:?Missing argument -days}
 		echo "Renew certificate: $name"
 		renew_cert "$name" "$days"
 }
 
 check () {
+		run_only backup shared
 		echo -n "Certificate \"$name\" is "
 		if has_valid_cert "$name" >/dev/null
 		then
@@ -113,13 +134,17 @@ check () {
 }
 
 list () {
+		run_only backup shared
 		echo "List all certificates"
 		list_cert_names
 }
 
 dump () {
+		local filename="$SSLBASE/$name/cert.pem"
+		[ -r "$filename" ] ||
+			die "Can not read file '$filename'"
 		echo "Dump certificate: $name"
-		openssl x509 -in "$SSLBASE/$name/cert.pem" -noout -text
+		openssl x509 -in "$filename" -noout -text
 }
 
 "$command"

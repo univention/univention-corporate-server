@@ -1,6 +1,8 @@
 univention-ssl (10.0.0-11) unstable; urgency=low
 
   * Bug #40498: Make hash-function and bit-count mode configurable
+  * Bug #24094: Allow univention-certificate only on DC Master
+  * Bug #35027: Prevent parallel univention-certificate runs
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 22 Jun 2016 12:06:37 +0200
 

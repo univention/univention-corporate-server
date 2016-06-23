@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e -u
+. ${0%/*}/common.sh
+
+init
+
+! univention-certificate new -name "$R64" -days 10
+! univention-certificate renew -name "$R64" -days 10
+! univention-certificate revoke -name "$R64"
+! univention-certificate list
+! univention-certificate check -name "$R64"
+
+ucr set server/role=domaincontroller_backup >/dev/null 2>&1
+! univention-certificate new -name "$R64" -days 10
+! univention-certificate renew -name "$R64" -days 10
+! univention-certificate revoke -name "$R64"
+univention-certificate list
+
+ucr set server/role=domaincontroller_master >/dev/null 2>&1
+univention-certificate new -name "$R64" -days 10
+univention-certificate list
+univention-certificate check -name "$R64"
+univention-certificate renew -name "$R64" -days 10
+univention-certificate revoke -name "$R64"
+
+:
