@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: samba
-fix: 
+fix: 2:4.3.7-1.832.201606231240
 desc: |
  The restart command of the samba init wrapper script has been adjusted
  to avoid restarting samba-ad-dc after nmbd.
