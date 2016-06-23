@@ -116,7 +116,6 @@ mapping.register('fixedaddress', 'univentionDhcpFixedAddress')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
-	name_identifier = 'host'
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		if not superordinate:

@@ -81,7 +81,6 @@ add_dhcp_options( property_descriptions, mapping, layout )
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
-	name_identifier = 'server'
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		if not superordinate:
