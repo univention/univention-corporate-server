@@ -149,6 +149,8 @@ class Sanitizer(object):
 	:param bool may_change_value: if the process of sanitizing is allowed
 		to alter *request.options*. If not, the sanitizer can still be used
 		for validation. Default: *True*
+	:param bool allow_none: if None is allowed and not further validated.
+		Default: *False*
 	'''
 
 	def __init__(self, **kwargs):
@@ -156,6 +158,7 @@ class Sanitizer(object):
 		self.required = kwargs.get('required', False)
 		self.default = kwargs.get('default', None)
 		self.may_change_value = kwargs.get('may_change_value', True)
+		self.allow_none = kwargs.get('allow_none', False)
 
 	def sanitize(self, name, options):
 		'''Sanitize function. Internally calls _sanitize with the
@@ -173,6 +176,8 @@ class Sanitizer(object):
 			else:
 				return self.default
 		value = options[name]
+		if value is None and self.allow_none:
+			return value
 		if self.further_arguments:
 			further_arguments = dict([(field, options.get(field)) for field in self.further_arguments])
 		else:
