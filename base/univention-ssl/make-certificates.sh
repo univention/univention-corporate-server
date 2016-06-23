@@ -42,6 +42,7 @@ DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)
 : ${DEFAULT_MD:=sha256}
 DEFAULT_BITS="$(/usr/sbin/univention-config-registry get ssl/default/bits)"
 : ${DEFAULT_BITS:=2048}
+export DEFAULT_MD DEFAULT_BITS
 
 if test -e "$SSLBASE/password"; then
 	PASSWD=`cat "$SSLBASE/password"`
@@ -122,7 +123,7 @@ crl_extensions     = crl_ext
 copy_extensions     = copy
 default_days        = $days
 default_crl_days    = 30
-default_md          = ${DEFAULT_MD}
+default_md          = \$ENV::DEFAULT_MD
 preserve            = no
 
 policy              = policy_match
@@ -149,9 +150,9 @@ emailAddress		= optional
 
 [ req ]
 
-default_bits		= $DEFAULT_BITS
+default_bits		= \$ENV::DEFAULT_BITS
 default_keyfile 	= privkey.pem
-default_md          = ${DEFAULT_MD}
+default_md          = \$ENV::DEFAULT_MD
 distinguished_name	= req_distinguished_name
 attributes		= req_attributes
 x509_extensions		= v3_ca

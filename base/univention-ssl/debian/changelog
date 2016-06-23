@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-11) unstable; urgency=low
+
+  * Bug #40498: Make hash-function and bit-count mode configurable
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 22 Jun 2016 12:06:37 +0200
+
 univention-ssl (10.0.0-10) unstable; urgency=medium
 
   * Bug #39376: correctly escape config variables; The characters " and $
