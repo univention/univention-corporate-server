@@ -393,6 +393,7 @@ revoke_cert () {
 gencert () {
 	local name="${1:?Missing argument: dirname}"
 	local fqdn="${2:?Missing argument: common name}"
+	local days="${3:-$DEFAULT_DAYS}"
 
 	local hostname=${fqdn%%.*} cn="$fqdn"
 	if [ ${#hostname} -gt 64 ]
@@ -400,9 +401,6 @@ gencert () {
 		echo "FATAL: Hostname '$hostname' is longer than 64 characters" >&2
 		return 2
 	fi
-
-	local days=$(/usr/sbin/univention-config-registry get ssl/default/days)
-	: ${days:=$DEFAULT_DAYS}
 
 	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
 

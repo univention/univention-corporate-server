@@ -72,6 +72,9 @@ run_only () {
 		die "Failed to get $mode lock"
 }
 
+command=
+name=
+days=
 while [ $# -ge 1 ]
 do
 	case "$1" in
@@ -99,7 +102,7 @@ cd "$SSLBASE"
 new () {
 		run_only master exclusive
 		echo "Creating certificate: $name"
-		gencert "$SSLBASE/$name" "$name"
+		gencert "$SSLBASE/$name" "$name" "$days"
 		if getent group "DC Backup Hosts" 2>&1 >/dev/null
 		then
 			chgrp -R "DC Backup Hosts" "$SSLBASE/$name"
