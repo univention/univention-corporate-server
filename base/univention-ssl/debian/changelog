@@ -1,6 +1,7 @@
 univention-ssl (10.0.0-12) unstable; urgency=low
 
   * Bug #40498: Convert openssl.conf on upgrade
+  * Bug #25285: Use debian.pool.ntp.org
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 23 Jun 2016 09:40:33 +0200
 
