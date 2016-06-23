@@ -213,37 +213,27 @@ nsComment               = This certificate is a Root CA Certificate
 issuerAltName           = issuer:copy
 authorityKeyIdentifier  = keyid:always,issuer:always
 EOF
-	chmod 0600 "$outfile"
 }
 
 move_cert () {
-	(
-	cd "$SSLBASE"
-
-	local i count
+	local i dir="${SSLBASE}/${CA}/certs"
 	for i in "$@"
 	do
 		if [ -f "$i" ]
 		then
-			local new="${SSLBASE}/${CA}/certs/$(basename "$i")"
-			mv "$i" "$new"
-			local hash=$(openssl x509 -hash -noout -in "$new")
-			count=0
+			local hash=$(openssl x509 -hash -noout -in "$i")
+			local new="${SSLBASE}/${CA}/certs/${i##*/}"
+			mv "$i" "${dir}/${i##*/}"
+			local count=0
 			while :
 			do
-				local linkname="${CA}/certs/${hash}.${count}"
-				if [ -h "$linkname" ]
-				then
-					count=$((count + 1))
-					continue
-				else
-					ln -s "$new" "$linkname"
-					break
-				fi
+				local linkname="${dir}/${hash}.${count}"
+				[ -h "$linkname" ] || break
+				count=$((count + 1))
 			done
+			ln -snf "${i##*/}" "$linkname"
 		fi
 	done
-	)
 }
 
 init () {
@@ -254,7 +244,7 @@ init () {
 	rm -rf "$SSLBASE"
 
 	# create the base directory
-	mkdir -p "$SSLBASE"
+	install -m 0755 -d "$SSLBASE"
 
 	# make sure we have a password, generate one if we don't
 	if ! test -e "$SSLBASE/password"; then
@@ -265,38 +255,35 @@ init () {
 	fi
 	PASSWD=`cat "$SSLBASE/password"`
 
-	(
 	# create directory infrastructure
-	cd "$SSLBASE"
-	mkdir -m 700 -p "${CA}"
-	mkdir -p "${CA}/certs"
-	mkdir -p "${CA}/crl"
-	mkdir -p "${CA}/newcerts"
-	mkdir -p "${CA}/private"
-	echo "01" >"${CA}/serial"
-	touch "${CA}/index.txt"
+	install -m 755 -d "${SSLBASE}/${CA}"
+	install -m 700 -d "${SSLBASE}/${CA}/certs"
+	install -m 700 -d "${SSLBASE}/${CA}/crl"
+	install -m 700 -d "${SSLBASE}/${CA}/newcerts"
+	install -m 700 -d "${SSLBASE}/${CA}/private"
+	echo "01" >"${SSLBASE}/${CA}/serial"
+	touch "${SSLBASE}/${CA}/index.txt"
 
 	# make the root-CA configuration file
-	mk_config openssl.cnf "$PASSWD" "$DEFAULT_DAYS" "$cn" || return $?
+	mk_config "${SSLBASE}/openssl.cnf" "$PASSWD" "$DEFAULT_DAYS" "$cn" || return $?
 
-	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${CA}/private/CAkey.pem" "$DEFAULT_BITS" || return $?
-	openssl req -batch -config openssl.cnf -new -x509 -days "$DEFAULT_DAYS" -key "${CA}/private/CAkey.pem" -out "${CA}/CAcert.pem" || return $?
+	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${SSLBASE}/${CA}/private/CAkey.pem" "$DEFAULT_BITS" || return $?
+	openssl req -batch -config "${SSLBASE}/openssl.cnf" -new -x509 -days "$DEFAULT_DAYS" -key "${SSLBASE}/${CA}/private/CAkey.pem" -out "${SSLBASE}/${CA}/CAcert.pem" || return $?
 
 	# copy the public key to a place, from where browsers can access it
-	openssl x509 -in "${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt || return $?
+	openssl x509 -in "${SSLBASE}/${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt || return $?
 
 	# copy the certificate to the certs dir and link it to its hash value
-	cp "${CA}/CAcert.pem" "${CA}/newcerts/00.pem"
-	move_cert "${CA}/newcerts/00.pem"
+	install -m 0600 "${SSLBASE}/${CA}/CAcert.pem" "${SSLBASE}/${CA}/newcerts/00.pem"
+	move_cert "${SSLBASE}/${CA}/newcerts/00.pem"
 
 	# generate root ca request
-	openssl x509 -x509toreq -in "${CA}/CAcert.pem" -signkey "${CA}/private/CAkey.pem" -out "${CA}/CAreq.pem" -passin pass:"$PASSWD" || return $?
+	openssl x509 -x509toreq -in "${SSLBASE}/${CA}/CAcert.pem" -signkey "${SSLBASE}/${CA}/private/CAkey.pem" -out "${SSLBASE}/${CA}/CAreq.pem" -passin pass:"$PASSWD" || return $?
 
-	find "${CA}" -type f -exec chmod 600 {} +
-	find "${CA}" -type d -exec chmod 700 {} +
+	find "${SSLBASE}/${CA}" -type f -exec chmod 600 {} + , -type d -exec chmod 700 {} +
 
-	chmod 755 "${CA}"
-	chmod 644 "${CA}/CAcert.pem"
+	chmod 755 "${SSLBASE}/${CA}"
+	chmod 644 "${SSLBASE}/${CA}/CAcert.pem"
 
 	# generate empty crl at installation time
 	gencrl
@@ -306,15 +293,14 @@ init () {
 		chgrp -R 'DC Backup Hosts' -- "$SSLBASE"
 		chmod -R g+rwX -- "$SSLBASE"
 	fi
-	)
 }
 
 gencrl () {
 	local pem="${SSLBASE}/${CA}/crl/crl.pem"
 	local der="${SSLBASE}/${CA}/crl/${CA}.crl"
-	openssl ca -config openssl.cnf -gencrl -out "${pem}" -passin pass:"$PASSWD" || return $?
+	openssl ca -config "${SSLBASE}/openssl.cnf" -gencrl -out "${pem}" -passin pass:"$PASSWD" || return $?
 	openssl crl -in "${pem}" -out "${der}" -inform pem -outform der || return $?
-	cp -f "${der}" /var/www/
+	install -m 0644 "${der}" /var/www/
 }
 
 list_cert_names () {
@@ -360,7 +346,6 @@ renew_cert () {
 
 	(
 	cd "$SSLBASE"
-
 	_common_gen_cert "$fqdn" "$fqdn"
 	)
 }
@@ -379,11 +364,8 @@ revoke_cert () {
 		return 2
 	fi
 
-	(
-	cd "$SSLBASE"
-	openssl ca -config openssl.cnf -revoke "${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
+	openssl ca -config "${SSLBASE}/openssl.cnf" -revoke "${SSLBASE}/${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
 	gencrl
-	)
 }
 
 
@@ -401,14 +383,12 @@ gencert () {
 		echo "FATAL: Hostname '$hostname' is longer than 64 characters" >&2
 		return 2
 	fi
+	name=$(cd "$SSLBASE" && readlink -f "$name")
 
 	revoke_cert "$fqdn" || [ $? -eq 2 ] || return $?
 
-	(
-	cd "$SSLBASE"
-
 	# generate a key pair
-	mkdir -pm 700 "$name"
+	install -m 700 -d "$name"
 	if [ ${#fqdn} -gt 64 ]
 	then
 		echo "INFO: FQDN '$fqdn' is longer than 64 characters, using hostname '$hostname' as CN."
@@ -419,7 +399,6 @@ gencert () {
 	openssl req -batch -config "$name/openssl.cnf" -new -key "$name/private.key" -out "$name/req.pem"
 
 	_common_gen_cert "$name" "$fqdn"
-	)
 }
 
 _common_gen_cert () {
@@ -434,17 +413,16 @@ _common_gen_cert () {
 
 	# process the request
 	if [ -s "${extFile:-}" ]; then
-		openssl ca -batch -config openssl.cnf -days $days -in "$name/req.pem" \
+		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$name/req.pem" \
 			-out "$name/cert.pem" -passin pass:"$PASSWD" -extfile "$extFile"
 		rm -f "$extFile"
 	else
-		openssl ca -batch -config openssl.cnf -days $days -in "$name/req.pem" \
+		openssl ca -batch -config "${SSLBASE}/openssl.cnf" -days $days -in "$name/req.pem" \
 			-out "$name/cert.pem" -passin pass:"$PASSWD"
 	fi
 
 	# move the new certificate to its place
-	move_cert "${CA}/newcerts/"*
+	move_cert "${SSLBASE}/${CA}/newcerts/"*
 
-	find "$name" -type f -exec chmod 600 {} +
-	find "$name" -type d -exec chmod 700 {} +
+	find "$name" -type f -exec chmod 600 {} + , -type d -exec chmod 700 {} +
 }
