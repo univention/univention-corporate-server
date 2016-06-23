@@ -299,9 +299,7 @@ init () {
 	chmod 644 "${CA}/CAcert.pem"
 
 	# generate empty crl at installation time
-	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD" || return $?
-	openssl crl -in "${CA}/crl/crl.pem" -out "${CA}/crl/${CA}.crl" -inform pem -outform der || return $?
-	cp "${CA}/crl/${CA}.crl" /var/www/
+	gencrl
 
 	if getent group 'DC Backup Hosts' >/dev/zero
 	then
@@ -309,6 +307,14 @@ init () {
 		chmod -R g+rwX -- "$SSLBASE"
 	fi
 	)
+}
+
+gencrl () {
+	local pem="${SSLBASE}/${CA}/crl/crl.pem"
+	local der="${SSLBASE}/${CA}/crl/${CA}.crl"
+	openssl ca -config openssl.cnf -gencrl -out "${pem}" -passin pass:"$PASSWD" || return $?
+	openssl crl -in "${pem}" -out "${der}" -inform pem -outform der || return $?
+	cp -f "${der}" /var/www/
 }
 
 list_cert_names () {
@@ -376,9 +382,7 @@ revoke_cert () {
 	(
 	cd "$SSLBASE"
 	openssl ca -config openssl.cnf -revoke "${CA}/certs/${NUM}.pem" -passin pass:"$PASSWD"
-	openssl ca -config openssl.cnf -gencrl -out "${CA}/crl/crl.pem" -passin pass:"$PASSWD"
-	openssl crl -in "${CA}/crl/crl.pem" -out "${CA}/crl/${CA}.crl" -inform pem -outform der
-	cp "${CA}/crl/${CA}.crl" /var/www/
+	gencrl
 	)
 }
 
