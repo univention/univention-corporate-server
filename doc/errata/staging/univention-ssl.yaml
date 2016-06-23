@@ -1,0 +1,19 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-ssl
+fix: 10.0.0-12.169.201606231402
+desc: |
+ This update addresses the following issues:
+ * 'univention-certificate check' now also checks the expiry date of the
+   certificate.
+ * 'univention-certificate new' now also accepts the '-days' parameter.
+ * 'univention-certificate' now checks the UCS server role, as its full
+   functionality is only available on the 'DC Master'.
+ * Changing the UCRVs 'ssl/default/hashfunction' and 'ssl/default/bits' now
+   takes immediate effect.
+ * During the initial CA creation '0.debian.pool.ntp.org' is used in addition.
+ * The certificate revocation list in now updated periodically. The intervals
+   are configured through the UCRV 'ssl/crl/interval' and 'ssl/crl/validity'.
+bug: [31369,39257,24094,40498,25285,35748]
