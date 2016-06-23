@@ -17,4 +17,5 @@ desc: |
  * The certificate revocation list in now updated periodically. The intervals
    are configured through the UCRV 'ssl/crl/interval' and 'ssl/crl/validity'.
  * The SSL extension example was fixed to work with with non-bash-shells.
-bug: [31369,39257,24094,40498,25285,35748,39045]
+ * Locking was added to prevent parallel execution when managing certificates.
+bug: [31369,39257,24094,40498,25285,35748,39045,35027]
