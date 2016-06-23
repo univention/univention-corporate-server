@@ -4,6 +4,7 @@ univention-ssl (10.0.0-11) unstable; urgency=low
   * Bug #24094: Allow univention-certificate only on DC Master
   * Bug #35027: Prevent parallel univention-certificate runs
   * Bug #39257: Allow univention-certificate new -days
+  * Bug #39045: Fix extensions-example.sh to work with POSIX shell
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 22 Jun 2016 12:06:37 +0200
 

@@ -1,6 +1,6 @@
 createHostExtensionsFile () {
 	local fqdn="$1"
-	local hostname=${fqdn/.*/}
+	local hostname=${fqdn%%.*}
 	local extFile=$(mktemp)
 
 	cat <<EOF >>"$extFile"
