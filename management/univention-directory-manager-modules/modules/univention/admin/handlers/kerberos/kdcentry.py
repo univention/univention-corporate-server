@@ -38,6 +38,7 @@ import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uldap
 
+import ldap
 import random
 import string
 
@@ -180,7 +181,12 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_create(self):
 		self._set_principal()
-		self.dn='krb5PrincipalName=%s,%s' % (self.krb5PrincipalName, self.position.getDn())
+		super(object, self)._ldap_pre_create()
+
+	def _ldap_dn(self):
+		dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+		dn[0] = [('krb5PrincipalName', self.krb5PrincipalName, dn[0][0][2])]
+		return ldap.dn.dn2str(dn)
 
 	def _ldap_modlist( self ):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist( self )

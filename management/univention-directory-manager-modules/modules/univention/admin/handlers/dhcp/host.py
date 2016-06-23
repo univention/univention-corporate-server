@@ -116,6 +116,7 @@ mapping.register('fixedaddress', 'univentionDhcpFixedAddress')
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
+	name_identifier = 'host'
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
 		if not superordinate:
@@ -124,9 +125,6 @@ class object(univention.admin.handlers.simpleLdap):
 			raise univention.admin.uexceptions.insufficientInformation, 'neither dn nor position present'
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('host'), mapping.mapValue('host', self.info['host']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		return [

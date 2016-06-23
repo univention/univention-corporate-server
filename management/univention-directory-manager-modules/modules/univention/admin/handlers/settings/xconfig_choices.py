@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ldap
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -195,8 +197,9 @@ mapping.register('displaySize', 'univentionXDisplaySizeChoices')
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def _ldap_pre_create(self):
-		self.dn='cn=%s,cn=univention,%s' % (self['name'], self.position.getDomain())
+	def _ldap_dn(self):
+		dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+		return '%s,cn=univention,%s' % (ldap.dn.dn2str(dn[0]), self.position.getDomain())
 
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionXConfigurationChoices'] ) ]

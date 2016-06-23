@@ -149,9 +149,6 @@ class object(univention.admin.handlers.simplePolicy):
 			if not ((key=='lease_time_min' or key=='lease_time_max' or key=='lease_time_default') and value[0] == ''):
 				univention.admin.handlers.simplePolicy.__setitem__(self, key, value)
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
-
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpLeaseTime'])

@@ -102,9 +102,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('address'), mapping.mapValue('address', self['address']), self.position.getDn())
-
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'dNSZone']),

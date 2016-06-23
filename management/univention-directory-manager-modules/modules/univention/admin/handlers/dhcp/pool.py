@@ -164,7 +164,6 @@ class object(univention.admin.handlers.simpleLdap):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 
 	def open(self):
-
 		univention.admin.handlers.simpleLdap.open(self)
 
 		for i in self.oldattr.get('dhcpPermitList', []):
@@ -181,10 +180,6 @@ class object(univention.admin.handlers.simpleLdap):
 				self['all_clients']=permit
 
 		self.save()
-
-
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		return [

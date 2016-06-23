@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ldap
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -78,8 +80,10 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name'].lower()), self.position.getDn())
+	def _ldap_dn(self):
+		dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
+		dn[0] = (dn[0][0], dn[0][1].lower(), dn[0][2])
+		return ldap.dn.dn2str(dn)
 
 	def _ldap_addlist(self):
 		ocs=[]

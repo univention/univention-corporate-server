@@ -307,7 +307,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.save()
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		super(object, self)._ldap_pre_create()
 		# cut off '/' at the beginning of the destination if it exists and protocol is file:/
 		if self[ 'uri' ] and self[ 'uri' ][ 0 ] == 'file:/' and self[ 'uri' ][ 1 ][ 0 ] == '/':
 			self[ 'uri' ][ 1 ] = re.sub( r'^/+', '', self[ 'uri' ][ 1 ] )

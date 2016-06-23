@@ -221,9 +221,7 @@ class object( univention.admin.handlers.simpleLdap ):
 
 	def _ldap_pre_create( self ):
 		self.__check()
-		self.dn = 'cn=%s,%s' % ( mapping.mapValue( 'name',
-												   self.info[ 'name' ] ),
-								 self.position.getDn() )
+		super(object, self)._ldap_pre_create()
 
 	def _ldap_pre_modify( self ):
 		self.__check()

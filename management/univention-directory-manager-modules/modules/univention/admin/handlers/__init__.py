@@ -485,22 +485,38 @@ class base(object):
 
 	def _update_policies(self):
 		pass
+
 	def _ldap_pre_ready(self):
 		pass
+
 	def _ldap_pre_create(self):
-		pass
+		self.dn = self._ldap_dn()
+
+	def _ldap_dn(self):
+		identifier = []
+		for name, prop in self.descriptions.items():
+			if prop.identifies:
+				identifier.append((self.mapping.mapName(name), self.mapping.mapValue(name, self.info[name]), 2))
+		return '%s,%s' % (ldap.dn.dn2str([identifier]), self.position.getDn())
+
 	def _ldap_post_create(self):
 		pass
+
 	def _ldap_pre_modify(self):
 		pass
+
 	def _ldap_post_modify(self):
 		pass
+
 	def _ldap_pre_move(self, newdn):
 		pass
+
 	def _ldap_post_move(self, olddn):
 		pass
+
 	def _ldap_pre_remove(self):
 		pass
+
 	def _ldap_post_remove(self):
 		pass
 
@@ -2199,6 +2215,7 @@ class simpleComputer( simpleLdap ):
 		return '.'.join(ip[ : maxLength-len(zoneNet) ])
 
 	def _ldap_pre_create(self):
+		super(simpleComputer, self)._ldap_pre_create()
 		self.check_common_name_length()
 
 	def _ldap_pre_modify(self):

@@ -176,8 +176,8 @@ mapping.register('defaultKdeProfiles', 'univentionDefaultKdeProfiles' )
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def _ldap_pre_create(self):
-		self.dn='cn=default containers,cn=univention,%s' % (self.position.getDomain())
+	def _ldap_dn(self):
+		return 'cn=default containers,cn=univention,%s' % (self.position.getDomain())
 
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionDefault'] ) ]

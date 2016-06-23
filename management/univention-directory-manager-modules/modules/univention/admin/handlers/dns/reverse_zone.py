@@ -238,9 +238,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.save()
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('subnet'), mapping.mapValue('subnet', self.info['subnet']), self.position.getDn())
-
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		if self.hasChanged(['nameserver', 'contact', 'serial', 'refresh', 'retry', 'expire', 'ttl']):

@@ -486,7 +486,7 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.gidNumberAlreadyUsedAsUidNumber, '%r' % self["gidNumber"]
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		super(object, self)._ldap_pre_create()
 		self.check_for_group_recursion()
 		self._check_uid_gid_uniqueness()
 

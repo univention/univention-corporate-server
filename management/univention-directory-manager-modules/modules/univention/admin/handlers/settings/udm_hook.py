@@ -195,14 +195,8 @@ mapping.register('ucsversionend', 'univentionUCSVersionEnd', None, univention.ad
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-
-	def _ldap_pre_create(self):		
-		self.dn='cn=%s,%s' % ( mapping.mapValue('name', self.info['name']), self.position.getDn())
-
 	def _ldap_addlist(self):
-		ocs=['top', 'univentionObjectMetadata', OC]		
+		ocs=['top', 'univentionObjectMetadata', OC]
 
 		return [
 			('objectClass', ocs),

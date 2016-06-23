@@ -139,10 +139,6 @@ class object(univention.admin.handlers.simpleLdap):
 		self.info['range'] = rangeUnmap( self.oldattr.get('dhcpRange', []) )
 		self.oldinfo['range'] = rangeUnmap( self.oldattr.get('dhcpRange', []) )
 
-
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('subnet'), mapping.mapValue('subnet', self.info['subnet']), self.position.getDn())
-
 	def _ldap_addlist(self):
 		return [
 			( 'objectClass', [ 'top', 'univentionDhcpSubnet' ] ),

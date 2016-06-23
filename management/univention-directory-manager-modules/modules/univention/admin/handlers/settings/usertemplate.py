@@ -446,9 +446,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
 		mungeddial.Support.__init__( self )
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
-
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionUserTemplate'] ) ]
 

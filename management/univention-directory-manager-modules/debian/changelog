@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-15) unstable; urgency=medium
+
+  * Bug #40041: escape special chars in DN's when creating objects
+
+ -- Florian Best <best@univention.de>  Wed, 22 Jun 2016 12:41:48 +0200
+
 univention-directory-manager-modules (11.0.3-14) unstable; urgency=medium
 
   * Bug #41580: fixup svn r70447; make sure modules are loaded

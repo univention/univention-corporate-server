@@ -172,10 +172,6 @@ mapping.register('objectClass', 'univentionUDMOptionObjectClass')
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
-	def _ldap_pre_create(self):
-		"""Create DN."""
-		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
-
 	def _ldap_addlist(self):
 		"""Add initial objectClasses."""
 		return [('objectClass', ['top', 'univentionUDMOption'])]

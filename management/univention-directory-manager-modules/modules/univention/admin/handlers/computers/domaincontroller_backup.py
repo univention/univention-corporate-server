@@ -452,11 +452,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 					#self.save()
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		super(object, self)._ldap_pre_create()
 		if not self['password']:
 			self['password']=self.oldattr.get('password',[''])[0]
 			self.modifypassword=0
-		univention.admin.handlers.simpleComputer._ldap_pre_create( self )
 
 	def _ldap_addlist(self):
 		ocs=['top', 'person', 'univentionHost', 'univentionDomainController']

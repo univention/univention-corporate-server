@@ -71,9 +71,6 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
-
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'organizationalRole'])

@@ -330,9 +330,6 @@ class object(univention.admin.handlers.simpleLdap):
 
 		self.save()
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
-
 	def _ldap_post_create(self):
 		pass
 

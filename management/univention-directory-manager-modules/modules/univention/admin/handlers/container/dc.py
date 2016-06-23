@@ -171,6 +171,7 @@ layout = [
 	]
 
 mapping=univention.admin.mapping.mapping()
+mapping.register('name', 'dc', None, univention.admin.mapping.ListToString)
 mapping.register('sambaDomainName', 'sambaDomainName')
 mapping.register('sambaSID', 'sambaSID', None, univention.admin.mapping.ListToString)
 mapping.register('sambaNextUserRid', 'sambaNextUserRid', None, univention.admin.mapping.ListToString)
@@ -194,9 +195,6 @@ class object(univention.admin.handlers.simpleLdap):
 			reverse=self.lo.searchDn(base=self.dn, scope='domain', filter='(&(objectClass=dNSZone)(relativeDomainName=@)(zoneName=*.in-addr.arpa))')
 			for r in reverse:
 				self['dnsReverseZone'].append(r)
-
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		return [

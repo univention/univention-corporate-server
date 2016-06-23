@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ldap
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -188,14 +190,14 @@ class object(univention.admin.handlers.simpleLdap):
 						self['sharedFolderGroupACL'].append( acl.rsplit( ' ', 1 ) )
 		self.save()
 
-
 	def description( self ):
 		"""Returns a name that identifies the object. This may be used
 		to override the default value that is the property marked with identifies = True"""
 		return '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
 
-	def _ldap_pre_create(self):
-		self.dn='cn=%s@%s,%s' % (self.info['name'], self.info['mailDomain'], self.position.getDn())
+	def _ldap_dn(self):
+		name = '%s@%s' % (self.info['name'], self.info['mailDomain'])
+		return 'cn=%s,%s' % (ldap.dn.escape_dn_chars(name), self.position.getDn())
 
 	def _ldap_post_create(self):
 		if self[ 'mailPrimaryAddress' ]:

@@ -168,9 +168,6 @@ class object(univention.admin.handlers.simplePolicy):
 		self.polinfo = univention.admin.mapping.mapDict( self.mapping, values )
 		self.polinfo = self._post_unmap( self.polinfo, values )
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
-
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyRegistry'])

@@ -240,9 +240,6 @@ class object(univention.admin.handlers.simpleLdap):
 				import traceback
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Failed to remove network %s from %s: %s' % (self.dn, computer.dn, traceback.format_exc()))
 
-	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
-
 	def _ldap_addlist(self):
 		if not self['nextIp']:
 			self.stepIp()

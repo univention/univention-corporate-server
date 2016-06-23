@@ -317,8 +317,8 @@ class object(univention.admin.handlers.simpleLdap):
 			if (props | DOMAIN_PASSWORD_STORE_CLEARTEXT) == props:
 				self['domainPasswordStoreCleartext'] = '1'
 
-	def _ldap_pre_create(self):		
-		self.dn='sambaDomainName=%s,%s' % ( mapping.mapValue('name', self.info['name']), self.position.getDn())
+	def _ldap_pre_create(self):
+		super(object, self)._ldap_pre_create()
 		self.__update_password_properties()
 
 	def _ldap_pre_modify(self):
