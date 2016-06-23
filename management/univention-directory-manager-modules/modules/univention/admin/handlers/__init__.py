@@ -103,13 +103,13 @@ class base(object):
 			self.position=univention.admin.uldap.position(lo.base)
 			if dn:
 				self.position.setDn(dn)
-		self._open = 0
+		self._open = False
 		self.options = []
 		self.old_options = []
 		self.alloc = []
 
 	def open(self):
-		self._open = 1
+		self._open = True
 
 	def save(self):
 		'''saves current state as old state'''
@@ -535,18 +535,16 @@ for _attr in ('_ldap_addlist', '_ldap_modlist', '_ldap_dellist', 'exists', '_mov
 
 class simpleLdap(base):
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global s4connector_present
-
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		self._exists = False
 		self.exceptions = []
-		base.__init__(self, co, lo, position, dn, superordinate )
-		base.open(self)
+		base.__init__(self, co, lo, position, dn, superordinate)
 
 		# s4connector_present is a global caching variable than can be
 		# None ==> ldap has not been checked for servers with service "S4 Connector"
 		# True ==> at least one server with IP address (aRecord) is present
 		# False ==> no server is present
+		global s4connector_present
 		if s4connector_present is None:
 			s4connector_present = False
 			searchResult = self.lo.search('(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=S4 Connector))', attr=['aRecord'])
@@ -556,28 +554,31 @@ class simpleLdap(base):
 		if not univention.admin.modules.modules:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'univention.admin.modules.update() was not called')
 			univention.admin.modules.update()
+
 		m = univention.admin.modules.get(self.module)
 		if not hasattr(self, 'mapping'):
 			self.mapping = getattr(m, 'mapping', None)
 		if not hasattr(self, 'descriptions'):
 			self.descriptions = getattr(m, 'property_descriptions', None)
 
+		self.info = {}
+		self.oldattr = {}
 		if attributes:
 			self.oldattr = attributes
-		else:
-			self.oldattr=self.lo.get(self.dn)
+		elif self.dn:
+			try:
+				self.oldattr = self.lo.get(self.dn, required=True)
+			except ldap.NO_SUCH_OBJECT:
+				raise univention.admin.uexceptions.noObject(self.dn)
+
 		if self.oldattr:
 			self._exists = True
-			oldinfo=univention.admin.mapping.mapDict(self.mapping, self.oldattr)
-			oldinfo = self._post_unmap( oldinfo, self.oldattr )
-			if 'univentionPolicyReference' in self.oldattr.get('objectClass', []):
-				self.policies=self.oldattr.get('univentionPolicyReference', [])
-		else:
-			oldinfo={}
-		self.info=oldinfo
+			oldinfo = univention.admin.mapping.mapDict(self.mapping, self.oldattr)
+			oldinfo = self._post_unmap(oldinfo, self.oldattr)
+			self.info.update(oldinfo)
 
+		self.policies = self.oldattr.get('univentionPolicyReference', [])
 		self.__set_options()
-
 		self.save()
 
 	def exists( self ):

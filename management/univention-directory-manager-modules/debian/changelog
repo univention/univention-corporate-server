@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-16) unstable; urgency=medium
+
+  * Bug #38110: raise noObject exception when passing a dn to
+  	object.__init__() which's object does not exists.
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jun 2016 17:08:45 +0200
+
 univention-directory-manager-modules (11.0.3-15) unstable; urgency=medium
 
   * Bug #40129: escape ldap filters
