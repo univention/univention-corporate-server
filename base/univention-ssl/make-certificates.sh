@@ -90,7 +90,7 @@ mk_config () {
 	touch "$outfile"
 	chmod 0600 "$outfile"
 
-	_escape() {
+	_escape () {
 		sed 's/["$]/\\\0/g'
 	}
 
@@ -285,7 +285,7 @@ init () {
 	# copy the public key to a place, from where browsers can access it
 	openssl x509 -in "${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt || return $?
 
-	# mv the certificate to the certs dir and link it to its hash value
+	# copy the certificate to the certs dir and link it to its hash value
 	cp "${CA}/CAcert.pem" "${CA}/newcerts/00.pem"
 	move_cert "${CA}/newcerts/00.pem"
 
