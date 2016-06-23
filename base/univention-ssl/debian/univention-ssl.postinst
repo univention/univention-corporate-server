@@ -72,24 +72,32 @@ if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ 
 	fi
 fi
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 10.0.0-5; then
-	if ! grep -q 'copy_extensions     = copy' /etc/univention/ssl/openssl.cnf; then
-		sed --in-place 's/crl_extensions     = crl_ext/crl_extensions     = crl_ext\ncopy_extensions     = copy/g' /etc/univention/ssl/openssl.cnf
+if [ "$1" = "configure" ]
+then
+	if dpkg --compare-versions "$2" lt-nl 10.0.0-12
+	then
+		find /etc/univention/ssl -name openssl.cnf -exec sed -r \
+			-e 's/^(default_bits\s*=\s*)\d+$/\1$ENV::DEFAULT_BITS/' \
+			-e 's/^(default_md\s*=\s*)\S+$/\1$ENV::DEFAULT_MD/' \
+			-i {} +
 	fi
-	# create new ssl/validity/... ucr variables
-	if [ -x /usr/sbin/univention-certificate-check-validity ]; then
-		/usr/sbin/univention-certificate-check-validity
+	if dpkg --compare-versions "$2" lt-nl 10.0.0-5
+	then
+		if ! grep -q 'copy_extensions     = copy' /etc/univention/ssl/openssl.cnf; then
+			sed --in-place 's/crl_extensions     = crl_ext/crl_extensions     = crl_ext\ncopy_extensions     = copy/g' /etc/univention/ssl/openssl.cnf
+		fi
+		# create new ssl/validity/... ucr variables
+		if [ -x /usr/sbin/univention-certificate-check-validity ]; then
+			/usr/sbin/univention-certificate-check-validity
+		fi
 	fi
-fi
+	if [ -z "$2" ]; then
+		# generate root ca request
+		(cd /etc/univention/ssl
+		openssl x509 -x509toreq -in ucsCA/CAcert.pem -signkey ucsCA/private/CAkey.pem -out ucsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
+		)
+	fi
 
-if [ "$1" = "configure" -a -z "$2" ]; then
-	# generate root ca request
-	(cd /etc/univention/ssl
-	openssl x509 -x509toreq -in ucsCA/CAcert.pem -signkey ucsCA/private/CAkey.pem -out ucsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
-	)
-fi
-
-if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
 	then
 		/etc/init.d/univention-directory-listener crestart || true
