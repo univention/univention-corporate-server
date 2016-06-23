@@ -5,6 +5,7 @@ univention-ssl (10.0.0-11) unstable; urgency=low
   * Bug #35027: Prevent parallel univention-certificate runs
   * Bug #39257: Allow univention-certificate new -days
   * Bug #39045: Fix extensions-example.sh to work with POSIX shell
+  * Bug #31369: Fix certificate not expired
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 22 Jun 2016 12:06:37 +0200
 
