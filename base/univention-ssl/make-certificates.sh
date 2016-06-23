@@ -35,7 +35,10 @@
 # http://www.pca.dfn.de/dfnpca/certify/ssl/handbuch/ossl092/
 
 SSLBASE="${sslbase:-/etc/univention/ssl}"
+case "$SSLBASE" in /*) ;; *) echo "$0: FATAL: Invalid SSLBASE=$SSLBASE" >&2 ; exit 2 ;; esac
 CA=ucsCA
+case "$CA" in /*) echo "$0: FATAL: Invalid CA=$CA" >&2 ; exit 2 ;; esac
+
 DEFAULT_DAYS="$(/usr/sbin/univention-config-registry get ssl/default/days)"
 : ${DEFAULT_DAYS:=1825}
 DEFAULT_MD="$(/usr/sbin/univention-config-registry get ssl/default/hashfunction)"
