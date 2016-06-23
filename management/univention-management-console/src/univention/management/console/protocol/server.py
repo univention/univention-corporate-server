@@ -141,7 +141,10 @@ class MagicBucket(object):
 			self._cleanup(socket)
 			return False
 
-		state = self.__states[socket]
+		try:
+			state = self.__states[socket]
+		except KeyError:
+			return False
 		state.buffer += data
 
 		msg = None
@@ -219,7 +222,10 @@ class MagicBucket(object):
 			state.processor.request(msg)
 
 	def _do_send(self, socket):
-		state = self.__states[socket]
+		try:
+			state = self.__states[socket]
+		except KeyError:
+			return False
 		id, first = state.resend_queue.pop(0)
 		try:
 			ret = socket.send(first)
