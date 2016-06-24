@@ -1,6 +1,6 @@
 @!@
-ldap_base=baseConfig['ldap/base']
-if baseConfig['ldap/server/type'] == 'master':
+ldap_base = configRegistry['ldap/base']
+if configRegistry['ldap/server/type'] == 'master':
 	access = 'write'
 else:
 	access = 'read'
@@ -9,12 +9,19 @@ print '''
 access to dn="cn=admin-settings,cn=univention,%(base)s" attrs="entry,children"
 	by users %(access)s
 	by * none break
-''' % { 'base' : ldap_base, 'access' : access }
+''' % {'base': ldap_base, 'access': access}
 
 print '''
-access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$"
-	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % { 'base' : ldap_base, 'access' : access }
+access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=objectClass value=univentionAdminUserSettings
+	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access}
 if configRegistry['ldap/server/type'] == "slave":
-	print '\tby dn.base="cn=admin,%(base)s" %(access)s' % { 'base' : ldap_base, 'access' : access }
+	print '\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access}
+print '\tby * none'
+
+print '''
+access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=entry,uid,univentionAdminListDNs,univentionAdminListWizards,univentionAdminListWebModules,univentionAdminBaseDN,univentionAdminMayOverrideSettings,univentionAdminShowSelf,univentionAdminSelfAttributes,univentionPolicyObject,univentionDnsObject,univentionDhcpObject,univentionUsersObject,univentionGroupsObject,univentionComputersObject,univentionNetworksObject,univentionSharesObject,univentionPrintersObject,univentionAdminListAttributes,univentionAdminListBrowseAttributes
+	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access}
+if configRegistry['ldap/server/type'] == "slave":
+	print '\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access}
 print '\tby * none'
 @!@

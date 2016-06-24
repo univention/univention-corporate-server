@@ -1,6 +1,8 @@
 univention-ldap (12.1.6-23) unstable; urgency=medium
 
   * Bug #41179: restrict access to own object classes
+  * Bug #41180: restrict access to uid=*,cn=admin-settings to
+  	objects with univentionAdminUserSettings object class
 
  -- Florian Best <best@univention.de>  Fri, 24 Jun 2016 12:10:30 +0200
 
