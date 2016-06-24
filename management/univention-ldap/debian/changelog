@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-23) unstable; urgency=medium
+
+  * Bug #41179: restrict access to own object classes
+
+ -- Florian Best <best@univention.de>  Fri, 24 Jun 2016 12:10:30 +0200
+
 univention-ldap (12.1.6-22) unstable; urgency=low
 
   * Bug #40575: Kill OpenLDAP slapd during upgrade
