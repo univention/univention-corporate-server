@@ -352,6 +352,11 @@ create_install_script ()
 	if [ "$main_app" = "zarafa" ]; then
 		close_fds=TRUE
 	fi
+
+	# Ticket #2016062321000191
+	if [ "$main_app" = "kix2016" ]; then
+		close_fds=TRUE
+	fi
 	
 	cat >/usr/lib/univention-install/99_setup_${main_app}.inst <<__EOF__
 #!/bin/sh
