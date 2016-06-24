@@ -244,6 +244,9 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 						(strcmp(vals[i]->bv_val, "univentionPolicy") &&
 							!strncmp(vals[i]->bv_val, "univentionPolicy" , strlen("univentionPolicy")))) {
 
+						if (policy != NULL) {
+							univention_debug(UV_DEBUG_POLICY, UV_DEBUG_ERROR, "more than one policy type has been determined for this policy!");
+						}
 						policy = univention_policy_list_get(&handle->policies, vals[i]->bv_val);
 						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "current policy type is %s", policy->name);
 					}
@@ -323,7 +326,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 #endif
 					struct univention_policy_attribute_list_s* policy_attr;
 
-					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s", policy->name, empty_attributes[i]);
+					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "considering %s/%s (EA)", policy->name, empty_attributes[i]);
 					policy_attr = univention_policy_attribute_list_get(&policy->attributes, empty_attributes[i]);
 					if (policy_attr->values == NULL || in_string_array(fixed_attributes, empty_attributes[i])) {
 						univention_policy_result_free(policy_attr->values);
@@ -335,7 +338,7 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 						policy_attr->values->values = calloc(policy_attr->values->count + 1, sizeof(char*));
 						policy_attr->values->values[0] = NULL;
 					} else {
-						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "not setting attribute");
+						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "not setting attribute (EA)");
 					}
 				}
 
