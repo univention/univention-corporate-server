@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-37) unstable; urgency=medium
+
+  * reset-sysvol-acls.py: set hashbang to python2.7 (Bug #39674)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Jun 2016 16:41:49 +0200
+
 univention-samba4 (5.0.1-36) unstable; urgency=medium
 
   * Add the listener module reset-sysvol-acls.py which synchronizes the

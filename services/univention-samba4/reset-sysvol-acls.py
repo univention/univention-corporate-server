@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.7
 #
 # Listener module to set reset the sysvol ACLs for a specified GPO
 #
