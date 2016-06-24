@@ -82,7 +82,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_dn(self):
 		dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
-		dn[0] = (dn[0][0], dn[0][1].lower(), dn[0][2])
+		dn[0] = [(dn[0][0][0], dn[0][0][1].lower(), dn[0][0][2])]
 		return ldap.dn.dn2str(dn)
 
 	def _ldap_addlist(self):

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-18) unstable; urgency=medium
+
+  * Bug #40041: fixup svn r70588, mail/domain
+
+ -- Florian Best <best@univention.de>  Fri, 24 Jun 2016 09:09:14 +0200
+
 univention-directory-manager-modules (11.0.3-17) unstable; urgency=medium
 
   * Bug #40422: fix local root code execution and MITM vulnerability
