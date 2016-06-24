@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-ldap
+fix: 12.1.6-23.814.201606241337
+desc: |
+ This update addresses the following issue(s):
+ * It is now prevented that regular users can change their object class.
+ * Users can now only create objects with univentionAdminUserSettings object
+   class underneath of "cn=admin-settings".
+bug: [41179, 41180]
