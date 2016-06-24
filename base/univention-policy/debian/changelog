@@ -1,3 +1,9 @@
+univention-policy (7.0.2-1) unstable; urgency=low
+
+  * Bug #41641: fixed detection of policy types in univention_policy_result
+
+ -- Sönke Schwardt-Krummrich <schwardt@univention.de>  Fri, 24 Jun 2016 14:52:32 +0200
+
 univention-policy (7.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

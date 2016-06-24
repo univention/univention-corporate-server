@@ -237,12 +237,16 @@ static void univention_policy_merge(LDAP *ld, const char *dn, univention_policy_
 			/* iterate over attributes of policy and parse general policy attributes. */
 			if ((vals = ldap_get_values_len(ld, entry, "objectClass")) != NULL) {
 				for (i = 0; (vals[i] != NULL && vals[i]->bv_val != NULL); i++) {
-					if (!strcmp(vals[i]->bv_val, "top")) continue;
-					if (!strcmp(vals[i]->bv_val, "univentionPolicyReference")) continue;
-					if (!strcmp(vals[i]->bv_val, "univentionObject")) continue;
+					/* bv_val is "umcPolicy" or "univentionMailQuota" or
+					   bv_val starts with "univentionPolicy" but is not "univentionPolicy" */
+					if (!strcmp(vals[i]->bv_val, "umcPolicy") ||
+						!strcmp(vals[i]->bv_val, "univentionMailQuota") ||
+						(strcmp(vals[i]->bv_val, "univentionPolicy") &&
+							!strncmp(vals[i]->bv_val, "univentionPolicy" , strlen("univentionPolicy")))) {
 
-					policy = univention_policy_list_get(&handle->policies, vals[i]->bv_val);
-					univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "current policy type is %s", policy->name);
+						policy = univention_policy_list_get(&handle->policies, vals[i]->bv_val);
+						univention_debug(UV_DEBUG_POLICY, UV_DEBUG_INFO, "current policy type is %s", policy->name);
+					}
 				}
 				ldap_value_free_len(vals);
 			}
