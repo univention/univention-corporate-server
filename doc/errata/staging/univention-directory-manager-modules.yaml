@@ -6,5 +6,11 @@ src: univention-directory-manager-modules
 fix: 11.0.3-11.1403.201606201927
 desc: |
  This update addresses the following issue(s):
- * TODO
+ * extended options are now always evaluated when instanciating a UDM object.
+ * special characters (such as "+") are now correctly escaped when composing a
+   DN for a newly created object.
+ * some ldap filters are now properly escaped.
+ * it is now checked if a object exists before trying to modify it.
+ * a man in the middle attack and a local root code execution vulnerability in
+   the UDM CLI client has been fixed.
 bug: [41580, 40041, 40129, 38110, 40422]
