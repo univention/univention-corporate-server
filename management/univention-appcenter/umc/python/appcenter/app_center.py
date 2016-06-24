@@ -161,14 +161,15 @@ class ApplicationLDAPObject(object):
 		base = 'cn=apps,cn=univention,%s' % ucr.get('ldap/base')
 		pos.setDn(base)
 		for container in reversed(containers):
-			if not container_udm_module.lookup(co, lo, 'cn=%s' % escape_filter_chars(container), base=base):
-				container_obj = container_udm_module.object(co, lo, pos, 'cn=%s' % container)
+			for container_obj in container_udm_module.lookup(co, lo, 'cn=%s' % escape_filter_chars(container), base=base):
+				break
+			else:
+				container_obj = container_udm_module.object(co, lo, pos)
 				container_obj.open()
 				container_obj.info['name'] = container
 				MODULE.process('Container %s for new univentionApp needed. Creating...' % container)
 				container_obj.create()
-			base = 'cn=%s,%s' % (container, base)
-			pos.setDn(base)
+			pos.setDn(container_obj.dn)
 		base64icon = ''
 		try:
 			with open(os.path.join(FRONTEND_ICONS_DIR, '50x50', app.get('icon'))) as f:

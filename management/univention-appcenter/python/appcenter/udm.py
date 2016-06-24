@@ -73,8 +73,8 @@ def init_object(module, lo, pos, dn=''):
 
 
 def remove_object_if_exists(module, lo, pos, dn):
-	obj = init_object(module, lo, pos, dn)
 	try:
+		obj = init_object(module, lo, pos, dn)
 		obj.remove()
 	except udm_errors.noObject:
 		pass
@@ -147,10 +147,13 @@ class ApplicationLDAPObject(object):
 
 	def _reload(self, app, create_if_not_exists=False):
 		self._udm_obj = None
-		udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
-		if udm_obj.exists():
-			self._udm_obj = udm_obj
-		elif create_if_not_exists:
+		try:
+			udm_obj = init_object('appcenter/app', self._lo, self._pos, self.dn)
+			if udm_obj.exists():
+				self._udm_obj = udm_obj
+		except udm_errors.noObject:
+			pass
+		if not self._udm_obj and create_if_not_exists:
 			self._create_obj(app)
 
 	def _create_obj(self, app):
