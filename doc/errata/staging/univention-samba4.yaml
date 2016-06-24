@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-samba4
+fix: 5.0.1-38.670.201606241645
+desc: |
+ This update addresses the following issue(s):
+ * A listener module has been added which resets the POSIX file ACLs
+   for a newly created or modified GPO.
+bug: [39674]
