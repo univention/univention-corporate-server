@@ -12,4 +12,5 @@ desc: |
  * Tests run before upgrading an App used the installed version, not the
    to-be-installed version.
  * A function to detect a docker bridge network conflict has been added.
-bug: [41360, 41542, 41532, 41596]
+ * The use of UDM handler objects has been optimized.
+bug: [41360, 41542, 41532, 41596, 41658]
