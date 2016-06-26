@@ -321,7 +321,7 @@ class object(univention.admin.handlers.simpleLdap):
 		if self[ 'uri' ] and self[ 'uri' ][ 0 ] == 'file:/' and self[ 'uri' ][ 1 ][ 0 ] == '/':
 			self[ 'uri' ][ 1 ] = re.sub( r'^/+', '', self[ 'uri' ][ 1 ] )
 		if self.hasChanged('setQuota') and self.info['setQuota'] == '0':
-			printergroups=self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1)(univentionPrinterSpoolHost=%s))', [self.info['spoolHost']]))
+			printergroups=self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1)(univentionPrinterSpoolHost=%s))', [self.info['spoolHost'][0]]))
 			group_cn=[]
 			for pg_dn in printergroups:
 				member_list = self.lo.get(pg_dn, attr=['univentionPrinterGroupMember','cn'])
@@ -333,7 +333,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 	def _ldap_pre_remove(self): # check for last member in printerclass
-		printergroups=self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPrinterGroup)(univentionPrinterSpoolHost=%s))', [self.info['spoolHost']]))
+		printergroups=self.lo.searchDn(filter=filter_format('(&(objectClass=univentionPrinterGroup)(univentionPrinterSpoolHost=%s))', [self.info['spoolHost'][0]]))
 		rm_attrib=[]
 		for pg_dn in printergroups:
 			member_list=self.lo.search( base=pg_dn, attr=['univentionPrinterGroupMember','cn'])

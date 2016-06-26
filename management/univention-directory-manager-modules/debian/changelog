@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-19) unstable; urgency=medium
+
+  * Bug #40129: fix filter formatting for multivalue fields
+
+ -- Florian Best <best@univention.de>  Sun, 26 Jun 2016 21:38:31 +0200
+
 univention-directory-manager-modules (11.0.3-18) unstable; urgency=medium
 
   * Bug #40041: fixup svn r70588, mail/domain
