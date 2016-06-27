@@ -1,3 +1,9 @@
+univention-directory-listener (8.100.5-6) unstable; urgency=low
+
+  * Bug #41261: Write notifier ID atomically
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Jun 2016 10:42:09 +0200
+
 univention-directory-listener (8.100.5-5) unstable; urgency=medium
 
   * Bug #40688: Backport adjustment from Bug #35144
