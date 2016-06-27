@@ -569,7 +569,8 @@ class simpleLdap(base):
 			try:
 				self.oldattr = self.lo.get(self.dn, required=True)
 			except ldap.NO_SUCH_OBJECT:
-				raise univention.admin.uexceptions.noObject(self.dn)
+				pass
+#				raise univention.admin.uexceptions.noObject(self.dn)
 
 		if self.oldattr:
 			self._exists = True
@@ -597,6 +598,7 @@ class simpleLdap(base):
 		return changes
 
 	def open(self):
+		base.open(self)
 		self.exceptions=[]
 		self.call_udm_property_hook('hook_open', self)
 		self.save()

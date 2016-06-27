@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-20) unstable; urgency=medium
+
+  * Bug #38110: restore previous behavior
+
+ -- Florian Best <best@univention.de>  Mon, 27 Jun 2016 10:17:45 +0200
+
 univention-directory-manager-modules (11.0.3-19) unstable; urgency=medium
 
   * Bug #40129: fix filter formatting for multivalue fields
