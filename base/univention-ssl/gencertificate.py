@@ -42,12 +42,7 @@ import subprocess
 
 name = 'gencertificate'
 description = 'Generate new Certificates'
-filter = '(|' + \
-		'(objectClass=univentionDomainController)' + \
-		'(objectClass=univentionClient)' + \
-		'(objectClass=univentionMobileClient)' + \
-		'(objectClass=univentionCorporateClient)' + \
-		'(objectClass=univentionMemberServer))'
+filter = '(|%s)' % ''.join('(objectClass=%s)' % oc for oc in set(configRegistry['ssl/host/objectclass'].split(',')))
 attributes = []
 modrdn = "1"
 
