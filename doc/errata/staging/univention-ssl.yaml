@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-ssl
-fix: 10.0.0-12.169.201606231402
+fix: 10.0.0-13.170.201606270853
 desc: |
  This update addresses the following issues:
  * 'univention-certificate check' now also checks the expiry date of the
