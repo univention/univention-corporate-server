@@ -51,9 +51,6 @@ filter = '(|' + \
 attributes = []
 
 
-uidNumber = 0
-gidNumber = 0
-saved_uid = 65545
 SSLDIR = '/etc/univention/ssl'
 
 
@@ -76,19 +73,6 @@ def handler(dn, new, old):
 
 	setuid(0)
 	try:
-		global uidNumber
-		try:
-			uidNumber = int(new.get('uidNumber', ['0'])[0])
-		except (LookupError, TypeError, ValueError):
-			uidNumber = 0
-
-		global gidNumber
-		try:
-			gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
-		except (LookupError, TypeError, ValueError):
-			ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn)
-			gidNumber = 0
-
 		if new and not old:
 			# changeType: add
 			create_certificate(new['cn'][0], domain(new))
@@ -103,17 +87,29 @@ def handler(dn, new, old):
 			if new_domain != old_domain:
 				remove_certificate(old['cn'][0], old_domain)
 				create_certificate(new['cn'][0], new_domain)
-			else:
+		if new:
 				# Reset permissions
-				fqdn = "%s.%s" % (new['cn'][0], new_domain)
+				fqdn = "%s.%s" % (new['cn'][0], domain(new))
 				certpath = os.path.join(SSLDIR, fqdn)
-				os.path.walk(certpath, set_permissions, None)
+				os.path.walk(certpath, set_permissions, (dn, new))
 	finally:
 		unsetuid()
 
 
-def set_permissions(_arg, directory, fnames):
+def set_permissions(arg, directory, fnames):
 	"""Set file permission on directory and files within."""
+	dn, new = arg
+	try:
+		uidNumber = int(new.get('uidNumber', ['0'])[0])
+	except (LookupError, TypeError, ValueError):
+		uidNumber = 0
+
+	try:
+		gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
+	except (LookupError, TypeError, ValueError):
+		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn)
+		gidNumber = 0
+
 	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
 	os.chown(directory, uidNumber, gidNumber)
 	os.chmod(directory, 0750)
@@ -159,8 +155,6 @@ def create_certificate(hostname, domainname):
 		os.symlink(certpath, link_path)
 	except OSError:
 		pass
-	# Fix permissions
-	os.path.walk(certpath, set_permissions, None)
 
 
 def remove_certificate(hostname, domainname):
