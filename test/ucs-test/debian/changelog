@@ -1,3 +1,9 @@
+ucs-test (6.0.33-75) unstable; urgency=low
+
+  * Bug #41641: Test univention-policy-result objectClass order
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Jun 2016 10:09:20 +0200
+
 ucs-test (6.0.33-74) unstable; urgency=medium
 
   * Bug #41580: fix options when creating nagios computers
