@@ -122,13 +122,13 @@ def handler(dn, new, old):
 
 def set_permissions(_arg, directory, fnames):
 	"""Set file permission on directory and files within."""
-	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
+	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
 	os.chown(directory, uidNumber, gidNumber)
 	os.chmod(directory, 0750)
 
 	for fname in fnames:
 		filename = os.path.join(directory, fname)
-		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (filename, gidNumber, uidNumber))
+		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
 		os.chown(filename, uidNumber, gidNumber)
 		os.chmod(filename, 0640)
 
