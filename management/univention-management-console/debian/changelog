@@ -1,4 +1,4 @@
-univention-management-console (8.0.28-6) unstable; urgency=medium
+univention-management-console (8.0.28-16) unstable; urgency=medium
 
   * Bug #41370: fix crashing of server on malicious request data
 
