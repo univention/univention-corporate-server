@@ -1,0 +1,33 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create a usertemplate object and remove it
+## tags: [udm-ldapextensions,apptest]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##   - univention-directory-manager-tools
+
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import bz2
+import base64
+
+if __name__ == '__main__':
+	with udm_test.UCSTestUDM() as udm:
+		template_name = uts.random_name()
+		try:
+			template = udm.create_object('settings/usertemplate', name = template_name)
+			utils.verify_ldap_object(template, {'cn': [template_name]})
+		except udm_test.UCSTestUDM_CreateUDMObjectFailed:
+			utils.fail('settings/usertemplate could not be created')
+		except utils.LDAPObjectNotFound:
+			utils.fail('settings/usertemplate object was not found')
+
+
+		udm.remove_object('settings/usertemplate', dn = template)
+		try:
+			utils.verify_ldap_object(template, {'cn': [template_name]})
+		except utils.LDAPObjectNotFound:
+			pass
+		else:
+			utils.fail('settings/usertemplate object was found although it had been removed')

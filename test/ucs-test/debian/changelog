@@ -1,3 +1,9 @@
+ucs-test (6.0.33-77) unstable; urgency=medium
+
+  * Bug #41580: Try to create a usertemplate object (fix testcase)
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 27 Jun 2016 18:17:26 +0200
+
 ucs-test (6.0.33-76) unstable; urgency=medium
 
   * Bug #41580: Try to create a usertemplate object
