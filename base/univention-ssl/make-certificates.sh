@@ -323,8 +323,8 @@ list_cert_names () {
 has_valid_cert () { # returns 0 if yes, 1 if not found, 2 if revoked, 3 if expired
 	local cn="${1:?Missing argument: common name}"
 
-	awk -F '\t' -v name="$cn" '
-	BEGIN { ret=1; seq=""; now=strftime("%y%m%d%H%M%SZ", systime(), 1); }
+	awk -F '\t' -v name="$cn" -v now="$(TZ=UTC date +%y%m%d%H%M%S)" '
+	BEGIN { ret=1; seq=""; }
 	{
 		split ( $6, X, "/" );
 		for ( i=2; X[i] != ""; i++ ) {
@@ -332,7 +332,7 @@ has_valid_cert () { # returns 0 if yes, 1 if not found, 2 if revoked, 3 if expir
 				split ( X[i], Y, "=" );
 				if ( name == Y[2] ) {
 					seq = $4;
-					ret = ( $1 == "V" ) ? ( $2 >= now ? 0 : 3 ) : 2;
+					ret = ( $1 != "R" ) ? ( $1 == "V" && $2 >= now ? 0 : 3 ) : 2;
 				}
 			}
 		}

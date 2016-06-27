@@ -124,16 +124,18 @@ renew () {
 }
 
 check () {
+		local rv=0
 		run_only backup shared
 		echo -n "Certificate \"$name\" is "
-		if has_valid_cert "$name" >/dev/null
-		then
-			echo "valid"
-			exit 0
-		else
-			echo "invalid"
-			exit 1
-		fi
+		has_valid_cert "$name" >/dev/null || rv=$?
+		case "$rv" in
+		0) echo "valid" ;;
+		1) echo "invalid (not found)" ;;
+		2) echo "invalid (revoked)" ;;
+		3) echo "invalid (expired)" ;;
+		*) echo "invalid" ;;
+		esac
+		exit $rv
 }
 
 list () {

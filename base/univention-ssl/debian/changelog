@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-14) unstable; urgency=low
+
+  * Bug #31369: Check SSL expiration date
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Jun 2016 13:44:06 +0200
+
 univention-ssl (10.0.0-13) unstable; urgency=low
 
   * Bug #25285: Switch to 2.debian.pool.ntp.org
