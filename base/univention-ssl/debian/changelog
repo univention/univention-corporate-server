@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-15) unstable; urgency=low
+
+  * Bug #24094 SSL: Disable unit test
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Jun 2016 17:46:11 +0200
+
 univention-ssl (10.0.0-14) unstable; urgency=low
 
   * Bug #31369: Check SSL expiration date
