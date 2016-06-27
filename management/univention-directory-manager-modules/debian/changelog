@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-21) unstable; urgency=medium
+
+  * Bug #41580: fix storing of samba mungeddial (ctx flags) properties in
+  	settings/usertemplate
+
+ -- Florian Best <best@univention.de>  Mon, 27 Jun 2016 17:27:24 +0200
+
 univention-directory-manager-modules (11.0.3-20) unstable; urgency=medium
 
   * Bug #38110: restore previous behavior

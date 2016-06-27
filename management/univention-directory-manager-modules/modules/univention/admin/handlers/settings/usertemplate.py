@@ -30,6 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import copy
+
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -346,7 +348,8 @@ property_descriptions={
 
 # append CTX properties
 for key, value in mungeddial.properties.items():
-	property_descriptions[ key ] = value
+	property_descriptions[key] = copy.deepcopy(value)
+	property_descriptions[key].options = []
 
 layout = [
 	Tab(_('General'),_('Basic values'), layout = [
