@@ -1,0 +1,49 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create and move computer, should keep SSL certificate
+## tags: [udm-computers,apptest]
+## bugs: [41230]
+## roles: [domaincontroller_master]
+## exposure: careful
+## versions:
+##  4.1-2: fixed
+
+import univention.testing.udm as udm_test
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+from subprocess import (Popen, PIPE)
+from time import sleep
+
+from univention.testing.decorators import SetTimeout
+utils.verify_ldap_object = SetTimeout(utils.verify_ldap_object)
+
+
+def get_ssl(name):
+	for i in xrange(10):
+		cmd = ('univention-certificate', 'list')
+		proc = Popen(cmd, stdout=PIPE)
+		for line in proc.stdout:
+			seq, fqdn = line.split(None, 1)
+			if fqdn.startswith(name):
+				return int(seq, 16)
+		print i
+		sleep(1)
+	raise LookupError('not found')
+
+
+def main():
+	with udm_test.UCSTestUDM() as udm:
+		test_ou = udm.create_object('container/ou', name=uts.random_string())
+		for role in ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver']:
+			name = uts.random_string()
+			computer = udm.create_object(role, name=name)
+			old_seq = get_ssl(name)
+
+			udm.move_object(role, dn=computer, position=test_ou)
+			new_seq = get_ssl(name)
+
+			if old_seq != new_seq:
+				utils.fail('New SSL certificate for "%s": %x -> %x' % (name, old_seq, new_seq))
+
+
+if __name__ == '__main__':
+	main()

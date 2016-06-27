@@ -1,3 +1,9 @@
+ucs-test (6.0.33-78) unstable; urgency=low
+
+  * Bug #41230: Check moved host keeps SSL certificate
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Jun 2016 18:23:31 +0200
+
 ucs-test (6.0.33-77) unstable; urgency=medium
 
   * Bug #41580: Try to create a usertemplate object (fix testcase)

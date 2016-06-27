@@ -287,6 +287,7 @@ class UCSTestUDM(object):
             if check_for_drs_replication:
                 if utils.package_installed('univention-samba4'):
                     wait_for_drs_replication('cn=%s' % dn.partition(",")[0].rpartition("=")[-1])
+        return new_dn
 
     def remove_object(self, modulename, wait_for_replication=True, **kwargs):
         if not modulename:
