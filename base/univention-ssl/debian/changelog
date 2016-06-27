@@ -1,3 +1,9 @@
+univention-ssl (10.0.0-13) unstable; urgency=low
+
+  * Bug #25285: Switch to 2.debian.pool.ntp.org
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 27 Jun 2016 08:44:49 +0200
+
 univention-ssl (10.0.0-12) unstable; urgency=low
 
   * Bug #40498: Convert openssl.conf on upgrade
