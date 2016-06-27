@@ -3,8 +3,12 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: samba
-fix: 2:4.3.7-1.832.201606231240
+fix: 2:4.3.7-1.834.201606271438
 desc: |
- The restart command of the samba init wrapper script has been adjusted
- to avoid restarting samba-ad-dc after nmbd.
-bug: [41644]
+ The following issues have been fixed in samba:
+ * The restart command of the samba init wrapper script has been adjusted
+   to avoid restarting samba-ad-dc after nmbd.
+ * The GetGroupsForUser SAMR RPC call has been adjusted to make use of the
+   memberOf attribute
+ * Two additional regression patches from the badlock update have been merged
+bug: [41551, 41644]
