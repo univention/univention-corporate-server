@@ -62,6 +62,13 @@ def initialize():
 	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Initialize')
 
 
+def domain(info):
+	try:
+		return info['associatedDomain'][0]
+	except LookupError:
+		return configRegistry['domainname']
+
+
 def handler(dn, new, old):
 	"""Handle changes to 'dn'."""
 	if configRegistry['server/role'] != 'domaincontroller_master':
@@ -84,33 +91,18 @@ def handler(dn, new, old):
 
 		if new and not old:
 			# changeType: add
-			try:
-				domain = new['associatedDomain'][0]
-			except LookupError:
-				domain = configRegistry['domainname']
-			create_certificate(new['cn'][0], domainname=domain)
+			create_certificate(new['cn'][0], domain(new))
 		elif old and not new:
 			# changeType: delete
-			try:
-				domain = old['associatedDomain'][0]
-			except LookupError:
-				domain = configRegistry['domainname']
-			remove_certificate(old['cn'][0], domainname=domain)
+			remove_certificate(old['cn'][0], domain(old))
 		else:
 			# changeType: modify
-			try:
-				old_domain = old['associatedDomain'][0]
-			except LookupError:
-				old_domain = configRegistry['domainname']
-
-			try:
-				new_domain = new['associatedDomain'][0]
-			except LookupError:
-				new_domain = configRegistry['domainname']
+			old_domain = domain(old)
+			new_domain = domain(new)
 
 			if new_domain != old_domain:
-				remove_certificate(old['cn'][0], domainname=old_domain)
-				create_certificate(new['cn'][0], domainname=new_domain)
+				remove_certificate(old['cn'][0], old_domain)
+				create_certificate(new['cn'][0], new_domain)
 			else:
 				# Reset permissions
 				fqdn = "%s.%s" % (new['cn'][0], new_domain)
