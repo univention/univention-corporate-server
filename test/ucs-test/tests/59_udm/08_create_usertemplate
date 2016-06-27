@@ -1,0 +1,18 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Test creation of usertemplate
+## exposure: careful
+## tags: [udm]
+## bugs:
+##  - 41580
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. udm.sh || exit 137
+
+check () {
+	udm-test settings/usertemplate create \
+		--position "cn=templates,cn=univention,$BASE" \
+		--set name="$name"
+}
+
+check
+:
