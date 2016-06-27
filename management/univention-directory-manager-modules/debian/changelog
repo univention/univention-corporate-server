@@ -1,5 +1,7 @@
 univention-directory-manager-modules (11.0.3-21) unstable; urgency=medium
 
+  * Bug #41580: normalize object class names to prevent errors in different
+  	case
   * Bug #41580: fix storing of samba mungeddial (ctx flags) properties in
   	settings/usertemplate
 

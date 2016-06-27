@@ -822,13 +822,19 @@ class simpleLdap(base):
 		unneeded_ocs |= set(chain.from_iterable(module_options[option].objectClasses for option in removed_options))
 		required_ocs |= set(chain.from_iterable(module_options[option].objectClasses for option in added_options))
 
+		# consider case insensitivity
+		schema = self.lo.get_schema()
+		mapping = {x.lower(): schema.get_obj(ldap.schema.models.ObjectClass, x).names[0] for x in ocs | unneeded_ocs | required_ocs}
+		unneeded_ocs = set(mapping[x.lower()] for x in unneeded_ocs)
+		required_ocs = set(mapping[x.lower()] for x in required_ocs)
+		ocs = set(mapping[x.lower()] for x in ocs)
+
 		ocs -= unneeded_ocs
 		ocs |= required_ocs
 		if set(self.oldattr.get('objectClass', [])) == ocs:
 			return ml
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'OCS=%r; required=%r; removed: %r' % (ocs, required_ocs, unneeded_ocs))
-		schema = self.lo.get_schema()
 
 		# make sure we still have a structural object class
 		if not schema.get_structural_oc(ocs):
