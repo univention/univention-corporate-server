@@ -32,7 +32,7 @@
 
 # pylint: disable-msg=C0103,W0704
 
-__package__ = ''	# workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 from listener import configRegistry, setuid, unsetuid
 import grp
 import os
@@ -56,9 +56,11 @@ gidNumber = 0
 saved_uid = 65545
 SSLDIR = '/etc/univention/ssl'
 
+
 def initialize():
 	"""Initialize the module once on first start or after clean."""
 	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Initialize')
+
 
 def handler(dn, new, old):
 	"""Handle changes to 'dn'."""
@@ -77,8 +79,7 @@ def handler(dn, new, old):
 		try:
 			gidNumber = int(grp.getgrnam('DC Backup Hosts')[2])
 		except (LookupError, TypeError, ValueError):
-			ud.debug(ud.LISTENER, ud.WARN,
-					'CERTIFICATE: Failed to get groupID for "%s"' % dn)
+			ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Failed to get groupID for "%s"' % dn)
 			gidNumber = 0
 
 		if new and not old:
@@ -118,21 +119,19 @@ def handler(dn, new, old):
 	finally:
 		unsetuid()
 
+
 def set_permissions(_arg, directory, fnames):
 	"""Set file permission on directory and files within."""
-	ud.debug(ud.LISTENER, ud.INFO,
-			'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % \
-					(directory, gidNumber, uidNumber))
+	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, gidNumber, uidNumber))
 	os.chown(directory, uidNumber, gidNumber)
 	os.chmod(directory, 0750)
 
 	for fname in fnames:
 		filename = os.path.join(directory, fname)
-		ud.debug(ud.LISTENER, ud.INFO,
-				'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % \
-						(filename, gidNumber, uidNumber))
+		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (filename, gidNumber, uidNumber))
 		os.chown(filename, uidNumber, gidNumber)
 		os.chmod(filename, 0640)
+
 
 def remove_dir(_arg, directory, fnames):
 	"""Remove directory and all files within."""
@@ -141,6 +140,7 @@ def remove_dir(_arg, directory, fnames):
 		os.remove(filename)
 	os.rmdir(directory)
 
+
 def create_certificate(hostname, domainname):
 	"""Create SSL host certificate."""
 	fqdn = '%s.%s' % (hostname, domainname)
@@ -148,16 +148,14 @@ def create_certificate(hostname, domainname):
 	link_path = os.path.join(SSLDIR, hostname)
 
 	if os.path.exists(certpath):
-		ud.debug(ud.LISTENER, ud.WARN,
-				'CERTIFICATE: Certificate for host %s already exists' % (fqdn,))
+		ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Certificate for host %s already exists' % (fqdn,))
 		if os.path.islink(link_path):
 			return
 	else:
 		if len(fqdn) > 64:
 			ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: FQDN %r is longer than 64 characters, setting Common Name to hostname.' % fqdn)
 
-		ud.debug(ud.LISTENER, ud.INFO,
-				'CERTIFICATE: Creating certificate %s' % hostname)
+		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Creating certificate %s' % hostname)
 		subprocess.call(('/usr/sbin/univention-certificate', 'new', '-name', fqdn))
 
 	# Create symlink
@@ -171,6 +169,7 @@ def create_certificate(hostname, domainname):
 		pass
 	# Fix permissions
 	os.path.walk(certpath, set_permissions, None)
+
 
 def remove_certificate(hostname, domainname):
 	"""Remove SSL host certificate."""
@@ -186,9 +185,11 @@ def remove_certificate(hostname, domainname):
 	if os.path.exists(certpath):
 		os.path.walk(certpath, remove_dir, None)
 
+
 def clean():
 	"""Handle request to clean-up the module."""
 	return
+
 
 def postrun():
 	"""Transition from prepared-state to not-prepared."""
