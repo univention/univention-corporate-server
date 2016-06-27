@@ -64,11 +64,11 @@ def initialize():
 
 def handler(dn, new, old):
 	"""Handle changes to 'dn'."""
+	if configRegistry['server/role'] != 'domaincontroller_master':
+		return
+
 	setuid(0)
 	try:
-		if configRegistry['server/role'] != 'domaincontroller_master':
-			return
-
 		global uidNumber
 		try:
 			uidNumber = int(new.get('uidNumber', ['0'])[0])
