@@ -273,7 +273,9 @@ init () {
 	openssl req -batch -config "${SSLBASE}/openssl.cnf" -new -x509 -days "$DEFAULT_DAYS" -key "${SSLBASE}/${CA}/private/CAkey.pem" -out "${SSLBASE}/${CA}/CAcert.pem" || return $?
 
 	# copy the public key to a place, from where browsers can access it
+	if [ -w /var/www ]; then
 	openssl x509 -in "${SSLBASE}/${CA}/CAcert.pem" -out /var/www/ucs-root-ca.crt || return $?
+	fi
 
 	# copy the certificate to the certs dir and link it to its hash value
 	install -m 0600 "${SSLBASE}/${CA}/CAcert.pem" "${SSLBASE}/${CA}/newcerts/00.pem"
@@ -302,7 +304,9 @@ gencrl () {
 	local der="${SSLBASE}/${CA}/crl/${CA}.crl"
 	openssl ca -config "${SSLBASE}/openssl.cnf" -gencrl -out "${pem}" -passin pass:"$PASSWD" || return $?
 	openssl crl -in "${pem}" -out "${der}" -inform pem -outform der || return $?
+	if [ -w /var/www ]; then
 	install -m 0644 "${der}" /var/www/
+	fi
 }
 
 list_cert_names () {

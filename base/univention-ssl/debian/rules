@@ -40,7 +40,11 @@ override_dh_fixperms:
 
 override_dh_auto_test:
 	ucslint
-	-run-parts -v --regex='^test.*' tests
+	if [ `id -u` -eq 0 ]; then \
+		PATH=$$PATH:/usr/sbin: run-parts -v --regex='^test.*' tests ; \
+	else \
+		PATH=$$PATH:/usr/sbin: fakeroot run-parts -v --regex='^test.*' tests ; \
+	fi
 	dh_auto_test
 
 %:
