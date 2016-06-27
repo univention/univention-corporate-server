@@ -3,11 +3,12 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-management-console
-fix: 8.0.28-15.919.201606231949
+fix: 8.0.28-16.921.201606271854
 desc: |
  This update addresses the following issue(s):
  * The Sanitizer base class now accept a parameter allow_none to allow None
    values.
  * A new DNSanitizer has been added, to validate LDAP distinguished names.
- * A UMC-Server crash is now prevent in specific circumstances after login.
-bug: [41424, 41423, 41070]
+ * A UMC-Server crash is now prevented in specific circumstances after login.
+ * A UMC-Server crash is now prevented for requests with malicious request data.
+bug: [41424, 41423, 41070, 41370]
