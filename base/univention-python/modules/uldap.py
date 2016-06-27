@@ -40,22 +40,14 @@ from ldapurl import isLDAPUrl
 
 def parentDn(dn, base=''):
 	_d = univention.debug.function('uldap.parentDn dn=%s base=%s' % (dn, base))
-	if dn == base:
-		return None
-	pos = dn.find(',') + 1
-	if pos == 0:
-		return None
-	return dn[pos:]
+	if dn.lower() == base.lower():
+		return
+	dn = ldap.dn.str2dn(dn)
+	return ldap.dn.dn2str(dn[1:])
 
 
 def explodeDn(dn, notypes=0):
-	if not dn:
-		return []
-
-	exploded_dn = dn.split(',')
-	if notypes:
-		return map(lambda x: x[x.find('=') + 1:], exploded_dn)
-	return exploded_dn
+	return ldap.dn.explode_dn(dn, notypes)
 
 
 def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
