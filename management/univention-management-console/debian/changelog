@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-6) unstable; urgency=medium
+
+  * Bug #41370: fix crashing of server on malicious request data
+
+ -- Florian Best <best@univention.de>  Mon, 27 Jun 2016 18:49:46 +0200
+
 univention-management-console (8.0.28-15) unstable; urgency=medium
 
   * Bug #41070: prevent crashing of server after authentication

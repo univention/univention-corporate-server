@@ -251,6 +251,8 @@ class Message(object):
 		if self.mimetype == MIMETYPE_JSON:
 			try:
 				self.body = json.loads(self.body)
+				if not isinstance(self.body, dict):
+					raise ValueError('body is a %r' % (type(self.body).__name__,))
 			except ValueError as exc:
 				self.body = {}
 				PARSER.error('Error parsing UMCP message body: %s' % (exc,))
