@@ -49,9 +49,12 @@ filter = '(|' + \
 		'(objectClass=univentionCorporateClient)' + \
 		'(objectClass=univentionMemberServer))'
 attributes = []
+modrdn = "1"
 
 
 SSLDIR = '/etc/univention/ssl'
+
+_delay = None
 
 
 def initialize():
@@ -66,20 +69,31 @@ def domain(info):
 		return configRegistry['domainname']
 
 
-def handler(dn, new, old):
+def handler(dn, new, old, command=''):
 	"""Handle changes to 'dn'."""
 	if configRegistry['server/role'] != 'domaincontroller_master':
 		return
 
 	setuid(0)
 	try:
+		global _delay
+		if _delay:
+			(old_dn, old) = _delay
+			if 'a' != command or old['entryUUID'] != new['entryUUID']:
+				ud.debug(ud.LISTENER, ud.WARN, 'CERTIFICATE: Non-consecutive move %s -> %s', old_dn, dn)
+				(old_dn, old) = (None, None)
+		_delay = None
+
 		if new and not old:
 			# changeType: add
 			create_certificate(new['cn'][0], domain(new))
 		elif old and not new:
 			# changeType: delete
-			remove_certificate(old['cn'][0], domain(old))
-		else:
+			if 'r' == command:
+				_delay = (dn, old)
+			else:
+				remove_certificate(old['cn'][0], domainname=domain(old))
+		elif old and new:
 			# changeType: modify
 			old_domain = domain(old)
 			new_domain = domain(new)
