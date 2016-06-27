@@ -50,6 +50,7 @@ univention-config-registry set ssl/country?"${country:-DE}" \
 	ssl/host/objectclass?univentionDomainController,univentionMemberServer,univentionClient,univentionMobileClient,univentionCorporateClient \
 	ssl/crl/interval?7 \
 	ssl/crl/validity?10 \
+	ssl/ca/cipher?aes256 \
 	ssl/default/hashfunction?sha256 \
 	ssl/default/bits?2048
 

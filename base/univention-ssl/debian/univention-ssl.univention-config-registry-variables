@@ -107,3 +107,9 @@ Description[de]=Das Aktualisierungsinterval der SSL-Zertifikat-Widerrufsliste in
 Description[en]=The update interval in days of the SSL certificate revokation list. No automatic update if unset, empty or zero. [7]
 Type=int
 Categories=system-ssl
+
+[ssl/ca/cipher]
+Description[de]=Bestimmt den Verschlüsselungsalgorithmus für den privaten Schlüssel der Root-CA: aes128,aes192,aes256,camellia128,camellia192,camellia256,des,des3,idea. [aes256]
+Description[en]=Specifies the cipher the private key of the root CA is encrypted with: aes128,aes192,aes256,camellia128,camellia192,camellia256,des,des3,idea. [aes256]
+Type=str
+Categories=system-ssl

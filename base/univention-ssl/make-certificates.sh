@@ -240,6 +240,7 @@ move_cert () {
 
 init () {
 	local cn="$(ucr get ssl/common)"
+	local cipher="$(/usr/sbin/univention-config-registry get ssl/ca/cipher)"
 	check_ssl_parameters "$cn" || return $?
 
 	# remove old stuff
@@ -269,7 +270,7 @@ init () {
 	# make the root-CA configuration file
 	mk_config "${SSLBASE}/openssl.cnf" "$PASSWD" "$DEFAULT_DAYS" "$cn" || return $?
 
-	openssl genrsa -des3 -passout pass:"$PASSWD" -out "${SSLBASE}/${CA}/private/CAkey.pem" "$DEFAULT_BITS" || return $?
+	openssl genrsa -${cipher:-aes256} -passout pass:"$PASSWD" -out "${SSLBASE}/${CA}/private/CAkey.pem" "$DEFAULT_BITS" || return $?
 	openssl req -batch -config "${SSLBASE}/openssl.cnf" -new -x509 -days "$DEFAULT_DAYS" -key "${SSLBASE}/${CA}/private/CAkey.pem" -out "${SSLBASE}/${CA}/CAcert.pem" || return $?
 
 	# copy the public key to a place, from where browsers can access it
