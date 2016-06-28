@@ -53,64 +53,51 @@ def explodeDn(dn, notypes=0):
 def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
-	bindpw = open('/etc/ldap.secret').read()
-	if bindpw[-1] == '\n':
-		bindpw = bindpw[0:-1]
+	bindpw = open('/etc/ldap.secret').read().rstrip('\n')
 	port = int(ucr.get('ldap/master/port', '7389'))
-	lo = access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
-	return lo
+	return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
 def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
-	bindpw = open('/etc/ldap-backup.secret').read()
-	if bindpw[-1] == '\n':
-		bindpw = bindpw[0:-1]
+	bindpw = open('/etc/ldap-backup.secret').read().rstrip('\n')
 	port = int(ucr.get('ldap/master/port', '7389'))
 	try:
-		lo = access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
-	except ldap.SERVER_DOWN as exc:
-		if ucr['ldap/backup']:
-			backup = ucr['ldap/backup'].split(' ')[0]
-			lo = access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
-		else:
-			raise ldap.SERVER_DOWN(exc)
-	return lo
+		return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+	except ldap.SERVER_DOWN:
+		if not ucr['ldap/backup']:
+			raise
+		backup = ucr['ldap/backup'].split(' ')[0]
+		return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
 def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	bindpw = open(secret_file).read()
-	if bindpw[-1] == '\n':
-		bindpw = bindpw[0:-1]
+	bindpw = open(secret_file).read().rstrip('\n')
 
 	if ldap_master:
 		# Connect to DC Master
 		port = int(ucr.get('ldap/master/port', '7389'))
-		lo = access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+		return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	else:
 		# Connect to ldap/server/name
 		port = int(ucr.get('ldap/server/port', '7389'))
 		try:
-			lo = access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+			return access(host=ucr['ldap/server/name'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 		except ldap.SERVER_DOWN as exc:
 			# ldap/server/name is down, try next server
 			if not ucr.get('ldap/server/addition'):
-				raise ldap.SERVER_DOWN(exc)
+				raise
 			servers = ucr.get('ldap/server/addition', '')
 			for server in servers.split():
 				try:
-					lo = access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
-				except ldap.SERVER_DOWN as exc:
+					return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+				except ldap.SERVER_DOWN:
 					pass
-				else:
-					return lo
-			raise ldap.SERVER_DOWN(exc)
-
-	return lo
+			raise exc
 
 
 class access:
@@ -133,26 +120,20 @@ class access:
 
 		if not self.port:  # if no explicit port is given
 			self.port = int(ucr.get('ldap/server/port', 7389))  # take UCR value
-			if use_ldaps and self.port == "7389":  # adjust the standard port for ssl
-					self.port = "7636"
+			if use_ldaps and self.port == 7389:  # adjust the standard port for ssl
+				self.port = "7636"
 
 		# http://www.openldap.org/faq/data/cache/605.html
 		self.protocol = 'ldap'
 		if use_ldaps:
 			self.protocol = 'ldaps'
-			self.uri = 'ldaps://%s:%s" % (self.host, self.port)'
+			self.uri = 'ldaps://%s:%s' % (self.host, self.port)
 		elif uri:
 			self.uri = uri
 		else:
 			self.uri = "ldap://%s:%s" % (self.host, self.port)
 
-		if not decode_ignorelist or decode_ignorelist == []:
-			if not ucr:
-				ucr = ConfigRegistry()
-				ucr.load()
-			self.decode_ignorelist = ucr.get('ldap/binaryattributes', 'krb5Key,userCertificate;binary').split(',')
-		else:
-			self.decode_ignorelist = decode_ignorelist
+		self.decode_ignorelist = decode_ignorelist or ucr.get('ldap/binaryattributes', 'krb5Key,userCertificate;binary').split(',')
 
 		# python-ldap does not cache the credentials, so we override the
 		# referral handling if follow_referral is set to true
@@ -184,9 +165,6 @@ class access:
 
 	def __open(self, ca_certfile):
 		_d = univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
-
-		if not hasattr(self, 'protocol'):
-			self.protocol = 'ldap'
 
 		if self.reconnect:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection with retry_max=%d' % self. client_connection_attempt)
@@ -262,10 +240,9 @@ class access:
 
 		if dn:
 			try:
-				result = self.lo.search_s(dn, ldap.SCOPE_BASE,
-										 '(objectClass=*)', attr)
+				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', attr)
 			except ldap.NO_SUCH_OBJECT:
-				result = {}
+				result = []
 			if result:
 				return self.__decode_entry(result[0][1])
 		if required:
@@ -278,10 +255,9 @@ class access:
 		_d = univention.debug.function('uldap.getAttr %s %s' % (dn, attr))
 		if dn:
 			try:
-				result = self.lo.search_s(dn, ldap.SCOPE_BASE,
-										'(objectClass=*)', [attr])
+				result = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', [attr])
 			except ldap.NO_SUCH_OBJECT:
-				result = {}
+				result = []
 			if result and attr in result[0][1]:
 				return result[0][1][attr]
 		if required:
@@ -297,19 +273,8 @@ class access:
 			base = self.base
 
 		if scope == 'base+one':
-			res = self.lo.search_ext_s(base,
-										ldap.SCOPE_BASE,
-										filter,
-										attr,
-										serverctrls=serverctrls, clientctrls=None,
-										timeout=timeout, sizelimit=sizelimit) + \
-										self.lo.search_ext_s(base,
-															  ldap.SCOPE_ONELEVEL,
-															  filter,
-															  attr,
-															  serverctrls=serverctrls,
-															  clientctrls=None,
-															  timeout=timeout, sizelimit=sizelimit)
+			res = self.lo.search_ext_s(base, ldap.SCOPE_BASE, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit) + \
+				self.lo.search_ext_s(base, ldap.SCOPE_ONELEVEL, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
 		else:
 			if scope == 'sub' or scope == 'domain':
 				ldap_scope = ldap.SCOPE_SUBTREE
@@ -317,12 +282,7 @@ class access:
 				ldap_scope = ldap.SCOPE_ONELEVEL
 			else:
 				ldap_scope = ldap.SCOPE_BASE
-			res = self.lo.search_ext_s(
-				base,
-				ldap_scope, filter,
-				attr,
-				serverctrls=serverctrls, clientctrls=None,
-				timeout=timeout, sizelimit=sizelimit)
+			res = self.lo.search_ext_s(base, ldap_scope, filter, attr, serverctrls=serverctrls, clientctrls=None, timeout=timeout, sizelimit=sizelimit)
 
 		if unique and len(res) > 1:
 			raise ldap.INAPPROPRIATE_MATCHING({'desc': 'more than one object'})
@@ -339,7 +299,7 @@ class access:
 
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0, serverctrls=None):
 		_d = univention.debug.function('uldap.searchDn filter=%s base=%s scope=%s unique=%d required=%d' % (filter, base, scope, unique, required))
-		return map(lambda x: x[0], self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls))
+		return [x[0] for x in self.search(filter, base, scope, ['dn'], unique, required, timeout, sizelimit, serverctrls)]
 
 	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
 		if attrs is None:
@@ -452,64 +412,49 @@ class access:
 		except ldap.REFERRAL as exc:
 			if not self.follow_referral:
 				raise
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
 			lo_ref = self._handle_referral(exc)
 			lo_ref.add_s(dn, nal)
 
-	def modify(self, dn, changes, atomic=0):
+	def modify(self, dn, changes):
 		"""Modify LDAP entry dn with attributes in changes=(attribute-name, old-values, new-values)."""
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.modify %s' % dn)
 
-		rename = None
 		ml = []
 		for key, oldvalue, newvalue in changes:
-			if dn.startswith(key + '='):
-				rename = key + '=' + newvalue
 			if oldvalue and newvalue:
-				if oldvalue == newvalue:
-					continue
-				if not isinstance(oldvalue, basestring) and not isinstance(newvalue, basestring) and set(oldvalue) == set(newvalue):
-					continue
-				if atomic:
-					ml.append((ldap.MOD_DELETE, key, val))
-					ml.append((ldap.MOD_ADD, key, val))
-					continue
+				if oldvalue == newvalue or (not isinstance(oldvalue, basestring) and not isinstance(newvalue, basestring) and set(oldvalue) == set(newvalue)):
+					continue  # equal values
 				op = ldap.MOD_REPLACE
-				if (key == 'krb5ValidEnd' or key == 'krb5PasswordEnd') and newvalue == '0':
+				val = newvalue
+				if (key == 'krb5ValidEnd' or key == 'krb5PasswordEnd') and newvalue == '0':  # TODO: move into the specific handlers
 					val = 0
-
-				else:
-					val = newvalue
-
 			elif not oldvalue and newvalue:
 				op = ldap.MOD_ADD
 				val = newvalue
 			elif oldvalue and not newvalue:
 				op = ldap.MOD_DELETE
-				if key == "jpegPhoto":
+				val = oldvalue
+				if key == "jpegPhoto":  # TODO: move into users/user
 					val = None
-				else:
-					val = oldvalue
 			else:
 				continue
 			ml.append((op, key, val))
 
+		# check if we need to rename the object
+		rdn = ldap.dn.str2dn(dn)[0]
+		dn_vals = dict((x[0].lower(), x[1]) for x in rdn)
+		new_vals = dict((key.lower(), val if isinstance(val, basestring) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
+		new_rdn = ldap.dn.dn2str([[(x, new_vals.get(x, dn_vals[x]), 1) for x in [y[0].lower() for y in rdn]]])
+		rdn = ldap.dn.dn2str([rdn])
+
 		ml = self.__encode_entry(ml)
-		if rename:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % rename)
-			self.lo.rename_s(dn, rename, None, delold=1)
-			dn = rename + dn[dn.find(','):]
+		if rdn != new_rdn:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % new_rdn)
+			self.lo.rename_s(dn, new_rdn, None, delold=1)
+			dn = ldap.dn.dn2str([ldap.dn.str2dn(new_rdn)[0]] + ldap.dn.str2dn(dn)[1:])
 		if ml:
-			try:
-				self.lo.modify_s(dn, ml)
-			except ldap.REFERRAL as exc:
-				if self.follow_referral:
-					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
-					lo_ref = self._handle_referral(exc)
-					lo_ref.modify_s(dn, ml)
-				else:
-					raise
+			self.modify_s(dn, ml)
 		return dn
 
 	def modify_s(self, dn, ml):
@@ -517,12 +462,10 @@ class access:
 		try:
 			self.lo.modify_s(dn, ml)
 		except ldap.REFERRAL as exc:
-			if self.follow_referral:
-				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
-				lo_ref = self._handle_referral(exc)
-				lo_ref.modify_s(dn, ml)
-			else:
+			if not self.follow_referral:
 				raise
+			lo_ref = self._handle_referral(exc)
+			lo_ref.modify_s(dn, ml)
 
 	def rename(self, dn, newdn):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn, newdn))
@@ -535,38 +478,31 @@ class access:
 			try:
 				self.lo.rename_s(dn, newrdn, newsdn)
 			except ldap.REFERRAL as exc:
-				if self.follow_referral:
-					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
-					lo_ref = self._handle_referral(exc)
-					lo_ref.rename_s(dn, newrdn, newsdn)
-				else:
+				if not self.follow_referral:
 					raise
+				lo_ref = self._handle_referral(exc)
+				lo_ref.rename_s(dn, newrdn, newsdn)
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename: modrdn %s to %s' % (dn, newrdn))
 			try:
 				self.lo.rename_s(dn, newrdn)
 			except ldap.REFERRAL as exc:
-				if self.follow_referral:
-					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
-					lo_ref = self._handle_referral(exc)
-					lo_ref.rename_s(dn, newrdn)
-				else:
+				if not self.follow_referral:
 					raise
+				lo_ref = self._handle_referral(exc)
+				lo_ref.rename_s(dn, newrdn)
 
 	def delete(self, dn):
-
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.delete %s' % dn)
 		if dn:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'delete')
 			try:
 				self.lo.delete_s(dn)
 			except ldap.REFERRAL as exc:
-				if self.follow_referral:
-					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
-					lo_ref = self._handle_referral(exc)
-					lo_ref.delete_s(dn)
-				else:
+				if not self.follow_referral:
 					raise
+				lo_ref = self._handle_referral(exc)
+				lo_ref.delete_s(dn)
 
 	def parentDn(self, dn):
 		return parentDn(dn, self.base)
@@ -582,28 +518,28 @@ class access:
 		# do onelevel search
 		old_sizelimit = ldap.get_option(ldap.OPT_SIZELIMIT)
 		ldap.set_option(ldap.OPT_SIZELIMIT, 1)
-		result = self.lo.search_s(dn, ldap.SCOPE_ONELEVEL, '(objectClass=*)', [''])
-		ldap.set_option(ldap.OPT_SIZELIMIT, old_sizelimit)
-		# BUG: evaluate result to TRUE | FALSE is missing here ?!
+		try:
+			# BUG: evaluate result to TRUE | FALSE is missing here ?!
+			self.lo.search_s(dn, ldap.SCOPE_ONELEVEL, '(objectClass=*)', [''])
+		finally:
+			ldap.set_option(ldap.OPT_SIZELIMIT, old_sizelimit)
 
 	def explodeDn(self, dn, notypes=False):
 		return explodeDn(dn, notypes)
 
 	def __getstate__(self):
-
 		_d = univention.debug.function('uldap.__getstate__')
 		odict = self.__dict__.copy()
 		del odict['lo']
 		return odict
 
 	def __setstate__(self, dict):
-
 		_d = univention.debug.function('uldap.__setstate__')
 		self.__dict__.update(dict)
-		self.__open()
+		self.__open(self.ca_certfile)
 
 	def _handle_referral(self, exception):
-		# Following referral
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'Following LDAP referral')
 		exc = exception.args[0]
 		info = exc.get('info')
 		ldap_url = info[info.find('ldap'):]
@@ -628,31 +564,3 @@ class access:
 
 		else:
 			raise ldap.CONNECT_ERROR('Bad referral "%s"' % (exc,))
-
-	def needed_objectclasses(self, entry):
-
-		dont_remove = ['organizationalPerson', 'univentionPerson']
-
-		ldap.set_option(ldap.OPT_DEBUG_LEVEL, 0)
-
-		ldap._trace_level = 0
-
-		subschemasubentry_dn, schema = ldap.schema.urlfetch('%s/cn=subschema', self.uri)
-
-		if subschemasubentry_dn is None:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'No sub schema sub entry found!')
-			return None
-
-		needed_oc = []
-		for attr_type, schema_class in ldap.schema.SCHEMA_CLASS_MAPPING.items():
-			if attr_type == 'objectClasses':
-				for element_id in schema.listall(schema_class):
-					se_orig = schema.get_obj(schema_class, element_id)
-					attributes = se_orig.may + se_orig.must
-					for i in range(0, len(se_orig.names)):
-						if se_orig.names[i] in entry['objectClass'] and not se_orig.names[i] in needed_oc:
-							for j in attributes:
-								if (j in res[0][1] or j in dont_remove) and not se_orig.names[i] in needed_oc:
-									needed_oc.append(se_orig.names[i])
-
-		return needed_oc

@@ -1,3 +1,9 @@
+univention-python (9.0.1-5) unstable; urgency=medium
+
+  * Bug #40041: make renaming of multi valued RDNs possible
+
+ -- Florian Best <best@univention.de>  Tue, 28 Jun 2016 22:43:39 +0200
+
 univention-python (9.0.1-4) unstable; urgency=medium
 
   * Bug #40129: use official python-LDAP utilities
