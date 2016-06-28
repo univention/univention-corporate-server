@@ -783,8 +783,9 @@ class simpleLdap(base):
 
 	def _ldap_object_classes(self, ml):
 		m = univention.admin.modules.get(self.module)
+		lowerset = lambda vals: set(x.lower() for x in vals)
 
-		ocs = set(_MergedAttributes(self, ml).get_attribute('objectClass'))
+		ocs = lowerset(_MergedAttributes(self, ml).get_attribute('objectClass'))
 		unneeded_ocs = set()
 		required_ocs = set()
 
@@ -819,22 +820,19 @@ class simpleLdap(base):
 				ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
 				ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
 
-		unneeded_ocs |= set(chain.from_iterable(module_options[option].objectClasses for option in removed_options))
-		required_ocs |= set(chain.from_iterable(module_options[option].objectClasses for option in added_options))
-
-		# consider case insensitivity
-		schema = self.lo.get_schema()
-		mapping = {x.lower(): schema.get_obj(ldap.schema.models.ObjectClass, x).names[0] for x in ocs | unneeded_ocs | required_ocs}
-		unneeded_ocs = set(mapping[x.lower()] for x in unneeded_ocs)
-		required_ocs = set(mapping[x.lower()] for x in required_ocs)
-		ocs = set(mapping[x.lower()] for x in ocs)
+		unneeded_ocs |= lowerset(chain.from_iterable(module_options[option].objectClasses for option in removed_options))
+		required_ocs |= lowerset(chain.from_iterable(module_options[option].objectClasses for option in added_options))
 
 		ocs -= unneeded_ocs
 		ocs |= required_ocs
-		if set(self.oldattr.get('objectClass', [])) == ocs:
+		if lowerset(self.oldattr.get('objectClass', [])) == ocs:
 			return ml
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'OCS=%r; required=%r; removed: %r' % (ocs, required_ocs, unneeded_ocs))
+
+		# case normalize object class names
+		schema = self.lo.get_schema()
+		ocs = set(schema.get_obj(ldap.schema.models.ObjectClass, x).names[0] for x in ocs)
 
 		# make sure we still have a structural object class
 		if not schema.get_structural_oc(ocs):

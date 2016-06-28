@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-22) unstable; urgency=medium
+
+  * Bug #41580: fix python2.6 syntax
+
+ -- Florian Best <best@univention.de>  Tue, 28 Jun 2016 09:29:27 +0200
+
 univention-directory-manager-modules (11.0.3-21) unstable; urgency=medium
 
   * Bug #41580: normalize object class names to prevent errors in different
