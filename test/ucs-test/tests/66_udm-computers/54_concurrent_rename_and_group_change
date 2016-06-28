@@ -1,7 +1,7 @@
 #!/usr/share/ucs-test/runner python
 ## desc: rename and change groups at once
 ## tags: [udm-computers,apptest,SKIP]
-## bugs: [41693]
+## bugs: [41694]
 ## roles: [domaincontroller_master]
 ## exposure: careful
 

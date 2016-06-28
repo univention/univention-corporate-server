@@ -1,6 +1,6 @@
 ucs-test (6.0.33-80) unstable; urgency=medium
 
-  * Bug #41693: add 66_udm-computers/54_concurrent_rename_and_group_change
+  * Bug #41694: add 66_udm-computers/54_concurrent_rename_and_group_change
 
  -- Florian Best <best@univention.de>  Wed, 29 Jun 2016 00:18:51 +0200
 
