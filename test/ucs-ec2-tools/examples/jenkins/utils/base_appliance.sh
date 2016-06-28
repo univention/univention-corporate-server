@@ -589,7 +589,9 @@ uninstall_packages ()
 	fi
 
 	# Old kernels
-	apt-get purge -y --force-yes linux-image-4.1.0-ucs153-amd64 linux-image-4.1.0-ucs153-amd64-signed linux-image-4.1.0-ucs174-amd64 linux-image-4.1.0-ucs174-amd64-signed linux-image-3.16-ucs109-amd64 linux-image-3.16-ucs109-amd64-signed linux-image-3.16.0-ucs135-amd64 linux-image-3.16.0-ucs135-amd64-signed linux-image-3.16.0-ucs165-amd64 linux-image-3.16.0-ucs165-amd64-signed linux-image-3.16.0-ucs195-amd64 linux-image-3.16.0-ucs195-amd64-signed
+	for kernel in linux-image-4.1.0-ucs153-amd64 linux-image-4.1.0-ucs153-amd64-signed linux-image-4.1.0-ucs174-amd64 linux-image-4.1.0-ucs174-amd64-signed linux-image-3.16-ucs109-amd64 linux-image-3.16-ucs109-amd64-signed linux-image-3.16.0-ucs135-amd64 linux-image-3.16.0-ucs135-amd64-signed linux-image-3.16.0-ucs165-amd64 linux-image-3.16.0-ucs165-amd64-signed linux-image-3.16.0-ucs195-amd64 linux-image-3.16.0-ucs195-amd64-signed; do
+		apt-get purge -y --force-yes ${kernel}
+	done
 }
 
 setup_pre_joined_environment ()
