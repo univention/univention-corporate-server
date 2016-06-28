@@ -4,7 +4,6 @@
 ## tags: [udm]
 ## roles:
 ##  - domaincontroller_master
-##  - domaincontroller_backup
 ## join: true
 ## bugs:
 ##  - 41641

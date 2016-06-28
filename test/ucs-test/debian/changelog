@@ -1,3 +1,9 @@
+ucs-test (6.0.33-79) unstable; urgency=low
+
+  * Bug #41641: Restrict 59/07_oc_order to Master
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 28 Jun 2016 08:15:51 +0200
+
 ucs-test (6.0.33-78) unstable; urgency=low
 
   * Bug #41230: Check moved host keeps SSL certificate
