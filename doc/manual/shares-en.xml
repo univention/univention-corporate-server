@@ -145,8 +145,7 @@ in the <filename>/etc/exports</filename> file and/or the Samba configuration.
 		  The server where the share is located.
 		  All of the domain controller master/backup/slave computers and &ucsMember;s
 		  entered in the LDAP directory for the domain are available for selection which
-		  are entered in a DNS forward lookup zone in the LDAP directory. This setting
-		  cannot be subsequently edited.
+		  are entered in a DNS forward lookup zone in the LDAP directory.
 		</entry>
 	  </row>
 

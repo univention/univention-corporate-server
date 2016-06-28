@@ -152,8 +152,7 @@ eingetragen/modifiziert oder entfernt.
 		  Der Server, auf dem die Freigabe liegt. Zur Wahl stehen alle im
 		  LDAP-Verzeichnis für die Domäne eingetragenen Rechner vom Typ
 		  Domänencontroller Master/Backup/Slave und &ucsMember;, die in einer DNS
-		  Forward Lookup Zone im LDAP-Verzeichnis eingetragen sind. Die Einstellung kann
-		  nachträglich nicht mehr bearbeitet werden.
+		  Forward Lookup Zone im LDAP-Verzeichnis eingetragen sind.
 		</entry>
 	  </row>
 
