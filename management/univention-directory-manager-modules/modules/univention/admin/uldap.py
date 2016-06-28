@@ -31,25 +31,27 @@
 # <http://www.gnu.org/licenses/>.
 
 import ldap
-import univention.uldap
 import string
 import time
+
+import univention.uldap
 from univention.admin import localization
 import univention.config_registry
 
 try:
 	import univention.admin.license
-	GPLversion=False
+	GPLversion = False
 except:
-	GPLversion=True
+	GPLversion = True
 
 translation = localization.translation('univention/admin')
 _ = translation.translate
 
-configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-explodeDn=univention.uldap.explodeDn
+explodeDn = univention.uldap.explodeDn
+
 
 def getBaseDN(host='localhost', port=None, uri=None):
 	if not uri:
@@ -58,23 +60,26 @@ def getBaseDN(host='localhost', port=None, uri=None):
 		uri = "ldap://%s:%s" % (host, port)
 	try:
 		l = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
-		result=l.search_s('',ldap.SCOPE_BASE,'objectClass=*',['NamingContexts'])
+		result = l.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
 		return result[0][1]['namingContexts'][0]
 	except ldap.SERVER_DOWN:
 		time.sleep(60)
 	l = ldap.ldapobject.ReconnectLDAPObject(uri, trace_stack_limit=None)
-	result=l.search_s('',ldap.SCOPE_BASE,'objectClass=*',['NamingContexts'])
+	result = l.search_s('', ldap.SCOPE_BASE, 'objectClass=*', ['NamingContexts'])
 	return result[0][1]['namingContexts'][0]
 
-def getAdminConnection(start_tls=2,decode_ignorelist=[]):
-	lo=univention.uldap.getAdminConnection(start_tls, decode_ignorelist=decode_ignorelist)
-	pos=position(lo.base)
+
+def getAdminConnection(start_tls=2, decode_ignorelist=[]):
+	lo = univention.uldap.getAdminConnection(start_tls, decode_ignorelist=decode_ignorelist)
+	pos = position(lo.base)
 	return access(lo=lo), pos
 
-def getMachineConnection(start_tls=2,decode_ignorelist=[], ldap_master = True):
-	lo=univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist, ldap_master=ldap_master)
-	pos=position(lo.base)
+
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):
+	lo = univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist, ldap_master=ldap_master)
+	pos = position(lo.base)
 	return access(lo=lo), pos
+
 
 def _err2str(err):
 	msgs = []
@@ -89,30 +94,34 @@ def _err2str(err):
 		msgs.append(': '.join([str(type(err).__name__), str(err)]))
 	return '. '.join(msgs)
 
+
 class domain:
+
 	def __init__(self, lo, position):
-		self.lo=lo
-		self.position=position
-		self.domain=self.lo.get(self.position.getDomain(), attr=['sambaDomain', 'sambaSID', 'krb5RealmName'])
+		self.lo = lo
+		self.position = position
+		self.domain = self.lo.get(self.position.getDomain(), attr=['sambaDomain', 'sambaSID', 'krb5RealmName'])
+
 	def getKerberosRealm(self):
-		if self.domain.has_key('krb5RealmName'):
-			return self.domain['krb5RealmName'][0]
+		return self.domain.get('krb5RealmName', [None])[0]
+
 
 class position:
+
 	def __init__(self, base, loginDomain=''):
 		if not base:
-			raise univention.admin.uexceptions.insufficientInformation, _( "There was no LDAP base specified." )
+			raise univention.admin.uexceptions.insufficientInformation(_("There was no LDAP base specified."))
 
-		self.__loginDomain=loginDomain or base
-		self.__base=base
-		self.__pos=""
-		self.__indomain=False
+		self.__loginDomain = loginDomain or base
+		self.__base = base
+		self.__pos = ""
+		self.__indomain = False
 
 	def setBase(self, base):
-		self.__base=base
+		self.__base = base
 
 	def setLoginDomain(self, loginDomain):
-		self.__loginDomain=loginDomain
+		self.__loginDomain = loginDomain
 
 	def __setPosition(self, pos):
 		self.__pos = pos
@@ -149,7 +158,7 @@ class position:
 		return ldap.dn.dn2str(dn[::-1])
 
 	def getDomainConfigBase(self):
-		return 'cn=univention,'+self.getDomain()
+		return 'cn=univention,' + self.getDomain()
 
 	def isDomain(self):
 		return self.getDn() == self.getDomain()
@@ -158,15 +167,15 @@ class position:
 		return self.__loginDomain
 
 	def __getPositionInDomain(self):
-		components=explodeDn(self.__pos,0)
+		components = explodeDn(self.__pos, 0)
 		components.reverse()
-		poscomponents=[]
+		poscomponents = []
 		for i in components:
-			mytype, ign = string.split(i,'=')
-			if mytype!='dc':
+			mytype, ign = string.split(i, '=')
+			if mytype != 'dc':
 				poscomponents.append(i)
 		poscomponents.reverse()
-		positionindomain=string.join(poscomponents,',')
+		positionindomain = string.join(poscomponents, ',')
 		return positionindomain
 
 	def switchToParent(self):
@@ -176,126 +185,125 @@ class position:
 		return True
 
 	def getPrintable(self, short=1, long=0, trailingslash=1):
-		domaincomponents=explodeDn(self.getDomain(),1)
-		domain=string.join(domaincomponents, '.')
-		indomaindn=self.__getPositionInDomain()
+		domaincomponents = explodeDn(self.getDomain(), 1)
+		domain = string.join(domaincomponents, '.')
+		indomaindn = self.__getPositionInDomain()
 		if indomaindn:
-			components=explodeDn(indomaindn,1)
+			components = explodeDn(indomaindn, 1)
 			components.reverse()
 			if not short or long:
-				printable=domain+':/'+string.join(components, '/')
+				printable = domain + ':/' + string.join(components, '/')
 				if trailingslash:
-					printable+='/'
+					printable += '/'
 			else:
-				printable=""
+				printable = ""
 				for i in range(len(components)):
-					printable+="&nbsp;&nbsp;"
-				printable+=components.pop()
+					printable += "&nbsp;&nbsp;"
+				printable += components.pop()
 		else:
-			printable=domain
+			printable = domain
 		return printable
 
 	# new "version" of getPrintable, returns the tree-depth as int instead of html-blanks
 	def getPrintable_depth(self, short=1, long=0, trailingslash=1):
-		domaincomponents=explodeDn(self.getDomain(),1)
-		domain=string.join(domaincomponents, '.')
-		indomaindn=self.__getPositionInDomain()
+		domaincomponents = explodeDn(self.getDomain(), 1)
+		domain = string.join(domaincomponents, '.')
+		indomaindn = self.__getPositionInDomain()
 		depth = 0
 		if indomaindn:
-			components=explodeDn(indomaindn,1)
+			components = explodeDn(indomaindn, 1)
 			components.reverse()
 			if not short or long:
-				printable=domain+':/'+string.join(components, '/')
+				printable = domain + ':/' + string.join(components, '/')
 				if trailingslash:
-					printable+='/'
+					printable += '/'
 			else:
-				printable=""
-				depth = len(components)*2
-				printable+=components.pop()
+				printable = ""
+				depth = len(components) * 2
+				printable += components.pop()
 		else:
-			printable=domain
-		return (printable,depth)
+			printable = domain
+		return (printable, depth)
 
 
 class access:
 
 	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, lo=None, follow_referral=False):
 		if lo:
-			self.lo=lo
+			self.lo = lo
 		else:
 			if not port:
 				port = int(configRegistry.get('ldap/server/port', 7389))
 			try:
-				self.lo=univention.uldap.access(host, port, base, binddn, bindpw, start_tls, follow_referral=follow_referral)
+				self.lo = univention.uldap.access(host, port, base, binddn, bindpw, start_tls, follow_referral=follow_referral)
 			except ldap.INVALID_CREDENTIALS:
-				raise univention.admin.uexceptions.authFail, _( "Authentication failed" )
+				raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 			except ldap.UNWILLING_TO_PERFORM:
-				raise univention.admin.uexceptions.authFail, _( "Authentication failed" )
-		self.host=self.lo.host
-		self.port=self.lo.port
-		self.base=self.lo.base
-		self.binddn=self.lo.binddn
-		self.bindpw=self.lo.bindpw
-		self.start_tls=start_tls
-		self.require_license=0
-		self.allow_modify=1
-		self.licensetypes = [ 'UCS' ]
+				raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+		self.host = self.lo.host
+		self.port = self.lo.port
+		self.base = self.lo.base
+		self.binddn = self.lo.binddn
+		self.bindpw = self.lo.bindpw
+		self.start_tls = start_tls
+		self.require_license = 0
+		self.allow_modify = 1
+		self.licensetypes = ['UCS']
 
 	def bind(self, binddn, bindpw):
 		try:
 			self.lo.bind(binddn, bindpw)
 		except ldap.INVALID_CREDENTIALS:
-			raise univention.admin.uexceptions.authFail, _( "Authentication failed" )
+			raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 		except ldap.UNWILLING_TO_PERFORM:
-			raise univention.admin.uexceptions.authFail, _( "Authentication failed" )
-
+			raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 
 		if self.require_license:
 			if GPLversion:
 				self.require_license = 0
 				raise univention.admin.uexceptions.licenseGPLversion
 
-			res=univention.admin.license.init_select(self.lo, 'admin')
+			res = univention.admin.license.init_select(self.lo, 'admin')
 
 			self.licensetypes = univention.admin.license._license.types
 
 			if res == 1:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseClients
 			elif res == 2:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseAccounts
 			elif res == 3:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseDesktops
 			elif res == 4:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseGroupware
 			elif res == 5:
 				# Free for personal use edition
 				raise univention.admin.uexceptions.freeForPersonalUse
 			# License Version 2:
 			elif res == 6:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseUsers
 			elif res == 7:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseServers
 			elif res == 8:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseManagedClients
 			elif res == 9:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseCorporateClients
 			elif res == 10:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseDVSUsers
 			elif res == 11:
-				self.allow_modify=0
+				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseDVSClients
 
 	def requireLicense(self, require=1):
-		self.require_license=require
+		self.require_license = require
 
 	def _validateLicense(self):
 		if self.require_license and not GPLversion:
@@ -315,38 +323,38 @@ class access:
 	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=0, required=0, timeout=-1, sizelimit=0):
 		try:
 			return self.lo.search(filter, base, scope, attr, unique, required, timeout, sizelimit)
-		except ldap.NO_SUCH_OBJECT, msg:
+		except ldap.NO_SUCH_OBJECT as msg:
 			raise univention.admin.uexceptions.noObject(_err2str(msg))
-		except ldap.INAPPROPRIATE_MATCHING, msg:
-			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
-		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED), msg:
-			raise univention.admin.uexceptions.ldapTimeout, _err2str(msg)
-		except ldap.SIZELIMIT_EXCEEDED, msg:
-			raise univention.admin.uexceptions.ldapSizelimitExceeded, _err2str(msg)
+		except ldap.INAPPROPRIATE_MATCHING as msg:
+			raise univention.admin.uexceptions.insufficientInformation(_err2str(msg))
+		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED) as msg:
+			raise univention.admin.uexceptions.ldapTimeout(_err2str(msg))
+		except ldap.SIZELIMIT_EXCEEDED as msg:
+			raise univention.admin.uexceptions.ldapSizelimitExceeded(_err2str(msg))
 		except ldap.FILTER_ERROR as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
-		except ldap.LDAPError, msg:
+		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 		try:
 			return self.lo.searchDn(filter, base, scope, unique, required, timeout, sizelimit)
-		except ldap.NO_SUCH_OBJECT, msg:
+		except ldap.NO_SUCH_OBJECT as msg:
 			raise univention.admin.uexceptions.noObject(_err2str(msg))
-		except ldap.INAPPROPRIATE_MATCHING, msg:
-			raise univention.admin.uexceptions.insufficientInformation, _err2str(msg)
-		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED), msg:
-			raise univention.admin.uexceptions.ldapTimeout, _err2str(msg)
-		except ldap.SIZELIMIT_EXCEEDED, msg:
-			raise univention.admin.uexceptions.ldapSizelimitExceeded, _err2str(msg)
+		except ldap.INAPPROPRIATE_MATCHING as msg:
+			raise univention.admin.uexceptions.insufficientInformation(_err2str(msg))
+		except (ldap.TIMEOUT, ldap.TIMELIMIT_EXCEEDED) as msg:
+			raise univention.admin.uexceptions.ldapTimeout(_err2str(msg))
+		except ldap.SIZELIMIT_EXCEEDED as msg:
+			raise univention.admin.uexceptions.ldapSizelimitExceeded(_err2str(msg))
 		except ldap.FILTER_ERROR as msg:
 			raise univention.admin.uexceptions.ldapError('%s: %s' % (_err2str(msg), filter))
-		except ldap.LDAPError, msg:
+		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def getPolicies( self, dn, policies = None, attrs = None, result = None, fixedattrs = None ):
+	def getPolicies(self, dn, policies=None, attrs=None, result=None, fixedattrs=None):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'getPolicies modules dn %s result' % dn)
-		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs )
+		return self.lo.getPolicies(dn, policies, attrs, result, fixedattrs)
 
 	def add(self, dn, al, exceptions=False):
 		self._validateLicense()
@@ -359,20 +367,20 @@ class access:
 			return self.lo.add(dn, al)
 		try:
 			return self.lo.add(dn, al)
-		except ldap.ALREADY_EXISTS, msg:
+		except ldap.ALREADY_EXISTS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
-			raise univention.admin.uexceptions.objectExists, dn
-		except ldap.INSUFFICIENT_ACCESS, msg:
+			raise univention.admin.uexceptions.objectExists(dn)
+		except ldap.INSUFFICIENT_ACCESS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
-		except ldap.LDAPError, msg:
+		except ldap.LDAPError as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'add dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def modify(self, dn, changes, exceptions=False, ignore_license=0):
 		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modify dn: %s'%  dn)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'modify dn: %s' % dn)
 			raise univention.admin.uexceptions.licenseDisableModify
 			return []
 		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s ml=%s' % (dn, changes))
@@ -380,34 +388,34 @@ class access:
 			return self.lo.modify(dn, changes)
 		try:
 			return self.lo.modify(dn, changes)
-		except ldap.NO_SUCH_OBJECT, msg:
+		except ldap.NO_SUCH_OBJECT as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
-		except ldap.INSUFFICIENT_ACCESS, msg:
+		except ldap.INSUFFICIENT_ACCESS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
-		except ldap.LDAPError, msg:
+		except ldap.LDAPError as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'mod dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
 	def rename(self, dn, newdn, move_childs=0, ignore_license=False):
 		if not move_childs == 0:
-			raise univention.admin.uexceptions.noObject, _( "Moving childs is not supported." )
+			raise univention.admin.uexceptions.noObject(_("Moving childs is not supported."))
 		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'move dn: %s'%  dn)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'move dn: %s' % dn)
 			raise univention.admin.uexceptions.licenseDisableModify
 			return []
 		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s newdn=%s' % (dn, newdn))
 		try:
 			return self.lo.rename(dn, newdn)
-		except ldap.NO_SUCH_OBJECT, msg:
+		except ldap.NO_SUCH_OBJECT as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
-		except ldap.INSUFFICIENT_ACCESS, msg:
+		except ldap.INSUFFICIENT_ACCESS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
-		except ldap.LDAPError, msg:
+		except ldap.LDAPError as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'ren dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
@@ -416,18 +424,18 @@ class access:
 		if exceptions:
 			try:
 				return self.lo.delete(dn)
-			except ldap.INSUFFICIENT_ACCESS, msg:
+			except ldap.INSUFFICIENT_ACCESS as msg:
 				raise univention.admin.uexceptions.permissionDenied
 		univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s' % (dn,))
 		try:
 			return self.lo.delete(dn)
-		except ldap.NO_SUCH_OBJECT, msg:
+		except ldap.NO_SUCH_OBJECT as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.noObject(dn)
-		except ldap.INSUFFICIENT_ACCESS, msg:
+		except ldap.INSUFFICIENT_ACCESS as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.permissionDenied
-		except ldap.LDAPError, msg:
+		except ldap.LDAPError as msg:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.ALL, 'del dn=%s err=%s' % (dn, msg))
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
