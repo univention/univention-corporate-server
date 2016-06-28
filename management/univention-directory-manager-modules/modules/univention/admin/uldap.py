@@ -103,14 +103,10 @@ class position:
 		if not base:
 			raise univention.admin.uexceptions.insufficientInformation, _( "There was no LDAP base specified." )
 
-		if not loginDomain:
-			self.__loginDomain=base
-		else:
-			self.__loginDomain=loginDomain
-
+		self.__loginDomain=loginDomain or base
 		self.__base=base
 		self.__pos=""
-		self.__indomain=0
+		self.__indomain=False
 
 	def setBase(self, base):
 		self.__base=base
@@ -119,44 +115,22 @@ class position:
 		self.__loginDomain=loginDomain
 
 	def __setPosition(self, pos):
-		self.__pos=pos
-		self.__indomain=0
-		components=explodeDn(self.__pos,0)
-		for i in components:
-			mytype, ign = string.split(i,'=')
-			if mytype=='dc':
-				self.__indomain=1
-				break
+		self.__pos = pos
+		self.__indomain = any('dc' == y[0] for x in ldap.dn.str2dn(self.__pos) for y in x)
+
 	def getDn(self):
-		if self.__getPosition():
-			dn=self.__pos+","+self.__base
-		else:
-			dn=self.__base
-		return dn
+		return ldap.dn.dn2str(ldap.dn.str2dn(self.__pos) + ldap.dn.str2dn(self.__base))
+
 	def setDn(self, dn):
-		try:
-			self.__indomain=0
-			baselist=explodeDn(self.getBase())
-			baselist.reverse()
-			dnlist=explodeDn(dn)
-			dnlist.reverse()
-			baselist.reverse()
-			for i in baselist:
-				dnlist.remove(i)
-			dnlist.reverse()
-			self.__pos=string.join(dnlist, ',')
-			components=explodeDn(self.__pos,0)
-			for i in components:
-				mytype, ign = string.split(i,'=')
-				if mytype=='dc':
-					self.__indomain=1
-					break
-		except ValueError:
-			raise univention.admin.uexceptions.noObject, _("DN not found: %s.") % dn
+		# strip out the trailing base from the DN; store relative dn
+		dn = ldap.dn.str2dn(dn)
+		base = ldap.dn.str2dn(self.getBase())
+		if dn[-len(base):] == base:
+			dn = dn[:-len(base)]
+		self.__setPosition(ldap.dn.dn2str(dn))
 
 	def getRdn(self):
-		components=explodeDn(self.getDn(),0)
-		return components.pop(0)
+		return ldap.dn.explode_rdn(self.getDn())[0]
 
 	def getBase(self):
 		return self.__base
@@ -167,18 +141,12 @@ class position:
 	def getDomain(self):
 		if not self.__indomain or self.getDn() == self.getBase():
 			return self.getBase()
-		components=explodeDn(self.getDn(),0)
-		components.reverse()
-		domaincomponents=[]
-		for i in components:
-			mytype, ign = string.split(i,'=')
-			if mytype=='dc':
-				domaincomponents.append(i)
-			else:
+		dn = []
+		for part in ldap.dn.str2dn(self.getDn())[::-1]:
+			if not any('dc' == y[0] for y in part):
 				break
-		domaincomponents.reverse()
-		domain=string.join(domaincomponents,',')
-		return domain
+			dn.append(part)
+		return ldap.dn.dn2str(dn[::-1])
 
 	def getDomainConfigBase(self):
 		return 'cn=univention,'+self.getDomain()
@@ -189,8 +157,6 @@ class position:
 	def getLoginDomain(self):
 		return self.__loginDomain
 
-	def __getPosition(self):
-		return self.__pos
 	def __getPositionInDomain(self):
 		components=explodeDn(self.__pos,0)
 		components.reverse()
@@ -205,11 +171,9 @@ class position:
 
 	def switchToParent(self):
 		if self.isBase():
-			return 0
-		poscomponents=explodeDn(self.__pos,0)
-		poscomponents.pop(0)
-		self.__setPosition(string.join(poscomponents,','))
-		return 1
+			return False
+		self.__setPosition(ldap.dn.dn2str(ldap.dn.str2dn(self.__pos)[1:]))
+		return True
 
 	def getPrintable(self, short=1, long=0, trailingslash=1):
 		domaincomponents=explodeDn(self.getDomain(),1)
