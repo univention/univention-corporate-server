@@ -148,6 +148,22 @@ else:
 	print '1024'" >"$targetfile"
 }
 
+app_appliance_AllowPreconfiguredSetup ()
+{
+	local app="$1"
+	[ -z "$app" ] && return 1
+	python -c "
+import sys
+from univention.management.console.modules.appcenter.app_center import Application
+app = Application.find('$app')
+bl = app.get('ApplianceAllowPreconfiguredSetup')
+if bl and bl in ['true', 'True', 'yes', 'Yes']:
+	sys.exit(0)
+else:
+	sys.exit(1)
+"
+}
+
 register_apps ()
 {
 	app=$1
@@ -517,7 +533,9 @@ uninstall_packages ()
 
 setup_pre_joined_environment ()
 {
-	cat >/var/cache/univention-system-setup/profile <<__EOF__
+
+	if app_appliance_AllowPreconfiguredSetup $app; then
+		cat >/var/cache/univention-system-setup/profile <<__EOF__
 hostname="master"
 domainname="ucs.example"
 server/role="domaincontroller_master"
@@ -549,7 +567,12 @@ update/system/after/setup="True"
 components=""
 interfaces/eth0/address="10.203.10.40"
 __EOF__
-	/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
+		ucr set umc/web/appliance/fast_setup_mode=true
+		/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
+	else
+		ucr set umc/web/appliance/fast_setup_mode=false
+		echo "No prejoined environment configured (ApplianceAllowPreconfiguredSetup)"
+	fi
 }
 
 setup_appliance ()
