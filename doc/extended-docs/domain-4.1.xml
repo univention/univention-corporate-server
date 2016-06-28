@@ -69,7 +69,6 @@ EOF
 # Become root
 sudo bash <<"EOF"
 
-# Set some environment variables
 . /etc/univention/ucr_master
 
 # Download the SSL certificate
@@ -108,7 +107,6 @@ EOF
 # Become root
 sudo bash <<"EOF"
 
-# Set some environment variables
 . /etc/univention/ucr_master
 
 # Install SSSD based configuration
@@ -289,7 +287,6 @@ EOF
 # Become root
 sudo bash <<"EOF"
 
-# Set some environment variables
 . /etc/univention/ucr_master
 
 # Install required packages
