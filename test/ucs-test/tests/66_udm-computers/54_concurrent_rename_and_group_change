@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner python
+## desc: rename and change groups at once
+## tags: [udm-computers,apptest,SKIP]
+## bugs: [41693]
+## roles: [domaincontroller_master]
+## exposure: careful
+
+from univention.testing.udm import UCSTestUDM
+import univention.testing.strings as uts
+import univention.testing.utils as utils
+
+
+def main():
+	with UCSTestUDM() as udm:
+		groupdn_a, name = udm.create_group()
+		groupdn_b, name = udm.create_group()
+		computerdn = udm.create_object('computers/ubuntu', name=uts.random_string(), groups=[groupdn_a, groupdn_b])
+		utils.verify_ldap_object(groupdn_a, {'uniqueMember': [computerdn]})
+		utils.verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn]})
+
+		computerdn_new = udm.modify_object('computers/ubuntu', dn=computerdn, name=uts.random_string(), groups=[groupdn_b])
+		utils.verify_ldap_object(computerdn, should_exist=False)
+		utils.verify_ldap_object(computerdn_new, should_exist=True)
+		utils.verify_ldap_object(groupdn_b, {'uniqueMember': [computerdn_new]})
+		utils.verify_ldap_object(groupdn_a, {'uniqueMember': []})
+
+
+if __name__ == '__main__':
+	main()
