@@ -320,7 +320,7 @@ download_system_setup_packages ()
 			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
 			check_returnvalue $? "Failed to download required packages for ${package}"
-		#done
+		done
 
 		apt-ftparchive packages . >Packages
 		check_returnvalue $? "Failed to create ftparchive directory"
