@@ -211,7 +211,18 @@ if configRegistry.get('ldap/maxopenfiles'):
 @!@		start-stop-daemon --start --quiet \
 			--exec $DAEMON -- -h "${uris}"
 	rvalue=$?
-	log_action_end_msg $rvalue
+	fail_msg=""
+	# Bug #33993
+	if [ "i686" = "$(uname -m)" ]; then
+		for i in $(seq 1 3); do
+			[ $rvalue -eq 0 ] && break
+			sleep 1
+			start-stop-daemon --start --quiet --exec $DAEMON -- -h "${uris}"
+			rvalue=$?
+		done
+		[ $rvalue -ne 0 ] && fail_msg="slapd start failed, check if ldap/database/mdb/maxsize is supported on this architecture"
+	fi
+	log_action_end_msg $rvalue "$fail_msg"	
 	if [ $rvalue != 0 ]; then
 		exit_if_start_is_running
 		[ -e /usr/sbin/slapschema ] && log_action_msg $(/usr/sbin/slapschema 2>&1)
