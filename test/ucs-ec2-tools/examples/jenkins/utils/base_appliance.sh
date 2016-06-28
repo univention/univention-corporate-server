@@ -315,11 +315,11 @@ download_system_setup_packages ()
 			apt-get update
 		done
 
-		#for package in firefox-en; do
-		#	LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
-		#	apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
+		for package in firefox-de; do
+			LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | 
+			apt-get download -o Dir::Cache::Archives=/var/cache/univention-system-setup/packages $(LC_ALL=C $install_cmd --reinstall -s -o Debug::NoLocking=1 ${package} | sed -ne 's|^Inst \([^ ]*\) .*|\1|p')
 
-		#	check_returnvalue $? "Failed to download required packages for ${package}"
+			check_returnvalue $? "Failed to download required packages for ${package}"
 		#done
 
 		apt-ftparchive packages . >Packages
