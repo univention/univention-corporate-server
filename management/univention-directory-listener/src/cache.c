@@ -318,7 +318,7 @@ int cache_get_master_entry(CacheMasterEntry *master_entry)
 
 	if (data.size != sizeof(CacheMasterEntry)) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR,
-				"master entry has unexcepted length");
+				"master entry has unexpected length");
 		return 1;
 	}
 
