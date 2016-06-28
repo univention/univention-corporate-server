@@ -3,10 +3,13 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-ldap
-fix: 12.1.6-23.814.201606241337
+fix: 12.1.6-24.815.201606281334
 desc: |
  This update addresses the following issue(s):
  * It is now prevented that regular users can change their object class.
  * Users can now only create objects with univentionAdminUserSettings object
    class underneath of "cn=admin-settings".
-bug: [41179, 41180]
+ * Starting the ldap daemon on i686 systems with a mdb backend
+   and a mdb maxsize of at least 2147483648 could potentially fail.
+   The init script now triple checks the start.
+bug: [41179, 41180, 33993]
