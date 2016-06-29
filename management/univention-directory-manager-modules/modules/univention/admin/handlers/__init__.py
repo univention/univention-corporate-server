@@ -36,7 +36,6 @@ import re
 import time
 import ldap
 import ipaddr
-from itertools import chain
 from ldap.filter import filter_format, escape_filter_chars
 
 import univention.debug
@@ -570,7 +569,7 @@ class simpleLdap(base):
 				self.oldattr = self.lo.get(self.dn, required=True)
 			except ldap.NO_SUCH_OBJECT:
 				pass
-#				raise univention.admin.uexceptions.noObject(self.dn)
+				# raise univention.admin.uexceptions.noObject(self.dn)
 
 		if self.oldattr:
 			self._exists = True
@@ -812,19 +811,17 @@ class simpleLdap(base):
 
 			if prop.deleteObjClass:
 				unneeded_ocs |= set([prop.objClass])
-			#else:
-			#	required_ocs |= set([prop.objClass])
 
 			# if the value is unset (or a boolean attribute with value == 0) we need to remove the attribute completely
 			if self.oldattr.get(prop.ldapMapping):
 				ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
 				ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
 
-		unneeded_ocs |= lowerset(chain.from_iterable(module_options[option].objectClasses for option in removed_options))
-		required_ocs |= lowerset(chain.from_iterable(module_options[option].objectClasses for option in added_options))
+		unneeded_ocs |= reduce(set.union, (set(module_options[option].objectClasses) for option in removed_options), set())
+		required_ocs |= reduce(set.union, (set(module_options[option].objectClasses) for option in added_options), set())
 
-		ocs -= unneeded_ocs
-		ocs |= required_ocs
+		ocs -= lowerset(unneeded_ocs)
+		ocs |= lowerset(required_ocs)
 		if lowerset(self.oldattr.get('objectClass', [])) == ocs:
 			return ml
 
