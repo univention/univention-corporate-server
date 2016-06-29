@@ -2,7 +2,6 @@
 ## desc: checking alternative ssl-certificate for apache
 ## roles:
 ##  - domaincontroller_master
-##  - domaincontroller_backup
 ## packages:
 ##  - univention-apache
 ##  - univention-ssl
@@ -18,8 +17,8 @@ getssl () {
 
 #create new certificate
 cert="ucs-test"
-univention-certificate list -name "$cert" 2>/dev/null
-univention-certificate new -name "$cert" 2>/dev/null
+univention-certificate list -name "$cert"
+univention-certificate new -name "$cert" || exit $?
 
 #set certification
 ucr_cert="apache2/ssl/certificate"
@@ -59,7 +58,7 @@ else
 	echo "und das ist auch gut so!"
 fi
 
-univention-certificate revoke -name "$cert" 2>/dev/null
+univention-certificate revoke -name "$cert"
 
 exit $RETVAL
 # vim: set ft=sh :

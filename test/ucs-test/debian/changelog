@@ -1,3 +1,9 @@
+ucs-test (6.0.33-81) unstable; urgency=low
+
+  * Bug #24094: Restrict 01/81ssl to DC master
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 Jun 2016 10:00:57 +0200
+
 ucs-test (6.0.33-80) unstable; urgency=medium
 
   * Bug #41694: add 66_udm-computers/54_concurrent_rename_and_group_change
