@@ -1,3 +1,9 @@
+ucs-test (6.0.33-82) unstable; urgency=low
+
+  * Bug #41580: Test uldap.py
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 29 Jun 2016 18:49:48 +0200
+
 ucs-test (6.0.33-81) unstable; urgency=low
 
   * Bug #24094: Restrict 01/81ssl to DC master

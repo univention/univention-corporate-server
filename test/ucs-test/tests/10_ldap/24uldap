@@ -1,0 +1,206 @@
+#!/usr/share/ucs-test/runner python
+## desc: test all univention.uldap methods
+## bugs: [40041]
+## versions:
+##  4.1-2: fixed
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+## exposure: careful
+
+from os import environ
+from os.path import exists
+from univention import uldap
+from unittest import (TestCase, main, skip, skipUnless)
+from tempfile import NamedTemporaryFile
+
+import ldap
+
+from univention.config_registry import ConfigRegistry
+
+
+class FakeUcr(object):
+
+    def __init__(self, values, defaults=True):
+        if defaults:
+            ucr = ConfigRegistry()
+            ucr.load()
+            self.values = dict(ucr.items())
+        else:
+            self.values = {}
+        self.values.update(values)
+        self.tmp = None
+
+    def __enter__(self):
+        self.tmp = NamedTemporaryFile()
+        self.tmp.write('# univention_ base.conf\n\n')
+        for key, value in self.values.iteritems():
+            self.tmp.write('\n%s: %s' % (key, value))
+        self.tmp.flush()
+        environ['UNIVENTION_BASECONF'] = self.tmp.name
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.tmp.close()
+        self.tmp = None
+        del environ['UNIVENTION_BASECONF']
+
+
+class TestParentDn(TestCase):
+
+    def testBase(self):
+        self.assertIsNone(uldap.parentDn('dc=de', 'dc=de'))
+
+    def testOne(self):
+        self.assertEqual(uldap.parentDn('dc=de'), '')
+
+    def testTwo(self):
+        self.assertEqual(uldap.parentDn('dc=univention,dc=de'), 'dc=de')
+
+    def testMultivalued(self):
+        self.assertEqual(uldap.parentDn('a=1+b=2,dc=de'), 'dc=de')
+
+
+class TestExplodeDn(TestCase):
+
+    def testOne(self):
+        self.assertEqual(uldap.explodeDn('dc=de'), ['dc=de'])
+
+    def testTwo(self):
+        self.assertEqual(uldap.explodeDn('dc=univention,dc=de'), ['dc=univention', 'dc=de'])
+
+    def testMultivalued(self):
+        self.assertEqual(uldap.explodeDn('a=1+b=2,dc=de'), ['a=1+b=2', 'dc=de'])
+
+
+@skipUnless(exists('/etc/ldap.secret'), 'Missing ldap.secret')
+class TestAdminConnection(TestCase):
+
+    def testDefault(self):
+        access = uldap.getAdminConnection()
+        self.assertIsInstance(access, uldap.access)
+
+    def testLocalhost(self):
+        with FakeUcr({'ldap/master': 'localhost'}):
+            access = uldap.getAdminConnection(reconnect=False)
+            self.assertTrue(isinstance(access, uldap.access))
+
+
+@skipUnless(exists('/etc/ldap-backup.secret'), 'Missing ldap-backup.secret')
+class TestBackupConnection(TestCase):
+
+    def testDefault(self):
+        access = uldap.getBackupConnection()
+        self.assertIsInstance(access, uldap.access)
+
+    def testServerDown(self):
+        with FakeUcr({'ldap/master': '255.255.255.255', 'ldap/backup': ''}):
+            self.assertRaises(ldap.SERVER_DOWN, uldap.getMachineConnection, reconnect=False)
+
+
+@skipUnless(exists('/etc/machine.secret'), 'Missing machine.secret')
+class TestMachineConnection(TestCase):
+
+    def testDefault(self):
+        access = uldap.getMachineConnection()
+        self.assertIsInstance(access, uldap.access)
+
+    def testNonMaster(self):
+        access = uldap.getMachineConnection(ldap_master=False, reconnect=False)
+        self.assertIsInstance(access, uldap.access)
+
+    def testAddition(self):
+        with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': 'localhost'}):
+            access = uldap.getMachineConnection(ldap_master=False, reconnect=False)
+            self.assertIsInstance(access, uldap.access)
+
+
+@skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')
+class TestAccess(TestCase):
+
+    def testDefault(self):
+        access = uldap.access()
+        self.assertIsInstance(access, uldap.access)
+
+    def testIPv6(self):
+        access = uldap.access(host='ip6-localhost', start_tls=0)
+        self.assertEqual(access.uri, 'ldap://ip6-localhost:7389')
+
+    def testPort(self):
+        access = uldap.access(port=7389)
+        self.assertEqual(access.uri, 'ldap://localhost:7389')
+
+    def testLdaps(self):
+        access = uldap.access(use_ldaps=True)
+        self.assertEqual(access.uri, 'ldaps://localhost:7636')
+
+    def testUri(self):
+        access = uldap.access(uri='ldapi:///')
+        self.assertEqual(access.uri, 'ldapi:///')
+
+
+@skipUnless(exists('/var/run/slapd/ldapi'), 'Missing local LDAP server')
+class TestAccessUsage(TestCase):
+
+    def setUp(self):
+        self.uut = uldap.access()
+
+    def testGet(self):
+        result = self.uut.get('cn=Subschema', ['entryDN'], required=True)
+        self.assertEqual(result, {'entryDN': ['cn=Subschema']})
+
+    def testGetAttr(self):
+        result = self.uut.getAttr('cn=Subschema', 'entryDN', required=True)
+        self.assertEqual(result, ['cn=Subschema'])
+
+    def testSearch(self):
+        result = self.uut.search(
+            base='',
+            scope='base',
+            attr=['subschemaSubentry'],
+            unique=True,
+            required=True,
+        )
+        self.assertEqual(result, [('', {'subschemaSubentry': ['cn=Subschema']})])
+
+    def testSearchDn(self):
+        result = self.uut.searchDn(
+            base='',
+            scope='base',
+            unique=True,
+            required=True,
+        )
+        self.assertEqual(result, [''])
+
+    @skip('TODO')
+    def testGetPolicies(self):
+        self.uut.getPolicies()
+
+    def testGetSchema(self):
+        result = self.uut.get_schema()
+        self.assertIsInstance(result, ldap.schema.subentry.SubSchema)
+
+    @skip('TODO')
+    def testAdd(self):
+        self.uut.add()
+
+    @skip('TODO')
+    def testModify(self):
+        self.uut.modify()
+
+    @skip('TODO')
+    def testModifyS(self):
+        self.uut.modify_s()
+
+    @skip('TODO')
+    def testRename(self):
+        self.uut.rename()
+
+    @skip('TODO')
+    def testDelete(self):
+        self.uut.delete()
+
+
+if __name__ == '__main__':
+    main()
