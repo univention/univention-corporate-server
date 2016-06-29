@@ -3,7 +3,7 @@
 # Univention Python
 #  UTF-8 helper functions
 #
-# Copyright 2002-2014 Univention GmbH
+# Copyright 2002-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -51,7 +51,7 @@ def decode(ob, ignore=[]):
 	>>> decode(set((chr(0xc3) + chr(0xa4),))) == set([u'ä'])
 	True
 	"""
-	if ob == None:
+	if ob is None:
 		return ob
 	elif isinstance(ob, basestring):
 		return utf8_decode(ob)[0]
@@ -88,7 +88,7 @@ def encode(ob):
 	>>> encode(set((u'ä',)))
 	set(['\\xc3\\xa4'])
 	"""
-	if ob == None:
+	if ob is None:
 		return ob
 	elif isinstance(ob, basestring):
 		try:

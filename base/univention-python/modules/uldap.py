@@ -3,7 +3,7 @@
 # Univention Python
 #  LDAP access
 #
-# Copyright 2002-2014 Univention GmbH
+# Copyright 2002-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -104,7 +104,6 @@ class access:
 
 	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[], use_ldaps=False, uri=None, follow_referral=False, reconnect=True):
 		"""start_tls = 0 (no); 1 (try); 2 (must)"""
-		ucr = None
 		self.host = host
 		self.base = base
 		self.binddn = binddn
@@ -113,7 +112,7 @@ class access:
 		self.ca_certfile = ca_certfile
 		self.reconnect = reconnect
 
-		self.port = port
+		self.port = int(port) if port else None
 
 		ucr = ConfigRegistry()
 		ucr.load()
@@ -121,17 +120,17 @@ class access:
 		if not self.port:  # if no explicit port is given
 			self.port = int(ucr.get('ldap/server/port', 7389))  # take UCR value
 			if use_ldaps and self.port == 7389:  # adjust the standard port for ssl
-				self.port = "7636"
+				self.port = 7636
 
 		# http://www.openldap.org/faq/data/cache/605.html
 		self.protocol = 'ldap'
 		if use_ldaps:
 			self.protocol = 'ldaps'
-			self.uri = 'ldaps://%s:%s' % (self.host, self.port)
+			self.uri = 'ldaps://%s:%d' % (self.host, self.port)
 		elif uri:
 			self.uri = uri
 		else:
-			self.uri = "ldap://%s:%s" % (self.host, self.port)
+			self.uri = "ldap://%s:%d" % (self.host, self.port)
 
 		self.decode_ignorelist = decode_ignorelist or ucr.get('ldap/binaryattributes', 'krb5Key,userCertificate;binary').split(',')
 
@@ -197,7 +196,7 @@ class access:
 		self.__reconnects_done = 0
 
 	def __encode(self, value):
-		if value == None:
+		if value is None:
 			return value
 		elif isinstance(value, unicode):
 			return str(value)
@@ -308,7 +307,7 @@ class access:
 			policies = []
 		_d = univention.debug.function('uldap.getPolicies dn=%s policies=%s attrs=%s' % (
 			dn, policies, attrs))
-		if not dn and not policies: # if policies is set apply a fictionally referenced list of policies
+		if not dn and not policies:  # if policies is set apply a fictionally referenced list of policies
 			return {}
 
 		# get current dn

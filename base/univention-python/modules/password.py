@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2010-2014 Univention GmbH
+# Copyright 2010-2016 Univention GmbH
 # 
 # http://www.univention.de/
 # 
