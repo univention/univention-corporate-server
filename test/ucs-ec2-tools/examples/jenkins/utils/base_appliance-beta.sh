@@ -534,7 +534,7 @@ uninstall_packages ()
 setup_pre_joined_environment ()
 {
 
-	if app_appliance_AllowPreconfiguredSetup $app; then
+	if app_appliance_AllowPreconfiguredSetup $1; then
 		cat >/var/cache/univention-system-setup/profile <<__EOF__
 hostname="master"
 domainname="ucs.example"
