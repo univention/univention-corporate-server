@@ -1,3 +1,9 @@
+univention-python (9.0.1-7) unstable; urgency=medium
+
+  * Bug #40041: hasChilds() is broken and can therefore be removed
+
+ -- Florian Best <best@univention.de>  Wed, 29 Jun 2016 18:47:45 +0200
+
 univention-python (9.0.1-6) unstable; urgency=medium
 
   * Bug #40041: ldaps port have to be int

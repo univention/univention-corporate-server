@@ -506,23 +506,6 @@ class access:
 	def parentDn(self, dn):
 		return parentDn(dn, self.base)
 
-	def hasChilds(self, dn):
-		# try operational attributes
-		attrs = self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['hasSubordinates'])
-		if 'hasSubordinates' in attrs:
-			if attrs['hasSubordinates'][0] == 'TRUE':
-				return True
-			elif attrs['hasSubordinates'][0] == 'FALSE':
-				return False
-		# do onelevel search
-		old_sizelimit = ldap.get_option(ldap.OPT_SIZELIMIT)
-		ldap.set_option(ldap.OPT_SIZELIMIT, 1)
-		try:
-			# BUG: evaluate result to TRUE | FALSE is missing here ?!
-			self.lo.search_s(dn, ldap.SCOPE_ONELEVEL, '(objectClass=*)', [''])
-		finally:
-			ldap.set_option(ldap.OPT_SIZELIMIT, old_sizelimit)
-
 	def explodeDn(self, dn, notypes=False):
 		return explodeDn(dn, notypes)
 
