@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-python
-fix: 9.0.1-5.163.201606282328
+fix: 9.0.1-7.165.201606291851
 desc: |
  This update addresses the following issues:
  * Use "python-ldap" utilities for splitting of DN's.
