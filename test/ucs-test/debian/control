@@ -407,6 +407,7 @@ Description: Test scripts for UMC
 Package: ucs-test-umc-module
 Architecture: all
 Recommends: univention-management-console-server,
+Depends: ${python:Depends},
 Description: Test UMC modules
  This package includes some test UMC modules
 
@@ -523,6 +524,7 @@ Package: ucs-test-docker
 Architecture: all
 Depends: ucs-test-libs (= ${source:Version}),
  ${misc:Depends},
+ ${python:Depends},
  python-pytest,
 Recommends: ucs-test-framework
 Provides: ucs-test-module
