@@ -1,3 +1,10 @@
+ucs-test (6.0.33-84) unstable; urgency=medium
+
+  * Bug #37102: sleep after killing UDM cli-server to make sure cleanup can be
+  	performt
+
+ -- Florian Best <best@univention.de>  Thu, 30 Jun 2016 13:57:58 +0200
+
 ucs-test (6.0.33-83) unstable; urgency=low
 
   * Bug #41580,Bug #40129: Fix uldap.py test on Memberserver

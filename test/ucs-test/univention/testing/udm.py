@@ -53,6 +53,7 @@ import univention.testing.ucr
 import univention.testing.strings as uts
 import univention.testing.utils as utils
 import ldap
+import time
 from univention.testing.ucs_samba import wait_for_drs_replication
 
 
@@ -407,15 +408,21 @@ class UCSTestUDM(object):
     def stop_cli_server(self):
         """ restart UDM CLI server """
         print 'trying to restart UDM CLI server'
+        procs = [
+            proc
+            for proc in psutil.process_iter()
+            if len(proc.cmdline) >= 2 and proc.cmdline[0].startswith('/usr/bin/python') and proc.cmdline[1] == self.PATH_UDM_CLI_SERVER
+        ]
         for signal in (15, 9):
-            try:
-                for proc in psutil.process_iter():
-                    if len(proc.cmdline) >= 2 and proc.cmdline[0].startswith('/usr/bin/python') and proc.cmdline[1] == self.PATH_UDM_CLI_SERVER:
-                        print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline,)
-                        os.kill(proc.pid, signal)
-            except (psutil.NoSuchProcess, IOError, OSError):
-                # process not running anymore
-                print 'process already terminated'
+            for proc in procs:
+                print 'sending signal %s to process %s (%r)' % (signal, proc.pid, proc.cmdline,)
+                try:
+                    os.kill(proc.pid, signal)
+                except (psutil.NoSuchProcess, EnvironmentError):
+                    print 'process already terminated'
+                    procs.remove(proc)
+            if signal == 15:
+                time.sleep(1)
 
     def __enter__(self):
         return self
