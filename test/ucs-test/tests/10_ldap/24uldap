@@ -20,16 +20,14 @@ import ldap
 
 from univention.config_registry import ConfigRegistry
 
+ucr = ConfigRegistry()
+ucr.load()
+
 
 class FakeUcr(object):
 
     def __init__(self, values, defaults=True):
-        if defaults:
-            ucr = ConfigRegistry()
-            ucr.load()
-            self.values = dict(ucr.items())
-        else:
-            self.values = {}
+        self.values = dict(ucr.items()) if defaults else {}
         self.values.update(values)
         self.tmp = None
 
@@ -53,6 +51,7 @@ class TestParentDn(TestCase):
         self.assertIsNone(uldap.parentDn('dc=de', 'dc=de'))
 
     def testOne(self):
+        # Before r70653 Bug #40129 returned None
         self.assertEqual(uldap.parentDn('dc=de'), '')
 
     def testTwo(self):
@@ -111,7 +110,7 @@ class TestMachineConnection(TestCase):
         self.assertIsInstance(access, uldap.access)
 
     def testAddition(self):
-        with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': 'localhost'}):
+        with FakeUcr({'ldap/server/name': '255.255.255.255', 'ldap/server/addition': ucr.get('ldap/server/name')}):
             access = uldap.getMachineConnection(ldap_master=False, reconnect=False)
             self.assertIsInstance(access, uldap.access)
 
