@@ -1,6 +1,7 @@
 ucs-test (6.0.33-83) unstable; urgency=low
 
   * Bug #41580,Bug #40129: Fix uldap.py test on Memberserver
+  * Bug #40129: Add MV-RDN test
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 30 Jun 2016 08:59:42 +0200
 

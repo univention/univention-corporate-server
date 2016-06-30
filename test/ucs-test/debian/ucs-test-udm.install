@@ -1,1 +1,2 @@
 tests/59_udm	usr/share/ucs-test/
+tests/59_udm/ipservice.py	usr/share/pyshared/univention/admin/handlers/tests/
