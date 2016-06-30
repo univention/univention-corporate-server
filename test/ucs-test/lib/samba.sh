@@ -6,7 +6,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 	t0=$(date +%Y%m%d%H%M%S)
 	t=t0
 	test -x /usr/sbin/univention-s4search || return 0
-	sambaSID=$(univention-ldapsearch -xLLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
+	sambaSID=$(univention-ldapsearch -LLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
 	if [ -z "${sambaSID%S-1-4*}" ]; then
 		echo -n "Waiting for S4-Connector and LDAP replication of domain sambaSID for user $username (current: $sambaSID)."
 		while [ -z "${sambaSID%S-1-4*}" ]; do
@@ -15,7 +15,7 @@ wait_for_LDAP_replication_of_domain_sambaSid () {
 			fi
 			sleep 1
 			echo -n "."
-			sambaSID=$(univention-ldapsearch -xLLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
+			sambaSID=$(univention-ldapsearch -LLL uid="$username" sambaSID | sed -n 's/^sambaSID: //p')
 			t=$(date +%Y%m%d%H%M%S)
 		done
 		echo
@@ -94,7 +94,7 @@ force_drs_replication () {
 
 	source_dc="${1:-}"
 	if [ -z "$source_dc" ]; then
-		s4_connector_hosts=$(univention-ldapsearch -x -b "cn=computers,$ldap_base" univentionService="S4 Connector" uid | sed -nr 's/^uid: (.*)\$$/\1/p')
+		s4_connector_hosts=$(univention-ldapsearch -b "cn=computers,$ldap_base" univentionService="S4 Connector" uid | sed -nr 's/^uid: (.*)\$$/\1/p')
 		if [ "$(wc -w <<<"$s4_connector_hosts")" -eq 1 ]; then
 			source_dc="$s4_connector_hosts"
 		else
