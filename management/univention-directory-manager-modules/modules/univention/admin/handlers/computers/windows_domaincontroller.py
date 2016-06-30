@@ -59,16 +59,19 @@ long_description=''
 options={
 	'posix': univention.admin.option(
 			short_description=_('Posix account'),
-			default=1
+			default=1,
+			objectClasses=('posixAccount', 'shadowAccount'),
 		),
 	'kerberos': univention.admin.option(
 			short_description=_('Kerberos principal'),
-			default=1
+			default=1,
+			objectClasses=('krb5Principal', 'krb5KDCEntry'),
 		),
 	'samba': univention.admin.option(
 			short_description=_('Samba account'),
 			editable=1,
-			default=1
+			default=1,
+			objectClasses=('sambaSamAccount',),
 		)
 }
 property_descriptions={
@@ -345,7 +348,7 @@ layout = [
 	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
 		'dnsEntryZoneAlias'
 		] ),
- ]
+]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -414,9 +417,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultDomainControllerGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
-					#self.save()
-
-
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
@@ -440,7 +440,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 			self.alloc.append(('uidNumber',self.uidNum))
 			gidNum = self.get_gid_for_primary_group()
-			ocs.extend(['posixAccount','shadowAccount'])
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))
 
@@ -467,7 +466,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			else:
 				self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum, self.get('sambaRID'))
 				self.alloc.append(('sid',self.machineSid))
-			ocs.append('sambaSamAccount')
 			al.append(('sambaSID', [self.machineSid]))
 			al.append(('sambaAcctFlags', [acctFlags.decode()]))
 			al.append(('displayName', self.info['name']))
@@ -590,16 +588,12 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			else:
 				self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0], self.get('sambaRID'))
 				self.alloc.append(('sid',self.machineSid))
-			ml.insert(0, ('objectClass', '', 'sambaSamAccount'))
 			ml.append(('sambaSID', '', [self.machineSid]))
 			ml.append(('sambaAcctFlags', '', [acctFlags.decode()]))
 			ml.append(('displayName', '', self.info['name']))
 			sambaPwdLastSetValue = str(long(time.time()))
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 		if self.exists() and self.option_toggled('samba') and 'samba' not in self.options:
-			ocs=self.oldattr.get('objectClass', [])
-			if 'sambaSamAccount' in ocs:
-				ml.insert(0, ('objectClass', 'sambaSamAccount', ''))
 			for key in [ 'sambaSID', 'sambaAcctFlags', 'sambaNTPassword', 'sambaLMPassword', 'sambaPwdLastSet', 'displayName' ]:
 				if self.oldattr.get(key, []):
 					ml.insert(0, (key, self.oldattr.get(key, []), ''))
@@ -631,7 +625,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	res=[]
 	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
-		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
+		filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:
 			res+=lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:

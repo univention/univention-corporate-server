@@ -415,7 +415,11 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_open()
 
 		self.modifypassword=0
-
+		if self.exists():
+			userPassword=self.oldattr.get('userPassword',[''])[0]
+			if userPassword:
+				self.info['password']=userPassword
+				self.modifypassword=0
 		if self.exists():
 
 			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
@@ -439,21 +443,13 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				pos = sid.rfind('-')
 				self.info['sambaRID'] = sid[pos+1:]
 
-		if self.exists():
-			userPassword=self.oldattr.get('userPassword',[''])[0]
-			if userPassword:
-				self.info['password']=userPassword
-				self.modifypassword=0
 			self.save()
-
 		else:
 			self.modifypassword=0
 			if 'posix' in self.options:
 				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultMemberserverGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
-					#self.save()
-
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()

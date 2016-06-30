@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-26) unstable; urgency=medium
+
+  * Bug #41580: also use generic option parsing in computers/windows and
+  	computers/windows_domaincontroller
+
+ -- Florian Best <best@univention.de>  Thu, 30 Jun 2016 22:12:49 +0200
+
 univention-directory-manager-modules (11.0.3-25) unstable; urgency=medium
 
   * Bug #40129: more LDAP filter escaping
