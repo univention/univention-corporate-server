@@ -30,21 +30,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from ldap.filter import escape_filter_chars as escapeForLdapFilter
 import re
 import univention.admin.uexceptions
-
-
-def escapeForLdapFilter(txt):
-	"""Escape LDAP filter value.
-	Bug #19976: According to RFC2254 [*()\\\0] must be \\%02x encoded.
-
-	>>> escapeForLdapFilter('key=value')
-	'key=value'
-	>>> escapeForLdapFilter('description=Number (1)')
-	'description=Number \\\\281\\\\29'
-	"""
-	# parenthesis mess up ldap filters - they should be escaped
-	return txt.replace('(', '\(').replace(')', '\)').replace('\\', '\\\\')
 
 
 class conjunction:

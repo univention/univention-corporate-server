@@ -317,7 +317,7 @@ class base(object):
 		temporary_object['name'] = name
 		temporary_object.create()
 
-		return 'ou=%s' % name
+		return 'ou=%s' % ldap.dn.escape_dn_chars(name)
 
 	def _delete_temporary_ou_if_empty(self, temporary_ou):
 
@@ -1313,7 +1313,7 @@ class simpleComputer( simpleLdap ):
 		if not position:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.WARN, 'could not access network object and given position is "None", using LDAP root as position for DHCP entry')
 			position = tmppos.getBase( )
-		results = self.lo.search( base = position, scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter = 'dhcpHWAddress=%s' % ethernet, unique = 0 )
+		results = self.lo.search( base = position, scope = 'domain', attr = [ 'univentionDhcpFixedAddress' ], filter=filter_format('dhcpHWAddress=%s', [ethernet]), unique = 0 )
 
 		if not results:
 			# if the dhcp object doesn't exists, then we create it
@@ -1500,7 +1500,7 @@ class simpleComputer( simpleLdap ):
 			zone_name = zoneDN.split('=')[1].split(',')[0]
 			for dn, attributes in self.lo.search(scope='domain', attr=['pTRRecord'], filter=filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (rdn, zone_name))):
 				if len(attributes['pTRRecord']) == 1:
-					self.lo.delete( 'relativeDomainName=%s,%s' % ( rdn, zoneDN ) )
+					self.lo.delete('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(rdn), zoneDN))
 				else:
 					for dn2, attributes2 in self.lo.search(scope='domain', attr=[ 'zoneName' ], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=0 ):
 						self.lo.modify( dn, [('pTRRecord', '%s.%s.' % (name, attributes2['zoneName'][0]), '')] )
@@ -1580,7 +1580,7 @@ class simpleComputer( simpleLdap ):
 			# check if the object exists
 			results = self.lo.search( base = tmppos.getBase() , scope = 'domain', attr = [ 'dn' ], filter='(&(relativeDomainName=%s)(%s))' % (escape_filter_chars(ipPart), ldap.explode_dn(zoneDn)[0]), unique = 0 )
 			if not results:
-				self.lo.add( 'relativeDomainName=%s,%s' % ( ipPart, zoneDn ), [ \
+				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(ipPart), zoneDn), [ \
 						( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ] ), \
 						( 'univentionObjectType', ['dns/ptr_record']), \
 						( 'zoneName', [ ldap.explode_dn( zoneDn, 1 )[ 0 ] ] ), \
@@ -1598,7 +1598,7 @@ class simpleComputer( simpleLdap ):
 			# check if dns forward object has more than one ip address
 			if not ip:
 				if zoneDn:
-					self.lo.delete( 'relativeDomainName=%s,%s'% ( name, zoneDn ) )
+					self.lo.delete('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn))
 					zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zoneDn )
 					zone.open( )
 					zone.modify( )
@@ -1737,7 +1737,7 @@ class simpleComputer( simpleLdap ):
 			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aAAARecord' ], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique = 0 )
 			if not results:
 				try:
-					self.lo.add( 'relativeDomainName=%s,%s'% ( name, zoneDn ), [\
+					self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn), [\
 										( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ]),\
 										( 'univentionObjectType', ['dns/host_record']),\
 										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
@@ -1764,7 +1764,7 @@ class simpleComputer( simpleLdap ):
 			results = self.lo.search( base = zoneDn, scope = 'domain', attr = [ 'aRecord' ], filter=filter_format('(&(relativeDomainName=%s)(!(cNAMERecord=*)))', (name,)), unique = 0 )
 			if not results:
 				try:
-					self.lo.add( 'relativeDomainName=%s,%s'% ( name, zoneDn ), [\
+					self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(name), zoneDn), [\
 										( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ]),\
 										( 'univentionObjectType', ['dns/host_record']),\
 										( 'zoneName', univention.admin.uldap.explodeDn( zoneDn, 1 )[ 0 ]),\
@@ -1792,7 +1792,7 @@ class simpleComputer( simpleLdap ):
 		if name and dnsForwardZone and dnsAliasZoneContainer and alias:
 			results = self.lo.search( base = dnsAliasZoneContainer, scope = 'domain', attr = [ 'cNAMERecord' ], filter=filter_format('relativeDomainName=%s', (alias,)), unique = 0 )
 			if not results:
-				self.lo.add( 'relativeDomainName=%s,%s'% ( alias, dnsAliasZoneContainer ), [\
+				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(alias), dnsAliasZoneContainer), [\
 									( 'objectClass', [ 'top', 'dNSZone' ]),\
 									( 'zoneName', univention.admin.uldap.explodeDn( dnsAliasZoneContainer, 1 )[ 0 ]),\
 									( 'cNAMERecord', [ "%s.%s." % (name, dnsForwardZone) ]),\
@@ -1812,7 +1812,7 @@ class simpleComputer( simpleLdap ):
 		if name:
 			if alias:
 				if dnsAliasZoneContainer:
-					self.lo.delete( 'relativeDomainName=%s,%s'% ( alias, dnsAliasZoneContainer ) )
+					self.lo.delete('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(alias), dnsAliasZoneContainer))
 					zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, dnsAliasZoneContainer )
 					zone.open( )
 					zone.modify( )
@@ -2359,8 +2359,8 @@ class simpleComputer( simpleLdap ):
 
 		# Since self.dn is not updated yet, self.dn contains still the old DN.
 		# Thats why olddn and newdn get reassebled from scratch.
-		olddn = 'cn=%s,%s' % (oldname, ','.join(univention.admin.uldap.explodeDn( self.dn, 0 )[1:]))
-		newdn = 'cn=%s,%s' % (newname, ','.join(univention.admin.uldap.explodeDn( self.dn, 0 )[1:]))
+		olddn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(oldname), self.lo.parentDn(self.dn))
+		newdn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(newname), self.lo.parentDn(self.dn))
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: olddn=%s' % olddn)
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__update_groups_after_namechange: newdn=%s' % newdn)

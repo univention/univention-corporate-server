@@ -37,6 +37,7 @@ import types
 import copy
 import locale
 import imp
+import ldap
 from ldap.filter import filter_format
 
 import univention.debug as ud
@@ -733,7 +734,7 @@ def defaultPosition(module, superordinate=None):
 		return superordinate.dn
 	start = name(module).split('/')[0]
 	if start in rdns:
-		return 'cn=%s,%s' % (start, base)
+		return 'cn=%s,%s' % (ldap.dn.escape_dn_chars(start), base)
 	return base
 
 def supports(module_name, operation):

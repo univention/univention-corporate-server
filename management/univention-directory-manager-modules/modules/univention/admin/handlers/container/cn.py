@@ -249,7 +249,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('name'):
-			newdn = 'cn=%s,%s' % (self.info['name'], ','.join(ldap.explode_dn(self.dn)[1:]))
+			newdn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(self.info['name']), self.lo.parentDn(self.dn))
 			self.move(newdn)
 
 	def _ldap_post_modify(self):

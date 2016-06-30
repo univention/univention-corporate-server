@@ -1021,7 +1021,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _update_sambaPrimaryGroupSID(self, oldSid, newSid):
 		if hasattr(self, 'update_sambaPrimaryGroupSid') and self.update_sambaPrimaryGroupSid:
-			res = self.lo.search('sambaPrimaryGroupSID=%s' % oldSid, attr=['sambaPrimaryGroupSID'])
+			res = self.lo.search(ldap.filter.filter_format('(sambaPrimaryGroupSID=%s)', [oldSid]), attr=['sambaPrimaryGroupSID'])
 			for dn,attr in res:
 				self.lo.modify(dn, [ ('sambaPrimaryGroupSID', attr.get('sambaPrimaryGroupSID', []), [newSid]) ] )
 			self.update_sambaPrimaryGroupSid = False

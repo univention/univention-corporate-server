@@ -1875,7 +1875,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				univention.admin.allocators.release(self.lo, self.position, 'uid', username)
 				raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % username
 
-			newdn = 'uid=%s%s' % (self['username'],self.dn[self.dn.find(','):])
+			newdn = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.parentDn(self.dn))
 			self._move(newdn)
 			univention.admin.allocators.release(self.lo, self.position, 'uid', self['username'])
 
@@ -2389,14 +2389,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] )
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self.uid)
 
-		f=univention.admin.filter.expression('uniqueMember', self.dn)
-		groupObjects=univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=f)
+		groupObjects=univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember', [self.dn]))
 		if groupObjects:
 			uid = univention.admin.uldap.explodeDn(self.dn, 1)[0]
 			for groupObject in groupObjects:
 				groupObject.fast_member_remove( [ self.dn ], [ uid ], ignore_license=1 )
 
-		admin_settings_dn='uid=%s,cn=admin-settings,cn=univention,%s' % (self['username'], self.lo.base)
+		admin_settings_dn='uid=%s,cn=admin-settings,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
 		# delete admin-settings object of user if it exists
 		try:
 			self.lo.delete(admin_settings_dn)
@@ -2405,7 +2404,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 	def _move(self, newdn, modify_childs = True, ignore_license = False):
 		olddn = self.dn
-		tmpdn = 'cn=%s-subtree,cn=temporary,cn=univention,%s' % (self['username'], self.lo.base)
+		tmpdn = 'cn=%s-subtree,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(self['username']), self.lo.base)
 		al = [('objectClass', ['top', 'organizationalRole']), ('cn', ['%s-subtree' % self['username']])]
 		subelements = self.lo.search(base=self.dn, scope='one', attr=['objectClass']) # FIXME: identify may fail, but users will raise decode-exception
 		if subelements:

@@ -532,8 +532,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	def _ldap_post_remove(self):
 		if 'posix' in self.options:
 			univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
-		f=univention.admin.filter.expression('uniqueMember', self.dn)
-		groupObjects=univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=f)
+		groupObjects=univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember', [self.dn]))
 		if groupObjects:
 			for i in range(0, len(groupObjects)):
 				groupObjects[i].open()

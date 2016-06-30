@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import ldap
 from ldap.filter import filter_format
 
 import univention.debug
@@ -95,7 +96,7 @@ def requestGroupSid(lo, position, gid_s, generateDomainLocalSid = False):
 def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start allocation for type = %r' % atype)
-	startID = lo.getAttr('cn=%s,cn=temporary,cn=univention,%s' % (atype, position.getBase()), 'univentionLastUsedValue')
+	startID = lo.getAttr('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(atype), position.getBase()), 'univentionLastUsedValue')
 
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE: Start ID = %r' % startID)
 
@@ -178,7 +179,7 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 	else:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LOCK univention.admin.locking.lock scope = %s' % scope)
 		univention.admin.locking.lock(lo, position, type, value, scope=scope)
-		if not lo.searchDn(base=searchBase, filter='%s=%s' % (attr, value)):
+		if not lo.searchDn(base=searchBase, filter=filter_format('%s=%s', (attr, value))):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s'% value)
 			return value
 	
@@ -193,7 +194,7 @@ def request(lo, position, type, value=None):
 
 def confirm(lo, position, type, value):
 	if type in ( 'uidNumber', 'gidNumber' ):
-		startID = lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (type,position.getBase()),[('univentionLastUsedValue','1', value)])
+		startID = lo.modify('cn=%s,cn=temporary,cn=univention,%s' % (ldap.dn.escape_dn_chars(type), position.getBase()),[('univentionLastUsedValue', '1', value)])
 	univention.admin.locking.unlock(lo, position, type, value, _type2scope[type])
 
 
