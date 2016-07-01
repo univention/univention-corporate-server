@@ -1,3 +1,9 @@
+ucs-test (6.0.34-85) unstable; urgency=medium
+
+  * Bug #37102: fixup last commit
+
+ -- Florian Best <best@univention.de>  Fri, 01 Jul 2016 09:40:34 +0200
+
 ucs-test (6.0.33-84) unstable; urgency=medium
 
   * Bug #37102: sleep after killing UDM cli-server to make sure cleanup can be
