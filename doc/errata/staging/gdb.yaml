@@ -1,0 +1,11 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: gdb
+fix: 7.4.1-3.26.201607011222
+desc: |
+ This update addresses the following issue:
+ * The newer version 7.4.1 of debugger 'gdb' was built to support debugging
+   "Position Independent Executables" (PIE).
+bug: [27785]
