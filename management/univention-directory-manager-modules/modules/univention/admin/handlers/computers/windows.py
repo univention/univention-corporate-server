@@ -59,19 +59,16 @@ long_description=''
 options={
 	'posix': univention.admin.option(
 			short_description=_('Posix account'),
-			default=1,
-			objectClasses=('posixAccount', 'shadowAccount'),
+			default=1
 		),
 	'kerberos': univention.admin.option(
 			short_description=_('Kerberos principal'),
-			default=1,
-			objectClasses=('krb5Principal', 'krb5KDCEntry'),
+			default=1
 		),
 	'samba': univention.admin.option(
 			short_description=_('Samba account'),
 			editable=1,
-			default=1,
-			objectClasses=('sambaSamAccount',),
+			default=1
 		)
 }
 property_descriptions={
@@ -363,7 +360,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
+		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes )
 		nagios.Support.__init__(self)
 
 	def open(self):
@@ -401,12 +398,15 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self.info['sambaRID'] = sid[pos+1:]
 
 			self.save()
+
 		else:
 			self.modifypassword=0
 			if 'posix' in self.options:
 				res=univention.admin.config.getDefaultValue(self.lo, 'computerGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
+					#self.save()
+
 
 
 	def _ldap_pre_create(self):
@@ -423,6 +423,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			realm=domain.getKerberosRealm()
 
 			if realm:
+				ocs.extend(['krb5Principal', 'krb5KDCEntry'])
 				al.append(('krb5MaxLife', '86400'))
 				al.append(('krb5MaxRenew', '604800'))
 				al.append(('krb5KDCFlags', '126'))
@@ -435,6 +436,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
 			self.alloc.append(('uidNumber',self.uidNum))
 			gidNum = self.get_gid_for_primary_group()
+			ocs.extend(['posixAccount','shadowAccount'])
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))
 
@@ -461,11 +463,13 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			else:
 				self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum, self.get('sambaRID'))
 				self.alloc.append(('sid',self.machineSid))
+			ocs.append('sambaSamAccount')
 			al.append(('sambaSID', [self.machineSid]))
 			al.append(('sambaAcctFlags', [acctFlags.decode()]))
 			al.append(('displayName', self.info['name']))
 
 		al.insert(0, ('objectClass', ocs))
+		# new since UCS 3.0, old Windows clients don't have this attribute
 		al.append(('univentionServerRole', '', 'windows_client'))
 		return al
 
@@ -587,12 +591,16 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			else:
 				self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0], self.get('sambaRID'))
 				self.alloc.append(('sid',self.machineSid))
+			ml.insert(0, ('objectClass', '', 'sambaSamAccount'))
 			ml.append(('sambaSID', '', [self.machineSid]))
 			ml.append(('sambaAcctFlags', '', [acctFlags.decode()]))
 			ml.append(('displayName', '', self.info['name']))
 			sambaPwdLastSetValue = str(long(time.time()))
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 		if self.exists() and self.option_toggled('samba') and 'samba' not in self.options:
+			ocs=self.oldattr.get('objectClass', [])
+			if 'sambaSamAccount' in ocs:
+				ml.insert(0, ('objectClass', 'sambaSamAccount', ''))
 			for key in [ 'sambaSID', 'sambaAcctFlags', 'sambaNTPassword', 'sambaLMPassword', 'sambaPwdLastSet', 'displayName' ]:
 				if self.oldattr.get(key, []):
 					ml.insert(0, (key, self.oldattr.get(key, []), ''))
@@ -624,7 +632,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	res=[]
 	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
-		filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
+		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:
 			res+=lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:

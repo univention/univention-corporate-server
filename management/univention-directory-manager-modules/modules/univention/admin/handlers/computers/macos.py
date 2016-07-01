@@ -341,12 +341,12 @@ mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToStr
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
 
-
+# WARNING: do not change class order if there are still super() calls
 class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
+		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes )
 		nagios.Support.__init__(self)
 
 	def open(self):
@@ -359,6 +359,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if userPassword:
 				self.info['password']=userPassword
 				self.modifypassword=0
+
 		if self.exists():
 
 			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
@@ -383,12 +384,16 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self.info['sambaRID'] = sid[pos+1:]
 
 			self.save()
+
 		else:
 			self.modifypassword=0
 			if 'posix' in self.options:
 				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultClientGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
+					#self.save()
+
+
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
@@ -601,7 +606,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	res=[]
 	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
 	if str(filter_s).find('(dnsAlias=') != -1:
-		filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
+		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:
 			res+=lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:

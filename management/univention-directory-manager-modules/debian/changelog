@@ -1,9 +1,8 @@
-univention-directory-manager-modules (11.0.3-26) unstable; urgency=medium
+univention-directory-manager-modules (11.0.3-27) unstable; urgency=medium
 
-  * Bug #41580: also use generic option parsing in computers/windows and
-  	computers/windows_domaincontroller
+  * Bug #41580: revert svn r70755
 
- -- Florian Best <best@univention.de>  Thu, 30 Jun 2016 22:12:49 +0200
+ -- Florian Best <best@univention.de>  Fri, 01 Jul 2016 09:50:47 +0200
 
 univention-directory-manager-modules (11.0.3-25) unstable; urgency=medium
 

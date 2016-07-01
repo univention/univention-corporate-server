@@ -379,7 +379,7 @@ layout = [
 	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
 		'dnsEntryZoneAlias'
 		] ),
-]
+ ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
@@ -419,6 +419,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if userPassword:
 				self.info['password']=userPassword
 				self.modifypassword=0
+
 		if self.exists():
 
 			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
@@ -443,12 +444,16 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				self.info['sambaRID'] = sid[pos+1:]
 
 			self.save()
+
 		else:
 			self.modifypassword=0
 			if 'posix' in self.options:
 				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultDomainControllerMasterGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
+					#self.save()
+
+
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
