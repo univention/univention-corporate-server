@@ -2389,7 +2389,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			univention.admin.allocators.release(self.lo, self.position, 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] )
 		univention.admin.allocators.release(self.lo, self.position, 'uid', self.uid)
 
-		groupObjects=univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember', [self.dn]))
+		groupObjects=univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
 		if groupObjects:
 			uid = univention.admin.uldap.explodeDn(self.dn, 1)[0]
 			for groupObject in groupObjects:
