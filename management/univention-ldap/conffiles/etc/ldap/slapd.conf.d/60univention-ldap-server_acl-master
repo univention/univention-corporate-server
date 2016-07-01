@@ -16,6 +16,9 @@ print '    uid=([^,]*),cn=(gssapi|saml),cn=auth'
 print '    ldap:///%s??sub?uid=$1' % (ldap_base,)
 print
 
+print 'add_content_acl on'
+print
+
 print 'access to attrs=userPassword'
 print '    by anonymous auth'
 print '    by * none break'

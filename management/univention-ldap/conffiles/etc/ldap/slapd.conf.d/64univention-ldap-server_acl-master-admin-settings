@@ -19,7 +19,12 @@ if configRegistry['ldap/server/type'] == "slave":
 print '\tby * none'
 
 print '''
-access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=entry,uid,univentionAdminListDNs,univentionAdminListWizards,univentionAdminListWebModules,univentionAdminBaseDN,univentionAdminMayOverrideSettings,univentionAdminShowSelf,univentionAdminSelfAttributes,univentionPolicyObject,univentionDnsObject,univentionDhcpObject,univentionUsersObject,univentionGroupsObject,univentionComputersObject,univentionNetworksObject,univentionSharesObject,univentionPrintersObject,univentionAdminListAttributes,univentionAdminListBrowseAttributes
+access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=objectClass
+	by dn.regex="^uid=$1,.*%(base)s$$" none''' % {'base': ldap_base}
+print '\tby * +0 break'
+
+print '''
+access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=entry,@univentionAdminUserSettings
 	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access}
 if configRegistry['ldap/server/type'] == "slave":
 	print '\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access}
