@@ -1,0 +1,25 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: bind9
+fix: 1:9.8.4.dfsg.P1-6+nmu2.120.201607011019
+desc: |
+ This update addresses the following issues:
+ * incorrect validation of DNSSEC-signed records in the Bind DNS server could
+   result in denial of service (CVE-2015-5722)
+ * Responses with a malformed class attribute can trigger an assertion failure
+   in db.c (CVE-2015-8000)
+ * Denial of service due to INSIST failure in apl_42.c triggered by specific
+   APL RR data (CVE-2015-8704)
+ * Denial of service due to maliciously crafted rdnc command (CVE-2016-1285)
+ * Denial of service (crash) due to DNAME parsing error (CVE-2016-1286)
+ * Debug symbols are now generated and properly put into the package
+   'bind9-dbg'.
+bug: [39544, 29977]
+cve:
+  - CVE-2015-5722
+  - CVE-2015-8000
+  - CVE-2015-8704
+  - CVE-2016-1285
+  - CVE-2016-1286
