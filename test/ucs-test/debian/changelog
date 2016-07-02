@@ -1,5 +1,11 @@
 ucs-test (6.0.34-86) unstable; urgency=medium
 
+  * Bug #41180: add missing executable flag
+
+ -- Florian Best <best@univention.de>  Sat, 02 Jul 2016 08:43:38 +0200
+
+ucs-test (6.0.34-86) unstable; urgency=medium
+
   * Bug #37102: fixup last commit
 
  -- Florian Best <best@univention.de>  Sat, 02 Jul 2016 08:19:48 +0200
