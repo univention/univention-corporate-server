@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (6.0.1-2) unstable; urgency=medium
+
+  * Bug #41723: restrict access to UVMM object classes for memberservers and domaincontrollers
+
+ -- Florian Best <best@univention.de>  Mon, 04 Jul 2016 19:39:56 +0200
+
 univention-virtual-machine-manager-schema (6.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
