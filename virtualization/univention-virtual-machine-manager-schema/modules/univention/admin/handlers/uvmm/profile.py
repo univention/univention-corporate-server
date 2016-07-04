@@ -3,7 +3,7 @@
 # UCS Virtual Machine Manager
 #  UDM Virtual Machine Manager Profiles
 #
-# Copyright 2010-2014 Univention GmbH
+# Copyright 2010-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
