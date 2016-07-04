@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-appcenter
+fix: 5.0.21-14.182.201607041949
+desc: |
+ This update addresses the following issue(s):
+ * Access to the object class "univentionApp" is now more restrictive.
+bug: [41724]
