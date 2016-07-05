@@ -39,6 +39,7 @@ define([
 	"dojo/on",
 	"dojo/dom",
 	"dojo/query",
+	"dojo/cookie",
 	"dojo/dom-attr",
 	"dojo/dom-class",
 	"dojox/html/styles",
@@ -54,7 +55,7 @@ define([
 	"umc/i18n!",
 	"dojo/domReady!",
 	"dojo/NodeList-dom"
-], function(declare, lang, array, win, aspect, when, has, on, dom, query, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, DialogUnderlay, tools, Text, StandbyMixin, _) {
+], function(declare, lang, array, win, aspect, when, has, on, dom, query, cookie, attr, domClass, styles, fx, baseFx, base64, Deferred, Dialog, DialogUnderlay, tools, Text, StandbyMixin, _) {
 
 	_('Username');
 	_('Password');
@@ -215,7 +216,7 @@ define([
 				var form = dom.byId(name);
 				on(form, 'submit', lang.hitch(this, function(evt) {
 					evt.preventDefault();
-					if (!navigator.cookieEnabled) {
+					if (!this._cookiesEnabled()) {
 						require(['umc/dialog'], lang.hitch(this, function(umcDialog) {
 							umcDialog.alert(this.noCookieMsg.msg, this.noCookieMsg.title);
 						}));
@@ -361,6 +362,22 @@ define([
 			Dialog._DialogLevelManager.hide(this);
 		},
 
+		_cookiesEnabled: function() {
+			if (!cookie.isSupported()) {
+				return false;
+			}
+			if (!has('ie')) {
+				return true;
+			}
+			var cookieTestString = 'cookiesEnabled';
+			cookie('_umcCookieCheck', cookieTestString, {expires: 1});
+			if (cookie('_umcCookieCheck') !== cookieTestString) {
+				return false;
+			}
+			cookie('_umcCookieCheck', cookieTestString, {expires: -1});
+			return true;
+		},
+
 		standby: function(standby) {
 			domClass.toggle(dom.byId('umcLoginDialog'), 'umcLoginLoading', standby);
 			if (standby && this._text.get('content')) {
@@ -425,7 +442,7 @@ define([
 				msg = _('Your browser is outdated and should be updated. You may continue to use Univention Management Console but you may experience performance issues and other problems.') + ((msg === '') ? msg : '<br>' + msg);
 			}
 
-			if (!navigator.cookieEnabled) {
+			if (!this._cookiesEnabled()) {
 				title = this.noCookieMsg.title;
 				msg = this.noCookieMsg.msg;
 			}
