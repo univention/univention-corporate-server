@@ -1,105 +1,93 @@
 #!/usr/share/ucs-test/runner python2.7
 ## desc: Test hijacking uidNumber=0
 ## roles-not:
-##  - memberserver
 ##  - basesystem
 ## packages:
 ##  - python-univention-lib
 ##  - python-ldap
 ## exposure: dangerous
 
-from univention.testing.utils import fail
-from univention.testing.udm import UCSTestUDM
+from univention.testing import utils
 import univention.testing.strings as uts
-from univention.config_registry import ConfigRegistry
 import univention.uldap
 import ldap
-import sys
 
-ucr = ConfigRegistry()
-ucr.load()
+modlists = [[
+	('objectClass', '', 'posixAccount'),
+	('uidNumber', '', '0'),
+	('gidNumber', '', '0'),
+	('userPassword', '', '{crypt}$6$H.05VD/DuPnyIoNC$yIJwYBZNWU4fkCV8SE0qiP7yDB3IQWnFPR08Ui.MKcHQBZvy7OImU2avb22GTYGlzBg4FjttMYCUz8FWSp0Jl/'),
+	('homeDirectory', '', '/foo/')
+],[  # when modifying a group (which already has a gidNumber)
+	('objectClass', '', 'posixAccount'),
+	('uidNumber', '', '0'),
+	('homeDirectory', '', '/foo/')
+]]
+al = [
+	('cn', '', 'hacker'),
+	('objectClass', '', 'organizationalRole')
+]
+add_lists = [ml + al for ml in modlists]
 
-add_uids=(uts.random_username(), uts.random_username(),)
-add_testcases = (
-	(	## case 0
-		"uid=%s,cn=idmap,cn=univention,%s" % (add_uids[0], ucr.get('ldap/base'),),
-		(
-			("uid", add_uids[0]),
-			("objectClass", [
-				"top",
-				"person",
-				"posixAccount",
-				]
-			),
-			("sn", "foo"),
-			("cn", "foo"),
-			("description", "foo"),
-			("homeDirectory", "foo"),
-			("uidNumber", "0"),
-			("gidNumber", "5002"),
-		)
-	),
-	(	## case 1
-		"uid=%s,cn=computers,%s" % (add_uids[1], ucr.get('ldap/base'),),
-		(
-			("uid", add_uids[1]),
-			("objectClass", [
-				"top",
-				"person",
-				"posixAccount",
-				]
-			),
-			("sn", "foo"),
-			("cn", "foo"),
-			("description", "foo"),
-			("homeDirectory", "foo"),
-			("uidNumber", "0"),
-			("gidNumber", "5002"),
-		)
-	),
-)
 
-modify_uids=(uts.random_username(),)
-modify_testcases = (
-	(	## case 0
-		"cn=Windows Hosts,cn=groups,%s" % ucr.get('ldap/base'),
-		(
-			("objectClass", "", "posixAccount"),
-			("uid", "", modify_uids[0]),
-			("uidNumber", "", "0"),
-			("homeDirectory", "", "foo"),
-		)
-	),
-)
+def add_testcases():
+	lo = utils.get_ldap_connection()  # TODO: use connection to master because this has only partly replicated objects
+	dns = set(lo.searchDn('univentionObjectType=container/cn'))  # cn=* ?
+	for dn in dns:
+		if 'cn=users' in ldap.explode_dn(dn):
+			continue
+		uid = uts.random_username()
+		for al in add_lists:
+			yield ('uid=%s,%s' % (uid, dn), al + [('uid', '', uid), ('cn', '', uid)])
+			yield ('cn=%s,%s' % (uid, dn), al + [('uid', '', uid), ('cn', '', uid)])
+
+
+def modify_testcases():
+	lo = utils.get_ldap_connection()  # TODO: use connection to master because this has only partly replicated objects
+	dns = set(lo.searchDn('cn=*'))
+	for dn in dns:
+		if 'cn=users' in ldap.explode_dn(dn):
+			continue
+		uid = uts.random_username()
+		for ml in modlists:
+			yield (dn, ml + [('uid', '', uid)])
+
+
+def main():
+	# TODO: prior to starting this test we should add a lot objects especially UCS@school related objects
+	failures = set()
+	for lo in [univention.uldap.getMachineConnection(ldap_master=True)]:
+		print 'Testing for %r' % (lo.binddn,)
+		
+		for dn, al in add_testcases():
+			try:
+				lo.add(dn, al)
+			except ldap.INSUFFICIENT_ACCESS:
+				print "OK: ldapadd of %s denied" % (dn,)
+			except (ldap.OBJECT_CLASS_VIOLATION, ldap.CONSTRAINT_VIOLATION, ldap.TYPE_OR_VALUE_EXISTS, ldap.NO_SUCH_OBJECT) as exc:
+				print 'SKIP: %s: %s' % (dn, exc)
+			else:
+				print "FAIL: ldapadd of %s (al=%r) successful" % (dn, al)
+				failures.add(dn)
+				lo.delete(dn)
+
+		for dn, ml in modify_testcases():
+			try:
+				lo.modify(dn, ml)
+			except ldap.INSUFFICIENT_ACCESS:
+				print "OK: ldapmodify of %s denied" % (dn,)
+			except (ldap.OBJECT_CLASS_VIOLATION, ldap.CONSTRAINT_VIOLATION, ldap.TYPE_OR_VALUE_EXISTS, ldap.NO_SUCH_OBJECT) as exc:
+				print 'SKIP: %s: %s' % (dn, exc)
+			else:
+				print "FAIL: ldapmodify of %s (ml=%r) successful" % (dn, ml)
+				failures.add(dn)
+				rml = [ (attr, new, old) for (attr, old, new) in ml ]
+				lo.modify(dn, rml)
+		print ''
+
+	assert not failures, 'uidNumber=0 hijacking by succeded for the following DNs: %s' % ('\n'.join(failures),)
+
 
 if __name__ == "__main__":
-	udm = UCSTestUDM()
-
-	with open('/etc/machine.secret') as pwdfile:
-		lo = univention.uldap.access( host=ucr.get('ldap/master'), port=int(ucr.get('ldap/master/port', '7389')), base=ucr.get('ldap/base'), binddn=ucr.get('ldap/hostdn'), bindpw=pwdfile.read())
-
-	
-	for dn, al in add_testcases:
-		try:
-			lo.add(dn, al)
-		except ldap.INSUFFICIENT_ACCESS:
-			print "OK: ldapadd of %s denied" % (dn,)
-			pass
-		else:
-			fail('uidNumber=0 hijacking by ldapadd succeded: %s' % (dn,))
-			lo.delete(dn)
-			sys.exit(100)
-
-	for dn, ml in modify_testcases:
-		try:
-			lo.modify(dn, ml)
-		except ldap.INSUFFICIENT_ACCESS:
-			print "OK: ldapmodify of %s denied" % (dn,)
-			pass
-		else:
-			fail('uidNumber=0 hijacking by ldapmodify succeded: %s' % (dn,))
-			rml = [ (attr, new, old) for (attr, old, new) in ml ]
-			lo.modify(dn, rml)
-			sys.exit(100)
-
+	main()
 # vim: set ft=python :
