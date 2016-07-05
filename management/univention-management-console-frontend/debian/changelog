@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-47) unstable; urgency=medium
+
+  * Bug #28665: Check for existing cookie instead of IE 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 05 Jul 2016 14:18:29 +0200
+
 univention-management-console-frontend (5.0.63-46) unstable; urgency=medium
 
   * Bug #28665: IE did not show the cookies disabled warning

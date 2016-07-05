@@ -366,7 +366,7 @@ define([
 			if (!cookie.isSupported()) {
 				return false;
 			}
-			if (!has('ie')) {
+			if (cookie('UMCUsername')) {
 				return true;
 			}
 			var cookieTestString = 'cookiesEnabled';
