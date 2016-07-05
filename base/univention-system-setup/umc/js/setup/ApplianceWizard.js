@@ -1366,12 +1366,43 @@ define([
 
 		_initStatusCheck: function() {
 			// timer to check the join status via existence of status file
+			var licenseUnknown = true;
+			var fakeUuid = '00000000-0000-0000-0000-000000000000';
+			var isFakeUuid = tools.status('uuidSystem') === fakeUuid;
+			var isReadyForPiwik = function() {
+				var deferred = new Deferred();
+				var piwikAlreadyLoaded = !licenseUnknown && !isFakeUuid;
+				if (piwikAlreadyLoaded) {
+					return deferred.resolve(false);
+				}
+				return tools.umcpCommand('get/ucr', ['license/base', 'uuid/system'], false).then(lang.hitch(this, function(data) {
+					ucr = data.result;
+					var isReady = ucr['license/base'] && ucr['uuid/system'] !== fakeUuid;
+					if (!isReady) {
+						return false;
+					}
+					tools.status('hasFreeLicense', tools.isFreeLicense(ucr['license/base']));
+					tools.status('uuidSystem', ucr['uuid/system']);
+					licenseUnknown = false;
+					isFakeUuid = false;
+					if (!tools.status('hasFreeLicense')) {
+						return false;
+					}
+					return true;
+				}));
+			};
 			this._checkStatusFileTimer = new timing.Timer(1000 * 10);
 			this._checkStatusFileTimer.onStart = lang.hitch(this, function() {
 				this.set('statusCheckResult', 'unknown');
 				this._checksTimedOut = 0;
 			});
 			this._checkStatusFileTimer.onTick = lang.hitch(this, function() {
+				isReadyForPiwik().then(function(isReady) {
+					if (isReady) {
+						tools.status('piwikDisabled', false);
+						topic.publish('/umc/piwik/load', true);
+					}
+				});
 				var _statusFileURI = '/ucs_setup_process_status.json';
 				request(_statusFileURI, {
 					timeout: 1000,
@@ -2152,6 +2183,8 @@ define([
 			this._progressBar.setInfo(_('Initialize the configuration process ...'), null, Infinity);
 			this.standby(true, this._progressBar);
 
+			topic.publish('/umc/actions', this.moduleID, 'configure', 'start');
+
 			// function to save data
 			var _join = lang.hitch(this, function(values, username, password) {
 				// make sure that no re-login is tried/required due to the server time
@@ -2263,6 +2296,7 @@ define([
 				this.watch('statusCheckResult', lang.hitch(this, function(attr, oldVal, newVal) {
 					if (newVal == 'joined' || newVal == 'error') {
 						deferred.resolve();
+						topic.publish('/umc/actions', this.moduleID, 'configure', newVal);
 					}
 					else if (newVal != 'unknown' && newVal != 'setup-scripts') {
 						// setup process passed setup-scripts -> update the progress bar
