@@ -267,7 +267,7 @@ objectclass ( uvmmCloudTypeObjectClass:1 NAME 'univentionVirtualMachineCloudType
 	MUST ( cn )
 	)
 
-ditcontentrule ( uvmmCloudConnectionObjectClass:1  NAME 'univentionVirtualMachineCloudConnection' AUX univentionObject univentionVirtualMachineHostOC )
+ditcontentrule ( uvmmCloudConnectionObjectClass:1  NAME 'univentionVirtualMachineCloudConnection' AUX ( univentionObject $ univentionVirtualMachineHostOC ) )
 ditcontentrule ( uvmmObjectClass:10 NAME 'univentionVirtualMachine' AUX univentionObject )
 ditcontentrule ( uvmmProfileObjectClass:1 NAME 'univentionVirtualMachineProfile' AUX univentionObject )
 ditcontentrule ( uvmmCloudTypeObjectClass:1 NAME 'univentionVirtualMachineCloudType' AUX univentionObject )

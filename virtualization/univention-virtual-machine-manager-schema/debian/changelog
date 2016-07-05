@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-schema (6.0.1-3) unstable; urgency=medium
+
+  * Bug #41723: fix syntax error in LDAP schema
+
+ -- Florian Best <best@univention.de>  Tue, 05 Jul 2016 10:23:22 +0200
+
 univention-virtual-machine-manager-schema (6.0.1-2) unstable; urgency=medium
 
   * Bug #41723: restrict access to UVMM object classes for memberservers and domaincontrollers
