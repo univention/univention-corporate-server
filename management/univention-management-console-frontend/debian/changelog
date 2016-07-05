@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-45) unstable; urgency=medium
+
+  * Bug #40551: Changes to be able to enable piwik during the system setup
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 04 Jul 2016 18:35:53 +0200
+
 univention-management-console-frontend (5.0.63-44) unstable; urgency=medium
 
   * Bug #28665: Show a warning on the login page if cookies are disabled

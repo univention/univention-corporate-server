@@ -562,7 +562,6 @@ define([
 				},
 
 				error: function(info) {
-					topic.publish('/umc/actions', 'error', info.status || 'unknown');
 
 					this.displayError(info);
 
@@ -575,6 +574,7 @@ define([
 					if (!this.displayErrors) {
 						return;
 					}
+					topic.publish('/umc/actions', 'error', info.status || 'unknown');
 					var status = info.status;
 					var message = info.message;
 					var statusMessage = tools._statusMessages[status];
@@ -1346,6 +1346,10 @@ define([
 		isTrue: function(/*mixed*/ input) {
 			//('yes', 'true', '1', 'enable', 'enabled', 'on')
 			return !this.isFalse(input);
+		},
+
+		isFreeLicense: function(/*string*/ licenseValue) {
+			return licenseValue == 'Free for personal use edition' || licenseValue == 'UCS Core Edition';
 		},
 
 		explodeDn: function(dn, noTypes) {

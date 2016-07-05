@@ -100,10 +100,6 @@ define([
 	var _favoritesDisabled = false;
 	var _initialHash = decodeURIComponent(hash());
 
-	var _hasFreeLicense = function() {
-		return _ucr['license/base'] == 'Free for personal use edition' || _ucr['license/base'] == 'UCS Core Edition';
-	};
-
 	// helper function for sorting, sort indeces with priority < 0 to be at the end
 	var _cmpPriority = function(x, y) {
 		if (y.priority == x.priority) {
@@ -555,7 +551,7 @@ define([
 			var isUCRVariableEmpty = !Boolean(_ucr['umc/web/startupdialog']);
 			var showStartupDialog = tools.isTrue(_ucr['umc/web/startupdialog']);
 			var isDCMaster = _ucr['server/role'] == 'domaincontroller_master';
-			if (!isDCMaster || !((isUCRVariableEmpty && _hasFreeLicense() && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
+			if (!isDCMaster || !((isUCRVariableEmpty && tools.status('hasFreeLicense') && isUserAdmin) || (showStartupDialog && isUserAdmin))) {
 				return;
 			}
 
@@ -1382,7 +1378,7 @@ define([
 
 		_insertPiwikMenuItem: function() {
 			var isUserAdmin = tools.status('username').toLowerCase() == 'administrator';
-			if (!(_hasFreeLicense() && isUserAdmin)) {
+			if (!(tools.status('hasFreeLicense') && isUserAdmin)) {
 				return;
 			}
 			this.addMenuEntry(new MenuItem({
@@ -1740,6 +1736,7 @@ define([
 				'umc/web/piwik',
 				'license/base',
 				'uuid/license',
+				'uuid/system',
 				'version/releasename',
 				'version/erratalevel',
 				'version/patchlevel',
@@ -1747,6 +1744,8 @@ define([
 			]).then(lang.hitch(this, function(res) {
 				// save the ucr variables in a local variable
 				lang.mixin(_ucr, res);
+				tools.status('hasFreeLicense', tools.isFreeLicense(_ucr['license/base']));
+				tools.status('uuidSystem', _ucr['uuid/system']);
 				this._loadPiwik();
 				this._saveVersionStatus();
 				tools.status('umcWebSsoNewwindow', _ucr['umc/web/sso/newwindow']);
@@ -1754,16 +1753,14 @@ define([
 		},
 
 		_loadPiwik: function() {
+			var fakeUuid = '00000000-0000-0000-0000-000000000000';
+			var isRealUuid = tools.status('uuidSystem') !== fakeUuid;
 			var piwikUcrv = _ucr['umc/web/piwik'];
 			var piwikUcrvIsSet = typeof piwikUcrv == 'string' && piwikUcrv !== '';
-			tools.status('hasFreeLicense', _hasFreeLicense());
-			if (tools.isTrue(_ucr['umc/web/piwik']) || (!piwikUcrvIsSet && _hasFreeLicense())) {
-				// use piwik for user action feedback if it is not switched off explicitely
-				tools.status('piwikDisabled', false);
-				require(["umc/piwik"], function() {});
-			} else {
-				tools.status('piwikDisabled', true);
-			}
+			var piwikAllowed = tools.isTrue(piwikUcrv) || (!piwikUcrvIsSet && tools.status('hasFreeLicense'));
+			// use piwik for user action feedback if it is not switched off explicitely
+			tools.status('piwikDisabled', !(piwikAllowed && isRealUuid));
+			require(["umc/piwik"], function() {});
 		},
 
 		_saveVersionStatus: function() {
@@ -2448,11 +2445,6 @@ define([
 				this._moduleStore.addFavoriteModule(module.id, module.flavor);
 				topic.publish('/umc/actions', 'overview', 'favorites', module.id, module.flavor, 'add');
 			}
-		},
-
-		_disablePiwik: function(disable) {
-			// FIXME: where is it used
-			topic.publish('/umc/piwik/disable', disable);
 		},
 
 		addSubMenu: function(item) {
