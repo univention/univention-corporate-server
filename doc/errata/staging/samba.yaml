@@ -11,7 +11,5 @@ desc: |
  * The GetGroupsForUser SAMR RPC call has been adjusted to make use of the
    memberOf attribute
  * Two additional regression patches from the badlock update have been merged
- * Client side SMB2 signing downgrade (CVE-2016-2119)
+ * TODO: Entry for Bug 41729
 bug: [41551, 41644, 41729]
-cve:
- - CVE-2016-2119
