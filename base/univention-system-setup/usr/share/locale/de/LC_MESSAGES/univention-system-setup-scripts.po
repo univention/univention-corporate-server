@@ -59,6 +59,10 @@ msgstr "Einrichten des Root-Passworts"
 msgid "Configuring init-scripts"
 msgstr "Einrichten der Init-Skripte"
 
+#: usr/lib/univention-system-setup/scripts/10_basis/50uuid:54
+msgid "Generating UUID"
+msgstr "UUID generieren"
+
 #: usr/lib/univention-system-setup/scripts/15_keyboard/10keyboard:35
 msgid "Setting keyboard layout"
 msgstr "Einrichten des Tastaturlayouts"

@@ -96,7 +96,7 @@ ucr set \
 	apache2/ssl/ca="$ca"
 
 # Re-create the system uuid
-ucr set uuid/system="$(cat /proc/sys/kernel/random/uuid)"
+/usr/lib/univention-system-setup/scripts/10_basis/50uuid --force-recreate
 
 # Re-create sources.list files before installing the role packages
 #  https://forge.univention.org/bugzilla/show_bug.cgi?id=28089
