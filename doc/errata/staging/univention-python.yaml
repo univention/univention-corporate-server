@@ -6,6 +6,6 @@ src: univention-python
 fix: 9.0.1-7.165.201606291851
 desc: |
  This update addresses the following issues:
- * Use "python-ldap" utilities for splitting of DN's.
+ * Use "python-ldap" utilities for splitting DN's.
  * Handling of DN's has been improved.
 bug: [40129, 40041]
