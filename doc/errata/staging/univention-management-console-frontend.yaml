@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-management-console-frontend
-fix: 5.0.63-46.1238.201607050936
+fix: 5.0.63-47.1239.201607051419
 desc: |
  This update addresses the following issue:
  * Show a warning message if browser cookies are disabled and ask the user to
