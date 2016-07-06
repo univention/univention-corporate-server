@@ -43,7 +43,7 @@ print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( gr
 if configRegistry['ldap/server/type'] == "slave":
 	print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
 print '    by self %s' % ( usr )
-print '    by * read break'
+print '    by * +0 break'
 print ''
 
 print 'access to dn="uid=join-backup,cn=users,%s"' % ( ldap_base )
@@ -51,7 +51,7 @@ print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( gr
 if configRegistry['ldap/server/type'] == "slave":
 	print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
 print '    by self %s' % ( usr )
-print '    by * read break'
+print '    by * +0 break'
 print ''
 
 print 'access to dn="uid=join-slave,cn=users,%s"' % ( ldap_base )
@@ -59,14 +59,14 @@ print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( gr
 if configRegistry['ldap/server/type'] == "slave":
 	print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
 print '    by self %s' % ( usr )
-print '    by * read break'
+print '    by * +0 break'
 print ''
 
 print 'access to attrs=entry,objectClass,uniqueMember,ou,uid,loginShell,homeDirectory,uidNumber,gidNumber,sn,cn,gecos,description,memberUid'
 print '    by group/univentionGroup/uniqueMember="cn=%s,cn=groups,%s" %s' % ( groups_default_domainadmins, ldap_base, usr)
 if configRegistry['ldap/server/type'] == "slave":
 	print '    by dn.base="cn=admin,%s" %s' % ( ldap_base, usr)
-print '    by * read break'
+print '    by * +0 break'
 print ''
 
 print 'access to attrs=univentionOperatingSystem,univentionOperatingSystemVersion'
