@@ -1,5 +1,6 @@
 univention-ldap (12.1.6-26) unstable; urgency=medium
 
+  * Bug #41715: restrict specific ACL's to specific object classes
   * Bug #41180: Add content rule to 'univentionAdminUserSettings' and
   	'univentionAdminGlobalSettings'
 
