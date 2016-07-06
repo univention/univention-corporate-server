@@ -6,7 +6,7 @@ src: bind9
 fix: 1:9.8.4.dfsg.P1-6+nmu2.120.201607011019
 desc: |
  This update addresses the following issues:
- * incorrect validation of DNSSEC-signed records in the Bind DNS server could
+ * Incorrect validation of DNSSEC-signed records in the Bind DNS server could
    result in denial of service (CVE-2015-5722)
  * Responses with a malformed class attribute can trigger an assertion failure
    in db.c (CVE-2015-8000)
