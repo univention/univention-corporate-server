@@ -1,14 +1,11 @@
 @!@
 ldap_base = configRegistry['ldap/base']
-if configRegistry['ldap/server/type'] == 'master':
-	access = 'write'
-else:
-	access = 'read'
+access = 'write' if configRegistry['ldap/server/type'] == 'master' else 'read'
 
 print '''
-access to dn="cn=admin-settings,cn=univention,%(base)s" attrs="entry,children"
+access to dn="cn=admin-settings,cn=univention,%(base)s" attrs=children
 	by users %(access)s
-	by * none break
+	by * +0 break
 ''' % {'base': ldap_base, 'access': access}
 
 print '''
@@ -16,7 +13,7 @@ access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filt
 	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access}
 if configRegistry['ldap/server/type'] == "slave":
 	print '\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access}
-print '\tby * none'
+print '\tby * none stop'
 
 print '''
 access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filter="objectClass=univentionAdminUserSettings" attrs=objectClass
@@ -28,5 +25,5 @@ access to dn.regex="^uid=([^,]+),cn=admin-settings,cn=univention,%(base)s$" filt
 	by dn.regex="^uid=$1,.*%(base)s$$" %(access)s''' % {'base': ldap_base, 'access': access}
 if configRegistry['ldap/server/type'] == "slave":
 	print '\tby dn.base="cn=admin,%(base)s" %(access)s' % {'base': ldap_base, 'access': access}
-print '\tby * none'
+print '\tby * none stop'
 @!@
