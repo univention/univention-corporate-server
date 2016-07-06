@@ -32,7 +32,7 @@ add_lists = [ml + al for ml in modlists]
 
 def add_testcases():
 	lo = utils.get_ldap_connection()  # TODO: use connection to master because this has only partly replicated objects
-	dns = set(lo.searchDn('univentionObjectType=container/cn'))  # cn=* ?
+	dns = set(lo.searchDn('cn=*'))
 	for dn in dns:
 		if 'cn=users' in ldap.explode_dn(dn):
 			continue
@@ -81,8 +81,12 @@ def main():
 			else:
 				print "FAIL: ldapmodify of %s (ml=%r) successful" % (dn, ml)
 				failures.add(dn)
-				rml = [ (attr, new, old) for (attr, old, new) in ml ]
-				lo.modify(dn, rml)
+				lo_admin = utils.get_ldap_connection()
+				for attr, old, new in ml:
+					try:
+						lo_admin.modify(dn, [(attr, new, old)])
+					except ldap.INSUFFICIENT_ACCESS:
+						print 'ERROR: could not revert %s %r' % (dn, (attr, old, new))
 		print ''
 
 	assert not failures, 'uidNumber=0 hijacking by succeded for the following DNs: %s' % ('\n'.join(failures),)
