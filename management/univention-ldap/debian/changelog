@@ -1,3 +1,10 @@
+univention-ldap (12.1.6-26) unstable; urgency=medium
+
+  * Bug #41180: Add content rule to 'univentionAdminUserSettings' and
+  	'univentionAdminGlobalSettings'
+
+ -- Florian Best <best@univention.de>  Wed, 06 Jul 2016 12:43:55 +0200
+
 univention-ldap (12.1.6-25) unstable; urgency=medium
 
   * Bug #41180: restrict also creation of cn=admin-settings entries
