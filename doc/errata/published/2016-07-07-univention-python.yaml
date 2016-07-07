@@ -9,3 +9,4 @@ desc: |
  * Use "python-ldap" utilities for splitting DN's.
  * Handling of DN's has been improved.
 bug: [40129, 40041]
+announced: 2016-07-07
