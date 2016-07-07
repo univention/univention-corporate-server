@@ -1,3 +1,9 @@
+univention-bind (10.0.2-6) unstable; urgency=medium
+
+  * Sanitize names of bind zone files (Bug #41005)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 07 Jul 2016 19:29:04 +0200
+
 univention-bind (10.0.2-5) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping
