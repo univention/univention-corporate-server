@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-48) unstable; urgency=medium
+
+  * Bug #28665: Fix typo in piwik.js 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 07 Jul 2016 14:38:35 +0200
+
 univention-management-console-frontend (5.0.63-47) unstable; urgency=medium
 
   * Bug #28665: Check for existing cookie instead of IE 

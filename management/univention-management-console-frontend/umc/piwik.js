@@ -39,7 +39,7 @@ define([
 	var actionStore = new Memory({data: []});
 	var storeId = 0;
 	var maxStoreItems = 1000;
-	var lastTimeStamp = 0;
+	var lastTimestamp = 0;
 	var piwikSendTimer = new dojox.timing.Timer(500);
 	var piwikTracker = null;
 
@@ -58,16 +58,16 @@ define([
 	};
 
 	var actionDict = function(parts) {
-		var timeStamp = Math.floor((new Date()).getTime()/1000);
-		if (lastTimeStamp >= timeStamp) {
-			timeStamp = lastTimeStamp + 1;
+		var timestamp = Math.floor((new Date()).getTime()/1000);
+		if (lastTimestamp >= timestamp) {
+			timestamp = lastTimestamp + 1;
 		}
-		lastTimeStamp = timeStamp;
+		lastTimestamp = timestamp;
 		var action =  {
 			siteTitle: _buildSiteTitle(parts),
 			url: window.location.protocol + "//" + window.location.host,
 			numOfTabs: tools.status('numOfTabs'),
-			timeStamp: timeStamp
+			timestamp: timestamp
 		};
 		return action;
 	};
