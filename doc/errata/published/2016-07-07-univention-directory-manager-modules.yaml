@@ -13,3 +13,4 @@ desc: |
  * A man in the middle attack and a local root code execution vulnerability in
    the UDM CLI client has been fixed.
 bug: [41580, 40041, 40129, 40422]
+announced: 2016-07-07
