@@ -9,3 +9,4 @@ desc: |
  * The newer version 7.4.1 of debugger 'gdb' was built to support debugging
    "Position Independent Executables" (PIE).
 bug: [27785]
+announced: 2016-07-07
