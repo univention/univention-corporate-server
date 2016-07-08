@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-system-setup
-fix: 9.0.4-28.972.201607081139
+fix: 9.0.4-29.973.201607081846
 desc: |
  This update addresses the following issue:
  * A new option for setting up a UCS system has been added which allows a
