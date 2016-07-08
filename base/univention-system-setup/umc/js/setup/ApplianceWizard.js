@@ -1373,43 +1373,34 @@ define([
 
 		_initStatusCheck: function() {
 			// timer to check the join status via existence of status file
-			var licenseUnknown = true;
+			var piwikLoadTriggered = false;
 			var fakeUuid = '00000000-0000-0000-0000-000000000000';
-			var isFakeUuid = tools.status('uuidSystem') === fakeUuid;
-			var isReadyForPiwik = function() {
-				var deferred = new Deferred();
-				var piwikAlreadyLoaded = !licenseUnknown && !isFakeUuid;
-				if (piwikAlreadyLoaded) {
-					return deferred.resolve(false);
+			var checkLicenseAndLoadPiwik = lang.hitch(this, function() {
+				if (piwikLoadTriggered || !this._joinTriggered) {
+					return;
 				}
-				return tools.umcpCommand('get/ucr', ['license/base', 'uuid/system'], false).then(lang.hitch(this, function(data) {
+				tools.umcpCommand('get/ucr', ['license/base', 'uuid/system'], false).then(lang.hitch(this, function(data) {
 					ucr = data.result;
 					var isReady = ucr['license/base'] && ucr['uuid/system'] !== fakeUuid;
 					if (!isReady) {
-						return false;
+						return;
 					}
 					tools.status('hasFreeLicense', tools.isFreeLicense(ucr['license/base']));
 					tools.status('uuidSystem', ucr['uuid/system']);
-					licenseUnknown = false;
-					isFakeUuid = false;
-					if (!tools.status('hasFreeLicense')) {
-						return false;
+					tools.status('piwikDisabled', !tools.status('hasFreeLicense'));
+					piwikLoadTriggered = true;
+					if (!tools.status('piwikDisabled')) {
+						topic.publish('/umc/piwik/load', true);
 					}
-					return true;
 				}));
-			};
+			});
 			this._checkStatusFileTimer = new timing.Timer(1000 * 10);
 			this._checkStatusFileTimer.onStart = lang.hitch(this, function() {
 				this.set('statusCheckResult', 'unknown');
 				this._checksTimedOut = 0;
 			});
 			this._checkStatusFileTimer.onTick = lang.hitch(this, function() {
-				isReadyForPiwik().then(function(isReady) {
-					if (isReady) {
-						tools.status('piwikDisabled', false);
-						topic.publish('/umc/piwik/load', true);
-					}
-				});
+				checkLicenseAndLoadPiwik();
 				var _statusFileURI = '/ucs_setup_process_status.json';
 				request(_statusFileURI, {
 					timeout: 1000,
