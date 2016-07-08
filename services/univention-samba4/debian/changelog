@@ -1,3 +1,10 @@
+univention-samba4 (5.0.1-39) unstable; urgency=medium
+
+  * reset-sysvol-acls.py: removed the listener module because it might
+    break the sysvol synchronization (Bug #39674)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 08 Jul 2016 17:06:33 +0200
+
 univention-samba4 (5.0.1-38) unstable; urgency=medium
 
   * reset-sysvol-acls.py: fixed typo in install file (Bug #39674)
