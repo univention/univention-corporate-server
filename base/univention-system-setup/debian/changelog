@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-28) unstable; urgency=medium
+
+  * Bug #40782: Allow users to send system setup errors as feedback 
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 08 Jul 2016 11:31:50 +0200
+
 univention-system-setup (9.0.4-27) unstable; urgency=medium
 
   * Bug #40551: Send piwik data for the system setup 

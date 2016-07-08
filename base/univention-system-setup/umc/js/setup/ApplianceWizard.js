@@ -50,9 +50,11 @@ define([
 	"dojox/html/entities",
 	"umc/dialog",
 	"umc/tools",
+	"umc/modules/sysinfo/lib",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
 	"umc/widgets/ComboBox",
+	"umc/widgets/ContainerWidget",
 	"umc/widgets/Text",
 	"umc/widgets/Button",
 	"umc/widgets/TitlePane",
@@ -67,7 +69,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, TextBox, CheckBox, ComboBox, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, sysinfo, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -865,10 +867,15 @@ define([
 				name: 'error',
 				headerText: errorHeader,
 				helpText: '_',
+				_errorFeedbackButtons: null,
 				widgets: [{
 					type: Text,
+					name: 'errors',
+					style: 'width: 100%',
+					content: ''
+				}, {
+					type: Text,
 					name: 'info',
-					style: 'font-style:italic;',
 					content: ''
 				}]
 			}), lang.mixin({}, pageConf, {
@@ -1582,25 +1589,25 @@ define([
 				var countryLowerCase = city.country.toLowerCase();
 				var layoutWidget = this.getWidget('locale', 'xorg/keyboard/options/XkbLayout');
 				array.some(layoutWidget.getAllItems(), function(ilayout) {
-					 var idxCountry = ilayout.countries.indexOf(city.country);
-					 if (ilayout.id == countryLowerCase || idxCountry >= 0) {
+					var idxCountry = ilayout.countries.indexOf(city.country);
+					if (ilayout.id == countryLowerCase || idxCountry >= 0) {
 						// found matching layout -> break loop
 						city.keyboard = ilayout.id;
 						defaultKeyboardLabel = ilayout.label;
 						nSettingsConfigured++;
 						return true;
-					 }
+					}
 				});
 				if (!city.keyboard && city.default_lang) {
 					// match language
 					array.some(layoutWidget.getAllItems(), function(ilayout) {
-						 if (ilayout.language == city.default_lang) {
+						if (ilayout.language == city.default_lang) {
 							// found matching layout -> break loop
 							city.keyboard = ilayout.id;
 							defaultKeyboardLabel = ilayout.label;
 							nSettingsConfigured++;
 							return true;
-						 }
+						}
 					});
 				}
 			}
@@ -1859,48 +1866,180 @@ define([
 		},
 
 		_updateErrorPage: function(details, critical) {
+			var createErrorMessages = function() {
+				//make the occurred errors more readable
+				var previousErrorHeader = '';
+				array.forEach(details, function(iDetail) {
+					var splitDetail = iDetail.split(":");
+					if (splitDetail.length === 2) {
+						var errorHeader = splitDetail[0];
+						var error = splitDetail[1];
+						if (errorHeader === previousErrorHeader) {
+							errors += error.trim() + '\n\n';
+						} else {
+							errors += "* " + errorHeader + ':\n' + error.trim() + '\n\n';
+						}
+						previousErrorHeader = errorHeader;
+					} else {
+						var readableMessage = iDetail.replace(/<br *\/?>/g, "\n");
+						errors += readableMessage + '\n';
+						previousErrorHeader = '';
+					}
+				});
+
+				//compose an error message that is shown to the user
+				errorMsgHeader = _('The following errors occurred while applying the settings.');
+				var errorsBox = '<pre style="max-height: 250px">' + errors + '</pre>';
+				var errorFeedbackText = _('Help us improve UCS by sending the occurred errors as feedback.');
+
+				errorMsg = '<p>' + errorMsgHeader + '</p>';
+				errorMsg += errorsBox;
+				errorMsg += '<p>' + errorFeedbackText + '</p>';
+			};
+
+			var createInfoMessage = lang.hitch(this, function() {
+				infoMsg += '<hr>';
+				infoMsg += '<p>' + _('You may restart the configuration process again with modified settings.') + '</p>';
+
+				// TODO: all these messages about joining are useless if (critical)? ... Maybe some hint about Univention support? Or sdb article how to deal with errors.
+				if (isMaster) {
+					infoMsg += '<p>';
+					infoMsg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems via Univention Management Console.') + ' ';
+					infoMsg += _('Failed join scripts can be executed via the UMC module <i>Domain join</i>.');
+					infoMsg += '</p>';
+
+					infoMsg += '<p>' + _('Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet created a new UCS domain:') + '</p>';
+					infoMsg += this._getUMCLinks();
+				} else if (isBaseSystem) {
+					var fqdn = this._getFQDN();
+					var ips = this._getIPAdresses();
+					infoMsg += '<p>';
+					infoMsg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems at a later point.') + ' ';
+					infoMsg += _('The system is reachable at <i>%(fqdn)s</i> or via its IP address(es) <i>%(addresses)s</i>.', {fqdn: fqdn, addresses: ips.join(', ')});
+				} else { // if (isNonMaster || isAdMemberMaster || isAdMember) {
+					infoMsg += '<p>';
+					infoMsg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems via Univention Management Console.') + ' ';
+					infoMsg += _('Failed join scripts or a new join of the system can be executed via the UMC module <i>Domain join</i>.');
+					infoMsg += '</p>';
+
+					infoMsg += '<p>' + _('Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet joined the domain:') + '</p>';
+					infoMsg += this._getUMCLinks();
+				}
+			});
+
+			var createFeedback = lang.hitch(this, function() {
+				feedbackMsg = lang.replace("{0}\n\n{1}\n\n{2}", [
+					tools.status('ucsVersion'),
+					errorMsgHeader,
+					errors
+				]);
+
+				feedbackMailLabel = _('Send feedback as mail');
+				feedbackMailto = lang.replace('mailto:{email}?body={body}&subject={subject}', {
+					email: encodeURIComponent(tools.status('feedbackAddress')),
+					body: encodeURIComponent(entities.decode(feedbackMsg)),
+					subject: encodeURIComponent(tools.status('feedbackSubject'))
+				});
+				feedbackMailLink = '<a href="' + feedbackMailto + '">' + feedbackMailLabel + '</a>';
+			});
+
+			var createFeedbackButtons = lang.hitch(this, function() {
+				var page = this.getPage('error');
+				var _errors = this.getWidget('error', 'errors');
+
+				//cleanup old buttons
+				if (page._errorFeedbackButtons) {
+					page._errorFeedbackButtons.destroyRecursive();
+				}
+				//create new buttons
+				var _errorFeedbackButtons = new ContainerWidget();
+				var _sendErrorAsMailButton = getSendErrorAsMailButton();
+				var _sendErrorButton = getSendErrorButton();
+
+				//add buttons
+				if (_sendErrorAsMailButton) {
+					_errorFeedbackButtons.addChild(_sendErrorAsMailButton);
+				}
+				if (_sendErrorButton) {
+					_errorFeedbackButtons.addChild(_sendErrorButton);
+				}
+
+				page._errorFeedbackButtons = _errorFeedbackButtons;
+			});
+
+			var getSendErrorButton = lang.hitch(this, function() {
+				var _sendErrorButton = null;
+
+				_sendErrorButton = new Button({
+					label: _('Send feedback'),
+					style: 'float: right',
+					onClick: lang.hitch(this, function() {
+						values = {
+							traceback: details.join('\n'),
+							remark: feedbackMsg,
+							email: ''
+						};
+						tools.umcpCommand('sysinfo/traceback', values, false).then(
+							function() {
+								dialog.alert(_('Thank you for your help'));
+							},
+							function() {
+								var failureString = _('Sending the information to the vendor failed');
+								if (!this.local_mode) {
+									failureString += '. ' + _('You can also send the information via mail:') + ' ' + feedbackMailLink;
+								}
+								dialog.alert(failureString);
+							}
+						);
+					})
+				});
+
+				return _sendErrorButton;
+			});
+
+			var getSendErrorAsMailButton = lang.hitch(this, function() {
+				var _sendErrorAsMail = null;
+				if (!this.local_mode) {
+					_sendErrorAsMail = new Button({
+						label: feedbackMailLabel,
+						style: 'float: right',
+						onClick: function() {
+							window.location.href = feedbackMailto;
+						}
+					});
+				}
+
+				return _sendErrorAsMail;
+			});
+
+			var displayInformation = lang.hitch(this, function() {
+				var page = this.getPage('error').set('helpText', helpText);
+				var errors = this.getWidget('error', 'errors').set('content', errorMsg);
+				//display feedback buttons
+				dojo.place(page._errorFeedbackButtons.domNode, errors.domNode, 'after');
+				this.getWidget('error', 'info').set('content', infoMsg);
+			});
+
 			var isMaster = this._isRoleMaster();
 			var isBaseSystem = this._isRoleBaseSystem();
-
 			var helpText = '<p>' + _('The system configuration could not be completed. Please choose to retry the configuration process or finish the wizard.') + '</p>';
-			var msg = '<p>' + _('The following errors occurred while applying the settings.') + '</p>';
-			msg += '<ul>';
-			array.forEach(details, function(idetail) {
-				msg += '<li>' + idetail + '</li>';
-			});
-			msg += '</ul>';
 
-			msg += '<p>' + _('You may restart the configuration process again with modified settings.') + '</p>';
+			var errorMsg = '';
+			var errorMsgHeader = '';
+			var errors = '';
+			createErrorMessages();
 
-			// TODO: all these messages about joining are useless if (critical)? ... Maybe some hint about Univention support? Or sdb article how to deal with errors.
-			if (isMaster) {
-				msg += '<p>';
-				msg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems via Univention Management Console.') + ' ';
-				msg += _('Failed join scripts can be executed via the UMC module <i>Domain join</i>.');
-				msg += '</p>';
+			var infoMsg = '';
+			createInfoMessage();
 
-				msg += '<p>' + _('Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet created a new UCS domain:') + '</p>';
-				msg += this._getUMCLinks();
-			} else if (isBaseSystem) {
-				var fqdn = this._getFQDN();
-				var ips = this._getIPAdresses();
-				msg += '<p>';
-				msg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems at a later point.') + ' ';
-				msg += _('The system is reachable at <i>%(fqdn)s</i> or via its IP address(es) <i>%(addresses)s</i>.', {fqdn: fqdn, addresses: ips.join(', ')});
-				msg += '</p>';
-			} else { // if (isNonMaster || isAdMemberMaster || isAdMember) {
-				msg += '<p>';
-				msg += _('Alternatively, you may click on the button <i>Finish</i> to exit the wizard and resolve the described problems via Univention Management Console.') + ' ';
-				msg += _('Failed join scripts or a new join of the system can be executed via the UMC module <i>Domain join</i>.');
-				msg += '</p>';
+			var feedbackMsg = '';
+			var feedbackMailLabel = '';
+			var feedbackMailto = '';
+			var feedbackMailLink = '';
+			createFeedback();
+			createFeedbackButtons();
 
-				msg += '<p>' + _('Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet joined the domain:') + '</p>';
-				msg += this._getUMCLinks();
-			}
-
-			// display validation information
-			this.getPage('error').set('helpText', helpText);
-			this.getWidget('error', 'info').set('content', msg);
+			displayInformation();
 
 			// save the state
 			this._criticalJoinErrorOccurred = critical;
@@ -2327,7 +2466,7 @@ define([
 			joinDeferred = joinDeferred.then(_checkJoinSuccessful);
 
 			// We have two sources of information:
- 			// (a) progress information via the setup/finished
+			// (a) progress information via the setup/finished
 			// (b) setup status information via /ucs_setup_process_status.json
 			// In case the network interface has been changed, (a) will fail at
 			// a certain point, and (b) will be able to provide additional extra
