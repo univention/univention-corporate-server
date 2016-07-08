@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-system-setup
-fix: 9.0.4-27.971.201607050943
+fix: 9.0.4-28.972.201607081139
 desc: |
  This update addresses the following issue:
  * A new option for setting up a UCS system has been added which allows a
@@ -27,4 +27,6 @@ desc: |
    improvements to the user experience even better.
  * Regenerate the system UUID during the fast setup demo mode to unsure a
    unique system.
-bug: [40046,41283,41622,40985,40968,41026,40710,40751,40673, 40551, 41140]
+ * Errors that occur during the system setup of UCS can now be send as
+   feedback to Univention by the user.
+bug: [40046,41283,41622,40985,40968,41026,40710,40751,40673, 40551, 41140, 40782]
