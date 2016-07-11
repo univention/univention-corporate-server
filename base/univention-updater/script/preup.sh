@@ -180,6 +180,31 @@ check_for_postgresql84 () {
 }
 check_for_postgresql84
 
+## Check if PostgreSQL 8.4 is installable (Bug #41597)
+check_for_postgresql84_installable () {
+	echo "Checking if univention-postgresql is installed..." >&3
+	case "$(dpkg-query -W -f '${Status}' univention-postgresql 2>/dev/null)" in
+		install*)
+			echo "It is installed." >&3
+			echo "Checking if PostgreSQL 8.4 is installable..." >&3
+			if apt-get --simulate --quiet --quiet install postgresql-8.4 >&3
+			then
+				echo "It seems installable, BAD, aborting." >&3
+				echo "WARNING: postgresql-8.4, although currently not installed, can be installed"
+				echo "         by apt-get. This is probably because old of sources.list-entries."
+				echo "         Aborting the update, because it would fail. (Bug #41597)"
+				exit 1
+			else
+				echo "Not installable, OK, continuing." >&3
+			fi
+			;;
+		*)
+			echo "It is not installed." >&3
+			;;
+	esac
+}
+check_for_postgresql84_installable
+
 ## Check docker network and disable docker if necessary
 check_docker_network () {
 	python -c "
