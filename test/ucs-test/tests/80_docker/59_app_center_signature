@@ -14,7 +14,7 @@ class SyncedAppcenter(Appcenter):
 	def __init__(self):
 		Appcenter.__init__(self)
 		self.vv = self.ucr.get('version/version')
-		self.upstream_appcenter='http://appcenter-test.software-univention.de'
+		self.upstream_appcenter='https://appcenter.software-univention.de'
 		handler_set([
 			'appcenter/index/verify=true',
 		])
@@ -25,7 +25,7 @@ class SyncedAppcenter(Appcenter):
 		])
 		call('univention-app update', shell=True)
 		handler_set([
-			'repository/app_center/server=%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
+			'repository/app_center/server=http://%s.%s' % (self.ucr['hostname'], self.ucr['domainname'])
 		])
 
 	def download(self, f):
@@ -79,12 +79,15 @@ class SyncedAppcenter(Appcenter):
 	def test_modify_ini(self):
 		self.download_index_json()
 		self.download_index_json_gpg()
-		self.remove_from_cache('dudle-docker.ini')
-		self.download('meta-inf/%s/dudle-docker/dudle-docker.ini' % self.vv)
-		call('echo "## SIGNATURE TEST ###" >>/var/www/meta-inf/%s/dudle-docker/dudle-docker.ini' % self.vv, shell=True)
+		app_id = 'tecart'
+		app_version = '4.4.12'
+		filename = 'tecart_20151204.ini'
+		self.remove_from_cache(filename)
+		self.download('meta-inf/%s/%s/%s' % (self.vv, app_id, filename))
+		call('echo "## SIGNATURE TEST ###" >>/var/www/meta-inf/%s/%s/%s' % (self.vv, app_id, filename), shell=True)
 		res = call('univention-app update', shell=True)
-		# dudle-docker must have been removed
-		res = call('univention-app get dudle-docker name', shell=True)
+		# tecart must have been removed
+		res = call('univention-app get %s=%s name' % (app_id, app_version), shell=True)
 		if res == 0:
 			fail('_test_modify_ini failed')
 		print '### _test_modify_ini passed'
@@ -92,12 +95,14 @@ class SyncedAppcenter(Appcenter):
 	def test_modify_inst(self):
 		self.download_index_json()
 		self.download_index_json_gpg()
-		self.remove_from_cache('owncloud8-docker_20150917.inst')
-		self.download('univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv)
-		call('echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/%s/maintained/component/owncloud8-docker_20150917/inst' % self.vv, shell=True)
+		filename = 'tecart_20151204.inst'
+		basename, ext = os.path.splitext(filename)
+		self.remove_from_cache(filename)
+		self.download('univention-repository/%s/maintained/component/%s/%s' % (self.vv, basename, ext))
+		call('echo "## SIGNATURE TEST ###" >>/var/www/univention-repository/%s/maintained/component/%s/%s' % (self.vv, basename, ext), shell=True)
 		res = call('univention-app update', shell=True)
-		# Check only if the file was removed from th local cache
-		if self.file_exists_in_cache('owncloud8-docker_20150917.inst'):
+		# Check only if the file was removed from the local cache
+		if self.file_exists_in_cache(filename):
 			fail('_test_modify_inst failed')
 		print '### _test_modify_inst passed'
 

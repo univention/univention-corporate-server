@@ -1,3 +1,9 @@
+ucs-test (6.0.34-91) unstable; urgency=medium
+
+  * Bug #41769: Do not test against Test App Center with verify/index=true
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Jul 2016 22:33:57 +0200
+
 ucs-test (6.0.34-90) unstable; urgency=low
 
   * Bug #39900: deactivate 40/26 until I have time to work on it
