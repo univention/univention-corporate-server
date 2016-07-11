@@ -163,6 +163,16 @@ if [ -n "$hold_packages" ]; then
 	fi
 fi
 
+# disable old (3.2-*) errata scopes if set (Bug #41597)
+for i in $(seq 0 10)
+do
+	if [ "$(ucr search --brief --non-empty --key '^repository/online/component/3\.2-'"$i"'-errata')" != '' ]
+	then # component is activated
+		ucr set 'repository/online/component/3.2-'"$i"'-errata=false' >&3
+	fi
+done
+apt-get update >&3
+
 ## Check for PostgreSQL-8.4 (Bug #39366)
 check_for_postgresql84 () {
 	case "$(dpkg-query -W -f '${Status}' postgresql-8.4 2>/dev/null)" in
