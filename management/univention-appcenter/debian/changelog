@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-15) unstable; urgency=medium
+
+  * Bug #41724: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 11 Jul 2016 21:45:59 +0200
+
 univention-appcenter (5.0.21-14) unstable; urgency=medium
 
   * Bug #41724: restrict access to univentionApp object class
