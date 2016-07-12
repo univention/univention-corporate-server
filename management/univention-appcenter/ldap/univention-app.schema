@@ -192,3 +192,5 @@ objectclass ( univentionAppObjectClass:1 NAME 'univentionApp'
 			$ univentionAppInstalledOnServer
 		)
 	)
+
+ditcontentrule ( univentionAppObjectClass:1 NAME 'univentionApp' AUX univentionObject )

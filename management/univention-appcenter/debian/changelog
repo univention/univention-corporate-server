@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-17) unstable; urgency=medium
+
+  * Bug #41724: Reenable ACL's
+
+ -- Florian Best <best@univention.de>  Tue, 12 Jul 2016 10:53:28 +0200
+
 univention-appcenter (5.0.21-16) unstable; urgency=medium
 
   * Bug #41770: Prepare App Center for Self Service
