@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-18) unstable; urgency=low
+
+  * Bug #40515: Added docker vs network warning
+
+ -- Felix Botner <botner@univention.de>  Tue, 12 Jul 2016 16:07:14 +0200
+
 univention-appcenter (5.0.21-17) unstable; urgency=medium
 
   * Bug #41724: Reenable ACL's

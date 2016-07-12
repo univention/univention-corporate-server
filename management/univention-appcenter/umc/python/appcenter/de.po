@@ -200,5 +200,17 @@ msgstr "nicht installiert"
 msgid "upgradable"
 msgstr "aktualisierbar"
 
+#: umc/python/appcenter/__init__.py:202
+msgid "A conflict between the system network settings and the docker bridge default network has been detected."
+msgstr "Es wurde ein Konflikt zwischen den Netzwerkeinstellungen des Systems und der Docker Bridge entdeckt."
+
+#: umc/python/appcenter/__init__.py:203
+msgid "Please either configure a different network for the docker bridge by setting the UCR variable docker/daemon/default/opts/bip to a different network and restart the system,"
+msgstr "Bitte konfigurieren Sie ein anderes Netzwerk für die Docker Bridge durch die UCR Variable docker/daemon/default/opts/bip und ein Neustart des Systems,"
+
+#: umc/python/appcenter/__init__.py:204
+msgid "or disable the docker support in the AppCenter by setting appcenter/docker to false."
+msgstr "oder deaktivieren Sie die Unterstützung für Docker im AppCenter indem die UCR Variable appcenter/docker auf false gesetzt wird."
+
 #~ msgid "Could not query App Center: %s"
 #~ msgstr "Konnte das App Center nicht erreichen: %s"

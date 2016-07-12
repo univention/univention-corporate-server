@@ -59,7 +59,7 @@ from univention.updater.errors import ConfigurationError
 import univention.management.console as umc
 import univention.management.console.modules as umcm
 from univention.appcenter import get_action, AppManager
-from univention.appcenter.utils import docker_is_running, call_process
+from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
 
@@ -198,6 +198,11 @@ class Instance(umcm.Base, ProgressMixin):
 			self.update_applications_done = True
 
 	def _test_for_docker_service(self):
+		if docker_bridge_network_conflict():
+			msg = _('A conflict between the system network settings and the docker bridge default network has been detected.') + '\n\n'
+			msg += _('Please either configure a different network for the docker bridge by setting the UCR variable docker/daemon/default/opts/bip to a different network and restart the system,') + ' '
+			msg += _('or disable the docker support in the AppCenter by setting appcenter/docker to false.')
+			raise umcm.UMC_Error(msg)
 		if not docker_is_running():
 			MODULE.warn('Docker is not running! Trying to start it now...')
 			call_process(['invoke-rc.d', 'docker', 'start'])
