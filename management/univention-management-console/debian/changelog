@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-17) unstable; urgency=medium
+
+  * Bug #41736: don't execute/evaluate code in umc-client arguments
+
+ -- Florian Best <best@univention.de>  Tue, 12 Jul 2016 13:28:22 +0200
+
 univention-management-console (8.0.28-16) unstable; urgency=medium
 
   * Bug #41370: fix crashing of server on malicious request data
