@@ -6,7 +6,7 @@ src: univention-directory-listener
 fix: 8.0.4-2.316.201606071758
 desc: |
  This update addresses the following issue:
- * A bug in handling the notifier ID was fixed: If the Listener was restarted
-   multiple times, the last processed transaction ID could be lost. This lead
-   to all transaction being skipped which happened in between.
+ * A bug in handling the notifier ID has been fixed: If the Listener was
+   restarted multiple times, the last processed transaction ID could be lost.
+   This led to all transactions being skipped which happened in between.
 bug: [41486]
