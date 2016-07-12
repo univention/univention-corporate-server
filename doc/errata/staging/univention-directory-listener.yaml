@@ -16,9 +16,9 @@ desc: |
  * Some debug messages were cleaned up.
  * Some data structures are no longer allocated dynamically but put onto the
    stack to make the Listener more robust against memory allocation problems.
- * A bug in handling the notifier ID was fixed: If the Listener was restarted
-   multiple times, the last processed transaction ID could be lost. This lead
-   to all transaction being skipped which happened in between.
+ * A bug in handling the notifier ID has been fixed: If the Listener was
+   restarted multiple times, the last processed transaction ID could be lost.
+   This led to all transactions being skipped which happened in between.
  * The locking has been improved to prevent multiple instances of the Listener
    running at the same time.
  * The transaction log is now only written on systems where the Notifier is
