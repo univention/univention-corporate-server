@@ -1,3 +1,9 @@
+ucs-test (6.0.35-1) unstable; urgency=medium
+
+  * Bug #41715: cleanup after tests
+
+ -- Florian Best <best@univention.de>  Tue, 12 Jul 2016 13:11:27 +0200
+
 ucs-test (6.0.34-91) unstable; urgency=medium
 
   * Bug #41769: Do not test against Test App Center with verify/index=true
