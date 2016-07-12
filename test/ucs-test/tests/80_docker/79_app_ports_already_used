@@ -5,28 +5,24 @@
 ## packages:
 ##   - docker.io
 
-from dockertest import *
+from dockertest import Appcenter, App, get_app_name, get_app_version
 from univention.testing.utils import get_ldap_connection
 import socket
-import sys
 
 def _open_port(port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	try:
-    		s.bind(('', port))
+		s.bind(('', port))
 	except socket.error as msg:
 		print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
-		return None
+		return
 	s.listen(10)
 	print 'Opened socket on port %d' % port
 	return s
 
 
 if __name__ == '__main__':
-	
-	sockets = []
-	for i in range(40000,40100):
-		sockets.append(_open_port(i))
+	sockets = [_open_port(i) for i in range(40000, 40100)]
 
 	with Appcenter() as appcenter:
 		app_name = get_app_name()
@@ -35,13 +31,14 @@ if __name__ == '__main__':
 		app = App(name=app_name, version=app_version)
 	
 		try:
-			app.set_ini_parameter(	DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
-									WebInterface='/%s' % app.app_name,
-									WebInterfacePortHTTP='80',
-									WebInterfacePortHTTPS='443',
-									AutoModProxy='True',
-									DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
-								)
+			app.set_ini_parameter(
+				DockerImage='docker.software-univention.de/ucs-appbox-amd64:4.1-0',
+				WebInterface='/%s' % app.app_name,
+				WebInterfacePortHTTP='80',
+				WebInterfacePortHTTPS='443',
+				AutoModProxy='True',
+				DockerScriptSetup='/usr/sbin/%s-setup' % app_name,
+			)
 			app.create_basic_modproxy_settings()
 			app.add_to_local_appcenter()
 	

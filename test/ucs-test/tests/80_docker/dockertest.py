@@ -97,7 +97,8 @@ def get_app_version():
 	return random_version()
 
 
-class App:
+class App(object):
+
 	def __init__(self, name, version, app_directory_suffix=None, package_name=None, build_package=True):
 		self.app_name = name
 		self.app_version = version
@@ -147,10 +148,15 @@ class App:
 		self.admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
 		self.admin_pwdfile = self.ucr.get('tests/domainadmin/pwdfile')
 
+		print repr(self)
+
+	def __repr__(self):
+		return '%s(app_name=%r, app_version=%r)' % (super(App, self).__repr__(), self.app_name, self.app_version)
+
 	def set_ini_parameter(self, **kwargs):
 		for key, value in kwargs.iteritems():
-			self.ini[key] = value
-		pass
+ 			print 'set_ini_parameter(%s=%s)' % (key, value)
+ 			self.ini[key] = value
 
 	def add_to_local_appcenter(self):
 		self._dump_ini()
@@ -163,6 +169,7 @@ class App:
 			self.scripts[key] = value
 
 	def install(self):
+		print 'App.install()'
 		self._update()
 		admin_user = self.ucr.get('tests/domainadmin/account').split(',')[0][len('uid='):]
 		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
@@ -183,6 +190,7 @@ class App:
 			raise UCSTest_DockerApp_UpdateFailed()
 
 	def upgrade(self):
+		print 'App.upgrade()'
 		self._update()
 		ret = subprocess.call('univention-app upgrade --noninteractive --username=%s --pwdfile=%s %s=%s' %
 					(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
@@ -193,6 +201,7 @@ class App:
 		self.installed = True
 
 	def verify(self, joined=True):
+		print 'App.verify(%r)' % (joined,)
 		ret = subprocess.call('univention-app status %s=%s' % (self.app_name, self.app_version), shell=True)
 		if ret != 0:
 			raise UCSTest_DockerApp_VerifyFailed()
@@ -213,6 +222,7 @@ class App:
 				raise UCSTest_DockerApp_VerifyFailed('univention-app shell failed')
 
 	def uninstall(self):
+		print 'App.uninstall()'
 		if self.installed:
 			ret = subprocess.call('univention-app remove --noninteractive --username=%s --pwdfile=%s %s=%s' %
 						(self.admin_user, self.admin_pwdfile, self.app_name, self.app_version), shell=True)
@@ -224,6 +234,7 @@ class App:
 		return subprocess.check_output('docker exec %s %s' % (self.container_id, cmd), stderr=subprocess.STDOUT, shell=True)
 
 	def remove(self):
+		print 'App.remove()'
 		if self.package:
 			self.package.remove()
 
@@ -300,7 +311,8 @@ echo "TEST-%(app_name)s" >>/var/www/%(app_name)s/index.txt
 
 
 
-class Appcenter:
+class Appcenter(object):
+
 	def __init__(self, version=None):
 		self.meta_inf_created = False
 		self.univention_repository_created = False
@@ -319,6 +331,8 @@ class Appcenter:
 			version = self.ucr.get('version/version')
 
 		self.add_ucs_version_to_appcenter(version)
+
+		print repr(self)
 
 	def add_ucs_version_to_appcenter(self, version):
 
