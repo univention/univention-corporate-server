@@ -48,7 +48,7 @@ from distutils.version import LooseVersion
 
 from univention.appcenter.app import App, AppManager, AppAttribute, _get_from_parser, _read_ini_file
 from univention.appcenter.actions import UniventionAppAction, get_action, Abort
-from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen
+from univention.appcenter.utils import get_sha256_from_file, get_md5_from_file, mkdir, urlopen, rmdir
 from univention.appcenter.ucr import ucr_save, ucr_get
 
 
@@ -56,6 +56,26 @@ from univention.appcenter.ucr import ucr_save, ucr_get
 _screenshot_attribute = AppAttribute(localisable=True)
 _screenshot_attribute.set_name('screenshot')
 App._attrs.append(_screenshot_attribute)
+
+
+class DevUseTestAppcenter(UniventionAppAction):
+	'''Use the Test App Center'''
+	help = 'Uses the Apps in the Test App Center. Used for testing Apps not yet published.'
+
+	def setup_parser(self, parser):
+		super(DevUseTestAppcenter, self).setup_parser(parser)
+		host_group = parser.add_mutually_exclusive_group()
+		host_group.add_argument('--appcenter-host', default='appcenter-test.software-univention.de', help='The hostname of the new App Center. Default: %(default)s')
+		revert_group = parser.add_mutually_exclusive_group()
+		revert_group.add_argument('--revert', action='store_true', help='Reverts the changes of a previous dev-use-test-appcenter')
+
+	def main(self, args):
+		if args.revert:
+			ucr_save({'repository/app_center/server': 'appcenter.software-univention.de', 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
+		else:
+			ucr_save({'repository/app_center/server': args.appcenter_host, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
+		update = get_action('update')
+		update.call()
 
 
 class LocalAppcenterAction(UniventionAppAction):
@@ -261,6 +281,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		arch = subprocess.check_output(['uname', '-m']).strip()
 		parser.add_argument('--new', action='store_true', help='Add a completely new (or a new version of an existing) app in the local App Center')
 		parser.add_argument('-c', '--component-id', help='The internal component ID for this version of the App')
+		parser.add_argument('--clear', action='store_true', help='Clear existing files')
 		parser.add_argument('-i', '--ini', help='Path to the ini file of the App')
 		parser.add_argument('-l', '--logo', help='Path to the logo file of the App (UCS 4.1: square SVG; UCS <= 4.0: 50x50 transparent PNG)')
 		parser.add_argument('--logo-detail', dest='logo_detail_page', help='Path to the detail logo file of the App (4.1 only, elongated SVG)')
@@ -322,9 +343,8 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 				self.fatal('Cannot easily set up unmaintained packages for %s (need %s). You need to download them into the repository manually. Sorry!' % (args.ucs_version, version))
 			else:
 				self._copy_unmaintained_packages(repo_dir, args)
-		self._copy_meta_files(component_id, meta_inf_dir, repo_dir, args)
-		if args.packages:
-			app = App.from_ini(os.path.join(meta_inf_dir, '%s.ini' % component_id))
+		app = self._copy_meta_files(component_id, meta_inf_dir, repo_dir, args)
+		if app and args.packages:
 			self._handle_packages(app, repo_dir, args)
 			self._generate_repo_index_files(repo_dir)
 		self._generate_meta_index_files(args)
@@ -340,7 +360,10 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			component_id = args.component_id
 		else:
 			component_id = '%s_%s' % (app.id, date.today().strftime('%Y%m%d'))
-		repo_dir = os.path.join(args.path, 'univention-repository', args.ucs_version, 'maintained', 'component', component_id)
+		return self._build_repo_dir(app, component_id, args.path, args.ucs_version)
+
+	def _build_repo_dir(self, app, component_id, path, ucs_version):
+		repo_dir = os.path.join(path, 'univention-repository', ucs_version, 'maintained', 'component', component_id)
 		if not app.without_repository:
 			mkdir(os.path.join(repo_dir, 'all'))
 			mkdir(os.path.join(repo_dir, 'i386'))
@@ -352,10 +375,10 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 		old_unmaintained = ucr_get(unmaintained_ucr_var)
 		ucr_save({unmaintained_ucr_var: 'yes'})
 		try:
-			old_debs = glob('*.deb')
+			old_debs = glob('*.*deb')
 			subprocess.call(['apt-get', 'update'])
 			subprocess.call(['apt-get', 'download'] + args.unmaintained)
-			new_debs = glob('*.deb')
+			new_debs = glob('*.*deb')
 			for deb in new_debs:
 				if deb not in old_debs:
 					args.packages = args.packages or []
@@ -364,11 +387,21 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			ucr_save({unmaintained_ucr_var: old_unmaintained})
 
 	def _copy_meta_files(self, component_id, meta_inf_dir, repo_dir, args):
-		if args.ini:
-			self.copy_file(args.ini, os.path.join(meta_inf_dir, '%s.ini' % component_id))
 		ini_file = os.path.join(meta_inf_dir, '%s.ini' % component_id)
+		if args.clear:
+			if os.path.exists(repo_dir):
+				rmdir(repo_dir)
+			if os.path.exists(ini_file):
+				os.unlink(ini_file)
+		if args.ini:
+			self.copy_file(args.ini, ini_file)
+		if not os.path.exists(ini_file):
+			self.warn('Stopping here due to no ini file')
+			return
 		app_en = App.from_ini(ini_file, 'en')
 		app_de = App.from_ini(ini_file, 'de')
+		if args.clear:
+			self._build_repo_dir(app_en, component_id, args.path, args.ucs_version)
 		if not app_en or not app_de:
 			raise Abort('Cannot continue with flawed ini file')
 		if args.logo:
@@ -446,6 +479,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 			self.copy_file(args.update_app_version, os.path.join(repo_dir, 'update_app_version'))
 		if args.env:
 			self.copy_file(args.env, os.path.join(repo_dir, 'env'))
+		return app_en
 
 	def _handle_packages(self, app, repo_dir, args):
 		dirname = mkdtemp()
@@ -456,11 +490,24 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 				except subprocess.CalledProcessError:
 					self.debug('%s is not a package' % pkg)
 				else:
-					pkg_name, pkg_version, pkg_arch = output.split()[1::2]
-					fname = '%s_%s_%s.deb' % (pkg_name, pkg_version, pkg_arch)
-					self.debug('%s -> %s' % (pkg, fname))
-					shutil.copy2(pkg, os.path.join(dirname, fname))
-			args.packages = glob(os.path.join(dirname, '*.deb'))
+					pkg_name = pkg_version = pkg_arch = None
+					__, ext = os.path.splitext(pkg)
+					if ext not in ['.deb', '.udeb']:
+						ext = '.deb'
+					for label, value in [line.split() for line in output.splitlines()]:
+						if label == 'Package:':
+							pkg_name = value
+						elif label == 'Version:':
+							pkg_version = value
+						elif label == 'Architecture:':
+							pkg_arch = value
+					if pkg_name and pkg_version and pkg_arch:
+						fname = '%s_%s_%s%s' % (pkg_name, pkg_version, pkg_arch, ext)
+						self.debug('%s -> %s' % (pkg, fname))
+						shutil.copy2(pkg, os.path.join(dirname, fname))
+					else:
+						self.warn('Could not determine package name: %s' % output)
+			args.packages = glob(os.path.join(dirname, '*.*deb'))
 			self._copy_packages(repo_dir, args)
 		finally:
 			shutil.rmtree(dirname)
@@ -475,18 +522,19 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 					os.unlink(existing_package)
 			dst = os.path.join(repo_dir, arch)
 			if add_arch_ending:
-				package_name, _ = os.path.splitext(os.path.basename(pkg))
-				dst = os.path.join(dst, '%s_%s.deb' % (package_name, arch))
+				package_name, ext = os.path.splitext(os.path.basename(pkg))
+				dst = os.path.join(dst, '%s_%s%s' % (package_name, arch, ext))
 			self.copy_file(pkg, dst)
 		for package in args.packages:
-			if not package.endswith('.deb'):
+			package_name, ext = os.path.splitext(os.path.basename(package))
+			if ext not in ['.deb', '.udeb']:
 				self.warn('%s should end with .deb' % package)
 				continue
-			if package.endswith('_i386.deb'):
+			if package_name.endswith('_i386'):
 				_copy_package(package, 'i386')
-			elif package.endswith('_amd64.deb'):
+			elif package_name.endswith('_amd64'):
 				_copy_package(package, 'amd64')
-			elif package.endswith('_all.deb'):
+			elif package_name.endswith('_all'):
 				_copy_package(package, 'all')
 			else:
 				self.warn('Could not determine architecture from filename. Assuming _all.deb')

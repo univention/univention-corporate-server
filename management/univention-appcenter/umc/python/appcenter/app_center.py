@@ -678,6 +678,8 @@ class Application(object):
 		for index_filename in ('index.json.gz', 'index.json.gz.gpg'):
 			files_in_json_file.append(os.path.join(CACHE_DIR, index_filename))
 		for cached_filename in glob(os.path.join(CACHE_DIR, '*')):
+			if os.path.isdir(cached_filename):
+				continue
 			if cached_filename not in files_in_json_file:
 				MODULE.info('Deleting obsolete %s' % cached_filename)
 				something_changed = True

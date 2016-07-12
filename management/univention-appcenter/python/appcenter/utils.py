@@ -58,6 +58,7 @@ from univention.appcenter.ucr import ucr_get, ucr_keys
 # also provides translation for univention-appcenter-docker etc
 _ = Translation('univention-appcenter').translate
 
+
 def docker_bridge_network_conflict():
 	docker0_net = ipaddr.IPv4Network(ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16'))
 	for name, iface in interfaces.Interfaces().ipv4_interfaces:
@@ -66,6 +67,7 @@ def docker_bridge_network_conflict():
 			if my_net.overlaps(docker0_net):
 				return True
 	return False
+
 
 def app_is_running(app):
 	from univention.appcenter.app import AppManager

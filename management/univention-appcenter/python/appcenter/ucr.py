@@ -61,8 +61,8 @@ def ucr_includes(key):
 	return key in _UCR
 
 
-def ucr_is_true(key, value=None):
-	return _UCR.is_true(key, value)
+def ucr_is_true(key, default=False, value=None):
+	return _UCR.is_true(key, default=default, value=value)
 
 
 def ucr_is_false(key):
