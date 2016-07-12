@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-management-console
-fix: 8.0.28-16.921.201606271854
+fix: 8.0.28-17.922.201607121335
 desc: |
  This update addresses the following issue(s):
  * The Sanitizer base class now accept a parameter allow_none to allow None
@@ -12,4 +12,5 @@ desc: |
  * A UMC-Server crash is now prevented in specific circumstances after login.
  * A UMC-Server crash is now prevented for requests with malicious request
    data.
-bug: [41424, 41423, 41070, 41370]
+ * The UMC-Client does not evaluate python code in its arguments anymore.
+bug: [41424, 41423, 41070, 41370, 41736]
