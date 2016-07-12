@@ -12,4 +12,7 @@ desc: |
  * Starting the LDAP daemon on i686 systems with a mdb backend
    and a mdb maxsize of at least 2147483648 could potentially fail.
    The init script now triple checks the start.
-bug: [41179, 41180, 33993]
+ * The content of an new entry is now also validated against the LDAP ACL's.
+ * Various restrictions for Memberserver and Domaincontrollers have been added
+   to the LDAP ACL's.
+bug: [41179, 41180, 33993, 41715]
