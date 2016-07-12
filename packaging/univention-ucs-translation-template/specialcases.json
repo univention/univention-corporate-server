@@ -1,401 +1,170 @@
 [
-	{
-		"action": "update-po",
-		"inputfiles": "*/umc/**js",
-		"packagedir": "management/univention-management-console-frontend",
-		"po_subdir": "umc",
-		"packagename": "univention-management-console-frontend"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/univention-management-console-frontend/js/umc/i18n/%(language)s/app.json",
-		"packagedir": "management/univention-management-console-frontend",
-		"po_subdir": "umc",
-		"packagename": "univention-management-console-frontend",
-		"target": "json"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/src/**py",
-		"packagedir": "management/univention-management-console",
-		"po_subdir": "src/univention/management/console",
-		"packagename": "univention-management-console"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-management-console",
-		"po_subdir": "src/univention/management/console",
-		"packagename": "univention-management-console",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin",
-		"packagename": "univention-admin"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin",
-		"packagename": "univention-admin",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers",
-		"packagename": "univention-admin-handlers"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers",
-		"packagename": "univention-admin-handlers",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/computers/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/computers",
-		"packagename": "univention-admin-handlers-computers"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/computers",
-		"packagename": "univention-admin-handlers-computers",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/container/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/container",
-		"packagename": "univention-admin-handlers-container"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/container",
-		"packagename": "univention-admin-handlers-container",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/dhcp/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/dhcp",
-		"packagename": "univention-admin-handlers-dhcp"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/dhcp",
-		"packagename": "univention-admin-handlers-dhcp",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/dns/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/dns",
-		"packagename": "univention-admin-handlers-dns"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/dns",
-		"packagename": "univention-admin-handlers-dns",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/groups/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/groups",
-		"packagename": "univention-admin-handlers-groups"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/groups",
-		"packagename": "univention-admin-handlers-groups",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/kerberos/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/kerberos",
-		"packagename": "univention-admin-handlers-kerberos"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/kerberos",
-		"packagename": "univention-admin-handlers-kerberos",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/legacy/computers/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/legacy/computers",
-		"packagename": "univention-admin-handlers-legacy-computers"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/legacy/computers",
-		"packagename": "univention-admin-handlers-legacy-computers",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/legacy/policies/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/legacy/policies",
-		"packagename": "univention-admin-handlers-legacy-policies"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/legacy/policies",
-		"packagename": "univention-admin-handlers-legacy-policies",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/mail/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/mail",
-		"packagename": "univention-admin-handlers-mail"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/mail",
-		"packagename": "univention-admin-handlers-mail",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/nagios/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/nagios",
-		"packagename": "univention-admin-handlers-nagios"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/nagios",
-		"packagename": "univention-admin-handlers-nagios",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/networks/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/networks",
-		"packagename": "univention-admin-handlers-networks"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/networks",
-		"packagename": "univention-admin-handlers-networks",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/policies/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/policies",
-		"packagename": "univention-admin-handlers-policies"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/policies",
-		"packagename": "univention-admin-handlers-policies",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/settings/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/settings",
-		"packagename": "univention-admin-handlers-settings"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/settings",
-		"packagename": "univention-admin-handlers-settings",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/shares/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/shares",
-		"packagename": "univention-admin-handlers-shares"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/shares",
-		"packagename": "univention-admin-handlers-shares",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/users/*.py",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/users",
-		"packagename": "univention-admin-handlers-users"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "management/univention-directory-manager-modules",
-		"po_subdir": "modules/univention/admin/handlers/users",
-		"packagename": "univention-admin-handlers-users",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/container/*.py",
-		"packagedir": "services/univention-s4-connector",
-		"po_subdir": "modules/univention/admin/handlers/container/msgpo",
-		"packagename": "univention-admin-handlers-container-msgpo"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "services/univention-s4-connector",
-		"po_subdir": "modules/univention/admin/handlers/container/msgpo",
-		"packagename": "univention-admin-handlers-container-msgpo",
-		"target": "mo"
-	},
-	{
-		"action": "update-po",
-		"inputfiles": "*/modules/univention/admin/handlers/saml/*.py",
-		"packagedir": "saml/univention-saml",
-		"po_subdir": "modules/univention/admin/handlers/saml",
-		"packagename": "univention-admin-handlers-saml"
-	},
-	{
-		"action": "install-mo/json",
-		"outputdir": "usr/share/locale/%(language)s/LC_MESSAGES/%(packagename)s.mo",
-		"packagedir": "saml/univention-saml",
-		"po_subdir": "modules/univention/admin/handlers/saml",
-		"packagename": "univention-admin-handlers-saml",
-		"target": "mo"
-	},
-	{
-		"action": "get-template",
-		"inputfile": "umc/help/en.json",
-		"packagedir": "management/univention-management-console-frontend",
-		"targetfile": "umc/help/%(language)s.json"
-	},
-	{
-		"action": "install-template",
-		"outputfile": "usr/share/univention-management-console-frontend/js/umc/help/%(language)s.json",
-		"packagedir": "management/univention-management-console-frontend",
-		"inputfile": "umc/help/%(language)s.json"
-	}, 
-	{
-		"action": "get-template",
-		"inputfile": "umc/app/about.en.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"targetfile": "umc/app/about.%(language)s.html"
-	},
-	{
-		"action": "install-template",
-		"outputfile": "usr/share/univention-management-console-frontend/js/umc/app/about.%(language)s.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"inputfile": "umc/app/about.%(language)s.html"
-	},
-	{
-		"action": "get-template",
-		"inputfile": "umc/app/activation.en.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"targetfile": "umc/app/activation.%(language)s.html"
-	},
-	{
-		"action": "install-template",
-		"outputfile": "usr/share/univention-management-console-frontend/js/umc/app/activation.%(language)s.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"inputfile": "umc/app/activation.%(language)s.html"
-	},
-	{
-		"action": "get-template",
-		"inputfile": "umc/app/feedback.en.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"targetfile": "umc/app/feedback.%(language)s.html"
-	},
-	{
-		"action": "install-template",
-		"outputfile": "usr/share/univention-management-console-frontend/js/umc/app/feedback.%(language)s.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"inputfile": "umc/app/feedback.%(language)s.html"
-	},
-	{
-		"action": "get-template",
-		"inputfile": "umc/app/finished.en.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"targetfile": "umc/app/finished.%(language)s.html"
-	},
-	{
-		"action": "install-template",
-		"outputfile": "usr/share/univention-management-console-frontend/js/umc/app/finished.%(language)s.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"inputfile": "umc/app/finished.%(language)s.html"
-	},
-	{
-		"action": "get-template",
-		"inputfile": "umc/app/help.en.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"targetfile": "umc/app/help.%(language)s.html"
-	},
-	{
-		"action": "install-template",
-		"outputfile": "usr/share/univention-management-console-frontend/js/umc/app/help.%(language)s.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"inputfile": "umc/app/help.%(language)s.html"
-	},
-	{
-		"action": "get-template",
-		"inputfile": "umc/app/welcome.en.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"targetfile": "umc/app/welcome.%(language)s.html"
-	},
-	{
-		"action": "install-template",
-		"outputfile": "usr/share/univention-management-console-frontend/js/umc/app/welcome.%(language)s.html",
-		"packagedir": "management/univention-management-console-frontend",
-		"inputfile": "umc/app/welcome.%(language)s.html"
-	}
+    {
+        "input_files": "umc/**js",
+        "mo_destination": "usr/share/univention-management-console-frontend/js/umc/i18n/{lang}/app.json",
+        "package_dir": "management/univention-management-console-frontend",
+        "package_name": "univention-management-console-frontend",
+        "po_subdir": "usr/share/univention-management-console-frontend/js/umc/i18n/{lang}",
+        "target": "json"
+    },
+    {
+        "input_files": "src/**py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-management-console.mo",
+        "package_dir": "management/univention-management-console",
+        "package_name": "univention-management-console",
+        "po_subdir": "src/univention/management/console",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin",
+        "po_subdir": "modules/univention/admin",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers",
+        "po_subdir": "modules/univention/admin/handlers",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/computers/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-computers.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-computers",
+        "po_subdir": "modules/univention/admin/handlers/computers",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/container/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-container.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-container",
+        "po_subdir": "modules/univention/admin/handlers/container",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/dhcp/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-dhcp.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-dhcp",
+        "po_subdir": "modules/univention/admin/handlers/dhcp",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/dns/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-dns.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-dns",
+        "po_subdir": "modules/univention/admin/handlers/dns",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/groups/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-groups.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-groups",
+        "po_subdir": "modules/univention/admin/handlers/groups",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/kerberos/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-kerberos.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-kerberos",
+        "po_subdir": "modules/univention/admin/handlers/kerberos",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/legacy/computers/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-legacy-computers.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-legacy-computers",
+        "po_subdir": "modules/univention/admin/handlers/legacy/computers",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/legacy/policies/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-legacy-policies.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-legacy-policies",
+        "po_subdir": "modules/univention/admin/handlers/legacy/policies",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/mail/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-mail.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-mail",
+        "po_subdir": "modules/univention/admin/handlers/mail",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/nagios/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-nagios.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-nagios",
+        "po_subdir": "modules/univention/admin/handlers/nagios",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/networks/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-networks.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-networks",
+        "po_subdir": "modules/univention/admin/handlers/networks",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/policies/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-policies.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-policies",
+        "po_subdir": "modules/univention/admin/handlers/policies",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/settings/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-settings.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-settings",
+        "po_subdir": "modules/univention/admin/handlers/settings",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/shares/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-shares.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-shares",
+        "po_subdir": "modules/univention/admin/handlers/shares",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/users/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-users.mo",
+        "package_dir": "management/univention-directory-manager-modules",
+        "package_name": "univention-admin-handlers-users",
+        "po_subdir": "modules/univention/admin/handlers/users",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/container/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-container-msgpo.mo",
+        "package_dir": "services/univention-s4-connector",
+        "package_name": "univention-admin-handlers-container-msgpo",
+        "po_subdir": "modules/univention/admin/handlers/container/msgpo",
+        "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/saml/*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-saml.mo",
+        "package_dir": "saml/univention-saml",
+        "package_name": "univention-admin-handlers-saml",
+        "po_subdir": "modules/univention/admin/handlers/saml",
+        "target": "mo"
+    }
 ]

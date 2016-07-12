@@ -1,0 +1,74 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright 2013-2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+import os
+import sys
+import getopt
+import fnmatch
+import polib
+
+USAGE = """
+Usage: univention-ucs-translation-fakemessage [directory]
+
+This script walks over all po files in a given directory and its subfolders.
+It fills all msgid strings to the corresponding msgid and prepeding it with a
+character sequence '!TR!'.
+It is useful for visual quick testing of translation coverage and po file
+generation.
+"""
+
+def main(po_dir):
+	for _dir, dns, fns in os.walk(os.path.abspath(po_dir)):
+		for po_file in fnmatch.filter(fns, '*po'):
+			po = polib.pofile(os.path.join(_dir, po_file))
+			for entry in po:
+				if entry.msgid == '':
+					continue
+				entry.msgstr = "!TR! " + entry.msgid
+			po.save(os.path.join(_dir, po_file))
+
+
+if __name__ == '__main__':
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], ":h", ["--help"])
+	except getopt.GetoptError as err:
+		print(USAGE)
+		sys.exit(2)
+
+	for opt, val in opts:
+		if opt in ("-h", "--help"):
+			print(USAGE)
+			sys.exit(0)
+
+	if not args or len(args) > 1:
+		print("Error: Invalid number of arguments. Provide a single directory.")
+		print(USAGE)
+		sys.exit(1)
+	else:
+		main(args[0])

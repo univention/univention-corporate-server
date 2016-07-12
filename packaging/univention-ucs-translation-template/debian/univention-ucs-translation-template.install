@@ -1,6 +1,4 @@
 translationhelper.py usr/share/pyshared/univention
 specialcases.json usr/share/univention-ucs-translation-template
 univention-ucs-translation-build-package.py usr/bin
-univention-ucs-translation-fakemessages.sh usr/bin
-univention-ucs-translation-update-source-files.py usr/bin
-univention-ucs-translation-update-target-files.py usr/bin
+univention-ucs-translation-fakemessage usr/bin

@@ -36,6 +36,9 @@ import univention.dh_umc as dh_umc
 import univention.translationhelper as tlh
 
 
+SPECIALCASES_PATH = "/tmp/univention-ucs-translation-template/specialcases.json"
+
+
 if __name__ == '__main__':
 	usage = '''%prog [options] -s source_dir -c language_code -l locale -n language_name
 e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
@@ -61,43 +64,30 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 	if not options.target_name:
 		parser.error('Missing argument -n. %s' % help_message)
 
-	# make options.source_dir absolute
 	options.source_dir = os.path.abspath(options.source_dir)
 	# find all module files and move them to a language specific directory
 	startdir = os.getcwd()
 	base_translation_modules = tlh.find_base_translation_modules(startdir, options.source_dir, options.basefiles)
-	# generate/update language specific .po files and generate .mo files in the correct directory
 	dh_umc.LANGUAGES = (options.target_language, )
-	for modules in base_translation_modules:
-		umc_modules = tlh.get_modules_from_path(modules['modulename'], os.path.join(options.source_dir, modules['packagedir']))
-		for module in umc_modules:
-			package_path_absolute = os.path.join(options.target_language, modules['packagedir'])
-			tlh.update_package_translation_files(module, modules['modulename'], modules['packagedir'], options.source_dir, options.target_language, startdir)
-			tlh.update_and_install_translation_files_to_correct_path(module, options.target_language, package_path_absolute, startdir)
+	all_modules = list()
+	for module_attrs in base_translation_modules:
+		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, options.target_language)
+		all_modules.append(module)
+		# generate/update language specific .po files and generate .mo files in the correct directory
+		abs_path_translated_src_pkg = tlh.update_package_translation_files(module, options.source_dir, options.target_language)
 
 	# special cases, e.g. univention-management-console-frontend
-	specialmodules = []
-	specialcases_file = "/usr/share/univention-ucs-translation-template/specialcases.json"
-	if os.path.exists(specialcases_file):
-		with open(specialcases_file, 'rb') as fd:
-			specialmodules = json.load(fd)
+	special_cases = []
+	if os.path.exists(SPECIALCASES_PATH):
+		with open(SPECIALCASES_PATH, 'rb') as fd:
+			special_cases = json.load(fd)
 	else:
-		print "Error: Could not find file %s. Several files will not be handled." % specialcases_file
+		print "Error: Could not find file %s. Several files will not be handled." % SPECIALCASES_PATH
 
-	for module in specialmodules:
-		try:
-			if module['action'] == 'update-po':
-				tlh.translate_special_case(module, options.source_dir, startdir, options.target_language)
-			elif module['action'] == 'install-mo/json':
-				tlh.translate_special_case_po_to_target(module, startdir, options.target_language)
-			elif module['action'] == 'get-template':
-				tlh.get_template(module, options.source_dir, startdir, options.target_language)
-			elif module['action'] == 'install-template':
-				tlh.install_template(module, startdir, options.target_language)
-		except Exception as exc:
-			print "Warning in special case: %s" % (exc,)
-	# end special case
+	for s_case in special_cases:
+		tlh.translate_special_case(s_case, options.source_dir, options.target_language)
 
 	# create new package
 	new_package_dir = os.path.join(startdir, 'univention-ucs-translation-%s' % options.target_language)
 	tlh.create_new_package(new_package_dir, options.target_language, options.target_locale, options.target_name, startdir)
+	tlh.write_makefile(all_modules, special_cases, new_package_dir, options.target_language)
