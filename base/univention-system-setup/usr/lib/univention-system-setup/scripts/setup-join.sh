@@ -179,8 +179,12 @@ if [ "$system_setup_boot_installer" != "true" ]; then
 	fi
 	progress_next_step 3
 
-	test -x /usr/share/univention-mail-postfix/create-dh-parameter-files.sh && \
-		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >>/var/log/univention/dh-parameter-files-creation.log 2>&1 &
+	if [ -x /usr/share/univention-mail-postfix/create-dh-parameter-files.sh ]; then
+		DH_LOG_FILE="/var/log/univention/dh-parameter-files-creation.log"
+		touch "$DH_LOG_FILE"
+		chmod 640 "$DH_LOG_FILE"
+		/usr/share/univention-mail-postfix/create-dh-parameter-files.sh >> "$DH_LOG_FILE" 2>&1 &
+	fi
 
 	progress_next_step 15
 fi

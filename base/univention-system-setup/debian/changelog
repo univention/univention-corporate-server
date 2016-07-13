@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-30) unstable; urgency=medium
+
+  * Bug #40046: fix rights for log file dh-parameter-files-creation.log
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 13 Jul 2016 18:33:24 +0200
+
 univention-system-setup (9.0.4-29) unstable; urgency=medium
 
   * Bug #40551: Send piwik data for the system setup (fixes) 
