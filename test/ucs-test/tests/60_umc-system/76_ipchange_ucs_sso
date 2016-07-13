@@ -29,8 +29,7 @@ if __name__ == '__main__':
 		utils.verify_ldap_object(computer, {'aRecord': ip})
 
 		for ucs_sso_dn, ucs_sso_object in lo.search('relativeDomainName=ucs-sso', unique=True, required=True):
-			ucs_sso_dn = ucs_sso_dn[0]
-			ips = ucs_sso_object[1].get('aRecord')
+			ips = ucs_sso_object.get('aRecord')
 			break
 		else:
 			raise ValueError('no ucs-sso host found.')

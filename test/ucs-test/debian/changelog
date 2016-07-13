@@ -1,3 +1,9 @@
+ucs-test (6.0.35-2) unstable; urgency=medium
+
+  * Bug #41748: fix test
+
+ -- Florian Best <best@univention.de>  Wed, 13 Jul 2016 11:12:38 +0200
+
 ucs-test (6.0.35-1) unstable; urgency=medium
 
   * Bug #41715: cleanup after tests
