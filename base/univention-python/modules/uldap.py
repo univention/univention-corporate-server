@@ -439,22 +439,37 @@ class access:
 			else:
 				continue
 			ml.append((op, key, val))
+		ml = self.__encode_entry(ml)
 
 		# check if we need to rename the object
-		rdn = ldap.dn.str2dn(dn)[0]
-		dn_vals = dict((x[0].lower(), x[1]) for x in rdn)
-		new_vals = dict((key.lower(), val if isinstance(val, basestring) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
-		new_rdn = ldap.dn.dn2str([[(x, new_vals.get(x, dn_vals[x]), 1) for x in [y[0].lower() for y in rdn]]])
-		rdn = ldap.dn.dn2str([rdn])
-
-		ml = self.__encode_entry(ml)
-		if rdn != new_rdn:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % new_rdn)
+		new_dn, new_rdn = self.__get_new_dn(dn, ml)
+		if not self.compare_dn(dn, new_dn):
+			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % (new_rdn,))
 			self.lo.rename_s(dn, new_rdn, None, delold=1)
-			dn = ldap.dn.dn2str([ldap.dn.str2dn(new_rdn)[0]] + ldap.dn.str2dn(dn)[1:])
+			dn = new_dn
 		if ml:
 			self.modify_s(dn, ml)
 		return dn
+
+	@classmethod
+	def __get_new_dn(self, dn, ml):
+		"""
+		>>> get_dn = access._access__get_new_dn
+		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'foo')])[0]
+		'univentionAppID=foo,dc=bar'
+		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'föo')])[0]
+		'univentionAppID=f\\xc3\\xb6o,dc=bar'
+		>>> get_dn('univentionAppID=foo,dc=bar', [(ldap.MOD_REPLACE, 'univentionAppID', 'bar')])[0]
+		'univentionAppID=bar,dc=bar'
+		"""
+		rdn = ldap.dn.str2dn(dn)[0]
+		dn_vals = dict((x[0].lower(), x[1]) for x in rdn)
+		new_vals = dict((key.lower(), val if isinstance(val, basestring) else val[0]) for op, key, val in ml if val and op not in (ldap.MOD_DELETE,))
+		new_rdn = ldap.dn.dn2str([[(x, new_vals.get(x.lower(), dn_vals[x.lower()]), ldap.AVA_STRING) for x in [y[0] for y in rdn]]])
+		rdn = ldap.dn.dn2str([rdn])
+		if rdn != new_rdn:
+			return ldap.dn.dn2str([ldap.dn.str2dn(new_rdn)[0]] + ldap.dn.str2dn(dn)[1:]), new_rdn
+		return dn, rdn
 
 	def modify_s(self, dn, ml):
 		"""Redirect modify_s directly to lo"""
@@ -509,6 +524,34 @@ class access:
 	def explodeDn(self, dn, notypes=False):
 		return explodeDn(dn, notypes)
 
+	@classmethod
+	def compare_dn(cls, a, b):
+		r"""Test DNs are same
+
+		>>> compare_dn = access.compare_dn
+		>>> compare_dn('foo=1', 'foo=1')
+		True
+		>>> compare_dn('foo=1', 'foo=2')
+		False
+		>>> compare_dn('Foo=1', 'foo=1')
+		True
+		>>> compare_dn('Foo=1', 'foo=2')
+		False
+		>>> compare_dn('foo=1,bar=2', 'foo=1,bar=2')
+		True
+		>>> compare_dn('bar=2,foo=1', 'foo=1,bar=2')
+		False
+		>>> compare_dn('foo=1+bar=2', 'foo=1+bar=2')
+		True
+		>>> compare_dn('bar=2+foo=1', 'foo=1+bar=2')
+		True
+		>>> compare_dn('bar=2+Foo=1', 'foo=1+Bar=2')
+		True
+		>>> compare_dn(r'foo=\31', r'foo=1')
+		True
+		"""
+		return [sorted((x.lower(), y, z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(a)] == [sorted((x.lower(), y, z) for x, y, z in rdn) for rdn in ldap.dn.str2dn(b)]
+
 	def __getstate__(self):
 		_d = univention.debug.function('uldap.__getstate__')
 		odict = self.__dict__.copy()
@@ -546,3 +589,8 @@ class access:
 
 		else:
 			raise ldap.CONNECT_ERROR('Bad referral "%s"' % (exc,))
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()

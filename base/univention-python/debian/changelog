@@ -1,3 +1,9 @@
+univention-python (9.0.1-8) unstable; urgency=medium
+
+  * Bug #41785: don't do modrdn() for equal DN's
+
+ -- Florian Best <best@univention.de>  Wed, 13 Jul 2016 10:14:43 +0200
+
 univention-python (9.0.1-7) unstable; urgency=medium
 
   * Bug #40041: hasChilds() is broken and can therefore be removed
