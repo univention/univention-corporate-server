@@ -201,7 +201,7 @@ check_for_postgresql84_installable () {
 			then
 				echo "It seems installable, BAD, aborting." >&3
 				echo "WARNING: postgresql-8.4, although currently not installed, can be installed"
-				echo "         by apt-get. This is probably because old of sources.list-entries."
+				echo "         by apt-get. This is probably because of old sources.list-entries."
 				echo "         Aborting the update, because it would fail. (Bug #41597)"
 				exit 1
 			else
