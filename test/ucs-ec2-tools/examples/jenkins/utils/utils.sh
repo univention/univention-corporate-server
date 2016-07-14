@@ -190,7 +190,8 @@ wait_for_reboot ()
 
 switch_to_test_app_center ()
 {
-	ucr set repository/app_center/server=appcenter-test.software-univention.de
+	# univention-app dev-use-test-appcenter
+	ucr set repository/app_center/server=appcenter-test.software-univention.de update/secure_apt=no appcenter/index/verify=no
 	if [ -x /usr/bin/univention-app ]; then
 		univention-app update
 	fi

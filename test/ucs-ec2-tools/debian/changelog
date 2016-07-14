@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-23) unstable; urgency=medium
+
+  * Bug #41771: Self service requires index/verify=no
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Jul 2016 23:44:57 +0200
+
 ucs-ec2-tools (2.0.0-22) unstable; urgency=low
 
   * Bug #41253: Switch to UCS-4.1-2 AMI
