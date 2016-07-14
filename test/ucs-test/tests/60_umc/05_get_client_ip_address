@@ -4,7 +4,7 @@
 ## packages:
 ##    - univention-management-console-web-server (>= 3.0.152)
 
-from univention.lib.umc_connection import UMCConnection
+from univention.testing.umc import UMCConnection
 import univention.testing.utils as utils
 import univention.testing.network as network
 from json import loads

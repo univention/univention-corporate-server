@@ -15,7 +15,7 @@ import json
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
-from univention.lib.umc_connection import UMCConnection
+from univention.testing.umc import UMCConnection
 
 
 class TestUMCUserAuthentication(TestUMCSystem):
@@ -46,19 +46,19 @@ class TestUMCUserAuthentication(TestUMCSystem):
 		"""
 		Queries UDM's users/user from UMC
 		"""
-		response = self.modify_object([{"object": {"userexpiry": None, "$dn$": self.test_user_dn}}], 'users/user')
+		return self.modify_object([{"object": {"userexpiry": None, "$dn$": self.test_user_dn}}], 'users/user')
 
 	def set_userexpiry_testval(self):
 		"""
 		Queries UDM's users/user from UMC
 		"""
-		response = self.modify_object([{"object": {"userexpiry": "2015-02-02", "$dn$": self.test_user_dn}}], 'users/user')
+		return self.modify_object([{"object": {"userexpiry": "2015-02-02", "$dn$": self.test_user_dn}}], 'users/user')
 
 	def set_userexpiry_empty(self):
 		"""
 		Queries UDM's users/user from UMC
 		"""
-		response = self.modify_object([{"object": {"userexpiry": "", "$dn$": self.test_user_dn}}], 'users/user')
+		return self.modify_object([{"object": {"userexpiry": "", "$dn$": self.test_user_dn}}], 'users/user')
 
 	def authenticate_to_umc(self, username, password):
 		"""

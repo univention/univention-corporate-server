@@ -12,7 +12,7 @@ import json
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 from univention.testing.strings import random_username
-from univention.lib.umc_connection import UMCConnection
+from univention.testing.umc import UMCConnection
 
 
 class TestUMCUserModules(TestUMCSystem):

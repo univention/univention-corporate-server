@@ -16,7 +16,7 @@ from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
 
 from univention.config_registry import ConfigRegistry
-from univention.lib.umc_connection import UMCConnection
+from univention.testing.umc import UMCConnection
 
 
 class TestUMCnonUCRpolicies(object):
@@ -79,7 +79,7 @@ class TestUMCnonUCRpolicies(object):
             # extracting the 'uid' value of the username string
             username = username.split(',')[0][len('uid='):]
         except (ValueError, KeyError) as exc:
-            print "Failed to get the UCR username and/or a password for a test"
+            print "Failed to get the UCR username and/or a password for a test: %s" % (exc,)
             self.return_code_result_skip()
         if hostname is None:
             print "The hostname in the UCR should not be 'None'"

@@ -9,7 +9,7 @@
 ## exposure: dangerous
 
 
-from umc_test_connection import UMCTestConnection
+from univention.testing.umc import UMCTestConnection
 import univention.testing.utils as utils
 import subprocess
 import ssl

@@ -1,10 +1,9 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Common Python Library
-#  Connections to remote UMC Servers
+# UCS test connections to remote UMC Servers
 #
-# Copyright 2015-2016 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,21 +30,36 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-
-# stdlib
+import sys
+import pprint
 import httplib
 
-
-# univention
-from univention.lib.umc_connection import UMCConnection
+from univention.lib.umc_connection import UMCConnection as _UMCConnection
 from univention.config_registry import ConfigRegistry
 
 
+class UMCConnection(_UMCConnection):
+
+	def request(self, url, data=None, flavor=None, command='command'):
+		print ''
+		print '*** UMC request: "%s/%s" %s \ndata = %s' % (command, url, '(%s)' % (flavor,) if flavor else '', pprint.pformat(data))
+		try:
+			response = super(UMCConnection, self).request(url, data, flavor, command)
+		except:
+			print 'UMC request failed: %s' % (sys.exc_info()[1],)
+			print ''
+			raise
+		print '*** UMC response: %s' % (pprint.pformat(response),)
+		print ''
+		return response
+
+
 class UMCTestConnection(UMCConnection):
+
 	def __init__(self, host=None, username=None, password=None, error_handler=None):
 		"""
 		All credentials are initialised with ucr values.
-		The the parameters can be used to overwrite them.
+		The parameters can be used to overwrite them.
 		The super constructor will do the authentification.
 		"""
 		self.ucr = ConfigRegistry()
@@ -54,16 +68,16 @@ class UMCTestConnection(UMCConnection):
 		self.username = self.ucr.get('tests/domainadmin/account')
 		self.username = self.username.split(',')[0][len('uid='):]
 		self.password = self.ucr.get('tests/domainadmin/pwd')
-		
+
 		if host:
 			self.hostname = host
-		
+
 		if username:
 			self.username = username
-		
+
 		if password:
 			self.password = password
-		
+
 		super(UMCTestConnection, self).__init__(self.hostname, self.username, self.password, error_handler)
 
 	def get_custom_connection(self, url=None, data=None, flavor=None, command='command', timeout=10):

@@ -1,5 +1,6 @@
 ucs-test (6.0.35-3) unstable; urgency=medium
 
+  * Bug #41790: more verbose output of all UMC commands
   * Bug #40385: (comment 1) wait_for_replication in 55slapd-crash-1270
 
  -- Florian Best <best@univention.de>  Thu, 14 Jul 2016 08:57:54 +0200

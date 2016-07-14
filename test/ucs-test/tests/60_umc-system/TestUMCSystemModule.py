@@ -10,8 +10,7 @@ from subprocess import Popen, PIPE
 from univention.config_registry import ConfigRegistry
 from univention.testing.codes import TestCodes
 import univention.testing.utils as utils
-from univention.lib.umc_connection import UMCConnection
-
+from univention.testing.umc import UMCConnection
 
 class TestUMCSystem(object):
     """

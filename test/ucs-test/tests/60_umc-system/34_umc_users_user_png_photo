@@ -17,7 +17,7 @@ from tempfile import NamedTemporaryFile
 import univention.testing.utils as utils
 from univention.testing.udm import UCSTestUDM
 from univention.testing.strings import random_username
-from univention.lib.umc_connection import UMCConnection
+from univention.testing.umc import UMCConnection
 
 
 class TestUMCUserAuthentication(TestUMCSystem):
