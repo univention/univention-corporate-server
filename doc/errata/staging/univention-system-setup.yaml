@@ -23,8 +23,8 @@ desc: |
    the setup process stating that no module would be available.
  * A typo in the header for the initial setup of UCS on an
    Amazon EC2 instance has been corrected.
- * Make it possible to collect usage data from the system setup to make future
-   improvements to the user experience even better.
+ * Enable collection of usage data during the system setup to allow future
+   improvements to the user experience.
  * Regenerate the system UUID during the fast setup demo mode to unsure a
    unique system.
  * Errors that occur during the system setup of UCS can now be send as
