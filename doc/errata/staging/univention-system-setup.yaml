@@ -25,7 +25,7 @@ desc: |
    Amazon EC2 instance has been corrected.
  * Enable collection of usage data during the system setup to allow future
    improvements to the user experience.
- * Regenerate the system UUID during the fast setup demo mode to unsure a
+ * Regenerate the system UUID during the fast setup demo mode to ensure a
    unique system.
  * Errors that occur during the system setup of UCS can now be send as
    feedback to Univention by the user.
