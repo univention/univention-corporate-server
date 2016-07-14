@@ -29,4 +29,6 @@ desc: |
    unique system.
  * Errors that occur during the system setup of UCS can now be send as
    feedback to Univention by the user.
-bug: [40046,41283,41622,40985,40968,41026,40710,40751,40673, 40551, 41140, 40782]
+ * Redirection problems for app appliances at the end of the setup wizard
+   have been corrected.
+bug: [40046,41283,41622,40985,40968,41026,40710,40751,40673,40551,41140,40782,41793]
