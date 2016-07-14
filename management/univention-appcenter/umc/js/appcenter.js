@@ -193,7 +193,11 @@ define([
 				this._appDetailsPage.destroyRecursive();
 			}
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
-			tools.umcpCommand('appcenter/ping');
+			if (!(app.is_installed_anywhere)) {
+				tools.umcpCommand('appcenter/track', {app: app.id});
+			} else {
+				tools.umcpCommand('appcenter/ping');
+			}
 			//this.standby(true);
 			var appDetailsDialog = new AppDetailsDialog({
 				moduleID: this.moduleID,

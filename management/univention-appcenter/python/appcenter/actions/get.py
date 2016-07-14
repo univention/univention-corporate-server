@@ -116,14 +116,14 @@ class Get(UniventionAppAction):
 	@classmethod
 	def _candidate_dict(cls, app):
 		ret = {}
-		latest = AppManager.find(app.id, latest=True)
-		if latest > app:
+		candidate = AppManager.find_candidate(app)
+		if candidate:
 			ret['update_available'] = True
-			ret['candidate_docker'] = latest.docker
-			ret['candidate_version'] = latest.version
-			ret['candidate_component_id'] = latest.component_id
-			ret['candidate_readme_update'] = latest.readme_update
-			ret['candidate_readme_post_update'] = latest.readme_post_update
+			ret['candidate_docker'] = candidate.docker
+			ret['candidate_version'] = candidate.version
+			ret['candidate_component_id'] = candidate.component_id
+			ret['candidate_readme_update'] = candidate.readme_update
+			ret['candidate_readme_post_update'] = candidate.readme_post_update
 		else:
 			ret['update_available'] = False  # TODO: ucr.is_true(app.ucr_upgrade_key); Bug#39916
 		return ret

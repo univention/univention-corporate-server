@@ -33,7 +33,6 @@
 #
 
 import re
-from distutils.version import LooseVersion
 
 from univention.appcenter.log import LogCatcher
 from univention.appcenter.utils import call_process
@@ -134,7 +133,9 @@ class Domain(CredentialsAction):
 				# unable to compute directly... better treat as not available
 				update_available = False
 			elif version:
-				update_available = LooseVersion(version) < LooseVersion(candidate_version)
+				remote_app = AppManager.find(app.id, app_version=version)
+				if remote_app:
+					update_available = AppManager.find_candidate(remote_app) is not None
 			ret[host['name']] = {
 				'ucs_version': remote_ucs_version,
 				'version': version,
@@ -147,4 +148,5 @@ class Domain(CredentialsAction):
 		return ret
 
 	def _find_latest_app_version(self, app):
-		return AppManager.find(app.id, latest=True)
+		candidate = AppManager.find_candidate(app)
+		return candidate or app

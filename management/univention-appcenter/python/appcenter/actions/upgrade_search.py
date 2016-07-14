@@ -62,4 +62,4 @@ class UpgradeSearch(UniventionAppAction):
 		return any(ucr_is_true(app.ucr_upgrade_key) for app in apps)
 
 	def _check_for_upgrades(self, app):
-		return AppManager.find(app.id, latest=True) > app
+		return AppManager.find_candidate(app) is not None

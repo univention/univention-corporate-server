@@ -101,7 +101,7 @@ class Update(UniventionAppAction):
 		if something_changed_locally or something_changed_remotely:
 			AppManager.clear_cache()
 			for app in AppManager.get_all_locally_installed_apps():
-				if AppManager.find(app.id, latest=True) > app:
+				if AppManager.find_candidate(app):
 					ucr_save({app.ucr_upgrade_key: 'yes'})
 			self._update_local_files()
 

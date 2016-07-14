@@ -1,3 +1,13 @@
+univention-appcenter (5.0.21-19) unstable; urgency=medium
+
+  * Bug #41702: Search for vendor, maintainer in Gallery
+  * Bug #33537: Apps may require previous versions before upgrade is allowed
+  * Bug #41690: Send a notification if an App is opened in the Gallery
+  * Bug #41691: Always send a notification if an App is (un)installed, maybe
+    anonymized
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 14 Jul 2016 10:03:46 +0200
+
 univention-appcenter (5.0.21-18) unstable; urgency=low
 
   * Bug #40515: Added docker vs network warning

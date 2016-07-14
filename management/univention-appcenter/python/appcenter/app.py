@@ -683,6 +683,7 @@ class App(object):
 	required_apps_in_domain = AppListAttribute()
 	conflicted_system_packages = AppListAttribute()
 	required_ucs_version = AppAttribute(regex=r'^(\d+)\.(\d+)-(\d+)(?: errata(\d+))?$')
+	required_app_version_upgrade = AppAttribute()
 	end_of_life = AppBooleanAttribute()
 
 	without_repository = AppBooleanAttribute()
@@ -974,8 +975,22 @@ class App(object):
 			ret.append(value)
 		return ret
 
+	@hard_requirement('upgrade')
+	def must_have_fitting_app_version(self):
+		'''To upgrade, at least version %(required_version)s needs to
+		be installed.'''
+		if self.required_app_version_upgrade:
+			required_version = LooseVersion(self.required_app_version_upgrade)
+			installed_app = AppManager.find(self)
+			installed_version = LooseVersion(installed_app.version)
+			if required_version > installed_version:
+				return {'required_version': self.required_app_version_upgrade}
+		return True
+
 	@hard_requirement('install', 'upgrade')
 	def must_have_fitting_ucs_version(self):
+		'''The application requires UCS version %(required_version)s or
+		later.'''
 		required_version = self.required_ucs_version
 		if not required_version:
 			return True
@@ -1416,6 +1431,18 @@ class AppManager(object):
 					return app
 		if apps:
 			return apps[0]
+
+	@classmethod
+	def find_candidate(cls, app):
+		app_version = LooseVersion(app.version)
+		apps = list(reversed(cls.get_all_apps_with_id(app.id)))
+		for _app in apps:
+			if _app <= app:
+				break
+			if _app.required_app_version_upgrade:
+				if LooseVersion(_app.required_app_version_upgrade) > app_version:
+					continue
+			return _app
 
 	@classmethod
 	def reload_package_manager(cls):

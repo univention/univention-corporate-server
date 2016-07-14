@@ -239,11 +239,11 @@ class UniventionAppAction(object):
 	def _send_information(self, app, status):
 		action = self.get_action_name()
 		self.debug('%s %s: %s' % (action, app.id, status))
-		if not app.notify_vendor:
-			return
 		server = AppManager.get_server()
 		url = '%s/postinst' % server
-		uuid = ucr_get('uuid/license', '00000000-0000-0000-0000-000000000000')
+		uuid = '00000000-0000-0000-0000-000000000000'
+		if app.notify_vendor:
+			uuid = ucr_get('uuid/license', uuid)
 		try:
 			values = {
 				'uuid': uuid,

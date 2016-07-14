@@ -264,6 +264,12 @@ class Instance(umcm.Base, ProgressMixin):
 		service = get_action(mode)
 		service.call(app=app)
 
+	@sanitize(app=AppSanitizer(required=True))
+	@simple_response
+	def track(self, app):
+		get = get_action('get')()
+		get._send_information(app, 200)
+
 	@require_password
 	def _invoke_docker(self, function, application, force, values):
 		can_continue = force  # always show configuration after first request
