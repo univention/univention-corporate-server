@@ -1,3 +1,9 @@
+ucs-test (6.0.35-4) unstable; urgency=low
+
+  * Bug #39056: deactivate 40/39 as I cannot reproduce it even on jenkins
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 14 Jul 2016 17:31:25 +0200
+
 ucs-test (6.0.35-3) unstable; urgency=medium
 
   * Bug #41790: more verbose output of all UMC commands

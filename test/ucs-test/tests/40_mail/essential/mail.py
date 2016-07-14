@@ -247,11 +247,11 @@ def virus_detected_and_quarantined(token, mail_address):
 
 
 def deactivate_spam_detection():
-	handler_set(['mail/antispam=no', 'mail/antivir/spam=no'])
+	handler_set(['mail/antivir/spam=no'])
 
 
 def activate_spam_detection():
-	handler_set(['mail/antispam=yes', 'mail/antivir/spam=yes'])
+	handler_set(['mail/antivir/spam=yes'])
 
 
 def activate_spam_header_tag(tag):
