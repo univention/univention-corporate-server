@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-31) unstable; urgency=medium
+
+  * Bug #41793: consider system activation for the redirect at the wizard end
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 14 Jul 2016 15:01:38 +0200
+
 univention-system-setup (9.0.4-30) unstable; urgency=medium
 
   * Bug #40046: fix rights for log file dh-parameter-files-creation.log

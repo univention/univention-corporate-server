@@ -163,6 +163,9 @@ def load_values(lang=None):
 					values['license_agreement'] = ''.join(license_file.readlines())
 					break
 
+	# check for installed system activation
+	values['system_activation_installed'] = os.path.exists('/usr/sbin/univention-system-activation')
+
 	return values
 
 def auto_complete_values_for_join(newValues, current_locale=None):

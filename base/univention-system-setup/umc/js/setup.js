@@ -378,8 +378,16 @@ define([
 		_redirectBrowser: function(interfaces, primary_interface) {
 			// redirect to new UMC address and set username to Administrator
 			this.standby(true);
-			var username = 'Administrator';
-			var target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), '/univention-management-console/?username=' + username);
+			var target = '/univention-management-console/?username=Administrator';
+			if (this._orgValues.system_activation_installed && this.wizard._isRoleMaster()) {
+				// redirect to '/' as the system activation service is enabled
+				// (Note: For roles other than DC master, the system activation service
+				// will not be enabled as they may only join into a domain with an
+				// already activated license.)
+				// Add a random digit at the end to avoid caching effects
+				target = '/?_rnd=' + Math.floor(Math.random() * 10e10);
+			}
+			target = window.location.href.replace(new RegExp( "/univention-management-console.*", "g" ), target);
 
 			// Consider IP changes, replace old ip in url by new ip
 			var newIp = this._getNewIpAddress(interfaces, primary_interface || 'eth0');
