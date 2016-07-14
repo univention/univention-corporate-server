@@ -56,7 +56,11 @@ group_create "$GROUPNAME" &&
 echo "$USERNAME" "$GROUPNAME"
 echo "$PRINTERNAME"
 
+wait_for_replication
+
 group_adduser "$USERNAME" "$GROUPNAME" || fail_test 1
+
+wait_for_replication
 
 echo -e "\n\n***Adding the new group to \"Domain Admins\""
 group_addgroup "$GROUPNAME" "Domain Admins" &&
