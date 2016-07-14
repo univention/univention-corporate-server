@@ -191,7 +191,9 @@ wait_for_reboot ()
 switch_to_test_app_center ()
 {
 	ucr set repository/app_center/server=appcenter-test.software-univention.de
-	[ -x /usr/bin/univention-app ] && univention-app update
+	if [ -x /usr/bin/univention-app ]; then
+		univention-app update
+	fi
 }
 
 switch_components_to_test_app_center ()
