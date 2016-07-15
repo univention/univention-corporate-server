@@ -533,7 +533,7 @@ uninstall_packages ()
 
 setup_pre_joined_environment ()
 {
-
+	ucr set appcenter/index/verify=no update/secure_apt=no
 	if app_appliance_AllowPreconfiguredSetup $1; then
 		cat >/var/cache/univention-system-setup/profile <<__EOF__
 hostname="master"
@@ -802,6 +802,8 @@ __EOF__
 appliance_reset_servers ()
 {
 	ucr set repository/online/server="https://updates.software-univention.de/"
+	ucr unset appcenter/index/verify=no
+       	ucr set update/secure_apt=yes
 
 	# ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
 	# 	ucr set "$key=appcenter.software-univention.de"
