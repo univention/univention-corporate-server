@@ -22,7 +22,7 @@ desc: |
  * Server certificates are no longer revoked and re-created when the LDAP host
    entry is only moved.
  * The new UCRV 'ssl/ca/cipher' can be used to chose the encryption mechanism
-   for the private key of the root CA.
+   for the private key of the root CA. The new default is aes256.
  * The new UCRV 'ssl/host/objectclass' can be used to configure the LDAP
    object classes for which SSL certificates are automatically created.
 bug: [31369,39257,24094,40498,25285,35748,39045,35027,31230,37621,38903]
