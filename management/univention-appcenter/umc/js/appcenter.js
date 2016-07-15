@@ -61,7 +61,7 @@ define([
 		}
 	});
 
-	app.registerOnStartup(function(){
+	app.registerOnStartup(function() {
 		tools.umcpCommand("appcenter/ping", {}, false, "appcenter");
 	});
 
@@ -193,11 +193,6 @@ define([
 				this._appDetailsPage.destroyRecursive();
 			}
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, app.id, 'show');
-			if (!(app.is_installed_anywhere)) {
-				tools.umcpCommand('appcenter/track', {app: app.id});
-			} else {
-				tools.umcpCommand('appcenter/ping');
-			}
 			//this.standby(true);
 			var appDetailsDialog = new AppDetailsDialog({
 				moduleID: this.moduleID,

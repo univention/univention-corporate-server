@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console window*/
+/*global define*/
 
 define([
 	"dojo/_base/declare",
@@ -116,7 +116,8 @@ define([
 			this.own(this._grid);
 		},
 
-		_setAppAttr: function(app) {
+		_setAppAttr: function(app, track) {
+			track = track !== false;
 			this._set('app', app);
 			if (this.appLoadingDeferred.isFulfilled()) {
 				this.appLoadingDeferred = new Deferred();
@@ -135,6 +136,11 @@ define([
 					this.onBack();
 					this.appLoadingDeferred.reject();
 					return;
+				}
+				if (track && !loadedApp.is_installed_anywhere) {
+					tools.umcpCommand('appcenter/track', {app: loadedApp.id});
+				} else {
+					tools.umcpCommand('appcenter/ping');
 				}
 				var app = new App(loadedApp, this);
 				this._set('app', app);
@@ -170,7 +176,7 @@ define([
 
 		reloadPage: function() {
 			// reset same app, but only pass the id => loads new from server
-			this.set('app', {id: this.app.id});
+			this.set('app', {id: this.app.id}, false);
 			return this.appLoadingDeferred;
 		},
 
@@ -297,8 +303,8 @@ define([
 					callback: lang.hitch(this, 'configureApp')
 				});
 			}
+			var callback;
 			if (this.app.canUninstallInDomain()) {
-				var callback;
 				if (isSingleServerInstallation) {
 					callback = lang.hitch(this.app, 'uninstall');
 				} else {
@@ -319,7 +325,6 @@ define([
 				});
 			}
 			if (this.app.canUpgradeInDomain()) {
-				var callback;
 				if (isSingleServerInstallation) {
 					callback = lang.hitch(this.app, 'upgrade');
 				} else {

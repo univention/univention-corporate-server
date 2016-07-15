@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-21) unstable; urgency=medium
+
+  * Bug #41690: Send a notification if an App is shown in the DetailsPage
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Jul 2016 16:10:19 +0200
+
 univention-appcenter (5.0.21-20) unstable; urgency=medium
 
   * Bug #41804: Do not install Docker Apps when non Docker versions were
