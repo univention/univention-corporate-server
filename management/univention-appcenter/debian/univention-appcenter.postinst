@@ -69,4 +69,13 @@ if dpkg --compare-versions "$2" lt-nl 5.0.20-44; then
 	chmod 664 /var/cache/univention-appcenter/*
 fi
 
+if dpkg --compare-versions "$2" lt-nl 5.0.21-20; then
+	python -c '
+from univention.appcenter import AppManager; from univention.appcenter.ucr import ucr_save;
+for app in AppManager.get_all_locally_installed_apps():
+  if not app.docker:
+    ucr_save({"appcenter/prudence/docker/%s" % app.id: "yes"})
+'
+fi
+
 exit 0

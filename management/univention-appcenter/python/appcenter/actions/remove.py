@@ -33,6 +33,7 @@
 #
 
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
+from univention.appcenter.ucr import ucr_save
 
 
 class Remove(InstallRemoveUpgrade):
@@ -60,6 +61,8 @@ class Remove(InstallRemoveUpgrade):
 		self._unregister_files(app)
 		self.percentage = 80
 		self._call_unjoin_script(app, args)
+		if not app.docker:
+			ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 
 	def _remove_app(self, app, args):
 		self._apt_get('remove', app.default_packages, 45, update=False)

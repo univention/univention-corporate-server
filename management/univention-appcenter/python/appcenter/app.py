@@ -503,6 +503,9 @@ class App(object):
 			App to work (because a specific feature was added or
 			a bug was fixed after the initial release of this UCS
 			version). Examples: 4.1-1, 4.1-1 errata200.
+		required_app_version_upgrade: The App version that has to be
+			installed before an upgrade to this version is allowed.
+			Does nothing when installing (not upgrading) the App.
 		end_of_life: If specified, this App does no longer show up in
 			the App Center when not installed. For old
 			installations, a warning is shown that the user needs
@@ -586,6 +589,8 @@ class App(object):
 			"app_report_object_type".
 		docker_image: Docker Image for the container. If specified the
 			App implicitly becomes a Docker App.
+		docker_migration_works: Whether it is safe to install this
+			version while a non Docker version is or was installed.
 		docker_allowed_images: List of other Docker Images. Used for
 			updates. If the new version has a new "docker_image"
 			but the old App runs on an older image specified in
@@ -716,6 +721,7 @@ class App(object):
 	app_report_attribute_filter = AppAttribute()
 
 	docker_image = AppAttribute()
+	docker_migration_works = AppBooleanAttribute()
 	docker_allowed_images = AppListAttribute()
 	docker_shell_command = AppAttribute(default='/bin/bash')
 	docker_volumes = AppListAttribute()
@@ -1434,9 +1440,12 @@ class AppManager(object):
 
 	@classmethod
 	def find_candidate(cls, app):
+		docker_careful = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
 		app_version = LooseVersion(app.version)
 		apps = list(reversed(cls.get_all_apps_with_id(app.id)))
 		for _app in apps:
+			if docker_careful and _app.docker and not _app.docker_migration_works:
+				continue
 			if _app <= app:
 				break
 			if _app.required_app_version_upgrade:

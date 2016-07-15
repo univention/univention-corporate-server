@@ -99,6 +99,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			else:
 				self.warn('Unable to process %r' % (mode,))
 				return
+			ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
 			self._do_it(app, args)
 		else:
 			self.log('Nothing to upgrade')

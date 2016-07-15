@@ -409,6 +409,7 @@ class Instance(umcm.Base, ProgressMixin):
 	@sanitize(
 		function=ChoicesSanitizer(['install', 'uninstall', 'update', 'install-schema', 'update-schema'], required=True),
 		application=StringSanitizer(minimum=1, required=True),
+		app_version=StringSanitizer(),
 		force=BooleanSanitizer(),
 		host=StringSanitizer(),
 		only_dry_run=BooleanSanitizer(),
@@ -425,6 +426,7 @@ class Instance(umcm.Base, ProgressMixin):
 		#   dry_run: install application although they were asked to dry_run)
 		host = request.options.get('host')
 		function = request.options.get('function')
+		app_version = request.options.get('app_version')
 		send_as = function
 		if function.startswith('install'):
 			function = 'install'
@@ -436,12 +438,18 @@ class Instance(umcm.Base, ProgressMixin):
 		application = Application.find(application_id)
 		if application is None:
 			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application_id,))
+		if app_version:
+			for application in application.versions:
+				if application.version == app_version:
+					break
+			else:
+				raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application_id,))
 		force = request.options.get('force')
 		values = request.options.get('values')
 		only_dry_run = request.options.get('only_dry_run')
 		dont_remote_install = request.options.get('dont_remote_install')
 		only_master_packages = send_as.endswith('schema')
-		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, host, force, only_master_packages, dont_remote_install, only_dry_run))
+		MODULE.process('Try to %s (%s) %s=%s on %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, application_id, app_version, host, force, only_master_packages, dont_remote_install, only_dry_run))
 
 		# REMOTE invocation!
 		if host and host != self.ucr.get('hostname'):
@@ -469,13 +477,6 @@ class Instance(umcm.Base, ProgressMixin):
 					thread = notifier.threads.Simple('invoke',
 						notifier.Callback(_thread_remote, connection, self.package_manager), _finished_remote)
 					thread.run()
-			self.finished(request.id, result)
-			return
-
-		# DOCKER is different!
-		# TODO
-		if application and application.get('docker'):
-			result = self._invoke_docker(function, application, force, values)
 			self.finished(request.id, result)
 			return
 
@@ -525,7 +526,7 @@ class Instance(umcm.Base, ProgressMixin):
 					previously_registered_by_dry_run = False
 					if can_continue and function in ('install', 'update'):
 						remove_component = only_dry_run
-						dry_run_result, previously_registered_by_dry_run = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force)
+						dry_run_result, previously_registered_by_dry_run = application.install_dry_run(self.package_manager, self.component_manager, remove_component=remove_component, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, function=function, force=force, this_version=True)
 						result.update(dry_run_result)
 						result['software_changes_computed'] = True
 						serious_problems = bool(result['broken'] or result['master_unreachable'] or result['serious_problems_with_hosts'])
@@ -554,7 +555,7 @@ class Instance(umcm.Base, ProgressMixin):
 								with module.package_manager.no_umc_restart(exclude_apache=True):
 									if function in ('install', 'update'):
 										# dont have to add component: already added during dry_run
-										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, previously_registered_by_dry_run=previously_registered_by_dry_run)
+										return application.install(module.package_manager, module.component_manager, add_component=only_master_packages, send_as=send_as, username=self._username, password=self.password, only_master_packages=only_master_packages, dont_remote_install=dont_remote_install, previously_registered_by_dry_run=previously_registered_by_dry_run, this_version=True)
 									else:
 										return application.uninstall(module.package_manager, module.component_manager, self._username, self.password)
 

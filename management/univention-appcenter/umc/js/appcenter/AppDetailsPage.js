@@ -957,6 +957,7 @@ define([
 					'function': func,
 					'application': this.app.id,
 					'app': this.app.id,
+					'app_version': this.app.candidateVersion || this.app.version,
 					'host': host || '',
 					'force': force === true,
 					'values': values || {}
@@ -1279,9 +1280,9 @@ define([
 				return null;
 			}
 			if (this.app.notifyVendor) {
-				return _('This application will inform the app provider about (un)installation. The app provider may contact you.');
+				return _('This application will inform the App provider about an (un)installation. The app provider may contact you.');
 			} else {
-				return _('This application will not inform the app provider about (un)installation.');
+				return _('This application will not inform the App provider about an (un)installation directly.');
 			}
 		},
 

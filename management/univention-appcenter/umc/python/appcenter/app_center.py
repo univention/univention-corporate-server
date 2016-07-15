@@ -82,6 +82,7 @@ from univention.management.console.ldap import machine_connection, get_machine_c
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions import get_action
+from univention.appcenter.ucr import ucr_save
 
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
@@ -1263,15 +1264,16 @@ class Application(object):
 			app = AppManager.find(self.id, self.version)
 			if app:
 				register.call(apps=[app], do_it=False)
+				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 			status = 200
 		except:
 			status = 500
 		self._finished('uninstall', status, component_manager.ucr, package_manager, username, password)
 		return status == 200
 
-	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_master_packages=False, dont_remote_install=False, function='install', force=False):
-		if self.candidate:
-			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password, only_master_packages, dont_remote_install, function, force)
+	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_master_packages=False, dont_remote_install=False, function='install', force=False, this_version=False):
+		if not this_version and self.candidate:
+			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password, only_master_packages, dont_remote_install, function, force, this_version)
 		MODULE.info('Invoke install_dry_run')
 		ucr.load()
 		server_role = ucr.get('server/role')
@@ -1632,9 +1634,9 @@ class Application(object):
 			finally:
 				package_manager.add_hundred_percent()
 
-	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False, previously_registered_by_dry_run=False):
-		if self.candidate:
-			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install, previously_registered_by_dry_run)
+	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False, previously_registered_by_dry_run=False, this_version=False):
+		if not this_version and self.candidate:
+			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install, previously_registered_by_dry_run, this_version)
 		if self.get('dockerimage'):
 			MODULE.error('Cannot install a Docker app. Use "univention-app install" or a newer version of the UMC module App Center')
 			return False
@@ -1722,6 +1724,7 @@ class Application(object):
 				app = AppManager.find(self.id, self.version)
 				if app:
 					register.call(apps=[app], do_it=True)
+				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 			status = 200
 		except:
 			MODULE.warn(traceback.format_exc())
@@ -1770,12 +1773,12 @@ class Application(object):
 			run_join_scripts.join()
 
 	def _send_information(self, action, status):
-		if not self.get('notifyvendor'):
-			return
 		ucr.load()
 		server = self.get_server(with_scheme=True)
 		url = '%s/postinst' % (server, )
-		uuid = LICENSE.uuid or '00000000-0000-0000-0000-000000000000'
+		uuid = '00000000-0000-0000-0000-000000000000'
+		if self.get('notifyvendor'):
+			uuid = LICENSE.uuid or uuid
 		try:
 			values = {
 				'uuid': uuid,

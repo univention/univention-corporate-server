@@ -1,3 +1,11 @@
+univention-appcenter (5.0.21-20) unstable; urgency=medium
+
+  * Bug #41804: Do not install Docker Apps when non Docker versions were
+    installed before
+  * Bug #33537: Code for old lib
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 15 Jul 2016 12:51:23 +0200
+
 univention-appcenter (5.0.21-19) unstable; urgency=medium
 
   * Bug #41702: Search for vendor, maintainer in Gallery

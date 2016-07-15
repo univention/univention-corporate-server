@@ -68,8 +68,12 @@ def error_handling(etype, exc, etraceback):
 
 
 class AppSanitizer(Sanitizer):
+	def __init__(self, **kwargs):
+		kwargs.setdefault('further_arguments', ['app_version'])
+		super(AppSanitizer, self).__init__(**kwargs)
+
 	def _sanitize(self, value, name, further_args):
-		return AppManager.find(value)
+		return AppManager.find(value, app_version=further_args.get('app_version'))
 
 
 # TODO: remove this, unused!

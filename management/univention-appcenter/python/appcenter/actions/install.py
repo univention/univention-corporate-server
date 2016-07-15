@@ -36,7 +36,7 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.udm import search_objects
-from univention.appcenter.ucr import ucr_get
+from univention.appcenter.ucr import ucr_get, ucr_is_true
 
 
 class ControlScriptException(Exception):
@@ -57,6 +57,12 @@ class Install(InstallRemoveUpgrade):
 		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install master packages on DC master and DC backup systems')
 
 	def main(self, args):
+		app = args.app
+		if app.docker and ucr_is_true('appcenter/ignore/docker/%s' % app.id):
+			apps = [_app for _app in AppManager.get_all_apps_with_id(app.id) if not _app.docker]
+			app = sorted(apps)[-1]
+			self.warn('Using %s instead of %s because docker is to be ignored' % (app, args.app))
+		args.app = app
 		return self.do_it(args)
 
 	def _install_only_master_packages(self, args):

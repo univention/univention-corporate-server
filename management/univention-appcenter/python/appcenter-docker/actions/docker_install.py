@@ -39,6 +39,7 @@ from univention.appcenter.actions.configure import StoreConfigAction
 from univention.appcenter.actions.install import Install
 from univention.appcenter.actions.docker_base import DockerActionMixin
 from univention.appcenter.actions import Abort, get_action
+from univention.appcenter.ucr import ucr_save
 from univention.appcenter.utils import _
 
 
@@ -58,6 +59,7 @@ class Install(Install, DockerActionMixin):
 			self._start_docker_image(app, hostdn, password, args)
 			self.percentage = 50
 			self._setup_docker_image(app, args)
+			ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
 			return True
 
 	def _revert(self, app, args):
