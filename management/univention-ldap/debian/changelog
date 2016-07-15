@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-30) unstable; urgency=medium
+
+  * Bug #41715: reallow posixAccount for univentionWindows objects
+
+ -- Florian Best <best@univention.de>  Fri, 15 Jul 2016 10:41:53 +0200
+
 univention-ldap (12.1.6-29) unstable; urgency=medium
 
   * Bug #41715: Bug #41180: revert adding add_content_acl to slapd.conf
