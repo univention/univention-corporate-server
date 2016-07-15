@@ -2,7 +2,6 @@
 ## desc: Check Secure APT is enabled
 ## tags:
 ##  - basic
-##  - apptest
 ## exposure: safe
 . /usr/share/univention-lib/ucr.sh || exit 137
 is_ucr_true update/secure_apt
