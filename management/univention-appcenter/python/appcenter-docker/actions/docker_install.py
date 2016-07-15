@@ -59,8 +59,13 @@ class Install(Install, DockerActionMixin):
 			self._start_docker_image(app, hostdn, password, args)
 			self.percentage = 50
 			self._setup_docker_image(app, args)
-			ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
 			return True
+
+	def _do_it(self, app, args):
+		ret = super(Install, self)._do_it(app, args)
+		if app.docker:
+			ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
+		return ret
 
 	def _revert(self, app, args):
 		if not args.revert:

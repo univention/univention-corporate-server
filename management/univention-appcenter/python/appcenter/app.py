@@ -1227,6 +1227,13 @@ class App(object):
 		on the Active Directory domain controller server.'''
 		return not self._has_active_ad_member_issue('password')
 
+	@soft_requirement('install', 'upgrade')
+	def shall_not_be_docker_if_discouraged(self):
+		'''The application has not been approved to migrate all
+		existing data.'''
+		problem = ucr_is_true('docker/prudence/docker/%s' % self.id) and self.docker and not self.docker_migration_works
+		return not problem
+
 	def check(self, function):
 		package_manager = AppManager.get_package_manager()
 		hard_problems = {}

@@ -36,7 +36,7 @@ from univention.appcenter.app import AppManager
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.udm import search_objects
-from univention.appcenter.ucr import ucr_get, ucr_is_true
+from univention.appcenter.ucr import ucr_get, ucr_is_true, ucr_save
 
 
 class ControlScriptException(Exception):
@@ -79,6 +79,7 @@ class Install(InstallRemoveUpgrade):
 			if self._install_app(app, args):
 				self.percentage = 80
 				self._call_join_script(app, args)
+				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 			else:
 				raise Abort('Failed to install the App')
 
