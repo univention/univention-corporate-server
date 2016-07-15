@@ -50,8 +50,27 @@ case "$1" in
 			_undivert "$file"
 		done
 
-		# rebuild plymouth theme
-		univention-config-registry set bootsplash/theme='ucs'
+		# reset UCR variables for grub
+		univention-config-registry set \
+			grub/backgroundimage='/boot/grub/uniboot.png' \
+			grub/color/highlight='white/green' \
+			grub/color/normal='black/black' \
+			grub/menu/color/highlight='white/green' \
+			grub/menu/color/normal='black/black' \
+			bootsplash/theme='ucs'
+
+		# reset other appliance related UCR variables
+		univention-config-registry unset \
+			system/setup/boot/pages/blacklist \
+			system/setup/boot/fields/blacklist \
+			repository/app_center/blacklist \
+			repository/app_center/whitelist \
+			umc/web/appliance/name \
+			umc/web/appliance/fast_setup_mode \
+			umc/web/appliance/data_path \
+			umc/web/appliance/logo \
+			grub/title
+
 		;;
 	purge)
 		;;

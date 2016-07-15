@@ -18,7 +18,7 @@ category = '''
 	</categories>
 '''
 
-if app:
+if app and app.name and app.appliance_primary_color:
 	print category.format(
 		name=app.name,
 		color=app.appliance_primary_color

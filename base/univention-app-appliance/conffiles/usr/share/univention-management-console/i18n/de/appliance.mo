@@ -10,6 +10,7 @@ from univention.appcenter import get_action
 appId = configRegistry.get('umc/web/appliance/id', '')
 app = AppManager.find(appId)
 get = get_action('get')()
+app_name = (app and app.name) or ''
 
 po = POFile()
 po.metadata = {
@@ -33,14 +34,14 @@ po.append(POEntry(
 	msgstr='Link zur UCS Übersicht'
 ))
 po.append(POEntry(
-	msgid='Link to the {name} webinterface'.format(name=cgi.escape(app.name)),
-	msgstr='Link zur {name} Weboberfläche'.format(name=cgi.escape(app.name))
+	msgid='Link to the {name} webinterface'.format(name=cgi.escape(app_name)),
+	msgstr='Link zur {name} Weboberfläche'.format(name=cgi.escape(app_name))
 ))
 
 try:
 	appliance_links_en = ast.literal_eval(list(get.get_values(app, [('Application', 'ApplianceLinks')]))[0][2])
 	appliance_links_de = ast.literal_eval(list(get.get_values(app, [('de', 'ApplianceLinks')]))[0][2])
-except IndexError:
+except (IndexError, AttributeError) as exception:
 	pass
 else:
 	for appliance_link_en, appliance_link_de in zip(appliance_links_en, appliance_links_de):

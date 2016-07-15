@@ -78,7 +78,7 @@ module_without_flavor = '''
 		</categories>
 	</module>'''
 
-if app:
+if app and app.name and app.appliance_primary_color:
 	print link_appcenter_detailspage.format(
 		id=cgi.escape(app.id or ''),
 		name=cgi.escape(app.name or ''),
@@ -86,7 +86,7 @@ if app:
 		description=cgi.escape(app.description or ''),
 		icon=cgi.escape(app.logo_name or ''),
 	)
-	
+
 	if app.web_interface:
 		print link_web_interface.format(
 			web_interface=cgi.escape(app.web_interface),

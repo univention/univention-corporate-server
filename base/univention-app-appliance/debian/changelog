@@ -1,3 +1,11 @@
+univention-app-appliance (0.2.2-34) unstable; urgency=medium
+
+  Bug #40826:
+  * Supply clean fallback for apps without branding
+  * Remove python errors during installation
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 15 Jul 2016 21:00:56 +0200
+
 univention-app-appliance (0.2.2-33) unstable; urgency=medium
 
   * Bug #41622: add option for enabling fast setup mode in app ini file
