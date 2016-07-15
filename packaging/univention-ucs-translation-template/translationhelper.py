@@ -27,7 +27,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
 from email.Utils import formatdate
 import fnmatch
 import getpass
@@ -71,23 +70,17 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		attrs['target_language'] = target_language
 		return super(UMCModuleTranslation, self).__init__(attrs)
 
-
 	def python_mo_destinations(self):
 		for po_file in self.python_po_files:
-			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), po_file), \
-				'usr/share/locale/{target_language}/LC_MESSAGES/{module_name}.mo'.format(**self)
-
+			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), po_file), 'usr/share/locale/{target_language}/LC_MESSAGES/{module_name}.mo'.format(**self)
 
 	def json_targets(self):
 		for js_po in self.js_po_files:
-			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), js_po), \
-				'usr/share/univention-management-console-frontend/js/umc/modules/i18n/{target_language}/{Module}.json'.format(**self)
-
+			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), js_po), 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/{target_language}/{Module}.json'.format(**self)
 
 	def xml_mo_destinations(self):
 		for _, xml_po in self.xml_po_files:
 			yield os.path.join(self.get('target_language'), self.get('relative_path_src_pkg'), xml_po), 'usr/share/univention-management-console/i18n/{target_language}/{Module}.mo'.format(**self)
-
 
 	@staticmethod
 	def from_source_package(module_in_source_tree, target_language):
@@ -95,7 +88,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 			# read package content with dh_umc
 			module = UMCModuleTranslation._get_module_from_source_package(module_in_source_tree, target_language)
 		except AttributeError as e:
-			print "%s AttributeError in module, trying to load as core module" % str(e)
+			print("%s AttributeError in module, trying to load as core module" % str(e))
 		else:
 			module['core'] = False
 			return module
@@ -112,45 +105,42 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 	@staticmethod
 	def _read_module_attributes_from_source_package(module):
-		   umc_module_definition_file = os.path.join(module.get('abs_path_to_src_pkg'), 'debian/', '{}.umc-modules'.format(module.get('module_name')))
-		   with open(umc_module_definition_file, 'r') as fd:
-				   def_file = fd.read()
-		   return dh_ucs.parseRfc822(def_file)[0]
-
+		umc_module_definition_file = os.path.join(module.get('abs_path_to_src_pkg'), 'debian/', '{}.umc-modules'.format(module.get('module_name')))
+		with open(umc_module_definition_file, 'r') as fd:
+			def_file = fd.read()
+		return dh_ucs.parseRfc822(def_file)[0]
 
 	@staticmethod
 	def _get_core_module_from_source_package(module, target_language):
-		   attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
-		   attrs['module_name'] = module.get('module_name')
-		   attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
-		   attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
-		   module = UMCModuleTranslation(attrs, target_language)
-		   if module.module_name != 'umc-core' or not module.xml_categories:
-				   raise ValueError('Module definition does not match core module')
-		   return module
-
+		attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
+		attrs['module_name'] = module.get('module_name')
+		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
+		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
+		module = UMCModuleTranslation(attrs, target_language)
+		if module.module_name != 'umc-core' or not module.xml_categories:
+			raise ValueError('Module definition does not match core module')
+		return module
 
 	@staticmethod
 	def _get_module_from_source_package(module, target_language):
-		   attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
-		   for required in (dh_umc.MODULE, dh_umc.PYTHON, dh_umc.DEFINITION, dh_umc.JAVASCRIPT):
-				   if not attrs.has_key(required):
-						   raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
-				   if not attrs.get(required):
-						   raise AttributeError('UMC module defintion incomplete. key {} is missing a value.'.format(required))
-		   attrs['module_name'] = module.get('module_name')
-		   attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
-		   attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
-		   return UMCModuleTranslation(attrs, target_language)
+		attrs = UMCModuleTranslation._read_module_attributes_from_source_package(module)
+		for required in (dh_umc.MODULE, dh_umc.PYTHON, dh_umc.DEFINITION, dh_umc.JAVASCRIPT):
+				if required not in attrs:
+					raise AttributeError('UMC module definition incomplete. key {} missing.'.format(required))
+				if required not in attrs:
+					raise AttributeError('UMC module defintion incomplete. key {} is missing a value.'.format(required))
+		attrs['module_name'] = module.get('module_name')
+		attrs['abs_path_to_src_pkg'] = module.get('abs_path_to_src_pkg')
+		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
+		return UMCModuleTranslation(attrs, target_language)
 
-
-def update_package_translation_files(module, source_dir, target_language):
-	print("Creating directories and PO files for {mod} in translation source package".format(mod=module.get('module_name')))
+#TODO: actually.. (module, output_dir)
+def update_package_translation_files(module, output_dir):
+	print("Creating directories and PO files for {module_name} in translation source package".format(**module))
 	start_dir = os.getcwd()
 	try:
 		# create directories for package translation
-		relative_path_in_source_tree = os.path.relpath(module.get('abs_path_to_src_pkg'), start=source_dir)
-		abs_path_translated_src_pkg = os.path.normpath("{}/{}/{}".format(os.getcwd(), target_language, relative_path_in_source_tree))
+		abs_path_translated_src_pkg = os.path.abspath("{}/{relative_path_src_pkg}".format(output_dir, **module))
 		if not os.path.exists(abs_path_translated_src_pkg):
 			os.makedirs(abs_path_translated_src_pkg)
 
@@ -204,7 +194,7 @@ def write_makefile(all_modules, special_cases, new_package_dir, target_language)
 			_append_to_target_lists(mo_destination, po_file)
 
 	for scase in special_cases:
-		_append_to_target_lists(scase.get('mo_destination'), scase.get('po_subdir') + '/tmp.po')
+		_append_to_target_lists(scase.get('mo_destination'), '{lang}/{po_subdir}/{lang}.po'.format(lang=target_language, **scase))
 	with open(os.path.join(new_package_dir, 'Makefile'), 'w') as fd:
 		fd.writelines(MAKEFILE_HEADER)
 		fd.write('ALL_TARGETS = {}\n\n'.format(' \\\n\t'.join(mo_targets_list)))
@@ -214,20 +204,21 @@ def write_makefile(all_modules, special_cases, new_package_dir, target_language)
 
 
 # special case e.g. univention-management-modules-frontend: translation files are built with a makefile
-def translate_special_case(special_case, source_dir, target_language):
+def translate_special_case(special_case, source_dir, target_language, output_dir):
 	for key, value in special_case.iteritems():
 		special_case[key] = special_case.get(key).format(lang=target_language)
-	special_case['po_subdir'] = '{}/{package_dir}/{po_subdir}'.format(target_language, **special_case)
+	special_case['po_subdir'] = '{package_dir}/{po_subdir}'.format(**special_case)
 
+	# TODO: Checks whether a special case is valid should be done on special case parsing
 	path_src_pkg = os.path.join(source_dir, special_case.get('package_dir'))
 	if not os.path.isdir(path_src_pkg):
 		# TODO: Exception 
 		return
 
-	new_po_path = os.path.join(os.getcwd(), special_case.get('po_subdir'))
+	new_po_path = os.path.join(output_dir, special_case.get('po_subdir'))
 	if not os.path.exists(new_po_path):
 		os.makedirs(new_po_path)
-	new_po_path = os.path.join(new_po_path, 'tmp.po')
+	new_po_path = os.path.join(new_po_path, '{}.po'.format(target_language))
 
 	# find source files
 	file_pattern = os.path.join(path_src_pkg, special_case.get('input_files'))

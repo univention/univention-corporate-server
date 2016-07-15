@@ -1,0 +1,108 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright 2013-2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+import argparse
+import fnmatch
+import polib
+import os
+import sys
+import univention.translationhelper as tlh
+import univention.dh_umc as dh_umc
+import json
+
+SPECIALCASES_PATH = "/usr/share/univention-ucs-translation-template/specialcases.json"
+
+
+def _get_po_files_from_dir(directory, return_relative_path=False):
+	po_files = list()
+	for parent, dirs, files in os.walk(directory):
+		for po_file in fnmatch.filter([os.path.join(parent, fn) for fn in files], '*.po'):
+			if return_relative_path:
+				po_files.append(os.path.relpath(po_file, start=directory))
+			else:
+				po_files.append(po_file)
+	return po_files
+
+
+def merge_po_file_trees(source_tree, target_tree):
+	upstream_pos = _get_po_files_from_dir(source_tree, return_relative_path=True)
+	translated_pos = _get_po_files_from_dir(target_tree, return_relative_path=True)
+
+	new_pos = set(upstream_pos) - set(translated_pos)
+	pos_delete_upstream = set(translated_pos) - set(upstream_pos)
+	# remove deleted
+	for obsolete_po in pos_delete_upstream:
+		os.unlink(os.path.join(target_tree, obsolete_po))
+	# add new
+	for new_po in new_pos:
+		new_po_path = os.path.join(target_tree, new_po)
+		os.makedirs(os.path.dirname(new_po_path))
+		os.rename(os.path.join(source_tree, new_po), new_po_path)
+	# merge upstream changes...
+	for dir, dirs, files in os.walk(target_tree):
+		for po_file in fnmatch.filter([os.path.join(dir, fn) for fn in files], '*.po'):
+			translated = polib.pofile(po_file)
+			upstream = polib.pofile(po_file.replace(target_tree, source_tree))
+			translated.merge(upstream)
+			translated.save()
+
+
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
+	parser.add_argument('lang_code', type=str, help="Language code of the translation package")
+	parser.add_argument('upstream', type=str, help="Source from upstream containing changes")
+	parser.add_argument('translation', type=str, help="Translation source package as merge target.")
+	args = parser.parse_args()
+
+	args.translation = os.path.abspath(args.translation)
+	args.upstream = os.path.abspath(args.upstream)
+	for dir in (args.translation, args.upstream):
+		if not os.path.isdir(dir):
+			print("Error: {} is not a direcotry or doesn't exist. Exiting.".format(dir))
+			sys.exit(1)
+
+	# generate {lang}_tomerge
+	dh_umc.LANGUAGES = (args.lang_code, )
+	modules_upstream = tlh.find_base_translation_modules(os.getcwd(), args.upstream, '.umc-modules')
+	output_dir = os.path.join(args.translation, '{}_merge'.format(args.lang_code))
+	for module_attrs in modules_upstream:
+		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, args.lang_code)
+		tlh.update_package_translation_files(module, output_dir)
+	# special cases, e.g. univention-management-console-frontend
+	special_cases = []
+	if os.path.exists(SPECIALCASES_PATH):
+		with open(SPECIALCASES_PATH, 'rb') as fd:
+			special_cases = json.load(fd)
+	else:
+		print "Error: Could not find file %s. Several files will not be handled." % SPECIALCASES_PATH
+
+	for scase in special_cases:
+		tlh.translate_special_case(scase, args.upstream, args.lang_code, output_dir)
+
+	merge_po_file_trees(output_dir, os.path.join(args.translation, args.lang_code))

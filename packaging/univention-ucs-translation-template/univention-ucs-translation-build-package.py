@@ -36,7 +36,7 @@ import univention.dh_umc as dh_umc
 import univention.translationhelper as tlh
 
 
-SPECIALCASES_PATH = "/tmp/univention-ucs-translation-template/specialcases.json"
+SPECIALCASES_PATH = "/usr/share/univention-ucs-translation-template/specialcases.json"
 
 
 if __name__ == '__main__':
@@ -70,11 +70,11 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 	base_translation_modules = tlh.find_base_translation_modules(startdir, options.source_dir, options.basefiles)
 	dh_umc.LANGUAGES = (options.target_language, )
 	all_modules = list()
+	output_dir = os.path.join(os.getcwd(), options.target_language)
 	for module_attrs in base_translation_modules:
 		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, options.target_language)
 		all_modules.append(module)
-		# generate/update language specific .po files and generate .mo files in the correct directory
-		abs_path_translated_src_pkg = tlh.update_package_translation_files(module, options.source_dir, options.target_language)
+		abs_path_translated_src_pkg = tlh.update_package_translation_files(module, output_dir)
 
 	# special cases, e.g. univention-management-console-frontend
 	special_cases = []
@@ -85,7 +85,7 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 		print "Error: Could not find file %s. Several files will not be handled." % SPECIALCASES_PATH
 
 	for s_case in special_cases:
-		tlh.translate_special_case(s_case, options.source_dir, options.target_language)
+		tlh.translate_special_case(s_case, options.source_dir, options.target_language, output_dir)
 
 	# create new package
 	new_package_dir = os.path.join(startdir, 'univention-ucs-translation-%s' % options.target_language)
