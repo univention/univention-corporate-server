@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-ldap
-fix: 12.1.6-27.820.201607061853
+fix: 12.1.6-29.822.201607150956
 desc: |
  This update addresses the following issues:
  * Regular users are prevented from changing their object class.
@@ -12,7 +12,6 @@ desc: |
  * Starting the LDAP daemon on i686 systems with a mdb backend
    and a mdb maxsize of at least 2147483648 could potentially fail.
    The init script now triple checks the start.
- * The content of an new entry is now also validated against the LDAP ACL's.
  * Various restrictions for Memberserver and Domaincontrollers have been added
    to the LDAP ACL's.
 bug: [41179, 41180, 33993, 41715]
