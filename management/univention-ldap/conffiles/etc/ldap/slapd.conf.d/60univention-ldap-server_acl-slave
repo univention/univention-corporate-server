@@ -2,8 +2,6 @@ authz-regexp
     uid=([^,]*),cn=(gssapi|saml),cn=auth
     ldap:///@%@ldap/base@%@??sub?uid=$1
 
-add_content_acl on
-
 # allow authentication
 access to attrs=userPassword
     by anonymous auth

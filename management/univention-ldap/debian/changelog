@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-29) unstable; urgency=medium
+
+  * Bug #41715: Bug #41180: revert adding add_content_acl to slapd.conf
+
+ -- Florian Best <best@univention.de>  Fri, 15 Jul 2016 09:53:21 +0200
+
 univention-ldap (12.1.6-28) unstable; urgency=medium
 
   * Bug #41715: allow explicit write access to cn=samba children
