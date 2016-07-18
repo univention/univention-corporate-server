@@ -704,8 +704,8 @@ def _add_object_from_new(l, dn, new):
 	al = addlist(new)
 	try:
 		l.add_s(dn, al)
-	except ldap.OBJECT_CLASS_VIOLATION:
-		ud.debug(ud.LISTENER, ud.ERROR, 'replication: object class violation while adding %s' % dn)
+	except ldap.OBJECT_CLASS_VIOLATION as ex:
+		log_ldap(ud.ERROR, 'object class violation while adding', ex, dn=dn)
 
 
 def _modify_object_from_old_and_new(l, dn, old, new):
