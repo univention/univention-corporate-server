@@ -1177,7 +1177,7 @@ define([
 				txts.push(_('The app provides a web interface: %s.', webInterface));
 			}
 			if (this.app.isDocker) {
-				txts.push(_('%s uses a container technology for enhanced security and compatibility.', entities.encode(this.app.name)));
+				txts.push(_('%(name)s uses a container technology for enhanced security and compatibility.', {name: entities.encode(this.app.name)}));
 			}
 			if (txts.length) {
 				return txts.join(' ');

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-23) unstable; urgency=medium
+
+  * Bug #41804: Wording
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 18 Jul 2016 10:52:58 +0200
+
 univention-appcenter (5.0.21-22) unstable; urgency=medium
 
   * Bug #41804: Add warning message

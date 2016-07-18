@@ -281,6 +281,11 @@ define([
 				window.open(_('https://docs.univention.de/manual.html#ad-connector:password-dienst'));
 			}
 		}),
+		shall_not_be_docker_if_discouraged: new Requirement({
+			reasonDescription: function(details) {
+				return _('%(name)s uses a container technology for enhanced security and compatibility.', details) + ' ' + _('A version without a container technology is or was installed.') + ' ' + _('The application has not been approved to migrate all existing data.');
+			}
+		}),
 		shall_have_enough_ram: new Requirement({
 			reasonDescription: function(details) {
 				return _('The application requires %(minimum)d MB of free RAM but only %(current)d MB are available.', details);
