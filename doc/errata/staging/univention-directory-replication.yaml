@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-directory-replication
-fix: 9.0.1-3.104.201606061133
+fix: 9.0.1-4.108.201607181744
 desc: |
  This update addresses the following issues:
  * The code for "flat-mode" replication has been removed.
@@ -13,4 +13,9 @@ desc: |
  * A traceback in failed-LDIF-mode has been fixed.
  * The replication module now logs more information in case of an object class
    violation.
-bug: [30489,28232,33594,41347,31757]
+ * The replication module no longer runs as the user 'root':
+   * '/var/lib/univention-directory-replication/' is now owned by the user
+     'listener:root'.
+   * 'failed.ldif' files are now owned by the user 'listener'.
+   * LDAP connections are not made as the user 'listener'.
+bug: [30489,28232,33594,41347,31757,34324]
