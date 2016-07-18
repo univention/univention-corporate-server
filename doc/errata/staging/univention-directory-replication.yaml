@@ -17,5 +17,5 @@ desc: |
    * '/var/lib/univention-directory-replication/' is now owned by the user
      'listener:root'.
    * 'failed.ldif' files are now owned by the user 'listener'.
-   * LDAP connections are not made as the user 'listener'.
+   * LDAP connections are now made by the user 'listener'.
 bug: [30489,28232,33594,41347,31757,34324]
