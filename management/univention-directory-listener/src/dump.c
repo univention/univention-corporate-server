@@ -140,9 +140,9 @@ int main(int argc, char* argv[])
 			rv=cache_next_entry(&cur, &dn, &entry)) {
 		if ((rv == 0 && !broken_only) || (rv == -1 && broken_only)) {
 			cache_dump_entry(dn, &entry, fp);
-			cache_free_entry(&dn, &entry);
 			fprintf(fp, "\n");
 		}
+		cache_free_entry(&dn, &entry);
 		if (rv < -1) break;
 	}
 	cache_free_cursor(cur);

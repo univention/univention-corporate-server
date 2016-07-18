@@ -101,6 +101,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		int		msgid;
 		time_t		timeout = DELAY_LDAP_CLOSE;
 
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Last Notifier ID: %lu", id);
 		if ((msgid = notifier_get_dn(NULL, id + 1)) < 1)
 			break;
 

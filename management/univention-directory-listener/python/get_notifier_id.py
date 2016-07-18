@@ -55,7 +55,10 @@ def parse_args():
 
 	if not options.master:
 		if args:
-			options.master, = args
+			try:
+				options.master, = args
+			except ValueError:
+				parser.error('incorrect number of arguments')
 		else:
 			from univention.config_registry import ConfigRegistry
 			configRegistry = ConfigRegistry()
@@ -63,7 +66,7 @@ def parse_args():
 			options.master = configRegistry.get('ldap/master')
 
 	if not options.master:
-		parser.error('ldap/master or --host not set')
+		parser.error('ldap/master or --master not set')
 
 	return options
 
