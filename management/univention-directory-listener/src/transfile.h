@@ -33,9 +33,11 @@
 #ifndef _TRANSFILE_H_
 #define _TRANSFILE_H_
 
+#include <stdbool.h>
 #include "network.h"
 
 extern char *transaction_file;
+bool notifier_has_failed_ldif(void);
 int	notifier_write_transaction_file	(NotifierEntry entry);
 
 #endif /* _TRANSFILE_H_ */

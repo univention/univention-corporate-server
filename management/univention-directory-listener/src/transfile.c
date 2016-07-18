@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
+#include <assert.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -109,19 +110,27 @@ static int fclose_lock(FILE **file, FILE **l_file)
 }
 
 
+bool notifier_has_failed_ldif(void) {
+	struct stat stat_buf;
+
+	if (stat(failed_ldif_file, &stat_buf) != 0)
+		return false;
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "'failed.ldif' exists. Check for %s", failed_ldif_file);
+	return true;
+}
+
+
 /* Write entry to transaction file. */
 int notifier_write_transaction_file(NotifierEntry entry)
 {
 	FILE *file, *l_file;
 	int res = -1;
 
-	struct stat stat_buf;
-
 	/* Check for failed ldif, if exists don't write the transaction file,
-	 * otherwise the notifier notifiies the other listeners and nothing changed
+	 * otherwise the notifier notifies the other listeners and nothing changed
 	 * in our local LDAP.
 	 */
-	if (stat(failed_ldif_file, &stat_buf) != 0) {
+	assert(!notifier_has_failed_ldif());
 		if ((file = fopen_lock(transaction_file, "a+", &l_file)) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open %s", transaction_file);
 			return res;
@@ -132,9 +141,6 @@ int notifier_write_transaction_file(NotifierEntry entry)
 		res = fclose_lock(&file, &l_file);
 		if (res != 0)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to write to transaction file %s: %d", transaction_file, res);
-	} else {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not write to transaction file %s. Check for %s", transaction_file, failed_ldif_file);
-	}
 
 	return res;
 }

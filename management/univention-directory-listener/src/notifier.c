@@ -164,7 +164,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		/* Try to do the change. If the LDAP server is down, try
 		   to reconnect */
 		while ((rv = change_update_dn(&trans)) != LDAP_SUCCESS) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_update_dn: %s", ldap_err2string(rv));
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_update_dn failed: %d", rv);
 			if (rv == LDAP_SERVER_DOWN)
 				if ((rv = connect_to_ldap(trans.lp, kp)) == 0)
 					continue;
@@ -173,6 +173,9 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 
 		/* rv had better be LDAP_SUCCESS if we get here */
 		assert(rv == LDAP_SUCCESS);
+
+		if (notifier_has_failed_ldif())
+			goto out;
 
 		/* Delay current command is stashed for later, otherwise process pending command now */
 		if (trans.prev.notify.command) {

@@ -3,6 +3,7 @@ univention-directory-listener (10.0.0-14) unstable; urgency=low
   * Bug #3490: Silence udl-ctrl
   * Bug #34324: Drop privileges after calling handler functions
   * Bug #41261: Add additional debug output for notifier ID
+  * Bug #40600: Check for failed.ldif
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jul 2016 12:30:34 +0200
 
