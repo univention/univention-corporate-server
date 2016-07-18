@@ -1,6 +1,7 @@
 univention-directory-replication (9.0.1-4) unstable; urgency=low
 
   * Bug #31757: Log object class violation
+  * Bug #33594: Handle ldap_rename(delold)
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jul 2016 15:24:24 +0200
 

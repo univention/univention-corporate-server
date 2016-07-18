@@ -693,6 +693,7 @@ def _backup_dn_recursive(l, dn):
 
 
 def _remove_file(pathname):
+	ud.debug(ud.LISTENER, ud.ALL, 'replication: removing %s' % (pathname,))
 	try:
 		os.remove(pathname)
 	except EnvironmentError as ex:
@@ -827,7 +828,7 @@ def handler(dn, new, listener_old, operation):
 
 		# add
 		if new:
-			if os.path.exists(CURRENT_MODRDN):
+			if os.path.exists(CURRENT_MODRDN) and not isinstance(l, LDIFObject):
 				target_uuid_file = os.readlink(CURRENT_MODRDN)
 				old_dn = _read_dn_from_file(CURRENT_MODRDN)
 
@@ -847,12 +848,19 @@ def handler(dn, new, listener_old, operation):
 						new_dn = ldap.dn.str2dn(dn)
 						new_parent = ldap.dn.dn2str(new_dn[1:])
 						new_rdn = ldap.dn.dn2str([new_dn[0]])
+
+						delold = 0
+						for (key, value, _typ) in ldap.dn.str2dn(old_dn)[0]:
+							if key not in new:
+								ud.debug(ud.LISTENER, ud.ALL, 'replication: move: attr %s not present' % (key,))
+								delold = 1
+							elif value not in new[key]:
+								ud.debug(ud.LISTENER, ud.ALL, 'replication: move: val %s not present in attr %s' % (value, new[key]))
+								delold = 1
+
 						ud.debug(ud.LISTENER, ud.PROCESS, 'replication: rename from %s to %s' % (old_dn, dn))
-						l.rename_s(old_dn, new_rdn, new_parent, delold=1)
+						l.rename_s(old_dn, new_rdn, new_parent, delold=delold)
 						_remove_file(modrdn_cache)
-						if not isinstance(l, LDIFObject):
-							old = getOldValues(l, dn)
-							_modify_object_from_old_and_new(l, dn, old, new)
 					else:
 						# the old object does not exists, so we have to re-create the new object
 						ud.debug(ud.LISTENER, ud.ALL, 'replication: the local target does not exist, so the object will be added: %s' % dn)
