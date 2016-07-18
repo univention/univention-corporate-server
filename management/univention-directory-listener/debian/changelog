@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-14) unstable; urgency=low
+
+  * Bug #3490: Silence udl-ctrl
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 18 Jul 2016 12:30:34 +0200
+
 univention-directory-listener (10.0.0-13) unstable; urgency=low
 
   * Bug #41261: Fix notifier ID not incrementing
