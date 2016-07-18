@@ -391,8 +391,6 @@ static int handler_exec(Handler *handler, const char *dn, CacheEntry *new, Cache
 	handler_prerun(handler);
 
 	result = PyObject_CallObject(handler->handler, argtuple);
-	/* make sure that privileges are properly dropped in case the handler
-	   does setuid() */
 	drop_privileges();
 	Py_XDECREF(argtuple);
 	if (result == NULL) {
@@ -415,13 +413,12 @@ int handler_clean(Handler *handler)
 	if (handler->clean == NULL)
 		return 0;
 
-	if ((result = PyObject_CallObject(handler->clean, NULL)) == NULL) {
+	result = PyObject_CallObject(handler->clean, NULL);
+	drop_privileges();
+	if (result == NULL) {
 		PyErr_Print();
-		drop_privileges();
 		return 1;
 	}
-
-	drop_privileges();
 
 	Py_XDECREF(result);
 	return 0;
@@ -446,13 +443,12 @@ int handler_initialize(Handler *handler)
 
 	if (handler->initialize == NULL)
 		return 0;
-	if ((result = PyObject_CallObject(handler->initialize, NULL)) == NULL) {
+	result = PyObject_CallObject(handler->initialize, NULL);
+	drop_privileges();
+	if (result == NULL) {
 		PyErr_Print();
-		drop_privileges();
 		return 1;
 	}
-
-	drop_privileges();
 
 	Py_XDECREF(result);
 	return 0;
@@ -900,13 +896,12 @@ int handler_set_data(Handler *handler, PyObject *argtuple)
 	if (handler->setdata == NULL)
 		return 0;
 
-	if ((result = PyObject_CallObject(handler->setdata, argtuple)) == NULL) {
+	result = PyObject_CallObject(handler->setdata, argtuple);
+	drop_privileges();
+	if (result == NULL) {
 		PyErr_Print();
 		return -1;
 	}
-	/* make sure that privileges are properly dropped in case the handler
-	   does setuid() */
-	drop_privileges();
 
 	if (result != Py_None)
 		rv=1;
