@@ -962,7 +962,6 @@ define([
 					'function': func,
 					'application': this.app.id,
 					'app': this.app.id,
-					'app_version': this.app.candidateVersion || this.app.version,
 					'host': host || '',
 					'force': force === true,
 					'values': values || {}

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-25) unstable; urgency=medium
+
+  * Bug #33537: Fixes for old lib
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 19 Jul 2016 17:08:57 +0200
+
 univention-appcenter (5.0.21-24) unstable; urgency=medium
 
   * Bug #41804: Wording

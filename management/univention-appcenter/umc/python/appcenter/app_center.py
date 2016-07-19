@@ -388,9 +388,18 @@ class Application(object):
 		self._fetch_file('readmeuninstall', 'README_UNINSTALL', localize)
 		self._fetch_file('readmepostuninstall', 'README_POST_UNINSTALL', localize)
 
-		# candidate is for upgrading an already installed app
-		# is set by all()
-		self.candidate = None
+	@property
+	def candidate(self):
+		is_installed = self.is_registered(ucr)
+		for ver in self.versions:
+			if ver is self:
+				continue
+			if ver.get('dockerimage'):
+				continue
+			if is_installed and ver.get('requiredappversionupgrade'):
+				if LooseVersion(ver.get('requiredappversionupgrade')) > LooseVersion(self.version):
+					continue
+			return ver
 
 	def set_id(self, app_id, recursive=True):
 		if recursive:
@@ -877,11 +886,12 @@ class Application(object):
 				if iiapp.is_registered(ucr):
 					if iiapp is not used_app:
 						used_app = iiapp
-						used_app.candidate = iapps[0]
+						used_app.versions = iapps
 						used_app.candidate.versions = iapps
 					break
-			# store all versions
-			used_app.versions = iapps
+			else:
+				# store all versions
+				used_app.versions = iapps
 			final_applications.append(used_app)
 
 		final_applications.sort(key=attrgetter('id'))
@@ -1199,7 +1209,7 @@ class Application(object):
 					'package_manager' : package_manager,
 					'function' : function,
 				}
-				if function == 'update':
+				if function == 'update' and hard_requirements:
 					app = self.candidate
 					if app is None:
 						# update is not possible,
@@ -1273,7 +1283,7 @@ class Application(object):
 
 	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_master_packages=False, dont_remote_install=False, function='install', force=False, this_version=False):
 		if not this_version and self.candidate:
-			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password, only_master_packages, dont_remote_install, function, force, this_version)
+			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password, only_master_packages, dont_remote_install, function, force, True)
 		MODULE.info('Invoke install_dry_run')
 		ucr.load()
 		server_role = ucr.get('server/role')
@@ -1636,7 +1646,7 @@ class Application(object):
 
 	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False, previously_registered_by_dry_run=False, this_version=False):
 		if not this_version and self.candidate:
-			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install, previously_registered_by_dry_run, this_version)
+			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install, previously_registered_by_dry_run, True)
 		if self.get('dockerimage'):
 			MODULE.error('Cannot install a Docker app. Use "univention-app install" or a newer version of the UMC module App Center')
 			return False
