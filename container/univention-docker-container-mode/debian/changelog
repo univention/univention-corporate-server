@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.12-1) UNRELEASED; urgency=medium
+
+  * Bug #39677: Workaround for cron hardlink issue on overlayfs
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 Jul 2016 18:30:58 +0200
+
 univention-docker-container-mode (1.0.11-1) unstable; urgency=low
 
   * run all scripts from /etc/univention/docker/init.d after starting
