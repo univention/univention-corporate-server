@@ -131,16 +131,17 @@ int notifier_write_transaction_file(NotifierEntry entry)
 	 * in our local LDAP.
 	 */
 	assert(!notifier_has_failed_ldif());
-		if ((file = fopen_lock(transaction_file, "a+", &l_file)) == NULL) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open %s", transaction_file);
-			return res;
-		}
 
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "write to transaction file dn=[%s], command=[%c]", entry.dn, entry.command);
-		fprintf(file, "%ld %s %c\n", entry.id, entry.dn, entry.command);
-		res = fclose_lock(&file, &l_file);
-		if (res != 0)
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to write to transaction file %s: %d", transaction_file, res);
+	if ((file = fopen_lock(transaction_file, "a+", &l_file)) == NULL) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open %s", transaction_file);
+		return res;
+	}
+
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "write to transaction file dn=[%s], command=[%c]", entry.dn, entry.command);
+	fprintf(file, "%ld %s %c\n", entry.id, entry.dn, entry.command);
+	res = fclose_lock(&file, &l_file);
+	if (res != 0)
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to write to transaction file %s: %d", transaction_file, res);
 
 	return res;
 }
