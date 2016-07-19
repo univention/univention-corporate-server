@@ -69,7 +69,7 @@ define([
 	"umc/i18n/tools",
 	"umc/i18n!umc/modules/setup",
 	"dojo/NodeList-manipulate"
-], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, sysinfo, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
+], function(dojo, declare, lang, array, dojoEvent, domClass, on, Evented, topic, Deferred, all, Memory, request, Select, Tooltip, focusUtil, timing, styles, entities, dialog, tools, systemInfoLib, TextBox, CheckBox, ComboBox, ContainerWidget, Text, Button, TitlePane, PasswordInputBox, PasswordBox, Wizard, Grid, RadioButton, ProgressBar, LiveSearch, VirtualKeyboardBox, i18nTools, _) {
 
 	var _Grid = declare(Grid, {
 		_onRowClick: function(evt) {
@@ -867,12 +867,10 @@ define([
 				name: 'error',
 				headerText: errorHeader,
 				helpText: '_',
-				_errorFeedbackButtons: null,
 				widgets: [{
-					type: Text,
+					type: ContainerWidget,
 					name: 'errors',
-					style: 'width: 100%',
-					content: ''
+					style: 'width: 100%'
 				}, {
 					type: Text,
 					name: 'info',
@@ -1857,9 +1855,10 @@ define([
 		},
 
 		_updateErrorPage: function(details, critical) {
-			var createErrorMessages = function() {
+			var createErrorMessage = function() {
 				//make the occurred errors more readable
 				var previousErrorHeader = '';
+				var errors = '';
 				array.forEach(details, function(iDetail) {
 					var splitDetail = iDetail.split(":");
 					if (splitDetail.length === 2) {
@@ -1879,16 +1878,19 @@ define([
 				});
 
 				//compose an error message that is shown to the user
-				errorMsgHeader = _('The following errors occurred while applying the settings.');
-				var errorsBox = '<pre style="max-height: 250px">' + errors + '</pre>';
+				var errorsBox = '<pre style="max-height: 200px">' + errors + '</pre>';
 				var errorFeedbackText = _('Help us improve UCS by sending the occurred errors as feedback.');
 
+				var errorMsg = '';
 				errorMsg = '<p>' + errorMsgHeader + '</p>';
 				errorMsg += errorsBox;
 				errorMsg += '<p>' + errorFeedbackText + '</p>';
+
+				return errorMsg;
 			};
 
 			var createInfoMessage = lang.hitch(this, function() {
+				var infoMsg = '';
 				infoMsg += '<hr>';
 				infoMsg += '<p>' + _('You may restart the configuration process again with modified settings.') + '</p>';
 
@@ -1916,119 +1918,48 @@ define([
 					infoMsg += '<p>' + _('Connect to Univention Management Console on this system either as user <b>Administrator</b> or as user <b>root</b> in case the system has not yet joined the domain:') + '</p>';
 					infoMsg += this._getUMCLinks();
 				}
+
+				return infoMsg;
 			});
 
-			var createFeedback = lang.hitch(this, function() {
-				feedbackMsg = lang.replace("{0}\n\n{1}\n\n{2}", [
-					tools.status('ucsVersion'),
-					errorMsgHeader,
-					errors
-				]);
-
-				feedbackMailLabel = _('Send feedback as mail');
-				feedbackMailto = lang.replace('mailto:{email}?body={body}&subject={subject}', {
-					email: encodeURIComponent(tools.status('feedbackAddress')),
-					body: encodeURIComponent(entities.decode(feedbackMsg)),
-					subject: encodeURIComponent(tools.status('feedbackSubject'))
-				});
-				feedbackMailLink = '<a href="' + feedbackMailto + '">' + feedbackMailLabel + '</a>';
-			});
-
-			var createFeedbackButtons = lang.hitch(this, function() {
-				var page = this.getPage('error');
-				var _errors = this.getWidget('error', 'errors');
-
-				//cleanup old buttons
-				if (page._errorFeedbackButtons) {
-					page._errorFeedbackButtons.destroyRecursive();
-				}
-				//create new buttons
-				var _errorFeedbackButtons = new ContainerWidget();
-				var _sendErrorAsMailButton = getSendErrorAsMailButton();
-				var _sendErrorButton = getSendErrorButton();
-
-				//add buttons
-				if (_sendErrorAsMailButton) {
-					_errorFeedbackButtons.addChild(_sendErrorAsMailButton);
-				}
-				if (_sendErrorButton) {
-					_errorFeedbackButtons.addChild(_sendErrorButton);
-				}
-
-				page._errorFeedbackButtons = _errorFeedbackButtons;
-			});
-
-			var getSendErrorButton = lang.hitch(this, function() {
-				var _sendErrorButton = null;
-
-				_sendErrorButton = new Button({
+			var createFeedbackButton = lang.hitch(this, function() {
+				return new Button({
 					label: _('Send feedback'),
 					style: 'float: right',
 					onClick: lang.hitch(this, function() {
-						values = {
-							traceback: details.join('\n'),
-							remark: feedbackMsg,
-							email: ''
-						};
-						tools.umcpCommand('sysinfo/traceback', values, false).then(
-							function() {
-								dialog.alert(_('Thank you for your help'));
-							},
-							function() {
-								var failureString = _('Sending the information to the vendor failed');
-								if (!this.local_mode) {
-									failureString += '. ' + _('You can also send the information via mail:') + ' ' + feedbackMailLink;
-								}
-								dialog.alert(failureString);
-							}
-						);
+						var msg = details.join('\n');
+						if (this.local_mode) {
+							systemInfoLib.traceback(msg);
+						} else {
+							tools._handleTraceback(msg, errorMsgHeader, _('Send to vendor'));
+						}
 					})
 				});
-
-				return _sendErrorButton;
-			});
-
-			var getSendErrorAsMailButton = lang.hitch(this, function() {
-				var _sendErrorAsMail = null;
-				if (!this.local_mode) {
-					_sendErrorAsMail = new Button({
-						label: feedbackMailLabel,
-						style: 'float: right',
-						onClick: function() {
-							window.location.href = feedbackMailto;
-						}
-					});
-				}
-
-				return _sendErrorAsMail;
 			});
 
 			var displayInformation = lang.hitch(this, function() {
 				var page = this.getPage('error').set('helpText', helpText);
-				var errors = this.getWidget('error', 'errors').set('content', errorMsg);
-				//display feedback buttons
-				dojo.place(page._errorFeedbackButtons.domNode, errors.domNode, 'after');
-				this.getWidget('error', 'info').set('content', infoMsg);
+
+				// display error message
+				var errors = this.getWidget('error', 'errors');
+				errors.destroyDescendants();
+
+				var errorsText = new Text({
+					content: createErrorMessage()
+				});
+				var sendFeedbackButton = createFeedbackButton();
+
+				errors.addChild(errorsText);
+				errors.addChild(sendFeedbackButton);
+
+				// display info message
+				this.getWidget('error', 'info').set('content', createInfoMessage());
 			});
 
 			var isMaster = this._isRoleMaster();
 			var isBaseSystem = this._isRoleBaseSystem();
 			var helpText = '<p>' + _('The system configuration could not be completed. Please choose to retry the configuration process or finish the wizard.') + '</p>';
-
-			var errorMsg = '';
-			var errorMsgHeader = '';
-			var errors = '';
-			createErrorMessages();
-
-			var infoMsg = '';
-			createInfoMessage();
-
-			var feedbackMsg = '';
-			var feedbackMailLabel = '';
-			var feedbackMailto = '';
-			var feedbackMailLink = '';
-			createFeedback();
-			createFeedbackButtons();
+			var errorMsgHeader = _('The following errors occurred while applying the settings.');
 
 			displayInformation();
 

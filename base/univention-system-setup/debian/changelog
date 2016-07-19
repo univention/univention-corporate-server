@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-32) unstable; urgency=medium
+
+  * Bug #40782: use existing traceback handling
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 19 Jul 2016 11:46:01 +0200
+
 univention-system-setup (9.0.4-31) unstable; urgency=medium
 
   * Bug #41793: consider system activation for the redirect at the wizard end
