@@ -1,3 +1,9 @@
+ucs-test (6.0.35-6) unstable; urgency=medium
+
+  * Bug #41504: add whitespace after log timestamp for readability
+
+ -- Florian Best <best@univention.de>  Tue, 19 Jul 2016 13:13:58 +0200
+
 ucs-test (6.0.35-5) unstable; urgency=medium
 
   * Bug #41771: Self service requires update/secure_apt=no

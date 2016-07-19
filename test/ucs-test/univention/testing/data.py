@@ -674,7 +674,7 @@ class TestCase(object):
                         del buf[0:match.end()]
 
                     now = datetime.now().isoformat(' ')
-                    entry = '{1[0]}{0}{1[1]}{2}\n'.format(now, paren, line.rstrip('\r\n'))
+                    entry = '{1[0]}{0}{1[1]} {2}\n'.format(now, paren, line.rstrip('\r\n'))
                     log.append(entry)
                     combined.append(entry)
 
