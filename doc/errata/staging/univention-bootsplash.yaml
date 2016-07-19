@@ -2,8 +2,8 @@ product: ucs
 release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
-src: univention-bootplash
+src: univention-bootsplash
 fix: 
 desc: |
- The bootplash has been extended to allow adjustments of its design.
+ The bootsplash has been extended to allow adjustments of its design.
 bug: [40826,39465,40046]
