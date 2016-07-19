@@ -2,7 +2,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-docker-container-mode
-fix: 
+fix: 1.0.12-2.57.201607191851
 desc: |
  This update addresses the following issue(s):
  * Workaround cron hardlink issue on overlayfs
