@@ -47,6 +47,7 @@ except ImportError:
 	sys.stderr.write('univention-management-console-module-appcenter must be installed\n')
 	sys.exit(2)
 
+
 def simple_handler(f):
 	def _simple_handler(msg):
 		msg = '%s\n\r' % msg.strip()
@@ -134,10 +135,9 @@ if __name__ == '__main__':
 	if options.install_all or options.install_master:
 		only_master_packages = not options.install_all
 		requested_app.versions = Application.find(requested_app.id).versions
-		requested_app.candidate = None # delete any possible candidate (newer version)
 		if only_master_packages:
 			function = '%s-schema' % function
-		success = requested_app.install(package_manager, component_manager, add_component=False, send_as=function, only_master_packages=only_master_packages) and success
+		success = requested_app.install(package_manager, component_manager, add_component=False, send_as=function, only_master_packages=only_master_packages, this_version=True) and success
 	else:
 		requested_app._send_information(function, 200)
 		manually = True
@@ -159,5 +159,4 @@ if __name__ == '__main__':
 	if success:
 		sys.exit(0)
 	else:
-		sys.exit(100) # apt-get error code
-
+		sys.exit(100)  # apt-get error code

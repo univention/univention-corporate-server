@@ -1,3 +1,9 @@
+univention-updater (11.0.10-2) unstable; urgency=medium
+
+  * Bug #33537: Do not set candidate
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 20 Jul 2016 10:35:06 +0200
+
 univention-updater (11.0.10-1) unstable; urgency=low
 
   * Bug #41237: Bump package version to guarantee 4.1-2 is newer than 4.1-1
