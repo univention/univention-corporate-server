@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-updater
+fix: 11.0.10-2.1479.201607201037
+desc: |
+ This update addresses the following issue:
+ * Adapted univention-add-app to reflect changes in the App Center package
+bug: [33537]
