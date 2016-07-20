@@ -8,7 +8,7 @@ desc: |
  This update addresses the following issue:
  * A new option for setting up a UCS system has been added which allows a
    fast instantiation for demo purposes. Some more aspects of the setup
-   process have been improved w.r.t. realiability and speed.
+   process have been improved w.r.t. reliability and speed.
  * Some more corrections have been applied for the fast UCS instantiation.
  * A UCR variable for enabling/disabling the fast instantiation has been
    added.
@@ -27,7 +27,7 @@ desc: |
    improvements to the user experience.
  * Regenerate the system UUID during the fast setup demo mode to ensure a
    unique system.
- * Errors that occur during the system setup of UCS can now be send as
+ * Errors that occur during the system setup of UCS can now be sent as
    feedback to Univention by the user.
  * Redirection problems for app appliances at the end of the setup wizard
    have been corrected.
