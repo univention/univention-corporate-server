@@ -323,7 +323,7 @@ def wait_for_replication(verbose=True):
             if verbose:
                 print 'Done: replication complete.'
             return
-        print proc.stdout
+        print '.',
         time.sleep(1)
 
     print 'Error: replication incomplete.'

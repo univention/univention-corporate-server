@@ -1,3 +1,9 @@
+ucs-test (6.0.35-8) unstable; urgency=medium
+
+  * Bug #41504: make replication messages smarter (completes Bug #39533: svn r64473)
+
+ -- Florian Best <best@univention.de>  Thu, 21 Jul 2016 15:55:03 +0200
+
 ucs-test (6.0.35-7) unstable; urgency=medium
 
   * Bug #41829: add 68_udm-extendedattribute/38_extended_attribute_boolean_syntax
