@@ -1,3 +1,9 @@
+univention-kernel-image (7.100.0-7) unstable; urgency=low
+
+  * Bug #41693: Update to 3.16.7-ckt25-2+deb8u3~bpo70+1
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 21 Jul 2016 18:13:49 +0200
+
 univention-kernel-image (7.100.0-6) unstable; urgency=low
 
   * Bug #41051: Update to 3.16.7-ckt25-2~bpo70+1
