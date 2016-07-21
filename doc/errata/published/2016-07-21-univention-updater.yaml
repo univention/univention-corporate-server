@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue:
  * Adapted univention-add-app to reflect changes in the App Center package
 bug: [33537]
+announced: 2016-07-21
