@@ -1,0 +1,248 @@
+product: ucs
+release: "3.3"
+version: [0]
+scope: ucs_3.3-0-errata3.3-0
+src: linux
+fix: 3.16.7-ckt25-2+deb8u3~bpo70+1~ucs3.3.197.201607211442
+desc: |
+ This update addresses the following issues:
+ * CVE-2015-7515: The aiptek_probe function in
+   drivers/input/tablet/aiptek.c in the Linux kernel before 4.4 allows
+   physically proximate attackers to cause a denial of service (NULL pointer
+   dereference and system crash) via a crafted USB device that lacks
+   endpoints.
+ * CVE-2016-0821: The LIST_POISON feature in
+   include/linux/poison.h in the Linux kernel before 4.3, as used in Android
+   6.0.1 before 2016-03-01, does not properly consider the relationship to the
+   mmap_min_addr value, which makes it easier for attackers to bypass a
+   poison-pointer protection mechanism by triggering the use of an
+   uninitialized list entry, aka Android internal bug 26186802, a different
+   vulnerability than CVE-2015-3636
+ * CVE-2016-1237: nfsd in the Linux kernel through 4.6.3 allows local users to
+   bypass intended file-permission restrictions by setting a POSIX ACL,
+   related to nfs2acl.c, nfs3acl.c, and nfs4acl.c.
+ * CVE-2016-1583: The ecryptfs_privileged_open function in
+   fs/ecryptfs/kthread.c in the Linux kernel before 4.6.3 allows local users
+   to gain privileges or cause a denial of service (stack memory consumption)
+   via vectors involving crafted mmap calls for /proc pathnames, leading to
+   recursive pagefault handling.
+ * CVE-2016-2117: The atl2_probe function in
+   drivers/net/ethernet/atheros/atlx/atl2.c in the Linux kernel through 4.5.2
+   incorrectly enables scatter/gather I/O, which allows remote attackers to
+   obtain sensitive information from kernel memory by reading packet data.
+ * CVE-2016-2143: The fork implementation in the Linux kernel before 4.5 on
+   s390 platforms mishandles the case of four page-table levels, which allows
+   local users to cause a denial of service (system crash) or possibly have
+   unspecified other impact via a crafted application, related to
+   arch/s390/include/asm/mmu_context.h and arch/s390/include/asm/pgalloc.h.
+ * CVE-2016-2184: The create_fixed_stream_quirk function in sound/usb/quirks.c
+   in the snd-usb-audio driver in the Linux kernel before 4.5.1 allows
+   physically proximate attackers to cause a denial of service (NULL pointer
+   dereference or double free, and system crash) via a crafted endpoints value
+   in a USB device descriptor.
+ * CVE-2016-2185: The ati_remote2_probe function in
+   drivers/input/misc/ati_remote2.c in the Linux kernel before 4.5.1 allows
+   physically proximate attackers to cause a denial of service (NULL pointer
+   dereference and system crash) via a crafted endpoints value in a USB device
+   descriptor.
+ * CVE-2016-2186: The powermate_probe function in
+   drivers/input/misc/powermate.c in the Linux kernel before 4.5.1 allows
+   physically proximate attackers to cause a denial of service (NULL pointer
+   dereference and system crash) via a crafted endpoints value in a USB device
+   descriptor.
+ * CVE-2016-2187: The gtco_probe function in drivers/input/tablet/gtco.c in
+   the Linux kernel through 4.5.2 allows physically proximate attackers to
+   cause a denial of service (NULL pointer dereference and system crash) via a
+   crafted endpoints value in a USB device descriptor.
+ * CVE-2016-3070: Null pointer dereference in trace_writeback_dirty_page()
+ * CVE-2016-3134: The netfilter subsystem in the Linux kernel through 4.5.2
+   does not validate certain offset fields, which allows local users to gain
+   privileges or cause a denial of service (heap memory corruption) via an
+   IPT_SO_SET_REPLACE setsockopt call.
+ * CVE-2016-3136: The mct_u232_msr_to_state function in
+   drivers/usb/serial/mct_u232.c in the Linux kernel before 4.5.1 allows
+   physically proximate attackers to cause a denial of service (NULL pointer
+   dereference and system crash) via a crafted USB device without two
+   interrupt-in endpoint descriptors.
+ * CVE-2016-3137: drivers/usb/serial/cypress_m8.c in the Linux kernel before
+   4.5.1 allows physically proximate attackers to cause a denial of service
+   (NULL pointer dereference and system crash) via a USB device without both
+   an interrupt-in and an interrupt-out endpoint descriptor, related to the
+   cypress_generic_port_probe and cypress_open functions.
+ * CVE-2016-3138: The acm_probe function in drivers/usb/class/cdc-acm.c in the
+   Linux kernel before 4.5.1 allows physically proximate attackers to cause a
+   denial of service (NULL pointer dereference and system crash) via a USB
+   device without both a control and a data endpoint descriptor.
+ * CVE-2016-3140: The digi_port_init function in
+   drivers/usb/serial/digi_acceleport.c in the Linux kernel before 4.5.1
+   allows physically proximate attackers to cause a denial of service (NULL
+   pointer dereference and system crash) via a crafted endpoints value in a
+   USB device descriptor.
+ * CVE-2016-3156: The IPv4 implementation in the Linux kernel before 4.5.2
+   mishandles destruction of device objects, which allows guest OS users to
+   cause a denial of service (host OS networking outage) by arranging for a
+   large number of IP addresses.
+ * CVE-2016-3157: The __switch_to function in arch/x86/kernel/process_64.c in
+   the Linux kernel does not properly context-switch IOPL on 64-bit PV Xen
+   guests, which allows local guest OS users to gain privileges, cause a
+   denial of service (guest OS crash), or obtain sensitive information by
+   leveraging I/O port access.
+ * CVE-2016-3672: The arch_pick_mmap_layout function in arch/x86/mm/mmap.c in
+   the Linux kernel through 4.5.2 does not properly randomize the legacy base
+   address, which makes it easier for local users to defeat the intended
+   restrictions on the ADDR_NO_RANDOMIZE flag, and bypass the ASLR protection
+   mechanism for a setuid or setgid program, by disabling stack-consumption
+   resource limits.
+ * CVE-2016-3951: Double free vulnerability in drivers/net/usb/cdc_ncm.c in
+   the Linux kernel before 4.5 allows physically proximate attackers to cause
+   a denial of service (system crash) or possibly have unspecified other
+   impact by inserting a USB device with an invalid USB descriptor.
+ * CVE-2016-3955: The usbip_recv_xbuff function in
+   drivers/usb/usbip/usbip_common.c in the Linux kernel before 4.5.3 allows
+   remote attackers to cause a denial of service (out-of-bounds write) or
+   possibly have unspecified other impact via a crafted length value in a
+   USB/IP packet.
+ * CVE-2016-3961: Xen and the Linux kernel through 4.5.x do not properly
+   suppress hugetlbfs support in x86 PV guests, which allows local PV guest OS
+   users to cause a denial of service (guest OS crash) by attempting to access
+   a hugetlbfs mapped area.
+ * CVE-2016-4470: The key_reject_and_link function in security/keys/key.c in
+   the Linux kernel through 4.6.3 does not ensure that a certain data
+   structure is initialized, which allows local users to cause a denial of
+   service (system crash) via vectors involving a crafted keyctl request2
+   command.
+ * CVE-2016-4482: The proc_connectinfo function in drivers/usb/core/devio.c in
+   the Linux kernel through 4.6 does not initialize a certain data structure,
+   which allows local users to obtain sensitive information from kernel stack
+   memory via a crafted USBDEVFS_CONNECTINFO ioctl call.
+ * CVE-2016-4485: The llc_cmsg_rcv function in net/llc/af_llc.c in the Linux
+   kernel before 4.5.5 does not initialize a certain data structure, which
+   allows attackers to obtain sensitive information from kernel stack memory
+   by reading a message.
+ * CVE-2016-4486: The rtnl_fill_link_ifmap function in net/core/rtnetlink.c in
+   the Linux kernel before 4.5.5 does not initialize a certain data structure,
+   which allows local users to obtain sensitive information from kernel stack
+   memory by reading a Netlink message.
+ * CVE-2016-4565: The InfiniBand (aka IB) stack in the Linux kernel before
+   4.5.3 incorrectly relies on the write system call, which allows local users
+   to cause a denial of service (kernel memory write operation) or possibly
+   have unspecified other impact via a uAPI interface.
+ * CVE-2016-4569: The snd_timer_user_params function in sound/core/timer.c in
+   the Linux kernel through 4.6 does not initialize a certain data structure,
+   which allows local users to obtain sensitive information from kernel stack
+   memory via crafted use of the ALSA timer interface.
+ * CVE-2016-4578: sound/core/timer.c in the Linux kernel through 4.6 does not
+   initialize certain r1 data structures, which allows local users to obtain
+   sensitive information from kernel stack memory via crafted use of the ALSA
+   timer interface, related to the (1) snd_timer_user_ccallback and (2)
+   snd_timer_user_tinterrupt functions.
+ * CVE-2016-4580: The x25_negotiate_facilities function in
+   net/x25/x25_facilities.c in the Linux kernel before 4.5.5 does not properly
+   initialize a certain data structure, which allows attackers to obtain
+   sensitive information from kernel stack memory via an X.25 Call Request.
+ * CVE-2016-4581: fs/pnode.c in the Linux kernel before 4.5.4 does not
+   properly traverse a mount propagation tree in a certain case involving a
+   slave mount, which allows local users to cause a denial of service (NULL
+   pointer dereference and OOPS) via a crafted series of mount system calls.
+ * CVE-2016-4805: Use-after-free vulnerability in
+   drivers/net/ppp/ppp_generic.c in the Linux kernel before 4.5.2 allows local
+   users to cause a denial of service (memory corruption and system crash, or
+   spinlock) or possibly have unspecified other impact by removing a network
+   namespace, related to the ppp_register_net_channel and
+   ppp_unregister_channel functions.
+ * CVE-2016-4913: The get_rock_ridge_filename function in fs/isofs/rock.c in
+   the Linux kernel before 4.5.5 mishandles NM (aka alternate name) entries
+   containing \0 characters, which allows local users to obtain sensitive
+   information from kernel memory or possibly have unspecified other impact
+   via a crafted isofs filesystem.
+ * CVE-2016-4997: The compat IPT_SO_SET_REPLACE setsockopt implementation in
+   the netfilter subsystem in the Linux kernel before 4.6.3 allows local users
+   to gain privileges or cause a denial of service (memory corruption) by
+   leveraging in-container root access to provide a crafted offset value that
+   triggers an unintended decrement.
+ * CVE-2016-4998: The IPT_SO_SET_REPLACE setsockopt implementation in the
+   netfilter subsystem in the Linux kernel before 4.6 allows local users to
+   cause a denial of service (out-of-bounds read) or possibly obtain sensitive
+   information from kernel heap memory by leveraging in-container root access
+   to provide a crafted offset value that leads to crossing a ruleset blob
+   boundary.
+ * CVE-2016-5243: The tipc_nl_compat_link_dump function in
+   net/tipc/netlink_compat.c in the Linux kernel through 4.6.3 does not
+   properly copy a certain string, which allows local users to obtain
+   sensitive information from kernel stack memory by reading a Netlink
+   message.
+ * CVE-2016-5244: The rds_inc_info_copy function in net/rds/recv.c in the
+   Linux kernel through 4.6.3 does not initialize a certain structure member,
+   which allows remote attackers to obtain sensitive information from kernel
+   stack memory by reading an RDS message.
+ * CVE-2014-9904: The snd_compress_check_input function in
+   sound/core/compress_offload.c in the ALSA subsystem in the Linux kernel
+   before 3.17 does not properly check for an integer overflow, which allows
+   local users to cause a denial of service (insufficient memory allocation)
+   or possibly have unspecified other impact via a crafted
+   SNDRV_COMPRESS_SET_PARAMS ioctl call.
+ * CVE-2016-5728: Race condition in the vop_ioctl function in
+   drivers/misc/mic/vop/vop_vringh.c in the MIC VOP driver in the Linux kernel
+   before 4.6.1 allows local users to obtain sensitive information from kernel
+   memory or cause a denial of service (memory corruption and system crash) by
+   changing a certain header, aka a "double fetch" vulnerability.
+ * CVE-2016-5828: The start_thread function in arch/powerpc/kernel/process.c
+   in the Linux kernel through 4.6.3 on powerpc platforms mishandles
+   transactional state, which allows local users to cause a denial of service
+   (invalid process state or TM Bad Thing exception, and system crash) or
+   possibly have unspecified other impact by starting and suspending a
+   transaction before an exec system call.
+ * CVE-2016-5829: Multiple heap-based buffer overflows in the
+   hiddev_ioctl_usage function in drivers/hid/usbhid/hiddev.c in the Linux
+   kernel through 4.6.3 allow local users to cause a denial of service or
+   possibly have unspecified other impact via a crafted (1) HIDIOCGUSAGES or
+   (2) HIDIOCSUSAGES ioctl call.
+ * CVE-2016-6130: Race condition in the sclp_ctl_ioctl_sccb function in
+   drivers/s390/char/sclp_ctl.c in the Linux kernel before 4.6 allows local
+   users to obtain sensitive information from kernel memory by changing a
+   certain length value, aka a "double fetch" vulnerability.
+note: This is the first part of the update.
+bug: [41693]
+cve:
+ - CVE-2015-7515
+ - CVE-2016-0821
+ - CVE-2016-1237
+ - CVE-2016-1583
+ - CVE-2016-2117
+ - CVE-2016-2143
+ - CVE-2016-2184
+ - CVE-2016-2185
+ - CVE-2016-2186
+ - CVE-2016-2187
+ - CVE-2016-3070
+ - CVE-2016-3134
+ - CVE-2016-3136
+ - CVE-2016-3137
+ - CVE-2016-3138
+ - CVE-2016-3140
+ - CVE-2016-3156
+ - CVE-2016-3157
+ - CVE-2016-3672
+ - CVE-2016-3951
+ - CVE-2016-3955
+ - CVE-2016-3961
+ - CVE-2016-4470
+ - CVE-2016-4482
+ - CVE-2016-4485
+ - CVE-2016-4486
+ - CVE-2016-4565
+ - CVE-2016-4569
+ - CVE-2016-4578
+ - CVE-2016-4580
+ - CVE-2016-4581
+ - CVE-2016-4805
+ - CVE-2016-4913
+ - CVE-2016-4997
+ - CVE-2016-4998
+ - CVE-2016-5243
+ - CVE-2016-5244
+ - CVE-2014-9904
+ - CVE-2016-5728
+ - CVE-2016-5828
+ - CVE-2016-5829
+ - CVE-2016-6130
