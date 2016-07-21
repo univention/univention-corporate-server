@@ -10,3 +10,4 @@ desc: |
    restarted multiple times, the last processed transaction ID could be lost.
    This led to all transactions being skipped which happened in between.
 bug: [41486]
+announced: 2016-07-21
