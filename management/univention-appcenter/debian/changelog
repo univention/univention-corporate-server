@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-26) unstable; urgency=medium
+
+  * Bug #41782: check if schema exists before writing ACL's
+
+ -- Florian Best <best@univention.de>  Thu, 21 Jul 2016 16:04:55 +0200
+
 univention-appcenter (5.0.21-25) unstable; urgency=medium
 
   * Bug #33537: Fixes for old lib
