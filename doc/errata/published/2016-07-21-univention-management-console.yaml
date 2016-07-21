@@ -14,3 +14,4 @@ desc: |
    data.
  * The UMC-Client does not evaluate python code in its arguments anymore.
 bug: [41424, 41423, 41070, 41370, 41736]
+announced: 2016-07-21
