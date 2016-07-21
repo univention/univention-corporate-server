@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Access to the UVMM object classes is now more restrictive.
 bug: [41723]
+announced: 2016-07-21
