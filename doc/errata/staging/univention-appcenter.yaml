@@ -7,5 +7,5 @@ fix: 5.0.21-26.198.201607211607
 desc: |
  This update addresses the following issue(s):
  * It is now checked if the schema exists before writing ACL definitions to
-   slapd.conf. This prevents some false positive error messages during joining.
+   slapd.conf. This prevents some false positive error messages during join.
 bug: [41782]
