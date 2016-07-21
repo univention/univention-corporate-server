@@ -1,6 +1,6 @@
 product: ucs
 release: "3.2"
-version: [0]
+version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: libssh
 fix: 0.4.5-3.15.201606131016
