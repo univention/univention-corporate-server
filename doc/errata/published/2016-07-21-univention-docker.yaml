@@ -11,3 +11,4 @@ desc: |
  * The start of the docker daemon is aborted if a 
    docker bridge network conflict has been detected.
 bug: [40515]
+announced: 2016-07-21
