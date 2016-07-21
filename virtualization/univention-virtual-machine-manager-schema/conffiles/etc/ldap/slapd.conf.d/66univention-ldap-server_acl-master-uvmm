@@ -2,8 +2,10 @@
 params = {}
 params['right'] = 'write' if configRegistry['ldap/server/type'] == 'master' else 'read'
 params['base'] = configRegistry['ldap/base']
+import os.path
 
-print '''
+if os.path.exists('/usr/share/univention-ldap/schema/univention-virtual-machine-manager.schema'):
+	print '''
 access to dn.regex="^univentionVirtualMachineUUID=([^,]+),cn=Information,cn=Virtual Machine Manager,%(base)s$" filter="(objectClass=univentionVirtualMachine)" attrs=entry,@univentionVirtualMachine,@univentionObject
 	by dn.onelevel="cn=dc,cn=computers,%(base)s" %(right)s
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" %(right)s
