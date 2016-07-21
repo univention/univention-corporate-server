@@ -19,3 +19,4 @@ desc: |
    * 'failed.ldif' files are now owned by the user 'listener'.
    * LDAP connections are now made by the user 'listener'.
 bug: [30489,28232,33594,41347,31757,34324]
+announced: 2016-07-21
