@@ -24,3 +24,4 @@ desc: |
  * The transaction log is now only written on systems where the Notifier is
    installed as well to prevent the hard disk from filling up.
 bug: [22383,30227,34324,34507,34738,3490,38696,39509,40600,41261]
+announced: 2016-07-21
