@@ -9,3 +9,4 @@ desc: |
  * Use the docker bip setting for docker specific
    iptables rules.
 bug: [40515]
+announced: 2016-07-21
