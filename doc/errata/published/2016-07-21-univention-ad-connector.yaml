@@ -13,3 +13,4 @@ desc: |
    AD Connector service which is installed on the Microsoft Active Directory
    server can be stopped after installing this update.
 bug: [41632]
+announced: 2016-07-21
