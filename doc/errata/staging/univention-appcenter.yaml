@@ -3,9 +3,11 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-appcenter
-fix: 5.0.21-26.198.201607211607
+fix: 5.0.21-27.199.201607221136
 desc: |
  This update addresses the following issue(s):
  * It is now checked if the schema exists before writing ACL definitions to
    slapd.conf. This prevents some false positive error messages during join.
-bug: [41782]
+ * Installing an App could sometimes lead to use a different version than
+   shown in the UMC module.
+bug: [41782, 41841]
