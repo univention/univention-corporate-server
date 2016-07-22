@@ -52,6 +52,7 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 	def __init__(self):
 		super(Upgrade, self).__init__()
 		self._had_image_upgrade = False
+		self._last_mode = None
 
 	def _app_too_old(self, current_app, specified_app):
 		if not current_app.docker:
@@ -85,7 +86,15 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		mode = self._docker_upgrade_mode(app)
 		if mode:
 			self.log('Upgrading %s' % mode)
-			if mode == 'packages':
+			if mode == 'join':
+				if self._last_mode == mode:
+					self.warn('Not again!')
+					return
+				self._run_join(app, args)
+			elif mode == 'packages':
+				if self._last_mode == mode:
+					self.warn('Not again!')
+					return
 				self._upgrade_packages(app)
 			elif mode.startswith('release:'):
 				release = mode[8:].strip()
@@ -99,10 +108,16 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			else:
 				self.warn('Unable to process %r' % (mode,))
 				return
+			self._last_mode = mode
 			ucr_save({'appcenter/prudence/docker/%s' % app.id: None})
 			self._do_it(app, args)
 		else:
 			self.log('Nothing to upgrade')
+
+	def _run_join(self, app, args):
+		process = self._execute_container_script(app, 'update_join', args)
+		if not process or process.returncode != 0:
+			raise Abort('Join upgrade script failed')
 
 	def _upgrade_packages(self, app):
 		process = self._execute_container_script(app, 'update_packages', _credentials=False)
