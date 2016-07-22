@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Univention Appliance Docker Container
-#  checking for package /release updates of the underlying os
+#  update join
 #
 # Copyright 2015 Univention GmbH
 #
@@ -32,22 +32,13 @@
 
 . /usr/share/univention-docker-container-mode/lib.sh
 
-univention-check-join-status 1>/dev/null 2>&1
-if [ ! "$?" -eq 0 ]; then
-	echo "join"
-	exit 0
+username="$(getarg --username)"
+password_file="$(getarg --password-file)"
+
+if [ -z "$username" -o -z "$password_file" ]; then
+	die "You are lacking --username or --password-file"
 fi
 
-available=$(ucr get update/available)
-if [ "$available" != "yes" ]; then
-	exit 0
-fi
-upgrade=$(univention-upgrade --check)
-release=$(echo "$upgrade" | grep "Checking for release updates:" | sed -n "s/.*found: UCS \(.*\)"/\\1/p)
-if [ -n "$release" ]; then
-	echo "release: $release"
-else
-	packages=$(echo "$upgrade" | grep "Checking for package updates:" | sed -n "s/.*found/packages/p")
-	echo "$packages"
-fi
+univention-run-join-scripts -dcaccount "$username" -dcpwd "$password_file"
+univention-check-join-status
 
