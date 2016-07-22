@@ -391,13 +391,15 @@ class Application(object):
 	@property
 	def candidate(self):
 		is_installed = self.is_registered(ucr)
+		this_version = LooseVersion(self.version)
 		for ver in self.versions:
-			if ver is self:
+			other_version = LooseVersion(ver.version)
+			if other_version <= this_version:
 				continue
 			if ver.get('dockerimage'):
 				continue
 			if is_installed and ver.get('requiredappversionupgrade'):
-				if LooseVersion(ver.get('requiredappversionupgrade')) > LooseVersion(self.version):
+				if LooseVersion(ver.get('requiredappversionupgrade')) > this_version:
 					continue
 			return ver
 

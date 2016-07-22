@@ -53,7 +53,7 @@ class Upgrade(Install):
 		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install master packages on DC master and DC backup systems')
 
 	def _app_too_old(self, current_app, specified_app):
-		if specified_app is None or current_app >= specified_app:
+		if current_app >= specified_app:
 			self.fatal('A newer version of %s than the one installed must be present and chosen' % current_app.id)
 			return True
 		return False
@@ -62,7 +62,7 @@ class Upgrade(Install):
 		app = args.app
 		self.old_app = AppManager.find(app)
 		if app == self.old_app:
-			app = AppManager.find_candidate(app)
+			app = AppManager.find_candidate(app) or app
 		if self._app_too_old(self.old_app, app):
 			return
 		args.app = app
