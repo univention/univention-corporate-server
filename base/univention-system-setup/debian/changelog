@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-33) unstable; urgency=medium
+
+  * Bug #40551: cleanup for jshint
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 22 Jul 2016 10:43:09 +0200
+
 univention-system-setup (9.0.4-32) unstable; urgency=medium
 
   * Bug #40782: use existing traceback handling

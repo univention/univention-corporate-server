@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define, console, require, window*/
 
 define([
 	"dojo/_base/kernel",
@@ -1150,7 +1150,7 @@ define([
 		_showMemoryWarning: function() {
 			var memory_min = Math.max(parseInt(this.ucr['system/setup/boot/minimal_memory'], 10) || 512, 512);
 			if (memory_min > this.values.memory_total) {
-				_memString = function(memory) {
+				var _memString = function(memory) {
 					if (memory < 1024) {
 						return _('%s MiB', parseInt(memory));
 					}
@@ -1378,7 +1378,7 @@ define([
 					return;
 				}
 				tools.umcpCommand('get/ucr', ['license/base', 'uuid/system'], false).then(lang.hitch(this, function(data) {
-					ucr = data.result;
+					var ucr = data.result;
 					var isReady = ucr['license/base'] && ucr['uuid/system'] !== fakeUuid;
 					if (!isReady) {
 						return;
