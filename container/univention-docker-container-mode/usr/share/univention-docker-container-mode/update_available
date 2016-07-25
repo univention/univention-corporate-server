@@ -34,7 +34,7 @@
 
 univention-check-join-status 1>/dev/null 2>&1
 if [ ! "$?" -eq 0 ]; then
-	echo "join"
+	echo "packages"
 	exit 0
 fi
 

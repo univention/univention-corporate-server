@@ -30,5 +30,24 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-univention-upgrade --noninteractive --updateto "$(ucr get version/version)-$(ucr get version/patchlevel)"
+. /usr/share/univention-docker-container-mode/lib.sh
 
+username="$(getarg --username)"
+password_file="$(getarg --password-file)"
+
+ret_join=0
+
+univention-upgrade --noninteractive --updateto "$(ucr get version/version)-$(ucr get version/patchlevel)"
+ret_pack="$?"
+
+if [ -n "$username" -a -n "$password_file" ]; then
+	univention-run-join-scripts -dcaccount "$username" -dcpwd "$password_file"
+	univention-check-join-status
+	ret_join="$?"
+fi
+
+if [ "$ret_pack" -ne 0 ]; then
+	exit "$ret_pack"
+else
+	exit "$ret_join"
+fi
