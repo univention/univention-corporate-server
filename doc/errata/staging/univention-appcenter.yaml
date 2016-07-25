@@ -3,11 +3,12 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-appcenter
-fix: 5.0.21-28.200.201607221241
+fix: 5.0.21-30.202.201607252257
 desc: |
  This update addresses the following issue(s):
  * It is now checked if the schema exists before writing ACL definitions to
    slapd.conf. This prevents some false positive error messages during join.
  * The App Center sometimes installed the last-to-latest App version.
  * Executing missing join scripts in a Docker Container is now supported.
-bug: [41782, 41841, 39551]
+ * Added a couple of extensions to "univention-app" for App developers.
+bug: [41782, 41841, 39551, 41853]
