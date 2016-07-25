@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-30) unstable; urgency=medium
+
+  * Bug #41853: Add Dev Tools for working with the Self Service module
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Jul 2016 22:48:58 +0200
+
 univention-appcenter (5.0.21-29) unstable; urgency=medium
 
   * Bug #39551: Credentials in update_packages
