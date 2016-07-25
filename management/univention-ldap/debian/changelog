@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-31) unstable; urgency=low
+
+  * Bug #33993: new i386 default for ldap/database/mdb/maxsize
+
+ -- Felix Botner <botner@univention.de>  Mon, 25 Jul 2016 15:42:19 +0200
+
 univention-ldap (12.1.6-30) unstable; urgency=medium
 
   * Bug #41715: reallow posixAccount for univentionWindows objects

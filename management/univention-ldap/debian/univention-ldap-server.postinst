@@ -90,12 +90,17 @@ ucr set \
 
 [ -f /etc/ldap/dh_2048.pem ] || cp /usr/share/univention-ldap/dh_2048.pem /etc/ldap/
 
+mdb_max=2147483648 # 2 GB
+if [ "i686" = "$(uname -m)" ]; then
+	mdb_max=1992294400 # 1.9 GB
+fi
+
 ucr set \
 	ldap/debug/level?0 \
 	slapd/port?"7389,389" \
 	slapd/port/ldaps?"7636,636" \
 	ldap/database/type?mdb \
-	ldap/database/mdb/maxsize?2147483648 \
+	ldap/database/mdb/maxsize?"$mdb_max" \
 	ldap/sizelimit?400000 \
 	ldap/cachesize?20000 \
 	ldap/idlcachesize?20000 \
