@@ -15,6 +15,7 @@ from univention.testing.internal import setup_environment, setup_debug, \
 		LOG_BASE, get_sections, get_tests
 from univention.testing.data import TestEnvironment, TestCase, TestResult
 from univention.testing.errors import TestError
+from univention.testing.coverage import Coverage
 
 
 def parse_options(sections):
@@ -70,8 +71,9 @@ def parse_options(sections):
 	output_group.add_option("-l", "--logfile",
 			dest="logfile", action="store", default=LOG_BASE % (time(),),
 			help="Path to log file [%default]")
-
 	parser.add_option_group(output_group)
+
+	parser.add_option_group(Coverage.get_option_group(parser))
 
 	return parser.parse_args()
 
@@ -166,6 +168,8 @@ def main():
 		selected_sections = all_sections.keys()
 	tests = get_tests(selected_sections)
 
+	coverage = Coverage(options)
+	coverage.start()
 	test_set = TestSet(tests)
 
 	if options.dry:
@@ -182,7 +186,10 @@ def main():
 	test_set.set_environment(test_environment)
 	test_set.set_prefix(options.count)
 	test_set.set_format(options.format)
-	test_set.run_tests(options.filter, options.dry, options.hold)
+	try:
+		test_set.run_tests(options.filter, options.dry, options.hold)
+	finally:
+		coverage.stop()
 
 
 if __name__ == '__main__':

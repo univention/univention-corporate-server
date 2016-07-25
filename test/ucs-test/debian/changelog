@@ -1,3 +1,9 @@
+ucs-test (6.0.35-9) unstable; urgency=medium
+
+  * Bug #37102: Add univention.testing.coverage
+
+ -- Florian Best <best@univention.de>  Mon, 25 Jul 2016 18:39:16 +0200
+
 ucs-test (6.0.35-8) unstable; urgency=medium
 
   * Bug #41504: make replication messages smarter (completes Bug #39533: svn r64473)
