@@ -86,16 +86,11 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		mode = self._docker_upgrade_mode(app)
 		if mode:
 			self.log('Upgrading %s' % mode)
-			if mode == 'join':
+			if mode == 'packages':
 				if self._last_mode == mode:
 					self.warn('Not again!')
 					return
-				self._run_join(app, args)
-			elif mode == 'packages':
-				if self._last_mode == mode:
-					self.warn('Not again!')
-					return
-				self._upgrade_packages(app)
+				self._upgrade_packages(app, args)
 			elif mode.startswith('release:'):
 				release = mode[8:].strip()
 				self._upgrade_release(app, release)
@@ -114,13 +109,8 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 		else:
 			self.log('Nothing to upgrade')
 
-	def _run_join(self, app, args):
-		process = self._execute_container_script(app, 'update_join', args)
-		if not process or process.returncode != 0:
-			raise Abort('Join upgrade script failed')
-
-	def _upgrade_packages(self, app):
-		process = self._execute_container_script(app, 'update_packages', _credentials=False)
+	def _upgrade_packages(self, app, args):
+		process = self._execute_container_script(app, 'update_packages', args)
 		if not process or process.returncode != 0:
 			raise Abort('Package upgrade script failed')
 

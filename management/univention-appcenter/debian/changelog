@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-29) unstable; urgency=medium
+
+  * Bug #39551: Credentials in update_packages
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 25 Jul 2016 10:07:19 +0200
+
 univention-appcenter (5.0.21-28) unstable; urgency=medium
 
   * Bug #39551: Support running missing join scripts in container

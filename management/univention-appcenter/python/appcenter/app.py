@@ -626,9 +626,6 @@ class App(object):
 		docker_script_update_available: Like docker_script_setup, but
 			for a script that is run to check whether an update is
 			available (packag or distribution upgrade).
-		docker_script_update_join: Like docker_script_setup, but
-			for a script that is run to execute any missing join
-			script in the container.
 		docker_script_update_packages: Like docker_script_setup, but
 			for a script that is run to install package updates
 			(like security updates) in the container without
@@ -735,7 +732,6 @@ class App(object):
 	docker_script_restore_data_before_setup = AppDockerScriptAttribute()
 	docker_script_restore_data_after_setup = AppDockerScriptAttribute()
 	docker_script_update_available = AppDockerScriptAttribute()
-	docker_script_update_join = AppDockerScriptAttribute()
 	docker_script_update_packages = AppDockerScriptAttribute()
 	docker_script_update_release = AppDockerScriptAttribute()
 	docker_script_update_app_version = AppDockerScriptAttribute()
