@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-ldap
-fix: 12.1.6-30.823.201607151042
+fix: 12.1.6-31.826.201607251545
 desc: |
  This update addresses the following issues:
  * Regular users are prevented from changing their object class.
