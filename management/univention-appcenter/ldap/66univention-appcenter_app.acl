@@ -2,9 +2,7 @@
 params = {}
 params['base'] = configRegistry['ldap/base']
 
-import os.path
-if os.path.exists('/var/lib/univention-ldap/local-schema/univention-app.schema'):
-	print '''
+print '''
 access to dn.regex="^univentionAppID=([^,]+),cn=([^,]+),cn=apps,cn=univention,%(base)s$" filter="(objectClass=univentionApp)" attrs=entry,@univentionApp,@univentionObject
 	by dn.onelevel="cn=dc,cn=computers,%(base)s" write
 	by dn.onelevel="cn=memberserver,cn=computers,%(base)s" write
