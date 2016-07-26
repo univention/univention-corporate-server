@@ -109,7 +109,7 @@ class Fatal(Exception):
 class Value(object):
 
     DOMAIN = r'(?:[0-9A-Za-z]+(?:[0-9A-Za-z-]*[0-9A-Za-z])?\.)+[0-9A-Za-z-]+(?:[0-9A-Za-z-]*[0-9A-Za-z])?'
-    PATH = r'/[#$%&+,./0-9:;=?@A-Z_a-z-]*'
+    PATH = r'/[!#$%&+,./0-9:;=?@A-Z_a-z-]*'
 
     RE_EMAIL = regex_compile(r'^.+@' + DOMAIN + r'$')
     RE_WWW = regex_compile(r'^https?://' + DOMAIN + r'(?::\d+)?(?:' + PATH + r')?$')
