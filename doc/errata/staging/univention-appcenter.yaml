@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-appcenter
-fix: 
+fix: 5.0.21-31.203.201607261300
 desc: |
  This update addresses the following issue(s):
  * The App Center sometimes installed the last-to-latest App version.
