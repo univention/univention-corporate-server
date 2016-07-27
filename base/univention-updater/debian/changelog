@@ -1,3 +1,9 @@
+univention-updater (11.0.10-3) unstable; urgency=low
+
+  * Bug #40458: Fix confusing update message about next blocked release
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 27 Jul 2016 14:56:44 +0200
+
 univention-updater (11.0.10-2) unstable; urgency=medium
 
   * Bug #33537: Do not set candidate

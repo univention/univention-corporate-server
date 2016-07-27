@@ -136,7 +136,6 @@ define([
 
 							var componentQueryDeferred = new Deferred();
 							var appliance_mode = (this._form.getWidget('appliance_mode').get('value') === 'true');
-							var theoreticalReleaseUpdate = this._form.getWidget('release_update_available').get('value');
 							var blockingComponents = this._form.getWidget('release_update_blocking_components').get('value');
 							if (blockingComponents === '') {
 								blockingComponents = [];
@@ -147,7 +146,7 @@ define([
 							var updatesTextComponentsUnknown = '';
 							var componentsUnknown = blockingComponents;
 							if (blockingComponents.length && !appliance_mode) {
-								updatestext = _('Version %(version)s is available but cannot be installed.', {version: theoreticalReleaseUpdate});
+								updatestext = _('Further release updates are available but cannot be installed.');
 								var updatesTextComponentsApps = '';
 								var askAppCenter = tools.umcpCommand('appcenter/get_by_component_id', {component_id: blockingComponents}, false).then(lang.hitch(this, function(data) {
 									var apps = data.result;
@@ -172,7 +171,7 @@ define([
 										});
 										var firstApp = componentApps[0];
 										var otherApps = componentApps.slice(1);
-										updatesTextComponentsApps = _('For UCS %(theoretical_release_update)s the application %(name)s is not available in the currently installed version.', {theoretical_release_update: theoreticalReleaseUpdate, name: componentApps[0].name});
+										updatesTextComponentsApps = _('The currently installed version of the application %(name)s is not available for all newer UCS releases.', {name: componentApps[0].name});
 										if (firstApp.is_installed && firstApp.candidate_version) {
 											updatesTextComponentsApps += ' ' + _('An update for the app is available which may solve this issue.');
 										} else {

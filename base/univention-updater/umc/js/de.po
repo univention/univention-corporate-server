@@ -165,11 +165,11 @@ msgstr "Während des Neustarts wird die Verbindung zum System unterbrochen. "
 #: umc/js/updater/UpdatesPage.js:199
 #, python-format
 msgid ""
-"For UCS %(theoretical_release_update)s the application %(name)s is not "
-"available in the currently installed version."
+"The currently installed version of the application %(name)s is not "
+"available for all newer UCS releases."
 msgstr ""
-"Für UCS %(theoretical_release_update)s ist die momentan installierte Version "
-"der Applikation %(name)s nicht verfügbar."
+"Die momentan installierte Version der Applikation %(name)s ist nicht "
+"verfügbar für alle neueren UCS Releases."
 
 #: umc/js/updater/ProgressPage.js:118
 msgid ""
@@ -435,8 +435,10 @@ msgstr ""
 
 #: umc/js/updater/UpdatesPage.js:174
 #, python-format
-msgid "Version %(version)s is available but cannot be installed."
-msgstr "Version %(version)s ist verfügbar, kann aber nicht installiert werden."
+msgid "Further release updates are available but cannot be installed."
+msgstr ""
+"Weitere Releaseupdates sind verfügbar, können jedoch nicht installiert "
+"werden."
 
 #: umc/js/updater/UpdatesPage.js:86
 msgid ""
