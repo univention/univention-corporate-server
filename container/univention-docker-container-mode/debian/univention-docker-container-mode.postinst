@@ -32,6 +32,12 @@
 
 ucr set homedir/mount?false
 
+if [ "$1" = configure ]; then
+	if dpkg --compare-versions "$2" lt-nl '1.0.12-5'; then
+		/etc/univention/docker/preinit.d/fix-cron-hardlinks
+	fi
+fi
+
 #DEBHELPER#
 
 exit 0

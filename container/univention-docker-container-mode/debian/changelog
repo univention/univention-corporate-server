@@ -1,3 +1,10 @@
+univention-docker-container-mode (1.0.12-5) unstable; urgency=medium
+
+  * Bug #39677: Fix preinit.d script name for run-parts
+  * Run fix-cron-hardlinks during package update
+
+ -- Arvid Requate <requate@univention.de>  Wed, 27 Jul 2016 17:16:29 +0200
+
 univention-docker-container-mode (1.0.12-4) unstable; urgency=medium
 
   * Bug #39551: Put join in package updates

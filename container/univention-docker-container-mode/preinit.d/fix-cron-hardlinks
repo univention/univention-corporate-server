@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Docker Container Mode - fix-cron-hardlinks.sh
+# Univention Docker Container Mode - fix-cron-hardlinks
 #
 # Copyright 2016 Univention GmbH
 #
