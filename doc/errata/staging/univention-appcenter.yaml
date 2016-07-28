@@ -3,10 +3,9 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-appcenter
-fix: 5.0.21-31.203.201607261300
+fix: 5.0.21-32.204.201607281722
 desc: |
  This update addresses the following issue(s):
  * The App Center sometimes installed the last-to-latest App version.
  * Executing missing join scripts in a Docker Container is now supported.
- * Added a couple of extensions to "univention-app" for App developers.
-bug: [41841, 39551, 41853]
+bug: [41841, 39551]
