@@ -1,3 +1,9 @@
+univention-appcenter (5.0.21-32) unstable; urgency=medium
+
+  * Bug #41853: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 28 Jul 2016 17:21:58 +0200
+
 univention-appcenter (5.0.21-31) unstable; urgency=medium
 
   * Revert "Bug #41782: check if schema exists before writing ACLs"

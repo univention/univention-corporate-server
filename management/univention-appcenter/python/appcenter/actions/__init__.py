@@ -185,7 +185,7 @@ class UniventionAppAction(object):
 			if msg:
 				self.fatal(msg)
 			self.percentage = 100
-			raise
+			return 10
 		except Exception as exc:
 			self.log_exception(exc)
 			raise

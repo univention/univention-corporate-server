@@ -227,7 +227,7 @@ class Instance(umcm.Base, ProgressMixin):
 	def get_by_component_id(self, component_id):
 		domain = get_action('domain')
 		if isinstance(component_id, list):
-			requested_apps = [AppManager.find_by_component_id(component_id) for cid in component_id]
+			requested_apps = [AppManager.find_by_component_id(cid) for cid in component_id]
 			return domain.to_dict(requested_apps)
 		else:
 			app = AppManager.find_by_component_id(component_id)
