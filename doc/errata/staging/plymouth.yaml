@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: plymouth
-fix: 
+fix: 0.8.5.1-5.22.201608021212
 desc: |
  The bootplash has been extended to allow adjustments of its design.
-bug: [40826]
+bug: [40826,41821]
