@@ -337,7 +337,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 # <http://www.gnu.org/licenses/>.
 
 override_dh_auto_test:
-	#ucslint
+	ucslint -m 0008
 	dh_auto_test
 
 %:
