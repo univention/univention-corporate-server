@@ -71,7 +71,8 @@ def merge_po_file_trees(source_tree, target_tree):
 	pos_delete_upstream = set(translated_pos) - set(upstream_pos)
 	# remove deleted
 	for obsolete_po in pos_delete_upstream:
-		os.unlink(os.path.join(target_tree, obsolete_po))
+		obsolete_po = os.path.join(target_tree, obsolete_po)
+		os.rename(obsolete_po, '{}.obsolete'.format(obsolete_po))
 	# add new
 	for new_po in new_pos:
 		new_po_path = os.path.join(target_tree, new_po)
