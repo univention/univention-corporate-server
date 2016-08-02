@@ -45,6 +45,11 @@ MODULE_BLACKLIST = [
 ]
 
 
+class InvalidSpecialCase(Exception):
+	def __init__(self, message):
+		super(InvalidSpecialCase, self).__init__(message)
+
+
 class UMCModuleTranslation(dh_umc.UMC_Module):
 	def __init__(self, attrs, target_language):
 		attrs['target_language'] = target_language
@@ -77,7 +82,6 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 			module = UMCModuleTranslation._get_core_module_from_source_package(module_in_source_tree, target_language)
 		except AttributeError as e:
 			print("%s core module load failed" % str(e))
-			# TODO: Module not loaded at all --> exception?
 		else:
 			print("Successfully loaded as core module: {}".format(module_in_source_tree.get('abs_path_to_src_pkg')))
 			module['core'] = True
@@ -115,7 +119,6 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		return UMCModuleTranslation(attrs, target_language)
 
 
-# TODO: actually.. (module, output_dir)
 def update_package_translation_files(module, output_dir):
 	print("Creating directories and PO files for {module_name} in translation source package".format(**module))
 	start_dir = os.getcwd()
@@ -189,10 +192,9 @@ def translate_special_case(special_case, source_dir, target_language, output_dir
 		special_case[key] = special_case.get(key).format(lang=target_language)
 	special_case['po_subdir'] = '{package_dir}/{po_subdir}'.format(**special_case)
 
-	# TODO: Checks whether a special case is valid should be done on special case parsing
 	path_src_pkg = os.path.join(source_dir, special_case.get('package_dir'))
 	if not os.path.isdir(path_src_pkg):
-		# TODO: Exception
+		raise InvalidSpecialCase("Path defined under 'package_dir' not found. Check specialcase definition for {package_name}".format(**special_case))
 		return
 
 	new_po_path = os.path.join(output_dir, special_case.get('po_subdir'))
@@ -207,7 +209,6 @@ def translate_special_case(special_case, source_dir, target_language, output_dir
 		matches.extend(fnmatch.filter([os.path.join(parent, fn) for fn in filenames], file_pattern))
 
 	if not matches:
-		# TODO: Exception
 		print('Error: specialcase for {} didn\'t match any files.'.format(special_case.get('package_dir')))
 	# FIXME: create_po should handle path itself?
 	cwd = os.getcwd()
