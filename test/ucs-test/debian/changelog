@@ -1,3 +1,9 @@
+ucs-test (6.0.35-11) unstable; urgency=medium
+
+  * Bug #41223: Add tests for univention-ucs-translation-template
+
+ -- Eduard Mai <mai@univention.de>  Tue, 02 Aug 2016 14:24:47 +0200
+
 ucs-test (6.0.35-10) unstable; urgency=low
 
   * Bug #41771: fixed RE_URL in apptests

@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.0.1-10) unstable; urgency=medium
+
+  * Bug #41223: Fix issues from QA
+
+ -- Eduard Mai <mai@univention.de>  Tue, 02 Aug 2016 14:25:39 +0200
+
 univention-ucs-translation-template (3.0.1-9) unstable; urgency=medium
 
   * Bug #41223: Improve ability to merge new messages into exiting translation 
