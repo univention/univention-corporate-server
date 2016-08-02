@@ -25,12 +25,11 @@ import logging
 import os
 import polib
 import random
-import shutil
 import sys
 import tools
 import univention.testing.utils as utils
 
-from pdb import set_trace as dbg
+from ipdb import set_trace as dbg
 
 
 def _entry_is_fuzzy(changed_entry, po_file_path):
@@ -55,14 +54,23 @@ def _change_entry_in_source_file(source_pkg_path, po_entry):
 					changed_source.write(line)
 		os.unlink(original_source_file)
 
+
+def _entry_is_obsolete(entry, po_path):
+	for obsolete in polib.pofile(po_path).obsolete_entries():
+		if obsolete.msgid == entry.msgid and obsolete.msgstr == entry.msgstr:
+			dbg()
+			return True
+	return False
+
+
 SVN = 'SVN_TEST0'
 TRANSLATION_PKG_NAME = 'univention-ucs-translation-XX'
 if __name__ == '__main__':
 	tmp_dir = mkdtemp(prefix='translation-template-test-00-')
 	os.chdir(tmp_dir)
 	logging.basicConfig(level='DEBUG')
-	#static_seed = int(time())
-	static_seed = 1469805026
+	static_seed = int(time())
+	# static_seed = 1469805026 # failure b/c of xgettext reformatting lines + fuzzy not matching
 	# static_seed = 1469802676 # firewall
 	# static_seed = 146891345919452252306608963434203697808 # {de}activated...
 	logging.debug('Seed for this test: %s', str(static_seed))
@@ -105,16 +113,19 @@ if __name__ == '__main__':
 	failed = False
 	for po_path, changed_entry in changes:
 		if not _entry_is_fuzzy(changed_entry, po_path):
-			logging.info('Test failure: There should be fuzzy entries for this change.')
-			logging.info('PO file: %s', po_path)
-			failed = True
+			# Sometimes msgmerges fuzzy matching does not match the change and
+			# appends the entry as commented (obsolete) to the end of the file
+			if _entry_is_obsolete(changed_entry, po_path):
+				logging.debug('Change not matched by fuzzy matching in PO file: %s', po_path)
+			else:
+				failed = True
+				logging.info('Failure in PO file: %s', po_path)
+				logging.info('Failure: Changed entry was neither fuzzy matched nor append as a comment(obsoleted).')
 
+	tools.call('svn', 'revert', '--recursive', '/root/SVN_TEST0') ## REMOVEME
 	if failed:
-		tools.call('svn', 'revert', '--recursive', '/root/SVN_TEST0')
 		utils.fail('Translation template test failed. See log for further information.')
 
-	#shutil.rmtree(tmp_dir)
-	tools.call('svn', 'revert', '--recursive', '/root/SVN_TEST0')
 
 	# tools.call('univention-ucs-translation-merge', 'XX', SVN, TRANSLATION_PKG_NAME)
 
