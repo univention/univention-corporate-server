@@ -27,7 +27,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
 from email.Utils import formatdate
 import fnmatch
 import getpass
@@ -38,12 +37,13 @@ import socket
 import traceback
 import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
-
+from pdb import set_trace as dbg
 # do not translate modules with these names, as they are examples and thus not worth the effort
 MODULE_BLACKLIST = [
 	'PACKAGENAME',
 	'0001-6-7'
 ]
+
 
 class UMCModuleTranslation(dh_umc.UMC_Module):
 	def __init__(self, attrs, target_language):
@@ -76,7 +76,7 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		try:
 			module = UMCModuleTranslation._get_core_module_from_source_package(module_in_source_tree, target_language)
 		except AttributeError as e:
-			print "%s core module load failed" % str(e)
+			print("%s core module load failed" % str(e))
 			# TODO: Module not loaded at all --> exception?
 		else:
 			print("Successfully loaded as core module: {}".format(module_in_source_tree.get('abs_path_to_src_pkg')))
@@ -114,7 +114,8 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 		attrs['relative_path_src_pkg'] = module.get('relative_path_src_pkg')
 		return UMCModuleTranslation(attrs, target_language)
 
-#TODO: actually.. (module, output_dir)
+
+# TODO: actually.. (module, output_dir)
 def update_package_translation_files(module, output_dir):
 	print("Creating directories and PO files for {module_name} in translation source package".format(**module))
 	start_dir = os.getcwd()
@@ -134,7 +135,7 @@ def update_package_translation_files(module, output_dir):
 					try:
 						dh_umc.create_po_file(new_po_file_abs_path, module['module_name'], src_files)
 					except dh_umc.Error as exc:
-						print str(exc)
+						print(str(exc))
 
 			# build python po files
 			_create_po_files(module.python_po_files, module.python_files)
@@ -148,11 +149,11 @@ def update_package_translation_files(module, output_dir):
 			try:
 				dh_umc.module_xml2po(module, po_file_full_path, lang)
 			except dh_umc.Error as exc:
-				print str(exc)
+				print(str(exc))
 
 	except OSError as exc:
-		print traceback.format_exc()
-		print "error in update_package_translation_files: %s" % (exc,)
+		print(traceback.format_exc())
+		print("error in update_package_translation_files: %s" % (exc,))
 	finally:
 		os.chdir(start_dir)
 	return abs_path_translated_src_pkg
@@ -191,7 +192,7 @@ def translate_special_case(special_case, source_dir, target_language, output_dir
 	# TODO: Checks whether a special case is valid should be done on special case parsing
 	path_src_pkg = os.path.join(source_dir, special_case.get('package_dir'))
 	if not os.path.isdir(path_src_pkg):
-		# TODO: Exception 
+		# TODO: Exception
 		return
 
 	new_po_path = os.path.join(output_dir, special_case.get('po_subdir'))
@@ -217,8 +218,8 @@ def translate_special_case(special_case, source_dir, target_language, output_dir
 
 
 def find_base_translation_modules(startdir, source_dir, module_basefile_name):
-	print 'looking in %s' % source_dir
-	print 'looking for files matching %s' % module_basefile_name
+	print('looking in %s' % source_dir)
+	print('looking for files matching %s' % module_basefile_name)
 	os.chdir(source_dir)
 	matches = []
 	for root, dirnames, filenames in os.walk('.'):
@@ -229,18 +230,18 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 
 	regex = re.compile(".*/(.*)/debian/.*%s$" % re.escape(module_basefile_name))
 	for match in matches:
-		print match
+		print(match)
 		packagenameresult = regex.search(match)
 		if packagenameresult:
 			packagename = packagenameresult.group(1)
 
 			modulename = os.path.basename(match.replace(module_basefile_name, ''))
 			if modulename in MODULE_BLACKLIST:
-				print "Ignoring module %s: Module is blacklisted\n" % modulename
+				print("Ignoring module %s: Module is blacklisted\n" % modulename)
 				continue
 
 			package_dir = os.path.dirname(os.path.dirname(match))
-			print "Found package: %s" % package_dir
+			print("Found package: %s" % package_dir)
 			module = {}
 			module['module_name'] = modulename
 			module['binary_package_name'] = packagename
@@ -248,7 +249,7 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 			module['relative_path_src_pkg'] = os.path.relpath(package_dir)
 			base_translation_modules.append(module)
 		else:
-			print "could not obtain packagename from directory %s" % match
+			print("could not obtain packagename from directory %s" % match)
 
 	os.chdir(startdir)
 	return base_translation_modules
@@ -257,7 +258,7 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 def create_new_package(new_package_dir, target_language, target_locale, language_name, startdir):
 	new_package_dir_debian = os.path.join(new_package_dir, 'debian')
 	if not os.path.exists(new_package_dir_debian):
-		print "creating directory: %s" % new_package_dir_debian
+		print("creating directory: %s" % new_package_dir_debian)
 		os.makedirs(new_package_dir_debian)
 
 	translation_package_name = "univention-ucs-translation-%s" % target_language
@@ -389,7 +390,7 @@ usr/share/locale/%(lang)s/LC_MESSAGES
 """ % language_dict)
 
 	shutil.copyfile('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(new_package_dir, 'Makefile'))
-	### Move source files and installed .mo files to new package dir
+	# Move source files and installed .mo files to new package dir
 	if os.path.exists(os.path.join(new_package_dir, 'usr')):
 		shutil.rmtree(os.path.join(new_package_dir, 'usr'))
 	#shutil.copytree(os.path.join(startdir, 'usr'), os.path.join(new_package_dir, 'usr'))
@@ -399,4 +400,3 @@ usr/share/locale/%(lang)s/LC_MESSAGES
 		shutil.rmtree(os.path.join(new_package_dir, target_language))
 	shutil.copytree(os.path.join(startdir, target_language), os.path.join(new_package_dir, target_language))
 	shutil.rmtree(os.path.join(startdir, target_language))
-
