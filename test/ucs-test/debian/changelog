@@ -1,3 +1,9 @@
+ucs-test (6.0.35-13) unstable; urgency=medium
+
+  * Bug #41223: translation-template: set test exposure to safe
+
+ -- Eduard Mai <mai@univention.de>  Tue, 02 Aug 2016 19:12:46 +0200
+
 ucs-test (6.0.35-12) unstable; urgency=medium
 
   * Bug #41223: translation-template: Adjust arguments to merge 
