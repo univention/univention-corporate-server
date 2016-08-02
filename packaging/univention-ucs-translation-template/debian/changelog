@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.0.1-13) unstable; urgency=medium
+
+  * Bug #41223: Remove *.install on merge with legacy translation package
+
+ -- Eduard Mai <mai@univention.de>  Tue, 02 Aug 2016 19:38:55 +0200
+
 univention-ucs-translation-template (3.0.1-12) unstable; urgency=medium
 
   * Bug #41223: Copy static Makefile on merge with legacy translation package

@@ -109,8 +109,13 @@ if __name__ == '__main__':
 
 	# Handle old translation package format
 	if not os.path.isfile(os.path.join(args.translation, 'all_targets.mk')):
-		tlh.write_debian_rules(os.path.join(args.translation, 'debian'))
-		shutil.copy('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(args.translation, 'Makefile'))
+		try:
+			os.remove(os.path.join(args.translation, 'debian', 'univention-ucs-translation-{}.install'.format(lang_code)))
+			tlh.write_debian_rules(os.path.join(args.translation, 'debian'))
+			shutil.copy('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(args.translation, 'Makefile'))
+		except Exception() as exc:
+			print("Error during handling of legacy translation package. Exiting.")
+			sys.exit(1)
 
 	# generate {lang}_tomerge
 	dh_umc.LANGUAGES = (lang_code, )
