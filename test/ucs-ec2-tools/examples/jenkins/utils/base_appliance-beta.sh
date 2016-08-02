@@ -290,7 +290,7 @@ create_install_script ()
 		packages="$packages $(app_get_packages $app)"
 	done
 	# Due to dovect: https://forge.univention.org/bugzilla/show_bug.cgi?id=39148
-	if [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "egroupware" ] || [ "$main_app" = "horde" ] || [ "$main_app" = "tine20" ] || [ "$main_app" = "fortnox" ]; then
+	if [ "$main_app" = "zarafa" ] || [ "$main_app" = "oxseforucs" ] || [ "$main_app" = "egroupware" ] || [ "$main_app" = "horde" ] || [ "$main_app" = "tine20" ] || [ "$main_app" = "fortnox" ]; then
 		close_fds=TRUE
 	fi
 	# Ticket #2015052821000587
@@ -553,7 +553,7 @@ interfaces/primary="eth0"
 interfaces/eth0/broadcast="10.203.255.255"
 packages_remove=""
 ssl/organization="DE"
-root_password="univention"
+root_password="zRMtAmGIb3"
 ssl/email="ssl@ucs.example"
 ldap/base="dc=ucs,dc=example"
 locale/default="de_DE.UTF-8:UTF-8"
