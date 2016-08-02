@@ -32,6 +32,7 @@ import fnmatch
 import polib
 import os
 import sys
+import shutil
 import univention.translationhelper as tlh
 import univention.dh_umc as dh_umc
 import json
@@ -62,7 +63,12 @@ def merge_po_file_trees(source_tree, target_tree):
 	# add new
 	for new_po in new_pos:
 		new_po_path = os.path.join(target_tree, new_po)
-		os.makedirs(os.path.dirname(new_po_path))
+		try:
+			os.makedirs(os.path.dirname(new_po_path))
+		except OSError as exc:
+			if not exc.errno == 17:
+				raise
+			pass
 		os.rename(os.path.join(source_tree, new_po), new_po_path)
 	# merge upstream changes...
 	for dir, dirs, files in os.walk(target_tree):
@@ -106,3 +112,5 @@ if __name__ == '__main__':
 		tlh.translate_special_case(scase, args.upstream, args.lang_code, output_dir)
 
 	merge_po_file_trees(output_dir, os.path.join(args.translation, args.lang_code))
+	shutil.rmtree(output_dir)
+	tlh.write_makefile(modules, special_cases, args.translation, args.lang_code)
