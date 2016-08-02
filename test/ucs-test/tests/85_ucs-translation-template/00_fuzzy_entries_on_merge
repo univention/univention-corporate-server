@@ -25,11 +25,11 @@ import logging
 import os
 import polib
 import random
-import sys
 import tools
 import univention.testing.utils as utils
 
-from ipdb import set_trace as dbg
+SVN_PATH = 'svn'
+TRANSLATION_PKG_NAME = 'univention-ucs-translation-XX'
 
 
 def _entry_is_fuzzy(changed_entry, po_file_path):
@@ -58,37 +58,37 @@ def _change_entry_in_source_file(source_pkg_path, po_entry):
 def _entry_is_obsolete(entry, po_path):
 	for obsolete in polib.pofile(po_path).obsolete_entries():
 		if obsolete.msgid == entry.msgid and obsolete.msgstr == entry.msgstr:
-			dbg()
 			return True
 	return False
 
 
-SVN = 'SVN_TEST0'
-TRANSLATION_PKG_NAME = 'univention-ucs-translation-XX'
+def _count_chars_in_msgid_and_msgstr(po_file_path):
+	total_chars = int()
+	for entry in polib.pofile(po_file_path):
+		total_chars += len(entry.msgid)
+		total_chars += len(entry.msgstr)
+
+	return total_chars
+
+
 if __name__ == '__main__':
 	tmp_dir = mkdtemp(prefix='translation-template-test-00-')
 	os.chdir(tmp_dir)
 	logging.basicConfig(level='DEBUG')
 	static_seed = int(time())
-	# static_seed = 1469805026 # failure b/c of xgettext reformatting lines + fuzzy not matching
-	# static_seed = 1469802676 # firewall
-	# static_seed = 146891345919452252306608963434203697808 # {de}activated...
 	logging.debug('Seed for this test: %s', str(static_seed))
 	rand = random.Random(static_seed)
 
 	try:
-		tools.call('ln', '-s', '/root/SVN_TEST0', tmp_dir)
-		# tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1', os.path.join(tmp_dir, 'svn_co'))
-		tools.call('univention-ucs-translation-build-package', '--source={}'.format(SVN), '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
+		tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1', os.path.join(tmp_dir, SVN_PATH))
+		tools.call('univention-ucs-translation-build-package', '--source={}'.format(SVN_PATH), '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
 		tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
 	except tools.InvalidCommandError:
-		print('Error: Tried to launch invalid command. Exiting.')
-		sys.exit(1)
+		utils.fail("Error during test execution.")
 
 	changes = list()
-	# for file_path_pattern in ('*umc*js*.po', '*umc*python*.po'):
-	file_path_pattern = '*.po'
-	po_paths = tools.get_matching_file_paths(TRANSLATION_PKG_NAME, file_path_pattern)
+	po_paths = tools.get_matching_file_paths(TRANSLATION_PKG_NAME, "*.po")
+	po_paths_total_chars = {path: _count_chars_in_msgid_and_msgstr(path) for path in po_paths}
 	i = int()
 	while i < 20:
 		random_po_path = rand.choice(po_paths)
@@ -104,13 +104,25 @@ if __name__ == '__main__':
 			logging.info('Choose a xml PO file')
 			continue
 		i += 1
-		source_pkg_path = os.path.join(SVN, '/'.join(random_po_path.split('/')[2:4]))
+		source_pkg_path = os.path.join(SVN_PATH, '/'.join(random_po_path.split('/')[2:4]))
 		_change_entry_in_source_file(source_pkg_path, random_entry)
 		changes.append((random_po_path, random_entry))
 
-	tools.call('univention-ucs-translation-merge', 'XX', SVN, TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-merge', 'XX', SVN_PATH, TRANSLATION_PKG_NAME)
 
+	# Total char count must be equal or increased(for files in list 'changes')
+	# for every file.
 	failed = False
+	for path, total_chars in po_paths_total_chars.iteritems():
+		if not os.path.isfile(path):
+			logging.info("Missing PO file after merge: %s", path)
+			failed = True
+		if total_chars > _count_chars_in_msgid_and_msgstr(path):
+			logging.info("Count of chars in msgid and msgstr smaller after merge for file: %s", path)
+			failed = True
+	if failed:
+		utils.fail("Unexpected char count in PO files or PO files missing. See log for details.")
+
 	for po_path, changed_entry in changes:
 		if not _entry_is_fuzzy(changed_entry, po_path):
 			# Sometimes msgmerges fuzzy matching does not match the change and
@@ -122,30 +134,5 @@ if __name__ == '__main__':
 				logging.info('Failure in PO file: %s', po_path)
 				logging.info('Failure: Changed entry was neither fuzzy matched nor append as a comment(obsoleted).')
 
-	tools.call('svn', 'revert', '--recursive', '/root/SVN_TEST0') ## REMOVEME
 	if failed:
 		utils.fail('Translation template test failed. See log for further information.')
-
-
-	# tools.call('univention-ucs-translation-merge', 'XX', SVN, TRANSLATION_PKG_NAME)
-
-	# for po_path, changed_entry in changes:
-	# 	if not _entry_is_fuzzy(changed_entry, po_path):
-	# 		print('Test: Failed! No fuzzy entries on second merge.')
-	# 		sys.exit(1)
-	# 	logging.info('Fuzzy entires correctly flagged after second merge.')
-	# 	_remove_fuzzy_flags(po_path)
-
-	# for po_path, _ in changes:
-	# 	failures = False
-	# 	with open(po_path, 'rb') as fd, open('{}.pre_change'.format(po_path), 'rb') as fd_pre:
-	# 		def _is_date(line):
-	# 			return line.startswith('"POT-Creation-Date')
-	# 		original = [line for line in fd_pre.readlines() if not _is_date(line)]
-	# 		result = [line for line in fd.readlines() if not _is_date(line)]
-	# 		if original != result:
-	# 			failures = True
-	# 			logging.info('Test: PO files not identical after last merge: %s', po_path)
-	# if failures:
-	# 	logging.info('Test failed.')
-	# 	sys.exit(1)
