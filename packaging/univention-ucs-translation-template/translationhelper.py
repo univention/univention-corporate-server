@@ -37,7 +37,6 @@ import socket
 import traceback
 import univention.debhelper as dh_ucs
 import univention.dh_umc as dh_umc
-from pdb import set_trace as dbg
 
 # do not translate modules with these names, as they are examples and thus not worth the effort
 MODULE_BLACKLIST = [
@@ -213,7 +212,6 @@ def translate_special_case(special_case, source_dir, target_language, output_dir
 	# FIXME: create_po should handle path itself?
 	cwd = os.getcwd()
 	os.chdir(path_src_pkg)
-	dbg()
 	try:
 		matches = [os.path.relpath(match, start=os.getcwd()) for match in matches]
 		dh_umc.create_po_file(new_po_path, special_case.get('package_name'), matches)

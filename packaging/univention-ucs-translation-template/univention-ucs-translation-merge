@@ -70,13 +70,14 @@ def merge_po_file_trees(source_tree, target_tree):
 				raise
 			pass
 		os.rename(os.path.join(source_tree, new_po), new_po_path)
+		upstream_pos.remove(new_po)
 	# merge upstream changes...
-	for dir, dirs, files in os.walk(target_tree):
-		for po_file in fnmatch.filter([os.path.join(dir, fn) for fn in files], '*.po'):
-			translated = polib.pofile(po_file)
-			upstream = polib.pofile(po_file.replace(target_tree, source_tree))
-			translated.merge(upstream)
-			translated.save()
+	for po_file in upstream_pos:
+		translated = polib.pofile(os.path.join(target_tree, po_file))
+		upstream = polib.pofile(os.path.join(source_tree, po_file))
+		translated.merge(upstream)
+		translated.save()
+	return pos_delete_upstream, new_pos
 
 
 if __name__ == '__main__':
@@ -97,8 +98,10 @@ if __name__ == '__main__':
 	dh_umc.LANGUAGES = (args.lang_code, )
 	modules_upstream = tlh.find_base_translation_modules(os.getcwd(), args.upstream, '.umc-modules')
 	output_dir = os.path.join(args.translation, '{}_merge'.format(args.lang_code))
+	modules = list()
 	for module_attrs in modules_upstream:
 		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, args.lang_code)
+		modules.append(module)
 		tlh.update_package_translation_files(module, output_dir)
 	# special cases, e.g. univention-management-console-frontend
 	special_cases = []
@@ -111,6 +114,13 @@ if __name__ == '__main__':
 	for scase in special_cases:
 		tlh.translate_special_case(scase, args.upstream, args.lang_code, output_dir)
 
-	merge_po_file_trees(output_dir, os.path.join(args.translation, args.lang_code))
+	removed, new = merge_po_file_trees(output_dir, os.path.join(args.translation, args.lang_code))
+	print('Merge summary: ')
+	if removed:
+		print('Following files have been removed:')
+		print('\n'.join(removed))
+	if new:
+		print('Following files habe been added:')
+		print('\n'.join(new))
 	shutil.rmtree(output_dir)
 	tlh.write_makefile(modules, special_cases, args.translation, args.lang_code)
