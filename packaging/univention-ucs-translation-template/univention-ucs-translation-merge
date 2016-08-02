@@ -29,13 +29,14 @@
 # <http://www.gnu.org/licenses/>.
 import argparse
 import fnmatch
-import polib
 import os
 import sys
 import shutil
 import univention.translationhelper as tlh
 import univention.dh_umc as dh_umc
 import json
+import subprocess
+from pdb import set_trace as dbg
 
 SPECIALCASES_PATH = "/usr/share/univention-ucs-translation-template/specialcases.json"
 
@@ -49,6 +50,17 @@ def _get_po_files_from_dir(directory, return_relative_path=False):
 			else:
 				po_files.append(po_file)
 	return po_files
+
+
+def _msgmerge(source, destination):
+	try:
+		subprocess.check_call(['msgmerge', '--update', '--sort-output', destination, source])
+	except TypeError:
+		print('Error: arguments must be names of existing files. Exiting.')
+		sys.exit(1)
+	except subprocess.CalledProcessError:
+		print('Error: PO file merge failed. Exiting.')
+		sys.exit(1)
 
 
 def merge_po_file_trees(source_tree, target_tree):
@@ -73,10 +85,7 @@ def merge_po_file_trees(source_tree, target_tree):
 		upstream_pos.remove(new_po)
 	# merge upstream changes...
 	for po_file in upstream_pos:
-		translated = polib.pofile(os.path.join(target_tree, po_file))
-		upstream = polib.pofile(os.path.join(source_tree, po_file))
-		translated.merge(upstream)
-		translated.save()
+		_msgmerge(os.path.join(source_tree, po_file), os.path.join(target_tree, po_file))
 	return pos_delete_upstream, new_pos
 
 if __name__ == '__main__':
