@@ -1,0 +1,6 @@
+Module: dummy
+Python: umc/python
+Definition: umc/dummy.xml
+Category: umc/categories/dummy.xml
+Javascript: umc/js
+Icons: umc/icons

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="dummy" version="1.0">
+	<name>Dummy module</name>
+	<description>This is a dummy module</description>
+	<keywords>dummy</keywords>
+	<categories>
+		<category name="system"/>
+	</categories>
+	<command name="dummy/query" function="query" />
+	<command name="dummy/colors" function="colors" />
+	<command name="dummy/get" function="get" />
+	</module>
+</umc>
