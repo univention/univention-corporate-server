@@ -47,7 +47,7 @@ def _change_msgid_in_source_file(source_file, line_number, msgid):
 		with open(source_file, 'r') as fd:
 			for i, line in enumerate(fd):
 				if i == int(line_number) - 1:
-					line = line.replace(msgid, 'CHANGED! {}'.format(msgid))
+					line = line.replace(msgid, 'TEST! {}'.format(msgid))
 				changed_js.write(line)
 	os.rename(new_source_file, source_file)
 
@@ -79,21 +79,27 @@ if __name__ == '__main__':
 	for source_file, line_number in random_entry.occurrences:
 		source_file = os.path.join('svn_repo', choosen_po_module_path, source_file)
 		_change_msgid_in_source_file(source_file, line_number, random_entry.msgid)
-	# js_file_path = os.path.join('svn_repo', module_path, js_file)
-	# new_js_file_path = '{}.changed'.format(js_file_path)
-	# with open(new_js_file_path, 'w') as changed_js:
-	# 	with open(js_file_path, 'r') as fd:
-	# 		for i, line in enumerate(fd):
-	# 			if i == int(line_number) - 1:
-	# 				line = line.replace(random_entry.msgid, 'CHANGED! {}'.format(random_entry.msgid))
-	# 			changed_js.write(line)
-	# os.rename(new_js_file_path, js_file_path)
 	_call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
 
 	# fuzzy?
 	choosen_po = polib.pofile(choosen_po_path)
 	found_change = False
-	random_entry_occurences = [random_entry.occ]
 	for fuzzy_entry in choosen_po.fuzzy_entries():
 		if list(*fuzzy_entry.occurrences) == list(*random_entry.occurrences):
 			found_change = True
+		else:
+			print('DBG: fuzzy entry not produced by test.')
+			sys.exit(1)
+		fuzzy_entry.flags.remove('fuzzy')
+	choosen_po.save()
+
+	if found_change:
+		print('Test: Success: fuzzy entries found!')
+
+	_call('svn', 'revert', '--recursive', 'svn_repo/management/univention-management-console-module-passwordchange')
+	_call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
+
+	choosen_po = polib.pofile(choosen_po_path)
+	for fuzzy_entry in choosen_po.fuzzy_entries():
+		fuzzy_entry.flags.remove('fuzzy')
+	choosen_po.save()
