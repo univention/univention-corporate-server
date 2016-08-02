@@ -6,6 +6,7 @@ import subprocess
 import sys
 import shutil
 import polib
+import logging
 from pdb import set_trace as dbg
 
 
@@ -41,15 +42,37 @@ def _call(*command_parts):
 		raise InvalidCommandError()
 
 
-def _change_msgid_in_source_file(source_file, line_number, msgid):
-	new_source_file = '{}.changed'.format(source_file)
-	with open(new_source_file, 'w') as changed_js:
-		with open(source_file, 'r') as fd:
-			for i, line in enumerate(fd):
-				if i == int(line_number) - 1:
-					line = line.replace(msgid, 'TEST! {}'.format(msgid))
-				changed_js.write(line)
-	os.rename(new_source_file, source_file)
+def _change_generated_fuzzy_entries(changed_entry, po_file_path):
+	po_file = polib.pofile(po_file_path)
+	found_change = False
+	for fuzzy in po_file.fuzzy_entries():
+		if fuzzy.occurrences == changed_entry.occurrences:
+			found_change = True
+		else:
+			print('DBG: fuzzy entry not produced by test.')
+			sys.exit(1)
+	return found_change
+
+
+def _remove_fuzzy_flags(po_file_path):
+	po_file = polib.pofile(po_file_path)
+	for fuzzy_entry in po_file.fuzzy_entries():
+		fuzzy_entry.flags.remove('fuzzy')
+	po_file.save()
+
+
+def _change_entry_in_source_file(module_path, po_entry):
+	for source_file, line_number in po_entry.occurrences:
+		source_file = os.path.join('svn_repo', module_path, source_file)
+		original_source_file = '{}.orig'.format(source_file)
+		os.rename(source_file, original_source_file)
+		with open(source_file, 'w') as changed_js:
+			with open(original_source_file, 'r') as fd:
+				for i, line in enumerate(fd):
+					if i == int(line_number) - 1:
+						logging.info('Changing {} in line {}'.format(source_file, line_number))
+						line = line.replace(po_entry.msgid, 'TEST! {}'.format(po_entry.msgid))
+					changed_js.write(line)
 
 
 TRANSLATION_PKG_NAME = 'univention-ucs-translation-XX'
@@ -72,34 +95,22 @@ if __name__ == '__main__':
 	# Choose js files to manipulate
 	js_po_files = _get_matching_file_paths(TRANSLATION_PKG_NAME, '*umc*js*.po')
 	choosen_po_path = random.choice(js_po_files)
-	choosen_po_module_path = '/'.join(choosen_po_path.split('/')[2:4])
+	module_path = '/'.join(choosen_po_path.split('/')[2:4])
 	choosen_po = polib.pofile(choosen_po_path)
 	random_entry = random.choice(choosen_po)
 
-	for source_file, line_number in random_entry.occurrences:
-		source_file = os.path.join('svn_repo', choosen_po_module_path, source_file)
-		_change_msgid_in_source_file(source_file, line_number, random_entry.msgid)
+	_change_entry_in_source_file(module_path, random_entry)
 	_call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
 
-	# fuzzy?
-	choosen_po = polib.pofile(choosen_po_path)
-	found_change = False
-	for fuzzy_entry in choosen_po.fuzzy_entries():
-		if list(*fuzzy_entry.occurrences) == list(*random_entry.occurrences):
-			found_change = True
-		else:
-			print('DBG: fuzzy entry not produced by test.')
-			sys.exit(1)
-		fuzzy_entry.flags.remove('fuzzy')
-	choosen_po.save()
-
-	if found_change:
+	if _change_generated_fuzzy_entries(random_entry, choosen_po_path):
 		print('Test: Success: fuzzy entries found!')
+	else:
+		print('FAILED: There should be fuzzy entries for this change.')
 
+	_remove_fuzzy_flags(choosen_po_path)
 	_call('svn', 'revert', '--recursive', 'svn_repo/management/univention-management-console-module-passwordchange')
 	_call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
 
-	choosen_po = polib.pofile(choosen_po_path)
-	for fuzzy_entry in choosen_po.fuzzy_entries():
-		fuzzy_entry.flags.remove('fuzzy')
-	choosen_po.save()
+	_remove_fuzzy_flags(choosen_po_path)
+	# Should be same as build + fakemassage
+	# TODO: Test for this..
