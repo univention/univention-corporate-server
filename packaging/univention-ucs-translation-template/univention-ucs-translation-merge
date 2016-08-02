@@ -79,7 +79,6 @@ def merge_po_file_trees(source_tree, target_tree):
 		translated.save()
 	return pos_delete_upstream, new_pos
 
-
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
 	parser.add_argument('lang_code', type=str, help="Language code of the translation package")
@@ -109,7 +108,7 @@ if __name__ == '__main__':
 		with open(SPECIALCASES_PATH, 'rb') as fd:
 			special_cases = json.load(fd)
 	else:
-		print "Error: Could not find file %s. Several files will not be handled." % SPECIALCASES_PATH
+		print("Error: Could not find file {}.\nSeveral files will not be handled.".format(SPECIALCASES_PATH))
 
 	for scase in special_cases:
 		tlh.translate_special_case(scase, args.upstream, args.lang_code, output_dir)

@@ -82,7 +82,7 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 		with open(SPECIALCASES_PATH, 'rb') as fd:
 			special_cases = json.load(fd)
 	else:
-		print "Error: Could not find file %s. Several files will not be handled." % SPECIALCASES_PATH
+		print("Error: Could not find file {}. Several files will not be handled.".format(SPECIALCASES_PATH))
 
 	for s_case in special_cases:
 		tlh.translate_special_case(s_case, options.source_dir, options.target_language, output_dir)
