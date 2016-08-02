@@ -30,6 +30,7 @@
 import argparse
 import fnmatch
 import os
+import re
 import sys
 import shutil
 import univention.translationhelper as tlh
@@ -90,7 +91,6 @@ def merge_po_file_trees(source_tree, target_tree):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="Merge upstream changes in translation files to existing translation source package.")
-	parser.add_argument('lang_code', type=str, help="Language code of the translation package")
 	parser.add_argument('upstream', type=str, help="Source from upstream containing changes")
 	parser.add_argument('translation', type=str, help="Translation source package as merge target.")
 	args = parser.parse_args()
@@ -102,13 +102,19 @@ if __name__ == '__main__':
 			print("Error: {} is not a direcotry or doesn't exist. Exiting.".format(dir))
 			sys.exit(1)
 
+	match = re.match(r'univention-ucs-translation-([a-zA-Z]{2})', os.path.basename(args.translation))
+	if not match:
+		print("Error: Unexpected translation source package name. Exiting.")
+		sys.exit(1)
+	lang_code = match.group(1)
+
 	# generate {lang}_tomerge
-	dh_umc.LANGUAGES = (args.lang_code, )
+	dh_umc.LANGUAGES = (lang_code, )
 	modules_upstream = tlh.find_base_translation_modules(os.getcwd(), args.upstream, '.umc-modules')
-	output_dir = os.path.join(args.translation, '{}_merge'.format(args.lang_code))
+	output_dir = os.path.join(args.translation, '{}_merge'.format(lang_code))
 	modules = list()
 	for module_attrs in modules_upstream:
-		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, args.lang_code)
+		module = tlh.UMCModuleTranslation.from_source_package(module_attrs, lang_code)
 		modules.append(module)
 		tlh.update_package_translation_files(module, output_dir)
 	# special cases, e.g. univention-management-console-frontend
@@ -120,9 +126,9 @@ if __name__ == '__main__':
 		print("Error: Could not find file {}.\nSeveral files will not be handled.".format(SPECIALCASES_PATH))
 
 	for scase in special_cases:
-		tlh.translate_special_case(scase, args.upstream, args.lang_code, output_dir)
+		tlh.translate_special_case(scase, args.upstream, lang_code, output_dir)
 
-	removed, new = merge_po_file_trees(output_dir, os.path.join(args.translation, args.lang_code))
+	removed, new = merge_po_file_trees(output_dir, os.path.join(args.translation, lang_code))
 	print('Merge summary: ')
 	if removed:
 		print('Following files have been removed:')
@@ -131,4 +137,4 @@ if __name__ == '__main__':
 		print('Following files habe been added:')
 		print('\n'.join(new))
 	shutil.rmtree(output_dir)
-	tlh.write_makefile(modules, special_cases, args.translation, args.lang_code)
+	tlh.write_makefile(modules, special_cases, args.translation, lang_code)
