@@ -729,8 +729,11 @@ class ucs:
 			entryUUID = new.get('entryUUID', [None])[0]
 			if entryUUID:
 				if self.was_entryUUID_deleted(entryUUID):
-					ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s was already deleted. Don't re-create." % entryUUID)
-					return True
+					if self._get_entryUUID(dn) == entryUUID:
+						ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s has been removed before but became visible again." % entryUUID)
+					else:
+						ud.debug(ud.LDAP, ud.PROCESS, "__sync_file_from_ucs: Object with entryUUID %s has been removed before. Don't re-create." % entryUUID)
+						return True
 			else:
 				ud.debug(ud.LDAP, ud.ERROR, "__sync_file_from_ucs: Object without entryUUID: %s", (dn,))
 				return False

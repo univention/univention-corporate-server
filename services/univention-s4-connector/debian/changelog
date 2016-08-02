@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-16) unstable; urgency=medium
+
+  * Bug #41756: ucs2con: allow recreation for visible ucs object
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Aug 2016 18:19:23 +0200
+
 univention-s4-connector (10.0.1-15) unstable; urgency=medium
 
   * Bug #41884: UCS@school: When an object gets moved out of visibility
