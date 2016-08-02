@@ -1,3 +1,14 @@
+univention-s4-connector (10.0.1-15) unstable; urgency=medium
+
+  * Bug #41884: UCS@school: When an object gets moved out of visibility
+    for an UCS@school Samba/AD PDC Slave the listener only passes the
+    first 'r' step of the modrdn operation to the s4-connector.py listener.
+    In this case, the s4-connector.py pickels an artificial delete for
+    the 'r' object (Bug #32542). It was found that it stored the attributes
+    of the wrong (next/following) object into the pickle file.
+
+ -- Arvid Requate <requate@univention.de>  Tue, 02 Aug 2016 18:16:00 +0200
+
 univention-s4-connector (10.0.1-14) unstable; urgency=medium
 
   * Bug #41482: Add variable description

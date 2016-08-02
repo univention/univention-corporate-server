@@ -145,7 +145,7 @@ def handler(dn, new, old, command):
 				#  https://forge.univention.org/bugzilla/show_bug.cgi?id=32542
 				if old_dn and new.get('entryUUID') != old_object.get('entryUUID'):
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (old_dn, dn))
-					_dump_changes_to_file_and_check_file(directory, old_dn, {}, old, None)
+					_dump_changes_to_file_and_check_file(directory, old_dn, {}, old_object, None)
 					old_dn = None
 						
 				if s4_init_mode:
