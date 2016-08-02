@@ -84,10 +84,6 @@ fi
 
 if [ "$1" = "configure" ]; then
 	if [ -n "$2" ]; then
-		if dpkg --compare-versions "$2" lt 10.0.2-6 # update to sanitized filenames
-		then
-			univention-directory-listener-ctrl resync bind
-		fi
 		invoke-rc.d bind9 crestart
 	else
 		invoke-rc.d bind9 start

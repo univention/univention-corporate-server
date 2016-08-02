@@ -98,11 +98,9 @@ def handler(dn, new, old):
 			_remove_zone(old['zoneName'][0])
 		if new.get('zoneName'):
 			# Change
-			# Create a file to trigger the postrun()
-			zone = new['zoneName'][0]
-			zonefile = sanitized_path_join(PROXY_CACHE_DIR, "%s.zone" % (zone, ))
+			# Create an empty file to trigger the postrun()
+			zonefile = os.path.join(PROXY_CACHE_DIR, "%s.zone" % (new['zoneName'][0],))
 			proxy_cache = open(zonefile, 'w')
-			proxy_cache.write(zone)
 			proxy_cache.close()
 			os.chmod(zonefile, 0640)
 			chgrp_bind(zonefile)
@@ -127,10 +125,12 @@ def _new_zone(ucr, zonename, dn):
 		os.mkdir(NAMED_CONF_DIR)
 		os.chmod(NAMED_CONF_DIR, 0755)
 
-	zonefile = sanitized_path_join(NAMED_CONF_DIR, zonename)
+	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
 
 	# Create empty file and restrict permission
-	os.close(os.open(zonefile, os.O_CREAT|os.O_EXCL, 0640))
+	named_zone = open(zonefile, 'w')
+	named_zone.close()
+	os.chmod(zonefile, 0640)
 	chgrp_bind(zonefile)
 
 	# Now fill zone file
@@ -149,11 +149,11 @@ def _new_zone(ucr, zonename, dn):
 	named_zone.close()
 
 	# Create proxy configuration file
-	proxy_file = sanitized_path_join(NAMED_CONF_DIR, zonename+'.proxy')
+	proxy_file = os.path.join(NAMED_CONF_DIR, zonename+'.proxy')
 	proxy_zone = open(proxy_file, 'w')
 	proxy_zone.write('zone "%s" {\n' % (zonename,))
 	proxy_zone.write('\ttype slave;\n')
-	proxy_zone.write('\tfile "%s.zone";\n' % (sanitize_filename(zonename), ))
+	proxy_zone.write('\tfile "%s.zone";\n' % (zonename,))
 	proxy_zone.write('\tmasters port 7777 { 127.0.0.1; };\n')
 	proxy_zone.write('};\n')
 	proxy_zone.close()
@@ -167,8 +167,8 @@ def _new_zone(ucr, zonename, dn):
 def _remove_zone(zonename):
 	"""Handle removal of zone."""
 	ud.debug(ud.LISTENER, ud.INFO, 'DNS: Removing zone %s' % (zonename,))
-	zonefile = sanitized_path_join(NAMED_CONF_DIR, zonename)
-	cached_zonefile = sanitized_path_join(NAMED_CACHE_DIR, zonename + '.zone')
+	zonefile = os.path.join(NAMED_CONF_DIR, zonename)
+	cached_zonefile = os.path.join(NAMED_CACHE_DIR, zonename + '.zone')
 	# Remove zone file
 	if os.path.exists(zonefile):
 		os.unlink(zonefile)
@@ -322,18 +322,13 @@ def postrun():
 				__zone_created_or_removed = False
 		elif dns_backend == 'ldap':
 			for filename in os.listdir(PROXY_CACHE_DIR):
-				filepath = os.path.join(PROXY_CACHE_DIR, filename)
-				zone = open(filepath, 'rb').read()
-				os.remove(filepath)
+				os.remove(os.path.join(PROXY_CACHE_DIR, filename))
 				if not os.path.exists(os.path.join(NAMED_CACHE_DIR, filename)):
 					ud.debug(ud.LISTENER, ud.PROCESS, 'DNS: %s does not exist. Triggering a bind9 restart.' % (os.path.join(NAMED_CACHE_DIR, filename)))
 					restart = True
 				else:
-					_, ext = os.path.splitext(filename)
-					if ext == '.zone':
-						zones.append(zone)
-					else:
-						ud.debug(ud.LISTENER, ud.WARN, 'DNS: strange file in PROXY_CACHE_DIR: %r' % (filename, ))
+					zone = filename.replace(".zone", "")
+					zones.append(zone)
 			if zones:
 				ud.debug(ud.LISTENER, ud.INFO, 'DNS: Zones: %s' % (zones,))
 		elif dns_backend == 'none':
@@ -350,47 +345,3 @@ def postrun():
 		_kill_children(pids)
 	finally:
 		listener.unsetuid()
-
-def sanitize_filename(bytestring):
-	# This function creates a unique safe filename for every given
-	# unsafe bytestring, i.e. it is injective.
-	# It is injective because each element is mapped with another
-	# injective function to the output, and the different functions
-	# have disjunct codomains.
-	#
-	# bytes that may be used in filename
-	safebytes = frozenset(map(chr, range(1, 256))) - frozenset('/')
-	# bytes that shall not be encoded (for readability, should cover ususal cases)
-	directbytes = frozenset(
-		'abcdefghijklmnopqrstuvwxyz' # lowercase letters
-		'0123456789' # digits
-		'-' # hyphen
-		'.' # dot
-	)
-	# bytes to use to encode other bytes' nibbles
-	encodingbytes = list('KLMNOPQRSTUVWXYZ')
-	assert len(set(encodingbytes)) >= 16, 'not enough encodingbytes'
-	assert not (directbytes & set(encodingbytes)), 'directbytes and encodingbytes are not disjunct'
-	assert not (directbytes - safebytes), 'directbytes contains un-safebytes'
-	assert not (set(encodingbytes) - safebytes), 'encodingbytes contains un-safebytes'
-	assert not (set('.proxy') - directbytes), '".proxy" can not be directly encoded'
-	assert not (set('.zone') - directbytes), '".zone" can not be directly encoded'
-	def encode(byte): # this must be injective
-		value = ord(byte) # this is injective
-		return encodingbytes[value / 16] + encodingbytes[value % 16] # this is injective for range(0, 256)
-	filename = ''
-	for byte in bytestring:
-		if byte == '.' and not filename: # always encode leading dot because '.' and '..' are special names
-			filename += encode(byte) # this is injective (see above)
-		elif byte in directbytes: # pass normal bytes straight through
-			filename += byte # this is injective (bijective)
-		else: # encode the rest
-			filename += encode(byte) # this is injective (see above)
-	return filename
-
-def sanitized_path_join(directory, unsafe_filename):
-	filename = sanitize_filename(unsafe_filename)
-	assert '/' not in filename
-	assert '\0' not in filename
-	assert filename not in ('.', '..', )
-	return os.path.join(directory, filename)
