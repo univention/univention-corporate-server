@@ -4,7 +4,7 @@
         "mo_destination": "usr/share/univention-management-console-frontend/js/umc/i18n/{lang}/app.json",
         "package_dir": "management/univention-management-console-frontend",
         "package_name": "univention-management-console-frontend",
-        "po_subdir": "usr/share/univention-management-console-frontend/js/umc/i18n/{lang}",
+        "po_subdir": "umc",
         "target": "json"
     },
     {
