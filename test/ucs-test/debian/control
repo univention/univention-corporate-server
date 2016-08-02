@@ -584,3 +584,13 @@ Recommends: ucs-test-framework
 Description: Test scripts to check cryptography software in UCS
  This package includes test-cases to check software and libraries used for
  cryptography (OpenSSL, GnuTLS, NSS, SSH, python-gnutls, python-ssl etc).
+
+Package: ucs-test-translation-template
+Architecture: all
+Depends: subversion,
+ univention-ucs-translation-template,
+ ${misc:Depends}
+Recommends: ucs-test-framework
+Description: Test the univention-ucs-translation-template
+ This package includes test to verify the functionality of utilites
+ from the univention-ucs-translation-template package.
