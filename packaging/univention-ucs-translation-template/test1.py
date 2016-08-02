@@ -1,4 +1,4 @@
-import helper
+import tools
 import os
 import sys
 import shutil
@@ -36,21 +36,21 @@ if __name__ == '__main__':
 		pass
 
 	try:
-		helper.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1', SVN_PATH)
-		helper.call('univention-ucs-translation-build-package', '--source=' + SVN_PATH, '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
-		helper.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
-	except helper.InvalidCommandError:
+		tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1', SVN_PATH)
+		tools.call('univention-ucs-translation-build-package', '--source=' + SVN_PATH, '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
+		tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
+	except tools.InvalidCommandError:
 		print('Error: Tried to launch invalid command. Exiting.')
 		sys.exit(1)
 	copy_file(os.path.join(TRANSLATION_PKG_NAME, 'all_targets.mk'), 'all_targets.mk.pre_merge')
 
 	# Add dummy module with new translations
 	copy_tree('./dummy_module', SVN_PATH)
-	helper.call('univention-ucs-translation-merge', 'XX', SVN_PATH, TRANSLATION_PKG_NAME)
-	helper.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-merge', 'XX', SVN_PATH, TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
 
 	translation_tree_path = os.path.join(TRANSLATION_PKG_NAME, 'XX', DUMMY_MOD_DIR)
-	new_po_paths = helper.get_matching_file_paths(translation_tree_path, '*.po')
+	new_po_paths = tools.get_matching_file_paths(translation_tree_path, '*.po')
 	if not set(new_po_paths) == set(DUMMY_MOD_EXPECTED_PO_PATHS):
 		print('Test: Failed')
 		sys.exit(1)
@@ -64,10 +64,10 @@ if __name__ == '__main__':
 		sys.exit(1)
 
 	shutil.rmtree(SVN_PATH+'/management/univention-management-console-module-dummy')
-	helper.call('univention-ucs-translation-merge', 'XX', SVN_PATH, TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-merge', 'XX', SVN_PATH, TRANSLATION_PKG_NAME)
 
 	# Files obsoleted upstream detected?
-	new_po_paths = helper.get_matching_file_paths(translation_tree_path, '*.obsolete')
+	new_po_paths = tools.get_matching_file_paths(translation_tree_path, '*.obsolete')
 	expected_obsoleted_po_paths = ['{}.obsolete'.format(path) for path in DUMMY_MOD_EXPECTED_PO_PATHS]
 	if set(new_po_paths) != set(expected_obsoleted_po_paths):
 		print('Test: Failed. Merge didn\'t detect obsoleted po files.')
