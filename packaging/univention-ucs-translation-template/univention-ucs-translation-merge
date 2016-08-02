@@ -80,7 +80,6 @@ def merge_po_file_trees(source_tree, target_tree):
 		except OSError as exc:
 			if not exc.errno == 17:
 				raise
-			pass
 		os.rename(os.path.join(source_tree, new_po), new_po_path)
 		upstream_pos.remove(new_po)
 	# merge upstream changes...
