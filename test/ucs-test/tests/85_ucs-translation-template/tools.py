@@ -31,8 +31,6 @@ import subprocess
 import fnmatch
 import os
 
-from pdb import set_trace as dbg
-
 
 class InvalidCommandError(Exception):
 	pass

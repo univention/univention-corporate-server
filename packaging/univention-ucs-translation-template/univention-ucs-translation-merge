@@ -37,7 +37,6 @@ import univention.translationhelper as tlh
 import univention.dh_umc as dh_umc
 import json
 import subprocess
-from pdb import set_trace as dbg
 
 SPECIALCASES_PATH = "/usr/share/univention-ucs-translation-template/specialcases.json"
 
@@ -107,6 +106,10 @@ if __name__ == '__main__':
 		print("Error: Unexpected translation source package name. Exiting.")
 		sys.exit(1)
 	lang_code = match.group(1)
+
+	# Handle old translation package format
+	if not os.path.isfile(os.path.join(args.translation, 'all_targets.mk')):
+		tlh.write_debian_rules(os.path.join(args.translation, 'debian'))
 
 	# generate {lang}_tomerge
 	dh_umc.LANGUAGES = (lang_code, )

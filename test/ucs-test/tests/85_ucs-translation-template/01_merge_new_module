@@ -52,7 +52,7 @@ if __name__ == '__main__':
 	os.chdir(tmp_dir)
 
 	try:
-		tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1', SVN_PATH)
+		tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1/management', os.path.join(SVN_PATH, 'management'))
 		tools.call('univention-ucs-translation-build-package', '--source={}'.format(SVN_PATH), '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
 		tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
 	except tools.InvalidCommandError:
@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
 	# Add dummy module with new translations
 	copy_tree('/usr/share/ucs-test/85_ucs-translation-template/dummy_module', SVN_PATH)
-	tools.call('univention-ucs-translation-merge', 'XX', SVN_PATH, TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-merge', SVN_PATH, TRANSLATION_PKG_NAME)
 	remove_tree(os.path.join(SVN_PATH, 'management/univention-management-console-module-dummy'))
 	tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
 
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 			logging.debug("Failure: unexpected diff. Resulting diff is empty.")
 		utils.fail("Diff didn't yield expected result.")
 
-	tools.call('univention-ucs-translation-merge', 'XX', SVN_PATH, TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-merge', SVN_PATH, TRANSLATION_PKG_NAME)
 
 	# Files obsoleted upstream detected?
 	new_po_paths = tools.get_matching_file_paths(translation_tree_path, '*.obsolete')
@@ -91,3 +91,4 @@ if __name__ == '__main__':
 	with open('all_targets.mk.pre_merge', 'rb') as pre_change, open(os.path.join(TRANSLATION_PKG_NAME, 'all_targets.mk'), 'rb') as after:
 		if md5(pre_change.read()).hexdigest() != md5(after.read()).hexdigest():
 			utils.fail("Makefile incorrect after dummy module removal.")
+	remove_tree(tmp_dir)

@@ -19,6 +19,7 @@
 ##   - univention-ucs-translation-template
 ##   - subversion
 from distutils.file_util import copy_file
+from distutils.dir_util import remove_tree
 from tempfile import mkdtemp
 from time import time
 import logging
@@ -80,7 +81,7 @@ if __name__ == '__main__':
 	rand = random.Random(static_seed)
 
 	try:
-		tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1', os.path.join(tmp_dir, SVN_PATH))
+		tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1/management', os.path.join(tmp_dir, SVN_PATH, 'management'))
 		tools.call('univention-ucs-translation-build-package', '--source={}'.format(SVN_PATH), '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
 		tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
 	except tools.InvalidCommandError:
@@ -108,7 +109,7 @@ if __name__ == '__main__':
 		_change_entry_in_source_file(source_pkg_path, random_entry)
 		changes.append((random_po_path, random_entry))
 
-	tools.call('univention-ucs-translation-merge', 'XX', SVN_PATH, TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-merge', SVN_PATH, TRANSLATION_PKG_NAME)
 
 	# Total char count must be equal or increased(for files in list 'changes')
 	# for every file.
@@ -136,3 +137,4 @@ if __name__ == '__main__':
 
 	if failed:
 		utils.fail('Translation template test failed. See log for further information.')
+	remove_tree(tmp_dir)

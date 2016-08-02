@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.0.1-11) unstable; urgency=medium
+
+  * Bug #41223: *merge: handle old translation package format 
+
+ -- Eduard Mai <mai@univention.de>  Tue, 02 Aug 2016 18:24:30 +0200
+
 univention-ucs-translation-template (3.0.1-10) unstable; urgency=medium
 
   * Bug #41223: Fix issues from QA

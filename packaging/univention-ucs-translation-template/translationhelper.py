@@ -45,11 +45,6 @@ MODULE_BLACKLIST = [
 ]
 
 
-class InvalidSpecialCase(Exception):
-	def __init__(self, message):
-		super(InvalidSpecialCase, self).__init__(message)
-
-
 class UMCModuleTranslation(dh_umc.UMC_Module):
 	def __init__(self, attrs, target_language):
 		attrs['target_language'] = target_language
@@ -194,7 +189,7 @@ def translate_special_case(special_case, source_dir, target_language, output_dir
 
 	path_src_pkg = os.path.join(source_dir, special_case.get('package_dir'))
 	if not os.path.isdir(path_src_pkg):
-		raise InvalidSpecialCase("Path defined under 'package_dir' not found. Check specialcase definition for {package_name}".format(**special_case))
+		print("Warning: Path defined under 'package_dir' not found. Check specialcase.json definitions with package_name: {package_name}".format(**special_case))
 		return
 
 	new_po_path = os.path.join(output_dir, special_case.get('po_subdir'))
@@ -261,6 +256,45 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 	return base_translation_modules
 
 
+def write_debian_rules(debian_dir_path):
+	with open(os.path.join(debian_dir_path, 'rules'), 'w') as f:
+		f.write("""#!/usr/bin/make -f
+#
+# Copyright 2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+override_dh_auto_test:
+	ucslint -m 0008
+	dh_auto_test
+
+%:
+	dh $@""")
+
+
 def create_new_package(new_package_dir, target_language, target_locale, language_name, startdir):
 	new_package_dir_debian = os.path.join(new_package_dir, 'debian')
 	if not os.path.exists(new_package_dir_debian):
@@ -306,42 +340,7 @@ License with the Debian GNU/Linux or Univention distribution in file
 
  -- %s <%s@%s>  %s""" % (translation_package_name, translation_creator, translation_creator, translation_host, formatdate()))
 
-	with open(os.path.join(new_package_dir_debian, 'rules'), 'w') as f:
-		f.write("""#!/usr/bin/make -f
-#
-# Copyright 2016 Univention GmbH
-#
-# http://www.univention.de/
-#
-# All rights reserved.
-#
-# The source code of this program is made available
-# under the terms of the GNU Affero General Public License version 3
-# (GNU AGPL V3) as published by the Free Software Foundation.
-#
-# Binary versions of this program provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention and not subject to the GNU AGPL V3.
-#
-# In the case you use this program under the terms of the GNU AGPL V3,
-# the program is provided in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License with the Debian GNU/Linux or Univention distribution in file
-# /usr/share/common-licenses/AGPL-3; if not, see
-# <http://www.gnu.org/licenses/>.
-
-override_dh_auto_test:
-	ucslint -m 0008
-	dh_auto_test
-
-%:
-	dh $@""")
+	write_debian_rules(new_package_dir_debian)
 
 	with open(os.path.join(new_package_dir_debian, 'control'), 'w') as f:
                 f.write("""Source: %s

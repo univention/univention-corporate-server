@@ -1,3 +1,9 @@
+ucs-test (6.0.35-12) unstable; urgency=medium
+
+  * Bug #41223: translation-template: Adjust arguments to merge 
+
+ -- Eduard Mai <mai@univention.de>  Tue, 02 Aug 2016 18:25:25 +0200
+
 ucs-test (6.0.35-11) unstable; urgency=medium
 
   * Bug #41223: Add tests for univention-ucs-translation-template
