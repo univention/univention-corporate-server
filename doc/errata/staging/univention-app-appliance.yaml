@@ -3,7 +3,7 @@ release: "4.1"
 version: [2]
 scope: ucs_4.1-0-errata4.1-2
 src: univention-app-appliance
-fix: 0.2.2-34.6.201607152105
+fix: 0.2.2-35.7.201608021431
 desc: |
  This update addresses the following issue(s):
  * Apps may now provide design information for branding UCS appliances.
