@@ -7,6 +7,7 @@ import sys
 import shutil
 import polib
 import logging
+from hashlib import md5
 from pdb import set_trace as dbg
 
 
@@ -42,15 +43,12 @@ def _call(*command_parts):
 		raise InvalidCommandError()
 
 
-def _change_generated_fuzzy_entries(changed_entry, po_file_path):
+def _entry_is_fuzzy(changed_entry, po_file_path):
 	po_file = polib.pofile(po_file_path)
 	found_change = False
 	for fuzzy in po_file.fuzzy_entries():
 		if fuzzy.occurrences == changed_entry.occurrences:
 			found_change = True
-		else:
-			print('DBG: fuzzy entry not produced by test.')
-			sys.exit(1)
 	return found_change
 
 
@@ -95,6 +93,8 @@ if __name__ == '__main__':
 	# Choose js files to manipulate
 	js_po_files = _get_matching_file_paths(TRANSLATION_PKG_NAME, '*umc*js*.po')
 	choosen_po_path = random.choice(js_po_files)
+	choosen_po_pre_changes_path = '{}.pre-change'.format(choosen_po_path)
+	shutil.copy(choosen_po_path, choosen_po_pre_changes_path)
 	module_path = '/'.join(choosen_po_path.split('/')[2:4])
 	choosen_po = polib.pofile(choosen_po_path)
 	random_entry = random.choice(choosen_po)
@@ -102,15 +102,24 @@ if __name__ == '__main__':
 	_change_entry_in_source_file(module_path, random_entry)
 	_call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
 
-	if _change_generated_fuzzy_entries(random_entry, choosen_po_path):
-		print('Test: Success: fuzzy entries found!')
-	else:
+	if not _entry_is_fuzzy(random_entry, choosen_po_path):
 		print('FAILED: There should be fuzzy entries for this change.')
+		sys.exit(1)
+	logging.info('Fuzzy entries correctly flagged after first merge.')
 
 	_remove_fuzzy_flags(choosen_po_path)
 	_call('svn', 'revert', '--recursive', 'svn_repo/management/univention-management-console-module-passwordchange')
 	_call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
-
+	if not _entry_is_fuzzy(random_entry, choosen_po_path):
+		print('Test: Failed! No fuzzy entries on second merge.')
+		sys.exit(1)
+	logging.info('Fuzzy entires correctly flagged after second merge.')
 	_remove_fuzzy_flags(choosen_po_path)
 	# Should be same as build + fakemassage
 	# TODO: Test for this..
+	with open(choosen_po_pre_changes_path, 'rb') as pre_change, open(choosen_po_path, 'rb') as after:
+		if md5(pre_change.read()).hexdigest() == md5(after.read()).hexdigest():
+			print('TEST: Success!')
+		else:
+			print('TEST: FAILED!')
+			sys.exit(1)
