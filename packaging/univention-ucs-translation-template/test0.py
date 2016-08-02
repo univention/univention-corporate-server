@@ -1,46 +1,19 @@
 #!/usr/bin/env python
-import os
-import fnmatch
-import random
-import subprocess
-import sys
-import shutil
-import polib
-import logging
 from hashlib import md5
+import logging
+import os
+import polib
+import random
+import shutil
+import sys
+import tools
+
+# DBG:
 from pdb import set_trace as dbg
 
 
 class InvalidCommandError(Exception):
 	pass
-
-
-def _get_matching_file_paths(path, pattern):
-	"""Recursively walk through path and match file paths with pattern,
-	return matches"""
-	matched_files_paths = list()
-	for dirname, dns, fnames in os.walk(path):
-		for fn in fnames:
-			matched_files_paths.append(os.path.join(dirname, fn))
-	return fnmatch.filter(matched_files_paths, pattern)
-
-
-def _call(*command_parts):
-	if not command_parts:
-		raise InvalidCommandError()
-	try:
-		subprocess.check_call([part for part in command_parts])
-	except subprocess.CalledProcessError as exc:
-		print('Error: Subprocess exited unsuccessfully. Attempted command:')
-		print(' '.join(exc.cmd))
-		raise InvalidCommandError()
-	except AttributeError as exc:
-		print('Command must be a string like object.')
-		raise InvalidCommandError()
-	except OSError as exc:
-		print('Error: {}'.format(exc.strerror))
-		print('Error: failed to start subprocess.')
-		raise InvalidCommandError()
 
 
 def _entry_is_fuzzy(changed_entry, po_file_path):
@@ -74,8 +47,9 @@ def _change_entry_in_source_file(module_path, po_entry):
 
 
 TRANSLATION_PKG_NAME = 'univention-ucs-translation-XX'
+# TODO: get latest public branch
 if __name__ == '__main__':
-	# _call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1/management/univention-management-console-module-passwordchange/', 'svn_repo')
+	# TODO: run whole test in tmp dir
 	try:
 		shutil.rmtree('svn_repo')
 		shutil.rmtree(TRANSLATION_PKG_NAME)
@@ -83,15 +57,15 @@ if __name__ == '__main__':
 		pass
 
 	try:
-		_call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1/management/univention-management-console-module-passwordchange/', 'svn_repo/management/univention-management-console-module-passwordchange')
-		_call('univention-ucs-translation-build-package', '--source=svn_repo', '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
-		_call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
+		tools.call('svn', 'checkout', 'http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-1/management/univention-management-console-module-passwordchange/', 'svn_repo/management/univention-management-console-module-passwordchange')
+		tools.call('univention-ucs-translation-build-package', '--source=svn_repo', '--languagecode=XX', '--locale=fr_FR.UTF-8:UTF-8', '--languagename=TEST0')
+		tools.call('univention-ucs-translation-fakemessage', TRANSLATION_PKG_NAME)
 	except InvalidCommandError:
 		print('Error: Tried to launch invalid command. Exiting.')
 		sys.exit(1)
 
 	# Choose js files to manipulate
-	js_po_files = _get_matching_file_paths(TRANSLATION_PKG_NAME, '*umc*js*.po')
+	js_po_files = tools.get_matching_file_paths(TRANSLATION_PKG_NAME, '*umc*js*.po')
 	choosen_po_path = random.choice(js_po_files)
 	choosen_po_pre_changes_path = '{}.pre-change'.format(choosen_po_path)
 	shutil.copy(choosen_po_path, choosen_po_pre_changes_path)
@@ -100,7 +74,7 @@ if __name__ == '__main__':
 	random_entry = random.choice(choosen_po)
 
 	_change_entry_in_source_file(module_path, random_entry)
-	_call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
+	tools.call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
 
 	if not _entry_is_fuzzy(random_entry, choosen_po_path):
 		print('FAILED: There should be fuzzy entries for this change.')
@@ -108,18 +82,15 @@ if __name__ == '__main__':
 	logging.info('Fuzzy entries correctly flagged after first merge.')
 
 	_remove_fuzzy_flags(choosen_po_path)
-	_call('svn', 'revert', '--recursive', 'svn_repo/management/univention-management-console-module-passwordchange')
-	_call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
+	tools.call('svn', 'revert', '--recursive', 'svn_repo/management/univention-management-console-module-passwordchange')
+	tools.call('univention-ucs-translation-merge', 'XX', 'svn_repo', TRANSLATION_PKG_NAME)
 	if not _entry_is_fuzzy(random_entry, choosen_po_path):
 		print('Test: Failed! No fuzzy entries on second merge.')
 		sys.exit(1)
 	logging.info('Fuzzy entires correctly flagged after second merge.')
+
 	_remove_fuzzy_flags(choosen_po_path)
-	# Should be same as build + fakemassage
-	# TODO: Test for this..
 	with open(choosen_po_pre_changes_path, 'rb') as pre_change, open(choosen_po_path, 'rb') as after:
-		if md5(pre_change.read()).hexdigest() == md5(after.read()).hexdigest():
-			print('TEST: Success!')
-		else:
+		if md5(pre_change.read()).hexdigest() != md5(after.read()).hexdigest():
 			print('TEST: FAILED!')
 			sys.exit(1)
