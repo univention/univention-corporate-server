@@ -1,0 +1,17 @@
+product: ucs
+release: "4.1"
+version: [2]
+scope: ucs_4.1-0-errata4.1-2
+src: univention-s4-connector
+fix: 10.0.1-17.616.201608021822
+desc: |
+ This update addresses the following issue(s):
+ * Allow recreation of object deleted in Samba/AD if visible in OpenLDAP
+ * Allow recreation of account deleted in Samba/AD if objectSid matches
+ * UCS@school: When an object gets moved out of visibility
+   for an UCS@school Samba/AD PDC Slave attributes passed to
+   the S4-Connector were mixed up. This caused the next object modified
+   to be marked internally as deleted by the S4-Connector, while it is
+   perfectly healthy in fact. While this update fixes the issue, manual
+   steps are be required to unmark the objects and restore normal sync.
+bug: [41756, 41864, 41884]
