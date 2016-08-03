@@ -12,3 +12,4 @@ desc: |
  * JavaScript files are now handled correctly on package generation.
  * The Translation process is simplified by requiring less steps.
 bug: [41222, 40917, 40936, 41223]
+announced: 2016-08-03
