@@ -11,3 +11,4 @@ desc: |
  * Make it possible to collect usage data from the system setup to make future
    improvements to the user experience even better.
 bug: [28665, 40551]
+announced: 2016-08-03
