@@ -8,3 +8,4 @@ desc: |
  This new package allows to configure arbitrary MySQL settings through UCR
  variables named 'mysql/config/$group/$option'.
 bug: [39471,40216]
+announced: 2016-08-03
