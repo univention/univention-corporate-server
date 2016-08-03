@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="en" id="releasenotes-4.1-2-en">
+<book lang="en" id="releasenotes-4.1-3-en">
 	<bookinfo>
-		<title>UCS 4.1-2 Release Notes</title>
-		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.1-2</subtitle>
+		<title>UCS 4.1-3 Release Notes</title>
+		<subtitle>Release notes for the installation and update of &ucsUCS; (UCS) 4.1-3</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,27 +44,18 @@
 		<title>Release Highlights</title>
 
 		<para>
-			With &ucsUCS; 4.1-2, the second point release of &ucsUCS; (UCS) 4.1 is
+			With &ucsUCS; 4.1-3, the third point release of &ucsUCS; (UCS) 4.1 is
 			now available.  It provides various improvements and
 			bugfixes. An overview of the most important changes:
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Several important security updates have been integrated in UCS 4.1-2, among others for Samba, Apache, OpenSSL and the
-				GNU C Library (glibc).
+				Several important security updates have been integrated in UCS
+				4.1-3, among others for libvirt, OpenSSL, QEMU and Samba.
 			</para></listitem>
 			<listitem><para>
-				The update to Samba 4.3.7 includes various security updates. In addition, several issues have been fixed, for example,
-				failed login attempts are now counted correctly.
-			</para></listitem>
-			<listitem><para>
-				The Active Directory Connector now uses Active Directory standard interfaces for synchronizing the password hashes.
-				Thus, the Windows password synchronization service is no longer needed.
-			</para></listitem>
-			<listitem><para>
-				The presentation of the apps in the Univention App Center has been improved, among others the App license terms are now
-				displayed.
+				...
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -205,10 +196,10 @@
 	<chapter id="relnotes:changelog">
 		<title>Changelog</title>
 		<para>
-			Listed are the changes since UCS 4.1-1:
+			Listed are the changes since UCS 4.1-2:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-2.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-3.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->
