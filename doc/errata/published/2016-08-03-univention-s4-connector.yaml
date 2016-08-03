@@ -15,3 +15,4 @@ desc: |
    perfectly healthy in fact. While this update fixes the issue, manual
    steps are be required to unmark the objects and restore normal sync.
 bug: [41756, 41864, 41884]
+announced: 2016-08-03
