@@ -15,3 +15,4 @@ desc: |
  * Various restrictions for Memberserver and Domaincontrollers have been added
    to the LDAP ACL's.
 bug: [41179, 41180, 33993, 41715]
+announced: 2016-08-03
