@@ -9,3 +9,4 @@ desc: |
  * Adds a package for phantomjs which is necessary
    for the new univention app appliances.
 bug: [40934]
+announced: 2016-08-03
