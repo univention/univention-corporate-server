@@ -2423,20 +2423,21 @@ class s4(univention.s4connector.ucs):
 				try:
 					self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls) #FIXME encoding
 				except ldap.ALREADY_EXISTS as ex:
-					sAMAccountName_attr_value = object['attributes'].get('sAMAccountName')[0]
-					objectSid_attr_value = object['attributes'].get('objectSid')[0]
+					sAMAccountName_attr_value = object['attributes'].get('sAMAccountName', [None])[0]
+					objectSid_attr_value = object['attributes'].get('objectSid', [None])[0]
 					objectSid = decode_sid(objectSid_attr_value)
 					if not (sAMAccountName_attr_value and objectSid):
-						raise	## unknown situation
+						raise ## unknown situation, raise original traceback
 					filter_s4 = '(&(sAMAccountName=%s)(objectSid=%s)(isDeleted=TRUE))' % (sAMAccountName_attr_value, objectSid)
-					ud.debug(ud.LDAP, ud.WARN, "sync_from_ucs: Error during add, searching for conflicting deleted object in S4. Filter: %s" % filter_s4)
+					ud.debug(ud.LDAP, ud.PROCESS, "sync_from_ucs: error during add, searching for conflicting deleted object in S4")
+					ud.debug(ud.LDAP, ud.INFO, "sync_from_ucs: search filter: %s" % filter_s4)
 					result = self.lo_s4.lo.search_ext_s(self.lo_s4.base,ldap.SCOPE_SUBTREE, filter_s4, ['dn'], serverctrls=[LDAPControl(LDAP_SERVER_SHOW_DELETED_OID, criticality=1), LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0)])
 					if not result or len(result)>1:	## the latter would indicate corruption
-						ud.debug(ud.LDAP, ud.WARN,"sync_from_ucs: No conflicting object found.")
-						raise	## unknown situation
-					ud.debug(ud.LDAP, ud.INFO,"sync_from_ucs: Ok, deleting conflicting object: %s"% result[0][0])
+						ud.debug(ud.LDAP, ud.PROCESS,"sync_from_ucs: no conflicting deleted object found")
+						raise ## unknown situation, raise original traceback
+					ud.debug(ud.LDAP, ud.PROCESS,"sync_from_ucs: deleting conflicting object: %s"% result[0][0])
 					self.lo_s4.lo.delete_ext_s(compatible_modstring(result[0][0]),  serverctrls=[LDAPControl(LDB_CONTROL_RELAX_OID, criticality=0)])
-					## and try again
+					## and try the add again
 					try:
 						self.lo_s4.lo.add_ext_s(compatible_modstring(object['dn']), compatible_addlist(addlist), serverctrls=ctrls) #FIXME encoding
 					except:

@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-18) unstable; urgency=medium
+
+  * Bug #41864: improve error handling
+
+ -- Arvid Requate <requate@univention.de>  Wed, 03 Aug 2016 12:48:47 +0200
+
 univention-s4-connector (10.0.1-17) unstable; urgency=medium
 
   * Bug #41864: ucs2con: allow recreation of deleted object
