@@ -9,3 +9,4 @@ desc: |
  * The App Center sometimes installed the last-to-latest App version.
  * Executing missing join scripts in a Docker Container is now supported.
 bug: [41841, 39551]
+announced: 2016-08-03
