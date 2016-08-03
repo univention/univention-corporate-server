@@ -11,3 +11,4 @@ desc: |
    thread-safe, which caused (for example "libvirtd") to crash on restart.
    Proper locking has been added.
 bug: [39775]
+announced: 2016-08-03
