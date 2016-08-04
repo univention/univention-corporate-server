@@ -106,6 +106,7 @@
 				-->
 		</section>
 
+				<!--
 		<section id="changelog:basis:boot">
 			<title>Boot Loader</title>
 			<itemizedlist>
@@ -113,6 +114,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:basis:other">
@@ -170,7 +172,7 @@
 				<title>Listener/Notifier domain replication</title>
 				<itemizedlist>
 					<listitem><simpara>
-						IPv6 support was added to i<command>get_notifier_id.py</command> (<u:bug>39509</u:bug>).
+						IPv6 support was added to <command>get_notifier_id.py</command> (<u:bug>39509</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						The help messages for <command>univention-directory-listener-ctrl</command> have been improved. Also two new subcommand
@@ -229,6 +231,7 @@
 				</itemizedlist>
 			</section>
 
+				<!--
 			<section id="changelog:domain:dnsserver">
 				<title>DNS server</title>
 				<itemizedlist>
@@ -236,6 +239,7 @@
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
+				-->
 		</section>
 	</section>
 
@@ -493,7 +497,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
 		<section id="changelog:umc:dns">
 			<title>DNS module</title>
@@ -550,6 +553,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 				<!--
 		<section id="changelog:umc:mail">
@@ -583,7 +587,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
 		<section id="changelog:umc:other">
 			<title>Other modules</title>
@@ -593,7 +596,6 @@
 			</itemizedlist>
 		</section>
 
-				<!--
 		<section id="changelog:umc:development">
 			<title>Development of modules for &ucsUMC;</title>
 			<itemizedlist>
@@ -677,6 +679,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:service:selfservice">
 			<title>Univention self service</title>
 			<itemizedlist>
@@ -685,7 +688,6 @@
 			</itemizedlist>
 		</section>
 
-				<!--
 		<section id="changelog:service:mail">
 			<title>Mail services</title>
 			<itemizedlist>
@@ -717,7 +719,6 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
 		<section id="changelog:service:kerberos">
 			<title>Kerberos</title>
@@ -726,6 +727,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:service:ssl">
 			<title>SSL</title>
@@ -784,6 +786,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:service:systeminfo">
 			<title>Univention System Info</title>
 			<itemizedlist>
@@ -799,6 +802,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:service:pam">
 			<title>PAM / Local group cache</title>
@@ -839,6 +843,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:virt:operation">
 			<title>Operate UCS as virtual machine</title>
 			<itemizedlist>
@@ -846,6 +851,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 	</section>
 
 
@@ -903,6 +909,7 @@
 			</itemizedlist>
 		</section>
 
+				<!--
 		<section id="changelog:win:takeover">
 			<title>Univention AD Takeover</title>
 			<itemizedlist>
@@ -910,6 +917,7 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:win:s4c">
 			<title>Univention S4 Connector</title>
