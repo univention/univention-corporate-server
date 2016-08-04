@@ -591,6 +591,7 @@ Depends: subversion,
  univention-ucs-translation-template,
  ${misc:Depends}
 Recommends: ucs-test-framework
+Provides: ucs-test-module
 Description: Test the univention-ucs-translation-template
  This package includes test to verify the functionality of utilites
  from the univention-ucs-translation-template package.
