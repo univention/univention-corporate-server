@@ -132,8 +132,8 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Starting the LDAP daemon on i686 systems with a mdb backend and a mdb maxsize of at least 2147483648 could potentially
-					fail. The init script now triple checks the start (<u:bug>33993</u:bug>).
+					Starting the LDAP daemon on <wordasword>i686</wordasword> systems with a MDB backend and a MDB <envar>maxsize</envar> of
+					at least 2147483648 could potentially fail. The init script now triple checks the start (<u:bug>33993</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
@@ -147,11 +147,11 @@
 						Regular users are prevented from changing their object class (<u:bug>41179</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						Users can now only create objects with univentionAdminUserSettings object class underneath of "cn=admin-settings"
-						(<u:bug>41180</u:bug>).
+						Users can now only create objects with <property>univentionAdminUserSettings</property> object class underneath of
+						<property>cn=admin-settings</property> (<u:bug>41180</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						Various restrictions for Memberserver and Domaincontrollers have been added to the LDAP ACL's (<u:bug>41715</u:bug>).
+						Various restrictions for Memberserver and Domaincontrollers have been added to the LDAP ACL (<u:bug>41715</u:bug>).
 					</simpara></listitem>
 				</itemizedlist>
 			</section>
@@ -212,10 +212,10 @@
 						The check for a full file system was inverted and has been fixed (<u:bug>28232</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						LDAP objects having a multi-valued RDNs are now handled correctly during a rename and move (<u:bug>33594</u:bug>).
+						LDAP objects having a multi-valued RDN attributes are now handled correctly during a rename and move (<u:bug>33594</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
-						A traceback in failed-LDIF-mode has been fixed (<u:bug>41347</u:bug>).
+						A traceback in failed LDIF mode has been fixed (<u:bug>41347</u:bug>).
 					</simpara></listitem>
 					<listitem><simpara>
 						The replication module now logs more information in case of an object class violation (<u:bug>31757</u:bug>).
@@ -265,16 +265,16 @@
 					The Sanitizer base class now accepts a parameter <option>allow_none</option> to allow <option>None</option> values (<u:bug>41424</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A new DNSanitizer has been added, to validate LDAP distinguished names (<u:bug>41423</u:bug>).
+					A new <property>DNSanitizer</property> has been added, to validate LDAP distinguished names (<u:bug>41423</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A UMC-Server crash is now prevented in specific circumstances after login (<u:bug>41070</u:bug>).
+					A UMC server crash is now prevented in specific circumstances after login (<u:bug>41070</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					A UMC-Server crash is now prevented for requests with malicious request data (<u:bug>41370</u:bug>).
+					A UMC server crash is now prevented for requests with malicious request data (<u:bug>41370</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The UMC-Client does not evaluate python code in its arguments anymore (<u:bug>41736</u:bug>).
+					The UMC client does not evaluate python code in its arguments anymore (<u:bug>41736</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -325,7 +325,7 @@
 					Access to the object class <property>univentionApp</property> is now more restrictive (<u:bug>41724</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
-					The AppCenter now displays a warning if a conflict between the systems network settings and the docker bridge network
+					The App Center now displays a warning if a conflict between the systems network settings and the docker bridge network
 					has been detected (<u:bug>40515</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
@@ -408,7 +408,7 @@
 					This update publishes some minor adjustments in the source code (<u:bug>40913</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					The package <package>phantomjs</package> has been added. It is necessary for the new univention app appliances
+					The package <package>phantomjs</package> has been added. It is necessary for the new App appliances
 					(<u:bug>40934</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
@@ -439,7 +439,7 @@
 					process (<u:bug>40968</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
-					The rendering of the welcome screen after booting a UCS system has been improved and overlaying log messages have been
+					The rendering of the welcome screen after booting a UCS system has been improved and OverlayFS log messages have been
 					removed (<u:bug>41026</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
@@ -647,11 +647,11 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				A faulty policy type detection has been fixed that could lead to wrong results of
-				<command>univention_policy_result</command>. This misbehaviour affected the DHCP service and other services using
+				<command>univention_policy_result</command>. This misbehavior affected the DHCP service and other services using
 				<command>univention_policy_result</command> (<u:bug>41641</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The python ldap utilities are now used for splitting DN's in <property>univention.ulap</property>
+				The python ldap utilities are now used for splitting a DN's in <property>univention.ulap</property>
 				(<u:bug>40129</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -765,7 +765,7 @@
  				</simpara></listitem>
  				<listitem><simpara>
 					The new &ucsUCRV; <envar>ssl/ca/cipher</envar> can be used to chose the encryption mechanism for the private key of the
-					root CA. The new default is aes256 (<u:bug>37621</u:bug>).
+					root CA. The new default is <property>aes256</property> (<u:bug>37621</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
 					The new &ucsUCRV; <envar>ssl/host/objectclass</envar> can be used to configure the LDAP object classes for which SSL
@@ -778,7 +778,7 @@
 			<title>Proxy services</title>
 			<itemizedlist>
 				<listitem><simpara>
-					The timeout for the spn-account samba search in the join script has been increased (and is now configurable via the
+					The timeout for the SPN account samba search in the join script has been increased (and is now configurable via the
 					&ucsUCRV; <envar>squid/kerberos/join/timeout</envar>) (<u:bug>41443</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -805,7 +805,7 @@
 			<itemizedlist>
 				<listitem><simpara>
 					The Name-Service-Switch (NSS) module <property>extrausers</property> is used to get user group information from LDAP.
-					The implementation of <option>getgrouplist()</option> was not thread-safe, which caused (for example "libvirtd") to
+					The implementation of <option>getgrouplist()</option> was not thread-safe, which caused (for example <command>libvirtd</command>) to
 					crash on restart.  Proper locking has been added (<u:bug>39775</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -830,7 +830,7 @@
 			<title>Univention Virtual Machine Manager (UVMM)</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Allow creating snapshots of VMs with more than 4 GiB RAM which is supported with Qemu since version 1.1
+					Allow creating snapshots of VMs with more than 4 GiB RAM which is supported with QEMU since version 1.1
 					(<u:bug>35581</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
@@ -860,10 +860,10 @@
 					The start of the docker daemon is aborted if a docker bridge network conflict has been detected (<u:bug>40515</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Use the docker bip setting for docker specific iptables rules (<u:bug>40515</u:bug>).
+					Use the docker <property>bip</property> setting for docker specific iptables rules (<u:bug>40515</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
-					Workaround cron hard-link issue on overlayfs (<u:bug>39677</u:bug>).
+					Workaround cron hard-link issue on OverlayFS (<u:bug>39677</u:bug>).
 				</simpara></listitem>
 				<listitem><simpara>
 					Executing missing join scripts in a Docker Container is now supported (<u:bug>39551</u:bug>).
@@ -885,20 +885,20 @@
 					(<u:bug>41021</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
-					Reliability of samba_dnsupdate has been improved on UCS@school DC Slaves by using localhost for dns-related Kerberos
-					operations. This fixes an intermittend error in the <filename>98univention-samba4slavepdc-dns.inst</filename> joinscript
+					Reliability of <command>samba_dnsupdate</command> has been improved on UCS@school DC Slaves by using localhost for DNS related Kerberos
+					operations. This fixes an intermittent error in the <filename>98univention-samba4slavepdc-dns.inst</filename> joinscript
 					(<u:bug>34908</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
-					The restart command of the samba init wrapper script has been adjusted to avoid restarting samba-ad-dc after nmbd
-					(<u:bug>41551</u:bug>).
+					The restart command of the samba init wrapper script has been adjusted to avoid restarting
+					<command>samba-ad-dc</command> after NMBD (<u:bug>41551</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
 					The <property>GetGroupsForUser</property> SAMR RPC call has been adjusted to make use of the
 					<property>memberOf</property> attribute (<u:bug>41644</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
-					Two additional regression patches from the badlock update have been merged (<u:bug>41729</u:bug>).
+					Two additional regression patches from the <wordasword>badlock</wordasword> update have been merged (<u:bug>41729</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -929,7 +929,7 @@
 					Allow recreation of object deleted in Samba/AD if visible in OpenLDAP (<u:bug>41756</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
-					Allow recreation of account deleted in Samba/AD if objectSid matches (<u:bug>41864</u:bug>).
+					Allow recreation of account deleted in Samba/AD if <property>objectSid</property> matches (<u:bug>41864</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
 					When an object gets moved out of visibility for an UCS@school Samba/AD PDC Slave attributes passed to the S4-Connector
@@ -944,7 +944,7 @@
 			<title>Univention Active Directory Connection</title>
 			<itemizedlist>
 				<listitem><simpara>
-					A traceback due to empty <property>proxyAddresses</property> in AD during the synchronisation has been fixed
+					A traceback due to empty <property>proxyAddresses</property> in AD during the synchronization has been fixed
 					(<u:bug>41246</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
@@ -959,7 +959,7 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
-				<command>ucslint</command> no longer warns about files processed by some debhelper scripts supporting the
+				<command>ucslint</command> no longer warns about files processed by some <command>debhelper</command> scripts supporting the
 				<option>--name</option> argument (<u:bug>41603</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
@@ -970,7 +970,7 @@
 				<command>ucslint</command> warns when <command>univention-ldapsearch -x</command> is used (<u:bug>38853</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
-				The bootsplash has been extended to allow adjustments of its design (<u:bug>41821</u:bug>, <u:bug>39465</u:bug>).
+				The boot splash has been extended to allow adjustments of its design (<u:bug>41821</u:bug>, <u:bug>39465</u:bug>).
 			</simpara></listitem>
 			<listitem><simpara>
 				The package <package>univention-mysql</package> has been added. It allows to configure arbitrary MySQL settings through
