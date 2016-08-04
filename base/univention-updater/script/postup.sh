@@ -132,14 +132,11 @@ fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.1-1-errata=false \
-	repository/online/component/4.1-1-errata/localmirror=true >>"$UPDATER_LOG" 2>&1
-
-# Set errata component for UCS 4.1-1
-ucr set \
-	repository/online/component/4.1-2-errata=enabled \
-	repository/online/component/4.1-2-errata/description="Errata updates for UCS 4.1-2" \
-	repository/online/component/4.1-2-errata/version="4.1" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.1-2-errata=false \
+	repository/online/component/4.1-2-errata/localmirror=true \
+	repository/online/component/4.1-3-errata=enabled \
+	repository/online/component/4.1-3-errata/description="Errata updates for UCS 4.1-3" \
+	repository/online/component/4.1-3-errata/version="4.1" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then

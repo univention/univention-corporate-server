@@ -618,6 +618,9 @@
 				Clarified a confusing message when UCS release updates are blocked because of missing Apps or components
 				(<u:bug>40458</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The Updater was adapted for UCS 4.1-3 (<u:bug>41895</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 
 				<!--
