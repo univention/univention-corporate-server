@@ -1,3 +1,9 @@
+ucs-test (6.0.35-15) unstable; urgency=medium
+
+  * Bug #41715: tag 10_ldap/90_acl_access_to_uidNumber0 as expected to fail
+
+ -- Arvid Requate <requate@univention.de>  Thu, 04 Aug 2016 13:28:40 +0200
+
 ucs-test (6.0.35-14) unstable; urgency=medium
 
   * Bug #41223: make sure that translation tests are auto-installed
