@@ -51,11 +51,23 @@
 
 		<itemizedlist>
 			<listitem><para>
-				Several important security updates have been integrated in UCS
-				4.1-3, among others for libvirt, OpenSSL, QEMU and Samba.
+				Several important security updates have been integrated in UCS 4.1-3, among others for libvirt, OpenSSL, QEMU and Samba.
+				Furthermore, security updates in the standard LDAP ACLs and the UMC servers have been integrated.
 			</para></listitem>
 			<listitem><para>
-				...
+				The App Center has been further developed in many places and more options have been implemented for migrating Apps to
+				Docker Apps.
+			</para></listitem>
+			<listitem><para>
+				The replication of directory service objects has been stabilized for several corder cases.
+			</para></listitem>
+			<listitem><para>
+				The domain join of additional Samba based domain controllers is now possible with more than 100.000 directory service
+				objects.
+			</para></listitem>
+			<listitem><para>
+				The App Appliances have been expanded, so it is now possible for App providers to define their own branding, and to
+				activate a fast demo mode. This allows a quick test of a pre-configured appliance.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
