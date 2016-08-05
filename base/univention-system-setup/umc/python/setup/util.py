@@ -180,8 +180,9 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 			raise Exception(_('Cannot automatically determine the domain. Please specify the server\'s fully qualified domain name.'))
 
 	# The check "and 'domainname' in newValues" is solely for basesystems
+	isAdMember = 'ad/member' in newValues and 'ad/address' in newValues
 	if 'windows/domain' not in newValues:
-		if 'ad/member' in newValues and 'ad/address' in newValues:
+		if isAdMember:
 			MODULE.process('Searching for NETBIOS domain in AD')
 			for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
 				ns = newValues.get(nameserver, ucr.get(nameserver))
@@ -199,9 +200,13 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		newValues['windows/domain'] = domain2windowdomain(newValues.get('domainname'))
 		MODULE.process('Setting NETBIOS domain to default: %s' % newValues['windows/domain'])
 
+	# make sure that AD connector package is installed if AD member mode is chosen
+	selectedComponents = set(newValues.get('components', []))
+	if isAdMember:
+		selectedComponents.add('univention-ad-connector')
+
 	# add lists with all packages that should be removed/installed on the system
-	if 'components' in newValues:
-		selectedComponents = set(newValues.get('components', []))
+	if selectedComponents:
 		currentComponents = set()
 		for iapp in get_apps():
 			if iapp['is_installed']:

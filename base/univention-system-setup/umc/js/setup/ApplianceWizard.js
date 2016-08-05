@@ -1644,16 +1644,6 @@ define([
 				this._appGalleryUpdated = true;
 				this._gallery.filter(this._getAppQuery());
 			}
-			this._autoAddAdConnectorToAppSelection();
-		},
-
-		_autoAddAdConnectorToAppSelection: function() {
-			if (this._isAdMemberMaster()) {
-				this._apps.query({id: 'adconnector'}).forEach(lang.hitch(this, function(iitem) {
-					var idx = this._gallery._grid.getItemIndex(iitem);
-					this._gallery._grid.selection.addToSelection(idx);
-				}));
-			}
 		},
 
 		_key2label: function(key) {
@@ -1812,7 +1802,6 @@ define([
 			msg += '</ul>';
 
 			// software components
-			this._autoAddAdConnectorToAppSelection();
 			var apps = this._gallery.getSelectedItems();
 			if (!apps.length) {
 				msg += '<p><b>' + _('Software components') + '</b>: ' + _('No additional software components will be installed.') + '</p>';
@@ -2783,6 +2772,11 @@ define([
 
 			var previousPage = this.inherited(arguments);
 
+			if (previousPage == 'role' || (previousPage == 'network' && !this.isPageVisible('role'))) {
+				// reset the temporary variable if user navigates back in wizard
+				this._domainHasMaster = null;
+			}
+
 			if (previousPage == 'warning-basesystem') {
 				previousPage = this.previous(previousPage);
 			}
@@ -2936,7 +2930,6 @@ define([
 
 			// software components
 			var packages = [];
-			this._autoAddAdConnectorToAppSelection();
 			array.forEach(this._gallery.getSelectedItems(), function(iapp) {
 				packages = packages.concat(iapp.defaultpackages, iapp.defaultpackagesmaster);
 			});
