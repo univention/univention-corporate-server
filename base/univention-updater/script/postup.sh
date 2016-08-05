@@ -122,12 +122,12 @@ if [ -x /usr/sbin/univention-check-templates ]; then
 fi
 
 if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
-	udm computers/$server_role modify \
+	udm "computers/$server_role" modify \
 		--binddn "$ldap_hostdn" \
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.1-2" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.1-3" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
