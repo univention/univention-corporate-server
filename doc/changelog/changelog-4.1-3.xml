@@ -776,6 +776,9 @@
 					The new &ucsUCRV; <envar>ssl/host/objectclass</envar> can be used to configure the LDAP object classes for which SSL
 					certificates are automatically created (<u:bug>38903</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					Some shell variable quoting problems have been fixed in the shell library for SSL handling (<u:bug>41917</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
