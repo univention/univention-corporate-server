@@ -74,11 +74,11 @@ check_ssl_parameters () {
 }
 
 mk_config () {
-	local outfile=${1:?Missing argument: outfile}
-	local password=${2?Missing argument: password}
-	local days=${3:?Missing argument: days}
-	local name=${4:?Missing argument: common name}
-	local subjectAltName=${5:-}
+	local outfile="${1:?Missing argument: outfile}"
+	local password="${2?Missing argument: password}"
+	local days="${3:?Missing argument: days}"
+	local name="${4:?Missing argument: common name}"
+	local subjectAltName="${5:-}"
 
 	check_ssl_parameters "$name" || return $?
 
@@ -223,7 +223,7 @@ move_cert () {
 	do
 		if [ -f "$i" ]
 		then
-			local hash=$(openssl x509 -hash -noout -in "$i")
+			local hash="$(openssl x509 -hash -noout -in "$i")"
 			local new="${SSLBASE}/${CA}/certs/${i##*/}"
 			mv "$i" "${dir}/${i##*/}"
 			local count=0
@@ -384,7 +384,7 @@ gencert () {
 	local fqdn="${2:?Missing argument: common name}"
 	local days="${3:-$DEFAULT_DAYS}"
 
-	local hostname=${fqdn%%.*} cn="$fqdn"
+	local hostname="${fqdn%%.*}" cn="$fqdn"
 	if [ ${#hostname} -gt 64 ]
 	then
 		echo "FATAL: Hostname '$hostname' is longer than 64 characters" >&2
