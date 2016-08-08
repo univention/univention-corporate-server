@@ -75,7 +75,7 @@ check_ssl_parameters () {
 
 mk_config () {
 	local outfile=${1:?Missing argument: outfile}
-	local password=${2:-?Missing argument: password}
+	local password=${2?Missing argument: password}
 	local days=${3:?Missing argument: days}
 	local name=${4:?Missing argument: common name}
 	local subjectAltName=${5:-}
