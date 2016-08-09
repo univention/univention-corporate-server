@@ -1,3 +1,9 @@
+ucs-test (6.0.35-16) unstable; urgency=medium
+
+  * Bug #41715: skip 10_ldap/90_acl_access_to_uidNumber0
+
+ -- Arvid Requate <requate@univention.de>  Tue, 09 Aug 2016 15:35:32 +0200
+
 ucs-test (6.0.35-15) unstable; urgency=medium
 
   * Bug #41715: tag 10_ldap/90_acl_access_to_uidNumber0 as expected to fail
