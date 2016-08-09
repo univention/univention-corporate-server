@@ -430,7 +430,7 @@
 					aspects of the setup process have been improved w.r.t. reliability and speed (<u:bug>40046</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
-					Some more corrections have been applied for the fast UCS instantiation (<u:bug>41283</u:bug>).
+					Some more corrections have been applied for the fast UCS instantiation (<u:bug>41283</u:bug>, <u:bug>41932</u:bug>).
  				</simpara></listitem>
  				<listitem><simpara>
 					A UCR variable for enabling/disabling the fast instantiation has been added (<u:bug>41622</u:bug>).
