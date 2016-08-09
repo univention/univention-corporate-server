@@ -29,12 +29,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/ucr.sh
-
-# when installing from DVD -> wait until all cleanup scripts are finished
-# otherwise processes might be interrupted due to the consecutive reboot
-if ! is_ucr_true system/setup/boot/installer; then
-	rm -f /var/www/ucs_setup_process_status.json
-fi
+# make sure that the status file is removed
+# (see also 05_remove_setup_status_file)
+rm -f /var/www/ucs_setup_process_status.json
 
 exit 0

@@ -1,3 +1,10 @@
+univention-system-setup (9.0.4-35) unstable; urgency=medium
+
+  * Bug #41932: remove the setup status file after all cleanup scripts when
+    installing from DVD
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 09 Aug 2016 11:11:21 +0200
+
 univention-system-setup (9.0.4-34) unstable; urgency=medium
 
   * Bug #37333: auto-install univention-ad-connector for AD member mode
