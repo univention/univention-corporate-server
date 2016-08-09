@@ -470,6 +470,9 @@
  				<listitem><simpara>
 					Redirection problems for app appliances at the end of the setup wizard have been corrected (<u:bug>41793</u:bug>).
  				</simpara></listitem>
+ 				<listitem><simpara>
+					The AD connector is now automatically installed if UCS is joining an AD domain (<u:bug>37333</u:bug>).
+ 				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
