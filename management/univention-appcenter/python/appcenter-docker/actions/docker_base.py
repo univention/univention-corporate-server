@@ -40,6 +40,7 @@ from time import time
 from ldap.dn import explode_dn
 
 from univention.appcenter.docker import Docker
+from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import Abort, get_action
 from univention.appcenter.actions.service import Start, Stop
 from univention.appcenter.utils import mkdir  # get_locale
@@ -162,6 +163,7 @@ class DockerActionMixin(object):
 		for variable in configure.list_config(app):
 			if variable['value'] is not None and variable['id'] not in set_vars:
 				set_vars[variable['id']] = variable['value']  # default
+		set_vars['docker/host/name'] = '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 		set_vars['ldap/hostdn'] = hostdn
 		set_vars['server/role'] = app.docker_server_role
 		set_vars['update/warning/releasenotes'] = 'no'
@@ -171,6 +173,18 @@ class DockerActionMixin(object):
 				if re.match(var, key):
 					set_vars[key] = ucr_get(key)
 		set_vars['updater/identify'] = 'Docker App'
+		database_connector = DatabaseConnector.get_connector(app)
+		if database_connector:
+			try:
+				database_password = database_connector.get_db_password()
+				if database_password:
+					set_vars[app.docker_env_database_host] = database_connector.get_db_host()
+					set_vars[app.docker_env_database_name] = database_connector.get_db_name()
+					set_vars[app.docker_env_database_user] = database_connector.get_db_user()
+					set_vars[app.docker_env_database_password] = database_password
+			except DatabaseError as exc:
+				raise Abort(str(exc))
+
 		container = docker.create(hostname, set_vars)
 		self.log('Preconfiguring container %s' % container)
 		autostart = 'yes'

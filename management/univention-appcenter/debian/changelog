@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-1) unstable; urgency=medium
+
+  * Bug #40857: Add database integration
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 11 Aug 2016 01:14:03 +0200
+
 univention-appcenter (5.0.21-32) unstable; urgency=medium
 
   * Bug #41853: Revert

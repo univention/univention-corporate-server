@@ -35,16 +35,16 @@
 import os.path
 import shutil
 import time
-from uuid import uuid4
 import re
 
 from ldap.dn import str2dn, dn2str
 
 from univention.appcenter.app import AppManager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists
-from univention.appcenter.actions import StoreAppAction
+from univention.appcenter.database import DatabaseConnector, DatabaseCreationFailed
+from univention.appcenter.actions import StoreAppAction, Abort
 from univention.appcenter.actions.credentials import CredentialsAction
-from univention.appcenter.utils import mkdir, get_sha256, app_ports, currently_free_port_in_range
+from univention.appcenter.utils import mkdir, app_ports, currently_free_port_in_range, generate_password
 from univention.appcenter.log import catch_stdout
 from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys
 
@@ -59,6 +59,7 @@ class Register(CredentialsAction):
 		parser.add_argument('--component', dest='register_task', action='append_const', const='component', help='Adding the component to the list of available repositories')
 		parser.add_argument('--host', dest='register_task', action='append_const', const='host', help='Creating a computer object for the app (docker apps only)')
 		parser.add_argument('--app', dest='register_task', action='append_const', const='app', help='Registering the app itself (internal UCR variables, ucs-overview variables, adding a special LDAP object for the app)')
+		parser.add_argument('--database', dest='register_task', action='append_const', const='database', help='Installing, starting a database management system and creating a databse for the app (if necessary)')
 		parser.add_argument('--do-it', dest='do_it', action='store_true', default=None, help='Always do it, disregarding installation status')
 		parser.add_argument('--undo-it', dest='do_it', action='store_false', default=None, help='Undo any registrations, disregarding installation status')
 		parser.add_argument('apps', nargs='*', action=StoreAppAction, help='The ID of the app that shall be registered')
@@ -73,6 +74,7 @@ class Register(CredentialsAction):
 		self._register_files_for_apps(apps, args)
 		self._register_host_for_apps(apps, args)
 		self._register_app_for_apps(apps, args)
+		self._register_database_for_apps(apps, args)
 		self._register_installed_apps_in_ucr()
 
 	def _do_register(self, app, args):
@@ -195,7 +197,7 @@ class Register(CredentialsAction):
 				self.warn('%s should be the host for %s. But it was not found in LDAP. Creating a new one' % (hostdn, app.id))
 		# quasi unique hostname; make sure it does not exceed 63 chars
 		hostname = '%s-%d' % (app.id[:46], time.time() * 1000000)
-		password = get_sha256(str(uuid4()) + str(time.time()))
+		password = generate_password()
 		self.log('Registering the container host %s for %s' % (hostname, app.id))
 		if app.docker_server_role == 'memberserver':
 			base = 'cn=memberserver,cn=computers,%s' % ucr_get('ldap/base')
@@ -256,6 +258,21 @@ class Register(CredentialsAction):
 			ucr_save(updates)
 			self._reload_apache()
 		return updates
+
+	def _register_database_for_apps(self, apps, args):
+		if not self._shall_register(args, 'database'):
+			return
+		for app in apps:
+			if self._do_register(app, args):
+				self._register_database(app)
+
+	def _register_database(self, app):
+		database_connector = DatabaseConnector.get_connector(app)
+		if database_connector:
+			try:
+				database_connector.create_database()
+			except DatabaseCreationFailed as exc:
+				raise Abort(str(exc))
 
 	def _register_docker_variables(self, app):
 		updates = {}

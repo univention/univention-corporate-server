@@ -489,6 +489,22 @@ class App(object):
 			If "web_interface_proxy_scheme" is set to http, both
 		ucs_overview_category: Whether and if where on the start site
 			the web_interface should be registered.
+		database: Which (if any) database an App wants to use. The App
+			Center will setup the database for the App. Useful for
+			Docker Apps running against the Host's database.
+		database_name: Name of the database to be created. Defaults to
+			"id" (- is replaced by _). Needs to be unique
+		database_user: Name of the database user to be created.
+			Defaults to "id" (- is replaced by _). May not be
+			"root" or "postgres".
+		docker_env_database_host: Environment variable name for the DB
+			host.
+		docker_env_database_name: Environment variable name for the DB
+			name.
+		docker_env_database_user: Environment variable name for the DB
+			user.
+		docker_env_database_password: Environment variable name for the
+			DB password (of "docker_env_database_user").
 		conflicted_apps: List of App IDs that may not be installed
 			together with this App. Works in both ways, one only
 			needs to specify it on one App.
@@ -682,6 +698,14 @@ class App(object):
 	web_interface_proxy_scheme = AppAttribute(default='both', choices=['http', 'https', 'both'])
 	auto_mod_proxy = AppBooleanAttribute(default=True)
 	ucs_overview_category = AppAttributeOrFalseOrNone(default='service', choices=['admin', 'service'])
+
+	database = AppAttribute()
+	database_name = AppAttribute()
+	database_user = AppAttribute(regex='(?!^(root)$|^(postgres)$)')  # anything but db superuser!
+	docker_env_database_host = AppAttribute(default='DB_HOST')
+	docker_env_database_name = AppAttribute(default='DB_NAME')
+	docker_env_database_user = AppAttribute(default='DB_USER')
+	docker_env_database_password = AppAttribute(default='DB_PASSWORD')
 
 	conflicted_apps = AppListAttribute()
 	required_apps = AppListAttribute()
@@ -1233,6 +1257,14 @@ class App(object):
 		existing data.'''
 		problem = ucr_is_true('appcenter/prudence/docker/%s' % self.id) and self.docker and not self.docker_migration_works
 		return not problem
+
+	@soft_requirement('install', 'upgrade')
+	def shall_not_have_mysql_filtered(self):
+		'''The application will open MySQL ports in the firewall.'''
+		if ucr_get('security/packetfilter/package/mysql/tcp/3306/all') != 'ACCEPT':
+			if AppManager.get_package_manager().is_installed('mysql-server'):
+				return False
+		return True
 
 	def check(self, function):
 		package_manager = AppManager.get_package_manager()

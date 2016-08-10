@@ -36,9 +36,10 @@ import os
 import os.path
 import re
 import shutil
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, list2cmdline
 import pipes
 from threading import Thread
+from uuid import uuid4
 import time
 import urllib2
 import httplib
@@ -124,6 +125,10 @@ def currently_free_port_in_range(lower_bound, upper_bound, blacklist):
 	raise NoMorePorts()
 
 
+def generate_password():
+	return get_sha256(str(uuid4()) + str(time.time()))
+
+
 def underscore(value):
 	if value:
 		return re.sub('([a-z])([A-Z])', r'\1_\2', value).lower()
@@ -184,6 +189,12 @@ def call_process(args, logger=None, env=None):
 	else:
 		process.communicate()
 	return process
+
+
+def call_process_as(user, args, logger=None, env=None):
+	args = list2cmdline(args)
+	args = ['/bin/su', '-', user, '-c', args]
+	return call_process(args, logger, env)
 
 
 def verbose_http_error(exc):

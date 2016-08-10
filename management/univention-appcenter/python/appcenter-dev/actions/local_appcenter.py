@@ -541,7 +541,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 				self.warn('Could not determine architecture from filename. Assuming _all.deb')
 				_copy_package(package, 'all', add_arch_ending=True)
 
-	def _generate_repo_index_files(self, repo_dir):
+	def _generate_repo_index_files(self, repo_dir, compress=True):
 		mode = 'packages'
 		for arch in ['i386', 'amd64', 'all']:
 			filename = os.path.join(repo_dir, arch, 'Packages')
@@ -555,9 +555,10 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 						path = line[len(os.path.dirname(repo_dir)) + 11:]  # -"Filename: /var/www/.../maintained/component/"
 						line = 'Filename: %s' % path
 					packages.write('%s\n' % line)
-			with open('%s.gz' % filename, 'wb') as gz:
-				subprocess.Popen(['gzip', '--stdout', filename], stdout=gz)
-			subprocess.call(['bzip2', '--keep', filename])
+			if compress:
+				with open('%s.gz' % filename, 'wb') as gz:
+					subprocess.Popen(['gzip', '--stdout', filename], stdout=gz)
+				subprocess.call(['bzip2', '--keep', filename])
 
 	def _generate_meta_index_files(self, args):
 		DevRegenerateMetaInf.call(ucs_version=args.ucs_version, path=args.path, appcenter_host=args.appcenter_host)
