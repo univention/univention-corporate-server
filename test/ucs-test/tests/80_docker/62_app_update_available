@@ -7,7 +7,7 @@
 
 from dockertest import *
 from univention.testing.debian_package import DebianPackage
-from univention.testing.utils import get_ldap_connection, fail
+from univention.testing.utils import get_ldap_connection, fail, UCSTestDomainAdminCredentials
 from univention.config_registry import ConfigRegistry
 
 def copy_package_to_appcenter(ucs_version, app_directory, package_name):
@@ -45,6 +45,7 @@ if __name__ == '__main__':
 		test_package_v1.build()
 		copy_package_to_appcenter(ucr['version/version'], app.app_directory, test_package_v1.get_binary_name())
 
+		admin_credentials = UCSTestDomainAdminCredentials()
 
 		try:
 
@@ -58,6 +59,8 @@ if __name__ == '__main__':
 			app.execute_command_in_container('univention-upgrade --noninteractive --updateto=%s-99 --disable-app-updates' % ucr['version/version'])
 
 			app.execute_command_in_container('univention-install %s' % package_name)
+			app.execute_command_in_container('bash -c "echo -n \"%s\" >/.pwd"' % admin_credentials.bindpw)
+			app.execute_command_in_container('univention-run-join-scripts -dcaccount "%s" -dcpwd "/.pwd"' % admin_credentials.username)
 			app.execute_command_in_container('/usr/share/univention-updater/univention-updater-check')
 			res = app.execute_command_in_container('/usr/share/univention-docker-container-mode/update_available')
 			if res:

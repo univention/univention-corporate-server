@@ -4,7 +4,7 @@
 ##  Does univention-ucs-translation-merge correctly insert new translation
 ##  files into existing translation source packages?
 ## bugs: [41223]
-## tags: [translation-template]
+## tags: [translation-template, skip_admember]
 ## roles:
 ##  - domaincontroller_master
 ##  - domaincontroller_backup
