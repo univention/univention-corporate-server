@@ -1,3 +1,16 @@
+ucs-test (6.0.36-1) unstable; urgency=medium
+
+  * 85_ucs-translation-template/01_merge_new_module: Skip test case in
+    AD member mode setups (Bug 41933)
+  * 85_ucs-translation-template/00_fuzzy_entries_on_merge: Skip test
+    because it is currently unstable (Bug #41933)
+  * 80_docker/62_app_update_available: Adjust test case to Bug #39551,
+    packages is now returned if join scripts are not executed
+    (Bug #41954)
+  * 61_udm-users/28_displayName_update: Stop S4 connector (Bug #41650)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Aug 2016 07:13:24 +0200
+
 ucs-test (6.0.35-16) unstable; urgency=medium
 
   * Bug #41715: skip 10_ldap/90_acl_access_to_uidNumber0
