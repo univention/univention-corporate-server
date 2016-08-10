@@ -353,6 +353,11 @@ create_install_script ()
 		close_fds=TRUE
 	fi
 
+	# Ticket #2016051821000139
+	if [ "$main_app" = "kopano-core" ]; then
+		close_fds=TRUE
+	fi
+
 	# Ticket #2016062321000191
 	if [ "$main_app" = "kix2016" ]; then
 		close_fds=TRUE
