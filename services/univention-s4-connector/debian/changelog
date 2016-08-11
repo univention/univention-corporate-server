@@ -3,6 +3,8 @@ univention-s4-connector (10.0.1-19) unstable; urgency=medium
   * Bug #41006: Synchronize TXTRecord
     Additional fixes:
     - Consider MX record in s4_host_record_create too
+    - Adjust to updated Samba code: use Samba CNameRecord object
+    - Adjust to updated Samba code: set new rank attribute
 
  -- Arvid Requate <requate@univention.de>  Thu, 11 Aug 2016 11:32:00 +0200
 

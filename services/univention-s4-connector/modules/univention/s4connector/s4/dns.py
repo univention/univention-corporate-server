@@ -53,47 +53,44 @@ from dns import rdataclass
 from dns.tokenizer import Tokenizer
 
 from samba.provision.sambadns import ARecord
-# def __init__(self, ip_addr, serial=1, ttl=3600):
+# def __init__(self, ip_addr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
 from samba.provision.sambadns import AAAARecord
-# def __init__(self, ip6_addr, serial=1, ttl=3600):
+# def __init__(self, ip6_addr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
 from samba.provision.sambadns import NSRecord
-# def __init__(self, dns_server, serial=1, ttl=3600):
+# def __init__(self, dns_server, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
 from samba.provision.sambadns import SOARecord
-# def __init__(self, mname, rname, serial=1, refresh=900, retry=600, expire=86400, minimum=3600, ttl=3600):
+# def __init__(self, mname, rname, serial=1, refresh=900, retry=600, expire=86400, minimum=3600, ttl=3600, rank=dnsp.DNS_RANK_ZONE):
 
 from samba.provision.sambadns import SRVRecord
-# def __init__(self, target, port, priority=0, weight=0, serial=1, ttl=3600):
+# def __init__(self, target, port, priority=0, weight=100, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
-class CName(dnsp.DnssrvRpcRecord):
-	def __init__(self, cname, serial=1, ttl=3600):
-		super(CName, self).__init__()
-		self.wType=dnsp.DNS_TYPE_CNAME
-		self.dwSerial=serial
-		self.dwTtlSeconds=ttl
-		self.data=cname
+from samba.provision.sambadns import CNameRecord
+# def __init__(self, cname, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
 from samba.provision.sambadns import TXTRecord
 # def __init__(self, slist, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
 class PTRRecord(dnsp.DnssrvRpcRecord):
-	def __init__(self, ptr, serial=1, ttl=3600):
+	def __init__(self, ptr, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 		super(PTRRecord, self).__init__()
-		self.wType=dnsp.DNS_TYPE_PTR
-		self.dwSerial=serial
-		self.dwTtlSeconds=ttl
-		self.data=ptr
+		self.wType = dnsp.DNS_TYPE_PTR
+		self.rank = rank
+		self.dwSerial = serial
+		self.dwTtlSeconds = ttl
+		self.data = ptr
 
 class MXRecord(dnsp.DnssrvRpcRecord):
-	def __init__(self, name, priority, serial=1, ttl=3600):
+	def __init__(self, name, priority, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 		super(MXRecord, self).__init__()
-		self.wType=dnsp.DNS_TYPE_MX
-		self.dwSerial=serial
-		self.dwTtlSeconds=ttl
-		self.data.wPriority=priority
-		self.data.nameTarget=name
+		self.wType = dnsp.DNS_TYPE_MX
+		self.rank = rank
+		self.dwSerial = serial
+		self.dwTtlSeconds = ttl
+		self.data.wPriority = priority
+		self.data.nameTarget = name
 
 import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
@@ -605,7 +602,7 @@ def __unpack_txtRecord(object):
 def __pack_cName(object, dnsRecords):
 	for c in object['attributes'].get('cNAMERecord', []):
 		c=univention.s4connector.s4.compatible_modstring(__remove_dot(c))
-		c_record=CName(c)
+		c_record=CNameRecord(c)
 		dnsRecords.append(ndr_pack(c_record))
 
 def __unpack_cName(object):
