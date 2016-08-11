@@ -8,6 +8,7 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 from univention.config_registry import ConfigRegistry
 import subprocess
+import sys
 import atexit
 
 if __name__ == '__main__':
@@ -18,8 +19,11 @@ if __name__ == '__main__':
 	# it is a problem to change the same object in short intervals,
 	# see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
 	if utils.s4connector_present():
-		atexit.register(utils.start_s4connector)
-		utils.stop_s4connector()
+		if ucr.get('server/role') == 'domaincontroller_master':
+			atexit.register(utils.start_s4connector)
+			utils.stop_s4connector()
+		else:
+			sys.exit(134)
 
 	with udm_test.UCSTestUDM() as udm:
 		role = ucr.get('server/role')
