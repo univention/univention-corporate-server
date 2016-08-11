@@ -1,34 +1,13 @@
-#!/usr/share/ucs-test/runner python
+#!/usr/share/ucs-test/runner bash
 ## desc: Check for S4 connector rejected objects
 ## exposure: safe
 ## bugs: [37011, 37324, 37570]
 ## packages:
-## - univention-s4-connector
+## - univention-nagios-s4-connector
 ## versions:
 ##  4.0-0: skip
 ##  4.0-1: skip
+##  4.1-3: fixed
 
-# TODO: please enable the test after Bug #37570 being fixed.
+/usr/lib/nagios/plugins/check_univention_s4_connector
 
-from subprocess import Popen, PIPE
-
-import univention.testing.utils as utils
-
-
-print "Looking for S4 connector rejects:"
-
-proc = Popen('univention-s4connector-list-rejected', stdout=PIPE, stderr=PIPE)
-stdout, stderr = proc.communicate()
-
-if stderr.strip():
-    utils.fail("An error occured while running "
-               " 'univention-s4connector-list-rejected'. STDERR: %r" % stderr)
-
-if not stdout.strip():
-    utils.fail("The 'univention-s4connector-list-rejected' did not produce "
-               "any output to STDOUT.")
-
-print stdout
-
-if ("UCS DN" in stdout) or ("S4 DN" in stdout):
-    utils.fail("S4 Connector rejects were found.")
