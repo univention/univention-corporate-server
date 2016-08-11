@@ -1,8 +1,10 @@
 univention-s4-connector (10.0.1-19) unstable; urgency=medium
 
   * Bug #41006: Synchronize TXTRecord
+    Additional fixes:
+    - Consider MX record in s4_host_record_create too
 
- -- Arvid Requate <requate@univention.de>  Thu, 11 Aug 2016 11:23:23 +0200
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Aug 2016 11:32:00 +0200
 
 univention-s4-connector (10.0.1-18) unstable; urgency=medium
 

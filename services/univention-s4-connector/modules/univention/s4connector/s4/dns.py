@@ -903,6 +903,7 @@ def s4_host_record_create(s4connector, object):
 	else:
 		__pack_aRecord(object, dnsRecords)
 
+	__pack_mxRecord(object, dnsRecords)
 	__pack_txtRecord(object, dnsRecords)
 
 	dnsNodeDn=s4_dns_node_base_create(s4connector, object, dnsRecords)
