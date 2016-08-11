@@ -1,3 +1,10 @@
+ucs-test (6.0.36-4) unstable; urgency=medium
+
+  * 00_checks/10_s4_connector_rejects: Re-activate test and use the
+    nagios plugin (Bug #37570)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Aug 2016 21:41:20 +0200
+
 ucs-test (6.0.36-3) unstable; urgency=medium
 
   * Skip 60_umc-system/76_ipchange_ucs_sso in a S4 environment
