@@ -1,3 +1,10 @@
+ucs-test (6.0.36-3) unstable; urgency=medium
+
+  * Skip 60_umc-system/76_ipchange_ucs_sso in a S4 environment
+    on a non-DC Master (Bug #41748)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Aug 2016 20:15:44 +0200
+
 ucs-test (6.0.36-2) unstable; urgency=medium
 
   * Stop S4 connector in the following test cases. The test cases change
