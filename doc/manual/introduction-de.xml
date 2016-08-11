@@ -132,7 +132,7 @@ Systemrollen sind Domänencontroller, &ucsMember; und Client.
 </para>
 
 <figure id="introduction:domain"><title>UCS-Domänenkonzept</title>
- <graphic scalefit="1" width="90%" align="center" fileref="illustrations41/domainconcept.jpg"/>
+ <graphic scalefit="1" width="90%" align="center" fileref="illustrations42/domainconcept.jpg"/>
 </figure>
 
 <para>
@@ -223,7 +223,7 @@ Weiterführende Informationen finden sich in <xref linkend="domain:ldap"/>.
 
 <para>
 <figure id="introduction:umc"><title>Univention Management Console</title>
- <graphic scalefit="1" width="100%" fileref="illustrations41/umc-favorites-tab-de.png"/>
+ <graphic scalefit="1" width="100%" fileref="illustrations42/umc-favorites-tab-de.png"/>
 </figure>
 </para>
 

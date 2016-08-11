@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="windows-4.1">
+<book lang="en" id="windows-4.2">
     <bookinfo>
       <title>Univention Corporate Server</title>
       <subtitle>Extended Windows integration documentation</subtitle>
@@ -96,7 +96,7 @@ root@backup:~#
 
 			<figure id="s4connector-rejoin">
 			  <title>Re-execute S4 connector join script</title>
-			  <graphic scalefit="1" width="80%" fileref="illustrations41/s4connector-re-execute.png"/>
+			  <graphic scalefit="1" width="80%" fileref="illustrations42/s4connector-re-execute.png"/>
 			</figure>
 
 			<para>

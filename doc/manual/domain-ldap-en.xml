@@ -263,7 +263,7 @@
 
 	  <figure id="domain-ldap:join:win7">
 		<title>Domain join of a Windows 7 system</title>
-		<graphic scalefit="1" width="80%" fileref="illustrations41/win7-join_2-en.png"/>
+		<graphic scalefit="1" width="80%" fileref="illustrations42/win7-join_2-en.png"/>
 	  </figure>
 
 	  <para>
@@ -424,7 +424,7 @@
 
 		<figure id="domain-ldap:join:osx">
 			<title>Domain join of a Mac OS X system</title>
-			<graphic scalefit="1" width="60%" fileref="illustrations41/macosx-bind_en.png"/>
+			<graphic scalefit="1" width="60%" fileref="illustrations42/macosx-bind_en.png"/>
 		</figure>
 
 		  <para>
@@ -969,7 +969,7 @@ slapcat &gt; ldapdata.txt
 
 	<figure id="domain-join:listener-notifier">
 	  <title>Listener/Notifier mechanism</title>
-	  <graphic scalefit="1" width="80%" fileref="illustrations41/administration-overview_en.png"/>
+	  <graphic scalefit="1" width="80%" fileref="illustrations42/administration-overview_en.png"/>
 	</figure>
 
 	<para>
@@ -1259,7 +1259,7 @@ univention-directory-listener-ctrl resync cups-printers
 
 	<figure id="domain:saml:samllogin">
 		<title>The <foreignphrase>single sign-on</foreignphrase> login page</title>
-		<graphic scalefit="1" width="70%" fileref="illustrations41/sso_SAML_login_page_en.png"/>
+		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_SAML_login_page_en.png"/>
 	</figure>
 
 	<para>
@@ -1297,7 +1297,7 @@ univention-directory-listener-ctrl resync cups-printers
 	</para>
 	<figure id="domain:saml:umclogin">
 		<title>The <foreignphrase>single sign-on</foreignphrase> link on the &ucsUMC; login page</title>
-		<graphic scalefit="1" width="70%" fileref="illustrations41/sso_umc_login_page_en.png"/>
+		<graphic scalefit="1" width="70%" fileref="illustrations42/sso_umc_login_page_en.png"/>
 	</figure>
 	</section>
 

@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-MAIN := quickstart-de-4.1 quickstart-en-4.1
+MAIN := quickstart-de-4.2 quickstart-en-4.2
 STYLESHEET := univention_extdocs
 quickstart-de%: lang := de
 

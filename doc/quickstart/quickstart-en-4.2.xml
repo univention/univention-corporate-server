@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="quickstart-en-4.1">
+<book lang="en" id="quickstart-en-4.2">
 <bookinfo>
   <title>Univention Corporate Server</title>
   <subtitle>Quick start guide for Univention Corporate Server</subtitle>
@@ -74,7 +74,7 @@
 
   <figure id="quick-systemrole">
 	<title>Selecting the domain setup</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/systemrole-en.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/systemrole-en.png"/>
   </figure>
 
 
@@ -146,7 +146,7 @@
 
 	<figure id="quick-umclogin">
 	  <title>Modules in the UMC</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations41/umc-modules-en.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations42/umc-modules-en.png"/>
 	</figure>
 
 </chapter>
@@ -176,7 +176,7 @@
 
 	<figure id="quick-appcenter">
 	  <title>Subsequent installation of UCS components</title>
-	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations41/appcenter-en.png"/>
+	  <graphic scalefit="1" width="80%" align="center" fileref="illustrations42/appcenter-en.png"/>
 	</figure>
 
   </para>
@@ -201,7 +201,7 @@
 
   <figure id="quick-ucr">
 	<title>Managing &ucsUCR; variables</title>
-	<graphic scalefit="1" width="80%" align="center" fileref="illustrations41/ucr-en.png"/>
+	<graphic scalefit="1" width="80%" align="center" fileref="illustrations42/ucr-en.png"/>
   </figure>
 
 </chapter>
