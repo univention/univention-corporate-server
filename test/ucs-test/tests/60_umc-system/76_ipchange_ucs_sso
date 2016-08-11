@@ -8,10 +8,18 @@ import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 from univention.config_registry import ConfigRegistry
 import subprocess
+import atexit
 
 if __name__ == '__main__':
 	ucr = ConfigRegistry()
 	ucr.load()
+
+	# Since the S4 connector uses a object based synchronization,
+	# it is a problem to change the same object in short intervals,
+	# see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
+	if utils.s4connector_present():
+		atexit.register(utils.start_s4connector)
+		utils.stop_s4connector()
 
 	with udm_test.UCSTestUDM() as udm:
 		role = ucr.get('server/role')
@@ -20,7 +28,7 @@ if __name__ == '__main__':
 		if role == 'domaincontroller_master':
 			role = 'domaincontroller_backup'
 		computerName = uts.random_string()
-		computer = udm.create_object('computers/%s' % role, name=computerName, password='univention', network='cn=default,cn=networks,%s' % ucr.get('ldap/base'), univentionService='univention-saml')
+		computer = udm.create_object('computers/%s' % role, name=computerName, password='univention', network='cn=default,cn=networks,%s' % ucr.get('ldap/base'), univentionService='univention-saml', check_for_drs_replication=False)
 
 		lo = utils.get_ldap_connection()
 		computer_object = lo.get(computer)

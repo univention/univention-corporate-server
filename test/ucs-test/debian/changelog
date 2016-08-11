@@ -1,3 +1,15 @@
+ucs-test (6.0.36-2) unstable; urgency=medium
+
+  * Stop S4 connector in the following test cases. The test cases change
+    the same object / attributes in a short time frame which leds to sync 
+    errors (Bug #35336):
+      60_umc-system/60_umc-service-extended-attributes (Bug #41790)
+      60_umc-system/76_ipchange_ucs_sso (Bug #41748)
+      61_udm-24_ignore_user_with_functional_flag (Bug #40198)
+      61_udm-25_script_lock_expired_accounts (Bug #41958)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Aug 2016 08:35:36 +0200
+
 ucs-test (6.0.36-1) unstable; urgency=medium
 
   * 85_ucs-translation-template/01_merge_new_module: Skip test case in

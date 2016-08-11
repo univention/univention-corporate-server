@@ -11,13 +11,22 @@
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
+import atexit
 import subprocess
 
 if __name__ == '__main__':
 	license_before  = subprocess.Popen(['univention-license-check'], stdout=subprocess.PIPE).communicate()[0]
+
+	# Since the S4 connector uses a object based synchronization,
+	# it is a problem to change the same object in short intervals,
+	# see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
+	if utils.s4connector_present():
+		atexit.register(utils.start_s4connector)
+		utils.stop_s4connector()
+
 	with udm_test.UCSTestUDM() as udm:
 		# create user and check its existance
-		user_dn = udm.create_user()[0]
+		user_dn = udm.create_user(check_for_drs_replication=False)[0]
 		utils.verify_ldap_object(user_dn)
 		stdout = subprocess.Popen([udm_test.UCSTestUDM.PATH_UDM_CLI_CLIENT, 'users/user', 'list'], stdout=subprocess.PIPE).communicate()[0]
 		if not user_dn.lower() in stdout.lower():

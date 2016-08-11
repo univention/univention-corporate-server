@@ -13,6 +13,7 @@ from TestUMCSystemModule import TestUMCSystem
 import univention.testing.utils as utils
 from univention.testing.strings import random_username
 import univention.testing.udm as udm_test
+import atexit
 
 
 class TestUMCExtendedAttributes(TestUMCSystem):
@@ -345,7 +346,8 @@ class TestUMCExtendedAttributes(TestUMCSystem):
                       "and after the modification"
                       % (test_username, test_attribute_name + '_cust'))
                 test_user_dn = UDM.create_user(password='univention',
-                                               username=test_username)[0]
+                                               username=test_username,
+                                               check_for_drs_replication=False)[0]
                 utils.verify_ldap_object(test_user_dn)
 
                 self.modify_check_user_attribute(test_user_dn,
@@ -363,5 +365,12 @@ class TestUMCExtendedAttributes(TestUMCSystem):
 
 
 if __name__ == '__main__':
+    # Since the S4 connector uses a object based synchronization,
+    # it is a problem to change the same object in short intervals,
+    # see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
+    if utils.s4connector_present():
+        atexit.register(utils.start_s4connector)
+        utils.stop_s4connector()
+
     TestUMC = TestUMCExtendedAttributes()
     sys.exit(TestUMC.main())

@@ -10,12 +10,21 @@ import univention.admin.uldap
 import univention.admin.modules as udm_modules
 import univention.testing.udm as udm_test
 import univention.testing.utils as utils
+import atexit
 import pprint
 import subprocess
 import time
 
 
 def main():
+
+	# Since the S4 connector uses a object based synchronization,
+	# it is a problem to change the same object in short intervals,
+	# see https://forge.univention.org/bugzilla/show_bug.cgi?id=35336
+	if utils.s4connector_present():
+		atexit.register(utils.start_s4connector)
+		utils.stop_s4connector()
+
 	print time.ctime()
 	with udm_test.UCSTestUDM() as udm:
 		udm_modules.update()
@@ -24,7 +33,7 @@ def main():
 
 		def create_user(expiry_days_delta, locked_status):
 			expiry_time = datetime.utcnow() + timedelta(days=expiry_days_delta)
-			userdn, username = udm.create_user(userexpiry=expiry_time.strftime("%Y-%m-%d"), locked=locked_status)
+			userdn, username = udm.create_user(userexpiry=expiry_time.strftime("%Y-%m-%d"), locked=locked_status, check_for_drs_replication=False)
 			return username
 
 		userdata = {}
