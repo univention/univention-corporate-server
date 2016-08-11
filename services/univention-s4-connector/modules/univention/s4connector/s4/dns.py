@@ -1006,7 +1006,7 @@ def ucs_ptr_record_create(s4connector, object):
 			newRecord['ptr_record']=ptr[0]
 			newRecord.modify()
 		else:
-			ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: do not modify host record')
+			ud.debug(ud.LDAP, ud.INFO, 'ucs_ptr_record_create: do not modify ptr record')
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
@@ -1062,7 +1062,7 @@ def ucs_cname_create(s4connector, object):
 			newRecord['cname']=c[0]
 			newRecord.modify()
 		else:
-			ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: do not modify host record')
+			ud.debug(ud.LDAP, ud.INFO, 'ucs_cname_create: do not modify cname record')
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
@@ -1141,7 +1141,7 @@ def ucs_srv_record_create(s4connector, object):
 				newRecord['location']=srv
 				newRecord.modify()
 			else:
-				ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not modify host record')
+				ud.debug(ud.LDAP, ud.INFO, 'ucs_srv_record_create: do not modify srv record')
 	else:
 		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
 
