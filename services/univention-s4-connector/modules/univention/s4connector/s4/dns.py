@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import absolute_import
 import ldap, string
 from ldap.filter import escape_filter_chars, filter_format
 import univention.debug2 as ud
@@ -45,6 +46,11 @@ from samba.ndr import ndr_pack, ndr_unpack, ndr_print
 import copy
 import time
 import sys
+
+from dns.rdtypes.ANY.TXT import TXT
+from dns import rdatatype
+from dns import rdataclass
+from dns.tokenizer import Tokenizer
 
 from samba.provision.sambadns import ARecord
 # def __init__(self, ip_addr, serial=1, ttl=3600):
@@ -68,6 +74,9 @@ class CName(dnsp.DnssrvRpcRecord):
 		self.dwSerial=serial
 		self.dwTtlSeconds=ttl
 		self.data=cname
+
+from samba.provision.sambadns import TXTRecord
+# def __init__(self, slist, serial=1, ttl=900, rank=dnsp.DNS_RANK_ZONE):
 
 class PTRRecord(dnsp.DnssrvRpcRecord):
 	def __init__(self, ptr, serial=1, ttl=3600):
@@ -571,6 +580,28 @@ def __unpack_mxRecord(object):
 			mx.append( [str(ndrRecord.data.wPriority), __append_dot(ndrRecord.data.nameTarget)] )
 	return mx
 
+def __pack_txtRecord(object, dnsRecords):
+	slist=[]
+	for txtRecord in object['attributes'].get('tXTRecord', []):
+		if txtRecord:
+			ud.debug(ud.LDAP, ud.INFO, '__pack_txtRecord: %s' % txtRecord)
+			txtRecord=univention.s4connector.s4.compatible_modstring(txtRecord)
+			token_list = TXT.from_text(rdataclass.IN, rdatatype.TXT, Tokenizer(txtRecord)).strings
+			ndr_txt_record = ndr_pack(TXTRecord(token_list))
+			dnsRecords.append(ndr_txt_record)
+			ud.debug(ud.LDAP, ud.INFO, '__pack_txtRecord: %s' % ndr_txt_record)
+
+def __unpack_txtRecord(object):
+	txt=[]
+	dnsRecords=object['attributes'].get('dnsRecord', [])
+	for dnsRecord in dnsRecords:
+		dnsRecord=dnsRecord.encode('latin1')
+		ndrRecord=ndr_unpack(dnsp.DnssrvRpcRecord, dnsRecord)
+		if ndrRecord.wType == dnsp.DNS_TYPE_TXT:
+			txt.append(str(TXT(rdataclass.IN, rdatatype.TXT, ndrRecord.data.str)))
+			# or: txt.append(' '.join(['"%s"' % token for token in ndrRecord.data.str]))
+	return txt
+
 def __pack_cName(object, dnsRecords):
 	for c in object['attributes'].get('cNAMERecord', []):
 		c=univention.s4connector.s4.compatible_modstring(__remove_dot(c))
@@ -716,6 +747,8 @@ def s4_zone_create(s4connector, object):
 		__pack_aRecord(object, dnsRecords)
 
 	__pack_mxRecord(object, dnsRecords)
+
+	__pack_txtRecord(object, dnsRecords)
 
 	s4connector.lo_s4.modify(soa_dn, [('dnsRecord', old_dnsRecords, dnsRecords)])
 
@@ -869,6 +902,8 @@ def s4_host_record_create(s4connector, object):
 				dnsRecords.append(ndr_pack(a_record))
 	else:
 		__pack_aRecord(object, dnsRecords)
+
+	__pack_txtRecord(object, dnsRecords)
 
 	dnsNodeDn=s4_dns_node_base_create(s4connector, object, dnsRecords)
 
@@ -1189,6 +1224,79 @@ def s4_srv_record_create(s4connector, object):
 	dnsNodeDn=s4_dns_node_base_create(s4connector, object, dnsRecords)
 
 	
+def ucs_txt_record_create(s4connector, object):
+	_d=ud.function('ucs_txt_record_create')
+	ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_create: object: %s' % object)
+	udm_property='txt'
+
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
+
+	# unpack the record
+	c = __unpack_txtRecord(object)
+
+	# Does a host record for this zone already exist?
+	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	searchResult=s4connector.lo.search(filter=ol_filter, unique=1)
+	if len(searchResult) > 0:
+		superordinate=s4connector_get_superordinate('dns/txt_record', s4connector.lo, searchResult[0][0])
+		foundRecord= univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		foundRecord.open()
+
+		## use normalized TXT records for comparison
+		normalized_txtRecord_list = []
+		for txtRecord in foundRecord['txt']:
+			normalized_txtRecord = str(TXT.from_text(rdataclass.IN, rdatatype.TXT, Tokenizer(txtRecord)))
+			normalized_txtRecord_list.append(normalized_txtRecord)
+		
+		if set(normalized_txtRecord_list) != set(c):
+			foundRecord[udm_property]=c
+			foundRecord.modify()
+		else:
+			ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_create: do not modify txt record')
+	else:
+		zoneDN='zoneName=%s,%s' % (zoneName, s4connector.property['dns'].ucs_default_dn)
+
+		superordinate=s4connector_get_superordinate('dns/txt_record', s4connector.lo, zoneDN)
+		ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_create: superordinate: %s' % superordinate)
+
+		position=univention.admin.uldap.position(zoneDN)
+
+		newRecord= univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position, dn=None, superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord.open()
+		newRecord['name']=relativeDomainName
+		newRecord[udm_property]=c
+		newRecord.create()
+	
+
+def ucs_txt_record_delete(s4connector, object):
+	_d=ud.function('ucs_txt_record_delete')
+	ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_delete: object: %s' % object)
+
+	zoneName = object['attributes']['zoneName'][0]
+	relativeDomainName = object['attributes']['relativeDomainName'][0]
+
+	ol_filter = filter_format('(&(relativeDomainName=%s)(zoneName=%s))', (relativeDomainName, zoneName))
+	searchResult=s4connector.lo.search(filter=ol_filter, unique=1)
+	if len(searchResult) > 0:
+		superordinate=s4connector_get_superordinate('dns/txt_record', s4connector.lo, searchResult[0][0])
+		newRecord= univention.admin.handlers.dns.txt_record.object(None, s4connector.lo, position=None, dn=searchResult[0][0], superordinate=superordinate, attributes=[], update_zone=False)
+		newRecord.open()
+		newRecord.delete()
+	else:
+		ud.debug(ud.LDAP, ud.INFO, 'ucs_txt_record_delete: Object was not found, filter was: %s' % ol_filter)
+
+	return True
+	
+def s4_txt_record_create(s4connector, object):
+	_d=ud.function('s4_txt_record_create')
+
+	dnsRecords=[]
+
+	__pack_txtRecord(object, dnsRecords)
+
+	dnsNodeDn=s4_dns_node_base_create(s4connector, object, dnsRecords)
+
 def ucs_zone_create(s4connector, object, dns_type):
 	_d=ud.function('ucs_zone_create')
 
@@ -1328,6 +1436,8 @@ def _identify_dns_ucs_object(s4connector, object):
 			return 'srv_record'
 		if univention.admin.handlers.dns.ptr_record.identify(object['dn'], object['attributes']):
 			return 'ptr_record'
+		if univention.admin.handlers.dns.txt_record.identify(object['dn'], object['attributes']):
+			return 'txt_record'
 	return None
 
 def _identify_dns_con_object(s4connector, object):
@@ -1374,6 +1484,8 @@ def _identify_dns_con_object(s4connector, object):
 					return 'srv_record'
 				elif set((dnsp.DNS_TYPE_A, dnsp.DNS_TYPE_AAAA)) & dns_types:
 					return 'host_record'
+				elif dnsp.DNS_TYPE_TXT in dns_types:
+					return 'txt_record'
 				
 	return None
 	
@@ -1436,6 +1548,13 @@ def ucs2con (s4connector, key, object):
 			s4_dns_node_base_delete(s4connector, object)
 		# ignore move
 
+	elif dns_type == 'txt_record':
+		if object['modtype'] in ['add', 'modify']:
+			s4_txt_record_create(s4connector, object)
+		elif object['modtype'] in ['delete']:
+			s4_dns_node_base_delete(s4connector, object)
+		# ignore move
+
 	return True
 
 def con2ucs (s4connector, key, object):
@@ -1486,6 +1605,12 @@ def con2ucs (s4connector, key, object):
 		elif object['modtype'] in ['delete']:
 			ucs_srv_record_delete(s4connector, object)
 		# ignore move
+	elif dns_type == 'txt_record':
+		if object['modtype'] in ['add', 'modify']:
+			ucs_txt_record_create(s4connector, object)
+		elif object['modtype'] in ['delete']:
+			ucs_txt_record_delete(s4connector, object)
+		# ignore move
 	if dns_type in ['forward_zone', 'reverse_zone']:
 		if object['modtype'] in ['add', 'modify']:
 			ucs_zone_create(s4connector, object, dns_type)
@@ -1509,7 +1634,8 @@ def identify(dn, attr, canonical=0):
 			univention.admin.handlers.dns.alias.identify(dn, attr) or\
 			univention.admin.handlers.dns.host_record.identify(dn, attr) or\
 			univention.admin.handlers.dns.srv_record.identify(dn, attr) or\
-			univention.admin.handlers.dns.ptr_record.identify(dn, attr) 
+			univention.admin.handlers.dns.ptr_record.identify(dn, attr) or\
+			univention.admin.handlers.dns.txt_record.identify(dn, attr) 
  
 '''
 	Because the dns/dns.py identify function has been overwritten

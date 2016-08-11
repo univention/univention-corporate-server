@@ -1,3 +1,9 @@
+univention-s4-connector (10.0.1-19) unstable; urgency=medium
+
+  * Bug #41006: Synchronize TXTRecord
+
+ -- Arvid Requate <requate@univention.de>  Thu, 11 Aug 2016 11:23:23 +0200
+
 univention-s4-connector (10.0.1-18) unstable; urgency=medium
 
   * Bug #41864: improve error handling
