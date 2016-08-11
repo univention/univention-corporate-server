@@ -6,10 +6,10 @@
 	%extensions;
 	%entities;
 ]>
-<book lang="de" id="releasenotes-4.1-3-de">
+<book lang="de" id="releasenotes-4.2-0-de">
 	<bookinfo>
-		<title>UCS 4.1-3 Release Notes</title>
-		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.1-3</subtitle>
+		<title>UCS 4.2 Release Notes</title>
+		<subtitle>Release Notes für die Inbetriebnahme und Aktualisierung von &ucsUCS; (UCS) 4.2</subtitle>
 
 		<legalnotice lang="">
 			<para>
@@ -44,31 +44,11 @@
 		<title>Release-Highlights</title>
 
 		<para>
-			Mit &ucsUCS; 4.1-3 steht das dritte Point-Release für &ucsUCS; (UCS) 4.1 zur Verfügung. Es
-			umfasst diverse Detailverbesserungen und Fehlerkorrekturen. Die wichtigsten Änderungen im
-			Überblick:
+			Mit &ucsUCS; 4.2 
 		</para>
 
 		<itemizedlist>
 			<listitem><para>
-				Diverse wichtige Sicherheitsupdates wurden in UCS 4.1-3 integriert, u.a. für libvirt, OpenSSL, QEMU und Samba. Weiter
-				wurden Sicherheitsaktualisierungen in den Standard-LDAP-ACLs und dem UMC-Server integriert.
-			</para></listitem>
-			<listitem><para>
-				Das App Center wurde an vielen Stellen weiterentwickelt und es wurden mehr Möglichkeiten für die Migration der Apps zu
-				Docker Apps implementiert.
-			</para></listitem>
-			<listitem><para>
-				Die Replikation von Verzeichnisdienstobjekten wurde für diverse Randsituationen weiter stabilisiert.
-			</para></listitem>
-			<listitem><para>
-				Der Domänenbeitritt von weiteren Samba-basierten Active Directory Domänencontrollern ist nun auch bei mehr als 100.000
-				Verzeichnisdienstobjekten möglich.
-			</para></listitem>
-			<listitem><para>
-				Die App Appliances wurden weiter ausgebaut, so ist es nun möglich für App Anbieter ein eigenes Branding zu definieren,
-				als auch einen Fast-Demo-Modus zu aktivieren. Dadurch kann ein Tester sehr schnell mit vordefinierten Einstellungen eine
-				App Appliance testen.
 			</para></listitem>
 		</itemizedlist>
 	</chapter>
@@ -210,10 +190,10 @@
 		<title>Changelog</title>
 		<para>
 			Die Changelogs mit den detaillierten Änderungsinformationen werden nur in Englisch gepflegt.
-			Aufgeführt sind die Änderungen seit UCS 4.1-2:
+			Aufgeführt sind die Änderungen seit UCS 4.1-4:
 		</para>
 
-		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.1-3.xml" xpointer="xpointer(/chapter/section)"/>
+		<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="changelog-4.2-0.xml" xpointer="xpointer(/chapter/section)"/>
 	</chapter>
 </book>
 <!-- vim: set ts=4 sw=4 noet: -->

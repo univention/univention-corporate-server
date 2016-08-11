@@ -8,7 +8,7 @@
 	%DocBookDTD;
 	%entities;
 ]>
-<book lang="en" id="ucs-4.1">
+<book lang="en" id="ucs-4.2">
   <bookinfo>
     <title>
       Univention Corporate Server
@@ -18,8 +18,8 @@
     </subtitle>
     <legalnotice>
       <literallayout>
-Version 4.1-3
-Date: August 9th, 2016
+Version 4.2-0
+Date: November Xth, 2016
       </literallayout>
 
       <literallayout lang="">
