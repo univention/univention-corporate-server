@@ -1,3 +1,9 @@
+univention-mysql (4.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:55 +0200
+
 univention-mysql (3.0.0-2) unstable; urgency=medium
 
   * Bug #40216: Set mysqld default settings based on feedback

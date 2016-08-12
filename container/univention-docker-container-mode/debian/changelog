@@ -1,3 +1,9 @@
+univention-docker-container-mode (2.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:00 +0200
+
 univention-docker-container-mode (1.0.12-5) unstable; urgency=medium
 
   * Bug #39677: Fix preinit.d script name for run-parts

@@ -1,3 +1,9 @@
+univention-radius (4.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:33 +0200
+
 univention-radius (3.0.0-6) unstable; urgency=low
 
   * Don't try to reconnect if LDAP server of DC slave is down, try DC master

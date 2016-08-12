@@ -1,3 +1,9 @@
+univention-management-console-module-lib (6.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:08 +0200
+
 univention-management-console-module-lib (5.0.1-1) unstable; urgency=medium
 
   * Bug #39578: don't display page reload dialog if a server restart is

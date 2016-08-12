@@ -1,3 +1,9 @@
+univention-pam (10.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:16 +0200
+
 univention-pam (9.0.0-6) unstable; urgency=medium
 
   * Bug #40968: Make timelimit for ldap searches in nss-ldap configurable

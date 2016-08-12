@@ -1,3 +1,9 @@
+univention-novnc (1.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:02 +0200
+
 univention-novnc (0.4+0+20131014+git142aa45-6) unstable; urgency=low
 
   * Fix python2.7 usage (Bug #35425)

@@ -1,3 +1,9 @@
+python-notifier (1.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:10 +0200
+
 python-notifier (0.9.7-4) unstable; urgency=medium
 
   * Bug #40510: fix KeyError in step() which was caused by socket removal

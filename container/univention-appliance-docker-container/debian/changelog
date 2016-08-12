@@ -1,3 +1,9 @@
+univention-appliance-docker-container (2.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:55:59 +0200
+
 univention-appliance-docker-container (1.0.0-0) unstable; urgency=medium
 
   * merge to 4.1

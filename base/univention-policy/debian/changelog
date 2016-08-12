@@ -1,3 +1,9 @@
+univention-policy (8.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:23 +0200
+
 univention-policy (7.0.2-1) unstable; urgency=low
 
   * Bug #41641: fixed detection of policy types in univention_policy_result

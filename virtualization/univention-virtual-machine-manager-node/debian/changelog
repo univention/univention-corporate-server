@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-node (5.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:08 +0200
+
 univention-virtual-machine-manager-node (4.0.1-4) unstable; urgency=low
 
   * Bug #41340: Improve description for global VNC password

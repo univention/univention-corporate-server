@@ -1,3 +1,9 @@
+univention-package-template (5.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:00 +0200
+
 univention-package-template (4.0.2-1) unstable; urgency=medium
 
   * Fixed build error, bar/baz/value was not registered in univention-

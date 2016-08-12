@@ -1,3 +1,9 @@
+univention-samba4 (6.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:59:10 +0200
+
 univention-samba4 (5.0.1-39) unstable; urgency=medium
 
   * reset-sysvol-acls.py: removed the listener module because it might

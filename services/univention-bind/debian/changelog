@@ -1,3 +1,9 @@
+univention-bind (11.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:59:09 +0200
+
 univention-bind (10.0.2-5) unstable; urgency=low
 
   * Bug #40031: Fix shell escaping

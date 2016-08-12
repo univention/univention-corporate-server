@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:19 +0200
+
 univention-base-files (5.0.1-2) unstable; urgency=low
 
   * Bug #41143: Fix docker/PXE detection

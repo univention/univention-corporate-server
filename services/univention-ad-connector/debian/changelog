@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:43 +0200
+
 univention-ad-connector (10.0.1-26) unstable; urgency=low
 
   * connector.samr.Close(user_handle) after password sync to ad (Bug #41247) 

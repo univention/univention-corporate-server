@@ -1,3 +1,9 @@
+generate-appliance (3.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:16 +0200
+
 generate-appliance (2.1.0-1) unstable; urgency=medium
 
   * Add "Amazon AWS EC2 AMI (EBS based) (HVM x64_64)" target

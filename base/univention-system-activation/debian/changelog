@@ -1,3 +1,9 @@
+univention-system-activation (2.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:20 +0200
+
 univention-system-activation (1.0.1-11) unstable; urgency=medium
 
   * Bug #40913: "dpkg-reconfigure univention-pam" not necessary anymore

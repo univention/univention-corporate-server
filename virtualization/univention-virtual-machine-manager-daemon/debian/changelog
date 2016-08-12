@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:05 +0200
+
 univention-virtual-machine-manager-daemon (5.0.1-10) unstable; urgency=low
 
   * Bug #35581: Remove snapshot limit for RAM < 4 GiB

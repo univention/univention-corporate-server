@@ -1,3 +1,9 @@
+univention-lib (6.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:53 +0200
+
 univention-lib (5.0.0-15) unstable; urgency=low
 
   * add support for message catalogs for UDM syntax and hook extensions 

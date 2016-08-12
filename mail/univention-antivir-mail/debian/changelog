@@ -1,3 +1,9 @@
+univention-antivir-mail (8.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:20 +0200
+
 univention-antivir-mail (7.0.0-0) unstable; urgency=low
 
   * Bug #38915: switch from custom amavis log template to default one.

@@ -1,3 +1,9 @@
+crudesaml (2.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:55:56 +0200
+
 crudesaml (1.5.0-4) unstable; urgency=medium
 
   * Initial Release

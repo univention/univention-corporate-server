@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:13 +0200
+
 univention-management-console-module-udm (6.0.11-23) unstable; urgency=medium
 
   * Bug #41291: A link that directs to the enterprise subscriptions

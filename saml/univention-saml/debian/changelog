@@ -1,3 +1,9 @@
+univention-saml (4.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:55:58 +0200
+
 univention-saml (3.0.27-4) unstable; urgency=medium
 
   * Bug #40895: Make serviceprovider extended attribute available for udm user

@@ -1,3 +1,9 @@
+univention-management-console (9.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:41 +0200
+
 univention-management-console (8.0.28-17) unstable; urgency=medium
 
   * Bug #41736: don't execute/evaluate code in umc-client arguments

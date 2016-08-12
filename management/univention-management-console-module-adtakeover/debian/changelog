@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (4.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:37 +0200
+
 univention-management-console-module-adtakeover (3.0.0-5) unstable; urgency=medium
 
   * Bug #39070: Take netbios domain name from AD

@@ -1,3 +1,9 @@
+univention-self-service (2.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:19 +0200
+
 univention-self-service (1.0.3-21) unstable; urgency=medium
 
   * Bug #40799: don't fork module process per request

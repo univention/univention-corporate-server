@@ -1,3 +1,9 @@
+univention-net-installer (10.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:30 +0200
+
 univention-net-installer (9.0.1-2) unstable; urgency=low
 
   * Bug #40559: Call setup-join with working chroot
