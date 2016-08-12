@@ -3,7 +3,7 @@
 # Univention Dansguardian
 #  Univention Configuration Registry Module to write filter group configuration
 #
-# Copyright 2009-2014 Univention GmbH
+# Copyright 2009-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

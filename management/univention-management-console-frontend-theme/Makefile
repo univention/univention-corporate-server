@@ -3,7 +3,7 @@
 # Univention Management Console Frontend Theme Package
 #  Makefile for building/installing the UMC theme
 #
-# Copyright 2014 Univention GmbH
+# Copyright 2014-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

@@ -4,7 +4,7 @@
 # Univention AD takeover script
 #  Migrates an AD server to the local UCS Samba 4 DC
 #
-# Copyright 2012-2014 Univention GmbH
+# Copyright 2012-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

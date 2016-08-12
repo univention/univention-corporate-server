@@ -6,7 +6,7 @@
 Wrapper script for ucs-kvm-create that replaces numerous placeholder in cfg file.
 """
 #
-# Copyright 2013-2015 Univention GmbH
+# Copyright 2013-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

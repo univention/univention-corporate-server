@@ -3,7 +3,7 @@
 # Univention Nagios
 #  listener module: update configuration of local Nagios server
 #
-# Copyright 2004-2014 Univention GmbH
+# Copyright 2004-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

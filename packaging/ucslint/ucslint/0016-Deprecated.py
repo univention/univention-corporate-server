@@ -2,7 +2,7 @@
 # pylint: disable-msg=C0103
 """Find use of deprecated functions / programs / scripts."""
 #
-# Copyright (C) 2008-2015 Univention GmbH
+# Copyright (C) 2008-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

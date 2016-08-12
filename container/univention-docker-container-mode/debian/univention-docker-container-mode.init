@@ -3,7 +3,7 @@
 # Univention Docker Container Mode
 #  internal init.d script for docker containers
 #
-# Copyright (C) 2015 Univention GmbH
+# Copyright (C) 2015-2016 Univention GmbH
 #
 # http://www.univention.de/
 #

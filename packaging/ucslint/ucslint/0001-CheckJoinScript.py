@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable-msg=C0301
 #
-# Copyright (C) 2008-2015 Univention GmbH
+# Copyright (C) 2008-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
