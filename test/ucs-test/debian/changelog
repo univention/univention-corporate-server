@@ -1,3 +1,10 @@
+ucs-test (6.0.36-5) unstable; urgency=medium
+
+  * 40_mail/29_mail_related_modifications_of_user_objects: Skip test
+    case (Bug #40199)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Aug 2016 06:10:56 +0200
+
 ucs-test (6.0.36-4) unstable; urgency=medium
 
   * 00_checks/10_s4_connector_rejects: Re-activate test and use the
