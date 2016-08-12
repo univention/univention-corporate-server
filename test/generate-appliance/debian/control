@@ -2,6 +2,7 @@ Source: generate-appliance
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 7.0.50~)
 
 Package: generate-appliance

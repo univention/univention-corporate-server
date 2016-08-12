@@ -2,6 +2,7 @@ Source: python-notifier
 Section: python
 Priority: optional
 Maintainer: Andreas Büsching <crunchy@bitkipper.net>
+Standards-Version: 3.9.8
 Build-Depends: debhelper,
  python-support,
  python-all,

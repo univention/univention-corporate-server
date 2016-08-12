@@ -2,6 +2,7 @@ Source: univention-dansguardian
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.9.8
 Build-Depends: debhelper,
  univention-config-dev,
  ucslint-univention
@@ -13,7 +14,7 @@ Depends: ${misc:Depends},
  univention-squid,
  dansguardian
 Replaces: univention-antivir-web
-Conflicts: univention-antivir-web (<=5.0.0-2)
+Conflicts: univention-antivir-web (<= 5.0.0-2)
 Provides: univention-antivir-web
 Recommends: univention-nagios-dansguardian
 Description: UCS - antivirus/webcontent filter
