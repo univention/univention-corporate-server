@@ -1,0 +1,12 @@
+apt-mirror-setup
+apt-setup-udeb
+choose-mirror
+choose-mirror-bin
+live-installer
+#
+debian-archive-keyring-udeb
+debian-edu-archive-keyring-udeb
+debian-ports-archive-keyring-udeb
+emdebian-archive-keyring-udeb
+#
+lilo-installer

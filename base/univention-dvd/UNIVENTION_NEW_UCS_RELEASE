@@ -15,16 +15,25 @@ parse () {
 		major="${1:?major}"
 		minor="${2:?minor}"
 		patch="${3:?patch}"
+		if [ $patch -ge 1 ]
+		then
+			prev="$(($patch - 1))"
+			plong="${major}.${minor}-${prev}"
+			pshort="ucs${major}${minor}${prev}"
+		elif [ $minor -ge 1 ]
+		then
+			prev="${4:?old-minor}"
+			plong="${major}.$((minor - 1))-${prev}"
+			pshort="ucs${major}$((minor - 1))${prev}"
+		else
+			die "min=$minor patch=$patch. Now what?"
+		fi
 		;;
 	*) usage ;;
 	esac
 
 	long="${major}.${minor}-${patch}"
 	short="ucs${major}${minor}${patch}"
-
-	prev="$(($patch - 1))"
-	plong="${major}.${minor}-${prev}"
-	pshort="ucs${major}${minor}${prev}"
 }
 
 copy () {
@@ -38,6 +47,7 @@ copy () {
 
 usage () {
 	echo "${0##*/} major minor patch"
+	echo "${0##*/} major minor 0 old-minor"
 	exit 0
 }
 
