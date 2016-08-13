@@ -1275,7 +1275,7 @@ class Application(object):
 			register = get_action('register')
 			app = AppManager.find(self.id, self.version)
 			if app:
-				register.call(apps=[app], do_it=False)
+				register.call_safe(apps=[app], do_it=False)
 				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 			status = 200
 		except:
@@ -1735,7 +1735,7 @@ class Application(object):
 				register = get_action('register')
 				app = AppManager.find(self.id, self.version)
 				if app:
-					register.call(apps=[app], do_it=True)
+					register.call_safe(apps=[app], do_it=True)
 				ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 			status = 200
 		except:

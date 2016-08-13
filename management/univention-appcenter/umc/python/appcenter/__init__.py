@@ -193,7 +193,7 @@ class Instance(umcm.Base, ProgressMixin):
 	def update_applications(self):
 		if self.ucr.is_true('appcenter/umc/update/always', True):
 			update = get_action('update')
-			update.call()
+			update.call_safe()
 			Application._all_applications = None
 			self.update_applications_done = True
 

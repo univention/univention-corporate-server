@@ -43,10 +43,12 @@ class UpgradeSearch(UniventionAppAction):
 
 	def setup_parser(self, parser):
 		parser.add_argument('app', nargs='*', action=StoreAppAction, help='The ID of the application')
+		parser.add_argument('--do-not-update', action='store_false', dest='update', help='Do not download new ini files from the App Center server')
 
 	def main(self, args):
 		from univention.appcenter import get_action
-		get_action('update').call()
+		if args.update:
+			get_action('update').call()
 		apps = args.app
 		if not apps:
 			apps = AppManager.get_all_locally_installed_apps()
