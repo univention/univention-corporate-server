@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-2) unstable; urgency=medium
+
+  * Bug #41626: Fixed web interface links with auto_mod_proxy=False
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 14 Aug 2016 00:45:05 +0200
+
 univention-appcenter (5.0.22-1) unstable; urgency=medium
 
   * Bug #40857: Add database integration
