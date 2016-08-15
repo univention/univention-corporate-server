@@ -767,8 +767,8 @@ class simpleLdap(base):
 		self._call_checkLdap_on_all_property_syntaxes()
 
 		ml = self._ldap_modlist()
-		ml = self._ldap_object_classes(ml)
 		ml = self.call_udm_property_hook('hook_ldap_modlist', self, ml)
+		ml = self._ldap_object_classes(ml)
 
 		#FIXME: timeout without exception if objectClass of Object is not exsistant !!
 		univention.debug.debug(univention.debug.ADMIN, 99, 'Modify dn=%r;\nmodlist=%r;\noldattr=%r;' % (self.dn, ml, self.oldattr))

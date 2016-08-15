@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-29) unstable; urgency=medium
+
+  * Bug #41899: execute hooks before adjusting object classes
+
+ -- Florian Best <best@univention.de>  Mon, 15 Aug 2016 16:57:21 +0200
+
 univention-directory-manager-modules (11.0.3-28) unstable; urgency=medium
 
   * Bug #40129: fixup svn r70751
