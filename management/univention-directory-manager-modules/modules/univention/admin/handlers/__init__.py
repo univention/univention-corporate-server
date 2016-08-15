@@ -834,22 +834,22 @@ class simpleLdap(base):
 		must, may = schema.attribute_types(ocs)
 		allowed = set(name.lower() for attr in may.values() for name in attr.names) | set(name.lower() for attr in must.values() for name in attr.names)
 
-		_ml = [x for x in ml if x[0].lower() != 'objectclass']
-		_ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
-		newattr = ldap.cidict.cidict(_MergedAttributes(self, _ml).get_attributes())
+		ml = [x for x in ml if x[0].lower() != 'objectclass']
+		ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
+		newattr = ldap.cidict.cidict(_MergedAttributes(self, ml).get_attributes())
 
 		# make sure only attributes known by the object classes are set
 		for attr, val in newattr.items():
 			if not val:
 				continue
-			if attr.lower() not in allowed:
+			if re.sub(';binary$', '', attr.lower()) not in allowed:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'The attribute %r is not allowed by any object class.' % (attr,))
 				# ml.append((attr, val, [])) # TODO: Remove the now invalid attribute instead
 				return ml
 
 		# require all MUST attributes to be set
 		for attr in must.values():
-			if not any(newattr.get(name) for name in attr.names):
+			if not any(newattr.get(name) or newattr.get('%s;binary' % (name,)) for name in attr.names):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'The attribute %r is required by the current object classes.' % (attr.names,))
 				return ml
 
