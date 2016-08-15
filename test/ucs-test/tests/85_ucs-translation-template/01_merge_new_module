@@ -7,6 +7,10 @@
 ## tags: [translation-template, skip_admember]
 ## roles:
 ##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+##  - basesystem
 ## versions:
 ##  4.1-2: found
 ##  4.1-2: fixed
