@@ -1,3 +1,10 @@
+univention-updater (11.0.11-3) unstable; urgency=medium
+
+  * Bug #41869: Do not fail if univention-app upgrade-search fails
+  * Bug #41840: Set update/available when release updates are available
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sun, 14 Aug 2016 01:37:45 +0200
+
 univention-updater (11.0.11-2) unstable; urgency=low
 
   * Bug #41895: Change version in LDAP to UCS 4.1-3
