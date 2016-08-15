@@ -1,6 +1,7 @@
 univention-directory-manager-modules (12.0.1-1) unstable; urgency=medium
 
   * Bug #41899: execute hooks before adjusting object classes
+  * Bug #41829: don't write 0 value to LDAP for boolean extended attributes
 
  -- Florian Best <best@univention.de>  Mon, 15 Aug 2016 16:57:21 +0200
 

@@ -320,9 +320,14 @@ def update_extended_attributes(lo, module, position):
 		if attrs.get('univentionUDMPropertyMultivalue', [''])[0] == '1':
 			multivalue = 1
 			map_method = None
+			unmap_method = None
 		else:
 			multivalue = 0
 			map_method = univention.admin.mapping.ListToString
+			unmap_method = None
+			if propertySyntaxString == 'boolean':
+				map_method = univention.admin.mapping.BooleanListToString
+				unmap_method = univention.admin.mapping.BooleanUnMap
 			# single value ==> use only first value
 			propertyDefault = propertyDefault[0]
 
@@ -362,7 +367,7 @@ def update_extended_attributes(lo, module, position):
 
 		# add LDAP mapping
 		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != 'objectClass'.lower():
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], None, map_method)
+			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], unmap_method, map_method)
 		else:
 			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 

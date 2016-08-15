@@ -683,18 +683,8 @@ class simpleLdap(base):
 		# evaluate extended attributes
 		ocs = set()
 		for prop in getattr(m, 'extended_udm_attributes', []):
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.objClass = %s, prop.name = %s'% (prop.objClass, prop.name))
-			if not self.info.get(prop.name):
-				continue
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: prop.name: info[%s] = %s'% (prop.name, self.info.get(prop.name)))
-
-			# do not add object class and value if syntax is boolean and checkbox is disabled
-			if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
-				al = [x for x in al if x[0].lower() != prop.ldapMapping.lower()]
-				continue
-
-			# in all other cases add object class
-			if self.has_key(prop.name):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: info[%s]:%r = %r'% (prop.name, self.has_key(prop.name), self.info.get(prop.name)))
+			if self.has_key(prop.name) and self.info.get(prop.name):
 				ocs.add(prop.objClass)
 
 		# add object classes of (especially extended) options
@@ -805,14 +795,14 @@ class simpleLdap(base):
 		for prop in getattr(m, 'extended_udm_attributes', []):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r'% (prop.name, prop.objClass))
 
-			if self.__ea_value_is_set(prop.name):
+			if self.has_key(prop.name) and self.info.get(prop.name):
 				required_ocs |= set([prop.objClass])
 				continue
 
 			if prop.deleteObjClass:
 				unneeded_ocs |= set([prop.objClass])
 
-			# if the value is unset (or a boolean attribute with value == 0) we need to remove the attribute completely
+			# if the value is unset we need to remove the attribute completely
 			if self.oldattr.get(prop.ldapMapping):
 				ml = [x for x in ml if x[0].lower() != prop.ldapMapping.lower()]
 				ml.append((prop.ldapMapping, self.oldattr.get(prop.ldapMapping), ''))
@@ -867,13 +857,6 @@ class simpleLdap(base):
 		ml.append(('objectClass', self.oldattr.get('objectClass', []), list(ocs)))
 
 		return ml
-
-	def __ea_value_is_set(self, name):
-		if not self.has_key(name):
-			return False
-		if self.descriptions[name].syntax == 'boolean' and self.info.get(name) == '0':
-			return False
-		return self.info.get(name)
 
 	def _move_in_subordinates(self, olddn):
 		result = self.lo.search(base=self.lo.base, filter=filter_format('(&(objectclass=person)(secretary=%s))', [olddn]), attr=['dn'])
