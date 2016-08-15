@@ -149,6 +149,17 @@ def mapBase64(value):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
 	return ""
 
+def BooleanListToString(list):
+	v = univention.admin.mapping.ListToString(list)
+	if v == '0':
+		return ''
+	return v
+
+def BooleanUnMap(value):
+	if value == '0':
+		return ''
+	return value
+
 class mapping:
 	def __init__(self):
 		self._map={}
