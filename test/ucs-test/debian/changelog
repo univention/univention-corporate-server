@@ -1,3 +1,12 @@
+ucs-test (7.0.0-2) unstable; urgency=medium
+
+  * 85_ucs-translation-template: Only execute tests on master as they are role
+    independent (Bug #41933)
+  * 85_ucs-translation-template/01_merge_new_module: Fix issue with multi-line
+    strings (Bug #41933)
+
+ -- Eduard Mai <mai@univention.de>  Mon, 15 Aug 2016 18:10:59 +0200
+
 ucs-test (7.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
