@@ -1807,9 +1807,8 @@ class ad(univention.connector.ucs):
 		ad_members = self.get_ad_members(ad_object['dn'], ldap_object_ad)
 
 		# search for members who have this as their primaryGroup
-		prim_members_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
-							     'primaryGroupID=%s'%group_rid,
-							     timeout=-1, sizelimit=0))
+		prim_members_ad = self.__search_ad( self.lo_ad.base,ldap.SCOPE_SUBTREE,
+								'primaryGroupID=%s'%group_rid)
 
 
 		for prim_dn, prim_object in prim_members_ad:
