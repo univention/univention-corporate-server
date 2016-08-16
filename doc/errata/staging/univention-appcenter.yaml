@@ -3,7 +3,7 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-appcenter
-fix: 5.0.22-3.208.201608140206
+fix: 5.0.22-4.209.201608170040
 desc: |
  This update addresses the following issue(s):
  * The App Center can now create a database for an App if it wishes so. Useful
@@ -11,4 +11,6 @@ desc: |
  * Added a couple of extensions to "univention-app" for App developers.
  * Fixed web interface links for Docker Apps without automatic Apache
    integration.
-bug: [40857, 41853, 41626]
+ * If needed, Docker Apps may now get read-only access to the Host's
+   certificate
+bug: [40857, 41853, 41626, 42016]
