@@ -9,8 +9,3 @@ XKBVARIANT="@%@xorg/keyboard/options/XkbVariant@%@"
 XKBOPTIONS="@%@xorg/keyboard/options/XkbOptions@%@"
 
 BACKSPACE="guess"
-
-# If you don't want to use the XKB layout on the console, you can
-# specify an alternative keymap.  Make sure it will be accessible
-# before /usr is mounted.
-KMAP=/etc/console/boottime.kmap.gz
