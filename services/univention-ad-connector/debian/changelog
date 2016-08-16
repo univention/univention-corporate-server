@@ -1,3 +1,10 @@
+univention-ad-connector (10.0.2-2) unstable; urgency=medium
+
+  * Bug #41248: Use paged search also in group_members_sync_to_ucs
+    (Bug #26208 fixed this for group_members_sync_from_ucs)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Aug 2016 22:25:58 +0200
+
 univention-ad-connector (10.0.2-1) unstable; urgency=medium
 
   * Bug #41744: Support range retrieval for member attribute
