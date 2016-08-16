@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-4) unstable; urgency=medium
+
+  * Bug #42016: Grant ro access to host's certificate to Docker Apps
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 16 Aug 2016 23:48:33 +0200
+
 univention-appcenter (5.0.22-3) unstable; urgency=medium
 
   * Bug #41853: Add Dev Tools for working with the Self Service module

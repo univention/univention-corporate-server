@@ -653,6 +653,8 @@ class App(object):
 		docker_script_update_app_version: Like docker_script_setup, but
 			for a script that is run to specifically install App
 			package updates in the container without destroying it.
+		host_certificate_access: Docker Apps only. The App gets access
+			to the host certificate.
 	"""
 	__metaclass__ = UniventionMetaClass
 
@@ -759,6 +761,8 @@ class App(object):
 	docker_script_update_packages = AppDockerScriptAttribute()
 	docker_script_update_release = AppDockerScriptAttribute()
 	docker_script_update_app_version = AppDockerScriptAttribute()
+
+	host_certificate_access = AppBooleanAttribute()
 
 	def __init__(self, **kwargs):
 		self._is_ucs_component = None
