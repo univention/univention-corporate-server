@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-2) unstable; urgency=low
+
+  * Bug #41961: Use UCS-4 GPG key for package verification
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 15 Aug 2016 10:43:57 +0200
+
 univention-dvd (2.0.0-1) unstable; urgency=low
 
   * Bug #41963: UCS-4.2 version bump
