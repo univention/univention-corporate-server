@@ -33,6 +33,7 @@
 
 
 import string, ldap, sys, traceback, base64, time, pdb, os, copy, types
+import re
 import array
 import ldap.sasl
 import subprocess
@@ -674,6 +675,9 @@ def explode_unicode_dn(dn, notypes=0):
 	return ret
 
 class ad(univention.connector.ucs):
+
+	range_retrieval_pattern = re.compile("^([^;]+);range=(\d+)-(\d+|\*)$")
+
 	def __init__(self, CONFIGBASENAME, property, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir, init_group_cache=True):
 
 		univention.connector.ucs.__init__(self, CONFIGBASENAME, property, baseConfig, listener_dir)
@@ -741,10 +745,12 @@ class ad(univention.connector.ucs):
 			for ad_group in ad_groups:
 				if not ad_group or not ad_group[0]:
 					continue
-				group = ad_group[0].lower()
+				ad_group_dn, ad_group_attrs = ad_group
+				group = ad_group_dn.lower()
 				self.group_members_cache_con[group] = []
-				if ad_group[1]:
-					for member in ad_group[1].get('member'):
+				if ad_group_attrs:
+					ad_members = self.get_ad_members(ad_group_dn, ad_group_attrs)
+					for member in ad_members:
 						self.group_members_cache_con[group].append(member.lower())
 			ud.debug(ud.LDAP, ud.INFO,"__init__: self.group_members_cache_con: %s" % self.group_members_cache_con)
 
@@ -991,10 +997,60 @@ class ad(univention.connector.ucs):
 	def isInCreationList(self, dn):
 		return dn.lower() in self.creation_list
 
-	def get_object(self, dn):
+	def parse_range_retrieval_attrs(self, ad_attrs, attr):
+		for k in ad_attrs:
+			m = self.range_retrieval_pattern.match(k)
+			if not m or m.group(1) != attr:
+				continue
+
+			key = k
+			values = ad_attrs[key]
+			lower = int(m.group(2))
+			upper = m.group(3)
+			if upper != "*":
+				upper = int(upper)
+			break
+		else:
+			key = None
+			values = []
+			lower = 0
+			upper = "*"
+		return (key, values, lower, upper)
+
+	def value_range_retrieval(self, ad_dn, ad_attrs, attr):
+		(key, values, lower, upper) = self.parse_range_retrieval_attrs(ad_attrs, attr)
+		ud.debug(ud.LDAP, ud.INFO, "value_range_retrieval: response:  %s" % (key,))
+		if lower != 0:
+			ud.debug(ud.LDAP, ud.ERROR, "value_range_retrieval: invalid range retrieval response:  %s" % (key,))
+			raise ldap.PROTOCOL_ERROR
+		all_values = values
+
+		while upper != "*":
+			next_key = "%s;range=%d-*" % (attr, upper + 1)
+			ad_attrs = self.get_object(ad_dn, [next_key])
+			returned_before = upper
+			(key, values, lower, upper) = self.parse_range_retrieval_attrs(ad_attrs, attr)
+			if lower != returned_before + 1:
+				ud.debug(ud.LDAP, ud.ERROR, "value_range_retrieval: invalid range retrieval response: asked for %s but got %s" % (next_key, key))
+				raise ldap.PARTIAL_RESULTS
+			ud.debug(ud.LDAP, ud.INFO, "value_range_retrieval: response:  %s" % (key,))
+			all_values.extend(values)
+		return all_values
+
+	def get_ad_members(self, ad_dn, ad_attrs):
+		ad_members = ad_attrs.get('member')
+		if ad_members is None:
+			ad_members = []
+		elif ad_members == []:
+			del ad_attrs['member']
+			ad_members = self.value_range_retrieval(ad_dn, ad_attrs, 'member')
+			ad_attrs['member'] = ad_members
+		return ad_members
+
+	def get_object(self, dn, attrlist=None):
 		_d=ud.function('ldap.get_object')
 		try:
-			dn, ad_object=self.lo_ad.lo.search_ext_s(compatible_modstring(dn),ldap.SCOPE_BASE,'(objectClass=*)')[0]
+			dn, ad_object=self.lo_ad.lo.search_ext_s(compatible_modstring(dn), ldap.SCOPE_BASE, '(objectClass=*)', attrlist=attrlist)[0]
 			try:
 				ud.debug(ud.LDAP, ud.INFO,"get_object: got object: %s" % dn)
 			except: # FIXME: which exception is to be caught?
@@ -1306,7 +1362,7 @@ class ad(univention.connector.ucs):
 
 		member_key = 'group' # FIXME: generate by identify-function ?
 		ad_group_object = self._object_mapping(member_key, {'dn':ucs_group_ldap[0][0], 'attributes': ucs_group_ldap[0][1]}, 'ucs')
-		ldap_object_ad_group = self.get_object(ad_group_object['dn'])
+		ldap_object_ad_group = self.get_object(ad_group_object['dn'], ['objectSid', 'primaryGroupID', 'member'])
 		rid = "513" # FIXME: Fallback: should be configurable
 		if ldap_object_ad_group and ldap_object_ad_group.has_key('objectSid'):
 			sid = ldap_object_ad_group['objectSid'][0]
@@ -1325,23 +1381,21 @@ class ad(univention.connector.ucs):
 			return True # nothing left to do
 		else:
 			is_member = False
-			if ldap_object_ad_group.has_key('member'):
-				for member in ldap_object_ad_group['member']:
-					if compatible_modstring(object['dn']).lower() == compatible_modstring(member).lower():
-						is_member = True
-						break
+			ad_members = self.get_ad_members(ad_group_object['dn'], ldap_object_ad_group)
+			ad_members = map(compatible_modstring, ad_members)
+			object_dn_modstring = compatible_modstring(object['dn'])
+			for member in ad_members:
+				if object_dn_modstring.lower() == member.lower():
+					is_member = True
+					break
 
 			if not is_member: # add as member
-				ad_members = []
-				if ldap_object_ad_group.has_key('member'):
-					for member in ldap_object_ad_group['member']:
-						ad_members.append(compatible_modstring(member))
-				ad_members.append(compatible_modstring(object['dn']))
+				ad_members.append(object_dn_modstring)
 				self.lo_ad.lo.modify_s(compatible_modstring(ad_group_object['dn']),[(ldap.MOD_REPLACE, 'member', ad_members)])
 				ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: primary Group needed change of membership in AD")
 				
 			# set new primary group
-			self.lo_ad.lo.modify_s(compatible_modstring(object['dn']),[(ldap.MOD_REPLACE, 'primaryGroupID', rid)])
+			self.lo_ad.lo.modify_s(object_dn_modstring,[(ldap.MOD_REPLACE, 'primaryGroupID', rid)])
 			ud.debug(ud.LDAP, ud.INFO, "primary_group_sync_from_ucs: changed primary Group in AD")
 
 			# If the user is not member in UCS of the previous primary group, the user must
@@ -1358,7 +1412,7 @@ class ad(univention.connector.ucs):
 					break
 			if not is_member:
 				# remove AD member from previous group
-				self.lo_ad.lo.modify_s(ad_group[0][0],[(ldap.MOD_DELETE, 'member', [compatible_modstring(object['dn'])])])
+				self.lo_ad.lo.modify_s(ad_group[0][0],[(ldap.MOD_DELETE, 'member', [object_dn_modstring])])
 			
 			return True
 
@@ -1481,16 +1535,12 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
 
-		ldap_object_ad = self.get_object(object['dn'])
+		ldap_object_ad = self.get_object(object['dn'], ['member'])
 		if not ldap_object_ad:
 			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The AD object (%s) was not found. The object was removed.' % object['dn'])
 			return
 		
-		if ldap_object_ad and ldap_object_ad.has_key('member'):
-			ad_members = ldap_object_ad['member']
-		else:
-			ad_members = []
-
+		ad_members = self.get_ad_members(object['dn'], ldap_object_ad)
 		ud.debug(ud.LDAP, ud.INFO,
 							   "group_members_sync_from_ucs: ad_members %s" % ad_members)
 
@@ -1750,14 +1800,11 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO,"group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 
 		# FIXME: does not use dn-mapping-function
-		ldap_object_ad = self.get_object(ad_object['dn']) # FIXME: may fail if object doesn't exist
-		if ldap_object_ad and ldap_object_ad.has_key('member'):
-			ad_members = ldap_object_ad['member']
-		else:
-			ad_members = []
-
+		ldap_object_ad = self.get_object(ad_object['dn'], ['member', 'objectSid']) # FIXME: may fail if object doesn't exist
 		group_sid = ldap_object_ad['objectSid'][0]
 		group_rid = group_sid[string.rfind(group_sid,"-")+1:]
+
+		ad_members = self.get_ad_members(ad_object['dn'], ldap_object_ad)
 
 		# search for members who have this as their primaryGroup
 		prim_members_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,

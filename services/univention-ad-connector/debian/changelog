@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-1) unstable; urgency=medium
+
+  * Bug #41744: Support range retrieval for member attribute
+
+ -- Arvid Requate <requate@univention.de>  Tue, 16 Aug 2016 22:24:38 +0200
+
 univention-ad-connector (10.0.1-26) unstable; urgency=low
 
   * connector.samr.Close(user_handle) after password sync to ad (Bug #41247) 
