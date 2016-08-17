@@ -289,11 +289,14 @@ class Docker(object):
 		for app_id, container_port, host_port in app_ports():
 			if app_id == self.app.id:
 				ports.append('%d:%d' % (host_port, container_port))
-		volumes = self.app.docker_volumes[:]
+		volumes = set(self.app.docker_volumes[:])
 		for app_volume in [self.app.get_data_dir(), self.app.get_conf_dir()]:
 			app_volume = '%s:%s' % (app_volume, app_volume)
-			if app_volume not in volumes:
-				volumes.append(app_volume)
+			volumes.add(app_volume)
+		if self.app.host_certificate_access:
+			cert_dir = '/etc/univention/ssl/%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
+			cert_volume = '%s:%s:ro' % (cert_dir, cert_dir)
+			volumes.add(cert_volume)
 		env_file = None
 		if os.path.exists(self.app.get_cache_file('env')):
 			env_file = self.app.get_cache_file('env')

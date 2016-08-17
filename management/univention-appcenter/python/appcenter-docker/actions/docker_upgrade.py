@@ -180,4 +180,4 @@ class Upgrade(Upgrade, Install, DockerActionMixin):
 			except Exception:
 				pass
 		else:
-			Start.call(app=self.old_app)
+			Start.call_safe(app=self.old_app)

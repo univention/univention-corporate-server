@@ -41,7 +41,7 @@ from ldap.dn import str2dn, dn2str
 
 from univention.appcenter.app import AppManager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists
-from univention.appcenter.database import DatabaseConnector, DatabaseCreationFailed
+from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import StoreAppAction, Abort
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, app_ports, currently_free_port_in_range, generate_password
@@ -271,7 +271,7 @@ class Register(CredentialsAction):
 		if database_connector:
 			try:
 				database_connector.create_database()
-			except DatabaseCreationFailed as exc:
+			except DatabaseError as exc:
 				raise Abort(str(exc))
 
 	def _register_docker_variables(self, app):
@@ -382,12 +382,14 @@ class Register(CredentialsAction):
 				# the web interface lives behind our apache with its
 				# default ports
 				port_http = port_https = None
+			label = app.get_localised('web_interface_name') or app.get_localised('name')
+			label_de = app.get_localised('web_interface_name', 'de') or app.get_localised('name', 'de')
 			variables = {
 				'icon': os.path.join('/univention-management-console/js/dijit/themes/umc/icons/scalable', app.logo_name),
 				'port_http': str(port_http or ''),
 				'port_https': str(port_https or ''),
-				'label': app.get_localised('name'),
-				'label/de': app.get_localised('name', 'de'),
+				'label': label,
+				'label/de': label_de,
 				'description': app.get_localised('description'),
 				'description/de': app.get_localised('description', 'de'),
 				'link': app.web_interface,

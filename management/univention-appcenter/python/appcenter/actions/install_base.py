@@ -139,7 +139,7 @@ class InstallRemoveUpgrade(Register):
 						self.log('Ignoring this error...')
 				self._register_installed_apps_in_ucr()
 				upgrade_search = get_action('upgrade-search')
-				upgrade_search.call(app=[app])
+				upgrade_search.call_safe(app=[app], update=False)
 
 	def _handle_errors(self, app, args, errors, fatal):
 		can_continue = True

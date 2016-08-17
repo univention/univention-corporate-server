@@ -1,3 +1,12 @@
+univention-appcenter (6.0.0-2) unstable; urgency=medium
+
+  * Bug #40857: Fix MySQL warning; fixed traceback, just show error message
+  * Bug #42016: Grant ro access to host's certificate to Docker Apps
+  * Bug #41853: Raise Abort when Abort is raised; do not return 10
+  * Bug #41626: Fixed web interface links with auto_mod_proxy=False
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 18 Aug 2016 00:56:37 +0200
+
 univention-appcenter (6.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

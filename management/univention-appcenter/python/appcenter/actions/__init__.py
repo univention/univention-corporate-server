@@ -170,6 +170,13 @@ class UniventionAppAction(object):
 		return namespace
 
 	@classmethod
+	def call_safe(cls, **kwargs):
+		try:
+			return cls.call(**kwargs)
+		except Abort:
+			return None
+
+	@classmethod
 	def call(cls, **kwargs):
 		obj = cls()
 		namespace = obj._build_namespace(**kwargs)
@@ -185,7 +192,7 @@ class UniventionAppAction(object):
 			if msg:
 				self.fatal(msg)
 			self.percentage = 100
-			return 10
+			raise
 		except Exception as exc:
 			self.log_exception(exc)
 			raise

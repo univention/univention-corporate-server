@@ -69,7 +69,7 @@ define([
 			this._continueDeferred = new Deferred();
 
 			if (hosts.length == 1 && !removedDueToRole.length && !removedDueToInstalled.length) {
-				// safely resolve this dialog's deferred object if there is
+				// safely resolve the deferred object of the dialog if there is
 				// only a single choice to be made
 				this._continueDeferred.resolve(hosts[0].id);
 			}

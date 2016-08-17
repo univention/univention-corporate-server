@@ -268,7 +268,7 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 				index_json.write(dumps(apps, sort_keys=True, indent=4))
 		if args.ucs_version == ucr_get('version/version'):
 			update = get_action('update')
-			update.call()
+			update.call_safe()
 
 
 class DevPopulateAppcenter(LocalAppcenterAction):
@@ -561,7 +561,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 				subprocess.call(['bzip2', '--keep', filename])
 
 	def _generate_meta_index_files(self, args):
-		DevRegenerateMetaInf.call(ucs_version=args.ucs_version, path=args.path, appcenter_host=args.appcenter_host)
+		DevRegenerateMetaInf.call_safe(ucs_version=args.ucs_version, path=args.path, appcenter_host=args.appcenter_host)
 
 
 class DevSetupLocalAppcenter(LocalAppcenterAction):
@@ -585,9 +585,8 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 				shutil.rmtree(repo_dir)
 			except OSError as exc:
 				self.warn(exc)
-			ucr_save({'repository/app_center/server': 'appcenter.software-univention.de', 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
-			update = get_action('update')
-			update.call()
+			use_test_appcenter = get_action('dev-use-test-appcenter')
+			use_test_appcenter.call_safe(revert=True)
 		else:
 			mkdir(meta_inf_dir)
 			mkdir(os.path.join(repo_dir, 'maintained', 'component'))
@@ -596,8 +595,9 @@ class DevSetupLocalAppcenter(LocalAppcenterAction):
 					categories = urlopen('%s/meta-inf/%s' % (AppManager.get_server(), supra_file)).read()
 					f.write(categories)
 			server = 'http://%s' % args.appcenter_host
-			ucr_save({'repository/app_center/server': server, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
-			DevRegenerateMetaInf.call(ucs_version=args.ucs_version, path=args.path, appcenter_host=server)
+			use_test_appcenter = get_action('dev-use-test-appcenter')
+			use_test_appcenter.call_safe(appcenter_host=server)
+			DevRegenerateMetaInf.call_safe(ucs_version=args.ucs_version, path=args.path, appcenter_host=server)
 			self.log('Local App Center server is set up at %s.' % server)
 			self.log('If this server should serve as an App Center server for other computers in the UCS domain, the following command has to be executed on each computer:')
-			self.log('  ucr set repository/app_center/server="%s"' % server)
+			self.log('  univention-app dev-use-test-appcenter --appcenter-host="%s"' % server)
