@@ -58,6 +58,26 @@ _screenshot_attribute.set_name('screenshot')
 App._attrs.append(_screenshot_attribute)
 
 
+class DevUseTestAppcenter(UniventionAppAction):
+	'''Use the Test App Center'''
+	help = 'Uses the Apps in the Test App Center. Used for testing Apps not yet published.'
+
+	def setup_parser(self, parser):
+		super(DevUseTestAppcenter, self).setup_parser(parser)
+		host_group = parser.add_mutually_exclusive_group()
+		host_group.add_argument('--appcenter-host', default='appcenter-test.software-univention.de', help='The hostname of the new App Center. Default: %(default)s')
+		revert_group = parser.add_mutually_exclusive_group()
+		revert_group.add_argument('--revert', action='store_true', help='Reverts the changes of a previous dev-use-test-appcenter')
+
+	def main(self, args):
+		if args.revert:
+			ucr_save({'repository/app_center/server': 'appcenter.software-univention.de', 'update/secure_apt': 'yes', 'appcenter/index/verify': 'yes'})
+		else:
+			ucr_save({'repository/app_center/server': args.appcenter_host, 'update/secure_apt': 'no', 'appcenter/index/verify': 'no'})
+		update = get_action('update')
+		update.call()
+
+
 class LocalAppcenterAction(UniventionAppAction):
 	def setup_parser(self, parser):
 		parser.add_argument('--path', default='/var/www/', help='Path where the root of the App Center lives / shall live. Default: %(default)s')
