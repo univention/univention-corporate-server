@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.1-3) unstable; urgency=medium
+
+  * Bug #41744: Fix regression by reverting a premature optimization
+
+ -- Arvid Requate <requate@univention.de>  Wed, 17 Aug 2016 12:28:51 +0200
+
 univention-ad-connector (11.0.1-2) unstable; urgency=medium
 
   * Bug #41248: Use paged search also in group_members_sync_to_ucs
