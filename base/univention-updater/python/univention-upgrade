@@ -260,6 +260,8 @@ def do_app_updates(options, checkForUpdates, silent):
         app_upgrade = get_action('upgrade')
         if app_upgrade is None:
             raise ImportError()
+        if not hasattr(app_upgrade, 'call_safe'):
+            raise ImportError()
     except ImportError:
         # the new univention.appcenter package is not installed. Never mind
         # cannot be a dependency as the app center depends on updater...

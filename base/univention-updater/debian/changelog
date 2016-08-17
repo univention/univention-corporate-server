@@ -1,3 +1,9 @@
+univention-updater (11.0.11-4) unstable; urgency=medium
+
+  * Bug #41869: Skip App upgrade when univention-appcenter is not up to date
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Aug 2016 22:55:32 +0200
+
 univention-updater (11.0.11-3) unstable; urgency=medium
 
   * Bug #41869: Do not fail if univention-app upgrade-search fails
