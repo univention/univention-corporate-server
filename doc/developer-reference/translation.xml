@@ -19,67 +19,58 @@
 		<remark></remark>
 
 		<para>
-			By default UCS includes English and German localization.
-			A package is provided to enable users to create additional translations for the &ucsUMC;.
+			By default UCS includes English and German localizations.
+			Univention provides a set of tools that facilitates the process of creating translations for &ucsUMC;.
 		</para>
 		<para>
 			This section describes all steps necessary to create a working translation package for UCS.
-			To create a new translation package it is advised to have a running UCS server where the package can be setup.
-			A current Subversion checkout of the UCS source code is required.
-			After installing the translation template package, a new translation for a target language can be created.
+			We recommend having a running UCS installation where the tools can be set up in an easy manner.
+			Further more a current Subversion checkout of the UCS source code is required.
 		</para>
 
 		<section id="misc:translation:preparation">
-			<title>Prepare a new translation</title>
+			<title>Install needed tools</title>
 			<para>
-				The following steps are required to setup a UCS server to create a new translation package.
+				The following steps are required to set up the tools for translation package creation.
 			</para>
-				<variablelist>
-					<varlistentry>
-						<term>Package <package>univention-ucs-translation-template</package></term>
-						<listitem>
-							<para>
-								The package <package>univention-ucs-translation-template</package> contains all tools required to setup and update a translation package.
-								It requires some additional Debian tools to build the package.
-								The following packages must be installed on an UCS server by running the following command:
-								<programlisting language="sh">
-univention-install univention-ucs-translation-template dpkg-dev subversion
-								</programlisting>
-							</para>
-						</listitem>
-					</varlistentry>
-					<varlistentry>
-						<term>A current checkout of the UCS Subversion repository</term>
-						<listitem>
-							<para>
-								The base translation files are available in the UCS Subversion repository.
-								A current checkout can be obtained by running the following commands:
-							</para>
-								<programlisting language="sh">
+			<procedure id="misc:translation:proc">
+				<step>
+					<simpara>Install <package>univention-ucs-translation-template</package> package</simpara>
+					<simpara>
+						The package <package>univention-ucs-translation-template</package> contains all tools required to setup and update a translation package.
+						It requires some additional Debian tools to build the package.
+						Run the following command on your UCS to install all needed packages.
+					</simpara>
+					<programlisting language="sh">
+univention-install univention-ucs-translation-template \
+	dpkg-dev subversion
+					</programlisting>
+				</step>
+				<step>
+					<simpara>Obtain a current checkout of the UCS Subversion repository</simpara>
+					<simpara>
+							The Subversion repository is later processed to get initial files for a new translation(often referred to as PO file or Portable Objects).
+					</simpara>
+					<programlisting language="sh">
 mkdir ~/translation
 cd ~/translation
-svn co http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-0
-								</programlisting>
-								<!-- TODO: Use &websvn; after it has been updated -->
-							<para>
-								Changes made to the &ucsUMC; should be synchronized regularly to the local Subversion checkout.
-								This can be done by executing <command>svn up ~/translation/ucs-4.1-0</command>.
-							</para>
-						</listitem>
-					</varlistentry>
-				</variablelist>
+svn co \
+	&websvn;
+					</programlisting>
+				</step>
+			</procedure>
 		</section>
 
 		<section id="misc:translation:createpackage">
 			<title>Create a new translation package</title>
 			<para>
-				To create a new translation package for e.g. French in the users home directory, the following command must be executed:
+				To create a new translation package for e.g. French in the current working directory, the following command must be executed:
 				<programlisting language="sh">
 cd ~/translation
-univention-ucs-translation-build-package.py \
-	-s ~/translation/ucs-4.1-0 -c fr -l fr_FR.UTF-8:UTF-8 -n French
+univention-ucs-translation-build-package \
+	-s ~/translation/ucs-4.1-3 -c fr -l fr_FR.UTF-8:UTF-8 -n French
 				</programlisting>
-				This creates a new directory <filename class="directory">univention-ucs-translation-fr/</filename>, which contains a Debian source package of the same name.
+				This creates a new directory <filename class="directory">~/translation/univention-ucs-translation-fr/</filename>, which contains a Debian source package of the same name.
 				It includes all source and target files for the translation.
 			</para>
 		</section>
@@ -96,28 +87,28 @@ univention-ucs-translation-build-package.py \
 						<term><filename class="extension">.po</filename> files</term>
 						<listitem>
 							<para>
-								These files are generated by the package gettext.
-								The gettext manual can be found at <ulink url="http://www.gnu.org/software/gettext/manual/gettext.html"/>.
-								Translation files created by gettext consist of a header and various entries of the form
+								These files are generated by the package <package>gettext</package>.
+								The manual can be found at <ulink url="http://www.gnu.org/software/gettext/manual/gettext.html"/>.
+								Translation files created by <package>gettext</package> consist of a header and various entries of the form
 							</para>
-								<programlisting>
+							<programlisting>
 #: umc/app.js:637
 #, python-format
 msgid "The %s will expire in %d days and should be renewed!"
 msgstr ""
-								</programlisting>
+							</programlisting>
 							<para>
 								The first line provides a hint, were the text is used.
 								The second line is optional and contains flags, which indicate the type and state of the translation.
 								The string <literal>fuzzy</literal> indicates an entry, which was copied by <command>gettext</command> from a previous version and needs to be updated.
-								The flag has to be removed afterwards.
 							</para>
 							<para>
 								The line starting with <literal>msgid</literal> contains the original text.
 								The translation has to be placed on the line containing <literal>msgstr</literal>.
-								Long texts can be split over multiple lines, were each line must start and end with a quote.
+								Long texts can be split over multiple lines, were each line must start and end with a double-quote.
 								The following example from the German translation shows a text spanning two lines, with the placeholder present in the original and translated text.
-								<programlisting>
+							</para>
+							<programlisting>
 #: umc/js/appcenter/AppCenterPage.js:1067
 #, python-format
 msgid ""
@@ -126,8 +117,7 @@ msgid ""
 msgstr ""
 "Wenn keine weiteren Fehler auftraten und dies nur ein temporäres "
 "Netzwerkproblem ist, sollten Sie %s als root auf dem Backup System ausführen."
-								</programlisting>
-							</para>
+							</programlisting>
 							<para>
 								Some lines contain parameters, in this example <literal>%s</literal> and <literal>%d</literal>.
 								They are indicated by a flag like <literal>c-format</literal> or <literal>python-format</literal>, which must not be removed.
@@ -135,7 +125,7 @@ msgstr ""
 								Some other files contain placeholders of the form <literal>%{text}s</literal>, which are more flexible and can be reordered.
 							</para>
 							<para>
-								After a file has been translated completely, the line containing <literal>fuzzy</literal> at the beginning of the file should be removed to avoid warnings.
+								After a file has been translated completely, the line containing <literal>fuzzy</literal> at the beginning of the entry should be removed to avoid warnings.
 								If a translation string consists of multiple lines the translated string should roughly contain as many lines as the original string.
 							</para>
 						</listitem>
@@ -157,45 +147,14 @@ msgstr ""
 		<section id="misc:translation:updatepackage">
 			<title>Update the translation package</title>
 			<para>
-				The following steps are needed to upgrade the translation to a new UCS release, or if changes have been made in the translation.
-				<variablelist>
-					<varlistentry>
-						<term>Update translation source files</term>
-						<listitem>
-							<para>
-								If changes occur in the UCS source packages that need a change of the translation files, the source files should be updated.
-								To update the source files, change the directory of the translation package and update the files by executing the following commands:
-							</para>
-							<programlisting language="sh">
-cd ~/translation/univention-ucs-translation-fr
-univention-ucs-translation-update-source-files \
-	-s ~/translation/ucs-4.1-0 -c fr
-							</programlisting>
-						</listitem>
-					</varlistentry>
-					<varlistentry>
-						<term>Update translation target files</term>
-						<listitem>
-						<important>
-							<para>
-								This step is necessary each time before compiling the translation package.
-								If the translation target files are not updated, the translation will not be shown in the &ucsUMC;
-							</para>
-						</important>
-							<para>
-								After the translation the source files have to be compiled.
-								This step can also be done in an early stage of the translation, when it is not yet complete.
-								To update the target files, change to the directory of the translation package and compile the source files by executing the following commands:
-							</para>
-							<programlisting language="sh">
-cd ~/translation/univention-ucs-translation-fr
-univention-ucs-translation-update-target-files \
-	-s ~/translation/ucs-4.1-0 -c fr
-							</programlisting>
-						</listitem>
-					</varlistentry>
-				</variablelist>
+				If changes affecting translations are made in the Subversion repository, existing translation packages need to be updated to reflect those changes.
+				Given a path to an updated Subversion checkout, <command>univention-ucs-translation-merge</command> can update a previously created translation source package. 
+				Following example will update a translation package <package>univention-ucs-translation-fr/</package> using an updated Subversion checkout in <filename class="directory">ucs-4.1-3/</filename>:
 			</para>
+			<programlisting language="sh">
+univention-ucs-translation-merge ~/translation/ucs-4.1-3 \
+		~/translation/univention-ucs-translation-fr
+			</programlisting>
 		</section>
 
 		<section id="misc:translation:buildpackage">
@@ -203,11 +162,13 @@ univention-ucs-translation-update-target-files \
 			<para>
 				Before using the new translation, the Debian package has to be built and installed.
 				This can be done with the following commands:
-				<programlisting language="sh">
+			</para>
+			<programlisting language="sh">
 cd ~/translation/univention-ucs-translation-fr
-dpkg-buildpackage
+dpkg-buildpackage -uc -us -b
 dpkg -i ../univention-ucs-translation-fr_*.deb
-				</programlisting>
+			</programlisting>
+			<para>
 				After logging out of the &ucsUMC; the new language should now be selectable in the &ucsUMC; login window.
 				Untranslated strings will be still shown in their original language, i.e. in English.
 			</para>
