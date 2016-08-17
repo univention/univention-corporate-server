@@ -1,3 +1,10 @@
+ucs-test (6.0.36-8) unstable; urgency=medium
+
+  * 85_ucs-translation-template/00_fuzzy_entries_on_merge: Skip test
+    because it is currently unstable (Bug #41933)
+
+ -- Eduard Mai <mai@univention.de>  Wed, 17 Aug 2016 16:36:32 +0200
+
 ucs-test (6.0.36-7.1) unstable; urgency=medium
 
   * Enable 38_extended_attribute_boolean_syntax test case (Bug #41829)
