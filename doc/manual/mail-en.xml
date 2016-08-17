@@ -39,7 +39,7 @@
 	  IMAP and the &ucsUCRV; <envar>mail/cyrus/imap</envar>.
 	</para>
 	<para>
-	  E-mails to foreign domains are sent directly to the responsible STMP server as
+	  E-mails to foreign domains are sent directly to the responsible SMTP server as
 	  standard. The location of the server is performed via the resolution of the MX
 	  record in the DNS. Mail sending can also be taken over by a relay host, e.g.,
 	  on the Internet provider. This is described in the <xref
@@ -737,7 +737,7 @@
 	  <title>Configuration of a relay host for sending the e-mails</title>
 
 	  <para>
-		In the default setting, Postfix creates a direct STMP connection to
+		In the default setting, Postfix creates a direct SMTP connection to
 		the mail server responsible for the domain when an e-mail is sent to
 		a non-local address. This server is determined by querying the MX
 		record in the DNS.
