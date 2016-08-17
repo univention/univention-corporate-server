@@ -1,3 +1,9 @@
+ucs-test (6.0.36-7.1) unstable; urgency=medium
+
+  * Enable 38_extended_attribute_boolean_syntax test case (Bug #41829)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Aug 2016 07:50:09 +0200
+
 ucs-test (6.0.36-6) unstable; urgency=medium
 
   * 85_ucs-translation-template: Only execute tests on master as they are role
