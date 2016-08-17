@@ -1362,7 +1362,7 @@ class ad(univention.connector.ucs):
 
 		member_key = 'group' # FIXME: generate by identify-function ?
 		ad_group_object = self._object_mapping(member_key, {'dn':ucs_group_ldap[0][0], 'attributes': ucs_group_ldap[0][1]}, 'ucs')
-		ldap_object_ad_group = self.get_object(ad_group_object['dn'], ['objectSid', 'primaryGroupID', 'member'])
+		ldap_object_ad_group = self.get_object(ad_group_object['dn'])
 		rid = "513" # FIXME: Fallback: should be configurable
 		if ldap_object_ad_group and ldap_object_ad_group.has_key('objectSid'):
 			sid = ldap_object_ad_group['objectSid'][0]
@@ -1535,7 +1535,7 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: clean ucs_members: %s" % ucs_members)
 
-		ldap_object_ad = self.get_object(object['dn'], ['member'])
+		ldap_object_ad = self.get_object(object['dn'])
 		if not ldap_object_ad:
 			ud.debug(ud.LDAP, ud.PROCESS, 'group_members_sync_from_ucs:: The AD object (%s) was not found. The object was removed.' % object['dn'])
 			return
@@ -1800,7 +1800,7 @@ class ad(univention.connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO,"group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 
 		# FIXME: does not use dn-mapping-function
-		ldap_object_ad = self.get_object(ad_object['dn'], ['member', 'objectSid']) # FIXME: may fail if object doesn't exist
+		ldap_object_ad = self.get_object(ad_object['dn']) # FIXME: may fail if object doesn't exist
 		group_sid = ldap_object_ad['objectSid'][0]
 		group_rid = group_sid[string.rfind(group_sid,"-")+1:]
 
