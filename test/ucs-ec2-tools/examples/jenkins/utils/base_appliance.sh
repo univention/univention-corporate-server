@@ -103,43 +103,6 @@ app_get_name ()
 				print app.name;"
 }
 
-app_get_version ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.version;"
-}
-
-app_get_notifyVendor ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('notifyvendor');"
-}
-
-app_get_appliance_name ()
-{
-	local app="$1"
-	python -c "
-from univention.management.console.modules.appcenter.app_center import Application
-app = Application.find('$app')
-appliance_name = app.get('ApplianceName')
-if appliance_name:
-	print appliance_name
-else:
-	print app.name;"
-}
-
-app_get_appliance_logo ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('ApplianceLogo');"
-}
-
 app_get_pre_installed_packages ()
 {
 	local app="$1"
@@ -148,29 +111,6 @@ app_get_pre_installed_packages ()
 				print app.get('AppliancePreInstalledPackages').replace(',',' ');"
 }
 
-app_get_appliance_blacklist ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('ApplianceBlackList');"
-}
-
-app_get_appliance_whitelist ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('ApplianceWhiteList');"
-}
-
-app_get_appliance_pages_blacklist ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('AppliancePagesBlackList');"
-}
 app_appliance_is_software_blacklisted ()
 {
 	local app="$1"
@@ -185,14 +125,6 @@ if bl and 'software' in bl.split(','):
 else:
 	sys.exit(1)
 "
-}
-
-app_get_appliance_fields_blacklist ()
-{
-	local app="$1"
-	python -c "from univention.management.console.modules.appcenter.app_center import Application; \
-				app = Application.find('$app'); \
-				print app.get('ApplianceFieldsBlackList').replace(',',' ');"
 }
 
 app_get_appliance_additional_apps ()
@@ -216,14 +148,30 @@ else:
 	print '1024'" >"$targetfile"
 }
 
+app_appliance_AllowPreconfiguredSetup ()
+{
+	local app="$1"
+	[ -z "$app" ] && return 1
+	python -c "
+import sys
+from univention.management.console.modules.appcenter.app_center import Application
+app = Application.find('$app')
+bl = app.get('ApplianceAllowPreconfiguredSetup')
+if bl and bl in ['true', 'True', 'yes', 'Yes']:
+	sys.exit(0)
+else:
+	sys.exit(1)
+"
+}
+
 register_apps ()
 {
 	app=$1
 	apps="$app $(app_get_appliance_additional_apps $app)"
 
-	for app in $apps; do
-		name=$(app_get_name $app)
-		component=$(app_get_component $app)
+	for the_app in $apps; do
+		name=$(app_get_name $the_app)
+		component=$(app_get_component $the_app)
 		component_prefix="repository/online/component/"
 		ucr set ${component_prefix}${component}description="$name" \
 				${component_prefix}${component}/localmirror=false \
@@ -235,6 +183,10 @@ register_apps ()
 			ucr set umc/web/appliance/data_path?"/var/cache/univention-appcenter/${component}."
 		fi
 	done
+
+	ucr set umc/web/appliance/id?${app}
+	univention-install -y univention-app-appliance
+
 	apt-get update
 }
 
@@ -601,7 +553,9 @@ uninstall_packages ()
 
 setup_pre_joined_environment ()
 {
-	cat >/var/cache/univention-system-setup/profile <<__EOF__
+	ucr set appcenter/index/verify=no update/secure_apt=no
+	if app_appliance_AllowPreconfiguredSetup $1; then
+		cat >/var/cache/univention-system-setup/profile <<__EOF__
 hostname="master"
 domainname="ucs.example"
 server/role="domaincontroller_master"
@@ -619,7 +573,7 @@ interfaces/primary="eth0"
 interfaces/eth0/broadcast="10.203.255.255"
 packages_remove=""
 ssl/organization="DE"
-root_password="univention"
+root_password="zRMtAmGIb3"
 ssl/email="ssl@ucs.example"
 ldap/base="dc=ucs,dc=example"
 locale/default="de_DE.UTF-8:UTF-8"
@@ -633,7 +587,12 @@ update/system/after/setup="True"
 components=""
 interfaces/eth0/address="10.203.10.40"
 __EOF__
-	/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
+		ucr set umc/web/appliance/fast_setup_mode=true
+		/usr/lib/univention-system-setup/scripts/setup-join.sh 2>&1 | tee /var/log/univention/setup.log
+	else
+		ucr set umc/web/appliance/fast_setup_mode=false
+		echo "No prejoined environment configured (ApplianceAllowPreconfiguredSetup)"
+	fi
 }
 
 setup_appliance ()
@@ -717,34 +676,6 @@ __EOF__
 	sed -i 's|msgstr "Domänenbeitritt"|msgstr "Domäneneinrichtung (Dies kann einige Zeit dauern)"|' /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 	msgfmt -o /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.mo /usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
 
-	# Hotfix for Bug #41392
-	echo 'Index: univention-system-activation
-===================================================================
---- univention-system-activation        (Revision 69737)
-+++ univention-system-activation        (Arbeitskopie)
-@@ -53,6 +53,21 @@
-        fuser /var/lib/dpkg/lock >/dev/null 2>&1 \
-                || dpkg -l univention-pam > /dev/null 2>&1 \
-                && dpkg-reconfigure univention-pam
-+
-+       # Copied from the univention-pam join script
-+       # 11univention-pam.inst
-+       . /usr/share/univention-lib/base.sh
-+       if is_domain_controller; then
-+               univention-config-registry set \
-+                       auth/sshd/restrict?"yes" \
-+                       "auth/sshd/group/Domain Admins?yes" \
-+                       auth/sshd/group/Computers?"yes" \
-+                       "auth/sshd/group/DC Slave Hosts?yes" \
-+                       "auth/sshd/group/DC Backup Hosts?yes" \
-+                       auth/sshd/group/Administrators?"yes" \
-+                       auth/sshd/user/root?"yes"
-+       fi
-+
- }
- 
- function restrict_root_login() {' | patch -p0 -l -d /usr/sbin/
-
 	# re-create dh parameter as background job (Bug #37459)
 	cat >/root/dh-parameter-background.patch <<'__EOF__'
 --- /usr/lib/univention-system-setup/scripts/setup-join.sh	(Revision 61517)
@@ -774,34 +705,6 @@ __EOF__
 __EOF__
 	patch -d/ -p0 </root/dh-parameter-background.patch
 	rm /root/dh-parameter-background.patch
-
-	# Set repository/online=yes in any case. Remove when #40710 is released
-	cat >/root/set_online_repository.patch <<'__EOF__'
---- /usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade.o    2016-06-15 10:14:52.292000000 -0400
-+++ /usr/lib/univention-system-setup/scripts/90_postjoin/20upgrade      2016-06-15 10:15:30.892000000 -0400
-@@ -34,6 +34,9 @@
-
- info_header "$0" "$(gettext "Upgrading the system")"
-
-+# Activate the online repository
-+/usr/sbin/ucr set repository/online=yes
-+
- is_profile_var_true "update/system/after/setup"
-
- if [ $? -ne 0 ]; then
-@@ -44,9 +47,6 @@
-
- eval "$(ucr shell)"
-
--# Activate the online repository
--/usr/sbin/ucr set repository/online=yes
--
- if [ "$server_role" = "domaincontroller_master" ]; then
- 	# Update to latest patchlevel
- 	echo "Running upgrade on DC Master: univention-upgrade --noninteractive --updateto $version_version-99"
-__EOF__
-	patch -d/ -p0 </root/set_online_repository.patch
-	rm /root/set_online_repository.patch
 
  # Do network stuff
 
@@ -848,38 +751,9 @@ appliance_basesettings ()
 {
 	set -x
 	app=$1
-
-	apps="$app $(app_get_appliance_additional_apps $app)"
-
-	pages_blacklist="$(app_get_appliance_pages_blacklist $app)"
-	ucr set system/setup/boot/pages/blacklist="$pages_blacklist"
-
-	fields_blacklist="$(app_get_appliance_fields_blacklist $app)"
-	ucr set system/setup/boot/fields/blacklist="$fields_blacklist"
-
-	blacklist="$(app_get_appliance_blacklist $app)"
-	whitelist="$(app_get_appliance_whitelist $app)"
-	ucr set repository/app_center/blacklist="$blacklist"
-	ucr set repository/app_center/whitelist="$whitelist"
-
-	name=$(app_get_appliance_name $app)
-	ucr set umc/web/appliance/name="$name"
-	ucr set grub/title="Start $name Univention App"
-
-	version=$(app_get_version $app)
-	ucr set appliance/apps/$app/version="$version"
-
-	notify=$(app_get_notifyVendor $app)
-	ucr set appliance/apps/$app/notifyVendor="$notify"
-
-	logo=$(app_get_appliance_logo $app)
-	if [ -n "$logo" ]; then
-		wget http://$(ucr get repository/app_center/server)/meta-inf/$(ucr get version/version)/$app/$logo -O /var/www/icon/$logo
-		ucr set umc/web/appliance/logo="/icon/$logo"
-		chmod 644 /var/www/icon/$logo
-	fi
-
 	
+	/usr/sbin/univention-app-appliance $app
+
 	app_fav_list=""
 	for a in $apps; do
 		app_fav_list="$app_fav_list,apps:$a"
@@ -896,6 +770,41 @@ udm users/user modify --dn "uid=Administrator,cn=users,\$ldap_base" --set umcPro
 __EOF__
 	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/umc-favorites
 
+	if [ "$app" = "zarafa" ]; then
+		sed -i 's|ucr set zarafa/webapp/config/DEFAULT_SERVER?|ucr set zarafa/webapp/config/DEFAULT_SERVER=|' /usr/lib/univention-install/71zarafa4ucs-webapp.inst
+		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_set_webapp_server <<__EOF__
+#!/bin/bash
+ucr set zarafa/webapp/config/DEFAULT_SERVER=\"https://\$(ucr get hostname).\$(ucr get domainname):237/zarafa\"
+__EOF__
+		
+		chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_set_webapp_server
+	fi
+	if [ "$app" = "owncloud82" ]; then
+		cat >/usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains <<__EOF__
+#!/bin/bash
+
+ips="\$(python  -c "
+from univention.config_registry.interfaces import Interfaces
+for name, iface in Interfaces().all_interfaces: print iface.get('address')")"
+
+HOSTS="'\$(ucr get hostname).\$(ucr get domainname)',"
+
+for ip in \$ips; do
+	HOSTS="\${HOSTS}'\${ip}',"
+done
+
+cd /var/www/owncloud/config
+(
+echo '<?php'
+echo -ne '\$CONFIG = '
+php -r "include('config.php'); \\\$CONFIG['trusted_domains'] = array(\$HOSTS); var_export(\\\$CONFIG);"
+echo ';'
+) > config.php.updated
+mv -f config.php.updated config.php
+chown www-data:www-data config.php
+__EOF__
+	chmod 755 /usr/lib/univention-system-setup/appliance-hooks.d/99_fix_owncloud_trusted_domains
+	fi
 
 }
 
@@ -913,6 +822,8 @@ __EOF__
 appliance_reset_servers ()
 {
 	ucr set repository/online/server="https://updates.software-univention.de/"
+	ucr unset appcenter/index/verify=no
+       	ucr set update/secure_apt=yes
 
 	ucr search --brief --value "^appcenter-test.software-univention.de$" | sed -ne 's|: .*||p' | while read key; do
 		ucr set "$key=appcenter.software-univention.de"
