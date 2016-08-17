@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-5) unstable; urgency=medium
+
+  * Bug #40857: Fix MySQL warning; fixed traceback, just show error message
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 17 Aug 2016 22:57:42 +0200
+
 univention-appcenter (5.0.22-4) unstable; urgency=medium
 
   * Bug #42016: Grant ro access to host's certificate to Docker Apps

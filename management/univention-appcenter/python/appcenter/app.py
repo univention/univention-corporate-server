@@ -1265,7 +1265,7 @@ class App(object):
 	@soft_requirement('install', 'upgrade')
 	def shall_not_have_mysql_filtered(self):
 		'''The application will open MySQL ports in the firewall.'''
-		if ucr_get('security/packetfilter/package/mysql/tcp/3306/all') != 'ACCEPT':
+		if self.database == 'mysql' and ucr_get('security/packetfilter/package/mysql/tcp/3306/all') != 'ACCEPT':
 			if AppManager.get_package_manager().is_installed('mysql-server'):
 				return False
 		return True

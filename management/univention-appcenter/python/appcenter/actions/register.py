@@ -41,7 +41,7 @@ from ldap.dn import str2dn, dn2str
 
 from univention.appcenter.app import AppManager
 from univention.appcenter.udm import create_object_if_not_exists, get_app_ldap_object, remove_object_if_exists
-from univention.appcenter.database import DatabaseConnector, DatabaseCreationFailed
+from univention.appcenter.database import DatabaseConnector, DatabaseError
 from univention.appcenter.actions import StoreAppAction, Abort
 from univention.appcenter.actions.credentials import CredentialsAction
 from univention.appcenter.utils import mkdir, app_ports, currently_free_port_in_range, generate_password
@@ -271,7 +271,7 @@ class Register(CredentialsAction):
 		if database_connector:
 			try:
 				database_connector.create_database()
-			except DatabaseCreationFailed as exc:
+			except DatabaseError as exc:
 				raise Abort(str(exc))
 
 	def _register_docker_variables(self, app):
