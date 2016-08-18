@@ -254,7 +254,7 @@ def mapDiff(mapping, diff):
 				nv=mapping.mapValue(key, newvalue)
 			except KeyError:
 				continue
-			if k:
+			if k and ov != nv:
 				ml.append((k, ov, nv))
 	return ml
 
