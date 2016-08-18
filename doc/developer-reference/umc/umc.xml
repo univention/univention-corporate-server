@@ -554,42 +554,7 @@ POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 						The child elements <literal>category</literal> set the categories within the overview where the module should be shown.
 						Each module can be part of multiple categories.
 						The attribute <literal>name</literal> is the internal identify of a category.
-						The UMC server has a set of predefined categories:
 					</para>
-					<variablelist>
-						<varlistentry>
-							<term>favorites</term>
-							<listitem>
-								<para>
-									This category is intended to be filled by the users themselves.
-								</para>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term>system</term>
-							<listitem>
-								<para>
-									Tools manipulating the system itself (e.g. software installation) should go in here.
-								</para>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term>wizards</term>
-							<listitem>
-								<para>
-									UMC modules providing a step-by-step assistant to create some kind of configuration should be added to this category
-								</para>
-							</listitem>
-						</varlistentry>
-						<varlistentry>
-							<term>monitor</term>
-							<listitem>
-								<para>
-									Everything that provides monitor functionality (e.g. simple system statistics) should be placed in this category
-								</para>
-							</listitem>
-						</varlistentry>
-					</variablelist>
 					<para>
 						At the end of the definition file a list of commands is specified.
 						The UMC server only passes commands to a UMC module that are defined.
