@@ -613,7 +613,7 @@ POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 				</itemizedlist>
 				<para>
 					In the definition file for the UMC module specifies functions for the commands provided by the module.
-					These functions must be implemented as methods of the class <classname>Instance</classname> that inherits from <classname>univention.management.console.modules.Base</classname>.
+					These functions must be implemented as methods of the class <classname>Instance</classname> that inherits from <classname>univention.management.console.base.Base</classname>.
 				</para>
 				<para>
 					The following Python code example matches the definition in the previous section:
@@ -646,37 +646,10 @@ POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 					</varlistentry>
 				</variablelist>
 				<para>
-					The method <methodname>containers</methodname> in the example above shows how to retrieve the command parameters and what to do to send the result back to the client.
-					Important is that returning a value in a command function does not send anything back to the client.
-					Therefor the function <function>finished</function> must be invoked.
-					The first parameter is the identifier of the request that will be answered and the second parameter the data structure containing the result.
-					As the result is converted to JSON it must just contain data types that can be converted.
-					The function <function>finished</function> has two further optional parameters.
-					<varname>message</varname> may contain a human readable text explaining the result and <varname>success</varname> is a boolean parameter defining the success of the operation.
-					By default <varname>success</varname> is true.
-					By setting <varname>success</varname> to <literal>False</literal> the UMC module sends an error status back to the client.
-					Another way to send an error message back to the client is by raising one of the following exceptions:
-				</para>
-				<variablelist>
-					<varlistentry>
-						<term><literal>UMC_OptionTypeError</literal></term>
-						<listitem><simpara>
-								The type of a given option does not match.
-						</simpara></listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><literal>UMC_OptionMissing</literal></term>
-						<listitem><simpara>
-								One required option is missing.
-						</simpara></listitem>
-					</varlistentry>
-					<varlistentry>
-						<term><literal>UMC_CommandError</literal></term>
-						<listitem><simpara>
-								A general error occurred
-						</simpara></listitem>
-					</varlistentry>
-				</variablelist>
+					The method <methodname>init()</methodname> in the example is invoked when the module process starts. It could e.g. be used to initialize a database connection.
+					The other mehthods in the example will serve specific request. To respond to a request the function <function>finished</function> must be invoked.
+					To validate the request body the decorator <varname>@sanitize</varname> might be used with various sanitizers defined in <classname>univention.management.console.modules.sanitizers</classname>.
+					For a way to send an error message back to the client the <classname>UMC_Error</classname> can be raised with the error message as argument and an optional HTTP status code.
 				<para>
 					The base class for modules provides some properties and methods that could be useful when writing UMC modules:
 				</para>
@@ -685,6 +658,12 @@ POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 						<term><varname>username</varname></term>
 						<listitem><simpara>
 								The username of the owner of this session.
+						</simpara></listitem>
+					</varlistentry>
+					<varlistentry>
+						<term><varname>user_dn</varname></term>
+						<listitem><simpara>
+								The DN of the user or None if the user is only a local user.
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
@@ -701,11 +680,9 @@ POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 						</simpara></listitem>
 					</varlistentry>
 					<varlistentry>
-						<term><methodname>permitted()</methodname></term>
+						<term><methodname>destroy()</methodname></term>
 						<listitem><simpara>
-								Can be used to determine if a specific UMCP command can be invoked by the current user.
-								This method has two parameters:
-								The <varname>command</varname> name and the <varname>options</varname>.
+								Is invoked before the module process shuts down.
 						</simpara></listitem>
 					</varlistentry>
 				</variablelist>
