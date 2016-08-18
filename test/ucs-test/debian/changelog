@@ -1,3 +1,10 @@
+ucs-test (6.0.36-9) unstable; urgency=medium
+
+  * 00_checks/10_s4_connector_rejects: Make sure it is executed in
+    school and other app environments (Bug #37570)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Aug 2016 06:11:45 +0200
+
 ucs-test (6.0.36-8) unstable; urgency=medium
 
   * 85_ucs-translation-template/00_fuzzy_entries_on_merge: Skip test

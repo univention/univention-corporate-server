@@ -4,6 +4,8 @@
 ## bugs: [37011, 37324, 37570]
 ## packages:
 ## - univention-nagios-s4-connector
+## tags:
+##  - apptest
 ## versions:
 ##  4.0-0: skip
 ##  4.0-1: skip
