@@ -184,8 +184,12 @@ register_apps ()
 		fi
 	done
 
+	ucr set repository/online/unmaintained='yes'
+
 	ucr set umc/web/appliance/id?${app}
 	univention-install -y univention-app-appliance
+
+	ucr set repository/online/unmaintained='no'
 
 	apt-get update
 }
