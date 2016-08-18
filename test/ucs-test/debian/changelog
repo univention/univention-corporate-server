@@ -1,3 +1,10 @@
+ucs-test (7.0.0-4) unstable; urgency=medium
+
+  * 00_checks/10_s4_connector_rejects: Make sure it is executed in
+    school and other app environments (Bug #37570)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Aug 2016 06:12:32 +0200
+
 ucs-test (7.0.0-3) unstable; urgency=medium
 
   * Enable 38_extended_attribute_boolean_syntax test case (Bug #41829)
