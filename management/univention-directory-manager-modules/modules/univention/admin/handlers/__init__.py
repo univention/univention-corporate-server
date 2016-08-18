@@ -684,6 +684,8 @@ class simpleLdap(base):
 		ocs = set()
 		for prop in getattr(m, 'extended_udm_attributes', []):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._create: info[%s]:%r = %r'% (prop.name, self.has_key(prop.name), self.info.get(prop.name)))
+			if prop.syntax == 'boolean' and self.info.get(prop.name) == '0':
+				continue
 			if self.has_key(prop.name) and self.info.get(prop.name):
 				ocs.add(prop.objClass)
 
@@ -795,7 +797,7 @@ class simpleLdap(base):
 		for prop in getattr(m, 'extended_udm_attributes', []):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._modify: extended attribute=%r  oc=%r'% (prop.name, prop.objClass))
 
-			if self.has_key(prop.name) and self.info.get(prop.name):
+			if self.has_key(prop.name) and self.info.get(prop.name) and (True if prop.syntax != 'boolean' else self.info.get(prop.name) != '0'):
 				required_ocs |= set([prop.objClass])
 				continue
 
@@ -2815,7 +2817,7 @@ class _MergedAttributes(object):
 
 	def __init__(self, obj, modlist):
 		self.obj = obj
-		self.modlist = modlist
+		self.modlist = [x if len(x) == 3 else (x[0], None, x[-1]) for x in modlist]
 		self.case_insensitive_attributes = ['objectClass']
 
 	def get_attributes(self):

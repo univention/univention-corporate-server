@@ -1,3 +1,10 @@
+univention-directory-manager-modules (11.0.3-30) unstable; urgency=medium
+
+  * Bug #41829: don't add object class of '0' values for extended attributes
+  	with boolean syntax
+
+ -- Florian Best <best@univention.de>  Thu, 18 Aug 2016 12:35:48 +0200
+
 univention-directory-manager-modules (11.0.3-29) unstable; urgency=medium
 
   * Bug #41899: execute hooks before adjusting object classes
