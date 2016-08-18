@@ -12,3 +12,4 @@ desc: |
    the LDAP entry for extended attributes with boolean syntax.
  * The ldap modlist hooks are now executed before sanitizing object classes.
 bug: [41824,41829,41899]
+announced: 2016-08-18
