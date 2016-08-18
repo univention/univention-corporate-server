@@ -253,14 +253,12 @@ def do_app_updates(options, checkForUpdates, silent):
 
     interactive = not (options.noninteractive or checkForUpdates)
     try:
-        from univention.appcenter.actions import get_action
+        from univention.appcenter.actions import get_action, Abort
         from univention.appcenter.app import AppManager
         import univention.appcenter.log as appcenter_log
         app_upgrade_search = get_action('upgrade-search')
         app_upgrade = get_action('upgrade')
         if app_upgrade is None:
-            raise ImportError()
-        if not hasattr(app_upgrade, 'call_safe'):
             raise ImportError()
     except ImportError:
         # the new univention.appcenter package is not installed. Never mind
@@ -280,7 +278,10 @@ def do_app_updates(options, checkForUpdates, silent):
     handler.setLevel(logging.INFO)
     logger.addHandler(handler)
 
-    app_upgrade_search.call_safe()
+    try:
+        app_upgrade_search.call()
+    except Abort:
+        pass
     new_apps = list(app_upgrade.iter_upgradable_apps())
     if not new_apps:
         dprint(silent, 'none')
@@ -315,13 +316,16 @@ def do_app_updates(options, checkForUpdates, silent):
     for app in new_apps:
         if interactive and not readcontinue('\nDo you want to upgrade %s [Y|n]?' % app.name):
             continue
-        success &= bool(app_upgrade.call_safe(
-            app=app,
-            noninteractive=not interactive,
-            username=options.username,
-            pwdfile=options.pwdfile,
-        ))
-
+        try:
+            local_success = bool(app_upgrade.call(
+                app=app,
+                noninteractive=not interactive,
+                username=options.username,
+                pwdfile=options.pwdfile,
+            ))
+        except Abort:
+            local_success = False
+        success &= local_success
     if not success:
         dprint(silent, 'ERROR: app upgrade failed. Please check /var/log/univention/updater.log\n')
         sys.exit(1)
@@ -448,7 +452,7 @@ def do_update(options):
         try:
             update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
         except SystemExit, e:
-            if options.setucr and configRegistry.is_false(UCR_UPDATE_AVAILABLE):
+            if options.setucr:
                 univention.config_registry.handler_set([
                     '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes'),
                 ])
@@ -464,7 +468,7 @@ def do_update(options):
         print >>logfd, traceback.format_exc()
         sys.exit(2)
     update_status(status='DONE')
-    if options.setucr and update_available is not None and configRegistry.is_true(UCR_UPDATE_AVAILABLE) != update_available:
+    if options.setucr and update_available is not None:
         univention.config_registry.handler_set([
             '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes' if update_available else 'no'),
         ])
