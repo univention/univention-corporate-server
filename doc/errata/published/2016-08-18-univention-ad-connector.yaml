@@ -9,3 +9,4 @@ desc: |
  * The AD-Connector didn't support synchronization of groups with more than
    1500 members.
 bug: [41248, 41744]
+announced: 2016-08-18
