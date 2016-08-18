@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <definitions>
+    <syntax base="String" name="UCR-Variable">
+      <regex-invalid>.*[\r\n!"§$%&amp;()\[\]{}=?`+#',;&lt;&gt;].*</regex-invalid>
+    </syntax>
+    <syntax base="String" name="UCR-Value">
+      <regex-invalid>.*[\r\n].*</regex-invalid>
+    </syntax>
+    <syntax base="Dictionary" name="UCR-Variables">
+      <item key="UCR-Variable" value="UCR-Value"/>
+    </syntax>
+    <syntax base="Selection" name="UCR-SearchOption">
+      <choice name="all"/>
+      <choice name="key"/>
+      <choice name="value"/>
+      <choice name="description"/>
+    </syntax>
+  </definitions>
+</umc>

@@ -1,0 +1,6 @@
+Module: ucr
+Python: umc/python
+Definition: umc/ucr.xml
+Syntax: umc/syntax/ucr.xml
+Javascript: umc/js
+Icons: umc/icons

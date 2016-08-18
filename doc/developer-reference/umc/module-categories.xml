@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<categories>
+		<category id="category" priority="..." icon="....svg" color="#xxxxxx"/>
+	</categories>
+</umc>

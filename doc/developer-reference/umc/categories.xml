@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <categories>
+    <category id="favorites">
+      <name>Favorites</name>
+    </category>
+    <category id="system">
+      <name>System</name>
+    </category>
+    <category id="wizards">
+      <name>Wizards</name>
+    </category>
+    <category id="monitor">
+      <name>Surveillance</name>
+    </category>
+  </categories>
+</umc>
