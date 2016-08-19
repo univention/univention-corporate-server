@@ -514,6 +514,9 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 
 	fr.close()
 
+	# Deactivate login message
+	univention.config_registry.handler_set(['system/setup/showloginmessage=false'])
+
 	# enable execution of servers again
 	subprocess.call(CMD_ENABLE_EXEC, stdout=f, stderr=f)
 
