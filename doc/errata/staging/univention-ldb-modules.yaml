@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-ldb-modules
+fix: 4.0.7-2.89.201608191625
+desc: |
+ This update addresses the following issue(s):
+ * The slave PDC join script now updates some descriptions for the default
+   users and groups. This avoids rejects if the Univention S4 Connector is 
+   not installed on the DC master in a distributed UCS@school environment.
+bug: [36831]
