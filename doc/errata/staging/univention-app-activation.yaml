@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [2,3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-app-activation
+fix: 0.2.2-36.8.201608191606
+desc: |
+ This update addresses the following issue(s):
+ * Use correct INI value for NotifyVendor information
+bug: [42068]
