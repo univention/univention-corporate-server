@@ -1,3 +1,9 @@
+univention-app-appliance (0.2.2-36) unstable; urgency=medium
+
+  * Bug #42068: Use correct ini value for NotifyVendor
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 19 Aug 2016 16:05:13 +0200
+
 univention-app-appliance (0.2.2-35) unstable; urgency=medium
 
   * Bug #40826: adjust style and color of links for system activation
