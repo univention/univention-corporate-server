@@ -85,7 +85,7 @@ except (TypeError, ValueError):
 
 
 def sessionidhash():
-	return hashlib.sha256('%s%s%s' % (cherrypy.request.headers['Authorization'], cherrypy.request.headers.get('Accept-Language', ''), sessionidhash.salt)).hexdigest()[:36]
+	return hashlib.sha256('%s%s%s%s' % (cherrypy.request.headers['Authorization'], cherrypy.request.headers.get('Accept-Language', ''), get_ip_address(), sessionidhash.salt)).hexdigest()[:36]
 # python 2.7.7 required:
 	#return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', cherrypy.request.headers['Authorization']), sessionidhash.salt, 100000)[:36]
 sessionidhash.salt = rndstr()
@@ -721,6 +721,21 @@ class CPgeneric(Ressource):
 	def get_request(self, path, args):
 		return umcp.Request(['generic'], opts={})
 
+	def add_request_headers(self, request):
+		request.http_method = cherrypy.request.method
+		request.headers = dict(cherrypy.request.headers)
+		request.headers.pop('Cookie', None)
+		request.cookies = dict((x.key, x.value) for x in cherrypy.request.cookie.values())
+
+	def add_response_headers(self, response):
+		cherrypy.response.headers.update(response.headers)
+		for key, item in response.cookies:
+			if isinstance(item, dict):
+				cherrypy.response.cookie[key] = item.pop('value', '')
+				cherrypy.response.cookie[key].update(item)
+			else:
+				cherrypy.response.cookie[key] = item
+
 	def load_json(self, body):
 		try:
 			json_ = json.loads(body)
@@ -767,6 +782,7 @@ class CPgeneric(Ressource):
 	def get_response(self, sessionid, path, args):
 		# create new UMCP request
 		req = self.get_request('/'.join(path), args)
+		self.add_request_headers(req)
 
 		# create new response queue
 		response_queue = Queue.Queue()
@@ -780,6 +796,7 @@ class CPgeneric(Ressource):
 		response = response_queue.get()
 		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s' % (id(response), id(response_queue), response.status))
 
+		self.add_response_headers(response)
 		status = response.status
 		body = response.body
 		if status is None:
