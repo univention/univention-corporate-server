@@ -166,5 +166,29 @@
         "package_name": "univention-admin-handlers-saml",
         "po_subdir": "modules/univention/admin/handlers/saml",
         "target": "mo"
+    },
+    {
+        "input_files": "modules/univention/admin/handlers/policies/mailquota/mailquota.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-mailquota.mo",
+        "package_dir": "mail/univention-mail-cyrus",
+        "package_name": "univention-mail-cyrus",
+        "po_subdir": "modules/univention/admin/handlers/policies/mailquota",
+        "target": "mo"
+    },
+    {
+        "input_files": "*.py",
+        "mo_destination": "usr/share/locale/{lang}/LC_MESSAGES/univenton-lib.mo",
+        "package_dir": "base/univention-lib",
+        "package_name": "univention-lib",
+        "po_subdir": "python",
+        "target": "mo"
+    },
+    {
+        "input_files": "js/ucs/*.js",
+        "mo_destination": "www/js/ucs/{lang}.json",
+        "package_dir": "base/univention-system-activation",
+        "package_name": "univention-system-activation",
+        "po_subdir": "js/ucs",
+        "target": "json"
     }
 ]
