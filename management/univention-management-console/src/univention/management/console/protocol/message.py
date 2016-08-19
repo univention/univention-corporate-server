@@ -172,12 +172,12 @@ class Message(object):
 		else:
 			PARSER.warn('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
 
-	def _get_key(self, key):
+	def _get_key(self, key, default=None):
 		if self.mimetype == MIMETYPE_JSON:
-			return self.body.get(key)
+			return self.body.get(key, default)
 		else:
 			PARSER.info('Attribute %s just available for MIME type %s' % (key, MIMETYPE_JSON))
-			return None
+			return default
 
 	#: contains a human readable error message
 	message = property(lambda self: self._get_key('message'), lambda self, value: self._set_key('message', value))
@@ -193,6 +193,15 @@ class Message(object):
 
 	#: flavor of the request
 	flavor = property(lambda self: self._get_key('flavor'), lambda self, value: self._set_key('flavor', value))
+
+	#: contains HTTP request / response headers
+	headers = property(lambda self: self._get_key('headers', {}), lambda self, value: self._set_key('headers', value))
+
+	#: contains parsed request / response cookies
+	cookies = property(lambda self: self._get_key('cookies', {}), lambda self, value: self._set_key('cookies', value))
+
+	#: contains the HTTP request method
+	http_method = property(lambda self: self._get_key('method'), lambda self, value: self._set_key('method', value))
 
 	def parse(self, msg):
 		"""Parses data and creates in case of a vaild UMCP message the

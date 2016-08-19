@@ -1,3 +1,9 @@
+univention-management-console (9.0.1-1) unstable; urgency=medium
+
+  * Bug #39731: Add HTTP metadata to UMCP messages
+
+ -- Florian Best <best@univention.de>  Fri, 19 Aug 2016 13:51:26 +0200
+
 univention-management-console (9.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
