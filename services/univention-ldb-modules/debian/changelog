@@ -1,3 +1,11 @@
+univention-ldb-modules (4.0.7-2) unstable; urgency=medium
+
+  * Update some default settings in the LDAP directory to prevent
+    rejects if no S4 connector is installed on the DC master
+    (Bug #36831)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Aug 2016 16:19:31 +0200
+
 univention-ldb-modules (4.0.7-1) unstable; urgency=low
 
   * Bug #40988: Dependency updated for rebuild against Samba 4.3.7 
