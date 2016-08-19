@@ -59,5 +59,18 @@ RewriteRule .* /univention-management-console/js/umc/modules/i18n/empty.json [P,
 	SetEnv proxy-nokeepalive 1
 </LocationMatch>
 
+<LocationMatch "^/univention-management-console/(login|blank).html$">
+	Header always setifempty "X-Frame-Options" "SAMEORIGIN"
+	Header always setifempty "Content-Security-Policy" "default-src 'self' 'unsafe-inline';"
+</LocationMatch>
+
+<LocationMatch "^/univention-management-console/.*">
+	Header always setifempty "X-Permitted-Cross-Domain-Policies" "master-only"
+	Header always setifempty "X-XSS-Protection" "1; mode=block"
+	Header always setifempty "X-Content-Type-Options" "nosniff"
+	Header always setifempty "X-Frame-Options" "DENY"
+	Header always setifempty "Content-Security-Policy" "default-src @%@umc/http/content-security-policy/default-src@%@; script-src @%@umc/http/content-security-policy/script-src@%@; object-src @%@umc/http/content-security-policy/object-src@%@; style-src @%@umc/http/content-security-policy/style-src@%@; img-src @%@umc/http/content-security-policy/img-src@%@; media-src @%@umc/http/content-security-policy/media-src@%@; frame-src @%@umc/http/content-security-policy/frame-src@%@; child-src @%@umc/http/content-security-policy/child-src@%@; font-src @%@umc/http/content-security-policy/font-src@%@; connect-src @%@umc/http/content-security-policy/connect-src@%@ https://@%@ucs/server/sso/fqdn@%@/; form-action @%@umc/http/content-security-policy/form-action@%@; frame-ancestors @%@umc/http/content-security-policy/frame-ancestors@%@;"
+</LocationMatch>
+
 <Directory "/var/www/univention-management-console">
 </Directory>

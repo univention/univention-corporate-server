@@ -53,7 +53,19 @@ univention-config-registry set "umc/http/session/timeout?600" \
 	umc/http/autostart?yes \
 	umc/http/port?8090 \
 	umc/http/interface?127.0.0.1 \
-	umc/server/upload/min_free_space?51200
+	umc/server/upload/min_free_space?51200 \
+	umc/http/content-security-policy/default-src?"'none'" \
+	umc/http/content-security-policy/script-src?"'self' 'unsafe-inline' 'unsafe-eval' https://www.piwik.univention.de/ https://www.youtube.com/ https://s.ytimg.com/" \
+	umc/http/content-security-policy/object-src?"'self'" \
+	umc/http/content-security-policy/style-src?"'self' 'unsafe-inline'" \
+	umc/http/content-security-policy/img-src?"*" \
+	umc/http/content-security-policy/media-src?"*" \
+	umc/http/content-security-policy/frame-src?"*" \
+	umc/http/content-security-policy/child-src?"*" \
+	umc/http/content-security-policy/font-src?"'self'" \
+	umc/http/content-security-policy/connect-src?"'self'" \
+	umc/http/content-security-policy/form-action?"'self'" \
+	umc/http/content-security-policy/frame-ancestors?"'none'"
 
 if [ "$1" = "configure" ]
 then
