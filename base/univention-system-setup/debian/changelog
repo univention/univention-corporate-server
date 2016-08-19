@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-36) unstable; urgency=medium
+
+  * Bug #42031: Also deactivate loginmessage in fast demo mode
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 19 Aug 2016 15:15:57 +0200
+
 univention-system-setup (9.0.4-35) unstable; urgency=medium
 
   * Bug #41932: remove the setup status file after all cleanup scripts when
