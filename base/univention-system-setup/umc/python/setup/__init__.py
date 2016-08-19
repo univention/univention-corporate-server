@@ -103,27 +103,6 @@ class Instance(Base, ProgressMixin):
 		# return the correctly loca
 		return label_dict.get(self.locale.language) or label_dict.get('en', '') or label_dict.get('', '')
 
-	def _check_thread_error( self, thread, result, request ):
-		"""Checks if the thread returned an exception. In that case in
-		error response is send and the function returns True. Otherwise
-		False is returned."""
-		if not isinstance( result, BaseException ):
-			return False
-
-		msg = '%s\n%s: %s\n' % ( ''.join( traceback.format_tb( thread.exc_info[ 2 ] ) ), thread.exc_info[ 0 ].__name__, str( thread.exc_info[ 1 ] ) )
-		MODULE.process( 'An internal error occurred: %s' % msg )
-		self.finished( request.id, None, msg, False )
-		return True
-
-	def _thread_finished( self, thread, result, request ):
-		"""This method is invoked when a threaded request function is
-		finished. The result is send back to the client. If the result
-		is an instance of BaseException an error is returned."""
-		if self._check_thread_error( thread, result, request ):
-			return
-
-		self.finished( request.id, result )
-
 	def ping(self, request):
 		if request.options.get('keep_alive'):
 			self.__keep_alive_request = request
@@ -361,9 +340,7 @@ class Instance(Base, ProgressMixin):
 			state = self._progressParser.current
 			return progress_info(state, finished=obj._finishedResult)
 
-		thread = notifier.threads.Simple( 'check_finished',
-			notifier.Callback( _thread, request, self ),
-			notifier.Callback( self._thread_finished, request ) )
+		thread = notifier.threads.Simple('check_finished', notifier.Callback(_thread, request, self), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@simple_response(with_flavor=True)
