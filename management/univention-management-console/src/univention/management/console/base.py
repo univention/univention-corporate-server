@@ -118,7 +118,7 @@ from univention.lib.i18n import Translation
 import univention.admin.uexceptions as udm_errors
 
 from univention.management.console.protocol.message import Response, MIMETYPE_JSON
-from univention.management.console.protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS, SUCCESS_MESSAGE, SUCCESS_PARTIAL, SUCCESS_SHUTDOWN
+from univention.management.console.protocol.definitions import BAD_REQUEST, MODULE_ERR, MODULE_ERR_COMMAND_FAILED, SUCCESS
 from univention.management.console.ldap import get_user_connection
 from univention.management.console.log import MODULE, CORE
 from univention.management.console.config import ucr
@@ -329,6 +329,9 @@ class Base(signals.Provider, Translation):
 		MODULE.process(str(message))
 		self.finished(request.id, result, message, status=status)
 
+	def default_response_headers(self):
+		return {}
+
 	def get_user_ldap_connection(self):
 		if not self._user_dn:
 			return  # local user (probably root)
@@ -367,12 +370,8 @@ class Base(signals.Provider, Translation):
 			return False
 		return self.__acls.is_command_allowed(command, options=options, flavor=flavor)
 
-	def finished(self, id, response, message=None, success=True, status=None, mimetype=None):
-		"""Should be invoked by module to finish the processing of a
-		request. 'id' is the request command identifier, 'dialog' should
-		contain the result as UMC dialog and 'success' defines if the
-		request could be fulfilled or not. If there is a definition of a
-		'_post' processing function it is called immediately."""
+	def finished(self, id, response, message=None, success=True, status=None, mimetype=None, headers=None):
+		"""Should be invoked by module to finish the processing of a request. 'id' is the request command identifier"""
 
 		if id not in self.__requests:
 			return
@@ -387,6 +386,7 @@ class Base(signals.Provider, Translation):
 			else:
 				res.result = response
 				res.message = message
+				res.headers = headers or self.default_response_headers()
 		else:
 			res = response
 
