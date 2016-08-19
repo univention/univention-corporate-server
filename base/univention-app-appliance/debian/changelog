@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.0-2) unstable; urgency=medium
+
+  * Bug #42068: Use correct ini value for NotifyVendor
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 19 Aug 2016 16:10:10 +0200
+
 univention-app-appliance (1.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

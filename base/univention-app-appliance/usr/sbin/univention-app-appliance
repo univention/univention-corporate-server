@@ -88,7 +88,7 @@ def set_appliance_ucr_values(app):
 		'umc/web/appliance/fast_setup_mode': str(app.appliance_allow_preconfigured_setup).lower(), # convert bool value to ('true', 'false')
 		'grub/title': "Start %s Univention App" % app.name,
 		'appliance/apps/%s/version' % app.id: app.version,
-		'appliance/apps/%s/notifyVendor' % app.id: str(app.appliance_notify_vendor),
+		'appliance/apps/%s/notifyVendor' % app.id: str(app.notify_vendor),
 	})
 
 
