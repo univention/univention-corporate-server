@@ -954,8 +954,6 @@ class Instance(Base, ProgressMixin):
 			return
 
 		def _thread(container):
-			success = True
-			message = None
 			superordinate = None
 			result = []
 			for base, typ in map(lambda x: x.split('/'), self.modules_with_childs):
@@ -983,21 +981,11 @@ class Instance(Base, ProgressMixin):
 							'$operations$': module.operations,
 							'$flags$': item.oldattr.get('univentionObjectFlag', []),
 						})
-				except UDM_Error as e:
-					success = False
-					result = None
-					message = str(e)
+				except UDM_Error as exc:
+					raise UMC_Error(str(exc))
+			return result
 
-			return result, message, success
-
-		def _finish(thread, result, request):
-			if not isinstance(result, BaseException):
-				result, message, success = result
-				self.finished(request.id, result, message, success)
-			else:
-				self.finished(request.id, None, str(result), False)
-
-		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(_finish, request))
+		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(
