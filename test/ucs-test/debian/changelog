@@ -1,3 +1,9 @@
+ucs-test (6.0.36-10) unstable; urgency=medium
+
+  * 10_s4_connector_rejects: Added more debug (Bug #37570)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Aug 2016 06:45:53 +0200
+
 ucs-test (6.0.36-9) unstable; urgency=medium
 
   * 00_checks/10_s4_connector_rejects: Make sure it is executed in
