@@ -1,0 +1,13 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-directory-listener
+fix: 10.0.0-15.327.201608221002
+desc: |
+ This update addresses the following issue:
+ * LDAP entries were not removed correctly, if they were moved to a location
+   filtered by LDAP access control. In that case the Univention Directory
+   Listener modules registered for those entries were not called or called
+   twice.
+bug: [42029]
