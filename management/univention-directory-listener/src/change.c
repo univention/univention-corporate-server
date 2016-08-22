@@ -285,38 +285,26 @@ result:
 }
 
 /* Call this function to remove a DN. */
-int change_delete_dn(NotifierID id, char *dn, char command)
+static void change_delete(struct transaction *trans)
 {
-	CacheEntry entry;
 	int rv;
 
-	if ((rv = cache_get_entry_lower_upper(dn, &entry)) == DB_NOTFOUND) {
-		signals_block();
-		/* run handlers anyway */
-		if (handlers_delete(dn, &entry, command) == 0) {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", dn);
-		} else {
-			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "not in cache: %s", dn);
-		}
-		signals_unblock();
-		return LDAP_SUCCESS;
-	} else if (rv != 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "reading from cache failed: %s", dn);
-		return LDAP_OTHER;
-	}
-
 	signals_block();
-	if (handlers_delete(dn, &entry, command) == 0) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", dn);
-	} else {
-		/* update information which modules failed and are still to be run */
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "at least one delete handler failed");
-	}
-	cache_delete_entry_lower_upper(id, dn);
-	signals_unblock();
-	cache_free_entry(NULL, &entry);
 
-	return LDAP_SUCCESS;
+	rv = handlers_delete(trans->cur.notify.dn, &trans->cur.cache, trans->cur.notify.command);
+	if (rv == 0)
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", trans->cur.notify.dn);
+	if (cache_entry_valid(&trans->cur.cache)) {
+		if (rv != 0)
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "at least one delete handler failed");
+		cache_delete_entry_lower_upper(trans->cur.notify.id, trans->cur.notify.dn);
+		cache_free_entry(NULL, &trans->cur.cache);
+	} else {
+		if (rv != 0)
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "not in cache: %s", trans->cur.notify.dn);
+	}
+
+	signals_unblock();
 }
 
 /* Make sure schema is up-to-date */
@@ -662,7 +650,8 @@ static int change_update_cache(struct transaction *trans) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
 					"Resurrection: DELETED object '%s' will re-appear at '%s'?",
 					trans->cur.notify.dn, trans->cur.ldap_dn);
-		rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
+		change_delete(trans);
+		rv = 0;
 		break;
 	case 'r': // move_from
 		// delay this 'r' until the following 'a' to decide if this is really a move or a delete.
@@ -776,7 +765,8 @@ retry_dn:
 			goto retry_dn;
 		}
 		// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
-		rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
+		change_delete(trans);
+		rv = 0;
 	}
 
 out:
