@@ -373,7 +373,8 @@ _update_groups ()
 
 _update_container ()
 {
-	udm container/cn modify "$@" --dn "cn=system,$ldap_base" --set description='Builtin system settings' 
+	udm container/cn create "$@" --ignore_exists --set name=System 
+	udm container/cn modify "$@" --dn "cn=System,$ldap_base" --set description='Builtin system settings' 
 }
 
 _create_default_s4_groups "$@"
