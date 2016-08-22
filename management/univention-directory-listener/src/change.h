@@ -44,9 +44,6 @@ int	change_update_entry	(univention_ldap_parameters_t	*lp,
 				 NotifierID			 id,
 				 LDAPMessage			*ldap_entry,
 				 char 				command);
-int 	change_delete_dn	(NotifierID			 id,
-				 char				*dn,
-				 char 				command);
 extern int	change_update_dn(struct transaction *);
 extern void	change_free_transaction_op(struct transaction_op *);
 
