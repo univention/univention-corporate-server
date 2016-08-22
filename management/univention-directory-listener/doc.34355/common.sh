@@ -10,7 +10,7 @@
 BUG32685=true # move to selective
 BUG33594=true # modrdn delold=1
 BUG34355=false # modify+modrdn
-BUG34749=true # ldap escape
+BUG34749=false # ldap escape
 BUG34833=false # move via temporary
 BUG35334=false # utf8 strcasecmp()
 
@@ -93,6 +93,7 @@ class AsRoot(object):
 	def __exit__(self, exc_type, exc_value, traceback):
 		listener.unsetuid()
 __PY__
+	ucr set options='-o'
 	listener restart
 }
 setup_trace () {
