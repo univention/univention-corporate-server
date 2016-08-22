@@ -771,12 +771,12 @@ retry_dn:
 	}
 	ldap_msgfree(res);
 	if (delete) {
-		// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
-		rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
 		if (uuid) {
 			uuid = NULL;
 			goto retry_dn;
 		}
+		// FIXME: trans->cur.notify.command = 'd' // to overwrite 'r' without 'a'
+		rv = change_delete_dn(trans->cur.notify.id, trans->cur.notify.dn, trans->cur.notify.command);
 	}
 
 out:
