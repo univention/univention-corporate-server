@@ -227,3 +227,15 @@ Description[de]=Zeit- oder Größenlimits anhand des Initiators oder der DN defi
 Description[en]=Specify time and size limits based on the operation's initiator or base DN.
 Type=str
 Categories=service-ldap
+
+[slapd/backup]
+Description[de]=Aktiviert/Deaktiviert das Backup der slapd Datenbank (slapcat).
+Description[en]=Activates/deactivates the slapd database backup (slapcat).
+Type=bool
+Categories=service-ldap
+
+[slapd/backup/cron]
+Description[de]=Cron-Intervall für das Backup der slapd Datenbank.
+Description[en]=Cron interval for the slapd database backup.
+Type=str
+Categories=service-ldap
