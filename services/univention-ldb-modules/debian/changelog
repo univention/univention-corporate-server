@@ -1,3 +1,10 @@
+univention-ldb-modules (5.0.4-1) unstable; urgency=medium
+
+  * Increase version number of samba4slavepdc join script to remove
+    rejects during the upgrade (Bug #36831)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 22 Aug 2016 10:14:51 +0200
+
 univention-ldb-modules (5.0.3-1) unstable; urgency=medium
 
   * Create the system container if it does not exist (Bug #36831)
