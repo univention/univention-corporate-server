@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-ldap
+fix: 5.0.22-4.209.201608170040
+desc: |
+ This update addresses the following issue(s):
+ * The UCR variable ldap/limits has been added to configure slapd limits.
+bug: [34873]
