@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-32) unstable; urgency=low
+
+  * Bug #34873: added ldap/limits
+
+ -- Felix Botner <botner@univention.de>  Mon, 22 Aug 2016 17:41:48 +0200
+
 univention-ldap (12.1.6-31) unstable; urgency=low
 
   * Bug #33993: new i386 default for ldap/database/mdb/maxsize
