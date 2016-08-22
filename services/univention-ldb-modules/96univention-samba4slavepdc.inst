@@ -358,7 +358,27 @@ _create_default_s4_groups ()
 		--set sambaRID="569" ||die
 }
 
+_update_groups ()
+{
+	users_default_administrator=$(custom_username "Administrator")
+	groups_default_domainadmins=$(custom_groupname "Domain Admins")
+	groups_default_domainusers=$(custom_groupname "Domain Users")
+	groups_default_domainguests=$(custom_groupname "Domain Guests")
+	udm groups/group modify "$@" --dn "cn=$groups_default_domainguests,cn=groups,$ldap_base" --set description='All domain guests'
+	udm groups/group modify "$@" --dn "cn=$groups_default_domainusers,cn=groups,$ldap_base" --set description='All domain users'
+	udm groups/group modify "$@" --dn "cn=$groups_default_domainadmins,cn=groups,$ldap_base" --set description='Designated administrators of the domain'
+	udm users/user modify "$@" --dn "uid=$users_default_administrator,cn=users,$ldap_base" --set description='Built-in account for administering the computer/domain'
+	udm groups/group modify "$@" --dn "cn=Group Policy Creator Owners,cn=groups,$ldap_base" --append users="uid=$users_default_administrator,cn=users,$ldap_base"
+}
+
+_update_container ()
+{
+	udm container/cn modify "$@" --dn "cn=system,$ldap_base" --set description='Builtin system settings' 
+}
+
 _create_default_s4_groups "$@"
+_update_groups "$@"
+_update_container "$@"
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 
