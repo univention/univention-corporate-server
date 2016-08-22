@@ -429,14 +429,10 @@ install_gpmc_windows ()
 {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
-	local DOMAIN_ADMIN_ACCOUNT="${3:-administrator}"
-	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
-	local LOCAL_ADMIN_ACCOUNT="testadmin"
-	local LOCAL_ADMIN_PWD="Univention@99"
-	
+	local ADMIN_ACCOUNT="${3:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'Administrator', 'Univention@99', 445, '$HOST')
 win.add_gpo_management_console()
 "
 }
@@ -446,14 +442,10 @@ join_windows_memberserver ()
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
 	local DNS_SERVER="${3:?Missing DNS server address}"
-	local DOMAIN_ADMIN_ACCOUNT="${4:-administrator}"
-	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
-	local LOCAL_ADMIN_ACCOUNT="testadmin"
-	local LOCAL_ADMIN_PWD="Univention@99"
-	
+	local ADMIN_ACCOUNT="${4:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
 win.domain_join('$DNS_SERVER')
 "
 }
@@ -463,14 +455,10 @@ _promote_ad ()
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
 	local MODE="${3:?Missing mode}"
-	local DOMAIN_ADMIN_ACCOUNT="${4:-administrator}"
-	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
-	local LOCAL_ADMIN_ACCOUNT="testadmin"
-	local LOCAL_ADMIN_PWD="Univention@99"
-	
+	local ADMIN_ACCOUNT="${4:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
 win.promote_ad('$MODE', '$MODE')
 "
 }
@@ -503,14 +491,10 @@ promote_ad_w2k3r2 ()
 reboot_windows_host ()
 {
 	local HOST="${1:?Missing host address}"
-	local DOMAIN_ADMIN_ACCOUNT="${2:-administrator}"
-	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
-	local LOCAL_ADMIN_ACCOUNT="testadmin"
-	local LOCAL_ADMIN_PWD="Univention@99"
-	
+	local ADMIN_ACCOUNT="${2:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('dummydomain', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
+win=univention.winexe.WinExe('dummydomain', '$ADMIN_ACCOUNT', 'Univention@99', 'Administrator', 'Univention@99', 445, '$HOST')
 win.reboot_remote_win_host()
 "
 }
@@ -519,14 +503,10 @@ shutdown_windows_host ()
 {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN_MODE="${2:-False}"
-	local DOMAIN_ADMIN_ACCOUNT="${3:-administrator}"
-	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
-	local LOCAL_ADMIN_ACCOUNT="testadmin"
-	local LOCAL_ADMIN_PWD="Univention@99"
-	
+	local ADMIN_ACCOUNT="${3:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('dummydomain', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
+win=univention.winexe.WinExe('dummydomain', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
 win.shutdown_remote_win_host($DOMAIN_MODE)
 "
 }
@@ -536,14 +516,10 @@ set_windows_gateway ()
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
 	local GATEWAY="${3:?Missing gateway address}"
-	local DOMAIN_ADMIN_ACCOUNT="${4:-administrator}"
-	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
-	local LOCAL_ADMIN_ACCOUNT="testadmin"
-	local LOCAL_ADMIN_PWD="Univention@99"
-	
+	local ADMIN_ACCOUNT="${4:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('dummydomain', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
 win.set_gateway('$GATEWAY')
 "
 }
@@ -552,18 +528,14 @@ create_ad_user_and_add_the_user_to_the_group ()
 {
 	local HOST="${1:?Missing host address}"
 	local DOMAIN="${2:?Missing domain name}"
-	local NEW_USERNAME="${3:?Missing user name}"
-	local NEW_PASSWORD="${4:?Missing user password}"
-	local NEW_GROUP="${5:?Missing group name}"
-	local DOMAIN_ADMIN_ACCOUNT="${6:-administrator}"
-	local DOMAIN_ADMIN_PWD=$(ucr get tests/domainadmin/pwd)
-	local LOCAL_ADMIN_ACCOUNT="testadmin"
-	local LOCAL_ADMIN_PWD="Univention@99"
-	
+	local NEW_ADMIN_USERNAME="${3:?Missing admin user name}"
+	local NEW_ADMIN_PASSWORD="${4:?Missing admin password}"
+	local NEW_ADMIN_GROUP="${5:?Missing group name}"
+	local ADMIN_ACCOUNT="${6:-administrator}"
 	python -c "
 import univention.winexe
-win=univention.winexe.WinExe('$DOMAIN', '$DOMAIN_ADMIN_ACCOUNT', '$DOMAIN_ADMIN_PWD', '$LOCAL_ADMIN_ACCOUNT', '$LOCAL_ADMIN_PWD', 445, '$HOST')
-win.create_user_and_add_to_group('$NEW_USERNAME', '$NEW_PASSWORD', '$NEW_GROUP')
+win=univention.winexe.WinExe('$DOMAIN', '$ADMIN_ACCOUNT', 'Univention@99', 'testadmin', 'Univention@99', 445, '$HOST')
+win.create_user_and_add_to_group('$NEW_ADMIN_USERNAME', '$NEW_ADMIN_PASSWORD', '$NEW_ADMIN_GROUP')
 "
 }
 
