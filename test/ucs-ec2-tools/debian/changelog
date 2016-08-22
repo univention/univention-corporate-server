@@ -1,3 +1,11 @@
+ucs-ec2-tools (2.0.0-24) unstable; urgency=low
+
+  * Bug #41571: Join a windows client in autotest-203-ucsschool-multiserver-s4
+  * improve readability of winexe parameters in
+    examples/jenkins/utils/utils.sh
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Aug 2016 21:36:44 +0200
+
 ucs-ec2-tools (2.0.0-23) unstable; urgency=medium
 
   * Bug #41771: Self service requires index/verify=no
