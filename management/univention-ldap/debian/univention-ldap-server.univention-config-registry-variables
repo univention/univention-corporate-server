@@ -221,3 +221,9 @@ Description[de]=Startet den LDAP Server automatisch neu, sobald eine neue DH Par
 Description[en]=Automatically restart the LDAP server, after a new DH parameter file has been generated. Disabled by default.
 Type=bool
 Categories=service-ldap
+
+[ldap/limits]
+Description[de]=Zeit- oder Größenlimits anhand des Initiators oder der DN definieren.
+Description[en]=Specify time and size limits based on the operation's initiator or base DN.
+Type=str
+Categories=service-ldap

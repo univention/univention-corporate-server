@@ -91,9 +91,10 @@ for indexcombination in indexcombinations:
 	if not attribs==[] and not indexes==[]:
 		print 'index\t%s %s'%(','.join(attribs),','.join(indexes))
 
-print ''
-print "limits users time.soft=-1 time.hard=-1"
-print ''
+print
+for key in configRegistry.get('ldap/limits', '').split(';'):
+	if key:
+		print "limits %s" % key
 
 if configRegistry['ldap/server/type'] == "master":
 	print 'rootdn\t\t"cn=admin,%(ldap/base)s"' % configRegistry

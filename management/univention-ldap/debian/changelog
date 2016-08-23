@@ -1,3 +1,9 @@
+univention-ldap (13.0.0-2) unstable; urgency=low
+
+  * Bug #34873: added ldap/limits
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Aug 2016 09:28:50 +0200
+
 univention-ldap (13.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
