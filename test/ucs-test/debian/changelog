@@ -1,3 +1,9 @@
+ucs-test (7.0.1-2) unstable; urgency=medium
+
+  * Bug #41571: Fix mixed indentation in 51_samba4/56evaluate_windows_gpo
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Aug 2016 20:02:17 +0200
+
 ucs-test (7.0.1-1) unstable; urgency=medium
 
   * Bug #41571: Adjust 51_samba4/56evaluate_windows_gpo to distinguish
