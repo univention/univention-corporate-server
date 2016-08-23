@@ -1,3 +1,9 @@
+ucs-ec2-tools (2.0.0-25) unstable; urgency=medium
+
+  * Bug #41571: autotest-203-ucsschool-multiserver-s4: install windows tools
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Aug 2016 20:39:16 +0200
+
 ucs-ec2-tools (2.0.0-24) unstable; urgency=low
 
   * Bug #41571: Join a windows client in autotest-203-ucsschool-multiserver-s4
