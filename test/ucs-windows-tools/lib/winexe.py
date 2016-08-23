@@ -337,15 +337,15 @@ class WinExe:
 	def get_gpo_report(self, gpo_name, server):
 		''' returns gpo report for the self.client on the server in the domain '''
 
-		return self.winexec("powershell-get-gpo-report", self.domain, gpo_name, server, domain_mode=True)
+		return self.winexec("univention-get-gpo-report", self.domain, gpo_name, server, domain_mode=True)
 
 
 	def create_gpo(self, gpo_name, server, comment):
 		''' creates a gpo via the self.client on the server in the domain '''
 
-		return self.winexec("powershell-create-gpo", self.domain, gpo_name, server, comment, domain_mode=True)
+		return self.winexec("univention-create-gpo", self.domain, gpo_name, server, comment, domain_mode=True)
 
-	def apply_gpo(self, gpo_name, permission_level, target_name, target_type, server, replace="False"):
+	def Set_GPPermissions(self, gpo_name, permission_level, target_name, target_type, server, replace="False"):
 		'''
 		applies a gpo via the self.client on the server in the domain
 		permission_level: GpoRead|GpoApply|GpoEdit|GpoEditDeleteModifySecurity|None
@@ -353,7 +353,7 @@ class WinExe:
 		replace to overwrite existing GpoPermissions: True|False as a string
 		'''
 
-		return self.winexec("powershell-apply-gpo", self.domain, gpo_name, permission_level, target_name, target_type, server, replace, domain_mode=True)
+		return self.winexec("univention-Set-GPPermissions", self.domain, gpo_name, permission_level, target_name, target_type, server, replace, domain_mode=True)
 
 
 	def gpo_set_reg_value(self, gpo_name, reg_key, value_name, value, value_type, server):
@@ -361,7 +361,7 @@ class WinExe:
 		modifies the gpo_name with reg_key to value_name and value_type with value
 		'''
 
-		return self.winexec("powershell-gpo-set-registry-value", self.domain, gpo_name, reg_key, value_name, value, value_type, server, domain_mode=True)
+		return self.winexec("univention-gpo-set-registry-value", self.domain, gpo_name, reg_key, value_name, value, value_type, server, domain_mode=True)
 
 
 	def link_gpo(self, gpo_name, link_order, target_container, server):
@@ -369,27 +369,27 @@ class WinExe:
 		links a gpo via the self.client on the server in the domain to the target_container
 		'''
 
-		return self.winexec("powershell-link-gpo", self.domain, gpo_name, link_order, target_container, server, domain_mode=True)
+		return self.winexec("univention-link-gpo", self.domain, gpo_name, link_order, target_container, server, domain_mode=True)
 
 	def remove_gpo(self, gpo_name, server):
 		''' removes a gpo via the self.client on the server in the domain '''
 
-		return self.winexec("powershell-remove-gpo", self.domain, gpo_name, server, domain_mode=True)
+		return self.winexec("univention-remove-gpo", self.domain, gpo_name, server, domain_mode=True)
 
 	def add_certificate_authority(self):
 		''' install and setup certificate authority '''
 
-		# this is a lib needed in powershell-add-certificate-authority
-		self.__copy_script(self.command_dir + "/powershell-install-certification-authority.ps1")
+		# this is a lib needed in univention-add-certificate-authority
+		self.__copy_script(self.command_dir + "/univention-install-certification-authority.ps1")
 
-		self.winexec("powershell-add-certificate-authority", self.domain)
+		self.winexec("univention-add-certificate-authority", self.domain)
 		self.winexec("reboot")
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=600)
 
 	def add_gpo_management_console(self):
 		''' install GPMC on self.client and reboot '''
-		self.winexec("powershell-install-gpmc", self.domain)
+		self.winexec("univention-install-gpmc", self.domain)
 		self.winexec("reboot")
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=120)
@@ -433,7 +433,7 @@ class WinExe:
 
 		self.set_local_user_password(self.domain_admin, self.domain_password)
 		self.winexec("firewall-turn-off", domain_mode=False)
-		self.winexec("powershell-promote-ad", self.domain, dmode, forest_mode, domain_mode=False)
+		self.winexec("univention-promote-ad", self.domain, dmode, forest_mode, domain_mode=False)
 		self.wait_until_client_is_gone(timeout=120)
 		self.wait_for_client(timeout=600)
 		if install_root_ca:

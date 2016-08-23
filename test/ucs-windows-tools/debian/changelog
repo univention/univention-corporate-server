@@ -1,3 +1,9 @@
+ucs-windows-tools (4.0.1-0) unstable; urgency=medium
+
+  * Bug #41571: Improve naming of scripts and API methods
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Aug 2016 17:18:23 +0200
+
 ucs-windows-tools (4.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
