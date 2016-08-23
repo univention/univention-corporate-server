@@ -89,13 +89,24 @@ for indexcombination in indexcombinations:
 					attribs.append(attr)
 					found_attribs.append(attr)
 	if not attribs==[] and not indexes==[]:
-		print 'index\t%s %s'%(','.join(attribs),','.join(indexes))
+		# wrap attr list after 2000 chars (ldap.conf max line limit is 2048)
+		line = ''
+		out = 'index\t%s ' + ','.join(indexes)
+		for attrib in attribs:
+			if len(line + ',' + attrib) > 2000:
+				print out % line
+				line = attrib
+			else:
+				line = line + ',' + attrib if line else attrib
+		if line:
+			print out % line
 
 print
 for key in configRegistry.get('ldap/limits', '').split(';'):
 	if key:
 		print "limits %s" % key
 
+print
 if configRegistry['ldap/server/type'] == "master":
 	print 'rootdn\t\t"cn=admin,%(ldap/base)s"' % configRegistry
 elif configRegistry['ldap/server/type'] == "slave":

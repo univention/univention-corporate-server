@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-35) unstable; urgency=low
+
+  * Bug #41648: wrap index lines
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Aug 2016 09:39:24 +0200
+
 univention-ldap (12.1.6-34) unstable; urgency=low
 
   * Bug #39307: added ldap/client/network_timeout
