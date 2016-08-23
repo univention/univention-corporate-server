@@ -1,3 +1,10 @@
+ucs-test (7.0.1-0) unstable; urgency=medium
+
+  * Bug #41571: Adjust 51_samba4/56evaluate_windows_gpo to renamed
+    method in univention.winexe.WinExe
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Aug 2016 17:22:52 +0200
+
 ucs-test (7.0.0-5) unstable; urgency=medium
 
   * 10_s4_connector_rejects: Added more debug (Bug #37570)
