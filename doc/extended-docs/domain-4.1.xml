@@ -577,7 +577,7 @@ ServerName printserver.example.com
         <para>
 		  The command <command>univention-certificate</command> can be used to manage these
 		  certificates, e.g., if it proves necessary to create a certificate for the integration of
-		  an external system.
+		  an external system. The command is executed as <systemitem class="username">root</systemitem> on the &ucsMaster;.
 		</para>
 
         <section id="extdom:ssl:storage">
