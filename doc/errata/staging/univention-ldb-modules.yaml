@@ -9,4 +9,5 @@ desc: |
  * The slave PDC join script now updates some descriptions for the default
    users and groups. This avoids rejects if the Univention S4 Connector is 
    not installed on the DC master in a distributed UCS@school environment.
-bug: [36831]
+ * The slave PDC host account is now removed from the Samba 4 LDAP directory.
+bug: [36831,41167]
