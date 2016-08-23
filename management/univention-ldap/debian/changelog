@@ -1,3 +1,9 @@
+univention-ldap (13.0.0-4) unstable; urgency=low
+
+  * Bug #39307: added ldap/client/network_timeout
+
+ -- Felix Botner <botner@univention.de>  Tue, 23 Aug 2016 09:33:15 +0200
+
 univention-ldap (13.0.0-3) unstable; urgency=low
 
   * Bug #38679: added UCR template for cron.d/univention-ldap-server

@@ -15,3 +15,9 @@ Description[de]=Maximaler SASL Sicherheits-Schicht, benötigt für Verbindung mi
 Description[en]=Maximal SASL security layers. This is needed for Windows AD server connections.
 Type=int
 Categories=service-ldap
+
+[ldap/client/network_timeout]
+Description[de]=Gibt den Timeout (in Sekunden) für das poll(2)/select(2) gefolgt von einem connect(2) an.
+Description[en]=Specifies the timeout (in seconds) after which the poll(2)/select(2) following a connect(2) returns in case of no activity.
+Type=int
+Categories=service-ldap

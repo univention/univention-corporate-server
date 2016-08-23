@@ -4,4 +4,5 @@ Variables: ldap/server/name
 Variables: ldap/server/port
 Variables: ldap/server/addition
 Variables: ldap/sasl/secprops/maxssf
+Variables: ldap/client/network_timeout
 Variables: libnss/.*
