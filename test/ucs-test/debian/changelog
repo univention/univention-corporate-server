@@ -1,3 +1,10 @@
+ucs-test (6.0.36-12) unstable; urgency=medium
+
+  * Bug #41571: Adjust 51_samba4/56evaluate_windows_gpo to distinguish
+    between domain_admin and windows_admin
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Aug 2016 19:56:47 +0200
+
 ucs-test (6.0.36-11) unstable; urgency=medium
 
   * Bug #41571: Adjust 51_samba4/56evaluate_windows_gpo to renamed
