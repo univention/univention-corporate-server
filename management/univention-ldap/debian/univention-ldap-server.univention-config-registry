@@ -86,3 +86,8 @@ Variables: ldap/ppolicy/default
 Type: file
 File: etc/cron.d/univention-ldap
 Variables: ldap/tls/dh/cron
+
+Type: file
+File: etc/cron.d/univention-ldap-server
+Variables: slapd/backup
+Variables: slapd/backup/cron
