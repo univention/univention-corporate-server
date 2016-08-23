@@ -1,3 +1,17 @@
+ucs-ec2-tools (3.0.1-1) unstable; urgency=low
+
+  * Bug #41571: autotest-203-ucsschool-multiserver-s4: install windows tools
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Aug 2016 20:41:29 +0200
+
+ucs-ec2-tools (3.0.1-0) unstable; urgency=low
+
+  * Bug #41571: Join a windows client in autotest-203-ucsschool-multiserver-s4
+  * improve readability of winexe parameters in
+    examples/jenkins/utils/utils.sh
+
+ -- Arvid Requate <requate@univention.de>  Mon, 22 Aug 2016 21:36:44 +0200
+
 ucs-ec2-tools (3.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
