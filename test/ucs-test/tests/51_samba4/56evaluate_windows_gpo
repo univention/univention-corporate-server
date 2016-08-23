@@ -125,25 +125,23 @@ def set_gpo_readonly(gpo_name, target_name, target_type, replace):
 	Adds the 'GpoRead' GpoPermissions to 'gpo_name' for the 'target_name'
 	of the 'target_type'.
 	"""
-	print("\nSetting GPO '%s' for the '%s' '%s' to 'GpoRead'"
+	print("\nSet-GPPermissions on '%s' for '%s' '%s' to 'GpoRead'"
 		  % (gpo_name, target_name, target_type))
 	try:
-		ret_code, stdout, stderr = Win.apply_gpo(gpo_name,
+		ret_code, stdout, stderr = Win.Set_GPPermissions(gpo_name,
 												 'GpoRead',
 												 target_name,
 												 target_type,
 												 hostname,
 												 replace)
 		if ret_code != 0:
-			utils.fail("The change of the GPO permission level on the "
-					   "Windows host has returned code '%s' when 0 is "
-					   "expected. STDOUT: %s STDERR: %s"
-					   % (ret_code, stdout, stderr))
+			utils.fail("Set-GPPermissions on the Windows host "
+					   "returned status '%s' when 0 is expected. "
+					   "STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
 		force_drs_replication()
 		force_drs_replication(direction="out")
 	except univention.winexe.WinExeFailed as exc:
-		utils.fail("An Error occured while changing GPO permission level "
-				   "remotely: %r" % exc)
+		utils.fail("Exception during Set-GPPermissions: %r" % exc)
 
 
 def apply_gpo(gpo_name, target_name, target_type):
@@ -151,22 +149,22 @@ def apply_gpo(gpo_name, target_name, target_type):
 	Applies the 'gpo_name' GPO to the 'target_name' of the 'target_type'
 	by executing a powershell script on Windows host via winexe.
 	"""
-	print("\nApplying GPO '%s' to the '%s' '%s'"
+	print("\nSet-GPPermissions on '%s' for '%s' '%s' to 'GpoApply'"
 		  % (gpo_name, target_name, target_type))
 	try:
-		ret_code, stdout, stderr = Win.apply_gpo(gpo_name,
+		ret_code, stdout, stderr = Win.Set_GPPermissions(gpo_name,
 												 'GpoApply',
 												 target_name,
 												 target_type,
 												 hostname)
 		if ret_code != 0:
-			utils.fail("The application of the GPO on the Windows host "
-					   "returned code '%s' when 0 is expected. "
+			utils.fail("Set-GPPermissions on the Windows host "
+					   "returned status '%s' when 0 is expected. "
 					   "STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
 		force_drs_replication()
 		force_drs_replication(direction="out")
 	except univention.winexe.WinExeFailed as exc:
-		utils.fail("An Error occured while applying GPO remotely: %r" % exc)
+		utils.fail("Exception during Set-GPPermissions: %r" % exc)
 
 
 def check_gpo_exists(gpo_name):
