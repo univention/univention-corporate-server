@@ -6,5 +6,7 @@ src: univention-system-setup
 fix: 9.0.4-36.980.201608191522
 desc: |
  This update addresses the following issue(s):
- * Deactivate motd login message during fast demo mode
+ * The console login message is now deactivated during the fast
+   demo mode. This corrects problems when uploading the license
+   file during an app appliance configuration.
 bug: [42031]
