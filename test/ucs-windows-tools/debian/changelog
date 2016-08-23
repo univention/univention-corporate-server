@@ -1,3 +1,9 @@
+ucs-windows-tools (3.0.1-5) unstable; urgency=medium
+
+  * Bug #41571: Improve naming of scripts and API methods
+
+ -- Arvid Requate <requate@univention.de>  Tue, 23 Aug 2016 17:17:04 +0200
+
 ucs-windows-tools (3.0.1-4) unstable; urgency=low
 
   * added copy_from_windows (Bug #1234) 

@@ -78,7 +78,7 @@ if (Get-Command -Module ADCSDeployment | Where-Object { $_.name -eq "Install-Adc
 }
 else {
 	try {
-		. c:\powershell-install-certification-authority.ps1
+		. c:\univention-install-certification-authority.ps1
 		Install-CertificationAuthority `
 			-CAType "Enterprise Root" `
 			-OverwriteExisting `
