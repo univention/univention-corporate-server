@@ -132,16 +132,18 @@ class Command(JSON_Object):
 	'''Represents a UMCP command handled by a module'''
 	SEPARATOR = '/'
 
-	def __init__(self, name='', method=None):
+	def __init__(self, name='', method=None, prevent_unauthenticated=True):
 		self.name = name
 		if method:
 			self.method = method
 		else:
 			self.method = self.name.replace(Command.SEPARATOR, '_')
+		self.prevent_unauthenticated = prevent_unauthenticated
 
 	def fromJSON(self, json):
 		for attr in ('name', 'method'):
 			setattr(self, attr, json[attr])
+		setattr(self, 'prevent_unauthenticated', json.get('prevent_unauthenticated', True))
 
 
 class Flavor(JSON_Object):
@@ -352,15 +354,12 @@ class XML_Definition(ET.ElementTree):
 		for flavor in self.flavors:
 			if flavor.name == name:
 				return flavor
-		return None
 
 	def get_command(self, name):
 		'''Retrieves details of a command'''
 		for command in self.findall('command'):
 			if command.get('name') == name:
-				cmd = Command(name, command.get('function'))
-				return cmd
-		return None
+				return Command(name, command.get('function'), command.get('prevent_unauthenticated', '1').lower() in ('yes', 'true', '1'))
 
 	def __nonzero__(self):
 		module = self.find('module')
@@ -403,6 +402,14 @@ class Manager(dict):
 			except (xml.parsers.expat.ExpatError, ET.ParseError) as e:
 				RESOURCES.warn('Failed to load module %s: %s' % (filename, str(e)))
 				continue
+
+	def is_command_allowed(self, acls, command, hostname=None, options={}, flavor=None):
+		for module_xmls in self.values():
+			for module_xml in module_xmls:
+				cmd = module_xml.get_command(command)
+				if cmd and not cmd.prevent_unauthenticated:
+					return True
+		return acls.is_command_allowed(command, hostname, options, flavor)
 
 	def permitted_commands(self, hostname, acls):
 		'''Retrieves a list of all modules and commands available
@@ -454,11 +461,11 @@ class Manager(dict):
 				# iterate over all commands in all XML descriptions
 				for module_xml in self[module_id]:
 					for command in module_xml.commands():
-						if acls.is_command_allowed(command, hostname, flavor=flavor.id):
+						cmd = module_xml.get_command(command)
+						if not cmd.prevent_unauthenticated or acls.is_command_allowed(command, hostname, flavor=flavor.id):
 							if not module_id in modules:
 								modules[module_id] = mod
-							cmd = module_xml.get_command(command)
-							if not cmd in modules[module_id].commands:
+							if cmd not in modules[module_id].commands:
 								modules[module_id].commands.append(cmd)
 							at_least_one_command = True
 

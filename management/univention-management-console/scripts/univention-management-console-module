@@ -67,7 +67,7 @@ if __name__ == '__main__':
 	default_debug = MODULE_DEBUG_LEVEL
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
 					   help = 'if given then debugging is activated and set to the specified level [default: %default]' )
-	parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-module', help = 'specifies an alternative log file [default: %default-<module name>.log]' )
+	parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-module-%(module)s', help = 'specifies an alternative log file [default: %default-<module name>.log]' )
 
 	( options, arguments ) = parser.parse_args()
 
@@ -86,7 +86,7 @@ if __name__ == '__main__':
 		notifier.init( notifier.QT )
 
 	# init logging
-	debug_fd = log_init( '%s-%s' % ( options.logfile, options.module ), options.debug )
+	debug_fd = log_init(options.logfile % {'module': options.module}, options.debug)
 	# no notifier logging
 	nflog.instance.handlers = []
 	# to activate notifier logging

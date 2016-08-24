@@ -61,7 +61,6 @@ used ::
 from __future__ import absolute_import
 
 import os
-import sys
 import ldap
 import cPickle
 import itertools
@@ -71,7 +70,6 @@ from fnmatch import fnmatch
 from .config import ucr
 from .log import ACL
 
-import univention.admin.modules
 import univention.admin.handlers.computers.domaincontroller_master as dc_master
 import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
 import univention.admin.handlers.computers.domaincontroller_slave as dc_slave
@@ -295,40 +293,34 @@ class ACLs(object):
 		ACL.process('')
 
 	def _read_from_file(self, username):
-		filename = os.path.join(ACLs.CACHE_DIR, username)
+		filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
 
 		try:
-			file = open(filename, 'r')
-		except IOError:
+			with open(filename, 'r') as fd:
+				acls = cPickle.load(fd)
+		except EnvironmentError as exc:
+			ACL.process('Could not load ACLs of %r: %s' % (username, exc,))
 			return False
 
-		lines = file.read()
-		acls = cPickle.loads(lines)
-		file.close()
-
 		self.acls = []
-		# check old format (< UCS 3.0)
-		if isinstance(acls, dict):
-			for rule in acls['allow']:
-				rule = Rule(rule)
-				if not rule in self.acls:
-					rule.flavor = None
-					self.acls.append(rule)
-		else:  # new format
-			for rule in acls:
-				if not rule in self.acls:
-					if not 'flavor' in rule:
-						rule['flavor'] = None
-					if not 'options' in rule:
-						rule['options'] = {}
-					self.acls.append(rule)
+		for rule in acls:
+			if rule not in self.acls:
+				if 'flavor' not in rule:
+					rule['flavor'] = None
+				if 'options' not in rule:
+					rule['options'] = {}
+				self.acls.append(rule)
 
 	def _write_to_file(self, username):
-		filename = os.path.join(ACLs.CACHE_DIR, username)
+		filename = os.path.join(ACLs.CACHE_DIR, username.replace('/', ''))
 
-		file = os.open(filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600)
-		os.write(file, cPickle.dumps(self.acls))
-		os.close(file)
+		try:
+			file = os.open(filename, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600)
+			os.write(file, cPickle.dumps(self.acls))
+			os.close(file)
+		except EnvironmentError as exc:
+			ACL.error('Could not write ACL file: %s' % (exc,))
+			return False
 
 	def json(self):
 		"""Returns the ACL definitions in a JSON compatible form."""
@@ -398,40 +390,3 @@ class LDAP_ACLs (ACLs):
 			result.append(g.next())
 
 		self.acls[:] = result
-
-
-if __name__ == '__main__':
-	import univention
-	import univention.uldap
-	import getpass
-
-	username = raw_input('Username [Administrator]: ')
-	if not username:
-		username = 'Administrator'
-	password = getpass.getpass('Password [univention]: ')
-	if not password:
-		password = 'univention'
-
-	lo = univention.uldap.access(host=ucr['ldap/server/name'], base=ucr['ldap/base'], start_tls=2)
-	userdn = lo.searchDn(filter='uid=%s' % username)
-	if not userdn:
-		print '\nError: user not found'
-		sys.exit(1)
-
-	userdn = userdn[0]
-
-	try:
-		lo = univention.uldap.access(host=ucr['ldap/server/name'], base=ucr['ldap/base'], binddn=userdn, bindpw=password, start_tls=2)
-	except ldap.INVALID_CREDENTIALS:
-		print '\nError: invalid credentials'
-		sys.exit(1)
-
-	acls = LDAP_ACLs(lo, username, ucr['ldap/base'])
-
-	print 'is baseconfig/set/foo allowed on this host?: %s' % acls.is_command_allowed('baseconfig/set/foo', ucr['hostname'])
-	print 'is baseconfig/set     allowed on this host with data ldap/*?: %s' % acls.is_command_allowed('baseconfig/set', ucr['hostname'], {'key': 'ldap/*'})
-	print 'is baseconfig/set     allowed on this host with data net/bla?: %s' % acls.is_command_allowed('baseconfig/set', ucr['hostname'], {'key': 'net/bla'})
-	print 'is baseconfig/set     allowed on this host with data interfaces/eth1/address?: %s' % acls.is_command_allowed('baseconfig/set', ucr['hostname'], {'key': 'interfaces/eth1/address'})
-	print 'is baseconfig/get     allowed on this host?: %s' % acls.is_command_allowed('baseconfig/get', ucr['hostname'])
-	print 'is cups/view          allowed on this host?: %s' % acls.is_command_allowed('cups/view', ucr['hostname'])
-	print 'is foo/bar            allowed on this host?: %s' % acls.is_command_allowed('foo/bar', ucr['hostname'])

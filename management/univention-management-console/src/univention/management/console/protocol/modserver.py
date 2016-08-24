@@ -37,7 +37,7 @@ the UMC server class
 """
 
 from .server import Server
-from .message import Response, Message, IncompleteMessageError, ParseError, UnknownCommandError
+from .message import Response, Message, IncompleteMessageError, ParseError
 from .definitions import (
 	BAD_REQUEST_NOT_FOUND, BAD_REQUEST_INVALID_OPTS,
 	MODULE_ERR_INIT_FAILED, SUCCESS, RECV_BUFFER_SIZE, status_description
@@ -174,13 +174,13 @@ class ModuleServer(Server):
 				self.__buffer = msg.parse(self.__buffer)
 				MODULE.info("Received request %s" % msg.id)
 				self.handle(msg)
-		except IncompleteMessageError as e:
+		except IncompleteMessageError:
 			MODULE.info('Failed to parse incomplete message')
-		except (ParseError, UnknownCommandError) as e:
-			MODULE.error('Failed to parse message: %s' % str(e))
+		except ParseError as exc:
+			MODULE.error('Failed to parse message: %s' % (exc,))
 			res = Response(msg)
 			res.id = -1
-			res.status = e.args[0]
+			res.status = exc.args[0]
 			self.response(res)
 
 		return True

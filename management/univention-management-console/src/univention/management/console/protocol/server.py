@@ -35,31 +35,22 @@
 Defines the basic class for an UMC server.
 """
 
-# python packages
-import fcntl
 import os
+import fcntl
 import socket
-import traceback
 import resource
+import traceback
 
-# external packages
 import notifier
 import notifier.signals as signals
 from OpenSSL import SSL
 
-# i18n
 from univention.lib.i18n import Translation
 _ = Translation('univention.management.console').translate
 
-# internal packages
-from .message import Message, Response, IncompleteMessageError, ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError, MIMETYPE_JSON
-from .session import State, Processor
-from .definitions import (
-	BAD_REQUEST_INVALID_ARGS, SUCCESS,
-	BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_NOT_FOUND,
-	BAD_REQUEST_UNAUTH, RECV_BUFFER_SIZE, SERVER_ERR, status_description,
-	SUCCESS_SHUTDOWN, UMCP_ERR_UNPARSABLE_BODY
-)
+from .message import Message, IncompleteMessageError, ParseError
+from .session import SessionHandler
+from .definitions import RECV_BUFFER_SIZE
 
 from ..resources import moduleManager, categoryManager
 from ..log import CORE, CRYPT, RESOURCES
@@ -88,7 +79,7 @@ class MagicBucket(object):
 		"""
 		CORE.info('Established connection: %s' % client)
 		state = State(client, socket)
-		state.signal_connect('authenticated', self._authenticated)
+		state.session.signal_connect('success', notifier.Callback(self._response, state))
 		self.__states[socket] = state
 		notifier.socket_add(socket, self._receive)
 
@@ -97,26 +88,12 @@ class MagicBucket(object):
 		# remove all sockets
 		for sock, state in self.__states.items():
 			CORE.info('Shutting down connection %s' % sock)
-			state.shutdown()
+			state.session.shutdown()
 			notifier.socket_remove(sock)
 		# delete states
 		for state in self.__states.values():
 			del state
 		self.__states = {}
-
-	def _authenticated(self, result, state, request):
-		"""Signal callback: Invoked when a authentication has been
-		tried. This function generates the UMCP response.
-
-		:param bool result: True if the authentication was successful
-		:param State state: the state object for the connection (see also :class:`~univention.management.console.protocol.session.State`)
-		"""
-		response = Response(request)
-		response.status = result.status
-		if result.message:
-			response.message = result.message
-		response.result = result.result
-		self._response(response, state)
 
 	def _receive(self, socket):
 		"""Signal callback: Handles incoming data. Processes SSL events
@@ -132,8 +109,11 @@ class MagicBucket(object):
 		except SSL.WantReadError:
 			# this error can be ignored (SSL need to do something)
 			return True
-		except (SSL.SysCallError, SSL.Error) as error:
-			CRYPT.warn('SSL error in _receive: %s. Probably the socket was closed by the client.' % str(error))
+		except (SSL.SysCallError, SSL.Error) as exc:
+			if exc.args and exc.args[0] == -1:
+				CRYPT.warn('The socket was closed by the client.')
+			else:
+				CRYPT.error('SSL error in _receive: %s.' % (exc,))
 			self._cleanup(socket)
 			return False
 
@@ -147,79 +127,25 @@ class MagicBucket(object):
 			return False
 		state.buffer += data
 
-		msg = None
-		try:
-			while state.buffer:
-				msg = Message()
+		while state.buffer:
+			msg = Message()
+			try:
 				state.buffer = msg.parse(state.buffer)
-				self._handle(state, msg)
-		except (KeyboardInterrupt, SystemExit, SyntaxError):
-			raise
-		except IncompleteMessageError as e:
-			CORE.info('MagicBucket: incomplete message: %s' % str(e))
-		except (ParseError, UnknownCommandError, InvalidArgumentsError, InvalidOptionsError) as e:
-			state.requests[msg.id] = msg
-			res = Response(msg)
-			if isinstance(e, ParseError):
-				CORE.process('Parser error: %s' % str(e))
-				res.status = UMCP_ERR_UNPARSABLE_BODY
-			elif isinstance(e, UnknownCommandError):
-				CORE.process('Unknown Command message: %s' % str(e))
-				res.status = BAD_REQUEST_NOT_FOUND
-			elif isinstance(e, InvalidArgumentsError):
-				CORE.process('Invalid arguments to UMCP command: %s' % str(e))
-				res.status = BAD_REQUEST_INVALID_ARGS
-			elif isinstance(e, InvalidOptionsError):
-				CORE.process('Invalid options to UMCP command %s: %r, Exception: %s' % (msg.command, msg.options, e, ))
-				res.status = BAD_REQUEST_INVALID_OPTS
+				state.requests[msg.id] = msg
+			except (KeyboardInterrupt, SystemExit, SyntaxError):
+				raise  # let the UMC-server crash/exit
+			except IncompleteMessageError as exc:
+				CORE.info('MagicBucket: incomplete message: %s' % (exc,))
+				return True
+			except ParseError as exc:
+				CORE.process('Parse error: %r' % (exc,))
+				state.session.execute('parse_error', msg)
+				return True
 			else:
-				res.status = SERVER_ERR
-			res.message = status_description(res.status)
-			self._response(res, state)
-		except:
-			CORE.error('Error during handling a request: %s' % (traceback.format_exc(),))
-			res = Response(msg)
-			res.status = 500
-			res.message = traceback.format_exc()
-			self._response(res, state)
+				state.session.execute('handle', msg)
+				return True
 
 		return True
-
-	def _handle(self, state, msg):
-		"""Ensures that commands are only passed to the processor if a
-		successful authentication has been completed.
-
-		:param State state: state object for the connection
-		:param Request msg: UMCP request
-
-		valid commands are redirected to the processor.
-		"""
-		state.requests[msg.id] = msg
-		CORE.info('Incoming request of type %s' % msg.command)
-		if not state.authenticated and msg.command != 'AUTH':
-			res = Response(msg)
-			res.status = BAD_REQUEST_UNAUTH
-			self._response(res, state)
-		elif msg.command == 'AUTH':
-			Server.reload()
-			try:
-				state.authenticate(msg)
-			except (TypeError, KeyError):
-				response = Response(msg)
-				response.status = 400
-				self._response(response, state)
-		elif msg.command == 'GET' and 'newsession' in msg.arguments:
-			CORE.info('Renewing session')
-			state.processor = None
-			res = Response(msg)
-			res.status = SUCCESS
-			self._response(res, state)
-		else:
-			# inform processor
-			if not state.processor:
-				state.processor = Processor(**state.credentials())
-				state.processor.signal_connect('success', notifier.Callback(self._response, state))
-			state.processor.request(msg)
 
 	def _do_send(self, socket):
 		try:
@@ -249,9 +175,8 @@ class MagicBucket(object):
 		''' Send UMCP response to client. If the status code is 250 the
 		module process is asking for exit. This method forfills the
 		request.'''
-		# FIXME: error handling is missing!!
-		if not msg.id in state.requests and msg.id != -1:
-			CORE.info('The given response is invalid or not known (%s)' % msg.id)
+		if msg.id not in state.requests and msg.id != -1:
+			CORE.info('The given response is invalid or not known (%s)' % (msg.id,))
 			return
 
 		try:
@@ -273,19 +198,15 @@ class MagicBucket(object):
 		except (SSL.SysCallError, SSL.Error, socket.error) as error:
 			CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
 			self._cleanup(state.socket)
-			return
-
-		# module process wants to exit
-		if msg.mimetype == MIMETYPE_JSON and msg.status == SUCCESS_SHUTDOWN:
-			module_name = state.processor.get_module_name(msg.arguments[0])
-			if module_name:
-				state.processor._purge_child(module_name)
+		except: # close the connection to the client. we can't do anything else
+			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
+			self._cleanup(state.socket)
 
 	def _cleanup(self, socket):
 		if socket not in self.__states:
 			return
 
-		self.__states[socket].shutdown()
+		self.__states[socket].session.shutdown()
 
 		notifier.socket_remove(socket)
 		self.__states[socket].__del__()
@@ -458,3 +379,19 @@ class Server(signals.Provider):
 		categoryManager.load()
 		RESOURCES.info('Reloading UCR variables')
 		ucr.load()
+
+
+class State(object):
+	"""Holds information about the state of an active session
+
+	:param str client: IP address + port
+	:param fd socket: file descriptor or socket object
+	"""
+
+	def __init__(self, client, socket):
+		self.client = client
+		self.socket = socket
+		self.buffer = ''
+		self.requests = {}
+		self.resend_queue = []
+		self.session = SessionHandler()

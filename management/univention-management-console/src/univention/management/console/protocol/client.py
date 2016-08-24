@@ -39,7 +39,7 @@ import fcntl
 
 from univention.lib.i18n import Translation
 
-from .message import Request, Response, IncompleteMessageError, UnknownCommandError, ParseError
+from .message import Request, Response, IncompleteMessageError, ParseError
 from .definitions import RECV_BUFFER_SIZE, BAD_REQUEST_AUTH_FAILED, SERVER_ERR_MODULE_DIED, SUCCESS, status_description
 from ..log import CORE, PROTOCOL
 from OpenSSL import SSL
@@ -49,10 +49,6 @@ import notifier.signals as signals
 
 
 class UnknownRequestError(Exception):
-	pass
-
-
-class NotAuthenticatedError(Exception):
 	pass
 
 
@@ -92,10 +88,10 @@ class Client(signals.Provider, Translation):
 			self.signal_emit('authenticated', False, response)
 		return ok
 
-	def __init__(self, servername='localhost', port=6670, unix=None, ssl=True, auth=True):
+	def __init__(self, servername='localhost', port=6670, unix=None, ssl=True):
 		'''Initialize a socket-connection to the server.'''
 		signals.Provider.__init__(self)
-		self.__authenticated = (not auth)
+		self.__authenticated = False
 		self.__auth_id = None
 		self.__ssl = ssl
 		self.__unix = unix
@@ -263,11 +259,7 @@ class Client(signals.Provider, Translation):
 		"""Sends an UMCP request to the UMC server
 
 		:param Request msg: the UMCP request to send
-		:raises: :class:`.NotAuthenticatedError`
 		"""
-		if not self.__authenticated and msg.command != 'AUTH':
-			raise NotAuthenticatedError()
-
 		PROTOCOL.info('Sending UMCP %s REQUEST %s' % (msg.command, msg.id))
 		if self.__ssl and not self.__unix:
 			sock = self.__socket
@@ -339,7 +331,7 @@ class Client(signals.Provider, Translation):
 		except IncompleteMessageError:
 			self.__buffer = recv
 			# waiting for the rest
-		except (ParseError, UnknownCommandError) as exc:
+		except ParseError as exc:
 			CORE.warn('Client: _recv: error parsing message: %s' % (exc,))
 			self.signal_emit('error', exc)
 
@@ -348,6 +340,7 @@ class Client(signals.Provider, Translation):
 	def _handle(self, response):
 		PROTOCOL.info('Received UMCP RESPONSE %s' % response.id)
 		if response.command == 'AUTH' and response.id == self.__auth_id:
+			self.__authenticated = False
 			if response.status == SUCCESS:
 				self.__authenticated = True
 				self.__unfinishedRequests.pop(response.id)
@@ -356,8 +349,7 @@ class Client(signals.Provider, Translation):
 			self.signal_emit('authenticated', self.__authenticated, response)
 		elif response.id in self.__unfinishedRequests:
 			self.signal_emit('response', response)
-			if response.is_final():
-				self.__unfinishedRequests.pop(response.id)
+			self.__unfinishedRequests.pop(response.id)
 		else:
 			CORE.warn('Client: _handle: received an unknown response: %s' % (response.id,))
 			self.signal_emit('error', UnknownRequestError())

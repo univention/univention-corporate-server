@@ -63,19 +63,3 @@ Server, client and session
 	:members:
 	:undoc-members:
 	:show-inheritance:
-
-Version
-=======
-
-.. automodule:: univention.management.console.protocol.version
-	:members:
-	:undoc-members:
-	:show-inheritance:
-
-Definitions
-===========
-
-.. automodule:: univention.management.console.protocol.definitions
-	:members:
-	:undoc-members:
-	:show-inheritance:

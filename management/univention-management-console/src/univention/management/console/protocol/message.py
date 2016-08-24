@@ -47,17 +47,12 @@ try:
 except:
 	import json
 
-from .definitions import (
-	command_has_arguments, command_is_known, SUCCESS_PARTIAL, UMCP_ERR_ARGS_MISSMATCH,
-	UMCP_ERR_UNKNOWN_COMMAND, UMCP_ERR_UNPARSABLE_BODY, UMCP_ERR_UNPARSABLE_HEADER
-)
+from .definitions import UMCP_ERR_UNPARSABLE_BODY, UMCP_ERR_UNPARSABLE_HEADER
 from univention.management.console.log import PARSER, PROTOCOL
 
 from univention.lib.i18n import Translation
 
 _ = Translation('univention.management.console').translate
-
-# Exceptions
 
 
 class ParseError(Exception):
@@ -67,17 +62,6 @@ class ParseError(Exception):
 class IncompleteMessageError(Exception):
 	pass
 
-
-class UnknownCommandError(Exception):
-	pass
-
-
-class InvalidArgumentsError(Exception):
-	pass
-
-
-class InvalidOptionsError(Exception):
-	pass
 
 # Constants
 MIMETYPE_JSON = 'application/json'
@@ -208,7 +192,7 @@ class Message(object):
 		corresponding object. If the data contains more than the message
 		the rest of the data is returned.
 
-		:raises: :class:`.ParseError`, :class:`.UnknownCommandError`, :class:`.InvalidArgumentsError`
+		:raises: :class:`.ParseError`
 		"""
 		header, nl, body = msg.partition('\n')
 
@@ -233,17 +217,8 @@ class Message(object):
 			raise ParseError(UMCP_ERR_UNPARSABLE_HEADER, _('Invalid length information'))
 		self.command = groups['command']
 
-		# known command?
-		if not command_is_known(self.command):
-			PROTOCOL.process('Unknown UMCP command: %s' % self.command)
-			raise UnknownCommandError(UMCP_ERR_UNKNOWN_COMMAND, _('Unknown UMCP command: %s') % self.command)
-
 		if groups.get('arguments'):
-			if command_has_arguments(self.command):
-				self.arguments = groups['arguments'].split(' ')
-			else:
-				PROTOCOL.process("The command '%s' do not have any arguments" % self.command)
-				raise InvalidArgumentsError(UMCP_ERR_ARGS_MISSMATCH, _("The command '%s' do not have any arguments") % self.command)
+			self.arguments = groups['arguments'].split(' ')
 
 		# invalid/missing message body?
 		current_length = len(body)
@@ -267,10 +242,6 @@ class Message(object):
 				PARSER.error('Error parsing UMCP message body: %s' % (exc,))
 				raise ParseError(UMCP_ERR_UNPARSABLE_BODY, _('error parsing UMCP message body'))
 
-			for key in ('options', ):
-				if key in self.body:
-					setattr(self, key[1:], self.body[key])
-
 		PARSER.info('UMCP %(type)s %(id)s parsed successfully' % groups)
 
 		return remains
@@ -281,23 +252,8 @@ class Request(Message):
 	'''Represents an UMCP request message'''
 
 	def __init__(self, command, arguments=[], options={}, mime_type=MIMETYPE_JSON):
-		if not command_is_known(command):
-			PROTOCOL.process("'%s' is not a valid UMCP command" % command)
-			raise UnknownCommandError(_("'%s' is not a valid UMCP command") % command)
 		Message.__init__(self, Message.REQUEST, command, arguments=arguments, options=options, mime_type=mime_type)
 		self._create_id()
-
-
-class Command(Request):
-
-	def __init__(self, arguments=[], options={}, mime_type=MIMETYPE_JSON):
-		Request.__init__(self, 'COMMAND', arguments, options)
-
-
-class SimpleCommand(Request):
-
-	def __init__(self, command, options={}, mime_type=MIMETYPE_JSON):
-		Request.__init__(self, 'COMMAND', [command], options)
 
 
 class Response(Message):
@@ -317,9 +273,6 @@ class Response(Message):
 					self.status = request.status
 		elif data:
 			self.parse(data)
-
-	def is_final(self):
-		return (self._id and (self.mimetype != MIMETYPE_JSON or self.status != SUCCESS_PARTIAL))
 
 	recreate_id = None
 
@@ -346,6 +299,7 @@ class Response(Message):
 		if isinstance(body, dict) and 'options' in body:
 			del body['options']
 		return Message._formattedMessage(self._id, self._type, self.mimetype, self.command, body, self.arguments)
+
 
 if __name__ == '__main__':
 	# encode

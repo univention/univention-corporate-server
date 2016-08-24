@@ -1,3 +1,9 @@
+univention-management-console (9.0.2-1) unstable; urgency=medium
+
+  * Bug #42114: make it possible to execute commands without authentication
+
+ -- Florian Best <best@univention.de>  Wed, 24 Aug 2016 20:59:31 +0200
+
 univention-management-console (9.0.1-1) unstable; urgency=medium
 
   * Bug #39731: Add HTTP metadata to UMCP messages

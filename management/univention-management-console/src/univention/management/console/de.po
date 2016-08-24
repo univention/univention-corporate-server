@@ -271,11 +271,11 @@ msgstr "Bitte warten, bis die Aktion durchgeführt wurde"
 
 #: univention/management/console/base.py:184
 msgid ""
-"Restart the LDAP service on the domaincontroller master either via \"invoke-"
-"rc.d slapd restart\" on command line or with the UMC module \"System services"
+"Restart the LDAP service on the domaincontroller master either via \"service"
+" slapd restart\" on command line or with the UMC module \"System services"
 "\""
 msgstr ""
-"Starten Sie den LDAP-Dienst entweder über \"invoke-rc.d slapd restart\" per "
+"Starten Sie den LDAP-Dienst entweder über \"service slapd restart\" per "
 "Kommandozeile oder mit dem UMC Modul \"Systemdienste\" auf dem "
 "Domänencontroller Master neu"
 

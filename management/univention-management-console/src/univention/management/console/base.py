@@ -181,7 +181,7 @@ class LDAP_ServerDown(UMC_Error):
 		else:
 			yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (self._fqdn,)
 			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domaincontroller master or free some resources')
-		yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
+		yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "service slapd restart" on command line or with the UMC module "System services"')
 		if self._updates_available:
 			yield ' * ' + _('Install the latest software updates')
 		#TODO: reuse but not in LDAP_ServerDown

@@ -37,7 +37,6 @@ and the communication with the module processes"""
 import base64
 import ldap
 import os
-import sys
 import time
 import json
 import traceback
@@ -48,7 +47,6 @@ import errno
 import ldap.filter
 
 import notifier
-import notifier.signals as signals
 import notifier.popen as popen
 from notifier import threads
 
@@ -57,85 +55,23 @@ import univention.admin.uexceptions as udm_errors
 
 from univention.lib.i18n import I18N_Error
 
-from .message import Response, Request, MIMETYPE_JSON, InvalidOptionsError
+from .message import Response, Request, MIMETYPE_JSON
 from .client import Client, NoSocketError
 from .version import VERSION
-from .definitions import (SUCCESS, BAD_REQUEST_INVALID_OPTS, BAD_REQUEST_INVALID_ARGS,
-	status_description, BAD_REQUEST_UNAVAILABLE_LOCALE, BAD_REQUEST_FORBIDDEN,
-	BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED)
+from .definitions import status_description, BAD_REQUEST_FORBIDDEN, BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED, UMCP_ERR_UNPARSABLE_BODY
 
 from ..resources import moduleManager, categoryManager
 from ..auth import AuthHandler
 from ..pam import PamAuth, PasswordChangeFailed
-from ..acl import LDAP_ACLs
+from ..acl import LDAP_ACLs, ACLs
 from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
 from ..base import Base, UMC_Error
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
-from ..modules.decorators import sanitize
+from ..modules.decorators import sanitize, simple_response
 
 TEMPUPLOADDIR = '/var/tmp/univention-management-console-frontend'
-
-
-class State(signals.Provider):
-
-	"""Holds information about the state of an active session
-
-	:param str client: IP address + port
-	:param fd socket: file descriptor or socket obbject
-	"""
-
-	def __init__(self, client, socket):
-		signals.Provider.__init__(self)
-		self.__auth = AuthHandler()
-		self.__auth.signal_connect('authenticated', self._authenticated)
-		self.client = client
-		self.socket = socket
-		self.processor = None
-		self.authenticated = False
-		self.__credentials = None
-		self.buffer = ''
-		self.requests = {}
-		self.signal_new('authenticated')
-		self.resend_queue = []
-		self.running = False
-
-	def shutdown(self):
-		if self.processor is not None:
-			self.processor.shutdown()
-
-	def __del__(self):
-		CORE.info('The session is shutting down')
-		if self.processor:
-			self.processor.__del__()
-		del self.processor
-		self.processor = None
-
-	def _authenticated(self, result, request):
-		self.authenticated = bool(result)
-		self.signal_emit('authenticated', result, self, request)
-		if not self.authenticated:
-			return
-		if self.processor is not None and self.processor.auth_type is None and result.credentials['auth_type']:
-			return # don't downgrade a regular login to e.g. a SAML login
-		self.__credentials = result.credentials
-		if self.processor is None:
-			return
-		# a second authentication request must cause an update of the password in all modules
-		self.processor.set_credentials(**self.credentials())
-		try:
-			self.processor.update_module_passwords()
-		except Exception:  # don't let it crash here until we catch exceptions on a higher layer
-			CORE.error('Failed to update module passwords: %s' % (traceback.format_exc(),))
-
-	def authenticate(self, msg):
-		"""Initiates an authentication process"""
-		self.__auth.authenticate(msg)
-
-	def credentials(self):
-		"""Returns the credentials"""
-		return self.__credentials
 
 
 class ModuleProcess(Client):
@@ -161,7 +97,7 @@ class ModuleProcess(Client):
 			self.__locale = locale
 		else:
 			self.__locale = None
-		Client.__init__(self, unix=socket, ssl=False, auth=False)
+		Client.__init__(self, unix=socket, ssl=False)
 		self.signal_connect('response', self._response)
 		CORE.process('running: %s' % args)
 		self.__process = popen.RunIt(args, stdout=False)
@@ -192,8 +128,6 @@ class ModuleProcess(Client):
 	def _response(self, msg):
 		# these responses must not be send to the external client as
 		# this commands were generated within the server
-		if msg.command == 'SET' and 'commands/permitted' in msg.arguments:
-			return
 		if msg.command == 'EXIT' and 'internal' in msg.arguments:
 			return
 
@@ -204,7 +138,7 @@ class ModuleProcess(Client):
 		return self.__pid
 
 
-class Processor(Base):
+class ProcessorBase(Base):
 
 	"""Implements a proxy and command handler. It handles all internal
 	UMCP commands and passes the commands for a module to the
@@ -214,27 +148,17 @@ class Processor(Base):
 	:param str password: password of the user
 	"""
 
-	def __init__(self, username, password, auth_type):
+	def __init__(self, username=None, password=None, auth_type=None):
 		Base.__init__(self, 'univention-management-console')
-		self.set_credentials(username, password, auth_type)
-
-		self.__udm_users_module_initialised = False
+		self.__processes = {}
+		self.__killtimer = {}
 		self.__command_list = None
 		self.i18n = I18N_Manager()
 		self.i18n['umc-core'] = I18N()
 
-		# stores the module processes [ modulename ] = <>
-		self.__processes = {}
-
-		self.__killtimer = {}
-
+		self.set_credentials(username, password, auth_type)
 		self._init_ldap_connection()
-		self._search_user_dn()
-
-		# read the ACLs
 		self._reload_acls_and_permitted_commands()
-
-		self.signal_new('response')
 
 	def set_credentials(self, username, password, auth_type):
 		self.username = username
@@ -244,7 +168,11 @@ class Processor(Base):
 	def _search_user_dn(self):
 		if self.lo is not None:
 			# get the LDAP DN of the authorized user
-			ldap_dn = self.lo.searchDn('(uid=%s)' % ldap.filter.escape_filter_chars(self._username))
+			try:
+				ldap_dn = self.lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self._username,)))
+			except (ldap.LDAPError, udm_errors.base):
+				ldap_dn = None
+				CORE.error('Could not get uid for %r: %s' % (self._username, traceback.format_exc()))
 			if ldap_dn:
 				self._user_dn = ldap_dn[0]
 				CORE.info('The LDAP DN for user %s is %s' % (self._username, self._user_dn))
@@ -253,8 +181,11 @@ class Processor(Base):
 			CORE.error('The LDAP DN for user %s could not be found (lo=%r)' % (self._username, self.lo))
 
 	def _reload_acls_and_permitted_commands(self):
-		self.acls = LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
+		self._reload_acls()
 		self.__command_list = moduleManager.permitted_commands(ucr['hostname'], self.acls)
+
+	def _reload_acls(self):
+		self.acls = LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
 
 	def _reload_i18n(self):
 		self.i18n.set_locale(str(self.i18n.locale))
@@ -283,7 +214,9 @@ class Processor(Base):
 			del process
 		if self.lo:
 			try:
-				self.lo.lo.lo.unbind()  # close the connection to LDAP
+				self.lo.lo.lo.unbind_s()  # close the connection to LDAP
+			except ldap.LDAPError:
+				pass
 			finally:
 				self.lo = None
 
@@ -306,6 +239,11 @@ class Processor(Base):
 			method = 'handle_request_unknown'
 
 		self.execute(method, msg)
+
+	def error_handling(self, etype, exc, etraceback):
+		super(ProcessorBase, self).error_handling(etype, exc, etraceback)
+		if isinstance(exc, UMC_Error) and exc.msg is None:
+			exc.args = (status_description(exc.status),)
 
 	def _purge_child(self, module_name):
 		if module_name in self.__processes:
@@ -351,218 +289,186 @@ class Processor(Base):
 		:param Request msg: UMCP request
 		"""
 		res = Response(msg)
-		res.status = SUCCESS  # Ok
 		res.body['version'] = VERSION
-		self.result(res)
-
-	CHANGELOG_VERSION = re.compile('^[^(]*\(([^)]*)\).*')
+		self.finished(msg.id, res)
 
 	def handle_request_get(self, msg):
-		"""Handles a GET request. The following possible variants are supported:
+		"""Handles a GET request"""
 
-		modules/list
-			Returns a list of all available UMC modules within the current session
+		for arg in msg.arguments:
+			method = {
+				'ucr': self.handle_request_get_ucr,
+				'info': self.handle_request_get_info,
+				'modules/list': self.handle_request_get_modules,
+				'modules': self.handle_request_get_modules,
+				'categories/list': self.handle_request_get_categories,
+				'categories': self.handle_request_get_categories,
+				'user/preferences': self.handle_request_get_user_preferences,
+				'hosts/list': self.handle_request_get_hosts,
+				'hosts': self.handle_request_get_hosts,
+			}.get(arg)
+			if method:
+				self.finished(msg.id, method(msg))
+				return
+		raise UMC_Error(status=BAD_REQUEST_NOT_FOUND)
 
-		categories/list
-			Returns a list of all known categories
+	@sanitize(StringSanitizer(required=True))
+	def handle_request_get_ucr(self, request):
+		ucr.load()
+		result = {}
+		for value in request.options:
+			if value.endswith('*'):
+				value = value[:-1]
+				result.update(dict((x, ucr.get(x)) for x in ucr.keys() if x.startswith(value)))
+			else:
+				result[value] = ucr.get(value)
+		return result
 
-		user/preferences
-			Returns the user preferences as a dict.
-
-		:param Request msg: UMCP request
-		"""
-
-		res = Response(msg)
-		res.status = SUCCESS
-
-		if 'ucr' in msg.arguments:
-			ucr.load()
-			res.result = {}
-			if not isinstance(msg.options, (list, tuple)):
-				raise InvalidOptionsError
-			for value in msg.options:
-				try:
-					if not value:
-						# make sure that 'value' is non-empty
-						CORE.warn('Empty UCR variable requested. Ignoring value...')
-						continue
-					if value.endswith('*'):
-						value = value[: -1]
-						for var in filter(lambda x: x.startswith(value), ucr.keys()):
-							res.result[var] = ucr.get(var)
-					else:
-						res.result[value] = ucr.get(value)
-				except (TypeError, IndexError, AttributeError):
-					CORE.warn('Invalid UCR variable requested: %s' % (value,))
-					res.status = BAD_REQUEST_INVALID_OPTS
-					res.message = self._('Invalid UCR variable requested: %s') % (value,)
-		elif 'info' in msg.arguments:
-			ucr.load()
-			res.result = {}
-			try:
-				fd = gzip.open('/usr/share/doc/univention-management-console-server/changelog.Debian.gz')
+	CHANGELOG_VERSION = re.compile('^[^(]*\(([^)]*)\).*')
+	def handle_request_get_info(self, request):
+		ucr.load()
+		result = {}
+		try:
+			with gzip.open('/usr/share/doc/univention-management-console-server/changelog.Debian.gz') as fd:
 				line = fd.readline()
-				fd.close()
-				match = self.CHANGELOG_VERSION.match(line)
-				if not match:
-					raise IOError
-				res.result['umc_version'] = match.groups()[0]
-				res.result['ucs_version'] = '{0}-{1} errata{2} ({3})'.format(ucr.get('version/version', ''), ucr.get('version/patchlevel', ''), ucr.get('version/erratalevel', '0'), ucr.get('version/releasename', ''))
-				res.result['server'] = '{0}.{1}'.format(ucr.get('hostname', ''), ucr.get('domainname', ''))
-				res.result['ssl_validity_host'] = int(ucr.get('ssl/validity/host', '0')) * 24 * 60 * 60 * 1000
-				res.result['ssl_validity_root'] = int(ucr.get('ssl/validity/root', '0')) * 24 * 60 * 60 * 1000
-			except IOError:
-				res.status = BAD_REQUEST_FORBIDDEN
-				pass
-		elif 'modules/list' in msg.arguments:
-			categoryManager.load()
-			moduleManager.load()
-			if isinstance(msg.options, dict) and msg.options.get('reload'):
-				CORE.info('Reloading ACLs for existing session')
-				self._reload_acls_and_permitted_commands()
-				self._reload_i18n()
+			match = self.CHANGELOG_VERSION.match(line)
+			if not match:
+				raise IOError
+			result['umc_version'] = match.groups()[0]
+			result['ucs_version'] = '{0}-{1} errata{2} ({3})'.format(ucr.get('version/version', ''), ucr.get('version/patchlevel', ''), ucr.get('version/erratalevel', '0'), ucr.get('version/releasename', ''))
+			result['server'] = '{0}.{1}'.format(ucr.get('hostname', ''), ucr.get('domainname', ''))
+			result['ssl_validity_host'] = int(ucr.get('ssl/validity/host', '0')) * 24 * 60 * 60 * 1000
+			result['ssl_validity_root'] = int(ucr.get('ssl/validity/root', '0')) * 24 * 60 * 60 * 1000
+		except IOError:
+			raise UMC_Error(status=BAD_REQUEST_FORBIDDEN)
+		return result
 
-			favorites = self._get_user_favorites()
-			modules = []
-			for id, module in self.__command_list.items():
-				# check for translation
-				if module.flavors:
-					for flavor in module.flavors:
-						favcat = []
-						if '%s:%s' % (id, flavor.id) in favorites:
-							favcat.append('_favorites_')
+	def handle_request_get_modules(self, request):
+		categoryManager.load()
+		moduleManager.load()
+		if isinstance(request.options, dict) and request.options.get('reload'):
+			CORE.info('Reloading ACLs for existing session')
+			self._reload_acls_and_permitted_commands()
+			self._reload_i18n()
 
-						translationId = flavor.translationId
-						if not translationId:
-							translationId = id
-						modules.append({
-							'id': id,
-							'flavor': flavor.id,
-							'name': self.i18n._(flavor.name, translationId),
-							'url': self.i18n._(module.url, translationId),
-							'description': self.i18n._(flavor.description, translationId),
-							'icon': flavor.icon,
-							'categories': (flavor.categories or module.categories) + favcat,
-							'priority': flavor.priority,
-							'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords]))
-						})
-				else:
+		favorites = self._get_user_favorites()
+		modules = []
+		for id, module in self.__command_list.items():
+			# check for translation
+			if module.flavors:
+				for flavor in module.flavors:
 					favcat = []
-					if id in favorites:
+					if '%s:%s' % (id, flavor.id) in favorites:
 						favcat.append('_favorites_')
-					translationId = module.translationId
+
+					translationId = flavor.translationId
 					if not translationId:
 						translationId = id
 					modules.append({
 						'id': id,
-						'name': self.i18n._(module.name, translationId),
+						'flavor': flavor.id,
+						'name': self.i18n._(flavor.name, translationId),
 						'url': self.i18n._(module.url, translationId),
-						'description': self.i18n._(module.description, translationId),
-						'icon': module.icon,
-						'categories': module.categories + favcat,
-						'priority': module.priority,
-						'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords]))
+						'description': self.i18n._(flavor.description, translationId),
+						'icon': flavor.icon,
+						'categories': (flavor.categories or module.categories) + favcat,
+						'priority': flavor.priority,
+						'keywords': list(set(flavor.keywords + [self.i18n._(keyword, translationId) for keyword in flavor.keywords]))
 					})
-			res.body['modules'] = modules
-			CORE.info('Modules: %s' % (modules,))
-
-		elif 'categories/list' in msg.arguments:
-			categoryManager.load()
-			ucr.load()
-			_ucr_dict = dict(ucr.items())
-			categories = []
-			for catID, category in categoryManager.items():
-				categories.append({
-					'id': catID,
-					'icon': category.icon,
-					'color': category.color,
-					'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
-					'priority': category.priority
-				})
-			res.body['categories'] = categories
-			CORE.info('Categories: %s' % (res.body['categories'],))
-		elif 'user/preferences' in msg.arguments:
-			# fallback is an empty dict
-			res.body['preferences'] = self._get_user_preferences(self.get_user_ldap_connection())
-		elif 'hosts/list' in msg.arguments:
-			self._init_ldap_connection()
-			if self.lo:
-				try:
-					domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
-				except (ldap.LDAPError, udm_errors.base) as exc:
-					CORE.warn('Could not search for domaincontrollers: %s' % (exc))
-					domaincontrollers = []
-				res.result = ['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')]
-				res.result.sort()
 			else:
-				# unjoined / no LDAP connection
-				res.result = []
-		else:
-			res.status = BAD_REQUEST_INVALID_ARGS
+				favcat = []
+				if id in favorites:
+					favcat.append('_favorites_')
+				translationId = module.translationId
+				if not translationId:
+					translationId = id
+				modules.append({
+					'id': id,
+					'name': self.i18n._(module.name, translationId),
+					'url': self.i18n._(module.url, translationId),
+					'description': self.i18n._(module.description, translationId),
+					'icon': module.icon,
+					'categories': module.categories + favcat,
+					'priority': module.priority,
+					'keywords': list(set(module.keywords + [self.i18n._(keyword, translationId) for keyword in module.keywords]))
+				})
+		CORE.info('Modules: %s' % (modules,))
+		res = Response(request)
+		res.body['modules'] = modules
+		return res
 
-		self.result(res)
+	def handle_request_get_categories(self, request):
+		categoryManager.load()
+		ucr.load()
+		_ucr_dict = dict(ucr.items())
+		categories = []
+		for catID, category in categoryManager.items():
+			categories.append({
+				'id': catID,
+				'icon': category.icon,
+				'color': category.color,
+				'name': self.i18n._(category.name, category.domain).format(**_ucr_dict),
+				'priority': category.priority
+			})
+		CORE.info('Categories: %s' % (categories,))
+		res = Response(request)
+		res.body['categories'] = categories
+		return res
+
+	def handle_request_get_user_preferences(self, request):
+		# fallback is an empty dict
+		res = Response(request)
+		res.body['preferences'] = self._get_user_preferences(self.get_user_ldap_connection())
+		return res
+
+	def handle_request_get_hosts(self, request):
+		self._init_ldap_connection()
+		result = []
+		if self.lo:
+			try:
+				domaincontrollers = self.lo.search(filter="(objectClass=univentionDomainController)", attr=['cn', 'associatedDomain'])
+			except (ldap.LDAPError, udm_errors.base) as exc:
+				CORE.warn('Could not search for domaincontrollers: %s' % (exc))
+				domaincontrollers = []
+			result = ['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')]
+			result.sort()
+		return result
 
 	def handle_request_set(self, msg):
-		"""Handles a SET request. No argument may be given. The
-		variables that should be set are passed via the request
-		options. Currently the only variable that may be set is the
-		locale. If any unknown variable is given the the request is
-		invalidated.
-
-		:param Request msg: UMCP request
-		"""
-		res = Response(msg)
-		if len(msg.arguments):
-			res.status = BAD_REQUEST_INVALID_ARGS
-			res.message = status_description(res.status)
-
-			self.result(res)
-			return
-
-		res.status = SUCCESS
-		if not isinstance(msg.options, dict):
-			raise InvalidOptionsError
 		for key, value in msg.options.items():
-			if key == 'password':
-				self._change_user_password(msg)
-				return
-			if key == 'locale':
-				try:
-					self.set_language(value)
-					CORE.info('Setting locale: %r' % (value,))
-					self.i18n.set_locale(value)
-				except (I18N_Error, AttributeError, TypeError):
-					res.status = BAD_REQUEST_UNAVAILABLE_LOCALE
-					res.message = status_description(res.status)
-					CORE.warn('Setting locale to specified locale failed (%r)' % (value,))
-					CORE.warn('Falling back to C')
-					self.set_language('C')
-					self.i18n.set_locale('C')
-					break
-			elif key == 'user' and isinstance(value, dict) and 'preferences' in value:
-				try:
-					# make sure we got a dict
-					prefs = value['preferences']
-					if not isinstance(prefs, dict):
-						raise ValueError('user preferences are not a dict: %r' % (prefs,))
+			method = {
+				'password': self._handle_request_set_password,
+				'locale': self._handle_request_set_locale,
+				'user': self._handle_request_set_user,
+			}.get(key)
+			if method:
+				return method(msg)
+		raise UMC_Error(status=BAD_REQUEST_NOT_FOUND)
 
-					lo = self.get_user_ldap_connection()
-					# eliminate double entries
-					preferences = self._get_user_preferences(lo)
-					preferences.update(dict(prefs))
-					if preferences:
-						self._set_user_preferences(lo, preferences)
+	@sanitize(locale=StringSanitizer(required=True))
+	@simple_response
+	def _handle_request_set_locale(self, locale):
+		try:
+			self.set_language(locale)
+			CORE.info('Setting locale: %r' % (locale,))
+			self.i18n.set_locale(locale)
+		except (I18N_Error, AttributeError):
+			CORE.warn('Setting locale to specified locale failed (%r)' % (locale,))
+			self.set_language('C')
+			self.i18n.set_locale('C')
+			raise UMC_Error(self._('Specified locale is not available'), status=406)
 
-				except (ValueError, ldap.LDAPError, udm_errors.base) as exc:
-					CORE.warn('Could not set given option: %r' % (exc,))
-					res.status = BAD_REQUEST_INVALID_OPTS
-					res.message = status_description(res.status)
-					break
-			else:
-				res.status = BAD_REQUEST_INVALID_OPTS
-				res.message = status_description(res.status)
-				break
-		self.result(res)
+	@sanitize(user=DictSanitizer(dict(
+		preferences=DictSanitizer(dict(), required=True),
+	)))
+	@simple_response
+	def _handle_request_set_user(self, user):
+		lo = self.get_user_ldap_connection()
+		# eliminate double entries
+		preferences = self._get_user_preferences(lo)
+		preferences.update(dict(user['preferences']))
+		if preferences:
+			self._set_user_preferences(lo, preferences)
 
 	def _get_user_preferences(self, lo):
 		if not self._user_dn or not lo:
@@ -599,27 +505,16 @@ class Processor(Base):
 		lo.modify(self._user_dn, [['univentionUMCProperty', old_preferences, new_preferences], ['objectClass', user.get('objectClass', []), object_classes]])
 
 	def _get_user_favorites(self):
-		favorites = set()
 		if not self._user_dn:  # no LDAP user
-			favorites = set(ucr.get('umc/web/favorites/default', '').split(','))
-		else:
-			favorites = self._get_user_preferences(self.get_user_ldap_connection()).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
-			favorites = set(favorites.split(','))
-
-		# appcenter module has changed to appcenter:appcenter -> make sure
-		# that it will be in the favorites also after an update from
-		# UCS 3.2 to UCS 4.0 (cf. Bug #36416)
-		if 'appcenter' in favorites:
-			favorites.add('appcenter:appcenter')
-		return favorites
+			return set(ucr.get('umc/web/favorites/default', '').split(','))
+		favorites = self._get_user_preferences(self.get_user_ldap_connection()).setdefault('favorites', ucr.get('umc/web/favorites/default', '')).strip()
+		return set(favorites.split(','))
 
 	@sanitize(password=DictSanitizer(dict(
 		password=StringSanitizer(required=True),
 		new_password=StringSanitizer(required=True),
 	)))
-	def _change_user_password(self, request):
-		CORE.info('Got password changing request')
-
+	def _handle_request_set_password(self, request):
 		username = self._username
 		password = request.options['password']['password']
 		new_password = request.options['password']['new_password']
@@ -632,44 +527,26 @@ class Processor(Base):
 		thread.run()
 
 	def _password_changed(self, thread, result, request, new_password):
-		res = Response(request)
+		# it is important that this thread callback must not raise an exception. Otherwise the UMC-Server crashes.
 		if isinstance(result, PasswordChangeFailed):
-			res.status = 400#422
-			res.message = '%s' % (result,)
-			res.result = {'new_password': '%s' % (result,)}
+			self.finished(request.id, {'new_password': '%s' % (result,)}, message=str(result), status=400)  # 422
 		elif isinstance(result, BaseException):
-			tb = ''.join(traceback.format_exception(*thread.exc_info))
-			CORE.error('Changing password failed: %s' % (tb,))
-			res.status = 500
-			res.message = '%s%s' % (result, tb)
+			self.thread_finished_callback(thread, result, request)
 		else:
 			CORE.info('Successfully changed password')
-			res.status = 200
-			res.message = self._('Password successfully changed.')
-
+			self.finished(request.id, None, message=self._('Password successfully changed.'))
 			self.auth_type = None
 			self._password = new_password
-
-			try:
-				self.update_module_passwords()
-			except:
-				res.status = 500
-				error_msg = self._('Nevertheless an error occured while updating the password for running modules. Please relogin to UMC to solve this problem.')
-				res.message = ('%s %s%s' % (res.message, error_msg, traceback.format_exc()))
-
-		self.result(res)
+			self.update_module_passwords()
 
 	def update_module_passwords(self):
-		exc_info = None
 		for module_name, proc in self.__processes.items():
-			CORE.info('Changing password on running module %s' % (module_name,))
+			CORE.info('Changing password for module %s' % (module_name,))
 			req = Request('SET', arguments=[module_name], options={'password': self._password, 'auth_type': self.auth_type})
 			try:
 				proc.request(req)
 			except:
-				exc_info = sys.exc_info()
-		if exc_info:
-			raise exc_info[0], exc_info[1], exc_info[2]
+				CORE.error(traceback.format_exc())
 
 	def _inactivitiy_tick(self, module):
 		if module._inactivity_counter > 0:
@@ -698,6 +575,11 @@ class Processor(Base):
 
 		module._inactivity_counter = MODULE_INACTIVITY_TIMER
 
+	@sanitize(DictSanitizer(dict(
+		tmpfile=StringSanitizer(required=True),
+		filename=StringSanitizer(required=True),
+		name=StringSanitizer(required=True),
+	)))
 	def handle_request_upload(self, msg):
 		"""Handles an UPLOAD request. The command is used for the HTTP
 		access to the UMC server. Incoming HTTP requests that send a
@@ -713,51 +595,36 @@ class Processor(Base):
 
 		:param Request msg: UMCP request
 		"""
-		# request.options = ( { 'filename' : store.filename, 'name' : store.name, 'tmpfile' : tmpfile } )
 
-		if not isinstance(msg.options, (list, tuple)):
-			raise InvalidOptionsError
-
+		direct_response = not msg.arguments or msg.arguments[0] in ('', '/')
+		result = []
 		for file_obj in msg.options:
-			# check if required options exists and file_obj is a dict
-			try:
-				tmpfilename, filename, name = file_obj['tmpfile'], file_obj['filename'], file_obj['name']
-			except:
-				raise InvalidOptionsError('required options "tmpfile", "filename" or "name" is missing')
+			tmpfilename, filename, name = file_obj['tmpfile'], file_obj['filename'], file_obj['name']
 
 			# limit files to tmpdir
 			if not os.path.realpath(tmpfilename).startswith(TEMPUPLOADDIR):
-				raise InvalidOptionsError('invalid file: invalid path')
+				raise UMC_Error('invalid file: invalid path')
 
 			# check if file exists
 			if not os.path.isfile(tmpfilename):
-				raise InvalidOptionsError('invalid file: file does not exists')
+				raise UMC_Error('invalid file: file does not exists')
 
 			# don't accept files bigger than umc/server/upload/max
 			st = os.stat(tmpfilename)
 			max_size = int(ucr.get('umc/server/upload/max', 64)) * 1024
 			if st.st_size > max_size:
-				raise InvalidOptionsError('filesize is too large, maximum allowed filesize is %d' % (max_size,))
+				os.remove(tmpfilename)
+				raise UMC_Error('filesize is too large, maximum allowed filesize is %d' % (max_size,))
 
-		if msg.arguments and msg.arguments[0] not in ('', '/'):
-			# The request has arguments, so it will be treaten as COMMAND
+			if direct_response:
+				with open(tmpfilename) as buf:
+					b64buf = base64.b64encode(buf.read())
+				result.append({'filename': filename, 'name': name, 'content': b64buf})
+
+		if direct_response:
+			self.finished(msg.id, result)
+		else:
 			self.handle_request_command(msg)
-			return
-
-		# The request is an generic UPLOAD command (/upload)
-		result = []
-		for file_obj in msg.options:
-			# read tmpfile and convert to base64
-			tmpfilename, filename, name = file_obj['tmpfile'], file_obj['filename'], file_obj['name']
-			with open(tmpfilename) as buf:
-				b64buf = base64.b64encode(buf.read())
-			result.append({'filename': filename, 'name': name, 'content': b64buf})
-
-		response = Response(msg)
-		response.result = result
-		response.status = SUCCESS
-
-		self.result(response)
 
 	def handle_request_command(self, msg):
 		"""Handles a COMMAND request. The request must contain a valid
@@ -777,7 +644,7 @@ class Processor(Base):
 
 		# only one command?
 		command = None
-		if len(msg.arguments) > 0:
+		if msg.arguments:
 			command = msg.arguments[0]
 
 		module_name = moduleManager.module_providing(self.__command_list, command)
@@ -793,23 +660,15 @@ class Processor(Base):
 			module_name = None
 
 		if not module_name:
-			res = Response(msg)
-			res.status = BAD_REQUEST_FORBIDDEN
-			res.message = status_description(res.status)
-			self.result(res)
-			return
+			raise UMC_Error(status=BAD_REQUEST_FORBIDDEN)
 
 		if msg.arguments:
 			if msg.mimetype == MIMETYPE_JSON:
-				is_allowed = self.acls.is_command_allowed(msg.arguments[0], options=msg.options, flavor=msg.flavor)
+				is_allowed = moduleManager.is_command_allowed(self.acls, msg.arguments[0], options=msg.options, flavor=msg.flavor)
 			else:
-				is_allowed = self.acls.is_command_allowed(msg.arguments[0])
+				is_allowed = moduleManager.is_command_allowed(self.acls, msg.arguments[0])
 			if not is_allowed:
-				response = Response(msg)
-				response.status = BAD_REQUEST_FORBIDDEN
-				response.message = status_description(response.status)
-				self.result(response)
-				return
+				raise UMC_Error(status=BAD_REQUEST_FORBIDDEN)
 			if module_name not in self.__processes:
 				CORE.info('Starting new module process and passing new request to module %s: %s' % (module_name, str(msg._id)))
 				try:
@@ -964,8 +823,99 @@ class Processor(Base):
 
 		:param Request msg: UMCP request
 		"""
-		res = Response(msg)
-		res.status = BAD_REQUEST_NOT_FOUND
-		res.message = status_description(res.status)
+		raise UMC_Error(status=405)#BAD_REQUEST_NOT_FOUND)
 
-		self.result(res)
+
+class Processor(ProcessorBase):
+
+	def __init__(self, username, password, auth_type):
+		super(Processor, self).__init__(username, password, auth_type)
+		self._search_user_dn()
+
+
+class SessionHandler(ProcessorBase):
+
+	def __init__(self):
+		super(SessionHandler, self).__init__()
+		self.__auth = AuthHandler()
+		self.__auth.signal_connect('authenticated', self._auth_response)
+		self.__auth.signal_connect('authenticated', self._authenticated)
+
+		self.processor = None
+		self.authenticated = False
+		self.__credentials = None
+
+	def _reload_acls(self):
+		"""All unauthenticated requests are passed here. We need to set empty ACL's"""
+		self.acls = ACLs()
+
+	def error_handling(self, etype, exc, etraceback):
+		super(SessionHandler, self).error_handling(etype, exc, etraceback)
+		# make sure that the UMC login dialog is shown if e.g. restarting the UMC-Server during active sessions
+		if isinstance(exc, UMC_Error) and exc.status == 403:
+			exc.status = 401
+
+	def shutdown(self):
+		if self.processor is not None:
+			self.processor.shutdown()
+
+	def __del__(self):
+		CORE.info('The session is shutting down')
+		if self.processor:
+			self.processor.__del__()
+		self.processor = None
+
+	def _auth_response(self, result, request):
+		response = Response(request)
+		response.status = result.status
+		if result.message:
+			response.message = result.message
+		response.result = result.result
+		self.signal_emit('success', response)
+
+	def _authenticated(self, result, request):
+		self.authenticated = bool(result)
+		if not self.authenticated:
+			return
+		if self.processor is not None and self.processor.auth_type is None and result.credentials['auth_type']:
+			return # don't downgrade a regular login to e.g. a SAML login
+		self.__credentials = result.credentials
+		if self.processor is None:
+			return
+		# a second authentication request must cause an update of the password in all modules
+		self.processor.set_credentials(**self.__credentials)
+		try:
+			self.processor.update_module_passwords()
+		except Exception:  # don't let it crash here until we catch exceptions on a higher layer
+			CORE.error('Failed to update module passwords: %s' % (traceback.format_exc(),))
+
+	def handle(self, request):
+		"""Ensures that commands are only passed to the processor if a
+			successful authentication has been completed."""
+		CORE.info('Incoming request of type %s' % (request.command,))
+		if not self.authenticated and request.command != 'AUTH':
+			self.request(request)
+		elif request.command == 'AUTH':
+			from univention.management.console.protocol.server import Server
+			Server.reload()
+			try:
+				self.__auth.authenticate(request)
+			except (TypeError, KeyError):
+				response = Response(request)
+				response.status = 400
+				self._response(response, self)
+		elif request.command == 'GET' and 'newsession' in request.arguments:
+			CORE.info('Renewing session')
+			self.processor = None
+			self.finished(request.id, None)
+		else:
+			if not self.processor:
+				self.processor = Processor(**self.__credentials)
+				self.processor.signal_connect('success', self._response)
+			self.processor.request(request)
+
+	def _response(self, response):
+		self.signal_emit('success', response)
+
+	def parse_error(self, request):
+		raise UMC_Error(status=UMCP_ERR_UNPARSABLE_BODY)

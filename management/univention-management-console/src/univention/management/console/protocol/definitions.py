@@ -41,40 +41,6 @@ _ = NullTranslation('univention.management.console').translate
 RECV_BUFFER_SIZE = 65536
 
 
-class CommandDefinition(object):
-
-	"""Defines basic properties of valid commands. Used to test for the
-	validity of an incoming request."""
-
-	def __init__(self, name, has_arguments, *options):
-		self._name = name
-		self._has_arguments = has_arguments
-		self._options = options
-
-	@property
-	def name(self):
-		return self._name
-
-	@property
-	def has_arguments(self):
-		return self._has_arguments
-
-	@property
-	def options(self):
-		return self._options
-
-#: List of valid commands
-COMMANDS = (
-	CommandDefinition('AUTH', False, 'username', 'password', 'new_password'),
-	CommandDefinition('COMMAND', True),
-	CommandDefinition('VERSION', False),
-	CommandDefinition('GET', True),
-	CommandDefinition('SET', True),
-	CommandDefinition('EXIT', True),
-	CommandDefinition('UPLOAD', True),
-)
-
-
 class Status(object):
 
 	def __init__(self, name, code, description):
@@ -92,16 +58,12 @@ class Status(object):
 
 	@property
 	def description(self):
-		if self._description:
-			return self._description
-		return _('Unknown status code')
+		return self._description
 
 #: list of valid status names, codes, and human readable descriptions
 STATUS = (
 	# UMCP request success messages
 	Status('SUCCESS', 200, _('OK, operation successful')),
-	Status('SUCCESS_MESSAGE', 204, _('OK, containing report message')),  # FIXME: HTTP violation
-	Status('SUCCESS_PARTIAL', 206, _('OK, partial response')),  # not yet used  # FIXME: HTTP violation
 	Status('SUCCESS_SHUTDOWN', 250, _('OK, operation successful ask for shutdown of connection')),
 
 	# the UMCP request was parsable but within the context it is not valid
@@ -112,18 +74,14 @@ STATUS = (
 	Status('BAD_REQUEST_INVALID_ARGS', 406, _('Invalid command arguments')),  # FIXME: HTTP violation
 	Status('BAD_REQUEST_INVALID_OPTS', 407, _('Invalid or missing command options')),  # FIXME: HTTP violation
 	Status('BAD_REQUEST_AUTH_FAILED', 401, _('The authentication has failed')),
-	Status('BAD_REQUEST_UNAVAILABLE_LOCALE', 414, _('Specified locale is not available')),  # FIXME: HTTP violation
 
 	# UMCP server core errors
 	Status('SERVER_ERR', 500, _('Internal error')),
 	Status('SERVER_ERR_MODULE_DIED', 510, _('Module process died unexpectedly')),
 	Status('SERVER_ERR_MODULE_FAILED', 511, _('Connection to module process failed')),
-	Status('SERVER_ERR_CERT_NOT_TRUSTWORTHY', 512, _('SSL server certificate is not trustworthy')),
 
 	# generic UMCP parser errors
 	Status('UMCP_ERR_UNPARSABLE_HEADER', 551, _('Unparsable message header')),
-	Status('UMCP_ERR_UNKNOWN_COMMAND', 552, _('Unknown command')),
-	Status('UMCP_ERR_ARGS_MISSMATCH', 553, _('Invalid number of arguments')),
 	Status('UMCP_ERR_UNPARSABLE_BODY', 554, _('Unparsable message body')),
 
 	# errors occuring during command process in module process
@@ -137,33 +95,8 @@ for status in STATUS:
 	setattr(sys.modules['univention.management.console.protocol.definitions'], status.name, status.code)
 
 
-def command_get(name):
-	"""Returns the command definition of the command named like *name*"""
-	for cmd in COMMANDS:
-		if cmd.name == name:
-			return cmd
-	return None
-
-
-def command_is_known(name):
-	return command_get(name) is not None
-
-
-def command_has_arguments(name):
-	cmd = command_get(name)
-	return cmd is not None and cmd.has_arguments == True
-
-
 def status_description(code):
 	for status in STATUS:
 		if status.code == code:
 			return status.description
-
 	return _('Unknown status code')
-
-
-def status_get(code):
-	for status in STATUS:
-		if status.code == code:
-			return status
-	return None

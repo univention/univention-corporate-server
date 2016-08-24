@@ -70,7 +70,7 @@ if not operation in OPERATIONS:
 	parser.error( 'unknown operation %s' % operation )
 	sys.exit( 1 )
 
-filename = os.path.join( _cache_dir, options.user )
+filename = os.path.join( _cache_dir, options.user.replace('/', '') )
 if os.path.isfile( filename ) and operation in ( 'show', 'allow', 'remove' ):
 	try:
 		fd = open( filename )
