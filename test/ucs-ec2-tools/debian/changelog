@@ -1,3 +1,9 @@
+ucs-ec2-tools (3.0.1-3) unstable; urgency=low
+
+  * Bug #42086: use jenkins_updates in app tests
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Aug 2016 13:29:15 +0200
+
 ucs-ec2-tools (3.0.1-2) unstable; urgency=low
 
   * Bug #42086: install app test package on docker host
