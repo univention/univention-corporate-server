@@ -35,7 +35,9 @@ nat_core_rules() {
 @!@
 import ipaddr
 docker0_net = ipaddr.IPv4Network(configRegistry.get('docker/daemon/default/opts/bip', '172.17.42.1/16'))
+mysql_port = configRegistry.get('mysql/config/mysqld/port', '3306')
 print '\tiptables -t nat -A POSTROUTING -s %s/%s ! -o docker0 -j MASQUERADE' % (str(docker0_net.network), str(docker0_net.prefixlen))
+print '\tiptables -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net.network), str(docker0_net.prefixlen), mysql_port)
 @!@
 	iptables -A FORWARD -o docker0 -j DOCKER
 	iptables -A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
