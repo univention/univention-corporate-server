@@ -36,13 +36,10 @@ basic_setup ()
 		# wait until Univention System Setup is running and profile file has been moved
 	else
 		echo "Assuming Amazon Cloud"
-		cat >/etc/network/if-up.d/z_route <<__SH__
-#!/bin/sh
-ip route replace default via 10.210.216.13  # VPN gateway
-ip route replace 169.254.169.254 dev eth0  # EC2 meta-data service
-__SH__
-		chmod +x /etc/network/if-up.d/z_route
-		/etc/network/if-up.d/z_route
+		echo "supersede routers 10.210.216.13;" >> /etc/dhcp/dhclient.conf.local
+		ip route replace default via 10.210.216.13  # VPN gateway
+		ip route replace 169.254.169.254 dev eth0  # EC2 meta-data service
+		ucr set gateway='10.210.216.13'
 		sleep 10 # just wait a few seconds to give the amazone cloud some time
 		# set dns/forwarder*, this should prevent a later bind restart (Bug #39807)
 		i=1; cat /etc/resolv.conf | sed -ne 's|^nameserver ||p' | while read ns; do ucr set dns/forwarder$i=$ns; i="$((i+1))"; done
