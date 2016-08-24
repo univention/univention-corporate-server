@@ -271,7 +271,13 @@ install_apps_test_packages ()
 	ucr set repository/online/unmaintained=yes
 	for app in "$@"
 	do
-		univention-install --yes "ucs-test-$app" || rv=$?
+		if [ -n "$(univention-app get $app DockerImage)" ]; then
+			univention-app shell "$app" apt-get download "ucs-test-$app"
+			dpkg -i /var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_*.deb
+			univention-install -f
+		else
+			univention-install --yes "ucs-test-$app" || rv=$?
+		fi
 	done
 	ucr set repository/online/unmaintained=no
 	return $rv

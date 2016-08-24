@@ -1,3 +1,10 @@
+ucs-ec2-tools (2.0.0-26) unstable; urgency=low
+
+  * Bug #42086: install app test package on docker host
+  * updated ami in app test ec2 cfgs 
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Aug 2016 11:22:05 +0200
+
 ucs-ec2-tools (2.0.0-25) unstable; urgency=medium
 
   * Bug #41571: autotest-203-ucsschool-multiserver-s4: install windows tools
