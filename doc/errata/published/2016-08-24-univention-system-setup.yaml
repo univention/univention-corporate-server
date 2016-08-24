@@ -10,3 +10,4 @@ desc: |
    demo mode. This corrects problems when uploading the license
    file during an app appliance configuration.
 bug: [42031]
+announced: 2016-08-24
