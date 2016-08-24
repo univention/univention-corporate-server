@@ -8,6 +8,7 @@ Mode: 0755
 Type: file
 File: etc/security/packetfilter.d/20_docker.sh
 Variables: docker/daemon/default/opts/.*
+Variables: mysql/config/mysqld/port
 User: root
 Group: root
 Mode: 0755
