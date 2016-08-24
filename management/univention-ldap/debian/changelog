@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-36) unstable; urgency=low
+
+  * Bug #39307: added ldap/client/timelimit and ldap/client/timeout
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Aug 2016 09:27:23 +0200
+
 univention-ldap (12.1.6-35) unstable; urgency=low
 
   * Bug #41648: wrap index lines

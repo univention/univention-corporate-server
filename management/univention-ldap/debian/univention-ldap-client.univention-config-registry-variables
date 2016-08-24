@@ -21,3 +21,15 @@ Description[de]=Gibt den Timeout (in Sekunden) für das poll(2)/select(2) gefolg
 Description[en]=Specifies the timeout (in seconds) after which the poll(2)/select(2) following a connect(2) returns in case of no activity.
 Type=int
 Categories=service-ldap
+
+[ldap/client/timeout]
+Description[de]=Gibt den Timeout (in Sekunden) an, nach dem synchrone LDAP APIs Aufrufe ohne Antwort beendet werden.
+Description[en]=Specifies a timeout (in seconds) after which calls to synchronous LDAP APIs will abort if no response is received.
+Type=int
+Categories=service-ldap
+
+[ldap/client/timelimit]
+Description[de]=Gibt den Timeout (in Sekunden) für das Suchen im LDAP an.
+Description[en]=Specifies a time limit (in seconds) to use when performing searches.
+Type=int
+Categories=service-ldap
