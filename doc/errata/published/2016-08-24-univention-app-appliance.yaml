@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Use correct INI value for NotifyVendor information
 bug: [42068]
+announced: 2016-08-24
