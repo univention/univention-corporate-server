@@ -152,6 +152,8 @@ class LockingDB:
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS S4_LOCK (id INTEGER PRIMARY KEY, guid TEXT);",
 			"CREATE TABLE IF NOT EXISTS UCS_LOCK (id INTEGER PRIMARY KEY, uuid TEXT);",
+			"CREATE INDEX IF NOT EXISTS s4_lock_guid ON s4_lock(guid);",
+			"CREATE INDEX IF NOT EXISTS ucs_lock_uuid ON ucs_lock(uuid);",
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)

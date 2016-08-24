@@ -1,3 +1,21 @@
+univention-s4-connector (11.0.0-2) unstable; urgency=medium
+
+  * Add indexes to enable efficient lookup
+      by data.guid_id (and data.attribute_id)
+      by attributes.attribute
+      by guids.guid
+    to the SQLite database of the S4Cache
+    Otherwise more objects lead to more work per object,
+    i.e. quadratic complexity. (Bug #41999)
+  * Additionally the patch adds indexes to enable efficient lookup
+      by s4_lock.guid
+      by ucs_lock.uuid
+    to the SQLite database of the LockingDB
+    Otherwise more locks lead to more work per lock,
+    i.e. quadratic complexity. (Bug #41999)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 24 Aug 2016 19:02:13 +0200
+
 univention-s4-connector (11.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

@@ -186,7 +186,10 @@ class S4Cache:
 		sql_commands = [
 			"CREATE TABLE IF NOT EXISTS GUIDS (id INTEGER PRIMARY KEY, guid TEXT);",
 			"CREATE TABLE IF NOT EXISTS ATTRIBUTES (id INTEGER PRIMARY KEY, attribute TEXT);",
-			"CREATE TABLE IF NOT EXISTS DATA (id INTEGER PRIMARY KEY, guid_id INTEGER, attribute_id INTEGER, value TEXT);"
+			"CREATE TABLE IF NOT EXISTS DATA (id INTEGER PRIMARY KEY, guid_id INTEGER, attribute_id INTEGER, value TEXT);",
+			"CREATE INDEX IF NOT EXISTS data_foreign_keys ON data(guid_id, attribute_id);",
+			"CREATE INDEX IF NOT EXISTS attributes_attribute ON attributes(attribute);",
+			"CREATE INDEX IF NOT EXISTS guids_guid ON guids(guid);",
 		]
 
 		self.__execute_sql_commands(sql_commands, fetch_result=False)
