@@ -5,4 +5,6 @@ Variables: ldap/server/port
 Variables: ldap/server/addition
 Variables: ldap/sasl/secprops/maxssf
 Variables: ldap/client/network_timeout
+Variables: ldap/client/timelimit
+Variables: ldap/client/timeout
 Variables: libnss/.*
