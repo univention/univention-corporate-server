@@ -185,6 +185,22 @@ wait_for_reboot ()
 	fi
 }
 
+wait_for_replication ()
+{
+	local timeout=${1:-3600}
+	local steps=${2:-10}
+	local timestamp=$(date +"%s")
+	echo "Waiting for replication..."
+	while ! /usr/lib/nagios/plugins/check_univention_replication; do
+		if [ $((timestamp+timeout)) -lt $(date +"%s") ]; then
+			echo "ERROR: replication incomplete."
+			return 1
+		fi
+		sleep $steps
+	done
+	return 0
+}
+
 switch_to_test_app_center ()
 {
 	# univention-app dev-use-test-appcenter
@@ -386,6 +402,14 @@ run_join_scripts ()
  		echo -n "$admin_password" >/tmp/univention
 		univention-run-join-scripts -dcaccount Administrator -dcpwd /tmp/univention
 	fi
+}
+
+run_rejoin ()
+{
+	local admin_password="${1:-univention}"
+
+ 	echo -n "$admin_password" >/tmp/univention
+	univention-join -dcaccount Administrator -dcpwd /tmp/univention
 }
 
 do_reboot () {
