@@ -1,3 +1,9 @@
+univention-nagios-samba (2.0.0-1) unstable; urgency=low
+
+  * Bug #29463: 4.2 version bump
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Aug 2016 17:16:10 +0200
+
 univention-nagios-samba (1.0.0-1) unstable; urgency=low
 
   * Bug #29463: initial release
