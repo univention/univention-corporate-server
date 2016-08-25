@@ -50,7 +50,6 @@ import notifier
 import notifier.popen as popen
 from notifier import threads
 
-import univention.admin.uldap as udm_uldap
 import univention.admin.uexceptions as udm_errors
 
 from univention.lib.i18n import I18N_Error
@@ -68,6 +67,7 @@ from ..log import CORE
 from ..config import MODULE_INACTIVITY_TIMER, MODULE_DEBUG_LEVEL, MODULE_COMMAND, ucr
 from ..locales import I18N, I18N_Manager
 from ..base import Base, UMC_Error
+from ..ldap import get_machine_connection
 from ..modules.sanitizers import StringSanitizer, DictSanitizer
 from ..modules.decorators import sanitize, simple_response
 
@@ -148,6 +148,10 @@ class ProcessorBase(Base):
 	:param str password: password of the user
 	"""
 
+	@property
+	def lo(self):
+		return get_machine_connection(write=False)[0]
+
 	def __init__(self, username=None, password=None, auth_type=None):
 		Base.__init__(self, 'univention-management-console')
 		self.__processes = {}
@@ -157,7 +161,6 @@ class ProcessorBase(Base):
 		self.i18n['umc-core'] = I18N()
 
 		self.set_credentials(username, password, auth_type)
-		self._init_ldap_connection()
 		self._reload_acls_and_permitted_commands()
 
 	def set_credentials(self, username, password, auth_type):
@@ -174,15 +177,6 @@ class ProcessorBase(Base):
 
 	def _reload_i18n(self):
 		self.i18n.set_locale(str(self.i18n.locale))
-
-	def _init_ldap_connection(self):
-		try:
-			# get LDAP connection with machine account
-			self.lo, self.po = udm_uldap.getMachineConnection(ldap_master=False)
-		except (ldap.LDAPError, udm_errors.base, IOError) as exc:
-			# problems connection to LDAP server or the server is not joined (machine.secret is missing)
-			CORE.warn('An error occurred connecting to the LDAP server: %s' % (exc,))
-			self.lo = None
 
 	def error_handling(self, etype, exc, etraceback):
 		super(ProcessorBase, self).error_handling(etype, exc, etraceback)
@@ -659,13 +653,6 @@ class ProcessorBase(Base):
 		CORE.process('Processor: dying')
 		for process in self.__processes.keys():
 			self.__processes.pop(process).__del__()
-		if self.lo:
-			try:
-				self.lo.lo.lo.unbind_s()  # close the connection to LDAP
-			except ldap.LDAPError:
-				pass
-			finally:
-				self.lo = None
 
 
 class Processor(ProcessorBase):
@@ -675,7 +662,7 @@ class Processor(ProcessorBase):
 		self._search_user_dn()
 
 	def _search_user_dn(self):
-		if self.lo is not None:
+		if self.lo:
 			# get the LDAP DN of the authorized user
 			try:
 				ldap_dn = self.lo.searchDn(ldap.filter.filter_format('(&(uid=%s)(objectClass=person))', (self._username,)))
@@ -721,7 +708,6 @@ class Processor(ProcessorBase):
 		return result
 
 	def handle_request_get_hosts(self, request):
-		self._init_ldap_connection()
 		result = []
 		if self.lo:
 			try:
@@ -832,6 +818,7 @@ class Processor(ProcessorBase):
 		res = Response(msg)
 		res.body['version'] = VERSION
 		self.finished(msg.id, res)
+
 
 class SessionHandler(ProcessorBase):
 

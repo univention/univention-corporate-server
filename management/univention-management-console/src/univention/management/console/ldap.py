@@ -119,6 +119,8 @@ class LDAP(object):
 		def getter():
 			try:
 				lo, po = self.__ldap_connections[hash_]
+				if lo is None:
+					raise KeyError()
 			except KeyError:
 				conn = connection()
 				try:
