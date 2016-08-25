@@ -1,0 +1,4 @@
+31univention-nagios-samba.inst usr/lib/univention-install/
+69univention-nagios-samba.uinst usr/lib/univention-uninstall/
+check_univention_samba_drs_failures usr/lib/nagios/plugins/
+check_univention_samba_drs_failures_suidwrapper usr/lib/nagios/plugins/
