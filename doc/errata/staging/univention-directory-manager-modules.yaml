@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-directory-manager-modules
+fix: 11.0.3-31.1420.201608251310
+desc: |
+ This update addresses the following issue:
+ * When deleting a computer object, the computer is now removed
+   from the list of nameservers in its dns zone objects.
+bug: [37086]
