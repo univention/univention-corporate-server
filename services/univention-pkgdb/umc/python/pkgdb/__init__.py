@@ -40,7 +40,6 @@ import univention.pkgdb as updb
 
 from univention.management.console.log import MODULE
 
-from univention.management.console.protocol.definitions import *
 from univention.management.console.modules.decorators import simple_response, log, sanitize
 from univention.management.console.modules.sanitizers import ChoicesSanitizer
 

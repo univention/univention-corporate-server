@@ -33,7 +33,7 @@
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules import Base
-from univention.management.console.protocol.definitions import *
+from univention.management.console.protocol.definitions import BAD_REQUEST_INVALID_OPTS, SUCCESS
 
 from univention.management.console.modules.decorators import simple_response, sanitize
 from univention.management.console.modules.sanitizers import PatternSanitizer, ChoicesSanitizer

@@ -31,19 +31,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import subprocess
 import univention.info_tools as uit
-import univention.management.console as umc
-import univention.management.console.modules as umcm
+from univention.management.console import Translation
+from univention.management.console.base import Base
 
-from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
-
-_ = umc.Translation('univention-management-console-modules-mrtg').translate
+_ = Translation('univention-management-console-modules-mrtg').translate
 
 # Teststring zum Wiederfinden
 
-class Instance(umcm.Base):
+class Instance(Base):
 	def init(self):
 		uit.set_language(str(self.locale))
 

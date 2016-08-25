@@ -34,7 +34,6 @@
 import re
 
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
 import univention.management.console as umc
 import univention.management.console.modules.decorators as decorators
 import univention.management.console.modules.sanitizers as sanitizers

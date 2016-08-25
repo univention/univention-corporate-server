@@ -31,20 +31,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import threading
 import traceback
-import time
-import notifier
-import notifier.threads
-import re
 import string
-import csv
-import univention.info_tools as uit
-from univention.lib.i18n import Translation
-import univention.management.console.modules as umcm
-import os
-import copy
-import locale
 import univention.config_registry
 import univention.admin.config
 import univention.admin.modules
@@ -55,10 +43,10 @@ univention.admin.modules.update()
 # update choices-lists which are defined in LDAP
 univention.admin.syntax.update_choices()
 
+from univention.management.console.base import Base
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import *
 
-class Instance(umcm.Base):
+class Instance(Base):
 	def change(self, request):
 		'''Return a dict with all necessary values for ipchange read from the current
 		status of the system.'''
