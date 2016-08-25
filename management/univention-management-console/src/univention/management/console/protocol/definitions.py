@@ -64,13 +64,13 @@ class Status(object):
 STATUS = (
 	# UMCP request success messages
 	Status('SUCCESS', 200, _('OK, operation successful')),
-	Status('SUCCESS_SHUTDOWN', 250, _('OK, operation successful ask for shutdown of connection')),
 
 	# the UMCP request was parsable but within the context it is not valid
 	Status('BAD_REQUEST', 400, _('Bad request')),
 	Status('BAD_REQUEST_UNAUTH', 401, _('Unauthorized')),
 	Status('BAD_REQUEST_FORBIDDEN', 403, _('Forbidden')),
 	Status('BAD_REQUEST_NOT_FOUND', 404, _('Not found')),
+	Status('BAD_REQUEST_METHOD_NOT_ALLOWED', 405, _('Method not allowed')),
 	Status('BAD_REQUEST_INVALID_ARGS', 406, _('Invalid command arguments')),  # FIXME: HTTP violation
 	Status('BAD_REQUEST_INVALID_OPTS', 407, _('Invalid or missing command options')),  # FIXME: HTTP violation
 	Status('BAD_REQUEST_AUTH_FAILED', 401, _('The authentication has failed')),

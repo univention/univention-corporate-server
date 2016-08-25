@@ -88,7 +88,7 @@ class Message(object):
 	_header = re.compile('(?P<type>REQUEST|RESPONSE)/(?P<id>[\d-]+)/(?P<length>\d+)(/(?P<mimetype>[a-z-/]+))?: ?(?P<command>\w+) ?(?P<arguments>[^\n]+)?', re.UNICODE)
 	__counter = 0
 
-	def __init__(self, type=REQUEST, command='', mime_type=MIMETYPE_JSON, data=None, arguments=[], options={}):
+	def __init__(self, type=REQUEST, command='', mime_type=MIMETYPE_JSON, data=None, arguments=None, options=None):
 		self._id = None
 		self._length = 0
 		self._type = type
@@ -97,10 +97,10 @@ class Message(object):
 		else:
 			self.body = ''
 		self.command = command
-		self.arguments = arguments
+		self.arguments = arguments if arguments is not None else []
 		self.mimetype = mime_type
 		if mime_type == MIMETYPE_JSON:
-			self.options = options
+			self.options = options if options is not None else {}
 		if data:
 			self.parse(data)
 
@@ -251,7 +251,7 @@ class Request(Message):
 
 	'''Represents an UMCP request message'''
 
-	def __init__(self, command, arguments=[], options={}, mime_type=MIMETYPE_JSON):
+	def __init__(self, command, arguments=None, options=None, mime_type=MIMETYPE_JSON):
 		Message.__init__(self, Message.REQUEST, command, arguments=arguments, options=options, mime_type=mime_type)
 		self._create_id()
 

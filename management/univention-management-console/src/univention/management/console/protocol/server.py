@@ -86,14 +86,10 @@ class MagicBucket(object):
 	def exit(self):
 		'''Closes all open connections.'''
 		# remove all sockets
-		for sock, state in self.__states.items():
+		for sock in self.__states.keys():
 			CORE.info('Shutting down connection %s' % sock)
-			state.session.shutdown()
+			self.__states.pop(sock).session.shutdown()
 			notifier.socket_remove(sock)
-		# delete states
-		for state in self.__states.values():
-			del state
-		self.__states = {}
 
 	def _receive(self, socket):
 		"""Signal callback: Handles incoming data. Processes SSL events
@@ -209,7 +205,7 @@ class MagicBucket(object):
 		self.__states[socket].session.shutdown()
 
 		notifier.socket_remove(socket)
-		self.__states[socket].__del__()
+		self.__states[socket].session.__del__()
 		del self.__states[socket]
 
 		try:

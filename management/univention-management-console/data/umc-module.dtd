@@ -65,4 +65,5 @@
 <!ATTLIST command
 	name CDATA #REQUIRED
 	function CDATA #REQUIRED
+	prevent_unauthenticated CDATA #IMPLIED
 >
