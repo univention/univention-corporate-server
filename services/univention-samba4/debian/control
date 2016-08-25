@@ -26,6 +26,7 @@ Depends: ${misc:Depends},
  univention-samba-local-config,
  pwgen,
  univention-samba4-sysvol-sync (= ${binary:Version})
+Recommends: univention-nagios-samba
 Description: UCS - Samba4 integration package
  This package contains the scripts and patches
  for integration of Samba4 into Univention Corporate Server (UCS)

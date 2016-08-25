@@ -1,3 +1,9 @@
+univention-samba4 (6.0.1-1) unstable; urgency=low
+
+  * added recommends univention-nagios-samba (Bug #29463)
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Aug 2016 17:18:13 +0200
+
 univention-samba4 (6.0.1-0) unstable; urgency=medium
 
   * Bug #40661: Remove --keep-existing option from joinscript
