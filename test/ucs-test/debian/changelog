@@ -1,3 +1,9 @@
+ucs-test (7.0.1-3) unstable; urgency=low
+
+  * Bug #37086: added 66_udm-computers/55_nameserver_update_in_zone_on_delete
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Aug 2016 13:22:37 +0200
+
 ucs-test (7.0.1-2) unstable; urgency=medium
 
   * Bug #41571: Fix mixed indentation in 51_samba4/56evaluate_windows_gpo
