@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-nagios-samba
+fix: 1.0.0-1.1.201608251657
+desc: |
+ This update addresses the following issue(s):
+ * The nagios check UNIVENTION_SAMBA_DRS_FAILURES has been added 
+   to check the state of samba drs replication.
+bug: [29463]
