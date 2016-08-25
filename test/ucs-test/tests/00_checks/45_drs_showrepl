@@ -1,6 +1,8 @@
 #!/usr/share/ucs-test/runner python
 ## desc: check samba-tool drs showrepl
 ## exposure: safe
+## tags:
+##  - apptest
 ## packages:
 ## - univention-samba4
 

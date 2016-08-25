@@ -1,3 +1,9 @@
+ucs-test (6.0.36-16) unstable; urgency=medium
+
+  * 00_checks/45_drs_showrepl: Added apptest flag (Bug #42127)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Aug 2016 14:25:39 +0200
+
 ucs-test (6.0.36-15) unstable; urgency=medium
 
   * 00_checks/45_drs_showrepl: Check the DRS replication status (Bug #42127)
