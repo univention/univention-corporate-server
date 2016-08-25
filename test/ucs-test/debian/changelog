@@ -1,3 +1,9 @@
+ucs-test (6.0.36-15) unstable; urgency=medium
+
+  * 00_checks/45_drs_showrepl: Check the DRS replication status (Bug #42127)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Aug 2016 14:19:50 +0200
+
 ucs-test (6.0.36-14) unstable; urgency=low
 
   * Bug #37086: added 66_udm-computers/55_nameserver_update_in_zone_on_delete

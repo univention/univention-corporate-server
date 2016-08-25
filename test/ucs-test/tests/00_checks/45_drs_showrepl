@@ -1,0 +1,28 @@
+#!/usr/share/ucs-test/runner python
+## desc: check samba-tool drs showrepl
+## exposure: safe
+## packages:
+## - univention-samba4
+
+from subprocess import Popen, PIPE, call
+import univention.testing.utils as utils
+from sys import exit
+import re
+
+proc = Popen(['samba-tool', 'drs', 'showrepl'], stdout=PIPE, stderr=PIPE)
+
+stdout, stderr = proc.communicate()
+
+print '** STDERR'
+print stderr.strip()
+print '** STDOUT'
+print stdout.strip()
+print '**'
+
+if stderr.strip():
+	utils.fail('samba-tool drsi showrepl returned on stderr: %s' % stderr.strip())
+
+if re.search('ERR_', stdout):
+	utils.fail('samba-tool drsi showrepl returned a string with ERR_')
+	
+exit(0)
