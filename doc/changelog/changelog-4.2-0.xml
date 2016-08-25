@@ -44,6 +44,7 @@
 			<title>Univention Configuration Registry</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The maximum transfer unit (<acronym>MTU</acronym>) for network interfaces can now be configured through the new &ucsUCRV; <envar>interfaces/<replaceable>interface</replaceable>/mtu</envar> (<u:bug>35814</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 

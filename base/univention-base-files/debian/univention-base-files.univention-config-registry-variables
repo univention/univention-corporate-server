@@ -223,6 +223,12 @@ Description[en]=A variable in the form interfaces/INTERFACE/route/INDEX allows t
 Type=str
 Categories=system-network
 
+[interfaces/.*/mtu]
+Description[de]=Eine Variable in der Form interfaces/INTERFACE/mtu erlaubt die Konfiguration der maximalen Transfergröße (MTU) pro Netzwerkschnittstelle.
+Description[en]=A variable in the form interfaces/INTERFACE/mtu allows the configuration the maximum transfer unit (MTU) per network interface.
+Type=int
+Categories=system-network
+
 [interfaces/.*/options/.*]
 Description[de]=Eine Variable in der Form interfaces/INTERFACE/options/INDEX erlaubt die Konfiguration zusätzlicher Optionen pro Netwerkschnittstelle (siehe 'man 5 interfaces').
 Description[en]=A variable in the form interfaces/INTERFACE/options/INDEX allows the configuration of additional options per network interface (see 'man 5 interfaces').

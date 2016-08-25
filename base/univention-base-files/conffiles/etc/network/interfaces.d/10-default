@@ -43,6 +43,8 @@ def ipv4(ucr, interfaces):
 				print '\tnetwork %s' % (iface.network,)
 			if iface.broadcast:
 				print '\tbroadcast %s' % (iface.broadcast,)
+			if 'mtu' in iface:
+				print '\tmtu %(mtu)s' % iface
 			if gateway:
 				if addr.prefixlen == addr.max_prefixlen and \
 						interfaces.primary in (name, iface.name):
@@ -110,6 +112,8 @@ def ipv6(interfaces):
 			else:
 				print '\tup   ip -6 addr add %s dev %s' % (addr, iface.name)
 				print '\tdown ip -6 addr del %s dev %s' % (addr, iface.name)
+			if 'mtu' in iface:
+				print '\tmtu %(mtu)s' % iface
 			if gateway_zoneindex is None:
 				# check if gateway is local on this interface
 				if gateway:
