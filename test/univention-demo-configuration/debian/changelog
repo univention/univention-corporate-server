@@ -1,3 +1,9 @@
+univention-demo-configuration (4.0.3-3) unstable; urgency=medium
+
+  * Bug #42129: allow call of command appcenter/track
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 25 Aug 2016 16:45:12 +0200
+
 univention-demo-configuration (4.0.3-2) unstable; urgency=medium
 
   * Bug #40118: Remove diversion of index.html on upgrade
