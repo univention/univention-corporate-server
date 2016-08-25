@@ -70,7 +70,7 @@ d-i partman/confirm_nooverwrite boolean true
 d-i ucr/system/setup/boot/start string false
 
 #
-# Univension System Setup profile
+# Univention System Setup profile
 #
 #univention-system-setup-boot uss/root_password string
 univention-system-setup-boot uss/components string
