@@ -1,3 +1,9 @@
+univention-self-service (2.0.0-2) unstable; urgency=medium
+
+  * Bug #42132: replace WSGI parts of self service with UMC
+
+ -- Florian Best <best@univention.de>  Thu, 25 Aug 2016 17:08:50 +0200
+
 univention-self-service (2.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

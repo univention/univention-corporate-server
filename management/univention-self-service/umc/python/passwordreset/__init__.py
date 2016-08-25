@@ -111,7 +111,7 @@ def prevent_denial_of_service(func):
 			if "username" in kwargs:
 				username = kwargs["username"]
 			else:
-				username = args[0].options.get("username")
+				username = args[0].options["username"]
 		except (IndexError, AttributeError, KeyError, TypeError):
 			# args[0] is not the expected 'request'
 			MODULE.error("prevent_denial_of_service() could not find username argument. self: %r args: %r kwargs: %r exception: %s" % (self, args, kwargs, traceback.format_exc()))

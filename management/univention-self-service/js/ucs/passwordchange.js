@@ -146,12 +146,14 @@ define([
 
 			if (allInputFieldsAreValid) {
 				data = json.stringify({
-					'username': this._username.get('value'),
-					'password': this._oldPassword.get('value'),
-					'new_password': this._newPassword.get('value')
+					password: {
+						'username': this._username.get('value'),
+						'password': this._oldPassword.get('value'),
+						'new_password': this._newPassword.get('value')
+					}
 				});
 
-				xhr.post('passwordchange/', {
+				xhr.post('/univention-management-console/set', {
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',

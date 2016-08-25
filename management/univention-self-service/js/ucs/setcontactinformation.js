@@ -168,7 +168,7 @@ define([
 					'username': this._username.get('value'),
 					'password': this._password.get('value')
 				});
-				xhr.post('passwordreset/get_contact', {
+				xhr.post('/univention-management-console/command/passwordreset/get_contact', {
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
@@ -223,7 +223,7 @@ define([
 			data = this._getNewContactInformation();
 			var isValidMail = this._validateMail(data.email);
 			if (isValidMail) {
-				xhr.post('passwordreset/set_contact', {
+				xhr.post('/univention-management-console/command/passwordreset/set_contact', {
 						handleAs: 'json',
 						headers: {
 							'Content-Type': 'application/json',

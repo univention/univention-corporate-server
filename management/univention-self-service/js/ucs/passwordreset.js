@@ -204,9 +204,11 @@ define([
 
 			if (this._username.isValid()) {
 				data = json.stringify({
-					'username': this._username.get('value')
+					options: {
+						'username': this._username.get('value')
+					}
 				});
-				xhr.post('passwordreset/get_reset_methods', {
+				xhr.post('/univention-management-console/command/passwordreset/get_reset_methods', {
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
@@ -271,10 +273,12 @@ define([
 			if (this.selectedTokenMethod) {
 				this._requestTokenButton.set('disabled', true);
 				data = json.stringify({
-					'username': this._username.get('value'),
-					'method': this.selectedTokenMethod.method
+					options: {
+						'username': this._username.get('value'),
+						'method': this.selectedTokenMethod.method
+					}
 				});
-				xhr.post('passwordreset/send_token', {
+				xhr.post('/univention-management-console/command/passwordreset/send_token', {
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
@@ -316,11 +320,13 @@ define([
 
 			if (isTokenAndNewPassValid) {
 				data = json.stringify({
-					'username': this._username.get('value'),
-					'password': this._verifyPassword.get('value'),
-					'token' : this._token.get('value')
+					options: {
+						'username': this._username.get('value'),
+						'password': this._verifyPassword.get('value'),
+						'token' : this._token.get('value')
+					}
 				});
-				xhr.post('passwordreset/set_password', {
+				xhr.post('/univention-management-console/command/passwordreset/set_password', {
 					handleAs: 'json',
 					headers: {
 						'Content-Type': 'application/json',
