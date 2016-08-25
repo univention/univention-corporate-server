@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-31) unstable; urgency=low
+
+  * Bug #37086: remove nameserver in dns zones if server is removed
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Aug 2016 13:08:32 +0200
+
 univention-directory-manager-modules (11.0.3-30) unstable; urgency=medium
 
   * Bug #41829: don't add object class of '0' values for extended attributes

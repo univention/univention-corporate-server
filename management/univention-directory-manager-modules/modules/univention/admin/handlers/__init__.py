@@ -2474,21 +2474,64 @@ class simpleComputer( simpleLdap ):
 		fqdn = self['fqdn']
 		fqdnDot = '%s.' % fqdn  # we might have entires w/ or w/out trailing '.'
 
+		# iterate over all reverse zones
+		for zone in self['dnsEntryZoneReverse'] or []:
+			# load zone object
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'clean up entries for zone: %s' % zone)
+			if len(zone) < 1:
+			        continue
+			zoneObj = univention.admin.objects.get(
+				univention.admin.modules.get('dns/reverse_zone'), self.co, self.lo, self.position, dn = zone[0])
+			zoneObj.open()
+			
+			# clean up nameserver records
+			if 'nameserver' in zoneObj:
+				if fqdnDot in zoneObj['nameserver']:
+					univention.debug.debug(
+						univention.debug.ADMIN,
+						univention.debug.INFO,
+						'removing %s from dns zone %s' % (fqdnDot, zone[0]))
+					# nameserver is required in reverse zone
+					if len(zoneObj['nameserver']) > 1:
+						zoneObj['nameserver'].remove(fqdnDot)
+						zoneObj.modify()
+	
+
 		# iterate over all forward zones
 		for zone in self['dnsEntryZoneForward'] or []:
 			# load zone object
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'clean up entries for zone: %s' % zone)
 			if len(zone) < 1:
 				continue
-			zoneObj = univention.admin.objects.get(univention.admin.modules.get('dns/forward_zone'), self.co, self.lo, self.position, dn = zone[0])
+			zoneObj = univention.admin.objects.get(
+				univention.admin.modules.get('dns/forward_zone'), self.co, self.lo, self.position, dn = zone[0])
 			zoneObj.open()
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'zone aRecords: %s' % zoneObj['a'])
+
+			zone_obj_modified = False
+			# clean up nameserver records
+			if 'nameserver' in zoneObj:
+				if fqdnDot in zoneObj['nameserver']:
+					univention.debug.debug(
+						univention.debug.ADMIN,
+						univention.debug.INFO,
+						'removing %s from dns zone %s' % (fqdnDot, zone))
+					# nameserver is required in forward zone
+					if len(zoneObj['nameserver']) > 1:
+						zoneObj['nameserver'].remove(fqdnDot)
+						zone_obj_modified = True
 
 			# clean up aRecords of zone itself
 			new_entries = list(set(zoneObj['a']) - ips)
 			if len(new_entries) != len(zoneObj['a']):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Clean up zone records:\n%s ==> %s' % (zoneObj['a'], new_entries))
+				univention.debug.debug(
+					univention.debug.ADMIN,
+					univention.debug.INFO,
+					'Clean up zone records:\n%s ==> %s' % (zoneObj['a'], new_entries))
 				zoneObj['a'] = new_entries
+				zone_obj_modified = True
+
+			if zone_obj_modified:
 				zoneObj.modify()
 
 			# clean up service records
