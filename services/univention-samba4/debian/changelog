@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-40) unstable; urgency=low
+
+  * added recommends univention-nagios-samba (Bug #29463)
+
+ -- Felix Botner <botner@univention.de>  Thu, 25 Aug 2016 17:01:56 +0200
+
 univention-samba4 (5.0.1-39) unstable; urgency=medium
 
   * reset-sysvol-acls.py: removed the listener module because it might
