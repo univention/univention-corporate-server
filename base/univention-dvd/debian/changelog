@@ -1,3 +1,9 @@
+univention-dvd (1.0.1-4) unstable; urgency=low
+
+  * Bug #29463: added univention-nagios-samba
+
+ -- Felix Botner <botner@univention.de>  Fri, 26 Aug 2016 09:28:04 +0200
+
 univention-dvd (1.0.1-3) unstable; urgency=low
 
   * Bug #41892: UCS-4.1-3 DVD
