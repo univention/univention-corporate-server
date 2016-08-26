@@ -1,3 +1,9 @@
+univention-dvd (2.0.0-3) unstable; urgency=low
+
+  * Bug #29463: added univention-nagios-samba
+
+ -- Felix Botner <botner@univention.de>  Fri, 26 Aug 2016 09:29:51 +0200
+
 univention-dvd (2.0.0-2) unstable; urgency=low
 
   * Bug #41961: Use UCS-4 GPG key for package verification
