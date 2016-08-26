@@ -705,6 +705,7 @@ class App(object):
 	database_name = AppAttribute()
 	database_user = AppAttribute(regex='(?!^(root)$|^(postgres)$)')  # anything but db superuser!
 	docker_env_database_host = AppAttribute(default='DB_HOST')
+	docker_env_database_port = AppAttribute(default='DB_PORT')
 	docker_env_database_name = AppAttribute(default='DB_NAME')
 	docker_env_database_user = AppAttribute(default='DB_USER')
 	docker_env_database_password = AppAttribute(default='DB_PASSWORD')

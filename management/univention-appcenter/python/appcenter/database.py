@@ -66,17 +66,18 @@ class DatabaseConnector(object):
 	def _get_db_port(self):
 		return None
 
+	def get_db_port(self):
+		return '%s' % self._get_db_port()
+
 	def get_db_host(self):
-		db_port = self._get_db_port()
-		if db_port:
-			bip = ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16')
-			try:
-				docker0_net = IPv4Network(bip)
-			except AddressValueError:
-				raise DatabaseInfoError('Could not find DB host for %r' % bip)
-			else:
-				ip_address = docker0_net.ip
-				return '%s:%s' % (ip_address, db_port)
+		bip = ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16')
+		try:
+			docker0_net = IPv4Network(bip)
+		except AddressValueError:
+			raise DatabaseInfoError('Could not find DB host for %r' % bip)
+		else:
+			ip_address = docker0_net.ip
+			return '%s' % (ip_address)
 
 	def get_db_name(self):
 		return self.app.database_name or self._get_default_db_name()

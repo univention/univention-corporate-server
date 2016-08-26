@@ -179,6 +179,7 @@ class DockerActionMixin(object):
 				database_password = database_connector.get_db_password()
 				if database_password:
 					set_vars[app.docker_env_database_host] = database_connector.get_db_host()
+					set_vars[app.docker_env_database_port] = database_connector.get_db_port()
 					set_vars[app.docker_env_database_name] = database_connector.get_db_name()
 					set_vars[app.docker_env_database_user] = database_connector.get_db_user()
 					set_vars[app.docker_env_database_password] = database_password
