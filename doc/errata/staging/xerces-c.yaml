@@ -1,0 +1,31 @@
+product: ucs
+release: "4.1"
+version: [2,3]
+scope: ucs_4.1-0-errata4.1-3
+src: xerces-c
+fix: 3.1.1-3.6.201608261028
+desc: |
+ This update addresses the following issue(s):
+ * Denial of service in internal/XMLReader.cpp via crafted XML data
+   (CVE-2015-0252)
+ * Apache Xerces-C XML Parser Crashes on Malformed Input
+   (CVE-2016-0729)
+ * Use-after-free vulnerability in validators/DTD/DTDScanner.cpp in
+   Apache Xerces C++ 3.1.3 and earlier does not properly handle
+   exceptions raised in the XMLReader class, which allows
+   context-dependent attackers to have unspecified impact via an
+   invalid character in an XML document. (CVE-2016-2099)
+ * Brandon Perry discovered that xerces-c, a validating XML parser
+   library for C++, fails to successfully parse a DTD that is deeply
+   nested, causing a stack overflow. A remote unauthenticated attacker
+   can take advantage of this flaw to cause a denial of service
+   against applications using the xerces-c library. (CVE-2016-4463)
+ * Additionally this update includes an enhancement to enable
+   applications to fully disable DTD processing through the use of an
+   environment variable (XERCES_DISABLE_DTD).
+bug: [38207]
+cve:
+ - CVE-2015-0252
+ - CVE-2016-0729
+ - CVE-2016-2099
+ - CVE-2016-4463
