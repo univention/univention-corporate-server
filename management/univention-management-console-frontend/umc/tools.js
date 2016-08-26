@@ -355,10 +355,12 @@ define([
 						data: this.content,
 						preventCache: true,
 						handleAs: 'json',
-						headers: {
+						headers: lang.mixin({
 							'Accept-Language': i18nTools.defaultLang(),
+							'Accept': 'application/json; q=1.0, text/html; q=0.3; */*; q=0.1',
 							'Content-Type': 'application/json'
-						},
+						}, args.headers),
+						withCredentials: args.withCredentials,
 						timeout: 1000 * this.xhrTimeout
 					}).then(lang.hitch(this, function(data) {
 						// request finished
@@ -414,7 +416,8 @@ define([
 			/*Object?*/ dataObj,
 			/*Object|Boolean?*/ handleErrors,
 			/*String?*/ flavor,
-			/*Object?*/ longPollingOptions) {
+			/*Object?*/ longPollingOptions,
+			/*Object?*/ args) {
 
 			// build the URL for the UMCP command
 			if (!(/^(get\/|set$|auth|logout(\/|$)|saml(\/|$))/i).test(command)) {
@@ -429,13 +432,15 @@ define([
 				_body.flavor = flavor;
 			}
 
-			return this._request({
+			return this._request(lang.mixin({
 				url: '/univention-management-console/' + command,
 				data: _body,
 				errorHandler: this.__getErrorHandler(handleErrors),
 				flavor: flavor,
+				headers: {},
+				withCredentials: false,
 				longPollingOptions: longPollingOptions
-			});
+			}, args || {}));
 		},
 
 		_request: function(args) {
@@ -471,10 +476,12 @@ define([
 				var call = xhr.post(url, {
 					data: body,
 					handleAs: 'json',
-					headers: {
+					headers: lang.mixin({
 						'Accept-Language': i18nTools.defaultLang(),
+						'Accept': 'application/json; q=1.0, text/html; q=0.3; */*; q=0.1',
 						'Content-Type': 'application/json'
-					}
+					}, args.headers),
+					withCredentials: args.withCredentials
 				});
 
 				call = call.then(function(data) {

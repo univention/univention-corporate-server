@@ -1,5 +1,6 @@
 univention-management-console-frontend (6.0.1-1) unstable; urgency=medium
 
+  * Bug #42114: allow anonymous commands to be send to the UMC-Server
   * Bug #39731: Add HTTP metadata to UMCP messages
   * Bug #39733: set security relevant HTTP headers
 

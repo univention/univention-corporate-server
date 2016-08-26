@@ -32,35 +32,36 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
-import threading
-from optparse import OptionParser
-import signal
 import sys
-import tempfile
 import time
+import uuid
+import json
+import zlib
+import signal
+import hashlib
+import tempfile
+import binascii
+import datetime
 import traceback
 import functools
-import uuid
-import datetime
-import json
-import hashlib
-import zlib
+import threading
 from errno import ESRCH
 from urlparse import urlparse
-from httplib import REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
+from optparse import OptionParser
+from httplib import OK, REQUEST_ENTITY_TOO_LARGE, LENGTH_REQUIRED, NOT_FOUND, BAD_REQUEST, UNAUTHORIZED, SERVICE_UNAVAILABLE
 
+import Queue
 import notifier
 import cherrypy
-from cherrypy.lib.httputil import valid_status
-import Queue
 from ipaddr import IPAddress
 from cherrypy import HTTPError, HTTPRedirect
+from cherrypy.lib.httputil import valid_status
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
-import univention.management.console.protocol as umcp
-from univention.management.console.log import CORE, log_init
-from univention.management.console.log import log_reopen
-from univention.config_registry import ConfigRegistry
+import univention.debug as ud
+from univention.management.console.protocol import Request, Response, Client, NoSocketError, TEMPUPLOADDIR
+from univention.management.console.log import CORE, log_init, log_reopen
+from univention.management.console.config import ucr
 
 from saml2 import BINDING_HTTP_POST, BINDING_HTTP_ARTIFACT, BINDING_HTTP_REDIRECT
 from saml2.client import Saml2Client
@@ -69,13 +70,8 @@ from saml2.response import VerificationError, UnsolicitedResponse, StatusError
 from saml2.s_utils import UnknownPrincipal, UnsupportedBinding, rndstr
 from saml2.sigver import MissingKey, SignatureError
 
-ucr = ConfigRegistry()
-ucr.load()
-
 from univention.lib.i18n import NullTranslation
 _ = NullTranslation('univention-management-console-frontend').translate
-
-_thread_http = None
 
 try:
 	_session_timeout = int(ucr.get('umc/http/session/timeout', 300))
@@ -85,10 +81,11 @@ except (TypeError, ValueError):
 
 
 def sessionidhash():
-	return hashlib.sha256('%s%s%s%s' % (cherrypy.request.headers['Authorization'], cherrypy.request.headers.get('Accept-Language', ''), get_ip_address(), sessionidhash.salt)).hexdigest()[:36]
-# python 2.7.7 required:
-	#return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', cherrypy.request.headers['Authorization']), sessionidhash.salt, 100000)[:36]
+	session = '%s%s%s%s' % (cherrypy.request.headers.get('Authorization', ''), cherrypy.request.headers.get('Accept-Language', ''), get_ip_address(), sessionidhash.salt)
+	return hashlib.sha256(session).hexdigest()[:36]
+	return binascii.hexlify(hashlib.pbkdf2_hmac('sha256', session), sessionidhash.salt, 100000)[:36]  # FIXME: python 2.7.7 required
 sessionidhash.salt = rndstr()
+
 
 def log_exceptions(func):
 	@functools.wraps(func)
@@ -125,16 +122,16 @@ class SessionClient(object):
 
 	def __init__(self, timeout=300, ip=None):
 		CORE.info('SessionClient(0x%x): creating new session' % (id(self),))
-		self.client = umcp.Client()
+		self.client = Client()
 		self.client.signal_connect('authenticated', self._authenticated)
 		self.client.signal_connect('response', self._response)
 		self.client.signal_connect('closed', self._closed)
 		try:
 			self.client.connect()
 			CORE.info('SessionClient(0x%x): connected to UMC server' % (id(self),))
-		except umcp.NoSocketError:
+		except NoSocketError:
 			CORE.warn('SessionClient(0x%x): connection to UMC server failed' % (id(self),))
-			raise umcp.NoSocketError('Connection failed')
+			raise NoSocketError('Connection failed')
 		self._auth_response = None
 		self._auth_response_queue = None
 		self._requestid2response_queue = {}
@@ -189,7 +186,7 @@ class SessionClient(object):
 	def authenticate_user(self, request, response_queue):
 		"""Send authentication request to UMC server."""
 		CORE.info('SessionClient(0x%x): authenticate_user: sending authentication request for user %r' % (id(self), request.body.get('username')))
-		self._auth_response = umcp.Response(request)
+		self._auth_response = Response(request)
 		self._auth_response_queue = response_queue
 		self.client.authenticate(request)
 
@@ -232,8 +229,8 @@ class SessionClient(object):
 		message = '\n'.join((
 			'The connection to the Univention Management Console Server broke up unexpectedly. ',
 			'If you have root permissions on the system you can restart UMC by executing the following commands:',
-			' * invoke-rc.d univention-management-console-server restart',
-			' * invoke-rc.d univention-management-console-web-server restart',
+			' * service univention-management-console-server restart',
+			' * service univention-management-console-web-server restart',
 			'Otherwise please contact an administrator or try again later.'
 		))
 		if self._auth_response_queue is not None:
@@ -243,7 +240,7 @@ class SessionClient(object):
 			self._auth_response_queue = None
 		for id, (queue, request) in self._requestid2response_queue.items():
 			self._requestid2response_queue.pop(id)
-			response = umcp.Response(request)
+			response = Response(request)
 			response.status = SERVICE_UNAVAILABLE
 			response.message = message
 			queue.put(response)
@@ -277,7 +274,7 @@ class UMCP_Dispatcher(object):
 				cls.dispatch(queuerequest)
 			except Exception as exc:
 				CORE.process('Failed to create UMC connection: %s' % (exc,))
-				response = umcp.Response(queuerequest.request)
+				response = Response(queuerequest.request)
 				response.status = 500
 				response.message = traceback.format_exc()
 				queuerequest.response_queue.put(response)
@@ -286,43 +283,19 @@ class UMCP_Dispatcher(object):
 	def dispatch(cls, queuerequest):
 		CORE.info('UMCP_Dispatcher: check_queue: new request: 0x%x' % (id(queuerequest),))
 
-		if not isinstance(queuerequest.sessionid, basestring) and queuerequest.sessionid is not None:
-			CORE.process('UMCP_Dispatcher: check_queue: got invalid sessionid: %r' % (queuerequest.sessionid,))
-		if not isinstance(queuerequest.request, umcp.Request):
-			CORE.process('UMCP_Dispatcher: check_queue: got invalid UMCP request: %r' % (queuerequest.request,))
-		if not isinstance(queuerequest.response_queue, Queue.Queue):
-			CORE.process('UMCP_Dispatcher: check_queue: got invalid response_queue: %r' % (queuerequest.response_queue,))
-
-		# stop here if sessionid is missing or unknown and request is no AUTH request
-		try:
-			client = cls.sessions[queuerequest.sessionid]
-			if queuerequest.ip != client.ip and not (queuerequest.ip in ('127.0.0.1', '::1') and client.ip in ('127.0.0.1', '::1')):
-				CORE.process('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
-				raise ValueError()
-		except (KeyError, ValueError):
-			client = None
-			if queuerequest.request.command != 'AUTH':
-				CORE.process('UMCP_Dispatcher: check_queue: invalid session: sessionid=%r' % (queuerequest.sessionid))
-				response = umcp.Response(queuerequest.request)
-				response.status = UNAUTHORIZED
-				queuerequest.response_queue.put(response)
-				return
-
-		if queuerequest.request.command == 'AUTH' and client is None:
-			# AUTH request
-			CORE.info('UMCP_Dispatcher: check_queue: AUTH request')
+		client = cls.sessions.get(queuerequest.sessionid)
+		if client is None:
 			try:
-				# create new session / umcp client
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
 				client = SessionClient(timeout=queuerequest.timeout + 5, ip=queuerequest.ip)
 			except Exception as exc:
 				CORE.process('Failed to create UMC connection: %s' % (exc,))
-				response = umcp.Response(queuerequest.request)
+				response = Response(queuerequest.request)
 				response.status = SERVICE_UNAVAILABLE
 				response.message = '\n'.join((
 					'The Univention Management Console Server is currently not running. ',
 					'If you have root permissions on the system you can restart it by executing the following command:',
-					' * invoke-rc.d univention-management-console-server restart',
+					' * service univention-management-console-server restart',
 					'The following logfile may contain information why the server is not running:',
 					' * /var/log/univention/management-console-server.log',
 					'Otherwise please contact an administrator or try again later.'
@@ -334,19 +307,19 @@ class UMCP_Dispatcher(object):
 			callback = notifier.Callback(cls.cleanup_session, queuerequest.sessionid)
 			client.client.signal_connect('closed', callback)
 
+		# bind session to IP
+		if queuerequest.ip != client.ip and not (queuerequest.ip in ('127.0.0.1', '::1') and client.ip in ('127.0.0.1', '::1')):
+			CORE.warn('The sessionid (ip=%s) is not valid for this IP address (%s)' % (client.ip, queuerequest.ip))
+			response = Response(queuerequest.request)
+			response.status = UNAUTHORIZED
+			queuerequest.response_queue.put(response)
+			return
+
 		if queuerequest.request.command == 'AUTH':
 			client.authenticate_user(queuerequest.request, queuerequest.response_queue)
-		else:
-			# COMMAND / GET / SET request
-			CORE.info('UMCP_Dispatcher: check_queue: normal request')
-			try:
-				client.send_request(queuerequest.request, queuerequest.response_queue)
-			except umcp.client.NotAuthenticatedError:
-				response = umcp.Response(queuerequest.request)
-				response.status = UNAUTHORIZED
-				queuerequest.response_queue.put(response)
-				# remove response_queue from internal mapping
-				client.cleanup_request(queuerequest.request)
+			return
+
+		client.send_request(queuerequest.request, queuerequest.response_queue)
 
 	@classmethod
 	def cleanup_session(cls, sessionid):
@@ -362,7 +335,7 @@ class UMCP_Dispatcher(object):
 class UploadManager(dict):
 
 	def add(self, request_id, store):
-		tmpfile = tempfile.NamedTemporaryFile(prefix=request_id, dir=umcp.TEMPUPLOADDIR, delete=False)
+		tmpfile = tempfile.NamedTemporaryFile(prefix=request_id, dir=TEMPUPLOADDIR, delete=False)
 		if hasattr(store, 'file') and store.file is None:
 			tmpfile.write(store.value)
 		else:
@@ -392,7 +365,14 @@ _upload_manager = UploadManager()
 class QueueRequest(object):
 
 	"""Element for the request queue containing the assoziated session
-	ID, the request object, a response queue and the request ip address."""
+	ID, the request object, a response queue and the request ip address.
+
+	:param sessionid: str
+	:param request: ´univention.management.console.protocol.message.Request´
+	:param response_queue: ´Queue.Queue´
+	:param ip: str
+	:param timeout: int
+	"""
 
 	def __init__(self, sessionid, request, response_queue, ip, timeout):
 		self.sessionid = sessionid
@@ -629,7 +609,7 @@ class Ressource(object):
 	def _log(self, loglevel, _msg):
 		remote = cherrypy.request.remote
 		msg = '%s (%s:%s) %s' % (self.name, get_ip_address(), remote.port, _msg)
-		self._logOptions.get(loglevel, CORE.info)(msg)
+		self._logOptions.get(loglevel, lambda x: ud.debug(ud.MAIN, loglevel, x))(msg)
 
 	def suffixed_cookie_name(self, name):
 		host, _, port = cherrypy.request.headers.get('Host', '').partition(':')
@@ -640,25 +620,27 @@ class Ressource(object):
 				port = ''
 		return '%s%s' % (name, port)
 
+	def create_sessionid(self, random=True):
+		if self.get_session():
+			# if the user is already authenticated at the UMC-Server
+			# we must not change the session ID cookie as this might cause
+			# race conditions in the frontend during login, especially when logged in via SAML
+			return self.get_session_id();
+		if random:
+			return str(uuid.uuid4())
+		return sessionidhash()
+
 	def get_session_id(self):
 		"""get the current session ID from cookie."""
-		sessionid = self.get_cookie('UMCSessionId')
-		if not sessionid and 'Authorization' in cherrypy.request.headers:
-			sessionid = sessionidhash()
-		if not sessionid:
-			self._log('info', 'no session found')
-			return
-		self._log('info', 'found sessionid')
-		self._log(99, 'sessionid=%r' % (sessionid,))
-		return sessionid
+		return self.get_cookie('UMCSessionId') or sessionidhash()
+
+	def get_session(self):
+		return UMCP_Dispatcher.sessions.get(self.get_session_id())
 
 	def check_saml_session_validity(self):
 		user = self.get_user()
 		if user and user.saml is not None and user.time_remaining < 1:
 			raise UMC_HTTPError(UNAUTHORIZED)
-
-	def get_session(self):
-		return UMCP_Dispatcher.sessions.get(self.get_session_id())
 
 	@property
 	def session_validity(self):
@@ -672,10 +654,7 @@ class Ressource(object):
 		# set the cookie once during successful authentication
 		# force expiration of cookie in 5 years from now on...
 		# IE does not support max-age
-		expires = kwargs.get('expires')
-		if expires is None:
-			expires = datetime.datetime.now()
-			expires = expires.replace(year=expires.year + 4)
+		expires = kwargs.get('expires') or (datetime.datetime.now() + datetime.timedelta(days=5*365))
 		cookie = cherrypy.response.cookie
 		for name, value in cookies:
 			name = self.suffixed_cookie_name(name)
@@ -719,7 +698,7 @@ class Ressource(object):
 class CPgeneric(Ressource):
 
 	def get_request(self, path, args):
-		return umcp.Request(['generic'], opts={})
+		return Request(['generic'], opts={})
 
 	def add_request_headers(self, request):
 		request.http_method = cherrypy.request.method
@@ -749,17 +728,8 @@ class CPgeneric(Ressource):
 	@cherrypy.expose
 	def default(self, *path, **kwargs):
 		self._log('info', 'got new request')
-
-		# get the session id from the request
-		sessionid = self.get_session_id()
-		if not sessionid:
-			raise UMC_HTTPError(UNAUTHORIZED)
-
 		self.check_saml_session_validity()
-
-		args = self.get_arguments(kwargs)
-
-		return self.get_response(sessionid, path, args)
+		return self.get_response(self.create_sessionid(), path, self.get_arguments(kwargs))
 
 	def get_arguments(self, kwargs):
 		if cherrypy.request.headers.get('Content-Type', '').startswith('application/json'):  # normal (json) request
@@ -797,14 +767,10 @@ class CPgeneric(Ressource):
 		self._log('info', 'got response(0x%x) from queue(0x%x): status=%s' % (id(response), id(response_queue), response.status))
 
 		self.add_response_headers(response)
-		status = response.status
+		status = response.status or 200  # status is not set if not json
 		body = response.body
-		if status is None:
-			# if status is not set, treat as SUCCESS. See Bug #29957
-			# UMCP responses which are not json do not have a status
-			status = 200
 		if 200 <= status < 300:
-			if response.mimetype == umcp.MIMETYPE_JSON:
+			if response.mimetype == 'application/json':
 				# convert data to JSON
 				body = json.dumps(response.body)
 
@@ -812,8 +778,8 @@ class CPgeneric(Ressource):
 			cherrypy.response.headers['Content-Type'] = response.mimetype
 			cherrypy.response.status = status
 			return body
-
-		# TODO: 3xx handling
+		elif 300 <= status < 400:
+			raise HTTPRedirect(response.headers.get('Location', ''), status)
 
 		# something bad happened
 		self._log('error', 'response status code: %s' % response.status)
@@ -829,7 +795,7 @@ class CPGet(CPgeneric):
 		raise UMC_HTTPError(NOT_FOUND)
 
 	def get_request(self, path, args):
-		return umcp.Request('GET', arguments=[path], options=args.get('options', {}))
+		return Request('GET', arguments=[path], options=args.get('options', {}))
 
 	@cherrypy.expose
 	def session_info(self, *args ,**kwargs):
@@ -864,7 +830,7 @@ class CPGet(CPgeneric):
 class CPSet(CPgeneric):
 
 	def get_request(self, path, args):
-		return umcp.Request('SET', options=args.get('options', {}))
+		return Request('SET', options=args.get('options', {}))
 
 
 class CPCommand(CPgeneric):
@@ -876,7 +842,7 @@ class CPCommand(CPgeneric):
 		if not path:
 			raise UMC_HTTPError(NOT_FOUND)
 
-		req = umcp.Command([path], options=args.get('options', {}))
+		req = Request('COMMAND', [path], options=args.get('options', {}))
 		if 'flavor' in args:
 			req.flavor = args['flavor']
 
@@ -898,7 +864,7 @@ class CPCommand(CPgeneric):
 		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
 		if 'iframe' in args and (args['iframe'] not in ('false', False, 0, '0')):
 			cherrypy.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
-		req = umcp.Request('UPLOAD', arguments=[path])
+		req = Request('UPLOAD', arguments=[path])
 		req.body = self._get_upload_arguments(req, args)
 		return req
 
@@ -916,7 +882,7 @@ class CPCommand(CPgeneric):
 
 		# check if enough free space is available
 		min_size = int(ucr.get('umc/server/upload/min_free_space', 51200))  # kilobyte
-		s = os.statvfs(umcp.TEMPUPLOADDIR)
+		s = os.statvfs(TEMPUPLOADDIR)
 		free_disk_space = s.f_bavail * s.f_frsize / 1024  # kilobyte
 		if free_disk_space < min_size:
 			self._log('error', 'there is not enough free space to upload files')
@@ -975,7 +941,7 @@ class CPAuth(CPgeneric):
 			# redirect user to login page in case he's not authenticated or his session timed out
 			raise HTTPRedirect('/univention-management-console/saml/')
 
-		req = umcp.Request('AUTH')
+		req = Request('AUTH')
 		req.body = {
 			"auth_type": "SAML",
 			"username": user.username,
@@ -983,7 +949,7 @@ class CPAuth(CPgeneric):
 		}
 
 		try:
-			response = self._auth_request(req, user.sessionid)
+			self._auth_request(req, user.sessionid)
 		except UMC_HTTPError as exc:
 			if exc.status == UNAUTHORIZED:
 				# slapd down, time synchronization between IDP and SP is wrong, etc.
@@ -1017,12 +983,10 @@ class CPAuth(CPgeneric):
 		CORE.info('auth: request: command=%s' % cherrypy.request.path_info)
 
 		# create a sessionid if the user is not yet authenticated
-		sessionid = self.get_session_id()
-		if sessionid not in UMCP_Dispatcher.sessions:
-			sessionid = str(uuid.uuid4())
+		sessionid = self.create_sessionid(True)
 
 		# create new UMCP request
-		req = umcp.Request('AUTH')
+		req = Request('AUTH')
 		req.body = data.get('options', {})
 		return self._auth_request(req, sessionid)
 
@@ -1035,13 +999,10 @@ class CPAuth(CPgeneric):
 		# send request to UMC server
 		request = QueueRequest(sessionid, req, response_queue, get_ip_address(), self.session_validity)
 		UMCP_Dispatcher._queue_send.put(request)
-
-		CORE.info('auth: pushed request to queue - waiting for response')
 		response = response_queue.get()
-		CORE.info('auth: got response with status %s' % response.status)
 
-		if response.status == umcp.SUCCESS:
-			CORE.info('auth: creating session with sessionid=%r' % (sessionid,))
+		if response.status == OK:
+			self._log(99, 'auth: creating session with sessionid=%r' % (sessionid,))
 
 			username = req.body.get('username')
 			body = response.body
@@ -1059,7 +1020,7 @@ class CPAuth(CPgeneric):
 		credentials = cherrypy.request.headers.get('Authorization')
 		if not credentials:
 			return
-		sessionid = self.get_session_id()
+		sessionid = self.create_sessionid(False)
 		if sessionid in UMCP_Dispatcher.sessions:
 			return
 		try:
@@ -1075,7 +1036,7 @@ class CPAuth(CPgeneric):
 
 		# authenticate
 		sessionid = sessionidhash()
-		req = umcp.Request('AUTH')
+		req = Request('AUTH')
 		req.body = {
 			"username": username,
 			"password": password
@@ -1093,13 +1054,14 @@ class CPAuth(CPgeneric):
 				break
 			response_queue = Queue.Queue()
 			CORE.process('Setting language %r' % (language.value,))
-			req = umcp.Request('SET', options={'locale': language.value})
+			req = Request('SET', options={'locale': language.value})
 			request = QueueRequest(sessionid, req, response_queue, get_ip_address(), self.session_validity)
 			UMCP_Dispatcher._queue_send.put(request)
 			response = response_queue.get()
 			CORE.process('response status of setting language is %s' % (response.status,))
 			if response.status == 200:
 				break
+
 
 class Root(Ressource):
 
@@ -1199,7 +1161,7 @@ class SAML(Ressource):
 		cherrypy.request.headers['X-Iframe-Response'] = 'true'  # enforce textarea wrapping
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
-		req = umcp.Request('AUTH')
+		req = Request('AUTH')
 		req.body = {
 			"auth_type": "SAML",
 			"username": saml.username,
@@ -1210,14 +1172,6 @@ class SAML(Ressource):
 		self.set_session(sessionid, saml.username, saml)
 		cherrypy.response.headers['Content-Type'] = 'text/html'
 		return '<html><body><textarea>%s</textarea></body></html>' % (auth_response,)
-
-	def create_sessionid(self):
-		if self.get_session():
-			# if the user is already authenticated at the UMC-Server
-			# we must not change the session ID cookie as this might cause
-			# race conditions in the frontend during login
-			return self.get_session_id();
-		return str(uuid.uuid4())
 
 	@cherrypy.expose
 	def slo(self, *args, **kwargs):  # single logout service
@@ -1256,7 +1210,7 @@ class SAML(Ressource):
 		# What if more than one
 		try:
 			data = self.sp.global_logout(user.saml.response.name_id)
-		except KeyError as exc:
+		except KeyError:
 			tb = sys.exc_info()[2]
 			while tb.tb_next:
 				tb = tb.tb_next
@@ -1422,7 +1376,7 @@ def run_cherrypy(options):
 		'engine.autoreload_on': False,
 		'tools.response_headers.on': True,
 		'tools.response_headers.headers': [
-			('Content-Type', umcp.MIMETYPE_JSON)
+			('Content-Type', 'application/json')
 		],
 		'tools.fix_uri.on': True,
 		'tools.umcp_auth.on': True,
