@@ -132,18 +132,18 @@ class Command(JSON_Object):
 	'''Represents a UMCP command handled by a module'''
 	SEPARATOR = '/'
 
-	def __init__(self, name='', method=None, prevent_unauthenticated=True):
+	def __init__(self, name='', method=None, allow_anonymous=False):
 		self.name = name
 		if method:
 			self.method = method
 		else:
 			self.method = self.name.replace(Command.SEPARATOR, '_')
-		self.prevent_unauthenticated = prevent_unauthenticated
+		self.allow_anonymous = allow_anonymous
 
 	def fromJSON(self, json):
 		for attr in ('name', 'method'):
 			setattr(self, attr, json[attr])
-		setattr(self, 'prevent_unauthenticated', json.get('prevent_unauthenticated', True))
+		setattr(self, 'allow_anonymous', json.get('allow_anonymous', False))
 
 
 class Flavor(JSON_Object):
@@ -359,7 +359,7 @@ class XML_Definition(ET.ElementTree):
 		'''Retrieves details of a command'''
 		for command in self.findall('command'):
 			if command.get('name') == name:
-				return Command(name, command.get('function'), command.get('prevent_unauthenticated', '1').lower() in ('yes', 'true', '1'))
+				return Command(name, command.get('function'), command.get('allow_anonymous', '0').lower() in ('yes', 'true', '1'))
 
 	def __nonzero__(self):
 		module = self.find('module')
@@ -407,7 +407,7 @@ class Manager(dict):
 		for module_xmls in self.values():
 			for module_xml in module_xmls:
 				cmd = module_xml.get_command(command)
-				if cmd and not cmd.prevent_unauthenticated:
+				if cmd and cmd.allow_anonymous:
 					return True
 		return acls.is_command_allowed(command, hostname, options, flavor)
 
@@ -462,7 +462,7 @@ class Manager(dict):
 				for module_xml in self[module_id]:
 					for command in module_xml.commands():
 						cmd = module_xml.get_command(command)
-						if not cmd.prevent_unauthenticated or acls.is_command_allowed(command, hostname, flavor=flavor.id):
+						if cmd.allow_anonymous or acls.is_command_allowed(command, hostname, flavor=flavor.id):
 							if not module_id in modules:
 								modules[module_id] = mod
 							if cmd not in modules[module_id].commands:
