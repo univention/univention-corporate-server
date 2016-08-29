@@ -3,7 +3,7 @@ release: "4.1"
 version: [2,3]
 scope: ucs_4.1-0-errata4.1-3
 src: libidn
-fix: 1.25-2.19.201608261038
+fix: 1.25-2.20.201608291156
 desc: |
  This update addresses the following issue(s):
  * The stringprep_utf8_to_ucs4 function in libidn before 1.31, as used
