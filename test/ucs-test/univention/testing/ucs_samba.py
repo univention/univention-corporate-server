@@ -48,25 +48,56 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
         time.sleep(delta_t)
         t = time.time()
 
+def get_available_s4connector_dc():
+    cmd = ("/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=S4 Connector)", "uid")
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    stdout, _stderr = p.communicate()
+    if not stdout:
+        print "WARNING: Automatic S4 Connector host detection failed"
+        return
+    matches = re.compile('^uid: (.*)\$$', re.M).findall(stdout)
+    if len(matches) == 1:
+        return matches[0]
+    elif len(matches) == 0:
+        print "WARNING: Automatic S4 Connector host detection failed"
+        return
+
+    ## check if this is UCS@school
+    cmd = ("/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=UCS@school)", "dn")
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    stdout, _stderr = p.communicate()
+    if not stdout:
+        print "ERROR: Automatic S4 Connector host detection failed: Found %s S4 Connector services" % len(matches)
+        return
+    ## Look for replicating DCs
+    dcs_replicating_with_this_one = []
+    for s4c in matches:
+        cmd = ("/usr/bin/samba-tool", "drs", "showrepl", s4c)
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, _stderr = p.communicate()
+        if p.returncode != 0:
+            continue
+        dcs_replicating_with_this_one.append(s4c)
+    if len(dcs_replicating_with_this_one) == 1:
+	return dcs_replicating_with_this_one[0]
+    else:
+        print "ERROR: Automatic S4 Connector host detection failed: Replicating with %s S4 Connector services" % len(dcs_replicating_with_this_one)
+        return
 
 def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
     if not package_installed('univention-samba4'):
         print 'force_drs_replication(): skip, univention-samba4 not installed.'
         return
     if not source_dc:
-        cmd = ("/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=S4 Connector)", "uid")
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-        stdout, _stderr = p.communicate()
-        if stdout:
-            matches = re.compile('^uid: (.*)\$$', re.M).findall(stdout)
-            if len(matches) == 1:
-                source_dc = matches[0]
-        else:
-            print "WARNING: Automatic S4 Connector host detection failed"
+        source_dc = get_available_s4connector_dc()
+        if not source_dc:
             return 1
 
     if not destination_dc:
         destination_dc = socket.gethostname()
+
+    if destination_dc == source_dc:
+	return
 
     if not partition_dn:
         lp = LoadParm()
