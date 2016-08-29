@@ -1,3 +1,11 @@
+univention-system-setup (9.0.4-37) unstable; urgency=medium
+
+  * Bug #42095: Detect legacy system-setup-boot package and close
+    the system setup session by killing the firefox process
+  * Bug #42122: Do not call download-packages upon installation
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 29 Aug 2016 10:57:27 +0200
+
 univention-system-setup (9.0.4-36) unstable; urgency=medium
 
   * Bug #42031: Also deactivate loginmessage in fast demo mode
