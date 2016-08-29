@@ -37,6 +37,7 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
 	error("I am not joined")
 }
 
+    Import-Module grouppolicy
     try {
             Remove-GPO `
                 -Name "$gpo_name" `
