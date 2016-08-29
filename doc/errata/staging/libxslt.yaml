@@ -3,7 +3,7 @@ release: "4.1"
 version: [2,3]
 scope: ucs_4.1-0-errata4.1-3
 src: libxslt
-fix: 1.1.26-14.1.39.201608261356
+fix: 1.1.26-14.1.40.201608291154
 desc: |
  This update addresses the following issue(s):
  * The xsltStylePreCompute function in preproc.c in libxslt 1.1.28
