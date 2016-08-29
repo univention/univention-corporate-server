@@ -1,3 +1,10 @@
+ucs-test (7.0.3-2) unstable; urgency=medium
+
+  * Bug #41571: Fix force_drs_replication() for UCS@school Slave PDCs
+  * Add get_available_s4connector_dc()
+
+ -- Arvid Requate <requate@univention.de>  Mon, 29 Aug 2016 22:02:17 +0200
+
 ucs-test (7.0.3-1) unstable; urgency=medium
 
   * 00_checks/45_drs_showrepl: Added apptest flag (Bug #42127)
