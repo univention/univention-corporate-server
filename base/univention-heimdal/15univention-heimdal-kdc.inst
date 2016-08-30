@@ -47,7 +47,7 @@ local_is_ucr_false () { # test if UCS variable is "true" or "false"
     esac
 }
 
-samba4dcs=$(univention-ldapsearch -x -LLL "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -ne 's|^cn: ||p')
+samba4dcs=$(univention-ldapsearch -LLL "(&(univentionService=Samba 4)(objectClass=univentionDomainController))" cn | sed -ne 's|^cn: ||p')
 
 if [ -z "$samba4dcs" ] && ! local_is_ucr_false dns/register/srv_records/kerberos; then
 	# Register in DNS onyl if no S4 is configured

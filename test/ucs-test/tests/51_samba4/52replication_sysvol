@@ -33,7 +33,7 @@ trap cleanup INT TERM EXIT
 determine_neighbour_s4host() {
 	local s4host_fqdn
 
-	s4hosts=( $(univention-ldapsearch -xLLL "(univentionService=Samba 4)" cn | sed -ne 's/^cn: //p') )
+	s4hosts=( $(univention-ldapsearch -LLL "(univentionService=Samba 4)" cn | sed -ne 's/^cn: //p') )
 	for candidate in "${s4hosts[@]}"
 	do
 		if [ "$candidate" != "$hostname" ] && ping -c 1 "$candidate.$domainname" > /dev/null; then

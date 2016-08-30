@@ -69,7 +69,7 @@ backup_and_remove_ldap_objects ()
 		"cn=Computers,cn=groups,$ldap_base" \
 		"cn=default containers,cn=univention,$ldap_base"
 	do
-		univention-ldapsearch -x -b "$dn" >>/var/univention-backup/import-backup.ldif
+		univention-ldapsearch -b "$dn" >>/var/univention-backup/import-backup.ldif
 		ldapdelete -x -D cn=admin,$ldap_base -y /etc/ldap.secret "$dn"
 	done
 }

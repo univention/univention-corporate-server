@@ -56,7 +56,7 @@ class UniventionLDAPExtension(object):
 	def is_local_active(self):
 		object_dn = None
 
-		cmd = ["univention-ldapsearch", "-xLLL", "-b", self.object_dn, "-s", "base", "(&(cn=%s)(%s=TRUE))" % (self.objectname, self.active_flag_attribute)]
+		cmd = ["univention-ldapsearch", "-LLL", "-b", self.object_dn, "-s", "base", "(&(cn=%s)(%s=TRUE))" % (self.objectname, self.active_flag_attribute)]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p.communicate()
 		if p.returncode:
@@ -293,7 +293,7 @@ class UniventionLDAPExtension(object):
 				app_filter = app_filter + "(cn=%s)" % appidentifier
 
 		if app_filter:
-			cmd = ["univention-ldapsearch", "-xLLL", "(&(objectClass=univentionApp)%s)", "cn" % (app_filter,)]
+			cmd = ["univention-ldapsearch", "-LLL", "(&(objectClass=univentionApp)%s)", "cn" % (app_filter,)]
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
 			if p.returncode:

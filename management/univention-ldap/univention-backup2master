@@ -416,7 +416,7 @@ samdb='/var/lib/samba/private/sam.ldb'
 remove_NTDS_objectGUID_alias() {
 	local NTDS_objectGUID="$1"
 	if [ -n "$NTDS_objectGUID" ]; then
-		NTDS_alias_dn=$(univention-ldapsearch -x relativeDomainName="$NTDS_objectGUID._msdcs" | ldapsearch-wrapper | sed -n 's/^dn: //p')
+		NTDS_alias_dn=$(univention-ldapsearch relativeDomainName="$NTDS_objectGUID._msdcs" | ldapsearch-wrapper | sed -n 's/^dn: //p')
 		if [ -n "$NTDS_alias_dn" ]; then
 			univention-directory-manager dns/alias remove --superordinate "${NTDS_alias_dn#*,}" --dn "$NTDS_alias_dn"
 		fi

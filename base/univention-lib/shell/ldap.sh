@@ -43,7 +43,7 @@ ucs_getAttrOfDN () { # <attr> <dn> [<ldapsearch-credentials>]
 		return 2
 	fi
 	if [ -n "$attr" ]; then
-		univention-ldapsearch -x "$@" -s base -b "$base" -LLL "$attr" \
+		univention-ldapsearch "$@" -s base -b "$base" -LLL "$attr" \
 			| ldapsearch-wrapper | ldapsearch-decode64 | sed -ne "s/^$attr: //p"
 	fi
 }
@@ -61,7 +61,7 @@ ucs_convertUID2DN () { # <uid> [<ldapsearch-credentials>]
 		return 2
 	fi
 	if [ -n "$uid" ]; then
-		univention-ldapsearch -x "$@" -LLL "(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*\$))(uid=$uid))" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
+		univention-ldapsearch "$@" -LLL "(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=univentionMail)(objectClass=sambaSamAccount)(objectClass=simpleSecurityObject)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*\$))(uid=$uid))" dn | ldapsearch-wrapper | ldapsearch-decode64 | sed -ne 's/dn: //p'
 	fi
 }
 
@@ -113,7 +113,7 @@ ucs_getGroupMembersRecursive () { # <groupDN> [<ldapsearch-credentials>]
 	fi
 	ucs_getGroupMembersDirect "$groupdn" "$@" | while read reply
 	do
-		ldif=$(univention-ldapsearch -x "$@" -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p")
+		ldif=$(univention-ldapsearch "$@" -LLL -b "$reply" '(!(objectClass=univentionGroup))' dn | sed -ne "s/^dn: //p")
 		if [ "$?" != 0 ]; then	## don't recurse in case of error
 			break
 		fi

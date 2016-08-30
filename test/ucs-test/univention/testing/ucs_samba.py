@@ -49,7 +49,7 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
         t = time.time()
 
 def get_available_s4connector_dc():
-    cmd = ("/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=S4 Connector)", "uid")
+    cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=S4 Connector)", "uid")
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, _stderr = p.communicate()
     if not stdout:
@@ -63,7 +63,7 @@ def get_available_s4connector_dc():
         return
 
     ## check if this is UCS@school
-    cmd = ("/usr/bin/univention-ldapsearch", "-xLLL", "(univentionService=UCS@school)", "dn")
+    cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=UCS@school)", "dn")
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, _stderr = p.communicate()
     if not stdout:

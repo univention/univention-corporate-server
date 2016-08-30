@@ -38,7 +38,7 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-if [ -z "$(univention-ldapsearch -xLLL relativeDomainName=_pkgdb._tcp relativeDomainName)" ]; then
+if [ -z "$(univention-ldapsearch -LLL relativeDomainName=_pkgdb._tcp relativeDomainName)" ]; then
 	/usr/share/univention-directory-manager-tools/univention-dnsedit "$@" --ignore-exists "$domainname" add srv pkgdb tcp 0 0 5432 "$hostname.$domainname." || die
 fi
 

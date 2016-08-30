@@ -153,7 +153,7 @@ upgrade_license () {
 	tmp=$(mktemp)
 	trap "rm -f '$tmp'" EXIT
 	dn="cn=admin,cn=license,cn=univention,$ldap_base"
-	univention-ldapsearch -xLLLo ldif-wrap=no -b "$dn" -s base >"$tmp" ||
+	univention-ldapsearch -LLLo ldif-wrap=no -b "$dn" -s base >"$tmp" ||
 		{ echo "Failed to retrieve UCS license: '$dn'"; return 1; }
 
 	if ! grep -Fxq 'univentionLicenseBaseDN: Free for personal use edition' "$tmp"

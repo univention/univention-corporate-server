@@ -86,7 +86,7 @@ while read dn; do
 	delete: univentionPrinterUseClientDriver
 	-
 	%EOR
-done < <(univention-ldapsearch -xLLL "(&(univentionPrinterUseClientDriver=*)(univentionPrinterSpoolHost=$(hostname -f)))" dn | ldapsearch-wrapper | sed -n 's/dn: //p')
+done < <(univention-ldapsearch -LLL "(&(univentionPrinterUseClientDriver=*)(univentionPrinterSpoolHost=$(hostname -f)))" dn | ldapsearch-wrapper | sed -n 's/dn: //p')
 ### </cleanupcode>
 
 univention-directory-manager container/cn create "$@" --ignore_exists --position "cn=univention,$ldap_base" --set name=cups || die

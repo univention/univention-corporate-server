@@ -508,7 +508,7 @@ get_available_s4connector_dc () {
 	local s4connector_dc_candidates
 	s4connector_dc=()
 	s4connector_dc_candidates=$(univention-ldapsearch "(&(univentionService=S4 Connector)(objectClass=univentionDomainController))" cn | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
-	if univention-ldapsearch -xLLL univentionservice=UCS@school dn | grep -q ^dn; then
+	if univention-ldapsearch -LLL univentionservice=UCS@school dn | grep -q ^dn; then
 		for dc in "${s4connector_dc_candidates[@]}"; do
 			if samba-tool drs showrepl "$dc" >/dev/null 2>&1; then
 				s4connector_dc+=( "$dc" )
@@ -632,7 +632,7 @@ _create_group_with_special_sid ()
 
 	shift 3
 	
-	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
+	group_dn="$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$name))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 
 	if [ -z "$group_dn" ]; then
 
@@ -726,7 +726,7 @@ _update_pseudo_group ()
 
 	shift 1
 	
-	group_dn="$(univention-ldapsearch -x "(&(objectClass=univentionGroup)(cn=$name)(!(univentionGroupType=-2147483643)))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
+	group_dn="$(univention-ldapsearch "(&(objectClass=univentionGroup)(cn=$name)(!(univentionGroupType=-2147483643)))" | ldapsearch-wrapper | sed -ne 's|dn: ||p')"
 
 	if [ -n "$group_dn" ]; then
 		extract_binddn_and_bindpwd_from_args "$@"
@@ -972,7 +972,7 @@ if [ "$samba4_role" = 'DC' ]; then
 
 	if [ $JS_LAST_EXECUTED_VERSION -lt 6 ]; then
 		## add server to Enterprise Domain Controllers group if it exists
-		if univention-ldapsearch -x sambaSID='S-1-5-9' cn | ldapsearch-wrapper | grep -q '^cn:'; then
+		if univention-ldapsearch sambaSID='S-1-5-9' cn | ldapsearch-wrapper | grep -q '^cn:'; then
 			# While Bug #28756 is not fixed, do not die
 			udm groups/group modify "$@" --ignore_exists \
 							--dn "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \

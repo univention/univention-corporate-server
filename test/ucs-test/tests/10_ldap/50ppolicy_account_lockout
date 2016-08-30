@@ -28,7 +28,7 @@ deactivate_ppolicy() {
 
 ucr set ldap/ppolicy=yes ldap/ppolicy/enabled=yes; /etc/init.d/slapd restart; undo deactivate_ppolicy
 
-default_ppolicy_ldif=$(univention-ldapsearch -xLLL -b "cn=default,cn=ppolicy,cn=univention,$ldap_base")
+default_ppolicy_ldif=$(univention-ldapsearch -LLL -b "cn=default,cn=ppolicy,cn=univention,$ldap_base")
 
 old_pwdFailureCountInterval=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdFailureCountInterval: //p')
 pwdMaxFailure=$(echo "$default_ppolicy_ldif" | sed -n 's/^pwdMaxFailure: //p')
@@ -64,7 +64,7 @@ for ((i=1; i<"$pwdMaxFailure"; i++)); do
 	ldapsearch -x -D "$test_userdn" -w foo >/dev/null 2>&1
 done
 
-# $(univention-ldapsearch -xLLL uid=$test_username pwdFailureTime | sed -n 's/^pwdFailureTime: //p' | wc -l)
+# $(univention-ldapsearch -LLL uid=$test_username pwdFailureTime | sed -n 's/^pwdFailureTime: //p' | wc -l)
 
 echo "Wait until pwdFailureCountInterval ($new_pwdFailureCountInterval seconds) has passed.."
 sleep "$new_pwdFailureCountInterval"
@@ -82,7 +82,7 @@ wait_for_replication_and_postrun
 locked_state=$(udm-test users/user list --filter "username=$test_username" | sed -n 's/^  locked: //p')
 if [ "$locked_state" != 'all' ]; then
 	fail_test 1 "Account not locked: $locked_state"
-	univention-ldapsearch -xLLL -b "$test_userdn" -s base +
+	univention-ldapsearch -LLL -b "$test_userdn" -s base +
 
 	echo "DEBUG: attempting to lock manually"
 	python -c "import univention.lib.account; univention.lib.account.lock('$test_userdn', '20141006192950Z')"

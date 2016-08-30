@@ -48,7 +48,7 @@ for i in 0 3 6 12; do
 
 	for b in "$B00" "$B01" "$B02" "$B03" "$B04"; do
 		echo "Search in UCS LDAP as user $b with the new password"
-		univention-ldapsearch -x -D "uid=$b,cn=users,$ldap_base" -w q1w2e3r4 -LLL -s base dn || fail_test 110
+		univention-ldapsearch -D "uid=$b,cn=users,$ldap_base" -w q1w2e3r4 -LLL -s base dn || fail_test 110
 		if is_ucr_true 'connector/ad/mapping/user/password/disabled'; then
 			echo "Password sync is disabled, skipping password sync check"
 		else

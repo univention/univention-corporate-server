@@ -43,7 +43,7 @@ fi
 
 
 # get the account data from OpenLDAP:
-openldap_account_data=$(univention-ldapsearch -xLLL -s base -b "$windows_host_dn" uid sambaSID)
+openldap_account_data=$(univention-ldapsearch -LLL -s base -b "$windows_host_dn" uid sambaSID)
 
 # get the sAMAccountName equivalent from OpenLDAP:
 samaccountname=$(sed -n 's/^uid: //p' <<<"$openldap_account_data")

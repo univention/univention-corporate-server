@@ -92,7 +92,7 @@ __SPECIAL_ACCOUNT_SIDS = {
 }
 
 __SPECIAL_SIDS = set(__SPECIAL_ACCOUNT_SIDS.values())
-	
+
 def open_idmap():
 	global lp
 	listener.setuid(0)
@@ -285,7 +285,7 @@ def handler(dn, new, old, operation):
 				xid_attr = 'gidNumber'
 				xid_type = 'ID_TYPE_GID'
 				samaccountname = old.get('cn', [None])[0]
-			
+
 			old_xid = old.get(xid_attr, [''] )[0]
 			if old_xid:
 				old_sambaSID = old.get(sidAttribute, [''])[0]
@@ -319,7 +319,7 @@ if __name__ == '__main__':
 	univention.debug.set_level(univention.debug.LISTENER, int(ucr.get('listener/debug/level', 2)))
 
 	import subprocess
-	cmd = ['/usr/bin/univention-ldapsearch', '-xLLL', filter, 'objectClass']
+	cmd = ['/usr/bin/univention-ldapsearch', '-LLL', filter, 'objectClass']
 	cmd.extend(attributes)
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	(stdout, stderr) = p1.communicate()

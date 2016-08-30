@@ -77,7 +77,7 @@ univention_samba4_append_to_ucr() {
 
 remove_non_samba4_dc_srv_records() {
 
-	ldif=$(univention-ldapsearch -LLLx "(&(objectClass=univentionDomainController)(univentionService=Samba 4))" cn associatedDomain | ldapsearch-wrapper)
+	ldif=$(univention-ldapsearch -LLL "(&(objectClass=univentionDomainController)(univentionService=Samba 4))" cn associatedDomain | ldapsearch-wrapper)
 
 	samba4_dcs_fqdn_list=("${hostname}.${domainname}")	## initialize with own fqdn for the initial join of the first Samba4 DC
 	while read -d '' record; do
@@ -91,13 +91,13 @@ remove_non_samba4_dc_srv_records() {
 	relativeDomainName_list=('_kerberos._tcp' '_kerberos._udp' '_kpasswd._tcp' '_kpasswd._udp' '_ldap._tcp')
 
 	for record in "${relativeDomainName_list[@]}"; do
-		ldap_record=$(univention-ldapsearch -LLLx \
+		ldap_record=$(univention-ldapsearch -LLL \
 			"(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=$record))" sRVRecord dn \
 			| ldapsearch-wrapper)
 		sRVRecord_DN=$(sed -n 's/^dn: //p' <<<"$ldap_record")
 		sRVRecord_attrs=$(sed -n 's/^sRVRecord: //p' <<<"$ldap_record")
 
-		zoneDN=$(univention-ldapsearch -LLLx "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
+		zoneDN=$(univention-ldapsearch -LLL "(&(objectClass=dNSZone)(zoneName=$domainname)(relativeDomainName=@))" dn \
 			| ldapsearch-wrapper | sed -n 's/^dn: //p')
 
 		while read line; do

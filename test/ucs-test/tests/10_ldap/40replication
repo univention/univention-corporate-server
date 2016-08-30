@@ -61,17 +61,17 @@ done
 
 wait_for_replication
 
-if ! univention-ldapsearch -LLL -x -b "cn=$container_name,$container_position"
+if ! univention-ldapsearch -LLL -b "cn=$container_name,$container_position"
 then
 	fail_test 1 'container not found!'
 else
 	echo 'OK: container was replicated.'
-	if ! univention-ldapsearch -LLL -x -b "cn=$container_name,$container_position" | grep -qs '^description:'
+	if ! univention-ldapsearch -LLL -b "cn=$container_name,$container_position" | grep -qs '^description:'
 	then
 		fail_test 1 'container has no "description"-attribute!'
 	else
 		echo 'OK: container has "description"-attribute.'
-		if ! univention-ldapsearch -LLL -x -b "cn=$container_name,$container_position" | grep -qs '^description:\s*other20$'
+		if ! univention-ldapsearch -LLL -b "cn=$container_name,$container_position" | grep -qs '^description:\s*other20$'
 		then
 			fail_test 1 'value of "description"-attribute is incorrect!'
 		else

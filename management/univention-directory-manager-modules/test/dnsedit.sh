@@ -4,8 +4,8 @@ eval "$(ucr shell)"
 
 cleanup () {
 	set +e
-	univention-ldapsearch -xLLLb "zoneName=123.168.192.in-addr.arpa,cn=dns,$ldap_base" dn
-	univention-ldapsearch -xLLLb "zoneName=test.$domainname,cn=dns,$ldap_base" dn
+	univention-ldapsearch -LLLb "zoneName=123.168.192.in-addr.arpa,cn=dns,$ldap_base" dn
+	univention-ldapsearch -LLLb "zoneName=test.$domainname,cn=dns,$ldap_base" dn
 	udm dns/reverse_zone remove --dn "zoneName=123.168.192.in-addr.arpa,cn=dns,$ldap_base"
 	udm dns/forward_zone remove --dn "zoneName=test.$domainname,cn=dns,$ldap_base"
 }

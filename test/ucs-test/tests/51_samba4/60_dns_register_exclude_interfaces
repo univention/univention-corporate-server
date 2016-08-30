@@ -19,7 +19,7 @@
 
 RETVAL=100
 
-arecords=$(univention-ldapsearch -x -b relativeDomainName=$(hostname),zoneName=$(dnsdomainname),cn=dns,$(ucr get ldap/base) | grep "^aRecord: ")
+arecords=$(univention-ldapsearch -b relativeDomainName=$(hostname),zoneName=$(dnsdomainname),cn=dns,$(ucr get ldap/base) | grep "^aRecord: ")
 samba_register_exclude_interfaces="$(ucr get samba/register/exclude/interfaces)"
 ucr unset samba/register/exclude/interfaces
 
