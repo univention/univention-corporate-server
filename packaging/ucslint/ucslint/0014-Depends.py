@@ -29,7 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os
+from os.path import join, exists, curdir, splitext
 import re
 from glob import glob
 try:
@@ -111,7 +111,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         self.debug('Build-Depends-Indep: %s' % (build_indep,))
         build_deps = build_arch | build_indep
 
-        fn = os.path.join(self.path, 'debian', 'rules')
+        fn = join(self.path, 'debian', 'rules')
         need = self._scan_script(fn)
         uses_uicr = 'uicr' in need
         uses_umcb = 'umcb' in need
@@ -139,8 +139,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # Assert packages using "ucr" in preinst pre-depend on "univention-config"
         for ms in ('preinst',):
-            fn = os.path.join(self.path, 'debian', '%s.%s' % (pkg, ms))
-            if not os.path.exists(fn):
+            fn = join(self.path, 'debian', '%s.%s' % (pkg, ms))
+            if not exists(fn):
                 continue
             need = self._scan_script(fn)
             if 'ucr' in need and not pre & UniventionPackageCheck.DEPS['ucr'][1]:
@@ -148,13 +148,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # Assert packages using "ucr" depend on "univention-config"
         for ms in ('postinst', 'prerm', 'postrm'):
-            fn = os.path.join(self.path, 'debian', '%s.%s' % (pkg, ms))
-            if not os.path.exists(fn):
+            fn = join(self.path, 'debian', '%s.%s' % (pkg, ms))
+            if not exists(fn):
                 continue
             need = self._scan_script(fn)
             if 'ucr' in need and not all & UniventionPackageCheck.DEPS['ucr'][1]:
                 self.addmsg('0014-5', 'Missing Depends: univention-config, ${misc:Depends}', filename=fn)
-        p = os.path.join(self.path, '[0-9][0-9]%s.inst' % (pkg,))
+        p = join(self.path, '[0-9][0-9]%s.inst' % (pkg,))
         for fn in glob(p):
             need = self._scan_script(fn)
             if 'ucr' in need and not all & UniventionPackageCheck.DEPS['ucr'][1]:
@@ -163,24 +163,24 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
         # Assert packages using "init-autostart.lib" depends on "univention-base-files"
         init_files = set()
-        init_files.add(os.path.join(self.path, 'debian', '%s.init' % (pkg,)))
-        init_files.add(os.path.join(self.path, 'debian', '%s.init.d' % (pkg,)))
+        init_files.add(join(self.path, 'debian', '%s.init' % (pkg,)))
+        init_files.add(join(self.path, 'debian', '%s.init.d' % (pkg,)))
         try:
-            fn = os.path.join(self.path, 'debian', '%s.univention-config-registry' % (pkg,))
-            if os.path.exists(fn):
+            fn = join(self.path, 'debian', '%s.univention-config-registry' % (pkg,))
+            if exists(fn):
                 f = open(fn, 'r')
                 try:
                     for l in f:
                         m = UniventionPackageCheck.RE_INIT.match(l)
                         if m:
-                            fn = os.path.join(self.path, 'conffiles', m.group(1))
+                            fn = join(self.path, 'conffiles', m.group(1))
                             init_files.add(fn)
                 finally:
                     f.close()
         except (IOError, OSError):
             self.addmsg('0014-0', 'failed to open and read file', filename=fn)
         for fn in init_files:
-            if not os.path.exists(fn):
+            if not exists(fn):
                 continue
             need = self._scan_script(fn)
             if 'ial' in need and not all & UniventionPackageCheck.DEPS['ial'][1]:
@@ -190,7 +190,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         """ the real check """
         super(UniventionPackageCheck, self).check(path)
 
-        fn = os.path.join(path, 'debian', 'control')
+        fn = join(path, 'debian', 'control')
         self.debug('Reading %s' % (fn,))
         try:
             parser = uub.ParserDebianControl(fn)
@@ -209,16 +209,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         # Assert all files debian/$pkg.$suffix belong to a package $pkg declared in debian/control
         exists = {}
         for suffix in ('.univention-config-registry', '.univention-config-registry-variables', '.univention-config-registry-categories', '.univention-service'):
-            pat = os.path.join(path, 'debian', '*%s' % (suffix,))
+            pat = join(path, 'debian', '*%s' % (suffix,))
             for fn in glob(pat):
-                pkg = os.path.basename(fn)[:-len(suffix)]
+                pkg = basename(fn)[:-len(suffix)]
                 exists.setdefault(pkg, []).append(fn)
         known = set((section['Package'] for section in parser.binary_sections))
 
 
 if __name__ == '__main__':
     upc = UniventionPackageCheck()
-    upc.check(os.path.curdir)
+    upc.check(curdir)
     msglist = upc.result()
     for msg in msglist:
         print str(msg)
