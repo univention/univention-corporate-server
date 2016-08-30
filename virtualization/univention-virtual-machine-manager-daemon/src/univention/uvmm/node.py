@@ -1657,7 +1657,7 @@ def domain_update(domain):
 				continue # skip this node
 	else:
 		logger.info('Domain %s not found for update' % domain)
-		raise NodeError(_('Failto to update domain "%(domain)s"'), domain=domain)
+		raise NodeError(_('Failed to update domain "%(domain)s"'), domain=domain)
 
 def domain_clone(uri, domain, name, subst):
 	"""Clone a domain."""

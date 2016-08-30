@@ -309,7 +309,7 @@ msgstr ""
 
 #: univention/uvmm/node.py:1711
 #, python-format
-msgid "Failto to update domain \"%(domain)s\""
+msgid "Failed to update domain \"%(domain)s\""
 msgstr "Aktualisieren der Domäne \"%(domain)s\" fehlgeschlagen"
 
 #: univention/uvmm/node.py:860
@@ -448,7 +448,7 @@ msgstr "Unbekannter PAM-Typ: %(type)s"
 
 #: univention/uvmm/commands.py:624
 #, python-format
-msgid "Unknown command \"%(command)s"
+msgid "Unknown command \"%(command)s\""
 msgstr "Unbekannter Befehl \"%(command)s\""
 
 #: univention/uvmm/node.py:404
