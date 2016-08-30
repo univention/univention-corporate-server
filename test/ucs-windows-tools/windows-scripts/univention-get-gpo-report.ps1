@@ -31,6 +31,9 @@ function error ($msg) {
 # MAIN #
 ########
 
+## Work around annoying automatic line wrap:
+$host.UI.RawUI.BufferSize = new-object System.Management.Automation.Host.Size(4096,50)
+
 $global:Now = Set-PSBreakpoint -Variable Now -Mode Read -Action { $global:Now = Get-Date }
 
 if (!(gwmi win32_computersystem).partofdomain -eq $true) {
