@@ -36,10 +36,10 @@
 # arg1: path to the file to be diverted
 # arg2: diversion filename (without path), defaults to <filename>.real
 _divert() {
-	local src_file=$1
-	local path=${1%/*}
+	local src_file="$1"
+	local path="${1%/*}"
 	# if no second parameter is given as destination filename, default to <filename>.real
-	local dest_file=${2:-${1##*/}.real}
+	local dest_file="${2:-${1##*/}.real}"
 	dpkg-divert --package univention-app-appliance --add --rename --divert "$path/$dest_file" "$src_file"
 }
 

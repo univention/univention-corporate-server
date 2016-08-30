@@ -10,7 +10,7 @@ then
 fi
 errors=0
 run () {
-	local prog=$1 in=$2 out=${2%in}out
+	local prog="$1" in="$2" out="${2%in}out"
 	"$prog" <"$in" | diff -y --suppress-common-lines - "$out" || { echo "-- $prog $in"; errors=$((errors +1)); }
 }
 for file in *.in

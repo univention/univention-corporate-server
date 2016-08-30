@@ -36,8 +36,8 @@ if [ -n "$bind_bindpw" -a "$bind_bindpw" != "/etc/machine.secret" ]; then
 	exit 0
 fi
 
-bind_service(){
-	local action=$1
+bind_service () {
+	local action="$1"
 
 	# start / stop bind9 only if the ldap backend is configured
 	if [ "$dns_backend" = "ldap" ]; then
