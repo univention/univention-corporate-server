@@ -1,3 +1,9 @@
+ucs-windows-tools (3.0.1-7) unstable; urgency=medium
+
+  * Bug #41571: Import-Module grouppolicy in univention-Set-GPPermissions.ps1
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2016 16:57:00 +0200
+
 ucs-windows-tools (3.0.1-6) unstable; urgency=medium
 
   * Bug #41571: Import-Module grouppolicy in GPO powershell scripts
