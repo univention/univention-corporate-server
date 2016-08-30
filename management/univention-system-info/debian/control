@@ -12,7 +12,11 @@ Standards-Version: 3.8.2
 
 Package: univention-system-info
 Architecture: all
-Depends: pciutils, module-init-tools, iproute, dmidecode
+Depends:
+ pciutils,
+ kmod,
+ iproute2,
+ dmidecode,
 Description: UCS - collect system information
  This package contains a skcript to collect system information
  .

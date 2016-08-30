@@ -13,7 +13,7 @@ Package: univention-join
 Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
- univention-config-registry,
+ univention-config,
  shell-univention-lib (>= 3.0.26-28),
  univention-ssh (>= 3.0.1-2),
  iputils-ping,

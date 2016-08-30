@@ -12,7 +12,7 @@ Package: univention-log-collector-server
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  gzip,
- univention-config-registry,
+ univention-config,
  python-openssl,
  python-univention-lib (>= 1.0.25-1)
 Description: UCS log-file Collector Server
@@ -26,7 +26,7 @@ Description: UCS log-file Collector Server
 Package: univention-log-collector-client
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
- univention-config-registry,
+ univention-config,
  python-openssl,
  python-univention-lib (>= 1.0.25-1)
 Description: UCS log-file Collector Client

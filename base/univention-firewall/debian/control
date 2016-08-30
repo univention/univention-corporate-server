@@ -14,7 +14,7 @@ Build-Depends: debhelper,
 Package: univention-firewall
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  python-ipaddr,
  iptables
 Description: UCS - firewall integration

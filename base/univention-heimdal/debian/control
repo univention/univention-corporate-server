@@ -12,7 +12,7 @@ Package: univention-heimdal-kdc
 Architecture: all
 Pre-Depends: heimdal-kdc (>> 0.6.3)
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  univention-base-files,
  shell-univention-lib (>= 3.0.26-41),
  libsasl2-modules-gssapi-heimdal,
@@ -36,7 +36,7 @@ Description: UCS - Kerberos KDC
 Package: univention-heimdal-member
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  libsasl2-modules-gssapi-heimdal,
  heimdal-clients,
  heimdal-servers,
@@ -55,7 +55,7 @@ Description: UCS - Kerberos member server
 Package: univention-heimdal-common
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  python-univention-heimdal,
  heimdal-clients
 Breaks: univention-heimdal-kdc (<< 5.0.6-1),

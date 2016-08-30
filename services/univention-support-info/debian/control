@@ -10,7 +10,11 @@ Standards-Version: 3.8.2
 
 Package: univention-support-info
 Architecture: all
-Depends: pciutils, module-init-tools, iproute, dmidecode
+Depends:
+ pciutils,
+ kmod,
+ iproute2,
+ dmidecode,
 Description: UCS - collect support information
  This package contains a skcript to collect support information
  .

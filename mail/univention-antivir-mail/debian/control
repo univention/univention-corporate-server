@@ -11,7 +11,7 @@ Package: univention-antivir-mail
 Architecture: all
 Depends: ${misc:Depends},
  amavisd-new,
- univention-config-registry,
+ univention-config,
  univention-spamassassin,
  clamav,
  clamav-daemon | kav4fileservers | sophie

@@ -9,7 +9,7 @@ Build-Depends: debhelper,
 Package: univention-snmp
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  snmp
 Description: UCS - SNMP client configuration
  This package contains the configuration for the

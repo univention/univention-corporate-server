@@ -528,7 +528,6 @@ appliance_preinstall_non_univention_packages ()
 			postgresql-client
 			ps2eps
 			psutils
-			raidutils
 			ruby1.9.1
 			ruby
 			snmp

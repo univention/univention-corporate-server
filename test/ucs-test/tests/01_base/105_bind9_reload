@@ -5,7 +5,7 @@
 ##  - apptest
 ## packages:
 ##  - bind9
-##  - iproute
+##  - iproute2
 ##  - makepasswd
 ## bugs:
 ##  - 36532

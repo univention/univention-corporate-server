@@ -37,7 +37,7 @@ univention-config-registry set 'nagios/client/checkraid?no' \
 
 eval "$(univention-config-registry shell)"
 
-# create missing device file for raidutils
+# create missing device file for dpt-i2o-raidutils
 if [ ! -e /dev/dpti0 ] ; then
   mknod /dev/dpti0 c 151 0
 fi

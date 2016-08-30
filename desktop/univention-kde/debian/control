@@ -15,7 +15,7 @@ Recommends: kde-l10n-de,
  univention-x-core
 Depends: ${misc:Depends},
  gettext,
- univention-config-registry,
+ univention-config,
  univention-directory-manager-tools,
  kde-standard (>= 5:66),
  univention-kde-setdirs,
@@ -31,7 +31,7 @@ Description: UCS - KDE desktop
 Package: univention-kde-setdirs
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry
+ univention-config
 Conflicts: univention-kde (<< 1.25)
 Description: UCS - Set Profile Path
  This package sets the profile path for the user

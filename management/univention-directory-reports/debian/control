@@ -29,7 +29,7 @@ Package: python-univention-directory-reports
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention-directory-manager,
- univention-config-registry
+ univention-config,
 Provides: ${python:Provides}
 Description: Creates reports for UCS Directory manager objects
  UCS Report Generator creates reports in PDF format using

@@ -9,7 +9,7 @@ Standards-Version: 3.8.2
 
 Package: univention-x-core
 Architecture: all
-Pre-Depends: univention-config-registry
+Pre-Depends: univention-config
 Depends: ${misc:Depends},
  univention-policy-tools,
  ldap-utils,

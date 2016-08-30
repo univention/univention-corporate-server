@@ -10,7 +10,7 @@ Build-Depends: debhelper,
 Package: univention-mozilla-firefox
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  firefox-en | firefox-de
 Description: UCS - Mozilla Firefox support
  This package contains the univention-config configuration

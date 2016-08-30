@@ -45,7 +45,7 @@ Depends: ${misc:Depends},
  ${python:Depends},
  python-netifaces
 Recommends: bridge-utils,
- ifenslave-2.6,
+ ifenslave,
  vlan
 Replaces: univention-network-manager,
  univention-ifplugd

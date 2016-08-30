@@ -15,10 +15,10 @@ Depends: ${misc:Depends},
  httpd,
  nmap,
  mrtg,
- netcat,
+ netcat-traditional,
  univention-mail-postfix | mail-transport-agent,
  cron,
- univention-config-registry,
+ univention-config,
  python-univention-lib (>= 1.0.25-1)
 Description: UCS - maintenance tools
  This package monitors the server root's homedir and

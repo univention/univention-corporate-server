@@ -1,0 +1,1 @@
+mv_conffile /etc/univention/templates/files/etc/iceweasel/pref/iceweasel.js /etc/univention/templates/files/etc/firefox-esr/pref/firefox-esr.js

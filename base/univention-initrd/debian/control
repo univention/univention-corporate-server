@@ -10,9 +10,9 @@ Build-Depends: debhelper (>= 7),
 Package: univention-initrd
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  univention-bootsplash,
- module-init-tools,
+ kmod,
  initramfs-tools (>= 0.112~bpo70+1),
  e2fsprogs
 Description: UCS - initrd scripts

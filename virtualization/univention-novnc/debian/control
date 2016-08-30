@@ -16,6 +16,6 @@ Depends: ${misc:Depends},
 # ${shlibs:Depends},
  ${python:Depends},
  univention-base-files,
- univention-config-registry,
+ univention-config,
 Description: HTML5 VNC client
  VNC client using HTML5 (WebSockets, Canvas) with encryption (wss://) support.

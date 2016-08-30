@@ -10,7 +10,7 @@ Standards-Version: 3.8.2
 Package: univention-spamassassin
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  spamassassin (>= 3.0.4),
  spamc,
  python-univention-lib (>= 1.0.25-1)

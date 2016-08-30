@@ -15,7 +15,7 @@ Depends: ${misc:Depends},
  sasl2-bin,
  libpam-univentionmailcyrus,
  univention-base-files,
- univention-config-registry (>= 7.0.31-1),
+ univention-config (>= 7.0.31-1),
  python-univention-lib (>= 3.0.4-1),
  openssl
 Conflicts: univention-mail,

@@ -16,7 +16,7 @@ Architecture: all
 Pre-Depends: univention-postgresql (>= 2.0.1-5)
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
- univention-config-registry,
+ univention-config,
  postgresql-client,
  univention-pkgdb-tools,
  shell-univention-lib (>= 3.0.1-1),
@@ -36,7 +36,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-apt,
  python-pygresql,
  python-dns,
- univention-config-registry
+ univention-config,
 Provides: ${python:Provides}
 Conflicts: univention-pkgdb-lib (<< 1.0.4)
 Description: UCS - PkgDB
@@ -50,7 +50,7 @@ Description: UCS - PkgDB
 Package: univention-pkgdb-tools
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  python-univention-pkgdb
 Recommends: postgresql-client
 Description: UCS - PkgDB-Tools

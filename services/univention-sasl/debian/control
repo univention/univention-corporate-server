@@ -11,7 +11,7 @@ Package: univention-sasl
 Architecture: all
 Depends: ${misc:Depends},
  sasl2-bin,
- univention-config-registry
+ univention-config,
 Description: UCS SASL configuration
  Configuration for Simple Auhentication and Security Layer (SASL2).
  .

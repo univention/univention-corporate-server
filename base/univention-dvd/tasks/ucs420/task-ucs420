@@ -46,7 +46,7 @@ vim
 wget
 zip
 bridge-utils
-ifenslave-2.6
+ifenslave
 vlan
 
 /* Role Packages */

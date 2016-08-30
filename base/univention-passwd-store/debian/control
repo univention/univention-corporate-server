@@ -9,7 +9,7 @@ Build-Depends: debhelper,
 Package: univention-passwd-store
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  univention-pam,
  pam-runasroot
 Description: UCS - password store

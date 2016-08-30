@@ -19,7 +19,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-server-master | univention-server-backup,
  python-univention-directory-manager (>= 7.0.214),
  python-pysqlite2
-Pre-Depends: univention-config-registry (>= 2.6.8-5)
+Pre-Depends: univention-config (>= 2.6.8-5)
 Provides: ${python:Provides}
 Conflicts: univention-server-slave,
  univention-server-member
@@ -39,7 +39,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-license,
  python-univention-connector (= ${binary:Version}),
  python-pysqlite2
-Pre-Depends: univention-config-registry
+Pre-Depends: univention-config,
 Provides: ${python:Provides}
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
@@ -53,7 +53,7 @@ Description: UCS - Modules for connector sychronisation
 Package: univention-ad-connector
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  univention-directory-manager-tools (>> 7.0.147),
  python-univention-connector-ad (= ${binary:Version}),
  shell-univention-lib (>= 1.0.6),

@@ -1,6 +1,6 @@
 @%@UCRWARNING=// @%@
 
-// This is the Debian specific preferences file for Mozilla Firefox
+// This is the Debian specific preferences file for Firefox ESR
 // You can make any change in here, it is the purpose of this file.
 // You can, with this file and all files present in the
 // /etc/mozilla-firefox/pref directory, override any preference that is
@@ -19,6 +19,18 @@ pref("intl.locale.matchOS", true);
 // Disable default browser checking.
 pref("browser.shell.checkDefaultBrowser", false);
 
+// Avoid openh264 being downloaded.
+pref("media.gmp-manager.url.override", "data:text/plain,");
+
+// Disable openh264.
+pref("media.gmp-gmpopenh264.enabled", false);
+
+// Default to classic view for about:newtab
+sticky_pref("browser.newtabpage.enhanced", false);
+
+// Disable health report upload
+pref("datareporting.healthreport.uploadEnabled", false);
+
 pref("print.print_command", "kprinter");
 pref("print.postscript.print_command", "kprinter");
 pref("print.postscript.paper_size", "A4");
@@ -27,4 +39,3 @@ pref("print.postscript.paper_size", "A4");
 if baseConfig.has_key('firefox/prefs/conffile') and baseConfig['firefox/prefs/conffile']:
 	print 'pref("general.config.filename", "%s");' % baseConfig['firefox/prefs/conffile']
 @!@
-

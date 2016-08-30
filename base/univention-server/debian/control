@@ -156,7 +156,7 @@ Description: UCS system server role common dependencies and files
 Package: univention-role-common
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  univention-join,
  univention-updater,
  univention-archive-key,
@@ -190,7 +190,7 @@ Description: UCS system role common dependencies and files
 Package: univention-container-role-common
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  univention-join,
  univention-updater,
  univention-archive-key,

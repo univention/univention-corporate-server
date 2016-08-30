@@ -10,7 +10,7 @@ Standards-Version: 3.8.2
 Package: univention-printquota
 Architecture: all
 Depends: ${misc:Depends},
- univention-config-registry,
+ univention-config,
  univention-printserver,
  pykota,
  univention-printquotadb,
@@ -35,7 +35,7 @@ Pre-Depends: univention-postgresql,
  univention-config (>= 7.0.25),
  shell-univention-lib (>= 3.0.1-1)
 Depends: ${misc:Depends},
- univention-config-registry (>= 8.0.2),
+ univention-config (>= 8.0.2),
  pykota,
 Description: UCS - quotasupport for printserver
  This packages provides the printquota-database configuration. Quota-Database

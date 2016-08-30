@@ -11,7 +11,7 @@ Package: univention-mail-cyrus-murder
 Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
- univention-config-registry,
+ univention-config,
  cyrus-murder-2.4 | cyrus-murder-2.2,
  univention-mail-cyrus,
  shell-univention-lib (>= 3.0.4-1)

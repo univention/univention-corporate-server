@@ -65,7 +65,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-directory-manager-tools (>> 7.0.147),
  univention-printserver,
- cups-pdf,
+ printer-driver-cups-pdf,
  shell-univention-lib
 Description: UCS - print server addons for pdf pseudo printer
  This packages provides configs and settings for a PDF printer.
