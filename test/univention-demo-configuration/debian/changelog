@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.0-2) unstable; urgency=medium
+
+  * Bug #42129: allow call of command appcenter/track
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 25 Aug 2016 16:45:12 +0200
+
 univention-demo-configuration (5.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
