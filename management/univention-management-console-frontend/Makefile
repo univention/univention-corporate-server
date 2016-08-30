@@ -39,7 +39,7 @@ tmpDir:=$(CURDIR)/tmp
 testsDir:=$(CURDIR)/tests
 jsFiles:=$(shell find umc -name "*.js")
 
-.PHONY: build build-dev build-common install clean jslint i18n umc/package.json $(buildDir)/login.html $(buildDir)/index.html $(buildDir)/debug.html $(buildDir)/error.html
+.PHONY: build build-dev build-common install clean jslint i18n umc/package.json
 
 build: build-common $(buildDir)/js/dojo/dojo.js.uncompressed.js
 
@@ -64,7 +64,7 @@ $(tmpDir):
 
 # convert .po to .json files
 i18n:
-	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles) index.html error.html univention-management-console-web-server
+	/usr/bin/dh-umc-translate -p univention-management-console-frontend -l en -l de -o umc $(jsFiles)
 
 $(buildDir):
 	mkdir -p $@
@@ -72,24 +72,6 @@ $(buildDir):
 # rule for the main dojo build process
 $(buildDir)/js/dojo/dojo.js.uncompressed.js: $(jsFiles) $(buildDir)
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(version)"
-
-# index page
-$(buildDir)/index.html: $(buildDir) index.html
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' index.html > $@
-
-# index page for debug mode
-$(buildDir)/debug.html: $(buildDir) index.html
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%/.uncompressed.js/; s/%VERSION%/$(version)/;' index.html > $@
-
-# error page
-$(buildDir)/error.html: $(buildDir) error.html
-	sed 's/%HASH%/_$(timestamp)/; s/%JSSUFFIX%//; s/%VERSION%/$(version)/;' error.html > $@
-
-# login page
-$(buildDir)/login.html: login.html
-	mkdir -p $(dir $@)
-	cp $< $(buildDir)
-	cp blank.html $(dir $@)/blank.html
 
 build-dev: build-common
 	# symlink javascript code
@@ -111,7 +93,7 @@ build-dev: build-common
 	fi
 
 
-build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(cssFiles) $(buildDir)/login.html $(buildDir) $(buildDir)/index.html $(buildDir)/debug.html  $(buildDir)/error.html
+build-common: i18n umc/widgets.js umc/package.json $(tmpDir) $(cssFiles) $(buildDir)
 	# symlink to javascript dir with timestamp
 	rm -f "$(buildDir)/js_"*
 	ln -s "js" "$(buildDir)/js_"'$(timestamp)'

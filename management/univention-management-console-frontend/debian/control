@@ -14,44 +14,12 @@ Build-Depends: debhelper (>= 7.0.50~),
  nodejs,
  librsvg2-bin
 
-Package: univention-management-console-frontend
-Architecture: all
-Depends: ${misc:Depends},
- univention-apache,
- univention-management-console-frontend-theme
-Description: UCS Management Console - Web based computer administration tool
- UCS Management Console is a web based program to manage computers.
- It has an extensible architecture, using modules to implement
- its features. This package contains the AJAX web-frontend
- application. It is written using the Dojo Toolkit and allows to
- access the univention management console web-services through
- the web browser.
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
 
-Package: univention-management-console-web-server
+Package: univention-web-js
 Architecture: all
 Depends: ${misc:Depends},
- univention-management-console-frontend,
- univention-management-console-server,
- python-univention-management-console (> 9.0.0-1),
- univention-base-files,
- curl,
- openssl,
- python-cherrypy3,
- python-daemon,
- python-ipaddr,
- python-pysaml2,
- univention-saml-schema,
- shell-univention-lib
-Description: UCS Management Console - Web server
- UCS Management Console is a web based program to manage computers.
- It has an extensible architecture, using modules to implement
- its features. This package contains the web server providing
- HTTP access to the UMC server.
+Description: Univention Javascript Library
+ This package contains the uncompressed UMC Javascript source files
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
