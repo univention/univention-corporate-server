@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 
 @!@
 if configRegistry.is_true("kdm/usetheme", True):

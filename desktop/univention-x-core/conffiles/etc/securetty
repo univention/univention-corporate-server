@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 
 # /etc/securetty: list of terminals on which root is allowed to login.
 # See securetty(5) and login(1).

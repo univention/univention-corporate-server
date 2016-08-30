@@ -1,4 +1,4 @@
-@%@BCWARNING=# @%@
+@%@UCRWARNING=# @%@
 
 START {
         # --- Normal cyrus spool, or Murder backends ---
