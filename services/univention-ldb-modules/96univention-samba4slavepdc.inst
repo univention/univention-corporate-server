@@ -377,42 +377,9 @@ _update_container ()
 	udm container/cn modify "$@" --dn "cn=System,$ldap_base" --set description='Builtin system settings' 
 }
 
-_remove_slavepdc_account_from_master_s4 ()
-{
-	local master_s4dn=$(univention-ldapsearch "(&(univentionServerRole=master)(univentionService=Samba 4))" dn | sed -ne 's/dn: //p')
-	if [ -n "$master_s4dn" ]; then
-		# Continue only if Samba 4 is installed on the mater
-		extract_binddn_and_bindpwd_from_args "$@"
-		local account=$(ucs_convertDN2UID "$binddn" "$@")
-
-		local host_dn="$(ldbsearch --debug-stderr -k no -H ldaps://$ldap_master "-U$account%$bindpwd" "(&(sAMAccountName=${hostname}$)(objectClass=computer))" dn | sed -ne 's/dn: //p')"
-		if [ -n "$host_dn" ]; then
-			echo "Delete $host_dn in Master Samba 4 LDAP"
-			ldbdel --debug-stderr -k no -H ldaps://$ldap_master "-U$account%$bindpwd" --recursive "$host_dn"
-		fi
-
-		local config_dn="$(ldbsearch --debug-stderr -k no -H ldaps://$ldap_master "-U$account%$bindpwd" --cross-ncs "(&(cn=${hostname})(objectClass=server))" dn | sed -ne 's/dn: //p')"
-		if [ -n "$config_dn" ]; then
-			echo "Delete $config_dn in Master Samba 4 LDAP"
-			ldbdel --debug-stderr -k no -H ldaps://$ldap_master "-U$account%$bindpwd" --cross-ncs --recursive "$config_dn"
-
-			# try to execute samba-tool drs kcc on DC Master. It doesn't
-			# matter if it fails because the command will be executed
-			# after some time automatically on the DC Master
-			pwdfile=$(mktemp)
-			chown 600 "$pwdfile"
-			echo -n "$bindpwd" >"$pwdfile"
-			univention-ssh "$pwdfile" root@$ldap_master samba-tool drs kcc
-			rm "$pwdfile"
-		fi
-
-	fi
-}
-
 _create_default_s4_groups "$@"
 _update_groups "$@"
 _update_container "$@"
-_remove_slavepdc_account_from_master_s4 "$@"
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 
