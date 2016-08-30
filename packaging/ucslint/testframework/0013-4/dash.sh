@@ -1,0 +1,43 @@
+#!/bin/sh
+t () {
+	local save=
+	local save=""
+	local save=''
+	local save= #
+	local save=0
+	local save=$
+	local save=a
+	local save=_
+	local save=$"" # bash quoting
+	local save=$'' # bash quoting
+	local save=$? # return code
+	local save=${?} # return code
+	local save=$$ # pid
+	local save=${$} # pid
+	local save=$! # child pid
+	local save=${!} # child pid
+	local save=$# # argument count
+	local save=${#} # argument count
+	local bad=`:` # subshell
+	local bad=$(:) # subshell
+	local bad=$* # arguments IFS[0] separated
+	local bad=${*} # arguments IFS[0] separated
+	local bad=$- # options
+	local bad=${-} # options
+	local bad=$0
+	local bad=${0}
+	local bad=$9
+	local bad=${9}
+	local bad=$@ # aruments quoted
+	local bad=${@} # aruments quoted
+	local bad=$A
+	local bad=${A}
+	local bad=$Z
+	local bad=${Z}
+	local bad=$_ # bashism
+	local bad=${_} # bashism
+	local bad=$a
+	local bad=${a}
+	local bad=$z
+	local bad=${z}
+}

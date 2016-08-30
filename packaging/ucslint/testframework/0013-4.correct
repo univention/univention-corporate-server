@@ -1,0 +1,26 @@
+E:0013-2: dash.sh:37: possible bashism ($_):
+	local bad=$_ # bashism
+E:0013-2: dash.sh:38: possible bashism ($_):
+	local bad=${_} # bashism
+W:0013-4: dash.sh:21: unquoted local variable: local bad=`:` # subshell
+W:0013-4: dash.sh:22: unquoted local variable: local bad=$(:) # subshell
+W:0013-4: dash.sh:23: unquoted local variable: local bad=$* # arguments IFS[0] separated
+W:0013-4: dash.sh:24: unquoted local variable: local bad=${*} # arguments IFS[0] separated
+W:0013-4: dash.sh:25: unquoted local variable: local bad=$- # options
+W:0013-4: dash.sh:26: unquoted local variable: local bad=${-} # options
+W:0013-4: dash.sh:27: unquoted local variable: local bad=$0
+W:0013-4: dash.sh:28: unquoted local variable: local bad=${0}
+W:0013-4: dash.sh:29: unquoted local variable: local bad=$9
+W:0013-4: dash.sh:30: unquoted local variable: local bad=${9}
+W:0013-4: dash.sh:31: unquoted local variable: local bad=$@ # aruments quoted
+W:0013-4: dash.sh:32: unquoted local variable: local bad=${@} # aruments quoted
+W:0013-4: dash.sh:33: unquoted local variable: local bad=$A
+W:0013-4: dash.sh:34: unquoted local variable: local bad=${A}
+W:0013-4: dash.sh:35: unquoted local variable: local bad=$Z
+W:0013-4: dash.sh:36: unquoted local variable: local bad=${Z}
+W:0013-4: dash.sh:37: unquoted local variable: local bad=$_ # bashism
+W:0013-4: dash.sh:38: unquoted local variable: local bad=${_} # bashism
+W:0013-4: dash.sh:39: unquoted local variable: local bad=$a
+W:0013-4: dash.sh:40: unquoted local variable: local bad=${a}
+W:0013-4: dash.sh:41: unquoted local variable: local bad=$z
+W:0013-4: dash.sh:42: unquoted local variable: local bad=${z}

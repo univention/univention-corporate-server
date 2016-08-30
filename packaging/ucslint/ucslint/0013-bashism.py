@@ -34,17 +34,36 @@ except ImportError:
 import re
 import subprocess
 
+RE_BASHISM = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
+RE_LOCAL = re.compile(
+    r'''
+    \blocal\b
+    \s+
+    \w+
+    =
+    (?:\$(?![?$!#\s'"]
+           |\{[?$!#]\}
+           |$)
+      |`
+    )
+    ''',
+    re.VERBOSE
+)
+
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
+
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
 		self.name = '0013-bashism'
 
 	def getMsgIds(self):
-		return { '0013-1': [ uub.RESULT_WARN,  'failed to open file' ],
-				 '0013-2': [ uub.RESULT_ERROR, 'possible bashism found' ],
-				 '0013-3': [ uub.RESULT_WARN,  'cannot parse output of "checkbashism"' ],
-				 }
+		return {
+			'0013-1': [uub.RESULT_WARN,  'failed to open file'],
+			'0013-2': [uub.RESULT_ERROR, 'possible bashism found'],
+			'0013-3': [uub.RESULT_WARN,  'cannot parse output of "checkbashism"'],
+			'0013-4': [uub.RESULT_WARN,  'unquoted local variable'],
+		}
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
@@ -54,12 +73,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		reBashism = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
-
-		for fn in uub.FilteredDirWalkGenerator( path,
-												ignore_suffixes=['~','.py','.bak','.po'],
-												reHashBang=re.compile('^#![ \t]*/bin/sh')):
+		for fn in uub.FilteredDirWalkGenerator(
+			path,
+			ignore_suffixes=['~', '.py', '.bak', '.po'],
+			reHashBang=re.compile('^#![ \t]*/bin/(?:d?a)?sh')
+		):
 			self.debug('Testing file %s' % fn)
+			self.check_bashism(fn)
+			self.check_unquoted_local(fn)
+
+	def check_bashism(self, fn):
 			p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			stdout, stderr = p.communicate()
 			# 2 = file is no shell script or file is already bash script
@@ -71,9 +94,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					if not item:
 						continue
 
-					match = reBashism.search(item)
+					match = RE_BASHISM.search(item)
 					if not match:
-						self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n','\\n').replace('\r','\\r'), filename=fn)
+						self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n').replace('\r', '\\r'), filename=fn)
 						continue
 
 					line = int(match.group(1))
@@ -81,3 +104,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					code = match.group(3)
 
 					self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), filename=fn, line=line)
+
+	def check_unquoted_local(self, fn):
+		with open(fn, 'r') as fd:
+			for nr, line in enumerate(fd, start=1):
+				line = line.strip()
+				match = RE_LOCAL.search(line)
+				if not match:
+					continue
+
+				self.addmsg('0013-4', 'unquoted local variable: %s' % (line,), filename=fn, line=nr)
