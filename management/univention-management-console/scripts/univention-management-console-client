@@ -54,9 +54,9 @@ class CLI_Client(Client):
 
 	def __init__(self, options=[], arguments=[]):
 		if options.unix_socket and os.path.exists(options.unix_socket):
-			super(CLI_Client, self).__init__(unix=options.unix_socket, ssl=False, auth=options.authenticate)
+			super(CLI_Client, self).__init__(unix=options.unix_socket, ssl=False)
 		else:
-			super(CLI_Client, self).__init__(servername=options.server, port=options.port, auth=options.authenticate)
+			super(CLI_Client, self).__init__(servername=options.server, port=options.port)
 		self.__wait = None
 		self._options = options
 		self.__started = None
@@ -65,7 +65,7 @@ class CLI_Client(Client):
 		try:
 			self.connect()
 		except umcp.NoSocketError:
-			print >>sys.stderr, "The UMC server %s could not be contacted." % options.server
+			print >> sys.stderr, "The UMC server %s could not be contacted." % options.server
 			sys.exit(1)
 
 		self.signal_connect('response', self._response)

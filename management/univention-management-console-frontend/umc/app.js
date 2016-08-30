@@ -1394,7 +1394,7 @@ define([
 			}
 			// update the host information in the header
 			var fqdn = tools.status('fqdn');
-			tools.umcpCommand('get/hosts/list').then(lang.hitch(this, function(data) {
+			tools.umcpCommand('get/hosts').then(lang.hitch(this, function(data) {
 				var empty = data.result.length <= 1;
 				empty = empty || data.result.length >= (parseInt(_ucr['umc/web/host_referrallimit'], 10) || 100);
 				this._hostInfo.set('disabled', empty);
@@ -1787,8 +1787,8 @@ define([
 			var options = reload ? {reload: true} : null;
 			var onlyLoadAutoStartModule = !tools.status('overview') && tools.status('autoStartModule');
 			return all({
-				modules: tools.umcpCommand('get/modules/list', options),
-				categories: tools.umcpCommand('get/categories/list')
+				modules: tools.umcpCommand('get/modules', options),
+				categories: tools.umcpCommand('get/categories')
 			}).then(lang.hitch(this, function(data) {
 				// update progress
 				var _modules = lang.getObject('modules.modules', false, data) || [];

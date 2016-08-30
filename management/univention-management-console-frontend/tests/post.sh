@@ -27,7 +27,7 @@ echo "POST http://${host}/${prefix}${url} HTTP/1.1
 Host: ${host}
 User-Agent: Mozilla/5.0 (X11; Linux i686; rv:6.0.2) Gecko/20100101 Firefox/6.0.2
 Content-Type: application/json
-X-Requested-With:XMLHttpRequest
+X-Requested-With: XMLHttpRequest
 Content-Length: ${#json}
 Cookie: UMCLang=de-DE; UMCUsername=$username; UMCSessionId=$key
 X-UMC-Session-Id: $key
@@ -63,7 +63,7 @@ function authenticate {
 authenticate
 
 # pretty print
-umcp get/modules/list | send | prettyprint
+umcp get/modules | send | prettyprint
 
 # synchronous requests
 (

@@ -61,9 +61,10 @@
 >
 <!ELEMENT command EMPTY>
 <!-- name: name of UMC function
-	function: name of python function -->
+	function: name of python function
+	allow_anonymous: if command can be executed without being authenticated -->
 <!ATTLIST command
 	name CDATA #REQUIRED
 	function CDATA #REQUIRED
-	prevent_unauthenticated CDATA #IMPLIED
+	allow_anonymous CDATA #IMPLIED
 >
