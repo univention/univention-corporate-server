@@ -41,7 +41,7 @@ import univention
 import univention.s4connector
 import univention.s4connector.s4
 
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 
 # parse commandline options
 
@@ -109,7 +109,7 @@ def connect():
 	sys.stdout=f
 	print time.ctime()
 
-	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig = ConfigRegistry()
 	baseConfig.load()
 
 	if not baseConfig.has_key('%s/s4/ldap/host' % CONFIGBASENAME):
@@ -146,7 +146,7 @@ def connect():
 			s4_ldap_bindpw=s4_ldap_bindpw[0:-1]
 	else:
 		s4_ldap_bindpw=None
-	
+
 	poll_sleep=int(baseConfig['%s/s4/poll/sleep' % CONFIGBASENAME])
 	s4_init=None
 	while not s4_init:
@@ -184,7 +184,7 @@ def connect():
 			s4.open_s4()
 			s4.open_ucs()
 			pass
-	
+
 
 	while not s4_init:
 		try:
@@ -285,7 +285,7 @@ def main():
 			f=open(STATUSLOGFILE, 'w+')
 			sys.stdout=f
 			print time.ctime()
-			
+
 			text = ''
 			exc_info = sys.exc_info()
 			lines = apply(traceback.format_exception, exc_info)

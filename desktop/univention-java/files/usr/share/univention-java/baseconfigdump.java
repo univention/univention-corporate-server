@@ -1,6 +1,6 @@
 /*
  * Univention Java
- *  source code for the java demonstration of univention-baseconfig
+ *  source code for the java demonstration of UCR
  *
  * Copyright 2004-2016 Univention GmbH
  *

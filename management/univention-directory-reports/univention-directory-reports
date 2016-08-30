@@ -39,10 +39,10 @@ import os
 import sys
 
 import univention.directory.reports as udr
+from univention.config_registry import ConfigRegistry
 
-import univention_baseconfig
 
-baseConfig = univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
 
 def dump_modules(cfg, module=None, out=sys.stdout):

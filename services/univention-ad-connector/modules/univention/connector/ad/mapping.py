@@ -32,10 +32,10 @@
 # <http://www.gnu.org/licenses/>.
 
 import string
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 import univention.debug2 as ud
 
-baseConfig=univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
 
 

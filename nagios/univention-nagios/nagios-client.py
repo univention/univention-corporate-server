@@ -34,7 +34,6 @@ __package__='' 	# workaround for PEP 366
 import listener
 import os, re, string, stat
 import univention.debug
-import univention_baseconfig
 
 name='nagios-client'
 description='Create configuration for Nagios nrpe server'

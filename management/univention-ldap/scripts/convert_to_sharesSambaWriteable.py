@@ -37,10 +37,11 @@ import os, sys, getopt, types, re, codecs
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
+
 
 co=univention.admin.config.config()
-baseConfig=univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
 
 baseDN=baseConfig['ldap/base']

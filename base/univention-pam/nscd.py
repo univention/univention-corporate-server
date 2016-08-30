@@ -38,14 +38,14 @@ attributes=['uniqueMember', 'cn']
 
 __package__='' 	# workaround for PEP 366
 import listener
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 import univention.debug
 
 def handler(dn, new, old):
 	pass
 
 def postrun():
-	baseConfig = univention_baseconfig.baseConfig()
+	baseConfig = ConfigRegistry()
 	baseConfig.load()
 
 	if baseConfig.is_true('nscd/group/invalidate_cache_on_changes', False) and baseConfig.is_false('nss/group/cachefile', True):

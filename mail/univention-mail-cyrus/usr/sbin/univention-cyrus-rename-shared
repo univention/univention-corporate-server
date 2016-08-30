@@ -32,7 +32,8 @@
 # <http://www.gnu.org/licenses/>.
 
 adminuser=0
-import os, string, pwd, grp, sys, univention_baseconfig
+import os, string, pwd, grp, sys
+from univention.config_registry import ConfigRegistry
 from pexpect import *
 def cyrescape(address):
 	address=address.replace("@","\@")
@@ -47,7 +48,7 @@ import smtplib
 from email.MIMEText import MIMEText
 
 
-baseConfig = univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
 
 

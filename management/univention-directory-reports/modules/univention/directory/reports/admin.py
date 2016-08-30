@@ -37,8 +37,7 @@ import univention.admin.mapping as ua_mapping
 import univention.admin.syntax as ua_syntax
 import univention.admin.config as ua_config
 import univention.admin.uexceptions as ua_exceptions
-
-import univention_baseconfig as ub
+from univention.config_registry import ConfigRegistry
 
 import univention.debug as ud
 
@@ -88,7 +87,7 @@ class AdminConnection( object ):
 		self._modules = {}
 		self._policies = {}
 		self._format = format
-		self._bc = ub.baseConfig()
+		self._bc = ConfigRegistry()
 		self._bc.load()
 		self.__reverse = {}
 		if not base:
@@ -105,7 +104,7 @@ class AdminConnection( object ):
 		self._config = ua_config.config( host = host )
 
 	def __repr__(self):
-		fmt = '%s(userdn=%r, password=%r, host=%r, base=%r, start_tls=%r, access=%r, format=%r)' 
+		fmt = '%s(userdn=%r, password=%r, host=%r, base=%r, start_tls=%r, access=%r, format=%r)'
 		val = (self.__class__.__name__, self._access.binddn, self._access.bindpw, self._access.host, self._access.base, self._access.start_tls, self._access, self._format)
 		return fmt % val
 
@@ -153,7 +152,7 @@ class AdminConnection( object ):
 		except Exception, e:
 			# write the traceback in the logfile
 			import traceback
-			
+
 			ud.debug( ud.ADMIN, ud.ERROR, 'The object %s could not be opened' % dn )
 			try:
 				tb = traceback.format_exc().encode( 'ascii', 'replace' ).replace( '%', '?' )

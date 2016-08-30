@@ -31,12 +31,12 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.uldap
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 
 
 lo = univention.uldap.getAdminConnection()
 
-baseConfig = univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
 
 searchResult = lo.search( base = baseConfig['ldap/base'], filter = '(&(objectClass=shadowAccount)(shadowLastChange=*)(shadowMax=*))', attr = ['shadowLastChange', 'shadowMax'] )
@@ -56,4 +56,4 @@ for dn,attributes in searchResult:
 				lo.modify( dn, ml )
 		except:
 			pass
-			
+

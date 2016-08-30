@@ -40,7 +40,7 @@ import univention
 import univention.connector
 import univention.connector.ad
 
-import univention_baseconfig
+from univention.config_registry import ConfigRegistry
 
 # parse commandline options
 
@@ -106,7 +106,7 @@ def connect():
 	sys.stdout=f
 	print time.ctime()
 
-	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig = ConfigRegistry()
 	baseConfig.load()
 
 	if not baseConfig.has_key('%s/ad/ldap/host' % CONFIGBASENAME):
@@ -148,11 +148,11 @@ def connect():
 			ca.close()
 
 			new_ca.close()
-			
+
 			ldap.set_option( ldap.OPT_X_TLS_CACERTFILE, new_ca_filename )
 		else:
 			ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
-	
+
 
 	if not baseConfig.has_key('%s/ad/listener/dir' % CONFIGBASENAME):
 		print '%s/ad/listener/dir not set' % CONFIGBASENAME
@@ -167,7 +167,7 @@ def connect():
 	ad_ldap_bindpw=open(baseConfig['%s/ad/ldap/bindpw' % CONFIGBASENAME]).read()
 	if ad_ldap_bindpw[-1] == '\n':
 		ad_ldap_bindpw=ad_ldap_bindpw[0:-1]
-	
+
 	poll_sleep=int(baseConfig['%s/ad/poll/sleep' % CONFIGBASENAME])
 	ad_init=None
 	while not ad_init:
@@ -205,7 +205,7 @@ def connect():
 			ad.open_ad()
 			ad.open_ucs()
 			pass
-	
+
 
 	while not ad_init:
 		try:
@@ -231,7 +231,7 @@ def connect():
 		while True:
 			# Read changes from OpenLDAP
 			try:
-				change_counter=ad.poll_ucs()			
+				change_counter=ad.poll_ucs()
 				if change_counter > 0:
 					# UCS changes, read again from UCS
 					retry_rejected=0
@@ -294,7 +294,7 @@ def main():
 			f=open(STATUSLOGFILE, 'w+')
 			sys.stdout=f
 			print time.ctime()
-			
+
 			text = ''
 			exc_info = sys.exc_info()
 			lines = apply(traceback.format_exception, exc_info)

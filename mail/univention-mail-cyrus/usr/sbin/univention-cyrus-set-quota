@@ -32,11 +32,12 @@
 # <http://www.gnu.org/licenses/>.
 
 adminuser=0
-import os, string, pwd, grp, sys, univention_baseconfig, ldap, tempfile, posix, subprocess, time
+import os, string, pwd, grp, sys, ldap, tempfile, posix, subprocess, time
+from univention.config_registry import ConfigRegistry
 import univention.uldap
 from pexpect import *
 
-baseConfig = univention_baseconfig.baseConfig()
+baseConfig = ConfigRegistry()
 baseConfig.load()
 
 
