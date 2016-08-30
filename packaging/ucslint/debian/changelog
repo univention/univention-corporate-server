@@ -4,6 +4,7 @@ ucslint (6.0.0-1) unstable; urgency=medium
   * Bug #37203: Check for transition packages
   * Bug #41926: Check for unquoted local variables
   * Bug #41603: Fix test-suite for "--name"ed debian/ files
+  * Bug #32539: Warn about wrong script name comments
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:57:03 +0200
 

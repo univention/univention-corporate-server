@@ -1,0 +1,17 @@
+Source: foo
+
+Package: a
+Architecture: all
+Description: okay
+
+Package: b
+Architecture: all
+Description: wrong
+
+Package: c
+Architecture: all
+Description: wrong
+
+Package: d
+Architecture: all
+Description: wrong
