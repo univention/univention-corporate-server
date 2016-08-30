@@ -252,7 +252,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if regexp.match(rel_name):
 				continue
 
-			for suffix in UniventionPackageCheck.KNOWN_DH_FILES:
+			for suffix in UniventionPackageCheck.KNOWN_DH_FILES | UniventionPackageCheck.NAMED_DH_FILES:
 				if rel_name == suffix:
 					self.addmsg('0011-15', 'non-prefixed debhelper file of package "%s"' % (pkgs[0],), filename=fn)
 					break
