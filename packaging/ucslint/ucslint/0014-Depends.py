@@ -103,15 +103,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def check_source(self, source_section):
         """Check source package for dependencies."""
-        build_arch = source_section.get('Build-Depends', '')
-        build_arch = self._split_field(build_arch)
-        build_arch = set(build_arch)
-        self.debug('Build-Depends: %s' % (build_arch,))
-        build_indep = source_section.get('Build-Depends-Indep', '')
-        build_indep = self._split_field(build_indep)
-        build_indep = set(build_indep)
-        self.debug('Build-Depends-Indep: %s' % (build_indep,))
-        build_deps = build_arch | build_indep
+        src_arch = source_section.get('Build-Depends', '')
+        src_arch = self._split_field(src_arch)
+        src_arch = set(src_arch)
+        self.debug('Build-Depends: %s' % (src_arch,))
+        src_indep = source_section.get('Build-Depends-Indep', '')
+        src_indep = self._split_field(src_indep)
+        src_indep = set(src_indep)
+        self.debug('Build-Depends-Indep: %s' % (src_indep,))
+        src_deps = src_arch | src_indep
 
         fn = join(self.path, 'debian', 'rules')
         need = self._scan_script(fn)
@@ -119,9 +119,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         uses_umcb = 'umcb' in need
 
         # Assert packages using "univention-install-" build-depens on "univention-config-dev" and depend on "univention-config"
-        if uses_uicr and not build_deps & UniventionPackageCheck.DEPS['uicr'][1]:
+        if uses_uicr and not src_deps & UniventionPackageCheck.DEPS['uicr'][1]:
             self.addmsg('0014-2', 'Missing Build-Depends: univention-config-dev', filename=fn)
-        if uses_umcb and not build_deps & UniventionPackageCheck.DEPS['umcb'][1]:
+        if uses_umcb and not src_deps & UniventionPackageCheck.DEPS['umcb'][1]:
             self.addmsg('0014-3', 'Missing Build-Depends: univention-management-console-dev', filename=fn)
 
     def check_package(self, section):
@@ -129,15 +129,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         pkg = section['Package']
         self.debug('Package: %s' % (pkg,))
 
-        pre = section.get('Pre-Depends', '')
-        pre = self._split_field(pre)
-        pre = set(pre)
-        self.debug('Pre-Depends: %s' % (pre,))
-        dep = section.get('Depends', '')
-        dep = self._split_field(dep)
-        dep = set(dep)
-        self.debug('Depends: %s' % (dep,))
-        all = pre | dep
+        bin_pre = section.get('Pre-Depends', '')
+        bin_pre = self._split_field(bin_pre)
+        bin_pre = set(bin_pre)
+        self.debug('Pre-Depends: %s' % (bin_pre,))
+        bin_dep = section.get('Depends', '')
+        bin_dep = self._split_field(bin_dep)
+        bin_dep = set(bin_dep)
+        self.debug('Depends: %s' % (bin_dep,))
+        bin_deps = bin_pre | bin_dep
 
         # Assert packages using "ucr" in preinst pre-depend on "univention-config"
         for ms in ('preinst',):
@@ -145,7 +145,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if not exists(fn):
                 continue
             need = self._scan_script(fn)
-            if 'ucr' in need and not pre & UniventionPackageCheck.DEPS['ucr'][1]:
+            if 'ucr' in need and not bin_pre & UniventionPackageCheck.DEPS['ucr'][1]:
                 self.addmsg('0014-4', 'Missing Pre-Depends: univention-config', filename=fn)
 
         # Assert packages using "ucr" depend on "univention-config"
@@ -154,12 +154,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if not exists(fn):
                 continue
             need = self._scan_script(fn)
-            if 'ucr' in need and not all & UniventionPackageCheck.DEPS['ucr'][1]:
+            if 'ucr' in need and not bin_deps & UniventionPackageCheck.DEPS['ucr'][1]:
                 self.addmsg('0014-5', 'Missing Depends: univention-config, ${misc:Depends}', filename=fn)
         p = join(self.path, '[0-9][0-9]%s.inst' % (pkg,))
         for fn in glob(p):
             need = self._scan_script(fn)
-            if 'ucr' in need and not all & UniventionPackageCheck.DEPS['ucr'][1]:
+            if 'ucr' in need and not bin_deps & UniventionPackageCheck.DEPS['ucr'][1]:
                 self.addmsg('0014-4', 'Missing Depends: univention-config, ${misc:Depends}', filename=fn)
         # FIXME: scan all other files for ucr as well?
 
@@ -185,7 +185,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if not exists(fn):
                 continue
             need = self._scan_script(fn)
-            if 'ial' in need and not all & UniventionPackageCheck.DEPS['ial'][1]:
+            if 'ial' in need and not bin_deps & UniventionPackageCheck.DEPS['ial'][1]:
                 self.addmsg('0014-6', 'Missing Depends: univention-base-files', filename=fn)
 
     def check(self, path):
