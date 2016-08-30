@@ -12,7 +12,7 @@ Package: univention-bootsplash
 Architecture: all
 Depends: ${misc:Depends},
  plymouth,
- plymouth-themes-all
+ plymouth-themes,
 Description: UCS - bootsplash
  This package configures the graphical boot screen.
  .
