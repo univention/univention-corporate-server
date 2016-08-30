@@ -3,7 +3,7 @@ release: "4.1"
 version: [2,3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-printquota
-fix: 
+fix: 8.0.1-2.68.201608301737
 desc: |
  This update addresses the following issue(s):
  * allow pykota database access via IPv6 localhost too (Bug #41915)
