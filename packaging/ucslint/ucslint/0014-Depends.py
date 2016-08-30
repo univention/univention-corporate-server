@@ -31,7 +31,6 @@
 
 import os
 import re
-import sys
 from glob import glob
 try:
     import univention.ucslint.base as uub
@@ -43,11 +42,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FIELD = re.compile("([a-z0-9_]+)[ \t]*(?:(<<|<=|=|>=|>>)[ \t]*([-a-zA-Z0-9.+~]+))?")
     RE_INIT = re.compile("^(?:File|Subfile): (etc/init.d/.+)$")
     DEPS = {
-            'uicr': (re.compile("(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)"), set(('univention-config-dev',))),
-            'umcb': (re.compile("(?:/usr/bin/)?dh-umc-module-build"), set(('univention-management-console-dev',))),
-            'ucr': (re.compile("""(?:^|(?<=['";& \t]))(?:/usr/sbin/)?(?:univention-config-registry|ucr)(?:(?=['";& \t])|$)"""), set(('univention-config', '${misc:Depends}'))),
-            'ial': (re.compile("/usr/share/univention-config-registry/init-autostart\.lib"), set(('univention-base-files',))),
-            }
+        'uicr': (re.compile("(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)"), set(('univention-config-dev',))),
+        'umcb': (re.compile("(?:/usr/bin/)?dh-umc-module-build"), set(('univention-management-console-dev',))),
+        'ucr': (re.compile("""(?:^|(?<=['";& \t]))(?:/usr/sbin/)?(?:univention-config-registry|ucr)(?:(?=['";& \t])|$)"""), set(('univention-config', '${misc:Depends}'))),
+        'ial': (re.compile("/usr/share/univention-config-registry/init-autostart\.lib"), set(('univention-base-files',))),
+    }
 
     def __init__(self):
         super(UniventionPackageCheck, self).__init__()
@@ -55,15 +54,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
     def getMsgIds(self):
         return {
-                '0014-0': [uub.RESULT_WARN, 'failed to open/read file'],
-                '0014-1': [uub.RESULT_ERROR, 'parsing error in debian/control'],
-                '0014-2': [uub.RESULT_ERROR, 'univention-install-... is used in debian/rules, but debian/control lacks a build-dependency on univention-config-dev.'],
-                '0014-3': [uub.RESULT_ERROR, 'dh-umc-module-build is used in debian/rules, but debian/control lacks a build-dependency on univention-management-console-dev.'],
-                '0014-4': [uub.RESULT_ERROR, 'univention-config-registry is used in a .preinst script, but the package lacks a pre-dependency on univention-config.'],
-                '0014-5': [uub.RESULT_ERROR, 'univention-config-registry is used in a maintainer script, but the package lacks a dependency on univention-config.'],
-                '0014-6': [uub.RESULT_WARN, 'init-autostart.lib is sourced by a script, but the package lacks an explicit dependency on univention-base-files.'],
-                '0014-7': [uub.RESULT_WARN, 'The source package contains debian/*.univention- files, but the package is not found in debian/control.'],
-                }
+            '0014-0': [uub.RESULT_WARN, 'failed to open/read file'],
+            '0014-1': [uub.RESULT_ERROR, 'parsing error in debian/control'],
+            '0014-2': [uub.RESULT_ERROR, 'univention-install-... is used in debian/rules, but debian/control lacks a build-dependency on univention-config-dev.'],
+            '0014-3': [uub.RESULT_ERROR, 'dh-umc-module-build is used in debian/rules, but debian/control lacks a build-dependency on univention-management-console-dev.'],
+            '0014-4': [uub.RESULT_ERROR, 'univention-config-registry is used in a .preinst script, but the package lacks a pre-dependency on univention-config.'],
+            '0014-5': [uub.RESULT_ERROR, 'univention-config-registry is used in a maintainer script, but the package lacks a dependency on univention-config.'],
+            '0014-6': [uub.RESULT_WARN, 'init-autostart.lib is sourced by a script, but the package lacks an explicit dependency on univention-base-files.'],
+            '0014-7': [uub.RESULT_WARN, 'The source package contains debian/*.univention- files, but the package is not found in debian/control.'],
+        }
 
     def postinit(self, path):
         """Checks to be run before real check or to create pre-calculated data for several runs. Only called once!"""
@@ -87,7 +86,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         self.debug('Reading %s' % (fn,))
         try:
             f = open(fn, 'r')
-        except (OSError, IOError), e:
+        except (OSError, IOError):
             self.addmsg('0014-0', 'failed to open and read file', filename=fn)
             return need
         try:
@@ -178,7 +177,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                             init_files.add(fn)
                 finally:
                     f.close()
-        except (IOError, OSError), e:
+        except (IOError, OSError):
             self.addmsg('0014-0', 'failed to open and read file', filename=fn)
         for fn in init_files:
             if not os.path.exists(fn):
@@ -196,10 +195,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         try:
             parser = uub.ParserDebianControl(fn)
             self.path = path
-        except uub.FailedToReadFile, e:
+        except uub.FailedToReadFile:
             self.addmsg('0014-0', 'failed to open and read file', filename=fn)
             return
-        except uub.UCSLintException, e:
+        except uub.UCSLintException:
             self.addmsg('0014-1', 'parsing error', filename=fn)
             return
 
