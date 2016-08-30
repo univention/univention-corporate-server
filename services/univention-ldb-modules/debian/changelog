@@ -1,3 +1,9 @@
+univention-ldb-modules (4.0.7-8) unstable; urgency=medium
+
+  * Demote Slave PDC in central S4 (Bug #41167)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Aug 2016 16:16:54 +0200
+
 univention-ldb-modules (4.0.7-7) unstable; urgency=medium
 
   * Revert: 'Remove Slave PDC account from Master S4 LDAP (Bug #41167)'

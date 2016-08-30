@@ -377,9 +377,52 @@ _update_container ()
 	udm container/cn modify "$@" --dn "cn=System,$ldap_base" --set description='Builtin system settings' 
 }
 
+_demote_slavepdc_in_central_s4 ()
+{
+    local master_s4=$(udm computers/domaincontroller_master list "$@" --filter univentionService='Samba 4'| sed -ne 's/^ *fqdn: //p')
+    local backup_s4=$(udm computers/domaincontroller_backup list "$@" --filter univentionService='Samba 4'| sed -ne 's/^ *fqdn: //p')
+    if [ -n "$master_s4" -o -n "$backup_s4" ]; then
+		extract_binddn_and_bindpwd_from_args "$@"
+		local account=$(ucs_convertDN2UID "$binddn" "$@")
+
+        for server in $master_s4 $backup_s4; do
+			local host_dn="$(ldbsearch --debug-stderr -k no -H ldaps://$server "-U$account%$bindpwd" "(&(sAMAccountName=${hostname}$)(objectClass=computer)(userAccountControl=532480))" dn | sed -ne 's/dn: //p')"
+			if [ -n "$host_dn" ]; then
+				echo "Demote $host_dn in Master Samba 4 LDAP"
+				ldbmodify --debug-stderr -k no -H ldaps://$server "-U$account%$bindpwd" <<-%EOT
+					dn: $host_dn
+					changetype: modify
+					replace: userAccountControl
+					userAccountControl: 4096
+					%EOT
+			else
+				continue
+			fi
+
+			local config_dn="$(ldbsearch --debug-stderr -k no -H ldaps://$server "-U$account%$bindpwd" --cross-ncs "(&(cn=${hostname})(objectClass=server))" dn | sed -ne 's/dn: //p')"
+			if [ -n "$config_dn" ]; then
+				echo "Delete $config_dn in Master Samba 4 LDAP"
+				ldbdel --debug-stderr -k no -H ldaps://$server "-U$account%$bindpwd" --cross-ncs --recursive "$config_dn"
+
+				# try to execute samba-tool drs kcc on DC Master. It doesn't
+				# matter if it fails because the command will be executed
+				# after some time automatically on the DC Master
+				pwdfile=$(mktemp)
+				chown 600 "$pwdfile"
+				echo -n "$bindpwd" >"$pwdfile"
+				univention-ssh "$pwdfile" root@$server samba-tool drs kcc
+				rm "$pwdfile"
+			fi
+
+			break
+		done
+	fi
+}
+
 _create_default_s4_groups "$@"
 _update_groups "$@"
 _update_container "$@"
+_demote_slavepdc_in_central_s4 "$@"
 
 ucs_addServiceToLocalhost "${NAME}" "$@"
 
