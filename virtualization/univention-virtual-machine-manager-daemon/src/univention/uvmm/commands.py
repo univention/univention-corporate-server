@@ -628,6 +628,6 @@ class _Commands:
 		try:
 			return getattr(self, cmd)
 		except AttributeError, e:
-			raise CommandError(cmd, _('Unknown command "%(command)s'))
+			raise CommandError(cmd, _('Unknown command "%(command)s"'))
 
 commands = _Commands()

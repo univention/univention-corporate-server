@@ -254,7 +254,7 @@ define([
 						type: ComboBox,
 						size: 'Two',
 						label: _('Drive image'),
-						description: _('If the required image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool local directory. After that go to the previous page an return to this one. The image should now be listed.'),
+						description: _('If the required image is not found it might be added by copying the file into the storage pool, e.g. to /var/lib/libvirt/images/ which is the directory of the storage pool local directory. After that go to the previous page and return to this one. The image should now be listed.'),
 						depends: [ 'pool_exists', 'driveType' ],
 						dynamicOptions: lang.hitch(this, function(options) {
 							return {
