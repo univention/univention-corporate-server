@@ -1,0 +1,11 @@
+Source: src
+Build-Depends: realpath
+Build-Depends-Indep:
+ realpath,
+
+Package: bin
+Pre-Depends: realpath,
+Depends: realpath, realpath
+Recommends: realpath
+Suggests: realpath
+Description: You should not depend on transitional packages

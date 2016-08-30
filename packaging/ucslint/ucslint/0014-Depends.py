@@ -37,11 +37,13 @@ try:
     import univention.ucslint.base as uub
 except ImportError:
     import ucslint.base as uub
+from apt import Cache
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     RE_FIELD = re.compile("([a-z0-9_]+)[ \t]*(?:(<<|<=|=|>=|>>)[ \t]*([-a-zA-Z0-9.+~]+))?")
     RE_INIT = re.compile("^(?:File|Subfile): (etc/init.d/.+)$")
+    RE_TRANSITIONAL = re.compile(r'\b[Tt]ransition(?:al)?(?: dummy)? [Pp]ackage\b')  # re.IGNORECASE
     DEPS = {
         'uicr': (re.compile("(?:/usr/bin/)?univention-install-(?:config-registry(?:-info)?|service-info)"), set(('univention-config-dev',))),
         'umcb': (re.compile("(?:/usr/bin/)?dh-umc-module-build"), set(('univention-management-console-dev',))),
@@ -52,6 +54,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
     def __init__(self):
         super(UniventionPackageCheck, self).__init__()
         self.name = '0014-Depends'
+        self.apt = None
 
     def getMsgIds(self):
         return {
@@ -64,11 +67,15 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0014-6': [uub.RESULT_WARN, 'init-autostart.lib is sourced by a script, but the package lacks an explicit dependency on univention-base-files.'],
             '0014-7': [uub.RESULT_WARN, 'The source package contains debian/*.univention- files, but the package is not found in debian/control.'],
             '0014-8': [uub.RESULT_WARN, 'unexpected UCR file'],
+            '0014-9': [uub.RESULT_WARN, 'depends on transitional package'],
         }
 
     def postinit(self, path):
         """Checks to be run before real check or to create pre-calculated data for several runs. Only called once!"""
-        pass
+        try:
+            self.apt = Cache(memonly=True)
+        except Exception as ex:
+            self.debug('failed to load APT cache: %s' % (ex,))
 
     def _split_field(self, s):
         """Split control field into parts. Returns generator."""
@@ -124,6 +131,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         if uses_umcb and not src_deps & UniventionPackageCheck.DEPS['umcb'][1]:
             self.addmsg('0014-3', 'Missing Build-Depends: univention-management-console-dev', filename=fn)
 
+        return src_deps
+
     def check_package(self, section):
         """Check binary package for dependencies."""
         pkg = section['Package']
@@ -137,6 +146,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         bin_dep = self._split_field(bin_dep)
         bin_dep = set(bin_dep)
         self.debug('Depends: %s' % (bin_dep,))
+        bin_rec = section.get('Recommends', '')
+        bin_rec = self._split_field(bin_rec)
+        bin_rec = set(bin_rec)
+        self.debug('Recommends: %s' % (bin_rec,))
+        bin_sug = section.get('Suggests', '')
+        bin_sug = self._split_field(bin_sug)
+        bin_sug = set(bin_sug)
+        self.debug('Suggests: %s' % (bin_sug,))
         bin_deps = bin_pre | bin_dep
 
         # Assert packages using "ucr" in preinst pre-depend on "univention-config"
@@ -188,6 +205,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             if 'ial' in need and not bin_deps & UniventionPackageCheck.DEPS['ial'][1]:
                 self.addmsg('0014-6', 'Missing Depends: univention-base-files', filename=fn)
 
+        return bin_deps | bin_rec | bin_sug
+
     def check(self, path):
         """ the real check """
         super(UniventionPackageCheck, self).check(path)
@@ -204,11 +223,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             self.addmsg('0014-1', 'parsing error', filename=fn)
             return
 
-        self.check_source(parser.source_section)
+        deps = self.check_source(parser.source_section)
         for section in parser.binary_sections:
-            self.check_package(section)
+            deps |= self.check_package(section)
 
         self.check_unknown(path, parser)
+        self.check_transitional(path, deps)
 
     def check_unknown(self, path, parser):
         # Assert all files debian/$pkg.$suffix belong to a package $pkg declared in debian/control
@@ -230,6 +250,22 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         )
         for unowned in exists - known:
             self.addmsg('0014-8', 'unexpected UCR file', filename=join(path, 'debian', unowned))
+
+    def check_transitional(self, path, deps):
+        if not self.apt:
+            return
+
+        for dep in deps:
+            if dep.startswith('${'):
+                continue
+            try:
+                pkg = self.apt[dep]
+                cand = pkg.candidate
+            except LookupError as ex:
+                self.debug('not found %s: %s' % (dep, ex))
+                continue
+            if self.RE_TRANSITIONAL.search(cand.summary):
+                self.addmsg('0014-8', 'depends on transitional package %s' % (dep,), filename=join(path, 'debian', 'control'))
 
 
 if __name__ == '__main__':
