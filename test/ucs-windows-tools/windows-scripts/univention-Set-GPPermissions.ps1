@@ -40,6 +40,7 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
 	error("I am not joined")
 }
 
+    Import-Module grouppolicy
     try {
             Set-GPPermissions `
                 -Name "$gpo_name" `
