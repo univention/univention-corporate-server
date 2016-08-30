@@ -1,3 +1,10 @@
+univention-printquota (9.0.0-2) unstable; urgency=medium
+
+  * PostgreSQL 9.1 supports host names in pg_hba.conf:
+     change 127.0.0.1/32 to localhost, and thus add support for IPv6 (Bug #41915)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 30 Aug 2016 15:59:46 +0200
+
 univention-printquota (9.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
