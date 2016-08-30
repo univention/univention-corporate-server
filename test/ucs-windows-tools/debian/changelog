@@ -1,3 +1,9 @@
+ucs-windows-tools (4.0.1-3) unstable; urgency=medium
+
+  * Bug #41571: Stop automatic line wrap in univention-get-gpo-report
+
+ -- Arvid Requate <requate@univention.de>  Tue, 30 Aug 2016 19:20:12 +0200
+
 ucs-windows-tools (4.0.1-2) unstable; urgency=medium
 
   * Bug #41571: Import-Module grouppolicy in univention-Set-GPPermissions.ps1
