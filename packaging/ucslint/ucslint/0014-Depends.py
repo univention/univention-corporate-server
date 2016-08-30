@@ -29,6 +29,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from os import listdir
 from os.path import join, exists, curdir, splitext
 import re
 from glob import glob
@@ -62,6 +63,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
             '0014-5': [uub.RESULT_ERROR, 'univention-config-registry is used in a maintainer script, but the package lacks a dependency on univention-config.'],
             '0014-6': [uub.RESULT_WARN, 'init-autostart.lib is sourced by a script, but the package lacks an explicit dependency on univention-base-files.'],
             '0014-7': [uub.RESULT_WARN, 'The source package contains debian/*.univention- files, but the package is not found in debian/control.'],
+            '0014-8': [uub.RESULT_WARN, 'unexpected UCR file'],
         }
 
     def postinit(self, path):
@@ -206,14 +208,28 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
         for section in parser.binary_sections:
             self.check_package(section)
 
+        self.check_unknown(path, parser)
+
+    def check_unknown(self, path, parser):
         # Assert all files debian/$pkg.$suffix belong to a package $pkg declared in debian/control
-        exists = {}
-        for suffix in ('.univention-config-registry', '.univention-config-registry-variables', '.univention-config-registry-categories', '.univention-service'):
-            pat = join(path, 'debian', '*%s' % (suffix,))
-            for fn in glob(pat):
-                pkg = basename(fn)[:-len(suffix)]
-                exists.setdefault(pkg, []).append(fn)
-        known = set((section['Package'] for section in parser.binary_sections))
+        SUFFIXES = (
+            '.univention-config-registry',
+            '.univention-config-registry-variables',
+            '.univention-config-registry-categories',
+            '.univention-service',
+        )
+        exists = set(
+            filename
+            for filename in listdir(join(path, 'debian'))
+            if splitext(filename)[1] in SUFFIXES
+        )
+        known = set(
+            section['Package'] + suffix
+            for section in parser.binary_sections
+            for suffix in SUFFIXES
+        )
+        for unowned in exists - known:
+            self.addmsg('0014-8', 'unexpected UCR file', filename=join(path, 'debian', unowned))
 
 
 if __name__ == '__main__':
