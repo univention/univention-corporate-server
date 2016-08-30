@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Appcenter
-#  postinst file for the debian package
+#  preinst file for the Debian package
 #
 # Copyright 2015-2016 Univention GmbH
 #

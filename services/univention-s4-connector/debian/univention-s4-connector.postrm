@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention S4 Connector
-#  postinst script of the samba4 connector package
+#  postrm script of the samba4 connector package
 #
 # Copyright 2013-2016 Univention GmbH
 #
