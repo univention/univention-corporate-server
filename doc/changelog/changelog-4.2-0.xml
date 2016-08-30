@@ -530,6 +530,13 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				<command>ucslint</command> check for missing quoting in function local variable assignments (<u:bug>41926</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				<command>ucslint</command> checks Debian maintainer scripts for wrong comments naming a different maintainer script (<u:bug>32539</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				<command>ucslint</command> warns of dependencies on transitional packages (<u:bug>37203</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
