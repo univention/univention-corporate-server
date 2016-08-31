@@ -92,7 +92,7 @@ msgid "Active"
 msgstr "Aktiv"
 
 #: modules/univention/admin/handlers/settings/syntax.py:126
-msgid "Add an empty value to choicelist"
+msgid "Add an empty value to choice list"
 msgstr "Einen leeren Wert zur Auswahlliste hinzufügen"
 
 #: modules/univention/admin/handlers/settings/usertemplate.py:325
@@ -551,7 +551,7 @@ msgstr "Horizontale Synchronisation"
 #: modules/univention/admin/handlers/settings/extended_attribute.py:229
 msgid ""
 "If a tab with the given name already exists, it is replaced by a new tab "
-"only containig extended attributes"
+"only containing extended attributes"
 msgstr ""
 "Wenn bereits eine Karteikarte mit diesem Namen existiert, wird sie durch "
 "eine Karteikarte ersetzt die nur erweiterte Attribute enthält"
@@ -1739,7 +1739,7 @@ msgid ""
 "standard syntax definitions (string) and (integer), there are three "
 "possibilities for expressing a binary condition. The syntax TrueFalse is "
 "represented at LDAP level using the strings true and false, the syntax "
-"TrueFalseUppercorresponds to the OpenLDAP boolean values TRUE and FALSE and "
+"TrueFalseUpper corresponds to the OpenLDAP boolean values TRUE and FALSE and "
 "the syntax boolean does not save any value or the string 1"
 msgstr ""
 "Bei der Eingabe von Werten nimmt die UMC eine Syntaxprüfung vor. Neben "

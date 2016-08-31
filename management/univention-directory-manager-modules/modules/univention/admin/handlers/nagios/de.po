@@ -276,8 +276,8 @@ msgstr "Sonntag"
 msgid "Time Period Settings"
 msgstr "Zeitraum-Einstellungen"
 
-msgid "General nagios service settings"
+msgid "General Nagios service settings"
 msgstr "Grundeinstellungen - Nagios-Dienst"
 
-msgid "General nagios time period settings"
+msgid "General Nagios time period settings"
 msgstr "Grundeinstellungen - Nagios-Zeitraum"

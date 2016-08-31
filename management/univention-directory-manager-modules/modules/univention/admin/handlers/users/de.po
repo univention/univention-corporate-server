@@ -97,7 +97,7 @@ msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
 #: modules/univention/admin/handlers/users/user.py:485
-msgid "Birthday"
+msgid "Birthdate"
 msgstr "Geburtsdatum"
 
 #: modules/univention/admin/handlers/users/user.py:992
@@ -353,7 +353,7 @@ msgid "Mail preferences"
 msgstr "Maileinstellungen"
 
 #: modules/univention/admin/handlers/users/user.py:222
-msgid "Manage samba privileges"
+msgid "Manage Samba privileges"
 msgstr "Samba-Privilegien verwalten"
 
 #: modules/univention/admin/handlers/users/user.py:1035

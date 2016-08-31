@@ -46,7 +46,7 @@ msgstr "%s ist nicht erlaubt. "
 
 #: modules/univention/admin/handlers/policies/policy.py:50
 msgid ""
-"<p>Policies are objects that can be connect with other objects in the "
+"<p>Policies are objects that can be connected with other objects in the "
 "directory tree. Connected policies allow to define object properties in a "
 "unified manner. Policies that are connected with containers or "
 "organizational units are inherited by all objects located below.</p><p>More "
@@ -100,7 +100,7 @@ msgstr "Erlaubte UMC Operationen"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:128
 msgid ""
-"An IP address identifing the server that should be used by the clients for "
+"An IP address identifiyng the server that should be used by the clients for "
 "further requests. Using this is not recommended."
 msgstr ""
 "Eine IP-Adresse des Servers, der von den Clients für weitere Anfragen "
@@ -1027,7 +1027,7 @@ msgid "Repository synchronisation"
 msgstr "Repository-Synchronisation"
 
 #: modules/univention/admin/handlers/policies/repositorysync.py:144
-msgid "Repository syncronisation settings"
+msgid "Repository synchronisations settings"
 msgstr "Repository Synchronisationseinstellungen"
 
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:97
@@ -1104,15 +1104,15 @@ msgstr ""
 "(Vorgabe), KB, MB, GB"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:88
-msgid "Soft- and Hardlimit for each allowed group"
+msgid "Soft and hard limits for each allowed group"
 msgstr "Soft- und Hard-Limit für jede berechtigte Gruppe"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:108
-msgid "Soft- and Hardlimit for each allowed user"
+msgid "Soft and hard limits for each allowed user"
 msgstr "Soft- und Hard-Limit für jeden berechtigten Benutzer"
 
 #: modules/univention/admin/handlers/policies/print_quota.py:98
-msgid "Soft- and Hardlimit for each member of allowed group"
+msgid "Soft and hard limits for each member of allowed group"
 msgstr "Soft- und Hard-Limit für jedes Mitglied der berechtigten Gruppe"
 
 #: modules/univention/admin/handlers/policies/dhcp_dnsupdate.py:131

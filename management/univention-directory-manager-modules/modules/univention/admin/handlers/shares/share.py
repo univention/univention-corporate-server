@@ -202,7 +202,7 @@ property_descriptions={
 		),
 	'nfs_hosts': univention.admin.property(
 			short_description=_('Only allow access for this host, IP address or network'),
-			long_description=_('May contain hostnames, ip addresses or networks (e.g. 10.1.1.1/24 or 10.1.1.1/255.255.255.0'),
+			long_description=_('May contain hostnames, IP addresses or networks (e.g. 10.1.1.1/24 or 10.1.1.1/255.255.255.0'),
 			syntax=univention.admin.syntax.hostname_or_ipadress_or_network,
 			multivalue=1,
 			options=['nfs'],
@@ -451,7 +451,7 @@ property_descriptions={
 		),
 	'sambaCscPolicy': univention.admin.property(
 			short_description=_('Client-side caching policy'),
-			long_description=_('The way clients are capable of offline caching will cache the files in the share.'),
+			long_description=_('The way clients capable of offline caching will cache the files in the share.'),
 			syntax=cscPolicy,
 			multivalue=0,
 			options=['samba'],
@@ -543,7 +543,7 @@ property_descriptions={
 		),
 	'sambaInheritAcls': univention.admin.property(
 			short_description=_('Inherit ACLs'),
-			long_description=_('This parameter can be used to ensure that if default acls exist on parent directories, they are always honored when creating a subdirectory. The default behavior is to use the mode specified when creating the directory. Enabling this option sets the mode to 0777, thus guaranteeing that default directory acls are propagated.'),
+			long_description=_('This parameter can be used to ensure that if default ACLs exist on parent directories, they are always honored when creating a subdirectory. The default behavior is to use the mode specified when creating the directory. Enabling this option sets the mode to 0777, thus guaranteeing that default directory ACLs are propagated.'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['samba'],

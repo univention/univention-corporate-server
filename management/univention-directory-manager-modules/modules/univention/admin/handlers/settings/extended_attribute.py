@@ -125,7 +125,7 @@ property_descriptions = {
 		),
 	'syntax': univention.admin.property(
 			short_description=_('Syntax class'),
-			long_description=_("When values are entered, the UMC performs a syntax check. Apart from standard syntax definitions (string) and (integer), there are three possibilities for expressing a binary condition. The syntax TrueFalse is represented at LDAP level using the strings true and false, the syntax TrueFalseUppercorresponds to the OpenLDAP boolean values TRUE and FALSE and the syntax boolean does not save any value or the string 1"),
+			long_description=_("When values are entered, the UMC performs a syntax check. Apart from standard syntax definitions (string) and (integer), there are three possibilities for expressing a binary condition. The syntax TrueFalse is represented at LDAP level using the strings true and false, the syntax TrueFalseUpper corresponds to the OpenLDAP boolean values TRUE and FALSE and the syntax boolean does not save any value or the string 1"),
 			syntax=univention.admin.syntax.string_numbers_letters_dots,
 			multivalue=0,
 			options=[],
@@ -226,7 +226,7 @@ property_descriptions = {
 		),
 	'overwriteTab': univention.admin.property(
 			short_description=_('Overwrite existing tab'),
-			long_description=_('If a tab with the given name already exists, it is replaced by a new tab only containig extended attributes'),
+			long_description=_('If a tab with the given name already exists, it is replaced by a new tab only containing extended attributes'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],

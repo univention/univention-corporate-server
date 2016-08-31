@@ -123,7 +123,7 @@ property_descriptions = {
 				identifies = 0
 				),
 	'addEmptyValue': univention.admin.property(
-				short_description=_('Add an empty value to choicelist'),
+				short_description=_('Add an empty value to choice list'),
 				long_description='',
 				syntax=univention.admin.syntax.TrueFalseUp,
 				multivalue=0,

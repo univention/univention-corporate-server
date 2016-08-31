@@ -2864,7 +2864,7 @@ class disabled( select ):
 		( 'posix', _( 'POSIX disabled' ) ),
 		( 'windows_posix', _( 'Windows and POSIX disabled' ) ),
 		( 'windows_kerberos', _( 'Windows and Kerberos disabled' ) ),
-		( 'posix_kerberos', _( 'POSIX and Kerbeors disabled' ) ),
+		( 'posix_kerberos', _( 'POSIX and Kerberos disabled' ) ),
 	)
 
 class locked( select ):

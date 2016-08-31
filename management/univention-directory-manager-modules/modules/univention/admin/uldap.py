@@ -400,7 +400,7 @@ class access:
 
 	def rename(self, dn, newdn, move_childs=0, ignore_license=False):
 		if not move_childs == 0:
-			raise univention.admin.uexceptions.noObject(_("Moving childs is not supported."))
+			raise univention.admin.uexceptions.noObject(_("Moving children is not supported."))
 		self._validateLicense()
 		if not self.allow_modify and not ignore_license:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'move dn: %s' % dn)

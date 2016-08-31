@@ -87,7 +87,7 @@ property_descriptions={
 		),
 	'quotaGroups': univention.admin.property(
 			short_description=_('Print quota for groups'),
-			long_description=_('Soft- and Hardlimit for each allowed group'),
+			long_description=_('Soft and hard limits for each allowed group'),
 			syntax=univention.admin.syntax.PrintQuotaGroup,
 			multivalue=1,
 			options=[],
@@ -97,7 +97,7 @@ property_descriptions={
 		),
 	'quotaGroupsPerUsers': univention.admin.property(
 			short_description=_('Print quota for groups per user'),
-			long_description=_('Soft- and Hardlimit for each member of allowed group'),
+			long_description=_('Soft and hard limits for each member of allowed group'),
 			syntax=univention.admin.syntax.PrintQuotaGroupPerUser,
 			multivalue=1,
 			options=[],
@@ -107,7 +107,7 @@ property_descriptions={
 		),
 	'quotaUsers': univention.admin.property(
 			short_description=_('Print quota for users'),
-			long_description=_('Soft- and Hardlimit for each allowed user'),
+			long_description=_('Soft and hard limits for each allowed user'),
 			syntax=univention.admin.syntax.PrintQuotaUser,
 			multivalue=1,
 			options=[],
