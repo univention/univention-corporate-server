@@ -1,3 +1,10 @@
+ucs-ec2-tools (2.0.0-28) unstable; urgency=medium
+
+  * Bug #41571: Add tests/windows/localadmin/name and .../pwd
+  * new utils.sh function set_windows_localadmin_password_for_ucs_test
+
+ -- Arvid Requate <requate@univention.de>  Wed, 31 Aug 2016 11:51:16 +0200
+
 ucs-ec2-tools (2.0.0-27) unstable; urgency=low
 
   * Bug #42086: use jenkins_updates in app tests
