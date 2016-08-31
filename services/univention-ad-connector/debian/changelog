@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-5) unstable; urgency=low
+
+  * Bug #42078: Corrected a typo.
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 31 Aug 2016 15:41:05 +0200
+
 univention-ad-connector (10.0.2-4) unstable; urgency=low
 
   * Bug #42078: Corrected a typo.
