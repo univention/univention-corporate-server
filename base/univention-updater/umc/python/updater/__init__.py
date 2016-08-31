@@ -478,7 +478,7 @@ class Instance(Base):
 		Contains all functions needed to view or 'tail' an arbitrary text file.
 		Argument 'count' can have different values:
 		< 0 ... ignore this many lines, return the rest of the file
-		0 ..... return the whole file, splitted into lines.
+		0 ..... return the whole file, split into lines.
 		> 0 ... return the last 'count' lines of the file. (a.k.a. tail -n <count>)
 		"""
 		lines = []

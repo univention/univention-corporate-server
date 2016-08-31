@@ -118,7 +118,7 @@
 	* notifier/version.py: set version to 0.8.5
 
 	* notifier/popen.py: when using Shell the command must not be
-	splitted but passed as a string to the subprocess module
+	split but passed as a string to the subprocess module
 
 2010-06-15  Andreas Büsching  <crunchy@bitkipper.net>
 

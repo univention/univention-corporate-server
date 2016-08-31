@@ -381,7 +381,7 @@ univention-nagios (5.0.8-2) unstable; urgency=low
 univention-nagios (5.0.8-1) unstable; urgency=low
 
   * added univention-nagios-common (Bug #23424)
-  * 26univention-nagios-server.inst has been splitted into
+  * 26univention-nagios-server.inst has been split into
     26univention-nagios-common.inst and 28univention-nagios-server.inst
   * added version specific dependencies between univention-nagios-*
     packages

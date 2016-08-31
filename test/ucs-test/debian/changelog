@@ -12765,7 +12765,7 @@ ucs-test (1.2.3-35) unstable; urgency=low
 
 ucs-test (1.2.3-34) unstable; urgency=low
 
-  * splitted the lib-files (Bug: #14196)
+  * split the lib-files (Bug: #14196)
 
  -- Christoph Niemann <niemann@univention.de>  Thu, 30 Apr 2009 17:15:43 +0200
 
@@ -13735,7 +13735,7 @@ ucs-test (1.1.2-11) unstable; urgency=low
 
 ucs-test (1.1.2-10) unstable; urgency=low
 
-  * splitted 01user into multiple files
+  * split 01user into multiple files
 
  -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 19 Jun 2008 14:35:28 +0200
 
