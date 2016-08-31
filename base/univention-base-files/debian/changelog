@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-3) unstable; urgency=low
+
+  * Bug #36571: Fix renamed package portmap to rpcbind
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 31 Aug 2016 07:08:57 +0200
+
 univention-base-files (6.0.0-2) unstable; urgency=low
 
   * Bug #35814: Add UCRV 'interfaces/*/mtu' to configure MTU

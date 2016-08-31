@@ -58,7 +58,7 @@ Type: file
 File: etc/init.d/cron
 
 Type: file
-File: etc/init.d/portmap
+File: etc/init.d/rpcbind
 
 Type: file
 File: etc/init.d/nscd

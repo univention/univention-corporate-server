@@ -64,7 +64,7 @@ univention-config-registry set cron/autostart?yes \
 	nscd/autostart?yes \
 	ntp/autostart?yes \
 	sshd/autostart?yes \
-	portmap/autostart?yes \
+	rpcbind/autostart?yes \
 
 # syslog
 if [ "$1" = configure -a -z "$2" ]; then

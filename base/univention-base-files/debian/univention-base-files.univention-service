@@ -26,12 +26,12 @@ programs=/usr/sbin/ntpd
 start_type=ntp/autostart
 icon=service/ntp
 
-[portmap]
-Description[de]=Port-Mapper
-Description[en]=Port Mapper
-programs=/sbin/portmap
-start_type=portmap/autostart
-icon=service/portmap
+[rpcbind]
+Description[de]=RPC Port-Mapper Dienst
+Description[en]=RPC port mapper service
+programs=/sbin/rpcbind
+start_type=rpcbind/autostart
+icon=service/rpcbind
 
 [ssh]
 Description[de]=SSH-Server

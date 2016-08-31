@@ -538,6 +538,9 @@
 			<listitem><simpara>
 				<command>ucslint</command> warns of dependencies on transitional packages (<u:bug>37203</u:bug>).
 			</simpara></listitem>
+			<listitem><simpara>
+				The service <systemitem class="service">portmap</systemitem> was renamed to <systemitem class="service">rpcbind</systemitem> (<u:bug>36571</u:bug>).
+			</simpara></listitem>
 		</itemizedlist>
 	</section>
 </chapter>

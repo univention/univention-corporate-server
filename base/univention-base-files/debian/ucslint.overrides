@@ -15,7 +15,7 @@
 0004-56: conffiles/etc/init.d/nscd
 0004-56: conffiles/etc/init.d/ntp
 0004-56: conffiles/etc/init.d/openbsd-inetd
-0004-56: conffiles/etc/init.d/portmap
+0004-56: conffiles/etc/init.d/rpcbind
 0004-56: conffiles/etc/init.d/rdate
 0004-56: conffiles/etc/inputrc
 0004-56: conffiles/etc/networks
@@ -36,7 +36,7 @@
 0010-2: conffiles/etc/init.d/ntp
 0010-2: conffiles/etc/init.d/rdate
 0010-2: conffiles/etc/init.d/openbsd-inetd
-0010-2: conffiles/etc/init.d/portmap
+0010-2: conffiles/etc/init.d/rpcbind
 0010-2: conffiles/etc/init.d/cron
 0010-2: conffiles/etc/init.d/networking
 0010-2: conffiles/etc/init.d/klogd
