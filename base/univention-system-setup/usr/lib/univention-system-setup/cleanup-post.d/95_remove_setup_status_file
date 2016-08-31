@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/usr/bin/python2.7
 #
 # Remove status file of Univention System Setup
+# Stop firefox browser if frontend uses legacy code
 #
 # Copyright 2016 Univention GmbH
 #
@@ -29,8 +30,52 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-# make sure that the status file is removed
-# (see also 05_remove_setup_status_file)
-rm -f /var/www/ucs_setup_process_status.json
+import univention.config_registry
+import psutil
+import os
+import os.path
 
-exit 0
+PATH_BROWSER_PID = '/var/cache/univention-system-setup/browser.pid'
+
+
+def finish_system_setup_boot():
+	ucr = univention.config_registry.ConfigRegistry()
+	ucr.load()
+
+	# make sure that the status file is removed
+	# (see also 05_remove_setup_status_file)
+	setup_status_file = '/var/www/ucs_setup_process_status.json'
+	if os.path.exists(setup_status_file):
+		os.remove(setup_status_file)
+
+	# It is possible that the installation is started with a legacy
+	# umc system setup frontend (deb version < 9.0.4-33), in that case,
+	# a UCRv is used as a flag to indicate this. Firefox then has to be
+	# stopped manually
+
+	if ucr.is_true('system/setup/boot/legacyfrontend', False):
+		print 'Appliance mode: try to shut down the browser'
+		try:
+			fpid = open(PATH_BROWSER_PID)
+			strpid = fpid.readline().strip()
+			pid = int(strpid)
+			p = psutil.Process(pid)
+			p.kill()
+		except IOError:
+			print 'WARN: cannot open browser PID file: %s' % PATH_BROWSER_PID
+		except ValueError:
+			print 'ERROR: browser PID is not a number: "%s"' % strpid
+		except psutil.NoSuchProcess:
+			print 'ERROR: cannot kill process with PID: %s' % pid
+
+		# support psutil 0.9 and 2.0
+		pname = lambda p: p.name() if callable(p.name) else p.name
+		pcmdline = lambda p: p.cmdline() if callable(p.cmdline) else p.cmdline
+
+		# Maybe the system-setup CMD tool was started
+		for p in psutil.process_iter():
+			if pname(p) == 'python2.7' and '/usr/share/univention-system-setup/univention-system-setup' in pcmdline(p):
+				p.kill()
+
+if __name__ == "__main__":
+	finish_system_setup_boot()
