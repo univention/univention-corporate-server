@@ -6,5 +6,6 @@ src: univention-app-appliance
 fix: 0.2.2-37.9.201608291054
 desc: |
  This update addresses the following issue(s):
- * The package does no longer divert the default ucs plymouth theme
+ * App appliances without a customized branding will show now
+   the default UCS bootsplash instead of a black screen.
 bug: [42165]
