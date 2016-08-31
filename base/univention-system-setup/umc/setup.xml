@@ -7,7 +7,7 @@
 		</flavor>
 		<flavor priority="50" id="languages">
 			<name>Language settings</name>
-			<description>All language relevant configurations</description>
+			<description>All language-related settings</description>
 			<keywords>timezone,locale,keyboard</keywords>
 		</flavor>
 		<flavor priority="50" id="network">

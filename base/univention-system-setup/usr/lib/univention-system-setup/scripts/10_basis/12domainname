@@ -34,7 +34,7 @@
 DN1 () { sed -ne 's/^DN: //p;T;q'; }
 dn1 () { ldapsearch-wrapper | sed -ne 's/^dn: //p;T;q'; }
 
-info_header "$0" "$(gettext "Setting domainname")"
+info_header "$0" "$(gettext "Setting domain name")"
 
 is_variable_set "domainname"
 

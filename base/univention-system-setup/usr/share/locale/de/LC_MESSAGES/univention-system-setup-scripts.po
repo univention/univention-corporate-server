@@ -40,7 +40,7 @@ msgid "Setting hostname"
 msgstr "Einrichten des Rechnernamens"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/12domainname:37
-msgid "Setting domainname"
+msgid "Setting domain name"
 msgstr "Einrichten des Domänennamens"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/14ldap_basis:35
@@ -48,7 +48,7 @@ msgid "Setting LDAP base"
 msgstr "Einrichten der LDAP-Basis"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/16windows_domain:35
-msgid "Setting windows domain"
+msgid "Setting Windows domain"
 msgstr "Einrichten der Windows-Domäne"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/18root_password:35
@@ -84,11 +84,11 @@ msgid "Setting IPv6 gateway"
 msgstr "Setzen des IPv6-Gateways"
 
 #: usr/lib/univention-system-setup/scripts/30_net/14nameserver:35
-msgid "Setting nameserver"
+msgid "Setting name server"
 msgstr "Einrichten des Rechnernamens"
 
 #: usr/lib/univention-system-setup/scripts/30_net/16forwarder:35
-msgid "Setting external nameservers"
+msgid "Setting external name servers"
 msgstr "Einrichten des Rechnernamens"
 
 #: usr/lib/univention-system-setup/scripts/30_net/18proxy:35
