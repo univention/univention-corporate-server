@@ -6,9 +6,10 @@ src: univention-system-setup
 fix: 9.0.4-38.982.201608311228
 desc: |
  This update addresses the following issue(s):
- * Detect installations with old univention-system-setup-boot
-   versions and finish the setup process correctly
- * Do no download packages upon univention-system-setup-boot
-   package installation
+ * The interoperability of older UCS installation images or
+   appliances with an update to the latest UCS version during
+   the installation/setup process has been improved.
+ * Software packages are no longer automatically cached when
+   installing univention-system-setup-boot.
  * Corrected some typos.
 bug: [42095,42122,42075]
