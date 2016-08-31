@@ -17,9 +17,9 @@ Depends: ${misc:Depends},
  univention-config (>= 8.0.2),
  univention-ssl,
  apache2-mpm-prefork,
- libapache2-mod-auth-pam,
+ libapache2-mod-authnz-pam,
  python2.7,
- php5
+ php5,
 Conflicts: apache
 Breaks: univention-webui-style
 Replaces: univention-webui-style

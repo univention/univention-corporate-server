@@ -22,7 +22,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-nagios-common (= ${binary:Version}),
  monitoring-plugins,
  nagios-nrpe-plugin,
- libapache2-mod-auth-pam,
+ libapache2-mod-authnz-pam,
  univention-config (>= 9.0.5-2.443.201312091553),
  univention-base-files,
  univention-directory-listener,
@@ -30,7 +30,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  univention-nagios-squid,
  univention-nagios-dansguardian,
  python-univention-lib (>= 3.0.26-14),
- shell-univention-lib
+ shell-univention-lib,
 Provides: ${python:Provides},
  univention-nagios-group-access
 XB-Python-Version: ${python:Versions}
