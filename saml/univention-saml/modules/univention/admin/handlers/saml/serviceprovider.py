@@ -69,7 +69,7 @@ property_descriptions = {
 		),
 	'AssertionConsumerService': univention.admin.property(
 			short_description = _(u'Respond to this service provider URL after login'),
-			long_description = _(u'The URL(s) of the AssertionConsumerService endpoints for this SP. Users will be redirected to the URL upon succesful authentication. Example: https://sp.example.com/login'),
+			long_description = _(u'The URL(s) of the AssertionConsumerService endpoints for this SP. Users will be redirected to the URL upon successful authentication. Example: https://sp.example.com/login'),
 			syntax = univention.admin.syntax.FiveThirdsString,
 			multivalue = True,
 			options = [],

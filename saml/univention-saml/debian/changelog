@@ -1,3 +1,9 @@
+univention-saml (3.0.27-5) unstable; urgency=low
+
+  * Bug #42071: Corrected a typo.
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 31 Aug 2016 10:30:34 +0200
+
 univention-saml (3.0.27-4) unstable; urgency=medium
 
   * Bug #40895: Make serviceprovider extended attribute available for udm user
