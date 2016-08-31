@@ -100,7 +100,7 @@ msgstr "Erlaubte UMC Operationen"
 
 #: modules/univention/admin/handlers/policies/dhcp_statements.py:128
 msgid ""
-"An IP address identifiyng the server that should be used by the clients for "
+"An IP address identifying the server that should be used by the clients for "
 "further requests. Using this is not recommended."
 msgstr ""
 "Eine IP-Adresse des Servers, der von den Clients für weitere Anfragen "
