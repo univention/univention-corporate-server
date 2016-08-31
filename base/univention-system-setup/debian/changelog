@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-39) unstable; urgency=medium
+
+  * Bug #42095: Create js links for legacy system-setup
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 31 Aug 2016 16:20:06 +0200
+
 univention-system-setup (9.0.4-38) unstable; urgency=low
 
   * Bug #42075: Corrected some typos.
