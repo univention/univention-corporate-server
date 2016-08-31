@@ -1,3 +1,9 @@
+univention-saml (4.0.0-2) precise; urgency=low
+
+  * Bug #42071: Corrected a typo.
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 31 Aug 2016 10:43:27 +0200
+
 univention-saml (4.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
