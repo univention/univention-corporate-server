@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-virtual-machine-manager-schema
+fix: 6.0.1-4.78.201608311012
+desc: |
+ This update addresses the following issue(s):
+ * Some typos have been corrected.
+bug: [42070]
