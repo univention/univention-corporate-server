@@ -1,0 +1,170 @@
+/* ======= Styling for the document itself (overriding dojo.css) ======== */
+
+@import "variables";
+@import url("../../../dojo/resources/dojo.css");
+
+*:focus {
+	// remove outline in chromium
+	outline: 0;
+}
+
+.claro {
+  font-family: Clear Sans, Arial, Helvetica, sans-serif;
+  //font-size: .75em;
+  font-size: 12px;
+  color: $document-text-color;
+}
+
+html {
+	height: 100%;
+	background: white;
+}
+
+.umc td,
+.umc th {
+	padding: 0em 1em 0.3em 0em;
+}
+.umc a {
+	color: $text-color-lightest;
+	text-decoration: underline;
+}
+.umc .umcGalleryItem a {
+	text-decoration: none;
+}
+.umc a:hover {
+	color: $text-color;
+}
+
+.umc p {
+	line-height: 1.2em;
+}
+.umc hr {
+	border-top: 2px solid $border-color;
+}
+
+body.claro .umcBackground,
+body.claro {
+	overflow-x: hidden;
+	/* Chrome,Safari4+ */
+	background: url(images/background-tile.png) repeat, -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(179,179,179,1)), color-stop(31%, rgba(224,224,224,1)), color-stop(51%, rgba(240,240,240,1)), color-stop(61%, rgba(235,235,235,1)), color-stop(74%, rgba(224,224,224,1)), color-stop(100%, rgba(189,189,189,1)));
+	/* Chrome10+,Safari5.1+ */
+	background: url(images/background-tile.png) repeat, -webkit-linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%);
+	/* W3C */
+	background: url(images/background-tile.png) repeat, unquote("linear-gradient(to right top, rgba(179,179,179,1) 0%, rgba(224,224,224,1) 31%, rgba(240,240,240,1) 51%, rgba(235,235,235,1) 61%, rgba(224,224,224,1) 74%, rgba(189,189,189,1) 100%)");
+}
+
+.dj_ie9 body.claro .umcBackground,
+.dj_ie8 body.claro .umcBackground,
+.dj_ie9 body.claro,
+.dj_ie8 body.claro {
+	/* fallback on horizontal gradient for IE8/9 */
+	filter: unquote("progid:DXImageTransform.Microsoft.gradient(startColorstr='#f0f0f0', endColorstr='#b3b3b3',GradientType=1)");
+	background: #cdcdcd;
+}
+
+.dj_ie9 body.claro:before .umcBackground,
+.dj_ie8 body.claro:before .umcBackground,
+.dj_ie9 body.claro:before,
+.dj_ie8 body.claro:before {
+	/* add the repeating background for IE9 additionally */
+	content: "";
+	background: url(images/background-tile.png) repeat;
+	position: absolute;
+	width: 100%;
+	height: 210px;
+}
+
+.dj_ie9 body.claro.umcOverviewShown:before,
+.dj_ie8 body.claro.umcOverviewShown:before,
+body.claro.umcOverviewShown {
+	min-height: 100%;
+}
+body.claro.umcOverviewNotShown {
+}
+
+body.claro.umcHeadless {
+	#umcHeader,
+	#umcHeader .umcHeaderLeft {
+		overflow: hidden;
+		min-height: 0;
+		height: 42px;
+	}
+	#umcHeader {
+		border-bottom: 2px solid $ucs-green;
+	}
+	.umcModuleHeader {
+		background-color: transparent!important;
+		.umcModuleTitle {
+			color: $text-color;
+		}
+	}
+}
+
+/* Headings */
+.claro h1 {
+	font-size: $font-size-medium;
+	font-weight: bold
+	margin-bottom:0.727em;
+}
+.claro h2 { 
+	font-size: $font-size-medium;
+	//line-height: 1.455em; 
+	margin-top:1em; 
+	margin-bottom:0.60em;
+	font-weight: normal;
+}
+.claro h3, .claro h4, .claro h5, .claro h6 {
+	font-size:1em; 
+	font-weight: bold; 
+}
+
+/* paragraphs, quotes and lists */
+body.umc,
+.claro p { 
+	line-height: 1.3em;
+}
+.claro p { 
+	margin-bottom: 0.7em;
+}
+
+/* pre and code */
+.claro pre, .claro code { 
+	//font-family:inherit; 
+	//background-color: $document-shadedsection-background-color; 
+	border: 1px solid $document-border-color;
+	word-wrap: normal;
+}
+
+/* tables */
+.claro table.dojoTabular thead, .claro table.dojoTabular tfoot { 
+	background-color: $document-shadedsection-background-color; 
+	border: 1px solid $document-border-color; 
+}
+
+/* define different media query breakpoints to optimize the height to various screen sizes */
+dynamicHeight($dynamicHeight, $viewportWidth=0, $viewportHeight=0) {
+	@media (min-width: unit($viewportWidth, px)) and (min-height: unit($viewportHeight, px)) {
+		for $ioffset in 0 55 105 {
+			$iruleSuffix = ''
+			if ($ioffset) {
+				$iruleSuffix = '-' + $ioffset
+			}
+			.umcDynamicHeight{$iruleSuffix} {
+				height: unit($dynamicHeight - $ioffset, px) !important;
+			}
+			.umcDynamicMaxHeight{$iruleSuffix} {
+				max-height: unit($dynamicHeight - $ioffset, px) !important;
+			}
+		}
+	}
+}
+
+dynamicHeight(300)  // default + minimum grid height
+$heights = 350 400 450 500 550 600 700 800 900 1000 1200 1400
+for $height in $heights {
+	dynamicHeight($height, 0, $height + 450)
+}
+for $height in $heights {
+	dynamicHeight($height, $md-min, $height + 300)
+}
+

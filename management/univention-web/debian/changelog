@@ -1,0 +1,5 @@
+univention-web (1.0.0-1) unstable; urgency=medium
+
+  * Bug #38824: create univention-web package
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 31 Aug 2016 17:18:10 +0200

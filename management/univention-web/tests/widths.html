@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		@import url("../js/dijit/themes/umc/umc.css");
+		@import url("style.css");
+	</style>
+	<script type="text/javascript">
+		var values = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent', 'white', 'black' ];
+
+		var dojoConfig = {
+			has: {
+				'dojo-undef-api': true
+			},
+			isDebug: true,
+			async: true,
+			deps: [
+				"dojo/_base/window",
+				"dojo/dom-style",
+				"umc/tools",
+				"umc/widgets/Form",
+				"umc/widgets/ComboBox"
+			],
+			callback: function(win, domStyle, tools, Form, ComboBox) {
+				domStyle.set('overlay', 'display', 'none');
+				var widgets = [{
+					type: ComboBox,
+					name: 'ComboBox1-1',
+					label: 'Size 1',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox1-2',
+					label: 'Size 1',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox2-1',
+					label: 'Size 1/2',
+					size: 'Half',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox2-2',
+					label: 'Size 1/2',
+					size: 'Half',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox3-1',
+					label: 'Size 1/3',
+					size: 'OneThird',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox3-2',
+					label: 'Size 2/3',
+					size: 'TwoThirds',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox4-1',
+					label: 'Size 2/3',
+					size: 'TwoThirds',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox4-2',
+					label: 'Size 1/3',
+					size: 'OneThird',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox5-1',
+					label: 'Size 1/3',
+					size: 'OneThird',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox5-2',
+					label: 'Size 1/3',
+					size: 'OneThird',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox5-3',
+					label: 'Size 1/3',
+					size: 'OneThird',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox6-1',
+					label: 'Size 4/3',
+					size: 'FourThirds',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox6-2',
+					label: 'Size 2/3',
+					size: 'TwoThirds',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox7-1',
+					label: 'Size 2/3',
+					size: 'TwoThirds',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox7-2',
+					label: 'Size 4/3',
+					size: 'FourThirds',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox8-1',
+					label: 'Size 5/3',
+					size: 'FiveThirds',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox8-2',
+					label: 'Size 1/3',
+					size: 'OneThird',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox9-1',
+					label: 'Size 1/3',
+					size: 'OneThird',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox9-2',
+					label: 'Size 5/3',
+					size: 'FiveThirds',
+					staticValues: values
+				},
+
+				{
+					type: ComboBox,
+					name: 'ComboBox10-1',
+					label: 'Size 3/2',
+					size: 'OneAndAHalf',
+					staticValues: values
+				}, {
+					type: ComboBox,
+					name: 'ComboBox10-2',
+					label: 'Size 1/2',
+					size: 'Half',
+					staticValues: values
+				}];
+				var buttons = [{
+					name: 'submit',
+					label: 'Submit'
+				}];
+				form = Form({
+					widgets: widgets,
+					buttons: buttons,
+					layout: [
+						[ 'ComboBox2-1', 'ComboBox2-2' ],
+						[ 'ComboBox3-1', 'ComboBox3-2' ],
+						[ 'ComboBox4-1', 'ComboBox4-2' ],
+						[ 'ComboBox5-1', 'ComboBox5-2', 'ComboBox5-3' ],
+						[ 'ComboBox1-1', 'ComboBox1-2', 'ComboBox1-3', 'ComboBox1-4' ],
+						[ 'ComboBox6-1', 'ComboBox6-2' ],
+						[ 'ComboBox7-1', 'ComboBox7-2' ],
+						[ 'ComboBox8-1', 'ComboBox8-2' ],
+						[ 'ComboBox9-1', 'ComboBox9-2' ],
+						[ 'ComboBox10-1', 'ComboBox10-2' ]
+					]
+				});
+				form.startup();
+				form.placeAt(win.body());
+			}
+		};
+	</script>
+	<script type="text/javascript" src="../js/dojo/dojo.js"></script>
+</head>
+<body class="umc">
+<div id="overlay"></div>
+</body>
+</html>

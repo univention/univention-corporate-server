@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   id="svg4542">
+  <metadata
+     id="metadata4588">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs">
+  </defs>
+  <path
+     d="M 15.96875,0.46875 A 1.50015,1.50015 0 0 0 14.5,2 l 0,6 a 1.50015,1.50015 0 1 0 3,0 l 0,-6 A 1.50015,1.50015 0 0 0 15.96875,0.46875 z"
+     id="path4544"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0"/>
+	</path>
+  <path
+     d="m 25.103758,3.4165865 a 1.50015,1.50015 0 0 0 -2.08829,0.3754977 l -3.526711,4.854102 a 1.50015,1.50015 0 1 0 2.427051,1.7633558 L 25.442519,5.55544 A 1.50015,1.50015 0 0 0 25.103758,3.4165865 z"
+     id="path4548"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.1s"/>
+	</path>
+  <path
+     d="m 30.76144,11.170859 a 1.50015,1.50015 0 0 0 -1.910174,-0.923682 l -5.706339,1.854102 a 1.50015,1.50015 0 1 0 0.927051,2.85317 l 5.706339,-1.854102 a 1.50015,1.50015 0 0 0 0.983123,-1.929488 z"
+     id="path4552"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.2s"/>
+	</path>
+  <path
+     d="m 30.780753,20.7697 a 1.50015,1.50015 0 0 0 -1.002436,-1.870047 l -5.706339,-1.854102 a 1.50015,1.50015 0 1 0 -0.927051,2.85317 l 5.706339,1.854102 A 1.50015,1.50015 0 0 0 30.780753,20.7697 z"
+     id="path4556"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.3s"/>
+	</path>
+  <path
+     d="m 25.154321,28.546677 a 1.50015,1.50015 0 0 0 0.288198,-2.102117 l -3.526711,-4.854102 a 1.50015,1.50015 0 1 0 -2.427051,1.763356 l 3.526711,4.854102 a 1.50015,1.50015 0 0 0 2.138853,0.338761 z"
+     id="path4560"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.4s"/>
+	</path>
+  <path
+     d="M 16.03125,31.53125 A 1.50015,1.50015 0 0 0 17.5,30 l 0,-6 a 1.50015,1.50015 0 1 0 -3,0 l 0,6 a 1.50015,1.50015 0 0 0 1.53125,1.53125 z"
+     id="path4564"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.5s"/>
+	</path>
+  <path
+     d="M 6.8962421,28.583413 A 1.50015,1.50015 0 0 0 8.984532,28.207916 l 3.526711,-4.854102 A 1.50015,1.50015 0 1 0 10.084192,21.590458 L 6.557481,26.44456 a 1.50015,1.50015 0 0 0 0.3387611,2.138853 z"
+     id="path4568"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.6s"/>
+	</path>
+  <path
+     d="m 1.2385603,20.829141 a 1.50015,1.50015 0 0 0 1.910174,0.923682 l 5.7063391,-1.854102 a 1.50015,1.50015 0 1 0 -0.927051,-2.85317 l -5.7063391,1.854102 a 1.50015,1.50015 0 0 0 -0.983123,1.929488 z"
+     id="path4572"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.7s"/>
+	</path>
+  <path
+     d="m 1.2192467,11.2303 a 1.50015,1.50015 0 0 0 1.0024366,1.870047 l 5.7063391,1.854102 a 1.50015,1.50015 0 1 0 0.927051,-2.85317 L 3.1487343,10.247177 A 1.50015,1.50015 0 0 0 1.2192467,11.2303 z"
+     id="path4576"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.8s"/>
+	</path>
+  <path
+     d="M 6.8456785,3.4533231 A 1.50015,1.50015 0 0 0 6.557481,5.55544 l 3.526711,4.854102 A 1.50015,1.50015 0 1 0 12.511243,8.6461862 L 8.984532,3.7920842 A 1.50015,1.50015 0 0 0 6.8456785,3.4533231 z"
+     id="path4580"
+     style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;opacity:0.1;color:#000000;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans">
+		<animate attributeName="opacity" from="1" to=".1" dur="1s" repeatCount="indefinite" begin="0.9s"/>
+	</path>
+</svg>

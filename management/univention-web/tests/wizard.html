@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		@import url("../js/dijit/themes/umc/umc.css");
+		@import url("style.css");
+	</style>
+	<script type="text/javascript">
+		var dojoConfig = {
+			has: {
+				'dojo-undef-api': true
+			},
+			isDebug: true,
+			async: true,
+			deps: [
+				"dojo/_base/declare",
+				"dojo/dom-construct",
+				"dojo/dom-style",
+				"dojo/_base/window",
+				"umc/widgets/Wizard",
+				"umc/widgets/TextBox"
+			],
+			callback: function(declare, domConstruct, domStyle, win, Wizard, TextBox) {
+				domStyle.set('overlay', 'display', 'none');
+				var MyWizard = declare(Wizard, {
+					pages: [{
+						name: 'first',
+						helpText: 'This is the first page of my wizard :) !',
+						headerText: 'Start page',
+						widgets: [{
+							name: 'name',
+							type: TextBox,
+							label: 'Name'
+						}, {
+							name: 'color',
+							type: TextBox,
+							label: 'Favorite color'
+						}],
+						layout: [ 'name', 'color' ]
+					}, {
+						name: 'second',
+						helpText: 'This is the second page of my wizard :) ! What a fantastic page!',
+						headerText: 'Second page',
+						widgets: [{
+							name: 'name',
+							type: TextBox,
+							label: 'Another name'
+						}, {
+							name: 'color',
+							type: TextBox,
+							label: 'Another favorite color'
+						}],
+						layout: [ 'name', 'color' ]
+					}, {
+						name: 'last',
+						helpText: 'This is the last page of my magic wizard :) !',
+						headerText: 'Last page',
+						widgets: [{
+							name: 'name',
+							type: TextBox,
+							label: 'A last name'
+						}, {
+							name: 'color',
+							type: TextBox,
+							label: 'A last favorite color'
+						}],
+						layout: [ 'name', 'color' ]
+					}],
+
+					next: function(/*String*/ currentID) {
+						if (!currentID) {
+							return 'first';
+						}
+						if (currentID == 'first') {
+							return 'second';
+						}
+						if (currentID == 'second') {
+							this.getWidget('last', 'name').set('value', this.getWidget('first', 'name').get('value'));
+							return 'last';
+						}
+						return null;
+					}
+				});
+
+				wizard = new MyWizard({
+					style: 'width:100%; height:100%;'
+				});
+				domConstruct.place(wizard.domNode, win.body());
+				wizard.startup();
+			}
+		};
+	</script>
+	<script type="text/javascript" src="../js/dojo/dojo.js"></script>
+</head>
+<body class="umc">
+<div id="overlay"></div>
+</body>
+</html>

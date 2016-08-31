@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		@import url("../js/dijit/themes/umc/umc.css");
+		@import url("style.css");
+	</style>
+	<script type="text/javascript">
+		var dojoConfig = {
+			has: {
+				'dojo-undef-api': true
+			},
+			isDebug: true,
+			async: true,
+			deps: [
+				"dojo/_base/lang",
+				"dojo/_base/array",
+				"dojo/_base/window",
+				"dojo/dom",
+				"dojo/dom-construct",
+				"dojo/dom-style",
+				"dojo/on",
+				"dojo/Stateful",
+				"dijit/layout/StackContainer",
+				"umc/widgets/Button",
+				"dijit/form/Textarea",
+				"umc/tools",
+				"umc/widgets/Text",
+				"umc/widgets/TextBox",
+				"umc/widgets/Form",
+				"umc/widgets/CheckBox",
+				"umc/widgets/ComboBox",
+				"umc/widgets/ContainerWidget",
+				"umc/widgets/MultiInput",
+				"umc/widgets/LabelPane",
+				"umc/widgets/Uploader",
+				"dojox/lang/functional/object",
+				"dojo/domReady!"
+			],
+			callback: function(lang, array, win, dom, domConstruct, domStyle, on, Stateful, StackContainer, Button, TextArea, tools, Text, TextBox, Form, CheckBox, ComboBox, ContainerWidget, MultiInput, LabelPane, Uploader, obj) {
+				domStyle.set('overlay', 'display', 'none');
+
+				var values = [ 'green', 'blue', 'yellow', 'red', 'purple', 'pink', 'orange', 'transparent'];
+
+				var defaultDesc = 'Default tooltip';
+				var defaultLabel = 'Default label';
+
+				var buttons = [{
+					name: '_change_label',
+					type: Button,
+					label: "Change all labels (empty=remove)",
+					onClick: function() {
+						setLabels();
+					}
+				}, {
+					name: '_change_description',
+					type: Button,
+					label: "Change all tooltips (empty=remove)",
+					onClick: function() {
+						setDescriptions();
+					}
+				}];
+
+				var widgets = [{
+					type: Text,
+					name: 'header1',
+					label: "<h1>MultiInput - MultiInput label/description + no subtype label/description</h1>"
+				}, {
+					type: MultiInput,
+					name: 'multi1',
+					subtypes: [{
+						type: TextBox,
+						size: 'Half'
+					}, {
+						type: TextBox,
+						size: 'Half'
+					}],
+					label: defaultLabel,
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header2',
+					label: "<h1>MultiInput - subtype label/description</h1>"
+				}, {
+					type: MultiInput,
+					name: 'multi2',
+					subtypes: [{
+						type: TextBox,
+						label: defaultLabel + ' subtype 1',
+						description: defaultDesc + ' subtype 1',
+						size: 'Half'
+					}, {
+						type: TextBox,
+						label: defaultLabel + '2 subtype ',
+						description: defaultDesc + '2 subtype ',
+						size: 'Half'
+					}],
+					label: defaultLabel,
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header3',
+					label: "<h1>Uploader with label/description</h1>"
+				} ,{
+					type: Uploader,
+					name: 'uploader1',
+					label: defaultLabel,
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header4',
+					label: "<h1>Uploader with description</h1>"
+				} ,{
+					type: Uploader,
+					name: 'uploader2',
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header5',
+					label: "<h1>Combobox</h1>"
+				}, {
+					type: ComboBox,
+					name: 'combobox',
+					label: defaultLabel,
+					description: defaultDesc,
+					staticValues: values
+				}, {
+					type: Text,
+					name: 'header6',
+					label: "<h1>Checkbox</h1>"
+				}, {
+					type: CheckBox,
+					name: 'checkbox',
+					label: defaultLabel,
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header7',
+					label: "<h1>Buttons</h1>"
+				}, {
+					name: 'button',
+					type: Button,
+					label: defaultLabel,
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header8',
+					label: "<h1>No initial label + description</h1>"
+				}, {
+					type: TextBox,
+					name: 'textbox1',
+					description: defaultDesc
+				}, {
+					type: Text,
+					name: 'header9',
+					label: "<h1>No initial description</h1>"
+				}, {
+					type: TextBox,
+					name: 'textbox2',
+					label: defaultLabel
+				}, {
+					type: Text,
+					name: 'header10',
+					label: "<h1>Change labels/tooltips</h1>"
+				}, {
+					type: TextBox,
+					name: '_text_label',
+					size: 'Half',
+					label: 'Enter text to be displayed in label fields'
+				}, {
+					type: TextBox,
+					name: '_text_description',
+					size: 'Half',
+					label: 'Enter text to be displayed as tooltip'
+				}];
+
+				var layout = [
+					'header1', 'multi1',
+					'header2', 'multi2',
+					'header3', 'uploader1',
+					'header4', 'uploader2',
+					'header5', 'combobox',
+					'header6', 'checkbox',
+					'header7', 'button',
+					'header8', 'textbox1',
+					'header9', 'textbox2',
+					'header10',
+					['_text_label', '_change_label'],
+					['_text_description', '_change_description']
+				]
+
+				form = new Form({
+					layout: layout,
+					buttons: buttons,
+					widgets: widgets
+				});
+
+				form.placeAt(win.body());
+				form.startup();
+
+				function get(widgetName) {
+					return form._widgets[widgetName];
+				};
+
+				function _set(attr, val) {
+					tools.forIn(form._widgets, function(ikey, iwidget) {
+						if (ikey[0] != '_' && !iwidget.isInstanceOf(Text)) {
+							if (ikey == 'multi2') {
+								// ignore
+							} else {
+								iwidget.set(attr, val);
+							}
+						}
+					});
+				}
+
+				function setDescriptions(description) {
+					var desc = get('_text_description').get('value') || null;
+					_set('description', desc);
+				};
+
+				function setLabels(label) {
+					var label = get('_text_label').get('value') || null;
+					_set('label', label);
+				};
+			}
+		};
+
+		</script>
+	<script type="text/javascript" src="../js/dojo/dojo.js"></script>
+</head>
+<body class="umc">
+	<div id="overlay"></div>
+</body>
+</html>

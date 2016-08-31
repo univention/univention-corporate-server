@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		@import url("../js/dijit/themes/umc/umc.css");
+		@import url("style.css");
+	</style>
+	<script type="text/javascript">
+		var dojoConfig = {
+			has: {
+				'dojo-undef-api': true
+			},
+			isDebug: true,
+			async: true,
+			deps: [
+				"dojo/_base/lang",
+				"dojo/_base/array",
+				"dojo/dom",
+				"dojo/dom-construct",
+				"dojo/dom-style",
+				"dojo/_base/window",
+				"umc/tools",
+				"umc/widgets/ImageUploader",
+				"umc/widgets/Uploader",
+				"umc/widgets/MultiUploader"
+			],
+			callback: function(lang, array, dom, domConstruct, domStyle, win, tools, ImageUploader, Uploader, MultiUploader) {
+				domStyle.set('overlay', 'display', 'none');
+
+				tools.umcpCommand('auth', {
+					username : 'Administrator',
+					password : 'univention'
+				});
+
+				log = function(id, msg) {
+					var totalMsg = dom.byId(id).innerHTML;
+					totalMsg += '<br/>';
+					if (typeof msg == 'string') {
+						totalMsg += msg;
+					} else {
+						totalMsg += '<pre>' + JSON.stringify(msg, null, '    ') + '</pre>';
+					}
+					dom.byId(id).innerHTML = totalMsg;
+				};
+
+				assert = function(id, test, msg) {
+					if (!test) {
+						log(id, '<span class="error">ERROR:</span> ' + msg);
+					}
+					else {
+						log(id, '<span class="success">SUCCESS:</span> ' + msg);
+					}
+				};
+
+				clear = function(id) {
+					dom.byId(id).innerHTML = '';
+				};
+
+				humanReadableSize = function(bytes) {
+					function _round(i) {
+						return Math.round(i * 100) / 100;
+					};
+
+					var unit;
+					if (bytes > 1024 * 1024) {
+						bytes = bytes / (1024 * 1024);
+						unit = 'MiB';
+					}
+					else if (bytes > 1024) {
+						bytes = bytes / 1024;
+						unit = 'KiB';
+					}
+					else {
+						unit = 'bytes';
+					}
+					return _round(bytes) + ' ' + unit;
+				};
+
+				getType = function(obj) {
+					var t = typeof obj;
+					if (t == 'string') {
+						t = 'string of length ' + obj.length;
+					}
+					if (obj instanceof Array) {
+						t = 'Array of length ' + obj.length;
+					}
+					return t;
+				};
+
+				cleanData = function(_data) {
+					var data = lang.clone(_data);
+					if (data instanceof Array) {
+						array.forEach(data, function(i) {
+							if (i.content) {
+								i.content = '<i>&lt;' + getType(i.content) + '&gt;</i>';
+							}
+						});
+					} else {
+						if (data.content) {
+							data.content = '<i>&lt;' + getType(data.content) + '&gt;</i>';
+						}
+					}
+					return data;
+				};
+
+				// image uploader
+				imageUploader = new ImageUploader({});
+				domConstruct.place(imageUploader.domNode, 'imageUploader');
+				imageUploader.startup();
+
+				function createUploader(id, UploaderClass, multiFile, maxSize) {
+					maxSize = maxSize || 1024 * 1024;
+					var outID = id + 'Output';
+					var _log = lang.partial(log, outID);
+					var _clear = lang.partial(clear, outID);
+					var _assert = lang.partial(assert, outID);
+					var _assertArrayOrNot = function(params) {
+						if (multiFile) {
+							_assert(params instanceof Array, 'Passed parameter should be an array.');
+						}
+						else {
+							_assert(!(params instanceof Array), 'Passed parameter should be an dictionary.');
+						}
+					};
+
+					// normal upload single file
+					var uploader = new UploaderClass({
+						maxSize: maxSize,
+						multiFile: multiFile,
+						canUpload: function(fileInfo) {
+							_clear();
+							_log('<b>canUpload()</b>');
+							_assertArrayOrNot(fileInfo);
+							_log(fileInfo);
+							return true;
+						},
+						canRemove: function(filenames) {
+							_clear();
+							_log('<b>canRemove:()</b>');
+							_log(filenames);
+							return true;
+						},
+						onUploadStarted: function(data) {
+							_log('<b>onUploadStarted()</b>');
+							_assertArrayOrNot(data);
+							_log(cleanData(data));
+						},
+						onUploadProgress: function(data) {
+							_log('<b>onProgress()</b>');
+							_assertArrayOrNot(data);
+							_log(cleanData(data));
+						},
+						onUploaded: function(data) {
+							_log('<b>onUploaded()</b>');
+							_assertArrayOrNot(data);
+							_log(cleanData(data));
+						},
+						onError: function(data) {
+							_log('<b>onError()</b>');
+							_assert(false, 'An error occurred');
+							_log(cleanData(data));
+						},
+						onChange: function(data) {
+							_log('<b>onChange()</b>');
+							if (UploaderClass == Uploader) {
+								_assertArrayOrNot(data);
+							} else if (UploaderClass == MultiUploader) {
+								_assert(data instanceof Array, 'Passed parameter should be an array.');
+							}
+							_log('<i>&lt;' + getType(data) + '&gt;</i><br/>');
+						}
+					});
+					uploader.watch('value', function(attr, oldVal, newVal) {
+						_log('<b>watch("value"):</b>');
+						if (UploaderClass == Uploader) {
+							_assertArrayOrNot(newVal);
+						} else if (UploaderClass == MultiUploader) {
+							_assert(newVal instanceof Array, 'Passed parameter should be an array.');
+						}
+						_log('<i>&lt;' + getType(newVal) + '&gt;</i><br/>');
+					});
+					domConstruct.place(uploader.domNode, id);
+					uploader.startup();
+					return uploader;
+				};
+				uploader = createUploader('uploader', Uploader, false);
+				uploaderMultiSelect = createUploader('uploaderMultiSelect', Uploader, true);
+				multiUploader = createUploader('multiUploader', MultiUploader, false);
+				multiUploaderMultiSelect = createUploader('multiUploaderMultiSelect', MultiUploader, true, 50 * 1024 * 1024);
+			}
+		};
+	</script>
+	<script type="text/javascript" src="../js/dojo/dojo.js"></script>
+</head>
+<body class="umc">
+<div id="overlay"></div>
+<h1>Uploader tests</h1>
+<h2>Image uploader</h2>
+<div id="imageUploader"></div>
+<h2>Uploader - single file, max 1MiB</h2>
+<div id="uploader"></div>
+<div id="uploaderOutput"></div>
+<h2>Uploader - multi file, max 1MiB</h2>
+<div id="uploaderMultiSelect"></div>
+<div id="uploaderMultiSelectOutput"></div>
+<h2>MultiUploader - single file, max 1MiB</h2>
+<div class="umcLayoutRow">
+	<div id="multiUploader"></div>
+	<div id="multiUploaderOutput"></div>
+</div>
+<h2>MultiUploader - multi file, max 50MiB</h2>
+<div id="multiUploaderMultiSelect"></div>
+	<div class="umcLayoutRow">
+	<div id="multiUploaderMultiSelectOutput"></div>
+</div>
+</body>
+</html>
