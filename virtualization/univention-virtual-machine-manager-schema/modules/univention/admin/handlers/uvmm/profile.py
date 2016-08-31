@@ -92,7 +92,7 @@ class DriverCache(udm_syntax.select):
 	name = 'DriverCache'
 	choices = [
 		('default', _('Hypervisor default')),
-		('none', _('No host cacheing, no forced sync')),
+		('none', _('No host caching, no forced sync')),
 		('writethrough', _('Read caching, forced sync')),
 		('writeback', _('Read/write caching, no forced sync')),
 		('directsync', _('No host caching, forced sync')),
@@ -194,7 +194,7 @@ property_descriptions = {
 		),
 	'vnc': univention.admin.property(
 			short_description=_('Remote access'),
-			long_description=_('Active VNC remote acess'),
+			long_description=_('Active VNC remote access'),
 			syntax=udm_syntax.boolean,
 			multivalue=False,
 			options=[],
@@ -243,7 +243,7 @@ property_descriptions = {
 			identifies=False
 		),
 	'advkernelconf': univention.admin.property(
-			short_description=_('Use advanced kernel configuarion'),
+			short_description=_('Use advanced kernel configuration'),
 			long_description=_('Manually specify the kernel configuration for paravirtualized machines or use pyGrub as bootloader'),
 			syntax=udm_syntax.TrueFalseUp,
 			multivalue=False,

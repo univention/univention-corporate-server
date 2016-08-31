@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:199
-msgid "Active VNC remote acess"
+msgid "Active VNC remote access"
 msgstr "Aktiviert den VNC Fernzugriff"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:169
@@ -183,7 +183,7 @@ msgid "Network interface"
 msgstr "Netz-Interface"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:97
-msgid "No host cacheing, no forced sync"
+msgid "No host caching, no forced sync"
 msgstr "Kein Host-Caching, kein erzwungenes sync"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:100
@@ -274,7 +274,7 @@ msgid "UVMM: Profile"
 msgstr "UVMM: Profil"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:248
-msgid "Use advanced kernel configuarion"
+msgid "Use advanced kernel configuration"
 msgstr "Verwende erweiterte Kernelkonfiguration"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:296
