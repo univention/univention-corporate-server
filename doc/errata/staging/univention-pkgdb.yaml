@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-pkgdb
+fix: 9.0.1-9.207.201608311254
+desc: |
+ This update addresses the following issue(s):
+ * Corrected some typos.
+bug: [42077]
