@@ -348,7 +348,7 @@ define([
 		},
 
 		_confirmUnsecureConnectionWithADDomain: function() {
-			return dialog.confirm(_('<p>An encrypted connection to the Active Directory domain could still not be established.</p><p>Confirm if you want to procced with an unsecure connection.</p>'), [{
+			return dialog.confirm(_('<p>An encrypted connection to the Active Directory domain could still not be established.</p><p>Confirm if you want to proceed with an unsecure connection.</p>'), [{
 				name: 'cancel',
 				label: _('Cancel')
 			}, {

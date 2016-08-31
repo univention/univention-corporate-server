@@ -43,7 +43,7 @@ msgstr ""
 #: umc/js/adconnector/SetupWizard.js:354
 msgid ""
 "<p>An encrypted connection to the Active Directory domain could still not be "
-"established.</p><p>Confirm if you want to procced with an unsecure "
+"established.</p><p>Confirm if you want to proceed with an unsecure "
 "connection.</p>"
 msgstr ""
 "<p>Eine verschlüsselte Verbindung zu der Active Directory-Domäne konnte "
