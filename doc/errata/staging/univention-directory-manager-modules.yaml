@@ -3,7 +3,7 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-directory-manager-modules
-fix: 11.0.3-32.1423.201608311600
+fix: 11.0.3-33.1424.201608311630
 desc: |
  This update addresses the following issue:
  * When deleting a computer object, the computer is now removed
