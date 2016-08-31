@@ -173,7 +173,7 @@ property_descriptions={
 
 layout = [
 	Tab( _('General'), _('Time Period Settings'), layout = [
-		Group( _( 'General nagios time period settings' ), layout = [
+		Group( _( 'General Nagios time period settings' ), layout = [
 				[ "name",  "description" ],
 				[ "periodMonday", "periodTuesday" ],
 				[ "periodWednesday", "periodThursday" ],

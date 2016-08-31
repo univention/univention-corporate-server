@@ -52,8 +52,8 @@ class printerACLTypes(univention.admin.syntax.select):
 	name='printerACLTypes'
 	choices=[
 			('allow all',_('Allow all users.')),
-			('allow',_('Allow only choosen users/groups.')),
-			('deny',_('Deny choosen users/groups.')),
+			('allow',_('Allow only chosen users/groups.')),
+			('deny',_('Deny chosen users/groups.')),
 			]
 
 help_link = _('http://docs.univention.de/manual.html#print::shares')

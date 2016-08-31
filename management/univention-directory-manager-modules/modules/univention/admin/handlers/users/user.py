@@ -219,7 +219,7 @@ property_descriptions={
 		),
 	'sambaPrivileges': univention.admin.property(
 			short_description = _( 'Samba privilege' ),
-			long_description = _( 'Manage samba privileges' ),
+			long_description = _( 'Manage Samba privileges' ),
 			syntax = univention.admin.syntax.SambaPrivileges,
 			multivalue = True,
 			options = [ 'samba' ],
@@ -482,7 +482,7 @@ property_descriptions={
 			readonly_when_synced=1,
 		),
 	'birthday' : univention.admin.property(
-			short_description=_('Birthday'),
+			short_description=_('Birthdate'),
 			long_description=_('Date of birth'),
 			syntax=univention.admin.syntax.iso8601Date,
 			multivalue=0,

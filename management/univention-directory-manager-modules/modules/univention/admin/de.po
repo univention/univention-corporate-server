@@ -755,7 +755,7 @@ msgid "Monday"
 msgstr "Montag"
 
 #: modules/univention/admin/uldap.py:427
-msgid "Moving childs is not supported."
+msgid "Moving children is not supported."
 msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
 
 #: modules/univention/admin/syntax.py:2819
@@ -988,7 +988,7 @@ msgid "POSIX Account"
 msgstr "POSIX Konto"
 
 #: modules/univention/admin/syntax.py:2862
-msgid "POSIX and Kerbeors disabled"
+msgid "POSIX and Kerberos disabled"
 msgstr "POSIX und Kerberos deaktiviert"
 
 #: modules/univention/admin/syntax.py:2859
@@ -1307,7 +1307,7 @@ msgstr ""
 
 #: modules/univention/admin/uexceptions.py:209
 msgid ""
-"The license check is disabled. Your are using the GPL version without any "
+"The license check is disabled. You are using the GPL version without any "
 "support or maintenance by Univention."
 msgstr ""
 "Die Lizenzüberprüfung ist deaktiviert. Sie verwenden die GPL Version ohne "

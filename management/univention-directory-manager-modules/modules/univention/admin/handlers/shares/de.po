@@ -125,7 +125,7 @@ msgid "Allow guest access"
 msgstr "Gastzugriff erlauben"
 
 #: modules/univention/admin/handlers/shares/printer.py:54
-msgid "Allow only choosen users/groups."
+msgid "Allow only chosen users/groups."
 msgstr "Zugriff nur für ausgewählte Benutzer/Gruppen zulassen."
 
 #: modules/univention/admin/handlers/shares/share.py:462
@@ -206,7 +206,7 @@ msgid "Denied host/network"
 msgstr "Nicht zugelassene(r/s) Rechner/Netz"
 
 #: modules/univention/admin/handlers/shares/printer.py:55
-msgid "Deny choosen users/groups."
+msgid "Deny chosen users/groups."
 msgstr "Zugriff für ausgewählte Benutzer/Gruppen verweigern."
 
 #: modules/univention/admin/handlers/shares/printer.py:92
@@ -386,7 +386,7 @@ msgstr "MSDFS-Wurzel"
 
 #: modules/univention/admin/handlers/shares/share.py:203
 msgid ""
-"May contain hostnames, ip addresses or networks (e.g. 10.1.1.1/24 or "
+"May contain hostnames, IP addresses or networks (e.g. 10.1.1.1/24 or "
 "10.1.1.1/255.255.255.0"
 msgstr ""
 "Kann Hostnamen, IP-Adressen oder Netze enthalten (z.B. 10.1.1.1/24 oder "
@@ -669,7 +669,7 @@ msgstr ""
 
 #: modules/univention/admin/handlers/shares/share.py:452
 msgid ""
-"The way clients are capable of offline caching will cache the files in the "
+"The way clients capable of offline caching will cache the files in the "
 "share."
 msgstr ""
 "Bestimmt das Verfahren, mit dem Clients Dateiinhalte lokal zwischenspeichern."
@@ -735,11 +735,11 @@ msgstr ""
 
 #: modules/univention/admin/handlers/shares/share.py:544
 msgid ""
-"This parameter can be used to ensure that if default acls exist on parent "
+"This parameter can be used to ensure that if default ACLs exist on parent "
 "directories, they are always honored when creating a subdirectory. The "
 "default behavior is to use the mode specified when creating the directory. "
 "Enabling this option sets the mode to 0777, thus guaranteeing that default "
-"directory acls are propagated."
+"directory ACLs are propagated."
 msgstr ""
 "Dieser Parameter kann benutzt werden, um sicherzustellen, dass wenn Standard-"
 "ACLs auf übergeordneten Ordern bestehen, diese immer berücksichtigt werden, "

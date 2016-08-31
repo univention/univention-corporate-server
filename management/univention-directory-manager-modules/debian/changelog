@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-32) unstable; urgency=low
+
+  * Bug #42156: Corrected some typos.
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 31 Aug 2016 15:47:52 +0200
+
 univention-directory-manager-modules (11.0.3-31) unstable; urgency=low
 
   * Bug #37086: remove nameserver in dns zones if server is removed

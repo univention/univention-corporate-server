@@ -125,7 +125,7 @@ property_descriptions={
 			),
 	'serverIdentifier': univention.admin.property(
 			short_description=_('Server identifier'),
-			long_description=_('An IP address identifing the server that should be used by the clients for further requests. Using this is not recommended.'),
+			long_description=_('An IP address identifying the server that should be used by the clients for further requests. Using this is not recommended.'),
 			syntax=univention.admin.syntax.hostOrIP,
 			multivalue=0,
 			options=[],
