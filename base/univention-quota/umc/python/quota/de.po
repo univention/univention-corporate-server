@@ -93,7 +93,7 @@ msgstr "Die folgende Partition ist derzeit nicht eingebunden: %s"
 
 #: umc/python/quota/user.py:163
 #, python-format
-msgid "The following partition is mounted mounted without quota support: %s"
+msgid "The following partition is mounted without quota support: %s"
 msgstr "Die folgende Partition ist ohne Quota-Unterstützung eingebunden: %s"
 
 #: umc/python/quota/partition.py:97

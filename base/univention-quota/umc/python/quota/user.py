@@ -160,7 +160,7 @@ class Commands(object):
 			if mounted_partition:
 				if 'usrquota' not in mounted_partition.options:
 					MODULE.error('The following partition is mounted without quota support: %s' % partition_name)
-					message = _('The following partition is mounted mounted without quota support: %s') % partition_name
+					message = _('The following partition is mounted without quota support: %s') % partition_name
 			else:
 				MODULE.error('The following partition is '
 				             'currently not mounted: %s' % partition_name)
