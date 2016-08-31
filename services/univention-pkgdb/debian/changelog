@@ -1,3 +1,9 @@
+univention-pkgdb (9.0.1-9) unstable; urgency=low
+
+  * Bug #42077: Corrected some typos.
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 31 Aug 2016 12:49:28 +0200
+
 univention-pkgdb (9.0.1-8) unstable; urgency=low
 
   * move UCRV description to correct file (Bug #33935)

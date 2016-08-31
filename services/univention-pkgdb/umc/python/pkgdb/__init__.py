@@ -171,9 +171,9 @@ LABELS = {
 	'sysversion_lower':			_("UCS Version is lower than"),
 	'all_properties':			_("All properties"),
 	# ----------- server roles --------------------
-	'domaincontroller_master':	_("Domaincontroller Master"),
-	'domaincontroller_backup':	_("Domaincontroller Backup"),
-	'domaincontroller_slave':	_("Domaincontroller Slave"),
+	'domaincontroller_master':	_("Domain controller Master"),
+	'domaincontroller_backup':	_("Domain controller Backup"),
+	'domaincontroller_slave':	_("Domain controller Slave"),
 	'memberserver':				_("Member Server"),
 	# ------------------ selection states --------------
 	'install':					_("Install"),

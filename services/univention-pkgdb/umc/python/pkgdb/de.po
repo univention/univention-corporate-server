@@ -47,15 +47,15 @@ msgid "Deinstall"
 msgstr "Deinstall"
 
 #: umc/python/pkgdb/__init__.py:175
-msgid "Domaincontroller Backup"
+msgid "Domain controller Backup"
 msgstr "Domaincontroller Backup"
 
 #: umc/python/pkgdb/__init__.py:174
-msgid "Domaincontroller Master"
+msgid "Domain controller Master"
 msgstr "Domaincontroller Master"
 
 #: umc/python/pkgdb/__init__.py:176
-msgid "Domaincontroller Slave"
+msgid "Domain controller Slave"
 msgstr "Domaincontroller Slave"
 
 #: umc/python/pkgdb/__init__.py:192
