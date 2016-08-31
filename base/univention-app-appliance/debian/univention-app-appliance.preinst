@@ -46,7 +46,6 @@ _divert() {
 case "$1" in
 	install|upgrade)
 		# create necessary diversions
-		_divert /usr/share/plymouth/themes/ucs/ucs.plymouth
 		_divert /usr/share/univention-management-console-frontend/js/dijit/themes/umc/umc.css umc.real.css
 		_divert /var/www/ucs-overview/css/ucs.css ucs.real.css
 		_divert /usr/share/univention-system-activation/www/css/ucs.css ucs.real.css

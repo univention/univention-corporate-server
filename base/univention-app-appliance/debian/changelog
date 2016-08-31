@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.0-3) unstable; urgency=medium
+
+  * Bug #42165: Do not divert ucs plymouth theme
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 31 Aug 2016 11:27:49 +0200
+
 univention-app-appliance (1.0.0-2) unstable; urgency=medium
 
   * Bug #42068: Use correct ini value for NotifyVendor
