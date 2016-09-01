@@ -1,3 +1,10 @@
+univention-updater (12.0.0-5) unstable; urgency=low
+
+  * Bug #42197: set version to 4.2 (patchlevel to 0)
+  * Bug #42054: set releasename to Lesum
+
+ -- Felix Botner <botner@univention.de>  Thu, 01 Sep 2016 14:29:42 +0200
+
 univention-updater (12.0.0-4) unstable; urgency=low
 
   * Bug #42052: set repository/server to updates-test.software-univention.de
