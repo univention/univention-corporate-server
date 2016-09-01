@@ -19,7 +19,7 @@ msgstr ""
 #: umc/python/ucr/__init__.py:115
 msgid ""
 "Invalid UCR variable entry, the properties \"key\" and \"value\" need to "
-"specified."
+"be specified."
 msgstr ""
 "Ungültiger UCR-Variableneintrag. Die Optionen \"key\" und \"value\" müssen "
 "angeeben werden"
