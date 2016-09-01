@@ -6,5 +6,5 @@ src: univention-management-console-module-udm
 fix: 6.0.11-24.654.201609011036
 desc: |
  This update addresses the following issue(s):
- * Corrected a typo.
+ * A typo has been corrected.
 bug: [42159]

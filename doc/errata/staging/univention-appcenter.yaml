@@ -13,5 +13,5 @@ desc: |
    integration.
  * If needed, Docker Apps may now get read-only access to the Host's
    certificate
- * Corrected some typos.
+ * Some typos have been corrected.
 bug: [40857, 41853, 41626, 42016, 42157]

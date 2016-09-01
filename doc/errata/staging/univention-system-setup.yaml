@@ -11,5 +11,5 @@ desc: |
    the installation/setup process has been improved.
  * Software packages are no longer automatically cached when
    installing univention-system-setup-boot.
- * Corrected some typos.
+ * Some typos have been corrected.
 bug: [42095,42122,42075]

@@ -6,5 +6,5 @@ src: univention-virtual-machine-manager-daemon
 fix: 5.0.1-11.615.201608301634
 desc: |
  This update addresses the following issue(s):
- * Some typos have been corrected in the package.
+ * Some typos have been corrected.
 bug: [42069]

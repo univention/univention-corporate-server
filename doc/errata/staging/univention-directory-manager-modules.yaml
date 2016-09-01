@@ -8,5 +8,5 @@ desc: |
  This update addresses the following issue:
  * When deleting a computer object, the computer is now removed
    from the list of nameservers in its dns zone objects.
- * Corrected some typos.
+ * Some typos have been corrected.
 bug: [37086,42156]

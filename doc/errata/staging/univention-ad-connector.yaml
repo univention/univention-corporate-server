@@ -6,5 +6,5 @@ src: univention-ad-connector
 fix: 10.0.2-5.505.201608311543
 desc: |
  This update addresses the following issue(s):
- * Corrected a typo.
+ * A typo has been corrected.
 bug: [42078]

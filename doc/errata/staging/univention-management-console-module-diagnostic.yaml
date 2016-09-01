@@ -6,5 +6,5 @@ src: univention-management-console-module-diagnostic
 fix: 2.0.0-6.29.201609011134
 desc: |
  This update addresses the following issue(s):
- * Corrected some typos.
+ * Some typos have been corrected.
 bug: [42161]
