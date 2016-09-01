@@ -12,6 +12,7 @@
 		<title>General</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The codename for UCS 4.2 has been set to <wordasword>Lesum</wordasword> (<u:bug>42054</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
