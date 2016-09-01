@@ -179,9 +179,9 @@ class LDAP_ServerDown(UMC_Error):
 		if self._is_master:
 			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server or free some resources')
 		else:
-			yield ' * ' + _('Make sure the domaincontroller master is running and reachable from %s') % (self._fqdn,)
-			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domaincontroller master or free some resources')
-		yield ' * ' + _('Restart the LDAP service on the domaincontroller master either via "service slapd restart" on command line or with the UMC module "System services"')
+			yield ' * ' + _('Make sure the domain controller master is running and reachable from %s') % (self._fqdn,)
+			yield ' * ' + _('Check if enough hard disk space and free RAM is available on this server and on the domain controller master or free some resources')
+		yield ' * ' + _('Restart the LDAP service on the domain controller master either via "service slapd restart" on command line or with the UMC module "System services"')
 		if self._updates_available:
 			yield ' * ' + _('Install the latest software updates')
 		#TODO: reuse but not in LDAP_ServerDown
@@ -274,7 +274,7 @@ class Base(signals.Provider, Translation):
 		try:
 			function = getattr(self, method).im_func
 		except AttributeError:
-			message = _('Method %(method)r (%(path)r) in %(module)r does not exists.\n\n%(traceback)s') % {'method': method, 'path': request.arguments, 'module': self.__class__.__module__, 'traceback': traceback.format_exc()}
+			message = _('Method %(method)r (%(path)r) in %(module)r does not exist.\n\n%(traceback)s') % {'method': method, 'path': request.arguments, 'module': self.__class__.__module__, 'traceback': traceback.format_exc()}
 			self.finished(request.id, None, message=message, status=500)
 			return
 

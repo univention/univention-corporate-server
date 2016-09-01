@@ -439,7 +439,7 @@ class ProcessorBase(Base):
 						errno.EMFILE: self._('There are too many opened files on the server.'),
 						errno.ENFILE: self._('There are too many opened files on the server.'),
 						errno.ENOSPC: self._('There is not enough free space on the server.')
-					}.get(exc.errno, self._('An unkown operating system error occurred (%s).' % (exc,)))
+					}.get(exc.errno, self._('An unknown operating system error occurred (%s).' % (exc,)))
 					raise UMC_Error(message, status=503)
 				mod_proc.signal_connect('result', self.result)
 

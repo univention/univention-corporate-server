@@ -1,3 +1,9 @@
+univention-management-console (9.0.2-2) unstable; urgency=low
+
+  * Bug #42162: Corrected some typos.
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Sep 2016 12:54:01 +0200
+
 univention-management-console (9.0.2-1) unstable; urgency=medium
 
   * Bug #42114: make it possible to execute commands without authentication
