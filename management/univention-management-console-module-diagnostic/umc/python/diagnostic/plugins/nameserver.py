@@ -43,7 +43,7 @@ def run():
 				msgs = ['\n', _('The nameserver %(nameserver)s (UCR variable %(var)r) is not responsive:') % {'nameserver': ucr[nameserver], 'var': nameserver}]
 
 				if isinstance(exc, Timeout):
-					msgs.append(_('A timeout occured while reaching the nameserver (is it online?).'))
+					msgs.append(_('A timeout occurred while reaching the nameserver (is it online?).'))
 				else:
 					msgs.append('%s' % (exc,))
 				failed.append('\n'.join(msgs))

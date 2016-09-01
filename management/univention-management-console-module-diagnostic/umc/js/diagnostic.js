@@ -186,7 +186,7 @@ define([
 				_('Otherwise the problems can be solved manually with help of the displayed links to articles by using the linked UMC modules. '),
 				headerButtons: [{
 					name: 'start_diagnose',
-					label: _('Run system diagnose'),
+					label: _('Run system diagnosis'),
 					callback: lang.hitch(this, '_runFullDiagnose')
 				}]
 			});
@@ -263,7 +263,7 @@ define([
 			this._progressBar = new ProgressBar({
 				region: 'nav'
 			});
-			this._progressBar.setInfo(_('Running full diagnose...'), undefined, Infinity);
+			this._progressBar.setInfo(_('Running full diagnosis...'), undefined, Infinity);
 
 			var deferred = new Deferred();
 			this._progressBar.feedFromDeferred(deferred);
@@ -272,7 +272,7 @@ define([
 				return this._runDiagnose(plugin).then(lang.hitch(this, function() {
 					var percentage = this._progressBar._progressBar.get('value') + this._stepInc;
 					deferred.progress({
-						message: _('Diagnose of "%s" was successful', plugin.title),
+						message: _('Diagnosis of "%s" was successful', plugin.title),
 						percentage: percentage
 					});
 				}));
@@ -285,7 +285,7 @@ define([
 			}));
 			this.refreshGrid();
 			this.standbyDuring(this._runDiagnose(plugin, opts)).then(lang.hitch(this, function() {
-				//this.addNotification(_('Finished running diagnose of "%s" again.', plugin.title));
+				//this.addNotification(_('Finished running diagnosis of "%s" again.', plugin.title));
 			})).then(lang.hitch(this, 'fixNoDataMessage'));
 		},
 

@@ -31,12 +31,12 @@ msgstr "Kritisch: "
 
 #: umc/js/diagnostic.js:275
 #, python-format
-msgid "Diagnose of \"%s\" was successful"
+msgid "Diagnosis of \"%s\" was successful"
 msgstr "Diagnose von \"%s\" war erfolgreich"
 
 #: umc/js/diagnostic.js:288
 #, python-format
-msgid "Finished running diagnose of \"%s\" again."
+msgid "Finished running diagnosis of \"%s\" again."
 msgstr "Erneuter Diagnosedurchlauf von \"%s\" beendet."
 
 #: umc/js/diagnostic.js:185
@@ -68,11 +68,11 @@ msgid "Problem: "
 msgstr "Problem: "
 
 #: umc/js/diagnostic.js:189
-msgid "Run system diagnose"
+msgid "Run system diagnosis"
 msgstr "System-Diagnose starten"
 
 #: umc/js/diagnostic.js:266
-msgid "Running full diagnose..."
+msgid "Running full diagnosis..."
 msgstr "Komplette Diagnose läuft..."
 
 #: umc/js/diagnostic.js:63
