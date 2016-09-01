@@ -1,3 +1,9 @@
+univention-management-console-module-adtakeover (3.0.0-6) unstable; urgency=low
+
+  * Bug #42164: Corrected a typo.
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Sep 2016 14:19:02 +0200
+
 univention-management-console-module-adtakeover (3.0.0-5) unstable; urgency=medium
 
   * Bug #39070: Take netbios domain name from AD
