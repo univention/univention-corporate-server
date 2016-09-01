@@ -1,3 +1,9 @@
+ucs-windows-tools (3.0.1-9) unstable; urgency=medium
+
+  * Bug #41571: Add Get-ItemProperty script to check Windows registry keys
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Sep 2016 22:37:34 +0200
+
 ucs-windows-tools (3.0.1-8) unstable; urgency=medium
 
   * Bug #41571: Stop automatic line wrap in univention-get-gpo-report
