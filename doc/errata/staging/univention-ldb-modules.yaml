@@ -3,11 +3,12 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-ldb-modules
-fix: 4.0.7-6.96.201608291833
+fix: 4.0.7-8.98.201608301617
 desc: |
  This update addresses the following issue(s):
  * The slave PDC join script now updates some descriptions for the default
    users and groups. This avoids rejects if the Univention S4 Connector is 
    not installed on the DC master in a distributed UCS@school environment.
- * The slave PDC host account is now removed from the Samba 4 LDAP directory.
-bug: [36831,41167]
+ * The slave PDC host account is now demoted from the central Samba in a 
+   distributed UCS@school environment.
+bug: [36831, 41168]
