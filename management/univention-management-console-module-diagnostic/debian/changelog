@@ -1,3 +1,9 @@
+univention-management-console-module-diagnostic (3.0.0-2) unstable; urgency=low
+
+  * Bug #42161: Corrected some typos.
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Sep 2016 11:30:27 +0200
+
 univention-management-console-module-diagnostic (3.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

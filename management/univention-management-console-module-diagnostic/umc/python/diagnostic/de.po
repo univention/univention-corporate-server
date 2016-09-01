@@ -18,7 +18,7 @@ msgid "%d of the configured nameservers are not responding to DNS queries."
 msgstr "%d der konfigurierten Nameserver anworten nicht auf DNS-Anfragen."
 
 #: umc/python/diagnostic/plugins/nameserver.py:46
-msgid "A timeout occured while reaching the nameserver (is it online?)."
+msgid "A timeout occurred while reaching the nameserver (is it online?)."
 msgstr ""
 "Eine Zeitüberschreitung trat beim Erreichen des Nameservers auf (ist er "
 "online?)."
