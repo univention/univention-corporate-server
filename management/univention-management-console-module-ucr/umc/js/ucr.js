@@ -95,7 +95,7 @@ define([
 	//		}, {
 	//			type: 'MultiSelect',
 	//			name: 'categories',
-	//			description: _( 'Categories that the UCR variable is assoziated with' ),
+	//			description: _( 'Categories that the UCR variable is associated with' ),
 	//			label: _( 'Categories' ),
 	//			dynamicValues: 'ucr/categories'
 			}];

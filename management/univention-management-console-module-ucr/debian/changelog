@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (5.0.1-2) unstable; urgency=low
+
+  * Bug #42160: Corrected some typos.
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 01 Sep 2016 10:50:58 +0200
+
 univention-management-console-module-ucr (5.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)

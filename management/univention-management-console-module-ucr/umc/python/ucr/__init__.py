@@ -112,7 +112,7 @@ class Instance( Base ):
 				except KeyError:
 					# handle the case that neither key nor value are given for an UCR variable entry
 					request.status = BAD_REQUEST_INVALID_OPTS
-					self.finished(request.id, False, message = _('Invalid UCR variable entry, the properties "key" and "value" need to specified.'))
+					self.finished(request.id, False, message = _('Invalid UCR variable entry, the properties "key" and "value" need to be specified.'))
 					return
 		else:
 			success = False

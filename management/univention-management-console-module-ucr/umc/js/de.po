@@ -47,7 +47,7 @@ msgid "Categories"
 msgstr "Kategorien"
 
 #: umc/js/ucr.js:96
-msgid "Categories that the UCR variable is assoziated with"
+msgid "Categories that the UCR variable is associated with"
 msgstr "Kategorien, die der UCR-Variable zugeordnet sind"
 
 #: umc/js/ucr.js:298
