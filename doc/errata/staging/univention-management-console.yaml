@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-management-console
+fix: 8.0.28-18.923.201609011257
+desc: |
+ This update addresses the following issue(s):
+ * Some typos have been corrected.
+bug: [42162]
