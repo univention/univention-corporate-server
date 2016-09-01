@@ -1,3 +1,12 @@
+ucs-test (7.0.3-3) unstable; urgency=medium
+
+  * Bug #41571: Bring 51_samba4/56evaluate_windows_gpo up to the state
+    of 90_ucsschool/98_samba4_evaluate_windows_gpo
+  * Create user via UDM instead of samba-tool, which doesn't work on
+    UCS@school Samba/AD PDC Slave
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Sep 2016 15:04:16 +0200
+
 ucs-test (7.0.3-2) unstable; urgency=medium
 
   * Bug #41571: Fix force_drs_replication() for UCS@school Slave PDCs
