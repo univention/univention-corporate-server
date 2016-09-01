@@ -584,5 +584,13 @@ set_administrator_password_for_ucs_test ()
 	echo -n "$password" >/var/lib/ucs-test/pwdfile
 }
 
+set_windows_localadmin_password_for_ucs_test () {
+	local username="$1"
+	local password="$2"
+
+	ucr set \
+		tests/windows/localadmin/name="$username" \
+		tests/windows/localadmin/pwd="$password"
+}
 
 # vim:set filetype=sh ts=4:
