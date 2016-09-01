@@ -654,7 +654,7 @@ class Processor(Base):
 				self.update_module_passwords()
 			except:
 				res.status = 500
-				error_msg = self._('Nevertheless an error occured while updating the password for running modules. Please relogin to UMC to solve this problem.')
+				error_msg = self._('Nevertheless an error occurred while updating the password for running modules. Please relogin to UMC to solve this problem.')
 				res.message = ('%s %s%s' % (res.message, error_msg, traceback.format_exc()))
 
 		self.result(res)
@@ -820,7 +820,7 @@ class Processor(Base):
 						errno.EMFILE: self._('There are too many opened files on the server.'),
 						errno.ENFILE: self._('There are too many opened files on the server.'),
 						errno.ENOSPC: self._('There is not enough free space on the server.')
-					}.get(exc.errno, self._('An unkown operating system error occurred (%s).' % (exc,)))
+					}.get(exc.errno, self._('An unknown operating system error occurred (%s).' % (exc,)))
 					raise UMC_Error(message, status=503)
 				mod_proc.signal_connect('result', self.result)
 

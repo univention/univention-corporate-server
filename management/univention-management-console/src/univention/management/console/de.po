@@ -38,7 +38,7 @@ msgstr "Eine Option für %(method)s hat den falschen Typ: %(exc)s"
 
 #: univention/management/console/protocol/session.py:823
 #, python-format
-msgid "An unkown operating system error occurred (%s)."
+msgid "An unknown operating system error occurred (%s)."
 msgstr "Ein unbekannter Betriebssystemfehler ist aufgetreten (%s)."
 
 #: univention/management/console/modules/sanitizers.py:172
@@ -68,7 +68,7 @@ msgstr "Passwort ändern fehlgeschlagen."
 #: univention/management/console/base.py:183
 msgid ""
 "Check if enough hard disk space and free RAM is available on this server and "
-"on the domaincontroller master or free some resources"
+"on the domain controller master or free some resources"
 msgstr ""
 "Überprüfen Sie, ob auf diesem Server und auf dem Domänencontroller Master "
 "genügend Festplattenspeicher und Arbeitsspeicher (RAM) verfügbar sind"
@@ -167,7 +167,7 @@ msgstr "Ungültige Fortschritt ID"
 
 #: univention/management/console/base.py:182
 #, python-format
-msgid "Make sure the domaincontroller master is running and reachable from %s"
+msgid "Make sure the domain controller master is running and reachable from %s"
 msgstr ""
 "Stellen Sie sicher, dass der Domänencontroller Master läuft und von %s aus "
 "erreichbar ist"
@@ -187,7 +187,7 @@ msgstr "Darf höchstens %(max_elements)d Element(e) haben"
 #: univention/management/console/base.py:277
 #, python-format
 msgid ""
-"Method %(method)r (%(path)r) in %(module)r does not exists.\n"
+"Method %(method)r (%(path)r) in %(module)r does not exist.\n"
 "\n"
 "%(traceback)s"
 msgstr ""
@@ -206,7 +206,7 @@ msgstr "Muss mindestens %(min_elements)d Element(e) haben"
 
 #: univention/management/console/protocol/session.py:657
 msgid ""
-"Nevertheless an error occured while updating the password for running "
+"Nevertheless an error occurred while updating the password for running "
 "modules. Please relogin to UMC to solve this problem."
 msgstr ""
 "Nichtsdestotrotz ist ein Fehler während der Aktualisierung des Passwords in "
@@ -271,7 +271,7 @@ msgstr "Bitte warten, bis die Aktion durchgeführt wurde"
 
 #: univention/management/console/base.py:184
 msgid ""
-"Restart the LDAP service on the domaincontroller master either via \"invoke-"
+"Restart the LDAP service on the domain controller master either via \"invoke-"
 "rc.d slapd restart\" on command line or with the UMC module \"System services"
 "\""
 msgstr ""
@@ -405,7 +405,7 @@ msgstr "Der Grund konnte nicht festgestellt werden"
 
 #: univention/management/console/protocol/modserver.py:106
 #, python-format
-msgid "The requested module %r does not exists."
+msgid "The requested module %r does not exist."
 msgstr "Das angefragte Modul %r existiert nicht."
 
 #: univention/management/console/protocol/session.py:820
