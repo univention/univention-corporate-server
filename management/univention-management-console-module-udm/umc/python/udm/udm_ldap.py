@@ -475,9 +475,9 @@ class UDM_Module(object):
 		except udm_errors.insufficientInformation as e:
 			return []
 		except udm_errors.ldapTimeout as e:
-			raise udm_errors.ldapTimeout(_('The query you have entered timed out. Please narrow down your search by specifiying more query parameters'))
+			raise udm_errors.ldapTimeout(_('The query you have entered timed out. Please narrow down your search by specifying more query parameters'))
 		except udm_errors.ldapSizelimitExceeded as e:
-			raise udm_errors.ldapSizelimitExceeded(_('The query you have entered yields too many matching entries. Please narrow down your search by specifiying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000'))
+			raise udm_errors.ldapSizelimitExceeded(_('The query you have entered yields too many matching entries. Please narrow down your search by specifying more query parameters. The current size limit of %s can be configured with the UCR variable directory/manager/web/sizelimit.') % ucr.get('directory/manager/web/sizelimit', '2000'))
 		except (LDAPError, udm_errors.ldapError):
 			raise
 		except udm_errors.base as e:
