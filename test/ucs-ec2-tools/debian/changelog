@@ -1,3 +1,10 @@
+ucs-ec2-tools (2.0.0-29) unstable; urgency=medium
+
+  * Bug #41571: Run set_windows_localadmin_password_for_ucs_test also
+    in autotest-095-slave-s4.cfg
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Sep 2016 14:53:25 +0200
+
 ucs-ec2-tools (2.0.0-28) unstable; urgency=medium
 
   * Bug #41571: Add tests/windows/localadmin/name and .../pwd
