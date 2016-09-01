@@ -199,7 +199,7 @@ msgstr "Alle"
 
 #: umc/js/appcenter/SettingsPage.js:358
 #, python-format
-msgid "An unknown error with code %d occured."
+msgid "An unknown error with code %d occurred."
 msgstr "Es ist ein unbekannter Fehler mit Code %d aufgetreten."
 
 #: umc/js/appcenter/AppDetailsPage.js:1095 umc/js/appcenter/requirements.js:85
@@ -333,11 +333,11 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #: umc/js/appcenter/AppDetailsDialog.js:210
-msgid "Continuation is not possible"
+msgid "It's not possible to continue"
 msgstr "Fortfahren nicht möglich"
 
 #: umc/js/appcenter/AppDetailsDialog.js:214
-msgid "Continuation is not recommended"
+msgid "It's not recommended to continue"
 msgstr "Fortfahren nicht empfohlen"
 
 #: umc/js/appcenter/AppDetailsPage.js:827

@@ -355,7 +355,7 @@ define([
 			//	3 ... error commiting UCR
 			//	4 ... any kind of 'repo not found' conditions
 			//	5 ... repo not found, but encountered without commit
-			var txt = _("An unknown error with code %d occured.", result.status);
+			var txt = _("An unknown error with code %d occurred.", result.status);
 			switch(result.status) {
 				case 1: txt = _("Please correct the corresponding input fields.");
 						break;
