@@ -323,7 +323,7 @@ def take_over_domain(progress):
 	progress._scale = 5
 	takeover_final.ping_AD(progress)
 
-	progress.headline(_('Taking over Active Directory domaincontroller roles'))
+	progress.headline(_('Taking over Active Directory domain controller roles'))
 	progress.message(_('Adjusting settings in Samba directory service'))
 	progress.percentage(5)
 	takeover_final.post_join_fix_samDB()
