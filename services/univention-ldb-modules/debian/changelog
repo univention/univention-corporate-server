@@ -1,3 +1,13 @@
+univention-ldb-modules (5.0.8-1) unstable; urgency=medium
+
+  * ucs-school-create_windows_computer: Add the school ou to the
+    arguments. Otherwise the computer might be added to the wrong ou.
+    The script has been converted to Python since the UCS@school python
+    lib has functions to determine the School ou. Thanks to Florian for
+    the patch (Bug #41765)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Sep 2016 20:33:09 +0200
+
 univention-ldb-modules (5.0.7-1) unstable; urgency=medium
 
   * Demote Slave PDC in central S4 (Bug #41167)
