@@ -355,6 +355,10 @@ class WinExe:
 
 		return self.winexec("univention-Set-GPPermissions", self.domain, gpo_name, permission_level, target_name, target_type, server, replace, domain_mode=True)
 
+	def Get_ItemProperty(self, item):
+
+		return self.winexec("univention-Get-ItemProperty", item, domain_mode=True)
+
 
 	def gpo_set_reg_value(self, gpo_name, reg_key, value_name, value, value_type, server):
 		'''
