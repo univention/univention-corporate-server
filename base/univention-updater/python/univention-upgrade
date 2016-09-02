@@ -169,7 +169,7 @@ def do_release_update(options, checkForUpdates, silent):
         return False
     if options.updateto and UCS_Version(options.updateto) < UCS_Version(version_next):
         dprint(silent, '%s is available but updater has been instructed to stop at version %s.' % (version_next, options.updateto))
-        return True
+        raise UserCancelled()
     dprint(silent, 'found: UCS %s' % version_next)
     if checkForUpdates:
         return True
