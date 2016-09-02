@@ -1,3 +1,9 @@
+univention-updater (12.0.0-6) unstable; urgency=low
+
+  * Bug #42076: Corrected some typos.
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 02 Sep 2016 15:37:12 +0200
+
 univention-updater (12.0.0-5) unstable; urgency=low
 
   * Bug #42197: set version to 4.2 (patchlevel to 0)
