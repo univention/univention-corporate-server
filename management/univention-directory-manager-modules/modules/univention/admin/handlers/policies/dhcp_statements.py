@@ -125,7 +125,7 @@ property_descriptions={
 			),
 	'serverIdentifier': univention.admin.property(
 			short_description=_('Server identifier'),
-			long_description=_('An IP address identifying the server that should be used by the clients for further requests. Using this is not recommended.'),
+			long_description=_('The IP address identifying the DHCP server that should be used by the clients. Use this only if auto-detection fails for servers with multiple IP addresses.'),
 			syntax=univention.admin.syntax.hostOrIP,
 			multivalue=0,
 			options=[],
@@ -135,8 +135,8 @@ property_descriptions={
 			),
 	'serverName': univention.admin.property(
 			short_description=_('Server name'),
-			long_description=_('Define the IP address of the boot server'),
-			syntax=univention.admin.syntax.string,
+			long_description=_('Define the name of the DHCP server'),
+			syntax=univention.admin.syntax.hostName,
 			multivalue=0,
 			options=[],
 			required=0,

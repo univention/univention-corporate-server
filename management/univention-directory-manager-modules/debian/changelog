@@ -1,3 +1,9 @@
+univention-directory-manager-modules (12.0.2-1) UNRELEASED; urgency=low
+
+  * Bug #34441: Fix wrong help text for DHCP server statements
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 02 Sep 2016 16:49:04 +0200
+
 univention-directory-manager-modules (12.0.1-5) unstable; urgency=low
 
   * Bug #42156: Corrected some typos.
