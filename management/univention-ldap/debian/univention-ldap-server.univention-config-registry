@@ -37,6 +37,8 @@ Variables: ldap/database/mdb/envflags
 Variables: ldap/ppolicy
 Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
+Variables: ldap/shadowbind
+Variables: ldap/shadowbind/ignorefilter
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

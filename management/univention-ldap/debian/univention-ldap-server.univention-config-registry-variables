@@ -239,3 +239,15 @@ Description[de]=Cron-Intervall für das Backup der slapd Datenbank.
 Description[en]=Cron interval for the slapd database backup.
 Type=str
 Categories=service-ldap
+
+[ldap/shadowbind]
+Description[de]=Aktiviert/Deaktiviert das Overlay-Modul shadowbind (diese Overlay prüft shadowExpire und shadowMax/shadowLastChange am Objekt der Bind-DN und verbietet den Login ggf.)
+Description[en]=To enable/disable the shadowbind overlay module (shadowbind checks shadowExpire and shadowMax/shadowLastChange of the bind DN object during bind and denies the login possibly)
+Type=str
+Categories=service-ldap
+
+[ldap/shadowbind/ignorefilter]
+Description[de]=Dieser LDAP-Filter wird auf das Objekt der Bind-DN angewendet. Trifft er zu, prüft das shadowbind Overlay-Modul die shadow-Attribute nicht.
+Description[en]=This LDAP filter is applied to the bind DN object during bind. If it matches, the shadowbind overlay does not check the shadow attributes for this object.
+Type=str
+Categories=service-ldap

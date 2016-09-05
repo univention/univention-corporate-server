@@ -1,3 +1,9 @@
+univention-ldap (13.0.0-7) unstable; urgency=low
+
+  * Bug #36215: added shadowbind overlay
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Sep 2016 13:32:31 +0200
+
 univention-ldap (13.0.0-6) unstable; urgency=low
 
   * Bug #39307: added ldap/client/timelimit and ldap/client/timeout

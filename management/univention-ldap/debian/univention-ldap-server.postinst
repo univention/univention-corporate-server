@@ -116,6 +116,8 @@ ucr set \
 	ldap/autostart?yes \
 	ldap/tls/dh/paramfile?/etc/ldap/dh_2048.pem \
 	ldap/limits?"users time.soft=-1 time.hard=-1" \
+	ldap/shadowbind?true \
+	ldap/shadowbind/ignorefilter?"(objectClass=univentionDomainController)" \
 	ldap/maxopenfiles?8192 # Bug #17705
 
 if [ "$1" = "configure" -a -z "$2" ]; then

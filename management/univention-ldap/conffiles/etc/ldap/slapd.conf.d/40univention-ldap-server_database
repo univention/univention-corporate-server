@@ -8,9 +8,10 @@ if configRegistry.is_true('ldap/k5pwd', True):
 	print "moduleload\tk5pwd.so"
 if configRegistry.is_true('ldap/pwd_scheme_kinit', True):
 	print "moduleload\tpwd_scheme_kinit.so"
-
 if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true('ldap/ppolicy', False):
 	print "moduleload\tppolicy.so"
+if configRegistry.is_true('ldap/shadowbind', True):
+	print 'moduleload\tshadowbind.so'
 
 print '\n'
 print 'database\t%(ldap/database/type)s' % configRegistry
@@ -29,6 +30,10 @@ if configRegistry.get('ldap/database/type') == "mdb" and configRegistry.is_true(
 	if configRegistry.is_true('ldap/ppolicy/enabled', False):
 		ppolicy_default = 'cn=default,cn=ppolicy,cn=univention,%(ldap/base)s' % configRegistry
 		print 'ppolicy_default\t"%s"' % configRegistry.get('ldap/ppolicy/default', ppolicy_default)
+if configRegistry.is_true('ldap/shadowbind', True):
+	print 'overlay\t\tshadowbind'
+	if 'ldap/shadowbind/ignorefilter' in configRegistry:
+		print 'shadowbind-ignore-filter "%s"' % configRegistry['ldap/shadowbind/ignorefilter']
 
 print '\n'
 if configRegistry['ldap/database/type'] == "mdb":
