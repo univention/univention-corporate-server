@@ -59,6 +59,7 @@ class LdapIndex(object):
         self.args = self.parse_args()
         self.setup_logging()
         self.autorebuild = None
+        self.quick_mode = None
         self.index = {}
 
     @staticmethod
@@ -114,6 +115,7 @@ class LdapIndex(object):
 
     def load_ucr(self, ucr):
         self.autorebuild = ucr.is_true('ldap/index/autorebuild')
+        self.quick_mode = ucr.is_true('ldap/index/quickmode')
         if self.autorebuild:
             LOG.debug('Automatically updating indexes is enabled')
         if self.args.force_defaults:
@@ -197,7 +199,9 @@ class LdapIndex(object):
             return
         LOG.info('Generating indexes...')
         self.check_slapd()
-        slapindex_cmd = ('/usr/sbin/slapindex',)
+        slapindex_cmd = ['/usr/sbin/slapindex']
+        if self.quick_mode:
+            slapindex_cmd.append('-q')
         slapindex = Popen(slapindex_cmd, stderr=PIPE)
         beautify_cmd = (
             'sed', '-e',
