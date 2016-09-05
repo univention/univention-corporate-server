@@ -1,3 +1,9 @@
+univention-mysql (3.0.0-3) unstable; urgency=low
+
+  * Bug #42026: version bump
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Sep 2016 18:29:40 +0200
+
 univention-mysql (3.0.0-2) unstable; urgency=medium
 
   * Bug #40216: Set mysqld default settings based on feedback
