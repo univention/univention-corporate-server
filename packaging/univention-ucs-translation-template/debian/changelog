@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.0.0-2) unstable; urgency=medium
+
+  * Bug #42259: add possibility to blacklist directories for module search
+
+ -- Eduard Mai <mai@univention.de>  Mon, 05 Sep 2016 18:20:09 +0200
+
 univention-ucs-translation-template (4.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
