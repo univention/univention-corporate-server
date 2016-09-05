@@ -42,6 +42,6 @@ else
 fi
 
 udm saml/serviceprovider modify "$@" \
-	--dn "SAMLServiceProviderIdentifier=https://$fqdn/univention-management-console/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base" \
+	--dn "SAMLServiceProviderIdentifier=https://$fqdn/univention/saml/metadata,cn=saml-serviceprovider,cn=univention,$ldap_base" \
 	--set serviceProviderMetadata="$metadata"
 exit $?

@@ -1,61 +1,66 @@
 @%@UCRWARNING=# @%@
 
-# backwards compatibility with UCS 4.0 mixed environments:
-RedirectMatch ^/umcp/sso$ /univention-management-console/
-RedirectMatch ^/univention-management-console/sso$ /univention-management-console/
-
 ProxyPreserveHost on
-
-@!@
-port = int(configRegistry.get('umc/http/port', 8090))
-interface = configRegistry.get('umc/http/interface', '127.0.0.1')
-
-print 'RewriteCond %{REQUEST_URI} ^/univention/.*$'
-print 'RewriteCond %{REQUEST_FILENAME} !-d'
-print 'RewriteCond %{REQUEST_FILENAME} !-f'
-print 'RewriteRule ^/univention/(.*)$ http://%s:%s/$1 [P]' % (interface, port)
-
-print 'ProxyPassMatch /univention-management-console/((set|get|logout|saml|auth|upload|command).*) http://%s:%s/$1 retry=0' % (interface, port)
-print 'ProxyPassReverse /umcp/ http://%s:%s/' % (interface, port)
-print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '300'))
-@!@
-RedirectMatch ^/umc(/$|$) /univention-management-console/
-RedirectMatch ^/univention-management-console$ /univention-management-console/
-
 RewriteEngine On
-RewriteRule ^/univention-management-console/style/(.*) /style/$1 [L]
-
-# legacy path /umcp/, should be removed in future or replaced by a permanent redirect
-SetEnvIf Request_URI "^/umcp/" umcp_legacy_path=true
-Header edit* Set-Cookie "Path=/univention-management-console/" "Path=/umcp/" env=umcp_legacy_path
-RewriteRule ^/umcp/(.*) /univention-management-console/$1 [PT]
 
 # rewrite non existing files in js/dijit/themes/umc to old /images path if they exists there; see Bug #29861
-RewriteCond %{REQUEST_URI} ^/univention-management-console/js[^/]*/dijit/themes/umc/(.*)
+RewriteCond %{REQUEST_URI} ^/univention/js[^/]*/dijit/themes/umc/(.*)
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
 RewriteCond %1 !(?:^|/)[.][.]/
-RewriteCond %{DOCUMENT_ROOT}univention-management-console/images/%1 -f [OR]
-RewriteCond %{DOCUMENT_ROOT}univention-management-console/images/%1 -d
-RewriteRule ^/univention-management-console/js[^/]*/dijit/themes/umc/(.*) /univention-management-console/images/$1 [R=301]
+RewriteCond %{DOCUMENT_ROOT}univention/images/%1 -f [OR]
+RewriteCond %{DOCUMENT_ROOT}univention/images/%1 -d
+RewriteRule ^/univention/js[^/]*/dijit/themes/umc/(.*) /univention/images/$1 [R=301]
 
 # make sure that requests for files in an old hashed javascript directory
 # are redirected; this applies only to GET requests as a HEAD request
 # should still fail to allow the detection of changes by JavaScript;
 # see Bug #29588
-RewriteCond %{REQUEST_URI} ^/(univention-management-console/js_[^/]*)/.*
+RewriteCond %{REQUEST_URI} ^/(univention/js_[^/]*)/.*
 RewriteCond %{DOCUMENT_ROOT}/%1 !-f
 RewriteCond %{DOCUMENT_ROOT}/%1 !-d
 RewriteCond %{REQUEST_METHOD} ^GET
-RewriteRule ^(/univention-management-console/js)_[^/]*/(.*) $1/$2 [R=301]
+RewriteRule ^(/univention/js)_[^/]*/(.*) $1/$2 [R=301]
 
 # avoid 404 Not Found errors for not existing translation files
-RewriteCond %{REQUEST_URI} ^/univention-management-console/js[^/]*/umc/modules/i18n/(en|de)/.*\.json
+RewriteCond %{REQUEST_URI} ^/univention/js[^/]*/umc/modules/i18n/(en|de)/.*\.json
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
-RewriteRule .* /univention-management-console/js/umc/modules/i18n/empty.json [P,L,T=application/json]
+RewriteRule .* /univention/js/umc/modules/i18n/empty.json [P,L,T=application/json]
 
-<LocationMatch "^/univention-management-console/(set|get|logout|saml|auth|upload|command).*">
+# UMC-Webserver proxy
+@!@
+port = int(configRegistry.get('umc/http/port', 8090))
+interface = configRegistry.get('umc/http/interface', '127.0.0.1')
+
+print 'ProxyPassMatch /univention/((set|get|logout|saml|auth|upload|command).*) http://%s:%s/$1 retry=0' % (interface, port)
+print 'ProxyPassReverse /univention/ http://%s:%s/' % (interface, port)
+print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '300'))
+
+print 'RewriteCond %{REQUEST_URI} ^/univention/.*$'
+print 'RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f'
+print 'RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d'
+print 'RewriteRule ^/univention/(.*)$ http://%s:%s/$1 [P]' % (interface, port)
+@!@
+
+# Security
+<LocationMatch "^/univention/login/(login|blank).html$">
+	Header always setifempty "X-Frame-Options" "SAMEORIGIN"
+	Header always setifempty "Content-Security-Policy" "default-src 'self' 'unsafe-inline';"
+</LocationMatch>
+
+<LocationMatch "^/univention/.*">
+	Header always setifempty "X-Permitted-Cross-Domain-Policies" "master-only"
+	Header always setifempty "X-XSS-Protection" "1; mode=block"
+	Header always setifempty "X-Content-Type-Options" "nosniff"
+	Header always setifempty "X-Frame-Options" "DENY"
+</LocationMatch>
+
+<LocationMatch "^/univention/management/.*">
+	Header always setifempty "Content-Security-Policy" "default-src @%@umc/http/content-security-policy/default-src@%@; script-src @%@umc/http/content-security-policy/script-src@%@; object-src @%@umc/http/content-security-policy/object-src@%@; style-src @%@umc/http/content-security-policy/style-src@%@; img-src @%@umc/http/content-security-policy/img-src@%@; media-src @%@umc/http/content-security-policy/media-src@%@; frame-src @%@umc/http/content-security-policy/frame-src@%@; child-src @%@umc/http/content-security-policy/child-src@%@; font-src @%@umc/http/content-security-policy/font-src@%@; connect-src @%@umc/http/content-security-policy/connect-src@%@ https://@%@ucs/server/sso/fqdn@%@/; form-action @%@umc/http/content-security-policy/form-action@%@; frame-ancestors @%@umc/http/content-security-policy/frame-ancestors@%@;"
+</LocationMatch>
+
+<LocationMatch "^/univention/(set|get|logout|saml|auth|upload|command).*">
 	RequestHeader set X-UMC-HTTPS %{HTTPS}s
 	ErrorDocument 503 "{\"status\": 503, \"message\": \"The Univention Management Console Web Server could not be reached. Please restart it or try again later.\"}"
 	# fix for bug in cherrypy returnin 408/409 errors out of the blue:
@@ -63,18 +68,12 @@ RewriteRule .* /univention-management-console/js/umc/modules/i18n/empty.json [P,
 	SetEnv proxy-nokeepalive 1
 </LocationMatch>
 
-<LocationMatch "^/univention-management-console/(login|blank).html$">
-	Header always setifempty "X-Frame-Options" "SAMEORIGIN"
-	Header always setifempty "Content-Security-Policy" "default-src 'self' 'unsafe-inline';"
-</LocationMatch>
-
-<LocationMatch "^/univention-management-console/.*">
-	Header always setifempty "X-Permitted-Cross-Domain-Policies" "master-only"
-	Header always setifempty "X-XSS-Protection" "1; mode=block"
-	Header always setifempty "X-Content-Type-Options" "nosniff"
-	Header always setifempty "X-Frame-Options" "DENY"
-	Header always setifempty "Content-Security-Policy" "default-src @%@umc/http/content-security-policy/default-src@%@; script-src @%@umc/http/content-security-policy/script-src@%@; object-src @%@umc/http/content-security-policy/object-src@%@; style-src @%@umc/http/content-security-policy/style-src@%@; img-src @%@umc/http/content-security-policy/img-src@%@; media-src @%@umc/http/content-security-policy/media-src@%@; frame-src @%@umc/http/content-security-policy/frame-src@%@; child-src @%@umc/http/content-security-policy/child-src@%@; font-src @%@umc/http/content-security-policy/font-src@%@; connect-src @%@umc/http/content-security-policy/connect-src@%@ https://@%@ucs/server/sso/fqdn@%@/; form-action @%@umc/http/content-security-policy/form-action@%@; frame-ancestors @%@umc/http/content-security-policy/frame-ancestors@%@;"
-</LocationMatch>
-
-<Directory "/var/www/univention-management-console">
-</Directory>
+# backwards compatibility
+RedirectMatch ^/umcp/sso$ /univention/management/
+RedirectMatch ^/univention-management-console/sso$ /univention/management/
+RedirectMatch ^/umc(/$|$) /univention/management/
+RedirectMatch ^/univention-management-console(/$|$|/index.html$) /univention/management/
+Header edit* Set-Cookie "Path=/univention-management-console/" "Path=/umcp/" "expr=%{REQUEST_URI} =~ m#^/umcp/#"
+RewriteRule ^/umcp/(.*) /univention/$1 [PT]
+Header edit* Set-Cookie "Path=/univention/" "Path=/univention-management-console/" "expr=%{REQUEST_URI} =~ m#^/univention-management-console/#"
+RewriteRule ^/univention-management-console/(.*) /univention/$1 [PT]

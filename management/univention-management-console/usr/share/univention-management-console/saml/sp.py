@@ -23,9 +23,9 @@ else:
 	addresses = [fqdn]
 	addresses.extend([y['address'] for x, y in i.all_interfaces if y and y.get('address')])
 
-bases = ['%s://%s/univention-management-console/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
+bases = ['%s://%s/univention/saml' % (scheme, addr) for addr in addresses for scheme in ('https', 'http')]
 CONFIG = {
-	"entityid": "https://%s/univention-management-console/saml/metadata" % (fqdn,),
+	"entityid": "https://%s/univention/saml/metadata" % (fqdn,),
 	"name_form": NAME_FORMAT_URI,
 	"description": "Univention Management Console SAML2.0 Service Provider",
 	"service": {
@@ -46,7 +46,7 @@ CONFIG = {
 	"cert_file": "/etc/univention/ssl/%s/cert.pem" % (fqdn,),
 	"xmlsec_binary": "/usr/bin/xmlsec1",
 	"metadata": {
-		"local": glob.glob('/usr/share/univention-management-console/saml/idp/*.xml'),
+		"local": glob.glob('/usr/share/univention/saml/idp/*.xml'),
 	},
 	# TODO: add contact_person?
 }

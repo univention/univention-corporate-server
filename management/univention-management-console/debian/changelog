@@ -1,3 +1,9 @@
+univention-management-console (9.0.4-1) unstable; urgency=medium
+
+  * Bug #42228: adjust paths to /univention/
+
+ -- Florian Best <best@univention.de>  Mon, 05 Sep 2016 18:54:08 +0200
+
 univention-management-console (9.0.3-1) unstable; urgency=medium
 
   * Bug #42228: adjust some URI paths

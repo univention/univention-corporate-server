@@ -106,7 +106,7 @@ def _proxy_uri():
 		scheme = 'https'
 
 	cherrypy.request.scheme = scheme
-	cherrypy.request.base = '%s://%s/univention-management-console' % (scheme, base)
+	cherrypy.request.base = '%s://%s/univention' % (scheme, base)
 	cherrypy.request.uri = ('%s%s?%s' % (cherrypy.request.base, cherrypy.request.path_info, cherrypy.request.query_string)).rstrip('?')
 	foo = cherrypy.request.params
 	try:
@@ -561,7 +561,7 @@ class SamlError(UMC_HTTPError):
 
 	@error
 	def unsolicited_response(self, exc):
-		return self._('Received an unsolicited SAML response. Please try to single sign on again by accessing /univention-management-console/saml/. Error message: %s') % (exc,)
+		return self._('Received an unsolicited SAML response. Please try to single sign on again by accessing /univention/saml/. Error message: %s') % (exc,)
 
 	@error
 	def status_error(self, exc):
@@ -661,7 +661,7 @@ class Ressource(object):
 			cookie[name] = value
 			cookie[name]['expires'] = expires.strftime("%a, %d-%b-%Y %H:%M:%S GMT")
 			cookie[name]['version'] = 1
-			cookie[name]['path'] = '/univention-management-console/'
+			cookie[name]['path'] = '/univention/'
 
 	def get_cookie(self, name):
 		cookie = cherrypy.request.cookie.get
@@ -939,7 +939,7 @@ class CPAuth(CPgeneric):
 		user = self.get_user()
 		if not user or not user.saml or user.timed_out():
 			# redirect user to login page in case he's not authenticated or his session timed out
-			raise HTTPRedirect('/univention-management-console/saml/')
+			raise HTTPRedirect('/univention/saml/')
 
 		req = Request('AUTH')
 		req.body = {
@@ -953,11 +953,11 @@ class CPAuth(CPgeneric):
 		except UMC_HTTPError as exc:
 			if exc.status == UNAUTHORIZED:
 				# slapd down, time synchronization between IDP and SP is wrong, etc.
-				raise HTTPRedirect('/univention-management-console/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
+				raise HTTPRedirect('/univention/saml/')  # FIXME: this might cause a endless redirection loop e.g. if slapd is down
 			raise
 
 		cherrypy.response.status = 303
-		cherrypy.response.headers['Location'] = '/univention-management-console/'
+		cherrypy.response.headers['Location'] = '/univention/management/'
 
 	@cherrypy.expose
 	def default(self, **kwargs):
@@ -1078,15 +1078,15 @@ class Root(Ressource):
 		"""
 		http://localhost:<ucr:umc/http/port>/
 		"""
-		raise HTTPRedirect('/univention-management-console/', status=305)
+		raise HTTPRedirect('/univention/', status=305)
 
 	@cherrypy.expose
 	def logout(self, **kwargs):
 		user = self.get_user()
 		if user and user.saml is not None:
-			raise HTTPRedirect('/univention-management-console/saml/logout')
+			raise HTTPRedirect('/univention/saml/logout')
 		self.expire_session()
-		raise HTTPRedirect(ucr.get('umc/logout/location') or '/univention-management-console/')
+		raise HTTPRedirect(ucr.get('umc/logout/location') or '/univention/management/')
 
 
 def get_ip_address():
@@ -1137,7 +1137,7 @@ class SAML(Ressource):
 		if message is None:
 #			user = self.get_user()
 #			if user and user.saml is not None and not user.timed_out():
-#				raise HTTPRedirect('/univention-management-console/auth/sso')
+#				raise HTTPRedirect('/univention/auth/sso')
 			return self.do_single_sign_on()
 
 		acs = self._acs_callbacks.pop(relay_state, self.attribute_consuming_service)
@@ -1154,7 +1154,7 @@ class SAML(Ressource):
 		response = self.acs(message, binding)
 		saml = SAMLUser(response, message)
 		self.set_session(self.create_sessionid(), saml.username, saml)
-		raise HTTPRedirect('/univention-management-console/auth/sso')
+		raise HTTPRedirect('/univention/auth/sso')
 
 	def attribute_consuming_service_iframe(self, binding, message, relay_state):
 		cherrypy.request.headers['X-Requested-With'] = 'XMLHttpRequest'  # enforce JSON response in case of errors
@@ -1235,7 +1235,7 @@ class SAML(Ressource):
 		user = self.get_user()
 		if user:
 			user.saml = None
-		raise HTTPRedirect('/univention-management-console/logout')
+		raise HTTPRedirect('/univention/logout')
 
 	def _get_saml_message(self):
 		"""Get the SAML message and corresponding binding from the HTTP request"""
