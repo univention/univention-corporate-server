@@ -88,6 +88,14 @@
 			<title>OpenLDAP</title>
 			<itemizedlist>
 				<listitem><simpara>
+					The overlay module shadowbind has been added. This module checks
+					shadowExpire and shadowMax/shadowLastChange of the bind DN object
+					and denies the login if the account or the password is expired.
+					The overlay can be enabled/disabled with the &ucsUCRV;
+					<envar>ldap/shadowbind</envar>. An ignore LDAP filter (shadowbind
+					does not check account/password expiry if the bind DN object
+					matches this filter) can be configured with the &ucsUCRV;
+					<envar>ldap/shadowbind/ignorefilter</envar> (<u:bug>36215</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 
