@@ -37,19 +37,16 @@ eval "$(/usr/sbin/univention-config-registry shell ldap/base)"
 BIND_ARGS="$@"
 
 umc_frontend_new_hash () {
-	# create new timestamps for index.html and debug.html in order to
-	# avoid caching problems in browsers
-	timestamp=$(date +'%Y%d%m%H%M%S')
-	for ifile in index.html debug.html error.html js/umc/login.html; do
-		f="/usr/share/univention-management-console-frontend/$ifile"
+	# create new timestamps in order to avoid caching problems in browsers
+	timestamp=$(date +'%Y%m%d%H%M%S')
+	for ifile in index.html management/index.html management/error.html; do
+		f="/var/www/univention/$ifile"
 		[ -w "$f" ] && sed -i 's/\$\(.*\)\$/$'$timestamp'$/' "$f"
 	done
 
-	# update the symlinks to the js/css directories
-	for idir in css js; do
-		rm -f "/usr/share/univention-management-console-frontend/${idir}_\$"*\$ || true
-		ln -s "$idir" "/usr/share/univention-management-console-frontend/${idir}_\$${timestamp}\$" || true
-	done
+	# update the symlink to the js directory
+	rm -f "/var/www/univention/js_\$"*\$ || true
+	ln -s "js" "/var/www/univention/js_\$${timestamp}\$" || true
 
 	return 0
 }
