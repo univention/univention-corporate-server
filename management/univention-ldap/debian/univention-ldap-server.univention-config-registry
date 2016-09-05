@@ -84,6 +84,8 @@ Variables: ldap/idlcachesize
 Variables: ldap/ppolicy
 Variables: ldap/ppolicy/enabled
 Variables: ldap/ppolicy/default
+Variables: ldap/shadowbind
+Variables: ldap/shadowbind/ignorefilter
 
 Type: file
 File: etc/cron.d/univention-ldap

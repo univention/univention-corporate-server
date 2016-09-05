@@ -1,3 +1,9 @@
+univention-ldap (13.0.0-8) unstable; urgency=low
+
+  * Bug #36215: added shadowbind overlay, fixed ucr registration
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Sep 2016 13:37:34 +0200
+
 univention-ldap (13.0.0-7) unstable; urgency=low
 
   * Bug #36215: added shadowbind overlay
