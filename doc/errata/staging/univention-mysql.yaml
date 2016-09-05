@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-mysql
+fix: 3.0.0-3.18.201609051830
+desc: |
+ This update addresses the following issue(s):
+ * The package univention-mysql has been added to the list
+   of maintained packages.
+bug: [42026]
