@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="MODULEID" version="1.0">
+	<name>MODULENAME</name>
+	<description>MODULEDESC</description>
+	<keywords>MODULEKEYWORDS</keywords>
+	<categories>
+	  <category name="CATEGORYNAME"/>
+	</categories>
+
+	<command name="MODULEID/configuration" function="configuration"/>
+	<command name="MODULEID/send" function="send"/>
+  </module>
+</umc>
