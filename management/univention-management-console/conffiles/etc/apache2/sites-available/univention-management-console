@@ -10,6 +10,11 @@ ProxyPreserveHost on
 port = int(configRegistry.get('umc/http/port', 8090))
 interface = configRegistry.get('umc/http/interface', '127.0.0.1')
 
+print 'RewriteCond %{REQUEST_URI} ^/univention/.*$'
+print 'RewriteCond %{REQUEST_FILENAME} !-d'
+print 'RewriteCond %{REQUEST_FILENAME} !-f'
+print 'RewriteRule ^/univention/(.*)$ http://%s:%s/$1 [P]' % (interface, port)
+
 print 'ProxyPassMatch /univention-management-console/((set|get|logout|saml|auth|upload|command).*) http://%s:%s/$1 retry=0' % (interface, port)
 print 'ProxyPassReverse /umcp/ http://%s:%s/' % (interface, port)
 print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '300'))
@@ -23,7 +28,6 @@ RewriteRule ^/univention-management-console/style/(.*) /style/$1 [L]
 # legacy path /umcp/, should be removed in future or replaced by a permanent redirect
 SetEnvIf Request_URI "^/umcp/" umcp_legacy_path=true
 Header edit* Set-Cookie "Path=/univention-management-console/" "Path=/umcp/" env=umcp_legacy_path
-# nicer would be, but can't have conditions: ProxyPassReverseCookiePath "/univention-management-console/" "/umcp/"
 RewriteRule ^/umcp/(.*) /univention-management-console/$1 [PT]
 
 # rewrite non existing files in js/dijit/themes/umc to old /images path if they exists there; see Bug #29861

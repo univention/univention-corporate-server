@@ -1,2 +1,3 @@
-empty.json usr/share/univention-management-console-frontend/js/umc/modules/i18n/
-www/univention var/www/
+www/univention/management/* usr/share/univention-management-console-frontend/
+www/univention/login var/www/univention
+www/univention/js var/www/univention

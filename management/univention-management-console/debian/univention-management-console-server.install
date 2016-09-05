@@ -4,5 +4,5 @@ debian/tmp/usr/sbin/univention-management-console-module
 debian/tmp/usr/sbin/univention-management-console-server
 debian/tmp/usr/share/univention-management-console/*
 debian/tmp/usr/share/locale/*
-data/categories/icon/*.svg	usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/scalable
+data/categories/icon/*.svg var/www/univention/js/dijit/themes/umc/icons/scalable
 umc-service-providers.py usr/lib/univention-directory-listener/system/

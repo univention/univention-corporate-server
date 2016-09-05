@@ -65,7 +65,7 @@ def do_package(package, core):
 			for lang in dh_umc.LANGUAGES:
 				module['lang'] = lang
 				dh_ucs.doIt('install', '-d', 'debian/%(package)s/usr/share/locale/%(lang)s/LC_MESSAGES' % module)
-				dh_ucs.doIt('install', '-d', 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s' % module)
+				dh_ucs.doIt('install', '-d', 'debian/%(package)s/var/www/univention/js/umc/modules/i18n/%(lang)s' % module)
 
 		if module.xml_categories:
 			dh_ucs.doIt('install', '-d', 'debian/%(package)s/usr/share/univention-management-console/categories' % module)
@@ -93,7 +93,7 @@ def do_package(package, core):
 			# copy javascript files
 			for srcFile in module.js_files:
 				# get destination path
-				destFile = 'debian/%s/usr/share/univention-management-console-frontend/js/umc/modules/%s' % (package, srcFile[len(module.js_path):])
+				destFile = 'debian/%s/var/www/univention/js/umc/modules/%s' % (package, srcFile[len(module.js_path):])
 
 				# check whether we need to create the destination dir
 				destDir = os.path.dirname(destFile)
@@ -106,7 +106,7 @@ def do_package(package, core):
 			# copy html files
 			for srcFile in module.html_files:
 				# get destination path
-				destFile = 'debian/%s/usr/share/univention-management-console-frontend/js/umc/modules/%s' % (package, srcFile[len(module.js_path):])
+				destFile = 'debian/%s/var/www/univention/js/umc/modules/%s' % (package, srcFile[len(module.js_path):])
 				# copy the .html file
 				dh_ucs.doIt('install', '-m', '644', srcFile, destFile)
 
@@ -127,7 +127,7 @@ def do_package(package, core):
 			for lang in dh_umc.LANGUAGES:
 				json_file = os.path.join(module.js_path, '%s.json' % lang)
 				module['lang'] = lang
-				dh_ucs.doIt('install', '-m', '644', json_file, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s/%(Module)s.json' % module)
+				dh_ucs.doIt('install', '-m', '644', json_file, 'debian/%(package)s/var/www/univention/js/umc/modules/i18n/%(lang)s/%(Module)s.json' % module)
 
 		# copy translation files (xml)
 		for lang in dh_umc.LANGUAGES:
@@ -153,7 +153,7 @@ def do_package(package, core):
 			for dirname, dirs, files in os.walk(module.icons):
 				if '.svn' in dirs:
 					dirs.remove('.svn')
-				dest = 'debian/%s/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/%s' % (package, dirname[len(module.icons):])
+				dest = 'debian/%s/var/www/univention/js/dijit/themes/umc/icons/%s' % (package, dirname[len(module.icons):])
 				if not os.path.exists(dest):
 					dh_ucs.doIt('install', '-d', dest)
 				for icon in files:
