@@ -1,3 +1,9 @@
+univention-mail-postfix (10.0.0-16) unstable; urgency=low
+
+  * add UCVR mail/postfix/myorigin to configure myorigin option (Bug #32572)
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 05 Sep 2016 16:42:17 +0200
+
 univention-mail-postfix (10.0.0-15) unstable; urgency=low
 
   * listfilter.py exists gracefully when told to (Bug #40569)
