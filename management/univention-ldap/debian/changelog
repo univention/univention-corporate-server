@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-37) unstable; urgency=low
+
+  * Bug #41281: added ldap/index/quickmode for slapindex quick mode
+
+ -- Felix Botner <botner@univention.de>  Mon, 05 Sep 2016 17:50:12 +0200
+
 univention-ldap (12.1.6-36) unstable; urgency=low
 
   * Bug #39307: added ldap/client/timelimit and ldap/client/timeout

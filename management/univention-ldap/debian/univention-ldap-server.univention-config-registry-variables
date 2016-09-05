@@ -114,6 +114,12 @@ Description[en]=If this option is activated, LDAP indices are automatically amen
 Type=bool
 Categories=service-ldap
 
+[ldap/index/autorebuild]
+Description[de]=Ist diese Option aktiviert, wird das LDAP Reindex-Tool slapindex im "quick" Modus gestartet (weniger Integritätsprüfungen, schnellere Indizierung)
+Description[en]=If this option is activated, the LDAP reindex tool slapindex is started in "quick" mode (fewer integrity checks, improved indexing time).
+Type=bool
+Categories=service-ldap
+
 [ldap/online/master]
 Description[de]=In der Grundeinstellung werden LDAP-Schreibzugriffe auf DC Backup und DC Slave an den DC Master weitergeleitet. Wird diese Option deaktiviert, werden die Daten in den lokalen LDAP-Server geschrieben. Diese Variable ist nur für Spezialfälle relevant.
 Description[en]=In the default setting LDAP write changes made on backup and slave domain controllers are redirected to the master domain controller. If this option is deactivated, the data is written to the local LDAP server. This variable is only relevant for special setups.
