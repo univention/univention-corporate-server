@@ -709,7 +709,7 @@ define([
 			551: _( 'Internal UMC protocol error: The UMCP message header could not be parsed.' ),
 			554: _( 'Internal UMC protocol error: The UMCP message body could not be parsed.' ),
 
-			590: _( 'Internal module error: An error occured during command processing.' ),
+			590: _( 'Internal module error: An error occurred during command processing.' ),
 			591: _( 'Could not process the request.' ),
 			592: _( 'Internal module error: The initialization of the module caused a fatal error.' )
 		},

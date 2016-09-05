@@ -1,3 +1,9 @@
+univention-management-console-frontend (5.0.63-49) unstable; urgency=medium
+
+  * Bug #42163: A typo has been corrected.
+
+ -- Richard ulmer <ulmer@univention.de>  Mon, 05 Sep 2016 15:06:27 +0200
+
 univention-management-console-frontend (5.0.63-48) unstable; urgency=medium
 
   * Bug #28665: Fix typo in piwik.js 
