@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.1-1) unstable; urgency=medium
+
+  * Bug #42228: adjust paths to /univention/
+
+ -- Florian Best <best@univention.de>  Mon, 05 Sep 2016 18:50:44 +0200
+
 univention-management-console-module-udm (7.0.0-2) unstable; urgency=low
 
   * Bug #42159: Corrected a typo.

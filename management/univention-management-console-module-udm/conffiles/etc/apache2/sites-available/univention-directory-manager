@@ -1,9 +1,5 @@
 @%@UCRWARNING=# @%@
 
-RedirectMatch ^/udm/?$ /univention-management-console/
-RedirectMatch ^/directory-manager/?$ /univention-management-console/
-RedirectMatch ^/univention-directory-manager/?$ /univention-management-console/
-
 <Directory /var/www/univention-directory-reports>
         Options -Indexes
 </Directory>
