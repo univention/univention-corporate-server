@@ -114,7 +114,7 @@ Description[en]=If this option is activated, LDAP indices are automatically amen
 Type=bool
 Categories=service-ldap
 
-[ldap/index/autorebuild]
+[ldap/index/quickmode]
 Description[de]=Ist diese Option aktiviert, wird das LDAP Reindex-Tool slapindex im "quick" Modus gestartet (weniger Integritätsprüfungen, schnellere Indizierung)
 Description[en]=If this option is activated, the LDAP reindex tool slapindex is started in "quick" mode (fewer integrity checks, improved indexing time).
 Type=bool
