@@ -55,7 +55,7 @@ define([
 					window.location = this.sso_uri;
 				})
 			});
-			xhr.get('/univention-management-console/entries.json', {handleAs: 'json'}).always(lang.hitch(this, function(result) {
+			xhr.get('/univention/management/entries.json', {handleAs: 'json'}).always(lang.hitch(this, function(result) {
 				if (!result.ucr['ucs/server/sso/fqdn']) {
 					throw new Error('IDP is not configured!');
 				}

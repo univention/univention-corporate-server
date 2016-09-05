@@ -1544,7 +1544,7 @@ define([
 
 		_authenticated: function(username) {
 			// save the username internally and as cookie
-			tools.setUsernameCookie(username, { expires: 100, path: '/univention-management-console/' });
+			tools.setUsernameCookie(username, { expires: 100, path: '/univention/' });
 			tools.status('username', username);
 
 			if (!tools.status('app.loaded').isFulfilled()) {
@@ -2476,7 +2476,7 @@ define([
 		logout: function() {
 			this._askLogout().then(lang.hitch(this, function() {
 				tools.checkSession(false);
-				window.location = '/univention-management-console/logout';
+				window.location = '/univention/logout';
 			}));
 		},
 

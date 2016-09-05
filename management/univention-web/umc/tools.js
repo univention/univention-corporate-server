@@ -141,7 +141,7 @@ define([
 			this.status('sessionLastRequest', new Date(0));
 			this.setSessionCookie(null, {
 				expires: -1,
-				path: '/univention-management-console/'
+				path: '/univention/'
 			});
 		},
 
@@ -433,7 +433,7 @@ define([
 			}
 
 			return this._request(lang.mixin({
-				url: '/univention-management-console/' + command,
+				url: '/univention/' + command,
 				data: _body,
 				errorHandler: this.__getErrorHandler(handleErrors),
 				flavor: flavor,
@@ -450,7 +450,7 @@ define([
 			//		A deferred object.
 
 			// set default values for parameters
-			var url = args.url ? args.url : '/univention-management-console/' + args.type + (args.command ? '/' + args.command : '');
+			var url = args.url ? args.url : '/univention/' + args.type + (args.command ? '/' + args.command : '');
 			var body = args.body;
 			if (args.data !== undefined) {
 				body = args.data;
@@ -1313,7 +1313,7 @@ define([
 
 			// set the cookie with all preferences
 			cookieStr = json.stringify(this._userPreferences);
-			cookie('UMCPreferences', cookieStr, { expires: 100, path: '/univention-management-console/' } );
+			cookie('UMCPreferences', cookieStr, { expires: 100, path: '/univention/' } );
 			return; // undefined
 		},
 
@@ -1549,7 +1549,7 @@ define([
 			});
 
 			var port = window.location.port ? ':' + window.location.port : '';
-			jumpToUrl(window.location.protocol + '//' + host + port + '/univention-management-console/');
+			jumpToUrl(window.location.protocol + '//' + host + port + '/univention/management/');
 		},
 
 		defer: function(func, waitingTime) {

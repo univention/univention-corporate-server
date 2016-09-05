@@ -1,3 +1,9 @@
+univention-web (1.0.1-1) unstable; urgency=medium
+
+  * Bug #42228: adjust paths to /univention/
+
+ -- Florian Best <best@univention.de>  Mon, 05 Sep 2016 18:49:34 +0200
+
 univention-web (1.0.0-1) unstable; urgency=medium
 
   * Bug #38824: create univention-web package

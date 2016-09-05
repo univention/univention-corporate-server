@@ -97,7 +97,7 @@ define([
 		},
 
 		sessioninfo: function() {
-			return xhr.post('/univention-management-console/get/session-info', { handleAs: 'json' }).then(function(response) {
+			return xhr.post('/univention/get/session-info', { handleAs: 'json' }).then(function(response) {
 				tools.status('authType', response.result.auth_type);
 				return response;
 			});
