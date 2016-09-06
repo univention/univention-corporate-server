@@ -291,10 +291,10 @@ class nagiosTimeperiodUsed(base):
 	message=_('Timeperiod Object still in use!')
 
 class nagiosARecordRequired(base):
-	message=_('IP address entry required to assign nagios services!')
+	message=_('IP address entry required to assign Nagios services!')
 
 class nagiosDNSForwardZoneEntryRequired(base):
-	message=_('DNS Forward Zone entry required to assign nagios services!')
+	message=_('DNS Forward Zone entry required to assign Nagios services!')
 
 class dnsAliasRecordExists(base):
 	message=_('The DNS forward entry could not be created. Please remove existing alias records or comparable DNS objects with the same name as this host from the forward zone.')

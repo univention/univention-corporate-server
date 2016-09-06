@@ -67,7 +67,7 @@ nagios_properties = {
 			identifies=0
 		),
 	'nagiosServices': univention.admin.property(
-			short_description = _('Assigned nagios services'),
+			short_description = _('Assigned Nagios services'),
 			long_description = (''),
 			syntax=univention.admin.syntax.nagiosServiceDn,
 			multivalue=1,

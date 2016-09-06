@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-34) unstable; urgency=medium
+
+  * Bug #42156: Corrected some typos.
+
+ -- Richard ulmer <ulmer@univention.de>  Tue, 06 Sep 2016 14:10:31 +0200
+
 univention-directory-manager-modules (11.0.3-33) unstable; urgency=low
 
   * Bug #42156: Corrected some typos.
