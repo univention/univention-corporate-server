@@ -51,6 +51,7 @@ trigger () {
 						;;
 				esac
 			done
+			univention-config-registry update
 			;;
 		esac
 		shift
