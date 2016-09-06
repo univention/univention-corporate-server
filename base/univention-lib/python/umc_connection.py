@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from httplib import HTTPConnection as HTTPSConnection, HTTPException
+from httplib import HTTPSConnection, HTTPException
 from json import loads, dumps
 from socket import error as SocketError
 
