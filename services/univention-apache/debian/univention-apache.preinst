@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Apache
-#  postrm file for the univention-apache debian package
+#  preinst script for the debian package
 #
-# Copyright 2001-2016 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,12 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/apache2/conf.d/ucs.conf -- $@
-
-if [ "$1" = "purge" ]; then
-	rm -rf /etc/univention/apache
-fi
-
 #DEBHELPER#
+
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/apache2/conf.d/ucs.conf -- $@
 
 exit 0
