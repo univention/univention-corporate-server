@@ -47,6 +47,13 @@
 				<listitem><simpara>
 					The maximum transfer unit (<acronym>MTU</acronym>) for network interfaces can now be configured through the new &ucsUCRV; <envar>interfaces/<replaceable>interface</replaceable>/mtu</envar> (<u:bug>35814</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The functions <function>remove_ucr_template</function> and <function>remove_ucr_info_file</function> from the shell library <filename>ucr.sh</filename> have been deprecated.
+					The library itself was moved into the package <package>univention-config</package> (<u:bug>27872</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<command>ucr update</command> is now automatically called when &ucsUCR; template files are added/modified/removed (<u:bug>23737</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 				<!--
