@@ -3,7 +3,7 @@ release: "3.3"
 version: [0]
 scope: ucs_3.3-0-errata3.3-0
 src: univention-kernel-image
-fix: 7.100.0-7.104.201607211815
+fix: 7.100.0-8.105.201609051515
 desc: |
  This update addresses the following issues:
  * CVE-2015-7515: The aiptek_probe function in
@@ -201,8 +201,23 @@ desc: |
    drivers/s390/char/sclp_ctl.c in the Linux kernel before 4.6 allows local
    users to obtain sensitive information from kernel memory by changing a
    certain length value, aka a "double fetch" vulnerability.
+ * CVE-2016-6136: Race condition in the audit_log_single_execve_arg function
+   in kernel/auditsc.c in the Linux kernel through 4.7 allows local users to
+   bypass intended character-set restrictions or disrupt system-call auditing
+   by changing a certain string, aka a "double fetch" vulnerability.
+ * CVE-2016-6480: Race condition in the ioctl_send_fib function in
+   drivers/scsi/aacraid/commctrl.c in the Linux kernel through 4.7 allows
+   local users to cause a denial of service (out-of-bounds access or system
+   crash) by changing a certain size value, aka a "double fetch"
+   vulnerability.
+ * CVE-2016-6828: Linux tcp_xmit_retransmit_queue use after free.
+ * CVE-2016-5696: net/ipv4/tcp_input.c in the Linux kernel before 4.7 does not
+   properly determine the rate of challenge ACK segments, which makes it
+   easier for man-in-the-middle attackers to hijack TCP sessions via a blind
+   in-window attack.
+ * fix d_walk()/non-delayed __d_free() race.
 note: This is the second part of the update.
-bug: [41693]
+bug: [41693,42099]
 cve:
  - CVE-2015-7515
  - CVE-2016-0821
@@ -246,3 +261,7 @@ cve:
  - CVE-2016-5828
  - CVE-2016-5829
  - CVE-2016-6130
+ - CVE-2016-6136
+ - CVE-2016-6480
+ - CVE-2016-6828
+ - CVE-2016-5696
