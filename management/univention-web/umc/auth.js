@@ -206,7 +206,7 @@ define([
 					}
 				}
 			};
-			_iframe = iframe.create(iframeid, entities.encode(iframeid + '_onload()'), 'saml/iframe/');
+			_iframe = iframe.create(iframeid, entities.encode(iframeid + '_onload()'), '/univention/saml/iframe/');
 			if (args && args.timeout) {
 				setTimeout(function() {
 					deferred.cancel();
