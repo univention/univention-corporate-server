@@ -39,9 +39,6 @@ a2enmod proxy
 a2enmod proxy_connect
 a2enmod proxy_http
 a2enmod headers
-
-# activate site
-a2ensite univention-management-console
 invoke-rc.d apache2 restart
 
 # UCR settings
@@ -66,6 +63,8 @@ univention-config-registry set "umc/http/session/timeout?600" \
 	umc/http/content-security-policy/connect-src?"'self'" \
 	umc/http/content-security-policy/form-action?"'self'" \
 	umc/http/content-security-policy/frame-ancestors?"'none'"
+
+dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-management-console -- $@
 
 if [ "$1" = "configure" ]
 then
