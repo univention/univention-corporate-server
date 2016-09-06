@@ -1,6 +1,7 @@
 univention-mail-postfix (11.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
+  * Bug #27872: Remove broken update code
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:58:22 +0200
 
