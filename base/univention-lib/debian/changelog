@@ -1,3 +1,9 @@
+univention-lib (6.0.2-1) unstable; urgency=low
+
+  * Bug #27872: Move ucs.sh to univention-config
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Sep 2016 15:23:23 +0200
+
 univention-lib (6.0.1-1) unstable; urgency=medium
 
   * Bug #42228: adjust URI's of umc_frontend_new_hash

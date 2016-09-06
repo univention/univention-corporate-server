@@ -3,5 +3,6 @@ scripts/univention-ldapsearch usr/bin/
 scripts/ldapsearch-wrapper usr/bin/
 scripts/ldapsearch-decode64 usr/bin/
 scripts/univention-check-templates usr/sbin/
+scripts/ucr.sh usr/share/univention-lib/
 python/univention-config-registry usr/sbin/
 etc/bash_completion.d/univention-config-registry etc/bash_completion.d/
