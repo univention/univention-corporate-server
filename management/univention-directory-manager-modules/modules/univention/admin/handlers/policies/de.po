@@ -1027,7 +1027,7 @@ msgid "Repository synchronisation"
 msgstr "Repository-Synchronisation"
 
 #: modules/univention/admin/handlers/policies/repositorysync.py:144
-msgid "Repository synchronisations settings"
+msgid "Repository synchronisation settings"
 msgstr "Repository Synchronisationseinstellungen"
 
 #: modules/univention/admin/handlers/policies/dhcp_scope.py:97

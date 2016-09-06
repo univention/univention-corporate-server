@@ -149,7 +149,7 @@ msgid "April"
 msgstr "April"
 
 #: modules/univention/admin/nagios.py:70
-msgid "Assigned nagios services"
+msgid "Assigned Nagios services"
 msgstr "Zugeordnete Nagios-Dienste"
 
 #: modules/univention/admin/syntax.py:2375
@@ -297,7 +297,7 @@ msgid "DNS Entry Reverse"
 msgstr "Reverse Lookup DNS-Eintrag"
 
 #: modules/univention/admin/uexceptions.py:297
-msgid "DNS Forward Zone entry required to assign nagios services!"
+msgid "DNS Forward Zone entry required to assign Nagios services!"
 msgstr ""
 "Zum Zuweisen von Nagios-Diensten wird ein Eintrag in der DNS Forward Zone "
 "benötigt!"
@@ -535,7 +535,7 @@ msgid "IP address"
 msgstr "IP-Adresse"
 
 #: modules/univention/admin/uexceptions.py:294
-msgid "IP address entry required to assign nagios services!"
+msgid "IP address entry required to assign Nagios services!"
 msgstr "Zum Zuweisen von Nagios-Diensten wird eine IP-Adresse benötigt!"
 
 #: modules/univention/admin/uexceptions.py:134

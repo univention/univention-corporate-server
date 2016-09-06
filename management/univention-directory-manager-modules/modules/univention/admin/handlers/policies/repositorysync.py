@@ -141,7 +141,7 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('General'),_('Repository synchronisations settings'), layout = [
+	Tab(_('General'),_('Repository synchronisation settings'), layout = [
 		Group( _( 'General repository synchronisation settings' ), layout = [
 			'name',
 			[ 'month', 'weekday' ],
