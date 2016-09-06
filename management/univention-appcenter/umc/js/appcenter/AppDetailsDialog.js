@@ -207,11 +207,11 @@ define([
 		},
 
 		showHardRequirements: function(hardRequirements, appDetailsPage) {
-			this.showRequirements(_("It's not possible to continue"), hardRequirements, appDetailsPage);
+			this.showRequirements(_("It is not possible to continue"), hardRequirements, appDetailsPage);
 		},
 
 		showSoftRequirements: function(softRequirements, appDetailsPage) {
-			this.showRequirements(_("It's not recommended to continue"), softRequirements, appDetailsPage);
+			this.showRequirements(_("It is not recommended to continue"), softRequirements, appDetailsPage);
 		},
 
 		showUp: function() {
