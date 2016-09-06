@@ -1,10 +1,18 @@
+univention-directory-manager-modules (12.0.3-1) unstable; urgency=medium
+
+  * Bug #41812: make sure binddn is set when logged in via SAML
+  * Bug #37519: add unbind() method to uldap.access()
+  * Bug #41745: use binddn from parent access class
+
+ -- Florian Best <best@univention.de>  Tue, 06 Sep 2016 18:14:11 +0200
+
 univention-directory-manager-modules (12.0.2-2) unstable; urgency=medium
 
   * Bug #42156: Corrected some typos.
 
  -- Richard ulmer <ulmer@univention.de>  Tue, 06 Sep 2016 14:12:47 +0200
 
-univention-directory-manager-modules (12.0.2-1) UNRELEASED; urgency=low
+univention-directory-manager-modules (12.0.2-1) unstable; urgency=low
 
   * Bug #34441: Fix wrong help text for DHCP server statements
 

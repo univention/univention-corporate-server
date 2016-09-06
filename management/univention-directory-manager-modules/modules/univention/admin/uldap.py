@@ -257,7 +257,16 @@ class access:
 			raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 		except ldap.UNWILLING_TO_PERFORM:
 			raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+		self.__require_licence()
 
+	def bind_saml(self, bindpw):
+		try:
+			return self.lo.bind_saml(bindpw)
+		except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
+			raise univention.admin.uexceptions.authFail(_("Authentication failed"))
+		self.__require_licence()
+
+	def __require_licence(self):
 		if self.require_license:
 			if GPLversion:
 				self.require_license = 0
@@ -301,6 +310,9 @@ class access:
 			elif res == 11:
 				self.allow_modify = 0
 				raise univention.admin.uexceptions.licenseDVSClients
+
+	def unbind(self):
+		self.lo.unbind()
 
 	def requireLicense(self, require=1):
 		self.require_license = require

@@ -343,11 +343,10 @@ class Base(signals.Provider, Translation):
 
 	def bind_user_connection(self, lo):
 		if self.auth_type == 'SAML':
-			saml = ldap.sasl.sasl({
-				ldap.sasl.CB_AUTHNAME: self._user_dn,
-				ldap.sasl.CB_PASS: self._password
-			}, 'SAML')
-			lo.lo.lo.sasl_interactive_bind_s('', saml)
+			lo.lo.bind_saml(self._password)
+			if not lo.lo.compare_dn(lo.binddn, self._user_dn):
+				CORE.warn('SAML binddn does not match: %r != %r' % (lo.binddn, self._user_dn))
+				self._user_dn = lo.binddn
 		else:
 			lo.lo.bind(self._user_dn, self._password)
 

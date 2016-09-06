@@ -1,3 +1,10 @@
+univention-python (10.0.1-1) unstable; urgency=medium
+
+  * Bug #41812: make sure binddn is set when logged in via SAML
+  * Bug #37519: add unbind() method to uldap.access()
+
+ -- Florian Best <best@univention.de>  Tue, 06 Sep 2016 18:14:01 +0200
+
 univention-python (10.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

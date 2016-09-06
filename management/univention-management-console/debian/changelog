@@ -1,3 +1,9 @@
+univention-management-console (9.0.7-1) unstable; urgency=medium
+
+  * Bug #41812: make sure binddn is set when logged in via SAML
+
+ -- Florian Best <best@univention.de>  Tue, 06 Sep 2016 18:11:26 +0200
+
 univention-management-console (9.0.6-1) unstable; urgency=medium
 
   * Bug #42293: use JavaScript as translation language for .js files

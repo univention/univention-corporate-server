@@ -30,8 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import re
 import ldap
 import ldap.schema
+import ldap.sasl
 import univention.debug
 from univention.config_registry import ConfigRegistry
 from ldapurl import LDAPUrl
@@ -161,6 +163,21 @@ class access:
 		self.bindpw = bindpw
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
 		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
+
+	def bind_saml(self, bindpw):
+		"""Do LDAP bind using SAML Message"""
+		self.binddn = None
+		self.bindpw = bindpw
+		saml = ldap.sasl.sasl({
+			ldap.sasl.CB_AUTHNAME: None,
+			ldap.sasl.CB_PASS: bindpw,
+		}, 'SAML')
+		self.lo.sasl_interactive_bind_s('', saml)
+		self.binddn = re.sub('^dn:', '', self.lo.whoami_s())
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'SAML bind binddn=%s' % self.binddn)
+
+	def unbind(self):
+		self.lo.unbind_s()
 
 	def __open(self, ca_certfile):
 		_d = univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
