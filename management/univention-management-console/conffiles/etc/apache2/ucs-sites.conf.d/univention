@@ -39,7 +39,7 @@ port = int(configRegistry.get('umc/http/port', 8090))
 interface = configRegistry.get('umc/http/interface', '127.0.0.1')
 
 print 'ProxyPassMatch /univention/js(/|_.*) !'
-print 'ProxyPass /univention/ http://%s:%s/$1 retry=0' % (interface, port)
+print 'ProxyPass /univention/ http://%s:%s/ retry=0' % (interface, port)
 print 'ProxyPassReverse /univention/ http://%s:%s/' % (interface, port)
 print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '300'))
 @!@
@@ -70,11 +70,11 @@ print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '30
 </LocationMatch>
 
 # backwards compatibility
+Header edit* Set-Cookie "Path=/univention-management-console/" "Path=/umcp/" "expr=%{REQUEST_URI} =~ m#^/umcp/#"
+Header edit* Set-Cookie "Path=/univention/" "Path=/univention-management-console/" "expr=%{REQUEST_URI} =~ m#^/univention-management-console/#"
 RedirectMatch ^/umcp/sso$ /univention/management/
 RedirectMatch ^/univention-management-console/sso$ /univention/management/
 RedirectMatch ^/umc(/$|$) /univention/management/
-RedirectMatch ^/univention-management-console(/$|$|/index.html$) /univention/management/
-Header edit* Set-Cookie "Path=/univention-management-console/" "Path=/umcp/" "expr=%{REQUEST_URI} =~ m#^/umcp/#"
+RewriteRule ^/univention-management-console(/|/index.html)?$ /univention/management/ [R]
 RewriteRule ^/umcp/(.*) /univention/$1 [PT]
-Header edit* Set-Cookie "Path=/univention/" "Path=/univention-management-console/" "expr=%{REQUEST_URI} =~ m#^/univention-management-console/#"
 RewriteRule ^/univention-management-console/(.*) /univention/$1 [PT]

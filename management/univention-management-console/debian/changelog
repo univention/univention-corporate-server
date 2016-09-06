@@ -1,3 +1,9 @@
+univention-management-console (9.0.5-2) unstable; urgency=medium
+
+  * Bug #42228: fix typo in last commit
+
+ -- Florian Best <best@univention.de>  Tue, 06 Sep 2016 13:53:08 +0200
+
 univention-management-console (9.0.5-1) unstable; urgency=medium
 
   * Bug #42228: adjust paths to /univention/

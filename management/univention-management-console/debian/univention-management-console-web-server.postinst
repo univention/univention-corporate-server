@@ -65,6 +65,9 @@ univention-config-registry set "umc/http/session/timeout?600" \
 	umc/http/content-security-policy/frame-ancestors?"'none'"
 
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-management-console -- $@
+if dpkg --compare-versions "$2" lt-nl 9.0.0-1; then
+	ucr update
+fi
 
 if [ "$1" = "configure" ]
 then
