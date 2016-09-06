@@ -32,29 +32,6 @@
 
 . /usr/share/univention-lib/all.sh
 
-# update to 3.0-0 cleanup Bug #23560
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
-	remove_ucr_template /etc/pam_ldap_imap.conf
-	remove_ucr_template /etc/imapd.conf
-	remove_ucr_template /etc/cyrus.conf
-	remove_ucr_template /etc/init.d/cyrus21
-	remove_ucr_template /etc/init.d/cyrus2.2
-	remove_ucr_info_file univention-mail-cyrus-pop.info
-	remove_ucr_info_file univention-mail-cyrus-imap.info
-
-	# rename cyrus-db-types.active to "resolve" database backends mismatch!
-	mv /usr/lib/cyrus/cyrus-db-types.active /usr/lib/cyrus/cyrus-db-types.active.old
-
-	# copy new cyrus init script
-	if [ -e "/etc/init.d/cyrus2.2.debian.dpkg-dist" -a ! -e "/etc/init.d/cyrus2.2" ]; then
-		cp /etc/init.d/cyrus2.2.debian.dpkg-dist /etc/init.d/cyrus2.2
-	fi
-
-    # fix sieve dir permissions
-	find  /var/spool/cyrus/sieve/ -maxdepth 5 -type d -exec chown cyrus:mail {} \;
-
-fi
-
 dpkg-statoverride --add cyrus sasl 640 /etc/univention/templates/files/etc/imapd/imapd.conf || true
 
 #DEBHELPER#
@@ -68,14 +45,6 @@ cp /etc/univention/ssl/$hostname.$domainname/cert.pem /var/lib/cyrus/ || true
 cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/ || true
 chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
-
-# (Bug 24390)
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt-nl 4.0.24; then
-	# set sieve port and firewall during update but NOT on initial installation
-	ucr set mail/cyrus/sieve/port?2000 \
-		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all="ACCEPT" \
-		security/packetfilter/package/univention-mail-cyrus/tcp/2000/all/en="Sieve"
-fi
 
 univention-config-registry set mail/cyrus=yes \
 	mail/cyrus/autostart?yes \
@@ -167,15 +136,5 @@ ucr set security/packetfilter/package/univention-mail-cyrus/tcp/110/all="ACCEPT"
 		security/packetfilter/package/univention-mail-cyrus/tcp/4190/all="ACCEPT" \
 		security/packetfilter/package/univention-mail-cyrus/tcp/4190/all/en="Sieve"
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
-
-# update, Bug #38500
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 7.0.1-6; then
-	echo "****************************************************************************"
-	echo " The default for the setting 'allowplaintext' was changed to 'no'."
-	echo " To return to the old behaviour (allow plaintext authentication over"
-	echo " unencrypted connections) run:"
-	echo " # ucr set mail/cyrus/imap/allowplaintext=yes"
-	echo "****************************************************************************"
-fi
 
 exit 0
