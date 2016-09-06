@@ -29,19 +29,28 @@ RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
 RewriteRule .* /univention/js/umc/modules/i18n/empty.json [P,L,T=application/json]
 
 # UMC-Webserver proxy
+RewriteCond %{REQUEST_URI} ^/univention/.*$
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -f [OR]
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} -d
+RewriteRule ^/univention/(.*)$ %{DOCUMENT_ROOT}%{REQUEST_FILENAME} [END]
+
 @!@
 port = int(configRegistry.get('umc/http/port', 8090))
 interface = configRegistry.get('umc/http/interface', '127.0.0.1')
 
-print 'ProxyPassMatch /univention/((set|get|logout|saml|auth|upload|command).*) http://%s:%s/$1 retry=0' % (interface, port)
+print 'ProxyPassMatch /univention/js(/|_.*) !'
+print 'ProxyPass /univention/ http://%s:%s/$1 retry=0' % (interface, port)
 print 'ProxyPassReverse /univention/ http://%s:%s/' % (interface, port)
 print 'ProxyTimeout %s' % int(configRegistry.get('umc/http/session/timeout', '300'))
-
-print 'RewriteCond %{REQUEST_URI} ^/univention/.*$'
-print 'RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f'
-print 'RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d'
-print 'RewriteRule ^/univention/(.*)$ http://%s:%s/$1 [P]' % (interface, port)
 @!@
+
+<Location "/univention/">
+	RequestHeader set X-UMC-HTTPS %{HTTPS}s
+	ErrorDocument 503 "{\"status\": 503, \"message\": \"The Univention Management Console Web Server could not be reached. Please restart it or try again later.\"}"
+	# fix for bug in cherrypy returnin 408/409 errors out of the blue:
+	#   http://cherrypy.org/ticket/853
+	SetEnv proxy-nokeepalive 1
+</Location>
 
 # Security
 <LocationMatch "^/univention/login/(login|blank).html$">
@@ -58,14 +67,6 @@ print 'RewriteRule ^/univention/(.*)$ http://%s:%s/$1 [P]' % (interface, port)
 
 <LocationMatch "^/univention/management/.*">
 	Header always setifempty "Content-Security-Policy" "default-src @%@umc/http/content-security-policy/default-src@%@; script-src @%@umc/http/content-security-policy/script-src@%@; object-src @%@umc/http/content-security-policy/object-src@%@; style-src @%@umc/http/content-security-policy/style-src@%@; img-src @%@umc/http/content-security-policy/img-src@%@; media-src @%@umc/http/content-security-policy/media-src@%@; frame-src @%@umc/http/content-security-policy/frame-src@%@; child-src @%@umc/http/content-security-policy/child-src@%@; font-src @%@umc/http/content-security-policy/font-src@%@; connect-src @%@umc/http/content-security-policy/connect-src@%@ https://@%@ucs/server/sso/fqdn@%@/; form-action @%@umc/http/content-security-policy/form-action@%@; frame-ancestors @%@umc/http/content-security-policy/frame-ancestors@%@;"
-</LocationMatch>
-
-<LocationMatch "^/univention/(set|get|logout|saml|auth|upload|command).*">
-	RequestHeader set X-UMC-HTTPS %{HTTPS}s
-	ErrorDocument 503 "{\"status\": 503, \"message\": \"The Univention Management Console Web Server could not be reached. Please restart it or try again later.\"}"
-	# fix for bug in cherrypy returnin 408/409 errors out of the blue:
-	#   http://cherrypy.org/ticket/853
-	SetEnv proxy-nokeepalive 1
 </LocationMatch>
 
 # backwards compatibility

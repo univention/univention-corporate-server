@@ -54,7 +54,7 @@ import Queue
 import notifier
 import cherrypy
 from ipaddr import IPAddress
-from cherrypy import HTTPError, HTTPRedirect
+from cherrypy import HTTPError, HTTPRedirect, NotFound
 from cherrypy.lib.httputil import valid_status
 from daemon.runner import DaemonRunner, DaemonRunnerStopFailureError, DaemonRunnerStartFailureError
 
@@ -92,7 +92,7 @@ def log_exceptions(func):
 	def _decorated(*args, **kwargs):
 		try:
 			return func(*args, **kwargs)
-		except (HTTPError, HTTPRedirect, KeyboardInterrupt, SystemExit):
+		except (HTTPError, HTTPRedirect, NotFound, KeyboardInterrupt, SystemExit):
 			raise # ignore system and common cherrypy exceptions
 		except Exception:
 			CORE.error('Traceback in %s(%r, %r):\n%s' % (func.__name__, args, kwargs, traceback.format_exc()))
