@@ -30,19 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/all.sh
-
 if [ -e "/etc/init.d/atftpd" ]; then
 	/etc/init.d/atftpd stop
-fi;
+fi
 
 update-inetd --group BOOT --remove "tftp"
 update-inetd --group BOOT --add "tftp               dgram   udp     wait \
         nobody /usr/sbin/tcpd /usr/sbin/in.tftpd --tftpd-timeout 300 --retry-timeout 5 --maxthread 100 --verbose=5  /var/lib/univention-client-boot/"
 
 /etc/init.d/atftpd start
-
-remove_ucr_template /etc/default/atftpd.conf
 
 #DEBHELPER#
 
@@ -52,4 +48,3 @@ ucr set security/packetfilter/package/univention-tftp/udp/69/all=ACCEPT \
 [ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
 
 exit 0
-
