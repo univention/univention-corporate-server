@@ -1,3 +1,9 @@
+ucslint (6.0.0-2) unstable; urgency=low
+
+  * Bug #27872: Check for broken UCS file removal
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Sep 2016 15:02:05 +0200
+
 ucslint (6.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

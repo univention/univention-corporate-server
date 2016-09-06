@@ -48,6 +48,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0006-4': [uub.RESULT_WARN, 'script contains "sh -e" in hashbang'],
 			'0006-5': [uub.RESULT_WARN, 'script contains "set -e"'],
 			'0006-6': [uub.RESULT_ERROR, 'script contains no "exit 0" at end of file'],
+			'0006-7': [uub.RESULT_WARN, 'script uses broken remove_ucr_template'],
+			'0006-8': [uub.RESULT_WARN, 'script uses broken remove_ucr_info_file'],
 		}
 
 	def postinit(self, path):
@@ -65,15 +67,16 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		#
 		for f in os.listdir(os.path.join(path, 'debian')):
 			fn = os.path.join(path, 'debian', f)
-			if f.endswith('.preinst') or f.endswith('.postinst') or f.endswith('.prerm') or f.endswith('.postrm') or f in ['preinst', 'postinst', 'prerm', 'postrm']:
+			if f.rsplit('.', 1)[-1] in ['preinst', 'postinst', 'prerm', 'postrm']:
 				fnlist_scripts[fn] = {
 					'debhelper': False,
 					'udm_calls': 0,
-					'unquoted_ucr_shell': 0,
 					'udm_in_line': 0,
 					'set-e-hashbang': False,
 					'set-e-body': 0,
 					'endswith-exit-0': False,
+					'uses-remove_ucr_template': False,
+					'uses-remove_ucr_info_file': False,
 				}
 				self.debug('found %s' % fn)
 
@@ -118,6 +121,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 				checks['endswith-exit-0'] = line.endswith('exit 0')
 
+				checks['uses-remove_ucr_template'] |= 'remove_ucr_template ' in line
+				checks['uses-remove_ucr_info_file'] |= 'remove_ucr_info_file ' in line
+
 		#
 		# create result
 		#
@@ -138,3 +144,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 			if not checks['endswith-exit-0']:
 				self.addmsg('0006-6', 'script contains no "exit 0" at end of file', fn)
+
+			if checks['uses-remove_ucr_template']:
+				self.addmsg('0006-7', 'script uses broken remove_ucr_template; should use dpkg-maintscript-helper rm_conffile', fn)
+
+			if checks['uses-remove_ucr_info_file']:
+				self.addmsg('0006-8', 'script uses broken remove_ucr_info_file; should use dpkg-maintscript-helper rm_conffile', fn)
