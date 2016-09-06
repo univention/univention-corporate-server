@@ -12,14 +12,14 @@ Variables: apache2/startsite
 Variables: apache2/documentroot
 
 Type: multifile
-Multifile: etc/apache2/sites-available/default
+Multifile: etc/apache2/sites-available/default.conf
 
 Type: subfile
-Multifile: etc/apache2/sites-available/default
+Multifile: etc/apache2/sites-available/default.conf
 Subfile: etc/apache2/sites-available/default.d/00start
 
 Type: subfile
-Multifile: etc/apache2/sites-available/default
+Multifile: etc/apache2/sites-available/default.conf
 Subfile: etc/apache2/sites-available/default.d/99end
 
 Type: file
@@ -33,10 +33,10 @@ Variables: apache2/ssl/ciphersuite
 Variables: apache2/force_https
 
 Type: multifile
-Multifile: etc/apache2/sites-available/default-ssl
+Multifile: etc/apache2/sites-available/default-ssl.conf
 
 Type: subfile
-Multifile: etc/apache2/sites-available/default-ssl
+Multifile: etc/apache2/sites-available/default-ssl.conf
 Subfile: etc/apache2/sites-available/ssl.d/00start
 Variables: apache2/ssl/certificate
 Variables: hostname
@@ -46,14 +46,14 @@ Variables: apache2/ssl/ca
 Variables: apache2/ssl/certificatechain
 
 Type: subfile
-Multifile: etc/apache2/sites-available/default-ssl
+Multifile: etc/apache2/sites-available/default-ssl.conf
 Subfile: etc/apache2/sites-available/ssl.d/10hsts
 Variables: apache2/hsts
 Variables: apache2/hsts/max-age
 Variables: apache2/hsts/includeSubDomains
 
 Type: subfile
-Multifile: etc/apache2/sites-available/default-ssl
+Multifile: etc/apache2/sites-available/default-ssl.conf
 Subfile: etc/apache2/sites-available/ssl.d/99end
 
 Type: module
