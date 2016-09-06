@@ -36,9 +36,6 @@ trigger () {
 	while [ $# -ge 1 ]
 	do
 		case "$1" in
-		univention-config-wrapper)
-			univention-config-registry update
-			;;
 		/etc/univention/templates/info)
 			local info pkg state
 			for info in $(find /etc/univention/templates/info -name '*.info' -print)
