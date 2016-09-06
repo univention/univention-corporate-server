@@ -442,15 +442,17 @@
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
+				-->
 
 		<section id="changelog:service:apache">
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Apache configs from <package>univention-apache</package> have been adapted
+					to apache version 2.4 (<u:bug>42196</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
-				-->
 
 		<section id="changelog:service:pam">
 			<title>PAM / Local group cache</title>
