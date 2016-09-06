@@ -61,12 +61,6 @@ case "$1" in
 configure)
 	rm -f /var/cache/univention-config/cache
 
-	# Bug #22524: move obsolete univention-baseconfig.info
-	if [ -n "$2" ] && [ -f /etc/univention/templates/info/univention-baseconfig.info ]
-	then
-		mv /etc/univention/templates/info/univention-baseconfig.info /etc/univention/templates/removed/
-	fi
-
 	if [ -z "$2" ]
 	then # fresh installation
 		univention-config-registry set 'ucr/encoding/strict?true'
