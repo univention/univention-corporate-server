@@ -31,44 +31,35 @@
 		<section id="misc:translation:preparation">
 			<title>Install needed tools</title>
 			<para>
-				The following steps are required to set up the tools for translation package creation.
+				The package <package>univention-ucs-translation-template</package> contains all tools required to setup and update a translation package.
+				It requires some additional Debian tools to build the package.
+				Run the following command on your UCS to install all needed packages.
+				<programlisting language="sh">
+univention-install univention-ucs-translation-template dpkg-dev subversion
+				</programlisting>
 			</para>
-			<procedure id="misc:translation:proc">
-				<step>
-					<simpara>Install <package>univention-ucs-translation-template</package> package</simpara>
-					<simpara>
-						The package <package>univention-ucs-translation-template</package> contains all tools required to setup and update a translation package.
-						It requires some additional Debian tools to build the package.
-						Run the following command on your UCS to install all needed packages.
-					</simpara>
-					<programlisting language="sh">
-univention-install univention-ucs-translation-template \
-	dpkg-dev subversion
-					</programlisting>
-				</step>
-				<step>
-					<simpara>Obtain a current checkout of the UCS Subversion repository</simpara>
-					<simpara>
-							The Subversion repository is later processed to get initial files for a new translation(often referred to as PO file or Portable Objects).
-					</simpara>
-					<programlisting language="sh">
+		</section>
+
+		<section id="misc:translation:checkoutsvn">
+			<title>Obtain a current checkout of the UCS Subversion repository</title>
+			<para>
+				The Subversion repository is later processed to get initial files for a new translation(often referred to as PO file or Portable Objects).
+				<programlisting language="sh">
 mkdir ~/translation
 cd ~/translation
-svn co \
-	&websvn;
-					</programlisting>
-				</step>
-			</procedure>
+svn co http://forge.univention.org/svn/dev/branches/ucs-4.1/ucs-4.1-3
+				</programlisting>
+			</para>
 		</section>
 
 		<section id="misc:translation:createpackage">
 			<title>Create a new translation package</title>
 			<para>
-				To create a new translation package for e.g. French in the current working directory, the following command must be executed:
+				To create a new translation package for, e.g., French in the current working directory, the following command must be executed:
 				<programlisting language="sh">
 cd ~/translation
 univention-ucs-translation-build-package \
-	-s ~/translation/ucs-4.1-3 -c fr -l fr_FR.UTF-8:UTF-8 -n French
+    -s ~/translation/ucs-4.1-3 -c fr -l fr_FR.UTF-8:UTF-8 -n French
 				</programlisting>
 				This creates a new directory <filename class="directory">~/translation/univention-ucs-translation-fr/</filename>, which contains a Debian source package of the same name.
 				It includes all source and target files for the translation.
@@ -78,7 +69,7 @@ univention-ucs-translation-build-package \
 		<section id="misc:translation:translate">
 			<title>Edit translation files</title>
 			<para>
-				The translation source files are located below the directory <filename class="directory">fr/</filename>.
+				The translation source files are located below the directory <filename class="directory">~/translation/univention-ucs-translation-fr/fr</filename>.
 				Each file should be edited to create the translation.
 				There are two file formats in common use:
 			</para>
@@ -130,30 +121,26 @@ msgstr ""
 							</para>
 						</listitem>
 					</varlistentry>
-
-					<varlistentry>
-						<term><filename class="extension">.html</filename> files</term>
-						<listitem>
-							<para>
-								Some &ucsUMC; dialogues are based on <acronym>HTML</acronym> files.
-								In this case a copy of the English <acronym>HTML</acronym> file is provided with a new name for the target language.
-								The full file has to be translated.
-							</para>
-						</listitem>
-					</varlistentry>
 				</variablelist>
 		</section>
 
 		<section id="misc:translation:updatepackage">
 			<title>Update the translation package</title>
 			<para>
+				First update your Subversion checkout:
+			</para>
+			<programlisting language="sh">
+cd ~/translation/ucs-4.1-3
+svn update
+			</programlisting>
+			<para>
 				If changes affecting translations are made in the Subversion repository, existing translation packages need to be updated to reflect those changes.
 				Given a path to an updated Subversion checkout, <command>univention-ucs-translation-merge</command> can update a previously created translation source package. 
-				Following example will update a translation package <package>univention-ucs-translation-fr/</package> using an updated Subversion checkout in <filename class="directory">ucs-4.1-3/</filename>:
+				The following example will update the translation package <package>univention-ucs-translation-fr/</package>:
 			</para>
 			<programlisting language="sh">
 univention-ucs-translation-merge ~/translation/ucs-4.1-3 \
-		~/translation/univention-ucs-translation-fr
+    ~/translation/univention-ucs-translation-fr
 			</programlisting>
 		</section>
 
