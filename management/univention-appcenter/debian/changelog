@@ -1,3 +1,9 @@
+univention-appcenter (6.0.0-5) unstable; urgency=medium
+
+  * Bug #42157: Corrected some typos.
+
+ -- Richard ulmer <ulmer@univention.de>  Tue, 06 Sep 2016 14:35:24 +0200
+
 univention-appcenter (6.0.0-4) unstable; urgency=low
 
   * Bug #42157: Corrected some typos.

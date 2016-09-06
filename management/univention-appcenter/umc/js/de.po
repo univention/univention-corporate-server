@@ -333,11 +333,11 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #: umc/js/appcenter/AppDetailsDialog.js:210
-msgid "It's not possible to continue"
+msgid "It is not possible to continue"
 msgstr "Fortfahren nicht möglich"
 
 #: umc/js/appcenter/AppDetailsDialog.js:214
-msgid "It's not recommended to continue"
+msgid "It is not recommended to continue"
 msgstr "Fortfahren nicht empfohlen"
 
 #: umc/js/appcenter/AppDetailsPage.js:827
