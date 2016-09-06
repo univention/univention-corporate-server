@@ -37,36 +37,6 @@
 # the proxy user needs to be in the group winbindd_priv to be able to access winbind
 adduser proxy winbindd_priv
 
-# Remove old templates for Squid 2, can be removed in UCS 3.1
-remove_ucr_template /etc/squid/squid.conf
-
-# convert old ldapauth to basicauth for this update Bug #24281
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.12; then
-	if [ "yes" = "$(ucr get squid/ldapauth)" ]; then
-		ucr set squid/basicauth=yes
-	fi
-	if [ -n "$(ucr get squid/ldapauth/children)" ]; then
-		ucr set squid/basicauth/children="$(ucr get squid/ldapauth/children)"
-	fi
-	ucr unset squid/ldapauth/children squid/ldapauth
-fi
-
-# change group default behavior #Bug 30553 for 3.1-1
-# if this was unchanged set it to the old default values, otherwise copy old values to new ucr variables
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.5-1; then
-	# only if any kind of authentication is activated. 
-	if is_ucr_true squid/basicauth || is_ucr_true squid/ntlmauth || is_ucr_true squid/krb5auth; then 
-		if [ -z "$(ucr get squid/auth/groups)" ] || is_ucr_true squid/auth/groups; then
-			if [ -n "$(ucr get squid/ldapauth/groups)" ]; then
-				ucr set squid/auth/allowed_groups="$(ucr get squid/ldapauth/groups)"
-			else
-				ucr set squid/auth/allowed_groups=www-access
-			fi
-		fi
-	fi
-	ucr unset squid/ldapauth/groups squid/auth/groups
-fi 
-
 if [ -e /etc/squid/local.conf ] ; then
     mv /etc/squid/local.conf /etc/squid3/local.conf
 fi
@@ -82,11 +52,6 @@ ucr set squid/transparentproxy?false \
 	squid/cache?yes \
 	squid/debug/level?ALL,1 \
 	squid/forwardedfor?off
-
-# Commit regarding template error: Bug 30969
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.9; then
-	ucr commit /etc/squid3/squid.conf
-fi
 
 /etc/init.d/squid3 stop
 /etc/init.d/squid3 start
