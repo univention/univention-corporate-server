@@ -1,3 +1,9 @@
+univention-management-console (9.0.6-1) unstable; urgency=medium
+
+  * Bug #42293: use JavaScript as translation language for .js files
+
+ -- Florian Best <best@univention.de>  Tue, 06 Sep 2016 16:54:59 +0200
+
 univention-management-console (9.0.5-2) unstable; urgency=medium
 
   * Bug #42228: fix typo in last commit

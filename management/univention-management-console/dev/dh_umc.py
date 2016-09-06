@@ -281,7 +281,7 @@ def create_po_file(po_file, package, files, language='python'):
 		os.unlink(message_po)
 	if isinstance(files, basestring):
 		files = [files]
-	if dh_ucs.doIt('xgettext', '--force-po', '--from-code=UTF-8', '--sort-output', '--package-name=%s' % package, '--msgid-bugs-address=packages@univention.de', '--copyright-holder=Univention GmbH', '--language', language, '-o', message_po, *files):
+	if dh_ucs.doIt('xgettext', '--force-po', '--add-comments=i18n', '--from-code=UTF-8', '--sort-output', '--package-name=%s' % package, '--msgid-bugs-address=packages@univention.de', '--copyright-holder=Univention GmbH', '--language', language, '-o', message_po, *files):
 		raise Error('xgettext failed for the files: %r' % (files,))
 	po = polib.pofile(message_po)
 	po.header = PO_HEADER
