@@ -228,6 +228,30 @@ class position:
 
 class access:
 
+	@property
+	def binddn(self):
+		return self.lo.binddn
+
+	@property
+	def bindpw(self):
+		return self.lo.bindpw
+
+	@property
+	def host(self):
+		return self.lo.host
+
+	@property
+	def port(self):
+		return self.lo.port
+
+	@property
+	def base(self):
+		return self.lo.base
+
+	@property
+	def start_tls(self):
+		return self.lo.start_tls
+
 	def __init__(self, host='localhost', port=None, base='', binddn='', bindpw='', start_tls=2, lo=None, follow_referral=False):
 		if lo:
 			self.lo = lo
@@ -240,12 +264,6 @@ class access:
 				raise univention.admin.uexceptions.authFail(_("Authentication failed"))
 			except ldap.UNWILLING_TO_PERFORM:
 				raise univention.admin.uexceptions.authFail(_("Authentication failed"))
-		self.host = self.lo.host
-		self.port = self.lo.port
-		self.base = self.lo.base
-		self.binddn = self.lo.binddn
-		self.bindpw = self.lo.bindpw
-		self.start_tls = start_tls
 		self.require_license = 0
 		self.allow_modify = 1
 		self.licensetypes = ['UCS']
