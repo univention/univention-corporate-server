@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from httplib import HTTPSConnection, HTTPException
+from httplib import HTTPConnection as HTTPSConnection, HTTPException
 from json import loads, dumps
 from socket import error as SocketError
 
@@ -49,6 +49,7 @@ class UMCConnection(object):
 			'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',
 			'X-Requested-With': 'XMLHttpRequest',
 		}
+		self._base_uri = '/univention/'
 		self._error_handler=error_handler
 		if username is not None:
 			self.auth(username, password)
@@ -85,27 +86,20 @@ class UMCConnection(object):
 		cookie. Has to be done only once (but keep in mind that the
 		session probably expires after 10 minutes of inactivity)'''
 		data = self.build_data({'username' : username, 'password' : password, 'auth_type': auth_type})
-		con = self.get_connection()
 		try:
-			con.request('POST', '/umcp/auth', data, headers=self._headers)
-		except Exception as e:
-			# probably unreachable
+			response = None
+			response = self.__request('POST', 'auth', data, headers=self._headers)
+			cookie = response.getheader('set-cookie')
+			if cookie is None:
+				raise ValueError('No cookie')
+			self._headers['Cookie'] = cookie  # FIXME: transform Set-Cookie to Cookie
+		except Exception as exc:
+			raise
+			err = (exc if response is None else response.read())
 			if self._error_handler:
-				self._error_handler(str(e))
-			error_message = '%s: Authentication failed while contacting: %s' % (self._host, e)
+				self._error_handler(str(exc))
+			error_message = '%s: Authentication failed: %s' % (self._host, err)
 			raise HTTPException(error_message)
-		else:
-			try:
-				response = con.getresponse()
-				cookie = response.getheader('set-cookie')
-				if cookie is None:
-					raise ValueError('No cookie')
-				self._headers['Cookie'] = cookie  # FIXME: transform Set-Cookie to Cookie
-			except Exception as e:
-				if self._error_handler:
-					self._error_handler(str(e))
-				error_message = '%s: Authentication failed: %s' % (self._host, response.read())
-				raise HTTPException(error_message)
 
 	def build_data(self, data, flavor=None):
 		'''Returns a dictionary as expected by the UMC Server'''
@@ -126,12 +120,10 @@ class UMCConnection(object):
 		if data is None:
 			data = {}
 		data = self.build_data(data, flavor)
-		con = self.get_connection()
-		umcp_command = '/umcp/%s' % command
+		path = command
 		if url:
-			umcp_command = '%s/%s' % (umcp_command, url)
-		con.request('POST', umcp_command, data, headers=self._headers)
-		response = con.getresponse()
+			path = '%s/%s' % (command, url)
+		response = self.__request('POST', path, data, headers=self._headers)
 		if response.status != 200:
 			error_message = '%s on %s (%s): %s' % (response.status, self._host, url, response.read())
 			if response.status == 403:
@@ -146,3 +138,19 @@ class UMCConnection(object):
 		if isinstance(content, dict):
 			return content.get('result', content)
 		return content
+
+	def __request(self, method, path, data, headers):
+		uri = '%s%s' % (self._base_uri, path)
+		con = self.get_connection()
+		con.request(method, uri, data, headers=headers)
+		response = con.getresponse()
+		if response.status == 404:
+			if self._base_uri == '/univention/':
+				# UCS 4.0
+				self._base_uri = '/univention-management-console/'
+				return self.__request(method, path, data, headers)
+			elif self._base_uri == '/univention-management-console/':
+				# UCS 3.X
+				self._base_uri = '/umcp/'
+				return self.__request(method, path, data, headers)
+		return response
