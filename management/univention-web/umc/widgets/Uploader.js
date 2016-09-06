@@ -74,7 +74,7 @@ define([
 		clearButtonLabel: 'Clear data',
 
 		// displayErrorMessage: Boolean
-		//		Show message if error occured when uploading file.
+		//		Show message if error occurred when uploading file.
 		displayErrorMessage: true,
 
 		// data: Object

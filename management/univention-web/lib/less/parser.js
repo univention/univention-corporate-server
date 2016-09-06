@@ -439,7 +439,7 @@ less.Parser = function Parser(env) {
             // string, so we've got a parsing error.
             //
             // We try to extract a \n delimited string,
-            // showing the line where the parse error occured.
+            // showing the line where the parse error occurred.
             // We split it up into two parts (the part which parsed,
             // and the part which didn't), so we can color them differently.
             if (i < input.length - 1) {

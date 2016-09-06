@@ -1,3 +1,9 @@
+univention-web (1.0.1-2) unstable; urgency=medium
+
+  * Bug #42257: Corrected some typos.
+
+ -- Richard ulmer <ulmer@univention.de>  Tue, 06 Sep 2016 14:56:01 +0200
+
 univention-web (1.0.1-1) unstable; urgency=medium
 
   * Bug #42228: adjust paths to /univention/

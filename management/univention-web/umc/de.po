@@ -417,7 +417,7 @@ msgstr ""
 "werden."
 
 #: umc/tools.js:712
-msgid "Internal module error: An error occured during command processing."
+msgid "Internal module error: An error occurred during command processing."
 msgstr ""
 "Interner Modul-Fehler: Ein Fehler trat während des Ausführens des Befehls "
 "auf."

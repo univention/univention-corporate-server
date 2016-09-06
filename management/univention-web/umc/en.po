@@ -362,7 +362,7 @@ msgid ""
 msgstr ""
 
 #: umc/tools.js:712
-msgid "Internal module error: An error occured during command processing."
+msgid "Internal module error: An error occurred during command processing."
 msgstr ""
 
 #: umc/tools.js:714
