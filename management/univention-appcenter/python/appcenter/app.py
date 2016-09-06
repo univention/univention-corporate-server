@@ -44,9 +44,8 @@ import platform
 from inspect import getargspec
 from json import dumps, loads
 
-from univention.lib.package_manager import PackageManager
-
 from univention.appcenter.log import get_base_logger
+from univention.appcenter.packages import get_package_manager, packages_are_installed, reload_package_manager
 from univention.appcenter.meta import UniventionMetaClass, UniventionMetaInfo
 from univention.appcenter.utils import app_ports, mkdir, get_current_ram_available, get_locale, _
 from univention.appcenter.ucr import ucr_get, ucr_includes, ucr_is_true, ucr_load
@@ -493,18 +492,23 @@ class App(object):
 			Center will setup the database for the App. Useful for
 			Docker Apps running against the Host's database.
 		database_name: Name of the database to be created. Defaults to
-			"id" (- is replaced by _). Needs to be unique
+			"id".
 		database_user: Name of the database user to be created.
-			Defaults to "id" (- is replaced by _). May not be
-			"root" or "postgres".
+			Defaults to "id". May not be "root" or "postgres".
 		docker_env_database_host: Environment variable name for the DB
 			host.
+		docker_env_database_port: Environment variable name for the DB
+			port.
 		docker_env_database_name: Environment variable name for the DB
 			name.
 		docker_env_database_user: Environment variable name for the DB
 			user.
 		docker_env_database_password: Environment variable name for the
 			DB password (of "docker_env_database_user").
+		docker_env_database_password_file: Environment variable name
+			for a file that holds the password for the DB. If set,
+			this file is created in the Docker Container;
+			"docker_env_database_password" will not be used.
 		conflicted_apps: List of App IDs that may not be installed
 			together with this App. Works in both ways, one only
 			needs to specify it on one App.
@@ -709,6 +713,7 @@ class App(object):
 	docker_env_database_name = AppAttribute(default='DB_NAME')
 	docker_env_database_user = AppAttribute(default='DB_USER')
 	docker_env_database_password = AppAttribute(default='DB_PASSWORD')
+	docker_env_database_password_file = AppAttribute()
 
 	conflicted_apps = AppListAttribute()
 	required_apps = AppListAttribute()
@@ -909,16 +914,7 @@ class App(object):
 			if not self.without_repository:
 				if not ucr_includes(self.ucr_component_key):
 					return False
-			package_manager = AppManager.get_package_manager()
-			for package_name in self.default_packages:
-				try:
-					package = package_manager.get_package(package_name, raise_key_error=True)
-				except KeyError:
-					return False
-				else:
-					if not package.is_installed:
-						return False
-			return True
+			return packages_are_installed(self.default_packages)
 
 	def is_ucs_component(self):
 		if self._is_ucs_component is None:
@@ -1263,16 +1259,8 @@ class App(object):
 		problem = ucr_is_true('appcenter/prudence/docker/%s' % self.id) and self.docker and not self.docker_migration_works
 		return not problem
 
-	@soft_requirement('install', 'upgrade')
-	def shall_not_have_mysql_filtered(self):
-		'''The application will open MySQL ports in the firewall.'''
-		if self.database == 'mysql' and ucr_get('security/packetfilter/package/mysql/tcp/3306/all') != 'ACCEPT':
-			if AppManager.get_package_manager().is_installed('mysql-server'):
-				return False
-		return True
-
 	def check(self, function):
-		package_manager = AppManager.get_package_manager()
+		package_manager = get_package_manager()
 		hard_problems = {}
 		soft_problems = {}
 		if function == 'upgrade':
@@ -1307,7 +1295,6 @@ class App(object):
 class AppManager(object):
 	_locale = None
 	_cache = []
-	_package_manager = None
 	_cache_file = os.path.join(CACHE_DIR, '.apps.%(locale)s.json')
 	_AppClass = App
 
@@ -1405,7 +1392,7 @@ class AppManager(object):
 	def clear_cache(cls):
 		ucr_load()
 		cls._cache[:] = []
-		cls.reload_package_manager()
+		reload_package_manager()
 		cls._invalidate_cache_file()
 		_get_rating_items._cache = None
 		_get_license_descriptions._cache = None
@@ -1499,21 +1486,15 @@ class AppManager(object):
 
 	@classmethod
 	def reload_package_manager(cls):
-		if cls._package_manager is None:
-			return
-		return cls._package_manager.reopen_cache()
+		reload_package_manager()
 
 	@classmethod
 	def get_package_manager(cls):
-		if cls._package_manager is None:
-			cls._package_manager = PackageManager(lock=False)
-			cls._package_manager.set_finished()  # currently not working. accepting new tasks
-			cls._package_manager.logger.parent = get_base_logger()
-		return cls._package_manager
+		return get_package_manager()
 
 	@classmethod
 	def set_package_manager(cls, package_manager):
-		cls._package_manager = package_manager
+		get_package_manager._package_manager = package_manager
 
 	@classmethod
 	def get_server(cls):

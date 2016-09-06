@@ -38,8 +38,9 @@ import MySQLdb as mysql
 from ipaddr import IPv4Network, AddressValueError
 
 from univention.appcenter.utils import generate_password, call_process, call_process_as
+from univention.appcenter.packages import packages_are_installed, install_packages, update_packages
 from univention.appcenter.log import get_base_logger, LogCatcher
-from univention.appcenter.ucr import ucr_get, ucr_save
+from univention.appcenter.ucr import ucr_get
 
 database_logger = get_base_logger().getChild('database')
 
@@ -63,11 +64,8 @@ class DatabaseConnector(object):
 	def _get_default_db_name(self):
 		return self.app.id
 
-	def _get_db_port(self):
-		return None
-
 	def get_db_port(self):
-		return '%s' % self._get_db_port()
+		return None
 
 	def get_db_host(self):
 		bip = ucr_get('docker/daemon/default/opts/bip', '172.17.42.1/16')
@@ -77,7 +75,7 @@ class DatabaseConnector(object):
 			raise DatabaseInfoError('Could not find DB host for %r' % bip)
 		else:
 			ip_address = docker0_net.ip
-			return '%s' % (ip_address)
+			return str(ip_address)
 
 	def get_db_name(self):
 		return self.app.database_name or self._get_default_db_name()
@@ -86,7 +84,7 @@ class DatabaseConnector(object):
 		return self.app.database_user or self._get_default_db_name()
 
 	def get_db_password(self):
-		db_password_file = self._get_db_password_file()
+		db_password_file = self.get_db_password_file()
 		if not db_password_file:
 			return None
 		try:
@@ -95,8 +93,11 @@ class DatabaseConnector(object):
 		except EnvironmentError:
 			return None
 
-	def _get_db_password_file(self):
+	def get_db_password_file(self):
 		pass
+
+	def get_autostart_variable(self):
+		return None
 
 	def _get_software_packages(self):
 		return []
@@ -104,14 +105,11 @@ class DatabaseConnector(object):
 	def install(self):
 		packages = self._get_software_packages()
 		if packages:
-			database_logger.info('Installing/upgrading %s' % ', '.join(packages))
-			from univention.appcenter.actions import get_action
-			install = get_action('install')()
-			if not install._apt_get('install', packages, update=False):
-				raise DatabaseCreationFailed('Could not install software packages')
-
-	#def get_socket_dir(self):
-	#	return None
+			if not packages_are_installed(packages):
+				database_logger.info('Installing/upgrading %s' % ', '.join(packages))
+				update_packages()
+				if not install_packages(packages):
+					raise DatabaseCreationFailed('Could not install software packages')
 
 	@classmethod
 	def get_connector(cls, app):
@@ -140,7 +138,7 @@ class DatabaseConnector(object):
 				raise DatabaseCreationFailed('Could not start %s' % service_name)
 
 	def _write_password(self, password):
-		db_password_file = self._get_db_password_file()
+		db_password_file = self.get_db_password_file()
 		try:
 			with open(db_password_file, 'wb') as f:
 				os.chmod(f.name, 0600)
@@ -152,7 +150,7 @@ class DatabaseConnector(object):
 
 	def _read_password(self):
 		try:
-			with open(self._get_db_password_file(), 'rb') as f:
+			with open(self.get_db_password_file(), 'rb') as f:
 				return f.read().rstrip('\n')
 		except (EnvironmentError, TypeError):
 			return None
@@ -189,14 +187,14 @@ class PostgreSQL(DatabaseConnector):
 	def _get_software_packages(self):
 		return ['univention-postgresql']
 
-	def _get_db_port(self):
+	def get_db_port(self):
 		return 5432
 
-	#def get_socket_dir(self):
-	#	return '/var/run/postgresql/'
-
-	def _get_db_password_file(self):
+	def get_db_password_file(self):
 		return '/etc/postgres-%s.secret' % self.app.id
+
+	def get_autostart_variable(self):
+		return 'postgres8/autostart'
 
 	def execute(self, query):
 		logger = LogCatcher()
@@ -230,14 +228,17 @@ class MySQL(DatabaseConnector):
 	def _get_software_packages(self):
 		return ['univention-mysql']
 
-	def _get_db_port(self):
-		return 3306
+	def get_db_port(self):
+		try:
+			return int(ucr_get('mysql/config/mysqld/port'))
+		except (TypeError, ValueError):
+			return 3306
 
-	#def get_socket_dir(self):
-	#	return '/var/run/mysqld/'
-
-	def _get_db_password_file(self):
+	def get_db_password_file(self):
 		return '/etc/mysql-%s.secret' % self.app.id
+
+	def get_autostart_variable(self):
+		return 'mysql/autostart'
 
 	def get_root_connection(self):
 		if self._connection is None:
@@ -259,11 +260,6 @@ class MySQL(DatabaseConnector):
 			raise DatabaseError(str(exc))
 		else:
 			return cursor
-
-	def setup(self):
-		super(MySQL, self).setup()
-		if ucr_save({'security/packetfilter/package/mysql/tcp/3306/all': 'ACCEPT', 'security/packetfilter/package/mysql/tcp/3306/all/en': 'MySQL for Docker Apps'}):
-			call_process(['service', 'univention-firewall', 'restart'])
 
 	def db_user_exists(self):
 		cursor = self.execute('SELECT EXISTS (SELECT DISTINCT user FROM mysql.user WHERE user = %s)' % self.escape(self.get_db_user()))

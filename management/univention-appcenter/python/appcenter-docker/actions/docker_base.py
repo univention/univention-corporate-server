@@ -138,12 +138,12 @@ class DockerActionMixin(object):
 				docker.execute('rm', password_file)
 			docker.execute('rm', error_file)
 
-	def _set_timezone(self, app):
-		self.debug('Setting timezone')
+	def _copy_files_into_container(self, app, *filenames):
 		docker = self._get_docker(app)
-		shutil.copy('/etc/timezone', docker.path('/etc/timezone'))
-		self.debug('Setting timezone')
-		shutil.copy('/etc/localtime', docker.path('/etc/localtime'))
+		for filename in filenames:
+			if filename:
+				self.debug('Copying %s into container' % filename)
+				shutil.copy2(filename, docker.path(filename))
 
 	def _start_docker_image(self, app, hostdn, password, args):
 		docker = self._get_docker(app)
@@ -174,15 +174,25 @@ class DockerActionMixin(object):
 					set_vars[key] = ucr_get(key)
 		set_vars['updater/identify'] = 'Docker App'
 		database_connector = DatabaseConnector.get_connector(app)
+		database_password_file = None
 		if database_connector:
 			try:
 				database_password = database_connector.get_db_password()
+				database_password_file = database_connector.get_db_password_file()
 				if database_password:
 					set_vars[app.docker_env_database_host] = database_connector.get_db_host()
-					set_vars[app.docker_env_database_port] = database_connector.get_db_port()
+					db_port = database_connector.get_db_port()
+					if db_port:
+						set_vars[app.docker_env_database_port] = db_port
 					set_vars[app.docker_env_database_name] = database_connector.get_db_name()
 					set_vars[app.docker_env_database_user] = database_connector.get_db_user()
-					set_vars[app.docker_env_database_password] = database_password
+					if app.docker_env_database_password_file:
+						set_vars[app.docker_env_database_password_file] = database_password_file
+					else:
+						set_vars[app.docker_env_database_password] = database_password
+				autostart_variable = database_connector.get_autostart_variable()
+				if autostart_variable:
+					set_vars[autostart_variable] = 'no'
 			except DatabaseError as exc:
 				raise Abort(str(exc))
 
@@ -194,5 +204,5 @@ class DockerActionMixin(object):
 		if password:
 			with open(docker.path('/etc/machine.secret'), 'w+b') as f:
 				f.write(password)
+		self._copy_files_into_container(app, '/etc/timezone', '/etc/localtime', database_password_file)
 		configure.call(app=app, autostart=autostart, set_vars=set_vars)
-		self._set_timezone(app)

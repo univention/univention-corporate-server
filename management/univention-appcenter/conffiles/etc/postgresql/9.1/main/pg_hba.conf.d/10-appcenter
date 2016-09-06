@@ -1,9 +1,4 @@
 @!@
-from univention.appcenter import AppManager
-
-for app in AppManager.get_all_locally_installed_apps():
-	if app.database == 'postgresql' and app.docker:
-		bip = configRegistry.get('docker/daemon/default/opts/bip', '172.17.42.1/16')
-		print 'host    all         all         %s          md5' % bip
-		break
+bip = configRegistry.get('docker/daemon/default/opts/bip', '172.17.42.1/16')
+print 'host    all         all         %s          md5' % bip
 @!@

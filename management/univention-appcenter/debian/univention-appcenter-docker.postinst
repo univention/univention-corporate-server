@@ -39,4 +39,8 @@ update-python-modules --post-install
 
 ucr set appcenter/docker?enabled
 
+if dpkg --compare-versions "$2" lt-nl 5.0.22-7; then
+	test -x /etc/init.d/postgresl && service postgresql restart
+fi
+
 exit 0
