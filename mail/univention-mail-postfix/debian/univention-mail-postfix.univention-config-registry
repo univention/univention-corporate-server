@@ -7,6 +7,7 @@ Subfile: etc/postfix/main.cf.d/10_general
 Variables: mail/postfix/smtp/hostlookup
 Variables: mail/postfix/maps/transport
 Variables: mail/postfix/mydestination
+Variables: mail/postfix/myorigin
 Variables: mail/postfix/relay/domains
 Variables: mail/postfix/transport/ldap/enabled
 Variables: mail/postfix/inet/interfaces

@@ -25,9 +25,13 @@ daemon_directory = /usr/lib/postfix
 # some basic mail system settings
 myhostname = @%@hostname@%@.@%@domainname@%@
 # mydomain is unset - The default is to use $myhostname minus the first component.
-myorigin = @%@hostname@%@.@%@domainname@%@
 @!@
-print 'smtp_helo_name = %s' % configRegistry.get('mail/smtp/helo/name', '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname')))
+fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+if configRegistry.get('mail/postfix/myorigin'):
+	print 'myorigin = %s' % configRegistry['mail/postfix/myorigin']
+else:
+	print 'myorigin = %s' % fqdn
+print 'smtp_helo_name = %s' % configRegistry.get('mail/smtp/helo/name', fqdn)
 print
 if configRegistry.is_false('mail/postfix/dnslookups', False):
 	print 'disable_dns_lookups = yes'

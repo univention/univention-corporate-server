@@ -382,3 +382,9 @@ Description[de]=Ist diese Option aktiviert, verwendet Postfix den SASL-Dienst vo
 Description[en]=If this option is activated, Postfix uses Dovecots SASL service.
 Type=bool
 Categories=service-mail
+
+[mail/postfix/myorigin]
+Description[de]=Die Domäne, von der lokal verschickte Mail zu kommen scheint, und an die lokal zugestellte Mail geschickt wird (siehe <http://www.postfix.org/postconf.5.html#myorigin>). Der Standard ist der vollqualifizierte Domänenname (FQDN).
+Description[en]=The domain name that locally-posted mail appears to come from, and that locally posted mail is delivered to (see <http://www.postfix.org/postconf.5.html#myorigin>). The default is the fully qualified domain name (FQDN).
+Type=str
+Categories=service-mail

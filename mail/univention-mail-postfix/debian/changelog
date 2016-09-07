@@ -1,3 +1,9 @@
+univention-mail-postfix (11.0.0-2) unstable; urgency=low
+
+  * add UCVR mail/postfix/myorigin to configure myorigin option (Bug #42300)
+
+ -- Daniel Troeder <troeder@univention.de>  Wed, 07 Sep 2016 08:35:58 +0200
+
 univention-mail-postfix (11.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
