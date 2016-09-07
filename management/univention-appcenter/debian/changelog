@@ -1,3 +1,11 @@
+univention-appcenter (6.0.0-6) unstable; urgency=medium
+
+  * Bug #40857: Fix MySQL passwords
+  * Bug #40857: Fix package installation, password file
+  * Bug #40857: Autostart; Package installation; DB password file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Sep 2016 17:40:51 +0200
+
 univention-appcenter (6.0.0-5) unstable; urgency=medium
 
   * Bug #42157: Corrected some typos.
