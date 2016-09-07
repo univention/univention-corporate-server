@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Improve performance of S4 connector when handling many objects
 bug: [41999]
+announced: 2016-09-07
