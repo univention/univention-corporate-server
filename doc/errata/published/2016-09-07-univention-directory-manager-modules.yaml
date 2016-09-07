@@ -10,3 +10,4 @@ desc: |
    from the list of nameservers in its dns zone objects.
  * Some typos have been corrected.
 bug: [37086,42156]
+announced: 2016-09-07
