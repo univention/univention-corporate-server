@@ -13,3 +13,4 @@ desc: |
    The Docker interface will be forwarded, giving container Apps from the App
    Center access to MySQL.
 bug: [42026, 42307]
+announced: 2016-09-07
