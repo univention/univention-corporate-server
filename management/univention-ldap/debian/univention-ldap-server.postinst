@@ -106,6 +106,7 @@ ucr set \
 	ldap/idlcachesize?20000 \
 	ldap/idletimeout?360 \
 	ldap/index/autorebuild?yes \
+	ldap/index/quickmode?false \
 	ldap/threads?16 \
 	ldap/tool-threads?1 \
 	ldap/acl/user/password/change?no \
@@ -116,6 +117,8 @@ ucr set \
 	ldap/autostart?yes \
 	ldap/tls/dh/paramfile?/etc/ldap/dh_2048.pem \
 	ldap/limits?"users time.soft=-1 time.hard=-1" \
+	slapd/backup/cron?"0 0 * * *" \
+	slapd/backup?true \
 	ldap/maxopenfiles?8192 # Bug #17705
 
 if [ "$1" = "configure" -a -z "$2" ]; then

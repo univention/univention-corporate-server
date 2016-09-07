@@ -115,8 +115,8 @@ Type=bool
 Categories=service-ldap
 
 [ldap/index/quickmode]
-Description[de]=Ist diese Option aktiviert, wird das LDAP Reindex-Tool slapindex im "quick" Modus gestartet (weniger Integritätsprüfungen, schnellere Indizierung)
-Description[en]=If this option is activated, the LDAP reindex tool slapindex is started in "quick" mode (fewer integrity checks, improved indexing time).
+Description[de]=Ist diese Option aktiviert, wird das LDAP Reindex-Tool slapindex im "quick" Modus gestartet (weniger Integritätsprüfungen, schnellere Indizierung). Standardmäßig deaktiviert.
+Description[en]=If this option is activated, the LDAP reindex tool slapindex is started in "quick" mode (fewer integrity checks, improved indexing time). Disabled by default.
 Type=bool
 Categories=service-ldap
 
@@ -235,13 +235,13 @@ Type=str
 Categories=service-ldap
 
 [slapd/backup]
-Description[de]=Aktiviert/Deaktiviert das Backup der slapd Datenbank (slapcat).
-Description[en]=Activates/deactivates the slapd database backup (slapcat).
+Description[de]=Aktiviert/Deaktiviert das Backup der slapd Datenbank. Standardmäßig aktiviert.
+Description[en]=Activates/deactivates the slapd database backup. Enabled by default.
 Type=bool
 Categories=service-ldap
 
 [slapd/backup/cron]
-Description[de]=Cron-Intervall für das Backup der slapd Datenbank.
-Description[en]=Cron interval for the slapd database backup.
+Description[de]=Cron-Intervall für das Backup der slapd Datenbank. Standard ist '0 0 * * *' (jede Tag um 00:00 Uhr).
+Description[en]=Cron interval for the slapd database backup. Default is '0 0 * * *' (midnight, every day).
 Type=str
 Categories=service-ldap

@@ -1,3 +1,9 @@
+univention-ldap (12.1.6-39) unstable; urgency=low
+
+  * Bug #41281 Bug #38679:: added defaults and description
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Sep 2016 09:12:46 +0200
+
 univention-ldap (12.1.6-38) unstable; urgency=low
 
   * Bug #41281: fixed description

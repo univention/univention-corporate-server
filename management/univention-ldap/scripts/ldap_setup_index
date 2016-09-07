@@ -115,7 +115,7 @@ class LdapIndex(object):
 
     def load_ucr(self, ucr):
         self.autorebuild = ucr.is_true('ldap/index/autorebuild')
-        self.quick_mode = ucr.is_true('ldap/index/quickmode')
+        self.quick_mode = ucr.is_true('ldap/index/quickmode', False)
         if self.autorebuild:
             LOG.debug('Automatically updating indexes is enabled')
         if self.args.force_defaults:
