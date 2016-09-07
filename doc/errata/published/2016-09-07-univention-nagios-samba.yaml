@@ -9,3 +9,4 @@ desc: |
  * The nagios check UNIVENTION_SAMBA_REPLICATION has been added 
    to check the state of Samba DRS replication.
 bug: [29463]
+announced: 2016-09-07
