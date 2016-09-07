@@ -5,7 +5,8 @@
         "package_dir": "management/univention-management-console-frontend",
         "package_name": "univention-management-console-frontend",
         "po_subdir": "umc",
-        "target": "json"
+        "target": "json",
+        "language": "Javascript"
     },
     {
         "input_files": "src/**py",

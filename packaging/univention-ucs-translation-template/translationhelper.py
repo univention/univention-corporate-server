@@ -130,19 +130,19 @@ def update_package_translation_files(module, output_dir):
 
 		os.chdir(module.get('abs_path_to_src_pkg'))
 		if not module.get('core'):
-			def _create_po_files(po_files, src_files):
+			def _create_po_files(po_files, src_files, language):
 				for po_file in po_files:
 					new_po_file_abs_path = os.path.join(abs_path_translated_src_pkg, po_file)
 					if not os.path.exists(os.path.dirname(new_po_file_abs_path)):
 						os.makedirs(os.path.dirname(new_po_file_abs_path))
 					try:
-						dh_umc.create_po_file(new_po_file_abs_path, module['module_name'], src_files)
+						dh_umc.create_po_file(new_po_file_abs_path, module['module_name'], src_files, language)
 					except dh_umc.Error as exc:
 						print(str(exc))
 
 			# build python po files
-			_create_po_files(module.python_po_files, module.python_files)
-			_create_po_files(module.js_po_files, module.js_files)
+			_create_po_files(module.python_po_files, module.python_files, 'python')
+			_create_po_files(module.js_po_files, module.js_files, 'Javascript')
 
 		# xml always has to be present
 		for lang, po_file in module.xml_po_files:
@@ -215,11 +215,11 @@ def translate_special_case(special_case, source_dir, target_language, output_dir
 	os.chdir(path_src_pkg)
 	try:
 		matches = [os.path.relpath(match, start=os.getcwd()) for match in matches]
-		dh_umc.create_po_file(new_po_path, special_case.get('package_name'), matches)
+		dh_umc.create_po_file(new_po_path, special_case.get('package_name'), matches, special_case.get('language', 'Javascript'))
 	except dh_umc.Error as exc:
-		repr(exc)
+		print repr(exc)
 	except TypeError as exc:
-		repr(exc)
+		print repr(exc)
 	os.chdir(cwd)
 
 
