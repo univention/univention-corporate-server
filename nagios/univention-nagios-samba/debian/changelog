@@ -1,3 +1,10 @@
+univention-nagios-samba (1.0.0-2) unstable; urgency=low
+
+  * Bug #29463: renamed UNIVENTION_SAMBA_DRS_FAILURES to
+    UNIVENTION_SAMBA_REPLICATION
+
+ -- Felix Botner <botner@univention.de>  Wed, 07 Sep 2016 08:51:35 +0200
+
 univention-nagios-samba (1.0.0-1) unstable; urgency=low
 
   * Bug #29463: initial release

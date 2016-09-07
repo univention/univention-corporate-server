@@ -44,7 +44,7 @@ else
 		# create nagios service for S4 connector
 		univention-directory-manager nagios/service create "$@" --ignore_exists \
 			--position "cn=nagios,$ldap_base" \
-			--set name="UNIVENTION_SAMBA_DRS_FAILURES" \
+			--set name="UNIVENTION_SAMBA_REPLICATION" \
 			--set checkCommand="check_univention_samba_drs_failures" \
 			--set normalCheckInterval=10 \
 			--set retryCheckInterval=1 \
@@ -61,7 +61,7 @@ else
 
 	if [ ! "$nagios_client_autoregister" = "no" ] ; then
 		univention-directory-manager nagios/service modify "$@" --ignore_exists \
-			--dn "cn=UNIVENTION_SAMBA_DRS_FAILURES,cn=nagios,$ldap_base" \
+			--dn "cn=UNIVENTION_SAMBA_REPLICATION,cn=nagios,$ldap_base" \
 			--append assignedHosts="$ldap_hostdn" || die
 	fi
 fi
