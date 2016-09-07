@@ -35,7 +35,8 @@
 
 case "$1" in
     configure)
-	ucr set mysql/config/mysqld/max_connections?151 \
+	ucr set mysql/config/mysqld/bind_address?0.0.0.0 \
+		mysql/config/mysqld/max_connections?151 \
 		mysql/config/mysqld/max_allowed_packet?33554432 \
 		mysql/config/mysqld/query_cache_size?33554432 \
 		mysql/config/mysqld/query_cache_limit?2097152 \

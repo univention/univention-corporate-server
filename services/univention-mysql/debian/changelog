@@ -1,3 +1,9 @@
+univention-mysql (3.0.0-4) unstable; urgency=medium
+
+  * Bug #42307: Set bind address to 0.0.0.0
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Sep 2016 16:21:50 +0200
+
 univention-mysql (3.0.0-3) unstable; urgency=low
 
   * Bug #42026: version bump
