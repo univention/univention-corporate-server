@@ -1,3 +1,9 @@
+univention-samba4 (6.0.1-2) unstable; urgency=medium
+
+  * Bug #41319: Do a net cache flush before sysvolreset during initial install
+
+ -- Arvid Requate <requate@univention.de>  Wed, 07 Sep 2016 11:28:05 +0200
+
 univention-samba4 (6.0.1-1) unstable; urgency=low
 
   * added recommends univention-nagios-samba (Bug #29463)

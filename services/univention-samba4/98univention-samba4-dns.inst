@@ -69,6 +69,7 @@ update_nss_group_cache
 # Reset NTACLs after the connector has synced the accounts
 if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 	## set the default sysvol and GPO NTACLs
+	net cache flush
 	samba-tool ntacl sysvolreset
 fi
 
