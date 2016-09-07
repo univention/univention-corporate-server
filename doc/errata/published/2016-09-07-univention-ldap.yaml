@@ -20,3 +20,4 @@ desc: |
    the LDAP reindex tool (ldap_setup_index) is started in quick mode
    (fewer integrity checks, improved indexing time)
 bug: [34873, 38679, 39307, 41648, 41281]
+announced: 2016-09-07
