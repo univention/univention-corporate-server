@@ -1,3 +1,9 @@
+univention-ucs-translation-fr (1.0.0-2) unstable; urgency=medium
+
+  * Bug #41776: update all_targets.mk
+
+ -- Eduard Mai <mai@univention.de>  Wed, 07 Sep 2016 19:02:14 +0200
+
 univention-ucs-translation-fr (1.0.0-1) unstable; urgency=low
 
   * Initial release
