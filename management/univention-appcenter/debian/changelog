@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-13) unstable; urgency=medium
+
+  * Bug #42200: Add additional packages for server roles
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 08 Sep 2016 01:14:01 +0200
+
 univention-appcenter (5.0.22-12) unstable; urgency=medium
 
   * Bug #40857: Fix MySQL passwords

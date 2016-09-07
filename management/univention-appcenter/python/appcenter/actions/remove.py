@@ -65,4 +65,4 @@ class Remove(InstallRemoveUpgrade):
 			ucr_save({'appcenter/prudence/docker/%s' % app.id: 'yes'})
 
 	def _remove_app(self, app, args):
-		self._apt_get('remove', app.default_packages, 45, update=False)
+		self._apt_get('remove', app.get_packages(), 45, update=False)

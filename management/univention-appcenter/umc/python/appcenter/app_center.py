@@ -343,7 +343,7 @@ class Application(object):
 				self._options[ikey] = 0
 
 		# parse list values
-		for ikey in ('categories', 'defaultpackages', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'requiredappsindomain', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection'):
+		for ikey in ('categories', 'defaultpackages', 'additionalpackagesmaster', 'additionalpackagesbackup', 'additionalpackagesslave', 'additionalpackagesmember', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'requiredappsindomain', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection'):
 			ival = self.get(ikey)
 			if ival:
 				self._options[ikey] = self._reg_comma.split(ival)
@@ -1229,10 +1229,24 @@ class Application(object):
 			return ret
 		return _check(True), _check(False)
 
+	def get_packages(self):
+		packages = []
+		packages.extend(self.get('defaultpackages'))
+		role = ucr.get('server/role')
+		if role == 'domaincontroller_master':
+			packages.extend(self.get('additionalpackagesmaster'))
+		elif role == 'domaincontroller_backup':
+			packages.extend(self.get('additionalpackagesbackup'))
+		elif role == 'domaincontroller_slave':
+			packages.extend(self.get('additionalpackagesslave'))
+		elif role == 'memberserver':
+			packages.extend(self.get('additionalpackagesmember'))
+		return packages
+
 	def is_installed(self, package_manager, strict=True):
 		if self.get('dockerimage') and not ucr.get('docker/container/uuid'):
 			return ucr.get('appcenter/apps/%s/status' % self.id) in ['installed', 'stalled'] and ucr.get('appcenter/apps/%s/version' % self.id) == self.version
-		default_packages = self.get('defaultpackages')
+		default_packages = self.get_packages()
 		if strict:
 			return all(package_manager.is_installed(package) for package in default_packages)
 		else:
@@ -1259,7 +1273,7 @@ class Application(object):
 		try:
 			# remove all packages of the component
 			package_manager.set_max_steps(200)
-			package_manager.commit(remove=self.get('defaultpackages'))
+			package_manager.commit(remove=self.get_packages())
 			package_manager.add_hundred_percent()
 
 			# remove all dependencies
@@ -1360,7 +1374,7 @@ class Application(object):
 			# packages to install
 			to_install = []
 			if not only_master_packages:
-				to_install.extend(app.get('defaultpackages'))
+				to_install.extend(app.get_packages())
 			MODULE.info('defaultpackages: %s' % (to_install, ))
 			if server_role in ('domaincontroller_master', 'domaincontroller_backup', ):
 				MODULE.info('Running on DC master or DC backup')
@@ -1548,7 +1562,7 @@ class Application(object):
 	def uninstall_dry_run(self, package_manager):
 		MODULE.info('Invoke uninstall_dry_run')
 		package_manager.reopen_cache()
-		to_uninstall = package_manager.get_packages(self.get('defaultpackages'))
+		to_uninstall = package_manager.get_packages(self.get_packages())
 		for package in to_uninstall:
 			package.mark_delete()
 		packages = [pkg.name for pkg in package_manager.packages() if pkg.is_auto_removable or pkg.marked_delete]
@@ -1668,7 +1682,7 @@ class Application(object):
 			is_backup = ucr.get('server/role') == 'domaincontroller_backup'
 			to_install = []
 			if not only_master_packages:
-				to_install.extend(self.get('defaultpackages'))
+				to_install.extend(self.get_packages())
 			master_packages = self.get('defaultpackagesmaster')
 			if master_packages:
 				MODULE.info('Trying to install master packages on DC master and DC backup')

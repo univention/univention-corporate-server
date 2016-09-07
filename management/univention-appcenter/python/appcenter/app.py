@@ -545,6 +545,18 @@ class App(object):
 			installed on Domaincontroller Master and Backup
 			systems while this App is installed. Deprecated. Not
 			supported for Docker Apps.
+		additional_packages_master: List of package names that shall be
+			installed along with "default_packages" when installed
+			on a DC Master. Not supported for Docker Apps.
+		additional_packages_backup: List of package names that shall be
+			installed along with "default_packages" when installed
+			on a DC Backup. Not supported for Docker Apps.
+		additional_packages_slave: List of package names that shall be
+			installed along with "default_packages" when installed
+			on a DC Slave. Not supported for Docker Apps.
+		additional_packages_member: List of package names that shall be
+			installed along with "default_packages" when installed
+			on a Memberserver. Not supported for Docker Apps.
 		rating: Positive rating on specific categories regarding the
 			App. Controlled by Univention. Not part of the ini
 			file.
@@ -730,6 +742,10 @@ class App(object):
 	without_repository = AppBooleanAttribute()
 	default_packages = AppListAttribute()
 	default_packages_master = AppListAttribute()
+	additional_packages_master = AppListAttribute()
+	additional_packages_backup = AppListAttribute()
+	additional_packages_slave = AppListAttribute()
+	additional_packages_member = AppListAttribute()
 
 	rating = AppListAttribute()
 
@@ -910,6 +926,20 @@ class App(object):
 		for attr in cls._attrs:
 			if attr.name == attr_name:
 				return attr
+
+	def get_packages(self):
+		packages = []
+		packages.extend(self.default_packages)
+		role = ucr_get('server/role')
+		if role == 'domaincontroller_master':
+			packages.extend(self.additional_packages_master)
+		elif role == 'domaincontroller_backup':
+			packages.extend(self.additional_packages_backup)
+		elif role == 'domaincontroller_slave':
+			packages.extend(self.additional_packages_slave)
+		elif role == 'memberserver':
+			packages.extend(self.additional_packages_member)
+		return packages
 
 	def is_installed(self):
 		if self.docker and not ucr_get('docker/container/uuid'):
