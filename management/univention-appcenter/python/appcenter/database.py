@@ -159,7 +159,7 @@ class DatabaseConnector(object):
 	def db_user_exists(self):
 		return False
 
-	def create_db_and_user(self):
+	def create_db_and_user(self, password):
 		raise NotImplementedError()
 
 	def setup(self):
@@ -267,20 +267,15 @@ class MySQL(DatabaseConnector):
 			return cursor
 
 	def db_user_exists(self):
-		cursor = self.execute('SELECT EXISTS (SELECT DISTINCT user FROM mysql.user WHERE user = %s)' % self.escape(self.get_db_user()))
+		cursor = self.execute("SELECT EXISTS (SELECT DISTINCT user FROM mysql.user WHERE user = '%s')" % self.escape(self.get_db_user()))
 		return cursor.fetchone()[0]
 
-	def escape(self, value, quotes=True):
-		value = self.get_root_connection().escape(value)
-		if not quotes:
-			return value[1:-1]
-		return value
+	def escape(self, value):
+		return self.get_root_connection().escape(unicode(value))
 
 	def create_db_and_user(self, password):
-		self.execute('CREATE DATABASE IF NOT EXISTS `%s`' % self.escape(self.get_db_name(), quotes=False))
-		db_user_passwd = generate_password()
-		self.execute("GRANT ALL ON `%s`.* TO %s@'%%' IDENTIFIED BY '%s'" % (self.escape(self.get_db_name(), quotes=False), self.escape(self.get_db_user()), db_user_passwd))
-		self._write_password(db_user_passwd)
+		self.execute('CREATE DATABASE IF NOT EXISTS `%s`' % self.escape(self.get_db_name()))
+		self.execute("GRANT ALL ON `%s`.* TO '%s'@'%%' IDENTIFIED BY '%s'" % (self.escape(self.get_db_name()), self.escape(self.get_db_user()), password))
 
 	def __del__(self):
 		if self._connection:
