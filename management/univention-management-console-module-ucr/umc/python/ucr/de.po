@@ -22,7 +22,7 @@ msgid ""
 "be specified."
 msgstr ""
 "Ungültiger UCR-Variableneintrag. Die Optionen \"key\" und \"value\" müssen "
-"angeeben werden"
+"angegeben werden"
 
 #: umc/python/ucr/__init__.py:155
 #, python-format
