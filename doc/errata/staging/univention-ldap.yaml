@@ -14,7 +14,8 @@ desc: |
  * The ldap client paramaters NETWORK_TIMEOUT, TIMEOUT and TIMELIMIT can
    now be configured with the UCR variables ldap/client/network_timeout,
    ldap/client/timeout and ldap/client/timelimit.
- * A bug in the slapd.conf template has been fixed.
+ * The index lines in the slapd.conf are now wrapped if the line is longer
+   than 2048 characters.
  * The UCR variable ldap/index/quickmode has been added. If set to true
    the LDAP reindex tool (ldap_setup_index) is started in quick mode
    (fewer integrity checks, improved indexing time)
