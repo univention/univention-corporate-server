@@ -1,3 +1,9 @@
+univention-ucs-translation-template (4.0.1-3) unstable; urgency=medium
+
+  * Bug #42259: Fix blacklisting in module search
+
+ -- Eduard Mai <mai@univention.de>  Wed, 07 Sep 2016 12:02:05 +0200
+
 univention-ucs-translation-template (4.0.1-2) unstable; urgency=medium
 
   * Bug #42293: use python as default language in specialcases.json
