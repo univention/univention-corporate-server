@@ -14,3 +14,4 @@ desc: |
  * Some typos have been corrected.
  * A missing package dependency has been added.
 bug: [42095,42122,42075,41920]
+announced: 2016-09-07
