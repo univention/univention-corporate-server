@@ -9,3 +9,4 @@ desc: |
  * App appliances without a customized branding will show now
    the default UCS bootsplash instead of a black screen.
 bug: [42165]
+announced: 2016-09-07
