@@ -26,7 +26,7 @@ RewriteRule ^(/univention/js)_[^/]*/(.*) $1/$2 [R=301]
 RewriteCond %{REQUEST_URI} ^/univention/js[^/]*/umc/modules/i18n/(en|de)/.*\.json
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
 RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-d
-RewriteRule .* /univention/js/umc/modules/i18n/empty.json [P,L,T=application/json]
+RewriteRule .* /univention/js/umc/modules/i18n/empty.json [PT,T=application/json,L]
 
 # UMC-Webserver proxy
 RewriteCond %{REQUEST_URI} ^/univention/.*$

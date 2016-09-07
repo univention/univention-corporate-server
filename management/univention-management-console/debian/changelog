@@ -1,3 +1,9 @@
+univention-management-console (9.0.8-1) unstable; urgency=medium
+
+  * Bug #40907: don't use mod_proxy for redirection to local files
+
+ -- Florian Best <best@univention.de>  Wed, 07 Sep 2016 12:47:42 +0200
+
 univention-management-console (9.0.7-1) unstable; urgency=medium
 
   * Bug #41812: make sure binddn is set when logged in via SAML
