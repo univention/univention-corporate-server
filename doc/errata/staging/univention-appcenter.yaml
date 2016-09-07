@@ -3,7 +3,7 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-appcenter
-fix: 5.0.22-10.216.201609061436
+fix: 5.0.22-11.217.201609071133
 desc: |
  This update addresses the following issue(s):
  * The App Center can now create a database for an App if it wishes so. Useful
