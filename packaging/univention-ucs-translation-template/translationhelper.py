@@ -40,8 +40,8 @@ import univention.dh_umc as dh_umc
 
 # Use this set to ignore whole subtrees of a given source tree
 DIR_BLACKLIST = set([
-	'doc',
-	'test'
+	'./doc',
+	'./test'
 ])
 # do not translate modules with these names, as they are examples and thus not worth the effort
 MODULE_BLACKLIST = [
@@ -229,7 +229,7 @@ def find_base_translation_modules(startdir, source_dir, module_basefile_name):
 	os.chdir(source_dir)
 	matches = []
 	for root, dirnames, filenames in os.walk('.'):
-		dirnames[:] = [d for d in dirnames if d not in DIR_BLACKLIST]
+		dirnames[:] = [d for d in dirnames if os.path.join(root, d) not in DIR_BLACKLIST]
 		for filename in fnmatch.filter(filenames, "*" + module_basefile_name):
 			matches.append(os.path.join(root, filename))
 
