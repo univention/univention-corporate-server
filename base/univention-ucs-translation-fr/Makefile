@@ -47,4 +47,4 @@ build:
 	mkdir -p $(@D)
 	mv "$(patsubst %.po,%.json,$<)" "$@"
 
-install: $(ALL_TARGETS) $(SPECIAL_TARGETS)
+install: $(ALL_TARGETS) $(ADDITIONAL)

@@ -8,6 +8,6 @@ case "${locale}" in
 	*)	ucr set locale="${locale} ${new_locale}" ;;
 esac
 
-ucr set ucs/server/languages/fr_FR?"français"
+ucr set ucs/server/languages/fr_FR?"Français"
 
 exit 0
