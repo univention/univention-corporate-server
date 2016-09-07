@@ -9,3 +9,4 @@ desc: |
  * The package univention-nagios-samba has been added to the list of
    recommended packages for univention-samba4.
 bug: [29463]
+announced: 2016-09-07
