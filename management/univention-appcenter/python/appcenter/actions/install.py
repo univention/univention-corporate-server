@@ -157,7 +157,7 @@ class Install(InstallRemoveUpgrade):
 			if ucr_get('server/role') == 'domaincontroller_backup':
 				self._install_master_packages(app, 30)
 				install_master = True
-		return self._install_packages(app.default_packages, 80, update=not install_master).returncode == 0
+		return self._install_packages(app.get_packages(), 80, update=not install_master).returncode == 0
 
 	def _revert(self, app, args):
 		try:
