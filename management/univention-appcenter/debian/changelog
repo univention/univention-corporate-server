@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-11) unstable; urgency=medium
+
+  * Bug #40857: Fix package installation, password file
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 07 Sep 2016 11:32:21 +0200
+
 univention-appcenter (5.0.22-10) unstable; urgency=medium
 
   * Bug #42157: Corrected some typos.

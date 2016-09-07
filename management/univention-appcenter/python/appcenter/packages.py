@@ -90,7 +90,7 @@ def packages_are_installed(pkgs, strict=True):
 
 def install_packages(pkgs):
 	with get_package_manager().locked(reset_status=True, set_finished=True):
-		get_package_manager().commit(install=pkgs)
+		return get_package_manager().commit(install=pkgs)
 
 
 def update_packages():

@@ -94,7 +94,8 @@ class DatabaseConnector(object):
 			return None
 
 	def get_db_password_file(self):
-		pass
+		if self.app.database_password_file:
+			return self.app.database_password_file
 
 	def get_autostart_variable(self):
 		return None
@@ -191,6 +192,8 @@ class PostgreSQL(DatabaseConnector):
 		return 5432
 
 	def get_db_password_file(self):
+		if self.app.database_password_file:
+			return self.app.database_password_file
 		return '/etc/postgres-%s.secret' % self.app.id
 
 	def get_autostart_variable(self):
@@ -235,6 +238,8 @@ class MySQL(DatabaseConnector):
 			return 3306
 
 	def get_db_password_file(self):
+		if self.app.database_password_file:
+			return self.app.database_password_file
 		return '/etc/mysql-%s.secret' % self.app.id
 
 	def get_autostart_variable(self):

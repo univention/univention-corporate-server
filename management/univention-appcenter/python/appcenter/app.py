@@ -495,6 +495,9 @@ class App(object):
 			"id".
 		database_user: Name of the database user to be created.
 			Defaults to "id". May not be "root" or "postgres".
+		database_password_file: Path to the file in which the password
+			will be stored. If not set, a default file will be
+			created.
 		docker_env_database_host: Environment variable name for the DB
 			host.
 		docker_env_database_port: Environment variable name for the DB
@@ -708,6 +711,7 @@ class App(object):
 	database = AppAttribute()
 	database_name = AppAttribute()
 	database_user = AppAttribute(regex='(?!^(root)$|^(postgres)$)')  # anything but db superuser!
+	database_password_file = AppAttribute()
 	docker_env_database_host = AppAttribute(default='DB_HOST')
 	docker_env_database_port = AppAttribute(default='DB_PORT')
 	docker_env_database_name = AppAttribute(default='DB_NAME')
