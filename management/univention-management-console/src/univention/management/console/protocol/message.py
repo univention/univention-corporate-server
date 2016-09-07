@@ -113,11 +113,12 @@ class Message(object):
 		if mimetype == MIMETYPE_JSON:
 			data = json.dumps(body)
 		else:
+#			data = bytes(body)
 			data = body
 		args = ''
 		if arguments:
 			args = ' '.join(map(lambda x: str(x), arguments))
-		return '%s/%s/%d/%s: %s %s\n%s' % (type, _id, len(data), mimetype, command, args, data)
+		return '%s/%s/%d/%s: %s %s\n%s' % (type, _id, len(data), mimetype, command or 'NONE', args, data)
 
 	def __str__(self):
 		'''Returns the formatted message'''
@@ -136,15 +137,14 @@ class Message(object):
 		"""Checks the message type"""
 		return (self._type == type)
 
-	# property: id
-	def _set_id(self, id):
-		self._id = id
-
-	def _get_id(self):
+	#: The property id contains the unique identifier for the message
+	@property
+	def id(self):
 		return self._id
 
-	#: The property id contains the unique identifier for the message
-	id = property(_get_id, _set_id)
+	@id.setter
+	def id(self, id):
+		self._id = id
 
 	# JSON body properties
 	def _set_key(self, key, value, cast=None):
@@ -201,6 +201,7 @@ class Message(object):
 		if not match:
 			if not nl:
 				raise IncompleteMessageError(_('The message header is not (yet) complete'))
+			PARSER.error('Error parsing UMCP message header: %r' % (header[:100],))
 			raise ParseError(UMCP_ERR_UNPARSABLE_HEADER, _('Unparsable message header'))
 
 		groups = match.groupdict()

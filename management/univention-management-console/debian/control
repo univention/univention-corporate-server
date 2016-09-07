@@ -99,7 +99,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-univention-config-registry,
  python-polib,
  gettext,
- inkscape | imagemagick
+ devscripts,
+ imagemagick | inkscape
 Description: UCS Management Console - development files
  UCS Management Console is a web based program to manage computers. It has
  an extensible architecture, using modules to implement its

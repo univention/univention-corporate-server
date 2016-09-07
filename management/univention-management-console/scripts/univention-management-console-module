@@ -67,15 +67,17 @@ if __name__ == '__main__':
 	default_debug = MODULE_DEBUG_LEVEL
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = default_debug,
 					   help = 'if given then debugging is activated and set to the specified level [default: %default]' )
-	parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-module-%(module)s', help = 'specifies an alternative log file [default: %default-<module name>.log]' )
+	parser.add_option( '-L', '--log-file', action = 'store',  dest = 'logfile', default = 'management-console-module-%(module)s', help = 'specifies an alternative log file [default: %default.log]' )
+	parser.add_option('-f', '--foreground', action='store_true', dest='foreground', default=False, help='do not daemonize the process')
 
 	( options, arguments ) = parser.parse_args()
 
-	daemon = DaemonContext(detach_process=False, prevent_core=False, umask=0077)
-	daemon.signal_map = {
-		signal.SIGHUP: lambda signal, frame: log_reopen(),
-	}
-	daemon.open()
+	if not options.foreground:
+		daemon = DaemonContext(detach_process=False, prevent_core=False, umask=0077)
+		daemon.signal_map = {
+			signal.SIGHUP: lambda signal, frame: log_reopen(),
+		}
+		daemon.open()
 
 	# MUST be called after initializing the deamon
 	if options.notifier.lower() == 'generic':
@@ -93,16 +95,15 @@ if __name__ == '__main__':
 	# nflog.set_level( nflog.DEBUG )
 	# nflog.open()
 
-	localeok = False
 	try:
 		locale_obj = Locale( options.language )
 		locale.setlocale( locale.LC_MESSAGES, str( locale_obj ) )
-		localeok = True
 		translation = Translation('univention-management-console')
 		translation.set_language(options.language)
 	except:
-		MODULE.error( 'The specified locale is not available (cmdline: %s)' % str( locale_obj ) )
+		MODULE.error('The specified locale %r is not available' % (options.language,))
 
+	# this import must be after the locale is set!
 	import univention.management.console.protocol as umcp
 
 	if not options.socket:

@@ -123,31 +123,28 @@ class ILogger(object):
 
 	def error(self, message):
 		"""Write a debug message with level ERROR"""
-		if _debug_ready:
-			ud.debug(self._id, ud.ERROR, message)
-		elif _debug_loglevel >= ud.ERROR:
-			self._fallbackLogger.error(message, extra=self._extras[ud.ERROR])
+		self.__log(ud.ERROR, message, self._fallbackLogger.error)
 
 	def warn(self, message):
 		"""Write a debug message with level WARN"""
-		if _debug_ready:
-			ud.debug(self._id, ud.WARN, message)
-		elif _debug_loglevel >= ud.WARN:
-			self._fallbackLogger.warning(message, extra=self._extras[ud.WARN])
+		self.__log(ud.WARN, message, self._fallbackLogger.warning)
 
 	def process(self, message):
 		"""Write a debug message with level PROCESS"""
-		if _debug_ready:
-			ud.debug(self._id, ud.PROCESS, message)
-		elif _debug_loglevel >= ud.PROCESS:
-			self._fallbackLogger.info(message, extra=self._extras[ud.PROCESS])
+		self.__log(ud.PROCESS, message, self._fallbackLogger.info)
 
 	def info(self, message):
 		"""Write a debug message with level INFO"""
+		self.__log(ud.INFO, message, self._fallbackLogger.debug)
+
+	def __log(self, level, message, logger):
 		if _debug_ready:
-			ud.debug(self._id, ud.INFO, message)
-		elif _debug_loglevel >= ud.INFO:
-			self._fallbackLogger.debug(message, extra=self._extras[ud.INFO])
+			try:
+				ud.debug(self._id, level, message)
+			except TypeError:
+				ud.debug(self._id, ud.ERROR, 'Could not log message %r' % (message,))
+		elif _debug_loglevel >= level:
+			logger(message, extra=self._extras[level])
 
 CORE = ILogger('MAIN')
 NETWORK = ILogger('NETWORK')

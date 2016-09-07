@@ -57,7 +57,7 @@ from univention.lib.i18n import I18N_Error
 from .message import Response, Request, MIMETYPE_JSON
 from .client import Client, NoSocketError
 from .version import VERSION
-from .definitions import status_description, BAD_REQUEST_FORBIDDEN, BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED, UMCP_ERR_UNPARSABLE_BODY
+from .definitions import status_description, BAD_REQUEST_FORBIDDEN, BAD_REQUEST_NOT_FOUND, SERVER_ERR_MODULE_FAILED, SERVER_ERR_MODULE_DIED
 
 from ..resources import moduleManager, categoryManager
 from ..auth import AuthHandler
@@ -443,6 +443,9 @@ class ProcessorBase(Base):
 					raise UMC_Error(message, status=503)
 				mod_proc.signal_connect('result', self.result)
 
+				cb = notifier.Callback(self._mod_error, module_name)
+				mod_proc.signal_connect('error', cb)
+
 				cb = notifier.Callback(self._socket_died, module_name)
 				mod_proc.signal_connect('closed', cb)
 
@@ -548,6 +551,13 @@ class ProcessorBase(Base):
 		if module_name in self.__processes:
 			self._mod_died(self.__processes[module_name].pid(), -1, module_name)
 
+	def _mod_error(self, exc, module_name):
+		CORE.error('Module %r ran into error: %s' % (module_name, exc))
+		if module_name in self.__processes:
+			self.__processes[module_name].invalidate_all_requests(status=exc.args[0], message=exc.args[1])
+			self._mod_died(self.__processes[module_name].pid(), -1, module_name)
+		self._purge_child(module_name)
+
 	def _mod_died(self, pid, status, module_name):
 		if status:
 			if os.WIFSIGNALED(status):
@@ -571,7 +581,7 @@ class ProcessorBase(Base):
 			del self.__killtimer[module_name]
 		if module_name in self.__processes:
 			CORE.warn('Cleaning up requests')
-			self.__processes[module_name].invalidate_all_requests()
+			self.__processes[module_name].invalidate_all_requests(status=SERVER_ERR_MODULE_DIED)
 			if self.__processes[module_name]._inactivity_timer is not None:
 				CORE.warn('Remove inactivity timer')
 				notifier.timer_remove(self.__processes[module_name]._inactivity_timer)
@@ -904,5 +914,6 @@ class SessionHandler(ProcessorBase):
 	def _response(self, response):
 		self.signal_emit('success', response)
 
-	def parse_error(self, request):
-		raise UMC_Error(status=UMCP_ERR_UNPARSABLE_BODY)
+	def parse_error(self, request, parse_error):
+		status, message = parse_error.args
+		raise UMC_Error(message, status=status)

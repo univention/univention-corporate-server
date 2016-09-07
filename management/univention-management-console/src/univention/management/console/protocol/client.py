@@ -40,7 +40,7 @@ import fcntl
 from univention.lib.i18n import Translation
 
 from .message import Request, Response, IncompleteMessageError, ParseError
-from .definitions import RECV_BUFFER_SIZE, BAD_REQUEST_AUTH_FAILED, SERVER_ERR_MODULE_DIED, SUCCESS, status_description
+from .definitions import RECV_BUFFER_SIZE, BAD_REQUEST_AUTH_FAILED, SUCCESS, status_description
 from ..log import CORE, PROTOCOL
 from OpenSSL import SSL
 
@@ -273,9 +273,9 @@ class Client(signals.Provider, Translation):
 
 		self.__unfinishedRequests[msg.id] = msg
 
-	def invalidate_all_requests(self):
+	def invalidate_all_requests(self, status=500, message=None):
 		"""Checks for open UMCP requests and invalidates these by faking
-		a response with status code SERVER_ERR_MODULE_DIED"""
+		a response with the given status code"""
 
 		if self.__unfinishedRequests:
 			CORE.warn('Invalidating all pending requests %s' % ', '.join(self.__unfinishedRequests.keys()))
@@ -283,7 +283,8 @@ class Client(signals.Provider, Translation):
 			CORE.info('No pending requests found')
 		for req in self.__unfinishedRequests.values():
 			response = Response(req)
-			response.status = SERVER_ERR_MODULE_DIED
+			response.status = status
+			response.message = message
 			self.signal_emit('response', response)
 		self.__unfinishedRequests = {}
 

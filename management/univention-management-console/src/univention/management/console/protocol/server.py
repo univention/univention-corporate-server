@@ -127,7 +127,6 @@ class MagicBucket(object):
 			msg = Message()
 			try:
 				state.buffer = msg.parse(state.buffer)
-				state.requests[msg.id] = msg
 			except (KeyboardInterrupt, SystemExit, SyntaxError):
 				raise  # let the UMC-server crash/exit
 			except IncompleteMessageError as exc:
@@ -135,9 +134,14 @@ class MagicBucket(object):
 				return True
 			except ParseError as exc:
 				CORE.process('Parse error: %r' % (exc,))
-				state.session.execute('parse_error', msg)
+				if msg.id is None:
+					self._cleanup(socket)
+					return False
+				state.requests[msg.id] = msg
+				state.session.execute('parse_error', msg, exc)
 				return True
 			else:
+				state.requests[msg.id] = msg
 				state.session.execute('handle', msg)
 				return True
 

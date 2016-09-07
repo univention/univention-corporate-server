@@ -268,7 +268,7 @@ class Base(signals.Provider, Translation):
 		exiting.'''
 		pass
 
-	def execute(self, method, request):
+	def execute(self, method, request, *args, **kwargs):
 		self.__requests[request.id] = (request, method)
 
 		try:
@@ -280,7 +280,7 @@ class Base(signals.Provider, Translation):
 
 		MODULE.info('Executing %s' % (request.arguments,))
 		try:
-			function(self, request)
+			function(self, request, *args, **kwargs)
 		except (KeyboardInterrupt, SystemExit):
 			self.finished(request.id, None, _('The UMC service is currently shutting down or restarting. Please retry soon.'), status=503)
 			raise
