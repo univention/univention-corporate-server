@@ -215,7 +215,7 @@ def translate_special_case(special_case, source_dir, target_language, output_dir
 	os.chdir(path_src_pkg)
 	try:
 		matches = [os.path.relpath(match, start=os.getcwd()) for match in matches]
-		dh_umc.create_po_file(new_po_path, special_case.get('package_name'), matches, special_case.get('language', 'Javascript'))
+		dh_umc.create_po_file(new_po_path, special_case.get('package_name'), matches, special_case.get('language', 'python'))
 	except dh_umc.Error as exc:
 		print repr(exc)
 	except TypeError as exc:

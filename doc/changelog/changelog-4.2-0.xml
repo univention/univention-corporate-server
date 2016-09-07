@@ -151,6 +151,9 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
+						Improved internationalization for javascript files in UMC (<u:bug>42293</u:bug>)..
+				</simpara></listitem>
+				<listitem><simpara>
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
