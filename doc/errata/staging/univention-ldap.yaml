@@ -6,7 +6,8 @@ src: univention-ldap
 fix: 12.1.6-38.835.201609051757
 desc: |
  This update addresses the following issue(s):
- * The UCR variable ldap/limits has been added to configure slapd limits.
+ * The UCR variable ldap/limits has been added to configure OpenLDAP server
+   limits.
  * The slapd backup cronjob can now be disabled by setting the UCR
    variable slapd/backup to false. The cron interval can be configured with
    the UCR variable slapd/backup/cron. 
