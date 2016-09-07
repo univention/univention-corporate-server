@@ -485,7 +485,7 @@ msgstr ""
 msgid "Value is too short, it has to be at least of length %(minimum)d"
 msgstr ""
 "La valeur est trop courte, elle doit au minimum avoir une taille de %"
-"(maximum)d"
+"(minimum)d"
 
 #: univention/management/console/protocol/message.py:257
 msgid "error parsing UMCP message body"
