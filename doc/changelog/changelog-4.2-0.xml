@@ -513,6 +513,15 @@
 			<itemizedlist>
 				<listitem><simpara>
  				</simpara></listitem>
+				<listitem><simpara>
+					Samba has been updated to version 4.5.0
+					(<u:bug>40661</u:bug>).
+				</simpara></listitem>
+				<listitem><simpara>
+					<package>univention-samba4</package> has been adjusted
+					to flush caches during initial install before committing
+					the sysvol ACLs (<u:bug>41319</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 		</section>
 
