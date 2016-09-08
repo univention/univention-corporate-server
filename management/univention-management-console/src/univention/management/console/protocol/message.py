@@ -113,8 +113,7 @@ class Message(object):
 		if mimetype == MIMETYPE_JSON:
 			data = json.dumps(body)
 		else:
-#			data = bytes(body)
-			data = body
+			data = bytes(body)
 		args = ''
 		if arguments:
 			args = ' '.join(map(lambda x: str(x), arguments))
