@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/apache2/conf.d/ucs.conf -- $@
-
 if [ "$1" = "purge" ]; then
 	rm -rf /etc/univention/apache
 fi

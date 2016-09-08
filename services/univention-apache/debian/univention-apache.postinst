@@ -33,7 +33,6 @@
 #DEBHELPER#
 
 # update to 4.2-0
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/apache2/conf.d/ucs.conf -- $@
 if dpkg --compare-versions "$2" lt-nl 9.0.0; then
 	ucr update
 	a2dismod auth_pam
