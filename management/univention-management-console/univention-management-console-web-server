@@ -288,7 +288,7 @@ class UMCP_Dispatcher(object):
 			try:
 				# add a small offset to the timeout in order to avoid a mismatch between frontend and backend
 				client = SessionClient(timeout=queuerequest.timeout + 5, ip=queuerequest.ip)
-			except Exception as exc:
+			except NoSocketError as exc:
 				CORE.process('Failed to create UMC connection: %s' % (exc,))
 				response = Response(queuerequest.request)
 				response.status = SERVICE_UNAVAILABLE
@@ -1373,7 +1373,7 @@ def run_cherrypy(options):
 		'server.request_queue_size': int(ucr.get('umc/http/requestqueuesize', 100)),
 		'server.thread_pool': int(ucr.get('umc/http/maxthreads', 35)),
 		'response.timeout': _session_timeout,
-		'engine.autoreload_on': False,
+		'engine.autoreload.on': False,
 		'tools.response_headers.on': True,
 		'tools.response_headers.headers': [
 			('Content-Type', 'application/json')
@@ -1529,9 +1529,9 @@ class UMC_HTTP_Daemon(DaemonRunner):
 			notifier.init(notifier.GENERIC)
 			notifier.dispatcher_add(UMCP_Dispatcher.check_queue)
 			notifier.loop()
-		except (SystemExit, KeyboardInterrupt) as e:
+		except (SystemExit, KeyboardInterrupt) as exc:
 			# stop the web server
-			CORE.info('stopping cherrypy: %s' % str(e))
+			CORE.info('stopping cherrypy: %s' % (exc,))
 			cherrypy.engine.exit()
 			CORE.info('cherrypy stopped')
 
@@ -1540,7 +1540,7 @@ if __name__ == '__main__':
 	http_daemon = UMC_HTTP_Daemon()
 	try:
 		http_daemon.do_action()
-	except DaemonRunnerStopFailureError as e:
-		CORE.process('Failed to shutdown server gracefully (may be its already dead): %s' % str(e))
-	except DaemonRunnerStartFailureError as e:
-		CORE.process('Failed to start server: %s' % str(e))
+	except DaemonRunnerStopFailureError as exc:
+		CORE.process('Failed to shutdown server gracefully (may be its already dead): %s' % (exc,))
+	except DaemonRunnerStartFailureError as exc:
+		CORE.process('Failed to start server: %s' % (exc,))

@@ -64,8 +64,9 @@ class MagicBucket(object):
 	accepted. After the user has authenticated the commands are passed
 	on to the Processor.'''
 
-	def __init__(self):
+	def __init__(self, ssl=True):
 		self.__states = {}
+		self.__ssl = ssl
 
 	def __del__(self):
 		self.exit()
@@ -134,7 +135,8 @@ class MagicBucket(object):
 				return True
 			except ParseError as exc:
 				CORE.process('Parse error: %r' % (exc,))
-				if msg.id is None:
+				if msg.id is None and self.__ssl:
+					# close the connection in case we use SSL (otherwise the umcp.Client resends the messages in plaintext)
 					self._cleanup(socket)
 					return False
 				state.requests[msg.id] = msg
@@ -271,9 +273,9 @@ class Server(signals.Provider):
 				self.crypto_context.use_privatekey_file(os.path.join(dir, 'private.key'))
 				self.crypto_context.use_certificate_file(os.path.join(dir, 'cert.pem'))
 				self.crypto_context.load_verify_locations(os.path.join(dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem'))
-			except SSL.Error as e:
+			except SSL.Error as exc:
 				# SSL is not possible
-				CRYPT.process('Setting up SSL configuration failed: %s' % str(e))
+				CRYPT.error('Setting up SSL configuration failed: %s' % (exc,))
 				CRYPT.warn('Communication will not be encrypted!')
 				self.__ssl = False
 				self.crypto_context = None
@@ -308,7 +310,7 @@ class Server(signals.Provider):
 		self.__magicClass = magicClass
 		self.__bucket = None
 		if self.__magic:
-			self.__bucket = self.__magicClass()
+			self.__bucket = self.__magicClass(self.__ssl)
 		else:
 			self.signal_new('session_new')
 

@@ -399,8 +399,8 @@ class Manager(dict):
 						continue
 					# save list of definitions in self
 					self.setdefault(mod.id, []).append(mod)
-			except (xml.parsers.expat.ExpatError, ET.ParseError) as e:
-				RESOURCES.warn('Failed to load module %s: %s' % (filename, str(e)))
+			except (xml.parsers.expat.ExpatError, ET.ParseError) as exc:
+				RESOURCES.warn('Failed to load module %s: %s' % (filename, exc))
 				continue
 
 	def is_command_allowed(self, acls, command, hostname=None, options={}, flavor=None):
