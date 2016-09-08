@@ -66,6 +66,7 @@ Depends: ${misc:Depends},
 Recommends: smbclient,
  xinit,
  firefox-en | firefox-de | firefox | firefox-esr,
+ dbus-x11,
  univention-kernel-image,
 Replaces: univention-setup-boot, univention-system-setup-appliance
 Description: Starting univention-system-setup on next boot
