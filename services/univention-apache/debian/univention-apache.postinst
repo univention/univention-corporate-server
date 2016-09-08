@@ -34,7 +34,7 @@
 
 # update to 4.2-0
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/apache2/conf.d/ucs.conf -- $@
-if dpkg --compare-versions "$2" lt-nl 9.0.0-1; then
+if dpkg --compare-versions "$2" lt-nl 9.0.0; then
 	ucr update
 	a2dismod auth_pam
 fi
@@ -102,9 +102,9 @@ fi
 
 if [ -x /etc/init.d/apache2 ]; then
 	# better stop&start, as this behaves differently to restart
-	/etc/init.d/apache2 stop
+	invoke-rc.d apache2 stop
 	sleep 3
-	/etc/init.d/apache2 start
+	invoke-rc.d apache2 start
 fi
 
 ucr set "ucs/server/languages/en_US?English" \
@@ -113,6 +113,4 @@ ucr set "ucs/server/languages/en_US?English" \
 	"ucs/server/languages/de_AT?Deutsch (Österreich)" \
 	"ucs/server/languages/de_CH?Deutsch (Schweiz)" 
 
-
 exit 0
-

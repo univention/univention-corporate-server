@@ -1,3 +1,9 @@
+univention-apache (9.0.1-1) unstable; urgency=low
+
+  * Bug #42196: Fix default configuration
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Sep 2016 10:10:19 +0200
+
 univention-apache (9.0.0-4) unstable; urgency=low
 
   * Bug #42196: apache config upgrade
