@@ -40,7 +40,7 @@ define([
 	"umc/widgets/ContainerWidget",
 	"umc/widgets/_SelectMixin"
 ], function(declare, lang, array, on, topic, Button, tools, app, ContainerWidget, _SelectMixin) {
-	return declare("umc.widgets.LinkList", [ ContainerWidget, _SelectMixin ], {
+	return declare([ ContainerWidget, _SelectMixin ], {
 		// summary:
 		//		Provides a list of buttons opening a given object
 

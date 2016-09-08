@@ -147,7 +147,7 @@ __widgets.extend([
 	Widget('PasswordInputBox', (udm_syntax.passwd, udm_syntax.userPasswd), ''),
 	Widget('DateBox', (udm_syntax.iso8601Date, udm_syntax.date), '1970-01-01'),
 	Widget('TimeBox', (udm_syntax.TimeString), '00:00'),
-	Widget(lambda syn, prop: 'LinkList' if syn.viewonly else 'ComboBox', (udm_syntax.LDAP_Search, ), [], subclasses=False),
+	Widget(lambda syn, prop: 'umc/modules/udm/LinkList' if syn.viewonly else 'ComboBox', (udm_syntax.LDAP_Search, ), [], subclasses=False),
 	Widget('ComboBox', udm_syntax.select, []),
 	Widget('TextBox', (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn), '', subclasses=False),
 	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] and len(syn.udm_modules) == 1 and syn.simple == False else 'umc/modules/udm/ComboBox',
