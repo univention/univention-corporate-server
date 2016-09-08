@@ -49,7 +49,7 @@ from univention.appcenter.log import get_base_logger
 from univention.appcenter.app import CACHE_DIR
 from univention.appcenter.actions.update import Update
 from univention.appcenter.actions import Abort
-from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get
+from univention.appcenter.ucr import ucr_save, ucr_is_false, ucr_get, ucr_run_filter
 
 _logger = get_base_logger().getChild('docker')
 
@@ -284,6 +284,15 @@ class Docker(object):
 			filename = filename[1:]
 		return os.path.join('/var/lib/docker/overlay', self.container, 'merged', filename)
 
+	def ucr_filter_env_file(self):
+		if os.path.exists(self.app.get_cache_file('env')):
+			env_file = os.path.join(self.app.get_data_dir().rstrip('data'), self.app.id + '.env')
+			with open(self.app.get_cache_file('env'), 'r') as infile:
+				with open(env_file, 'w') as outfile:
+					outfile.write(ucr_run_filter(infile.read()))
+			return env_file
+		return None
+
 	def create(self, hostname, env):
 		ports = []
 		for app_id, container_port, host_port in app_ports():
@@ -297,9 +306,7 @@ class Docker(object):
 			cert_dir = '/etc/univention/ssl/%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))
 			cert_volume = '%s:%s:ro' % (cert_dir, cert_dir)
 			volumes.add(cert_volume)
-		env_file = None
-		if os.path.exists(self.app.get_cache_file('env')):
-			env_file = self.app.get_cache_file('env')
+		env_file = self.ucr_filter_env_file()
 		command = shlex.split(self.app.docker_script_init)
 		args = shlex.split(ucr_get(self.app.ucr_docker_params_key, ''))
 		container = create(self.image, command, hostname, env, ports, volumes, env_file, args)
