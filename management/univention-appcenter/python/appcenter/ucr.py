@@ -34,6 +34,7 @@
 
 from univention.config_registry import ConfigRegistry
 from univention.config_registry.frontend import ucr_update
+from univention.config_registry.handler import run_filter
 
 _UCR = ConfigRegistry()
 _UCR.load()
@@ -78,6 +79,8 @@ def ucr_evaluated_as_true(value):
 		value = value.lower()
 	return _UCR.is_true(value=value)
 
+def ucr_run_filter(string):
+	return run_filter(string, _UCR)
 
 def ucr_instance():
 	return _UCR

@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-14) unstable; urgency=low
+
+  * Bug #42317: run ucr_filter on docker env file
+
+ -- Felix Botner <botner@univention.de>  Thu, 08 Sep 2016 13:52:12 +0200
+
 univention-appcenter (5.0.22-13) unstable; urgency=medium
 
   * Bug #42200: Add additional packages for server roles
