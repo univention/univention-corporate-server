@@ -900,7 +900,7 @@ class SessionHandler(ProcessorBase):
 			except (TypeError, KeyError):
 				response = Response(request)
 				response.status = 400
-				self._response(response, self)
+				self._response(response)
 		elif request.command == 'GET' and 'newsession' in request.arguments:
 			CORE.info('Renewing session')
 			self.processor = None

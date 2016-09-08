@@ -1,3 +1,9 @@
+univention-management-console (9.0.11-1) unstable; urgency=medium
+
+  * Bug #42114: fix up svn r71911
+
+ -- Florian Best <best@univention.de>  Thu, 08 Sep 2016 19:23:30 +0200
+
 univention-management-console (9.0.10-1) unstable; urgency=medium
 
   * Bug #42114: Make the UMC-Server more robust against crashes by

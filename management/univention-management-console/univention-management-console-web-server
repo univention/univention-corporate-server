@@ -1111,7 +1111,7 @@ class SAML(Ressource):
 	@property
 	def sp(self):
 		if not self.__sp and not self.reload():
-			raise UMC_HTTPError(500, 'Single sign on is not available due to misconfiguration. See logfiles.')
+			raise UMC_HTTPError(503, 'Single sign on is not available due to misconfiguration. See logfiles.')
 		return self.__sp
 
 	def reload(self):

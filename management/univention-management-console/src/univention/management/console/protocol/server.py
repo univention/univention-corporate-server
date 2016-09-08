@@ -64,9 +64,8 @@ class MagicBucket(object):
 	accepted. After the user has authenticated the commands are passed
 	on to the Processor.'''
 
-	def __init__(self, ssl=True):
+	def __init__(self):
 		self.__states = {}
-		self.__ssl = ssl
 
 	def __del__(self):
 		self.exit()
@@ -124,28 +123,24 @@ class MagicBucket(object):
 			return False
 		state.buffer += data
 
-		while state.buffer:
-			msg = Message()
-			try:
+		try:
+			while state.buffer:
+				msg = Message()
 				state.buffer = msg.parse(state.buffer)
-			except (KeyboardInterrupt, SystemExit, SyntaxError):
-				raise  # let the UMC-server crash/exit
-			except IncompleteMessageError as exc:
-				CORE.info('MagicBucket: incomplete message: %s' % (exc,))
-				return True
-			except ParseError as exc:
-				CORE.process('Parse error: %r' % (exc,))
-				if msg.id is None and self.__ssl:
-					# close the connection in case we use SSL (otherwise the umcp.Client resends the messages in plaintext)
-					self._cleanup(socket)
-					return False
-				state.requests[msg.id] = msg
-				state.session.execute('parse_error', msg, exc)
-				return True
-			else:
 				state.requests[msg.id] = msg
 				state.session.execute('handle', msg)
-				return True
+		except (KeyboardInterrupt, SystemExit, SyntaxError):
+			raise  # let the UMC-server crash/exit
+		except IncompleteMessageError as exc:
+			CORE.info('MagicBucket: incomplete message: %s' % (exc,))
+		except ParseError as exc:
+			CORE.process('Parse error: %r' % (exc,))
+			if msg.id is None:
+				# close the connection in case we use could not parse the header
+				self._cleanup(socket)
+				return False
+			state.requests[msg.id] = msg
+			state.session.execute('parse_error', msg, exc)
 
 		return True
 
@@ -310,7 +305,7 @@ class Server(signals.Provider):
 		self.__magicClass = magicClass
 		self.__bucket = None
 		if self.__magic:
-			self.__bucket = self.__magicClass(self.__ssl)
+			self.__bucket = self.__magicClass()
 		else:
 			self.signal_new('session_new')
 
