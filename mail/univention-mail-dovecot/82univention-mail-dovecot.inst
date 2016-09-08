@@ -80,6 +80,8 @@ fi
 
 /usr/lib/univention-server/server_password_change.d/univention-mail-dovecot postchange
 
+invoke-rc.d dovecot restart
+
 joinscript_save_current_version
 
 exit 0

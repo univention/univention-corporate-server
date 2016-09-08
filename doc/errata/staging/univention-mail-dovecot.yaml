@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [2,3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-mail-dovecot$
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * In some situations Dovecot was not properly configured after the
+   initial installation. This has been fixed.
+bug: [42032]

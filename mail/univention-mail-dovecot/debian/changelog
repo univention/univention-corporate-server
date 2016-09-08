@@ -1,3 +1,9 @@
+univention-mail-dovecot (2.0.1-5) unstable; urgency=low
+
+  * Bug #42032: restart Dovecot at the end of the join script
+
+ -- Daniel Troeder <troeder@univention.de>  Thu, 08 Sep 2016 14:19:37 +0200
+
 univention-mail-dovecot (2.0.1-4) unstable; urgency=low
 
   * use /var/spool for data for queued work, don't move pickle file that
