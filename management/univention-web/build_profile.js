@@ -35,7 +35,7 @@ var profile = (function() {
 	return {
 		stripConsole : "normal",
 		basePath : "./tmp",
-		releaseDir : "../build/js",
+		releaseDir : "../build",
 		action : "release",
 
 		packages: [
@@ -48,14 +48,14 @@ var profile = (function() {
 			"xstyle"
 		],
 
-		layerOptimize : "closure",
-		optimize : "closure",
+		layerOptimize : false, //"closure",
+		optimize : false, //"closure",
 		cssOptimize: "comments.keepLines",
 		copyTests: false,
 
 		layers: {
 			"dojo/dojo": {
-				include: [ "dojo/dojo", "umc/app", "umc/widgets", "dgrid" ],
+				include: [ "dojo/dojo", "umc/_all", "dgrid" ],
 				customBase: true,
 				boot: true
 			}

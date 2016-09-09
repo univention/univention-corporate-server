@@ -1,3 +1,9 @@
+univention-web (1.0.1-3) unstable; urgency=medium
+
+  * Bug #38824: WIP - adjust Makefile and move UMC outside
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 Sep 2016 15:07:08 +0200
+
 univention-web (1.0.1-2) unstable; urgency=medium
 
   * Bug #42257: Corrected some typos.
