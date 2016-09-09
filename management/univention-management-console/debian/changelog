@@ -1,3 +1,9 @@
+univention-management-console (9.0.11-4) unstable; urgency=medium
+
+  * Bug #39733: add more specific frame rules
+
+ -- Florian Best <best@univention.de>  Fri, 09 Sep 2016 14:48:20 +0200
+
 univention-management-console (9.0.11-3) unstable; urgency=medium
 
   * Bug #42228: fixup svn r72274
