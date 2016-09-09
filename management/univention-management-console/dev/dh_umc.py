@@ -313,8 +313,50 @@ def create_json_file(po_file):
 	json_fd = open(json_file, 'w')
 	pofile = polib.pofile(po_file)
 	data = {}
+	
+	has_plurals = False
+	for meta_entry in pofile.ordered_metadata():
+		if meta_entry[0] == "Plural-Forms":
+			has_plurals = True
+			plural_rules = meta_entry[1]
+			break
+
+	# The rules get parsed from the pofile and put into the json file as
+	# entries, if there are any. Parsing happens with regular expressions.
+	if has_plurals:
+		p = re.compile("nplurals\s*=\s*")
+		pos_start = re.search(p, plural_rules).end()
+		p = re.compile("[\d]+")
+		pos_end = p.match(plural_rules, pos_start).end()
+		data["$nplurals$"] = plural_rules[pos_start:pos_end]
+		
+		# The $plural$ string contains everything from "plural=" to the last
+		# ';'. This is a useful, since it would include illegal code, which
+		# can then be found later and generate an error.
+		p = re.compile("plural\s*=\s*")
+		pos_start = re.search(p, plural_rules).end()
+		pos_end = list(re.finditer(';', plural_rules))[-1].start()
+		data["$plural$"] = plural_rules[pos_start:pos_end]
+		
+		# The expression in data["$plural$"] will be evalueted via eval() in
+		# javascript. To avoid malicious code injection a simple check is
+		# performed here.
+		p = re.compile("^[\s\dn=?!&|%:()<>]+$")
+		if not p.match(data["$plural$"]):
+			raise ValueError(('There are illegal characters in the "plural" '
+			'expression in the .po file\'s header entry "Plural-Forms"'))
+
 	for entry in pofile:
-		data[entry.msgid] = entry.msgstr
+		if entry.msgstr:
+			data[entry.msgid] = entry.msgstr
+		elif entry.msgstr_plural:
+			if not has_plurals:
+				raise LookupError(("There are plural forms in the .po file, "
+					"but no rules for them in the .po file's header"))
+			tmp_lst = []
+			for i in range(len(entry.msgstr_plural)):
+				tmp_lst.append(entry.msgstr_plural[str(i)])
+		data[entry.msgid] = tmp_lst
 
 	json_fd.write(json.dumps(data))
 	json_fd.close()

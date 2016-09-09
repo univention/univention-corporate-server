@@ -1,3 +1,9 @@
+univention-management-console (9.0.11-2) unstable; urgency=medium
+
+  * Bug #42220: Extended create_json_file() to handle plural forms
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 09 Sep 2016 10:36:08 +0200
+
 univention-management-console (9.0.11-1) unstable; urgency=medium
 
   * Bug #42114: fix up svn r71911
