@@ -46,7 +46,7 @@ CONFIG = {
 	"cert_file": "/etc/univention/ssl/%s/cert.pem" % (fqdn,),
 	"xmlsec_binary": "/usr/bin/xmlsec1",
 	"metadata": {
-		"local": glob.glob('/usr/share/univention/saml/idp/*.xml'),
+		"local": glob.glob('/usr/share/univention-management-console/saml/idp/*.xml'),
 	},
 	# TODO: add contact_person?
 }

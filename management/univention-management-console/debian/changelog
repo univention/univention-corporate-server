@@ -1,3 +1,9 @@
+univention-management-console (9.0.11-3) unstable; urgency=medium
+
+  * Bug #42228: fixup svn r72274
+
+ -- Florian Best <best@univention.de>  Fri, 09 Sep 2016 12:36:05 +0200
+
 univention-management-console (9.0.11-2) unstable; urgency=medium
 
   * Bug #42220: Extended create_json_file() to handle plural forms
