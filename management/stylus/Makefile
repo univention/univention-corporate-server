@@ -27,7 +27,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=0.48.1
+VERSION=0.54.5
 
 .PHONY: all clean
 
