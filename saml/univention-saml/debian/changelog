@@ -1,3 +1,9 @@
+univention-saml (4.0.0-3) unstable; urgency=medium
+
+  * Bug #42196: apache: Move univention-saml to univention-saml.conf
+
+ -- Florian Best <best@univention.de>  Fri, 09 Sep 2016 12:00:42 +0200
+
 univention-saml (4.0.0-2) precise; urgency=low
 
   * Bug #42071: Corrected a typo.
