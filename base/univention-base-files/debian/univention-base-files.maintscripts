@@ -1,1 +1,2 @@
 rm_conffile /etc/univention/templates/files/etc/init.d/portmap 6.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/init.d/klogd 6.0.0-4~

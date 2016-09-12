@@ -43,9 +43,6 @@ Type: file
 File: etc/init.d/networking
 
 Type: file
-File: etc/init.d/klogd
-
-Type: file
 File: etc/init.d/rdate
 
 Type: file

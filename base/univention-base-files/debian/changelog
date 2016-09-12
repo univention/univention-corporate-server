@@ -1,3 +1,9 @@
+univention-base-files (6.0.0-4) unstable; urgency=low
+
+  * Bug #38438: Fix dependency based boot
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 11:13:34 +0200
+
 univention-base-files (6.0.0-3) unstable; urgency=low
 
   * Bug #36571: Fix renamed package portmap to rpcbind
