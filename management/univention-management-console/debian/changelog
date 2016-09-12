@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-2) unstable; urgency=medium
+
+  * Bug #38824: adjust debian/u-m-c-frontend.link and .install file
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Sep 2016 13:13:10 +0200
+
 univention-management-console (9.0.12-1) unstable; urgency=low
 
   * Bug #38438: Make init-script LSB compliant
