@@ -101,9 +101,9 @@ case "$1" in
 		log_end_msg 0
 		;;
 	restart|force-reload)
-		$0 stop
+		"$0" stop
 		sleep 1
-		$0 start
+		"$0" start
 		;;
 	status)
 		status="0"
@@ -121,19 +121,19 @@ case "$1" in
 		;;
 	crestart)
 		if pidof smbd > /dev/null 2>&1
-			then
-			$0 restart
-			else
+		then
+			"$0" restart
+		else
 			if pidof nmbd > /dev/null 2>&1
-				then
-				$0 restart
+			then
+				"$0" restart
 			else
 				log_action_msg "No smbd or nmbd process found, no need to restart."
 			fi
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/samba {start|stop|reload|restart|crestart|force-reload|status}"
+		echo "Usage: $0 {start|stop|reload|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac
