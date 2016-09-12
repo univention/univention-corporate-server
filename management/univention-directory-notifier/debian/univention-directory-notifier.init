@@ -1,7 +1,12 @@
 #!/bin/sh
-#
-# Univention Directory Notifier
-#  init script
+### BEGIN INIT INFO
+# Provides:          univention-directory-notifier
+# Required-Start:    $remote_fs univention-runit slapd
+# Required-Stop:     $remote_fs univention-runit slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Directory Notifier Daemon
+### END INIT INFO
 #
 # Copyright 2004-2016 Univention GmbH
 #
@@ -35,6 +40,8 @@ if [ ! -e /etc/runit/univention/univention-directory-notifier ]; then
 fi
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
 	start)
@@ -43,39 +50,41 @@ case "$1" in
 		    . "/usr/share/univention-config-registry/init-autostart.lib"
 		    check_autostart notifier notifier/autostart
 		fi
-		log_action_msg "Starting Univention Directory Notifier daemon"
-		if sv start univention-directory-notifier; then
-		    log_action_end_msg 0
-		else
-		    log_action_end_msg 1
-		fi
+		log_daemon_msg "Starting $DESC" "$NAME"
+		sv start "$NAME"
+		log_end_msg $?
 		;;
 	stop)
-		log_action_msg "Stopping univention-directory-notifier daemon: "
-		if sv stop univention-directory-notifier; then
-		    log_action_end_msg 0
-		else
-		    log_action_end_msg 1
-		fi
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		sv stop "$NAME"
+		log_end_msg $?
 		;;
 	restart|force-reload)
-		log_action_msg "Restarting univention-directory-notifier daemon: "
-		if sv restart univention-directory-notifier; then
-		    log_action_end_msg 0
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		sv restart "$NAME"
+		log_end_msg $?
+		;;
+	status)
+		log_daemon_msg "Checking status of $DESC" "$NAME"
+		if sv status "$NAME" | grep -q ^run:
+		then
+			log_process_msg "running"
+			log_end_msg 0
 		else
-		    log_action_end_msg 1
+			log_process_msg "not running"
+			log_end_msg 1
 		fi
 		;;
 	crestart)
-		if sv status univention-directory-notifier | grep ^run: > /dev/null 2>&1
-			then
-			$0 restart
+		if sv status "$NAME" | grep -q ^run:
+		then
+			"$0" restart
 		else
-			log_action_msg "sv status returns no running notifier, don't need to restart."
+			log_warning_msg "sv status returns no running notifier, don't need to restart."
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-directory-notifier {start|stop|restart|crestart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac

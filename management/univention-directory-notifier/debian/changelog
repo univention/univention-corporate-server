@@ -1,6 +1,7 @@
 univention-directory-notifier (11.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
+  * Bug #38438: Make init-script LSB compliant
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:27 +0200
 
