@@ -34,11 +34,11 @@
 
 @import "variables";
 
-.claro .dijitCalendar td, .claro .dijitCalendar th {
+.umc .dijitCalendar td, .umc .dijitCalendar th {
 	padding: 0px;
 }
 
-.claro .dijitCalendar {
+.umc .dijitCalendar {
 	border: solid 1px $base-border-color;
 	border-collapse: separate;	// in case user CSS has set border-collapse: collapse for tables
 	//border-radius: 4px;
@@ -54,90 +54,90 @@
 	text-align:center;
 	padding:6px 0px 3px 0px;
 }
-.dj_ie6 .claro .dijitCalendar {
+.dj_ie6 .umc .dijitCalendar {
 	//background-image:none;	// because on IE6 background-image overrides background-color
 }
-.claro .dijitCalendar img {
+.umc .dijitCalendar img {
 	border:none;
 }
-.claro .dijitCalendarHover, .claro .dijitCalendar:hover,
-.claro .dijitCalendarActive {
+.umc .dijitCalendarHover, .umc .dijitCalendar:hover,
+.umc .dijitCalendarActive {
 	/* treat dijitCalendarActive like hover since there's
 	 * no concept of clicking a Calendar as a whole (although you can click things inside the calendar)
 	 */
 	background-color: $hovered-background-color;
 	border:solid 1px $hovered-border-color;
 }
-.claro .dijitCalendarMonthContainer th {
+.umc .dijitCalendarMonthContainer th {
 	text-align:center;
 	padding-bottom:4px;
 	vertical-align:middle;
 }
-.claro .dijitCalendarMonthLabel {
+.umc .dijitCalendarMonthLabel {
 	color: $text-color;
 	//font-size: 1.091em;
 	padding: 0 4px;
 }
 
 /* next/previous month arrows */
-.claro .dijitCalendarIncrementControl {
+.umc .dijitCalendarIncrementControl {
 	width:18px;
 	height:16px;
 	//background-image: url($image-calendar-arrows);
 	
 	background-repeat: no-repeat;
 }
-.dj_ie6 .claro .dijitCalendarIncrementControl {
+.dj_ie6 .umc .dijitCalendarIncrementControl {
 	//background-image: url($image-calendar-arrows-ie6);
 }
-.claro .dijitCalendarIncrease {
+.umc .dijitCalendarIncrease {
 	//background-position:-18px 0;
 	icon-image(-72, -12, "", "-small", 12px, 12px);
 }
-.claro .dijitCalendarDecrease {
+.umc .dijitCalendarDecrease {
 	icon-image(-48, -12, "", "-small", 12px, 12px);
 }
 
-.claro .dijitCalendarArrowHover .dijitCalendarDecrease,
-.claro .dijitCalendarArrow:hover .dijitCalendarDecrease {
+.umc .dijitCalendarArrowHover .dijitCalendarDecrease,
+.umc .dijitCalendarArrow:hover .dijitCalendarDecrease {
 	icon-image(-60, -12, "", "-small", 12px, 12px);
 	opacity: 0.66;
 }
-.claro .dijitCalendarArrowHover .dijitCalendarIncrease,
-.claro .dijitCalendarArrow:hover .dijitCalendarIncrease {
+.umc .dijitCalendarArrowHover .dijitCalendarIncrease,
+.umc .dijitCalendarArrow:hover .dijitCalendarIncrease {
 	icon-image(-84, -12, "", "-small", 12px, 12px);
 	opacity: 0.66;
 }
-.claro .dijitCalendarArrowActive .dijitCalendarDecrease,
-.claro .dijitCalendarArrow:active .dijitCalendarDecrease {
+.umc .dijitCalendarArrowActive .dijitCalendarDecrease,
+.umc .dijitCalendarArrow:active .dijitCalendarDecrease {
 	icon-image(-60, -12, "", "-small", 12px, 12px);
 	opacity: 1;
 }
-.claro .dijitCalendarArrowActive .dijitCalendarIncrease,
-.claro .dijitCalendarArrow:active .dijitCalendarIncrease {
+.umc .dijitCalendarArrowActive .dijitCalendarIncrease,
+.umc .dijitCalendarArrow:active .dijitCalendarIncrease {
 	icon-image(-84, -12, "", "-small", 12px, 12px);
 	opacity: 1;
 }
-.claro .dijitA11ySideArrow {
+.umc .dijitA11ySideArrow {
 	/* text +/- labels instead of arrow icons, for high contrast mode */
 	display: none;
 }
 
-.claro .dijitCalendarDayLabelTemplate {
+.umc .dijitCalendarDayLabelTemplate {
 	padding-bottom:0;
 	text-align:center;
 	border-bottom:1px solid $border-color;
 	padding:0 3px 2px !important;
 	font-weight: bold;
 }
-.claro .dijitCalendarDayLabel {
+.umc .dijitCalendarDayLabel {
 	padding:0 4px 0 4px;
 	//font-weight:bold;
 	font-size:0.909em;
 	text-align:center;
 	color: $text-color;
 }
-.claro .dijitCalendarDateTemplate {
+.umc .dijitCalendarDateTemplate {
 	//background-color:$calendar-currentmonth-background-color;
 	border-bottom: 1px solid $base-border-color;
 	padding-top:0;
@@ -148,16 +148,16 @@
 	text-align:center;
 	color: $text-color;
 }
-.dj_ie6 .claro .dijitCalendarDateTemplate {
+.dj_ie6 .umc .dijitCalendarDateTemplate {
 	background-image: none;
 }
-.claro .dijitCalendarPreviousMonth,
-.claro .dijitCalendarNextMonth {
+.umc .dijitCalendarPreviousMonth,
+.umc .dijitCalendarNextMonth {
 	background-color: $primary-color;
 	background-image:none;
 	//border-bottom:solid 1px $minor-border-color;	/* todo: redundant with above .dijitCalendarDateTemplate rule */	
 }
-.claro .dijitCalendarDateTemplate .dijitCalendarDateLabel {
+.umc .dijitCalendarDateTemplate .dijitCalendarDateLabel {
 	text-decoration:none;
 	display:block;
 	padding:4px 6px 4px 6px;
@@ -166,51 +166,51 @@
 	transition-property: background-color, border, color;
  	transition-duration: .35s;
 }
-.claro .dijitCalendarPreviousMonth .dijitCalendarDateLabel,
-.claro .dijitCalendarNextMonth .dijitCalendarDateLabel{
+.umc .dijitCalendarPreviousMonth .dijitCalendarDateLabel,
+.umc .dijitCalendarNextMonth .dijitCalendarDateLabel{
 	color: $calendar-adjacentmonth-text-color;
 	border-color: $calendar-adjacentmonth-background-color;	/* intentionally matches background-color, no visible border until hover/selection */
 }
 
-.claro .dijitCalendarYearContainer {
+.umc .dijitCalendarYearContainer {
 	vertical-align:middle;
 }
-.claro .dijitCalendarYearControl {
+.umc .dijitCalendarYearControl {
 	padding: 1px 2px 2px 2px;
 }
-.claro .dijitCalendarYearLabel {
+.umc .dijitCalendarYearLabel {
 	padding: 2px 0 0 0;
 	margin: 0;
 	font-size: $font-size-buttons;
 }
-.claro .dijitCalendarYearLabel span {
+.umc .dijitCalendarYearLabel span {
 	/* trying to center next/current/previous year vertically, doesn't work on IE6/7 though */
 	vertical-align:middle;
 }
-.claro .dijitCalendarSelectedYear {
+.umc .dijitCalendarSelectedYear {
 	padding:0 3px;
 }
-.claro .dijitCalendarNextYear,
-.claro .dijitCalendarPreviousYear {
+.umc .dijitCalendarNextYear,
+.umc .dijitCalendarPreviousYear {
 	padding: 1px 6px 1px 6px;
 	//font-size:0.909em;
 }
-.claro .dijitCalendarSelectedYear {
+.umc .dijitCalendarSelectedYear {
 	//font-size:1.091em;
 	color:$selected-text-color;
 	font-weight: bold;
 }
 /* End Normal Calendar Style */
 /* Hovered Calendar Style */
-.claro .dijitCalendarHoveredDate .dijitCalendarDateLabel,
-.claro .dijitCalendarEnabledDate:hover .dijitCalendarDateLabel {
+.umc .dijitCalendarHoveredDate .dijitCalendarDateLabel,
+.umc .dijitCalendarEnabledDate:hover .dijitCalendarDateLabel {
 	background-color:$base-border-color;
 	//border:solid 1px $hovered-border-color;
 	color:$hovered-text-color;
 	transition-duration: .2s;
 }
-.claro .dijitCalendarNextYearHover, .claro .dijitCalendarNextYear:hover,
-.claro .dijitCalendarPreviousYearHover, .claro .dijitCalendarPreviousYear:hover {
+.umc .dijitCalendarNextYearHover, .umc .dijitCalendarNextYear:hover,
+.umc .dijitCalendarPreviousYearHover, .umc .dijitCalendarPreviousYear:hover {
 	color:$text-color-dark-background;
 	//border:solid 1px $calendar-button-hovered-border-color;
 	//padding: 0 5px 0 5px;	/* reduced by 1 to make room for border */
@@ -218,25 +218,25 @@
 }
 /* End Hovered Calendar Style */
 /* Active Calendar Style */
-.claro .dijitCalendarNextYearActive, .claro .dijitCalendarNextYear:active
-.claro .dijitCalendarPreviousYearActive, .claro .dijitCalendarPreviousYear:active {
+.umc .dijitCalendarNextYearActive, .umc .dijitCalendarNextYear:active
+.umc .dijitCalendarPreviousYearActive, .umc .dijitCalendarPreviousYear:active {
 	border: solid 1px $calendar-button-pressed-border-color;
 	padding: 0 5px 0 5px;	/* reduced by 1 to make room for border */
 	background-color: $calendar-date-selected-background-color;
 	//background-color:$calendar-button-pressed-background-color;
 }
-.claro .dijitCalendarActiveDate .dijitCalendarDateLabel,
-.claro .dijitCalendarEnabledDate:active .dijitCalendarDateLabel {
+.umc .dijitCalendarActiveDate .dijitCalendarDateLabel,
+.umc .dijitCalendarEnabledDate:active .dijitCalendarDateLabel {
 	background-color: $calendar-date-pressed-background-color;
 	//border:solid 1px $calendar-date-pressed-border-color;
 	transition-duration: .1s;
 }
-.dj_ie6 .claro .dijitCalendarActiveDate .dijitCalendarDateLabel {
+.dj_ie6 .umc .dijitCalendarActiveDate .dijitCalendarDateLabel {
 	background-image:none;
 }
 /* End Active Calendar Style */
 /* Selected Calendar Style */
-.claro .dijitCalendarSelectedDate .dijitCalendarDateLabel {
+.umc .dijitCalendarSelectedDate .dijitCalendarDateLabel {
 	color:$selected-text-color;
 	background-color: $calendar-date-selected-background-color;
 	border-color: $calendar-date-selected-border-color;
@@ -244,7 +244,7 @@
 }
 /* End Selected Calendar Style */
 /* Disabled Calendar Style*/
-.claro .dijitCalendarDisabledDate .dijitCalendarDateLabel {
+.umc .dijitCalendarDisabledDate .dijitCalendarDateLabel {
 	color: $disabled-text-color;
 	text-decoration:line-through;
 }
@@ -253,31 +253,31 @@
 
 /* Styling for month DropDownButton */
 
-.claro .dijitCalendar .dijitDropDownButton {
+.umc .dijitCalendar .dijitDropDownButton {
 	margin: 0;
 }
-.claro .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner {
+.umc .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner {
 	icon-image(0, -12, "", "-small", 12px, 12px);
 }
-.claro .dijitCalendar .dijitDropDownButtonHover .dijitArrowButtonInner,
-.claro .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner:hover{
+.umc .dijitCalendar .dijitDropDownButtonHover .dijitArrowButtonInner,
+.umc .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner:hover{
 	icon-image(-12, -12, "", "-small", 12px, 12px);
 	opacity: 0.66;
 }
-.claro .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner:active,
-.claro .dijitCalendar .dijitDropDownButtonActive .dijitArrowButtonInner {
+.umc .dijitCalendar .dijitDropDownButton .dijitArrowButtonInner:active,
+.umc .dijitCalendar .dijitDropDownButtonActive .dijitArrowButtonInner {
 	icon-image(-12, -12, "", "-small", 12px, 12px);
 	opacity: 1;
 }
 
 
-.claro .dijitCalendar .dijitButtonText {
+.umc .dijitCalendar .dijitButtonText {
 	padding: 1px 0 3px;
 	margin-right:-4px;
 	font-size: 1em;
 	font-weight: bold;
 }
-.claro .dijitCalendar .dijitDropDownButton .dijitButtonNode {
+.umc .dijitCalendar .dijitDropDownButton .dijitButtonNode {
 	padding: 0 3px 0 2px;
 	border:solid 1px $border-color;
 	box-shadow: 0 0 0 rgba(0,0,0,0);
@@ -287,27 +287,27 @@
 	background-image: none;
 	border: none;
 }
-.claro .dijitCalendar .dijitDropDownButtonHover .dijitButtonNode,
-.claro .dijitCalendar .dijitDropDownButton:hover .dijitButtonNode {
+.umc .dijitCalendar .dijitDropDownButtonHover .dijitButtonNode,
+.umc .dijitCalendar .dijitDropDownButton:hover .dijitButtonNode {
 	//background-color: $calendar-button-hovered-background-color;
 	//border:solid 1px $calendar-button-hovered-border-color;
 }
 
 /* Styling for month drop down list */
 
-.claro .dijitCalendarMonthMenu {
+.umc .dijitCalendarMonthMenu {
 	border-color: $popup-border-color;
 	background-color: $menu-background-color;
 	text-align:center;
 	background-image: none;
 }
-.claro .dijitCalendarMonthMenu .dijitCalendarMonthLabel {
+.umc .dijitCalendarMonthMenu .dijitCalendarMonthLabel {
 	border-top: solid 1px $menu-background-color;		/* intentionally invisible until hover */
 	border-bottom: solid 1px $menu-background-color;
 	padding: 2px 0;
 }
-.claro .dijitCalendarMonthMenu .dijitCalendarMonthLabelHover,
-.claro .dijitCalendarMonthMenu .dijitCalendarMonthLabel:hover {
+.umc .dijitCalendarMonthMenu .dijitCalendarMonthLabelHover,
+.umc .dijitCalendarMonthMenu .dijitCalendarMonthLabel:hover {
 	border-color: $hovered-border-color;
 	border-width:1px 0;
 	background-color: $hovered-background-color;

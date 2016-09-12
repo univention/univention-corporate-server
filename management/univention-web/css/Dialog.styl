@@ -31,7 +31,7 @@
 
 @import "variables";
 
-.claro .dijitDialog {
+.umc .dijitDialog {
 	//border: 1px solid $popup-border-color;
 	border: none;
 	box-shadow: 0 0px 25px rgba(0,0,0,0.15);
@@ -52,7 +52,7 @@
 	}
 }
 
-.claro .dijitDialogPaneContent {
+.umc .dijitDialogPaneContent {
 	background: $pane-background-color repeat-x top left;
 	border-top: 1px solid $popup-border-color;
 	padding: 1.6em 1.2em 1.2em 1.2em;
@@ -66,7 +66,7 @@
 	max-width: none;
 }
 
-.claro .dijitDialogPaneContentArea {
+.umc .dijitDialogPaneContentArea {
 	/* trick to get action bar (gray bar at bottom with OK/cancel buttons) to span from
 	 * left to right but still indent dialog content
 	 */ 
@@ -74,7 +74,7 @@
 	padding: 10px 8px;
 }
 
-.claro .dijitDialogPaneActionBar {
+.umc .dijitDialogPaneActionBar {
 	/* gray bar at bottom of dialog with OK/Cancel buttons */
 	//background-color: $bar-background-color;
 	padding: 3px 5px 2px 7px;
@@ -82,7 +82,7 @@
 	border-top: 1px solid $minor-border-color;
 	margin: 10px -8px -10px;
 }
-.claro .dijitTooltipDialog .dijitDialogPaneActionBar {
+.umc .dijitTooltipDialog .dijitDialogPaneActionBar {
   -webkit-border-bottom-right-radius: 4px;
   -webkit-border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -91,11 +91,11 @@
   -moz-border-radius-bottomleft: 4px;
   margin: 10px -10px -8px;
 }
-.claro .dijitDialogPaneActionBar .dijitButton {
+.umc .dijitDialogPaneActionBar .dijitButton {
 	float: none;
 }
 
-.claro .dijitDialogTitleBar {
+.umc .dijitDialogTitleBar {
 	/* outer container for the titlebar of the dialog */
 	//border: 1px solid $dialog-titlebar-border-color;
 	border: none;
@@ -106,14 +106,14 @@
 	//box-sizing: content-box;
 }
 
-.claro .dijitDialogTitle {
+.umc .dijitDialogTitle {
 	/* typography and styling of the dialog title */
 	padding: 0 1px;
 	font-size: $font-size-medium;
 	color: $text-color-dark-background;
 }
 
-.claro .dijitDialogCloseIcon {
+.umc .dijitDialogCloseIcon {
 	/* the default close icon for the dialog */
 	//background: url($image-dialog-close);
 	//background-repeat:no-repeat;
@@ -125,29 +125,29 @@
 	//width: 21px;
 	icon-image(0, -60, "", "-white");
 }
-.dj_ie6 .claro .dijitDialogCloseIcon {
+.dj_ie6 .umc .dijitDialogCloseIcon {
 	//background-image: url($image-dialog-close-ie6);
 }
-.claro .dijitDialogCloseIconHover {
+.umc .dijitDialogCloseIconHover {
 	background-position:-20px -60px;
 	opacity: 1;
 }
-.claro .dijitDialogCloseIconActive {
+.umc .dijitDialogCloseIconActive {
 	background-position:-20px -60px;
 	opacity: 0.66;
 }
 
 /* Tooltip and TooltipDialog */
 
-.claro .dijitTooltip,
-.claro .dijitTooltipDialog {
+.umc .dijitTooltip,
+.umc .dijitTooltipDialog {
 	/* the outermost dom node, holding the connector and container */
 	background: transparent;	/* make the area on the sides of the arrow transparent */
 	padding: 4px;
 	//box-sizing: content-box;
 }
 
-.claro .dijitTooltip {
+.umc .dijitTooltip {
 	box-sizing: content-box;
 }
 
@@ -168,7 +168,7 @@
 .umc .dijitTooltip.dijitTooltipRight {
 	padding-left: 13px;
 }
-.claro .dijitTooltipContainer {
+.umc .dijitTooltipContainer {
 	/* the part with the text */
 	background-color:$popup-background-color;
 	//linear-gradient(bottom, $tooltip-gradient-color 0px, $popup-background-color 10px);
@@ -182,7 +182,7 @@
 	max-width: 400px;
 }
 
-.claro .dijitTooltipConnector {
+.umc .dijitTooltipConnector {
 	/* the arrow piece */
 	border: 0;
 	z-index: 2;
@@ -191,12 +191,12 @@
 	width:20px;
 	height:18px;
 }
-.dj_ie6 .claro .dijitTooltipConnector {
+.dj_ie6 .umc .dijitTooltipConnector {
 	background-image:url($image-tooltip-ie6);
 }
 
 .umc .dijitTooltipDialog .dijitTooltipConnector,
-.claro .dijitTooltipBelow .dijitTooltipConnector {
+.umc .dijitTooltipBelow .dijitTooltipConnector {
 	/* the arrow piece for tooltips below an element */
 	top: -6px;
 	//left: 3px;
@@ -207,18 +207,18 @@
 	left: 12px;
 }
 
-.claro .dijitTooltipAbove .dijitTooltipConnector {
+.umc .dijitTooltipAbove .dijitTooltipConnector {
 	/* the arrow piece for tooltips above an element */
 	bottom: -6px;
 	//left: 3px;
 	background-position:-21px -1px;
 }
-.dj_ie7 .claro .dijitTooltipAbove .dijitTooltipConnector,
-.dj_ie6 .claro .dijitTooltipAbove .dijitTooltipConnector {
+.dj_ie7 .umc .dijitTooltipAbove .dijitTooltipConnector,
+.dj_ie6 .umc .dijitTooltipAbove .dijitTooltipConnector {
 	//bottom: -1px;
 }
 
-.claro .dijitTooltipABRight .dijitTooltipConnector {
+.umc .dijitTooltipABRight .dijitTooltipConnector {
 	/* above or below tooltip, but the arrow appears on the right,
 		and the right edges of target and tooltip are aligned rather than the left.
 		Override above rules for .dijitTooltipBelow, .dijitTooltipAbove */
@@ -227,25 +227,25 @@
 }
 
 
-.claro .dijitTooltipLeft {
+.umc .dijitTooltipLeft {
 	//padding-right: 14px;
 }
-.claro .dijitTooltipLeft .dijitTooltipConnector {
+.umc .dijitTooltipLeft .dijitTooltipConnector {
 	/* the arrow piece for tooltips to the left of an element, bottom borders aligned */
 	right: -6px;
 	background-position:-1px -1px;
 }
 
-.claro .dijitTooltipRight {
+.umc .dijitTooltipRight {
 	//padding-left: 14px;
 }
-.claro .dijitTooltipRight .dijitTooltipConnector {
+.umc .dijitTooltipRight .dijitTooltipConnector {
 	/* the arrow piece for tooltips to the right of an element, bottom borders aligned */
 	left: -6px;
 	background-position:-61px -1px;
 }
 
-.claro .dijitDialogUnderlay {
+.umc .dijitDialogUnderlay {
 	background: $dialog-underlay-color;
 }
 
@@ -260,19 +260,19 @@
 	max-height: 200px;
 }
 
-.claro .umcDescriptionIcon{
+.umc .umcDescriptionIcon{
 		icon-image(-24, 0, "./", "-small", 12px, 12px);
 			margin: 0.4em 0 0  0.3em;
 				display: inline-block;
 }
 
-.claro .umcDescriptionIcon:hover {
+.umc .umcDescriptionIcon:hover {
 		/* unselected */
 			background-position: -36px 0;
 				opacity: 0.66;
 }
 
-.claro .umcDescriptionIcon:active {
+.umc .umcDescriptionIcon:active {
 		/* unselected */
 			opacity: 1;
 }

@@ -22,76 +22,76 @@
 @import "variables";
 
 /* override Button.css */
-.claro .dijitTimePicker .dijitButtonNode {
+.umc .dijitTimePicker .dijitButtonNode {
 	padding: 0 0;
 	border-radius: 0;
 }
-.claro .dijitTimePicker {
+.umc .dijitTimePicker {
 	border:1px $border-color solid;
 	border-top:none;
 	border-bottom:none;
 	background-color:#fff;	/* TODO: useless?   Appears to be overridden by settings on individual elements */
 }
-.claro .dijitTimePickerItem {
+.umc .dijitTimePickerItem {
 	/* dijitTimePickerItem refers to both Tick's (minor values like 2:15, 2:30, 2:45) and Marker's (major values like 2PM, 3PM) */
 	standard-gradient();
 	border-top:solid 1px $border-color;
 	border-bottom:solid 1px $border-color;
 	margin-top:-1px;
 }
-.claro .dijitTimePickerTick {
+.umc .dijitTimePickerTick {
 	/* minor value */
 	color:$timepicker-minorvalue-text-color;
 	background-color:$timepicker-minorvalue-background-color;
 	font-size:0.818em;
 }
-.claro .dijitTimePickerMarker {
+.umc .dijitTimePickerMarker {
 	/* major value - 1:00, 2:00, times on the hour */
 	background-color: $timepicker-majorvalue-background-color;
 	font-size: 1em;
 	white-space: nowrap;
 }
-.claro .dijitTimePickerTickHover,
-.claro .dijitTimePickerMarkerHover,
-.claro .dijitTimePickerMarkerSelected,
-.claro .dijitTimePickerTickSelected {
+.umc .dijitTimePickerTickHover,
+.umc .dijitTimePickerMarkerHover,
+.umc .dijitTimePickerMarkerSelected,
+.umc .dijitTimePickerTickSelected {
 	background-color: $timepicker-value-hovered-background-color;
 	color:$timepicker-value-hovered-text-color;
 }
-.claro .dijitTimePickerMarkerSelected,
-.claro .dijitTimePickerTickSelected {
+.umc .dijitTimePickerMarkerSelected,
+.umc .dijitTimePickerTickSelected {
 	font-size: 1em;
 }
 
-.claro .dijitTimePickerTick .dijitTimePickerItemInner {
+.umc .dijitTimePickerTick .dijitTimePickerItemInner {
 	padding:1px;
 	margin:0;
 }
-.claro .dijitTimePicker .dijitButtonNode {
+.umc .dijitTimePicker .dijitButtonNode {
 	border-left:none;
 	border-right:none;
 	border-color:$border-color;
 	background-color: $unselected-background-color;
 	standard-gradient();
 }
-.claro .dijitTimePicker .dijitArrowButtonInner {
+.umc .dijitTimePicker .dijitArrowButtonInner {
 	height: 100%; /* hack claro.button.css */
 	background-image: url($image-form-common-arrows);
 	background-repeat: no-repeat;
 	background-position:-140px 45%;
 }
-.claro .dijitTimePicker .dijitDownArrowButton .dijitArrowButtonInner {
+.umc .dijitTimePicker .dijitDownArrowButton .dijitArrowButtonInner {
 	background-position:-35px 45%;
 }
 /* hover */
-.claro .dijitTimePicker .dijitUpArrowHover, 
-.claro .dijitTimePicker .dijitDownArrowHover {
+.umc .dijitTimePicker .dijitUpArrowHover, 
+.umc .dijitTimePicker .dijitDownArrowHover {
 	background-color: $timepicker-arrow-hovered-background-color;
 }
-.claro .dijitTimePicker .dijitUpArrowHover .dijitArrowButtonInner {
+.umc .dijitTimePicker .dijitUpArrowHover .dijitArrowButtonInner {
 	background-position:-175px 45%;
 }
-.claro .dijitTimePicker .dijitDownArrowHover .dijitArrowButtonInner {
+.umc .dijitTimePicker .dijitDownArrowHover .dijitArrowButtonInner {
 	background-position:-70px 45%;
 }
 

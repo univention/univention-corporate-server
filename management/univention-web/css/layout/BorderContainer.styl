@@ -32,31 +32,31 @@ Splitters and gutters:
 
 @import "../variables";
 
-.claro .dijitBorderContainer {
+.umc .dijitBorderContainer {
 	/* matches the width of the splitters between panes */
 	padding: 5px;
 }
 
-.claro .dijitSplitContainer-child,
-.claro .dijitBorderContainer-child {
+.umc .dijitSplitContainer-child,
+.umc .dijitBorderContainer-child {
 	/* By default put borders on all children of BorderContainer,
 	 *  to give illusion of borders on the splitters themselves.
 	 */
 	border: 1px $border-color solid;
 }
 
-.claro .dijitBorderContainer-dijitTabContainerTop,
-.claro .dijitBorderContainer-dijitTabContainerBottom,
-.claro .dijitBorderContainer-dijitTabContainerLeft,
-.claro .dijitBorderContainer-dijitTabContainerRight,
-.claro .dijitBorderContainer-dijitAccordionContainer {
+.umc .dijitBorderContainer-dijitTabContainerTop,
+.umc .dijitBorderContainer-dijitTabContainerBottom,
+.umc .dijitBorderContainer-dijitTabContainerLeft,
+.umc .dijitBorderContainer-dijitTabContainerRight,
+.umc .dijitBorderContainer-dijitAccordionContainer {
 	/* except that TabContainer defines borders on it's sub-nodes (tablist and dijitTabPaneWrapper),
 	 * so override rule setting border on domNode
 	 */
 	 border: none;
 
 }
-.claro .dijitBorderContainer-dijitBorderContainer {
+.umc .dijitBorderContainer-dijitBorderContainer {
 	/* make nested BorderContainers look like a single big widget with lots of splitters */
 	border: 0;
 	padding: 0;
@@ -64,72 +64,72 @@ Splitters and gutters:
 
 /* Splitters and gutters */
 
-.claro .dijitSplitterH,
-.claro .dijitGutterH {
+.umc .dijitSplitterH,
+.umc .dijitGutterH {
 	background:none;
 	border:0;
 	height:5px;
 }
-.dj_ios .claro .dijitSplitterH, .dj_android .claro .dijitSplitterH {
+.dj_ios .umc .dijitSplitterH, .dj_android .umc .dijitSplitterH {
 	height: 11px;
 }
 
-.claro .dijitSplitterH .dijitSplitterThumb {
+.umc .dijitSplitterH .dijitSplitterThumb {
 	background:$border-color none;
 	height:1px;
 	top:2px;
 	width:19px;
 }
-.dj_ios .claro .dijitSplitterH .dijitSplitterThumb, .dj_android .claro .dijitSplitterH .dijitSplitterThumb {
+.dj_ios .umc .dijitSplitterH .dijitSplitterThumb, .dj_android .umc .dijitSplitterH .dijitSplitterThumb {
 	top:5px;
 }
 
-.claro .dijitSplitterV,
-.claro .dijitGutterV {
+.umc .dijitSplitterV,
+.umc .dijitGutterV {
 	background:none;
 	border:0;
 	width:5px;
 	margin: 0;
 }
-.dj_ios .claro .dijitSplitterV, .dj_android .claro .dijitSplitterV {
+.dj_ios .umc .dijitSplitterV, .dj_android .umc .dijitSplitterV {
 	width: 11px;
 }
 
-.claro .dijitSplitterV .dijitSplitterThumb {
+.umc .dijitSplitterV .dijitSplitterThumb {
 	background:$border-color none;
 	height:19px;
 	left:2px;
 	width:1px;
 	margin: 0;
 }
-.dj_ios .claro .dijitSplitterV .dijitSplitterThumb, .dj_android .claro .dijitSplitterV .dijitSplitterThumb {
+.dj_ios .umc .dijitSplitterV .dijitSplitterThumb, .dj_android .umc .dijitSplitterV .dijitSplitterThumb {
 	left:5px;
 }
 
 /* hovered splitter */
-.claro .dijitSplitterHHover,
-.claro .dijitSplitterVHover {
+.umc .dijitSplitterHHover,
+.umc .dijitSplitterVHover {
 	font-size: 1px;
 	background-color: $splitter-hovered-background-color;
 }
 
-.claro .dijitSplitterHHover {
+.umc .dijitSplitterHHover {
 	alpha-white-gradient(left, (1 0px), (0 50%), (1 100%));
 }
 
-.claro .dijitSplitterVHover {
+.umc .dijitSplitterVHover {
 	alpha-white-gradient(top, (1 0px), (0 50%), (1 100%));
 }
 
-.claro .dijitSplitterHHover .dijitSplitterThumb,
-.claro .dijitSplitterVHover .dijitSplitterThumb {
+.umc .dijitSplitterHHover .dijitSplitterThumb,
+.umc .dijitSplitterVHover .dijitSplitterThumb {
 	background:$hovered-border-color none;
 }
 
 
 /* active splitter */
-.claro .dijitSplitterHActive,
-.claro .dijitSplitterVActive {
+.umc .dijitSplitterHActive,
+.umc .dijitSplitterVActive {
 	font-size: 1px;
 	background-color:$splitter-dragged-background-color;
 	background-image: none;		// color all the way across, not gradient like in hover mode

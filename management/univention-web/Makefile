@@ -81,7 +81,6 @@ $(TMP_THEME_DIR): $(TMP_DIR)
 	cp -r $(PWD)/$(THEME_REPO) $@
 	# mv claro.css to umc.css and replace '.claro' selector with '.umc'
 	mv $(TMP_THEME_DIR)/claro.css $(TMP_THEME_CSS)
-	sed -i 's/\.claro\>/.umc/g;' $$(find $(TMP_THEME_DIR) -name '*.styl' -o -name '*.css')
 
 # automatically create SVG files with white icons
 %-white.svg: %.svg

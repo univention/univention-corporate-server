@@ -25,10 +25,10 @@
 
 @import "variables";
 
-.claro .dijitTreeNode {
+.umc .dijitTreeNode {
     zoom: 1;	/* force layout on IE (TODO: may not be needed anymore) */
 }
-.claro .dijitTreeIsRoot {
+.umc .dijitTreeIsRoot {
     background-image: none;
 }
 
@@ -36,9 +36,9 @@
  * Also use this styling when dropping between items on the tree (in other words, don't
  * use hover effect)
  */
-.claro .dijitTreeRow,
-.claro .dijitTreeNode .dojoDndItemBefore,
-.claro .dijitTreeNode .dojoDndItemAfter {
+.umc .dijitTreeRow,
+.umc .dijitTreeNode .dojoDndItemBefore,
+.umc .dijitTreeNode .dojoDndItemAfter {
 	/* so insert line shows up on IE when dropping after a target element */
 	padding: 4px 0 2px 0;
 
@@ -57,7 +57,7 @@
 	transition-timing-function: ease-out;
 }
 
-.claro .dijitTreeRowSelected {
+.umc .dijitTreeRowSelected {
 	background-color: $selected-background-color;
 	standard-gradient();
 	padding: 3px 0 1px;
@@ -65,7 +65,7 @@
 	border-width: 1px 0;
 	color: $selected-text-color;
 }
-.claro .dijitTreeRowHover {
+.umc .dijitTreeRowHover {
 	background-color: $hovered-background-color;
 	standard-gradient();
 	padding: 3px 0 1px;
@@ -74,7 +74,7 @@
 	color: $hovered-text-color;
 	transition-duration: .25s;
 }
-.claro .dijitTreeRowActive {
+.umc .dijitTreeRowActive {
 	background-color:$pressed-background-color;
 	active-gradient();
 	padding: 3px 0 1px;
@@ -82,35 +82,35 @@
 	border-width: 1px 0;
 	color: $selected-text-color;
 }
-.claro .dijitTreeRowFocused {
+.umc .dijitTreeRowFocused {
 	background-repeat: repeat;
 }
 
 /* expando (open/closed) icon */
 
-.claro .dijitTreeExpando {
+.umc .dijitTreeExpando {
 	background-image: url($image-tree-expand);
     width: 16px;
     height: 16px;
 	background-position: -35px 0;		/* for dijitTreeExpandoOpened */
 }
-.dj_ie6 .claro .dijitTreeExpando {
+.dj_ie6 .umc .dijitTreeExpando {
 	background-image: url($image-tree-expand-ie6);
 }
-.claro .dijitTreeRowHover .dijitTreeExpandoOpened {
+.umc .dijitTreeRowHover .dijitTreeExpandoOpened {
 	background-position: -53px 0;
 }
-.claro .dijitTreeExpandoClosed {
+.umc .dijitTreeExpandoClosed {
 	background-position: 1px 0;
 }
-.claro .dijitTreeRowHover .dijitTreeExpandoClosed {
+.umc .dijitTreeRowHover .dijitTreeExpandoClosed {
 	background-position: -17px 0;
 }
-.claro .dijitTreeExpandoLeaf,
-.dj_ie6 .claro .dijitTreeExpandoLeaf {
+.umc .dijitTreeExpandoLeaf,
+.dj_ie6 .umc .dijitTreeExpandoLeaf {
 	background-image:none;
 }
-.claro .dijitTreeExpandoLoading {
+.umc .dijitTreeExpandoLoading {
 	background-image: url($image-loading-animation);
 }
 
@@ -119,9 +119,9 @@
  * (ie, indented equally with) target element, even
  * though dijitTreeRowNode is the actual "drag object"
  */
-.claro .dijitTreeNode .dojoDndItemBefore .dijitTreeContent {
+.umc .dijitTreeNode .dojoDndItemBefore .dijitTreeContent {
 	border-top: 2px solid $dnd-dropseparator-color;		// TODO: normal separator is just 1px, why is this 2px?
 }
-.claro .dijitTreeNode .dojoDndItemAfter .dijitTreeContent {
+.umc .dijitTreeNode .dojoDndItemAfter .dijitTreeContent {
 	border-bottom: 2px solid $dnd-dropseparator-color;	// TODO: normal separator is just 1px, why is this 2px?
 }

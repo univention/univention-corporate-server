@@ -28,16 +28,16 @@
 
 @import "../variables";
 
-.claro .dijitButtonNode {
+.umc .dijitButtonNode {
 	/* rules for dijit.form.*Button widgets and arrow nodes on ComboBox, Spinner etc. */
 	transition-property: background-color;
  	transition-duration: .3s;
 }
 
-.claro .dijitButton .dijitButtonNode,
-.claro .dijitDropDownButton .dijitButtonNode,
-.claro .dijitComboButton .dijitButtonNode,
-.claro .dijitToggleButton .dijitButtonNode {
+.umc .dijitButton .dijitButtonNode,
+.umc .dijitDropDownButton .dijitButtonNode,
+.umc .dijitComboButton .dijitButtonNode,
+.umc .dijitToggleButton .dijitButtonNode {
 	/* rules for the dijit.form.*Button widgets (see also ComboButton section below) */
 	border: 1px solid $button-border-color;
 	padding: 3px 6px 5px 6px;
@@ -57,7 +57,7 @@
 	//_background-image: none;	// IE6 can't handle background-color and background-image at once.
 }
 
-.claro .dijitButton.dijitDefaultButton .dijitButtonNode {
+.umc .dijitButton.dijitDefaultButton .dijitButtonNode {
 	vertical-gradient-and-filter($default-button-gradient-top-color, $default-button-gradient-bottom-color);
 	border-color: $default-button-border-color;
 	.dijitButtonText {
@@ -65,13 +65,13 @@
 	}
 }
 
-.claro .dijitComboButton .dijitArrowButton {
+.umc .dijitComboButton .dijitArrowButton {
 	border-left-width: 0;
 	padding: 4px 2px 4px 2px;	/* TODO: still needed? */
 }
 
 /*arrow styles for down/up/left/right directions*/
-.claro .dijitArrowButtonInner {
+.umc .dijitArrowButtonInner {
 	//width: 15px;
 	///height: 15px;
 	margin: 0 auto;
@@ -80,25 +80,25 @@
 	//background-position:-51px 53%;
 	icon-image(-162, -20, "../", width: 16px);
 }
-.claro .dijitLeftArrowButton .dijitArrowButtonInner {
+.umc .dijitLeftArrowButton .dijitArrowButtonInner {
 	background-position: -202px -20px;
 }
-.claro .dijitRightArrowButton .dijitArrowButtonInner {
+.umc .dijitRightArrowButton .dijitArrowButtonInner {
 	background-position: -222px -20px;
 }
-.claro .dijitUpArrowButton .dijitArrowButtonInner {
+.umc .dijitUpArrowButton .dijitArrowButtonInner {
 	background-position: -182px -20px;
 }
-.claro .dijitDisabled .dijitArrowButtonInner {
+.umc .dijitDisabled .dijitArrowButtonInner {
 	//background-position: 0 -160px;
 }
-.claro .dijitDisabled .dijitLeftArrowButton .dijitArrowButtonInner {
+.umc .dijitDisabled .dijitLeftArrowButton .dijitArrowButtonInner {
 	//background-position: -240px 0;
 }
-.claro .dijitDisabled .dijitRightArrowButton .dijitArrowButtonInner {
+.umc .dijitDisabled .dijitRightArrowButton .dijitArrowButtonInner {
 	//background-position: -280px 0;
 }
-.claro .dijitDisabled .dijitUpArrowButton .dijitArrowButtonInner {
+.umc .dijitDisabled .dijitUpArrowButton .dijitArrowButtonInner {
 	//background-position: -160px 0;
 }
 
@@ -109,7 +109,7 @@
 }
 
 
-.claro .dijitButtonText {
+.umc .dijitButtonText {
 	padding: 0 0.3em;
 	text-align: center;
 	font-size: $font-size-buttons;
@@ -117,11 +117,11 @@
 }
 
 /* hover status */
-.claro .dijitButtonHover .dijitButtonNode,
-.claro .dijitDropDownButtonHover .dijitButtonNode,
-.claro .dijitComboButton .dijitButtonNodeHover, 
-.claro .dijitComboButton .dijitDownArrowButtonHover,
-.claro .dijitToggleButtonHover .dijitButtonNode {
+.umc .dijitButtonHover .dijitButtonNode,
+.umc .dijitDropDownButtonHover .dijitButtonNode,
+.umc .dijitComboButton .dijitButtonNodeHover, 
+.umc .dijitComboButton .dijitDownArrowButtonHover,
+.umc .dijitToggleButtonHover .dijitButtonNode {
 	//background-color: desaturate(darken($button-hovered-background-color, 10), 20);
 	color:$text-color;
 	transition-duration: .2s;
@@ -140,11 +140,11 @@
 }
 
 /* active, checked status */
-.claro .dijitButtonActive .dijitButtonNode, 
-.claro .dijitDropDownButtonActive .dijitButtonNode,
-.claro .dijitComboButtonActive .dijitButtonNode,
-.claro .dijitToggleButtonActive .dijitButtonNode,
-.claro .dijitToggleButtonChecked .dijitButtonNode {
+.umc .dijitButtonActive .dijitButtonNode, 
+.umc .dijitDropDownButtonActive .dijitButtonNode,
+.umc .dijitComboButtonActive .dijitButtonNode,
+.umc .dijitToggleButtonActive .dijitButtonNode,
+.umc .dijitToggleButtonChecked .dijitButtonNode {
 	background-color: desaturate(darken($button-pressed-background-color, 10), 20);
 	box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.2);
 	transition-duration: .1s;
@@ -154,18 +154,18 @@
 }
 
 /* disabled status */
-.claro .dijitButtonDisabled,
-.claro .dijitDropDownButtonDisabled,
-.claro .dijitComboButtonDisabled,
-.claro .dijitToggleButtonDisabled {
+.umc .dijitButtonDisabled,
+.umc .dijitDropDownButtonDisabled,
+.umc .dijitComboButtonDisabled,
+.umc .dijitToggleButtonDisabled {
 	background-image: none;
 	outline: none;
 }
 
-.claro .dijitButtonDisabled .dijitButtonNode,
-.claro .dijitDropDownButtonDisabled .dijitButtonNode,
-.claro .dijitComboButtonDisabled .dijitButtonNode,
-.claro .dijitToggleButtonDisabled .dijitButtonNode { 
+.umc .dijitButtonDisabled .dijitButtonNode,
+.umc .dijitDropDownButtonDisabled .dijitButtonNode,
+.umc .dijitComboButtonDisabled .dijitButtonNode,
+.umc .dijitToggleButtonDisabled .dijitButtonNode { 
 	background-color: $disabled-background-color;
 	border: solid 1px $disabled-border-color;
 	color: $disabled-text-color;
@@ -178,17 +178,17 @@
 	_background-image: none;	// IE6 can't handle background-color and background-image at once.
 }
 
-.claro .dijitComboButtonDisabled .dijitArrowButton{ 
+.umc .dijitComboButtonDisabled .dijitArrowButton{ 
 	border-left-width: 0;
 }
 /* for ComboButton */
-.claro table.dijitComboButton {
+.umc table.dijitComboButton {
 	border-collapse: separate;	/* override dijit.css so that ComboBox rounded corners work */
 }
 
-.claro .dijitComboButton .dijitStretch {
+.umc .dijitComboButton .dijitStretch {
 	border-radius: $button-border-radius 0 0 $button-border-radius;
 }
-.claro .dijitComboButton .dijitArrowButton {
+.umc .dijitComboButton .dijitArrowButton {
 	border-radius: 0 $button-border-radius $button-border-radius 0;
 }

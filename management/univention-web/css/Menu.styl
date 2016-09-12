@@ -32,7 +32,7 @@ There are three areas of styling for the Menu:
 
 @import "variables";
 
-.claro .dijitMenuBar {
+.umc .dijitMenuBar {
 	border: 1px solid $border-color;
 	margin: 0;
 	padding: 0;
@@ -40,35 +40,35 @@ There are three areas of styling for the Menu:
 	standard-gradient();
 }
 
-.claro .dijitMenu {
+.umc .dijitMenu {
 	background-color:$menu-background-color;
 	//border: 1px solid $popup-border-color;
 	border: none;
 }
 
-.claro .dijitMenuItem {
+.umc .dijitMenuItem {
 	color: $text-color;
 }
-.claro .dijitMenuBar .dijitMenuItem {  
+.umc .dijitMenuBar .dijitMenuItem {  
 	padding: 6px 10px 7px;
 	margin:-1px;
 }	
-//.claro .dijitMenuBar .dijitMenuItemHover,
-//.claro .dijitMenuBar .dijitMenuItemSelected {
+//.umc .dijitMenuBar .dijitMenuItemHover,
+//.umc .dijitMenuBar .dijitMenuItemSelected {
 	// on hover or selection of MenuBar item, add border and reduce padding to compensate
 	//border:solid 1px $hovered-border-color;
 	//padding: 5px 9px 6px;
 //}
 
 /* this prevents jiggling upon hover of a menu item */
-.claro .dijitMenuTable {
+.umc .dijitMenuTable {
 	border-collapse:separate;
 	//border-spacing:0 0;
 	padding:0;
 }
 
-.claro .dijitMenu .dijitMenuItem td,
-.claro .dijitComboBoxMenu .dijitMenuItem {
+.umc .dijitMenu .dijitMenuItem td,
+.umc .dijitComboBoxMenu .dijitMenuItem {
 	// Make drop down menu text line up with text in <input>.
 	//padding: $textbox-padding;
 	//border-width:1px 0 1px 0;
@@ -78,13 +78,13 @@ There are three areas of styling for the Menu:
 }
 
 /* hover over a MenuItem or MenuBarItem */
-.claro .dijitMenu .dijitMenuItemHover td,
-.claro .dijitMenu .dijitMenuItemSelected td,
-.claro .dijitMenuItemActive,
-.claro .dijitMenuItemActiveFocused,
-.claro .dijitMenuItemHover,
-.claro .dijitComboBoxMenu .dijitMenuItemHover,
-.claro .dijitMenuItemSelected {
+.umc .dijitMenu .dijitMenuItemHover td,
+.umc .dijitMenu .dijitMenuItemSelected td,
+.umc .dijitMenuItemActive,
+.umc .dijitMenuItemActiveFocused,
+.umc .dijitMenuItemHover,
+.umc .dijitComboBoxMenu .dijitMenuItemHover,
+.umc .dijitMenuItemSelected {
 	// note: seems like the selected MenuItem should use $pressed-background-color
 	// and .active-gradient, but claro didn't to that
 	//border-color: $hovered-border-color;
@@ -93,15 +93,15 @@ There are three areas of styling for the Menu:
 	color: $selected-text-color;
 }
 
-.claro .dijitMenuItemActive {
+.umc .dijitMenuItemActive {
 	// todo: seems like the selected MenuItem should come here
 	// todo: seems like should use $pressed-background-color
 	active-gradient();
 }
-.dj_ie .claro .dijitMenuActive .dijitMenuItemHover,
-.dj_ie .claro .dijitMenuActive .dijitMenuItemSelected,
-.dj_ie .claro .dijitMenuPassive .dijitMenuItemHover,
-.dj_ie .claro .dijitMenuPassive .dijitMenuItemSelected {
+.dj_ie .umc .dijitMenuActive .dijitMenuItemHover,
+.dj_ie .umc .dijitMenuActive .dijitMenuItemSelected,
+.dj_ie .umc .dijitMenuPassive .dijitMenuItemHover,
+.dj_ie .umc .dijitMenuPassive .dijitMenuItemSelected {
 	// Selectivity set to override ComboBox rules below.
 	// If this rule isn't present, on IE6 hovering an item in the ComboBox drop down causes two
 	// items to be highlighted (except when hovering the first item in the list)
@@ -110,11 +110,11 @@ There are three areas of styling for the Menu:
 	margin-top: -3px;
 }
 
-.claro td.dijitMenuItemIconCell {
+.umc td.dijitMenuItemIconCell {
  padding: 2px;
  margin: 0 0 0 4px;
 }
-.claro td.dijitMenuItemLabel {
+.umc td.dijitMenuItemLabel {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
@@ -124,7 +124,7 @@ There are three areas of styling for the Menu:
 	vertical-align: middle;
 }
 
-.claro .dijitMenuExpand {
+.umc .dijitMenuExpand {
 	//width: 7px;
 	//height: 7px;
 	//background-image: url($image-arrow-sprite);
@@ -139,49 +139,49 @@ There are three areas of styling for the Menu:
 	icon-image(-84, 0, '', '-small-white', width: 12px, height: 12px);
 }
 
-.claro .dijitMenuItemDisabled .dijitMenuItemIconCell {
+.umc .dijitMenuItemDisabled .dijitMenuItemIconCell {
 	opacity:1;
 }
-.claro .dijitMenuSeparatorTop {
+.umc .dijitMenuSeparatorTop {
 	height: auto;
 	margin-top:1px; /* prevents spacing above/below separator */
 	border-bottom: 1px solid $border-color
 }
-.claro .dijitMenuSeparatorBottom{
+.umc .dijitMenuSeparatorBottom{
 	height: auto;
 	margin-bottom:1px;
 }
 /* the checked menu item */
-.claro .dijitCheckedMenuItem .dijitMenuItemIcon,
-.claro .dijitRadioMenuItem .dijitMenuItemIcon {
+.umc .dijitCheckedMenuItem .dijitMenuItemIcon,
+.umc .dijitRadioMenuItem .dijitMenuItemIcon {
 	background-image: url($image-form-checkbox-and-radios);
 	background-repeat:no-repeat;
 	background-position: -15px 50%;	/* unchecked checkbox */
 	width:15px;
 	height:16px;
 }
-.dj_ie6 .claro .dijitCheckedMenuItem .dijitMenuItemIcon,
-.dj_ie6 .claro .dijitRadioMenuItem .dijitMenuItemIcon {
+.dj_ie6 .umc .dijitCheckedMenuItem .dijitMenuItemIcon,
+.dj_ie6 .umc .dijitRadioMenuItem .dijitMenuItemIcon {
 	background-image: url($image-form-checkbox-and-radios-ie6);
 }
-.claro .dijitCheckedMenuItemChecked .dijitCheckedMenuItemIcon {
+.umc .dijitCheckedMenuItemChecked .dijitCheckedMenuItemIcon {
 	background-position: 0 50%;	/* checked checkbox */
 }
-.claro .dijitRadioMenuItem .dijitMenuItemIcon {
+.umc .dijitRadioMenuItem .dijitMenuItemIcon {
 	background-position: -105px 50%;	/* unfilled circle */
 }
-.claro .dijitRadioMenuItemChecked .dijitMenuItemIcon {
+.umc .dijitRadioMenuItemChecked .dijitMenuItemIcon {
 	background-position: -90px 50%;	/* filled circle */
 }
 
 /*ComboBox Menu*/
-.claro .dijitComboBoxMenu {
+.umc .dijitComboBoxMenu {
 	margin-left:0;
 	background-image: none;
 }
 
-.claro .dijitMenu .dijitMenuItemSelected td,
-.claro .dijitComboBoxMenu .dijitMenuItemSelected {
+.umc .dijitMenu .dijitMenuItemSelected td,
+.umc .dijitComboBoxMenu .dijitMenuItemSelected {
 	// TODO: combine with above rules for selected items?
 	// But the selected item in a Select drop down is different than when MenuBarItem "File" is highlighted
 	// because the user is on the file menu?
@@ -189,9 +189,9 @@ There are three areas of styling for the Menu:
 	//border-color:$hovered-border-color;
 	background-color:$hovered-background-color;
 }
-.claro .dijitComboBoxMenuActive .dijitMenuItemSelected {
+.umc .dijitComboBoxMenuActive .dijitMenuItemSelected {
 	background-color: $select-dropdownitem-hovered-background-color;	/* TODO: why is this a different color than normal .dijitMenuItemSelected? */
 }
-.claro .dijitMenuPreviousButton, .claro .dijitMenuNextButton {
+.umc .dijitMenuPreviousButton, .umc .dijitMenuNextButton {
 	font-style: italic;
 }

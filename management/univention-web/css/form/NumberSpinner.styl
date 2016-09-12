@@ -22,34 +22,34 @@
 
 @import "../variables";
 
-.claro .dijitSpinnerButtonContainer {
+.umc .dijitSpinnerButtonContainer {
 	overflow: hidden;
 	position: relative;
 	width: auto;
 	padding: 0 2px;
 }
-.claro .dijitSpinnerButtonContainer .dijitSpinnerButtonInner {
+.umc .dijitSpinnerButtonContainer .dijitSpinnerButtonInner {
 	border-width: 1px 0; /* reserve space to match the claro combobox button border with border and not padding to make IE happier */
 	border-style: solid none;
 }
 
 /* button */
-.claro .dijitSpinner .dijitArrowButton {
+.umc .dijitSpinner .dijitArrowButton {
 	width:auto;
 	//background-color: $arrowbutton-background-color;
 	//standard-gradient("../");
 	overflow: hidden;
 	border: none;
 }
-.dj_iequirks .claro .dijitSpinner .dijitArrowButton {
+.dj_iequirks .umc .dijitSpinner .dijitArrowButton {
 	overflow: visible; /* 0 height w/o this */
 }
 
-.claro .dijitSpinner .dijitSpinnerButtonInner {
+.umc .dijitSpinner .dijitSpinnerButtonInner {
 	width: 15px;
 }
 /* up & down button icons */
-.claro .dijitSpinner .dijitArrowButtonInner {
+.umc .dijitSpinner .dijitArrowButtonInner {
 	//border:solid 1px $arrowbutton-inner-border-color;
 	//border-bottom-width: 0; /* 2 top borders = 1 top+bottom border in ComboBox */
 	//background-image: url("../" + $image-form-common-arrows);
@@ -68,33 +68,33 @@
 	//margin: -1px 0 -1px 0;	/* compensate for inner border */
 }
 
-.dj_iequirks .claro .dijitSpinner .dijitArrowButtonInner,
-.dj_ie6 .claro .dijitSpinner .dijitArrowButtonInner,
-.dj_ie7 .claro .dijitSpinner .dijitArrowButtonInner,
-.dj_ie8 .claro .dijitSpinner .dijitArrowButtonInner {
+.dj_iequirks .umc .dijitSpinner .dijitArrowButtonInner,
+.dj_ie6 .umc .dijitSpinner .dijitArrowButtonInner,
+.dj_ie7 .umc .dijitSpinner .dijitArrowButtonInner,
+.dj_ie8 .umc .dijitSpinner .dijitArrowButtonInner {
 	margin-top: 0; /* since its bottom aligned */
 }
 
-.dj_iequirks .claro .dijitSpinner .dijitArrowButtonInner {
+.dj_iequirks .umc .dijitSpinner .dijitArrowButtonInner {
 	width: 19px;
 }
-.claro .dijitSpinner .dijitDownArrowButton .dijitArrowButtonInner {
+.umc .dijitSpinner .dijitDownArrowButton .dijitArrowButtonInner {
 	background-position: -160px -24px;
 }
-.claro .dijitSpinner .dijitArrowButtonInner .dijitInputField {
+.umc .dijitSpinner .dijitArrowButtonInner .dijitInputField {
 	padding: 0;
 }
 
 /** hover & focused status **/
 
-.claro .dijitUpArrowButtonActive,
-.claro .dijitDownArrowButtonActive {
+.umc .dijitUpArrowButtonActive,
+.umc .dijitDownArrowButtonActive {
 	//background-color:$arrowbutton-pressed-background-color;
 }
 
-.claro .dijitSpinner .dijitUpArrowButtonHover,
-.claro .dijitSpinner .dijitDownArrowButtonHover,
-.claro .dijitSpinnerFocused .dijitArrowButton {
+.umc .dijitSpinner .dijitUpArrowButtonHover,
+.umc .dijitSpinner .dijitDownArrowButtonHover,
+.umc .dijitSpinnerFocused .dijitArrowButton {
 	//background-color: $arrowbutton-hovered-background-color;
 }
 .umc .dijitSpinner {
@@ -106,27 +106,27 @@
 	}
 }
 
-.claro .dijitSpinner .dijitUpArrowButtonHover .dijitArrowButtonInner {
+.umc .dijitSpinner .dijitUpArrowButtonHover .dijitArrowButtonInner {
 	//background-position:-174px;
 }
-.claro .dijitSpinner .dijitDownArrowButtonHover .dijitArrowButtonInner {
+.umc .dijitSpinner .dijitDownArrowButtonHover .dijitArrowButtonInner {
 	//background-position:-69px;
 }
 
-.claro .dijitSpinnerFocused {
+.umc .dijitSpinnerFocused {
 	//background-color: $textbox-focused-background-color;
 	background-image: none;
 }
 
 /* mouse down status */
-.claro .dijitSpinner .dijitDownArrowButtonActive,
-.claro .dijitSpinner .dijitUpArrowButtonActive {
+.umc .dijitSpinner .dijitDownArrowButtonActive,
+.umc .dijitSpinner .dijitUpArrowButtonActive {
 	//background-color: #7dbefa;		// TODO.  Mailed Jason about inconsistent ComboBox/Spinner behavior.
 	//active-gradient("../");
 	background-color: $secondary-color;
 }
-.claro .dijitSpinner .dijitUpArrowButtonActive .dijitArrowButtonInner,
-.claro .dijitSpinner .dijitDownArrowButtonActive .dijitArrowButtonInner {
+.umc .dijitSpinner .dijitUpArrowButtonActive .dijitArrowButtonInner,
+.umc .dijitSpinner .dijitDownArrowButtonActive .dijitArrowButtonInner {
 	/* hide inner border while button is depressed */
 	//border: 0;
 	//padding: 1px;
@@ -134,22 +134,22 @@
 	//margin-bottom:1px;
 	opacity: 1;
 }
-.claro .dijitSpinner .dijitUpArrowButtonActive .dijitArrowButtonInner {
+.umc .dijitSpinner .dijitUpArrowButtonActive .dijitArrowButtonInner {
 	//background-position:-173px;
 }
-.claro .dijitSpinner .dijitDownArrowButtonActive .dijitArrowButtonInner {
+.umc .dijitSpinner .dijitDownArrowButtonActive .dijitArrowButtonInner {
 	//background-position:-68px;
 }
 
 /* disabled */
 
-.claro .dijitSpinnerDisabled .dijitArrowButtonInner {
+.umc .dijitSpinnerDisabled .dijitArrowButtonInner {
 	//background-color: $disabled-background-color;
 }
-.claro .dijitSpinnerDisabled .dijitUpArrowButton .dijitArrowButtonInner {
+.umc .dijitSpinnerDisabled .dijitUpArrowButton .dijitArrowButtonInner {
 	//background-position:-104px;
 }
-.claro .dijitSpinnerDisabled .dijitDownArrowButton .dijitArrowButtonInner {
+.umc .dijitSpinnerDisabled .dijitDownArrowButton .dijitArrowButtonInner {
 	//background-position:1px;
 }
 
@@ -157,6 +157,6 @@
 
 /* for IE 7, when div is enlarged, 
  * should be no empty space between dijitInputLayoutContainer and dijitSpinner*/
-.dj_ie7 .claro .dijitSpinner {
+.dj_ie7 .umc .dijitSpinner {
 	overflow:visible;
 } 

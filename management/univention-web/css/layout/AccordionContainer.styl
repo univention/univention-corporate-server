@@ -30,10 +30,10 @@
 
 @import "../variables";
 
-.claro .dijitAccordionContainer {
+.umc .dijitAccordionContainer {
 	border:none;
 }
-.claro .dijitAccordionInnerContainer {
+.umc .dijitAccordionInnerContainer {
 	background-color: $unselected-background-color;	/* gray, for closed pane */
 	border:solid 1px $border-color;
 	margin-bottom:1px;
@@ -41,7 +41,7 @@
  	transition-duration: .3s;
 	transition-timing-function: linear;
 }
-.claro .dijitAccordionTitle {
+.umc .dijitAccordionTitle {
 	background-color: transparent;	/* pick up color from dijitAccordionInnerContainer */
 	standard-gradient("../");
 	padding: 5px 7px 2px 7px;
@@ -49,7 +49,7 @@
 	color:$unselected-text-color;
 }
 
-.claro .dijitAccordionContainer .dijitAccordionChildWrapper {
+.umc .dijitAccordionContainer .dijitAccordionChildWrapper {
 	/* this extends the blue trim styling of the title bar to wrapping around the node.
 	 * done by setting margin
 	 */
@@ -58,42 +58,42 @@
 	margin: 0 2px 2px;
 }
 	
-.claro .dijitAccordionContainer .dijitAccordionContainer-child {
+.umc .dijitAccordionContainer .dijitAccordionContainer-child {
 	/* this is affecting the child widget itself */
 	padding: 9px;
 }
 
 /* Hover state for closed pane */
 
-.claro .dijitAccordionInnerContainerHover {
+.umc .dijitAccordionInnerContainerHover {
 	border:1px solid $hovered-border-color;
 	background-color:$hovered-background-color;
 	transition-duration: .2s;
 }
 
-.claro .dijitAccordionInnerContainerHover .dijitAccordionTitle {
+.umc .dijitAccordionInnerContainerHover .dijitAccordionTitle {
 	color:$hovered-text-color;
 }
 
 /* Active state for closed pane */
 
-.claro .dijitAccordionInnerContainerActive {
+.umc .dijitAccordionInnerContainerActive {
 	border:1px solid $selected-border-color;
 	background-color:$pressed-background-color;
 	transition-duration: .1s;
 }
-.claro .dijitAccordionInnerContainerActive .dijitAccordionTitle {
+.umc .dijitAccordionInnerContainerActive .dijitAccordionTitle {
 	active-gradient("../");
 	color:$selected-text-color;
 }
 
 /* Open (a.k.a. selected) pane */
 
-.claro .dijitAccordionInnerContainerSelected {
+.umc .dijitAccordionInnerContainerSelected {
 	border-color:$selected-border-color;
 	background-color: $selected-background-color;
 }
-.claro .dijitAccordionInnerContainerSelected .dijitAccordionTitle {
+.umc .dijitAccordionInnerContainerSelected .dijitAccordionTitle {
 	color:$selected-text-color;
 	standard-gradient("../");	/* avoid effect when clicking the title of the open pane */
 }
