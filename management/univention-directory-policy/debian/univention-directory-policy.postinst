@@ -34,10 +34,6 @@
 
 univention-config-registry set ldap/policy/cron?"5 * * * *"
 
-if [ -n "$2" ]; then
-	update-rc.d -f univention-directory-policy remove >/dev/null 2>&1 || true
-fi
-
 #DEBHELPER#
 
 create_logfile /var/log/univention/ldap-policy.log "root:adm" 640

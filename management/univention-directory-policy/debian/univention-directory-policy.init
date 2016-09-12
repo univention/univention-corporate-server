@@ -1,7 +1,14 @@
 #!/bin/sh
-#
-# Univention Directory Policy
-#  init script
+### BEGIN INIT INFO
+# Provides:          univention-directory-policy
+# Required-Start:    $network $remote_fs
+# Required-Stop:     $network $remote_fs
+# Should-Start:      slapd
+# Should-Stop:       slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Directory Policy
+### END INIT INFO
 #
 # Copyright 2004-2016 Univention GmbH
 #
@@ -31,38 +38,35 @@
 # <http://www.gnu.org/licenses/>.
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
+
+d_start () {
+	local ldap_server_port ldap_server_addition ldap_server_name host IFS="${IFS:- 	},"
+	eval "$(univention-config-registry shell ldap/server/port ldap/server/addition ldap/server/name)"
+
+	set -- $ldap_server_name $ldap_server_addition
+	[ $# -eq 0 ] && return 0
+	for host in "$@"
+	do
+		netcat -q0 -w4 "$host" ${ldap_server_port:-7389} </dev/null >/dev/null 2>&1 ||
+			continue
+		run-parts /usr/lib/univention-directory-policy >>/var/log/univention/ldap-policy.log 2>&1
+		return $?
+	done
+	return 1
+}
 
 case "$1" in
-	start|restart)
-		log_daemon_msg "Starting Univention Directory Policy"
-
-		eval "$(univention-config-registry shell)"
-
-		if [ -z "$ldap_server_port" ]; then
-			ldap_server_port=7389
-		fi
-		addition=$(echo "$ldap_server_addition" | sed -e "s/,/ /g")
-		connection=false
-		for host in $ldap_server_name $addition; do
-			if /bin/netcat -q0 -w4 $host $ldap_server_port </dev/null >/dev/null 2>&1; then
-				run-parts /usr/lib/univention-directory-policy >>/var/log/univention/ldap-policy.log 2>&1
-				if [ $? = 0 ]; then
-					log_end_msg 0
-				else
-					log_end_msg 1
-				fi
-				connection=true
-				break
-			fi
-		done
-		if [ "false" = "$connection" ]; then
-			log_end_msg 1
-		fi
+	start|restart|force-reload)
+		log_action_begin_msg "Applying $DESC"
+		d_start
+		log_action_end_msg $?
 		;;
-	stop)
+	stop|status)
 		;;
 	*)
-		log_action_msg "Usage: /etc/init.d/univention-directory-policy {start|stop|restart}"
+		echo "Usage: $0 {start|stop|restart|force-reload|status}"
 		exit 1
 		;;
 esac
