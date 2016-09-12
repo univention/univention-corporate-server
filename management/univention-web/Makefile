@@ -57,6 +57,8 @@ THEME_INSTALL_DIR=/usr/share/univention-web/js/dijit/themes/umc
 
 build: build-js build-css
 
+build-dev: $(TMP_DIR) $(TMP_JS_FILES) build-common-js build-css
+
 build-js: $(BUILD_DIR)/dojo/dojo.js
 
 build-common-js: $(TMP_DIR) $(BUILD_DIR) $(TMP_I18N_FILES) $(TMP_DIR)/umc/_all.js $(TMP_DIR)/umc/i18n/en/branding.json $(BUILD_DIR)/umc/package.json

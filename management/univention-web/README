@@ -10,15 +10,15 @@ will create a new subdirectory 'build' to which all necessary files are store.
 
 === Development ===
 
-The Dojo build process takes some time. In order to develop, you can use the
-directory tmp which is created by the Makefile as an intermediate step. Herein,
-JavaScript and stylus files are symbolic links to their sources. The tmp
-directory can be hooked into /var/www via a symbolic link. Since all of the
-files are simply symbolic links to the original source files, they can be
-modified directly in order to perform 'live' development.
+The Dojo build process takes some time. In order to develop, call "make
+build-dev" to shorten the build process. The directory tmp is then created and
+updated. Herein, JavaScript and stylus files are symbolic links to their
+sources. The tmp directory can be hooked into /var/www via a symbolic link.
+Since all of the files are simply symbolic links to the original source files,
+they can be modified directly in order to perform 'live' development.
 
-Stylus files need to compiled to CSS files, nevertheless. For this, simply run
-make build-css to recompile only CSS files.
+Stylus files need to compiled to CSS files, nevertheless. Simply run "make
+build-dev" to recompile only CSS files.
 
 
 === Debugging ===
