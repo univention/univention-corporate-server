@@ -1,7 +1,14 @@
 #!/bin/sh
-#
-# restricted configuration for demo.univention.de
-#  upgrade init script
+### BEGIN INIT INFO
+# Provides:          univention-demo-configuration
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs $network
+# Should-Start:      bind9
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: restricted configuration for demo.univention.de
+### END INIT INFO
 #
 # Copyright 2012-2016 Univention GmbH
 #
@@ -32,10 +39,16 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 case "$1" in
-	start)
+	start|restart|force-reload)
 		ucr commit /etc/apt/sources.list.d/*
 		univention-upgrade --noninteractive
 		univention-config-registry set update/reboot/required=false
+		;;
+	stop|status)
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|force-reload|status}"
+		exit 1
 		;;
 esac
 

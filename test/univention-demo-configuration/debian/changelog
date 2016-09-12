@@ -1,3 +1,9 @@
+univention-demo-configuration (5.0.0-3) unstable; urgency=low
+
+  * Bug #38438: Make init-script LSB compliant
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 14:58:11 +0200
+
 univention-demo-configuration (5.0.0-2) unstable; urgency=medium
 
   * Bug #42129: allow call of command appcenter/track
