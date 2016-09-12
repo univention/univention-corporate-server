@@ -1,7 +1,12 @@
 #!/bin/sh
-#
-# Univention RunIt
-#  init script
+### BEGIN INIT INFO
+# Provides:          univention-runit
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention process supervision
+### END INIT INFO
 #
 # Copyright 2003-2016 Univention GmbH
 #
@@ -31,25 +36,33 @@
 # <http://www.gnu.org/licenses/>.
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
+DAEMON="/usr/sbin/runsvdir-start"
 
 case "$1" in
 	start)
-		log_action_msg "Starting univention-runit"
-		start-stop-daemon -S -b -x /usr/sbin/runsvdir-start
-		log_action_end_msg 0
+		log_daemon_msg "Starting $DESC" "$NAME"
+		start-stop-daemon --start --background --exec "$DAEMON"
+		log_end_msg $?
 		;;
 	stop)
-		log_action_msg "Stopping univention-runit:"
+		log_daemon_msg "Stopping $DESC" "$NAME"
 		killall -s HUP runsvdir
-		log_action_end_msg 0
+		log_end_msg $?
 		;;
 	restart|force-reload)
-		$0 stop
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		killall -s HUP runsvdir
 		sleep 1
-		$0 start
+		start-stop-daemon --start --background --exec "$DAEMON"
+		log_end_msg $?
+		;;
+	status)
+		status_of_proc "$DAEMON" "$DESC"
 		;;
 	*)
-		echo "Usage: $0 {start|stop|restart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|force-reload|status}"
 		exit 1
 		;;
 esac

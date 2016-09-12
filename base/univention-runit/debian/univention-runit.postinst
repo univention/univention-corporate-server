@@ -43,11 +43,6 @@ then
 	rm /etc/inittab_univention-runit_postinst
 fi
 
-if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt-nl 5.0.0~
-then
-	update-rc.d -f univention-runit remove >/dev/null
-fi
-
 #DEBHELPER#
 
 if [ -z "$2" ]
