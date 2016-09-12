@@ -115,11 +115,6 @@ univention-config-registry set sshd/port?22 \
 	sshd/challengeresponse?yes \
 	sshd/passwordauthentication?no
 
-if [ -x /etc/init.d/ntpdate -a -x /etc/rcS.d/S51ntpdate ]; then
-	update-rc.d -f ntpdate remove >/dev/null 2>&1 || true
-	update-rc.d  ntpdate defaults 22 >/dev/null 2>&1 || true
-fi
-
 if [ -e /etc/init.d/rdate ]; then
 	chmod +x /etc/init.d/rdate
 fi
@@ -128,8 +123,6 @@ if [ -n "$locale" ]; then
 	locale-gen || true
 fi
 dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~ -- "$@"
-
-update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 
 univention-config-registry set kernel/do_initrd?yes \
 	kernel/do_bootfloppy?no \

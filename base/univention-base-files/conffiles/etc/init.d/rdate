@@ -1,6 +1,16 @@
 #!/bin/sh
 @%@UCRWARNING=# @%@
 
+### BEGIN INIT INFO
+# Provides:        rdate
+# Required-Start:  $network $remote_fs
+# Required-Stop:   $network $remote_fs
+# Default-Start:   2 3 4 5
+# Default-Stop:
+# X-Start-Before: ntp
+# Short-Description: Fetch NTP time
+### END INIT INFO
+
 PATH=/sbin:/bin
 
 test -f /usr/bin/rdate || exit 0
