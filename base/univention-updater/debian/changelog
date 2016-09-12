@@ -1,3 +1,9 @@
+univention-updater (12.0.0-7) unstable; urgency=low
+
+  * Bug #38438: Make init-script LSB compliant
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 16:08:04 +0200
+
 univention-updater (12.0.0-6) unstable; urgency=low
 
   * Bug #42076: Corrected some typos.
