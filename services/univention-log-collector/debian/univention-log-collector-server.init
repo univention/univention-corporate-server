@@ -1,6 +1,12 @@
 #! /bin/sh
-#
-# Univention Log Collector
+### BEGIN INIT INFO
+# Provides:          univention-log-collector-server
+# Required-Start:    $network $remote_fs
+# Required-Stop:     $network $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Log file collector server
+### END INIT INFO
 #
 # Copyright 2007-2016 Univention GmbH
 #
@@ -35,30 +41,35 @@ DAEMON=/usr/sbin/log-collector-server.py
 PIDFILE=/var/run/$NAME.pid
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 # Gracefully exit if the package has been removed.
-test -x $DAEMON || exit 0
+test -x "$DAEMON" || exit 0
 
 case "$1" in
   start)
-	log_action_msg "Starting Univention log collector server"
-	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --background --exec $DAEMON
-	log_action_end_msg 0
+	log_daemon_msg "Starting $DESC" "$NAME"
+	start-stop-daemon --start --oknodo --quiet --make-pidfile --pidfile "$PIDFILE" --background --exec "$DAEMON"
+	log_end_msg $?
 	;;
   stop)
-	log_action_msg "Stopping Univention log collector server"
-	start-stop-daemon --stop --quiet --pidfile $PIDFILE
-	log_action_end_msg 0
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	start-stop-daemon --stop --oknodo --quiet --pidfile "$PIDFILE"
+	log_end_msg $?
 	;;
-  restart)
-	log_action_msg "Restarting Univention log collector server"
-	start-stop-daemon --stop --quiet --pidfile $PIDFILE
+  restart|force-reload)
+	log_daemon_msg "Restarting $DESC" "$NAME"
+	start-stop-daemon --stop --oknodo --quiet --pidfile "$PIDFILE"
 	sleep 1
-	start-stop-daemon --start --quiet --make-pidfile --pidfile $PIDFILE --background --exec $DAEMON
-	log_action_end_msg 0
+	start-stop-daemon --start --oknodo --quiet --make-pidfile --pidfile "$PIDFILE" --background --exec "$DAEMON"
+	log_end_msg $?
+	;;
+  status)
+	status_of_proc -p "$PIDFILE" "$DAEMON" "$DESC"
 	;;
   *)
-	echo "Usage: /etc/init.d/univention-log-collector-server {start|stop|restart|force-reload}" >&2
+	echo "Usage: $0 {start|stop|restart|force-reload|status}" >&2
 	exit 1
 	;;
 esac
