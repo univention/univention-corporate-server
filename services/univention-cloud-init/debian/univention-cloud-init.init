@@ -1,7 +1,12 @@
 #!/bin/bash
-#
-# Univention cloud-init
-#  boot init script for univention cloud-init
+### BEGIN INIT INFO
+# Provides:          univention-cloud-init
+# Required-Start:    $network $remote_fs
+# Required-Stop:     $network $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Cloud initialization
+### END INIT INFO
 #
 # Copyright 2014-2016 Univention GmbH
 #
@@ -33,10 +38,12 @@
 . /lib/lsb/init-functions
 
 . /usr/share/univention-lib/ucr.sh
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
 	start)
-		log_action_msg "Starting univention-cloud-init"
+		log_action_msg "Running $DESC"
 
 		if is_ucr_true server/cloud-init; then
 			if [ -e /var/cache/univention-system-setup/profile -a ! -e /var/univention-join/joined ]; then
@@ -69,8 +76,18 @@ case "$1" in
 		fi
 		log_action_end_msg 0
 		;;
+	stop|restart|force-reload)
+		;;
+	status)
+		if is_ucr_true server/cloud-init
+		then
+			log_success_msg "$DESC is enabled"
+		else
+			log_failure_msg "$DESC is disabled"
+		fi
+		;;
 	*)
-		log_action_msg "Usage: /etc/init.d/univention-cloud-init start"
+		echo "Usage: $0 {start|stop|restart|force-reload|status}."
 		exit 1
 		;;
 esac

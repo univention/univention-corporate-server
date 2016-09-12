@@ -44,6 +44,4 @@ if ! ucr get grub/append | grep -q "${option}"; then
 	ucr set grub/append="$(ucr get grub/append) ${option}"
 fi
 
-update-rc.d univention-cloud-init-prepare-boot defaults 15
-
 exit 0
