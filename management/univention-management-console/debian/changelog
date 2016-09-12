@@ -1,3 +1,11 @@
+univention-management-console (9.0.12-1) unstable; urgency=low
+
+  * Bug #38438: Make init-script LSB compliant
+  * Bug #42339: Fix wrong service name
+  * Bug #42340: Fix wrong service name
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 13:47:57 +0200
+
 univention-management-console (9.0.11-5) unstable; urgency=medium
 
   * Bug #38824: WIP - move UMC specific code from web lib

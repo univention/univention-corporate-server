@@ -1,8 +1,8 @@
-debian/tmp/usr/sbin/univention-management-console-acls
-debian/tmp/usr/sbin/univention-management-console-client
-debian/tmp/usr/sbin/univention-management-console-module
-debian/tmp/usr/sbin/univention-management-console-server
-debian/tmp/usr/share/univention-management-console/*
-debian/tmp/usr/share/locale/*
+usr/sbin/univention-management-console-acls
+usr/sbin/univention-management-console-client
+usr/sbin/univention-management-console-module
+usr/sbin/univention-management-console-server
+usr/share/univention-management-console/*
+usr/share/locale/*
 data/categories/icon/*.svg var/www/univention/js/dijit/themes/umc/icons/scalable
 umc-service-providers.py usr/lib/univention-directory-listener/system/

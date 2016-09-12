@@ -1,7 +1,14 @@
 #!/bin/sh
-#
-# Univention Management Console
-#  init script for the UMC web server
+### BEGIN INIT INFO
+# Provides:          univention-management-console-web-server
+# Required-Start:    $network $remote_fs univention-management-console-server
+# Required-Stop:     $network $remote_fs univention-management-console-server
+# X-Start-Before:    apache2
+# X-Stop-After:      apache2
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Management Console Web Server
+### END INIT INFO
 #
 # Copyright 2011-2016 Univention GmbH
 #
@@ -31,9 +38,10 @@
 # <http://www.gnu.org/licenses/>.
 
 . /lib/lsb/init-functions
-
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 DAEMON="/usr/sbin/univention-management-console-web-server"
-NAME="Univention Management Console Web Server"
+PIDFILE="/var/run/umc-web-server.pid"
 
 if [ ! -x "$DAEMON" ]; then
 	exit 0
@@ -44,49 +52,52 @@ case "$1" in
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/http/autostart
+			check_autostart "$NAME" umc/http/autostart
 		fi
-		log_action_msg "Starting $NAME"
-		$DAEMON start
-		log_action_end_msg 0
+		log_daemon_msg "Starting $DESC" "$NAME"
+		"$DAEMON" start
+		log_end_msg $?
 		;;
 	stop)
-		log_action_msg "Stopping $NAME"
-		$DAEMON stop
-		log_action_end_msg 0
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		"$DAEMON" stop
+		log_end_msg $?
 		;;
 	restart)
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/http/autostart
+			check_autostart "$NAME" umc/http/autostart
 		fi
-		log_action_msg "Restarting $NAME"
-		$DAEMON restart
-		log_action_end_msg 0
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		"$DAEMON" restart
+		log_end_msg $?
 		;;
 	reload)
-		log_action_msg "Reloading $NAME"
-		$DAEMON reload
-		log_action_end_msg 0
+		log_daemon_msg "Reloading $DESC" "$NAME"
+		"$DAEMON" reload
+		log_end_msg $?
+		;;
+	status)
+		status_of_proc -p "$PIDFILE" "$DAEMON" "$DESC"
 		;;
 	crestart)
 		# check UCR autostart setting
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
-			check_autostart listener"$NAME" umc/http/autostart
+			check_autostart "$NAME" umc/http/autostart
 		fi
-		log_action_msg "Restarting $NAME (if currently active)"
-		pid="$(cat /var/run/umc-web-server.pid)"
+		log_action_msg "Restarting $DESC (if currently active)"
+		pid="$(cat "$PIDFILE" 2>/dev/null)"
 		if [ -n "$pid" -a -d "/proc/$pid" ]; then
-			$DAEMON crestart
-			log_action_end_msg 0
+			"$DAEMON" crestart
+			log_action_end_msg $?
 		else
-			log_action_msg "$NAME is not running, no need to restart."
+			log_action_msg "$DESC is not running, no need to restart."
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-management-console-web-server {start|stop|restart|reload|crestart}"
+		echo "Usage: $0 {start|stop|restart|reload|crestart|status}"
 		exit 1
 		;;
 esac
