@@ -77,8 +77,8 @@ $(TMP_DIR):
 	cp -rfs "$(CURDIR)/js" $@/umc
 
 $(TMP_THEME_DIR): $(TMP_DIR)
-	# copy theme files into the tmp dir
-	cp -r $(PWD)/$(THEME_REPO) $@
+	# link theme files into the tmp dir
+	cp -fsr $(PWD)/$(THEME_REPO) $@
 
 # automatically create SVG files with white icons
 %-white.svg: %.svg
@@ -102,8 +102,6 @@ $(BUILD_IMAGE_DIRS)::
 	cp -r $$src $@
 
 $(BUILD_THEME_DIR)/umc.css: tmp-css
-	# compile all stylus files
-	stylus $(TMP_THEME_DIR) $(TMP_THEME_DIR)/form $(TMP_THEME_DIR)/layout $(TMP_THEME_DIR)/site
 	# generate source maps
 	for idir in . form layout site; do \
 		cd $(TMP_THEME_DIR)/$$idir; \

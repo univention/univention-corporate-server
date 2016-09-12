@@ -1,3 +1,9 @@
+univention-web (1.0.1-5) unstable; urgency=medium
+
+  * Bug #38824: WIP - update README + optimize Makefile
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Sep 2016 11:51:47 +0200
+
 univention-web (1.0.1-4) unstable; urgency=medium
 
   * Bug #38824: WIP - rename css/js directories
