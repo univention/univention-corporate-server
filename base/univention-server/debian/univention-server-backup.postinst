@@ -41,8 +41,4 @@ mkdir -p /var/lib/samba/netlogon/scripts/
 
 #DEBHELPER#
 
-if [ -x /etc/init.d/ntp-server -a -x /etc/rc2.d/S23ntp-server ]; then
-	update-rc.d -f ntp-server remove >/dev/null 2>&1 || true
-fi
-
 exit 0
