@@ -33,7 +33,7 @@
 # Provides:          univention-net-installer-daemon
 # Required-Start:    $network $local_fs
 # Required-Stop:
-# Should-Start:      $named
+# Should-Start:      $named slapd
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
@@ -222,12 +222,10 @@ case "$1" in
         log_warning_msg "cannot re-read the config file (use restart)."
         ;;
   *)
-	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|force-stop|restart|force-reload|status}" >&2
+	echo "Usage: $0 {start|stop|force-stop|restart|force-reload|status}" >&2
 	exit 1
 	;;
 esac
 
 exit 0
 # vim:set ft=sh:
-
