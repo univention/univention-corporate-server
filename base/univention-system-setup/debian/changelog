@@ -1,6 +1,7 @@
 univention-system-setup (10.0.0-8) unstable; urgency=low
 
   * Bug #36168: Install dbus-x11 needed by Firefox.
+  * Bug #38438: Make init-script LSB compliant
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 08 Sep 2016 15:34:03 +0200
 
