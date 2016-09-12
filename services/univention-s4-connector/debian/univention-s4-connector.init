@@ -1,7 +1,12 @@
 #!/bin/sh
-#
-# Univention S4 Connector
-#  init script of the ad connector
+### BEGIN INIT INFO
+# Provides:          univention-s4-connector
+# Required-Start:    $network $remote_fs slapd samba-ad-dc
+# Required-Stop:     $network $remote_fs slapd samba-ad-dc
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention S4 Connector
+### END INIT INFO
 #
 # Copyright 2004-2016 Univention GmbH
 #
@@ -31,10 +36,13 @@
 # <http://www.gnu.org/licenses/>.
 
 S4CONNECTORPID=/var/run/univention-s4-connector
+DAEMON="/usr/sbin/univention-s4-connector"
 
-test -x /usr/sbin/univention-s4-connector || exit 0
+test -x "$DAEMON"|| exit 0
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
 	start)
@@ -42,37 +50,40 @@ case "$1" in
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart s4-connector connector/s4/autostart
-		fi	
-		log_action_msg "Starting univention-s4-connector daemon"
-		if start-stop-daemon --start --quiet --pidfile "$S4CONNECTORPID" -a /usr/sbin/univention-s4-connector; then
-			log_action_end_msg 0
+		fi
+		log_daemon_msg "Starting $DESC" "$NAME"
+		if start-stop-daemon --start --quiet --pidfile "$S4CONNECTORPID" --startas "$DAEMON"
+		then
+			log_end_msg 0
 		else
-			log_action_end_msg 1
+			log_end_msg 1
 		fi
 		;;
 	stop)
-		log_action_msg "Stopping univention-s4-connector daemon"
-		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$S4CONNECTORPID" -a /usr/sbin/univention-s4-connector; then
-			log_action_end_msg 0
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$S4CONNECTORPID"
+		then
+			log_end_msg 0
 		else
-			log_action_end_msg 1
+			log_end_msg 1
 		fi
 		;;
 	restart|force-reload)
-		$0 stop
+		"$0" stop
 		sleep 2 # give it some time to die
-		$0 start
+		"$0" start
+		;;
+	status)
+		status_of_proc -p "$S4CONNECTORPID" "$DAEMON" "$DESC"
 		;;
 	crestart)
 		S4CONNECTOR=`cat $S4CONNECTORPID 2>/dev/null`
 		if [ -n "$S4CONNECTOR" ]; then
-		    ps xaw | grep connector | grep -q "$S4CONNECTOR" && $0 restart
+		    ps xaw | grep -q "$S4CONNECTOR" && "$0" restart
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-s4-connector {start|stop|restart|crestart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac
-
-

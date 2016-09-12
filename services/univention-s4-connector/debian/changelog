@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.0-3) unstable; urgency=low
+
+  * Bug #38438: Make init-script LSB compliant
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 15:19:33 +0200
+
 univention-s4-connector (11.0.0-2) unstable; urgency=medium
 
   * Add indexes to enable efficient lookup
