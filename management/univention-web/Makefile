@@ -30,7 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-PKG_DIR:=/usr/share/univention-web/js/
 DOJO_DIR:=/usr/share/univention-dojo
 VERSION:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 BUILD_DIR:=$(CURDIR)/build
@@ -49,26 +48,23 @@ TMP_CSS_FILES:=$(TMP_STYL_FILES:.styl:.css)
 BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
 BUILD_IMAGE_DIRS=$(addprefix $(BUILD_THEME_DIR)/, images form/images layout/images)
 TMP_THEME_CSS=$(TMP_THEME_DIR)/umc.css
-THEME_INSTALL_DIR=/usr/share/univention-web/js/dijit/themes/umc
 
-.PHONY: build-dev install clean jslint
+JS_INSTALL_DIR:=/usr/share/univention-web/js
+THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
 
-#.PRECIOUS: $(BUILD_DIR)
+.PHONY: build-dev install clean
 
-build: build-js build-css
+build: $(BUILD_DIR)/dojo/dojo.js build-css
 
-build-dev: $(TMP_DIR) $(TMP_JS_FILES) build-common-js build-css
-
-build-js: $(BUILD_DIR)/dojo/dojo.js
-
-build-common-js: $(TMP_DIR) $(BUILD_DIR) $(TMP_I18N_FILES) $(TMP_DIR)/umc/_all.js $(TMP_DIR)/umc/i18n/en/branding.json $(BUILD_DIR)/umc/package.json
+build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css
 
 build-css: $(BUILD_THEME_DIR)/umc.css $(BUILD_THEME_DIR)/fonts $(BUILD_IMAGE_DIRS)
 
+# shortcut rule
+i18n: js/de.po js/en.po
+
 tmp-css: $(TMP_THEME_DIR) $(TMP_THEME_DIR)/bootstrap.css $(addprefix $(TMP_THEME_DIR)/images/,icons-white.svg icons-small-white.svg icons.png icons-small.png icons-white.png icons-small-white.png)
 
-$(BUILD_DIR):
-	mkdir -p $@
 
 $(TMP_DIR):
 	# copy dojo and dijit files into tmp dir; remove util dir
@@ -123,7 +119,7 @@ $(TMP_DIR)/umc/_all.js:
 	deps=$$(find js/ -name "*.js" -a -not -name "*.*.js" | sort | sed 's/\.js//; s/^js/umc/; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
 	echo "define([$$deps], function() { })" > $@
 
-$(BUILD_DIR)/umc/package.json: debian/changelog
+$(TMP_DIR)/umc/package.json: debian/changelog
 	mkdir -p $(@D)
 	sed 's/%VERSION%/$(VERSION)/' package.json > $@
 
@@ -142,15 +138,10 @@ $(I18N_FILES):: $(JS_FILES)
 	lang=$${lang%.*}; \
 	/usr/bin/dh-umc-translate -p univention-web-js -l $$lang -o $(@D) $^
 
-$(BUILD_DIR)/dojo/dojo.js: $(TMP_DIR) $(TMP_JS_FILES) $(BUILD_DIR) build_profile.js build-common-js
+$(BUILD_DIR)/dojo/dojo.js: build_profile.js $(TMP_JS_FILES) $(TMP_DIR) $(TMP_I18N_FILES) $(TMP_DIR)/umc/_all.js $(TMP_DIR)/umc/i18n/en/branding.json $(TMP_DIR)/umc/package.json
 	# main dojo build process
+	mkdir -p $(BUILD_DIR)
 	/usr/share/univention-dojo/util/buildscripts/build.sh profile=build_profile.js version="$(VERSION)"
-
-build-dev: build-common-js build-css
-	# symlinks for installed modules
-	mkdir -p $(TMP_DIR)/umc/modules
-	cp -frsn /usr/share/univention-management-console-frontend/js/umc/modules/* $(TMP_DIR)/umc/modules
-	#cp -frsn /usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons css
 
 $(TMP_DIR)/umc/i18n/en/branding.json:
 	# create empty branding localisation files to not cause 404 errors
@@ -158,15 +149,16 @@ $(TMP_DIR)/umc/i18n/en/branding.json:
 	touch "$@"
 
 install: build
-	# copy all files from the build directory .. exclude file of the tmp directory
-	mkdir -p "$(DESTDIR)$(PKG_DIR)"
-	rsync -rpl --exclude ".svn" "$(BUILD_DIR)/" "$(DESTDIR)$(PKG_DIR)"
-	
-	cd $(BUILD_THEME_DIR); find ./ -type d -exec install -m0755 -d $(DESTDIR)$(THEME_INSTALL_DIR)/{} \;
-	cd $(BUILD_THEME_DIR); find ./ -type f -exec install -m0644 {} $(DESTDIR)$(THEME_INSTALL_DIR)/{} \;
-	install -m0755 -d $(DESTDIR)$(THEME_INSTALL_DIR)/icons/scalable
-	install -m0755 -d $(DESTDIR)$(THEME_INSTALL_DIR)/icons/50x50
-	install -m0755 -d $(DESTDIR)$(THEME_INSTALL_DIR)/icons/16x16
+	# copy all files for univention-web-js
+	cd $(BUILD_DIR); find . -type d -exec install -m0755 -d $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/{} \;
+	cd $(BUILD_DIR); find . -type f -exec install -m0644 {} $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/{} \;
+	rm -rf $(CURDIR)/debian/univention-web-js/$(JS_INSTALL_DIR)/dijit/themes/umc
+	# copy all files for univention-web-style
+	cd $(BUILD_DIR); find dijit/themes/umc -type d -exec install -m0755 -d $(CURDIR)/debian/univention-web-style/$(JS_INSTALL_DIR)/{} \;
+	cd $(BUILD_DIR); find dijit/themes/umc -type f -exec install -m0644 {} $(CURDIR)/debian/univention-web-style/$(JS_INSTALL_DIR)/{} \;
+	install -m0755 -d $(CURDIR)/debian/univention-web-style/$(THEME_INSTALL_DIR)/icons/scalable
+	install -m0755 -d $(CURDIR)/debian/univention-web-style/$(THEME_INSTALL_DIR)/icons/50x50
+	install -m0755 -d $(CURDIR)/debian/univention-web-style/$(THEME_INSTALL_DIR)/icons/16x16
 
 clean:
 	rm -rf $(TMP_DIR) $(BUILD_DIR) js/de.json js/en.json

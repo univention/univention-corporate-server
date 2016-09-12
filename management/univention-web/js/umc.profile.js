@@ -32,7 +32,7 @@ var profile = (function() {
 		resourceTags: {
 			copyOnly: function(filename, mid) {
 				// copy all .html, .css, and .json files
-				return (/\.(html|css|json)$/).test(filename) || mid == 'umc/umc.profile.js';
+				return (/\.(html|css|json|png|svg)$/).test(filename) || mid == 'umc/umc.profile.js';
 			},
 
 			amd: function(filename, mid) {

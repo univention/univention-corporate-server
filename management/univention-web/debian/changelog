@@ -1,3 +1,9 @@
+univention-web (1.0.1-6) unstable; urgency=medium
+
+  * Bug #38824: make sure that package build works correctly
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 12 Sep 2016 14:52:28 +0200
+
 univention-web (1.0.1-5) unstable; urgency=medium
 
   * Bug #38824: WIP - update README + optimize Makefile
