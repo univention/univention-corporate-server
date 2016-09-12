@@ -36,14 +36,6 @@ eval "$(univention-config-registry shell server/role)"
 
 case "$1" in
 configure)
-	if dpkg --compare-versions "$2" lt 3.0.3~
-	then
-		univention-config-registry update
-		[ -L /etc/init.d/univention-virtual-machine-manager-node-common ] &&
-			[ "$(readlink /etc/init.d/univention-virtual-machine-manager-node-common)" = libvirt-bin ] &&
-			rm -f /etc/init.d/univention-virtual-machine-manager-node-common
-		update-rc.d -f libvirt-bin remove || :
-	fi
 	# Setup firewall and backup directory
 	univention-config-registry set \
 		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all="ACCEPT" \
