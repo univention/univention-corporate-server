@@ -2,6 +2,7 @@ univention-directory-listener (11.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
   * Bug #42029: Fix deletion of ACLed entries
+  * Bug #38438: Make init-script LSB compliant
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:56:16 +0200
 
