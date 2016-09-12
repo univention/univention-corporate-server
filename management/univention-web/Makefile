@@ -35,13 +35,13 @@ DOJO_DIR:=/usr/share/univention-dojo
 VERSION:=$(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
 BUILD_DIR:=$(CURDIR)/build
 TESTS_DIR:=$(CURDIR)/tests
-JS_FILES:=$(shell find umc -name "*.js")
-TMP_JS_FILES:=$(shell find tmp -name "*.js")
-I18N_FILES= $(addprefix umc/, de.json en.json de.po en.po)
+JS_FILES:=$(shell find js -name "*.js")
+I18N_FILES= $(addprefix js/, de.json en.json de.po en.po)
 TMP_I18N_FILES= $(addprefix $(TMP_DIR)/umc/i18n/, en/app.json de/app.json)
 
 TMP_DIR:=$(CURDIR)/tmp
-THEME_REPO=dijit-claro-stylus
+TMP_JS_FILES:=$(patsubst js/%, $(TMP_DIR)/umc/%, $(TMP_DIR))
+THEME_REPO=css
 TMP_THEME_DIR=$(TMP_DIR)/dijit/themes/umc
 STYL_FILES:=$(shell find $(THEME_REPO) -name "*.styl")
 TMP_STYL_FILES:=$(STYL_FILES:$(THEME_REPO):$(TMP_THEME_DIR))
@@ -74,13 +74,11 @@ $(TMP_DIR):
 	cp -rf $(DOJO_DIR)/* $@
 	rm -rf $@/util
 	# copy univention JS files into the tmp dir
-	cp -rfs "$(CURDIR)/umc" $@
+	cp -rfs "$(CURDIR)/js" $@/umc
 
 $(TMP_THEME_DIR): $(TMP_DIR)
 	# copy theme files into the tmp dir
 	cp -r $(PWD)/$(THEME_REPO) $@
-	# mv claro.css to umc.css and replace '.claro' selector with '.umc'
-	mv $(TMP_THEME_DIR)/claro.css $(TMP_THEME_CSS)
 
 # automatically create SVG files with white icons
 %-white.svg: %.svg
@@ -122,7 +120,7 @@ $(BUILD_THEME_DIR)/umc.css: tmp-css
 
 $(TMP_DIR)/umc/_all.js:
 	# generate a pseudo module which contains references to all other JS modules
-	deps=$$(find umc/ -name "*.js" -a -not -name "*.*.js" | sort | sed 's/\.js//; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
+	deps=$$(find js/ -name "*.js" -a -not -name "*.*.js" | sort | sed 's/\.js//; s/^js/umc/; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
 	echo "define([$$deps], function() { })" > $@
 
 $(BUILD_DIR)/umc/package.json: debian/changelog
@@ -131,8 +129,8 @@ $(BUILD_DIR)/umc/package.json: debian/changelog
 
 # manually define dependencies between JSON translation files
 # and add a more generic rule for copying JSON translation file
-$(TMP_DIR)/umc/i18n/de/app.json: umc/de.json
-$(TMP_DIR)/umc/i18n/en/app.json: umc/en.json
+$(TMP_DIR)/umc/i18n/de/app.json: js/de.json
+$(TMP_DIR)/umc/i18n/en/app.json: js/en.json
 $(TMP_DIR)/umc/i18n/%/app.json:
 	# install JSON translation at correct position
 	mkdir -p $(@D)
@@ -171,4 +169,4 @@ install: build
 	install -m0755 -d $(DESTDIR)$(THEME_INSTALL_DIR)/icons/16x16
 
 clean:
-	rm -rf $(TMP_DIR) $(BUILD_DIR) umc/de.json um/en.json
+	rm -rf $(TMP_DIR) $(BUILD_DIR) js/de.json js/en.json
