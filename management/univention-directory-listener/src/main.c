@@ -103,7 +103,7 @@ static void daemonize(int lock_fd)
 	if (rv < 0 || rv >= PATH_MAX)
 		abort();
 
-	fd = open(pidfile, O_WRONLY|O_CREAT|O_EXCL);
+	fd = open(pidfile, O_WRONLY|O_CREAT|O_EXCL, 0644);
 	if (fd < 0) {
 		if (errno == EEXIST)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "pidfile %s exists, aborting...%d %s", pidfile, errno, strerror(errno));
@@ -149,29 +149,34 @@ static void daemonize(int lock_fd)
 		rv = snprintf(buf, sizeof buf, "%d", pid);
 		if (rv < 0 || rv >= sizeof buf)
 			abort();
-		write(fd, buf, rv);
+		rv = write(fd, buf, rv);
+		if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to write %s: %s", pidfile, strerror(errno));
 	}
-	close(fd);
+	rv = close(fd);
+	if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close %s: %s", pidfile, strerror(errno));
 
 	// Set new file permissions
 	umask(0);
 
 	// Change the working directory to the root directory
-	chdir("/");
+	rv = chdir("/");
+	if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to change directory: %s", strerror(errno));
 
 	if ((null = open("/dev/null", O_RDWR)) == -1) {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not open /dev/null");
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not open /dev/null: %s", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
 	dup2(null, STDIN_FILENO);
 	dup2(null, STDOUT_FILENO);
-	if ((log = open("/var/log/univention/listener.log", O_WRONLY | O_CREAT | O_APPEND)) >= 0) {
+	if ((log = open("/var/log/univention/listener.log", O_WRONLY | O_CREAT | O_APPEND, 0640)) >= 0) {
 		dup2(log, STDERR_FILENO);
-		close(log);
+		rv = close(log);
+		if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close /var/log/univention/listener.log: %s", strerror(errno));
 	} else {
 		dup2(null, STDERR_FILENO);
 	}
-	close(null);
+	rv = close(null);
+	if (rv) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to close /dev/null: %s", strerror(errno));
 
 	// Close all open file descriptors
 	for (fd = sysconf(_SC_OPEN_MAX); fd > STDERR_FILENO; fd--)

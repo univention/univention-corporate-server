@@ -42,8 +42,8 @@ test__utils__same_dn: ../src/utils.o
 
 include ../src/Makefile
 
-CFLAGS := -g -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS) -I../src
-LDFLAGS := -Wl,--unresolved-symbols=ignore-all -Wl,--as-needed
+CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS) -I../src
+LDFLAGS += -Wl,--unresolved-symbols=ignore-all -Wl,--as-needed
 LDLIBS := -lldap -licuuc
 
 .PHONY: clean

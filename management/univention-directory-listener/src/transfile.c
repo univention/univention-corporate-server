@@ -33,6 +33,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+#include <errno.h>
 #include <limits.h>
 #include <assert.h>
 #include <sys/types.h>
@@ -80,7 +82,8 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 	if ((file = fopen(name, type)) == NULL) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Could not open file [%s]", name);
 
-		lockf(l_fd, F_ULOCK, 0);
+		int rc = lockf(l_fd, F_ULOCK, 0);
+		if (rc) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed to unlock %s: %s", buf, strerror(errno));
 		fclose(*l_file);
 		*l_file = NULL;
 	}
