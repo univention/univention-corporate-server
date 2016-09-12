@@ -16,7 +16,6 @@ Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
  python-univention,
  python-univention-license,
- univention-server-master | univention-server-backup,
  python-univention-directory-manager (>= 7.0.214),
  python-pysqlite2
 Pre-Depends: univention-config-registry (>= 2.6.8-5)
@@ -77,7 +76,6 @@ Description: UCS - Modules for sync UCS and Active Directory
 Package: univention-ad-connector-exchange
 Architecture: all
 Depends: ${misc:Depends},
- univention-server-master | univention-server-backup,
  univention-directory-manager-tools (>> 7.0.147),
  shell-univention-lib (>= 1.0.6)
 Description: UCS - AD-connector Exchange configuration

@@ -1,3 +1,9 @@
+univention-ad-connector (10.0.2-6) unstable; urgency=medium
+
+  * Remove the master / backup dependency (Bug #41682)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Sep 2016 07:40:58 +0200
+
 univention-ad-connector (10.0.2-5) unstable; urgency=low
 
   * Bug #42078: Corrected a typo.
