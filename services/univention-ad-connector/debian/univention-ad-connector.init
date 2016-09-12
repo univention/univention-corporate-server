@@ -1,7 +1,12 @@
 #!/bin/sh
-#
-# Univention AD Connector
-#  init script of the ad connector
+### BEGIN INIT INFO
+# Provides:          univention-ad-connector
+# Required-Start:    $network $remote_fs slapd
+# Required-Stop:     $network $remote_fs slapd
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention AD Connector
+### END INIT INFO
 #
 # Copyright 2004-2016 Univention GmbH
 #
@@ -31,8 +36,9 @@
 # <http://www.gnu.org/licenses/>.
 
 ADCONNECTORPID=/var/run/univention-ad-connector
+DAEMON="/usr/sbin/univention-ad-connector"
 
-test -x /usr/sbin/univention-ad-connector || exit 0
+test -x "$DAEMON" || exit 0
 
 . /lib/lsb/init-functions
 
@@ -42,37 +48,40 @@ case "$1" in
 		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart ad-connector connector/ad/autostart
-		fi	
-		log_action_msg "Starting univention-ad-connector daemon"
-		if start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector; then
-			log_action_end_msg 0
+		fi
+		log_daemon_msg "Starting $DESC" "$NAME"
+		if start-stop-daemon --start --quiet --pidfile "$ADCONNECTORPID" --startas "$DAEMON"
+		then
+			log_end_msg 0
 		else
-			log_action_end_msg 1
+			log_end_msg 1
 		fi
 		;;
 	stop)
-		log_action_msg "Stopping univention-ad-connector daemon"
-		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$ADCONNECTORPID" -a /usr/sbin/univention-ad-connector; then
-			log_action_end_msg 0
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		if start-stop-daemon --stop --retry TERM/300/KILL/5 --quiet --pidfile "$ADCONNECTORPID"
+		then
+			log_end_msg 0
 		else
-			log_action_end_msg 1
+			log_end_msg 1
 		fi
 		;;
 	restart|force-reload)
-		$0 stop
+		"$0" stop
 		sleep 2 # give it some time to die
-		$0 start
+		"$0" start
+		;;
+	status)
+		status_of_proc -p "$ADCONNECTORPID" "$DAEMON" "$DESC"
 		;;
 	crestart)
 		ADCONNECTOR=`cat $ADCONNECTORPID 2>/dev/null`
 		if [ -n "$ADCONNECTOR" ]; then
-		    ps xaw | grep connector | grep -q "$ADCONNECTOR" && $0 restart
+		    ps xaw | grep -q "$ADCONNECTOR" && "$0" restart
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-ad-connector {start|stop|restart|crestart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac
-
-

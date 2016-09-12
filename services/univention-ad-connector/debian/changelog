@@ -1,3 +1,9 @@
+univention-ad-connector (11.0.2-1) unstable; urgency=low
+
+  * Bug #38438: Make init-script LSB compliant
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 15:47:10 +0200
+
 univention-ad-connector (11.0.1-5) unstable; urgency=medium
 
   * Remove the master / backup dependency (Bug #41682)
