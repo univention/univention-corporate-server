@@ -1,4 +1,12 @@
 #!/bin/sh
+### BEGIN INIT INFO
+# Provides:          univention-firewall
+# Required-Start:    $network $remote_fs
+# Required-Stop:     $network $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention iptables configuration
+### END INIT INFO
 #
 # Copyright 2004-2016 Univention GmbH
 #
@@ -28,6 +36,8 @@
 # <http://www.gnu.org/licenses/>.
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 . /usr/share/univention-lib/ucr.sh
 
 case "$1" in
@@ -35,37 +45,48 @@ case "$1" in
         # Notice that only a proper "true" or "on" value switches firewall OFF.
         # Everything else like "false" or "off" or "muell" will leave firewall ON.
         if is_ucr_true security/packetfilter/disabled; then
-            echo "Univention iptables configuration has been disabled."
+            log_warning_msg "$DESC has been disabled."
         else
-            log_daemon_msg "Starting Univention iptables configuration:"
+            log_action_begin_msg "Starting $DESC"
             if [ -x /etc/security/packetfilter.d ] ; then
                 run-parts --regex='^[a-zA-Z0-9_-]+([.]sh)?$' /etc/security/packetfilter.d/
             fi
-            log_end_msg 0
+            log_action_end_msg $?
         fi
         ;;
     stop)
-        log_daemon_msg "Stopping Univention iptables configuration:"
+        log_daemon_msg "Stopping $DESC"
 
-        iptables -P INPUT ACCEPT
-        iptables -P OUTPUT ACCEPT
-        iptables -F
-        iptables -F -t nat
-        iptables -F -t mangle
+        rc=0
+        iptables -P INPUT ACCEPT || rc=$?
+        iptables -P OUTPUT ACCEPT || rc=$?
+        iptables -F || rc=$?
+        iptables -F -t nat || rc=$?
+        iptables -F -t mangle || rc=$?
 
-        ip6tables -P INPUT ACCEPT
-        ip6tables -P OUTPUT ACCEPT
-        ip6tables -F
-        ip6tables -F -t mangle
+        ip6tables -P INPUT ACCEPT || rc=$?
+        ip6tables -P OUTPUT ACCEPT || rc=$?
+        ip6tables -F || rc=$?
+        ip6tables -F -t mangle || rc=$?
 
-        log_end_msg 0
+        log_action_end_msg $rc
         ;;
-    restart)
-        $0 stop
-        $0 start
+    restart|force-reload)
+        "$0" stop
+        "$0" start
+        ;;
+    status)
+        if is_ucr_true security/packetfilter/disabled
+        then
+            log_failure_msg "$DESC is disabled."
+            exit 1
+        else
+            log_success_msg "$DESC is enabled"
+            exit 0
+        fi
         ;;
     *)
-        log_action_msg "Usage: /etc/init.d/univention-iptables {start|stop|restart}"
+        log_action_msg "Usage: $0 {start|stop|restart|force-reload|status}"
         exit 1
         ;;
 esac
