@@ -56,14 +56,6 @@ univention-config-registry set 'bind/autostart?yes' \
                                'dns/dlz/debug/level?0' \
                                'dns/debug/level?0'
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 6.0.10; then
-	# Update to UCS 3.0
-	univention-config-registry set dns/backend=ldap
-	echo "# add local zones here" >> /etc/bind/local.conf.samba4
-	update-rc.d -f univention-bind-proxy disable
-	update-rc.d -f univention-bind disable
-	update-rc.d bind9 defaults 15 85
-fi
 if [ "$1" = configure ] && [ -z "$2" ]
 then
 	univention-config-registry set dns/allow/query/cache?'localhost; 10.0.0.0/8; 169.254.0.0/16; 172.16.0.0/12; 192.168.0.0/16; fc00::/7; fe80::/10; localnets'

@@ -1,5 +1,15 @@
 #!/bin/sh
 @%@UCRWARNING=# @%@
+### BEGIN INIT INFO
+# Provides:          bind9
+# Required-Start:    $network $remote_fs univention-runit
+# Required-Stop:     $network $remote_fs univention-runit
+# Should-Start:      slapd samba-ad-dc
+# Should-Stop:       slapd samba-ad-dc
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: bind9 Domain Name Server (DNS)
+### END INIT INFO
 #
 # Copyright 2001-2016 Univention GmbH
 #
@@ -32,6 +42,8 @@
 eval "$(univention-config-registry shell dns/backend)"
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 sv_action () { # Silently toggle runit state: $action $service_name
 	if [ -e "/etc/runit/univention/$2" ]; then
@@ -58,21 +70,36 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind bind/autostart
 		fi
-		log_action_begin_msg "Starting bind9 daemon:"
-		if [ "$dns_backend" = "samba4" ]; then
-			sv_action up univention-bind-samba4
-		elif [ "$dns_backend" = "ldap" ]; then
-			sv_action up univention-bind
-			sv_action up univention-bind-proxy
-		fi
-		log_action_end_msg 0
+		log_daemon_msg "Starting $DESC"
+		rv=0
+		case "$dns_backend" in
+		samba4)
+			log_process_msg 'samba4'
+			sv_action start univention-bind-samba4 || rv=$?
+			;;
+		ldap)
+			log_process_msg 'ldap'
+			sv_action start univention-bind || rv=$?
+			log_process_msg 'proxy'
+			sv_action start univention-bind-proxy || rv=$?
+			;;
+		*)
+			log_process_msg "Unknown DNS backend $dns_backend"
+			rv=1
+			;;
+		esac
+		log_end_msg $rv
 		;;
 	stop)
-		log_action_begin_msg "Stopping bind9 daemon: "
-		sv_action down univention-bind-proxy
-		sv_action down univention-bind
-		sv_action down univention-bind-samba4
-		log_action_end_msg 0
+		log_daemon_msg "Stopping $DESC"
+		rv=0
+		log_process_msg 'proxy'
+		sv_action stop univention-bind-proxy || rv=$?
+		log_process_msg 'ldap'
+		sv_action stop univention-bind || rv=$?
+		log_process_msg 'samba4'
+		sv_action stop univention-bind-samba4 || rv=$?
+		log_end_msg $rv
 		;;
 	restart|force-reload)
 		# check ucr autostart setting
@@ -81,17 +108,31 @@ case "$1" in
 			check_autostart univention-bind bind/autostart
 		fi
 
-		log_action_begin_msg "Restarting bind9 daemon: "
-		if [ "$dns_backend" = "samba4" ]; then
-			sv_action stop univention-bind
-			sv_action stop univention-bind-proxy
-			sv_action restart univention-bind-samba4
-		elif [ "$dns_backend" = "ldap" ]; then
-			sv_action stop univention-bind-samba4
-			sv_action restart univention-bind
-			sv_action restart univention-bind-proxy
-		fi
-		log_action_end_msg 0
+		log_daemon_msg "Restarting $DESC"
+		rv=0
+		case "$dns_backend" in
+		samba4)
+			log_process_msg 'ldap'
+			sv_action stop univention-bind || rv=$?
+			log_process_msg 'proxy'
+			sv_action stop univention-bind-proxy || rv=$?
+			log_process_msg 'samba4'
+			sv_action restart univention-bind-samba4 || rv=$?
+			;;
+		ldap)
+			log_process_msg 'samba4'
+			sv_action stop univention-bind-samba4 || rv=$?
+			log_process_msg 'ldap'
+			sv_action restart univention-bind || rv=$?
+			log_process_msg 'proxy'
+			sv_action restart univention-bind-proxy || rv=$?
+			;;
+		*)
+			log_process_msg "Unknown DNS backend $dns_backend"
+			rv=1
+			;;
+		esac
+		log_end_msg $rv
 		;;
 	crestart)
 		# check ucr autostart setting
@@ -99,30 +140,41 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart univention-bind bind/autostart
 		fi
-		if [ "$dns_backend" = "samba4" ]; then
+		case "$dns_backend" in
+		samba4)
 			if sv_running univention-bind-samba4
 			then
 				"$0" restart
 			fi
-		elif [ "$dns_backend" = "ldap" ]; then
+			;;
+		ldap)
 			if sv_running univention-bind || sv_running univention-bind-proxy
 			then
 				"$0" restart
 			fi
-		fi
-		;;
-	reload)
-		log_action_begin_msg "Reloading bind9 daemon: "
-		case "$dns_backend" in
-		samba4)
-			log_action_cont_msg "samba4" && rndc -p 953 reload >/dev/null
 			;;
-		ldap)
-			log_action_cont_msg "ldap" && rndc -p 55555 reload >/dev/null
-			log_action_cont_msg "proxy" && rndc -p 953 reload >/dev/null
+		*)
+			log_failure_msg "Unknown DNS backend $dns_backend"
 			;;
 		esac
-		log_action_end_msg 0
+		;;
+	reload)
+		log_action_begin_msg "Reloading $DESC"
+		rv=0
+		case "$dns_backend" in
+		samba4)
+			log_action_cont_msg "samba4" && rndc -p 953 reload >/dev/null || rv=$?
+			;;
+		ldap)
+			log_action_cont_msg "ldap" && rndc -p 55555 reload >/dev/null || rv=$?
+			log_action_cont_msg "proxy" && rndc -p 953 reload >/dev/null || rv=$?
+			;;
+		*)
+			log_action_cont_msg "Unknown DNS backend $dns_backend"
+			rv=1
+			;;
+		esac
+		log_action_end_msg $rv
 		;;
 	status)
 		if	sv status univention-bind-samba4 | grep -qs ^run: ||
