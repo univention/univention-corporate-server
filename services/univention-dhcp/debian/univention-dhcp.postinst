@@ -37,32 +37,6 @@ set -e
 . /usr/share/univention-lib/base.sh
 create_logfile_if_missing /var/log/univention/dhcp.log root:adm 640
 
-update-rc.d -f isc-dhcp-server remove >/dev/null 2>&1
-update-rc.d -f dhcp3-server remove >/dev/null 2>&1
-update-rc.d -f dhcp remove >/dev/null 2>&1
-
-dpkg-maintscript-helper mv_conffile "/etc/dhcp3/local.conf" "/etc/dhcp/local.conf" 6.0.0~ univention-dhcp -- "$@"
-dpkg-maintscript-helper mv_conffile "/etc/dhcp3/univention.conf" "/etc/dhcp/univention.conf" 6.0.0~ univention-dhcp -- "$@"
-dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/etc/dhcp3/dhcpd.conf" 6.0.0~ univention-dhcp -- "$@"
-dpkg-maintscript-helper rm_conffile "/etc/univention/templates/files/etc/init.d/dhcp3-server" 6.0.0~ univention-dhcp -- "$@"
-
-case "$1" in
-configure)
-	# Remove files diverted by old templates
-	if dpkg --compare-versions "$2" lt-nl "6.0.0"
-	then
-		for f in /etc/dhcp3/dhcpd.conf /etc/init.d/dhcp3-server
-		do
-			if [ -n "$(dpkg-divert --list "$f")" ]
-			then
-				[ -f "$f" ] && [ -f "$f".debian ] && rm -f "$f"
-				dpkg-divert --quiet --rename --divert "$f".debian --remove "$f"
-			fi
-		done
-	fi
-	;;
-esac
-
 eval "$(univention-config-registry shell)"
 
 if [ -n "$dhcpd_enable" ]; then

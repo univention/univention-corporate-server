@@ -47,6 +47,8 @@ if [ ! -e /etc/runit/univention/univention-dhcp ]; then
 fi
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
 	start)
@@ -55,13 +57,13 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart dhcpd dhcpd/autostart
 		fi
-		log_daemon_msg "Starting univention-dhcp" "dhcpd"
-		sv up univention-dhcp
+		log_daemon_msg "Starting $DESC" "$NAME"
+		sv start univention-dhcp
 		log_end_msg $?
 		;;
 	stop)
-		log_daemon_msg "Stopping univention-dhcp" "dhcpd"
-		sv down univention-dhcp
+		log_daemon_msg "Stopping $DESC" "$NAME"
+		sv stop univention-dhcp
 		log_end_msg $?
 		;;
 	restart|force-reload)
@@ -70,7 +72,7 @@ case "$1" in
 			. "/usr/share/univention-config-registry/init-autostart.lib"
 			check_autostart dhcpd dhcpd/autostart
 		fi
-		log_daemon_msg "Restarting univention-dhcp" "dhcpd"
+		log_daemon_msg "Restarting $DESC" "$NAME"
 		sv restart univention-dhcp 1>/dev/null
 		log_end_msg $?
 		;;
@@ -87,8 +89,18 @@ case "$1" in
 			log_action_msg "sv status return no running dhcpd, don't need to restart."
 		fi
 		;;
+	status)
+		if sv status /etc/runit/univention-dhcp | grep -q ^run:
+		then
+			log_success_msg "$DESC is running"
+			exit 0
+		else
+			log_failure_msg "$DESC is not running."
+			exit 1
+		fi
+		;;
 	*)
-		echo "Usage: /etc/init.d/univention-dhcp {start|stop|restart|crestart|force-reload}"
+		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"
 		exit 1
 		;;
 esac
