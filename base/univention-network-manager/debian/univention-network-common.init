@@ -1,7 +1,12 @@
 #!/bin/bash
-#
-# Univention Network Common
-#  Save the dhclient result in LDAP
+### BEGIN INIT INFO
+# Provides:          univention-network-common
+# Required-Start:    $network $remote_fs
+# Required-Stop:     $network $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: save DHCP address in LDAP
+### END INIT INFO
 #
 # Copyright (C) 2012-2016 Univention GmbH
 #
@@ -33,6 +38,8 @@
 eval "$(univention-config-registry shell)"
 
 . /lib/lsb/init-functions
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 . /usr/share/univention-lib/all.sh
 
@@ -51,16 +58,15 @@ do_start () {
 }
 
 case "$1" in
-	start)
-		log_action_begin_msg "Starting univention-network-common"
+	start|restart|force-reload)
+		log_action_begin_msg "$DESC"
 		do_start
 		log_action_end_msg $?
 		;;
-	stop)
-		log_action_end_msg 0
+	stop|status)
 		;;
 	*)
-		log_action_msg "Usage: $0 {start|stop}."
+		echo "Usage: $0 {start}."
 		exit 1
 		;;
 esac
