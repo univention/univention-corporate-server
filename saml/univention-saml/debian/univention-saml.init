@@ -1,7 +1,12 @@
 #!/bin/bash
-#
-# UCS - univention-saml integration - domain integration
-#  init script
+### BEGIN INIT INFO
+# Provides:          univention-saml
+# Required-Start:    $network $remote_fs memcached stunnel4
+# Required-Stop:     $network $remote_fs memcached stunnel4
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Univention Security Assertion Markup Language integration
+### END INIT INFO
 #
 # Copyright 2015-2016 Univention GmbH
 #
@@ -32,37 +37,42 @@
 
 . /lib/lsb/init-functions
 
-NAME=univention-saml
+NAME=$(get_lsb_header_val "$0" Provides)
+DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
 	start)
 		# TODO: runit
-		log_action_msg "Starting $NAME"
-		mkdir -p /var/run/univention-saml/
-		chown samlcgi:root /var/run/univention-saml/
-		chmod 770 /var/run/univention-saml/
+		log_daemon_msg "Starting $DESC" "$NAME"
+		install -m 770 -o samlcgi -g root -d /var/run/univention-saml
 		/etc/init.d/memcached start
 		/etc/init.d/stunnel4 start
 		sleep 1
 		chmod 0600 /var/run/univention-saml/*.socket
 		chown samlcgi:root /var/run/univention-saml/*.socket
-		log_action_end_msg 0
+		log_end_msg 0
 		;;
 	stop)
-		log_action_msg "Stopping $NAME"
+		log_daemon_msg "Stopping $DESC" "$NAME"
 		/etc/init.d/memcached stop
 		/etc/init.d/stunnel4 stop
 		rm -f -- /var/run/univention-saml/*.socket
-		log_action_end_msg 0
+		log_end_msg 0
 		;;
-	restart)
-		log_action_msg "Restarting $NAME"
-		/etc/init.d/univention-saml stop
-		/etc/init.d/univention-saml start
-		log_action_end_msg 0
+	restart|force-reload)
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		"$0" stop
+		"$0" start
+		log_end_msg 0
+		;;
+	status)
+		rc=0
+		/etc/init.d/memcached status || rc=$?
+		/etc/init.d/stunnel4 status || rc=$?
+		exit $rc
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-saml {start|stop|restart}"
+		echo "Usage: $0 {start|stop|restart|force-reload|status}"
 		exit 1
 		;;
 esac

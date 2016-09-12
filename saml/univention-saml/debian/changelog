@@ -1,3 +1,9 @@
+univention-saml (4.0.0-4) precise; urgency=low
+
+  * Bug #38438: Make init-script LSB compliant
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 16:12:53 +0200
+
 univention-saml (4.0.0-3) unstable; urgency=medium
 
   * Bug #42196: apache: Move univention-saml to univention-saml.conf
