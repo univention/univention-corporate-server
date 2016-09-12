@@ -1,3 +1,9 @@
+univention-virtual-machine-manager-daemon (6.0.0-3) precise; urgency=low
+
+  * Bug #38438: Make init-script LSB compliant
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 14:51:16 +0200
+
 univention-virtual-machine-manager-daemon (6.0.0-2) precise; urgency=low
 
   * Bug #42069: Remove typos
