@@ -1,3 +1,9 @@
+univention-s4-connector (11.0.0-4) unstable; urgency=low
+
+  * Bug #38438: Fix use of get_lsb_header_val
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2016 10:12:30 +0200
+
 univention-s4-connector (11.0.0-3) unstable; urgency=low
 
   * Bug #38438: Make init-script LSB compliant

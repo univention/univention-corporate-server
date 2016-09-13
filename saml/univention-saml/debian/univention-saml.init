@@ -37,7 +37,7 @@
 
 . /lib/lsb/init-functions
 
-NAME=$(get_lsb_header_val "$0" Provides)
+NAME='univention-saml'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in

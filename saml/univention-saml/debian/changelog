@@ -1,3 +1,9 @@
+univention-saml (4.0.0-5) precise; urgency=low
+
+  * Bug #38438: Fix use of get_lsb_header_val
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2016 10:08:12 +0200
+
 univention-saml (4.0.0-4) precise; urgency=low
 
   * Bug #38438: Make init-script LSB compliant

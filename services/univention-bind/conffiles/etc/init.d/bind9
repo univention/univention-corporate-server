@@ -42,7 +42,7 @@
 eval "$(univention-config-registry shell dns/backend)"
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
+NAME='bind9'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 sv_action () { # Silently toggle runit state: $action $service_name
@@ -74,17 +74,17 @@ case "$1" in
 		rv=0
 		case "$dns_backend" in
 		samba4)
-			log_process_msg 'samba4'
+			log_progress_msg 'samba4'
 			sv_action start univention-bind-samba4 || rv=$?
 			;;
 		ldap)
-			log_process_msg 'ldap'
+			log_progress_msg 'ldap'
 			sv_action start univention-bind || rv=$?
-			log_process_msg 'proxy'
+			log_progress_msg 'proxy'
 			sv_action start univention-bind-proxy || rv=$?
 			;;
 		*)
-			log_process_msg "Unknown DNS backend $dns_backend"
+			log_progress_msg "Unknown DNS backend $dns_backend"
 			rv=1
 			;;
 		esac
@@ -93,11 +93,11 @@ case "$1" in
 	stop)
 		log_daemon_msg "Stopping $DESC"
 		rv=0
-		log_process_msg 'proxy'
+		log_progress_msg 'proxy'
 		sv_action stop univention-bind-proxy || rv=$?
-		log_process_msg 'ldap'
+		log_progress_msg 'ldap'
 		sv_action stop univention-bind || rv=$?
-		log_process_msg 'samba4'
+		log_progress_msg 'samba4'
 		sv_action stop univention-bind-samba4 || rv=$?
 		log_end_msg $rv
 		;;
@@ -112,23 +112,23 @@ case "$1" in
 		rv=0
 		case "$dns_backend" in
 		samba4)
-			log_process_msg 'ldap'
+			log_progress_msg 'ldap'
 			sv_action stop univention-bind || rv=$?
-			log_process_msg 'proxy'
+			log_progress_msg 'proxy'
 			sv_action stop univention-bind-proxy || rv=$?
-			log_process_msg 'samba4'
+			log_progress_msg 'samba4'
 			sv_action restart univention-bind-samba4 || rv=$?
 			;;
 		ldap)
-			log_process_msg 'samba4'
+			log_progress_msg 'samba4'
 			sv_action stop univention-bind-samba4 || rv=$?
-			log_process_msg 'ldap'
+			log_progress_msg 'ldap'
 			sv_action restart univention-bind || rv=$?
-			log_process_msg 'proxy'
+			log_progress_msg 'proxy'
 			sv_action restart univention-bind-proxy || rv=$?
 			;;
 		*)
-			log_process_msg "Unknown DNS backend $dns_backend"
+			log_progress_msg "Unknown DNS backend $dns_backend"
 			rv=1
 			;;
 		esac

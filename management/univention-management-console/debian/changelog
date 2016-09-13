@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-4) unstable; urgency=low
+
+  * Bug #38438: Fix use of get_lsb_header_val
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2016 10:07:28 +0200
+
 univention-management-console (9.0.12-3) unstable; urgency=medium
 
   * Bug #38824: adjust debia/*install files to avoid usr/share/u-m-c

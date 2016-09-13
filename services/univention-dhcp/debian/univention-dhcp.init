@@ -47,7 +47,7 @@ if [ ! -e /etc/runit/univention/univention-dhcp ]; then
 fi
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
+NAME='univention-dhcp'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
@@ -90,14 +90,7 @@ case "$1" in
 		fi
 		;;
 	status)
-		if sv status /etc/runit/univention-dhcp | grep -q ^run:
-		then
-			log_success_msg "$DESC is running"
-			exit 0
-		else
-			log_failure_msg "$DESC is not running."
-			exit 1
-		fi
+		status_of_proc "$NAME" "$DESC" && exit 0 || exit $?
 		;;
 	*)
 		echo "Usage: $0 {start|stop|restart|crestart|force-reload|status}"

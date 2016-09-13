@@ -36,12 +36,12 @@
 # <http://www.gnu.org/licenses/>.
 
 S4CONNECTORPID=/var/run/univention-s4-connector
+NAME='univention-s4-connector'
 DAEMON="/usr/sbin/univention-s4-connector"
 
 test -x "$DAEMON"|| exit 0
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in

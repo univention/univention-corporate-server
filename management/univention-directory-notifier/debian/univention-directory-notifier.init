@@ -40,7 +40,7 @@ if [ ! -e /etc/runit/univention/univention-directory-notifier ]; then
 fi
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
+NAME='univention-directory-notifier'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in
@@ -65,15 +65,7 @@ case "$1" in
 		log_end_msg $?
 		;;
 	status)
-		log_daemon_msg "Checking status of $DESC" "$NAME"
-		if sv status "$NAME" | grep -q ^run:
-		then
-			log_process_msg "running"
-			log_end_msg 0
-		else
-			log_process_msg "not running"
-			log_end_msg 1
-		fi
+		status_of_proc "$NAME" "$DESC" && exit 0 || exit $?
 		;;
 	crestart)
 		if sv status "$NAME" | grep -q ^run:

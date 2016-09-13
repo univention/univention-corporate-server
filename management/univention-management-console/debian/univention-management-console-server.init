@@ -38,7 +38,7 @@
 # <http://www.gnu.org/licenses/>.
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
+NAME='univention-management-console-server'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 DAEMON="/usr/sbin/univention-management-console-server"
 PIDFILE="/var/run/umc-server.pid"

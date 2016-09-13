@@ -38,7 +38,7 @@
 . /lib/lsb/init-functions
 
 . /usr/share/univention-lib/ucr.sh
-NAME=$(get_lsb_header_val "$0" Provides)
+NAME='univention-cloud-init'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 case "$1" in

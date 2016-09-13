@@ -35,11 +35,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+NAME='univention-welcome-screen'
 DAEMON='/usr/bin/univention-welcome-screen'
 PIDFILE='/var/run/univention-welcome-screen.pid'
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 is_running () {

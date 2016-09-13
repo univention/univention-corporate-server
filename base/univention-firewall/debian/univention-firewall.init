@@ -36,7 +36,7 @@
 # <http://www.gnu.org/licenses/>.
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
+NAME='univention-firewall'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 . /usr/share/univention-lib/ucr.sh
 
@@ -79,7 +79,7 @@ case "$1" in
         if is_ucr_true security/packetfilter/disabled
         then
             log_failure_msg "$DESC is disabled."
-            exit 1
+            exit 3
         else
             log_success_msg "$DESC is enabled"
             exit 0

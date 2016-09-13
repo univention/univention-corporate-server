@@ -38,7 +38,7 @@
 eval "$(univention-config-registry shell system/setup/boot/start)"
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
+NAME='univention-system-setup-boot'
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 . /usr/share/univention-lib/ucr.sh

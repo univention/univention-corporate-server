@@ -1,3 +1,9 @@
+univention-dhcp (11.0.0-2) unstable; urgency=low
+
+  * Bug #38438: Fix use of get_lsb_header_val
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2016 10:10:58 +0200
+
 univention-dhcp (11.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

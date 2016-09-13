@@ -1,3 +1,15 @@
+univention-cloud-init (4.0.0-3) unstable; urgency=low
+
+  * Bug #38438: Fix use of get_lsb_header_val
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2016 10:09:57 +0200
+
+univention-cloud-init (4.0.0-2) unstable; urgency=low
+
+  * Bug #38438: Fix use of get_lsb_header_val
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2016 10:09:23 +0200
+
 univention-cloud-init (4.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

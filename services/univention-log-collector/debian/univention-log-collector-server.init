@@ -36,12 +36,11 @@
 # <http://www.gnu.org/licenses/>.
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-NAME=univention-log-collector-server
+NAME='univention-log-collector-server'
 DAEMON=/usr/sbin/log-collector-server.py
 PIDFILE=/var/run/$NAME.pid
 
 . /lib/lsb/init-functions
-NAME=$(get_lsb_header_val "$0" Provides)
 DESC=$(get_lsb_header_val "$0" Short-Description)
 
 # Gracefully exit if the package has been removed.
