@@ -247,11 +247,11 @@ class Module(JSON_Object):
 		self.merge_flavors(other.flavors)
 
 		for category in other.categories:
-			if not category in self.categories:
+			if category not in self.categories:
 				self.categories.append(category)
 
 		for command in other.commands:
-			if not command in self.commands:
+			if command not in self.commands:
 				self.commands.append(command)
 
 
@@ -463,7 +463,7 @@ class Manager(dict):
 					for command in module_xml.commands():
 						cmd = module_xml.get_command(command)
 						if cmd.allow_anonymous or acls.is_command_allowed(command, hostname, flavor=flavor.id):
-							if not module_id in modules:
+							if module_id not in modules:
 								modules[module_id] = mod
 							if cmd not in modules[module_id].commands:
 								modules[module_id].commands.append(cmd)

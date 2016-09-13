@@ -205,8 +205,8 @@ class ACLs(object):
 			# a key starting with ! means it may not be available
 			if key.startswith('!') and key in opts:
 				return ACLs.MATCH_NONE
-			# else if key not not in opts no rule available -> OK
-			if not key in opts:
+			# else if key not in opts no rule available -> OK
+			if key not in opts:
 				continue
 
 			if isinstance(opts[key], basestring):
@@ -280,8 +280,10 @@ class ACLs(object):
 
 		# first check the group rules. If the group policy allows the
 		# command there is no need to check the user policy
-		return self._is_allowed(filter(lambda x: x.fromUser == False, self.acls), command, hostname, options, flavor) or \
-				self._is_allowed(filter(lambda x: x.fromUser == True, self.acls), command, hostname, options, flavor)
+		user_rules = [x for x in self.acls if x.fromUser]
+		group_rules = [x for x in self.acls if not x.fromUser]
+
+		return self._is_allowed(user_rules + group_rules, command, hostname, options, flavor)
 
 	def _dump(self):
 		"""Dumps the ACLs for the user"""

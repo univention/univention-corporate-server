@@ -178,7 +178,7 @@ class I18N_Manager(dict):
 		LOCALE.info('Searching for %s translation of "%s' % (str(self.locale), message))
 		try:
 			if domain is not None:
-				if not domain in self:
+				if domain not in self:
 					self[domain] = I18N(self.locale, domain)
 				return self[domain]._(message)
 			for domain, i18n in self.items():

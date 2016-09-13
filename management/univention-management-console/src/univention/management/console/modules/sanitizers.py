@@ -473,10 +473,12 @@ class LDAPSearchSanitizer(SearchSanitizer):
 	except for \*.
 	'''
 
+	ESCAPED_WILDCARD = ldap.filter.escape_filter_chars('*')
+
 	def _escape_and_return(self, value):
 		value = ldap.filter.escape_filter_chars(value)
 		if self.use_asterisks:
-			value = value.replace(r'\2a', '*')
+			value = value.replace(self.ESCAPED_WILDCARD, '*')
 		return value
 
 
