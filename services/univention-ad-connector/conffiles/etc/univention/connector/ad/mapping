@@ -34,6 +34,7 @@ import univention.connector.ad
 import univention.connector.ad.mapping
 import univention.connector.ad.password
 
+@!@
 global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base@%@',
 			'cn=shares,@%@ldap/base@%@','cn=printers,@%@ldap/base@%@',
 			'cn=networks,@%@ldap/base@%@', 'cn=kerberos,@%@ldap/base@%@',
@@ -50,6 +51,12 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'cn=opsi,@%@ldap/base@%@',
 			'cn=Microsoft Exchange System Objects,@%@connector/ad/ldap/base@%@']
 
+for k in configRegistry.keys():
+	if k.startswith('connector/ad/mapping/ignoresubtree/'):
+		global_ignore_subtree.append(configRegistry.get(k))
+
+print 'global_ignore_subtree=%s' % global_ignore_subtree
+@!@
 
 ad_mapping = {
 	'user': univention.connector.property (

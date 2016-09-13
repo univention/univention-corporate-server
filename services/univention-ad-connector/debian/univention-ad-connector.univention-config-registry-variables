@@ -112,6 +112,12 @@ Description[en]=Defines the synchronisation mode for containers (cn) between the
 Type=str
 Categories=service-adcon
 
+[con.*/ad/mapping/ignoresubtree/.*]
+Description[de]=Definiert die Positionen im Verzeichnisdienst, die von der Synchronisation ausgeschlossen werden. Die Werte können sowohl Positionen im Active Directory als auch im UCS-LDAP enthalten. Standardmäßig ist die Variable nicht gesetzt.
+Description[en]=Defines the locations in the directory service that are excluded from the synchronization. The values can contain positions in Active Directory and in the UCS LDAP. By default, the variable is not set.
+Type=str
+Categories=service-adcon
+
 [con.*/ad/ldap/base]
 Description[de]=Die LDAP-Basis-DN des Active Directory-Servers.
 Description[en]=The LDAP base DN of the Active Directory server.

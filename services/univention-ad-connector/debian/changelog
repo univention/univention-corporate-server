@@ -1,3 +1,10 @@
+univention-ad-connector (10.0.2-8) unstable; urgency=medium
+
+  * Make the global_ignore_subtree configuration option configurable
+    via the UCR variable connector/ad/mapping/ignoresubtree/* (Bug #41680)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Sep 2016 13:27:53 +0200
+
 univention-ad-connector (10.0.2-7) unstable; urgency=medium
 
   * Added support for the following UCR variables:
