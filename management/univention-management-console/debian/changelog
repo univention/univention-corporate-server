@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-11) unstable; urgency=medium
+
+  * Bug #38824: remove dependency to app.css 
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 13 Sep 2016 16:14:26 +0200
+
 univention-management-console (9.0.12-10) unstable; urgency=medium
 
   * Bug #38824: fix typo in .link file

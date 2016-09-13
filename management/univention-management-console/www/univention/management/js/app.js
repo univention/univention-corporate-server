@@ -86,7 +86,6 @@ define([
 	"umc/app/CategoryButton",
 	"umc/i18n/tools",
 	"umc/i18n!",
-	"xstyle/css!./app.css",
 	"dojo/sniff" // has("ie"), has("ff")
 ], function(declare, lang, kernel, array, baseFx, baseWin, win, on, mouse, touch, tap, aspect, has,
 		Evented, Deferred, all, cookie, topic, ioQuery, fxEasing, Memory, Observable,
