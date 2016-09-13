@@ -1,3 +1,10 @@
+ucs-test (7.0.4-1) unstable; urgency=medium
+
+  * 80_docker/91_additional_packages: Test additional packages
+    (Bug #42200)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Sep 2016 15:42:48 +0200
+
 ucs-test (7.0.3-3) unstable; urgency=medium
 
   * Bug #41571: Bring 51_samba4/56evaluate_windows_gpo up to the state
