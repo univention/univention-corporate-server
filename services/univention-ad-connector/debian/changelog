@@ -1,3 +1,10 @@
+univention-ad-connector (10.0.2-9) unstable; urgency=medium
+
+  * Moving an object to a non-readable LDAP position resulted to a wrong
+    move. This issue has been fixed (Bug #41938)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Sep 2016 14:10:16 +0200
+
 univention-ad-connector (10.0.2-8) unstable; urgency=medium
 
   * Make the global_ignore_subtree configuration option configurable
