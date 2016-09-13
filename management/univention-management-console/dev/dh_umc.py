@@ -353,7 +353,7 @@ def create_json_file(po_file):
 		elif entry.msgstr_plural and not has_plurals:
 			raise LookupError(("There are plural forms in the .po file, but no rules for them in the .po file's header"))
 		elif entry.msgstr_plural:
-			data[entry.msgid] = list(entry.msgstr_plural)
+			data[entry.msgid] = list(entry.msgstr_plural.values())
 
 	json_fd.write(json.dumps(data))
 	json_fd.close()
