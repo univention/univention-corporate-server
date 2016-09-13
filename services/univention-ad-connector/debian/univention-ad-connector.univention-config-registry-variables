@@ -74,11 +74,41 @@ Categories=service-adcon
 Description[de]=Ist diese Option aktiviert, werden die unterschiedlichen Active Directory Gruppen synchronisiert mit Ausnhme der lokalen Gruppen. Ist die Variable nicht gesetzt, werden nur globale Active Directory Gruppen synchronisiert.
 Description[en]=If this option is activated, the different Active Directory groups are synchronized except the local groups. If the variable is unset only global Active Directory groups are synchronized.
 Type=bool
-Categories=service-s4con
+Categories=service-adcon
 
 [con.*/ad/mapping/syncmode]
 Description[de]=Diese Variable konfiguriert den Sychronisations-Modus zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Änderungen können nur im Active Directory vorgenommen werden und werden in das UCS-LDAP übertragen), 'write' (Änderungen können nur im UCS-LDAP vorgenommen werden und werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, in beiden Verzeichnisdiensten können Änderungen vorgenommen werden).
 Description[en]=This variable configures the synchronisation mode between the UCS LDAP and Active Directory. The following values are supported: 'read' (changes can only by made in Active Directory and are synchronised to UCS LDAP), 'write' (changes can only by made in UCS LDAP and are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes can be made in both directory services).
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/user/syncmode]
+Description[de]=Definiert den Sychronisations-Modus für Benutzer-Objekte zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Nur Änderungen im Active Directory werden in das UCS-LDAP übertragen), 'write' (Nur Änderungen im UCS-LDAP werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, Änderungen in beiden Verzeichnisdiensten werden übertragen). Falls diese Variable nicht gesetzt ist, wird der Wert von connector/ad/mapping/syncmode verwendet.
+Description[en]=Defines the synchronisation mode for user objects between the UCS LDAP and Active Directory. The following values are supported: 'read' (Only changes in Active Directory are synchronised to UCS LDAP), 'write' (Only changes in UCS LDAP are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes in both directory services are synchronised). If this variable is not set, the value of connector/ad/mapping/syncmode will be used.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/group/syncmode]
+Description[de]=Definiert den Sychronisations-Modus für Gruppen-Objekte zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Nur Änderungen im Active Directory werden in das UCS-LDAP übertragen), 'write' (Nur Änderungen im UCS-LDAP werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, Änderungen in beiden Verzeichnisdiensten werden übertragen). Falls diese Variable nicht gesetzt ist, wird der Wert von connector/ad/mapping/syncmode verwendet.
+Description[en]=Defines the synchronisation mode for group objects between the UCS LDAP and Active Directory. The following values are supported: 'read' (Only changes in Active Directory are synchronised to UCS LDAP), 'write' (Only changes in UCS LDAP are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes in both directory services are synchronised). If this variable is not set, the value of connector/ad/mapping/syncmode will be used.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/computer/syncmode]
+Description[de]=Definiert den Sychronisations-Modus für Computer-Objekte zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Nur Änderungen im Active Directory werden in das UCS-LDAP übertragen), 'write' (Nur Änderungen im UCS-LDAP werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, Änderungen in beiden Verzeichnisdiensten werden übertragen). Falls diese Variable nicht gesetzt ist, wird der Wert von connector/ad/mapping/syncmode verwendet.
+Description[en]=Defines the synchronisation mode for computer objects between the UCS LDAP and Active Directory. The following values are supported: 'read' (Only changes in Active Directory are synchronised to UCS LDAP), 'write' (Only changes in UCS LDAP are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes in both directory services are synchronised). If this variable is not set, the value of connector/ad/mapping/syncmode will be used.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/ou/syncmode]
+Description[de]=Definiert den Sychronisations-Modus für Organizational Units (ou) zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Nur Änderungen im Active Directory werden in das UCS-LDAP übertragen), 'write' (Nur Änderungen im UCS-LDAP werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, Änderungen in beiden Verzeichnisdiensten werden übertragen). Falls diese Variable nicht gesetzt ist, wird der Wert von connector/ad/mapping/syncmode verwendet.
+Description[en]=Defines the synchronisation mode for organizational units (ou) between the UCS LDAP and Active Directory. The following values are supported: 'read' (Only changes in Active Directory are synchronised to UCS LDAP), 'write' (Only changes in UCS LDAP are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes in both directory services are synchronised). If this variable is not set, the value of connector/ad/mapping/syncmode will be used.
+Type=str
+Categories=service-adcon
+
+[con.*/ad/mapping/container/syncmode]
+Description[de]=Definiert den Sychronisations-Modus für Container (cn) zwischen dem UCS-LDAP und dem Active Directory. Unterstützt werden die Werte 'read' (Nur Änderungen im Active Directory werden in das UCS-LDAP übertragen), 'write' (Nur Änderungen im UCS-LDAP werden in das Active Directory übertragen) oder 'sync' (bidirektionale Synchronisation, Änderungen in beiden Verzeichnisdiensten werden übertragen). Falls diese Variable nicht gesetzt ist, wird der Wert von connector/ad/mapping/syncmode verwendet.
+Description[en]=Defines the synchronisation mode for containers (cn) between the UCS LDAP and Active Directory. The following values are supported: 'read' (Only changes in Active Directory are synchronised to UCS LDAP), 'write' (Only changes in UCS LDAP are synchronised to Active Directory) and 'sync' (bidirectional synchronisation, changes in both directory services are synchronised). If this variable is not set, the value of connector/ad/mapping/syncmode will be used.
 Type=str
 Categories=service-adcon
 

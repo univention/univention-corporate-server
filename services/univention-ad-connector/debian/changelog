@@ -1,3 +1,14 @@
+univention-ad-connector (11.0.3-1) unstable; urgency=medium
+
+  * Added support for the following UCR variables:
+     - connector/ad/mapping/user/syncmode
+     - connector/ad/mapping/group/syncmode
+     - connector/ad/mapping/container/syncmode
+     - connector/ad/mapping/ou/syncmode
+    (Bug #41685)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Sep 2016 11:46:40 +0200
+
 univention-ad-connector (11.0.2-1) unstable; urgency=low
 
   * Bug #38438: Make init-script LSB compliant
