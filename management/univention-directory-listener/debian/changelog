@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.0-3) unstable; urgency=low
+
+  * Bug #38438: Fix message printing in init-script
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2016 10:58:02 +0200
+
 univention-directory-listener (11.0.0-2) unstable; urgency=low
 
   * Bug #38438: Fix message printing in init-script

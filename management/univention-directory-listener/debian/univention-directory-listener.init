@@ -69,7 +69,7 @@ case "$1" in
 		fi
 		log_daemon_msg "Restarting $DESC" "$NAME"
 		sv restart "$NAME"
-		_end_msg $?
+		log_end_msg $?
 		;;
 	status)
 		status_of_proc "$NAME" "$DESC" && exit 0 || exit $?
