@@ -31,12 +31,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import copy
+import re
 import os
 import sys
+import copy
+import json
 from email.utils import formatdate
 
-import json
 import polib
 import xml.etree.ElementTree as ET
 
@@ -349,14 +350,10 @@ def create_json_file(po_file):
 	for entry in pofile:
 		if entry.msgstr:
 			data[entry.msgid] = entry.msgstr
+		elif entry.msgstr_plural and not has_plurals:
+			raise LookupError(("There are plural forms in the .po file, but no rules for them in the .po file's header"))
 		elif entry.msgstr_plural:
-			if not has_plurals:
-				raise LookupError(("There are plural forms in the .po file, "
-					"but no rules for them in the .po file's header"))
-			tmp_lst = []
-			for i in range(len(entry.msgstr_plural)):
-				tmp_lst.append(entry.msgstr_plural[str(i)])
-		data[entry.msgid] = tmp_lst
+			data[entry.msgid] = list(entry.msgstr_plural)
 
 	json_fd.write(json.dumps(data))
 	json_fd.close()

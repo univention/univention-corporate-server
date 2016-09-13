@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-5) unstable; urgency=medium
+
+  * Bug #42220: Fix create_json_file()
+
+ -- Florian Best <best@univention.de>  Tue, 13 Sep 2016 10:42:21 +0200
+
 univention-management-console (9.0.12-4) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val
