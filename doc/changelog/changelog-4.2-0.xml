@@ -151,9 +151,10 @@
 			<title>Univention Management Console web interface</title>
 			<itemizedlist>
 				<listitem><simpara>
-						Improved internationalization for javascript files in UMC (<u:bug>42293</u:bug>)..
+						Improved internationalization for JavaScript files in UMC (<u:bug>42293</u:bug>)..
 				</simpara></listitem>
 				<listitem><simpara>
+						The correct service name is shown when the start behavior is configured through the &ucsUCRV; <envar>umc/http/autostart</envar> (<u:bug>42340</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -161,6 +162,9 @@
 		<section id="changelog:umc:server">
 			<title>Univention Management Console server</title>
 			<itemizedlist>
+				<listitem><simpara>
+						The correct service name is shown when the start behavior is configured through the &ucsUCRV; <envar>umc/server/autostart</envar> (<u:bug>42339</u:bug>).
+				</simpara></listitem>
 				<listitem><simpara>
 				</simpara></listitem>
 			</itemizedlist>
@@ -451,7 +455,7 @@
 			<title>Apache</title>
 			<itemizedlist>
 				<listitem><simpara>
-					Apache configs from <package>univention-apache</package> have been adapted
+					Apache configuration files from <package>univention-apache</package> have been adapted
 					to apache version 2.4 (<u:bug>42196</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
@@ -523,7 +527,7 @@
 				<listitem><simpara>
 					<package>univention-samba4</package> has been adjusted
 					to flush caches during initial install before committing
-					the sysvol ACLs (<u:bug>41319</u:bug>).
+					the SYSVOL ACLs (<u:bug>41319</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
@@ -570,6 +574,9 @@
 			</simpara></listitem>
 			<listitem><simpara>
 				The service <systemitem class="service">portmap</systemitem> was renamed to <systemitem class="service">rpcbind</systemitem> (<u:bug>36571</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
+				The init scripts of all services have been made <orgname>Linux Standard Base</orgname> (<acronym>LSB</acronym>) compliant to allow <command>insserv</command> to automatically reorder them based on dependencies (<u:bug>38438</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
