@@ -1,2 +1,3 @@
 usr/share/univention-management-console-frontend var/www/univention/management
 var/www/univention/management var/www/univention-management-console 
+umc/modules usr/share/univention-management-console-frontend/js/
