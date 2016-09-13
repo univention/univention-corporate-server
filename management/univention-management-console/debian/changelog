@@ -1,12 +1,18 @@
+univention-management-console (9.0.12-9) unstable; urgency=medium
+
+  * Bug #38824: a few more tweaks for univention-web-js
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 Sep 2016 15:11:52 +0200
+
 univention-management-console (9.0.12-8) unstable; urgency=medium
 
-  * Bug #38824: fix typo 
+  * Bug #38824: fix typo
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 13 Sep 2016 14:47:34 +0200
 
 univention-management-console (9.0.12-7) unstable; urgency=medium
 
-  * Bug #38824: make UMC work with univention-web-js 
+  * Bug #38824: make UMC work with univention-web-js
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 13 Sep 2016 14:43:19 +0200
 
