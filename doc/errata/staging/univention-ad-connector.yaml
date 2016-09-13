@@ -3,7 +3,7 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-ad-connector
-fix: 10.0.2-8.508.201609131329
+fix: 10.0.2-9.509.201609131411
 desc: |
  This update addresses the following issue(s):
  * The package dependency to the master and backup server role packages has
@@ -12,4 +12,6 @@ desc: |
    Registry variables for users, groups and containers separately.
  * The ignored subtrees can now be configured through the Univention
    Configuration Registry variables connector/ad/mapping/ignoresubtree/*.
-bug: [41682,41685,41680]
+ * Moving an object to a non-readable LDAP position resulted to a wrong
+   move. This issue has been fixed.
+bug: [41682,41685,41680,41938]
