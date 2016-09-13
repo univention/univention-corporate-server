@@ -97,6 +97,21 @@ def get_app_version():
 	return random_version()
 
 
+def copy_package_to_appcenter(ucs_version, app_directory, package_name):
+	target = os.path.join('/var/www/univention-repository/%s/maintained/component' % ucs_version, '%s/all' % app_directory)
+	print 'cp %s %s' % (package_name, target)
+	shutil.copy(package_name, target)
+	print '''
+		cd /var/www/univention-repository/%(version)s/maintained/component;
+		apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
+		gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
+	''' % {'version': ucs_version, 'app': app_directory}
+	subprocess.call('''
+		cd /var/www/univention-repository/%(version)s/maintained/component;
+		apt-ftparchive packages %(app)s/all >%(app)s/all/Packages;
+		gzip -c %(app)s/all/Packages >%(app)s/all/Packages.gz
+	''' % {'version': ucs_version, 'app': app_directory}, shell=True)
+	
 class App(object):
 
 	def __init__(self, name, version, app_directory_suffix=None, package_name=None, build_package=True):
@@ -182,6 +197,18 @@ class App(object):
 		self.ucr.load()
 		self.container_id = self.ucr.get('appcenter/apps/%s/container' % self.app_name)
 
+		self.installed = True
+
+	def install_via_add_app(self):
+		self._update()
+		# ret = subprocess.call('univention-app install --noninteractive --do-not-revert --username=%s --pwdfile=%s %s' %
+		cmd = 'univention-add-app -a -l %s' % self.app_name
+		print cmd
+		ret = subprocess.call(cmd, shell=True)
+		if ret != 0:
+			raise UCSTest_DockerApp_InstallationFailed()
+
+		self.ucr.load()
 		self.installed = True
 
 	def _update(self):
