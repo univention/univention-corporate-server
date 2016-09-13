@@ -59,7 +59,12 @@ ad_mapping = {
 			ucs_module='users/user',
 
 			# read, write, sync, none
-			sync_mode='@%@connector/ad/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/ad/mapping/user/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/ad/mapping/user/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/ad/mapping/syncmode')
+@!@
 			scope='sub',
 
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
@@ -256,7 +261,12 @@ if configRegistry.is_true('connector/ad/mapping/user/alternativemail'):
 
 			ucs_module='groups/group',
 
-			sync_mode='@%@connector/ad/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/ad/mapping/group/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/ad/mapping/group/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/ad/mapping/syncmode')
+@!@
 			scope='sub',
 
 @!@
@@ -428,7 +438,12 @@ if ignore_filter:
 	'container': univention.connector.property (
 			ucs_module='container/cn',
 
-			sync_mode='@%@connector/ad/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/ad/mapping/container/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/ad/mapping/container/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/ad/mapping/syncmode')
+@!@
 
 			scope='sub',
 
@@ -471,7 +486,12 @@ if ignore_filter:
 	'ou': univention.connector.property (
 			ucs_module='container/ou',
 
-			sync_mode='@%@connector/ad/mapping/syncmode@%@',
+			@!@
+if configRegistry.get('connector/ad/mapping/ou/syncmode'):
+	print "sync_mode='%s'," % configRegistry.get('connector/ad/mapping/ou/syncmode')
+else:
+	print "sync_mode='%s'," % configRegistry.get('connector/ad/mapping/syncmode')
+@!@
 
 			scope='sub',
 
