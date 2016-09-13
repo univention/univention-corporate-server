@@ -97,7 +97,7 @@ $(BUILD_IMAGE_DIRS)::
 	mkdir -p $(@D)
 	src=$@; \
 	src=$(TMP_THEME_DIR)$${src#$(BUILD_THEME_DIR)}; \
-	cp -r $$src $@
+	cp -rL $$src $@
 
 $(BUILD_THEME_DIR)/umc.css: tmp-css
 	# generate source maps

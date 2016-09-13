@@ -1,3 +1,9 @@
+univention-web (1.0.1-7) unstable; urgency=medium
+
+  * Bug #38824: do not include images as symlinks in build directory
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 Sep 2016 15:22:46 +0200
+
 univention-web (1.0.1-6) unstable; urgency=medium
 
   * Bug #38824: make sure that package build works correctly
