@@ -74,6 +74,8 @@ from .udm_ldap import (
 	LDAP_ServerDown
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license
+USE_ASTERISKS = ucr.is_true('directory/manager/web/allow_wildcard_search', True)
+ADD_ASTERISKS = USE_ASTERISKS and ucr.is_true('directory/manager/web/auto_substring_search', True)
 
 _ = Translation( 'univention-management-console-module-udm' ).translate
 
@@ -474,7 +476,10 @@ class Instance( Base, ProgressMixin ):
 										  notifier.Callback( self._thread_finished, request ) )
 		thread.run()
 
-	@sanitize(objectPropertyValue=LDAPSearchSanitizer())
+	@sanitize(objectPropertyValue=LDAPSearchSanitizer(
+		add_asterisks=ADD_ASTERISKS,
+		use_asterisks=USE_ASTERISKS,
+	))
 	def query( self, request ):
 		"""Searches for LDAP objects and returns a few properties of the found objects
 
