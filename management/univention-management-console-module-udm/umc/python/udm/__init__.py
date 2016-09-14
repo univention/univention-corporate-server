@@ -77,6 +77,9 @@ from .udm_ldap import (
 )
 from .tools import LicenseError, LicenseImport, install_opener, urlopen, dump_license, check_license
 
+USE_ASTERISKS = ucr.is_true('directory/manager/web/allow_wildcard_search', True)
+ADD_ASTERISKS = USE_ASTERISKS and ucr.is_true('directory/manager/web/auto_substring_search', True)
+
 _ = Translation('univention-management-console-module-udm').translate
 
 
@@ -492,7 +495,10 @@ class Instance(Base, ProgressMixin):
 		thread.run()
 
 	@sanitize(
-		objectPropertyValue=LDAPSearchSanitizer(),
+		objectPropertyValue=LDAPSearchSanitizer(
+			add_asterisks=ADD_ASTERISKS,
+			use_asterisks=USE_ASTERISKS,
+		),
 		objectProperty=ObjectPropertySanitizer(required=True),
 		fields=ListSanitizer(),
 	)

@@ -51,3 +51,15 @@ Description[de]=Definiert eine abweichenden Widget-Pfad für die angegebene Eige
 Description[en]=Defines a differing widget path for the specified property.
 Type=str
 Categories=management-umc
+
+[directory/manager/web/allow_wildcard_search]
+Description[de]=Definiert, ob Wildcards (*) in der Suche ausgewertet werden.
+Description[en]=Defines whether wildcards (*) are evaluated when searching.
+Type=bool
+Categories=management-umc
+
+[directory/manager/web/auto_substring_search]
+Description[de]=Definiert, ob automatisch nach Teilstrings gesucht wird.
+Description[en]=Defines if it is searched automatically for substrings.
+Type=bool
+Categories=management-umc

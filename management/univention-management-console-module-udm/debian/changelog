@@ -1,3 +1,9 @@
+univention-management-console-module-udm (6.0.11-25) unstable; urgency=medium
+
+  * Bug #42388: make wildcard and substring search configurable
+
+ -- Florian Best <best@univention.de>  Wed, 14 Sep 2016 13:07:51 +0200
+
 univention-management-console-module-udm (6.0.11-24) unstable; urgency=low
 
   * Bug #42159: Corrected a typo.
