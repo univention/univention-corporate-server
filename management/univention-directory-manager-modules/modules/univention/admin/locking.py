@@ -33,6 +33,10 @@
 import ldap, time
 import univention.debug
 import univention.admin.uexceptions
+import univention.admin.localization
+
+translation = univention.admin.localization.translation('univention/admin')
+_ = translation.translate
 
 def lockDn(lo, position, type, value, scope):
 	dn = [ [('cn', value,        ldap.AVA_STRING)],

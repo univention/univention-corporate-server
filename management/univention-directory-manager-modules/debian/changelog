@@ -1,4 +1,10 @@
-univention-directory-manager-modules (9.0.77-1) unstable; urgency=medium
+univention-directory-manager-modules (9.0.76-44) unstable; urgency=medium
+
+  * Bug #42379: fix missing _ function
+
+ -- Florian Best <best@univention.de>  Wed, 14 Sep 2016 12:50:47 +0200
+
+univention-directory-manager-modules (9.0.76-44) unstable; urgency=medium
 
   * Bug #42379: enhance error messages
 
