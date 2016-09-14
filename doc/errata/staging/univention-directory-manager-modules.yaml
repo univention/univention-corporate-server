@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-directory-manager-modules
+fix: 11.0.3-35.1428.201609141317
+desc: |
+ This update addresses the following issue(s):
+ * Error messages regarding attribute locking have been enhanced.
+bug: [42386]

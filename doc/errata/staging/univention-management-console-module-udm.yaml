@@ -3,8 +3,9 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-management-console-module-udm
-fix: 6.0.11-24.654.201609011036
+fix: 6.0.11-25.657.201609141316
 desc: |
  This update addresses the following issue(s):
  * A typo has been corrected.
-bug: [42159]
+ * Wildcard and automatic substring searches are now configurable via UCR.
+bug: [42159i, 42388]
