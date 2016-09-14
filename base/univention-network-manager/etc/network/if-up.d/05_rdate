@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 [ -f /var/run/ntpd.pid ] && exit 0
+[ -d /run/systemd/system ] && exit 0
 
 . /etc/network/ucs-network-tools
 ucs_ignore_interface

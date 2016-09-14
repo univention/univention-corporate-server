@@ -31,6 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 [ -x /etc/init.d/univention-directory-policy ] || exit 0
+[ -d /run/systemd/system ] && exit 0
 
 . /etc/network/ucs-network-tools
 ucs_ignore_interface

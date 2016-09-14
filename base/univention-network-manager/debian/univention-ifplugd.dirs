@@ -1,2 +1,1 @@
-etc/dhcp/dhclient-enter-hooks.d
 etc/dhcp/dhclient-enter-hooks.univention.d

@@ -1,3 +1,9 @@
+univention-network-manager (9.0.0-3) unstable; urgency=low
+
+  * Bug #42380: Disable (re-)starting services when systemd is used.
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 14 Sep 2016 09:49:48 +0200
+
 univention-network-manager (9.0.0-2) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val

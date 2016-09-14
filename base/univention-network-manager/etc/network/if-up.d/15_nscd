@@ -36,6 +36,7 @@
 . /etc/network/ucs-network-tools
 ucs_ignore_interface
 
+[ -d /run/systemd/system ] ||
 invoke-rc.d nscd restart
 nscd -i passwd
 nscd -i group
