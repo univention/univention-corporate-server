@@ -9,3 +9,4 @@ desc: |
  * In some situations Dovecot was not properly configured after the
    initial installation. This has been fixed.
 bug: [42032]
+announced: 2016-09-14
