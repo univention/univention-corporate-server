@@ -1,0 +1,10 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: univention-management-console-module-udm
+fix: 4.0.99-11.655.201609141219
+desc: |
+ This update addresses the following issue(s):
+ * Wildcard and automatic substring searches are now configurable via UCR.
+bug: [42181]
