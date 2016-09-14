@@ -152,7 +152,7 @@ def acquireRange(lo, position, atype, attr, ranges, scope='base'):
 					univention.admin.locking.unlock(lo, position, other, str(startID), scope=scope)
 			return str(startID)
 
-	raise univention.admin.uexceptions.noLock, _(': type was %s') % atype
+	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (atype,))
 
 
 def acquireUnique(lo, position, type, value, attr, scope='base'):
@@ -183,7 +183,7 @@ def acquireUnique(lo, position, type, value, attr, scope='base'):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALLOCATE return %s'% value)
 			return value
 	
-	raise univention.admin.uexceptions.noLock, _(': type was %s')%type
+	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
 
 
 def request(lo, position, type, value=None):
