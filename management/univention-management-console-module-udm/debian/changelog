@@ -1,4 +1,4 @@
-univention-management-console-module-udm (4.0.99-11) unstable; urgency=medium
+univention-management-console-module-udm (4.0.99-1011) unstable; urgency=medium
 
   * Bug #42181: make wildcard and substring search configurable
 
