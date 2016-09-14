@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.1-5) unstable; urgency=medium
+
+  * Bug #38824: fix dependency to widgets.js
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 14 Sep 2016 19:02:38 +0200
+
 univention-management-console-module-udm (7.0.1-4) unstable; urgency=medium
 
   * Bug #42388: make wildcard and substring search configurable
