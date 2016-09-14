@@ -14,3 +14,4 @@ desc: |
  * The school OU was not defined while joining a new Windows client. This
    issue has been fixed.
 bug: [36831, 41168, 41765]
+announced: 2016-09-14
