@@ -1,0 +1,1 @@
+mv_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-management-console /etc/univention/templates/files/etc/apache2/sites-available/univention.conf 9.0.0~

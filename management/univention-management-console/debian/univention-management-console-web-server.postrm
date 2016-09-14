@@ -32,8 +32,6 @@
 
 #DEBHELPER#
 
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/files/etc/apache2/sites-available/univention-management-console -- $@
-
 if [ "$1" = "remove" ]
 then
 	. /usr/share/univention-lib/all.sh

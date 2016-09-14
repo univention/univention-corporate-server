@@ -1,5 +1,5 @@
 Type: file
-File: etc/apache2/ucs-sites.conf.d/univention
+File: etc/apache2/sites-available/univention.conf
 Variables: umc/http/port
 Variables: umc/http/interface
 Variables: umc/http/session/timeout
