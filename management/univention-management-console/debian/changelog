@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-13) unstable; urgency=medium
+
+  * Bug #42228: make univention a apache site again
+
+ -- Florian Best <best@univention.de>  Wed, 14 Sep 2016 15:05:13 +0200
+
 univention-management-console (9.0.12-12) unstable; urgency=medium
 
   * Bug #42228: make univention a apache site again
