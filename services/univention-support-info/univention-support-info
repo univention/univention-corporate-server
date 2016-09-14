@@ -153,6 +153,11 @@ ucr.load()
 timeString = time.strftime('%Y-%m-%d_%H-%M-%SZ', time.gmtime())
 hostname = socket.gethostname()
 
+env = None
+sambaDomainVersion = None
+archive = None
+archiveFile = None
+archiveFileName = None
 
 
 def Popen(CommandTuple, Input=None):

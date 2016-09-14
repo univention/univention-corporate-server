@@ -55,6 +55,7 @@ filter='(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
 attributes=['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName','univentionPrinterPricePerPage','univentionPrinterPricePerJob','univentionPrinterQuotaSupport','univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype', 'univentionPrinterUseClientDriver',]
 
 EMPTY = ('',)
+reload_samba_in_postrun = None
 
 def lpadmin(args):
 

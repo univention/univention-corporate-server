@@ -38,7 +38,7 @@ import univention.management.console as umc
 import univention.management.console.modules.decorators as decorators
 import univention.management.console.modules.sanitizers as sanitizers
 
-import univention.management.console.modules.firewall.backend
+from univention.management.console.modules.firewall import backend
 
 
 _ = umc.Translation('univention-management-console-module-firewall').translate

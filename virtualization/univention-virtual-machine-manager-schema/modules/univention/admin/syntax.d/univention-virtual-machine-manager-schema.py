@@ -1,3 +1,5 @@
+import re
+
 class UvmmProfiles(UDM_Objects):
 	description = _('UVMM: Profile')
 	udm_modules = ('uvmm/profile',)

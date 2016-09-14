@@ -41,6 +41,7 @@ except ImportError:
 from time import sleep
 from univention.config_registry import ConfigRegistry
 ucr = ConfigRegistry()
+connection = None
 
 parser = OptionParser()
 parser.add_option('-H', '--host', dest='host', default='localhost',

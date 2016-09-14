@@ -339,6 +339,8 @@ def add_zone(contact, serial, refresh, retry, expire, ttl, *nameserver):
 	zone.create()
 
 
+lo = options = zone = zone_name = position = co = parser = None
+
 def main():
 	"""Run DNS edit."""
 	global options
