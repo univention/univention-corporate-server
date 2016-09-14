@@ -47,9 +47,10 @@ TMP_STYL_FILES:=$(STYL_FILES:$(THEME_REPO):$(TMP_THEME_DIR))
 TMP_CSS_FILES:=$(TMP_STYL_FILES:.styl:.css)
 BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
 BUILD_IMAGE_DIRS=$(addprefix $(BUILD_THEME_DIR)/, images form/images layout/images)
-TMP_THEME_CSS=$(TMP_THEME_DIR)/umc.css
+TMP_THEME_CSS=$(TMP_THEME_DIR)/$(CSS_FILE_NAME)
+CSS_FILE_NAME=umc.css
 
-JS_INSTALL_DIR:=/usr/share/univention-web/js
+JS_INSTALL_DIR:=usr/share/univention-web/js
 THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
 
 .PHONY: build-dev install clean
@@ -103,14 +104,15 @@ $(BUILD_THEME_DIR)/umc.css: tmp-css
 	# generate source maps
 	for idir in . form layout site; do \
 		cd $(TMP_THEME_DIR)/$$idir; \
-		stylus -m . ; \
+		stylus --sourcemap . ; \
 	done
 	# Workaround: mark several commands as comments (/*TMP ... */)
 	# to avoid parse errors with stylus
 	sed -i 's/.*\(^\s\+#\|filter: alpha\|filter:\|top: expression\).*/\/\*TMP\0\*\//; /\/\*TMP/ { s|/\*[^*]*\*/\*/|*/| }' $$(find $(TMP_DIR)/dojo $(TMP_DIR)/dijit -name "*.css")
 	# compile all .css files into one big file
 	mkdir -p $(@D)
-	stylus --resolve-url --include-css -o $(@D) $(TMP_THEME_CSS)
+	stylus --resolve-url --include-css $(TMP_THEME_CSS)
+	cp $(TMP_THEME_CSS) $(@D)/$(CSS_FILE_NAME)
 	# Workaround: remove the temporarily commented lines
 	sed -i 's|/\*TMP\(.*\)\*/|\1|' $@
 

@@ -1,3 +1,9 @@
+univention-web (1.0.1-8) unstable; urgency=medium
+
+  * Bug #38824: Fix missing icons
+
+ -- Johannes Keiser <keiser@univention.de>  Wed, 14 Sep 2016 18:14:13 +0200
+
 univention-web (1.0.1-7) unstable; urgency=medium
 
   * Bug #38824: do not include images as symlinks in build directory
