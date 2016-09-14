@@ -1,6 +1,6 @@
 univention-directory-manager-modules (9.0.76-144) unstable; urgency=medium
 
-  * Bug #42385: enhance error messages
+  * Bug #42387: enhance error messages
 
  -- Florian Best <best@univention.de>  Wed, 14 Sep 2016 12:14:45 +0200
 
