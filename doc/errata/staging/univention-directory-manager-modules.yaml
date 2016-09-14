@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: univention-directory-manager-modules
-fix: 9.0.76-43.1426.201609141221
+fix: 9.0.76-44.1427.201609141253
 desc: |
  This update addresses the following issue(s):
  * Error messages regarding attribute locking have been enhanced.
