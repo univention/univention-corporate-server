@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-14) unstable; urgency=medium
+
+  * Bug #42384: fix images
+
+ -- Florian Best <best@univention.de>  Wed, 14 Sep 2016 18:43:38 +0200
+
 univention-management-console (9.0.12-13) unstable; urgency=medium
 
   * Bug #42228: make univention a apache site again
