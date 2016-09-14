@@ -33,6 +33,10 @@
 import ldap, time
 import univention.debug
 import univention.admin.uexceptions
+import univention.admin.localization
+
+translation = univention.admin.localization.translation('univention/admin')
+_ = translation.translate
 
 def lockDn(lo, position, type, value, scope):
 	dn = [ [('cn', value,        ldap.AVA_STRING)],
@@ -63,14 +67,12 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 	]
 	if not lo.get(dn, ['lockTime']):
 		try:
-			lo.add(dn, al, exceptions=0)
+			lo.add(dn, al)
 			return locktime
 		except ldap.ALREADY_EXISTS:
 			pass
-		except univention.admin.uexceptions.permissionDenied, e:
-			raise e
-		else:
-			raise univention.admin.uexceptions.noLock, _(': type was %s')%type
+		except univention.admin.uexceptions.permissionDenied:
+			raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
 
 	oldlocktime=lo.getAttr(dn, 'lockTime')
 	if oldlocktime and oldlocktime[0]:
@@ -84,13 +86,12 @@ def lock(lo, position, type, value, scope='domain', timeout=300):
 			('lockTime', str(oldlocktime), str(locktime))
 		]
 		try:
-			lo.modify(dn, ml, exceptions=1)
+			lo.modify(dn, ml, exceptions=True)
 			return locktime
-		except 'f':
-			pass
-	
-	# locking failed
-	raise univention.admin.uexceptions.noLock
+		except ldap.INSUFFICIENT_ACCESS:
+			raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
+
+	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
 
 def relock(lo, position, type, value, scope='domain', timeout=300):
 
@@ -106,28 +107,26 @@ def relock(lo, position, type, value, scope='domain', timeout=300):
 		('lockTime', 1, str(locktime))
 	]
 	try:
-		lo.modify(dn, ml, exceptions=1)
+		lo.modify(dn, ml, exceptions=True)
 		return locktime
-	except 'f':
-		pass
+	except ldap.INSUFFICIENT_ACCESS:
+		raise univention.admin.uexceptions.permissionDenied(_('Can not modify lock time of %r.') % (dn,))
 	
 	# locking failed
-	raise univention.admin.uexceptions.noLock
+	raise univention.admin.uexceptions.noLock(_('The attribute %r could not get locked.') % (type,))
 
 def unlock(lo, position, type, value, scope='domain'):
 	
 	_d=univention.debug.function('admin.locking.unlock type=%s value=%s scope=%s' % (type, value, scope))
 	dn=lockDn(lo, position, type, value, scope)
 	try:
-		lo.delete(dn, exceptions=1)
+		lo.delete(dn, exceptions=True)
 	except ldap.NO_SUCH_OBJECT:
 		pass
 	
 def getLock(lo, position, type, value, scope='domain'):
 	dn=lockDn(lo, position, type, value, scope)
 	try:
-		return int(lo.getAttr(dn, 'lockTime', exceptions=1)[0])
+		return int(lo.getAttr(dn, 'lockTime', exceptions=True)[0])
 	except ldap.NO_SUCH_OBJECT:
 		return 0
-
-
