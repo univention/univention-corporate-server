@@ -1161,8 +1161,8 @@ define([
 				values.icon = filenameParts[1];
 
 				// search in local icons directory
-				values.url = require.toUrl('dijit/themes');
-				values.url = lang.replace('{url}/umc/icons/{dir}/{icon}.{suffix}', values);
+				values.url = require.toUrl('dijit/themes/umc/icons');
+				values.url = lang.replace('{url}/{dir}/{icon}.{suffix}', values);
 				iconClass = lang.replace('icon{s}-{icon}', values);
 			}
 

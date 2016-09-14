@@ -1,3 +1,9 @@
+univention-web (1.0.2-1) unstable; urgency=medium
+
+  * Bug #42384: fix images
+
+ -- Florian Best <best@univention.de>  Wed, 14 Sep 2016 18:45:14 +0200
+
 univention-web (1.0.1-8) unstable; urgency=medium
 
   * Bug #38824: Fix missing icons
