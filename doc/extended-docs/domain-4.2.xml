@@ -309,6 +309,7 @@ cat >/etc/krb5.conf <<__EOF__
 $kerberos_realm = {
    kdc = $master_ip $ldap_master
    admin_server = $master_ip $ldap_master
+   kpasswd_server = $master_ip $ldap_master
 }
 __EOF__
 
