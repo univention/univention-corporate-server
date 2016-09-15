@@ -1,3 +1,10 @@
+univention-management-console (9.0.12-16) unstable; urgency=medium
+
+  * Bug #38824: removed mod_rewrite rule for non existing files under
+    dijit/themes/umc/
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 15 Sep 2016 18:17:11 +0200
+
 univention-management-console (9.0.12-15) unstable; urgency=medium
 
   Bug #38824:
