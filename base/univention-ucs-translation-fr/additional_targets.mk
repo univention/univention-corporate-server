@@ -10,7 +10,7 @@ ADDITIONAL = $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-
 	$(DESTDIR)/var/www/ucs-overview/js/ci-appliance/fr.json \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-handlers-cups.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-mswmifilter.mo \
-	$(DESTDIR)/usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo
+	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo
 
 
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.mo: fr/base/univention-system-setup/usr/share/locale/de/LC_MESSAGES/univention-system-setup-scripts.po
@@ -26,4 +26,4 @@ $(DESTDIR)/var/www/ucs-overview/js/ucs/fr.json: fr/services/univention-apache/js
 $(DESTDIR)/var/www/ucs-overview/js/ci-appliance/fr.json: fr/services/univention-cloud-init/var/www/ucs-overview/js/ci-appliance/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-management-console-handlers-cups.mo: fr/services/univention-printserver/modules/univention/management/console/handlers/cups/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-mswmifilter.mo: fr/services/univention-s4-connector/modules/univention/admin/handlers/settings/mswmifilter/fr.po
-$(DESTDIR)/usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo: fr/services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy/fr.po
+$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo: fr/services/univention-s4-connector/modules/univention/admin/handlers/settings/msprintconnectionpolicy/fr.po
