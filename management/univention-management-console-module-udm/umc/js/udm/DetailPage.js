@@ -60,7 +60,8 @@ define([
 	"umc/modules/udm/UMCPBundle",
 	"umc/modules/udm/cache",
 	"umc/i18n!umc/modules/udm",
-	"dijit/registry"
+	"dijit/registry",
+	"umc/_all"
 ], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
