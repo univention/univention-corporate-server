@@ -1,3 +1,12 @@
+univention-management-console (9.0.12-15) unstable; urgency=medium
+
+  Bug #38824:
+  *  mod_rewrite dijit/themes/umc/ request if they are not found
+     in new location
+  *  removed mod_rewrite for hashed javascript directories
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 15 Sep 2016 15:22:56 +0200
+
 univention-management-console (9.0.12-14) unstable; urgency=medium
 
   * Bug #42384: fix images
@@ -18,7 +27,7 @@ univention-management-console (9.0.12-12) unstable; urgency=medium
 
 univention-management-console (9.0.12-11) unstable; urgency=medium
 
-  * Bug #38824: remove dependency to app.css 
+  * Bug #38824: remove dependency to app.css
 
  -- Johannes Keiser <keiser@univention.de>  Tue, 13 Sep 2016 16:14:26 +0200
 
