@@ -54,6 +54,9 @@
 				<listitem><simpara>
 					<command>ucr update</command> is now automatically called when &ucsUCR; template files are added/modified/removed (<u:bug>23737</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					&ucsUCR; now loads its data atomically to fix a problem when multiple threads access the database concurrently (<u:bug>37402</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 				<!--
