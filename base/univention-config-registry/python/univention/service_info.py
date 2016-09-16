@@ -32,7 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import os
-import re
 import shlex
 
 import univention.info_tools as uit
@@ -42,10 +41,6 @@ class Service(uit.LocalizedDictionary):
 
 	def __init__(self):
 		uit.LocalizedDictionary.__init__(self)
-		self.start_runlevel = []
-		self.stop_runlevel = []
-		self.start_code = 0
-		self.stop_code = 0
 		self.running = False
 
 	def check(self):
@@ -98,36 +93,11 @@ class ServiceInfo(object):
 	CUSTOMIZED = '_customized'
 	FILE_SUFFIX = '.cfg'
 
-	RUNLEVELS = map(str, range(7)) + ['S']
-	INIT_SCRIPT_REGEX = re.compile('(?P<action>[SK])(?P<code>[0-9]+)(?P<name>.*)')
-
 	def __init__(self, install_mode=False):
 		self.services = {}
 		if not install_mode:
 			self.__load_services()
 			self.update_services()
-
-	def sysv_infos(self):
-		global _runlevels, _init_link
-
-		for level in _runlevels:
-			for link in os.listdir('/etc/rc%s.d/' % level):
-				if not os.path.islink(link):
-					continue
-				matches = _init_link.match(link)
-				if not matches:
-					continue
-				grp = matches.groupdict()
-
-				name = grp.get('name', '')
-				if not name or name not in self.services.keys():
-					continue
-				if grp.get('action', '') == 'S':
-					self.services[name].start_runlevels.append(level)
-					self.services[name].start_code = int(grp['code'])
-				elif grp.get('action', '') == 'K':
-					self.services[name].start_runlevels.append(level)
-					self.services[name].start_code = int(grp['code'])
 
 	def __update_status(self, name, service):
 		for prog in service['programs'].split(','):
