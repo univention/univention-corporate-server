@@ -127,6 +127,7 @@ class ServiceInfo(object):
 		return incomplete
 
 	def write_customized(self):
+		"""Save service cusomization."""
 		filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
 		try:
 			fd = open(filename, 'w')
@@ -147,6 +148,7 @@ class ServiceInfo(object):
 		return True
 
 	def read_services(self, filename=None, package=None, override=False):
+		"""Read start/stop levels of services."""
 		if not filename and not package:
 			raise AttributeError("neither 'filename' nor 'package' is specified")
 		if not filename:
@@ -170,6 +172,7 @@ class ServiceInfo(object):
 				self.services[sec] = srv
 
 	def __load_services(self):
+		"""Load definition of all defined services."""
 		path = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES)
 		for entry in os.listdir(path):
 			# customized service descrptions are read afterwards
@@ -182,6 +185,7 @@ class ServiceInfo(object):
 		self.read_customized()
 
 	def read_customized(self):
+		"""Read service cusomization."""
 		custom = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
 		self.read_services(custom, override=True)
 
@@ -199,3 +203,8 @@ class ServiceInfo(object):
 		entry'''
 		if not service.check():
 			self.services[name] = service
+
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
