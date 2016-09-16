@@ -154,14 +154,14 @@ class ServiceInfo(object):
 		filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
 		try:
 			fd = open(filename, 'w')
-		except:
+		except EnvironmentError:
 			return False
 
 		cfg = uit.UnicodeConfig()
 		for name, srv in self.services.items():
 			cfg.add_section(name)
-			for key in var.keys():
-				items = var.normalize(key)
+			for key in srv.keys():
+				items = srv.normalize(key)
 				for item, value in items.items():
 					cfg.set(name, item, value)
 
@@ -179,7 +179,7 @@ class ServiceInfo(object):
 		cfg.read(filename)
 		for sec in cfg.sections():
 			# service already known?
-			if not override and sec in self.services.keys():
+			if not override and sec in self.services:
 				continue
 			srv = Service()
 			for name, value in cfg.items(sec):
