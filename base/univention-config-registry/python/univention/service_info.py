@@ -216,7 +216,7 @@ class ServiceInfo(object):
 	def get_service(self, name):
 		'''returns a service object associated with the given name or
 		None if it does not exist'''
-		self.services.get(name, None)
+		return self.services.get(name, None)
 
 	def add_service(self, name, service):
 		'''this methods adds a new service object or overrides an old
