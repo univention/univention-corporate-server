@@ -41,9 +41,17 @@ class LocalizedValue(dict):
 
 	"""Localized description entry."""
 
-	def __init__(self):
-		dict.__init__(self)
-		self.__default = ''
+	def __init__(self, *agrs, **kwargs):
+		tmp = dict(*agrs, **kwargs)
+		self.__default = tmp.pop('__default', '')
+		dict.__init__(self, tmp)
+
+	def __repr__(self):
+		return '%s(%s, __default=%r)' % (
+			self.__class__.__name__,
+			dict.__repr__(self),
+			self.__default,
+		)
 
 	def get(self, locale=None):
 		if not locale:

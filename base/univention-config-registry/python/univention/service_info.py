@@ -39,9 +39,15 @@ import univention.info_tools as uit
 
 class Service(uit.LocalizedDictionary):
 
-	def __init__(self):
-		uit.LocalizedDictionary.__init__(self)
+	def __init__(self, *args, **kwargs):
+		uit.LocalizedDictionary.__init__(self, *args, **kwargs)
 		self.running = False
+
+	def __repr__(self):
+		return '%s(%s)' % (
+			self.__class__.__name__,
+			dict.__repr__(self),
+		)
 
 	def check(self):
 		"""Check service entry for validity, returning list of incomplete entries."""
