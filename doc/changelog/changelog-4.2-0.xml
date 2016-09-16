@@ -57,6 +57,9 @@
 				<listitem><simpara>
 					&ucsUCR; now loads its data atomically to fix a problem when multiple threads access the database concurrently (<u:bug>37402</u:bug>).
 				</simpara></listitem>
+				<listitem><simpara>
+					The robustness of services module has been improved to better handle process changes (<u:bug>34234</u:bug>).
+				</simpara></listitem>
 			</itemizedlist>
 
 				<!--

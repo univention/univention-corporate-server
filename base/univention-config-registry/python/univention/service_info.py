@@ -53,36 +53,35 @@ class Service(uit.LocalizedDictionary):
 
 
 def pidof(name):
+	"""
+	Return list of process IDs matching name.
+	>>> import os,sys;os.getpid() in list(pidof(os.path.realpath(sys.executable))) + list(pidof(sys.executable)) + list(pidof(sys.argv[0]))
+	True
+	"""
 	result = []
-	for file in os.listdir('/proc'):
-		dir = os.path.join('/proc', file)
-		if not os.path.isdir(dir):
+
+	cmd = shlex.split(name)
+	for proc in os.listdir('/proc'):
+		try:
+			pid = int(proc, 10)
+		except ValueError:
 			continue
-		if not os.path.isfile(os.path.join(dir, 'stat')):
+		cmdline = os.path.join('/proc', proc, 'cmdline')
+		try:
+			with open(cmdline, 'r') as fd:
+				commandline = fd.read()
+		except EnvironmentError:
 			continue
-		cmdline = os.path.join(dir, 'cmdline')
-		if not os.path.isfile(cmdline):
-			continue
-		fd = open(cmdline)
-		cmd = fd.readline()
 		# kernel thread
-		if not cmd:
+		if not commandline:
 			continue
-		if '\x00' in cmd:
-			args = cmd.split('\x00')
-		else:
-			args = cmd.split(' ')
-		cmd = shlex.split(name)
-		if cmd[0] in args:
-			if len(cmd) > 1 and len(args) >= len(cmd):
-				for i in range(1, len(cmd)):
-					print cmd[i], args[i]
-					if cmd[i] != args[i]:
-						break
-				else:
-					result.append(file)
-			else:
-				result.append(file)
+		args = commandline.split('\0')
+		if cmd[0] not in args:
+			continue
+		if len(args) >= len(cmd) > 1:
+			if any(a != c for a, c in zip(args, cmd)):
+				continue
+		result.append(pid)
 
 	return result
 
