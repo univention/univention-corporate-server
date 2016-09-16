@@ -36,38 +36,41 @@ import re
 # default locale
 _locale = 'de'
 
-class LocalizedValue( dict ):
+
+class LocalizedValue(dict):
+
 	"""Localized description entry."""
-	def __init__( self ):
-		dict.__init__( self )
+
+	def __init__(self):
+		dict.__init__(self)
 		self.__default = ''
 
-	def get( self, locale = None ):
-		global _locale
+	def get(self, locale=None):
 		if not locale:
 			locale = _locale
 		if locale in self:
-			return self[ locale ]
+			return self[locale]
 		return self.__default
 
-	def set( self, value, locale = None ):
-		global _locale
+	def set(self, value, locale=None):
 		self[locale or _locale] = value
 
-	def set_default( self, default ):
+	def set_default(self, default):
 		self.__default = default
 
-	def get_default( self ):
+	def get_default(self):
 		return self.__default
 
-class LocalizedDictionary( dict ):
+
+class LocalizedDictionary(dict):
+
 	"""Localized descriptions."""
 	_LOCALE_REGEX = re.compile('(?P<key>[a-zA-Z]*)\[(?P<lang>[a-z]*)\]$')
 
-	def __init__( self ):
-		dict.__init__( self )
+	def __init__(self):
+		dict.__init__(self)
 
-	def __setitem__( self, key, value ):
+	def __setitem__(self, key, value):
 		key = key.lower()
 		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		# localized value?
@@ -79,7 +82,7 @@ class LocalizedDictionary( dict ):
 		else:
 			val.set_default(value)
 
-	def __getitem__( self, key ):
+	def __getitem__(self, key):
 		key = key.lower()
 		matches = LocalizedDictionary._LOCALE_REGEX.match(key)
 		# localized value?
@@ -89,7 +92,7 @@ class LocalizedDictionary( dict ):
 			lang = None
 		return dict.__getitem__(self, key).get(lang)
 
-	def get( self, key, default = None ):
+	def get(self, key, default=None):
 		try:
 			value = self.__getitem__(key) or default
 			return value
@@ -104,49 +107,52 @@ class LocalizedDictionary( dict ):
 		return dict.__contains__(self, key)
 	has_key = __contains__
 
-	def __normalize_key( self, key ):
+	def __normalize_key(self, key):
 		if key not in self:
 			return {}
 
 		temp = {}
-		variable = dict.__getitem__( self, key )
+		variable = dict.__getitem__(self, key)
 		for locale, value in variable.items():
-			temp[ '%s[%s]' % ( key, locale ) ] = value
+			temp['%s[%s]' % (key, locale)] = value
 
 		if variable.get_default():
-			temp[ key ] = variable.get_default()
+			temp[key] = variable.get_default()
 
 		return temp
 
-	def normalize( self, key = None ):
+	def normalize(self, key=None):
 		if key:
-			return self.__normalize_key( key )
+			return self.__normalize_key(key)
 		temp = {}
 		for key in self.keys():
-			temp.update( self.__normalize_key( key ) )
+			temp.update(self.__normalize_key(key))
 		return temp
 
-	def get_dict( self, key ):
+	def get_dict(self, key):
 		if key not in self:
 			return {}
-		return dict.__getitem__( self, key )
+		return dict.__getitem__(self, key)
 
-	def __eq__( self, other ):
-		if not isinstance( other, dict ):
+	def __eq__(self, other):
+		if not isinstance(other, dict):
 			return False
 		me = self.normalize()
 		you = other.normalize()
-		return dict.__eq__( me, you )
+		return dict.__eq__(me, you)
 
-	def __ne__( self, other ):
-		return not self.__eq__( other )
+	def __ne__(self, other):
+		return not self.__eq__(other)
 
 # my config parser
-class UnicodeConfig( ConfigParser.ConfigParser ):
-	def __init__( self ):
-		ConfigParser.ConfigParser.__init__( self )
 
-	def write( self, fp ):
+
+class UnicodeConfig(ConfigParser.ConfigParser):
+
+	def __init__(self):
+		ConfigParser.ConfigParser.__init__(self)
+
+	def write(self, fp):
 		"""Write an .ini-format representation of the configuration state."""
 		if self._defaults:
 			fp.write("[%s]\n" % DEFAULTSECT)
@@ -157,9 +163,10 @@ class UnicodeConfig( ConfigParser.ConfigParser ):
 			fp.write("[%s]\n" % section)
 			for (key, value) in self._sections[section].items():
 				if key != "__name__":
-					fp.write( "%s = %s\n" % ( key, value.replace( '\n', '\n\t' ) ) )
+					fp.write("%s = %s\n" % (key, value.replace('\n', '\n\t')))
 			fp.write("\n")
 
-def set_language( lang ):
+
+def set_language(lang):
 	global _locale
 	_locale = lang

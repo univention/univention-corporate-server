@@ -31,115 +31,117 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import locale
 import os
 import re
-import string
 import shlex
 
 import univention.info_tools as uit
 
-class Service( uit.LocalizedDictionary ):
-	def __init__( self ):
-		uit.LocalizedDictionary.__init__( self )
+
+class Service(uit.LocalizedDictionary):
+
+	def __init__(self):
+		uit.LocalizedDictionary.__init__(self)
 		self.start_runlevel = []
 		self.stop_runlevel = []
 		self.start_code = 0
 		self.stop_code = 0
 		self.running = False
 
-	def check( self ):
+	def check(self):
 		"""Check service entry for validity, returning list of incomplete entries."""
 		incomplete = []
-		for key in ( 'description', 'programs' ):
-			if not self.get( key, None ):
+		for key in ('description', 'programs'):
+			if not self.get(key, None):
 				incomplete.append(key)
 		return incomplete
 
-def pidof( name ):
+
+def pidof(name):
 	result = []
-	for file in os.listdir( '/proc' ):
-		dir = os.path.join( '/proc', file )
-		if not os.path.isdir( dir ):
+	for file in os.listdir('/proc'):
+		dir = os.path.join('/proc', file)
+		if not os.path.isdir(dir):
 			continue
-		if not os.path.isfile( os.path.join( dir, 'stat' ) ):
+		if not os.path.isfile(os.path.join(dir, 'stat')):
 			continue
-		cmdline = os.path.join( dir, 'cmdline' )
-		if not os.path.isfile( cmdline ):
+		cmdline = os.path.join(dir, 'cmdline')
+		if not os.path.isfile(cmdline):
 			continue
-		fd = open( cmdline )
+		fd = open(cmdline)
 		cmd = fd.readline()
 		# kernel thread
 		if not cmd:
 			continue
-		if '\x00' in cmd: 
-			args = cmd.split( '\x00' )
+		if '\x00' in cmd:
+			args = cmd.split('\x00')
 		else:
 			args = cmd.split(' ')
-		cmd = shlex.split( name )
+		cmd = shlex.split(name)
 		if cmd[0] in args:
-			if len( cmd ) > 1 and len( args ) >= len( cmd ):
-				for i in range( 1, len( cmd ) ):
-					print cmd[ i ], args[ i ]
-					if cmd[ i ] != args[ i ]:
+			if len(cmd) > 1 and len(args) >= len(cmd):
+				for i in range(1, len(cmd)):
+					print cmd[i], args[i]
+					if cmd[i] != args[i]:
 						break
 				else:
-					result.append( file )
+					result.append(file)
 			else:
-				result.append( file )
+				result.append(file)
 
 	return result
 
-class ServiceInfo( object ):
+
+class ServiceInfo(object):
 	BASE_DIR = '/etc/univention/service.info'
 	SERVICES = 'services'
 	CUSTOMIZED = '_customized'
 	FILE_SUFFIX = '.cfg'
 
 	RUNLEVELS = map(str, range(7)) + ['S']
-	INIT_SCRIPT_REGEX = re.compile( '(?P<action>[SK])(?P<code>[0-9]+)(?P<name>.*)' )
+	INIT_SCRIPT_REGEX = re.compile('(?P<action>[SK])(?P<code>[0-9]+)(?P<name>.*)')
 
-	def __init__( self, install_mode = False ):
+	def __init__(self, install_mode=False):
 		self.services = {}
 		if not install_mode:
 			self.__load_services()
 			self.update_services()
 
-	def sysv_infos( self ):
+	def sysv_infos(self):
 		global _runlevels, _init_link
 
 		for level in _runlevels:
-			for link in os.listdir( '/etc/rc%s.d/' % level ):
-				if not os.path.islink( link ):
+			for link in os.listdir('/etc/rc%s.d/' % level):
+				if not os.path.islink(link):
 					continue
-				matches = _init_link.match( link )
+				matches = _init_link.match(link)
 				if not matches:
 					continue
 				grp = matches.groupdict()
 
-				name = grp.get( 'name', '' )
-				if not name or not name in self.services.keys():
+				name = grp.get('name', '')
+				if not name or name not in self.services.keys():
 					continue
-				if grp.get( 'action', '' ) == 'S':
-					self.services[ name ].start_runlevels.append( level )
-					self.services[ name ].start_code = int( grp[ 'code' ] )
-				elif grp.get( 'action', '' ) == 'K':
-					self.services[ name ].start_runlevels.append( level )
-					self.services[ name ].start_code = int( grp[ 'code' ] )
+				if grp.get('action', '') == 'S':
+					self.services[name].start_runlevels.append(level)
+					self.services[name].start_code = int(grp['code'])
+				elif grp.get('action', '') == 'K':
+					self.services[name].start_runlevels.append(level)
+					self.services[name].start_code = int(grp['code'])
 
-	def __update_status( self, name, service ):
-		for prog in service[ 'programs' ].split( ',' ):
-			if prog and not pidof( prog.strip() ):
+	def __update_status(self, name, service):
+		for prog in service['programs'].split(','):
+			if prog and not pidof(prog.strip()):
 				service.running = False
 				break
 		else:
 			service.running = True
 
-	def update_services( self ):
+	def update_services(self):
 		for name, serv in self.services.items():
-			self.__update_status( name, serv )
+			self.__update_status(name, serv)
 
-	def check_services( self ):
+	def check_services(self):
 		"""Return dictionary of incomplete service descriptions."""
 		incomplete = {}
 		for name, srv in self.services.items():
@@ -148,79 +150,76 @@ class ServiceInfo( object ):
 				incomplete[name] = miss
 		return incomplete
 
-	def write_customized( self ):
-		filename = os.path.join( ServiceInfo.BASE_DIR, ServiceInfo.SERVICES,
-								 ServiceInfo.CUSTOMIZED )
+	def write_customized(self):
+		filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
 		try:
-			fd = open( filename, 'w' )
+			fd = open(filename, 'w')
 		except:
 			return False
 
 		cfg = uit.UnicodeConfig()
 		for name, srv in self.services.items():
-			cfg.add_section( name )
+			cfg.add_section(name)
 			for key in var.keys():
-				items = var.normalize( key )
+				items = var.normalize(key)
 				for item, value in items.items():
-					cfg.set( name, item, value )
+					cfg.set(name, item, value)
 
-		cfg.write( fd )
+		cfg.write(fd)
 		fd.close()
 
 		return True
 
-	def read_services( self, filename = None, package = None, override = False ):
+	def read_services(self, filename=None, package=None, override=False):
 		if not filename and not package:
-			raise AttributeError( "neither 'filename' nor 'package' is specified" )
+			raise AttributeError("neither 'filename' nor 'package' is specified")
 		if not filename:
-			filename = os.path.join( ServiceInfo.BASE_DIR, ServiceInfo.SERVICES,
-									 package + ServiceInfo.FILE_SUFFIX )
+			filename = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, package + ServiceInfo.FILE_SUFFIX)
 		cfg = uit.UnicodeConfig()
-		cfg.read( filename )
+		cfg.read(filename)
 		for sec in cfg.sections():
 			# service already known?
 			if not override and sec in self.services.keys():
 				continue
 			srv = Service()
-			for name, value in cfg.items( sec ):
-				srv[ name ] = value
+			for name, value in cfg.items(sec):
+				srv[name] = value
 			for path in srv.get('programs', '').split(','):
 				# "programs" defines the "/proc/self/cmdline" of the service,
 				# not the executable, therefore we test for a leading "/":
 				# check if it is a real file    split to remove parameters
 				if path.startswith('/') and not os.path.exists(path.split(' ', 1)[0]):
-					break # ==> do not execute else
+					break  # ==> do not execute else
 			else:
-				self.services[ sec ] = srv
+				self.services[sec] = srv
 
-	def __load_services( self ):
-		path = os.path.join( ServiceInfo.BASE_DIR, ServiceInfo.SERVICES )
-		for entry in os.listdir( path ):
+	def __load_services(self):
+		path = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES)
+		for entry in os.listdir(path):
 			# customized service descrptions are read afterwards
 			if entry == ServiceInfo.CUSTOMIZED:
 				continue
-			cfgfile = os.path.join( path, entry )
-			if os.path.isfile( cfgfile ) and cfgfile.endswith(ServiceInfo.FILE_SUFFIX):
-				self.read_services( cfgfile )
+			cfgfile = os.path.join(path, entry)
+			if os.path.isfile(cfgfile) and cfgfile.endswith(ServiceInfo.FILE_SUFFIX):
+				self.read_services(cfgfile)
 		# read modified/added service descriptions
 		self.read_customized()
 
-	def read_customized( self ):
-		custom = os.path.join( ServiceInfo.BASE_DIR, ServiceInfo.SERVICES,
-							   ServiceInfo.CUSTOMIZED )
-		self.read_services( custom, override = True )
+	def read_customized(self):
+		custom = os.path.join(ServiceInfo.BASE_DIR, ServiceInfo.SERVICES, ServiceInfo.CUSTOMIZED)
+		self.read_services(custom, override=True)
 
-	def get_services( self ):
+	def get_services(self):
 		'''returns a list fo service names'''
 		return self.services.keys()
 
-	def get_service( self, name ):
+	def get_service(self, name):
 		'''returns a service object associated with the given name or
 		None if it does not exist'''
-		self.services.get( name, None )
+		self.services.get(name, None)
 
-	def add_service( self, name, service ):
+	def add_service(self, name, service):
 		'''this methods adds a new service object or overrides an old
 		entry'''
 		if not service.check():
-			self.services[ name ] = service
+			self.services[name] = service
