@@ -51,6 +51,14 @@ class Service(uit.LocalizedDictionary):
 				incomplete.append(key)
 		return incomplete
 
+	def _update_status(self):
+		for prog in self['programs'].split(','):
+			if prog and not pidof(prog.strip()):
+				self.running = False
+				break
+		else:
+			self.running = True
+
 
 def pidof(name):
 	"""
@@ -98,17 +106,10 @@ class ServiceInfo(object):
 			self.__load_services()
 			self.update_services()
 
-	def __update_status(self, name, service):
-		for prog in service['programs'].split(','):
-			if prog and not pidof(prog.strip()):
-				service.running = False
-				break
-		else:
-			service.running = True
-
 	def update_services(self):
-		for name, serv in self.services.items():
-			self.__update_status(name, serv)
+		"""Update the run state of all services."""
+		for serv in self.services.values():
+			serv._update_status()
 
 	def check_services(self):
 		"""Return dictionary of incomplete service descriptions."""
