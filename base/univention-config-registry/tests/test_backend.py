@@ -10,6 +10,7 @@ import time
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'python'))
 from univention.config_registry.backend import ConfigRegistry
 
+
 class TestConfigRegistry(unittest.TestCase):
 	"""Unit test for univention.config_registry.backend.ConfigRegistry"""
 	def setUp(self):
@@ -219,25 +220,25 @@ class TestConfigRegistry(unittest.TestCase):
 		"""Test valid is_true()."""
 		ucr = ConfigRegistry()
 		for ucr['foo'] in ('YES', 'yes', 'Yes', 'true', '1', 'enable', 'enabled', 'on'):
-			self.assertTrue(ucr.is_true('foo'))
+			self.assertTrue(ucr.is_true('foo'), 'is_true(%(foo)r)' % ucr)
 
 	def test_is_true_invalid(self):
 		"""Test invalid is_true()."""
 		ucr = ConfigRegistry()
 		for ucr['foo'] in ('yes ', ' yes', ''):
-			self.assertFalse(ucr.is_true('foo'))
+			self.assertFalse(ucr.is_true('foo'), 'is_true(%(foo)r)' % ucr)
 
 	def test_is_true_valid_direct(self):
 		"""Test valid is_true(value)."""
 		ucr = ConfigRegistry()
-		for value in ('yes', 'true', '1', 'enable', 'enabled', 'on'):
-			self.assertTrue(ucr.is_true(value=value))
+		for value in ('YES', 'Yes', 'yes', 'true', '1', 'enable', 'enabled', 'on'):
+			self.assertTrue(ucr.is_true(value=value), 'is_true(v=%r)' % value)
 
 	def test_is_true_invalid_direct(self):
 		"""Test invalid is_true(value)."""
 		ucr = ConfigRegistry()
-		for value in ('YES', 'Yes', 'yes ', ' yes', ''):
-			self.assertFalse(ucr.is_true(value=value))
+		for value in ('yes ', ' yes', ''):
+			self.assertFalse(ucr.is_true(value=value), 'is_true(v=%r)' % value)
 
 	def test_is_false_unset(self):
 		"""Test unset is_false()."""
@@ -254,25 +255,25 @@ class TestConfigRegistry(unittest.TestCase):
 		"""Test valid is_false()."""
 		ucr = ConfigRegistry()
 		for ucr['foo'] in ('NO', 'no', 'No', 'false', '0', 'disable', 'disabled', 'off'):
-			self.assertTrue(ucr.is_false('foo'))
+			self.assertTrue(ucr.is_false('foo'), 'is_false(%(foo)r)' % ucr)
 
 	def test_is_false_invalid(self):
 		"""Test invalid is_false()."""
 		ucr = ConfigRegistry()
 		for ucr['foo'] in ('no ', ' no', ''):
-			self.assertFalse(ucr.is_false('foo'))
+			self.assertFalse(ucr.is_false('foo'), 'is_false(%(foo)r)' % ucr)
 
 	def test_is_false_valid_direct(self):
 		"""Test valid is_false(value)."""
 		ucr = ConfigRegistry()
-		for value in ('no', 'false', '0', 'disable', 'disabled', 'off'):
-			self.assertTrue(ucr.is_false(value=value))
+		for value in ('NO', 'No', 'no', 'false', '0', 'disable', 'disabled', 'off'):
+			self.assertTrue(ucr.is_false(value=value), 'is_false(v=%r)' % value)
 
 	def test_is_false_invalid_direct(self):
 		"""Test valid is_false(value)."""
 		ucr = ConfigRegistry()
-		for value in ('NO', 'No', 'no ', ' no', ''):
-			self.assertFalse(ucr.is_false(value=value))
+		for value in ('no ', ' no', ''):
+			self.assertFalse(ucr.is_false(value=value), 'is_false(v=%r)' % value)
 
 	def test_update(self):
 		"""Test update()."""

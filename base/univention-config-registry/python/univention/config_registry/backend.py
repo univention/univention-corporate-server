@@ -245,21 +245,19 @@ class ConfigRegistry(dict):
 
 	def is_true(self, key=None, default=False, value=None):
 		"""Return if the strings value of key is considered as true."""
-		if key:
-			if key in self:
-				value = self.get(key).lower()  # pylint: disable-msg=E1103
-			else:
+		if value is None:
+			value = self.get(key)
+			if value is None:
 				return default
-		return value in ('yes', 'true', '1', 'enable', 'enabled', 'on')
+		return value.lower() in ('yes', 'true', '1', 'enable', 'enabled', 'on')
 
 	def is_false(self, key=None, default=False, value=None):
 		"""Return if the strings value of key is considered as false."""
-		if key:
-			if key in self:
-				value = self.get(key).lower()  # pylint: disable-msg=E1103
-			else:
+		if value is None:
+			value = self.get(key)
+			if value is None:
 				return default
-		return value in ('no', 'false', '0', 'disable', 'disabled', 'off')
+		return value.lower() in ('no', 'false', '0', 'disable', 'disabled', 'off')
 
 	def update(self, changes):
 		"""
@@ -280,6 +278,7 @@ class ConfigRegistry(dict):
 			new_value = registry.get(key, value)
 			changed[key] = (old_value, new_value)
 		return changed
+
 
 class _ConfigRegistry(dict):
 	"""
