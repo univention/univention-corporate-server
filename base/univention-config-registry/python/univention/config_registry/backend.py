@@ -308,7 +308,7 @@ class _ConfigRegistry(dict):
 		except EnvironmentError:
 			import_failed = True
 		else:
-			import_failed = reg_file.read() == '' and reg_file.read() == ''
+			import_failed = reg_file.readline() == '' and reg_file.readline() == ''
 
 		if import_failed:
 			try:

@@ -58,8 +58,8 @@ override_dh_auto_test:
 	tests/unwrap/test.sh
 
 version := $(shell dpkg-parsechangelog | sed -ne 's/Version: //p')
-override_dh_install:
-	dh_install
+override_dh_install-indep:
+	dh_install -i
 	sed -i -e 's/@%@package_version@%@/$(version)/' debian/python-univention-config-registry/usr/share/pyshared/univention/config_registry/frontend.py
 
 override_dh_installinit: ; # BUG: install -p -m755 debian/univention-config-registry.univention-config-registry debian/univention-config-registry/etc/init.d/univention-config-registry
