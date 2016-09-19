@@ -152,7 +152,7 @@ class Instance(umcm.Base):
 		ucr.load()
 		url = ucr.get('umc/sysinfo/upload/url', 'https://forge.univention.org/cgi-bin/system-info-upload.py')
 
-		SYSINFO_PATH = '/var/www/univention-management-console/system-info/'
+		SYSINFO_PATH = '/usr/share/univention-system-info/archives/'
 		path = os.path.abspath(os.path.join(SYSINFO_PATH, archive))
 		if not path.startswith(SYSINFO_PATH):
 			raise UMC_Error('Archive path invalid.')

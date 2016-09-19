@@ -1,3 +1,9 @@
+univention-system-info (7.0.1-1) unstable; urgency=medium
+
+  * Bug #42431: migrate to new URI structure (Bug #42228)
+
+ -- Florian Best <best@univention.de>  Mon, 19 Sep 2016 14:02:04 +0200
+
 univention-system-info (7.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

@@ -317,7 +317,7 @@ define([
 				lang.hitch(this, function(data) {
 					this._archiveFilename = data.result.archive;
 					this._archiveLink = lang.replace('<a href="{url}">{text}</a>', {
-						'url': '/univention-management-console/system-info/' + this._archiveFilename,
+						'url': '/univention/system-info/' + this._archiveFilename,
 						'text': _('Archive with system information')
 					});
 
