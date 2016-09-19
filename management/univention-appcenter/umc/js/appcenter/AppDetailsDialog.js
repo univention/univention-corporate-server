@@ -97,10 +97,20 @@ define([
 					name: 'submit',
 					label: this.actionLabel,
 					callback: lang.hitch(this, function() {
-						var values = null;
+						var values = {};
 						if (this._configForm) {
-							values = this._configForm.get('value');
+							tools.forIn(this._configForm.get('value'), function(key, value) {
+								if (value === '') {
+									value = null;
+								}
+								values[key] = value;
+							});
 						}
+						array.forEach(this.app.config, function(config) {
+							if (values[config.id] === undefined) {
+								values[config.id] = config.value;
+							}
+						});
 						this._continueDeferred.resolve(values);
 					})
 				});
@@ -147,7 +157,7 @@ define([
 							value: value
 						};
 						widget = lang.mixin(widget, additionalParams);
-						widgets.push(widget);
+						_widgets.push(widget);
 					});
 				};
 				addWidgets(array.filter(this.app.config, function(w) { return !w.advanced; }), false, widgets);
