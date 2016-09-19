@@ -88,8 +88,8 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	install univention-managed-client
 fi
 
-# Update to UCS 4.1 autoremove
-if ! is_ucr_true update41/skip/autoremove; then
+# Update to UCS 4.2 autoremove
+if ! is_ucr_true update42/skip/autoremove; then
 	DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes autoremove >>"$UPDATER_LOG" 2>&1
 fi
 
@@ -127,16 +127,16 @@ if [ -f /var/univention-join/joined -a "$server_role" != basesystem ]; then
 		--bindpwdfile "/etc/machine.secret" \
 		--dn "$ldap_hostdn" \
 		--set operatingSystem="Univention Corporate Server" \
-		--set operatingSystemVersion="4.1-3" >>"$UPDATER_LOG" 2>&1
+		--set operatingSystemVersion="4.2-0" >>"$UPDATER_LOG" 2>&1
 fi
 
 # Move to mirror mode for previous errata component
 ucr set \
-	repository/online/component/4.1-2-errata=false \
-	repository/online/component/4.1-2-errata/localmirror=true \
-	repository/online/component/4.1-3-errata=enabled \
-	repository/online/component/4.1-3-errata/description="Errata updates for UCS 4.1-3" \
-	repository/online/component/4.1-3-errata/version="4.1" >>"$UPDATER_LOG" 2>&1
+	repository/online/component/4.1-3-errata=false \
+	repository/online/component/4.1-3-errata/localmirror=true \
+	repository/online/component/4.2-0-errata=enabled \
+	repository/online/component/4.2-0-errata/description="Errata updates for UCS 4.2-0" \
+	repository/online/component/4.2-0-errata/version="4.2" >>"$UPDATER_LOG" 2>&1
 
 # run remaining joinscripts
 if [ "$server_role" = "domaincontroller_master" ]; then
@@ -154,13 +154,6 @@ echo "
 
 
 " >>"$UPDATER_LOG" 2>&1
-
-# disbaled, see Bug #37961
-#echo -n "Restart UMC server components to finish update... " >>"$UPDATER_LOG" 2>&1
-#sleep 10s
-#/usr/share/univention-updater/disable-apache2-umc --exclude-apache >>"$UPDATER_LOG" 2>&1
-#/usr/share/univention-updater/enable-apache2-umc >>"$UPDATER_LOG" 2>&1
-#echo "restart done" >>"$UPDATER_LOG" 2>&1
 
 echo "done."
 date >>"$UPDATER_LOG"
