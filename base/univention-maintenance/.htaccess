@@ -2,8 +2,8 @@ AuthUserFile /dev/null
 AuthGroupFile /dev/null
 AuthName "Protected Area Statistics"
 AuthType Basic
-AuthPAM_Enabled on
-AuthPAM_Service login
+AuthBasicProvider PAM
+AuthPAMService login
 AuthBasicAuthoritative Off
 Require user Administrator
 

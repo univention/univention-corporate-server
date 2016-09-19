@@ -1,3 +1,9 @@
+univention-maintenance (9.0.0-2) unstable; urgency=low
+
+  * Bug #42196: fixed htaccess
+
+ -- Felix Botner <botner@univention.de>  Mon, 19 Sep 2016 15:30:59 +0200
+
 univention-maintenance (9.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
