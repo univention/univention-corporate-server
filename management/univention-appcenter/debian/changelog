@@ -1,3 +1,10 @@
+univention-appcenter (6.0.0-9) unstable; urgency=medium
+
+  * Bug #42401: Fix UCR settings for docker installations
+  * Bug #42362: Make dependencies explicit version wise
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Sep 2016 00:37:24 +0200
+
 univention-appcenter (6.0.0-8) unstable; urgency=low
 
   * Bug #42317: run ucr_filter on docker env file

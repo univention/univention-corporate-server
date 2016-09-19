@@ -138,7 +138,7 @@ class Configure(UniventionAppAction, DockerActionMixin):
 			variable['value'] = value
 			advanced = _get_cfg(parser, section, 'advanced')
 			if advanced:
-				advanced = ucr_evaluated_as_true(value)
+				advanced = ucr_evaluated_as_true(advanced)
 			variable['advanced'] = advanced
 			variables.append(variable)
 		return variables
