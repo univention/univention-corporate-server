@@ -63,7 +63,17 @@ define([
 				iconClass: 'umcSaveIconWhite',
 				label: _('Apply changes'),
 				callback: lang.hitch(this, function() {
-					this.apply(this._serviceForm.get('value'), this._confForm.get('value'), this._advancedConfForm.get('value')).then(lang.hitch(this, 'onBack', true));
+					var getValues = function(form) {
+						var values = {};
+						tools.forIn(form.get('value'), function(key, value) {
+							if (value === '') {
+								value = null;
+							}
+							values[key] = value;
+						});
+						return values;
+					};
+					this.apply(this._serviceForm.get('value'), getValues(this._confForm), getValues(this._advancedConfForm)).then(lang.hitch(this, 'onBack', true));
 				})
 			}, {
 				name: 'close',
