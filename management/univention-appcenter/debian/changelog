@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-15) unstable; urgency=medium
+
+  * Bug #42362: Make dependencies explicit version wise
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 19 Sep 2016 11:44:17 +0200
+
 univention-appcenter (5.0.22-14) unstable; urgency=low
 
   * Bug #42317: run ucr_filter on docker env file
