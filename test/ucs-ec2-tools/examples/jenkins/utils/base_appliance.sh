@@ -173,7 +173,7 @@ register_apps ()
 		name=$(app_get_name $the_app)
 		component=$(app_get_component $the_app)
 		component_prefix="repository/online/component/"
-		ucr set ${component_prefix}${component}description="$name" \
+		ucr set ${component_prefix}${component}/description="$name" \
 				${component_prefix}${component}/localmirror=false \
 				${component_prefix}${component}/server="$(ucr get repository/app_center/server)" \
 				${component_prefix}${component}/unmaintained=disabled \
@@ -757,6 +757,14 @@ appliance_basesettings ()
 	app=$1
 	
 	/usr/sbin/univention-app-appliance $app
+
+	# Remove if bug # is published
+	if ucr get bootsplash/theme | grep -q ucs-appliance-light; then
+		ucr set grub/color/highlight="black/black" \
+			grub/color/normal="black/black" \
+			grub/menu/color/highlight="black/black" \
+			grub/menu/color/normal="black/black"
+	fi
 
 	app_fav_list=""
 	for a in $apps; do
