@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-app-appliance
+fix: 0.2.2-38.10.201609201310
+desc: |
+ This update addresses the following issue(s):
+ * Use black/black as grub theme colors for the 'light' theme to
+   improve text readability
+bug: [42440]
