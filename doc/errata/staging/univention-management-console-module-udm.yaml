@@ -8,4 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * A typo has been corrected.
  * Wildcard and automatic substring searches are now configurable via UCR.
-bug: [42159i, 42388]
+bug: [42159, 42388]
