@@ -153,7 +153,7 @@ def main(app_id):
 			if theme == 'dark':
 				grub_color = 'white/black'
 			elif theme == 'light':
-				grub_color = 'black/white'
+				grub_color = 'black/black'
 			ucr_vars = {
 				'grub/backgroundimage': '/usr/share/plymouth/themes/ucs-appliance-%s/bg.png' % (theme,),
 				'grub/color/highlight': grub_color,

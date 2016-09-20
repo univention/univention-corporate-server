@@ -1,3 +1,9 @@
+univention-app-appliance (1.0.0-4) unstable; urgency=medium
+
+  * Bug #42440: Set grub color to black/black for light theme
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 20 Sep 2016 13:13:24 +0200
+
 univention-app-appliance (1.0.0-3) unstable; urgency=medium
 
   * Bug #42165: Do not divert ucs plymouth theme
