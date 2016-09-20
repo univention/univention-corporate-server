@@ -1,3 +1,9 @@
+univention-join (9.0.0-2) unstable; urgency=low
+
+  * Bug #42420: Use univention-ldapsearch
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 20 Sep 2016 12:10:57 +0200
+
 univention-join (9.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
