@@ -1,3 +1,9 @@
+univention-updater (11.0.11-8) unstable; urgency=medium
+
+  * Bug #41840: Revert
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 20 Sep 2016 14:26:51 +0200
+
 univention-updater (11.0.11-7) unstable; urgency=low
 
   * Bug #42076: Corrected some typos.
