@@ -143,7 +143,7 @@ check_ldap_tls_connection () {
 
 	eval "$(ucr shell ldap/master/port)"
 
-	ldapsearch -x -ZZ -p "$ldap_master_port" -s base -h "$DCNAME" -D "$binddn" -w "$(<"$DCPWD")" dn >/dev/null
+	univention-ldapsearch -p "$ldap_master_port" -s base -h "$DCNAME" -D "$binddn" -w "$(<"$DCPWD")" dn >/dev/null
 	if  [ $? != 0 ]; then
  		failed_message "Establishing a TLS connection with $DCNAME failed. Maybe you didn't specify a FQDN."
 	fi
