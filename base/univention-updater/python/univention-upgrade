@@ -57,10 +57,6 @@ logfd = None
 silent = False
 
 
-class UserCancelled(Exception):
-    pass
-
-
 def dprint(silent, msg, newline=True, debug=False):
     """Print debug output."""
     if silent:
@@ -109,13 +105,6 @@ def update_status(**kwargs):
         dprint(silent, 'Warning: cannot update %s' % FN_STATUS)
 
 
-def readcontinueorraise(msg):
-    """Print message and read yes/no/abort answer.
-    If the answer is no/cancelled, raise UserCancelled"""
-    if not readcontinue(msg):
-        raise UserCancelled()
-
-
 def readcontinue(msg):
     """Print message and read yes/no/abort answer."""
     while True:
@@ -144,18 +133,12 @@ def _package_list(new_packages):
 
 
 def performUpdate(options, checkForUpdates=False, silent=False):
-    update_available_global = None
     for func in (do_package_updates, do_app_updates, do_release_update):
-        try:
-            update_available_local = func(options, checkForUpdates, silent)
-        except UserCancelled:
-            update_available_global = True
-        else:
-            if func is not do_app_updates and update_available_local is not None:
-                update_available_global = update_available_global or update_available_local
-            if not checkForUpdates and update_available_local:
+        if func(options, checkForUpdates, silent):
+            if checkForUpdates:
+                return True
+            else:
                 do_exec()
-    return update_available_global
 
 
 def do_release_update(options, checkForUpdates, silent):
@@ -169,14 +152,14 @@ def do_release_update(options, checkForUpdates, silent):
         return False
     if options.updateto and UCS_Version(options.updateto) < UCS_Version(version_next):
         dprint(silent, '%s is available but updater has been instructed to stop at version %s.' % (version_next, options.updateto))
-        raise UserCancelled()
+        return False
     dprint(silent, 'found: UCS %s' % version_next)
     if checkForUpdates:
         return True
 
     interactive = not (options.noninteractive or checkForUpdates)
-    if interactive:
-        readcontinueorraise('Do you want to update to %s [Y|n]?' % version_next)
+    if interactive and not readcontinue('Do you want to update to %s [Y|n]?' % version_next):
+        return False
 
     update_status(
         current_version=updater.current_version,
@@ -225,8 +208,8 @@ def do_package_updates(options, checkForUpdates, silent):
         dprint(silent, 'The following packages will be installed:\n %s' % _package_list(new_packages))
     if len(upgraded_packages) > 0:
         dprint(silent, 'The following packages will be upgraded:\n %s' % _package_list(upgraded_packages))
-    if interactive:
-        readcontinueorraise('\nDo you want to continue [Y|n]?')
+    if interactive and not readcontinue('\nDo you want to continue [Y|n]?'):
+        return False
 
     time.sleep(1)
     dprint(silent, 'Starting dist-update at %s...' % (time.ctime()), debug=True)
@@ -264,7 +247,7 @@ def do_app_updates(options, checkForUpdates, silent):
         # the new univention.appcenter package is not installed. Never mind
         # cannot be a dependency as the app center depends on updater...
         dprint(silent, 'unavailable')
-        return
+        return False
 
     # check if component updates are available
     appcenter_log.log_to_logfile()
@@ -282,6 +265,7 @@ def do_app_updates(options, checkForUpdates, silent):
         app_upgrade_search.call()
     except Abort:
         pass
+
     new_apps = list(app_upgrade.iter_upgradable_apps())
     if not new_apps:
         dprint(silent, 'none')
@@ -316,16 +300,13 @@ def do_app_updates(options, checkForUpdates, silent):
     for app in new_apps:
         if interactive and not readcontinue('\nDo you want to upgrade %s [Y|n]?' % app.name):
             continue
-        try:
-            local_success = bool(app_upgrade.call(
-                app=app,
-                noninteractive=not interactive,
-                username=options.username,
-                pwdfile=options.pwdfile,
-            ))
-        except Abort:
-            local_success = False
-        success &= local_success
+        success &= bool(app_upgrade.call(
+            app=app,
+            noninteractive=not interactive,
+            username=options.username,
+            pwdfile=options.pwdfile,
+        ))
+
     if not success:
         dprint(silent, 'ERROR: app upgrade failed. Please check /var/log/univention/updater.log\n')
         sys.exit(1)
@@ -449,14 +430,7 @@ def update_local_repository(options):
 
 def do_update(options):
     try:
-        try:
-            update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
-        except SystemExit, e:
-            if options.setucr:
-                univention.config_registry.handler_set([
-                    '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes'),
-                ])
-            raise
+        update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
     except ConfigurationError, e:
         update_status(status='FAILED', errorsource='SETTINGS')
         print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
@@ -468,7 +442,7 @@ def do_update(options):
         print >>logfd, traceback.format_exc()
         sys.exit(2)
     update_status(status='DONE')
-    if options.setucr and update_available is not None:
+    if options.setucr and configRegistry.is_true(UCR_UPDATE_AVAILABLE) != update_available:
         univention.config_registry.handler_set([
             '%s=%s' % (UCR_UPDATE_AVAILABLE, 'yes' if update_available else 'no'),
         ])
@@ -480,6 +454,9 @@ def do_update(options):
         else:
             print 'No update available.'
             sys.exit(1)
+
+    if update_available:
+        do_exec()
 
 
 def do_exec():
