@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-join
+fix: 8.0.4-3.516.201609201225
+desc: |
+ This update addresses the following issue:
+ * The function 'check_ldap_tls_connection' now uses 'univention-ldapsearch'
+   to better handle LDAP server restarts while joining.
+bug: [42420]
