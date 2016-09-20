@@ -6,5 +6,5 @@ src: univention-directory-manager-modules
 fix: 9.0.76-144~ucs3.3.1429.201609141328
 desc: |
  This update addresses the following issue(s):
- * Error messages regarding attribute locking have been enhanced.
+ * Error messages regarding attribute locking have been improved.
 bug: [42385]
