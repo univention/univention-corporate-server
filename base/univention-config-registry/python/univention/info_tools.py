@@ -41,8 +41,8 @@ class LocalizedValue(dict):
 
 	"""Localized description entry."""
 
-	def __init__(self, *agrs, **kwargs):
-		tmp = dict(*agrs, **kwargs)
+	def __init__(self, *args, **kwargs):
+		tmp = dict(*args, **kwargs)
 		self.__default = tmp.pop('__default', '')
 		dict.__init__(self, tmp)
 
