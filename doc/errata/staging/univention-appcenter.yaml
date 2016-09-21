@@ -3,7 +3,7 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-appcenter
-fix: 5.0.22-16.222.201609200036
+fix: 5.0.22-17.223.201609200055
 desc: |
  This update addresses the following issue(s):
  * Improved configuring Docker Apps
