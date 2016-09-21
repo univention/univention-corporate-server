@@ -11,3 +11,4 @@ desc: |
    A short wait for the the apache2 daemon pid file creation 
    is introduced by this erratum,
 bug: [41781]
+announced: 2016-09-21
