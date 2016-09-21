@@ -158,9 +158,6 @@ install: build
 	# copy all files for univention-web-style
 	cd $(BUILD_DIR); find dijit/themes/umc -type d -exec install -m0755 -d $(CURDIR)/debian/univention-web-style/$(JS_INSTALL_DIR)/{} \;
 	cd $(BUILD_DIR); find dijit/themes/umc -type f -exec install -m0644 {} $(CURDIR)/debian/univention-web-style/$(JS_INSTALL_DIR)/{} \;
-	install -m0755 -d $(CURDIR)/debian/univention-web-style/$(THEME_INSTALL_DIR)/icons/scalable
-	install -m0755 -d $(CURDIR)/debian/univention-web-style/$(THEME_INSTALL_DIR)/icons/50x50
-	install -m0755 -d $(CURDIR)/debian/univention-web-style/$(THEME_INSTALL_DIR)/icons/16x16
 
 clean:
 	rm -rf $(TMP_DIR) $(BUILD_DIR) js/de.json js/en.json

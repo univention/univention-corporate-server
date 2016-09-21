@@ -1,3 +1,12 @@
+univention-web (1.0.2-2) unstable; urgency=medium
+
+  Bug #42228:
+  * removed empty directory
+  * removed unused images
+  * removed icons folder from installation
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Sep 2016 13:59:25 +0200
+
 univention-web (1.0.2-1) unstable; urgency=medium
 
   * Bug #42384: fix images
