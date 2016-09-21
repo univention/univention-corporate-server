@@ -51,6 +51,13 @@ db_progress SET 3
 db_progress INFO di-univention-system-setup/progress/uss
 # activate univention-system-setup-boot
 in-target /usr/sbin/ucr set system/setup/boot/start=true
+
+REMOUNT_CD=false
+if [ -e /var/lib/install-cd.id ] && df /cdrom >/dev/null 2>&1; then
+       REMOUNT_CD=true
+       log-output -t umount /cdrom || :
+fi
+
 # start univention-system-setup if in GTK mode
 if [ -n "$DISPLAY" ]; then
 	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installer
@@ -59,6 +66,8 @@ else
 	db_progress INFO di-univention-system-setup/progress/usstextmode
 	chroot /target /usr/share/univention-system-setup/startxwithfirefox --installertext
 fi
+
+"$REMOUNT_CD" && load-install-cd "/target" || :
 
 ussbootflag="$(chroot /target /usr/sbin/ucr get system/setup/boot/start)"
 if [ "$ussbootflag" = "true" -o "$ussbootflag" = "yes" ] ; then

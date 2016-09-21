@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-42) unstable; urgency=medium
+
+  * Bug #42402: Make cdrom available in-target
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 21 Sep 2016 15:35:59 +0200
+
 univention-system-setup (9.0.4-41) unstable; urgency=medium
 
   * Bug #41920: add missing dependency
