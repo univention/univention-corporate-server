@@ -11,3 +11,4 @@ desc: |
    packages with explicit versions. This prevents errors in case one package
    failed to install.
 bug: [42401, 42362]
+announced: 2016-09-21
