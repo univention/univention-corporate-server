@@ -30,10 +30,10 @@
 /*global define*/
 define([
 	"dojo/_base/lang",
-	"../tools",
-	"../widgets/Text",
-	"../widgets/CheckBox",
-	"../i18n!"
+	"umc/tools",
+	"umc/widgets/Text",
+	"umc/widgets/CheckBox",
+	"umc/i18n!"
 ], function(lang, tools, Text, CheckBox, _) {
 	return {
 		name: 'feedback',

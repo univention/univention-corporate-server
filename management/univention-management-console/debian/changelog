@@ -1,3 +1,12 @@
+univention-management-console (9.0.12-17) unstable; urgency=medium
+
+  Bug #42228:
+  * renamed app.js to main.js
+  * moved all widgets to the same dir as main.js
+  * adjusted symlinks and module identifiers for new structure
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Sep 2016 16:35:40 +0200
+
 univention-management-console (9.0.12-16) unstable; urgency=medium
 
   * Bug #38824: removed mod_rewrite rule for non existing files under

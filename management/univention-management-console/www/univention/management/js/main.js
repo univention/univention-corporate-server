@@ -83,7 +83,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Text",
 	"umc/widgets/Module",
-	"umc/app/CategoryButton",
+	"./CategoryButton",
 	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")
@@ -554,7 +554,7 @@ define([
 				return;
 			}
 
-			require(["umc/app/StartupDialog"], lang.hitch(this, function(StartupDialog) {
+			require(["management/StartupDialog"], lang.hitch(this, function(StartupDialog) {
 				var startupDialog = new StartupDialog({});
 				startupDialog.on('hide', function() {
 					// dialog is being closed
@@ -1434,7 +1434,7 @@ define([
 
 			// require given Page reference and display the dialog
 			var deferred = new Deferred();
-			require(["umc/app/" + _PageRef], lang.hitch(this, function(_pageConf) {
+			require(["management" + _PageRef], lang.hitch(this, function(_pageConf) {
 				// prepare dict
 				var pageConf = lang.mixin({
 					'class': ''
