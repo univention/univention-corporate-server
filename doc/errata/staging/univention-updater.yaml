@@ -5,10 +5,8 @@ scope: ucs_4.1-0-errata4.1-3
 src: univention-updater
 fix: 11.0.11-8.1490.201609201429
 desc: |
- This update addresses the following issue(s):
- * univention-upgrade no longer fails if the searching for new apps fails,
-   e.g. because of a network error.
- * Setting update/available to yes when release updates are available in any
-   case.
+ This update addresses the following issues:
+ * univention-upgrade no longer fails if searching for new apps fails,
+   e.g. because of network errors.
  * Some typos in links addresses have been corrected.
 bug: [41869, 42076]
