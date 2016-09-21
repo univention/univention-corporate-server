@@ -1,3 +1,10 @@
+univention-management-console-module-udm (7.0.1-7) unstable; urgency=medium
+
+  * Bug #42228: changed module identifiers for widgets from
+    univention-management-console
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 20 Sep 2016 13:55:37 +0200
+
 univention-management-console-module-udm (7.0.1-6) unstable; urgency=medium
 
   Bug #38824:
