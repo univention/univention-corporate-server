@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Error messages regarding attribute locking have been improved.
 bug: [42379]
+announced: 2016-09-22
