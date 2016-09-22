@@ -43,8 +43,8 @@ define([
 	"umc/app",
 	"umc/tools",
 	"umc/dialog",
-	"management/ActivationPage!",  // page needs to be loaded as plugin
-	"management/ActivationDialog",
+	"management/widgets/ActivationPage!",  // page needs to be loaded as plugin
+	"management/widgets/ActivationDialog",
 	"umc/i18n!umc/modules/udm"
 ], function(declare, kernel, lang, array, query, Deferred, topic, registry, Menu, PopupMenuItem, MenuItem, app, tools, dialog, ActivationPage, ActivationDialog, _) {
 

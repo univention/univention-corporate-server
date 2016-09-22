@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.1-8) unstable; urgency=medium
+
+  * Bug #42228: adjusted module identifiers
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 22 Sep 2016 17:15:44 +0200
+
 univention-management-console-module-udm (7.0.1-7) unstable; urgency=medium
 
   * Bug #42228: changed module identifiers for widgets from
