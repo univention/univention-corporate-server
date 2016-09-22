@@ -83,7 +83,7 @@ define([
 	"umc/widgets/Button",
 	"umc/widgets/Text",
 	"umc/widgets/Module",
-	"./CategoryButton",
+	"./widgets/CategoryButton",
 	"umc/i18n/tools",
 	"umc/i18n!",
 	"dojo/sniff" // has("ie"), has("ff")

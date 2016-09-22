@@ -52,6 +52,7 @@
 					}
 				});
 			};
+
 			var _showLoginTooltip = function(evt) {
 				require(["dojo/on", "dojo/_base/event", "dijit/Tooltip",  "umc/i18n!umc/app"], function(on, dojoEvent, Tooltip, _) {
 					var node = evt.target;
@@ -76,6 +77,7 @@
 			if (locale) {
 				locale = locale.replace('_', '-');
 			}
+
 			var dojoConfig = {
 				has: {
 					'dojo-undef-api': true
@@ -84,14 +86,17 @@
 				locale: locale,
 				async: true,
 				deps: [],
+				packages: [
+					{ name: 'management', location: '/univention/management' }
+				],
 				map: {
 					'*': {
-						'umc/app': 'management/main',
+						'umc/app': 'management',
 						'umc/modules': 'management/modules'
 					}
 				},
 				callback: function() {
-					require(["dojo/parser", "umc/app", "umc/tools", "management/LanguageSwitch", "umc/hook", "dojo/domReady!"], function(parser, app, tools) {
+					require(["dojo/parser", "management", "umc/tools", "umc/hook", "dojo/domReady!"], function(parser, management, tools) {
 						// parse the DOM tree
 						parser.parse();
 
@@ -99,7 +104,7 @@
 						tools.status('version', '%VERSION%');
 
 						// start the application when everything has been loaded
-						app.start({
+						management.start({
 							username: getQuery('username'),
 							password: getQuery('password'),
 							module: getQuery('module'),
@@ -134,8 +139,8 @@
 		<div id="umcLoginWrapper">
 			<div id="umcFakeLoginLogo"></div>
 			<div id="umcLoginHeaderRight">
-				<div id="umcSingleSignOn" data-dojo-type="management/SingleSignOn"></div>
-				<div id="umcLanguageSwitch" data-dojo-type="management/LanguageSwitch"></div>
+				<div id="umcSingleSignOn" data-dojo-type="management/widgets/SingleSignOn"></div>
+				<div id="umcLanguageSwitch" data-dojo-type="management/widgets/LanguageSwitch"></div>
 			</div>
 			<div id="umcLoginCenterer"></div>
 			<div id="umcLoginDialog" class="umcLoginLoading dijitDialog dojoxDialog umcLoginDialog">
