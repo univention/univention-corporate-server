@@ -53,9 +53,9 @@ db_progress INFO di-univention-system-setup/progress/uss
 in-target /usr/sbin/ucr set system/setup/boot/start=true
 
 REMOUNT_CD=false
-if [ -e /var/lib/install-cd.id ] && df /cdrom >/dev/null 2>&1; then
+if [ -e /var/lib/install-cd.id ] && grep -q " /cdrom " /proc/mounts; then
        REMOUNT_CD=true
-       log-output -t umount /cdrom || :
+       log-output -t univention-system-setup umount /cdrom || :
 fi
 
 # start univention-system-setup if in GTK mode
