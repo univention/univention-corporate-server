@@ -1,3 +1,9 @@
+univention-system-setup (10.0.0-10) unstable; urgency=medium
+
+  * Bug #42402: Make cdrom available in-target
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 22 Sep 2016 13:21:13 +0200
+
 univention-system-setup (10.0.0-9) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val
