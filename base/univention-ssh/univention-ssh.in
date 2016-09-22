@@ -167,9 +167,9 @@ try:
 				pw_file.close()
 
 			command = {
-				'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no'],
-				'univention-scp': ['scp', '-o', 'StrictHostKeyChecking=no'],
-				'univention-ssh-rsync': ['rsync', '-e', 'ssh -o StrictHostKeyChecking=no'],
+				'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
+				'univention-scp': ['scp', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
+				'univention-ssh-rsync': ['rsync', '-e', 'ssh -o StrictHostKeyChecking=no -o ControlPath=none'],
 				}[cmd]
 			if split:
 				sys.argv = shlex.split(' '.join(sys.argv))
