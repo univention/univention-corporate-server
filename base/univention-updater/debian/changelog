@@ -1,3 +1,9 @@
+univention-updater (11.0.11-9) unstable; urgency=low
+
+  * Bug #42450: Assert valid /etc/apt/sources.list.d/15_ucs-online-version.list
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 22 Sep 2016 16:09:10 +0200
+
 univention-updater (11.0.11-8) unstable; urgency=medium
 
   * Bug #41840: Revert
