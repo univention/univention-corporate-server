@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-samba
+fix: 9.0.4-43.987.201609220946
+desc: |
+ This update addresses the following issue(s):
+ * Locking in the sysvol sync script has been improved.
+bug: [42475]
