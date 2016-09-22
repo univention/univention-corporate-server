@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-updater
+fix: 11.0.11-9.1491.201609221623
+desc: |
+ This update addresses the following issue:
+ * Check for a valid APT sources list before updating the Packages files or
+   performing package maintenance.
+bug: [42450]
