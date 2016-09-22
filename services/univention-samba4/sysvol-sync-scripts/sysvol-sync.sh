@@ -325,7 +325,7 @@ sync_from_upstream_DC() {
 (
 
 # get a lock, prevent script from running twice
-flock -n 9 || exit 0
+flock -un 9 || exit 0
  
 
 if ! [ -d "$SYSVOL_SYNC_TRIGGERDIR" ]; then
