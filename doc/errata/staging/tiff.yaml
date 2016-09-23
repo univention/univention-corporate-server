@@ -1,0 +1,48 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: tiff
+fix: 4.0.2-6.62.201609231243
+desc: |
+ This update addresses the following issue(s):
+ * Out-of-bounds read in TIFFRGBAImage interface (CVE-2015-8665)
+ * Out-of-bounds read in CIE Lab image format (CVE-2015-8683)
+ * an out of bounds write in tif_luv.c (CVE-2015-8781)
+ * other out-of-bounds writes (CVE-2015-8782)
+ * other out-of-bounds reads (CVE-2015-8783)
+ * potential out-of-bound write in NeXTDecode (CVE-2015-8784)
+ * tiffcrop: out-of-bounds write in loadImage() (CVE-2016-3991)
+ * PixarLogDecode() out-of-bound writes (CVE-2016-5314)
+ * tif_dir.c: setByteArray() Read access violation (CVE-2016-5315)
+ * tif_pixarlog.c: PixarLogCleanup() Segmentation fault
+   (CVE-2016-5316)
+ * GNOME nautilus: crash occurs when generating a thumbnail for a
+   crafted TIFF image (CVE-2016-5317)
+ * rgb2ycbcr: command excution (CVE-2016-5320)
+ * DumpModeDecode(): Ddos (CVE-2016-5321)
+ * extractContigSamplesBytes: out-of-bounds read (CVE-2016-5322)
+ * tiffcrop _TIFFFax3fillruns(): NULL pointer dereference
+   (CVE-2016-5323)
+ * tiff: heap-based buffer overflow when using the PixarLog
+   compression format (CVE-2016-5875)
+ * tiff: information leak in libtiff/tif_read.c (CVE-2016-6223)
+bug: [40406]
+cve:
+ - CVE-2015-8665
+ - CVE-2015-8683
+ - CVE-2015-8781
+ - CVE-2015-8782
+ - CVE-2015-8783
+ - CVE-2015-8784
+ - CVE-2016-3991
+ - CVE-2016-5314
+ - CVE-2016-5315
+ - CVE-2016-5316
+ - CVE-2016-5317
+ - CVE-2016-5320
+ - CVE-2016-5321
+ - CVE-2016-5322
+ - CVE-2016-5323
+ - CVE-2016-5875
+ - CVE-2016-6223
