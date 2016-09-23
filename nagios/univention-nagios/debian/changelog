@@ -1,3 +1,9 @@
+univention-nagios (7.0.6-7) unstable; urgency=low
+
+  * use FQDN in check_univention_ldap (Bug #42474)
+
+ -- Felix Botner <botner@univention.de>  Fri, 23 Sep 2016 14:30:05 +0200
+
 univention-nagios (7.0.6-6) unstable; urgency=low
 
   * Added a missing / to the symlink (Bug #35078)
