@@ -7,5 +7,5 @@ fix: 9.0.4-43.987.201609220946
 desc: |
  This update addresses the following issue(s):
  * During DVD installation the packages are now installed directly
-   from the DVD, instead of beeing copied to the disk beforehand.
+   from the DVD, instead of being copied to the disk beforehand.
 bug: [42402]
