@@ -20,8 +20,6 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-pysqlite2
 Pre-Depends: univention-config (>= 2.6.8-5)
 Provides: ${python:Provides}
-Conflicts: univention-server-slave,
- univention-server-member
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
  features of UCS Active Directory (AD) Connector.
