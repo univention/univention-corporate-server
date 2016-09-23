@@ -9,3 +9,4 @@ desc: |
  * Check for a valid APT sources list before updating the Packages files or
    performing package maintenance.
 bug: [42450]
+announced: 2016-09-23
