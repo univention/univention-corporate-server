@@ -273,10 +273,11 @@ class Update(UniventionAppAction):
 				src = app.get_cache_file(file)
 				dest = update_files[file](app)
 				if not os.path.exists(src):
-					# remove files that do not exist on server anymore
-					if os.path.exists(dest):
-						self.log('Deleting obsolete app file %s' % dest)
-						os.unlink(dest)
+					if app.docker:
+						# remove files that do not exist on server anymore
+						if os.path.exists(dest):
+							self.log('Deleting obsolete app file %s' % dest)
+							os.unlink(dest)
 				else:
 					# update local files if downloaded
 					component_file = '%s.%s' % (app.component_id, file)

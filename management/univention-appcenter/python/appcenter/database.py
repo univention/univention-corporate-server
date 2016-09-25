@@ -38,7 +38,7 @@ import MySQLdb as mysql
 from ipaddr import IPv4Network, AddressValueError
 
 from univention.appcenter.utils import generate_password, call_process, call_process_as
-from univention.appcenter.packages import packages_are_installed, install_packages, update_packages
+from univention.appcenter.packages import packages_are_installed, install_packages, update_packages, mark_packages_as_manually_installed
 from univention.appcenter.log import get_base_logger, LogCatcher
 from univention.appcenter.ucr import ucr_get
 
@@ -106,7 +106,9 @@ class DatabaseConnector(object):
 	def install(self):
 		packages = self._get_software_packages()
 		if packages:
-			if not packages_are_installed(packages):
+			if packages_are_installed(packages):
+				mark_packages_as_manually_installed(packages)
+			else:
 				database_logger.info('Installing/upgrading %s' % ', '.join(packages))
 				update_packages()
 				if not install_packages(packages):
