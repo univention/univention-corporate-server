@@ -95,3 +95,7 @@ def install_packages(pkgs):
 
 def update_packages():
 	return get_package_manager().update()
+
+
+def mark_packages_as_manually_installed(pkgs):
+	return get_package_manager().mark_auto(False, *pkgs)

@@ -34,6 +34,7 @@
 
 import os.path
 import shutil
+from glob import glob
 from getpass import getuser
 import subprocess
 from argparse import SUPPRESS
@@ -239,7 +240,10 @@ class InstallRemoveUpgrade(Register):
 
 	def _call_join_script(self, app, args, unjoin=False):
 		other_script = self._get_joinscript_path(app, unjoin=not unjoin)
-		if os.path.exists(other_script):
+		any_number_basename = os.path.basename(other_script)
+		any_number_basename = '[0-9][0-9]%s' % any_number_basename[2:]
+		any_number_scripts = os.path.join(os.path.dirname(other_script), any_number_basename)
+		for other_script in glob(any_number_scripts):
 			self.log('Uninstalling %s' % other_script)
 			os.unlink(other_script)
 		if unjoin:

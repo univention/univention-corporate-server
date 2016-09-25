@@ -1,3 +1,11 @@
+univention-appcenter (5.0.22-18) unstable; urgency=medium
+
+  * Bug #42485: Do not delete joinscripts / schema files from Non-Docker Apps
+  * Bug #42488: Mark database packages as user installed if already installed
+  * Bug #42498: Call join scripts last when upgrading to Docker App
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 26 Sep 2016 01:41:02 +0200
+
 univention-appcenter (5.0.22-17) unstable; urgency=medium
 
   * Bug #42401: Fix UCR settings for docker installations (2)
