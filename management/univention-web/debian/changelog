@@ -1,3 +1,9 @@
+univention-web (1.0.2-3) unstable; urgency=medium
+
+  * Bug #38824: Fix build-dev 
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 26 Sep 2016 14:50:12 +0200
+
 univention-web (1.0.2-2) unstable; urgency=medium
 
   Bug #42228:

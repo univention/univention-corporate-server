@@ -57,7 +57,7 @@ THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
 
 build: $(BUILD_DIR)/dojo/dojo.js build-css
 
-build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css
+build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css
 
 build-css: $(BUILD_THEME_DIR)/umc.css $(BUILD_THEME_DIR)/fonts $(BUILD_IMAGE_DIRS)
 
