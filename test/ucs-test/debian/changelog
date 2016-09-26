@@ -1,3 +1,9 @@
+ucs-test (6.0.36-20) unstable; urgency=medium
+
+  * Bug #41571: Run force_drs_replication also after windows_link_gpo
+
+ -- Arvid Requate <requate@univention.de>  Mon, 26 Sep 2016 19:12:58 +0200
+
 ucs-test (6.0.36-19) unstable; urgency=medium
 
   * 80_docker/91_additional_packages: Test additional packages
