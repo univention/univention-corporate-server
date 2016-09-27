@@ -6,6 +6,6 @@ src: univention-ad-connector
 fix: 10.0.2-11.511.201609271618
 desc: |
  This update addresses the following issue(s):
- * The package conflict to the slave server role packages has
+ * The package conflict to the slave server role has
    been removed.
 bug: [42489]
