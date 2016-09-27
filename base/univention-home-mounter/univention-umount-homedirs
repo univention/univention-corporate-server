@@ -30,11 +30,15 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-test -f /var/lib/univention-home-mounter/mounts || exit 0
+MOUNTS='/var/lib/univention-home-mounter/mounts'
+test -s "$MOUNTS" || exit 0
 
 mps=`tempfile`
 cat /var/lib/univention-home-mounter/mounts > $mps
-cat $mps | while read mp seconds; do
+
+while read line
+do
+	mp="${line% *}" seconds="${line##* }"
 	if [ $((seconds+300)) -lt `date +%s` ]
 		then
 		failed=0
@@ -46,6 +50,6 @@ cat $mps | while read mp seconds; do
 			dotlockfile -u /var/lib/univention-home-mounter/mounts.lock
 		fi
 	fi
-done
+done <"$MOUNTS.$$"
 rm -f "$mps"
 
