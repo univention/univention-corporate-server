@@ -40,19 +40,29 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
 	error("I am not joined")
 }
 
-    Import-Module grouppolicy
-    try {
-            Set-GPRegistryValue `
-                -Name "$gpo_name" `
-                -Key "$reg_key" `
-                -ValueName "$value_name" `
-                -Value "$value" `
-                -Type "$type" `
-                -Domain "$domain" `
-                -Server "$server" `
+Import-Module grouppolicy
+try {
+	if ($server -ne "") {
+		Set-GPRegistryValue `
+			-Name "$gpo_name" `
+			-Key "$reg_key" `
+			-ValueName "$value_name" `
+			-Value "$value" `
+			-Type "$type" `
+			-Domain "$domain" `
+			-Server "$server" `
+	} else {
+		Set-GPRegistryValue `
+			-Name "$gpo_name" `
+			-Key "$reg_key" `
+			-ValueName "$value_name" `
+			-Value "$value" `
+			-Type "$type" `
+			-Domain "$domain" `
+	}
 }
-    Catch {
-            error("$_")
-    }
+Catch {
+	error("$_")
+}
 
 exit(0)
