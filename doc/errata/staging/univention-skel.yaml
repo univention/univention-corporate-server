@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-skel
+fix: 5.0.22-18.224.201609260147
+desc: |
+ This update addresses the following issue(s):
+ * Handling of symlinks has been improved in univention-skel.
+bug: [42493]
