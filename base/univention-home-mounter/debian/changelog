@@ -1,3 +1,9 @@
+univention-home-mounter (7.0.1-2) unstable; urgency=low
+
+  * Bug #39394: debian/control: Add priority
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 23 Sep 2016 16:00:14 +0200
+
 univention-home-mounter (7.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
