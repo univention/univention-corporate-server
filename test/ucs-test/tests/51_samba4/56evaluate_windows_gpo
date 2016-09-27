@@ -89,8 +89,6 @@ def windows_create_gpo(gpo_name, gpo_comment):
 			utils.fail("The creation of the GPO on the Windows host returned "
 				"code '%s' when 0 is expected. STDOUT: %s STDERR: "
 				"%s" % (ret_code, stdout, stderr))
-		force_drs_replication()
-		force_drs_replication(direction="out")
 	except univention.winexe.WinExeFailed as exc:
 		utils.fail("An Error occured while creating GPO remotely: %r" % exc)
 
@@ -141,8 +139,6 @@ def windows_set_gpo_security_filter_GpoRead(gpo_name, target_name, target_type, 
 			utils.fail("Set-GPPermissions on the Windows host "
 				"returned status '%s' when 0 is expected. "
 				"STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
-		force_drs_replication()
-		force_drs_replication(direction="out")
 	except univention.winexe.WinExeFailed as exc:
 		utils.fail("Exception during Set-GPPermissions: %r" % exc)
 
@@ -164,8 +160,6 @@ def windows_set_gpo_security_filter_GpoApply(gpo_name, target_name, target_type)
 			utils.fail("Set-GPPermissions on the Windows host "
 				"returned status '%s' when 0 is expected. "
 				"STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
-		force_drs_replication()
-		force_drs_replication(direction="out")
 	except univention.winexe.WinExeFailed as exc:
 		utils.fail("Exception during Set-GPPermissions: %r" % exc)
 
@@ -202,8 +196,6 @@ def windows_set_gpo_registry_value(gpo_name, reg_key, value_name, value, value_t
 			utils.fail("The modification of the GPO on the Windows host "
 				"returned code '%s' when 0 is expected. "
 				"STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
-		force_drs_replication()
-		force_drs_replication(direction="out")
 	except univention.winexe.WinExeFailed as exc:
 		utils.fail("An Error occured while modifying GPO remotely: %r" % exc)
 
@@ -507,6 +499,8 @@ if __name__ == '__main__':
 		# case 1: checks with user GPO
 		gpo_name = test_user_gpo
 		windows_create_gpo(gpo_name, "GPO for %s" % (test_username,))
+		force_drs_replication()
+		force_drs_replication(direction="out")
 		samba_check_gpo_exists(gpo_name)
 
 		windows_set_gpo_registry_value(gpo_name,
@@ -514,12 +508,16 @@ if __name__ == '__main__':
 			"TestUserValueOne",
 			"Foo",
 			"String")
+		force_drs_replication()
+		force_drs_replication(direction="out")
 		sysvol_check_gpo_registry_value(gpo_name,
 			"HKCU\Software\Policies\Microsoft\UCSTestKey",
 			"TestUserValueOne",
 			"Foo")
 
 		windows_link_gpo(gpo_name, ldap_base)
+		force_drs_replication()
+		force_drs_replication(direction="out")
 		samba_check_gpo_application_listed(gpo_name, test_username)
 
 		# double quotes for '"Authenticated Users"' for it to be
@@ -527,6 +525,8 @@ if __name__ == '__main__':
 		windows_set_gpo_security_filter_GpoRead(gpo_name,
 			'"Authenticated Users"', 'Group', 'True')
 		windows_set_gpo_security_filter_GpoApply(gpo_name, test_username, 'User')
+		force_drs_replication()
+		force_drs_replication(direction="out")
 		sleep(60)  # seems like force_drs does not help here
 		windows_force_gpo_update()
 		windows_check_gpo_report(gpo_name, test_username)
@@ -534,6 +534,8 @@ if __name__ == '__main__':
 		# case 2: checks with computer GPO
 		gpo_name = test_machine_gpo
 		windows_create_gpo(gpo_name, "GPO for %s Windows host" % windows_client['hostname'])
+		force_drs_replication()
+		force_drs_replication(direction="out")
 		samba_check_gpo_exists(gpo_name)
 
 		windows_set_gpo_registry_value(gpo_name,
@@ -541,12 +543,16 @@ if __name__ == '__main__':
 			"TestComputerValueTwo",
 			"Bar",
 			"String")
+		force_drs_replication()
+		force_drs_replication(direction="out")
 		sysvol_check_gpo_registry_value(gpo_name,
 			"HKLM\Software\Policies\Microsoft\UCSTestKey",
 			"TestComputerValueTwo",
 			"Bar")
 
 		windows_link_gpo(gpo_name, ldap_base)
+		force_drs_replication()
+		force_drs_replication(direction="out")
 		samba_check_gpo_application_listed(gpo_name, windows_client['hostname'])
 
 		# double quotes for '"Authenticated Users"' for it to be
@@ -554,6 +560,8 @@ if __name__ == '__main__':
 		windows_set_gpo_security_filter_GpoRead(gpo_name,
 			'"Authenticated Users"', 'Group', 'True')
 		windows_set_gpo_security_filter_GpoApply(gpo_name, windows_client['hostname'], 'Computer')
+		force_drs_replication()
+		force_drs_replication(direction="out")
 		sleep(60)  # seems like force_drs does not help here
 		windows_force_gpo_update()
 		windows_check_gpo_report(gpo_name, "%s$" % windows_client['hostname'])
