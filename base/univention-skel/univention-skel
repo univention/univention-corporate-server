@@ -130,10 +130,10 @@ def install_files(stamps, dir, files):
 		hfile = os.path.join(hdir, file)
 		if not os.path.isfile(ifile):
 			if os.path.islink(ifile):
-				if not os.path.exists(hfile):
+				if not os.path.islink(hfile):
 					print 'create_link %s' % hfile
 					os.symlink(os.readlink(ifile), hfile)
-				if (os.path.exists(hfile) and os.readlink(hfile) != os.readlink(ifile)):
+				if (os.path.islink(hfile) and os.readlink(hfile) != os.readlink(ifile)):
 					print 'create_link %s' % hfile
 					os.unlink(hfile)
 					os.symlink(os.readlink(ifile), hfile)

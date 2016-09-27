@@ -1,3 +1,9 @@
+univention-skel (8.0.1-2) unstable; urgency=low
+
+  * fix link handling in univention-skell (Bug #42493)
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Sep 2016 12:54:31 +0200
+
 univention-skel (8.0.1-1) unstable; urgency=medium
 
   * Bump version for UCS 4.1 (Bug #39729)
