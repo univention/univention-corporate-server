@@ -1,3 +1,12 @@
+ucs-test (6.0.36-21) unstable; urgency=medium
+
+  * Bug #41571: Improve 51_samba4/56evaluate_windows_gpo
+    - Set GPO values against PDC emulator instead of against local server
+    - Run sysvol_sync
+    - Stabilize timing in UCS@school
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Sep 2016 16:26:38 +0200
+
 ucs-test (6.0.36-20) unstable; urgency=medium
 
   * Bug #41571: Run force_drs_replication also after windows_link_gpo
