@@ -1,6 +1,7 @@
 univention-home-mounter (8.0.0-2) unstable; urgency=low
 
   * Bug #39394: debian/control: Add priority
+  * Bug #42491: Fix tempfile
   * Bug #32018: Fix share names with blanks
 
  -- Philipp Hahn <hahn@univention.de>  Fri, 23 Sep 2016 16:00:14 +0200

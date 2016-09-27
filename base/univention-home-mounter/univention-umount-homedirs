@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 #
 # Univention Home Mounter
 #  unmount the home dirs
@@ -33,23 +33,21 @@
 MOUNTS='/var/lib/univention-home-mounter/mounts'
 test -s "$MOUNTS" || exit 0
 
-mps=`tempfile`
-cat /var/lib/univention-home-mounter/mounts > $mps
+[ "${FLOCKER}" != "$0" ] && exec env FLOCKER="$0" flock -en "${MOUNTS%/*}" "$0" "$@" || :
 
+mv "$MOUNTS" "$MOUNTS.$$"
+
+now=$(date +%s)
 while read line
 do
 	mp="${line% *}" seconds="${line##* }"
-	if [ $((seconds+300)) -lt `date +%s` ]
-		then
-		failed=0
-		result=`umount "$mp" 2>&1` || failed=1
-		if [ "$failed" = 0 ] || echo $result | grep -q 'not mounted'; then
-			dotlockfile -l /var/lib/univention-home-mounter/mounts.lock
-			cat /var/lib/univention-home-mounter/mounts | grep -v "^$mp$" > /var/lib/univention-home-mounter/mounts.new || true
-			mv /var/lib/univention-home-mounter/mounts.new /var/lib/univention-home-mounter/mounts
-			dotlockfile -u /var/lib/univention-home-mounter/mounts.lock
-		fi
+	if [ $((seconds+300)) -lt $now ]
+	then
+		mountpoint -q "$mp" || continue
+		result=`LC_ALL=C umount "$mp" 2>&1` && continue
+		echo "$result" | grep -Fq 'not mounted' && continue
 	fi
+	echo "$line" >>"$MOUNTS"
 done <"$MOUNTS.$$"
-rm -f "$mps"
 
+rm -f "$MOUNTS.$$"
