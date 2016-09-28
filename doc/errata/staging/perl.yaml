@@ -1,0 +1,24 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: perl
+fix: 5.14.2-21.82.201609281452
+desc: |
+ This update addresses the following issues:
+ * Denial of service in regexp processing (CVE-2013-7422)
+ * ambiguous environment variables handling (CVE-2016-2381)
+ * Some modules in Perl 5.x do not properly remove . (period) characters from
+   the end of the includes directory array, which might allow local users to
+   gain privileges via a Trojan horse module under the current working
+   directory. (CVE-2016-1238)
+ * The XSLoader::load method in XSLoader in Perl does not properly locate .so
+   files when called in a string eval, which might allow local users to
+   execute arbitrary code via a Trojan horse library under the current working
+   directory. (CVE-2016-6185)
+bug: [37706]
+cve:
+  - CVE-2013-7422
+  - CVE-2016-2381
+  - CVE-2016-1238
+  - CVE-2016-6185
