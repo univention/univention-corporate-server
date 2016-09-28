@@ -1,3 +1,10 @@
+ucs-test (7.0.5-1) unstable; urgency=medium
+
+  * 55_adconnector/163sync_ad_remove_capital_user_from_group: re-enable
+    test case (Bug #18433)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Sep 2016 07:21:44 +0200
+
 ucs-test (7.0.4-2) unstable; urgency=medium
 
   * Bug #41571: Run force_drs_replication also after windows_link_gpo

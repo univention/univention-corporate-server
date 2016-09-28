@@ -7,13 +7,10 @@
 ##  - 18433
 ## versions:
 ##  3.0-0: skip
+##  4.1-3: fixed
 ## tags:
 ##  - groupsync
 ##  - skip_admember
-
-# skip test, see https://forge.univention.org/bugzilla/show_bug.cgi?id=28696
-exit 131
-
 
 . "$TESTLIBPATH/base.sh" || exit 137
 . "$TESTLIBPATH/udm.sh" || exit 137
