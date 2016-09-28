@@ -1,8 +1,12 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Configuration Registry
-#  install UMC module
+# Univention Management Console
+"""
+Install UMC modules. It parses a RFC 822 file called
+$(package).umc-modules and installs the specified components of a module
+into the correct directories.
+"""
 #
 # Copyright 2011-2016 Univention GmbH
 #
@@ -42,125 +46,134 @@ try:
 except ImportError:
 	import univention.dh_umc as dh_umc
 
-"""Helps installing UMC modules. It parses a RFC 822 file called
-$(package).umc-modules and installs the specified components of a module
-into the correct directories."""
 
+class Module(object):
 
-def do_package(package, core):
-	try:
-		modules = dh_umc.read_modules(package, core)
-	except AttributeError as e:
-		print >>sys.stderr, str(e)
-		sys.exit(1)
+	def __init__(self, module):
+		self.module = module
+		self.destdir = os.path.join('debian', self.module.package)
+		self.languages = dh_umc.LANGUAGES
 
-	if not modules:
-		return
+	def dh_module_install(self):
+		self.install_xml()
+		self.install_categories()
+		self.install_python()
+		self.install_javascript()
+		self.install_html_css()
+		self.install_icons()
+		joinscript = self.install_joinscript()
+		self.install_deb_scripts(joinscript)
 
-	for module in modules:
-		# prepare directory
-		if not core:
-			dh_ucs.doIt('install', '-d', 'debian/%(package)s/usr/share/pyshared/univention/management/console/modules/%(Module)s' % module)
-			dh_ucs.doIt('install', '-d', 'debian/%(package)s/usr/share/univention-management-console/modules' % module)
-			for lang in dh_umc.LANGUAGES:
-				module['lang'] = lang
-				dh_ucs.doIt('install', '-d', 'debian/%(package)s/usr/share/locale/%(lang)s/LC_MESSAGES' % module)
-				dh_ucs.doIt('install', '-d', 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s' % module)
-
-		if module.xml_categories:
-			dh_ucs.doIt('install', '-d', 'debian/%(package)s/usr/share/univention-management-console/categories' % module)
-		else:
-			print >>sys.stderr, 'info: no category definition file'
-
-		if module.icons is not None and not os.path.isdir(module.icons):
-			print >>sys.stderr, 'error: could not find icon directory %s' % module.icons
-
-		if not core:
-			# copy python module
-			install_python = []
-			for entry in os.listdir(module.python_path):
-				filename = os.path.join(module.python_path, entry)
-				if os.path.isfile(filename) and entry.endswith('.py'):
-					install_python.append(filename)
-			if not install_python:
-				print >>sys.stderr, 'error: no python files found in %s' % module.python_path
-				sys, exit(1)
-			install_python.append('debian/%(package)s/usr/share/pyshared/univention/management/console/modules/%(Module)s' % module)
-			install_python_command = ['install', '-m', '644']
-			install_python_command.extend(install_python)
-			dh_ucs.doIt(*install_python_command)
-
-			# copy javascript files
-			for srcFile in module.js_files:
-				# get destination path
-				destFile = 'debian/%s/usr/share/univention-management-console-frontend/js/umc/modules/%s' % (package, srcFile[len(module.js_path):])
-
-				# check whether we need to create the destination dir
-				destDir = os.path.dirname(destFile)
-				if not os.path.exists(destDir):
-					dh_ucs.doIt('install', '-d', destDir)
-
-				# copy the .js file
-				dh_ucs.doIt('install', '-m', '644', srcFile, destFile)
-
-			# copy html files
-			for srcFile in module.html_files:
-				# get destination path
-				destFile = 'debian/%s/usr/share/univention-management-console-frontend/js/umc/modules/%s' % (package, srcFile[len(module.js_path):])
-				# copy the .html file
-				dh_ucs.doIt('install', '-m', '644', srcFile, destFile)
-
-			# copy XML definitions
-			dh_ucs.doIt('install', '-m', '644', module.xml_definition, 'debian/%(package)s/usr/share/univention-management-console/modules' % module)
-
-		if module.xml_categories:
-			dh_ucs.doIt('install', '-m', '644', module.xml_categories, 'debian/%(package)s/usr/share/univention-management-console/categories' % module)
-
-		if not core:
-			# copy translation files (python)
-			for lang in dh_umc.LANGUAGES:
-				mo_file = os.path.join(module.python_path, '%s.mo' % lang)
-				module['lang'] = lang
-				dh_ucs.doIt('install', '-m', '644', mo_file, 'debian/%(package)s/usr/share/locale/%(lang)s/LC_MESSAGES/%(package)s.mo' % module)
-
-			# copy translation files (javascript)
-			for lang in dh_umc.LANGUAGES:
-				json_file = os.path.join(module.js_path, '%s.json' % lang)
-				module['lang'] = lang
-				dh_ucs.doIt('install', '-m', '644', json_file, 'debian/%(package)s/usr/share/univention-management-console-frontend/js/umc/modules/i18n/%(lang)s/%(Module)s.json' % module)
+	def install_xml(self):
+		if not self.module.xml_definition:
+			print >> sys.stderr, 'I: no module definition file'
+			return
+		target = os.path.join(self.destdir, 'usr/share/univention-management-console/modules')
+		dh_ucs.doIt('install', '-d', target)
+		dh_ucs.doIt('install', '-m', '644', self.module.xml_definition, target)
 
 		# copy translation files (xml)
-		for lang in dh_umc.LANGUAGES:
-			mo_file = os.path.join(os.path.dirname(module.xml_definition), '%s.mo' % lang)
-			module['lang'] = lang
-			dh_ucs.doIt('install', '-m', '644', '-D', mo_file, 'debian/%(package)s/usr/share/univention-management-console/i18n/%(lang)s/%(Module)s.mo' % module)
+		target_i18n = os.path.join(self.destdir, 'usr/share/univention-management-console/i18n/%%s/%(Module)s.mo' % self.module)
+		for lang in self.languages:
+			mo_file = os.path.join(os.path.dirname(self.module.xml_definition), '%s.mo' % lang)
+			dh_ucs.doIt('install', '-m', '644', '-D', mo_file, target_i18n % (lang,))
 
-		# join script
-		join_script = '%s.inst' % package
-		join_dest = 'debian/%s/usr/lib/univention-install' % package
-		join_exists = False
-		for filename in os.listdir('.'):
-			if filename.endswith(join_script):
-				join_script = filename
-				if not os.path.exists(join_dest):
-					dh_ucs.doIt('install', '-d', join_dest)
-				dh_ucs.doIt('install', '-t', join_dest, '-m', '755', filename)
-				join_exists = True
-				break
+	def install_categories(self):
+		if not self.module.xml_categories:
+			print >> sys.stderr, 'I: no category definition file'
+			return
 
-		if not core:
-			# copy icons
-			for dirname, dirs, files in os.walk(module.icons):
-				if '.svn' in dirs:
-					dirs.remove('.svn')
-				dest = 'debian/%s/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/%s' % (package, dirname[len(module.icons):])
-				if not os.path.exists(dest):
-					dh_ucs.doIt('install', '-d', dest)
-				for icon in files:
-					dh_ucs.doIt('install', '-t', dest, '-m', '644', os.path.join(dirname, icon))
+		target = os.path.join(self.destdir, 'usr/share/univention-management-console/categories')
+		dh_ucs.doIt('install', '-d', target)
+		dh_ucs.doIt('install', '-m', '644', self.module.xml_categories, target)
 
-		with open(os.path.join('debian', '%s.postinst.debhelper' % (package,)), 'a') as f_postinst:
-			if join_exists:
+	def install_python(self):
+		target = os.path.join(self.destdir, 'usr/share/pyshared/univention/management/console/modules/%(Module)s' % self.module)
+		python_files = list(self.module.python_files)
+
+		if not python_files:
+			print >> sys.stderr, 'I: no python files found in %s' % (self.module.python_path,)
+			return
+
+		for src_file in python_files:
+			target_file = os.path.join(target, src_file[len(self.module.python_path):])
+			target_dir = os.path.dirname(target_file)
+			if not os.path.exists(target_dir):
+				dh_ucs.doIt('install', '-d', target_dir)
+			dh_ucs.doIt('install', '-m', '644', src_file, target_file)
+
+		# copy translation files (python)
+		target_i18n = os.path.join(self.destdir, 'usr/share/locale/%s/LC_MESSAGES/')
+		for lang in self.languages:
+			mo_file = os.path.join(self.module.python_path, '%s.mo' % lang)
+			if not os.path.exists(mo_file):
+				print >> sys.stderr, 'W: no translation file %r found' % (mo_file,)
+				continue
+			destdir_i18n = target_i18n % (lang,)
+			dh_ucs.doIt('install', '-d', destdir_i18n)
+			dh_ucs.doIt('install', '-m', '644', mo_file, os.path.join(destdir_i18n, '%(package)s.mo' % self.module))
+
+	def install_javascript(self):
+		target = 'usr/share/univention-management-console-frontend/js/umc/modules/'
+		js_files = list(self.module.js_files)
+
+		if not js_files:
+			print >> sys.stderr, 'I: no javascript files found in %s' % (self.module.js_path,)
+			return
+
+		for src_file in js_files:
+			target_file = os.path.join(self.destdir, target, src_file[len(self.module.js_path):])
+			target_dir = os.path.dirname(target_file)
+			if not os.path.exists(target_dir):
+				dh_ucs.doIt('install', '-d', target_dir)
+			dh_ucs.doIt('install', '-m', '644', src_file, target_file)
+
+		# copy translation files (javascript)
+		target_i18n = os.path.join(self.destdir, 'usr/share/univention-management-console-frontend/js/umc/modules/i18n/%%s' % self.module)
+		for lang in self.languages:
+			json_file = os.path.join(self.module.js_path, '%s.json' % lang)
+			if not os.path.exists(json_file):
+				print >> sys.stderr, 'W: no translation file %r found' % (json_file,)
+				continue
+			destdir_i18n = target_i18n % (lang,)
+			dh_ucs.doIt('install', '-d', destdir_i18n)
+			dh_ucs.doIt('install', '-m', '644', json_file, os.path.join(destdir_i18n, '%(Module)s.json' % self.module))
+
+	def install_html_css(self):
+		for src_file in list(self.module.html_files) + list(self.module.css_files):
+			target = os.path.join(self.destdir, 'usr/share/univention-management-console-frontend/js/umc/modules/%s' % (src_file[len(self.module.js_path):]))
+			dh_ucs.doIt('install', '-m', '644', src_file, target)
+
+	def install_icons(self):
+		if self.module.icons is None:
+			return
+		if not os.path.isdir(self.module.icons):
+			print >> sys.stderr, 'W: could not find icon directory %s' % (self.module.icons,)
+			return
+
+		for dirname, dirs, files in os.walk(self.module.icons):
+			if '.svn' in dirs:
+				dirs.remove('.svn')
+			dest = 'debian/%s/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/%s' % (self.module.package, dirname[len(self.module.icons):])
+			if not os.path.exists(dest):
+				dh_ucs.doIt('install', '-d', dest)
+			for icon in files:
+				dh_ucs.doIt('install', '-t', dest, '-m', '644', os.path.join(dirname, icon))
+
+	def install_joinscript(self):
+		join_script_base = '%s.inst' % (self.module.package,)
+		join_scripts = [filename for filename in os.listdir('.') if filename.endswith(join_script_base)]
+		if not join_scripts:
+			return
+		join_script = join_scripts[0]
+		join_dest = os.path.join(self.destdir, 'usr/lib/univention-install')
+		dh_ucs.doIt('install', '-d', join_dest)
+		dh_ucs.doIt('install', '-t', join_dest, '-m', '755', join_script)
+		return join_script
+
+	def install_deb_scripts(self, join_script):
+		with open(os.path.join('debian', '%s.postinst.debhelper' % (self.module.package,)), 'a') as f_postinst:
+			if join_script:
 				f_postinst.write('''
 # run join script on DC master and DC backup
 . /usr/share/univention-lib/base.sh
@@ -173,14 +186,19 @@ call_joinscript %s || true
 umc_frontend_new_hash
 ''')
 
-		with open(os.path.join('debian', package + '.prerm.debhelper'), 'a') as f_prerm:
+		with open(os.path.join('debian', '%s.prerm.debhelper' % (self.module.package,)), 'a') as f_prerm:
 			f_prerm.write('invoke-rc.d univention-management-console-server reload || true\n')
 
-if __name__ == '__main__':
-	# parse all options
-	parser = OptionParser(usage='usage: %prog [--core]')
-	parser.add_option('-c', '--core', action='store_true', dest='core', help='If specified modules without javascript and python code are excepted')
 
-	(options, args) = parser.parse_args()
+def main():
+	parser = OptionParser(usage='usage: %prog [--core]')
+	parser.add_option('-c', '--core', action='store_true', dest='core', help='do not require python, javascript, module-name and XML definition to be set')
+
+	options, args = parser.parse_args()
 	for package in dh_ucs.binary_packages():
-		do_package(package, options.core)
+		for module in dh_umc.read_modules(package, options.core):
+			Module(module).dh_module_install()
+
+
+if __name__ == '__main__':
+	main()

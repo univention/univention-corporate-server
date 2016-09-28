@@ -1,8 +1,12 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Configuration Registry
-#  build UMC module
+# Univention Management Console
+"""
+Install UMC modules. It parses a RFC 822 file called
+$(package).umc-modules and installs the specified components of a module
+into the correct directories.
+"""
 #
 # Copyright 2011-2016 Univention GmbH
 #
@@ -41,19 +45,12 @@ try:
 except ImportError:
 	import univention.dh_umc as dh_umc
 
-"""Helps installing UMC modules. It parses a RFC 822 file called
-$(package).umc-modules and installs the specified components of a module
-into the correct directories."""
-
 
 def do_package(package, core):
-	try:
-		modules = dh_umc.read_modules(package, core)
-	except AttributeError as e:
-		print >>sys.stderr, str(e)
-		sys.exit(1)
+	"""Compile translation files for package."""
+	modules = dh_umc.read_modules(package, core)
 
-	if not options.core:
+	if not core:
 		# build python PO files
 		for module in modules:
 			for po_file in module.python_po_files:
@@ -73,15 +70,19 @@ def do_package(package, core):
 			dh_umc.create_mo_file(po_file)
 
 
-if __name__ == '__main__':
+def main():
 	# parse all options
 	parser = OptionParser(usage='usage: %prog [--core]')
-	parser.add_option('-c', '--core', action='store_true', dest='core', help='If specified modules without javascript and python code are excepted')
+	parser.add_option('-c', '--core', action='store_true', dest='core', help='If specified only XML files are evaluated')
 
-	(options, args) = parser.parse_args()
+	options, args = parser.parse_args()
+	for package in dh_ucs.binary_packages():
+		do_package(package, options.core)
+
+
+if __name__ == '__main__':
 	try:
-		for package in dh_ucs.binary_packages():
-			do_package(package, options.core)
+		main()
 	except dh_umc.Error as exc:
 		print >> sys.stderr, str(exc)
 		sys.exit(1)

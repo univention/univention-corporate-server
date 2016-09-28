@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-20) unstable; urgency=medium
+
+  * Bug #42293: dh_umc adaptions
+
+ -- Florian Best <best@univention.de>  Wed, 28 Sep 2016 19:49:42 +0200
+
 univention-management-console (9.0.12-19) unstable; urgency=medium
 
   * Bug #42220: Improved functionality for plural forms in translations.

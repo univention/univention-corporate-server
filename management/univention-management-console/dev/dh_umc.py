@@ -1,8 +1,28 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Configuration Registry
-#  build UMC module
+# Univention Management Console
+"""Each module definition contains the following entries:
+
+ Module: The internal name of the module
+ Python: A directory containing the python module. There must be a subdirectory named like the internal name of the module.
+ Definition: The XML definition of the module
+ Javascript: The directory of the javascript code. In this directory must be a a file called <Module>.js
+ Category: The XML definition of additional categories
+ Icons: A directory containing the icons used by the module. The
+   directory structure must follow the following pattern
+   <weight>x<height>/<icon>.(png|svg)
+
+The entries Module and Definition are required.
+
+Example:
+ Module: ucr
+ Python: umc/module
+ Definition: umc/ucr.xml
+ Javascript: umc/js
+ Category: umc/categories/ucr.xml
+ Icons: umc/icons
+"""
 #
 # Copyright 2011-2016 Univention GmbH
 #
@@ -66,28 +86,6 @@ PO_METADATA = {
 	'Content-Transfer-Encoding': '8bit'
 }
 
-"""Each module definition contains the following entries:
-
- Module: The internal name of the module
- Python: A directory containing the python module. There must be a subdirectory named like the internal name of the module.
- Definition: The XML definition of the module
- Javascript: The directory of the javascript code. In this directory must be a a file called <Module>.js
- Category: The XML definition of additional categories
- Icons: A directory containing the icons used by the module. The
-   directory structure must follow the following pattern
-   <weight>x<height>/<icon>.(png|gif)
-
-The entry Category is optional.
-
-Example:
- Module: ucr
- Python: umc/module
- Definition: umc/ucr.xml
- Javascript: umc/js
- Category: umc/categories/ucr.xml
- Icons: umc/icons
-"""
-
 
 class Error(SystemExit):
 	pass
@@ -98,27 +96,43 @@ class UMC_Module(dict):
 	def __init__(self, *args):
 		dict.__init__(self, *args)
 		for key in (MODULE, PYTHON, JAVASCRIPT, DEFINITION, CATEGORY, ICONS):
-			if key in self and self[key]:
+			if self.get(key):
 				self[key] = self[key][0]
 
 	@property
 	def package(self):
+		"""Return the name of the Debian binary package."""
 		return self.get('package')
 
 	@property
 	def python_path(self):
-		return '%(Python)s/%(Module)s/' % self
+		"""Return path to Python UMC directory."""
+		try:
+			return '%(Python)s/%(Module)s/' % self
+		except KeyError:
+			pass
 
 	@property
 	def js_path(self):
-		return '%(Javascript)s/' % self
+		"""Return path to JavaScript UMC directory."""
+		try:
+			return '%(Javascript)s/' % self
+		except KeyError:
+			pass
 
 	@property
 	def js_module_file(self):
-		return '%(Javascript)s/%(Module)s.js' % self
+		"""Return path to main JavaScript file."""
+		try:
+			return '%(Javascript)s/%(Module)s.js' % self
+		except KeyError:
+			pass
 
-	def iter_files(self, suffix):
-		for dirname, dirs, files in os.walk(self.js_path):
+	def _iter_files(self, base, suffix):
+		"""Iterate over all files below base ending with suffix."""
+		if base is None:
+			return
+		for dirname, dirs, files in os.walk(base):
 			# ignore .svn directories
 			if '.svn' in dirs:
 				dirs.remove('.svn')
@@ -129,62 +143,62 @@ class UMC_Module(dict):
 
 	@property
 	def js_files(self):
-		return self.iter_files('.js')
-		# for dirname, dirs, files in os.walk( self.js_path ):
-		# ignore .svn directories
-		# 	if '.svn' in dirs:
-		# 		dirs.remove( '.svn' )
-		# we are only interested in .js files
-		# 	for ifile in files:
-		# 		if ifile.endswith('.js'):
-		# 			yield os.path.join(dirname, ifile)
+		"""Iterate over all JavaScript UMC files."""
+		return self._iter_files(self.js_path, '.js')
 
 	@property
 	def html_files(self):
-		return self.iter_files('.html')
-		# for dirname, dirs, files in os.walk( self.js_path ):
-		# ignore .svn directories
-		# 	if '.svn' in dirs:
-		# 		dirs.remove( '.svn' )
-		# we are only interested in .js files
-		# 	for ifile in files:
-		# 		if ifile.endswith('.html'):
-		# 			yield os.path.join(dirname, ifile)
+		"""Iterate over all JavaScript HTML files."""
+		return self._iter_files(self.js_path, '.html')
+
+	@property
+	def css_files(self):
+		"""Iterate over all Javascript CSS files."""
+		return self._iter_files(self.js_path, '.css')
 
 	@property
 	def module_name(self):
+		"""Return the name of the UMC module."""
 		return self.__getitem__(MODULE)
 
 	@property
 	def xml_definition(self):
+		"""Return the path to the XML UMC definition."""
 		return self.get(DEFINITION)
 
 	@property
 	def xml_categories(self):
-		if CATEGORY in self:
-			return self.get(CATEGORY, '')
+		"""Return the path to the XML file defining categories."""
+		return self.get(CATEGORY)
 
 	@property
 	def python_files(self):
-		for (path, dirs, filenames) in os.walk(self.python_path):
-			for filename in filenames:
-				if not filename.endswith('.py'):
-					continue
-				yield os.path.join(path, filename)
+		"""Iterate over all Python UMC files."""
+		return self._iter_files(self.python_path, '.py')
 
 	@property
 	def python_po_files(self):
-		path = '%(Python)s/%(Module)s/' % self
+		"""Iterate over all Python UMC message catalogs."""
+		try:
+			path = '%(Python)s/%(Module)s/' % self
+		except KeyError:
+			return
 		for lang in LANGUAGES:
 			yield os.path.join(path, '%s.po' % lang)
 
 	@property
 	def js_po_files(self):
+		"""Iterate over all JavaScript UMC message catalogs."""
+		try:
+			path = self[JAVASCRIPT]
+		except KeyError:
+			return
 		for lang in LANGUAGES:
-			yield os.path.join(self.__getitem__(JAVASCRIPT), '%s.po' % lang)
+			yield os.path.join(path, '%s.po' % lang)
 
 	@property
 	def xml_po_files(self):
+		"""Iterate over all XML UMC message catalogs."""
 		if self.xml_definition is None:
 			return
 		dirpath = os.path.dirname(self.xml_definition)
@@ -193,10 +207,12 @@ class UMC_Module(dict):
 
 	@property
 	def icons(self):
+		"""Return path to UMC icon directory."""
 		return self.get(ICONS)
 
 
 def read_modules(package, core=False):
+	"""Read UMC module definition from debian/<package>.umc-modules."""
 	modules = []
 
 	file_umc_module = os.path.join('debian/', package + '.umc-modules')
@@ -204,35 +220,23 @@ def read_modules(package, core=False):
 	if not os.path.isfile(file_umc_module):
 		return modules
 
-	f_umc_module = open(file_umc_module, 'r')
+	with open(file_umc_module, 'rb') as fd:
+		for item in dh_ucs.parseRfc822(fd.read()):
+			# required fields
+			if not core:
+				for required in (MODULE, PYTHON, DEFINITION, JAVASCRIPT):
+					if not item.get(required):
+						raise Error('UMC module definition incomplete. key %s missing' % (required,))
 
-	for item in dh_ucs.parseRfc822(f_umc_module.read()):
-		# required fields
-		if not core:
-			for required in (MODULE, PYTHON, DEFINITION, JAVASCRIPT):
-				if not required in item or not item[required]:
-					raise AttributeError('UMC module definition incomplete. key %s missing' % required)
-
-		# single values
-		item['package'] = package
-		module = UMC_Module(item)
-		if core:
-			if module.module_name != 'umc-core' or not module.xml_categories:
-				raise ValueError('Module definition does not match core module')
-		modules.append(module)
+			# single values
+			item['package'] = package
+			module = UMC_Module(item)
+			if core:
+				if module.module_name != 'umc-core' or not module.xml_categories:
+					raise Error('Module definition does not match core module')
+			modules.append(module)
 
 	return modules
-
-
-def _appendPoEntry(poFile, xmlEntry):
-	"""Helper function to access text property of XML elements and to find the
-	corresponding po-entry."""
-	if xmlEntry is not None and xmlEntry.text is not None:  # important to use "xmlEntry is non None"!
-		entry = polib.POEntry(msgid=xmlEntry.text, msgstr='')
-		try:
-			poFile.append(entry)
-		except ValueError as exc:  # Entry "..." already exists
-			print >> sys.stderr, 'Warning: Appending %r to po file failed: %s' % (xmlEntry.text, exc)
 
 
 def module_xml2po(module, po_file, language):
@@ -246,21 +250,31 @@ def module_xml2po(module, po_file, language):
 	po.metadata['POT-Creation-Date'] = formatdate(localtime=True)
 	po.metadata['Language'] = language
 
+	def _append_po_entry(xml_entry):
+		"""Helper function to access text property of XML elements and to find the
+		corresponding po-entry."""
+		if xml_entry is not None and xml_entry.text is not None:  # important to use "xml_entry is not None"!
+			entry = polib.POEntry(msgid=xml_entry.text, msgstr='')
+			try:
+				po.append(entry)
+			except ValueError as exc:  # Entry "..." already exists
+				print >> sys.stderr, 'Warning: Appending %r to po file failed: %s' % (xml_entry.text, exc)
+
 	if module.xml_definition and os.path.isfile(module.xml_definition):
 		tree = ET.ElementTree(file=module.xml_definition)
-		_appendPoEntry(po, tree.find('module/name'))
-		_appendPoEntry(po, tree.find('module/description'))
+		_append_po_entry(tree.find('module/name'))
+		_append_po_entry(tree.find('module/description'))
 		for flavor in tree.findall('module/flavor'):
-			_appendPoEntry(po, flavor.find('name'))
-			_appendPoEntry(po, flavor.find('description'))
-		_appendPoEntry(po, tree.find('link/name'))
-		_appendPoEntry(po, tree.find('link/description'))
-		_appendPoEntry(po, tree.find('link/url'))
+			_append_po_entry(flavor.find('name'))
+			_append_po_entry(flavor.find('description'))
+		_append_po_entry(tree.find('link/name'))
+		_append_po_entry(tree.find('link/description'))
+		_append_po_entry(tree.find('link/url'))
 
 	if module.xml_categories and os.path.isfile(module.xml_categories):
 		tree = ET.ElementTree(file=module.xml_categories)
 		for cat in tree.findall('categories/category'):
-			_appendPoEntry(po, cat.find('name'))
+			_append_po_entry(cat.find('name'))
 
 	po.save(message_po)
 	if os.path.isfile(po_file):
@@ -276,13 +290,23 @@ def module_xml2po(module, po_file, language):
 
 def create_po_file(po_file, package, files, language='python'):
 	"""Create a PO file for a defined set of files"""
-	message_po = '%s/messages.po' % (os.path.dirname(po_file) or '.')
+	message_po = '%s/messages.pot' % (os.path.dirname(po_file) or '.')
 
 	if os.path.isfile(message_po):
 		os.unlink(message_po)
 	if isinstance(files, basestring):
 		files = [files]
-	if dh_ucs.doIt('xgettext', '--force-po', '--add-comments=i18n', '--from-code=UTF-8', '--sort-output', '--package-name=%s' % package, '--msgid-bugs-address=packages@univention.de', '--copyright-holder=Univention GmbH', '--language', language, '-o', message_po, *files):
+	if dh_ucs.doIt('xgettext',
+			'--force-po',
+			'--add-comments=i18n',
+			'--from-code=UTF-8',
+			'--sort-output',
+			'--package-name=%s' % package,
+			'--msgid-bugs-address=packages@univention.de',
+			'--copyright-holder=Univention GmbH',
+			'--language', language,
+			'-o', message_po,
+			*files):
 		raise Error('xgettext failed for the files: %r' % (files,))
 	po = polib.pofile(message_po)
 	po.header = PO_HEADER
@@ -305,13 +329,14 @@ def create_po_file(po_file, package, files, language='python'):
 
 
 def create_mo_file(po_file):
+	"""Compile textual message catalog to binary message catalog."""
 	if dh_ucs.doIt('msgfmt', '--check', '--output-file', po_file.replace('.po', '.mo'), po_file):
 		raise Error('Failed to compile translation file from %s.' % (po_file,))
 
 
 def create_json_file(po_file):
+	"""Compile textual message catalog to JSON message catalog."""
 	json_file = po_file.replace('.po', '.json')
-	json_fd = open(json_file, 'w')
 	pofile = polib.pofile(po_file)
 	data = {}
 	
@@ -361,5 +386,5 @@ def create_json_file(po_file):
 			if len(data[entry.msgid]) != int(data["$nplurals$"]):
 				raise Error('The amount of plural forms for a translation in %s doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".' % (po_file));
 
-	json_fd.write(json.dumps(data))
-	json_fd.close()
+	with open(json_file, 'w') as fd:
+		json.dump(data, fd)

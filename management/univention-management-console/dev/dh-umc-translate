@@ -1,8 +1,8 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 #
-# Univention Configuration Registry
-#  build UMC module
+# Univention Management Console
+"""Tool creates .json files for translation using gettext."""
 #
 # Copyright 2011-2016 Univention GmbH
 #
@@ -31,13 +31,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import sys
-
 from optparse import OptionParser
 
 import univention.dh_umc as dh_umc
-
-"""Tool creates .json files for translation using gettext."""
 
 
 def main():
@@ -48,7 +46,7 @@ def main():
 		help='Specifies the package name which is needed for the creation of .po files. (Mandatory)'
 	)
 	parser.add_option('-t', '--type', action='store', type='choice',
-		choices=['json', 'mo', 'po', 'core'],
+		choices=['json', 'mo', 'po'],
 		dest='type',
 		default='json',
 		help='Type of the final output file; note that "json" and "mo" will both also create .po files [%default]'
@@ -60,12 +58,7 @@ def main():
 		dest='lang',
 		help='Specifies the languages that are processed (default: de)')
 
-	(options, args) = parser.parse_args()
-
-# make sure we have javascript files
-#	if not len(args):
-#		print '\nPlease specify a set of JavaScript files containing translations!\n'
-#		sys.exit(1)
+	options, args = parser.parse_args()
 
 	# update the list of languages
 	if options.lang and len(options.lang):
@@ -73,36 +66,28 @@ def main():
 
 	# make sure we have enough parameters
 	if not options.package:
-		print '\nYou need to specify a package-name (--package) as well as a list of JavaScript files to process!\n'
-		sys.exit(1)
+		parser.error('You need to specify a package-name (--package) as well as a list of JavaScript files to process!')
 
 	# make sure that we have an output file specified
 	if not options.outdir:
-		print '\nYou need to specify an output directory (--outdir)!\n'
-		sys.exit(1)
+		parser.error('You need to specify an output directory (--outdir)!')
 
 	# set the po/mo/json file names and the correct function for generating the
 	# final output
-	po_file = '%s/%%s.po' % options.outdir
-	create_final_output = lambda x: None
-	if 'json' == options.type:
-		# output is json
-		create_final_output = dh_umc.create_json_file
-	elif 'mo' == options.type:
-		# output is mo
-		create_final_output = dh_umc.create_mo_file
-	elif 'po' != options.type:
-		# invalid output type
-		print '\nThe output type needs to be one of the following: ".json", ".mo", ".po"!\n'
-		sys.exit(1)
+	create_final_output = {
+		'json': dh_umc.create_json_file,
+		'mo': dh_umc.create_mo_file,
+		'po': lambda x: None,
+	}[options.type]
 
 	# build translation files
 	for lang in dh_umc.LANGUAGES:
-		ipo_file = po_file % lang
-		if len(args):
+		ipo_file = os.path.join(options.outdir, '%s.po' % lang)
+		if args:
 			# only re-create po files if javascript files are given
 			dh_umc.create_po_file(ipo_file, options.package, args, 'JavaScript')
 		create_final_output(ipo_file)
+
 
 if __name__ == '__main__':
 	try:
