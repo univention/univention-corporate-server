@@ -1,3 +1,9 @@
+ucs-test (6.0.36-23) unstable; urgency=medium
+
+  * Bug #41571: Improve 51_samba4/56evaluate_windows_gpo
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Sep 2016 18:45:44 +0200
+
 ucs-test (6.0.36-22) unstable; urgency=medium
 
   * 55_adconnector/163sync_ad_remove_capital_user_from_group: re-enable

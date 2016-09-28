@@ -125,6 +125,8 @@ def windows_set_gpo_security_filter(gpo_name, permission_level, target_name, tar
 	"""
 	Applies the 'gpo_name' GPO to the 'target_name' of the 'target_type'
 	by executing a powershell script on Windows host via winexe.
+	By default (server="") the powershell code will select
+	the Master (fsmo: PDC emulator) to run against.
 	"""
 	if not permission_level in ("GpoRead", "GpoApply", "GpoEdit", "GpoEditDeleteModifySecurity", "None"):
 		utils.fail("Set-GPPermissions: unsupported permission_level: %s" % permission_level)
@@ -168,6 +170,8 @@ def samba_check_gpo_exists(gpo_name):
 def windows_set_gpo_registry_value(gpo_name, reg_key, value_name, value, value_type, server=""):
 	"""
 	Sets the 'value_name', 'value' and 'value_type' for 'gpo_name' Registry Key
+	By default (server="") the powershell code will select
+	the Master (fsmo: PDC emulator) to run against.
 	"""
 	print "\nModifying the '%s' GPO '%s' registry key " % (gpo_name, reg_key)
 	try:
@@ -253,6 +257,11 @@ def windows_check_gpo_report(gpo_name, identity_name):
 
 
 def sysvol_sync():
+	"""
+	We need to sync the sysvol from the master (fsmo: PDC emulator)
+	becasue the special Domain DFS module dfs_server/dfs_server_ad.c
+	randomizes the DFS referral for the Windows client
+	"""
 	stdout, stderr = run_cmd(("/usr/share/univention-samba4/scripts/sysvol-sync.sh"))
 	print stdout
 	if stderr:
@@ -495,6 +504,7 @@ if __name__ == '__main__':
 		force_drs_replication(direction="out")
 		samba_check_gpo_exists(gpo_name)
 
+		sysvol_sync()
 		windows_set_gpo_registry_value(gpo_name,
 			"HKCU\Software\Policies\Microsoft\UCSTestKey",
 			"TestUserValueOne",
@@ -537,6 +547,7 @@ if __name__ == '__main__':
 		force_drs_replication(direction="out")
 		samba_check_gpo_exists(gpo_name)
 
+		sysvol_sync()
 		windows_set_gpo_registry_value(gpo_name,
 			"HKLM\Software\Policies\Microsoft\UCSTestKey",
 			"TestComputerValueTwo",
