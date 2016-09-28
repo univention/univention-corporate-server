@@ -13,3 +13,4 @@ desc: |
  * Database packages are marked as user installed when a Docker App has
    database integration.
 bug: [42498, 42485, 42488]
+announced: 2016-09-28
