@@ -1,0 +1,18 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: apache2
+fix: 2.2.22-13.101.201609281005
+desc: |
+ This update addresses the following issue:
+ * The Apache HTTPD server used the value of the Proxy header from HTTP
+   requests to initialize the HTTP_PROXY environment variable for CGI scripts,
+   which in turn was incorrectly used by certain HTTP client implementations
+   to configure the proxy for outgoing HTTP requests. A remote attacker could
+   possibly use this flaw to redirect HTTP requests performed by a CGI script
+   to an attacker-controlled proxy via a malicious HTTP request.
+   (CVE-2016-5387)
+bug: [41826]
+cve:
+  - CVE-2016-5387
