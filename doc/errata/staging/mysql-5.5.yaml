@@ -1,0 +1,47 @@
+product: ucs
+release: "3.3"
+scope: ucs_3.3-0-errata3.3-0
+src: mysql-5.5
+fix: 5.5.52-0~ucs3.3.24.201609281417
+version: [0]
+desc: |
+ Multiple security issues have been fixed in MySQL 5.5.52.
+ Since Oracle does not disclose sufficient information to provide backported
+ patches, MySQL is updated to the new release.
+ * <https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-47.html>
+ * <https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-48.html>
+ * <https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-49.html>
+ * <https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-50.html>
+ * <https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-51.html>
+ * <https://dev.mysql.com/doc/relnotes/mysql/5.5/en/news-5-5-52.html>
+ * <http://www.oracle.com/technetwork/topics/security/cpujan2016-2367955.html>
+bug:
+ - 41851
+cve:
+ - CVE-2016-0505
+ - CVE-2016-0546
+ - CVE-2016-0596
+ - CVE-2016-0597
+ - CVE-2016-0598
+ - CVE-2016-0600
+ - CVE-2016-0606
+ - CVE-2016-0608
+ - CVE-2016-0609
+ - CVE-2016-0616
+ - CVE-2016-0640
+ - CVE-2016-0641
+ - CVE-2016-0642
+ - CVE-2016-0643
+ - CVE-2016-0644
+ - CVE-2016-0646
+ - CVE-2016-0647
+ - CVE-2016-0648
+ - CVE-2016-0649
+ - CVE-2016-0650
+ - CVE-2016-0666
+ - CVE-2016-2047
+ - CVE-2016-3477
+ - CVE-2016-3521
+ - CVE-2016-3615
+ - CVE-2016-5440
+ - CVE-2016-6662
