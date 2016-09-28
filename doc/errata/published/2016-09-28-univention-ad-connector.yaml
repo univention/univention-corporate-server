@@ -9,3 +9,4 @@ desc: |
  * The package conflict to the slave server role has
    been removed.
 bug: [42489]
+announced: 2016-09-28
