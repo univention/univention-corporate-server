@@ -325,35 +325,41 @@ def create_json_file(po_file):
 	# The rules get parsed from the pofile and put into the json file as
 	# entries, if there are any. Parsing happens with regular expressions.
 	if has_plurals:
-		p = re.compile("nplurals\s*=\s*")
-		pos_start = re.search(p, plural_rules).end()
-		p = re.compile("[\d]+")
-		pos_end = p.match(plural_rules, pos_start).end()
-		data["$nplurals$"] = plural_rules[pos_start:pos_end]
-		
-		# The $plural$ string contains everything from "plural=" to the last
-		# ';'. This is a useful, since it would include illegal code, which
-		# can then be found later and generate an error.
-		p = re.compile("plural\s*=\s*")
-		pos_start = re.search(p, plural_rules).end()
-		pos_end = list(re.finditer(';', plural_rules))[-1].start()
-		data["$plural$"] = plural_rules[pos_start:pos_end]
-		
-		# The expression in data["$plural$"] will be evalueted via eval() in
-		# javascript. To avoid malicious code injection a simple check is
-		# performed here.
-		p = re.compile("^[\s\dn=?!&|%:()<>]+$")
-		if not p.match(data["$plural$"]):
-			raise ValueError(('There are illegal characters in the "plural" '
-			'expression in the .po file\'s header entry "Plural-Forms"'))
+		try:
+			p = re.compile("nplurals\s*=\s*")
+			pos_start = re.search(p, plural_rules).end()
+			p = re.compile("[\d]+")
+			pos_end = p.match(plural_rules, pos_start).end()
+			data["$nplurals$"] = plural_rules[pos_start:pos_end]
+			
+			# The $plural$ string contains everything from "plural=" to the last
+			# ';'. This is a useful, since it would include illegal code, which
+			# can then be found later and generate an error.
+			p = re.compile("plural\s*=\s*")
+			pos_start = re.search(p, plural_rules).end()
+			pos_end = list(re.finditer(';', plural_rules))[-1].start()
+			data["$plural$"] = plural_rules[pos_start:pos_end]
+			
+			# The expression in data["$plural$"] will be evalueted via eval() in
+			# javascript. To avoid malicious code injection a simple check is
+			# performed here.
+			p = re.compile("^[\s\dn=?!&|%:()<>]+$")
+			if not p.match(data["$plural$"]):
+				raise Error(('There are illegal characters in the "plural" expression in %s\'s header entry "Plural-Forms".' % (po_file)))
+		except AttributeError:
+			raise Error('The plural rules in %s\'s header entry "Plural-Forms" seem to be incorrect.' % (po_file))
 
 	for entry in pofile:
 		if entry.msgstr:
 			data[entry.msgid] = entry.msgstr
 		elif entry.msgstr_plural and not has_plurals:
-			raise LookupError(("There are plural forms in the .po file, but no rules for them in the .po file's header"))
+			raise Error("There are plural forms in %s, but no rules in the file's header." % (po_file))
 		elif entry.msgstr_plural:
-			data[entry.msgid] = list(entry.msgstr_plural.values())
+			entries = entry.msgstr_plural.items()
+			entries.sort(key=lambda x: int(x[0]))
+			data[entry.msgid] = [x[1] for x in entries]
+			if len(data[entry.msgid]) != int(data["$nplurals$"]):
+				raise Error('The amount of plural forms for a translation in %s doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".' % (po_file));
 
 	json_fd.write(json.dumps(data))
 	json_fd.close()
