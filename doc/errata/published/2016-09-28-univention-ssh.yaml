@@ -9,3 +9,4 @@ desc: |
  * SSH connection multiplexing is disabled, as processes can get stuck waiting
    for the master connection to terminate.
 bug: [42476]
+announced: 2016-09-28
