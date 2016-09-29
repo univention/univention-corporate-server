@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-21) unstable; urgency=medium
+
+  * Bug #42220: Prettified code for the translation of plural forms.
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 29 Sep 2016 09:48:38 +0200
+
 univention-management-console (9.0.12-20) unstable; urgency=medium
 
   * Bug #42293: dh_umc adaptions

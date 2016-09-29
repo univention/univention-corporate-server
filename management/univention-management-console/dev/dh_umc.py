@@ -350,29 +350,27 @@ def create_json_file(po_file):
 	# The rules get parsed from the pofile and put into the json file as
 	# entries, if there are any. Parsing happens with regular expressions.
 	if has_plurals:
-		try:
-			p = re.compile("nplurals\s*=\s*")
-			pos_start = re.search(p, plural_rules).end()
-			p = re.compile("[\d]+")
-			pos_end = p.match(plural_rules, pos_start).end()
-			data["$nplurals$"] = plural_rules[pos_start:pos_end]
-			
-			# The $plural$ string contains everything from "plural=" to the last
-			# ';'. This is a useful, since it would include illegal code, which
-			# can then be found later and generate an error.
-			p = re.compile("plural\s*=\s*")
-			pos_start = re.search(p, plural_rules).end()
-			pos_end = list(re.finditer(';', plural_rules))[-1].start()
-			data["$plural$"] = plural_rules[pos_start:pos_end]
-			
-			# The expression in data["$plural$"] will be evalueted via eval() in
-			# javascript. To avoid malicious code injection a simple check is
-			# performed here.
-			p = re.compile("^[\s\dn=?!&|%:()<>]+$")
-			if not p.match(data["$plural$"]):
-				raise Error(('There are illegal characters in the "plural" expression in %s\'s header entry "Plural-Forms".' % (po_file)))
-		except AttributeError:
+		nplurals_start = re.search("nplurals\s*=\s*", plural_rules)
+		nplurals_end = re.search("nplurals\s*=\s*[\d]+", plural_rules)
+		
+		# The $plural$ string contains everything from "plural=" to the last
+		# ';'. This is a useful, since it would include illegal code, which
+		# can then be found later and generate an error.
+		plural_start = re.search("plural\s*=\s*", plural_rules)
+		plural_end = re.search('plural\s*=.*;', plural_rules)
+		
+		if nplurals_start == None or nplurals_end == None or \
+		   plural_start == None or plural_end == None:
 			raise Error('The plural rules in %s\'s header entry "Plural-Forms" seem to be incorrect.' % (po_file))
+		
+		data["$nplurals$"] = plural_rules[nplurals_start.end():nplurals_end.end()]
+		data["$plural$"] = plural_rules[plural_start.end():plural_end.end()-1]
+		
+		# The expression in data["$plural$"] will be evaluated via eval() in
+		# javascript. To avoid malicious code injection a simple check is
+		# performed here.
+		if not re.match("^[\s\dn=?!&|%:()<>]+$", data["$plural$"]):
+			raise Error(('There are illegal characters in the "plural" expression in %s\'s header entry "Plural-Forms".' % (po_file)))
 
 	for entry in pofile:
 		if entry.msgstr:
