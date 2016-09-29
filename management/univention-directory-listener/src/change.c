@@ -291,7 +291,7 @@ static void change_delete(struct transaction *trans)
 
 	signals_block();
 
-	rv = handlers_delete(trans->cur.notify.dn, &trans->cur.cache, trans->cur.notify.command);
+	rv = handlers_delete(trans->cur.notify.dn, &trans->cur.cache, 'd');
 	if (rv == 0)
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", trans->cur.notify.dn);
 	if (cache_entry_valid(&trans->cur.cache)) {

@@ -7,7 +7,7 @@
 # 3. Run tests as often as needed:
 #    run-parts --verbose --regex '^test' doc.34355
 
-BUG32685=true # move to selective
+BUG32685=false # move to selective
 BUG33594=true # modrdn delold=1
 BUG34355=false # modify+modrdn
 BUG34749=false # ldap escape
@@ -201,6 +201,7 @@ _py_repr () {
 wait_listener () {
 	while [ "$(<"$LCACHE/notifier_id")" -lt "$(/usr/share/univention-directory-listener/get_notifier_id.py)" ]
 	do
+		[ -s "$LDIF" ] && exit 1
 		printf .
 		sleep 10
 	done
