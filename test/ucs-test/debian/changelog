@@ -1,3 +1,15 @@
+ucs-test (7.0.6-5) unstable; urgency=medium
+
+  * Bug #41571: Reduce winexe loglevel again
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Sep 2016 01:46:47 +0200
+
+ucs-test (7.0.6-4) unstable; urgency=medium
+
+  * Bug #41571: Try again without workaround
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Sep 2016 01:37:31 +0200
+
 ucs-test (7.0.6-3) unstable; urgency=medium
 
   * Bug #41571: Workaround to stabilize 51_samba4/56evaluate_windows_gpo

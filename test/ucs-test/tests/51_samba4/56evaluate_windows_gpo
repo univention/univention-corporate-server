@@ -75,7 +75,7 @@ def samba_create_test_user():
 		print stdout
 
 
-def windows_create_gpo(gpo_name, gpo_comment):
+def windows_create_gpo(gpo_name, gpo_comment, server=""):
 	"""
 	Creates a GPO with a given 'gpo_name' and 'gpo_comment' via
 	winexe running the powershell script on the Windows host.
@@ -83,8 +83,8 @@ def windows_create_gpo(gpo_name, gpo_comment):
 	print "\nCreating GPO for the test with a name:", gpo_name
 	try:
 		ret_code, stdout, stderr = Win.create_gpo(gpo_name,
-			hostname,
-			gpo_comment)
+			gpo_comment,
+			server)
 		if ret_code != 0:
 			utils.fail("The creation of the GPO on the Windows host returned "
 				"code '%s' when 0 is expected. STDOUT: %s STDERR: "
@@ -93,7 +93,7 @@ def windows_create_gpo(gpo_name, gpo_comment):
 		utils.fail("An Error occured while creating GPO remotely: %r" % exc)
 
 
-def windows_link_gpo(gpo_name, container):
+def windows_link_gpo(gpo_name, container, server=""):
 	"""
 	Links a given 'gpo_name' to a container using powershell script
 	on Windows Host via winexe.
@@ -101,7 +101,7 @@ def windows_link_gpo(gpo_name, container):
 	print "\nLinking GPO '%s' to a '%s'" % (gpo_name, container)
 	try:
 		ret_code, stdout, stderr = Win.link_gpo(
-			gpo_name, 1, container, hostname)
+			gpo_name, 1, container, server)
 		if ret_code != 0:
 			utils.fail("The linking of the GPO on the Windows host "
 				"returned code '%s' when 0 is expected. "
@@ -206,14 +206,14 @@ def samba_get_gpo_uid_by_name(gpo_name):
 			return '{' + search('{(.+?)}', gpo).group(1) + '}'
 
 
-def windows_check_gpo_report(gpo_name, identity_name):
+def windows_check_gpo_report(gpo_name, identity_name, server=""):
 	"""
 	Gets the XML GPOreport for the 'gpo_name' from the remote Windows Host
 	via winexe. Checks that 'identity_name' has 'gpo_name' applied.
 	"""
 	print "\nCollecting and checking the GPOreport for %s:" % gpo_name
 	try:
-		ret_code, stdout, stderr = Win.get_gpo_report(gpo_name, hostname)
+		ret_code, stdout, stderr = Win.get_gpo_report(gpo_name, server)
 		if ret_code != 0:
 			utils.fail("The collection of the GPO report on the Windows host "
 				"returned code '%s' when 0 is expected. "
@@ -421,14 +421,14 @@ def samba_remove_test_user():
 		print stderr
 
 
-def windows_remove_test_gpo(gpo_name):
+def windows_remove_test_gpo(gpo_name, server=""):
 	"""
 	Removes the GPO with a given 'gpo_name' via
 	winexe running the powershell script on the Windows host.
 	"""
 	print "\nRemoving GPOs created for the test:", gpo_name
 	try:
-		ret_code, stdout, stderr = Win.remove_gpo(gpo_name, hostname)
+		ret_code, stdout, stderr = Win.remove_gpo(gpo_name, server)
 		if ret_code != 0:
 			print ("The removal of the GPO on the Windows host returned "
 				"code '%s' when 0 is expected. STDOUT: %s STDERR: "
@@ -509,8 +509,7 @@ if __name__ == '__main__':
 			"HKCU\Software\Policies\Microsoft\UCSTestKey",
 			"TestUserValueOne",
 			"Foo",
-			"String",
-			server=hostname)  ## TODO: why is this required?
+			"String")
 		force_drs_replication()
 		force_drs_replication(direction="out")
 		sysvol_sync()
@@ -524,22 +523,17 @@ if __name__ == '__main__':
 		force_drs_replication(direction="out")
 		samba_check_gpo_application_listed(gpo_name, test_username)
 
-		# double quotes for '"Authenticated Users"' for it to be
-		# considered as only one argument, otherwise it's passed as two args:
 		windows_set_gpo_security_filter(gpo_name, 'GpoRead',
-			'"Authenticated Users"', 'Group', 'True',
-			server=hostname)  ## TODO: why is this required?
+			'Authenticated Users', 'Group', 'True')
 		if ucr.is_true("connector/s4/mapping/gpo/ntsd", False):
 			## Workaround for Bug #35336
 			utils.wait_for_connector_replication()
 			utils.wait_for_replication()
 			utils.wait_for_connector_replication()
 		windows_set_gpo_security_filter(gpo_name, 'GpoApply',
-			test_username, 'User',
-			server=hostname)  ## TODO: why is this required?
+			test_username, 'User')
 		force_drs_replication()
 		force_drs_replication(direction="out")
-		# sleep(60)  # seems like force_drs does not help here
 		windows_force_gpo_update()
 		windows_check_gpo_report(gpo_name, test_username)
 
@@ -555,8 +549,7 @@ if __name__ == '__main__':
 			"HKLM\Software\Policies\Microsoft\UCSTestKey",
 			"TestComputerValueTwo",
 			"Bar",
-			"String",
-			server=hostname)  ## TODO: why is this required?
+			"String")
 		force_drs_replication()
 		force_drs_replication(direction="out")
 		sysvol_sync()
@@ -570,22 +563,17 @@ if __name__ == '__main__':
 		force_drs_replication(direction="out")
 		samba_check_gpo_application_listed(gpo_name, windows_client['hostname'])
 
-		# double quotes for '"Authenticated Users"' for it to be
-		# considered as only one argument, otherwise it's passed as two args:
 		windows_set_gpo_security_filter(gpo_name, 'GpoRead',
-			'"Authenticated Users"', 'Group', 'True',
-			server=hostname)  ## TODO: why is this required?
+			'Authenticated Users', 'Group', 'True')
 		if ucr.is_true("connector/s4/mapping/gpo/ntsd", False):
 			## Workaround for Bug #35336
 			utils.wait_for_connector_replication()
 			utils.wait_for_replication()
 			utils.wait_for_connector_replication()
 		windows_set_gpo_security_filter(gpo_name, 'GpoApply',
-			windows_client['hostname'], 'Computer',
-			server=hostname)  ## TODO: why is this required?
+			windows_client['hostname'], 'Computer')
 		force_drs_replication()
 		force_drs_replication(direction="out")
-		# sleep(60)  # seems like force_drs does not help here
 		windows_force_gpo_update()
 		windows_check_gpo_report(gpo_name, "%s$" % windows_client['hostname'])
 	finally:
