@@ -29,6 +29,15 @@ desc: |
    operations (CVE-2016-6306)
  * Remote denial of service (NULL pointer dereference and application crash)
    by triggering a CRL operation (CVE-2016-7052)
+ * Validate ClientHello session_id field length and send alert on failure
+   (RT#4080)
+ * Validate ClientHello extension field length (RT#4069)
+ * Change functions to pass in a limit rather than calculate it
+ * Fix DTLS unprocessed records bug
+ * Remove LOW from the DEFAULT cipher list (removing singles DES from default)
+ * Fix missing malloc return value checks
+ * Ensure all EVP calls have their returns checked where appropriate
+ * Use newest CRL (RT#4615)
 bug: [42486]
 cve:
  - CVE-2016-2177
