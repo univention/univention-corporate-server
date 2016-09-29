@@ -30,19 +30,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import univention.admin.modules  # required for UDM
 from univention.admin.uexceptions import base as udm_error
 import univention.admin.handlers.uvmm.profile as uvmm_profile
 
 from univention.lib.i18n import Translation
 
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
+from univention.management.console.ldap import machine_connection
 
 from urlparse import urlsplit
-from notifier import Callback
 
-from .udm import LDAP_Connection
 from .tools import object2dict
 
 _ = Translation('univention-management-console-modules-uvmm').translate
@@ -72,25 +69,26 @@ class Profiles(object):
 		'kvm-hvm': _('Full virtualization (KVM)'),
 		}
 
-	@LDAP_Connection
+	@machine_connection(write=False)
 	def read_profiles(self, ldap_connection=None, ldap_position=None):
 		"""
 		Read all profiles from LDAP.
 		"""
 		base = "%s,%s" % (Profiles.PROFILE_RDN, ldap_position.getDn())
-		try:
-			res = uvmm_profile.lookup(
-				None,
-				ldap_connection,
-				'',
-				base=base,
-				scope='sub',
-				required=False,
-				unique=False
-			)
-		except udm_error as ex:
-			MODULE.error("Failed to read profiles: %s" % (ex,))
-			res = ()
+		res = ()
+		if ldap_connection is not None:
+			try:
+				res = uvmm_profile.lookup(
+					None,
+					ldap_connection,
+					'',
+					base=base,
+					scope='sub',
+					required=False,
+					unique=False
+				)
+			except udm_error as exc:
+				MODULE.error("Failed to read profiles: %s" % (exc,))
 		self.profiles = [(obj.dn, Profile(obj.info)) for obj in res]
 
 	def _filter_profiles(self, node_pd):
@@ -115,33 +113,19 @@ class Profiles(object):
 		"""
 		self.required_options(request, 'nodeURI')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM NODE_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-			if success:
-				profiles = [
-						{'id': dn, 'label': item.name}
-						for pd in data
-						for (dn, item) in self._filter_profiles(pd)
-						]
-
-				self.finished(request.id, profiles)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			return [
+				{'id': dn, 'label': item.name}
+				for pd in data
+				for (dn, item) in self._filter_profiles(pd)
+			]
 
 		self.uvmm.send(
 				'NODE_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				group='default',
 				pattern=request.options['nodeURI']
 				)

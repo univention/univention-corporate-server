@@ -30,10 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import sys
+
 from univention.lib.i18n import Translation
-from univention.management.console.modules import Base, UMC_OptionTypeError, error_handling
+from univention.management.console.modules import Base, UMC_Error
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
+from univention.management.console.modules.decorators import sanitize
+from univention.management.console.modules.sanitizers import ChoicesSanitizer, StringSanitizer
 
 from notifier import Callback
 
@@ -64,95 +67,65 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 		"""
 		self.read_profiles()
 
-	def _check_thread_error(self, thread, result, request):
-		"""
-		Checks if the thread returned an exception. In that case an
-		error response is send and the function returns True. Otherwise
-		False is returned.
-		"""
-		if not isinstance(result, BaseException):
-			return False
+	def process_uvmm_response(self, request, callback=None):
+		return Callback(self._process_uvmm_response, request, callback)
 
-		def fake_func(self, request):
-			raise thread.exc_info[0], thread.exc_info[1], thread.exc_info[2]
-		fake_func.__name__ = 'thread %s' % (request.arguments[0],)
-		error_handling(fake_func)(self, request)
-		return True
-
-	def _thread_finish(self, thread, result, request):
-		"""
-		This method is invoked when a threaded request function is
-		finished. The result is send back to the client. If the result
-		is an instance of BaseException an error is returned.
-		"""
-		if self._check_thread_error(thread, result, request):
+	def _process_uvmm_response(self, thread, result, request, callback=None):
+		# this is a notifier thread callback. If this raises an exception the whole module process crashes!
+		if isinstance(result, BaseException):
+			self.thread_finished_callback(thread, result, request)
 			return
 
 		success, data = result
-		MODULE.info('Got result from UVMMd: success: %s, data: %s' % (success, data))
+		MODULE.info('Got result from UVMMd: success: %s, data: %r' % (success, data))
 		if not success:
-			self.finished(
-					request.id,
-					None,
-					message=data,
-					status=MODULE_ERR_COMMAND_FAILED
-					)
-		else:
-			self.finished(request.id, data)
-
-	def _thread_finish_success(self, thread, result, request):
-		"""
-		This method is invoked when a threaded request function is
-		finished. The result is send back to the client. If the result
-		is an instance of BaseException an error is returned.
-		"""
-		if self._check_thread_error(thread, result, request):
+			result = UMC_Error(str(data), status=500)
+			self.thread_finished_callback(thread, result, request)
 			return
 
-		success, data = result
-		MODULE.info('Got result from UVMMd: success: %s, data: %s' % (success, data))
-		self.finished(request.id, {'success' : success, 'data' : data})
+		if callback:
+			try:
+				data = callback(data)
+			except BaseException as result:
+				thread._exc_info = sys.exc_info()
+				self.thread_finished_callback(thread, result, request)
+				return
 
+		self.finished(request.id, data)
+
+	@sanitize(
+		type=ChoicesSanitizer(['group', 'node', 'domain', 'cloud', 'instance'], required=True),
+		nodePattern=StringSanitizer(required=True),
+		domainPattern=StringSanitizer(required=False),
+	)
 	def query(self, request):
 		"""
 		Meta query function for groups, nodes and domains.
-
-		options: {
-			'type': (group|node|domain),
-			'nodePattern': <node pattern>,
-			['domainPattern': <domain pattern>]
-			}
 
 		return: {
 			'success': (True|False),
 			'message': <details>
 			}
 		"""
-		self.required_options(request, 'type', 'nodePattern')
 
-		if request.options['type'] == 'node':
-			self.node_query(request)
-		elif request.options['type'] == 'domain':
-			self.domain_query(request)
-		elif request.options['type'] == 'cloud':
-			self.cloud_query(request)
-		elif request.options['type'] == 'instance':
-			self.instance_query(request)
-		elif request.options['type'] == 'group':
+		def group_root(request):
 			self.finished(request.id, [{
 				'id': 'default',
 				'label': _('Physical servers'),
 				'type': 'group',
 				'icon': 'uvmm-group',
 				}])
-		else:
-			raise UMC_OptionTypeError(_('Unknown query type'))
+		method = {
+			'node': self.node_query,
+			'domain': self.domain_query,
+			'cloud': self.cloud_query,
+			'instance': self.instance_query,
+			'group': group_root,
+		}[request.options['type']]
+		return method(request)
 
 	def group_query(self, request):
 		"""
 		Get server groups.
 		"""
-		self.uvmm.send(
-				'GROUP_LIST',
-				Callback(self._thread_finish, request)
-				)
+		self.uvmm.send('GROUP_LIST', self.process_uvmm_response(request))

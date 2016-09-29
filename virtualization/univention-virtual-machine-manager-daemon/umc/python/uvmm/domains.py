@@ -37,9 +37,8 @@ import re
 from univention.lib.i18n import Translation
 
 from univention.management.console.config import ucr
-from univention.management.console.modules import UMC_OptionTypeError, UMC_CommandError
+from univention.management.console.modules import UMC_Error
 from univention.management.console.log import MODULE
-from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import SearchSanitizer
 
@@ -47,7 +46,6 @@ from univention.uvmm.protocol import Data_Domain, Disk, Graphic, Interface
 from univention.uvmm.storage import POOLS_TYPE
 
 from urlparse import urlsplit, urldefrag
-from notifier import Callback
 
 from .tools import object2dict
 
@@ -100,47 +98,34 @@ class Domains(object):
 			}, ...]
 		"""
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM DOMAIN_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-
-			if success:
-				domain_list = []
-				for node_uri, domains in data.items():
-					uri = urlsplit(node_uri)
-					for domain in domains:
-						domain_uri = '%s#%s' % (node_uri, domain['uuid'])
-						domain_list.append({
-							'id': domain_uri,
-							'label': domain['name'],
-							'nodeName': uri.netloc,
-							'state': domain['state'],
-							'type': 'domain',
-							'mem': domain['mem'],
-							'cpuUsage': domain['cpu_usage'],
-							'vnc': domain['vnc'],
-							'vnc_port': domain['vnc_port'],
-							'suspended': bool(domain['suspended']),
-							'description': domain['description'],
-							'node_available': domain['node_available'],
-							})
-				self.finished(request.id, domain_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			domain_list = []
+			for node_uri, domains in data.items():
+				uri = urlsplit(node_uri)
+				for domain in domains:
+					domain_uri = '%s#%s' % (node_uri, domain['uuid'])
+					domain_list.append({
+						'id': domain_uri,
+						'label': domain['name'],
+						'nodeName': uri.netloc,
+						'state': domain['state'],
+						'type': 'domain',
+						'mem': domain['mem'],
+						'cpuUsage': domain['cpu_usage'],
+						'vnc': domain['vnc'],
+						'vnc_port': domain['vnc_port'],
+						'suspended': bool(domain['suspended']),
+						'description': domain['description'],
+						'node_available': domain['node_available'],
+						})
+			return domain_list
 
 		self.uvmm.send(
 				'DOMAIN_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				uri=request.options.get('nodePattern', ''),
 				pattern=request.options['domainPattern']
 				)
@@ -153,24 +138,11 @@ class Domains(object):
 
 		return: {...}
 		"""
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM DOMAIN_INFO answer.
 			Convert UVMM protocol to JSON.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-			if not success:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
-				return
-
 			node_uri = urlsplit(request.options['domainURI'])
 			uri, _uuid = urldefrag(request.options['domainURI'])
 			json = object2dict(data)
@@ -261,17 +233,14 @@ class Domains(object):
 				if profile:
 					json['profileData'] = object2dict(profile)
 
-			MODULE.info('Got domain description: success: %s, data: %s' % (
-				success,
-				json
-				))
-			self.finished(request.id, json)
+			MODULE.info('Got domain description: %s' % (json,))
+			return json
 
 		self.required_options(request, 'domainURI')
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_INFO',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				uri=node_uri,
 				domain=domain_uuid
 				)
@@ -385,7 +354,7 @@ class Domains(object):
 					profile = pro
 					break
 			else:
-				raise UMC_OptionTypeError(_('Unknown profile given'))
+				raise UMC_Error(_('Unknown profile given'))
 			domain_info.annotations['profile'] = profile_dn
 			MODULE.info('Creating new domain using profile %s' % (object2dict(profile),))
 			domain_info.annotations['os'] = getattr(profile, 'os')
@@ -400,9 +369,7 @@ class Domains(object):
 		elif profile:
 			domain_info.arch = profile.arch
 		else:
-			raise UMC_CommandError(
-					_('Could not determine architecture for domain')
-					)
+			raise UMC_Error(_('Could not determine architecture for domain'), status=500)
 
 		if domain_info.arch == 'automatic':
 			success, node_list = self.uvmm.send(
@@ -412,13 +379,9 @@ class Domains(object):
 					pattern=request.options['nodeURI']
 					)
 			if not success:
-				raise UMC_CommandError(
-						_('Failed to retrieve details for the server %(nodeURI)s') % request.optiond
-						)
+				raise UMC_Error(_('Failed to retrieve details for the server %(nodeURI)s') % request.options, status=500)
 			if not node_list:
-				raise UMC_CommandError(
-						_('Unknown physical server %(nodeURI)s') % request.options
-						)
+				raise UMC_Error(_('Unknown physical server %(nodeURI)s') % request.options, status=500)
 			archs = set([t.arch for t in node_list[0].capabilities])
 			if 'x86_64' in archs:
 				domain_info.arch = 'x86_64'
@@ -433,7 +396,7 @@ class Domains(object):
 		try:
 			domain_info.vcpus = int(domain['vcpus'])
 		except ValueError:
-			raise UMC_OptionTypeError(_('vcpus must be a number'))
+			raise UMC_Error(_('vcpus must be a number'))
 
 		# boot devices
 		if 'boot' in domain:
@@ -441,9 +404,7 @@ class Domains(object):
 		elif profile:
 			domain_info.boot = getattr(profile, 'bootdev', None)
 		else:
-			raise UMC_CommandError(
-					_('Could not determine the list of boot devices for domain')
-					)
+			raise UMC_Error(_('Could not determine the list of boot devices for domain'), status=500)
 
 		# VNC
 		if domain['vnc']:
@@ -457,9 +418,7 @@ class Domains(object):
 			elif profile:
 				gfx.keymap = profile.kblayout
 			else:
-				raise UMC_CommandError(
-						_('Could not determine the keyboard layout for the VNC access')
-						)
+				raise UMC_Error(_('Could not determine the keyboard layout for the VNC access'), status=500)
 			if domain.get('vnc_password', None):
 				gfx.passwd = domain['vnc_password']
 
@@ -494,30 +453,15 @@ class Domains(object):
 			iface.mac_address = interface.get('mac_address', None)
 			domain_info.interfaces.append(iface)
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM DOMAIN_DEFINE answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-
-			json = object2dict(data)
-			MODULE.info('New domain: success: %s, data: %s' % (success, json))
-			if success:
-				self.finished(request.id, json)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			return object2dict(data)
 
 		self.uvmm.send(
 				'DOMAIN_DEFINE',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				uri=request.options['nodeURI'],
 				domain=domain_info
 				)
@@ -540,10 +484,10 @@ class Domains(object):
 		MODULE.info('nodeURI: %s, domainUUID: %s' % (node_uri, domain_uuid))
 		state = request.options['domainState']
 		if state not in self.TARGET_STATES:
-			raise UMC_OptionTypeError(_('Invalid domain state: %s') % state)
+			raise UMC_Error(_('Invalid domain state: %s') % state)
 		self.uvmm.send(
 				'DOMAIN_STATE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				uri=node_uri,
 				domain=domain_uuid,
 				state=state,
@@ -564,7 +508,7 @@ class Domains(object):
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_MIGRATE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				uri=node_uri,
 				domain=domain_uuid,
 				target_uri=request.options['targetNodeURI']
@@ -586,7 +530,7 @@ class Domains(object):
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_CLONE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				uri=node_uri,
 				domain=domain_uuid,
 				name=request.options['cloneName'],
@@ -609,7 +553,7 @@ class Domains(object):
 		volume_list = request.options['volumes']
 		self.uvmm.send(
 				'DOMAIN_UNDEFINE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				uri=node_uri,
 				domain=domain_uuid,
 				volumes=volume_list

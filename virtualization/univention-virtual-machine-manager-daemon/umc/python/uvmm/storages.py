@@ -34,15 +34,12 @@ import os
 
 from univention.lib.i18n import Translation
 
-from univention.management.console.log import MODULE
-from univention.management.console.modules import UMC_OptionTypeError
-from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
+from univention.management.console.modules import UMC_Error
 
 from univention.uvmm.protocol import Disk
 from univention.uvmm.storage import POOLS_RW
 
 from urlparse import urldefrag
-from notifier import Callback
 
 from .tools import object2dict
 
@@ -81,28 +78,19 @@ class Storages(object):
 			self.finished(request.id, self.storage_pools[uri].values())
 			return
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM STORAGE_POOLS answer.
 			"""
-			success, data = result
-			if success:
-				self.storage_pools[uri] = dict([
-					(pool.name, object2dict(pool))
-					for pool in data
-					])
-				self.finished(request.id, self.storage_pools[uri].values())
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			self.storage_pools[uri] = dict([
+				(pool.name, object2dict(pool))
+				for pool in data
+			])
+			return self.storage_pools[uri].values()
 
 		self.uvmm.send(
 				'STORAGE_POOLS',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				uri=uri
 				)
 
@@ -133,32 +121,23 @@ class Storages(object):
 		"""
 		self.required_options(request, 'nodeURI', 'pool')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM STORAGE_VOLUMES answer.
 			"""
-			success, data = result
-			if success:
-				volume_list = []
-				for vol in data:
-					vol = object2dict(vol)
-					vol['volumeFilename'] = os.path.basename(vol.get('source', ''))
-					volume_list.append(vol)
-				self.finished(request.id, volume_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			volume_list = []
+			for vol in data:
+				vol = object2dict(vol)
+				vol['volumeFilename'] = os.path.basename(vol.get('source', ''))
+				volume_list.append(vol)
+			return volume_list
 
 		drive_type = request.options.get('type', None)
 		if drive_type == 'floppy': # not yet supported
 			drive_type = 'disk'
 		self.uvmm.send(
 				'STORAGE_VOLUMES',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				uri=request.options['nodeURI'],
 				pool=request.options['pool'],
 				type=drive_type
@@ -176,11 +155,10 @@ class Storages(object):
 		return:
 		"""
 		self.required_options(request, 'nodeURI', 'volumes')
-		node_uri = request.options['nodeURI']
 		volume_list = [vol['source'] for vol in request.options['volumes']]
 		self.uvmm.send(
 				'STORAGE_VOLUMES_DESTROY',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				uri=request.options['nodeURI'],
 				volumes=volume_list
 				)
@@ -234,7 +212,7 @@ class Storages(object):
 					volume=volume_path
 					)
 			if not success:
-				raise UMC_OptionTypeError(
+				raise UMC_Error(
 						_('Failed to check if the drive is used by any other virtual instance')
 						)
 
@@ -252,7 +230,7 @@ class Storages(object):
 						domain=domain_uuid
 						)
 				if not success:
-					raise UMC_OptionTypeError(
+					raise UMC_Error(
 							_('Could not retrieve details for domain %s') % domain_uuid
 							)
 				_tmp_cache[volume['domainURI']] = domain

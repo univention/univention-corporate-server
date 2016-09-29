@@ -32,13 +32,10 @@
 
 from univention.lib.i18n import Translation
 
-from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
-from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import sanitize
 from univention.management.console.modules.sanitizers import SearchSanitizer, ChoicesSanitizer
 from univention.uvmm.uvmm_ldap import ldap_cloud_types, ldap_cloud_connection_add
 
-from notifier import Callback
 from urlparse import urldefrag
 
 _ = Translation('univention-management-console-modules-uvmm').translate
@@ -66,19 +63,11 @@ class Cloud(object):
 		"""
 		self.required_options(request, 'nodePattern')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM L_CLOUD_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			clouds = []
-			success, data = result
-
-			if success:
-				for d in data:
-					clouds.append({
+			return [{
 						'id': d.name,
 						'label': d.name,
 						'group': _('Cloud connection'),
@@ -89,21 +78,11 @@ class Cloud(object):
 						'dn': d.dn,
 						'search_pattern': d.search_pattern,
 						'ucs_images': d.ucs_images,
-						})
-
-				MODULE.info('success: %s, data: %s' % (success, clouds))
-				self.finished(request.id, clouds)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			} for d in data]
 
 		self.uvmm.send(
 				'L_CLOUD_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				pattern=request.options['nodePattern']
 				)
 
@@ -119,24 +98,10 @@ class Cloud(object):
 
 		return: []
 		"""
-		def _finished(thread, result, request):
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-
-			if success:
-				# add cloud to ldap
-				ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images, search_pattern, preselected_images)
-
-				self.finished(request.id, data)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+		def _finished(data):
+			# add cloud to ldap
+			ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images, search_pattern, preselected_images)
+			return data
 
 		self.required_options(request, 'cloudtype', 'name', 'parameter', 'testconnection')
 		cloudtype = request.options.get('cloudtype')
@@ -157,7 +122,7 @@ class Cloud(object):
 
 		self.uvmm.send(
 				'L_CLOUD_ADD',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				args=args,
 				testconnection=testconnection
 				)
@@ -169,33 +134,19 @@ class Cloud(object):
 		self.required_options(request, 'conn_name')
 		conn_name = request.options.get('conn_name')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM L_CLOUD_KEYPAIR_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-			if success:
-				keypair_list = [
-						{'id': item.name, 'label': item.name}
-						for conn_name, images in data.items()
-						for item in images
-						]
-
-				self.finished(request.id, keypair_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			return [
+				{'id': item.name, 'label': item.name}
+				for conn_name, images in data.items()
+				for item in images
+			]
 
 		self.uvmm.send(
 				'L_CLOUD_KEYPAIR_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
 				)
 
@@ -206,38 +157,26 @@ class Cloud(object):
 		self.required_options(request, 'conn_name')
 		conn_name = request.options.get('conn_name')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM L_CLOUD_SIZE_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
+			size_list = []
+			for conn_name, images in data.items():
+				for item in images:
+					size_list.append({
+						'id': item.id,
+						'label': item.u_displayname,
+						'disk': item.disk,
+						'ram': item.ram,
+						'vcpus': item.vcpus,
+					})
 
-			success, data = result
-			if success:
-				size_list = []
-				for conn_name, images in data.items():
-					for item in images:
-						size_list.append({
-							'id': item.id,
-							'label': item.u_displayname,
-							'disk': item.disk,
-							'ram': item.ram,
-							'vcpus': item.vcpus,
-						})
-
-				self.finished(request.id, size_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			return size_list
 
 		self.uvmm.send(
 				'L_CLOUD_SIZE_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
 				)
 
@@ -249,33 +188,19 @@ class Cloud(object):
 		self.required_options(request, 'conn_name')
 		conn_name = request.options.get('conn_name')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM L_CLOUD_IMAGE_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-			if success:
-				image_list = [
-						{'id': item.id, 'label': item.name}
-						for conn_name, images in data.items()
-						for item in images
-						]
-
-				self.finished(request.id, image_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			return [
+				{'id': item.id, 'label': item.name}
+				for conn_name, images in data.items()
+				for item in images
+			]
 
 		self.uvmm.send(
 				'L_CLOUD_IMAGE_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
 				)
 
@@ -287,33 +212,19 @@ class Cloud(object):
 		conn_name = request.options.get('conn_name')
 		network_id = request.options.get('network_id')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM L_CLOUD_SECGROUP_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-			if success:
-				secgroup_list = [
-						{'id': item.id, 'label': item.name}
-						for conn_name, images in data.items()
-						for item in images if network_id in ('default', item.network_id)
-						]
-
-				self.finished(request.id, secgroup_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			return [
+				{'id': item.id, 'label': item.name}
+				for conn_name, images in data.items()
+				for item in images if network_id in ('default', item.network_id)
+			]
 
 		self.uvmm.send(
 				'L_CLOUD_SECGROUP_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
 				)
 
@@ -324,36 +235,22 @@ class Cloud(object):
 		self.required_options(request, 'conn_name')
 		conn_name = request.options.get('conn_name')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM L_CLOUD_NETWORK_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-			if success:
-				network_list = [
-						{
-							'id': item.id,
-							'label': '%s %s' % (item.name, item.cidr or "")
-						}
-						for conn_name, images in data.items()
-						for item in images
-						]
-
-				self.finished(request.id, network_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			return [
+				{
+					'id': item.id,
+					'label': '%s %s' % (item.name, item.cidr or "")
+				}
+				for conn_name, images in data.items()
+				for item in images
+			]
 
 		self.uvmm.send(
 				'L_CLOUD_NETWORK_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
 				)
 
@@ -365,36 +262,22 @@ class Cloud(object):
 		conn_name = request.options.get('conn_name')
 		network_id = request.options.get('network_id')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM L_CLOUD_SUBNET_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-			if success:
-				subnet_list = [
-						{
-							'id': item.id,
-							'label': '%s %s' % (item.name, item.cidr or "")
-						}
-						for conn_name, images in data.items()
-						for item in images if network_id == item.network_id
-						]
-
-				self.finished(request.id, subnet_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			return [
+				{
+					'id': item.id,
+					'label': '%s %s' % (item.name, item.cidr or "")
+				}
+				for conn_name, images in data.items()
+				for item in images if network_id == item.network_id
+			]
 
 		self.uvmm.send(
 				'L_CLOUD_SUBNET_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
 				)
 
@@ -425,51 +308,37 @@ class Cloud(object):
 		}, ... ]
 		"""
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM L_CLOUD_INSTANCE_LIST answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
 			instances = []
-			success, data = result
-
-			if success:
-				for conn_name, insts in data.items():
-					for inst in insts:
-						instance_uri = '%s#%s' % (conn_name, inst.id)
-						instances.append({
-							'id': instance_uri,
-							'label': inst.name,
-							'nodeName': conn_name,
-							'state': inst.state,
-							'type': 'instance',
-							'suspended': None,  # FIXME
-							'description': '%s [%s]' % (inst.u_size_name, inst.state),
-							'node_available': inst.available,
-							'extra': inst.extra,
-							'public_ips': inst.public_ips,
-							'private_ips': inst.private_ips,
-							'u_size_name': inst.u_size_name,
-							'u_connection_type': inst.u_connection_type,
-							'keypair': inst.key_name,
-							'image': inst.u_image_name,
-							'securitygroup': inst.secgroups,
-						})
-				MODULE.info('success: %s, data: %s' % (success, instances))
-				self.finished(request.id, instances)
-			else:
-				self.finished(
-						request.id,
-						None,
-						str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			for conn_name, insts in data.items():
+				for inst in insts:
+					instance_uri = '%s#%s' % (conn_name, inst.id)
+					instances.append({
+						'id': instance_uri,
+						'label': inst.name,
+						'nodeName': conn_name,
+						'state': inst.state,
+						'type': 'instance',
+						'suspended': None,  # FIXME
+						'description': '%s [%s]' % (inst.u_size_name, inst.state),
+						'node_available': inst.available,
+						'extra': inst.extra,
+						'public_ips': inst.public_ips,
+						'private_ips': inst.private_ips,
+						'u_size_name': inst.u_size_name,
+						'u_connection_type': inst.u_connection_type,
+						'keypair': inst.key_name,
+						'image': inst.u_image_name,
+						'securitygroup': inst.secgroups,
+					})
+			return instances
 
 		self.uvmm.send(
 				'L_CLOUD_INSTANCE_LIST',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				conn_name=request.options.get('nodePattern', ''),
 				pattern=request.options['domainPattern']
 				)
@@ -493,7 +362,7 @@ class Cloud(object):
 
 		self.uvmm.send(
 				'L_CLOUD_INSTANCE_STATE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				conn_name=conn_name,
 				instance_id=instance_id,
 				state=state,
@@ -514,7 +383,7 @@ class Cloud(object):
 
 		self.uvmm.send(
 				'L_CLOUD_INSTANCE_TERMINATE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				conn_name=conn_name,
 				instance_id=instance_id
 				)
@@ -541,7 +410,7 @@ class Cloud(object):
 
 		self.uvmm.send(
 				'L_CLOUD_INSTANCE_CREATE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				conn_name=conn_name,
 				args=args
 				)

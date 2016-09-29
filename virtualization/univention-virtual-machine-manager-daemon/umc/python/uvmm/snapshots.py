@@ -32,11 +32,9 @@
 
 from datetime import datetime
 from urlparse import urldefrag
-from notifier import Callback
 
 from univention.lib.i18n import Translation
 
-from univention.management.console.protocol.definitions import MODULE_ERR_COMMAND_FAILED
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
@@ -59,40 +57,26 @@ class Snapshots(object):
 		"""
 		self.required_options(request, 'domainURI')
 
-		def _finished(thread, result, request):
+		def _finished(data):
 			"""
 			Process asynchronous UVMM DOMAIN_INFO answer.
 			"""
-			if self._check_thread_error(thread, result, request):
-				return
-
-			success, data = result
-
-			if success:
-				snapshot_list = []
-				if success and data.snapshots is not None:
-					for name, info in data.snapshots.items():
-						creation = datetime.fromtimestamp(info.ctime)
-						snapshot = {
-							'id': name,
-							'label': name,
-							'time': creation.isoformat(' '),
-							}
-						snapshot_list.append(snapshot)
-
-				self.finished(request.id, snapshot_list)
-			else:
-				self.finished(
-						request.id,
-						None,
-						message=str(data),
-						status=MODULE_ERR_COMMAND_FAILED
-						)
+			snapshot_list = []
+			if data.snapshots is not None:
+				for name, info in data.snapshots.items():
+					creation = datetime.fromtimestamp(info.ctime)
+					snapshot = {
+						'id': name,
+						'label': name,
+						'time': creation.isoformat(' '),
+						}
+					snapshot_list.append(snapshot)
+			return snapshot_list
 
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_INFO',
-				Callback(_finished, request),
+				self.process_uvmm_response(request, _finished),
 				uri=node_uri,
 				domain=domain_uuid
 				)
@@ -113,7 +97,7 @@ class Snapshots(object):
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_SNAPSHOT_CREATE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
@@ -135,7 +119,7 @@ class Snapshots(object):
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_SNAPSHOT_DELETE',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
@@ -157,7 +141,7 @@ class Snapshots(object):
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
 				'DOMAIN_SNAPSHOT_REVERT',
-				Callback(self._thread_finish, request),
+				self.process_uvmm_response(request),
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
