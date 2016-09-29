@@ -1,3 +1,9 @@
+ucs-windows-tools (3.0.1-12) unstable; urgency=medium
+
+  * Bug #41571: add __copy_scripts as an alternative to using certutil
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Sep 2016 01:31:39 +0200
+
 ucs-windows-tools (3.0.1-11) unstable; urgency=medium
 
   * Bug #41571:

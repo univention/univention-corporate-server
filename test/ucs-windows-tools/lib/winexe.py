@@ -72,6 +72,7 @@ class WinExe:
 		self.port = port
 		self.client = client
 		self.loglevel = loglevel
+		self.scripts_copied = False
 
 		self.__check_default_options()
 
@@ -160,6 +161,22 @@ class WinExe:
 		return p.returncode, stdout, stderr
 
 
+	def __copy_scripts(self):
+		if self.scripts_copied:
+			return
+
+		cmd = ["smbclient"]
+		cmd.append("//%s/C$" % self.client)
+		cmd.append("-U")
+		cmd.append(self.local_admin + "%" + self.local_password)
+		cmd.extend(["-c", "prompt; lcd %s; mput *; quit" % self.command_dir])
+		ret, stdout, stderr = self.__run_command(cmd, dont_fail=True)
+		if ret:
+			raise WinExeFailed("failed to copy scripts to %s  (%s, %s, %s)" % (self.client, ret, stdout, stderr))
+
+		self.scripts_copied = True
+
+
 	def __copy_script(self, script=None, domain_mode=True, runas_user=None, runas_password=None):
 
 		extension = script.split(".")[-1]
@@ -217,7 +234,8 @@ class WinExe:
 
 		script = glob.glob(self.command_dir + command + ".*")
 		if script and len(script) == 1:
-			self.__copy_script(script=script[0], domain_mode=domain_mode, runas_user=runas_user, runas_password=runas_password)
+			# self.__copy_script(script=script[0], domain_mode=domain_mode, runas_user=runas_user, runas_password=runas_password)
+			self.__copy_scripts()
 			if script[0].endswith(".bat"):
 				cmd.append("cmd /C call c:\\%s.bat %s" % (command, " ".join(command_args)))
 			elif script[0].endswith(".vbs"):
