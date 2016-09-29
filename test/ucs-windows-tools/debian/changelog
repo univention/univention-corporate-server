@@ -1,3 +1,17 @@
+ucs-windows-tools (4.0.1-7) unstable; urgency=medium
+
+  * Bug #41571: add __copy_scripts as an alternative to using certutil
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Sep 2016 01:46:36 +0200
+
+ucs-windows-tools (4.0.1-6) unstable; urgency=medium
+
+  * Bug #41571:
+    - Quote some powershell arguments which might contain spaces
+    - Make univention-*.ps1 work against PDC emulator by default
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Sep 2016 01:27:36 +0200
+
 ucs-windows-tools (4.0.1-5) unstable; urgency=medium
 
   * Bug #41571:

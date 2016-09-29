@@ -39,17 +39,25 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
 	error("I am not joined")
 }
 
-    Import-Module grouppolicy
-    try {
-            New-GPLink `
-                -Name "$gpo_name" `
-                -Order "$order" `
-                -Target "$target" `
-                -Domain "$domain" `
-                -Server "$server" `
+Import-Module grouppolicy
+try {
+	if ($server -ne "") {
+		New-GPLink `
+			-Name "$gpo_name" `
+			-Order "$order" `
+			-Target "$target" `
+			-Domain "$domain" `
+			-Server "$server" `
+	} else {
+		New-GPLink `
+			-Name "$gpo_name" `
+			-Order "$order" `
+			-Target "$target" `
+			-Domain "$domain" `
+	}
 }
-    Catch {
-            error("$_")
-    }
+Catch {
+	error("$_")
+}
 
 exit(0)

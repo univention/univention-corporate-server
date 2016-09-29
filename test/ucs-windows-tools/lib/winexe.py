@@ -72,6 +72,7 @@ class WinExe:
 		self.port = port
 		self.client = client
 		self.loglevel = loglevel
+		self.scripts_copied = False
 
 		self.__check_default_options()
 
@@ -160,6 +161,22 @@ class WinExe:
 		return p.returncode, stdout, stderr
 
 
+	def __copy_scripts(self):
+		if self.scripts_copied:
+			return
+
+		cmd = ["smbclient"]
+		cmd.append("//%s/C$" % self.client)
+		cmd.append("-U")
+		cmd.append(self.local_admin + "%" + self.local_password)
+		cmd.extend(["-c", "prompt; lcd %s; mput *; quit" % self.command_dir])
+		ret, stdout, stderr = self.__run_command(cmd, dont_fail=True)
+		if ret:
+			raise WinExeFailed("failed to copy scripts to %s  (%s, %s, %s)" % (self.client, ret, stdout, stderr))
+
+		self.scripts_copied = True
+
+
 	def __copy_script(self, script=None, domain_mode=True, runas_user=None, runas_password=None):
 
 		extension = script.split(".")[-1]
@@ -217,7 +234,8 @@ class WinExe:
 
 		script = glob.glob(self.command_dir + command + ".*")
 		if script and len(script) == 1:
-			self.__copy_script(script=script[0], domain_mode=domain_mode, runas_user=runas_user, runas_password=runas_password)
+			# self.__copy_script(script=script[0], domain_mode=domain_mode, runas_user=runas_user, runas_password=runas_password)
+			self.__copy_scripts()
 			if script[0].endswith(".bat"):
 				cmd.append("cmd /C call c:\\%s.bat %s" % (command, " ".join(command_args)))
 			elif script[0].endswith(".vbs"):
@@ -338,16 +356,16 @@ class WinExe:
 		return self.winexec('cmd /C "gpupdate.exe /force"', dont_fail=True)
 
 
-	def get_gpo_report(self, gpo_name, server):
+	def get_gpo_report(self, gpo_name, server=""):
 		''' returns gpo report for the self.client on the server in the domain '''
 
-		return self.winexec("univention-get-gpo-report", self.domain, gpo_name, server, domain_mode=True)
+		return self.winexec("univention-get-gpo-report", self.domain, '"%s"' % gpo_name, server, domain_mode=True)
 
 
-	def create_gpo(self, gpo_name, server, comment):
+	def create_gpo(self, gpo_name, comment="", server=""):
 		''' creates a gpo via the self.client on the server in the domain '''
 
-		return self.winexec("univention-create-gpo", self.domain, gpo_name, server, comment, domain_mode=True)
+		return self.winexec("univention-create-gpo", self.domain, '"%s"' % gpo_name, '"%s"' % comment, server, domain_mode=True)
 
 	def Set_GPPermissions(self, gpo_name, permission_level, target_name, target_type, replace="False", server=""):
 		'''
@@ -357,7 +375,7 @@ class WinExe:
 		replace to overwrite existing GpoPermissions: True|False as a string
 		'''
 
-		return self.winexec("univention-Set-GPPermissions", self.domain, gpo_name, permission_level, target_name, target_type, replace, server, domain_mode=True)
+		return self.winexec("univention-Set-GPPermissions", self.domain, '"%s"' % gpo_name, permission_level, '"%s"' % target_name, target_type, replace, server, domain_mode=True)
 
 	def Get_ItemProperty(self, item):
 
@@ -369,20 +387,20 @@ class WinExe:
 		modifies the gpo_name with reg_key to value_name and value_type with value
 		'''
 
-		return self.winexec("univention-Set-GPRegistryValue", self.domain, gpo_name, reg_key, value_name, value, value_type, server, domain_mode=True)
+		return self.winexec("univention-Set-GPRegistryValue", self.domain, '"%s"' % gpo_name, reg_key, value_name, value, value_type, server, domain_mode=True)
 
 
-	def link_gpo(self, gpo_name, link_order, target_container, server):
+	def link_gpo(self, gpo_name, link_order, target_container, server=""):
 		'''
 		links a gpo via the self.client on the server in the domain to the target_container
 		'''
 
-		return self.winexec("univention-link-gpo", self.domain, gpo_name, link_order, target_container, server, domain_mode=True)
+		return self.winexec("univention-link-gpo", self.domain, '"%s"' % gpo_name, link_order, target_container, server, domain_mode=True)
 
-	def remove_gpo(self, gpo_name, server):
+	def remove_gpo(self, gpo_name, server=""):
 		''' removes a gpo via the self.client on the server in the domain '''
 
-		return self.winexec("univention-remove-gpo", self.domain, gpo_name, server, domain_mode=True)
+		return self.winexec("univention-remove-gpo", self.domain, '"%s"' % gpo_name, server, domain_mode=True)
 
 	def add_certificate_authority(self):
 		''' install and setup certificate authority '''

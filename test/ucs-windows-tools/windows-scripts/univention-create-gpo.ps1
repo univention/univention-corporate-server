@@ -3,8 +3,8 @@ Param(
 # domainname, gpo name, server name, comment
         [string]$domain,
 	[string]$gpo_name,
-	[string]$server,
-	[string]$comment
+	[string]$comment,
+	[string]$server
 )
 
 ##################
@@ -38,16 +38,23 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
 	error("I am not joined")
 }
 
-    Import-Module grouppolicy
-    try {
-            New-GPO `
-                -Name "$gpo_name" `
-                -Comment "$comment" `
-                -Domain "$domain" `
-                -Server "$server" `
+Import-Module grouppolicy
+try {
+	if ($server -ne "") {
+		New-GPO `
+			-Name "$gpo_name" `
+			-Comment "$comment" `
+			-Domain "$domain" `
+			-Server "$server" `
+	} else {
+		New-GPO `
+			-Name "$gpo_name" `
+			-Comment "$comment" `
+			-Domain "$domain" `
+	}
 }
-    Catch {
-            error("$_")
-    }
+Catch {
+	error("$_")
+}
 
 exit(0)
