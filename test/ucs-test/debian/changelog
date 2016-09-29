@@ -1,3 +1,24 @@
+ucs-test (7.0.6-3) unstable; urgency=medium
+
+  * Bug #41571: Workaround to stabilize 51_samba4/56evaluate_windows_gpo
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Sep 2016 22:44:07 +0200
+
+ucs-test (7.0.6-2) unstable; urgency=medium
+
+  * Bug #41571: Improve 51_samba4/56evaluate_windows_gpo
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Sep 2016 18:45:44 +0200
+
+ucs-test (7.0.6-1) unstable; urgency=medium
+
+  * Bug #41571: Improve 51_samba4/56evaluate_windows_gpo
+    - Set GPO values against PDC emulator instead of against local server
+    - Run sysvol_sync
+    - Stabilize timing in UCS@school
+
+ -- Arvid Requate <requate@univention.de>  Tue, 27 Sep 2016 16:26:38 +0200
+
 ucs-test (7.0.5-1) unstable; urgency=medium
 
   * 55_adconnector/163sync_ad_remove_capital_user_from_group: re-enable

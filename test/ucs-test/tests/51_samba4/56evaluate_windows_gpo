@@ -121,41 +121,28 @@ def windows_force_gpo_update():
 		utils.fail("An Error occured while linking a GPO remotely: %r" % exc)
 
 
-def windows_set_gpo_security_filter_GpoRead(gpo_name, target_name, target_type, replace):
-	"""
-	Adds the 'GpoRead' GpoPermissions to 'gpo_name' for the 'target_name'
-	of the 'target_type'.
-	"""
-	print("\nSet-GPPermissions on '%s' for '%s' '%s' to 'GpoRead'"
-		% (gpo_name, target_name, target_type))
-	try:
-		ret_code, stdout, stderr = Win.Set_GPPermissions(gpo_name,
-			'GpoRead',
-			target_name,
-			target_type,
-			hostname,
-			replace)
-		if ret_code != 0:
-			utils.fail("Set-GPPermissions on the Windows host "
-				"returned status '%s' when 0 is expected. "
-				"STDOUT: %s STDERR: %s" % (ret_code, stdout, stderr))
-	except univention.winexe.WinExeFailed as exc:
-		utils.fail("Exception during Set-GPPermissions: %r" % exc)
-
-
-def windows_set_gpo_security_filter_GpoApply(gpo_name, target_name, target_type):
+def windows_set_gpo_security_filter(gpo_name, permission_level, target_name, target_type, replace="False", server=""):
 	"""
 	Applies the 'gpo_name' GPO to the 'target_name' of the 'target_type'
 	by executing a powershell script on Windows host via winexe.
+	By default (server="") the powershell code will select
+	the Master (fsmo: PDC emulator) to run against.
 	"""
-	print("\nSet-GPPermissions on '%s' for '%s' '%s' to 'GpoApply'"
-		% (gpo_name, target_name, target_type))
+	if not permission_level in ("GpoRead", "GpoApply", "GpoEdit", "GpoEditDeleteModifySecurity", "None"):
+		utils.fail("Set-GPPermissions: unsupported permission_level: %s" % permission_level)
+		
+	if not target_type in ("Computer", "User", "Group"):
+		utils.fail("Set-GPPermissions: unsupported target_type: %s" % target_type)
+	
+	print("\nSet-GPPermissions on '%s' for '%s' '%s' to '%s'"
+		% (gpo_name, target_name, target_type, permission_level))
 	try:
 		ret_code, stdout, stderr = Win.Set_GPPermissions(gpo_name,
-			'GpoApply',
+			permission_level,
 			target_name,
 			target_type,
-			hostname)
+			replace,
+			server)
 		if ret_code != 0:
 			utils.fail("Set-GPPermissions on the Windows host "
 				"returned status '%s' when 0 is expected. "
@@ -180,18 +167,20 @@ def samba_check_gpo_exists(gpo_name):
 			% gpo_name)
 
 
-def windows_set_gpo_registry_value(gpo_name, reg_key, value_name, value, value_type):
+def windows_set_gpo_registry_value(gpo_name, reg_key, value_name, value, value_type, server=""):
 	"""
 	Sets the 'value_name', 'value' and 'value_type' for 'gpo_name' Registry Key
+	By default (server="") the powershell code will select
+	the Master (fsmo: PDC emulator) to run against.
 	"""
 	print "\nModifying the '%s' GPO '%s' registry key " % (gpo_name, reg_key)
 	try:
-		ret_code, stdout, stderr = Win.gpo_set_reg_value(gpo_name,
+		ret_code, stdout, stderr = Win.Set_GPRegistryValue(gpo_name,
 			reg_key,
 			value_name,
 			value,
 			value_type,
-			hostname)
+			server)
 		if ret_code != 0:
 			utils.fail("The modification of the GPO on the Windows host "
 				"returned code '%s' when 0 is expected. "
@@ -265,6 +254,18 @@ def windows_check_gpo_report(gpo_name, identity_name):
 	print gporeport_unicode
 	utils.fail("\nCould not confirm that GPO '%s' is applied to '%s'"
 		% (gpo_name, identity_name))
+
+
+def sysvol_sync():
+	"""
+	We need to sync the sysvol from the master (fsmo: PDC emulator)
+	becasue the special Domain DFS module dfs_server/dfs_server_ad.c
+	randomizes the DFS referral for the Windows client
+	"""
+	stdout, stderr = run_cmd(("/usr/share/univention-samba4/scripts/sysvol-sync.sh"))
+	print stdout
+	if stderr:
+		print "\nAn Error occured during sysvol sync:", stderr
 
 
 def sysvol_check_gpo_registry_value(gpo_name, reg_key, value_name, value):
@@ -481,7 +482,7 @@ if __name__ == '__main__':
 	Win = univention.winexe.WinExe(domainname,
 		domain_admin, domain_admin_password,
 		windows_admin, windows_admin_password,
-		445, dns_get_host_ip(windows_client['hostname']))
+		445, dns_get_host_ip(windows_client['hostname']), loglevel=0)
 	windows_check_domain()
 
 	test_username = 'ucs_test_gpo_user_' + random_username(4)
@@ -503,13 +504,16 @@ if __name__ == '__main__':
 		force_drs_replication(direction="out")
 		samba_check_gpo_exists(gpo_name)
 
+		sysvol_sync()
 		windows_set_gpo_registry_value(gpo_name,
 			"HKCU\Software\Policies\Microsoft\UCSTestKey",
 			"TestUserValueOne",
 			"Foo",
-			"String")
+			"String",
+			server=hostname)  ## TODO: why is this required?
 		force_drs_replication()
 		force_drs_replication(direction="out")
+		sysvol_sync()
 		sysvol_check_gpo_registry_value(gpo_name,
 			"HKCU\Software\Policies\Microsoft\UCSTestKey",
 			"TestUserValueOne",
@@ -522,12 +526,20 @@ if __name__ == '__main__':
 
 		# double quotes for '"Authenticated Users"' for it to be
 		# considered as only one argument, otherwise it's passed as two args:
-		windows_set_gpo_security_filter_GpoRead(gpo_name,
-			'"Authenticated Users"', 'Group', 'True')
-		windows_set_gpo_security_filter_GpoApply(gpo_name, test_username, 'User')
+		windows_set_gpo_security_filter(gpo_name, 'GpoRead',
+			'"Authenticated Users"', 'Group', 'True',
+			server=hostname)  ## TODO: why is this required?
+		if ucr.is_true("connector/s4/mapping/gpo/ntsd", False):
+			## Workaround for Bug #35336
+			utils.wait_for_connector_replication()
+			utils.wait_for_replication()
+			utils.wait_for_connector_replication()
+		windows_set_gpo_security_filter(gpo_name, 'GpoApply',
+			test_username, 'User',
+			server=hostname)  ## TODO: why is this required?
 		force_drs_replication()
 		force_drs_replication(direction="out")
-		sleep(60)  # seems like force_drs does not help here
+		# sleep(60)  # seems like force_drs does not help here
 		windows_force_gpo_update()
 		windows_check_gpo_report(gpo_name, test_username)
 
@@ -538,13 +550,16 @@ if __name__ == '__main__':
 		force_drs_replication(direction="out")
 		samba_check_gpo_exists(gpo_name)
 
+		sysvol_sync()
 		windows_set_gpo_registry_value(gpo_name,
 			"HKLM\Software\Policies\Microsoft\UCSTestKey",
 			"TestComputerValueTwo",
 			"Bar",
-			"String")
+			"String",
+			server=hostname)  ## TODO: why is this required?
 		force_drs_replication()
 		force_drs_replication(direction="out")
+		sysvol_sync()
 		sysvol_check_gpo_registry_value(gpo_name,
 			"HKLM\Software\Policies\Microsoft\UCSTestKey",
 			"TestComputerValueTwo",
@@ -557,12 +572,20 @@ if __name__ == '__main__':
 
 		# double quotes for '"Authenticated Users"' for it to be
 		# considered as only one argument, otherwise it's passed as two args:
-		windows_set_gpo_security_filter_GpoRead(gpo_name,
-			'"Authenticated Users"', 'Group', 'True')
-		windows_set_gpo_security_filter_GpoApply(gpo_name, windows_client['hostname'], 'Computer')
+		windows_set_gpo_security_filter(gpo_name, 'GpoRead',
+			'"Authenticated Users"', 'Group', 'True',
+			server=hostname)  ## TODO: why is this required?
+		if ucr.is_true("connector/s4/mapping/gpo/ntsd", False):
+			## Workaround for Bug #35336
+			utils.wait_for_connector_replication()
+			utils.wait_for_replication()
+			utils.wait_for_connector_replication()
+		windows_set_gpo_security_filter(gpo_name, 'GpoApply',
+			windows_client['hostname'], 'Computer',
+			server=hostname)  ## TODO: why is this required?
 		force_drs_replication()
 		force_drs_replication(direction="out")
-		sleep(60)  # seems like force_drs does not help here
+		# sleep(60)  # seems like force_drs does not help here
 		windows_force_gpo_update()
 		windows_check_gpo_report(gpo_name, "%s$" % windows_client['hostname'])
 	finally:
