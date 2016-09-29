@@ -1,3 +1,13 @@
+ucs-windows-tools (4.0.1-5) unstable; urgency=medium
+
+  * Bug #41571:
+    - rename univention-gpo-set-registry-value.ps1 to ...-Set-GPRegistryValue
+    - Make univention-Set-GP*.ps1 work against PDC emulator by default
+      if no specific server is given
+    - Make loglevel adjustable in winexe.py
+
+ -- Arvid Requate <requate@univention.de>  Thu, 29 Sep 2016 22:38:26 +0200
+
 ucs-windows-tools (4.0.1-4) unstable; urgency=medium
 
   * Bug #41571: Add Get-ItemProperty script to check Windows registry keys

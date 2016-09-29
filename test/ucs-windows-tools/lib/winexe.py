@@ -24,7 +24,7 @@ def default_options():
 	group.add_option("--local-password", dest="local_password", help="the local administrator password")
 	group.add_option("--port", dest="port", type="int", default=445, help="winexe port (445)")
 	group.add_option("--client", dest="client", help="the windows client")
-	group.add_option("--debug", dest="debug", action="store_true", default=False, help="verbose output")
+	group.add_option("--loglevel", dest="loglevel", action="int", default=0, help="log level")
 	parser.add_option_group(group)
 
 	# get default options from config
@@ -60,7 +60,7 @@ class WinExe:
 		local_password=None,
 		port=445,
 		client=None,
-		debug=None,
+		loglevel=0,
 	):
 
 		self.command_dir = COMMAND_DIR
@@ -71,7 +71,7 @@ class WinExe:
 		self.local_password = local_password
 		self.port = port
 		self.client = client
-		self.debug = debug
+		self.loglevel = loglevel
 
 		self.__check_default_options()
 
@@ -107,7 +107,7 @@ class WinExe:
 				return True
 			except socket.error, e:
 				time.sleep(1)
-				self.__debug("checking if client %s:%s is reachable" % (self.client, self.port))
+				self.__log("checking if client %s:%s is reachable" % (self.client, self.port))
 		return False
 
 
@@ -128,8 +128,8 @@ class WinExe:
 		return cmd
 
 
-	def __debug(self, msg):
-		if self.debug:
+	def __log(self, msg, log_at_level=0):
+		if self.loglevel >= log_at_level:
 			sys.stdout.write("%s\n" % msg)
 
 	def __trim_windows_stdout(self, msg):
@@ -144,12 +144,16 @@ class WinExe:
 				new_msg.append(i)
 		return "\n".join(new_msg)
 
-	def __run_command(self, cmd, dont_fail=False):
-		self.__debug("running %s" % " ".join(cmd))
+	def __run_command(self, cmd, dont_fail=False, log_at_level=1):
+		self.__log("running %s" % " ".join(cmd), log_at_level)
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=False)
 		stdout, stderr = p.communicate()
-		self.__debug(stdout)
-		self.__debug(stderr)
+		if stderr:
+			log_at_level = 0
+			self.__log("Error running %s" % " ".join(cmd), log_at_level)
+		for stream in (stdout, stderr):
+			if stream:
+				self.__log(stream, log_at_level)
 		if p.returncode and not dont_fail:
 			raise WinExeFailed("command '%s' failed with: %s %s" % (" ".join(cmd), stdout, stderr))
 		stdout = self.__trim_windows_stdout(stdout)
@@ -166,7 +170,7 @@ class WinExe:
 		# certutil is required on the client as we need it to decode the
 		# base64 encoded scripts, is there a better way?
 		certutil = cmd + ['certutil']
-		ret, stdout, stderr = self.__run_command(certutil, dont_fail=True)
+		ret, stdout, stderr = self.__run_command(certutil, dont_fail=True, log_at_level=2)
 		if ret:
 			raise WinExeFailed("certutil not found on client %s! (%s %s)" % (self.client, stderr, stdout))
 
@@ -177,13 +181,13 @@ class WinExe:
 		for i in range(0, len(base64), 4000):
 			copy = cmd + ["cmd /C echo %s %s c:\\%s.tmp" % (base64[i:i+4000], overwrite, command)]
 			overwrite = ">>"
-			ret, stdout, stderr = self.__run_command(copy, dont_fail=True)
+			ret, stdout, stderr = self.__run_command(copy, dont_fail=True, log_at_level=2)
 			if ret:
 				raise WinExeFailed("failed to copy %s.%s (%s, %s, %s)" % (command, extension, ret, stdout, stderr))
 
 		# decode script
 		decode = cmd + ["certutil -f -decode c:\\%s.tmp c:\\%s.%s" % (command, command, extension)]
-		ret, stdout, stderr = self.__run_command(decode, dont_fail=True)
+		ret, stdout, stderr = self.__run_command(decode, dont_fail=True, log_at_level=2)
 		if ret:
 			raise WinExeFailed("failed to decode %s.%s (%s, %s, %s)" % (command, extension, ret, stdout, stderr))
 
@@ -242,7 +246,7 @@ class WinExe:
 			if retval == 0:
 				return 0
 			time.sleep(1)
-			self.__debug("waiting for client %s" % self.client)
+			self.__log("waiting for client %s" % self.client, 1)
 		# failed to connect
 		raise WinExeFailed("waiting for client (%s) failed with timeout %s (can't run winexe)" % (self.client, timeout))
 
@@ -256,7 +260,7 @@ class WinExe:
 			if not self.__client_reachable(timeout=1):
 				return 0
 			time.sleep(1)
-			self.__debug("waiting for client %s to disappear" % self.client)
+			self.__log("waiting for client %s to disappear" % self.client, 1)
 		raise WinExeFailed("waiting until client (%s) is gone failed with timeout %s" % (self.client, timeout))
 
 		return True
@@ -345,7 +349,7 @@ class WinExe:
 
 		return self.winexec("univention-create-gpo", self.domain, gpo_name, server, comment, domain_mode=True)
 
-	def Set_GPPermissions(self, gpo_name, permission_level, target_name, target_type, server, replace="False"):
+	def Set_GPPermissions(self, gpo_name, permission_level, target_name, target_type, replace="False", server=""):
 		'''
 		applies a gpo via the self.client on the server in the domain
 		permission_level: GpoRead|GpoApply|GpoEdit|GpoEditDeleteModifySecurity|None
@@ -353,19 +357,19 @@ class WinExe:
 		replace to overwrite existing GpoPermissions: True|False as a string
 		'''
 
-		return self.winexec("univention-Set-GPPermissions", self.domain, gpo_name, permission_level, target_name, target_type, server, replace, domain_mode=True)
+		return self.winexec("univention-Set-GPPermissions", self.domain, gpo_name, permission_level, target_name, target_type, replace, server, domain_mode=True)
 
 	def Get_ItemProperty(self, item):
 
 		return self.winexec("univention-Get-ItemProperty", item, domain_mode=True)
 
 
-	def gpo_set_reg_value(self, gpo_name, reg_key, value_name, value, value_type, server):
+	def Set_GPRegistryValue(self, gpo_name, reg_key, value_name, value, value_type, server=""):
 		'''
 		modifies the gpo_name with reg_key to value_name and value_type with value
 		'''
 
-		return self.winexec("univention-gpo-set-registry-value", self.domain, gpo_name, reg_key, value_name, value, value_type, server, domain_mode=True)
+		return self.winexec("univention-Set-GPRegistryValue", self.domain, gpo_name, reg_key, value_name, value, value_type, server, domain_mode=True)
 
 
 	def link_gpo(self, gpo_name, link_order, target_container, server):

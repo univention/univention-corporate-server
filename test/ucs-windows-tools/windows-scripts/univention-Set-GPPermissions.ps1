@@ -5,8 +5,8 @@ Param(
         [string]$permission_level,  # GpoRead|GpoApply|GpoEdit|GpoEditDeleteModifySecurity|None
         [string]$target_name,  # Object in LDAP
         [string]$target_type,  # Computer|User|Group
-	[string]$server,  # Domain controller
-        [string]$replace # force GpoPermissions overwrite True|False
+        [string]$replace, # force GpoPermissions overwrite True|False
+	[string]$server   # Domain controller
 )
 
 ##################
@@ -40,19 +40,29 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
 	error("I am not joined")
 }
 
-    Import-Module grouppolicy
-    try {
-            Set-GPPermissions `
-                -Name "$gpo_name" `
-                -PermissionLevel "$permission_level" `
-                -TargetName "$target_name" `
-                -TargetType "$target_type" `
-                -Domain "$domain" `
-                -Server "$server" `
-                -Replace:([System.Convert]::ToBoolean($replace)) `
+Import-Module grouppolicy
+try {
+	if ($server -ne "") {
+		Set-GPPermissions `
+			-Name "$gpo_name" `
+			-PermissionLevel "$permission_level" `
+			-TargetName "$target_name" `
+			-TargetType "$target_type" `
+			-Domain "$domain" `
+			-Replace:([System.Convert]::ToBoolean($replace)) `
+			-Server "$server" `
+	} else {
+		Set-GPPermissions `
+			-Name "$gpo_name" `
+			-PermissionLevel "$permission_level" `
+			-TargetName "$target_name" `
+			-TargetType "$target_type" `
+			-Domain "$domain" `
+			-Replace:([System.Convert]::ToBoolean($replace)) `
+	}
 }
-    Catch {
-            error("$_")
-    }
+Catch {
+	error("$_")
+}
 
 exit(0)
