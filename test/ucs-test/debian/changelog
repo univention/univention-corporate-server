@@ -1,3 +1,9 @@
+ucs-test (6.0.36-26) unstable; urgency=medium
+
+  * Bug #41571: Reduce winexe loglevel again
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Sep 2016 01:42:52 +0200
+
 ucs-test (6.0.36-25) unstable; urgency=medium
 
   * Bug #41571: Try again without workaround
