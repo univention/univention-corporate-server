@@ -200,6 +200,15 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:umc:update">
+			<title>Software update module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					Non-UTF-8 characters don't cause a crash when viewing the logfile anymore (<u:bug>41539</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
+
 				<!--
 		<section id="changelog:umc:user">
 			<title>Users module</title>
@@ -243,14 +252,6 @@
 
 		<section id="changelog:umc:top">
 			<title>Process overview module</title>
-			<itemizedlist>
-				<listitem><simpara>
-				</simpara></listitem>
-			</itemizedlist>
-		</section>
-
-		<section id="changelog:umc:update">
-			<title>Software update module</title>
 			<itemizedlist>
 				<listitem><simpara>
 				</simpara></listitem>

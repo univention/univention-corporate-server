@@ -488,7 +488,7 @@ class Instance(Base):
 					if (count < 0):
 						count += 1
 					else:
-						lines.append(line.rstrip())
+						lines.append(line.rstrip().decode('utf-8', 'replace'))
 						if (count > 0) and (len(lines) > count):
 							lines.pop(0)
 		except (IOError, OSError):
