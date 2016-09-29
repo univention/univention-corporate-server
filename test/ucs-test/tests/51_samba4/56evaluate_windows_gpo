@@ -141,8 +141,8 @@ def windows_set_gpo_security_filter(gpo_name, permission_level, target_name, tar
 			permission_level,
 			target_name,
 			target_type,
-			server,
-			replace)
+			replace,
+			server)
 		if ret_code != 0:
 			utils.fail("Set-GPPermissions on the Windows host "
 				"returned status '%s' when 0 is expected. "
@@ -509,7 +509,8 @@ if __name__ == '__main__':
 			"HKCU\Software\Policies\Microsoft\UCSTestKey",
 			"TestUserValueOne",
 			"Foo",
-			"String")
+			"String",
+			server=hostname)  ## TODO: why is this required?
 		force_drs_replication()
 		force_drs_replication(direction="out")
 		sysvol_sync()
@@ -526,14 +527,16 @@ if __name__ == '__main__':
 		# double quotes for '"Authenticated Users"' for it to be
 		# considered as only one argument, otherwise it's passed as two args:
 		windows_set_gpo_security_filter(gpo_name, 'GpoRead',
-			'"Authenticated Users"', 'Group', 'True')
+			'"Authenticated Users"', 'Group', 'True',
+			server=hostname)  ## TODO: why is this required?
 		if ucr.is_true("connector/s4/mapping/gpo/ntsd", False):
 			## Workaround for Bug #35336
 			utils.wait_for_connector_replication()
 			utils.wait_for_replication()
 			utils.wait_for_connector_replication()
 		windows_set_gpo_security_filter(gpo_name, 'GpoApply',
-			test_username, 'User')
+			test_username, 'User',
+			server=hostname)  ## TODO: why is this required?
 		force_drs_replication()
 		force_drs_replication(direction="out")
 		# sleep(60)  # seems like force_drs does not help here
@@ -552,7 +555,8 @@ if __name__ == '__main__':
 			"HKLM\Software\Policies\Microsoft\UCSTestKey",
 			"TestComputerValueTwo",
 			"Bar",
-			"String")
+			"String",
+			server=hostname)  ## TODO: why is this required?
 		force_drs_replication()
 		force_drs_replication(direction="out")
 		sysvol_sync()
@@ -569,14 +573,16 @@ if __name__ == '__main__':
 		# double quotes for '"Authenticated Users"' for it to be
 		# considered as only one argument, otherwise it's passed as two args:
 		windows_set_gpo_security_filter(gpo_name, 'GpoRead',
-			'"Authenticated Users"', 'Group', 'True')
+			'"Authenticated Users"', 'Group', 'True',
+			server=hostname)  ## TODO: why is this required?
 		if ucr.is_true("connector/s4/mapping/gpo/ntsd", False):
 			## Workaround for Bug #35336
 			utils.wait_for_connector_replication()
 			utils.wait_for_replication()
 			utils.wait_for_connector_replication()
 		windows_set_gpo_security_filter(gpo_name, 'GpoApply',
-			windows_client['hostname'], 'Computer')
+			windows_client['hostname'], 'Computer',
+			server=hostname)  ## TODO: why is this required?
 		force_drs_replication()
 		force_drs_replication(direction="out")
 		# sleep(60)  # seems like force_drs does not help here
