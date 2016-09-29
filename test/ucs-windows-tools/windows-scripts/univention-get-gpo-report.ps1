@@ -40,16 +40,23 @@ if (!(gwmi win32_computersystem).partofdomain -eq $true) {
 	error("I am not joined")
 }
 
-    Import-Module grouppolicy
-    try {
-            Get-GPOReport `
-                -Name "$gpo_name" `
-                -ReportType "Xml" `
-                -Domain "$domain" `
-                -Server "$server" `
+Import-Module grouppolicy
+try {
+	if ($server -ne "") {
+		Get-GPOReport `
+			-Name "$gpo_name" `
+			-ReportType "Xml" `
+			-Domain "$domain" `
+			-Server "$server" `
+	} else {
+		Get-GPOReport `
+			-Name "$gpo_name" `
+			-ReportType "Xml" `
+			-Domain "$domain" `
+	}
 }
-    Catch {
-            error("$_")
-    }
+Catch {
+	error("$_")
+}
 
 exit(0)

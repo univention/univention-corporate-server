@@ -1,3 +1,11 @@
+ucs-windows-tools (3.0.1-11) unstable; urgency=medium
+
+  * Bug #41571:
+    - Quote some powershell arguments which might contain spaces
+    - Make univention-*.ps1 work against PDC emulator by default
+
+ -- Arvid Requate <requate@univention.de>  Fri, 30 Sep 2016 01:27:36 +0200
+
 ucs-windows-tools (3.0.1-10) unstable; urgency=medium
 
   * Bug #41571:
