@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-22) unstable; urgency=medium
+
+  * Bug #42220: Changed "== None" to "is None" in an if-condition.
+
+ -- Richard Ulmer <ulmer@univention.de>  Thu, 29 Sep 2016 13:51:10 +0200
+
 univention-management-console (9.0.12-21) unstable; urgency=medium
 
   * Bug #42220: Prettified code for the translation of plural forms.
