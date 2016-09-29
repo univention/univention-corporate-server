@@ -8,6 +8,6 @@ main () {
 	udm settings/packages modify --dn "cn=test,cn=visible,$BASE" --set packageList="test$RANDOM"
 	udm settings/packages remove --dn "cn=test,cn=visible,$BASE"
 	listener start
-	check "cn=test,cn=visible" "" - m
+	check "cn=test,cn=visible" "" - d
 }
 . "${0%/*}/common.sh"

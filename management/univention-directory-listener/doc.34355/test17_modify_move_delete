@@ -9,6 +9,6 @@ main () {
 	udm settings/packages move --dn "cn=test,cn=visible,$BASE" --position "$BASE"
 	udm settings/packages remove --dn "cn=test,$BASE"
 	listener start
-	check "cn=test,cn=visible" "" - m
+	check "cn=test,cn=visible" "" - d
 }
 . "${0%/*}/common.sh"
