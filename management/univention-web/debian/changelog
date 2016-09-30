@@ -1,3 +1,9 @@
+univention-web (1.0.2-4) unstable; urgency=medium
+
+  * Bug #42220: Added the _.ngettext function to i18n.js
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 30 Sep 2016 11:19:02 +0200
+
 univention-web (1.0.2-3) unstable; urgency=medium
 
   * Bug #38824: Fix build-dev 

@@ -105,7 +105,8 @@ define([
 
 	return {
 		// summary:
-		//		Plugin for internationalization, implements the _() function.
+		//		Plugin for internationalization, implements the _() and
+		//		ngettext() functions.
 		// description:
 		//		This plugin loads the json translation files given the current
 		//		language settings and the specified scope. Its URI is deducted
@@ -114,8 +115,8 @@ define([
 		//		"domain/i18n/<language>/mymodule.json".
 		//		As parameter for the plugin, several scopes may be specified,
 		//		e.g.  "umc/i18n!umc/branding,umc/app".
-		//		The plugin provides a gettext-like method that will translate
-		//		the given message string.  A printf-like syntax for the string
+		//		The plugin provides gettext-like methods that will translate
+		//		the given message string. A printf-like syntax for the string
 		//		is possible, simply provide the function with a dict or more
 		//		arguments containing referenced variables.
 		// example:
@@ -125,6 +126,12 @@ define([
 		// |		msg = _('The total cost was %.2f EUR!', 10.2353);
 		// |		msg = _('Hello %s!', 'John Miller');
 		// |		msg = _('Hello %(last)s, %(first)s!', { first: 'John', last: 'Miller' });
+		// |
+		// |		msg = _.ngettext("There is one foo.", "There are %d foos.", n);
+		// |		msg = _.ngettext("One file removed from directory %s",
+		// |		                 "%d files removed from directory %s", n, dir);
+		// |		msg = _.ngettext("In directory %2$s: removed one file.",
+		// |		                 "In directory %2$s: removed %1$d files.", n, dir);
 		// |	});
 
 		load: function (params, req, load, config) {
@@ -167,6 +174,68 @@ define([
 				// call sprintf
 				return sprintf.apply(null, args);
 			};
+
+			// Arguments: translate.ngettext(String, String, number, mixed)
+			translate.ngettext = function( id, id_plural, n, filler) {
+				var language = _language();
+				var _msg = '';
+				var msg = '';
+				var plural;
+				var _data = {};
+				var i = 0;
+				
+				for (i = 0; i < scopes.length; ++i) {
+					_data = _get(language, scopes[i]);
+					_msg = _data[id];
+					if (_msg instanceof Array && _msg.length > 0) {
+						// we found the array with translations for all the
+						// plural forms. Pick the right one and break the loop.
+						plural = eval(_data["$plural$"]);
+						// Catch the special case, where the expression in
+						// eval() is "n>1" (or similar) and returns a bool.
+						if (typeof plural == "boolean")
+							plural = plural ? 1 : 0;
+						
+						msg = _msg[plural];
+						break;
+					}
+				}
+
+				// When no translation was found just build the english plural.
+				if (!msg) {
+					if (n == 1)
+						msg = id;
+					else
+						msg = id_plural;
+				}
+
+				// Check if the "%d" for n was omitted in the translation
+				// and don't include n in the arguments list if so.
+				//
+				// But only when not using argument swapping!!!
+				// When "%1$d" exists in id_plural just proceed normal.
+				// sprintf will just skip the first argument (since all
+				// other "%xx" will be hard-linked to a certain argument,
+				// too, in this case).
+				var vars_in_msg = msg.match(/(^|[^%])%[^%]/g);
+				var var_cnt_in_msg = vars_in_msg ? vars_in_msg.length : 0;
+				var args = [msg];
+				if (id_plural.search(/(^|[^%])\%1\$/) == -1 && arguments.length-2 > var_cnt_in_msg) {
+					// get arguments for sprintf (leaving out n)
+					for (i = 3; i < arguments.length; ++i) {
+						args.push(arguments[i]);
+					}
+				}
+				else {
+					// get arguments for sprintf
+					for (i = 2; i < arguments.length; ++i) {
+						args.push(arguments[i]);
+					}
+				}
+
+				// call sprintf
+				return sprintf.apply(null, args);
+			}
 
 			translate.inverse = function(/*String*/ _msg /*, String scope, ...*/) {
 				// try to get the original message given the localized message
