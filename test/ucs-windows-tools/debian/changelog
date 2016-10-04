@@ -1,3 +1,9 @@
+ucs-windows-tools (3.0.1-13) unstable; urgency=medium
+
+  * Bug #41571: Disable __copy_scripts, doesn't work yet in ec2
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Oct 2016 11:30:50 +0200
+
 ucs-windows-tools (3.0.1-12) unstable; urgency=medium
 
   * Bug #41571: add __copy_scripts as an alternative to using certutil

@@ -234,8 +234,8 @@ class WinExe:
 
 		script = glob.glob(self.command_dir + command + ".*")
 		if script and len(script) == 1:
-			# self.__copy_script(script=script[0], domain_mode=domain_mode, runas_user=runas_user, runas_password=runas_password)
-			self.__copy_scripts()
+			self.__copy_script(script=script[0], domain_mode=domain_mode, runas_user=runas_user, runas_password=runas_password)
+			# self.__copy_scripts()
 			if script[0].endswith(".bat"):
 				cmd.append("cmd /C call c:\\%s.bat %s" % (command, " ".join(command_args)))
 			elif script[0].endswith(".vbs"):
