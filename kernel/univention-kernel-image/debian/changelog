@@ -1,3 +1,9 @@
+univention-kernel-image (6.0.1-10) unstable; urgency=low
+
+  * Bug #40521: Update to 3.2.82-ucs200
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 30 Sep 2016 14:38:22 +0200
+
 univention-kernel-image (6.0.1-9) unstable; urgency=low
 
   * Bug #40521: Update to 3.2.81-ucs196
