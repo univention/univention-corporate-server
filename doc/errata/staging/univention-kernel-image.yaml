@@ -3,7 +3,7 @@ release: "3.1"
 version: [1]
 scope: ucs_3.1-0-extsec3.1
 src: univention-kernel-image
-fix: 6.0.1-9.103.201606211746
+fix: 6.0.1-10.106.201610040842
 desc: |
  These vulnerabilities have been fixed:
  * unix: properly account for FDs passed over unix sockets (CVE-2013-4312,
@@ -71,6 +71,17 @@ desc: |
  * InfiniBand: Restrict use of the write() interface (CVE-2016-4565)
  * get_rock_ridge_filename(): handle malformed NM entries (CVE-2016-4913)
  * [s390*] mm: four page table levels vs. fork (CVE-2016-2143)
+ * ecryptfs: don't allow mmap when the lower fs doesn't support it
+   (CVE-2016-1583)
+ * KEYS: potential uninitialized variable (CVE-2016-4470)
+ * HID: hiddev: validate num_values for HIDIOCGUSAGES, HIDIOCSUSAGES commands
+   (CVE-2016-5829)
+ * tcp: make challenge acks less predictable (CVE-2016-5696)
+ * audit: fix a double fetch in audit_log_single_execve_arg() (CVE-2016-6136)
+ * [arm*] oabi compat: add missing access checks (CVE-2016-3857)
+ * aacraid: Check size values after double-fetch from user (CVE-2016-6480)
+ * tcp: fix use after free in tcp_xmit_retransmit_queue() (CVE-2016-6828)
+ * fs: Fix oops when fcntl() is called on an aufs directory (CVE-2016-7118)
 bug: [40521]
 cve:
  - CVE-2013-4312
@@ -84,7 +95,9 @@ cve:
  - CVE-2016-0774
  - CVE-2016-0821
  - CVE-2016-1583
+ - CVE-2016-1583
  - CVE-2016-2069
+ - CVE-2016-2143
  - CVE-2016-2184
  - CVE-2016-2185
  - CVE-2016-2186
@@ -98,6 +111,7 @@ cve:
  - CVE-2016-2548
  - CVE-2016-2549
  - CVE-2016-2550
+ - CVE-2016-2847
  - CVE-2016-3134
  - CVE-2016-3136
  - CVE-2016-3137
@@ -106,9 +120,11 @@ cve:
  - CVE-2016-3156
  - CVE-2016-3157
  - CVE-2016-3672
+ - CVE-2016-3857
  - CVE-2016-3951
  - CVE-2016-3955
  - CVE-2016-3961
+ - CVE-2016-4470
  - CVE-2016-4482
  - CVE-2016-4485
  - CVE-2016-4486
@@ -119,5 +135,9 @@ cve:
  - CVE-2016-4913
  - CVE-2016-5243
  - CVE-2016-5244
- - CVE-2016-2143
- - CVE-2016-2847
+ - CVE-2016-5696
+ - CVE-2016-5829
+ - CVE-2016-6136
+ - CVE-2016-6480
+ - CVE-2016-6828
+ - CVE-2016-7118
