@@ -1,3 +1,9 @@
+univention-firewall (9.0.0-3) unstable; urgency=medium
+
+  * Bug #42117: Allow Docker's IP range to access MySQL
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 25 Aug 2016 01:05:48 +0200
+
 univention-firewall (9.0.0-2) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val
