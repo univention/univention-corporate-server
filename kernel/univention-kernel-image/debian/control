@@ -21,7 +21,7 @@ Description: UCS - Linux kernel (standard)
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-486
-Architecture: any
+Architecture: i386
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion486}, univention-initrd (>= 6.0.0-2), xfsprogs, firmware-atheros, firmware-bnx2, firmware-bnx2x, firmware-brcm80211, firmware-intelwimax, firmware-iwlwifi, firmware-linux-free, firmware-linux-nonfree, firmware-netxen, firmware-adi, firmware-qlogic, firmware-ralink, firmware-realtek, zd1211-firmware, libc6-i686 [i386], firmware-libertas, firmware-myricom, univention-config 
 Description: UCS - Linux kernel (for old systems)
@@ -49,7 +49,7 @@ Description: UCS - Linux kernel headers (standard)
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-486
-Architecture: any
+Architecture: i386
 Depends: linux-headers-${F:KernelVersion486}
 Description: UCS - Linux kernel headers (PAE)
  This meta-package depends on the latest UCS kernel headers compatible

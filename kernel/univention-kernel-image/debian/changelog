@@ -1,3 +1,9 @@
+univention-kernel-image (7.0.0-24) unstable; urgency=low
+
+  * Bug #41314: Update to 3.10.103
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 06 Oct 2016 09:12:22 +0200
+
 univention-kernel-image (7.0.0-23) unstable; urgency=medium
 
   * Update to the latest kernel build (Bug #39209)
