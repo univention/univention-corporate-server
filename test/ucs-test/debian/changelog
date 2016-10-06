@@ -1,3 +1,9 @@
+ucs-test (7.0.6-10) unstable; urgency=medium
+
+  * Bug #42587: ucs-test (appcenter): add 73_umc_dependency_failure
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 06 Oct 2016 17:35:12 +0200
+
 ucs-test (7.0.6-9) unstable; urgency=medium
 
   * Bug #42585: ucs-test (appcenter): add 72_umc_basic_failure_non_existent
