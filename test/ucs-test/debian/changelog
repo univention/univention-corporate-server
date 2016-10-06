@@ -1,3 +1,9 @@
+ucs-test (7.0.6-7) unstable; urgency=medium
+
+  * Bug #42583: ucs-test (appcenter): add 70_umc_basic_operations
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 06 Oct 2016 17:34:42 +0200
+
 ucs-test (7.0.6-6) unstable; urgency=medium
 
   * Bug #42580: ucs-test (appcenter): implement UMC test-wrapper with checks
