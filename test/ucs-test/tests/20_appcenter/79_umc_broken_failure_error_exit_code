@@ -12,25 +12,11 @@ import logging
 import appcentertest as app_test
 
 
-def test_install_traces(self, app_center, application):
-	info = app_center.get(application)
-	is_installed = app_center.is_installed(application, info=info)
-	install_traces = not app_test.CheckOperations.uninstalled(application, info)
-	return (is_installed, install_traces)
-
-
-def test_uninstall_traces(self, app_center, application):
-	info = app_center.get(application)
-	is_installed = app_center.is_installed(application, info=info)
-	uninstall_traces = not app_test.CheckOperations.installed(application, info)
-	return (is_installed, uninstall_traces)
-
-
 @app_test.test_case
 def test_install_preinst_error(app_center, application):
 	"""
-	Try to install an app that contains an error in `preinst` (exit 1)
-	(must fail).
+	Try to install and uninstall an app that contains an error in `preinst`
+	(exit 1). No traces must be left and the app must be reinstallable.
 	"""
 
 	package = app_test.DebianPackage(name=application)
@@ -41,25 +27,38 @@ def test_install_preinst_error(app_center, application):
 	app.remove_tempdir()
 
 	test = app_test.TestOperations(app_center, app.app_id)
-	try: dpkg_errors = test.test_install(test_installed=False)
-	except app_test.AppCenterCheckError: pass
-	else:
-		error = "Install of broken app did not fail."
-		(is_installed, install_traces) = test_install_traces(app_center, application)
-		if is_installed: error += " And is marked as installed."
-		if install_traces: error += " And the installation left traces."
-		app_test.fail(error.strip())
-	finally:
-		#  lets try to be safe and remove the broken app
-		if app_center.is_installed(app.app_id):
-			app_center.uninstall(app.app_id, force=True)
+	with test.test_install_safe(test_installed=False) as dpkg_errors:
+		if dpkg_errors:
+			print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
+		else:
+			app_test.fail("Install of broken app did not produce dpkg errors.")
+
+		try:
+			test.test_uninstall()
+		except app_test.AppCenterCheckError:
+			#  FIXME (APPCENTER-SWITCH): Normally we want to remove this
+			#  try/except block as the app-center should be able to remove
+			#  broken apps. But this test captures the state before the
+			#  app-center-switch, so we expect an error and fail otherwise.
+			pass
+		else:
+			app_test.fail("Uninstall of broken app didnt fail (APPCENTER-SWITCH)")
+
+	#  FIXME (APPCENTER-SWITCH): Normally we want to test if the app-center is
+	#  in a state where we can reinstall this broken app. But this test
+	#  captures the state before the app-center-switch, so we just dont.
+	#try:
+	#	with test.test_install_safe(test_installed=False):
+	#		test.test_uninstall()
+	#except app_test.AppCenterCheckError as e:
+	#	app_test.fail("Reinstall of broken app failed: " + str(e))
 
 
 @app_test.test_case
 def test_install_postinst_error(app_center, application):
 	"""
-	Try to install an app that contains an error in `postinst` (exit 1)
-	(must fail).
+	Try to install and uninstall an app that contains an error in `postinst`
+	(exit 1). No traces must be left and the app must be reinstallable.
 	"""
 
 	package = app_test.DebianPackage(name=application)
@@ -70,25 +69,24 @@ def test_install_postinst_error(app_center, application):
 	app.remove_tempdir()
 
 	test = app_test.TestOperations(app_center, app.app_id)
-	try: dpkg_errors = test.test_install(test_installed=False)
-	except app_test.AppCenterCheckError: pass
-	else:
-		error = "Install of broken app did not fail."
-		(is_installed, install_traces) = test_install_traces(app_center, application)
-		if is_installed: error += " And is marked as installed."
-		if install_traces: error += " And the installation left traces."
-		app_test.fail(error.strip())
-	finally:
-		#  lets try to be safe and remove the broken app
-		if app_center.is_installed(app.app_id):
-			app_center.uninstall(app.app_id, force=True)
+	with test.test_install_safe(test_installed=False) as dpkg_errors:
+		if dpkg_errors:
+			print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
+		else:
+			app_test.fail("Install of broken app did not produce dpkg errors.")
+		test.test_uninstall()
+
+	try: test.test_install(test_installed=False)
+	except app_test.AppCenterCheckError as e:
+		app_test.fail("Reinstall of broken app failed: " + str(e))
+	else: test.test_uninstall()
 
 
 @app_test.test_case
 def test_uninstall_prerm_error(app_center, application):
 	"""
-	Try to uninstall an app that contains an error in `prerm` (exit 1)
-	(must fail).
+	Try to install and uninstall an app that contains an error in `prerm`
+	(exit 1). No traces must be left and the app must be reinstallable.
 	"""
 
 	package = app_test.DebianPackage(name=application)
@@ -100,21 +98,32 @@ def test_uninstall_prerm_error(app_center, application):
 
 	test = app_test.TestOperations(app_center, app.app_id)
 	with test.test_install_safe():
-		try: dpkg_errors = test.test_uninstall(test_uninstalled=False)
-		except app_test.AppCenterCheckError: pass
+		dpkg_errors = test.test_uninstall(test_uninstalled=False)
+		if dpkg_errors:
+			print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
 		else:
-			error = "Uninstall of broken app did not fail."
-			(is_installed, uninstall_traces) = test_uninstall_traces(app_center, application)
-			if not is_installed: error += " And was marked as not installed."
-			if uninstall_traces: error += " And not all install traces are still present."
-			app_test.fail(error.strip())
+			app_test.fail("Uninstall of broken app did not produce dpkg errors.")
+
+	try: test.test_install(test_installed=False)
+	except app_test.AppCenterCheckError as e:
+		#  FIXME (APPCENTER-SWITCH): Normally we want to fail this test at this
+		#  point, as the app-center should be able to reinstall broken apps.
+		#  But this test captures the state before the app-center-switch, so we
+		#  expect an error and fail otherwise
+		#app_test.fail("Reinstall of broken app failed: " + str(e))
+		pass
+	else:
+		#  FIXME (APPCENTER-SWITCH): Uncomment the following statement and
+		#  remove the app_test.fail()
+		#test.test_uninstall()
+		app_test.fail("Reinstall of broken app didnt fail (APPCENTER-SWITCH)")
 
 
 @app_test.test_case
 def test_uninstall_postrm_error(app_center, application):
 	"""
-	Try to uninstall an app that contains an error in `postrm` (exit 1)
-	(must fail).
+	Try to install and uninstall an app that contains an error in `postrm`
+	(exit 1). No traces must be left and the app must be reinstallable.
 	"""
 
 	package = app_test.DebianPackage(name=application)
@@ -126,14 +135,25 @@ def test_uninstall_postrm_error(app_center, application):
 
 	test = app_test.TestOperations(app_center, app.app_id)
 	with test.test_install_safe():
-		try: dpkg_errors = test.test_uninstall(test_uninstalled=False)
-		except app_test.AppCenterCheckError: pass
+		dpkg_errors = test.test_uninstall(test_uninstalled=False)
+		if dpkg_errors:
+			print("OK - Errors reported:", *dpkg_errors, sep="\n\t")
 		else:
-			error = "Uninstall of broken app did not fail."
-			(is_installed, uninstall_traces) = test_uninstall_traces(app_center, application)
-			if not is_installed: error += " And was marked as not installed."
-			if uninstall_traces: error += " And not all install traces are still present."
-			app_test.fail(error.strip())
+			app_test.fail("Install of broken app did not produce dpkg errors.")
+
+	try: test.test_install(test_installed=False)
+	except app_test.AppCenterCheckError as e:
+		#  FIXME (APPCENTER-SWITCH): Normally we want to fail this test at this
+		#  point, as the app-center should be able to reinstall broken apps.
+		#  But this test captures the state before the app-center-switch, so we
+		#  expect an error and fail otherwise
+		#app_test.fail("Reinstall of broken app failed: " + str(e))
+		pass
+	else:
+		#  FIXME (APPCENTER-SWITCH): Uncomment the following statement and
+		#  remove the app_test.fail()
+		#test.test_uninstall()
+		app_test.fail("Reinstall of broken app didnt fail (APPCENTER-SWITCH)")
 
 
 def main():
