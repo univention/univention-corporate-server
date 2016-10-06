@@ -1,3 +1,14 @@
+ucs-test (6.0.36-32) unstable; urgency=medium
+
+  * Bug #42586: ucs-test (appcenter): rework 79_umc_broken_failure_error_exit_code.
+    Instead of expecting the actual installation/uninstallation to fail, this test
+    now tests if the `appcenter/progress` call returns the dpkg errors. In addition
+    it tests whether the app is re-installable.
+    The tests capture the state before the APP-Center-Switch. After the switch the
+    places marked with `FIXME (APPCENTER-SWITCH)` should be adapted.
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 06 Oct 2016 17:28:34 +0200
+
 ucs-test (6.0.36-31) unstable; urgency=medium
 
   * Bug #42587: ucs-test (appcenter): add 73_umc_dependency_failure
