@@ -1,3 +1,9 @@
+univention-system-setup (9.0.4-44) unstable; urgency=medium
+
+  * Bug #42483: Initialize updater/identify from ISO image metadata
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Thu, 06 Oct 2016 18:34:11 +0200
+
 univention-system-setup (9.0.4-43) unstable; urgency=medium
 
   * Bug #42402: Make cdrom available in-target

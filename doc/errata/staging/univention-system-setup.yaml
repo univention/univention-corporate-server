@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-system-setup
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Initialize updater/identify from ISO image metadata
+bug: [42483]
