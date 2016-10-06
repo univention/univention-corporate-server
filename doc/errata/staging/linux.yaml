@@ -1,0 +1,88 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: linux
+fix: 3.10.103-1.203.201610051715
+desc: |
+ This update addresses the following issues:
+ * USB: serial: visor: fix crash on detecting device without write_urbs
+   (CVE-2015-7566)
+ * RDS: fix race condition when sending a message on unbound socket
+   (CVE-2015-7990)
+ * fuse: break infinite loop in fuse_fill_write_pages()(CVE-2015-8785)
+ * iw_cxgb3: Fix incorrectly returning error on success (CVE-2015-8812)
+ * tty: Fix unsafe ldisc reference via ioctl(TIOCGETD) (CVE-2016-0723)
+ * ALSA: usb-audio: avoid freeing umidi object twice (CVE-2016-2384)
+ * unix: correctly track in-flight fds in sending process user_struct
+   (CVE-2016-2550)
+ * USB: visor: fix null-deref at probe (CVE-2016-2782)
+ * net: fix a kernel infoleak in x25 module (CVE-2016-4580)
+ * net: fix infoleak in rtnetlink (CVE-2016-4486)
+ * net: fix infoleak in llc (CVE-2016-4485)
+ * atl2: Disable unimplemented scatter/gather feature (CVE-2016-2117)
+ * get_rock_ridge_filename(): handle malformed NM entries (CVE-2016-4913)
+ * include/linux/poison.h: fix LIST_POISON{1,2} offset (CVE-2016-0821)
+ * USB: usbip: fix potential out-of-bounds write (CVE-2016-3955)
+ * Input: gtco - fix crash on detecting device without endpoints
+   (CVE-2016-2187)
+ * usbvision: fix crash on detecting device with invalid configuration
+   (CVE-2015-7833)
+ * ppp: take reference on channels netns (CVE-2016-4805)
+ * usbnet: memory corruption triggered by invalid USB descriptor
+   (CVE-2016-3951)
+ * Input: ati_remote2 - fix crashes on detecting device with invalid
+   descriptor (CVE-2016-2185)
+ * Input: ims-pcu - sanity check against missing interfaces (CVE-2016-3689)
+ * Input: powermate - fix oops with malicious USB descriptors (CVE-2016-2186)
+ * USB: cypress_m8: add endpoint sanity check (CVE-2016-3137)
+ * USB: digi_acceleport: do sanity checking for the number of ports
+   (CVE-2016-3140)
+ * USB: mct_u232: add sanity checking in probe (CVE-2016-3136)
+ * USB: iowarrior: fix oops with malicious USB descriptors (CVE-2016-2188)
+ * USB: cdc-acm: more sanity checking (CVE-2016-3138)
+ * Xen: I/O port access privilege escalation in x86-64 Linux (CVE-2016-3157)
+ * Race condition in the audit_log_single_execve_arg function in
+   kernel/auditsc.c in the Linux kernel through 4.7 allows local users to
+   bypass intended character-set restrictions or disrupt system-call auditing
+   by changing a certain string, aka a "double fetch" vulnerability.
+   (CVE-2016-6136)
+ * Race condition in the ioctl_send_fib function in
+   drivers/scsi/aacraid/commctrl.c in the Linux kernel through 4.7 allows
+   local users to cause a denial of service (out-of-bounds access or system
+   crash) by changing a certain size value, aka a "double fetch"
+   vulnerability.  (CVE-2016-6480)
+ * Linux tcp_xmit_retransmit_queue use after free (CVE-2016-6828)
+bug: [41314]
+cve:
+ - CVE-2015-7566
+ - CVE-2015-7990
+ - CVE-2015-8785
+ - CVE-2015-8812
+ - CVE-2016-0723
+ - CVE-2016-2384
+ - CVE-2016-2550
+ - CVE-2016-2782
+ - CVE-2016-4580
+ - CVE-2016-4486
+ - CVE-2016-4485
+ - CVE-2016-2117
+ - CVE-2016-4913
+ - CVE-2016-0821
+ - CVE-2016-3955
+ - CVE-2016-2187
+ - CVE-2015-7833
+ - CVE-2016-4805
+ - CVE-2016-3951
+ - CVE-2016-2185
+ - CVE-2016-3689
+ - CVE-2016-2186
+ - CVE-2016-3137
+ - CVE-2016-3140
+ - CVE-2016-3136
+ - CVE-2016-2188
+ - CVE-2016-3138
+ - CVE-2016-3157
+ - CVE-2016-6136
+ - CVE-2016-6480
+ - CVE-2016-6828
