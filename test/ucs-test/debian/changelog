@@ -1,3 +1,9 @@
+ucs-test (7.0.6-8) unstable; urgency=medium
+
+  * Bug #42584: ucs-test (appcenter): add 71_umc_basic_failure_installed
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 06 Oct 2016 17:34:50 +0200
+
 ucs-test (7.0.6-7) unstable; urgency=medium
 
   * Bug #42583: ucs-test (appcenter): add 70_umc_basic_operations
