@@ -1,0 +1,90 @@
+#!/usr/share/ucs-test/runner python
+## desc: |
+##  Check basic App-Center Operation failures (non existent apps) via UMC commands within a local testing appcenter.
+## roles-not: [basesystem]
+## packages:
+##   - univention-management-console-module-appcenter
+##   - univention-appcenter-dev
+## tags: [appcenter]
+from __future__ import print_function
+
+import httplib
+import appcentertest as app_test
+
+
+@app_test.test_case
+def test_install_non_existent_dry_run(app_center, application):
+	"""
+	Try to dry-run install an app that does not exist (must fail).
+	"""
+
+	try: app_center.install(application, only_dry_run=True)
+	except httplib.HTTPException: pass
+	else: app_test.fail("Dry-Install of non existent app did not fail.")
+
+
+@app_test.test_case
+def test_install_non_existent(app_center, application):
+	"""
+	Try to install an app that does not exist (must fail).
+	"""
+
+	try: app_center.install(application, force=True)
+	except httplib.HTTPException: pass
+	else: app_test.fail("Dry-Install of non existent app did not fail.")
+
+
+@app_test.test_case
+def test_update_non_existent_dry_run(app_center, application):
+	"""
+	Try to dry-run update an app that does not exist (must fail).
+	"""
+
+	try: app_center.update(application, only_dry_run=True)
+	except httplib.HTTPException: pass
+	else: app_test.fail("Dry-Update of non existent app did not fail.")
+
+
+@app_test.test_case
+def test_update_non_existent(app_center, application):
+	"""
+	Try to update an app that does not exist (must fail).
+	"""
+
+	try: app_center.update(application, force=True)
+	except httplib.HTTPException: pass
+	else: app_test.fail("Dry-Update of non existent app did not fail.")
+
+
+@app_test.test_case
+def test_uninstall_non_existent_dry_run(app_center, application):
+	"""
+	Try to dry-run uninstall an app that does not exist (must fail).
+	"""
+
+	try: app_center.uninstall(application, only_dry_run=True)
+	except httplib.HTTPException: pass
+	else: app_test.fail("Dry-Uninstall of non existent app did not fail.")
+
+
+@app_test.test_case
+def test_uninstall_non_existent(app_center, application):
+	"""
+	Try to uninstall an app that does not exist (must fail).
+	"""
+
+	try: app_center.uninstall(application, force=True)
+	except httplib.HTTPException: pass
+	else: app_test.fail("Dry-Update of non existent app did not fail.")
+
+
+def main():
+	test_install_non_existent_dry_run()
+	test_install_non_existent()
+	test_update_non_existent_dry_run()
+	test_update_non_existent()
+	test_uninstall_non_existent_dry_run()
+	test_uninstall_non_existent()
+
+if __name__ == '__main__':
+	main()
