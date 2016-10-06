@@ -1,3 +1,9 @@
+ucs-test (6.0.36-27) unstable; urgency=medium
+
+  * Bug #42580: ucs-test (appcenter): implement UMC test-wrapper with checks
+
+ -- Lukas Oyen <oyen@univention.de>  Thu, 06 Oct 2016 17:25:43 +0200
+
 ucs-test (6.0.36-26) unstable; urgency=medium
 
   * Bug #41571: Reduce winexe loglevel again
