@@ -229,7 +229,7 @@ define([
 				};
 			}
 
-			if ( 'users/self' == this.moduleFlavor ) {
+			if ('users/self' == this.moduleFlavor) {
 				this.openObject = {
 					objectType: this.moduleFlavor,
 					objectDN: 'self'
@@ -353,13 +353,13 @@ define([
 			}));
 		},
 
-		_ldapDN2TreePath: function( ldapDN ) {
+		_ldapDN2TreePath: function(ldapDN) {
 			var path = [];
-			while ( ldapDN != this._ucr[ 'ldap/base' ] ) {
-				path.unshift( ldapDN );
-				ldapDN = ldapDN.slice( ldapDN.indexOf( ',' ) + 1 );
+			while (ldapDN != this._ucr[ 'ldap/base' ]) {
+				path.unshift(ldapDN);
+				ldapDN = ldapDN.slice(ldapDN.indexOf(',') + 1);
 			}
-			path.unshift( ldapDN );
+			path.unshift(ldapDN);
 
 			return path;
 		},
@@ -408,7 +408,7 @@ define([
 							json.stringify(app),
 							'Univention App Center'
 						);
-						this.addWarning( _warningText(app, link) );
+						this.addWarning(_warningText(app, link));
 
 					}
 				}));
@@ -530,58 +530,58 @@ define([
 		renderGrid: function() {
 			var _addDescriptionText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Add a new user.' ),
-					'groups/group'      : _( 'Add a new group.' ),
-					'computers/computer': _( 'Add a new computer.' ),
-					'networks/network'  : _( 'Add a new network object.' ),
-					'dns/dns'           : _( 'Add a new DNS object.' ),
-					'dhcp/dhcp'         : _( 'Add a new DHCP object.' ),
-					'shares/share'      : _( 'Add a new share.' ),
-					'shares/print'      : _( 'Add a new printer.' ),
-					'mail/mail'         : _( 'Add a new mail object.' ),
-					'nagios/nagios'     : _( 'Add a new Nagios object.' ),
-					'policies/policy'   : _( 'Add a new policy.' )
+					'users/user'        : _('Add a new user.'),
+					'groups/group'      : _('Add a new group.'),
+					'computers/computer': _('Add a new computer.'),
+					'networks/network'  : _('Add a new network object.'),
+					'dns/dns'           : _('Add a new DNS object.'),
+					'dhcp/dhcp'         : _('Add a new DHCP object.'),
+					'shares/share'      : _('Add a new share.'),
+					'shares/print'      : _('Add a new printer.'),
+					'mail/mail'         : _('Add a new mail object.'),
+					'nagios/nagios'     : _('Add a new Nagios object.'),
+					'policies/policy'   : _('Add a new policy.')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'Add a new LDAP object.' );
+					text = _('Add a new LDAP object.');
 				}
 				return text;
 			});
 			var _editDescriptionText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Edit the user.' ),
-					'groups/group'      : _( 'Edit the group.' ),
-					'computers/computer': _( 'Edit the computer.' ),
-					'networks/network'  : _( 'Edit the network object.' ),
-					'dns/dns'           : _( 'Edit the DNS object.' ),
-					'dhcp/dhcp'         : _( 'Edit the DHCP object.' ),
-					'shares/share'      : _( 'Edit the share.' ),
-					'shares/print'      : _( 'Edit the printer.' ),
-					'mail/mail'         : _( 'Edit the mail object.' ),
-					'nagios/nagios'     : _( 'Edit the Nagios object.' ),
-					'policies/policy'   : _( 'Edit the policy.' )
+					'users/user'        : _('Edit the user.'),
+					'groups/group'      : _('Edit the group.'),
+					'computers/computer': _('Edit the computer.'),
+					'networks/network'  : _('Edit the network object.'),
+					'dns/dns'           : _('Edit the DNS object.'),
+					'dhcp/dhcp'         : _('Edit the DHCP object.'),
+					'shares/share'      : _('Edit the share.'),
+					'shares/print'      : _('Edit the printer.'),
+					'mail/mail'         : _('Edit the mail object.'),
+					'nagios/nagios'     : _('Edit the Nagios object.'),
+					'policies/policy'   : _('Edit the policy.')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'Edit the LDAP object.' );
+					text = _('Edit the LDAP object.');
 				}
 				return text;
 			});
 			var _deleteDescriptionText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Delete the selected users.' ),
-					'groups/group'      : _( 'Delete the selected groups.' ),
-					'computers/computer': _( 'Delete the selected computers.' ),
-					'networks/network'  : _( 'Delete the selected network objects.' ),
-					'dns/dns'           : _( 'Delete the selected DNS objects.' ),
-					'dhcp/dhcp'         : _( 'Delete the selected DHCP objects.' ),
-					'shares/share'      : _( 'Delete the selected shares.' ),
-					'shares/print'      : _( 'Delete the selected printers.' ),
-					'mail/mail'         : _( 'Delete the selected mail objects.' ),
-					'nagios/nagios'     : _( 'Delete the selected Nagios objects.' ),
-					'policies/policy'   : _( 'Delete the selected policies.' )
+					'users/user'        : _('Delete the selected users.'),
+					'groups/group'      : _('Delete the selected groups.'),
+					'computers/computer': _('Delete the selected computers.'),
+					'networks/network'  : _('Delete the selected network objects.'),
+					'dns/dns'           : _('Delete the selected DNS objects.'),
+					'dhcp/dhcp'         : _('Delete the selected DHCP objects.'),
+					'shares/share'      : _('Delete the selected shares.'),
+					'shares/print'      : _('Delete the selected printers.'),
+					'mail/mail'         : _('Delete the selected mail objects.'),
+					'nagios/nagios'     : _('Delete the selected Nagios objects.'),
+					'policies/policy'   : _('Delete the selected policies.')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'Delete the selected LDAP objects.' );
+					text = _('Delete the selected LDAP objects.');
 				}
 				return text;
 			});
@@ -589,38 +589,38 @@ define([
 				// generate the caption for the grid footer
 				if (0 === nItemsTotal) {
 					var text = {
-						'users/user'        : _( 'No users could be found.' ),
-						'groups/group'      : _( 'No groups could be found.' ),
-						'computers/computer': _( 'No computers could be found.' ),
-						'networks/network'  : _( 'No network objects could be found.' ),
-						'dns/dns'           : _( 'No DNS objects could be found.' ),
-						'dhcp/dhcp'         : _( 'No DHCP objects could be found.' ),
-						'shares/share'      : _( 'No shares could be found.' ),
-						'shares/print'      : _( 'No printers could be found.' ),
-						'mail/mail'         : _( 'No mail objects could be found.' ),
-						'nagios/nagios'     : _( 'No Nagios objects could be found.' ),
-						'policies/policy'   : _( 'No policies could be found.' )
+						'users/user'        : _('No users could be found.'),
+						'groups/group'      : _('No groups could be found.'),
+						'computers/computer': _('No computers could be found.'),
+						'networks/network'  : _('No network objects could be found.'),
+						'dns/dns'           : _('No DNS objects could be found.'),
+						'dhcp/dhcp'         : _('No DHCP objects could be found.'),
+						'shares/share'      : _('No shares could be found.'),
+						'shares/print'      : _('No printers could be found.'),
+						'mail/mail'         : _('No mail objects could be found.'),
+						'nagios/nagios'     : _('No Nagios objects could be found.'),
+						'policies/policy'   : _('No policies could be found.')
 					}[this.moduleFlavor];
 					if (!text) {
-						text = _( 'No LDAP objects could be found.' );
+						text = _('No LDAP objects could be found.');
 					}
 					return text;
 				} else {
 					var text = {
-						'users/user'        : _.ngettext( 'One user of %d selected.', '%d users of %d selected.', nItems, nItemsTotal),
-						'groups/group'      : _.ngettext( 'One group of %d selected.', '%d groups of %d selected.', nItems, nItemsTotal),
-						'computers/computer': _.ngettext( 'One computer of %d selected.', '%d computers of %d selected.', nItems, nItemsTotal),
-						'networks/network'  : _.ngettext( 'One network object of %d selected.', '%d network objects of %d selected.', nItems, nItemsTotal),
-						'dns/dns'           : _.ngettext( 'One DNS object of %d selected.', '%d DNS objects of %d selected.', nItems, nItemsTotal),
-						'dhcp/dhcp'         : _.ngettext( 'One DHCP object of %d selected.', '%d DHCP objects of %d selected.', nItems, nItemsTotal),
-						'shares/share'      : _.ngettext( 'One share of %d selected.', '%d shares of %d selected.', nItems, nItemsTotal),
-						'shares/print'      : _.ngettext( 'One printer of %d selected.', '%d printers of %d selected.', nItems, nItemsTotal),
-						'mail/mail'         : _.ngettext( 'One mail object of %d selected.', '%d mail objects of %d selected.', nItems, nItemsTotal),
-						'nagios/nagios'     : _.ngettext( 'One Nagios object of %d selected.', '%d Nagios objects of %d selected.', nItems, nItemsTotal),
-						'policies/policy'   : _.ngettext( 'One policy of %d selected.', '%d policies of %d selected.', nItems, nItemsTotal)
+						'users/user'        : _.ngettext('One user of %d selected.', '%d users of %d selected.', nItems, nItemsTotal),
+						'groups/group'      : _.ngettext('One group of %d selected.', '%d groups of %d selected.', nItems, nItemsTotal),
+						'computers/computer': _.ngettext('One computer of %d selected.', '%d computers of %d selected.', nItems, nItemsTotal),
+						'networks/network'  : _.ngettext('One network object of %d selected.', '%d network objects of %d selected.', nItems, nItemsTotal),
+						'dns/dns'           : _.ngettext('One DNS object of %d selected.', '%d DNS objects of %d selected.', nItems, nItemsTotal),
+						'dhcp/dhcp'         : _.ngettext('One DHCP object of %d selected.', '%d DHCP objects of %d selected.', nItems, nItemsTotal),
+						'shares/share'      : _.ngettext('One share of %d selected.', '%d shares of %d selected.', nItems, nItemsTotal),
+						'shares/print'      : _.ngettext('One printer of %d selected.', '%d printers of %d selected.', nItems, nItemsTotal),
+						'mail/mail'         : _.ngettext('One mail object of %d selected.', '%d mail objects of %d selected.', nItems, nItemsTotal),
+						'nagios/nagios'     : _.ngettext('One Nagios object of %d selected.', '%d Nagios objects of %d selected.', nItems, nItemsTotal),
+						'policies/policy'   : _.ngettext('One policy of %d selected.', '%d policies of %d selected.', nItems, nItemsTotal)
 					}[this.moduleFlavor];
 					if (!text) {
-						text = _.ngettext( 'One LDAP object of %d selected.', '%d LDAP objects of %d selected.', nItems, nItemsTotal);
+						text = _.ngettext('One LDAP object of %d selected.', '%d LDAP objects of %d selected.', nItems, nItemsTotal);
 					}
 					return text;
 				}
@@ -646,7 +646,7 @@ define([
 				callback: lang.hitch(this, 'showNewObjectDialog')
 			}, {
 				name: 'edit',
-				label: _( 'Edit' ),
+				label: _('Edit'),
 				description: _editDescriptionText(),
 				iconClass: 'umcIconEdit',
 				isStandardAction: true,
@@ -674,7 +674,7 @@ define([
 			}, {
 				name: 'editNewTab',
 				label: _('Edit in new tab'),
-				description: _( 'Open a new tab in order to edit the UDM-object' ),
+				description: _('Open a new tab in order to edit the UDM-object'),
 				isMultiAction: false,
 				canExecute: lang.hitch(this, '_canEdit'),
 				callback: lang.hitch(this, function(ids, items) {
@@ -694,7 +694,7 @@ define([
 				})
 			}, {
 				name: 'delete',
-				label: _( 'Delete' ),
+				label: _('Delete'),
 				description: _deleteDescriptionText(),
 				isStandardAction: true,
 				isMultiAction: true,
@@ -706,7 +706,7 @@ define([
 			}, {
 				name: 'move',
 				label: _('Move to...'),
-				description: _( 'Move objects to a different LDAP position.' ),
+				description: _('Move objects to a different LDAP position.'),
 				isMultiAction: true,
 				canExecute: lang.hitch(this, '_canMove'),
 				callback: lang.hitch(this, function(ids, objects) {
@@ -751,20 +751,20 @@ define([
 		renderSearchForm: function(containers, superordinates) {
 			var _objectPropertyInlineLabelText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Search users...' ),
-					'groups/group'      : _( 'Search groups...' ),
-					'computers/computer': _( 'Search computers...' ),
-					'networks/network'  : _( 'Search network objects...' ),
-					'dns/dns'           : _( 'Search DNS objects...' ),
-					'dhcp/dhcp'         : _( 'Search DHCP objects...' ),
-					'shares/share'      : _( 'Search shares...' ),
-					'shares/print'      : _( 'Search printers...' ),
-					'mail/mail'         : _( 'Search mail objects...' ),
-					'nagios/nagios'     : _( 'Search Nagios objects...' ),
-					'policies/policy'   : _( 'Search policies...' )
+					'users/user'        : _('Search users...'),
+					'groups/group'      : _('Search groups...'),
+					'computers/computer': _('Search computers...'),
+					'networks/network'  : _('Search network objects...'),
+					'dns/dns'           : _('Search DNS objects...'),
+					'dhcp/dhcp'         : _('Search DHCP objects...'),
+					'shares/share'      : _('Search shares...'),
+					'shares/print'      : _('Search printers...'),
+					'mail/mail'         : _('Search mail objects...'),
+					'nagios/nagios'     : _('Search Nagios objects...'),
+					'policies/policy'   : _('Search policies...')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'Search LDAP objects...' );
+					text = _('Search LDAP objects...');
 				}
 				return text;
 			});
@@ -790,8 +790,8 @@ define([
 			var objProperties = [];
 			if ('navigation' == this.moduleFlavor) {
 				// add the types 'None'  and '$containers$' to objTypes
-				objTypes.push( { id: 'None', label: _( 'All types' ) } );
-				objTypes.push( { id: '$containers$', label: _( 'All containers' ) } );
+				objTypes.push({ id: 'None', label: _('All types') });
+				objTypes.push({ id: '$containers$', label: _('All containers') });
 			} else if (superordinates && superordinates.length) {
 				// superordinates...
 				widgets.push({
@@ -805,10 +805,10 @@ define([
 				});
 				layout[0].push('superordinate');
 				objTypeDependencies.push('superordinate');
-				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
+				objTypes.push({ id: this.moduleFlavor, label: _('All types') });
 			} else if (containers && containers.length) {
 				// containers...
-				containers.unshift({ id: 'all', label: _( 'All containers' ) });
+				containers.unshift({ id: 'all', label: _('All containers') });
 				widgets.push({
 					type: ComboBox,
 					name: 'container',
@@ -819,9 +819,9 @@ define([
 					umcpCommand: umcpCmd
 				});
 				layout[0].push('container');
-				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
+				objTypes.push({ id: this.moduleFlavor, label: _('All types') });
 			}
-			objProperties.push({ id: 'None', label: _( 'Default properties' ) });
+			objProperties.push({ id: 'None', label: _('Default properties') });
 
 			// add remaining elements of the search form
 			widgets = widgets.concat([{
@@ -872,7 +872,7 @@ define([
 				type: ComboBox,
 				autoHide: true,
 				name: 'objectProperty',
-				label: _( 'Property' ),
+				label: _('Property'),
 				staticValues: objProperties,
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
@@ -895,7 +895,7 @@ define([
 						return;
 					}
 					// get the current label of objectPropertyValue
-					var label = _( 'Property value' );
+					var label = _('Property value');
 					array.some(widget.getAllItems(), function(iitem) {
 						if (newVal == iitem.id) {
 							label = iitem.label;
@@ -915,7 +915,7 @@ define([
 			}, {
 				type: MixedInput,
 				name: 'objectPropertyValue',
-				label: _( 'Property value' ),
+				label: _('Property value'),
 				inlineLabel: _objectPropertyInlineLabelText(),
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
@@ -975,20 +975,20 @@ define([
 		renderTree: function() {
 			var _superordinateNameText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Users' ),
-					'groups/group'      : _( 'Groups' ),
-					'computers/computer': _( 'Computers' ),
-					'networks/network'  : _( 'Network objects' ),
-					'dns/dns'           : _( 'DNS zones' ),
-					'dhcp/dhcp'         : _( 'DHCP services' ),
-					'shares/share'      : _( 'Shares' ),
-					'shares/print'      : _( 'Printers' ),
-					'mail/mail'         : _( 'Mail objects' ),
-					'nagios/nagios'     : _( 'Nagios objects' ),
-					'policies/policy'   : _( 'Policies' )
+					'users/user'        : _('Users'),
+					'groups/group'      : _('Groups'),
+					'computers/computer': _('Computers'),
+					'networks/network'  : _('Network objects'),
+					'dns/dns'           : _('DNS zones'),
+					'dhcp/dhcp'         : _('DHCP services'),
+					'shares/share'      : _('Shares'),
+					'shares/print'      : _('Printers'),
+					'mail/mail'         : _('Mail objects'),
+					'nagios/nagios'     : _('Nagios objects'),
+					'policies/policy'   : _('Policies')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'LDAP Objects' );
+					text = _('LDAP Objects');
 				}
 				return text;
 			});
@@ -998,9 +998,9 @@ define([
 					label: _('Parent container'),
 					iconClass: 'umcDoubleUpIcon',
 					callback: lang.hitch(this, function() {
-						var path = this._tree.get( 'path' );
+						var path = this._tree.get('path');
 						var ldapDN = path[ path.length - 2 ].id;
-						this._tree.set( 'path', this._ldapDN2TreePath( ldapDN ) );
+						this._tree.set('path', this._ldapDN2TreePath(ldapDN));
 						// we can relaunch the search after all search form values
 						// have been updated
 						on.once(this._searchForm.getWidget('objectPropertyValue'), 'valuesLoaded', lang.hitch(this, function() {
@@ -1054,12 +1054,12 @@ define([
 					this._reloadingPath = '';
 				}
 				if ('navigation' == this.moduleFlavor) {
-					if ( this._tree.get('path').length > 1 ) {
-						this._grid._toolbar.addChild( this._navUpButton, 0 );
+					if (this._tree.get('path').length > 1) {
+						this._grid._toolbar.addChild(this._navUpButton, 0);
 					} else {
-						this._grid._toolbar.removeChild( this._navUpButton );
+						this._grid._toolbar.removeChild(this._navUpButton);
 					}
-					this._navUpButton.set( 'visible', this._tree.get('path').length > 1 );
+					this._navUpButton.set('visible', this._tree.get('path').length > 1);
 				}
 
 			})));
@@ -1067,14 +1067,14 @@ define([
 			// add a context menu to edit/delete items
 			var menu = new Menu({});
 			menu.addChild(this._menuEdit = new MenuItem({
-				label: _( 'Edit' ),
+				label: _('Edit'),
 				iconClass: 'umcIconEdit',
 				onClick: lang.hitch(this, function() {
 					this.createDetailPage(this._navContextItem.objectType, this._navContextItem.id);
 				})
 			}));
 			menu.addChild(this._menuDelete = new MenuItem({
-				label: _( 'Delete' ),
+				label: _('Delete'),
 				iconClass: 'umcIconDelete',
 				onClick: lang.hitch(this, function() {
 					this.removeObjects([this._navContextItem]);
@@ -1087,7 +1087,7 @@ define([
 				})
 			}));
 			menu.addChild(new MenuItem({
-				label: _( 'Reload' ),
+				label: _('Reload'),
 				iconClass: 'umcIconRefresh',
 				onClick: lang.hitch(this, 'reloadTree')
 			}));
@@ -1260,11 +1260,11 @@ define([
 			// open the dialog
 			topic.publish('/umc/actions', this.moduleID, this.moduleFlavor, 'grid', 'report');
 			var _dialog = new CreateReportDialog( {
-				umcpCommand: lang.hitch( this, 'umcpCommand' ),
+				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				moduleFlavor: this.moduleFlavor,
 				objects: ids,
 				reports: this._reports
-			} );
+			});
 			this.own(_dialog);
 			_dialog.show();
 		},
@@ -1272,51 +1272,51 @@ define([
 		moveObjects: function(ids) {
 			var _selectLdapPosText = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext( 'Please select an LDAP destination for the user:',
-					                                  'Please select an LDAP destination for the %d selected users:', n ),
-					'groups/group'      : _.ngettext( 'Please select an LDAP destination for the group:',
-					                                  'Please select an LDAP destination for the %d selected groups:', n ),
-					'computers/computer': _.ngettext( 'Please select an LDAP destination for the computer:',
-					                                  'Please select an LDAP destination for the %d selected computers:', n ),
-					'networks/network'  : _.ngettext( 'Please select an LDAP destination for the network object:',
-					                                  'Please select an LDAP destination for the %d selected network objects:', n ),
-					'dns/dns'           : _.ngettext( 'Please select an LDAP destination for the DNS object:',
-					                                  'Please select an LDAP destination for the %d selected DNS objects:', n ),
-					'dhcp/dhcp'         : _.ngettext( 'Please select an LDAP destination for the DHCP object:',
-					                                  'Please select an LDAP destination for the %d selected DHCP objects:', n ),
-					'shares/share'      : _.ngettext( 'Please select an LDAP destination for the share:',
-					                                  'Please select an LDAP destination for the %d selected shares:', n ),
-					'shares/print'      : _.ngettext( 'Please select an LDAP destination for the printer:',
-					                                  'Please select an LDAP destination for the %d selected printers:', n ),
-					'mail/mail'         : _.ngettext( 'Please select an LDAP destination for the mail object:',
-					                                  'Please select an LDAP destination for the %d selected mail objects:', n ),
-					'nagios/nagios'     : _.ngettext( 'Please select an LDAP destination for the Nagios object:',
-					                                  'Please select an LDAP destination for the %d selected Nagios objects:', n ),
-					'policies/policy'   : _.ngettext( 'Please select an LDAP destination for the policy:',
-					                                  'Please select an LDAP destination for the %d selected policies:', n )
+					'users/user'        : _.ngettext('Please select an LDAP destination for the user:',
+					                                  'Please select an LDAP destination for the %d selected users:', n),
+					'groups/group'      : _.ngettext('Please select an LDAP destination for the group:',
+					                                  'Please select an LDAP destination for the %d selected groups:', n),
+					'computers/computer': _.ngettext('Please select an LDAP destination for the computer:',
+					                                  'Please select an LDAP destination for the %d selected computers:', n),
+					'networks/network'  : _.ngettext('Please select an LDAP destination for the network object:',
+					                                  'Please select an LDAP destination for the %d selected network objects:', n),
+					'dns/dns'           : _.ngettext('Please select an LDAP destination for the DNS object:',
+					                                  'Please select an LDAP destination for the %d selected DNS objects:', n),
+					'dhcp/dhcp'         : _.ngettext('Please select an LDAP destination for the DHCP object:',
+					                                  'Please select an LDAP destination for the %d selected DHCP objects:', n),
+					'shares/share'      : _.ngettext('Please select an LDAP destination for the share:',
+					                                  'Please select an LDAP destination for the %d selected shares:', n),
+					'shares/print'      : _.ngettext('Please select an LDAP destination for the printer:',
+					                                  'Please select an LDAP destination for the %d selected printers:', n),
+					'mail/mail'         : _.ngettext('Please select an LDAP destination for the mail object:',
+					                                  'Please select an LDAP destination for the %d selected mail objects:', n),
+					'nagios/nagios'     : _.ngettext('Please select an LDAP destination for the Nagios object:',
+					                                  'Please select an LDAP destination for the %d selected Nagios objects:', n),
+					'policies/policy'   : _.ngettext('Please select an LDAP destination for the policy:',
+					                                  'Please select an LDAP destination for the %d selected policies:', n)
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _.ngettext( 'Please select an LDAP destination for the LDAP object:',
-					                   'Please select an LDAP destination for the %d selected LDAP objects:', n );
+					text = _.ngettext('Please select an LDAP destination for the LDAP object:',
+					                   'Please select an LDAP destination for the %d selected LDAP objects:', n);
 				}
 				return text;
 			});
 			var _moveLabelText = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext( 'Move user', 'Move users', n ),
-					'groups/group'      : _.ngettext( 'Move group', 'Move groups', n ),
-					'computers/computer': _.ngettext( 'Move computer', 'Move computers', n ),
-					'networks/network'  : _.ngettext( 'Move network object', 'Move network objects', n ),
-					'dns/dns'           : _.ngettext( 'Move DNS object', 'Move DNS objects', n ),
-					'dhcp/dhcp'         : _.ngettext( 'Move DHCP object', 'Move DHCP objects', n ),
-					'shares/share'      : _.ngettext( 'Move share', 'Move shares', n ),
-					'shares/print'      : _.ngettext( 'Move printer', 'Move printers', n ),
-					'mail/mail'         : _.ngettext( 'Move mail object', 'Move mail objects', n ),
-					'nagios/nagios'     : _.ngettext( 'Move Nagios object', 'Move Nagios objects', n ),
-					'policies/policy'   : _.ngettext( 'Move policy', 'Move policies', n )
+					'users/user'        : _.ngettext('Move user', 'Move users', n),
+					'groups/group'      : _.ngettext('Move group', 'Move groups', n),
+					'computers/computer': _.ngettext('Move computer', 'Move computers', n),
+					'networks/network'  : _.ngettext('Move network object', 'Move network objects', n),
+					'dns/dns'           : _.ngettext('Move DNS object', 'Move DNS objects', n),
+					'dhcp/dhcp'         : _.ngettext('Move DHCP object', 'Move DHCP objects', n),
+					'shares/share'      : _.ngettext('Move share', 'Move shares', n),
+					'shares/print'      : _.ngettext('Move printer', 'Move printers', n),
+					'mail/mail'         : _.ngettext('Move mail object', 'Move mail objects', n),
+					'nagios/nagios'     : _.ngettext('Move Nagios object', 'Move Nagios objects', n),
+					'policies/policy'   : _.ngettext('Move policy', 'Move policies', n)
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _.ngettext( 'Move LDAP object', 'Move LDAP objects', n );
+					text = _.ngettext('Move LDAP object', 'Move LDAP objects', n);
 				}
 				return text;
 			});
@@ -1600,35 +1600,35 @@ define([
 			}));
 		},
 
-		removeObjects: function( /*String|String[]*/ _ids, /*Boolean?*/ isContainer, /*Boolean?*/ cleanup, /*Boolean?*/ recursive ) {
+		removeObjects: function(/*String|String[]*/ _ids, /*Boolean?*/ isContainer, /*Boolean?*/ cleanup, /*Boolean?*/ recursive) {
 			var _msg = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext( 'Please confirm the removal of the user:',
-					                                  'Please confirm the removal of the %d selected users', n ),
-					'groups/group'      : _.ngettext( 'Please confirm the removal of the group:',
-					                                  'Please confirm the removal of the %d selected groups', n ),
-					'computers/computer': _.ngettext( 'Please confirm the removal of the computer:',
-					                                  'Please confirm the removal of the %d selected computers', n ),
-					'networks/network'  : _.ngettext( 'Please confirm the removal of the network object:',
-					                                  'Please confirm the removal of the %d selected network objects', n ),
-					'dns/dns'           : _.ngettext( 'Please confirm the removal of the DNS object:',
-					                                  'Please confirm the removal of the %d selected DNS objects', n ),
-					'dhcp/dhcp'         : _.ngettext( 'Please confirm the removal of the DHCP object:',
-					                                  'Please confirm the removal of the %d selected DHCP objects', n ),
-					'shares/share'      : _.ngettext( 'Please confirm the removal of the share:',
-					                                  'Please confirm the removal of the %d selected shares', n ),
-					'shares/print'      : _.ngettext( 'Please confirm the removal of the printer:',
-					                                  'Please confirm the removal of the %d selected printers', n ),
-					'mail/mail'         : _.ngettext( 'Please confirm the removal of the mail object:',
-					                                  'Please confirm the removal of the %d selected mail objects', n ),
-					'nagios/nagios'     : _.ngettext( 'Please confirm the removal of the Nagios object:',
-					                                  'Please confirm the removal of the %d selected Nagios objects', n ),
-					'policies/policy'   : _.ngettext( 'Please confirm the removal of the policy:',
-					                                  'Please confirm the removal of the %d selected ploicies', n )
+					'users/user'        : _.ngettext('Please confirm the removal of the user:',
+					                                  'Please confirm the removal of the %d selected users', n),
+					'groups/group'      : _.ngettext('Please confirm the removal of the group:',
+					                                  'Please confirm the removal of the %d selected groups', n),
+					'computers/computer': _.ngettext('Please confirm the removal of the computer:',
+					                                  'Please confirm the removal of the %d selected computers', n),
+					'networks/network'  : _.ngettext('Please confirm the removal of the network object:',
+					                                  'Please confirm the removal of the %d selected network objects', n),
+					'dns/dns'           : _.ngettext('Please confirm the removal of the DNS object:',
+					                                  'Please confirm the removal of the %d selected DNS objects', n),
+					'dhcp/dhcp'         : _.ngettext('Please confirm the removal of the DHCP object:',
+					                                  'Please confirm the removal of the %d selected DHCP objects', n),
+					'shares/share'      : _.ngettext('Please confirm the removal of the share:',
+					                                  'Please confirm the removal of the %d selected shares', n),
+					'shares/print'      : _.ngettext('Please confirm the removal of the printer:',
+					                                  'Please confirm the removal of the %d selected printers', n),
+					'mail/mail'         : _.ngettext('Please confirm the removal of the mail object:',
+					                                  'Please confirm the removal of the %d selected mail objects', n),
+					'nagios/nagios'     : _.ngettext('Please confirm the removal of the Nagios object:',
+					                                  'Please confirm the removal of the %d selected Nagios objects', n),
+					'policies/policy'   : _.ngettext('Please confirm the removal of the policy:',
+					                                  'Please confirm the removal of the %d selected ploicies', n)
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _.ngettext( 'Please confirm the removal of the LDAP object:',
-					                   'Please confirm the removal of the %d selected LDAP objects', n );
+					text = _.ngettext('Please confirm the removal of the LDAP object:',
+					                   'Please confirm the removal of the %d selected LDAP objects', n);
 				}
 				return text;
 			});
@@ -1689,7 +1689,7 @@ define([
 				// remove the selected elements via a transaction on the module store
 				var transaction = this.moduleStore.transaction();
 				array.forEach(ids, function(iid) {
-					this.moduleStore.remove( iid, options );
+					this.moduleStore.remove(iid, options);
 				}, this);
 				this.standbyDuring(transaction.commit()).then(lang.hitch(this, function(data) {
 

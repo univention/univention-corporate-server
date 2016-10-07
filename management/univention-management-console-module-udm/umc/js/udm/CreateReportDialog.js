@@ -76,20 +76,20 @@ define([
 
 			var _titleText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Report for user' ),
-					'groups/group'      : _( 'Report for group' ),
-					'computers/computer': _( 'Report for computer' ),
-					'networks/network'  : _( 'Report for network object' ),
-					'dns/dns'           : _( 'Report for DNS object' ),
-					'dhcp/dhcp'         : _( 'Report for DHCP object' ),
-					'shares/share'      : _( 'Report for share' ),
-					'shares/print'      : _( 'Report for printer' ),
-					'mail/mail'         : _( 'Report for mail object' ),
-					'nagios/nagios'     : _( 'Report for Nagio object' ),
-					'policies/policy'   : _( 'Report for policy' )
+					'users/user'        : _('Report for user'),
+					'groups/group'      : _('Report for group'),
+					'computers/computer': _('Report for computer'),
+					'networks/network'  : _('Report for network object'),
+					'dns/dns'           : _('Report for DNS object'),
+					'dhcp/dhcp'         : _('Report for DHCP object'),
+					'shares/share'      : _('Report for share'),
+					'shares/print'      : _('Report for printer'),
+					'mail/mail'         : _('Report for mail object'),
+					'nagios/nagios'     : _('Report for Nagio object'),
+					'policies/policy'   : _('Report for policy')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'Report for LDAP object' );
+					text = _('Report for LDAP object');
 				}
 				return text;
 			});
@@ -105,20 +105,20 @@ define([
 
 			var _widgetsLabelText = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext( 'Report for user', 'Report for %d users', n ),
-					'groups/group'      : _.ngettext( 'Report for group', 'Report for %d groups', n ),
-					'computers/computer': _.ngettext( 'Report for computer', 'Report for %d computers', n ),
-					'networks/network'  : _.ngettext( 'Report for network object', 'Report for %d network objects', n ),
-					'dns/dns'           : _.ngettext( 'Report for DNS object', 'Report for %d DNS objects', n ),
-					'dhcp/dhcp'         : _.ngettext( 'Report for DHCP object', 'Report for %d DHCP objects', n ),
-					'shares/share'      : _.ngettext( 'Report for share', 'Report for %d shares', n ),
-					'shares/print'      : _.ngettext( 'Report for printer', 'Report for %d printers', n ),
-					'mail/mail'         : _.ngettext( 'Report for mail object', 'Report for %d mail objects', n ),
-					'nagios/nagios'     : _.ngettext( 'Report for Nagios object', 'Report for %d Nagios objects', n ),
-					'policies/policy'   : _.ngettext( 'Report for policy', 'Report for %d policies', n )
+					'users/user'        : _.ngettext('Report for user', 'Report for %d users', n),
+					'groups/group'      : _.ngettext('Report for group', 'Report for %d groups', n),
+					'computers/computer': _.ngettext('Report for computer', 'Report for %d computers', n),
+					'networks/network'  : _.ngettext('Report for network object', 'Report for %d network objects', n),
+					'dns/dns'           : _.ngettext('Report for DNS object', 'Report for %d DNS objects', n),
+					'dhcp/dhcp'         : _.ngettext('Report for DHCP object', 'Report for %d DHCP objects', n),
+					'shares/share'      : _.ngettext('Report for share', 'Report for %d shares', n),
+					'shares/print'      : _.ngettext('Report for printer', 'Report for %d printers', n),
+					'mail/mail'         : _.ngettext('Report for mail object', 'Report for %d mail objects', n),
+					'nagios/nagios'     : _.ngettext('Report for Nagios object', 'Report for %d Nagios objects', n),
+					'policies/policy'   : _.ngettext('Report for policy', 'Report for %d policies', n)
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _.ngettext( 'Report for LDAP object', 'Report for %d LDAP objects', n );
+					text = _.ngettext('Report for LDAP object', 'Report for %d LDAP objects', n);
 				}
 				return text;
 			});
@@ -167,53 +167,55 @@ define([
 		onDone: function(options) {
 			var _waitingContentText = lang.hitch(this, function(n) {
 				var text = {
-					'users/user'        : _.ngettext( '<p>Generating user report for one object.</p>',
-					                                  '<p>Generating user report for %d objects.</p>', n ),
-					'groups/group'      : _.ngettext( '<p>Generating group report for one object.</p>',
-					                                  '<p>Generating group report for %d objects.</p>', n ),
-					'computers/computer': _.ngettext( '<p>Generating computer report for one object.</p>',
-					                                  '<p>Generating computer report for %d objects.</p>', n ),
-					'networks/network'  : _.ngettext( '<p>Generating network object report for one object.</p>',
-					                                  '<p>Generating network object report for %d objects.</p>', n ),
-					'dns/dns'           : _.ngettext( '<p>Generating DNS object report for one object.</p>',
-					                                  '<p>Generating DNS object report for %d objects.</p>', n ),
-					'dhcp/dhcp'         : _.ngettext( '<p>Generating DHCP object report for one object.</p>',
-					                                  '<p>Generating DHCP object report for %d objects.</p>', n ),
-					'shares/share'      : _.ngettext( '<p>Generating share report for one object.</p>',
-					                                  '<p>Generating share report for %d objects.</p>', n ),
-					'shares/print'      : _.ngettext( '<p>Generating printer report for one object.</p>',
-					                                  '<p>Generating printer report for %d objects.</p>', n ),
-					'mail/mail'         : _.ngettext( '<p>Generating mail object report for one object.</p>',
-					                                  '<p>Generating mail object report for %d objects.</p>', n ),
-					'nagios/nagios'     : _.ngettext( '<p>Generating Nagios object report for one object.</p>',
-					                                  '<p>Generating Nagios object report for %d objects.</p>', n ),
-					'policies/policy'   : _.ngettext( '<p>Generating policy report for one object.</p>',
-					                                  '<p>Generating policy report for %d objects.</p>', n )
+					'users/user'        : _.ngettext('<p>Generating user report for one object.</p>',
+					                                  '<p>Generating user report for %d objects.</p>', n),
+					'groups/group'      : _.ngettext('<p>Generating group report for one object.</p>',
+					                                  '<p>Generating group report for %d objects.</p>', n),
+					'computers/computer': _.ngettext('<p>Generating computer report for one object.</p>',
+					                                  '<p>Generating computer report for %d objects.</p>', n),
+					'networks/network'  : _.ngettext('<p>Generating network object report for one object.</p>',
+					                                  '<p>Generating network object report for %d objects.</p>', n),
+					'dns/dns'           : _.ngettext('<p>Generating DNS object report for one object.</p>',
+					                                  '<p>Generating DNS object report for %d objects.</p>', n),
+					'dhcp/dhcp'         : _.ngettext('<p>Generating DHCP object report for one object.</p>',
+					                                  '<p>Generating DHCP object report for %d objects.</p>', n),
+					'shares/share'      : _.ngettext('<p>Generating share report for one object.</p>',
+					                                  '<p>Generating share report for %d objects.</p>', n),
+					'shares/print'      : _.ngettext('<p>Generating printer report for one object.</p>',
+					                                  '<p>Generating printer report for %d objects.</p>', n),
+					'mail/mail'         : _.ngettext('<p>Generating mail object report for one object.</p>',
+					                                  '<p>Generating mail object report for %d objects.</p>', n),
+					'nagios/nagios'     : _.ngettext('<p>Generating Nagios object report for one object.</p>',
+					                                  '<p>Generating Nagios object report for %d objects.</p>', n),
+					'policies/policy'   : _.ngettext('<p>Generating policy report for one object.</p>',
+					                                  '<p>Generating policy report for %d objects.</p>', n)
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _.ngettext( '<p>Generating LDAP object report for one object.</p>',
-					                   '<p>Generating LDAP object report for %d objects.</p>', n );
+					text = _.ngettext('<p>Generating LDAP object report for one object.</p>',
+					                   '<p>Generating LDAP object report for %d objects.</p>', n);
 				}
 				text += '<p>This may take a while</p>';
 				return text;
 			});
 			var _standbyDuringSuccessText = lang.hitch(this, function(type, href) {
-				var text = {
-					'users/user'        : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">user report</a>', type, href ),
-					'groups/group'      : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">group report</a>', type, href ),
-					'computers/computer': _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">computer report</a>', type, href ),
-					'networks/network'  : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">network object report</a>', type, href ),
-					'dns/dns'           : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">DNS object report</a>', type, href ),
-					'dhcp/dhcp'         : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">DHCP object report</a>', type, href ),
-					'shares/share'      : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">share report</a>', type, href ),
-					'shares/print'      : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">printer report</a>', type, href ),
-					'mail/mail'         : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">mail object report</a>', type, href ),
-					'nagios/nagios'     : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">Nagios object report</a>', type, href ),
-					'policies/policy'   : _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">policy report</a>', type, href )
+				var obj = {
+					'users/user'        : _('user report'),
+					'groups/group'      : _('group report'),
+					'computers/computer': _('computer report'),
+					'networks/network'  : _('network object report'),
+					'dns/dns'           : _('DNS object report'),
+					'dhcp/dhcp'         : _('DHCP object report'),
+					'shares/share'      : _('share report'),
+					'shares/print'      : _('printer report'),
+					'mail/mail'         : _('mail object report'),
+					'nagios/nagios'     : _('Nagios object report'),
+					'policies/policy'   : _('policy report')
 				}[this.moduleFlavor];
-				if (!text) {
-					text = _( 'The %s can be downloaded at<br><br><a target="_blank" href="%s">LDAP object report</a>', type, href );
+				if (!obj) {
+					obj = _('LDAP object report');
 				}
+				var text = lang.replace(_('The {type} can be downloaded at<br><br><a target="_blank" href="{href}">{obj}</a>'),
+				                        {type, href, obj});
 				return text;
 			});
 

@@ -130,20 +130,20 @@ define([
 		buildRendering: function() {
 			var _labelText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Loading user...' ),
-					'groups/group'      : _( 'Loading group...' ),
-					'computers/computer': _( 'Loading computer...' ),
-					'networks/network'  : _( 'Loading network object...' ),
-					'dns/dns'           : _( 'Loading DNS object...' ),
-					'dhcp/dhcp'         : _( 'Loading DHCP object...' ),
-					'shares/share'      : _( 'Loading share...' ),
-					'shares/print'      : _( 'Loading printer...' ),
-					'mail/mail'         : _( 'Loading mail object...' ),
-					'nagios/nagios'     : _( 'Loading Nagios object...' ),
-					'policies/policy'   : _( 'Loading policy...' )
+					'users/user'        : _('Loading user...'),
+					'groups/group'      : _('Loading group...'),
+					'computers/computer': _('Loading computer...'),
+					'networks/network'  : _('Loading network object...'),
+					'dns/dns'           : _('Loading DNS object...'),
+					'dhcp/dhcp'         : _('Loading DHCP object...'),
+					'shares/share'      : _('Loading share...'),
+					'shares/print'      : _('Loading printer...'),
+					'mail/mail'         : _('Loading mail object...'),
+					'nagios/nagios'     : _('Loading Nagios object...'),
+					'policies/policy'   : _('Loading policy...')
 				}[this.detailPage.moduleFlavor];
 				if (!text) {
-					text = _( 'Loading LDAP object...' );
+					text = _('Loading LDAP object...');
 				}
 				return text;
 			});

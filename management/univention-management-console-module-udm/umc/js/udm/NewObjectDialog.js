@@ -82,20 +82,20 @@ define([
 
 			var _titleText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Add a new user' ),
-					'groups/group'      : _( 'Add a new group' ),
-					'computers/computer': _( 'Add a new computer' ),
-					'networks/network'  : _( 'Add a new network object' ),
-					'dns/dns'           : _( 'Add a new DNS object' ),
-					'dhcp/dhcp'         : _( 'Add a new DHCP object' ),
-					'shares/share'      : _( 'Add a new share' ),
-					'shares/print'      : _( 'Add a new printer' ),
-					'mail/mail'         : _( 'Add a new mail object' ),
-					'nagios/nagios'     : _( 'Add a new Nagios object' ),
-					'policies/policy'   : _( 'Add a new policy' )
+					'users/user'        : _('Add a new user'),
+					'groups/group'      : _('Add a new group'),
+					'computers/computer': _('Add a new computer'),
+					'networks/network'  : _('Add a new network object'),
+					'dns/dns'           : _('Add a new DNS object'),
+					'dhcp/dhcp'         : _('Add a new DHCP object'),
+					'shares/share'      : _('Add a new share'),
+					'shares/print'      : _('Add a new printer'),
+					'mail/mail'         : _('Add a new mail object'),
+					'nagios/nagios'     : _('Add a new Nagios object'),
+					'policies/policy'   : _('Add a new policy')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'Add a new LDAP object' );
+					text = _('Add a new LDAP object');
 				}
 				return text;
 			});

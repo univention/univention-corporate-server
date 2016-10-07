@@ -62,7 +62,7 @@ define([
 	"umc/i18n!umc/modules/udm",
 	"dijit/registry",
 	"umc/_all"
-], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _ ) {
+], function(declare, lang, array, on, Deferred, all, when, construct, domClass, topic, json, TitlePane, render, tools, dialog, ContainerWidget, MultiInput, ComboBox, Form, Page, StandbyMixin, TabController, StackContainer, Text, Button, LabelPane, Template, OverwriteLabel, UMCPBundle, cache, _) {
 
 	var _StandbyPage = declare([Page, StandbyMixin], {});
 
@@ -314,7 +314,7 @@ define([
 				}));
 
 				// var objecttype = vals.$labelObjectType$;
-				var path = tools.ldapDn2Path( this.ldapName, this.ldapBase );
+				var path = tools.ldapDn2Path( this.ldapName, this.ldapBase);
 				var objecttype = _('Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
 				var position = _('Position: <i>%(path)s</i>', { path: path });
 				var position_text = lang.replace('{0}<br>{1}', [objecttype, position]);
@@ -518,7 +518,7 @@ define([
 					// filter out the property 'name'
 					var usedProperties = {};
 					array.forEach(newLayout, function(jlayout) {
-					   if ( jlayout instanceof Array || typeof jlayout == "object" ) {
+					   if ( jlayout instanceof Array || typeof jlayout == "object") {
 						   var nestedLayout = (undefined === jlayout.layout) ? jlayout : jlayout.layout;
 							array.forEach( nestedLayout, function(klayout) {
 								array.forEach(tools.stringOrArray(klayout), function(llayout) {
@@ -586,9 +586,9 @@ define([
 					}, this);
 
 					// make sure that the widget use the flavored umcpCommand
-					array.forEach( newProperties, function( iprop ) {
+					array.forEach( newProperties, function( iprop) {
 						iprop.umcpCommand = this.umcpCommand;
-					}, this );
+					}, this);
 
 					// for the policy group, we need a ComboBox that allows to link an object
 					// to a particular policy
@@ -655,13 +655,13 @@ define([
 			var optionMap = {};
 			array.forEach(_properties, function(iprop) {
 				// ignore internal properties
-				if ( iprop.id.slice( 0, 1 ) == '$' && iprop.id.slice( -1 ) == '$' ) {
+				if ( iprop.id.slice( 0, 1) == '$' && iprop.id.slice( -1) == '$') {
 					properties.push(iprop);
 					return;
 				}
-				if ( 'LinkList' == iprop.type ) {
+				if ('LinkList' == iprop.type) {
 					iprop.multivalue = false;
-				} else if ( iprop.type.indexOf('MultiObjectSelect') >= 0 ) {
+				} else if ( iprop.type.indexOf('MultiObjectSelect') >= 0) {
 					iprop.multivalue = false;
 				} else if (iprop.multivalue && 'MultiInput' != iprop.type) {
 					// handle multivalue inputs
@@ -686,7 +686,7 @@ define([
 				}
 
 				// handle editable items
-				if ( iprop.readonly ) {
+				if ( iprop.readonly) {
 					iprop.disabled = true;
 				} else {
 					if (iprop.disabled !== true) {
@@ -714,9 +714,9 @@ define([
 			}
 
 			// make sure that the widget use the flavored umcpCommand
-			array.forEach( properties, function( iprop ) {
+			array.forEach( properties, function( iprop) {
 				iprop.umcpCommand = this.umcpCommand;
-			}, this );
+			}, this);
 
 			return properties;
 		},
@@ -822,34 +822,34 @@ define([
 		addActiveDirectoryWarning: function() {
 			var _nameText = lang.hitch(this, function(n, value) {
 				var text = {
-					'users/user'        : _.ngettext( 'The user "%s" is part of the Active Directory domain.',
-					                                  'The users are part of the Active Directory domain.', n, value ),
-					'groups/group'      : _.ngettext( 'The group "%s" is part of the Active Directory domain.',
-					                                  'The groups are part of the Active Directory domain.', n, value ),
-					'computers/computer': _.ngettext( 'The computer "%s" is part of the Active Directory domain.',
-					                                  'The computers are part of the Active Directory domain.', n, value ),
-					'networks/network'  : _.ngettext( 'The network object "%s" is part of the Active Directory domain.',
-					                                  'The network objects are part of the Active Directory domain.', n, value ),
-					'dns/dns'           : _.ngettext( 'The DNS object "%s" is part of the Active Directory domain.',
-					                                  'The DNS objects are part of the Active Directory domain.', n, value ),
-					'dhcp/dhcp'         : _.ngettext( 'The DHCP object "%s" is part of the Active Directory domain.',
-					                                  'The DHCP objects are part of the Active Directory domain.', n, value ),
-					'shares/share'      : _.ngettext( 'The share "%s" is part of the Active Directory domain.',
-					                                  'The shares are part of the Active Directory domain.', n, value ),
-					'shares/print'      : _.ngettext( 'The printer "%s" is part of the Active Directory domain.',
-					                                  'The printers are part of the Active Directory domain.', n, value ),
-					'mail/mail'         : _.ngettext( 'The mail object "%s" is part of the Active Directory domain.',
-					                                  'The mail objects are part of the Active Directory domain.', n, value ),
-					'nagios/nagios'     : _.ngettext( 'The Nagios object "%s" is part of the Active Directory domain.',
-					                                  'The Nagios objects are part of the Active Directory domain.', n, value ),
-					'policies/policy'   : _.ngettext( 'The policy "%s" is part of the Active Directory domain.',
-					                                  'The policies are part of the Active Directory domain.', n, value )
+					'users/user'        : _.ngettext('The user "%s" is part of the Active Directory domain.',
+					                                  'The users are part of the Active Directory domain.', n, value),
+					'groups/group'      : _.ngettext('The group "%s" is part of the Active Directory domain.',
+					                                  'The groups are part of the Active Directory domain.', n, value),
+					'computers/computer': _.ngettext('The computer "%s" is part of the Active Directory domain.',
+					                                  'The computers are part of the Active Directory domain.', n, value),
+					'networks/network'  : _.ngettext('The network object "%s" is part of the Active Directory domain.',
+					                                  'The network objects are part of the Active Directory domain.', n, value),
+					'dns/dns'           : _.ngettext('The DNS object "%s" is part of the Active Directory domain.',
+					                                  'The DNS objects are part of the Active Directory domain.', n, value),
+					'dhcp/dhcp'         : _.ngettext('The DHCP object "%s" is part of the Active Directory domain.',
+					                                  'The DHCP objects are part of the Active Directory domain.', n, value),
+					'shares/share'      : _.ngettext('The share "%s" is part of the Active Directory domain.',
+					                                  'The shares are part of the Active Directory domain.', n, value),
+					'shares/print'      : _.ngettext('The printer "%s" is part of the Active Directory domain.',
+					                                  'The printers are part of the Active Directory domain.', n, value),
+					'mail/mail'         : _.ngettext('The mail object "%s" is part of the Active Directory domain.',
+					                                  'The mail objects are part of the Active Directory domain.', n, value),
+					'nagios/nagios'     : _.ngettext('The Nagios object "%s" is part of the Active Directory domain.',
+					                                  'The Nagios objects are part of the Active Directory domain.', n, value),
+					'policies/policy'   : _.ngettext('The policy "%s" is part of the Active Directory domain.',
+					                                  'The policies are part of the Active Directory domain.', n, value)
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _.ngettext( 'The LDAP object "%s" is part of the Active Directory domain.',
-					                   'The LDAP objects are part of the Active Directory domain.', n, value  );
+					text = _.ngettext('The LDAP object "%s" is part of the Active Directory domain.',
+					                   'The LDAP objects are part of the Active Directory domain.', n, value );
 				}
-				text = _( '<b>Attention:</b> ) ' + text + _( ' UCS can only change certain attributes.' );
+				text = _('<b>Attention:</b>) ' + text + _(' UCS can only change certain attributes.');
 				return text;
 			});
 
@@ -895,17 +895,17 @@ define([
 
 			var option_prop = _getOptionProperty(properties);
 			var option_values = {};
-			if ( option_prop && option_prop.widgets.length > 0 && !this._multiEdit ) {
+			if ( option_prop && option_prop.widgets.length > 0 && !this._multiEdit) {
 				var optiontab = {
-					label: _( '[Options]' ),
-					description: _( 'Options describing the basic features of the LDAP object' ),
+					label: _('[Options]'),
+					description: _('Options describing the basic features of the LDAP object'),
 					layout: [ '$options$' ]
 				};
-				layout.push( optiontab );
+				layout.push( optiontab);
 
 				var option_widgets = [];
 				var option_layout = [];
-				array.forEach( option_prop.widgets, function ( option ) {
+				array.forEach( option_prop.widgets, function ( option) {
 					option = lang.clone(option);
 					// special case: bring options from template into the widget
 					if (template && template._options) {
@@ -913,16 +913,16 @@ define([
 					}
 					option_widgets.push( lang.mixin( {
 						disabled: isNewObject ? false : ! option.editable
-					}, option ) );
+					}, option));
 					option_values[ option.id ] = option.value;
-					option_layout.push( option.id );
-				} );
+					option_layout.push( option.id);
+				});
 				option_prop.widgets = option_widgets;
 				option_prop.layout = option_layout;
 			} else {
-				properties = array.filter( properties, function( item ) {
+				properties = array.filter( properties, function( item) {
 					return item.id != '$options$';
-				} );
+				});
 			}
 
 			formBuiltDeferred.then(lang.hitch(this, function() {
@@ -933,7 +933,7 @@ define([
 
 				// set options... required when creating a new object
 				var optionsWidget = this._form.widgets.$options$;
-				optionsWidget.set( 'value', option_values );
+				optionsWidget.set('value', option_values);
 			}));
 
 			return properties;
@@ -952,19 +952,19 @@ define([
 
 		_autoUpdateTabTitle: function(widgets) {
 			if (this._multiEdit) {
-				this.moduleWidget.set( 'title', this.moduleWidget.defaultTitle + ' ' + _('(multi-edit)'));
+				this.moduleWidget.set('title', this.moduleWidget.defaultTitle + ' ' + _('(multi-edit)'));
 			} else {
 				// find property identifying the object
-				tools.forIn( widgets, function( name, widget ) {
-					if ( widget.identifies ) {
+				tools.forIn( widgets, function( name, widget) {
+					if ( widget.identifies) {
 						// watch value and modify title (escaped)
-						this.own(widget.watch('value', lang.hitch( this, function( attr, oldValue, _value ) {
-							var value = _value instanceof Array ? _value.join( " " ) : _value;
-							this.moduleWidget.set( 'titleDetail', value );
-						} ) ) );
+						this.own(widget.watch('value', lang.hitch( this, function( attr, oldValue, _value) {
+							var value = _value instanceof Array ? _value.join( " ") : _value;
+							this.moduleWidget.set('titleDetail', value);
+						})));
 						return false; // break out of forIn
 					}
-				}, this );
+				}, this);
 			}
 		},
 
@@ -1224,20 +1224,20 @@ define([
 		getButtonDefinitions: function() {
 			var _createLabelText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Create user' ),
-					'groups/group'      : _( 'Create group' ),
-					'computers/computer': _( 'Create computer' ),
-					'networks/network'  : _( 'Create network object' ),
-					'dns/dns'           : _( 'Create DNS object' ),
-					'dhcp/dhcp'         : _( 'Create DHCP object' ),
-					'shares/share'      : _( 'Create share' ),
-					'shares/print'      : _( 'Create printer' ),
-					'mail/mail'         : _( 'Create mail object' ),
-					'nagios/nagios'     : _( 'Create Nagios object' ),
-					'policies/policy'   : _( 'Create policy' )
+					'users/user'        : _('Create user'),
+					'groups/group'      : _('Create group'),
+					'computers/computer': _('Create computer'),
+					'networks/network'  : _('Create network object'),
+					'dns/dns'           : _('Create DNS object'),
+					'dhcp/dhcp'         : _('Create DHCP object'),
+					'shares/share'      : _('Create share'),
+					'shares/print'      : _('Create printer'),
+					'mail/mail'         : _('Create mail object'),
+					'nagios/nagios'     : _('Create Nagios object'),
+					'policies/policy'   : _('Create policy')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'Create LDAP object' );
+					text = _('Create LDAP object');
 				}
 				return text;
 			});
@@ -1246,7 +1246,7 @@ define([
 			if (this.newObjectOptions) {
 				createLabel = _createLabelText();
 			} else {
-				createLabel = _( 'Save' );
+				createLabel = _('Save');
 			}
 			var closeLabel = _('Back');
 			if (this.isClosable) {
@@ -1434,9 +1434,9 @@ define([
 						}));
 					} else {
 						// fallback
-						var value = array.map( iinfo, function( item ) {
+						var value = array.map( iinfo, function( item) {
 							return item.value;
-						} );
+						});
 						iwidget.set('value', value);
 					}
 				}, this);
@@ -1517,89 +1517,89 @@ define([
 			// event stub
 		},
 
-		onOptionsChanged: function( newValue ) {
+		onOptionsChanged: function( newValue) {
 			var activeOptions = [];
 
 			// retrieve active options
 			var optionsWidget = this._form.widgets.$options$;
-			tools.forIn( optionsWidget.get( 'value' ), function( item, value ) {
-				if ( value === true ) {
-					activeOptions.push( item );
+			tools.forIn( optionsWidget.get('value'), function( item, value) {
+				if ( value === true) {
+					activeOptions.push( item);
 				}
-			} );
+			});
 
 			// hide/show widgets
-			tools.forIn( this._propertyOptionMap, lang.hitch( this, function( prop, options ) {
+			tools.forIn( this._propertyOptionMap, lang.hitch( this, function( prop, options) {
 				var visible = false;
-				if ( ! (options instanceof Array) || ! options.length  ) {
+				if ( ! (options instanceof Array) || ! options.length ) {
 					visible = true;
 				} else {
-					array.forEach( options, function( option ) {
-						if ( array.indexOf(activeOptions, option) != -1 ) {
+					array.forEach( options, function( option) {
+						if ( array.indexOf(activeOptions, option) != -1) {
 							visible = true;
 						}
-					} );
+					});
 				}
-				var iwidget = this._form.getWidget( prop );
+				var iwidget = this._form.getWidget( prop);
 				if (iwidget) {
-					iwidget.set( 'visible' , visible );
+					iwidget.set('visible' , visible);
 				}
-			} ) );
+			}));
 
 			// hide/show title panes
-			this._visibilityTitlePanes( this._layoutMap );
+			this._visibilityTitlePanes( this._layoutMap);
 		},
 
-		_anyVisibleWidget: function( titlePane ) {
+		_anyVisibleWidget: function( titlePane) {
 			var visible = false;
-			array.forEach( titlePane.layout, lang.hitch( this, function( element ) {
-				if ( element instanceof Array ) {
-					array.forEach( element, lang.hitch( this, function( property ) {
-						if ( property in this._form._widgets ) {
-							if ( this._form._widgets[ property ].get( 'visible' ) === true ) {
+			array.forEach( titlePane.layout, lang.hitch( this, function( element) {
+				if ( element instanceof Array) {
+					array.forEach( element, lang.hitch( this, function( property) {
+						if ( property in this._form._widgets) {
+							if ( this._form._widgets[ property ].get('visible') === true) {
 								visible = true;
 								return false;
 							}
 						}
-					} ) );
+					}));
 					// if there is a visible widget there is no need to check the other widgets
-					if ( visible ) {
+					if ( visible) {
 						return false;
 					}
-				} else if ( typeof element == "object" ) {
-					if ( this._anyVisibleWidget( element ) ) {
-						domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', false );
+				} else if ( typeof element == "object") {
+					if ( this._anyVisibleWidget( element)) {
+						domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', false);
 						visible = true;
 						return false;
 					} else {
-						domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', true );
+						domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', true);
 					}
 				}
-			} ) );
+			}));
 
 			return visible;
 		},
 
-		_visibilityTitlePanes: function( layout ) {
-			array.forEach( layout, lang.hitch( this, function( tab ) {
-				if ( typeof tab == "object" ) {
+		_visibilityTitlePanes: function( layout) {
+			array.forEach( layout, lang.hitch( this, function( tab) {
+				if ( typeof tab == "object") {
 					var visible = false;
-					array.forEach( tab.layout, lang.hitch( this, function( element ) {
-						if ( element instanceof Array ) {
+					array.forEach( tab.layout, lang.hitch( this, function( element) {
+						if ( element instanceof Array) {
 							// ignore for now
 							visible = true;
 							return;
 						}
-						if ( this._anyVisibleWidget( element ) ) {
-							domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', false );
+						if ( this._anyVisibleWidget( element)) {
+							domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', false);
 							visible = true;
 						} else {
-							domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', true );
+							domClass.toggle( element.$refTitlePane$.domNode, 'dijitHidden', true);
 						}
-					} ) );
+					}));
 					this._setTabVisibility(tab.$refSubTab$, visible);
 				}
-			} ) );
+			}));
 		},
 
 		haveValuesChanged: function() {
@@ -1884,20 +1884,20 @@ define([
 		getAlteredValues: function() {
 			var _consoleErrorText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'Failed to retrieve the user from the server.' ),
-					'groups/group'      : _( 'Failed to retrieve the group from the server.' ),
-					'computers/computer': _( 'Failed to retrieve the computer from the server.' ),
-					'networks/network'  : _( 'Failed to retrieve the network object from the server.' ),
-					'dns/dns'           : _( 'Failed to retrieve the DNS object from the server.' ),
-					'dhcp/dhcp'         : _( 'Failed to retrieve the DHCP object from the server.' ),
-					'shares/share'      : _( 'Failed to retrieve the share from the server.' ),
-					'shares/print'      : _( 'Failed to retrieve the printer from the server.' ),
-					'mail/mail'         : _( 'Failed to retrieve the mail object from the server.' ),
-					'nagios/nagios'     : _( 'Failed to retrieve the Nagios object from the server.' ),
-					'policies/policy'   : _( 'Failed to retrieve the policy from the server.' )
+					'users/user'        : _('Failed to retrieve the user from the server.'),
+					'groups/group'      : _('Failed to retrieve the group from the server.'),
+					'computers/computer': _('Failed to retrieve the computer from the server.'),
+					'networks/network'  : _('Failed to retrieve the network object from the server.'),
+					'dns/dns'           : _('Failed to retrieve the DNS object from the server.'),
+					'dhcp/dhcp'         : _('Failed to retrieve the DHCP object from the server.'),
+					'shares/share'      : _('Failed to retrieve the share from the server.'),
+					'shares/print'      : _('Failed to retrieve the printer from the server.'),
+					'mail/mail'         : _('Failed to retrieve the mail object from the server.'),
+					'nagios/nagios'     : _('Failed to retrieve the Nagios object from the server.'),
+					'policies/policy'   : _('Failed to retrieve the policy from the server.')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'Failed to retrieve the LDAP object from the server.' );
+					text = _('Failed to retrieve the LDAP object from the server.');
 				}return text;
 			});
 

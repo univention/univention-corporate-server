@@ -229,20 +229,20 @@ define([
 		getCurrentObjectTypeName: function() {
 			var _returnText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'users' ),
-					'groups/group'      : _( 'groups' ),
-					'computers/computer': _( 'computers' ),
-					'networks/network'  : _( 'network objects' ),
-					'dns/dns'           : _( 'DNS objects' ),
-					'dhcp/dhcp'         : _( 'DHCP objects' ),
-					'shares/share'      : _( 'shares' ),
-					'shares/print'      : _( 'printers' ),
-					'mail/mail'         : _( 'mail objects' ),
-					'nagios/nagios'     : _( 'Nagios objects' ),
-					'policies/policy'   : _( 'policies' )
+					'users/user'        : _('users'),
+					'groups/group'      : _('groups'),
+					'computers/computer': _('computers'),
+					'networks/network'  : _('network objects'),
+					'dns/dns'           : _('DNS objects'),
+					'dhcp/dhcp'         : _('DHCP objects'),
+					'shares/share'      : _('shares'),
+					'shares/print'      : _('printers'),
+					'mail/mail'         : _('mail objects'),
+					'nagios/nagios'     : _('Nagios objects'),
+					'policies/policy'   : _('policies')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'LDAP objects' );
+					text = _('LDAP objects');
 				}
 				return text;
 			});
@@ -308,20 +308,20 @@ define([
 		_getOptionSelectionPage: function() {
 			var _templateLabelText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'User template' ),
-					'groups/group'      : _( 'Group template' ),
-					'computers/computer': _( 'Computer template' ),
-					'networks/network'  : _( 'Network object template' ),
-					'dns/dns'           : _( 'DNS object template' ),
-					'dhcp/dhcp'         : _( 'DHCP object template' ),
-					'shares/share'      : _( 'Share template' ),
-					'shares/print'      : _( 'Printer template' ),
-					'mail/mail'         : _( 'Mail object template' ),
-					'nagios/nagios'     : _( 'Nagios object template' ),
-					'policies/policy'   : _( 'Policy template' )
+					'users/user'        : _('User template'),
+					'groups/group'      : _('Group template'),
+					'computers/computer': _('Computer template'),
+					'networks/network'  : _('Network object template'),
+					'dns/dns'           : _('DNS object template'),
+					'dhcp/dhcp'         : _('DHCP object template'),
+					'shares/share'      : _('Share template'),
+					'shares/print'      : _('Printer template'),
+					'mail/mail'         : _('Mail object template'),
+					'nagios/nagios'     : _('Nagios object template'),
+					'policies/policy'   : _('Policy template')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'LDAP object template' );
+					text = _('LDAP object template');
 				}
 				return text;
 			});
@@ -470,20 +470,20 @@ define([
 		getObjectTypeName: function() {
 			var _defaultObjectTypeNameText = lang.hitch(this, function() {
 				var text = {
-					'users/user'        : _( 'user' ),
-					'groups/group'      : _( 'group' ),
-					'computers/computer': _( 'computer' ),
-					'networks/network'  : _( 'network object' ),
-					'dns/dns'           : _( 'DNS object' ),
-					'dhcp/dhcp'         : _( 'DHCP object' ),
-					'shares/share'      : _( 'share' ),
-					'shares/print'      : _( 'printer' ),
-					'mail/mail'         : _( 'mail object' ),
-					'nagios/nagios'     : _( 'Nagios object' ),
-					'policies/policy'   : _( 'policy' )
+					'users/user'        : _('user'),
+					'groups/group'      : _('group'),
+					'computers/computer': _('computer'),
+					'networks/network'  : _('network object'),
+					'dns/dns'           : _('DNS object'),
+					'dhcp/dhcp'         : _('DHCP object'),
+					'shares/share'      : _('share'),
+					'shares/print'      : _('printer'),
+					'mail/mail'         : _('mail object'),
+					'nagios/nagios'     : _('Nagios object'),
+					'policies/policy'   : _('policy')
 				}[this.moduleFlavor];
 				if (!text) {
-					text = _( 'LDAP object' );
+					text = _('LDAP object');
 				}
 				return text;
 			});
