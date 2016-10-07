@@ -1,3 +1,9 @@
+univention-kernel-image (9.0.0-11) unstable; urgency=low
+
+  * Bug #41058: Update to linux-4.1.33
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 07 Oct 2016 09:04:46 +0200
+
 univention-kernel-image (9.0.0-10) unstable; urgency=low
 
   * Bug #41054: Add option to disable mbcache
