@@ -1,3 +1,9 @@
+univention-management-console-module-ucr (6.0.0-4) unstable; urgency=medium
+
+  * Bug #23837: add ucslint to build process
+
+ -- Florian Best <best@univention.de>  Fri, 07 Oct 2016 15:19:37 +0200
+
 univention-management-console-module-ucr (6.0.0-3) unstable; urgency=medium
 
   * Bug #42160: Corrected a typo in the german translation.
