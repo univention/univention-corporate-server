@@ -758,14 +758,6 @@ appliance_basesettings ()
 	
 	/usr/sbin/univention-app-appliance $app
 
-	# Remove if bug # is published
-	if ucr get bootsplash/theme | grep -q ucs-appliance-light; then
-		ucr set grub/color/highlight="black/black" \
-			grub/color/normal="black/black" \
-			grub/menu/color/highlight="black/black" \
-			grub/menu/color/normal="black/black"
-	fi
-
 	app_fav_list=""
 	for a in $apps; do
 		app_fav_list="$app_fav_list,apps:$a"
