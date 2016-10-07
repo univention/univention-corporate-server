@@ -196,9 +196,9 @@ register_apps ()
 
 register_components ()
 {
-	local $components="$1"
+	local components="$1"
 	echo "deb http://192.168.0.10/build2/ ucs_4.1-0-"$components"/all/" >> /etc/apt/sources.list
-	echo "deb http://192.168.0.10/build2/ ucs_4.1-0-"$components"/$(ARCH)/" >> /etc/apt/sources.list
+	echo "deb http://192.168.0.10/build2/ ucs_4.1-0-"$components"/\$(ARCH)/" >> /etc/apt/sources.list
 
 #	for component in $components; do
 #		component_prefix="repository/online/component/"
@@ -842,7 +842,7 @@ __EOF__
 
 appliance_reset_servers ()
 {
-	local $components=""
+	local components=""
 	[ -n "$1" ] && local $components="$1"
 	for component in $components; do
 		ucr set repository/online/component/"$component"/server="https://updates.software-univention.de/"
