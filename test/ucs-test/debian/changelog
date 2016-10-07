@@ -1,3 +1,9 @@
+ucs-test (6.0.36-33) unstable; urgency=medium
+
+  * Bug #40656: Re-enable can_apps_be_installed for UCS@school
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Fri, 07 Oct 2016 10:59:59 +0200
+
 ucs-test (6.0.36-32) unstable; urgency=medium
 
   * Bug #42586: ucs-test (appcenter): rework 79_umc_broken_failure_error_exit_code.
