@@ -227,14 +227,34 @@ define([
 		},
 
 		getCurrentObjectTypeName: function() {
+			var _returnText = lang.hitch(this, function() {
+				var text = {
+					'users/user'        : _( 'users' ),
+					'groups/group'      : _( 'groups' ),
+					'computers/computer': _( 'computers' ),
+					'networks/network'  : _( 'network objects' ),
+					'dns/dns'           : _( 'DNS objects' ),
+					'dhcp/dhcp'         : _( 'DHCP objects' ),
+					'shares/share'      : _( 'shares' ),
+					'shares/print'      : _( 'printers' ),
+					'mail/mail'         : _( 'mail objects' ),
+					'nagios/nagios'     : _( 'Nagios objects' ),
+					'policies/policy'   : _( 'policies' )
+				}[this.moduleFlavor];
+				if (!text) {
+					text = _( 'LDAP objects' );
+				}
+				return text;
+			});
+
 			if (this.moduleFlavor !== 'navigation') {
-				return this.objectNamePlural;
+				return _returnText();
 			}
 			try {
 				var o = this._pages['firstPage']._form.getWidget('objectType');
 				return o._ids[o.get('value')].split(':')[0];
 			} catch (error) {
-				return this.objectNamePlural;
+				return _returnText();
 			}
 		},
 
@@ -286,6 +306,26 @@ define([
 
 
 		_getOptionSelectionPage: function() {
+			var _templateLabelText = lang.hitch(this, function() {
+				var text = {
+					'users/user'        : _( 'User template' ),
+					'groups/group'      : _( 'Group template' ),
+					'computers/computer': _( 'Computer template' ),
+					'networks/network'  : _( 'Network object template' ),
+					'dns/dns'           : _( 'DNS object template' ),
+					'dhcp/dhcp'         : _( 'DHCP object template' ),
+					'shares/share'      : _( 'Share template' ),
+					'shares/print'      : _( 'Printer template' ),
+					'mail/mail'         : _( 'Mail object template' ),
+					'nagios/nagios'     : _( 'Nagios object template' ),
+					'policies/policy'   : _( 'Policy template' )
+				}[this.moduleFlavor];
+				if (!text) {
+					text = _( 'LDAP object template' );
+				}
+				return text;
+			});
+
 			var types = this.types, containers = this.containers, superordinates = this.superordinates, templates = lang.clone(this.templates);
 			// depending on the list we get, create a form for adding
 			// a new LDAP object
@@ -370,7 +410,7 @@ define([
 							type: 'ComboBox',
 							name: 'objectTemplate',
 							value: defaultValue,  // see Bug #13073, for users/user, there exists only one object type
-							label: _('%s template', tools.capitalize(this.objectNameSingular)),
+							label: _templateLabelText(),
 							description: _('A template defines rules for default object properties.'),
 							autoHide: true,
 							staticValues: templates,
@@ -400,7 +440,7 @@ define([
 				}, {
 					type: 'ComboBox',
 					name: 'objectTemplate',
-					label: _('%s template', tools.capitalize(this.objectNameSingular)),
+					label: _templateLabelText(),
 					description: _('A template defines rules for default object properties.'),
 					depends: 'objectType',
 					umcpCommand: this.umcpCommand,
@@ -428,6 +468,26 @@ define([
 		},
 
 		getObjectTypeName: function() {
+			var _defaultObjectTypeNameText = lang.hitch(this, function() {
+				var text = {
+					'users/user'        : _( 'user' ),
+					'groups/group'      : _( 'group' ),
+					'computers/computer': _( 'computer' ),
+					'networks/network'  : _( 'network object' ),
+					'dns/dns'           : _( 'DNS object' ),
+					'dhcp/dhcp'         : _( 'DHCP object' ),
+					'shares/share'      : _( 'share' ),
+					'shares/print'      : _( 'printer' ),
+					'mail/mail'         : _( 'mail object' ),
+					'nagios/nagios'     : _( 'Nagios object' ),
+					'policies/policy'   : _( 'policy' )
+				}[this.moduleFlavor];
+				if (!text) {
+					text = _( 'LDAP object' );
+				}
+				return text;
+			});
+
 			var firstPageValues = this.getValues();
 			var objectTypeName;
 			array.some(this.types, function(type) {
@@ -438,7 +498,7 @@ define([
 			});
 			if (!objectTypeName) {
 				// cache may return empty label for no sub modules
-				objectTypeName = this.objectNameSingular;
+				objectTypeName = _defaultObjectTypeNameText();
 			}
 			return objectTypeName;
 		},

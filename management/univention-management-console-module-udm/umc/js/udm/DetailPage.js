@@ -179,10 +179,6 @@ define([
 		// reference to TabControllers of each subtab
 		_tabControllers: null,
 
-		// LDAP object type name in singular and plural
-		objectNameSingular: '',
-		objectNamePlural: '',
-
 		isSyncedObject: null, // object which is modified (or one of multiedited) has univentionObjectFlag == synced
 
 		'class': 'udmDetailPage',
@@ -824,14 +820,47 @@ define([
 		},
 
 		addActiveDirectoryWarning: function() {
+			var _nameText = lang.hitch(this, function(n, value) {
+				var text = {
+					'users/user'        : _.ngettext( 'The user "%s" is part of the Active Directory domain.',
+					                                  'The users are part of the Active Directory domain.', n, value ),
+					'groups/group'      : _.ngettext( 'The group "%s" is part of the Active Directory domain.',
+					                                  'The groups are part of the Active Directory domain.', n, value ),
+					'computers/computer': _.ngettext( 'The computer "%s" is part of the Active Directory domain.',
+					                                  'The computers are part of the Active Directory domain.', n, value ),
+					'networks/network'  : _.ngettext( 'The network object "%s" is part of the Active Directory domain.',
+					                                  'The network objects are part of the Active Directory domain.', n, value ),
+					'dns/dns'           : _.ngettext( 'The DNS object "%s" is part of the Active Directory domain.',
+					                                  'The DNS objects are part of the Active Directory domain.', n, value ),
+					'dhcp/dhcp'         : _.ngettext( 'The DHCP object "%s" is part of the Active Directory domain.',
+					                                  'The DHCP objects are part of the Active Directory domain.', n, value ),
+					'shares/share'      : _.ngettext( 'The share "%s" is part of the Active Directory domain.',
+					                                  'The shares are part of the Active Directory domain.', n, value ),
+					'shares/print'      : _.ngettext( 'The printer "%s" is part of the Active Directory domain.',
+					                                  'The printers are part of the Active Directory domain.', n, value ),
+					'mail/mail'         : _.ngettext( 'The mail object "%s" is part of the Active Directory domain.',
+					                                  'The mail objects are part of the Active Directory domain.', n, value ),
+					'nagios/nagios'     : _.ngettext( 'The Nagios object "%s" is part of the Active Directory domain.',
+					                                  'The Nagios objects are part of the Active Directory domain.', n, value ),
+					'policies/policy'   : _.ngettext( 'The policy "%s" is part of the Active Directory domain.',
+					                                  'The policies are part of the Active Directory domain.', n, value )
+				}[this.moduleFlavor];
+				if (!text) {
+					text = _.ngettext( 'The LDAP object "%s" is part of the Active Directory domain.',
+					                   'The LDAP objects are part of the Active Directory domain.', n, value  );
+				}
+				text = _( '<b>Attention:</b> ) ' + text + _( ' UCS can only change certain attributes.' );
+				return text;
+			});
+
 			if (!this.active_directory_enabled() || !this.ldapName || !this.isSyncedObject) {
 				return;
 			}
+			var value = '';
 			var name;
-			if (this._multiEdit) {
-				name = _('<b>Attention:</b> The %s are', this.objectNamePlural);
-			} else {
-				var value = '';
+			// for multi edit, this.ldapName is an array
+			var editCount = this._multiEdit ? this.ldapName.length : 1;
+			if (!this._multiEdit) {
 				tools.forIn(this._form._widgets, function(name, widget) {
 					if (widget.identifies) {
 						value = widget.get('value');
@@ -839,11 +868,12 @@ define([
 						return false; // break out of forIn
 					}
 				}, this);
-				name = _('<b>Attention:</b> The %(name)s "%(value)s" is', {name: this.objectNameSingular, value: value});
 			}
+			name = _nameText(editCount, value);
+
 			if (!this.adInformation) {
 				this.adInformation = new Text({
-					content: _('%s part of the Active Directory domain. UCS can only change certain attributes.', name),
+					content: name,
 					'class': 'umcUDMDetailPageWarning'
 				});
 				this.own(this.adInformation);
@@ -1192,9 +1222,29 @@ define([
 		},
 
 		getButtonDefinitions: function() {
+			var _createLabelText = lang.hitch(this, function() {
+				var text = {
+					'users/user'        : _( 'Create user' ),
+					'groups/group'      : _( 'Create group' ),
+					'computers/computer': _( 'Create computer' ),
+					'networks/network'  : _( 'Create network object' ),
+					'dns/dns'           : _( 'Create DNS object' ),
+					'dhcp/dhcp'         : _( 'Create DHCP object' ),
+					'shares/share'      : _( 'Create share' ),
+					'shares/print'      : _( 'Create printer' ),
+					'mail/mail'         : _( 'Create mail object' ),
+					'nagios/nagios'     : _( 'Create Nagios object' ),
+					'policies/policy'   : _( 'Create policy' )
+				}[this.moduleFlavor];
+				if (!text) {
+					text = _( 'Create LDAP object' );
+				}
+				return text;
+			});
+
 			var createLabel = '';
 			if (this.newObjectOptions) {
-				createLabel = _( 'Create %s', this.objectNameSingular );
+				createLabel = _createLabelText();
 			} else {
 				createLabel = _( 'Save' );
 			}
@@ -1832,6 +1882,25 @@ define([
 		},
 
 		getAlteredValues: function() {
+			var _consoleErrorText = lang.hitch(this, function() {
+				var text = {
+					'users/user'        : _( 'Failed to retrieve the user from the server.' ),
+					'groups/group'      : _( 'Failed to retrieve the group from the server.' ),
+					'computers/computer': _( 'Failed to retrieve the computer from the server.' ),
+					'networks/network'  : _( 'Failed to retrieve the network object from the server.' ),
+					'dns/dns'           : _( 'Failed to retrieve the DNS object from the server.' ),
+					'dhcp/dhcp'         : _( 'Failed to retrieve the DHCP object from the server.' ),
+					'shares/share'      : _( 'Failed to retrieve the share from the server.' ),
+					'shares/print'      : _( 'Failed to retrieve the printer from the server.' ),
+					'mail/mail'         : _( 'Failed to retrieve the mail object from the server.' ),
+					'nagios/nagios'     : _( 'Failed to retrieve the Nagios object from the server.' ),
+					'policies/policy'   : _( 'Failed to retrieve the policy from the server.' )
+				}[this.moduleFlavor];
+				if (!text) {
+					text = _( 'Failed to retrieve the LDAP object from the server.' );
+				}return text;
+			});
+
 			// summary:
 			//		Return a list of object properties that have been altered.
 
@@ -1857,7 +1926,7 @@ define([
 				if (this._receivedObjFormData === null) {
 					// error happend while loading the object
 					setTimeout(lang.hitch(this, 'onCloseTab'), 50); // prevent dom-removal exception with setTimeout
-					console.error('Failed to retrieve the %s from the server.', this.objectNameSingular);
+					console.error(_consoleErrorText());
 					return {};
 				}
 				tools.forIn(vals, function(iname, ival) {

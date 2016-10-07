@@ -128,13 +128,33 @@ define([
 		},
 
 		buildRendering: function() {
+			var _labelText = lang.hitch(this, function() {
+				var text = {
+					'users/user'        : _( 'Loading user...' ),
+					'groups/group'      : _( 'Loading group...' ),
+					'computers/computer': _( 'Loading computer...' ),
+					'networks/network'  : _( 'Loading network object...' ),
+					'dns/dns'           : _( 'Loading DNS object...' ),
+					'dhcp/dhcp'         : _( 'Loading DHCP object...' ),
+					'shares/share'      : _( 'Loading share...' ),
+					'shares/print'      : _( 'Loading printer...' ),
+					'mail/mail'         : _( 'Loading mail object...' ),
+					'nagios/nagios'     : _( 'Loading Nagios object...' ),
+					'policies/policy'   : _( 'Loading policy...' )
+				}[this.detailPage.moduleFlavor];
+				if (!text) {
+					text = _( 'Loading LDAP object...' );
+				}
+				return text;
+			});
+
 			this.inherited(arguments);
 			var allWidgets = {};
 			tools.forIn(this._pages, lang.hitch(this, function(pageName, page) {
 				var finishButton = page._footerButtons.finish;
 				var originalLabel = finishButton.get('label');
 				finishButton.set('disabled', true);
-				finishButton.set('label', _('Loading %s...', this.detailPage.objectNameSingular));
+				finishButton.set('label', _labelText());
 				this._mayFinishDeferred.then(function() {
 					finishButton.set('label', originalLabel);
 					finishButton.set('disabled', false);
