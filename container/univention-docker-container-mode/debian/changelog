@@ -1,3 +1,9 @@
+univention-docker-container-mode (1.0.13-2) unstable; urgency=medium
+
+  * Bug #42602: Version bump
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 08 Oct 2016 02:10:29 +0200
+
 univention-docker-container-mode (1.0.13-1) unstable; urgency=medium
 
   * Bug #42602: Fixed quoting issues to support App installations with
