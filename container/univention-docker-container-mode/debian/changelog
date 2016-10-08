@@ -1,3 +1,14 @@
+univention-docker-container-mode (1.0.13-1) unstable; urgency=medium
+
+  * Bug #42602: Fixed quoting issues to support App installations with
+    versions containing spaces
+  * Bug #42603: When upgrading the underlying container, all available release
+    updates are installed in one run
+  * Bug #39803: Abort installation if the App is not found instead of doing
+    nothing
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Sat, 08 Oct 2016 02:01:08 +0200
+
 univention-docker-container-mode (1.0.12-5) unstable; urgency=medium
 
   * Bug #39677: Fix preinit.d script name for run-parts
