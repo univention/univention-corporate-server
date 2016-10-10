@@ -260,7 +260,7 @@ def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFu
 INSTDIR = '/usr/lib/univention-install'
 LOGFILE = '/var/log/univention/join.log'
 LOCKFILE = '/var/lock/univention_umc_join.lock'
-RE_JOINFILE = re.compile('^(?P<script>(?P<prio>\d+)(?P<name>.+))\.(inst|uinst)$')
+RE_JOINFILE = re.compile('^(?P<script>(?P<prio>\d\d)(?P<name>.+))\.(inst|uinst)$')
 RE_NOT_CONFIGURED = re.compile("^Warning: '([^']+)' is not configured.$")
 RE_ERROR = re.compile('^Error: (.*?)$')
 
@@ -318,8 +318,12 @@ class Instance(Base):
 			match = RE_NOT_CONFIGURED.match(line)
 			if match:
 				name = match.groups()[0]
+				if name not in files:
+					# The joinscripts does not exists in the filesystem or has a invalid name
+					MODULE.error('not existing join script or join script with invalid name mentioned in status file: %r' % (name,))
+					continue
 				files[name]['configured'] = False
-				files[name]['status'] = '0:%s' % (files[name]['prio'])
+				files[name]['status'] = '0:%s' % (files[name]['prio'],)
 
 		return files.values()
 

@@ -79,7 +79,8 @@ do
 	test -e "$i" || continue
 	unset VERSION
 	eval "$(grep -h ^VERSION= "$i")"
-	n="${i##*/[0-9][0-9]}"
+	n="${i#/usr/lib/univention-install/}"
+	n="${n#[0-9][0-9]}"
 	n="${n%.uinst}"
 	n="${n%.inst}"
 	if ! grep -Fxq "$n v${VERSION} successful" /var/univention-join/status
