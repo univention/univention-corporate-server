@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
 		perror("Required argument missing: device");
 		return EX_USAGE;
 	}
-	if (argc > 1) {
+	if (argc > 2) {
 		perror("Too many arguments");
 		return EX_USAGE;
 	}

@@ -1,8 +1,8 @@
-univention-system-setup (9.0.4-46) unstable; urgency=medium
+univention-system-setup (9.0.4-47) unstable; urgency=medium
 
   * Bug #42483: Initialize updater/identify from ISO image metadata
 
- -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 10 Oct 2016 14:09:18 +0200
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 10 Oct 2016 15:35:36 +0200
 
 univention-system-setup (9.0.4-43) unstable; urgency=medium
 
