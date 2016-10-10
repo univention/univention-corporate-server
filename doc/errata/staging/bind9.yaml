@@ -1,0 +1,14 @@
+product: ucs
+release: "3.2"
+version: [8]
+scope: ucs_3.2-0-errata3.2-8
+src: bind9
+fix: 1:9.8.4.dfsg.P1-6+nmu2.113.201610101547
+desc: |
+ This update addresses the following issue:
+ * buffer.c in named does not properly construct responses, which allows
+   remote attackers to cause a denial of service (assertion failure and daemon
+   exit) via a crafted query. (CVE-2016-2776)
+bug: [42590]
+cve:
+  - CVE-2016-2776
