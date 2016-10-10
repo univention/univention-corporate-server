@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-directory-logger
+fix: 7.0.1-2.38.201610101831
+desc: |
+ This update addresses the following issue:
+ * Handle logging of entries missing LDAP operational attributes.
+bug: [25404]
