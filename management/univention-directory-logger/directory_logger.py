@@ -211,8 +211,14 @@ def handler(dn, new, old):
 
 		# 2. generate log record
 		if new_copy:
-			modifier = new_copy['modifiersName'][0]
-			timestamp = ldapTime2string( new_copy['modifyTimestamp'][0] )
+			try:
+				modifier = new_copy.get['modifiersName'][0]
+			except LookupError:
+				modifier = '<unknown>'
+			try:
+				timestamp = ldapTime2string(new_copy['modifyTimestamp'][0])
+			except LookupError:
+				timestamp = '<unknown>'
 
 			if not old_copy:	# create branch
 				record = headerfmt % (previoushash, dn, id, modifier, timestamp, 'add')
@@ -279,8 +285,7 @@ def createFile(filename, withdirs=False ):
 	if not os.path.exists( basedir ):
 		os.makedirs( basedir )
 
-	returncode = subprocess.call(["/bin/touch", "%s" % filename ])
-	if not os.path.exists( filename ):
+	if subprocess.call(["/bin/touch", filename ]) or not os.path.exists(filename):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: %s could not be created.' % (name, filename) )
 		return 1
 	os.chown(filename, uidNumber, gidNumber)
