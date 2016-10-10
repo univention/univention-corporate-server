@@ -41,15 +41,18 @@
 #include <sysexits.h>
 #include <unistd.h>
 
+static const int OPEN_FAILED = -1;
+static const off_t LSEEK_FAILED = (off_t) -1;
+
 static const uint8_t *open_disk(const char *path)
 {
 	const int fileno = open(path, O_RDONLY);
-	if (fileno == -1) {
+	if (fileno == OPEN_FAILED) {
 		perror("Could not open file");
 		exit(EX_OSERR);
 	}
 	const off_t size = lseek(fileno, 0, SEEK_END);
-	if (size == (off_t) -1 || size < 0) {
+	if (size == LSEEK_FAILED || size < 0) {
 		perror("Could not find end of file");
 		exit(EX_OSERR);
 	}
@@ -77,15 +80,15 @@ static const char *strD(const uint8_t *disk, const size_t offset, const size_t l
 		exit(EX_OSERR);
 	}
 	size_t i;
-	for (i = length; i-- > 0; ) {
-		if (disk[offset + i] == '\0' || disk[offset + i] == ' ') {
+	for (i = length; i-- > 0; ) {  // i ← length - 1 … 0
+		if (disk[offset + i] == '\0' || disk[offset + i] == ' ') {  // rstrip ' '
 			str[i] = '\0';
-		} else {
+		} else {  // copy the rest verbatim
+			for (i++; i-- > 0; ) {  // i ← i … 0
+				str[i] = (char)disk[offset + i];
+			}
 			break;
 		}
-	}
-	for (; i-- > 0; ) {
-		str[i] = (char)disk[offset + i];
 	}
 	return str;
 }
@@ -145,6 +148,10 @@ int main(int argc, char *argv[])
 {
 	if (argc <= 1) {
 		perror("Required argument missing: device");
+		return EX_USAGE;
+	}
+	if (argc > 1) {
+		perror("Too many arguments");
 		return EX_USAGE;
 	}
 	const char *device = argv[1];
