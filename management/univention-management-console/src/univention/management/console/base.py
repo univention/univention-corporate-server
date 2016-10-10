@@ -295,6 +295,8 @@ class Base(signals.Provider, Translation):
 		self.__error_handling(request, method, *thread.exc_info)
 
 	def error_handling(self, etype, exc, etraceback):
+		if isinstance(exc, udm_errors.ldapError) and isinstance(getattr(exc, 'original_exception', None), ldap.SERVER_DOWN):
+			exc = exc.original_exception
 		if isinstance(exc, ldap.SERVER_DOWN):
 			raise LDAP_ServerDown()
 
