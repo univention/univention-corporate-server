@@ -3,7 +3,7 @@
 ## tags: [udm-computers, SKIP]
 ## roles: [domaincontroller_master]
 ## exposure: careful
-## bugs: [15758]
+## bugs: [15758,31832]
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
@@ -22,9 +22,6 @@ if __name__ == '__main__':
 	ucr.load()
 
 	for role in udm_test.UCSTestUDM.COMPUTER_MODULES:
-		if role == 'computers/macos':
-			continue
-
 		computerProperties = {
 			'mac': '01:23:45:67:89:ab',
 			'name': uts.random_name()

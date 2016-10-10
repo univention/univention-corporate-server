@@ -1,3 +1,9 @@
+ucs-test (7.0.6-12) unstable; urgency=medium
+
+  * Bug #31832: reenable skipped test
+
+ -- Florian Best <best@univention.de>  Mon, 10 Oct 2016 15:51:51 +0200
+
 ucs-test (7.0.6-11) unstable; urgency=medium
 
   * Bug #42586: ucs-test (appcenter): rework 79_umc_broken_failure_error_exit_code.
