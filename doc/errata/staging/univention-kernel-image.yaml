@@ -83,21 +83,68 @@ desc: |
  * unix: correctly track in-flight fds in sending process user_struct
    (CVE-2016-2550)
  * USB: visor: fix null-deref at probe (CVE-2016-2782)
+ * ppp, slip: Validate VJ compression slot parameters completely
+   (CVE-2015-7799)
+ * [media] media/vivid-osd: fix info leak in ioctl (CVE-2015-7884)
+ * KVM: svm: unconditionally intercept #DB (CVE-2015-8104)
+ * Xen: when used on a system providing PV backends, allows local guest OS
+   administrators to cause a denial of service (host OS crash) or gain
+   privileges by writing to memory shared between the frontend and backend,
+   aka a double fetch vulnerability (CVE-2015-8550)
+ * Xen: Linux pciback missing sanity checks leading to crash (CVE-2015-8551)
+ * sctp: Prevent soft lockup when sctp_accept() is called during a timeout
+   event (CVE-2015-8767)
+ * netfilter: nf_nat_redirect: add missing NULL pointer check (CVE-2015-8787)
+ * USB: fix invalid memory access in hub_activate() (CVE-2015-8816)
+ * powerpc/tm: Block signal return setting invalid MSR state (CVE-2015-8844)
+ * powerpc/tm: Check for already reclaimed tasks (CVE-2015-8845)
+ * nfsd: check permissions when setting ACLs (CVE-2016-1237)
+ * x86/mm: Add barriers and document switch_mm()-vs-flush synchronization
+   (CVE-2016-2069)
+ * EVM: Use crypto_memneq() for digest comparisons (CVE-2016-2085)
+ * s390/mm: four page table levels vs. fork (CVE-2016-2143)
+ * ALSA: seq: Fix missing NULL check at remove_events ioctl (CVE-2016-2543)
+ * ALSA: seq: Fix race at timer setup and close (CVE-2016-2544)
+ * ALSA: timer: Fix double unlink of active_list (CVE-2016-2545)
+ * ALSA: timer: Fix race among timer ioctls (CVE-2016-2546)
+ * ALSA: timer: Harden slave timer list handling (CVE-2016-2547)
+ * ALSA: hrtimer: Fix stall by hrtimer_cancel() (CVE-2016-2549)
+ * ALSA: timer: Fix leak in SNDRV_TIMER_IOCTL_PARAMS (CVE-2016-4569)
+ * ALSA: timer: Fix leak in events via snd_timer_user_ccallback
+   (CVE-2016-4578)
+ * KVM: PPC: Book3S HV: Save/restore TM state in H_CEDE (CVE-2016-5412)
+ * ovl: verify upper dentry before unlink and rename (CVE-2016-6197)
+ * IB/srpt: Simplify srpt_handle_tsk_mgmt() (CVE-2016-6327)
+ * net: Fix use after free in the recvmmsg exit path (CVE-2016-7117)
 note: This is the third part of three parts of the Linux kernel update.
 bug: [41058]
 cve:
  - CVE-2013-4312
  - CVE-2015-7513
  - CVE-2015-7566
+ - CVE-2015-7799
  - CVE-2015-7833
+ - CVE-2015-7884
+ - CVE-2015-8104
  - CVE-2015-8539
+ - CVE-2015-8550
+ - CVE-2015-8551
  - CVE-2015-8660
+ - CVE-2015-8767
  - CVE-2015-8785
+ - CVE-2015-8787
  - CVE-2015-8812
+ - CVE-2015-8816
+ - CVE-2015-8844
+ - CVE-2015-8845
  - CVE-2016-0723
  - CVE-2016-0821
+ - CVE-2016-1237
  - CVE-2016-1583
+ - CVE-2016-2069
+ - CVE-2016-2085
  - CVE-2016-2117
+ - CVE-2016-2143
  - CVE-2016-2184
  - CVE-2016-2185
  - CVE-2016-2186
@@ -105,6 +152,12 @@ cve:
  - CVE-2016-2188
  - CVE-2016-2383
  - CVE-2016-2384
+ - CVE-2016-2543
+ - CVE-2016-2544
+ - CVE-2016-2545
+ - CVE-2016-2546
+ - CVE-2016-2547
+ - CVE-2016-2549
  - CVE-2016-2550
  - CVE-2016-2782
  - CVE-2016-3134
@@ -123,6 +176,8 @@ cve:
  - CVE-2016-4486
  - CVE-2016-4557
  - CVE-2016-4565
+ - CVE-2016-4569
+ - CVE-2016-4578
  - CVE-2016-4580
  - CVE-2016-4581
  - CVE-2016-4794
@@ -132,9 +187,13 @@ cve:
  - CVE-2016-4997
  - CVE-2016-4998
  - CVE-2016-5400
+ - CVE-2016-5412
  - CVE-2016-5696
  - CVE-2016-5828
  - CVE-2016-5829
  - CVE-2016-6136
+ - CVE-2016-6197
+ - CVE-2016-6327
  - CVE-2016-6480
  - CVE-2016-6828
+ - CVE-2016-7117
