@@ -8,6 +8,6 @@ desc: |
  This update addresses the following issues:
  * NFS home shares with names containing blanks are now also unmounted
    properly.
- * Several bugs were fixed which could lead to the root file system being
-   filled with temporary files.
+ * Several bugs have been fixed which could lead to the root file system
+   being filled with temporary files.
 bug: [32018,42491]
