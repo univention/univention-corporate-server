@@ -1,0 +1,11 @@
+Source: univention-portal
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+
+Package: univention-portal
+Architecture: all
+Depends: ${misc:Depends}
+Description: Univention Portal

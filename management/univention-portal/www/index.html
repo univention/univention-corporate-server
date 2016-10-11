@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Univention Portal</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="/favicon.ico"/>
+		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="/univention/js/dijit/themes/umc/umc.css" type="text/css"/>
+		<link rel="stylesheet" href="/univention/management/modules/appcenter.css" type="text/css"/>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<script type"text/javascript" async src="/univention/js/dojo/dojo.js"></script>
+		<script type="text/javascript">
+			function getQuery(/*String*/ param, /*mixed*/ defaultVal) {
+				// parse the URI query string
+				var query = window.location.search.substring(1);
+				var vars = query.split('&');
+				for (var i = 0; i < vars.length; i++) {
+					// parse the tuple
+					var tuple = vars[i].split('=');
+
+					// check whether we found the particular parameter we are interested in
+					if (2 == tuple.length && param == tuple[0]) {
+						return tuple[1];
+					}
+				}
+
+				// otherwise return the specified default value
+				return defaultVal;
+			}
+
+			var locale = getQuery('lang');
+			if (locale) {
+				locale = locale.replace('_', '-');
+			}
+
+			var dojoConfig = {
+				isDebug: false,
+				locale: locale,
+				async: true,
+				packages: [
+					{ name: 'portal', location: '/univention/portal' },
+				<!-- TODO remove? -->
+					{ name: 'management', location: '/univention/management' }
+				],
+				map: {
+					'*': {
+						'umc/modules': 'management/modules'
+					}
+				},
+				<!-- TOOD remove -->
+				callback: function() {
+					require(["portal", "umc/auth", "dojo/domReady!"], function(portal) {
+						portal.start();
+					});
+				}
+			};
+		</script>
+	</head>
+	<body class="umc portal" id="portal"></body>
+</html>

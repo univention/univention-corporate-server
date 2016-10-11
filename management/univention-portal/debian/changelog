@@ -1,0 +1,11 @@
+univention-portal (0.2) unstable; urgency=medium
+
+  * Bug #42228: implement univention portal
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 22 Sep 2016 18:50:01 +0200
+
+univention-portal (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Johannes Keiser <keiser@univention.de>  Sat, 27 Aug 2016 05:34:34 +0200

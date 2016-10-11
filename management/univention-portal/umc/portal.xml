@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+    <module id="portal" priority="50" version="1.0">
+        <name>Portal</name>
+        <keywords>portal</keywords>
+        <command name="portal/getInstalledAppsInDomain" function="get_installed_apps_in_domain" allow_anonymous="true" />
+        <command name="portal/getDomainName" function="get_domain_name" allow_anonymous="true" />
+        <command name="portal/getHostName" function="get_host_name" allow_anonymous="true" />
+        <command name="portal/getLdapMaster" function="get_ldap_master" allow_anonymous="true" />
+    </module>
+</umc>
