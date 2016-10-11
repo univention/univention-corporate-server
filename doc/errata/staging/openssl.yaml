@@ -3,7 +3,7 @@ release: "4.1"
 version: [2,3]
 scope: ucs_4.1-0-errata4.1-3
 src: openssl
-fix: 1.0.2d-1.124.201609292137
+fix: 1.0.2d-1.125.201610111007
 desc: |
  This update addresses the following issue(s):
  * Remote denial of service (integer overflow and application crash)
@@ -19,7 +19,6 @@ desc: |
    via spoofed DTLS records (CVE-2016-2181)
  * Remote denial of service (out-of-bounds write and application crash)
    or unspecified other impact via BN_bn2dec function (CVE-2016-2182)
- * Sweet32 attack against DES and Triple DES ciphers (CVE-2016-2183)
  * Remote denial of service via a ticket that is too short (CVE-2016-6302)
  * Remote denial of service (out-of-bounds write and application crash)
    or unspecified other impact via MDC2_Update function (CVE-2016-6303)
@@ -46,7 +45,6 @@ cve:
  - CVE-2016-2180
  - CVE-2016-2181
  - CVE-2016-2182
- - CVE-2016-2183
  - CVE-2016-6302
  - CVE-2016-6303
  - CVE-2016-6304
