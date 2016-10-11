@@ -46,6 +46,12 @@ Description[en]=Deactivates the network configuration through UMC while the depr
 Type=str
 Categories=uvmm
 
+[libvirt/group]
+Description[de]=Setzt die Gruppenzugehörigkeit des UNIX Domain Sockets von libvirtd. Sie erlaubt einer 'vertrauenswürdigen' Benutzergruppe die Nutzung der Verwaltungsfunktionen ohne 'root' werden zu müssen. Standard ist 'libvirt'.
+Description[en]=Set the UNIX domain socket group ownership for libvirtd. This can be used to allow a 'trusted' set of users access to management capabilities without becoming root. The default is 'libvirt'.
+Type=str
+Categories=uvmm
+
 [libvirt/log/level]
 Description[de]=Konfiguration des allgemeinen libvirtd Loglevels. Mögliche Werte sind 1-4, wobei 3 der Standardwert ist (DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4). Jede Nachricht enthält dabei Informationen über die Priorität, die Kategorie, den Funktionsnamen, die Zeilennummer und einen formatierten Nachrichtentext.
 Description[en]=Configuration of the general libvirtd log level. Possible values range from 1-4 with 3 being the default (DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4). Each message includes a priority level, a category, function name, line number and a formatted message text.

@@ -49,6 +49,7 @@ configure)
 		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all="ACCEPT" \
 		security/packetfilter/package/univention-virtual-machine-manager-node-common/tcp/16514/all/en="libvirt" \
 		uvmm/backup/directory\?/var/backups/univention-virtual-machine-manager-daemon \
+		libvirt/group?libvirt \
 		libvirt/log/level?4
 	univention-config-registry update
 

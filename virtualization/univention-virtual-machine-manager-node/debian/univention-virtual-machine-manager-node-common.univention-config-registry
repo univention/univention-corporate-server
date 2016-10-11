@@ -4,6 +4,7 @@ Variables: hostname
 Variables: domainname
 Variables: ssl/.*
 Variables: uvmm/managers
+Variables: libvirt/group
 Variables: libvirt/log/level
 Variables: libvirt/log/filters
 Variables: libvirt/log/outputs
