@@ -12,7 +12,8 @@ import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.config_registry as configRegistry
-import sys
+import ldap.dn
+import ldap.filter
 
 
 if __name__ == '__main__':
@@ -35,12 +36,12 @@ if __name__ == '__main__':
 		except udm_test.UCSTestUDM_ModifyUDMObjectFailed:
 			pass
 
-		new_cn = 'cn=%s,%s' % (cn_name_new,ucr.get('ldap/base'))
-		new_user = 'uid=%s,cn=%s,%s' % (user_name, cn_name_new, ucr.get('ldap/base'))
+		new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))
+		new_user = 'uid=%s,cn=%s,%s' % (ldap.dn.escape_dn_chars(user_name), ldap.dn.escape_dn_chars(cn_name_new), ucr.get('ldap/base'))
 		utils.verify_ldap_object(new_cn, should_exist = True)
 		utils.verify_ldap_object(new_user, should_exist = True)
 
 		lo = utils.get_ldap_connection()
-		for dn, entry in lo.search(filter='cn=%s' % cn_name):
+		for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name])):
 			if entry.get('cn')[0] != cn_name:
 				utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name))

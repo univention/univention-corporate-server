@@ -7,6 +7,7 @@
 ##   - univention-config
 ##   - univention-directory-manager-tools
 
+import ldap.dn
 
 import univention.testing.utils as utils
 import univention.testing.udm as udm_test
@@ -24,4 +25,4 @@ if __name__ == '__main__':
 
 		udm.move_object('container/ou', dn = ou, position = ou2)
 		udm.move_object('container/ou', dn = ou2, position = ou3)
-		utils.verify_ldap_object('ou=%s,ou=%s,%s' % (ou_name, ou2_name, ou3))
+		utils.verify_ldap_object('ou=%s,ou=%s,%s' % (ldap.dn.escape_dn_chars(ou_name), ldap.dn.escape_dn_chars(ou2_name), ou3))

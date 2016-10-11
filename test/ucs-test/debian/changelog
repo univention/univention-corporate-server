@@ -1,6 +1,8 @@
 ucs-test (7.0.6-12) unstable; urgency=medium
 
   * Bug #31832: reenable skipped test
+  * Bug #37337: Bug #8052: Fix escaping of DN's and LDAP filters; revert svn
+  	r56733
 
  -- Florian Best <best@univention.de>  Mon, 10 Oct 2016 15:51:51 +0200
 

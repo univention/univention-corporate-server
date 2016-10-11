@@ -12,8 +12,8 @@ import univention.testing.utils as utils
 import univention.testing.udm as udm_test
 import univention.testing.strings as uts
 import univention.config_registry as configRegistry
-import sys
-
+import ldap.dn
+import ldap.filter
 
 if __name__ == '__main__':
 	ucr = configRegistry.ConfigRegistry()
@@ -45,17 +45,17 @@ if __name__ == '__main__':
 			if fail:
 				utils.fail('ou = %s remained' % dn)
 
-			new_cn = 'cn=%s,%s' % (cn_name_new, parent)
-			new_user = 'uid=%s,%s' % (user_name, new_cn)
+			new_cn = 'cn=%s,%s' % (ldap.dn.escape_dn_chars(cn_name_new), parent)
+			new_user = 'uid=%s,%s' % (ldap.dn.escape_dn_chars(user_name), new_cn)
 
 			utils.verify_ldap_object(new_cn, should_exist = True)
 			if add_user:
-				for dn, entry in lo.search(filter='uid=%s' % user_name):
+				for dn, entry in lo.search(filter=ldap.filter.filter_format('uid=%s', [user_name])):
 					if entry.get('uid')[0] != user_name:
 						utils.fail('CASE SENSITIVITY: uid = %s; expected: %s' % (entry.get('uid')[0], user_name))
 				utils.verify_ldap_object(new_user, should_exist = True)
 
-			for dn, entry in lo.search(filter='cn=%s' % cn_name_new):
+			for dn, entry in lo.search(filter=ldap.filter.filter_format('cn=%s', [cn_name_new])):
 				if entry.get('cn')[0] != cn_name_new:
 					utils.fail('cn = %s; expected: %s' % (entry.get('cn')[0], cn_name_new))
 			return new_cn
