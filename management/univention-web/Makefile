@@ -86,9 +86,9 @@ $(TMP_THEME_DIR): $(TMP_DIR)
 %.png: %.svg
 	convert -background transparent "$<" "$@"
 
-$(BUILD_THEME_DIR)/fonts: clearsans-1.00.zip
+$(BUILD_THEME_DIR)/fonts: roboto.zip
 	mkdir -p $@
-	unzip -o -j $< "*.woff" -d $@
+	unzip -o $< -d $@
 
 %/bootstrap.css: bootstrap.zip
 	unzip -o -j $< "*bootstrap.css" -d $(TMP_THEME_DIR)
