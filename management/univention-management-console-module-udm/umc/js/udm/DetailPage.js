@@ -849,7 +849,7 @@ define([
 					text = _.ngettext('The LDAP object "%s" is part of the Active Directory domain.',
 					                   'The LDAP objects are part of the Active Directory domain.', n, value );
 				}
-				text = _('<b>Attention:</b>) ' + text + _(' UCS can only change certain attributes.');
+				text = _('<b>Attention:</b> ') + text + _(' UCS can only change certain attributes.');
 				return text;
 			});
 
