@@ -11,3 +11,4 @@ desc: |
  * Several bugs have been fixed which could lead to the root file system
    being filled with temporary files.
 bug: [32018,42491]
+announced: 2016-10-12
