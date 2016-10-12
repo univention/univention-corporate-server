@@ -16,3 +16,4 @@ desc: |
 bug: [41826]
 cve:
   - CVE-2016-5387
+announced: 2016-10-12
