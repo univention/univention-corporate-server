@@ -14,3 +14,4 @@ desc: |
    no longer associated with that entry.
    The Listener now calls the modules with command='d' to signal a deletion.
 bug: [32685]
+announced: 2016-10-12
