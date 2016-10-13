@@ -73,7 +73,7 @@ property_descriptions={
 			identifies=0
 		),
 	'failover_peer': univention.admin.property(
-			short_description=_('Failover peer'),
+			short_description=_('Failover peer configuration'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
