@@ -43,7 +43,7 @@ _=translation.translate
 
 module='dhcp/pool'
 operations=['add','edit','remove','search']
-superordinate = 'dhcp/subnet'
+superordinate = ['dhcp/subnet', 'dhcp/sharedsubnet']
 childs=0
 usewizard=1
 short_description=_('DHCP: Pool')
