@@ -112,14 +112,14 @@ define([
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			if ('navigation' != this.moduleFlavor) {
+			if ('navigation' !== this.moduleFlavor) {
 				// query the necessary elements to display the add-dialog correctly
 				var superordinate = this.selectedSuperordinate !== undefined ? this.selectedSuperordinate : null;
 				all({
 					types: this.moduleCache.getChildModules(superordinate, null, true),
 					containers: this.moduleCache.getContainers().then(function(result) {
 						return array.filter(result, function(icontainer) {
-							return icontainer.id != 'all';
+							return icontainer.id !== 'all';
 						});
 					}),
 					superordinates: this.moduleCache.getSuperordinates(),

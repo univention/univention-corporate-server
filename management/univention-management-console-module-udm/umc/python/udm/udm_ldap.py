@@ -264,6 +264,9 @@ class UDM_Module(object):
 	def lookup_filter(self, filter_s=None, lo=None):
 		return getattr(self.module, 'lookup_filter')(filter_s, lo)
 
+	def __repr__(self):
+		return '<%s(%r) at 0x%x>' % (type(self).__name__, self.name, id(self))
+
 	def __getitem__(self, key):
 		props = getattr(self.module, 'property_descriptions', {})
 		return props[key]
@@ -457,7 +460,7 @@ class UDM_Module(object):
 		MODULE.info('Searching for LDAP objects: container = %s, filter = %s, superordinate = %s' % (container, filter_s, superordinate))
 		result = None
 		try:
-			sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000'))
+			sizelimit = int(ucr.get('directory/manager/web/sizelimit', '2000') or 2000)
 			if simple and self.allows_simple_lookup():
 				lookup_filter = self.lookup_filter(filter, ldap_connection)
 				if lookup_filter is None:
