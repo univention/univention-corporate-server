@@ -1434,6 +1434,10 @@ define([
 						});
 					}
 				}
+				if (vals.superordinate && vals.superordinate !== 'None') {
+					// a superordinate is selected in the tree. only show the direct children of it!
+					vals.scope = 'one';
+				}
 				vals.fields = array.map(columns, function(column) { return column.name; });
 				if ('navigation' != this.moduleFlavor || this._tree.get('path').length) {
 					this._grid.filter(vals);
