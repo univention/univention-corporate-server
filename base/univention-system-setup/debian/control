@@ -79,7 +79,7 @@ Description: Starting univention-system-setup on next boot
  refer to: http://www.univention.de/
 
 Package: di-univention-system-setup
-Architecture: all
+Architecture: any
 Section: debian-installer
 XB-Subarchitecture: ${subarch}
 Provides: configured-ucs

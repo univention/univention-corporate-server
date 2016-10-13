@@ -47,6 +47,13 @@ db_progress INFO di-univention-system-setup/progress/ucr
 in-target /usr/sbin/ucr commit
 in-target /usr/sbin/ucr unset --force interfaces/restart/auto
 
+cdrom_device=$(debconf-get cdrom-detect/cdrom_device)
+identifier=$(get-volume-set-identifier "$cdrom_device")
+if [ -n "$identifier" ]
+then
+	in-target /usr/sbin/ucr set "updater/identify=UCS (${identifier})"
+fi
+
 db_progress SET 3
 db_progress INFO di-univention-system-setup/progress/uss
 # activate univention-system-setup-boot

@@ -49,7 +49,9 @@ override_dh_installinit:
 
 override_dh_fixperms:
 	dh_fixperms
+ifneq ($(wildcard debian/*/usr/lib/univention-system-setup/),)
 	find debian/*/usr/lib/univention-system-setup/ -type f -exec chmod +x {} +
+endif
 
 override_dh_auto_test:
 	ucslint
