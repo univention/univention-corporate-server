@@ -4,6 +4,7 @@ univention-directory-logger (7.0.1-2) unstable; urgency=low
   * Bug #34739: Switch hash implementation
   * Bug #34420: Fix base64 encoding
   * Bug #34916: Fix tracebacks
+  * Bug #42665: Fix small issues
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 10 Oct 2016 18:26:27 +0200
 
