@@ -1,7 +1,7 @@
 [ldap/logging]
 Description[de]=Ist das Paket univention-directory-logger installiert und diese Variable auf 'yes' gesetzt, werden alle Änderungen im LDAP-Verzeichnisdienst protokolliert. Eine integrierte Hash-Summe stellt zusätzlich sicher, dass keine Änderungen unbemerkt aus der Logdatei entfernt werden können. Die Protokollierung erfolgt in die Datei /var/log/univention/directory-logger.log.
 Description[en]=If univention-directory-logger package is installed and this variable is set to 'yes', all changes in the LDAP directory service are logged. An integrated hash sum ensures that no changes can be deleted without traces from the log file. Changes are logged to the /var/log/univention/directory-logger.log file.
-Type=str
+Type=bool
 Categories=service-ldap
 
 [ldap/logging/exclude.*]

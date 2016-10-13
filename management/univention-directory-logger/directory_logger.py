@@ -139,7 +139,7 @@ def process_dellog(dn):
 
 
 def handler(dn, new_copy, old_copy):
-	if listener.configRegistry['ldap/logging'] != 'yes':
+	if not listener.configRegistry.is_true('ldap/logging'):
 		return
 
 	# check for exclusion
