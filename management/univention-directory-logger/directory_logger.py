@@ -222,7 +222,7 @@ def handler(dn, new_copy, old_copy):
 		listener.unsetuid()
 
 
-def createFile(filename, withdirs=False):
+def createFile(filename):
 	global uidNumber
 	global gidNumber
 	global preferedGroup
