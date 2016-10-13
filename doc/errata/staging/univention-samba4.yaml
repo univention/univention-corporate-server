@@ -7,4 +7,5 @@ fix: 5.0.1-45.678.201609231438
 desc: |
  This update addresses the following issue(s):
  * Locking in the sysvol sync script has been improved.
-bug: [42475]
+ * 39251
+bug: [42475,39251]
