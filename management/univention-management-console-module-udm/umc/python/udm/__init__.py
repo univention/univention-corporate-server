@@ -704,18 +704,13 @@ class Instance(Base, ProgressMixin):
 		containers.sort(cmp=lambda x, y: cmp(x['label'].lower(), y['label'].lower()))
 		return containers
 
+	@sanitize(container=StringSanitizer(allow_none=True))
 	@module_from_request
 	@simple_response
-	def superordinates(self, module):
+	def superordinates(self, module, container=None):
 		"""Returns the list of superordinate containers for the given
-		object type.
-
-		requests.options = {}
-			'objectType' -- The UDM module name
-
-		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
-		"""
-		return module.superordinates
+		object type."""
+		return module.superordinates(container)
 
 	@module_from_request
 	@simple_response

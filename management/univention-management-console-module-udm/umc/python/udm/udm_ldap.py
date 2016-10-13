@@ -804,8 +804,7 @@ class UDM_Module(object):
 	def superordinate_names(self):
 		return udm_modules.superordinate_names(self.module)
 
-	@property
-	def superordinates(self):
+	def superordinates(self, container=None):
 		"""List of superordinates"""
 		modules = getattr(self.module, 'wizardsuperordinates', [])
 		superordinates = []
@@ -817,7 +816,7 @@ class UDM_Module(object):
 				if not module:
 					continue
 				for so in module.superordinate_names or [None]:
-					objects = module.search(superordinate=so)
+					objects = module.search(container, superordinate=so)
 					for obj in objects:
 						superordinates.append({
 							'id': obj.dn,

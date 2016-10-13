@@ -122,7 +122,7 @@ define([
 							return icontainer.id !== 'all';
 						});
 					}),
-					superordinates: this.moduleCache.getSuperordinates(),
+					superordinates: this.moduleCache.getSuperordinates(superordinate),
 					templates: this.moduleCache.getTemplates()
 				}).then(lang.hitch(this, function(results) {
 					var types = lang.getObject('types', false, results) || [];
