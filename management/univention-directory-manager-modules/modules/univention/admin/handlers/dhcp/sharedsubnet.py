@@ -42,7 +42,7 @@ _=translation.translate
 module='dhcp/sharedsubnet'
 operations=['add','edit','remove','search']
 superordinate='dhcp/shared'
-childs=1
+childs=False
 short_description=_('DHCP: Shared subnet')
 long_description=''
 options={
@@ -60,7 +60,7 @@ property_descriptions={
 			identifies=1
 		),
 	'subnetmask': univention.admin.property(
-			short_description=_('Netmask'),
+			short_description=_('Address prefix length (or Netmask)'),
 			long_description='',
 			syntax=univention.admin.syntax.v4netmask,
 			multivalue=0,
@@ -89,9 +89,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-}
-
-options={
 }
 
 layout = [

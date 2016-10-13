@@ -229,8 +229,8 @@ msgstr "Name"
 
 #: modules/univention/admin/handlers/dhcp/sharedsubnet.py:65
 #: modules/univention/admin/handlers/dhcp/subnet.py:66
-msgid "Netmask"
-msgstr "Netzmaske"
+msgid "Address prefix length (or Netmask)"
+msgstr "Prefixlänge (oder Netzmaske)"
 
 #: modules/univention/admin/handlers/dhcp/dhcp.py:60
 msgid "Search"
