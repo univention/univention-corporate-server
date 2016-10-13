@@ -304,7 +304,7 @@ define([
 				all({
 					columns: this.getDefaultColumns(),
 					containers: moduleCache.getContainers(),
-					superordinates: moduleCache.getSuperordinates(),
+					superordinates: moduleCache.getSuperordinates(null),
 					reports: moduleCache.getReports(),
 					metaInfo: moduleCache.getMetaInfo(),
 					ucr: this._loadUCRVariables()

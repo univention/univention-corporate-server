@@ -83,7 +83,7 @@ define([
 
 			this.getMetaInfo(this.superModule);
 			this.getContainers(this.superModule);
-			this.getSuperordinates(this.superModule);
+			this.getSuperordinates(null, this.superModule);
 			this.getChildModules().then(lang.hitch(this, function(modules) {
 				this._loadPropertiesMulti(modules);
 				this._loadLayoutMulti(modules);
@@ -195,8 +195,8 @@ define([
 			return this._getInfo('containers', {}, this.superModule, module, forceLoad);
 		},
 
-		getSuperordinates: function(module, forceLoad) {
-			return this._getInfo('superordinates', {}, this.superModule, module, forceLoad);
+		getSuperordinates: function(container, module, forceLoad) {
+			return this._getInfo('superordinates', { container: container }, this.superModule, module, forceLoad);
 		},
 
 		getValues: function(module, property, forceLoad) {
