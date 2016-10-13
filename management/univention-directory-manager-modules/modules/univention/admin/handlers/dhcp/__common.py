@@ -50,16 +50,9 @@ _properties = {
 		),
 }
 
-# def optionMap( value ):
-# 	return map( lambda x: ' '.join( x ), value )
-
-# def optionUnmap( value ):
-# 	return map( lambda x: x.split( ' ', 1 ), value )
-
 _mappings = (
-	# ( 'option', 'dhcpOption', optionMap, optionUnmap ),
-	( 'option', 'dhcpOption', None, univention.admin.mapping.ListToString ),
-	)
+	('option', 'dhcpOption', None, None),
+)
 
 def add_dhcp_options( properties, mapping, layout ):
 	global _properties, _mappings
