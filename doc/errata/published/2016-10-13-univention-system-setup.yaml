@@ -8,3 +8,4 @@ desc: |
  This update addresses the following issue(s):
  * Initialize updater/identify from ISO image metadata
 bug: [42483]
+announced: 2016-10-13
