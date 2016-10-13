@@ -798,8 +798,8 @@ class UDM_Module(object):
 		return map(lambda x: {'id': '%s,%s' % (x, ldap_base), 'label': ldap_dn2path('%s,%s' % (x, ldap_base))}, containers)
 
 	@property
-	def superordinate(self):
-		return udm_modules.superordinate_name(self.module)
+	def superordinate_names(self):
+		return udm_modules.superordinate_names(self.module)
 
 	@property
 	def superordinates(self):
@@ -811,10 +811,9 @@ class UDM_Module(object):
 				superordinates.append({'id': mod, 'label': _('None')})
 			else:
 				module = UDM_Module(mod)
-				if module:
-					so = module.superordinate
-					if so == '':
-						so = None
+				if not module:
+					continue
+				for so in module.superordinate_names or [None]:
 					objects = module.search(superordinate=so)
 					for obj in objects:
 						superordinates.append({
@@ -1060,13 +1059,15 @@ def list_objects(container, object_type=None, ldap_connection=None, ldap_positio
 		if not module.module:
 			MODULE.process('The UDM module %r could not be found. Ignoring LDAP object %r' % (modules[0], dn))
 			continue
-		if module.superordinate:
-			so_module = UDM_Module(module.superordinate)
-			so_obj = so_module.get(container)
-			try:
-				yield (module, module.get(dn, so_obj, attributes=attrs))
-			except:
-				yield (module, module.get(dn, so_obj))
+		if module.superordinate_names:
+			for superordinate in module.superordinate_names:
+				so_module = UDM_Module(superordinate)
+				so_obj = so_module.get(container)
+				try:
+					yield (module, module.get(dn, so_obj, attributes=attrs))
+				except:
+					yield (module, module.get(dn, so_obj))
+				break
 		else:
 			try:
 				yield (module, module.get(dn, attributes=attrs))
