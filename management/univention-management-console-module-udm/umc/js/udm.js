@@ -90,6 +90,23 @@ define([
 		});
 	}
 
+	// virtual widget which always returns the selected superordinate in the tree
+	var SuperordinateWidget = declare("umc.modules.udm.SuperordinateWidget", HiddenInput, {
+		udm: null,
+		_getValueAttr: function() {
+			if (!this.udm._tree) {
+				return;
+			}
+			var path = lang.clone(this.udm._tree.get('path'));
+			while (path.length) {
+				var item = path.pop();
+				if (item.$isSuperordinate$) {
+					return item.id;
+				}
+			}
+		}
+	});
+
 	return declare("umc.modules.udm", [ Module ], {
 		// summary:
 		//		Module to interface (Univention Directory Manager) LDAP objects.
@@ -354,7 +371,7 @@ define([
 					return;
 				}
 				var state = _state.split(':');
-				if (!state.length || (state.length == 1 && state[0] == '')) {
+				if (!state.length || (state.length == 1 && state[0] === '')) {
 					if (this._searchPage) {
 						this.closeDetailPage();
 					}
@@ -504,19 +521,6 @@ define([
 					this._searchForm._widgets.objectProperty.set('visible', 'None' != val && '$containers$' != val);
 					this._searchForm._widgets.objectPropertyValue.set('visible', 'None' != val && '$containers$' != val);
 					this.layout();
-				})));
-			}
-
-			var superordinateWidget = this._searchForm.getWidget('superordinate');
-			if (superordinateWidget) {
-				this.own(superordinateWidget.watch('value', lang.hitch(this, function(attr, oldval, val) {
-					if (tools.isTrue(this._autoSearch)) {
-						// we can relaunch the search after all search form values
-						// have been updated
-						this._searchForm.ready().then(lang.hitch(this, 'filter'));
-					}
-					val = (val === 'None') ? ['None'] : ['None', val];
-					this._tree.set('path', val);
 				})));
 			}
 
@@ -702,12 +706,12 @@ define([
 			} else if (superordinates && superordinates.length) {
 				// superordinates...
 				widgets.push({
-					type: ComboBox,
+					type: SuperordinateWidget,
+					udm: this,
 					name: 'superordinate',
 					label: _('Superordinate'),
 					value: superordinates[0].id || superordinates[0],
 					staticValues: superordinates,
-					visible: false,
 					umcpCommand: umcpCmd
 				});
 				layout[0].push('superordinate');
@@ -740,6 +744,12 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'objectType',
+				ready: function() {
+					// workaround Bug #42673
+					var d = new Deferred();
+					d.resolve();
+					return d;
+				},
 				autoHide: true,
 				label: _('Type'),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
@@ -821,6 +831,12 @@ define([
 				})
 			}, {
 				type: MixedInput,
+				ready: function() {
+					// workaround Bug #42673
+					var d = new Deferred();
+					d.resolve();
+					return d;
+				},
 				name: 'objectPropertyValue',
 				label: _( 'Property value' ),
 				inlineLabel: _('Search %s...', this.objectNamePlural),
@@ -900,7 +916,7 @@ define([
 
 			var model = new TreeModel({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
-				moduleFlavor: this.moduleFlavor,
+				moduleFlavor: this.moduleFlavor
 			});
 
 			this._tree = new Tree({
@@ -923,15 +939,12 @@ define([
 				// if the tree has been loaded successfully, model.root
 				// is set and we can select the root as active node
 				if (this._tree.model.root) {
-					this._tree.set('path', [ this._tree.model.root ]);
+					this._tree.set('path', [this._tree.model.root]);
 				}
 			}));
 			this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
 				// register for changes of the selected item (= path)
 				// only take them into account in case the tree is not reloading
-				if (this.moduleFlavor !== 'navigation' && newVal.length) {
-					this._setSuperordinateAndFilter(newVal[newVal.length-1].id);
-				}
 				if (!this._reloadingPath) {
 					this._searchForm.ready().then(lang.hitch(this, 'filter'));
 				} else if (this._reloadingPath == this._path2str(this._tree.get('path'))) {
@@ -999,13 +1012,6 @@ define([
 				this.resetPathAndReloadTreeAndFilter([dn]);
 			}));
 
-			// keep superordinate widget in sync with the tree for DHCP / DNS
-			this.own(aspect.after(this._tree, 'reload', lang.hitch(this, function() {
-				if (this.moduleFlavor !== 'navigation') {
-					this._reloadSuperordinates();
-				}
-			})));
-
 			// as the menu is displayed above the grid with the tree,
 			// we need to adjust the dynamic size class of the grid
 			// to account for this via an offset
@@ -1031,40 +1037,11 @@ define([
 			return item.$operations$.indexOf('remove') !== -1;
 		},
 
-		_reloadSuperordinates: function() {
-			var widget = this._searchForm.getWidget('superordinate');
-			if (widget) {
-				// force reloading of superordinates
-				var superordinatesDeferred = cache.get(this.moduleFlavor).getSuperordinates(null, true);
-				superordinatesDeferred.then(lang.hitch(this, function(data) {
-					var currentVals = array.map(widget.get('staticValues'), function(i) { return i.id; });
-					var newVals = array.map(data, function(i) { return i.id; });
-					if (!tools.isEqual(currentVals, newVals)) {
-						var curVal = widget.get('value');
-						if (newVals.indexOf(curVal) !== -1) {
-							widget.setInitialValue(curVal);
-						}
-						widget.set('staticValues', data);
-					}
-				}));
-			}
-		},
-
 		_updateMenuAvailability: function() {
 			var operations = this._navContextItemFocused.$operations$;
 			this._menuEdit.set('disabled', operations.indexOf('edit') === -1);
 			this._menuDelete.set('disabled', operations.indexOf('remove') === -1 || !this._canDelete(this._navContextItemFocused));
 			this._menuMove.set('disabled', operations.indexOf('move') === -1 || !this._canMove(this._navContextItemFocused));
-		},
-
-		_setSuperordinateAndFilter: function(superordinate) {
-			var superordinateWidget = this._searchForm.getWidget('superordinate');
-			superordinateWidget.set('value', superordinate);
-			if (tools.isFalse(this._autoSearch)) {
-				// autosearch is false: filtering was not done
-				//   automatically by superordinate.watch('value')
-				this._searchForm.ready().then(lang.hitch(this, 'filter'));
-			}
 		},
 
 		_selectInputText: function() {
@@ -1425,6 +1402,9 @@ define([
 
 			this.getDefaultColumns().then(lang.hitch(this, function(columns) {
 				var vals = this._searchForm.get('value');
+				if (!vals.objectType && !vals.objectProperty) {
+					return;  // workaround Bug #42673
+				}
 				if (this._tree) {
 					// the tree view (navigation, DHCP, DNS) might contain containers (e.g. also underneath of a superordinate!)
 					// we need to set the currently selected container if it's not a superordinate
@@ -1437,7 +1417,7 @@ define([
 						}
 					}
 				}
-				if (vals.superordinate && vals.superordinate !== 'None') {
+				if (vals.superordinate) {
 					// a superordinate is selected in the tree. only show the direct children of it!
 					vals.scope = 'one';
 				}
@@ -1497,13 +1477,8 @@ define([
 
 				if (this._tree && this._tree.get('selectedItems')[0].id == ids[0]) {
 					// when we are removing objects which are selected in the tree
-					// a reload would fail... so set the superordinate to all superordinates
-					// and trigger a reload of the path
-					var superordinateWidget = this._searchForm.getWidget('superordinate');
-					if (superordinateWidget) {
-						superordinateWidget.set('value', 'None');
-						this.filter();
-					}
+					// a reload would fail... reset the tree path to the top/root element
+					this._tree.set('path', [this._tree.model.root]);
 				}
 
 				// remove the selected elements via a transaction on the module store
@@ -1580,7 +1555,6 @@ define([
 			var superordinate = this._searchForm.getWidget('superordinate');
 			superordinate = superordinate && superordinate.get('value') || null;
 
-			var moduleCache = cache.get(this.moduleFlavor);
 			if ('navigation' == this.moduleFlavor) {
 				var items = this._tree.get('selectedItems');
 				if (items.length) {
