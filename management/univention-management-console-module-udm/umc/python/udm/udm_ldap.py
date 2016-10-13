@@ -822,11 +822,13 @@ class UDM_Module(object):
 						superordinates.append({
 							'id': obj.dn,
 							'label': obj[module.identifies],
+							'title': module.title,
+							'icon': 'udm-%s' % module.name.replace('/', '-'),
 							'objectType': module.name,
 							'$operations$': module.operations,
 							'$flags$': obj.oldattr.get('univentionObjectFlag', []),
-							'title': module.title,
-							'icon': 'udm-%s' % module.name.replace('/', '-'),
+							'$childs$': module.childs,
+							'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
 						})
 
 		return superordinates

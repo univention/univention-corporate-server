@@ -26,13 +26,15 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define console*/
+/*global define,console*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
+	"dojox/string/sprintf",
 	"umc/tools"
-], function(declare, lang, tools) {
+], function(declare, lang, array, sprintf, tools) {
 	return declare('umc.modules.udm.TreeModel', null, {
 		// summary:
 		//		Class that implements the tree model for the UDM container hierarchy.
@@ -44,6 +46,7 @@ define([
 		// umcpCommand: Function
 		//		Reference to the module specific umcpCommand function.
 		umcpCommand: null,
+		moduleFlavor: null,
 
 		root: null,
 
@@ -69,7 +72,7 @@ define([
 		},
 
 		mayHaveChildren: function(item) {
-			return true;
+			return item.$childs$;
 		},
 
 		getIdentity: function(item) {
@@ -77,10 +80,21 @@ define([
 		},
 
 		getChildren: function(parentItem, onComplete) {
-			this.umcpCommand('udm/nav/container/query', { container: parentItem.id }, false).then(lang.hitch(this, function(data) {
+			this.umcpCommand('udm/nav/container/query', { container: parentItem.id }).then(lang.hitch(this, function(data) {
 				// sort items alphabetically
 				var results = data.result instanceof Array ? data.result : [];
-				results.sort(tools.cmpObjects('label'));
+				results = array.map(results, lang.hitch(this, function(obj) {
+					obj.sortlabel = obj.label;
+					if (obj.objectType === 'dns/reverse_zone') {
+						obj.sortlabel = array.map(obj.label.split('.'), function(v) { return sprintf('%03d', v); }).join('.');
+					}
+					return obj;
+				}));
+				if (this.moduleFlavor !== 'navigation') {
+					results.sort(tools.cmpObjects('objectType', 'sortlabel'));
+				} else {
+					results.sort(tools.cmpObjects('label'));
+				}
 				try {
 					onComplete(results);
 				} catch (error) {

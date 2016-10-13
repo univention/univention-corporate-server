@@ -110,8 +110,8 @@ msgstr ""
 
 #: modules/univention/admin/handlers/dhcp/dhcp.py:54
 #: modules/univention/admin/handlers/dhcp/dhcp.py:58
-msgid "DHCP"
-msgstr "DHCP"
+msgid "All DHCP services"
+msgstr "Alle DHCP-Dienste"
 
 #: modules/univention/admin/handlers/dhcp/__common.py:43
 msgid "DHCP options"

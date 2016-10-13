@@ -74,8 +74,8 @@ msgid "General alias record settings"
 msgstr "Grundeinstellungen - Alias Record"
 
 #: dns.py:53 dns.py:57
-msgid "DNS"
-msgstr "DNS"
+msgid "All DNS zones"
+msgstr "Alle DNS-Zonen"
 
 #: dns.py:58
 msgid "Add, edit and delete DNS objects"
