@@ -1,3 +1,12 @@
+univention-samba4 (6.0.2-1) unstable; urgency=medium
+
+  * In case Samba 4 is installed only on a backup the re-join fails. The
+    join script now checks if this system is configured as S4 connector
+    system and re-initialized the system. In this case all other Samba 4
+    DCs need to be re-joined (Bug #39251)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Oct 2016 16:26:14 +0200
+
 univention-samba4 (6.0.1-5) unstable; urgency=low
 
   * fixed rules (Bug #42475)

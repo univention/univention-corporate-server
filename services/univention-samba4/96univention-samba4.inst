@@ -851,6 +851,10 @@ if [ "$samba4_role" = 'DC' ]; then
 	                   "(&(univentionService=${NAME})(objectClass=univentionDomainController))" cn \
 					   | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')	## currently there is no u-d-m module computers/dc
 
+	s4connector_is_used=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
+	                   "(&(univentionService=S4 Connector)(objectClass=univentionDomainController)(cn=$hostname))" cn \
+					   | ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
+
 	/etc/init.d/samba stop
 
 	univention-config-registry set \
@@ -858,7 +862,7 @@ if [ "$samba4_role" = 'DC' ]; then
 		kerberos/kpasswdserver=127.0.0.1
 
 	is_ucr_true samba4/provision/primary
-	if [ $? -eq 0 ] || [ -z "$samba4servicedcs" ]; then	## we are the first domaincontroller to provide this service
+	if [ $? -eq 0 ] || [ -z "$samba4servicedcs" ] || [ -n "$s4connector_is_used" ]; then	## we are the first domaincontroller to provide this service
 
 		if [ $JS_LAST_EXECUTED_VERSION -lt 1 ]; then
 			run_samba_provision "$@"
