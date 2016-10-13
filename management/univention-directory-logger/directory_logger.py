@@ -212,7 +212,7 @@ def handler(dn, new, old):
 		# 2. generate log record
 		if new_copy:
 			try:
-				modifier = new_copy.get['modifiersName'][0]
+				modifier = new_copy['modifiersName'][0]
 			except LookupError:
 				modifier = '<unknown>'
 			try:
