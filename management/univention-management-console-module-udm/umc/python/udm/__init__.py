@@ -954,48 +954,67 @@ class Instance(Base, ProgressMixin):
 		LDAP base (option 'container'). If no base container is
 		specified the LDAP base object is returned."""
 
-		if not request.options.get('container'):
-			ldap_base = ucr.get('ldap/base')
-			self.finished(request.id, [{'id': ldap_base, 'label': ldap_dn2path(ldap_base), 'icon': 'udm-container-dc', 'objectType': 'container/dc', '$operations$': ['edit']}])
+		ldap_base = ucr.get('ldap/base')
+		container = request.options.get('container')
+		if not container:
+			root_defaults = {
+				'navigation': {
+					'objectType': 'container/dc',
+					'label': ldap_dn2path(ldap_base),
+					'icon': 'udm-container-dc',
+					'$operations$': ['edit'],
+				}
+			}.get(request.flavor, {})
+			self.finished(request.id, [{
+				'id': ldap_base,
+				'label': root_defaults.get('label') or UDM_Module(request.flavor).title,
+				'icon': root_defaults.get('icon', 'udm-%s' % (request.flavor.replace('/', '-'),)),
+				'path': ldap_dn2path(ldap_base),
+				'objectType': 'container/dc',
+				'$operations$': root_defaults.get('$operations$', []),
+				'$flags$': [],
+				'$childs$': True,
+				'$isSuperordinate$': False,
+			}])
 			return
 
-		def _thread(container):
-			superordinate = None
+		root_subelements = ldap_base.lower() == container.lower() and request.flavor != 'navigation'
+		scope = 'sub' if root_subelements else 'one'
+		modules = [request.flavor] if root_subelements else self.modules_with_childs
+
+		def _thread():
 			result = []
-			for base, typ in map(lambda x: x.split('/'), self.modules_with_childs):
-				module = UDM_Module('%s/%s' % (base, typ))
-				so_obj = None
-				if module.superordinate_names:
-					if superordinate is None:
-						for module_superordinate in module.superordinate_names:
-							try:
-								so_module = UDM_Module(module_superordinate)
-								so_obj = so_module.get(request.options.get('container'))
-								superordinate = so_obj
-							except UDM_Error:  # superordinate object could not be load -> ignore module
-								continue
-						if so_obj is None:
+			for xmodule in modules:
+				xmodule = UDM_Module(xmodule)
+				superordinate = None
+				if xmodule.superordinate_names:
+					for module_superordinate in xmodule.superordinate_names:
+						try:
+							superordinate = UDM_Module(module_superordinate).get(container)
+						except UDM_Error:  # the container is not a direct superordinate  # FIXME: get the "real" superordinate; Bug #40885
 							continue
-					else:
-						so_obj = superordinate
+					if superordinate is None:
+						continue  # superordinate object could not be load -> ignore module
 				try:
-					for item in module.search(container, scope='one', superordinate=so_obj):
+					for item in xmodule.search(container, scope=scope, superordinate=superordinate):
+						module = UDM_Module(item.module)
 						result.append({
 							'id': item.dn,
 							'label': item[module.identifies],
-							'icon': 'udm-%s-%s' % (base, typ),
+							'icon': 'udm-%s' % (module.name.replace('/', '-')),
 							'path': ldap_dn2path(item.dn),
-							'objectType': '%s/%s' % (base, typ),
+							'objectType': module.name,
 							'$operations$': module.operations,
 							'$flags$': item.oldattr.get('univentionObjectFlag', []),
 							'$childs$': module.childs,
+							'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
 						})
 				except UDM_Error as exc:
 					raise UMC_Error(str(exc))
 
 			return result
 
-		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(self.thread_finished_callback, request))
+		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(_thread), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(

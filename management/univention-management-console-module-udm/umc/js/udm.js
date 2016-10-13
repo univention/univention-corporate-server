@@ -65,8 +65,8 @@ define([
 	"umc/widgets/Tree",
 	"umc/widgets/MixedInput",
 	"umc/widgets/ProgressBar",
+	"umc/widgets/HiddenInput",
 	"umc/modules/udm/TreeModel",
-	"umc/modules/udm/TreeModelSuperordinate",
 	"umc/modules/udm/CreateReportDialog",
 	"umc/modules/udm/NewObjectDialog",
 	"umc/modules/udm/DetailPage",
@@ -80,8 +80,8 @@ define([
 ], function(declare, lang, array, has, Deferred, when, all, on, topic, aspect, json,
 	domStyle, domClass, Menu, MenuItem, _TextBoxMixin, Dialog, sprintf, entities, app, tools, dialog,
 	store, ContainerWidget, Text, CheckBox, ComboBox, Module, Page, Grid,
-	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, TreeModel,
-	TreeModelSuperordinate, CreateReportDialog, NewObjectDialog, DetailPage, cache, udmStartup, _)
+	Form, SearchForm, Button, Tree, MixedInput, ProgressBar, HiddenInput, TreeModel,
+	CreateReportDialog, NewObjectDialog, DetailPage, cache, udmStartup, _)
 {
 	app.registerOnStartup(udmStartup);
 	if ('registerOnReset' in tools) {
@@ -898,18 +898,9 @@ define([
 				}))[0];
 			}
 
-			var superordinateName = this.objectNamePlural;
-			if ('dhcp/dhcp' == this.moduleFlavor) {
-				superordinateName = _('DHCP services');
-			} else if ('dns/dns' == this.moduleFlavor) {
-				superordinateName = _('DNS zones');
-			}
-
-			var ModelClass = ('navigation' == this.moduleFlavor) ? TreeModel : TreeModelSuperordinate;
-			var model = new ModelClass({
+			var model = new TreeModel({
 				umcpCommand: lang.hitch(this, 'umcpCommand'),
 				moduleFlavor: this.moduleFlavor,
-				rootName: _('All %s', superordinateName)
 			});
 
 			this._tree = new Tree({

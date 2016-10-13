@@ -51,7 +51,7 @@ _ = translation.translate
 module = 'dns/dns'
 
 childs = 0
-short_description = _('DNS')
+short_description = _('All DNS zones')
 long_description = ''
 operations = ['search']
 usewizard = 1

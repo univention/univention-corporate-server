@@ -51,7 +51,7 @@ _=translation.translate
 module='dhcp/dhcp'
 
 childs=0
-short_description=_('DHCP')
+short_description=_('All DHCP services')
 long_description=''
 operations=['search']
 usewizard=1
