@@ -60,8 +60,6 @@ property_descriptions={
 			identifies=1
 		)
 }
-options={
-}
 
 layout = [
 	Tab( _( 'General' ), _( 'Basic settings' ), layout = [

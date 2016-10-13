@@ -124,9 +124,6 @@ property_descriptions={
 		),
 }
 
-options={
-}
-
 layout = [
 	Tab(_('General'), _('Basic settings'), layout = [
 		Group( _( 'General DHCP pool settings' ), layout = [

@@ -55,8 +55,6 @@ _mappings = (
 )
 
 def add_dhcp_options( properties, mapping, layout ):
-	global _properties, _mappings
-
 	for name, prop in _properties.items():
 		properties[ name ] = prop
 

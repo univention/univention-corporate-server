@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import string
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -63,7 +61,7 @@ property_descriptions={
 			identifies=1
 		),
 	'subnetmask': univention.admin.property(
-			short_description=_('Netmask'),
+			short_description=_('Address prefix length (or Netmask)'),
 			long_description='',
 			syntax=univention.admin.syntax.v4netmask,
 			multivalue=0,
@@ -92,9 +90,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-}
-
-options={
 }
 
 layout = [
@@ -155,10 +150,10 @@ class object(univention.admin.handlers.simpleLdap):
 					if i != j and univention.admin.ipaddress.is_range_overlapping(i, j):
 						raise univention.admin.uexceptions.rangesOverlapping, '%s-%s; %s-%s' % (i[0], i[1], j[0], j[1])
 
-				ip_in_network=1
+				ip_in_network=True
 				for j in i:
 					if not univention.admin.ipaddress.ip_is_in_network(self['subnet'], self['subnetmask'], j):
-						ip_in_network=0
+						ip_in_network=False
 
 					if univention.admin.ipaddress.ip_is_network_address(self['subnet'], self['subnetmask'], j):
 						raise univention.admin.uexceptions.rangeInNetworkAddress, '%s-%s' % (i[0], i[1])
@@ -167,7 +162,7 @@ class object(univention.admin.handlers.simpleLdap):
 						raise univention.admin.uexceptions.rangeInBroadcastAddress, '%s-%s' % (i[0], i[1])
 
 				if ip_in_network:
-					dhcpRange.append(string.join(i, ' '))
+					dhcpRange.append(' '.join(i))
 				else:
 					raise univention.admin.uexceptions.rangeNotInNetwork, '%s-%s' % (i[0], i[1])
 			#univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo['range'])
