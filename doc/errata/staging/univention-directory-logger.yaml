@@ -3,8 +3,12 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-directory-logger
-fix: 7.0.1-2.38.201610101831
+fix: 7.0.1-2.39.201610131121
 desc: |
- This update addresses the following issue:
+ This update addresses the following issues:
  * Handle logging of entries missing LDAP operational attributes.
-bug: [25404]
+ * Fix robustness of logging deleted entries.
+ * Improve logging of binary values using base64
+ * The UCR variable 'ldap/logging/dellogdir' now has a description and the
+   value of UCR variable 'ldap/logging' is interpreted as a boolean.
+bug: [25404,34916,34420,42665]

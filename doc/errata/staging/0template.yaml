@@ -2,12 +2,9 @@ product: ucs
 release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
-src: univention-virtual-machine-manager-node
-fix: 4.0.1-5.97.201610110950
+src: 
+fix: 
 desc: |
- This update addresses the following issue:
- * The new UCR variable 'libvirt/group' can be used to set the group
-   membership of the UNIX domain socket of 'libvirtd', which allows users of
-   that group to access the management capabilities of 'libvirtd' without
-   becoming 'root'.
-bug: [42622]
+ This update addresses the following issue(s):
+ * 
+bug: []
