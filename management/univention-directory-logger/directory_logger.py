@@ -142,17 +142,14 @@ def handler(dn, new_copy, old_copy):
 	if not listener.configRegistry.is_true('ldap/logging'):
 		return
 
-	# check for exclusion
-	skip = 0
-	excludeKeys = [key for key in listener.configRegistry.keys() if excludeKeyPattern.search(key)]
-	exclude = [listener.configRegistry[key] for key in excludeKeys]
-	for base in exclude:
-		if dn.rfind(base) != -1:
-			skip = 1
-
 	listener.setuid(0)
 	try:
-		if skip == 1:
+		# check for exclusion
+		if any(
+			value in dn
+			for key, value in listener.configRegistry.iteritems()
+			if excludeKeyPattern.match(key)
+		):
 			if not new_copy:  # there should be a dellog entry to remove
 				process_dellog(dn)
 			# important: don't return a thing, otherwise this dn
