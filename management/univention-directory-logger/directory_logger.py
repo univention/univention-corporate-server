@@ -223,9 +223,7 @@ def handler(dn, new_copy, old_copy):
 
 
 def createFile(filename):
-	global uidNumber
 	global gidNumber
-	global preferedGroup
 
 	if gidNumber == 0:
 		try:
