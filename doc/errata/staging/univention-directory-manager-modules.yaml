@@ -1,0 +1,17 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-directory-manager-modules
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The DHCP options mapping was fixed so that multiple values can be provided.
+ * The "failover peer" property description has been renamed into "failover
+   peer configuration".
+ * Some univentionObject object classes are added to automatically created
+   objects.
+ * The DHCP "netmask" property has been renamed into "address prefix length".
+ * DHCP Pools may now be created underneath of shared subnets.
+ * DHCP Pools may now be created via the DHCP UMC module.
+bug: [33614, 39876, 38073, 27123, 40649, 42177]

@@ -1,3 +1,14 @@
+univention-directory-manager-modules (11.0.3-36) unstable; urgency=medium
+
+  * Bug #33614: fix mapping of DHCP options
+  * Bug #39876: Renamed "failover peer" to "failover peer configuration
+  * Bug #38073: add missing univentionObject object class
+  * Bug #27123: rename netmask into address prefix length
+  * Bug #40649: add support for multiple superordinate modules
+  * Bug #42177: fix DCHP pool handling
+
+ -- Florian Best <best@univention.de>  Thu, 13 Oct 2016 18:17:08 +0200
+
 univention-directory-manager-modules (11.0.3-35) unstable; urgency=medium
 
   * Bug #42386: enhance error messages

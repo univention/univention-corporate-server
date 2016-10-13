@@ -1,3 +1,20 @@
+univention-management-console-module-udm (6.0.11-26) unstable; urgency=medium
+
+  * Bug #42177: Bug #39144: fix race conditions in superordinate handling
+  * Bug #42177: Bug #39144: Make it possible to select container underneath of
+  	superordinates
+  * Bug #42177: Bug #33205: only show direct children of the currently
+  	selected superordinate
+  * Bug #42177: display the list of superordinates depending on the currently
+  	selected container/superordinate
+  * Bug #40649: Bug #26131: Bug #42177: Allow DHCP pools underneath of
+  	dhcp/sharedsubnet's
+  * Bug #42177: adjust Tree view
+  * Bug #39588: don't crash on empty directory/manager/web/sizelimit
+  * Bug #40649: add support for multiple superordinate modules
+
+ -- Florian Best <best@univention.de>  Thu, 13 Oct 2016 18:15:02 +0200
+
 univention-management-console-module-udm (6.0.11-25) unstable; urgency=medium
 
   * Bug #42388: make wildcard and substring search configurable
