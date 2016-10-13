@@ -32,7 +32,6 @@
 
 __package__ = ''  # workaround for PEP 366
 import listener
-import string
 import time
 import syslog
 import re
@@ -69,22 +68,17 @@ filemode = '0640'
 cleanupDellog = True  # remove missed dellog entries (after reporting about them)
 digest = listener.configRegistry.get('ldap/logging/hash', 'md5')
 
-
-def needsConversion(char):
-	return char > '\x7f'
-
-
-def base64Filter(str):
-	if [char for char in str if needsConversion(char)]:
-		str = string.rstrip(base64.encodestring(str))
-	return str
+SAFE_STRING_RE = re.compile(r'^(?:\000|\n|\r| |:|<)|[\000\n\r\200-\377]+|[ ]+$')
 
 
 def ldapEntry2string(entry):
-	str = ''
-	for (key, valuelist) in entry.iteritems():
-		str += ''.join(['%s: %s\n' % (key, base64Filter(value)) for value in valuelist])
-	return str
+	return ''.join(
+		'%s:: %s\n' % (key, base64.standard_b64encode(value))
+		if SAFE_STRING_RE.search(value) else
+		'%s: %s\n' % (key, value)
+		for key, values in entry.iteritems()
+		for value in values
+	)
 
 
 def ldapTime2string(timestamp):
