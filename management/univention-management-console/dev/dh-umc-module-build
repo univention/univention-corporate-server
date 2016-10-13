@@ -84,5 +84,5 @@ if __name__ == '__main__':
 	try:
 		main()
 	except dh_umc.Error as exc:
-		print >> sys.stderr, str(exc)
+		print >> sys.stderr, 'Error: %s' % (exc,)
 		sys.exit(1)
