@@ -322,15 +322,7 @@ def simple_response(function=None, with_flavor=None, with_progress=False):
 				# return value is a function which is meant to be executed as thread
 				# TODO: replace notfier by threading
 
-				def thread_end(thread, result, request):
-					if isinstance(result, BaseException):
-						self.finished(request.id, None, message=''.join(traceback.format_exception(*thread.exc_info)), status=500)
-						return
-					self.finished(request.id, result)
-
-				thread = notifier.Callback(result[0], self, request)
-				thread_end = notifier.Callback(thread_end, request)
-				thread = notifier.threads.Simple('simple_response', thread, thread_end)
+				thread = notifier.threads.Simple('simple_response', notifier.Callback(result[0], self, request), notifier.Callback(self.thread_finished_callback, request))
 				thread.run()
 
 	copy_function_meta_data(function, _response)
