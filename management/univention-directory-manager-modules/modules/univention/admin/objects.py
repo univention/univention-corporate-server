@@ -47,17 +47,19 @@ def module(object):
 			mod=res[0].replace('.', '/')
 			return mod
 
-def get_superordinate( module, co, lo, dn ):
+def get_superordinate(module, co, lo, dn):
 	"""Searches for the superordinate object for the given DN. if the
 	object does not require a superordinate object or it is not found
 	None is returned."""
-	super_module = univention.admin.modules.superordinate( module )
-	if super_module:
+	super_modules = set(univention.admin.modules.superordinate_names(module))
+	if super_modules:
 		while dn:
-			attr = lo.get( dn )
-			if univention.admin.modules.identifyOne( dn, attr ) == super_module:
-				return get( super_module, co, lo, None, dn )
-			dn = lo.parentDn( dn )
+			attr = lo.get(dn)
+			super_module = set(univention.admin.modules.name(x) for x in univention.admin.modules.identify(dn, attr)) & super_modules
+			if super_module:
+				super_module = univention.admin.modules.get(list(super_module)[0])
+				return get(super_module, co, lo, None, dn)
+			dn = lo.parentDn(dn)
 
 	return None
 

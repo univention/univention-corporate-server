@@ -785,7 +785,7 @@ class Instance(Base, ProgressMixin):
 			else:
 				# add all types that do not have a superordinate
 				MODULE.info('container has no superordinate')
-				allowed_modules.update(filter(lambda mod: not udm_modules.superordinate(mod), udm_modules.modules.values()))
+				allowed_modules.update(mod for mod in udm_modules.modules.values() if not udm_modules.superordinates(mod))
 
 			# make sure that the object type can be created
 			allowed_modules = filter(lambda mod: udm_modules.supports(mod, 'add'), allowed_modules)
@@ -960,24 +960,24 @@ class Instance(Base, ProgressMixin):
 			return
 
 		def _thread(container):
-			success = True
-			message = None
 			superordinate = None
 			result = []
 			for base, typ in map(lambda x: x.split('/'), self.modules_with_childs):
 				module = UDM_Module('%s/%s' % (base, typ))
-				if module.superordinate:
+				so_obj = None
+				if module.superordinate_names:
 					if superordinate is None:
-						try:
-							so_module = UDM_Module(module.superordinate)
-							so_obj = so_module.get(request.options.get('container'))
-							superordinate = so_obj
-						except UDM_Error:  # superordinate object could not be load -> ignore module
+						for module_superordinate in module.superordinate_names:
+							try:
+								so_module = UDM_Module(module_superordinate)
+								so_obj = so_module.get(request.options.get('container'))
+								superordinate = so_obj
+							except UDM_Error:  # superordinate object could not be load -> ignore module
+								continue
+						if so_obj is None:
 							continue
 					else:
 						so_obj = superordinate
-				else:
-					so_obj = None
 				try:
 					for item in module.search(container, scope='one', superordinate=so_obj):
 						result.append({
@@ -988,22 +988,14 @@ class Instance(Base, ProgressMixin):
 							'objectType': '%s/%s' % (base, typ),
 							'$operations$': module.operations,
 							'$flags$': item.oldattr.get('univentionObjectFlag', []),
+							'$childs$': module.childs,
 						})
-				except UDM_Error as e:
-					success = False
-					result = None
-					message = str(e)
+				except UDM_Error as exc:
+					raise UMC_Error(str(exc))
 
-			return result, message, success
+			return result
 
-		def _finish(thread, result, request):
-			if not isinstance(result, BaseException):
-				result, message, success = result
-				self.finished(request.id, result, message, success)
-			else:
-				self.finished(request.id, None, str(result), False)
-
-		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(_finish, request))
+		thread = notifier.threads.Simple('NavContainerQuery', notifier.Callback(_thread, request.options['container']), notifier.Callback(self.thread_finished_callback, request))
 		thread.run()
 
 	@sanitize(

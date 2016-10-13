@@ -52,21 +52,21 @@ translation = localization.translation('univention/admin')
 _ = translation.translate
 
 modules={}
-superordinates=set()  # list of all module names (strings) that are superordinates
+_superordinates=set()  # list of all module names (strings) that are _superordinates
 containers=[]
 
 def update():
 	'''scan handler modules'''
-	global modules, superordinates
+	global modules, _superordinates
 	modules={}
-	superordinates=set()
+	_superordinates=set()
 
 	## since last update(), syntax.d and hooks.d may have changed (Bug #31154)
 	univention.admin.syntax.import_syntax_files()
 	univention.admin.hook.import_hook_files()
 
 	def _walk(root, dir, files):
-		global modules, superordinates
+		global modules, _superordinates
 		for file in files:
 			if not file.endswith('.py') or file.startswith('__'):
 				continue
@@ -84,11 +84,7 @@ def update():
 			if isContainer(m):
 				containers.append(m)
 
-			# update the list of superordinates
-			superordinate = superordinate_name(m)
-			if superordinate:
-				superordinates.add(superordinate)
-
+			_superordinates.update(superordinate_names(m))
 
 	for p in sys.path:
 		dir=os.path.join(p, 'univention/admin/handlers')
@@ -580,20 +576,30 @@ def name(module):
 		return ''
 	return get(module).module
 
-def superordinate_name(module_name):
+def superordinate_names(module_name):
 	'''return name of superordinate module'''
 	module = get(module_name)
-	return getattr(module, 'superordinate', '')
+	names = getattr(module, 'superordinate', [])
+	if isinstance(names, basestring):
+		names = [names]
+	return names
 
-def superordinate(module):
+def superordinate_name(module_name):  # deprecated, use superordinate_names()!
+	'''return name of first superordinate module'''
+	names = superordinate_names(module_name)
+	return names[0] if names else None
+
+def superordinate(module):  # deprecated, use superordinates()
 	'''return instance of superordinate module'''
 	return get(superordinate_name(module))
 
+def superordinates(module):
+	'''return instance of superordinate module'''
+	return [get(x) for x in superordinate_names(module)]
+
 def subordinates(module):
 	'''return list of instances of subordinate modules'''
-	global modules
-	return [mod for mod in modules.values()
-		if superordinate_name(mod) == name(module) and not isContainer(mod)]
+	return [mod for mod in modules.values() if name(module) in superordinate_names(mod) and not isContainer(mod)]
 
 def find_superordinate( dn, co, lo ):
 	'''For a given DN, search in the LDAP path whether this LDAP object is
@@ -603,7 +609,7 @@ def find_superordinate( dn, co, lo ):
 	# walk up the ldap path and stop if we find an object type that is a superordinate
 	while dn:
 		attr = lo.get( dn )
-		module = identifyOne(dn, attr) 
+		module = identifyOne(dn, attr)
 		if isSuperordinate(module):
 			return get(module)
 		dn = lo.parentDn( dn )
@@ -723,7 +729,7 @@ def quickDescription(module_name, dn):
 	return getattr(module, 'quickDescription', rdn)
 
 def isSuperordinate(module):
-	return name(module) in superordinates
+	return name(module) in _superordinates
 
 def isContainer(module):
 	return name(module).startswith('container/')

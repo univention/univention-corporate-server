@@ -225,8 +225,7 @@ def module_usage(information, action=''):
 
 def module_information(module, identifies_only=0):
 	information={module:[{},{}]}
-	if 'superordinate' in dir(module) and module.superordinate:
-		superordinate=univention.admin.modules.get(module.superordinate)
+	for superordinate in univention.admin.modules.superordinates(module):
 		information.update(module_information(superordinate, identifies_only=1))
 
 	if not identifies_only:
@@ -599,15 +598,10 @@ def _doit(arglist):
 
 	information=module_information(module)
 
+	superordinate=None
 	if superordinate_dn and univention.admin.modules.superordinate(module):
-		try:
-			superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(module), co, lo, '', dn=superordinate_dn)
-		except univention.admin.uexceptions.insufficientInformation, e:
-			out.append('Insufficient Information: %s' % str(e))
-			return out + ["OPERATION FAILED"]
-	else:
-		superordinate=None
-
+		# the superordinate itself also has a superordinate, get it!
+		superordinate = univention.admin.objects.get_superordinate(module, None, lo, superordinate_dn)
 
 	if len(arglist) == 2:
 		out = usage() + module_usage(information)
