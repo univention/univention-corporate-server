@@ -58,7 +58,13 @@ from univention.testing.ucs_samba import wait_for_drs_replication
 
 
 class UCSTestUDM_Exception(Exception):
-    pass
+	def __str__(self):
+		if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
+			return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].iteritems())
+		else:
+			return Exception.__str__(self)
+	__repr__ = __str__
+
 
 
 class UCSTestUDM_MissingModulename(UCSTestUDM_Exception):
@@ -159,9 +165,11 @@ class UCSTestUDM(object):
                 for value in values:
                     cmd.extend(['--%s' % operation, '%s=%s' % (key, value)])
 
-        if args.pop('remove_referring', True):
-            if action == 'remove':
-                cmd.append('--remove_referring')
+        if args.pop('remove_referring', True) and action == 'remove':
+            cmd.append('--remove_referring')
+
+        if args.pop('ignore_exists', False) and action == 'create':
+           cmd.append('--ignore_exists')
 
         # set all other remaining properties
         for key, value in args.items():
@@ -195,8 +203,8 @@ class UCSTestUDM(object):
 
         # find DN of freshly created object and add it to cleanup list
         for line in stdout.splitlines():  # :pylint: disable-msg=E1103
-            if line.startswith('Object created: '):
-                dn = line.split('Object created: ', 1)[-1]
+            if line.startswith('Object created: ') or line.startswith('Object exists: '):
+                dn = line.split('Object created: ', 1)[-1].split('Object exists: ', 1)[-1]
                 self._cleanup.setdefault(modulename, []).append(dn)
                 break
         else:

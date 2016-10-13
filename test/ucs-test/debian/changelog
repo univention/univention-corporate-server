@@ -1,3 +1,10 @@
+ucs-test (7.0.6-13) unstable; urgency=medium
+
+  * Bug #42672: univention.testing.udm is capable of create --ignore-exists
+  	now
+
+ -- Florian Best <best@univention.de>  Thu, 13 Oct 2016 18:52:35 +0200
+
 ucs-test (7.0.6-12) unstable; urgency=medium
 
   * Bug #31832: reenable skipped test
