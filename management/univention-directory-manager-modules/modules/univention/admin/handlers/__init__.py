@@ -991,8 +991,6 @@ class simpleLdap(base):
 			self.policyObjects[policy_type]=univention.admin.objects.get(policy_module, None, self.lo, policy_position)
 			self.policyObjects[policy_type].copyIdentifier(self)
 			self._init_ldap_search( self.policyObjects[ policy_type ] )
-		else:
-			pass
 
 		return self.policyObjects[policy_type]
 
@@ -1152,9 +1150,7 @@ class simpleComputer( simpleLdap ):
 		self.open_warning = None
 		open_warnings = [ ]
 
-		self.__multiip = False
-		if len ( self[ 'mac' ] ) > 1 or len( self[ 'ip' ] ) > 1:
-			self.__multiip = True
+		self.__multiip = len(self['mac']) > 1 or len(self['ip']) > 1
 
 		self[ 'dnsEntryZoneForward' ] = [ ]
 		self[ 'dnsEntryZoneReverse' ] = [ ]
@@ -1309,7 +1305,8 @@ class simpleComputer( simpleLdap ):
 			results = self.lo.searchDn( base = position, scope = 'domain', filter=filter_format('(&(objectClass=univentionDhcpHost)(|(cn=%s)(cn=%s_uv*)))', (name, name)), unique = 0 )
 			if not results:
 				self.lo.add( 'cn = %s,%s'% ( name, position ), [
-						( 'objectClass', [ 'top', 'univentionDhcpHost' ] ),\
+						( 'objectClass', [ 'top', 'univentionObject', 'univentionDhcpHost' ] ),\
+						( 'univentionObjectType', [ 'dhcp/host' ]),\
 						( 'cn', name ),\
 						( 'univentionDhcpFixedAddress', [ ip ] ),\
 						( 'dhcpHWAddress', [ ethernet ] ) ] )
@@ -1328,7 +1325,8 @@ class simpleComputer( simpleLdap ):
 								n = 1
 
 				self.lo.add( 'cn = %s_uv%d,%s'% ( name, n, position ), [
-						( 'objectClass', [ 'top', 'univentionDhcpHost' ] ),\
+						( 'objectClass', [ 'top', 'univentionObject', 'univentionDhcpHost' ] ),\
+						( 'univentionObjectType', [ 'dhcp/host' ]),\
 						( 'cn', '%s_uv%d' % ( name,n ) ),\
 						( 'univentionDhcpFixedAddress', [ ip ] ),\
 						( 'dhcpHWAddress', [ ethernet ] ) ] )
@@ -1778,7 +1776,8 @@ class simpleComputer( simpleLdap ):
 			results = self.lo.search( base = dnsAliasZoneContainer, scope = 'domain', attr = [ 'cNAMERecord' ], filter=filter_format('relativeDomainName=%s', (alias,)), unique = 0 )
 			if not results:
 				self.lo.add('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(alias), dnsAliasZoneContainer), [\
-									( 'objectClass', [ 'top', 'dNSZone' ]),\
+									( 'objectClass', [ 'top', 'dNSZone', 'univentionObject' ]),\
+									( 'univentionObjectType', [ 'dns/alias' ] ),\
 									( 'zoneName', univention.admin.uldap.explodeDn( dnsAliasZoneContainer, 1 )[ 0 ]),\
 									( 'cNAMERecord', [ "%s.%s." % (name, dnsForwardZone) ]),\
 									( 'relativeDomainName', [ alias ])])
@@ -1790,7 +1789,6 @@ class simpleComputer( simpleLdap ):
 			else:
 				# thow exeption, cNAMERecord is single value
 				raise univention.admin.uexceptions.dnsAliasAlreadyUsed, _('DNS alias is already in use.')
-		pass
 
 	def __remove_dns_alias_object( self, name, dnsForwardZone, dnsAliasZoneContainer, alias = None ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'remove a dns alias object: name="%s", dnsForwardZone="%s", dnsAliasZoneContainer="%s", alias="%s"' % ( name, dnsForwardZone, dnsAliasZoneContainer, alias ) )
@@ -1838,8 +1836,7 @@ class simpleComputer( simpleLdap ):
 
 	def _ldap_post_modify( self ):
 
-		if len ( self[ 'mac' ] ) > 1 or len( self[ 'ip' ] ) > 1:
-			self.__multiip = True
+		self.__multiip |= len(self['mac']) > 1 or len(self['ip']) > 1
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
@@ -1973,7 +1970,6 @@ class simpleComputer( simpleLdap ):
 			self.__update_groups_after_namechange()
 			self.__rename_dhcp_object( position = None, old_name = self.__changes[ 'name' ][ 0 ], new_name = self.__changes[ 'name' ][ 1 ] )
 			self.__rename_dns_object( position = None, old_name = self.__changes[ 'name' ][ 0 ], new_name = self.__changes[ 'name' ][ 1 ] )
-			pass
 
 		if self.ipRequest == 1 and self[ 'ip' ]:
 			for ipAddress in self[ 'ip' ]:
@@ -2175,12 +2171,9 @@ class simpleComputer( simpleLdap ):
 				else:
 					raise univention.admin.uexceptions.invalidDNSAliasEntry, _('The DNS alias entry for this host should contain the zone name, the alias zone container LDAP-DN and the alias.')
 
-		if len ( self[ 'mac' ] ) < 2 and len( self[ 'ip' ] ) < 2:
-			self.__multiip = False
-		else:
-			self.__multiip = True
+		self.__multiip = len(self['mac']) > 1 or len(self['ip']) > 1
 
-		ml = ml + super( simpleComputer, self )._ldap_modlist( )
+		ml += super(simpleComputer, self)._ldap_modlist()
 
 		return ml
 
@@ -2590,9 +2583,6 @@ class simpleComputer( simpleLdap ):
 							self.__saved_dhcp_entry = network_object['dhcpEntryZone']
 
 					self.old_network=value
-				else:
-					pass
-
 
 		elif key == 'ip':
 			self.ip_freshly_set = True
@@ -2835,9 +2825,7 @@ class simplePolicy(simpleLdap):
 				if self.hasChanged(key):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'polinfo: key:%s hasChanged' % (key) )
 					self.changes=1
-				return
-			else:
-				return
+			return
 
 		# this object did not exist before
 		if not self.oldinfo:
