@@ -40,7 +40,6 @@ import base64
 import grp
 import subprocess
 import os
-import fcntl
 
 import univention.debug
 import univention.misc
@@ -112,51 +111,25 @@ def filterOutUnchangedAttributes(old_copy, new_copy):
 
 def process_dellog(dn):
 	dellog = listener.configRegistry['ldap/logging/dellogdir']
-	lockfilename = dellog + '.lock'
-	lock = open(lockfilename, "w")
-	fcntl.flock(lock, fcntl.LOCK_EX)
-	try:
-		dellist = os.listdir(dellog)
-		dellist.sort()
-		filename = dellist.pop(0)
-		filename = os.path.join(dellog, filename)
-		f = open(filename)
-		(dellog_stamp, dellog_id, dellog_dn, dellog_bindDN, dellog_action) = [line.rstrip() for line in f]
-		f.close()
-		if dellog_dn != dn:
 
-			# first clean up the mess:
-			leftover = 1
+	dellist = os.listdir(dellog)
+	dellist.sort()
+	for leftover, filename in enumerate(dellist):
+		pathname = os.path.join(dellog, filename)
+		try:
+			with open(pathname, 'r') as f:
+				(dellog_stamp, dellog_id, dellog_dn, modifier, action) = [line.rstrip() for line in f]
+
 			if cleanupDellog:
-				os.unlink(filename)
+				os.unlink(pathname)
+		except EnvironmentError:
+			continue
 
-			# be nice: see if we can find dn in a later entry
-			for filename in dellist:
-				filename = os.path.join(dellog, filename)
-				f = open(filename)
-				(dellog_stamp, dellog_id, dellog_dn, dellog_bindDN, dellog_action) = [line.rstrip() for line in f]
-				f.close()
-				if dellog_dn == dn:
-					univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: dn found in dellog entry %s, ID %s (+%s)' % (name, filename, dellog_id, leftover))
-					break
-				# damn, missed that one as well. Now it's too late, clean up:
-				leftover += 1
-				if cleanupDellog:
-					os.unlink(filename)
-
-		if dellog_dn == dn:  # haben wir's jetzt?
+		if dellog_dn == dn:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: dn found in dellog entry %s, ID %s (+%s)' % (name, filename, dellog_id, leftover))
 			timestamp = ldapTime2string(dellog_stamp)
-			modifier = dellog_bindDN
-			action = dellog_action
-			os.unlink(filename)
-		else:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, '%s: dn not found in dellog: %s' % (name, dn))
-
-	finally:
-		fcntl.flock(lock, fcntl.LOCK_UN)
-		os.unlink(lockfilename)
-
-	if not modifier:  # Fallback
+			break
+	else:
 		timestamp = time.strftime(timestampfmt, time.gmtime())
 		dellog_id = '<NoID>'
 		modifier = '<unknown>'
