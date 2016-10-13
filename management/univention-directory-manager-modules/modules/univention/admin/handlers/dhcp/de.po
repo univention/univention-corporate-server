@@ -172,8 +172,8 @@ msgid "Dynamic address assignment"
 msgstr "Dynamische Adresszuweisung"
 
 #: modules/univention/admin/handlers/dhcp/pool.py:77
-msgid "Failover peer"
-msgstr "Failover Peer"
+msgid "Failover peer configuration"
+msgstr "Failover Peer Konfiguration"
 
 #: modules/univention/admin/handlers/dhcp/host.py:75
 msgid "Fixed IP addresses"
