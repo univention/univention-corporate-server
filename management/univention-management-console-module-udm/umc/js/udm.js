@@ -356,7 +356,7 @@ define([
 				var state = _state.split(':');
 				if (!state.length || (state.length == 1 && state[0] == '')) {
 					if (this._searchPage) {
-							this.closeDetailPage();
+						this.closeDetailPage();
 					}
 				}
 				else {
@@ -525,7 +525,7 @@ define([
 				if (tools.isTrue(this._autoSearch)) {
 					// connect to the onValuesInitialized event of the form
 					on.once(this._searchForm, 'valuesInitialized', lang.hitch(this, function() {
-						this.filter(this._searchForm.get('value'));
+						this.filter();
 					}));
 				}
 			}
@@ -545,7 +545,7 @@ define([
 				isContextAction: false,
 				callback: lang.hitch(this, function(keys, items) {
 					this._tree.set('path', this._ldapDN2TreePath(keys[0]));
-					this.filter(this._searchForm.get('value'));
+					this.filter();
 				})
 			}, {
 				name: 'add',
@@ -1500,10 +1500,11 @@ define([
 				if (this._tree && this._tree.get('selectedItems')[0].id == ids[0]) {
 					// when we are removing objects which are selected in the tree
 					// a reload would fail... so set the superordinate to all superordinates
-					// this triggers a reload of the path
+					// and trigger a reload of the path
 					var superordinateWidget = this._searchForm.getWidget('superordinate');
 					if (superordinateWidget) {
 						superordinateWidget.set('value', 'None');
+						this.filter();
 					}
 				}
 
