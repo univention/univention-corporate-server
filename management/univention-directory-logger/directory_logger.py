@@ -42,7 +42,6 @@ import grp
 import subprocess
 import os
 import fcntl
-import copy
 
 import univention.debug
 import univention.misc
@@ -171,12 +170,7 @@ def process_dellog(dn):
 	return (timestamp, dellog_id, modifier, action)
 
 
-def handler(dn, new, old):
-	# Copy dictonaries because they will be modified
-	# see https://forge.univention.org/bugzilla/show_bug.cgi?id=22564 for details
-	new_copy = copy.deepcopy(new)
-	old_copy = copy.deepcopy(old)
-
+def handler(dn, new_copy, old_copy):
 	if listener.configRegistry['ldap/logging'] != 'yes':
 		return
 
