@@ -1425,13 +1425,16 @@ define([
 
 			this.getDefaultColumns().then(lang.hitch(this, function(columns) {
 				var vals = this._searchForm.get('value');
-				if ('navigation' == this.moduleFlavor) {
-					// add currently selected container
+				if (this._tree) {
+					// the tree view (navigation, DHCP, DNS) might contain containers (e.g. also underneath of a superordinate!)
+					// we need to set the currently selected container if it's not a superordinate
 					var path = this._tree.get('path');
 					if (path.length) {
-						lang.mixin(vals, {
-							container: path[path.length - 1].id
-						});
+						if (!path[path.length -1].$isSuperordinate$) {
+							// a regular container is selected in the tree (which might be underneath of a superordinate)
+							delete vals.superordinate;
+							vals.container = path[path.length - 1].id;
+						}
 					}
 				}
 				if (vals.superordinate && vals.superordinate !== 'None') {
