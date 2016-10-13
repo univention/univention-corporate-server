@@ -36,7 +36,7 @@ import string
 import time
 import syslog
 import re
-import md5
+import hashlib
 import base64
 import grp
 import subprocess
@@ -67,6 +67,7 @@ preferedGroup = "adm"
 gidNumber = 0  # fallback
 filemode = '0640'
 cleanupDellog = True  # remove missed dellog entries (after reporting about them)
+digest = listener.configRegistry.get('ldap/logging/hash', 'md5')
 
 
 def needsConversion(char):
@@ -248,7 +249,7 @@ def handler(dn, new_copy, old_copy):
 			logfile.close()
 		# 4. calculate nexthash, omitting the final line break to make validation of the
 		#    record more intituive
-		nexthash = md5.new(record[:-1]).hexdigest()
+		nexthash = hashlib.new(digest, record[:-1]).hexdigest()
 		# 5. cache nexthash (the actual logfile might be logrotated away..)
 		cachefile.seek(0)
 		cachefile.write(nexthash)
@@ -318,7 +319,7 @@ def initialize():
 			logfile.close()
 
 		# 4. calculate initial hash
-		nexthash = md5.new(record).hexdigest()
+		nexthash = hashlib.new(digest, record).hexdigest()
 		# 5. cache nexthash (the actual logfile might be logrotated away..)
 		cachefile.seek(0)
 		cachefile.write(nexthash)
