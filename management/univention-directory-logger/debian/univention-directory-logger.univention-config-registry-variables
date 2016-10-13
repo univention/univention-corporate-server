@@ -15,3 +15,9 @@ Description[de]=Legt den Namen des Hash-Algorithmus fest. Standard ist 'md5'.
 Description[en]=Defines the name of the hash algorithm. Default is 'md5'.
 Type=str
 Categories=service-ldap
+
+[ldap/logging/dellogdir]
+Description[de]=Aktiviert und legt den Namen des Verzeichnis fest, in das OpenLDAP das sog. "delete log" schreibt.
+Description[en]=Activates and defines the name of the directory, into which OpenLDAP writes the so called "delete log".
+Type=str
+Categories=service-ldap
