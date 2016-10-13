@@ -1,0 +1,12 @@
+[
+    {
+        "binary_package_name": "univention-system-activation",
+        "package_dir": "base/univention-system-activation",
+        "input_files": [
+            "js/ucs/*.js"
+        ],
+        "po_subdir": "js/ucs",
+        "target_type": "json",
+        "destination": "www/js/ucs/{lang}.json"
+    }
+]

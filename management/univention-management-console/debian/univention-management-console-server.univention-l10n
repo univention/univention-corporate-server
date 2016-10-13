@@ -1,0 +1,12 @@
+[
+	{
+		"binary_package_name": "univention-management-console-server",
+		"package_dir": "management/univention-management-console",
+		"input_files": [
+			"src/*.py"
+		],
+		"po_subdir": "src/univention/management/console",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-management-console.mo"
+	}
+]

@@ -1,0 +1,12 @@
+[
+	{
+		"binary_package_name": "univention-management-console-module-appcenter",
+		"package_dir": "management/univention-appcenter",
+		"input_files": [
+			"udm/*"
+		],
+		"po_subdir": "udm/handlers/appcenter",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-appcenter.mo"
+	}
+]

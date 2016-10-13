@@ -1,0 +1,12 @@
+[
+	{
+		"binary_package_name": "univention-printserver",
+		"package_dir": "services/univention-printserver",
+		"input_files": [
+			"modules/univention/management/console/handlers/cups/*"
+		],
+		"po_subdir": "./",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-management-console-handlers-cups.mo"
+	}
+]

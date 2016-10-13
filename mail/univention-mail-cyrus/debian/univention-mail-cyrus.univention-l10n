@@ -1,0 +1,12 @@
+[
+	{
+		"binary_package_name": "univention-mail-cyrus",
+		"package_dir": "mail/univention-mail-cyrus",
+		"input_files": [
+			"modules/univention/admin/handlers/policies/mailquota/mailquota.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/policies/mailquota",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-mailquota.mo"
+	}
+]

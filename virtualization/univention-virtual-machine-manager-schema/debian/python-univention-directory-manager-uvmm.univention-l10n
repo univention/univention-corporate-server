@@ -1,0 +1,12 @@
+[
+	{
+		"binary_package_name": "python-univention-directory-manager-uvmm",
+		"package_dir": "virtualization/univention-virtual-machine-manager-schema",
+		"input_files": [
+			"modules/univention/admin/*"
+		],
+		"po_subdir": "modules/univention/admin/handlers/uvmm",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-virtual-machine-manager-schema.mo"
+	}
+]
