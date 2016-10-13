@@ -168,14 +168,13 @@ def handler(dn, new_copy, old_copy):
 		previoushash = cachefile.read()
 
 		# get ID
-		f = open(notifier_id, 'r')
-		id = int(f.read()) + 1
+		with open(notifier_id, 'r') as f:
+			id = int(f.read()) + 1
 		# matches notifier transaction id. Tested for UCS 1.3-2 and 2.0.
 		# Note about 1.3-2:
 		# For user removal this matches with ++last_id as seen by the dellog overlay,
 		# but for user create dellog sees id-1, i.e. last_id has already been incremented before
 		# we see it here
-		f.close()
 
 		# 2. generate log record
 		if new_copy:
@@ -209,11 +208,8 @@ def handler(dn, new_copy, old_copy):
 		record += endtag
 
 		# 3. write log file record
-		try:
-			logfile = open(logname, 'a')  # append
+		with open(logname, 'a') as logfile:  # append
 			logfile.write(record)
-		finally:
-			logfile.close()
 		# 4. calculate nexthash, omitting the final line break to make validation of the
 		#    record more intituive
 		nexthash = hashlib.new(digest, record[:-1]).hexdigest()
@@ -279,12 +275,8 @@ def initialize():
 		record += endtag
 
 		# 3. write log file record
-		try:
-			logfile = open(logname, 'a')  # append
+		with open(logname, 'a') as logfile:  # append
 			logfile.write(record)
-		finally:
-			logfile.close()
-
 		# 4. calculate initial hash
 		nexthash = hashlib.new(digest, record).hexdigest()
 		# 5. cache nexthash (the actual logfile might be logrotated away..)
