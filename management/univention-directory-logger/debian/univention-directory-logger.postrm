@@ -33,30 +33,20 @@
 #DEBHELPER#
 
 registrySection='ldap/logging'
-workdir=/var/lib/univention-directory-logger
-dellog=${workdir}/dellog
+workdir='/var/lib/univention-directory-logger'
+dellog="${workdir}/dellog"
 
 case "$1" in
 	"remove")
-		## unload the listener module
-		/etc/init.d/univention-directory-listener crestart
-
-		## unset directory variable, to stop dellog template activation
-		univention-config-registry unset "${registrySection}/dellogdir"
-
-		## commit the changes to slapd.conf multifile
+		univention-config-registry unset \
+			"${registrySection}/dellogdir" \
+			"${registrySection}"
+		invoke-rc.d univention-directory-listener crestart
 		univention-config-registry commit /etc/ldap/slapd.conf
-
-		## restart the OpenLDAP Server to unload the overlay
-		/etc/init.d/slapd crestart
-
-		## unset main ucr variable
-		univention-config-registry unset "${registrySection}"
-
-		dpkg-statoverride --remove --force "${dellog}"
-
-		rm -rf "${dellog}"
-		rm -f "${dellog}".lock
+		invoke-rc.d slapd crestart
+		;;
+	"upgrade")
+		dpkg-statoverride --force --quiet --remove "${dellog}"
 		;;
 	"purge")
 		rm -rf "${workdir}"

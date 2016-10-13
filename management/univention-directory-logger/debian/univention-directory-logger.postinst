@@ -33,39 +33,22 @@
 #DEBHELPER#
 
 registrySection='ldap/logging'
-workdir=/var/lib/univention-directory-logger
-dellog=${workdir}/dellog
+workdir='/var/lib/univention-directory-logger'
+dellog="${workdir}/dellog"
 
-[ -d "${workdir}" ] || /bin/mkdir -p "${workdir}"
-
-if [ -d "${dellog}" ]; then
-	/bin/rm -rf "${dellog}"
-	/bin/rm -f "${dellog}".lock
-	dpkg-statoverride --remove --force "${dellog}"
-fi
-
-/bin/mkdir -p "${dellog}"
-dpkg-statoverride --add --update root adm 700 "${dellog}"
-
-# if [ "$1" = "configure" -a -z "$2" ]; then	# only do this at installation time, not on update
 if [ "$1" = "configure" ]; then
-	## set config-registry vriables
-	univention-config-registry set "${registrySection}"?yes
-	univention-config-registry set "${registrySection}/dellogdir"?"${dellog}"
+	install -m 0700 -o root -g adm -d "$workdir"
+	install -m 0700 -o root -g adm -d "$dellog"
 
-	## commit the changes to slapd.conf multifile
-	univention-config-registry commit /etc/ldap/slapd.conf
-
-	## restart the OpenLDAP Server to load the module
-	/etc/init.d/slapd crestart
-
-	# exclude temporary objects by default
 	eval "$(univention-config-registry shell ldap/base)"
-	univention-config-registry set "${registrySection}/exclude1"?"cn=temporary,cn=univention,$ldap_base"
+	univention-config-registry set \
+		"${registrySection}?yes" \
+		"${registrySection}/dellogdir?${dellog}" \
+		"${registrySection}/exclude1?cn=temporary,cn=univention,$ldap_base"
 
-	## load the listener module
-	/etc/init.d/univention-directory-listener crestart
-
+	univention-config-registry commit /etc/ldap/slapd.conf
+	invoke-rc.d slapd crestart
+	invoke-rc.d univention-directory-listener crestart
 fi
 
 exit 0
