@@ -9,3 +9,9 @@ Description[de]=Mit Variablen der Form 'ldap/logging/exclude*=DN' können Contai
 Description[en]=Variables in the format 'ldap/logging/exclude*=DN' can be used to exclude containers/OUs from the logging.
 Type=str
 Categories=service-ldap
+
+[ldap/logging/hash]
+Description[de]=Legt den Namen des Hash-Algorithmus fest. Standard ist 'md5'.
+Description[en]=Defines the name of the hash algorithm. Default is 'md5'.
+Type=str
+Categories=service-ldap

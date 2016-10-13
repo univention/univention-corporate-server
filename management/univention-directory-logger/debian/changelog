@@ -1,6 +1,7 @@
 univention-directory-logger (8.0.0-2) unstable; urgency=low
 
   * Bug #25404: Fix old LDAP parsing
+  * Bug #34739: Switch hash implementation
 
  -- Philipp Hahn <hahn@univention.de>  Mon, 10 Oct 2016 18:26:27 +0200
 
