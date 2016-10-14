@@ -43,8 +43,10 @@
 #include <string.h>
 #include <time.h>
 #include <sys/time.h>
+#include <sys/statvfs.h>
 
 #include <univention/debug.h>
+#include <univention/config.h>
 #include <univention/ldap.h>
 #ifdef WITH_KRB5
 #include <univention/krb5.h>
@@ -84,6 +86,37 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp,
 	return LDAP_SUCCESS;
 }
 
+static void check_free_space()
+{
+	static int min_mib = -2;
+	const char *dirnames[] = {
+		cache_dir,
+		ldap_dir,
+		NULL
+	}, **dirname;
+
+	if (min_mib == -2)
+		min_mib = univention_config_get_int("listener/freespace");
+
+	if (min_mib <= 0)
+		return;
+
+	for (dirname=dirnames; *dirname; dirname++) {
+		struct statvfs buf;
+		int free_mib;
+
+		if (statvfs(*dirname, &buf))
+			continue;
+
+		free_mib = ((long)buf.f_bavail * (long)buf.f_frsize) >> 20;
+		if (free_mib >= min_mib)
+			continue;
+
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "File system '%s' full: %d < %d", *dirname, free_mib, min_mib);
+		abort();
+	}
+}
+
 /* listen for ldap updates */
 int notifier_listen(univention_ldap_parameters_t *lp,
 		univention_krb5_parameters_t *kp,
@@ -100,6 +133,8 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 	for (;;) {
 		int		msgid;
 		time_t		timeout = DELAY_LDAP_CLOSE;
+
+		check_free_space();
 
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "Last Notifier ID: %lu", id);
 		if ((msgid = notifier_get_dn(NULL, id + 1)) < 1)
