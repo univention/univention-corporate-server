@@ -1,3 +1,10 @@
+ucs-test (7.0.6-14) unstable; urgency=medium
+
+  * 00_checks/23_enterprise_domain_controller_membership: Check if DC
+    master is member of Enterprise Domain Controllers (Bug #41549)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Oct 2016 08:25:48 +0200
+
 ucs-test (7.0.6-13) unstable; urgency=medium
 
   * Bug #42672: univention.testing.udm is capable of create --ignore-exists

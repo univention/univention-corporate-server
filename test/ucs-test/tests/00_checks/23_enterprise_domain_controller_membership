@@ -1,0 +1,20 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: Check if the DC master is member of Enterprise Domain Controller
+## exposure: safe
+## bugs: [41549]
+## tags:
+##  - basic
+##  - apptest
+## packages:
+##  - univention-samba4
+
+RETVAL=0
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+eval "$(ucr shell)"
+
+id ${ldap_master%%.$domainname}$ | grep 'Enterprise Domain Controllers' || fail_fast 110 "DC master is not member of Enterprise Domain Controllers"
+
+exit $RETVAL
+
