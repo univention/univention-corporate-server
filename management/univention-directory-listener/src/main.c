@@ -44,9 +44,6 @@
 
 #include <univention/debug.h>
 #include <univention/ldap.h>
-#ifdef WITH_KRB5
-#include <univention/krb5.h>
-#endif
 #include <univention/config.h>
 
 #include "common.h"
@@ -220,13 +217,12 @@ static void usage(void)
 	fprintf(stderr, "   -b   LDAP base dn\n");
 	fprintf(stderr, "   -D   LDAP bind dn\n");
 	fprintf(stderr, "   -w   LDAP bind password\n");
-	fprintf(stderr, "   -y   read LDAP bind (or Kerberos with -K) password from file\n");
+	fprintf(stderr, "   -y   read LDAP bind password from file\n");
 	fprintf(stderr, "   -x   LDAP simple bind\n");
 	fprintf(stderr, "   -Z   LDAP start TLS request (-ZZ to require successful response)\n");
 	fprintf(stderr, "   -Y   SASL mechanism\n");
-	fprintf(stderr, "   -U   SASL/Kerberos username\n");
-	fprintf(stderr, "   -R   SASL/Kerberos realm\n");
-	fprintf(stderr, "   -K   acquire Kerberos ticket granting ticket (like kinit)\n");
+	fprintf(stderr, "   -U   SASL username\n");
+	fprintf(stderr, "   -R   SASL realm\n");
 	fprintf(stderr, "   -m   Listener module path (may be specified multiple times)\n");
 	fprintf(stderr, "   -B   Only use dc backup notifier\n");
 	fprintf(stderr, "   -c   Listener cache path\n");
@@ -340,12 +336,6 @@ int main(int argc, char* argv[])
 	univention_ldap_parameters_t	*lp;
 	univention_ldap_parameters_t	*lp_local;
 	char *server_role;
-#ifdef WITH_KRB5
-	univention_krb5_parameters_t	*kp = NULL;
-	bool do_kinit = false;
-#else
-	void				*kp = NULL ;
-#endif
 	int debugging = 0;
 	bool from_scratch = false;
 	bool foreground = false;
@@ -390,11 +380,6 @@ int main(int argc, char* argv[])
 
 	if ((lp_local = univention_ldap_new()) == NULL)
 		exit(1);
-
-#if WITH_KRB5
-	if ((kp=univention_krb5_new()) == NULL)
-		exit(1);
-#endif
 
 	/* parse arguments */
 	for (;;) {
@@ -442,9 +427,6 @@ int main(int argc, char* argv[])
 			break;
 		case 'w':
 			lp->bindpw=strdup(optarg);
-#ifdef WITH_KRB5
-			kp->password=strdup(optarg);
-#endif
 			/* remove password from process list */
 			memset(optarg, 'X', strlen(optarg));
 			break;
@@ -456,27 +438,16 @@ int main(int argc, char* argv[])
 			break;
 		case 'y':
 			lp->bindpw=read_pwd_from_file(optarg);
-#ifdef WITH_KRB5
-			kp->password=strdup(lp->bindpw);
-#endif
 			break;
 		case 'Y':
 			lp->sasl_mech=strdup(optarg);
 			break;
 		case 'U':
 			if (asprintf(&lp->sasl_authzid, "u:%s", optarg) < 0) abort();
-			/* kp->username=strdup(optarg); */
+			break;
 		case 'R':
 			lp->sasl_realm=strdup(optarg);
-#ifdef WITH_KRB5
-			kp->realm=strdup(optarg);
-#endif
 			break;
-#ifdef WITH_KRB5
-		case 'K':
-			do_kinit = true;
-			break;
-#endif
 		case 'g':
 			from_scratch = true;
 			break;
@@ -499,7 +470,6 @@ int main(int argc, char* argv[])
 
 	univention_debug_set_level(UV_DEBUG_LISTENER, debugging);
 	univention_debug_set_level(UV_DEBUG_LDAP, debugging);
-	univention_debug_set_level(UV_DEBUG_KERBEROS, debugging);
 
 	{
 		char filename[PATH_MAX];
@@ -533,15 +503,6 @@ int main(int argc, char* argv[])
 				"no server given, choosing one by myself (%s)",
 				lp->host);
 	}
-
-#ifdef WITH_KRB5
-	if (!do_kinit)
-		kp = NULL;
-	if (kp != NULL && univention_krb5_init(kp) != 0) {
-		univention_debug(UV_DEBUG_KERBEROS, UV_DEBUG_ERROR, "kinit failed");
-		exit(1);
-	}
-#endif
 
 	while (do_connection(lp) != 0) {
 		if (suspend_connect()) {
@@ -631,7 +592,7 @@ int main(int argc, char* argv[])
 	signals_unblock();
 
 	if (!initialize_only) {
-		rv = notifier_listen(lp, kp, write_transaction_file, lp_local);
+		rv = notifier_listen(lp, write_transaction_file, lp_local);
 	}
 
 	if (rv != 0)

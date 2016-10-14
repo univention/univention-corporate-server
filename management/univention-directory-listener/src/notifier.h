@@ -35,14 +35,8 @@
 
 #include <stdbool.h>
 #include <univention/ldap.h>
-#ifdef WITH_KRB5
-#include <univention/krb5.h>
-#else
-typedef void univention_krb5_parameters_t;
-#endif
 
 int	notifier_listen	(univention_ldap_parameters_t	*lp,
-			 univention_krb5_parameters_t	*kp,
 			 bool write_transaction_file,
 			 univention_ldap_parameters_t *lp_local);
 

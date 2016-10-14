@@ -43,7 +43,7 @@ LDAP bind dn.
 LDAP bind password.
 .TP
 .BI \-y\  file
-Read LDAP bind (or Kerberos with \fB\-K\fP) password from file.
+Read LDAP bind password from file.
 .TP
 .B \-x
 LDAP simple bind.
@@ -55,13 +55,10 @@ LDAP start TLS request (\fB\-ZZ\fP to require successful response).
 SASL mechanism.
 .TP
 .BI \-U\  username
-SASL/Kerberos username.
+SASL username.
 .TP
 .BI \-R\  realm
-SASL/Kerberos realm.
-.TP
-.B \-K
-Acquire Kerberos ticket granting ticket (like \fBkinit\fP(1)).
+SASL realm.
 .TP
 .BI \-m\  listeners
 Listener module path (may be specified multiple times).

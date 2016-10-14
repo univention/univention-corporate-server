@@ -48,9 +48,6 @@
 #include <univention/debug.h>
 #include <univention/config.h>
 #include <univention/ldap.h>
-#ifdef WITH_KRB5
-#include <univention/krb5.h>
-#endif
 
 #include "notifier.h"
 #include "common.h"
@@ -66,10 +63,8 @@
 #define TIMEOUT_NOTIFIER_RECONNECT	5*60 /* 5 minutes */
 
 
-static int connect_to_ldap(univention_ldap_parameters_t *lp,
-		                univention_krb5_parameters_t *kp)
+static int connect_to_ldap(univention_ldap_parameters_t *lp)
 {
-	/* XXX: Fix when using krb5 */
 	while (univention_ldap_open(lp) != LDAP_SUCCESS) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "can not connect to ldap server (%s)", lp->host);
 
@@ -119,7 +114,6 @@ static void check_free_space()
 
 /* listen for ldap updates */
 int notifier_listen(univention_ldap_parameters_t *lp,
-		univention_krb5_parameters_t *kp,
 		bool write_transaction_file,
 		univention_ldap_parameters_t *lp_local)
 {
@@ -190,7 +184,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 
 		/* ensure that LDAP connection is open */
 		if (trans.lp->ld == NULL) {
-			if ((rv = connect_to_ldap(trans.lp, kp)) != 0) {
+			if ((rv = connect_to_ldap(trans.lp)) != 0) {
 				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to connect to LDAP");
 				goto out;
 			}
@@ -201,7 +195,7 @@ int notifier_listen(univention_ldap_parameters_t *lp,
 		while ((rv = change_update_dn(&trans)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "change_update_dn failed: %d", rv);
 			if (rv == LDAP_SERVER_DOWN)
-				if ((rv = connect_to_ldap(trans.lp, kp)) == 0)
+				if ((rv = connect_to_ldap(trans.lp)) == 0)
 					continue;
 			goto out;
 		}

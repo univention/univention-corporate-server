@@ -106,15 +106,12 @@ int main(int argc, char* argv[])
 	if (debugging > 1) {
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_ALL);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_ALL);
-		univention_debug_set_level(UV_DEBUG_KERBEROS, UV_DEBUG_ALL);
 	} else if ( debugging > 0 ) {
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_INFO);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_INFO);
-		univention_debug_set_level(UV_DEBUG_KERBEROS, UV_DEBUG_INFO);
 	} else {
 		univention_debug_set_level(UV_DEBUG_LISTENER, UV_DEBUG_ERROR);
 		univention_debug_set_level(UV_DEBUG_LDAP, UV_DEBUG_ERROR);
-		univention_debug_set_level(UV_DEBUG_KERBEROS, UV_DEBUG_ERROR);
 	}
 
 	if (output_file) {

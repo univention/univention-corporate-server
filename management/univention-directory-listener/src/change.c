@@ -478,7 +478,6 @@ int check_parent_dn(struct transaction *trans, char *dn)
 
 	/* try to open a connection to the local LDAP for the parent DN check */
 	if (trans->lp_local->ld == NULL) {
-		/* XXX: Fix when using krb5 */
 		rv = univention_ldap_open(trans->lp_local);
 		if (rv != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "check_parent_dn: bind to local LDAP failed");
