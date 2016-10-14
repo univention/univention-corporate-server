@@ -262,7 +262,7 @@ static int handler_import(char* filename)
 	if (state_fp == NULL) {
 		handler->state = 0;
 	} else {
-		fscanf(state_fp, "%d", &handler->state);
+		fscanf(state_fp, "%u", &handler->state);
 		fclose(state_fp);
 	}
 

@@ -45,10 +45,11 @@
    initializing, HANDLER_READY will be set; however, if the
    initialization fails, it will be removed again. If it's successful,
    both, HANDLER_INITIALIZED and HANDLER_READY will be set */
-#define HANDLER_INITIALIZED	000000001
-#define HANDLER_READY		000000002
-
-#define HANDLER_PREPARED        000000004
+enum state {
+	HANDLER_INITIALIZED = 1 << 0,
+	HANDLER_READY = 1 << 1,
+	HANDLER_PREPARED = 1 << 2,
+};
 
 struct filter {
 	char	*base;
@@ -71,7 +72,7 @@ struct _Handler {
 	PyObject	 *setdata;
 	struct _Handler	 *next;
 
-	int		  state;
+	enum state	  state;
 	int		  prepared : 1;
 } typedef Handler;
 
