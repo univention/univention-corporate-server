@@ -3,7 +3,7 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-samba4
-fix: 5.0.1-49.682.201610140750
+fix: 5.0.1-50.683.201610140813
 desc: |
  This update addresses the following issue(s):
  * Locking in the sysvol sync script has been improved.
@@ -17,4 +17,7 @@ desc: |
  * It is possible that Samba 4 joins against another DC and not against
    the master. This could led to different problems. The join script
    now tries to join against the S4 Connector system first.
-bug: [42475,39251,40511,41767,30836]
+ * The group DC Backup Hosts is now member of the group Enterprise
+   Domain Controllers. This is needed for the sysvol replication in
+   case Samba 4 is not installed on the DC master.
+bug: [42475,39251,40511,41767,30836,41549]
