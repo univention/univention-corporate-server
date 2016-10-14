@@ -1,3 +1,9 @@
+univention-pam (9.0.0-7) unstable; urgency=medium
+
+  * Bug #42103: enhance pam_unix password change configuration
+
+ -- Florian Best <best@univention.de>  Fri, 14 Oct 2016 12:18:09 +0200
+
 univention-pam (9.0.0-6) unstable; urgency=medium
 
   * Bug #40968: Make timelimit for ldap searches in nss-ldap configurable

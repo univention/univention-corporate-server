@@ -1,3 +1,9 @@
+univention-management-console (8.0.28-19) unstable; urgency=medium
+
+  * Bug #42103: enhance pam_unix password change configuration
+
+ -- Florian Best <best@univention.de>  Fri, 14 Oct 2016 12:17:25 +0200
+
 univention-management-console (8.0.28-18) unstable; urgency=low
 
   * Bug #42162: Corrected some typos.

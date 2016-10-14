@@ -1,0 +1,12 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-pam
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * The PAM unix configuration for password changes has been adjusted.
+   New passwords are stored with Sha512 instead of MD5. Changing empty
+   passwords is not allowed anymore.
+bug: [42103]
