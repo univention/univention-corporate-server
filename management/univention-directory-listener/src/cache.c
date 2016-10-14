@@ -248,14 +248,15 @@ int cache_get_schema_id(NotifierID *value, const long def)
 {
 	FILE *fp;
 	char file[PATH_MAX];
+	int rv;
 
 	*value = def;
 
 	snprintf(file, PATH_MAX, "%s/schema/id/id", ldap_dir);
 	if ((fp = fopen(file, "r")) == NULL)
 		return 1;
-	fscanf(fp, "%ld", value);
-	return fclose(fp);
+	rv = fscanf(fp, "%ld", value);
+	return fclose(fp) || (rv != 1);
 }
 
 int cache_set_int(char *key, const NotifierID value)
@@ -285,14 +286,15 @@ int cache_get_int(char *key, NotifierID *value, const long def)
 {
 	FILE *fp;
 	char file[PATH_MAX];
+	int rv;
 
 	*value = def;
 
 	snprintf(file, PATH_MAX, "%s/%s", cache_dir, key);
 	if ((fp = fopen(file, "r")) == NULL)
 		return 1;
-	fscanf(fp, "%ld", value);
-	return fclose(fp);
+	rv = fscanf(fp, "%ld", value);
+	return fclose(fp) || (rv != 1);
 }
 
 int cache_get_master_entry(CacheMasterEntry *master_entry)

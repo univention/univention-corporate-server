@@ -109,7 +109,7 @@ void select_server(univention_ldap_parameters_t *lp)
 		}
 
 		if (ldap_backups && !current_server_list) {
-			char *str, *saveptr;
+			char *str, *saveptr = NULL;
 			/* rebuild list and initialize */
 			current_server_list = strdup(ldap_backups);
 			while (server_list_entries > 0)

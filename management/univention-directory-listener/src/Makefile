@@ -30,35 +30,37 @@
 # <http://www.gnu.org/licenses/>.
 #
 CC ?= gcc
-DB_LDADD=-ldb3
-DB_CFLAGS=-I/usr/include/db3 -DWITH_DB3
-DB_OBJS=cache.o cache_entry.o cache_lowlevel.o base64.o filter.o
 
-CFLAGS += -g -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
-LDADD += -g -luniventiondebug -licuuc
-LISTENER_LDADD=$(LDADD) -luniventionpolicy -lldap -lpython2.7 $(DB_LDADD)
-LISTENER_OBJS=main.o notifier.o transfile.o handlers.o change.o network.o signals.o select_server.o utils.o $(DB_OBJS)
-DUMP_LDADD=$(LDADD) -lldap -luniventionconfig $(DB_LDADD)
-DUMP_OBJS=dump.o dump_signals.o utils.o $(DB_OBJS)
-DEMO_LDADD=$(LDADD) -luniventionconfig
-DEMO_OBJS=demo.o network.o utils.o
-VERIFY_LDADD=$(LDADD) -lldap -luniventionconfig $(DB_LDADD)
-VERIFY_OBJS=verify.o dump_signals.o utils.o $(DB_OBJS)
+DB_LDLIBS := -ldb3
+DB_CFLAGS := -I/usr/include/db3 -DWITH_DB3
+DB_OBJS := cache.o cache_entry.o cache_lowlevel.o base64.o filter.o
+
+LDAP_LDLIBS := -lldap -llber
+
+CFLAGS += -Wall -Werror -D_FILE_OFFSET_BITS=64 $(DB_CFLAGS)
+LDLIBS := -luniventiondebug -luniventionconfig -licuuc
+LISTENER_LDLIBS := -luniventionpolicy $(LDAP_LDLIBS) -lpython2.7 $(DB_LDLIBS)
+LISTENER_OBJS := main.o notifier.o transfile.o handlers.o change.o network.o signals.o select_server.o utils.o $(DB_OBJS)
+DUMP_LDLIBS := $(LDAP_LDLIBS) $(DB_LDLIBS)
+DUMP_OBJS := dump.o dump_signals.o utils.o $(DB_OBJS)
+DEMO_OBJS := demo.o network.o utils.o
+VERIFY_LDLIBS := $(LDAP_LDLIBS) $(DB_LDLIBS)
+VERIFY_OBJS := verify.o dump_signals.o utils.o $(DB_OBJS)
 
 .PHONY: all
 all: listener dump verify
 
 listener: $(LISTENER_OBJS)
-	$(CC) -o $@ $^ $(LISTENER_LDADD)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) $(LISTENER_LDLIBS)
 
 dump: $(DUMP_OBJS)
-	$(CC) -o $@ $^ $(DUMP_LDADD)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) $(DUMP_LDLIBS)
 
 demo: $(DEMO_OBJS)
-	$(CC) -o $@ $^ $(DEMO_LDADD)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) $(DEMO_LDLIBS)
 
 verify: $(VERIFY_OBJS)
-	$(CC) -o $@ $^ $(VERIFY_LDADD)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) $(VERIFY_LDLIBS)
 
 .PHONY: clean
 clean:

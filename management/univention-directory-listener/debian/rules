@@ -37,7 +37,7 @@ override_dh_auto_clean:
 
 override_dh_auto_build:
 	$(MAKE) -C src clean
-	$(MAKE) -C src DB_CFLAGS="-I/usr/include/db3 -DWITH_DB3" DB_LDADD="-ldb3"
+	$(MAKE) -C src
 	dh_auto_build
 
 override_dh_auto_install:
