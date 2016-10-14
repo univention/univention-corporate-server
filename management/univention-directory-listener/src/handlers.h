@@ -50,10 +50,6 @@
 
 #define HANDLER_PREPARED        000000004
 
-#define HANDLER_HAS_FLAG(handler, flag)		((handler->state & flag) == flag)
-#define HANDLER_SET_FLAG(handler, flag)		handler->state |= flag
-#define HANDLER_UNSET_FLAG(handler, flag)	handler->state &= ~flag
-
 struct filter {
 	char	*base;
 	int	 scope;
