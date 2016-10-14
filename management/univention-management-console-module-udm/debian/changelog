@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.1-11) unstable; urgency=medium
+
+  * Bug #42220: Added translations to umc/js/de.po
+
+ -- Richard Ulmer <ulmer@univention.de>  Fri, 14 Oct 2016 15:23:40 +0200
+
 univention-management-console-module-udm (7.0.1-10) unstable; urgency=medium
 
   * Bug #42177: Bug #39144: fix race conditions in superordinate handling
