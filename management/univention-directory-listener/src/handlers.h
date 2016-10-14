@@ -78,6 +78,7 @@ struct _Handler {
 
 int	handlers_init			(void);
 int	handlers_free_all		(void);
+void handler_write_state(Handler *handler);
 int	handlers_load_path		(char		*filename);
 int	handlers_reload_all_paths	(void);
 int	handlers_update			(const char		*dn,

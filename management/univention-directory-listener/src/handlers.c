@@ -535,18 +535,10 @@ static int handlers_load_all_paths(void)
 }
 
 
-/* Free one handler. */
-int handler_free(Handler *handler)
-{
-	char **a;
-	struct filter **f;
+void handler_write_state(Handler *handler) {
 	char state_filename[PATH_MAX];
 	FILE *state_fp;
 	int rv;
-
-	if ( handler == NULL || handler->name == NULL ) {
-		return 0;
-	}
 
 	/* write handler state */
 	/* XXX: can be removed, once we use a database for this */
@@ -560,6 +552,20 @@ int handler_free(Handler *handler)
 		fprintf(state_fp, "%d", handler->state);
 		fclose(state_fp);
 	}
+}
+
+
+/* Free one handler. */
+int handler_free(Handler *handler)
+{
+	char **a;
+	struct filter **f;
+
+	if ( handler == NULL || handler->name == NULL ) {
+		return 0;
+	}
+
+	handler_write_state(handler);
 
 	/* free list node */
 	free(handler->name);
