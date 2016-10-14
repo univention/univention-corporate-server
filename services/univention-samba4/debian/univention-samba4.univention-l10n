@@ -1,9 +1,7 @@
 [
 	{
-		"binary_package_name": "univention-samba4",
-		"package_dir": "services/univention-samba4",
 		"input_files": [
-			"scripts/*"
+			"scripts/.*"
 		],
 		"po_subdir": "./",
 		"target_type": "mo",

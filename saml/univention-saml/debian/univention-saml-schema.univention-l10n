@@ -1,9 +1,7 @@
 [
 	{
-		"binary_package_name": "univention-saml-schema",
-		"package_dir": "saml/univention-saml",
 		"input_files": [
-			"modules/univention/admin/handlers/saml/*.py"
+			"modules/univention/admin/handlers/saml/.*py"
 		],
 		"po_subdir": "modules/univention/admin/handlers/saml",
 		"target_type": "mo",

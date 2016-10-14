@@ -1,7 +1,5 @@
 [
 	{
-		"binary_package_name": "univention-system-setup-boot",
-		"package_dir": "base/univention-system-setup",
 		"input_files": [
 			"var/www/ucs-overview/initialsetup.html"
 		],

@@ -1,7 +1,5 @@
 [
 	{
-		"binary_package_name": "univention-kde",
-		"package_dir": "desktop/univention-kde",
 		"input_files": [
 			"profiles/univention-root-login-notification"
 		],

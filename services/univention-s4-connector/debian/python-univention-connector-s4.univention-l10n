@@ -1,17 +1,13 @@
 [
 	{
-		"binary_package_name": "python-univention-connector-s4",
-		"package_dir": "services/univention-s4-connector",
 		"input_files": [
-			"modules/univention/admin/handlers/container/*.py"
+			"modules/univention/admin/handlers/container/.*.py"
 		],
 		"po_subdir": "modules/univention/admin/handlers/container/msgpo",
 		"target_type": "mo",
 		"destination": "usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-container-msgpo.mo"
 	},
 	{
-		"binary_package_name": "python-univention-connector-s4",
-		"package_dir": "services/univention-s4-connector",
 		"input_files": [
 			"modules/univention/admin/handlers/settings/mswmifilter.py"
 		],
@@ -20,8 +16,6 @@
 		"destination": "usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-settings-mswmifilter.mo"
 	},
 	{
-		"binary_package_name": "python-univention-connector-s4",
-		"package_dir": "services/univention-s4-connector",
 		"input_files": [
 			"modules/univention/admin/handlers/settings/msprintconnectionpolicy.py"
 		],

@@ -1,7 +1,5 @@
 [
 	{
-		"binary_package_name": "univention-welcome-screen",
-		"package_dir": "base/univention-bootsplash",
 		"input_files": [
 			"univention-welcome-screen"
 		],

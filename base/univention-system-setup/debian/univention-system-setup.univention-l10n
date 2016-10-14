@@ -1,9 +1,7 @@
 [
 	{
-		"binary_package_name": "univention-system-setup",
-		"package_dir": "base/univention-system-setup",
 		"input_files": [
-			"usr/lib/univention-system-setup/scripts/*",
+			"usr/lib/univention-system-setup/scripts/.*",
 			"umc/python/setup/setup_script.py"
 		],
 		"po_subdir": "usr/share/locale/{lang}/LC_MESSAGES/",

@@ -1,9 +1,7 @@
 [
 	{
-		"binary_package_name": "univention-management-console-frontend",
-		"package_dir": "management/univention-management-console-frontend",
 		"input_files": [
-			"umc/*.js",
+			"umc/.*js",
 			"univention-management-console-web-server",
 			"index.html",
 			"error.html"

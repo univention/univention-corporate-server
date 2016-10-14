@@ -1,7 +1,5 @@
 [
 	{
-		"binary_package_name": "univention-cloud-init",
-		"package_dir": "services/univention-cloud-init",
 		"input_files": [
 			"var/www/ucs-overview/cloud-init-setup.html"
 		],

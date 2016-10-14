@@ -1,9 +1,7 @@
 [
 	{
-		"binary_package_name": "univention-apache",
-		"package_dir": "services/univention-apache",
 		"input_files": [
-			"js/ucs/*",
+			"js/ucs/.*",
 			"www/ucs-overview/index.html"
 		],
 		"po_subdir": "js/ucs",

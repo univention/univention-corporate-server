@@ -1,12 +1,10 @@
 [
 	{
-		"binary_package_name": "univention-self-service",
-		"package_dir": "management/univention-self-service",
 		"input_files": [
-			"umc/js/*.js"
+			"js/ucs/.*js"
 		],
-		"po_subdir": "umc/js",
+		"po_subdir": "js/ucs",
 		"target_type": "json",
-		"destination": "/usr/share/univention-self-service/www/js/ucs/{lang}.json"
+		"destination": "usr/share/univention-self-service/www/js/ucs/{lang}.json"
 	}
 ]

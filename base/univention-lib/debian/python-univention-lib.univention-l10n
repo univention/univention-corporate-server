@@ -1,9 +1,7 @@
 [
 	{
-		"binary_package_name": "python-univention-lib",
-		"package_dir": "base/univention-lib",
 		"input_files": [
-			"*.py"
+			".*py"
 		],
 		"po_subdir": "python",
 		"target_type": "mo",
