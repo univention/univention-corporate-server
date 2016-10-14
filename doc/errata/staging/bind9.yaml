@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: bind9
-fix: 1:9.8.4.dfsg.P1-6+nmu2.113.201610101547
+fix: 1:9.8.4.dfsg.P1-6+nmu2.121.201610141703
 desc: |
  This update addresses the following issue:
  * buffer.c in named does not properly construct responses, which allows
