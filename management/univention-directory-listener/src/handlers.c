@@ -555,7 +555,7 @@ int handlers_load_path(char *path)
 
 
 /* Load handlers from all directories. */
-int handlers_load_all_paths(void)
+static int handlers_load_all_paths(void)
 {
 	char **module_dir;
 
@@ -734,7 +734,7 @@ static PyObject* handlers_argtuple_command(const char *dn, CacheEntry *new, Cach
 
 
 /* return boolean indicating whether attribute has changed */
-int attribute_has_changed(char** changes, char* attribute)
+static int attribute_has_changed(char** changes, char* attribute)
 {
 	char **cur;
 
@@ -886,7 +886,7 @@ char *handlers_filter(void)
 
 
 /* Pass configuration data from listener to one module. */
-int handler_set_data(Handler *handler, PyObject *argtuple)
+static int handler_set_data(Handler *handler, PyObject *argtuple)
 {
 	PyObject *result;
 	int rv;
