@@ -550,7 +550,9 @@ void handler_write_state(Handler *handler) {
 		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not open %s", state_filename);
 	} else {
 		fprintf(state_fp, "%d", handler->state);
-		fclose(state_fp);
+		rv = fclose(state_fp);
+		if (rv != 0)
+			abort_io("close", state_filename);
 	}
 }
 
