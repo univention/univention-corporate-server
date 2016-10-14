@@ -1,3 +1,9 @@
+univention-pam (9.0.0-8) unstable; urgency=medium
+
+  * Bug #42103: adjust pseudo tests
+
+ -- Florian Best <best@univention.de>  Fri, 14 Oct 2016 14:04:17 +0200
+
 univention-pam (9.0.0-7) unstable; urgency=medium
 
   * Bug #42103: enhance pam_unix password change configuration
