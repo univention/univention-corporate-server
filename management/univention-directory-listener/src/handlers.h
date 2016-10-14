@@ -83,7 +83,6 @@ int	handlers_init			(void);
 int	handlers_free_all		(void);
 int	handlers_load_path		(char		*filename);
 int	handlers_reload_all_paths	(void);
-int	handlers_dump			(void);
 int	handlers_update			(const char		*dn,
 					 CacheEntry	*new,
 					 CacheEntry	*old,

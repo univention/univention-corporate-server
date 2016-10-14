@@ -466,37 +466,6 @@ int handlers_initialize_all(void)
 }
 
 
-/* dump internal state of one handler. */
-static void handler_dump(Handler *handler)
-{
-	struct filter **filter;
-
-	printf("name: %s\n", handler->name);
-	printf("description: %s\n", handler->description);
-
-	for (filter = handler->filters; filter != NULL; filter++) {
-		printf("filter: %s %d %s\n", (*filter)->base, (*filter)->scope, (*filter)->filter);
-	}
-
-	printf("clean handler: %d\n", handler->clean != NULL);
-	printf("initialize handler: %d\n", handler->initialize != NULL);
-	printf("prerun handler: %d\n", handler->prerun != NULL);
-	printf("postrun handler: %d\n", handler->postrun != NULL);
-	printf("setdata handler: %d\n", handler->setdata != NULL);
-}
-
-
-/* dump internal state of all handlers. UNUSED */
-int handlers_dump(void)
-{
-	Handler *handler;
-	for (handler=handlers; handler != NULL; handler=handler->next)
-		handler_dump(handler);
-
-	return 0;
-}
-
-
 /* Load all handlers from one directory. */
 int handlers_load_path(char *path)
 {
