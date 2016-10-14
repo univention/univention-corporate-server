@@ -1,3 +1,9 @@
+univention-directory-listener (10.0.0-18) unstable; urgency=low
+
+  * Bug #42573: Fix variable description for 'listener/freespace'
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Oct 2016 14:50:33 +0200
+
 univention-directory-listener (10.0.0-17) unstable; urgency=low
 
   * Bug #41842: Write module state after init

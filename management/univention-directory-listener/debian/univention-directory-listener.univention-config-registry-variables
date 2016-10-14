@@ -47,7 +47,7 @@ Type=int
 Categories=service-ln
 
 [listener/freespace]
-Description[de]=Diese Variable legt die untere Grenze für den freien Speicherplatz in den Verzeichnissen '/var/lib/univention-ldap/' und '/var/lib/univention-directory-listener/', ab der der Listener gestoppt wird. Standard is 10 [KiB].
+Description[de]=Diese Variable legt die untere Grenze für den freien Speicherplatz in den Verzeichnissen '/var/lib/univention-ldap/' und '/var/lib/univention-directory-listener/', ab der der Listener gestoppt wird. Standard is 10 [MiB].
 Description[en]=This variable configures the lower limit for free space in the directories '/var/lib/univention-ldap/' and '/var/lib/univention-directory-listener/', when the Listener will be stopped. Default is 10 [MiB].
 Type=int
 Categories=service-ln
