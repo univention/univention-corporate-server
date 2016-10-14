@@ -711,6 +711,9 @@ create_pseudo_groups ()
 	_create_group_with_special_sid "Enterprise Domain Controllers" "S-1-5-9" "cn=groups" "$@"
 
 	udm groups/group modify "$@" --dn  "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \
+			--append nestedGroup="cn=DC Backup Hosts,cn=groups,$ldap_base"
+
+	udm groups/group modify "$@" --dn  "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \
 			--append hosts="$ldap_hostdn"
 
 	_create_group_with_special_sid "Remote Interactive Logon" "S-1-5-14" "cn=Builtin" "$@"

@@ -355,6 +355,13 @@ if [ "$1" = "configure" ]; then
 	[ -e "$uinst" ] && rm "$uinst"
 fi
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.1-50; then
+	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+		udm groups/group modify --dn  "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \
+				--append nestedGroup="cn=DC Backup Hosts,cn=groups,$ldap_base"
+	fi
+fi
+
 call_joinscript 96univention-samba4.inst
 ## cannot call joinscript 98univention-samba4-dns.inst here, maybe the s4-connector did not run yet
 

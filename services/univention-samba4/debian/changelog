@@ -1,3 +1,11 @@
+univention-samba4 (5.0.1-50) unstable; urgency=medium
+
+  * The group DC Backup Hosts is now member if the group Enterprise
+    Domain Controllers. This is needed for the sysvol replication in
+    case Samba 4 is not installed on the DC master (Bug #41549)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Oct 2016 08:12:02 +0200
+
 univention-samba4 (5.0.1-49) unstable; urgency=medium
 
   * It is possible that Samba 4 joins against another DC and not against
