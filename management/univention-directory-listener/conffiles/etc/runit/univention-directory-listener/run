@@ -1,5 +1,4 @@
 #!/bin/sh -e
-@%@UCRWARNING=# @%@
 #
 # Copyright 2004-2016 Univention GmbH
 #
@@ -32,36 +31,29 @@
 test ! -f /etc/nologin || exit 0
 
 cachedir=/var/lib/univention-directory-listener
-moduledir=/usr/lib/univention-directory-listener/system
-
 for dir in "$cachedir" /var/lib/univention-ldap/listener; do
 	find "$dir" ! -user listener -exec chown listener {} \;
 done
 
 eval "$(univention-config-registry shell)"
+write_translog= ignore_master= dn= secret=
+[ "$server_role" != "domaincontroller_master" ] && command -v univention-directory-notifier >/dev/null 2>&1 &&
+	write_translog=1
+[ "${listener_ignoremaster:-}" = "yes" ] &&
+	ignore_master=1
+case "$server_role" in
+domaincontroller_master|domaincontroller_backup) dn="cn=admin,$ldap_base" secret=/etc/ldap.secret ;;
+?*) dn="$ldap_hostdn" secret=/etc/machine.secret ;;
+esac
 
-if [ "$server_role" != "domaincontroller_master" ] && command -v univention-directory-notifier >/dev/null 2>&1 ; then
-		options="-o"
-fi
-
-
-if [ -n "$listener_debug_level" ]; then
-	options="$options -d $listener_debug_level"
-fi
-
-options="$options -x -ZZ"
-
-if [ -n "$listener_ignoremaster" -a "$listener_ignoremaster" = "yes" ]; then
-	options="$options -B"
-fi
-
-if [ -n "$server_role" ]; then
-	if [ "@%@server/role@%@" = "domaincontroller_master" -o "@%@server/role@%@" = "domaincontroller_backup" ]; then
-		exec /usr/sbin/univention-directory-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options -D cn=admin,@%@ldap/base@%@ -y /etc/ldap.secret >>/var/log/univention/listener.log 2>&1
-	else
-		exec /usr/sbin/univention-directory-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options -D "@%@ldap/hostdn@%@" -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1
-	fi
-else
-	exec /usr/sbin/univention-directory-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options >>/var/log/univention/listener.log 2>&1
-fi
-
+tty -s || exec >>/var/log/univention/listener.log 2>&1
+exec /usr/sbin/univention-directory-listener -F \
+	${listener_debug_level:+-d "$listener_debug_level"} \
+	-b "$ldap_base" \
+	-m /usr/lib/univention-directory-listener/system \
+	-c "$cachedir" \
+	${write_translog:+-o} \
+	${ignore_master:+-B} \
+	-ZZ \
+	-x \
+	${dn:+-D "$dn"} ${secret:+-y "$secret"}

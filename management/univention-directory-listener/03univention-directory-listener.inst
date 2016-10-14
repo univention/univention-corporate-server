@@ -37,10 +37,7 @@ joinscript_init
 
 ln -sf /etc/runit/univention-directory-listener /etc/runit/univention/univention-directory-listener
 
-listener_pid=`pidof univention-directory-listener`
-if [ -n "$listener_pid" ]; then
-	sv down univention-directory-listener
-fi
+sv down univention-directory-listener
 
 if [ -e "/var/lib/univention-directory-listener" ]; then
 	rm -Rf /var/lib/univention-directory-listener/*
@@ -51,47 +48,38 @@ if [ -e "/var/lib/univention-directory-replication" ]; then
 fi
 
 eval "$(univention-config-registry shell)"
+write_translog= dn= secret=
 
-if [ "$server_role" = "domaincontroller_master" ]; then
-	test -n "`grep "univention-directory-listener v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-directory-listener v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+case "$server_role" in
+domaincontroller_master)
+	index="/usr/lib/univention-install/.index.txt"
+	line="univention-directory-listener v${VERSION} successful"
+	grep -Fqx "$line" "$index" || echo "$line" >>"$index"
 	exit 0
-fi
-cachedir=/var/lib/univention-directory-listener
-moduledir=/usr/lib/univention-directory-listener/system
-
-if [ "$server_role" != "domaincontroller_master" ]; then
+	;;
+*)
 	if [ -e "/var/lib/univention-ldap/listener/listener" ]; then
 		chown listener /var/lib/univention-ldap/listener/listener*
-		options="-o"
+		write_translog=1
 	fi
-fi
+esac
+
+case "$server_role" in
+domaincontroller_master|domaincontroller_backup) dn="cn=admin,$ldap_base" secret=/etc/ldap.secret ;;
+?*) dn="$ldap_hostdn" secret=/etc/machine.secret ;;
+esac
 
 univention-config-registry set ldap/database/ldbm/dbsync="10"
-
-if [ "`echo $ldap_master_bind | tr A-Z a-z`" = "gssapi" ]; then
-	options="$options -K"
-else
-	options="$options -x"
-fi
-
-debugLevel=1
-if [ -n "$listener_debug_level" ]; then
-	debugLevel="$listener_debug_level"
-fi
-options="$options -ZZ -d $debugLevel"
-
-options="$options -i -h $ldap_master -b "$ldap_base" -m $moduledir -c $cachedir"
-
-if [ -n "$server_role" ]; then
-	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-		/usr/sbin/univention-directory-listener $options -D "cn=admin,$ldap_base" -y /etc/ldap.secret
-	else
-		/usr/sbin/univention-directory-listener $options -D "`univention-config-registry get ldap/hostdn`" -y /etc/machine.secret
-	fi
-else
-	/usr/sbin/univention-directory-listener $options
-fi
-
+/usr/sbin/univention-directory-listener -i \
+	-d "${listener_debug_level:-1}" \
+	-h "$ldap_master" \
+	-b "$ldap_base" \
+	-m /usr/lib/univention-directory-listener/system \
+	-c /var/lib/univention-directory-listener \
+	${write_translog:+-o} \
+	-ZZ \
+	-x \
+	${dn:+-D "$dn"} ${secret:+-y "$secret"}
 exit_status=$?
 
 univention-config-registry set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync
@@ -100,7 +88,7 @@ univention-config-registry set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbs
 sleep 15
 
 if [ -f /etc/init.d/slapd ]
-    then
+then
     /etc/init.d/slapd restart
 fi
 
@@ -123,5 +111,3 @@ test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
 
 joinscript_save_current_version
 exit 0
-
-
