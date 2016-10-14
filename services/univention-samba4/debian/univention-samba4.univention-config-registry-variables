@@ -505,3 +505,33 @@ Description[de]=Über diese Variable lässt sich die Samba Option "server signin
 Description[en]=This variable can be used to adjust the Samba option "server signing" (see man smb.conf).
 Type=str
 Categories=service-samba
+
+[samba/winbind/nested/groups]
+Description[de]=UCS unterstützt die Verschachtelung von Gruppen (Gruppen in Gruppen). Ist diese Variable auf 'yes' gesetzt, werden diese verschachtelten Gruppen in Winbind aufgelöst.
+Description[en]=UCS supports nested groups (groups as members of groups). If this variable is set to 'yes', Winbind resolves these nested groups.
+Type=str
+Categories=service-samba
+
+[samba/winbind/rpc/only]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, verwendet Winbind RPC statt LDAP um Informationen von AD-kompatiblen Domänencontrollern abzufragen.
+Description[en]=If this variable is set to 'yes', Winbind will use RPC instead of LDAP to retrieve information from AD compatible Domain Controllers.
+Type=str
+Categories=service-samba
+
+[samba/winbind/max/clients]
+Description[de]=Die maximale Anzahl an Verbindungen, die Winbind bearbeiten kann. Ist die Variable nicht gesetzt, wird die Samba Standard Einstellung verwendet.
+Description[en]=The maximum number of connections Winbind can serve. If the variable is unset, the Samba default applies.
+Type=int
+Categories=service-samba
+
+[samba/winbind/enum/users]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, vergibt Winbind bei Benutzern einer vertrauten Domäne POSIX IDs. Ist die Variable nicht gesetzt, wird die Samba Standard Einstellung verwendet.
+Description[en]=If this variable is set to 'yes', Winbind will assign POSIX IDs to users of trusted domains. If the variable is unset, the Samba default applies.
+Type=int
+Categories=service-samba
+
+[samba/winbind/enum/groups]
+Description[de]=Ist diese Variable auf 'yes' gesetzt, vergibt Winbind bei Gruppen einer vertrauten Domäne POSIX IDs. Ist die Variable nicht gesetzt, wird die Samba Standard Einstellung verwendet.
+Description[en]=If this variable is set to 'yes', Winbind will assign POSIX IDs to groups of trusted domains. If the variable is unset, the Samba default applies.
+Type=int
+Categories=service-samba

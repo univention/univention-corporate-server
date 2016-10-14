@@ -1,4 +1,16 @@
-univention-samba4 (5.0.1-47) UNRELEASED; urgency=medium
+univention-samba4 (5.0.1-48) unstable; urgency=medium
+
+  * Added the following UCR variables to configure the winbind settings:
+      samba/winbind/nested/groups
+      samba/winbind/rpc/only,
+      samba/winbind/max/clients
+      samba/winbind/enum/users
+      samba/winbind/enum/groups
+    (Bug #41767)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Oct 2016 07:08:38 +0200
+
+univention-samba4 (5.0.1-47) unstable; urgency=medium
 
   * Move the old idmap.ldb while rejoining the system. This increases
     the rejoin performance (Bug #40511)
