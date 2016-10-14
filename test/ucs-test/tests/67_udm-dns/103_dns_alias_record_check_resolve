@@ -1,7 +1,6 @@
 #!/usr/share/ucs-test/runner python
 ## desc: Creates dns alias record and trys to resolve it
 ## bugs: [39269]
-## tags: [WIP]
 ## roles:
 ##  - domaincontroller_master
 ## packages:
