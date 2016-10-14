@@ -126,6 +126,7 @@ static int change_init_module(univention_ldap_parameters_t *lp, Handler *handler
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
 			"module %s for relating objects", handler->name);
+	rv = LDAP_SUCCESS;
 	for (f = handler->filters; !abort_init && f != NULL && *f != NULL; f++) {
 		/* When initializing a module, only search for the DNs. If the
 		   entry for a DN is already in our cache, we use that one,
