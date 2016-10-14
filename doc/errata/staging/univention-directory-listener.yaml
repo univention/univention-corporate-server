@@ -1,0 +1,17 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-directory-listener
+fix: 10.0.0-17.334.201610141418
+desc: |
+ This update addresses the following issues:
+ * The Listener now checks the file system for enough free space and aborts,
+   if too few is available. The default of 10 MiB can be changed through the
+   new UCR variable 'listener/freespace'.
+ * The Listener now writes the state of each handler just after
+   initialization.
+ * For each changed LDAP entry the distinguished name is now logged with debug
+   level 'PROCESS'.
+ * Several quoting problems in the init and runit scripts have been fixed.
+bug: [42328,41960,41842,42573]
