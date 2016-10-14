@@ -240,6 +240,8 @@ int change_new_modules(univention_ldap_parameters_t *lp)
 				handler->state |= HANDLER_INITIALIZED;
 			else
 				handler->state ^= HANDLER_READY;
+
+			handler_write_state(handler);
 		}
 	}
 	INIT_ONLY = old_init_only;
