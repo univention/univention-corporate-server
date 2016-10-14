@@ -317,13 +317,32 @@ samba_domain_join() {
 			exit 1
 		fi
 	else
-		if samba-tool domain info "$domainname"; then
-			samba-tool domain join "$domainname" "$samba4_role" "${samba_join_options[@]}"
+
+		# Let's try to join against the S4 Connector 
+		s4connector_dc=$(ldapsearch -x -ZZ -LLL -D "$ldap_hostdn" -y /etc/machine.secret \
+			"(&(univentionService=S4 Connector)(objectClass=univentionDomainController)(!(univentionService=S4 SlavePDC)))" cn \
+			| ldapsearch-wrapper | sed -n 's/^cn: \(.*\)/\1/p')
+	
+		if [ -n "$s4connector_dc" ]; then
+			echo "Join against S4 Connector server: $s4connector_dc"
+			samba-tool domain join "$domainname" "$samba4_role" --server "$s4connector_dc" "${samba_join_options[@]}"
 			if [ $? -eq 0 ]; then
 				success=true
 			else
-				echo "Failed to join the domain $domainname."
-				exit 1
+				echo "Failed to join against the S4 Connector server ${s4connector_dc}."
+			fi
+		fi
+
+
+		if [ -z "$success" ]; then
+			if samba-tool domain info "$domainname"; then
+				samba-tool domain join "$domainname" "$samba4_role" "${samba_join_options[@]}"
+				if [ $? -eq 0 ]; then
+					success=true
+				else
+					echo "Failed to join the domain $domainname."
+					exit 1
+				fi
 			fi
 		fi
 
