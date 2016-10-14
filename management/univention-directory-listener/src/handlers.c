@@ -262,7 +262,7 @@ static int handler_import(char* filename)
 	if (state_fp == NULL) {
 		handler->state = 0;
 	} else {
-		rv = fscanf(state_fp, "%d", &handler->state);
+		rv = fscanf(state_fp, "%u", &handler->state);
 		if (rv != 1) univention_debug(UV_DEBUG_LDAP, UV_DEBUG_WARN, "Failed reading %s: %s", state_filename, strerror(errno));
 		fclose(state_fp);
 	}
