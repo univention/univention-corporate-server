@@ -1,3 +1,10 @@
+univention-samba4 (6.0.3-1) unstable; urgency=medium
+
+  * Move the old idmap.ldb while rejoining the system. This increases
+    the rejoin performance (Bug #40511)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Oct 2016 06:39:10 +0200
+
 univention-samba4 (6.0.2-1) unstable; urgency=medium
 
   * In case Samba 4 is installed only on a backup the re-join fails. The
