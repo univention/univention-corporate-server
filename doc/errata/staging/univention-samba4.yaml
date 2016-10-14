@@ -3,9 +3,11 @@ release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
 src: univention-samba4
-fix: 5.0.1-45.678.201609231438
+fix: 5.0.1-47.680.201610140641
 desc: |
  This update addresses the following issue(s):
  * Locking in the sysvol sync script has been improved.
  * 39251
-bug: [42475,39251]
+ * The idmap database is now removed while re-joining the system. This
+   reduces the re-join time.
+bug: [42475,39251,40511]
