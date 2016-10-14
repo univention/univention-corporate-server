@@ -34,6 +34,7 @@
 __package__='' 	# workaround for PEP 366
 import listener
 import os
+import time
 import univention.debug
 
 import ldb
@@ -234,6 +235,17 @@ def remove_idmap_entry(sambaSID, xidNumber, type_string, idmap=None):
 	except ldb.LdbError, (enum, estr):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, estr)
 
+
+def initialize():
+	idmap_ldb = '/var/lib/samba/private/idmap.ldb'
+	if os.path.exists(idmap_ldb):
+		listener.setuid(0)
+		try:
+			idmap_ldb_backup = '%s_%d' % (idmap_ldb, time.time())
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, 'Move %s to %s' % (idmap_ldb, idmap_ldb_backup))
+			os.rename(idmap_ldb, idmap_ldb_backup)
+		finally:
+			listener.unsetuid()
 
 def handler(dn, new, old, operation):
 
