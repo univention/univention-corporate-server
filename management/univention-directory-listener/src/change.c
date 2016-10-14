@@ -692,7 +692,7 @@ int change_update_dn(struct transaction *trans) {
 	int rv;
 	const char *uuid = NULL;
 
-	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "updating '%s' command %c", trans->cur.notify.dn, trans->cur.notify.command);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_PROCESS, "updating '%s' command %c", trans->cur.notify.dn, trans->cur.notify.command);
 
 	rv = cache_get_entry_lower_upper(trans->cur.notify.dn, &trans->cur.cache);
 	if (rv != 0 && rv != DB_NOTFOUND) {
