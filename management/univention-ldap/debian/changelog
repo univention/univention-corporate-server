@@ -1,3 +1,9 @@
+univention-ldap (13.0.0-11) unstable; urgency=medium
+
+  * Bug #42103: enhance pam_unix password change configuration
+
+ -- Florian Best <best@univention.de>  Fri, 14 Oct 2016 14:00:47 +0200
+
 univention-ldap (13.0.0-10) unstable; urgency=low
 
   * Bug #41281 Bug #38679:: added defaults and description

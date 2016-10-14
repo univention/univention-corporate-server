@@ -1,3 +1,9 @@
+univention-management-console (9.0.12-24) unstable; urgency=medium
+
+  * Bug #42103: enhance pam_unix password change configuration
+
+ -- Florian Best <best@univention.de>  Fri, 14 Oct 2016 13:59:57 +0200
+
 univention-management-console (9.0.12-23) unstable; urgency=medium
 
   * Bug #42617: Removed conditional comment for IE8.

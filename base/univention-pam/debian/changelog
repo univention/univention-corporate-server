@@ -1,3 +1,9 @@
+univention-pam (10.0.0-2) unstable; urgency=medium
+
+  * Bug #42103: enhance pam_unix password change configuration
+
+ -- Florian Best <best@univention.de>  Fri, 14 Oct 2016 14:00:54 +0200
+
 univention-pam (10.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
