@@ -37,6 +37,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <limits.h>
+#include <errno.h>
 #include <sys/types.h>
 
 #include <univention/debug.h>
@@ -279,14 +280,22 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			rv = snprintf(filename, PATH_MAX, "%s/bad_cache", cache_dir);
 			if (rv < 0 || rv >= PATH_MAX)
 				abort();
-			if ((file = fopen(filename, "w")) != NULL) {
-				fprintf(file, "Check log file");
-				fclose(file);
-			}
+			if ((file = fopen(filename, "w")) == NULL)
+				abort_io("open", filename);
+			fprintf(file, "Check log file");
+			rv = fclose(file);
+			if (rv != 0)
+				abort_io("close", filename);
 
 			return -1;
 		}
 	}
 
 	return 0;
+}
+
+void abort_io(const char *func, const char *filename)
+{
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Fatal %s(%s): %s", func, filename, strerror(errno));
+	abort();
 }

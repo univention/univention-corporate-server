@@ -269,11 +269,11 @@ int cache_set_int(char *key, const NotifierID value)
 	if (rv < 0 || rv >= PATH_MAX)
 		return rv;
 	if ((fp = fopen(tmpfile, "w")) == NULL)
-		return 1;
+		abort_io("open", tmpfile);
 	fprintf(fp, "%ld", value);
 	rv = fclose(fp);
 	if (rv != 0)
-		return rv;
+		abort_io("close", tmpfile);
 
 	rv = snprintf(file, PATH_MAX, "%s/%s", cache_dir, key);
 	if (rv < 0 || rv >= PATH_MAX)

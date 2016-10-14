@@ -95,8 +95,10 @@ static FILE* fopen_lock(const char *name, const char *type, FILE **l_file)
 /* Close file and lock file. */
 static int fclose_lock(FILE **file, FILE **l_file)
 {
+	int rv = 0;
+
 	if (*file != NULL) {
-		fclose(*file);
+		rv |= fclose(*file);
 		*file = NULL;
 	}
 
@@ -105,11 +107,11 @@ static int fclose_lock(FILE **file, FILE **l_file)
 		int rc = lockf(l_fd, F_ULOCK, 0);
 		if (rc)
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ALL, "unlockf(): %d", rc);
-		fclose(*l_file);
+		rv |= fclose(*l_file);
 		*l_file = NULL;
 	}
 
-	return 0;
+	return rv;
 }
 
 
