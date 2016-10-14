@@ -2,6 +2,7 @@ univention-directory-listener (10.0.0-17) unstable; urgency=low
 
   * Bug #41842: Write module state after init
   * Bug #42573: Check disk space
+  * Bug #41960: Log DN of every processed LDAP entry with level PROCESS
 
  -- Philipp Hahn <hahn@univention.de>  Thu, 13 Oct 2016 14:34:44 +0200
 
