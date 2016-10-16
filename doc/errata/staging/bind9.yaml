@@ -3,7 +3,7 @@ release: "3.3"
 version: [0]
 scope: ucs_3.3-0-errata3.3-0
 src: bind9
-fix: 1:9.8.4.dfsg.P1-6+nmu2.113.201610101550
+fix: 1:9.8.4.dfsg.P1-6+nmu2.123.201610152028
 desc: |
  This update addresses the following issue:
  * incorrect validation of DNSSEC-signed records in the Bind DNS server could
