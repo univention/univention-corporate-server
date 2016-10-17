@@ -1,3 +1,9 @@
+univention-lib (6.0.4-1) unstable; urgency=medium
+
+  * Bug #24758: Fix quoting in umc.sh
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 17 Oct 2016 12:42:52 +0200
+
 univention-lib (6.0.3-1) unstable; urgency=medium
 
   * Bug #42228: make umc_connection capable to communicate with legacy path's.
