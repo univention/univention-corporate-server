@@ -1,4 +1,5 @@
-#!/usr/bin/make -f
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2013-2016 Univention GmbH
 #
@@ -26,10 +27,4 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
-override_dh_auto_test:
-	ucslint
-	dh_auto_test
-
-%:
-	dh $@ --with python_support
+from implementation import *

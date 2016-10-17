@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"src/.*"
+		],
+		"po_subdir": "src",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-virtual-machine-manager.mo"
+	}
+]

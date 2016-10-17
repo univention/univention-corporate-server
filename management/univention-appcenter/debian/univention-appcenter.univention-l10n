@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"python/.*py"
+		],
+		"po_subdir": "python",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-appcenter.mo"
+	}
+]

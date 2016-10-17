@@ -1,3 +1,9 @@
+univention-ucs-translation-template (3.1.0-0) unstable; urgency=medium
+
+  * Bug #42260: Redesign of special case processing
+
+ -- Eduard Mai <mai@univention.de>  Fri, 14 Oct 2016 18:30:08 +0200
+
 univention-ucs-translation-template (3.0.1-16) unstable; urgency=medium
 
   * Bug #42259: restructure Makefile to work with dh_auto_build
