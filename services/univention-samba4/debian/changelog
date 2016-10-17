@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-52) unstable; urgency=medium
+
+  * Move the update code to the sysvol-sync postinst (Bug #41549)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2016 20:14:22 +0200
+
 univention-samba4 (5.0.1-51) unstable; urgency=medium
 
   * Check the s4connector host via samba-tool domain info (Bug #30836)

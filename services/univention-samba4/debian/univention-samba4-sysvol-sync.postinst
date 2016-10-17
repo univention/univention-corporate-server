@@ -34,6 +34,8 @@
 
 . /usr/share/univention-lib/base.sh
 
+eval "$(univention-config-registry shell)"
+
 if [ "$1" = "configure" ]; then
 	## create sysvol-sync logfile
 	create_logfile /var/log/univention/sysvol-sync.log "root:adm" 640
@@ -71,6 +73,13 @@ if [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt 5.0.1-4 ; then
 	ucr set sshd/config/ClientAliveInterval?60
 	if [ -x /etc/init.d/ssh ]; then
 		invoke-rc.d ssh reload
+	fi
+fi
+
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 5.0.1-50; then
+	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+		udm groups/group modify --dn  "cn=Enterprise Domain Controllers,cn=groups,$ldap_base" \
+				--append nestedGroup="cn=DC Backup Hosts,cn=groups,$ldap_base"
 	fi
 fi
 
