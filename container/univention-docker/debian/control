@@ -11,7 +11,8 @@ Package: univention-docker
 Architecture: all
 Depends: ${misc:Depends},
  docker.io,
- univention-base-files
+ univention-base-files,
+ shell-univention-lib
 Description: UCS settings for Docker
  This integration package contains configuration adjustments
  for running Docker in UCS.

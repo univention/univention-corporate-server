@@ -1,3 +1,9 @@
+univention-docker (1.0.1-7) unstable; urgency=low
+
+  * restart univention-firewall (Bug #42698)
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Oct 2016 17:23:30 +0200
+
 univention-docker (1.0.1-6) unstable; urgency=low
 
   * restart univention-firewall (Bug #42698)

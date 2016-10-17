@@ -137,7 +137,9 @@ case "$1" in
 			exit 1
 		fi
 		# restart firewall for docker specific rules
-		invoke-rc.d univention-firewall restart || true
+		if ! is_ucr_true security/packetfilter/disabled; then
+			invoke-rc.d univention-firewall restart || true
+		fi
 		# start containers
 		if previous_containers_exist; then
 			if docker_is_running; then
