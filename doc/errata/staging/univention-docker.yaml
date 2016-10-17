@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-docker
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * Apply docker firewall settings during start of docker.
+bug: [42698]
