@@ -1,0 +1,11 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-config-registry
+fix: 11.0.0-5.499.201610171052
+desc: |
+ This update addresses the following issue:
+   * `univention-check-templates` now checks all files below
+     '/etc/univention/' for modifications.
+bug: [41735]
