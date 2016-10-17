@@ -1,3 +1,9 @@
+univention-config-registry (12.0.0-4) unstable; urgency=low
+
+  * Bug #41735: Check all files below /etc/univention/
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 17 Oct 2016 10:49:00 +0200
+
 univention-config-registry (12.0.0-3) unstable; urgency=low
 
   * Bug #37402: Fix check for corrupted nase.conf

@@ -38,7 +38,7 @@ from hashlib import md5
 from optparse import OptionParser
 from textwrap import dedent
 
-PREFIX = '/etc/univention/templates/files'
+PREFIX = '/etc/univention'
 SUFFIX = ('.dpkg-new', '.dpkg-dist')
 K64 = 1 << 16
 
@@ -52,7 +52,7 @@ def main():
 		modified |= check_md5(opt.verbose)
 	if modified:
 		print >> sys.stderr, dedent("""\
-			WARNING: The following UCR templates are modified locally.
+			WARNING: The following UCR files are modified locally.
 			Updated versions will be named FILENAME.dpkg-*.
 			The files should be checked for differences.
 			""")
