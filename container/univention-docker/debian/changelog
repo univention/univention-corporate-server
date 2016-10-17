@@ -1,3 +1,9 @@
+univention-docker (2.0.0-2) unstable; urgency=low
+
+  * restart univention-firewall (Bug #42698)
+
+ -- Felix Botner <botner@univention.de>  Mon, 17 Oct 2016 15:53:47 +0200
+
 univention-docker (2.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump

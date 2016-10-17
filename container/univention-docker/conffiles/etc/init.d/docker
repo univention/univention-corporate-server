@@ -136,6 +136,9 @@ case "$1" in
 			log_failure_msg "$DOCKER_DESC: did not start properly"
 			exit 1
 		fi
+		# restart firewall for docker specific rules
+		invoke-rc.d univention-firewall restart || true
+		# start containers
 		if previous_containers_exist; then
 			if docker_is_running; then
 				log_progress_msg "previously stopped containers... "
