@@ -1,3 +1,9 @@
+univention-lib (5.0.0-16) unstable; urgency=low
+
+  * Bug #24758: Fix quoting in umc.sh
+
+ -- Philipp Hahn <hahn@univention.de>  Mon, 17 Oct 2016 12:42:52 +0200
+
 univention-lib (5.0.0-15) unstable; urgency=low
 
   * add support for message catalogs for UDM syntax and hook extensions 

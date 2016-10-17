@@ -34,12 +34,38 @@
 
 eval "$(/usr/sbin/univention-config-registry shell ldap/base)"
 
-BIND_ARGS="$@"
+_umc_udm_bind () {
+	UMC_UDM_BIND_DN=
+	UMC_UDM_BIND_PWD=
+	UMC_UDM_BIND_PWDFILE=
+	while [ $# -ge 1 ]
+	do
+		case "$1" in
+		--bindd*=*) UMC_UDM_BIND_DN=${1#--bindd*=} ;;
+		--bindd*) UMC_UDM_BIND_DN=${2} ; shift ;;
+		--bindpwd=*) UMC_UDM_BIND_PWD=${1#--bindpwd=} ;;
+		--bindpwd) UMC_UDM_BIND_PWD=${2} ; shift ;;
+		--bindpwdf*=*) UMC_UDM_BIND_PWDFILE=${1#--bindpwdf*=} ;;
+		--bindpwdf*) UMC_UDM_BIND_PWDFILE=${2} ; shift ;;
+		esac
+		shift
+	done
+}
+_umc_udm_bind "$@"
+umc_udm () {
+	local module="${1:?Missing module}" action="${2:?Missing action}"
+	shift 2 || return $?
+	univention-directory-manager "$module" "$action" \
+		${UMC_UDM_BIND_DN:+--binddn "$UMC_UDM_BIND_DN"} \
+		${UMC_UDM_BIND_PWD:+--bindpwd "$UMC_UDM_BIND_PWD"} \
+		${UMC_UDM_BIND_PWDFILE:+--bindpwdfile "$UMC_UDM_BIND_PWDFILE"} \
+		"$@"
+}
 
 umc_frontend_new_hash () {
 	# create new timestamps for index.html and debug.html in order to
 	# avoid caching problems in browsers
-	timestamp=$(date +'%Y%d%m%H%M%S')
+	local ifile f idir timestamp="$(date +'%Y%d%m%H%M%S')"
 	for ifile in index.html debug.html error.html js/umc/login.html; do
 		f="/usr/share/univention-management-console-frontend/$ifile"
 		[ -w "$f" ] && sed -i 's/\$\(.*\)\$/$'$timestamp'$/' "$f"
@@ -55,67 +81,65 @@ umc_frontend_new_hash () {
 }
 
 umc_init () {
-
 	eval "$(/usr/sbin/univention-config-registry shell groups/default/domainadmins groups/default/domainusers)"
 
 	# containers
-	udm container/cn create $BIND_ARGS --ignore_exists --position "cn=univention,$ldap_base" --set name=UMC || exit $?
-	udm container/cn create $BIND_ARGS --ignore_exists --position "cn=policies,$ldap_base" --set name=UMC --set policyPath=1 || exit $?
-	udm container/cn create $BIND_ARGS --ignore_exists --position "cn=UMC,cn=univention,$ldap_base" --set name=operations || exit $?
+	umc_udm container/cn create --ignore_exists --position "cn=univention,$ldap_base" --set name=UMC || exit $?
+	umc_udm container/cn create --ignore_exists --position "cn=policies,$ldap_base" --set name=UMC --set policyPath=1 || exit $?
+	umc_udm container/cn create --ignore_exists --position "cn=UMC,cn=univention,$ldap_base" --set name=operations || exit $?
 
 	# default admin policy
-	udm policies/umc create $BIND_ARGS --ignore_exists --set name=default-umc-all \
+	umc_udm policies/umc create --ignore_exists --set name=default-umc-all \
 		--position "cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# link default admin policy to the group "Domain Admins"
 	group_admins="${groups_default_domainadmins:-Domain Admins}"
-	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=$group_admins,cn=groups,$ldap_base" \
+	umc_udm groups/group modify --ignore_exists --dn "cn=$group_admins,cn=groups,$ldap_base" \
 		--policy-reference="cn=default-umc-all,cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# default user policy
-	udm policies/umc create $BIND_ARGS --ignore_exists --set name=default-umc-users \
+	umc_udm policies/umc create --ignore_exists --set name=default-umc-users \
 		--position "cn=UMC,cn=policies,$ldap_base" || exit $?
 
 	# link default user policy to the group "Domain Users"
 	group_users="${groups_default_domainusers:-Domain Users}"
-	udm groups/group modify $BIND_ARGS --ignore_exists --dn "cn=$group_users,cn=groups,$ldap_base" \
+	umc_udm groups/group modify --ignore_exists --dn "cn=$group_users,cn=groups,$ldap_base" \
 		--policy-reference="cn=default-umc-users,cn=UMC,cn=policies,$ldap_base" || exit $?
 }
 
 _umc_remove_old () {
 	# removes an object and ignores all errors
-	name=$1; shift
-	module=$1; shift
-	container=$1
-
-	udm $module remove $BIND_ARGS --dn "cn=$name,$container,$ldap_base" 2>/dev/null || true
+	local name="$1" module="$2" container="$3"
+	umc_udm "$module" remove --dn "cn=$name,$container,$ldap_base" 2>/dev/null || true
 }
 
 umc_operation_create () {
 	# example: umc_operation_create "udm" "UDM" "users/user" "udm/*:objectType=users/*"
-	name=$1; shift
-	description=$1; shift
-	flavor=$1; shift
-	operations=""
-	for oper in "$@"; do
-		operations="$operations --append operation=$oper "
+	local name="$1" description="$2" flavor="$3" nargs arg
+	shift 3 || return $?
+	nargs=$#
+	for arg in "$@"
+	do
+		set -- "$@" --append operation="$arg"
 	done
-	udm settings/umc_operationset create $BIND_ARGS --ignore_exists \
+	shift $nargs || return $?
+	umc_udm settings/umc_operationset create --ignore_exists \
 		--position "cn=operations,cn=UMC,cn=univention,$ldap_base" \
 		--set name="$name" \
 		--set description="$description" \
-		--set flavor="$flavor" $operations || exit $?
+		--set flavor="$flavor" "$@" || exit $?
 }
 
 umc_policy_append () {
 	# example: umc_policy_append "default-umc-all" "udm-all" "udm-users"
-	policy="$1"; shift
-
-	ops=""
-	for op in "$@"; do
-		ops="$ops --append allow=cn=$op,cn=operations,cn=UMC,cn=univention,$ldap_base "
+	local policy="$1" nargs arg
+	shift || return $?
+	nargs=$#
+	for arg in "$@"
+	do
+		set -- "$@" --append allow="cn=$arg,cn=operations,cn=UMC,cn=univention,$ldap_base"
 	done
-
-	udm policies/umc modify $BIND_ARGS --ignore_exists \
-		--dn "cn=$policy,cn=UMC,cn=policies,$ldap_base" $ops || exit $?
+	shift $nargs || return $?
+	umc_udm policies/umc modify --ignore_exists \
+		--dn "cn=$policy,cn=UMC,cn=policies,$ldap_base" "$@" || exit $?
 }
