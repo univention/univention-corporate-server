@@ -36,6 +36,7 @@ DOCKER_DESC="Docker"
 
 # load UCS Docker shell functions
 . /usr/lib/univention-docker/univention-docker_lib.sh
+. /usr/share/univention-lib/ucr.sh
 
 if [ -f /etc/default/$BASE ]; then
 	. /etc/default/$BASE
