@@ -1,3 +1,9 @@
+univention-samba4 (5.0.1-51) unstable; urgency=medium
+
+  * Check the s4connector host via samba-tool domain info (Bug #30836)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Oct 2016 19:59:58 +0200
+
 univention-samba4 (5.0.1-50) unstable; urgency=medium
 
   * The group DC Backup Hosts is now member if the group Enterprise

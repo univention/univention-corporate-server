@@ -325,11 +325,15 @@ samba_domain_join() {
 	
 		if [ -n "$s4connector_dc" ]; then
 			echo "Join against S4 Connector server: $s4connector_dc"
-			samba-tool domain join "$domainname" "$samba4_role" --server "$s4connector_dc" "${samba_join_options[@]}"
-			if [ $? -eq 0 ]; then
-				success=true
+			if samba-tool domain info "$s4connector_dc.$domainname"; then
+				samba-tool domain join "$domainname" "$samba4_role" --server "$s4connector_dc" "${samba_join_options[@]}"
+				if [ $? -eq 0 ]; then
+					success=true
+				else
+					echo "Failed to join against the S4 Connector server ${s4connector_dc}."
+				fi
 			else
-				echo "Failed to join against the S4 Connector server ${s4connector_dc}."
+				echo "Samba currently not available on S4 Connector server ${s4connector_dc}."
 			fi
 		fi
 
