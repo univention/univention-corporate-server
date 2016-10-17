@@ -36,6 +36,7 @@ DOCKER_DESC="Docker"
 
 # load UCS Docker shell functions
 . /usr/lib/univention-docker/univention-docker_lib.sh
+. /usr/share/univention-lib/ucr.sh
 
 if [ -f /etc/default/$BASE ]; then
 	. /etc/default/$BASE
@@ -137,7 +138,9 @@ case "$1" in
 			exit 1
 		fi
 		# restart firewall for docker specific rules
-		invoke-rc.d univention-firewall restart || true
+		if ! is_ucr_true security/packetfilter/disabled; then
+			invoke-rc.d univention-firewall restart || true
+		fi
 		# start containers
 		if previous_containers_exist; then
 			if docker_is_running; then
