@@ -345,3 +345,7 @@ def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileNa
 	finally:
 		rmdir(gpg_homedirname)
 	return (p.returncode, stderr)
+
+
+def get_local_fqdn():
+	return '%s.%s' % (ucr_get('hostname'), ucr_get('domainname'))

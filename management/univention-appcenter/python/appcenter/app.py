@@ -1504,12 +1504,15 @@ class AppManager(object):
 			return apps[0]
 
 	@classmethod
-	def find_candidate(cls, app):
-		docker_careful = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
+	def find_candidate(cls, app, prevent_docker=None):
+		if prevent_docker is None:
+			prevent_docker = ucr_is_true('appcenter/prudence/docker/%s' % app.id)
+		if app.docker:
+			prevent_docker = False
 		app_version = LooseVersion(app.version)
 		apps = list(reversed(cls.get_all_apps_with_id(app.id)))
 		for _app in apps:
-			if docker_careful and _app.docker and not _app.docker_migration_works:
+			if prevent_docker and _app.docker and not _app.docker_migration_works:
 				continue
 			if _app <= app:
 				break

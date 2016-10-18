@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-19) unstable; urgency=medium
+
+  * Bug #42713: Do not show Docker App updates for remote systems
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Oct 2016 15:52:19 +0200
+
 univention-appcenter (5.0.22-18) unstable; urgency=medium
 
   * Bug #42485: Do not delete joinscripts / schema files from Non-Docker Apps
