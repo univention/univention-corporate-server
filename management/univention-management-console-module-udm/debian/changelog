@@ -1,3 +1,9 @@
+univention-management-console-module-udm (7.0.1-12) unstable; urgency=medium
+
+  * Bug #42177: fixup svn r73168
+
+ -- Florian Best <best@univention.de>  Tue, 18 Oct 2016 18:23:59 +0200
+
 univention-management-console-module-udm (7.0.1-11) unstable; urgency=medium
 
   * Bug #42220: Added translations to umc/js/de.po

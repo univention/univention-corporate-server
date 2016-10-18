@@ -744,50 +744,49 @@ class Instance(Base, ProgressMixin):
 
 		return: [ { 'id' : <LDAP DN of container or None>, 'label' : <name> }, ... ]
 		"""
+		superordinate = request.options.get('superordinate')
 		if request.flavor != 'navigation':
 			module = UDM_Module(request.flavor)
-			superordinate = request.options.get('superordinate')
 			if superordinate:
 				self.finished(request.id, module.types4superordinate(request.flavor, superordinate))
-				return
 			else:
 				self.finished(request.id, module.child_modules)
-				return
+			return
+
+		container = request.options.get('container') or superordinate
+		if not container:
+			# no container is specified, return all existing object types
+			MODULE.info('no container specified, returning all object types')
+			self.finished(request.id, map(lambda module: {'id': module[0], 'label': getattr(module[1], 'short_description', module[0])}, udm_modules.modules.items()))
+			return
+
+		if 'None' == container:
+			# if 'None' is given, use the LDAP base
+			container = ucr.get('ldap/base')
+			MODULE.info('no container == \'None\', set LDAP base as container')
+
+		# create a list of modules that can be created
+		# ... all container types except container/dc
+		allowed_modules = set([m for m in udm_modules.containers if udm_modules.name(m) != 'container/dc'])
+
+		# the container may be a superordinate or have one as its parent
+		# (or grandparent, ....)
+		superordinate = udm_modules.find_superordinate(container, None, ldap_connection)
+		if superordinate:
+			# there is a superordinate... add its subtypes to the list of allowed modules
+			MODULE.info('container has a superordinate: %s' % superordinate)
+			allowed_modules.update(udm_modules.subordinates(superordinate))
 		else:
-			container = request.options.get('container')
-			if not container:
-				# no container is specified, return all existing object types
-				MODULE.info('no container specified, returning all object types')
-				self.finished(request.id, map(lambda module: {'id': module[0], 'label': getattr(module[1], 'short_description', module[0])}, udm_modules.modules.items()))
-				return
+			# add all types that do not have a superordinate
+			MODULE.info('container has no superordinate')
+			allowed_modules.update(mod for mod in udm_modules.modules.values() if not udm_modules.superordinates(mod))
 
-			if 'None' == container:
-				# if 'None' is given, use the LDAP base
-				container = ucr.get('ldap/base')
-				MODULE.info('no container == \'None\', set LDAP base as container')
+		# make sure that the object type can be created
+		allowed_modules = filter(lambda mod: udm_modules.supports(mod, 'add'), allowed_modules)
+		MODULE.info('all modules that are allowed: %s' % [udm_modules.name(mod) for mod in allowed_modules])
 
-			# create a list of modules that can be created
-			# ... all container types except container/dc
-			allowed_modules = set([m for m in udm_modules.containers if udm_modules.name(m) != 'container/dc'])
-
-			# the container may be a superordinate or have one as its parent
-			# (or grandparent, ....)
-			superordinate = udm_modules.find_superordinate(container, None, ldap_connection)
-			if superordinate:
-				# there is a superordinate... add its subtypes to the list of allowed modules
-				MODULE.info('container has a superordinate: %s' % superordinate)
-				allowed_modules.update(udm_modules.subordinates(superordinate))
-			else:
-				# add all types that do not have a superordinate
-				MODULE.info('container has no superordinate')
-				allowed_modules.update(mod for mod in udm_modules.modules.values() if not udm_modules.superordinates(mod))
-
-			# make sure that the object type can be created
-			allowed_modules = filter(lambda mod: udm_modules.supports(mod, 'add'), allowed_modules)
-			MODULE.info('all modules that are allowed: %s' % [udm_modules.name(mod) for mod in allowed_modules])
-
-			# return the final list of object types
-			self.finished(request.id, map(lambda module: {'id': udm_modules.name(module), 'label': getattr(module, 'short_description', udm_modules.name(module))}, allowed_modules))
+		# return the final list of object types
+		self.finished(request.id, map(lambda module: {'id': udm_modules.name(module), 'label': getattr(module, 'short_description', udm_modules.name(module))}, allowed_modules))
 
 	@bundled
 	@sanitize(
@@ -949,7 +948,7 @@ class Instance(Base, ProgressMixin):
 		LDAP base (option 'container'). If no base container is
 		specified the LDAP base object is returned."""
 
-		ldap_base = ucr.get('ldap/base')
+		ldap_base = ucr['ldap/base']
 		container = request.options.get('container')
 		if not container:
 			root_defaults = {
