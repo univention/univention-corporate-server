@@ -1,0 +1,692 @@
+# UCS Virtual Machine Manager Daemon.
+#
+# Copyright 2010-2016 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of the software contained in this package
+# as well as the source package itself are made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this package provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# In the case you use the software under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+#
+#
+# Philipp Hahn <hahn@univention.de>, 2010.
+# Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
+# Éric Bischoff <ebischoff@bureau-cornavin.com>, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-virtual-machine-manager 0.9.333-1\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2016-10-12 20:39+0200\n"
+"PO-Revision-Date: 2016-07-03 21:15+0100\n"
+"Last-Translator: Éric Bischoff <ebischoff@bureau-cornavin.com>\n"
+"Language-Team: German <fr@bureau-cornavin.com>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: src/univention-virtual-machine-manager-daemon:211
+msgid "Cache options"
+msgstr ""
+
+#: src/univention/uvmm/commands.py:627
+#, python-format
+msgid "Command \"%(command)s\" is restricted"
+msgstr "L'utilisation de la commande « %(command)s » est restreinte"
+
+#: src/univention-virtual-machine-manager-daemon:205
+msgid "Connection options"
+msgstr ""
+
+#: src/univention/uvmm/uvmm_ldap.py:186 src/univention/uvmm/uvmm_ldap.py:242
+#: src/univention/uvmm/uvmm_ldap.py:275 src/univention/uvmm/uvmm_ldap.py:291
+msgid "Could not open LDAP-Admin connection"
+msgstr "Impossible d'ouvrir une connexion LDAP-Admin"
+
+#: src/univention/uvmm/uvmm_ldap.py:168
+msgid "Could not open LDAP-Machine connection"
+msgstr "Impossible d'ouvrir une connexion LDAP-Machine"
+
+#: src/univention/uvmm/client.py:119
+#, python-format
+msgid "Could not open socket \"%(path)s\": %(errno)d"
+msgstr "Impossible d'ouvrir la socket « %(path)s » : %(errno)d"
+
+#: src/univention/uvmm/uvmm_ldap.py:160
+#, python-format
+msgid "Could not query \"%(uri)s\""
+msgstr "Impossible d'envoyer une requête à « %(uri)s »"
+
+#: src/univention/uvmm/client.py:63
+#, python-format
+msgid "Could not send request: %(errno)d"
+msgstr "Impossible d'envoyer la requête : %(errno)d"
+
+#: src/univention-virtual-machine-manager-daemon:220
+msgid "Daemon options"
+msgstr ""
+
+#: src/univention-virtual-machine-manager-daemon:217
+msgid "Do not load cached state"
+msgstr ""
+
+#: src/univention/uvmm/node.py:1673
+#, python-format
+msgid "Domain \"%(domain)s\" already exists: %(uuid)s"
+msgstr "Le domaine « %(domain)s » existe déjà : %(uuid)s"
+
+#: src/univention/uvmm/node.py:1522
+#, python-format
+msgid "Domain \"%(domain)s\" in state \"%(state)s\" can not be migrated"
+msgstr "Le domaine « %(domain)s » dans l'état « %(state)s » ne peut être migré"
+
+#: src/univention/uvmm/node.py:1681
+#, python-format
+msgid "Domain \"%(domain)s\" is not shut off: %(state)d"
+msgstr "Le domaine « %(domain)s » n'est pas éteint : %(state)d"
+
+#: src/univention/uvmm/node.py:1195
+#, python-format
+msgid "Domain name \"%(domain)s\" already used by \"%(uuid)s\""
+msgstr "Le nom de domaine « %(domain)s » est déjà utilisé par « %(uuid)s »"
+
+#: src/univention/uvmm/client.py:94
+msgid "EOS while waiting for answer."
+msgstr "Signal « Fin de la connexion » reçu en attendant la réponse."
+
+#: src/univention/uvmm/node.py:1854
+#, python-format
+msgid "Error cloning \"%(domain)s\": %(error)s"
+msgstr "Erreur en dupliquant « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/node.py:1562
+#, python-format
+msgid "Error creating \"%(domain)s\" snapshot: %(error)s"
+msgstr "Erreur en créant un instantané de « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/storage.py:95
+#, python-format
+msgid "Error creating storage pool \"%(pool)s\": %(error)s"
+msgstr ""
+"Erreur en créant l'espace de stockage mis en commun « %(pool)s » : %(error)s"
+
+#: src/univention/uvmm/storage.py:275
+#, python-format
+msgid ""
+"Error creating storage volume \"%(name)s\" for \"%(domain)s\": %(error)s"
+msgstr ""
+"Erreur en créant le volume de stockage « %(name)s » de « %(domain)s » : "
+"%(error)s"
+
+#: src/univention/uvmm/node.py:1287
+#, python-format
+msgid "Error defining domain \"%(domain)s\": %(error)s"
+msgstr "Erreur en définissant le domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/node.py:1611 src/univention/uvmm/node.py:1620
+#, python-format
+msgid "Error deleting \"%(domain)s\" snapshot: %(error)s"
+msgstr "Erreur en supprimant l'instantané « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/storage.py:425 src/univention/uvmm/storage.py:448
+#: src/univention/uvmm/storage.py:469
+#, python-format
+msgid "Error listing pools at \"%(uri)s\": %(error)s"
+msgstr ""
+"Erreur en obtenant la liste des espaces mis en commun de « %(uri)s » : "
+"%(error)s"
+
+#: src/univention/uvmm/storage.py:289 src/univention/uvmm/storage.py:309
+#, python-format
+msgid "Error listing volumes at \"%(uri)s\": %(error)s"
+msgstr "Erreur en obtenant la liste des volumes de « %(uri)s » : %(error)s"
+
+#: src/univention/uvmm/storage.py:147
+#, python-format
+msgid "Error locating storage pool \"%(pool)s\" for \"%(domain)s\": %(error)s"
+msgstr ""
+"Erreur en localisant l'espace de stockage mis en commun « %(pool)s » pour "
+"« %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/storage.py:123 src/univention/uvmm/storage.py:185
+#, python-format
+msgid ""
+"Error locating storage volume \"%(volume)s\" for \"%(domain)s\": %(error)s"
+msgstr ""
+"Erreur en localisant le volume de stockage « %(volume)s » pour "
+"« %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/node.py:1421
+#, python-format
+msgid "Error managing domain \"%(domain)s\""
+msgstr "Erreur en gérant le domaine « %(domain)s »"
+
+#: src/univention/uvmm/node.py:1424 src/univention/uvmm/node.py:1427
+#, python-format
+msgid "Error managing domain \"%(domain)s\": %(error)s"
+msgstr "Erreur en gérant le domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/node.py:1511 src/univention/uvmm/node.py:1541
+#, python-format
+msgid "Error migrating domain \"%(domain)s\": %(error)s"
+msgstr "Erreur en migrant le domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/uvmm_ldap.py:125
+#, python-format
+msgid "Error reading %(file)s: %(msg)s"
+msgstr "Erreur en lisant %(file)s : %(msg)s"
+
+#: src/univention/uvmm/uvmm_ldap.py:128
+#, python-format
+msgid "Error reading incomplete %(file)s."
+msgstr "Erreur en lisant le fichier incomplet %(file)s."
+
+#: src/univention/uvmm/uvmm_ldap.py:100
+#, python-format
+msgid "Error removing %(file)s.old: %(msg)s"
+msgstr "Erreur en supprimant %(file)s.old : %(msg)s"
+
+#: src/univention/uvmm/node.py:1278
+#, python-format
+msgid "Error removing domain \"%(domain)s\": %(error)s"
+msgstr "Erreur en supprimant le domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/uvmm_ldap.py:110
+#, python-format
+msgid "Error renaming %(file)s.new: %(msg)s"
+msgstr "Erreur en renommant %(file)s.new : %(msg)s"
+
+#: src/univention/uvmm/uvmm_ldap.py:105
+#, python-format
+msgid "Error renaming %(file)s: %(msg)s"
+msgstr "Erreur en renommant %(file)s : %(msg)s"
+
+#: src/univention/uvmm/node.py:1455
+#, python-format
+msgid "Error restoring domain \"%(domain)s\": %(error)s"
+msgstr "Erreur en restaurant le domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/network.py:54
+#, python-format
+msgid "Error retrieving list of active networks: %(error)s"
+msgstr "Erreur en obtenant la liste des réseaux actifs : %(error)s"
+
+#: src/univention/uvmm/network.py:75
+#, python-format
+msgid "Error retrieving list of networks: %(error)s"
+msgstr "Erreur en obtenant la liste des réseaux : %(error)s"
+
+#: src/univention/uvmm/node.py:1200 src/univention/uvmm/node.py:1209
+#, python-format
+msgid "Error retrieving old domain \"%(domain)s\": %(error)s"
+msgstr "Erreur en obtenant l'ancien domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/node.py:1588 src/univention/uvmm/node.py:1594
+#, python-format
+msgid "Error reverting \"%(domain)s\" to snapshot: %(error)s"
+msgstr "Erreur en ramenant « %(domain)s » vers l'instantané : %(error)s"
+
+#: src/univention/uvmm/node.py:1441
+#, python-format
+msgid "Error saving domain \"%(domain)s\": %(error)s"
+msgstr "Erreur en enregistrant le domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/network.py:68
+#, python-format
+msgid "Error starting network %(name)s: %(error)s"
+msgstr "Erreur en démarrant le réseau %(name)s : %(error)s"
+
+#: src/univention/uvmm/node.py:1483
+#, python-format
+msgid "Error undefining domain \"%(domain)s\": %(error)s"
+msgstr ""
+"Erreur en supprimant la définition du domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/node.py:1638 src/univention/uvmm/node.py:1655
+#, python-format
+msgid "Error updating domain \"%(domain)s\""
+msgstr "Erreur en actualisant le domaine « %(domain)s »"
+
+#: src/univention/uvmm/node.py:1253 src/univention/uvmm/node.py:1256
+#: src/univention/uvmm/node.py:1261
+#, python-format
+msgid "Error updating domain \"%(domain)s\": %(error)s"
+msgstr "Erreur en actualisant le domaine « %(domain)s » : %(error)s"
+
+#: src/univention/uvmm/client.py:104
+#, python-format
+msgid "Error while closing socket: %(errno)d"
+msgstr "Erreur en fermant la socket : %(errno)d"
+
+#: src/univention/uvmm/client.py:92
+#, python-format
+msgid "Error while waiting for answer: %(errno)d"
+msgstr "Erreur en attendant la réponse : %(errno)d"
+
+#: src/univention/uvmm/unix.py:152
+#, python-format
+msgid "Exception: %(exception)s"
+msgstr "Exception : %(exception)s"
+
+#: src/univention/uvmm/node.py:885
+#, python-format
+msgid "Failed to backup domain %(domain)s: %(xml)s"
+msgstr "Échec de la sauvegarde du domaine %(domain)s : %(xml)s"
+
+#: src/univention/uvmm/node.py:1827
+#, python-format
+msgid "Failed to clone volume \"%(volume)s\": %(error)s"
+msgstr "Échec de la duplication du volume « %(volume)s » : %(error)s"
+
+#: src/univention-virtual-machine-manager-daemon:124
+#, fuzzy
+msgid "Failed to fork daemon."
+msgstr "Échec de mise à jour du périphérique."
+
+#: src/univention/uvmm/node.py:1792
+#, python-format
+msgid "Failed to generate new name for disk \"%(disk)s\""
+msgstr "Échec de génération d'un nouveau nom pour le disque « %(disk)s »"
+
+#: src/univention/uvmm/node.py:1247
+msgid "Failed to update device."
+msgstr "Échec de mise à jour du périphérique."
+
+#: src/univention/uvmm/node.py:1660
+#, fuzzy, python-format
+msgid "Failed to update domain \"%(domain)s\""
+msgstr "Échec d'actualisation du domaine « %(domain)s »"
+
+#: src/univention/uvmm/node.py:1306 src/univention/uvmm/node.py:1309
+msgid "Failed to update the additionally information in the LDAP directory."
+msgstr ""
+"Échec d'actualisation des informations supplémentaires dans l'annuaire LDAP."
+
+#: src/univention-virtual-machine-manager-daemon:226
+msgid "Fork into background"
+msgstr ""
+
+#: src/univention/uvmm/node.py:820
+#, python-format
+msgid "Hypervisor \"%(uri)s\" is already connected."
+msgstr "L'hyperviseur « %(uri)s » est déjà connecté."
+
+#: src/univention/uvmm/node.py:832 src/univention/uvmm/node.py:841
+#, python-format
+msgid "Hypervisor \"%(uri)s\" is not connected."
+msgstr "L'hyperviseur « %(uri)s » n'est pas connecté."
+
+#: src/univention/uvmm/protocol.py:83
+#, python-format
+msgid "Incompatible version: %(major)d.%(minor)d"
+msgstr "Version non compatible : %(major)d.%(minor)d"
+
+#: src/univention/uvmm/uvmm_ldap.py:135
+msgid "No SERVICES defined."
+msgstr "Aucun SERVICE défini."
+
+#: src/univention-virtual-machine-manager:108
+msgid "No nodes found."
+msgstr ""
+
+#: src/univention/uvmm/protocol.py:94
+#, python-format
+msgid "Not a Packet: %(type)s"
+msgstr "N'est pas un paquet : %(type)s"
+
+#: src/univention/uvmm/client.py:84
+msgid "Not a UVMM_Response."
+msgstr "N'est pas une réponse UVMM."
+
+#: src/univention/uvmm/protocol.py:92
+#, python-format
+msgid "Not a valid Packet: %(msg)s"
+msgstr "N'est pas un paquet valide : %(msg)s"
+
+#: src/univention/uvmm/unix.py:105
+#, python-format
+msgid "Packet is no UVMM Request: %(type)s"
+msgstr "Le paquet n'est pas une requête UVMM : %(type)s"
+
+#: src/univention-virtual-machine-manager:136
+msgid "Path to the UNIX socket"
+msgstr ""
+
+#: src/univention-virtual-machine-manager-daemon:208
+#, python-format
+msgid "Path to the UNIX socket [%(default)s]"
+msgstr ""
+
+#: src/univention-virtual-machine-manager-daemon:235
+#, python-format
+msgid "Path to the ini-file [%(default)s]"
+msgstr ""
+
+#: src/univention-virtual-machine-manager-daemon:229
+msgid "Path to the log-file"
+msgstr ""
+
+#: src/univention-virtual-machine-manager-daemon:223
+#, python-format
+msgid "Path to the pid-file [%(default)s]"
+msgstr ""
+
+#: src/univention-virtual-machine-manager:142
+#: src/univention-virtual-machine-manager-daemon:232
+msgid "Print additional information"
+msgstr ""
+
+#: src/univention-virtual-machine-manager-daemon:238
+msgid "Skip reading ini-file"
+msgstr ""
+
+#: src/univention/uvmm/node.py:1548 src/univention/uvmm/node.py:1553
+#: src/univention/uvmm/node.py:1569 src/univention/uvmm/node.py:1574
+#: src/univention/uvmm/node.py:1601 src/univention/uvmm/node.py:1606
+#, python-format
+msgid "Snapshot not supported \"%(node)s\""
+msgstr "L'instantané n'est pas pris en charge « %(node)s »"
+
+#: src/univention/uvmm/ec2cloud.py:506
+#, python-format
+msgid ""
+"The EC2 region returned an error for connection \"%(connection)s\":\n"
+"\n"
+"AuthFailure: The provided AWS access credentials could not be validated. "
+"Please ensure that you are using the correct access keys. Consult the AWS "
+"service documentation for details."
+msgstr ""
+"La région EC2 a retourné une erreur pour la connexion « %(connection)s » :\n"
+"\n"
+"AuthFailure : les preuves d'identité pour l'accès à AWS fournies n'ont pu "
+"être validées. Veuillez vous assurer que vous utilisez des clés d'accès "
+"correctes. Consultez la documentation du service AWS pour plus de détails."
+
+#: src/univention/uvmm/ec2cloud.py:539
+#, python-format
+msgid ""
+"The EC2 region returned an error for connection \"%(connection)s\":\n"
+"\n"
+"RequestExpired: Please check your system time to interact with AWS."
+msgstr ""
+"La région EC2 a retourné une erreur pour la connexion « %(connection)s » :\n"
+"\n"
+"RequestExpired: veuillez vérifier l'horloge de votre système pour interagir "
+"avec AWS."
+
+#: src/univention/uvmm/ec2cloud.py:541
+#, python-format
+msgid ""
+"The EC2 region returned an error for connection \"%(connection)s\":\n"
+"\n"
+"UnauthorizedOperation: The provided AWS access credentials are not "
+"authorized to perform this operation. Check your IAM policies, and ensure "
+"that you are using the correct access keys. Also, the IAM user must have "
+"appropriate access rights to interact with EC2, e.g. AmazonEC2FullAccess."
+msgstr ""
+"La région EC2 a retourné une erreur pour la connexion « %(connection)s » :\n"
+"\n"
+"UnauthorizedOperation : les preuves d'identité pour l'accès à AWS fournies "
+"ne permettent pas d'effectuer cette opération. Vérifiez vos droits IAM et "
+"assurez-vous que vous utilisez des clés d'accès correctes. De plus, "
+"l'utilisateur IAM doit avoir des droits d'accès appropriés pour interagir "
+"avec EC2, par ex. AmazonEC2FullAccess."
+
+#: src/univention/uvmm/ec2cloud.py:537
+#, python-format
+msgid ""
+"The EC2 region returned an error for connection \"%(connection)s\":\n"
+"\n"
+"Your AWS account is currently blocked. If you have questions, please contact "
+"AWS Support."
+msgstr ""
+"La région EC2 a retourné une erreur pour la connexion « %(connection)s » :\n"
+"\n"
+"Votre compte AWS est actuellement bloqué. Si vous avez des questions, "
+"veuillez contacter le service en ligne d'AWS."
+
+#: src/univention/uvmm/client.py:102
+msgid "Timed out while closing socket."
+msgstr "Délai dépassé en fermant la connexion."
+
+#: src/univention/uvmm/client.py:117
+#, python-format
+msgid "Timed out while opening local socket \"%(path)s\"."
+msgstr "Délai dépassé en ouvrant une connexion locale « %(path)s »."
+
+#: src/univention/uvmm/client.py:90
+msgid "Timed out while receiving data."
+msgstr "Délai dépassé en recevant les données."
+
+#: src/univention/uvmm/client.py:61
+msgid "Timed out while sending data."
+msgstr "Délai dépassé en envoyant les données."
+
+#: src/univention-virtual-machine-manager:149
+msgid "Timeout in seconds for UVMM commands"
+msgstr ""
+
+#: src/univention/uvmm/commands.py:631
+#, fuzzy, python-format
+msgid "Unknown command \"%(command)s\""
+msgstr "Commande « %(command)s » inconnue"
+
+#: src/univention/uvmm/node.py:360
+#, python-format
+msgid "Unknown disk type: %(type)d"
+msgstr "Type de disque inconnu : %(type)d"
+
+#: src/univention/uvmm/node.py:1068 src/univention/uvmm/node.py:1763
+#, python-format
+msgid "Unknown disk/type='%(type)s'"
+msgstr "Type de disque inconnu='%(type)s'"
+
+#: src/univention/uvmm/node.py:1338
+#, python-format
+msgid "Unknown domain \"%s\""
+msgstr "Domaine inconnu « %s »"
+
+#: src/univention/uvmm/node.py:1113
+#, python-format
+msgid "Unknown interface/type='%(type)s'"
+msgstr "Type d'interface inconnu='%(type)s'"
+
+#: src/univention/uvmm/node.py:981
+#, python-format
+msgid "Unknown os/type='%(type)s'"
+msgstr "Type de système d'exploitation inconnu='%(type)s'"
+
+#: src/univention/uvmm/node.py:1384
+#, python-format
+msgid "Unsupported state transition %(cur_state)s to %(next_state)s"
+msgstr ""
+"Transition de l'état %(cur_state)s vers %(next_state)s non prise en charge"
+
+#: src/univention/uvmm/storage.py:249
+#, python-format
+msgid "Unsupported storage-pool-type \"%(pool_type)s\" for \"%(domain)s\""
+msgstr ""
+"storage-pool-type « %(pool_type)s » non pris en charge pour « %(domain)s »"
+
+#: src/univention/uvmm/node.py:1772
+#, python-format
+msgid "Volume \"%(volume)s\" not found: %(error)s"
+msgstr "Volume « %(volume)s » non trouvé : %(error)s"
+
+#: src/univention/uvmm/commands.py:61 src/univention/uvmm/commands.py:254
+#, python-format
+msgid "args != dict: %(args)s"
+msgstr "args != dictionnaire : %(args)s"
+
+#: src/univention-virtual-machine-manager-daemon:214
+#, python-format
+msgid "cache directory [%(default)s]"
+msgstr ""
+
+#: src/univention/uvmm/commands.py:102 src/univention/uvmm/commands.py:132
+#: src/univention/uvmm/commands.py:146 src/univention/uvmm/commands.py:159
+#: src/univention/uvmm/commands.py:172 src/univention/uvmm/commands.py:185
+#: src/univention/uvmm/commands.py:198 src/univention/uvmm/commands.py:211
+#: src/univention/uvmm/commands.py:224 src/univention/uvmm/commands.py:239
+#: src/univention/uvmm/commands.py:252
+#, python-format
+msgid "conn_name != string: %(conn_name)s"
+msgstr "conn_name != chaîne : %(conn_name)s"
+
+#: src/univention/uvmm/commands.py:392
+#, python-format
+msgid "definition != Domain: %(domain)s"
+msgstr "definition != domaine : %(domain)s"
+
+#: src/univention/uvmm/commands.py:375 src/univention/uvmm/commands.py:409
+#: src/univention/uvmm/commands.py:424 src/univention/uvmm/commands.py:439
+#: src/univention/uvmm/commands.py:454 src/univention/uvmm/commands.py:475
+#: src/univention/uvmm/commands.py:490 src/univention/uvmm/commands.py:505
+#: src/univention/uvmm/commands.py:520 src/univention/uvmm/commands.py:533
+#: src/univention/uvmm/commands.py:546
+#, python-format
+msgid "domain != string: %(domain)s"
+msgstr "domain != chaîne : %(domain)s"
+
+#: src/univention/uvmm/commands.py:118
+#, python-format
+msgid "freq != int: %(freq)s"
+msgstr "freq != entier : %(freq)s"
+
+#: src/univention/uvmm/commands.py:324
+#, python-format
+msgid "group != string: %(group)s"
+msgstr "group != chaîne : %(group)s"
+
+#: src/univention/uvmm/commands.py:311
+#, python-format
+msgid "hz != int: %(hz)s"
+msgstr "hz != entier : %(hz)s"
+
+#: src/univention/uvmm/commands.py:226 src/univention/uvmm/commands.py:241
+#, python-format
+msgid "instance_id != string: %(instance_id)s"
+msgstr "instance_id != chaîne : %(instance_id)s"
+
+#: src/univention/uvmm/commands.py:76 src/univention/uvmm/commands.py:120
+#: src/univention/uvmm/commands.py:548
+#, python-format
+msgid "name != string: %(name)s"
+msgstr "name != chaîne : %(name)s"
+
+#: src/univention/uvmm/commands.py:89 src/univention/uvmm/commands.py:104
+#: src/univention/uvmm/commands.py:326 src/univention/uvmm/commands.py:358
+#, python-format
+msgid "pattern != string: %(pattern)s"
+msgstr "pattern != chaîne : %(pattern)s"
+
+#: src/univention/uvmm/commands.py:492 src/univention/uvmm/commands.py:507
+#: src/univention/uvmm/commands.py:522
+#, python-format
+msgid "snapshot != string: %(snapshot)s"
+msgstr "snapshot != chaîne : %(snapshot)s"
+
+#: src/univention/uvmm/commands.py:426 src/univention/uvmm/commands.py:441
+#, python-format
+msgid "statefile != string: %(file)s"
+msgstr "statefile != chaîne : %(file)s"
+
+#: src/univention/uvmm/commands.py:550
+#, python-format
+msgid "subst != dict: %(subst)s"
+msgstr "subst != dictionnaire : %(subst)s"
+
+#: src/univention/uvmm/commands.py:553 src/univention/uvmm/commands.py:555
+#, python-format
+msgid "subst[] != string: %(subst)s"
+msgstr "subst[] != chaîne : %(subst)s"
+
+#: src/univention/uvmm/commands.py:477
+#, python-format
+msgid "target_uri != string: %(uri)s"
+msgstr "target_uri != chaîne : %(uri)s"
+
+#: src/univention/uvmm/commands.py:64
+#, python-format
+msgid "testconnection is not a bool %(testconnection)s"
+msgstr "testconnection n'est pas un booléen %(testconnection)s"
+
+#: src/univention/uvmm/commands.py:294
+#, python-format
+msgid "unknown node %(uri)s"
+msgstr "nœud inconnu %(uri)s"
+
+#: src/univention/uvmm/commands.py:228 src/univention/uvmm/commands.py:411
+#, python-format
+msgid "unsupported state: %(state)s"
+msgstr "état non pris en charge : %(state)s"
+
+#: src/univention/uvmm/commands.py:264 src/univention/uvmm/commands.py:276
+#: src/univention/uvmm/commands.py:288 src/univention/uvmm/commands.py:313
+#: src/univention/uvmm/commands.py:356 src/univention/uvmm/commands.py:373
+#: src/univention/uvmm/commands.py:390 src/univention/uvmm/commands.py:407
+#: src/univention/uvmm/commands.py:422 src/univention/uvmm/commands.py:437
+#: src/univention/uvmm/commands.py:452 src/univention/uvmm/commands.py:473
+#: src/univention/uvmm/commands.py:488 src/univention/uvmm/commands.py:503
+#: src/univention/uvmm/commands.py:518 src/univention/uvmm/commands.py:544
+#: src/univention/uvmm/commands.py:570 src/univention/uvmm/commands.py:585
+#: src/univention/uvmm/commands.py:602
+#, python-format
+msgid "uri != string: %(uri)s"
+msgstr "uri != chaîne : %(uri)s"
+
+#: src/univention-virtual-machine-manager-daemon:203
+msgid "usage: %prog [options] [uri...]"
+msgstr ""
+
+#: src/univention/uvmm/commands.py:619
+#, python-format
+msgid "volume != string: %(volume)s"
+msgstr "volume != chaîne : %(volume)s"
+
+#: src/univention/uvmm/commands.py:456
+#, python-format
+msgid "volumes != list or None: %(volumes)s"
+msgstr "volumes != liste ou None: %(volumes)s"
+
+#: src/univention/uvmm/commands.py:460 src/univention/uvmm/commands.py:605
+#, python-format
+msgid "volumes[] != string: %(volume)s"
+msgstr "volumes[] != chaîne : %(volume)s"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Échec de l'authentification"
+
+#~ msgid "Authentication protocol violated"
+#~ msgstr "Protocole d'authentification violé"
+
+#~ msgid "Could not connect to \"%(host)s:%(port)d\": %(errno)d"
+#~ msgstr "Impossible de se connecter à « %(host)s:%(port)d » : %(errno)d"
+
+#~ msgid "Timed out while connecting to \"%(host)s:%(port)d\"."
+#~ msgstr "Délai dépassé en se connectant à « %(host)s:%(port)d »."
+
+#~ msgid "Unknown PAM type: %(type)s"
+#~ msgstr "Type PAM inconnu : %(type)s"
