@@ -888,12 +888,11 @@ class Application(object):
 				if iiapp.is_registered(ucr):
 					if iiapp is not used_app:
 						used_app = iiapp
-						used_app.versions = iapps
-						used_app.candidate.versions = iapps
+						if used_app.candidate:
+							used_app.candidate.versions = iapps
 					break
-			else:
-				# store all versions
-				used_app.versions = iapps
+			# store all versions
+			used_app.versions = iapps
 			final_applications.append(used_app)
 
 		final_applications.sort(key=attrgetter('id'))
