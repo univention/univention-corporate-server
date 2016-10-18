@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-20) unstable; urgency=medium
+
+  * Bug #42527: Fix setting registry variables on non-UCS systems
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Oct 2016 16:16:24 +0200
+
 univention-appcenter (5.0.22-19) unstable; urgency=medium
 
   * Bug #42713: Do not show Docker App updates for remote systems

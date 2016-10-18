@@ -175,7 +175,10 @@ class Configure(UniventionAppAction, DockerActionMixin):
 					if variable['type'] == 'bool':
 						value = str(ucr_evaluated_as_true(str(value))).lower()
 
-			_ucr[key] = value
+			if value is None:
+				_ucr.pop(key, None)
+			else:
+				_ucr[key] = str(value)
 		_ucr.lock()
 		try:
 			_ucr.save()
