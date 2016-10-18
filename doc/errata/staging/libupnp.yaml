@@ -2,10 +2,10 @@ product: ucs
 release: "4.1"
 version: [3]
 scope: ucs_4.1-0-errata4.1-3
-src: linupnp
+src: libupnp
 fix: 1:1.6.17-1.2.6.201610181517
 desc: |
- This update addresses the following issue(s):
+ This update addresses the following issue:
  * write files via POST (CVE-2016-6255)
 bug: [42030]
 cve:
