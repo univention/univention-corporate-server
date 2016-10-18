@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.4-3) unstable; urgency=medium
+
+  * Bug #34764: The position and superordinate type is now validated
+  * Bug #39588: don't crash on empty directory/manager/web/sizelimit
+
+ -- Florian Best <best@univention.de>  Tue, 18 Oct 2016 15:27:36 +0200
+
 univention-directory-manager-modules (12.0.4-2) unstable; urgency=medium
 
   * Bug #33614: fix mapping of DHCP options
