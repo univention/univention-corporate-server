@@ -108,6 +108,8 @@ def check_md5(verbose=False):
 				print >> sys.stderr, "%s %s %s" % (filepath, expected, current)
 			if expected == current:
 				original.add(filepath)
+			elif current is None:
+				continue
 			else:
 				modified.add(filepath)
 		return modified
