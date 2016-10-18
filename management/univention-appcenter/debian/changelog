@@ -1,3 +1,10 @@
+univention-appcenter (6.0.0-11) unstable; urgency=medium
+
+  * Bug #42527: Fix setting registry variables on non-UCS systems
+  * Bug #42713: Do not show Docker App updates for remote systems
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Oct 2016 16:32:57 +0200
+
 univention-appcenter (6.0.0-10) unstable; urgency=medium
 
   * Bug #42485: Do not delete joinscripts / schema files from Non-Docker Apps

@@ -35,7 +35,7 @@
 import re
 
 from univention.appcenter.log import LogCatcher
-from univention.appcenter.utils import call_process
+from univention.appcenter.utils import call_process, get_local_fqdn
 from univention.appcenter.udm import search_objects
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions.credentials import CredentialsAction
@@ -112,11 +112,12 @@ class Domain(CredentialsAction):
 	def _get_installations(self, app, hosts, app_ldap_objects, lo, pos):
 		ret = {}
 		local_ucs_version = ucr_get('version/version')
-		candidate_version = self._find_latest_app_version(app).version
 		for host in hosts:
+			candidate = self._find_latest_app_version(app)
 			role = host.info.get('serverRole')[0]
 			description = host.info.get('description')
 			remote_ucs_version = host.info.get('operatingSystemVersion')
+			is_local = host.info.get('fqdn') == get_local_fqdn()
 			if remote_ucs_version:
 				remote_ucs_version = re.sub('.*([0-9]+\.[0-9]+).*', '\\1', remote_ucs_version)
 			ip = host.info.get('ip')  # list
@@ -135,12 +136,16 @@ class Domain(CredentialsAction):
 			elif version:
 				remote_app = AppManager.find(app.id, app_version=version)
 				if remote_app:
-					update_available = AppManager.find_candidate(remote_app) is not None
+					prevent_docker = None
+					if not is_local:
+						prevent_docker = True
+					candidate = AppManager.find_candidate(remote_app, prevent_docker=prevent_docker) or remote_app
+					update_available = remote_app < candidate
 			ret[host['name']] = {
 				'ucs_version': remote_ucs_version,
 				'version': version,
 				'update_available': update_available,
-				'candidate_version': candidate_version,
+				'candidate_version': candidate.version,
 				'description': description,
 				'ip': ip,
 				'role': role,
