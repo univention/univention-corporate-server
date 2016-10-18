@@ -1,0 +1,13 @@
+#!/bin/sh
+#DEBHELPER#
+
+eval "$(ucr shell locale)"
+new_locale="fr_FR.UTF-8:UTF-8"
+case "${locale}" in
+	*"${new_locale}"*) echo "Locale ${new_locale} already known" ;;
+	*)	ucr set locale="${locale} ${new_locale}" ;;
+esac
+
+ucr set ucs/server/languages/fr_FR?"Français"
+
+exit 0
