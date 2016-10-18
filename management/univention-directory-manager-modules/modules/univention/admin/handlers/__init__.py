@@ -152,6 +152,7 @@ class base(object):
 	def ready(self):
 		'''checks if all properties marked required are set'''
 
+		missing = []
 		for name, p in self.descriptions.items():
 			# skip if this property is not present in the current option set
 			if p.options and not set(p.options) & set(self.options):
@@ -159,7 +160,9 @@ class base(object):
 
 			if p.required and (not self[name] or (isinstance(self[name], list) and self[name] == [''])):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "property %s is required but not set." % name)
-				return False
+				missing.append(name)
+		if missing:
+			raise univention.admin.uexceptions.insufficientInformation(_('The following properties are missing:\n%s') % ('\n'.join(missing),))
 		return True
 
 	def has_key(self, key):
@@ -289,8 +292,7 @@ class base(object):
 			raise univention.admin.uexceptions.objectExists(self.dn)
 
 		self._ldap_pre_ready()
-		if not self.ready():
-			raise univention.admin.uexceptions.insufficientInformation
+		self.ready()
 
 		return self._create()
 
@@ -301,8 +303,7 @@ class base(object):
 			raise univention.admin.uexceptions.noObject(self.dn)
 
 		self._ldap_pre_ready()
-		if not self.ready():
-			raise univention.admin.uexceptions.insufficientInformation
+		self.ready()
 
 		return self._modify(modify_childs,ignore_license=ignore_license)
 
@@ -560,6 +561,8 @@ class simpleLdap(base):
 		if not hasattr(self, 'descriptions'):
 			self.descriptions = getattr(m, 'property_descriptions', None)
 
+		self._validate_information()
+
 		self.info = {}
 		self.oldattr = {}
 		if attributes:
@@ -583,6 +586,42 @@ class simpleLdap(base):
 
 	def exists( self ):
 		return self._exists
+
+	def _validate_information(self):
+		if self.dn and self.position and not self.__ensure_subtree(self.position.getDn(), self.dn):
+			raise univention.admin.uexceptions.insufficientInformation(_('The DN must be in the subtree of the position.'))
+
+		superordinate_names = set(univention.admin.modules.superordinate_names(self.module))
+		if not superordinate_names:
+			return  # module has no superodinates
+
+		if not self.superordinate:
+			if superordinate_names == set(['settings/cn']):
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'No settings/cn superordinate was given.')
+				return   # settings/cn might be misued as superordinate, don't risk currently
+			raise univention.admin.uexceptions.insufficientInformation(_('No superordinate object given.'))
+
+		if self.superordinate and not self.dn and not self.position:
+			# this check existed in all modules with superordinates, so still check it here, too
+			# TODO: change into setting the position to the superordinate dn?
+			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
+
+		# check if the superordinate is of the correct object type
+		if not set([self.superordinate.module]) & superordinate_names:
+			raise univention.admin.uexceptions.insufficientInformation(_('The given %r superordinate is expected to be of type %s.') % (self.superordinate.module, ', '.join(superordinate_names)))
+
+		if self.position and not self.__ensure_subtree(self.superordinate.dn, self.position.getDn()):
+			raise univention.admin.uexceptions.insufficientInformation(_('The position must be in the subtree of the superordinate.'))
+
+		if self.dn and not self.__ensure_subtree(self.superordinate.dn, self.lo.parentDn(self.dn)):
+			raise univention.admin.uexceptions.insufficientInformation(_('The DN must be underneath of the superordinate.'))
+
+	def __ensure_subtree(self, parent, dn):
+		while dn:
+			if self.lo.lo.compare_dn(dn, parent):
+				return True
+			dn = self.lo.parentDn(dn)
+		return False
 
 	def call_udm_property_hook(self, hookname, module, changes = None):
 		m = univention.admin.modules.get( module.module )

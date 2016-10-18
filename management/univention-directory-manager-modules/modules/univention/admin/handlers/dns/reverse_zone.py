@@ -219,10 +219,9 @@ class object(univention.admin.handlers.simpleLdap):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		if not dn and not position:
-			raise univention.admin.uexceptions.insufficientInformation, _( 'neither DN nor position present' )
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
+		if not self.dn and not self.position:
+			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)

@@ -156,9 +156,6 @@ mapping.register('packageversion', 'univentionOwnedByPackageVersion', None, univ
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-
 	def _ldap_addlist(self):
 		ocs=['top', 'univentionObjectMetadata', OC]		
 

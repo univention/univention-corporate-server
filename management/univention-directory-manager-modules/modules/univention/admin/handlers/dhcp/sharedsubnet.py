@@ -121,14 +121,6 @@ add_dhcp_options( property_descriptions, mapping, layout )
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		if not superordinate:
-			raise univention.admin.uexceptions.insufficientInformation, 'superordinate object not present'
-		if not dn and not position:
-			raise univention.admin.uexceptions.insufficientInformation, 'neither dn nor position present'
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'univentionDhcpSubnet', 'univentionDhcpSharedSubnet', 'dhcpOptions' ]),

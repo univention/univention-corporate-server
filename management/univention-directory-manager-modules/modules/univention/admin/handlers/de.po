@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-admin-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-18 12:10+0100\n"
+"POT-Creation-Date: 2016-10-18 13:45+0200\n"
 "PO-Revision-Date: 2005-10-18 13:52+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,54 +38,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modules/univention/admin/handlers/__init__.py:2604
+#: modules/univention/admin/handlers/__init__.py:2465
 msgid "DHCP"
 msgstr "DHCP"
 
-#: modules/univention/admin/handlers/__init__.py:2612
+#: modules/univention/admin/handlers/__init__.py:2473
 msgid "DNS Alias"
 msgstr "DNS-Alias"
 
-#: modules/univention/admin/handlers/__init__.py:1910
+#: modules/univention/admin/handlers/__init__.py:1802
 msgid "DNS alias is already in use."
 msgstr "DNS-Alias ist bereits verwendet."
 
-#: modules/univention/admin/handlers/__init__.py:2588
+#: modules/univention/admin/handlers/__init__.py:2449
 msgid "DNS forward zone"
 msgstr "DNS-Forward-Zone"
 
-#: modules/univention/admin/handlers/__init__.py:2596
+#: modules/univention/admin/handlers/__init__.py:2457
 msgid "DNS reverse zone"
 msgstr "DNS-Reverse-Zone"
 
-#: modules/univention/admin/handlers/__init__.py:412
+#: modules/univention/admin/handlers/__init__.py:356
 msgid "Destination object can't have sub objects."
 msgstr "Zielobjekt kann keine Unterobjekte haben."
 
-#: modules/univention/admin/handlers/__init__.py:426
+#: modules/univention/admin/handlers/__init__.py:370
 msgid "Moving into one's own sub container not allowed."
 msgstr ""
 "Verschieben in einen Container innerhalb des zu verschiebenden Objektes "
 "nicht erlaubt."
 
-#: modules/univention/admin/handlers/__init__.py:416
+#: modules/univention/admin/handlers/__init__.py:360
 msgid "Moving not possible: old and new DN are identical."
 msgstr "Verschieben ist nicht möglich: Alter und neuer DN sind identisch."
 
-#: modules/univention/admin/handlers/__init__.py:406
+#: modules/univention/admin/handlers/__init__.py:570
+msgid "Neither DN nor position given."
+msgstr "Weder ein DN noch eine Position wurde angegeben."
+
+#: modules/univention/admin/handlers/__init__.py:568
+msgid "No superordinate object given."
+msgstr "Kein übergeordnetes Objekt angegeben."
+
+#: modules/univention/admin/handlers/__init__.py:350
 msgid "Objects from Active Directory can not be moved."
 msgstr "Objekte aus Active-Directory-Domänen können nicht verschoben werden."
 
-#: modules/univention/admin/handlers/__init__.py:1011
+#: modules/univention/admin/handlers/__init__.py:914
 msgid "Objects from Active Directory can not be removed."
 msgstr "Objekte aus Active-Directory-Domänen können nicht gelöscht werden."
 
-#: modules/univention/admin/handlers/__init__.py:1644
-#: modules/univention/admin/handlers/__init__.py:1662
+#: modules/univention/admin/handlers/__init__.py:1542
+#: modules/univention/admin/handlers/__init__.py:1558
 msgid "Reverse zone and IP address are incompatible."
 msgstr "Reverse Zone und IP-Adresse sind inkompatibel."
 
-#: modules/univention/admin/handlers/__init__.py:2269
+#: modules/univention/admin/handlers/__init__.py:2150
 msgid ""
 "The DHCP entry for this host should contain the zone LDAP-DN, the IP address "
 "and the MAC address."
@@ -93,7 +101,7 @@ msgstr ""
 "Der DHCP-Eintrag für diesen Rechner sollte die Zonen LDAP-DN, die IP- und "
 "MAC-Adresse enthalten."
 
-#: modules/univention/admin/handlers/__init__.py:2302
+#: modules/univention/admin/handlers/__init__.py:2183
 msgid ""
 "The DNS alias entry for this host should contain the zone name, the alias "
 "zone container LDAP-DN and the alias."
@@ -101,31 +109,43 @@ msgstr ""
 "Der DNS-Alias Eintrag für diesen Rechner sollte den Zonennamen, die LDAP-DN "
 "des Alias-Zonencontainers und den Alias-Namen enthalten."
 
-#: modules/univention/admin/handlers/__init__.py:234
+#: modules/univention/admin/handlers/__init__.py:165
+#, python-format
+msgid ""
+"The following properties are missing:\n"
+"%s"
+msgstr "Die folgenden Eigenschaften fehlen:\n%s"
+
+#: modules/univention/admin/handlers/__init__.py:572
+#, python-format
+msgid "The given %r superordinate is expected to be of type %s."
+msgstr "Das angegebene %r übergeordnete Objekt ist muss vom Typ %s sein."
+
+#: modules/univention/admin/handlers/__init__.py:199
 #, python-format
 msgid "The property %s is required"
 msgstr "Die Eigenschaft %s wird benötigt."
 
-#: modules/univention/admin/handlers/__init__.py:461
-#: modules/univention/admin/handlers/__init__.py:504
+#: modules/univention/admin/handlers/__init__.py:405
+#: modules/univention/admin/handlers/__init__.py:448
 #, python-format
 msgid ""
 "Unable to move object %(name)s (%(type)s) in subtree, trying to revert "
 "changes."
 msgstr ""
-"Das Objekt %(name)s (%(type)s) im Teilbaum kann nicht verschoben werden, versuche den "
-"Ausgangzustand wiederherzustellen."
+"Das Objekt %(name)s (%(type)s) im Teilbaum kann nicht verschoben werden, "
+"versuche den Ausgangzustand wiederherzustellen."
 
 # __init__.py:chen"024
-#: modules/univention/admin/handlers/__init__.py:2588
-#: modules/univention/admin/handlers/__init__.py:2596
-#: modules/univention/admin/handlers/__init__.py:2604
-#: modules/univention/admin/handlers/__init__.py:2612
+#: modules/univention/admin/handlers/__init__.py:2449
+#: modules/univention/admin/handlers/__init__.py:2457
+#: modules/univention/admin/handlers/__init__.py:2465
+#: modules/univention/admin/handlers/__init__.py:2473
 msgid "delete"
 msgstr "Löschen"
 
-#: modules/univention/admin/handlers/__init__.py:231
-#: modules/univention/admin/handlers/__init__.py:1163
+#: modules/univention/admin/handlers/__init__.py:196
+#: modules/univention/admin/handlers/__init__.py:1062
 #, python-format
 msgid "key=%(key)s old=%(old)s new=%(new)s"
 msgstr "Attribut=%(key)s alter Wert=%(old)s neuer Wert=%(new)s"

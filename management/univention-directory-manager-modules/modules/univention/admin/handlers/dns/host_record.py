@@ -150,15 +150,9 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [], update_zone = True ):
 		self.update_zone = update_zone
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
-		if not superordinate:
-			raise univention.admin.uexceptions.insufficientInformation, _( 'superordinate object not present' )
-		if not dn and not position:
-			raise univention.admin.uexceptions.insufficientInformation, _( 'neither DN nor position present' )
-
-		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes = attributes )
-
-		if dn:
+		if dn:  # TODO: document why or remove
 			self.open()
 
 	def open(self):
