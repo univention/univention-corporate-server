@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"univention-welcome-screen"
+		],
+		"po_subdir": "i18n",
+		"target_type": "mo",
+		"destination": "usr/share/plymouth/themes/ucs/{lang}/LC_MESSAGES/univention-welcome-screen.mo"
+	}
+]

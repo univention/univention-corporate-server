@@ -1,0 +1,13 @@
+[
+	{
+		"input_files": [
+			"umc/.*js",
+			"univention-management-console-web-server",
+			"index.html",
+			"error.html"
+		],
+		"po_subdir": "umc",
+		"target_type": "json",
+		"destination": "usr/share/univention-management-console-frontend/js/umc/i18n/{lang}/app.json"
+	}
+]

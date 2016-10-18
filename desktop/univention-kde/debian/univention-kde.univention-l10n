@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"profiles/univention-root-login-notification"
+		],
+		"po_subdir": "./",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-root-login-notification.mo"
+	}
+]

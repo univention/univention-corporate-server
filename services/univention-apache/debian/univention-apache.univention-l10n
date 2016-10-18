@@ -1,0 +1,11 @@
+[
+	{
+		"input_files": [
+			"js/ucs/.*",
+			"www/ucs-overview/index.html"
+		],
+		"po_subdir": "js/ucs",
+		"target_type": "json",
+		"destination": "var/www/ucs-overview/js/ucs/{lang}.json"
+	}
+]

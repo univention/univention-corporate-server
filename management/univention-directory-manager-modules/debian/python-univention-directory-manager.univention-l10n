@@ -1,0 +1,138 @@
+[
+	{
+		"input_files": [
+			"modules/univention/admin/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/computers/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/computers",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-computers.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/container/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/container",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-container.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/dhcp/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/dhcp",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-dhcp.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/dns/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/dns",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-dns.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/groups/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/groups",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-groups.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/kerberos/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/kerberos",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-kerberos.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/legacy/computers/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/legacy/computers",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-legacy-computers.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/legacy/policies/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/legacy/policies",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-legacy-policies.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/mail/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/mail",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-mail.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/nagios/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/nagios",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-nagios.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/networks/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/networks",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-networks.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/policies/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/policies",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-policies.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/settings/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/settings",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-settings.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/shares/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/shares",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-shares.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/users/[^/]*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/users",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-users.mo"
+	}
+]

@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"js/ucs/.*js"
+		],
+		"po_subdir": "js/ucs",
+		"target_type": "json",
+		"destination": "usr/share/univention-self-service/www/js/ucs/{lang}.json"
+	}
+]

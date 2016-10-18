@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"udm/.*"
+		],
+		"po_subdir": "udm/handlers/appcenter",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-admin-handlers-appcenter.mo"
+	}
+]

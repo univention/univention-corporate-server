@@ -1,0 +1,26 @@
+[
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/container/.*.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/container/msgpo",
+		"target_type": "mo",
+		"destination": "usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-container-msgpo.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/settings/mswmifilter.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/settings/mswmifilter",
+		"target_type": "mo",
+		"destination": "usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-settings-mswmifilter.mo"
+	},
+	{
+		"input_files": [
+			"modules/univention/admin/handlers/settings/msprintconnectionpolicy.py"
+		],
+		"po_subdir": "modules/univention/admin/handlers/settings/msprintconnectionpolicy",
+		"target_type": "mo",
+		"destination": "usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-settings-msprintconnectionpolicy.mo"
+	}
+]

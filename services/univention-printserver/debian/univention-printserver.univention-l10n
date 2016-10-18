@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"modules/univention/management/console/handlers/cups/.*"
+		],
+		"po_subdir": "modules/univention/management/console/handlers/cups",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-management-console-handlers-cups.mo"
+	}
+]

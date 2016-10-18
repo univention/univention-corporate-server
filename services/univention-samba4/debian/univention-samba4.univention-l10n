@@ -1,0 +1,10 @@
+[
+	{
+		"input_files": [
+			"scripts/.*"
+		],
+		"po_subdir": "./",
+		"target_type": "mo",
+		"destination": "usr/share/locale/{lang}/LC_MESSAGES/univention-samba4.mo"
+	}
+]

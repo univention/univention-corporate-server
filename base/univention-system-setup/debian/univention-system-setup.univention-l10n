@@ -1,0 +1,11 @@
+[
+	{
+		"input_files": [
+			"usr/lib/univention-system-setup/scripts/.*",
+			"umc/python/setup/setup_script.py"
+		],
+		"po_subdir": "usr/share/locale/{lang}/LC_MESSAGES/",
+		"target_type": "mo",
+		"destination": "/usr/share/locale/{lang}/LC_MESSAGES/univention-system-setup-scripts.mo"
+	}
+]
