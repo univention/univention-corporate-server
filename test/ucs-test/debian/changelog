@@ -1,3 +1,9 @@
+ucs-test (6.0.36-35) unstable; urgency=medium
+
+  * 67_udm-dns/10?_*: WIP tag has been removed with r73202 (Bug #39269)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Oct 2016 21:26:19 +0200
+
 ucs-test (6.0.36-34) unstable; urgency=medium
 
   * 00_checks/23_enterprise_domain_controller_membership: Check if DC
