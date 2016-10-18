@@ -47,8 +47,8 @@ Type=str
 Categories=uvmm
 
 [libvirt/group]
-Description[de]=Setzt die Gruppenzugehörigkeit des UNIX Domain Sockets von libvirtd. Sie erlaubt einer 'vertrauenswürdigen' Benutzergruppe die Nutzung der Verwaltungsfunktionen ohne 'root' werden zu müssen. Standard ist 'libvirt'.
-Description[en]=Set the UNIX domain socket group ownership for libvirtd. This can be used to allow a 'trusted' set of users access to management capabilities without becoming root. The default is 'libvirt'.
+Description[de]=Setzt die Gruppenzugehörigkeit des UNIX Domain Sockets von libvirtd. Sie erlaubt einer 'vertrauenswürdigen' Benutzergruppe die Nutzung der Verwaltungsfunktionen über 'virsh -c qemu:///system' ohne 'root' werden zu müssen. Standard ist 'libvirt'.
+Description[en]=Set the UNIX domain socket group ownership for libvirtd. This can be used to allow a 'trusted' set of users access to management capabilities using 'virsh -c qemu:///system' without becoming root. The default is 'libvirt'.
 Type=str
 Categories=uvmm
 
