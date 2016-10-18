@@ -109,7 +109,7 @@ end with two character language code, e.g. univention-l10n-fr. Exiting.""")
 			os.remove(os.path.join(args.translation, 'debian', 'univention-ucs-translation-{}.install'.format(lang_code)))
 			tlh.write_debian_rules(os.path.join(args.translation, 'debian'))
 			shutil.copy('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(args.translation, 'Makefile'))
-		except Exception() as exc:
+		except Exception as exc:
 			sys.exit("Error during handling of legacy translation package. Exiting.")
 
 	# generate {lang}_tomerge

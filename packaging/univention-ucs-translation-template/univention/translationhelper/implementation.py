@@ -210,8 +210,8 @@ def update_package_translation_files(module, output_dir):
 						print(str(exc))
 
 			# build python po files
-			_create_po_files(module.python_po_files, module.python_files, 'python')
-			_create_po_files(module.js_po_files, module.js_files, 'Javascript')
+			_create_po_files(module.python_po_files, module.python_files, 'Python')
+			_create_po_files(module.js_po_files, module.js_files, 'JavaScript')
 
 		# xml always has to be present
 		for lang, po_file in module.xml_po_files:
