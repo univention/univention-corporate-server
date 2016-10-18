@@ -6,7 +6,59 @@ src: libarchive
 fix: 3.0.4-3.11.201610181152
 desc: |
  This update addresses the following issue(s):
- * 
+ * Absolute path traversal vulnerability in bsdcpio allows remote attackers to
+   write to arbitrary files via a full pathname in an archive (CVE-2015-2304)
+ * NULL pointer access in CAB parser (CVE-2015-8917)
+ * Heap out of bounds read in LHA/LZH parser (CVE-2015-8919)
+ * Stack out of bounds read in ar parser (CVE-2015-8920)
+ * Global out of bounds read in mtree parser (CVE-2015-8921)
+ * NULL pointer access in 7z parser (CVE-2015-8922)
+ * Unclear crashes in ZIP parser (CVE-2015-8923)
+ * Heap out of bounds read in TAR parser (CVE-2015-8924)
+ * Unclear invalid memory read in mtree parser (CVE-2015-8925)
+ * NULL pointer access in RAR parser (CVE-2015-8926)
+ * Endless loop in ISO parser (CVE-2015-8930)
+ * Undefined behavior (signed integer overflow) in mtree parser (CVE-2015-8931)
+ * Undefined behavior / invalid shiftleft in TAR parser (CVE-2015-8932)
+ * Signed integer overflow in archive_read_format_tar_skip() (CVE-2015-8933)
+ * Out of bounds heap read in RAR parser (CVE-2015-8934)
+ * 7-Zip read_SubStreamsInfo Integer Overflow (CVE-2016-4300)
+ * Libarchive Rar RestartModel Heap Overflow (CVE-2016-4302)
+ * Memory allocate error with symbolic links in cpio archives (CVE-2016-4809)
+ * undefined behaviour (integer overflow) in iso parser (CVE-2016-5844) 
+ * Out of bounds read using malformed cpio archive (CVE-2015-8915)
+ * Denial of service bug with gzip quine (CVE-2016-7166)
+ * The sandboxing code mishandles hardlink archive entries of non-zero data
+   size, which might allow remote attackers to write to arbitrary files via
+   a crafted archive file. (CVE-2016-5418)
+ * Stack based buffer overflow in bsdtar_expand_char (CVE-2016-8687)
+ * Out of bounds heap read when parsing multiple long lines by mtree parser
+   (CVE-2016-8688)
+ * Heap buffer overflow in read_Header (CVE-2016-8689)
 bug: [38171]
 cve:
- - 
+ - CVE-2015-2304
+ - CVE-2015-8917
+ - CVE-2015-8919
+ - CVE-2015-8920
+ - CVE-2015-8921
+ - CVE-2015-8922
+ - CVE-2015-8923
+ - CVE-2015-8924
+ - CVE-2015-8925
+ - CVE-2015-8926
+ - CVE-2015-8930
+ - CVE-2015-8931
+ - CVE-2015-8932
+ - CVE-2015-8933
+ - CVE-2015-8934
+ - CVE-2016-4300
+ - CVE-2016-4302
+ - CVE-2016-4809
+ - CVE-2016-5844
+ - CVE-2015-8915
+ - CVE-2016-7166
+ - CVE-2016-5418
+ - CVE-2016-8687
+ - CVE-2016-8688
+ - CVE-2016-8689
