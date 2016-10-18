@@ -201,7 +201,7 @@ class property:
 		self.configAttributeName=configAttributeName
 		self.templates=[]
 		self.include_in_default_search=include_in_default_search
-		self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000'))
+		self.threshold = int(configRegistry.get('directory/manager/web/sizelimit', '2000') or 2000)
 		self.nonempty_is_default = nonempty_is_default
 		self.readonly_when_synced = readonly_when_synced
 		self.size = size
