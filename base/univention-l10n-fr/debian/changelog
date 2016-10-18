@@ -1,5 +1,7 @@
-univention-l10n-fr (1.0.0-1) unstable; urgency=low
+univention-l10n-fr (1.1.0-0) unstable; urgency=medium
 
-  * Initial release
+  * Bug #42260: rebuild with updated univention-ucs-translation-build-package
+    tool
+  * Bug #42260: merge PO file changes with univention-ucs-translation-merge
 
- -- root <root@dc0.univention.intranet>  Wed, 12 Oct 2016 18:19:08 -0000
+ -- Eduard Mai <mai@univention.de>  Tue, 18 Oct 2016 14:52:22 +0200
