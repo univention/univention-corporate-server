@@ -35,10 +35,7 @@ import sys
 import shutil
 import univention.translationhelper as tlh
 import univention.dh_umc as dh_umc
-import json
 import subprocess
-
-SPECIALCASES_PATH = "/usr/share/univention-ucs-translation-template/specialcases.json"
 
 
 def _get_po_files_from_dir(directory, return_relative_path=False):
@@ -98,13 +95,12 @@ if __name__ == '__main__':
 	args.upstream = os.path.abspath(args.upstream)
 	for dir in (args.translation, args.upstream):
 		if not os.path.isdir(dir):
-			print("Error: {} is not a direcotry or doesn't exist. Exiting.".format(dir))
-			sys.exit(1)
+			sys.exit("Error: {} is not a directory or doesn't exist. Exiting.".format(dir))
 
-	match = re.match(r'univention-ucs-translation-([a-zA-Z]{2})', os.path.basename(args.translation))
+	match = re.match(r'.*-([a-zA-Z]{2})', os.path.basename(args.translation))
 	if not match:
-		print("Error: Unexpected translation source package name. Exiting.")
-		sys.exit(1)
+		sys.exit("""Error: Unexpected translation source package name. Name must
+end with two character language code, e.g. univention-l10n-fr. Exiting.""")
 	lang_code = match.group(1)
 
 	# Handle old translation package format
@@ -114,8 +110,7 @@ if __name__ == '__main__':
 			tlh.write_debian_rules(os.path.join(args.translation, 'debian'))
 			shutil.copy('/usr/share/univention-ucs-translation-template/base_makefile', os.path.join(args.translation, 'Makefile'))
 		except Exception() as exc:
-			print("Error during handling of legacy translation package. Exiting.")
-			sys.exit(1)
+			sys.exit("Error during handling of legacy translation package. Exiting.")
 
 	# generate {lang}_tomerge
 	dh_umc.LANGUAGES = (lang_code, )
@@ -127,15 +122,9 @@ if __name__ == '__main__':
 		modules.append(module)
 		tlh.update_package_translation_files(module, output_dir)
 	# special cases, e.g. univention-management-console-frontend
-	special_cases = []
-	if os.path.exists(SPECIALCASES_PATH):
-		with open(SPECIALCASES_PATH, 'rb') as fd:
-			special_cases = json.load(fd)
-	else:
-		print("Error: Could not find file {}.\nSeveral files will not be handled.".format(SPECIALCASES_PATH))
-
+	special_cases = tlh.get_special_cases(args.upstream, lang_code)
 	for scase in special_cases:
-		tlh.translate_special_case(scase, args.upstream, lang_code, output_dir)
+		tlh.translate_special_case(scase, args.upstream, output_dir)
 
 	removed, new = merge_po_file_trees(output_dir, os.path.join(args.translation, lang_code))
 	print('Merge summary: ')

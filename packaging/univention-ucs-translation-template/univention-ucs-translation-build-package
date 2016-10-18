@@ -27,11 +27,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
 from optparse import OptionParser
-
 import os
-import json
 import univention.dh_umc as dh_umc
 import univention.translationhelper as tlh
 
@@ -47,22 +44,22 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 	parser.add_option('-c', '--languagecode', action='store', dest='target_language', help='Target language code (e.g. de)')
 	parser.add_option('-b', '--basefiles', action='store', dest='basefiles', default='.umc-modules', help='xml file basename (default: .umc-modules)')
 	parser.add_option('-l', '--locale', action='store', dest='target_locale', help='Target locale (e.g. de_DE.UTF-8:UTF-8)')
-	parser.add_option('-n', '--languagename', action='store', dest='target_name', help='Language name that is shown in the UMC (e.g. Deutsch)')
+	parser.add_option('-n', '--language-name', action='store', dest='target_name', help='Language name that is shown in the UMC (e.g. Deutsch)')
+	parser.add_option('-o', '--package-name', action='store', dest='src_pkg_name', help='Determines the name of the generated source package. Default: univention-l10n-{language code}')
 
 	(options, args) = parser.parse_args()
 	help_message = 'Use --help to show additional help.'
 
 	if not options.source_dir:
 		parser.error('Missing argument -s. %s' % help_message)
-
 	if not options.target_language:
 		parser.error('Missing argument -c. %s' % help_message)
-
 	if not options.target_locale:
 		parser.error('Missing argument -l. %s' % help_message)
-
 	if not options.target_name:
 		parser.error('Missing argument -n. %s' % help_message)
+	if not options.src_pkg_name:
+		options.src_pkg_name = "univention-l10n-{}".format(options.target_language)
 
 	options.source_dir = os.path.abspath(options.source_dir)
 	# find all module files and move them to a language specific directory
@@ -76,18 +73,10 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 		all_modules.append(module)
 		abs_path_translated_src_pkg = tlh.update_package_translation_files(module, output_dir)
 
-	# special cases, e.g. univention-management-console-frontend
-	special_cases = []
-	if os.path.exists(SPECIALCASES_PATH):
-		with open(SPECIALCASES_PATH, 'rb') as fd:
-			special_cases = json.load(fd)
-	else:
-		print("Error: Could not find file {}. Several files will not be handled.".format(SPECIALCASES_PATH))
-
+	special_cases = tlh.get_special_cases(options.source_dir, options.target_language)
 	for s_case in special_cases:
-		tlh.translate_special_case(s_case, options.source_dir, options.target_language, output_dir)
+		tlh.translate_special_case(s_case, options.source_dir, output_dir)
 
 	# create new package
-	new_package_dir = os.path.join(startdir, 'univention-ucs-translation-%s' % options.target_language)
-	tlh.create_new_package(new_package_dir, options.target_language, options.target_locale, options.target_name, startdir)
-	tlh.write_makefile(all_modules, special_cases, new_package_dir, options.target_language)
+	tlh.create_new_package(options.src_pkg_name, options.target_language, options.target_locale, options.target_name, startdir)
+	tlh.write_makefile(all_modules, special_cases, options.src_pkg_name, options.target_language)
