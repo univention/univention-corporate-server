@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-21) unstable; urgency=medium
+
+  * Bug #41992: Fix App initilialization in old code
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Tue, 18 Oct 2016 17:41:23 +0200
+
 univention-appcenter (5.0.22-20) unstable; urgency=medium
 
   * Bug #42527: Fix setting registry variables on non-UCS systems
