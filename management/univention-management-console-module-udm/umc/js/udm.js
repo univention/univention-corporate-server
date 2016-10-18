@@ -715,7 +715,7 @@ define([
 					umcpCommand: umcpCmd
 				});
 				layout[0].push('superordinate');
-				objTypeDependencies.push('superordinate');
+				//objTypeDependencies.push('superordinate');  // FIXME: HiddenInput doesn't support to be dependency
 				objTypes.push({ id: this.moduleFlavor, label: _( 'All types' ) });
 			} else if (containers && containers.length) {
 				// containers...
@@ -744,18 +744,15 @@ define([
 			}, {
 				type: ComboBox,
 				name: 'objectType',
-				ready: function() {
-					// workaround Bug #42673
-					var d = new Deferred();
-					d.resolve();
-					return d;
-				},
 				autoHide: true,
 				label: _('Type'),
 				//value: objTypes.length ? this.moduleFlavor : undefined,
 				// ComboBox.set('staticValues') seems broken. We need to remove 'All types' from the values in case there is only one object type (e.g. dns/ptr_record in a dns/reverse_zone).
 //				staticValues: objTypes,
 				sortDynamicValues: false,
+				dynamicOptions: lang.hitch(this, function() {
+					return this._searchForm.get('value');
+				}),
 				dynamicValues: lang.hitch(this, function(options) {
 					var moduleCache = cache.get(this.moduleFlavor);
 					return moduleCache.getChildModules(options.superordinate, null, true).then(lang.hitch(this, function(result) {
@@ -782,8 +779,7 @@ define([
 					var newObjProperty = this._ucr['directory/manager/web/modules/' + newObjType + '/search/default'] || '';
 					var objPropertyWidget = this._searchForm._widgets.objectProperty;
 					objPropertyWidget.setInitialValue(newObjProperty || undefined, false);
-					var objTypeWidget = this._searchForm._widgets.objectType;
-					objTypeWidget.setInitialValue(null, false);
+					widget.setInitialValue(null, false);
 				})
 			}, {
 				type: ComboBox,
@@ -831,12 +827,6 @@ define([
 				})
 			}, {
 				type: MixedInput,
-				ready: function() {
-					// workaround Bug #42673
-					var d = new Deferred();
-					d.resolve();
-					return d;
-				},
 				name: 'objectPropertyValue',
 				label: _( 'Property value' ),
 				inlineLabel: _('Search %s...', this.objectNamePlural),
@@ -891,6 +881,7 @@ define([
 				widgets: widgets,
 				layout: layout,
 				buttons: buttons,
+				_getValueAttr: lang.hitch(this, '_getValueAttr'),
 				onSearch: lang.hitch(this, 'filter')
 			});
 		},
@@ -943,6 +934,7 @@ define([
 				}
 			}));
 			this.own(this._tree.watch('path', lang.hitch(this, function(attr, oldVal, newVal) {
+				this._searchForm.getWidget('objectType').reloadDynamicValues();
 				// register for changes of the selected item (= path)
 				// only take them into account in case the tree is not reloading
 				if (!this._reloadingPath) {
@@ -1385,7 +1377,7 @@ define([
 //				if (customColumns.length) {
 					columns.push(valueColumn);
 				}
-				if ((numObjTypes > 2 || 'navigation' == this.moduleFlavor) && (this._searchForm ? (~array.indexOf(['None', '$containers$', this.moduleFlavor], this._searchForm._widgets.objectType.get('value'))) : true)) {
+				if (this._tree || numObjTypes > 2) {
 					columns.push(typeColumn);
 				}
 				if (!(~columns.indexOf(valueColumn))) {
@@ -1395,6 +1387,28 @@ define([
 			}));
 		},
 
+		_getValueAttr: function() {
+			var values = this._searchForm.inherited(arguments);
+			if (this._tree) {
+				// the tree view (navigation, DHCP, DNS) might contain containers (e.g. also underneath of a superordinate!)
+				// we need to set the currently selected container if it's not a superordinate
+				var path = this._tree.get('path');
+				if (path.length) {
+					values.container = path[path.length - 1].id;
+					values.superordinate = path[path.length - 1].id;
+					if (!path[path.length -1].$isSuperordinate$) {
+						// a regular container is selected in the tree (which might be underneath of a superordinate)
+						delete values.superordinate;
+					}
+				}
+			}
+			if (values.superordinate) {
+				// a superordinate is selected in the tree. only show the direct children of it!
+				values.scope = 'one';
+			}
+			return values;
+		},
+
 		filter: function() {
 			// summary:
 			//		Send a new query with the given filter options as specified in the search form
@@ -1402,25 +1416,6 @@ define([
 
 			this.getDefaultColumns().then(lang.hitch(this, function(columns) {
 				var vals = this._searchForm.get('value');
-				if (!vals.objectType && !vals.objectProperty) {
-					return;  // workaround Bug #42673
-				}
-				if (this._tree) {
-					// the tree view (navigation, DHCP, DNS) might contain containers (e.g. also underneath of a superordinate!)
-					// we need to set the currently selected container if it's not a superordinate
-					var path = this._tree.get('path');
-					if (path.length) {
-						if (!path[path.length -1].$isSuperordinate$) {
-							// a regular container is selected in the tree (which might be underneath of a superordinate)
-							delete vals.superordinate;
-							vals.container = path[path.length - 1].id;
-						}
-					}
-				}
-				if (vals.superordinate) {
-					// a superordinate is selected in the tree. only show the direct children of it!
-					vals.scope = 'one';
-				}
 				vals.fields = array.map(columns, function(column) { return column.name; });
 				if ('navigation' != this.moduleFlavor || this._tree.get('path').length) {
 					this._grid.filter(vals);

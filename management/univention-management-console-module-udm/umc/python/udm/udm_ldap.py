@@ -815,20 +815,18 @@ class UDM_Module(object):
 				module = UDM_Module(mod)
 				if not module:
 					continue
-				for so in module.superordinate_names or [None]:
-					objects = module.search(container, superordinate=so)
-					for obj in objects:
-						superordinates.append({
-							'id': obj.dn,
-							'label': obj[module.identifies],
-							'title': module.title,
-							'icon': 'udm-%s' % module.name.replace('/', '-'),
-							'objectType': module.name,
-							'$operations$': module.operations,
-							'$flags$': obj.oldattr.get('univentionObjectFlag', []),
-							'$childs$': module.childs,
-							'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
-						})
+				for obj in module.search(container, superordinate=None):
+					superordinates.append({
+						'id': obj.dn,
+						'label': obj[module.identifies],
+						'title': module.title,
+						'icon': 'udm-%s' % module.name.replace('/', '-'),
+						'objectType': module.name,
+						'$operations$': module.operations,
+						'$flags$': obj.oldattr.get('univentionObjectFlag', []),
+						'$childs$': module.childs,
+						'$isSuperordinate$': udm_modules.isSuperordinate(module.module),
+					})
 
 		return superordinates
 
