@@ -703,9 +703,8 @@ def _doit(arglist):
 					return out + ["OPERATION FAILED"]
 			try:
 				object=module.object(co, lo, position=position, superordinate=superordinate)
-			except univention.admin.uexceptions.insufficientInformation:
-				out.append('E: Insufficient information')
-				out.append('Superordinate object is missing')
+			except univention.admin.uexceptions.insufficientInformation as exc:
+				out.append('E: Insufficient information: %s' % (exc,))
 				return out + ["OPERATION FAILED"]
 
 			if parsed_options:
@@ -781,14 +780,8 @@ def _doit(arglist):
 				if not ignore_exists:
 					out.append('E: invalid Options: %s' % e)
 					return out + ["OPERATION FAILED"]
-			except univention.admin.uexceptions.insufficientInformation:
-				out.append('E: Insufficient information')
-				out.append('The following parameters are missing:')
-				for i in module.property_descriptions:
-					property=module.property_descriptions.get(i)
-					if property.required:
-						if not object.has_key(i) or (not object[i] or (type(object[i]) == list and object[i]==[''])):
-							out.append(i)
+			except univention.admin.uexceptions.insufficientInformation as exc:
+				out.append('E: Insufficient information: %s' % (exc,))
 				return out + ["OPERATION FAILED"]
 			except univention.admin.uexceptions.noObject, e:
 				out.append('E: object not found: %s' % e)

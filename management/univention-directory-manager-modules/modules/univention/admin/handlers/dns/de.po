@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-directory-manager-modules\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2015-04-15 16:16+0200\n"
+"POT-Creation-Date: 2016-10-18 12:50+0200\n"
 "PO-Revision-Date: 2009-08-04 14:47+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: German <packages@univention.de>\n"
@@ -38,252 +38,278 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: alias.py:50
-msgid "DNS: Alias record"
-msgstr "DNS: Alias Record"
-
-#: alias.py:56
-msgid "Alias"
-msgstr "Alias"
-
-#: alias.py:67 forward_zone.py:67 host_record.py:66 reverse_zone.py:65
-#: srv_record.py:75 txt_record.py:65
-msgid "Zone time to live"
-msgstr "Zone Time-to-Live"
-
-#: alias.py:78
-msgid "Canonical name"
-msgstr "Kanonischer Name"
-
-#: alias.py:79
-msgid "Alias for this host. FQDNs must end with '.'"
-msgstr "Alias des Rechners. Der FQDN muss mit einem '.' enden"
-
-#: alias.py:90 dns.py:85 forward_zone.py:183 host_record.py:106
-#: ptr_record.py:75 reverse_zone.py:154 srv_record.py:87 txt_record.py:87
-msgid "General"
-msgstr "Allgemein"
-
-#: alias.py:90 dns.py:85 forward_zone.py:183 ptr_record.py:75
-#: reverse_zone.py:154 srv_record.py:87
-msgid "Basic settings"
-msgstr "Grundeinstellungen"
-
-#: alias.py:91
-msgid "General alias record settings"
-msgstr "Grundeinstellungen - Alias Record"
-
-#: dns.py:53 dns.py:57
-msgid "All DNS zones"
-msgstr "Alle DNS-Zonen"
-
-#: dns.py:58
-msgid "Add, edit and delete DNS objects"
-msgstr "Hinzufügen, bearbeiten und löschen eines DNS-Objektes"
-
-#: dns.py:59
+#: modules/univention/admin/handlers/dns/dns.py:60
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: dns.py:59
+#: modules/univention/admin/handlers/dns/dns.py:60
 msgid "Add DNS object"
 msgstr "DNS-Objekt hinzufügen"
 
-#: dns.py:59
-msgid "Search"
-msgstr "Suchen"
+#: modules/univention/admin/handlers/dns/dns.py:59
+msgid "Add, edit and delete DNS objects"
+msgstr "Hinzufügen, bearbeiten und löschen eines DNS-Objektes"
 
-#: dns.py:59
-msgid "Search DNS object(s)"
-msgstr "DNS-Objekt(e) suchen"
-
-#: dns.py:74 srv_record.py:55 txt_record.py:54
-msgid "Name"
-msgstr "Name"
-
-#: forward_zone.py:50
-msgid "DNS: Forward lookup zone"
-msgstr "DNS: Forward Lookup Zone"
-
-#: forward_zone.py:56
-msgid "Zone name"
-msgstr "Name der Zone"
-
-#: forward_zone.py:78 reverse_zone.py:76
-msgid "Contact person"
-msgstr "Verantwortliche Person"
-
-#: forward_zone.py:89 reverse_zone.py:87
-msgid "Serial number"
-msgstr "Seriennummer"
-
-#: forward_zone.py:100 reverse_zone.py:98
-msgid "Refresh interval"
-msgstr "Aktualisierungsintervall"
-
-#: forward_zone.py:111 reverse_zone.py:109
-msgid "Retry interval"
-msgstr "Intervall für erneute Versuche"
-
-#: forward_zone.py:122 reverse_zone.py:120
-msgid "Expiry interval"
-msgstr "Ablaufintervall"
-
-#: forward_zone.py:133 reverse_zone.py:131
-msgid "Minimum time to live"
-msgstr "Minimum Time-to-Live"
-
-#: forward_zone.py:144 reverse_zone.py:142
-msgid "Name server"
-msgstr "Nameserver"
-
-#: forward_zone.py:154
-msgid "Mail exchanger host"
-msgstr "Mail Exchanger Rechner"
-
-#: forward_zone.py:163
-msgid "TXT record"
-msgstr "TXT Record"
-
-#: forward_zone.py:172
-msgid "IP address"
-msgstr "IP-Adresse"
-
-#: forward_zone.py:184
-msgid "General forward lookup zone settings"
-msgstr "Grundeinstellungen - Forward Lookup Zone"
-
-#: forward_zone.py:190 forward_zone.py:191 reverse_zone.py:161
-#: reverse_zone.py:162
-msgid "Start of authority"
-msgstr "Start of Authority Eintrag"
-
-#: forward_zone.py:190 reverse_zone.py:161
-msgid "Primary name server information"
-msgstr "Primäre Nameserver Informationen"
-
-#: forward_zone.py:198 host_record.py:77
-msgid "IP addresses"
-msgstr "IP-Adressen"
-
-#: forward_zone.py:198 forward_zone.py:199
-msgid "IP addresses of the zone"
-msgstr "IP-Adressen der Zone"
-
-#: forward_zone.py:203 forward_zone.py:204
-msgid "MX records"
-msgstr "MX Records"
-
-#: forward_zone.py:203
-msgid "Mail exchanger records"
-msgstr "Mailserver-Einträge"
-
-#: forward_zone.py:208 forward_zone.py:209
-msgid "TXT records"
-msgstr "TXT Records"
-
-#: forward_zone.py:208
-msgid "Text records"
-msgstr "Text Records"
-
-#: forward_zone.py:249 host_record.py:158 ptr_record.py:102
-#: reverse_zone.py:228 srv_record.py:143 txt_record.py:117
-msgid "neither DN nor position present"
-msgstr "Weder ein DN noch eine Position wurde angegeben"
-
-#: host_record.py:55
-msgid "Hostname"
-msgstr "Rechnername"
-
-#: host_record.py:86
-msgid "Mail Exchanger"
-msgstr "Mail Exchanger"
-
-#: host_record.py:95 txt_record.py:76
-msgid "Text Record"
-msgstr "Text Record"
-
-#: host_record.py:106 txt_record.py:87
-msgid "Basic values"
-msgstr "Grundeinstellungen"
-
-#: host_record.py:107
-msgid "General host record settings"
-msgstr "Grundeinstellungen - Host Record"
-
-#: host_record.py:113
-msgid "Mail"
-msgstr "Mail"
-
-#: host_record.py:113
-msgid "Mail exchangers for this host"
-msgstr "Mail Exchanger für diesen Rechner"
-
-#: host_record.py:116
-msgid "Text"
-msgstr "Text"
-
-#: host_record.py:116
-msgid "Optional text"
-msgstr "Optionaler Text"
-
-#: host_record.py:156 ptr_record.py:100 srv_record.py:141 txt_record.py:115
-msgid "superordinate object not present"
-msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
-
-#: ptr_record.py:46
-msgid "DNS: Pointer record"
-msgstr "DNS: Pointer Record"
-
-#: ptr_record.py:52
+#: modules/univention/admin/handlers/dns/ptr_record.py:53
 msgid "Address"
 msgstr "Adresse"
 
-#: ptr_record.py:63
-msgid "Pointer record"
-msgstr "Pointer Record"
+#: modules/univention/admin/handlers/dns/alias.py:58
+msgid "Alias"
+msgstr "Alias"
 
-#: ptr_record.py:64
-msgid "FQDNs must end with '.'"
-msgstr "Der FQDN muss mit einem '.' enden"
+#: modules/univention/admin/handlers/dns/alias.py:81
+msgid "Alias for this host. FQDNs must end with '.'"
+msgstr "Alias des Rechners. Der FQDN muss mit einem '.' enden"
 
-#: ptr_record.py:76
-msgid "General pointer record settings"
-msgstr "Grundeinstellungen - Pointer Record"
+#: modules/univention/admin/handlers/dns/dns.py:54
+msgid "All DNS zones"
+msgstr "Alle DNS-Zonen"
 
-#: reverse_zone.py:48
+#: modules/univention/admin/handlers/dns/alias.py:92
+#: modules/univention/admin/handlers/dns/dns.py:86
+#: modules/univention/admin/handlers/dns/forward_zone.py:184
+#: modules/univention/admin/handlers/dns/ptr_record.py:76
+#: modules/univention/admin/handlers/dns/reverse_zone.py:155
+#: modules/univention/admin/handlers/dns/srv_record.py:88
+msgid "Basic settings"
+msgstr "Grundeinstellungen"
+
+#: modules/univention/admin/handlers/dns/host_record.py:107
+#: modules/univention/admin/handlers/dns/txt_record.py:87
+msgid "Basic values"
+msgstr "Grundeinstellungen"
+
+#: modules/univention/admin/handlers/dns/alias.py:80
+msgid "Canonical name"
+msgstr "Kanonischer Name"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:79
+#: modules/univention/admin/handlers/dns/reverse_zone.py:77
+msgid "Contact person"
+msgstr "Verantwortliche Person"
+
+#: modules/univention/admin/handlers/dns/dns.py:58
+msgid "DNS"
+msgstr ""
+
+#: modules/univention/admin/handlers/dns/alias.py:52
+msgid "DNS: Alias record"
+msgstr "DNS: Alias Record"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:51
+msgid "DNS: Forward lookup zone"
+msgstr "DNS: Forward Lookup Zone"
+
+#: modules/univention/admin/handlers/dns/ptr_record.py:47
+msgid "DNS: Pointer record"
+msgstr "DNS: Pointer Record"
+
+#: modules/univention/admin/handlers/dns/reverse_zone.py:49
 msgid "DNS: Reverse lookup zone"
 msgstr "DNS: Reverse Lookup Zone"
 
-#: reverse_zone.py:54
-msgid "Subnet"
-msgstr "Subnetz"
-
-#: reverse_zone.py:155
-msgid "General reverse lookup zone settings"
-msgstr "Grundeinstellungen - Reverse Lookup Zone"
-
-#: srv_record.py:49
+#: modules/univention/admin/handlers/dns/srv_record.py:50
 msgid "DNS: Service record"
 msgstr "DNS: Service Record"
 
-#: srv_record.py:66
-msgid "Location"
-msgstr "Ort"
+#: modules/univention/admin/handlers/dns/forward_zone.py:123
+#: modules/univention/admin/handlers/dns/reverse_zone.py:121
+msgid "Expiry interval"
+msgstr "Ablaufintervall"
 
-#: srv_record.py:88
-msgid "General service record settings"
-msgstr "Grundeinstellungen - Service Record"
+#: modules/univention/admin/handlers/dns/ptr_record.py:65
+msgid "FQDNs must end with '.'"
+msgstr "Der FQDN muss mit einem '.' enden"
 
-#: txt_record.py:88
+#: modules/univention/admin/handlers/dns/alias.py:92
+#: modules/univention/admin/handlers/dns/dns.py:86
+#: modules/univention/admin/handlers/dns/forward_zone.py:184
+#: modules/univention/admin/handlers/dns/host_record.py:107
+#: modules/univention/admin/handlers/dns/ptr_record.py:76
+#: modules/univention/admin/handlers/dns/reverse_zone.py:155
+#: modules/univention/admin/handlers/dns/srv_record.py:88
+#: modules/univention/admin/handlers/dns/txt_record.py:87
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/dns/txt_record.py:88
 msgid "General TXT record settings"
 msgstr "Grundeinstellungen - TXT Record"
 
-#~ msgid "DNS: Host Record"
-#~ msgstr "DNS: Host Record"
+#: modules/univention/admin/handlers/dns/alias.py:93
+msgid "General alias record settings"
+msgstr "Grundeinstellungen - Alias Record"
 
-#~ msgid "DNS: TXT Record"
-#~ msgstr "DNS: TXT Record"
+#: modules/univention/admin/handlers/dns/forward_zone.py:185
+msgid "General forward lookup zone settings"
+msgstr "Grundeinstellungen - Forward Lookup Zone"
+
+#: modules/univention/admin/handlers/dns/host_record.py:108
+msgid "General host record settings"
+msgstr "Grundeinstellungen - Host Record"
+
+#: modules/univention/admin/handlers/dns/ptr_record.py:77
+msgid "General pointer record settings"
+msgstr "Grundeinstellungen - Pointer Record"
+
+#: modules/univention/admin/handlers/dns/reverse_zone.py:156
+msgid "General reverse lookup zone settings"
+msgstr "Grundeinstellungen - Reverse Lookup Zone"
+
+#: modules/univention/admin/handlers/dns/srv_record.py:89
+msgid "General service record settings"
+msgstr "Grundeinstellungen - Service Record"
+
+#: modules/univention/admin/handlers/dns/host_record.py:56
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:173
+msgid "IP address"
+msgstr "IP-Adresse"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:199
+#: modules/univention/admin/handlers/dns/host_record.py:78
+msgid "IP addresses"
+msgstr "IP-Adressen"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:199
+#: modules/univention/admin/handlers/dns/forward_zone.py:200
+msgid "IP addresses of the zone"
+msgstr "IP-Adressen der Zone"
+
+#: modules/univention/admin/handlers/dns/srv_record.py:67
+msgid "Location"
+msgstr "Ort"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:204
+#: modules/univention/admin/handlers/dns/forward_zone.py:205
+msgid "MX records"
+msgstr "MX Records"
+
+#: modules/univention/admin/handlers/dns/host_record.py:114
+msgid "Mail"
+msgstr "Mail"
+
+#: modules/univention/admin/handlers/dns/host_record.py:87
+msgid "Mail Exchanger"
+msgstr "Mail Exchanger"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:155
+msgid "Mail exchanger host"
+msgstr "Mail Exchanger Rechner"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:204
+msgid "Mail exchanger records"
+msgstr "Mailserver-Einträge"
+
+#: modules/univention/admin/handlers/dns/host_record.py:114
+msgid "Mail exchangers for this host"
+msgstr "Mail Exchanger für diesen Rechner"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:134
+#: modules/univention/admin/handlers/dns/reverse_zone.py:132
+msgid "Minimum time to live"
+msgstr "Minimum Time-to-Live"
+
+#: modules/univention/admin/handlers/dns/dns.py:75
+#: modules/univention/admin/handlers/dns/srv_record.py:56
+#: modules/univention/admin/handlers/dns/txt_record.py:53
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:145
+#: modules/univention/admin/handlers/dns/reverse_zone.py:143
+msgid "Name server"
+msgstr "Nameserver"
+
+#: modules/univention/admin/handlers/dns/host_record.py:117
+msgid "Optional text"
+msgstr "Optionaler Text"
+
+#: modules/univention/admin/handlers/dns/ptr_record.py:64
+msgid "Pointer record"
+msgstr "Pointer Record"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:191
+#: modules/univention/admin/handlers/dns/reverse_zone.py:162
+msgid "Primary name server information"
+msgstr "Primäre Nameserver Informationen"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:101
+#: modules/univention/admin/handlers/dns/reverse_zone.py:99
+msgid "Refresh interval"
+msgstr "Aktualisierungsintervall"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:112
+#: modules/univention/admin/handlers/dns/reverse_zone.py:110
+msgid "Retry interval"
+msgstr "Intervall für erneute Versuche"
+
+#: modules/univention/admin/handlers/dns/dns.py:60
+msgid "Search"
+msgstr "Suchen"
+
+#: modules/univention/admin/handlers/dns/dns.py:60
+msgid "Search DNS object(s)"
+msgstr "DNS-Objekt(e) suchen"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:90
+#: modules/univention/admin/handlers/dns/reverse_zone.py:88
+msgid "Serial number"
+msgstr "Seriennummer"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:191
+#: modules/univention/admin/handlers/dns/forward_zone.py:192
+#: modules/univention/admin/handlers/dns/reverse_zone.py:162
+#: modules/univention/admin/handlers/dns/reverse_zone.py:163
+msgid "Start of authority"
+msgstr "Start of Authority Eintrag"
+
+#: modules/univention/admin/handlers/dns/reverse_zone.py:55
+msgid "Subnet"
+msgstr "Subnetz"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:164
+msgid "TXT record"
+msgstr "TXT Record"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:209
+#: modules/univention/admin/handlers/dns/forward_zone.py:210
+msgid "TXT records"
+msgstr "TXT Records"
+
+#: modules/univention/admin/handlers/dns/host_record.py:117
+msgid "Text"
+msgstr "Text"
+
+#: modules/univention/admin/handlers/dns/host_record.py:96
+#: modules/univention/admin/handlers/dns/txt_record.py:75
+msgid "Text Record"
+msgstr "Text Record"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:209
+msgid "Text records"
+msgstr "Text Records"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:57
+msgid "Zone name"
+msgstr "Name der Zone"
+
+#: modules/univention/admin/handlers/dns/alias.py:69
+#: modules/univention/admin/handlers/dns/forward_zone.py:68
+#: modules/univention/admin/handlers/dns/host_record.py:67
+#: modules/univention/admin/handlers/dns/reverse_zone.py:66
+#: modules/univention/admin/handlers/dns/srv_record.py:76
+#: modules/univention/admin/handlers/dns/txt_record.py:64
+msgid "Zone time to live"
+msgstr "Zone Time-to-Live"
+
+#: modules/univention/admin/handlers/dns/forward_zone.py:244
+#: modules/univention/admin/handlers/dns/reverse_zone.py:223
+msgid "Neither DN nor position given."
+msgstr "Weder ein DN noch eine Position wurde angegeben."
 
 #~ msgid "Additional name servers"
 #~ msgstr "Zusätzliche Nameserver"
@@ -291,20 +317,26 @@ msgstr "Grundeinstellungen - TXT Record"
 #~ msgid "Alias for this host"
 #~ msgstr "Alias des Rechners"
 
-#~ msgid "Primary Name Server"
-#~ msgstr "Primärer Nameserver"
+#~ msgid "DNS: Host Record"
+#~ msgstr "DNS: Host Record"
 
-#~ msgid "Primary IP-Address"
-#~ msgstr "Primäre IP-Adresse"
-
-#~ msgid "IP addresses of the host"
-#~ msgstr "IP-Adressen des Rechners"
+#~ msgid "DNS: TXT Record"
+#~ msgstr "DNS: TXT Record"
 
 #~ msgid "DNS: Zone Mail Exchanger"
 #~ msgstr "DNS: Zone Mail Exchanger"
 
 #~ msgid "DNS: Zone Text"
 #~ msgstr "DNS: Zone Text"
+
+#~ msgid "IP addresses of the host"
+#~ msgstr "IP-Adressen des Rechners"
+
+#~ msgid "Primary IP-Address"
+#~ msgstr "Primäre IP-Adresse"
+
+#~ msgid "Primary Name Server"
+#~ msgstr "Primärer Nameserver"
 
 #~ msgid "Update/Create Reverse Record"
 #~ msgstr "Reverse Record erstellen/erneuern"
