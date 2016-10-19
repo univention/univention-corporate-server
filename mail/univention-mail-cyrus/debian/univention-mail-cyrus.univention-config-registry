@@ -24,6 +24,7 @@ Variables: mail/cyrus/ssl/certificate
 Variables: mail/cyrus/ssl/key
 Variables: mail/cyrus/ssl/cafile
 Variables: mail/cyrus/ssl/capath
+Variables: mail/cyrus/ssl/cipher_list
 Variables: mail/cyrus/mailnotifier
 Variables: mail/cyrus/notifyd
 User: cyrus
