@@ -1,3 +1,10 @@
+univention-directory-manager-modules (12.0.4-4) unstable; urgency=medium
+
+  * Bug #34764: don't validate DN as subtree of position, only validate the
+  	correct superordinate positions
+
+ -- Florian Best <best@univention.de>  Wed, 19 Oct 2016 09:51:39 +0200
+
 univention-directory-manager-modules (12.0.4-3) unstable; urgency=medium
 
   * Bug #34764: The position and superordinate type is now validated

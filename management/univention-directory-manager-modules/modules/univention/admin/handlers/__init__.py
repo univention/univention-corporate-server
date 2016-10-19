@@ -588,9 +588,6 @@ class simpleLdap(base):
 		return self._exists
 
 	def _validate_information(self):
-		if self.dn and self.position and not self.__ensure_subtree(self.position.getDn(), self.dn):
-			raise univention.admin.uexceptions.insufficientInformation(_('The DN must be in the subtree of the position.'))
-
 		superordinate_names = set(univention.admin.modules.superordinate_names(self.module))
 		if not superordinate_names:
 			return  # module has no superodinates
