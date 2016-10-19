@@ -91,6 +91,8 @@ def check_find(verbose=False):
 					if verbose:
 						print >> sys.stderr, filepath
 					basepath = filepath[:-len(suffix)]
+					if not os.path.exists(basepath):
+						continue
 					modified.add(basepath)
 	return modified
 
