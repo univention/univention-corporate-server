@@ -1,3 +1,14 @@
+univention-docker-container-mode (2.0.0-3) unstable; urgency=medium
+
+  * Bug #42602: Fixed quoting issues to support App installations with
+    versions containing spaces
+  * Bug #42603: When upgrading the underlying container, all available release
+    updates are installed in one run
+  * Bug #39803: Abort installation if the App is not found instead of doing
+    nothing
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 19 Oct 2016 15:49:05 +0200
+
 univention-docker-container-mode (2.0.0-2) unstable; urgency=low
 
   * Bug #38438: Fix use of get_lsb_header_val

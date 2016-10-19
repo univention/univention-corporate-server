@@ -41,7 +41,7 @@ fi
 
 echo "Installing packages for $APP_ARG"
 univention-app update
-univention-app register "$APP_ARG" --component --do-it
+univention-app register "$APP_ARG" --component --do-it || die "Could not register Component"
 app_packages="$(univention-app get "$APP_ARG" default_packages --values-only --shell)"
 if [ -n "$app_packages" ]; then
 	if [ -n "$ERROR_FILE" ]; then
@@ -52,6 +52,7 @@ if [ -n "$app_packages" ]; then
 	if [ "$?" -ne 0 ]; then
 		die "Could not install the app"
 	fi
+	/usr/share/univention-updater/univention-updater-check
 
 	echo "Calling app join scripts..."
 	univention-run-join-scripts -dcaccount "$username" -dcpwd "$password_file"

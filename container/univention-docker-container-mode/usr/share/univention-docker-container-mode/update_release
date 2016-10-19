@@ -33,5 +33,4 @@
 . /usr/share/univention-docker-container-mode/lib.sh
 
 RELEASE=$(getarg "--release")
-univention-upgrade --noninteractive --updateto "$RELEASE"
-
+univention-upgrade --noninteractive --updateto "$RELEASE" && /usr/share/univention-updater/univention-updater-check

@@ -30,10 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ARGS="$@"
+ARGS=("$@")
 getarg() {
 	local found=0
-	for arg in $ARGS; do
+	for arg in "${ARGS[@]}"; do
 		if [ "$found" -eq 1 ]; then
 			echo "$arg"
 			break
@@ -44,8 +44,8 @@ getarg() {
 	done
 }
 
-APP=$(getarg "--app")
-APP_VERSION=$(getarg "--app-version")
+APP="$(getarg "--app")"
+APP_VERSION="$(getarg "--app-version")"
 APP_ARG="$APP"
 if [ -n "$APP_VERSION" ]; then
 	APP_ARG="$APP=$APP_VERSION"
@@ -61,7 +61,7 @@ error_msg() {
 }
 
 die() {
-	error_msg $@
+	error_msg "$@"
 	exit 1
 }
 
