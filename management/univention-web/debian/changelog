@@ -1,3 +1,9 @@
+univention-web (1.0.2-6) unstable; urgency=medium
+
+  * Bug #42291: Update grid and tree widget for dgrid 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 19 Oct 2016 18:28:00 +0200
+
 univention-web (1.0.2-5) unstable; urgency=medium
 
   * Bug #42261: Replaced 'Clear Sans' font with 'Roboto' font

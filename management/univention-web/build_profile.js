@@ -44,6 +44,7 @@ var profile = (function() {
 			"dojox",
 			"umc",
 			"dgrid",
+			"dstore",
 			"put-selector",
 			"xstyle"
 		],
@@ -55,7 +56,7 @@ var profile = (function() {
 
 		layers: {
 			"dojo/dojo": {
-				include: [ "dojo/dojo", "umc/_all", "dgrid" ],
+				include: [ "dojo/dojo", "umc/_all", "dgrid"],
 				customBase: true,
 				boot: true
 			}

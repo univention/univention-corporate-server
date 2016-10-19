@@ -49,6 +49,7 @@ BUILD_THEME_DIR=$(BUILD_DIR)/dijit/themes/umc
 BUILD_IMAGE_DIRS=$(addprefix $(BUILD_THEME_DIR)/, images form/images layout/images)
 TMP_THEME_CSS=$(TMP_THEME_DIR)/$(CSS_FILE_NAME)
 CSS_FILE_NAME=umc.css
+ICONS_DIR=/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons
 
 JS_INSTALL_DIR:=usr/share/univention-web/js
 THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
@@ -57,7 +58,7 @@ THEME_INSTALL_DIR=$(JS_INSTALL_DIR)/dijit/themes/umc
 
 build: $(BUILD_DIR)/dojo/dojo.js build-css
 
-build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css
+build-dev: $(TMP_DIR) $(TMP_JS_FILES) $(TMP_DIR)/umc/_all.js $(TMP_I18N_FILES) $(TMP_DIR)/umc/i18n/en/branding.json build-css $(TMP_DIR)/dijit/themes/umc/icons
 
 build-css: $(BUILD_THEME_DIR)/umc.css $(BUILD_THEME_DIR)/fonts $(BUILD_IMAGE_DIRS)
 
@@ -120,6 +121,9 @@ $(TMP_DIR)/umc/_all.js:
 	# generate a pseudo module which contains references to all other JS modules
 	deps=$$(find js/ -name "*.js" -a -not -name "*.*.js" | sort | sed 's/\.js//; s/^js/umc/; s/i18n$$/i18n!/; s/.*/"\0",/; $$ s/,$$//'); \
 	echo "define([$$deps], function() { })" > $@
+
+$(TMP_DIR)/dijit/themes/umc/icons:
+	cp -rfs $(ICONS_DIR) $@
 
 $(TMP_DIR)/umc/package.json: debian/changelog
 	mkdir -p $(@D)

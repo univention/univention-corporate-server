@@ -125,6 +125,14 @@
 	}
 }
 
+.umcGrid .dgrid-scroller {
+	max-height: inherit;
+}
+
+.umcGrid .dgrid-cell div {
+	display: inline;
+}
+
 .umcGrid .umcGridDefaultAction:hover {
 	text-decoration: underline;
 	cursor: pointer;
@@ -132,8 +140,14 @@
 
 .umc .umcGridFooter {
   margin-bottom: 0.5em;
-  border-top: thin solid $text-color;
 }
+
+.umc .umcGrid .dgrid-cell {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .umc .dojoxGridArrowButtonChar {
 	display: none;
 	float: right;

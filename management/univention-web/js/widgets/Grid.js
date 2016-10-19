@@ -26,7 +26,7 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define require setTimeout clearTimeout*/
+/*global define, require, setTimeout, clearTimeout*/
 
 define([
 	"dojo/_base/declare",
@@ -42,12 +42,18 @@ define([
 	"dojo/topic",
 	"dojo/aspect",
 	"dojo/on",
+	"dojo/window",
+	"dijit/Destroyable",
 	"dijit/Menu",
 	"dijit/MenuItem",
 	"dijit/form/DropDownButton",
-	"dojo/data/ObjectStore",
-	"dojox/grid/EnhancedGrid",
-	"dojox/grid/cells",
+	"dgrid/OnDemandGrid",
+	"dgrid/Selection",
+	"dgrid/extensions/DijitRegistry",
+	"dgrid/Selector",
+	"dstore/legacy/StoreAdapter",
+	"dstore/Trackable",
+	"dstore/Memory",
 	"./Button",
 	"./Text",
 	"./ContainerWidget",
@@ -57,38 +63,18 @@ define([
 	"../tools",
 	"../render",
 	"../i18n!",
-	"dojox/grid/enhanced/plugins/IndirectSelection",
-	"dojox/grid/enhanced/plugins/Menu"
 ], function(declare, lang, array, kernel, win, construct, attr, geometry, style, domClass,
-		topic, aspect, on, Menu, MenuItem, DropDownButton,
-		ObjectStore, EnhancedGrid, cells, Button, Text, ContainerWidget,
+		topic, aspect, on, dojoWindow, Destroyable, Menu, MenuItem, DropDownButton,
+		OnDemandGrid, Selection, DijitRegistry, Selector, StoreAdapter, Trackable, Memory, Button, Text, ContainerWidget,
 		StandbyMixin, Tooltip, _RegisterOnShowMixin, tools, render, _) {
 
-	// disable Grid search with different starting points, as the results are loaded
-	// only once entirely (see Bug #25476)
-	var _Grid = declare([EnhancedGrid], {
-		_fetch: function(start, isRender) {
-			// force start=0
-			arguments[0] = 0;
-			this.inherited(arguments);
-		},
-
-		createView: function() {
-			// workaround for FF:
-			// if clicking into the last column, it might happen that the scrollbox
-			// scrolls to the left such that the checkbox of the very first column
-			// are moved half outside of the grid's visible area. This workaround makes
-			// sure that horizontal scroll position is always 0 if via CSS horizontal
-			// scrolling is disabled (i.e., overflow-x: hidden).
-			var view = this.inherited(arguments);
-			view.own(on(view.scrollboxNode, 'scroll', function(evt) {
-				if (view.scrollboxNode.scrollLeft != 0 && style.get(view.scrollboxNode, 'overflowX') == 'hidden') {
-					view.scrollboxNode.scrollLeft = 0;
-				}
-			}));
-			return view;
-		}
-	});
+	var _Grid = declare([OnDemandGrid, Selection, Selector, DijitRegistry, Destroyable], {
+		getItem: function(rowIndex) {
+			// workaround -> in dgrid it's easier :)
+			var item = rowIndex;
+			return item;
+ 		}
+ 	});
 
 	var _DropDownButton = declare([DropDownButton], {
 		_onClick: function(evt) {
@@ -197,29 +183,28 @@ define([
 		_toolbar: null,
 
 		_header: null,
-		_footer: null,
+		_gridInfo: null,
 
-		_footerLegend: null,
+		_gridInfoLegend: null,
 
 		// internal list of all disabled items... when data has been loaded, we need to
 		// disable these items again
 		_disabledIDs: null,
 
-		// internal flag in order to ignore the next onFetch events
-		_ignoreNextFetch: false,
-
 		_selectionChangeTimeout: null,
 
 		_resizeDeferred: null,
+
+		// internal adapter to the module store
+		_store: null,
 
 		_iconFormatter: function(valueField, iconField) {
 			// summary:
 			//		Generates a formatter functor for a given value and icon field.
 
-			return lang.hitch(this, function(value, rowIndex) {
-				// get the iconNamae
-				var item = this._grid.getItem(rowIndex);
-				var iconName = this._dataStore.getValue(item, iconField);
+			return lang.hitch(this, function(value, item) {
+				// get the iconName
+				var iconName = item[iconField];
 
 				// create an HTML image that contains the icon
 				var html = lang.replace('<img src="{url}/umc/icons/16x16/{icon}.png" height="{height}" width="{width}" style="float:left; margin-right: 5px" /> {value}', {
@@ -251,92 +236,134 @@ define([
 			}
 		},
 
+		_onScroll: function() {
+			var viewPortHeight = dojoWindow.getBox().h;
+			var atBottom = (window.pageYOffset + viewPortHeight) === win.body().clientHeight;
+			if (atBottom) {
+				this._heightenGrid(2 * viewPortHeight);
+			}
+		},
+
+		_heightenGrid: function(extension) {
+			var gridHeight = style.get(this._grid.domNode, "height");
+			var newMaxGridHeight = gridHeight + extension;
+			style.set(this._grid.domNode, "max-height", newMaxGridHeight + 'px');
+			this._grid.resize();
+			var gridIsFullyRendered = this._grid.domNode.scrollHeight < newMaxGridHeight;
+			if (gridIsFullyRendered) {
+				style.set(this._pleaseWait.domNode, "display", "none");
+				this._scrollSignal.remove();
+				return;
+			}
+		},
+
+		_setInitialGridHeight: function() {
+			this._scrollSignal.remove();
+			this._scrollSignal = on(win.doc, 'scroll', lang.hitch(this, '_onScroll'));
+			style.set(this._pleaseWait.domNode, "display", "block");
+			var viewPortHeight = dojoWindow.getBox().h;
+			var gridHeight = Math.round(viewPortHeight + viewPortHeight / 3);
+			this._heightenGrid(gridHeight);
+		},
+
+		_selectAll: function() {
+			this._grid.collection.fetch().forEach(lang.hitch(this, function(item){
+				var row = this._grid.row(item);
+				this._grid.select(row);
+			}));
+		},
+
+		_setGridSorting: function() {
+			if (typeof this.sortIndex === "number" && this.sortIndex !== 0) {
+				var column = this.columns[Math.abs(this.sortIndex) - 1];
+				this._grid.set('sort', [{property: column.name, descending: this.sortIndex < 0 }]);
+			}
+		},
+
 		postMixInProperties: function() {
 			this.inherited(arguments);
 
-			// encapsulate the object store into a old data store for the grid
-			this._dataStore = new ObjectStore({
-				objectStore: this.moduleStore
-			});
-
 			this._disabledIDs = {};
+			var TrackableStoreAdapter = declare([ Trackable, Memory, StoreAdapter ]);
+			this._store = (new TrackableStoreAdapter({
+				objectStore: this.moduleStore,
+				isUmcpCommandStore: typeof(this.moduleStore.umcpCommand) === "function"
+			}));
+			var tracked = this._store.track();
+			tracked.on('add, update, delete', function(){
+				this._updateGridInfoContent();
+			});
+			if (this._store.isUmcpCommandStore) {
+				this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
+					this.filter(this.query);
+				})));
+			} else {
+				var observer = this.moduleStore.query().observe(lang.hitch(this, function() {
+					this._store.emit('update');
+				}));
+				this.own(observer);
+			}
 		},
 
 		buildRendering: function() {
 			this.inherited(arguments);
 
-			// create right-click context menu
-			this._contextMenu = new Menu({});
-			this.own(this._contextMenu);
-
-			// add a header for the grid
 			this._header = new ContainerWidget({
 				baseClass: 'umcGridHeader'
 			});
 			this.addChild(this._header);
-
-			// create the grid
-			this._grid = new _Grid(lang.mixin({
-				store: this._dataStore,
-				query: this.query,
-				queryOptions: { ignoreCase: true },
-				'class': 'umcDynamicHeight',
-				rowsPerPage: 30,
-				plugins : {
-					indirectSelection: {
-						headerSelector: true,
-						name: 'Selection',
-						width: '25px',
-						styles: 'text-align: center;'
-					},
-					menus: {
-						rowMenu: this._contextMenu
-					}
-				}/*,
-				canSort: lang.hitch(this, function(col) {
-					// disable sorting for the action columns
-					return Math.abs(col) - 2 < this.columns.length && Math.abs(col) - 2 >= 0;
-				})*/
-			}, this.gridOptions || {}));
-
-			// add a footer for the grid
-			this._footer = new ContainerWidget({
+			
+			this._gridInfo = new ContainerWidget({
 				baseClass: 'umcGridFooter'
 			});
-			this._createFooter();
+			this._createGridInfo();
+			this.addChild(this._gridInfo);
 
-			// update columns and actions
+			this._grid = new _Grid(lang.mixin({
+				collection: this._store,
+				className: 'dgrid-autoheight',
+				bufferRows: 0,
+				selectionMode: 'extended',
+				allowSelectAll: true,
+				allowSelect: lang.hitch(this, 'allowSelect'),
+				_selectAll: lang.hitch(this, '_selectAll'),
+				selectAll: function() {
+					this.inherited(arguments);
+					this._selectAll(); //Bug: dgrid #1198
+				}
+			}, this.gridOptions || {}));
+
+			this._setGridSorting();
+
+			this._contextMenu = new Menu({
+				targetNodeIds: [this._grid.domNode]
+			});
+			this._pleaseWait = new Text({
+				content: _("Please wait...")
+			});
+			this.own(this._contextMenu);
+
 			this.setColumnsAndActions(this.columns, this.actions);
-			if (typeof this.sortIndex == "number") {
-				this._grid.setSortIndex(Math.abs(this.sortIndex), this.sortIndex > 0);
-			}
 
 			this.addChild(this._grid);
-			this.addChild(this._footer);
+			this.addChild(this._pleaseWait);
 
 			//
 			// register event handler
 			//
 
-			// in case of any changes in the module store, refresh the grid
-			// FIXME: should not be needed anymore with Dojo 1.8
-			if (this.moduleStore.on && this.moduleStore.onChange) {
-				this.own(this.moduleStore.on('Change', lang.hitch(this, function() {
-					this.filter(this.query);
-				})));
+			this._grid.on('dgrid-select', lang.hitch(this, '_selectionChanged', true));
+			this._grid.on('dgrid-deselect', lang.hitch(this, '_selectionChanged', false));
+
+			this._grid.on(".dgrid-row:contextmenu", lang.hitch(this, '_updateContextItem'));
+
+			this._scrollSignal = on(win.doc, 'scroll', lang.hitch(this, '_onScroll'));
+			this.own(this._scrollSignal);
+
+			if (this.query) {
+				this.filter(this.query);
 			}
 
-			this.own(aspect.after(this._grid, '_onFetchComplete', lang.hitch(this, '_onFetched', true)));
-			this.own(aspect.after(this._grid, '_onFetchError', lang.hitch(this, '_onFetched', false)));
-			this.own(aspect.after(this._grid, 'postrender', lang.hitch(this, '_cleanupWidgets'))); 
-
-			this._grid.on('selectionChanged', lang.hitch(this, '_selectionChanged'));
-			this._grid.on('cellContextMenu', lang.hitch(this, '_updateContextItem'));
-
-			this._grid.on('rowClick', lang.hitch(this, '_onRowClick'));
-
-			// make sure that we update the disabled items after sorting etc.
-			this.own(aspect.after(this._grid, '_refresh', lang.hitch(this, '_updateDisabledItems')));
 		},
 
 		_cleanupWidgets: function() {
@@ -359,18 +386,6 @@ define([
 			this.inherited(arguments);
 
 			this._registerAtParentOnShowEvents(lang.hitch(this._grid, 'resize'));
-			this.own(on(win.doc, 'resize', lang.hitch(this, '_handleResize')));
-			this.own(on(kernel.global, 'resize', lang.hitch(this, '_handleResize')));
-		},
-
-		_handleResize: function() {
-			if (this._resizeDeferred && !this._resizeDeferred.isFulfilled()) {
-				this._resizeDeferred.cancel();
-			}
-			this._resizeDeferred = tools.defer(lang.hitch(this, function() {
-				this._grid.resize();
-			}), 200);
-			this._resizeDeferred.otherwise(function() { /* prevent logging of exception */ });
 		},
 
 		setColumnsAndActions: function(columns, actions) {
@@ -393,58 +408,63 @@ define([
 
 				// set common properties
 				var col = lang.mixin({
-					width: 'auto',
-					editable: false,
-					description: ''
+//					width: 'auto',
+//					editable: false,
+//					description: ''
 				}, icol, {
 					field: icol.name,
-					name: icol.label
+					label: icol.label
 				});
-				delete col.label;
+//				delete col.label;
 
 				// default action
-				var defaultActionExists = this.defaultAction && (typeof this.defaultAction == "function" || array.indexOf(array.map(this.actions, function(iact) { return iact.name; }), this.defaultAction) !== -1);
+				var defaultActionExists = this.defaultAction && (typeof this.defaultAction === "function" || array.indexOf(array.map(this.actions, function(iact) { return iact.name; }), this.defaultAction) !== -1);
 				var isDefaultActionColumn = (!this.defaultActionColumn && colNum === 0) || (this.defaultActionColumn && col.name == this.defaultActionColumn);
 
 				if (defaultActionExists && isDefaultActionColumn) {
-					col.formatter = lang.hitch(this, function(value, rowIndex) {
-						var item = this._grid.getItem(rowIndex);
+					col.renderCell = lang.hitch(this, function(item, value, node, options) {
+						value = icol.formatter ? icol.formatter(value, item) : value;
 
-						value = icol.formatter ? icol.formatter(value, rowIndex) : value;
+						var defaultAction = this._getDefaultActionForItem(item);
 
-						if (!this._getDefaultActionForItem(item)) {
+						if (!defaultAction) {
 							if (value && value.domNode) {
 								this.own(value);
 							}
-							return value;
+							return value.domNode;
 						}
 
+						var container = null;
+
 						if (value && value.domNode) {
-							var container = new ContainerWidget({
+							container = new ContainerWidget({
 								baseClass: 'umcGridDefaultAction',
-								'style': 'display: inline!important;'
 							});
 							container.addChild(value);
 							container.own(value);
-							this.own(container);
-							return container;
 						} else {
-							return this.own(new Text({
+							container = new Text({
 								content: value,
 								baseClass: 'umcGridDefaultAction',
-								'style': 'display: inline!important;'
-							}))[0];
+							});
 						}
+						this.own(container);
+						container.on('click', lang.hitch(this, function() {
+							var idProperty = this.moduleStore.idProperty;
+							defaultAction.callback([item[idProperty]], [item]);
+						}));
+						return container.domNode;
 					});
 				}
 
 				// check whether the width shall be computed automatically
-				if ('adjust' == col.width) {
-					col.width = (this._getHeaderWidth(col.name) + 18) + 'px';
+				if ('adjust' === col.width) {
+					col.width = (this._getHeaderWidth(col.label) + 10) + 'px';
 				}
 
 				// set cell type
-				if (typeof icol.type == "string" && 'checkbox' == icol.type.toLowerCase()) {
+				//TODO
+				if (typeof icol.type === "string" && 'checkbox' === icol.type.toLowerCase()) {
 					col.cellType = cells.Bool;
 				}
 
@@ -457,8 +477,18 @@ define([
 				return col;
 			}, this);
 
+			var selectionColumn = {
+				selector: 'checkbox',
+				label: 'Selector',
+				width: '30px'
+			};
+			gridColumns.unshift(selectionColumn);
+
 			// set new grid structure
-			this._grid.setStructure(gridColumns);
+			this._grid.set('columns', gridColumns);
+			array.forEach(gridColumns, lang.hitch(this, function(column, id) {
+				this._grid.styleColumn(id, 'width: ' + column.width);
+			}));
 		},
 
 		layout: function() {
@@ -474,8 +504,8 @@ define([
 		_getHeaderWidth: function(text) {
 			// if we do not have a temporary cell yet, create it
 			if (!this._tmpCell && !this._tmpCellHeader) {
-				this._tmpCellHeader = construct.create('div', { 'class': 'dojoxGridHeader dijitOffScreen' });
-				this._tmpCell = construct.create('div', { 'class': 'dojoxGridCell' });
+				this._tmpCellHeader = construct.create('div', { 'class': 'dgrid-header dijitOffScreen' });
+				this._tmpCell = construct.create('div', { 'class': 'dgrid-cell' });
 				construct.place(this._tmpCell, this._tmpCellHeader);
 				construct.place(this._tmpCellHeader, win.body());
 			}
@@ -536,9 +566,9 @@ define([
 							this._publishAction(prefix + iaction.name);
 							var ids = this.getSelectedIDs();
 							var items = this.getSelectedItems();
-							if (iaction.enablingMode == 'some') {
+							if (iaction.enablingMode === 'some') {
 								items = array.filter(items, function(iitem) {
-									return typeof iaction.canExecute == "function" ? iaction.canExecute(iitem) : true;
+									return typeof iaction.canExecute === "function" ? iaction.canExecute(iitem) : true;
 								});
 								ids = array.map(items, function(iitem) {
 									return this._dataStore.getValue(iitem, this.moduleStore.idProperty);
@@ -549,8 +579,8 @@ define([
 					};
 				});
 				// get icon and label (these properties may be functions)
-				var iiconClass = typeof iaction.iconClass == "function" ? iaction.iconClass() : iaction.iconClass;
-				var ilabel = typeof iaction.label == "function" ? iaction.label() : iaction.label;
+				var iiconClass = typeof iaction.iconClass === "function" ? iaction.iconClass() : iaction.iconClass;
+				var ilabel = typeof iaction.label === "function" ? iaction.label() : iaction.label;
 
 				var props = { iconClass: iiconClass, label: ilabel, _action: iaction };
 
@@ -559,7 +589,7 @@ define([
 					var btn = new Button(lang.mixin(props, getCallback(''), { iconClass: props.iconClass || 'umcIconNoIcon' }));
 					if (iaction.description) {
 						try {
-						var idescription = typeof iaction.description == "function" ? iaction.description(undefined) : iaction.description;
+						var idescription = typeof iaction.description === "function" ? iaction.description(undefined) : iaction.description;
 						var tooltip = new (iaction.tooltipClass || Tooltip)({
 							label: idescription,
 							connectId: [btn.domNode]
@@ -636,20 +666,6 @@ define([
 			}, this);
 		},
 
-		_onFetched: function(success) {
-			// standby animation when loading data
-			if (this._ignoreNextFetch) {
-				this._ignoreNextFetch = false;
-				return;
-			}
-			this.standby(false);
-			this._grid.selection.clear();
-			this._updateFooterContent();
-			this._updateDisabledItems();
-			this.onFilterDone(success);
-			this._grid.resize();
-		},
-
 		_selectionChanged: function() {
 			if (this._selectionChangeTimeout) {
 				clearTimeout(this._selectionChangeTimeout);
@@ -658,7 +674,7 @@ define([
 			this._selectionChangeTimeout = setTimeout(lang.hitch(this, function() {
 				this._updateContextActions();
 
-				this._updateFooterContent();
+				this._updateGridInfoContent();
 			}), 50);
 		},
 
@@ -667,7 +683,7 @@ define([
 		},
 
 		_updateContextActions: function() {
-			var nItems = this._grid.selection.getSelectedCount();
+			var nItems = this.getSelectedIDs().length;
 
 			array.forEach(this._getContextActionItems(), function(item) {
 				if ((item instanceof Button || item instanceof MenuItem) && item._action) {
@@ -679,7 +695,7 @@ define([
 					}
 					// disable multiaction if one of the selected items can not be executed
 					var enablingFunction = array.every;
-					if (item._action.enablingMode == 'some') {
+					if (item._action.enablingMode === 'some') {
 						enablingFunction = array.some;
 					}
 					enabled = enabled && enablingFunction(this.getSelectedItems(), function(iitem) { return item._action.canExecute ? item._action.canExecute(iitem) : true; });
@@ -694,50 +710,26 @@ define([
 
 		_updateContextItem: function(evt) {
 			// when opening the context menu...
-			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
-			if (rowDisabled) {
-				return;
-			}
+//TODO
+//			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
+//			if (rowDisabled) {
+//				return;
+//			}
 
 			var hasClickedOnDefaultAction = (evt.target != evt.cellNode);
-			if (!this._grid.selection.isSelected(evt.rowIndex) || hasClickedOnDefaultAction) {
-				this._grid.selection.select(evt.rowIndex);
-			}
-		},
-
-		_onRowClick: function(evt) {
-			if (evt.cellIndex === 0) {
-				// the checkbox cell was pressed, this does already the wanted behavior
-				return true;
-			}
-
-			var rowDisabled = this._grid.rowSelectCell.disabled(evt.rowIndex);
-			if (rowDisabled) {
-				// deselect disabled rows
-				this._grid.selection.deselect(evt.rowIndex);
-				return;
-			}
-
-			this._grid.selection.select(evt.rowIndex);
-
-			var item = this._grid.getItem(evt.rowIndex);
-			var identity = item[this.moduleStore.idProperty];
-
-			var defaultAction = this._getDefaultActionForItem(item);
-			var isDefaultActionColumn = ((!this.defaultActionColumn && evt.cellIndex === 1) || (this.defaultActionColumn && evt.cell.field == this.defaultActionColumn));
-			var hasClickedOnDefaultAction = (evt.target != evt.cellNode);
-
-			// execute default action or toggle selection
-			if (defaultAction && isDefaultActionColumn && hasClickedOnDefaultAction) {
-				this._publishAction('default-' + defaultAction.name);
-				defaultAction.callback([identity], [item]);
+			var id = this._grid.row(evt).id;
+			var isSelected = this._grid.get('selection')[id];
+			if (!isSelected || hasClickedOnDefaultAction) {
+				var newSelection = lang.mixin({}, this._grid.get('selection'));
+				newSelection[id] = true;
+				this._grid.set('selection', newSelection);
 			}
 		},
 
 		_getDefaultActionForItem: function(item) {
 			// returns the default action for a specified item if the action exists and can be executed
 			var identity = item[this.moduleStore.idProperty];
-			var defaultAction = typeof this.defaultAction == "function" ?
+			var defaultAction = typeof this.defaultAction === "function" ?
 				this.defaultAction([identity], [item]) : this.defaultAction;
 
 			if (defaultAction) {
@@ -749,7 +741,7 @@ define([
 					}
 				}, this);
 				if (action && action.callback) {
-					var isExecutable = typeof action.canExecute == "function" ? action.canExecute(item) : true;
+					var isExecutable = typeof action.canExecute === "function" ? action.canExecute(item) : true;
 					if (isExecutable && !this.getDisabledItem(identity)) {
 						return action;
 					}
@@ -757,25 +749,16 @@ define([
 			}
 		},
 
-		_disableAllItems: function(disable) {
-			var items = this.getAllItems();
-			disable = undefined === disable ? true : disable;
-			array.forEach(items, lang.hitch(this, function(iitem) {
-				var idx = this.getItemIndex(iitem[this.moduleStore.idProperty]);
-				if (idx >= 0) {
-					this._grid.rowSelectCell.setDisabled(idx, disable);
-				}
-			}));
-			this._grid.render();
-		},
-
 		_setDisabledAttr: function(value) {
 			this.disabled = value;
 
 			// disable items
-			this._disableAllItems(value);
+			this._grid.collection.fetch().forEach(lang.hitch(this, function(item) {
+				var id = item[this.moduleStore.idProperty];
+				this.setDisabledItem(id, value);
+			}));
 			// re-disable explicitly disabled items
-			this._updateDisabledItems();
+			//this._updateDisabledItems();
 
 			// disable all actions
 			array.forEach(this._toolbar.getChildren().concat(this._contextActionsToolbar), lang.hitch(this, function(widget) {
@@ -785,15 +768,15 @@ define([
 			}));
 		},
 
-		_createFooter: function() {
+		_createGridInfo: function() {
 			// add a legend that states how many objects are currently selected
-			this._footerLegend = new Text({
+			this._gridInfoLegend = new Text({
 				content: _('No object selected'),
 				style: 'padding-left: 5px'
 			});
-			this._footer.addChild(this._footerLegend);
+			this._gridInfo.addChild(this._gridInfoLegend);
 
-			this._footer.startup();
+			this._gridInfo.startup();
 
 			// redo the layout since we added elements
 			this.layout();
@@ -801,23 +784,24 @@ define([
 			return true;
 		},
 
-		_updateFooterContent: function() {
-			var nItems = this._grid.selection.getSelectedCount();
-			var nItemsTotal = this._grid.rowCount;
-			var msg = '';
-			if (typeof this.footerFormatter == "function") {
-				msg = this.footerFormatter(nItems, nItemsTotal);
-			}
-			else {
-				msg = _('%(num)d entries of %(total)d selected', {num: nItems, total: nItemsTotal});
-				if (0 === nItemsTotal) {
-					msg = _('No entries could be found');
+		_updateGridInfoContent: function() {
+			var nItems = this.getSelectedIDs().length;
+			this._grid.collection.fetch().totalLength.then(lang.hitch(this, function(nItemsTotal) {
+				var msg = '';
+				if (typeof this.footerFormatter === "function") {
+					msg = this.footerFormatter(nItems, nItemsTotal);
 				}
-				else if (1 == nItems) {
-					msg = _('1 entry of %d selected', nItemsTotal);
+				else {
+					msg = _('%(num)d entries of %(total)d selected', {num: nItems, total: nItemsTotal});
+					if (0 === nItemsTotal) {
+						msg = _('No entries could be found');
+					}
+					else if (1 === nItems) {
+						msg = _('1 entry of %d selected', nItemsTotal);
+					}
 				}
-			}
-			this._footerLegend.set('content', msg);
+				this._gridInfoLegend.set('content', msg);
+			}));
 		},
 
 		uninitialize: function() {
@@ -830,23 +814,37 @@ define([
 			}
 		},
 
-		filter: function(query) {
+		filter: function(query, options) {
 			// store the last query
 			this.query = query;
-			this.standby(true);
-			this._grid.filter(query);
-			this.clearDisabledItems(false);
-			this.layout();
+			style.set(this._grid.domNode, 'max-height', '1px');
+			//this.moduleStore.clearCache();
+			if (this._store.isUmcpCommandStore) {
+				this.standby(true);
+				// umcpCommand doesn't know a range option -> need to cache
+				this._store.filter(query, options).fetch().then(lang.hitch(this, function(result) {
+					var tempStore = new Memory({
+						idProperty: this.moduleStore.idProperty,
+						data: result
+					});
+					this._grid.set('collection', tempStore);
+					this._updateGridInfoContent();
+					this.standby(false);
+					this.onFilterDone(true);
+					this._setInitialGridHeight();
+				}));
+			} else {
+				this._grid.set('collection', this._store.filter(query, options));
+				this._updateGridInfoContent();
+				this.onFilterDone(true);
+				this._setInitialGridHeight();
+			}
 		},
 
 		getAllItems: function() {
 			// summary:
 			//		Returns a list of all items
-			var items = [];
-			var i;
-			for (i = 0; i < this._grid.rowCount; i++) {
-				items.push(this._grid.getItem(i));
-			}
+			var items = this._grid.collection.fetchSync();
 			return items;
 		},
 
@@ -856,10 +854,11 @@ define([
 			//		Filters disabled items.
 			// returns:
 			//		An array of dictionaries with all available properties of the selected items.
-			return array.filter(this._grid.selection.getSelected(), lang.hitch(this, function(item) {
-				var rowDisabled = this._grid.rowSelectCell.disabled(this._grid.getItemIndex(item));
-				return !rowDisabled;
-			}));
+			var ids = this.getSelectedIDs();
+			var filter = new this._grid.collection.Filter();
+			var selectedItemsFilter = filter.in(this.moduleStore.idProperty, ids);
+			var items = this._grid.collection.filter(selectedItemsFilter).fetchSync();
+			return items;
 		},
 
 		getSelectedIDs: function() {
@@ -867,23 +866,17 @@ define([
 			//		Return the currently selected items.
 			// returns:
 			//		An array of id strings (as specified by moduleStore.idProperty).
-			var items = this.getSelectedItems();
-			var vars = [];
-			for (var iitem = 0; iitem < items.length; ++iitem) {
-				vars.push(this._dataStore.getValue(items[iitem], this.moduleStore.idProperty));
+			var ids = [];
+			for (var id in this._grid.selection){
+				if (this._grid.selection[id]) {
+					ids.push(id);
+				}
 			}
-			return vars; // String[]
+			return ids; // String[]
 		},
 
-		getRowValues: function(rowIndex) {
-			// summary:
-			//		Convenience method to fetch all attributes of an item as dictionary.
-			var values = {};
-			var item = this._grid.getItem(rowIndex);
-			array.forEach(this._dataStore.getAttributes(item), lang.hitch(this, function(key) {
-				values[key] = this._dataStore.getValue(item, key);
-			}));
-			return values;
+		getRowValues: function(row) {
+			return row;
 		},
 
 		getItemIndex: function(id) {
@@ -896,7 +889,7 @@ define([
 			if (!item) {
 				return -1;
 			}
-			return this._grid.getItemIndex(item);
+			return id;
 		},
 
 		getItem: function(id) {
@@ -904,30 +897,44 @@ define([
 			//		Returns the item for a given ID.
 			// id: String
 
-			return lang.getObject('item', false, this._grid._by_idty[id]);
+			var item = array.filter(this._grid._lastCollection || [], function(iitem) {
+				return iitem[this.moduleStore.idProperty] === id;
+			}, this);
+			if (item.length) {
+				return item[0];
+			}
+			return null;
 		},
 
-		_updateDisabledItems: function() {
-			// see how many items are disabled
-			var nDisabledItems = 0;
-			tools.forIn(this._disabledIDs, function() {
-				++nDisabledItems;
-			});
-			if (!nDisabledItems) {
-				// nothing to do
-				return;
-			}
+		//_updateDisabledItems: function() {
+		//    // see how many items are disabled
+		//    var nDisabledItems = 0;
+		//    tools.forIn(this._disabledIDs, function() {
+		//        ++nDisabledItems;
+		//    });
+		//    if (!nDisabledItems) {
+		//        // nothing to do
+		//        return;
+		//    }
 
-			// walk through all elements and make sure that their disabled state
-			// is correctly set
-			var idx, iitem, iid, disabled;
-			for (idx = 0; idx < this._grid.rowCount; ++idx) {
-				iitem = this._grid.getItem(idx);
-				iid = iitem[this.moduleStore.idProperty];
-				disabled = this._disabledIDs[iid] === true;
-				if (disabled === (!this._grid.rowSelectCell.disabled(idx))) {
-					this._grid.rowSelectCell.setDisabled(idx, disabled);
-				}
+		//    // walk through all elements and make sure that their disabled state
+		//    // is correctly set
+		//    var idx, iitem, iid, disabled;
+		//    for (idx = 0; idx < this._grid.rowCount; ++idx) {
+		//        iitem = this._grid.getItem(idx);
+		//        iid = iitem[this.moduleStore.idProperty];
+		//        disabled = this._disabledIDs[iid] === true;
+		//        if (disabled === (!this._grid.rowSelectCell.disabled(idx))) {
+		//            this._grid.rowSelectCell.setDisabled(idx, disabled);
+		//        }
+		//    }
+		//},
+
+		allowSelect: function(row) {
+			if (this._disabledIDs[row.id]) {
+				return false;
+			} else {
+				return true;
 			}
 		},
 
@@ -943,10 +950,16 @@ define([
 			disable = undefined === disable ? true : disable;
 			array.forEach(ids, function(id) {
 				this._disabledIDs[id] = !!disable;
+				if (this._disabledIDs[id]) {
+					this._grid.deselect(id);
+				}
+				var selectorColumn = '0';
+				var selectorCell = this._grid.cell(id, selectorColumn);
+				if (selectorCell.element) {
+					var checkboxNode = selectorCell.element.firstChild;
+					attr.set(checkboxNode, 'disabled', disable);
+				}
 			}, this);
-			this._updateDisabledItems();
-			this._ignoreNextFetch = true;
-			this._grid.render();
 		},
 
 		getDisabledItem: function(_ids) {
@@ -958,9 +971,8 @@ define([
 
 			var ids = tools.stringOrArray(_ids);
 			var result = array.map(ids, function(id) {
-				var idx = this.getItemIndex(id);
-				if (idx >= 0) {
-					return this._grid.rowSelectCell.disabled(idx);
+				if (this._grid.row(id).element) {
+					return this._grid.allowSelect(id);
 				}
 				return null;
 			}, this);
@@ -976,22 +988,16 @@ define([
 			// summary:
 			//		Enables all previously disabled items and clears internal cache.
 
-			// clear internal cache
-			this._disabledIDs = {};
-
 			// enable all disabled items
-			var idx;
-			for (idx = 0; idx < this._grid.rowCount; ++idx) {
-				// enable item if it is disabled
-				if (this._grid.rowSelectCell.disabled(idx)) {
-					this._grid.rowSelectCell.setDisabled(idx, false);
+			for (var id in this._disabledIDs) {
+				if (this._disabledIDs[id] === true) {
+					this.setDisabledItem(id, false);
 				}
 			}
 
 			// perform rendering if requested
 			if (undefined === doRendering || doRendering) {
-				this._ignoreNextFetch = true;
-				this._grid.render();
+				this._grid.refresh();
 			}
 		},
 
@@ -1001,7 +1007,7 @@ define([
 			var actionObj = null;
 			var executableItems = [];
 
-			if (typeof action == "string") {
+			if (typeof action === "string") {
 				var tmpActions = array.filter(this.actions, function(iaction) {
 					return iaction.isMultiAction && iaction.name == action;
 				});
@@ -1011,7 +1017,7 @@ define([
 				actionObj = tmpActions[0];
 			}
 			executableItems = array.filter(items, function(iitem) {
-				return typeof actionObj.canExecute == "function" ? actionObj.canExecute(iitem) : true;
+				return typeof actionObj.canExecute === "function" ? actionObj.canExecute(iitem) : true;
 			});
 
 			return executableItems;

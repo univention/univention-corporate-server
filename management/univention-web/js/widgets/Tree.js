@@ -26,111 +26,173 @@
  * /usr/share/common-licenses/AGPL-3; if not, see
  * <http://www.gnu.org/licenses/>.
  */
-/*global define clearTimeout*/
+/*global define, require*/
 
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dijit/Tree"
-], function(declare, lang, array, Tree) {
-	return declare("umc.widgets.Tree", Tree, {
-		// summary:
-		//		Extension of `dijit.Tree` with a `refresh()` method.
-		// description:
-		//		This code has been imported from: http://bugs.dojotoolkit.org/ticket/11065
-
-		'class': 'umcDynamicHeight',
-
-		/**
-		 * Unset tree's attributes but leave the widget untouched.
-		 * This code is copied from dijit.Tree's .destroy()-method.
-		 *
-		 * dijit.Tree.destroy() could be reduced to
-		 *
-		 * destroy: function() {
-		 * 		this._destroy();
-		 * 		this.inherited(arguments);
-		 * }
-		 *
-		 * if someone of the dijit.Tree-developers can
-		 * implement this ._destroy()-method.
-		 *
-		 **/
-		_destroy: function(){
-			if(this._curSearch){
-				clearTimeout(this._curSearch.timer);
-				delete this._curSearch;
-			}
-			if(this.rootNode){
-				this.rootNode.destroyRecursive();
-			}
-			if(this.dndController && typeof this.dndController != "string"){
-				this.dndController.destroy();
-			}
-			this.rootNode = null;
+	"dojo/on",
+	"dojo/mouse",
+	"dojo/Evented",
+	"dojo/Deferred",
+	"dijit/Destroyable",
+	"dgrid/OnDemandGrid",
+	"dgrid/Tree",
+	"dgrid/Selection",
+	"dgrid/extensions/DijitRegistry",
+	"dstore/Memory",
+	"dstore/Trackable",
+	"dstore/Tree",
+	"./ContainerWidget",
+	"./_RegisterOnShowMixin",
+	"xstyle/css!../../dgrid/css/dgrid.css"
+], function(declare, lang, array, on, mouse, Evented, Deferred, Destroyable, OnDemandGrid, Tree, Selection, DijitRegistry, Memory, Trackable, TreeDstore, ContainerWidget, _RegisterOnShowMixin) {
+	return declare("umc.widgets.Tree", [ContainerWidget, _RegisterOnShowMixin, Evented], {
+		postMixInProperties: function() {
+			this.inherited(arguments);
 		},
-
-		resize: function() {
-			//console.log('### Tree.resize');
-		},
-
-		/**
-		 * reload the whole tree
-		 *
-		 * (many thanks to the tips from Rob Weiss found here:
-		 * http://mail.dojotoolkit.org/pipermail/dojo-interest/2010-April/045180.html)
-		 */
-		reload: function () {
-			/* remember current paths:
-			 * simplify all nodes of paths-array to strings of identifiers because
-			 * after reload the nodes may have different ids and therefore the
-			 * paths may not be applied */
-			var reloadPaths = array.map(this.get('paths'), lang.hitch(this, function(path) {
-				return array.map(path, lang.hitch(this, function(pathItem) {
-					return this.model.getIdentity(pathItem) + '';
-				}));
-			}));
-
-			/* reset tree: */
-			this._destroy();
-			this.dndController = "dijit.tree._dndSelector";
-
-			/* unset the store's cache (if existing).
-			 * TODO: currently only tested on JsonRestStore! */
-			/*if (dojox && dojox.rpc && dojox.rpc.Rest && dojox.rpc.Rest._index) {
-				for (var idx in dojox.rpc.Rest._index) {
-					if (idx.match("^" + this.model.store.target)) {
-						delete dojox.rpc.Rest._index[idx];
+		buildRendering: function() {
+			this.inherited(arguments);
+			var GridTree = declare([OnDemandGrid, Tree, Selection, DijitRegistry, Destroyable]);
+			this._gridTree = new GridTree(lang.mixin({
+				collection: null,
+				collapseOnRefresh: true,
+				shouldExpand: lang.hitch(this, 'shouldExpandAndSelect'),
+				showHeader: false,
+				columns: {
+					label: {
+						label: 'DN',
+						renderExpando: true,
+						formatter: lang.hitch(this, function(value, object) {
+							return this.getRowIconHTML(object.icon) + value;
+						})
 					}
 				}
-			}*/
-
-			// reset the tree.model's root
-			this.model.constructor({
-				rootId: '0',
-				rootLabel: ''
-			});
-
-			// rebuild the tree
-			this.postMixInProperties();
-			this.postCreate(); // FIXME: this registers events again
-
-			/* reset the paths */
-			this._reloadOnLoadConnect = this.on('load', lang.hitch(this, function() {
-				/* restore old paths.
-				 * FIXME: this will result in an error if a formerly selected item
-				 * is no longer existent in the tree after reloading! */
-				this.set('paths', reloadPaths).then(lang.hitch(this, function() {
-					if (this.get('selectedNode')) {
-						this.focusNode(this.get('selectedNode'));
-					}
-					this._reloadOnLoadConnect.remove();
-					this._reloadOnLoadConnect = null;
-				}));
+			}, {}));
+			this.addChild(this._gridTree);
+			this._gridTree.on('dgrid-select', lang.hitch(this, '_selectionChanged'));
+			this._gridTree.on(on.selector('.dgrid-content .dgrid-row', mouse.enter), lang.hitch(this, function (event) {
+				var row = this._gridTree.row(event);
+				var legacyObject = {
+					item: row.data
+				};
+				this._onNodeMouseEnter(legacyObject);
 			}));
+		},
+		_getStore: function() {
+			var MemoryTree = declare([Memory, Trackable, TreeDstore]);
+			var store = new MemoryTree({
+				getChildren: lang.hitch(this, function(parentItem) {
+					var childrenStore = new MemoryTree();
+					this.model.getChildren(parentItem, lang.hitch(this, function(items){
+						items.forEach(lang.hitch(this, function(item) {
+							item.parentId = parentItem.id;
+							childrenStore.put(item);
+						}));
+					}));
+					return childrenStore;
+				}),
+				mayHaveChildren: lang.hitch(this, function(item) {
+					return this.model.mayHaveChildren(item);
+				})
+			});
+			this.model.getRoot(lang.hitch(this, function(item) {
+				store.put(item);
+				this.emit("load", {});
+			}));
+			return store;
+		},
+		startup: function() {
+			this.inherited(arguments);
+			this._loadGridTreeData();
+			this._registerAtParentOnShowEvents(lang.hitch(this._gridTree, 'resize'));
+		},
+		_loadGridTreeData: function() {
+			this._gridTree.set('collection', this._getStore());
+		},
+		reload: function() {
+			this._loadGridTreeData();
+		},
+		shouldExpandAndSelect: function(row) {
+			var isItemOnPath = array.some(this.path, function(itemOnPath) {
+				return itemOnPath.id === row.id;
+			});
+			if (this.path && row.id === this.path[this.path.length - 1].id) {
+				this._gridTree.select(row.id);
+			}
+			return isItemOnPath;
+		},
+		getRowIconHTML: function(icon) {
+			var html = lang.replace('<img src="{url}/umc/icons/16x16/{icon}.png" role="presentation" class="dgrid-tree-icon"/>', {
+				icon: icon,
+				url: require.toUrl('dijit/themes')
+			});
+			return html;
+		},
+		path: null,
+		_selectionChanged: function() {
+			var selectedObject = this._getSelectedObjects()[0];
+			var path = [];
+			var objectOnPath = selectedObject;
+			var parentObject = null;
+			while (objectOnPath.parentId) {
+				parentObject = this._getObject(objectOnPath.parentId);
+				path.push(parentObject);
+				objectOnPath = parentObject;
+			}
+			path.push(selectedObject);
+			this._set('path', path);
+		},
+		selectedItems: null,
+		_getSelectedItemsAttr: function() {
+			this.selectedItems = this._getSelectedObjects();
+			return this.selectedItems;
+		},
+		_getSelectedObjects: function() {
+			var selectedItems = [];
+			for (var id in this._gridTree.selection) {
+				if (this._gridTree.selection[id]) {
+					selectedItems.push(this._getObject(id));
+				}
+			}
+			return selectedItems;
+		},
+
+		_getObject: function(id) {
+			var row = this._gridTree.row(id);
+			return row.data;
+		},
+		_setPathAttr: function(pathTemp) {
+			var path = [];
+			var pathChanged = false;
+			array.forEach(pathTemp, lang.hitch(this, function(_location) {
+				if (typeof(_location) === 'object') {
+					path.push(_location);
+				} else {
+					path.push(this._getObject(_location));
+				}
+			}));
+			if (this.path && path.length === this.path.length) {
+				for (var i = 0; i < path.length; i++) {
+					if (this.path[i].id !== path[i].id) {
+						pathChanged = true;
+						break;
+					}
+				}
+			} else {
+				pathChanged = true;
+			}
+			if (pathChanged) {
+				this.path = path;
+				this._gridTree.refresh();
+			}
+		},
+		_onNodeMouseEnter: function() {
+			return;
+		},
+		indentDetector: {
+			style: ''
 		}
 	});
 });
-
-
