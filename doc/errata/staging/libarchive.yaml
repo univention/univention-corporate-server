@@ -18,14 +18,15 @@ desc: |
  * Unclear invalid memory read in mtree parser (CVE-2015-8925)
  * NULL pointer access in RAR parser (CVE-2015-8926)
  * Endless loop in ISO parser (CVE-2015-8930)
- * Undefined behavior (signed integer overflow) in mtree parser (CVE-2015-8931)
+ * Undefined behavior (signed integer overflow) in mtree parser
+   (CVE-2015-8931)
  * Undefined behavior / invalid shiftleft in TAR parser (CVE-2015-8932)
  * Signed integer overflow in archive_read_format_tar_skip() (CVE-2015-8933)
  * Out of bounds heap read in RAR parser (CVE-2015-8934)
  * 7-Zip read_SubStreamsInfo Integer Overflow (CVE-2016-4300)
  * Libarchive Rar RestartModel Heap Overflow (CVE-2016-4302)
  * Memory allocate error with symbolic links in cpio archives (CVE-2016-4809)
- * undefined behaviour (integer overflow) in iso parser (CVE-2016-5844) 
+ * undefined behaviour (integer overflow) in iso parser (CVE-2016-5844)
  * Out of bounds read using malformed cpio archive (CVE-2015-8915)
  * Denial of service bug with gzip quine (CVE-2016-7166)
  * The sandboxing code mishandles hardlink archive entries of non-zero data
