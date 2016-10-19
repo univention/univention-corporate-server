@@ -15,3 +15,4 @@ desc: |
  * The initialization of all Apps could result in a traceback for Apps with a
    certain version history.
 bug: [42527, 42713, 41992]
+announced: 2016-10-19
