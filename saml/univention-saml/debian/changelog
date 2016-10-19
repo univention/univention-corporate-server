@@ -1,3 +1,9 @@
+univention-saml (3.0.27-6) unstable; urgency=medium
+
+  * Bug 41187: fix module description translation
+
+ -- Eduard Mai <mai@univention.de>  Wed, 19 Oct 2016 18:49:30 +0200
+
 univention-saml (3.0.27-5) unstable; urgency=low
 
   * Bug #42071: Corrected a typo.

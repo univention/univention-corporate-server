@@ -27,13 +27,21 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+override_dh_auto_build:
+	dh-umc-module-build -c
+	dh_auto_build
 
 override_dh_auto_install:
+	dh-umc-module-install -c
+	# usage of -c results in umc-core.mo being created which is not the mo file
+	# that will be queried for the translation strings of umc/saml-serviceprovider.xml:
+	mv debian/univention-saml/usr/share/univention-management-console/i18n/de/umc-core.mo debian/univention-saml/usr/share/univention-management-console/i18n/de/udm-saml.mo
 	dh_auto_install
 	univention-install-config-registry
 
 override_dh_auto_test:
 	dh_auto_test
 	ucslint
+
 %:
 	dh $@ --with 'python_support'
