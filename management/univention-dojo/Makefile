@@ -37,7 +37,7 @@ INSTDIR=/usr/share/${PKGNAME}
 LIBDIR:=$(CURDIR)/libs
 
 # all JS packages
-LIBS=dojo libs/dgrid libs/put-selector libs/xstyle
+LIBS=dojo libs/dgrid libs/dstore libs/put-selector libs/xstyle
 
 .PHONY: clean all install
 

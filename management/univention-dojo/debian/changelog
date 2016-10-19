@@ -1,3 +1,9 @@
+univention-dojo (10.0.0-2) unstable; urgency=medium
+
+  * Bug #42291: Added/Updated dgrid and dstore 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 19 Oct 2016 18:33:12 +0200
+
 univention-dojo (10.0.0-1) unstable; urgency=medium
 
   * Bug #41963: UCS-4.2 version bump
