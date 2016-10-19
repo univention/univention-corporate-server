@@ -607,8 +607,9 @@ class simpleLdap(base):
 		if not set([self.superordinate.module]) & superordinate_names:
 			raise univention.admin.uexceptions.insufficientInformation(_('The given %r superordinate is expected to be of type %s.') % (self.superordinate.module, ', '.join(superordinate_names)))
 
-		if self.position and not self.__ensure_subtree(self.superordinate.dn, self.position.getDn()):
-			raise univention.admin.uexceptions.insufficientInformation(_('The position must be in the subtree of the superordinate.'))
+		if self.position and not self.lo.lo.compare_dn(self.position.getDn(), self.position.getBase()):
+			if not self.__ensure_subtree(self.superordinate.dn, self.position.getDn()):
+				raise univention.admin.uexceptions.insufficientInformation(_('The position must be in the subtree of the superordinate.'))
 
 		if self.dn and not self.__ensure_subtree(self.superordinate.dn, self.lo.parentDn(self.dn)):
 			raise univention.admin.uexceptions.insufficientInformation(_('The DN must be underneath of the superordinate.'))
