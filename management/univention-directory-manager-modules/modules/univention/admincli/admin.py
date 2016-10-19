@@ -602,6 +602,9 @@ def _doit(arglist):
 	if superordinate_dn and univention.admin.modules.superordinate(module):
 		# the superordinate itself also has a superordinate, get it!
 		superordinate = univention.admin.objects.get_superordinate(module, None, lo, superordinate_dn)
+		if superordinate is None:
+			out.append('E: %s is not a superordinate for %s.' % (superordinate_dn, univention.admin.modules.name(module)))
+			return out + ["OPERATION FAILED"]
 
 	if len(arglist) == 2:
 		out = usage() + module_usage(information)
