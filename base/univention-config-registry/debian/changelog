@@ -1,6 +1,12 @@
+univention-config-registry (11.0.0-7) unstable; urgency=low
+
+  * Bug #41735: Skip checking non-existing files
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 19 Oct 2016 14:37:39 +0200
+
 univention-config-registry (11.0.0-6) unstable; urgency=low
 
-  * Bug #41735: Check checking non-existing files
+  * Bug #41735: Skip checking non-existing files
 
  -- Philipp Hahn <hahn@univention.de>  Tue, 18 Oct 2016 08:50:24 +0200
 
