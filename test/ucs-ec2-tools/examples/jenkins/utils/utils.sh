@@ -281,6 +281,11 @@ install_ucs_test ()
 	install_with_unmaintained ucs-test
 }
 
+install_additional_packages ()
+{
+	install_with_unmaintained "$@"
+}
+
 install_apps_test_packages ()
 {
 	local app rv=0
