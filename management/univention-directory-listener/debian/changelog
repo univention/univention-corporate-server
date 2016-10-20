@@ -1,3 +1,9 @@
+univention-directory-listener (11.0.0-6) unstable; urgency=low
+
+  * Bug #42573: Initialize UCRV 'listener/freespace'=10 MiB
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 20 Oct 2016 10:02:21 +0200
+
 univention-directory-listener (11.0.0-5) unstable; urgency=low
 
   * Bug #41842: Write module state after init
