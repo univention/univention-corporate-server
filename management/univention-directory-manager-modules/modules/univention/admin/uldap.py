@@ -145,7 +145,7 @@ class position:
 		return self.__base
 
 	def isBase(self):
-		return self.getDn() == self.getBase()
+		return access.compare_dn(self.getDn(), self.getBase())
 
 	def getDomain(self):
 		if not self.__indomain or self.getDn() == self.getBase():
@@ -343,6 +343,10 @@ class access:
 		if not hasattr(self.lo, 'get_schema'):  # introduced in UCS 4.1-2 erratum. can be removed in the future
 			return ldap.schema.SubSchema(self.lo.lo.read_subschemasubentry_s(self.lo.lo.search_subschemasubentry_s()), 0)
 		return self.lo.get_schema()
+
+	@classmethod
+	def compare_dn(cls, a, b):
+		return univention.uldap.compare_dn(a, b)
 
 	def get(self, dn, attr=[], required=0, exceptions=0):
 		return self.lo.get(dn, attr, required)
