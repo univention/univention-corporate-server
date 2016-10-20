@@ -14,4 +14,6 @@ desc: |
  * For each changed LDAP entry the distinguished name is now logged with debug
    level 'PROCESS'.
  * Several quoting problems in the init and runit scripts have been fixed.
-bug: [42328,41960,41842,42573]
+ * Build-hardening and more warnings were enabled for the compiler. Error
+   handling and logging was improved.
+bug: [42328,41960,41842,42573,42701]
