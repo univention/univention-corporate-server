@@ -66,7 +66,7 @@ from json import loads
 
 # univention
 from univention.management.console.log import MODULE
-from univention.config_registry import ConfigRegistry, handler_commit
+from univention.config_registry import handler_commit
 from univention.config_registry.frontend import ucr_update
 import univention.uldap as uldap
 import univention.management.console as umc
@@ -82,14 +82,13 @@ from univention.management.console.ldap import machine_connection, get_machine_c
 from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 from univention.appcenter.app import AppManager
 from univention.appcenter.actions import get_action
-from univention.appcenter.ucr import ucr_save
+from univention.appcenter.ucr import ucr_instance, ucr_save
 
 CACHE_DIR = '/var/cache/univention-appcenter'
 LOCAL_ARCHIVE = '/usr/share/univention-appcenter/local/all.tar.gz'
 FRONTEND_ICONS_DIR = '/usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons'
 UCR_VARIABLE_TOKEN = re.compile('@%@')
-ucr = ConfigRegistry()
-ucr.load()
+ucr = ucr_instance()
 
 _ = umc.Translation('univention-management-console-module-appcenter').translate
 

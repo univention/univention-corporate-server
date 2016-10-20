@@ -1,3 +1,9 @@
+univention-appcenter (6.0.0-13) unstable; urgency=medium
+
+  * Bug #42619: Remove dangerous use of UCR functions
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Thu, 20 Oct 2016 18:04:45 +0200
+
 univention-appcenter (6.0.0-12) unstable; urgency=medium
 
   * Bug #41992: Fix App initilialization in old code

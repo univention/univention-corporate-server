@@ -47,6 +47,7 @@ from hashlib import md5
 from univention.management.console.log import MODULE
 import univention.management.console as umc
 import univention.config_registry
+from univention.config_registry.frontend import ucr_update
 from univention.admin.handlers.computers import domaincontroller_master
 from univention.admin.handlers.computers import domaincontroller_backup
 from univention.admin.handlers.computers import domaincontroller_slave
@@ -263,41 +264,34 @@ class Changes(object):
 			Function handles boolean values properly.
 		"""
 		try:
-			oldval = self.ucr.get(name, '')
+			oldval = self.ucr.get(name)
 			if isinstance(value, bool):
 				value = self._bool_string(name, value)
-
-			# Don't do anything if the value being set is the same as
-			# the value already found.
-			if value == oldval:
-				return
 
 			# Possibly useful: if the value is the empty string -> try to unset this variable.
 			# FIXME Someone please confirm that there are no UCR variables that need
 			#		to be set to an empty string!
 			if value == '':
-				if name in self.ucr:
-					MODULE.info("Deleting registry variable '%s'" % name)
-					del self.ucr[name]
-			else:
-				MODULE.info("Setting registry variable '%s' = '%s'" % (name, value))
-				self.ucr[name] = value
-			self._changes[name] = (oldval, value)
+				value = None
+
+			# Don't do anything if the value being set is the same as
+			# the value already found.
+			if value == oldval:
+				return
+			MODULE.info('Setting registry variable %r to %r' % (name, value))
+
+			self._changes[name] = value
 		except Exception as e:
 			MODULE.warn("set_registry_var('%s', '%s') ERROR %s" % (name, value, str(e)))
 
 	def commit(self):
-		handler = univention.config_registry.configHandlers()
-		handler.load()
-		handler(self._changes.keys(), (self.ucr, self._changes))
+		ucr_update(self.ucr, self._changes)
 
 @contextmanager
 def set_save_commit_load(ucr):
 	ucr.load()
 	changes = Changes(ucr)
 	yield changes
-	ucr.save()
-	ucr.load()
 	if changes.changed():
 		changes.commit()
 
