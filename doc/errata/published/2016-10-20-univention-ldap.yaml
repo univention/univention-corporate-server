@@ -10,3 +10,4 @@ desc: |
    New passwords are stored with Sha512 instead of MD5. Changing empty
    passwords is not allowed anymore.
 bug: [42103]
+announced: 2016-10-20
