@@ -10,3 +10,4 @@ desc: |
  * Variables in 'umc.sh' are now declared local to not clobber global
    variables.
 bug: [24758]
+announced: 2016-10-20
