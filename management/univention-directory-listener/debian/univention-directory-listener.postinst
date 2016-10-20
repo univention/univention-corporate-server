@@ -48,6 +48,7 @@ fi
 #DEBHELPER#
 
 univention-config-registry set listener/debug/level?2 \
+	listener/freespace?10 \
 								listener/network/protocol=all
 
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=17998
