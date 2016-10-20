@@ -272,23 +272,20 @@ class Changes(object):
 			# FIXME Someone please confirm that there are no UCR variables that need
 			#		to be set to an empty string!
 			if value == '':
-				MODULE.info("Deleting registry variable '%s'" % name)
 				value = None
-			else:
-				MODULE.info("Setting registry variable '%s' = '%s'" % (name, value))
 
 			# Don't do anything if the value being set is the same as
 			# the value already found.
 			if value == oldval:
-				MODULE.info("Skipping... '%s' already set to '%s'" % (name, value))
 				return
+			MODULE.info('Setting registry variable %r to %r' % (name, value))
 
 			self._changes[name] = value
 		except Exception as e:
 			MODULE.warn("set_registry_var('%s', '%s') ERROR %s" % (name, value, str(e)))
 
 	def commit(self):
-		ucr_update(self._changes)
+		ucr_update(self.ucr, self._changes)
 
 @contextmanager
 def set_save_commit_load(ucr):
