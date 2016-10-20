@@ -11,3 +11,4 @@ desc: |
    that group to access the management capabilities of 'libvirtd' without
    becoming 'root'.
 bug: [42622]
+announced: 2016-10-20
