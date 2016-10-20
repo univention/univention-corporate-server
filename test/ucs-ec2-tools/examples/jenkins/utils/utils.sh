@@ -283,7 +283,9 @@ install_ucs_test ()
 
 install_additional_packages ()
 {
-	install_with_unmaintained "$@"
+	if [ -n "$1" ]; then
+		install_with_unmaintained "$@"
+	fi
 }
 
 install_apps_test_packages ()
