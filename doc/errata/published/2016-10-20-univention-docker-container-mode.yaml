@@ -12,3 +12,4 @@ desc: |
    installed in one run.
  * Abort installation if the App is not found instead of doing nothing.
 bug: [42602, 42603, 39803]
+announced: 2016-10-20
