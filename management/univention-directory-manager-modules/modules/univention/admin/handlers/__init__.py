@@ -163,6 +163,14 @@ class base(object):
 				missing.append(name)
 		if missing:
 			raise univention.admin.uexceptions.insufficientInformation(_('The following properties are missing:\n%s') % ('\n'.join(missing),))
+
+		# when creating a object make sure that its position is underneath of its superordinate
+		if not self.exists() and self.position and self.superordinate:
+			if not self.__ensure_dn_in_subtree(self.superordinate.dn, self.position.getDn()):
+				raise univention.admin.uexceptions.insufficientInformation(_('The position must be in the subtree of the superordinate.'))
+
+		self.__validate_superordinate()
+
 		return True
 
 	def has_key(self, key):
@@ -561,7 +569,7 @@ class simpleLdap(base):
 		if not hasattr(self, 'descriptions'):
 			self.descriptions = getattr(m, 'property_descriptions', None)
 
-		self._validate_information()
+		self.__validate_superordinate()
 
 		self.info = {}
 		self.oldattr = {}
@@ -587,14 +595,14 @@ class simpleLdap(base):
 	def exists( self ):
 		return self._exists
 
-	def _validate_information(self):
+	def __validate_superordinate(self):
 		superordinate_names = set(univention.admin.modules.superordinate_names(self.module))
 		if not superordinate_names:
 			return  # module has no superodinates
 
 		if not self.superordinate:
 			if superordinate_names == set(['settings/cn']):
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'No settings/cn superordinate was given.')
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'No settings/cn superordinate was given.')
 				return   # settings/cn might be misued as superordinate, don't risk currently
 			raise univention.admin.uexceptions.insufficientInformation(_('No superordinate object given.'))
 
@@ -607,14 +615,10 @@ class simpleLdap(base):
 		if not set([self.superordinate.module]) & superordinate_names:
 			raise univention.admin.uexceptions.insufficientInformation(_('The given %r superordinate is expected to be of type %s.') % (self.superordinate.module, ', '.join(superordinate_names)))
 
-		if self.position and not self.lo.lo.compare_dn(self.position.getDn(), self.position.getBase()):
-			if not self.__ensure_subtree(self.superordinate.dn, self.position.getDn()):
-				raise univention.admin.uexceptions.insufficientInformation(_('The position must be in the subtree of the superordinate.'))
-
-		if self.dn and not self.__ensure_subtree(self.superordinate.dn, self.lo.parentDn(self.dn)):
+		if self.dn and not self.__ensure_dn_in_subtree(self.superordinate.dn, self.lo.parentDn(self.dn)):
 			raise univention.admin.uexceptions.insufficientInformation(_('The DN must be underneath of the superordinate.'))
 
-	def __ensure_subtree(self, parent, dn):
+	def __ensure_dn_in_subtree(self, parent, dn):
 		while dn:
 			if self.lo.lo.compare_dn(dn, parent):
 				return True
