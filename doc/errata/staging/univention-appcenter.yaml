@@ -1,0 +1,10 @@
+product: ucs
+release: "4.1"
+version: [3]
+scope: ucs_4.1-0-errata4.1-3
+src: univention-appcenter
+fix: 5.0.22-22.228.201610201802
+desc: |
+ This update addresses the following issue(s):
+ * A race condition could lead to data loss in the Univention Config Registry.
+bug: [42619]
