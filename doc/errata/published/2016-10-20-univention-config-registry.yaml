@@ -9,3 +9,4 @@ desc: |
  * `univention-check-templates` now checks all files below '/etc/univention/'
    for modifications.
 bug: [41735]
+announced: 2016-10-20
