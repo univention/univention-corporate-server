@@ -1,3 +1,9 @@
+univention-directory-logger (7.0.1-4) unstable; urgency=low
+
+  * Bug #42665: Workaroung ucr.iteritems() Bug #33101
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 21 Oct 2016 15:19:20 +0200
+
 univention-directory-logger (7.0.1-3) unstable; urgency=low
 
   * Bug #34916: Remove message from dellog processing
