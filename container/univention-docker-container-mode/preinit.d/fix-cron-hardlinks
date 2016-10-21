@@ -1,9 +1,8 @@
 #!/bin/sh
 #
-# Univention Docker Container Mode
-#  postinst script for the debian package
+# Univention Docker Container Mode - fix-cron-hardlinks
 #
-# Copyright 2015 Univention GmbH
+# Copyright 2016 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,15 +29,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-ucr set homedir/mount?false
-
-if [ "$1" = configure ]; then
-	if dpkg --compare-versions "$2" lt-nl '1.0.11-2'; then
-		/etc/univention/docker/preinit.d/fix-cron-hardlinks
-	fi
+if [ -f /etc/crontab ]; then
+	touch /etc/crontab
 fi
 
-#DEBHELPER#
-
-exit 0
-
+if [ -d /etc/cron.d ]; then
+	touch /etc/cron.d/*
+fi

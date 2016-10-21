@@ -1,3 +1,4 @@
 sbin/init
 usr/share/univention-docker-container-mode/*
 .univention-environment
+preinit.d/fix-cron-hardlinks etc/univention/docker/preinit.d
