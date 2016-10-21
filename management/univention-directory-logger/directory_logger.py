@@ -146,7 +146,7 @@ def handler(dn, new_copy, old_copy):
 		# check for exclusion
 		if any(
 			value in dn
-			for key, value in listener.configRegistry.iteritems()
+			for key, value in listener.configRegistry.items()
 			if excludeKeyPattern.match(key)
 		):
 			if not new_copy:  # there should be a dellog entry to remove
