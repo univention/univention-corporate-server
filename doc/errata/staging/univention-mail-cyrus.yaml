@@ -6,7 +6,8 @@ src: univention-mail-cyrus
 fix: 6.100.0-1~ucs3.3.210.201610191802
 desc: |
  This update addresses the following issue(s):
- * SSLv2 has been disabled by default in Cyrus IMAP. To reenable the previous
-   settings set the new UCR variable mail/cyrus/ssl/cipher_list to
-   'TLSv1:SSLv3:SSLv2:!NULL:!EXPORT:!DES:!LOW:@STRENGTH'.
+ * SSLv2 has been disabled by default in Cyrus IMAP.
+   The new UCR variable mail/cyrus/ssl/cipher_list allows to change the
+   supported cypher list. It will however ignore "SSLv2", as it has been
+   disabled in the program code.
 bug: [41378]
