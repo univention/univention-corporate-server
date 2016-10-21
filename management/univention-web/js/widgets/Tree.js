@@ -130,7 +130,7 @@ define([
 			});
 			return html;
 		},
-		path: null,
+		path: [],
 		_selectionChanged: function() {
 			var selectedObject = this._getSelectedObjects()[0];
 			var path = [];
