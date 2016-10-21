@@ -360,10 +360,26 @@ define([
 			this._scrollSignal = on(win.doc, 'scroll', lang.hitch(this, '_onScroll'));
 			this.own(this._scrollSignal);
 
+			this.on('filterDone', lang.hitch(this, '_updateGlobalCanExecute'));
+
 			if (this.query) {
 				this.filter(this.query);
 			}
 
+		},
+
+		_updateGlobalCanExecute: function() {
+			var items = this.getAllItems();
+			array.forEach(this._getGlobalActions(), lang.hitch(this, function(action) {
+				if (action.canExecute) {
+					var enabled = action.canExecute(items);
+					array.forEach(this._toolbar.getChildren(), function(button) {
+						if (button.name == action.name) {
+							button.set('disabled', !enabled);
+						}
+					});
+				}
+			}));
 		},
 
 		_cleanupWidgets: function() {

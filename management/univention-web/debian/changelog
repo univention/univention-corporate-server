@@ -1,3 +1,9 @@
+univention-web (1.0.2-7) unstable; urgency=medium
+
+  * Bug #32027: Update canExecute on grid changes 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 21 Oct 2016 13:05:57 +0200
+
 univention-web (1.0.2-6) unstable; urgency=medium
 
   * Bug #42291: Update grid and tree widget for dgrid 
