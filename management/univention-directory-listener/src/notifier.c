@@ -42,6 +42,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <inttypes.h>
 #include <sys/time.h>
 #include <sys/statvfs.h>
 
@@ -83,7 +84,7 @@ static int connect_to_ldap(univention_ldap_parameters_t *lp)
 
 static void check_free_space()
 {
-	static int min_mib = -2;
+	static int64_t min_mib = -2;
 	const char *dirnames[] = {
 		cache_dir,
 		ldap_dir,
@@ -98,16 +99,16 @@ static void check_free_space()
 
 	for (dirname=dirnames; *dirname; dirname++) {
 		struct statvfs buf;
-		int free_mib;
+		int64_t free_mib;
 
 		if (statvfs(*dirname, &buf))
 			continue;
 
-		free_mib = ((long)buf.f_bavail * (long)buf.f_frsize) >> 20;
+		free_mib = ((int64_t)buf.f_bavail * (int64_t)buf.f_frsize) >> 20;
 		if (free_mib >= min_mib)
 			continue;
 
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "File system '%s' full: %d < %d", *dirname, free_mib, min_mib);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "File system '%s' full: %"PRId64" < %"PRId64, *dirname, free_mib, min_mib);
 		abort();
 	}
 }
