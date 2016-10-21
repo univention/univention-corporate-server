@@ -114,7 +114,7 @@ def process_dellog(dn):
 
 	dellist = os.listdir(dellog)
 	dellist.sort()
-	for leftover, filename in enumerate(dellist):
+	for filename in dellist:
 		pathname = os.path.join(dellog, filename)
 		try:
 			with open(pathname, 'r') as f:
@@ -126,7 +126,6 @@ def process_dellog(dn):
 			continue
 
 		if dellog_dn == dn:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: dn found in dellog entry %s, ID %s (+%s)' % (name, filename, dellog_id, leftover))
 			timestamp = ldapTime2string(dellog_stamp)
 			break
 	else:
