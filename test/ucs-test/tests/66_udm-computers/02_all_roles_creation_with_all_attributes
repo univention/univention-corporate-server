@@ -6,9 +6,6 @@
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools
-## versions:
-##  4.0-2: skip
-
 
 import smbpasswd
 import univention.testing.udm as udm_test
@@ -73,7 +70,6 @@ if __name__ == '__main__':
 				properties['shell'] =  uts.random_string()
 				properties['primaryGroup'] =  udm.create_group(check_for_drs_replication=False)[0]
 				properties['groups'] = [udm.create_group(check_for_drs_replication=False)[0], udm.create_group(check_for_drs_replication=False)[0]]
-				properties['sambaRID'] = uts.random_int(10000, 12000)
 				expectedLdap['gidNumber'] = ldap.search(base = properties['primaryGroup'], attr = ['gidNumber'])[0][1].get('gidNumber', [])
 				expectedLdap['loginShell'] =  [properties['shell']]
 				expectedLdap['sambaPrimaryGroupSID'] =  [ldap.getAttr(properties['primaryGroup'], 'sambaSID')[0]]

@@ -1,3 +1,9 @@
+ucs-test (6.0.36-36) unstable; urgency=low
+
+  * 02_all_roles_creation_with_all_attributes: removed sambaRID (Bug #37390) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 21 Oct 2016 12:43:45 +0200
+
 ucs-test (6.0.36-35) unstable; urgency=medium
 
   * 67_udm-dns/10?_*: WIP tag has been removed with r73202 (Bug #39269)
