@@ -210,6 +210,14 @@
 			</itemizedlist>
 		</section>
 
+		<section id="changelog:umc:join">
+			<title>Domain join module</title>
+			<itemizedlist>
+				<listitem><simpara>
+					The "execute pending join scripts" button is now greyed out if no unconfigured join scripts exists (<u:bug>35326</u:bug>).
+				</simpara></listitem>
+			</itemizedlist>
+		</section>
 				<!--
 		<section id="changelog:umc:user">
 			<title>Users module</title>

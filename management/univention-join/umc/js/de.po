@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: univention-management-console-module-join\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2016-01-14 12:34+0100\n"
+"POT-Creation-Date: 2016-10-21 13:21+0200\n"
 "PO-Revision-Date: 2012-04-23 16:17+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -12,12 +12,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: umc/js/join/Grid.js:174
+#: umc/js/join/Grid.js:172
 #, python-format
 msgid "%d scripts are pending to be run."
 msgstr "Insgesamt können %d Skripte ausgeführt werden."
 
-#: umc/js/join/Grid.js:166
+#: umc/js/join/Grid.js:164
 #, python-format
 msgid "%d scripts selected"
 msgstr "%d Skripte ausgewählt"
@@ -26,7 +26,7 @@ msgstr "%d Skripte ausgewählt"
 msgid "... loading log ..."
 msgstr "... Protokoll wird geladen ..."
 
-#: umc/js/join/Grid.js:166
+#: umc/js/join/Grid.js:164
 msgid "1 script selected"
 msgstr "1 Skript ausgewählt"
 
@@ -65,8 +65,8 @@ msgid ""
 "As %(root)s you do not have access to the App Center. For this you need to "
 "log in as %(administrator)s."
 msgstr ""
-"Als %(root)s haben Sie keinen Zugriff auf das App Center. Dafür müssen Sie sich "
-"als %(administrator)s anmelden."
+"Als %(root)s haben Sie keinen Zugriff auf das App Center. Dafür müssen Sie "
+"sich als %(administrator)s anmelden."
 
 #: umc/js/join.js:63
 #, python-format
@@ -74,8 +74,8 @@ msgid ""
 "As %(root)s you have neither access to the domain administration nor to the "
 "App Center. For this you need to log in as %(administrator)s."
 msgstr ""
-"Als %(root)s haben Sie weder Zugriff auf die Domänenadministration noch auf das "
-"App Center. Dafür müssen Sie sich als %(administrator)s anmelden."
+"Als %(root)s haben Sie weder Zugriff auf die Domänenadministration noch auf "
+"das App Center. Dafür müssen Sie sich als %(administrator)s anmelden."
 
 #: umc/js/join.js:298
 msgid "Basic settings module"
@@ -133,7 +133,7 @@ msgstr "Join-Protokoll"
 msgid "Join status"
 msgstr "Join-Status"
 
-#: umc/js/join/Grid.js:171
+#: umc/js/join/Grid.js:169
 msgid "Join status ok, nothing to do."
 msgstr "Join-Status OK, es gibt nichts zu tun."
 
@@ -150,7 +150,7 @@ msgstr ""
 "Nicht alle installierten Komponenten wurden registriert. Bitte rufen Sie das "
 "%s auf um alle verbliebenen Komponenten zu registrieren."
 
-#: umc/js/join/Grid.js:174
+#: umc/js/join/Grid.js:172
 msgid "One script is pending to be run."
 msgstr "Ein Skript steht zur Ausführung an."
 
@@ -164,7 +164,7 @@ msgstr ""
 "werden. Um die gewählten Skripte trotzdem auszuführen muss die Ausführung "
 "erzwingen Option benutzt werden."
 
-#: umc/js/join.js:444 umc/js/join/Form.js:59
+#: umc/js/join/Form.js:59 umc/js/join.js:444
 msgid "Password"
 msgstr "Passwort"
 
@@ -184,7 +184,7 @@ msgstr ""
 "Bitte Zugangsdaten eines Benutzerkontos mit Administratorrechten eingeben, "
 "um der Domäne beizutreten."
 
-#: umc/js/join/Grid.js:93
+#: umc/js/join/Grid.js:91
 msgid "Rejoin"
 msgstr "Erneut beitreten"
 
@@ -192,7 +192,7 @@ msgstr "Erneut beitreten"
 msgid "Rejoin system"
 msgstr "Domäne erneut beitreten"
 
-#: umc/js/join/Grid.js:94
+#: umc/js/join/Grid.js:92
 msgid "Rejoins the system"
 msgstr "Tritt der Domöne neu bei"
 
@@ -204,11 +204,11 @@ msgstr "Ausführen"
 msgid "Run join scripts"
 msgstr "Join-Skripte ausführen"
 
-#: umc/js/join/Grid.js:115
+#: umc/js/join/Grid.js:113
 msgid "Script (package)"
 msgstr "Skript (Paket)"
 
-#: umc/js/join/Grid.js:116
+#: umc/js/join/Grid.js:114
 msgid "Script name (the same as the package it belongs to)"
 msgstr "Skriptname (benannt nach dem Paket, zu dem er gehört)"
 
@@ -216,7 +216,7 @@ msgstr "Skriptname (benannt nach dem Paket, zu dem er gehört)"
 msgid "Show Join status"
 msgstr "Join-Status zeigen"
 
-#: umc/js/join/Grid.js:100
+#: umc/js/join/Grid.js:98
 msgid "Shows the join log"
 msgstr "Zeigt das Join-Protokoll"
 
@@ -224,11 +224,11 @@ msgstr "Zeigt das Join-Protokoll"
 msgid "Starting the join process..."
 msgstr "Join-Vorgang startet..."
 
-#: umc/js/join/Grid.js:121
+#: umc/js/join/Grid.js:119
 msgid "State"
 msgstr "Status"
 
-#: umc/js/join/Grid.js:122
+#: umc/js/join/Grid.js:120
 msgid "Status of this package"
 msgstr "Status dieses Paketes"
 
@@ -274,10 +274,6 @@ msgstr "Es muss ein Benutzername angegeben werden."
 msgid "The username of the domain administrator"
 msgstr "Benutzername des Domänen-Administrators"
 
-#: umc/js/join/Grid.js:86
-msgid "There are no pending join scripts to execute."
-msgstr "Es gibt keine ausstehenden Join-Skripte zum Ausführen."
-
 #: umc/js/join.js:120
 msgid ""
 "This page shows the status of all available join scripts on this system, "
@@ -286,7 +282,7 @@ msgstr ""
 "Diese Seite zeigt den Status aller verfügbaren Join-Skripte auf diesem "
 "System, zusammen mit allen zugehörigen Aktionen."
 
-#: umc/js/join.js:439 umc/js/join/Form.js:53
+#: umc/js/join/Form.js:53 umc/js/join.js:439
 msgid "Username"
 msgstr "Benutzername"
 
@@ -294,7 +290,7 @@ msgstr "Benutzername"
 msgid "Username invalid"
 msgstr "Benutzername ungültig"
 
-#: umc/js/join/Grid.js:99
+#: umc/js/join/Grid.js:97
 msgid "View join log"
 msgstr "Join-Protokoll ansehen"
 
@@ -302,28 +298,10 @@ msgstr "Join-Protokoll ansehen"
 msgid "Warning: "
 msgstr "Warnung: "
 
-#: umc/js/join/Grid.js:125
+#: umc/js/join/Grid.js:123
 msgid "pending"
 msgstr "ausstehend"
 
-#: umc/js/join/Grid.js:125
+#: umc/js/join/Grid.js:123
 msgid "successful"
 msgstr "erfolgreich"
-
-#~ msgid "Can't run join scripts:<br>"
-#~ msgstr "Kann Join-Skripte nicht ausführen:<br>"
-
-#~ msgid "Can't start join process:<br>"
-#~ msgstr "Konnte Join-Vorgang nicht starten:<br>"
-
-#~ msgid "Error"
-#~ msgstr "Fehler"
-
-#~ msgid "hostname"
-#~ msgstr "Hostname"
-
-#~ msgid "password"
-#~ msgstr "Passwort"
-
-#~ msgid "username"
-#~ msgstr "Benutzername"

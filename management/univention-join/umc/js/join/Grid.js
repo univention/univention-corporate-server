@@ -80,13 +80,11 @@ define([
 				label: _('Execute all pending join scripts'),
 				description: _('Executes join scripts which are not properly configured.'),
 				isContextAction: false,
+				canExecute: function(items) {
+					return array.some(items, function(item) { return !item.configured; });
+				},
 				callback: lang.hitch(this, function() {
-					var ids = this.getPendingIds();
-					if (ids.length === 0) {
-						dialog.alert(_('There are no pending join scripts to execute.'));
-						return;
-					}
-					return this.onRunScripts(ids);
+					return this.onRunScripts(this.getPendingIds());
 				})
 			}, {
 				name: 'rejoin',
