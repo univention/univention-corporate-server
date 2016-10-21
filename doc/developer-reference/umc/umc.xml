@@ -647,7 +647,7 @@ POST http://10.200.15.31/umcp/command/udm/query HTTP/1.1
 				</variablelist>
 				<para>
 					The method <methodname>init()</methodname> in the example is invoked when the module process starts. It could e.g. be used to initialize a database connection.
-					The other mehthods in the example will serve specific request. To respond to a request the function <function>finished</function> must be invoked.
+					The other methods in the example will serve specific request. To respond to a request the function <function>finished</function> must be invoked.
 					To validate the request body the decorator <varname>@sanitize</varname> might be used with various sanitizers defined in <classname>univention.management.console.modules.sanitizers</classname>.
 					For a way to send an error message back to the client the <classname>UMC_Error</classname> can be raised with the error message as argument and an optional HTTP status code.
 					The base class for modules provides some properties and methods that could be useful when writing UMC modules:
