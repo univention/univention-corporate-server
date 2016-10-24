@@ -1,3 +1,9 @@
+univention-docker-container-mode (2.0.0-4) unstable; urgency=low
+
+  * Bug #40611: call univention-join with -skipAdMemberMode
+
+ -- Felix Botner <botner@univention.de>  Mon, 24 Oct 2016 13:52:25 +0200
+
 univention-docker-container-mode (2.0.0-3) unstable; urgency=medium
 
   * Bug #42602: Fixed quoting issues to support App installations with
