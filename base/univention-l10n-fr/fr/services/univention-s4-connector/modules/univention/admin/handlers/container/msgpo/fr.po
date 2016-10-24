@@ -77,7 +77,6 @@ msgid "MS Group Policy Version Number"
 msgstr "Numéro de version de la stratégie de groupe MS"
 
 #: modules/univention/admin/handlers/container/msgpo.py:153
-#, fuzzy
 msgid "MS Group Policy WQL Filter"
 msgstr "Drapeaux de la stratégie de groupe MS"
 

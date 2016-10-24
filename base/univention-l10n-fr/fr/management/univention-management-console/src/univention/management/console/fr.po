@@ -39,7 +39,7 @@ msgid "An option passed to %(method)s has the wrong type: %(exc)s"
 msgstr "Une option transmise à %(method)s est du mauvais type : %(exc)s"
 
 #: src/univention/management/console/protocol/session.py:823
-#, fuzzy, python-format
+#, python-format
 msgid "An unknown operating system error occurred (%s)."
 msgstr "Une erreur inconnue du système d'exploitation est survenue (%s)."
 
@@ -68,7 +68,6 @@ msgid "Changing password failed."
 msgstr "Échec du changement du mot de passe."
 
 #: src/univention/management/console/base.py:183
-#, fuzzy
 msgid ""
 "Check if enough hard disk space and free RAM is available on this server and "
 "on the domain controller master or free some resources"
@@ -170,7 +169,7 @@ msgid "Invalid progress ID"
 msgstr "Id. de l'avancement invalide"
 
 #: src/univention/management/console/base.py:182
-#, fuzzy, python-format
+#, python-format
 msgid "Make sure the domain controller master is running and reachable from %s"
 msgstr ""
 "Veuillez vous assurer que le contrôleur de domaine maître est lancé et "
@@ -189,7 +188,7 @@ msgid "May have at most %(max_elements)d element(s)"
 msgstr "Peut avoir au maximum %(max_elements)d élément(s)"
 
 #: src/univention/management/console/base.py:277
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Method %(method)r (%(path)r) in %(module)r does not exist.\n"
 "\n"
@@ -209,7 +208,6 @@ msgid "Must have at least %(min_elements)d element(s)"
 msgstr "Doit avoir au minimum %(min_elements)d élément(s)"
 
 #: src/univention/management/console/protocol/session.py:657
-#, fuzzy
 msgid ""
 "Nevertheless an error occurred while updating the password for running "
 "modules. Please relogin to UMC to solve this problem."
@@ -275,7 +273,6 @@ msgid "Please wait for operation to finish"
 msgstr "Veuillez patienter le temps que l'opération se termine"
 
 #: src/univention/management/console/base.py:184
-#, fuzzy
 msgid ""
 "Restart the LDAP service on the domain controller master either via \"invoke-"
 "rc.d slapd restart\" on command line or with the UMC module \"System services"
@@ -411,7 +408,7 @@ msgid "The reason could not be determined"
 msgstr "La raison n'a pu être déterminée"
 
 #: src/univention/management/console/protocol/modserver.py:106
-#, fuzzy, python-format
+#, python-format
 msgid "The requested module %r does not exist."
 msgstr "Le module %r demandé n'existe pas."
 
@@ -473,9 +470,8 @@ msgid "Value is invalid"
 msgstr "La valeur n'est pas correcte"
 
 #: src/univention/management/console/modules/sanitizers.py:607
-#, fuzzy
 msgid "Value is not a LDAP DN."
-msgstr "La valeur n'est pas une chaîne de caractères"
+msgstr "La valeur n'est pas un DN LDAP."
 
 #: src/univention/management/console/modules/sanitizers.py:583
 msgid "Value is not a string"

@@ -109,7 +109,6 @@ msgstr ""
 "être utilisée pour forcer l'arrêt d'une machine virtuelle.</p>"
 
 #: umc/js/uvmm.js:167
-#, fuzzy
 msgid ""
 "<p>This module provides a management interface for physical servers that are "
 "registered within the UCS domain.</p><p>The tree view on the left side shows "
@@ -300,7 +299,6 @@ msgid "By default the private network is 192.168.122.0/24."
 msgstr "Le réseau privé est par défaut 192.168.122.0/24."
 
 #: umc/js/uvmm/DomainWizard.js:128
-#, fuzzy
 msgid ""
 "By selecting a profile for the virtual machine most of the settings will be "
 "set to default values. In the following steps some of these values might be "
@@ -450,7 +448,6 @@ msgid "Create new snapshot"
 msgstr "Créer un nouvel instantané"
 
 #: umc/js/uvmm/SnapshotGrid.js:119
-#, fuzzy
 msgid ""
 "Creating a snapshot is not possible, because the domain contains writeable "
 "raw images!"
@@ -467,7 +464,6 @@ msgstr ""
 "une image qcow2 !"
 
 #: umc/js/uvmm/SnapshotGrid.js:100
-#, fuzzy
 msgid ""
 "Creating a snapshot is not possible, because the domain is currently "
 "suspended!"
@@ -735,7 +731,6 @@ msgid "Icelandic"
 msgstr "Islandais"
 
 #: umc/js/uvmm/DriveWizard.js:257
-#, fuzzy
 msgid ""
 "If the required image is not found it might be added by copying the file "
 "into the storage pool, e.g. to /var/lib/libvirt/images/ which is the "
@@ -1465,7 +1460,6 @@ msgid "Turkish"
 msgstr "Turc"
 
 #: umc/js/uvmm/InterfaceWizard.js:57
-#, fuzzy
 msgid ""
 "Two types of network interfaces are supported. The first one is <i>Bridge</"
 "i> that requires a static network connection on the physical server that is "

@@ -98,7 +98,6 @@ msgid "Active"
 msgstr "Actif"
 
 #: modules/univention/admin/handlers/settings/syntax.py:126
-#, fuzzy
 msgid "Add an empty value to choice list"
 msgstr "Ajouter une valeur vide à la liste de choix"
 
@@ -557,7 +556,6 @@ msgid "Horizontal Sync"
 msgstr "Synchronisation horizontale"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:229
-#, fuzzy
 msgid ""
 "If a tab with the given name already exists, it is replaced by a new tab "
 "only containing extended attributes"
@@ -1729,7 +1727,6 @@ msgid "Vertical Refresh"
 msgstr "Rafraîchissement vertical"
 
 #: modules/univention/admin/handlers/settings/extended_attribute.py:128
-#, fuzzy
 msgid ""
 "When values are entered, the UMC performs a syntax check. Apart from "
 "standard syntax definitions (string) and (integer), there are three "

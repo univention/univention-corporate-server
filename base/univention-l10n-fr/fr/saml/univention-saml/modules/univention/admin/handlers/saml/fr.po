@@ -140,7 +140,6 @@ msgstr ""
 "L'URL du point d'accès SingleLogoutService pour ce fournisseur de service"
 
 #: modules/univention/admin/handlers/saml/serviceprovider.py:72
-#, fuzzy
 msgid ""
 "The URL(s) of the AssertionConsumerService endpoints for this SP. Users will "
 "be redirected to the URL upon successful authentication. Example: https://sp."

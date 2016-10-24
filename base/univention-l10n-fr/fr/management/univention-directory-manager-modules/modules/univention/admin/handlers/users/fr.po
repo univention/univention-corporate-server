@@ -100,7 +100,6 @@ msgid "Basic settings"
 msgstr "Réglages de base"
 
 #: modules/univention/admin/handlers/users/user.py:485
-#, fuzzy
 msgid "Birthdate"
 msgstr "Date de naissance"
 
@@ -357,7 +356,6 @@ msgid "Mail preferences"
 msgstr "Préférences de courriel"
 
 #: modules/univention/admin/handlers/users/user.py:222
-#, fuzzy
 msgid "Manage Samba privileges"
 msgstr "Gérer les privilèges Samba"
 

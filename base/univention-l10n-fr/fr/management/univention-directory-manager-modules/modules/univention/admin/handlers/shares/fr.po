@@ -122,7 +122,6 @@ msgid "Allow guest access"
 msgstr "Autoriser l'accès invité"
 
 #: modules/univention/admin/handlers/shares/printer.py:55
-#, fuzzy
 msgid "Allow only chosen users/groups."
 msgstr "N'autoriser l'accès qu'à des utilisateurs / groupes sélectionnés."
 
@@ -207,7 +206,6 @@ msgid "Denied host/network"
 msgstr "Hôte / réseau interdit"
 
 #: modules/univention/admin/handlers/shares/printer.py:56
-#, fuzzy
 msgid "Deny chosen users/groups."
 msgstr "Refuser les utilisateurs / groupes sélectionnés."
 
@@ -391,7 +389,6 @@ msgid "MSDFS root"
 msgstr "Racine MSDFS"
 
 #: modules/univention/admin/handlers/shares/share.py:205
-#, fuzzy
 msgid ""
 "May contain hostnames, IP addresses or networks (e.g. 10.1.1.1/24 or "
 "10.1.1.1/255.255.255.0"
@@ -667,7 +664,6 @@ msgstr ""
 "groupe 0 est utilisé."
 
 #: modules/univention/admin/handlers/shares/share.py:454
-#, fuzzy
 msgid ""
 "The way clients capable of offline caching will cache the files in the share."
 msgstr ""
@@ -737,7 +733,6 @@ msgstr ""
 "de ce service. Elle accepte les caractères de remplacement habituels."
 
 #: modules/univention/admin/handlers/shares/share.py:546
-#, fuzzy
 msgid ""
 "This parameter can be used to ensure that if default ACLs exist on parent "
 "directories, they are always honored when creating a subdirectory. The "

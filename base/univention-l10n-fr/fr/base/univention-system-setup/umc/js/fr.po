@@ -257,9 +257,8 @@ msgstr ""
 "utilisateurs et de gestion sont enregistrées localement."
 
 #: umc/js/setup/ApplianceWizard.js:1716
-#, fuzzy
 msgid "A preconfigured test domain will be instantiated."
-msgstr "Un nouveau domaine UCS va être créé."
+msgstr "Un nouveau domaine UCS préconfiguré va être créé."
 
 #: umc/js/setup/ApplianceWizard.js:1143
 msgid ""
@@ -779,9 +778,8 @@ msgstr ""
 "<i>Rejoindre le domaine</i>."
 
 #: umc/js/setup/ApplianceWizard.js:566
-#, fuzzy
 msgid "Fast demo configuration"
-msgstr "Configuration du pont"
+msgstr "Configuration rapide de démonstration"
 
 #: umc/js/setup/ApplianceWizard.js:696
 msgid ""
@@ -1627,7 +1625,6 @@ msgid "Virtual keyboard"
 msgstr "Clavier virtuel"
 
 #: umc/js/setup/ApplianceWizard.js:1464 umc/js/setup/ApplianceWizard.js:2353
-#, fuzzy
 msgid "Waiting for restart of server components..."
 msgstr "Redémarrage des composants du serveur..."
 

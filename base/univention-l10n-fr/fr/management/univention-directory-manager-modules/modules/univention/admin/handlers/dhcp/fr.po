@@ -68,7 +68,6 @@ msgid "Advanced DHCP pool options"
 msgstr "Options avancées du groupe DHCP"
 
 #: modules/univention/admin/handlers/dhcp/dhcp.py:54
-#, fuzzy
 msgid "All DHCP services"
 msgstr "DHCP : service"
 
@@ -186,7 +185,6 @@ msgid "Dynamic address assignment"
 msgstr "Assignation dynamique des adresses"
 
 #: modules/univention/admin/handlers/dhcp/pool.py:76
-#, fuzzy
 msgid "Failover peer configuration"
 msgstr "Pair de secours"
 

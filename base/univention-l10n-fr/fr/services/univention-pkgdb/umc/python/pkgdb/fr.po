@@ -51,17 +51,14 @@ msgid "Deinstall"
 msgstr "Désinstaller"
 
 #: umc/python/pkgdb/__init__.py:175
-#, fuzzy
 msgid "Domain controller Backup"
 msgstr "Contrôleur de domaine de secours"
 
 #: umc/python/pkgdb/__init__.py:174
-#, fuzzy
 msgid "Domain controller Master"
 msgstr "Contrôleur de domaine maître"
 
 #: umc/python/pkgdb/__init__.py:176
-#, fuzzy
 msgid "Domain controller Slave"
 msgstr "Contrôleur de domaine esclave"
 

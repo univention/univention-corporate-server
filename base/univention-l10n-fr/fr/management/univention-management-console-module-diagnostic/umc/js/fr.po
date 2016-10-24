@@ -34,12 +34,12 @@ msgid "Critical: "
 msgstr "Grave :"
 
 #: umc/js/diagnostic.js:275
-#, fuzzy, python-format
+#, python-format
 msgid "Diagnosis of \"%s\" was successful"
 msgstr "Le diagnostic de « %s » a réussi"
 
 #: umc/js/diagnostic.js:288
-#, fuzzy, python-format
+#, python-format
 msgid "Finished running diagnosis of \"%s\" again."
 msgstr "Fin d'une nouvelle exécution du diagnostic de « %s »."
 
@@ -72,12 +72,10 @@ msgid "Problem: "
 msgstr "Problème :"
 
 #: umc/js/diagnostic.js:189
-#, fuzzy
 msgid "Run system diagnosis"
 msgstr "Lancer un diagnostic système"
 
 #: umc/js/diagnostic.js:266
-#, fuzzy
 msgid "Running full diagnosis..."
 msgstr "Exécution d'un diagnostic complet..."
 

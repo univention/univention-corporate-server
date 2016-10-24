@@ -49,7 +49,6 @@ msgid "Categories"
 msgstr "Catégories"
 
 #: umc/js/ucr.js:98
-#, fuzzy
 msgid "Categories that the UCR variable is associated with"
 msgstr "Catégories auxquelles la variable UCR est associée"
 
