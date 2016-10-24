@@ -1,3 +1,9 @@
+univention-directory-manager-modules (11.0.3-42) unstable; urgency=medium
+
+  * Bug #34764: add workaround for UCS@school < 4.2
+
+ -- Florian Best <best@univention.de>  Mon, 24 Oct 2016 15:34:14 +0200
+
 univention-directory-manager-modules (11.0.3-41) unstable; urgency=medium
 
   * Bug #34764: fix typo
