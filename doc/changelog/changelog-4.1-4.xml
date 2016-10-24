@@ -296,6 +296,9 @@
 		<title>Software deployment</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The Updater was adapted for UCS 4.1-4 (<u:bug>42655</u:bug>).
+			</simpara></listitem>
+			<listitem><simpara>
 			</simpara></listitem>
 		</itemizedlist>
 
