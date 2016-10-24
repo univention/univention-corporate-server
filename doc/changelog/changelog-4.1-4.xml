@@ -159,6 +159,7 @@
 			<title>Modules for system settings / setup wizard</title>
 			<itemizedlist>
 				<listitem><simpara>
+					Fix a crash during validation in special DNS constellations (<u:bug>42179</u:bug>).
 				</simpara></listitem>
 			</itemizedlist>
 		</section>
