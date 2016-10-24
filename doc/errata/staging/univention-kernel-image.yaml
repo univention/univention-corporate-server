@@ -3,7 +3,7 @@ release: "3.1"
 version: [1]
 scope: ucs_3.1-0-extsec3.1
 src: univention-kernel-image
-fix: 6.0.1-10.106.201610040842
+fix: 6.0.1-11.109.201610241408
 desc: |
  These vulnerabilities have been fixed:
  * unix: properly account for FDs passed over unix sockets (CVE-2013-4312,
@@ -82,6 +82,11 @@ desc: |
  * aacraid: Check size values after double-fetch from user (CVE-2016-6480)
  * tcp: fix use after free in tcp_xmit_retransmit_queue() (CVE-2016-6828)
  * fs: Fix oops when fcntl() is called on an aufs directory (CVE-2016-7118)
+ * Bluetooth: Fix potential NULL dereference in RFCOMM bind callback
+   (CVE-2015-8956)
+ * KEYS: Fix short sprintf buffer in /proc/keys show function (CVE-2016-7042)
+ * scsi: arcmsr: Buffer overflow in arcmsr_iop_message_xfer() (CVE-2016-7425)
+ * mm, gup: close FOLL MAP_PRIVATE race (CVE-2016-5195)
 bug: [40521]
 cve:
  - CVE-2013-4312
@@ -141,3 +146,7 @@ cve:
  - CVE-2016-6480
  - CVE-2016-6828
  - CVE-2016-7118
+ - CVE-2015-8956
+ - CVE-2016-7042
+ - CVE-2016-7425
+ - CVE-2016-5195
