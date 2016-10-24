@@ -1,3 +1,9 @@
+univention-kernel-image-signed (2.0.0-9) unstable; urgency=medium
+
+  * Bug #42727: Update to linux-4.1.34-ucs207
+
+ -- Arvid Requate <requate@univention.de>  Mon, 24 Oct 2016 20:09:14 +0200
+
 univention-kernel-image-signed (2.0.0-8) unstable; urgency=low
 
   * Bug #41058: Update to linux-4.1.33-ucs205
