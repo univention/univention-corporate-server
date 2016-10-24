@@ -606,6 +606,9 @@ class simpleLdap(base):
 				return   # settings/cn might be misued as superordinate, don't risk currently
 			raise univention.admin.uexceptions.insufficientInformation(_('No superordinate object given.'))
 
+		if not isinstance(self.superordinate, simpleLdap):
+			return  # UCS@school < 4.2 is broken
+
 		if self.superordinate and not self.dn and not self.position:
 			# this check existed in all modules with superordinates, so still check it here, too
 			# TODO: change into setting the position to the superordinate dn?
