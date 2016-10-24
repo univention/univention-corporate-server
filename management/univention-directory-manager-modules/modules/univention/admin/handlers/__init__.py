@@ -947,7 +947,7 @@ class simpleLdap(base):
 		self.call_udm_property_hook('hook_ldap_pre_remove', self)
 
 		if remove_childs:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'handlers/__init__._remove() childs of base dn %s' % self.dn)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,'handlers/__init__._remove() children of base dn %s' % self.dn)
 			subelements = self.lo.search(base=self.dn, scope='one', attr=[])
 			if subelements:
 				try:
@@ -1339,9 +1339,9 @@ class simpleComputer( simpleLdap ):
 
 		if not results:
 			# if the dhcp object doesn't exists, then we create it
-			# but we it is possible, that the hostname for the dhcp object alreay used, so we use the _uv$NUM extension
+			# but it is possible, that the hostname for the dhcp object is already used, so we use the _uv$NUM extension
 
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac addresss "%s" does not exists, we create one' % ethernet )
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" does not exists, we create one' % ethernet )
 
 			results = self.lo.searchDn( base = position, scope = 'domain', filter=filter_format('(&(objectClass=univentionDhcpHost)(|(cn=%s)(cn=%s_uv*)))', (name, name)), unique = 0 )
 			if not results:
@@ -1351,9 +1351,9 @@ class simpleComputer( simpleLdap ):
 						( 'cn', name ),\
 						( 'univentionDhcpFixedAddress', [ ip ] ),\
 						( 'dhcpHWAddress', [ ethernet ] ) ] )
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "%s,%s"' % ( name, position ) )
+				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "cn=%s,%s"' % ( name, position ) )
 			else:
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the host "%s" already has a dhcp object, so we searh for the next free uv name' % ( name ) )
+				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the host "%s" already has a dhcp object, so we search for the next free uv name' % ( name ) )
 				n = 0
 				for result in results:
 					val = result.split( ',' )[ 0 ].split( "_uv" )
@@ -1371,10 +1371,10 @@ class simpleComputer( simpleLdap ):
 						( 'cn', '%s_uv%d' % ( name,n ) ),\
 						( 'univentionDhcpFixedAddress', [ ip ] ),\
 						( 'dhcpHWAddress', [ ethernet ] ) ] )
-				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "%s_uv%d,%s"' % ( name, n, position ) )
+				univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we just added the object "cn=%s_uv%d,%s"' % ( name, n, position ) )
 		else:
 			# if the object already exists, we append or remove the ip address
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac addresss "%s" exists, we change the ip' % ethernet )
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'the dhcp object with the mac address "%s" exists, we change the ip' % ethernet )
 			for dn, attr in results:
 				if ip:
 					if ip in attr.get('univentionDhcpFixedAddress', []):
@@ -1445,8 +1445,8 @@ class simpleComputer( simpleLdap ):
 
 
 	def __remove_from_dhcp_object( self, position = None, name = None, oldname = None, mac = None, ip = None ):
-		# if we got the mac addres, then we remove the object
-		# if we only got the ip addres, we remove the ip address
+		# if we got the mac address, then we remove the object
+		# if we only got the ip address, we remove the ip address
 
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should remove a dhcp object: position="%s", name="%s", oldname="%s", mac="%s", ip="%s"' % ( position, name, oldname, mac, ip ) )
 
@@ -2129,7 +2129,7 @@ class simpleComputer( simpleLdap ):
 
 			if len(self.info.get('ip', [])) == 1 and len(self.info.get('mac', [])) == 1 and len(self.info.get('dhcpEntryZone', [])):
 				# In this special case, we assume the mapping between ip/mac address to be
-				# unique. The dhcp entry needs to contain the mac address (as sepcified by
+				# unique. The dhcp entry needs to contain the mac address (as specified by
 				# the ldap search for dhcp entries), the ip address may not correspond to
 				# the ip address associated with the computer ldap object, but this would
 				# be erroneous anyway. We therefore update the dhcp entry to correspond to
@@ -2323,7 +2323,7 @@ class simpleComputer( simpleLdap ):
 		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'remove' ]:
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
 			if not alias:
-				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but ths case does not seem to occur
+				# nonfunctional code since self[ 'alias' ] should be self[ 'dnsAlias' ], but this case does not seem to occur
 				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, self[ 'alias' ][ 0 ] )
 			else:
 				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
@@ -2517,7 +2517,7 @@ class simpleComputer( simpleLdap ):
 			zoneObj = univention.admin.objects.get(
 				univention.admin.modules.get('dns/reverse_zone'), self.co, self.lo, self.position, dn = zone[0])
 			zoneObj.open()
-			
+
 			# clean up nameserver records
 			if 'nameserver' in zoneObj:
 				if fqdnDot in zoneObj['nameserver']:
@@ -2529,7 +2529,7 @@ class simpleComputer( simpleLdap ):
 					if len(zoneObj['nameserver']) > 1:
 						zoneObj['nameserver'].remove(fqdnDot)
 						zoneObj.modify()
-	
+
 
 		# iterate over all forward zones
 		for zone in self['dnsEntryZoneForward'] or []:
