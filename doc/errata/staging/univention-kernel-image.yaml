@@ -3,7 +3,7 @@ release: "3.1"
 version: [1]
 scope: ucs_3.1-0-extsec3.1
 src: univention-kernel-image
-fix: 6.0.1-11.109.201610241408
+fix: 6.0.1-11.110.201610241557
 desc: |
  These vulnerabilities have been fixed:
  * unix: properly account for FDs passed over unix sockets (CVE-2013-4312,
