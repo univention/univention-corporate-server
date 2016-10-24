@@ -68,9 +68,8 @@ msgid "Conflicting Apps"
 msgstr "Apps entrant en conflit"
 
 #: udm/handlers/appcenter/app.py:217
-#, fuzzy
 msgid "Conflicting System Packages"
-msgstr "Apps entrant en conflit (paquetages système)"
+msgstr "Paquet de système en conflit"
 
 #: udm/handlers/appcenter/app.py:116
 msgid "Contact"

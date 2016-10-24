@@ -297,7 +297,6 @@ msgstr ""
 "UMCP."
 
 #: umc/tools.js:712
-#, fuzzy
 msgid "Internal module error: An error occurred during command processing."
 msgstr ""
 "Erreur interne du module : une erreur est survenue lors du traitement de la "

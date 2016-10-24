@@ -226,7 +226,6 @@ msgid "The property %(property)s has an invalid value: %(value)s"
 msgstr "La propriété %(property)s possède une valeur non valide : %(value)s"
 
 #: umc/python/udm/udm_ldap.py:481
-#, fuzzy
 msgid ""
 "The query you have entered timed out. Please narrow down your search by "
 "specifying more query parameters"
@@ -235,7 +234,7 @@ msgstr ""
 "en précisant davantage de critères de recherche."
 
 #: umc/python/udm/udm_ldap.py:483
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "The query you have entered yields too many matching entries. Please narrow "
 "down your search by specifying more query parameters. The current size limit "

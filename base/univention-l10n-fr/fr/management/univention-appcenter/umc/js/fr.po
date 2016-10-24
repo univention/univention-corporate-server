@@ -34,11 +34,11 @@ msgstr "%(name)s ne gère que l'architecture %(supported)s. %(msg)s"
 
 #: umc/js/appcenter/requirements.js:286
 #: umc/js/appcenter/AppDetailsPage.js:1179
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "%(name)s uses a container technology for enhanced security and compatibility."
 msgstr ""
-"%s utilise une technologie de conteneur permettant une sécurité et une "
+"%(name)s utilise une technologie de conteneur permettant une sécurité et une "
 "compatibilité améliorées."
 
 #: umc/js/appcenter/PackagesPage.js:426
@@ -117,7 +117,7 @@ msgid ""
 "%s was removed from the list because the application requires a different "
 "server role than the one this host has."
 msgstr ""
-"%d a été supprimé de la liste car l'application exige un rôle de serveur "
+"%s a été supprimé de la liste car l'application exige un rôle de serveur "
 "différent de l'actuel."
 
 #: umc/js/appcenter/AppDetailsPage.js:970
@@ -201,7 +201,7 @@ msgid "All"
 msgstr "Tous"
 
 #: umc/js/appcenter/SettingsPage.js:358
-#, fuzzy, python-format
+#, python-format
 msgid "An unknown error with code %d occurred."
 msgstr "Une erreur inconnue, avec le code %d, est survenue."
 
@@ -603,7 +603,6 @@ msgid "It is not possible to continue"
 msgstr ""
 
 #: umc/js/appcenter/AppDetailsDialog.js:224
-#, fuzzy
 msgid "It is not recommended to continue"
 msgstr "Il n'est pas recommandé de continuer"
 
@@ -1148,7 +1147,6 @@ msgid "This application requires an extension of the LDAP schema."
 msgstr "Cette application nécessite une extension du schéma LDAP."
 
 #: umc/js/appcenter/AppDetailsPage.js:1287
-#, fuzzy
 msgid ""
 "This application will inform the App provider about an (un)installation. The "
 "app provider may contact you."
@@ -1172,7 +1170,6 @@ msgstr ""
 "de désinstaller %(app)s et de chercher une alternative."
 
 #: umc/js/appcenter/AppDetailsPage.js:1289
-#, fuzzy
 msgid ""
 "This application will not inform the App provider about an (un)installation "
 "directly."

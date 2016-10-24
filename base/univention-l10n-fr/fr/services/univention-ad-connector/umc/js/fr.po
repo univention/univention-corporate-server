@@ -25,7 +25,6 @@ msgstr ""
 "pas été trouvé sur le serveur DNS.</p> "
 
 #: umc/js/adconnector/SetupWizard.js:351
-#, fuzzy
 msgid ""
 "<p>An encrypted connection to the Active Directory domain could still not be "
 "established.</p><p>Confirm if you want to proceed with an unsecure "

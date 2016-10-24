@@ -267,7 +267,6 @@ msgid "Synchronizing system clock"
 msgstr "Synchronisation de l'horloge système"
 
 #: umc/python/adtakeover/takeover.py:326
-#, fuzzy
 msgid "Taking over Active Directory domain controller roles"
 msgstr "Prise de contrôle des rôles du contrôleur de domaine Active Directory"
 

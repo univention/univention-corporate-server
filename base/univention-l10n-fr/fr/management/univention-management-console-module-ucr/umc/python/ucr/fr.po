@@ -18,7 +18,6 @@ msgstr ""
 "X-Generator: Lokalize 1.5\n"
 
 #: umc/python/ucr/__init__.py:115
-#, fuzzy
 msgid ""
 "Invalid UCR variable entry, the properties \"key\" and \"value\" need to be "
 "specified."

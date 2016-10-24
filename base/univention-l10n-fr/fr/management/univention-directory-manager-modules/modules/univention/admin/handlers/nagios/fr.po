@@ -99,12 +99,10 @@ msgid "General"
 msgstr "Général"
 
 #: modules/univention/admin/handlers/nagios/service.py:236
-#, fuzzy
 msgid "General Nagios service settings"
 msgstr "Réglages généraux des services Nagios"
 
 #: modules/univention/admin/handlers/nagios/timeperiod.py:176
-#, fuzzy
 msgid "General Nagios time period settings"
 msgstr "Réglages généraux des plages horaires Nagios"
 

@@ -103,9 +103,8 @@ msgstr ""
 "d'utilisateur et le mot de passe sont corrects."
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:144
-#, fuzzy
 msgid "Could not recreate SSL certificate for %s."
-msgstr "Génération du certificat SSL"
+msgstr ""
 
 #: usr/lib/univention-system-setup/scripts/90_postjoin/10admember:145
 #, python-format
@@ -142,9 +141,8 @@ msgid "Generating SSL certificate"
 msgstr "Génération du certificat SSL"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/50uuid:54
-#, fuzzy
 msgid "Generating UUID"
-msgstr "Génération des paramètres de localisation"
+msgstr "Génération UUID"
 
 #: usr/lib/univention-system-setup/scripts/20_language/10language:35
 msgid "Generating locales"
@@ -163,9 +161,8 @@ msgid "Preparing package lists..."
 msgstr "Préparation de la liste des paquetages..."
 
 #: usr/lib/univention-system-setup/scripts/40_ssl/10ssl:142
-#, fuzzy
 msgid "Recreate SSL certificate for %s"
-msgstr "Génération du certificat SSL"
+msgstr "Re-généreation du certificat SSL pour %s"
 
 #: usr/lib/univention-system-setup/scripts/setup-join.sh:158
 msgid "Recreating SSH keys"
@@ -200,17 +197,14 @@ msgid "Setting LDAP base"
 msgstr "Définition de la base LDAP"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/16windows_domain:35
-#, fuzzy
 msgid "Setting Windows domain"
 msgstr "Définition du domaine Windows"
 
 #: usr/lib/univention-system-setup/scripts/10_basis/12domainname:37
-#, fuzzy
 msgid "Setting domain name"
 msgstr "Définition du nom de domaine"
 
 #: usr/lib/univention-system-setup/scripts/30_net/16forwarder:35
-#, fuzzy
 msgid "Setting external name servers"
 msgstr "Définition des serveurs de noms externes"
 
@@ -223,7 +217,6 @@ msgid "Setting keyboard layout"
 msgstr "Définition de la disposition du clavier"
 
 #: usr/lib/univention-system-setup/scripts/30_net/14nameserver:35
-#, fuzzy
 msgid "Setting name server"
 msgstr "Définition du serveur de noms"
 
