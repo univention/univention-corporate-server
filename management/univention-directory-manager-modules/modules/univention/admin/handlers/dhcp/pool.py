@@ -53,7 +53,7 @@ options={
 property_descriptions={
 	'name': univention.admin.property(
 			short_description=_('Name'),
-			long_description='',
+			long_description=_('A unique name for this DHCP pool object.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			include_in_default_search=1,
@@ -64,7 +64,7 @@ property_descriptions={
 		),
 	'range': univention.admin.property(
 			short_description=_('IP range for dynamic assignment'),
-			long_description='',
+			long_description=_('Define a pool of addresses available for dynamic address assignment.'),
 			syntax=univention.admin.syntax.IPv4_AddressRange,
 			multivalue=1,
 			options=[],
@@ -74,7 +74,7 @@ property_descriptions={
 		),
 	'failover_peer': univention.admin.property(
 			short_description=_('Failover peer configuration'),
-			long_description='',
+			long_description=_('The name of the "failover peer" configuration to use.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -84,7 +84,7 @@ property_descriptions={
 		),
 	'known_clients': univention.admin.property(
 			short_description=_('Allow known clients'),
-			long_description='',
+			long_description=_('Addresses from this pool are given to clients which have a DHCP host entry without assigned IP address matching their MAC address.'),
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
 			options=[],
@@ -94,7 +94,7 @@ property_descriptions={
 		),
 	'unknown_clients': univention.admin.property(
 			short_description=_('Allow unknown clients'),
-			long_description='',
+			long_description=_('Addresses from this pool are given to clients, which do not have a DHCP host entry matching their MAC address.'),
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
 			options=[],
@@ -104,7 +104,7 @@ property_descriptions={
 		),
 	'dynamic_bootp_clients': univention.admin.property(
 			short_description=_('Allow dynamic BOOTP clients'),
-			long_description='',
+			long_description=_('Addresses from this pool are given to clients using the old BOOTP protocol, which has no machanism to free addresses again.'),
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
 			options=[],
@@ -114,7 +114,7 @@ property_descriptions={
 		),
 	'all_clients': univention.admin.property(
 			short_description=_('All clients'),
-			long_description='',
+			long_description=_('Globally enable or disable this pool'),
 			syntax=univention.admin.syntax.AllowDeny,
 			multivalue=0,
 			options=[],
