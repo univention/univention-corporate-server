@@ -1880,7 +1880,7 @@ class simpleComputer( simpleLdap ):
 		self.__multiip |= len(self['mac']) > 1 or len(self['ip']) > 1
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % (entry,))
 			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				mac = ''
@@ -1891,7 +1891,7 @@ class simpleComputer( simpleLdap ):
 				self.__remove_from_dhcp_object( dn, ip = ip, mac = mac )
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % (entry,))
 			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				ip, mac = ('', '')
@@ -1916,7 +1916,7 @@ class simpleComputer( simpleLdap ):
 				self.__remove_related_ptrrecords(dn, ip)
 
 		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'add' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object "%s"' % entry )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object "%s"' % (entry,))
 			dn, ip = self.__split_dns_line( entry )
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dn="%s" and ip="%s"' % ( dn, ip ) )
 			if not ip and not self.__multiip:
@@ -1960,7 +1960,7 @@ class simpleComputer( simpleLdap ):
 				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
 
 		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns alias object "%s"' % entry )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns alias object "%s"' % (entry,))
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (dnsForwardZone, dnsAliasZoneContainer, alias))
 			if not alias:
@@ -2245,7 +2245,7 @@ class simpleComputer( simpleLdap ):
 
 	def _ldap_post_create(self):
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % (entry,))
 			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				mac = ''
@@ -2256,7 +2256,7 @@ class simpleComputer( simpleLdap ):
 				self.__remove_from_dhcp_object( dn, ip = ip, mac = mac )
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'add' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % entry )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: added: %s' % (entry,))
 			dn, ip, mac = self.__split_dhcp_line( entry )
 			if not ip and not mac and not self.__multiip:
 				if len( self[ 'ip' ] ) > 0 and len( self[ 'mac' ] ) > 0:
@@ -2276,7 +2276,7 @@ class simpleComputer( simpleLdap ):
 				self.__remove_dns_forward_object( self[ 'name' ], dn, ip )
 
 		for entry in self.__changes[ 'dnsEntryZoneForward' ][ 'add' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object "%s"' % entry )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object "%s"' % (entry,))
 			dn, ip = self.__split_dns_line( entry )
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dn="%s" and ip="%s"' % ( dn, ip ) )
 			if not ip and not self.__multiip:
@@ -2328,7 +2328,7 @@ class simpleComputer( simpleLdap ):
 			else:
 				self.__remove_dns_alias_object( self[ 'name' ], dnsForwardZone, dnsAliasZoneContainer, alias )
 		for entry in self.__changes[ 'dnsEntryZoneAlias' ][ 'add' ]:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns alias object "%s"' % entry )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns alias object "%s"' % (entry,))
 			dnsForwardZone, dnsAliasZoneContainer, alias = entry
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'changed the object to dnsForwardZone [%s], dnsAliasZoneContainer [%s] and alias [%s]' % (dnsForwardZone, dnsAliasZoneContainer, alias))
 			if not alias:
