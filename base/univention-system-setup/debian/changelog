@@ -1,3 +1,9 @@
+univention-system-setup (9.0.5-1) unstable; urgency=medium
+
+  * Bug #42179: Catch NoNameservers exception
+
+ -- Florian Best <best@univention.de>  Mon, 24 Oct 2016 17:49:25 +0200
+
 univention-system-setup (9.0.4-48) unstable; urgency=medium
 
   * Bug #42483: Initialize updater/identify from ISO image metadata

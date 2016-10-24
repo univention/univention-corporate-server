@@ -47,6 +47,7 @@ import json
 import random
 import urllib2
 import psutil
+import traceback
 from contextlib import contextmanager
 from httplib import HTTPException
 
@@ -628,7 +629,6 @@ def run_scripts_in_path(path, logfile, category_name=""):
 			try:
 				subprocess.call(os.path.join(path, filename), stdout=logfile, stderr=logfile)
 			except (OSError, IOError):
-				import traceback
 				logfile.write('%s' % (traceback.format_exc(),))
 			logfile.flush()
 
@@ -901,10 +901,12 @@ def is_ucs_domain(nameserver, domain):
 	try:
 		resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
 		return True
-	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer):
+	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers):
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for DC master record at nameserver %s timed out: %s' % (nameserver, exc))
+	except dns.exception.DNSException as exc:
+		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 	return False
 
 def get_ucs_domain(nameserver):
@@ -934,10 +936,12 @@ def get_fqdn(nameserver):
 		domain = '.'.join(parts)
 
 		return domain
-	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer) as exc:
+	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers) as exc:
 		MODULE.warn('Lookup for nameserver %s failed: %s' % (nameserver, exc))
 	except dns.exception.Timeout as exc:
 		MODULE.warn('Lookup for nameserver %s timed out: %s' % (nameserver, exc))
+	except dns.exception.DNSException as exc:
+		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 	return None
 
 def get_available_locales(pattern, category='language_en'):
