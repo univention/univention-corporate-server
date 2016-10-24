@@ -21,7 +21,6 @@ msgstr ""
 "X-Generator: Lokalize 2.0\n"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:197
-#, fuzzy
 msgid "Active VNC remote access"
 msgstr "Accès distant VNC actif"
 
@@ -196,7 +195,6 @@ msgid "No host caching, forced sync"
 msgstr "Pas de mise en cache sur l'hôte, synchronisation forcée"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:95
-#, fuzzy
 msgid "No host caching, no forced sync"
 msgstr "Pas de cache sur l'hôte, pas de synchronisation forcée"
 
@@ -294,7 +292,6 @@ msgid "UVMM: Profile"
 msgstr "UVMM : profil"
 
 #: modules/univention/admin/handlers/uvmm/profile.py:246
-#, fuzzy
 msgid "Use advanced kernel configuration"
 msgstr "Utiliser la configuration avancée du noyau"
 

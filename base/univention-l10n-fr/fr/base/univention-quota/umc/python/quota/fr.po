@@ -95,7 +95,7 @@ msgid "The following partition is currently not mounted: %s"
 msgstr "La partition suivante n'est pas montée actuellement : %s"
 
 #: umc/python/quota/user.py:163
-#, fuzzy, python-format
+#, python-format
 msgid "The following partition is mounted without quota support: %s"
 msgstr "La partition suivante est montée sans prise en charge des quotas : %s"
 

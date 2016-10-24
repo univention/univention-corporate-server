@@ -113,7 +113,6 @@ msgstr ""
 "plus récentes."
 
 #: umc/js/updater.js:314
-#, fuzzy
 msgid ""
 "Consider <a href=\"https://docs.software-univention.de/\" target=\"_blank"
 "\">release notes and changelogs</a> as well as references posted in the <a "
@@ -126,7 +125,7 @@ msgstr ""
 "php?f=54\" targe=\"_blank\">Forum Univention</a>."
 
 #: umc/js/updater.js:311
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Consider <a href=\"https://docs.software-univention.de/release-notes-%s-en."
 "html\" target=\"_blank\">release notes and changelogs</a> as well as "
@@ -178,9 +177,8 @@ msgstr ""
 "plus récentes."
 
 #: umc/js/updater/UpdatesPage.js:149
-#, fuzzy
 msgid "Further release updates are available but cannot be installed."
-msgstr "La version %(version)s est disponible mais ne peut pas être installée."
+msgstr ""
 
 #: umc/js/updater/ProgressPage.js:113 umc/js/updater/UpdatesPage.js:80
 msgid ""
@@ -305,13 +303,11 @@ msgid "The currently installed release version is {ucs_version}."
 msgstr "La version actuellement installée est {ucs_version}."
 
 #: umc/js/updater/UpdatesPage.js:174
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "The currently installed version of the application %(name)s is not available "
 "for all newer UCS releases."
 msgstr ""
-"L'application %(name)s n'est pas disponible dans sa version actuellement "
-"installée pour UCS %(theoretical_release_update)s."
 
 #: umc/js/updater/_LogViewer.js:134
 msgid ""

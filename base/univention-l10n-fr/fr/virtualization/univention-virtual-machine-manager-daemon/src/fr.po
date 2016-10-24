@@ -301,9 +301,8 @@ msgid "Failed to clone volume \"%(volume)s\": %(error)s"
 msgstr "Échec de la duplication du volume « %(volume)s » : %(error)s"
 
 #: src/univention-virtual-machine-manager-daemon:124
-#, fuzzy
 msgid "Failed to fork daemon."
-msgstr "Échec de mise à jour du périphérique."
+msgstr ""
 
 #: src/univention/uvmm/node.py:1792
 #, python-format
@@ -315,7 +314,7 @@ msgid "Failed to update device."
 msgstr "Échec de mise à jour du périphérique."
 
 #: src/univention/uvmm/node.py:1660
-#, fuzzy, python-format
+#, python-format
 msgid "Failed to update domain \"%(domain)s\""
 msgstr "Échec d'actualisation du domaine « %(domain)s »"
 
@@ -489,7 +488,7 @@ msgid "Timeout in seconds for UVMM commands"
 msgstr ""
 
 #: src/univention/uvmm/commands.py:631
-#, fuzzy, python-format
+#, python-format
 msgid "Unknown command \"%(command)s\""
 msgstr "Commande « %(command)s » inconnue"
 

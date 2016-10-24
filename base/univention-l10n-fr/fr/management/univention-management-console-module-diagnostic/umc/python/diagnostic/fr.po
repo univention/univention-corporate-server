@@ -22,7 +22,6 @@ msgid "%d of the configured nameservers are not responding to DNS queries."
 msgstr "%d des serveurs de noms configurés ne répondent pas aux requêtes DNS."
 
 #: umc/python/diagnostic/plugins/nameserver.py:46
-#, fuzzy
 msgid "A timeout occurred while reaching the nameserver (is it online?)."
 msgstr "Délai dépassé lors de l'accès au serveur de noms (est-il connecté ?)."
 

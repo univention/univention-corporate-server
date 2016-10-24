@@ -146,7 +146,6 @@ msgid "April"
 msgstr "Avril"
 
 #: modules/univention/admin/nagios.py:70
-#, fuzzy
 msgid "Assigned Nagios services"
 msgstr "Services Nagios assignés"
 
@@ -296,7 +295,6 @@ msgid "DNS Entry Reverse"
 msgstr "Enregistrement DNS inverse"
 
 #: modules/univention/admin/uexceptions.py:297
-#, fuzzy
 msgid "DNS Forward Zone entry required to assign Nagios services!"
 msgstr ""
 "L'enregistrement DNS de zone de transmission (forward zone) est nécessaire "
@@ -537,7 +535,6 @@ msgid "IP address"
 msgstr "Adresse IP"
 
 #: modules/univention/admin/uexceptions.py:294
-#, fuzzy
 msgid "IP address entry required to assign Nagios services!"
 msgstr ""
 "Un enregistrement d'adresse IP est nécessaire pour assigner les services "
@@ -762,7 +759,6 @@ msgid "Monday"
 msgstr "Lundi"
 
 #: modules/univention/admin/uldap.py:403
-#, fuzzy
 msgid "Moving children is not supported."
 msgstr "Déplacer les enfants n'est pas pris en charge."
 
@@ -998,7 +994,6 @@ msgid "POSIX Account"
 msgstr "Compte POSIX"
 
 #: modules/univention/admin/syntax.py:2867
-#, fuzzy
 msgid "POSIX and Kerberos disabled"
 msgstr "POSIX et Kerberos désactivés"
 
@@ -1281,9 +1276,9 @@ msgstr "L'adresse MAC est déjà utilisée."
 #: modules/univention/admin/locking.py:118
 #: modules/univention/admin/allocators.py:155
 #: modules/univention/admin/allocators.py:186
-#, fuzzy, python-format
+#, python-format
 msgid "The attribute %r could not get locked."
-msgstr "Groupe demandé non trouvé."
+msgstr ""
 
 #: modules/univention/admin/syntax.py:1118
 #, python-format
@@ -1326,7 +1321,6 @@ msgstr ""
 "Le nom de groupe est déjà utilisé comme nom de groupe ou nom d'utilisateur"
 
 #: modules/univention/admin/uexceptions.py:209
-#, fuzzy
 msgid ""
 "The license check is disabled. You are using the GPL version without any "
 "support or maintenance by Univention."
