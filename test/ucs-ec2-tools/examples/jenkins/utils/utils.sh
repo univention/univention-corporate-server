@@ -203,11 +203,15 @@ wait_for_replication ()
 
 switch_to_test_app_center ()
 {
-	# univention-app dev-use-test-appcenter
-	ucr set repository/app_center/server=appcenter-test.software-univention.de update/secure_apt=no appcenter/index/verify=no
-	if [ -x /usr/bin/univention-app ]; then
-		univention-app update
-	fi
+	univention-install --yes univention-appcenter-dev
+	univention-app dev-use-test-appcenter
+
+	for app in $(< /var/cache/appcenter-installed.txt); do 
+		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+			univention-app shell "$app" test -x "$(which univention-install)" && univention-install -y univention-appcenter-dev
+			univention-app shell "$app" test -x "$(which univention-app)" && univention-app dev-use-test-appcenter
+		fi
+	done
 }
 
 switch_components_to_test_app_center ()
