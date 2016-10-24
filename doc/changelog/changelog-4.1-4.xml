@@ -502,6 +502,8 @@
 		<title>Other changes</title>
 		<itemizedlist>
 			<listitem><simpara>
+				The command line parameter <wordasword>-skipAdMemberMode</wordasword> has been added to 
+				<package>univention-join</package> to skip the ad member mode configuration (<u:bug>40611</u:bug>).
 			</simpara></listitem>
 		</itemizedlist>
 	</section>
