@@ -1,6 +1,6 @@
 univention-l10n-fr (1.1.0-1) unstable; urgency=medium
 
-  * Bug 41776: check and correct fuzzy entries
+  * Bug #41776: check and correct fuzzy entries
 
  -- Alexander Kläser <klaeser@univention.de>  Mon, 24 Oct 2016 11:36:29 +0200
 
