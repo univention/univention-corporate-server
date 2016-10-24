@@ -46,6 +46,7 @@ DCPWD="$USERTMP/dcpwd"
 VERSION_CHECK=true
 VERBOSE=false
 SKIPIPMAC=false
+SKIPADMEMBERMODE=false
 
 trapOnExit() {
 	rm -rf "$USERTMP"
@@ -75,6 +76,7 @@ display_help() {
 	  -windom <windows domain name>: Name of the windows (samba) domain
 	  -disableVersionCheck           Disable version check against _dcname_
 	  -skipIpMac                     Do not register IP and MAC in machine account
+	  -skipAdMemberMode              Do not activate ad member mode during join
 	  -verbose                       Enable verbose logging (/var/log/univention/join.log)
 
 	  -h | --help | -?:              Print this usage message and exit program
@@ -213,6 +215,11 @@ run_join_scripts () {
 
 check_and_configure_ad_member_mode () {
 
+	if "$SKIPADMEMBERMODE"; then
+		echo "AD Member Mode disabled by -skipAdMemberMode"
+		return 0
+	fi
+
 	# switch to ad member mode
 	if is_domain_in_admember_mode; then
 		if ! is_localhost_in_admember_mode; then
@@ -287,6 +294,10 @@ do
 			;;
 		"-skipIpMac")
 			SKIPIPMAC=true
+			shift
+			;;
+		"-skipAdMemberMode")
+			SKIPADMEMBERMODE=true
 			shift
 			;;
 		*)
