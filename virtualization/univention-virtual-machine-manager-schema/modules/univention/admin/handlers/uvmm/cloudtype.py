@@ -53,15 +53,15 @@ operations = ['search', 'edit', 'add', 'remove']
 # UDM properties
 property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name'),
-			syntax=udm_syntax.string,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 }
 
 # UDM web layout
@@ -71,7 +71,7 @@ layout = [
 			"name",
 		])
 	])
-	]
+]
 
 # Maping between UDM properties and LDAP attributes
 mapping = udm_mapping.mapping()
@@ -79,6 +79,7 @@ mapping.register('name', 'cn', None, udm_mapping.ListToString)
 
 
 class object(simpleLdap):
+
 	"""UVMM Cloud Type."""
 	module = module
 
@@ -97,13 +98,13 @@ class object(simpleLdap):
 				mapping.mapName('name'),
 				mapping.mapValue('name', self.info['name']),
 				self.position.getDn()
-				)
+		)
 
 	def _ldap_addlist(self):
 		"""Add LDAP objectClass for UVMM Cloud Type."""
 		return [
 				('objectClass', ['univentionVirtualMachineCloudType'])
-				]
+		]
 
 
 def lookup_filter(filter_s=None, lo=None):
@@ -112,7 +113,7 @@ def lookup_filter(filter_s=None, lo=None):
 	"""
 	ldap_filter = udm_filter.conjunction('&', [
 				udm_filter.expression('objectClass', 'univentionVirtualMachineCloudType'),
-				])
+	])
 	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
 	return unicode(ldap_filter)
 
