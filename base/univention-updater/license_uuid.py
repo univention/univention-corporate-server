@@ -35,7 +35,7 @@ name = 'license_uuid'
 description = 'Dump key id from license to local UCR variable'
 filter = '(&(objectClass=univentionLicense)(cn=admin))'
 
-__package__ = '' 	# workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.config_registry
 

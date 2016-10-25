@@ -36,7 +36,7 @@ description='Invalidate the nss group cache whenever a group membership has been
 filter='(objectClass=univentionGroup)'
 attributes=['uniqueMember', 'cn']
 
-__package__='' 	# workaround for PEP 366
+__package__=''  # workaround for PEP 366
 import listener
 import univention.config_registry
 

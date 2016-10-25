@@ -36,7 +36,7 @@ description='Invalidate the NSCD group cache whenever a group membership has bee
 filter='(objectClass=univentionGroup)'
 attributes=['uniqueMember', 'cn']
 
-__package__='' 	# workaround for PEP 366
+__package__=''  # workaround for PEP 366
 import listener
 from univention.config_registry import ConfigRegistry
 import univention.debug
