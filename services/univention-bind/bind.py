@@ -36,7 +36,7 @@ configuration directory (should-state) and reload/restart as appropriate.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = '' 	# workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import os
 import subprocess

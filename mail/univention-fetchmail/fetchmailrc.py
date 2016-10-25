@@ -30,7 +30,7 @@ description = 'write user-configuration to fetchmailrc'
 filter = '(objectClass=univentionFetchmail)'
 attributes = []
 
-__package__='' 	# workaround for PEP 366
+__package__=''  # workaround for PEP 366
 import listener
 import univention.debug
 import univention.utf8
