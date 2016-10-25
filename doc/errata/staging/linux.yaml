@@ -3,7 +3,7 @@ release: "3.2"
 version: [8]
 scope: ucs_3.2-0-errata3.2-8
 src: linux
-fix: 3.10.103-1.203.201610051715
+fix: 3.10.104-0.1.210.201610251001
 desc: |
  This update addresses the following issues:
  * USB: serial: visor: fix crash on detecting device without write_urbs
@@ -53,6 +53,21 @@ desc: |
    crash) by changing a certain size value, aka a "double fetch"
    vulnerability.  (CVE-2016-6480)
  * Linux tcp_xmit_retransmit_queue use after free (CVE-2016-6828)
+ * The rfcomm_sock_bind function in net/bluetooth/rfcomm/sock.c in the Linux
+   kernel before 4.2 allows local users to obtain sensitive information or
+   cause a denial of service (NULL pointer dereference) via vectors involving
+   a bind system call on a Bluetooth RFCOMM socket. (CVE-2015-8956)
+ * privilege escalation via MAP_PRIVATE COW breakage (CVE-2016-5195)
+ * The proc_keys_show function in security/keys/proc.c in the Linux kernel
+   through 4.8.2, when the GNU Compiler Collection (gcc) stack protector is
+   enabled, uses an incorrect buffer size for certain timeout data, which
+   allows local users to cause a denial of service (stack memory corruption
+   and panic) by reading the /proc/keys file. (CVE-2016-7042)
+ * The arcmsr_iop_message_xfer function in drivers/scsi/arcmsr/arcmsr_hba.c in
+   the Linux kernel through 4.8.2 does not restrict a certain length field,
+   which allows local users to gain privileges or cause a denial of service
+   (heap-based buffer overflow) via an ARCMSR_MESSAGE_WRITE_WQBUFFER control
+   code. (CVE-2016-7425)
 bug: [41314]
 cve:
  - CVE-2015-7566
@@ -86,3 +101,7 @@ cve:
  - CVE-2016-6136
  - CVE-2016-6480
  - CVE-2016-6828
+ - CVE-2015-8956
+ - CVE-2016-5195
+ - CVE-2016-7042
+ - CVE-2016-7425
