@@ -37,4 +37,3 @@ import univention.admin.syntax
 class samlserviceprovider(univention.admin.syntax.UDM_Objects):
 	udm_modules = ('saml/serviceprovider', )
 	regex = None
-
