@@ -73,26 +73,34 @@ logger = logging.getLogger('uvmmd.node')
 
 STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHED')
 
+
 class NodeError(TranslatableException):
+
 	"""Error while handling node."""
 	pass
 
+
 class StoragePool(object):
+
 	"""Container for storage pool statistics."""
+
 	def __init__(self, pool):
 		self.uuid = pool.UUIDString()
 		self.name = pool.name()
 		self.capacity = 0
 		self.available = 0
 		self.update(pool)
+
 	def __eq__(self, other):
 		return self.uuid == other.uuid
+
 	def update(self, pool):
 		"""Update statistics."""
 		_state, self.capacity, _allocation, self.available = pool.info()
 
 
 class DomainTemplate(object):
+
 	'''Container for node capability.'''
 
 	@staticmethod
@@ -156,8 +164,11 @@ class DomainTemplate(object):
 		'''Return True if domain matches os_type, arch and domain_type.'''
 		return self.arch == domain.arch and self.domain_type == domain.domain_type and self.os_type == domain.os_type
 
+
 class PersistentCached(object):
+
 	"""Abstract class to implement caching."""
+
 	def cache_file_name(self, suffix='.pic'):
 		raise NotImplementedError()
 
@@ -178,9 +189,12 @@ class PersistentCached(object):
 		new_name = self.cache_file_name(suffix='.old')
 		os.rename(old_name, new_name)
 
+
 class Domain(PersistentCached):
+
 	"""Container for domain statistics."""
-	CPUTIMES = (10, 60, 5*60) # 10s 60s 5m
+	CPUTIMES = (10, 60, 5 * 60)  # 10s 60s 5m
+
 	def __init__(self, domain, node):
 		self.node = node
 		self._time_stamp = 0.0
@@ -192,7 +206,7 @@ class Domain(PersistentCached):
 			self.pd.uuid = domain.UUIDString()
 			self.pd.os_type = domain.OSType()
 			self.update(domain)
-		elif isinstance(domain, basestring): # XML
+		elif isinstance(domain, basestring):  # XML
 			self.xml2obj(domain)
 		self.update_ldap()
 
@@ -205,7 +219,7 @@ class Domain(PersistentCached):
 			self.pd.name = domain.name()
 		for i in range(5):
 			info = domain.info()
-			if info[0] != libvirt.VIR_DOMAIN_NOSTATE: # ignore =?= libvirt's transient error
+			if info[0] != libvirt.VIR_DOMAIN_NOSTATE:  # ignore =?= libvirt's transient error
 				break
 			if not domain.isActive():
 				info[0] = libvirt.VIR_DOMAIN_SHUTOFF
@@ -217,24 +231,24 @@ class Domain(PersistentCached):
 
 		self.pd.state, maxMem, curMem, self.pd.vcpus, runtime = info
 
-		self.pd.maxMem = long(maxMem) << 10 # KiB
+		self.pd.maxMem = long(maxMem) << 10  # KiB
 
 		if self.pd.state in (libvirt.VIR_DOMAIN_SHUTOFF, libvirt.VIR_DOMAIN_CRASHED):
 			self.pd.curMem = 0L
 			delta_used = 0L
 			self._time_used = 0L
 		else:
-			self.pd.curMem = long(curMem) << 10 # KiB
-			delta_used = runtime - self._time_used # running [ns]
+			self.pd.curMem = long(curMem) << 10  # KiB
+			delta_used = runtime - self._time_used  # running [ns]
 			self._time_used = runtime
 
 		# Calculate historical CPU usage
 		# http://www.teamquest.com/resources/gunther/display/5/
 		now = time.time()
-		delta_t = now - self._time_stamp # wall clock [s]
+		delta_t = now - self._time_stamp  # wall clock [s]
 		if delta_t > 0.0 and delta_used >= 0L:
 			try:
-				self._cpu_usage = delta_used / delta_t / self.pd.vcpus / 1000000 # ms
+				self._cpu_usage = delta_used / delta_t / self.pd.vcpus / 1000000  # ms
 			except ZeroDivisionError:
 				self._cpu_usage = 0
 			for i in range(len(Domain.CPUTIMES)):
@@ -256,7 +270,7 @@ class Domain(PersistentCached):
 			try:
 				self.cache_save(xml)
 				self._cache_id = cache_id
-			except IOError, ex:
+			except IOError as ex:
 				logger.warning("Failed to cache domain %s: %s" % (self.pd.uuid, ex))
 			self.xml2obj(xml)
 
@@ -267,10 +281,10 @@ class Domain(PersistentCached):
 			try:
 				conn = domain.connect()
 				vol = conn.storageVolLookupByPath(dev.source)
-				dev.size = vol.info()[1] # (type, capacity, allocation)
+				dev.size = vol.info()[1]  # (type, capacity, allocation)
 				pool = vol.storagePoolLookupByVolume()
 				dev.pool = pool.name()
-			except libvirt.libvirtError, ex:
+			except libvirt.libvirtError as ex:
 				if ex.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
 					logger.warning('Failed to query disk %s#%s: %s', self.pd.uuid, dev.source, ex.get_error_message())
 
@@ -462,18 +476,23 @@ class Domain(PersistentCached):
 
 
 class _DomainDict(dict):
+
 	"""Dictionary for handling domains of a node and their persistent cache."""
+
 	def __delitem__(self, uuid):
 		"""x.__delitem__(i) <==> del x[i]"""
 		domStat = super(_DomainDict, self).pop(uuid)
 		try:
 			domStat.cache_purge()
-		except OSError, ex:
+		except OSError as ex:
 			if ex.errno != errno.ENOENT:
 				logger.warning("Failed to remove cached domain '%s#%s': %s", domStat.node.pd.uri, uuid, ex)
 
+
 class Node(PersistentCached):
+
 	"""Container for node statistics."""
+
 	def __init__(self, uri, cache_dir=None):
 		self.cache_dir = cache_dir
 		self.domains = _DomainDict()
@@ -487,8 +506,8 @@ class Node(PersistentCached):
 			# Calculate base cache dir for node
 			cache_dom_dir = self.cache_dom_dir(uri)
 			try:
-				os.mkdir(cache_dom_dir, 0700) # contains VNC password
-			except OSError, ex:
+				os.mkdir(cache_dom_dir, 0o700)  # contains VNC password
+			except OSError as ex:
 				if ex.errno != errno.EEXIST:
 					raise
 
@@ -524,10 +543,10 @@ class Node(PersistentCached):
 						logger.debug("Loaded from cache '%s#%s'", self.pd.uri, domStat.pd.uuid)
 					except (EOFError, IOError, AssertionError, ET.XMLSyntaxError) as ex:
 						logger.warning("Failed to load cached domain %s: %s" % (cache_file_name, ex))
-				del dirs[:] # just that direcory; no recursion
-		except (EOFError, IOError, AssertionError, pickle.PickleError), ex:
+				del dirs[:]  # just that direcory; no recursion
+		except (EOFError, IOError, AssertionError, pickle.PickleError) as ex:
 			logger.warning("Failed to load cached state of %s: %s" % (uri, ex))
-			self.pd = Data_Node() # public data
+			self.pd = Data_Node()  # public data
 			self.pd.uri = uri
 			self.pd.name = re.sub('^[^:]+://(?:[^/@]+@)?([^/]+).*', lambda m: m.group(1), uri)
 		self._cache_id = self.calc_cache_id()
@@ -564,7 +583,7 @@ class Node(PersistentCached):
 				self.current_frequency = self.config_frequency
 			self.update()
 			self.pd.last_try = self.pd.last_update = time.time()
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			self.pd.last_try = time.time()
 			# double timer interval until maximum
 			hz = min(self.current_frequency * 2, Nodes.BEBO_FREQUENCY)
@@ -592,7 +611,7 @@ class Node(PersistentCached):
 		del self.pd
 		del self.domains
 
-	def _register_default_pool( self ):
+	def _register_default_pool(self):
 		'''create a default storage pool if not available'''
 		try:
 			get_pool_info(self, 'default')
@@ -602,13 +621,13 @@ class Node(PersistentCached):
 			create_storage_pool(
 					self.conn,
 					configRegistry.get('uvmm/pool/default/path', '/var/lib/libvirt/images')
-					)
+			)
 
 	def update_once(self):
 		"""Update once on (re-)connect."""
 		self.pd.name = self.conn.getHostname()
 		info = self.conn.getInfo()
-		self.pd.phyMem = long(info[1]) << 20 # MiB
+		self.pd.phyMem = long(info[1]) << 20  # MiB
 		self.pd.cpus = info[2]
 		self.pd.cores = tuple(info[4:8])
 		xml = self.conn.getCapabilities()
@@ -631,10 +650,10 @@ class Node(PersistentCached):
 						del self.domains[uuid]
 					except KeyError:
 						pass
-				else: # VIR_DOMAIN_EVENT_STARTED _SUSPENDED _RESUMED _STOPPED
+				else:  # VIR_DOMAIN_EVENT_STARTED _SUSPENDED _RESUMED _STOPPED
 					try:
 						domStat = self.domains[uuid]
-						domStat.update( dom )
+						domStat.update(dom)
 						self.write_novnc_tokens()
 					except KeyError:
 						# during migration events are not ordered causal
@@ -653,7 +672,7 @@ class Node(PersistentCached):
 			self.timer = None
 			self.timerEvent.set()
 			while wait:
-				timer.join(1.0) # wait for up to 1 second until Thread terminates
+				timer.join(1.0)  # wait for up to 1 second until Thread terminates
 				if timer.isAlive():
 					logger.debug("timer still alive: %s" % (self.pd.uri,))
 				else:
@@ -677,6 +696,7 @@ class Node(PersistentCached):
 		maxMem = 0
 		cpu_usage = 0
 		cached_domains = self.domains.keys()
+
 		def all_domains():
 			for dom_id in self.conn.listDomainsID():
 				yield self.conn.lookupByID(dom_id)
@@ -713,7 +733,7 @@ class Node(PersistentCached):
 				data = pickle.dumps(self.pd)
 				self.cache_save(data)
 				self._cache_id = cache_id
-			except IOError, ex:
+			except IOError as ex:
 				logger.exception("Failed to write cached node %s: %s" % (self.pd.uri, ex))
 			self.write_novnc_tokens()
 
@@ -761,15 +781,15 @@ class Node(PersistentCached):
 			uri = self.pd.uri
 		return os.path.join(self.cache_dir, uri_encode(uri) + suffix)
 
-	def domain_list( self, pattern = '*' ):
-		regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
+	def domain_list(self, pattern='*'):
+		regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 		domains = []
 		for dom in self.domains:
-			pd = self.domains[ dom ].pd
-			contact = pd.annotations.get( 'contact', '' )
+			pd = self.domains[dom].pd
+			contact = pd.annotations.get('contact', '')
 			name = pd.name
-			descr = pd.annotations.get( 'description', '' )
-			if regex.match( name ) is not None or regex.match( contact )  is not None or regex.match( descr ) is not None:
+			descr = pd.annotations.get('description', '')
+			if regex.match(name) is not None or regex.match(contact) is not None or regex.match(descr) is not None:
 				vnc = self.domains[dom]._vnc()
 				domains.append({
 					'uuid': pd.uuid,
@@ -782,7 +802,7 @@ class Node(PersistentCached):
 					'suspended': pd.suspended,
 					'description': descr,
 					'node_available': self.pd.last_try == self.pd.last_update
-					})
+				})
 
 		return domains
 
@@ -790,11 +810,13 @@ class Node(PersistentCached):
 		"""Return the path of the domain cache directory of the node."""
 		return self.cache_file_name(uri, suffix='.d')
 
+
 class Nodes(dict):
+
 	"""Handle registered nodes."""
-	IDLE_FREQUENCY = 15*1000 # ms
-	USED_FREQUENCY = 10*1000 # ms
-	BEBO_FREQUENCY = 5*60*1000 # ms
+	IDLE_FREQUENCY = 15 * 1000  # ms
+	USED_FREQUENCY = 10 * 1000  # ms
+	BEBO_FREQUENCY = 5 * 60 * 1000  # ms
 
 	def __init__(self):
 		super(Nodes, self).__init__()
@@ -848,14 +870,14 @@ class Nodes(dict):
 			node = self.query(uri)
 			node.set_frequency(hz)
 
-	def list( self, group, pattern ):
+	def list(self, group, pattern):
 		"""Return list of watched nodes matching the given pattern."""
 		nodes = []
-		if group == 'default' or group is None: # FIXME
-			pattern_regex = re.compile( fnmatch.translate( pattern ), re.IGNORECASE )
+		if group == 'default' or group is None:  # FIXME
+			pattern_regex = re.compile(fnmatch.translate(pattern), re.IGNORECASE)
 			for node_uri in self.keys():
-				if pattern_regex.match( node_uri ) is not None:
-					nodes.append( self[ node_uri ].pd )
+				if pattern_regex.match(node_uri) is not None:
+					nodes.append(self[node_uri].pd)
 		return nodes
 
 nodes = Nodes()
@@ -865,22 +887,24 @@ node_query = nodes.query
 node_frequency = nodes.frequency
 node_list = nodes.list
 
+
 def group_list():
 	"""Return list of groups for nodes."""
 	group = []
-	if (len(node_list('default','*')) > 0):
+	if (len(node_list('default', '*')) > 0):
 		group.append('default')
 	from univention.uvmm.cloudnode import cloudconnections
 	if (len(cloudconnections.list()) > 0):
 		group.append('cloudconnections')
 	return group
 
+
 def _domain_backup(dom, save=True):
 	"""Save domain definition to backup file."""
 	backup_dir = configRegistry.get('uvmm/backup/directory', '/var/backups/univention-virtual-machine-manager-daemon')
 	uuid = dom.UUIDString()
 	xml = dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
-	if len(xml) < 300: # minimal XML descriptor length
+	if len(xml) < 300:  # minimal XML descriptor length
 		logger.error("Failed to backup domain %s: %s" % (uuid, xml))
 		raise NodeError(_("Failed to backup domain %(domain)s: %(xml)s"), domain=uuid, xml=xml)
 	now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
@@ -889,7 +913,7 @@ def _domain_backup(dom, save=True):
 		suffix += '.save'
 	tmp_file_name = os.path.join(backup_dir, "%s_%s.%s" % (uuid, now, suffix))
 	file = os.path.join(backup_dir, "%s.%s" % (uuid, suffix))
-	umask = os.umask(0177)
+	umask = os.umask(0o177)
 	tmp_file = open(tmp_file_name, "w")
 	try:
 		tmp_file.write(xml)
@@ -898,6 +922,7 @@ def _domain_backup(dom, save=True):
 	os.umask(umask)
 	os.rename(tmp_file_name, file)
 	logger.info("Domain backuped to %s." % (file,))
+
 
 def __update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 	'''Create, update or delete node named '_node_name' of '_node_parent'.
@@ -924,6 +949,7 @@ def __update_xml(_node_parent, _node_name, _node_value, _changes=set(), **attr):
 				_changes.add(k)
 				node.attrib[k] = v
 	return node
+
 
 def _domain_edit(node, dom_stat, xml):
 	"""Apply python object 'dom_stat' to an XML domain description."""
@@ -986,14 +1012,14 @@ def _domain_edit(node, dom_stat, xml):
 		domain_bootloader_args = update(domain, 'bootloader_args', dom_stat.bootloader_args)
 	# /domain/memory
 	try:
-		old_maxMem = int(domain.find('memory').text) << 10 # KiB
+		old_maxMem = int(domain.find('memory').text) << 10  # KiB
 	except:
 		old_maxMem = -1
-	domain_memory = update(domain, 'memory', '%d' % (dom_stat.maxMem >> 10)) # KiB
+	domain_memory = update(domain, 'memory', '%d' % (dom_stat.maxMem >> 10))  # KiB
 	# On change, reset currentMemory to new maxMem as well
 	if old_maxMem != dom_stat.maxMem:
 		# /domain/currentMemory
-		domain_currentMemory = update(domain, 'currentMemory', '%d' % (dom_stat.maxMem >> 10)) # KiB
+		domain_currentMemory = update(domain, 'currentMemory', '%d' % (dom_stat.maxMem >> 10))  # KiB
 	# /domain/vcpu
 	domain_vcpu = update(domain, 'vcpu', '%d' % dom_stat.vcpus)
 
@@ -1009,16 +1035,16 @@ def _domain_edit(node, dom_stat, xml):
 	elif dom_stat.rtc_offset == 'variable':
 		domain_clock = update(domain, 'clock', '', offset=dom_stat.rtc_offset, timezone=None)
 	elif dom_stat.rtc_offset:
-		domain_clock = update(domain, 'clock', '', offset=dom_stat.rtc_offset) # timezone='', adjustment=0
+		domain_clock = update(domain, 'clock', '', offset=dom_stat.rtc_offset)  # timezone='', adjustment=0
 	# /domain/on_poweroff
 	if defaults:
-		domain_on_poweroff = update(domain, 'on_poweroff', 'destroy') # (destroy|restart|preserve|rename-restart)
+		domain_on_poweroff = update(domain, 'on_poweroff', 'destroy')  # (destroy|restart|preserve|rename-restart)
 	# /domain/on_reboot
 	if defaults:
-		domain_on_reboot = update(domain, 'on_reboot', 'restart') # (destroy|restart|preserve|rename-restart)
+		domain_on_reboot = update(domain, 'on_reboot', 'restart')  # (destroy|restart|preserve|rename-restart)
 	# /domain/on_crash
 	if defaults:
-		domain_on_crash = update(domain, 'on_crash', 'destroy') # (destroy|restart|preserve|rename-restart)
+		domain_on_crash = update(domain, 'on_crash', 'destroy')  # (destroy|restart|preserve|rename-restart)
 
 	# /domain/devices/*[]
 	domain_devices = update(domain, 'devices', '')
@@ -1179,7 +1205,8 @@ def _domain_edit(node, dom_stat, xml):
 	updates_xml = [ET.tostring(device) for device in live_updates]
 	return (xml, updates_xml)
 
-def domain_define( uri, domain ):
+
+def domain_define(uri, domain):
 	"""Convert python object to an XML document."""
 	node = node_query(uri)
 	conn = node.conn
@@ -1194,7 +1221,7 @@ def domain_define( uri, domain ):
 		if old_uuid != domain.uuid:
 			raise NodeError(_('Domain name "%(domain)s" already used by "%(uuid)s"'), domain=domain.name, uuid=old_uuid)
 		old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 			logger.error(ex)
 			raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.name, error=ex.get_error_message())
@@ -1203,7 +1230,7 @@ def domain_define( uri, domain ):
 			if domain.uuid:
 				old_dom = conn.lookupByUUIDString(domain.uuid)
 				old_xml = old_dom.XMLDesc(libvirt.VIR_DOMAIN_XML_SECURE)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(ex)
 				raise NodeError(_('Error retrieving old domain "%(domain)s": %(error)s'), domain=domain.uuid, error=ex.get_error_message())
@@ -1214,7 +1241,7 @@ def domain_define( uri, domain ):
 		try:
 			dom = node.domains[domain.uuid]
 		except KeyError:
-			pass # New domain with pre-configured UUID
+			pass  # New domain with pre-configured UUID
 		else:
 			old_stat = dom.key()
 
@@ -1227,7 +1254,7 @@ def domain_define( uri, domain ):
 			try:
 				# FIXME: If the volume is outside any pool, ignore error
 				create_storage_volume(conn, domain, disk)
-			except StorageError, ex:
+			except StorageError as ex:
 				raise NodeError(ex)
 
 	# update running domain definition
@@ -1241,11 +1268,11 @@ def domain_define( uri, domain ):
 								xml, (
 									libvirt.VIR_DOMAIN_DEVICE_MODIFY_LIVE |
 									libvirt.VIR_DOMAIN_DEVICE_MODIFY_CONFIG
-									)
-								)
+        )
+						)
 						if rv != 0:
 							warnings.append(_('Failed to update device.'))
-					except libvirt.libvirtError, ex:
+					except libvirt.libvirtError as ex:
 						if ex.get_error_code() == libvirt.VIR_ERR_OPERATION_INVALID:
 							pass
 						elif ex.get_error_code() == libvirt.VIR_ERR_OPERATION_FAILED:
@@ -1256,7 +1283,7 @@ def domain_define( uri, domain ):
 							raise NodeError(_('Error updating domain "%(domain)s": %(error)s'), domain=domain.uuid, error=ex.get_error_message())
 						else:
 							raise
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			logger.error(ex)
 			raise NodeError(_('Error updating domain "%(domain)s": %(error)s'), domain=domain.uuid, error=ex.get_error_message())
 
@@ -1264,15 +1291,15 @@ def domain_define( uri, domain ):
 	if old_dom:
 		try:
 			_domain_backup(old_dom)
-			if old_dom.name() != domain.name: # rename needs undefine
-				try: # all snapshots are destroyed!
-					old_dom.undefineFlags(libvirt.VIR_DOMAIN_UNDEFINE_MANAGED_SAVE | libvirt.VIR_DOMAIN_UNDEFINE_SNAPSHOTS_METADATA) # all snapshots are destroyed!
-				except libvirt.libvirtError, ex:
+			if old_dom.name() != domain.name:  # rename needs undefine
+				try:  # all snapshots are destroyed!
+					old_dom.undefineFlags(libvirt.VIR_DOMAIN_UNDEFINE_MANAGED_SAVE | libvirt.VIR_DOMAIN_UNDEFINE_SNAPSHOTS_METADATA)  # all snapshots are destroyed!
+				except libvirt.libvirtError as ex:
 					if ex.get_error_code() not in (libvirt.VIR_ERR_NO_SUPPORT, libvirt.VIR_ERR_INVALID_ARG):
 						raise
 					old_dom.undefine()
 				logger.info('Old domain "%s" removed.' % (domain.uuid,))
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(ex)
 				raise NodeError(_('Error removing domain "%(domain)s": %(error)s'), domain=domain.uuid, error=ex.get_error_message())
@@ -1282,7 +1309,7 @@ def domain_define( uri, domain ):
 		dom2 = conn.defineXML(new_xml)
 		domain.uuid = dom2.UUIDString()
 		_domain_backup(dom2, save=False)
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error defining domain "%(domain)s": %(error)s'), domain=domain.name, error=ex.get_error_message())
 	logger.info('New domain "%s"(%s) defined.' % (domain.name, domain.uuid))
@@ -1301,18 +1328,19 @@ def domain_define( uri, domain ):
 					modified = True
 			if modified:
 				record.commit()
-		except LdapConnectionError, ex:
+		except LdapConnectionError as ex:
 			logger.error('Updating LDAP failed, insufficient permissions: %s' % (ex,))
-			warnings.append( _( 'Failed to update the additionally information in the LDAP directory.' ) )
-		except ( univention.admin.uexceptions.ldapError, univention.admin.uexceptions.objectExists ), ex:
+			warnings.append(_('Failed to update the additionally information in the LDAP directory.'))
+		except (univention.admin.uexceptions.ldapError, univention.admin.uexceptions.objectExists) as ex:
 			logger.error('Updating LDAP failed: %s %s' % (ex, record))
-			warnings.append( _( 'Failed to update the additionally information in the LDAP directory.' ) )
+			warnings.append(_('Failed to update the additionally information in the LDAP directory.'))
 
 	node.wait_update(domain.uuid, old_stat)
 
-	return ( domain.uuid, warnings )
+	return (domain.uuid, warnings)
 
-def domain_list( uri, pattern = '*' ):
+
+def domain_list(uri, pattern='*'):
 	"""Returns a dictionary of domains matching the pattern in name, contact or description.
 
 	return: { 'nodeY' : [ ( <uuid>, <domain name> ), ... ], ... }
@@ -1322,25 +1350,27 @@ def domain_list( uri, pattern = '*' ):
 	if uri in ('*', ''):
 		node_list = nodes.values()
 	else:
-		node_list = [ node_query(uri) ]
+		node_list = [node_query(uri)]
 
 	domains = {}
 	for node in node_list:
-		domains[ node.pd.uri ] = node.domain_list( pattern )
+		domains[node.pd.uri] = node.domain_list(pattern)
 
 	return domains
 
-def domain_info( uri, domain ):
+
+def domain_info(uri, domain):
 	"""Return detailed information of a domain."""
-	node = node_query( uri )
+	node = node_query(uri)
 	# transfer state number into string constant
 	if not domain in node.domains:
-		raise NodeError( _( 'Unknown domain "%s"' ) % domain )
-	domain_pd = copy.copy( node.domains[ domain ].pd )
-	domain_pd.state = STATES[ domain_pd.state ]
+		raise NodeError(_('Unknown domain "%s"') % domain)
+	domain_pd = copy.copy(node.domains[domain].pd)
+	domain_pd.state = STATES[domain_pd.state]
 	domain_pd.available = node.pd.last_try == node.pd.last_update
 
 	return domain_pd
+
 
 def domain_state(uri, domain, state):
 	"""Change running state of domain on node and wait for updated state."""
@@ -1352,32 +1382,32 @@ def domain_state(uri, domain, state):
 		stat_key = dom_stat.key()
 		try:
 			TRANSITION = {
-					(libvirt.VIR_DOMAIN_RUNNING,  'PAUSE'   ): dom.suspend,
-					(libvirt.VIR_DOMAIN_RUNNING,  'RESTART' ): lambda:dom.reboot(0),
-					(libvirt.VIR_DOMAIN_RUNNING,  'RUN'     ): None,
-					(libvirt.VIR_DOMAIN_RUNNING,  'SHUTDOWN'): dom.shutdown,
-					(libvirt.VIR_DOMAIN_RUNNING,  'SHUTOFF' ): dom.destroy,
-					(libvirt.VIR_DOMAIN_RUNNING,  'SUSPEND' ): lambda:dom.managedSave(0),
-					(libvirt.VIR_DOMAIN_BLOCKED,  'PAUSE'   ): dom.suspend,
-					(libvirt.VIR_DOMAIN_BLOCKED,  'RESTART' ): lambda:dom.reboot(0),
-					(libvirt.VIR_DOMAIN_BLOCKED,  'RUN'     ): None,
-					(libvirt.VIR_DOMAIN_BLOCKED,  'SHUTDOWN'): dom.shutdown,
-					(libvirt.VIR_DOMAIN_BLOCKED,  'SHUTOFF' ): dom.destroy,
-					(libvirt.VIR_DOMAIN_BLOCKED,  'SUSPEND' ): lambda:dom.managedSave(0),
-					(libvirt.VIR_DOMAIN_PAUSED,   'PAUSE'   ): None,
-					(libvirt.VIR_DOMAIN_PAUSED,   'RUN'     ): dom.resume,
-					(libvirt.VIR_DOMAIN_PAUSED,   'SHUTDOWN'): dom.destroy,
-					(libvirt.VIR_DOMAIN_PAUSED,   'SHUTOFF' ): dom.destroy,
-					(libvirt.VIR_DOMAIN_SHUTDOWN, 'RUN'     ): dom.create,
+					(libvirt.VIR_DOMAIN_RUNNING, 'PAUSE'): dom.suspend,
+					(libvirt.VIR_DOMAIN_RUNNING, 'RESTART'): lambda: dom.reboot(0),
+					(libvirt.VIR_DOMAIN_RUNNING, 'RUN'): None,
+					(libvirt.VIR_DOMAIN_RUNNING, 'SHUTDOWN'): dom.shutdown,
+					(libvirt.VIR_DOMAIN_RUNNING, 'SHUTOFF'): dom.destroy,
+					(libvirt.VIR_DOMAIN_RUNNING, 'SUSPEND'): lambda: dom.managedSave(0),
+					(libvirt.VIR_DOMAIN_BLOCKED, 'PAUSE'): dom.suspend,
+					(libvirt.VIR_DOMAIN_BLOCKED, 'RESTART'): lambda: dom.reboot(0),
+					(libvirt.VIR_DOMAIN_BLOCKED, 'RUN'): None,
+					(libvirt.VIR_DOMAIN_BLOCKED, 'SHUTDOWN'): dom.shutdown,
+					(libvirt.VIR_DOMAIN_BLOCKED, 'SHUTOFF'): dom.destroy,
+					(libvirt.VIR_DOMAIN_BLOCKED, 'SUSPEND'): lambda: dom.managedSave(0),
+					(libvirt.VIR_DOMAIN_PAUSED, 'PAUSE'): None,
+					(libvirt.VIR_DOMAIN_PAUSED, 'RUN'): dom.resume,
+					(libvirt.VIR_DOMAIN_PAUSED, 'SHUTDOWN'): dom.destroy,
+					(libvirt.VIR_DOMAIN_PAUSED, 'SHUTOFF'): dom.destroy,
+					(libvirt.VIR_DOMAIN_SHUTDOWN, 'RUN'): dom.create,
 					(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTDOWN'): None,
-					(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTOFF' ): None,
-					(libvirt.VIR_DOMAIN_SHUTOFF,  'RUN'     ): dom.create,
-					(libvirt.VIR_DOMAIN_SHUTOFF,  'SHUTDOWN'): None,
-					(libvirt.VIR_DOMAIN_SHUTOFF,  'SHUTOFF' ): None,
-					(libvirt.VIR_DOMAIN_CRASHED,  'RUN'     ): dom.create,
-					(libvirt.VIR_DOMAIN_CRASHED,  'SHUTDOWN'): None, # TODO destroy?
-					(libvirt.VIR_DOMAIN_CRASHED,  'SHUTOFF' ): None, # TODO destroy?
-					}
+					(libvirt.VIR_DOMAIN_SHUTDOWN, 'SHUTOFF'): None,
+					(libvirt.VIR_DOMAIN_SHUTOFF, 'RUN'): dom.create,
+					(libvirt.VIR_DOMAIN_SHUTOFF, 'SHUTDOWN'): None,
+					(libvirt.VIR_DOMAIN_SHUTOFF, 'SHUTOFF'): None,
+					(libvirt.VIR_DOMAIN_CRASHED, 'RUN'): dom.create,
+					(libvirt.VIR_DOMAIN_CRASHED, 'SHUTDOWN'): None,  # TODO destroy?
+					(libvirt.VIR_DOMAIN_CRASHED, 'SHUTOFF'): None,  # TODO destroy?
+			}
 			transition = TRANSITION[(dom_stat.pd.state, state)]
 		except KeyError:
 			cur_state = STATES[dom_stat.pd.state]
@@ -1388,11 +1418,11 @@ def domain_state(uri, domain, state):
 				# if interfaces of type NETWORK exist, verify that the network is active
 				for nic in dom_stat.pd.interfaces:
 					if nic.type == Interface.TYPE_NETWORK:
-						network_start( conn, nic.source )
+						network_start(conn, nic.source)
 					elif nic.type == Interface.TYPE_BRIDGE:
-						network = network_find_by_bridge( conn, nic.source )
+						network = network_find_by_bridge(conn, nic.source)
 						if network:
-							network_start( conn, network.name )
+							network_start(conn, network.name)
 			# Detect if VNC is wanted
 			wait_for_vnc = state in ('RUN', 'PAUSE') and any(True for dev in dom_stat.pd.graphics if dev.type == Graphic.TYPE_VNC)
 			transition()
@@ -1411,20 +1441,21 @@ def domain_state(uri, domain, state):
 			if wait_for_vnc:
 				# wait <=3*10s until port is known
 				for t in range(3):
-					if any(True for dev in dom_stat.pd.graphics if dev.type == Graphic.TYPE_VNC and 0 <= dev.port < (1<<16)):
+					if any(True for dev in dom_stat.pd.graphics if dev.type == Graphic.TYPE_VNC and 0 <= dev.port < (1 << 16)):
 						break
 					logger.info('Still waiting for VNC of %s...' % domain)
 					stat_key = dom_stat.key()
 					node.wait_update(domain, stat_key)
-	except KeyError, ex:
+	except KeyError as ex:
 		logger.error("Domain %s not found" % (ex,))
 		raise NodeError(_('Error managing domain "%(domain)s"'), domain=domain)
-	except NetworkError, ex:
+	except NetworkError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=str(ex))
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error managing domain "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
+
 
 def domain_save(uri, domain, statefile):
 	"""Save defined domain."""
@@ -1432,13 +1463,14 @@ def domain_save(uri, domain, statefile):
 		node = node_query(uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
-		old_state = node.domains[ domain ].key()
+		old_state = node.domains[domain].key()
 		dom.save(statefile)
-		node.domains[ domain ].update( dom )
-		node.wait_update( domain, old_state )
-	except libvirt.libvirtError, ex:
+		node.domains[domain].update(dom)
+		node.wait_update(domain, old_state)
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error saving domain "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
+
 
 def domain_restore(uri, domain, statefile):
 	"""Restore defined domain."""
@@ -1446,13 +1478,14 @@ def domain_restore(uri, domain, statefile):
 		node = node_query(uri)
 		conn = node.conn
 		dom = conn.lookupByUUIDString(domain)
-		old_state = node.domains[ domain ].key()
+		old_state = node.domains[domain].key()
 		conn.restore(statefile)
-		node.domains[ domain ].update( dom )
-		node.wait_update( domain, old_state )
-	except libvirt.libvirtError, ex:
+		node.domains[domain].update(dom)
+		node.wait_update(domain, old_state)
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error restoring domain "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
+
 
 def domain_undefine(uri, domain, volumes=[]):
 	"""Undefine a domain and its volumes on a node."""
@@ -1467,20 +1500,21 @@ def domain_undefine(uri, domain, volumes=[]):
 		try:
 			if dom.hasManagedSaveImage(0):
 				dom.managedSaveRemove(0)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			# libvirt returns an 'internal error' when no save image exists
 			if ex.get_error_code() != libvirt.VIR_ERR_INTERNAL_ERROR:
 				logger.debug(ex)
 		del node.domains[domain]
 		try:
 			dom.undefineFlags(libvirt.VIR_DOMAIN_UNDEFINE_MANAGED_SAVE | libvirt.VIR_DOMAIN_UNDEFINE_SNAPSHOTS_METADATA)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ex.get_error_code() not in (libvirt.VIR_ERR_NO_SUPPORT, libvirt.VIR_ERR_INVALID_ARG):
 				raise
 			dom.undefine()
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error undefining domain "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
+
 
 def domain_migrate(source_uri, domain, target_uri):
 	"""Migrate a domain from node to the target node."""
@@ -1497,7 +1531,7 @@ def domain_migrate(source_uri, domain, target_uri):
 		target_node = node_query(target_uri)
 		target_conn = target_node.conn
 
-		if source_conn is None: # offline node
+		if source_conn is None:  # offline node
 			domStat = source_node.domains[domain]
 			try:
 				cache_file_name = domStat.cache_file_name()
@@ -1507,7 +1541,7 @@ def domain_migrate(source_uri, domain, target_uri):
 				finally:
 					cache_file.close()
 				target_conn.defineXML(xml)
-			except IOError, ex:
+			except IOError as ex:
 				raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=ex)
 		elif source_state in (libvirt.VIR_DOMAIN_RUNNING, libvirt.VIR_DOMAIN_BLOCKED, libvirt.VIR_DOMAIN_PAUSED):
 			# running domains are live migrated
@@ -1527,7 +1561,7 @@ def domain_migrate(source_uri, domain, target_uri):
 			del source_node.domains[domain]
 		except KeyError:
 			pass
-		#target_node.domains[domain] = Domain(target_dom, node=target_node)
+		# target_node.domains[domain] = Domain(target_dom, node=target_node)
 		for t in range(20):
 			if (domain not in source_node.domains and
 					domain in target_node.domains and
@@ -1535,10 +1569,11 @@ def domain_migrate(source_uri, domain, target_uri):
 				break
 			time.sleep(1)
 		else:
-			logger.warning('Domain "%(domain)s" still not migrated from "%(source)s" to "%(target)s"' % {'domain':domain, 'source':source_uri, 'target':target_uri})
-	except libvirt.libvirtError, ex:
+			logger.warning('Domain "%(domain)s" still not migrated from "%(source)s" to "%(target)s"' % {'domain': domain, 'source': source_uri, 'target': target_uri})
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error migrating domain "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
+
 
 def domain_snapshot_create(uri, domain, snapshot):
 	"""Create new snapshot of domain."""
@@ -1557,9 +1592,10 @@ def domain_snapshot_create(uri, domain, snapshot):
 
 		dom_stat.update(dom)
 		node.wait_update(domain, old_state)
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error creating "%(domain)s" snapshot: %(error)s'), domain=domain, error=ex.get_error_message())
+
 
 def domain_snapshot_revert(uri, domain, snapshot):
 	"""Revert to snapshot of domain."""
@@ -1573,14 +1609,14 @@ def domain_snapshot_revert(uri, domain, snapshot):
 		if dom_stat.pd.snapshots is None:
 			raise NodeError(_('Snapshot not supported "%(node)s"'), node=uri)
 		if dom.hasManagedSaveImage(0):
-			logger.warning('Domain "%(domain)s" saved state will be removed.' % {'domain':domain})
+			logger.warning('Domain "%(domain)s" saved state will be removed.' % {'domain': domain})
 			dom.managedSaveRemove(0)
 		old_state = dom_stat.key()
 		snap = dom.snapshotLookupByName(snapshot, 0)
 		try:
 			# Try unforced revert for backward-compatibility with previous versions first
 			res = dom.revertToSnapshot(snap, 0)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_SNAPSHOT_REVERT_RISKY:
 				raise
 			res = dom.revertToSnapshot(snap, libvirt.VIR_DOMAIN_SNAPSHOT_REVERT_FORCE)
@@ -1589,9 +1625,10 @@ def domain_snapshot_revert(uri, domain, snapshot):
 
 		dom_stat.update(dom)
 		node.wait_update(domain, old_state)
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error reverting "%(domain)s" to snapshot: %(error)s'), domain=domain, error=ex.get_error_message())
+
 
 def domain_snapshot_delete(uri, domain, snapshot):
 	"""Delete snapshot of domain."""
@@ -1615,9 +1652,10 @@ def domain_snapshot_delete(uri, domain, snapshot):
 		except KeyError:
 			dom_stat.update(dom)
 			node.wait_update(domain, old_state)
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise NodeError(_('Error deleting "%(domain)s" snapshot: %(error)s'), domain=domain, error=ex.get_error_message())
+
 
 def domain_update(domain):
 	"""Trigger update of domain.
@@ -1632,7 +1670,7 @@ def domain_update(domain):
 			dom_stat.update(dom)
 			dom_stat.update_ldap()
 			return
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(ex)
 				raise NodeError(_('Error updating domain "%(domain)s"'), domain=domain)
@@ -1649,15 +1687,16 @@ def domain_update(domain):
 			dom_stat = Domain(dom, node=node)
 			node.domains[domain] = dom_stat
 			return
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 				logger.error(ex)
 				raise NodeError(_('Error updating domain "%(domain)s"'), domain=domain)
 			else:
-				continue # skip this node
+				continue  # skip this node
 	else:
 		logger.info('Domain %s not found for update' % domain)
 		raise NodeError(_('Failed to update domain "%(domain)s"'), domain=domain)
+
 
 def domain_clone(uri, domain, name, subst):
 	"""Clone a domain."""
@@ -1671,7 +1710,7 @@ def domain_clone(uri, domain, name, subst):
 				dom = conn.lookupByName(name)
 				uuid = dom.UUIDString()
 				raise NodeError(_('Domain "%(domain)s" already exists: %(uuid)s'), domain=name, uuid=uuid)
-			except libvirt.libvirtError, ex:
+			except libvirt.libvirtError as ex:
 				if ex.get_error_code() != libvirt.VIR_ERR_NO_DOMAIN:
 					raise
 
@@ -1681,7 +1720,7 @@ def domain_clone(uri, domain, name, subst):
 				raise NodeError(_('Domain "%(domain)s" is not shut off: %(state)d'), domain=domain, state=dom_stat.pd.state)
 			try:
 				annotations = ldap_annotation(domain)
-			except LdapConnectionError, ex:
+			except LdapConnectionError as ex:
 				warning = 'Failed to get annotations from LDAP for "%(domain)s": %(error)s' % {'domain': domain, 'error': ex}
 				logger.warning(warning)
 				warnings.append(warning)
@@ -1691,15 +1730,15 @@ def domain_clone(uri, domain, name, subst):
 			# /domain
 			domain = ET.fromstring(xml)
 			# /domain/uuid
-			domain_uuid = __update_xml(domain, 'uuid', None) # remove
+			domain_uuid = __update_xml(domain, 'uuid', None)  # remove
 			# /domain/name
-			domain_name = __update_xml(domain, 'name', name) # replace
+			domain_name = __update_xml(domain, 'name', name)  # replace
 			# /domain/devices/*[]
 			domain_devices = __update_xml(domain, 'devices', '')
 
 			# /domain/devices/interface[]
 			domain_devices_interfaces = domain_devices.findall('interface')
-			default_mac = subst.get( 'mac', 'clone' ) # clone or auto
+			default_mac = subst.get('mac', 'clone')  # clone or auto
 			for domain_devices_interface in domain_devices_interfaces:
 				# /domain/devices/interface/mac @address
 				domain_devices_interface_mac = domain_devices_interface.find('mac')
@@ -1749,7 +1788,7 @@ def domain_clone(uri, domain, name, subst):
 					else:
 						method = 'copy'
 				if method == 'share':
-					continue # nothing to clone for shared disks
+					continue  # nothing to clone for shared disks
 
 				# /domain/devices/disk/source @file @dev
 				domain_devices_disk_source = domain_devices_disk.find('source')
@@ -1766,18 +1805,19 @@ def domain_clone(uri, domain, name, subst):
 				try:
 					vol = conn.storageVolLookupByPath(source)
 					pool = vol.storagePoolLookupByVolume()
-				except libvirt.libvirtError, ex:
+				except libvirt.libvirtError as ex:
 					if ex.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
 						raise
 					raise NodeError(_('Volume "%(volume)s" not found: %(error)s'), volume=source, error=ex.get_error_message())
 
 				# create new name
 				old_name = vol.name()
+
 				def new_names():
 					key = 'name#%s' % (target_dev,)
 					if key in subst:
 						yield subst[key]
-						return # Only try the explicit name
+						return  # Only try the explicit name
 					if dom_stat.pd.name in old_name:
 						yield old_name.replace(dom_stat.pd.name, name, 1)
 					yield '%s_%s%s' % (name, target_dev, suffix)
@@ -1795,16 +1835,16 @@ def domain_clone(uri, domain, name, subst):
 				# /volume
 				volume = ET.fromstring(xml)
 				# /volume/name
-				volume_name = __update_xml(volume, 'name', new_name) # replace
+				volume_name = __update_xml(volume, 'name', new_name)  # replace
 				# /volume/key
-				volume_key = __update_xml(volume, 'key', None) # remove
+				volume_key = __update_xml(volume, 'key', None)  # remove
 				# /volume/source
-				volume_source = __update_xml(volume, 'source', None) # remove
+				volume_source = __update_xml(volume, 'source', None)  # remove
 				# /volume/target
 				volume_target = volume.find('target')
 				if volume_target:
 					# /volume/target/path
-					volume_target_path = __update_xml(volume_target, 'path', None) # remove
+					volume_target_path = __update_xml(volume_target, 'path', None)  # remove
 
 				if method == 'cow':
 					# /volume/backingStore
@@ -1823,7 +1863,7 @@ def domain_clone(uri, domain, name, subst):
 						logger.info('Backing "%(new_volume)s" by "%(old_volume)s"' % {'old_volume': old_name, 'new_volume': new_name})
 						new_vol = pool.createXML(xml, 0)
 					undo_vol.append(new_vol)
-				except libvirt.libvirtError, ex:
+				except libvirt.libvirtError as ex:
 					raise NodeError(_('Failed to clone volume "%(volume)s": %(error)s'), volume=source, error=ex.get_error_message())
 
 				if disk_type == 'file':
@@ -1843,13 +1883,13 @@ def domain_clone(uri, domain, name, subst):
 				record = ldap_modify(uuid)
 				for key, value in annotations.items():
 					record[key] = value
-			except (LdapConnectionError, univention.admin.uexceptions.ldapError, univention.admin.uexceptions.objectExists), ex:
+			except (LdapConnectionError, univention.admin.uexceptions.ldapError, univention.admin.uexceptions.objectExists) as ex:
 				warning = 'Failed to write annotations in LDAP for "%(domain)s": %(error)s' % {'domain': domain, 'error': ex}
 				logger.warning(warning)
 				warnings.append(warning)
 
 			return (uuid, warnings)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			logger.error(ex)
 			raise NodeError(_('Error cloning "%(domain)s": %(error)s'), domain=domain, error=ex.get_error_message())
 	finally:
@@ -1857,5 +1897,5 @@ def domain_clone(uri, domain, name, subst):
 			try:
 				logger.info('Deleting "%(volume)s"' % {'volume': vol.name()})
 				vol.delete(0)
-			except Exception, ex:
+			except Exception as ex:
 				logger.warning('Failed undo: %(error)s' % {'error': ex})

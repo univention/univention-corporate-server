@@ -63,7 +63,7 @@ EC2_CONNECTION_ATTRIBUTES = {
 		"host": "host",
 		"port": "port",
 		"region": "region",
-		}
+}
 
 EC2_CREATE_ATTRIBUTES = {
 		"name": "name",
@@ -90,7 +90,7 @@ LIBCLOUD_EC2_UVMM_STATE_MAPPING = {
 		NodeState.TERMINATED: "TERMINATED",
 		NodeState.UNKNOWN: "NOSTATE",
 		NodeState.STOPPED: "SHUTOFF",
-		}
+}
 
 
 PROVIDER_MAPPING = {
@@ -103,7 +103,7 @@ PROVIDER_MAPPING = {
 		"EC2_SA_EAST": "sa-east-1",
 		"EC2_AP_SOUTHEAST2": "ap-southeast-2",
 		"EC2_EU_CENTRAL": "eu-central-1",
-		}
+}
 
 
 class EC2CloudConnectionError(CloudConnectionError):
@@ -111,6 +111,7 @@ class EC2CloudConnectionError(CloudConnectionError):
 
 
 class EC2CloudConnection(CloudConnection, PersistentCached):
+
 	def __init__(self, cloud, cache_dir):
 		self._check_connection_attributes(cloud)
 		super(EC2CloudConnection, self).__init__(cloud, cache_dir)
@@ -345,18 +346,18 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 
 		OS_TRANSITION = {
 				# (NodeState.TERMINATED, "*"): None, cannot do anything with terminated instances
-				(NodeState.RUNNING,    "RUN"): None,
-				(NodeState.PENDING,    "RUN"): None,
-				(NodeState.UNKNOWN,    "RUN"): self._boot_instance,
-				(NodeState.STOPPED,    "RUN"): self._boot_instance,
-				(NodeState.RUNNING,    "SOFTRESTART"): self._softreboot_instance,
-				(NodeState.PENDING,    "RESTART"): None,
-				(NodeState.RUNNING,    "SHUTDOWN"): self._shutdown_instance,
-				(NodeState.RUNNING,    "SHUTOFF"): self._shutoff_instance,
-				(NodeState.REBOOTING,  "SHUTOFF"): self._shutoff_instance,
-				(NodeState.PENDING,    "SHUTOFF"): self._shutoff_instance,
-				(NodeState.UNKNOWN,    "SHUTOFF"): self._shutoff_instance,
-				}
+				(NodeState.RUNNING, "RUN"): None,
+				(NodeState.PENDING, "RUN"): None,
+				(NodeState.UNKNOWN, "RUN"): self._boot_instance,
+				(NodeState.STOPPED, "RUN"): self._boot_instance,
+				(NodeState.RUNNING, "SOFTRESTART"): self._softreboot_instance,
+				(NodeState.PENDING, "RESTART"): None,
+				(NodeState.RUNNING, "SHUTDOWN"): self._shutdown_instance,
+				(NodeState.RUNNING, "SHUTOFF"): self._shutoff_instance,
+				(NodeState.REBOOTING, "SHUTOFF"): self._shutoff_instance,
+				(NodeState.PENDING, "SHUTOFF"): self._shutoff_instance,
+				(NodeState.UNKNOWN, "SHUTOFF"): self._shutoff_instance,
+		}
 		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
 		try:
 			transition = OS_TRANSITION[(instance.state, state)]
@@ -366,7 +367,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 				logger.debug("NOP state transition: %s -> %s" % (instance.state, state))
 		except KeyError:
 			raise EC2CloudConnectionError("Unsupported State transition (%s -> %s) requested" % (instance.state, state))
-		except Exception, e:
+		except Exception as e:
 			raise EC2CloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, e))
 		logger.debug("STATE: done")
 		self.set_frequency_fast_update()
@@ -379,7 +380,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			self._exec_libcloud(lambda: self.driver.destroy_node(instance))
 			# Update instance information
 			self.set_frequency_fast_update()
-		except Exception, e:  # Unfortunately, libcloud only throws "Exception"
+		except Exception as e:  # Unfortunately, libcloud only throws "Exception"
 			raise EC2CloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, e))
 		logger.info("Destroyed instance %s (id:%s), using connection %s" % (name, instance_id, self.publicdata.name))
 
@@ -494,7 +495,7 @@ class EC2CloudConnection(CloudConnection, PersistentCached):
 			logger.debug("CREATE INSTANCE, connection:%s ARGS: %s" % (self.publicdata.name, kwargs))
 			self._exec_libcloud(lambda: self.driver.create_node(**kwargs))
 			self.set_frequency_fast_update()
-		except Exception, e:
+		except Exception as e:
 			raise EC2CloudConnectionError("Instance could not be created: %s" % e)
 
 	# Execute lambda function

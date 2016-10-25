@@ -42,6 +42,7 @@ _ = Translation('univention-management-console-modules-uvmm').translate
 
 
 class Cloud(object):
+
 	"""
 	Handle cloud connections and instances.
 	"""
@@ -84,7 +85,7 @@ class Cloud(object):
 				'L_CLOUD_LIST',
 				self.process_uvmm_response(request, _finished),
 				pattern=request.options['nodePattern']
-				)
+		)
 
 	def cloud_add(self, request):
 		"""
@@ -125,7 +126,7 @@ class Cloud(object):
 				self.process_uvmm_response(request, _finished),
 				args=args,
 				testconnection=testconnection
-				)
+		)
 
 	def cloud_list_keypair(self, request):
 		"""
@@ -148,7 +149,7 @@ class Cloud(object):
 				'L_CLOUD_KEYPAIR_LIST',
 				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
-				)
+		)
 
 	def cloud_list_size(self, request):
 		"""
@@ -178,7 +179,7 @@ class Cloud(object):
 				'L_CLOUD_SIZE_LIST',
 				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
-				)
+		)
 
 	@sanitize(pattern=SearchSanitizer(default='*'))
 	def cloud_list_image(self, request):
@@ -202,7 +203,7 @@ class Cloud(object):
 				'L_CLOUD_IMAGE_LIST',
 				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
-				)
+		)
 
 	def cloud_list_secgroup(self, request):
 		"""
@@ -226,7 +227,7 @@ class Cloud(object):
 				'L_CLOUD_SECGROUP_LIST',
 				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
-				)
+		)
 
 	def cloud_list_network(self, request):
 		"""
@@ -252,7 +253,7 @@ class Cloud(object):
 				'L_CLOUD_NETWORK_LIST',
 				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
-				)
+		)
 
 	def cloud_list_subnet(self, request):
 		"""
@@ -279,7 +280,7 @@ class Cloud(object):
 				'L_CLOUD_SUBNET_LIST',
 				self.process_uvmm_response(request, _finished),
 				conn_name=conn_name
-				)
+		)
 
 	@sanitize(domainPattern=SearchSanitizer(default='*'))
 	def instance_query(self, request):
@@ -341,7 +342,7 @@ class Cloud(object):
 				self.process_uvmm_response(request, _finished),
 				conn_name=request.options.get('nodePattern', ''),
 				pattern=request.options['domainPattern']
-				)
+		)
 
 	@sanitize(state=ChoicesSanitizer(choices=('RUN', 'RESTART', 'SOFTRESTART', 'SHUTOFF', 'SHUTDOWN', 'SUSPEND', 'PAUSE', 'RESUME', 'UNPAUSE')))
 	def instance_state(self, request):
@@ -366,7 +367,7 @@ class Cloud(object):
 				conn_name=conn_name,
 				instance_id=instance_id,
 				state=state,
-				)
+		)
 
 	def instance_remove(self, request):
 		"""
@@ -386,7 +387,7 @@ class Cloud(object):
 				self.process_uvmm_response(request),
 				conn_name=conn_name,
 				instance_id=instance_id
-				)
+		)
 
 	def instance_add(self, request):
 		"""
@@ -413,7 +414,7 @@ class Cloud(object):
 				self.process_uvmm_response(request),
 				conn_name=conn_name,
 				args=args
-				)
+		)
 
 	def cloudtype_get(self, request):
 		"""
@@ -424,6 +425,6 @@ class Cloud(object):
 			cloudtypes.append({
 				'id': item['name'],
 				'label': item['name']
-				})
+			})
 
 		self.finished(request.id, cloudtypes)

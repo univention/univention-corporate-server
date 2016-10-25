@@ -37,6 +37,7 @@ from textwrap import dedent
 
 
 class _Domain(TestCase):
+
 	def setUp(self):
 		xml = dedent(self.__doc__)
 		self.dom = Domain(xml, None)
@@ -44,6 +45,7 @@ class _Domain(TestCase):
 
 
 class TestDomainKVM(_Domain):
+
 	"""
 	<domain type='kvm'>
 		<name>ucs401</name>
@@ -184,6 +186,7 @@ class TestDomainKVM(_Domain):
 
 
 class TestDomainXenHVM(_Domain):
+
 	"""
 	<domain type="xen">
 		<name>ucs401</name>
@@ -222,6 +225,7 @@ class TestDomainXenHVM(_Domain):
 
 
 class TestDomainXenPVDirect(_Domain):
+
 	"""
 	<domain type="xen">
 		<name>ucs401</name>
@@ -265,6 +269,7 @@ class TestDomainXenPVDirect(_Domain):
 
 
 class TestDomainXenPVGrub(_Domain):
+
 	"""
 	<domain type="xen">
 		<name>ucs401</name>
@@ -329,6 +334,7 @@ class TestDomainXenPVGrub(_Domain):
 
 
 class TestDomainVNC(_Domain):
+
 	"""
 	<domain type='kvm'>
 		<name>ucs401</name>

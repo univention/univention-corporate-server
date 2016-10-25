@@ -53,6 +53,7 @@ _ = Translation('univention-management-console-modules-uvmm').translate
 
 
 class Domains(object):
+
 	"""
 	UMC functions for UVMM domain handling.
 	"""
@@ -64,11 +65,11 @@ class Domains(object):
 	SOCKET_FAMILIES = {
 			'IPv4': socket.AF_INET,
 			'IPv6': socket.AF_INET6,
-			}
+	}
 	SOCKET_FORMATS = {
 			socket.AF_INET: '%s',
 			socket.AF_INET6: '[%s]',
-			}
+	}
 
 	@sanitize(
 		domainPattern=SearchSanitizer(default='*')
@@ -120,7 +121,7 @@ class Domains(object):
 						'suspended': bool(domain['suspended']),
 						'description': domain['description'],
 						'node_available': domain['node_available'],
-						})
+					})
 			return domain_list
 
 		self.uvmm.send(
@@ -128,7 +129,7 @@ class Domains(object):
 				self.process_uvmm_response(request, _finished),
 				uri=request.options.get('nodePattern', ''),
 				pattern=request.options['domainPattern']
-				)
+		)
 
 	def domain_get(self, request):
 		"""
@@ -147,7 +148,7 @@ class Domains(object):
 			uri, _uuid = urldefrag(request.options['domainURI'])
 			json = object2dict(data)
 
-			## re-arrange a few attributes for the frontend
+			# re-arrange a few attributes for the frontend
 			# annotations
 			for key in json['annotations']:
 				if key == 'uuid':
@@ -199,7 +200,7 @@ class Domains(object):
 									family,
 									socket.SOCK_STREAM,
 									socket.SOL_TCP
-									)
+							)
 							for (family, _socktype, _proto, _canonname, sockaddr) in addrs:
 								host, port = sockaddr[:2]
 								if regex.search(host):
@@ -215,11 +216,11 @@ class Domains(object):
 						host = vnc_link_format
 					json['vnc_host'] = host
 					json['vnc_port'] = port
-				except re.error, ex: # port is not valid
+				except re.error as ex:  # port is not valid
 					MODULE.warn('Invalid VNC regex: %s' % (ex,))
-				except socket.gaierror, ex:
+				except socket.gaierror as ex:
 					MODULE.warn('Invalid VNC host: %s' % (ex,))
-				except (ValueError, LookupError), ex: # port is not valid
+				except (ValueError, LookupError) as ex:  # port is not valid
 					MODULE.warn('Failed VNC lookup: %s' % (ex,))
 
 			# profile (MUST be after mapping annotations)
@@ -243,7 +244,7 @@ class Domains(object):
 				self.process_uvmm_response(request, _finished),
 				uri=node_uri,
 				domain=domain_uuid
-				)
+		)
 
 	def _create_disk(self, node_uri, disk, domain_info, profile=None):
 		"""
@@ -251,7 +252,7 @@ class Domains(object):
 		"""
 		uri = urlsplit(node_uri)
 
-		driver_pv = disk.get('paravirtual', False) # by default no paravirtual devices
+		driver_pv = disk.get('paravirtual', False)  # by default no paravirtual devices
 
 		drive = Disk()
 		drive.device = disk['device']
@@ -285,7 +286,7 @@ class Domains(object):
 
 		MODULE.info('Creating a %s drive' % (
 			'paravirtual' if driver_pv else 'emulated',
-			))
+		))
 
 		try:
 			pool_type = pool['type']
@@ -302,7 +303,7 @@ class Domains(object):
 		if drive.device == Disk.DEVICE_DISK:
 			drive.readonly = disk.get('readonly', False)
 		elif drive.device == Disk.DEVICE_CDROM:
-			drive.driver_type = 'raw' # ISOs need driver/@type='raw'
+			drive.driver_type = 'raw'  # ISOs need driver/@type='raw'
 			drive.readonly = disk.get('readonly', True)
 		elif drive.device == Disk.DEVICE_FLOPPY:
 			drive.readonly = disk.get('readonly', True)
@@ -377,7 +378,7 @@ class Domains(object):
 					None,
 					group='default',
 					pattern=request.options['nodeURI']
-					)
+			)
 			if not success:
 				raise UMC_Error(_('Failed to retrieve details for the server %(nodeURI)s') % request.options, status=500)
 			if not node_list:
@@ -422,7 +423,7 @@ class Domains(object):
 			if domain.get('vnc_password', None):
 				gfx.passwd = domain['vnc_password']
 
-			domain_info.graphics = [gfx,]
+			domain_info.graphics = [gfx, ]
 
 		# RTC offset
 		if 'rtc_offset' in domain:
@@ -436,7 +437,7 @@ class Domains(object):
 		domain_info.disks = [
 				self._create_disk(request.options['nodeURI'], disk, domain_info, profile)
 				for disk in domain['disks']
-				]
+		]
 		verify_device_files(domain_info)
 
 		# network interface
@@ -464,7 +465,7 @@ class Domains(object):
 				self.process_uvmm_response(request, _finished),
 				uri=request.options['nodeURI'],
 				domain=domain_info
-				)
+		)
 
 	domain_put = domain_add
 
@@ -491,7 +492,7 @@ class Domains(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				state=state,
-				)
+		)
 
 	def domain_migrate(self, request):
 		"""
@@ -512,7 +513,7 @@ class Domains(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				target_uri=request.options['targetNodeURI']
-				)
+		)
 
 	def domain_clone(self, request):
 		"""
@@ -535,7 +536,7 @@ class Domains(object):
 				domain=domain_uuid,
 				name=request.options['cloneName'],
 				subst={'mac': request.options.get('macAddress', 'clone')}
-				)
+		)
 
 	def domain_remove(self, request):
 		"""
@@ -557,10 +558,11 @@ class Domains(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				volumes=volume_list
-				)
+		)
 
 
 class Bus(object):
+
 	"""
 	Periphery bus like IDE-, SCSI-, VirtIO- und FDC-Bus.
 	"""
@@ -602,7 +604,7 @@ class Bus(object):
 						dev.target_bus == self.name or
 						(not dev.target_bus and self.default)
 					)
-				):
+			):
 				letter = dev.target_dev[-1]
 				self._connected.add(letter)
 
@@ -643,8 +645,8 @@ def verify_device_files(domain_info):
 					'fdc', 'fd%s',
 					default=True,
 					unsupported=(Disk.DEVICE_DISK, Disk.DEVICE_CDROM)
-					),
-				)
+    ),
+	)
 
 	for bus in busses:
 		bus.attach(domain_info.disks)

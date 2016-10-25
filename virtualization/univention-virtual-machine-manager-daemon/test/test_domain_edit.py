@@ -39,6 +39,7 @@ from doctest import Example
 
 
 class _Template(object):
+
 	def matches(self, stat):
 		return True
 
@@ -48,6 +49,7 @@ class _Template(object):
 
 
 class _Domain(TestCase):
+
 	def assertXmlEqual(self, want, got):
 		checker = LXMLOutputChecker()
 		if not checker.check_output(want, got, 0):
@@ -72,6 +74,7 @@ class _Domain(TestCase):
 
 
 class TestDomainDefault(_Domain):
+
 	"""
 	<domain type="kvm">
 		<os>
@@ -101,6 +104,7 @@ class TestDomainDefault(_Domain):
 
 
 class TestDomainBootloader(_Domain):
+
 	"""
 	<domain type="kvm">
 		<os>
@@ -134,6 +138,7 @@ class TestDomainBootloader(_Domain):
 
 
 class TestDomainKVM(_Domain):
+
 	"""
 	<domain type='kvm'>
 		<uuid>da33829a-4c56-4626-8d33-beec0580fc10</uuid>
@@ -231,6 +236,7 @@ class TestDomainKVM(_Domain):
 
 
 class TestDomainNew(_Domain):
+
 	"""
 	<domain type='kvm'>
 		<name>ucs401</name>

@@ -52,6 +52,7 @@ _ = Translation('univention-management-console-modules-uvmm').translate
 
 
 class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
+
 	"""
 	UMC functions for UVMM handling.
 	"""
@@ -114,7 +115,7 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 				'label': _('Physical servers'),
 				'type': 'group',
 				'icon': 'uvmm-group',
-				}])
+			}])
 		method = {
 			'node': self.node_query,
 			'domain': self.domain_query,

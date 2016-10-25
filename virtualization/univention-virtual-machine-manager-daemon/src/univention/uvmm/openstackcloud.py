@@ -66,7 +66,7 @@ OPENSTACK_CONNECTION_ATTRIBUTES = {
 		"service_region": "ex_force_service_region",
 		"auth_token": "ex_force_auth_token",
 		"base_url": "ex_force_base_url",
-		}
+}
 
 OPENSTACK_CREATE_ATTRIBUTES = {
 		"name": "name",
@@ -95,7 +95,7 @@ LIBCLOUD_UVMM_STATE_MAPPING = {
 		NodeState.ERROR: "CRASHED",
 		NodeState.PAUSED: "PAUSED",
 		NodeState.UNKNOWN: "NOSTATE"
-		}
+}
 
 
 class OpenStackCloudConnectionError(CloudConnectionError):
@@ -103,6 +103,7 @@ class OpenStackCloudConnectionError(CloudConnectionError):
 
 
 class OpenStackCloudConnection(CloudConnection, PersistentCached):
+
 	def __init__(self, cloud, cache_dir):
 		self._check_connection_attributes(cloud)
 		super(OpenStackCloudConnection, self).__init__(cloud, cache_dir)
@@ -302,29 +303,29 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 
 		OS_TRANSITION = {
 				# (NodeState.TERMINATED, "*"): None, cannot do anything with terminated instances
-				(NodeState.RUNNING,    "RUN"): None,
-				(NodeState.REBOOTING,  "RUN"): None,
-				(NodeState.PENDING,    "RUN"): None,
-				(NodeState.UNKNOWN,    "RUN"): self._boot_instance,
-				(NodeState.STOPPED,    "RUN"): self._boot_instance,
-				(NodeState.SUSPENDED,  "RUN"): self._resume_instance,
-				(NodeState.PAUSED,     "RUN"): self._unpause_instance,
-				(NodeState.RUNNING,    "SOFTRESTART"): self._softreboot_instance,
-				(NodeState.RUNNING,    "RESTART"): self._reboot_instance,
-				(NodeState.REBOOTING,  "RESTART"): None,
-				(NodeState.PENDING,    "RESTART"): None,
-				(NodeState.UNKNOWN,    "RESTART"): self._reboot_instance,
-				(NodeState.PAUSED,     "RESTART"): self._reboot_instance,
-				(NodeState.STOPPED,    "RESTART"): self._reboot_instance,
-				(NodeState.RUNNING,    "PAUSE"): self._pause_instance,
-				(NodeState.RUNNING,    "SHUTDOWN"): self._shutdown_instance,
-				(NodeState.RUNNING,    "SHUTOFF"): self._shutoff_instance,
-				(NodeState.REBOOTING,  "SHUTOFF"): self._shutoff_instance,
-				(NodeState.PENDING,    "SHUTOFF"): self._shutoff_instance,
-				(NodeState.UNKNOWN,    "SHUTOFF"): self._shutoff_instance,
-				(NodeState.PAUSED,     "SHUTOFF"): self._shutoff_instance,
-				(NodeState.RUNNING,    "SUSPEND"): self._suspend_instance,
-				}
+				(NodeState.RUNNING, "RUN"): None,
+				(NodeState.REBOOTING, "RUN"): None,
+				(NodeState.PENDING, "RUN"): None,
+				(NodeState.UNKNOWN, "RUN"): self._boot_instance,
+				(NodeState.STOPPED, "RUN"): self._boot_instance,
+				(NodeState.SUSPENDED, "RUN"): self._resume_instance,
+				(NodeState.PAUSED, "RUN"): self._unpause_instance,
+				(NodeState.RUNNING, "SOFTRESTART"): self._softreboot_instance,
+				(NodeState.RUNNING, "RESTART"): self._reboot_instance,
+				(NodeState.REBOOTING, "RESTART"): None,
+				(NodeState.PENDING, "RESTART"): None,
+				(NodeState.UNKNOWN, "RESTART"): self._reboot_instance,
+				(NodeState.PAUSED, "RESTART"): self._reboot_instance,
+				(NodeState.STOPPED, "RESTART"): self._reboot_instance,
+				(NodeState.RUNNING, "PAUSE"): self._pause_instance,
+				(NodeState.RUNNING, "SHUTDOWN"): self._shutdown_instance,
+				(NodeState.RUNNING, "SHUTOFF"): self._shutoff_instance,
+				(NodeState.REBOOTING, "SHUTOFF"): self._shutoff_instance,
+				(NodeState.PENDING, "SHUTOFF"): self._shutoff_instance,
+				(NodeState.UNKNOWN, "SHUTOFF"): self._shutoff_instance,
+				(NodeState.PAUSED, "SHUTOFF"): self._shutoff_instance,
+				(NodeState.RUNNING, "SUSPEND"): self._suspend_instance,
+		}
 		logger.debug("STATE: connection: %s instance %s (id:%s), oldstate: %s (%s), requested: %s" % (self.publicdata.name, instance.name, instance.id, instance.state, instance.state, state))
 		try:
 			transition = OS_TRANSITION[(instance.state, state)]
@@ -334,7 +335,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 				logger.debug("NOP state transition: %s -> %s" % (instance.state, state))
 		except KeyError:
 			raise OpenStackCloudConnectionError("Unsupported State transition (%s -> %s) requested" % (instance.state, state))
-		except Exception, e:
+		except Exception as e:
 			raise OpenStackCloudConnectionError("Error trying to %s instance %s (id:%s): %s" % (state, instance.name, instance_id, e))
 		logger.debug("STATE: done")
 		self.set_frequency_fast_update()
@@ -347,7 +348,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			self._exec_libcloud(lambda: self.driver.destroy_node(instance))
 			# Update instance information
 			self.set_frequency_fast_update()
-		except Exception, e:  # Unfortunately, libcloud only throws "Exception"
+		except Exception as e:  # Unfortunately, libcloud only throws "Exception"
 			raise OpenStackCloudConnectionError("Error while destroying instance %s (id:%s): %s" % (name, instance_id, e))
 		logger.info("Destroyed instance %s (id:%s), using connection %s" % (name, instance_id, self.publicdata.name))
 
@@ -442,7 +443,7 @@ class OpenStackCloudConnection(CloudConnection, PersistentCached):
 			logger.debug("CREATE INSTANCE. ARGS: %s" % kwargs)
 			self._exec_libcloud(lambda: self.driver.create_node(**kwargs))
 			self.set_frequency_fast_update()
-		except Exception, e:
+		except Exception as e:
 			raise OpenStackCloudConnectionError("Instance could not be created: %s" % e)
 
 	# Execute lambda function

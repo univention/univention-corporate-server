@@ -39,7 +39,9 @@ from urlparse import urlsplit
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
+
 class Nodes(object):
+
 	"""
 	UMC functions for UVMM node handling.
 	"""
@@ -87,7 +89,7 @@ class Nodes(object):
 					'cpus': node_pd.cpus,
 					'supports_suspend': node_pd.supports_suspend,
 					'supports_snapshot': node_pd.supports_snapshot,
-					})
+				})
 			return nodes
 
 		self.uvmm.send(
@@ -95,4 +97,4 @@ class Nodes(object):
 				self.process_uvmm_response(request, _finished),
 				group='default',
 				pattern=request.options['nodePattern']
-				)
+		)

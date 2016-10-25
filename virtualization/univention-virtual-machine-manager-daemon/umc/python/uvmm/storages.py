@@ -47,6 +47,7 @@ _ = Translation('univention-management-console-modules-uvmm').translate
 
 
 class Storages(object):
+
 	"""
 	UMC functions for UVMM storage pool handling.
 	"""
@@ -92,7 +93,7 @@ class Storages(object):
 				'STORAGE_POOLS',
 				self.process_uvmm_response(request, _finished),
 				uri=uri
-				)
+		)
 
 	def storage_volume_query(self, request):
 		"""
@@ -133,7 +134,7 @@ class Storages(object):
 			return volume_list
 
 		drive_type = request.options.get('type', None)
-		if drive_type == 'floppy': # not yet supported
+		if drive_type == 'floppy':  # not yet supported
 			drive_type = 'disk'
 		self.uvmm.send(
 				'STORAGE_VOLUMES',
@@ -141,7 +142,7 @@ class Storages(object):
 				uri=request.options['nodeURI'],
 				pool=request.options['pool'],
 				type=drive_type
-				)
+		)
 
 	def storage_volume_remove(self, request):
 		"""
@@ -161,7 +162,7 @@ class Storages(object):
 				self.process_uvmm_response(request),
 				uri=request.options['nodeURI'],
 				volumes=volume_list
-				)
+		)
 
 	def storage_volume_deletable(self, request):
 		"""
@@ -210,11 +211,11 @@ class Storages(object):
 					'STORAGE_VOLUME_USEDBY',
 					None,
 					volume=volume_path
-					)
+			)
 			if not success:
 				raise UMC_Error(
 						_('Failed to check if the drive is used by any other virtual instance')
-						)
+				)
 
 			if len(result) > 1:  # is used by at least one other domain
 				volume['deletable'] = False
@@ -228,11 +229,11 @@ class Storages(object):
 						None,
 						uri=node_uri,
 						domain=domain_uuid
-						)
+				)
 				if not success:
 					raise UMC_Error(
 							_('Could not retrieve details for domain %s') % domain_uuid
-							)
+					)
 				_tmp_cache[volume['domainURI']] = domain
 
 			drive = None
@@ -260,8 +261,7 @@ class Storages(object):
 					'STORAGE_POOLS',
 					None,
 					uri=node_uri
-					)
+			)
 			pools = dict([(pool.name, object2dict(pool)) for pool in data])
 			self.storage_pools[node_uri] = pools
 		return pools.get(pool_name)
-

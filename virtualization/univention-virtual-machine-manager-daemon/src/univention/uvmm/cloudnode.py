@@ -52,10 +52,12 @@ STATES = ('NOSTATE', 'RUNNING', 'IDLE', 'PAUSED', 'SHUTDOWN', 'SHUTOFF', 'CRASHE
 
 
 class CloudConnectionMananger(dict):
+
 	"""
 	Dictionary which holds all connections
 	key is the cloud name, value the CloudConnection
 	"""
+
 	def __init__(self):
 		super(CloudConnectionMananger, self).__init__()
 

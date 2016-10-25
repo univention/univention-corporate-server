@@ -38,7 +38,9 @@ from univention.lib.i18n import Translation
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
+
 class Snapshots(object):
+
 	"""
 	UMC functions for UVMM snapshot handling.
 	"""
@@ -69,7 +71,7 @@ class Snapshots(object):
 						'id': name,
 						'label': name,
 						'time': creation.isoformat(' '),
-						}
+					}
 					snapshot_list.append(snapshot)
 			return snapshot_list
 
@@ -79,7 +81,7 @@ class Snapshots(object):
 				self.process_uvmm_response(request, _finished),
 				uri=node_uri,
 				domain=domain_uuid
-				)
+		)
 
 	def snapshot_create(self, request):
 		"""
@@ -101,7 +103,7 @@ class Snapshots(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
-				)
+		)
 
 	def snapshot_remove(self, request):
 		"""
@@ -123,7 +125,7 @@ class Snapshots(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
-				)
+		)
 
 	def snapshot_revert(self, request):
 		"""
@@ -145,4 +147,4 @@ class Snapshots(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
-				)
+		)

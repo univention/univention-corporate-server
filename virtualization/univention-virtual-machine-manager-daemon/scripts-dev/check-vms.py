@@ -28,12 +28,13 @@ try:
     NORMAL = curses.tigetstr('sgr0')
     SET_AF = curses.tigetstr('setaf')
     BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = \
-            [curses.tparm(SET_AF, i) for i in range(8)]
+        [curses.tparm(SET_AF, i) for i in range(8)]
 except (ImportError, curses.error):
     NORMAL = BLACK = RED = GREEN = YELLOW = BLUE = MAGENTA = CYAN = WHITE = ''
 
 
 class Dotter(object):
+
     """Handle dot graph."""
     RE_KEY = re.compile('[^0-9A-Za-z]')
 
@@ -58,6 +59,7 @@ class Dotter(object):
 
 
 class Resource(object):
+
     """A existing or required resource in the file system."""
     all = {}
     dotter = Dotter()
@@ -69,8 +71,7 @@ class Resource(object):
         self.exists = None  # unchecked
         self.used = False
         self.dependencies = []
-        self.logger = logging.getLogger('%s.%s' % \
-                (self.__class__.__name__, self.__str__()))
+        self.logger = logging.getLogger('%s.%s' % (self.__class__.__name__, self.__str__()))
 
     @classmethod
     def create(cls, name, *args):
@@ -125,7 +126,7 @@ class Resource(object):
         data = {
                 'id': Dotter.key2dot(self.filename),
                 'label': label or self.__str__(),
-                }
+        }
         if shape:
             fmt.append('shape=%(shape)s')
             data['shape'] = shape
@@ -169,10 +170,11 @@ class Resource(object):
                 self.used,
                 self.dependencies,
                 self.exists,
-                )
+        )
 
 
 class VirtualMachine(Resource):
+
     """Persistent virtual machine resource."""
 
     def __init__(self, vm_name):
@@ -246,10 +248,11 @@ class VirtualMachine(Resource):
                 self.used,
                 self.dependencies,
                 self.uuid,
-                )
+        )
 
 
 class SnapShot(Resource):
+
     """Snapshot of a virtual machine resource.
 
     <domainsnapshot>
@@ -388,10 +391,11 @@ class SnapShot(Resource):
                 self.used,
                 self.dependencies,
                 self.state,
-                )
+        )
 
 
 class StorageVolume(Resource):
+
     """Disk volume of a virtual machine resource.
 
     <volume>
@@ -437,7 +441,7 @@ class StorageVolume(Resource):
         self.exists = True
         try:
             vol_xml = disk.XMLDesc(0)
-        except libvirt.libvirtError, ex:
+        except libvirt.libvirtError as ex:
             if ex.get_error_code() != libvirt.VIR_ERR_SYSTEM_ERROR:
                 self.logger.exception('Failed to get XML for %s', disk_name)
             self.invalid('Failed to get XML')
@@ -481,7 +485,7 @@ class StorageVolume(Resource):
         snapshots = []
         lines = stdout.splitlines()  # pylint: disable-msg=E1103
         del lines[:2]  # strip header
-        for line in lines: # %-10s%-20s%7s%20s%15s
+        for line in lines:  # %-10s%-20s%7s%20s%15s
             num = line[0:10].rstrip()
             tag = line[10:-42]
             if len(tag) == 20:
@@ -545,7 +549,7 @@ class StorageVolume(Resource):
                 self.used,
                 self.dependencies,
                 self.target_format_type,
-                )
+        )
 
 TEMP_POOL = """
 virsh # pool-create-as --type dir --name temp --target /etc/libvirt/qemu
@@ -562,7 +566,7 @@ def check_storage_pools(conn):
         pool = conn.storagePoolLookupByName(pool_name)
         try:
             pool.refresh(0)
-        except libvirt.libvirtError, ex:
+        except libvirt.libvirtError as ex:
             if ex.get_error_code() != libvirt.VIR_ERR_OPERATION_DENIED:
                 raise
 
@@ -618,7 +622,7 @@ def check_storage_volumes(conn):
         if dirname in StorageVolume.pools:
             try:
                 disk2 = conn.storageVolLookupByPath(vol.filename)
-            except libvirt.libvirtError, ex:
+            except libvirt.libvirtError as ex:
                 if ex.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_VOL:
                     raise
                 vol.exists = False
@@ -703,7 +707,7 @@ def main():
         3: logging.INFO,
         4: logging.DEBUG,
         5: logging.NOTSET,
-        }.get(options.verbose, logging.NOTSET))
+    }.get(options.verbose, logging.NOTSET))
     try:
         url = arguments[0]
     except IndexError:

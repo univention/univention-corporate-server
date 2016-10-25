@@ -46,9 +46,11 @@ _ = Translation('univention-management-console-modules-uvmm').translate
 
 
 class Profile(object):
+
 	"""
 	Single UVMM profile.
 	"""
+
 	def __init__(self, profile):
 		for key, value in profile.items():
 			if key not in ('cpus',):
@@ -60,6 +62,7 @@ class Profile(object):
 
 
 class Profiles(object):
+
 	"""
 	UVMM profiles.
 	"""
@@ -67,7 +70,7 @@ class Profiles(object):
 	PROFILE_RDN = 'cn=Profiles,cn=Virtual Machine Manager'
 	VIRTTECH_MAPPING = {
 		'kvm-hvm': _('Full virtualization (KVM)'),
-		}
+	}
 
 	@machine_connection(write=False)
 	def read_profiles(self, ldap_connection=None, ldap_position=None):
@@ -105,7 +108,7 @@ class Profiles(object):
 				(dn, item)
 				for dn, item in self.profiles
 				if item.arch in archs and item.virttech.startswith(tech)
-				]
+		]
 
 	def profile_query(self, request):
 		"""
@@ -128,7 +131,7 @@ class Profiles(object):
 				self.process_uvmm_response(request, _finished),
 				group='default',
 				pattern=request.options['nodeURI']
-				)
+		)
 
 	def profile_get(self, request):
 		"""
@@ -146,4 +149,4 @@ class Profiles(object):
 				None,
 				_('Unknown profile'),
 				success=False
-				)
+		)
