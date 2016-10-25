@@ -47,9 +47,11 @@ _uvmm_locale = Translation('univention-virtual-machine-manager').translate
 
 
 class UVMM_Error(UMC_Error):
+
 	"""
 	UVMM request was not successful.
 	"""
+
 	def __init__(self, message, errno=None):
 		if errno in (2, 104, 111):  # UVMM daemon is down
 			status = 503
@@ -68,9 +70,11 @@ class UVMM_Error(UMC_Error):
 
 
 class UVMM_Request(object):
+
 	"""
 	UVMM request.
 	"""
+
 	def request(self, command, **kwargs):
 		"""
 		Send request to UVMMd.
@@ -112,11 +116,12 @@ class UVMM_Request(object):
 		elif isinstance(result, protocol.Response_ERROR):
 			data = _uvmm_locale(result.translatable_text) % result.values
 		elif isinstance(result, protocol.Response_OK):
-			pass # no further data available
+			pass  # no further data available
 		return (success, data)
 
 
 class UVMM_ConnectionThread(Simple, UVMM_Request):
+
 	"""
 	Thread to handle one UVMM request.
 	"""
@@ -130,7 +135,7 @@ class UVMM_ConnectionThread(Simple, UVMM_Request):
 				'UVMM_Connection-%d' % (UVMM_ConnectionThread.counter,),
 				None,
 				Callback(self._finished)
-				)
+		)
 		UVMM_ConnectionThread.counter += 1
 		self.busy = False
 
@@ -161,6 +166,7 @@ class UVMM_ConnectionThread(Simple, UVMM_Request):
 
 
 class UVMM_RequestBroker(list):
+
 	"""
 	Handle multiple outstanding UVMM requests.
 	"""
@@ -174,7 +180,7 @@ class UVMM_RequestBroker(list):
 		"""
 		MODULE.info('Sending request %s to UVMMd' % (request,))
 
-		if callback is None: # synchron call
+		if callback is None:  # synchron call
 			request_obj = UVMM_Request()
 			return request_obj.request(request, **kwargs)
 

@@ -41,7 +41,9 @@ from notifier import Callback
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
+
 class Nodes(object):
+
 	"""
 	UMC functions for UVMM node handling.
 	"""
@@ -105,7 +107,7 @@ class Nodes(object):
 						'cpus': node_pd.cpus,
 						'supports_suspend': node_pd.supports_suspend,
 						'supports_snapshot': node_pd.supports_snapshot,
-						})
+					})
 
 				self.finished(request.id, nodes)
 			else:
@@ -114,11 +116,11 @@ class Nodes(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'NODE_LIST',
 				Callback(_finished, request),
 				group='default',
 				pattern=request.options['nodePattern']
-				)
+		)

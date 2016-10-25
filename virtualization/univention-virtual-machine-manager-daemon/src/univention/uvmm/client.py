@@ -42,13 +42,17 @@ __all__ = [
 		'UVMM_ClientUnixSocket',
 		'uvmm_connect',
 		'uvmm_cmd',
-		]
+]
+
 
 class ClientError(TranslatableException):
+
 	"""Error during communication with UVMM daemon."""
 	pass
 
+
 class UVMM_ClientSocket(object):
+
 	"""UVMM client."""
 
 	def send(self, req):
@@ -57,9 +61,9 @@ class UVMM_ClientSocket(object):
 		try:
 			self.sock.send(packet)
 			return self.receive()
-		except socket.timeout, msg:
+		except socket.timeout as msg:
 			raise ClientError(_('Timed out while sending data.'))
-		except socket.error, (errno, msg):
+		except socket.error as (errno, msg):
 			raise ClientError(_("Could not send request: %(errno)d"), errno=errno)
 
 	def receive(self):
@@ -75,7 +79,7 @@ class UVMM_ClientSocket(object):
 					buffer += data
 				packet = protocol.Packet.parse(buffer)
 				if packet is None:
-					continue # waiting
+					continue  # waiting
 
 				(length, res) = packet
 				buffer = buffer[length:]
@@ -84,11 +88,11 @@ class UVMM_ClientSocket(object):
 					raise ClientError(_('Not a UVMM_Response.'))
 				else:
 					return res
-		except protocol.PacketError, (translatable_text, dict):
+		except protocol.PacketError as (translatable_text, dict):
 			raise ClientError(translatable_text, **dict)
-		except socket.timeout, msg:
+		except socket.timeout as msg:
 			raise ClientError(_('Timed out while receiving data.'))
-		except socket.error, (errno, msg):
+		except socket.error as (errno, msg):
 			raise ClientError(_('Error while waiting for answer: %(errno)d'), errno=errno)
 		except EOFError:
 			raise ClientError(_('EOS while waiting for answer.'))
@@ -98,12 +102,14 @@ class UVMM_ClientSocket(object):
 		try:
 			self.sock.close()
 			self.sock = None
-		except socket.timeout, msg:
+		except socket.timeout as msg:
 			raise ClientError(_('Timed out while closing socket.'))
-		except socket.error, (errno, msg):
+		except socket.error as (errno, msg):
 			raise ClientError(_('Error while closing socket: %(errno)d'), errno=errno)
 
+
 class UVMM_ClientUnixSocket(UVMM_ClientSocket):
+
 	"""UVMM client Unix socket."""
 
 	def __init__(self, socket_path, timeout=0):
@@ -113,9 +119,9 @@ class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 			if timeout > 0:
 				self.sock.settimeout(timeout)
 			self.sock.connect(socket_path)
-		except socket.timeout, msg:
+		except socket.timeout as msg:
 			raise ClientError(_('Timed out while opening local socket "%(path)s".'), path=socket_path)
-		except socket.error, (errno, msg):
+		except socket.error as (errno, msg):
 			raise ClientError(_('Could not open socket "%(path)s": %(errno)d'), path=socket_path, errno=errno)
 
 	def __str__(self):
@@ -124,6 +130,7 @@ class UVMM_ClientUnixSocket(UVMM_ClientSocket):
 
 __ucr = ucr.ConfigRegistry()
 __ucr.load()
+
 
 def __auth_machine():
 	"""Get machine connection."""
@@ -134,6 +141,7 @@ def __auth_machine():
 	finally:
 		f.close()
 	return (username, password)
+
 
 def __debug(msg):
 	"""Output debugging messages."""
@@ -150,7 +158,7 @@ def uvmm_connect():
 	try:
 			__debug("Opening connection to local UVVMd...")
 			uvmm = UVMM_ClientUnixSocket('/var/run/uvmm.socket')
-	except ClientError, e:
+	except ClientError as e:
 		raise ClientError('Can not open connection to UVMM daemon: %s' % e)
 	return uvmm
 
@@ -173,6 +181,8 @@ def uvmm_cmd(request):
 	return response
 
 import os.path
+
+
 def uvmm_local_uri(local=False):
 	"""Return libvirt-URI for local host.
 	If local=True, use UNIX-socket instead of TCP-socket.

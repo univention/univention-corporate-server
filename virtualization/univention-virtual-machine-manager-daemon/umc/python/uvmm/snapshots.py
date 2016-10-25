@@ -40,7 +40,9 @@ from univention.management.console.protocol.definitions import MODULE_ERR_COMMAN
 
 _ = Translation('univention-management-console-modules-uvmm').translate
 
+
 class Snapshots(object):
+
 	"""
 	UMC functions for UVMM snapshot handling.
 	"""
@@ -77,7 +79,7 @@ class Snapshots(object):
 							'id': name,
 							'label': name,
 							'time': creation.isoformat(' '),
-							}
+						}
 						snapshot_list.append(snapshot)
 
 				self.finished(request.id, snapshot_list)
@@ -87,7 +89,7 @@ class Snapshots(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		node_uri, domain_uuid = urldefrag(request.options['domainURI'])
 		self.uvmm.send(
@@ -95,7 +97,7 @@ class Snapshots(object):
 				Callback(_finished, request),
 				uri=node_uri,
 				domain=domain_uuid
-				)
+		)
 
 	def snapshot_create(self, request):
 		"""
@@ -117,7 +119,7 @@ class Snapshots(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
-				)
+		)
 
 	def snapshot_remove(self, request):
 		"""
@@ -139,7 +141,7 @@ class Snapshots(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
-				)
+		)
 
 	def snapshot_revert(self, request):
 		"""
@@ -161,4 +163,4 @@ class Snapshots(object):
 				uri=node_uri,
 				domain=domain_uuid,
 				snapshot=request.options['snapshotName']
-				)
+		)

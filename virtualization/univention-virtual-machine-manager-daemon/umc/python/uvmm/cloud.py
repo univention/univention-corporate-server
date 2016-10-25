@@ -45,6 +45,7 @@ _ = Translation('univention-management-console-modules-uvmm').translate
 
 
 class Cloud(object):
+
 	"""
 	Handle cloud connections and instances.
 	"""
@@ -89,7 +90,7 @@ class Cloud(object):
 						'dn': d.dn,
 						'search_pattern': d.search_pattern,
 						'ucs_images': d.ucs_images,
-						})
+					})
 
 				MODULE.info('success: %s, data: %s' % (success, clouds))
 				self.finished(request.id, clouds)
@@ -99,13 +100,13 @@ class Cloud(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'L_CLOUD_LIST',
 				Callback(_finished, request),
 				pattern=request.options['nodePattern']
-				)
+		)
 
 	def cloud_add(self, request):
 		"""
@@ -136,7 +137,7 @@ class Cloud(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.required_options(request, 'cloudtype', 'name', 'parameter', 'testconnection')
 		cloudtype = request.options.get('cloudtype')
@@ -160,7 +161,7 @@ class Cloud(object):
 				Callback(_finished, request),
 				args=args,
 				testconnection=testconnection
-				)
+		)
 
 	def cloud_list_keypair(self, request):
 		"""
@@ -182,7 +183,7 @@ class Cloud(object):
 						{'id': item.name, 'label': item.name}
 						for conn_name, images in data.items()
 						for item in images
-						]
+				]
 
 				self.finished(request.id, keypair_list)
 			else:
@@ -191,13 +192,13 @@ class Cloud(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'L_CLOUD_KEYPAIR_LIST',
 				Callback(_finished, request),
 				conn_name=conn_name
-				)
+		)
 
 	def cloud_list_size(self, request):
 		"""
@@ -233,13 +234,13 @@ class Cloud(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'L_CLOUD_SIZE_LIST',
 				Callback(_finished, request),
 				conn_name=conn_name
-				)
+		)
 
 	@sanitize(pattern=SearchSanitizer(default='*'))
 	def cloud_list_image(self, request):
@@ -262,7 +263,7 @@ class Cloud(object):
 						{'id': item.id, 'label': item.name}
 						for conn_name, images in data.items()
 						for item in images
-						]
+				]
 
 				self.finished(request.id, image_list)
 			else:
@@ -271,13 +272,13 @@ class Cloud(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'L_CLOUD_IMAGE_LIST',
 				Callback(_finished, request),
 				conn_name=conn_name
-				)
+		)
 
 	def cloud_list_secgroup(self, request):
 		"""
@@ -300,7 +301,7 @@ class Cloud(object):
 						{'id': item.id, 'label': item.name}
 						for conn_name, images in data.items()
 						for item in images if network_id in ('default', item.network_id)
-						]
+				]
 
 				self.finished(request.id, secgroup_list)
 			else:
@@ -309,13 +310,13 @@ class Cloud(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'L_CLOUD_SECGROUP_LIST',
 				Callback(_finished, request),
 				conn_name=conn_name
-				)
+		)
 
 	def cloud_list_network(self, request):
 		"""
@@ -340,7 +341,7 @@ class Cloud(object):
 						}
 						for conn_name, images in data.items()
 						for item in images
-						]
+				]
 
 				self.finished(request.id, network_list)
 			else:
@@ -349,13 +350,13 @@ class Cloud(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'L_CLOUD_NETWORK_LIST',
 				Callback(_finished, request),
 				conn_name=conn_name
-				)
+		)
 
 	def cloud_list_subnet(self, request):
 		"""
@@ -381,7 +382,7 @@ class Cloud(object):
 						}
 						for conn_name, images in data.items()
 						for item in images if network_id == item.network_id
-						]
+				]
 
 				self.finished(request.id, subnet_list)
 			else:
@@ -390,13 +391,13 @@ class Cloud(object):
 						None,
 						message=str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'L_CLOUD_SUBNET_LIST',
 				Callback(_finished, request),
 				conn_name=conn_name
-				)
+		)
 
 	@sanitize(domainPattern=SearchSanitizer(default='*'))
 	def instance_query(self, request):
@@ -465,14 +466,14 @@ class Cloud(object):
 						None,
 						str(data),
 						status=MODULE_ERR_COMMAND_FAILED
-						)
+				)
 
 		self.uvmm.send(
 				'L_CLOUD_INSTANCE_LIST',
 				Callback(_finished, request),
 				conn_name=request.options.get('nodePattern', ''),
 				pattern=request.options['domainPattern']
-				)
+		)
 
 	@sanitize(state=ChoicesSanitizer(choices=('RUN', 'RESTART', 'SOFTRESTART', 'SHUTOFF', 'SHUTDOWN', 'SUSPEND', 'PAUSE', 'RESUME', 'UNPAUSE')))
 	def instance_state(self, request):
@@ -497,7 +498,7 @@ class Cloud(object):
 				conn_name=conn_name,
 				instance_id=instance_id,
 				state=state,
-				)
+		)
 
 	def instance_remove(self, request):
 		"""
@@ -517,7 +518,7 @@ class Cloud(object):
 				Callback(self._thread_finish, request),
 				conn_name=conn_name,
 				instance_id=instance_id
-				)
+		)
 
 	def instance_add(self, request):
 		"""
@@ -544,7 +545,7 @@ class Cloud(object):
 				Callback(self._thread_finish, request),
 				conn_name=conn_name,
 				args=args
-				)
+		)
 
 	def cloudtype_get(self, request):
 		"""
@@ -555,6 +556,6 @@ class Cloud(object):
 			cloudtypes.append({
 				'id': item['name'],
 				'label': item['name']
-				})
+			})
 
 		self.finished(request.id, cloudtypes)

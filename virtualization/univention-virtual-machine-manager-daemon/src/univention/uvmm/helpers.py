@@ -40,15 +40,17 @@ __all__ = [
 		'uri_decode',
 		'TimeoutError',
 		'timeout',
-		]
+]
 
 import gettext
+from functools import reduce
 
 N_ = lambda msg: msg
 _ = gettext.translation('univention-virtual-machine-manager', fallback=True).ugettext
 
 
 class TranslatableException(Exception):
+
 	"""Translatable exception (translatable_text, dict, key=value)."""
 
 	def __init__(self, translatable_text, dict={}, **args):
@@ -113,7 +115,7 @@ def uri_decode(uri):
 	"""
 	i = uri.find('%')
 	if i >= 0:
-		return uri[:i] + chr(int(uri[i+1:i+3], 16)) + uri_decode(uri[i+3:])
+		return uri[:i] + chr(int(uri[i + 1:i + 3], 16)) + uri_decode(uri[i + 3:])
 	else:
 		return uri
 
@@ -126,6 +128,7 @@ class TimeoutError(Exception):
 
 
 class timeout(object):
+
 	"""
 	Call a function in another thread and wait for its completion.  If the
 	functions doesn't return in the maximum allowed time, raise an
@@ -139,6 +142,7 @@ class timeout(object):
 	Traceback (most recent call last):
 	TimeoutError: <built-in function sleep>
 	"""
+
 	def __init__(self, target, timeout=10.0):
 		self.target = target
 		self.timeout = timeout

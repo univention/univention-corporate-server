@@ -39,11 +39,13 @@ from os.path import join
 
 
 class _Storage(TestCase):
+
 	def setUp(self):
 		self.xml = dedent(self.__doc__)
 
 
 class _StoragePool(_Storage):
+
 	"""
 	<pool type='dir'>
 		<name>default</name>
@@ -88,6 +90,7 @@ class _StoragePool(_Storage):
 
 
 class TestCreateStorageVolume(_StoragePool):
+
 	def storageVolLookupByPath(self, path):  # conn
 		assert path == self.PNAME
 		ex = libvirtError("")
@@ -143,6 +146,7 @@ class TestCreateStorageVolume(_StoragePool):
 
 
 class TestGetDomainStorageVolumes(_Storage):
+
 	"""
 	<domain type='kvm'>
 		<devices>
@@ -176,6 +180,7 @@ class TestGetDomainStorageVolumes(_Storage):
 
 
 class TestGetPoolInfo(_StoragePool):
+
 	@property
 	def conn(self):  # node
 		return self
@@ -199,6 +204,7 @@ class TestGetPoolInfo(_StoragePool):
 
 
 class TestGetStorageVolumes(_Storage):
+
 	"""
 	<volume type='file'>
 		<name>ucs401-0.qcow2</name>

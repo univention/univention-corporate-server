@@ -87,9 +87,9 @@ def dump(obj):
 	if isinstance(obj, list):
 		return map(dump, obj)
 	elif isinstance(obj, dict):
-		return dict(map(lambda (k, v): (k, dump(v)), obj.items()))
+		return dict(map(lambda k_v: (k_v[0], dump(k_v[1])), obj.items()))
 	elif hasattr(obj, '__dict__'):
-		return dict(map(lambda (k, v): (k, dump(v)), obj.__dict__.items()))
+		return dict(map(lambda k_v1: (k_v1[0], dump(k_v1[1])), obj.__dict__.items()))
 	else:
 		return obj
 
@@ -172,8 +172,10 @@ class ParserGenerator(object):
 	def _usage(doc):
 		"""Show usage informations for mode."""
 		lines = doc.split('\n')
-		while lines and not lines[0].strip(): del lines[0]
-		while lines and not lines[-1].strip(): del lines[-1]
+		while lines and not lines[0].strip():
+			del lines[0]
+		while lines and not lines[-1].strip():
+			del lines[-1]
 		indent = min([len(l[0:-len(l.lstrip())]) for l in filter(None, lines)])
 		desc = [l[indent:] for l in lines]
 		return '\n'.join(desc)
@@ -370,105 +372,165 @@ class ParserGenerator(object):
 			root = ET.fromstring(args.file_or_xml)
 		else:
 			tree = ET.parse(args.file_or_xml)
-			root = tree.getroot() # domain
+			root = tree.getroot()  # domain
 		domain = protocol.Data_Domain()
 		domain.domain_type = root.attrib['type']
 		domain.uuid = root.findtext('uuid')
 		domain.name = root.findtext('name')
 		domain.os_type = root.find('os').findtext('type')
-		try: domain.arch = root.find('os').find('type').attrib['arch']
-		except KeyError: domain.arch = 'i686' # FIXME
+		try:
+			domain.arch = root.find('os').find('type').attrib['arch']
+		except KeyError:
+			domain.arch = 'i686'  # FIXME
 		if domain.os_type == 'hvm':
-			try: domain.boot = [boot.attrib['dev'] for boot in root.find('os').findall('boot')]
-			except AttributeError: pass
-			except KeyError: pass
+			try:
+				domain.boot = [boot.attrib['dev'] for boot in root.find('os').findall('boot')]
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
 		else:
-			raise ValueError( "Unknown os/type='%s'" % (domain.os_type,) )
-		try: domain.bootloader = root.findtext('bootloader')
-		except AttributeError: pass
-		try: domain.bootloader_args = root.findtext('bootloader_args')
-		except AttributeError: pass
-		domain.maxMem = int(root.findtext('memory')) << 10 # KiB
-		try: domain.rtc_offset = root.find('clock').attrib['offset']
-		except AttributeError: pass
-		except KeyError: pass
+			raise ValueError("Unknown os/type='%s'" % (domain.os_type,))
+		try:
+			domain.bootloader = root.findtext('bootloader')
+		except AttributeError:
+			pass
+		try:
+			domain.bootloader_args = root.findtext('bootloader_args')
+		except AttributeError:
+			pass
+		domain.maxMem = int(root.findtext('memory')) << 10  # KiB
+		try:
+			domain.rtc_offset = root.find('clock').attrib['offset']
+		except AttributeError:
+			pass
+		except KeyError:
+			pass
 		from univention.uvmm.node import Disk, Interface, Graphic
 		for disk in root.find('devices').findall('disk'):
 			d = Disk()
 			d.type = disk.attrib['type']
-			try: d.device = disk.attrib['device']
-			except KeyError: pass
-			try: d.driver = disk.find('driver').attrib['name']
-			except AttributeError: pass
-			except KeyError: pass
-			try: d.driver_type = disk.find('driver').attrib['type']
-			except AttributeError: pass
-			except KeyError: pass
-			try: d.driver_cache = disk.find('driver').attrib['cache']
-			except AttributeError: pass
-			except KeyError: pass
+			try:
+				d.device = disk.attrib['device']
+			except KeyError:
+				pass
+			try:
+				d.driver = disk.find('driver').attrib['name']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
+			try:
+				d.driver_type = disk.find('driver').attrib['type']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
+			try:
+				d.driver_cache = disk.find('driver').attrib['cache']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
 			if d.type == Disk.TYPE_FILE:
 				d.source = disk.find('source').attrib['file']
 			elif d.type == Disk.TYPE_BLOCK:
 				d.source = disk.find('source').attrib['dev']
 			else:
-				d.source = None # FIXME
-			try: d.target_dev = disk.find('target').attrib['dev']
-			except AttributeError: pass
-			except KeyError: pass
-			try: d.target_bus = disk.find('target').attrib['bus']
-			except AttributeError: pass
-			except KeyError: pass
-			try: d.readonly = bool(disk.find('readonly'))
-			except KeyError: pass
+				d.source = None  # FIXME
+			try:
+				d.target_dev = disk.find('target').attrib['dev']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
+			try:
+				d.target_bus = disk.find('target').attrib['bus']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
+			try:
+				d.readonly = bool(disk.find('readonly'))
+			except KeyError:
+				pass
 			domain.disks.append(d)
 		for interface in root.find('devices').findall('interface'):
 			i = Interface()
 			i.type = interface.attrib['type']
-			try: i.mac_address = interface.find('mac').attrib['address']
-			except AttributeError: pass
-			except KeyError: pass
-			try: i.source = interface.find('source').attrib['bridge']
-			except AttributeError: pass
-			except KeyError: pass
-			try: i.script = interface.find('script').attrib['path']
-			except AttributeError: pass
-			except KeyError: pass
-			try: i.target = interface.find('target').attrib['dev']
-			except AttributeError: pass
-			except KeyError: pass
-			try: i.model = interface.find('model').attrib['type']
-			except AttributeError: pass
-			except KeyError: pass
+			try:
+				i.mac_address = interface.find('mac').attrib['address']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
+			try:
+				i.source = interface.find('source').attrib['bridge']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
+			try:
+				i.script = interface.find('script').attrib['path']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
+			try:
+				i.target = interface.find('target').attrib['dev']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
+			try:
+				i.model = interface.find('model').attrib['type']
+			except AttributeError:
+				pass
+			except KeyError:
+				pass
 			domain.interfaces.append(i)
 		for graphics in root.find('devices').findall('graphics'):
 			g = Graphic()
 			g.type = graphics.attrib['type']
-			try: g.port = int(graphics.attrib['port'])
-			except KeyError: pass
-			except ValueError: pass
-			except TypeError: pass
-			try: g.autoport = graphics.attrib['autoport'] == 'yes'
-			except KeyError: pass
-			try: g.keymap = graphics.attrib['keymap']
-			except KeyError: pass
-			try: g.listen = graphics.attrib['listen']
+			try:
+				g.port = int(graphics.attrib['port'])
+			except KeyError:
+				pass
+			except ValueError:
+				pass
+			except TypeError:
+				pass
+			try:
+				g.autoport = graphics.attrib['autoport'] == 'yes'
+			except KeyError:
+				pass
+			try:
+				g.keymap = graphics.attrib['keymap']
+			except KeyError:
+				pass
+			try:
+				g.listen = graphics.attrib['listen']
 			except KeyError:
 				for listen in graphics.findall('listen'):
 					try:
-						if listen.attrib['type'] != 'address': continue
+						if listen.attrib['type'] != 'address':
+							continue
 						g.listen = listen.attrib['address']
 						break
-					except KeyError: pass
-			try: g.passwd = graphics.attrib['passwd']
-			except KeyError: pass
+					except KeyError:
+						pass
+			try:
+				g.passwd = graphics.attrib['passwd']
+			except KeyError:
+				pass
 			domain.graphics.append(g)
 		try:
 			for annotation in root.find('annotations').findall('annotation'):
 				key = annotation.findtext('key')
 				value = annotation.findtext('value')
 				domain.annotations[key] = value
-		except AttributeError: pass
+		except AttributeError:
+			pass
 		pprint(domain.__dict__)
 		args.domain = domain
 
@@ -941,7 +1003,7 @@ def do_request(args):
 	try:
 		ret = request(args, req)
 		sys.exit(ret)
-	except TranslatableException, (translatable_text, fillin):
+	except TranslatableException as (translatable_text, fillin):
 		print >> sys.stderr, _(translatable_text) % fillin
 		sys.exit(1)
 

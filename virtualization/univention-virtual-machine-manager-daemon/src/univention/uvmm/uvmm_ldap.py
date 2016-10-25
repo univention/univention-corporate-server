@@ -54,7 +54,7 @@ logger = logging.getLogger('uvmmd.ldap')
 # Mapping from service name to libvirt-uri
 SERVICES = {
 		"KVM Host": "qemu://%s/system",
-		}
+}
 
 LDAP_UVMM_RDN = "cn=Virtual Machine Manager"
 LDAP_INFO_RDN = "cn=Information,%s" % LDAP_UVMM_RDN
@@ -62,25 +62,33 @@ LDAP_PROFILES_RDN = "cn=Profiles,%s" % LDAP_UVMM_RDN
 LDAP_CLOUD_CONNECTION_RDN = "cn=CloudConnection,%s" % LDAP_UVMM_RDN
 LDAP_CLOUD_TYPE_RDN = "cn=CloudType,%s" % LDAP_UVMM_RDN
 
+
 class LdapError(TranslatableException):
+
 	"""LDAP error."""
 	pass
 
+
 class LdapConfigurationError(LdapError):
+
 	"""LDAP configuration error."""
 	pass
 
+
 class LdapConnectionError(LdapError):
+
 	"""LDAP connection error."""
 	pass
+
 
 def ldap2fqdn(ldap_result):
 	"""Convert LDAP result to fqdn."""
 	if not 'associatedDomain' in ldap_result:
-		domain = configRegistry.get( 'domainname', '' )
+		domain = configRegistry.get('domainname', '')
 	else:
-		domain = ldap_result[ 'associatedDomain' ][ 0 ]
+		domain = ldap_result['associatedDomain'][0]
 	return "%s.%s" % (ldap_result['cn'][0], domain)
+
 
 def cached(cachefile, func, exception=LdapConnectionError):
 	"""Cache result of function or return cached result on LdapConnectionException."""
@@ -95,23 +103,23 @@ def cached(cachefile, func, exception=LdapConnectionError):
 			file.close()
 		try:
 			os.remove("%s.old" % (cachefile,))
-		except OSError, e:
+		except OSError as e:
 			if e.errno != errno.ENOENT:
 				raise LdapError(_('Error removing %(file)s.old: %(msg)s'), file=cachefile, msg=e)
 		try:
 			os.rename("%s" % (cachefile,), "%s.old" % (cachefile,))
-		except OSError, e:
+		except OSError as e:
 			if e.errno != errno.ENOENT:
 				raise LdapError(_('Error renaming %(file)s: %(msg)s'), file=cachefile, msg=e)
 		try:
 			os.rename("%s.new" % (cachefile,), "%s" % (cachefile,))
-		except OSError, e:
+		except OSError as e:
 			if e.errno != errno.ENOENT:
 				raise LdapError(_('Error renaming %(file)s.new: %(msg)s'), file=cachefile, msg=e)
-	except IOError, e:
+	except IOError as e:
 		# LdapError("Error writing %(file)s: %(msg)e", file=cachefile, msg=e)
 		pass
-	except exception, msg:
+	except exception as msg:
 		logger.info('Using cached data "%s"' % (cachefile,))
 		try:
 			file = open("%s" % (cachefile,), "r")
@@ -120,7 +128,7 @@ def cached(cachefile, func, exception=LdapConnectionError):
 				result = p.load()
 			finally:
 				file.close()
-		except IOError, e:
+		except IOError as e:
 			if e.errno != errno.ENOENT:
 				raise exception(_('Error reading %(file)s: %(msg)s'), file=cachefile, msg=e)
 			raise msg
@@ -128,6 +136,7 @@ def cached(cachefile, func, exception=LdapConnectionError):
 			raise exception(_('Error reading incomplete %(file)s.'), file=cachefile)
 
 	return result
+
 
 def ldap_uris(ldap_uri=None):
 	"""Return all nodes registered in LDAP."""
@@ -142,7 +151,7 @@ def ldap_uris(ldap_uri=None):
 		filter = filter_list[0]
 
 	# ensure that we should manage the host
-	filter = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % ( filter, HOST_FQDN )
+	filter = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % (filter, HOST_FQDN)
 	logger.debug('Find servers to manage "%s"' % filter)
 	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 	try:
@@ -156,15 +165,16 @@ def ldap_uris(ldap_uri=None):
 					nodes.append(uri)
 		logger.debug('Registered URIs: %s' % ', '.join(nodes))
 		return nodes
-	except LDAPError, e:
+	except LDAPError as e:
 		raise LdapConnectionError(_('Could not query "%(uri)s"'), uri=ldap_uri)
+
 
 def ldap_annotation(uuid):
 	"""Load annotations for domain from LDAP."""
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-	except ( SERVER_DOWN, IOError ), e:
+	except (SERVER_DOWN, IOError) as e:
 		raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
@@ -177,12 +187,13 @@ def ldap_annotation(uuid):
 	except univention.admin.uexceptions.base:
 		return {}
 
+
 def ldap_modify(uuid):
 	"""Modify annotations for domain from LDAP."""
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=True)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-	except (SERVER_DOWN, IOError ), e:
+	except (SERVER_DOWN, IOError) as e:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
@@ -208,7 +219,7 @@ def ldap_cloud_connections():
 	""" Return a list of all cloud connections."""
 	filt = '(objectClass=univentionVirtualMachineCloudConnection)'
 	# ensure that we should manage the host
-	filt = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % ( filt, HOST_FQDN )
+	filt = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % (filt, HOST_FQDN)
 	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 	try:
 		cloudconnections = []
@@ -238,8 +249,9 @@ def ldap_cloud_connections():
 				cloudconnections.append(c)
 
 		return cloudconnections
-	except LDAPError, e:
+	except LDAPError as e:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
+
 
 def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search_pattern="*", preselected_images=[]):
 	""" Add a new cloud connection."""
@@ -254,9 +266,9 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search
 		if ucs_images is False:
 			ucs_images = "0"
 
-		for k,v in parameter.items():
+		for k, v in parameter.items():
 			if (k and v):
-				parameter_lst.append('%s=%s' % (k,v))
+				parameter_lst.append('%s=%s' % (k, v))
 		attrs = {
 			'objectClass': ['univentionVirtualMachineCloudConnection', 'univentionVirtualMachineHostOC', 'univentionObject'],
 			'univentionObjectType': 'uvmm/cloudconnection',
@@ -268,11 +280,12 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search
 		}
 		if preselected_images:
 			attrs['univentionVirtualMachineCloudConnectionImageList'] = preselected_images
-		modlist = [(k,v) for k,v in attrs.items()]
+		modlist = [(k, v) for k, v in attrs.items()]
 		lo.add(dn, modlist)
 
-	except LDAPError, e:
+	except LDAPError as e:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
+
 
 def ldap_cloud_types():
 	""" Return a list of all cloud types."""
@@ -287,5 +300,5 @@ def ldap_cloud_types():
 			cloudtypes.append(c)
 
 		return cloudtypes
-	except LDAPError, e:
+	except LDAPError as e:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))

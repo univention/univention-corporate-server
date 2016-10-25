@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 """UVMM storage handler.
 
-This module implements functions to handle network configurations. 
+This module implements functions to handle network configurations.
 """
 
 import libvirt
@@ -41,43 +41,48 @@ from protocol import Network
 
 logger = logging.getLogger('uvmmd.network')
 
-class NetworkError( TranslatableException ):
+
+class NetworkError(TranslatableException):
+
 	'''Error occurred during operation on network object'''
 	pass
 
-def network_is_active( conn, name ):
+
+def network_is_active(conn, name):
 	'''checks if the network with the given name ist currently active'''
 	try:
 		return name in conn.listNetworks()
-	except libvirt.libvirtError, e:
-		logger.error( e )
-		raise NetworkError( _( 'Error retrieving list of active networks: %(error)s' ), error = e.get_error_message() )
+	except libvirt.libvirtError as e:
+		logger.error(e)
+		raise NetworkError(_('Error retrieving list of active networks: %(error)s'), error=e.get_error_message())
 
-def network_start( conn, name ):
+
+def network_start(conn, name):
 	'''Starts the network specified by given name. Returns Trie if the
 	network could be activated or if it was already active.'''
 	try:
-		network = conn.networkLookupByName( name )
+		network = conn.networkLookupByName(name)
 		if not network.autostart():
-			network.setAutostart( True )
+			network.setAutostart(True)
 		if not network.isActive():
 			return network.create() == 0
 		return True
-	except libvirt.libvirtError, e:
-		logger.error( e )
-		raise NetworkError( _( 'Error starting network %(name)s: %(error)s' ), name = name, error = e.get_error_message() )
+	except libvirt.libvirtError as e:
+		logger.error(e)
+		raise NetworkError(_('Error starting network %(name)s: %(error)s'), name=name, error=e.get_error_message())
 
-def network_find_by_bridge( conn, bridge ):
+
+def network_find_by_bridge(conn, bridge):
 	try:
 		networks = conn.listNetworks() + conn.listDefinedNetworks()
-	except libvirt.libvirtError, e:
-		logger.error( e )
-		raise NetworkError( _( 'Error retrieving list of networks: %(error)s' ), error = e.get_error_message() )
+	except libvirt.libvirtError as e:
+		logger.error(e)
+		raise NetworkError(_('Error retrieving list of networks: %(error)s'), error=e.get_error_message())
 	for name in networks:
 		try:
-			net = conn.networkLookupByName( name )
-		except libvirt.libvirtError, e:
-			logger.error( e )
+			net = conn.networkLookupByName(name)
+		except libvirt.libvirtError as e:
+			logger.error(e)
 		if net.bridgeName() == bridge:
 			network = Network()
 			network.uuid = net.UUIDString()
