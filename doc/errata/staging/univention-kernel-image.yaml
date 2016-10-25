@@ -71,8 +71,6 @@ desc: |
  * InfiniBand: Restrict use of the write() interface (CVE-2016-4565)
  * get_rock_ridge_filename(): handle malformed NM entries (CVE-2016-4913)
  * [s390*] mm: four page table levels vs. fork (CVE-2016-2143)
- * ecryptfs: don't allow mmap when the lower fs doesn't support it
-   (CVE-2016-1583)
  * KEYS: potential uninitialized variable (CVE-2016-4470)
  * HID: hiddev: validate num_values for HIDIOCGUSAGES, HIDIOCSUSAGES commands
    (CVE-2016-5829)
@@ -99,7 +97,6 @@ cve:
  - CVE-2016-0723
  - CVE-2016-0774
  - CVE-2016-0821
- - CVE-2016-1583
  - CVE-2016-1583
  - CVE-2016-2069
  - CVE-2016-2143
