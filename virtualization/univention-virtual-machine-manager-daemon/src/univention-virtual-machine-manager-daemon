@@ -48,14 +48,14 @@ from time import time
 
 def createDaemon(options):
 	"""http://code.activestate.com/recipes/278731/"""
-	UMASK = 0037
+	UMASK = 0o037
 	WORKDIR = "/"
 	MAXFD = 1024
 
 	try:
 		(read_end, write_end) = os.pipe()
 		pid = os.fork()
-	except OSError, e:
+	except OSError as e:
 		raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
 	if (pid == 0):  # 1st child
 		# detach from parent environment
@@ -65,7 +65,7 @@ def createDaemon(options):
 
 		try:
 			pid = os.fork()
-		except OSError, e:
+		except OSError as e:
 			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
 		if (pid == 0):  # 2nd child
 			os.close(read_end)
@@ -123,7 +123,7 @@ def createDaemon(options):
 			else:
 				print >>sys.stderr, _("Failed to fork daemon.")
 				sys.exit(1)
-		except OSError, e:
+		except OSError as e:
 			raise TranslatableException(N_("%(strerror)s [%(errno)d]"), stderror=e.strerror, errno=e.errno)
 
 
@@ -183,6 +183,7 @@ def install_signal_handlers(options):
 
 	try:
 		from meliae import scanner
+
 		def signal_handler_dump(signum, frame):
 			"""Handle SIGUSR2 to dump memory usage"""
 			filename = '/var/tmp/uvmm-mm_%d.json' % (time(),)
@@ -257,7 +258,7 @@ if __name__ == '__main__':
 	try:
 		logging.config.fileConfig(options.conffile)
 		logger = logging.getLogger("uvmmd")
-	except ConfigParser.Error, e:
+	except ConfigParser.Error as e:
 		logger = logging.getLogger("uvmmd")
 		logger.warning('Could not configure logger from %s' % (options.conffile,))
 
@@ -310,7 +311,7 @@ if __name__ == '__main__':
 			except:
 				logger.error("Could not add connection %s (from ldap)" % (connection["name"]))
 
-	except LdapError, msg:
+	except LdapError as msg:
 		logger.warning(msg)
 
 	from univention.uvmm.unix import unix

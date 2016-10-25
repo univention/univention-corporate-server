@@ -48,18 +48,20 @@ import traceback
 
 logger = logging.getLogger('uvmmd.unix')
 
+
 class StreamHandler(SocketServer.StreamRequestHandler):
+
 	"""Handle one client connection."""
 
-	active_count = 0 # Number of active clients.
-	client_count = 0 # Number of instances.
+	active_count = 0  # Number of active clients.
+	client_count = 0  # Number of instances.
 
 	def setup(self):
 		"""Initialize connection."""
 		StreamHandler.client_count += 1
 		self.client_id = StreamHandler.client_count
 		logger.info('[%d] New connection.' % (self.client_id,))
-		#super(StreamHandler,self).setup()
+		# super(StreamHandler,self).setup()
 		SocketServer.StreamRequestHandler.setup(self)
 		if False and StreamHandler.active_count == 0:
 			node_frequency(Nodes.USED_FREQUENCY)
@@ -73,7 +75,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 			while not self.eos:
 				try:
 					data = self.request.recv(1024)
-				except socket.error, (err, errmsg):
+				except socket.error as (err, errmsg):
 					if err == errno.EINTR:
 						continue
 					else:
@@ -86,8 +88,8 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				try:
 					packet = protocol.Packet.parse(buffer)
 					if packet is None:
-						continue # waiting
-				except protocol.PacketError, e: # (translatable_text, dict):
+						continue  # waiting
+				except protocol.PacketError as e:  # (translatable_text, dict):
 					logger.warning("[%d] Invalid packet received: %s" % (self.client_id, e))
 					if logger.isEnabledFor(logging.DEBUG):
 						logger.debug("[%d] Dump: %r" % (self.client_id, data))
@@ -105,7 +107,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 					res.translatable_text = _('Packet is no UVMM Request: %(type)s')
 					res.values = {
 							'type': type(command),
-							}
+					}
 
 				logger.debug('[%d] Sending response.' % (self.client_id,))
 				packet = res.pack()
@@ -114,13 +116,13 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 				logger.debug('[%d] Done.' % (self.client_id,))
 		except EOFError:
 			pass
-		except socket.error, (err, errmsg):
+		except socket.error as (err, errmsg):
 			if err != errno.ECONNRESET:
 				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 				raise
 			else:
 				logger.warn('[%d] NetException: %s' % (self.client_id, traceback.format_exc()))
-		except Exception, e:
+		except Exception as e:
 			logger.critical('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 			raise
 
@@ -129,30 +131,30 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 		logger.info('[%d] Request "%s" received' % (self.client_id, command.command,))
 		try:
 			cmd = commands[command.command]
-		except KeyError, e:
-			logger.warning('[%d] Unknown command "%s": %s.' % (self.client_id, command.command,str(e)))
+		except KeyError as e:
+			logger.warning('[%d] Unknown command "%s": %s.' % (self.client_id, command.command, str(e)))
 			res = protocol.Response_ERROR()
 			res.translatable_text = '[%(id)d] Unknown command "%(command)s".'
 			res.values = {
-					'id': self.client_id,
-					'command': command.command,
-					}
+				'id': self.client_id,
+				'command': command.command,
+			}
 		else:
 			try:
 				res = cmd(self, command)
 				if res is None:
 					res = protocol.Response_OK()
-			except CommandError, e:
+			except CommandError as e:
 				logger.warning('[%d] Error doing command "%s": %s' % (self.client_id, command.command, e))
 				res = protocol.Response_ERROR()
 				res.translatable_text, res.values = e.args
-			except Exception, e:
+			except Exception as e:
 				logger.error('[%d] Exception: %s' % (self.client_id, traceback.format_exc()))
 				res = protocol.Response_ERROR()
 				res.translatable_text = _('Exception: %(exception)s')
 				res.values = {
-						'exception': str(e),
-						}
+					'exception': str(e),
+				}
 		return res
 
 	def finish(self):
@@ -161,7 +163,7 @@ class StreamHandler(SocketServer.StreamRequestHandler):
 		StreamHandler.active_count -= 1
 		if False and StreamHandler.active_count == 0:
 			node_frequency(Nodes.IDLE_FREQUENCY)
-		#super(StreamHandler,self).finish()
+		# super(StreamHandler,self).finish()
 		SocketServer.StreamRequestHandler.finish(self)
 
 
@@ -170,7 +172,7 @@ def unix(options):
 	try:
 		if os.path.exists(options.socket):
 			os.remove(options.socket)
-	except OSError, (err, errmsg):
+	except OSError as (err, errmsg):
 		logger.error("Failed to delete old socket '%s': %s" % (options.socket, errmsg))
 		sys.exit(1)
 
@@ -180,7 +182,7 @@ def unix(options):
 			unixd = SocketServer.ThreadingUnixStreamServer(options.socket, StreamHandler)
 			unixd.daemon_threads = True
 			sockets[unixd.fileno()] = unixd
-		except Exception, e:
+		except Exception as e:
 			logger.error("Could not create SSL server: %s" % (e,))
 	if not sockets:
 		logger.error("No UNIX socket server.")
@@ -196,7 +198,7 @@ def unix(options):
 			rlist, wlist, xlist = select.select(sockets.keys(), [], [], None)
 			for fd in rlist:
 				sockets[fd].handle_request()
-		except (select.error, socket.error), (err, errmsg):
+		except (select.error, socket.error) as (err, errmsg):
 			if err == errno.EINTR:
 				continue
 			else:
@@ -207,7 +209,7 @@ def unix(options):
 	logger.info('Server is terminating.')
 	try:
 		os.remove(options.socket)
-	except OSError, (err, errmsg):
+	except OSError as (err, errmsg):
 		logger.warning("Failed to delete old socket '%s': %s" % (options.socket, errmsg))
 
 if __name__ == '__main__':

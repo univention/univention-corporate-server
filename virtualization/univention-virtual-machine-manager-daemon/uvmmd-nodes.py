@@ -60,14 +60,14 @@ def handler(dn, new, old):
 	try:
 		old_services = old.get('univentionService', [])
 		old_fqdn = ldap2fqdn(old)
-	except StandardError:  # NameError, KeyError
+	except Exception:  # NameError, KeyError
 		old_services = []
 		old_fqdn = ""
 
 	try:
 		new_services = new.get('univentionService', [])
 		new_fqdn = ldap2fqdn(new)
-	except StandardError:  # NameError, KeyError
+	except Exception:  # NameError, KeyError
 		new_services = []
 		new_fqdn = ""
 

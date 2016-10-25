@@ -58,7 +58,7 @@ POOLS_TYPE = {
 		'mpath': Disk.TYPE_BLOCK,
 		'netfs': Disk.TYPE_FILE,
 		'scsi': Disk.TYPE_BLOCK,
-		}
+}
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
@@ -67,6 +67,7 @@ logger = logging.getLogger('uvmmd.storage')
 
 
 class StorageError(TranslatableException):
+
 	"""Error while handling storage."""
 	pass
 
@@ -84,18 +85,18 @@ def create_storage_pool(conn, path, pool_name='default'):
 	''' % {
 			'pool': xml_escape(pool_name),
 			'path': xml_escape(path),
-			}
+	}
 	try:
 		pool = conn.storagePoolDefineXML(xml, 0)
 		pool.setAutostart(True)
 		pool.create(0)
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise StorageError(
 				_('Error creating storage pool "%(pool)s": %(error)s'),
 				pool=pool_name,
 				error=ex.get_error_message(),
-				)
+		)
 
 
 def create_storage_volume(conn, domain, disk):
@@ -107,24 +108,24 @@ def create_storage_volume(conn, domain, disk):
 				'Reusing existing volume "%s" for domain "%s"',
 				disk.source,
 				domain.name,
-				)
+		)
 		return vol
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.info(
 				'create_storage_volume: libvirt error (%d): %s',
 				ex.get_error_code(),
 				ex,
-				)
+		)
 		if not ex.get_error_code() in (
 				libvirt.VIR_ERR_INVALID_STORAGE_VOL,
 				libvirt.VIR_ERR_NO_STORAGE_VOL,
-				):
+		):
 			raise StorageError(
 					_('Error locating storage volume "%(volume)s" for "%(domain)s": %(error)s'),
 					volume=disk.source,
 					domain=domain.name,
 					error=ex.get_error_message(),
-					)
+			)
 
 	best = (0, None, '')
 	for pool_name in conn.listStoragePools() + conn.listDefinedStoragePools():
@@ -140,7 +141,7 @@ def create_storage_volume(conn, domain, disk):
 				length = len(path)
 				if length > best[0]:
 					best = (length, pool, pool_type)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ex.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_POOL:
 				logger.error(ex)
 				raise StorageError(
@@ -148,8 +149,8 @@ def create_storage_volume(conn, domain, disk):
 						pool=pool_name,
 						domain=domain.name,
 						error=ex.get_error_message(),
-						)
-		except IndexError, ex:
+				)
+		except IndexError as ex:
 			pass
 	length, pool, pool_type = best
 	if not length:
@@ -157,10 +158,10 @@ def create_storage_volume(conn, domain, disk):
 				'Volume "%s" for "%s" in not located in any storage pool.',
 				disk.source,
 				domain.name,
-				)
-		return None # FIXME
-		#raise StorageError(_('Volume "%(volume)s" for "%(domain)s" in not located in any storage pool.'), volume=disk.source, domain=domain.name)
-		#create_storage_pool(conn, path.dirname(disk.source))
+		)
+		return None  # FIXME
+		# raise StorageError(_('Volume "%(volume)s" for "%(domain)s" in not located in any storage pool.'), volume=disk.source, domain=domain.name)
+		# create_storage_pool(conn, path.dirname(disk.source))
 	try:
 		if pool_type in ('dir', 'fs', 'netfs'):
 			pool.refresh(0)
@@ -169,34 +170,34 @@ def create_storage_volume(conn, domain, disk):
 				'Reusing existing volume "%s" for domain "%s"',
 				disk.source,
 				domain.name,
-				)
+		)
 		return vol
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.info(
 				'create_storage_volume: libvirt error (%d): %s',
 				ex.get_error_code(),
 				ex,
-				)
+		)
 		if not ex.get_error_code() in (
 				libvirt.VIR_ERR_INVALID_STORAGE_VOL,
 				libvirt.VIR_ERR_NO_STORAGE_VOL,
-				):
+		):
 			raise StorageError(
 					_('Error locating storage volume "%(volume)s" for "%(domain)s": %(error)s'),
 					volume=disk.source,
 					domain=domain.name,
 					error=ex.get_error_message(),
-					)
+			)
 
 	if hasattr(disk, 'size') and disk.size:
 		size = disk.size
 	else:
-		size = 8 << 30 # GiB
+		size = 8 << 30  # GiB
 
 	values = {
 			'name': xml_escape(os.path.basename(disk.source)),
 			'size': size,
-			}
+	}
 
 	if POOLS_TYPE.get(pool_type) == Disk.TYPE_FILE:
 		if hasattr(disk, 'driver_type') and disk.driver_type not in (None, 'iso', 'aio'):
@@ -209,11 +210,11 @@ def create_storage_volume(conn, domain, disk):
 		permissions = ['\t\t\t<%(tag)s>%(value)s</%(tag)s>' % {
 			'tag': xml_escape(key),
 			'value': xml_escape(value),
-			} for (key, value) in permissions if value and value.isdigit()]
+		} for (key, value) in permissions if value and value.isdigit()]
 		if permissions:
 			permissions = '\t\t<permissions>\n%s\n\t\t</permissions>' % (
 					'\n'.join(permissions),
-					)
+			)
 		else:
 			permissions = ''
 
@@ -244,12 +245,12 @@ def create_storage_volume(conn, domain, disk):
 				pool_type,
 				domain.name,
 				disk.source,
-				)
+		)
 		raise StorageError(
 				_('Unsupported storage-pool-type "%(pool_type)s" for "%(domain)s"'),
 				pool_type=pool_type,
 				domain=domain.name,
-				)
+		)
 
 	xml = template % values
 	try:
@@ -260,15 +261,15 @@ def create_storage_volume(conn, domain, disk):
 				vol.path(),
 				domain.name,
 				domain.uuid,
-				)
+		)
 		return vol
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		if ex.get_error_code() in (libvirt.VIR_ERR_NO_STORAGE_VOL,):
 			logger.warning(
 					'Reusing existing volume "%s" for domain "%s"',
 					disk.source,
 					domain.name,
-					)
+			)
 			return None
 		logger.error(ex)
 		raise StorageError(
@@ -276,7 +277,7 @@ def create_storage_volume(conn, domain, disk):
 				name=disk.source,
 				domain=domain.name,
 				error=ex.get_error_message(),
-				)
+		)
 
 
 def get_storage_volumes(node, pool_name, type=None):
@@ -289,7 +290,7 @@ def get_storage_volumes(node, pool_name, type=None):
 				_('Error listing volumes at "%(uri)s": %(error)s'),
 				uri=node.uri,
 				error='no connection'
-				)
+		)
 	volumes = []
 	try:
 		pool = timeout(node.conn.storagePoolLookupByName)(pool_name)
@@ -299,25 +300,25 @@ def get_storage_volumes(node, pool_name, type=None):
 		pool_type = pool_tree.attrib['type']
 		if pool_type in ('dir', 'fs', 'netfs'):
 			pool.refresh(0)
-	except TimeoutError, ex:
+	except TimeoutError as ex:
 		logger.warning('libvirt connection "%s" timeout: %s', node.pd.uri, ex)
 		node.pd.last_try = time.time()
 		return volumes
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise StorageError(
 				_('Error listing volumes at "%(uri)s": %(error)s'),
 				uri=node.pd.uri,
 				error=ex.get_error_message(),
-				)
+		)
 
 	xml = pool.XMLDesc(0)
 	pool_tree = ET.fromstring(xml)
 	pool_type = pool_tree.attrib['type']
 
 	for name in pool.listVolumes():
-		vol = pool.storageVolLookupByName( name )
-		xml = vol.XMLDesc( 0 )
+		vol = pool.storageVolLookupByName(name)
+		xml = vol.XMLDesc(0)
 		try:
 			volume_tree = ET.fromstring(xml)
 		except ET.XMLSyntaxError:
@@ -337,17 +338,17 @@ def get_storage_volumes(node, pool_name, type=None):
 				disk.device = Disk.DEVICE_DISK
 		elif disk.type == Disk.TYPE_BLOCK:
 			disk.device = Disk.DEVICE_DISK
-			disk.driver_type = None # raw
+			disk.driver_type = None  # raw
 		elif disk.source.startswith('/dev/'):
 			disk.type = Disk.TYPE_BLOCK
 			disk.device = Disk.DEVICE_DISK
-			disk.driver_type = None # raw
+			disk.driver_type = None  # raw
 		else:
 			logger.info('Unsupported storage pool type: %s', pool_type)
 			continue
 
 		if not type or disk.device == type:
-			volumes.append( disk )
+			volumes.append(disk)
 
 	return volumes
 
@@ -379,35 +380,35 @@ def destroy_storage_volumes(conn, volumes, ignore_error=False):
 		try:
 			ref = conn.storageVolLookupByPath(name)
 			refs.append(ref)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ignore_error:
 				logger.warning(
 						"Error translating '%s' to volume: %s",
 						name,
 						ex.get_error_message(),
-						)
+				)
 			else:
 				logger.error(
 						"Error translating '%s' to volume: %s. Ignored.",
 						name,
 						ex.get_error_message(),
-						)
+				)
 				raise
 	# 2. delete them all
 	for volume in refs:
 		try:
 			volume.delete(0)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			if ignore_error:
 				logger.warning(
 						"Error deleting volume: %s",
 						ex.get_error_message(),
-						)
+				)
 			else:
 				logger.error(
 						"Error deleting volume: %s. Ignored.",
 						ex.get_error_message(),
-						)
+				)
 				raise
 
 
@@ -416,8 +417,8 @@ def get_pool_info(node, name):
 	Get 'protocol.Data_Pool' instance for named pool.
 	"""
 	try:
-		pool = node.conn.storagePoolLookupByName( name )
-	except libvirt.libvirtError, ex:
+		pool = node.conn.storagePoolLookupByName(name)
+	except libvirt.libvirtError as ex:
 		if ex.get_error_code() == libvirt.VIR_ERR_NO_STORAGE_POOL:
 			raise KeyError(name)
 		logger.error(ex)
@@ -425,7 +426,7 @@ def get_pool_info(node, name):
 				_('Error listing pools at "%(uri)s": %(error)s'),
 				uri=node.pd.uri,
 				error=ex.get_error_message(),
-				)
+		)
 	xml = pool.XMLDesc(0)
 	pool_tree = ET.fromstring(xml)
 	res = Data_Pool()
@@ -448,31 +449,31 @@ def storage_pools(node):
 				_('Error listing pools at "%(uri)s": %(error)s'),
 				uri=node.pd.uri,
 				error='no connection'
-				)
+		)
 	try:
 		pools = []
 		for name in timeout(node.conn.listStoragePools)():
 			pool = get_pool_info(node, name)
-			pools.append( pool )
+			pools.append(pool)
 		return pools
-	except TimeoutError, ex:
+	except TimeoutError as ex:
 		logger.warning(
 				'libvirt connection "%s" timeout: %s',
 				node.pd.uri,
 				ex,
-				)
+		)
 		node.pd.last_try = time.time()
 		return pools
-	except libvirt.libvirtError, ex:
+	except libvirt.libvirtError as ex:
 		logger.error(ex)
 		raise StorageError(
 				_('Error listing pools at "%(uri)s": %(error)s'),
 				uri=node.uri,
 				error=ex.get_error_message(),
-				)
+		)
 
 
-def storage_volume_usedby( nodes, volume_path, ignore_cdrom = True ):
+def storage_volume_usedby(nodes, volume_path, ignore_cdrom=True):
 	"""Returns a list of tuples ( <node URI>, <domain UUID> ) of domains
 	that use the given volume"""
 	used_by = []

@@ -36,12 +36,14 @@ from textwrap import dedent
 
 
 class _DomainTemplate(TestCase):
+
 	def setUp(self):
 		xml = dedent(self.__doc__)
 		self.kvm = DomainTemplate.list_from_xml(xml)
 
 
 class TestDomainTemplateKVM(_DomainTemplate):
+
 	"""
 	<capabilities>
 		<host>

@@ -38,7 +38,7 @@ description = 'UCS Virtual Machine Manager Daemon LDAP monitor'
 filter = '(objectClass=univentionVirtualMachine)'
 attributes = []
 
-__package__ = '' 	# workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug as debug
 

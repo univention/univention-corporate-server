@@ -50,11 +50,13 @@ logger = logging.getLogger('uvmmd.cloudconnection')
 
 
 class CloudConnectionError(TranslatableException):
+
 	"""Error while handling cloud connection."""
 	pass
 
 
 class CloudConnection(object):
+
 	def __init__(self, cloud, cache_dir):
 		self.type = cloud["type"]
 		self.DEFAULT_FREQUENCY = 15 * 1000  # ms

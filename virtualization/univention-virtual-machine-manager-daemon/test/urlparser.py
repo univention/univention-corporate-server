@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 from univention.uvmm.helpers import urlparse
 
+
 def __test():
 	URIS = filter(None, map(lambda u: u.lstrip(), """\
 	lxc:///
@@ -91,5 +92,6 @@ def __test():
 
 if __name__ == '__main__':
 	__test()
-	import readline, rlcompleter
+	import readline
+	import rlcompleter
 	readline.parse_and_bind("tab: complete")

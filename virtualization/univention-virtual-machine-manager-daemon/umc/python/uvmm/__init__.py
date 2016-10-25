@@ -49,6 +49,7 @@ _ = Translation('univention-management-console-modules-uvmm').translate
 
 
 class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
+
 	"""
 	UMC functions for UVMM handling.
 	"""
@@ -96,7 +97,7 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 					None,
 					message=data,
 					status=MODULE_ERR_COMMAND_FAILED
-					)
+			)
 		else:
 			self.finished(request.id, data)
 
@@ -111,7 +112,7 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 
 		success, data = result
 		MODULE.info('Got result from UVMMd: success: %s, data: %s' % (success, data))
-		self.finished(request.id, {'success' : success, 'data' : data})
+		self.finished(request.id, {'success': success, 'data': data})
 
 	def query(self, request):
 		"""
@@ -144,7 +145,7 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 				'label': _('Physical servers'),
 				'type': 'group',
 				'icon': 'uvmm-group',
-				}])
+			}])
 		else:
 			raise UMC_OptionTypeError(_('Unknown query type'))
 
@@ -155,4 +156,4 @@ class Instance(Base, Nodes, Profiles, Storages, Domains, Snapshots, Cloud):
 		self.uvmm.send(
 				'GROUP_LIST',
 				Callback(self._thread_finish, request)
-				)
+		)

@@ -35,6 +35,7 @@ from types import BuiltinMethodType, MethodType, FunctionType, TypeType, NoneTyp
 
 BASE_TYPES = (int, float, long, bool, basestring, NoneType, list, tuple)
 
+
 def object2dict(obj):
 	"""
 	Converts the attributes of an object to a dictionary.
@@ -63,7 +64,7 @@ def object2dict(obj):
 			attrs[slot] = dict([
 				(key, object2dict(value))
 				for key, value in attr.items()
-				])
+			])
 		else:
 			attrs[slot] = object2dict(attr)
 

@@ -41,6 +41,7 @@ _ldap_position = None
 
 
 class LDAP_ConnectionError(Exception):
+
 	"""
 	Error connecting LDAP server.
 	"""
@@ -75,7 +76,7 @@ def LDAP_Connection(func):
 		else:
 			try:
 				lo, po = udm_uldap.getMachineConnection(ldap_master=False)
-			except LDAPError, ex:
+			except LDAPError as ex:
 				raise LDAP_ConnectionError('Opening LDAP connection failed: %s' % (ex,))
 
 		kwargs['ldap_connection'] = lo
