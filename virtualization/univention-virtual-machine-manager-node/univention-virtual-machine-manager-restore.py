@@ -44,68 +44,76 @@ import univention.config_registry as ucr
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
-class Instance( object ):
-	def __init__( self, name, uuid, filename ):
+
+class Instance(object):
+
+	def __init__(self, name, uuid, filename):
 		self.name = name
 		self.uuid = uuid
 		self.filename = filename
 
-def __get_value( doc, element ):
-	tag = doc.getElementsByTagName( element )
-	if tag and tag[ 0 ].firstChild and tag[ 0 ].firstChild.nodeValue:
-		return tag[ 0 ].firstChild.nodeValue
+
+def __get_value(doc, element):
+	tag = doc.getElementsByTagName(element)
+	if tag and tag[0].firstChild and tag[0].firstChild.nodeValue:
+		return tag[0].firstChild.nodeValue
 
 	return None
 
-def _parse_xml_file( filename ):
-	doc = parse( filename )
+
+def _parse_xml_file(filename):
+	doc = parse(filename)
 	if not doc:
 		print >>sys.stderr, 'error: failed to parse backup file %s' % filename
 		return None
-	name = __get_value( doc, 'name' )
-	uuid = __get_value( doc, 'uuid' )
+	name = __get_value(doc, 'name')
+	uuid = __get_value(doc, 'uuid')
 
-	return Instance( name, uuid, filename )
+	return Instance(name, uuid, filename)
+
 
 def read_backup_files():
 	instances = []
-	dir = configRegistry.get( 'uvmm/backup/directory', '/var/backups/univention-virtual-machine-manager-daemon' )
-	for filename in os.listdir( dir ):
-		if not os.path.isfile( os.path.join( dir, filename ) ) or not filename.endswith( '.xml' ):
+	dir = configRegistry.get('uvmm/backup/directory', '/var/backups/univention-virtual-machine-manager-daemon')
+	for filename in os.listdir(dir):
+		if not os.path.isfile(os.path.join(dir, filename)) or not filename.endswith('.xml'):
 			continue
-		instance = _parse_xml_file( os.path.join( dir, filename ) )
+		instance = _parse_xml_file(os.path.join(dir, filename))
 		if instance:
-			instances.append( instance )
+			instances.append(instance)
 
 	return instances
 
-def list_instances( instances, pattern ):
+
+def list_instances(instances, pattern):
 	if not instances:
 		print 'no backups available'
 		return
-	max_length = max( map( lambda x: len( x.name ), instances ) )
+	max_length = max(map(lambda x: len(x.name), instances))
 	format_str = '%%-%ds (%%s)' % max_length
 	for instance in instances:
-		if fnmatch.fnmatch( instance.name, pattern ):
-			print format_str % ( instance.name, instance.uuid )
+		if fnmatch.fnmatch(instance.name, pattern):
+			print format_str % (instance.name, instance.uuid)
 
-def instance_exists( instance ):
-	devnull = open( os.devnull, 'w' )
-	ret = subprocess.call( [ 'virsh', 'domuuid', instance.name ], stdout = devnull, stderr = devnull )
+
+def instance_exists(instance):
+	devnull = open(os.devnull, 'w')
+	ret = subprocess.call(['virsh', 'domuuid', instance.name], stdout=devnull, stderr=devnull)
 	devnull.close()
 	return ret == 0
 
-def restore_instance( instances, name, force ):
+
+def restore_instance(instances, name, force):
 	for instance in instances:
 		if instance.name == name or instance.uuid == name:
-			if instance_exists( instance ):
+			if instance_exists(instance):
 				if not force:
 					print >>sys.stderr, 'error: the virtual instance already exists. Use the option -f to overwrite it'
-					sys.exit( 1 )
+					sys.exit(1)
 				else:
 					print >>sys.stderr, 'warning: overwriting existing virtual instance (forced)'
-			devnull = open( os.devnull, 'w' )
-			ret = subprocess.call( [ 'virsh', 'define', instance.filename ], stdout = devnull, stderr = devnull )
+			devnull = open(os.devnull, 'w')
+			ret = subprocess.call(['virsh', 'define', instance.filename], stdout=devnull, stderr=devnull)
 			devnull.close()
 			if ret:
 				print >>sys.stderr, 'error: failed to restore virtual instance %s' % instance.name
@@ -115,21 +123,21 @@ def restore_instance( instances, name, force ):
 
 if __name__ == '__main__':
 	parser = OptionParser()
-	parser.add_option( '-l', '--list', action = 'store_true', dest = 'list', default = False, help = 'List all available backups.' )
-	parser.add_option( '-p', '--pattern', action = 'store', dest = 'pattern', default = '*', help = 'When listing backups the instance names must match this pattern.' )
-	parser.add_option( '-r', '--restore', action = 'store', dest = 'restore', default = None, help = 'Restore a virtual instance. RESTORE can be the name or UUID.' )
-	parser.add_option( '-f', '--force', action = 'store_true', dest = 'force', default = False, help = 'Force overwriting existing instances when restoring a virtual instance' )
+	parser.add_option('-l', '--list', action='store_true', dest='list', default=False, help='List all available backups.')
+	parser.add_option('-p', '--pattern', action='store', dest='pattern', default='*', help='When listing backups the instance names must match this pattern.')
+	parser.add_option('-r', '--restore', action='store', dest='restore', default=None, help='Restore a virtual instance. RESTORE can be the name or UUID.')
+	parser.add_option('-f', '--force', action='store_true', dest='force', default=False, help='Force overwriting existing instances when restoring a virtual instance')
 
 	(options, arguments) = parser.parse_args()
 
 	# default action: list
-	if len( sys.argv ) < 2:
+	if len(sys.argv) < 2:
 		options.list = True
 
 	# whatever should be done the backup files need to be read
 	instances = read_backup_files()
 
 	if options.list:
-		list_instances( instances, options.pattern )
+		list_instances(instances, options.pattern)
 	elif options.restore:
-		restore_instance( instances, options.restore, options.force )
+		restore_instance(instances, options.restore, options.force)

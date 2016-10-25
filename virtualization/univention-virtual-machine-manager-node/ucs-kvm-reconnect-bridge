@@ -40,6 +40,7 @@ SYS_NET = "/sys/class/net"
 
 
 class Repair(object):
+
 	"""
 	Re-connect interfaces of running VMs to their bridges.
 	"""
@@ -87,13 +88,13 @@ class Repair(object):
 		"""
 		try:
 			xml = dom.XMLDesc(0)
-		except libvirt.libvirtError, ex:
+		except libvirt.libvirtError as ex:
 			print >> sys.stderr, ex
 			return
 
 		try:
 			doc = libxml2.parseDoc(xml)
-		except libxml2.libxmlError, ex:
+		except libxml2.libxmlError as ex:
 			print >> sys.stderr, ex
 			return
 		ctxt = doc.xpathNewContext()
