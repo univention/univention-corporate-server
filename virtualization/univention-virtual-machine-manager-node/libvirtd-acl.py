@@ -33,13 +33,13 @@
 """Watch for addition or deletion of management stations and update
 /etc/libvirt/libvirtd.conf and the UCR variable uvmm/managers accordingly."""
 
-name='libvirtd-acl'
-description='Update UCS Virtual Machine Manager libvirtd permissions'
-#filter='(|(objectClass=univentionHost)(&(objectClass=univentionVirtualMachineGroupOC)(univentionVirtualMachineGroup=1)))'
-filter='(objectClass=univentionHost)'
-attributes=['univentionService']
+name = 'libvirtd-acl'
+description = 'Update UCS Virtual Machine Manager libvirtd permissions'
+# filter='(|(objectClass=univentionHost)(&(objectClass=univentionVirtualMachineGroupOC)(univentionVirtualMachineGroup=1)))'
+filter = '(objectClass=univentionHost)'
+attributes = ['univentionService']
 
-__package__='' 	# workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 from univention.config_registry import ConfigRegistry, handler_set
 import univention.debug as debug
@@ -48,15 +48,17 @@ import subprocess
 service_names = set(["Virtual Machine Manager", "KVM Host"])
 need_restart = False
 
+
 def initialize():
 	"""Called once on first initialization."""
 	pass
+
 
 def handler(dn, new, old):
 	"""Called on each change."""
 	ucr = ConfigRegistry()
 	ucr.load()
-	value = ucr.get('uvmm/managers','')
+	value = ucr.get('uvmm/managers', '')
 	debug.debug(debug.LISTENER, debug.ALL, "old hosts: %s" % value)
 	tls_allowed_dn_list = value.split()
 
@@ -94,6 +96,7 @@ def handler(dn, new, old):
 		finally:
 			listener.unsetuid()
 
+
 def postrun():
 	"""Called 15s after handler."""
 	global need_restart
@@ -101,10 +104,11 @@ def postrun():
 		listener.setuid(0)
 		try:
 			# "libvirtd reload" only reloads the driver state, not the config file!
-			ret = subprocess.call(['invoke-rc.d', 'libvirtd', 'restart'])
+			subprocess.call(['invoke-rc.d', 'libvirtd', 'restart'])
 			need_restart = False
 		finally:
 			listener.unsetuid()
+
 
 def clean():
 	"""Called before resync."""
