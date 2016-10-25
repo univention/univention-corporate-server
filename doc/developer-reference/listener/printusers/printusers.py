@@ -82,9 +82,11 @@ def _rec(data):
 
 
 class AsRoot(object):
+
 	"""
 	Temporarily change effective UID to 'root'.
 	"""
+
 	def __enter__(self):
 		listener.setuid(0)
 
