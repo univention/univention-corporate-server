@@ -53,68 +53,68 @@ operations = ['search', 'edit', 'add', 'remove']
 # UDM properties
 property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name'),
-			syntax=udm_syntax.string,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'type': univention.admin.property(
-			short_description=_('Cloud Type'),
-			long_description=_('Reference to the type of the cloud connection'),
-			syntax=udm_syntax.UvmmCloudType,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Cloud Type'),
+		long_description=_('Reference to the type of the cloud connection'),
+		syntax=udm_syntax.UvmmCloudType,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False
+	),
 	'searchPattern': univention.admin.property(
-			short_description=_('Pattern for filtering images'),
-			long_description=_('When creating new instances, this pattern is used to further filter all available Images'),
-			syntax=udm_syntax.string,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False,
-			default='*'
-		),
+		short_description=_('Pattern for filtering images'),
+		long_description=_('When creating new instances, this pattern is used to further filter all available Images'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False,
+		default='*'
+	),
 	'includeUCSimages': univention.admin.property(
-			short_description=_('Show UCS images when creating a new instance'),
-			long_description=_('Show UCS images when creating a new instance'),
-			syntax=udm_syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False,
-			default='1'
-		),
+		short_description=_('Show UCS images when creating a new instance'),
+		long_description=_('Show UCS images when creating a new instance'),
+		syntax=udm_syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False,
+		default='1'
+	),
 	'availableImages': univention.admin.property(
-			short_description=_('Add the listed images to the list of selectable images'),
-			long_description=_('The specified images are added to the list of selectable images in the instance wizard'),
-			syntax=udm_syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Add the listed images to the list of selectable images'),
+		long_description=_('The specified images are added to the list of selectable images in the instance wizard'),
+		syntax=udm_syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 	'parameter': univention.admin.property(
-			short_description=_('Cloud Connection parameters'),
-			long_description=_('Key-value pair storing needed parameters for the Cloud Connection'),
-			syntax=univention.admin.syntax.keyAndValue,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			dontsearch=True
-		),
+		short_description=_('Cloud Connection parameters'),
+		long_description=_('Key-value pair storing needed parameters for the Cloud Connection'),
+		syntax=univention.admin.syntax.keyAndValue,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		dontsearch=True
+	),
 }
 
 # UDM web layout
@@ -129,7 +129,7 @@ layout = [
 			"parameter",
 		])
 	])
-	]
+]
 
 
 def mapKeyAndValue(old):
@@ -156,6 +156,7 @@ mapping.register('parameter', 'univentionVirtualMachineCloudConnectionParameter'
 
 
 class object(simpleLdap):
+
 	"""UVMM Cloud Connection."""
 	module = module
 
@@ -174,13 +175,13 @@ class object(simpleLdap):
 				mapping.mapName('name'),
 				mapping.mapValue('name', self.info['name']),
 				self.position.getDn()
-				)
+		)
 
 	def _ldap_addlist(self):
 		"""Add LDAP objectClass for UVMM Cloud Connection."""
 		return [
 				('objectClass', ['univentionVirtualMachineCloudConnection'])
-				]
+		]
 
 
 def lookup_filter(filter_s=None, lo=None):
@@ -189,7 +190,7 @@ def lookup_filter(filter_s=None, lo=None):
 	"""
 	ldap_filter = udm_filter.conjunction('&', [
 				udm_filter.expression('objectClass', 'univentionVirtualMachineCloudConnection'),
-				])
+	])
 	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
 	return unicode(ldap_filter)
 

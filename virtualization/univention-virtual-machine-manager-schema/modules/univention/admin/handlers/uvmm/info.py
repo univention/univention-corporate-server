@@ -53,54 +53,54 @@ operations = ['search', 'edit', 'add', 'remove']
 # UDM properties
 property_descriptions = {
 	'uuid': univention.admin.property(
-			short_description= _('UUID'),
-			long_description= _('UUID'),
-			syntax=udm_syntax.string,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('UUID'),
+		long_description=_('UUID'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'description': univention.admin.property(
-			short_description= _('Description'),
-			long_description= _('Description of virtual machine'),
-			syntax=udm_syntax.TextArea,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Description'),
+		long_description=_('Description of virtual machine'),
+		syntax=udm_syntax.TextArea,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'os': univention.admin.property(
-			short_description= _('Operating system'),
-			long_description= _('Name of the operation system'),
-			syntax=udm_syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Operating system'),
+		long_description=_('Name of the operation system'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'contact': univention.admin.property(
-			short_description = _('Contact'),
-			syntax=udm_syntax.string,
-			multivalue = False,
-			options = [],
-			required = False,
-			may_change = True,
-			identifies = False
-		),
+		short_description=_('Contact'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'profile': univention.admin.property(
-			short_description=_('Profile'),
-			long_description=_('Reference to the profile used for defining this VM'),
-			syntax=udm_syntax.UvmmProfiles,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Profile'),
+		long_description=_('Reference to the profile used for defining this VM'),
+		syntax=udm_syntax.UvmmProfiles,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 
@@ -115,7 +115,7 @@ layout = [
 			"profile",
 		])
 	])
-	]
+]
 
 
 # Maping between UDM properties and LDAP attributes
@@ -128,6 +128,7 @@ mapping.register('profile', 'univentionVirtualMachineProfileRef', None, udm_mapp
 
 
 class object(simpleLdap):
+
 	"""
 	UDM module to handle UVMM VM info objects.
 	"""
@@ -150,7 +151,7 @@ class object(simpleLdap):
 				mapping.mapName('uuid'),
 				mapping.mapValue('uuid', self.info['uuid']),
 				self.position.getDn()
-				)
+		)
 
 	def _ldap_addlist(self):
 		"""
@@ -158,7 +159,7 @@ class object(simpleLdap):
 		"""
 		return [
 				('objectClass', ['univentionVirtualMachine'])
-				]
+		]
 
 
 def lookup_filter(filter_s=None, lo=None):
@@ -167,7 +168,7 @@ def lookup_filter(filter_s=None, lo=None):
 	"""
 	ldap_filter = udm_filter.conjunction('&', [
 				udm_filter.expression('objectClass', 'univentionVirtualMachine'),
-				])
+	])
 	ldap_filter.append_unmapped_filter_string(filter_s, udm_mapping.mapRewrite, mapping)
 	return unicode(ldap_filter)
 
