@@ -32,39 +32,37 @@
 
 import getopt
 import sys
-import os
 import re
 
+
 class FSMountCheck:
+
 	def __init__(self):
-		self.PROGNAME='check_univention_nfsstatus'
-		self.REVISION='1.0'
-		self.FSTAB='/etc/fstab'
-		self.PROCMOUNTS='/proc/mounts'
-		self.FSTYPES = [ 'nfs' ]
+		self.PROGNAME = 'check_univention_nfsstatus'
+		self.REVISION = '1.0'
+		self.FSTAB = '/etc/fstab'
+		self.PROCMOUNTS = '/proc/mounts'
+		self.FSTYPES = ['nfs']
 		self.errorstate = 'CRITICAL'
-		self.allnfs=0
-		self.verbose=0
+		self.allnfs = 0
+		self.verbose = 0
 		self.re_fstab = re.compile('^(.*?)[ \t]+(.*?)[ \t]+(.*?)[ \t]+(.*?)[ \t]+')
 		self.re_mounts = re.compile('^(.*?) (.*?) (.*?) (.*?) ')
 		self.re_comment = re.compile('^[ \t]*#')
 		self.re_noauto = re.compile('(?:^|,)noauto(?:,|$)', re.IGNORECASE)
 
-		self.STATE = { 'OK': 0,
+		self.STATE = {'OK': 0,
 					   'WARNING': 1,
 					   'CRITICAL': 2,
-					   'UNKNOWN': 3 }
-
+					   'UNKNOWN': 3}
 
 	def print_revision(self):
 		print '%s: version %s' % (self.PROGNAME, self.REVISION)
-
 
 	def print_usage(self):
 		print 'Usage: %s [-v] [-w] [-c] [-a]' % self.PROGNAME
 		print 'Usage: %s --help' % self.PROGNAME
 		print 'Usage: %s --version' % self.PROGNAME
-
 
 	def print_help(self):
 		self.print_revision()
@@ -76,11 +74,9 @@ class FSMountCheck:
 		print ' -c        CRITICAL if a nfs share is not mounted'
 		print ' -a        check also nfs shares with option "noauto"'
 
-
 	def exit_with_status(self, state, msg):
 		print '%s: %s' % (state, msg)
-		sys.exit( self.STATE[state] )
-
+		sys.exit(self.STATE[state])
 
 	def main(self):
 		# parse command line
@@ -98,7 +94,7 @@ class FSMountCheck:
 				self.print_help()
 				sys.exit(self.STATE['UNKNOWN'])
 			elif opt[0] == '-v':
-				self.verbose+=1
+				self.verbose += 1
 			elif opt[0] == '-w':
 				self.errorstate = 'WARNING'
 			elif opt[0] == '-a':
@@ -114,7 +110,7 @@ class FSMountCheck:
 		state = 'UNKNOWN'
 
 		# read currently mounted filesystems
-		f = open( self.PROCMOUNTS, 'r' )
+		f = open(self.PROCMOUNTS, 'r')
 		mounts = f.read()
 		f.close()
 		mountlist = {}
@@ -124,11 +120,10 @@ class FSMountCheck:
 			if result:
 				(source, mntpoint, fstype, options) = result.groups()
 				if fstype in self.FSTYPES:
-					mountlist[ source ] = ( source, mntpoint, fstype, options )
-
+					mountlist[source] = (source, mntpoint, fstype, options)
 
 		# read desired mounted filesystemss
-		f = open( self.FSTAB, 'r' )
+		f = open(self.FSTAB, 'r')
 		fstab = f.read()
 		f.close()
 		self.fstab = []
@@ -143,12 +138,11 @@ class FSMountCheck:
 						result_noauto = self.re_noauto.search(options)
 						if self.allnfs == 1 or not result_noauto:
 							nfscnt += 1
-							if mountlist.has_key( source ) and mountlist[source][1] == mntpoint:
+							if source in mountlist and mountlist[source][1] == mntpoint:
 								mounted += 1
 							else:
 								umounted += 1
 								msg += '"%s" not mounted, ' % source
-
 
 		msg = msg.rstrip(', ')
 		if nfscnt == 0:

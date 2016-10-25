@@ -31,45 +31,45 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import commands
 import getopt
 import sys
-import pickle
 import os
 import re
 
+
 class I2O_RAIDCheck:
+
 	def __init__(self):
-		self.PROGNAME='check_univention_i2o_raid'
-		self.REVISION='1.0'
-		self.INPUTFN='/var/lib/univention-nagios/check_univention_i2o_raid.status'
-		self.verbose=0
-		self.device=0
-		self.option=None
-		self.content={}
-		self.msg=''
-		self.str_ok	= [ 'Optimal' ]
-		self.str_warning = [ 'Rebuilding', 'Reconstruct', 'Reconstructing', 'Replaced Drive', 'Expanding', 'Warning', 'Verify' ]
-		self.str_critical = [ 'Degraded', 'Dead', 'Failed', 'Error', 'Missing' ]
+		self.PROGNAME = 'check_univention_i2o_raid'
+		self.REVISION = '1.0'
+		self.INPUTFN = '/var/lib/univention-nagios/check_univention_i2o_raid.status'
+		self.verbose = 0
+		self.device = 0
+		self.option = None
+		self.content = {}
+		self.msg = ''
+		self.str_ok = ['Optimal']
+		self.str_warning = ['Rebuilding', 'Reconstruct', 'Reconstructing', 'Replaced Drive', 'Expanding', 'Warning', 'Verify']
+		self.str_critical = ['Degraded', 'Dead', 'Failed', 'Error', 'Missing']
 
 		self.re_other = re.compile('^\s*(d(\d{1,2})b\d{1,2}t\d{1,2}d\d{1,2})\s+(RAID|Disk).*\W(\d+MB)\s+\W(.*?)(?: \d{1,3}%)?$')
 		self.re_controller = re.compile('^(d(\d{1,2})) -- --\s+(\w+)\s+\w+\s+\w+\s+\w+\s+[\w\.\_\-]+\s+([\.\-\_\w]+)\s*(%s|%s|%s)\s*$' %
-										('|'.join(self.str_ok), '|'.join(self.str_warning), '|'.join(self.str_critical)) )
+										('|'.join(self.str_ok), '|'.join(self.str_warning), '|'.join(self.str_critical)))
 
-		self.state = { 'OK': 0,
-					   'WARNING': 1,
-					   'CRITICAL': 2,
-					   'UNKNOWN': 3 }
+		self.state = {
+			'OK': 0,
+			'WARNING': 1,
+			'CRITICAL': 2,
+			'UNKNOWN': 3
+		}
 
 	def print_revision(self):
 		print '%s: version %s' % (self.PROGNAME, self.REVISION)
-
 
 	def print_usage(self):
 		print 'Usage: %s [-v [-v]] [-d <num>] (-l|-p|-c|-r)' % self.PROGNAME
 		print 'Usage: %s --help' % self.PROGNAME
 		print 'Usage: %s --version' % self.PROGNAME
-
 
 	def print_help(self):
 		self.print_revision()
@@ -84,11 +84,9 @@ class I2O_RAIDCheck:
 		print ' -c        test status of controller device'
 		print ' -r        test status of raid device'
 
-
 	def exit_with_status(self, state, msg):
 		print '%s: %s' % (state, msg)
-		sys.exit( self.state[state] )
-
+		sys.exit(self.state[state])
 
 	def load_inputfile(self):
 		if not os.path.exists(self.INPUTFN):
@@ -104,10 +102,9 @@ class I2O_RAIDCheck:
 		(self.content['physical'], self.content['logical'],
 		 self.content['controller'], self.content['raid']) = self.content['all'].split('\n\n')[0:4]
 
-
 	def parse_data(self):
-		returnstate='UNKNOWN'
-		txt = self.content[ self.option ]
+		returnstate = 'UNKNOWN'
+		txt = self.content[self.option]
 
 		for line in txt.splitlines():
 			if self.verbose > 1:
@@ -133,11 +130,11 @@ class I2O_RAIDCheck:
 
 						if state == 'CRITICAL':
 							returnstate = state
-						elif state == 'WARNING' and returnstate not in [ 'CRITICAL' ]:
+						elif state == 'WARNING' and returnstate not in ['CRITICAL']:
 							returnstate = state
-						elif state == 'OK' and returnstate not in [ 'CRITICAL', 'WARNING' ]:
+						elif state == 'OK' and returnstate not in ['CRITICAL', 'WARNING']:
 							returnstate = state
-						elif state == 'UNKNOWN' and returnstate not in [ 'CRITICAL' ]:
+						elif state == 'UNKNOWN' and returnstate not in ['CRITICAL']:
 							# return WARNING if device is in unknown state
 							returnstate = 'WARNING'
 
@@ -161,11 +158,11 @@ class I2O_RAIDCheck:
 
 						if state == 'CRITICAL':
 							returnstate = state
-						elif state == 'WARNING' and returnstate not in [ 'CRITICAL' ]:
+						elif state == 'WARNING' and returnstate not in ['CRITICAL']:
 							returnstate = state
-						elif state == 'OK' and returnstate not in [ 'CRITICAL', 'WARNING' ]:
+						elif state == 'OK' and returnstate not in ['CRITICAL', 'WARNING']:
 							returnstate = state
-						elif state == 'UNKNOWN' and returnstate not in [ 'CRITICAL' ]:
+						elif state == 'UNKNOWN' and returnstate not in ['CRITICAL']:
 							# return WARNING if device is in unknown state
 							returnstate = 'WARNING'
 
@@ -176,7 +173,6 @@ class I2O_RAIDCheck:
 
 		self.returnstate = returnstate
 		self.msg = self.msg.rstrip(', ')
-
 
 	def main(self):
 		# parse command line
@@ -192,7 +188,7 @@ class I2O_RAIDCheck:
 				self.print_help()
 				sys.exit(self.state['UNKNOWN'])
 			elif opt[0] == '-v':
-				self.verbose+=1
+				self.verbose += 1
 			elif opt[0] == '--version':
 				self.print_revision()
 				sys.exit(self.state['UNKNOWN'])

@@ -30,19 +30,21 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__='' 	# workaround for PEP 366
+__package__ = '' 	# workaround for PEP 366
 import listener
-import os, re, string, stat
+import os
+import re
+import stat
 import univention.debug
 import subprocess
 
-name='nagios-server'
-description='Create configuration for Nagios server'
-filter='(|(objectClass=univentionNagiosServiceClass)(objectClass=univentionNagiosTimeperiodClass)(objectClass=univentionHost))'
+name = 'nagios-server'
+description = 'Create configuration for Nagios server'
+filter = '(|(objectClass=univentionNagiosServiceClass)(objectClass=univentionNagiosTimeperiodClass)(objectClass=univentionHost))'
 
 __predefinedTimeperiod = 'Univention-Predefined-24x7'
 __fallbackContact = 'root@localhost'
-__initscript='/etc/init.d/nagios3'
+__initscript = '/etc/init.d/nagios3'
 
 #
 # /etc/nagios3/conf.univention.d/services/<SERVICENAME>,<HOSTFQDN>.cfg
@@ -54,7 +56,7 @@ __initscript='/etc/init.d/nagios3'
 #
 
 __confdir = '/etc/nagios3/conf.univention.d/'
-__confsubdirs = [ 'services', 'hosts', 'hostextinfo', 'hostgrps', 'contacts', 'contactgrps', 'timeperiods' ]
+__confsubdirs = ['services', 'hosts', 'hostextinfo', 'hostgrps', 'contacts', 'contactgrps', 'timeperiods']
 
 __servicesdir = __confdir + 'services/'
 __hostsdir = __confdir + 'hosts/'
@@ -64,45 +66,69 @@ __contactsdir = __confdir + 'contacts/'
 __contactgrpsdir = __confdir + 'contactgrps/'
 __timeperiodsdir = __confdir + 'timeperiods/'
 
-__exthostinfo_mapping = { 'unknown' : { 'icon_image'     : 'univention/unknown.gif',
-											'vrml_image'     : 'univention/unknown.gif',
-											'statusmap_image': 'univention/unknown.gd2' },
-							'ipmanagedclient' : { 'icon_image'     : 'univention/ipmanagedclient.gif',
-															'vrml_image'     : 'univention/ipmanagedclient.gif',
-															'statusmap_image': 'univention/ipmanagedclient.gd2' },
-							'client' : { 'icon_image'     : 'univention/client.gif',
-															'vrml_image'     : 'univention/client.gif',
-															'statusmap_image': 'univention/client.gd2' },
-							'macos' : { 'icon_image'     : 'univention/macos.gif',
-															'vrml_image'     : 'univention/macos.gif',
-															'statusmap_image': 'univention/macos.gd2' },
-							'mobileclient' : { 'icon_image'     : 'univention/mobileclient.gif',
-												 'vrml_image'     : 'univention/mobileclient.gif',
-												 'statusmap_image': 'univention/mobileclient.gd2' },
-							'thinclient' : { 'icon_image'     : 'univention/thinclient.gif',
-											 'vrml_image'     : 'univention/thinclient.gif',
-											 'statusmap_image': 'univention/thinclient.gd2' },
-							'windows' : { 'icon_image'     : 'univention/windows.gif',
-											'vrml_image'     : 'univention/windows.gif',
-											'statusmap_image': 'univention/windows.gd2' },
-							'memberserver' : { 'icon_image'     : 'univention/memberserver.gif',
-												 'vrml_image'     : 'univention/memberserver.gif',
-												 'statusmap_image': 'univention/memberserver.gd2' },
-							'domaincontroller_master' : { 'icon_image'     : 'univention/domaincontroller_master.gif',
-															 'vrml_image'     : 'univention/domaincontroller_master.gif',
-															 'statusmap_image': 'univention/domaincontroller_master.gd2' },
-							'domaincontroller_backup' : { 'icon_image'     : 'univention/domaincontroller_backup.gif',
-															 'vrml_image'     : 'univention/domaincontroller_backup.gif',
-															 'statusmap_image': 'univention/domaincontroller_backup.gd2' },
-							'domaincontroller_slave' : { 'icon_image'     : 'univention/domaincontroller_slave.gif',
-															 'vrml_image'     : 'univention/domaincontroller_slave.gif',
-															 'statusmap_image': 'univention/domaincontroller_slave.gd2' }
-							}
+__exthostinfo_mapping = {
+	'unknown': {
+		'icon_image': 'univention/unknown.gif',
+		'vrml_image': 'univention/unknown.gif',
+		'statusmap_image': 'univention/unknown.gd2'
+	},
+	'ipmanagedclient': {
+		'icon_image': 'univention/ipmanagedclient.gif',
+		'vrml_image': 'univention/ipmanagedclient.gif',
+		'statusmap_image': 'univention/ipmanagedclient.gd2'
+	},
+	'client': {
+		'icon_image': 'univention/client.gif',
+		'vrml_image': 'univention/client.gif',
+		'statusmap_image': 'univention/client.gd2'
+	},
+	'macos': {
+		'icon_image': 'univention/macos.gif',
+		'vrml_image': 'univention/macos.gif',
+		'statusmap_image': 'univention/macos.gd2'
+	},
+	'mobileclient': {
+		'icon_image': 'univention/mobileclient.gif',
+		'vrml_image': 'univention/mobileclient.gif',
+		'statusmap_image': 'univention/mobileclient.gd2'
+	},
+	'thinclient': {
+		'icon_image': 'univention/thinclient.gif',
+		'vrml_image': 'univention/thinclient.gif',
+		'statusmap_image': 'univention/thinclient.gd2'
+	},
+	'windows': {
+		'icon_image': 'univention/windows.gif',
+		'vrml_image': 'univention/windows.gif',
+		'statusmap_image': 'univention/windows.gd2'
+	},
+	'memberserver': {
+		'icon_image': 'univention/memberserver.gif',
+		'vrml_image': 'univention/memberserver.gif',
+		'statusmap_image': 'univention/memberserver.gd2'
+	},
+	'domaincontroller_master': {
+		'icon_image': 'univention/domaincontroller_master.gif',
+		'vrml_image': 'univention/domaincontroller_master.gif',
+		'statusmap_image': 'univention/domaincontroller_master.gd2'
+	},
+	'domaincontroller_backup': {
+		'icon_image': 'univention/domaincontroller_backup.gif',
+		'vrml_image': 'univention/domaincontroller_backup.gif',
+		'statusmap_image': 'univention/domaincontroller_backup.gd2'
+	},
+	'domaincontroller_slave': {
+		'icon_image': 'univention/domaincontroller_slave.gif',
+		'vrml_image': 'univention/domaincontroller_slave.gif',
+		'statusmap_image': 'univention/domaincontroller_slave.gd2'
+	},
+}
 
 
 __reload = False
 
-def writeTimeperiod( filename, name, alias, periods ):
+
+def writeTimeperiod(filename, name, alias, periods):
 	listener.setuid(0)
 	try:
 		fp = open(filename, 'w')
@@ -158,8 +184,7 @@ def handleTimeperiod(dn, new, old):
 
 		periods = new['univentionNagiosTimeperiod'][0].split('#')
 
-		writeTimeperiod( filename, new['cn'][0], new['description'][0], periods )
-
+		writeTimeperiod(filename, new['cn'][0], new['description'][0], periods)
 
 
 def createDefaultTimeperiod():
@@ -167,9 +192,8 @@ def createDefaultTimeperiod():
 	global __predefinedTimeperiod
 	filename = __timeperiodsdir + __predefinedTimeperiod + '.cfg'
 	if not os.path.exists(filename):
-		periods = [ '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00' ]
-		writeTimeperiod( filename, __predefinedTimeperiod, __predefinedTimeperiod, periods )
-
+		periods = ['00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00', '00:00-24:00']
+		writeTimeperiod(filename, __predefinedTimeperiod, __predefinedTimeperiod, periods)
 
 
 def hostDeleted(new, old):
@@ -193,8 +217,7 @@ def hostDeleted(new, old):
 	return False
 
 
-
-def createContact( contact ):
+def createContact(contact):
 	global __contactsdir
 	global __predefinedTimeperiod
 
@@ -226,27 +249,25 @@ def createContact( contact ):
 		listener.unsetuid()
 
 
-
 def removeContactIfUnused(contact):
 	global __contactsdir
 
-	contact_filename = os.path.join( __contactsdir, "%s.cfg" % contact )
-	if os.path.exists( contact_filename ):
+	contact_filename = os.path.join(__contactsdir, "%s.cfg" % contact)
+	if os.path.exists(contact_filename):
 		listener.setuid(0)
 		try:
 			# check if email address is still in use
 			result = os.system('grep -c "%s" %s* 2> /dev/null > /dev/null' % (contact, __contactgrpsdir))
 			if result == 1:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: removing contact %s' % contact_filename)
-				os.unlink( contact_filename )
+				os.unlink(contact_filename)
 			else:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: contact %s is in use' % contact_filename)
 		finally:
 			listener.unsetuid()
 
 
-
-def createContactGroup( grpname, contactlist ):
+def createContactGroup(grpname, contactlist):
 	global __contactgrpsdir
 	global __contactsdir
 
@@ -270,7 +291,7 @@ def createContactGroup( grpname, contactlist ):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: contactgroup %s written: members=%s' % (grpname, contactlist))
 		# create missing contacts
 		for contact in contactlist:
-			if not os.path.exists( os.path.join( __contactsdir, '%s.cfg' % contact) ):
+			if not os.path.exists(os.path.join(__contactsdir, '%s.cfg' % contact)):
 				createContact(contact)
 
 		# create default timeperiod if missing
@@ -280,26 +301,22 @@ def createContactGroup( grpname, contactlist ):
 		listener.unsetuid()
 
 
-
 def updateContactGroup(fqdn, new, old):
-	cg_old = [ __fallbackContact ]
-	cg_new = [ __fallbackContact ]
-	if old and old.has_key('univentionNagiosEmail') and old['univentionNagiosEmail']:
+	cg_old = [__fallbackContact]
+	cg_new = [__fallbackContact]
+	if old and 'univentionNagiosEmail' in old and old['univentionNagiosEmail']:
 		cg_old = old['univentionNagiosEmail']
-	if new and new.has_key('univentionNagiosEmail') and new['univentionNagiosEmail']:
+	if new and 'univentionNagiosEmail' in new and new['univentionNagiosEmail']:
 		cg_new = new['univentionNagiosEmail']
-
-	cg_delete_list = []
-	cg_add_list = []
 
 	if hostDeleted(new, old):
 		# host deleted --> remove contact group
 
-		cg_filename = os.path.join( __contactgrpsdir, 'cg-%s.cfg' % fqdn )
-		if os.path.exists( cg_filename ):
+		cg_filename = os.path.join(__contactgrpsdir, 'cg-%s.cfg' % fqdn)
+		if os.path.exists(cg_filename):
 			listener.setuid(0)
 			try:
-				os.unlink( cg_filename )
+				os.unlink(cg_filename)
 			finally:
 				listener.unsetuid()
 
@@ -310,26 +327,25 @@ def updateContactGroup(fqdn, new, old):
 			removeContactIfUnused(contact)
 	else:
 		# host has been updated
-		createContactGroup( 'cg-%s' % fqdn, cg_new )
+		createContactGroup('cg-%s' % fqdn, cg_new)
 
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: wrote contactgroup for host %s' % fqdn)
 
 		# find deleted contacts
 		for contact in cg_old:
-			if not contact in cg_new:
+			if contact not in cg_new:
 				removeContactIfUnused(contact)
-
 
 
 def readHostGroup(grpname):
 	global __hostgrpsdir
-	grp_filename = os.path.join( __hostgrpsdir, '%s.cfg' % grpname )
+	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
 	try:
-		if not os.path.exists( grp_filename ):
+		if not os.path.exists(grp_filename):
 			return []
-		fp = open(grp_filename,'r')
+		fp = open(grp_filename, 'r')
 		content = fp.read()
 		fp.close()
 		res = re.search(r'\W+members\W+(.*?)\W*$', content, re.MULTILINE)
@@ -340,10 +356,9 @@ def readHostGroup(grpname):
 		listener.unsetuid()
 
 
-
 def writeHostGroup(grpname, members):
 	global __hostgrpsdir
-	grp_filename = os.path.join( __hostgrpsdir, '%s.cfg' % grpname )
+	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
 	try:
@@ -358,18 +373,16 @@ def writeHostGroup(grpname, members):
 		listener.unsetuid()
 
 
-
 def deleteHostGroup(grpname):
 	global __hostgrpsdir
-	grp_filename = os.path.join( __hostgrpsdir, '%s.cfg' % grpname )
+	grp_filename = os.path.join(__hostgrpsdir, '%s.cfg' % grpname)
 
 	listener.setuid(0)
 	try:
-		if os.path.exists( grp_filename ):
-			os.unlink( os.path.join( __servicesdir, grp_filename) )
+		if os.path.exists(grp_filename):
+			os.unlink(os.path.join(__servicesdir, grp_filename))
 	finally:
 		listener.unsetuid()
-
 
 
 def removeFromHostGroup(grpname, fqdn):
@@ -387,10 +400,9 @@ def removeFromHostGroup(grpname, fqdn):
 
 def addToHostGroup(grpname, fqdn):
 	members = readHostGroup(grpname)
-	if not fqdn in members:
+	if fqdn not in members:
 		members.append(fqdn)
 	writeHostGroup(grpname, members)
-
 
 
 def handleService(dn, new, old):
@@ -399,19 +411,18 @@ def handleService(dn, new, old):
 	if old:
 		listener.setuid(0)
 		try:
-			for fn in os.listdir( __servicesdir ):
-				if fn.find( "%s," % old['cn'][0] ) == 0:
-					os.unlink( os.path.join( __servicesdir, fn) )
+			for fn in os.listdir(__servicesdir):
+				if fn.find("%s," % old['cn'][0]) == 0:
+					os.unlink(os.path.join(__servicesdir, fn))
 		finally:
 			listener.unsetuid()
-
 
 	if new:
 		listener.setuid(0)
 		try:
-			if new.has_key('univentionNagiosHostname') and new['univentionNagiosHostname']:
+			if 'univentionNagiosHostname' in new and new['univentionNagiosHostname']:
 				for host in new['univentionNagiosHostname']:
-					filename = os.path.join( __servicesdir, '%s,%s.cfg' % (new['cn'][0], host))
+					filename = os.path.join(__servicesdir, '%s,%s.cfg' % (new['cn'][0], host))
 					fp = open(filename, 'w')
 					fp.write('# Warning: This file is auto-generated and might be overwritten.\n')
 					fp.write('#          Please use univention-admin instead.\n')
@@ -423,10 +434,10 @@ def handleService(dn, new, old):
 					fp.write('    host_name               %s\n' % host)
 					fp.write('    service_description     %s\n' % new['cn'][0])
 
-					if new.has_key('univentionNagiosUseNRPE') and new['univentionNagiosUseNRPE'] and new['univentionNagiosUseNRPE'][0] == '1':
+					if 'univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and new['univentionNagiosUseNRPE'][0] == '1':
 						fp.write('    check_command           check_nrpe_1arg!%s\n' % new['cn'][0])
 					else:
-						if new.has_key('univentionNagiosCheckArgs') and new['univentionNagiosCheckArgs'] and new['univentionNagiosCheckArgs'][0]:
+						if 'univentionNagiosCheckArgs' in new and new['univentionNagiosCheckArgs'] and new['univentionNagiosCheckArgs'][0]:
 							fp.write('    check_command           %s!%s\n' % (new['univentionNagiosCheckCommand'][0],
 																			  new['univentionNagiosCheckArgs'][0]))
 						else:
@@ -443,12 +454,12 @@ def handleService(dn, new, old):
 					fp.write('}\n')
 					fp.close()
 
-					cg_filename = os.path.join( __contactgrpsdir, 'cg-%s.cfg' % host)
-					if not os.path.exists( cg_filename ):
+					cg_filename = os.path.join(__contactgrpsdir, 'cg-%s.cfg' % host)
+					if not os.path.exists(cg_filename):
 						univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR,
 											   'NAGIOS-SERVER: handleService: contactgrp for host %s does not exist - using fallback' % host)
 
-						createContactGroup( 'cg-%s' % host, [ __fallbackContact ] )
+						createContactGroup('cg-%s' % host, [__fallbackContact])
 						listener.setuid(0)
 
 		finally:
@@ -456,10 +467,10 @@ def handleService(dn, new, old):
 
 
 def getUniventionComputerType(new):
-	if not new or not new.has_key('objectClass'):
+	if not new or 'objectClass' not in new:
 		return 'unknown'
 
-	if new and new.has_key('objectClass'):
+	if new and 'objectClass' in new:
 		if 'univentionClient' in new['objectClass']:
 			if 'posixAccount' in new['objectClass'] or 'shadowAccount' in new['objectClass']:
 				return 'client'
@@ -478,7 +489,7 @@ def getUniventionComputerType(new):
 		elif 'univentionMemberServer' in new['objectClass']:
 			return 'memberserver'
 		elif 'univentionDomainController' in new['objectClass']:
-			if new.has_key('univentionServerRole'):
+			if 'univentionServerRole' in new:
 				for role in ['master', 'backup', 'slave']:
 					if role in new['univentionServerRole']:
 						return 'domaincontroller_%s' % role
@@ -489,11 +500,11 @@ def createHostExtInfo(fqdn, new):
 	global __exthostinfo_mapping
 	global __hostextinfodir
 
-	fn = os.path.join( __hostextinfodir, '%s.cfg' % fqdn )
+	fn = os.path.join(__hostextinfodir, '%s.cfg' % fqdn)
 
 	if new:
 		hosttype = getUniventionComputerType(new)
-		if not __exthostinfo_mapping.has_key(hosttype):
+		if hosttype not in __exthostinfo_mapping:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: createHostExtInfo: unknown host type "%s" of %s' % (hosttype, fqdn))
 			return
 
@@ -522,8 +533,8 @@ def createHostExtInfo(fqdn, new):
 
 def removeHostExtInfo(fqdn):
 	global __hostextinfodir
-	fn = os.path.join( __hostextinfodir, '%s.cfg' % fqdn )
-	if os.path.exists( fn ):
+	fn = os.path.join(__hostextinfodir, '%s.cfg' % fqdn)
+	if os.path.exists(fn):
 		listener.setuid(0)
 		try:
 			os.unlink(fn)
@@ -533,8 +544,8 @@ def removeHostExtInfo(fqdn):
 
 def removeHost(fqdn):
 	global __hostextinfodir
-	fn = os.path.join( __hostsdir, '%s.cfg' % fqdn )
-	if os.path.exists( fn ):
+	fn = os.path.join(__hostsdir, '%s.cfg' % fqdn)
+	if os.path.exists(fn):
 		listener.setuid(0)
 		try:
 			os.unlink(fn)
@@ -549,34 +560,34 @@ def handleHost(dn, new, old):
 
 	# avoid additional ldap requests - building fqdn by combining "cn" and baseconfig variable "domainname"
 	host = ''
-	oldfqdn='unknown'
-	newfqdn='unknown'
+	oldfqdn = 'unknown'
+	newfqdn = 'unknown'
 
 	olddomain = listener.baseConfig['domainname']
-	if old and old.has_key('associatedDomain') and old['associatedDomain']:
+	if old and 'associatedDomain' in old and old['associatedDomain']:
 		olddomain = old['associatedDomain'][0]
 	if old:
-		if old.has_key('cn') and old['cn']:
+		if 'cn' in old and old['cn']:
 			host = old['cn'][0]
 			oldfqdn = host + '.' + olddomain
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: unable to determine old fqdn for %s' % str(dn))
 			host = 'unknown'
 			oldfqdn = host + '.unknown'
-	old_host_filename = os.path.join( __hostsdir, '%s.cfg' % oldfqdn )
+	old_host_filename = os.path.join(__hostsdir, '%s.cfg' % oldfqdn)
 
 	newdomain = listener.baseConfig['domainname']
-	if new and new.has_key('associatedDomain') and new['associatedDomain']:
+	if new and 'associatedDomain' in new and new['associatedDomain']:
 		newdomain = new['associatedDomain'][0]
 	if new:
-		if new.has_key('cn') and new['cn']:
+		if 'cn' in new and new['cn']:
 			host = new['cn'][0]
 			newfqdn = host + '.' + newdomain
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: unable to determine new fqdn for %s' % str(dn))
 			host = 'unknown'
 			newfqdn = host + '.unknown'
-	new_host_filename = os.path.join( __hostsdir, '%s.cfg' % newfqdn )
+	new_host_filename = os.path.join(__hostsdir, '%s.cfg' % newfqdn)
 
 	# determine grpname
 	# default: AllHosts
@@ -585,50 +596,49 @@ def handleHost(dn, new, old):
 	ldapbase = listener.baseConfig['ldap/base']
 	result = re.search('^cn=%s(,.*?)?,%s$' % (host, ldapbase), dn)
 	if result:
-		grpname=re.sub(',\w+=', '_', result.group(1))[1:]
+		grpname = re.sub(',\w+=', '_', result.group(1))[1:]
 
 	# fqdn changed ==> remove old entry and create new ones
 	if oldfqdn != newfqdn and new and old:
 		listener.setuid(0)
 		try:
-			if os.path.exists( old_host_filename ):
-				os.unlink( old_host_filename )
+			if os.path.exists(old_host_filename):
+				os.unlink(old_host_filename)
 		finally:
 			listener.unsetuid()
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: fqdn changed: host %s deleted' % oldfqdn)
 
 		# remove contact group and contacts
-		updateContactGroup( oldfqdn, {}, old )
+		updateContactGroup(oldfqdn, {}, old)
 
 		# remove host from hostgroup
-		removeFromHostGroup( grpname, oldfqdn )
+		removeFromHostGroup(grpname, oldfqdn)
 
 		# remove ext host info
 		removeHostExtInfo(oldfqdn)
-
 
 	# check if host has been deleted or nagios support disabled
 	if hostDeleted(new, old):
 		listener.setuid(0)
 		try:
-			if os.path.exists( old_host_filename ):
-				os.unlink( old_host_filename )
+			if os.path.exists(old_host_filename):
+				os.unlink(old_host_filename)
 		finally:
 			listener.unsetuid()
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: host %s deleted' % oldfqdn)
 
 		# remove contact group and contacts
-		updateContactGroup( oldfqdn, new, old )
+		updateContactGroup(oldfqdn, new, old)
 
 		# remove host from hostgroup
-		removeFromHostGroup( grpname, oldfqdn )
+		removeFromHostGroup(grpname, oldfqdn)
 
 		removeHostExtInfo(oldfqdn)
 
 		removeHost(oldfqdn)
 
 	elif new:
-		if not (new.has_key('aRecord') and new['aRecord']):
+		if not ('aRecord' in new and new['aRecord']):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: missing aRecord (%s)' % dn)
 			return
 
@@ -643,12 +653,12 @@ def handleHost(dn, new, old):
 			fp.write('\n')
 			fp.write('define host {\n')
 			fp.write('    host_name               %s\n' % newfqdn)
-			if new.has_key('description') and new['description']:
-				fp.write('    alias                   %s (%s)\n' % (newfqdn,new['description'][0]))
+			if 'description' in new and new['description']:
+				fp.write('    alias                   %s (%s)\n' % (newfqdn, new['description'][0]))
 			else:
 				fp.write('    alias                   %s\n' % newfqdn)
 			fp.write('    address                 %s\n' % new['aRecord'][0])
-			if new.has_key('univentionNagiosParent') and new['univentionNagiosParent']:
+			if 'univentionNagiosParent' in new and new['univentionNagiosParent']:
 				fp.write('    parents                 %s\n' % ', '.join(new['univentionNagiosParent']))
 
 			if listener.baseConfig.is_true("nagios/server/hostcheck/enable", False):
@@ -658,7 +668,7 @@ def handleHost(dn, new, old):
 			fp.write('    contact_groups          cg-%s\n' % newfqdn)
 
 			notification_interval = 0
-			if listener.baseConfig.has_key("nagios/server/hostcheck/notificationinterval") and listener.baseConfig["nagios/server/hostcheck/notificationinterval"]:
+			if "nagios/server/hostcheck/notificationinterval" in listener.baseConfig and listener.baseConfig["nagios/server/hostcheck/notificationinterval"]:
 				notification_interval = listener.baseConfig["nagios/server/hostcheck/notificationinterval"]
 
 			fp.write('    notification_interval   %s\n' % notification_interval)
@@ -673,13 +683,13 @@ def handleHost(dn, new, old):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: host %s written' % newfqdn)
 
 		if oldfqdn == newfqdn:
-			updateContactGroup( newfqdn, new, old )
+			updateContactGroup(newfqdn, new, old)
 		else:
-			updateContactGroup( newfqdn, new, {} )
+			updateContactGroup(newfqdn, new, {})
 
-		addToHostGroup( grpname, newfqdn )
+		addToHostGroup(grpname, newfqdn)
 
-		createHostExtInfo( newfqdn, new )
+		createHostExtInfo(newfqdn, new)
 
 
 def handler(dn, new, old):
@@ -690,13 +700,13 @@ def handler(dn, new, old):
 #	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: IN old=%s' % str(old))
 #	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: IN new=%s' % str(new))
 
-	if ((old and old.has_key('objectClass') and 'univentionNagiosServiceClass' in old['objectClass']) or
-		(new and new.has_key('objectClass') and 'univentionNagiosServiceClass' in new['objectClass'])):
+	if ((old and 'objectClass' in old and 'univentionNagiosServiceClass' in old['objectClass']) or
+		(new and 'objectClass' in new and 'univentionNagiosServiceClass' in new['objectClass'])):
 		handleService(dn, new, old)
 		__reload = True
 
-	elif ((old and old.has_key('objectClass') and 'univentionNagiosHostClass' in old['objectClass']) or
-		(new and new.has_key('objectClass') and 'univentionNagiosHostClass' in new['objectClass'])):
+	elif ((old and 'objectClass' in old and 'univentionNagiosHostClass' in old['objectClass']) or
+		(new and 'objectClass' in new and 'univentionNagiosHostClass' in new['objectClass'])):
 		# check if the nagios related attributes were changed
 		for attr in ['aRecord', 'associatedDomain', 'uid', 'cn', 'description', 'univentionNagiosParent', 'univentionNagiosEnabled', 'univentionNagiosEmail']:
 			if not (new.get(attr, None) == old.get(attr, None)):
@@ -704,33 +714,31 @@ def handler(dn, new, old):
 				__reload = True
 				break
 
-	elif ((old and old.has_key('objectClass') and 'univentionNagiosTimeperiodClass' in old['objectClass']) or
-		(new and new.has_key('objectClass') and 'univentionNagiosTimeperiodClass' in new['objectClass'])):
+	elif ((old and 'objectClass' in old and 'univentionNagiosTimeperiodClass' in old['objectClass']) or
+		(new and 'objectClass' in new and 'univentionNagiosTimeperiodClass' in new['objectClass'])):
 		handleTimeperiod(dn, new, old)
 		__reload = True
 
 
-
 def initialize():
 	global __confsubdirs
-	dirs = [ '' ]
+	dirs = ['']
 	dirs.extend(__confsubdirs)
 
 	for dir in dirs:
-		dirname = os.path.join('/etc/nagios3/conf.univention.d', dir )
+		dirname = os.path.join('/etc/nagios3/conf.univention.d', dir)
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: creating dir: %s' % dirname)
-		if not os.path.exists( dirname ):
+		if not os.path.exists(dirname):
 			listener.setuid(0)
 			try:
-				os.mkdir( dirname )
+				os.mkdir(dirname)
 			finally:
 				listener.unsetuid()
 
 
-
 def deleteTree(dirname):
-	if os.path.exists( dirname ):
-		for f in os.listdir( dirname ):
+	if os.path.exists(dirname):
+		for f in os.listdir(dirname):
 			fn = os.path.join(dirname, f)
 			mode = os.stat(fn)[stat.ST_MODE]
 			if stat.S_ISDIR(mode):
@@ -740,16 +748,14 @@ def deleteTree(dirname):
 		os.rmdir(dirname)
 
 
-
 def clean():
-	dirname='/etc/nagios3/conf.univention.d'
+	dirname = '/etc/nagios3/conf.univention.d'
 	if os.path.exists(dirname):
 		listener.setuid(0)
 		try:
 			deleteTree(dirname)
 		finally:
 			listener.unsetuid()
-
 
 
 def postrun():
@@ -795,4 +801,3 @@ def postrun():
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'NAGIOS-SERVER: nagios3 reported an error in configfile /etc/nagios3/nagios.cfg. Please restart nagios3 manually: "%s restart".' % initscript)
 				listener.unsetuid()
 		__reload = False
-

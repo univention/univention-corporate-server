@@ -32,34 +32,31 @@
 
 import getopt
 import sys
-import os
 import time
 
 from univention.config_registry import ConfigRegistry
 
 
 class SSLCertificateCheck:
-	def __init__(self):
-		self.PROGNAME='check_univention_ssl_certificate'
-		self.REVISION='1.0'
-		self.days_warning=45
-		self.days_critical=15
 
-		self.STATE = { 'OK': 0,
+	def __init__(self):
+		self.PROGNAME = 'check_univention_ssl_certificate'
+		self.REVISION = '1.0'
+		self.days_warning = 45
+		self.days_critical = 15
+
+		self.STATE = {'OK': 0,
 					   'WARNING': 1,
 					   'CRITICAL': 2,
-					   'UNKNOWN': 3 }
-
+					   'UNKNOWN': 3}
 
 	def print_revision(self):
 		print '%s: version %s' % (self.PROGNAME, self.REVISION)
-
 
 	def print_usage(self):
 		print 'Usage: %s [-w <n>] [-c <n>]' % self.PROGNAME
 		print 'Usage: %s --help' % self.PROGNAME
 		print 'Usage: %s --version' % self.PROGNAME
-
 
 	def print_help(self):
 		self.print_revision()
@@ -69,11 +66,9 @@ class SSLCertificateCheck:
 		print ' -w <n>   WARNING if ssl cert expires in <n> days'
 		print ' -c <n>   CRITICAL if ssl cert expires in <n> days'
 
-
 	def exit_with_status(self, state, msg):
 		print '%s: %s' % (state, msg)
-		sys.exit( self.STATE[state] )
-
+		sys.exit(self.STATE[state])
 
 	def main(self):
 		# parse command line
@@ -95,7 +90,6 @@ class SSLCertificateCheck:
 			elif opt[0] == '--version':
 				self.print_revision()
 				sys.exit(self.STATE['UNKNOWN'])
-
 
 		state = 'UNKNOWN'
 		msg = ''

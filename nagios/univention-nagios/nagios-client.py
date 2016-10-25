@@ -30,38 +30,39 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__='' 	# workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
-import os, re, string, stat
+import os
+import re
+import stat
 import univention.debug
 
-name='nagios-client'
-description='Create configuration for Nagios nrpe server'
-filter='(objectClass=univentionNagiosServiceClass)'
+name = 'nagios-client'
+description = 'Create configuration for Nagios nrpe server'
+filter = '(objectClass=univentionNagiosServiceClass)'
 
-__initscript='/etc/init.d/nagios-nrpe-server'
+__initscript = '/etc/init.d/nagios-nrpe-server'
 __confdir = '/etc/nagios/nrpe.univention.d/'
 __pluginconfdir = '/etc/nagios-plugins/config/'
 
 __pluginconfdirstat = 0
-__pluginconfig = { }
-
+__pluginconfig = {}
 
 
 def readPluginConfig():
 	global __pluginconfig
 	global __pluginconfdirstat
 
-	if __pluginconfdirstat != os.stat( __pluginconfdir )[8]:
+	if __pluginconfdirstat != os.stat(__pluginconfdir)[8]:
 		# save modification time
-		__pluginconfdirstat = os.stat( __pluginconfdir )[8]
+		__pluginconfdirstat = os.stat(__pluginconfdir)[8]
 
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: updating plugin config')
 
 		listener.setuid(0)
 		try:
-			for fn in os.listdir( __pluginconfdir ):
-				fp = open( os.path.join( __pluginconfdir, fn),'r')
+			for fn in os.listdir(__pluginconfdir):
+				fp = open(os.path.join(__pluginconfdir, fn), 'r')
 				content = fp.read()
 				fp.close()
 				for cmddef in re.split('\s*define\s+command\s*\{', content):
@@ -75,18 +76,16 @@ def readPluginConfig():
 			listener.unsetuid()
 
 
-
 def replaceArguments(cmdline, args):
 	for i in range(9):
 		if i < len(args):
-			cmdline = re.sub('\$ARG%s\$' % (i+1), args[i], cmdline)
+			cmdline = re.sub('\$ARG%s\$' % (i + 1), args[i], cmdline)
 		else:
-			cmdline = re.sub('\$ARG%s\$' % (i+1), '', cmdline)
+			cmdline = re.sub('\$ARG%s\$' % (i + 1), '', cmdline)
 	return cmdline
 
 
-
-def writeConfig( fqdn, new ):
+def writeConfig(fqdn, new):
 	global __confdir
 	global __pluginconfig
 
@@ -96,23 +95,23 @@ def writeConfig( fqdn, new ):
 	cmdline = 'PluginNameNotFoundError'
 
 	# if no univentionNagiosHostname is present or current host is no member then quit
-	if new.has_key('univentionNagiosHostname') and new['univentionNagiosHostname']:
+	if 'univentionNagiosHostname' in new and new['univentionNagiosHostname']:
 		if fqdn not in new['univentionNagiosHostname']:
 			return
 	else:
 		return
 
-	if new.has_key('univentionNagiosCheckCommand') and new['univentionNagiosCheckCommand'] and new['univentionNagiosCheckCommand'][0]:
-		if __pluginconfig.has_key( new['univentionNagiosCheckCommand'][0] ):
-			cmdline = __pluginconfig[ new['univentionNagiosCheckCommand'][0] ]
-	if new.has_key('univentionNagiosCheckArgs') and new['univentionNagiosCheckArgs'] and new['univentionNagiosCheckArgs'][0]:
-		cmdline = replaceArguments( cmdline, new['univentionNagiosCheckArgs'][0].split('!') )
+	if 'univentionNagiosCheckCommand' in new and new['univentionNagiosCheckCommand'] and new['univentionNagiosCheckCommand'][0]:
+		if new['univentionNagiosCheckCommand'][0] in __pluginconfig:
+			cmdline = __pluginconfig[new['univentionNagiosCheckCommand'][0]]
+	if 'univentionNagiosCheckArgs' in new and new['univentionNagiosCheckArgs'] and new['univentionNagiosCheckArgs'][0]:
+		cmdline = replaceArguments(cmdline, new['univentionNagiosCheckArgs'][0].split('!'))
 	cmdline = re.sub('\$HOSTADDRESS\$', fqdn, cmdline)
 	cmdline = re.sub('\$HOSTNAME\$', fqdn, cmdline)
 
 	listener.setuid(0)
 	try:
-		filename = os.path.join( __confdir, "%s.cfg" % name )
+		filename = os.path.join(__confdir, "%s.cfg" % name)
 		fp = open(filename, 'w')
 		fp.write('# Warning: This file is auto-generated and might be overwritten.\n')
 		fp.write('#          Please use univention-directory-manager instead.\n')
@@ -128,17 +127,14 @@ def writeConfig( fqdn, new ):
 		listener.unsetuid()
 
 
-
-def removeConfig( name ):
-	filename = os.path.join( __confdir, "%s.cfg" % name )
+def removeConfig(name):
+	filename = os.path.join(__confdir, "%s.cfg" % name)
 	listener.setuid(0)
 	try:
-		if os.path.exists( filename ):
-			os.unlink( filename )
+		if os.path.exists(filename):
+			os.unlink(filename)
 	finally:
 		listener.unsetuid()
-
-
 
 
 def handler(dn, new, old):
@@ -154,8 +150,8 @@ def handler(dn, new, old):
 		removeConfig(old['cn'][0])
 
 	if old and \
-		   old.has_key('univentionNagiosHostname') and old['univentionNagiosHostname'] and fqdn in old['univentionNagiosHostname'] and \
-		   not(new.has_key('univentionNagiosHostname') and new['univentionNagiosHostname'] and fqdn in new['univentionNagiosHostname']):
+		'univentionNagiosHostname' in old and old['univentionNagiosHostname'] and fqdn in old['univentionNagiosHostname'] and \
+		not('univentionNagiosHostname' in new and new['univentionNagiosHostname'] and fqdn in new['univentionNagiosHostname']):
 		# object changed and
 		# local fqdn was in old object and
 		# local fqdn is not in new object
@@ -163,8 +159,8 @@ def handler(dn, new, old):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: host removed from service %s' % str(old['cn'][0]))
 		removeConfig(old['cn'][0])
 	elif old and \
-			 old.has_key('univentionNagiosUseNRPE') and old['univentionNagiosUseNRPE'] and (old['univentionNagiosUseNRPE'][0] == '1') and \
-			 not(new.has_key('univentionNagiosUseNRPE') and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == '1')):
+		'univentionNagiosUseNRPE' in old and old['univentionNagiosUseNRPE'] and (old['univentionNagiosUseNRPE'][0] == '1') and \
+		not('univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == '1')):
 		# object changed and
 		# local fqdn is in new object  (otherwise previous if-statement matches)
 		# NRPE was enabled in old object
@@ -177,27 +173,25 @@ def handler(dn, new, old):
 		# - this host was configure in old and new object or
 		# - this host is newly added to list or
 		# - this object is new
-		if new.has_key('univentionNagiosUseNRPE') and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == '1'):
+		if 'univentionNagiosUseNRPE' in new and new['univentionNagiosUseNRPE'] and (new['univentionNagiosUseNRPE'][0] == '1'):
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: writing service %s' % str(new['cn'][0]))
 			writeConfig(fqdn, new)
-
 
 
 def initialize():
 	dirname = '/etc/nagios/nrpe.univention.d'
 
-	if not os.path.exists( dirname ):
+	if not os.path.exists(dirname):
 		listener.setuid(0)
 		try:
-			os.mkdir( dirname )
+			os.mkdir(dirname)
 		finally:
 			listener.unsetuid()
 
 
-
 def deleteTree(dirname):
-	if os.path.exists( dirname ):
-		for f in os.listdir( dirname ):
+	if os.path.exists(dirname):
+		for f in os.listdir(dirname):
 			fn = os.path.join(dirname, f)
 			mode = os.stat(fn)[stat.ST_MODE]
 			if stat.S_ISDIR(mode):
@@ -207,9 +201,8 @@ def deleteTree(dirname):
 		os.rmdir(dirname)
 
 
-
 def clean():
-	dirname='/etc/nagios/nrpe.univention.d'
+	dirname = '/etc/nagios/nrpe.univention.d'
 	if os.path.exists(dirname):
 		listener.setuid(0)
 		try:
@@ -218,11 +211,10 @@ def clean():
 			listener.unsetuid()
 
 
-
 def postrun():
 	global __initscript
 	initscript = __initscript
-	if listener.baseConfig.has_key("nagios/client/autostart") and ( listener.baseConfig["nagios/client/autostart"] in ["yes", "true", '1']):
+	if "nagios/client/autostart" in listener.baseConfig and (listener.baseConfig["nagios/client/autostart"] in ["yes", "true", '1']):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NRPED: Restarting server')
 		listener.setuid(0)
 		try:
