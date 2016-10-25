@@ -9,10 +9,14 @@
 import sys
 import subprocess
 
-import univention.config_registry
 from univention.testing.ucr import UCSTestConfigRegistry
 
 from appcentertest import get_requested_apps
+
+from univention.appcenter.app import AppManager
+from univention.appcenter.ucr import ucr_get, ucr_save
+from univention.appcenter.actions import get_action
+from univention.appcenter.log import log_to_stream
 
 requested_apps = get_requested_apps()
 if requested_apps and all(app.docker for app in requested_apps):
@@ -22,92 +26,48 @@ if requested_apps and all(app.docker for app in requested_apps):
 
 with UCSTestConfigRegistry() as ucr:
 
-	univention.config_registry.handler_set(['repository/app_center/server=appcenter.software-univention.de'])
+	log_to_stream()
+	old_server = ucr_get('repository/app_center/server')
+	ucr_save({'repository/app_center/server': 'appcenter.software-univention.de'})
 
-	from univention.lib.package_manager import PackageManager
-	from univention.management.console.modules.appcenter.app_center import Application
-	from univention.management.console.modules.appcenter.util import ComponentManager
-	from univention.updater import UniventionUpdater
-
-	# monkey patch Application to avoid the error 'must_not_have_concurrent_operation'
-	Application.must_not_have_concurrent_operation = lambda x: True
-
-	# the next lines are a workaround for the following traceback:
-	#   Error in function stop
-	#   Traceback (most recent call last):
-	#     File "/usr/lib/python2.7/dist-packages/apt/progress/text.py", line 229, in stop
-	#       signal.signal(signal.SIGWINCH, self._signal)
-	#   ValueError: signal only works in main thread
-	def _dummy(*args):
-		pass
-	import signal
-	signal._signal_old = signal.signal
-	signal.signal = _dummy
-
-	# helper functions
-	def _msg_handler(msg_type):
-		def _handler(msg):
-			print '%s: %s' % (msg_type, msg)
-
-	# instantiate needed tools
-	pm = PackageManager(
-		info_handler=_msg_handler('INFO'),
-		step_handler=_msg_handler('STEP'),
-		error_handler=_msg_handler('WARN'),
-		lock=False,
-		always_noninteractive=True,
-	)
-	pm.update()
-	uu = UniventionUpdater(False)
-	cm = ComponentManager(ucr, uu)
-
-	# more helper functions/variables
-	is_master = ucr.get('server/role') == 'domaincontroller_master' or ucr.get('server/role') == 'domaincontroller_backup'
+	update = get_action('update')
+	update.call()
+	register = get_action('register')
 
 	def _packages_to_install(app):
-		packages = []
-		packages.extend(app.get('defaultpackages'))
-		if is_master:
-			packages.extend(app.get('defaultpackagesmaster'))
-		return packages
+		return app.get_packages()
 
 	def _apt_get_simulate(app):
-		app.register(cm, pm)
+		register.call(apps=[app], register_task=['component'], do_it=True)
+		subprocess.call(['/usr/bin/apt-get', 'update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		packages = _packages_to_install(app)
 		cmd = ['/usr/bin/apt-get', 'install', '-s'] + packages
 		print 'Executing the command: %s' % cmd
-		subprocess.call(cmd, stderr=subprocess.STDOUT)
-		app.unregister(cm)
+		retcode = subprocess.call(cmd, stderr=subprocess.STDOUT)
+		register.call(apps=[app], register_task=['component'])
+		return retcode == 0
 
-	# print overview of installed apps
-	all_apps = Application.all()
-	_installed_apps = [app for app in all_apps if app.is_installed(pm)]
-	installed_apps = set([app.id for app in _installed_apps])
-
-	print 'Installed apps: %s' % [app for app in installed_apps]
+	print 'Installed apps: %s' % [app for app in AppManager.get_all_locally_installed_apps()]
 
 	failed = []
-	for app in all_apps:
-		if app.get('dockerimage'):
+	for app in AppManager.get_all_apps():
+		if app.docker:
 			print 'Ignoring app %r: Docker App' % app
 			continue
-		forbidden, warning = app.check_invokation('install', pm)
+		forbidden, warning = app.check('install')
 		if forbidden:
-			print 'Ignoring app %r: requirements not met -> %s' % (app, forbidden)
+			print 'Ignoring app %r: requirements not met -> %r' % (app, forbidden)
 			continue
 
 		print 'Checking app: %r' % app
-		result, previously_registered_by_dry_run = app.install_dry_run(pm, cm)
-		if result.get('broken'):
-			failed.append((app, result['broken']))
+		if not _apt_get_simulate(app):
+			failed.append(app)
 
+	ucr_save({'repository/app_center/server': old_server})
 	if failed:
 		print '\nTEST FAILED: the following apps cannot be installed due to broken packages...'
-		for app, brokenPackages in failed:
+		for app in failed:
 			print '\n[ APP: %s ]' % app.id
-			print 'broken packages: %s' % brokenPackages
-			print 'output of apt-get install -s'
-			_apt_get_simulate(app)
 		sys.exit(1)
 
 sys.exit(0)
