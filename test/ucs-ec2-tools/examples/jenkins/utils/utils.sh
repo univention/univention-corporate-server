@@ -208,8 +208,8 @@ switch_to_test_app_center ()
 
 	for app in $(< /var/cache/appcenter-installed.txt); do 
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-			univention-app shell "$app" test -x "$(which univention-install)" && univention-install -y univention-appcenter-dev
-			univention-app shell "$app" test -x "$(which univention-app)" && univention-app dev-use-test-appcenter
+			univention-app shell "$app" univention-install -y univention-appcenter-dev
+			univention-app shell "$app" univention-app dev-use-test-appcenter
 		fi
 	done
 }
@@ -228,7 +228,7 @@ install_apps ()
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
 	do
-		latestversion="$(univention-app list "$app" | egrep '    \w+' | sed 's/^\s*//g' | tail -n1)"
+		latestversion="$(python -c "from univention.appcenter.app import AppManager; print AppManager.find('$app', latest=True).version")"
 		if [ -n "$(univention-app get "$app=$latestversion" DockerImage)" ]; then
 			username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
