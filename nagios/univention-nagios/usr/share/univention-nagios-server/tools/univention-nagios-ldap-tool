@@ -27,7 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import getopt, sys, os, socket, copy
+import getopt
+import sys
+import os
+import socket
+import copy
 import univention.uldap as uuldap
 import univention.config_registry
 
@@ -36,13 +40,14 @@ confreg.load()
 
 
 class UniventionNagiosLDAP(object):
+
 	def __init__(self, binddn='', bindpwd='', start_tls=2):
 		try:
 			if binddn:
-				self.lo = univention.uldap.access( host = confreg['ldap/master'], port = confreg['ldap/master/port'], base = confreg['ldap/base'], binddn = binddn, bindpw = bindpwd, start_tls = start_tls, decode_ignorelist = [])
+				self.lo = univention.uldap.access(host=confreg['ldap/master'], port=confreg['ldap/master/port'], base=confreg['ldap/base'], binddn=binddn, bindpw=bindpwd, start_tls=start_tls, decode_ignorelist=[])
 			else:
 				self.lo = uuldap.getAdminConnection()
-		except Exception, e:
+		except Exception as e:
 			print 'E: cannot connect to ldap server: %s' % str(e)
 			sys.exit(1)
 		self.dnscache = {}
@@ -50,18 +55,18 @@ class UniventionNagiosLDAP(object):
 
 	def checkFQDN(self, fqdn):
 		try:
-			ipaddr = socket.gethostbyname( fqdn )
+			ipaddr = socket.gethostbyname(fqdn)
 		except:
 			return False
 		return True
 
 	def check(self):
 		print 'Searching LDAP objects... please wait... ',
-		servicednlist = self.lo.searchDn( filter = '(objectClass=univentionNagiosServiceClass)' )
+		servicednlist = self.lo.searchDn(filter='(objectClass=univentionNagiosServiceClass)')
 		print 'done'
 		print 'Processing LDAP objects... please wait... ',
 		for servicedn in servicednlist:
-			fqdnlist = self.lo.getAttr( servicedn, 'univentionNagiosHostname' )
+			fqdnlist = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
 			for fqdn in fqdnlist:
 				if not self.checkFQDN(fqdn):
 					if not fqdn in self.failedFQDN:
@@ -85,28 +90,27 @@ class UniventionNagiosLDAP(object):
 			for key in self.failedFQDN.keys():
 				for dn in self.failedFQDN[key]:
 					print 'Fixing %s' % dn
-					self.removeFQDN( key, dnlist=[ dn ] )
-
+					self.removeFQDN(key, dnlist=[dn])
 
 	def removeFQDN(self, fqdn, dnlist=None):
 		if not dnlist:
-			dnlist = self.lo.searchDn( filter = '(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % fqdn )
+			dnlist = self.lo.searchDn(filter='(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % fqdn)
 		for dn in dnlist:
-			fqdnlist = self.lo.getAttr( dn, 'univentionNagiosHostname' )
+			fqdnlist = self.lo.getAttr(dn, 'univentionNagiosHostname')
 			oldlist = copy.deepcopy(fqdnlist)
-			newlist = [ item for item in oldlist if item != fqdn ]
-			self.lo.modify(dn, [ ('univentionNagiosHostname', oldlist, newlist) ] )
+			newlist = [item for item in oldlist if item != fqdn]
+			self.lo.modify(dn, [('univentionNagiosHostname', oldlist, newlist)])
 
 	def replaceFQDN(self, oldfqdn, newfqdn, dnlist=None):
 		if not dnlist:
-			dnlist = self.lo.searchDn( filter = '(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % oldfqdn )
+			dnlist = self.lo.searchDn(filter='(&(objectClass=univentionNagiosServiceClass)(univentionNagiosHostname=%s))' % oldfqdn)
 		for dn in dnlist:
-			fqdnlist = self.lo.getAttr( dn, 'univentionNagiosHostname' )
+			fqdnlist = self.lo.getAttr(dn, 'univentionNagiosHostname')
 			oldlist = copy.deepcopy(fqdnlist)
-			newlist = [ item for item in oldlist if item != oldfqdn ]
+			newlist = [item for item in oldlist if item != oldfqdn]
 			newlist.append(newfqdn)
 			print 'Changing %s' % dn
-			self.lo.modify(dn, [ ('univentionNagiosHostname', oldlist, newlist) ] )
+			self.lo.modify(dn, [('univentionNagiosHostname', oldlist, newlist)])
 
 
 def usage():
@@ -119,19 +123,20 @@ def usage():
 	print '  -D <binddn>    bind DN'
 	print '  -w <bindpwd>   bind password'
 
+
 def main():
-	actions = { 'check': False,
+	actions = {'check': False,
 				'modify': False,
 				'autofix': False,
-				}
-	cfg = { 'oldfqdn': None,
+            }
+	cfg = {'oldfqdn': None,
 			'newfqdn': None,
 			'binddn': '',
 			'bindpwd': '',
-			}
+        }
 
 	try:
-		(opts, pargs) = getopt.getopt(sys.argv[1:], 'acmo:n:D:w:', [ 'check', 'modify' ])
+		(opts, pargs) = getopt.getopt(sys.argv[1:], 'acmo:n:D:w:', ['check', 'modify'])
 	except:
 		usage()
 		sys.exit(0)
@@ -159,13 +164,12 @@ def main():
 		elif opt[0] == '-w':
 			cfg['bindpwd'] = opt[1]
 
-
 	if actions['modify'] and not cfg['oldfqdn']:
 		usage()
 		sys.exit(1)
 	else:
 		if not cfg['binddn']:
-			if not confreg.get('server/role','') == 'domaincontroller_master':
+			if not confreg.get('server/role', '') == 'domaincontroller_master':
 				print 'E: please run univention-nagios-ldap-tool as user root on'
 				print 'E: domaincontroller_master or specify binddn and bindpwd!'
 				sys.exit(2)
@@ -189,4 +193,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-

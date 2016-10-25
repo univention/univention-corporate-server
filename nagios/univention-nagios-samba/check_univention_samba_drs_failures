@@ -44,6 +44,7 @@ NAGIOS_STATE_WARNING = 1
 NAGIOS_STATE_CRITICAL = 2
 NAGIOS_STATE_UNKNOWN = 3
 
+
 class CheckSambaDrsRepl(object):
 
 	def __init__(self):
@@ -73,6 +74,7 @@ class CheckSambaDrsRepl(object):
 			text = '%s failures on %s' % (consecutive_sync_failures[server], server)
 			msg = msg + ', ' + text if msg else text
 		return (failures, msg)
+
 
 def nagios_exit(state, msg):
 	if state == NAGIOS_STATE_OK:
