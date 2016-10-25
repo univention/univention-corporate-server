@@ -354,6 +354,18 @@ install_ucs_windows_tools ()
 
 run_apptests ()
 {
+
+	# some tests create domaincontroller_master objects, the listener ldap_server.py
+	# sets this objects as ldap/server/name ldap/master in the docker container
+	# until this is fixed, force the variables in the docker container
+	for app in $(< /var/cache/appcenter-installed.txt); do
+		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_server_name" && ucr set --force ldap/server/name="$ldap_server_name"'
+			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_master" && ucr set --force ldap/master="$ldap_master"'
+			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$kerberos_adminserver" && ucr set --force kerberos/adminserver="$kerberos_adminserver"'
+		fi
+	done
+
 	run_tests -r apptest "$@"
 }
 
