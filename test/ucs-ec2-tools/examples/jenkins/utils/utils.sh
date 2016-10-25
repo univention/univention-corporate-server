@@ -208,8 +208,8 @@ switch_to_test_app_center ()
 
 	for app in $(< /var/cache/appcenter-installed.txt); do 
 		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
-			univention-app shell "$app" test -x "$(which univention-install)" && univention-install -y univention-appcenter-dev
-			univention-app shell "$app" test -x "$(which univention-app)" && univention-app dev-use-test-appcenter
+			univention-app shell "$app" univention-install -y univention-appcenter-dev
+			univention-app shell "$app" univention-app dev-use-test-appcenter
 		fi
 	done
 }
@@ -228,7 +228,7 @@ install_apps ()
 	for app in "$@"; do echo "$app" >>/var/cache/appcenter-installed.txt; done
 	for app in "$@"
 	do
-		latestversion="$(univention-app list "$app" | egrep '    \w+' | sed 's/^\s*//g' | tail -n1)"
+		latestversion="$(python -c "from univention.appcenter.app import AppManager; print AppManager.find('$app', latest=True).version")"
 		if [ -n "$(univention-app get "$app=$latestversion" DockerImage)" ]; then
 			username="$(ucr get tests/domainadmin/account | sed -e 's/uid=//' -e 's/,.*//')"
 			if [ -z "$(ucr get "appcenter/apps/$app/status")" ]; then
@@ -354,6 +354,18 @@ install_ucs_windows_tools ()
 
 run_apptests ()
 {
+
+	# some tests create domaincontroller_master objects, the listener ldap_server.py
+	# sets this objects as ldap/server/name ldap/master in the docker container
+	# until this is fixed, force the variables in the docker container
+	for app in $(< /var/cache/appcenter-installed.txt); do
+		if [ -n "$(univention-app get "$app" DockerImage)" ]; then
+			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_server_name" && ucr set --force ldap/server/name="$ldap_server_name"'
+			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$ldap_master" && ucr set --force ldap/master="$ldap_master"'
+			univention-app shell "$app" bash -c 'eval "$(ucr shell)"; test -n "$kerberos_adminserver" && ucr set --force kerberos/adminserver="$kerberos_adminserver"'
+		fi
+	done
+
 	run_tests -r apptest "$@"
 }
 
