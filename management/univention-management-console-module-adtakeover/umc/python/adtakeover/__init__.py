@@ -40,13 +40,14 @@ import univention.management.console.modules as umcm
 from univention.management.console.protocol.definitions import SUCCESS, BAD_REQUEST, MODULE_ERR_COMMAND_FAILED
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response
-#from univention.lib.package_manager import CMD_DISABLE_EXEC, CMD_ENABLE_EXEC
+# from univention.lib.package_manager import CMD_DISABLE_EXEC, CMD_ENABLE_EXEC
 
 from univention.management.console.modules.adtakeover import takeover
 
 ucr = ConfigRegistry()
 ucr.load()
 _ = umc.Translation('univention-management-console-module-adtakeover').translate
+
 
 def background(func):
 	def _foreground(self, request):
@@ -67,8 +68,8 @@ def background(func):
 				status = MODULE_ERR_COMMAND_FAILED
 				tb_text = traceback.format_exc()
 				message = _("Execution of command '%(command)s' has failed:\n\n%(text)s") % {
-						'command' : func.__name__,
-						'text' : tb_text,
+						'command': func.__name__,
+						'text': tb_text,
 				}
 				MODULE.process(message)
 				self.progress.error(message)
@@ -79,7 +80,9 @@ def background(func):
 		thread.start()
 	return _foreground
 
+
 class Instance(umcm.Base):
+
 	def __init__(self):
 		super(Instance, self).__init__()
 		self.progress = takeover.Progress()
@@ -117,4 +120,3 @@ class Instance(umcm.Base):
 	@background
 	def take_over_domain(self, request):
 		takeover.take_over_domain(self.progress)
-
