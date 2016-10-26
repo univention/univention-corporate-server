@@ -11,3 +11,4 @@ note: This is the first part of three parts of the Linux kernel update.
 bug: [42727]
 cve:
  - CVE-2016-5195
+announced: 2016-10-26
