@@ -30,20 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#############################################################################
-#                                                                           #
+#
+#
 # This is meant as an example. Please feel free to copy this file and adapt #
 # it to your needs.                                                         #
-#                                                                           #
-#############################################################################
+#
+#
 
-#############################################################################
-#                                                                           #
+#
+#
 # If the return code is other that True or an exception is raised and not   #
 # caught, it is assumed that it was not possible to send the token to the   #
 # user. The token is then deleted from the database.                        #
-#                                                                           #
-#############################################################################
+#
+#
 
 import os
 import subprocess
@@ -99,14 +99,14 @@ class SendWithExternal(UniventionSelfServiceTokenEmitter):
 		env["selfservice_address"] = self.data["address"]
 		env["selfservice_token"] = self.data["token"]
 
-		#############################################################################
-		#                                                                           #
+		#
+		#
 		# ATTENTION                                                                 #
 		# The environment is inherited by all programs that are started by your     #
 		# program. Your program should remove the token from its environment,       #
 		# before starting any other program.                                        #
-		#                                                                           #
-		#############################################################################
+		#
+		#
 
 		self.log("Starting external program {}...".format(self.cmd))
 		cmd_proc = subprocess.Popen(self.cmd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

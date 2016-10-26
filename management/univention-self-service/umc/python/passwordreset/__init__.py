@@ -150,9 +150,7 @@ class ServiceForbidden(UMC_Error):
 	status = 403
 
 	def __init__(self):
-		super(ServiceForbidden, self).__init__(
-		_("Either username or password is incorrect or you are not allowed to use this service.")
-	)
+		super(ServiceForbidden, self).__init__(_("Either username or password is incorrect or you are not allowed to use this service."))
 
 
 class TokenNotFound(UMC_Error):
@@ -440,7 +438,7 @@ class Instance(Base):
 			MODULE.error("udm_set_password(): failed to set password: {}".format(traceback.format_exc()))
 			raise
 
-	#TODO: decoratorize
+	# TODO: decoratorize
 	@machine_connection
 	def is_blacklisted(self, username, ldap_connection=None, ldap_position=None):
 		def listize(li):
