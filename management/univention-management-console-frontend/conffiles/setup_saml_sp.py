@@ -38,6 +38,7 @@ from time import sleep
 from urlparse import urlparse
 workaround = set()
 
+
 def handler(config_registry, changes):
 	if not isinstance(changes.get('umc/saml/idp-server'), (list, tuple)):
 		# workaround for Bug #39444
@@ -66,8 +67,8 @@ def cleanup():
 def download_idp_metadata(metadata):
 	idp = bytes(urlparse(metadata).netloc)
 	filename = '/usr/share/univention-management-console/saml/idp/%s.xml' % (idp,)
-	for i in range(0,60):
-		print 'Try to download idp metadata (%s/60)' % (i+1)
+	for i in range(0, 60):
+		print 'Try to download idp metadata (%s/60)' % (i + 1)
 		rc = call([
 			'/usr/bin/curl',
 			'--cacert', '/etc/univention/ssl/ucsCA/CAcert.pem',
