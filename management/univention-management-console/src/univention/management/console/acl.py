@@ -283,7 +283,7 @@ class ACLs(object):
 		# first check the group rules. If the group policy allows the
 		# command there is no need to check the user policy
 		return self._is_allowed(filter(lambda x: x.fromUser == False, self.acls), command, hostname, options, flavor) or \
-				self._is_allowed(filter(lambda x: x.fromUser == True, self.acls), command, hostname, options, flavor)
+			self._is_allowed(filter(lambda x: x.fromUser == True, self.acls), command, hostname, options, flavor)
 
 	def _dump(self):
 		"""Dumps the ACLs for the user"""

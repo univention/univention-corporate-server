@@ -46,7 +46,7 @@ def main():
 	parser.add_option('-p', '--package', action='store',
 		dest='package',
 		help='Specifies the package name which is needed for the creation of .po files. (Mandatory)'
-	)
+                   )
 	parser.add_option('-t', '--type', action='store', type='choice',
 		choices=['json', 'mo', 'po', 'core'],
 		dest='type',

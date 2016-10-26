@@ -45,6 +45,7 @@ attributes = ['univentionService', 'cn', 'associatedDomain']
 
 __changed_trusted_sp = False
 
+
 def handler(dn, new, old):
 	global __changed_trusted_sp
 	listener.setuid(0)
@@ -62,17 +63,18 @@ def handler(dn, new, old):
 	finally:
 		listener.unsetuid()
 
+
 def postrun():
 	global __changed_trusted_sp
 
 	if __changed_trusted_sp:
 		__changed_trusted_sp = False
 		slapd_running = not subprocess.call(['pidof', 'slapd'])
-		initscript='/etc/init.d/slapd'
+		initscript = '/etc/init.d/slapd'
 		if os.path.exists(initscript) and slapd_running:
 			listener.setuid(0)
 			try:
-				ud.debug(ud.LISTENER, ud.INFO, '%s: Reloading LDAP server.' % (name,) )
+				ud.debug(ud.LISTENER, ud.INFO, '%s: Reloading LDAP server.' % (name,))
 				p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
 				p.wait()
 				if p.returncode != 0:

@@ -184,10 +184,10 @@ class LDAP_ServerDown(UMC_Error):
 		yield ' * ' + _('Restart the LDAP service on the domain controller master either via "invoke-rc.d slapd restart" on command line or with the UMC module "System services"')
 		if self._updates_available:
 			yield ' * ' + _('Install the latest software updates')
-		#TODO: reuse but not in LDAP_ServerDown
-		#yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
-		#yield ' * /var/log/univention/management-console-server.log'
-		#yield ' * /var/log/univention/management-console-module-*.log'
+		# TODO: reuse but not in LDAP_ServerDown
+		# yield _('If the problem persists additional hints about the cause can be found in the following log file(s):')
+		# yield ' * /var/log/univention/management-console-server.log'
+		# yield ' * /var/log/univention/management-console-module-*.log'
 
 
 def error_handling(function, method=None):
@@ -272,7 +272,7 @@ class Base(signals.Provider, Translation):
 		self.__requests[request.id] = (request, method)
 
 		try:
-			function = getattr(self, method).im_func
+			function = getattr(self, method).__func__
 		except AttributeError:
 			message = _('Method %(method)r (%(path)r) in %(module)r does not exist.\n\n%(traceback)s') % {'method': method, 'path': request.arguments, 'module': self.__class__.__module__, 'traceback': traceback.format_exc()}
 			self.finished(request.id, None, message=message, status=500)

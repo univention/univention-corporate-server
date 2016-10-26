@@ -414,7 +414,7 @@ class Server(signals.Provider):
 		except EnvironmentError as exc:
 			CORE.error('Cannot accept new connection: %s' % (exc,))
 			soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-			resource.setrlimit(resource.RLIMIT_NOFILE, (soft+2, hard+2))
+			resource.setrlimit(resource.RLIMIT_NOFILE, (soft + 2, hard + 2))
 			try:
 				socket, addr = socket.accept()
 				socket.close()

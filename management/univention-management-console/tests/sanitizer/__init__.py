@@ -34,12 +34,14 @@
 from univention.management.console.modules import Base
 
 from univention.lib.i18n import Translation
-_ = Translation( 'univention.management.console' ).translate
+_ = Translation('univention.management.console').translate
 
 from univention.management.console.modules.decorators import simple_response, log, file_upload, multi_response, sanitize
 import univention.management.console.modules.sanitizers as s
 
-class Instance( Base ):
+
+class Instance(Base):
+
 	@sanitize(value=s.BooleanSanitizer(required=True))
 	@simple_response
 	@log
@@ -52,12 +54,13 @@ class Instance( Base ):
 		return '%r' % (value,)
 
 	_choices = ('Ja', 2, True, (2,), [], {})
-	@sanitize(value=s.ChoicesSanitizer(choices = _choices, required=True))
+
+	@sanitize(value=s.ChoicesSanitizer(choices=_choices, required=True))
 	@simple_response
 	@log
 	def choices(self, value):
 		assert value in self._choices, 'A value is not in choices'
-		assert isinstance(value, type(self._choices[self._choices.index(value)])), 'A choice has the wrong type' # makes sense !;)
+		assert isinstance(value, type(self._choices[self._choices.index(value)])), 'A choice has the wrong type'  # makes sense !;)
 		return '%r' % (value,)
 
 	@sanitize(value=s.DictSanitizer({}, required=True))
@@ -85,7 +88,7 @@ class Instance( Base ):
 	@simple_response
 	@log
 	def int(self, value):
-		assert isinstance(value, int), 'Value is not an int' # could be long
+		assert isinstance(value, int), 'Value is not an int'  # could be long
 		return '%r' % (value,)
 
 	@sanitize(value=s.LDAPSearchSanitizer(required=True))
@@ -114,11 +117,12 @@ class Instance( Base ):
 		b'bar': 1,
 		'baz': []
 	}
+
 	@sanitize(value=s.MappingSanitizer(_mapping, required=True))
 	@simple_response
 	@log
 	def mapping(self, value):
-		assert value in self._mapping.values(), 'Mapping failed: %r' % (value,) # TODO: more?
+		assert value in self._mapping.values(), 'Mapping failed: %r' % (value,)  # TODO: more?
 		return '%r' % (value,)
 
 	@sanitize(value=s.PatternSanitizer(required=True))
