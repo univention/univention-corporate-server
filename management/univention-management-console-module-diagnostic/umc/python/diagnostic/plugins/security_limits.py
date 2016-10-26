@@ -18,10 +18,10 @@ description = '\n'.join([
 	_('This can cause several different serious problems (e.g. the login at samba servers may be impossible, file operations (copy, move) on shares can fail, etc.)'),
 	_('It is suggested to increase the security limits either manually by using {ucr} or to automatically adjust them to the suggested limits:'),
 	'<pre>samba/max_open_files=%s</pre>' % (suggested_max_open_files,),
-#	_('More related information can be found at the "{sdb}".'),
+    #	_('More related information can be found at the "{sdb}".'),
 ])
 # SDB article not published yet, Bug #35868
-#links = [{
+# links = [{
 #	'name': 'sdb',
 #	'href': _('http://forum.univention.de/viewtopic.php?f=48&t=2100'),
 #	'label': _('Samba4 max open files - Univention Forum')
@@ -42,7 +42,7 @@ def run():
 			for line in fd:
 				counter += len(re.findall('Too many open files', line))
 	except (OSError, IOError):
-		return # logfile does not exists
+		return  # logfile does not exists
 
 	ucr.load()
 	try:
