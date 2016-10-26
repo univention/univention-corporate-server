@@ -31,13 +31,17 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, os, string, getopt, univention.config_registry
-from pexpect import *
+import sys
+import getopt
+import univention.config_registry
+from pexpect import spawn, EOF
+
 
 def cyrescape(address):
-	address=address.replace("@","\@")
-	address=address.replace(".","\^")
+	address = address.replace("@", "\@")
+	address = address.replace(".", "\^")
 	return address.strip()
+
 
 def usage():
 	print 'usage: %s [-o] <folder> <new backend fqdn>' % sys.argv[0]
@@ -46,13 +50,13 @@ def usage():
 
 try:
 	opts, args = getopt.gnu_getopt(sys.argv, 'oh', ['help'])
-except getopt.GetoptError, err:
+except getopt.GetoptError as err:
 	print str(err)
 	usage()
 # arguments
 if len(args) == 3:
-	mbox=args[1].lower()
-	localbackend=args[2].lower()
+	mbox = args[1].lower()
+	localbackend = args[2].lower()
 else:
 	usage()
 # options
@@ -76,31 +80,31 @@ if not isMurder:
 	print >> sys.stderr, "this host is not a cyrus murder server"
 	sys.exit(1)
 
-cyrus_user='cyrus'
+cyrus_user = 'cyrus'
 
-password=open('/etc/cyrus.secret').read()
+password = open('/etc/cyrus.secret').read()
 if password[-1] == '\n':
-	password=password[0:-1]
+	password = password[0:-1]
 
 child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, fqdn))
-i=0
-c=0
+i = 0
+c = 0
 while not i == 3:
 	i = child.expect(['Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
 	if i == 0:
 		child.sendline(password)
 	elif i == 1:
-		if c==0:
+		if c == 0:
 			print 'renamemailbox user/%s user/%s %s' % (mbox, mbox, localbackend)
-			child.sendline( 'rename user/%s user/%s %s' % (mbox, mbox, localbackend))
-			c+=1
-		elif c==1:
+			child.sendline('rename user/%s user/%s %s' % (mbox, mbox, localbackend))
+			c += 1
+		elif c == 1:
 			if child.before.find('renamemailbox: ') != -1:
 				print child.before.split('\n')[1]
 				sys.exit(1)
 			child.sendline('disc')
-			c+=1
-		elif c==2:
+			c += 1
+		elif c == 2:
 			child.sendline('exit')
 	elif i == 2:
 		sys.exit(1)

@@ -30,38 +30,39 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import os
 import univention.debug
 import cPickle
 from univention.config_registry.interfaces import Interfaces
 
-hostname=listener.configRegistry['hostname']
-domainname=listener.configRegistry['domainname']
+hostname = listener.configRegistry['hostname']
+domainname = listener.configRegistry['domainname']
 interfaces = Interfaces(listener.configRegistry)
 ip = interfaces.get_default_ip_address().ip
 
-name='cyrus-shared-folder'
-description='Create shared folders'
-filter='(&(objectClass=univentionMailSharedFolder)(|(univentionMailHomeServer=%s)(univentionMailHomeServer=%s.%s)))' % (ip, hostname, domainname)
+name = 'cyrus-shared-folder'
+description = 'Create shared folders'
+filter = '(&(objectClass=univentionMailSharedFolder)(|(univentionMailHomeServer=%s)(univentionMailHomeServer=%s.%s)))' % (ip, hostname, domainname)
 
-directory='/var/cache/univention-mail-cyrus/'
+directory = '/var/cache/univention-mail-cyrus/'
 defaultAnyoneACLFlags = "p"
 
-modrdn='1'
+modrdn = '1'
+
 
 def handler(dn, new, old, command):
 
 	try:
-		old_dn=None
+		old_dn = None
 
-		filename = directory+'/old_dn'
+		filename = directory + '/old_dn'
 
 		try:
 			if os.path.exists(filename):
-				f=open(filename,'r')
-				old_dn=cPickle.load(f)
+				f = open(filename, 'r')
+				old_dn = cPickle.load(f)
 				f.close()
 
 		except:
@@ -69,8 +70,8 @@ def handler(dn, new, old, command):
 
 		if command == 'r':
 
-			f=open(filename, 'w+')
-			os.chmod(filename, 0600)
+			f = open(filename, 'w+')
+			os.chmod(filename, 0o600)
 			cPickle.dump(dn, f)
 			f.close()
 
@@ -79,7 +80,6 @@ def handler(dn, new, old, command):
 
 	# Done as function because it is called quite often
 	def setacl(new, mailbox, email, policy):
-
 
 		# add defaul acls for anyone
 		if email == "anyone" and "mailPrimaryAddress" in new and new["mailPrimaryAddress"][0]:
@@ -91,7 +91,7 @@ def handler(dn, new, old, command):
 						policy += flag
 		try:
 			listener.setuid(0)
-			p = os.popen( '/usr/sbin/univention-cyrus-set-acl %s \'%s\' %s' % ( mailbox, email, policy ) )
+			p = os.popen('/usr/sbin/univention-cyrus-set-acl %s \'%s\' %s' % (mailbox, email, policy))
 			p.close()
 			listener.unsetuid()
 		except:
@@ -100,7 +100,7 @@ def handler(dn, new, old, command):
 	def setquota(mailbox, quota):
 		try:
 			listener.setuid(0)
-			p = os.popen('/usr/sbin/univention-cyrus-set-quota-shared %s %s' % ( mailbox, quota ) )
+			p = os.popen('/usr/sbin/univention-cyrus-set-quota-shared %s %s' % (mailbox, quota))
 			p.close()
 			listener.unsetuid()
 		except:
@@ -129,11 +129,11 @@ def handler(dn, new, old, command):
 	# split acl entry into mail adress/group name and access right
 	def split_acl_entry(entry):
 		last_space = entry.rfind(" ")
-		return (entry[:last_space], entry[last_space+1:])
+		return (entry[:last_space], entry[last_space + 1:])
 
 	# Create a new shared folder
-	if (new and not old) or ('univentionMailHomeServer' not in old) or ('univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and new['univentionMailHomeServer'] != old['univentionMailHomeServer']\
-									 and new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
+	if (new and not old) or ('univentionMailHomeServer' not in old) or ('univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and new['univentionMailHomeServer'] != old['univentionMailHomeServer']
+									 and new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname, domainname)]):
 
 		if 'cn' in new and new['cn'][0]:
 
@@ -142,10 +142,10 @@ def handler(dn, new, old, command):
 				name = '"%s"' % new['cn'][0]
 
 				if not old_dn:
-					p = os.popen( '/usr/sbin/univention-cyrus-mkdir-shared  %s' % name )
+					p = os.popen('/usr/sbin/univention-cyrus-mkdir-shared  %s' % name)
 					p.close()
 				else:
-					p = os.popen( '/usr/sbin/univention-cyrus-rename-shared %s %s' % (old_dn, name) )
+					p = os.popen('/usr/sbin/univention-cyrus-rename-shared %s %s' % (old_dn, name))
 					p.close()
 
 				# default policy
@@ -173,7 +173,7 @@ def handler(dn, new, old, command):
 				pass
 
 	# Delete existing shared folder
-	if (old and not new) or ('univentionMailHomeServer' not in new) or (not new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname,domainname)]):
+	if (old and not new) or ('univentionMailHomeServer' not in new) or (not new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname, domainname)]):
 
 		if listener.configRegistry.is_true('mail/cyrus/mailbox/delete', False):
 			univention.debug.debug(
@@ -183,7 +183,7 @@ def handler(dn, new, old, command):
 			)
 			try:
 				listener.setuid(0)
-				p = os.popen( '/usr/sbin/univention-cyrus-delete-folder %s' % old['cn'][0] )
+				p = os.popen('/usr/sbin/univention-cyrus-delete-folder %s' % old['cn'][0])
 				p.close()
 			except:
 				pass
@@ -207,7 +207,7 @@ def handler(dn, new, old, command):
 		if 'univentionMailUserQuota' in old and old['univentionMailUserQuota'][0] and 'univentionMailUserQuota' not in new:
 			setquota(name, "none")
 
-		if 'univentionMailUserQuota'in new  and new['univentionMailUserQuota'][0]:
+		if 'univentionMailUserQuota'in new and new['univentionMailUserQuota'][0]:
 			setquota(name, new['univentionMailUserQuota'][0])
 
 		if 'univentionMailACL' in old and old['univentionMailACL'] and not 'univentionMailACL' in new:
@@ -216,12 +216,12 @@ def handler(dn, new, old, command):
 				setacl(new, name, email, 'none')
 
 		# convert new acls to dict
-		curacl={}
+		curacl = {}
 		if 'univentionMailACL' in new:
 			for entry in new['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
 				policy = getpolicy(policy)
-				curacl[email]=policy
+				curacl[email] = policy
 
 		if 'univentionMailACL' in old:
 			for entry in old['univentionMailACL']:

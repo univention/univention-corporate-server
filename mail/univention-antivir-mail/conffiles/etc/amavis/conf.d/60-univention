@@ -163,7 +163,7 @@ $child_timeout=5*60;  # abort child if it does not complete each task in n sec
 # you do not unintentionally override these settings further down!
 # @bypass_spam_checks_acl  = qw( . );    # No default dependency on spamassassin
 @!@
-if baseConfig.has_key('mail/antivir/spam') and baseConfig['mail/antivir/spam'].lower() in ['yes', 'true']:
+if 'mail/antivir/spam' in configRegistry and configRegistry['mail/antivir/spam'].lower() in ['yes', 'true']:
        print '#@bypass_spam_checks_acl  = qw( . );    '
 else:
        print '@bypass_spam_checks_acl  = qw( . );    '
@@ -192,8 +192,8 @@ else:
 #
 @!@
 key = 'mail/hosteddomains'
-if baseConfig.has_key(key) and baseConfig[key]:
-	print '@local_domains_acl = qw( %s );  # hosted mail domains' % baseConfig[key]
+if key in configRegistry and configRegistry[key]:
+	print '@local_domains_acl = qw( %s );  # hosted mail domains' % configRegistry[key]
 	print '# @local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains'
 else:
 	print '@local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains'
@@ -488,10 +488,10 @@ $viruses_that_fake_sender_re = new_RE(
 # $virus_admin = 'virus-admin@example.com';
 
 @!@
-if baseConfig.has_key('mail/antivir/virus_admin') and baseConfig['mail/antivir/virus_admin']:
-	print "$virus_admin = '%s';" % baseConfig['mail/antivir/virus_admin']
+if 'mail/antivir/virus_admin' in configRegistry and configRegistry['mail/antivir/virus_admin']:
+	print "$virus_admin = '%s';" % configRegistry['mail/antivir/virus_admin']
 else:
-	print '$virus_admin = "postmaster\@%s.$mydomain";' % baseConfig['hostname']
+	print '$virus_admin = "postmaster\@%s.$mydomain";' % configRegistry['hostname']
 @!@
 
 # equivalent to $virus_admin, but for spam admin notifications:
@@ -617,8 +617,8 @@ $QUARANTINEDIR = '/var/lib/amavis/virusmails';
 
 @!@
 key = 'mail/antivir/quarantine_to'
-if baseConfig.has_key(key) and baseConfig[key] and baseConfig[key] != 'virus-quarantine':
-	to = baseConfig['mail/antivir/quarantine_to']
+if key in configRegistry and configRegistry[key] and configRegistry[key] != 'virus-quarantine':
+	to = configRegistry['mail/antivir/quarantine_to']
 	if to.find('@') == -1:
 		to += '@'
 	print "$virus_quarantine_to  = '%s';\t# forward to MTA for delivery" % to
@@ -715,8 +715,8 @@ spec = (('double', 'double_ext', ' '),
 	('rfc',    'rfc2046',    ' '))
 for n, x, d in spec:
 	y = 'mail/antivir/banned/%s' % x
-	if baseConfig.has_key(y):
-		if baseConfig[y].lower() in ('yes', 'true'):
+	if y in configRegistry:
+		if configRegistry[y].lower() in ('yes', 'true'):
 			v[n] = ' '
 		else:
 			v[n] = '#'
@@ -746,8 +746,8 @@ print '''$banned_filename_re = new_RE(
 
 @!@
 key = 'mail/antivir/banned_to'
-if baseConfig.has_key(key) and baseConfig[key]:
-	to = baseConfig['mail/antivir/banned_to']
+if key in configRegistry and configRegistry[key]:
+	to = configRegistry['mail/antivir/banned_to']
 	if to.find('@') == -1:
 		print "$banned_quarantine_to = '%s';" % to
 	else:
@@ -1243,8 +1243,8 @@ $undecipherable_subject_tag = undef;
 @av_scanners = (
 
 @!@
-if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner'] not in ['', 'none']:
-	scanner=baseConfig['mail/antivir/scanner'].split(' ')
+if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/scanner'] not in ['', 'none']:
+	scanner=configRegistry['mail/antivir/scanner'].split(' ')
 	
 	if 'sophie' in scanner:
 		print("### http://www.vanja.com/tools/sophie/")
@@ -1492,8 +1492,8 @@ if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scann
 
 @av_scanners_backup = (
 @!@
-if baseConfig.has_key('mail/antivir/scanner') and baseConfig['mail/antivir/scanner'] not in ['', 'none']:
-	scanner=baseConfig['mail/antivir/scanner'].split(' ')
+if 'mail/antivir/scanner' in configRegistry and configRegistry['mail/antivir/scanner'] not in ['', 'none']:
+	scanner=configRegistry['mail/antivir/scanner'].split(' ')
 
 	if 'clamscan' in scanner:
 		print("### http://clamav.elektrapro.com/")

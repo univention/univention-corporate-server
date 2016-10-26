@@ -4,16 +4,16 @@ smtpd_tls_auth_only = yes
 smtpd_starttls_timeout = 300s
 smtpd_timeout = 300s
 @!@
-fqdn = '%s.%s' % (baseConfig.get('hostname'), baseConfig.get('domainname'))
-print 'smtpd_tls_mandatory_protocols = %s' % baseConfig.get('mail/postfix/smtpd/tls/mandatory_protocols', '!SSLv2')
-print 'smtpd_tls_protocols = %s' % baseConfig.get('mail/postfix/smtpd/tls/protocols', '')
-print 'smtpd_tls_exclude_ciphers = %s' % baseConfig.get('mail/postfix/smtpd/tls/exclude_ciphers', 'RC4, aNULL')
-print 'smtpd_tls_cert_file = %s' % baseConfig.get('mail/postfix/ssl/certificate', '/etc/univention/ssl/%s/cert.pem' % fqdn)
-print 'smtpd_tls_key_file = %s' % baseConfig.get('mail/postfix/ssl/key', '/etc/univention/ssl/%s/private.key' % fqdn)
-if baseConfig.get('mail/postfix/ssl/cafile'):
-	print 'smtpd_tls_CAfile = %s' % baseConfig['mail/postfix/ssl/cafile']
-if baseConfig.get('mail/postfix/ssl/capath'):
-	print 'smtpd_tls_CApath = %s' % baseConfig['mail/postfix/ssl/capath']
+fqdn = '%s.%s' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+print 'smtpd_tls_mandatory_protocols = %s' % configRegistry.get('mail/postfix/smtpd/tls/mandatory_protocols', '!SSLv2')
+print 'smtpd_tls_protocols = %s' % configRegistry.get('mail/postfix/smtpd/tls/protocols', '')
+print 'smtpd_tls_exclude_ciphers = %s' % configRegistry.get('mail/postfix/smtpd/tls/exclude_ciphers', 'RC4, aNULL')
+print 'smtpd_tls_cert_file = %s' % configRegistry.get('mail/postfix/ssl/certificate', '/etc/univention/ssl/%s/cert.pem' % fqdn)
+print 'smtpd_tls_key_file = %s' % configRegistry.get('mail/postfix/ssl/key', '/etc/univention/ssl/%s/private.key' % fqdn)
+if configRegistry.get('mail/postfix/ssl/cafile'):
+	print 'smtpd_tls_CAfile = %s' % configRegistry['mail/postfix/ssl/cafile']
+if configRegistry.get('mail/postfix/ssl/capath'):
+	print 'smtpd_tls_CApath = %s' % configRegistry['mail/postfix/ssl/capath']
 @!@
 smtpd_tls_received_header = no
 smtpd_tls_session_cache_timeout = 3600s
@@ -32,10 +32,10 @@ if configRegistry.is_true('mail/postfix/dovecot_sasl'):
 
 # smtp client
 @!@
-print 'smtp_tls_security_level = %s' % baseConfig.get('mail/postfix/tls/client/level', 'none')
-print 'smtp_tls_mandatory_protocols = %s' % baseConfig.get('mail/postfix/tls/client/mandatory_protocols', '!SSLv2')
-print 'smtp_tls_protocols = %s' % baseConfig.get('mail/postfix/tls/client/protocols', '!SSLv2')
-print 'smtp_tls_exclude_ciphers = %s' % baseConfig.get('mail/postfix/tls/client/exclude_ciphers', 'RC4, aNULL')
+print 'smtp_tls_security_level = %s' % configRegistry.get('mail/postfix/tls/client/level', 'none')
+print 'smtp_tls_mandatory_protocols = %s' % configRegistry.get('mail/postfix/tls/client/mandatory_protocols', '!SSLv2')
+print 'smtp_tls_protocols = %s' % configRegistry.get('mail/postfix/tls/client/protocols', '!SSLv2')
+print 'smtp_tls_exclude_ciphers = %s' % configRegistry.get('mail/postfix/tls/client/exclude_ciphers', 'RC4, aNULL')
 @!@
 
 # Support broken clients like Microsoft Outlook Express 4.x which expect AUTH=LOGIN instead of AUTH LOGIN

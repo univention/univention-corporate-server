@@ -31,17 +31,16 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import imaplib
+import sys
+import os
+import re
+
 # this is allowed in cyrus 2.4
 GOODCHARS = " +,-.0123456789:=@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~"
 
 # this is the delimiter and was never allowd
 GOODCHARS += "/&"
-
-import imaplib
-import sys
-import os
-import types
-import re
 
 list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
 host = "localhost"
@@ -61,12 +60,12 @@ if not password:
 # imap login
 try:
 	imap = imaplib.IMAP4_SSL(host)
-except Exception, e:
+except Exception as e:
 	sys.stderr.write("imap ssl connect to %s failed\n" % host)
 	sys.exit(1)
 try:
 	imap.login(user, password)
-except Exception, e:
+except Exception as e:
 	sys.stderr.write("imap login to %s failed\n" % host)
 	sys.exit(1)
 
@@ -77,10 +76,10 @@ ret, result = imap.list(pattern="*")
 badMboxNames = []
 for res in result:
 	if res:
-		if isinstance(res, types.TupleType) and len(res) > 0:
+		if isinstance(res, tuple) and len(res) > 0:
 			# ('(\\HasNoChildren) "/" {29}', 'user/admin/test@univention.qa')
 			res = '(\\HasNoChildren) "/" "%s"' % res[-1].strip()
-		elif isinstance(res, types.StringType):
+		elif isinstance(res, bytes):
 			# (\HasNoChildren) "/" "user/admin/test folder@univention.qa"
 			pass
 		else:
@@ -93,12 +92,12 @@ for res in result:
 		if m and len(m.groups()) > 2:
 			flags, delimiter, name = m.groups()
 			name = name.strip('"')
-	
+
 		if name:
 			good = True
 			formattedName = ""
 			for char in name:
-				if not char in GOODCHARS:
+				if char not in GOODCHARS:
 					formattedName += "(->)%s(<-)" % char
 					good = False
 				else:

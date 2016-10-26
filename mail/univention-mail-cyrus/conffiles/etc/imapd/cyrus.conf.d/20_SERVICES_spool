@@ -11,24 +11,24 @@ SERVICES {
 
 # get backend interface, default is ""
 pre = ''
-interface = baseConfig.get('mail/cyrus/murder/backend/interface')
+interface = configRegistry.get('mail/cyrus/murder/backend/interface')
 if interface:
 	ucrVariable = 'interfaces/' + interface + '/address'
-	interfaceIP = baseConfig.get(ucrVariable)
+	interfaceIP = configRegistry.get(ucrVariable)
 	if interfaceIP:
 		pre = "%s:" % interfaceIP
 
 # imap
-if baseConfig.has_key('mail/cyrus/imap') and baseConfig['mail/cyrus/imap'] == 'yes':
-	maxchild = baseConfig.get('mail/cyrus/imap/maxchilds', '400')
+if 'mail/cyrus/imap' in configRegistry and configRegistry['mail/cyrus/imap'] == 'yes':
+	maxchild = configRegistry.get('mail/cyrus/imap/maxchilds', '400')
 	print ''
 	print '\t# imap/imaps'
 	print '\timap cmd="imapd -C /etc/imapd/imapd.conf -U 30" listen="%simap" prefork=0 maxchild=%s' % (pre, maxchild)
 	print '\timaps cmd="imapd -C /etc/imapd/imapd.conf -s -U 30" listen="%simaps" prefork=0 maxchild=%s' % (pre, maxchild)
 
 # pop
-if baseConfig.has_key('mail/cyrus/pop') and baseConfig['mail/cyrus/pop'] == 'yes':
-	maxchild = baseConfig.get('mail/cyrus/pop/maxchilds', '400')
+if 'mail/cyrus/pop' in configRegistry and configRegistry['mail/cyrus/pop'] == 'yes':
+	maxchild = configRegistry.get('mail/cyrus/pop/maxchilds', '400')
 	print ''
 	print '\t# pop/pops'
 	print '\tpop3 cmd="pop3d -C /etc/imapd/imapd.conf -U 30" listen="%spop3" prefork=0 maxchild=%s' % (pre, maxchild)
@@ -45,8 +45,8 @@ else:
 print ''
 
 # sieve
-maxchild = baseConfig.get('mail/cyrus/sieve/maxchilds', "400")
-sieve_host = baseConfig.get("mail/cyrus/sieve/listen_host")
+maxchild = configRegistry.get('mail/cyrus/sieve/maxchilds', "400")
+sieve_host = configRegistry.get("mail/cyrus/sieve/listen_host")
 sieve_pre = "localhost:"
 if sieve_host:
 	if sieve_host == "all":

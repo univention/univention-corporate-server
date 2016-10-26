@@ -126,6 +126,7 @@ name = 'dovecot-shared-folder'
 description = 'Create shared folders for Dovecot'
 filter = '(&(objectClass=univentionMailSharedFolder)(univentionMailHomeServer=%s.%s))' % (hostname, domainname)
 
+
 def handler(dn, new, old):
 	global hostname, domainname
 	hostname = hostname.lower()
@@ -149,8 +150,8 @@ def handler(dn, new, old):
 	# Delete existing shared folder
 	#
 	if (old and not new) \
-			or ("univentionMailHomeServer" not in new) \
-			or (not new["univentionMailHomeServer"][0].lower() in [hostname, "%s.%s" % (hostname, domainname)]):
+		or ("univentionMailHomeServer" not in new) \
+		or (not new["univentionMailHomeServer"][0].lower() in [hostname, "%s.%s" % (hostname, domainname)]):
 		dl.del_shared_folder(old)
 		return
 

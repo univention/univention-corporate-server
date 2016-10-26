@@ -60,33 +60,32 @@ if os.path.isfile("/etc/cyrus.secret"):
 		password = password[0:-1]
 
 if isMurder and backend and password:
-	
+
 	# get list of mbox's that belong to this server
 	ldap = univention.uldap.getMachineConnection(ldap_master=False)
 	filter = '(&(objectClass=inetOrgPerson)(objectClass=univentionMail)(univentionMailHomeServer=%s))' % fqdn
 	results = ldap.search(filter=filter, attr=["mailPrimaryAddress"])
 	addrlist = []
 	for result in results:
-		if len(result) > 1:	
+		if len(result) > 1:
 			mail = result[1].get("mailPrimaryAddress", [])
 			if mail:
 				addrlist.append(mail[0])
 
-	
 	# imap login
 	try:
 		imap = imaplib.IMAP4_SSL(backend)
-	except Exception, e:
+	except Exception as e:
 		sys.stderr.write("imap ssl connect to %s failed\n" % backend)
 		sys.exit(1)
 	try:
 		imap.login("cyrus", password)
-	except Exception, e:
+	except Exception as e:
 		sys.stderr.write("imap login to %s failed\n" % backend)
 		sys.exit(1)
 
 	# get list of mbox's from server
-	result = imap.list() 
+	result = imap.list()
 	serverlist = []
 	if len(result) > 1:
 		for res in result[1]:
@@ -103,7 +102,7 @@ if isMurder and backend and password:
 	# report incoherence
 	if noticelist:
 
-		emailtext  = "Subject: univentionMailHomeServer incoherence on host %s\n" % fqdn
+		emailtext = "Subject: univentionMailHomeServer incoherence on host %s\n" % fqdn
 		emailtext += "Report from cron job univention-mail-cyrus-murder\n"
 		emailtext += "running on host %s:\n" % fqdn
 		emailtext += "The following list of primary mail addresses were\n"
@@ -119,7 +118,7 @@ if isMurder and backend and password:
 			server = smtplib.SMTP("localhost")
 			server.sendmail("root", "root", emailtext)
 			server.quit()
-		except Exception, e:
+		except Exception as e:
 			sys.stderr.write("could not send incoherence mail on %s (%s).\n" % (fqdn, emailtext))
 			sys.exit(1)
 

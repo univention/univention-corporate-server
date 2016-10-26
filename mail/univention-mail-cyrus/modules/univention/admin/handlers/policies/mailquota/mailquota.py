@@ -50,51 +50,52 @@ except ImportError:
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies.mailquota')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies.mailquota')
+_ = translation.translate
+
 
 class mailquotaFixedAttributes(univention.admin.syntax.select):
-	name='mailquotaFixedAttributes'
-	choices=[
+	name = 'mailquotaFixedAttributes'
+	choices = [
 		('univentionMailQuotaMB', _('Quota limit (MB)')),
-		]
+	]
 
-module='policies/mailquota'
-operations=['add','edit','remove','search']
+module = 'policies/mailquota'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionMailQuota'
-policy_apply_to=["users/user"]
-policy_position_dn_prefix="cn=mail"
+policy_oc = 'univentionMailQuota'
+policy_apply_to = ["users/user"]
+policy_position_dn_prefix = "cn=mail"
 
-childs=0
-short_description=_('Policy: Mail quota')
-policy_short_description=_('Mail quota')
-long_description=''
-options={
+childs = 0
+short_description = _('Policy: Mail quota')
+policy_short_description = _('Mail quota')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
-			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'MailQuota': univention.admin.property(
-			short_description=_('Quota limit (MB)'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=0,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	}
+		short_description=_('Quota limit (MB)'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
+}
 
 if UDMPolicyAPIVersion == 0:
 	property_descriptions.update({
@@ -102,47 +103,47 @@ if UDMPolicyAPIVersion == 0:
 			short_description=_('Required object class'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 		'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object class'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 		'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attribute'),
 			long_description='',
 			syntax=mailquotaFixedAttributes,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 		'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attribute'),
 			long_description='',
 			syntax=mailquotaFixedAttributes,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	})
 
-	object_tab = Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes', 'emptyAttributes' ]
+	object_tab = Tab(_('Object'), _('Object'), advanced=True, layout=[
+		['requiredObjectClasses', 'prohibitedObjectClasses'],
+		['fixedAttributes', 'emptyAttributes']
 	])
 else:
 	property_descriptions.update(dict([
@@ -155,16 +156,16 @@ else:
 	object_tab = policy_object_tab()
 
 layout = [
-	Tab(_('General'),_('Mail quota'), layout = [
-		Group( _( 'General mail quota settings' ), layout = [
+	Tab(_('General'), _('Mail quota'), layout=[
+		Group(_('General mail quota settings'), layout=[
 			'name',
 			'MailQuota'
-		] ),
-	] ),
+		]),
+	]),
 	object_tab,
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('MailQuota', 'univentionMailQuotaMB', None, univention.admin.mapping.ListToString)
 if UDMPolicyAPIVersion == 0:
@@ -177,41 +178,44 @@ else:
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+	module = module
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
+		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionMailQuota']) ]
+		return [('objectClass', ['top', 'univentionPolicy', 'univentionMailQuota'])]
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionMailQuota')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionMailQuota' in attr.get('objectClass', [])
