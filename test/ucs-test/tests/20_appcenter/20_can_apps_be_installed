@@ -24,10 +24,10 @@ if requested_apps and all(app.docker for app in requested_apps):
 	print 'Only testing Docker Apps. No need to check other Apps'
 	sys.exit(0)
 
-with UCSTestConfigRegistry() as ucr:
+with UCSTestConfigRegistry():
 
 	log_to_stream()
-	old_server = ucr_get('repository/app_center/server')
+	# reset by UCSTestConfigRegistry()
 	ucr_save({'repository/app_center/server': 'appcenter.software-univention.de'})
 
 	update = get_action('update')
@@ -63,7 +63,6 @@ with UCSTestConfigRegistry() as ucr:
 		if not _apt_get_simulate(app):
 			failed.append(app)
 
-	ucr_save({'repository/app_center/server': old_server})
 	if failed:
 		print '\nTEST FAILED: the following apps cannot be installed due to broken packages...'
 		for app in failed:
