@@ -30,71 +30,91 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-class Token( object ):
-	def __init__( self, name = None, attrs = {}, data = None ):
+
+class Token(object):
+
+	def __init__(self, name=None, attrs={}, data=None):
 		self.name = name
 		self.attrs = attrs
 		self.data = data
 
-	def __nonzero__( self ):
+	def __nonzero__(self):
 		return self.name != None
 
-class TextToken( Token ):
-	def __init__( self, text = '' ):
-		Token.__init__( self, name = '<empty>', data = text )
 
-	def __str__( self ):
+class TextToken(Token):
+
+	def __init__(self, text=''):
+		Token.__init__(self, name='<empty>', data=text)
+
+	def __str__(self):
 		return self.data
 
-class TemplateToken( Token ):
-	def __init__( self, name, attrs = {} ):
-		Token.__init__( self, name, attrs )
 
-	def __str__( self ):
+class TemplateToken(Token):
+
+	def __init__(self, name, attrs={}):
+		Token.__init__(self, name, attrs)
+
+	def __str__(self):
 		attrs = ''
 		for key, value in self.attrs.items():
-			attrs += '%s="%s" ' % ( key, value )
-		return '<@%s %s@>' % ( self.name, attrs[ : -1 ] )
+			attrs += '%s="%s" ' % (key, value)
+		return '<@%s %s@>' % (self.name, attrs[: -1])
 
-class IContextToken( TemplateToken, list ):
-	def __init__( self, name, attrs, closing ):
-		TemplateToken.__init__( self, name, attrs )
-		list.__init__( self )
+
+class IContextToken(TemplateToken, list):
+
+	def __init__(self, name, attrs, closing):
+		TemplateToken.__init__(self, name, attrs)
+		list.__init__(self)
 		self.closing = closing
 		self.objects = []
 
-	def clear( self ):
+	def clear(self):
 		while self.__len__():
 			self.pop()
 
-	def __str__( self ):
+	def __str__(self):
 		content = ''
 		for item in self:
-			content += str( item )
-		return TemplateToken.__str__( self ) + content + '<@/%s@>' % self.name
+			content += str(item)
+		return TemplateToken.__str__(self) + content + '<@/%s@>' % self.name
 
-class ResolveToken( IContextToken ):
-	def __init__( self, attrs = {}, closing = False ):
-		IContextToken.__init__( self, 'resolve', attrs, closing )
 
-class QueryToken( IContextToken, list ):
-	def __init__( self, attrs = {}, closing = False ):
-		IContextToken.__init__( self, 'query', attrs, closing )
+class ResolveToken(IContextToken):
 
-class HeaderToken( IContextToken, list ):
-	def __init__( self, attrs = {}, closing = False ):
-		IContextToken.__init__( self, 'header', attrs, closing )
+	def __init__(self, attrs={}, closing=False):
+		IContextToken.__init__(self, 'resolve', attrs, closing)
 
-class FooterToken( IContextToken, list ):
-	def __init__( self, attrs = {}, closing = False ):
-		IContextToken.__init__( self, 'footer', attrs, closing )
 
-class AttributeToken( TemplateToken ):
-	def __init__( self, attrs = {}, value = '' ):
-		TemplateToken.__init__( self, 'attribute', attrs )
+class QueryToken(IContextToken, list):
+
+	def __init__(self, attrs={}, closing=False):
+		IContextToken.__init__(self, 'query', attrs, closing)
+
+
+class HeaderToken(IContextToken, list):
+
+	def __init__(self, attrs={}, closing=False):
+		IContextToken.__init__(self, 'header', attrs, closing)
+
+
+class FooterToken(IContextToken, list):
+
+	def __init__(self, attrs={}, closing=False):
+		IContextToken.__init__(self, 'footer', attrs, closing)
+
+
+class AttributeToken(TemplateToken):
+
+	def __init__(self, attrs={}, value=''):
+		TemplateToken.__init__(self, 'attribute', attrs)
 		self.value = value
 
-class PolicyToken( TemplateToken ):
-	def __init__( self, attrs = {}, value = '' ):
-		TemplateToken.__init__( self, 'policy', attrs )
+
+class PolicyToken(TemplateToken):
+
+	def __init__(self, attrs={}, value=''):
+		TemplateToken.__init__(self, 'policy', attrs)
 		self.value = value
