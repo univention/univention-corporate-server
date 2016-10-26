@@ -12,3 +12,4 @@ desc: |
  * The UCR variable 'ldap/logging/dellogdir' now has a description and the
    value of UCR variable 'ldap/logging' is interpreted as a boolean.
 bug: [25404,34916,34420,42665]
+announced: 2016-10-26
