@@ -33,31 +33,33 @@ except ImportError:
 	import ucslint.base as uub
 import re
 import os
-from itertools import product
+
+
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
+
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
 		self.name = '0011-Control'
 
 	def getMsgIds(self):
-		return { '0011-1': [ uub.RESULT_WARN, 'failed to open/read file' ],
-				 '0011-2': [ uub.RESULT_ERROR, 'source package name differs in debian/control and debian/changelog' ],
-				 '0011-3': [ uub.RESULT_WARN, 'wrong section - should be "Univention"' ],
-				 '0011-4': [ uub.RESULT_WARN, 'wrong priority - should be "optional"' ],
-				 '0011-5': [ uub.RESULT_ERROR, 'wrong maintainer - should be "Univention GmbH <packages@univention.de>"' ],
-				 '0011-6': [ uub.RESULT_ERROR, 'XS-Python-Version without python-central in build-dependencies' ],
-				 '0011-7': [ uub.RESULT_ERROR, 'XS-Python-Version without XB-Python-Version in binary package entries' ],
-				 '0011-8': [ uub.RESULT_WARN, 'XS-Python-Version should be "2.7"' ],
-				 '0011-9': [ uub.RESULT_ERROR, 'cannot determine source package name' ],
-				 '0011-10': [uub.RESULT_ERROR, 'parsing error in debian/control' ],
-				 '0011-11': [uub.RESULT_WARN,  'debian/control: XS-Python-Version is not required any longer' ],
-				 '0011-12': [uub.RESULT_ERROR, 'debian/control: please use python-support instead of python-central in Build-Depends' ],
-				 '0011-13': [uub.RESULT_WARN,  'debian/control: ucslint is missing in Build-Depends' ],
+		return {'0011-1': [uub.RESULT_WARN, 'failed to open/read file'],
+				 '0011-2': [uub.RESULT_ERROR, 'source package name differs in debian/control and debian/changelog'],
+				 '0011-3': [uub.RESULT_WARN, 'wrong section - should be "Univention"'],
+				 '0011-4': [uub.RESULT_WARN, 'wrong priority - should be "optional"'],
+				 '0011-5': [uub.RESULT_ERROR, 'wrong maintainer - should be "Univention GmbH <packages@univention.de>"'],
+				 '0011-6': [uub.RESULT_ERROR, 'XS-Python-Version without python-central in build-dependencies'],
+				 '0011-7': [uub.RESULT_ERROR, 'XS-Python-Version without XB-Python-Version in binary package entries'],
+				 '0011-8': [uub.RESULT_WARN, 'XS-Python-Version should be "2.7"'],
+				 '0011-9': [uub.RESULT_ERROR, 'cannot determine source package name'],
+				 '0011-10': [uub.RESULT_ERROR, 'parsing error in debian/control'],
+				 '0011-11': [uub.RESULT_WARN, 'debian/control: XS-Python-Version is not required any longer'],
+				 '0011-12': [uub.RESULT_ERROR, 'debian/control: please use python-support instead of python-central in Build-Depends'],
+				 '0011-13': [uub.RESULT_WARN, 'debian/control: ucslint is missing in Build-Depends'],
 				 '0011-14': [uub.RESULT_WARN, 'no matching package in debian/control'],
 				 '0011-15': [uub.RESULT_WARN, 'non-prefixed debhelper file'],
 				 '0011-16': [uub.RESULT_INFO, 'unknown debhelper file'],
-				 }
+          }
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
@@ -101,15 +103,14 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			if srcpkgname != controlpkgname:
 				self.addmsg('0011-2', 'source package name differs in debian/changelog and debian/control', filename=fn_changelog)
 
-
 		# parse source section of debian/control
-		if not parser.source_section.get('Section', '') in ( 'univention' ):
+		if not parser.source_section.get('Section', '') in ('univention'):
 			self.addmsg('0011-3', 'wrong Section entry - should be "univention"', filename=fn_control)
 
-		if not parser.source_section.get('Priority', '') in ( 'optional' ):
+		if not parser.source_section.get('Priority', '') in ('optional'):
 			self.addmsg('0011-4', 'wrong Priority entry - should be "optional"', filename=fn_control)
 
-		if not parser.source_section.get('Maintainer', '') in ( 'Univention GmbH <packages@univention.de>' ):
+		if not parser.source_section.get('Maintainer', '') in ('Univention GmbH <packages@univention.de>'):
 			self.addmsg('0011-5', 'wrong Maintainer entry - should be "Univention GmbH <packages@univention.de>"', filename=fn_control)
 
 		if parser.source_section.get('XS-Python-Version', ''):
@@ -124,75 +125,75 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.check_debhelper(path, parser)
 
 	EXCEPTION_FILES = set((
-			'changelog', # dh_installchangelogs default
-			'clean', # dh_clean
-			'compat', # dh
+			'changelog',  # dh_installchangelogs default
+			'clean',  # dh_clean
+			'compat',  # dh
 			'control',
-			'copyright', # dh_installdocs default
-			'files', # dh_builddeb
-			'NEWS', # dh_installchangelogs default
+			'copyright',  # dh_installdocs default
+			'files',  # dh_builddeb
+			'NEWS',  # dh_installchangelogs default
 			'rules',
-			'source.lintian-overrides', # dh_lintian
+			'source.lintian-overrides',  # dh_lintian
 			'ucslint.overrides',
-			))
+	))
 
 	KNOWN_DH_FILES = set((
-			'bash-completion', # dh_bash-completion
-			'bug-control', # dh_bugfiles
-			'bug-presubj', # dh_bugfiles
-			'bug-script', # dh_bugfiles
-			'changelog', # dh_installchangelogs
-			'compress', # dh_compress
-			'conffiles', # dh_installdeb
-			'config', # dh_installdebconf
-			'copyright', # dh_installdocs
-			'debhelper.log', # dh
-			'dirs', # dh_installdirs
-			'doc-base', # dh_installdocs
-			'docs', # dh_installdocs
-			'emacsen-install', # dh_installemacsen
-			'emacsen-remove', # dh_installemacsen
-			'emacsen-startup', # dh_installemacsen
-			'examples', # dh_installexamples
-			'files', # dh_movefiles
-			'gconf-defaults', # dh_gconf
-			'gconf-mandatory', # dh_gconf
-			'info', # dh_installinfo
-			'install', # dh_install
-			'links', # dh_link
-			'lintian-overrides', # dh_lintian
-			'maintscript', # dh_installdeb
-			'manpages', # dh_installman
-			'menu', # dh_installmenu
-			'menu-method', # dh_installmenu
-			'mine', # dh_installmime
-			'NEWS', # dh_installchangelogs
-			'postinst', # dh_installdeb
-			'postinst.debhelper', # dh_installdeb
-			'postrm', # dh_installdeb
-			'postrm.debhelper', # dh_installdeb
-			'preinst', # dh_installdeb
-			'preinst.debhelper', # dh_installdeb
-			'prerm', # dh_installdeb
-			'prerm.debhelper', # dh_installdeb
-			'README.Debian', # dh_installdocs
-			'sgmlcatalogs', # dh_installcatalogs
-			'sharedmimeinfo', # dh_installmime
-			'shlibs', # dh_installdeb
-			'substvars', # dh_gencontrol
-			'symbols', # dh_makeshlibs
-			'symbols.i386', # dh_makeshlibs
-			'templates', # dh_installdebconf
-			'TODO', # dh_installdocs
-			'triggers', # dh_installdeb
-			'umc-modules', # dh-umc-modules-install
-			'univention-config-registry-categories', # univention-install-config-registry-info
-			'univention-config-registry-mapping', # univention-install-config-registry-info
-			'univention-config-registry', # univention-install-config-registry
-			'univention-config-registry-variables', # univention-install-config-registry-info
-			'univention-service', # univention-install-service-info
-			'wm', # dh_installwm
-			))
+			'bash-completion',  # dh_bash-completion
+			'bug-control',  # dh_bugfiles
+			'bug-presubj',  # dh_bugfiles
+			'bug-script',  # dh_bugfiles
+			'changelog',  # dh_installchangelogs
+			'compress',  # dh_compress
+			'conffiles',  # dh_installdeb
+			'config',  # dh_installdebconf
+			'copyright',  # dh_installdocs
+			'debhelper.log',  # dh
+			'dirs',  # dh_installdirs
+			'doc-base',  # dh_installdocs
+			'docs',  # dh_installdocs
+			'emacsen-install',  # dh_installemacsen
+			'emacsen-remove',  # dh_installemacsen
+			'emacsen-startup',  # dh_installemacsen
+			'examples',  # dh_installexamples
+			'files',  # dh_movefiles
+			'gconf-defaults',  # dh_gconf
+			'gconf-mandatory',  # dh_gconf
+			'info',  # dh_installinfo
+			'install',  # dh_install
+			'links',  # dh_link
+			'lintian-overrides',  # dh_lintian
+			'maintscript',  # dh_installdeb
+			'manpages',  # dh_installman
+			'menu',  # dh_installmenu
+			'menu-method',  # dh_installmenu
+			'mine',  # dh_installmime
+			'NEWS',  # dh_installchangelogs
+			'postinst',  # dh_installdeb
+			'postinst.debhelper',  # dh_installdeb
+			'postrm',  # dh_installdeb
+			'postrm.debhelper',  # dh_installdeb
+			'preinst',  # dh_installdeb
+			'preinst.debhelper',  # dh_installdeb
+			'prerm',  # dh_installdeb
+			'prerm.debhelper',  # dh_installdeb
+			'README.Debian',  # dh_installdocs
+			'sgmlcatalogs',  # dh_installcatalogs
+			'sharedmimeinfo',  # dh_installmime
+			'shlibs',  # dh_installdeb
+			'substvars',  # dh_gencontrol
+			'symbols',  # dh_makeshlibs
+			'symbols.i386',  # dh_makeshlibs
+			'templates',  # dh_installdebconf
+			'TODO',  # dh_installdocs
+			'triggers',  # dh_installdeb
+			'umc-modules',  # dh-umc-modules-install
+			'univention-config-registry-categories',  # univention-install-config-registry-info
+			'univention-config-registry-mapping',  # univention-install-config-registry-info
+			'univention-config-registry',  # univention-install-config-registry
+			'univention-config-registry-variables',  # univention-install-config-registry-info
+			'univention-service',  # univention-install-service-info
+			'wm',  # dh_installwm
+	))
 
 	NAMED_DH_FILES = set((
 		'cron.daily',  # dh_installcron

@@ -38,20 +38,22 @@ import os
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
+
     """Find use of deprecated functions / programs / scripts."""
+
     def __init__(self):
         super(UniventionPackageCheck, self).__init__()
         self.name = '0016-Deprecated'
 
     def getMsgIds(self):  # pylint: disable-msg=R0201
         """Return severity and description for message identifiers."""
-        return { '0016-1': [ uub.RESULT_WARN, 'failed to open file' ],
-                 '0016-2': [ uub.RESULT_WARN, 'Deprecated use of "univention-admin"' ],
-                 '0016-3': [ uub.RESULT_WARN, 'Use of deprecated "univention-baseconfig"' ],
-                 '0016-4': [ uub.RESULT_WARN, 'Use of deprecated "univention_baseconfig"' ],
-                 '0016-5': [ uub.RESULT_WARN, 'Use of deprecated "@%@BCWARNING=@%@"' ],
-                 '0016-6': [ uub.RESULT_WARN, 'Use of deprecated "debian/*.univention-baseconfig"' ],
-                 }
+        return {'0016-1': [uub.RESULT_WARN, 'failed to open file'],
+               '0016-2': [uub.RESULT_WARN, 'Deprecated use of "univention-admin"'],
+               '0016-3': [uub.RESULT_WARN, 'Use of deprecated "univention-baseconfig"'],
+               '0016-4': [uub.RESULT_WARN, 'Use of deprecated "univention_baseconfig"'],
+               '0016-5': [uub.RESULT_WARN, 'Use of deprecated "@%@BCWARNING=@%@"'],
+               '0016-6': [uub.RESULT_WARN, 'Use of deprecated "debian/*.univention-baseconfig"'],
+                }
 
     def postinit(self, path):
         """checks to be run before real check or to create precalculated data
