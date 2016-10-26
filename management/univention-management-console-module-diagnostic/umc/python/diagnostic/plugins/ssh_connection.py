@@ -15,9 +15,12 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 title = _('SSH connection to UCS server failed!')
 
+
 class IgnorePolicy(paramiko.MissingHostKeyPolicy):
+
 	def missing_host_key(self, client, hostname, key):
 		pass
+
 
 def run():
 	ucr.load()
