@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyMailQuotaTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/mailquota'
 		super(PolicyMailQuotaTestCase,
@@ -44,15 +45,15 @@ class PolicyMailQuotaTestCase(GenericTestCase):
 		super(PolicyMailQuotaTestCase, self).setUp()
 		self.createProperties = {
 			'MailQuota': '4'
-			}
+		}
 		self.modifyProperties = {
 			'MailQuota': '3'
-			}
+		}
 		self.name = 'testmailquotapolicy'
 
 
 def suite():
-	import sys, unittest
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyMailQuotaTestCase())
 	return suite

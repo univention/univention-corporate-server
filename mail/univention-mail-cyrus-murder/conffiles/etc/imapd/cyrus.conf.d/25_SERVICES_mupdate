@@ -1,19 +1,19 @@
 @!@
-hostname = baseConfig['hostname']
-domainname = baseConfig['domainname']
-myfqdn = '.'.join([ hostname, domainname ])
+hostname = configRegistry['hostname']
+domainname = configRegistry['domainname']
+myfqdn = '.'.join([hostname, domainname ])
 isMurder = False
-murders = baseConfig.get('mail/cyrus/murder/servers', "")
-mail_cyrus_murder_master = baseConfig.get('mail/cyrus/murder/master')
+murders = configRegistry.get('mail/cyrus/murder/servers', "")
+mail_cyrus_murder_master = configRegistry.get('mail/cyrus/murder/master')
 
 if hostname + "$" in murders.split(" "):
 	isMurder = True
 
 pre = ''
-interface = baseConfig.get('mail/cyrus/murder/frontend/interface')
+interface = configRegistry.get('mail/cyrus/murder/frontend/interface')
 if interface:
 	ucrVariable = 'interfaces/' + interface + '/address'
-	interfaceIP = baseConfig.get(ucrVariable)
+	interfaceIP = configRegistry.get(ucrVariable)
 	if interfaceIP:
 		pre = "%s:" % interfaceIP
 
@@ -41,15 +41,15 @@ if mail_cyrus_murder_master:
 			print '        # mupdate database service - must prefork at least 1'
 			print '        mupdate cmd="mupdate -C /etc/imapd/frontend.conf" listen="3905" prefork=1'
 
-		if baseConfig.get('mail/cyrus/imap') == 'yes' and pre:
-			maxchild = baseConfig.get('mail/cyrus/imap/maxchilds', '400')
+		if configRegistry.get('mail/cyrus/imap') == 'yes' and pre:
+			maxchild = configRegistry.get('mail/cyrus/imap/maxchilds', '400')
 			print ''
 			print '        # proxy imap/imaps'
 			print '        imapproxy cmd="proxyd -C /etc/imapd/frontend.conf -U 30" listen="%simap" prefork=0 maxchild=%s' % (pre, maxchild)
 			print '        imapsproxy cmd="proxyd -C /etc/imapd/frontend.conf -s -U 30" listen="%simaps" prefork=0 maxchild=%s' % (pre, maxchild)
 
-		if baseConfig.get('mail/cyrus/pop') == 'yes' and pre:
-			maxchild = baseConfig.get('mail/cyrus/pop/maxchilds', '400')
+		if configRegistry.get('mail/cyrus/pop') == 'yes' and pre:
+			maxchild = configRegistry.get('mail/cyrus/pop/maxchilds', '400')
 			print ''
 			print '        # proxy pop/pops'
 			print '        pop3proxy cmd="pop3proxyd -C /etc/imapd/frontend.conf -U 30" listen="%spop3" prefork=0 maxchild=%s' % (pre, maxchild)

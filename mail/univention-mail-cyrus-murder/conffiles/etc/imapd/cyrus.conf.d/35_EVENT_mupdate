@@ -1,10 +1,10 @@
 @!@
-hostname = baseConfig['hostname']
-domainname = baseConfig['domainname']
-myfqdn = '.'.join([ hostname, domainname ])
+hostname = configRegistry['hostname']
+domainname = configRegistry['domainname']
+myfqdn = '.'.join([hostname, domainname])
 isMurder = False
-murders = baseConfig.get('mail/cyrus/murder/servers', "")
-mail_cyrus_murder_master = baseConfig.get('mail/cyrus/murder/master')
+murders = configRegistry.get('mail/cyrus/murder/servers', "")
+mail_cyrus_murder_master = configRegistry.get('mail/cyrus/murder/master')
 
 if hostname + "$" in murders.split(" "):
     isMurder = True

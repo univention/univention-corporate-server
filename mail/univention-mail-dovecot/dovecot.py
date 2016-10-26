@@ -49,6 +49,7 @@ DOVECOT_OLD_PICKLE = "/var/spool/univention-mail-dovecot/dovecot_old_dn"
 
 
 class DovecotUserListener(DovecotListener):
+
 	def new_email_account2(self, email):
 		try:
 			self.new_email_account(email)
@@ -90,6 +91,7 @@ class DovecotUserListener(DovecotListener):
 		finally:
 			listener.unsetuid()
 
+
 def load_old(old):
 	if os.path.exists(DOVECOT_OLD_PICKLE):
 		f = open(DOVECOT_OLD_PICKLE, "r")
@@ -101,9 +103,10 @@ def load_old(old):
 	else:
 		return old
 
+
 def save_old(old):
 	f = open(DOVECOT_OLD_PICKLE, "w+")
-	os.chmod(DOVECOT_OLD_PICKLE, 0600)
+	os.chmod(DOVECOT_OLD_PICKLE, 0o600)
 	p = cPickle.Pickler(f)
 	p.dump(old)
 	p.clear_memo()

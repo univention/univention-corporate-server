@@ -44,6 +44,7 @@ default_sieve_script = "/var/lib/dovecot/sieve/default.sieve"
 
 
 class DovecotListener(object):
+
 	def __init__(self, listener, name):
 		self.listener = listener
 		self.name = name
@@ -57,7 +58,7 @@ class DovecotListener(object):
 	def new_email_account(self, email):
 		spam_folder = self.listener.configRegistry.get("mail/dovecot/folder/spam")
 		if self.listener.configRegistry.is_true("mail/dovecot/sieve/spam", True)\
-				and spam_folder and spam_folder.lower() != "none":
+			and spam_folder and spam_folder.lower() != "none":
 			try:
 				self.upload_activate_sieve_script(email, default_sieve_script)
 			except:
@@ -247,7 +248,7 @@ class DovecotListener(object):
 		try:
 			self.listener.setuid(0)
 			if not os.path.exists(dir):
-				os.mkdir(dir, 02700)
+				os.mkdir(dir, 0o2700)
 				os.chown(dir, dovecot_uid, dovecot_gid)
 		except:
 			self.log_e("Failed to create directory '%s'.\n%s" % (dir, traceback.format_exc()))

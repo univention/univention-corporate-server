@@ -52,6 +52,7 @@ ucr = ConfigRegistry()
 ucr.load()
 check_sasl_username = ucr.is_true("mail/postfix/policy/listfilter/use_sasl_username", True)
 
+
 def listfilter(attrib):
 	if check_sasl_username:
 		sender = attrib.get("sasl_username", None)

@@ -28,24 +28,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import os
 import univention.config_registry
 import univention.debug
 
-name='cyrusMurderServers'
-description='Update Cyrus Murder Server List'
-filter="(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=Cyrus Murder))"
-attributes=["uid"]
+name = 'cyrusMurderServers'
+description = 'Update Cyrus Murder Server List'
+filter = "(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=Cyrus Murder))"
+attributes = ["uid"]
 var = "mail/cyrus/murder/servers"
 reload = False
+
 
 def initialize():
 
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, '%s: Initialize' % name)
 
 	return
+
 
 def setVar(content):
 
@@ -56,6 +58,7 @@ def setVar(content):
 		listener.unsetuid
 
 	return
+
 
 def addServer(uid, ucr):
 
@@ -69,11 +72,12 @@ def addServer(uid, ucr):
 		reload = True
 
 	return
-	
+
+
 def removeServer(uid, ucr):
 
 	global reload
-	
+
 	servers = ucr.get(var, "").split(" ")
 	newServers = []
 	serverRemoved = False
@@ -92,6 +96,7 @@ def removeServer(uid, ucr):
 
 	return
 
+
 def handler(dn, new, old):
 
 	configRegistry = univention.config_registry.ConfigRegistry()
@@ -99,20 +104,21 @@ def handler(dn, new, old):
 
 	# added
 	if new and not old:
-		if new.has_key('uid'):
+		if 'uid' in new:
 			addServer(new['uid'][0], configRegistry)
 	# removed
 	if old and not new:
-		if old.has_key('uid'):
+		if 'uid' in old:
 			removeServer(old['uid'][0], configRegistry)
 	# modified
 	else:
-		if old.has_key('uid'):
+		if 'uid' in old:
 			removeServer(old['uid'][0], configRegistry)
-		if new.has_key('uid'):
+		if 'uid' in new:
 			addServer(new['uid'][0], configRegistry)
 
 	return
+
 
 def postrun():
 

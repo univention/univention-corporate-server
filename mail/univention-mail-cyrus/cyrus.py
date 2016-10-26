@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 
 import listener
 import univention.debug
@@ -43,12 +43,13 @@ import glob
 import copy
 import cPickle
 
-name='cyrus'
-description='manage imap folders'
-filter='(&(objectClass=univentionMail)(uid=*))'
-attributes=['uid', 'mailPrimaryAddress', 'univentionMailHomeServer']
-FN_CACHE='/var/cache/univention-mail-cyrus/cyrus-mailboxrename.pickle'
-modrdn='1'
+name = 'cyrus'
+description = 'manage imap folders'
+filter = '(&(objectClass=univentionMail)(uid=*))'
+attributes = ['uid', 'mailPrimaryAddress', 'univentionMailHomeServer']
+FN_CACHE = '/var/cache/univention-mail-cyrus/cyrus-mailboxrename.pickle'
+modrdn = '1'
+
 
 def is_cyrus_murder_backend():
 	if (listener.configRegistry.get('mail/cyrus/murder/master') and listener.configRegistry.get('mail/cyrus/murder/backend/hostname')):
@@ -56,6 +57,7 @@ def is_cyrus_murder_backend():
 		return True
 	else:
 		return False
+
 
 def cyrus_usermailbox_delete(old):
 
@@ -79,6 +81,7 @@ def cyrus_usermailbox_delete(old):
 					os.rmdir(oldpath)
 		finally:
 		    listener.unsetuid()
+
 
 def cyrus_usermailbox_rename(old, new):
 
@@ -107,10 +110,11 @@ def cyrus_usermailbox_rename(old, new):
 					os.rename(oldpath, newpath)
 				else:
 					os.mkdir(newpath)
-				os.chmod(newpath, 0750)
+				os.chmod(newpath, 0o750)
 				os.chown(newpath, cyrus_id, mail_id)
 		finally:
 			listener.unsetuid()
+
 
 def create_cyrus_mailbox(new):
 
@@ -127,6 +131,7 @@ def create_cyrus_mailbox(new):
 	finally:
 		listener.unsetuid()
 
+
 def create_cyrus_userlogfile(mailaddress):
 
 	# create log file directory
@@ -136,8 +141,9 @@ def create_cyrus_userlogfile(mailaddress):
 		mail_id = grp.getgrnam('mail')[2]
 		if not os.path.exists(path):
 			os.mkdir(path)
-		os.chmod(path, 0750)
+		os.chmod(path, 0o750)
 		os.chown(path, cyrus_id, mail_id)
+
 
 def move_cyrus_murder_mailbox(old, new):
 
@@ -162,6 +168,7 @@ def move_cyrus_murder_mailbox(old, new):
 	finally:
 		listener.unsetuid()
 
+
 def handler(dn, new, old, command):
 
 	fqdn = '%s.%s' % (listener.configRegistry['hostname'], listener.configRegistry['domainname'])
@@ -175,9 +182,9 @@ def handler(dn, new, old, command):
 		listener.setuid(0)
 		try:
 			with open(FN_CACHE, 'w+') as f:
-				os.chmod(FN_CACHE, 0600)
+				os.chmod(FN_CACHE, 0o600)
 				cPickle.dump(old, f)
-		except Exception, e:
+		except Exception as e:
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
@@ -189,16 +196,16 @@ def handler(dn, new, old, command):
 	if os.path.exists(FN_CACHE):
 		listener.setuid(0)
 		try:
-			with open(FN_CACHE,'r') as f:
+			with open(FN_CACHE, 'r') as f:
 				old = cPickle.load(f)
-		except Exception, e:
+		except Exception as e:
 		    univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
 				'cyrus: failed to open/read pickle file: %s' % str(e))
 		try:
 			os.remove(FN_CACHE)
-		except Exception, e:
+		except Exception as e:
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
@@ -210,15 +217,14 @@ def handler(dn, new, old, command):
 			listener.unsetuid()
 			return
 
-		listener.unsetuid()	
-
+		listener.unsetuid()
 
 	# new
 	if new and not old:
 		newHomeServer = new.get('univentionMailHomeServer', [''])[0]
 		newMailPrimaryAddress = new.get('mailPrimaryAddress', [''])[0]
 		if newHomeServer.lower() == fqdn:
-			# create mailbox if we are the home server 
+			# create mailbox if we are the home server
 			if newMailPrimaryAddress:
 				create_cyrus_mailbox(newMailPrimaryAddress.lower())
 
@@ -267,7 +273,7 @@ def handler(dn, new, old, command):
 							if oldMailPrimaryAddress != newMailPrimaryAddress:
 								if listener.configRegistry.is_true('mail/cyrus/mailbox/rename', False):
 									cyrus_usermailbox_rename(oldMailPrimaryAddress.lower(), newMailPrimaryAddress.lower())
-								#else tree is already handled above(if not is_cyrus_murder_backend())
+								# else tree is already handled above(if not is_cyrus_murder_backend())
 
 				if oldHomeServer.lower() == fqdn:
 					# delete mailbox on old home server
@@ -288,4 +294,3 @@ def handler(dn, new, old, command):
 		# delete maibox if we are the home server
 		if oldHomeServer == fqdn and oldMailPrimaryAddress:
 			cyrus_usermailbox_delete(oldMailPrimaryAddress.lower())
-

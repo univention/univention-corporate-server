@@ -45,14 +45,15 @@ from univention.mail.dovecot import DovecotListener
 
 # UDM name → (IMAP, doveadm)
 dovecot_acls = {
-	"read":   ("lrws",     ["lookup", "read", "write", "write-seen"]),
-	"post":   ("lrwsp",    ["lookup", "read", "write", "write-seen", "post"]),
-	"append": ("lrwspi",   ["lookup", "read", "write", "write-seen", "post", "insert"]),
-	"write":  ("lrwspite",  ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "expunge"]),
-	"all":    ("lrwspitea", ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "expunge", "admin"])}
+	"read": ("lrws", ["lookup", "read", "write", "write-seen"]),
+	"post": ("lrwsp", ["lookup", "read", "write", "write-seen", "post"]),
+	"append": ("lrwspi", ["lookup", "read", "write", "write-seen", "post", "insert"]),
+	"write": ("lrwspite", ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "expunge"]),
+	"all": ("lrwspitea", ["lookup", "read", "write", "write-seen", "post", "insert", "write-deleted", "expunge", "admin"])}
 
 
 class DovecotSharedFolderListener(DovecotListener):
+
 	def __init__(self, *args, **kwargs):
 		super(DovecotSharedFolderListener, self).__init__(*args, **kwargs)
 		self.modules = ["mail/folder"]
@@ -341,7 +342,7 @@ class DovecotSharedFolderListener(DovecotListener):
 		:return: None
 		"""
 
-		#TODO: create distinct configurations for each server (honor univentionMailHomeServer)
+		# TODO: create distinct configurations for each server (honor univentionMailHomeServer)
 
 		# When deleting, remove only one entry, so in the case of multi-remove
 		# subsequent code can still access the remaining namespace configuration.
