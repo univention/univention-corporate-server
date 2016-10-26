@@ -48,19 +48,34 @@ _ = Translation('univention-management-console-module-diagnostic').translate
 
 
 class Problem(Exception):
+
 	def __init__(self, description=None, **kwargs):
 		super(Problem, self).__init__(description)
 		self.kwargs = kwargs
 		kwargs['type'] = self.__class__.__name__.lower()
 		if description:
 			kwargs['description'] = description
-		#kwargs['success'] = False  # debugging ;)
+		# kwargs['success'] = False  # debugging ;)
 
-class Success(Problem): pass
-class Conflict(Problem): pass
-class Warning(Problem): pass
-class Critical(Problem): pass
-class ProblemFixed(Problem): pass
+
+class Success(Problem):
+	pass
+
+
+class Conflict(Problem):
+	pass
+
+
+class Warning(Problem):
+	pass
+
+
+class Critical(Problem):
+	pass
+
+
+class ProblemFixed(Problem):
+	pass
 
 
 class Instance(Base, ProgressMixin):
@@ -79,6 +94,7 @@ class Instance(Base, ProgressMixin):
 	def run(self, plugin, args=None):
 		plugin = self.get(plugin)
 		args = args or {}
+
 		def thread(self, request):
 			return plugin.execute(**args)
 		return thread
@@ -110,6 +126,7 @@ class Instance(Base, ProgressMixin):
 
 
 class Plugin(object):
+
 	u"""A wrapper for a python module underneath of "univention.management.console.modules.diagnostic.plugins".
 
 	These python modules (plugins) may have the following properties:

@@ -46,7 +46,7 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 		curl.setopt(pycurl.PROXYUSERPWD, credentials)
 
 	curl.setopt(pycurl.URL, url)
-	#curl.setopt(pycurl.VERBOSE, bVerbose)
+	# curl.setopt(pycurl.VERBOSE, bVerbose)
 
 	buf = StringIO.StringIO()
 	curl.setopt(pycurl.WRITEFUNCTION, buf.write)
@@ -72,8 +72,8 @@ def run(url='http://www.univention.de/', connecttimeout=30, timeout=30):
 
 		raise Conflict('\n'.join([description, msg]))
 	else:
-		#page = buf.getvalue()
-		#MODULE.info(page[:100])
+		# page = buf.getvalue()
+		# MODULE.info(page[:100])
 		buf.close()
 		http_status = curl.getinfo(pycurl.HTTP_CODE)
 		if http_status >= 400:
