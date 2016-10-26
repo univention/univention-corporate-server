@@ -442,7 +442,7 @@ class LDIFObject:
 
 	def __init__(self, filename):
 		self.fp = open(filename, 'a')
-		os.chmod(filename, 0600)
+		os.chmod(filename, 0o600)
 
 	def __print_attribute(self, attribute, value):
 		pos = len(attribute) + 2  # +colon+space
@@ -686,7 +686,7 @@ def _backup_dn_recursive(l, dn):
 	backup_file = os.path.join(BACKUP_DIR, str(time.time()))
 	ud.debug(ud.LISTENER, ud.PROCESS, 'replication: dump %s to %s' % (dn, backup_file))
 	with open(backup_file, 'w+') as fd:
-		os.fchmod(fd.fileno(), 0600)
+		os.fchmod(fd.fileno(), 0o600)
 		ldif_writer = ldifparser.LDIFWriter(fd)
 		for dn, entry in l.search_s(dn, ldap.SCOPE_SUBTREE, '(objectClass=*)', attrlist=['*', '+']):
 			ldif_writer.unparse(dn, entry)
@@ -897,7 +897,7 @@ def handler(dn, new, listener_old, operation):
 				modrdn_cache = os.path.join(STATE_DIR, old_entryUUID)
 				try:
 					with open(modrdn_cache, 'w') as f:
-						os.fchmod(f.fileno(), 0600)
+						os.fchmod(f.fileno(), 0o600)
 						f.write(dn)
 					_remove_file(CURRENT_MODRDN)
 					os.symlink(modrdn_cache, CURRENT_MODRDN)
@@ -1016,7 +1016,7 @@ def new_password():
 	listener.setuid(0)
 	try:
 		with open(ROOTPW_FILE, 'w') as fd:
-			os.fchmod(fd.fileno(), 0600)
+			os.fchmod(fd.fileno(), 0o600)
 			print >>fd, 'rootpw "%s"' % (pw.replace('\\', '\\\\').replace('"', '\\"'),)
 	finally:
 		listener.unsetuid()

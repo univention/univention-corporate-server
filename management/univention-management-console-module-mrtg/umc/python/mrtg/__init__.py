@@ -39,7 +39,8 @@ _ = Translation('univention-management-console-modules-mrtg').translate
 
 # Teststring zum Wiederfinden
 
+
 class Instance(Base):
+
 	def init(self):
 		uit.set_language(str(self.locale))
-

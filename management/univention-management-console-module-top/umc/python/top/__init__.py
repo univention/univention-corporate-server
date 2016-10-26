@@ -46,6 +46,7 @@ _ = Translation('univention-management-console-module-top').translate
 
 
 class Process(object):
+
 	"""A wrapper for psutil.Process which is able to handle API changes to support psutil 0.9 and >= 2.0"""
 
 	def __init__(self, process):
