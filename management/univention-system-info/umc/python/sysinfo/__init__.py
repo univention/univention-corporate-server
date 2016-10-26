@@ -87,7 +87,7 @@ class Instance(umcm.Base):
 				self.finished(request.id, None, message)
 				return
 			else:
-				stdout = stdout[:-1] # remove newline character
+				stdout = stdout[:-1]  # remove newline character
 				stdout_list.append(stdout)
 		result = {}
 		result['manufacturer'] = stdout_list[0]
@@ -97,10 +97,10 @@ class Instance(umcm.Base):
 		self.finished(request.id, result)
 
 	def get_system_info(self, request):
-		MANUFACTURER = request.options['manufacturer'].encode( 'utf-8' )
-		MODEL = request.options['model'].encode( 'utf-8' )
-		COMMENT = request.options['comment'].encode( 'utf-8' )
-		SYSTEM_INFO_CMD = ( '/usr/bin/univention-system-info',
+		MANUFACTURER = request.options['manufacturer'].encode('utf-8')
+		MODEL = request.options['model'].encode('utf-8')
+		COMMENT = request.options['comment'].encode('utf-8')
+		SYSTEM_INFO_CMD = ('/usr/bin/univention-system-info',
 							'-m', MANUFACTURER,
 							'-t', MODEL,
 							'-c', COMMENT,
@@ -130,7 +130,7 @@ class Instance(umcm.Base):
 						result['mem'] = result['mem'].replace('.', ',')
 					except (IndexError, ValueError):
 						pass
-			result.pop('Temp', None) # remove unnecessary entry
+			result.pop('Temp', None)  # remove unnecessary entry
 			request.status = SUCCESS
 
 		self.finished(request.id, result)
@@ -173,17 +173,17 @@ class Instance(umcm.Base):
 	@simple_response
 	def upload_traceback(self, traceback, remark, email):
 		ucr.load()
-		ucs_version = '{0}-{1} errata{2} ({3})'.format( ucr.get( 'version/version', '' ), ucr.get( 'version/patchlevel', '' ), ucr.get( 'version/erratalevel', '0' ), ucr.get( 'version/releasename', '' ) )
+		ucs_version = '{0}-{1} errata{2} ({3})'.format(ucr.get('version/version', ''), ucr.get('version/patchlevel', ''), ucr.get('version/erratalevel', '0'), ucr.get('version/releasename', ''))
 		# anonymised id of localhost
 		uuid_system = ucr.get('uuid/system', '')
 		url = ucr.get('umc/sysinfo/traceback/url', 'https://forge.univention.org/cgi-bin/system-info-traceback.py')
 		MODULE.process('Sending %s to %s' % (traceback, url))
 		request_data = {
-			'traceback' : traceback,
-			'remark' : remark,
-			'email' : email,
-			'ucs_version' : ucs_version,
-			'uuid_system' : uuid_system,
+			'traceback': traceback,
+			'remark': remark,
+			'email': email,
+			'ucs_version': ucs_version,
+			'uuid_system': uuid_system,
 		}
 		request = urllib2.Request(url, request_data)
 		urllib2.urlopen(request)

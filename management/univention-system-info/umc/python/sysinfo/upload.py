@@ -1,20 +1,20 @@
 #!/usr/bin/python2.7
 # Copyright (C) 2004,2005,2006,2008,2009 Fabien SEISEN
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-# 
+#
 # you can contact me at: <fabien@seisen.org>
 # http://fabien.seisen.org/python/
 #
@@ -36,14 +36,17 @@ import urllib2
 
 CHUNK_SIZE = 65536
 
+
 def get_content_type(filename):
     return mimetypes.guess_type(filename)[0] or 'application/octet-stream'
 
 # if sock is None, return the estimate size
+
+
 def send_data(v_vars, v_files, boundary, sock=None):
     l = 0
     for (k, v) in v_vars:
-        buffer=''
+        buffer = ''
         buffer += '--%s\r\n' % boundary
         buffer += 'Content-Disposition: form-data; name="%s"\r\n' % k
         buffer += '\r\n'
@@ -55,17 +58,17 @@ def send_data(v_vars, v_files, boundary, sock=None):
         fd = v
     	# Special case for StringIO
         print type(fd)
-        if type(fd) != file and fd.__module__ in ("StringIO", "cStringIO"):
+        if not isinstance(fd, file) and fd.__module__ in ("StringIO", "cStringIO"):
             name = k
-            fd.seek(0, 2) # EOF
+            fd.seek(0, 2)  # EOF
             file_size = fd.tell()
-            fd.seek(0) # START
+            fd.seek(0)  # START
         else:
             file_size = os.fstat(fd.fileno())[stat.ST_SIZE]
         name = fd.name.split('/')[-1]
         if isinstance(name, unicode):
             name = name.encode('UTF-8')
-        buffer=''
+        buffer = ''
         buffer += '--%s\r\n' % boundary
         buffer += 'Content-Disposition: form-data; name="%s"; filename="%s"\r\n' \
                   % (k, name)
@@ -85,7 +88,7 @@ def send_data(v_vars, v_files, boundary, sock=None):
             if sock:
                 sock.send(chunk)
         l += file_size
-    buffer='\r\n'
+    buffer = '\r\n'
     buffer += '--%s--\r\n' % boundary
     buffer += '\r\n'
     if sock:
@@ -94,16 +97,19 @@ def send_data(v_vars, v_files, boundary, sock=None):
     return l
 
 # mainly a copy of HTTPHandler from urllib2
+
+
 class newHTTPHandler(urllib2.BaseHandler):
+
     def http_open(self, req):
         return self.do_open(httplib.HTTP, req)
 
     def do_open(self, http_class, req):
         data = req.get_data()
-        v_files=[]
-        v_vars=[]
+        v_files = []
+        v_vars = []
         # mapping object (dict)
-        if req.has_data() and type(data) != str:
+        if req.has_data() and not isinstance(data, str):
             if hasattr(data, 'items'):
                 data = data.items()
             else:
@@ -113,21 +119,21 @@ class newHTTPHandler(urllib2.BaseHandler):
                 except TypeError:
                     ty, va, tb = sys.exc_info()
                     raise TypeError, "not a valid non-string sequence or mapping object", tb
-                
+
             for (k, v) in data:
                 if hasattr(v, 'read'):
                     v_files.append((k, v))
                 else:
-                    v_vars.append( (k, v) )
+                    v_vars.append((k, v))
         # no file ? convert to string
         if len(v_vars) > 0 and len(v_files) == 0:
             data = urllib.urlencode(v_vars)
-            v_files=[]
-            v_vars=[]
+            v_files = []
+            v_vars = []
         host = req.get_host()
         if not host:
             raise urllib2.URLError('no host given')
-        h = http_class(host) # will parse host:port
+        h = http_class(host)  # will parse host:port
         if req.has_data():
             h.putrequest('POST', req.get_selector())
             if not 'Content-type' in req.headers:
@@ -158,12 +164,12 @@ class newHTTPHandler(urllib2.BaseHandler):
         # to convert a socket error to a URLError.
         try:
             h.endheaders()
-        except socket.error, err:
+        except socket.error as err:
             raise urllib2.URLError(err)
 
         if req.has_data():
             print v_files
-            if len(v_files) >0:
+            if len(v_files) > 0:
                 l = send_data(v_vars, v_files, boundary, h)
             elif len(v_vars) > 0:
                 # if data is passed as dict ...
@@ -186,8 +192,10 @@ class newHTTPHandler(urllib2.BaseHandler):
 urllib2._old_HTTPHandler = urllib2.HTTPHandler
 urllib2.HTTPHandler = newHTTPHandler
 
+
 class newHTTPSHandler(newHTTPHandler):
+
     def https_open(self, req):
         return self.do_open(httplib.HTTPS, req)
-    
+
 urllib2.HTTPSHandler = newHTTPSHandler
