@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''	# workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug as ud
 import univention.lib.ldap_extension as ldap_extension
@@ -44,6 +44,7 @@ attributes = []
 
 schema_handler = ldap_extension.UniventionLDAPSchema(listener.configRegistry)
 acl_handler = ldap_extension.UniventionLDAPACL(listener.configRegistry)
+
 
 def handler(dn, new, old):
 	"""Handle LDAP schema extensions on Master and Backup"""
@@ -61,6 +62,7 @@ def handler(dn, new, old):
 	else:
 		ud.debug(ud.LISTENER, ud.ERROR, '%s: Undetermined error: unknown objectclass: %s.' % (name, ocs))
 
+
 def postrun():
 	"""Restart LDAP server Master and mark new extension objects active"""
 	global schema_handler, acl_handler
@@ -68,19 +70,19 @@ def postrun():
 	server_role = listener.configRegistry.get('server/role')
 	if not server_role == 'domaincontroller_master':
 		if not acl_handler._todo_list:
-			## In case of schema changes only restart slapd on Master
+			# In case of schema changes only restart slapd on Master
 			return
-		## Only set active flags on Master
+		# Only set active flags on Master
 		schema_handler._todo_list = []
 		acl_handler._todo_list = []
 
 	slapd_running = not subprocess.call(['pidof', 'slapd'])
-	initscript='/etc/init.d/slapd'
+	initscript = '/etc/init.d/slapd'
 	if os.path.exists(initscript) and slapd_running:
 		listener.setuid(0)
 		try:
 			if schema_handler._do_reload or acl_handler._do_reload:
-				ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,) )
+				ud.debug(ud.LISTENER, ud.PROCESS, '%s: Reloading LDAP server.' % (name,))
 				p = subprocess.Popen([initscript, 'graceful-restart'], close_fds=True)
 				p.wait()
 				for handler_object in (schema_handler, acl_handler,):
@@ -89,7 +91,7 @@ def postrun():
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: LDAP server restart returned %s.' % (name, p.returncode))
 					return
 
-			## Only set active flags on Master
+			# Only set active flags on Master
 			if server_role == 'domaincontroller_master':
 				for handler_object in (schema_handler, acl_handler,):
 					handler_object.mark_active()
