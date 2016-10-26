@@ -53,6 +53,8 @@ COMPONENTS = (ud.MAIN, ud.NETWORK, ud.SSL, ud.ADMIN, ud.MODULE, ud.AUTH, ud.PARS
 _ucr = ConfigRegistry()
 _debug_ready = False
 _debug_loglevel = 2
+
+
 def _reset_debug_loglevel():
 	global _debug_loglevel
 	_ucr.load()
@@ -88,6 +90,7 @@ def log_set_level(level=0):
 	"""
 	for component in COMPONENTS:
 		ud.set_level(component, level)
+
 
 def log_reopen():
 	"""Reopenes the logfile and reset the current loglevel"""

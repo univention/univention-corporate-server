@@ -224,10 +224,10 @@ class Module(JSON_Object):
 
 	def merge_flavors(self, other_flavors):
 		for other_flavor in other_flavors:
-			try: # merge other_flavor into self_flavor
+			try:  # merge other_flavor into self_flavor
 				self_flavor = [iflavor for iflavor in self.flavors if iflavor.id == other_flavor.id][0]
 				self_flavor.merge(other_flavor)
-			except IndexError: # add if other_flavor does not exist
+			except IndexError:  # add if other_flavor does not exist
 				RESOURCES.info('Add flavor: %s' % other_flavor.name)
 				self.flavors.append(other_flavor)
 
@@ -257,6 +257,7 @@ class Module(JSON_Object):
 
 class Link(Module):
 	pass
+
 
 class XML_Definition(ET.ElementTree):
 

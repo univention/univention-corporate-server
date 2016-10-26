@@ -195,7 +195,7 @@ class MagicBucket(object):
 		except (SSL.SysCallError, SSL.Error, socket.error) as error:
 			CRYPT.warn('SSL error in _response: %s. Probably the socket was closed by the client.' % str(error))
 			self._cleanup(state.socket)
-		except: # close the connection to the client. we can't do anything else
+		except:  # close the connection to the client. we can't do anything else
 			CORE.error('FATAL ERROR: %s' % (traceback.format_exc(),))
 			self._cleanup(state.socket)
 
@@ -332,7 +332,7 @@ class Server(signals.Provider):
 		except EnvironmentError as exc:
 			CORE.error('Cannot accept new connection: %s' % (exc,))
 			soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
-			resource.setrlimit(resource.RLIMIT_NOFILE, (soft+2, hard+2))
+			resource.setrlimit(resource.RLIMIT_NOFILE, (soft + 2, hard + 2))
 			try:
 				socket, addr = socket.accept()
 				socket.close()
@@ -379,6 +379,7 @@ class Server(signals.Provider):
 
 
 class State(object):
+
 	"""Holds information about the state of an active session
 
 	:param str client: IP address + port

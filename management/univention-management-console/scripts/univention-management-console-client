@@ -244,7 +244,7 @@ if __name__ == '__main__':
 	group.add_option('-l', '--list-options', action='store_true', dest='list_options',
 		help='if set all specified options will be assembled in a list')
 	group.add_option('-m', '--mimetype', action='store', dest='mimetype', default=umcp.MIMETYPE_JSON,
-		help = 'defines the mime type of the UMCP request body [default: %default].')
+		help='defines the mime type of the UMCP request body [default: %default].')
 	group.add_option('-o', '--option', type='string', default=[], action='append', dest='options',
 		help='append an option to the request')
 	parser.add_option_group(group)

@@ -46,6 +46,7 @@ class LDAP(object):
 
 	def connection(self, func=None, bind=None, host=None, port=None, base=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
 		hash_ = ('connection', bind, host, port, base, tuple(kwargs.items()))
+
 		def connection():
 			lo = _access(host=host, port=port, base=base, **kwargs)
 			if bind is not None:
@@ -56,6 +57,7 @@ class LDAP(object):
 	def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
 		hash_ = ('machine', bool(write), tuple(kwargs.items()))
 		kwargs.update({'ldap_master': write})
+
 		def connection():
 			try:
 				return _getMachineConnection(**kwargs)
@@ -67,6 +69,7 @@ class LDAP(object):
 
 	def admin_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
 		hash_ = ('admin', tuple(kwargs.items()))
+
 		def connection():
 			try:
 				return _getAdminConnection(**kwargs)
@@ -78,6 +81,7 @@ class LDAP(object):
 
 	def backup_connection(self, func=None, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
 		hash_ = ('backup', tuple(kwargs.items()))
+
 		def connection():
 			lo = _getBackupConnection(**kwargs)
 			return _access(lo=lo), _position(lo.base)
@@ -116,6 +120,7 @@ class LDAP(object):
 				self.__ldap_connections.pop(hash_, None)
 			else:
 				self.__ldap_connections[hash_] = conn
+
 		def getter():
 			try:
 				lo, po = self.__ldap_connections[hash_]
@@ -128,6 +133,7 @@ class LDAP(object):
 				except (TypeError, ValueError):
 					lo, po = None, None
 			return lo, po
+
 		def _decorator(func):
 			@functools.wraps(func)
 			def _decorated(*args, **kwargs):

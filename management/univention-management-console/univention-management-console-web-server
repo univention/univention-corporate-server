@@ -93,7 +93,7 @@ def log_exceptions(func):
 		try:
 			return func(*args, **kwargs)
 		except (HTTPError, HTTPRedirect, NotFound, KeyboardInterrupt, SystemExit):
-			raise # ignore system and common cherrypy exceptions
+			raise  # ignore system and common cherrypy exceptions
 		except Exception:
 			CORE.error('Traceback in %s(%r, %r):\n%s' % (func.__name__, args, kwargs, traceback.format_exc()))
 			raise
@@ -442,8 +442,8 @@ class SAMLUser(object):
 def default_error_page(status, message, traceback, version, result=None):
 	if traceback:
 		CORE.error('%s' % (traceback,))
-	#accept_json, accept_html = True, True
-	#for accept in cherrypy.request.headers.elements('Accept'):
+	# accept_json, accept_html = True, True
+	# for accept in cherrypy.request.headers.elements('Accept'):
 	#	acceptable = accept.qvalue > 0
 	#	mimetype = accept.value
 	#	if mimetype in ('*/*', 'text/*', 'text/html'):
@@ -452,7 +452,7 @@ def default_error_page(status, message, traceback, version, result=None):
 	#		accept_json = acceptable
 	is_ajax = cherrypy.request.headers.get('X-Requested-With', '').lower() == 'XMLHttpRequest'.lower()
 
-	#if not accept_json or (not is_ajax and accept_html):
+	# if not accept_json or (not is_ajax and accept_html):
 	if not is_ajax:
 		return default_error_page_html(status, message, traceback, version, result)
 	page = default_error_page_json(status, message, traceback, version, result)
@@ -583,7 +583,7 @@ class SamlError(UMC_HTTPError):
 	def no_identity_provider(self):
 		return self._('There is a configuration error in the service provider: No identity provider are set up for use.')
 
-	@error # TODO: multiple choices redirection status
+	@error  # TODO: multiple choices redirection status
 	def multiple_identity_provider(self, idps, idp_query_param):
 		return self._('Could not pick an identity provider. You can specify one via the query string parameter %(param)r from %(idps)r') % {'param': idp_query_param, 'idps': idps}
 
@@ -625,7 +625,7 @@ class Ressource(object):
 			# if the user is already authenticated at the UMC-Server
 			# we must not change the session ID cookie as this might cause
 			# race conditions in the frontend during login, especially when logged in via SAML
-			return self.get_session_id();
+			return self.get_session_id()
 		if random:
 			return str(uuid.uuid4())
 		return sessionidhash()
@@ -654,7 +654,7 @@ class Ressource(object):
 		# set the cookie once during successful authentication
 		# force expiration of cookie in 5 years from now on...
 		# IE does not support max-age
-		expires = kwargs.get('expires') or (datetime.datetime.now() + datetime.timedelta(days=5*365))
+		expires = kwargs.get('expires') or (datetime.datetime.now() + datetime.timedelta(days=5 * 365))
 		cookie = cherrypy.response.cookie
 		for name, value in cookies:
 			name = self.suffixed_cookie_name(name)
@@ -798,7 +798,7 @@ class CPGet(CPgeneric):
 		return Request('GET', arguments=[path], options=args.get('options', {}))
 
 	@cherrypy.expose
-	def session_info(self, *args ,**kwargs):
+	def session_info(self, *args, **kwargs):
 		info = {}
 		user = self.get_user()
 		if user is None:
@@ -1046,7 +1046,7 @@ class CPAuth(CPgeneric):
 		# set language based on Accept-Language header
 		try:
 			languages = cherrypy.request.headers.elements('Accept-Language')
-		except StandardError as exc:
+		except Exception as exc:
 			CORE.warn('malformed Accept-Language header: %s' % (exc,))
 			return
 		for language in languages:
@@ -1296,7 +1296,7 @@ class SAML(Ressource):
 			self.relay_state[relay_state] = cherrypy.request.uri
 
 		http_args = self.sp.apply_binding(binding, message, destination, relay_state=relay_state)
-		self.outstanding_queries[sid] = service_provider_url #cherrypy.request.uri  # TODO: shouldn't this contain service_provider_url?
+		self.outstanding_queries[sid] = service_provider_url  # cherrypy.request.uri  # TODO: shouldn't this contain service_provider_url?
 		return binding, http_args
 
 	def select_identity_provider(self):
@@ -1399,17 +1399,17 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		self.parser.add_option('-n', '--no-daemon', action='store_false',
 			dest='daemon_mode', default=True,
 			help='if set the process will not fork into the background'
-		)
+                         )
 		try:
 			default_debug = int(ucr.get('umc/server/debug/level', '1'))
 		except:
 			default_debug = 1
 		self.parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=default_debug,
 			help='if given than debugging is activated and set to the specified level [default: %default]'
-		)
+                         )
 		self.parser.add_option('-L', '--log-file', action='store', dest='logfile', default='management-console-web-server',
 			help='specifies an alternative log file [default: %default]'
-		)
+                         )
 		(self.options, self.arguments) = self.parser.parse_args()
 
 		# cleanup environment
@@ -1444,7 +1444,7 @@ class UMC_HTTP_Daemon(DaemonRunner):
 		DaemonRunner.__init__(self, self)
 		self.daemon_context.prevent_core = False
 		self.daemon_context.detach_process = self.options.daemon_mode
-		self.daemon_context.umask = 0077
+		self.daemon_context.umask = 0o077
 		self.daemon_context.files_preserve = [debug_fd]
 
 	def _restart(self):

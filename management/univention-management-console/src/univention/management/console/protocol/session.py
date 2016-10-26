@@ -202,7 +202,7 @@ class ProcessorBase(Base):
 
 		:param Request msg: UMCP request
 		"""
-		raise UMC_Error(status=405)#BAD_REQUEST_NOT_FOUND)
+		raise UMC_Error(status=405)  # BAD_REQUEST_NOT_FOUND)
 
 	handle_request_get_ucr = handle_request_unknown
 	handle_request_get_info = handle_request_unknown
@@ -699,6 +699,7 @@ class Processor(ProcessorBase):
 		return result
 
 	CHANGELOG_VERSION = re.compile('^[^(]*\(([^)]*)\).*')
+
 	def handle_request_get_info(self, request):
 		ucr.load()
 		result = {}
@@ -725,8 +726,7 @@ class Processor(ProcessorBase):
 			except (ldap.LDAPError, udm_errors.base) as exc:
 				CORE.warn('Could not search for domaincontrollers: %s' % (exc))
 				domaincontrollers = []
-			result = ['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')]
-			result.sort()
+			result = sorted(['%s.%s' % (computer['cn'][0], computer['associatedDomain'][0]) for dn, computer in domaincontrollers if computer.get('associatedDomain')])
 		return result
 
 	@sanitize(password=DictSanitizer(dict(
@@ -875,7 +875,7 @@ class SessionHandler(ProcessorBase):
 		if not self.authenticated:
 			return
 		if self.processor is not None and self.processor.auth_type is None and result.credentials['auth_type']:
-			return # don't downgrade a regular login to e.g. a SAML login
+			return  # don't downgrade a regular login to e.g. a SAML login
 		self.__credentials = result.credentials
 		if self.processor is None:
 			return

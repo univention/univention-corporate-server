@@ -40,41 +40,41 @@ from univention.management.console.acl import Rule
 
 import univention.config_registry as ucr
 
-OPERATIONS = ( 'show', 'reset', 'allow', 'remove' )
+OPERATIONS = ('show', 'reset', 'allow', 'remove')
 _cache_dir = '/var/cache/univention-management-console/acls'
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
-parser = OptionParser( usage = '%%prog (%s) [options]' % '|'.join( OPERATIONS ) )
-parser.add_option( '-u', '--user', action = 'store',
-				   dest = 'user', default = 'root',
-				   help = 'define the user who should get access [default: %default]' )
-parser.add_option( '-c', '--command', type = 'string', action = 'append',
-				   dest = 'commands', default = [],
-				   help = 'defines a list of UMC commands (or patterns)' )
-parser.add_option( '-f', '--flavor', type = 'string', action = 'store',
-				   dest = 'flavor', default = '*',
-				   help = 'defines the flavor' )
-parser.add_option( '-H', '--host', type = 'string', action = 'store',
-				   dest = 'host', default = configRegistry[ 'hostname' ],
-				   help = 'on which host the commands are allowed [default: %default]' )
+parser = OptionParser(usage='%%prog (%s) [options]' % '|'.join(OPERATIONS))
+parser.add_option('-u', '--user', action='store',
+				   dest='user', default='root',
+				   help='define the user who should get access [default: %default]')
+parser.add_option('-c', '--command', type='string', action='append',
+				   dest='commands', default=[],
+				   help='defines a list of UMC commands (or patterns)')
+parser.add_option('-f', '--flavor', type='string', action='store',
+				   dest='flavor', default='*',
+				   help='defines the flavor')
+parser.add_option('-H', '--host', type='string', action='store',
+				   dest='host', default=configRegistry['hostname'],
+				   help='on which host the commands are allowed [default: %default]')
 
-( options, args ) = parser.parse_args()
+(options, args) = parser.parse_args()
 
-if len( args ) < 1:
-	parser.error( 'operation missing' )
-	sys.exit( 1 )
-operation = args[ 0 ]
+if len(args) < 1:
+	parser.error('operation missing')
+	sys.exit(1)
+operation = args[0]
 if not operation in OPERATIONS:
-	parser.error( 'unknown operation %s' % operation )
-	sys.exit( 1 )
+	parser.error('unknown operation %s' % operation)
+	sys.exit(1)
 
-filename = os.path.join( _cache_dir, options.user.replace('/', '') )
-if os.path.isfile( filename ) and operation in ( 'show', 'allow', 'remove' ):
+filename = os.path.join(_cache_dir, options.user.replace('/', ''))
+if os.path.isfile(filename) and operation in ('show', 'allow', 'remove'):
 	try:
-		fd = open( filename )
-		acls = cPickle.load( fd )
+		fd = open(filename)
+		acls = cPickle.load(fd)
 		print 'loaded pickle file', filename
 	except:
 		acls = []
@@ -85,36 +85,36 @@ else:
 
 # convert old format
 new_acls = []
-if isinstance( acls, dict ):
-	for rule in acls[ 'allow' ]:
-		rule = Rule( rule )
+if isinstance(acls, dict):
+	for rule in acls['allow']:
+		rule = Rule(rule)
 		if not rule in new_acls:
-			new_acls.append( rule )
-else: # check for duplicates
+			new_acls.append(rule)
+else:  # check for duplicates
 	for rule in acls:
-		rule = Rule( rule )
+		rule = Rule(rule)
 		if not rule in new_acls:
-			new_acls.append( rule )
+			new_acls.append(rule)
 acls = new_acls
 
 if operation == 'show':
 	print 'Username: %s' % options.user
 	for acl in acls:
-		print '     Host: %-10s Command: %-15s Flavor: %-14s Options: %s' % ( acl.host, acl.command, acl.flavor, str( acl.options ) )
-	sys.exit( 0 )
+		print '     Host: %-10s Command: %-15s Flavor: %-14s Options: %s' % (acl.host, acl.command, acl.flavor, str(acl.options))
+	sys.exit(0)
 elif operation == 'allow':
 	for command in options.commands:
-		rule = Rule( { 'fromUser': False, 'host': options.host, 'command': command, 'flavor': options.flavor } )
+		rule = Rule({'fromUser': False, 'host': options.host, 'command': command, 'flavor': options.flavor})
 		if not rule in acls:
-			acls.append( rule )
+			acls.append(rule)
 			print 'info: rule %s appended' % command
 		else:
 			print 'warning: rule %s already exists' % command
 elif operation == 'remove':
-	acls = filter( lambda item: item.command not in options.commands,  acls )
+	acls = filter(lambda item: item.command not in options.commands, acls)
 elif operation == 'reset':
-	pass # nothing todo as the acls dict is already "reset" and will be written in the next step
+	pass  # nothing todo as the acls dict is already "reset" and will be written in the next step
 
-fd = open( filename, 'w' )
-fd.write( cPickle.dumps( acls ) )
+fd = open(filename, 'w')
+fd.write(cPickle.dumps(acls))
 fd.close()

@@ -339,7 +339,7 @@ def create_json_file(po_file):
 	json_file = po_file.replace('.po', '.json')
 	pofile = polib.pofile(po_file)
 	data = {}
-	
+
 	has_plurals = False
 	for meta_entry in pofile.ordered_metadata():
 		if meta_entry[0] == "Plural-Forms":
@@ -352,20 +352,20 @@ def create_json_file(po_file):
 	if has_plurals:
 		nplurals_start = re.search("nplurals\s*=\s*", plural_rules)
 		nplurals_end = re.search("nplurals\s*=\s*[\d]+", plural_rules)
-		
+
 		# The $plural$ string contains everything from "plural=" to the last
 		# ';'. This is a useful, since it would include illegal code, which
 		# can then be found later and generate an error.
 		plural_start = re.search("plural\s*=\s*", plural_rules)
 		plural_end = re.search('plural\s*=.*;', plural_rules)
-		
+
 		if nplurals_start is None or nplurals_end is None or \
 		   plural_start is None or plural_end is None:
 			raise Error('The plural rules in %s\'s header entry "Plural-Forms" seem to be incorrect.' % (po_file))
-		
+
 		data["$nplurals$"] = plural_rules[nplurals_start.end():nplurals_end.end()]
-		data["$plural$"] = plural_rules[plural_start.end():plural_end.end()-1]
-		
+		data["$plural$"] = plural_rules[plural_start.end():plural_end.end() - 1]
+
 		# The expression in data["$plural$"] will be evaluated via eval() in
 		# javascript. To avoid malicious code injection a simple check is
 		# performed here.
@@ -382,7 +382,7 @@ def create_json_file(po_file):
 			entries.sort(key=lambda x: int(x[0]))
 			data[entry.msgid] = [x[1] for x in entries]
 			if len(data[entry.msgid]) != int(data["$nplurals$"]):
-				raise Error('The amount of plural forms for a translation in %s doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".' % (po_file));
+				raise Error('The amount of plural forms for a translation in %s doesn\'t match "nplurals" from the file\'s header entry "Plural-Forms".' % (po_file))
 
 	with open(json_file, 'w') as fd:
 		json.dump(data, fd)

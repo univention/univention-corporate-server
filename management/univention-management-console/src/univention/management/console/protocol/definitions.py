@@ -65,9 +65,9 @@ def status_description(code):
 		404: _('Not found'),
 		405: _('Method not allowed'),
 		406: _('Invalid command arguments'),  # FIXME: HTTP violation
-		407: _('Invalid or missing command options'), # FIXME: HTTP violation
+		407: _('Invalid or missing command options'),  # FIXME: HTTP violation
 		500: _('Internal error'),
-		510: _('Module process died unexpectedly'), # FIXME: HTTP violation
+		510: _('Module process died unexpectedly'),  # FIXME: HTTP violation
 		511: _('Connection to module process failed'),  # FIXME: HTTP violation
 		551: _('Unparsable message header'),  # FIXME: HTTP violation
 		554: _('Unparsable message body'),  # FIXME: HTTP violation
