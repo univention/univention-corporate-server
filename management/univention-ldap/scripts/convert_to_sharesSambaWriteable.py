@@ -32,7 +32,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, getopt, types, re, codecs
+import sys
+import re
+import codecs
 
 import univention.admin.uldap
 import univention.admin.modules
@@ -40,37 +42,37 @@ import univention.admin.objects
 from univention.config_registry import ConfigRegistry
 
 
-co=univention.admin.config.config()
+co = univention.admin.config.config()
 baseConfig = ConfigRegistry()
 baseConfig.load()
 
-baseDN=baseConfig['ldap/base']
-position=univention.admin.uldap.position(baseDN)
+baseDN = baseConfig['ldap/base']
+position = univention.admin.uldap.position(baseDN)
 
-secretFile=open('/etc/ldap.secret','r')
-pwdLine=secretFile.readline()
-pwd=re.sub('\n','',pwdLine)
-tls=2
+secretFile = open('/etc/ldap.secret', 'r')
+pwdLine = secretFile.readline()
+pwd = re.sub('\n', '', pwdLine)
+tls = 2
 
 try:
-	lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn='cn=admin,'+baseDN, bindpw=pwd, start_tls=tls)
-except Exception, e:
+	lo = univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn='cn=admin,' + baseDN, bindpw=pwd, start_tls=tls)
+except Exception as e:
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 	print 'authentication error: %s' % str(e)
 	sys.exit(1)
 
 
-module=univention.admin.modules.get('shares/share')
-univention.admin.modules.init(lo,position,module)
+module = univention.admin.modules.get('shares/share')
+univention.admin.modules.init(lo, position, module)
 
 for object in univention.admin.modules.lookup(module, None, lo, scope='sub'):
 	object.open()
 	print 'work on DN:', codecs.latin_1_encode(univention.admin.objects.dn(object))[0]
 
 	if object['writeable'] and object['sambaWriteable']:
-		object['sambaWriteable']=object['writeable']
-		dn=object.modify()
-		lo.modify(dn,[])
+		object['sambaWriteable'] = object['writeable']
+		dn = object.modify()
+		lo.modify(dn, [])
 
 	else:
 		print "WARNING: Object is missing attributes writeable and/or sambaWriteable ! Did you already update univention-ldap ?"

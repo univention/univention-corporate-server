@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, optparse
+import sys
+import optparse
 import univention.uldap
 import univention.config_registry
 
@@ -41,19 +42,19 @@ def run():
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 
-	searchResult = lo.search( base = ucr.get('ldap/base'), filter = '(&(objectClass=univentionMailSharedFolder)(univentionMailSharedFolderDeliveryAddress=*))', attr = ['univentionMailSharedFolderDeliveryAddress'] )
+	searchResult = lo.search(base=ucr.get('ldap/base'), filter='(&(objectClass=univentionMailSharedFolder)(univentionMailSharedFolderDeliveryAddress=*))', attr=['univentionMailSharedFolderDeliveryAddress'])
 
 	for dn, attr in searchResult:
 		ml = []
 		oldval = attr['univentionMailSharedFolderDeliveryAddress']
-		newval = [ x.lower() for x in oldval ]
+		newval = [x.lower() for x in oldval]
 		if oldval != newval:
-			ml.append( ('univentionMailSharedFolderDeliveryAddress', oldval, newval ) )
+			ml.append(('univentionMailSharedFolderDeliveryAddress', oldval, newval))
 			try:
 				print 'Updating %s' % dn
-				lo.modify( dn, ml )
-			except Exception, e:
-				print >>sys.stderr, 'E: Failed to modify %s' % dn
+				lo.modify(dn, ml)
+			except Exception:
+				print >> sys.stderr, 'E: Failed to modify %s' % dn
 
 	print 'done'
 

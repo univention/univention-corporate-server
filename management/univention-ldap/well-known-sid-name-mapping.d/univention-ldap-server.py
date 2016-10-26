@@ -34,6 +34,7 @@ import univention.debug
 
 relevant_names = ('Administrator', 'Domain Admins', 'Windows Hosts')
 
+
 def postrun(modified_default_names=None):
 	if not isinstance(modified_default_names, list):
 		return

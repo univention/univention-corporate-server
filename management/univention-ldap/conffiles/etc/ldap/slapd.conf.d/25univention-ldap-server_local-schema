@@ -1,14 +1,15 @@
-
 @!@
+
 import os
 import re
 import subprocess
 
+
 def getRegisteredFiles():
 	files = []
-	registeredDirectory='/etc/univention/templates/info/'
+	registeredDirectory = '/etc/univention/templates/info/'
 	for f in os.listdir(registeredDirectory):
-		for line in open(os.path.join(registeredDirectory,f), 'r').readlines():
+		for line in open(os.path.join(registeredDirectory, f), 'r').readlines():
 			if line.startswith('File: '):
 				files.append(line.replace('File: ', '').strip())
 			elif line.startswith('Subfile: '):
@@ -18,7 +19,7 @@ def getRegisteredFiles():
 
 
 def isSchemaFileIncluded(schemaFile):
-	directoryPath='/etc/univention/templates/files/etc/ldap/slapd.conf.d/'
+	directoryPath = '/etc/univention/templates/files/etc/ldap/slapd.conf.d/'
 
 	registeredFiles = getRegisteredFiles()
 
@@ -47,5 +48,4 @@ if configRegistry.get('ldap/server/type', 'slave') == 'master':
 		for schemaFile in sorted(os.listdir('/var/lib/univention-ldap/local-schema')):
 			if not isSchemaFileIncluded(schemaFile):
 				print 'include         /var/lib/univention-ldap/local-schema/%s' % schemaFile
-
 @!@
