@@ -9,3 +9,4 @@ desc: |
  * The function 'check_ldap_tls_connection' now uses 'univention-ldapsearch'
    to better handle LDAP server restarts while joining.
 bug: [42420]
+announced: 2016-10-26
