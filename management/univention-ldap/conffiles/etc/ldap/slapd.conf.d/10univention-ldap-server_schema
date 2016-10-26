@@ -2,7 +2,7 @@
 
 @!@
 import os.path
-if baseConfig['ldap/server/type']=="master":
+if configRegistry['ldap/server/type'] == "master":
 	print 'include         /etc/ldap/schema/core.schema'
 	print 'include         /etc/ldap/schema/cosine.schema'
 	print 'include         /etc/ldap/schema/nis.schema'

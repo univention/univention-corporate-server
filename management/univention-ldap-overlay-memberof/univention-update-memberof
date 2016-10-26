@@ -42,7 +42,7 @@ if cr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroll
 	# ldap connection
 	try:
 		lo = univention.uldap.getAdminConnection()
-	except Exception, e:
+	except Exception as e:
 		print "failed to get ldap connection: %s" % e
 
 	# search groups and del/add uniqueMember
@@ -56,7 +56,7 @@ if cr.get("server/role", "dummy") in ["domaincontroller_master", "domaincontroll
 				ml = []
 				ml.append((ldap.MOD_REPLACE, "uniqueMember", uniqueMember))
 				lo.modify_s(dn, ml)
-			except Exception, e:
+			except Exception as e:
 				sys.stderr.write("E: modifing %s failed error with %s\n" % (dn, e))
 				sys.stderr.write("   please check the membership of this group\n")
 				sys.exit(1)
