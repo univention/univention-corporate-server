@@ -30,18 +30,17 @@ description = 'write user-configuration to fetchmailrc'
 filter = '(objectClass=univentionFetchmail)'
 attributes = []
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.debug
 import univention.utf8
 import re
-import ldap
 import univention.config_registry
 import univention.uldap
 import os
 import cPickle
 
-modrdn="1"
+modrdn = "1"
 
 fn_fetchmailrc = '/etc/fetchmailrc'
 __initscript = '/etc/init.d/fetchmail'
@@ -51,30 +50,36 @@ FETCHMAIL_OLD_PICKLE = "/var/spool/univention-fetchmail/fetchmail_old_dn"
 REpassword = re.compile("^poll .*? there with password '(.*?)' is '[^']+' here")
 
 # ----- function to open an textfile with setuid(0) for root-action
+
+
 def load_rc(ofile):
 	l = None
 	listener.setuid(0)
 	try:
-		f = open(ofile,"r")
+		f = open(ofile, "r")
 		l = f.readlines()
 		f.close()
-	except Exception, e:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Failed to open "%s": %s' % (ofile, str(e)) )
+	except Exception as e:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Failed to open "%s": %s' % (ofile, str(e)))
 	listener.unsetuid()
 	return l
 
 # ----- function to write to an textfile with setuid(0) for root-action
+
+
 def write_rc(flist, wfile):
 	listener.setuid(0)
 	try:
-		f = open(wfile,"w")
+		f = open(wfile, "w")
 		f.writelines(flist)
 		f.close()
-	except Exception, e:
+	except Exception as e:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Failed to write to file "%s": %s' % (wfile, str(e)))
 	listener.unsetuid()
 
 # ----- function to get current password of a user from fetchmailrc
+
+
 def get_pw_from_rc(lines, uid):
 	if not uid:
 		return None
@@ -87,50 +92,52 @@ def get_pw_from_rc(lines, uid):
 	return None
 
 # ----- function to delete an object in filerepresenting-list if old settings are found
+
+
 def objdelete(dlist, old):
-	if old and old.has_key('uid') and old['uid'][0]:
-		return [ line for line in dlist if not re.search("#UID='%s'[ \t]*$" % old['uid'][0], line) ]
+	if old and 'uid' in old and old['uid'][0]:
+		return [line for line in dlist if not re.search("#UID='%s'[ \t]*$" % old['uid'][0], line)]
 	else:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Removal of user in fetchmailrc failed: %s' % str(old.get('uid')))
 
 
 # ----- function to add new entry
-def objappend(flist, new, password = None):
+def objappend(flist, new, password=None):
 	passwd = password
 	if details_complete(new):
 		flag_ssl = ''
 		flag_keep = 'nokeep'
-		passwd = new.get('univentionFetchmailPasswd', [ passwd ])[0]
+		passwd = new.get('univentionFetchmailPasswd', [passwd])[0]
 		if new.get('univentionFetchmailUseSSL', [''])[0].upper() in ['1']:
 			flag_ssl = 'ssl'
 		if new.get('univentionFetchmailKeepMailOnServer', [''])[0].upper() in ['1']:
 			flag_keep = 'keep'
 
-		flist.append( "poll %s with proto %s auth password user '%s' there with password '%s' is '%s' here %s %s #UID='%s'\n" % \
-					  ( new['univentionFetchmailServer'][0],
+		flist.append("poll %s with proto %s auth password user '%s' there with password '%s' is '%s' here %s %s #UID='%s'\n" %
+					  (new['univentionFetchmailServer'][0],
 						new['univentionFetchmailProtocol'][0],
 						new['univentionFetchmailAddress'][0],
 						passwd,
 						new['mailPrimaryAddress'][0],
 						flag_keep,
 						flag_ssl,
-						new['uid'][0] ) )
+						new['uid'][0]))
 	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO,'Adding user to "fetchmailrc" failed')
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Adding user to "fetchmailrc" failed')
 
 
-def details_complete(obj, incl_password = False):
+def details_complete(obj, incl_password=False):
 	complete = True
 	if not obj:
 		complete = False
 	else:
-		attrlist = [ 'mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress' ]
+		attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
 		if incl_password:
-			attrlist.append( 'univentionFetchmailPasswd' )
+			attrlist.append('univentionFetchmailPasswd')
 		for attr in attrlist:
-			if not obj.get( attr ):
+			if not obj.get(attr):
 				complete = False
-			elif not obj.get( attr )[0]:
+			elif not obj.get(attr)[0]:
 				complete = False
 	return complete
 
@@ -141,13 +148,13 @@ def only_password_reset(old, new):
 		return False
 	else:
 		# if one of the following attributes changed ==> false
-		attrlist = [ 'mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress' ]
+		attrlist = ['mailPrimaryAddress', 'univentionFetchmailServer', 'univentionFetchmailProtocol', 'univentionFetchmailAddress']
 		for attr in attrlist:
-			if old.get( attr ) != new.get( attr ):
+			if old.get(attr) != new.get(attr):
 				return False
 
 		# if password hasn't been reset (reset == "old.pw and not new.pw") ==> false
-		if not old.get( 'univentionFetchmailPasswd' ) or new.get( 'univentionFetchmailPasswd' ):
+		if not old.get('univentionFetchmailPasswd') or new.get('univentionFetchmailPasswd'):
 			return False
 
 	return True
@@ -162,7 +169,7 @@ def handler(dn, new, old, command):
 		os.unlink(FETCHMAIL_OLD_PICKLE)
 	if command == 'r':
 		f = open(FETCHMAIL_OLD_PICKLE, 'w+')
-		os.chmod(FETCHMAIL_OLD_PICKLE, 0600)
+		os.chmod(FETCHMAIL_OLD_PICKLE, 0o600)
 		p = cPickle.Pickler(f)
 		old = p.dump(old)
 		p.clear_memo()
@@ -184,29 +191,29 @@ def handler(dn, new, old, command):
 		passwd = None
 		if old:
 			# old exists ==> object has been modified ==> get old password and remove object entry from rc file
-			passwd = get_pw_from_rc( flist, old.get('uid')[0] )
+			passwd = get_pw_from_rc(flist, old.get('uid')[0])
 			flist = objdelete(flist, old)
 
 		if not details_complete(new, incl_password=True):
 			if only_password_reset(old, new):
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: password has been reset - nothing to do' )
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: password has been reset - nothing to do')
 				# only password has been reset ==> nothing to do
 				return
 
 			# new obj does not contain password
 			if passwd:
 				# passwd has been set in old ==> use old password
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: using old password' )
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: using old password')
 				objappend(flist, new, passwd)
 				write_rc(flist, fn_fetchmailrc)
 			else:
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: user "%s": no password set in old and new' % new['uid'][0] )
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: user "%s": no password set in old and new' % new['uid'][0])
 		else:
 			# new obj contains password ==> use new password
 			objappend(flist, new)
 			write_rc(flist, fn_fetchmailrc)
 
-			univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: using new password' )
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: using new password')
 
 			configRegistry = univention.config_registry.ConfigRegistry()
 			configRegistry.load()
@@ -216,14 +223,16 @@ def handler(dn, new, old, command):
 				lo = univention.uldap.getMachineConnection()
 				modlist = [('univentionFetchmailPasswd', new['univentionFetchmailPasswd'][0], "")]
 				lo.modify(dn, modlist)
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: reset password successfully' )
-			except Exception, e:
-				univention.debug.debug( univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: cannot reset password in LDAP (%s): %s' % (dn, str(e)) )
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'fetchmail: reset password successfully')
+			except Exception as e:
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'fetchmail: cannot reset password in LDAP (%s): %s' % (dn, str(e)))
 			finally:
 				listener.unsetuid()
 
+
 def initialize():
 	pass
+
 
 def postrun():
 	global __initscript

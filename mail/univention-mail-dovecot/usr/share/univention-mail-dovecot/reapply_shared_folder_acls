@@ -39,6 +39,7 @@ from univention.mail.dovecot_shared_folder import DovecotSharedFolderListener
 
 
 class ListenerMockup(object):
+
 	def __init__(self, ucr):
 		self.configRegistry = ucr
 

@@ -1,14 +1,13 @@
 @!@
-hostname = baseConfig['hostname']
-domainname = baseConfig['domainname']
-myfqdn = '.'.join([ hostname, domainname ])
+hostname = configRegistry['hostname']
+domainname = configRegistry['domainname']
+myfqdn = '.'.join([hostname, domainname])
 isMurder = False
-murders = baseConfig.get('mail/cyrus/murder/servers', "")
-mail_cyrus_murder_master = baseConfig.get('mail/cyrus/murder/master')
+murders = configRegistry.get('mail/cyrus/murder/servers', "")
+mail_cyrus_murder_master = configRegistry.get('mail/cyrus/murder/master')
 
 if hostname + "$" in murders.split(" "):
 	isMurder = True
-
 
 if mail_cyrus_murder_master:
 	if mail_cyrus_murder_master == myfqdn:
@@ -37,5 +36,5 @@ if mail_cyrus_murder_master:
 		print '        # this is recommended if caching TLS sessions'
 		print '        tlsprunefrontend cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf"'
 		print ''
-		print '        # ----------------------------------------------'		
+		print '        # ----------------------------------------------'
 @!@

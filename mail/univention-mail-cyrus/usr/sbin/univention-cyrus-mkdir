@@ -59,7 +59,7 @@ for i in range(0, spamHits):
 	spamHitsValue += "*"
 
 
-sieveSpamFilter =  """# Univention Sieve Script - generated on %s
+sieveSpamFilter = """# Univention Sieve Script - generated on %s
 require "fileinto";
 
 # Spamfilter
@@ -69,6 +69,8 @@ if header :comparator "i;ascii-casemap" :contains "X-Spam-Level" "%s"  {
 }""" % (time.asctime(time.localtime()), spamHitsValue, cr.get('mail/cyrus/folder/spam', "Spam"))
 
 # save mailbox name if creation failed
+
+
 def failed(mailBox, remote, e):
 
 	sys.stderr.write("creation of mailbox %s failed with: %s\n" % (mailBox, e))
@@ -93,11 +95,11 @@ parser.add_option("-u", "--username", dest="username",
 	help="Connect to imap server as this user instead of the default (cyrus).")
 parser.add_option("-h", "--hostname", dest="hostname",
 	help="Connect to this imap server instead of the default (localhost).")
-parser.add_option("-p", "--password", dest="password", 
+parser.add_option("-p", "--password", dest="password",
 	help="Use this password for the connection instead of the default (/etc/cyrus.secret).")
-parser.set_defaults (username="cyrus")
-parser.set_defaults (hostname="localhost")
-parser.set_defaults (password=password)
+parser.set_defaults(username="cyrus")
+parser.set_defaults(hostname="localhost")
+parser.set_defaults(password=password)
 options, args = parser.parse_args()
 
 # test options
@@ -117,14 +119,14 @@ remote = False
 # remote or not remote
 if options.hostname != "localhost" or options.username != "cyrus" or options.password != password:
 	remote = True
-	
+
 # create sieve directory on localhost
 if not remote:
 	sieve = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domain[0], domain, fsUser[0], fsUser)
 	if not os.path.exists(sieve):
 		sieveDirTmp = "/var/spool/cyrus/"
-		cyrusId=pwd.getpwnam('cyrus')[2]
-		mailId=grp.getgrnam('mail')[2]
+		cyrusId = pwd.getpwnam('cyrus')[2]
+		mailId = grp.getgrnam('mail')[2]
 		sieveDirs = sieve.replace(sieveDirTmp, "")
 		for sieveDir in sieveDirs.split("/"):
 			sieveDirTmp = os.path.join(sieveDirTmp, sieveDir)
@@ -144,41 +146,43 @@ if not remote:
 			os.symlink("default.bc", sieveLink)
 			os.chown(sieveScript, cyrusId, mailId)
 			os.chown(sieveBc, cyrusId, mailId)
-	
-# overwrite hostname if mail/cyrus/murder/backend/hostname 
+
+# overwrite hostname if mail/cyrus/murder/backend/hostname
 if not remote:
 	murder = cr.get("mail/cyrus/murder/backend/hostname", "")
 	if murder:
 		options.hostname = murder
 
-		
+
 # create imap connection
 try:
 	imap = imaplib.IMAP4_SSL(options.hostname)
-except Exception, e:
+except Exception as e:
 	failed(mailPrimaryAddress, remote, e)
 
 try:
 	imap.login(options.username, options.password)
-except Exception, e:
+except Exception as e:
 	failed(mailPrimaryAddress, remote, e)
 
 # get folders
 mbs = []
 mbs.append("user/" + mailPrimaryAddress)
 if not remote:
-	
+
 	# default folders are Spam and Ham nothing else
-	
+
 	# spam
 	spamFolder = cr.get('mail/cyrus/folder/spam', "Spam")
-	if not spamFolder: spamFolder = "Spam"
+	if not spamFolder:
+		spamFolder = "Spam"
 	if spamFolder.lower() != 'none':
 		mbs.append("user/%s/%s@%s" % (user, spamFolder, domain))
 
 	# ham
 	hamFolder = cr.get('mail/cyrus/folder/ham', "Ham")
-	if not hamFolder: hamFolder = "Ham"
+	if not hamFolder:
+		hamFolder = "Ham"
 	if hamFolder.lower() != 'none':
 		mbs.append("user/%s/%s@%s" % (user, hamFolder, domain))
 
@@ -195,8 +199,8 @@ for mb in mbs:
 	#    BAD - command unknown or arguments invalid
 	# we need OK
 	res, msg = imap.create(mb)
-	#if res.lower() != "ok":
-	#	failed(mailPrimaryAddress, remote, msg)
+	# if res.lower() != "ok":
+	# 	failed(mailPrimaryAddress, remote, msg)
 	#
 
 imap.logout()
@@ -207,4 +211,3 @@ if not remote:
 		os.unlink(path)
 
 sys.exit(0)
-
