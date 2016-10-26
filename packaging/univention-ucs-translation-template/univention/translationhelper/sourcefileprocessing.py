@@ -38,6 +38,7 @@ class UnsupportedSourceType(Exception):
 
 
 class SourceFileSet(object):
+
 	def __init__(self, src_pkg_path, files):
 		self.files = files
 		self.src_pkg_path = src_pkg_path
@@ -47,27 +48,32 @@ class SourceFileSet(object):
 
 
 class SourceFilesXgettext(SourceFileSet):
+
 	def process(self, gettext_lang, new_po_path, files):
 		pofile.join_existing(gettext_lang, new_po_path, files, cwd=self.src_pkg_path)
 
 
 class SourceFilesShell(SourceFilesXgettext):
+
 	def process(self, new_po_path):
 		super(SourceFilesShell, self).process('Shell', new_po_path, self.files)
 
 
 class SourceFilesPython(SourceFilesXgettext):
+
 	def process(self, new_po_path):
 		super(SourceFilesPython, self).process('Python', new_po_path, self.files)
 
 
 class SourceFilesJavaScript(SourceFilesXgettext):
+
 	def process(self, new_po_path):
 		# xgettext in UCS 4.1 has no 'JavaScript' language option
 		super(SourceFilesJavaScript, self).process('Python', new_po_path, self.files)
 
 
 class SourceFilesHTML(SourceFileSet):
+
 	def process(self, new_po_path):
 		new_po = polib.pofile(new_po_path)
 		html_parser = etree.HTMLParser()
@@ -97,7 +103,7 @@ class SourceFileSetFactory(object):
 		try:
 			obj = cls._map[mimetype](src_pkg_path, files)
 		except KeyError:
-			raise(UnsupportedSourceType(files))
+			raise UnsupportedSourceType(files)
 		else:
 			return obj
 
