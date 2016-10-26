@@ -62,6 +62,7 @@ class NoSpecialCaseDefintionsFound(Exception):
 
 
 class UMCModuleTranslation(dh_umc.UMC_Module):
+
 	def __init__(self, attrs, target_language):
 		attrs['target_language'] = target_language
 		return super(UMCModuleTranslation, self).__init__(attrs)
@@ -131,8 +132,10 @@ class UMCModuleTranslation(dh_umc.UMC_Module):
 
 
 class SpecialCase():
+
 	"""Consumes special case definition and computes resulting sets of source
 	files"""
+
 	def __init__(self, special_case_definition, source_dir, path_to_definition, target_language):
 		self.__dict__.update(special_case_definition)
 		def_relative = os.path.relpath(path_to_definition, start=source_dir)
@@ -174,6 +177,7 @@ Value must be valid regular expression.""".format(self.path_to_definition))
 
 
 class MIMEChecker():
+
 	def __init__(self):
 		self._ms = magic.open(magic.MIME_TYPE)
 		self._ms.load()
