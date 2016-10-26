@@ -36,6 +36,7 @@ import os.path
 import ConfigParser
 import shlex
 from argparse import Action
+from contextlib import contextmanager
 
 from univention.config_registry.backend import _ConfigRegistry
 
@@ -87,14 +88,31 @@ class Configure(UniventionAppAction, DockerActionMixin):
 			self._set_config(args.app, set_vars)
 
 	@classmethod
+	@contextmanager
+	def _locked_app_ucr(cls, app):
+		ucr_file = cls._get_app_ucr_filename(app)
+		ucr = _ConfigRegistry(ucr_file)
+		ucr.lock()
+		try:
+			ucr.load()
+			yield ucr
+		finally:
+			ucr.unlock()
+
+	@classmethod
 	def _get_app_ucr(cls, app):
+		ucr_file = cls._get_app_ucr_filename(app)
+		ucr = _ConfigRegistry(ucr_file)
+		ucr.load()
+		return ucr
+
+	@classmethod
+	def _get_app_ucr_filename(cls, app):
 		docker = cls._get_docker(app)
 		ucr_file = docker.path('/etc/univention/base.conf')
 		if ucr_file:
 			mkdir(os.path.dirname(ucr_file))
-			ucr = _ConfigRegistry(ucr_file)
-			ucr.load()
-			return ucr
+			return ucr_file
 		raise NoDatabaseFound()
 
 	@classmethod
@@ -165,25 +183,21 @@ class Configure(UniventionAppAction, DockerActionMixin):
 		self._set_config_via_tool(app, set_vars)
 
 	def _set_config_directly(self, app, set_vars):
-		_ucr = self._get_app_ucr(app)
-		variables = self.list_config(app)
-		for key, value in set_vars.iteritems():
-			# if this was one of the defined variables
-			# and it is boolean, format it to "true"/"false"
-			for variable in variables:
-				if variable['id'] == key:
-					if variable['type'] == 'bool':
-						value = str(ucr_evaluated_as_true(str(value))).lower()
+		with self._locked_app_ucr(app) as _ucr:
+			variables = self.list_config(app)
+			for key, value in set_vars.iteritems():
+				# if this was one of the defined variables
+				# and it is boolean, format it to "true"/"false"
+				for variable in variables:
+					if variable['id'] == key:
+						if variable['type'] == 'bool':
+							value = str(ucr_evaluated_as_true(str(value))).lower()
 
-			if value is None:
-				_ucr.pop(key, None)
-			else:
-				_ucr[key] = str(value)
-		_ucr.lock()
-		try:
+				if value is None:
+					_ucr.pop(key, None)
+				else:
+					_ucr[key] = str(value)
 			_ucr.save()
-		finally:
-			_ucr.unlock()
 
 	def _set_config_via_tool(self, app, set_vars):
 		docker = self._get_docker(app)

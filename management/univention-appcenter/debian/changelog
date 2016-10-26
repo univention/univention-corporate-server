@@ -1,3 +1,9 @@
+univention-appcenter (5.0.22-23) unstable; urgency=medium
+
+  * Bug #42619: Also improve UCR funtions for Non-UCS containers
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Oct 2016 16:58:53 +0200
+
 univention-appcenter (5.0.22-22) unstable; urgency=medium
 
   * Bug #42619: Remove dangerous use of UCR functions
