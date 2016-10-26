@@ -44,6 +44,6 @@ _ = umc.Translation('univention-management-console-modules-mrtg').translate
 # Teststring zum Wiederfinden
 
 class Instance(umcm.Base):
+
 	def init(self):
 		uit.set_language(str(self.locale))
-

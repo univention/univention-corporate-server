@@ -48,7 +48,9 @@ import univention.config_registry
 
 _ = umc.Translation('univention-management-console-module-services').translate
 
+
 class Instance(umcm.Base):
+
 	def _run_it(self, services, action):
 		failed = []
 		for srv in services:
@@ -69,7 +71,7 @@ class Instance(umcm.Base):
 			entry['service'] = name
 			if 'description' in srv:
 				try:
-					lang = _.im_self.locale.language
+					lang = _.__self__.locale.language
 					if lang in (None, 'C'):
 						lang = 'en'
 					entry['description'] = srv['description[%s]' % lang]
@@ -84,9 +86,9 @@ class Instance(umcm.Base):
 			if not ucr.get(key):
 				entry['autostart'] = 'yes'
 			elif ucr.get(key).lower() in ('no'):
-				entry['autostart']  = 'no'
+				entry['autostart'] = 'no'
 			elif ucr.get(key).lower() in ('manually'):
-				entry['autostart']  = 'manually'
+				entry['autostart'] = 'manually'
 			else:
 				entry['autostart'] = 'yes'
 			# Check if service is running

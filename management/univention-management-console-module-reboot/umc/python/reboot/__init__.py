@@ -36,4 +36,6 @@ from univention.management.console.modules import Base
 
 _ = umc.Translation('univention-management-console-module-reboot').translate
 
-class Instance(Base): pass
+
+class Instance(Base):
+    pass
