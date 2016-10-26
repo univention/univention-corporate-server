@@ -43,107 +43,110 @@ from univention.config_registry_info import ConfigRegistryInfo, Variable
 
 import univention.info_tools as uit
 
-_ = Translation( 'univention-management-console-module-ucr' ).translate
+_ = Translation('univention-management-console-module-ucr').translate
 
-class Instance( Base ):
+
+class Instance(Base):
+
 	def init(self):
 		# set the language in order to return the correctly localized labels/descriptions
-		uit.set_language( self.locale.language )
+		uit.set_language(self.locale.language)
 
-	def __create_variable_info( self, options ):
-		all_info = ConfigRegistryInfo( registered_only = False )
-		info = ConfigRegistryInfo( install_mode = True )
+	def __create_variable_info(self, options):
+		all_info = ConfigRegistryInfo(registered_only=False)
+		info = ConfigRegistryInfo(install_mode=True)
 		info.read_customized()
 		var = Variable()
 
 		# description
-		for line in options[ 'descriptions' ]:
-			text = line[ 'text' ]
-			if not text: continue
+		for line in options['descriptions']:
+			text = line['text']
+			if not text:
+				continue
 			if 'lang' in line:
-				var[ 'description[%s]' % line[ 'lang' ] ] = text
+				var['description[%s]' % line['lang']] = text
 			else:
-				var[ 'description' ] = text
+				var['description'] = text
 		# categories
-		if options[ 'categories' ]:
-			var[ 'categories' ] = ','.join( options[ 'categories' ] )
+		if options['categories']:
+			var['categories'] = ','.join(options['categories'])
 
 		# type
-		var[ 'type' ] = options[ 'type' ]
+		var['type'] = options['type']
 
 		# are there any modifications?
-		old_value = all_info.get_variable( options[ 'key' ] )
+		old_value = all_info.get_variable(options['key'])
 		if old_value != var:
 			# save
-			info.add_variable( options[ 'key' ], var )
+			info.add_variable(options['key'], var)
 			info.write_customized()
 
-	def is_readonly( self, key ):
-		ucrinfo_system = ConfigRegistryInfo( registered_only = False, load_customized = False )
-		var = ucrinfo_system.get_variable( key )
+	def is_readonly(self, key):
+		ucrinfo_system = ConfigRegistryInfo(registered_only=False, load_customized=False)
+		var = ucrinfo_system.get_variable(key)
 		if var:
-			return var.get( 'readonly' ) in  ( 'yes', '1', 'true' )
+			return var.get('readonly') in ('yes', '1', 'true')
 		return False
 
-	def add( self, request ):
+	def add(self, request):
 		# does the same as put
-		self.put( request )
+		self.put(request)
 
-	def put( self, request ):
+	def put(self, request):
 		message = ''
 		request.status = SUCCESS
 		success = True
-		if isinstance( request.options, ( list, tuple ) ):
+		if isinstance(request.options, (list, tuple)):
 			for _var in request.options:
 				try:
 					var = _var['object']
 					value = var['value'] or ''
 					key = var['key']
-					if self.is_readonly( key ):
+					if self.is_readonly(key):
 						success = False
-						message = _( 'The UCR variable %s is read-only and can not be changed!' ) % key
+						message = _('The UCR variable %s is read-only and can not be changed!') % key
 						break
-					arg = [ '%s=%s' % ( key.encode(), value.encode() ) ]
-					ucr.handler_set( arg )
+					arg = ['%s=%s' % (key.encode(), value.encode())]
+					ucr.handler_set(arg)
 
 					# handle descriptions, type, and categories
 					if 'descriptions' in var or 'type' in var or 'categories' in var:
-						self.__create_variable_info( var )
+						self.__create_variable_info(var)
 				except KeyError:
 					# handle the case that neither key nor value are given for an UCR variable entry
 					request.status = BAD_REQUEST_INVALID_OPTS
-					self.finished(request.id, False, message = _('Invalid UCR variable entry, the properties "key" and "value" need to be specified.'))
+					self.finished(request.id, False, message=_('Invalid UCR variable entry, the properties "key" and "value" need to be specified.'))
 					return
 		else:
 			success = False
 			request.status = BAD_REQUEST_INVALID_OPTS
 
-		self.finished( request.id, success, message )
+		self.finished(request.id, success, message)
 
-	def remove( self, request ):
-		variables = filter( lambda x: x is not None, map( lambda x: x.get( 'object' ), request.options ) )
+	def remove(self, request):
+		variables = filter(lambda x: x is not None, map(lambda x: x.get('object'), request.options))
 		for var in variables:
-			if self.is_readonly( var ):
-				message = _( 'The UCR variable %s is read-only and can not be removed!' ) % var
-				self.finished( request.id, False, message )
+			if self.is_readonly(var):
+				message = _('The UCR variable %s is read-only and can not be removed!') % var
+				self.finished(request.id, False, message)
 				return
 
-		ucr.handler_unset( variables )
-		self.finished( request.id, True )
+		ucr.handler_unset(variables)
+		self.finished(request.id, True)
 
-	def get( self, request ):
+	def get(self, request):
 		ucrReg = ucr.ConfigRegistry()
 		ucrReg.load()
-		ucrInfo = ConfigRegistryInfo( registered_only = False )
+		ucrInfo = ConfigRegistryInfo(registered_only=False)
 
 		# iterate over all requested variables
 		results = []
 		for key in request.options:
-			info = ucrInfo.get_variable( str( key ) )
-			value = ucrReg.get( str( key ) )
+			info = ucrInfo.get_variable(str(key))
+			value = ucrReg.get(str(key))
 			if not info and (value or '' == value):
 				# only the value available
-				results.append( {'key': key, 'value': value} )
+				results.append({'key': key, 'value': value})
 			elif info:
 				# info (categories etc.) available
 				info['value'] = value
@@ -152,12 +155,12 @@ class Instance( Base ):
 			else:
 				# variable not available, request failed
 				request.status = BAD_REQUEST_INVALID_OPTS
-				self.finished( request.id, False, message = _( 'The UCR variable %(key)s could not be found' ) % { 'key' : key } )
+				self.finished(request.id, False, message=_('The UCR variable %(key)s could not be found') % {'key': key})
 				return
-		self.finished( request.id, results )
+		self.finished(request.id, results)
 
-	def categories( self, request ):
-		ucrInfo = ConfigRegistryInfo( registered_only = False )
+	def categories(self, request):
+		ucrInfo = ConfigRegistryInfo(registered_only=False)
 		categories = []
 		for id, obj in ucrInfo.categories.iteritems():
 			name = obj['name']
@@ -165,7 +168,7 @@ class Instance( Base ):
 				'id': id,
 				'label': name
 			})
-		self.finished( request.id, categories )
+		self.finished(request.id, categories)
 
 	@sanitize(pattern=PatternSanitizer(default='.*'), key=ChoicesSanitizer(['all', 'key', 'value', 'description'], required=True))
 	@simple_response
@@ -190,11 +193,14 @@ class Instance( Base ):
 
 		def _match_value(name, var):
 			return var.value and pattern.match(var.value)
+
 		def _match_key(name, var):
 			return pattern.match(name)
+
 		def _match_description(name, var):
 			descr = var.get('description')
 			return descr and pattern.match(descr)
+
 		def _match_all(name, var):
 			return _match_value(name, var) or _match_description(name, var) or _match_key(name, var)
 
@@ -206,4 +212,3 @@ class Instance( Base ):
 				                  'description': var.get('description', None), })
 
 		return variables
-
