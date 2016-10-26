@@ -31,7 +31,6 @@
 """Univention IP-Phone Example UDM Client."""
 
 import sys
-import os
 import univention.debug
 univention.debug.init('/var/log/univention/ip-phone-tool.log', univention.debug.FLUSH, univention.debug.NO_FUNCTION)
 
@@ -49,7 +48,9 @@ univention.admin.localization.locale.setlocale(univention.admin.localization.loc
 translation = univention.admin.localization.translation('univention.admin.handlers.test')
 _ = translation.translate
 
-class ipphonetool:
+
+class ipphonetool(object):
+
 	"""Simple example demonstrating how to implement and how to use custom Univention Directory Manager modules.
 	This is an example tool to manage IP phones.
 	"""
@@ -69,8 +70,8 @@ class ipphonetool:
 			server_role = ucr.get('server/role', '')
 			if server_role in ('domaincontroller_master', 'domaincontroller_backup'):
 				try:
-					bindpw = open('/etc/ldap.secret','r').read().strip()
-				except IOError, e:
+					bindpw = open('/etc/ldap.secret', 'r').read().strip()
+				except IOError as e:
 					print >>sys.stderr, "Could not read credentials."
 					sys.exit(1)
 			else:
@@ -79,7 +80,7 @@ class ipphonetool:
 
 		try:
 			self.lo = univention.admin.uldap.access(host=ldap_master, base=self.ldap_base, binddn=binddn, bindpw=bindpw, start_tls=2)
-		except Exception, e:
+		except Exception as e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 			print 'authentication error: %s' % str(e)
 			sys.exit(1)
@@ -112,7 +113,7 @@ class ipphonetool:
 			if 'redirection' not in obj.options:
 				obj.options.append('redirection')
 			obj['redirect_user'] = options.redirect
-		else:		## if no redirection is given, this example removes the objectclass
+		else:  # if no redirection is given, this example removes the objectclass
 			if 'redirection' in obj.options:
 				obj.options.remove('redirection')
 			obj['redirect_user'] = options.redirect
@@ -120,14 +121,14 @@ class ipphonetool:
 		if objs:
 			try:
 				obj.modify()
-			except univention.admin.uexceptions.ldapError, e:
+			except univention.admin.uexceptions.ldapError as e:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not modify entry: %s' % e)
 				print >>sys.stderr, 'Could not modify entry: %s' % name
 				sys.exit(1)
 		else:
 			try:
 				obj.create()
-			except univention.admin.uexceptions.ldapError, e:
+			except univention.admin.uexceptions.ldapError as e:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not create entry: %s' % e)
 				print >>sys.stderr, 'Could not create entry: %s' % name
 				sys.exit(1)
@@ -142,7 +143,7 @@ class ipphonetool:
 			obj = objs[0]
 			try:
 				obj.remove()
-			except univention.admin.uexceptions.ldapError, e:
+			except univention.admin.uexceptions.ldapError as e:
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not remove entry: %s' % e)
 				print >>sys.stderr, 'Could not remove entry: %s' % name
 				sys.exit(1)
@@ -161,7 +162,7 @@ class ipphonetool:
 				sys.exit(1)
 
 			object = univention.admin.objects.get(self.module, self.co, self.lo, position=self.position, dn=dn[0])
-			object.open()						## open the object
+			object.open()  # open the object
 
 			if 'redirection' in object.options:
 				object.options.remove('redirection')
@@ -173,11 +174,11 @@ class ipphonetool:
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ip-phone-tool: Redirection deactivated')
 
-		except univention.admin.uexceptions.valueError, e:
+		except univention.admin.uexceptions.valueError as e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'error: invalid syntax (%s)' % e)
 			print >>sys.stderr, 'Could not modify entry: %s' % name
 			sys.exit(1)
-		except univention.admin.uexceptions.ldapError, e:
+		except univention.admin.uexceptions.ldapError as e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Could not modify entry: %s' % e)
 			print >>sys.stderr, 'Could not modify entry: %s' % name
 			sys.exit(1)
@@ -192,36 +193,36 @@ if __name__ == '__main__':
    or   ip-phone-tool remove voip1""")
 
 	parser = OptionParser(usage=usage)
-	parser.add_option( '-D', '--binddn',
-			action = 'store', dest = 'binddn',
-			help = _('LDAP Bind DN') )
-	parser.add_option( '-w', '--bindpw',
-			action = 'store', dest = 'bindpw',
-			help = _('LDAP Bind Password') )
-	parser.add_option( '-W',
-			action = 'store_true', dest = 'ask_pass', default = False,
-			help = _('Prompt for password') )
-	parser.add_option( '-y', '--password-file',
-			action = 'store', dest = 'password_file',
-			help = _('Read password from file') )
-	parser.add_option( '-v', '--verbose',
-			action = 'count', dest = 'verbose',
-			help = _('Print additional information') )
+	parser.add_option('-D', '--binddn',
+			action='store', dest='binddn',
+			help=_('LDAP Bind DN'))
+	parser.add_option('-w', '--bindpw',
+			action='store', dest='bindpw',
+			help=_('LDAP Bind Password'))
+	parser.add_option('-W',
+			action='store_true', dest='ask_pass', default=False,
+			help=_('Prompt for password'))
+	parser.add_option('-y', '--password-file',
+			action='store', dest='password_file',
+			help=_('Read password from file'))
+	parser.add_option('-v', '--verbose',
+			action='count', dest='verbose',
+			help=_('Print additional information'))
 
 	def check_debuglevel(option, opt_str, value, parser):
 		if value < 0 or value > 4:
 			raise OptionValueError("valid values for option %s are [0-4]" % opt_str)
 		setattr(parser.values, option.dest, value)
-	parser.add_option( '-d', type = 'int', dest = 'debuglevel', default = 1,
-			action = 'callback', callback = check_debuglevel,
-			help = _('Set debug level') )
-	parser.add_option( '-U', '--user',
-			action = 'store', dest = 'username',
-			help = _('Username') )
+	parser.add_option('-d', type='int', dest='debuglevel', default=1,
+			action='callback', callback=check_debuglevel,
+			help=_('Set debug level'))
+	parser.add_option('-U', '--user',
+			action='store', dest='username',
+			help=_('Username'))
 
-	parser.add_option( '--redirect',
-			action = 'store', dest = 'redirect',
-			help = _('Redirect address') )
+	parser.add_option('--redirect',
+			action='store', dest='redirect',
+			help=_('Redirect address'))
 	(options, arguments) = parser.parse_args()
 
 	if options.debuglevel:
@@ -240,17 +241,17 @@ if __name__ == '__main__':
 		if len(arguments) < 4:
 			parser.print_usage(sys.stderr)
 			sys.exit(2)
-		udm_ipphone.set( options, arguments[1], arguments[2], arguments[3] )
-	elif  arguments[0] == 'remove':
+		udm_ipphone.set(options, arguments[1], arguments[2], arguments[3])
+	elif arguments[0] == 'remove':
 		if len(arguments) < 2:
 			parser.print_usage(sys.stderr)
 			sys.exit(2)
-		udm_ipphone.remove( arguments[1] )
-	elif  arguments[0] == 'clear_redirect':
+		udm_ipphone.remove(arguments[1])
+	elif arguments[0] == 'clear_redirect':
 		if len(arguments) < 2:
 			parser.print_usage(sys.stderr)
 			sys.exit(2)
-		udm_ipphone.clear_redirect( arguments[1] )
+		udm_ipphone.clear_redirect(arguments[1])
 	else:
 		parser.print_usage(sys.stderr)
 		sys.exit(2)
