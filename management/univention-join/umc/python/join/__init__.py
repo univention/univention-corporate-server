@@ -85,6 +85,7 @@ def get_master_dns_lookup():
 
 
 class HostSanitizer(StringSanitizer):
+
 	def _sanitize(self, value, name, further_args):
 		value = super(HostSanitizer, self)._sanitize(value, name, further_args)
 		try:
@@ -95,6 +96,7 @@ class HostSanitizer(StringSanitizer):
 
 
 class Progress(object):
+
 	def __init__(self, max_steps=100):
 		self.reset(max_steps)
 
@@ -137,17 +139,20 @@ class Progress(object):
 	def step_handler(self, steps):
 		self.steps = steps
 
-	def add_steps(self, steps = 1):
+	def add_steps(self, steps=1):
 		self.steps += steps
 
 # dummy function that does nothing
+
+
 def _dummyFunc(*args):
 	pass
 
-def system_join(hostname, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, critical_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
+
+def system_join(hostname, username, password, info_handler=_dummyFunc, error_handler=_dummyFunc, critical_handler=_dummyFunc, step_handler=_dummyFunc, component_handler=_dummyFunc):
 	# get the number of join scripts
 	nJoinScripts = len(glob.glob('%s/*.inst' % INSTDIR))
-	stepsPerScript = 100.0 / (nJoinScripts+1)
+	stepsPerScript = 100.0 / (nJoinScripts + 1)
 
 	with tempfile.NamedTemporaryFile() as passwordFile:
 		passwordFile.write('%s' % password)
@@ -158,7 +163,8 @@ def system_join(hostname, username, password, info_handler = _dummyFunc, error_h
 
 		return run(cmd, stepsPerScript, info_handler, error_handler, critical_handler, step_handler, component_handler)
 
-def run_join_scripts(scripts, force, username, password, info_handler = _dummyFunc, error_handler = _dummyFunc, critical_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
+
+def run_join_scripts(scripts, force, username, password, info_handler=_dummyFunc, error_handler=_dummyFunc, critical_handler=_dummyFunc, step_handler=_dummyFunc, component_handler=_dummyFunc):
 	with tempfile.NamedTemporaryFile() as passwordFile:
 		cmd = ['/usr/sbin/univention-run-join-scripts']
 		if username and password:
@@ -176,12 +182,13 @@ def run_join_scripts(scripts, force, username, password, info_handler = _dummyFu
 		else:
 			# we need the number of join scripts for the progressbar
 			scripts = os.listdir(INSTDIR)
-		stepsPerScript = 100.0 / (len(scripts)+1)
+		stepsPerScript = 100.0 / (len(scripts) + 1)
 
 		MODULE.process('Executing join scripts ...')
 		return run(cmd, stepsPerScript, info_handler, error_handler, critical_handler, step_handler, component_handler)
 
-def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFunc, critical_handler = _dummyFunc, step_handler = _dummyFunc, component_handler = _dummyFunc):
+
+def run(cmd, stepsPerScript, info_handler=_dummyFunc, error_handler=_dummyFunc, critical_handler=_dummyFunc, step_handler=_dummyFunc, component_handler=_dummyFunc):
 	# disable UMC/apache restart
 	MODULE.info('disabling UMC and apache server restart')
 	subprocess.call(CMD_DISABLE_EXEC)
@@ -231,7 +238,7 @@ def run(cmd, stepsPerScript, info_handler = _dummyFunc, error_handler = _dummyFu
 			m = regInfo.match(line)
 			if m:
 				info_handler(m.groupdict().get('message'))
-				step_handler(stepsPerScript/10)
+				step_handler(stepsPerScript / 10)
 				continue
 
 		# get all remaining output
@@ -263,6 +270,7 @@ LOCKFILE = '/var/lock/univention_umc_join.lock'
 RE_JOINFILE = re.compile('^(?P<script>(?P<prio>\d\d)(?P<name>.+))\.(inst|uinst)$')
 RE_NOT_CONFIGURED = re.compile("^Warning: '([^']+)' is not configured.$")
 RE_ERROR = re.compile('^Error: (.*?)$')
+
 
 class Instance(Base):
 
@@ -348,7 +356,7 @@ class Instance(Base):
 	@property
 	def _joined(self):
 		return os.path.exists('/var/univention-join/joined')
-	
+
 	@property
 	def _running(self):
 		return os.path.exists(LOCKFILE)
@@ -356,14 +364,14 @@ class Instance(Base):
 	def _lock(self):
 		try:
 			open(LOCKFILE, 'a').close()
-		except (IOError, OSError), ex:
+		except (IOError, OSError) as ex:
 			MODULE.warn('_lock: %s' % (ex))
 
 	def _unlock(self):
 		try:
 			if self._running:
 				os.unlink(LOCKFILE)
-		except (IOError, OSError), ex:
+		except (IOError, OSError) as ex:
 			MODULE.warn('_unlock: %s' % (ex))
 
 	def __del__(self):

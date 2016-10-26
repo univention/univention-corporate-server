@@ -39,12 +39,14 @@ from optparse import OptionParser
 
 from univention.debhelper import doIt, binary_packages
 
+
 def debhelper_file(package, ext):
 	"""Name of a package configuration file."""
 	return os.path.join('debian', '%s.%s.debhelper' % (package, ext))
 
 JOINSCRIPT_DIR = '/usr/lib/univention-install'
 UNJOINSCRIPT_DIR = '/usr/lib/univention-uninstall'
+
 
 def _install_script(package, script_name, script_dir, dest_filename=None):
 	for filename in os.listdir('.'):
@@ -58,6 +60,7 @@ def _install_script(package, script_name, script_dir, dest_filename=None):
 			doIt('install', '-m', '755', filename, dest_filename)
 
 			return filename
+
 
 def install_joinscript(package, unjoinscript_name=None):
 	joinscript_name = _install_script(package, '%s.inst' % package, JOINSCRIPT_DIR)
@@ -87,6 +90,7 @@ def install_joinscript(package, unjoinscript_name=None):
 
 	return joinscript_name
 
+
 def install_unjoinscript(package):
 	unjoinscript_name = _install_script(package, '%s.uinst' % package, UNJOINSCRIPT_DIR) or _install_script(package, '%s-uninstall.uinst' % package, UNJOINSCRIPT_DIR)
 	if unjoinscript_name:
@@ -106,6 +110,7 @@ def install_unjoinscript(package):
 			postrm.write('# End automatically added section\n')
 
 	return unjoinscript_name
+
 
 def main():
 	"""Install (un)joinscripts."""
@@ -130,7 +135,7 @@ The unjoinscript *.uinst goes to /usr/lib/univention-uninstall/
 		for package in binary_packages():
 			unjoinscript_name = install_unjoinscript(package)
 			install_joinscript(package, unjoinscript_name)
-	except IOError, ex:
+	except IOError as ex:
 		print >> sys.stderr, ex
 		sys.exit(1)
 
