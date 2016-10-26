@@ -41,6 +41,7 @@ from ...config import ucr
 
 
 class Widget(object):
+
 	"""
 	Describes a widget for the web frontend.
 	"""
@@ -232,7 +233,7 @@ def choices(syntax, udm_property):
 		return opts
 
 	return {
-		'staticValues': [{'id': _[0], 'label': _[1],} for _ in getattr(syntax, 'choices', [])],
+		'staticValues': [{'id': _[0], 'label': _[1], } for _ in getattr(syntax, 'choices', [])],
 	}
 
 
