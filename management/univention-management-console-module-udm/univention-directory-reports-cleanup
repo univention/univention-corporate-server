@@ -39,18 +39,18 @@ configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 now = time.time()
-max_age = int( configRegistry.get( 'directory/reports/cleanup/age', '43200' ) )
+max_age = int(configRegistry.get('directory/reports/cleanup/age', '43200'))
 
 old = []
 dirname = '/var/www/univention-directory-reports'
-for f in os.listdir( dirname ):
-	if not f.startswith( 'univention-directory-reports-' ) or not f.endswith( '.pdf' ):
+for f in os.listdir(dirname):
+	if not f.startswith('univention-directory-reports-') or not f.endswith('.pdf'):
 		continue
-	creation_date = os.stat( os.path.join( dirname, f ) )[ 8 ]
+	creation_date = os.stat(os.path.join(dirname, f))[8]
 	age = now - creation_date
 	if age > max_age:
-		old.append( f )
+		old.append(f)
 
 if old:
 	for f in old:
-		os.unlink( os.path.join( dirname, f ) )
+		os.unlink(os.path.join(dirname, f))

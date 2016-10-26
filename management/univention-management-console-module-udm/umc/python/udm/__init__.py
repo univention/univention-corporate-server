@@ -791,7 +791,7 @@ class Instance(Base, ProgressMixin):
 	@bundled
 	@sanitize(
 		objectType=StringSanitizer(),
-#		objectDN=StringSanitizer(allow_none=True),
+     #		objectDN=StringSanitizer(allow_none=True),
 	)
 	def layout(self, request):
 		"""Returns the layout information for the given object type.
@@ -1072,8 +1072,8 @@ class Instance(Base, ProgressMixin):
 		policyType=StringSanitizer(required=True),
 		objectDN=Sanitizer(default=None),
 		container=Sanitizer(default=None)
-		#objectDN=StringSanitizer(default=None, allow_none=True),
-		#container=StringSanitizer(default=None, allow_none=True)
+		# objectDN=StringSanitizer(default=None, allow_none=True),
+		# container=StringSanitizer(default=None, allow_none=True)
 	)))
 	def object_policies(self, request):
 		"""Returns a virtual policy object containing the values that
@@ -1218,7 +1218,7 @@ class Instance(Base, ProgressMixin):
 			urlopen(request)
 		except (urllib2.HTTPError, urllib2.URLError, IOError) as exc:
 			strerror = ''
-			if hasattr(exc, 'read'): # try to parse an html error
+			if hasattr(exc, 'read'):  # try to parse an html error
 				body = exc.read()
 				match = re.search('<span id="details">(?P<details>.*?)</span>', body, flags=re.DOTALL)
 				if match:
@@ -1232,10 +1232,10 @@ class Instance(Base, ProgressMixin):
 					version = ucr.get('version/version')
 					errno = exc.errno
 					strerror += getattr(exc, 'strerror', '') or ''
-					if errno == 1: # gaierror(1, something like 'SSL Unknown protocol')
+					if errno == 1:  # gaierror(1, something like 'SSL Unknown protocol')
 						link_to_doc = _('http://docs.univention.de/manual-%s.html#ip-config:Web_proxy_for_caching_and_policy_management__virus_scan') % version
 						strerror += '. ' + _('This may be a problem with the proxy of your system. You may find help at %s.') % link_to_doc
-					if errno == -2: # gaierror(-2, 'Name or service not known')
+					if errno == -2:  # gaierror(-2, 'Name or service not known')
 						link_to_doc = _('http://docs.univention.de/manual-%s.html#networks:dns') % version
 						strerror += '. ' + _('This is probably due to the DNS settings of your server. You may find help at %s.') % link_to_doc
 			if not strerror.strip():

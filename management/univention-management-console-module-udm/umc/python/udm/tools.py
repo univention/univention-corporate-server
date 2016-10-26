@@ -120,25 +120,25 @@ def check_license(ldap_connection, ignore_core_edition=False):
 				return
 	except udm_errors.licenseNotFound:
 		raise LicenseError(_('License not found. During this session add and modify are disabled.'))
-	except udm_errors.licenseAccounts: #UCS license v1
+	except udm_errors.licenseAccounts:  # UCS license v1
 		raise LicenseError(_('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.'))
-	except udm_errors.licenseUsers: #UCS license v2
+	except udm_errors.licenseUsers:  # UCS license v2
 		raise LicenseError(_('You have too many user accounts for your license. Add and modify are disabled. Disable or delete <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'users/user\', {})"> user accounts</a> to re-enable editing.'))
-	except udm_errors.licenseClients: # UCS license v1
+	except udm_errors.licenseClients:  # UCS license v1
 		raise LicenseError(_('You have too many client accounts for your license. During this session add and modify are disabled.'))
-	except udm_errors.licenseServers: # UCS license v2
+	except udm_errors.licenseServers:  # UCS license v2
 		raise LicenseError(_('You have too many server accounts for your license. During this session add and modify are disabled.'))
-	except udm_errors.licenseManagedClients: # UCS license v2
+	except udm_errors.licenseManagedClients:  # UCS license v2
 		raise LicenseError(_('You have too many managed client accounts for your license. During this session add and modify are disabled.'))
-	except udm_errors.licenseCorporateClients: # UCS license v2
+	except udm_errors.licenseCorporateClients:  # UCS license v2
 		raise LicenseError(_('You have too many corporate client accounts for your license. During this session add and modify are disabled.'))
-	except udm_errors.licenseDesktops: # UCS license v1
+	except udm_errors.licenseDesktops:  # UCS license v1
 		raise LicenseError(_('You have too many desktop accounts for your license. During this session add and modify are disabled.'))
-	except udm_errors.licenseGroupware: # UCS license v1
+	except udm_errors.licenseGroupware:  # UCS license v1
 		raise LicenseError(_('You have too many groupware accounts for your license. During this session add and modify are disabled.'))
-	except udm_errors.licenseDVSUsers: # UCS license v2
+	except udm_errors.licenseDVSUsers:  # UCS license v2
 		raise LicenseError(_('You have too many DVS user accounts for your license. During this session add and modify are disabled.'))
-	except udm_errors.licenseDVSClients: # UCS license v2
+	except udm_errors.licenseDVSClients:  # UCS license v2
 		raise LicenseError(_('You have too many DVS client accounts for your license. During this session add and modify are disabled.'))
 	except udm_errors.licenseExpired:
 		raise LicenseError(_('Your license is expired. During this session add and modify are disabled.'))
