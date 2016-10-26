@@ -35,30 +35,32 @@ import shlex
 import locale
 import os.path
 
-class Config( ConfigParser.ConfigParser ):
-	def __init__( self, filename = '/etc/univention/directory/reports/config.ini' ):
-		ConfigParser.ConfigParser.__init__( self )
+
+class Config(ConfigParser.ConfigParser):
+
+	def __init__(self, filename='/etc/univention/directory/reports/config.ini'):
+		ConfigParser.ConfigParser.__init__(self)
 		self._filename = filename
-		self.read( filename )
+		self.read(filename)
 		defaults = self.defaults()
-		self._oldHeader = defaults.get( 'header', None )
-		self._oldFooter = defaults.get( 'footer', None )
-		self.default_report_name = defaults.get( 'report', None )
+		self._oldHeader = defaults.get('header', None)
+		self._oldFooter = defaults.get('footer', None)
+		self.default_report_name = defaults.get('report', None)
 		self._reports = {}
-		
+
 		# get the language, defaults to English if nothing is set
 		self._lang = locale.getlocale(locale.LC_MESSAGES)[0]
 		if not self._lang:
 			self._lang = "en_US"
 
-		for key, value in self.items( 'reports' ):
+		for key, value in self.items('reports'):
 			# Entries are expected to have the form (see also config.ini):
 			#   <module> <name> <directoryPath> <templateFile>
 			# For compatibility reasons, we need also to accept the deprecated format:
 			#   <module> <name> <templateFilePath>
 			# make sure that the entries match this format
 			module, name, dir, filename = [''] * 4
-			tmpList = shlex.split( value )
+			tmpList = shlex.split(value)
 			if len(tmpList) == 3:
 				# old format, insert empty string for 'directory'
 				tmpList.insert(2, '')
@@ -68,15 +70,15 @@ class Config( ConfigParser.ConfigParser ):
 			module, name, dir, filename = tmpList
 
 			# save the entry to our internal list
-			if self._reports.has_key( module ):
-				self._reports[ module ].append( ( name, dir, filename ) )
+			if module in self._reports:
+				self._reports[module].append((name, dir, filename))
 			else:
-				self._reports[ module ] = [ ( name, dir, filename ) ]
+				self._reports[module] = [(name, dir, filename)]
 
-	def _get_report_entry(self, module, name = None):
+	def _get_report_entry(self, module, name=None):
 		"""Find the correct internal report entry for a given a module and a report name."""
 		# return None for non-existent module
-		if not self._reports.has_key( module ):
+		if module not in self._reports:
 			return None
 		# return first report if only the module name is given
 		if not name:
@@ -88,7 +90,7 @@ class Config( ConfigParser.ConfigParser ):
 		# if anything fails, return None
 		return None
 
-	def _guess_path( self, directory, fileName, alternativePath = ''):
+	def _guess_path(self, directory, fileName, alternativePath=''):
 		"""Guess the correct path for a given template file. Possible paths:
 		(1) directory/<language>/fileName
 		(2) directory/fileName
@@ -113,25 +115,24 @@ class Config( ConfigParser.ConfigParser ):
 				return path
 		return None
 
-	def get_header( self, module, name = None ):
+	def get_header(self, module, name=None):
 		report = self._get_report_entry(module, name)
 		if not report:
 			return None
 		return self._guess_path(report[1], 'header.tex', self._oldHeader)
 
-	def get_footer( self, module, name = None ):
+	def get_footer(self, module, name=None):
 		report = self._get_report_entry(module, name)
 		if not report:
 			return None
 		return self._guess_path(report[1], 'footer.tex', self._oldFooter)
 
-	def get_report_names( self, module ):
-		reports = self._reports.get( module, [] )
-		return [ item[ 0 ] for item in reports ]
+	def get_report_names(self, module):
+		reports = self._reports.get(module, [])
+		return [item[0] for item in reports]
 
-	def get_report( self, module, name = None ):
+	def get_report(self, module, name=None):
 		report = self._get_report_entry(module, name)
 		if not report:
 			return None
 		return self._guess_path(report[1], report[2])
-

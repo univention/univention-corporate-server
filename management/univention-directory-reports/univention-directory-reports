@@ -45,6 +45,7 @@ from univention.config_registry import ConfigRegistry
 baseConfig = ConfigRegistry()
 baseConfig.load()
 
+
 def dump_modules(cfg, module=None, out=sys.stdout):
 	"""Dump reports for specific or all known modules."""
 	if module is None:
@@ -56,66 +57,67 @@ def dump_modules(cfg, module=None, out=sys.stdout):
 		for name in cfg.get_report_names(module):
 			print >>out, ' - %s' % name
 
+
 def main():
 	cfg = udr.Config()
 
-	parser = OptionParser( usage = 'usage: %prog -m <module> [options] dn1 dn2 ...' )
-	parser.add_option( '-u', '--user', action = 'store',
-					   dest = 'user', default = None, metavar='USERDN',
-					   help = 'User-DN for simple LDAP access' )
-	parser.add_option( '-p', '--password', action = 'store',
-					   dest = 'password', default = None,
-					   help = 'Password for simple LDAP access' )
-	parser.add_option( '-H', '--header', action = 'store',
-					   dest = 'header', default = None,
-					   help = 'File containing the header for the report' )
-	parser.add_option( '-F', '--footer', action = 'store',
-					   dest = 'footer', default = None,
-					   help = 'file containing the footer for the report' )
-	parser.add_option( '-s', '--server', action = 'store',
-					   dest = 'server', default = baseConfig.get( 'ldap/server/name', 'localhost' ),
-					   help = 'LDAP server [%default]' )
-	parser.add_option( '-b', '--base', action = 'store',
-					   dest = 'base', default = baseConfig.get( 'ldap/base', '' ),
-					   help = 'LDAP base [%default]' )
-	parser.add_option( '-m', '--module', action = 'store',
-					   dest = 'module', default = None,
-					   help = 'admin module defining the report to generate' )
-	parser.add_option( '-r', '--report', action = 'store',
-					   dest = 'report', default=cfg.default_report_name,
-					   help = 'Name of the report to use [%default]' )
-	parser.add_option( '-l', '--list', action = 'store_true',
-					   dest = 'list_reports', default = False,
-					   help = 'List names of available reports' )
-	parser.add_option( '-n', '--no-cleanup', action = 'store_true',
-					   dest = 'no_cleanup', default = False,
-					   help = 'do not remove the temporary LaTeX files (for debugging)' )
-	parser.add_option( '-c', '--config', action = 'store',
-					   dest = 'config', default = '/etc/univention/directory/reports/config.ini',
-					   help = 'location of the configuration file [%default]' )
-	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
-					   dest = 'debug', default = 0,
-					   help = 'if given than debugging is activated and set to the specified level' )
+	parser = OptionParser(usage='usage: %prog -m <module> [options] dn1 dn2 ...')
+	parser.add_option('-u', '--user', action='store',
+					   dest='user', default=None, metavar='USERDN',
+					   help='User-DN for simple LDAP access')
+	parser.add_option('-p', '--password', action='store',
+					   dest='password', default=None,
+					   help='Password for simple LDAP access')
+	parser.add_option('-H', '--header', action='store',
+					   dest='header', default=None,
+					   help='File containing the header for the report')
+	parser.add_option('-F', '--footer', action='store',
+					   dest='footer', default=None,
+					   help='file containing the footer for the report')
+	parser.add_option('-s', '--server', action='store',
+					   dest='server', default=baseConfig.get('ldap/server/name', 'localhost'),
+					   help='LDAP server [%default]')
+	parser.add_option('-b', '--base', action='store',
+					   dest='base', default=baseConfig.get('ldap/base', ''),
+					   help='LDAP base [%default]')
+	parser.add_option('-m', '--module', action='store',
+					   dest='module', default=None,
+					   help='admin module defining the report to generate')
+	parser.add_option('-r', '--report', action='store',
+					   dest='report', default=cfg.default_report_name,
+					   help='Name of the report to use [%default]')
+	parser.add_option('-l', '--list', action='store_true',
+					   dest='list_reports', default=False,
+					   help='List names of available reports')
+	parser.add_option('-n', '--no-cleanup', action='store_true',
+					   dest='no_cleanup', default=False,
+					   help='do not remove the temporary LaTeX files (for debugging)')
+	parser.add_option('-c', '--config', action='store',
+					   dest='config', default='/etc/univention/directory/reports/config.ini',
+					   help='location of the configuration file [%default]')
+	parser.add_option('-d', '--debug', action='store', type='int',
+					   dest='debug', default=0,
+					   help='if given than debugging is activated and set to the specified level')
 
-	( options, args ) = parser.parse_args()
+	(options, args) = parser.parse_args()
 
 	if not options.user or not options.password:
 		try:
 			pwdfile = '/etc/machine.secret'
-			options.user = baseConfig[ 'ldap/hostdn' ]
-			if baseConfig[ 'server/role' ] == 'domaincontroller_master':
+			options.user = baseConfig['ldap/hostdn']
+			if baseConfig['server/role'] == 'domaincontroller_master':
 				pwdfile = '/etc/ldap.secret'
-				options.user = 'cn=admin,%s' % baseConfig[ 'ldap/base' ]
-			fd = open( pwdfile, 'r' )
-			options.password = fd.readline()[ : -1 ]
+				options.user = 'cn=admin,%s' % baseConfig['ldap/base']
+			fd = open(pwdfile, 'r')
+			options.password = fd.readline()[: -1]
 			fd.close()
 		except:
 			print >>sys.stderr, "error: user and/or password not specified"
 			parser.print_help(sys.stderr)
-			sys.exit( 1 )
+			sys.exit(1)
 
-	ud.init( '/var/log/univention/directory-reports.log', 1, 1 )
-	ud.set_level( ud.ADMIN, options.debug )
+	ud.init('/var/log/univention/directory-reports.log', 1, 1)
+	ud.set_level(ud.ADMIN, options.debug)
 
 	cfg = udr.Config(options.config)
 
@@ -153,8 +155,8 @@ def main():
 		print >>sys.stderr, "error: no DNs specified on command line"
 		sys.exit(2)
 
-	udr.admin.connect( options.user, options.password, host = options.server,
-					   base = options.base, start_tls = 0 )
+	udr.admin.connect(options.user, options.password, host=options.server,
+					   base=options.base, start_tls=0)
 
 	try:
 		if options.header is None:
@@ -162,21 +164,21 @@ def main():
 		if options.footer is None:
 			options.footer = cfg.get_footer(options.module, options.report)
 		doc = udr.Document(template, header=options.header, footer=options.footer)
-	except NameError, e: # missing file
+	except NameError as e:  # missing file
 		print >>sys.stderr, e
 		sys.exit(1)
-	tmpfile = doc.create_source( args )
+	tmpfile = doc.create_source(args)
 	if doc._type == udr.Document.TYPE_LATEX:
 		type = 'PDF'
-		outfile = doc.create_pdf( tmpfile )
+		outfile = doc.create_pdf(tmpfile)
 		if options.no_cleanup:
 			print >>sys.stderr, 'kept temporary source file at %s' % tmpfile
 		else:
-			basefile = tmpfile.rsplit('.', 1)[0] # strip suffix
+			basefile = tmpfile.rsplit('.', 1)[0]  # strip suffix
 			for file in [tmpfile] + ['%s.%s' % (basefile, suffix) for suffix in ('aux', 'log')]:
 				try:
 					os.unlink(file)
-				except OSError, e:
+				except OSError as e:
 					pass
 	elif doc._type == udr.Document.TYPE_CSV:
 		type = 'CSV'
@@ -189,7 +191,7 @@ def main():
 		print 'created %s file: %s' % (type, outfile)
 	else:
 		print >>sys.stderr, "error: report could not be created"
-		sys.exit( 1 )
+		sys.exit(1)
 
 if __name__ == "__main__":
 	main()

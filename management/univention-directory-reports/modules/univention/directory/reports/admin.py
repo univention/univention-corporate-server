@@ -41,29 +41,30 @@ from univention.config_registry import ConfigRegistry
 
 import univention.debug as ud
 
-import re
-from filter import *
+from filter import filter_get
 
-__all__ = [ 'connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format' ]
+__all__ = ['connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format']
 
 _admin = None
 
 TEX_ESCAPE = {
-		u'€': 'EUR',
-		'"': "''",
-		'\\': '\\textbackslash{}',
-		'&': '\\&',
-		'%': '\\%',
-		'#': '\\#',
-		'_': '\\_',
-		'{': '\\{',
-		'}': '\\}',
-		'~': '\\textasciitilde{}',
-		'^': '\\^{\,}',
-		'$': '\\$',
-		u'°': '$^{\\circ}$',
-		u'´': '',
-		}
+	u'€': 'EUR',
+	'"': "''",
+	'\\': '\\textbackslash{}',
+	'&': '\\&',
+	'%': '\\%',
+	'#': '\\#',
+	'_': '\\_',
+	'{': '\\{',
+	'}': '\\}',
+	'~': '\\textasciitilde{}',
+	'^': '\\^{\,}',
+	'$': '\\$',
+	u'°': '$^{\\circ}$',
+	u'´': '',
+}
+
+
 def texClean(str):
 	u"""Escape string for use in LaTeX.
 
@@ -81,8 +82,10 @@ def texClean(str):
 	esc = esc.replace('´', '')
 	return esc
 
-class AdminConnection( object ):
-	def __init__( self, userdn = None, password = None, host = 'localhost', base = None, start_tls = 2, access = None, format = True ):
+
+class AdminConnection(object):
+
+	def __init__(self, userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None, format=True):
 		self._cached = {}
 		self._modules = {}
 		self._policies = {}
@@ -91,93 +94,92 @@ class AdminConnection( object ):
 		self._bc.load()
 		self.__reverse = {}
 		if not base:
-			self._base = self._bc[ 'ldap/base' ]
+			self._base = self._bc['ldap/base']
 		else:
 			self._base = base
-		self._position = ua_ldap.position( self._base )
+		self._position = ua_ldap.position(self._base)
 		if access:
 			self._access = access
 		else:
-			self._access = ua_ldap.access(  host = host, base = self._base,
-											binddn = userdn, bindpw = password, start_tls = start_tls )
+			self._access = ua_ldap.access(host=host, base=self._base, binddn=userdn, bindpw=password, start_tls=start_tls)
 		ua_modules.update()
-		self._config = ua_config.config( host = host )
+		self._config = ua_config.config(host=host)
 
 	def __repr__(self):
 		fmt = '%s(userdn=%r, password=%r, host=%r, base=%r, start_tls=%r, access=%r, format=%r)'
 		val = (self.__class__.__name__, self._access.binddn, self._access.bindpw, self._access.host, self._access.base, self._access.start_tls, self._access, self._format)
 		return fmt % val
 
-	def cache_object( self, obj ):
-		return self.get_object( ua_objects.module( obj ), obj.dn )
+	def cache_object(self, obj):
+		return self.get_object(ua_objects.module(obj), obj.dn)
 
-	def clear_cache( self ):
+	def clear_cache(self):
 		del self._cached
 		self._cached = {}
 
-	def get_object( self, module, dn ):
-		if dn in self.__reverse: # this value has been escaped => use <self.__reverse> to unescape
+	def get_object(self, module, dn):
+		if dn in self.__reverse:  # this value has been escaped => use <self.__reverse> to unescape
 			possible_real_DNs = set()
 			for possible_real_DN_set in self.__reverse[dn].values():
-				possible_real_DNs |= possible_real_DN_set # collect every distinct possible value
+				possible_real_DNs |= possible_real_DN_set  # collect every distinct possible value
 			possible_real_DNs = tuple(possible_real_DNs)
 			if not len(possible_real_DNs) == 1:
 				raise ValueError('ambiguous DNs, cannot unescape %s (possibilities: %s)' % (repr(dn), repr(possible_real_DNs)))
 			dn = possible_real_DNs[0]
 		try:
 			return self.get_object_real(module, dn)
-		except ua_exceptions.noObject, e:
+		except ua_exceptions.noObject:
 			return None
 
-	def get_object_real( self, module, dn ):
-		if self._cached.has_key( dn ):
-			return self._cached[ dn ]
-		if isinstance( module, basestring ):
-			if self._modules.has_key( module ):
-				module = self._modules[ module ]
+	def get_object_real(self, module, dn):
+		if dn in self._cached:
+			return self._cached[dn]
+		if isinstance(module, basestring):
+			if module in self._modules:
+				module = self._modules[module]
 			else:
 				name = module
-				module = ua_modules.get( name )
-				ua_modules.init( self._access, self._position, module )
-				self._modules[ name ] = module
+				module = ua_modules.get(name)
+				ua_modules.init(self._access, self._position, module)
+				self._modules[name] = module
 		elif module == None:
-			module = self.identify( dn )
+			module = self.identify(dn)
 			if not module:
 				return None
-			ua_modules.init( self._access, self._position, module )
-		new = ua_objects.get( module, self._config, self._access, position = self._position, dn = dn )
+			ua_modules.init(self._access, self._position, module)
+		new = ua_objects.get(module, self._config, self._access, position=self._position, dn=dn)
 		# if the object is not valid it should be displayed as an empty object
 		try:
 			new.open()
-		except Exception, e:
+		except Exception:
 			# write the traceback in the logfile
 			import traceback
 
-			ud.debug( ud.ADMIN, ud.ERROR, 'The object %s could not be opened' % dn )
+			ud.debug(ud.ADMIN, ud.ERROR, 'The object %s could not be opened' % dn)
 			try:
-				tb = traceback.format_exc().encode( 'ascii', 'replace' ).replace( '%', '?' )
+				tb = traceback.format_exc().encode('ascii', 'replace').replace('%', '?')
 				# this might fail because of problems with univention.debug
-				ud.debug( ud.ADMIN, ud.ERROR, 'Traceback: %s' % tb )
+				ud.debug(ud.ADMIN, ud.ERROR, 'Traceback: %s' % tb)
 			except:
 				pass
 		for key, value in new.items():
 			if self._format:
-				i, j = self.format_property( new.descriptions, key, value )
-				new.info[ i ] = j
+				i, j = self.format_property(new.descriptions, key, value)
+				new.info[i] = j
 			else:
-				new.info[ key ] = value
+				new.info[key] = value
 
-		self._get_policies( new )
-		self._cached[ dn ] = new
+		self._get_policies(new)
+		self._cached[dn] = new
 
 		return new
 
-	def identify( self, dn ):
-		res = self._access.search( base = dn, scope = 'base' )
+	def identify(self, dn):
+		res = self._access.search(base=dn, scope='base')
 		if res:
-			mods = ua_modules.identify( dn, res[ 0 ][ 1 ] )
+			mods = ua_modules.identify(dn, res[0][1])
 			if mods:
-				return mods[ 0 ]
+				return mods[0]
 		return None
 
 	# store the old value of every attribute (if it is a string) in <self.__reverse> to enable <get_object()> to reverse the escaping
@@ -185,16 +187,16 @@ class AdminConnection( object ):
 		(newkey, newvalue) = self.format_property_real(props, oldkey, oldvalue)
 		assert newkey == oldkey
 		key = oldkey
-		if type(newvalue) in (list, tuple): # multivalue => unpack
+		if isinstance(newvalue, (list, tuple)):  # multivalue => unpack
 			for (newv, oldv) in zip(newvalue, oldvalue):
-				if type(oldv) is str and newv != oldv: # only consider strings, because DNs are always strings
+				if isinstance(oldv, str) and newv != oldv:  # only consider strings, because DNs are always strings
 					if newv not in self.__reverse:
 						self.__reverse[newv] = {}
 					oldvalues = self.__reverse[newv].get(key, set())
 					oldvalues.add(oldv)
 					self.__reverse[newv][key] = oldvalues
 		else:
-			if type(oldvalue) is str and newvalue != oldvalue: # only consider strings, because DNs are always strings
+			if isinstance(oldvalue, str) and newvalue != oldvalue:  # only consider strings, because DNs are always strings
 				if newvalue not in self.__reverse:
 					self.__reverse[newvalue] = {}
 				oldvalues = self.__reverse[newvalue].get(key, set())
@@ -202,16 +204,16 @@ class AdminConnection( object ):
 				self.__reverse[newvalue][key] = oldvalues
 		return (key, newvalue)
 
-	def format_property_real( self, props, key, value ):
-		prop = props.get( key, None )
+	def format_property_real(self, props, key, value):
+		prop = props.get(key, None)
 
 		if not prop:
-			return ( key, value )
+			return (key, value)
 		else:
-			if isinstance( value, ( list, tuple ) ):
+			if isinstance(value, (list, tuple)):
 				result = []
 				for v in value:
-					if type(v) == type([]) or type(v) == type(()):
+					if isinstance(v, (list, tuple)):
 						for i in v:
 							result.append(texClean(str(i)))
 					else:
@@ -219,43 +221,44 @@ class AdminConnection( object ):
 				value = result
 			elif value:
 				value = texClean(value)
-			filter = filter_get( prop.syntax )
+			filter = filter_get(prop.syntax)
 			if filter:
-				return filter( prop, key, value )
+				return filter(prop, key, value)
 
-		return ( key, value )
+		return (key, value)
 
-	def _get_policies( self, obj ):
-		dict={}
-		policies = self._access.getPolicies( obj.dn )
+	def _get_policies(self, obj):
+		dict = {}
+		policies = self._access.getPolicies(obj.dn)
 		for policy_oc, attrs in policies.items():
-			module_name = ua_objects.ocToType( policy_oc )
-			module = ua_modules.get( module_name )
+			module_name = ua_objects.ocToType(policy_oc)
+			module = ua_modules.get(module_name)
 			if not module:
 				continue
 			for attr_name, value_dict in attrs.items():
-				dict[attr_name]=value_dict[ 'value' ]
+				dict[attr_name] = value_dict['value']
 
-			for key, value in ua_mapping.mapDict( module.mapping, dict ).items():
+			for key, value in ua_mapping.mapDict(module.mapping, dict).items():
 				if self._format:
-					i, j = self.format_property( module.property_descriptions, key, value )
-					obj.info[ i ] = j
+					i, j = self.format_property(module.property_descriptions, key, value)
+					obj.info[i] = j
 				else:
-					obj.info[ key ] = value
+					obj.info[key] = value
 
 
-
-def connect( userdn = None, password = None, host = 'localhost', base = None, start_tls = 2, access = None ):
+def connect(userdn=None, password=None, host='localhost', base=None, start_tls=2, access=None):
 	global _admin
 	if _admin:
 		return
-	_admin = AdminConnection( userdn, password, host, base, start_tls, access )
+	_admin = AdminConnection(userdn, password, host, base, start_tls, access)
 
-def cache_object( obj ):
+
+def cache_object(obj):
 	global _admin
 	if not _admin:
 		return None
-	return _admin.cache_object( obj )
+	return _admin.cache_object(obj)
+
 
 def clear_cache():
 	global _admin
@@ -263,23 +266,27 @@ def clear_cache():
 		return
 	_admin.clear_cache()
 
-def get_object( module, dn ):
+
+def get_object(module, dn):
 	global _admin
 	if not _admin:
 		return None
 	try:
-		return _admin.get_object( module, dn )
+		return _admin.get_object(module, dn)
 	except ua_exceptions.ldapError:
 		return None
 
-def set_format( format ):
+
+def set_format(format):
 	global _admin
 	if _admin:
 		_admin._format = format
 
-def identify( dn ):
+
+def identify(dn):
 	global _admin
-	return _admin.identfy( dn )
+	return _admin.identfy(dn)
+
 
 def connected():
 	global _admin

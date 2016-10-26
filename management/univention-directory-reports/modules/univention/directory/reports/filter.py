@@ -33,49 +33,54 @@
 import univention.admin.syntax as ua_syntax
 
 import univention.admin.localization
-translation=univention.admin.localization.translation('univention-directory-reports')
-_=translation.translate
+translation = univention.admin.localization.translation('univention-directory-reports')
+_ = translation.translate
 
-__all__ = [ 'filter_add', 'filter_get' ]
+__all__ = ['filter_add', 'filter_get']
 
 _filters = []
 
-def filter_add( types, func ):
-	_filters.append( ( types, func ) )
 
-def filter_get( prop_type ):
+def filter_add(types, func):
+	_filters.append((types, func))
+
+
+def filter_get(prop_type):
 	for types, func in _filters:
-		if isinstance( prop_type, types ):
+		if isinstance(prop_type, types):
 			return func
 	return None
 
-def _boolean_filter( prop, key, value ):
-	if value and value.lower() in ( '1', 'yes', 'true' ):
+
+def _boolean_filter(prop, key, value):
+	if value and value.lower() in ('1', 'yes', 'true'):
 		# need to call str() here directly order to force a correct translation
-		return ( key, str(_( 'Yes' )) )
+		return (key, str(_('Yes')))
 	else:
 		# need to call str() here directly order to force a correct translation
-		return ( key, str(_( 'No' )) )
+		return (key, str(_('No')))
 
-filter_add( ( ua_syntax.boolean, ua_syntax.TrueFalseUp, ua_syntax.TrueFalse,
-			  ua_syntax.TrueFalseUpper, ua_syntax.OkOrNot ), _boolean_filter )
+filter_add((ua_syntax.boolean, ua_syntax.TrueFalseUp, ua_syntax.TrueFalse,
+			  ua_syntax.TrueFalseUpper, ua_syntax.OkOrNot), _boolean_filter)
 
-def _email_address( prop, key, value ):
+
+def _email_address(prop, key, value):
 	if prop.multivalue:
-		value = [ '\mbox{%s}' % val for val in value ]
+		value = ['\mbox{%s}' % val for val in value]
 	else:
 		value = '\mbox{%s}' % value
-	return ( key, value )
+	return (key, value)
 
-filter_add( ( ua_syntax.emailAddress, ), _email_address )
+filter_add((ua_syntax.emailAddress, ), _email_address)
 
-def _samba_group_type( prop, key, value ):
+
+def _samba_group_type(prop, key, value):
 	# need to call str() directly in order to force a correct translation
-	types = { '2' : str(_( 'Domain Group' )),
-			  '3' : str(_( 'Local Group' )),
-			  '5' : str(_( 'Well-Known Group' )) }
+	types = {'2': str(_('Domain Group')),
+			  '3': str(_('Local Group')),
+			  '5': str(_('Well-Known Group'))}
 	if value in types.keys():
-		value = types[ value ]
-	return ( key, value )
+		value = types[value]
+	return (key, value)
 
-filter_add( ( ua_syntax.sambaGroupType, ), _samba_group_type )
+filter_add((ua_syntax.sambaGroupType, ), _samba_group_type)
