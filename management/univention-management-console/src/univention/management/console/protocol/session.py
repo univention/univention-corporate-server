@@ -118,7 +118,7 @@ class State(signals.Provider):
 		if not self.authenticated:
 			return
 		if self.processor is not None and self.processor.auth_type is None and result.credentials['auth_type']:
-			return # don't downgrade a regular login to e.g. a SAML login
+			return  # don't downgrade a regular login to e.g. a SAML login
 		self.__credentials = result.credentials
 		if self.processor is None:
 			return
@@ -634,7 +634,7 @@ class Processor(Base):
 	def _password_changed(self, thread, result, request, new_password):
 		res = Response(request)
 		if isinstance(result, PasswordChangeFailed):
-			res.status = 400#422
+			res.status = 400  # 422
 			res.message = '%s' % (result,)
 			res.result = {'new_password': '%s' % (result,)}
 		elif isinstance(result, BaseException):
