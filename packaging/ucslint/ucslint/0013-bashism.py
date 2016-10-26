@@ -36,15 +36,16 @@ import subprocess
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
+
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
 		self.name = '0013-bashism'
 
 	def getMsgIds(self):
-		return { '0013-1': [ uub.RESULT_WARN,  'failed to open file' ],
-				 '0013-2': [ uub.RESULT_ERROR, 'possible bashism found' ],
-				 '0013-3': [ uub.RESULT_WARN,  'cannot parse output of "checkbashism"' ],
-				 }
+		return {'0013-1': [uub.RESULT_WARN, 'failed to open file'],
+				 '0013-2': [uub.RESULT_ERROR, 'possible bashism found'],
+				 '0013-3': [uub.RESULT_WARN, 'cannot parse output of "checkbashism"'],
+          }
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
@@ -56,8 +57,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		reBashism = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
 
-		for fn in uub.FilteredDirWalkGenerator( path,
-												ignore_suffixes=['~','.py','.bak','.po'],
+		for fn in uub.FilteredDirWalkGenerator(path,
+												ignore_suffixes=['~', '.py', '.bak', '.po'],
 												reHashBang=re.compile('^#![ \t]*/bin/sh')):
 			self.debug('Testing file %s' % fn)
 			p = subprocess.Popen(['checkbashisms', fn], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -73,7 +74,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 					match = reBashism.search(item)
 					if not match:
-						self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n','\\n').replace('\r','\\r'), filename=fn)
+						self.addmsg('0013-3', 'cannot parse checkbashism output:\n"%s"' % item.replace('\n', '\\n').replace('\r', '\\r'), filename=fn)
 						continue
 
 					line = int(match.group(1))

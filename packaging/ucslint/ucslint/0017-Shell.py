@@ -36,6 +36,7 @@ import re
 
 reHashBang = re.compile('#!\s*/bin/(?:ba|da|z|c)?sh')
 
+
 def containsHashBang(path):
 	try:
 		fp = open(path, 'r')
@@ -51,6 +52,7 @@ def containsHashBang(path):
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
+
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
 		self.name = '0017-Shell'
@@ -66,8 +68,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 	def getMsgIds(self):
 		return {
-			'0017-1': [ uub.RESULT_WARN,  'script contains unquoted calls of eval "$(ucr shell)"' ],
-			'0017-2': [ uub.RESULT_ERROR,  'script contains unquoted arguments of tr' ],
+			'0017-1': [uub.RESULT_WARN, 'script contains unquoted calls of eval "$(ucr shell)"'],
+			'0017-2': [uub.RESULT_ERROR, 'script contains unquoted arguments of tr'],
 			'0017-3': [uub.RESULT_WARN, 'LDAP simple bind is an internal detail of "univention-ldapsearch"'],
 		}
 

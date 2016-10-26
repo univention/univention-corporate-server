@@ -32,18 +32,19 @@ try:
 except ImportError:
 	import ucslint.base as uub
 import re
-import os
 import tre
 
+
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
+
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
 		self.name = '0015-Names'
 
 	def getMsgIds(self):
-		return { '0015-1': [ uub.RESULT_WARN, 'failed to open file' ],
-				 '0015-2': [ uub.RESULT_WARN, 'file contains "univention" incorrectly written' ],
-				 }
+		return {'0015-1': [uub.RESULT_WARN, 'failed to open file'],
+				 '0015-2': [uub.RESULT_WARN, 'file contains "univention" incorrectly written'],
+          }
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
@@ -77,10 +78,10 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		fz = tre.Fuzzyness(maxerr = 2)
+		fz = tre.Fuzzyness(maxerr=2)
 		pt = tre.compile("\<univention\>", tre.EXTENDED | tre.ICASE)
 
-		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=['~','.gz', '.zip', '.bak', '.jpeg', '.jpg', '.png', '.svg', '.mo']):
+		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=['~', '.gz', '.zip', '.bak', '.jpeg', '.jpg', '.png', '.svg', '.mo']):
 				fd = open(fn, 'r')
 				try:
 					for lnr, line in enumerate(fd, start=1):
