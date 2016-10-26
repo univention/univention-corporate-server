@@ -112,8 +112,7 @@ def filterOutUnchangedAttributes(old_copy, new_copy):
 def process_dellog(dn):
 	dellog = listener.configRegistry['ldap/logging/dellogdir']
 
-	dellist = os.listdir(dellog)
-	dellist.sort()
+	dellist = sorted(os.listdir(dellog))
 	for filename in dellist:
 		pathname = os.path.join(dellog, filename)
 		try:
