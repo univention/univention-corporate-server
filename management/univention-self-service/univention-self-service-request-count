@@ -116,4 +116,4 @@ for key in keys:
 
 	expdiff = entries[key][1] - datetime.datetime.now()
 	exp = "in {:>5} seconds (at {})".format(expdiff.seconds, entries[key][1].strftime("%d.%m.%Y %H:%M:%S"))
-	print "{:<15} {:>5} /{:>5} \t expiration {}".format(key+":", entries[key][0], limit, exp)
+	print "{:<15} {:>5} /{:>5} \t expiration {}".format(key + ":", entries[key][0], limit, exp)

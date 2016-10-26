@@ -30,20 +30,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#############################################################################
-#                                                                           #
+#
+#
 # This is meant as an example. Please feel free to copy this file and adapt #
 # it to your needs.                                                         #
-#                                                                           #
-#############################################################################
+#
+#
 
-#############################################################################
-#                                                                           #
+#
+#
 # If the return code is other that True or an exception is raised and not   #
 # caught, it is assumed that it was not possible to send the token to the   #
 # user. The token is then deleted from the database.                        #
-#                                                                           #
-#############################################################################
+#
+#
 
 import os.path
 import smtplib
