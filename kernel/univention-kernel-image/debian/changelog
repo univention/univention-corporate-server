@@ -1,3 +1,9 @@
+univention-kernel-image (7.100.0-9) unstable; urgency=low
+
+  * Bug #42353: Update to 3.16.38
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 26 Oct 2016 17:40:22 +0200
+
 univention-kernel-image (7.100.0-8) unstable; urgency=low
 
   * Bug #41693, Bug #42099: More 3.16.7-ckt25-2+deb8u3~bpo70+1
