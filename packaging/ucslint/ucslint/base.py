@@ -44,11 +44,13 @@ RESULT_INT2STR = {
 	RESULT_ERROR: 'E',
 	RESULT_INFO: 'I',
 	RESULT_STYLE: 'S',
-	}
+}
 
 
 class UPCMessage(object):
+
 	"""Univention Policy Check message."""
+
 	def __init__(self, id_, msg=None, filename=None, line=None, pos=None):
 		self.id = id_
 		self.msg = msg
@@ -74,6 +76,7 @@ class UPCMessage(object):
 
 
 class UniventionPackageCheckBase(object):
+
 	def __init__(self):
 		self.name = None
 		self.msg = []
@@ -107,37 +110,45 @@ class UniventionPackageCheckBase(object):
 
 
 class UniventionPackageCheckDebian(UniventionPackageCheckBase):
+
     """Check for debian/ directory."""
+
     def check(self, path):
         """ the real check """
         super(UniventionPackageCheckDebian, self).check(path)
-        if not os.path.isdir( os.path.join(path, 'debian') ):
+        if not os.path.isdir(os.path.join(path, 'debian')):
             raise UCSLintException("directory '%s' does not exist!" % (path,))
 
 
 class UCSLintException(Exception):
+
     """Top level exception."""
     pass
 
 
 class DebianControlNotEnoughSections(UCSLintException):
+
     """Content exception."""
     pass
 
 
 class DebianControlParsingError(UCSLintException):
+
     """Parsing exception."""
     pass
 
 
 class FailedToReadFile(UCSLintException):
+
 	"""File reading exception."""
+
 	def __init__(self, fn):
 		UCSLintException.__init__(self)
 		self.fn = fn
 
 
 class DebianControlEntry(dict):
+
 	def __init__(self, content):
 		dict.__init__(self)
 
@@ -151,7 +162,7 @@ class DebianControlEntry(dict):
 				continue
 			if lines[i].startswith(' ') or lines[i].startswith('\t'):
 				if not inDescription:
-					lines[i-1] += ' %s' % lines[i].lstrip(' \t')
+					lines[i - 1] += ' %s' % lines[i].lstrip(' \t')
 					del lines[i]
 					continue
 			i += 1
@@ -161,11 +172,13 @@ class DebianControlEntry(dict):
 			if not ':' in line:
 				raise DebianControlParsingError(line)
 			key, val = line.split(': ', 1)
-			self[ key ] = val
+			self[key] = val
 
 
 class ParserDebianControl(object):
+
 	"""Parse debian/control file."""
+
 	def __init__(self, filename):
 		self.filename = filename
 		self.source_section = None
@@ -188,6 +201,7 @@ class ParserDebianControl(object):
 
 
 class RegExTest(object):
+
 	def __init__(self, regex, msgid, msg, cntmin=None, cntmax=None):
 		self.regex = regex
 		self.msgid = msgid
@@ -197,13 +211,14 @@ class RegExTest(object):
 		self.cntmax = cntmax
 		self.cnt = 0
 
-		for val in [ '%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s' ]:
+		for val in ['%(startline)s', '%(startpos)s', '%(endline)s', '%(endpos)s', '%(basename)s', '%(filename)s']:
 			if val in msg:
 				self.formatmsg = True
 				break
 
 
 class UPCFileTester(object):
+
 	""" Univention Package Check - File Tester
 		simple class to test if a certain text exists/does not exist in a textfile
 
@@ -222,7 +237,7 @@ class UPCFileTester(object):
 		1234-5: /etc/fstab: Habe kein squashfs in Datei fstab gefunden.
 	"""
 
-	def __init__(self, maxsize=100*1024):
+	def __init__(self, maxsize=100 * 1024):
 		"""
 		creates a new UPCFileTester object
 		maxsize: maximum number of bytes read from specified file
@@ -243,9 +258,9 @@ class UPCFileTester(object):
 		# hold raw file in memory (self.raw) and a unwrapped version (self.lines)
 		# the raw version is required to calculate the correct position.
 		# tests will be done with unwrapped version.
-		self.raw = open(filename,'r').read(self.maxsize)
+		self.raw = open(filename, 'r').read(self.maxsize)
 		self.raw.rstrip('\n')
-		lines = self.raw.replace('\\\n','  ').replace('\\\r\n','   ')
+		lines = self.raw.replace('\\\n', '  ').replace('\\\r\n', '   ')
 		self.lines = lines.splitlines()
 
 	def _getpos(self, linenumber, pos_in_line):
@@ -259,7 +274,7 @@ class UPCFileTester(object):
 		raw = self.raw[:pos]
 		realpos = len(raw) - raw.rfind('\n')
 		realline = raw.count('\n')
-		return (realline+1, realpos)
+		return (realline + 1, realpos)
 
 	def addTest(self, regex, msgid, msg, cntmin=None, cntmax=None):
 		"""
@@ -276,7 +291,7 @@ class UPCFileTester(object):
 		"""
 		if cntmin is None and cntmax is None:
 			raise ValueError('cntmin or cntmax has to be set')
-		self.tests.append( RegExTest( regex, msgid, msg, cntmin, cntmax) )
+		self.tests.append(RegExTest(regex, msgid, msg, cntmin, cntmax))
 
 	def runTests(self):
 		"""
@@ -299,27 +314,28 @@ class UPCFileTester(object):
 					t.cnt += 1
 					if t.cntmax is not None and t.cnt > t.cntmax:
 						# a maximum counter has been defined and maximum has been exceeded
-						startline, startpos = self._getpos( linenum, match.start(0) )
-						endline, endpos = self._getpos( linenum, match.end(0) )
+						startline, startpos = self._getpos(linenum, match.start(0))
+						endline, endpos = self._getpos(linenum, match.end(0))
 						msg = t.msg
 						if t.formatmsg:
 							# format msg
-							msg = msg % { 'startline': startline, 'startpos': startpos, 'endline': endline, 'endpos': endpos, 'basename': self.basename, 'filename': self.filename }
+							msg = msg % {'startline': startline, 'startpos': startpos, 'endline': endline, 'endpos': endpos, 'basename': self.basename, 'filename': self.filename}
 						# append UPCMessage
-						msglist.append( UPCMessage( t.msgid, msg=msg, filename=self.filename, line=startline, pos=startpos ) )
+						msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename, line=startline, pos=startpos))
 
 		# check if mincnt has been reached by counter - if not then add UPCMessage
 		for t in self.tests:
 			if t.cntmin is not None and t.cnt < t.cntmin:
 				msg = t.msg
 				if t.formatmsg:
-					msg = msg % { 'basename': self.basename, 'filename': self.filename }
+					msg = msg % {'basename': self.basename, 'filename': self.filename}
 					# append msg
-					msglist.append( UPCMessage( t.msgid, msg=msg, filename=self.filename ) )
+					msglist.append(UPCMessage(t.msgid, msg=msg, filename=self.filename))
 		return msglist
 
 
 class FilteredDirWalkGenerator(object):
+
 	def __init__(self, path, ignore_dirs=None, prefixes=None, suffixes=None, ignore_suffixes=None, ignore_files=None, ignore_debian_subdirs=True, reHashBang=None, readSize=2048, dangling_symlinks=False):
 		"""
 		FilteredDirWalkGenerator is a generator that walks down all directories and returns all matching filenames.
@@ -346,11 +362,11 @@ class FilteredDirWalkGenerator(object):
 		self.prefixes = prefixes
 		self.suffixes = suffixes
 		if ignore_suffixes is None:
-			self.ignore_suffixes = [ '~', '.bak' ]
+			self.ignore_suffixes = ['~', '.bak']
 		else:
 			self.ignore_suffixes = ignore_suffixes
 		if ignore_files is None:
-			self.ignore_files = ( 'config.guess', 'configure', 'libtool', 'depcomp', 'install-sh', 'config.sub', 'missing', 'config.status' )
+			self.ignore_files = ('config.guess', 'configure', 'libtool', 'depcomp', 'install-sh', 'config.sub', 'missing', 'config.status')
 		else:
 			self.ignore_files = ignore_files
 		self.ignore_debian_subdirs = ignore_debian_subdirs
@@ -359,7 +375,7 @@ class FilteredDirWalkGenerator(object):
 		self.dangling_symlinks = dangling_symlinks
 
 	def __iter__(self):
-		for dirpath, dirnames, filenames in os.walk( self.path ):
+		for dirpath, dirnames, filenames in os.walk(self.path):
 			# remove undesired directories
 			if self.ignore_dirs:
 				for item in self.ignore_dirs:
@@ -405,7 +421,7 @@ class FilteredDirWalkGenerator(object):
 
 				if self.reHashBang:
 					try:
-						content = open(fn,'r').read(self.readSize)
+						content = open(fn, 'r').read(self.readSize)
 					except (IOError, OSError):
 						continue
 					if not self.reHashBang.search(content):
@@ -420,8 +436,8 @@ def _test():
 	"""Run simple test."""
 	import re
 	x = UPCFileTester()
-	x.addTest( re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
-	x.addTest( re.compile('squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
+	x.addTest(re.compile('ext[234]'), '5432-1', 'Habe ein extfs in Zeile %(startline)s und Position %(startpos)s in Datei %(basename)s gefunden.', cntmax=0)
+	x.addTest(re.compile('squashfs'), '1234-5', 'Habe kein squashfs in Datei %(basename)s gefunden.', cntmin=1)
 	x.open('/etc/fstab')
 	msglist = x.runTests()
 	for msg in msglist:

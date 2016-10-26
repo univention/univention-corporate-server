@@ -43,14 +43,15 @@ REticket = re.compile(r'''
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
+
 	def __init__(self):
 		super(UniventionPackageCheck, self).__init__()
 		self.name = '0007-Changelog'
 
 	def getMsgIds(self):
-		return { '0007-1': [ uub.RESULT_WARN, 'failed to open file' ],
-				 '0007-2': [ uub.RESULT_WARN, 'changelog does not contain ticket/bug/issue number' ],
-				 }
+		return {'0007-1': [uub.RESULT_WARN, 'failed to open file'],
+				 '0007-2': [uub.RESULT_WARN, 'changelog does not contain ticket/bug/issue number'],
+          }
 
 	def postinit(self, path):
 		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
@@ -64,12 +65,12 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		try:
 			content = open(fn, 'r').read()
 		except IOError:
-			self.addmsg( '0007-1', 'failed to open and read file', fn )
+			self.addmsg('0007-1', 'failed to open and read file', fn)
 			return
 
-		REchangelog = re.compile('^ -- [^<]+ <[^>]+>', re.M )
+		REchangelog = re.compile('^ -- [^<]+ <[^>]+>', re.M)
 
-		firstEntry = REchangelog.split( content )[0]
+		firstEntry = REchangelog.split(content)[0]
 		match = REticket.search(firstEntry)
 		if not match:
-			self.addmsg( '0007-2', 'latest changelog entry does not contain bug/ticket/issue number', fn)
+			self.addmsg('0007-2', 'latest changelog entry does not contain bug/ticket/issue number', fn)

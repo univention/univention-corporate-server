@@ -7,12 +7,13 @@ import re
 
 RE_ID = re.compile('^[UWEIS]:\d\d\d\d-\d+: ')
 
+
 def main():
     """Sort ucslint output for stable comparison."""
     if len(sys.argv) == 1:
         content = sys.stdin
     elif len(sys.argv) == 2:
-        content = open(sys.argv[1], 'r' )
+        content = open(sys.argv[1], 'r')
     else:
         print >> sys.stderr, 'ucslint-sort-output.py <filename>'
         sys.exit(2)
@@ -27,7 +28,7 @@ def main():
             tmplines = []
         tmplines.append(line.rstrip())
     if tmplines:
-        eventlist.append( '\n'.join(tmplines) )
+        eventlist.append('\n'.join(tmplines))
 
     eventlist.sort()
 
