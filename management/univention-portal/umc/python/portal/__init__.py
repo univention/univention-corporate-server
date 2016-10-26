@@ -38,6 +38,7 @@ from univention.management.console.modules.decorators import simple_response
 
 
 class Instance(Base):
+
 	@simple_response
 	def get_installed_apps_in_domain(self):
 		apps = self.get_apps()
