@@ -31,8 +31,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import re
-
 from univention.management.console.log import MODULE
 from univention.management.console.protocol.definitions import *
 import univention.management.console as umc
@@ -46,6 +44,7 @@ _ = umc.Translation('univention-management-console-module-firewall').translate
 
 
 class Instance(umc.modules.Base):
+
 	def _get_description(self, description):
 		# Try to return the localised description or
 		# use english as a fallback
@@ -147,7 +146,6 @@ class Instance(umc.modules.Base):
 			MODULE.error(u"%s: %s" % (message, str(e), ))
 			raise umc.modules.UMC_CommandError(message)
 
-
 		for (object, ) in iterator:
 			try:
 				if edit:
@@ -180,33 +178,14 @@ class Instance(umc.modules.Base):
 			MODULE.error(u"%s: %s" % (message, str(e), ))
 			raise umc.modules.UMC_CommandError(message)
 
-	@decorators.sanitize(sanitizers.DictSanitizer(
-			{u'object': sanitizers.DictSanitizer(
-					{u'protocol':
-						 sanitizers.ChoicesSanitizer((u'tcp', u'udp', ),
-						                             required=True),
-					 u'portStart':
-						 sanitizers.IntegerSanitizer(minimum=1,
-						                             maximum=2**16,
-						                             maximum_strict=True,
-						                             required=True),
-					 u'portEnd':
-						 sanitizers.IntegerSanitizer(minimum=1,
-						                             maximum=2**16,
-						                             maximum_strict=True,
-						                             required=True),
-					 u'addressType':
-						 sanitizers.ChoicesSanitizer((u'all', u'ipv4',
-						                              u'ipv6', u'specific', ),
-						                             required=True),
-					 u'addressValue':
-						 sanitizers.StringSanitizer(default=u''),
-					 u'action':
-						 sanitizers.ChoicesSanitizer((u'accept', u'reject',
-						                              u'drop', ),
-						                             required=True),
-					 },
-					required=True), }))
+	@decorators.sanitize(sanitizers.DictSanitizer({u'object': sanitizers.DictSanitizer({
+		u'protocol': sanitizers.ChoicesSanitizer((u'tcp', u'udp', ), required=True),
+		u'portStart': sanitizers.IntegerSanitizer(minimum=1, maximum=2**16, maximum_strict=True, required=True),
+		u'portEnd': sanitizers.IntegerSanitizer(minimum=1, maximum=2**16, maximum_strict=True, required=True),
+		u'addressType': sanitizers.ChoicesSanitizer((u'all', u'ipv4', u'ipv6', u'specific', ), required=True),
+		u'addressValue': sanitizers.StringSanitizer(default=u''),
+		u'action': sanitizers.ChoicesSanitizer((u'accept', u'reject', u'drop', ), required=True),
+	}, required=True), }))
 	@decorators.multi_response
 	@decorators.log
 	def rules_add(self, iterator, object):
@@ -259,7 +238,6 @@ class Instance(umc.modules.Base):
 			try:
 				rule = firewall.rules[identifier]
 
-				entry = {}
 				entry = {u'identifier': rule.identifier,
 						 u'protocol': rule.protocol,
 						 u'portStart': rule.port[0],
@@ -322,10 +300,7 @@ class Instance(umc.modules.Base):
 		"""
 		return self._add_or_edit(iterator, object, edit=True)
 
-	@decorators.sanitize(sanitizers.DictSanitizer(
-			{u'object':
-				 sanitizers.StringSanitizer(required=True), },
-			required=True))
+	@decorators.sanitize(sanitizers.DictSanitizer({u'object': sanitizers.StringSanitizer(required=True), }, required=True))
 	@decorators.multi_response
 	@decorators.log
 	def rules_remove(self, iterator, object):
