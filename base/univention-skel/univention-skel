@@ -31,86 +31,99 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import os, sys, hashlib, string, subprocess
+import os
+import sys
+import hashlib
+import string
+import subprocess
 # for file locking
 import fcntl
 import time
 
 import univention.config_registry
 
-home = os.getenv( 'HOME', '' )
-if not os.path.isdir( home ):
+home = os.getenv('HOME', '')
+if not os.path.isdir(home):
 	print >>sys.stderr, 'Invalid home directory'
-	sys.exit( 1 )
+	sys.exit(1)
 
 cfgRegistry = univention.config_registry.ConfigRegistry()
 cfgRegistry.load()
 
 # directories
 user_skel_dir = '.univention-skel'
-userconfig_templates='/etc/univention/skel'
-userconfig_meta='/etc/univention/skel.meta'
-userconfig_base=os.path.join(home, user_skel_dir )
+userconfig_templates = '/etc/univention/skel'
+userconfig_meta = '/etc/univention/skel.meta'
+userconfig_base = os.path.join(home, user_skel_dir)
 # locking
-lockfile = os.path.join( home, '.univention-skel.lock' )
+lockfile = os.path.join(home, '.univention-skel.lock')
 lock_fd = None
 # defaults
-perms_dir = cfgRegistry.get( 'skel/permissions/directory', '0700' )
-perms_file = cfgRegistry.get( 'skel/permissions/file', '0600' )
+perms_dir = cfgRegistry.get('skel/permissions/directory', '0700')
+perms_file = cfgRegistry.get('skel/permissions/file', '0600')
+
 
 class Stamps:
-	base=''
-	files={}
-	dirs=[]
+	base = ''
+	files = {}
+	dirs = []
+
 	def read(self, base):
-		self.base=base
-		self.files={}
-		self.dirs=[]
+		self.base = base
+		self.files = {}
+		self.dirs = []
 		if os.path.exists(os.path.join(base, 'dirs')):
-			fp=open(os.path.join(base, 'dirs'))
+			fp = open(os.path.join(base, 'dirs'))
 			for line in fp.readlines():
-				dir=line[0:-1]
+				dir = line[0:-1]
 				self.dirs.append(dir)
 			fp.close()
 		if os.path.exists(os.path.join(base, 'files')):
-			fp=open(os.path.join(base, 'files'))
+			fp = open(os.path.join(base, 'files'))
 			for line in fp.readlines():
-				(file,hashsum)=line[0:-1].split('@%@')
-				self.files[file]=hashsum
+				(file, hashsum) = line[0:-1].split('@%@')
+				self.files[file] = hashsum
 			fp.close()
+
 	def write(self):
 		if not os.path.exists(self.base):
 			os.mkdir(self.base)
-		fp=open(os.path.join(self.base, 'dirs'), 'w')
+		fp = open(os.path.join(self.base, 'dirs'), 'w')
 		for dir in self.dirs:
-			fp.write(dir+'\n')
+			fp.write(dir + '\n')
 		fp.close()
-		fp=open(os.path.join(self.base, 'files'), 'w')
+		fp = open(os.path.join(self.base, 'files'), 'w')
 		for file in self.files.items():
-			fp.write(string.join(file, '@%@')+'\n')
+			fp.write(string.join(file, '@%@') + '\n')
 		fp.close()
+
 
 def hashsum(file):
 	return hashlib.md5(open(file).read()).hexdigest()
 
+
 def i2h_file(file):
 	return file.replace(userconfig_templates, home)
+
 
 def h2i_file(file):
 	return file.replace(home, userconfig_templates)
 
-def get_permissions( filename ):
-	if os.path.isdir( filename ):
-		return int( perms_dir, 8 )
-	else:
-		return int( perms_file, 8 )
 
-def run_script( filename ):
-	if os.path.isdir( filename ):
-		filename = os.path.join( filename, '.directory' )
-	filename = filename.replace( userconfig_templates, userconfig_meta )
-	if os.path.isfile( filename ):
-		subprocess.call( [ filename ], shell = True )
+def get_permissions(filename):
+	if os.path.isdir(filename):
+		return int(perms_dir, 8)
+	else:
+		return int(perms_file, 8)
+
+
+def run_script(filename):
+	if os.path.isdir(filename):
+		filename = os.path.join(filename, '.directory')
+	filename = filename.replace(userconfig_templates, userconfig_meta)
+	if os.path.isfile(filename):
+		subprocess.call([filename], shell=True)
+
 
 def install_files(stamps, dir, files):
 	hstamps, istamps = stamps
@@ -119,10 +132,10 @@ def install_files(stamps, dir, files):
 
 	# create directories if necessary
 	if not os.path.exists(hdir):
-		if not hdir in hstamps.dirs:
+		if hdir not in hstamps.dirs:
 			hstamps.dirs.append(hdir)
- 			os.mkdir( hdir, get_permissions( dir ) )
-			run_script( dir )
+			os.mkdir(hdir, get_permissions(dir))
+			run_script(dir)
 
 	# check files
 	for file in files:
@@ -142,53 +155,56 @@ def install_files(stamps, dir, files):
 			continue
 		istamps.files[ifile] = hashsum(ifile)
 		# copy file if:
-		## file does not exist
-		## there is no hashsum
-		## unmodified version of file exists and hashsums of skel and user version do not match
-		if ( not os.path.exists(hfile) ) or \
-			   ( not (hfile in hstamps.files) ) or \
-			   ( os.path.exists(hfile) and hashsum(hfile) == hstamps.files.get(hfile, '') and \
-				 hstamps.files[hfile] != istamps.files[ifile] ):
+		# file does not exist
+		# there is no hashsum
+		# unmodified version of file exists and hashsums of skel and user version do not match
+		if (not os.path.exists(hfile)) or \
+			(not (hfile in hstamps.files)) or \
+			(os.path.exists(hfile) and hashsum(hfile) == hstamps.files.get(hfile, '') and
+			hstamps.files[hfile] != istamps.files[ifile]):
 			print 'create', hfile
-			rfp=open(ifile)
-			wfp = os.open( hfile, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, get_permissions( ifile ) )
-			os.write( wfp, rfp.read() )
-			os.close( wfp )
+			rfp = open(ifile)
+			wfp = os.open(hfile, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, get_permissions(ifile))
+			os.write(wfp, rfp.read())
+			os.close(wfp)
 			rfp.close()
-			run_script( ifile )
+			run_script(ifile)
 			hstamps.files[hfile] = hashsum(hfile)
+
 
 def _lock():
 	'''try to lock skel operations. If lock could not be acquired will
 	retry it for skel/retries times'''
 	global lock_fd
 
-	count = int( cfgRegistry.get( 'skel/lock/retry', '5' ) )
-	lock_fd = os.open( lockfile, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0600 )
+	count = int(cfgRegistry.get('skel/lock/retry', '5'))
+	lock_fd = os.open(lockfile, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0o600)
 	while count:
 		try:
-			fcntl.lockf( lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB )
+			fcntl.lockf(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
 			return True
-		except Exception ,e:
+		except Exception:
 			count -= 1
-			time.sleep( 0.05 ) # 50 milliseconds
+			time.sleep(0.05)  # 50 milliseconds
 
 	return False
+
 
 def _unlock():
 	'''free lock for skel operations'''
 	global lock_fd
 
-	if not lock_fd: return False
-	fcntl.lockf( lock_fd, fcntl.LOCK_UN )
-	os.close( lock_fd )
+	if not lock_fd:
+		return False
+	fcntl.lockf(lock_fd, fcntl.LOCK_UN)
+	os.close(lock_fd)
 	lock_fd = None
 
 	return True
 
 if not _lock():
 	print >>sys.stderr, 'Unable to lock skel operations'
-	sys.exit( 1 )
+	sys.exit(1)
 
 # for debugging
 # sys.stdout = open( '/tmp/univention-skel.log', 'w' )
@@ -200,7 +216,7 @@ print userconfig_templates
 os.path.walk(userconfig_templates, install_files, (hstamps, istamps))
 
 # delete old skel files
-delete_files=[]
+delete_files = []
 for hfile in hstamps.files.keys():
 	ifile = h2i_file(hfile)
 	if os.path.islink(hfile) and not (ifile in istamps.files) and os.path.exists(hfile):
@@ -208,7 +224,7 @@ for hfile in hstamps.files.keys():
 		delete_files.append(hfile)
 		os.unlink(hfile)
 	if not os.path.islink(ifile) and not (ifile in istamps.files) and os.path.exists(hfile) and \
-			hstamps.files[hfile] == hashsum(hfile):
+		hstamps.files[hfile] == hashsum(hfile):
 		print 'delete', hfile
 		delete_files.append(hfile)
 		os.unlink(hfile)
@@ -218,10 +234,10 @@ for file in delete_files:
 # delete old skel directories
 hstamps.dirs.sort()
 hstamps.dirs.reverse()
-delete_dirs=[]
+delete_dirs = []
 for hdir in hstamps.dirs:
 	idir = h2i_file(hdir)
-	if not idir in istamps.dirs and os.path.exists(hdir):
+	if idir not in istamps.dirs and os.path.exists(hdir):
 		print 'delete', hdir
 		delete_dirs.append(hdir)
 		try:
@@ -235,4 +251,4 @@ hstamps.write()
 
 if not _unlock():
 	print >>sys.stderr, 'Unable to free lock of skel operations'
-	sys.exit( 1 )
+	sys.exit(1)
