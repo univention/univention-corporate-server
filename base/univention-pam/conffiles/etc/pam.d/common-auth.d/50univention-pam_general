@@ -16,7 +16,7 @@ auth     [success=<succ> new_authtok_reqd=ok \
          service_err=<unavail> authinfo_unavail=<unavail> \
          default=<unknown>]                         pam_winbind.so use_first_pass'''
 
-value=baseConfig.get('auth/passwdcache/max_user', '3')
+value=configRegistry.get('auth/passwdcache/max_user', '3')
 
 pam_cache='''
 # cache password (on successful authentification)
@@ -54,7 +54,7 @@ def pam_section(template, index, last):
 		replace('<fail>', fail).replace('<unknown>', unknown)
 
 methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind', 'cache'],
-	baseConfig['auth/methods'].split(' '))
+	configRegistry['auth/methods'].split(' '))
 if 'cache' in methods:
 	methods.remove('cache')
 	index = len(methods)
