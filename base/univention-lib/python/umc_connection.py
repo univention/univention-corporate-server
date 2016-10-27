@@ -50,7 +50,7 @@ class UMCConnection(object):
 			'X-Requested-With': 'XMLHttpRequest',
 		}
 		self._base_uri = '/univention/'
-		self._error_handler=error_handler
+		self._error_handler = error_handler
 		if username is not None:
 			self.auth(username, password)
 
@@ -85,7 +85,7 @@ class UMCConnection(object):
 		'''Tries to authenticate against the host and preserves the
 		cookie. Has to be done only once (but keep in mind that the
 		session probably expires after 10 minutes of inactivity)'''
-		data = self.build_data({'username' : username, 'password' : password, 'auth_type': auth_type})
+		data = self.build_data({'username': username, 'password': password, 'auth_type': auth_type})
 		try:
 			response = None
 			response = self.__request('POST', 'auth', data, headers=self._headers)
@@ -103,7 +103,7 @@ class UMCConnection(object):
 
 	def build_data(self, data, flavor=None):
 		'''Returns a dictionary as expected by the UMC Server'''
-		data = {'options' : data}
+		data = {'options': data}
 		if flavor:
 			data['flavor'] = flavor
 		return dumps(data)

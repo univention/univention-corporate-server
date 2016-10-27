@@ -45,6 +45,7 @@ DIR_BLACKLIST.append("/dev")
 DIR_BLACKLIST.append("/tmp")
 DIR_BLACKLIST.append("/root")
 
+
 def dirIsMountPoint(path):
 
 	if path == "/":
@@ -66,6 +67,7 @@ def dirIsMountPoint(path):
 						return "%s is a mount point" % path
 	return None
 
+
 def checkDirFileSystem(path, cr):
 
 	knownFs = cr.get("listener/shares/rename/fstypes", DEFAULT_FS).split(":")
@@ -80,13 +82,14 @@ def checkDirFileSystem(path, cr):
 					# ok, found fs is fs whitelist
 					return None
 			break
-	return "filesystem %s for %s is not on a known filesystem" % (myFs, path)	
+	return "filesystem %s for %s is not on a known filesystem" % (myFs, path)
+
 
 def createOrRename(old, new, cr):
 	# create or rename
 	rename = False
 	if cr.is_true("listener/shares/rename", False) and old:
-		# rename only if old object exists and 
+		# rename only if old object exists and
 		# share host is unchanged and
 		# path was changed
 		if old.get("univentionShareHost") and new.get("univentionShareHost"):
@@ -103,10 +106,10 @@ def createOrRename(old, new, cr):
 	if os.path.islink(newPath):
 		newPath = os.path.realpath(newPath)
 	if newPath == "/":
-		return "/ as new path is not allowed" 
+		return "/ as new path is not allowed"
 
 	# rename it
-	if rename:	
+	if rename:
 
 		# old path (source)
 		if not old.get("univentionSharePath"):
@@ -168,8 +171,8 @@ def createOrRename(old, new, cr):
 		# create path to destination
 		if not os.access(newPathDir, os.F_OK):
 			try:
-				os.makedirs(newPathDir, int('0755',0))
-			except Exception, e:
+				os.makedirs(newPathDir, int('0755', 0))
+			except Exception as e:
 				return "creation of directory %s failed: %s" % (newPathDir, str(e))
 
 		# check size of source and free space in destination
@@ -179,14 +182,14 @@ def createOrRename(old, new, cr):
 		try:
 			if not oldPath == "/" and not newPath == "/":
 				shutil.move(oldPath, newPath)
-		except Exception, e:
+		except Exception as e:
 			return "failed to move directory %s to %s: %s" % (oldPath, newPath, str(e))
 
 	# or create directory anyway
 	if not os.access(newPath, os.F_OK):
 		try:
-			os.makedirs(newPath, int('0755',0))
-		except Exception, e:
+			os.makedirs(newPath, int('0755', 0))
+		except Exception as e:
 			return "creation of directory %s failed: %s" % (newPath, str(e))
 
 	# set custom permissions for path in new
@@ -214,7 +217,7 @@ def createOrRename(old, new, cr):
 
 	# only dirs
 	if not os.path.isdir(newPath):
-		return "custom permissions only for directories allowed (%s)" % newPath 
+		return "custom permissions only for directories allowed (%s)" % newPath
 
 	# check blacklist
 	for dir in DIR_BLACKLIST:
@@ -223,10 +226,10 @@ def createOrRename(old, new, cr):
 
 	# set permissions, only modify them if a change has occured
 	try:
-		if (not old or (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and 
+		if (not old or (new.get("univentionShareDirectoryMode") and old.get("univentionShareDirectoryMode") and
 				new["univentionShareDirectoryMode"][0] != old["univentionShareDirectoryMode"][0])):
 			os.chmod(newPath, int(mode, 0))
-		
+
 		if (not old or (new.get("univentionShareUid") and old.get("univentionShareUid") and
 				new["univentionShareUid"][0] != old["univentionShareUid"][0])):
 			os.chown(newPath, uid, -1)

@@ -32,6 +32,7 @@
 import fcntl
 import os
 
+
 def get_lock(name, nonblocking=False):
 	"""
 	get_lock() returns a filedescriptor for a lock file after the file
@@ -58,7 +59,7 @@ def get_lock(name, nonblocking=False):
 			fcntl.lockf(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
 		else:
 			fcntl.lockf(fd, fcntl.LOCK_EX)
-	except IOError, e:
+	except IOError as e:
 		if e.errno == 11:
 			return None
 		raise

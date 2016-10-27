@@ -58,13 +58,17 @@ _ = Translation('univention-lib').translate
 CMD_DISABLE_EXEC = '/usr/share/univention-updater/disable-apache2-umc'
 CMD_ENABLE_EXEC = ['/usr/share/univention-updater/enable-apache2-umc', '--no-restart']
 
+
 class LockError(Exception):
+
 	'''Lock error for the package manager.
 	Not to be confused with LockFailedException (apt)
 	'''
 	pass
 
+
 class ProgressState(object):
+
 	def __init__(self, parent_logger):
 		self._logger = parent_logger.getChild('dpkg')
 		self.hard_reset()
@@ -111,17 +115,19 @@ class ProgressState(object):
 
 	def poll(self):
 		result = {
-			'info' : self._info,
-			'steps' : self._steps,
-			'errors' : self._errors,
-			'finished' : self._finished,
+			'info': self._info,
+			'steps': self._steps,
+			'errors': self._errors,
+			'finished': self._finished,
 		}
 		if self._max_steps and result['steps']:
 			result['steps'] = int((result['steps'] * 100 / self._max_steps))
 		self.reset()
 		return result
 
+
 class MessageWriter(object):
+
 	'''Mimics a file object
 	supports flush and write. Writes no '\\r',
 	writes no empty strings, writes not just spaces.
@@ -138,10 +144,13 @@ class MessageWriter(object):
 		if msg:
 			self.progress_state.info(msg, logger_name='fetch')
 
+
 class FetchProgress(apt.progress.text.AcquireProgress):
+
 	'''Used to handle information about fetching packages.
 	Writes a lot of __MSG__es, as it uses MessageWriter
 	'''
+
 	def __init__(self, outfile=None):
 		super(FetchProgress, self).__init__()
 		self._file = MessageWriter(outfile)
@@ -156,10 +165,13 @@ class FetchProgress(apt.progress.text.AcquireProgress):
 	def _write(self, msg, newline=True, maximize=True):
 		super(FetchProgress, self)._write(msg, newline=False, maximize=False)
 
+
 class DpkgProgress(apt.progress.base.InstallProgress):
+
 	'''Progress when installing or removing software.
 	Writes messages (and percentage) from apts status file descriptor
 	'''
+
 	def __init__(self, progress_state):
 		super(DpkgProgress, self).__init__()
 		self.progress_state = progress_state
@@ -236,6 +248,7 @@ class DpkgProgress(apt.progress.base.InstallProgress):
 #	def processing(self, pkg, stage):
 #		self.log('PROCESS', pkg, stage)
 #
+
 
 class _PackageManagerLoggerHandler(Handler):
 
@@ -627,7 +640,7 @@ class PackageManager(object):
 			self.mark(install, remove, dry_run=False)
 
 			# commit marked packages
-			kwargs = {'fetch_progress' : self.fetch_progress, 'install_progress' : self.dpkg_progress}
+			kwargs = {'fetch_progress': self.fetch_progress, 'install_progress': self.dpkg_progress}
 			if self.always_noninteractive:
 				with self.noninteractive():
 					result = self.cache.commit(**kwargs)
@@ -649,12 +662,12 @@ class PackageManager(object):
 
 		# check whether all packages have been installed
 		for pkg in install:
-			if not self.is_installed(pkg.name): # fresh from cache
+			if not self.is_installed(pkg.name):  # fresh from cache
 				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to install')))
 
 		# check whether all packages have been removed
 		for pkg in remove:
-			if self.is_installed(pkg.name): # fresh from cache
+			if self.is_installed(pkg.name):  # fresh from cache
 				self.progress_state.error('%s: %s' % (pkg.name, _('Failed to uninstall')))
 
 		return result
