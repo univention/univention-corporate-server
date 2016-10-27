@@ -57,123 +57,123 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 			default=('directory', [])
 		),
 	'policies': univention.admin.property(
 			short_description=_('Policy Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'dns': univention.admin.property(
 			short_description=_('DNS Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'dhcp': univention.admin.property(
 			short_description=_('DHCP Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'users': univention.admin.property(
 			short_description=_('User Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'groups': univention.admin.property(
 			short_description=_('Group Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'computers': univention.admin.property(
 			short_description=_('Computer Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'networks': univention.admin.property(
 			short_description=_('Network Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'shares': univention.admin.property(
 			short_description=_('Share Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'printers': univention.admin.property(
 			short_description=_('Printer Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'mail': univention.admin.property(
 			short_description=_('Mail Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'license': univention.admin.property(
 			short_description=_('License Link'),
 			long_description='',
 			syntax=univention.admin.syntax.ldapDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		)
 }
 
@@ -242,7 +242,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionDirectory'] ) ]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionDirectory')

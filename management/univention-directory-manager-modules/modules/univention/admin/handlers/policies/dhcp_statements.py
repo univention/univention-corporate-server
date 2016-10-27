@@ -76,72 +76,72 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'authoritative': univention.admin.property(
 			short_description=_('Authoritative'),
 			long_description=_('Send DHCPNAK messages to misconfigured clients. Disabled by default.'),
 			syntax=univention.admin.syntax.booleanNone,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'boot-unknown-clients': univention.admin.property(
 			short_description=_('Boot unknown clients'),
 			long_description=_('Enable clients for which there is no host declaration to obtain IP addresses. Allow and deny statements within pool declarations will still be respected.'),
 			syntax=univention.admin.syntax.TrueFalse,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'pingCheck': univention.admin.property(
 			short_description=_('Ping check'),
 			long_description=_('First send an ICMP Echo request (a ping) when considering dynamically allocating an IP address. Should only be disabled if the delay of one second introduced by this is a problem for a client.'),
 			syntax=univention.admin.syntax.TrueFalse,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'getLeaseHostnames': univention.admin.property(
 			short_description=_('Add hostnames to leases'),
 			long_description=_('Look up the domain name corresponding to the IP address of each address in the lease pool and use that address for the DHCP hostname option. Disabled by default.'),
 			syntax=univention.admin.syntax.TrueFalse,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'serverIdentifier': univention.admin.property(
 			short_description=_('Server identifier'),
 			long_description=_('The IP address identifying the DHCP server that should be used by the clients. Use this only if auto-detection fails for servers with multiple IP addresses.'),
 			syntax=univention.admin.syntax.hostOrIP,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'serverName': univention.admin.property(
 			short_description=_('Server name'),
 			long_description=_('Define the name of the DHCP server'),
 			syntax=univention.admin.syntax.hostName,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 }
 property_descriptions.update(dict([
@@ -184,7 +184,7 @@ class object(univention.admin.handlers.simplePolicy):
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpStatements'])
 		]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpStatements'),

@@ -70,112 +70,112 @@ property_descriptions={
 	        short_description=_('Configuration Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 			),
 	'passwordLength': univention.admin.property(
 			short_description=_('Password Length'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'passwordHistory': univention.admin.property(
 			short_description=_('Password History'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'minPasswordAge': univention.admin.property(
 			short_description=_('Minimum Password Age'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'badLockoutAttempts': univention.admin.property(
 			short_description=_('Bad Lockout Attempts'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'logonToChangePW': univention.admin.property(
 			short_description=_('User must Logon to Change Password'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'maxPasswordAge': univention.admin.property(
 			short_description=_('Maximum Password Age'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'lockoutDuration': univention.admin.property(
 			short_description=_('Lockout Duration Minutes'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'resetCountMinutes': univention.admin.property(
 			short_description=_('Reset Count Minutes'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'disconnectTime': univention.admin.property(
 			short_description=_('Disconnect Time'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'refuseMachinePWChange': univention.admin.property(
 			short_description=_('Refuse Machine Password Change'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	}
 
@@ -221,7 +221,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 
 	
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionSambaConfig'),

@@ -71,19 +71,19 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.printerName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'location' : univention.admin.property(
 			short_description = _( 'Location' ),
 			long_description = '',
 			syntax = univention.admin.syntax.string,
 			multivalue = 0,
-			include_in_default_search=1,
+			include_in_default_search=True,
 			options = [],
 			required = 0,
 			may_change = 1,
@@ -94,7 +94,7 @@ property_descriptions={
 			long_description = '',
 			syntax = univention.admin.syntax.string,
 			multivalue = 0,
-			include_in_default_search=1,
+			include_in_default_search=True,
 			options = [],
 			required = 0,
 			may_change = 1,
@@ -104,18 +104,18 @@ property_descriptions={
 			short_description=_('Spool host'),
 			long_description='',
 			syntax=univention.admin.syntax.ServicePrint_FQDN,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'uri': univention.admin.property(
 			short_description = _( 'Connection' ),
 			long_description = '',
 			syntax=univention.admin.syntax.PrinterURI,
 			multivalue = False,
-			include_in_default_search=1,
+			include_in_default_search=True,
 			options = [],
 			required = True,
 			may_change = True,
@@ -125,12 +125,12 @@ property_descriptions={
 			short_description=_('Printer model'),
 			long_description='',
 			syntax=univention.admin.syntax.PrinterDriverList,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'producer': univention.admin.property(
 			short_description = _( 'Printer producer' ),
@@ -146,73 +146,73 @@ property_descriptions={
 			short_description=_('Windows name'),
 			long_description='',
 			syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
-			unique=1
+			required=False,
+			may_change=True,
+			identifies=False,
+			unique=True
 		),
 	'setQuota': univention.admin.property(
 			short_description=_('Enable quota support'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'pagePrice': univention.admin.property(
 			short_description=_('Price per page'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'jobPrice': univention.admin.property(
 			short_description=_('Price per print job'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'ACLtype': univention.admin.property(
 			short_description=_('Access control'),
 			long_description=_('Access list can allow or deny listed users and groups.'),
 			syntax=printerACLTypes,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 			default="allow all"
 		),
 	'ACLUsers': univention.admin.property(
 			short_description=_('Allowed/denied users'),
 			long_description=_('For the given users printing is explicitly allowed or denied.'),
 			syntax=univention.admin.syntax.UserDN,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 		),
 	'ACLGroups': univention.admin.property(
 			short_description=_('Allowed/denied groups'),
 			long_description=_('For the given groups printing is explicitly allowed or denied.'),
 			syntax=univention.admin.syntax.GroupDN,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 		),
 }
 
@@ -349,7 +349,7 @@ class object(univention.admin.handlers.simpleLdap):
 			printergroup_object['groupMember'].remove(self.info['name'])
 			printergroup_object.modify()
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPrinter'),

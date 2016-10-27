@@ -50,31 +50,31 @@ nagios_properties = {
 			short_description = _('Email address of Nagios contacts'),
 			long_description = (''),
 			syntax=univention.admin.syntax.emailAddress,
-			multivalue=1,
-			required=0,
-			may_change=1,
+			multivalue=True,
+			required=False,
+			may_change=True,
 			options=['nagios'],
-			identifies=0
+			identifies=False
 		),
 	'nagiosParents': univention.admin.property(
 			short_description = _('Parent hosts'),
 			long_description = (''),
 			syntax=univention.admin.syntax.nagiosHostsEnabledDn,
-			multivalue=1,
-			required=0,
-			may_change=1,
+			multivalue=True,
+			required=False,
+			may_change=True,
 			options=['nagios'],
-			identifies=0
+			identifies=False
 		),
 	'nagiosServices': univention.admin.property(
 			short_description = _('Assigned Nagios services'),
 			long_description = (''),
 			syntax=univention.admin.syntax.nagiosServiceDn,
-			multivalue=1,
-			required=0,
-			may_change=1,
+			multivalue=True,
+			required=False,
+			may_change=True,
 			options=['nagios'],
-			identifies=0
+			identifies=False
 		)
 }
 
@@ -98,7 +98,7 @@ nagios_options={
 	'nagios': univention.admin.option(
 			short_description=_('Nagios support'),
 			default=0,
-			editable=1,
+			editable=True,
 			objectClasses = ['univentionNagiosHostClass'],
 		)
 	}

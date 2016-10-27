@@ -78,93 +78,93 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'ddnsHostname': univention.admin.property(
 			short_description=_('DDNS hostname'),
 			long_description=_("Hostname that will be used for the client's A and PTR records"),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'ddnsDomainname': univention.admin.property(
 			short_description=_('DDNS domain name'),
 			long_description=_("Domain name that will be appended to the client's hostname to form a fully-qualified domain-name (FQDN)"),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'ddnsRevDomainname': univention.admin.property(
 			short_description=_('DDNS reverse domain name'),
 			long_description=_("Domain name that will be appended to the client's hostname to produce a name for use in the client's PTR record"),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'ddnsUpdates': univention.admin.property(
 			short_description=_('DDNS updates'),
 			long_description=_("Attempt to do a DNS update when a DHCP lease is confirmed"),
 			syntax=univention.admin.syntax.ddnsUpdates,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'ddnsUpdateStyle': univention.admin.property(
 			short_description=_('DDNS update style'),
 			long_description=_("Specify the DDNS Update Style to use for a DHCP Service"),
 			syntax=univention.admin.syntax.ddnsUpdateStyle,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'ddnsDoForwardUpdate': univention.admin.property(
 			short_description=_('DDNS forward update'),
 			long_description=_("Attempt to update a DHCP client's A record when the client acquires or renews a lease"),
 			syntax=univention.admin.syntax.TrueFalse,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'updateStaticLeases': univention.admin.property(
 			short_description=_('Update static leases'),
 			long_description=_("Do DNS updates for clients even if their IP addresses are assigned using fixed addresses"),
 			syntax=univention.admin.syntax.TrueFalse,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 			),
 	'clientUpdates': univention.admin.property(
 			short_description=_('Client updates'),
 			long_description=_("Honor the client's intention to do its own update of its A record"),
 			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 property_descriptions.update(dict([
@@ -210,7 +210,7 @@ class object(univention.admin.handlers.simplePolicy):
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpDnsUpdate'])
 		]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpDnsUpdate'),

@@ -76,62 +76,62 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'softLimitSpace': univention.admin.property(
 			short_description=_('Soft limit'),
 			long_description=_('Soft limit. If exceeded users can be warned. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
 			syntax=univention.admin.syntax.filesize,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'hardLimitSpace': univention.admin.property(
 			short_description=_('Hard limit'),
 			long_description=_('Hard limit. Can not be exceeded. Values may be entered with one of the following units as postfix: B (default), kB, MB, GB'),
 			syntax=univention.admin.syntax.filesize,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'softLimitInodes': univention.admin.property(
 			short_description=_('Soft limit (Files)'),
 			long_description=_('Soft limit. If exceeded users can be warned.'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'hardLimitInodes': univention.admin.property(
 			short_description=_('Hard limit (Files)'),
 			long_description=_('Hard limit. Can not be exceeded.'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'reapplyeverylogin': univention.admin.property(
 			short_description=_('Reapply settings on every login'),
 			long_description=_('Reapply the mountpoint specific user quota policies on each user login. If not set, the initially configured quota settings will not be overwritten.'),
 			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 			default="FALSE"
 		),
 
@@ -172,7 +172,7 @@ class object(univention.admin.handlers.simplePolicy):
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyShareUserQuota']) ]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyShareUserQuota')

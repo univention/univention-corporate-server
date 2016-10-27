@@ -62,171 +62,171 @@ property_descriptions={
 			short_description= _('Name'),
 			long_description= _('Service name'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'description': univention.admin.property(
 			short_description= _('Description'),
 			long_description= _('Service description'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'checkCommand': univention.admin.property(
 			short_description= _('Plugin command'),
 			long_description= _('Command name of Nagios plugin'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'checkArgs': univention.admin.property(
 			short_description = _('Plugin command arguments'),
 			long_description = _('Arguments of used Nagios plugin'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'useNRPE': univention.admin.property(
 			short_description = _('Use NRPE'),
 			long_description = _('Use NRPE to check remote services'),
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'checkPeriod': univention.admin.property(
 			short_description = _('Check period'),
 			long_description = _('Check services within check period'),
 			syntax=ldap_search_period,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'maxCheckAttempts': univention.admin.property(
 			short_description = _('Maximum number of check attempts'),
 			long_description = _('Maximum number of check attempts with non-OK-result until contact will be notified'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
+			required=True,
+			may_change=True,
 			default='10',
-			identifies=0,
+			identifies=False,
 			size='One',
 		),
 	'normalCheckInterval': univention.admin.property(
 			short_description = _('Check interval'),
 			long_description = _('Interval between checks'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
+			required=True,
+			may_change=True,
 			default='10',
-			identifies=0,
+			identifies=False,
 			size='One',
 		),
 	'retryCheckInterval': univention.admin.property(
 			short_description = _('Retry check interval'),
 			long_description = _('Interval between re-checks if service is in non-OK-state'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
+			required=True,
+			may_change=True,
 			default='1',
-			identifies=0,
+			identifies=False,
 			size='One',
 		),
 	'notificationInterval': univention.admin.property(
 			short_description = _('Notification interval'),
 			long_description = _('Interval between notifications'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
+			required=True,
+			may_change=True,
 			default='180',
-			identifies=0,
+			identifies=False,
 			size='One',
 		),
 	'notificationPeriod': univention.admin.property(
 			short_description = _('Notification period'),
 			long_description = _('Send notifications during this period'),
 			syntax=ldap_search_period,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'notificationOptionWarning': univention.admin.property(
 			short_description = _('Notify if service state changes to WARNING'),
 			long_description = '',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
 			default='1',
-			may_change=1,
-			identifies=0
+			may_change=True,
+			identifies=False
 		),
 	'notificationOptionCritical': univention.admin.property(
 			short_description = _('Notify if service state changes to CRITICAL'),
 			long_description = '',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
 			default='1',
-			may_change=1,
-			identifies=0
+			may_change=True,
+			identifies=False
 		),
 	'notificationOptionUnreachable': univention.admin.property(
 			short_description = _('Notify if service state changes to UNREACHABLE'),
 			long_description = '',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
 			default='1',
-			may_change=1,
-			identifies=0
+			may_change=True,
+			identifies=False
 		),
 	'notificationOptionRecovered': univention.admin.property(
 			short_description = _('Notify if service state changes to RECOVERED'),
 			long_description = '',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
 			default='1',
-			may_change=1,
-			identifies=0
+			may_change=True,
+			identifies=False
 		),
 	'assignedHosts': univention.admin.property(
 			short_description = _('Assigned hosts'),
 			long_description = _('Check services on these hosts'),
 			syntax=univention.admin.syntax.nagiosHostsEnabledDn,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		)
 }
 
@@ -388,7 +388,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	filter=univention.admin.filter.conjunction('&', [
 				univention.admin.filter.expression('objectClass', 'univentionNagiosServiceClass'),
 				])

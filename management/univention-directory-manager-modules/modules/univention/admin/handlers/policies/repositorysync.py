@@ -73,62 +73,62 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'month': univention.admin.property(
 			short_description=_('Month'),
 			long_description='',
 			syntax=univention.admin.syntax.Month,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'day': univention.admin.property(
 			short_description=_('Day'),
 			long_description='',
 			syntax=univention.admin.syntax.Day,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'weekday': univention.admin.property(
 			short_description=_('Day of week'),
 			long_description='',
 			syntax=univention.admin.syntax.Weekday,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'hour': univention.admin.property(
 			short_description=_('Hour'),
 			long_description='',
 			syntax=univention.admin.syntax.Hour,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'minute': univention.admin.property(
 			short_description=_('Minute'),
 			long_description='',
 			syntax=univention.admin.syntax.Minute,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 
 }
@@ -219,7 +219,7 @@ class object(univention.admin.handlers.simplePolicy):
 			ml.append(('univentionRepositoryCron', self.oldattr.get('univentionRepositoryCron', []), [cron]))
 		return ml
 	
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyRepositorySync')

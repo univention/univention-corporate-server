@@ -348,13 +348,13 @@ class access:
 	def compare_dn(cls, a, b):
 		return univention.uldap.compare_dn(a, b)
 
-	def get(self, dn, attr=[], required=0, exceptions=0):
+	def get(self, dn, attr=[], required=False, exceptions=False):
 		return self.lo.get(dn, attr, required)
 
-	def getAttr(self, dn, attr, required=0, exceptions=0):
+	def getAttr(self, dn, attr, required=False, exceptions=False):
 		return self.lo.getAttr(dn, attr, required)
 
-	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=0, required=0, timeout=-1, sizelimit=0):
+	def search(self, filter='(objectClass=*)', base='', scope='sub', attr=[], unique=False, required=False, timeout=-1, sizelimit=0):
 		try:
 			return self.lo.search(filter, base, scope, attr, unique, required, timeout, sizelimit)
 		except ldap.NO_SUCH_OBJECT as msg:
@@ -370,7 +370,7 @@ class access:
 		except ldap.LDAPError as msg:
 			raise univention.admin.uexceptions.ldapError(_err2str(msg), original_exception=msg)
 
-	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 		try:
 			return self.lo.searchDn(filter, base, scope, unique, required, timeout, sizelimit)
 		except ldap.NO_SUCH_OBJECT as msg:

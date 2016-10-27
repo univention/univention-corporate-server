@@ -55,85 +55,85 @@ property_descriptions={
 			short_description=_('Principal name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 		),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
-			required=0,
-			may_change=1,
-			identifies=0
+			multivalue=False,
+			include_in_default_search=True,
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'password': univention.admin.property(
 			short_description=_('Password'),
 			long_description='',
 			syntax=univention.admin.syntax.passwd,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True
 		),
 	'generateRandomPassword': univention.admin.property(
 			short_description=_('Generate random password'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True
 		),
 	'keyVersionNumber': univention.admin.property(
 			short_description=_('Key version'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1,
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True,
 			default='1'
 		),
 	'KDCFlags': univention.admin.property(
 			short_description=_('KDC Flags'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1,
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True,
 			default='126'
 		),
 	'maxLife': univention.admin.property(
 			short_description=_('Maximum life time'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1,
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True,
 			default='86400'
 		),
 	'maxRenew': univention.admin.property(
 			short_description=_('Maximum renew time'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1,
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True,
 			default='604800'
 		),
 }
@@ -211,7 +211,7 @@ class object(univention.admin.handlers.simpleLdap):
 			('objectClass', [ 'top', 'account', 'krb5Principal', 'krb5KDCEntry' ])
 		]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'top'),

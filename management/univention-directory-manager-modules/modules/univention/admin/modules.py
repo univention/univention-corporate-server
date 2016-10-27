@@ -712,7 +712,7 @@ def virtual(module_name):
 	module = get(module_name)
 	return getattr(module, 'virtual', False)
 
-def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='base+one', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(module_name, co, lo, filter='', base='', superordinate=None, scope='base+one', unique=False, required=False, timeout=-1, sizelimit=0):
 	'''return objects of module that match the given criteria'''
 	module = get(module_name)
 	tmpres=[]

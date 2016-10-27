@@ -60,64 +60,64 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.printerName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'spoolHost': univention.admin.property(
 			short_description=_('Spool host'),
 			long_description='',
 			syntax=univention.admin.syntax.ServicePrint_FQDN,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'sambaName': univention.admin.property(
 			short_description=_('Windows name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
-			unique=1
+			required=False,
+			may_change=True,
+			identifies=False,
+			unique=True
 		),
 	'setQuota': univention.admin.property(
 			short_description=_('Enable quota support'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'pagePrice': univention.admin.property(
 			short_description=_('Price per page'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'jobPrice': univention.admin.property(
 			short_description=_('Price per print job'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 
@@ -126,7 +126,7 @@ mapping=univention.admin.mapping.mapping()
 class object(univention.admin.handlers.simpleLdap):
 	module=module
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	return univention.admin.handlers.shares.printer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.shares.printergroup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 

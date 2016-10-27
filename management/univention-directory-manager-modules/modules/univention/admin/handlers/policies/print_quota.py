@@ -78,42 +78,42 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'quotaGroups': univention.admin.property(
 			short_description=_('Print quota for groups'),
 			long_description=_('Soft and hard limits for each allowed group'),
 			syntax=univention.admin.syntax.PrintQuotaGroup,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'quotaGroupsPerUsers': univention.admin.property(
 			short_description=_('Print quota for groups per user'),
 			long_description=_('Soft and hard limits for each member of allowed group'),
 			syntax=univention.admin.syntax.PrintQuotaGroupPerUser,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'quotaUsers': univention.admin.property(
 			short_description=_('Print quota for users'),
 			long_description=_('Soft and hard limits for each allowed user'),
 			syntax=univention.admin.syntax.PrintQuotaUser,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 
 }
@@ -182,7 +182,7 @@ class object(univention.admin.handlers.simplePolicy):
 				if len(user_dn) < 1 and entry[2] != 'root':
 					raise univention.admin.uexceptions.notValidUser,_('%s is not valid. ') % entry[2]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicySharePrintQuota')
