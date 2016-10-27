@@ -1,7 +1,6 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 @%@UCRWARNING=# @%@
-
 # Copyright 2004-2016 Univention GmbH
 #
 # http://www.univention.de/
@@ -28,7 +27,6 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-
 import sys
 import univention.password
 
@@ -42,13 +40,13 @@ while not end:
 		continue
 
 	try:
-		key, val = line.split(': ',1)
+		key, val = line.split(': ', 1)
 	except:
 		print 'key value pair is not correct: %s' % line
 		sys.exit(1)
 	params[key] = val
 
-if not 'new-password' in params:
+if 'new-password' not in params:
 	print 'missing password'
 	sys.exit(1)
 
@@ -57,6 +55,5 @@ if 'principal' in params:
 	try:
 		pwdCheck.check(params['new-password'])
 		print 'APPROVED'
-	except ValueError, e:
+	except ValueError as e:
 		print str(e)
-

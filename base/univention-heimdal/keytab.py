@@ -29,8 +29,11 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
-__package__=''  # workaround for PEP 366
-import listener, os, pwd, types, time, univention.debug
+__package__ = ''  # workaround for PEP 366
+import listener
+import os
+import time
+import univention.debug
 import univention.config_registry
 
 hostname = listener.baseConfig['hostname']
@@ -40,15 +43,16 @@ server_role = listener.baseConfig['server/role']
 ldap_master = listener.baseConfig['ldap/master']
 
 
-name='keytab'
-description='Kerberos 5 keytab maintainance'
-filter='(&(objectClass=krb5Principal)(objectClass=krb5KDCEntry)(krb5KeyVersionNumber=*)(|(krb5PrincipalName=host/%s@%s)(krb5PrincipalName=ldap/%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)))' % (hostname, realm, hostname, realm, hostname, domainname, realm, hostname, domainname, realm, hostname, listener.baseConfig['ldap/base'].replace('dc=','').replace(',','.'), realm, hostname, listener.baseConfig['ldap/base'].replace('dc=','').replace(',','.'), realm)
+name = 'keytab'
+description = 'Kerberos 5 keytab maintainance'
+filter = '(&(objectClass=krb5Principal)(objectClass=krb5KDCEntry)(krb5KeyVersionNumber=*)(|(krb5PrincipalName=host/%s@%s)(krb5PrincipalName=ldap/%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)(krb5PrincipalName=host/%s.%s@%s)(krb5PrincipalName=ldap/%s.%s@%s)))' % (hostname, realm, hostname, realm, hostname, domainname, realm, hostname, domainname, realm, hostname, listener.baseConfig['ldap/base'].replace('dc=', '').replace(',', '.'), realm, hostname, listener.baseConfig['ldap/base'].replace('dc=', '').replace(',', '.'), realm)
 
 etypes = ['des-cbc-crc', 'des-cbc-md4', 'des3-cbc-sha1', 'des-cbc-md5', 'arcfour-hmac-md5']
 listener.setuid(0)
 
+
 def clean():
-	## don't do anything here if this system is joined as a Samba 4 DC 
+	# don't do anything here if this system is joined as a Samba 4 DC
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 	samba4_role = ucr.get('samba4/role', '')
@@ -62,8 +66,9 @@ def clean():
 	finally:
 		listener.unsetuid()
 
+
 def handler(dn, new, old):
-	## don't do anything here if this system is joined as a Samba 4 DC 
+	# don't do anything here if this system is joined as a Samba 4 DC
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 	samba4_role = ucr.get('samba4/role', '')
@@ -77,7 +82,7 @@ def handler(dn, new, old):
 		listener.setuid(0)
 		if os.path.exists('/etc/krb5.keytab'):
 			os.remove('/etc/krb5.keytab')
-		count=0
+		count = 0
 		while not os.path.exists('/etc/krb5.keytab'):
 			os.spawnv(os.P_WAIT, '/usr/sbin/univention-scp', ['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), '/etc/krb5.keytab'])
 			if not os.path.exists('/etc/krb5.keytab'):
@@ -86,10 +91,10 @@ def handler(dn, new, old):
 					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'E: failed to download keytab for memberserver')
 					listener.unsetuid()
 					return -1
-				count=count+1
+				count = count + 1
 				time.sleep(2)
 		os.chown('/etc/krb5.keytab', 0, 0)
-		os.chmod('/etc/krb5.keytab', 0600)
+		os.chmod('/etc/krb5.keytab', 0o600)
 		listener.unsetuid()
 	else:
 		listener.setuid(0)
@@ -101,6 +106,7 @@ def handler(dn, new, old):
 
 		finally:
 			listener.unsetuid()
+
+
 def initialize():
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'init keytab')
-
