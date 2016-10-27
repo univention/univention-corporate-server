@@ -11,3 +11,4 @@ desc: |
    supported cypher list. It will however ignore "SSLv2", as it has been
    disabled in the program code.
 bug: [41378]
+announced: 2016-10-27
