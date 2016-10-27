@@ -192,7 +192,7 @@ else:
 #
 @!@
 key = 'mail/hosteddomains'
-if key in configRegistry and configRegistry[key]:
+if configRegistry.get(key):
 	print '@local_domains_acl = qw( %s );  # hosted mail domains' % configRegistry[key]
 	print '# @local_domains_acl = ( ".$mydomain" );  # $mydomain and its subdomains'
 else:
@@ -488,7 +488,7 @@ $viruses_that_fake_sender_re = new_RE(
 # $virus_admin = 'virus-admin@example.com';
 
 @!@
-if 'mail/antivir/virus_admin' in configRegistry and configRegistry['mail/antivir/virus_admin']:
+if configRegistry.get('mail/antivir/virus_admin'):
 	print "$virus_admin = '%s';" % configRegistry['mail/antivir/virus_admin']
 else:
 	print '$virus_admin = "postmaster\@%s.$mydomain";' % configRegistry['hostname']
@@ -746,7 +746,7 @@ print '''$banned_filename_re = new_RE(
 
 @!@
 key = 'mail/antivir/banned_to'
-if key in configRegistry and configRegistry[key]:
+if configRegistry.get(key):
 	to = configRegistry['mail/antivir/banned_to']
 	if to.find('@') == -1:
 		print "$banned_quarantine_to = '%s';" % to
