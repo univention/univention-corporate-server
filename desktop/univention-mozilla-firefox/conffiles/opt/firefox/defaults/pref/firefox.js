@@ -181,8 +181,8 @@ pref("general.autoScroll", false);
 // Whether or not the application should check at startup each time if it 
 // is the default browser.
 @!@
-if baseConfig.has_key('firefox/prefs/checkdefaultbrowser') and baseConfig['firefox/prefs/checkdefaultbrowser']:
-	print 'pref("browser.shell.checkDefaultBrowser", %s);' % baseConfig['firefox/prefs/checkdefaultbrowser']
+if configRegistry.get('firefox/prefs/checkdefaultbrowser'):
+	print 'pref("browser.shell.checkDefaultBrowser", %s);' % configRegistry['firefox/prefs/checkdefaultbrowser']
 else:
 	print 'pref("browser.shell.checkDefaultBrowser", true);'
 @!@
@@ -193,10 +193,10 @@ pref("browser.startup.page",                3);
 
 
 @!@
-if baseConfig.has_key('firefox/prefs/homepage') and baseConfig['firefox/prefs/homepage']:
-	print 'pref("browser.startup.homepage", "%s");' %  baseConfig['firefox/prefs/homepage']
-	print 'pref("browser.startup.homepage_reset", "%s");' %  baseConfig['firefox/prefs/homepage']
-	print 'pref("startup.homepage_welcome_url", "%s");' %  baseConfig['firefox/prefs/homepage']
+if configRegistry.get('firefox/prefs/homepage'):
+	print 'pref("browser.startup.homepage", "%s");' %  configRegistry['firefox/prefs/homepage']
+	print 'pref("browser.startup.homepage_reset", "%s");' %  configRegistry['firefox/prefs/homepage']
+	print 'pref("startup.homepage_welcome_url", "%s");' %  configRegistry['firefox/prefs/homepage']
 else:
 	print 'pref("browser.startup.homepage", "http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official");'
 	print 'pref("browser.startup.homepage_reset", "http://de.start2.mozilla.com/firefox?client=firefox-a&rls=org.mozilla:de:official");'
@@ -562,7 +562,7 @@ pref("browser.backspace_action", 2);
 pref("layout.spellcheckDefault", 1);
 
 @!@
-print 'pref("spellchecker.dictionary", "%s");' % baseConfig.get('firefox/prefs/spellchecker/dictionary', 'en-US')
+print 'pref("spellchecker.dictionary", "%s");' % configRegistry.get('firefox/prefs/spellchecker/dictionary', 'en-US')
 @!@
 
 pref("browser.send_pings", false);
@@ -823,6 +823,6 @@ pref("geo.wifi.uri", "https://www.google.com/loc/json");
 
 // UCS extensions
 @!@
-if baseConfig.has_key('firefox/prefs/conffile') and baseConfig['firefox/prefs/conffile']:
-	print 'pref("general.config.filename", "%s");' % baseConfig['firefox/prefs/conffile']
+if configRegistry.get('firefox/prefs/conffile'):
+	print 'pref("general.config.filename", "%s");' % configRegistry['firefox/prefs/conffile']
 @!@
