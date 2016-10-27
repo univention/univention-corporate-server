@@ -33,8 +33,10 @@
 
 import os
 
+
 class File(list):
-	def __init__(self, file = '/etc/mtab'):
+
+	def __init__(self, file='/etc/mtab'):
 		list.__init__(self)
 		self.__file = file
 		self.load()
@@ -58,14 +60,16 @@ class File(list):
 
 
 class Entry(object):
+
 	def __init__(self, spec, mount_point, type, options,
-	             dump = 0, passno = 0, comment = ''):
+	             dump=0, passno=0, comment=''):
 		self.spec = spec.strip()
 		self.mount_point = mount_point.strip()
 		self.type = type.strip()
 		self.options = options.split(',')
 		self.dump = int(dump)
 		self.passno = int(passno)
+
 
 class InvalidEntry(Exception):
 	pass

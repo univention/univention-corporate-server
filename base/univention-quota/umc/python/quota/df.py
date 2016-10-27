@@ -35,7 +35,9 @@
 
 import os
 
+
 class DeviceInfo:
+
 	def __init__(self, path):
 		self.path = path
 		self._statvfs = os.statvfs(self.path)

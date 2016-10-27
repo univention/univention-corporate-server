@@ -59,7 +59,7 @@ def _dump_share_and_policy_result(dn, share_object, policy_result):
 	filename = os.path.join(SHARE_CACHE_DIR, dn)
 
 	f = open(filename, 'w+')
-	os.chmod(filename, 0600)
+	os.chmod(filename, 0o600)
 	p = cPickle.Pickler(f)
 	p.dump((dn, share_object, policy_result))
 	p.clear_memo()

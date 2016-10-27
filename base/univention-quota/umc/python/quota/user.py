@@ -47,6 +47,7 @@ import tools
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 
+
 class Commands(object):
 
 	@sanitize(
@@ -68,7 +69,7 @@ class Commands(object):
 		there is output to parse that is restructured as UMC Dialog'''
 		# general information
 		devs = fstab.File()
-		part = devs.find(spec = partition)
+		part = devs.find(spec=partition)
 
 		# skip header
 		try:
@@ -77,7 +78,7 @@ class Commands(object):
 				header += 1
 		except:
 			pass
-		quotas = tools.repquota_parse(partition, callbackResult[header + 1 :])
+		quotas = tools.repquota_parse(partition, callbackResult[header + 1:])
 		result = []
 		for list_entry in quotas:
 			if fnmatch(list_entry['user'], request.options['filter']):
@@ -145,7 +146,7 @@ class Commands(object):
 		thread = notifier.threads.Simple('Remove', notifier.Callback(_thread, request), notifier.Callback(self._thread_finished, request))
 		thread.run()
 
-	def _check_error(self, request, partition_name): # TODO
+	def _check_error(self, request, partition_name):  # TODO
 		try:
 			fs = fstab.File()
 			mt = mtab.File()
@@ -154,7 +155,7 @@ class Commands(object):
 			raise ValueError(_('Could not open %s') % error.filename)
 
 		message = None
-		partition = fs.find(spec = partition_name)
+		partition = fs.find(spec=partition_name)
 		if partition:
 			mounted_partition = mt.get(partition.spec)
 			if mounted_partition:

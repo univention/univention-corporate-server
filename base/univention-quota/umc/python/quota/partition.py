@@ -44,7 +44,9 @@ from univention.lib import fstab
 
 _ = umc.Translation('univention-management-console-module-quota').translate
 
+
 class Commands(object):
+
 	def partitions_query(self, request):
 		result = []
 		message = None
@@ -84,7 +86,7 @@ class Commands(object):
 			message = _('Could not open %s') % error.filename
 			request.status = MODULE_ERR
 		else:
-			partition = fs.find(spec = request.options['partitionDevice'])
+			partition = fs.find(spec=request.options['partitionDevice'])
 			if partition:
 				mounted_partition = mt.get(partition.spec)
 				if mounted_partition:

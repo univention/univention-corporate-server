@@ -49,6 +49,7 @@ _ = umc.Translation('univention-management-console-module-quota').translate
 
 
 class UserQuota(dict):
+
 	def __init__(self, partition, user, bused, bsoft,
 	             bhard, btime, fused, fsoft,
 	             fhard, ftime):
@@ -82,7 +83,7 @@ def repquota(partition, callback, user=None):
 
 	# find filesystem type
 	fs = fstab.File()
-	part = fs.find(spec = partition)
+	part = fs.find(spec=partition)
 	if part.type == 'xfs':
 		args += '-F xfs '
 
@@ -92,7 +93,7 @@ def repquota(partition, callback, user=None):
 	# -C == do not try to resolve all users at once
 	# -v == verbose
 	cmd = '/usr/sbin/repquota -C -v %s %s' % (partition, args)
-	proc = notifier.popen.Shell(cmd, stdout = True)
+	proc = notifier.popen.Shell(cmd, stdout=True)
 	proc.signal_connect('finished', callback)
 	proc.start()
 
@@ -122,6 +123,7 @@ def setquota(partition, user, bsoft, bhard, fsoft, fhard):
 	       str(fsoft), str(fhard), partition)
 	return subprocess.call(cmd)
 
+
 class QuotaActivationError(Exception):
 	pass
 
@@ -137,14 +139,15 @@ def usrquota_is_active(fstab_entry, mt=None):
 	if not mtab_entry:
 		raise QuotaActivationError(_('Device is not mounted'))
 
-	### First remount the partition with option "usrquota" if it isn't already
+	# First remount the partition with option "usrquota" if it isn't already
 	if 'usrquota' in mtab_entry.options:
 		return True
 	else:
 		return False
 
+
 def quota_is_enabled(fstab_entry):
-	local_env=os.environ.copy()
+	local_env = os.environ.copy()
 	local_env["LC_MESSAGES"] = "C"
 	cmd = ("/sbin/quotaon", "-p", "-u", fstab_entry.mount_point)
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=local_env)
@@ -152,7 +155,7 @@ def quota_is_enabled(fstab_entry):
 	if "not found or has no quota enabled" in stdout:
 		return False
 	else:
-		## match lines like "quota on / (/dev/disk/by-uuid/5bf2a723-b25a) is on"
+		# match lines like "quota on / (/dev/disk/by-uuid/5bf2a723-b25a) is on"
 		pattern = re.compile("user quota on %s \([^)]*\) is (on|off)" % fstab_entry.mount_point)
 		match = pattern.match(stdout)
 		if match:
@@ -161,7 +164,7 @@ def quota_is_enabled(fstab_entry):
 			else:
 				return False
 		else:
-			return None	## tertium datur
+			return None  # tertium datur
 
 
 def activate_quota(partition, activate, callback):
@@ -208,9 +211,9 @@ def _do_activate_quota_partition(fs, fstab_entry, activate):
 	if not (activate ^ quota_enabled):
 		return {'partitionDevice': fstab_entry.spec, 'success': True, 'message': _('Quota already en/disabled')}
 
-	## persistently change the option in /etc/fstab:
+	# persistently change the option in /etc/fstab:
 	if activate:
-		if not 'usrquota' in fstab_entry.options:
+		if 'usrquota' not in fstab_entry.options:
 			fstab_entry.options.append('usrquota')
 	else:
 		if 'usrquota' in fstab_entry.options:
@@ -277,18 +280,18 @@ def enable_quota_in_kernel(activate):
 
 def _activate_quota_ext(fstab_entry, activate=True):
 	if activate:
-		### First remount the partition with option "usrquota" if it isn't already
+		# First remount the partition with option "usrquota" if it isn't already
 		if not usrquota_is_active(fstab_entry):
-			## Since the usrquota option is set in fstab remount will pick it up automatically
+			# Since the usrquota option is set in fstab remount will pick it up automatically
 			if subprocess.call(('/bin/mount', '-o', 'remount', fstab_entry.spec)):
 				raise QuotaActivationError(_('Remounting the partition has failed'))
 
-		### Then make sure that quotacheck can run on the partition by running quotaoff on this partition.
-		if subprocess.call(('/sbin/quotaoff', '-u', fstab_entry.spec)):	## exit status should always be zero, even if off already
+		# Then make sure that quotacheck can run on the partition by running quotaoff on this partition.
+		if subprocess.call(('/sbin/quotaoff', '-u', fstab_entry.spec)):  # exit status should always be zero, even if off already
 			raise QuotaActivationError(_('Restarting the quota services has failed'))
 
-		### Run quotacheck to create the aquota.user quota file on the partition
-		## Note: This part is the one that makes activation take some time.
+		# Run quotacheck to create the aquota.user quota file on the partition
+		# Note: This part is the one that makes activation take some time.
 		args = ['/sbin/quotacheck']
 		if fstab_entry.mount_point == '/':
 			args.append('-m')
@@ -296,20 +299,20 @@ def _activate_quota_ext(fstab_entry, activate=True):
 		if subprocess.call(args):
 			raise QuotaActivationError(_('Generating the quota information file failed'))
 
-		### Finally turn on the quota for the partition.
-		if subprocess.call(('/sbin/quotaon', '-u', fstab_entry.spec)):	## exit status should be zero
+		# Finally turn on the quota for the partition.
+		if subprocess.call(('/sbin/quotaon', '-u', fstab_entry.spec)):  # exit status should be zero
 			raise QuotaActivationError(_('Restarting the quota services has failed'))
 	else:
-		### First turn the userquota off as requested, otherwise "mount -o remount,noquota" fails.
-		if subprocess.call(('/sbin/quotaoff', '-u', fstab_entry.spec)):	## exit status should always be zero, even if off already
+		# First turn the userquota off as requested, otherwise "mount -o remount,noquota" fails.
+		if subprocess.call(('/sbin/quotaoff', '-u', fstab_entry.spec)):  # exit status should always be zero, even if off already
 			raise QuotaActivationError(_('Restarting the quota services has failed'))
 
-		### Then we could turn of the usrquota option on the partition.
-		## Note: This is not strictly required technically, we might as well leave it on (until the machine is rebootet).
-		##       The important point is that the usrquota option has been removed from fstab, that's what /etc/init.d/quota checks.
-		##
-		## Note2: If the usrquota option is set in mtab but removed in fstab, then remount doesn't automatically pick it up.
-		##
+		# Then we could turn of the usrquota option on the partition.
+		# Note: This is not strictly required technically, we might as well leave it on (until the machine is rebootet).
+		# The important point is that the usrquota option has been removed from fstab, that's what /etc/init.d/quota checks.
+		#
+		# Note2: If the usrquota option is set in mtab but removed in fstab, then remount doesn't automatically pick it up.
+		#
 		# if subprocess.call(('/bin/mount', '-o', 'remount,noquota', fstab_entry.spec)):
 		# 	raise QuotaActivationError(_('Remounting the partition has failed'))
 
@@ -317,7 +320,7 @@ _units = ('B', 'KB', 'MB', 'GB', 'TB')
 _size_regex = re.compile('(?P<size>[0-9.]+)(?P<unit>(B|KB|MB|GB|TB))?')
 
 
-def block2byte(size, convertTo, block_size = 1024):
+def block2byte(size, convertTo, block_size=1024):
 	size = long(size) * float(block_size)
 	unit = 0
 	if convertTo in _units:
@@ -327,7 +330,7 @@ def block2byte(size, convertTo, block_size = 1024):
 	return size
 
 
-def byte2block(size, unit = 'MB', block_size = 1024):
+def byte2block(size, unit='MB', block_size=1024):
 	factor = 0
 	if unit in _units:
 		while _units[factor] != unit:
