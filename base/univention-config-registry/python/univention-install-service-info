@@ -37,6 +37,7 @@ import univention.service_info as us_info
 from univention.debhelper import doIt, binary_packages
 from optparse import OptionParser
 
+
 def install_services(info, package):
 	"""Process debian/$package.univention-service."""
 	cfile = '%s.univention-service' % (package,)
@@ -62,6 +63,7 @@ def install_services(info, package):
 	doIt('install', '-m', '755', '-d', dest_path)
 	doIt('install', '-m', '644', source, dest)
 
+
 def main():
 	"""Install service files."""
 	usage = "%prog"
@@ -81,11 +83,11 @@ The service descriptions debian/*.univention-service go to
 	if args:
 		parser.error('No argument expected')
 
-	info = us_info.ServiceInfo( install_mode = True )
+	info = us_info.ServiceInfo(install_mode=True)
 	try:
 		for package in binary_packages():
 			install_services(info, package)
-	except IOError, ex:
+	except IOError as ex:
 		print >> sys.stderr, ex
 		sys.exit(1)
 

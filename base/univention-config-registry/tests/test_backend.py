@@ -11,7 +11,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'pyth
 from univention.config_registry.backend import ConfigRegistry
 
 class TestConfigRegistry(unittest.TestCase):
+
 	"""Unit test for univention.config_registry.backend.ConfigRegistry"""
+
 	def setUp(self):
 		"""Create object."""
 		self.work_dir = tempfile.mkdtemp()
@@ -186,7 +188,7 @@ class TestConfigRegistry(unittest.TestCase):
 		self.assertEqual(
 				sorted(ucr.items()),
 				sorted([('foo', 'FORCED'), ('bar', 'FORCED'), ('baz', 'NORMAL')])
-				)
+		)
 
 	def test_keys(self):
 		"""Test merged keys."""
@@ -194,7 +196,7 @@ class TestConfigRegistry(unittest.TestCase):
 		self.assertEqual(
 				sorted(ucr.keys()),
 				sorted(['foo', 'bar', 'baz'])
-				)
+		)
 
 	def test_values(self):
 		"""Test merged values."""
@@ -202,7 +204,7 @@ class TestConfigRegistry(unittest.TestCase):
 		self.assertEqual(
 				sorted(ucr.values()),
 				sorted(['FORCED', 'FORCED', 'NORMAL'])
-				)
+		)
 
 	def test_is_true_unset(self):
 		"""Test unset is_true()."""
@@ -283,10 +285,10 @@ class TestConfigRegistry(unittest.TestCase):
 			'foo': None,
 			'bar': 'baz',
 			'baz': 'bar',
-			})
+		})
 		self.assertEqual(ucr.get('foo'), None)
-		self.assertEqual(ucr.get('bar'),'baz')
-		self.assertEqual(ucr.get('baz'),'bar')
+		self.assertEqual(ucr.get('bar'), 'baz')
+		self.assertEqual(ucr.get('baz'), 'bar')
 
 	def test_locking(self):
 		"""Test inter-process-locking."""
@@ -295,7 +297,7 @@ class TestConfigRegistry(unittest.TestCase):
 		read_end, write_end = os.pipe()
 
 		pid1 = os.fork()
-		if not pid1: # child 1
+		if not pid1:  # child 1
 			os.close(read_end)
 			ucr.lock()
 			os.write(write_end, '1')
@@ -304,7 +306,7 @@ class TestConfigRegistry(unittest.TestCase):
 			os._exit(0)
 
 		pid2 = os.fork()
-		if not pid2: # child 2
+		if not pid2:  # child 2
 			os.close(write_end)
 			os.read(read_end, 1)
 			ucr.lock()

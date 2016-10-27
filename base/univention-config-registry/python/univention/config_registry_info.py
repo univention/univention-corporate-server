@@ -40,39 +40,46 @@ import univention.info_tools as uit
 # default locale
 _locale = 'de'
 
-class Variable( uit.LocalizedDictionary ):
+
+class Variable(uit.LocalizedDictionary):
+
 	"""UCR variable description."""
-	def __init__( self, registered = True ):
-		uit.LocalizedDictionary.__init__( self )
+
+	def __init__(self, registered=True):
+		uit.LocalizedDictionary.__init__(self)
 		self.value = None
 		self._registered = registered
 
-	def check( self ):
+	def check(self):
 		"""Check description for completeness."""
 		missing = []
 		if not self._registered:
 			return missing
 
-		for key in ( 'description', 'type', 'categories' ):
-			if not self.get( key, None ):
-				missing.append(key)
-		return missing
-
-
-class Category( uit.LocalizedDictionary ):
-	"""UCR category description."""
-	def __init__( self ):
-		uit.LocalizedDictionary.__init__( self )
-
-	def check( self ):
-		"""Check description for completeness."""
-		missing = []
-		for key in ( 'name', 'icon' ):
+		for key in ('description', 'type', 'categories'):
 			if not self.get(key, None):
 				missing.append(key)
 		return missing
 
-class ConfigRegistryInfo( object ):
+
+class Category(uit.LocalizedDictionary):
+
+	"""UCR category description."""
+
+	def __init__(self):
+		uit.LocalizedDictionary.__init__(self)
+
+	def check(self):
+		"""Check description for completeness."""
+		missing = []
+		for key in ('name', 'icon'):
+			if not self.get(key, None):
+				missing.append(key)
+		return missing
+
+
+class ConfigRegistryInfo(object):
+
 	"""UCR variable and category descriptions."""
 	BASE_DIR = '/etc/univention/registry.info'
 	CATEGORIES = 'categories'
@@ -80,7 +87,7 @@ class ConfigRegistryInfo( object ):
 	CUSTOMIZED = '_customized'
 	FILE_SUFFIX = '.cfg'
 
-	def __init__( self, install_mode = False, registered_only = True, load_customized=True ):
+	def __init__(self, install_mode=False, registered_only=True, load_customized=True):
 		"""Initialize variable and category descriptions.
 
 		install_mode=True deactivates the use of an UCR instance.
@@ -94,11 +101,11 @@ class ConfigRegistryInfo( object ):
 			self.__configRegistry = ucr.ConfigRegistry()
 			self.__configRegistry.load()
 			self.load_categories()
-			self.__load_variables( registered_only, load_customized )
+			self.__load_variables(registered_only, load_customized)
 		else:
 			self.__configRegistry = None
 
-	def check_categories( self ):
+	def check_categories(self):
 		"""Return dictionary of incomplete category descriptions."""
 		"""Check all categories for completeness."""
 		incomplete = {}
@@ -108,7 +115,7 @@ class ConfigRegistryInfo( object ):
 				incomplete[name] = miss
 		return incomplete
 
-	def check_variables( self ):
+	def check_variables(self):
 		"""Return dictionary of incomplete variable descriptions."""
 		incomplete = {}
 		for name, var in self.variables.items():
@@ -117,26 +124,26 @@ class ConfigRegistryInfo( object ):
 				incomplete[name] = miss
 		return incomplete
 
-	def read_categories( self, filename ):
+	def read_categories(self, filename):
 		"""Load a single category description file."""
 		cfg = uit.UnicodeConfig()
-		cfg.read( filename )
+		cfg.read(filename)
 		for sec in cfg.sections():
 			# category already known?
 			cat_name = sec.lower()
 			if cat_name in self.categories:
 				continue
 			cat = Category()
-			for name, value in cfg.items( sec ):
-				cat[ name ] = value
-			self.categories[ cat_name ] = cat
+			for name, value in cfg.items(sec):
+				cat[name] = value
+			self.categories[cat_name] = cat
 
-	def load_categories( self ):
+	def load_categories(self):
 		"""Load all category description files."""
-		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.CATEGORIES )
-		if os.path.exists ( path ):
-			for filename in os.listdir( path ):
-				self.read_categories( os.path.join( path, filename ) )
+		path = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.CATEGORIES)
+		if os.path.exists(path):
+			for filename in os.listdir(path):
+				self.read_categories(os.path.join(path, filename))
 
 	@staticmethod
 	def __pattern_sorter(args):
@@ -144,14 +151,14 @@ class ConfigRegistryInfo( object ):
 		pattern, data = args
 		return ((len(pattern), pattern), data)
 
-	def check_patterns( self ):
+	def check_patterns(self):
 		# in install mode
 		if self.__configRegistry is None:
 			return
 		# Try more specific (longer) regular expressions first
 		for pattern, data in sorted(self.__patterns.items(),
 				key=ConfigRegistryInfo.__pattern_sorter, reverse=True):
-			regex = re.compile( pattern )
+			regex = re.compile(pattern)
 			# find config registry variables that match this pattern and are
 			# not already listed in self.variables
 			for key, value in self.__configRegistry.items():
@@ -189,110 +196,110 @@ class ConfigRegistryInfo( object ):
 				patterns[pattern] = var
 		return patterns
 
-	def write_customized( self ):
+	def write_customized(self):
 		"""Persist the customized variable descriptions."""
-		filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
-								 ConfigRegistryInfo.CUSTOMIZED )
-		self.__write_variables( filename )
+		filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
+								 ConfigRegistryInfo.CUSTOMIZED)
+		self.__write_variables(filename)
 
-	def __write_variables( self, filename = None, package = None ):
+	def __write_variables(self, filename=None, package=None):
 		"""Persist the variable descriptions into a file."""
 		if filename:
 			pass
 		elif package:
-			filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
-									 package + ConfigRegistryInfo.FILE_SUFFIX )
+			filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
+									 package + ConfigRegistryInfo.FILE_SUFFIX)
 		else:
-			raise AttributeError( "neither 'filename' nor 'package' is specified" )
+			raise AttributeError("neither 'filename' nor 'package' is specified")
 		try:
-			fd = open( filename, 'w' )
+			fd = open(filename, 'w')
 		except IOError:
 			return False
 
 		cfg = uit.UnicodeConfig()
 		for name, var in self.variables.items():
-			cfg.add_section( name )
+			cfg.add_section(name)
 			for key in var.keys():
-				items = var.normalize( key )
+				items = var.normalize(key)
 				for item, value in items.items():
 					value = value
-					cfg.set( name, item, value )
+					cfg.set(name, item, value)
 
-		cfg.write( fd )
+		cfg.write(fd)
 		fd.close()
 
 		return True
 
-	def read_customized( self ):
+	def read_customized(self):
 		"""Read customized variable descriptions."""
-		filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
-								 ConfigRegistryInfo.CUSTOMIZED )
-		self.read_variables( filename, override = True )
+		filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
+								 ConfigRegistryInfo.CUSTOMIZED)
+		self.read_variables(filename, override=True)
 
-	def read_variables( self, filename = None, package = None, override = False ):
+	def read_variables(self, filename=None, package=None, override=False):
 		"""Read variable descriptions."""
 		if filename:
 			pass
 		elif package:
-			filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
-									 package + ConfigRegistryInfo.FILE_SUFFIX )
+			filename = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
+									 package + ConfigRegistryInfo.FILE_SUFFIX)
 		else:
-			raise AttributeError( "neither 'filename' nor 'package' is specified" )
+			raise AttributeError("neither 'filename' nor 'package' is specified")
 		cfg = uit.UnicodeConfig()
-		cfg.read( filename )
+		cfg.read(filename)
 		for sec in cfg.sections():
 			# is a pattern?
-			if sec.find( '.*' ) != -1:
-				self.__patterns[ sec ] = cfg.items( sec )
+			if sec.find('.*') != -1:
+				self.__patterns[sec] = cfg.items(sec)
 				continue
 			# variable already known?
 			if not override and sec in self.variables:
 				continue
 			var = Variable()
-			for name, value in cfg.items( sec ):
-				var[ name ] = value
+			for name, value in cfg.items(sec):
+				var[name] = value
 			# get current value
 			if self.__configRegistry is not None:
-				var.value = self.__configRegistry.get( sec, None )
-			self.variables[ sec ] = var
+				var.value = self.__configRegistry.get(sec, None)
+			self.variables[sec] = var
 
-	def __load_variables( self, registered_only = True, load_customized=True ):
+	def __load_variables(self, registered_only=True, load_customized=True):
 		"""Read default and customized variable descriptions.
 
 		With default registered_only=True only variables for which a
 		description exists are loaded, otherwise all currently set variables
 		are also included.
 		"""
-		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES )
-		if os.path.exists ( path ):
-			for entry in os.listdir( path ):
-				cfgfile = os.path.join( path, entry )
-				if os.path.isfile( cfgfile ) and cfgfile.endswith(ConfigRegistryInfo.FILE_SUFFIX) and entry != ConfigRegistryInfo.CUSTOMIZED:
-					self.read_variables( cfgfile )
+		path = os.path.join(ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES)
+		if os.path.exists(path):
+			for entry in os.listdir(path):
+				cfgfile = os.path.join(path, entry)
+				if os.path.isfile(cfgfile) and cfgfile.endswith(ConfigRegistryInfo.FILE_SUFFIX) and entry != ConfigRegistryInfo.CUSTOMIZED:
+					self.read_variables(cfgfile)
 			self.check_patterns()
 			if not registered_only:
 				for key, value in self.__configRegistry.items():
 					if key in self.variables:
 						continue
-					var = Variable( registered = False )
+					var = Variable(registered=False)
 					var.value = value
-					self.variables[ key ] = var
+					self.variables[key] = var
 			# read customized infos afterwards to override existing entries
 			if load_customized:
 				self.read_customized()
 
-	def get_categories( self ):
+	def get_categories(self):
 		'''returns a list of category names'''
 		return self.categories.keys()
 
-	def get_category( self, name ):
+	def get_category(self, name):
 		'''returns a category object associated with the given name or
 		None'''
 		if name.lower() in self.categories:
 			return self.categories[name.lower()]
 		return None
 
-	def get_variables( self, category = None ):
+	def get_variables(self, category=None):
 		"""Return dictionary of variable info blocks belonging to given category."""
 		if not category:
 			return self.variables
@@ -305,16 +312,17 @@ class ConfigRegistryInfo( object ):
 				temp[name] = var
 		return temp
 
-	def get_variable( self, key ):
+	def get_variable(self, key):
 		"""Return the description of requested variable."""
-		return self.variables.get( key, None )
+		return self.variables.get(key, None)
 
-	def add_variable( self, key, variable ):
+	def add_variable(self, key, variable):
 		'''this methods adds a new variable information item or
 		overrides an old entry'''
-		self.variables[ key ] = variable
+		self.variables[key] = variable
 
-def set_language( lang ):
+
+def set_language(lang):
 	"""Set the default language."""
 	global _locale
 	_locale = lang
