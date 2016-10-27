@@ -30,8 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, os, ipaddr, netifaces
-import socket, struct
+import sys
+import os
+import ipaddr
+import netifaces
+import socket
+import struct
 
 from univention.config_registry.frontend import ConfigRegistry, ucr_update
 
