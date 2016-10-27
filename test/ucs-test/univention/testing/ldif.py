@@ -166,7 +166,7 @@ class LdifFile(LdifSource):
         """
         try:
             self.src = open(self.filename, 'r+')
-        except IOError, ex:
+        except IOError as ex:
             raise LdifError(ex)
 
 
@@ -197,7 +197,7 @@ class LdifSlapcat(LdifSource):
         """
         try:
             self.proc = subprocess.Popen(self.command, stdout=subprocess.PIPE)
-        except OSError, ex:
+        except OSError as ex:
             raise SlapError("Error executing", self.command, ex)
 
 
@@ -237,7 +237,7 @@ class LdifSsh(LdifSlapcat):
             try:
                 rlist, wlist, xlist = select.select(rlist, wlist, xlist)
                 break
-            except select.error, ex:
+            except select.error as ex:
                 if ex[0] == errno.EINTR:
                     continue
                 else:
@@ -463,7 +463,7 @@ def main():
                 src = args.pop(0)
                 ldif = options.source.create(src, options)
                 sources.append(ldif)
-            except LdifError, ex:
+            except LdifError as ex:
                 parser.error(ex)
 
     try:
@@ -485,7 +485,7 @@ def main():
     try:
         for ldif in (ldif1, ldif2):
             ldif.start_reading()
-    except (LdifError, SlapError), ex:
+    except (LdifError, SlapError) as ex:
         parser.error("Failed to setup source: %s" % ex)
 
     run_compare(ldif1, ldif2, options)
@@ -501,15 +501,15 @@ def run_compare(ldif1, ldif2, options):
     except KeyboardInterrupt:
         signal.signal(signal.SIGINT, signal.SIG_DFL)
         os.kill(os.getpid(), signal.SIGINT)
-    except IOError, ex:
+    except IOError as ex:
         if ex.errno == errno.EPIPE:
             signal.signal(signal.SIGPIPE, signal.SIG_DFL)
             os.kill(os.getpid(), signal.SIGPIPE)
         else:
             print >> sys.stderr, 'Error: %s' % (ex,)
-    except OSError, ex:
+    except OSError as ex:
         print >> sys.stderr, 'Error: %s' % (ex,)
-    except LdifError, ex:
+    except LdifError as ex:
         print >> sys.stderr, 'Invalid LDIF: %s' % (ex,)
     sys.exit(ret)
 

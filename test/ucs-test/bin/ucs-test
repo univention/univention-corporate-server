@@ -16,6 +16,7 @@ from univention.testing.internal import setup_environment, setup_debug, \
 from univention.testing.data import TestEnvironment, TestCase, TestResult
 from univention.testing.errors import TestError
 from univention.testing.coverage import Coverage
+from functools import reduce
 
 
 def parse_options(sections):
@@ -79,6 +80,7 @@ def parse_options(sections):
 
 
 class TestSet(object):
+
 	"""Container for tests."""
 
 	def __init__(self, tests):

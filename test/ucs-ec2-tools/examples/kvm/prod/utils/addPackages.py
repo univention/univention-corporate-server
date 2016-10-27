@@ -4,12 +4,13 @@
 from __future__ import print_function
 import argparse
 
+
 def main():
 	desc = "This is a little parser to add univention-packages to kvm-files"
 	parser = argparse.ArgumentParser(description=desc)
-	parser.add_argument('--url','-u',help='the url to the corresponding file',required=True)
-	
-	parser.add_argument('--packages','-p', nargs='*', default=['empty'])
+	parser.add_argument('--url', '-u', help='the url to the corresponding file', required=True)
+
+	parser.add_argument('--packages', '-p', nargs='*', default=['empty'])
 
 	args = vars(parser.parse_args())
 
@@ -20,10 +21,9 @@ def main():
 	with open(path, 'r') as f:
 		listFile = f.readlines()
 
-	#if args['packages'] or len(args['packages']) == 0:
+	# if args['packages'] or len(args['packages']) == 0:
 	packages = args['packages']
 	newListFile = [checkPackages(item, packages) for item in listFile]
-
 
 	with open(path, 'w') as f:
 		for elem in newListFile:
@@ -35,8 +35,10 @@ the line with the additional packages that have to be installed.
 In case that no packages where given as arguments the list of packages
 will be empty
 """
+
+
 def checkPackages(item, packagesList=None):
-	#print(packagesList)
+	# print(packagesList)
 	if packagesList and (packagesList[0] != "empty" and "packages_install=" in item):
 		packages = packagesList
 		packagesStr = " packages_install=\""

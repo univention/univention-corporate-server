@@ -436,10 +436,10 @@ class UCSTestUDM(object):
 
 
 def _prettify_cmd(cmd):
-	cmd = ' '.join(pipes.quote(x) for x in cmd)
-	if set(cmd) & set(['\x00', '\n']):
-		cmd = repr(cmd)
-	return cmd
+    cmd = ' '.join(pipes.quote(x) for x in cmd)
+    if set(cmd) & set(['\x00', '\n']):
+        cmd = repr(cmd)
+    return cmd
 
 
 if __name__ == '__main__':
@@ -465,11 +465,11 @@ if __name__ == '__main__':
         # test with malformed arguments
         try:
             _dnUser, _username = udm.create_user(username='')
-        except UCSTestUDM_CreateUDMObjectFailed, ex:
+        except UCSTestUDM_CreateUDMObjectFailed as ex:
             print 'Caught anticipated exception UCSTestUDM_CreateUDMObjectFailed - SUCCESS'
 
         # try to modify object not created by create_udm_object()
         try:
             udm.modify_object('users/user', dn='uid=Administrator,cn=users,%s' % ucr.get('ldap/base'), description='Foo Bar')
-        except UCSTestUDM_CannotModifyExistingObject, ex:
+        except UCSTestUDM_CannotModifyExistingObject as ex:
             print 'Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS'

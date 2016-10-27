@@ -58,4 +58,3 @@ retval, out, err = wexe.list_domain_users()
 print out
 
 sys.exit(0)
-

@@ -12,9 +12,9 @@ except ImportError:
 from jenkinsapi.custom_exceptions import JenkinsAPIException, PostRequired
 # import logging
 
-# # these two lines enable debugging at httplib level (requests->urllib3->httplib)
-# # you will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
-# # the only thing missing will be the response.body which is not logged.
+# these two lines enable debugging at httplib level (requests->urllib3->httplib)
+# you will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
+# the only thing missing will be the response.body which is not logged.
 # import httplib
 # httplib.HTTPConnection.debuglevel = 1
 

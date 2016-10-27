@@ -33,7 +33,7 @@ class SetTimeout(object):
                 print "** Exiting", self.func.__name__
                 break
             except Exception as ex:
-                print "(%d)-- Exception cought: %s %s" % (i,  type(ex), str(ex))
+                print "(%d)-- Exception cought: %s %s" % (i, type(ex), str(ex))
                 time.sleep(1)
         else:
             self.func(*args, **kwargs)
@@ -48,7 +48,7 @@ def setTimeout(func, timeout=DEFAULT_TIMEOUT):
                 print "** Exiting", func.__name__
                 break
             except Exception as ex:
-                print "(%d)-- Exception cought: %s %s" % (i,  type(ex), str(ex))
+                print "(%d)-- Exception cought: %s %s" % (i, type(ex), str(ex))
                 time.sleep(1)
         else:
             func(*args, **kwargs)

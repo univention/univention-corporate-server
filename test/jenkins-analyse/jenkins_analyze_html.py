@@ -8,8 +8,6 @@ import urllib
 from collections import defaultdict
 from collections import OrderedDict
 from yattag import Doc
-from yattag import indent
-import sys
 
 colors = defaultdict(lambda: 'black')
 colors.update({
@@ -20,7 +18,7 @@ colors.update({
 	'REGRESSION': '#990000',
 })
 
-stylesheet='''
+stylesheet = '''
 body {
   padding: 50px;
 }
@@ -116,7 +114,7 @@ var lastSibling = function (node){
 	var tempObj=node.parentNode.lastChild;
 	while(tempObj.nodeType!=1 && tempObj.previousSibling!=null){
 		tempObj=tempObj.previousSibling;
-	}  
+	}
 	return (tempObj.nodeType==1)?tempObj:false;
 };
 
@@ -138,10 +136,10 @@ var getDisplay = function (element) {
 		getComputedStyle(element, null).display;
 }
 
-/* collapse/expand a section. This function expects 'this' to be bound to the 
-header <tr> element. If no parameter is passed, the function will toggle the 
-current state. Otherwise, 
-if newval is truthy, the section will be collapsed, 
+/* collapse/expand a section. This function expects 'this' to be bound to the
+header <tr> element. If no parameter is passed, the function will toggle the
+current state. Otherwise,
+if newval is truthy, the section will be collapsed,
 if newval is falsy,  the section will be expanded   */
 
 var togglecollapse = function(newval) {
@@ -168,7 +166,7 @@ var togglecollapse = function(newval) {
 	while (next && next.nodeType != 1) {
 		next = next.nextSibling;
 	}
-	
+
 	while (next) {
 		if (arguments.length === 0) {
 			if (this.getAttribute('collapsed') === 'true') {
@@ -183,7 +181,7 @@ var togglecollapse = function(newval) {
 				next.style.display = 'table-row';
 			}
 		}
-		
+
 		next = next.nextSibling;
 		while (next && next.nodeType != 1) {
 			next = next.nextSibling;
@@ -222,16 +220,17 @@ window.onload = function(){
 
 doc, tag, text = Doc().tagtext()
 
+
 def main():
 	global doc, tag, text
 	desc = "console tool for analyzing jenkins builds"
 	parser = argparse.ArgumentParser(description=desc)
-	parser.add_argument('--url', '-u', 
+	parser.add_argument('--url', '-u',
 		    help='the url of a jenkins matrix project. case sensitive.',
 		    required=True)
 	parser.add_argument(
 			'--output', '-o', help='output file.'
-			)
+	)
 	group = parser.add_mutually_exclusive_group(required=True)
 	group.add_argument(
 			'--latest', '-l', help='get all results for the latest build',
@@ -241,8 +240,8 @@ def main():
 	group.add_argument(
 			'--test', '-t', help='get all results for a specific test')
 	args = vars(parser.parse_args())
-	#split the url into server url and job name.
-	#remove trailing slashes (if any)
+	# split the url into server url and job name.
+	# remove trailing slashes (if any)
 	url = args['url']
 	if url[-1] == '/':
 		url = url[:-1]
@@ -289,6 +288,7 @@ def table_header(machines):
 def pretty_machine_name(name):
 	return name.decode('utf-8').split(u'\u00bb')[-1].split('#')[0]
 
+
 def strip_build_number(machine_name):
 	return ''.join(machine_name.split()[:-1])
 
@@ -302,19 +302,20 @@ def td_status(status, url):
 		else:
 			text(status[:4])
 
+
 def single_build(job, args):
 	global doc, tag, text
 	if args['latest']:
 		args['build'] = job.get_last_buildnumber()
 	build = job.get_build(int(args['build']))
-	
+
 	with tag('h1'):
 		text(job.name)
-	with tag ('h2'):
+	with tag('h2'):
 		text('Build # {}'.format(args['build']))
-	with tag('button', onclick ='expandall()'):
+	with tag('button', onclick='expandall()'):
 		text('expand all')
-	with tag('button', onclick ='collapseall()'):
+	with tag('button', onclick='collapseall()'):
 		text('collapse all')
 	doc.asis('<br />')
 	results = {run.name:
@@ -327,12 +328,12 @@ def single_build(job, args):
 	pretty_names = map(pretty_machine_name, results.keys())
 
 	test_names = set()
-	#get all unique test names
+	# get all unique test names
 	for resultset in results.values():
 		test_names |= set(resultset.keys())
 	test_names = sorted(list(test_names))
 
-	#turn the test names into a dictionary, containing the section names as keys
+	# turn the test names into a dictionary, containing the section names as keys
 	sections = OrderedDict()
 	for test_name in test_names:
 		section_name = test_name.split('.')[0]
@@ -346,22 +347,22 @@ def single_build(job, args):
 		with tag('tbody'):
 			for section, test_names in sections.iteritems():
 				with tag('tr', onclick='togglecollapse.bind(this)();', klass='section_header'):
-					with tag('td', colspan=len(pretty_names)+2):
+					with tag('td', colspan=len(pretty_names) + 2):
 						text(section + "[+]")
-				for test_num,test_name in enumerate(test_names):
+				for test_num, test_name in enumerate(test_names):
 					with tag('tr', klass='child'):
 						with tag('td', style='text-align:left'):
 							text(test_name)
 						for pretty_name, resultset in zip(pretty_names, results.values()):
 							if test_name in resultset.keys():
 								test = resultset[test_name]
-								js_mouseover  = 'mk_mouseover.bind(this)( "{}");'.format(pretty_name);
+								js_mouseover = 'mk_mouseover.bind(this)( "{}");'.format(pretty_name)
 								js_mouseout = 'mk_mouseout.bind(this)() '
 								with tag('td', style='background-color: {}'.format(colors[test.status]),
-										onmouseover = js_mouseover, onmouseout=js_mouseout):
+										onmouseover=js_mouseover, onmouseout=js_mouseout):
 									if test.stdout or test.stderr:
 										url = '/'.join(resultset.baseurl.split('/')[:-2]) + \
-											'/' + test.identifier().replace('.','/')
+											'/' + test.identifier().replace('.', '/')
 										with tag('a', href=url):
 											text(test.status[:4])
 									else:
@@ -407,7 +408,7 @@ def single_test(job, args):
 							test = resultset[test_name]
 							status = test.status
 							if test.stdout or test.stderr:
-								url = '/'.join(resultset.baseurl.split('/')[:-2]) + '/' + test.identifier().replace('.','/')
+								url = '/'.join(resultset.baseurl.split('/')[:-2]) + '/' + test.identifier().replace('.', '/')
 							else:
 								url = ''
 							td_status(test.status, url)
