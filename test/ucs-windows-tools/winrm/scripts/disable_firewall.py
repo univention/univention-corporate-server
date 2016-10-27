@@ -1,5 +1,5 @@
 args = dict(
-	state = dict(
+	state=dict(
 		choices=['on', 'off'],
 		default='on',
 		help='firewall state',

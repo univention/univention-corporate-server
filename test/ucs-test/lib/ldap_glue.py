@@ -14,6 +14,7 @@ except ImportError:
 baseConfig = ConfigRegistry()
 baseConfig.load()
 
+
 def get_rdn(dn):
 	index = dn.find(',')
 	if index == -1:
@@ -21,14 +22,17 @@ def get_rdn(dn):
 	else:
 		return dn[0:index]
 
+
 def get_parent_dn(dn):
 	index = dn.find(',')
 	if index == -1:
 		return None
 	else:
-		return dn[index+1:len(dn)]
+		return dn[index + 1:len(dn)]
+
 
 class LDAPConnection(object):
+
 	'''helper functions to modify LDAP-objects intended as glue for shell-scripts'''
 
 	def __init__(self, no_starttls=False):
@@ -82,7 +86,7 @@ class LDAPConnection(object):
 			first = res[0]
 			_dn, key_values = first
 			return key_values[attribute]
-		except (IndexError, TypeError, KeyError), e:
+		except (IndexError, TypeError, KeyError):
 			return []
 
 	def create(self, dn, attrs):
@@ -99,7 +103,7 @@ class LDAPConnection(object):
 		newrdn = get_rdn(newdn)
 		parent1 = get_parent_dn(dn)
 		parent2 = get_parent_dn(newdn)
-		
+
 		if parent1 != parent2:
 			self.lo.rename_s(compatible_modstring(unicode(dn)),
 					compatible_modstring(unicode(newrdn)),

@@ -1,6 +1,6 @@
 """
 The SimpleDoc class generates xml or html documents using context managers (`with` blocks).
-The Doc class extends the SimpleDoc class. It adds the capability to render 
+The Doc class extends the SimpleDoc class. It adds the capability to render
 html forms with defaults values and errors.
 These two classes can be used to define html templates in a web application.
 
@@ -21,7 +21,7 @@ Nested html tags, no need to close tags.
                 text('Hello world!')
 
     print(doc.getvalue())
-    
+
 Html form rendering example with default values
 -----------------------------------------------
 
@@ -44,11 +44,11 @@ Html form rendering example with default values
                 ("coffee", "Ethiopian coffee")
             ):
                 with doc.option(value = value):
-                    text(description) 
+                    text(description)
         doc.stag('input', type = "submit", value = "Validate")
 
     print(doc.getvalue())
-    
+
 Full tutorial on yattag.org_
 
 .. _yattag.org: http://www.yattag.org

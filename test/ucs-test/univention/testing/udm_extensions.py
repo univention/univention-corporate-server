@@ -249,7 +249,7 @@ def get_postinst_script_buffer(extension_type, filename, app_id=None, version_st
     other_options = ''
     if options:
         for key in options:
-            if type(options[key]) == str:
+            if isinstance(options[key], str):
                 other_options += ' --%s %s' % (key, options[key])
             else:
                 other_options += ' --%s ' % (key,) + ' --%s '.join(options[key])
@@ -303,7 +303,7 @@ def get_join_script_buffer(extension_type, filename, app_id=None, joinscript_ver
     other_options = ''
     if options:
         for key in options:
-            if type(options[key]) == str:
+            if isinstance(options[key], str):
                 other_options += ' --%s %s' % (key, options[key])
             else:
                 other_options += ' --%s ' % (key,) + (' --%s ' % (key,)).join(options[key])

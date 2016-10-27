@@ -115,7 +115,7 @@ def join_read_mode():
 		'ad_server_address': options.domain_host,
 		'password': options.domain_password,
 		'username': options.domain_admin
-		}
+	}
 
 	result = connection.request("adconnector/admember/join", data=send_data)
 
@@ -168,7 +168,7 @@ def check_correct_passwords():
 
 	ucr.load()
 	ucr_domain_pw = ucr['tests/domainadmin/pwd']
-	if  ucr_domain_pw != options.domain_password:
+	if ucr_domain_pw != options.domain_password:
 		ucr['tests/domainadmin/pwd'] = options.domain_password
 
 	ucr.save()

@@ -46,6 +46,7 @@ from random import choice
 
 
 class MassCreate(object):
+
 	"""Mass create users and groups."""
 
 	def __init__(self, count):
@@ -86,10 +87,10 @@ class MassCreate(object):
 		try:
 			dn = g.create()
 			print 'Group "%s"' % (dn,)
-		except univention.admin.uexceptions.groupNameAlreadyUsed, ex:
+		except univention.admin.uexceptions.groupNameAlreadyUsed as ex:
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
 			print >> sys.stderr, 'Group "%s" exists: %s' % (dn, ex)
-		except univention.admin.uexceptions.objectExists, ex:
+		except univention.admin.uexceptions.objectExists as ex:
 			dn = 'cn=%s,%s' % (escape_dn_chars(name), self.gp.getDn())
 			print >> sys.stderr, 'Object "%s" exists: %s' % (dn, ex)
 		return dn
@@ -98,7 +99,7 @@ class MassCreate(object):
 		"""Create user, which is itself member in groups."""
 		gdn = ["cn=%s,%s" % (escape_dn_chars(group), self.gp.getDn()) for group in groups]
 		u = self.uu.object(co=self.config, lo=self.access, position=self.up)
-		#u.options = ['posix', 'samba']
+		# u.options = ['posix', 'samba']
 		u.open()
 		u.info['username'] = name
 		u.info['password'] = 'univention'
@@ -114,14 +115,13 @@ class MassCreate(object):
 		try:
 			dn = u.create()
 			print 'User "%s"' % (dn,)
-		except univention.admin.uexceptions.uidAlreadyUsed, ex:
+		except univention.admin.uexceptions.uidAlreadyUsed as ex:
 			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
 			print >> sys.stderr, 'User "%s" exists: %s' % (dn, ex)
-		except univention.admin.uexceptions.objectExists, ex:
+		except univention.admin.uexceptions.objectExists as ex:
 			dn = 'uid=%s,%s' % (escape_dn_chars(name), self.up.getDn())
 			print >> sys.stderr, 'Object "%s" exists: %s' % (dn, ex)
 		return dn
-
 
 	def group_members(self, name, uniqueMember=None, memberUid=None):
 		"""Set members of group."""
@@ -141,14 +141,13 @@ class MassCreate(object):
 			try:
 				try:
 					r_type, r_data = self.access.lo.lo.modify_s(dn, ml)
-				except ldap.TYPE_OR_VALUE_EXISTS, ex:
+				except ldap.TYPE_OR_VALUE_EXISTS as ex:
 					print >> sys.stderr, 'XXX %s' % (ex,)
 					ml = [(ldap.MOD_REPLACE, attr, val) for (_op, attr, val) in ml]
 					r_type, r_data = self.access.lo.lo.modify_s(dn, ml)
-			except ldap.NO_SUCH_ATTRIBUTE, ex:
+			except ldap.NO_SUCH_ATTRIBUTE as ex:
 				print >> sys.stderr, 'Group "%s" error: %s' % (dn, ex)
 		return dn
-
 
 	def create(self, groups):
 		"""Create hierarchy of groups and users."""

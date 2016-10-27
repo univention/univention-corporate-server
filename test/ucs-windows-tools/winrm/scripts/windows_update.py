@@ -1,8 +1,8 @@
 ﻿#[CmdletBinding()]
-#param(
+# param(
 #$Path = (Get-Location),
-#[switch]$Reboot, 
-#[switch]$ScanOnly = $true, 
+#[switch]$Reboot,
+#[switch]$ScanOnly = $true,
 #[string]$ProxyAddress,
 #[String[]][ValidateSet("Critical","Definition", "Drivers", "FeaturePacks", "Security", "ServicePacks", "Tools", "UpdateRollups", "Updates", "Microsoft", "ALL")]$UpdateTypes
 #
@@ -79,7 +79,7 @@
 #        $AvailableUpdates = $SearchResults.Updates
 #    }
 #    else{
-#        
+#
 #        foreach($UpdateID in $UpdateIds)
 #        {
 #            $AvailableUpdates += $SearchResults.RootCategories.Item($UpdateID).Updates
@@ -88,7 +88,7 @@
 #
 #    Write-Host "Updates selected for installation"
 #    $AvailableUpdates | ForEach-Object {
-#    
+#
 #        if (($_.InstallationBehavior.CanRequestUserInput) -or ($_.EulaAccepted -eq $FALSE)) {
 #            Write-Host $_.Title " *** Requires user input and will not be installed." -ForegroundColor Yellow
 #        }
@@ -97,7 +97,7 @@
 #        }
 #    }
 #
-#    # Exit script if no updates are available
+# Exit script if no updates are available
 #    if ($ScanOnly) {
 #        Write-Host "Exiting...";
 #        break
@@ -106,7 +106,7 @@
 #        Write-Host "No results meet your criteria. Exiting";
 #        break
 #    }
-#    
+#
 #    Write-Verbose "Creating Download Selection"
 #    $DownloadCollection = New-Object -com "Microsoft.Update.UpdateColl"
 #
@@ -141,11 +141,11 @@
 #    Write-Host
 #
 #
-#    # Reboot if needed
+# Reboot if needed
 #    if ($Results.RebootRequired) {
 #        if ($Reboot) {
 #            Write-Host "Rebooting..."
-#            Restart-Computer ## add computername here
+# Restart-Computer ## add computername here
 #        }
 #        else {
 #	        Write-Host "Please reboot."

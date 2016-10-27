@@ -35,6 +35,7 @@ import socket
 from univention.config_registry import ConfigRegistry
 import sys
 
+
 def main():
     """Retrive current Univention Directory Notifier transaction ID."""
     configRegistry = ConfigRegistry()
@@ -56,7 +57,7 @@ def main():
 
         if notifier_result:
             print "%s" % notifier_result.splitlines()[1]
-    except socket.error, ex:
+    except socket.error as ex:
         print >> sys.stderr, 'Error: %s' % (ex,)
         sys.exit(1)
 
