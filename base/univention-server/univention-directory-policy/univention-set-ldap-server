@@ -39,7 +39,7 @@ from univention.config_registry.frontend import ucr_update
 configRegistry = ConfigRegistry(write_registry=ConfigRegistry.LDAP)
 configRegistry.load()
 
-found=0
+found = 0
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 if ldap_hostdn:
@@ -50,21 +50,21 @@ if ldap_hostdn:
 			for k in ldap_server_string.split(' '):
 				p1 = subprocess.Popen(['univention_policy_result', '-h', k, '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
 				result = p1.communicate()[0]
-				addition=[]
+				addition = []
 
 				if p1.returncode != 0:
 					continue
 
 				updates = {}
 				for line in result.split('\n'):
-					line=line.strip(' ').strip('\n')
+					line = line.strip(' ').strip('\n')
 					if line.startswith('univentionLDAPServer='):
-						new_ldap_server=line.replace('univentionLDAPServer=', '').replace('"','')
+						new_ldap_server = line.replace('univentionLDAPServer=', '').replace('"', '')
 						if not found:
 							ldap_server_name = configRegistry.get('ldap/server/name')
 							if not ldap_server_name or new_ldap_server != ldap_server_name:
 								updates['ldap/server/name'] = new_ldap_server
-							found=1
+							found = 1
 						else:
 							addition.append(new_ldap_server)
 
