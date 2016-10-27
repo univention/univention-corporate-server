@@ -59,7 +59,7 @@ def calculate_ipv6_reverse(network):
 	# at least one part must remain for zone entry
 	prefixlen = min(network.prefixlen / 4, network.max_prefixlen / 4 - 1) or 1
 	prefix = network.ip.exploded.replace(':', '')[:prefixlen]
-	return ':'.join([prefix[i:i+4] for i in xrange(0, len(prefix), 4)])
+	return ':'.join([prefix[i:i + 4] for i in xrange(0, len(prefix), 4)])
 
 
 def calculate_ipv4_reverse(network):
@@ -98,7 +98,7 @@ def calculate_ipv6_network(network):
 	"""
 	prefixlen = network.prefixlen / 4
 	prefix = network.ip.exploded.replace(':', '')[:prefixlen]
-	return ':'.join([prefix[i:i+4] for i in xrange(0, len(prefix), 4)])
+	return ':'.join([prefix[i:i + 4] for i in xrange(0, len(prefix), 4)])
 
 
 def calculate_ipv4_network(network):
