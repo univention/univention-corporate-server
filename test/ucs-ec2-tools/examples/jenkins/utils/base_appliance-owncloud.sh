@@ -269,26 +269,32 @@ prepare_docker_app_container ()
 		prepared_app_container_id=$(docker commit "$container_id" "${app}-app")
 		docker rm "$container_id"
 
+		cat >/root/provide_joinpwdfile.patch <<__EOF__
+--- /usr/lib/univention-system-setup/scripts/10_basis/18root_password.orig      2016-10-27 16:40:47.296000000 +0200
++++ /usr/lib/univention-system-setup/scripts/10_basis/18root_password   2016-10-27 16:41:59.744000000 +0200
+@@ -54,6 +54,10 @@
+
+ root_password=\`get_profile_var "root_password"\`
+
++touch /tmp/joinpwd
++chmod 0600 /tmp/joinpwd
++echo -n "\$root_password" > /tmp/joinpwd
++
+ sed -i 's|^root_password=.*|#root_password="***********"|g' /var/cache/univention-system-setup/profile
+
+ if [ -z "\$root_password" ]; then
+__EOF__
+		patch -p0 < /root/provide_joinpwdfile.patch
+		rm /root/provide_joinpwdfile.patch
+
 		cat >/usr/lib/univention-install/99_setup_${app}.inst <<__EOF__
 #!/bin/bash
 . /usr/share/univention-join/joinscripthelper.lib
 #. /usr/share/univention-appcenter/joinscripthelper.sh
 VERSION="1"
-ARGS="\$@"
-getarg() {
-	local found=0
-	for arg in \$ARGS; do
-		if [ "\$found" -eq 1 ]; then
-			echo "\$arg"
-			break
-		fi
-		if [ "\$arg" = "\$1" ]; then
-			found=1
-		fi
-	done
-}
 
 APP="$app"
+
 joinscript_init
 joinscript_save_current_version
 python -c "from univention.appcenter.app import AppManager
@@ -297,8 +303,9 @@ app=AppManager.find('\$APP')
 app.docker_image='${app}-app'
 
 install = get_action('install')
-install.call(app=app, skip_checks=['must_have_valid_license'],pwdfile='"\$(getarg --bindpwd)"')
+install.call(app=app, skip_checks=['must_have_valid_license'],pwdfile='/tmp/joinpwd')
 "
+rm /tmp/joinpwd
 __EOF__
 		chmod 755 /usr/lib/univention-install/99_setup_${app}.inst
 	fi
@@ -441,7 +448,7 @@ create_install_script ()
 	apps="$main_app $(app_get_appliance_additional_apps $main_app)"
 
 	# Only for non docker apps
-	if ! app_appliance_IsDockerApp $app; then
+	if ! app_appliance_IsDockerApp $main_app; then
 		main_app_packages="$(app_get_packages $main_app)"
 
 		additional_app_packages=""
@@ -912,6 +919,10 @@ __EOF__
 	rm -f /etc/udev/rules.d/70-persistent-net.rules
 	 
 	ucr set system/setup/boot/start=true
+
+	# the appliance base image is 4.1-0, so this UCRv is set.
+	# But the appliance will be rebooted, and the new system-setup will run, so we dont want this feature
+	ucr unset system/setup/boot/legacyfrontend
 }
 
 
@@ -990,12 +1001,6 @@ __EOF__
 
 appliance_reset_servers ()
 {
-	local components=""
-	[ -n "$1" ] && local $components="$1"
-	for component in $components; do
-		ucr set repository/online/component/"$component"/server="https://updates.software-univention.de/"
-	done
-
 	ucr set repository/online/server="https://updates.software-univention.de/"
 	ucr unset appcenter/index/verify=no
        	ucr set update/secure_apt=yes
