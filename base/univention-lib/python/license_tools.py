@@ -35,14 +35,17 @@ import univention.uldap
 
 
 class LicenseCheckError(Exception):
+
 	'''Generic error during license check'''
 
 
 class LicenseExpired(LicenseCheckError):
+
 	'''The license is expired'''
 
 
 class LicenseNotFound(LicenseCheckError):
+
 	'''The license cannot be found in LDAP'''
 
 

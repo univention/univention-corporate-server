@@ -34,11 +34,12 @@
 import os
 import re
 
+
 class File(list):
 	_is_comment = re.compile('[ \t]*#').search
 	_filesystems = ('ext2', 'xfs', 'nfs', 'proc', 'auto', 'swap')
 
-	def __init__(self, file = '/etc/fstab'):
+	def __init__(self, file='/etc/fstab'):
 		list.__init__(self)
 		self.__file = file
 		self.load()
@@ -63,10 +64,10 @@ class File(list):
 				return entry
 		return None
 
-	def get(self, filesystem = [], ignore_root = True):
+	def get(self, filesystem=[], ignore_root=True):
 		result = []
 		for entry in self:
-			if type(entry) == str:
+			if isinstance(entry, str):
 				continue
 			if ignore_root and entry.mount_point == '/':
 				continue
@@ -83,7 +84,7 @@ class File(list):
 	def __parse(self, line):
 		fields = line.split(None, 7)
 		if len(fields) < 4:
-			raise InvalidEntry('The following is not a valid fstab entry: %s' % line) #TODO
+			raise InvalidEntry('The following is not a valid fstab entry: %s' % line)  # TODO
 		entry = Entry(*fields[: 4])
 		if len(fields) > 4:
 			dump = fields[4]
@@ -103,8 +104,9 @@ class File(list):
 
 
 class Entry(object):
+
 	def __init__(self, spec, mount_point, type, options,
-		         dump = 0, passno = 0, comment = ''):
+		         dump=0, passno=0, comment=''):
 		self.spec = spec.strip()
 		if self.spec.startswith('UUID='):
 			self.uuid = self.spec[5:]
@@ -120,19 +122,20 @@ class Entry(object):
 		self.passno = int(passno)
 		self.comment = comment
 
-	def __str__( self ):
+	def __str__(self):
 		if self.uuid:
 			return 'UUID=%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
-			       ( self.uuid, self.mount_point, self.type,  ','.join( self.options ),
-			         self.dump, self.passno, self.comment )
+			       (self.uuid, self.mount_point, self.type, ','.join(self.options),
+				self.dump, self.passno, self.comment)
 		else:
 			return '%s\t%s\t%s\t%s\t%d\t%d\t%s' % \
-			       ( self.spec, self.mount_point, self.type,  ','.join( self.options ),
-			         self.dump, self.passno, self.comment )
+			       (self.spec, self.mount_point, self.type, ','.join(self.options),
+				self.dump, self.passno, self.comment)
+
 
 class InvalidEntry(Exception):
 	pass
 
 if __name__ == '__main__':
-	fstab= File('fstab')
+	fstab = File('fstab')
 	print fstab.get(['xfs', 'ext3'])

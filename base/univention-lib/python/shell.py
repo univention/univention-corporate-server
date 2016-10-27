@@ -32,6 +32,7 @@
 import subprocess
 import re
 
+
 def escape_value(value):
 	"""
 	Escape a value for shell usage with double quotes.
@@ -50,6 +51,8 @@ def escape_value(value):
 	return '"%s"' % ''.join(map(lambda c: escapes.get(c, c), value))
 
 _RE_AT_JOB = re.compile('^job ([1-9][0-9]*) at .*')
+
+
 def create_at_job(script, time=None, date=None):
 	"""
 	Create an "at" job.
@@ -76,6 +79,7 @@ def create_at_job(script, time=None, date=None):
 	env = {'LC_ALL': 'C'}
 
 	p = subprocess.Popen(cmd, shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+
 	class AtJob:
 		stdout, stderr = p.communicate(script)
 		returncode = p.returncode

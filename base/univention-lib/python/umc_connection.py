@@ -49,7 +49,7 @@ class UMCConnection(object):
 			'Accept': 'application/json; q=1, text/html; q=0.5; */*; q=0.1',
 			'X-Requested-With': 'XMLHttpRequest',
 		}
-		self._error_handler=error_handler
+		self._error_handler = error_handler
 		if username is not None:
 			self.auth(username, password)
 
@@ -84,7 +84,7 @@ class UMCConnection(object):
 		'''Tries to authenticate against the host and preserves the
 		cookie. Has to be done only once (but keep in mind that the
 		session probably expires after 10 minutes of inactivity)'''
-		data = self.build_data({'username' : username, 'password' : password, 'auth_type': auth_type})
+		data = self.build_data({'username': username, 'password': password, 'auth_type': auth_type})
 		con = self.get_connection()
 		try:
 			con.request('POST', '/umcp/auth', data, headers=self._headers)
@@ -109,7 +109,7 @@ class UMCConnection(object):
 
 	def build_data(self, data, flavor=None):
 		'''Returns a dictionary as expected by the UMC Server'''
-		data = {'options' : data}
+		data = {'options': data}
 		if flavor:
 			data['flavor'] = flavor
 		return dumps(data)

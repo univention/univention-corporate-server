@@ -4,6 +4,7 @@ import socket
 import ssl
 import urllib2
 
+
 class CertificateError(ValueError):
 	pass
 
@@ -11,6 +12,8 @@ class CertificateError(ValueError):
 # official fix for CVE-2013-2099 has been added.
 # Please check http://docs.python.org/3/license.html for license information.
 #
+
+
 def _dnsname_to_pat(dn, max_wildcards=1):
 	pats = []
 	for frag in dn.split(r'.'):
@@ -34,6 +37,8 @@ def _dnsname_to_pat(dn, max_wildcards=1):
 # The following method has been backported from Python 3.3.2.
 # Please check http://docs.python.org/3/license.html for license information.
 #
+
+
 def match_hostname(cert, hostname):
 	"""Verify that *cert* (in decoded format as returned by
 	SSLSocket.getpeercert()) matches the *hostname*.  RFC 2818 rules
@@ -74,14 +79,13 @@ def match_hostname(cert, hostname):
 			"subjectAltName fields were found")
 
 
-
-
 #
 # New wrapper classes for HTTPSConnection in python 2.6 to be able
 # to verify the certificate against a CA and to verify the
 # certificate's hostname.
 #
 class VerifiedHTTPSConnection(httplib.HTTPSConnection):
+
 	def __init__(self, host, **kwargs):
 		self._ca_certs_file = kwargs.pop('ca_certs_file', None)
 		self._check_hostname = kwargs.pop('check_hostname', True)
@@ -111,7 +115,9 @@ class VerifiedHTTPSConnection(httplib.HTTPSConnection):
 			self.sock.close()
 			raise
 
+
 class VerifiedHTTPSHandler(urllib2.HTTPSHandler):
+
 	"""
     Possible keyword arguments:
       cert_file:       (see httplib.HTTPSConnection)
@@ -131,8 +137,9 @@ class VerifiedHTTPSHandler(urllib2.HTTPSHandler):
 	  response = opener.open(url, body).read()
 
 	"""
+
 	def __init__(self, **kwargs):
-		urllib2.HTTPSHandler.__init__(self, kwargs.pop('debuglevel', 0)) # always pass debuglevel to HTTPSHandler
+		urllib2.HTTPSHandler.__init__(self, kwargs.pop('debuglevel', 0))  # always pass debuglevel to HTTPSHandler
 		self._httpcon_kwargs = kwargs
 
 	def https_open(self, req):
