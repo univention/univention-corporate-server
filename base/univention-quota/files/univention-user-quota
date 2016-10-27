@@ -78,7 +78,7 @@ def get_shares():
 		if os.path.isdir(filename):
 			continue
 		f = open(filename, 'r')
-		dn, attrs, policy_result  = cPickle.load(f)
+		dn, attrs, policy_result = cPickle.load(f)
 		f.close()
 		shares[attrs['univentionSharePath'][0]] = {
 				'inodeSoftLimit': int(policy_result.get('univentionQuotaSoftLimitInodes', ['0'])[0]),
@@ -132,7 +132,7 @@ def get_mountpoints_with_quota(user, shares):
 									'inodeHardLimit': quota_values[7],
 									'updatequota': initialValue
 											}
-		
+
 		# The mountpoint will not be in _mountpoints if no quota is activated for it
 		# Continue with next share definition
 		if not attrs['mountpoint'] in _mountpoints:
