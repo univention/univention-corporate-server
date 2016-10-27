@@ -30,15 +30,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
-import listener, os, pwd, types, time, univention.debug
-import grp, string
+__package__ = ''  # workaround for PEP 366
+import listener
+import os
+import univention.debug
+import grp
+import string
 
-name='passwdcache'
-description='Remove deleted user from passwd cache'
+name = 'passwdcache'
+description = 'Remove deleted user from passwd cache'
 
-filter='(objectClass=shadowAccount)'
-attributes=[]
+filter = '(objectClass=shadowAccount)'
+attributes = []
+
 
 def clean():
 	listener.setuid(0)
@@ -54,9 +58,10 @@ def clean():
 	finally:
 		listener.unsetuid()
 
+
 def _remove_user_from_file(filename, uid):
-	filename_orig='/etc/univention/passwdcache/%s' % filename
-	filename_new='/etc/univention/passwdcache/%s.new' % filename
+	filename_orig = '/etc/univention/passwdcache/%s' % filename
+	filename_new = '/etc/univention/passwdcache/%s.new' % filename
 
 	if os.path.exists(filename_orig):
 		modify = False
@@ -76,15 +81,17 @@ def _remove_user_from_file(filename, uid):
 			return True
 	return False
 
+
 def _clean_file(filename):
 	f = open('/etc/univention/passwdcache/%s' % filename, 'w')
 	f.close()
 	os.chown('/etc/univention/passwdcache/%s' % filename, 0, 0)
-	
+
+
 def _set_shadow_permissions():
-	filename='/etc/univention/passwdcache/shadow'
+	filename = '/etc/univention/passwdcache/shadow'
 	if os.path.exists(filename):
-		os.chmod(filename, 0640)
+		os.chmod(filename, 0o640)
 		try:
 			shadow_gid = grp.getgrnam('shadow')[2]
 		except:
@@ -92,15 +99,16 @@ def _set_shadow_permissions():
 			shadow_gid = 0
 		os.chown(filename, 0, shadow_gid)
 
+
 def _cleanup_groups():
-	shadow_file='/etc/univention/passwdcache/shadow'
-	group_file='/etc/univention/passwdcache/group'
-	
+	shadow_file = '/etc/univention/passwdcache/shadow'
+	group_file = '/etc/univention/passwdcache/group'
+
 	users = []
 	fp = open(shadow_file, 'r')
 	shadow_lines = fp.readlines()
 	fp.close()
-	
+
 	for shadow_line in shadow_lines:
 		users.append(shadow_line.split(':')[0].lower())
 
@@ -125,24 +133,25 @@ def _cleanup_groups():
 		if modified:
 			new_fp = '/etc/univention/passwdcache/group.new'
 			out_file = open(new_fp, 'w')
-			out_file.write(string.join(groups_new, '' ))
+			out_file.write(string.join(groups_new, ''))
 			out_file.close()
 			os.rename(new_fp, group_file)
-		
+
 	else:
 		_clean_file('group')
-		
+
 
 def _remove_user(uid):
 	listener.setuid(0)
 	try:
 		_remove_user_from_file('passwd', uid)
-		modified=_remove_user_from_file('shadow', uid)
+		modified = _remove_user_from_file('shadow', uid)
 		if modified:
 			_set_shadow_permissions()
 			_cleanup_groups()
 	finally:
 		listener.unsetuid()
+
 
 def handler(dn, new, old):
 	if not new and old:
@@ -151,12 +160,11 @@ def handler(dn, new, old):
 
 	else:
 		# if the user was disabled he should be removed from the cache
-		if new and new.has_key('sambaAcctFlags'):
+		if new and 'sambaAcctFlags' in new:
 			if new['sambaAcctFlags'][0].find('D') > 0:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'User was disabled: uid: %s' % new['uid'][0])
 				_remove_user(new['uid'][0])
-	
+
 
 def initialize():
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'init passwdcache')
-
