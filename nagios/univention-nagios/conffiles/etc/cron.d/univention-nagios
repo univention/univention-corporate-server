@@ -2,7 +2,7 @@
 
 # Read RAID status
 @!@
-if baseConfig.has_key('nagios/client/checkraid') and baseConfig['nagios/client/checkraid'] == 'yes':
+if 'nagios/client/checkraid' in configRegistry and configRegistry['nagios/client/checkraid'] == 'yes':
         print '* * * * * root /usr/bin/raidutil -L physical -L logical -L controller -L raid > /var/lib/univention-nagios/check_univention_i2o_raid.status'
 else:
         print '#* * * * * root /usr/bin/raidutil -L physical -L logical -L controller -L raid > /var/lib/univention-nagios/check_univention_i2o_raid.status'
