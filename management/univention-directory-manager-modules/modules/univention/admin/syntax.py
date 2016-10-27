@@ -1286,7 +1286,7 @@ class keyAndValue(complex):
 
 class dnsMX(complex):
 	subsyntaxes=[(_('Priority'), integer), (_('Mail server'), dnsNameDot)]
-	all_required=1
+	all_required=True
 
 class dnsSRVName(complex):
 	"""DNS Service Record.
@@ -1307,7 +1307,7 @@ class postalAddress( complex ):
 class dnsSRVLocation(complex):
 	subsyntaxes=[(_('Priority'), integer), (_('Weighting'), integer), (_('Port'), integer), (_('Server'), dnsName)]
 	size = ( 'OneThird', 'OneThird', 'OneThird', 'One' )
-	all_required=1
+	all_required=True
 
 class unixTime(simple):
 	regex = re.compile('^[0-9]+$')
@@ -1364,7 +1364,7 @@ class MAC_Address( simple ):
 class DHCP_HardwareAddress( complex ):
 	subsyntaxes = ( ( _( 'Type' ), NetworkType ), ( _( 'Address' ), MAC_Address ) )
 	size = ( 'One', 'One' )
-	all_required=1
+	all_required=True
 
 class Packages( UDM_Attribute ):
 	udm_module = 'settings/packages'
@@ -2822,7 +2822,7 @@ class nfsShare(UDM_Objects):
 
 class nfsMounts(complex):
 	subsyntaxes=[(_('NFS share'), nfsShare), ('Mount point', string)]
-	all_required=1
+	all_required=True
 
 class languageCode(string):
 	min_length=5
@@ -2921,7 +2921,7 @@ class printerName(simple):
 
 class printerModel(complex):
 	subsyntaxes=[(_('Driver'), string), (_('Description'), string)]
-	all_required=1
+	all_required=True
 
 class PrinterDriverList( UDM_Attribute ):
 	udm_module = 'settings/printermodel'

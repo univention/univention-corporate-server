@@ -54,42 +54,42 @@ property_descriptions={
 			short_description=_('Subnet address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipv4Address,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'subnetmask': univention.admin.property(
 			short_description=_('Address prefix length (or Netmask)'),
 			long_description='',
 			syntax=univention.admin.syntax.v4netmask,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'broadcastaddress': univention.admin.property(
 			short_description=_('Broadcast address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipv4Address,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'range': univention.admin.property(
 			short_description=_('Dynamic address assignment'),
 			long_description=_( 'Define a pool of addresses available for dynamic address assignment.' ),
 			syntax=univention.admin.syntax.IPv4_AddressRange,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 
@@ -163,7 +163,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', []), dhcpRange))
 		return add_dhcp_objectclass( self, ml )
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),

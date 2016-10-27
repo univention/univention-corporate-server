@@ -102,7 +102,7 @@ def rewrite(filter_s, **args):
 	return unicode(filter_p)
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	ptr_filter = rewrite(filter_s, name='address')
 	fw_zone_filter = rewrite(filter_s, name='zone')
 	rv_zone_filter = rewrite(filter_s, name='subnet')

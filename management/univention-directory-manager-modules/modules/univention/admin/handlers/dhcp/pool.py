@@ -55,72 +55,72 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description=_('A unique name for this DHCP pool object.'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'range': univention.admin.property(
 			short_description=_('IP range for dynamic assignment'),
 			long_description=_('Define a pool of addresses available for dynamic address assignment.'),
 			syntax=univention.admin.syntax.IPv4_AddressRange,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'failover_peer': univention.admin.property(
 			short_description=_('Failover peer configuration'),
 			long_description=_('The name of the "failover peer" configuration to use.'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 		),
 	'known_clients': univention.admin.property(
 			short_description=_('Allow known clients'),
 			long_description=_('Addresses from this pool are given to clients which have a DHCP host entry without assigned IP address matching their MAC address.'),
 			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'unknown_clients': univention.admin.property(
 			short_description=_('Allow unknown clients'),
 			long_description=_('Addresses from this pool are given to clients, which do not have a DHCP host entry matching their MAC address.'),
 			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'dynamic_bootp_clients': univention.admin.property(
 			short_description=_('Allow dynamic BOOTP clients'),
 			long_description=_('Addresses from this pool are given to clients using the old BOOTP protocol, which has no machanism to free addresses again.'),
 			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'all_clients': univention.admin.property(
 			short_description=_('All clients'),
 			long_description=_('Globally enable or disable this pool'),
 			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 
@@ -221,7 +221,7 @@ def rewrite(filter, mapping):
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionDhcpPool')

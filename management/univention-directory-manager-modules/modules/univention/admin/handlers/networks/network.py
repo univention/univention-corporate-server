@@ -62,84 +62,84 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
-			required=1,
-			may_change=0,
-			identifies=1
+			multivalue=False,
+			include_in_default_search=True,
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'network': univention.admin.property(
 			short_description=_('Networks'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
-			multivalue=0,
-			include_in_default_search=1,
-			required=1,
-			may_change=0,
-			identifies=0
+			multivalue=False,
+			include_in_default_search=True,
+			required=True,
+			may_change=False,
+			identifies=False
 		),
 	'netmask': univention.admin.property(
 			short_description=_('Netmask'),
 			long_description='',
 			syntax=univention.admin.syntax.netmask,
-			multivalue=0,
-			include_in_default_search=1,
-			required=1,
-			may_change=0,
-			identifies=0
+			multivalue=False,
+			include_in_default_search=True,
+			required=True,
+			may_change=False,
+			identifies=False
 		),
 	'nextIp': univention.admin.property(
 			short_description=_('Next IP address'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			multivalue=False,
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'ipRange': univention.admin.property(
 			short_description=_('IP address range'),
 			long_description='',
 			syntax=univention.admin.syntax.IP_AddressRange,
-			multivalue=1,
-			dontsearch=1,
-			required=0,
-			may_change=1,
-			identifies=0
+			multivalue=True,
+			dontsearch=True,
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'dnsEntryZoneForward': univention.admin.property(
 			short_description=_('DNS forward lookup zone'),
 			long_description='',
 			syntax=univention.admin.syntax.DNS_ForwardZone,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'dnsEntryZoneReverse': univention.admin.property(
 			short_description=_('DNS reverse lookup zone'),
 			long_description='',
 			syntax=univention.admin.syntax.DNS_ReverseZone,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'dhcpEntryZone': univention.admin.property(
 			short_description=_('DHCP service'),
 			long_description='',
 			syntax=univention.admin.syntax.dhcpService,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 }
 
@@ -317,7 +317,7 @@ class object(univention.admin.handlers.simpleLdap):
 def rewrite(filter, mapping):
 	univention.admin.mapping.mapRewrite(filter, mapping)
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionNetworkClass'),

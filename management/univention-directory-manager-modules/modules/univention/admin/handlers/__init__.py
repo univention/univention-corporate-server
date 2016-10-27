@@ -336,7 +336,7 @@ class base(object):
 		dn = '%s,%s' %(temporary_ou,self.lo.base)
 
 		module = univention.admin.modules.get('container/ou')
-		temporary_object = univention.admin.modules.lookup(module, None, self.lo, scope='base', base=dn, required=1, unique=1)[0]
+		temporary_object = univention.admin.modules.lookup(module, None, self.lo, scope='base', base=dn, required=True, unique=True)[0]
 		temporary_object.open()
 		try:
 			temporary_object.remove()
@@ -1529,7 +1529,7 @@ class simpleComputer( simpleLdap ):
 				if len(attributes['pTRRecord']) == 1:
 					self.lo.delete('relativeDomainName=%s,%s' % (ldap.dn.escape_dn_chars(rdn), zoneDN))
 				else:
-					for dn2, attributes2 in self.lo.search(scope='domain', attr=[ 'zoneName' ], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=0 ):
+					for dn2, attributes2 in self.lo.search(scope='domain', attr=[ 'zoneName' ], filter=filter_format('(&(relativeDomainName=%s)(objectClass=dNSZone))', [name]), unique=False ):
 						self.lo.modify( dn, [('pTRRecord', '%s.%s.' % (name, attributes2['zoneName'][0]), '')] )
 
 				zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, zoneDN)
@@ -1592,7 +1592,7 @@ class simpleComputer( simpleLdap ):
 				ipPart = '.'.join(reversed(ipPart.split('.')))
 				tmppos = univention.admin.uldap.position(self.position.getDomain())
 				# check in which forward zone the ip is set
-				results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (name, ip)), unique=0)
+				results = self.lo.search(base=tmppos.getBase(), scope='domain', attr=['zoneName'], filter=filter_format('(&(relativeDomainName=%s)(aRecord=%s))', (name, ip)), unique=False)
 			if results:
 				for dn, attr in results:
 					if 'zoneName' in attr:
@@ -1641,7 +1641,7 @@ class simpleComputer( simpleLdap ):
 					(attrEdit, attrOther, ) = ('aAAARecord', 'aRecord', )
 				else:
 					(attrEdit, attrOther, ) = ('aRecord', 'aAAARecord', )
-				results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord', ], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, attrEdit, ip)), unique=0, required=0)
+				results = self.lo.search(base=base, scope='domain', attr=['aRecord', 'aAAARecord', ], filter=filter_format('(&(relativeDomainName=%s)(%s=%s))', (name, attrEdit, ip)), unique=False, required=False)
 				for dn, attr in results:
 					if attr[attrEdit] == [ip, ] and not attr.get(attrOther): # the <ip> to be removed is the last on the object
 						# remove the object

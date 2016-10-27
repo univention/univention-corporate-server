@@ -73,42 +73,42 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'netbios_name_servers': univention.admin.property(
 			short_description=_('NetBIOS name servers'),
 			long_description=_('List of WINS servers listed in order of preference'),
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'netbios_scope': univention.admin.property(
 			short_description=_('NetBIOS scope'),
 			long_description=_('NetBIOS over TCP/IP scope parameter'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'netbios_node_type': univention.admin.property(
 			short_description=_('NetBIOS node type'),
 			long_description=_('The node type of clients for NetBIOS over TCP/IP'),
 			syntax=univention.admin.syntax.netbiosNodeType,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 property_descriptions.update(dict([
@@ -147,7 +147,7 @@ class object(univention.admin.handlers.simplePolicy):
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpNetbios'])
 		]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpNetbios'),

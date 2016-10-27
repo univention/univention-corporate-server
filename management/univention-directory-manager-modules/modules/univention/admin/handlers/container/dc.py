@@ -68,87 +68,87 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'dnsForwardZone': univention.admin.property(
 			short_description=_('DNS forward lookup zone'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsName,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
+			required=False,
 			default = ( '<name>.%s' % configRegistry.get( 'domainname', '' ), [] ),
-			may_change=0,
-			identifies=0
+			may_change=False,
+			identifies=False
 		),
 	'dnsReverseZone': univention.admin.property(
 			short_description=_('DNS reverse lookup zone'),
 			long_description='',
 			syntax=univention.admin.syntax.reverseLookupSubnet,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=0,
-			identifies=0
+			required=False,
+			may_change=False,
+			identifies=False
 		),
 	'sambaDomainName': univention.admin.property(
 			short_description=_('Samba domain name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
+			required=False,
+			may_change=True,
 			default = ( configRegistry.get( 'domainname', '' ).upper(), [] ),
-			identifies=0
+			identifies=False
 		),
 	'sambaSID': univention.admin.property(
 			short_description=_('Samba SID'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=0,
-			identifies=0
+			required=False,
+			may_change=False,
+			identifies=False
 		),
 	'sambaNextUserRid': univention.admin.property(
 			short_description=_('Samba Next User RID'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
+			required=False,
+			may_change=True,
 			default=('1000', []),
-			identifies=0
+			identifies=False
 		),
 	'sambaNextGroupRid': univention.admin.property(
 			short_description=_('Samba Next Group RID'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
+			required=False,
+			may_change=True,
 			default=('1000', []),
-			identifies=0
+			identifies=False
 		),
 	'kerberosRealm': univention.admin.property(
 			short_description=_('Kerberos realm'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=['kerberos'],
-			required=1,
-			may_change=0,
+			required=True,
+			may_change=False,
 			default = ( configRegistry.get( 'domainname', '' ).upper(), [] ),
-			identifies=0
+			identifies=False
 		),
 }
 
@@ -333,7 +333,7 @@ class object(univention.admin.handlers.simpleLdap):
 		tmpPosition.setDn(oldPos)
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionBase'),

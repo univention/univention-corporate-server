@@ -70,226 +70,226 @@ property_descriptions={
 			short_description=_('Hostname'),
 			long_description='',
 			syntax=univention.admin.syntax.hostName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 		),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
-			required=0,
-			may_change=1,
-			identifies=0
+			multivalue=False,
+			include_in_default_search=True,
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'domain': univention.admin.property(
 			short_description=_('Domain'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
-			required=0,
-			may_change=1,
-			identifies=0
+			multivalue=False,
+			include_in_default_search=True,
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'mac': univention.admin.property(
 			short_description=_('MAC address'),
 			long_description='',
 			syntax=univention.admin.syntax.MAC_Address,
-			multivalue=1,
-			include_in_default_search=1,
+			multivalue=True,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'network': univention.admin.property(
 			short_description=_('Network'),
 			long_description='',
 			syntax=univention.admin.syntax.network,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'ip': univention.admin.property(
 			short_description=_('IP address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
-			multivalue=1,
-			include_in_default_search=1,
+			multivalue=True,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'dnsEntryZoneForward': univention.admin.property(
 			short_description=_('Forward zone for DNS entry'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsEntry,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'dnsEntryZoneReverse': univention.admin.property(
 			short_description=_('Reverse zone for DNS entry'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsEntryReverse,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'dnsEntryZoneAlias': univention.admin.property(
 			short_description=_('Zone for DNS alias'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsEntryAlias,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'dnsAlias': univention.admin.property(
 			short_description=_('DNS alias'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'dhcpEntryZone': univention.admin.property(
 			short_description=_('DHCP service'),
 			long_description='',
 			syntax=univention.admin.syntax.dhcpEntry,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'password': univention.admin.property(
 			short_description=_('Password'),
 			long_description='',
 			syntax=univention.admin.syntax.passwd,
-			multivalue=0,
+			multivalue=False,
 			options=['kerberos','posix'],
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True
 		),
 	'unixhome': univention.admin.property(
 			short_description=_('Unix home directory'),
 			long_description='',
 			syntax=univention.admin.syntax.absolutePath,
-			multivalue=0,
+			multivalue=False,
 			options=['posix'],
-			required=1,
-			may_change=1,
-			identifies=0,
+			required=True,
+			may_change=True,
+			identifies=False,
 			default=('/dev/null', [])
 		),
 	'shell': univention.admin.property(
 			short_description=_('Login shell'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=['posix'],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 			default=('/bin/bash', [])
 		),
 	'primaryGroup': univention.admin.property(
 			short_description=_('Primary group'),
 			long_description='',
 			syntax=univention.admin.syntax.GroupDN,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=['posix'],
-			required=1,
-			dontsearch=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			dontsearch=True,
+			may_change=True,
+			identifies=False
 		),
 	'reinstall': univention.admin.property(
 			short_description=_('(Re-)install on next boot'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'reinstalltext': univention.admin.property(
 			short_description=_('Interactive installation'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'reinstalloption': univention.admin.property(
 			short_description=_('additional start options'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 
 	'instprofile': univention.admin.property(
 			short_description=_('Name of installation profile'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'inventoryNumber': univention.admin.property(
 			short_description=_('Inventory number'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			include_in_default_search=1,
+			multivalue=True,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'groups': univention.admin.property(
 			short_description=_('Groups'),
 			long_description='',
 			syntax=univention.admin.syntax.GroupDN,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 }
 
@@ -579,7 +579,7 @@ def rewrite(filter, mapping):
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	res=[]
 	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
