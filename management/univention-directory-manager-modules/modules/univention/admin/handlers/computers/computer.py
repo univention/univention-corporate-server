@@ -62,72 +62,72 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.hostName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 		),
 	'dnsAlias': univention.admin.property(
 			short_description=_('DNS alias'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
-			required=0,
-			may_change=1,
-			identifies=0
+			multivalue=False,
+			include_in_default_search=True,
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'mac': univention.admin.property(
 			short_description=_('MAC address'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			include_in_default_search=1,
+			multivalue=True,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'ip': univention.admin.property(
 			short_description=_('IP address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
-			multivalue=1,
-			include_in_default_search=1,
+			multivalue=True,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'inventoryNumber': univention.admin.property(
 			short_description=_('Inventory number'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			include_in_default_search=1,
+			multivalue=True,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'fqdn' : univention.admin.property(
 			short_description = 'FQDN',
 			long_description = '',
 			syntax=univention.admin.syntax.string,
 			multivalue = False,
-			include_in_default_search=1,
+			include_in_default_search=True,
 			options = [],
 			required = False,
 			may_change = False,
@@ -153,7 +153,7 @@ class object(univention.admin.handlers.simpleLdap):
 			#   be in sync.
 			self[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	res=[]
 	if str(filter_s).find('(dnsAlias=') != -1:

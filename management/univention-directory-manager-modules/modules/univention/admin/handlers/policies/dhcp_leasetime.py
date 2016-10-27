@@ -73,42 +73,42 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'lease_time_default': univention.admin.property(
 			short_description=_('Default lease time'),
 			long_description=_('Lease time used if the client does not request a specific expiration time'),
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'lease_time_max': univention.admin.property(
 			short_description=_('Maximum lease time'),
 			long_description=_('Maximum lease time that the server will accept if asked for'),
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'lease_time_min': univention.admin.property(
 			short_description=_('Minimum lease time'),
 			long_description=_('Minimum granted lease time'),
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 property_descriptions.update(dict([
@@ -154,7 +154,7 @@ class object(univention.admin.handlers.simplePolicy):
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpLeaseTime'])
 		]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpLeaseTime'),
 		])

@@ -55,73 +55,73 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.printerName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'spoolHost': univention.admin.property(
 			short_description=_('Spool host'),
 			long_description='',
 			syntax=univention.admin.syntax.ServicePrint_FQDN,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'groupMember': univention.admin.property(
 			short_description=_('Group members'),
 			long_description='',
 			syntax=univention.admin.syntax.PrinterNames,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'sambaName': univention.admin.property(
 			short_description=_('Windows name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
-			unique=1
+			required=False,
+			may_change=True,
+			identifies=False,
+			unique=True
 		),
 	'setQuota': univention.admin.property(
 			short_description=_('Enable quota support'),
 			long_description='',
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'pagePrice': univention.admin.property(
 			short_description=_('Price per page'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'jobPrice': univention.admin.property(
 			short_description=_('Price per print job'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 
@@ -215,7 +215,7 @@ class object(univention.admin.handlers.simpleLdap):
 				raise univention.admin.uexceptions.notValidPrinter(_('%(name)s is not a valid printer on Spoolhost %(host)s.') % {'name': member, 'host': self.info['spoolHost']})
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPrinterGroup'),

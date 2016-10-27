@@ -53,34 +53,34 @@ property_descriptions={
 			short_description=_('Hostname'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 		),
 	'hwaddress': univention.admin.property(
 			short_description=_('Hardware address'),
 			long_description=_('Currently, only the ethernet and token-ring types are recognized. \
 The hardware-address should be a set of hexadecimal octets (numbers from 0 through ff) separated by colons.'),
 			syntax=univention.admin.syntax.DHCP_HardwareAddress,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'fixedaddress': univention.admin.property(
 			short_description=_('Fixed IP addresses'),
 			long_description=_('Assign one or more fixed IP addresses. \
 Each address should be either an IP address or a domain name that resolves to one or more IP addresses'),
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 layout=[
@@ -122,7 +122,7 @@ class object(univention.admin.handlers.simpleLdap):
 			('objectClass', ['top', 'univentionDhcpHost']),
 		]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionDhcpHost')

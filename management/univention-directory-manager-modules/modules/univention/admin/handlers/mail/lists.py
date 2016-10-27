@@ -54,62 +54,62 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.gid,
-			multivalue=0,
-			include_in_default_search=1,
-			required=1,
-			may_change=1,
-			identifies=1
+			multivalue=False,
+			include_in_default_search=True,
+			required=True,
+			may_change=True,
+			identifies=True
 		),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
-			required=0,
-			may_change=1,
-			identifies=0
+			multivalue=False,
+			include_in_default_search=True,
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'members': univention.admin.property(
 			short_description=_('Members'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
-			multivalue=1,
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			multivalue=True,
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'mailAddress': univention.admin.property(
 			short_description=_('Mail address'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddressValidDomain,
-			multivalue=0,
-			include_in_default_search=1,
-			required=0,
-			may_change=1,
-			dontsearch=0,
-			identifies=0
+			multivalue=False,
+			include_in_default_search=True,
+			required=False,
+			may_change=True,
+			dontsearch=False,
+			identifies=False
 		),
 	'allowedEmailUsers': univention.admin.property(
 			short_description=_('Users that are allowed to send e-mails to the list'),
 			long_description='',
 			syntax=univention.admin.syntax.UserDN,
-			multivalue=1,
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			multivalue=True,
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		),
 	'allowedEmailGroups': univention.admin.property(
 			short_description=_('Groups that are allowed to send e-mails to the list'),
 			long_description='',
 			syntax=univention.admin.syntax.GroupDN,
-			multivalue=1,
-			required=0,
-			may_change=1,
-			dontsearch=1,
-			identifies=0
+			multivalue=True,
+			required=False,
+			may_change=True,
+			dontsearch=True,
+			identifies=False
 		)
 }
 
@@ -201,7 +201,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return ml
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionMailList')

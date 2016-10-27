@@ -54,7 +54,7 @@ property_descriptions={
 			long_description = '',
 			syntax = univention.admin.syntax.string,
 			multivalue = False,
-			include_in_default_search=1,
+			include_in_default_search=True,
 			options = [],
 			required = True,
 			may_change = True,
@@ -126,7 +126,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_remove(self):
 		self._updateZone()
 
-def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),

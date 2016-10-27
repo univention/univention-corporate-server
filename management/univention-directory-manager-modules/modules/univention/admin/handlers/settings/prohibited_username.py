@@ -55,23 +55,23 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description=_('Name'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1,
+			required=True,
+			may_change=True,
+			identifies=True,
 		),
 	'usernames': univention.admin.property(
 			short_description=_('Prohibited user name'),
 			long_description=_('Prohibited user name'),
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			include_in_default_search=1,
+			multivalue=True,
+			include_in_default_search=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 		),
 }
 
@@ -94,7 +94,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionProhibitedUsernames']) ]
 	
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionProhibitedUsernames')

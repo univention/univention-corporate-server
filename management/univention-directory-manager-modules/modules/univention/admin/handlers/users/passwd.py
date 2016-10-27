@@ -57,22 +57,22 @@ property_descriptions={
 			short_description=_('User name'),
 			long_description='',
 			syntax=univention.admin.syntax.uid,
-			multivalue=0,
-			include_in_default_search=1,
-			required=1,
-			may_change=0,
-			identifies=1
+			multivalue=False,
+			include_in_default_search=True,
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'password': univention.admin.property(
 			short_description=_('Password'),
 			long_description='',
 			syntax=univention.admin.syntax.userPasswd,
-			multivalue=0,
+			multivalue=False,
 			options=['posix', 'samba', 'kerberos', 'mail'],
-			required=1,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
+			required=True,
+			may_change=True,
+			identifies=False,
+			dontsearch=True
 		),
 }
 

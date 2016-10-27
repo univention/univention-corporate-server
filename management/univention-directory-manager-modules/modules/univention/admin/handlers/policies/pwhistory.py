@@ -74,52 +74,52 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'length': univention.admin.property(
 			short_description=_('History length'),
 			long_description=_('This number indicates after how many changes the user may reuse the old password again'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'expiryInterval': univention.admin.property(
 			short_description=_('Password expiry interval'),
 			long_description=_('Number of days after which the password has to be changed'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'pwLength': univention.admin.property(
 			short_description=_('Password length'),
 			long_description=_('Minimal amount of characters'),
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'pwQualityCheck': univention.admin.property(
 			short_description=_('Password quality check'),
 			long_description=_('Enables/disables password quality checks for example dictionary entries'),
 			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 
 }
@@ -159,7 +159,7 @@ class object(univention.admin.handlers.simplePolicy):
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyPWHistory']) ]
 	
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyPWHistory')

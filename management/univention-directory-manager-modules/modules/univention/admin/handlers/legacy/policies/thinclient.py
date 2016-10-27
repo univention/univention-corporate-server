@@ -75,62 +75,62 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 		),
 	'linuxTerminalServer': univention.admin.property(
 			short_description=_('Linux terminal servers'),
 			long_description=_('Linux terminal servers of the Thin Client'),
 			syntax=univention.admin.syntax.UCS_Server,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'fileServer': univention.admin.property(
 			short_description=_('File servers'),
 			long_description=_('File servers of the Thin Client'),
 			syntax=univention.admin.syntax.UCS_Server,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'authServer': univention.admin.property(
 			short_description=_('Authentication servers'),
 			long_description=_('Authentication servers of the Thin Client'),
 			syntax=univention.admin.syntax.DomainController,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'windowsTerminalServer': univention.admin.property(
 			short_description=_('Windows terminal servers'),
 			long_description=_('Windows terminal servers for Windows Login'),
 			syntax=univention.admin.syntax.Windows_Server,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 	'windowsDomain': univention.admin.property(
 			short_description=_('Windows domain'),
 			long_description=_('Windows domain for Windows Login'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 		),
 }
 property_descriptions.update(dict([
@@ -177,7 +177,7 @@ class object(univention.admin.handlers.simplePolicy):
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyThinClient']) ]
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyThinClient')

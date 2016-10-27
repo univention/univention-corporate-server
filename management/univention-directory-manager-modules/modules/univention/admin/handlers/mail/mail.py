@@ -65,12 +65,12 @@ property_descriptions={
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 		)
 }
 layout = [ Tab( _( 'General' ), _( 'Basic settings' ), [ "name" ] ) ]
@@ -82,7 +82,7 @@ class object(univention.admin.handlers.simpleLdap):
 	module=module
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	ret=[]
 	ret+=univention.admin.handlers.mail.domain.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	ret+=univention.admin.handlers.mail.folder.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)

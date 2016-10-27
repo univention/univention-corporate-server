@@ -57,126 +57,126 @@ property_descriptions={
 			short_description=_('Zone name'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsZone,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1
+			required=True,
+			may_change=False,
+			identifies=True
 		),
 	'zonettl': univention.admin.property(
 			short_description=_('Zone time to live'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0,
+			required=True,
+			may_change=True,
+			identifies=False,
 			default=( ( '3', 'hours' ), [])
 		),
 	'contact': univention.admin.property(
 			short_description=_('Contact person'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0,
+			required=True,
+			may_change=True,
+			identifies=False,
 			default = ( 'root@%s' % configRegistry.get( 'domainname' ), [] ),
 		),
 	'serial': univention.admin.property(
 			short_description=_('Serial number'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0,
+			required=True,
+			may_change=True,
+			identifies=False,
 			default=('1', [])
 		),
 	'refresh': univention.admin.property(
 			short_description=_('Refresh interval'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0,
+			required=True,
+			may_change=True,
+			identifies=False,
 			default=( ( '8', 'hours' ), [])
 		),
 	'retry': univention.admin.property(
 			short_description=_('Retry interval'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0,
+			required=True,
+			may_change=True,
+			identifies=False,
 			default=( ( '2', 'hours' ), [] )
 		),
 	'expire': univention.admin.property(
 			short_description=_('Expiry interval'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0,
+			required=True,
+			may_change=True,
+			identifies=False,
 			default = ( ( '7', 'days' ), [] )
 		),
 	'ttl': univention.admin.property(
 			short_description=_('Minimum time to live'),
 			long_description='',
 			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0,
+			required=True,
+			may_change=True,
+			identifies=False,
 			default = ( ( '3', 'hours' ), [] )
 		),
 	'nameserver': univention.admin.property(
 			short_description=_('Name server'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsName,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=0
+			required=True,
+			may_change=True,
+			identifies=False
 		),
 	'mx': univention.admin.property(
 			short_description=_('Mail exchanger host'),
 			long_description='',
 			syntax=univention.admin.syntax.dnsMX,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1
+			required=False,
+			may_change=True
 		),
 	'txt': univention.admin.property(
 			short_description=_('TXT record'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1
+			required=False,
+			may_change=True
 		),
 	'a': univention.admin.property(
 			short_description=_('IP address'),
 			long_description='',
 			syntax=univention.admin.syntax.ipAddress,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1
+			required=False,
+			may_change=True
 		),
 }
 
@@ -329,7 +329,7 @@ def lookup_filter(filter_s=None, lo=None):
 	lookup_filter_obj.append_unmapped_filter_string(filter_s, univention.admin.mapping.mapRewrite, mapping)
 	return lookup_filter_obj
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter=lookup_filter(filter_s)
 	res=[]

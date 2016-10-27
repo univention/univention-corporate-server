@@ -73,7 +73,7 @@ def getDefaultContainer(lo, module):
 		elif module.startswith('dns/'):
 			att='univentionDnsObject'
 
-	dn, attrs=lo.search(filter='objectClass=univentionDirectory', attr=[att], scope='domain', unique=1, required=1)[0]
+	dn, attrs=lo.search(filter='objectClass=univentionDirectory', attr=[att], scope='domain', unique=True, required=True)[0]
 	return attrs.get(att, [None])[0]
 
 
@@ -88,7 +88,7 @@ def getDefaultValue(lo, name, position=None):
 
 
 	if position:
-		dn, attrs=lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=1, required=1)[0]
+		dn, attrs=lo.search(filter='objectClass=univentionDefault', attr=[att], base=position.getDomain(), scope='domain', unique=True, required=True)[0]
 	else:
-		dn, attrs=lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=1, required=1)[0]
+		dn, attrs=lo.search(filter='objectClass=univentionDefault', attr=[att], scope='domain', unique=True, required=True)[0]
 	return attrs.get(att, [None])[0]
