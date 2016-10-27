@@ -42,7 +42,7 @@
 #(proxy)
 
 @!@
-if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
 	group = configRegistry.get( 'dansguardian/current/group' )
 	prefix = 'dansguardian/groups/%s/banned/regexp/urls/' % group
 	for key in configRegistry.keys():

@@ -119,7 +119,7 @@ if ignore_filter:
 
 			post_con_modify_functions=[ univention.connector.ad.set_userPrincipalName_from_ucr,
 @!@
-if baseConfig.is_false('connector/ad/mapping/user/password/disabled', True):
+if configRegistry.is_false('connector/ad/mapping/user/password/disabled', True):
 	print '						    univention.connector.ad.password.password_sync_ucs,'
 @!@
 						    univention.connector.ad.primary_group_sync_from_ucs,
@@ -128,8 +128,8 @@ if baseConfig.is_false('connector/ad/mapping/user/password/disabled', True):
 						    ],
 
 			post_ucs_modify_functions=[ @!@
-if baseConfig.is_false('connector/ad/mapping/user/password/disabled', True):
-	if baseConfig.is_true('connector/ad/mapping/user/password/kinit', False):
+if configRegistry.is_false('connector/ad/mapping/user/password/disabled', True):
+	if configRegistry.is_true('connector/ad/mapping/user/password/kinit', False):
 		print '						univention.connector.ad.password.password_sync_kinit,'
 	else:
 		print '						univention.connector.ad.password.password_sync,'
@@ -145,11 +145,11 @@ if baseConfig.is_false('connector/ad/mapping/user/password/disabled', True):
 							ucs_attribute='organisation',
 							ldap_attribute='o',
 							@!@
-print 'con_attribute=\'%s\',' % (baseConfig.get('connector/ad/mapping/organisation', 'company'))
+print 'con_attribute=\'%s\',' % (configRegistry.get('connector/ad/mapping/organisation', 'company'))
 							@!@
 						),
 						@!@
-if baseConfig.has_key('connector/ad/mapping/user/exchange') and baseConfig['connector/ad/mapping/user/exchange'] in ['yes','true']:
+if 'connector/ad/mapping/user/exchange' in configRegistry and configRegistry['connector/ad/mapping/user/exchange'] in ['yes','true']:
 	print """
 					'Exchange-Homeserver': univention.connector.attribute (
 							ucs_attribute='Exchange-Homeserver',
@@ -167,7 +167,7 @@ if baseConfig.has_key('connector/ad/mapping/user/exchange') and baseConfig['conn
 							con_attribute='mailNickname',
 					),
 					"""
-if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['connector/ad/mapping/user/primarymail'] in ['yes','true']:
+if 'connector/ad/mapping/user/primarymail' in configRegistry and configRegistry['connector/ad/mapping/user/primarymail'] in ['yes','true']:
 	print """
 					'mailPrimaryAddress': univention.connector.attribute (
 						ucs_attribute='mailPrimaryAddress',
@@ -325,7 +325,7 @@ if configRegistry.is_true('connector/ad/mapping/group/grouptype', True):
 							con_attribute='description',
 						),
 						@!@
-if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['connector/ad/mapping/group/primarymail'] in ['yes','true']:
+if 'connector/ad/mapping/group/primarymail' in configRegistry and configRegistry['connector/ad/mapping/group/primarymail'] in ['yes','true']:
 	print """
 					'mailAddress': univention.connector.attribute (
 						ucs_attribute='mailAddress',
@@ -346,7 +346,7 @@ if configRegistry.is_true('connector/ad/mapping/group/alternativemail'):
 						con_value_map_function = univention.connector.ad.proxyAddresses.con2ucs,
 					),
 					"""
-if baseConfig.has_key('connector/ad/mapping/group/exchange') and baseConfig['connector/ad/mapping/group/exchange'] in ['yes','true']:
+if 'connector/ad/mapping/group/exchange' in configRegistry and configRegistry['connector/ad/mapping/group/exchange'] in ['yes','true']:
 	print """
 					'Exchange-Nickname': univention.connector.attribute (
 						ucs_attribute='Exchange-Nickname',
@@ -359,7 +359,7 @@ if baseConfig.has_key('connector/ad/mapping/group/exchange') and baseConfig['con
 
 			mapping_table = {
 						@!@
-if baseConfig.has_key('connector/ad/mapping/group/language') and baseConfig['connector/ad/mapping/group/language'] in ['de','DE']:
+if 'connector/ad/mapping/group/language' in configRegistry and configRegistry['connector/ad/mapping/group/language'] in ['de','DE']:
 	print """
 				'cn': [( u'Domain Users' , u'Domänen-Benutzer'), ( u'Domain Users' , u'Domain Users'),
 						(u'Domain Admins', u'Domänen-Admins'), (u'Domain Admins', u'Domain Admins'),

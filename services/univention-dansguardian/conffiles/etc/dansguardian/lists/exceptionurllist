@@ -17,7 +17,7 @@
 #generallybadsite.tld/partthatsok/
 
 @!@
-if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
 	group = configRegistry.get( 'dansguardian/current/group' )
 	exception = configRegistry.get( 'dansguardian/groups/%s/exception/urls' % group, '' )
 	for entry in exception.split( ' ' ):

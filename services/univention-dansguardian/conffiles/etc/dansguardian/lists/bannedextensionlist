@@ -3,7 +3,7 @@
 #Banned extension list
 
 @!@
-if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
 	group = configRegistry.get( 'dansguardian/current/group' )
 	banned = configRegistry.get( 'dansguardian/groups/%s/banned/extensions' % group, '' )
 	for entry in banned.split( ' ' ):
