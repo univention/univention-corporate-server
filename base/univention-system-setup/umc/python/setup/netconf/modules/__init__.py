@@ -35,6 +35,7 @@ from univention.management.console.modules.setup.netconf import Phase, SkipPhase
 
 
 class RunPhases(object):
+
 	"""
 	Handle modules for network configuration.
 	<http://lkubuntu.wordpress.com/2012/10/02/writing-a-python-plugin-api/>

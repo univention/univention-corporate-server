@@ -6,6 +6,7 @@ from ldap import LDAPError
 
 
 class PhaseLdapSamba(AddressMap, LdapChange):
+
 	"""
 	Rewrite Samba gc._msdcs host address.
 	"""

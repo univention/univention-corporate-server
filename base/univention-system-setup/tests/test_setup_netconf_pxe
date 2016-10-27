@@ -10,11 +10,13 @@ from univention.management.console.modules.setup.netconf.modules import RewriteP
 
 
 class DummyOption(object):
+
 	def __init__(self):
 		self.no_act = True
 
 
 class TestPxeRewrite(unittest.TestCase):
+
 	def setUp(self):
 		ucr = {
 			"interfaces/eth0/address": "2.3.4.5",
@@ -50,6 +52,7 @@ class TestPxeRewrite(unittest.TestCase):
 
 
 class TestPxeRewriteMultiple(unittest.TestCase):
+
 	def setUp(self):
 		ucr = {
 			"interfaces/eth0/address": "2.3.4.5",
@@ -80,6 +83,7 @@ class TestPxeRewriteMultiple(unittest.TestCase):
 
 
 class TestPxeRewriteRemoved(unittest.TestCase):
+
 	def setUp(self):
 		ucr = {
 			"interfaces/eth0/address": "2.3.4.5",

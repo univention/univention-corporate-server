@@ -4,6 +4,7 @@ from univention.config_registry.frontend import handler_commit
 
 
 class PhaseResolvConv(Dhcp):
+
 	"""
 	Commit /etc/resolv.conf if no more DHCP is used.
 	"""

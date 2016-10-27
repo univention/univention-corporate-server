@@ -2,6 +2,7 @@ from univention.management.console.modules.setup.netconf import Phase, SkipPhase
 
 
 class PhaseFlushOldAddresses(Phase):
+
 	"""
 	Flush old interfaces to remove old addresses.
 	"""

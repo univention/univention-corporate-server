@@ -51,6 +51,7 @@ _ = setup_i18n()
 
 
 class Profile(dict):
+
 	def load(self, filename=PATH_PROFILE):
 		with open(filename, 'r') as profile:
 			for line in profile:
@@ -94,6 +95,7 @@ class Profile(dict):
 
 
 class TransactionalUcr(object):
+
 	def __init__(self):
 		self.ucr = ConfigRegistry()
 		self.ucr.load()
@@ -146,6 +148,7 @@ class TransactionalUcr(object):
 
 
 class SetupScript(object):
+
 	'''Baseclass for all Python-based Setup-Scripts.
 
 	Script lifecycle:
@@ -347,12 +350,15 @@ from contextlib import contextmanager
 
 
 class _PackageManagerLoggerHandlerWithoutProcess(_PackageManagerLoggerHandler):
+
 	def emit(self, record):
 		if record.name == 'packagemanager.dpkg.process':
 			return
 		super(_PackageManagerLoggerHandlerWithoutProcess, self).emit(record)
 
+
 class AptScript(SetupScript):
+
 	'''More or less just a wrapper around
 	univention.lib.package_manager.PackageManager
 	with SetupScript capabilities.
@@ -365,11 +371,11 @@ class AptScript(SetupScript):
 		self.package_manager.logger.addHandler(handler)
 
 		self.roles_package_map = {
-			'domaincontroller_master' : 'univention-server-master',
-			'domaincontroller_backup' : 'univention-server-backup',
-			'domaincontroller_slave' : 'univention-server-slave',
-			'memberserver' : 'univention-server-member',
-			'basesystem' : 'univention-basesystem',
+			'domaincontroller_master': 'univention-server-master',
+			'domaincontroller_backup': 'univention-server-backup',
+			'domaincontroller_slave': 'univention-server-slave',
+			'memberserver': 'univention-server-member',
+			'basesystem': 'univention-basesystem',
 		}
 		self.current_server_role = self.ucr.get('server/role')
 		self.wanted_server_role = self.profile.get('server/role')

@@ -10,6 +10,7 @@ from ipaddr import IPAddress
 
 
 class PhaseLdapSelf(AddressMap, LdapChange, Executable):
+
 	"""
 	Rewrite IP configuration in self LDAP object.
 	"""

@@ -69,4 +69,3 @@ if __name__ == '__main__':
 		json.dump(country_data, outfile, indent=2)
 
 	print '... done :)'
-

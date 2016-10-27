@@ -37,6 +37,7 @@ from ipaddr import IPv4Network, IPv6Network
 
 
 class RestartService(Executable):
+
 	"""
 	Helper to restart a single service.
 	"""
@@ -58,6 +59,7 @@ class RestartService(Executable):
 
 
 class AddressMap(AddressChange):
+
 	"""
 	Helper to provide a mapping from old addresses to new addresses.
 	"""
@@ -120,6 +122,7 @@ class AddressMap(AddressChange):
 
 
 class LdapChange(AddressChange, Ldap):
+
 	"""
 	Helper to provide access to LDAP through UDM.
 	"""

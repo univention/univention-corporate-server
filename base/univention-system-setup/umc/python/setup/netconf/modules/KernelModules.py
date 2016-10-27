@@ -2,6 +2,7 @@ from univention.management.console.modules.setup.netconf.common import Executabl
 
 
 class PhaseKernelModules(Executable):
+
 	"""
 	(Un-)load kernel modules for VLAN, Bridging, Bonding.
 	"""

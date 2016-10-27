@@ -31,6 +31,7 @@ import os
 import sys
 import json
 
+
 def _get_path(filename):
 	for ipath in (
 		os.path.join(os.path.dirname(sys.argv[0]), filename),
@@ -39,6 +40,7 @@ def _get_path(filename):
 		if os.path.exists(ipath):
 			return ipath
 	raise RuntimeError('Cannot find data file %s' % filename)
+
 
 def get_country_codes(countryCodeKeyType=2):
 	if countryCodeKeyType == 2:
@@ -59,6 +61,7 @@ def get_country_codes(countryCodeKeyType=2):
 			pairs[parts[idx1]] = parts[idx2]
 		return pairs
 
+
 def get_country_code_to_geonameid_map(countryCodeType=2):
 	countries = {}
 	if countryCodeType == 2:
@@ -75,6 +78,7 @@ def get_country_code_to_geonameid_map(countryCodeType=2):
 			parts = line.split('\t')
 			countries[parts[countryCodeIndex]] = parts[16].strip()
 	return countries
+
 
 def get_country_default_language(countryCodeType=2):
 	if countryCodeType == 2:
@@ -102,6 +106,7 @@ def get_country_default_language(countryCodeType=2):
 
 	return locales
 
+
 def get_city_geonameid_to_country_code_map():
 	cities = {}
 	with open(_get_path('cities15000.txt')) as infile:
@@ -109,6 +114,7 @@ def get_city_geonameid_to_country_code_map():
 			parts = line.split('\t')
 			cities[parts[0]] = parts[8].strip()
 	return cities
+
 
 def get_city_data():
 	cities = {}
@@ -121,6 +127,7 @@ def get_city_data():
 				population=int(parts[14]),
 			)
 	return cities
+
 
 def get_localized_names(geonameids, lang):
 	labels = {}
@@ -141,6 +148,7 @@ def get_localized_names(geonameids, lang):
 					label_score[iid] = iscore
 	return labels
 
+
 def get_alternate_names(geonameids, *locales):
 	labels = []
 	with open(_get_path('alternateNames.txt')) as infile:
@@ -154,6 +162,7 @@ def get_alternate_names(geonameids, *locales):
 				labels.append((iid, ilabel))
 	return labels
 
+
 def get_timezones():
 	with open(_get_path('timeZones.txt')) as infile:
 		countries = {}
@@ -161,6 +170,7 @@ def get_timezones():
 			parts = line.split('\t')
 			countries[parts[0]] = dict(id=parts[1], offset=parts[4])
 		return countries
+
 
 def get_country_code_to_nameserver_map():
 	with open(_get_path('nameservers.json')) as infile:
@@ -187,4 +197,3 @@ def get_country_code_to_nameserver_map():
 			imapEntry[idx].append(ientry['ip'])
 
 	return mapping
-

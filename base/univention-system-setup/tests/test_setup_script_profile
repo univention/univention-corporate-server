@@ -10,7 +10,9 @@ from setup_script import Profile
 
 
 class TestProfile(unittest.TestCase):
+
 	"""Unit test for univention.management.console.modules.setup.setup_script"""
+
 	def setUp(self):
 		"""Create object."""
 		self.profile = Profile()

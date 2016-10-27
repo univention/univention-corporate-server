@@ -35,6 +35,7 @@ from univention.config_registry.interfaces import Interfaces
 
 
 class ChangeSet(object):
+
 	def __init__(self, ucr, profile, options):
 		self.ucr = ucr
 		self.profile = profile
@@ -93,6 +94,7 @@ class SkipPhase(Exception):
 
 
 class Phase(object):
+
 	"""
 	Base-class for all phases.
 	"""

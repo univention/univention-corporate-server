@@ -4,6 +4,7 @@ from univention.management.console.modules.setup.netconf.conditions import Serve
 
 
 class PhaseIfplugd(RestartService, Server, Dhcp):
+
 	"""
 	Stop and restart ifplugd if DHCP is used.
 	"""

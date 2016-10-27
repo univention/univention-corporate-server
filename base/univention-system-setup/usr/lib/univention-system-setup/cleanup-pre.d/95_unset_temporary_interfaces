@@ -37,6 +37,7 @@ import univention.config_registry
 
 RE_IPV4_TYPE = re.compile('^interfaces/[^/]*/type$')
 
+
 def unset_temporary_interfaces():
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
@@ -54,4 +55,3 @@ def unset_temporary_interfaces():
 
 if __name__ == "__main__":
 	unset_temporary_interfaces()
-

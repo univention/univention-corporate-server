@@ -39,7 +39,7 @@ class WelcomeScreenInstaller(AptScript):
 
 	def inner_run(self):
 		if self.current_server_role == 'basesystem':
-			return True # do not install on basesystem
+			return True  # do not install on basesystem
 		self.steps(100)
 
 		self.install('univention-welcome-screen')
