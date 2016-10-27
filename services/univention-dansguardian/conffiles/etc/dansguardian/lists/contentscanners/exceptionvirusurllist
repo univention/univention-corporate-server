@@ -17,9 +17,9 @@
 #generallybadsite.tld/partthatisok/
 
 @!@
-if baseConfig.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
-        if not baseConfig.get('dansguardian/virus/exception/urls', '') == '':
-                for url in baseConfig['dansguardian/virus/exception/urls'].split(" "):
+if configRegistry.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
+        if not configRegistry.get('dansguardian/virus/exception/urls', '') == '':
+                for url in configRegistry['dansguardian/virus/exception/urls'].split(" "):
                         print url
 @!@
 
