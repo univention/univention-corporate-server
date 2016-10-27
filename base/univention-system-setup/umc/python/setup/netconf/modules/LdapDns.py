@@ -4,6 +4,7 @@ from univention import ipcalc
 
 
 class PhaseLdapDns(AddressMap, Ldap, Executable):
+
 	"""
 	Create reverse DNS zones and add pointer records for host.
 	"""

@@ -4,6 +4,7 @@ import os
 
 
 class PhaseRewriteWins(AddressMap):
+
 	"""
 	Rewrite IP configuration stored in wins.dat.
 	"""

@@ -37,6 +37,7 @@ from ldap.filter import filter_format
 
 
 class AddressChange(Phase):
+
 	"""
 	Check for at least one removed or added address.
 	"""
@@ -53,6 +54,7 @@ class AddressChange(Phase):
 
 
 class Server(Phase):
+
 	"""
 	Check server role for being a UCS server.
 	"""
@@ -61,7 +63,7 @@ class Server(Phase):
 	def check(self):
 		super(Server, self).check()
 		role = self.changeset.ucr.get("server/role")
-		if not role in (
+		if role not in (
 			"domaincontroller_master",
 			"domaincontroller_backup",
 			"domaincontroller_slave",
@@ -71,6 +73,7 @@ class Server(Phase):
 
 
 class Executable(Phase):
+
 	"""
 	Check executable exists.
 	"""
@@ -84,6 +87,7 @@ class Executable(Phase):
 
 
 class Dhcp(Phase):
+
 	"""
 	Check for interfaces using DHCP.
 	"""
@@ -105,6 +109,7 @@ class Dhcp(Phase):
 
 
 class NotNetworkOnly(Phase):
+
 	"""
 	Skip when not in network only mode.
 	"""
@@ -117,6 +122,7 @@ class NotNetworkOnly(Phase):
 
 
 class Ldap(Phase):
+
 	"""
 	Check LDAP server is available.
 	"""

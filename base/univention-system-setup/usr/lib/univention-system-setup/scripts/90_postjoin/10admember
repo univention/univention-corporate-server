@@ -37,6 +37,7 @@ from univention.management.console.modules.setup.setup_script import SetupScript
 
 import univention.debug as ud
 
+
 class AdMemberScript(SetupScript):
 	name = _('Configuring Active Directory connection')
 
@@ -93,6 +94,7 @@ class AdMemberScript(SetupScript):
 
 			_step_offset = 30.0
 			_nsteps = 35.0
+
 			def _step_handler(step):
 				self.step((step / 100.0) * _nsteps + _step_offset)
 
@@ -136,7 +138,7 @@ class AdMemberScript(SetupScript):
 		except admember.failedADConnect as exc:
 			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.domainnameMismatch as exc:
-			_err(exc, _('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain' : ad_domain_info["Domain"], 'ucs_domain' : self.profile.get('domainname')})
+			_err(exc, _('The domain name of the AD Server (%(ad_domain)s) does not match the local UCS domain name (%(ucs_domain)s). For the AD member mode, it is necessary to setup a UCS system with the same domain name as the AD Server.') % {'ad_domain': ad_domain_info["Domain"], 'ucs_domain': self.profile.get('domainname')})
 		except admember.connectionFailed as exc:
 			_err(exc, _('Could not connect to AD Server %s. Please verify that username and password are correct.') % ad_domain_info.get('DC DNS Name'))
 		except admember.failedToSetAdministratorPassword as exc:

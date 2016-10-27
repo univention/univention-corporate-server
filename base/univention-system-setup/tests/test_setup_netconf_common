@@ -12,6 +12,7 @@ from ipaddr import IPNetwork, IPv4Network, IPv6Network
 
 
 class TestIpv4Subnet(unittest.TestCase):
+
 	def _test(self, expected, actual):
 		self.assertEqual(
 			IPv4Network(expected),
@@ -28,6 +29,7 @@ class TestIpv4Subnet(unittest.TestCase):
 
 
 class TestIpv6Subnet(unittest.TestCase):
+
 	def _test(self, expected, actual):
 		self.assertEqual(
 			IPv6Network(expected),
@@ -65,6 +67,7 @@ class TestIpv6Subnet(unittest.TestCase):
 
 
 class TestGenericSubnet(TestIpv4Subnet, TestIpv6Subnet):
+
 	def _test(self, expected, actual):
 		self.assertEqual(
 			IPNetwork(expected),

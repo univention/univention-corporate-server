@@ -10,14 +10,17 @@ from univention.management.console.modules.setup.netconf.modules import LdapSelf
 
 
 class DummyOption(object):
+
 	def __init__(self):
 		self.no_act = True
 
 
 class TestLdapChanged(unittest.TestCase):
+
 	"""
 	Old address changed to new address.
 	"""
+
 	def setUp(self):
 		ucr = {
 			"interfaces/eth0/type": "static",

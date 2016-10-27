@@ -10,11 +10,13 @@ from univention.management.console.modules.setup.netconf.modules import KernelMo
 
 
 class DummyOption(object):
+
 	def __init__(self):
 		self.no_act = True
 
 
 class TestModulesUnconfigured(unittest.TestCase):
+
 	def setUp(self):
 		ucr = {}
 		profile = {}
@@ -28,6 +30,7 @@ class TestModulesUnconfigured(unittest.TestCase):
 
 
 class TestModulesChanged(unittest.TestCase):
+
 	def setUp(self):
 		ucr = {
 			"kernel/modules": "dummy;bonding",

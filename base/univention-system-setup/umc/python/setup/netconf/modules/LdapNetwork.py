@@ -8,6 +8,7 @@ from ldap import LDAPError
 
 
 class PhaseLdapNetwork(LdapChange):
+
 	"""
 	Rewrite default network.
 	This must run after LdapDhcp[48], which might created the new DHCP subnet.
@@ -39,7 +40,7 @@ class PhaseLdapNetwork(LdapChange):
 			# PMH: the original shell version first updates univentionNetwork,
 			# then deletes the network and re-creates it again. I'll skip the
 			# first part.
-			#self._update_network()
+			# self._update_network()
 			self._recreate_network()
 		except (LDAPError, UniventionBaseException) as ex:
 			self.logger.warn("Failed LDAP: %s", ex)

@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
 	print 'generating city data...'
 	city_data = _util.get_city_data()
-	city_geonameids = set(city_data.keys());
+	city_geonameids = set(city_data.keys())
 	for iid, icity in city_data.iteritems():
 		icity['id'] = iid
 
@@ -56,4 +56,3 @@ if __name__ == '__main__':
 		json.dump(city_data.values(), outfile, indent=2)
 
 	print '... done :)'
-

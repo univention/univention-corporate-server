@@ -6,6 +6,7 @@ from ldap import LDAPError
 
 
 class PhaseLdapDhcp(LdapChange):
+
 	"""
 	Re-create DHCP subnet.
 	"""

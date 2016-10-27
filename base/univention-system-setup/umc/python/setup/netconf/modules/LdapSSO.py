@@ -6,6 +6,7 @@ from ldap import LDAPError
 
 
 class PhaseLdapSSO(AddressMap, LdapChange):
+
 	"""
 	Rewrite UCS SSO host address.
 	"""
@@ -36,7 +37,7 @@ class PhaseLdapSSO(AddressMap, LdapChange):
 			zone = forward_zone.get('zone')
 			if not sso_fqdn.endswith(zone):
 				continue
-			sso_name = sso_fqdn[:-(len(zone)+1)]
+			sso_name = sso_fqdn[:-(len(zone) + 1)]
 			hosts = host_module.lookup(None, self.ldap, "relativeDomainName=%s" % sso_name, superordinate=forward_zone)
 			for host in hosts:
 				self._update_host(host)

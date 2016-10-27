@@ -85,9 +85,9 @@ class Instance(Base, ProgressMixin):
 		self._very_first_locale = None
 		self.__keep_alive_request = None
 		# reset umask to default
-		os.umask( 0022 )
+		os.umask(0o022)
 
-	def init( self ):
+	def init(self):
 		os.putenv('LANG', str(self.locale))
 		_locale.setlocale(_locale.LC_ALL, str(self.locale))
 		self._very_first_locale = copy.deepcopy(self.locale)
@@ -158,7 +158,7 @@ class Instance(Base, ProgressMixin):
 			util.create_status_file()
 
 			# enforce particular arguments for setup scripts
-			script_args = ['--appliance-mode', '--force-recreate' , '--demo-mode']
+			script_args = ['--appliance-mode', '--force-recreate', '--demo-mode']
 
 		def _thread(request, obj):
 			# acquire the lock until the scripts have been executed
@@ -186,7 +186,7 @@ class Instance(Base, ProgressMixin):
 				util.write_profile(values)
 
 				if not values:
-					MODULE.error( 'No property "values" given for save().' )
+					MODULE.error('No property "values" given for save().')
 					return False
 
 				# in case of changes of the IP address, restart UMC server and web server
@@ -216,20 +216,20 @@ class Instance(Base, ProgressMixin):
 			finally:
 				obj._finishedLock.release()
 
-		def _finished( thread, result ):
+		def _finished(thread, result):
 			if self.__keep_alive_request:
 				self.finished(self.__keep_alive_request.id, None)
 				self.__keep_alive_request = None
 
-			if isinstance( result, BaseException ):
+			if isinstance(result, BaseException):
 				msg = '%s\n%s: %s\n' % (''.join(traceback.format_tb(thread.exc_info[2])), thread.exc_info[0].__name__, str(thread.exc_info[1]))
-				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, msg) )
+				MODULE.warn('Exception during saving the settings: %s\n%s' % (result, msg))
 				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % result)
 				self._progressParser.current.critical = True
 				self._finishedResult = True
 
-		thread = notifier.threads.Simple( 'save',
-			notifier.Callback( _thread, request, self ), _finished )
+		thread = notifier.threads.Simple('save',
+			notifier.Callback(_thread, request, self), _finished)
 		thread.run()
 		self.finished(request.id, None)
 
@@ -274,15 +274,15 @@ class Instance(Base, ProgressMixin):
 					for i in range(1, 4):
 						# overwrite these values only if they are set, because the UMC module
 						# will save only changed values
-						if values.get( 'dns/forwarder%d' % i ):
-							values[ 'nameserver%d' % i ] = values.get( 'dns/forwarder%d' % i )
+						if values.get('dns/forwarder%d' % i):
+							values['nameserver%d' % i] = values.get('dns/forwarder%d' % i)
 
 				MODULE.info('saving profile values')
 				util.write_profile(values)
 
 				# unjoined DC master (that is not being converted to a basesystem) -> run the join script
 				MODULE.info('runnning system setup join script')
-				util.run_joinscript( self._progressParser, values, username, password, lang=str(self.locale) )
+				util.run_joinscript(self._progressParser, values, username, password, lang=str(self.locale))
 
 				# done :)
 				self._finishedResult = True
@@ -297,7 +297,7 @@ class Instance(Base, ProgressMixin):
 				self.__keep_alive_request = None
 
 			if isinstance(result, BaseException):
-				MODULE.warn( 'Exception during saving the settings: %s\n%s' % (result, ''.join(traceback.format_exception(*thread.exc_info))))
+				MODULE.warn('Exception during saving the settings: %s\n%s' % (result, ''.join(traceback.format_exception(*thread.exc_info))))
 				self._progressParser.current.errors.append(_('Encountered unexpected error during setup process: %s') % (result,))
 				self._progressParser.current.critical = True
 				self._finishedResult = True
@@ -313,11 +313,11 @@ class Instance(Base, ProgressMixin):
 		try can be started.'''
 		def _thread(request, obj):
 			def progress_info(state, **kwargs):
-				info = { 'component' : state.fractionName,
-					 'info' : state.message,
-					 'errors' : state.errors,
-					 'critical' : state.critical,
-					 'steps' : state.percentage }
+				info = {'component': state.fractionName,
+					 'info': state.message,
+					 'errors': state.errors,
+					 'critical': state.critical,
+					 'steps': state.percentage}
 				info.update(kwargs)
 				MODULE.info('Progress state: %(steps).1f%% - %(component)s - %(info)s' % info)
 				return info
@@ -330,7 +330,7 @@ class Instance(Base, ProgressMixin):
 				if ntries <= 0 or self._progressParser.changed and self._progressParser.current:
 					state = self._progressParser.current
 					return progress_info(state, finished=False)
-				time.sleep( SLEEP_TIME )
+				time.sleep(SLEEP_TIME)
 				ntries -= 1
 
 			obj._finishedLock.release()
@@ -434,7 +434,7 @@ class Instance(Base, ProgressMixin):
 
 		for ikey in ('ssl/country', 'ssl/state', 'ssl/locality', 'ssl/organization', 'ssl/organizationalunit', 'ssl/email', 'ssl/common'):
 			for table in (stringprep.in_table_c21_c22, stringprep.in_table_a1, stringprep.in_table_c8, stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, lambda c: c == u'\ufffd'):
-				_check(ikey, lambda x: not any(map(table, unicode(x))) , _('The value for %s contains invalid characters.') % (labels[ikey],))
+				_check(ikey, lambda x: not any(map(table, unicode(x))), _('The value for %s contains invalid characters.') % (labels[ikey],))
 
 		_check('ssl/country', lambda x: len(x) == 2, _('Country must be a country code consisting of 2 characters.'))
 		for ikey in ['ssl/email', 'email_address']:
@@ -467,7 +467,7 @@ class Instance(Base, ProgressMixin):
 				if nameserver:
 					if obj.get('ad/member') and obj.get('ad/address'):
 						try:
-							ad_domain_info = lookup_adds_dc(obj.get('ad/address'), ucr={'nameserver1' : nameserver})
+							ad_domain_info = lookup_adds_dc(obj.get('ad/address'), ucr={'nameserver1': nameserver})
 						except failedADConnect:
 							pass
 						else:
@@ -482,7 +482,7 @@ class Instance(Base, ProgressMixin):
 				# 'nameserver1'-key exists → widget is displayed → = not in UCS/debian installer mode
 				if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()):
 					_append('nameserver1', _('A domain name server needs to be specified.'))
-					#_append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
+					# _append('nameserver1', _('At least one domain name server needs to be given if DHCP or SLAAC is not specified.'))
 
 			# see whether the domain can be determined automatically
 			ucr.load()
@@ -504,9 +504,9 @@ class Instance(Base, ProgressMixin):
 					_append('nameserver1', _('The specified nameserver %s is not part of a valid UCS domain.') % (values['nameserver1'],))
 
 		# check gateways
-		if values.get('gateway'): # allow empty value
+		if values.get('gateway'):  # allow empty value
 			_check('gateway', util.is_ipv4addr, _('The specified gateway IPv4 address is not valid: %s') % values.get('gateway'))
-		if values.get('ipv6/gateway'): # allow empty value
+		if values.get('ipv6/gateway'):  # allow empty value
 			_check('ipv6/gateway', util.is_ipv6addr, _('The specified gateway IPv6 address is not valid: %s') % values.get('ipv6/gateway'))
 
 		# proxy
@@ -531,11 +531,11 @@ class Instance(Base, ProgressMixin):
 		try:
 			file = open('/usr/share/univention-system-setup/locale/timezone')
 		except:
-			MODULE.error( 'Cannot find locale data for timezones in /usr/share/univention-system-setup/locale' )
+			MODULE.error('Cannot find locale data for timezones in /usr/share/univention-system-setup/locale')
 			self.finished(request.id, None)
 			return
 
-		timezones = [ i.strip('\n') for i in file if not i.startswith('#') ]
+		timezones = [i.strip('\n') for i in file if not i.startswith('#')]
 
 		self.finished(request.id, timezones)
 
@@ -588,7 +588,7 @@ class Instance(Base, ProgressMixin):
 				'id': variant.xpath('./configItem/name')[0].text
 			} for variant in variants]
 
-		variante_result.insert(0, { 'label': '', 'id': '' })
+		variante_result.insert(0, {'label': '', 'id': ''})
 
 		return variante_result
 
@@ -608,8 +608,8 @@ class Instance(Base, ProgressMixin):
 		tmpUCR = univention.config_registry.ConfigRegistry()
 		tmpUCR.load()
 		ssl_country = tmpUCR.get('ssl/country')
-		if ssl_country not in [ i['id'] for i in countries ]:
-			countries.append( {'label': ssl_country, 'id': ssl_country} )
+		if ssl_country not in [i['id'] for i in countries]:
+			countries.append({'label': ssl_country, 'id': ssl_country})
 
 		self.finished(request.id, countries)
 
@@ -623,7 +623,7 @@ class Instance(Base, ProgressMixin):
 	@simple_response
 	def net_interfaces(self):
 		'''Return a list of all available network interfaces.'''
-		return [ idev['name'] for idev in util.detect_interfaces() ]
+		return [idev['name'] for idev in util.detect_interfaces()]
 
 	# workaround: use with_progress to make the method threaded
 	@simple_response(with_progress=True)
@@ -658,7 +658,7 @@ class Instance(Base, ProgressMixin):
 	@simple_response
 	def find_city(self, pattern, max_results):
 		pattern = pattern.decode(self.locale.codeset).lower()
-		MODULE.info('pattern: %s' % pattern);
+		MODULE.info('pattern: %s' % pattern)
 		if not pattern:
 			return []
 
@@ -750,7 +750,6 @@ class Instance(Base, ProgressMixin):
 	def domain_has_activated_license(self, nameserver, username, password):
 		return util.domain_has_activated_license(nameserver, username, password)
 
-
 	@simple_response
 	def check_credentials(self, role, dns, nameserver, address, username, password):
 		if role == 'ad':
@@ -759,4 +758,3 @@ class Instance(Base, ProgressMixin):
 			return util.check_credentials_nonmaster(dns, nameserver, address, username, password)
 		# master? basesystem? no domain check necessary
 		return True
-

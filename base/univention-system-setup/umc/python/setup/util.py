@@ -119,16 +119,19 @@ UCR_VARIABLES = [
 	'domainname',
 ]
 
+
 def timestamp():
 	return time.strftime('%Y-%m-%d %H:%M:%S')
+
 
 def is_system_joined():
 	return os.path.exists('/var/univention-join/joined')
 
+
 def load_values(lang=None):
 	# load UCR variables
 	ucr.load()
-	values = dict([ (ikey, ucr[ikey]) for ikey in UCR_VARIABLES ])
+	values = dict([(ikey, ucr[ikey]) for ikey in UCR_VARIABLES])
 
 	# net
 	from univention.management.console.modules.setup.network import Interfaces
@@ -150,7 +153,7 @@ def load_values(lang=None):
 		with open('/etc/timezone') as fd:
 			values['timezone'] = fd.readline().strip()
 	else:
-		values['timezone']=''
+		values['timezone'] = ''
 
 	# read license agreement for app appliance
 	if lang and ucr.get('umc/web/appliance/data_path'):
@@ -168,6 +171,7 @@ def load_values(lang=None):
 	values['system_activation_installed'] = os.path.exists('/usr/sbin/univention-system-activation')
 
 	return values
+
 
 def auto_complete_values_for_join(newValues, current_locale=None):
 	# try to automatically determine the domain, except on a dcmaster and basesystem
@@ -189,7 +193,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 				ns = newValues.get(nameserver, ucr.get(nameserver))
 				if ns:
 					try:
-						ad_domain_info = lookup_adds_dc(newValues.get('ad/address'), ucr={'nameserver1' : ns})
+						ad_domain_info = lookup_adds_dc(newValues.get('ad/address'), ucr={'nameserver1': ns})
 					except failedADConnect:
 						pass
 					else:
@@ -255,6 +259,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 
 	return newValues
 
+
 def pre_save(newValues):
 	'''Modify the final dict before saving it to the profile file.'''
 
@@ -266,9 +271,10 @@ def pre_save(newValues):
 		interfaces.check_consistency()
 		newValues.update(dict((key, value or '') for key, value in interfaces.to_ucr().iteritems()))
 
+
 def write_profile(values):
 	pre_save(values)
-	old_umask = os.umask(0177)
+	old_umask = os.umask(0o177)
 	try:
 		with open(PATH_PROFILE, "w+") as cache_file:
 			for ikey, ival in values.iteritems():
@@ -277,6 +283,7 @@ def write_profile(values):
 				cache_file.write('%s="%s"\n' % (ikey, ival or ''))
 	finally:
 		os.umask(old_umask)
+
 
 def run_networkscrips():
 	# write header before executing scripts
@@ -295,7 +302,7 @@ def run_networkscrips():
 			MODULE.info('Running script %s\n' % scriptpath)
 			# appliance-mode for temporary saving the old ip address
 			# network-only for not restarting all those services (time consuming!)
-			p = subprocess.Popen([scriptpath, '--network-only', '--appliance-mode'], stdout = f, stderr = subprocess.STDOUT)
+			p = subprocess.Popen([scriptpath, '--network-only', '--appliance-mode'], stdout=f, stderr=subprocess.STDOUT)
 			p.wait()
 
 	finally:
@@ -314,11 +321,13 @@ def written_profile(values):
 	finally:
 		os.remove(PATH_PROFILE)
 
-class ProgressState( object ):
-	def __init__( self ):
+
+class ProgressState(object):
+
+	def __init__(self):
 		self.reset()
 
-	def reset( self ):
+	def reset(self):
 		self.name = ''
 		self.message = ''
 		self._percentage = 0.0
@@ -331,44 +340,45 @@ class ProgressState( object ):
 		self.critical = False
 
 	@property
-	def percentage( self ):
-		return ( self._percentage + self.fraction * ( self.step / float( self.steps ) ) ) / self.max * 100
+	def percentage(self):
+		return (self._percentage + self.fraction * (self.step / float(self.steps))) / self.max * 100
 
-	def __eq__( self, other ):
+	def __eq__(self, other):
 		return self.name == other.name and self.message == other.message and self.percentage == other.percentage and self.fraction == other.fraction and self.steps == other.steps and self.step == other.step and self.errors == other.errors and self.critical == other.critical
 
-	def __ne__( self, other ):
-		return not self.__eq__( other )
+	def __ne__(self, other):
+		return not self.__eq__(other)
 
-	def __nonzero__( self ):
-		return bool( self.name or self.message or self.percentage or self._join_error or self._misc_error )
+	def __nonzero__(self):
+		return bool(self.name or self.message or self.percentage or self._join_error or self._misc_error)
 
-class ProgressParser( object ):
+
+class ProgressParser(object):
 	# regular expressions
-	NAME = re.compile( '^__NAME__: *(?P<key>[^ ]*) (?P<name>.*)\n$' )
-	MSG = re.compile( '^__MSG__: *(?P<message>.*)\n$' )
-	STEPS = re.compile( '^__STEPS__: *(?P<steps>.*)\n$' )
-	STEP = re.compile( '^__STEP__: *(?P<step>.*)\n$' )
-	JOINERROR = re.compile( '^__JOINERR__: *(?P<error_message>.*)\n$' )
-	ERROR = re.compile( '^__ERR__: *(?P<error_message>.*)\n$' )
+	NAME = re.compile('^__NAME__: *(?P<key>[^ ]*) (?P<name>.*)\n$')
+	MSG = re.compile('^__MSG__: *(?P<message>.*)\n$')
+	STEPS = re.compile('^__STEPS__: *(?P<steps>.*)\n$')
+	STEP = re.compile('^__STEP__: *(?P<step>.*)\n$')
+	JOINERROR = re.compile('^__JOINERR__: *(?P<error_message>.*)\n$')
+	ERROR = re.compile('^__ERR__: *(?P<error_message>.*)\n$')
 
 	# fractions of setup scripts
 	FRACTIONS = {
-		'05_role/10role' : 30,
-		'10_basis/12domainname' : 15,
-		'10_basis/14ldap_basis' : 20,
+		'05_role/10role': 30,
+		'10_basis/12domainname': 15,
+		'10_basis/14ldap_basis': 20,
 		'20_language/11default_locale': 5,
-		'30_net/10interfaces' : 20,
-		'30_net/12gateway' : 10,
-		'30_net/13ipv6gateway' : 10,
+		'30_net/10interfaces': 20,
+		'30_net/12gateway': 10,
+		'30_net/13ipv6gateway': 10,
 		'40_ssl/10ssl': 10,
-		'50_software/10software' : 30,
-		'90_postjoin/10admember' : 30,
-		'90_postjoin/20upgrade' : 10,
+		'50_software/10software': 30,
+		'90_postjoin/10admember': 30,
+		'90_postjoin/20upgrade': 10,
 	}
 
 	# current status
-	def __init__( self ):
+	def __init__(self):
 		self.current = ProgressState()
 		self.old = ProgressState()
 		self.allowed_subdirs = None
@@ -379,16 +389,16 @@ class ProgressParser( object ):
 		ucr.load()
 		self.current.reset()
 		self.old.reset()
-		self.fractions = copy.copy( ProgressParser.FRACTIONS )
+		self.fractions = copy.copy(ProgressParser.FRACTIONS)
 		self.calculateFractions()
 
-	def calculateFractions( self ):
+	def calculateFractions(self):
 		MODULE.info('Calculating maximum value for fractions ...')
 		for category in [x for x in os.listdir(PATH_SETUP_SCRIPTS) if os.path.isdir(os.path.join(PATH_SETUP_SCRIPTS, x))]:
 			cat_path = os.path.join(PATH_SETUP_SCRIPTS, category)
 			for script in [x for x in os.listdir(cat_path) if os.path.isfile(os.path.join(cat_path, x))]:
 				name = '%s/%s' % (category, script)
-				if not name in self.fractions:
+				if name not in self.fractions:
 					self.fractions[name] = 1
 				if self.allowed_subdirs and category not in self.allowed_subdirs:
 					self.fractions[name] = 0
@@ -398,46 +408,46 @@ class ProgressParser( object ):
 		MODULE.info('Dumping all fractions:\n%s' % self.fractions)
 
 	@property
-	def changed( self ):
+	def changed(self):
 		if self.current != self.old:
-			MODULE.info( 'Progress state has changed!' )
-			self.old = copy.copy( self.current )
+			MODULE.info('Progress state has changed!')
+			self.old = copy.copy(self.current)
 			return True
 		return False
 
-	def parse( self, line ):
+	def parse(self, line):
 		# start new component name
-		match = ProgressParser.NAME.match( line )
+		match = ProgressParser.NAME.match(line)
 		if match is not None:
 			self.current.name, self.current.fractionName = match.groups()
 			self.current.message = ''
 			self.current._percentage += self.current.fraction
-			self.current.fraction = self.fractions.get( self.current.name, 1.0 )
-			self.current.step = 0 # reset current step
+			self.current.fraction = self.fractions.get(self.current.name, 1.0)
+			self.current.step = 0  # reset current step
 			self.current.steps = 1
 			return True
 
 		# new status message
-		match = ProgressParser.MSG.match( line )
+		match = ProgressParser.MSG.match(line)
 		if match is not None:
-			self.current.message = match.groups()[ 0 ]
+			self.current.message = match.groups()[0]
 			return True
 
 		# number of steps
-		match = ProgressParser.STEPS.match( line )
+		match = ProgressParser.STEPS.match(line)
 		if match is not None:
 			try:
-				self.current.steps = int( match.groups()[ 0 ] )
+				self.current.steps = int(match.groups()[0])
 				self.current.step = 0
 				return True
 			except ValueError:
 				pass
 
 		# current step
-		match = ProgressParser.STEP.match( line )
+		match = ProgressParser.STEP.match(line)
 		if match is not None:
 			try:
-				self.current.step = float( match.groups()[ 0 ] )
+				self.current.step = float(match.groups()[0])
 				if self.current.step > self.current.steps:
 					self.current.step = self.current.steps
 				return True
@@ -445,21 +455,22 @@ class ProgressParser( object ):
 				pass
 
 		# error message: why did the join fail?
-		match = ProgressParser.JOINERROR.match( line )
+		match = ProgressParser.JOINERROR.match(line)
 		if match is not None:
-			error = '%s: %s' % (self.current.fractionName, match.groups()[ 0 ])
-			self.current.errors.append( error )
+			error = '%s: %s' % (self.current.fractionName, match.groups()[0])
+			self.current.errors.append(error)
 			self.current.critical = True
 			return True
 
 		# error message: why did the script fail?
-		match = ProgressParser.ERROR.match( line )
+		match = ProgressParser.ERROR.match(line)
 		if match is not None:
-			error = '%s: %s' % (self.current.fractionName, match.groups()[ 0 ])
-			self.current.errors.append( error )
+			error = '%s: %s' % (self.current.fractionName, match.groups()[0])
+			self.current.errors.append(error)
 			return True
 
 		return False
+
 
 def sorted_files_in_subdirs(directory, allowed_subdirs=None):
 	for entry in sorted(os.listdir(directory)):
@@ -469,6 +480,7 @@ def sorted_files_in_subdirs(directory, allowed_subdirs=None):
 		if os.path.isdir(path):
 			for filename in sorted(os.listdir(path)):
 				yield os.path.join(path, filename)
+
 
 def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang='C', args=[]):
 	# write header before executing scripts
@@ -487,23 +499,23 @@ def run_scripts(progressParser, restartServer=False, allowed_subdirs=None, lang=
 	fullLine = ''
 
 	# make sure that UMC servers and apache will not be restartet
-	subprocess.call( CMD_DISABLE_EXEC, stdout = f, stderr = f )
+	subprocess.call(CMD_DISABLE_EXEC, stdout=f, stderr=f)
 
 	for scriptpath in sorted_files_in_subdirs(PATH_SETUP_SCRIPTS, allowed_subdirs):
 			# launch script
-			icmd = [scriptpath] + args;
+			icmd = [scriptpath] + args
 			MODULE.info('Running script %s\n' % icmd)
 			f.write('== script: %s\n' % icmd)
-			p = subprocess.Popen(icmd, stdout = f, stderr = subprocess.STDOUT, env = {
+			p = subprocess.Popen(icmd, stdout=f, stderr=subprocess.STDOUT, env={
 				'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
 				'LANG': lang,
 			})
 
 			while p.poll() is None:
-				fr.seek(0, os.SEEK_END) # update file handle
-				fr.seek(lastPos, os.SEEK_SET) # continue reading at last position
+				fr.seek(0, os.SEEK_END)  # update file handle
+				fr.seek(lastPos, os.SEEK_SET)  # continue reading at last position
 
-				currentLine = fr.readline() # try to read until next line break
+				currentLine = fr.readline()  # try to read until next line break
 				if not currentLine:
 					continue
 
@@ -533,49 +545,51 @@ sleep 5;  # leave enough time to display error messages or indicate success
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
 
+
 @contextmanager
 def _temporary_password_file(password):
 	# write password file
 	fp = open(PATH_PASSWORD_FILE, 'w')
 	fp.write('%s' % password)
 	fp.close()
-	os.chmod(PATH_PASSWORD_FILE, 0600)
+	os.chmod(PATH_PASSWORD_FILE, 0o600)
 	try:
 		yield PATH_PASSWORD_FILE
 	finally:
 		# remove password file
 		os.remove(PATH_PASSWORD_FILE)
 
-def run_joinscript( progressParser, values, _username, password, lang='C'):
+
+def run_joinscript(progressParser, values, _username, password, lang='C'):
 	# write header before executing join script
 	f = open(LOG_FILE, 'a')
 	f.write('\n\n=== RUNNING SETUP JOIN SCRIPT (%s) ===\n\n' % timestamp())
 	f.flush()
 
 	# the following scripts will not be called via setup-join.sh
-	progressParser.fractions[ '10_basis/10hostname' ] = 0
-	progressParser.fractions[ '10_basis/12domainname' ] = 0
-	progressParser.fractions[ '10_basis/14ldap_basis' ] = 0
-	progressParser.fractions[ '10_basis/16windows_domain' ] = 0
+	progressParser.fractions['10_basis/10hostname'] = 0
+	progressParser.fractions['10_basis/12domainname'] = 0
+	progressParser.fractions['10_basis/14ldap_basis'] = 0
+	progressParser.fractions['10_basis/16windows_domain'] = 0
 
 	# check whether particular scripts are called
 	if not values.get('ad/member'):
-		progressParser.fractions[ '90_postjoin/10admember' ] = 0
+		progressParser.fractions['90_postjoin/10admember'] = 0
 	if not values.get('update/system/after/setup'):
-		progressParser.fractions[ '90_postjoin/20upgrade' ] = 0
+		progressParser.fractions['90_postjoin/20upgrade'] = 0
 	if not values.get('packages_remove') and not values.get('packages_install'):
-		progressParser.fractions[ '50_software/10software' ] = 0
+		progressParser.fractions['50_software/10software'] = 0
 
 	# additional entries that will be called via setup-join.sh
-	progressParser.fractions[ 'domain-join' ] = 50
-	progressParser.fractions[ 'appliance-hooks.d' ] = 1
-	progressParser.fractions[ 'create-ssh-keys' ] = 10
+	progressParser.fractions['domain-join'] = 50
+	progressParser.fractions['appliance-hooks.d'] = 1
+	progressParser.fractions['create-ssh-keys'] = 10
 
 	# recompute sum
-	progressParser.current.max = sum( progressParser.fractions.values() )
+	progressParser.current.max = sum(progressParser.fractions.values())
 
-	def runit( command ):
-		p = subprocess.Popen( command, stdout = subprocess.PIPE, stderr = subprocess.STDOUT, env = {
+	def runit(command):
+		p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env={
 			'PATH': '/bin:/sbin:/usr/bin:/usr/sbin',
 			'LANG': lang,
 		})
@@ -583,12 +597,12 @@ def run_joinscript( progressParser, values, _username, password, lang='C'):
 			line = p.stdout.readline()
 			if not line:
 				break
-			progressParser.parse( line )
-			f.write( line )
+			progressParser.parse(line)
+			f.write(line)
 			f.flush()
 		p.wait()
 
-	cmd = [ PATH_JOIN_SCRIPT ]
+	cmd = [PATH_JOIN_SCRIPT]
 	if _username and password:
 
 		with _temporary_password_file(password) as password_file:
@@ -597,7 +611,7 @@ def run_joinscript( progressParser, values, _username, password, lang='C'):
 			username = reg.sub('_', _username)
 
 			# run join scripts without the cleanup scripts
-			runit( cmd + [ '--dcaccount', username, '--password_file', password_file, '--run_cleanup_as_atjob' ] )
+			runit(cmd + ['--dcaccount', username, '--password_file', password_file, '--run_cleanup_as_atjob'])
 
 	else:
 		# run join scripts without the cleanup scripts
@@ -605,6 +619,7 @@ def run_joinscript( progressParser, values, _username, password, lang='C'):
 
 	f.write('\n=== DONE (%s) ===\n\n' % timestamp())
 	f.close()
+
 
 def cleanup(with_appliance_hooks=False):
 	# add delay of 1 sec before actually executing the commands
@@ -617,6 +632,7 @@ def cleanup(with_appliance_hooks=False):
 
 	# start an at job in the background
 	atjobs.add(cmd)
+
 
 def run_scripts_in_path(path, logfile, category_name=""):
 	logfile.write('\n=== Running %s scripts (%s) ===\n' % (category_name, timestamp()))
@@ -635,9 +651,11 @@ def run_scripts_in_path(path, logfile, category_name=""):
 	logfile.write('\n=== done (%s) ===\n' % timestamp())
 	logfile.flush()
 
+
 def create_status_file():
 	with open(PATH_STATUS_FILE, 'w') as status_file:
-		status_file.write('"setup-scripts"');
+		status_file.write('"setup-scripts"')
+
 
 def detect_interfaces():
 	"""
@@ -672,6 +690,7 @@ def detect_interfaces():
 
 	return interfaces
 
+
 def dhclient(interface, timeout=None):
 	"""
 	perform DHCP request for specified interface. If succesful, returns a dict
@@ -687,8 +706,8 @@ def dhclient(interface, timeout=None):
 		'netmask': '255.255.255.0'
 	}
 """
-	tempfilename = tempfile.mkstemp( '.out', 'dhclient.', '/tmp' )[1]
-	pidfilename = tempfile.mkstemp( '.pid', 'dhclient.', '/tmp' )[1]
+	tempfilename = tempfile.mkstemp('.out', 'dhclient.', '/tmp')[1]
+	pidfilename = tempfile.mkstemp('.pid', 'dhclient.', '/tmp')[1]
 	cmd = ('/sbin/dhclient',
 			'-1',
 			'-lf', '/tmp/dhclient.leases',
@@ -710,13 +729,13 @@ def dhclient(interface, timeout=None):
 	stderr_thread.join(timeout)
 
 	if stderr:
-		stderr=stderr[0]
+		stderr = stderr[0]
 
 	# note: despite '-1' background dhclient never seems to terminate
 	try:
-		dhclientpid = int(open(pidfilename,'r').read().strip('\n\r\t '))
+		dhclientpid = int(open(pidfilename, 'r').read().strip('\n\r\t '))
 		os.kill(dhclientpid, 15)
-		time.sleep(1.0) # sleep 1s
+		time.sleep(1.0)  # sleep 1s
 		os.kill(dhclientpid, 9)
 	except:
 		pass
@@ -725,18 +744,20 @@ def dhclient(interface, timeout=None):
 	except:
 		pass
 
-	dhcp_dict={}
+	dhcp_dict = {}
 	MODULE.info('dhclient returned the following values:')
 	with open(tempfilename) as file:
 		for line in file.readlines():
 			key, value = line.strip().split('=', 1)
-			dhcp_dict[key]=value[1:-1]
+			dhcp_dict[key] = value[1:-1]
 			MODULE.info('  %s: %s' % (key, dhcp_dict[key]))
 	os.unlink(tempfilename)
 
 	return dhcp_dict
 
 _apps = None
+
+
 def get_apps(no_cache=False):
 	global _apps
 	if _apps and not no_cache:
@@ -749,7 +770,7 @@ def get_apps(no_cache=False):
 		lock=False,
 		always_noninteractive=True,
 	)
-	package_manager.set_finished() # currently not working. accepting new tasks
+	package_manager.set_finished()  # currently not working. accepting new tasks
 
 	# circumvent download of categories.ini file
 	app_center.Application._get_category_translations(fake=True)
@@ -761,11 +782,13 @@ def get_apps(no_cache=False):
 	_apps = [iapp.to_dict(package_manager) for iapp in applications if iapp.get('withoutrepository')]
 	return _apps
 
+
 def is_proxy(proxy):
 	if proxy and proxy != 'http://' and proxy != 'https://':
 		if not proxy.startswith('http://') and not proxy.startswith('https://'):
 			return False
 	return True
+
 
 def is_ipaddr(addr):
 	try:
@@ -774,12 +797,14 @@ def is_ipaddr(addr):
 		return False
 	return True
 
+
 def is_ipv4addr(addr):
 	try:
 		ipaddr.IPv4Address(addr)
 	except ValueError:
 		return False
 	return True
+
 
 def is_ipv4netmask(addr_netmask):
 	try:
@@ -788,12 +813,14 @@ def is_ipv4netmask(addr_netmask):
 		return False
 	return True
 
+
 def is_ipv6addr(addr):
 	try:
 		ipaddr.IPv6Address(addr)
 	except ValueError:
 		return False
 	return True
+
 
 def is_ipv6netmask(addr_netmask):
 	try:
@@ -802,9 +829,11 @@ def is_ipv6netmask(addr_netmask):
 		return False
 	return True
 
+
 def is_hostname(hostname):
 	return is_hostname.RE.match(hostname) is not None
 is_hostname.RE = re.compile("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$", re.IGNORECASE)
+
 
 def is_domainname(domainname):
 	"""
@@ -827,9 +856,11 @@ def is_domainname(domainname):
 	return all(is_domainname.RE.match(_) for _ in domainname.split('.'))
 is_domainname.RE = re.compile(r'^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$', re.I)
 
+
 def is_windowsdomainname(domainname):
 	return is_windowsdomainname.RE.match(domainname) is not None and len(domainname) < 14
 is_windowsdomainname.RE = re.compile(r"^[A-Z](?:[A-Z0-9-]*[A-Z0-9])?$")
+
 
 def domain2windowdomain(domainname):
 	if '.' in domainname:
@@ -843,16 +874,18 @@ def domain2windowdomain(domainname):
 	else:
 		windomain = ''
 
-	windomain = windomain[:15] ## enforce netbios limit
+	windomain = windomain[:15]  # enforce netbios limit
 
 	if not windomain:
 		# fallback name
 		windomain = 'UCSDOMAIN'
 	return windomain
 
+
 def is_domaincontroller(domaincontroller):
 	return is_domaincontroller.RE.match(domaincontroller) is not None
 is_domaincontroller.RE = re.compile("^[a-zA-Z].*\..*$")
+
 
 def is_ldap_base(ldap_base):
 	"""
@@ -877,6 +910,8 @@ is_ldap_base.RE = re.compile('^(c=[A-Za-z]{2}|(dc|cn|o|l)=[a-zA-Z0-9-]+)(,(c=[A-
 is_ldap_base.CC = ['AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ', 'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ', 'CA', 'CC', 'CD', 'CF', 'CG', 'CH', 'CI', 'CK', 'CL', 'CM', 'CN', 'CO', 'CR', 'CU', 'CV', 'CW', 'CX', 'CY', 'CZ', 'DE', 'DJ', 'DK', 'DM', 'DO', 'DZ', 'EC', 'EE', 'EG', 'EH', 'ER', 'ES', 'ET', 'FI', 'FJ', 'FK', 'FM', 'FO', 'FR', 'GA', 'GB', 'GD', 'GE', 'GF', 'GG', 'GH', 'GI', 'GL', 'GM', 'GN', 'GP', 'GQ', 'GR', 'GS', 'GT', 'GU', 'GW', 'GY', 'HK', 'HM', 'HN', 'HR', 'HT', 'HU', 'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT', 'JE', 'JM', 'JO', 'JP', 'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ', 'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY', 'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ', 'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ', 'OM', 'PA', 'PE', 'PF', 'PG', 'PH', 'PK', 'PL', 'PM', 'PN', 'PR', 'PS', 'PT', 'PW', 'PY', 'QA', 'RE', 'RO', 'RS', 'RU', 'RW', 'SA', 'SB', 'SC', 'SD', 'SE', 'SG', 'SH', 'SI', 'SJ', 'SK', 'SL', 'SM', 'SN', 'SO', 'SR', 'SS', 'ST', 'SV', 'SX', 'SY', 'SZ', 'TC', 'TD', 'TF', 'TG', 'TH', 'TJ', 'TK', 'TL', 'TM', 'TN', 'TO', 'TR', 'TT', 'TV', 'TW', 'TZ', 'UA', 'UG', 'UM', 'US', 'UY', 'UZ', 'VA', 'VC', 'VE', 'VG', 'VI', 'VN', 'VU', 'WF', 'WS', 'YE', 'YT', 'ZA', 'ZM', 'ZW']
 
 # new defined methods
+
+
 def is_ascii(str):
 	try:
 		str.decode("ascii")
@@ -884,11 +919,13 @@ def is_ascii(str):
 	except:
 		return False
 
+
 def _get_dns_resolver(nameserver):
 	resolver = dns.resolver.Resolver()
 	resolver.lifetime = 10  # make sure that we get an early timeout
 	resolver.nameservers = [nameserver]
 	return resolver
+
 
 def is_ucs_domain(nameserver, domain):
 	if not nameserver or not domain:
@@ -909,16 +946,19 @@ def is_ucs_domain(nameserver, domain):
 		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 	return False
 
+
 def get_ucs_domain(nameserver):
 	domain = get_domain(nameserver)
 	if not is_ucs_domain(nameserver, domain):
 		return None
 	return domain
 
+
 def get_domain(nameserver):
 	fqdn = get_fqdn(nameserver)
 	if fqdn:
 		return '.'.join(fqdn.split('.')[1:])
+
 
 def get_fqdn(nameserver):
 	# register nameserver
@@ -944,18 +984,19 @@ def get_fqdn(nameserver):
 		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 	return None
 
+
 def get_available_locales(pattern, category='language_en'):
 	'''Return a list of all available locales.'''
 	try:
 		fsupported = open('/usr/share/i18n/SUPPORTED')
 		flanguages = open('/usr/share/univention-system-setup/locale/languagelist')
 	except:
-		MODULE.error( 'Cannot find locale data for languages in /usr/share/univention-system-setup/locale' )
+		MODULE.error('Cannot find locale data for languages in /usr/share/univention-system-setup/locale')
 		return
 
 	# get all locales that are supported
 	rsupported = csv.reader(fsupported, delimiter=' ')
-	supportedLocales = { 'C': True }
+	supportedLocales = {'C': True}
 	for ilocale in rsupported:
 		# we only support UTF-8
 		if ilocale[1] != 'UTF-8':
@@ -1014,6 +1055,8 @@ def get_available_locales(pattern, category='language_en'):
 	return locales
 
 _city_data = None
+
+
 def get_city_data():
 	global _city_data
 	if not _city_data:
@@ -1022,12 +1065,15 @@ def get_city_data():
 	return _city_data
 
 _country_data = None
+
+
 def get_country_data():
 	global _country_data
 	if not _country_data:
 		with open(COUNTRY_DATA_PATH) as infile:
 			_country_data = json.load(infile)
 	return _country_data
+
 
 def get_random_nameserver(country):
 	ipv4_servers = country.get('ipv4') or country.get('ipv4_erroneous') or [None]
@@ -1036,6 +1082,7 @@ def get_random_nameserver(country):
 		ipv4_nameserver=random.choice(ipv4_servers),
 		ipv6_nameserver=random.choice(ipv6_servers),
 	)
+
 
 def domain_has_activated_license(nameserver, username, password):
 	fqdn_master = get_fqdn(nameserver)
@@ -1050,9 +1097,10 @@ def domain_has_activated_license(nameserver, username, password):
 
 	return bool(result.get('keyID'))
 
+
 def check_credentials_ad(nameserver, address, username, password):
 	try:
-		ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1' : nameserver})
+		ad_domain_info = lookup_adds_dc(address, ucr={'nameserver1': nameserver})
 		check_connection(ad_domain_info, username, password)
 		do_time_sync(address)
 		check_ad_account(ad_domain_info, username, password)
@@ -1062,11 +1110,12 @@ def check_credentials_ad(nameserver, address, username, password):
 	except connectionFailed:
 		# checked: failed!
 		return False
-	except notDomainAdminInAD: # check_ad_account()
+	except notDomainAdminInAD:  # check_ad_account()
 		# checked: Not a Domain Administrator!
 		raise UMC_Error(_("The given user is not member of the Domain Admins group in Active Directory. This is a requirement for the Active Directory domain join."))
 	else:
 		return ad_domain_info['Domain']
+
 
 def check_credentials_nonmaster(dns, nameserver, address, username, password):
 	if dns:
@@ -1079,4 +1128,3 @@ def check_credentials_nonmaster(dns, nameserver, address, username, password):
 	with _temporary_password_file(password) as password_file:
 		return_code = subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo', 'WORKS'])
 		return return_code == 0 and domain
-

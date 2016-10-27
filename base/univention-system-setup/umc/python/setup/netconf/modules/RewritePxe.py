@@ -5,6 +5,7 @@ import re
 
 
 class Mapping(object):
+
 	def __init__(self, ipv4_changes):
 		self.mapping = dict((
 			(str(old_ip.ip), str(new_ip.ip))
@@ -30,6 +31,7 @@ class Mapping(object):
 
 
 class PhaseRewritePxe(AddressMap):
+
 	"""
 	Rewrite IP configuration of PXE boot.
 	"""

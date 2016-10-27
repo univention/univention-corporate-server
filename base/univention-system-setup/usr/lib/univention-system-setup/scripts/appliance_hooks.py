@@ -49,4 +49,3 @@ def appliance_hooks():
 
 if __name__ == "__main__":
 	appliance_hooks()
-

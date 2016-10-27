@@ -49,12 +49,13 @@ _ = _translation.translate
 
 RE_INTERFACE = re.compile(r'^interfaces/(?!(?:primary|restart/auto|handler)$)([^/]+?)(_[0-9]+)?/')
 RE_IPV6_ID = re.compile(r'^[a-zA-Z0-9]+\Z')
-#VALID_NAME_RE = re.compile(r'^(?![.]{1,2})[^/ \t\n\r\f]{1,15}\Z')
+# VALID_NAME_RE = re.compile(r'^(?![.]{1,2})[^/ \t\n\r\f]{1,15}\Z')
 
 PHYSICAL_INTERFACES = [dev['name'] for dev in detect_interfaces()]
 
 
 class DeviceError(ValueError):
+
 	def __init__(self, msg, device=None):
 		if device is not None:
 			msg = '%s: %s' % (device, msg)
@@ -63,6 +64,7 @@ class DeviceError(ValueError):
 
 
 class IP4Set(set):
+
 	def add(self, ip):
 		set.add(self, ipaddr.IPv4Address(ip))
 
@@ -71,6 +73,7 @@ class IP4Set(set):
 
 
 class IP6Set(set):
+
 	def add(self, ip):
 		set.add(self, ipaddr.IPv6Address(ip))
 
@@ -79,6 +82,7 @@ class IP6Set(set):
 
 
 class Interfaces(dict):
+
 	"""All network interfaces"""
 
 	def __init__(self, *args, **kwargs):
@@ -185,6 +189,7 @@ class Interfaces(dict):
 
 
 class Device(object):
+
 	"""Abstract base class for network interfaces"""
 
 	def __new__(cls, name, interfaces):
@@ -480,8 +485,7 @@ class Device(object):
 
 		vals['interfaces/%s/ipv6/acceptRA' % (name)] = str(bool(self.ip6dynamic)).lower()
 
-		options = self.get_options()
-		options.sort()
+		options = sorted(self.get_options())
 		for i, option in enumerate(options):
 			vals['interfaces/%s/options/%d' % (name, i)] = option
 
@@ -532,7 +536,9 @@ class Device(object):
 
 
 class _RemovedDevice(Device):
+
 	"""Internal class representing that a device have to be removed from UCR"""
+
 	def to_ucr(self):
 		to_remove = {}
 		for key in ucr:
@@ -549,11 +555,13 @@ class _RemovedDevice(Device):
 
 
 class Ethernet(Device):
+
 	"""A physical network interface"""
 	pass
 
 
 class VLAN(Device):
+
 	"""A virtual network interface (VLAN)"""
 
 	@property
@@ -592,7 +600,7 @@ class VLAN(Device):
 
 	def validate_name(self):
 		super(VLAN, self).validate_name()
-		if not '.' in self.name:
+		if '.' not in self.name:
 			raise DeviceError(_('Invalid device name: %r') % (self.name,))
 		if not (1 <= self.vlan_id <= 4095):
 			raise DeviceError(_('Invalid VLAN ID. Must be between 1 and 4095.'), self.name)
@@ -630,6 +638,7 @@ class VLAN(Device):
 
 
 class Bond(Device):
+
 	"""A network bonding interface"""
 
 	MODES = {
@@ -680,7 +689,7 @@ class Bond(Device):
 				raise DeviceError(_('Missing device: %r') % (name), self.name)
 
 			# all interfaces must be physical
-			if not isinstance(self.interfaces[name], Ethernet) or not name in PHYSICAL_INTERFACES:
+			if not isinstance(self.interfaces[name], Ethernet) or name not in PHYSICAL_INTERFACES:
 				raise DeviceError(_('Devices used in a bonding must be physical: %s is not') % (name), self.name)
 
 			# all used interfaces in a bonding must be unconfigured
@@ -741,7 +750,7 @@ class Bond(Device):
 		options += [
 				'bond-slaves %s' % (' '.join(self.bond_slaves),),
 				'bond-mode %s' % (self.bond_mode,),
-				]
+		]
 		if int(self.bond_mode) == 1 and self.bond_primary:
 			options.append('bond-primary %s' % (' '.join(self.bond_primary),))
 		if self.bond_miimon is not None:
@@ -751,6 +760,7 @@ class Bond(Device):
 
 
 class Bridge(Device):
+
 	"""A network bridge interface"""
 
 	def clear(self):
@@ -816,7 +826,7 @@ class Bridge(Device):
 		options += [
 				'bridge_ports %s' % (' '.join(self.bridge_ports) or 'none',),
 				'bridge_fd %d' % (self.bridge_fd,),
-				]
+		]
 
 		return options
 

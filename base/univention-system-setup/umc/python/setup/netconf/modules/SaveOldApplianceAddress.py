@@ -2,6 +2,7 @@ from univention.management.console.modules.setup.netconf.conditions import Addre
 
 
 class PhaseSaveOldApplianceAddress(AddressChange):
+
 	"""
 	Save old IP address in dummy interface to not dis-connect the UMC connection.
 	"""

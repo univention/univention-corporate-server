@@ -6,6 +6,7 @@ from ldap import LDAPError
 
 
 class PhaseLdapReferences(AddressMap, LdapChange):
+
 	"""
 	Rewrite IP configuration in LDAP object.
 	"""
@@ -34,8 +35,8 @@ class PhaseLdapReferences(AddressMap, LdapChange):
 		try:
 			self.open_ldap()
 			for module, udm_property in self._iterate_objects():
-				#ldap_attribute = module.mapping.mapName(udm_property)
-				#force = not module.property_descriptions[udm_property].multivalue
+				# ldap_attribute = module.mapping.mapName(udm_property)
+				# force = not module.property_descriptions[udm_property].multivalue
 				objects = module.lookup(None, self.ldap, None)
 				for obj in objects:
 					self._rewrite_object(obj, udm_property)

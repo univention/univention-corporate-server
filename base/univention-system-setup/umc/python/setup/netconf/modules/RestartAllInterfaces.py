@@ -2,6 +2,7 @@ from univention.management.console.modules.setup.netconf import Phase
 
 
 class PhaseRestartAllInterfaces(Phase):
+
 	"""
 	Stop and restart all interfaces.
 	"""
