@@ -41,14 +41,14 @@ import univention.management.console as umc
 
 _ = umc.Translation('univention-management-console-module-firewall').translate
 
-REGEX_RULE = re.compile(r'^security/packetfilter' # prefix
-                        r'(/package/(?P<package>[^/]+))?/' # package rule
-                        r'(?P<protocol>tcp|udp)/' # protocol
-                        r'(?P<port>[^/]+)/' # port
-                        r'(?P<address>[^/]+)' # address
-                        r'(/(?P<property>[^/]+))?') # property (e.g. 'en')
-REGEX_RULE_PORT = re.compile(r'^(?P<start>[0-9]+)' # start port
-                             r'((:|-)(?P<end>[0-9]+))?$') # end port
+REGEX_RULE = re.compile(r'^security/packetfilter'  # prefix
+                        r'(/package/(?P<package>[^/]+))?/'  # package rule
+                        r'(?P<protocol>tcp|udp)/'  # protocol
+                        r'(?P<port>[^/]+)/'  # port
+                        r'(?P<address>[^/]+)'  # address
+                        r'(/(?P<property>[^/]+))?')  # property (e.g. 'en')
+REGEX_RULE_PORT = re.compile(r'^(?P<start>[0-9]+)'  # start port
+                             r'((:|-)(?P<end>[0-9]+))?$')  # end port
 REGEX_RULE_ADDRESS = re.compile(r'^(all|ipv4|ipv6)$')
 
 
@@ -57,6 +57,7 @@ class Error(Exception):
 
 
 class Firewall(object):
+
 	def __init__(self):
 		self._default_policy = None
 		self._disabled = None
@@ -117,8 +118,8 @@ class Firewall(object):
 					rule.action = value
 				else:
 					rule.description[rule_props[u'property']] = value
-			except Error as err:
-				pass # TODO
+			except Error:
+				pass  # TODO
 			else:
 				self._rules = rules
 
@@ -203,6 +204,7 @@ class Firewall(object):
 
 
 class Rule(object):
+
 	def __init__(self, protocol, port, address, package=None, action=None):
 		self._protocol = self._validate_protocol(protocol.lower())
 		self._port = self._validate_port(*port)
@@ -293,6 +295,7 @@ class Rule(object):
 
 
 class DictDiffer(object):
+
 	def __init__(self, current_dict, past_dict):
 		self._current_dict = current_dict
 		self._past_dict = past_dict
