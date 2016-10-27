@@ -75,7 +75,7 @@ class UpdaterLock(object):
                 lock_fd = os.open(
                     self.__UPDATER_LOCK_FILE_NAME,
                     os.O_WRONLY | os.O_CREAT | os.O_EXCL,
-                    0644)
+                    0o644)
                 bytes_written = os.write(lock_fd, my_pid)
                 assert bytes_written == len(my_pid)
                 os.close(lock_fd)

@@ -113,7 +113,7 @@ def migrate_repository(options):
         shutil.rmtree(boot_dest)
     try:
         shutil.copytree(os.path.join(REPO_BASE_OLD, 'boot'), boot_dest)
-    except shutil.Error, e:
+    except shutil.Error as e:
         print >> options.teefile, "failed (%s)." % str(e)
         sys.exit(1)
     else:
@@ -126,12 +126,12 @@ def migrate_repository(options):
         shutil.rmtree(profiles_dest)
     try:
         shutil.copytree(os.path.join(REPO_BASE_OLD, 'profiles'), profiles_dest)
-    except shutil.Error, e:
+    except shutil.Error as e:
         print >> options.teefile, "failed (%s)." % str(e)
         sys.exit(1)
     else:
         # everyone should be able to read the profiles
-        os.chmod(profiles_dest, 0555)
+        os.chmod(profiles_dest, 0o555)
         print >> options.teefile, 'done.'
 
     # copy repository in subdirectory 'packages'
@@ -142,7 +142,7 @@ def migrate_repository(options):
     # create symbolic link univention-repository
     try:
         os.symlink('.', os.path.join(REPO_BASE_NEW, 'mirror', 'univention-repository'))
-    except OSError, e:
+    except OSError as e:
         if e.errno != errno.EEXIST:
             raise
 
@@ -153,7 +153,7 @@ def migrate_repository(options):
         shutil.rmtree(dists_dest)
     try:
         shutil.copytree(os.path.join(REPO_BASE_OLD, 'packages', 'dists'), dists_dest)
-    except shutil.Error, e:
+    except shutil.Error as e:
         print >> options.teefile, "failed (%s)." % str(e)
         sys.exit(1)
     else:

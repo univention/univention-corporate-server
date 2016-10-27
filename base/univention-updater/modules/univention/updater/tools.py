@@ -142,7 +142,7 @@ class UCSRepo(UCS_Version):
         while format:
             try:
                 return format % self
-            except KeyError, (k,):
+            except KeyError as (k,):
                 # strip missing part
                 i = format.index('%%(%s)' % k)
                 format = format[:i]
@@ -172,7 +172,7 @@ class UCSRepo(UCS_Version):
         def __str__(self):
             try:
                 return self.format % self.values
-            except KeyError, e:
+            except KeyError as e:
                 for (k, v) in self.values.items():
                     if self == v:
                         raise KeyError(k)
@@ -454,7 +454,7 @@ class UCSHttpServer(object):
         # URL:110  | HTTP:404  URL:111  URL:110  GAI:-2  HTTP:407 | Port filtered
         # GAI:-2   | HTTP:502/4URL:111  URL:110  GAI:-2  HTTP:407 | Host name unknown
         # HTTP:401 | HTTP:401  URL:111  URL:110  GAI:-2  HTTP:407 | Authorization required
-        except urllib2.HTTPError, res:
+        except urllib2.HTTPError as res:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), res, exc_info=True)
             if res.code == httplib.UNAUTHORIZED:  # 401
                 raise ConfigurationError(uri, 'credentials not accepted')
@@ -464,7 +464,7 @@ class UCSHttpServer(object):
                 self.failed_hosts.add(req.get_host())
                 raise ConfigurationError(uri, 'host is unresolvable')
             raise DownloadError(uri, res.code)
-        except urllib2.URLError, e:
+        except urllib2.URLError as e:
             self.log.debug("Failed %s %s: %s", req.get_method(), req.get_full_url(), e, exc_info=True)
             if isinstance(e.reason, basestring):
                 reason = e.reason
@@ -651,7 +651,7 @@ class UniventionUpdater:
                     assert self.server.access(None, '/univention-repository/')
                     self.server += '/univention-repository/'
                     self.log.info('Using detected prefix /univention-repository/')
-                except DownloadError, e:
+                except DownloadError as e:
                     self.log.info('No prefix /univention-repository/ detected, using /')
                     ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
                 return  # already validated or implicit /
@@ -659,11 +659,11 @@ class UniventionUpdater:
             try:
                 assert self.server.access(None, '')
                 self.log.info('Using configured prefix %s', self.repourl.path)
-            except DownloadError, e:
+            except DownloadError as e:
                 self.log.error('Failed configured prefix %s', self.repourl.path, exc_info=True)
                 uri, code = e
                 raise ConfigurationError(uri, 'non-existing prefix "%s": %s' % (self.repourl.path, uri))
-        except ConfigurationError, e:
+        except ConfigurationError as e:
             if self.check_access:
                 self.log.fatal('Failed server detection: %s', e, exc_info=True)
                 raise
@@ -679,11 +679,11 @@ class UniventionUpdater:
         def versions(major, minor, patchlevel):
             """Generate next valid version numbers as hash."""
             if patchlevel < 99:
-                yield {'major': major,   'minor': minor,   'patchlevel': patchlevel + 1}
+                yield {'major': major, 'minor': minor, 'patchlevel': patchlevel + 1}
             if minor < 99:
-                yield {'major': major,   'minor': minor + 1, 'patchlevel': 0}
+                yield {'major': major, 'minor': minor + 1, 'patchlevel': 0}
             if major < 99:
-                yield {'major': major + 1, 'minor': 0,       'patchlevel': 0}
+                yield {'major': major + 1, 'minor': 0, 'patchlevel': 0}
 
         for ver in versions(version.major, version.minor, version.patchlevel):
             repo = UCSRepoPool(prefix=self.server, part='maintained', **ver)
@@ -708,7 +708,7 @@ class UniventionUpdater:
                 else:
                     self.log.info('Going for version %s', ver)
                     return UCS_Version.FULLFORMAT % ver
-            except DownloadError, e:
+            except DownloadError as e:
                 ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
         return None
 
@@ -1136,10 +1136,10 @@ class UniventionUpdater:
                                         elif size == 0 and server.proxy_handler.proxies:
                                             uri = server.join(ver.path())
                                             raise ProxyError(uri, "download blocked by proxy?")
-                                    except DownloadError, e:
+                                    except DownloadError as e:
                                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
                                 del ver.arch
-                            except DownloadError, e:
+                            except DownloadError as e:
                                 ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
                         del ver.part
 
@@ -1152,7 +1152,7 @@ class UniventionUpdater:
                     ver.patchlevel = ver.patchlevel_reset
                     if ver > end:
                         break
-            except DownloadError, e:
+            except DownloadError as e:
                 ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
             if findFirst and ver.minor < 99:
                 ver.minor += 1
@@ -1293,7 +1293,7 @@ class UniventionUpdater:
                         code, size, content = server.access(ver, "Sources.gz")
                         if size >= MIN_GZIP:
                             result.append(ver.deb(server, "deb-src"))
-                    except DownloadError, e:
+                    except DownloadError as e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
         return '\n'.join(result)
@@ -1343,7 +1343,7 @@ class UniventionUpdater:
                         code, size, content = server.access(ver, "Sources.gz")
                         if size >= MIN_GZIP:
                             result.append(ver.deb(server, "deb-src"))
-                    except DownloadError, e:
+                    except DownloadError as e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
         return '\n'.join(result)
@@ -1400,7 +1400,7 @@ class UniventionUpdater:
                         code, size, content = server.access(ver, "Sources.gz")
                         if size >= MIN_GZIP:
                             result.append(ver.deb(server, "deb-src"))
-                    except DownloadError, e:
+                    except DownloadError as e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
         return '\n'.join(result)
@@ -1479,7 +1479,7 @@ class UniventionUpdater:
             if prefix and prefix.lower() == 'none':
                 try:
                     assert server.access(None, '')
-                except DownloadError, e:
+                except DownloadError as e:
                     uri, code = e
                     raise ConfigurationError(uri, 'absent prefix forced - component %s not found: %s' % (component, uri))
             else:
@@ -1495,7 +1495,7 @@ class UniventionUpdater:
                     try:
                         assert testserver.access(None, '')
                         return testserver
-                    except DownloadError, e:
+                    except DownloadError as e:
                         ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
                         uri, code = e
                 raise ConfigurationError(uri, 'non-existing component prefix: %s' % (uri,))
@@ -1573,7 +1573,7 @@ class UniventionUpdater:
                             code, size, content = server.access(ver, "Sources.gz")
                             if size >= MIN_GZIP:
                                 result.append(ver.deb(server, "deb-src"))
-                        except DownloadError, e:
+                        except DownloadError as e:
                             ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
         return result
@@ -1630,7 +1630,7 @@ class UniventionUpdater:
                     uri = server.join('%s/component/%s/' % (version, component))
                     raise ConfigurationError(uri, 'component not found')
                 result += repos
-            except ConfigurationError, e:
+            except ConfigurationError as e:
                 # just log configuration errors and continue
                 result.append('# %s: %s' % (e, component))
         return '\n'.join(result)
@@ -1692,7 +1692,7 @@ class UniventionUpdater:
             fd, name = tempfile.mkstemp(suffix='.sh', prefix=phase, dir=tempdir)
             try:
                 size = os.write(fd, script)
-                os.chmod(name, 0744)
+                os.chmod(name, 0o744)
                 if size == len(script):
                     ud.debug(ud.NETWORK, ud.INFO, "%s saved to %s" % (uri, name))
                     if struct.part.endswith('/component'):
@@ -1779,7 +1779,7 @@ class UniventionUpdater:
                             raise VerificationError(path, "Invalid signature: %s" % error)
                         yield server, struct, None, path_gpg, signature
                     yield server, struct, phase, path, script
-                except DownloadError, e:
+                except DownloadError as e:
                     ud.debug(ud.NETWORK, ud.ALL, "%s" % e)
 
 

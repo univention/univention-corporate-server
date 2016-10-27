@@ -93,7 +93,7 @@ def update_cdrom(options):
     """ Copy repository from local DVD or ISO image """
     # try to mount update ISO image or DVD
     if options.iso_file:
-        ret = subprocess.call(['mount', '-o', 'loop',  options.iso_file, options.mount_point], stdout=options.logfile, stderr=options.logfile)
+        ret = subprocess.call(['mount', '-o', 'loop', options.iso_file, options.mount_point], stdout=options.logfile, stderr=options.logfile)
     elif options.device:
         ret = subprocess.call(['mount', options.device, options.mount_point], stdout=options.logfile, stderr=options.logfile)
     else:
@@ -120,7 +120,7 @@ def update_cdrom(options):
                 # copy repository
                 try:
                     copy_repository(options, directory, entry)
-                except (IOError, os.error), why:
+                except (IOError, os.error) as why:
                     print >> options.teefile, '\nError: while copying %s: %s' % (entry, why)
                     sys.exit(1)
     finally:
@@ -148,7 +148,7 @@ def update_net(options):
     makedirs(destdir)
     try:
         os.symlink('.', os.path.join(destdir, 'univention-repository'))
-    except OSError, e:
+    except OSError as e:
         if e.errno != errno.EEXIST:
             raise
 
@@ -282,7 +282,7 @@ def main():
 
             try:
                 update_net(options)
-            except VerificationError, ex:
+            except VerificationError as ex:
                 print >> options.teefile, "Error: %s" % (ex,)
                 print >> options.teefile, '\n'.join(wrap(dedent(
                     """\
@@ -291,7 +291,7 @@ def main():
                     """
                 )))
                 sys.exit(1)
-            except UpdaterException, e:
+            except UpdaterException as e:
                 print >>options.teefile, "Error: %s" % e
                 sys.exit(1)
         elif command == 'cdrom':

@@ -85,7 +85,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_PATCH99(self):
         """Test next patch version after 99."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR,     MAJOR, MINOR,   100): '',
+            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR, MAJOR, MINOR, 100): '',
             '%d.%d/maintained/%d.%d-%d/' % (MAJOR, MINOR + 1, MAJOR, MINOR + 1, 0): '',
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, 99)))
@@ -102,8 +102,8 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MINOR99(self):
         """Test next minor version after 99."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR,     100, MAJOR,   100, 0): '',
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR + 1,   0, MAJOR + 1, 0, 0): '',
+            '%d.%d/maintained/%d.%d-%d/' % (MAJOR, 100, MAJOR, 100, 0): '',
+            '%d.%d/maintained/%d.%d-%d/' % (MAJOR + 1, 0, MAJOR + 1, 0, 0): '',
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, 99, 0)))
         self.assertEqual('%d.%d-%d' % (MAJOR + 1, 0, 0), ver)
@@ -111,7 +111,7 @@ class TestUniventionUpdater(unittest.TestCase):
     def test_get_next_version_MAJOR(self):
         """Test next major version."""
         self._uri({
-            '%d.%d/maintained/%d.%d-%d/' % (MAJOR + 1,   0, MAJOR + 1, 0, 0): '',
+            '%d.%d/maintained/%d.%d-%d/' % (MAJOR + 1, 0, MAJOR + 1, 0, 0): '',
         })
         ver = self.u.get_next_version(version=U.UCS_Version((MAJOR, MINOR, PATCH)))
         self.assertEqual('%d.%d-%d' % (MAJOR + 1, 0, 0), ver)
@@ -274,7 +274,7 @@ class TestUniventionUpdater(unittest.TestCase):
         tmp = self.u.get_all_available_errata_component_updates()
         self.assertEqual(dict([
             ('a', {'2.3': [1, 2], '2.4': [3]}),
-            ('b', {'3.0': [1],    '3.1': []}),
+            ('b', {'3.0': [1], '3.1': []}),
             ('c', {'%d.%d' % (MAJOR, MINOR): [1]}),
         ]), dict(tmp))
 
@@ -773,8 +773,8 @@ class TestUniventionUpdater(unittest.TestCase):
         self._uri({
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR,   'all'): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR,   ARCH): DATA,
+            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
+            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
         })
         r = self.u.get_component_repositories(component='a', versions=('%d.%d' % (MAJOR, MINOR),))
         self.assertEqual(set((
@@ -808,10 +808,10 @@ class TestUniventionUpdater(unittest.TestCase):
             'repository/online/component/a/%d.%d/erratalevel' % (MAJOR, MINOR + 1): '1',
         })
         self._uri({
-            '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR,   'all'): DATA,
-            '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR,   ARCH): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR,   'all'): DATA,
-            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR,   ARCH): DATA,
+            '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
+            '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
+            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, 'all'): DATA,
+            '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR, ARCH): DATA,
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR + 1, 'all'): DATA,
             '%d.%d/maintained/component/a/%s/Packages.gz' % (MAJOR, MINOR + 1, ARCH): DATA,
             '%d.%d/maintained/component/a-errata1/%s/Packages.gz' % (MAJOR, MINOR + 1, 'all'): DATA,
@@ -819,12 +819,12 @@ class TestUniventionUpdater(unittest.TestCase):
             '%d.%d/maintained/component/a-errata2/%s/Packages.gz' % (MAJOR, MINOR + 1, 'all'): DATA,
             '%d.%d/maintained/component/a-errata2/%s/Packages.gz' % (MAJOR, MINOR + 1, ARCH): DATA,
         })
-        v1 = U.UCS_Version((MAJOR, MINOR,   0))
+        v1 = U.UCS_Version((MAJOR, MINOR, 0))
         v2 = U.UCS_Version((MAJOR, MINOR + 1, 0))
         r = self.u.get_component_repositories(component='a', versions=(v1, v2))
         self.assertEqual(set((
-            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR,   'all'),
-            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR,   ARCH),
+            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, 'all'),
+            'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR, ARCH),
             'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR + 1, 'all'),
             'deb file:///mock/%d.%d/maintained/component/ a/%s/' % (MAJOR, MINOR + 1, ARCH),
             'deb file:///mock/%d.%d/maintained/component/ a-errata1/%s/' % (MAJOR, MINOR + 1, 'all'),
@@ -917,9 +917,9 @@ class TestUniventionUpdater(unittest.TestCase):
             preup_c = struct_c.path('preup.sh')
             postup_c = struct_c.path('postup.sh')
 
-            yield (server, struct_r, 'preup',  preup_r,  'r_pre')
+            yield (server, struct_r, 'preup', preup_r, 'r_pre')
             yield (server, struct_r, 'postup', postup_r, 'r_post')
-            yield (server, struct_c, 'preup',  preup_c,  'c_pre')
+            yield (server, struct_c, 'preup', preup_c, 'c_pre')
             yield (server, struct_c, 'postup', postup_c, 'c_post')
         tmp = NamedTemporaryFile()
 

@@ -63,7 +63,7 @@ if __name__ == '__main__':
     longopts = ['file=']
     try:
         opts, args = getopt.getopt(sys.argv[1:], '', longopts)
-    except getopt.error, msg:
+    except getopt.error as msg:
         print msg
         sys.exit(1)
 

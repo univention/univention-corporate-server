@@ -116,7 +116,7 @@ def copy_repository(options):
             shutil.rmtree(boot_dest)
         try:
             shutil.copytree(os.path.join(options.mount_point, 'boot'), boot_dest)
-        except shutil.Error, ex:
+        except shutil.Error as ex:
             print "failed (%s)." % (ex,)
         else:
             print 'done.'
@@ -129,11 +129,11 @@ def copy_repository(options):
                 shutil.rmtree(profiles_dest)
             try:
                 shutil.copytree(os.path.join(options.mount_point, 'profiles'), profiles_dest)
-            except shutil.Error, ex:
+            except shutil.Error as ex:
                 print "failed (%s)." % (ex,)
             else:
                 # everyone should be able to read the profiles
-                os.chmod(profiles_dest, 0555)
+                os.chmod(profiles_dest, 0o555)
                 print 'done.'
 
         copy_dists(options)
@@ -160,7 +160,7 @@ def copy_dists(options):
         for dists_src in (os.path.join(options.mount_point, 'packages', 'dists'), os.path.join(options.mount_point, 'dists')):
             if os.path.isdir(dists_src):
                 shutil.copytree(dists_src, dists_dest, symlinks=True)
-    except shutil.Error, ex:
+    except shutil.Error as ex:
         print "failed (%s)." % (ex,)
     else:
         print 'done.'
@@ -335,7 +335,7 @@ def main():
         # create symbolic link univention-repository
         try:
             os.symlink('.', os.path.join(_mirror_base, 'mirror', 'univention-repository'))
-        except OSError, ex:
+        except OSError as ex:
             if ex.errno != errno.EEXIST:
                 raise
 

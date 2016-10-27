@@ -50,7 +50,7 @@ except ImportError:
     import univention.debug2 as ud
 
 
-def makedirs(dirname, mode=0755):
+def makedirs(dirname, mode=0o755):
     try:
         os.makedirs(dirname, mode)
     except OSError as ex:
@@ -102,7 +102,7 @@ class UniventionMirror(UniventionUpdater):
         path = os.path.join(self.repository_path, 'mirror', 'univention-repository')
         try:
             os.symlink('.', path)
-        except OSError, ex:
+        except OSError as ex:
             if ex.errno != errno.EEXIST:
                 raise
 

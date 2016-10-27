@@ -125,7 +125,7 @@ class MockPopen(object):
                     content = fd_script.read(1024)
                 finally:
                     fd_script.close()
-            except IOError, ex:
+            except IOError as ex:
                 content = ex
             MockPopen.mock_commands.append(tuple(cmd) + (content,))
 

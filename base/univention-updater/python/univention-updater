@@ -287,7 +287,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, iso=None, updater=None
             nextversion = updater.release_update_available(errorsto='exception')
         except RequiredComponentError:
             raise
-        except ConfigurationError, ex:
+        except ConfigurationError as ex:
             raise UpdateError('The configured repository is unavailable: %s' % (ex,), errorsource='SETTINGS')
 
     if nextversion in (None, 'none'):
@@ -364,7 +364,7 @@ def main():
     longopts = ['src=', 'device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check', 'ignoressh', 'ignoreterm', 'ignore-releasenotes', 'silent', 'noninteractive', ]
     try:
         opts, args = getopt.getopt(sys.argv[2:], '', longopts)
-    except getopt.error, msg:
+    except getopt.error as msg:
         dprint(msg)
         fp_debug.close()
         sys.exit(2)
@@ -384,7 +384,7 @@ def main():
             try:
                 updateto = UCS_Version(val)
                 updateto_args = ['--updateto', val]
-            except ValueError, e:
+            except ValueError as e:
                 dprint("%s" % e)
                 sys.exit(2)
         elif opt == '--reboot':
@@ -398,7 +398,7 @@ def main():
                 if nextversion:
                     dprint('Next version is %s' % nextversion)
                     sys.exit(1)
-            except UpdateError, msg:
+            except UpdateError as msg:
                 dprint("Error: %s" % msg)
                 print >>sys.stderr, 'Error: Please check "%s" for details.' % LOGNAME
                 # Errors are handles as "update currently no available"
@@ -592,7 +592,7 @@ if __name__ == '__main__':
             try:
                 with UpdaterLock():
                     main()
-            except VerificationError, ex:
+            except VerificationError as ex:
                 msg = '\n'.join([
                     "Update aborted due to verification error:",
                     "%s" % (ex,),
@@ -603,13 +603,13 @@ if __name__ == '__main__':
                     """
                 )))
                 raise UpdateError(msg, errorsource='SETTINGS')
-            except ConfigurationError, e:
+            except ConfigurationError as e:
                 msg = 'Update aborted due to configuration error: %s' % e
                 raise UpdateError(msg, errorsource='SETTINGS')
-            except RequiredComponentError, ex:
+            except RequiredComponentError as ex:
                 update_status(status='DONE', errorsource='PREPARATION')
                 dprint("%s" % ex)
-            except PreconditionError, (phase, order, component, script):
+            except PreconditionError as (phase, order, component, script):
                 if phase == 'preup':
                     phase = 'pre-update'
                     errorsource = 'PREUP'
@@ -628,7 +628,7 @@ if __name__ == '__main__':
 
                 msg = 'Update aborted by %s script of %s' % (phase, order)
                 raise UpdateError(msg, errorsource=errorsource)
-        except UpdateError, msg:
+        except UpdateError as msg:
             if msg.errorsource:
                 update_status(status='FAILED', errorsource=msg.errorsource)
             else:
@@ -647,7 +647,7 @@ if __name__ == '__main__':
             # (update_ucr_updatestatus() calls indirectly univention-updater which calls update_ucr_updatestatus() .... )
             do_ucr_update = False
             sys.exit(1)
-        except UpToDateNoError, error:
+        except UpToDateNoError as error:
             update_status(status='DONE')
             if os.path.exists(failure):
                 os.unlink(failure)

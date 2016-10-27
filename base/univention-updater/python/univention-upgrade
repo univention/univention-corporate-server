@@ -431,11 +431,11 @@ def update_local_repository(options):
 def do_update(options):
     try:
         update_available = performUpdate(options, checkForUpdates=options.check, silent=False)
-    except ConfigurationError, e:
+    except ConfigurationError as e:
         update_status(status='FAILED', errorsource='SETTINGS')
         print >>sys.stderr, 'The connection to the repository server failed: %s. Please check the repository configuration and the network connection.' % e
         sys.exit(3)
-    except Exception, e:
+    except Exception as e:
         update_status(status='FAILED')
         print 'An error occurred - see "%s" for details' % (LOGFN,)
         print >>logfd, 'Traceback in univention-upgrade:'

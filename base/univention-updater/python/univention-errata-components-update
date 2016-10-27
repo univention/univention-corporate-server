@@ -143,7 +143,7 @@ if __name__ == '__main__':
     longopts = ['file=', 'silent', 'noupdate', 'check', 'no-repository-update', 'component=']
     try:
         opts, args = getopt.getopt(sys.argv[2:], '', longopts)
-    except getopt.error, msg:
+    except getopt.error as msg:
         usage(sys.stderr)
         fp_debug.close()
         sys.exit(1)
@@ -175,7 +175,7 @@ if __name__ == '__main__':
                 sys.exit(1)  # reversed: 1=update available
             else:
                 sys.exit(0)  # reversed: 0=no updates
-        except Exception, e:
+        except Exception as e:
             dprint(traceback.format_exc(), [fp_debug])
             dprint("Failure to query repository: %s" % e)
             sys.exit(0)  # no updates available because of error :-(
