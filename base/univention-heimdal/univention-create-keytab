@@ -93,4 +93,3 @@ for (kvno, enctype, principal, timestamp, keyblock) in keytab.list():
 		p1 = subprocess.Popen(['/usr/sbin/ktutil', '-k', keytab_filename, 'add', '-p', spn, '-V', str(kvno), '-e', enctype, '-w', keyblock_hex, '--hex'])
 		p1.wait()
 os.unlink(temp_keytab_filename)
-
