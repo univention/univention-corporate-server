@@ -723,7 +723,6 @@ uninstall_packages ()
 
 setup_pre_joined_environment ()
 {
-	ucr set appcenter/index/verify=no update/secure_apt=no
 	if app_appliance_AllowPreconfiguredSetup $1; then
 		cat >/var/cache/univention-system-setup/profile <<__EOF__
 hostname="master"
