@@ -115,7 +115,7 @@ check_subschema ()
 		fi
 	done
 @!@
-if baseConfig.is_true('ldap/schema/export'):
+if configRegistry.is_true('ldap/schema/export'):
 		print '\tcp $tmpfile /var/www/ldap-schema.txt'
 		print '\tchmod a+r /var/www/ldap-schema.txt'
 @!@
@@ -190,7 +190,7 @@ case "$1" in
 	fi
 	logger "/etc/init.d/slapd $1 (pid: $$, ppid:$(ps -p $PPID -o pid= -o comm=))"
 @!@
-if baseConfig['ldap/database/type'] == 'bdb':
+if configRegistry['ldap/database/type'] == 'bdb':
 	print '\t# check backend database'
 	print '\tbdbrecover'
 if configRegistry.get('ldap/replog', '').lower() in ('true', 'yes'):
@@ -232,7 +232,7 @@ if configRegistry.get('ldap/maxopenfiles'):
 	test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi
 
 @!@
-if baseConfig['ldap/server/type']=="master":
+if configRegistry['ldap/server/type']=="master":
 	print '\tlog_action_begin_msg "Checking Schema ID: "'
 	print '\tcheck_subschema 2>&1'
 	print '\tlog_action_end_msg 0'
