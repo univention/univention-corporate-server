@@ -37,7 +37,9 @@ __all__ = ['Output', 'filter_shell', 'filter_keys_only', 'filter_sort']
 
 
 class Output:
+
 	"""Output buffer for applying filter."""
+
 	def __init__(self):
 		self.text = []
 

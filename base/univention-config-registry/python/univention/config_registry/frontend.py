@@ -64,7 +64,7 @@ __all__ = [
 		'handler_version',
 		'handler_help',
 		'main',
-		]
+]
 
 REPLOG_FILE = '/var/log/univention/config-registry.replog'
 
@@ -73,7 +73,9 @@ _SHOW_EMPTY, _SHOW_DESCRIPTION, _SHOW_SCOPE, _SHOW_CATEGORIES = \
 
 
 class UnknownKeyException(Exception):
+
 	"""Query for unknown key: no info file nor set."""
+
 	def __init__(self, value):
 		Exception.__init__(self, value)
 
@@ -98,7 +100,7 @@ def replog(ucr, var, old_value, value=None):
 				ConfigRegistry.LDAP: '--ldap-policy ',
 				ConfigRegistry.FORCED: '--force ',
 				ConfigRegistry.SCHEDULE: '--schedule ',
-				}.get(ucr.scope, '')
+		}.get(ucr.scope, '')
 
 		if old_value is None:
 			old_value = "[Previously undefined]"
@@ -107,11 +109,11 @@ def replog(ucr, var, old_value, value=None):
 				method, scope_arg, varvalue, old_value)
 		try:
 			if not os.path.isfile(REPLOG_FILE):
-				os.close(os.open(REPLOG_FILE, os.O_CREAT, 0640))
+				os.close(os.open(REPLOG_FILE, os.O_CREAT, 0o640))
 			logfile = open(REPLOG_FILE, "a+")
 			logfile.write(log)
 			logfile.close()
-		except EnvironmentError, ex:
+		except EnvironmentError as ex:
 			print >> sys.stderr, ("E: exception occurred while writing to " +
 				"replication log: %s" % (ex,))
 			exception_occured()
@@ -253,7 +255,7 @@ def handler_register(args, opts=dict()):
 	# def_count a second time, which is not nice, but uncritical, since the
 	# diversion is (re-)done when >= 1.
 	handlers.register(args[0], ucr)
-	#handlers.commit((ucr, {}))
+	# handlers.commit((ucr, {}))
 
 
 def handler_unregister(args, opts=dict()):
@@ -294,7 +296,7 @@ def handler_search(args, opts=dict()):
 	else:
 		try:
 			regex = [re.compile(_) for _ in args]
-		except re.error, ex:
+		except re.error as ex:
 			print >> sys.stderr, 'E: invalid regular expression: %s' % (ex,)
 			sys.exit(1)
 
@@ -378,9 +380,9 @@ def print_variable_info_string(key, value, variable_info, scope=None,
 		value_string = '%s' % value
 
 	if scope in (None, 0) or \
-			scope > len(SCOPE) or \
-			not _SHOW_SCOPE & details or \
-			OPT_FILTERS['shell'][2]:  # Do not display scope in shell export
+		scope > len(SCOPE) or \
+		not _SHOW_SCOPE & details or \
+		OPT_FILTERS['shell'][2]:  # Do not display scope in shell export
 		key_value = '%s: %s' % (key, value_string)
 	else:
 		key_value = '%s (%s): %s' % (key, SCOPE[scope], value_string)
@@ -420,7 +422,7 @@ def handler_info(args, opts=dict()):
 			print_variable_info_string(arg, ucr.get(arg, None),
 					info.get_variable(arg),
 					details=_SHOW_EMPTY | _SHOW_DESCRIPTION | _SHOW_CATEGORIES)
-		except UnknownKeyException, ex:
+		except UnknownKeyException as ex:
 			print >> sys.stderr, ex
 
 
@@ -510,7 +512,7 @@ def missing_parameter(action):
 	"""Print missing parameter error."""
 	print >> sys.stderr, 'E: too few arguments for command [%s]' % (action,)
 	print >> sys.stderr, \
-			'try `univention-config-registry --help` for more information'
+		'try `univention-config-registry --help` for more information'
 	sys.exit(1)
 
 
@@ -527,7 +529,7 @@ HANDLERS = {
 	'search': (handler_search, 0),
 	'get': (handler_get, 1),
 	'info': (handler_info, 1),
-	}
+}
 
 # action options: each of these options perform an action
 OPT_ACTIONS = {
@@ -535,7 +537,7 @@ OPT_ACTIONS = {
 	'help': [handler_help, False, ('-h', '-?')],
 	'version': [handler_version, False, ('-v',)],
 	'debug': [lambda args: None, False, ()],
-	}
+}
 
 # filter options: these options define filter for the output
 OPT_FILTERS = {
@@ -543,7 +545,7 @@ OPT_FILTERS = {
 	'keys-only': [0, filter_keys_only, False, ('dump', 'search')],
 	'sort': [10, filter_sort, False, ('dump', 'search', 'info')],
 	'shell': [99, filter_shell, False, ('dump', 'search', 'shell', 'get')],
-	}
+}
 
 BOOL, STRING = range(2)
 
@@ -552,12 +554,12 @@ OPT_COMMANDS = {
 		'force': [BOOL, False],
 		'ldap-policy': [BOOL, False],
 		'schedule': [BOOL, False],
-		},
+	},
 	'unset': {
 		'force': [BOOL, False],
 		'ldap-policy': [BOOL, False],
 		'schedule': [BOOL, False],
-		},
+	},
 	'search': {
 		'key': [BOOL, False],
 		'value': [BOOL, False],
@@ -566,11 +568,11 @@ OPT_COMMANDS = {
 		'category': [STRING, None],
 		'non-empty': [BOOL, False],
 		'verbose': [BOOL, False],
-		},
+	},
 	'filter': {
 		'encode-utf8': [BOOL, False],
-		}
 	}
+}
 
 
 def main(args):
@@ -638,7 +640,7 @@ def main(args):
 		post_filter = False
 		for name, (_prio, func, state, actions) in OPT_FILTERS.items():
 			if state:
-				if not action in actions:
+				if action not in actions:
 					print >> sys.stderr, \
 							'E: invalid option --%s for command %s' % \
 							(name, action)
@@ -693,7 +695,7 @@ def main(args):
 				sys.stdout = old_stdout
 				text = capture.text
 				for _prio, (name, filter_func, state, actions) in \
-						sorted(OPT_FILTERS.items(), key=lambda (k, v): v[0]):
+					sorted(OPT_FILTERS.items(), key=lambda k_v: k_v[1][0]):
 					if state:
 						text = filter_func(args, text)
 				for line in text:

@@ -62,7 +62,7 @@ replace_umlaut.UMLAUTS = {  # pylint: disable-msg=W0612
 		u'Ü': 'Ue',
 		u'ü': 'ue',
 		u'ß': 'ss',
-		}
+}
 
 
 def key_shell_escape(line):
@@ -99,8 +99,8 @@ def validate_key(key, out=sys.stderr):
 		if not match:
 			return True
 		print >> out, \
-				'Please fix invalid char "%s" in config registry key "%s"' % \
-				(match.group(), key)
+			'Please fix invalid char "%s" in config registry key "%s"' % \
+			(match.group(), key)
 	return False
 INVALID_KEY_CHARS = re.compile('[][\r\n!"#$%&\'()+,;<=>?\\\\`{}§]')
 

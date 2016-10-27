@@ -35,7 +35,7 @@
 
 from backend import ConfigRegistry
 from ipaddr import IPv4Address, IPv4Network, IPv6Address, IPv6Network
-from sys import maxint
+from sys import maxsize
 import re
 
 __all__ = ['RE_IFACE', 'forgiving', 'cmp_alnum', 'Interfaces']
@@ -44,7 +44,7 @@ _SKIP = set((
 	'interfaces/handler',
 	'interfaces/primary',
 	'interfaces/restart/auto',
-	))
+))
 RE_IFACE = re.compile(r'''^
 		(?!(?:%s)$) # _SKIP
 		interfaces/ # prefix
@@ -62,11 +62,12 @@ def forgiving(translation=None):
 
 	def decorator(func):
 		"""Wrap function and translate exceptions."""
+
 		def inner(self, *args, **kwargs):
 			"""Run function and translate exceptions."""
 			try:
 				return func(self, *args, **kwargs)
-			except Exception, ex:
+			except Exception as ex:
 				best = None
 				for cls, _value in translation.items():
 					if isinstance(ex, cls):
@@ -91,14 +92,16 @@ def cmp_alnum(value):
 	value = str(value)
 	key = []
 	for num, text in cmp_alnum.RE.findall(value):  # pylint: disable-msg=E1101
-		key.append(int(num or maxint))
+		key.append(int(num or maxsize))
 		key.append(text)
 	return tuple(key)
 cmp_alnum.RE = re.compile(r'([0-9]+)|([^0-9]+)')  # pylint: disable-msg=W0612
 
 
 class _Iface(dict):
+
 	"""Single network interface."""
+
 	def __init__(self, *args, **kwargs):
 		dict.__init__(self, *args, **kwargs)
 		self.ipv6_names = set()
@@ -109,7 +112,7 @@ class _Iface(dict):
 		return self['name'].replace('_', ':')
 
 	@property
-	@forgiving({KeyError: maxint, ValueError: maxint})
+	@forgiving({KeyError: maxsize, ValueError: maxsize})
 	def order(self):
 		"""Return interface order."""
 		return int(self['order'])
@@ -166,11 +169,13 @@ class _Iface(dict):
 
 
 class VengefulConfigRegistry(ConfigRegistry):
+
 	"""Instance wrapper for Config Registry throwing exceptions.
 
 	<https://forge.univention.org/bugzilla/show_bug.cgi?id=28276>
 	<http://stackoverflow.com/questions/1443129/>
 	"""
+
 	def __init__(self, base_object):
 		self.__class__ = type(base_object.__class__.__name__,
 				(self.__class__, base_object.__class__),
@@ -198,6 +203,7 @@ class VengefulConfigRegistry(ConfigRegistry):
 
 
 class Interfaces(object):
+
 	"""Handle network interfaces configured by UCR."""
 
 	def __init__(self, ucr=None):
@@ -253,11 +259,11 @@ class Interfaces(object):
 		try:
 			primary = self.primary.index(iface.name)
 		except ValueError:
-			primary = maxint
+			primary = maxsize
 		return (primary,
 				cmp_alnum(iface.order),
 				cmp_alnum(iface.name),
-				)
+          )
 
 	def _cmp_name(self, iname):
 		"""Compare IPv6 sub-interfaces by name."""
@@ -267,14 +273,14 @@ class Interfaces(object):
 	def all_interfaces(self):
 		"""Yield IPv4 interfaces."""
 		for name_settings in sorted(self._all_interfaces.items(),
-				key=lambda (name, iface): self._cmp_order(iface)):
+				key=lambda name_iface: self._cmp_order(name_iface[1])):
 			yield name_settings
 
 	@property
 	def ipv4_interfaces(self):
 		"""Yield IPv4 interfaces."""
 		for name, iface in sorted(self._all_interfaces.items(),
-				key=lambda (_name, iface): self._cmp_order(iface)):
+				key=lambda _name_iface: self._cmp_order(_name_iface[1])):
 			if iface.ipv4_address() is not None:
 				yield (name, iface)
 
@@ -320,7 +326,9 @@ if __name__ == '__main__':
 	import unittest
 
 	class Test_Iface(unittest.TestCase):
+
 		"""Test implementation."""
+
 		def test_basic(self):
 			"""Test basic functions."""
 			i = _Iface({
@@ -337,7 +345,7 @@ if __name__ == '__main__':
 				'route/3': 'foo',
 				'route/2': 'host 192.168.0.240',
 				'route/1': 'net 192.168.0.0 netmask 255.255.255.128',
-				})
+			})
 			self.assertEqual('NAME', i.name)
 			self.assertEqual(42, i.order)
 			self.assertEqual('static', i.type)
@@ -355,7 +363,7 @@ if __name__ == '__main__':
 			i = _Iface({
 				'address': '2.3.4.5',
 				'ipv6/default/address': '1:2:3:4:5:6:7:8',
-				})
+			})
 			self.assertEqual(None, i.ipv4_address())
 			self.assertEqual(None, i.ipv6_address())
 
@@ -364,7 +372,7 @@ if __name__ == '__main__':
 			i = _Iface({
 				'netmask': '255.255.255.0',
 				'ipv6/default/prefix': '64',
-				})
+			})
 			self.assertEqual(None, i.ipv4_address())
 			self.assertEqual(None, i.ipv6_address())
 
@@ -375,7 +383,7 @@ if __name__ == '__main__':
 				'netmask': '42',
 				'ipv6/default/address': '1:2:3:4:5:6:7:8',
 				'ipv6/default/prefix': '4711',
-				})
+			})
 			self.assertEqual(False, i.ipv4_address())
 			self.assertEqual(False, i.ipv6_address())
 
@@ -387,7 +395,7 @@ if __name__ == '__main__':
 				'ipv6/default/prefix': '64',
 				'ipv6/other/address': '2:3:4:5:6:7:8:9',
 				'ipv6/other/prefix': '80',
-				})
+			})
 			self.assertEqual('NAME', i.name)
 			self.assertEqual(None, i.ipv4_address())
 			self.assertEqual(IPv6Network('1:2:3:4:5:6:7:8/64'),
@@ -398,11 +406,13 @@ if __name__ == '__main__':
 					i.ipv6_address('other'))
 
 	class TestInterfaces(unittest.TestCase):
+
 		"""Test implementation."""
+
 		def test_empty(self):
 			"""Test no interface."""
 			t = Interfaces(ucr={
-				})
+			})
 			self.assertEqual('ifplugd', t.handler)
 			self.assertEqual('eth0', t.primary)
 			self.assertEqual(None, t.ipv4_gateway)
@@ -424,7 +434,7 @@ if __name__ == '__main__':
 			t = Interfaces(ucr={
 				'interfaces/eth0/address': '1.2.3.4',
 				'interfaces/eth0/netmask': '255.255.255.0',
-				})
+			})
 			self.assertEqual(['eth0'],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
@@ -441,7 +451,7 @@ if __name__ == '__main__':
 			t = Interfaces(ucr={
 				'interfaces/eth0/address': '2.3.4.5',
 				'interfaces/eth0/ipv6/default/address': '1:2:3:4:5:6:7:8',
-				})
+			})
 			self.assertEqual([],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
@@ -458,7 +468,7 @@ if __name__ == '__main__':
 			t = Interfaces(ucr={
 				'interfaces/eth0/netmask': '255.255.255.0',
 				'interfaces/eth0/ipv6/default/prefix': '64',
-				})
+			})
 			self.assertEqual([],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
@@ -477,7 +487,7 @@ if __name__ == '__main__':
 				'interfaces/eth0/netmask': '255.255.255.0',
 				'interfaces/eth1/address': '2.3.4.5',
 				'interfaces/eth1/netmask': '255.255.255.0',
-				})
+			})
 			self.assertEqual(['eth0', 'eth1'],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
@@ -496,7 +506,7 @@ if __name__ == '__main__':
 				'interfaces/eth0/ipv6/default/prefix': '64',
 				'interfaces/eth1/ipv6/default/address': '2:3:4:5:6:7:8:9',
 				'interfaces/eth1/ipv6/default/prefix': '64',
-				})
+			})
 			self.assertEqual([],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual(['eth0', 'eth1'],
@@ -515,7 +525,7 @@ if __name__ == '__main__':
 				'interfaces/eth0/ipv6/default/prefix': '64',
 				'interfaces/eth0/address': '2.3.4.5',
 				'interfaces/eth0/netmask': '255.255.255.0',
-				})
+			})
 			self.assertEqual(['eth0'],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual(['eth0'],
@@ -534,7 +544,7 @@ if __name__ == '__main__':
 				'interfaces/eth0/netmask': '255.255.255.0',
 				'interfaces/eth1/ipv6/default/address': '1:2:3:4:5:6:7:8',
 				'interfaces/eth1/ipv6/default/prefix': '64',
-				})
+			})
 			self.assertEqual(['eth0'],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual(['eth1'],
@@ -556,7 +566,7 @@ if __name__ == '__main__':
 				'interfaces/eth2/order': '1',
 				'interfaces/eth2/address': '3.4.5.6',
 				'interfaces/eth2/netmask': '255.0.0.0',
-				})
+			})
 			self.assertEqual(['eth2', 'eth0', 'eth1'],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([],
@@ -578,7 +588,7 @@ if __name__ == '__main__':
 				'interfaces/eth2/order': '1',
 				'interfaces/eth2/ipv6/default/address': '3:4:5:6:7:8:9:a',
 				'interfaces/eth2/ipv6/default/prefix': '80',
-				})
+			})
 			self.assertEqual([],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual(['eth2', 'eth0', 'eth1'],
@@ -606,7 +616,7 @@ if __name__ == '__main__':
 				'interfaces/eth2/ipv6/default/address': '2:3:4:5:6:7:8:9',
 				'interfaces/eth2/ipv6/default/prefix': '72',
 				'interfaces/primary': 'eth2,eth1',
-				})
+			})
 			self.assertEqual([],
 					[s.name for _n, s in t.ipv4_interfaces])
 			self.assertEqual([
@@ -628,7 +638,7 @@ if __name__ == '__main__':
 			t = Interfaces(ucr={
 				'interfaces/br0/order': 'br0',
 				'interfaces/br1/order': '1',
-				})
+			})
 			self.assertEqual(['br1', 'br0'], [n for n, _s in t.all_interfaces])
 
 		def test_basis(self):
@@ -638,7 +648,7 @@ if __name__ == '__main__':
 				'ipv6/gateway': '1:2:3:4:5:6:7:8',
 				'interfaces/handler': 'manual',
 				'interfaces/primary': 'br0',
-				})
+			})
 			self.assertEqual('manual', t.handler)
 			self.assertEqual('br0', t.primary)
 			self.assertEqual(IPv4Address('1.2.3.4'), t.ipv4_gateway)
@@ -649,7 +659,7 @@ if __name__ == '__main__':
 			"""Test IPv6 link-local gateway."""
 			t = Interfaces(ucr={
 				'ipv6/gateway': 'fe80::1%eth0',
-				})
+			})
 			self.assertEqual(IPv6Address('fe80::1'), t.ipv6_gateway)
 			self.assertEqual('eth0', t.ipv6_gateway_zone_index)
 
@@ -661,6 +671,7 @@ if __name__ == '__main__':
 				self.fail('Failed to create Interfaces(None)')
 
 	class TestDecorator(unittest.TestCase):
+
 		"""Test forgiving decorator."""
 		@forgiving()
 		def value_through(self):
@@ -718,7 +729,9 @@ if __name__ == '__main__':
 			self.assertEqual(42, self.error_multi())
 
 	class TestSort(unittest.TestCase):
+
 		"""Rest alpha-numeric sorting."""
+
 		def test_all_num(self):
 			"""Test all plain numeric."""
 			data = [0, 1]

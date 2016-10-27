@@ -12,6 +12,7 @@ from univention.config_registry.backend import ConfigRegistry
 
 
 class DummyLock(object):
+
 	def __enter__(self):
 		pass
 
@@ -20,7 +21,9 @@ class DummyLock(object):
 
 
 class TestConfigRegistry(unittest.TestCase):
+
 	"""Unit test for univention.config_registry.backend.ConfigRegistry"""
+
 	def setUp(self):
 		"""Create object."""
 		self.work_dir = mkdtemp()

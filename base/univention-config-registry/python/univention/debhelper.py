@@ -33,16 +33,18 @@
 import os
 import subprocess
 
+
 def doIt(*argv):
 	"""
 	Execute argv and wait.
-	
+
 	>>> doIt('true')
 	0
 	"""
 	if os.environ.get('DH_VERBOSE', False):
 		print '\t%s' % ' '.join(argv)
 	return subprocess.call(argv)
+
 
 def binary_packages():
 	"""
@@ -58,10 +60,11 @@ def binary_packages():
 		for line in f:
 			if not line.startswith(_prefix):
 				continue
-			packages.append(line[len(_prefix) : -1])
+			packages.append(line[len(_prefix): -1])
 	finally:
 		f.close()
 	return packages
+
 
 def parseRfc822(f):
 	r"""

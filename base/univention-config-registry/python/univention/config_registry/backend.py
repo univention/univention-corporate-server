@@ -44,6 +44,7 @@ INVALID_VALUE_CHARS = '\r\n'
 
 
 class StrictModeException(Exception):
+
 	"""Attempt to store non-UTF-8 characters in strict UTF-8 mode."""
 	pass
 
@@ -52,7 +53,7 @@ def exception_occured(out=sys.stderr):
 	"""Print exception message and exit."""
 	print >> out, 'E: your request could not be fulfilled'
 	print >> out, \
-			'try `univention-config-registry --help` for more information'
+		'try `univention-config-registry --help` for more information'
 	sys.exit(1)
 
 
@@ -60,6 +61,7 @@ SCOPE = ['normal', 'ldap', 'schedule', 'forced', 'custom']
 
 
 class ConfigRegistry(dict):
+
 	"""
 	Merged persistent value store.
 	This is a merged view of several sub-registries.
@@ -71,7 +73,7 @@ class ConfigRegistry(dict):
 			LDAP: 'base-ldap.conf',
 			SCHEDULE: 'base-schedule.conf',
 			FORCED: 'base-forced.conf',
-			}
+	}
 
 	def __init__(self, filename=None, write_registry=NORMAL):
 		dict.__init__(self)
@@ -211,7 +213,7 @@ class ConfigRegistry(dict):
 				ConfigRegistry.LDAP,
 				ConfigRegistry.NORMAL,
 				ConfigRegistry.CUSTOM,
-				):
+		):
 			registry = self._registry[reg]
 			if not isinstance(registry, _ConfigRegistry):
 				continue
@@ -281,10 +283,12 @@ class ConfigRegistry(dict):
 
 
 class _ConfigRegistry(dict):
+
 	"""
 	Persistent value store.
 	This is a single value store using a text file.
 	"""
+
 	def __init__(self, filename=None):
 		dict.__init__(self)
 		if file:
@@ -339,7 +343,7 @@ class _ConfigRegistry(dict):
 	def __create_base_conf(self):
 		"""Create sub registry file."""
 		try:
-			reg_file = os.open(self.file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0644)
+			reg_file = os.open(self.file, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
 			os.close(reg_file)
 		except EnvironmentError as ex:
 			if ex.errno != errno.EEXIST:
@@ -357,7 +361,7 @@ class _ConfigRegistry(dict):
 				user = file_stat.st_uid
 				group = file_stat.st_gid
 			except:
-				mode = 00644
+				mode = 0o0644
 				user = 0
 				group = 0
 			# open temporary file for writing
@@ -388,7 +392,7 @@ class _ConfigRegistry(dict):
 					reg_file.write('# univention_ base.conf\n\n')
 					reg_file.write(self.__str__())
 					reg_file.close()
-		except EnvironmentError, ex:
+		except EnvironmentError as ex:
 			# suppress certain errors
 			if ex.errno != errno.EACCES:
 				raise
