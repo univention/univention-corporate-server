@@ -362,6 +362,8 @@ define([
 
 			this.on('filterDone', lang.hitch(this, '_updateGlobalCanExecute'));
 
+			this._grid.on('dgrid-refresh-complete', lang.hitch(this, '_cleanupWidgets'));
+
 			if (this.query) {
 				this.filter(this.query);
 			}
@@ -385,7 +387,7 @@ define([
 		_cleanupWidgets: function() {
 			this._widgetList = array.filter(this._widgetList, function(iwidget) {
 				if ((iwidget.isInstanceOf && !iwidget.isInstanceOf(Menu))
-						&& (!iwidget.domNode || !iwidget.domNode.parentNode)
+						&& (iwidget.id && !document.getElementById(iwidget.id))
 						&& !iwidget._destroyed
 						&& iwidget.destroy) {
 					iwidget.destroy();
