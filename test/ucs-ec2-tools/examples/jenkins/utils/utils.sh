@@ -296,6 +296,7 @@ install_apps_test_packages ()
 {
 	local app rv=0
 	ucr set repository/online/unmaintained=yes
+	apt-get update --yes
 	for app in "$@"
 	do
 		if [ -n "$(univention-app get $app DockerImage)" ]; then
