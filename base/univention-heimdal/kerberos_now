@@ -40,17 +40,18 @@ import univention.uldap
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 lo = univention.uldap.getAdminConnection()
-krbbase='ou=krb5,'+configRegistry['ldap/base']
-realm=configRegistry['kerberos/realm']
+krbbase = 'ou=krb5,' + configRegistry['ldap/base']
+realm = configRegistry['kerberos/realm']
+
 
 def nt_password_to_arcfour_hmac_md5(nt_password):
-	
+
 	# all arcfour-hmac-md5 keys begin this way
-	key='0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
-	
+	key = '0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
+
 	for i in range(0, 16):
-		o=nt_password[2*i:2*i+2]
-		key+=chr(int(o, 16))
+		o = nt_password[2 * i:2 * i + 2]
+		key += chr(int(o, 16))
 	return key
 
 for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(sambaNTPassword=*)(uid=*)(!(objectClass=univentionWindows)))', attr=['uid', 'sambaNTPassword', 'objectClass']):
@@ -60,14 +61,14 @@ for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(sambaNTPasswo
 			print 'Skipping user root '
 			continue
 
-		principal=attrs['uid'][0]+'@'+realm
-	
-		ocs=[]
-		ml=[]
-		if not 'krb5Principal' in attrs['objectClass']:
+		principal = attrs['uid'][0] + '@' + realm
+
+		ocs = []
+		ml = []
+		if 'krb5Principal' not in attrs['objectClass']:
 			ocs.append('krb5Principal')
 			ml.append(('krb5PrincipalName', None, principal))
-		if not 'krb5KDCEntry' in attrs['objectClass']:
+		if 'krb5KDCEntry' not in attrs['objectClass']:
 			ocs.append('krb5KDCEntry')
 			ml.extend([
 				('krb5MaxLife', None, '86400'),
@@ -76,14 +77,14 @@ for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(sambaNTPasswo
 				('krb5KeyVersionNumber', None, '1'),
 				('krb5Key', None, nt_password_to_arcfour_hmac_md5(attrs['sambaNTPassword'][0]))
 			])
-		
+
 		if not ocs:
 			continue
-		
+
 		print 'Adding Kerberos key for %s...' % repr(dn),
-	
+
 		ml.insert(0, ('objectClass', None, ocs))
-	
+
 		try:
 			lo.modify(dn, ml)
 		except ldap.ALREADY_EXISTS:
