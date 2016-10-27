@@ -374,7 +374,7 @@ class UDM_Module(object):
 			obj.open()
 			MODULE.info('Creating LDAP object')
 			if '$options$' in ldap_object:
-				obj.options = filter(lambda option: ldap_object['$options$'][option] == True, ldap_object['$options$'].keys())
+				obj.options = filter(lambda option: ldap_object['$options$'][option] is True, ldap_object['$options$'].keys())
 				del ldap_object['$options$']
 			if '$policies$' in ldap_object:
 				obj.policies = reduce(lambda x, y: x + y, ldap_object['$policies$'].values(), [])
@@ -432,7 +432,7 @@ class UDM_Module(object):
 		try:
 			obj.open()
 			if '$options$' in ldap_object:
-				obj.options = filter(lambda option: ldap_object['$options$'][option] == True, ldap_object['$options$'].keys())
+				obj.options = filter(lambda option: ldap_object['$options$'][option] is True, ldap_object['$options$'].keys())
 				MODULE.info('Setting new options to %s' % str(obj.options))
 				del ldap_object['$options$']
 			MODULE.info('Modifying LDAP object %s' % obj.dn)

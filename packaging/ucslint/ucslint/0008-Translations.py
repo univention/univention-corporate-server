@@ -77,13 +77,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			return r'(?:%s)' % ('|'.join(disjunct))
 
 		matched_string = '%s?%s' % (
-				_or('[Rr]', '[Uu]', '[Uu][Rr]'),
-				_or(
-					r"'''(?:[^'\\]|\\.|'[^']|''[^'])*?'''",
-					r'"""(?:[^"\\]|\\.|"[^"]|""[^"])*?"""',
-					r"'(?:[^'\\\n]|\\.)*?'",
-					r'"(?:[^"\\\n]|\\.)*?"',
-    )
+			_or('[Rr]', '[Uu]', '[Uu][Rr]'),
+			_or(
+				r"'''(?:[^'\\]|\\.|'[^']|''[^'])*?'''",
+				r'"""(?:[^"\\]|\\.|"[^"]|""[^"])*?"""',
+				r"'(?:[^'\\\n]|\\.)*?'",
+				r'"(?:[^"\\\n]|\\.)*?"',
+			)
 		)
 		non_string = r"""[^'"#\n]"""
 		context = _or(non_string, matched_string)

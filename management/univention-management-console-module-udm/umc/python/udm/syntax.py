@@ -151,7 +151,7 @@ __widgets.extend([
 	Widget(lambda syn, prop: 'umc/modules/udm/LinkList' if syn.viewonly else 'ComboBox', (udm_syntax.LDAP_Search, ), [], subclasses=False),
 	Widget('ComboBox', udm_syntax.select, []),
 	Widget('TextBox', (udm_syntax.ldapDnOrNone, udm_syntax.ldapDn), '', subclasses=False),
-	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] and len(syn.udm_modules) == 1 and syn.simple == False else 'umc/modules/udm/ComboBox',
+	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] and len(syn.udm_modules) == 1 and not syn.simple else 'umc/modules/udm/ComboBox',
 		udm_syntax.UDM_Objects, ''),
 	Widget('ComboBox', udm_syntax.UDM_Attribute, ''),
 	Widget(lambda syn, prop: 'umc/modules/udm/MultiObjectSelect' if prop['multivalue'] else 'ComboBox',
@@ -176,7 +176,7 @@ def choices(syntax, udm_property):
 	MODULE.info('Find choices for syntax %s' % (syntax,))
 	opts = None
 	if inspect.isclass(syntax) and issubclass(syntax, (udm_syntax.UDM_Objects, udm_syntax.UDM_Attribute)):
-		if issubclass(syntax, udm_syntax.UDM_Objects) and udm_property['multivalue'] and len(syntax.udm_modules) == 1 and syntax.simple == False:
+		if issubclass(syntax, udm_syntax.UDM_Objects) and udm_property['multivalue'] and len(syntax.udm_modules) == 1 and not syntax.simple:
 			opts = {'objectType': syntax.udm_modules[0]}
 		else:
 			opts = {

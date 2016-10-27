@@ -74,7 +74,7 @@ class TestLocalizedDictionary(unittest.TestCase):
 		self.obj['foo'] = 'bar'
 		self.assertEqual('bar', self.obj['foo'])
 
-	def test_normalize(self):
+	def test_setitem_getitem(self):
 		"""__setitem__() and __getitem__()."""
 		self.obj['foO'] = 'bar'
 		self.assertEqual('bar', self.obj['Foo'])

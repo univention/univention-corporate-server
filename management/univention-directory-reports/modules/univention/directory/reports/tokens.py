@@ -39,7 +39,7 @@ class Token(object):
 		self.data = data
 
 	def __nonzero__(self):
-		return self.name != None
+		return self.name is not None
 
 
 class TextToken(Token):

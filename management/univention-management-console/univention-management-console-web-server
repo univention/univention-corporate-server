@@ -1135,9 +1135,9 @@ class SAML(Ressource):
 		binding, message, relay_state = self._get_saml_message()
 
 		if message is None:
-#			user = self.get_user()
-#			if user and user.saml is not None and not user.timed_out():
-#				raise HTTPRedirect('/univention/auth/sso')
+			# user = self.get_user()
+			# if user and user.saml is not None and not user.timed_out():
+			# raise HTTPRedirect('/univention/auth/sso')
 			return self.do_single_sign_on()
 
 		acs = self._acs_callbacks.pop(relay_state, self.attribute_consuming_service)

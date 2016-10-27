@@ -691,7 +691,7 @@ class AD_Connection():
 			if "msDS-Behavior-Version" in obj:
 				try:
 					msds_behavior_version = int(obj["msDS-Behavior-Version"][0])
-				except ValueError as ex:
+				except ValueError:
 					log.error("Cannot parse msDS-Behavior-Version: %s" % (obj["msDS-Behavior-Version"][0],))
 				if msds_behavior_version > 4:
 					raise TakeoverError(_("The Active Directory domain has a function level of Windows Server 2012 or newer, Samba currently only supports up to Windows 2008R2: %s") % (msds_behavior_version))
@@ -946,7 +946,7 @@ class AD_Takeover():
 		RE_PARTITION = re.compile("^Partition\[(?P<partition_dn>[^\]]+)\] objects\[([^\]]+)\] linked_values\[([^\]]+)\]$")
 		domain_dn = self.AD.samdb.domain_dn()
 		part_started = ''
-		while p.poll() == None:
+		while p.poll() is None:
 			log_line = p.stdout.readline().rstrip()
 			if log_line:
 				log.debug(log_line)
@@ -1336,7 +1336,7 @@ class AD_Takeover():
 							domainpart = address[char_idx + 1:].lower()
 							# if not domainpart.endswith(".local"): ## We need to create all the domains. Alternatively set:
 							# ucr:directory/manager/web/modules/users/user/properties/mailAlternativeAddress/syntax=emailAddress
-							if not domainpart in maildomains:
+							if domainpart not in maildomains:
 								maildomains.append(domainpart)
 		for maildomain in maildomains:
 			returncode = run_and_output_to_log(["univention-directory-manager", "mail/domain", "create", "--ignore_exists", "--position", "cn=domain,cn=mail,%s" % self.ucr["ldap/base"], "--set", "name=%s" % maildomain], log.debug)
@@ -2068,7 +2068,7 @@ def run_and_output_to_log(cmd, log_function, print_commandline=True):
 	if print_commandline and log_function == log.debug:
 		log_function("Calling: %s" % ' '.join(cmd))
 	p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-	while p.poll() == None:
+	while p.poll() is None:
 		log_line = p.stdout.readline().rstrip()
 		if log_line:
 			log_function(log_line)
@@ -2384,12 +2384,12 @@ def operatingSystem_attribute(ucr, samdb):
 	                   attrs=["operatingSystem", "operatingSystemVersion"])
 	if msg:
 		obj = msg[0]
-		if not "operatingSystem" in obj:
+		if "operatingSystem" not in obj:
 			delta = ldb.Message()
 			delta.dn = obj.dn
 			delta["operatingSystem"] = ldb.MessageElement("Univention Corporate Server", ldb.FLAG_MOD_REPLACE, "operatingSystem")
 			samdb.modify(delta)
-		if not "operatingSystemVersion" in obj:
+		if "operatingSystemVersion" not in obj:
 			delta = ldb.Message()
 			delta.dn = obj.dn
 			delta["operatingSystemVersion"] = ldb.MessageElement("3.0", ldb.FLAG_MOD_REPLACE, "operatingSystemVersion")
@@ -2473,7 +2473,7 @@ def let_samba4_manage_etc_krb5_keytab(ucr, secretsdb):
 	                       attrs=["krb5Keytab"])
 	if msg:
 		obj = msg[0]
-		if not "krb5Keytab" in obj or not "/etc/krb5.keytab" in obj["krb5Keytab"]:
+		if "krb5Keytab" not in obj or "/etc/krb5.keytab" not in obj["krb5Keytab"]:
 			delta = ldb.Message()
 			delta.dn = obj.dn
 			delta["krb5Keytab"] = ldb.MessageElement("/etc/krb5.keytab", ldb.FLAG_MOD_ADD, "krb5Keytab")
@@ -2489,7 +2489,7 @@ def add_servicePrincipals(ucr, secretsdb, spn_list):
 		delta = ldb.Message()
 		delta.dn = obj.dn
 		for spn in spn_list:
-			if not "servicePrincipalName" in obj or not spn in obj["servicePrincipalName"]:
+			if "servicePrincipalName" not in obj or spn not in obj["servicePrincipalName"]:
 				delta[spn] = ldb.MessageElement(spn, ldb.FLAG_MOD_ADD, "servicePrincipalName")
 		secretsdb.modify(delta)
 

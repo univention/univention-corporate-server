@@ -55,7 +55,7 @@ class UniventionNagiosLDAP(object):
 
 	def checkFQDN(self, fqdn):
 		try:
-			ipaddr = socket.gethostbyname(fqdn)
+			socket.gethostbyname(fqdn)
 		except:
 			return False
 		return True
@@ -69,9 +69,9 @@ class UniventionNagiosLDAP(object):
 			fqdnlist = self.lo.getAttr(servicedn, 'univentionNagiosHostname')
 			for fqdn in fqdnlist:
 				if not self.checkFQDN(fqdn):
-					if not fqdn in self.failedFQDN:
+					if fqdn not in self.failedFQDN:
 						self.failedFQDN[fqdn] = []
-					if not servicedn in self.failedFQDN[fqdn]:
+					if servicedn not in self.failedFQDN[fqdn]:
 						self.failedFQDN[fqdn].append(servicedn)
 		print 'done'
 		print ''

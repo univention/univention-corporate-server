@@ -139,9 +139,9 @@ def removeConfig(name):
 
 def handler(dn, new, old):
 
-#	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN dn=%s' % str(dn))
-#	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN old=%s' % str(old))
-#	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN new=%s' % str(new))
+	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN dn=%s' % str(dn))
+	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN old=%s' % str(old))
+	# univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-CLIENT: IN new=%s' % str(new))
 
 	fqdn = listener.baseConfig['hostname'] + '.' + listener.baseConfig['domainname']
 

@@ -639,13 +639,14 @@ def verify_device_files(domain_info):
 	Verify block devices are connected to allowed buses.
 	"""
 	busses = (
-				Bus('ide', 'hd%s', default=True),
-				Bus('virtio', 'vd%s'),
-				Bus(
-					'fdc', 'fd%s',
-					default=True,
-					unsupported=(Disk.DEVICE_DISK, Disk.DEVICE_CDROM)
-    ),
+		Bus('ide', 'hd%s', default=True),
+		Bus('virtio', 'vd%s'),
+		Bus(
+			'fdc',
+			'fd%s',
+			default=True,
+			unsupported=(Disk.DEVICE_DISK, Disk.DEVICE_CDROM)
+		),
 	)
 
 	for bus in busses:

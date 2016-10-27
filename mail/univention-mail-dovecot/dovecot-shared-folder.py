@@ -140,9 +140,9 @@ def handler(dn, new, old):
 	#
 	if (new and not old) \
 		or ('univentionMailHomeServer' not in old) \
-		or ('univentionMailHomeServer' in new and 'univentionMailHomeServer' in old
-			and new['univentionMailHomeServer'][0].lower() != old['univentionMailHomeServer'][0].lower()
-			and new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname, domainname)]):
+		or ('univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and
+			new['univentionMailHomeServer'][0].lower() != old['univentionMailHomeServer'][0].lower() and
+			new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname, domainname)]):
 		dl.add_shared_folder(new)
 		return
 

@@ -169,7 +169,7 @@ class DebianControlEntry(dict):
 
 		# split lines into dictionary
 		for line in lines:
-			if not ':' in line:
+			if ':' not in line:
 				raise DebianControlParsingError(line)
 			key, val = line.split(': ', 1)
 			self[key] = val

@@ -458,7 +458,7 @@ if __name__ == '__main__':
     ucr.load()
 
     with UCSTestUDM() as udm:
-    # create user
+        # create user
         dnUser, _username = udm.create_user()
 
         # stop CLI daemon

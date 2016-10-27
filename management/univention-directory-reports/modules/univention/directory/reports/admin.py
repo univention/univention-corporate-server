@@ -142,7 +142,7 @@ class AdminConnection(object):
 				module = ua_modules.get(name)
 				ua_modules.init(self._access, self._position, module)
 				self._modules[name] = module
-		elif module == None:
+		elif module is None:
 			module = self.identify(dn)
 			if not module:
 				return None
@@ -290,7 +290,7 @@ def identify(dn):
 
 def connected():
 	global _admin
-	return _admin != None
+	return _admin is not None
 
 if __name__ == '__main__':
 	import doctest

@@ -1171,7 +1171,8 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 		parts.append(
 			E.part(
 				# Complex type defining the starting and ending byte count of a part.
-				E('byte-range',
+				E(
+					'byte-range',
 					# Offset of a part's first byte in the disk image.
 					start='%d' % (offset, ),
 					# Offset of a part's last byte in the disk image.
