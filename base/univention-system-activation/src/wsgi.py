@@ -7,6 +7,7 @@ import re
 from ldif import LDIFParser
 from univention.config_registry import ConfigRegistry
 
+
 class LicenseLDIF(LDIFParser):
 
 	def __init__(self, input, ucr):
@@ -30,6 +31,8 @@ ucr.load()
 LICENSE_UPLOAD_PATH = '/var/cache/univention-system-activation/license.ldif'
 
 reg_exp_app_key = re.compile(r'^appliance/apps/(?P<id>[^/]*)/(?P<key>.*)$')
+
+
 def get_installed_apps():
 	notify_apps = set()
 	apps = []
@@ -90,7 +93,7 @@ def application(environ, start_response):
 
 	# make sure the 'license' field exists in the request
 	formdata = cgi.FieldStorage(environ=environ, fp=environ['wsgi.input'])
-	if not 'license' in formdata:
+	if 'license' not in formdata:
 		# no license has been uploaded :(
 		return _finish('400 Bad Request', {
 			'success': False,
@@ -136,4 +139,3 @@ if __name__ == '__main__':
 	from wsgiref.simple_server import make_server
 	srv = make_server('localhost', 8398, application)
 	srv.serve_forever()
-
