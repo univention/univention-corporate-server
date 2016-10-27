@@ -32,17 +32,17 @@
 # <http://www.gnu.org/licenses/>.
 
 import locale
-from univention.management.console.modules import Base
+from univention.management.console.base import Base, UMC_Error
 from univention.management.console.modules.decorators import simple_response
 from univention.appcenter import get_action
 from univention.app_appliance import AppManager
 from univention.appcenter.ucr import ucr_instance
 from univention.lib.i18n import Translation
-import univention.management.console.modules as umcm
 
 _ = Translation('univention-app-appliance').translate
 
-class Instance(umcm.Base):
+
+class Instance(Base):
 
 	def init(self):
 		locale.setlocale(locale.LC_ALL, str(self.locale))
@@ -54,5 +54,5 @@ class Instance(umcm.Base):
 		application = ucr.get('umc/web/appliance/id', '')
 		app = AppManager.find(application)
 		if app is None:
-			raise umcm.UMC_CommandError(_('Could not find an application for %s') % (application,))
+			raise UMC_Error(_('Could not find an application for %s') % (application,))
 		return domain.to_dict([app])[0]
