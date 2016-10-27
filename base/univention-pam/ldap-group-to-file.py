@@ -42,7 +42,7 @@ import tempfile
 import subprocess
 
 
-def _get_members(lo, g, recursion_list, check_member = False):
+def _get_members(lo, g, recursion_list, check_member=False):
 	result = []
 	for m in g[1].get('uniqueMember', []):
 		if m.startswith('uid='):
@@ -56,7 +56,7 @@ def _get_members(lo, g, recursion_list, check_member = False):
 				except ldap.NO_SUCH_OBJECT:
 					continue
 			mrdn = ldap.explode_rdn(m)
-			mname = string.join( string.split(mrdn[0],'=')[1:], '=')
+			mname = string.join(string.split(mrdn[0], '=')[1:], '=')
 			result.append(mname)
 		elif m.startswith('cn='):
 			try:
@@ -81,8 +81,9 @@ def _get_members(lo, g, recursion_list, check_member = False):
 					# Recursion !!!
 					pass
 			else:
-				result.append(member[1].get('cn')[0]+'$')
+				result.append(member[1].get('cn')[0] + '$')
 	return result
+
 
 def _run_hooks(options):
 	HOOK_DIR = '/var/lib/ldap-group-to-file-hooks.d'
@@ -99,14 +100,14 @@ def _run_hooks(options):
 
 
 if __name__ == '__main__':
-	parser = optparse.OptionParser( )
+	parser = optparse.OptionParser()
 	parser.add_option("--file", dest="file", default='/var/lib/extrausers/group', action="store", help="write result to the given file, default is /var/lib/extrausers/group")
 	parser.add_option("--verbose", dest="verbose", default=False, action="store_true", help="verbose output")
 	parser.add_option("--check_member", dest="check_member", default=False, action="store_true", help="checks if the member exists")
 	(options, args) = parser.parse_args()
 
 	try:
-		lo = univention.uldap.getMachineConnection( ldap_master=False )
+		lo = univention.uldap.getMachineConnection(ldap_master=False)
 	except ldap.SERVER_DOWN:
 		print "Abort: Can't contact LDAP server."
 		sys.exit(1)
@@ -119,7 +120,6 @@ if __name__ == '__main__':
 	if len(groups) < 1:
 		print 'Abort: Did not found any LDAP group.'
 		sys.exit(1)
-	
 
 	# Write to a temporary file
 	(fdtemp, fdname) = tempfile.mkstemp()
@@ -127,13 +127,13 @@ if __name__ == '__main__':
 
 	for group in groups:
 		rdn = ldap.explode_rdn(group[0])
-		groupname = string.join( string.split(rdn[0],'=')[1:], '=')
-		members=_get_members(lo, group, [], options.check_member)
+		groupname = string.join(string.split(rdn[0], '=')[1:], '=')
+		members = _get_members(lo, group, [], options.check_member)
 		# The list(set(members)) call removes all duplicates from the group members
 		fd.write('%s:*:%s:%s\n' % (groupname, group[1].get('gidNumber', [''])[0], string.join(list(set(members)), ',')))
 	fd.close()
 
-	os.chmod(fdname, 0644)
+	os.chmod(fdname, 0o644)
 
 	# Move the file
 	shutil.move(fdname, options.file)
@@ -143,4 +143,3 @@ if __name__ == '__main__':
 	_run_hooks(options)
 
 	sys.exit(0)
-

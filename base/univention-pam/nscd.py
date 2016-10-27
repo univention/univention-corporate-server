@@ -31,18 +31,20 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-name='nscd_update'
-description='Invalidate the NSCD group cache whenever a group membership has been modified.'
-filter='(objectClass=univentionGroup)'
-attributes=['uniqueMember', 'cn']
+name = 'nscd_update'
+description = 'Invalidate the NSCD group cache whenever a group membership has been modified.'
+filter = '(objectClass=univentionGroup)'
+attributes = ['uniqueMember', 'cn']
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 from univention.config_registry import ConfigRegistry
 import univention.debug
 
+
 def handler(dn, new, old):
 	pass
+
 
 def postrun():
 	baseConfig = ConfigRegistry()
