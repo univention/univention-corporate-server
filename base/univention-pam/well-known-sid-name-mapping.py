@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 
 import os
 import cPickle
@@ -53,6 +53,7 @@ ucr = univention.config_registry.ConfigRegistry()
 ucr.load()
 modified_default_names = []
 
+
 def sidToName(sid):
 	rid = sid.split("-")[-1]
 	if univention.lib.s4.well_known_sids.get(sid):
@@ -61,13 +62,14 @@ def sidToName(sid):
 		return univention.lib.s4.well_known_domain_rids[rid]
 	return None
 
+
 def checkAndSet(new, old):
 
 	obj = new or old
 	if not obj:
 		return
 
-	## check either new or old is relevant here
+	# check either new or old is relevant here
 	well_known_sid = None
 	for candidate in (new, old):
 		if not candidate:
@@ -153,7 +155,7 @@ def no_relevant_change(new, old):
 			name_attr = 'uid'
 		else:
 			name_attr = 'cn'
-		
+
 		old_name = old.get(name_attr, [])
 		new_name = new.get(name_attr, [])
 		old_sid = old.get("sambaSID", [])
@@ -167,6 +169,7 @@ def no_relevant_change(new, old):
 
 		return (set(old_name) == set(new_name)) and (set(old_sid) == set(new_sid))
 
+
 def handler(dn, new, old, command):
 	global modified_default_names
 
@@ -178,7 +181,7 @@ def handler(dn, new, old, command):
 		)
 		return
 
-	if command == 'r':	# modrdn pase I: store old object
+	if command == 'r':  # modrdn pase I: store old object
 		univention.debug.debug(
 			univention.debug.LISTENER,
 			univention.debug.INFO,
@@ -186,9 +189,9 @@ def handler(dn, new, old, command):
 		listener.setuid(0)
 		try:
 			with open(FN_CACHE, 'w+') as f:
-				os.chmod(FN_CACHE, 0600)
+				os.chmod(FN_CACHE, 0o600)
 				cPickle.dump(old, f)
-		except Exception, e:
+		except Exception as e:
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
@@ -197,7 +200,7 @@ def handler(dn, new, old, command):
 			listener.unsetuid()
 		return
 
-	## check for modrdn pase II in case of an add
+	# check for modrdn pase II in case of an add
 	if new and os.path.exists(FN_CACHE) and not old:
 		univention.debug.debug(
 			univention.debug.LISTENER,
@@ -205,16 +208,16 @@ def handler(dn, new, old, command):
 			'%s: modrdn phase II: %s' % (name, dn))
 		listener.setuid(0)
 		try:
-			with open(FN_CACHE,'r') as f:
+			with open(FN_CACHE, 'r') as f:
 				pickled_object = cPickle.load(f)
-		except Exception, e:
+		except Exception as e:
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
 				'%s: failed to open/read pickle file: %s' % (name, str(e)))
 		try:
 		    os.remove(FN_CACHE)
-		except Exception, e:
+		except Exception as e:
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.ERROR,
@@ -235,10 +238,9 @@ def handler(dn, new, old, command):
 		else:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.PROCESS, "The entryUUID attribute of the saved object (%s) does not match the entryUUID attribute of the current object (%s). This can be normal in a selective replication scenario." % (pickled_object.get('entryDN'), dn))
 
-
-	## handle all the usual cases: add, modify, delete
+	# handle all the usual cases: add, modify, delete
 	if new:
-		if not old:	# add
+		if not old:  # add
 			univention.debug.debug(
 				univention.debug.LISTENER,
 				univention.debug.INFO,
@@ -248,7 +250,7 @@ def handler(dn, new, old, command):
 			if changed_default_name:
 				modified_default_names.append(changed_default_name)
 
-		else:	# modify
+		else:  # modify
 			if no_relevant_change(new, old):
 				return
 
@@ -256,7 +258,7 @@ def handler(dn, new, old, command):
 			if changed_default_name:
 				modified_default_names.append(changed_default_name)
 
-	elif old:	# delete
+	elif old:  # delete
 		univention.debug.debug(
 			univention.debug.LISTENER,
 			univention.debug.INFO,
@@ -265,6 +267,7 @@ def handler(dn, new, old, command):
 		changed_default_name = checkAndSet(new, old)
 		if changed_default_name:
 			modified_default_names.append(changed_default_name)
+
 
 def postrun():
 	global modified_default_names

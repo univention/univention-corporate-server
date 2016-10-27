@@ -31,17 +31,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-name='nss'
-description='Invalidate the nss group cache whenever a group membership has been modified.'
-filter='(objectClass=univentionGroup)'
-attributes=['uniqueMember', 'cn']
+name = 'nss'
+description = 'Invalidate the nss group cache whenever a group membership has been modified.'
+filter = '(objectClass=univentionGroup)'
+attributes = ['uniqueMember', 'cn']
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.config_registry
 
+
 def handler(dn, new, old):
 	pass
+
 
 def postrun():
 	ucr = univention.config_registry.ConfigRegistry()
@@ -54,4 +56,3 @@ def postrun():
 			param.append('--check_member')
 		listener.run('/usr/lib/univention-pam/ldap-group-to-file.py', param, uid=0)
 		listener.unsetuid()
-
