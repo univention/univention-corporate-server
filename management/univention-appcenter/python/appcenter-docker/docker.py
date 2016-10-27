@@ -56,7 +56,7 @@ _logger = get_base_logger().getChild('docker')
 DOCKER_READ_USER_CRED = {
 	'username': 'ucs',
 	'password': 'readonly',
-	}
+}
 
 
 class DockerImageVerificationFailedRegistryContact(Exception):
@@ -70,6 +70,7 @@ class DockerImageVerificationFailedRegistryContact(Exception):
 
 
 class DockerImageVerificationFailedChecksum(Exception):
+
 	def __init__(self, app_name):
 		reason_en_US = 'Manifest checksum mismatch'
 		reason_message = _('Manifest checksum mismatch')
@@ -217,6 +218,7 @@ def commit(container, new_base_image):
 
 
 class Docker(object):
+
 	def __init__(self, app, logger=None):
 		self.app = app
 		self.logger = logger or _logger

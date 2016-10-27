@@ -59,6 +59,7 @@ App._attrs.append(_screenshot_attribute)
 
 
 class DevUseTestAppcenter(UniventionAppAction):
+
 	'''Use the Test App Center'''
 	help = 'Uses the Apps in the Test App Center. Used for testing Apps not yet published.'
 
@@ -79,6 +80,7 @@ class DevUseTestAppcenter(UniventionAppAction):
 
 
 class LocalAppcenterAction(UniventionAppAction):
+
 	def setup_parser(self, parser):
 		parser.add_argument('--path', default='/var/www/', help='Path where the root of the App Center lives / shall live. Default: %(default)s')
 		parser.add_argument('--ucs-version', default=ucr_get('version/version'), help='App Center is used for UCS_VERSION. Default: %(default)s')
@@ -89,7 +91,7 @@ class LocalAppcenterAction(UniventionAppAction):
 			result_file = os.path.join(result_file, os.path.basename(src))
 		if src == dst:
 			try:
-				os.chmod(result_file, 0644)
+				os.chmod(result_file, 0o644)
 			except EnvironmentError as exc:
 				self.warn(exc)
 				return False
@@ -97,7 +99,7 @@ class LocalAppcenterAction(UniventionAppAction):
 				return True
 		try:
 			shutil.copy2(src, dst)
-			os.chmod(result_file, 0644)
+			os.chmod(result_file, 0o644)
 		except EnvironmentError as exc:
 			self.warn(exc)
 			return False
@@ -106,6 +108,7 @@ class LocalAppcenterAction(UniventionAppAction):
 
 
 class FileInfo(object):
+
 	def __init__(self, app, name, url, filename):
 		self.name = name
 		self.url = url
@@ -116,6 +119,7 @@ class FileInfo(object):
 
 
 class AppcenterApp(object):
+
 	def __init__(self, name, id, ucs_version, meta_inf_dir, components_dir, server):
 		self.name = name
 		self.id = id
@@ -238,6 +242,7 @@ def check_ini_file(filename):
 
 
 class DevRegenerateMetaInf(LocalAppcenterAction):
+
 	'''Generate necessary cache files for the App Center server'''
 	help = 'In order to work correctly as an App Center server, certain cache files need to be present for clients to download. These are (re)generated automatically by this function'
 
@@ -272,6 +277,7 @@ class DevRegenerateMetaInf(LocalAppcenterAction):
 
 
 class DevPopulateAppcenter(LocalAppcenterAction):
+
 	'''Add/update an app in the (local) App Center'''
 	help = 'To be called after dev-setup-local-appcenter! Puts meta data (like ini file) and packages in the correct directories. Generates other meta files for the App Center to work'
 
@@ -565,6 +571,7 @@ class DevPopulateAppcenter(LocalAppcenterAction):
 
 
 class DevSetupLocalAppcenter(LocalAppcenterAction):
+
 	'''Use this host as an App Center server'''
 	help = 'Sets up this host as an App Center server and configures the App Center module to use it. WARNING: the actual app server is overwritten'
 

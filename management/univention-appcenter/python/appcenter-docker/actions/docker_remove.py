@@ -39,6 +39,7 @@ from univention.appcenter.actions.docker_base import DockerActionMixin
 
 
 class Remove(Remove, DockerActionMixin):
+
 	def setup_parser(self, parser):
 		super(Remove, self).setup_parser(parser)
 		parser.add_argument('--do-not-backup', action='store_false', dest='backup', help='For docker apps, do not save a backup container')

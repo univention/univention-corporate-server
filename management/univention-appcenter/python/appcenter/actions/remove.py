@@ -37,6 +37,7 @@ from univention.appcenter.ucr import ucr_save
 
 
 class Remove(InstallRemoveUpgrade):
+
 	'''Removes an application from the Univention App Center.'''
 	help = 'Uninstall an app'
 

@@ -48,6 +48,7 @@ from univention.appcenter.ucr import ucr_get
 
 
 class _AptLogger(object):
+
 	def __init__(self, action, end):
 		import re
 		self.action = action
@@ -257,7 +258,7 @@ class InstallRemoveUpgrade(Register):
 			dest = self._get_joinscript_path(app, unjoin=unjoin)
 			shutil.copy2(joinscript, dest)
 			# change to UCS umask + +x:      -rwxr-xr-x
-			os.chmod(dest, 0755)
+			os.chmod(dest, 0o755)
 			if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
 				ret = self._call_script('/usr/sbin/univention-run-join-scripts')
 			else:

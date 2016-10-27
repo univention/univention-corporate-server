@@ -44,6 +44,7 @@ from univention.appcenter.ucr import ucr_save
 
 
 class Upgrade(Upgrade, Install, DockerActionMixin):
+
 	def setup_parser(self, parser):
 		super(Upgrade, self).setup_parser(parser)
 		parser.add_argument('--set', nargs='+', action=StoreConfigAction, metavar='KEY=VALUE', dest='set_vars', help='Sets the configuration variable. Example: --set some/variable=value some/other/variable="value 2"')

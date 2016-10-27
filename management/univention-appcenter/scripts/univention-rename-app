@@ -43,6 +43,7 @@ from univention.management.console.modules.appcenter.util import ComponentManage
 ucr = ConfigRegistry()
 ucr.load()
 
+
 def main():
 	usage = '%prog OLD_ID NEW_ID'
 	description = '%prog changes the internal ID of an application. This means:' \
@@ -70,4 +71,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-

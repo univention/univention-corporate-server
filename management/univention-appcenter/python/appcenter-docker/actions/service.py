@@ -40,6 +40,7 @@ ORIGINAL_INIT_SCRIPT = '/usr/share/docker-app-container-init-script'
 
 
 class Service(UniventionAppAction):
+
 	def setup_parser(self, parser):
 		parser.add_argument('app', action=StoreAppAction, help='The ID of the app that shall be started')
 
@@ -56,6 +57,7 @@ class Service(UniventionAppAction):
 
 
 class Start(Service):
+
 	'''Starts an application previously installed.'''
 	help = 'Start an app'
 
@@ -64,6 +66,7 @@ class Start(Service):
 
 
 class Stop(Service):
+
 	'''Stops a running application.'''
 	help = 'Stop an app'
 
@@ -72,6 +75,7 @@ class Stop(Service):
 
 
 class Restart(Service):
+
 	'''Restarts an app. Stops and Starts. Does not have to be running'''
 	help = 'Restart an app'
 
@@ -80,6 +84,7 @@ class Restart(Service):
 
 
 class CRestart(Service):
+
 	'''CRestarts an app. Stops and Starts. Has to be running'''
 	help = 'CRestart an app'
 
@@ -88,6 +93,7 @@ class CRestart(Service):
 
 
 class Status(Service):
+
 	'''Ask service about status. Possible answers: running stopped'''
 	help = 'Retrieve status of an app'
 

@@ -223,6 +223,7 @@ def verbose_http_error(exc):
 
 
 class HTTPSConnection(httplib.HTTPSConnection):
+
 	def connect(self):
 		sock = socket.create_connection((self.host, self.port), self.timeout, self.source_address)
 		if self._tunnel_host:
@@ -277,7 +278,7 @@ def get_sha256_from_file(filename):
 
 def get_current_ram_available():
 	''' Returns RAM currently available in MB, excluding Swap '''
-	#return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. reenable when methods are supported
+	# return (psutil.avail_phymem() + psutil.phymem_buffers() + psutil.cached_phymem()) / (1024*1024) # psutil is outdated. reenable when methods are supported
 	# implement here. see http://code.google.com/p/psutil/source/diff?spec=svn550&r=550&format=side&path=/trunk/psutil/_pslinux.py
 	with open('/proc/meminfo', 'r') as f:
 		splitlines = map(lambda line: line.split(), f.readlines())
@@ -319,18 +320,19 @@ def gpg_verify(filename, detached_sig_filename=None, content=None, keyringFileNa
 	gpg_homedirname = tempfile.mkdtemp()
 	try:
 
-		cmd = ('gpg',
-				'--no-options',
-				'--no-default-keyring', '--keyring', keyringFileName,
-				'--batch', '--quiet', '--no-tty',
-				# '--logger-file', '/dev/null'
-				'--with-colons', '--utf8-strings',
-				'--no-auto-check-trustdb', '--no-auto-key-locate', '--no-use-agent',
-				'--no-random-seed-file',
-				'--trust-model', 'always',
-				'--homedir', gpg_homedirname,
-				'--verify',
-				)
+		cmd = (
+			'gpg',
+			'--no-options',
+			'--no-default-keyring', '--keyring', keyringFileName,
+			'--batch', '--quiet', '--no-tty',
+			# '--logger-file', '/dev/null'
+			'--with-colons', '--utf8-strings',
+			'--no-auto-check-trustdb', '--no-auto-key-locate', '--no-use-agent',
+			'--no-random-seed-file',
+			'--trust-model', 'always',
+			'--homedir', gpg_homedirname,
+			'--verify',
+		)
 
 		if detached_sig_filename:
 			cmd += (detached_sig_filename,)

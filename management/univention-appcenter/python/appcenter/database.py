@@ -58,6 +58,7 @@ class DatabaseInfoError(DatabaseError):
 
 
 class DatabaseConnector(object):
+
 	def __init__(self, app):
 		self.app = app
 
@@ -144,7 +145,7 @@ class DatabaseConnector(object):
 		db_password_file = self.get_db_password_file()
 		try:
 			with open(db_password_file, 'wb') as f:
-				os.chmod(f.name, 0600)
+				os.chmod(f.name, 0o600)
 				f.write(password)
 		except EnvironmentError as exc:
 			raise DatabaseCreationFailed(str(exc))
@@ -187,6 +188,7 @@ class DatabaseConnector(object):
 
 
 class PostgreSQL(DatabaseConnector):
+
 	def _get_software_packages(self):
 		return ['univention-postgresql']
 
@@ -225,6 +227,7 @@ class PostgreSQL(DatabaseConnector):
 
 
 class MySQL(DatabaseConnector):
+
 	def __init__(self, app):
 		super(MySQL, self).__init__(app)
 		self._connection = None

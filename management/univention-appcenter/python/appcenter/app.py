@@ -116,6 +116,7 @@ _get_license_descriptions._cache = None
 
 
 class CaseSensitiveConfigParser(RawConfigParser):
+
 	def optionxform(self, optionstr):
 		return optionstr
 
@@ -220,6 +221,7 @@ class AppAttribute(UniventionMetaInfo):
 
 
 class AppBooleanAttribute(AppAttribute):
+
 	def test_type(self, value, instance_type):
 		super(AppBooleanAttribute, self).test_type(value, bool)
 
@@ -234,6 +236,7 @@ class AppBooleanAttribute(AppAttribute):
 
 
 class AppIntAttribute(AppAttribute):
+
 	def test_type(self, value, instance_type):
 		super(AppIntAttribute, self).test_type(value, int)
 
@@ -243,6 +246,7 @@ class AppIntAttribute(AppAttribute):
 
 
 class AppListAttribute(AppAttribute):
+
 	def parse(self, value):
 		if value == '':
 			value = None
@@ -312,6 +316,7 @@ class AppLocalisedListAttribute(AppListAttribute):
 
 
 class AppAttributeOrFalseOrNone(AppBooleanAttribute):
+
 	def __init__(self, required=False, default=None, regex=None, choices=None, localisable=False, localisable_by_file=None, strict=True):
 		choices = (choices or [])[:]
 		choices.extend([None, False])
@@ -331,6 +336,7 @@ class AppAttributeOrFalseOrNone(AppBooleanAttribute):
 
 class AppFileAttribute(AppAttribute):
 	# TODO: UCR TOKEN
+
 	def __init__(self, required=False, default=None, regex=None, choices=None, localisable=True):
 		# localisable=True !
 		super(AppFileAttribute, self).__init__(required, default, regex, choices, localisable)
@@ -358,12 +364,14 @@ class AppFileAttribute(AppAttribute):
 
 
 class AppDockerScriptAttribute(AppAttribute):
+
 	def set_name(self, name):
 		self.default = os.path.join(CONTAINER_SCRIPTS_PATH, name[14:])
 		super(AppDockerScriptAttribute, self).set_name(name)
 
 
 class App(object):
+
 	"""
 	This is the main App class. It represents *one version* of the App in
 	the Univention App Center. It is mainly a container for a parsed ini
@@ -827,7 +835,7 @@ class App(object):
 
 	@classmethod
 	def from_ini(cls, ini_file, locale=True):
-		#app_logger.debug('Loading app from %s' % ini_file)
+		# app_logger.debug('Loading app from %s' % ini_file)
 		if locale is True:
 			locale = get_locale()
 		component_id = os.path.splitext(os.path.basename(ini_file))[0]

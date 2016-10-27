@@ -50,6 +50,7 @@ from univention.appcenter.ucr import ucr_save, ucr_get, ucr_keys
 
 
 class Register(CredentialsAction):
+
 	'''Registers one or more applications. Done automatically via install, only useful if something went wrong / finer grained control is needed.'''
 	help = 'Registers an app'
 

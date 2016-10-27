@@ -71,6 +71,7 @@ class ConnectionFailedServerDown(ConnectionFailed):
 
 
 class CredentialsAction(UniventionAppAction):
+
 	def __init__(self):
 		super(CredentialsAction, self).__init__()
 		self._username = None

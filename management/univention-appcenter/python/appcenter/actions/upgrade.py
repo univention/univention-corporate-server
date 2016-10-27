@@ -38,6 +38,7 @@ from univention.appcenter.ucr import ucr_is_true
 
 
 class Upgrade(Install):
+
 	'''Upgrades an installed application from the Univention App Center.'''
 	help = 'Upgrade an app'
 
