@@ -35,6 +35,7 @@ import subprocess
 import univention.config_registry as confreg
 from optparse import OptionParser
 
+
 def get_policy(host_dn, verbose=False):
 	"""Retriev policy for host_dn."""
 	set_list = {}
@@ -66,6 +67,7 @@ def get_policy(host_dn, verbose=False):
 	return set_list
 get_policy.ATTR = 'Attribute: univentionRegistry;entry-hex-'
 get_policy.VALUE = 'Value: '
+
 
 def parse_cmdline():
 	"""Parse command line and return options and dn."""
@@ -100,6 +102,7 @@ def parse_cmdline():
 	if options.simulate:
 		print >> sys.stderr, 'Simulating update...'
 	return options, host_dn
+
 
 def main():
 	"""Get UCR settings from LDAP policy."""
