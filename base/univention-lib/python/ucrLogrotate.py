@@ -30,15 +30,18 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+
 def _getBoolDefault(varGlobal, varLocal, settings, configRegistry):
 
 	configName = varGlobal.split("/")[-1]
 	if configRegistry.is_true(varGlobal, True):
 		settings[configName] = configName
 	if configRegistry.is_false(varLocal):
-		if settings.get(configName): del settings[configName]
+		if settings.get(configName):
+			del settings[configName]
 	if configRegistry.is_true(varLocal, False):
 		settings[configName] = configName
+
 
 def getLogrotateConfig(name, configRegistry):
 
@@ -46,12 +49,12 @@ def getLogrotateConfig(name, configRegistry):
 
 	for var in ["logrotate/", "logrotate/" + name + "/"]:
 
-		if configRegistry.get(var + "rotate"): 
-			settings["rotate"] = configRegistry[var + "rotate"] 
-		if configRegistry.get(var + "rotate/count"): 
-			settings["rotate/count"] = "rotate " + configRegistry[var + "rotate/count"] 
-		if configRegistry.get(var + "create"): 
-			settings["create"] = "create " + configRegistry[var + "create"] 
+		if configRegistry.get(var + "rotate"):
+			settings["rotate"] = configRegistry[var + "rotate"]
+		if configRegistry.get(var + "rotate/count"):
+			settings["rotate/count"] = "rotate " + configRegistry[var + "rotate/count"]
+		if configRegistry.get(var + "create"):
+			settings["create"] = "create " + configRegistry[var + "create"]
 
 	_getBoolDefault("logrotate/missingok", "logrotate/" + name + "/missingok", settings, configRegistry)
 	_getBoolDefault("logrotate/compress", "logrotate/" + name + "/compress", settings, configRegistry)

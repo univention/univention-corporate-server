@@ -52,7 +52,7 @@ from univention.lib.misc import custom_groupname
 import univention.debug as ud
 from univention.config_registry.interfaces import Interfaces
 
-## Workaround for local module "dns" in s4connector:
+# Workaround for local module "dns" in s4connector:
 import sys
 import copy
 orig_path = None
@@ -70,43 +70,69 @@ finally:
 	if orig_path:
 		sys.path = orig_path
 
+
 class failedToSetService(Exception):
+
 	'''ucs_addServiceToLocalhost failed'''
 
+
 class invalidUCSServerRole(Exception):
+
 	'''Invalid UCS Server Role'''
 
+
 class failedADConnect(Exception):
+
 	'''Connection to AD Server failed'''
 
+
 class failedToSetAdministratorPassword(Exception):
+
 	'''Failed to set the password of the UCS Administrator to the AD password'''
 
+
 class domainnameMismatch(Exception):
+
 	'''Domain Names don't match'''
 
+
 class connectionFailed(Exception):
+
 	'''Connection to AD failed'''
 
+
 class notDomainAdminInAD(Exception):
+
 	'''User is not member of Domain Admins group in AD'''
 
+
 class univentionSambaWrongVersion(Exception):
+
 	'''univention-samba candiate has wrong version'''
 
+
 class timeSyncronizationFailed(Exception):
+
 	'''Time synchronization failed.'''
 
+
 class manualTimeSyncronizationRequired(timeSyncronizationFailed):
+
 	'''Time difference critical for Kerberos but syncronization aborted.'''
 
+
 class sambaJoinScriptFailed(Exception):
+
 	'''26univention-samba.inst failed'''
 
+
 class failedToAddServiceRecordToAD(Exception):
+
 	'''failed to add SRV record in AD'''
 
+
 class failedToGetUcrVariable(Exception):
+
 	'''failed to get ucr variable'''
 
 
@@ -126,6 +152,7 @@ def is_localhost_in_adconnector_mode(ucr=None):
 		return True
 	return False
 
+
 def is_domain_in_admember_mode(ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
@@ -136,14 +163,15 @@ def is_domain_in_admember_mode(ucr=None):
 		return True
 	return False
 
+
 def _get_kerberos_ticket(principal, password, ucr=None):
 	ud.debug(ud.MODULE, ud.INFO, "running _get_kerberos_ticket")
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	## We need to remove the target credential cache first,
-	## otherwise kinit may use an old ticket and run into "krb5_get_init_creds: Clock skew too great".
+	# We need to remove the target credential cache first,
+	# otherwise kinit may use an old ticket and run into "krb5_get_init_creds: Clock skew too great".
 	cmd = ("/usr/bin/kdestroy",)
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout, stderr = p1.communicate()
@@ -153,9 +181,9 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 	if 'KRB5CCNAME' in os.environ:
 		uid = os.geteuid()
 		default_krb5_cc_path = '/tmp/krb5cc_%d' % uid
-		## get the default "/tmp/krb5cc_$uid" key cache out of the way,
-		## otherwise kinit doesn't generate one in the specified location
-		## Note: Could also above run "kdestroy -A" instead
+		# get the default "/tmp/krb5cc_$uid" key cache out of the way,
+		# otherwise kinit doesn't generate one in the specified location
+		# Note: Could also above run "kdestroy -A" instead
 		default_krb5_cc = None
 		if os.path.exists(default_krb5_cc_path):
 			backup_default_krb5_cc = tempfile.NamedTemporaryFile(delete=False)
@@ -164,7 +192,7 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 
 	f = tempfile.NamedTemporaryFile(delete=False)
 	try:
-		os.chmod(f.name, 0600)
+		os.chmod(f.name, 0o600)
 		f.write(password)
 		f.close()
 
@@ -182,6 +210,7 @@ def _get_kerberos_ticket(principal, password, ucr=None):
 		if os.path.exists(f.name):
 			os.unlink(f.name)
 
+
 def check_connection(ad_domain_info, username, password):
 	ud.debug(ud.MODULE, ud.INFO, "running check_connection")
 
@@ -191,6 +220,7 @@ def check_connection(ad_domain_info, username, password):
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
 		raise connectionFailed()
+
 
 def check_ad_account(ad_domain_info, username, password, ucr=None):
 	'''
@@ -228,11 +258,11 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
 		raise
 
-	## Ok, ready and set for kerberized LDAP lookup
+	# Ok, ready and set for kerberized LDAP lookup
 	try:
 		lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
 		lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
-		lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
+		lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 		lo_ad.lo.sasl_interactive_bind_s("", auth)
 	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
 		raise connectionFailed()
@@ -241,14 +271,14 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 		set_ucr(previous_krb_ucr_set, previous_krb_ucr_unset)
 
 	res = lo_ad.search(scope="base", attr=["objectSid"])
-	if not res or not "objectSid" in res[0][1]:
+	if not res or "objectSid" not in res[0][1]:
 		ud.debug(ud.MODULE, ud.ERROR, "Determination of AD domain SID failed")
 		raise connectionFailed()
 
 	domain_sid = ndr_unpack(security.dom_sid, res[0][1]["objectSid"][0])
 
 	res = lo_ad.search(filter="(sAMAccountName=%s)" % username, attr=["objectSid", "primaryGroupID"])
-	if not res or not "objectSid" in res[0][1]:
+	if not res or "objectSid" not in res[0][1]:
 		ud.debug(ud.MODULE, ud.ERROR, "Determination user SID failed")
 		raise connectionFailed()
 
@@ -264,11 +294,11 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 	user_dn = res[0][0]
 
 	res = lo_ad.search(filter="(sAMAccountName=%s)" % username, base=user_dn, scope="base", attr=["tokenGroups"])
-	if not res or not "tokenGroups" in res[0][1]:
+	if not res or "tokenGroups" not in res[0][1]:
 		ud.debug(ud.MODULE, ud.ERROR, "Lookup of AD group memberships for user failed")
 		raise connectionFailed()
 
-	if not "tokenGroups" in res[0][1]:
+	if "tokenGroups" not in res[0][1]:
 		raise notDomainAdminInAD()
 
 	for group_sid_ndr in res[0][1]["tokenGroups"]:
@@ -278,6 +308,7 @@ def check_ad_account(ad_domain_info, username, password, ucr=None):
 	else:
 		ud.debug(ud.MODULE, ud.ERROR, "User is not member of Domain Admins")
 		raise notDomainAdminInAD()
+
 
 def _sid_of_ucs_sambadomain(lo=None, ucr=None):
 	if not lo:
@@ -299,6 +330,7 @@ def _sid_of_ucs_sambadomain(lo=None, ucr=None):
 
 	return ucs_domain_sid
 
+
 def _dn_of_udm_domain_admins(lo=None, ucr=None):
 	if not lo:
 		lo = univention.uldap.getMachineConnection()
@@ -316,6 +348,7 @@ def _dn_of_udm_domain_admins(lo=None, ucr=None):
 
 	return res[0]
 
+
 def _create_domain_admin_account_in_udm(username, password, lo=None, ucr=None):
 	if not lo:
 		lo = univention.uldap.getMachineConnection()
@@ -327,7 +360,7 @@ def _create_domain_admin_account_in_udm(username, password, lo=None, ucr=None):
 
 	domain_admins_dn = _dn_of_udm_domain_admins(lo, ucr)
 
-	cmd=("univention-directory-manager", "users/user", "create", "--position", "cn=users,%s" % ucr.get("ldap/base"), "--set", "username=%s" % username, "--set", "lastname=tmp", "--set", "password=%s" % password, "--set", "primaryGroup=%s" % domain_admins_dn)
+	cmd = ("univention-directory-manager", "users/user", "create", "--position", "cn=users,%s" % ucr.get("ldap/base"), "--set", "username=%s" % username, "--set", "lastname=tmp", "--set", "password=%s" % password, "--set", "primaryGroup=%s" % domain_admins_dn)
 
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout, stderr = p1.communicate()
@@ -337,6 +370,7 @@ def _create_domain_admin_account_in_udm(username, password, lo=None, ucr=None):
 			ud.debug(ud.MODULE, ud.ERROR, "udm users/user create output:\n%s" % stdout)
 		return False
 	return True
+
 
 def _ucs_sid_is_well_known_administrator(user_sid, lo=None, ucr=None):
 	if not lo:
@@ -352,6 +386,7 @@ def _ucs_sid_is_well_known_administrator(user_sid, lo=None, ucr=None):
 		return True
 	return False
 
+
 def _add_udm_account_to_domain_admins(user_dn, lo=None, ucr=None):
 	if not lo:
 		lo = univention.uldap.getMachineConnection()
@@ -361,7 +396,7 @@ def _add_udm_account_to_domain_admins(user_dn, lo=None, ucr=None):
 		ucr.load()
 
 	domain_admins_dn = _dn_of_udm_domain_admins(lo, ucr)
-	cmd=("univention-directory-manager", "users/user", "modify", "--dn", user_dn, "--append", "groups=%s" % domain_admins_dn)
+	cmd = ("univention-directory-manager", "users/user", "modify", "--dn", user_dn, "--append", "groups=%s" % domain_admins_dn)
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
@@ -370,6 +405,7 @@ def _add_udm_account_to_domain_admins(user_dn, lo=None, ucr=None):
 			ud.debug(ud.MODULE, ud.ERROR, "udm users/user modify groups output:\n%s" % stdout)
 		return False
 	return True
+
 
 def _set_udm_account_password(user_dn, password):
 	cmd = ('univention-directory-manager', 'users/user', 'modify', '--dn', user_dn, '--set', 'password=%s' % password, '--set', 'overridePWHistory=1', '--set', 'overridePWLength=1')
@@ -382,6 +418,7 @@ def _set_udm_account_password(user_dn, password):
 		return False
 	return True
 
+
 def prepare_administrator(username, password, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Prepare administrator account")
 
@@ -389,7 +426,7 @@ def prepare_administrator(username, password, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	### First check if account exists in LDAP, otherwise create it:
+	# First check if account exists in LDAP, otherwise create it:
 	lo = univention.uldap.getMachineConnection()
 	res = lo.search(filter="(&(uid=%s)(objectClass=shadowAccount))" % (username,), attr=["userPassword", "sambaSID"])
 	if not res:
@@ -402,7 +439,7 @@ def prepare_administrator(username, password, ucr=None):
 			raise failedToSetAdministratorPassword()
 		return
 
-	### Second, if the account existed already, check if it has the well known Administrator SID
+	# Second, if the account existed already, check if it has the well known Administrator SID
 	user_dn = res[0][0]
 	user_sid = res[0][1].get("sambaSID", [None])[0]
 	old_hash = res[0][1].get("userPassword", [None])[0]
@@ -417,7 +454,7 @@ def prepare_administrator(username, password, ucr=None):
 	except ldap.NO_SUCH_OBJECT:
 		raise failedToSetAdministratorPassword()
 
-	### Third, if the account doesn't have the well known Administrator SID, add it to Domain Admins
+	# Third, if the account doesn't have the well known Administrator SID, add it to Domain Admins
 	if not is_well_known_admin:
 		try:
 			success = _add_udm_account_to_domain_admins(user_dn, lo, ucr)
@@ -426,8 +463,8 @@ def prepare_administrator(username, password, ucr=None):
 		if not success:
 			raise failedToSetAdministratorPassword()
 		return
-	
-	### Finally, if the account does have the Administrator SID, set it's UDM password to the AD one.
+
+	# Finally, if the account does have the Administrator SID, set it's UDM password to the AD one.
 	if old_hash == '{KINIT}':
 		return
 
@@ -435,16 +472,17 @@ def prepare_administrator(username, password, ucr=None):
 	if not success:
 		raise failedToSetAdministratorPassword()
 
+
 def _mapped_ad_dn(ad_dn, ad_ldap_base, ucr=None):
 	if ad_dn[-len(ad_ldap_base):] != ad_ldap_base:
 		ud.debug(ud.MODULE, ud.ERROR, "Mapping of AD DN %s failed, base is not %s" % (ad_dn, ad_ldap_base))
-		return 
+		return
 
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	relative_dn = ad_dn[:-len(ad_ldap_base)-1]
+	relative_dn = ad_dn[:-len(ad_ldap_base) - 1]
 	mapped_relative_dn_components = []
 	relative_dn_components = relative_dn.split(',')
 	for rdn in relative_dn_components:
@@ -457,6 +495,7 @@ def _mapped_ad_dn(ad_dn, ad_ldap_base, ucr=None):
 	mapped_dn = ",".join((mapped_relative_dn, ucr.get("ldap/base")))
 	return mapped_dn
 
+
 def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "running synchronize_account_position")
 
@@ -464,7 +503,7 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	### First determine target position from AD:
+	# First determine target position from AD:
 	ad_server_name = ad_domain_info["DC DNS Name"]
 	ad_ldap_base = ad_domain_info["LDAP Base"]
 	ad_domain = ad_domain_info["Domain"]
@@ -472,7 +511,7 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 	try:
 		lo_ad = univention.uldap.access(host=ad_server_name, port=389, base=ad_ldap_base, binddn=None, bindpw=None, start_tls=0, use_ldaps=False, decode_ignorelist=["objectSid"])
 		lo_ad.lo.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
-		lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
+		lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
 		if 'KRB5CCNAME' in os.environ:
 			krb5_cc_path = os.environ['KRB5CCNAME']
@@ -481,26 +520,26 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 			krb5_cc_path = '/tmp/krb5cc_%d' % uid
 
 		if not os.path.exists(krb5_cc_path):
-			## should have been created by check_ad_account, but just in case..
+			# should have been created by check_ad_account, but just in case..
 			principal = "%s@%s" % (username, ad_realm)
 			_get_kerberos_ticket(principal, password, ucr)
 		auth = ldap.sasl.gssapi("")
 		lo_ad.lo.sasl_interactive_bind_s("", auth)
 	except (ldap.INVALID_CREDENTIALS, ldap.UNWILLING_TO_PERFORM):
-		return False ## Massive failure, but no issue to be raised here.
+		return False  # Massive failure, but no issue to be raised here.
 
 	res = lo_ad.searchDn(filter="(sAMAccountName=%s)" % username)
 	if not res:
 		ud.debug(ud.MODULE, ud.ERROR, "Lookup of AD DN for user %s failed" % username)
-		return False ## Massive failure, but no issue to be raised here.
+		return False  # Massive failure, but no issue to be raised here.
 	ad_user_dn = res[0]
 
-	### Second determine position in UCS LDAP:
+	# Second determine position in UCS LDAP:
 	lo = univention.uldap.getMachineConnection()
 	res = lo.searchDn(filter="(&(uid=%s)(objectClass=shadowAccount))" % (username,), unique=True)
 	if not res:
 		ud.debug(ud.MODULE, ud.ERROR, "No UCS LDAP search result for uid=%s" % username)
-		return False ## Massive failure, but no issue to be raised here.
+		return False  # Massive failure, but no issue to be raised here.
 
 	ucs_user_dn = res[0]
 	if ucs_user_dn.lower() == ad_user_dn.lower():
@@ -509,7 +548,7 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 	mapped_ad_user_dn = _mapped_ad_dn(ad_user_dn, ad_ldap_base, ucr)
 	target_position = mapped_ad_user_dn.split(',', 1)[1]
 
-	cmd=("univention-directory-manager", "users/user", "move", "--dn", ucs_user_dn, "--position", target_position)
+	cmd = ("univention-directory-manager", "users/user", "move", "--dn", ucs_user_dn, "--position", target_position)
 	p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 	stdout, stderr = p1.communicate()
 	if p1.returncode != 0:
@@ -518,6 +557,7 @@ def synchronize_account_position(ad_domain_info, username, password, ucr=None):
 			ud.debug(ud.MODULE, ud.ERROR, "udm users/user modify groups output:\n%s" % stdout)
 		return False
 	return True
+
 
 def _server_supports_ssl(server):
 	ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
@@ -531,6 +571,7 @@ def _server_supports_ssl(server):
 		return False
 	return True
 
+
 def server_supports_ssl(server):
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Check if server supports SSL")
@@ -543,6 +584,7 @@ def server_supports_ssl(server):
 	else:
 		ud.debug(ud.MODULE, ud.PROCESS, "SSL False")
 		return False
+
 
 def enable_ssl():
 	ud.debug(ud.MODULE, ud.PROCESS, "Enable connector SSL")
@@ -564,11 +606,13 @@ def _add_service_to_localhost(service):
 	if res != 0:
 		raise failedToSetService
 
+
 def _remove_service_from_localhost(service):
 	ud.debug(ud.MODULE, ud.PROCESS, "Remove service %s from localhost" % service)
 	res = subprocess.call('. /usr/share/univention-lib/ldap.sh; ucs_removeServiceFromLocalhost "%s"' % service, shell=True)
 	if res != 0:
 		raise failedToSetService
+
 
 def add_admember_service_to_localhost():
 	_add_service_to_localhost('AD Member')
@@ -577,14 +621,18 @@ def add_admember_service_to_localhost():
 def add_adconnector_service_to_localhost():
 	_add_service_to_localhost('AD Connector')
 
+
 def remove_admember_service_from_localhost():
 	_remove_service_from_localhost('AD Member')
+
 
 def info_handler(msg):
 	ud.debug(ud.MODULE, ud.PROCESS, msg)
 
+
 def error_handler(msg):
 	ud.debug(ud.MODULE, ud.ERROR, msg)
+
 
 def remove_install_univention_samba(info_handler=info_handler, step_handler=None, error_handler=error_handler, install=True, uninstall=True):
 	pm = univention.lib.package_manager.PackageManager(
@@ -603,7 +651,7 @@ def remove_install_univention_samba(info_handler=info_handler, step_handler=None
 		if not pm.uninstall('univention-samba'):
 			return False
 
-	# install 
+	# install
 	if install:
 		ud.debug(ud.MODULE, ud.PROCESS, "Install univention-samba")
 		if not pm.install('univention-samba'):
@@ -659,7 +707,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 
 	ad_server_ip = None
 	for ip in ips:
-		try: # check cldap
+		try:  # check cldap
 			net = Net(creds=None, lp=lp)
 			cldap_res = net.finddc(address=ip, flags=nbt.NBT_SERVER_LDAP | nbt.NBT_SERVER_DS | nbt.NBT_SERVER_WRITABLE)
 		except RuntimeError as ex:
@@ -668,14 +716,14 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 			if not check_dns:
 				ad_server_ip = ip
 				break
-			try: # check dns
+			try:  # check dns
 				cmd = ['dig', '@%s' % ip]
 				ud.debug(ud.MODULE, ud.PROCESS, "running %s" % cmd)
 				p1 = subprocess.Popen(cmd, close_fds=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				stdout, stderr = p1.communicate()
 				ud.debug(ud.MODULE, ud.PROCESS, "stdout: %s" % stdout)
 				ud.debug(ud.MODULE, ud.PROCESS, "stderr: %s" % stderr)
-				if p1.returncode == 0: # yes, this is also a DNS server, we are good
+				if p1.returncode == 0:  # yes, this is also a DNS server, we are good
 					ad_server_ip = ip
 					break
 			except OSError as ex:
@@ -702,7 +750,7 @@ def lookup_adds_dc(ad_server=None, ucr=None, check_dns=True):
 		"Client Site": cldap_res.client_site,
 		"LDAP Base": ad_ldap_base,
 		"DC IP": ad_server_ip,
-		}
+	}
 
 	ud.debug(ud.MODULE, ud.PROCESS, "AD Info: %s" % ad_domain_info)
 
@@ -742,7 +790,8 @@ def invoke_service(service, cmd):
 		ud.debug(ud.MODULE, ud.ERROR, "invoke-rc.d %s %s failed (%d)" % (service, cmd, p1.returncode,))
 		return
 
-	ud.debug(ud.MODULE, ud.PROCESS, "invoke-rc.d %s %s: %s" % (service, cmd, stdout)) 
+	ud.debug(ud.MODULE, ud.PROCESS, "invoke-rc.d %s %s: %s" % (service, cmd, stdout))
+
 
 def do_time_sync(ad_ip):
 	ud.debug(ud.MODULE, ud.PROCESS, "Synchronizing time to %s" % ad_ip)
@@ -753,6 +802,7 @@ def do_time_sync(ad_ip):
 		ud.debug(ud.MODULE, ud.ERROR, "rdate -s -p failed (%d)" % (p1.returncode,))
 		return False
 	return True
+
 
 def time_sync(ad_ip, tolerance=180, critical_difference=360):
 	'''Try to sync the local time with an AD server'''
@@ -776,7 +826,7 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
 	time_string = stdout.strip()
 	old_locale = locale.getlocale(locale.LC_TIME)
 	try:
-		locale.setlocale(locale.LC_TIME, (None, None)) # 'C' as env['LC_ALL'] some lines earlier
+		locale.setlocale(locale.LC_TIME, (None, None))  # 'C' as env['LC_ALL'] some lines earlier
 		remote_datetime = datetime.strptime(time_string, TIME_FORMAT)
 	except ValueError as ex:
 		raise timeSyncronizationFailed("AD Server did not return proper time string: %s" % time_string)
@@ -797,6 +847,7 @@ def time_sync(ad_ip, tolerance=180, critical_difference=360):
 		if not do_time_sync(ad_ip):
 			raise timeSyncronizationFailed("Time synchronization failed")
 	return True
+
 
 def check_server_role(ucr=None):
 	if not ucr:
@@ -839,6 +890,7 @@ def set_nameserver(server_ips, ucr=None):
 			univention.config_registry.handler_unset([var])
 	return (previous_ucr_set, previous_ucr_unset)
 
+
 def rename_well_known_sid_objects(username, password, ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
@@ -846,19 +898,19 @@ def rename_well_known_sid_objects(username, password, ucr=None):
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Matching well known object names")
 
-	## First determine current name Domain Admins (trivial)
+	# First determine current name Domain Admins (trivial)
 	lo = univention.uldap.getMachineConnection()
 	ucs_domain_sid = _sid_of_ucs_sambadomain(lo, ucr)
 
 	domain_admins_sid = "%s-%s" % (ucs_domain_sid, security.DOMAIN_RID_ADMINS)
 	res = lo.search(filter="(&(sambaSID=%s)(objectClass=sambaGroupMapping))" % domain_admins_sid, attr=["cn"], unique=True)
-	if not res or not "cn" in res[0][1]:
+	if not res or "cn" not in res[0][1]:
 		ud.debug(ud.MODULE, ud.ERROR, "Lookup of group name for Domain Admins sid failed")
-		domain_admins_name = "Domain Admins" ## sensible guess
+		domain_admins_name = "Domain Admins"  # sensible guess
 	else:
 		domain_admins_name = res[0][1]["cn"][0]
 
-	## Next run the renaming script
+	# Next run the renaming script
 	binddn = '%s@%s' % (username, ucr.get('kerberos/realm'))
 	p1 = subprocess.Popen(['/usr/share/univention-ad-connector/scripts/well-known-sid-object-rename', '--binddn', binddn, '--bindpwd', password],
 		stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -869,9 +921,9 @@ def rename_well_known_sid_objects(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "well-known-sid-object-rename failed with %d (%s)" % (p1.returncode, stderr))
 		raise connectionFailed()
 
-	## Finally wait for replication and slapd restart to ensure that new LDAP ACLs are active:
+	# Finally wait for replication and slapd restart to ensure that new LDAP ACLs are active:
 	res = lo.search(filter="(&(sambaSID=%s)(objectClass=sambaGroupMapping))" % domain_admins_sid, attr=["cn"], unique=True)
-	if not res or not "cn" in res[0][1]:
+	if not res or "cn" not in res[0][1]:
 		ud.debug(ud.MODULE, ud.ERROR, "Lookup of new group name for Domain Admins sid failed")
 		new_domain_admins_name = "Domain Admins"
 	else:
@@ -892,6 +944,7 @@ def rename_well_known_sid_objects(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "Waiting for postrun of well-known-sid-name-mapping")
 		time.sleep(15)
 
+
 def make_deleted_objects_readable_for_this_machine(username, password, ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
@@ -909,24 +962,25 @@ def make_deleted_objects_readable_for_this_machine(username, password, ucr=None)
 		ud.debug(ud.MODULE, ud.ERROR, "make-deleted-objects-readable-for-this-machine failed with %d (%s)" % (p1.returncode, stderr))
 		raise connectionFailed()
 
+
 def prepare_dns_reverse_settings(ad_domain_info):
-	## For python-ldap / GSSAPI / AD we need working reverse DNS lookups
-	## Otherwise one ends up with:
-	## SASL(-1): generic failure: GSSAPI Error: Miscellaneous failure (see text)
-        ##           (Matching credential (ldap/10.20.30.123@10.20.30.123) not found)
+	# For python-ldap / GSSAPI / AD we need working reverse DNS lookups
+	# Otherwise one ends up with:
+	# SASL(-1): generic failure: GSSAPI Error: Miscellaneous failure (see text)
+        # (Matching credential (ldap/10.20.30.123@10.20.30.123) not found)
 	try:
 		socket.gethostbyaddr(ad_domain_info['DC IP'])
 	except socket.herror:
 		ad_server_name = ad_domain_info['DC DNS Name']
 		ip = socket.gethostbyname(ad_server_name)
 		ucr_key = u'hosts/static/%s' % (ip,)
-		ucr_set = [ u'%s=%s' % (ucr_key, ad_server_name), ]
+		ucr_set = [u'%s=%s' % (ucr_key, ad_server_name), ]
 		univention.config_registry.handler_set(ucr_set)
 		if os.path.exists("/usr/sbin/nscd"):
 			cmd = ("/usr/sbin/nscd", "--invalidate=hosts")
 			p1 = subprocess.Popen(cmd, close_fds=True)
 			p1.communicate()
-	
+
 
 def prepare_kerberos_ucr_settings(realm=None, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Prepare Kerberos UCR settings")
@@ -971,9 +1025,11 @@ def prepare_kerberos_ucr_settings(realm=None, ucr=None):
 
 	return (previous_ucr_set, previous_ucr_unset)
 
+
 def set_ucr(ucr_set, ucr_unset):
 	univention.config_registry.handler_set(ucr_set)
 	univention.config_registry.handler_unset(ucr_unset)
+
 
 def prepare_ucr_settings():
 
@@ -996,6 +1052,7 @@ def prepare_ucr_settings():
 	univention.config_registry.handler_set(ucr_set)
 
 	prepare_kerberos_ucr_settings()
+
 
 def revert_ucr_settings():
 
@@ -1039,6 +1096,7 @@ def prepare_connector_settings(username, password, ad_domain_info, ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Setting UCR variables: %s" % ucr_set)
 	univention.config_registry.handler_set(ucr_set)
 
+
 def revert_connector_settings(ucr=None):
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Revert connector settings")
@@ -1056,6 +1114,7 @@ def revert_connector_settings(ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Unsetting UCR variables: %s" % ucr_unset)
 	univention.config_registry.handler_unset(ucr_unset)
 
+
 def disable_local_samba4():
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Disable local samba4")
@@ -1064,10 +1123,11 @@ def disable_local_samba4():
 
 
 def disable_local_heimdal():
-	
+
 	ud.debug(ud.MODULE, ud.PROCESS, "Disable local heimdal")
 	stop_service("heimdal-kdc")
 	univention.config_registry.handler_set([u'kerberos/autostart=false'])
+
 
 def run_samba_join_script(username, password, ucr=None):
 	if not ucr:
@@ -1095,6 +1155,7 @@ def run_samba_join_script(username, password, ucr=None):
 		ud.debug(ud.MODULE, ud.ERROR, "26univention-samba.inst failed with %d" % (p1.returncode,))
 		raise sambaJoinScriptFailed()
 
+
 def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, fqdn=None, ip=None, sso=False):
 
 	pwdfile = None
@@ -1116,7 +1177,7 @@ def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, 
 
 	# take myself as default
 	if not ip:
-		ip = Interfaces().get_default_ip_address().ip	
+		ip = Interfaces().get_default_ip_address().ip
 
 	if sso and not fqdn:
 		fqdn = ucr.get('ucs/server/sso/fqdn', 'ucs-sso.' + domainname)
@@ -1157,7 +1218,7 @@ def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, 
 	fd.write('quit\n')
 	fd.close()
 
-	# create pwd file 
+	# create pwd file
 	if create_pwdfile:
 		tmp = tempfile.NamedTemporaryFile(delete=False)
 		tmp.write('%s' % pwdfile)
@@ -1181,6 +1242,7 @@ def add_host_record_in_ad(uid=None, binddn=None, bindpw=None, bindpwdfile=None, 
 
 	return True
 
+
 def get_domaincontroller_srv_record(domain, nameserver=None):
 	if not domain:
 		return False
@@ -1203,11 +1265,12 @@ def get_domaincontroller_srv_record(domain, nameserver=None):
 		ud.debug(ud.MODULE, ud.WARN, 'Lookup for DC master record timed out: %s' % (exc,))
 	return None
 
+
 def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
-	
+
 	ud.debug(ud.MODULE, ud.PROCESS, "Create _domaincontroller_master SRV record on %s" % ad_ip)
 	hostname = ucr.get('hostname')
 	domainname = ucr.get('domainname')
@@ -1216,7 +1279,7 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, ucr=None):
 	if get_domaincontroller_srv_record(domainname) == fqdn_with_trailing_dot:
 		ud.debug(ud.MODULE, ud.PROCESS, "Ok, SRV record %s already points to this server" % (srv_record,))
 		return True
-	
+
 	fd = tempfile.NamedTemporaryFile(delete=False)
 	fd.write('server %s\n' % ad_ip)
 	fd.write('update add %s. 10800 SRV 0 0 0 %s\n' %
@@ -1261,7 +1324,7 @@ def set_nameserver_from_ucs_master(ucr=None):
 		ucr.load()
 
 	ud.debug(ud.MODULE, ud.PROCESS, "Set nameservers")
-	
+
 	for var in ['nameserver1', 'nameserver2', 'nameserver3']:
 		value = get_ucr_variable_from_ucs(ucr.get('hostname'), ucr.get('ldap/master'), var)
 		if value:
@@ -1303,7 +1366,7 @@ def configure_ad_member(ad_server_ip, username, password):
 	run_samba_join_script(username, password)
 
 	add_domaincontroller_srv_record_in_ad(ad_server_ip)
-	
+
 	if server_supports_ssl(server=ad_domain_info["DC DNS Name"]):
 		enable_ssl()
 	else:
@@ -1321,11 +1384,13 @@ def configure_backup_as_ad_member():
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
+
 def configure_slave_as_ad_member():
 	# TODO something else?
 	set_nameserver_from_ucs_master()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
+
 
 def configure_member_as_ad_member():
 	# TODO something else?
@@ -1333,18 +1398,20 @@ def configure_member_as_ad_member():
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
-def revert_backup_ad_member ():
+
+def revert_backup_ad_member():
 	# TODO something else?
 	remove_install_univention_samba(install=False)
 	revert_ucr_settings()
+
 
 def revert_slave_ad_member():
 	# TODO something else?
 	remove_install_univention_samba(install=False)
 	revert_ucr_settings()
 
+
 def revert_member_ad_member():
 	# TODO something else?
 	remove_install_univention_samba(install=False)
 	revert_ucr_settings()
-

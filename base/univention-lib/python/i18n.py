@@ -34,46 +34,49 @@ import gettext
 from locale import getlocale, Error, LC_MESSAGES
 import re
 
-class I18N_Error( Exception ):
+
+class I18N_Error(Exception):
 	pass
 
-class Locale( object ):
+
+class Locale(object):
+
 	'''Represents a locale specification and provides simple access to
 	language, territory, codeset and modifier'''
 
-	REGEX = re.compile( '(?P<language>([a-z]{2}|C|POSIX))(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?' )
+	REGEX = re.compile('(?P<language>([a-z]{2}|C|POSIX))(_(?P<territory>[A-Z]{2}))?(.(?P<codeset>[a-zA-Z-0-9]+)(@(?P<modifier>.+))?)?')
 
-	def __init__( self, locale = None ):
+	def __init__(self, locale=None):
 		self.__reset()
 		if locale is not None:
-			self.parse( locale )
+			self.parse(locale)
 
-	def __reset( self ):
+	def __reset(self):
 		self.language = None
 		self.territory = None
 		self.codeset = None
 		self.modifier = None
 
-	def parse( self, locale ):
-		if not isinstance( locale, basestring ):
-			raise TypeError( 'locale must be of type string' )
+	def parse(self, locale):
+		if not isinstance(locale, basestring):
+			raise TypeError('locale must be of type string')
 		self.__reset()
-		regex = Locale.REGEX.match( locale )
+		regex = Locale.REGEX.match(locale)
 		if not regex:
-			raise AttributeError( 'attribute does not match locale specification language[_territory][.codeset][@modifier]' )
+			raise AttributeError('attribute does not match locale specification language[_territory][.codeset][@modifier]')
 
-		self.codeset = 'UTF-8' # default encoding
+		self.codeset = 'UTF-8'  # default encoding
 		for key, value in regex.groupdict().items():
 			if value is None:
 				continue
-			setattr( self, key, value )
+			setattr(self, key, value)
 
-	def __nonzero__( self ):
+	def __nonzero__(self):
 		return self.language is not None
 
-	def __str__( self ):
+	def __str__(self):
 		text = self.language
-		if self.language not in ( 'C', 'POSIX' ):
+		if self.language not in ('C', 'POSIX'):
 			if self.territory is not None:
 				text += '_%s' % self.territory
 			if self.codeset is not None:
@@ -82,8 +85,10 @@ class Locale( object ):
 				text += '@%s' % self.modifier
 		return text is None and '' or text
 
-class NullTranslation( object ):
-	def __init__( self, namespace = None, locale_spec = None, localedir = None ):
+
+class NullTranslation(object):
+
+	def __init__(self, namespace=None, locale_spec=None, localedir=None):
 		self.domain = namespace
 		self._translation = None
 		self._localedir = localedir
@@ -92,60 +97,60 @@ class NullTranslation( object ):
 		if not self._locale:
 			self.set_language()
 
-	def _set_domain( self, namespace ):
+	def _set_domain(self, namespace):
 		if namespace is not None:
-			self._domain = namespace.replace( '/', '-' ).replace( '.', '-' )
+			self._domain = namespace.replace('/', '-').replace('.', '-')
 		else:
 			self._domain = None
 
-	domain = property( fset = _set_domain )
+	domain = property(fset=_set_domain)
 
-	def set_language( self, language = None ):
+	def set_language(self, language=None):
 		pass
 
-	def _get_locale( self ):
+	def _get_locale(self):
 		return self._localespec
 
-	def _set_locale( self, locale_spec = None ):
+	def _set_locale(self, locale_spec=None):
 		if locale_spec is None:
 			return
-		self._localespec = Locale( locale_spec )
+		self._localespec = Locale(locale_spec)
 
-	locale = property( fget = _get_locale, fset = _set_locale )
+	locale = property(fget=_get_locale, fset=_set_locale)
 
-	def translate( self, message ):
+	def translate(self, message):
 		if self._translation is None:
 			return message
-		return self._translation.ugettext( message )
+		return self._translation.ugettext(message)
 
 	_ = translate
 
-class Translation( NullTranslation ):
+
+class Translation(NullTranslation):
 	locale = Locale()
 
-	def set_language( self, language = None ):
+	def set_language(self, language=None):
 		if language is not None:
-			Translation.locale.parse( language )
+			Translation.locale.parse(language)
 
 		if not Translation.locale:
 			try:
-				lang = getlocale( LC_MESSAGES )
-				if lang[ 0 ] is None:
+				lang = getlocale(LC_MESSAGES)
+				if lang[0] is None:
 					language = 'C'
 				else:
-					language = lang[ 0 ]
-				Translation.locale.parse( language )
+					language = lang[0]
+				Translation.locale.parse(language)
 			except Error as e:
-				raise I18N_Error( 'The given locale is not vaild: %s' % str( e ) )
+				raise I18N_Error('The given locale is not vaild: %s' % str(e))
 
 		if not self._domain:
 			return
 
 		try:
-			self._translation = gettext.translation( self._domain, languages = ( Translation.locale.language, ), localedir = self._localedir )
-		except IOError, e:
+			self._translation = gettext.translation(self._domain, languages=(Translation.locale.language, ), localedir=self._localedir)
+		except IOError as e:
 			try:
-				self._translation = gettext.translation( self._domain, languages = ( '%s_%s' % ( Translation.locale.language, Translation.locale.territory ), ), localedir = self._localedir )
+				self._translation = gettext.translation(self._domain, languages=('%s_%s' % (Translation.locale.language, Translation.locale.territory), ), localedir=self._localedir)
 			except IOError:
 				self._translation = None
-

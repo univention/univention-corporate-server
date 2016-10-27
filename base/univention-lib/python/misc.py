@@ -2,9 +2,10 @@
 import univention.config_registry
 import subprocess
 
+
 def createMachinePassword():
 	"""
-	Returns a $(pwgen) generated password according to the 
+	Returns a $(pwgen) generated password according to the
 	requirements in
 		machine/password/length
 		machine/password/complexity
@@ -17,7 +18,8 @@ def createMachinePassword():
 	(stdout, stderr) = p.communicate()
 	return stdout.strip()
 
-def getLDAPURIs(configRegistryInstance = None):
+
+def getLDAPURIs(configRegistryInstance=None):
 	"""
 	Returns a string with all configured LDAP servers,
 	ldap/server/name and ldap/server/addition.
@@ -31,7 +33,7 @@ def getLDAPURIs(configRegistryInstance = None):
 		ucr.load()
 
 	uri_string = ''
-	ldaphosts=[]
+	ldaphosts = []
 	port = ucr.get('ldap/server/port', '7389')
 	ldap_server_name = ucr.get('ldap/server/name')
 	ldap_server_addition = ucr.get('ldap/server/addition')
@@ -41,12 +43,13 @@ def getLDAPURIs(configRegistryInstance = None):
 	if ldap_server_addition:
 		ldaphosts.extend(ldap_server_addition.split())
 	if ldaphosts:
-		urilist=[ "ldap://%s:%s" % (host, port) for host in ldaphosts ]
+		urilist = ["ldap://%s:%s" % (host, port) for host in ldaphosts]
 		uri_string = ' '.join(urilist)
 
 	return uri_string
 
-def getLDAPServersCommaList(configRegistryInstance = None):
+
+def getLDAPServersCommaList(configRegistryInstance=None):
 	"""
 	Returns a comma-separated string with all configured LDAP servers,
 	ldap/server/name and ldap/server/addition.
@@ -60,7 +63,7 @@ def getLDAPServersCommaList(configRegistryInstance = None):
 		ucr.load()
 
 	ldap_servers = ''
-	ldaphosts=[]
+	ldaphosts = []
 	ldap_server_name = ucr.get('ldap/server/name')
 	ldap_server_addition = ucr.get('ldap/server/addition')
 
@@ -73,7 +76,8 @@ def getLDAPServersCommaList(configRegistryInstance = None):
 
 	return ldap_servers
 
-def custom_username(name, configRegistryInstance = None):
+
+def custom_username(name, configRegistryInstance=None):
 	"""
 	Returns the customized username configured via UCR
 	"""
@@ -89,7 +93,8 @@ def custom_username(name, configRegistryInstance = None):
 
 	return ucr.get("users/default/" + name.lower().replace(" ", ""), name)
 
-def custom_groupname(name, configRegistryInstance = None):
+
+def custom_groupname(name, configRegistryInstance=None):
 	"""
 	Returns the customized groupname configured via UCR
 	"""
