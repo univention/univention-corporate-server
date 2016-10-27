@@ -37,6 +37,7 @@ import shlex
 import signal
 import time
 
+
 def trim(docstring):
 	'''Format docstring. http://www.python.org/dev/peps/pep-0257/#one-line-docstrings'''
 	if not docstring:
@@ -45,14 +46,14 @@ def trim(docstring):
 	# and split into a list of lines:
 	lines = docstring.expandtabs().splitlines()
 	# Determine minimum indentation (first line doesn't count):
-	indent = sys.maxint
+	indent = sys.maxsize
 	for line in lines[1:]:
 		stripped = line.lstrip()
 		if stripped:
 			indent = min(indent, len(line) - len(stripped))
 	# Remove indentation (first line is special):
 	trimmed = [lines[0].strip()]
-	if indent < sys.maxint:
+	if indent < sys.maxsize:
 		for line in lines[1:]:
 			trimmed.append(line[indent:].rstrip())
 	# Strip off trailing and leading blank lines:
@@ -62,6 +63,7 @@ def trim(docstring):
 		trimmed.pop(0)
 	# Return a single string:
 	return '\n'.join(trimmed)
+
 
 def display_help(out=sys.stdout):
 	'''Display help text.'''
@@ -122,6 +124,7 @@ def display_help(out=sys.stdout):
 		'''
 	print >>out, trim(text % {'cmd': cmd})
 
+
 def display_version(out=sys.stdout):
 	'''Display program name and version string.'''
 	print >>out, '%s @@package_version@@' % (cmd,)
@@ -170,7 +173,7 @@ try:
 				'univention-ssh': ['ssh', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
 				'univention-scp': ['scp', '-o', 'StrictHostKeyChecking=no', '-o', 'ControlPath=none'],
 				'univention-ssh-rsync': ['rsync', '-e', 'ssh -o StrictHostKeyChecking=no -o ControlPath=none'],
-				}[cmd]
+			}[cmd]
 			if split:
 				sys.argv = shlex.split(' '.join(sys.argv))
 			if cmd == 'univention-ssh-rsync':
@@ -179,7 +182,7 @@ try:
 					arg = sys.argv[i]
 					if arg in ('-e', '--rsh'):
 						print >>sys.stderr, 'Overwriting %s option' % (arg,)
-						del sys.argv[i:i+2]
+						del sys.argv[i:i + 2]
 					elif arg.startswith('--rsh='):
 						print >>sys.stderr, 'Overwriting --rsh option' % (arg,)
 						del sys.argv[i]
@@ -190,13 +193,13 @@ try:
 			pid = os.fork()
 			if pid < 0:
 				print >>sys.stderr, 'Failed to fork child process'
-			elif pid == 0: # child
+			elif pid == 0:  # child
 				# the password for the grandchild
 				os.environ[UNIVENTION_SSH_ASKPASS_ENV] = password
 				# path to self
 				os.environ['SSH_ASKPASS'] = UNIVENTION_SSH_ASKPASS_HELPER
 				# DISPLAY must be non-empty
-				if not 'DISPLAY' in os.environ:
+				if 'DISPLAY' not in os.environ:
 					os.environ['DISPLAY'] = ':99'
 
 				# create new session to force ssh to call SSH_ASKPASS
@@ -205,7 +208,7 @@ try:
 				os.execvp(command[0], command)
 
 				print >>sys.stderr, 'Failed to exec %s' % (' '.join(command),)
-			else: # parent
+			else:  # parent
 				# close all file descriptors
 				max_fd = os.sysconf('SC_OPEN_MAX')
 				if hasattr(os, 'closerange'):
@@ -226,12 +229,12 @@ try:
 
 				try:
 					# setup timeout
-					handler = lambda signum, frame:None
-					sig_alrm = signal.signal(signal.SIGALRM, handler) # alarm
-					signal.signal(signal.SIGHUP, handler) # hang up
-					signal.signal(signal.SIGINT, handler) # interrupt
-					signal.signal(signal.SIGTERM, handler) # terminate
-					signal.signal(signal.SIGSEGV, handler) # memory corrupt
+					handler = lambda signum, frame: None
+					sig_alrm = signal.signal(signal.SIGALRM, handler)  # alarm
+					signal.signal(signal.SIGHUP, handler)  # hang up
+					signal.signal(signal.SIGINT, handler)  # interrupt
+					signal.signal(signal.SIGTERM, handler)  # terminate
+					signal.signal(signal.SIGSEGV, handler)  # memory corrupt
 
 					signal.alarm(timeout)
 
@@ -248,7 +251,7 @@ try:
 						sig = os.WTERMSIG(status)
 						self = os.getpid()
 						os.kill(self, sig)
-				except OSError, e:
+				except OSError as e:
 					print >>sys.stderr, 'Signal.'
 					os.kill(pid, signal.SIGTERM)
 					cpid, status = os.waitpid(pid, os.WNOHANG)
@@ -258,11 +261,11 @@ try:
 						cpid, status = os.waitpid(pid, 0)
 			# the buck stops here: fatal error
 			sys.exit(1)
-except KeyError, e:
+except KeyError as e:
 	print >>sys.stderr, 'Unknown command %s' % (cmd,)
-except IndexError, e:
+except IndexError as e:
 	display_help(sys.stderr)
-except IOError, e:
+except IOError as e:
 	print >>sys.stderr, 'Failed to read password from %s' % (pw_filename,)
 
 sys.exit(2)
