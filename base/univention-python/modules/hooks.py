@@ -32,7 +32,9 @@
 import os
 import imp
 
+
 class HookManager:
+
 	"""
 	This class tries to provide a simple interface to load and call hooks within existing code.
 	Python modules are loaded from specified 'module_dir' and automatically registered.
@@ -80,6 +82,7 @@ class HookManager:
 	------------------------------------------------------------------------------------------
 
 	"""
+
 	def __init__(self, module_dir, raise_exceptions=True):
 		"""
 		module_dir:				path to directory that contains python modules with hook functions
@@ -93,25 +96,22 @@ class HookManager:
 		self.__load_hooks()
 		self.__register_hooks()
 
-
 	def __load_hooks(self):
 		"""
 		loads all python modules in specified module dir
 		"""
-		if os.path.exists( self.__module_dir ) and os.path.isdir( self.__module_dir ):
-			for f in os.listdir( self.__module_dir ):
+		if os.path.exists(self.__module_dir) and os.path.isdir(self.__module_dir):
+			for f in os.listdir(self.__module_dir):
 				if f.endswith('.py') and len(f) > 3:
-					fn = os.path.join( self.__module_dir, f )
 					modname = f[0:-3]
-					fd = open( os.path.join( self.__module_dir, f ) )
+					fd = open(os.path.join(self.__module_dir, f))
 					module = imp.new_module(modname)
 					try:
-						exec fd in module.__dict__
+						exec(fd, module.__dict__)
 						self.__loaded_modules[modname] = module
-					except Exception, e:
+					except Exception:
 						if self.__raise_exceptions:
 							raise
-
 
 	def __register_hooks(self):
 		for module in self.__loaded_modules.values():
@@ -125,11 +125,10 @@ class HookManager:
 					if hookname in self.__registered_hooks:
 						self.__registered_hooks[hookname].append(func)
 					else:
-						self.__registered_hooks[hookname]=[ func ]
-			except Exception, e:
+						self.__registered_hooks[hookname] = [func]
+			except Exception:
 				if self.__raise_exceptions:
 					raise
-
 
 	def set_raise_exceptions(self, val):
 		if val in (True, False):
@@ -137,13 +136,11 @@ class HookManager:
 		else:
 			raise ValueError('boolean value required')
 
-
 	def get_hook_list(self):
 		"""
 		returns a list of hook names that have been defined by loaded python modules
 		"""
 		return self.__registered_hooks.keys()
-
 
 	def call_hook(self, name, *args, **kwargs):
 		"""
@@ -153,11 +150,11 @@ class HookManager:
 
 		"""
 		result = []
-		for func in self.__registered_hooks.get(name,[]):
+		for func in self.__registered_hooks.get(name, []):
 			try:
 				res = func(*args, **kwargs)
 				result.append(res)
-			except Exception, e:
+			except Exception as e:
 				if self.__raise_exceptions:
 					raise
 				else:
@@ -170,4 +167,3 @@ if __name__ == '__main__':
 	x = HookManager('./test')
 	print 'get_hook_list()=', x.get_hook_list()
 	print 'call_hook(test_hook)=', x.call_hook('test_hook', 'abc', 123, x=1, y='B')
-

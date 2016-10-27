@@ -34,8 +34,11 @@ See <http://linux.die.net/include/mntent.h>.
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+
 class mntent(object):
+
 	"""Structure describing a mount table entry."""
+
 	def __init__(self, fsname, dir, type, opts=None, freq=0, passno=0, comment=None):
 		self.fsname = mntent.unquote(fsname)
 		self.dir = mntent.unquote(dir)
@@ -64,7 +67,7 @@ class mntent(object):
 				"opts=%r" % ','.join(self.opts),
 				"freq=%d" % self.freq,
 				"passno=%d" % self.passno,
-				]
+		]
 		if self.comment:
 			h.append("comment=%r" % self.comment)
 		return "mntent(%s)" % ', '.join(h)
@@ -84,7 +87,7 @@ class mntent(object):
 				mntent.quote(','.join(self.opts)),
 				str(self.freq),
 				str(self.passno),
-				]
+		]
 		if self.comment:
 			h.append(self.comment)
 		return delim.join(h)
@@ -124,7 +127,9 @@ class mntent(object):
 		"""
 		return filter(lambda o: o.startswith(opt), self.opts)
 
+
 class fstab(object):
+
 	"""Handle parsing and writing /etc/fstab."""
 
 	def __init__(self, fstab='/etc/fstab'):

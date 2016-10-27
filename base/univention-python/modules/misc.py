@@ -34,6 +34,7 @@ import platform
 import os
 import resource
 
+
 def filemax_global():
 	"""
 	Get maximum number of files the kernel can open.
@@ -48,19 +49,21 @@ def filemax_global():
 	finally:
 		f.close()
 
+
 def filemax():
 	"""
 	Get maximum number of files a process can open.
-	
+
 	>>> filemax() #doctest: +ELLIPSIS
 	...
 	"""
 	return resource.getrlimit(resource.RLIMIT_NOFILE)[1]
 
+
 def close_fds():
 	"""
 	Close all open file descriptors and open /dev/null as stdin, stdout, and stderr.
-	
+
 	>>> close_fds()
 	"""
 	if platform.system() == 'Linux':
@@ -76,19 +79,20 @@ def close_fds():
 	assert 1 == os.open(os.path.devnull, os.O_WRONLY)
 	assert 2 == os.open(os.path.devnull, os.O_WRONLY)
 
+
 def close_fd_spawn(file, args):
 	"""
 	Close all open file descriptors before doing execv().
-	
+
 	>>> close_fd_spawn("/bin/bash", ["bash", "-c", "exit `find /proc/$$/fd -mindepth 1 -lname /dev/null | wc -l`"])
 	3
 	"""
 	pid = os.fork()
-	if pid == 0: # child
+	if pid == 0:  # child
 		close_fds()
 		os.execv(file, args)
 		os._exit(127)
-	elif pid > 0: # parent
+	elif pid > 0:  # parent
 		pid, status = os.waitpid(pid, 0)
 		if os.WIFEXITED(status):
 			return os.WEXITSTATUS(status)
