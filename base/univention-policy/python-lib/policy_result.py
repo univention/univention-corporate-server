@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from subprocess import Popen, PIPE
-import string
+
 
 def policy_result(dn, binddn="", bindpw=""):
 	"""
@@ -56,14 +56,14 @@ def policy_result(dn, binddn="", bindpw=""):
 	stdout, stderr = p.communicate()
 	if p.returncode != 0:
 		raise Exception("Error getting univention-policy-result for '%(dn)s': %(error)s" % {'dn': dn, 'error': stderr})
-	results = {} # Attribute -> [Values...]
-	policies = {} # Attribute -> Policy-DN
+	results = {}  # Attribute -> [Values...]
+	policies = {}  # Attribute -> Policy-DN
 	current_attribute = None
 	for line in stdout.splitlines():
 		if line.startswith('Attribute: '):
 			current_attribute = line[len('Attribute: '):]
 			if current_attribute.startswith('univentionRegistry;entry-hex-'):
-				current_attribute=current_attribute.replace('univentionRegistry;entry-hex-','').decode('hex')
+				current_attribute = current_attribute.replace('univentionRegistry;entry-hex-', '').decode('hex')
 			policies[current_attribute] = policy
 			current_values = results.setdefault(current_attribute, [])
 		elif line.startswith('Value: '):
@@ -72,11 +72,11 @@ def policy_result(dn, binddn="", bindpw=""):
 		elif line.startswith('Policy: '):
 			policy = line[len('Policy: '):]
 		elif line.startswith('DN: '):
-			pass # DN of the object
+			pass  # DN of the object
 		elif line.startswith('POLICY '):
-			pass # DN of the object ?
+			pass  # DN of the object ?
 		else:
-			pass # empty line
+			pass  # empty line
 	return (results, policies)
 
 if __name__ == '__main__':
