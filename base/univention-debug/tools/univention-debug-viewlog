@@ -67,6 +67,7 @@ skip = True
 levels = ['^']
 msg_pattern = re.compile('^([^ ]+) *\( ([^ ]+) +\) : (.+)$')
 
+
 def suspended(levels):
 	suspend = 1
 	priority = 0
@@ -78,19 +79,21 @@ def suspended(levels):
 
 	return suspend < 1
 
+
 def spacing(depth):
 	if depth == 0:
 		return ''
 	else:
-		return '   '*depth
+		return '   ' * depth
+
 
 def split(line, l):
 	if len(line) < l:
 		return [line]
 	res = []
 	ls = len(line) / l
-	for i in range(0, ls+1):
-		n = line[i*l:(i+1)*l]
+	for i in range(0, ls + 1):
+		n = line[i * l:(i + 1) * l]
 		if not n:
 			break
 		res.append(n)
@@ -103,20 +106,20 @@ while True:
 	line = line[0:-1]
 	if line.startswith('DEBUG_INIT'):
 		if not breakline:
-			print '-'*80
+			print '-' * 80
 		else:
-			print '-'*breakline
+			print '-' * breakline
 		skip = False
 	elif skip:
 		pass
 	elif line.startswith('UNIVENTION_DEBUG_BEGIN  : '):
-		function = line[line.find(':')+2:]
+		function = line[line.find(':') + 2:]
 		levels.append(function)
 
 		if not suspended(levels):
 			if breakline:
-				s = spacing(len(levels)-1)
-				sl = breakline-len(s)-3
+				s = spacing(len(levels) - 1)
+				sl = breakline - len(s) - 3
 				c = 1
 				for i in split(function, sl):
 					if c:
@@ -125,15 +128,15 @@ while True:
 					else:
 						print s, ' ', i
 			else:
-				print spacing(len(levels)-1), '+', function
-		
+				print spacing(len(levels) - 1), '+', function
+
 	elif line.startswith('UNIVENTION_DEBUG_END    : '):
-		function = line[line.find(':')+2:]
+		function = line[line.find(':') + 2:]
 		levels.pop()
-		
+
 	else:
 		if not suspended(levels):
-			#ADMIN       ( INFO    ) : writing XML
+			# ADMIN       ( INFO    ) : writing XML
 			msgs = msg_pattern.findall(line)
 			if msgs:
 				module, level, msg = msgs[0]

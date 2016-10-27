@@ -32,7 +32,7 @@
 
 import sys
 import logging
-#import logging.handlers
+# import logging.handlers
 
 ERROR = 0
 WARN = 1
@@ -86,9 +86,9 @@ _map_id_old2new = {
 }
 
 
-#13.08.08 13:13:57  LISTENER    ( ERROR   ) : listener: 1
-#13.08.08 13:13:57  LISTENER    ( WARN    ) : received signal 2
-#13.08.08 13:14:02  DEBUG_INIT
+# 13.08.08 13:13:57  LISTENER    ( ERROR   ) : listener: 1
+# 13.08.08 13:13:57  LISTENER    ( WARN    ) : received signal 2
+# 13.08.08 13:14:02  DEBUG_INIT
 _outfmt = '%(asctime)s,%(msecs)d %(name)-11s (%(levelname)-7s): %(message)s'
 _outfmt_syslog = '%(name)-11s (%(levelname)-7s): %(message)s'
 _datefmt = '%d.%m.%Y %H:%M:%S'
@@ -106,18 +106,19 @@ _logger_level = {}
 for key in _map_id_old2new.values():
 	_logger_level[key] = _map_lvl_old2new[DEFAULT]
 
-def init( logfilename, do_flush=0, enable_function=0, enable_syslog=0 ):
+
+def init(logfilename, do_flush=0, enable_function=0, enable_syslog=0):
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 
 	_logfilename = logfilename
 
 	# create root logger
 	logging.basicConfig(level=logging.DEBUG,
-						filename = '/dev/null',       # disabled
-						format = _outfmt,
-						datefmt = _datefmt)
+						filename='/dev/null',       # disabled
+						format=_outfmt,
+						datefmt=_datefmt)
 
-	formatter = logging.Formatter( _outfmt, _datefmt )
+	formatter = logging.Formatter(_outfmt, _datefmt)
 	if logfilename == 'stderr' or logfilename == 'stdout':
 		# add stderr or stdout handler
 		try:
@@ -126,10 +127,10 @@ def init( logfilename, do_flush=0, enable_function=0, enable_syslog=0 ):
 				_handler_console = None
 
 			if logfilename == 'stdout':
-				_handler_console = logging.StreamHandler( sys.stdout )
+				_handler_console = logging.StreamHandler(sys.stdout)
 			else:
-				_handler_console = logging.StreamHandler( sys.stderr )
-			_handler_console.setLevel( logging.DEBUG )
+				_handler_console = logging.StreamHandler(sys.stderr)
+			_handler_console.setLevel(logging.DEBUG)
 			_handler_console.setFormatter(formatter)
 			logging.getLogger('').addHandler(_handler_console)
 		except:
@@ -140,8 +141,8 @@ def init( logfilename, do_flush=0, enable_function=0, enable_syslog=0 ):
 			_handler_file = None
 		try:
 			# add file handler
-			_handler_file = logging.FileHandler( logfilename, 'a+' )
-			_handler_file.setLevel( logging.DEBUG )
+			_handler_file = logging.FileHandler(logfilename, 'a+')
+			_handler_file.setLevel(logging.DEBUG)
 			_handler_file.setFormatter(formatter)
 			logging.getLogger('').addHandler(_handler_file)
 		except:
@@ -149,7 +150,7 @@ def init( logfilename, do_flush=0, enable_function=0, enable_syslog=0 ):
 
 # 	if enable_syslog:
 # 		try:
-# 			# add syslog handler
+# add syslog handler
 # 			_handler_syslog = logging.handlers.SysLogHandler( ('localhost', 514), logging.handlers.SysLogHandler.LOG_ERR )
 # 			_handler_syslog.setLevel( _map_lvl_old2new[ERROR] )
 # 			_handler_syslog.setFormatter(formatter)
@@ -158,11 +159,11 @@ def init( logfilename, do_flush=0, enable_function=0, enable_syslog=0 ):
 # 			raise
 # 			print 'opening syslog failed'
 
-	logging.addLevelName( 25, 'PROCESS' )
-	logging.addLevelName( 15, 'ALL' )
-	logging.addLevelName( 100, '------' )
+	logging.addLevelName(25, 'PROCESS')
+	logging.addLevelName(15, 'ALL')
+	logging.addLevelName(100, '------')
 
-	logging.getLogger('MAIN').log( 100, 'DEBUG_INIT' )
+	logging.getLogger('MAIN').log(100, 'DEBUG_INIT')
 
 	_do_flush = do_flush
 	_enable_function = enable_function
@@ -171,53 +172,58 @@ def init( logfilename, do_flush=0, enable_function=0, enable_syslog=0 ):
 
 def reopen():
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
-	logging.getLogger('MAIN').log( 100, 'DEBUG_REINIT' )
-	init( _logfilename, _do_flush, _enable_function, _enable_syslog )
+	logging.getLogger('MAIN').log(100, 'DEBUG_REINIT')
+	init(_logfilename, _do_flush, _enable_function, _enable_syslog)
 
-def set_level( id, level ):
+
+def set_level(id, level):
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	new_id = _map_id_old2new.get(id, 'MAIN')
 	if level > ALL:
 		level = ALL
 	elif level < ERROR:
 		level = ERROR
-	new_level = _map_lvl_old2new[ level ]
-	_logger_level[ new_id ] = new_level
+	new_level = _map_lvl_old2new[level]
+	_logger_level[new_id] = new_level
 
-def set_function( activated ):
+
+def set_function(activated):
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	_enable_function = activated
 
-def debug( id, level, msg, utf8=True):
+
+def debug(id, level, msg, utf8=True):
 	global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 	new_id = _map_id_old2new.get(id, 'MAIN')
-	new_level = _map_lvl_old2new[ level ]
-	if new_level >= _logger_level[ new_id ]:
-		logging.getLogger( new_id ).log( new_level, msg )
+	new_level = _map_lvl_old2new[level]
+	if new_level >= _logger_level[new_id]:
+		logging.getLogger(new_id).log(new_level, msg)
 		# flush if requested
 		if _do_flush:
-			for handler in [ _handler_console, _handler_file, _handler_syslog ]:
+			for handler in [_handler_console, _handler_file, _handler_syslog]:
 				if handler:
 					handler.flush()
 
+
 class function:
+
 	def __init__(self, text, utf8=True):
 		global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
-		self.text=text
+		self.text = text
 		if _enable_function:
-			logging.getLogger('MAIN').log( 100, 'UNIVENTION_DEBUG_BEGIN : ' + self.text )
+			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_BEGIN : ' + self.text)
 			# flush if requested
 			if _do_flush:
-				for handler in [ _handler_console, _handler_file, _handler_syslog ]:
+				for handler in [_handler_console, _handler_file, _handler_syslog]:
 					if handler:
 						handler.flush()
 
 	def __del__(self):
 		global _logfilename, _handler_console, _handler_file, _handler_syslog, _do_flush, _enable_function, _enable_syslog, _logger_level
 		if _enable_function:
-			logging.getLogger('MAIN').log( 100, 'UNIVENTION_DEBUG_END   : ' + self.text )
+			logging.getLogger('MAIN').log(100, 'UNIVENTION_DEBUG_END   : ' + self.text)
 			# flush if requested
 			if _do_flush:
-				for handler in [ _handler_console, _handler_file, _handler_syslog ]:
+				for handler in [_handler_console, _handler_file, _handler_syslog]:
 					if handler:
 						handler.flush()

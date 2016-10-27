@@ -45,10 +45,13 @@ example:
 import _debug
 from _debug import *
 
+
 def debug(id, level, ustring, utf8=True):
 	_debug.debug(id, level, ustring)
 
+
 class function:
+
 	def __init__(self, text, utf8=True):
 		self.text = text
 		_debug.begin(self.text)
