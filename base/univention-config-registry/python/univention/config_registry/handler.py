@@ -67,6 +67,7 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
 
 '''
 
+
 def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	"""Process a template file: substitute variables."""
 	while True:
@@ -145,16 +146,16 @@ def run_module(modpath, arg, ucr, changes):
 	subdirectory."""
 	arg2meth = {
 			'generate': lambda obj: getattr(obj, 'handler'),
-			'preinst':  lambda obj: getattr(obj, 'preinst'),
+			'preinst': lambda obj: getattr(obj, 'preinst'),
 			'postinst': lambda obj: getattr(obj, 'postinst'),
-			}
+	}
 	# temporarily prepend MODULE_DIR to load path
 	sys.path.insert(0, MODULE_DIR)
 	module_name = os.path.splitext(modpath)[0]
 	try:
 		module = __import__(module_name.replace(os.path.sep, '.'))
 		arg2meth[arg](module)(ucr, changes)
-	except (AttributeError, ImportError), ex:
+	except (AttributeError, ImportError) as ex:
 		print >> sys.stderr, ex
 	del sys.path[0]
 
@@ -178,11 +179,13 @@ def warning_string(prefix='# ', width=80, srcfiles=set(), enforce_ascii=False):
 
 
 class ConfigHandler(object):
+
 	"""Base class of all config handlers."""
 	variables = set()
 
 
 class ConfigHandlerDiverting(ConfigHandler):
+
 	"""File diverting config handler."""
 
 	def __init__(self, to_file):
@@ -202,7 +205,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 		"""Compare this to other handler."""
 		return cmp(self.to_file, other.to_file)
 
-	def _set_perm(self, stat, to_file = None):
+	def _set_perm(self, stat, to_file=None):
 		"""Set file permissions."""
 		if not to_file:
 			to_file = self.to_file
@@ -275,6 +278,7 @@ class ConfigHandlerDiverting(ConfigHandler):
 
 
 class ConfigHandlerMultifile(ConfigHandlerDiverting):
+
 	"""Handler for multifile."""
 
 	def __init__(self, dummy_from_file, to_file):
@@ -307,7 +311,6 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 		ucr, changed = args
 		print 'Multifile: %s' % self.to_file
 
-
 		if hasattr(self, 'preinst') and self.preinst:
 			run_module(self.preinst, 'preinst', ucr, changed)
 
@@ -316,7 +319,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
-			os.makedirs(to_dir, 0755)
+			os.makedirs(to_dir, 0o755)
 
 		if os.path.isfile(self.dummy_from_file):
 			stat = os.stat(self.dummy_from_file)
@@ -354,7 +357,6 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 				os.unlink(tmp_to_file)
 			raise
 
-
 		if hasattr(self, 'postinst') and self.postinst:
 			run_module(self.postinst, 'postinst', ucr, changed)
 
@@ -382,6 +384,7 @@ class ConfigHandlerMultifile(ConfigHandlerDiverting):
 
 
 class ConfigHandlerFile(ConfigHandlerDiverting):
+
 	"""Handler for (single)file."""
 
 	def __init__(self, from_file, to_file):
@@ -399,7 +402,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
-			os.makedirs(to_dir, 0755)
+			os.makedirs(to_dir, 0o755)
 
 		try:
 			stat = os.stat(self.from_file)
@@ -446,6 +449,7 @@ class ConfigHandlerFile(ConfigHandlerDiverting):
 
 
 class ConfigHandlerScript(ConfigHandler):
+
 	"""Handler for scripts."""
 
 	def __init__(self, script):
@@ -461,6 +465,7 @@ class ConfigHandlerScript(ConfigHandler):
 
 
 class ConfigHandlerModule(ConfigHandler):
+
 	"""Handler for module."""
 
 	def __init__(self, module):
@@ -480,6 +485,7 @@ def grep_variables(text):
 
 
 class ConfigHandlers:
+
 	"""Manage handlers for configuration variables."""
 	CACHE_FILE = '/var/cache/univention-config/cache'
 	# 0: without version
@@ -534,7 +540,7 @@ class ConfigHandlers:
 				self._multifiles = pickler.load()
 			finally:
 				cache_file.close()
-		except (StandardError, cPickle.UnpicklingError):
+		except (Exception, cPickle.UnpicklingError):
 			self.update()
 
 	def strip_basepath(self, path, basepath):
@@ -712,7 +718,7 @@ class ConfigHandlers:
 
 	def update_divert(self, handlers):
 		"""Synchronize diversions with handlers."""
-		wanted = dict([(h.to_file, h) for h in handlers if \
+		wanted = dict([(h.to_file, h) for h in handlers if
 				isinstance(h, ConfigHandlerDiverting) and h.need_divert()])
 		to_remove = set()
 		# Scan for diversions done by UCR

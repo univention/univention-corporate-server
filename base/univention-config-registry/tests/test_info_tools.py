@@ -7,8 +7,11 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir, 'python'))
 import univention.info_tools as uit
 
+
 class TestLocalizedValue(unittest.TestCase):
+
 	"""Unit test for univention.info_tools.LocalizedValue"""
+
 	def setUp(self):
 		"""Create object."""
 		self.obj = uit.LocalizedValue()
@@ -54,7 +57,9 @@ class TestLocalizedValue(unittest.TestCase):
 
 
 class TestLocalizedDictionary(unittest.TestCase):
+
 	"""Unit test for univention.info_tools.LocalizedDictionary"""
+
 	def setUp(self):
 		"""Create object."""
 		self.obj = uit.LocalizedDictionary()
@@ -116,7 +121,7 @@ class TestLocalizedDictionary(unittest.TestCase):
 				'foo[fr]': 'bar',
 				'foo[en]': 'baz',
 				'foo': 'bam',
-				}
+		}
 		for key, value in reference.items():
 			self.obj[key] = value
 		norm = self.obj.normalize('foo')
@@ -127,7 +132,7 @@ class TestLocalizedDictionary(unittest.TestCase):
 		reference = {
 				'foo[fr]': 'bar',
 				'foo[en]': 'baz',
-				}
+		}
 		for key, value in reference.items():
 			self.obj[key] = value
 		var = self.obj.get_dict('foo')
@@ -149,7 +154,9 @@ class TestLocalizedDictionary(unittest.TestCase):
 
 
 class TestSetLanguage(unittest.TestCase):
+
 	"""Unit test for univention.info_tools.set_language()."""
+
 	def setUp(self):
 		"""Create objects."""
 		self.lval = uit.LocalizedValue()

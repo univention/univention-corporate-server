@@ -49,7 +49,7 @@ if __name__ == '__main__':
 	import sys
 	try:
 		main(sys.argv[1:])
-	except StrictModeException, ex2:
+	except StrictModeException as ex2:
 		print >> sys.stderr, ('E: UCR is running in strict mode ' +
 			'and thus cannot accept the given input:')
 		print >> sys.stderr, ex2

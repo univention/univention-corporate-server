@@ -41,33 +41,42 @@ try:
 except ImportError:
 	from pipes import quote
 
+
 def tmpDir(package):
 	"""Name of the packages build directory."""
-	return 'debian/'+package
+	return 'debian/' + package
+
 
 def extFile(package, ext):
 	"""Name of a package configuration file."""
-	return 'debian/'+package+'.'+ext
+	return 'debian/' + package + '.' + ext
+
 
 def srcPath(file):
 	"""Find file in source directory."""
-	f = 'conffiles/'+file
-	if os.path.exists(f): return f
+	f = 'conffiles/' + file
+	if os.path.exists(f):
+		return f
 	f = file
-	if os.path.exists(f): return f
+	if os.path.exists(f):
+		return f
 	if file.startswith('etc/'):
-		f = 'conffiles/'+file[4:]
-		if os.path.exists(f): return f
+		f = 'conffiles/' + file[4:]
+		if os.path.exists(f):
+			return f
 	print >>sys.stderr, "file %s was not found" % file
 	sys.exit(1)
 
+
 def destPath(file, package, type='files'):
 	"""File name for a UCR file inside the packages build directory."""
-	return tmpDir(package)+'/etc/univention/templates/'+type+'/'+file
+	return tmpDir(package) + '/etc/univention/templates/' + type + '/' + file
+
 
 def destDir(file, package, type='files'):
 	"""Directory name for a UCR file inside the packages build directory."""
-	return tmpDir(package)+'/etc/univention/templates/'+type+'/'+os.path.dirname(file)
+	return tmpDir(package) + '/etc/univention/templates/' + type + '/' + os.path.dirname(file)
+
 
 def typeDir(type):
 	"""Name for the subdirectory for a UCR file."""
@@ -75,6 +84,7 @@ def typeDir(type):
 		return 'script'
 	else:
 		return 'file'
+
 
 def do_package(package):
 	"""Install all files related to one package."""
@@ -125,17 +135,17 @@ def do_package(package):
 	f_ucr.close()
 
 	doIt('install', '-d', destDir('', package, 'info'))
-	doIt('install', '-m644', n_ucr, destPath(package+'.info', package, 'info'))
-	mapping_file = extFile( package, 'univention-config-registry-mapping')
+	doIt('install', '-m644', n_ucr, destPath(package + '.info', package, 'info'))
+	mapping_file = extFile(package, 'univention-config-registry-mapping')
 	if os.path.exists(mapping_file):
 		doIt('install', '-d', destDir('', package, 'mapping'))
-		doIt('install', '-m644', mapping_file, destPath(package+'.univention-config-registry-mapping', package, 'mapping'))
+		doIt('install', '-m644', mapping_file, destPath(package + '.univention-config-registry-mapping', package, 'mapping'))
 
 	data = {
 			'pkg': quote(package),
 			'info': quote("/etc/univention/templates/info/%s.info" % package),
 			'removed': quote("/etc/univention/templates/removed/%s.info" % package),
-			}
+	}
 
 	f_preinst = open(extFile(package, 'preinst.debhelper'), 'a')
 	f_preinst.write('# Automatically added by univention-install-config-registry\n')
@@ -164,6 +174,7 @@ def do_package(package):
 	f_prerm.close()
 
 	doIt('perl', '-e', 'use Debian::Debhelper::Dh_Lib;addsubstvar("%s", "misc:Depends", "univention-config (>= 7.0.25)");' % package)
+
 
 def main():
 	"""Install config registry script."""
@@ -195,7 +206,7 @@ The mapping files debian/*.univention-config-registry-mapping go to /etc/univent
 	try:
 		for package in binary_packages():
 			do_package(package)
-	except (LookupError, IOError), ex:
+	except (LookupError, IOError) as ex:
 		print >> sys.stderr, ex
 		sys.exit(1)
 
