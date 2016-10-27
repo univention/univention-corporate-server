@@ -121,13 +121,13 @@ def set_permissions(arg, directory, fnames):
 
 	ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (directory, uidNumber, gidNumber))
 	os.chown(directory, uidNumber, gidNumber)
-	os.chmod(directory, 0750)
+	os.chmod(directory, 0o750)
 
 	for fname in fnames:
 		filename = os.path.join(directory, fname)
 		ud.debug(ud.LISTENER, ud.INFO, 'CERTIFICATE: Set permissons for = %s with owner/group %s/%s' % (filename, uidNumber, gidNumber))
 		os.chown(filename, uidNumber, gidNumber)
-		os.chmod(filename, 0640)
+		os.chmod(filename, 0o640)
 
 
 def remove_dir(_arg, directory, fnames):
