@@ -40,7 +40,7 @@ import subprocess
 import shlex
 import getopt
 
-configRegistry=univention.config_registry.ConfigRegistry()
+configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 verbose = False
 simulate = False
@@ -49,17 +49,20 @@ ldap_hostdn = configRegistry.get('ldap/hostdn')
 
 MAGIC_LDAP = '#LDAP Entry DN:'
 
+
 def debug(msg, out=sys.stderr):
 	"""Print verbose information 'msg' to 'out'."""
 	if verbose:
 		print >>out, msg,
 
-def exit(result, message = None):
+
+def exit(result, message=None):
 	"""Exit with optional error message."""
 	script = os.path.basename(sys.argv[0])
 	if message:
 		print >>sys.stderr, '%s: %s' % (script, message)
 	sys.exit(result)
+
 
 def query_policy(dn):
 	"""Get NFS shares from LDAP as per policy for dn."""
@@ -68,7 +71,7 @@ def query_policy(dn):
 	try:
 		p = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', dn], shell=False, stdout=subprocess.PIPE)
 		stdout, stderr = p.communicate()
-	except OSError, e:
+	except OSError:
 		exit(1, "FAIL: failed to execute `univention_policy_result %s'" % dn)
 	for line in stdout.splitlines():
 		line = line.rstrip('\n')
@@ -80,6 +83,7 @@ def query_policy(dn):
 			nfsmount.add(v)
 	return nfsmount
 
+
 def usage(out=sys.stdout):
 	"""Output usage message."""
 	print >>out, 'syntax: nfsmounts [-h] [-v]'
@@ -87,6 +91,7 @@ def usage(out=sys.stdout):
 	print >>out, '     -s, --simulate   simulate update and just show actions'
 	print >>out, '     -v, --verbose    print verbose information'
 	print >>out, ''
+
 
 def main():
 	# parse command line
@@ -113,7 +118,7 @@ def main():
 		print >>sys.stderr, "Error: ldap/hostdn is not set."
 		exit(1)
 	debug("Hostdn is %s\n" % hostdn)
-	
+
 	nfsmounts = query_policy(hostdn)
 
 	lo = univention.uldap.getMachineConnection()
@@ -126,13 +131,13 @@ def main():
 	try:
 		f_old = open('/etc/fstab', 'r')
 		if simulate:
-			#f_new = os.fdopen(os.dup(sys.stderr.fileno()), "w")
+			# f_new = os.fdopen(os.dup(sys.stderr.fileno()), "w")
 			from StringIO import StringIO
 			f_new = StringIO()
 		else:
 			f_new = open(fstabNew, 'w')
 		for line in f_old:
-			if not MAGIC_LDAP in line:
+			if MAGIC_LDAP not in line:
 				f_new.write(line)
 				debug("= %s" % line)
 			else:
@@ -141,7 +146,7 @@ def main():
 				continue
 
 			line = line.rstrip('\n')
-			fields = line.split(' ') # source_spec mount_point fs options freq passno
+			fields = line.split(' ')  # source_spec mount_point fs options freq passno
 
 			sp = fields[0]
 			sources.add(sp)
@@ -154,14 +159,14 @@ def main():
 				pass
 
 		f_old.close()
-	except IOError, e:
+	except IOError as e:
 		exit(1, e)
 
 	fqdn = "%(hostname)s.%(domainname)s" % configRegistry
 	to_mount = set()
 	for nfsmount in nfsmounts:
 		debug("NFS Mount: %s ..." % nfsmount)
-		fields = nfsmount.split(' ') # dn_univentionShareNFS mount_point
+		fields = nfsmount.split(' ')  # dn_univentionShareNFS mount_point
 		dn = fields[0]
 		if not dn:
 			debug('no dn, skipping\n')
@@ -229,7 +234,7 @@ def main():
 	fp = open('/etc/mtab', 'r')
 	for line in fp:
 		line = line.rstrip('\n')
-		fields = line.split(' ') # source_spec mount_point fs options freq passno
+		fields = line.split(' ')  # source_spec mount_point fs options freq passno
 		to_mount.discard(fields[1])
 
 	for mp in sorted(to_mount):

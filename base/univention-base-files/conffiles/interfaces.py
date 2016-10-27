@@ -38,6 +38,7 @@ SKIP = set(('interfaces/restart/auto',))
 PRIMARY = 'interfaces/primary'
 GATEWAYS = set(('gateway', 'ipv6/gateway'))
 
+
 def _common(ucr, changes, command):
 	"""Run command on changed interfaces."""
 	if not ucr.is_true('interfaces/restart/auto', True):
@@ -63,9 +64,11 @@ def _common(ucr, changes, command):
 	for iface in interfaces:
 		call((command, iface))
 
+
 def preinst(ucr, changes):
 	"""Pre run handler to shutdown changed interfaces."""
 	_common(ucr, changes, 'ifdown')
+
 
 def postinst(ucr, changes):
 	"""Post run handler to start changed interfaces."""
