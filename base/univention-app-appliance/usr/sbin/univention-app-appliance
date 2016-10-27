@@ -85,7 +85,7 @@ def set_appliance_ucr_values(app):
 		'repository/app_center/whitelist': app.appliance_whitelist,
 		'umc/web/appliance/id': app.id,
 		'umc/web/appliance/name': app.name,
-		'umc/web/appliance/fast_setup_mode': str(app.appliance_allow_preconfigured_setup).lower(), # convert bool value to ('true', 'false')
+		'umc/web/appliance/fast_setup_mode': str(app.appliance_allow_preconfigured_setup).lower(),  # convert bool value to ('true', 'false')
 		'grub/title': "Start %s Univention App" % app.name,
 		'appliance/apps/%s/version' % app.id: app.version,
 		'appliance/apps/%s/notifyVendor' % app.id: str(app.notify_vendor),
@@ -177,7 +177,7 @@ def main(app_id):
 		download_resource(app, app.appliance_logo, logo)
 		logo_copy = '/var/www/icon/%s' % app.appliance_logo
 		shutil.copy(logo, logo_copy)
-		os.chmod(logo_copy, 0644)
+		os.chmod(logo_copy, 0o644)
 		ucr_update(UCR, {'umc/web/appliance/logo': '/icon/%s' % app.appliance_logo})
 
 	if app.appliance_umc_header_logo:
