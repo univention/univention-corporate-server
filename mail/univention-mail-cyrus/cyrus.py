@@ -53,7 +53,7 @@ modrdn = '1'
 
 def is_cyrus_murder_backend():
 	if (listener.configRegistry.get('mail/cyrus/murder/master') and listener.configRegistry.get('mail/cyrus/murder/backend/hostname')):
-	# ucr currently gives '' if not set, might change to None
+		# ucr currently gives '' if not set, might change to None
 		return True
 	else:
 		return False
@@ -148,7 +148,7 @@ def create_cyrus_userlogfile(mailaddress):
 def move_cyrus_murder_mailbox(old, new):
 
 	murderBackend = listener.configRegistry.get('mail/cyrus/murder/backend/hostname')
-	if not "." in murderBackend:
+	if "." not in murderBackend:
 		murderBackend = '%s.%s' % (murderBackend, listener.configRegistry.get('domainname'))
 
 	univention.debug.debug(

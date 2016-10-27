@@ -87,7 +87,7 @@ def handler(dn, new, old, command):
 				policy = defaultAnyoneACLFlags
 			else:
 				for flag in defaultAnyoneACLFlags:
-					if not flag in policy:
+					if flag not in policy:
 						policy += flag
 		try:
 			listener.setuid(0)
@@ -132,8 +132,7 @@ def handler(dn, new, old, command):
 		return (entry[:last_space], entry[last_space + 1:])
 
 	# Create a new shared folder
-	if (new and not old) or ('univentionMailHomeServer' not in old) or ('univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and new['univentionMailHomeServer'] != old['univentionMailHomeServer']
-									 and new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname, domainname)]):
+	if (new and not old) or ('univentionMailHomeServer' not in old) or ('univentionMailHomeServer' in new and 'univentionMailHomeServer' in old and new['univentionMailHomeServer'] != old['univentionMailHomeServer'] and new['univentionMailHomeServer'][0].lower() in [hostname, '%s.%s' % (hostname, domainname)]):
 
 		if 'cn' in new and new['cn'][0]:
 
@@ -210,7 +209,7 @@ def handler(dn, new, old, command):
 		if 'univentionMailUserQuota'in new and new['univentionMailUserQuota'][0]:
 			setquota(name, new['univentionMailUserQuota'][0])
 
-		if 'univentionMailACL' in old and old['univentionMailACL'] and not 'univentionMailACL' in new:
+		if 'univentionMailACL' in old and old['univentionMailACL'] and 'univentionMailACL' not in new:
 			for line in old['univentionMailACL']:
 				(email, policy) = split_acl_entry(line)
 				setacl(new, name, email, 'none')
@@ -226,7 +225,7 @@ def handler(dn, new, old, command):
 		if 'univentionMailACL' in old:
 			for entry in old['univentionMailACL']:
 				(email, policy) = split_acl_entry(entry)
-				if not email in curacl:
+				if email not in curacl:
 					setacl(new, name, email, 'none')
 
 		for key in curacl.keys():

@@ -32,13 +32,9 @@ import sys
 import os
 import argparse
 import winrm
-import inspect
 import socket
 import time
-import functools
 import ConfigParser
-import glob
-import base64
 import pkgutil
 
 from functools import partial
@@ -93,7 +89,7 @@ class UcsWin(object):
 
         # command?
         args = self.parser.parse_args(sys.argv[1:2])
-        if not args.command in self.commands:
+        if args.command not in self.commands:
             print 'ERR: Unrecognized command'
             self.parser.print_help()
             sys.exit(1)
@@ -127,7 +123,7 @@ class UcsWin(object):
             if hasattr(module, 'args'):
                 for arg in module.args:
                     default = self.get_param_default(arg)
-                    if not 'default' in module.args[arg]:
+                    if 'default' not in module.args[arg]:
                         module.args[arg]['default'] = self.get_param_default(arg)
                     self.parser.add_argument('--' + arg, **module.args[arg])
             self.args = self.parser.parse_args()
@@ -215,7 +211,7 @@ class UcsWin(object):
             s.settimeout(2)
             s.connect((self.args.client, 5985))
             return True
-        except socket.error as e:
+        except socket.error:
             return False
 
     def _wait_until_client_is_gone(self, timeout=120):

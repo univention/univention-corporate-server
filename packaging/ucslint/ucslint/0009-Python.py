@@ -80,7 +80,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		tester = uub.UPCFileTester()
 		tester.addTest(re.compile('.has_key\s*\('), '0009-5', 'dict.has_key is deprecated in python3 - please use "if key in dict:"', cntmax=0)
-		tester.addTest( re.compile(r'''\braise\s*(?:'[^']+'|"[^"]+")'''), '0009-6', 'raise "text" is deprecated in python3', cntmax=0 )
+		tester.addTest(re.compile(r'''\braise\s*(?:'[^']+'|"[^"]+")'''), '0009-6', 'raise "text" is deprecated in python3', cntmax=0)
 		tester.addTest(re.compile(r"""\b(?:if|while)\b.*(?:(?:!=|<>|==)\s*None\b|\bNone\s*(?:!=|<>|==)).*:"""),
 			'0009-7', 'fragile comparison with None', cntmax=0)
 		tester.addTest(re.compile(r'''(?:baseConfig|configRegistry|ucr)(?:\[.+\]|\.get\(.+\)).*\bin\s*

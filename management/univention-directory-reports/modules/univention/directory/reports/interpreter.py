@@ -175,7 +175,7 @@ class Interpreter(object):
 					token.value = value
 			elif 'default' in token.attrs:
 				token.value = token.attrs['default']
-			if token.value == None or token.value == '':
+			if token.value is None or token.value == '':
 				token.value = ''
 				if 'default' in token.attrs:
 					token.value = token.attrs['default']

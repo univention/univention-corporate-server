@@ -789,10 +789,7 @@ class Instance(Base, ProgressMixin):
 		self.finished(request.id, map(lambda module: {'id': udm_modules.name(module), 'label': getattr(module, 'short_description', udm_modules.name(module))}, allowed_modules))
 
 	@bundled
-	@sanitize(
-		objectType=StringSanitizer(),
-     #		objectDN=StringSanitizer(allow_none=True),
-	)
+	@sanitize(objectType=StringSanitizer())  # objectDN=StringSanitizer(allow_none=True),
 	def layout(self, request):
 		"""Returns the layout information for the given object type.
 

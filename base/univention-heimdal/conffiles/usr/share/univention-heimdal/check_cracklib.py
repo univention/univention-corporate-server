@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
-@%@UCRWARNING=# @%@
+# @%@UCRWARNING=# @%@
 # Copyright 2004-2016 Univention GmbH
 #
 # http://www.univention.de/

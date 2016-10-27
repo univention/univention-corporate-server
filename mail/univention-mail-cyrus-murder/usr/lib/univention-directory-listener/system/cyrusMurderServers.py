@@ -65,7 +65,7 @@ def addServer(uid, ucr):
 	global reload
 
 	servers = ucr.get(var, "").split(" ")
-	if not uid in servers:
+	if uid not in servers:
 		servers.append(uid)
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, '%s: - adding %s to %s' % (name, uid, var))
 		setVar(servers)

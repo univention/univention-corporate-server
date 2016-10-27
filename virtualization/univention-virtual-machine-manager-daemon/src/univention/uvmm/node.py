@@ -1264,12 +1264,10 @@ def domain_define(uri, domain):
 				for xml in live_updates:
 					try:
 						logger.debug('DEVICE_UPDATE: %s' % xml)
-						rv = old_dom.updateDeviceFlags(
-								xml, (
-									libvirt.VIR_DOMAIN_DEVICE_MODIFY_LIVE |
-									libvirt.VIR_DOMAIN_DEVICE_MODIFY_CONFIG
-        )
-						)
+						rv = old_dom.updateDeviceFlags(xml, (
+							libvirt.VIR_DOMAIN_DEVICE_MODIFY_LIVE |
+							libvirt.VIR_DOMAIN_DEVICE_MODIFY_CONFIG
+						))
 						if rv != 0:
 							warnings.append(_('Failed to update device.'))
 					except libvirt.libvirtError as ex:
@@ -1363,7 +1361,7 @@ def domain_info(uri, domain):
 	"""Return detailed information of a domain."""
 	node = node_query(uri)
 	# transfer state number into string constant
-	if not domain in node.domains:
+	if domain not in node.domains:
 		raise NodeError(_('Unknown domain "%s"') % domain)
 	domain_pd = copy.copy(node.domains[domain].pd)
 	domain_pd.state = STATES[domain_pd.state]

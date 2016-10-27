@@ -66,7 +66,7 @@ if len(args) < 1:
 	parser.error('operation missing')
 	sys.exit(1)
 operation = args[0]
-if not operation in OPERATIONS:
+if operation not in OPERATIONS:
 	parser.error('unknown operation %s' % operation)
 	sys.exit(1)
 
@@ -88,12 +88,12 @@ new_acls = []
 if isinstance(acls, dict):
 	for rule in acls['allow']:
 		rule = Rule(rule)
-		if not rule in new_acls:
+		if rule not in new_acls:
 			new_acls.append(rule)
 else:  # check for duplicates
 	for rule in acls:
 		rule = Rule(rule)
-		if not rule in new_acls:
+		if rule not in new_acls:
 			new_acls.append(rule)
 acls = new_acls
 
@@ -105,7 +105,7 @@ if operation == 'show':
 elif operation == 'allow':
 	for command in options.commands:
 		rule = Rule({'fromUser': False, 'host': options.host, 'command': command, 'flavor': options.flavor})
-		if not rule in acls:
+		if rule not in acls:
 			acls.append(rule)
 			print 'info: rule %s appended' % command
 		else:

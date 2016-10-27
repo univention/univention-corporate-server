@@ -96,7 +96,7 @@ if isMurder and backend and password:
 	# compare list's
 	noticelist = []
 	for i in addrlist:
-		if not i in serverlist:
+		if i not in serverlist:
 			noticelist.append(i)
 
 	# report incoherence
