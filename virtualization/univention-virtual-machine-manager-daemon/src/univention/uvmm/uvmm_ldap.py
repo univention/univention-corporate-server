@@ -83,7 +83,7 @@ class LdapConnectionError(LdapError):
 
 def ldap2fqdn(ldap_result):
 	"""Convert LDAP result to fqdn."""
-	if not 'associatedDomain' in ldap_result:
+	if 'associatedDomain' not in ldap_result:
 		domain = configRegistry.get('domainname', '')
 	else:
 		domain = ldap_result['associatedDomain'][0]
@@ -165,7 +165,7 @@ def ldap_uris(ldap_uri=None):
 					nodes.append(uri)
 		logger.debug('Registered URIs: %s' % ', '.join(nodes))
 		return nodes
-	except LDAPError as e:
+	except LDAPError:
 		raise LdapConnectionError(_('Could not query "%(uri)s"'), uri=ldap_uri)
 
 
@@ -174,7 +174,7 @@ def ldap_annotation(uuid):
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-	except (SERVER_DOWN, IOError) as e:
+	except (SERVER_DOWN, IOError):
 		raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
@@ -193,7 +193,7 @@ def ldap_modify(uuid):
 	try:
 		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=True)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
-	except (SERVER_DOWN, IOError) as e:
+	except (SERVER_DOWN, IOError):
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 	co = None
 	dn = "%s=%s,%s" % (uvmm_info.mapping.mapName('uuid'), uuid, base)
@@ -249,7 +249,7 @@ def ldap_cloud_connections():
 				cloudconnections.append(c)
 
 		return cloudconnections
-	except LDAPError as e:
+	except LDAPError:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 
 
@@ -283,7 +283,7 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search
 		modlist = [(k, v) for k, v in attrs.items()]
 		lo.add(dn, modlist)
 
-	except LDAPError as e:
+	except LDAPError:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
 
 
@@ -300,5 +300,5 @@ def ldap_cloud_types():
 			cloudtypes.append(c)
 
 		return cloudtypes
-	except LDAPError as e:
+	except LDAPError:
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))

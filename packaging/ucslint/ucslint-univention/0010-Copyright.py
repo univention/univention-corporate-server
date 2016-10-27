@@ -102,7 +102,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
                         )
 
 			for teststr in copyright_strings:
-				if not teststr in content:
+				if teststr not in content:
 					self.debug('Missing copyright string: %s' % teststr)
 					self.addmsg('0010-2', 'file contains no copyright text block', filename=fn)
 					break
@@ -114,6 +114,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				else:
 					years = match.group(2)
 					current_year = str(time.localtime()[0])
-					if not current_year in years:
+					if current_year not in years:
 						self.debug('Current year=%s  years="%s"' % (current_year, years))
 						self.addmsg('0010-3', 'copyright line seems to be outdated', filename=fn)

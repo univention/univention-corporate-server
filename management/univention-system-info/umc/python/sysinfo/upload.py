@@ -136,7 +136,7 @@ class newHTTPHandler(urllib2.BaseHandler):
         h = http_class(host)  # will parse host:port
         if req.has_data():
             h.putrequest('POST', req.get_selector())
-            if not 'Content-type' in req.headers:
+            if 'Content-type' not in req.headers:
                 if len(v_files) > 0:
                     boundary = mimetools.choose_boundary()
                     l = send_data(v_vars, v_files, boundary)
@@ -146,7 +146,7 @@ class newHTTPHandler(urllib2.BaseHandler):
                 else:
                     h.putheader('Content-type',
                                 'application/x-www-form-urlencoded')
-                    if not 'Content-length' in req.headers:
+                    if 'Content-length' not in req.headers:
                         h.putheader('Content-length', '%d' % len(data))
         else:
             h.putrequest('GET', req.get_selector())

@@ -193,7 +193,7 @@ class DebianPackageCheck(object):
 
 def clean_id(idstr):
 	"""Format ID strng."""
-	if not '-' in idstr:
+	if '-' not in idstr:
 		raise ValueError('no valid id (%s) - missing dash' % idstr)
 	modid, msgid = idstr.strip().split('-', 1)
 	return '%s-%s' % (clean_modid(modid), clean_msgid(msgid))

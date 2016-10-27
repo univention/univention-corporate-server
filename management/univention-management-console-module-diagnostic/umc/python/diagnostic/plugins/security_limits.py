@@ -18,7 +18,7 @@ description = '\n'.join([
 	_('This can cause several different serious problems (e.g. the login at samba servers may be impossible, file operations (copy, move) on shares can fail, etc.)'),
 	_('It is suggested to increase the security limits either manually by using {ucr} or to automatically adjust them to the suggested limits:'),
 	'<pre>samba/max_open_files=%s</pre>' % (suggested_max_open_files,),
-    #	_('More related information can be found at the "{sdb}".'),
+	# _('More related information can be found at the "{sdb}".'),
 ])
 # SDB article not published yet, Bug #35868
 # links = [{

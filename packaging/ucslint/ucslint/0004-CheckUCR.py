@@ -134,7 +134,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		Returns True if given variable name contains invalid characters
 		"""
 		for i, c in enumerate(var):
-			if not c.isalpha() and not c.isdigit() and not c in self.UCR_VALID_SPECIAL_CHARACTERS:
+			if not c.isalpha() and not c.isdigit() and c not in self.UCR_VALID_SPECIAL_CHARACTERS:
 				if c == '%' and (i < len(var) - 1):
 					if not var[i + 1] in ['d', 's']:
 						return True
@@ -213,7 +213,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						elif var.startswith('UCRWARNING='):
 							checks['ucrwarning'] = True
 							warning_pos = warning_pos or match.start() + 1
-						elif not var in checks['placeholder']:
+						elif var not in checks['placeholder']:
 							checks['placeholder'].append(var)
 						pos = match.end()
 			if checks['placeholder']:
@@ -242,7 +242,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 						break
 					else:
 						var = match.group(1)
-						if not var in checks['variables']:
+						if var not in checks['variables']:
 							checks['variables'].append(var)
 						pos = match.end()
 			if checks['variables']:
@@ -295,7 +295,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 			# find debian/*.u-c-r and check for univention-config-registry-install in debian/rules
 			reUICR = re.compile('[\n\t ]univention-install-(baseconfig|config-registry)[\n\t ]')
-			reUICRI = re.compile('[\n\t ]univention-install-config-registry-info[\n\t ]')
 			for f in os.listdir(os.path.join(path, 'debian')):
 				if f.endswith('.univention-config-registry') or f.endswith('.univention-baseconfig'):
 					tmpfn = os.path.join(path, 'debian', '%s.univention-config-registry-variables' % f.rsplit('.', 1)[0])
@@ -595,7 +594,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 					# check only variables against knownvars, @%@-placeholder are auto-detected
 					for var in conffiles[conffn]['variables']:
-						if not var in knownvars:
+						if var not in knownvars:
 							# if not found check if regex matches
 							for rvar in knownvars:
 								if '.*' in rvar:
@@ -660,8 +659,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					for _ in all_definitions[fn]:
 						self.addmsg('0004-15', 'UCR template file "%s" is registered but not found in conffiles/ (1)' % (fn,), _)
 				else:
-					if not conffiles[ conffn ]['headerfound'] and \
-							not conffiles[ conffn ]['bcwarning'] and \
+					if not conffiles[conffn]['headerfound'] and \
+							not conffiles[conffn]['bcwarning'] and \
 							not conffiles[conffn]['ucrwarning']:
 						self.addmsg('0004-16', 'UCR header is missing', conffn)
 				self.test_marker(os.path.join(path, 'conffiles', fn))
@@ -724,7 +723,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				var = line.strip(' \t[]')
 				variables.add(var)
 				try:
-					_ = line.decode('utf-8')
+					line.decode('utf-8')
 				except UnicodeError:
 					self.addmsg('0004-30', 'contains invalid characters', tmpfn, linecnt)
 		finally:

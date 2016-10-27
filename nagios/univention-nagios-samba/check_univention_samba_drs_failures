@@ -67,7 +67,7 @@ class CheckSambaDrsRepl(object):
 			if n.consecutive_sync_failures > 0:
 				failures = True
 				(site, server) = drs_parse_ntds_dn(n.source_dsa_obj_dn)
-				if not server in consecutive_sync_failures:
+				if server not in consecutive_sync_failures:
 					consecutive_sync_failures[server] = 0
 				consecutive_sync_failures[server] += n.consecutive_sync_failures
 		for server in consecutive_sync_failures:

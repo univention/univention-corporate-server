@@ -227,7 +227,7 @@ class _Commands:
 			raise CommandError('L_CLOUD_INSTANCE_STATE', _('conn_name != string: %(conn_name)s'), conn_name=request.conn_name)
 		if not isinstance(request.instance_id, basestring):
 			raise CommandError('L_CLOUD_INSTANCE_STATE', _('instance_id != string: %(instance_id)s'), instance_id=request.instance_id)
-		if not request.state in ('RUN', 'PAUSE', 'SHUTDOWN', 'SHUTOFF', 'SOFTRESTART', 'RESTART', 'SUSPEND'):
+		if request.state not in ('RUN', 'PAUSE', 'SHUTDOWN', 'SHUTOFF', 'SOFTRESTART', 'RESTART', 'SUSPEND'):
 			raise CommandError('L_CLOUD_INSTANCE_STATE', _('unsupported state: %(state)s'), state=request.state)
 		try:
 			cloudnode.cloudconnections.instance_state(request.conn_name, request.instance_id, request.state)
@@ -410,7 +410,7 @@ class _Commands:
 			raise CommandError('DOMAIN_STATE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
 			raise CommandError('DOMAIN_STATE', _('domain != string: %(domain)s'), domain=request.domain)
-		if not request.state in ('RUN', 'PAUSE', 'SHUTDOWN', 'SHUTOFF', 'RESTART', 'SUSPEND'):
+		if request.state not in ('RUN', 'PAUSE', 'SHUTDOWN', 'SHUTOFF', 'RESTART', 'SUSPEND'):
 			raise CommandError('DOMAIN_STATE', _('unsupported state: %(state)s'), state=request.state)
 		logger.debug('DOMAIN_STATE %s#%s %s' % (request.uri, request.domain, request.state))
 		try:
@@ -455,9 +455,9 @@ class _Commands:
 			raise CommandError('DOMAIN_UNDEFINE', _('uri != string: %(uri)s'), uri=request.uri)
 		if not isinstance(request.domain, basestring):
 			raise CommandError('DOMAIN_UNDEFINE', _('domain != string: %(domain)s'), domain=request.domain)
-		if not request.volumes is None and not isinstance(request.volumes, (list, tuple)):
+		if request.volumes is not None and not isinstance(request.volumes, (list, tuple)):
 			raise CommandError('DOMAIN_UNDEFINE', _('volumes != list or None: %(volumes)s'), volumes=request.volumes)
-		if not request.volumes is None:
+		if request.volumes is not None:
 			for vol in request.volumes:
 				if not isinstance(vol, basestring):
 					raise CommandError('DOMAIN_UNDEFINE', _('volumes[] != string: %(volume)s'), volume=vol)
@@ -630,7 +630,7 @@ class _Commands:
 			raise CommandError(cmd, _('Command "%(command)s" is restricted'))
 		try:
 			return getattr(self, cmd)
-		except AttributeError as e:
+		except AttributeError:
 			raise CommandError(cmd, _('Unknown command "%(command)s"'))
 
 commands = _Commands()
