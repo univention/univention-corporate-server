@@ -37,11 +37,11 @@ import re
 
 import univention.config_registry as ucr
 
-configRegistry=ucr.ConfigRegistry()
+configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
 if 'grub/generate-menu-lst' not in configRegistry or configRegistry.is_false('grub/generate-menu-lst', False):
-	sys.exit(0)
+    sys.exit(0)
 
 if os.path.exists("/boot/grub/menu.lst"):
     f = open("/boot/grub/menu.lst")
@@ -57,10 +57,10 @@ if os.path.exists("/boot/grub/menu.lst"):
         sys.exit(0)
 
 try:
-	grub2 = open("/boot/grub/grub.cfg", "r")
-except OSError, e:
-       print >>sys.stderr, "Failed to open grub.cfg: %s" % (e,)
-       sys.exit(1)
+    grub2 = open("/boot/grub/grub.cfg", "r")
+except OSError as e:
+    print >>sys.stderr, "Failed to open grub.cfg: %s" % (e,)
+    sys.exit(1)
 
 
 lst = []
@@ -80,48 +80,48 @@ RE_CLOSE = re.compile(r"^}")
 name = kernel = initrd = None
 
 for line in grub2:
-	m = RE_MENUENTRY.match(line)
-	if m:
-		(name,) = m.groups()
-		continue
+    m = RE_MENUENTRY.match(line)
+    if m:
+        (name,) = m.groups()
+        continue
 
-	if 'grub/grub1root' in configRegistry:
-		root = configRegistry['grub/grub1root']
-	else:
-		m = RE_ROOT.match(line)
-		if m:
-			device, part = m.groups()
-			if device.startswith('hd'):
-				root = "(%s,%d)" % (device, int(part) - 1)
-			elif device.startswith('/dev/'):
-				root = "(hd0,%d)" % (int(part) - 1)
-			else:
-				print >>sys.stderr, "Unhandled root=%s" % (line,)
+    if 'grub/grub1root' in configRegistry:
+        root = configRegistry['grub/grub1root']
+    else:
+        m = RE_ROOT.match(line)
+        if m:
+            device, part = m.groups()
+            if device.startswith('hd'):
+                root = "(%s,%d)" % (device, int(part) - 1)
+            elif device.startswith('/dev/'):
+                root = "(hd0,%d)" % (int(part) - 1)
+            else:
+                print >>sys.stderr, "Unhandled root=%s" % (line,)
 
-	m = RE_LINUX.match(line)
-	if m:
-		(kernel,) = m.groups()
-		continue
+    m = RE_LINUX.match(line)
+    if m:
+        (kernel,) = m.groups()
+        continue
 
-	m = RE_INITRD.match(line)
-	if m:
-		(initrd,) = m.groups()
-		continue
+    m = RE_INITRD.match(line)
+    if m:
+        (initrd,) = m.groups()
+        continue
 
-	m = RE_CLOSE.match(line)
-	if m:
-		if name and root and kernel:
-			lst.append("title           " + name)
-			lst.append("root            " + root)
-			lst.append("kernel          " + kernel)
-			if initrd:
-				lst.append("initrd          " + initrd)
-			lst.append(" ")
-		name = root = kernel = initrd = None
-		continue
+    m = RE_CLOSE.match(line)
+    if m:
+        if name and root and kernel:
+            lst.append("title           " + name)
+            lst.append("root            " + root)
+            lst.append("kernel          " + kernel)
+            if initrd:
+                lst.append("initrd          " + initrd)
+            lst.append(" ")
+        name = root = kernel = initrd = None
+        continue
 
 if os.path.exists("/boot/grub/menu.lst"):
-   shutil.copyfile("/boot/grub/menu.lst", "/boot/grub/menu.lst.bak")
+    shutil.copyfile("/boot/grub/menu.lst", "/boot/grub/menu.lst.bak")
 
 print "Generating legacy menu.lst from current kernels"
 generated_list = open("/boot/grub/menu.lst", "w")
