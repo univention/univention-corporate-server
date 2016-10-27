@@ -68,7 +68,7 @@ def main():
 	try:
 		_addr = ipaddr.IPAddress(options.address)
 		network = ipaddr.IPNetwork('%s/%s' % (options.address, options.netmask))
-	except ValueError, ex:
+	except ValueError as ex:
 		print >> sys.stderr, ex
 		sys.exit(1)
 	try:
