@@ -79,7 +79,7 @@ ALL_TARGETS = $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-app-applianc
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-mailquota.mo \
 	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo \
 	$(DESTDIR)/usr/share/plymouth/themes/ucs/fr/LC_MESSAGES/univention-welcome-screen.mo \
-	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univenton-lib.mo \
+	$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-lib.mo \
 	$(DESTDIR)//usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.mo \
 	$(DESTDIR)/var/www/ucs-overview/js/initialsetup/fr.json \
 	$(DESTDIR)/www/js/ucs/fr.json \
@@ -196,7 +196,7 @@ $(DESTDIR)/usr/share/univention-management-console/i18n/fr/uvmm.mo: fr/virtualiz
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-mailquota.mo: fr/mail/univention-mail-cyrus/modules/univention/admin/handlers/policies/mailquota/fr.po
 $(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-admin-handlers-saml-serviceprovider.mo: fr/saml/univention-saml/modules/univention/admin/handlers/saml/fr.po
 $(DESTDIR)/usr/share/plymouth/themes/ucs/fr/LC_MESSAGES/univention-welcome-screen.mo: fr/base/univention-bootsplash/i18n/fr.po
-$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univenton-lib.mo: fr/base/univention-lib/python/fr.po
+$(DESTDIR)/usr/share/locale/fr/LC_MESSAGES/univention-lib.mo: fr/base/univention-lib/python/fr.po
 $(DESTDIR)//usr/share/locale/fr/LC_MESSAGES/univention-system-setup-scripts.mo: fr/base/univention-system-setup/usr/share/locale/fr/LC_MESSAGES/fr.po
 $(DESTDIR)/var/www/ucs-overview/js/initialsetup/fr.json: fr/base/univention-system-setup/var/www/ucs-overview/js/initialsetup/fr.po
 $(DESTDIR)/www/js/ucs/fr.json: fr/base/univention-system-activation/js/ucs/fr.po
