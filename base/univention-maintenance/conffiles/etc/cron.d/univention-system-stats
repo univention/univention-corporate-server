@@ -3,8 +3,8 @@
 @!@
 roles = ["domaincontroller_backup", "domaincontroller_master", "domaincontroller_slave", "memberserver"]
 print "# collect system stats"
-if baseConfig.is_true("system/stats", False) and baseConfig["server/role"] in roles:
-	cron = baseConfig.get("system/stats/cron", "0,30 * * * * ")
+if configRegistry.is_true("system/stats", False) and configRegistry["server/role"] in roles:
+	cron = configRegistry.get("system/stats/cron", "0,30 * * * * ")
 	file = "/usr/sbin/univention-system-stats"
 	print "SHELL=/bin/sh"
 	print "PATH=/sbin:/bin:/usr/sbin:/usr/bin"
