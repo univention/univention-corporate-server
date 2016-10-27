@@ -24,7 +24,7 @@ pref("print.postscript.print_command", "kprinter");
 pref("print.postscript.paper_size", "A4");
 
 @!@
-if baseConfig.has_key('firefox/prefs/conffile') and baseConfig['firefox/prefs/conffile']:
-	print 'pref("general.config.filename", "%s");' % baseConfig['firefox/prefs/conffile']
+if configRegistry.get('firefox/prefs/conffile'):
+	print 'pref("general.config.filename", "%s");' % configRegistry['firefox/prefs/conffile']
 @!@
 
