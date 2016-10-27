@@ -32,8 +32,6 @@
 # <http://www.gnu.org/licenses/>.
 
 from distutils.core import setup, Extension
-from ConfigParser import ConfigParser
-import sys,os,string,time
 
 setup(
 	name='python-heimdal',
@@ -49,7 +47,7 @@ setup(
 			['module.c', 'error.c', 'context.c', 'principal.c',
 				'creds.c', 'ticket.c', 'keytab.c', 'ccache.c',
 				'salt.c', 'enctype.c', 'keyblock.c', 'asn1.c'],
-			libraries=['krb5', 'kadm5clnt', 'hdb', 'asn1', 'com_err', 'roken' ]
+			libraries=['krb5', 'kadm5clnt', 'hdb', 'asn1', 'com_err', 'roken']
 		)
 	],
 )

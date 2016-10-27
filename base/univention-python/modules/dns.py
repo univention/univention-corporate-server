@@ -34,6 +34,7 @@ import DNS
 
 DNS.DiscoverNameServers()
 
+
 def lookup(query, type='a'):
 	"""
 	Lookup DNS entries of specified type.
