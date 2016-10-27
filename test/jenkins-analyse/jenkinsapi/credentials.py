@@ -19,12 +19,14 @@ log = logging.getLogger(__name__)
 
 
 class Credentials(JenkinsBase):
+
     """
     This class provides a container-like API which gives
     access to all global credentials on a Jenkins node.
 
     Returns a list of Credential Objects.
     """
+
     def __init__(self, baseurl, jenkins_obj):
         self.baseurl = baseurl
         self.jenkins = jenkins_obj

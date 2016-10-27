@@ -37,6 +37,7 @@ from univention.updater import UniventionUpdater
 import sys
 import optparse
 
+
 def simple_handler(f):
 	def _simple_handler(msg):
 		msg = '%s\n\r' % msg.strip()
@@ -47,7 +48,7 @@ parser = optparse.OptionParser()
 parser.add_option('-a', '--app-id', help='app id to deinstall', metavar='APP_ID')
 (options, args) = parser.parse_args()
 if not options.app_id:
-	raise Exception, 'app id missing'
+	raise Exception('app id missing')
 
 ucr = ConfigRegistry()
 ucr.load()
@@ -58,4 +59,4 @@ component_manager = ComponentManager(ucr, updater)
 app = Application.find(options.app_id)
 if app:
 	if not app.uninstall(package_manager, component_manager):
-		raise Exception, 'deinstallation of app %s failed' % options.app_id
+		raise Exception('deinstallation of app %s failed' % options.app_id)

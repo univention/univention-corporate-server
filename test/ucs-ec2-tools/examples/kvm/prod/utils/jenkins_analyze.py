@@ -7,9 +7,9 @@ from collections import defaultdict
 
 # import requests
 # import logging
-# # these two lines enable debugging at httplib level (requests->urllib3->httplib)
-# # you will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
-# # the only thing missing will be the response.body which is not logged.
+# these two lines enable debugging at httplib level (requests->urllib3->httplib)
+# you will see the REQUEST, including HEADERS and DATA, and RESPONSE with HEADERS but without DATA.
+# the only thing missing will be the response.body which is not logged.
 # import httplib
 # httplib.HTTPConnection.debuglevel = 1
 # logging.basicConfig() # you need to initialize logging, otherwise you will not see anything from requests
@@ -31,7 +31,7 @@ base_url = 'http://jenkins.knut.univention.de:8080/job/UCS-4.1/job/UCS-4.1-1/'
 
 
 def print_table_header(machines, spacing=4):
-	#print a list of matrix elements
+	# print a list of matrix elements
 	for n, name in enumerate(machines):
 		print('{0:02d} - {1:s}'.format(n, name))
 	print('==================================================\n\n')
@@ -55,20 +55,20 @@ def append_status_to_line(line, status):
 def main():
 	desc = "console tool for analyzing jenkins builds"
 	parser = argparse.ArgumentParser(description=desc)
-#single test or single build?
+# single test or single build?
 	group = parser.add_mutually_exclusive_group(required=True)
 	group.add_argument(
 			'--build', '-b', help='get all results for a specific build')
 	group.add_argument(
 			'--test', '-t', help='get all results for a specific test')
-#4.03-update or 4.1?
+# 4.03-update or 4.1?
 	version_group = parser.add_mutually_exclusive_group(required=True)
 	version_group.add_argument(
 			'--template03', '-3', help='updated 4.03 template',
-			action ='store_false', dest='new')
+			action='store_false', dest='new')
 	version_group.add_argument(
 			'--template10', '-1', help='4.10 template',
-			action ='store_true', dest='new')
+			action='store_true', dest='new')
 
 	parser.add_argument(
 			'--no-empty', '-n', help='do not show empty lines in build mode',
@@ -99,7 +99,7 @@ def single_build(job, args):
 
 	test_names = set()
 
-	#get all unique test names
+	# get all unique test names
 	for resultset in results.values():
 		test_names |= set(resultset.keys())
 

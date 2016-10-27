@@ -5,13 +5,13 @@ import optparse
 import time
 import glob
 import os
-import base64
 import ConfigParser
 
 if os.path.exists('./windows-scripts'):
 	COMMAND_DIR = './windows-scripts/'
 else:
 	COMMAND_DIR = '/usr/share/ucs-windows-tools/windows-scripts/'
+
 
 def default_options():
 	usage = "usage: %prog [OPTIONS]"
@@ -46,7 +46,9 @@ def default_options():
 
 	return parser
 
+
 class WinExeFailed(Exception):
+
 	'''ucs_addServiceToLocalhost failed'''
 
 
@@ -61,7 +63,7 @@ class WinExe:
 		port=445,
 		client=None,
 		loglevel=0,
-	):
+              ):
 
 		self.command_dir = COMMAND_DIR
 		self.domain = domain
@@ -77,7 +79,6 @@ class WinExe:
 		self.__check_default_options()
 
 		return
-
 
 	def __check_default_options(self):
 
@@ -97,7 +98,6 @@ class WinExe:
 			raise WinExeFailed("--client needs to be specified")
 		return True
 
-
 	# TODO better check if IPC$ is reachable for client
 	def __client_reachable(self, timeout=1):
 		for i in range(timeout):
@@ -106,11 +106,10 @@ class WinExe:
 				s.settimeout(1)
 				s.connect((self.client, self.port))
 				return True
-			except socket.error, e:
+			except socket.error:
 				time.sleep(1)
 				self.__log("checking if client %s:%s is reachable" % (self.client, self.port))
 		return False
-
 
 	def __build_winexe_cmd(self, domain_mode=True, runas_user=None, runas_password=None):
 		cmd = []
@@ -127,7 +126,6 @@ class WinExe:
 
 		cmd.append("//" + self.client)
 		return cmd
-
 
 	def __log(self, msg, log_at_level=0):
 		if self.loglevel >= log_at_level:
@@ -160,7 +158,6 @@ class WinExe:
 		stdout = self.__trim_windows_stdout(stdout)
 		return p.returncode, stdout, stderr
 
-
 	def __copy_scripts(self):
 		if self.scripts_copied:
 			return
@@ -175,7 +172,6 @@ class WinExe:
 			raise WinExeFailed("failed to copy scripts to %s  (%s, %s, %s)" % (self.client, ret, stdout, stderr))
 
 		self.scripts_copied = True
-
 
 	def __copy_script(self, script=None, domain_mode=True, runas_user=None, runas_password=None):
 
@@ -196,7 +192,7 @@ class WinExe:
 		command = os.path.basename(script).split(".")[0]
 		overwrite = ">"
 		for i in range(0, len(base64), 4000):
-			copy = cmd + ["cmd /C echo %s %s c:\\%s.tmp" % (base64[i:i+4000], overwrite, command)]
+			copy = cmd + ["cmd /C echo %s %s c:\\%s.tmp" % (base64[i:i + 4000], overwrite, command)]
 			overwrite = ">>"
 			ret, stdout, stderr = self.__run_command(copy, dont_fail=True, log_at_level=2)
 			if ret:
@@ -244,7 +240,7 @@ class WinExe:
 				cmd.append("PowerShell.exe -inputformat none -Noninteractive -ExecutionPolicy Bypass -File c:\\%s.ps1 %s " % (command, " ".join(command_args)))
 
 			else:
-				raise WinExeFailed("script has an unknown file extension: %s"  % script[0])
+				raise WinExeFailed("script has an unknown file extension: %s" % script[0])
 		else:
 			if command_args:
 				command = "%s %s" % (command, " ".join(command_args))
@@ -270,7 +266,6 @@ class WinExe:
 
 		return True
 
-
 	def wait_until_client_is_gone(self, timeout=1):
 		''' wait until self.client is no longer reachable '''
 
@@ -282,7 +277,6 @@ class WinExe:
 		raise WinExeFailed("waiting until client (%s) is gone failed with timeout %s" % (self.client, timeout))
 
 		return True
-
 
 	def check_user_login(self, runas_user, runas_password):
 		''' run klist with user runas_user '''
@@ -298,11 +292,9 @@ class WinExe:
 
 		return True
 
-
 	def check_name_server(self, dns_server):
 		''' check (dig) if dns_server is a DNS server '''
 		self.__run_command(["dig", "@%s" % dns_server])
-
 
 	def domain_join(self, dns_server=None):
 		''' join self.client into self.domain '''
@@ -320,47 +312,39 @@ class WinExe:
 
 		return True
 
-
 	def list_domain_users(self):
 		''' list all the domain users '''
 
 		return self.winexec("ad-users")
-
 
 	def create_ad_users(self, username, password, users):
 		''' creates users users with prefix username and password password '''
 
 		return self.winexec("create-ad-users", username, password, users)
 
-
 	def create_ad_groups(self, groupname, groups):
 		''' creates groups groups with prefix groupname '''
 
 		return self.winexec("create-ad-groups", groupname, groups)
-
 
 	def add_users_to_group(self, username, users, groupname, groups):
 		''' adds users with prefix username to groups with prefix groupname '''
 
 		return self.winexec("add-users-to-group", username, users, groupname, groups)
 
-
 	def create_user_and_add_to_group(self, username, password, groupname):
 		''' create a user with the given username and add the user to the group '''
 
 		return self.winexec("create-user-and-add-to-group", username, password, groupname)
 
-
 	def force_gpo_update(self):
 		''' Runs gpupdate.exe /force '''
 		return self.winexec('cmd /C "gpupdate.exe /force"', dont_fail=True)
-
 
 	def get_gpo_report(self, gpo_name, server=""):
 		''' returns gpo report for the self.client on the server in the domain '''
 
 		return self.winexec("univention-get-gpo-report", self.domain, '"%s"' % gpo_name, server, domain_mode=True)
-
 
 	def create_gpo(self, gpo_name, comment="", server=""):
 		''' creates a gpo via the self.client on the server in the domain '''
@@ -381,14 +365,12 @@ class WinExe:
 
 		return self.winexec("univention-Get-ItemProperty", item, domain_mode=True)
 
-
 	def Set_GPRegistryValue(self, gpo_name, reg_key, value_name, value, value_type, server=""):
 		'''
 		modifies the gpo_name with reg_key to value_name and value_type with value
 		'''
 
 		return self.winexec("univention-Set-GPRegistryValue", self.domain, '"%s"' % gpo_name, reg_key, value_name, value, value_type, server, domain_mode=True)
-
 
 	def link_gpo(self, gpo_name, link_order, target_container, server=""):
 		'''

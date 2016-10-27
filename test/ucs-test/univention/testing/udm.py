@@ -58,13 +58,13 @@ from univention.testing.ucs_samba import wait_for_drs_replication
 
 
 class UCSTestUDM_Exception(Exception):
-	def __str__(self):
-		if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
-			return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].iteritems())
-		else:
-			return Exception.__str__(self)
-	__repr__ = __str__
 
+    def __str__(self):
+        if self.args and len(self.args) == 1 and isinstance(self.args[0], dict):
+            return '\n'.join('%s=%s' % (key, value) for key, value in self.args[0].iteritems())
+        else:
+            return Exception.__str__(self)
+    __repr__ = __str__
 
 
 class UCSTestUDM_MissingModulename(UCSTestUDM_Exception):
@@ -169,7 +169,7 @@ class UCSTestUDM(object):
             cmd.append('--remove_referring')
 
         if args.pop('ignore_exists', False) and action == 'create':
-           cmd.append('--ignore_exists')
+            cmd.append('--ignore_exists')
 
         # set all other remaining properties
         for key, value in args.items():
@@ -444,10 +444,10 @@ class UCSTestUDM(object):
 
 
 def _prettify_cmd(cmd):
-	cmd = ' '.join(pipes.quote(x) for x in cmd)
-	if set(cmd) & set(['\x00', '\n']):
-		cmd = repr(cmd)
-	return cmd
+    cmd = ' '.join(pipes.quote(x) for x in cmd)
+    if set(cmd) & set(['\x00', '\n']):
+        cmd = repr(cmd)
+    return cmd
 
 
 if __name__ == '__main__':
@@ -458,7 +458,7 @@ if __name__ == '__main__':
     ucr.load()
 
     with UCSTestUDM() as udm:
-        # create user
+    # create user
         dnUser, _username = udm.create_user()
 
         # stop CLI daemon
@@ -473,11 +473,11 @@ if __name__ == '__main__':
         # test with malformed arguments
         try:
             _dnUser, _username = udm.create_user(username='')
-        except UCSTestUDM_CreateUDMObjectFailed, ex:
+        except UCSTestUDM_CreateUDMObjectFailed as ex:
             print 'Caught anticipated exception UCSTestUDM_CreateUDMObjectFailed - SUCCESS'
 
         # try to modify object not created by create_udm_object()
         try:
             udm.modify_object('users/user', dn='uid=Administrator,cn=users,%s' % ucr.get('ldap/base'), description='Foo Bar')
-        except UCSTestUDM_CannotModifyExistingObject, ex:
+        except UCSTestUDM_CannotModifyExistingObject as ex:
             print 'Caught anticipated exception UCSTestUDM_CannotModifyExistingObject - SUCCESS'

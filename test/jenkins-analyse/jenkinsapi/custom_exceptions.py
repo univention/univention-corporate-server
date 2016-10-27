@@ -154,6 +154,7 @@ class BadParams(JenkinsAPIException):
 
 
 class AlreadyExists(JenkinsAPIException):
+
     """
     Method requires POST and not GET
     """

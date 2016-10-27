@@ -35,7 +35,7 @@ def main():
 		parser.print_usage(sys.stderr)
 		sys.exit(2)
 
-	formatter = getattr(univention.testing.format, 'format_%s' % \
+	formatter = getattr(univention.testing.format, 'format_%s' %
 			(options.format,))
 	format = formatter()
 	test_env = TestEnvironment(interactive=True)

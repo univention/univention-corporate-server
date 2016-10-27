@@ -75,4 +75,3 @@ if opts.groups > 0 and opts.users > 0:
 	print out
 
 sys.exit(0)
-

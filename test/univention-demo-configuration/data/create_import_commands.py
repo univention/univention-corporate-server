@@ -31,25 +31,23 @@
 
 
 import os
-import string
-import codecs
 import csv
 import sys
-#from univention.config_registry import ConfigRegistry
+# from univention.config_registry import ConfigRegistry
 
-#ucr = ConfigRegistry()
-#ucr.load()
+# ucr = ConfigRegistry()
+# ucr.load()
 
-CWD=os.path.dirname(sys.argv[0])
+CWD = os.path.dirname(sys.argv[0])
 
-#LDAPBASE=ucr.get('ldap/base')
-LDAPBASE='"$ldap_base"'
-IMPORTFILE='%s/data.csv' % CWD
-IMPORTIMAGEDIR='%s/images' % CWD
-#DOMAIN=ucr.get('domainname')
-DOMAIN='"$domainname"'
+# LDAPBASE=ucr.get('ldap/base')
+LDAPBASE = '"$ldap_base"'
+IMPORTFILE = '%s/data.csv' % CWD
+IMPORTIMAGEDIR = '%s/images' % CWD
+# DOMAIN=ucr.get('domainname')
+DOMAIN = '"$domainname"'
 
-NAGIOS_SERVICES=(
+NAGIOS_SERVICES = (
 	"UNIVENTION_PING",
 	"UNIVENTION_DISK_ROOT",
 	"UNIVENTION_DNS",
@@ -64,15 +62,16 @@ NAGIOS_SERVICES=(
 	"UNIVENTION_JOINSTATUS",
 	"UNIVENTION_CUPS",
 )
-DC_OPTIONS='--option kerberos --option samba --option posix --option nagios'
-NAGIOS_OPTIONS=' '.join([
+DC_OPTIONS = '--option kerberos --option samba --option posix --option nagios'
+NAGIOS_OPTIONS = ' '.join([
 	'--append nagiosServices=cn=%s,cn=nagios,%s' % (iservice, LDAPBASE)
 	for iservice in NAGIOS_SERVICES
 ])
 
+
 def importRow(row):
 	''' Import one row containing a user definition '''
-	#dwdn = row[0]
+	# dwdn = row[0]
 	uid = row[1]
 	firstname = row[2]
 	lastname = row[3]
@@ -80,30 +79,30 @@ def importRow(row):
 	gender = row[5]
 	birthplace = row[6]
 	birthday = row[7]
-	age = row[8] # calculated in 2012
-	imageref = row[9] # always broken
-	#mail = row[10] # broken in csv
+	age = row[8]  # calculated in 2012
+	imageref = row[9]  # always broken
+	# mail = row[10] # broken in csv
 	mail = "%s@%s" % (uid, DOMAIN)
-	office = row[11] # name of a city
+	office = row[11]  # name of a city
 	organisation = row[12]
 	department = row[13]
 	employeeType = row[14]
 	degree = row[15]
-	manager = row[16] # LDAP-DN
-	phone = row[23] # partly broken, only phone extension (no complete numbers)
+	manager = row[16]  # LDAP-DN
+	phone = row[23]  # partly broken, only phone extension (no complete numbers)
 	roomNumber = row[24]
 	employeeNumber = row[28]
 	computerType = row[29]
 
-	#print "generate %s %s / %s in %s" % (firstname, lastname, mail, office)
+	# print "generate %s %s / %s in %s" % (firstname, lastname, mail, office)
 
 	# check if container for user exists
-	print 'udm container/ou create --ignore_exist --position "ou=People,%s" --set name="%s" --set userPath="1" --set groupPath="1"' % (LDAPBASE, office) #  create OU for User
+	print 'udm container/ou create --ignore_exist --position "ou=People,%s" --set name="%s" --set userPath="1" --set groupPath="1"' % (LDAPBASE, office)  # create OU for User
 
 	# generate udm call to create user
 	userSetMap = [
 		('username', uid),
-		('description', "%s - %s %s %s" %(displayName, employeeType, department, office)),
+		('description', "%s - %s %s %s" % (displayName, employeeType, department, office)),
 		('password', 'univention'),
 		('firstname', firstname),
 		('lastname', lastname),
@@ -114,24 +113,24 @@ def importRow(row):
 		('employeeType', employeeType),
 		('phone', phone),
 		('roomNumber', roomNumber),
-		('departmentNumber', department), # mhm, might not "fit"
+		('departmentNumber', department),  # mhm, might not "fit"
 		('city', office),
 		('employeeNumber', employeeNumber)
-		]
+	]
 	callUser = 'udm users/user create --position "ou=%s,ou=People,%s"' % (office, LDAPBASE)
-	for (udmOption,value) in userSetMap:
+	for (udmOption, value) in userSetMap:
 		callUser = '%s --set "%s"="%s"' % (callUser, udmOption, value)
 	print callUser
 
-	groups = ["users office %s" % office, "users office %s" % department ]
+	groups = ["users office %s" % office, "users office %s" % department]
 	for group in groups:
-		print 'udm groups/group create --ignore_exist --position "ou=People,%s" --set name="%s"' % (LDAPBASE, group) #  create group
+		print 'udm groups/group create --ignore_exist --position "ou=People,%s" --set name="%s"' % (LDAPBASE, group)  # create group
 		print 'udm groups/group modify --dn "cn=%s,ou=People,%s" --append users="uid=%s,ou=%s,ou=People,%s"' % (group, LDAPBASE, uid, office, LDAPBASE)
 
-	#check if container for computer in this department exists
+	# check if container for computer in this department exists
 	print 'udm container/ou create --ignore_exist --position "ou=Departments,%s" --set name="%s" --set computerPath="1"' % (LDAPBASE, office)
 
-	#check if DC slave for this department exists
+	# check if DC slave for this department exists
 	print 'udm computers/domaincontroller_slave create --ignore_exist --position "ou=Departments,%s" --set name="server-%s" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, office, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS)
 
 	# generate computer object per user

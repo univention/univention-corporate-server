@@ -20,9 +20,9 @@ exit 1
 name = 'change_user_password'
 description = 'change user password'
 args = dict(
-	username = dict(help='change password for this user'),
-	userpassword = dict(help='the password string'),
-	domain = dict(help='the windows domain name'),
-	domainuser = dict(help='username to use for the join'),
-	domainpassword = dict(help='username to use for the join'),
+	username=dict(help='change password for this user'),
+	userpassword=dict(help='the password string'),
+	domain=dict(help='the windows domain name'),
+	domainuser=dict(help='username to use for the join'),
+	domainpassword=dict(help='username to use for the join'),
 )

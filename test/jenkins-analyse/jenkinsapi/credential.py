@@ -7,6 +7,7 @@ log = logging.getLogger(__name__)
 
 
 class Credential(object):
+
     """
     Base abstract class for credentials
 
@@ -20,6 +21,7 @@ class Credential(object):
     Each class expects specific credential dict, see below.
     """
     # pylint: disable=unused-argument
+
     def __init__(self, cred_dict):
         """
         Create credential
@@ -43,6 +45,7 @@ class Credential(object):
 
 
 class UsernamePasswordCredential(Credential):
+
     """
     Username and password credential
 
@@ -60,6 +63,7 @@ class UsernamePasswordCredential(Credential):
     When creating credential via jenkinsapi automatic fields not need to be in
     dict
     """
+
     def __init__(self, cred_dict):
         super(UsernamePasswordCredential, self).__init__(cred_dict)
         if 'typeName' in cred_dict:
@@ -96,6 +100,7 @@ class UsernamePasswordCredential(Credential):
 
 
 class SSHKeyCredential(Credential):
+
     """
     SSH key credential
 
@@ -120,6 +125,7 @@ class SSHKeyCredential(Credential):
     When creating credential via jenkinsapi automatic fields not need to be in
     dict
     """
+
     def __init__(self, cred_dict):
         super(SSHKeyCredential, self).__init__(cred_dict)
         if 'typeName' in cred_dict:

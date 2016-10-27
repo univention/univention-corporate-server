@@ -84,8 +84,9 @@ class Coverage(object):
 
 		# FIXME: univention-cli-server calls os.fork() which destroys all information
 		cov = coverage.process_startup()
-		for method in ['execl', 'execle', 'execlp', 'execlpe', 'execv', 'execve', 'execvp', 'execvpe']:#, 'fork', '_exit']:
+		for method in ['execl', 'execle', 'execlp', 'execlpe', 'execv', 'execve', 'execvp', 'execvpe']:  # , 'fork', '_exit']:
 			setattr(os, method, StopCoverageDecorator(cov, getattr(os, method)))
+
 		def sigterm(sig, frame):
 			cov.stop()
 			cov.save()
@@ -94,6 +95,7 @@ class Coverage(object):
 
 class StopCoverageDecorator:  # https://bitbucket.org/ned/coveragepy/issues/43/coverage-measurement-fails-on-code
 	inDecorator = False
+
 	def __init__(self, cov, method):
 		self.cov = cov
 		self.method = method

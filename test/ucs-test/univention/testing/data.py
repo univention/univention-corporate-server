@@ -19,6 +19,7 @@ import errno
 import re
 from hashlib import md5
 from time import time
+from functools import reduce
 
 
 __all__ = ['TestEnvironment', 'TestCase', 'TestResult', 'TestFormatInterface']

@@ -53,8 +53,11 @@ import uuid
 
 WORKDIR = TEMPDIR = STOREDIR = None
 
+
 class File(object):
+
 	'''base class for delayed file/image actions'''
+
 	def __init__(self):
 		self._available = False
 
@@ -83,7 +86,9 @@ class File(object):
 
 
 class Raw(File):
+
 	'''represents a "RAW" disk image'''
+
 	def __init__(self, inputfile):
 		self._inputfile = inputfile
 		self._path = None
@@ -113,7 +118,7 @@ class Raw(File):
 		if not os.path.exists(store):
 			log('Creating RAW')
 			os.mkdir(store)
-			cmd = ('qemu-img','convert','-p','-O','raw','/dev/stdin','image.raw', )
+			cmd = ('qemu-img', 'convert', '-p', '-O', 'raw', '/dev/stdin', 'image.raw', )
 			subprocess.check_call(cmd, cwd=TEMPDIR, stdin=self._inputfile, stdout=sys.stderr)
 			output = os.path.join(TEMPDIR, 'image.raw')
 			os.rename(output, target)
@@ -122,6 +127,7 @@ class Raw(File):
 
 
 class Vmdk(File):
+
 	def __init__(self, raw, streamOptimized=False):
 		assert isinstance(raw, (Raw, ))
 		self._raw = raw
@@ -153,13 +159,13 @@ class Vmdk(File):
 			if self._streamOptimized:
 				log('Creating VMDK (streamOptimized)')
 				# qemu-img 1.1 is broken
-				#cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=streamOptimized', self._raw.path(), 'image.vmdk', )
-				#subprocess.check_call(cmd, cwd=TEMPDIR)
+				# cmd = ('qemu-img','convert','-f','raw','-O','vmdk','-o','subformat=streamOptimized', self._raw.path(), 'image.vmdk', )
+				# subprocess.check_call(cmd, cwd=TEMPDIR)
 				# use VMDKstream instead
 				VMDKstream.convert_to_stream(self._raw.path(), output)
 			else:
 				log('Creating VMDK (monolithic)')
-				cmd = ('qemu-img','convert','-p','-f','raw','-O','vmdk','-o','subformat=monolithicSparse', self._raw.path(), 'image.vmdk', )
+				cmd = ('qemu-img', 'convert', '-p', '-f', 'raw', '-O', 'vmdk', '-o', 'subformat=monolithicSparse', self._raw.path(), 'image.vmdk', )
 				subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
 			os.rename(output, target)
 		self._path = target
@@ -167,6 +173,7 @@ class Vmdk(File):
 
 
 class Tar(File):
+
 	def __init__(self, file_list, fileformat=tarfile.USTAR_FORMAT):
 		for _, source_file in file_list:
 			assert isinstance(source_file, (File, )) or isinstance(source_file, str)
@@ -216,6 +223,7 @@ class Tar(File):
 
 
 class Pkzip(File):
+
 	def __init__(self, file_list):
 		for _, source_file in file_list:
 			if source_file is not None:
@@ -267,7 +275,9 @@ class Pkzip(File):
 
 
 class Target(object):
+
 	'''represents the process for creating a complete image for a platform'''
+
 	def create(self, image, options):
 		raise NotImplementedError()
 
@@ -289,6 +299,7 @@ def encode_vmware_uuid(universally_unique_identifier):
 	encoded = encoded[:23] + '-' + encoded[24:]
 	return encoded
 
+
 def create_vmxf(machine_uuid, image_name):
 	E = lxml.builder.ElementMaker()
 	foundry = E.Foundry(
@@ -309,11 +320,13 @@ def create_vmxf(machine_uuid, image_name):
 	)
 	return lxml.etree.tostring(foundry, encoding='UTF-8', xml_declaration=True, pretty_print=True)
 
+
 def encode_vmx_file(vmx):
 	output = '.encoding = "UTF-8"\n'
 	for key, value, in sorted(vmx.items()):
 		output += '%s = "%s"\n' % (key, value, )
 	return output.encode('UTF-8')
+
 
 def create_vmx(image_name, image_uuid, options):
 	machine_name = options.product
@@ -396,7 +409,9 @@ def create_vmx(image_name, image_uuid, options):
 	}
 	return encode_vmx_file(vmx)
 
+
 class VMware(Target):
+
 	def __str__(self):
 		return 'Zipped VMware®-compatible (VMDK based)'
 
@@ -464,6 +479,7 @@ environments with Windows- and Linux-based clients and to extend those
 environments with proven enterprise software, also either in the cloud or
 on-premises.'''
 
+
 def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image_uuid, options):
 	machine_name = options.product
 	if options.version is not None:
@@ -498,8 +514,7 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 			E.File(**{
 				OVF + 'href': image_name,
 				OVF + 'id': 'file1',
-				}
-			),
+			}),
 		),
 		E.DiskSection(
 			E.Info('List of the virtual disks used in the package'),
@@ -715,7 +730,9 @@ def create_ovf_descriptor_virtualbox(machine_uuid, image_name, image_size, image
 	)
 	return lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True)
 
+
 class Virtualbox(Target):
+
 	def __str__(self):
 		return 'VirtualBox OVA (VMDK based)'
 
@@ -806,8 +823,7 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 				OVF + 'href': image_name,
 				OVF + 'id': 'file1',
 				OVF + 'size': '%d' % (image_packed_size, ),
-				}
-			),
+			}),
 		),
 		E.DiskSection(
 			E.Info('Virtual disk information'),
@@ -1090,7 +1106,10 @@ def create_ovf_descriptor_esxi(image_name, image_size, image_packed_size, image_
 		}
 	)
 	return lxml.etree.tostring(envelope, encoding='UTF-8', xml_declaration=True, pretty_print=True)
+
+
 class ESXi(Target):
+
 	def __str__(self):
 		return 'VMware ESXi OVA (VMDK based)'
 
@@ -1141,13 +1160,14 @@ ddb.virtualHWVersion = "7"
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 ESXi = ESXi()
 
+
 def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime):
 	# <http://docs.aws.amazon.com/AWSEC2/latest/APIReference/manifest.html>
 	E = lxml.builder.ElementMaker()
 	part_count = int(math.ceil(float(vmdk.size()) / part_size))
 	parts = []
 	for index, offset in enumerate(map(lambda x: x * part_size, range(part_count))):
-		key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, )) # TODO: redundant code
+		key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, ))  # TODO: redundant code
 		parts.append(
 			E.part(
 				# Complex type defining the starting and ending byte count of a part.
@@ -1169,7 +1189,7 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 				index='%d' % (index, ),
 			),
 		)
-	manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, )) # TODO: redundant code
+	manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, ))  # TODO: redundant code
 	manifest = E.manifest(
 		# Version designator for the manifest file,
 		E.version('2010-11-15'),
@@ -1204,6 +1224,7 @@ def create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_
 	)
 	return lxml.etree.tostring(manifest, encoding='UTF-8', xml_declaration=False, pretty_print=True)
 
+
 def chunks(imagefile, chunksize):
 	handle = open(imagefile.path(), 'rb')
 	while True:
@@ -1212,7 +1233,9 @@ def chunks(imagefile, chunksize):
 		if len(chunk) < chunksize:
 			break
 
+
 class EC2(Target):
+
 	def __str__(self):
 		return 'Amazon AWS EC2 AMI (EBS based) (HVM x64_64)'
 
@@ -1228,9 +1251,9 @@ class EC2(Target):
 		if options.version is not None:
 			machine_name += ' ' + options.version
 		image_name = '%s-disk1.vmdk' % (options.filename, )
-		part_size = 10 * 1000 * 1000 # 10 MB
-		url_lifetime = 24 * 60 * 60 # 1 day
-		volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024)) # GiB
+		part_size = 10 * 1000 * 1000  # 10 MB
+		url_lifetime = 24 * 60 * 60  # 1 day
+		volume_size = int(math.ceil(float(image.size()) / 1024 / 1024 / 1024))  # GiB
 		folder_name = uuid.uuid4()
 		s3 = boto.s3.connect_to_region(boto.connect_s3().get_bucket(options.bucket).get_location())
 		ec2 = boto.ec2.connect_to_region(options.region)
@@ -1239,7 +1262,7 @@ class EC2(Target):
 		keys_to_delete = []
 		manifest = create_import_manifest(image, vmdk, bucket, folder_name, image_name, volume_size, part_size, url_lifetime)
 		log('Uploading manifest…')
-		manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, )) # TODO: redundant code
+		manifest_key = boto.s3.key.Key(bucket, '%s/%smanifest.xml' % (folder_name, image_name, ))  # TODO: redundant code
 		manifest_key.storage_class = 'REDUCED_REDUNDANCY'
 		manifest_key.set_contents_from_string(manifest)
 		keys_to_delete.append(manifest_key)
@@ -1247,7 +1270,7 @@ class EC2(Target):
 		part_count = int(math.ceil(float(vmdk.size()) / part_size))
 		for index, part in enumerate(chunks(vmdk, part_size)):
 			log('Uploading part %d/%d…' % (index, part_count, ))
-			key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, )) # TODO: redundant code
+			key = boto.s3.key.Key(bucket, '%s/%s.part%d' % (folder_name, image_name, index, ))  # TODO: redundant code
 			key.storage_class = 'REDUCED_REDUNDANCY'
 			key.set_contents_from_string(part)
 			keys_to_delete.append(key)
@@ -1265,11 +1288,11 @@ class EC2(Target):
 		# wait for volume
 		while True:
 			for task in ec2.get_all_conversion_tasks(task_ids=[task.id]):
-				pass # just fill <task> variable
+				pass  # just fill <task> variable
 			if task.state != 'active':
 				log(' done')
 				break
-			time.sleep(32) # TODO adaptive and jittery
+			time.sleep(32)  # TODO adaptive and jittery
 			# TODO: abort if no progress after some time?
 			log('.', False)
 		if task.state == 'completed':
@@ -1283,7 +1306,7 @@ class EC2(Target):
 			else:
 				log('Failed')
 		if task.state != 'completed':
-			return # abort
+			return  # abort
 		log('Generating snapshot ', False)
 		snapshot = ec2.create_snapshot(task.volume_id, description=image_name)
 		# wait for snapshot
@@ -1292,14 +1315,14 @@ class EC2(Target):
 			if snapshot.status != 'pending':
 				log(' done')
 				break
-			time.sleep(32) # TODO adaptive and jittery
+			time.sleep(32)  # TODO adaptive and jittery
 			# TODO: abort if no progress after some time?
 			log('.', False)
 		if snapshot.status == 'completed':
 			log('  %s' % (snapshot.id, ))
 		else:
 			log('  Failed (%, %r, %r, %r)' % (snapshot.id, snapshot.volume_id, snapshot.status, snapshot.progress, ))
-			return # abort
+			return  # abort
 		if ec2.delete_volume(task.volume_id):
 			log('Deleted volume %s' % (task.volume_id, ))
 		else:
@@ -1324,7 +1347,7 @@ class EC2(Target):
 		amis = []
 		while not amis:
 			amis = [ami for ami in ec2.get_all_images(image_ids=[ami_id]) if ami.state != 'pending']
-			time.sleep(32) # TODO adaptive and jittery
+			time.sleep(32)  # TODO adaptive and jittery
 			# TODO: abort if no progress after some time?
 			log('.', False)
 		log(' done')
@@ -1335,7 +1358,9 @@ class EC2(Target):
 				log('Could not generate image (%r, %r)' % (self, ami.id, ami.state, ))
 EC2 = EC2()
 
+
 class Docker(Target):
+
 	def __str__(self):
 		return 'Docker Image (tgz)'
 
@@ -1364,7 +1389,7 @@ class Docker(Target):
 			'mount', '/dev/sda1', '/boot', ':',
 			'tar-in', temp_patch_tar, '/', ':',
 			'tar-out', '/', archive_name,
-			]
+		]
 		subprocess.check_call(cmd, cwd=TEMPDIR, stdout=sys.stderr)
 		log('Generated "%s" appliance as\n  %s' % (self, archive_name, ))
 Docker = Docker()
@@ -1439,15 +1464,17 @@ def parse_options():
 		options.filename = '-'.join([x for x in options.filename.split('-') if x])
 	try:
 		options.source = open(options.source, 'rb')
-	except IOError, e:
+	except IOError as e:
 		parser.error(e)
 	return options
+
 
 def log(text, newline=True):
 	sys.stderr.write(text)
 	if newline:
 		sys.stderr.write('\n')
 	sys.stderr.flush()
+
 
 def main():
 	global WORKDIR, TEMPDIR, STOREDIR
@@ -1464,7 +1491,7 @@ def main():
 		return os.EX_OK
 	finally:
 		log('Cleanup')
-		cmd = ('find', WORKDIR, '(','-type','f','-printf','  %f\\n','-o','-true',')','-delete', )
+		cmd = ('find', WORKDIR, '(', '-type', 'f', '-printf', '  %f\\n', '-o', '-true', ')', '-delete', )
 		subprocess.call(cmd, stdout=sys.stderr)
 
 if __name__ == "__main__":

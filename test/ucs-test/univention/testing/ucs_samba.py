@@ -41,12 +41,13 @@ def wait_for_drs_replication(ldap_filter, attrs=None, base=None, scope=ldb.SCOPE
                 if verbose:
                     print "\nDRS replication took %d seconds" % (t - t0, )
                 return res
-        except ldb.LdbError, (_num, msg):
+        except ldb.LdbError as (_num, msg):
             print "Error during samdb.search: %s" % (msg, )
 
         print '.',
         time.sleep(delta_t)
         t = time.time()
+
 
 def get_available_s4connector_dc():
     cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=S4 Connector)", "uid")
@@ -62,14 +63,14 @@ def get_available_s4connector_dc():
         print "WARNING: Automatic S4 Connector host detection failed"
         return
 
-    ## check if this is UCS@school
+    # check if this is UCS@school
     cmd = ("/usr/bin/univention-ldapsearch", "-LLL", "(univentionService=UCS@school)", "dn")
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     stdout, _stderr = p.communicate()
     if not stdout:
         print "ERROR: Automatic S4 Connector host detection failed: Found %s S4 Connector services" % len(matches)
         return
-    ## Look for replicating DCs
+    # Look for replicating DCs
     dcs_replicating_with_this_one = []
     for s4c in matches:
         cmd = ("/usr/bin/samba-tool", "drs", "showrepl", s4c)
@@ -79,10 +80,11 @@ def get_available_s4connector_dc():
             continue
         dcs_replicating_with_this_one.append(s4c)
     if len(dcs_replicating_with_this_one) == 1:
-	return dcs_replicating_with_this_one[0]
+        return dcs_replicating_with_this_one[0]
     else:
         print "ERROR: Automatic S4 Connector host detection failed: Replicating with %s S4 Connector services" % len(dcs_replicating_with_this_one)
         return
+
 
 def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None, direction="in"):
     if not package_installed('univention-samba4'):
@@ -97,7 +99,7 @@ def force_drs_replication(source_dc=None, destination_dc=None, partition_dn=None
         destination_dc = socket.gethostname()
 
     if destination_dc == source_dc:
-	return
+        return
 
     if not partition_dn:
         lp = LoadParm()

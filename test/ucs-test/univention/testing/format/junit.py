@@ -48,7 +48,7 @@ class Junit(TestFormatInterface):
         dirname = os.path.dirname(filename)
         try:
             os.makedirs(dirname)
-        except OSError, ex:
+        except OSError as ex:
             if ex.errno != errno.EEXIST:
                 raise
         f_report = open(filename, 'w')
