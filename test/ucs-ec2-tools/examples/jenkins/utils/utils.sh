@@ -296,13 +296,12 @@ install_apps_test_packages ()
 {
 	local app rv=0
 	ucr set repository/online/unmaintained=yes
-	apt-get update --yes
 	for app in "$@"
 	do
 		if [ -n "$(univention-app get $app DockerImage)" ]; then
 			univention-app shell "$app" apt-get download "ucs-test-$app"
 			dpkg -i /var/lib/docker/overlay/$(ucr get appcenter/apps/$app/container)/merged/ucs-test-${app}_*.deb
-			univention-install -f
+			univention-install -f --yes
 		else
 			univention-install --yes "ucs-test-$app" || rv=$?
 		fi
