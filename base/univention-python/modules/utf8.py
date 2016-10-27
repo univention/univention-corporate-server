@@ -33,7 +33,8 @@
 import codecs
 
 (utf8_encode, utf8_decode, utf8_reader, utf8_writer) = codecs.lookup('utf-8')
-(iso_encode,  iso_decode,  iso_reader,  iso_writer)  = codecs.lookup('iso-8859-1')
+(iso_encode, iso_decode, iso_reader, iso_writer) = codecs.lookup('iso-8859-1')
+
 
 def decode(ob, ignore=[]):
 	u"""
@@ -72,6 +73,7 @@ def decode(ob, ignore=[]):
 	else:
 		return ob
 
+
 def encode(ob):
 	u"""
 	Encode object to UTF-8.
@@ -93,7 +95,7 @@ def encode(ob):
 	elif isinstance(ob, basestring):
 		try:
 			return utf8_encode(ob)[0]
-		except Exception, ex:
+		except Exception:
 			return ob
 	elif isinstance(ob, list):
 		return map(encode, ob)
@@ -102,7 +104,7 @@ def encode(ob):
 	elif isinstance(ob, set):
 		return set(map(encode, ob))
 	elif isinstance(ob, dict):
-		return dict(map(lambda (k, v): (k, encode(v)), ob.items()))
+		return dict(map(lambda k_v: (k_v[0], encode(k_v[1])), ob.items()))
 	else:
 		return ob
 

@@ -30,6 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+
 def splitDotted(ip):
 	"""
 	Split IPv4 address from dotted quad string.
@@ -42,6 +43,7 @@ def splitDotted(ip):
 		quad.append(0)
 	return quad
 
+
 def joinDotted(ip):
 	"""
 	Convert IPv4 address to dotted quad string.
@@ -50,6 +52,7 @@ def joinDotted(ip):
 	'1.2.3.4'
 	"""
 	return '%d.%d.%d.%d' % tuple(ip[0:4])
+
 
 def networkNumber(dottedIp, dottedNetmask):
 	"""
@@ -61,9 +64,10 @@ def networkNumber(dottedIp, dottedNetmask):
 	ip = splitDotted(dottedIp)
 	netmask = splitDotted(dottedNetmask)
 
-	network = map(lambda (i, n): i & n, zip(ip, netmask))
+	network = map(lambda i_n: i_n[0] & i_n[1], zip(ip, netmask))
 
 	return joinDotted(network)
+
 
 def broadcastNumber(dottedNetwork, dottedNetmask):
 	"""
@@ -77,7 +81,7 @@ def broadcastNumber(dottedNetwork, dottedNetmask):
 	network = splitDotted(dottedNetwork)
 	netmask = splitDotted(dottedNetmask)
 
-	broadcast = map(lambda (n, m): n | (255 ^ m), zip(network, netmask))
+	broadcast = map(lambda n_m: n_m[0] | (255 ^ n_m[1]), zip(network, netmask))
 
 	return joinDotted(broadcast)
 
