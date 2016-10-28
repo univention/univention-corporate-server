@@ -43,73 +43,74 @@ from univention.admin.policy import (
 )
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+_ = translation.translate
+
 
 class dhcp_leasetimeFixedAttributes(univention.admin.syntax.select):
-	name='dhcp_leasetimeFixedAttributes'
-	choices=[
-		('univentionDhcpLeaseTimeDefault',_('Default lease time')),
-		('univentionDhcpLeaseTimeMax',_('Maximum lease time')),
-		('univentionDhcpLeaseTimeMin',_('Minimum lease time'))
-		]
+	name = 'dhcp_leasetimeFixedAttributes'
+	choices = [
+		('univentionDhcpLeaseTimeDefault', _('Default lease time')),
+		('univentionDhcpLeaseTimeMax', _('Maximum lease time')),
+		('univentionDhcpLeaseTimeMin', _('Minimum lease time'))
+	]
 
-module='policies/dhcp_leasetime'
-operations=['add','edit','remove','search']
+module = 'policies/dhcp_leasetime'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc="univentionPolicyDhcpLeaseTime"
-policy_apply_to=["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix="cn=leasetime,cn=dhcp"
-policies_group="dhcp"
-usewizard=1
-childs=0
-short_description=_('Policy: DHCP lease time')
-policy_short_description=_('Lease time')
-long_description=''
-options={
+policy_oc = "univentionPolicyDhcpLeaseTime"
+policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
+policy_position_dn_prefix = "cn=leasetime,cn=dhcp"
+policies_group = "dhcp"
+usewizard = 1
+childs = 0
+short_description = _('Policy: DHCP lease time')
+policy_short_description = _('Lease time')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'lease_time_default': univention.admin.property(
-			short_description=_('Default lease time'),
-			long_description=_('Lease time used if the client does not request a specific expiration time'),
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Default lease time'),
+		long_description=_('Lease time used if the client does not request a specific expiration time'),
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'lease_time_max': univention.admin.property(
-			short_description=_('Maximum lease time'),
-			long_description=_('Maximum lease time that the server will accept if asked for'),
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Maximum lease time'),
+		long_description=_('Maximum lease time that the server will accept if asked for'),
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'lease_time_min': univention.admin.property(
-			short_description=_('Minimum lease time'),
-			long_description=_('Minimum granted lease time'),
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Minimum lease time'),
+		long_description=_('Minimum granted lease time'),
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
@@ -120,33 +121,32 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('Lease Time'), _('DHCP lease time'), layout = [
-		Group( _( 'General DHCP lease time settings' ), layout = [
+	Tab(_('Lease Time'), _('DHCP lease time'), layout=[
+		Group(_('General DHCP lease time settings'), layout=[
 			'name',
 			'lease_time_default',
 			'lease_time_min',
 			'lease_time_max',
-		] ),
-	] ),
+		]),
+	]),
 	policy_object_tab()
 ]
 
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('lease_time_default', 'univentionDhcpLeaseTimeDefault', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
-mapping.register('lease_time_max', 'univentionDhcpLeaseTimeMax', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
-mapping.register('lease_time_min', 'univentionDhcpLeaseTimeMin', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+mapping.register('lease_time_default', 'univentionDhcpLeaseTimeDefault', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.register('lease_time_max', 'univentionDhcpLeaseTimeMax', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.register('lease_time_min', 'univentionDhcpLeaseTimeMin', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 register_policy_mapping(mapping)
 
 
-
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def __setitem__(self, key, value):
 		if value and value[0]:
-			if not ((key=='lease_time_min' or key=='lease_time_max' or key=='lease_time_default') and value[0] == ''):
+			if not ((key == 'lease_time_min' or key == 'lease_time_max' or key == 'lease_time_default') and value[0] == ''):
 				univention.admin.handlers.simplePolicy.__setitem__(self, key, value)
 
 	def _ldap_addlist(self):
@@ -154,23 +154,25 @@ class object(univention.admin.handlers.simplePolicy):
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpLeaseTime'])
 		]
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpLeaseTime'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicyDhcpLeaseTime' in attr.get('objectClass', [])

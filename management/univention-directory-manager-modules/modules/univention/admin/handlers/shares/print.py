@@ -34,102 +34,104 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.shares')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.shares')
+_ = translation.translate
 
 import univention.admin.handlers.shares.printer
 import univention.admin.handlers.shares.printergroup
 
-module='shares/print'
-usewizard=1
-wizardmenustring=_("Printers")
-wizarddescription=_("Add, edit and delete print shares")
-wizardoperations={"add":[_("Add"), _("Add printer object")],"find":[_("Search"), _("Search printer object(s)")]}
-wizardpath='univentionPrintersObject'
-childmodules=['shares/printer','shares/printergroup']
+module = 'shares/print'
+usewizard = 1
+wizardmenustring = _("Printers")
+wizarddescription = _("Add, edit and delete print shares")
+wizardoperations = {"add": [_("Add"), _("Add printer object")], "find": [_("Search"), _("Search printer object(s)")]}
+wizardpath = 'univentionPrintersObject'
+childmodules = ['shares/printer', 'shares/printergroup']
 
-childs=0
-short_description=_('Printer share')
-long_description=''
-operations=['search']
-virtual=1
-options={
+childs = 0
+short_description = _('Printer share')
+long_description = ''
+operations = ['search']
+virtual = 1
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.printerName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.printerName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 	'spoolHost': univention.admin.property(
-			short_description=_('Spool host'),
-			long_description='',
-			syntax=univention.admin.syntax.ServicePrint_FQDN,
-			multivalue=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Spool host'),
+		long_description='',
+		syntax=univention.admin.syntax.ServicePrint_FQDN,
+		multivalue=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False
+	),
 	'sambaName': univention.admin.property(
-			short_description=_('Windows name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			unique=True
-		),
+		short_description=_('Windows name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		unique=True
+	),
 	'setQuota': univention.admin.property(
-			short_description=_('Enable quota support'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Enable quota support'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'pagePrice': univention.admin.property(
-			short_description=_('Price per page'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Price per page'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'jobPrice': univention.admin.property(
-			short_description=_('Price per print job'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Price per print job'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	return univention.admin.handlers.shares.printer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.shares.printergroup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 
+
 def identify(dn, attr, canonical=0):
 	pass
-

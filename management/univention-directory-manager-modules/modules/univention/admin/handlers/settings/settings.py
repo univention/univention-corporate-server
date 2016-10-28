@@ -34,8 +34,8 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
 
 import univention.admin.handlers.settings.directory
 import univention.admin.handlers.settings.default
@@ -43,27 +43,29 @@ import univention.admin.handlers.settings.usertemplate
 import univention.admin.handlers.settings.license
 import univention.admin.handlers.settings.xconfig_choices
 
-module='settings/settings'
-superordinate='settings/cn'
-childs=0
-short_description=_('Preferences')
-long_description=''
-operations=['search']
-virtual=1
-options={
+module = 'settings/settings'
+superordinate = 'settings/cn'
+childs = 0
+short_description = _('Preferences')
+long_description = ''
+operations = ['search']
+virtual = 1
+options = {
 }
-property_descriptions={
+property_descriptions = {
 }
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	return univention.admin.handlers.settings.directory.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.settings.default.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.settings.usertemplate.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.settings.license.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.settings.xconfig_choices.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 
+
 def identify(dn, attr, canonical=0):
 	pass
-

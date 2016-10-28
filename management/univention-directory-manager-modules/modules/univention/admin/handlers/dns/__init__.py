@@ -3,10 +3,12 @@
 ARPA_IP4 = '.in-addr.arpa'
 ARPA_IP6 = '.ip6.arpa'
 
+
 def makeContactPerson(obj, arg):
     """Create contact Email-address for domain."""
     domain = obj.position.getDomain()
-    return 'root@%s.' % (domain.replace('dc=', '').replace(',','.'),)
+    return 'root@%s.' % (domain.replace('dc=', '').replace(',', '.'),)
+
 
 def unescapeSOAemail(email):
     r"""
@@ -31,6 +33,7 @@ def unescapeSOAemail(email):
         ret += email[i]
         i += 1
     raise ValueError()
+
 
 def escapeSOAemail(email):
     r"""

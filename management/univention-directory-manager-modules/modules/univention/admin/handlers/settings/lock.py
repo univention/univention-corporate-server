@@ -38,76 +38,78 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
 
-module='settings/lock'
-operations=['edit','remove','search']
-superordinate='settings/cn'
+module = 'settings/lock'
+operations = ['edit', 'remove', 'search']
+superordinate = 'settings/cn'
 
-childs=0
-short_description=_('Settings: Lock')
-long_description=_('Lock objects')
-options={
+childs = 0
+short_description = _('Settings: Lock')
+long_description = _('Lock objects')
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'locktime': univention.admin.property(
-			short_description=_('Lock Time'),
-			long_description=_('Locked until'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=False,
-			identifies=False,
-		),
+		short_description=_('Lock Time'),
+		long_description=_('Locked until'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=False,
+		identifies=False,
+	),
 }
 
 layout = [
-	Tab(_('General'),_('Lock Information'), layout = [
-		Group( _( 'General lock settings' ), layout = [
-			[ 'name', 'locktime' ],
-		] ),
-	] ),
+	Tab(_('General'), _('Lock Information'), layout=[
+		Group(_('General lock settings'), layout=[
+			['name', 'locktime'],
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('locktime', 'lockTime', None, univention.admin.mapping.ListToString)
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'lock')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'lock' in attr.get('objectClass', [])

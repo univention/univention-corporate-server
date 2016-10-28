@@ -38,80 +38,83 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
 
-module='settings/prohibited_username'
-operations=['add','edit','remove','search','move']
-superordinate='settings/cn'
+module = 'settings/prohibited_username'
+operations = ['add', 'edit', 'remove', 'search', 'move']
+superordinate = 'settings/cn'
 
-childs=0
-short_description=_('Settings: Prohibited user names')
-long_description=_('Univention Prohibited user names')
-options={
+childs = 0
+short_description = _('Settings: Prohibited user names')
+long_description = _('Univention Prohibited user names')
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True,
+	),
 	'usernames': univention.admin.property(
-			short_description=_('Prohibited user name'),
-			long_description=_('Prohibited user name'),
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Prohibited user name'),
+		long_description=_('Prohibited user name'),
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 }
 
 layout = [
-	Tab(_('General'),_('Prohibited user names'), layout = [
-		Group( _( 'General prohibited user names settings' ), layout = [
+	Tab(_('General'), _('Prohibited user names'), layout=[
+		Group(_('General prohibited user names settings'), layout=[
 			'name',
 			'usernames',
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('usernames', 'prohibitedUsername', None, None)
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionProhibitedUsernames']) ]
-	
+		return [('objectClass', ['top', 'univentionProhibitedUsernames'])]
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionProhibitedUsernames')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionProhibitedUsernames' in attr.get('objectClass', [])

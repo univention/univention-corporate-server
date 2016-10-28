@@ -33,14 +33,15 @@
 
 import os.path
 
-policies=[]
+policies = []
 
-def __walk( root, dir, files ):
+
+def __walk(root, dir, files):
 	global _policies
- 	for file in files:
- 		if not file.endswith('.py') or file.startswith('__') or file in ('policy.py', 'base.py'):
- 			continue
- 		policies.append( __import__( file[ : -3 ], globals(), locals(), [ '' ] ) )
+	for file in files:
+		if not file.endswith('.py') or file.startswith('__') or file in ('policy.py', 'base.py'):
+			continue
+		policies.append(__import__(file[: -3], globals(), locals(), ['']))
 
-path = os.path.abspath( os.path.dirname( __file__ ) )
-os.path.walk( path, __walk, path )
+path = os.path.abspath(os.path.dirname(__file__))
+os.path.walk(path, __walk, path)

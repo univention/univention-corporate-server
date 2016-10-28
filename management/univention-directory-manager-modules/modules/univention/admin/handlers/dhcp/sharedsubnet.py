@@ -36,79 +36,81 @@ import univention.admin.handlers
 import univention.admin.ipaddress
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dhcp')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
+_ = translation.translate
 
-module='dhcp/sharedsubnet'
-operations=['add','edit','remove','search']
-superordinate='dhcp/shared'
-childs=True
+module = 'dhcp/sharedsubnet'
+operations = ['add', 'edit', 'remove', 'search']
+superordinate = 'dhcp/shared'
+childs = True
 childmodules = ['dhcp/pool']
-short_description=_('DHCP: Shared subnet')
-long_description=''
-options={
+short_description = _('DHCP: Shared subnet')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'subnet': univention.admin.property(
-			short_description=_('Subnet address'),
-			long_description='',
-			syntax=univention.admin.syntax.ipv4Address,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('Subnet address'),
+		long_description='',
+		syntax=univention.admin.syntax.ipv4Address,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 	'subnetmask': univention.admin.property(
-			short_description=_('Address prefix length (or Netmask)'),
-			long_description='',
-			syntax=univention.admin.syntax.v4netmask,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Address prefix length (or Netmask)'),
+		long_description='',
+		syntax=univention.admin.syntax.v4netmask,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False
+	),
 	'broadcastaddress': univention.admin.property(
-			short_description=_('Broadcast address'),
-			long_description='',
-			syntax=univention.admin.syntax.ipv4Address,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Broadcast address'),
+		long_description='',
+		syntax=univention.admin.syntax.ipv4Address,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'range': univention.admin.property(
-			short_description=_('Dynamic address assignment'),
-			long_description=_( 'Define a pool of addresses available for dynamic address assignment.'),
-			syntax=univention.admin.syntax.IPv4_AddressRange,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Dynamic address assignment'),
+		long_description=_('Define a pool of addresses available for dynamic address assignment.'),
+		syntax=univention.admin.syntax.IPv4_AddressRange,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout = [
-		Group( _( 'General DHCP shared subnet settings' ), layout = [
-			[ 'subnet', 'subnetmask' ],
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('General DHCP shared subnet settings'), layout=[
+			['subnet', 'subnetmask'],
 			'broadcastaddress',
 			'range'
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-def rangeMap( value ):
-	return map( lambda x: ' '.join( x ), value ) or None
 
-def rangeUnmap( value ):
-	return map( lambda x: x.split( ' ' ), value )
+def rangeMap(value):
+	return map(lambda x: ' '.join(x), value) or None
 
-mapping=univention.admin.mapping.mapping()
+
+def rangeUnmap(value):
+	return map(lambda x: x.split(' '), value)
+
+mapping = univention.admin.mapping.mapping()
 mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
@@ -116,37 +118,40 @@ mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, uni
 
 from .__common import add_dhcp_options, add_dhcp_objectclass
 
-add_dhcp_options( property_descriptions, mapping, layout )
+add_dhcp_options(property_descriptions, mapping, layout)
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', ['top', 'univentionDhcpSubnet', 'univentionDhcpSharedSubnet', 'dhcpOptions' ]),
+			('objectClass', ['top', 'univentionDhcpSubnet', 'univentionDhcpSharedSubnet', 'dhcpOptions']),
 		]
 
 	def _ldap_modlist(self):
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist( self )
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		return add_dhcp_objectclass( self, ml )
+		return add_dhcp_objectclass(self, ml)
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
-	univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')
+	filter = univention.admin.filter.conjunction('&', [
+		univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
+		univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')
 	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
+
 
 def identify(dn, attr):
 	return 'univentionDhcpSubnet' in attr.get('objectClass', []) and 'univentionDhcpSharedSubnet' in attr.get('objectClass', [])

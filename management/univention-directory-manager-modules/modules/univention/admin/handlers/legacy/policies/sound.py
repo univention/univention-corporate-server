@@ -43,62 +43,63 @@ from univention.admin.policy import (
 	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
-translation=univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
+_ = translation.translate
+
 
 class soundFixedAttributes(univention.admin.syntax.select):
-	name='soundFixedAttributes'
-	choices=[
-		('univentionSoundEnabled',_('Sound enabled')),
-		('univentionSoundModule',_('Sound module'))
-		]
+	name = 'soundFixedAttributes'
+	choices = [
+		('univentionSoundEnabled', _('Sound enabled')),
+		('univentionSoundModule', _('Sound module'))
+	]
 
-module='policies/sound'
-operations=['add','edit','remove','search']
+module = 'policies/sound'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicySoundConfiguration'
-policy_apply_to=["computers/thinclient"]
-policy_position_dn_prefix="cn=sound"
-usewizard=1
-childs=0
-short_description=_('Policy: Sound')
-policy_short_description=_('Sound settings')
-long_description=''
-options={
+policy_oc = 'univentionPolicySoundConfiguration'
+policy_apply_to = ["computers/thinclient"]
+policy_position_dn_prefix = "cn=sound"
+usewizard = 1
+childs = 0
+short_description = _('Policy: Sound')
+policy_short_description = _('Sound settings')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'enable': univention.admin.property(
-			short_description=_('Sound enabled'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Sound enabled'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'soundModule': univention.admin.property(
-			short_description=_('Sound module'),
-			long_description='',
-			syntax=univention.admin.syntax.soundModule,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Sound module'),
+		long_description='',
+		syntax=univention.admin.syntax.soundModule,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
@@ -109,55 +110,58 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('General'),_('Sound settings'), layout = [
-		Group( _( 'General sound settings' ), layout = [
+	Tab(_('General'), _('Sound settings'), layout=[
+		Group(_('General sound settings'), layout=[
 			'name',
 			'enable',
 			'soundModule'
-		] ),
-	] ),
+		]),
+	]),
 	policy_object_tab(),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('enable', 'univentionSoundEnabled', None, univention.admin.mapping.ListToString)
 mapping.register('soundModule', 'univentionSoundModule', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
 
-class object(univention.admin.handlers.simplePolicy):
-	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+class object(univention.admin.handlers.simplePolicy):
+	module = module
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
+		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicySoundConfiguration']) ]
-	
+		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicySoundConfiguration'])]
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicySoundConfiguration')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicySoundConfiguration' in attr.get('objectClass', [])

@@ -39,116 +39,118 @@ import univention.admin.handlers
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dns')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dns')
+_ = translation.translate
 
-module='dns/host_record'
-operations=['add','edit','remove','search']
+module = 'dns/host_record'
+operations = ['add', 'edit', 'remove', 'search']
 columns = ['a']
-superordinate='dns/forward_zone'
-usewizard=1
-childs=0
-short_description='DNS: Host Record'
-long_description=''
+superordinate = 'dns/forward_zone'
+usewizard = 1
+childs = 0
+short_description = 'DNS: Host Record'
+long_description = ''
 
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Hostname'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('Hostname'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'zonettl': univention.admin.property(
-			short_description=_('Zone time to live'),
-			long_description='',
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default = ( ( '3', 'hours' ), [] )
-		),
+		short_description=_('Zone time to live'),
+		long_description='',
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=(('3', 'hours'), [])
+	),
 	'a': univention.admin.property(
-			short_description=_('IP addresses'),
-			long_description='',
-			syntax=univention.admin.syntax.ipAddress,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True
-		),
+		short_description=_('IP addresses'),
+		long_description='',
+		syntax=univention.admin.syntax.ipAddress,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True
+	),
 	'mx': univention.admin.property(
-			short_description=_('Mail Exchanger'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsMX,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True
-		),
+		short_description=_('Mail Exchanger'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsMX,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True
+	),
 	'txt': univention.admin.property(
-			short_description=_('Text Record'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True
-		)
+		short_description=_('Text Record'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True
+	)
 }
 
 layout = [
-	Tab(_('General'), _('Basic values'), layout = [
-		Group( _( 'General host record settings' ), layout = [
+	Tab(_('General'), _('Basic values'), layout=[
+		Group(_('General host record settings'), layout=[
 			'name',
 			'a',
 			'zonettl'
-		] ),
-	] ),
-	Tab(_('Mail'), _('Mail exchangers for this host'), advanced = True, layout = [
+		]),
+	]),
+	Tab(_('Mail'), _('Mail exchangers for this host'), advanced=True, layout=[
 		'mx'
-		] ),
-	Tab(_('Text'), _('Optional text'), advanced = True, layout = [
+	]),
+	Tab(_('Text'), _('Optional text'), advanced=True, layout=[
 		'txt',
-		] )
+	])
 ]
 
 
 def unmapMX(old):
 	_d = univention.debug.function('admin.handlers.dns.host_record.unmapMX old=%s' % str(old))
-	new=[]
+	new = []
 	for i in old:
 		new.append(i.split(' '))
 	return new
 
+
 def mapMX(old):
 	_d = univention.debug.function('admin.handlers.dns.host_record.mapMX old=%s' % str(old))
-	new=[]
+	new = []
 	for i in old:
 		new.append(string.join(i, ' '))
 	return new
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString)
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)
 mapping.register('txt', 'tXTRecord')
-mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _updateZone(self):
 		if self.update_zone:
 			self.superordinate.open()
 			self.superordinate.modify()
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [], update_zone = True ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
@@ -161,10 +163,10 @@ class object(univention.admin.handlers.simpleLdap):
 		self.info['a'] = []
 		if 'aRecord' in self.oldattr:
 			self.oldinfo['a'].extend(self.oldattr['aRecord'])
-			self.info['a'].extend(   self.oldattr['aRecord'])
+			self.info['a'].extend(self.oldattr['aRecord'])
 		if 'aAAARecord' in self.oldattr:
 			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-			self.info['a'].extend(   map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+			self.info['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 	def _ldap_addlist(self):
 		return [
@@ -172,7 +174,7 @@ class object(univention.admin.handlers.simpleLdap):
 			(self.superordinate.mapping.mapName('zone'), self.superordinate.mapping.mapValue('zone', self.superordinate['zone'])),
 		]
 
-	def _ldap_modlist(self): # IPv6
+	def _ldap_modlist(self):  # IPv6
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		oldAddresses = self.oldinfo.get('a')
 		newAddresses = self.info.get('a')
@@ -183,13 +185,13 @@ class object(univention.admin.handlers.simpleLdap):
 		if oldAddresses != newAddresses:
 			if oldAddresses:
 				for address in oldAddresses:
-					if ':' in address: # IPv6
+					if ':' in address:  # IPv6
 						oldAaaaRecord.append(address)
 					else:
 						oldARecord.append(address)
 			if newAddresses:
 				for address in newAddresses:
-					if ':' in address: # IPv6
+					if ':' in address:  # IPv6
 						newAaaaRecord.append(ipaddr.IPv6Address(address).exploded)
 					else:
 						newARecord.append(address)
@@ -197,7 +199,7 @@ class object(univention.admin.handlers.simpleLdap):
 			# explode all IPv6 addresses and remove duplicates
 			newAaaaRecord = list(set(map(lambda x: ipaddr.IPv6Address(x).exploded, newAaaaRecord)))
 
-			ml.append(('aRecord',    oldARecord,    newARecord, ))
+			ml.append(('aRecord', oldARecord, newARecord, ))
 			ml.append(('aAAARecord', oldAaaaRecord, newAaaaRecord, ))
 		return ml
 
@@ -211,9 +213,10 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_remove(self):
 		self._updateZone()
 
-def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
+
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('zoneName', '*.in-addr.arpa')]),
@@ -224,24 +227,25 @@ def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=Fal
 			univention.admin.filter.expression('aRecord', '*'),
 			univention.admin.filter.expression('aAAARecord', '*'),
 			univention.admin.filter.expression('mXRecord', '*'),
-			]),
-		])
+		]),
+	])
 
 	if superordinate:
 		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('zone', superordinate['zone'])))
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
 
+
 def identify(dn, attr, canonical=0):
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALIAS(host_record) identify DN=%s'% dn)
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'ALIAS(host_record) identify DN=%s' % dn)
 	return 'dNSZone' in attr.get('objectClass', []) and '@' not in attr.get('relativeDomainName', []) and \
-		not attr['zoneName'][0].endswith('.arpa') and not attr.get( 'cNAMERecord', [] ) and \
-		not attr.get('sRVRecord', []) and ( attr.get('aRecord', []) or attr.get('aAAARecord', []) or attr.get('mXRecord', []))
+		not attr['zoneName'][0].endswith('.arpa') and not attr.get('cNAMERecord', []) and \
+		not attr.get('sRVRecord', []) and (attr.get('aRecord', []) or attr.get('aAAARecord', []) or attr.get('mXRecord', []))

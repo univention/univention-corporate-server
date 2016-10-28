@@ -45,82 +45,83 @@ from univention.admin.policy import (
 )
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+_ = translation.translate
+
 
 class pwhistoryFixedAttributes(univention.admin.syntax.select):
-	name='pwhistoryFixedAttributes'
-	choices=[
-		('univentionPWHistoryLen',_('History length')),
-		('univentionPWExpiryInterval',_('Password expiry interval')),
-		('univentionPWLength',_('Password length'))
-		]
+	name = 'pwhistoryFixedAttributes'
+	choices = [
+		('univentionPWHistoryLen', _('History length')),
+		('univentionPWExpiryInterval', _('Password expiry interval')),
+		('univentionPWLength', _('Password length'))
+	]
 
-module='policies/pwhistory'
-operations=['add','edit','remove','search']
+module = 'policies/pwhistory'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicyPWHistory'
-policy_apply_to=["users/user"]
-policy_position_dn_prefix="cn=pwhistory,cn=users"
-usewizard=1
-childs=0
-short_description=_('Policy: Passwords')
-policy_short_description=_('Passwords')
-long_description=''
-options={
+policy_oc = 'univentionPolicyPWHistory'
+policy_apply_to = ["users/user"]
+policy_position_dn_prefix = "cn=pwhistory,cn=users"
+usewizard = 1
+childs = 0
+short_description = _('Policy: Passwords')
+policy_short_description = _('Passwords')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'length': univention.admin.property(
-			short_description=_('History length'),
-			long_description=_('This number indicates after how many changes the user may reuse the old password again'),
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('History length'),
+		long_description=_('This number indicates after how many changes the user may reuse the old password again'),
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'expiryInterval': univention.admin.property(
-			short_description=_('Password expiry interval'),
-			long_description=_('Number of days after which the password has to be changed'),
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Password expiry interval'),
+		long_description=_('Number of days after which the password has to be changed'),
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'pwLength': univention.admin.property(
-			short_description=_('Password length'),
-			long_description=_('Minimal amount of characters'),
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Password length'),
+		long_description=_('Minimal amount of characters'),
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'pwQualityCheck': univention.admin.property(
-			short_description=_('Password quality check'),
-			long_description=_('Enables/disables password quality checks for example dictionary entries'),
-			syntax=univention.admin.syntax.TrueFalseUp,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Password quality check'),
+		long_description=_('Enables/disables password quality checks for example dictionary entries'),
+		syntax=univention.admin.syntax.TrueFalseUp,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 
 }
 property_descriptions.update(dict([
@@ -132,19 +133,19 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('General'),_('Passwords'), layout = [
-		Group( _( 'General passwords settings' ), layout = [
+	Tab(_('General'), _('Passwords'), layout=[
+		Group(_('General passwords settings'), layout=[
 			'name',
 			'pwLength',
 			'expiryInterval',
 			'length',
 			'pwQualityCheck',
-		] ),
-	] ),
+		]),
+	]),
 	policy_object_tab()
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('length', 'univentionPWHistoryLen', None, univention.admin.mapping.ListToIntToString)
 mapping.register('expiryInterval', 'univentionPWExpiryInterval', None, univention.admin.mapping.ListToIntToString)
@@ -154,29 +155,31 @@ register_policy_mapping(mapping)
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyPWHistory']) ]
-	
+		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyPWHistory'])]
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyPWHistory')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicyPWHistory' in attr.get('objectClass', [])

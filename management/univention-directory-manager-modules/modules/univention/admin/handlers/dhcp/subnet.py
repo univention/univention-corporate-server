@@ -36,150 +36,155 @@ import univention.admin.handlers
 import univention.admin.ipaddress
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dhcp')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
+_ = translation.translate
 
-module='dhcp/subnet'
-operations=['add','edit','remove','search']
-superordinate='dhcp/service'
-childs=1
+module = 'dhcp/subnet'
+operations = ['add', 'edit', 'remove', 'search']
+superordinate = 'dhcp/service'
+childs = 1
 childmodules = ['dhcp/pool']
-usewizard=1
-short_description=_('DHCP: Subnet')
-long_description=''
-options={
+usewizard = 1
+short_description = _('DHCP: Subnet')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'subnet': univention.admin.property(
-			short_description=_('Subnet address'),
-			long_description='',
-			syntax=univention.admin.syntax.ipv4Address,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('Subnet address'),
+		long_description='',
+		syntax=univention.admin.syntax.ipv4Address,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 	'subnetmask': univention.admin.property(
-			short_description=_('Address prefix length (or Netmask)'),
-			long_description='',
-			syntax=univention.admin.syntax.v4netmask,
-			multivalue=False,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Address prefix length (or Netmask)'),
+		long_description='',
+		syntax=univention.admin.syntax.v4netmask,
+		multivalue=False,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False
+	),
 	'broadcastaddress': univention.admin.property(
-			short_description=_('Broadcast address'),
-			long_description='',
-			syntax=univention.admin.syntax.ipv4Address,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Broadcast address'),
+		long_description='',
+		syntax=univention.admin.syntax.ipv4Address,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'range': univention.admin.property(
-			short_description=_('Dynamic address assignment'),
-			long_description=_( 'Define a pool of addresses available for dynamic address assignment.' ),
-			syntax=univention.admin.syntax.IPv4_AddressRange,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Dynamic address assignment'),
+		long_description=_('Define a pool of addresses available for dynamic address assignment.'),
+		syntax=univention.admin.syntax.IPv4_AddressRange,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
-	Tab( _( 'General' ), _('Basic settings'), layout = [
-		Group( _( 'General DHCP subnet settings' ), layout = [
-			[ 'subnet', 'subnetmask' ],
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('General DHCP subnet settings'), layout=[
+			['subnet', 'subnetmask'],
 			'broadcastaddress',
 			'range'
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-def rangeMap( value ):
-	return map( lambda x: ' '.join( x ), value )
 
-def rangeUnmap( value ):
-	return map( lambda x: x.split(), value )
+def rangeMap(value):
+	return map(lambda x: ' '.join(x), value)
 
-mapping=univention.admin.mapping.mapping()
+
+def rangeUnmap(value):
+	return map(lambda x: x.split(), value)
+
+mapping = univention.admin.mapping.mapping()
 mapping.register('subnet', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('subnetmask', 'dhcpNetMask', None, univention.admin.mapping.ListToString)
 mapping.register('broadcastaddress', 'univentionDhcpBroadcastAddress', None, univention.admin.mapping.ListToString)
 
 from .__common import add_dhcp_options, add_dhcp_objectclass
 
-add_dhcp_options( property_descriptions, mapping, layout )
+add_dhcp_options(property_descriptions, mapping, layout)
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
-		self.info['range'] = rangeUnmap( self.oldattr.get('dhcpRange', []) )
-		self.oldinfo['range'] = rangeUnmap( self.oldattr.get('dhcpRange', []) )
+		self.info['range'] = rangeUnmap(self.oldattr.get('dhcpRange', []))
+		self.oldinfo['range'] = rangeUnmap(self.oldattr.get('dhcpRange', []))
 
 	def _ldap_addlist(self):
 		return [
-			( 'objectClass', [ 'top', 'univentionDhcpSubnet' ] ),
+			('objectClass', ['top', 'univentionDhcpSubnet']),
 		]
 
 	def _ldap_modlist(self):
 
-		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		if self.hasChanged('range'):
-			dhcpRange=[]
+			dhcpRange = []
 			for i in self['range']:
 				for j in self['range']:
 					if i != j and univention.admin.ipaddress.is_range_overlapping(i, j):
-						raise univention.admin.uexceptions.rangesOverlapping, '%s-%s; %s-%s' % (i[0], i[1], j[0], j[1])
+						raise univention.admin.uexceptions.rangesOverlapping('%s-%s; %s-%s' % (i[0], i[1], j[0], j[1]))
 
-				ip_in_network=True
+				ip_in_network = True
 				for j in i:
 					if not univention.admin.ipaddress.ip_is_in_network(self['subnet'], self['subnetmask'], j):
-						ip_in_network=False
+						ip_in_network = False
 
 					if univention.admin.ipaddress.ip_is_network_address(self['subnet'], self['subnetmask'], j):
-						raise univention.admin.uexceptions.rangeInNetworkAddress, '%s-%s' % (i[0], i[1])
+						raise univention.admin.uexceptions.rangeInNetworkAddress('%s-%s' % (i[0], i[1]))
 
 					if univention.admin.ipaddress.ip_is_broadcast_address(self['subnet'], self['subnetmask'], j):
-						raise univention.admin.uexceptions.rangeInBroadcastAddress, '%s-%s' % (i[0], i[1])
+						raise univention.admin.uexceptions.rangeInBroadcastAddress('%s-%s' % (i[0], i[1]))
 
 				if ip_in_network:
 					dhcpRange.append(' '.join(i))
 				else:
-					raise univention.admin.uexceptions.rangeNotInNetwork, '%s-%s' % (i[0], i[1])
-			#univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo['range'])
+					raise univention.admin.uexceptions.rangeNotInNetwork('%s-%s' % (i[0], i[1]))
+			# univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'old Range: %s' % self.oldinfo['range'])
 			if '' in dhcpRange:
 				dhcpRange.remove('')
 			ml.append(('dhcpRange', self.oldattr.get('dhcpRange', []), dhcpRange))
-		return add_dhcp_objectclass( self, ml )
+		return add_dhcp_objectclass(self, ml)
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
-	univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')])
+	filter = univention.admin.filter.conjunction('&', [
+		univention.admin.filter.expression('objectClass', 'univentionDhcpSubnet'),
+		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDhcpSharedSubnet')])
 	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
 
+
 def identify(dn, attr):
-	
+
 	return 'univentionDhcpSubnet' in attr.get('objectClass', []) and not 'univentionDhcpSharedSubnet' in attr.get('objectClass', [])

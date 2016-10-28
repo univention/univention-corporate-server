@@ -40,112 +40,116 @@ from univention.admin.handlers import simpleLdap
 
 import univention.debug
 
-_ = translation( 'univention.admin.handlers.settings' ).translate
+_ = translation('univention.admin.handlers.settings').translate
 
 module = 'settings/umc_operationset'
-operations = ( 'add', 'edit', 'remove', 'search', 'move' )
+operations = ('add', 'edit', 'remove', 'search', 'move')
 superordinate = 'settings/cn'
 
 childs = 0
-short_description = _( 'Settings: UMC operation set')
-long_description = _( 'List of Operations for UMC' )
+short_description = _('Settings: UMC operation set')
+long_description = _('List of Operations for UMC')
 options = {}
 
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name'),
-			syntax=udm_syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True,
+	),
 	'description': univention.admin.property(
-			short_description=_('Description'),
-			long_description=_('Description'),
-			syntax=udm_syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			dontsearch=True,
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Description'),
+		long_description=_('Description'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		dontsearch=True,
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 	'operation': univention.admin.property(
-			short_description = _( 'UMC commands' ),
-			long_description=_('List of UMC command names or patterns'),
-			syntax=udm_syntax.UMC_CommandPattern,
-			multivalue=True,
-			options=[],
-			dontsearch=True,
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('UMC commands'),
+		long_description=_('List of UMC command names or patterns'),
+		syntax=udm_syntax.UMC_CommandPattern,
+		multivalue=True,
+		options=[],
+		dontsearch=True,
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 	'flavor': univention.admin.property(
-			short_description = _( 'Flavor' ),
-			long_description = _( 'Defines a specific flavor of the UMC module. If given the operations are permitted only if the flavor matches.' ),
-			syntax = udm_syntax.string,
-			multivalue = False,
-			include_in_default_search=True,
-			options = [],
-			dontsearch = True,
-			required = False,
-			may_change = True,
-			identifies = False
-		),
+		short_description=_('Flavor'),
+		long_description=_('Defines a specific flavor of the UMC module. If given the operations are permitted only if the flavor matches.'),
+		syntax=udm_syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		dontsearch=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
-	Tab(_('General'),_('UMC Operation Set'), layout = [
-		Group( _( 'General UMC operation set settings' ), layout = [
-			[ 'name', 'description' ],
+	Tab(_('General'), _('UMC Operation Set'), layout=[
+		Group(_('General UMC operation set settings'), layout=[
+			['name', 'description'],
 			'operation',
 			'flavor'
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-def mapUMC_CommandPattern( value ):
-	return map( lambda x: ':'.join( x ), value )
 
-def unmapUMC_CommandPattern( value ):
+def mapUMC_CommandPattern(value):
+	return map(lambda x: ':'.join(x), value)
+
+
+def unmapUMC_CommandPattern(value):
 	unmapped = []
 	for item in value:
-		if item.find( ':' ) >= 0:
-			unmapped.append( item.split( ':', 1 ) )
+		if item.find(':') >= 0:
+			unmapped.append(item.split(':', 1))
 		else:
-			unmapped.append( ( item, '' ) )
+			unmapped.append((item, ''))
 	return unmapped
 
-mapping=udm_mapping.mapping()
-mapping.register( 'name', 'cn', None, udm_mapping.ListToString )
-mapping.register( 'description', 'description', None, udm_mapping.ListToString )
-mapping.register( 'operation', 'umcOperationSetCommand', mapUMC_CommandPattern, unmapUMC_CommandPattern )
-mapping.register( 'flavor', 'umcOperationSetFlavor', None, udm_mapping.ListToString )
+mapping = udm_mapping.mapping()
+mapping.register('name', 'cn', None, udm_mapping.ListToString)
+mapping.register('description', 'description', None, udm_mapping.ListToString)
+mapping.register('operation', 'umcOperationSetCommand', mapUMC_CommandPattern, unmapUMC_CommandPattern)
+mapping.register('flavor', 'umcOperationSetFlavor', None, udm_mapping.ListToString)
 
-class object( simpleLdap ):
+
+class object(simpleLdap):
 	module = module
 
-	def _ldap_addlist( self ):
-		return [ ( 'objectClass', [ 'top', 'umcOperationSet' ] ) ]
+	def _ldap_addlist(self):
+		return [('objectClass', ['top', 'umcOperationSet'])]
 
-def lookup( co, lo, filter_s, base = '', superordinate = None, scope = 'sub', unique = 0, required = 0, timeout = -1, sizelimit = 0 ):
 
-	filter=udm_filter.conjunction('&', [
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+
+	filter = udm_filter.conjunction('&', [
 		udm_filter.expression('objectClass', 'umcOperationSet')
-		])
+	])
 
 	if filter_s:
-		filter_p=udm_filter.parse(filter_s)
-		udm_filter.walk( filter_p, udm_mapping.mapRewrite, arg=mapping)
+		filter_p = udm_filter.parse(filter_s)
+		udm_filter.walk(filter_p, udm_mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
 			res.append(object(co, lo, None, dn))
@@ -153,5 +157,6 @@ def lookup( co, lo, filter_s, base = '', superordinate = None, scope = 'sub', un
 		pass
 	return res
 
+
 def identify(dn, attr, canonical=0):
-	return 'umcOperationSet' in attr.get( 'objectClass', [] )
+	return 'umcOperationSet' in attr.get('objectClass', [])

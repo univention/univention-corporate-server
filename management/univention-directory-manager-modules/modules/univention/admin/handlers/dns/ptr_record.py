@@ -35,64 +35,65 @@ import univention.admin
 import univention.admin.handlers
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dns')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dns')
+_ = translation.translate
 
-module='dns/ptr_record'
-operations=['add','edit','remove','search']
+module = 'dns/ptr_record'
+operations = ['add', 'edit', 'remove', 'search']
 columns = ['ptr_record']
-superordinate='dns/reverse_zone'
-usewizard=1
-childs=0
-short_description=_('DNS: Pointer record')
-long_description=''
-options={
+superordinate = 'dns/reverse_zone'
+usewizard = 1
+childs = 0
+short_description = _('DNS: Pointer record')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'address': univention.admin.property(
-			short_description=_('Address'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-		identifies = True
-		),
+		short_description=_('Address'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'ptr_record': univention.admin.property(
-			short_description=_('Pointer record'),
-			long_description=_("FQDNs must end with '.'"),
-			syntax=univention.admin.syntax.dnsName,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True
-		),
+		short_description=_('Pointer record'),
+		long_description=_("FQDNs must end with '.'"),
+		syntax=univention.admin.syntax.dnsName,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True
+	),
 }
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General pointer record settings' ), layout = [
-			[ 'address', 'ptr_record' ],
-		] ),
-	] ),
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('General pointer record settings'), layout=[
+			['address', 'ptr_record'],
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('address', 'relativeDomainName', None, univention.admin.mapping.ListToString)
 mapping.register('ptr_record', 'pTRRecord')
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _updateZone(self):
 		if self.update_zone:
 			self.superordinate.open()
 			self.superordinate.modify()
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [], update_zone = True  ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
@@ -112,29 +113,31 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_post_remove(self):
 		self._updateZone()
 
-def lookup(co, lo, filter_s, base='', superordinate=None,scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+def lookup(co, lo, filter_s, base='', superordinate=None, scope="sub", unique=False, required=False, timeout=-1, sizelimit=0):
+
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'dNSZone'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('relativeDomainName', '@')]),
 		univention.admin.filter.conjunction('|', [
 			univention.admin.filter.expression('zoneName', '*.in-addr.arpa'),
 			univention.admin.filter.expression('zoneName', '*.ip6.arpa'),
-			]),
-		])
+		]),
+	])
 
 	if superordinate:
 		filter.expressions.append(univention.admin.filter.expression('zoneName', superordinate.mapping.mapValue('subnet', superordinate['subnet'])))
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
+
 
 def identify(dn, attr):
 
