@@ -29,12 +29,15 @@
 # <http://www.gnu.org/licenses/>.
 from optparse import OptionParser
 import os
+import sys
 import univention.dh_umc as dh_umc
 import univention.translationhelper as tlh
 
 
-SPECIALCASES_PATH = "/usr/share/univention-ucs-translation-template/specialcases.json"
-
+NO_SC_WARNING = '''WARNING: The given directory doesn't seem to be the checkout
+of a Univention source repository or the provided checkout is to old. This tool
+works for source trees of UCS 4.1-3, UCS@school 4.1r2 and later releases.
+The translation will be incomplete.'''
 
 if __name__ == '__main__':
 	usage = '''%prog [options] -s source_dir -c language_code -l locale -n language_name
@@ -73,7 +76,12 @@ e.g.: -s /path/to/ucs-repository/ -c de -l de_DE.UTF-8:UTF-8 -n Deutsch'''
 		all_modules.append(module)
 		abs_path_translated_src_pkg = tlh.update_package_translation_files(module, output_dir)
 
-	special_cases = tlh.get_special_cases(options.source_dir, options.target_language)
+	special_cases = []
+	try:
+		special_cases = tlh.get_special_cases(options.source_dir, options.target_language)
+	except tlh.NoSpecialCaseDefintionsFound:
+		print(NO_SC_WARNING)
+
 	for s_case in special_cases:
 		tlh.translate_special_case(s_case, options.source_dir, output_dir)
 

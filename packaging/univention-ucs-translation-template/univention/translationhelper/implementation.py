@@ -57,6 +57,10 @@ MODULE_BLACKLIST = [
 ]
 
 
+class NoSpecialCaseDefintionsFound(Exception):
+	pass
+
+
 class UMCModuleTranslation(dh_umc.UMC_Module):
 
 	def __init__(self, attrs, target_language):
@@ -275,13 +279,14 @@ def translate_special_case(special_case, source_dir, output_dir):
 
 
 def get_special_cases(source_tree_path, target_language):
+	# currently only svn checkouts on branch level are processed correctly.
+	# So the tree in source_tree_path must contain *.univention-l10n files on
+	# the third (UCS@school) or fourth (UCS) level
+	# FIXME: This should check for SVN metadata or the like
 	special_cases = []
-	sc_files = glob(os.path.join(source_tree_path, '*/*/debian/*.univention-l10n'))
+	sc_files = glob(os.path.join(source_tree_path, '*/*/debian/*.univention-l10n')) or glob(os.path.join(source_tree_path, '*/debian/*.univention-l10n'))
 	if not sc_files:
-		sys.exit('''WARNING: The given directory doesn't seem to be the checkout
-of a Univention source repository or the provided checkout is to old. This tool
-works for source trees of UCS 4.1-3, UCS@school 4.1r2 and later releases.
-Exiting.''')
+		raise NoSpecialCaseDefintionsFound()
 	for definition_path in sc_files:
 		with open(definition_path) as fd:
 			try:
