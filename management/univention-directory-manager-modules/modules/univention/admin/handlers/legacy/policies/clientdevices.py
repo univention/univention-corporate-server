@@ -43,50 +43,51 @@ from univention.admin.policy import (
 	fixedAttributesProperty, emptyAttributesProperty, ldapFilterProperty
 )
 
-translation=univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.legacy.policies')
+_ = translation.translate
+
 
 class clientDevicesFixedAttributes(univention.admin.syntax.select):
-	name='releaseFixedAttributes'
-	choices=[
-		('univentionClientDevice',_('Client devices')),
-		]
+	name = 'releaseFixedAttributes'
+	choices = [
+		('univentionClientDevice', _('Client devices')),
+	]
 
-module='policies/clientdevices'
-operations=['add','edit','remove','search']
+module = 'policies/clientdevices'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicyClientDevices'
-policy_apply_to=["computers/thinclient"]
-policy_position_dn_prefix="cn=thinclient"
+policy_oc = 'univentionPolicyClientDevices'
+policy_apply_to = ["computers/thinclient"]
+policy_position_dn_prefix = "cn=thinclient"
 
-childs=0
-short_description=_('Policy: Client devices')
-policy_short_description=_('Client devices')
-long_description=''
-options={
+childs = 0
+short_description = _('Policy: Client devices')
+policy_short_description = _('Client devices')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'clientDevicesActivate': univention.admin.property(
-			short_description=_('Activate access to client devices'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Activate access to client devices'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
@@ -97,53 +98,56 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab( _( 'General' ), _( 'Client devices' ), layout = [
-		Group( _( 'General client devices settings' ), layout = [
+	Tab(_('General'), _('Client devices'), layout=[
+		Group(_('General client devices settings'), layout=[
 			'name',
 			'clientDevicesActivate'
-		] ),
-	] ),
+		]),
+	]),
 	policy_object_tab(),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('clientDevicesActivate', 'univentionClientDevicesActivate', None, univention.admin.mapping.ListToString)
 register_policy_mapping(mapping)
 
-class object(univention.admin.handlers.simplePolicy):
-	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+class object(univention.admin.handlers.simplePolicy):
+	module = module
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
+		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyClientDevices']) ]
-	
+		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyClientDevices'])]
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyClientDevices')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicyClientDevices' in attr.get('objectClass', [])

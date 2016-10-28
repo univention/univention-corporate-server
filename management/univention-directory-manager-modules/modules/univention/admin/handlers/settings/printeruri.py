@@ -38,82 +38,85 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
 
-module='settings/printeruri'
-operations=['add','edit','remove','search','move']
-superordinate='settings/cn'
+module = 'settings/printeruri'
+operations = ['add', 'edit', 'remove', 'search', 'move']
+superordinate = 'settings/cn'
 
-childs=0
-short_description=_('Settings: Printer URI List')
-long_description=_('List of URIs for printers')
-options={
+childs = 0
+short_description = _('Settings: Printer URI List')
+long_description = _('List of URIs for printers')
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('Name'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True,
+	),
 	'printeruri': univention.admin.property(
-			short_description=_('Printer URI'),
-			long_description=_('Printer URI'),
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			dontsearch=True,
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Printer URI'),
+		long_description=_('Printer URI'),
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		dontsearch=True,
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 }
 
 layout = [
-	Tab(_('General'),_('Printer URI'), layout = [
-		Group( _( 'General printer URI list settings' ), layout = [
+	Tab(_('General'), _('Printer URI'), layout=[
+		Group(_('General printer URI list settings'), layout=[
 			'name',
 			'printeruri',
-		] ),
-	] ),
+		]),
+	]),
 ]
 
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('printeruri', 'printerURI')
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPrinterURIs']) ]
-	
+		return [('objectClass', ['top', 'univentionPrinterURIs'])]
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPrinterURIs')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPrinterURIs' in attr.get('objectClass', [])

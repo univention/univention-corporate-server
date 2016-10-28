@@ -36,7 +36,7 @@ import univention.admin.filter as udm_filter
 import univention.admin.mapping as udm_mapping
 
 from univention.admin.handlers import simplePolicy
-from  univention.admin.localization import translation
+from univention.admin.localization import translation
 
 import univention.debug
 
@@ -49,47 +49,48 @@ from univention.admin.policy import (
 
 _ = translation('univention.admin.handlers.policies').translate
 
-class umcFixedAttributes( udm_syntax.select ):
+
+class umcFixedAttributes(udm_syntax.select):
 	choices = (
-		( 'umcPolicyGrantedOperationSet', _( 'Allowed UMC operation sets' ) ),
-		)
+		('umcPolicyGrantedOperationSet', _('Allowed UMC operation sets')),
+	)
 
 module = 'policies/umc'
-operations = ( 'add', 'edit', 'remove', 'search' )
+operations = ('add', 'edit', 'remove', 'search')
 
 policy_oc = 'umcPolicy'
-policy_apply_to = [ 'users/user', 'groups/group' ]
+policy_apply_to = ['users/user', 'groups/group']
 policy_position_dn_prefix = 'cn=UMC'
 
 childs = 0
-short_description = _( 'Policy: UMC' )
-policy_short_description = _( 'Defines a set of allowed UMC operations' )
+short_description = _('Policy: UMC')
+policy_short_description = _('Defines a set of allowed UMC operations')
 long_description = ''
 
 options = {}
 
 property_descriptions = {
 	'name': univention.admin.property(
-			short_description = _( 'Name' ),
-			long_description = '',
-			syntax = udm_syntax.policyName,
-			multivalue = False,
-			include_in_default_search=True,
-			options=[],
-			required = True,
-			may_change = False,
-			identifies = True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=udm_syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'allow': univention.admin.property(
-			short_description = _( 'List of allowed UMC operation sets' ),
-			long_description = '',
-			syntax = udm_syntax.UMC_OperationSet,
-			multivalue = True,
-			options = [],
-			required = False,
-			may_change = True,
-			identifies = False
-		),
+		short_description=_('List of allowed UMC operation sets'),
+		long_description='',
+		syntax=udm_syntax.UMC_OperationSet,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
@@ -100,45 +101,47 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'General UMC settings' ), layout = [
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('General UMC settings'), layout=[
 			'name',
 			'allow',
-		] ),
-	] ),
+		]),
+	]),
 	policy_object_tab()
 ]
 
 mapping = udm_mapping.mapping()
-mapping.register( 'name', 'cn', None, udm_mapping.ListToString )
-mapping.register( 'allow', 'umcPolicyGrantedOperationSet' )
+mapping.register('name', 'cn', None, udm_mapping.ListToString)
+mapping.register('allow', 'umcPolicyGrantedOperationSet')
 register_policy_mapping(mapping)
 
 
-class object( simplePolicy ):
+class object(simplePolicy):
 	module = module
 
-	def _ldap_addlist( self ):
-		return [ ( 'objectClass', [ 'top', 'univentionPolicy', 'umcPolicy' ] ) ]
+	def _ldap_addlist(self):
+		return [('objectClass', ['top', 'univentionPolicy', 'umcPolicy'])]
 
-def lookup( co, lo, filter_s, base = '', superordinate = None, scope = 'sub', unique = 0, required = 0, timeout = -1, sizelimit= 0 ):
 
-	filter = udm_filter.conjunction( '&', [
-		udm_filter.expression( 'objectClass', 'umcPolicy' )
-		] )
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+
+	filter = udm_filter.conjunction('&', [
+		udm_filter.expression('objectClass', 'umcPolicy')
+	])
 
 	if filter_s:
-		filter_p = udm_filter.parse( filter_s )
-		udm_filter.walk( filter_p, udm_mapping.mapRewrite, arg = mapping )
-		filter.expressions.append( filter_p )
+		filter_p = udm_filter.parse(filter_s)
+		udm_filter.walk(filter_p, udm_mapping.mapRewrite, arg=mapping)
+		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
-		for dn, attrs in lo.search( unicode( filter ), base, scope, [], unique, required, timeout, sizelimit ):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
 
-def identify( dn, attr, canonical = 0 ):
-	return 'umcPolicy' in attr.get( 'objectClass', [] )
+
+def identify(dn, attr, canonical=0):
+	return 'umcPolicy' in attr.get('objectClass', [])

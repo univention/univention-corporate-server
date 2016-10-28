@@ -34,137 +34,139 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.computers')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.computers')
+_ = translation.translate
 
 import univention.admin.handlers.computers
 
-module='computers/computer'
-usewizard=1
-wizardmenustring=_("Computer")
-wizarddescription=_("Add, edit and delete computers")
-wizardoperations={"add":[_("Add"), _("Add Computer")],"find":[_("Search"), _("Search computer(s)")]}
+module = 'computers/computer'
+usewizard = 1
+wizardmenustring = _("Computer")
+wizarddescription = _("Add, edit and delete computers")
+wizardoperations = {"add": [_("Add"), _("Add Computer")], "find": [_("Search"), _("Search computer(s)")]}
 
 
 childmodules = []
 for computer in univention.admin.handlers.computers.computers:
 	childmodules.append(computer.module)
 
-childs=0
-short_description=_('Computer')
-long_description=''
-operations=['search']
-virtual=1
-options={
+childs = 0
+short_description = _('Computer')
+long_description = ''
+operations = ['search']
+virtual = 1
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.hostName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.hostName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'dnsAlias': univention.admin.property(
-			short_description=_('DNS alias'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('DNS alias'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'description': univention.admin.property(
-			short_description=_('Description'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Description'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'mac': univention.admin.property(
-			short_description=_('MAC address'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('MAC address'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'ip': univention.admin.property(
-			short_description=_('IP address'),
-			long_description='',
-			syntax=univention.admin.syntax.ipAddress,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('IP address'),
+		long_description='',
+		syntax=univention.admin.syntax.ipAddress,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'inventoryNumber': univention.admin.property(
-			short_description=_('Inventory number'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
-	'fqdn' : univention.admin.property(
-			short_description = 'FQDN',
-			long_description = '',
-			syntax=univention.admin.syntax.string,
-			multivalue = False,
-			include_in_default_search=True,
-			options = [],
-			required = False,
-			may_change = False,
-			identifies = 0,
-			dontsearch = 1
-		)
+		short_description=_('Inventory number'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+	'fqdn': univention.admin.property(
+		short_description='FQDN',
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=False,
+		identifies=0,
+		dontsearch=1
+	)
 }
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
-mapping.register('mac', 'macAddress' )
+mapping.register('mac', 'macAddress')
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
-	def open( self ):
-		super( object, self ).open()
+	def open(self):
+		super(object, self).open()
 		if 'name' in self.info and 'domain' in self.info:
 			# in syntax.py IComputer_FQDN key and label are '%(name)s.%(domain)s' for
 			#   performance reasons. These statements and this fqdn over here have to
 			#   be in sync.
-			self[ 'fqdn' ] = '%s.%s' % ( self[ 'name' ], self[ 'domain' ] )
+			self['fqdn'] = '%s.%s' % (self['name'], self['domain'])
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	res=[]
+	res = []
 	if str(filter_s).find('(dnsAlias=') != -1:
-		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
+		filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:
-			res+=lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+			res += lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:
 		for computer in univention.admin.handlers.computers.computers:
-			res.extend( computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) )
+			res.extend(computer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit))
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	pass
-

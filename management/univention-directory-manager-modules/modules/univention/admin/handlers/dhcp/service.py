@@ -35,67 +35,69 @@ import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dhcp')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
+_ = translation.translate
 
-module='dhcp/service'
-operations=['add','edit','remove','search']
-childs=1
-usewizard=1
-short_description=_('DHCP: Service')
-long_description=''
-options={
+module = 'dhcp/service'
+operations = ['add', 'edit', 'remove', 'search']
+childs = 1
+usewizard = 1
+short_description = _('DHCP: Service')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'service': univention.admin.property(
-			short_description=_('Service name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('Service name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 }
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'DHCP service description' ), layout = [
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('DHCP service description'), layout=[
 			'service',
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('service', 'cn', None, univention.admin.mapping.ListToString)
 
 from .__common import add_dhcp_options, add_dhcp_objectclass
 
-add_dhcp_options( property_descriptions, mapping, layout )
+add_dhcp_options(property_descriptions, mapping, layout)
+
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 		if not self.dn and not self.position:
 			raise univention.admin.uexceptions.insufficientInformation(_('Neither DN nor position given.'))
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', [ 'top', 'univentionDhcpService', 'dhcpOptions' ] ),
+			('objectClass', ['top', 'univentionDhcpService', 'dhcpOptions']),
 		]
 
 	def _ldap_modlist(self):
-		ml = univention.admin.handlers.simpleLdap._ldap_modlist( self )
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		return add_dhcp_objectclass( self, ml )
+		return add_dhcp_objectclass(self, ml)
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.conjunction('|', [
 			univention.admin.filter.expression('objectClass', 'dhcpService'),
 			univention.admin.filter.expression('objectClass', 'univentionDhcpService')
@@ -103,14 +105,15 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=Fa
 	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
+
 
 def identify(dn, attr):
 	return 'dhcpService' in attr.get('objectClass', []) \

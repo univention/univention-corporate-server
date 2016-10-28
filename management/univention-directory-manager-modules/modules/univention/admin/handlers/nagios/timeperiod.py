@@ -41,170 +41,169 @@ import univention.admin.syntax
 import univention.admin.localization
 import univention.admin.uexceptions
 
-translation=univention.admin.localization.translation('univention.admin.handlers.nagios')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.nagios')
+_ = translation.translate
 
 module = 'nagios/timeperiod'
 
 childs = 0
 short_description = _('Nagios time period')
 long_description = ''
-operations = [ 'search', 'edit', 'add', 'remove' ]
+operations = ['search', 'edit', 'add', 'remove']
 
 
 class syntax_timeperiod(univention.admin.syntax.simple):
-	name='timeperiod'
+	name = 'timeperiod'
 	_re = re.compile('^([0-9][0-9]\:[0-9][0-9]-[0-9][0-9]\:[0-9][0-9](,[0-9][0-9]\:[0-9][0-9]-[0-9][0-9]\:[0-9][0-9])*)?$')
 
 	@classmethod
 	def parse(self, text):
 		if text and self._re.match(text) != None:
 			for period in text.split(','):
-				(start,end) = period.split('-')
-				(shour,smin) = start.split(':')
-				(ehour,emin) = end.split(':')
-				if ((int(shour)>=24) and (int(smin) != 0)) or (int(smin) > 59):
-					raise univention.admin.uexceptions.valueError, _("No valid timeperiod list!")
-				if ((int(ehour)>=24) and (int(emin) != 0)) or (int(emin) > 59):
-					raise univention.admin.uexceptions.valueError, _("No valid timeperiod list!")
-				shour+=smin
-				ehour+=emin
+				(start, end) = period.split('-')
+				(shour, smin) = start.split(':')
+				(ehour, emin) = end.split(':')
+				if ((int(shour) >= 24) and (int(smin) != 0)) or (int(smin) > 59):
+					raise univention.admin.uexceptions.valueError(_("No valid timeperiod list!"))
+				if ((int(ehour) >= 24) and (int(emin) != 0)) or (int(emin) > 59):
+					raise univention.admin.uexceptions.valueError(_("No valid timeperiod list!"))
+				shour += smin
+				ehour += emin
 				if (int(shour) > int(ehour)):
-					raise univention.admin.uexceptions.valueError, _("No valid timeperiod list!")
+					raise univention.admin.uexceptions.valueError(_("No valid timeperiod list!"))
 			return text
-		raise univention.admin.uexceptions.valueError, _("No valid timeperiod list!")
+		raise univention.admin.uexceptions.valueError(_("No valid timeperiod list!"))
 
 
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description= _('Name'),
-			long_description= _('Name'),
-			syntax=univention.admin.syntax.string_numbers_letters_dots,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description=_('Name'),
+		syntax=univention.admin.syntax.string_numbers_letters_dots,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 	'description': univention.admin.property(
-			short_description= _('Description'),
-			long_description= _('Description of time period (eg. non-workhours)'),
-			syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Description'),
+		long_description=_('Description of time period (eg. non-workhours)'),
+		syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False
+	),
 	'periodMonday': univention.admin.property(
-			short_description= _('Monday'),
-			long_description= _('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
-			syntax=syntax_timeperiod,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Monday'),
+		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
+		syntax=syntax_timeperiod,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'periodTuesday': univention.admin.property(
-			short_description= _('Tuesday'),
-			long_description= _('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
-			syntax=syntax_timeperiod,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Tuesday'),
+		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
+		syntax=syntax_timeperiod,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'periodWednesday': univention.admin.property(
-			short_description= _('Wednesday'),
-			long_description= _('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
-			syntax=syntax_timeperiod,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Wednesday'),
+		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
+		syntax=syntax_timeperiod,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'periodThursday': univention.admin.property(
-			short_description= _('Thursday'),
-			long_description= _('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
-			syntax=syntax_timeperiod,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Thursday'),
+		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
+		syntax=syntax_timeperiod,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'periodFriday': univention.admin.property(
-			short_description= _('Friday'),
-			long_description= _('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
-			syntax=syntax_timeperiod,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Friday'),
+		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
+		syntax=syntax_timeperiod,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'periodSaturday': univention.admin.property(
-			short_description= _('Saturday'),
-			long_description= _('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
-			syntax=syntax_timeperiod,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Saturday'),
+		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
+		syntax=syntax_timeperiod,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'periodSunday': univention.admin.property(
-			short_description= _('Sunday'),
-			long_description= _('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
-			syntax=syntax_timeperiod,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		)
+		short_description=_('Sunday'),
+		long_description=_('enter list of periods (e.g. 00:00-07:15,14:30-18:32,23:00-24:00)'),
+		syntax=syntax_timeperiod,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	)
 }
 
 
 layout = [
-	Tab( _('General'), _('Time Period Settings'), layout = [
-		Group( _( 'General Nagios time period settings' ), layout = [
-				[ "name",  "description" ],
-				[ "periodMonday", "periodTuesday" ],
-				[ "periodWednesday", "periodThursday" ],
-				[ "periodFriday", "periodSaturday" ],
-				"periodSunday"
-		] ),
-	] ),
+	Tab(_('General'), _('Time Period Settings'), layout=[
+		Group(_('General Nagios time period settings'), layout=[
+			["name", "description"],
+			["periodMonday", "periodTuesday"],
+			["periodWednesday", "periodThursday"],
+			["periodFriday", "periodSaturday"],
+			"periodSunday"
+		]),
+	]),
 ]
 
 
-
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		if self.exists():
 			if self.oldattr.get('univentionNagiosTimeperiod', []):
 				periods = self.oldattr.get('univentionNagiosTimeperiod', [])[0].split('#')
-				self[ 'periodMonday' ] = periods[0]
-				self[ 'periodTuesday' ] = periods[1]
-				self[ 'periodWednesday' ] = periods[2]
-				self[ 'periodThursday' ] = periods[3]
-				self[ 'periodFriday' ] = periods[4]
-				self[ 'periodSaturday' ] = periods[5]
-				self[ 'periodSunday' ] = periods[6]
+				self['periodMonday'] = periods[0]
+				self['periodTuesday'] = periods[1]
+				self['periodWednesday'] = periods[2]
+				self['periodThursday'] = periods[3]
+				self['periodFriday'] = periods[4]
+				self['periodSaturday'] = periods[5]
+				self['periodSunday'] = periods[6]
 		self.save()
 
 	def _ldap_post_create(self):
@@ -218,7 +217,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_pre_remove(self):
 		# refuse deletion if there is still a reference
-		searchResult=self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(|(univentionNagiosCheckPeriod=%s)(univentionNagiosNotificationPeriod=%s)))', [self['name'], self['name']]), scope='sub')
+		searchResult = self.lo.searchDn(base=self.position.getDomain(), filter=filter_format('(&(objectClass=univentionNagiosServiceClass)(|(univentionNagiosCheckPeriod=%s)(univentionNagiosNotificationPeriod=%s)))', [self['name'], self['name']]), scope='sub')
 		if searchResult:
 			raise univention.admin.uexceptions.nagiosTimeperiodUsed
 
@@ -229,37 +228,37 @@ class object(univention.admin.handlers.simpleLdap):
 		pass
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionNagiosTimeperiodClass' ] ) ]
+		return [('objectClass', ['top', 'univentionNagiosTimeperiodClass'])]
 
 	def _ldap_modlist(self):
-		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		# timeperiod list for one weekday is hash separated - only usage of [0-9:-] is allowed
 		# those lists are concatenated with hashes as delimiter
-		periodslist = [ self['periodMonday'], self['periodTuesday'], self['periodWednesday'], self['periodThursday'],
-						self['periodFriday'], self['periodSaturday'], self['periodSunday'] ]
+		periodslist = [self['periodMonday'], self['periodTuesday'], self['periodWednesday'], self['periodThursday'], self['periodFriday'], self['periodSaturday'], self['periodSunday']]
 		for i in range(len(periodslist)):
 			if periodslist[i] == None:
 				periodslist[i] = ''
 		newperiods = '#'.join(periodslist)
 
-		ml.append( ('univentionNagiosTimeperiod', self.oldattr.get('univentionNagiosTimeperiod', []), newperiods) )
+		ml.append(('univentionNagiosTimeperiod', self.oldattr.get('univentionNagiosTimeperiod', []), newperiods))
 
 		return ml
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
-	filter=univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('objectClass', 'univentionNagiosTimeperiodClass'),
-				])
+	filter = univention.admin.filter.conjunction('&', [
+		univention.admin.filter.expression('objectClass', 'univentionNagiosTimeperiodClass'),
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append( object( co, lo, None, dn, attributes = attrs ) )
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
 

@@ -43,63 +43,64 @@ from univention.admin.policy import (
 )
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+_ = translation.translate
+
 
 class dhcp_dnsFixedAttributes(univention.admin.syntax.select):
-	name='dhcp_dnsFixedAttributes'
-	choices=[
-		('univentionDhcpDomainName',_('Domain name')),
-		('univentionDhcpDomainNameServers',_('Domain name servers'))
-		]
+	name = 'dhcp_dnsFixedAttributes'
+	choices = [
+		('univentionDhcpDomainName', _('Domain name')),
+		('univentionDhcpDomainNameServers', _('Domain name servers'))
+	]
 
-module='policies/dhcp_dns'
-operations=['add','edit','remove','search']
+module = 'policies/dhcp_dns'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc="univentionPolicyDhcpDns"
-policy_apply_to=["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix="cn=dns,cn=dhcp"
-policies_group="dhcp"
-usewizard=1
-childs=0
-short_description=_('Policy: DHCP DNS')
-policy_short_description=_('DNS')
-long_description=''
-options={
+policy_oc = "univentionPolicyDhcpDns"
+policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
+policy_position_dn_prefix = "cn=dns,cn=dhcp"
+policies_group = "dhcp"
+usewizard = 1
+childs = 0
+short_description = _('Policy: DHCP DNS')
+policy_short_description = _('DNS')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'domain_name': univention.admin.property(
-			short_description=_('Domain name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Domain name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'domain_name_servers': univention.admin.property(
-			short_description=_('Domain name servers'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Domain name servers'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
@@ -110,50 +111,51 @@ property_descriptions.update(dict([
 ]))
 
 layout = [
-	Tab(_('General'),_('Basic DNS settings'), layout = [
-		Group( _( 'General DHCP DNS settings' ), layout = [
+	Tab(_('General'), _('Basic DNS settings'), layout=[
+		Group(_('General DHCP DNS settings'), layout=[
 			'name',
-			[ 'domain_name', 'domain_name_servers' ]
-		] ),
-	] ),
+			['domain_name', 'domain_name_servers']
+		]),
+	]),
 	policy_object_tab()
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('domain_name', 'univentionDhcpDomainName', None, univention.admin.mapping.ListToString)
 mapping.register('domain_name_servers', 'univentionDhcpDomainNameServers')
 register_policy_mapping(mapping)
 
 
-
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpDns'])
 		]
-	
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpDns'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
 
+
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionPolicyDhcpDns' in attr.get('objectClass', [])

@@ -42,192 +42,192 @@ import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.networks.network
 
-translation=univention.admin.localization.translation('univention.admin.handlers.computers')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.computers')
+_ = translation.translate
 
-module='computers/ipmanagedclient'
-operations=['add','edit','remove','search','move']
-usewizard=1
-docleanup=1
-childs=0
-short_description=_('Computer: IP managed client')
-long_description=''
-options={
+module = 'computers/ipmanagedclient'
+operations = ['add', 'edit', 'remove', 'search', 'move']
+usewizard = 1
+docleanup = 1
+childs = 0
+short_description = _('Computer: IP managed client')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('IP managed client name'),
-			long_description='',
-			syntax=univention.admin.syntax.hostName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('IP managed client name'),
+		long_description='',
+		syntax=univention.admin.syntax.hostName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'description': univention.admin.property(
-			short_description=_('Description'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=False,
-			may_change=True,
-			identifies=False
-		),	
+		short_description=_('Description'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'mac': univention.admin.property(
-			short_description=_('MAC address'),
-			long_description='',
-			syntax=univention.admin.syntax.MAC_Address,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('MAC address'),
+		long_description='',
+		syntax=univention.admin.syntax.MAC_Address,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'network': univention.admin.property(
-			short_description=_('Network'),
-			long_description='',
-			syntax=univention.admin.syntax.network,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Network'),
+		long_description='',
+		syntax=univention.admin.syntax.network,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'ip': univention.admin.property(
-			short_description=_('IP address'),
-			long_description='',
-			syntax=univention.admin.syntax.ipAddress,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('IP address'),
+		long_description='',
+		syntax=univention.admin.syntax.ipAddress,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'dnsEntryZoneForward': univention.admin.property(
-			short_description=_('Forward zone for DNS entry'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsEntry,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('Forward zone for DNS entry'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsEntry,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'dnsEntryZoneReverse': univention.admin.property(
-			short_description=_('Reverse zone for DNS entry'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsEntryReverse,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('Reverse zone for DNS entry'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsEntryReverse,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'dnsEntryZoneAlias': univention.admin.property(
-			short_description=_('Zone for DNS alias'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsEntryAlias,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('Zone for DNS alias'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsEntryAlias,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'dnsAlias': univention.admin.property(
-			short_description=_('DNS alias'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('DNS alias'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'dhcpEntryZone': univention.admin.property(
-			short_description=_('DHCP service'),
-			long_description='',
-			syntax=univention.admin.syntax.dhcpEntry,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('DHCP service'),
+		long_description='',
+		syntax=univention.admin.syntax.dhcpEntry,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'inventoryNumber': univention.admin.property(
-			short_description=_('Inventory number'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Inventory number'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'groups': univention.admin.property(
-			short_description=_('Groups'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('Groups'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'domain': univention.admin.property(
-			short_description=_('Domain'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Domain'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
-	Tab( _( 'General' ),_( 'Basic settings' ), layout = [
-		Group( _( 'Computer account' ), layout = [
-			[ 'name', 'description' ],
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('Computer account'), layout=[
+			['name', 'description'],
 			'inventoryNumber',
-		] ),
-		Group( _( 'Network settings ' ), layout = [
+		]),
+		Group(_('Network settings '), layout=[
 			'network',
 			'mac',
 			'ip',
-		] ),
-		Group( _( 'DNS Forward and Reverse Lookup Zone' ), layout = [
+		]),
+		Group(_('DNS Forward and Reverse Lookup Zone'), layout=[
 			'dnsEntryZoneForward',
 			'dnsEntryZoneReverse',
-		] ),
-		Group( _( 'DHCP' ), layout = [
+		]),
+		Group(_('DHCP'), layout=[
 			'dhcpEntryZone'
-		] ),
-		] ),
-	Tab( _( 'Groups' ),_( 'Group memberships' ), advanced = True, layout = [
+		]),
+	]),
+	Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
 		"groups",
-		] ),
-	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
+	]),
+	Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
 		'dnsEntryZoneAlias'
-		] ),
-	]
+	]),
+]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
-mapping.register('mac', 'macAddress' )
+mapping.register('mac', 'macAddress')
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString)
 
@@ -236,15 +236,15 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 
 
 class object(univention.admin.handlers.simpleComputer, nagios.Support):
-	module=module
+	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 		nagios.Support.__init__(self)
 
 	def open(self):
 
-		univention.admin.handlers.simpleComputer.open( self )
+		univention.admin.handlers.simpleComputer.open(self)
 		self.nagios_open()
 
 		if not self.exists():
@@ -257,70 +257,72 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.nagios_ldap_pre_create()
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionHost','univentionClient', 'person']) ]
+		return [('objectClass', ['top', 'univentionHost', 'univentionClient', 'person'])]
 
 	def _ldap_post_create(self):
-		univention.admin.handlers.simpleComputer._ldap_post_create( self )
+		univention.admin.handlers.simpleComputer._ldap_post_create(self)
 		self.nagios_ldap_post_create()
 
 	def _ldap_post_remove(self):
 		self.nagios_ldap_post_remove()
-		univention.admin.handlers.simpleComputer._ldap_post_remove( self )
+		univention.admin.handlers.simpleComputer._ldap_post_remove(self)
 
 	def _ldap_post_modify(self):
-		univention.admin.handlers.simpleComputer._ldap_post_modify( self )
+		univention.admin.handlers.simpleComputer._ldap_post_modify(self)
 		self.nagios_ldap_post_modify()
 
 	def _ldap_pre_modify(self):
-		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
+		univention.admin.handlers.simpleComputer._ldap_pre_modify(self)
 		self.nagios_ldap_pre_modify()
 
 	def _ldap_modlist(self):
-		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
+		ml = univention.admin.handlers.simpleComputer._ldap_modlist(self)
 		self.nagios_ldap_modlist(ml)
 		return ml
 
 	def cleanup(self):
 		self.open()
 		self.nagios_cleanup()
-		univention.admin.handlers.simpleComputer.cleanup( self )
+		univention.admin.handlers.simpleComputer.cleanup(self)
 
 	def cancel(self):
 		for key, value in self.alloc:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (key, value) )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (key, value))
 			univention.admin.allocators.release(self.lo, self.position, key, value)
+
 
 def rewrite(filter, mapping):
 	if filter.variable == 'ip':
-		filter.variable='aRecord'
+		filter.variable = 'aRecord'
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	res=[]
-	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
+	res = []
+	filter_s = univention.admin.filter.replace_fqdn_filter(filter_s)
 	if str(filter_s).find('(dnsAlias=') != -1:
-		filter_s=univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
+		filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:
-			res+=lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+			res += lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:
-		filter=univention.admin.filter.conjunction('&', [
+		filter = univention.admin.filter.conjunction('&', [
 			univention.admin.filter.expression('objectClass', 'univentionHost'),
 			univention.admin.filter.expression('objectClass', 'univentionClient'),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'posixAccount')]),
 			univention.admin.filter.conjunction('!', [univention.admin.filter.expression('univentionObjectType', 'computers/managedclient')]),
-			])
+		])
 
 		if filter_s:
-			filter_p=univention.admin.filter.parse(filter_s)
+			filter_p = univention.admin.filter.parse(filter_s)
 			univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
 			filter.expressions.append(filter_p)
 
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionClient' in attr.get('objectClass', []) and not 'posixAccount' in attr.get('objectClass', [])
-

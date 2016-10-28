@@ -37,207 +37,210 @@ import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
+
 
 def logonToChangePWMap(val):
 	"""
 	'User must logon to change PW' behaves like an integer (at least
 	to us), but must be stored as either 0 (allow) or 2 (disallow)
 	"""
-	
-	if (val=="1"):
+
+	if (val == "1"):
 		return "2"
 	else:
 		return "0"
 
+
 def logonToChangePWUnmap(val):
-	
-	if (val[0]=="2"):
+
+	if (val[0] == "2"):
 		return "1"
 	else:
 		return "2"
 
-module='settings/sambaconfig'
-childs=0
+module = 'settings/sambaconfig'
+childs = 0
 # since samba 3.0.30 and UCS 2.1 the domain configuration for samba will be stored in the samba domain object
-operations=['edit','remove','search','move']
-short_description=_('Settings: Samba Configuration')
-long_description=''
-options={}
-property_descriptions={
+operations = ['edit', 'remove', 'search', 'move']
+short_description = _('Settings: Samba Configuration')
+long_description = ''
+options = {}
+property_descriptions = {
 	'name': univention.admin.property(
-	        short_description=_('Configuration Name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-			),
+		short_description=_('Configuration Name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'passwordLength': univention.admin.property(
-			short_description=_('Password Length'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-			),
+		short_description=_('Password Length'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'passwordHistory': univention.admin.property(
-			short_description=_('Password History'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Password History'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'minPasswordAge': univention.admin.property(
-			short_description=_('Minimum Password Age'),
-			long_description='',
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Minimum Password Age'),
+		long_description='',
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'badLockoutAttempts': univention.admin.property(
-			short_description=_('Bad Lockout Attempts'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Bad Lockout Attempts'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'logonToChangePW': univention.admin.property(
-			short_description=_('User must Logon to Change Password'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('User must Logon to Change Password'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'maxPasswordAge': univention.admin.property(
-			short_description=_('Maximum Password Age'),
-			long_description='',
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Maximum Password Age'),
+		long_description='',
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'lockoutDuration': univention.admin.property(
-			short_description=_('Lockout Duration Minutes'),
-			long_description='',
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Lockout Duration Minutes'),
+		long_description='',
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'resetCountMinutes': univention.admin.property(
-			short_description=_('Reset Count Minutes'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Reset Count Minutes'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'disconnectTime': univention.admin.property(
-			short_description=_('Disconnect Time'),
-			long_description='',
-			syntax=univention.admin.syntax.UNIX_TimeInterval,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Disconnect Time'),
+		long_description='',
+		syntax=univention.admin.syntax.UNIX_TimeInterval,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'refuseMachinePWChange': univention.admin.property(
-			short_description=_('Refuse Machine Password Change'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
-	}
+		short_description=_('Refuse Machine Password Change'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
+}
 
 layout = [
-	Tab(_('General'),_('Basic values'), layout = [
-		Group( _( 'General Samba configuration settings' ), layout = [
+	Tab(_('General'), _('Basic values'), layout=[
+		Group(_('General Samba configuration settings'), layout=[
 			"name",
-			[ "passwordLength", "passwordHistory" ],
-			[ "minPasswordAge", "maxPasswordAge" ],
-			[ "badLockoutAttempts", "lockoutDuration" ],
-			[ "resetCountMinutes", "logonToChangePW" ],
-			[ "disconnectTime", "refuseMachinePWChange" ],
-		] ),
-	] ),
+			["passwordLength", "passwordHistory"],
+			["minPasswordAge", "maxPasswordAge"],
+			["badLockoutAttempts", "lockoutDuration"],
+			["resetCountMinutes", "logonToChangePW"],
+			["disconnectTime", "refuseMachinePWChange"],
+		]),
+	]),
 ]
 
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('passwordLength', 'univentionSambaMinPasswordLength', None, univention.admin.mapping.ListToString)
 mapping.register('passwordHistory', 'univentionSambaPasswordHistory', None, univention.admin.mapping.ListToString)
-mapping.register('minPasswordAge', 'univentionSambaMinPasswordAge', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
-mapping.register('maxPasswordAge', 'univentionSambaMaxPasswordAge', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+mapping.register('minPasswordAge', 'univentionSambaMinPasswordAge', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.register('maxPasswordAge', 'univentionSambaMaxPasswordAge', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.register('badLockoutAttempts', 'univentionSambaBadLockoutAttempts', None, univention.admin.mapping.ListToString)
 mapping.register('logonToChangePW', 'univentionSambaLogonToChangePW', logonToChangePWMap, logonToChangePWUnmap)
-mapping.register('lockoutDuration', 'univentionSambaLockoutDuration', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+mapping.register('lockoutDuration', 'univentionSambaLockoutDuration', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.register('resetCountMinutes', 'univentionSambaResetCountMinutes', None, univention.admin.mapping.ListToString)
-mapping.register('disconnectTime', 'univentionSambaDisconnectTime', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval )
+mapping.register('disconnectTime', 'univentionSambaDisconnectTime', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
 mapping.register('refuseMachinePWChange', 'univentionSambaRefuseMachinePWChange', None, univention.admin.mapping.ListToString)
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
 	def _ldap_addlist(self):
-		ocs=['top', 'univentionSambaConfig']
+		ocs = ['top', 'univentionSambaConfig']
 
 		return [
 			('objectClass', ocs),
 		]
 
 
-	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionSambaConfig'),
 		univention.admin.filter.conjunction('!', [univention.admin.filter.expression('objectClass', 'univentionDomain')]),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append( object( co, lo, None, dn, attributes = attrs ) )
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
+
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionSambaConfig' in attr.get('objectClass', [])

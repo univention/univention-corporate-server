@@ -38,135 +38,138 @@ import univention.admin.handlers
 import univention.admin.localization
 import univention.admin.uexceptions
 
-translation=univention.admin.localization.translation('univention.admin.handlers.dhcp')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
+_ = translation.translate
 
-module='dhcp/pool'
-operations=['add','edit','remove','search']
+module = 'dhcp/pool'
+operations = ['add', 'edit', 'remove', 'search']
 superordinate = ['dhcp/subnet', 'dhcp/sharedsubnet']
-childs=0
-usewizard=1
-short_description=_('DHCP: Pool')
-long_description=''
-options={
+childs = 0
+usewizard = 1
+short_description = _('DHCP: Pool')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description=_('A unique name for this DHCP pool object.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('Name'),
+		long_description=_('A unique name for this DHCP pool object.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 	'range': univention.admin.property(
-			short_description=_('IP range for dynamic assignment'),
-			long_description=_('Define a pool of addresses available for dynamic address assignment.'),
-			syntax=univention.admin.syntax.IPv4_AddressRange,
-			multivalue=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('IP range for dynamic assignment'),
+		long_description=_('Define a pool of addresses available for dynamic address assignment.'),
+		syntax=univention.admin.syntax.IPv4_AddressRange,
+		multivalue=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=False
+	),
 	'failover_peer': univention.admin.property(
-			short_description=_('Failover peer configuration'),
-			long_description=_('The name of the "failover peer" configuration to use.'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False,
-		),
+		short_description=_('Failover peer configuration'),
+		long_description=_('The name of the "failover peer" configuration to use.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False,
+	),
 	'known_clients': univention.admin.property(
-			short_description=_('Allow known clients'),
-			long_description=_('Addresses from this pool are given to clients which have a DHCP host entry without assigned IP address matching their MAC address.'),
-			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Allow known clients'),
+		long_description=_('Addresses from this pool are given to clients which have a DHCP host entry without assigned IP address matching their MAC address.'),
+		syntax=univention.admin.syntax.AllowDeny,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'unknown_clients': univention.admin.property(
-			short_description=_('Allow unknown clients'),
-			long_description=_('Addresses from this pool are given to clients, which do not have a DHCP host entry matching their MAC address.'),
-			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Allow unknown clients'),
+		long_description=_('Addresses from this pool are given to clients, which do not have a DHCP host entry matching their MAC address.'),
+		syntax=univention.admin.syntax.AllowDeny,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'dynamic_bootp_clients': univention.admin.property(
-			short_description=_('Allow dynamic BOOTP clients'),
-			long_description=_('Addresses from this pool are given to clients using the old BOOTP protocol, which has no machanism to free addresses again.'),
-			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Allow dynamic BOOTP clients'),
+		long_description=_('Addresses from this pool are given to clients using the old BOOTP protocol, which has no machanism to free addresses again.'),
+		syntax=univention.admin.syntax.AllowDeny,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'all_clients': univention.admin.property(
-			short_description=_('All clients'),
-			long_description=_('Globally enable or disable this pool'),
-			syntax=univention.admin.syntax.AllowDeny,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('All clients'),
+		long_description=_('Globally enable or disable this pool'),
+		syntax=univention.admin.syntax.AllowDeny,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
-	Tab(_('General'), _('Basic settings'), layout = [
-		Group( _( 'General DHCP pool settings' ), layout = [
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('General DHCP pool settings'), layout=[
 			'name',
 			'range'
-		] ),
-	] ),
-	Tab( _( 'Advanced' ), _('Advanced DHCP pool options'), advanced = True, layout = [
+		]),
+	]),
+	Tab(_('Advanced'), _('Advanced DHCP pool options'), advanced=True, layout=[
 		'failover_peer',
-		[ 'known_clients', 'unknown_clients' ],
-		[ 'dynamic_bootp_clients', 'all_clients' ]
-	] )
+		['known_clients', 'unknown_clients'],
+		['dynamic_bootp_clients', 'all_clients']
+	])
 ]
 
-def rangeMap( value ):
-	return map( lambda x: ' '.join( x ), value )
 
-def rangeUnmap( value ):
-	return map( lambda x: x.split( ' ' ), value )
+def rangeMap(value):
+	return map(lambda x: ' '.join(x), value)
 
-mapping=univention.admin.mapping.mapping()
+
+def rangeUnmap(value):
+	return map(lambda x: x.split(' '), value)
+
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('range', 'dhcpRange', rangeMap, rangeUnmap)
 mapping.register('failover_peer', 'univentionDhcpFailoverPeer', None, univention.admin.mapping.ListToString)
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
 		for i in self.oldattr.get('dhcpPermitList', []):
-			pos=i.find(' ')
-			permit=i[:pos]
-			name=i[pos+1:]
+			pos = i.find(' ')
+			permit = i[:pos]
+			name = i[pos + 1:]
 			if name == 'known clients':
-				self['known_clients']=permit
+				self['known_clients'] = permit
 			elif name == 'unknown clients':
-				self['unknown_clients']=permit
+				self['unknown_clients'] = permit
 			elif name == 'dynamic bootp clients':
-				self['dynamic_bootp_clients']=permit
+				self['dynamic_bootp_clients'] = permit
 			elif name == 'all clients':
-				self['all_clients']=permit
+				self['all_clients'] = permit
 
 		self.save()
 
@@ -174,33 +177,33 @@ class object(univention.admin.handlers.simpleLdap):
 		return [
 			('objectClass', ['top', 'univentionDhcpPool']),
 		]
-	
+
 	def _ldap_modlist(self):
-		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		if self.hasChanged(['known_clients', 'unknown_clients', 'dynamic_bootp_clients', 'all_clients']):
-			old=self.oldattr.get('dhcpPermitList', [])
-			new=copy.deepcopy(old)
+			old = self.oldattr.get('dhcpPermitList', [])
+			new = copy.deepcopy(old)
 
 			if self.oldinfo.has_key('known_clients') and self.oldinfo['known_clients']:
-				new.remove(self.oldinfo['known_clients']+' known clients')
+				new.remove(self.oldinfo['known_clients'] + ' known clients')
 			if self.info.has_key('known_clients') and self.info['known_clients']:
-				new.append(self.info['known_clients']+' known clients')
-				
+				new.append(self.info['known_clients'] + ' known clients')
+
 			if self.oldinfo.has_key('unknown_clients') and self.oldinfo['unknown_clients']:
-				new.remove(self.oldinfo['unknown_clients']+' unknown clients')
+				new.remove(self.oldinfo['unknown_clients'] + ' unknown clients')
 			if self.info.has_key('unknown_clients') and self.info['unknown_clients']:
-				new.append(self.info['unknown_clients']+' unknown clients')
+				new.append(self.info['unknown_clients'] + ' unknown clients')
 
 			if self.oldinfo.has_key('dynamic_bootp_clients') and self.oldinfo['dynamic_bootp_clients']:
-				new.remove(self.oldinfo['dynamic_bootp_clients']+' dynamic bootp clients')
+				new.remove(self.oldinfo['dynamic_bootp_clients'] + ' dynamic bootp clients')
 			if self.info.has_key('dynamic_bootp_clients') and self.info['dynamic_bootp_clients']:
-				new.append(self.info['dynamic_bootp_clients']+' dynamic bootp clients')
-			
+				new.append(self.info['dynamic_bootp_clients'] + ' dynamic bootp clients')
+
 			if self.oldinfo.has_key('all_clients') and self.oldinfo['all_clients']:
-				new.remove(self.oldinfo['all_clients']+' all clients')
+				new.remove(self.oldinfo['all_clients'] + ' all clients')
 			if self.info.has_key('all_clients') and self.info['all_clients']:
-				new.append(self.info['all_clients']+' all clients')
-				
+				new.append(self.info['all_clients'] + ' all clients')
+
 			ml.append(('dhcpPermitList', old, new))
 		if self.info.get('failover_peer', None) and not self.info.get('dynamic_bootp_clients', None) == 'deny':
 			raise univention.admin.uexceptions.bootpXORFailover
@@ -223,19 +226,18 @@ def rewrite(filter, mapping):
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
-	univention.admin.filter.expression('objectClass', 'univentionDhcpPool')
-	])
+	filter = univention.admin.filter.conjunction('&', [univention.admin.filter.expression('objectClass', 'univentionDhcpPool')])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, rewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes = attrs )))
+		res.append((object(co, lo, None, dn=dn, superordinate=superordinate, attributes=attrs)))
 	return res
+
 
 def identify(dn, attr):
 	return 'univentionDhcpPool' in attr.get('objectClass', [])

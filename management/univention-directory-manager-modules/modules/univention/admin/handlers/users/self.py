@@ -36,11 +36,11 @@ import univention.admin.localization
 
 import univention.admin.handlers.users.user as udm_user
 
-translation=univention.admin.localization.translation('univention.admin.handlers.users')
+translation = univention.admin.localization.translation('univention.admin.handlers.users')
 _ = translation.translate
 
 module = 'users/self'
-operations = ['edit','search']
+operations = ['edit', 'search']
 options = {}
 
 mapping = udm_user.mapping
@@ -55,5 +55,6 @@ childs = 0
 short_description = _('User: Self')
 long_description = ''
 
+
 class object(univention.admin.handlers.users.user.object):
-	module=module
+	module = module

@@ -37,66 +37,69 @@ import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
 
-module='settings/service'
-superordinate='settings/cn'
-childs=0
-operations=['add','edit','remove','search','move']
-short_description=_('Settings: Service')
-long_description=''
-options={}
-property_descriptions={
+module = 'settings/service'
+superordinate = 'settings/cn'
+childs = 0
+operations = ['add', 'edit', 'remove', 'search', 'move']
+short_description = _('Settings: Service')
+long_description = ''
+options = {}
+property_descriptions = {
 	'name': univention.admin.property(
-	        short_description=_('Service Name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-			),
-	}
+		short_description=_('Service Name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
+}
 
 layout = [
-	Tab(_('General'),_('Basic values'),[
-		Group( _( 'General service settings' ), layout = [
+	Tab(_('General'), _('Basic values'), [
+		Group(_('General service settings'), layout=[
 			"name",
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 
+
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
-		ocs=['univentionServiceObject']
+		ocs = ['univentionServiceObject']
 
 		return [
 			('objectClass', ocs),
 		]
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter = univention.admin.filter.conjunction( '&', [
-		univention.admin.filter.expression( 'objectClass', 'univentionServiceObject' ),
-		] )
+	filter = univention.admin.filter.conjunction('&', [
+		univention.admin.filter.expression('objectClass', 'univentionServiceObject'),
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append( object( co, lo, None, dn, attributes = attrs ) )
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
+
 
 def identify(dn, attr, canonical=0):
 

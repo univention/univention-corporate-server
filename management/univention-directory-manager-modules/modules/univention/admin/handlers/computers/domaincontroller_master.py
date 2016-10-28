@@ -46,347 +46,347 @@ import univention.admin.handlers.groups.group
 import univention.admin.handlers.networks.network
 import time
 
-translation=univention.admin.localization.translation('univention.admin.handlers.computers')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.computers')
+_ = translation.translate
 
-module='computers/domaincontroller_master'
-operations=['add','edit','remove','search','move']
-usewizard=1
-docleanup=1
-childs=0
-short_description=_('Computer: Domain Controller Master')
-long_description=''
-options={
+module = 'computers/domaincontroller_master'
+operations = ['add', 'edit', 'remove', 'search', 'move']
+usewizard = 1
+docleanup = 1
+childs = 0
+short_description = _('Computer: Domain Controller Master')
+long_description = ''
+options = {
 	'posix': univention.admin.option(
-			short_description=_('Posix account'),
-			default=1,
-			objectClasses=('posixAccount', 'shadowAccount'),
-		),
+		short_description=_('Posix account'),
+		default=1,
+		objectClasses=('posixAccount', 'shadowAccount'),
+	),
 	'kerberos': univention.admin.option(
-			short_description=_('Kerberos principal'),
-			default=1,
-			objectClasses=('krb5Principal', 'krb5KDCEntry'),
-		),
+		short_description=_('Kerberos principal'),
+		default=1,
+		objectClasses=('krb5Principal', 'krb5KDCEntry'),
+	),
 	'samba': univention.admin.option(
-			short_description=_('Samba account'),
-			editable=True,
-			default=1,
-			objectClasses=('sambaSamAccount',),
-		)
+		short_description=_('Samba account'),
+		editable=True,
+		default=1,
+		objectClasses=('sambaSamAccount',),
+	)
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Domain controller name'),
-			long_description='',
-			syntax=univention.admin.syntax.hostName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True
-		),
+		short_description=_('Domain controller name'),
+		long_description='',
+		syntax=univention.admin.syntax.hostName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True
+	),
 	'description': univention.admin.property(
-			short_description=_('Description'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Description'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'operatingSystem': univention.admin.property(
-			short_description=_('Operating system'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Operating system'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'operatingSystemVersion': univention.admin.property(
-			short_description=_('Operating system version'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Operating system version'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'domain': univention.admin.property(
-			short_description=_('Domain'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Domain'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'mac': univention.admin.property(
-			short_description=_('MAC address'),
-			long_description='',
-			syntax=univention.admin.syntax.MAC_Address,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('MAC address'),
+		long_description='',
+		syntax=univention.admin.syntax.MAC_Address,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'network': univention.admin.property(
-			short_description=_('Network'),
-			long_description='',
-			syntax=univention.admin.syntax.network,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Network'),
+		long_description='',
+		syntax=univention.admin.syntax.network,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'ip': univention.admin.property(
-			short_description=_('IP address'),
-			long_description='',
-			syntax=univention.admin.syntax.ipAddress,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('IP address'),
+		long_description='',
+		syntax=univention.admin.syntax.ipAddress,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'serverRole': univention.admin.property(
-			short_description=_('System role'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			include_in_default_search=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('System role'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		include_in_default_search=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'service': univention.admin.property(
-			short_description=_('Service'),
-			long_description='',
-			syntax=univention.admin.syntax.Service,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Service'),
+		long_description='',
+		syntax=univention.admin.syntax.Service,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'dnsEntryZoneForward': univention.admin.property(
-			short_description=_('Forward zone for DNS entry'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsEntry,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('Forward zone for DNS entry'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsEntry,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'dnsEntryZoneReverse': univention.admin.property(
-			short_description=_('Reverse zone for DNS entry'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsEntryReverse,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('Reverse zone for DNS entry'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsEntryReverse,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'dnsEntryZoneAlias': univention.admin.property(
-			short_description=_('Zone for DNS alias'),
-			long_description='',
-			syntax=univention.admin.syntax.dnsEntryAlias,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('Zone for DNS alias'),
+		long_description='',
+		syntax=univention.admin.syntax.dnsEntryAlias,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'dnsAlias': univention.admin.property(
-			short_description=_('DNS alias'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('DNS alias'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'dhcpEntryZone': univention.admin.property(
-			short_description=_('DHCP service'),
-			long_description='',
-			syntax=univention.admin.syntax.dhcpEntry,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('DHCP service'),
+		long_description='',
+		syntax=univention.admin.syntax.dhcpEntry,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'password': univention.admin.property(
-			short_description=_('Password'),
-			long_description='',
-			syntax=univention.admin.syntax.passwd,
-			multivalue=False,
-			options=['kerberos','posix', 'samba'],
-			required=False,
-			may_change=True,
-			identifies=False,
-			dontsearch=True
-		),
+		short_description=_('Password'),
+		long_description='',
+		syntax=univention.admin.syntax.passwd,
+		multivalue=False,
+		options=['kerberos', 'posix', 'samba'],
+		required=False,
+		may_change=True,
+		identifies=False,
+		dontsearch=True
+	),
 	'unixhome': univention.admin.property(
-			short_description=_('Unix home directory'),
-			long_description='',
-			syntax=univention.admin.syntax.absolutePath,
-			multivalue=False,
-			options=['posix'],
-			required=True,
-			may_change=True,
-			identifies=False,
-			default=('/dev/null', [])
-		),
+		short_description=_('Unix home directory'),
+		long_description='',
+		syntax=univention.admin.syntax.absolutePath,
+		multivalue=False,
+		options=['posix'],
+		required=True,
+		may_change=True,
+		identifies=False,
+		default=('/dev/null', [])
+	),
 	'shell': univention.admin.property(
-			short_description=_('Login shell'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=['posix'],
-			required=False,
-			may_change=True,
-			identifies=False,
-			default=('/bin/bash', [])
-		),
+		short_description=_('Login shell'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=['posix'],
+		required=False,
+		may_change=True,
+		identifies=False,
+		default=('/bin/bash', [])
+	),
 	'primaryGroup': univention.admin.property(
-			short_description=_('Primary group'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=False,
-			options=['posix'],
-			required=True,
-			dontsearch=True,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Primary group'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=False,
+		options=['posix'],
+		required=True,
+		dontsearch=True,
+		may_change=True,
+		identifies=False
+	),
 	'reinstall': univention.admin.property(
-			short_description=_('(Re-)install on next boot'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('(Re-)install on next boot'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'reinstalloption': univention.admin.property(
-			short_description=_('additional start options'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('additional start options'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'instprofile': univention.admin.property(
-			short_description=_('Name of installation profile'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Name of installation profile'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'inventoryNumber': univention.admin.property(
-			short_description=_('Inventory number'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Inventory number'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'groups': univention.admin.property(
-			short_description=_('Groups'),
-			long_description='',
-			syntax=univention.admin.syntax.GroupDN,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False
-		),
+		short_description=_('Groups'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False
+	),
 	'sambaRID': univention.admin.property(
-			short_description=_('Relative ID'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			dontsearch=True,
-			identifies=False,
-			options=['samba']
-		),
+		short_description=_('Relative ID'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		dontsearch=True,
+		identifies=False,
+		options=['samba']
+	),
 }
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'Computer account' ), layout = [
-			[ 'name', 'description' ],
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('Computer account'), layout=[
+			['name', 'description'],
 			'inventoryNumber',
-		] ),
-		Group( _( 'Network settings ' ), layout = [
+		]),
+		Group(_('Network settings '), layout=[
 			'network',
 			'mac',
 			'ip',
-		] ),
-		Group( _( 'DNS Forward and Reverse Lookup Zone' ), layout = [
+		]),
+		Group(_('DNS Forward and Reverse Lookup Zone'), layout=[
 			'dnsEntryZoneForward',
 			'dnsEntryZoneReverse',
-		] ),
-		Group( _( 'DHCP' ), layout = [
+		]),
+		Group(_('DHCP'), layout=[
 			'dhcpEntryZone'
-		] ),
-		] ),
-	Tab( _( 'Account' ), _( 'Account' ), advanced = True, layout = [
+		]),
+	]),
+	Tab(_('Account'), _('Account'), advanced=True, layout=[
 		'password',
 		'primaryGroup'
-		] ),
-	Tab( _( 'Unix account' ), _( 'Unix account settings' ), advanced = True, layout = [
-		[ 'unixhome', 'shell' ]
-		] ),
-	Tab( _( 'Services' ), _( 'Services' ), advanced = True, layout = [
+	]),
+	Tab(_('Unix account'), _('Unix account settings'), advanced=True, layout=[
+		['unixhome', 'shell']
+	]),
+	Tab(_('Services'), _('Services'), advanced=True, layout=[
 		'service',
-		] ),
-	Tab( _( 'Deployment' ), _( 'Deployment' ), advanced = True, layout = [
-		[ 'reinstall' ],
-		[ 'instprofile', 'reinstalloption' ]
-		] ),
-	Tab( _( 'Groups' ), _( 'Group memberships' ), advanced = True, layout = [
+	]),
+	Tab(_('Deployment'), _('Deployment'), advanced=True, layout=[
+		['reinstall'],
+		['instprofile', 'reinstalloption']
+	]),
+	Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
 		'groups',
-		] ),
-	Tab( _( 'DNS alias' ),_( 'Alias DNS entry' ), advanced = True, layout = [
+	]),
+	Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
 		'dnsEntryZoneAlias'
-		] ),
- ]
+	]),
+]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString)
 mapping.register('serverRole', 'univentionServerRole')
-mapping.register('mac', 'macAddress' )
+mapping.register('mac', 'macAddress')
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
 mapping.register('reinstall', 'univentionServerReinstall', None, univention.admin.mapping.ListToString)
 mapping.register('instprofile', 'univentionServerInstallationProfile', None, univention.admin.mapping.ListToString)
@@ -403,84 +403,82 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 
 
 class object(univention.admin.handlers.simpleComputer, nagios.Support):
-	module=module
+	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 		nagios.Support.__init__(self)
 
 	def open(self):
-		univention.admin.handlers.simpleComputer.open( self )
+		univention.admin.handlers.simpleComputer.open(self)
 		self.nagios_open()
 
-		self.modifypassword=0
+		self.modifypassword = 0
 		if self.exists():
-			userPassword=self.oldattr.get('userPassword',[''])[0]
+			userPassword = self.oldattr.get('userPassword', [''])[0]
 			if userPassword:
-				self.info['password']=userPassword
-				self.modifypassword=0
+				self.info['password'] = userPassword
+				self.modifypassword = 0
 
 		if self.exists():
 
-			if 'posix' in self.options and not self.info.get( 'primaryGroup' ):
-				primaryGroupNumber=self.oldattr.get('gidNumber',[''])[0]
+			if 'posix' in self.options and not self.info.get('primaryGroup'):
+				primaryGroupNumber = self.oldattr.get('gidNumber', [''])[0]
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'primary group number = %s' % (primaryGroupNumber))
 				if primaryGroupNumber:
-					primaryGroupResult=self.lo.searchDn(filter_format('(&(objectClass=posixGroup)(gidNumber=%s))', [primaryGroupNumber]))
+					primaryGroupResult = self.lo.searchDn(filter_format('(&(objectClass=posixGroup)(gidNumber=%s))', [primaryGroupNumber]))
 					if primaryGroupResult:
-						self['primaryGroup']=primaryGroupResult[0]
+						self['primaryGroup'] = primaryGroupResult[0]
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Set primary group = %s' % (self['primaryGroup']))
 					else:
-						self['primaryGroup']=None
+						self['primaryGroup'] = None
 						self.save()
 						raise univention.admin.uexceptions.primaryGroup
 				else:
-					self['primaryGroup']=None
+					self['primaryGroup'] = None
 					self.save()
 					raise univention.admin.uexceptions.primaryGroup
 			if 'samba' in self.options:
 				sid = self.oldattr.get('sambaSID', [''])[0]
 				pos = sid.rfind('-')
-				self.info['sambaRID'] = sid[pos+1:]
+				self.info['sambaRID'] = sid[pos + 1:]
 
 			self.save()
 
 		else:
-			self.modifypassword=0
+			self.modifypassword = 0
 			if 'posix' in self.options:
-				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultDomainControllerMasterGroup', position=self.position)
+				res = univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultDomainControllerMasterGroup', position=self.position)
 				if res:
-					self['primaryGroup']=res
-					#self.save()
-
-
+					self['primaryGroup'] = res
+					# self.save()
 
 	def _ldap_pre_create(self):
 		super(object, self)._ldap_pre_create()
 		if not self['password']:
-			self['password']=self.oldattr.get('password',[''])[0]
-			self.modifypassword=0
+			self['password'] = self.oldattr.get('password', [''])[0]
+			self.modifypassword = 0
 
 	def _ldap_addlist(self):
-		ocs=['top', 'person', 'univentionHost', 'univentionDomainController']
-		al=[]
+		ocs = ['top', 'person', 'univentionHost', 'univentionDomainController']
+		al = []
 		if 'kerberos' in self.options:
 			al.append(('krb5MaxLife', '86400'))
 			al.append(('krb5MaxRenew', '604800'))
 			al.append(('krb5KDCFlags', '126'))
-			krb_key_version=str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0])+1)
+			krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
 			al.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 
 		if 'posix' in self.options:
-			self.uidNum=univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
-			self.alloc.append(('uidNumber',self.uidNum))
+			self.uidNum = univention.admin.allocators.request(self.lo, self.position, 'uidNumber')
+			self.alloc.append(('uidNumber', self.uidNum))
 			gidNum = self.get_gid_for_primary_group()
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))
 
 		if self.modifypassword or self['password']:
 			if 'kerberos' in self.options:
-				krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
+				krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
 				al.append(('krb5Key', self.oldattr.get('password', ['1']), krb_keys))
 			if 'posix' in self.options:
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
@@ -491,16 +489,16 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				al.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 				sambaPwdLastSetValue = str(long(time.time()))
 				al.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
-			self.modifypassword=0
+			self.modifypassword = 0
 		if 'samba' in self.options:
-			acctFlags=univention.admin.samba.acctFlags(flags={'S':1})
+			acctFlags = univention.admin.samba.acctFlags(flags={'S': 1})
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
 				# new sambaSID back from Samba 4.
-				self.machineSid='S-1-4-%s' % self.uidNum
+				self.machineSid = 'S-1-4-%s' % self.uidNum
 			else:
 				self.machineSid = self.getMachineSid(self.lo, self.position, self.uidNum, self.get('sambaRID'))
-				self.alloc.append(('sid',self.machineSid))
+				self.alloc.append(('sid', self.machineSid))
 			al.append(('sambaSID', [self.machineSid]))
 			al.append(('sambaAcctFlags', [acctFlags.decode()]))
 			al.append(('displayName', self.info['name']))
@@ -513,20 +511,20 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		if 'posix' in self.options:
 			if hasattr(self, 'uid') and self.uid:
 				univention.admin.allocators.confirm(self.lo, self.position, 'uid', self.uid)
-			univention.admin.handlers.simpleComputer.primary_group( self )
-			univention.admin.handlers.simpleComputer.update_groups( self )
-		univention.admin.handlers.simpleComputer._ldap_post_create( self )
+			univention.admin.handlers.simpleComputer.primary_group(self)
+			univention.admin.handlers.simpleComputer.update_groups(self)
+		univention.admin.handlers.simpleComputer._ldap_post_create(self)
 		self.nagios_ldap_post_create()
 
 	def _ldap_pre_remove(self):
 		self.open()
-		if 'posix' in self.options and self.oldattr.get( 'uidNumber' ):
-			self.uidNum=self.oldattr['uidNumber'][0]
+		if 'posix' in self.options and self.oldattr.get('uidNumber'):
+			self.uidNum = self.oldattr['uidNumber'][0]
 
 	def _ldap_post_remove(self):
 		if 'posix' in self.options:
 			univention.admin.allocators.release(self.lo, self.position, 'uidNumber', self.uidNum)
-		groupObjects=univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
+		groupObjects = univention.admin.handlers.groups.group.lookup(self.co, self.lo, filter_s=filter_format('uniqueMember=%s', [self.dn]))
 		if groupObjects:
 			for i in range(0, len(groupObjects)):
 				groupObjects[i].open()
@@ -535,43 +533,42 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 					groupObjects[i].modify(ignore_license=1)
 
 		self.nagios_ldap_post_remove()
-		univention.admin.handlers.simpleComputer._ldap_post_remove( self )
+		univention.admin.handlers.simpleComputer._ldap_post_remove(self)
 		# Need to clean up oldinfo. If remove was invoked, because the
 		# creation of the object has failed, the next try will result in
 		# a 'object class violation' (Bug #19343)
 		self.oldinfo = {}
 
 	def krb5_principal(self):
-		domain=univention.admin.uldap.domain(self.lo, self.position)
-		realm=domain.getKerberosRealm()
+		domain = univention.admin.uldap.domain(self.lo, self.position)
+		realm = domain.getKerberosRealm()
 		if self.info.has_key('domain') and self.info['domain']:
-			kerberos_domain=self.info['domain']
+			kerberos_domain = self.info['domain']
 		else:
-			kerberos_domain=domain.getKerberosRealm()
-		return 'host/' + self['name']+'.'+kerberos_domain.lower()+'@'+realm
+			kerberos_domain = domain.getKerberosRealm()
+		return 'host/' + self['name'] + '.' + kerberos_domain.lower() + '@' + realm
 
 	def _ldap_post_modify(self):
-		univention.admin.handlers.simpleComputer.primary_group( self )
-		univention.admin.handlers.simpleComputer.update_groups( self )
-		univention.admin.handlers.simpleComputer._ldap_post_modify( self )
+		univention.admin.handlers.simpleComputer.primary_group(self)
+		univention.admin.handlers.simpleComputer.update_groups(self)
+		univention.admin.handlers.simpleComputer._ldap_post_modify(self)
 		self.nagios_ldap_post_modify()
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('password'):
 			if not self['password']:
-				self['password']=self.oldattr.get('password',[''])[0]
-				self.modifypassword=0
+				self['password'] = self.oldattr.get('password', [''])[0]
+				self.modifypassword = 0
 			elif not self.info['password']:
-				self['password']=self.oldattr.get('password',[''])[0]
-				self.modifypassword=0
+				self['password'] = self.oldattr.get('password', [''])[0]
+				self.modifypassword = 0
 			else:
-				self.modifypassword=1
+				self.modifypassword = 1
 		self.nagios_ldap_pre_modify()
-		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
-
+		univention.admin.handlers.simpleComputer._ldap_pre_modify(self)
 
 	def _ldap_modlist(self):
-		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
+		ml = univention.admin.handlers.simpleComputer._ldap_modlist(self)
 
 		self.nagios_ldap_modlist(ml)
 
@@ -579,15 +576,15 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				if hasattr(self, 'uidNum'):
 					univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
-				requested_uid="%s$" % self['name']
+				requested_uid = "%s$" % self['name']
 				try:
-					self.uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
+					self.uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
 				except Exception:
 					self.cancel()
-					raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
+					raise univention.admin.uexceptions.uidAlreadyUsed(': %s' % requested_uid)
 					return []
 
-				self.alloc.append(('uid',self.uid))
+				self.alloc.append(('uid', self.uid))
 
 				ml.append(('uid', self.oldattr.get('uid', [None])[0], self.uid))
 
@@ -599,8 +596,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		if self.modifypassword and self['password']:
 			if 'kerberos' in self.options:
-				krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
-				krb_key_version=str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0])+1)
+				krb_keys = univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
+				krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
 				ml.append(('krb5Key', self.oldattr.get('password', ['1']), krb_keys))
 				ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 			if 'posix' in self.options:
@@ -615,21 +612,21 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		# add samba option
 		if self.exists() and self.option_toggled('samba') and 'samba' in self.options:
-			acctFlags=univention.admin.samba.acctFlags(flags={'S':1})
+			acctFlags = univention.admin.samba.acctFlags(flags={'S': 1})
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
 				# new sambaSID back from Samba 4.
-				self.machineSid='S-1-4-%s' % self.oldattr['uidNumber'][0]
+				self.machineSid = 'S-1-4-%s' % self.oldattr['uidNumber'][0]
 			else:
 				self.machineSid = self.getMachineSid(self.lo, self.position, self.oldattr['uidNumber'][0], self.get('sambaRID'))
-				self.alloc.append(('sid',self.machineSid))
+				self.alloc.append(('sid', self.machineSid))
 			ml.append(('sambaSID', '', [self.machineSid]))
 			ml.append(('sambaAcctFlags', '', [acctFlags.decode()]))
 			ml.append(('displayName', '', self.info['name']))
 			sambaPwdLastSetValue = str(long(time.time()))
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 		if self.exists() and self.option_toggled('samba') and 'samba' not in self.options:
-			for key in [ 'sambaSID', 'sambaAcctFlags', 'sambaNTPassword', 'sambaLMPassword', 'sambaPwdLastSet', 'displayName' ]:
+			for key in ['sambaSID', 'sambaAcctFlags', 'sambaNTPassword', 'sambaLMPassword', 'sambaPwdLastSet', 'displayName']:
 				if self.oldattr.get(key, []):
 					ml.insert(0, (key, self.oldattr.get(key, []), ''))
 
@@ -642,37 +639,37 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	def cleanup(self):
 		self.open()
 		self.nagios_cleanup()
-		univention.admin.handlers.simpleComputer.cleanup( self )
+		univention.admin.handlers.simpleComputer.cleanup(self)
 
 	def cancel(self):
-		for i,j in self.alloc:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i,j) )
+		for i, j in self.alloc:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'cancel: release (%s): %s' % (i, j))
 			univention.admin.allocators.release(self.lo, self.position, i, j)
 
 	def link(self):
 		result = []
-		if self['ip'] and len( self[ 'ip' ] ) > 0 and self['ip'][ 0 ]:
-			result = [{ 'url': 'https://%s/univention-management-console/' % self['ip'][ 0 ],
-						'ipaddr': self['ip'][ 0 ],
-						}]
-		if self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len( self['dnsEntryZoneForward' ] ) > 0:
-			zone = univention.admin.uldap.explodeDn( self['dnsEntryZoneForward'][0], 1)[0]
+		if self['ip'] and len(self['ip']) > 0 and self['ip'][0]:
+			result = [{'url': 'https://%s/univention-management-console/' % self['ip'][0], 'ipaddr': self['ip'][0], }]
+		if self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len(self['dnsEntryZoneForward']) > 0:
+			zone = univention.admin.uldap.explodeDn(self['dnsEntryZoneForward'][0], 1)[0]
 			if not result:
-				result = [ { 'url': 'https://%s.%s/univention-management-console/' % (self['name'], zone) }]
+				result = [{'url': 'https://%s.%s/univention-management-console/' % (self['name'], zone)}]
 			result[0]['fqdn'] = '%s.%s' % (self['name'], zone)
 		if result:
 			result[0]['name'] = _('Open Univention Management Console on this computer')
 			return result
 		return None
 
+
 def rewrite(filter, mapping):
 	if filter.variable == 'ip':
-		filter.variable='aRecord'
+		filter.variable = 'aRecord'
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 
+
 def lookup_filter(filter_s=None, lo=None):
-	filter_s = univention.admin.filter.replace_fqdn_filter( filter_s )
+	filter_s = univention.admin.filter.replace_fqdn_filter(filter_s)
 	if str(filter_s).find('(dnsAlias=') != -1:
 		filter_s = univention.admin.handlers.dns.alias.lookup_alias_filter(lo, filter_s)
 		if filter_s:
@@ -690,15 +687,17 @@ def lookup_filter(filter_s=None, lo=None):
 	lookup_filter_obj.append_unmapped_filter_string(filter_s, rewrite, mapping)
 	return lookup_filter_obj
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=lookup_filter(filter_s, lo)
+	filter = lookup_filter(filter_s, lo)
 	if filter is None:
 		return []
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append( object( co, lo, None, dn, attributes = attrs ) )
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionDomainController' in attr.get('objectClass', []) and 'master' in attr.get('univentionServerRole', [])

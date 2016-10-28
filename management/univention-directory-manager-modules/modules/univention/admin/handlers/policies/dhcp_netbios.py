@@ -43,73 +43,74 @@ from univention.admin.policy import (
 )
 
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.policies')
+_ = translation.translate
+
 
 class dhcp_netbiosFixedAttributes(univention.admin.syntax.select):
-	name='dhcp_netbiosFixedAttributes'
-	choices=[
-		('univentionDhcpNetbiosNameServers',_('NetBIOS name servers')),
-		('univentionDhcpNetbiosScope',_('NetBIOS scope')),
-		('univentionDhcpNetbiosNodeType',_('NetBIOS node type'))
-		]
+	name = 'dhcp_netbiosFixedAttributes'
+	choices = [
+		('univentionDhcpNetbiosNameServers', _('NetBIOS name servers')),
+		('univentionDhcpNetbiosScope', _('NetBIOS scope')),
+		('univentionDhcpNetbiosNodeType', _('NetBIOS node type'))
+	]
 
-module='policies/dhcp_netbios'
-operations=['add','edit','remove','search']
+module = 'policies/dhcp_netbios'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc="univentionPolicyDhcpNetbios"
-policy_apply_to=["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
-policy_position_dn_prefix="cn=netbios,cn=dhcp"
-policies_group="dhcp"
-usewizard=1
-childs=0
-short_description=_('Policy: DHCP NetBIOS')
-policy_short_description=_('NetBIOS')
-long_description=''
-options={
+policy_oc = "univentionPolicyDhcpNetbios"
+policy_apply_to = ["dhcp/host", "dhcp/pool", "dhcp/service", "dhcp/subnet", "dhcp/sharedsubnet", "dhcp/shared"]
+policy_position_dn_prefix = "cn=netbios,cn=dhcp"
+policies_group = "dhcp"
+usewizard = 1
+childs = 0
+short_description = _('Policy: DHCP NetBIOS')
+policy_short_description = _('NetBIOS')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.policyName,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.policyName,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'netbios_name_servers': univention.admin.property(
-			short_description=_('NetBIOS name servers'),
-			long_description=_('List of WINS servers listed in order of preference'),
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('NetBIOS name servers'),
+		long_description=_('List of WINS servers listed in order of preference'),
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'netbios_scope': univention.admin.property(
-			short_description=_('NetBIOS scope'),
-			long_description=_('NetBIOS over TCP/IP scope parameter'),
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('NetBIOS scope'),
+		long_description=_('NetBIOS over TCP/IP scope parameter'),
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'netbios_node_type': univention.admin.property(
-			short_description=_('NetBIOS node type'),
-			long_description=_('The node type of clients for NetBIOS over TCP/IP'),
-			syntax=univention.admin.syntax.netbiosNodeType,
-			multivalue=False,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('NetBIOS node type'),
+		long_description=_('The node type of clients for NetBIOS over TCP/IP'),
+		syntax=univention.admin.syntax.netbiosNodeType,
+		multivalue=False,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
@@ -119,18 +120,18 @@ property_descriptions.update(dict([
 	ldapFilterProperty(),
 ]))
 
-layout=[
-	Tab(_('Netbios'),_('SMB/CIFS name resolution'), layout = [
-		Group( _( 'General DHCP NetBIOS settings' ), layout = [
+layout = [
+	Tab(_('Netbios'), _('SMB/CIFS name resolution'), layout=[
+		Group(_('General DHCP NetBIOS settings'), layout=[
 			'name',
 			'netbios_name_servers',
-			[ 'netbios_scope', 'netbios_node_type' ],
-		] ),
-	] ),
+			['netbios_scope', 'netbios_node_type'],
+		]),
+	]),
 	policy_object_tab()
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('netbios_name_servers', 'univentionDhcpNetbiosNameServers')
 mapping.register('netbios_scope', 'univentionDhcpNetbiosScope', None, univention.admin.mapping.ListToString)
@@ -138,33 +139,34 @@ mapping.register('netbios_node_type', 'univentionDhcpNetbiosNodeType', None, uni
 register_policy_mapping(mapping)
 
 
-
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def _ldap_addlist(self):
 		return [
 			('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDhcpNetbios'])
 		]
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyDhcpNetbios'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 

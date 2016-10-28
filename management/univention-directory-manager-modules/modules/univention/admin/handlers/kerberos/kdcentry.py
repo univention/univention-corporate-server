@@ -42,117 +42,117 @@ import ldap
 import random
 import string
 
-translation=univention.admin.localization.translation('univention.admin.handlers.kerberos')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.kerberos')
+_ = translation.translate
 
-module='kerberos/kdcentry'
-operations=['add','edit','remove','search','move']
-childs=0
-short_description=_('Kerberos: KDC Entry')
-long_description=''
-property_descriptions={
+module = 'kerberos/kdcentry'
+operations = ['add', 'edit', 'remove', 'search', 'move']
+childs = 0
+short_description = _('Kerberos: KDC Entry')
+long_description = ''
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Principal name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=True,
-			identifies=True
-		),
+		short_description=_('Principal name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=True,
+		identifies=True
+	),
 	'description': univention.admin.property(
-			short_description=_('Description'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Description'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'password': univention.admin.property(
-			short_description=_('Password'),
-			long_description='',
-			syntax=univention.admin.syntax.passwd,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			identifies=False,
-			dontsearch=True
-		),
+		short_description=_('Password'),
+		long_description='',
+		syntax=univention.admin.syntax.passwd,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
+		dontsearch=True
+	),
 	'generateRandomPassword': univention.admin.property(
-			short_description=_('Generate random password'),
-			long_description='',
-			syntax=univention.admin.syntax.boolean,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			identifies=False,
-			dontsearch=True
-		),
+		short_description=_('Generate random password'),
+		long_description='',
+		syntax=univention.admin.syntax.boolean,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
+		dontsearch=True
+	),
 	'keyVersionNumber': univention.admin.property(
-			short_description=_('Key version'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			identifies=False,
-			dontsearch=True,
-			default='1'
-		),
+		short_description=_('Key version'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
+		dontsearch=True,
+		default='1'
+	),
 	'KDCFlags': univention.admin.property(
-			short_description=_('KDC Flags'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			identifies=False,
-			dontsearch=True,
-			default='126'
-		),
+		short_description=_('KDC Flags'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
+		dontsearch=True,
+		default='126'
+	),
 	'maxLife': univention.admin.property(
-			short_description=_('Maximum life time'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			identifies=False,
-			dontsearch=True,
-			default='86400'
-		),
+		short_description=_('Maximum life time'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
+		dontsearch=True,
+		default='86400'
+	),
 	'maxRenew': univention.admin.property(
-			short_description=_('Maximum renew time'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=False,
-			required=False,
-			may_change=True,
-			identifies=False,
-			dontsearch=True,
-			default='604800'
-		),
+		short_description=_('Maximum renew time'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=False,
+		required=False,
+		may_change=True,
+		identifies=False,
+		dontsearch=True,
+		default='604800'
+	),
 }
 
 layout = [
-	Tab( _( 'General' ), _( 'Basic settings' ), layout = [
-		Group( _( 'KDC entry' ), layout = [
-			[ 'name', 'description' ],
+	Tab(_('General'), _('Basic settings'), layout=[
+		Group(_('KDC entry'), layout=[
+			['name', 'description'],
 			'password',
 			'generateRandomPassword',
 			'keyVersionNumber',
 			'KDCFlags',
 			'maxLife',
 			'maxRenew',
-		] ),
-	] ),
- ]
+		]),
+	]),
+]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'uid', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('keyVersionNumber', 'krb5KeyVersionNumber', None, univention.admin.mapping.ListToString)
@@ -160,17 +160,18 @@ mapping.register('KDCFlags', 'krb5KDCFlags', None, univention.admin.mapping.List
 mapping.register('maxLife', 'krb5MaxLife', None, univention.admin.mapping.ListToString)
 mapping.register('maxRenew', 'krb5MaxRenew', None, univention.admin.mapping.ListToString)
 
-class object(univention.admin.handlers.simpleLdap):
-	module=module
 
-	def description( self ):
+class object(univention.admin.handlers.simpleLdap):
+	module = module
+
+	def description(self):
 		# Use the name by default, otherwise the rdn will be used
 		return self['name']
 
 	def _set_principal(self):
 		if self.hasChanged('name') or not hasattr(self, 'krb5PrincipalName'):
-			domain=univention.admin.uldap.domain(self.lo, self.position)
-			realm=domain.getKerberosRealm()
+			domain = univention.admin.uldap.domain(self.lo, self.position)
+			realm = domain.getKerberosRealm()
 			try:
 				self['name'].index('@')
 			except ValueError:
@@ -188,47 +189,48 @@ class object(univention.admin.handlers.simpleLdap):
 		dn[0] = [('krb5PrincipalName', self.krb5PrincipalName, dn[0][0][2])]
 		return ldap.dn.dn2str(dn)
 
-	def _ldap_modlist( self ):
-		ml=univention.admin.handlers.simpleLdap._ldap_modlist( self )
+	def _ldap_modlist(self):
+		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
 		self._set_principal()
 
 		if self.hasChanged('name'):
-			ml.append( ('krb5PrincipalName', self.oldattr.get('krb5PrincipalName',[]), [self.krb5PrincipalName]) )
+			ml.append(('krb5PrincipalName', self.oldattr.get('krb5PrincipalName', []), [self.krb5PrincipalName]))
 
 		if self.info.get('generateRandomPassword', '').lower() in ['true', 'yes', '1']:
-			self['password'] = string.join(random.sample(string.letters+string.digits, 24), '')
+			self['password'] = string.join(random.sample(string.letters + string.digits, 24), '')
 
 		if self.hasChanged('password'):
-			krb_keys=univention.admin.password.krb5_asn1(self.krb5PrincipalName, self['password'])
+			krb_keys = univention.admin.password.krb5_asn1(self.krb5PrincipalName, self['password'])
 			ml.append(('krb5Key', self.oldattr.get('krb5Key', []), krb_keys))
-			
+
 		return ml
-			
 
 	def _ldap_addlist(self):
 		return [
-			('objectClass', [ 'top', 'account', 'krb5Principal', 'krb5KDCEntry' ])
+			('objectClass', ['top', 'account', 'krb5Principal', 'krb5KDCEntry'])
 		]
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'top'),
 		univention.admin.filter.expression('objectClass', 'account'),
 		univention.admin.filter.expression('objectClass', 'krb5Principal'),
 		univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append( object( co, lo, None, dn, attributes = attrs ) )
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
+
 
 def identify(dn, attr, canonical=0):
 

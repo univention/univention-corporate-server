@@ -34,41 +34,43 @@ import copy
 
 import univention.admin.localization
 
-translation = univention.admin.localization.translation( 'univention.admin.handlers.dhcp' )
+translation = univention.admin.localization.translation('univention.admin.handlers.dhcp')
 _ = translation.translate
 
 _properties = {
 	'option': univention.admin.property(
-		short_description = _( 'DHCP options' ),
-		long_description = _( 'Defines DHCP options for the subnet.' ),
-		syntax = univention.admin.syntax.string,
-		multivalue = True,
-		options = [],
-		required = 0,
-		may_change = True,
-		identifies = 0
-		),
+		short_description=_('DHCP options'),
+		long_description=_('Defines DHCP options for the subnet.'),
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=0,
+		may_change=True,
+		identifies=0
+	),
 }
 
 _mappings = (
 	('option', 'dhcpOption', None, None),
 )
 
-def add_dhcp_options( properties, mapping, layout ):
+
+def add_dhcp_options(properties, mapping, layout):
 	for name, prop in _properties.items():
-		properties[ name ] = prop
+		properties[name] = prop
 
 	for item in _mappings:
-		mapping.register( *item )
+		mapping.register(*item)
 
 	# currently not visible
-	#layout.append( Tab( _( 'Advanced' ), _( 'Advanced DHCP options' ), layout = [ 'option' ] ) )
+	# layout.append( Tab( _( 'Advanced' ), _( 'Advanced DHCP options' ), layout = [ 'option' ] ) )
 
-def add_dhcp_objectclass( self, ml ):
-	oldOCs = self.oldattr.get( 'objectClass', [] )
-	newOCs = copy.copy( oldOCs )
-	if self.info.get( 'option', [] ) and not 'dhcpOptions' in oldOCs:
-		newOCs.append( 'dhcpOptions' )
-		ml.append( ( 'objectClass', oldOCs, newOCs ) )
+
+def add_dhcp_objectclass(self, ml):
+	oldOCs = self.oldattr.get('objectClass', [])
+	newOCs = copy.copy(oldOCs)
+	if self.info.get('option', []) and not 'dhcpOptions' in oldOCs:
+		newOCs.append('dhcpOptions')
+		ml.append(('objectClass', oldOCs, newOCs))
 
 	return ml

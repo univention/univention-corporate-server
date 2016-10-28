@@ -38,149 +38,150 @@ import univention.admin.handlers
 import univention.admin.password
 import univention.admin.localization
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.settings')
+_ = translation.translate
+
 
 def plusBase(object, arg):
-	return [arg+','+object.position.getDomain()]
+	return [arg + ',' + object.position.getDomain()]
 
-module='settings/xconfig_choices'
-superordinate='settings/cn'
-childs=0
-width="100"
-operations=['search','edit']
-short_description=_('Preferences: X Configuration Choices')
-long_description=''
-options={
+module = 'settings/xconfig_choices'
+superordinate = 'settings/cn'
+childs = 0
+width = "100"
+operations = ['search', 'edit']
+short_description = _('Preferences: X Configuration Choices')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description=_('Name'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=False,
-			include_in_default_search=True,
-			options=[],
-			required=True,
-			may_change=False,
-			identifies=True,
-		),
+		short_description=_('Name'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=False,
+		include_in_default_search=True,
+		options=[],
+		required=True,
+		may_change=False,
+		identifies=True,
+	),
 	'resolution': univention.admin.property(
-			short_description=_('Resolution'),
-			long_description='',
-			syntax=univention.admin.syntax.XResolution,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Resolution'),
+		long_description='',
+		syntax=univention.admin.syntax.XResolution,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'colorDepth': univention.admin.property(
-			short_description=_('Color Depth'),
-			long_description='',
-			syntax=univention.admin.syntax.integer,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Color Depth'),
+		long_description='',
+		syntax=univention.admin.syntax.integer,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'mouseProtocol': univention.admin.property(
-			short_description=_('Mouse Protocol'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Mouse Protocol'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'mouseDevice': univention.admin.property(
-			short_description=_('Mouse Device'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Mouse Device'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'keyboardLayout': univention.admin.property(
-			short_description=_('Keyboard Layout'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Keyboard Layout'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'keyboardVariant': univention.admin.property(
-			short_description=_('Keyboard Variant'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Keyboard Variant'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'hSync': univention.admin.property(
-			short_description=_('Horizontal Sync'),
-			long_description='',
-			syntax=univention.admin.syntax.XSync,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Horizontal Sync'),
+		long_description='',
+		syntax=univention.admin.syntax.XSync,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'vRefresh': univention.admin.property(
-			short_description=_('Vertical Refresh'),
-			long_description='',
-			syntax=univention.admin.syntax.XSync,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Vertical Refresh'),
+		long_description='',
+		syntax=univention.admin.syntax.XSync,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'xModule': univention.admin.property(
-			short_description=_('X Module'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('X Module'),
+		long_description='',
+		syntax=univention.admin.syntax.string,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 	'displaySize': univention.admin.property(
-			short_description=_('Display Size (mm)'),
-			long_description='',
-			syntax=univention.admin.syntax.XResolution,
-			multivalue=True,
-			options=[],
-			required=False,
-			may_change=True,
-			identifies=False
-		),
+		short_description=_('Display Size (mm)'),
+		long_description='',
+		syntax=univention.admin.syntax.XResolution,
+		multivalue=True,
+		options=[],
+		required=False,
+		may_change=True,
+		identifies=False
+	),
 }
 
 layout = [
-	Tab(_('General'),_('X Configuration Choices'), layout = [
-		Group( _( 'General X configuration choices settings' ), layout = [
+	Tab(_('General'), _('X Configuration Choices'), layout=[
+		Group(_('General X configuration choices settings'), layout=[
 			'name',
-			[ 'resolution', 'colorDepth' ],
-			[ 'mouseProtocol', 'mouseDevice' ],
-			[ 'keyboardLayout', 'keyboardVariant' ],
-			[ 'hSync', 'vRefresh' ],
+			['resolution', 'colorDepth'],
+			['mouseProtocol', 'mouseDevice'],
+			['keyboardLayout', 'keyboardVariant'],
+			['hSync', 'vRefresh'],
 			'displaySize',
-		] ),
-	] ),
+		]),
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('xModule', 'univentionXModuleChoices')
 mapping.register('resolution', 'univentionXResolutionChoices')
@@ -195,33 +196,33 @@ mapping.register('displaySize', 'univentionXDisplaySizeChoices')
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def _ldap_dn(self):
 		dn = ldap.dn.str2dn(super(object, self)._ldap_dn())
 		return '%s,cn=univention,%s' % (ldap.dn.dn2str(dn[0]), self.position.getDomain())
 
 	def _ldap_addlist(self):
-		return [('objectClass', ['top', 'univentionXConfigurationChoices'] ) ]
-	
+		return [('objectClass', ['top', 'univentionXConfigurationChoices'])]
+
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionXConfigurationChoices')
-		])
+	])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-		res.append( object( co, lo, None, dn, attributes = attrs ) )
+		res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
 
+
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionXConfigurationChoices' in attr.get('objectClass', [])
-
-
