@@ -46,17 +46,17 @@ import univention.admin.handlers.groups.group
 oldsid, newsid = sys.argv[1:]
 lo, position = univention.admin.uldap.getAdminConnection()
 
-for dn, attrs in lo.search(filter='(|(sambaSID=*)(sambaPrimaryGroupSID=*))', attr=['sambaSID','sambaPrimaryGroupSID']):
-	ml=[]
+for dn, attrs in lo.search(filter='(|(sambaSID=*)(sambaPrimaryGroupSID=*))', attr=['sambaSID', 'sambaPrimaryGroupSID']):
+	ml = []
 	sambaPrimaryGroupSID = attrs.get('sambaPrimaryGroupSID', [None])[0]
 	if sambaPrimaryGroupSID and sambaPrimaryGroupSID.startswith(oldsid):
-		oldval=sambaPrimaryGroupSID
-		newval=oldval.replace(oldsid, newsid)
+		oldval = sambaPrimaryGroupSID
+		newval = oldval.replace(oldsid, newsid)
 		ml.append(('sambaPrimaryGroupSID', oldval, newval))
 	sambaSID = attrs.get('sambaSID', [None])[0]
 	if sambaSID and sambaSID.startswith(oldsid):
-		oldval=sambaSID
-		newval=oldval.replace(oldsid, newsid)
+		oldval = sambaSID
+		newval = oldval.replace(oldsid, newsid)
 		ml.append(('sambaSID', oldval, newval))
 	if ml:
 		print 'Changing SID in %s...' % repr(dn),
