@@ -1,3 +1,9 @@
+ucs-test (6.0.36-39) unstable; urgency=medium
+
+  * Bug #42260: update 01_merge_new_module
+
+ -- Eduard Mai <mai@univention.de>  Fri, 28 Oct 2016 18:58:15 +0200
+
 ucs-test (6.0.36-38) unstable; urgency=medium
 
   * Bug #42619: Fix 20_apps_can_be_installed (2)
