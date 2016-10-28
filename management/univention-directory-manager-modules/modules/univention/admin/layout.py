@@ -32,59 +32,62 @@
 
 import copy
 
-class ILayoutElement( dict ):
+
+class ILayoutElement(dict):
+
 	"""Describes the layout information for a tab or a groupbox"""
-	def __init__( self, label, description = '', layout = [] ):
-		dict.__init__( self )
-		self.__setitem__( 'label', label )
-		self.__setitem__( 'description', description )
-		self.__setitem__( 'layout', copy.copy( layout ) )
+
+	def __init__(self, label, description='', layout=[]):
+		dict.__init__(self)
+		self.__setitem__('label', label)
+		self.__setitem__('description', description)
+		self.__setitem__('layout', copy.copy(layout))
 
 	@property
-	def label( self ):
-		return self[ 'label' ]
+	def label(self):
+		return self['label']
 
 	@property
-	def description( self ):
-		return self[ 'description' ]
+	def description(self):
+		return self['description']
 
 	@property
-	def layout( self ):
-		return self[ 'layout' ]
+	def layout(self):
+		return self['layout']
 
 	@layout.setter
-	def layout( self, value ):
-		 self[ 'layout' ] = value
+	def layout(self, value):
+		self['layout'] = value
 
-	def replace( self, old, new, recursive = True ):
+	def replace(self, old, new, recursive=True):
 		new_layout = []
 		replaced = False
 		for item in self.layout:
 			if replaced:
-				new_layout.append( item )
+				new_layout.append(item)
 				continue
-			if isinstance( item, basestring ) and item == old:
-				new_layout.append( new )
+			if isinstance(item, basestring) and item == old:
+				new_layout.append(new)
 				replaced = True
-			elif isinstance( item, ( tuple, list ) ):
+			elif isinstance(item, (tuple, list)):
 				line = []
 				for elem in item:
 					if elem == old:
 						replaced = True
-						line.append( new )
+						line.append(new)
 					else:
-						line.append( elem )
-				new_layout.append( line )
-			elif isinstance( item, ILayoutElement ) and recursive:
-				replaced, layout = item.replace( old, new, recursive )
-				new_layout.append( item )
+						line.append(elem)
+				new_layout.append(line)
+			elif isinstance(item, ILayoutElement) and recursive:
+				replaced, layout = item.replace(old, new, recursive)
+				new_layout.append(item)
 			else:
-				new_layout.append( item )
+				new_layout.append(item)
 		self.layout = new_layout
 
-		return ( replaced, self.layout )
+		return (replaced, self.layout)
 
-	def remove( self, field, recursive=True ):
+	def remove(self, field, recursive=True):
 		new_layout = []
 		removed = False
 		if self.exists(field):
@@ -111,53 +114,55 @@ class ILayoutElement( dict ):
 
 		return (removed, self.layout)
 
-	def exists( self, field ):
+	def exists(self, field):
 		for item in self.layout:
-			if isinstance( item, basestring ) and item == field:
+			if isinstance(item, basestring) and item == field:
 				return True
-			elif isinstance( item, ( tuple, list ) ):
+			elif isinstance(item, (tuple, list)):
 				if field in item:
 					return True
-			elif isinstance( item, ILayoutElement ):
-				if item.exists( field ):
+			elif isinstance(item, ILayoutElement):
+				if item.exists(field):
 					return True
 
 		return False
 
-	def insert( self, position, field ):
+	def insert(self, position, field):
 		if position == -1:
-			self.layout.insert( 0, field )
+			self.layout.insert(0, field)
 			return
 
-		fline = ( position -1 ) // 2
-		fpos = ( position - 1 ) % 2
+		fline = (position - 1) // 2
+		fpos = (position - 1) % 2
 
 		currentLine = fline
 
-		if len( self.layout ) <= currentLine:
-			self.layout.append( field )
+		if len(self.layout) <= currentLine:
+			self.layout.append(field)
 		else:
-			if isinstance( self.layout[ currentLine ], basestring ):
+			if isinstance(self.layout[currentLine], basestring):
 				if fpos == 0:
-					self.layout[ currentLine ] = [ field, self.layout[ currentLine ] ]
+					self.layout[currentLine] = [field, self.layout[currentLine]]
 				else:
-					self.layout[ currentLine ] = [ self.layout[ currentLine ], field ]
+					self.layout[currentLine] = [self.layout[currentLine], field]
 			else:
-				self.layout[ currentLine ].insert( fpos, field  )
+				self.layout[currentLine].insert(fpos, field)
 
-class Tab( ILayoutElement ):
-	def __init__( self, label, description = '', advanced = False, layout = [] ):
-		ILayoutElement.__init__( self, label, description, layout )
-		self.__setitem__( 'advanced', advanced )
+
+class Tab(ILayoutElement):
+
+	def __init__(self, label, description='', advanced=False, layout=[]):
+		ILayoutElement.__init__(self, label, description, layout)
+		self.__setitem__('advanced', advanced)
 
 	@property
-	def advanced( self ):
-		return self[ 'advanced' ]
+	def advanced(self):
+		return self['advanced']
 
 	@advanced.setter
-	def advanced( self, value ):
-		self[ 'advanced' ] = value
+	def advanced(self, value):
+		self['advanced'] = value
 
-class Group( ILayoutElement ):
+
+class Group(ILayoutElement):
 	pass
-

@@ -30,41 +30,45 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-UCS = ['UCS', 'Univention Corporate Server' ]
+UCS = ['UCS', 'Univention Corporate Server']
+
 
 class Attributes:
-	def __init__( self, required_license = None, options = {} ):
+
+	def __init__(self, required_license=None, options={}):
 		self.required_license = required_license
 		self._options = options
 
-	def options( self, license_type ):
-		if not self._options: return ()
-		if not isinstance( license_type, list ):
-			license_type = list( license_type )
+	def options(self, license_type):
+		if not self._options:
+			return ()
+		if not isinstance(license_type, list):
+			license_type = list(license_type)
 		license_type.sort()
-		
+
 		for key in self._options.keys():
-			skey = list( key )
+			skey = list(key)
 			skey.sort()
 			if license_type == skey:
-				return self._options[ key ]
+				return self._options[key]
 
 		return ()
 
-	def valid( self, license_type ):
-		if not isinstance( license_type, list ):
-			license_type = list( license_type )
+	def valid(self, license_type):
+		if not isinstance(license_type, list):
+			license_type = list(license_type)
 
 		if not self.required_license:
 			return True
 
-		if isinstance ( self.required_license, list ):
+		if isinstance(self.required_license, list):
 			for rl in self.required_license:
 				if rl in license_type:
 					return True
 			return False
 		else:
 			return self.required_license in license_type
+
 
 def moreGroupware(license):
 	return False, (license.compare(license.licenses[license.ACCOUNT],
@@ -82,4 +86,3 @@ def moreGroupware(license):
 
 modules = {
 }
-

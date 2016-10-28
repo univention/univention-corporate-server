@@ -32,12 +32,13 @@
 
 
 from GenericTest import GenericTestCase
-from TestDhcpService    import DhcpServiceTestCase
+from TestDhcpService import DhcpServiceTestCase
 from TestDnsForwardZone import DnsForwardZoneTestCase
 from TestDnsReverseZone import DnsReverseZoneTestCase
 
 
 class NetworksNetworkTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'networks/network'
 		super(NetworksNetworkTestCase, self).__init__(*args, **kwargs)
@@ -46,7 +47,7 @@ class NetworksNetworkTestCase(GenericTestCase):
 		msg = 'Failed to %s %s %s' % (action, thing.modname, thing.name)
 		proc.check(msg, self)
 
-	def __create(self, klass, subnet, suffix = ''):
+	def __create(self, klass, subnet, suffix=''):
 		thing = klass()
 		thing.setUp(subnet)
 		thing.name += str(suffix)
@@ -65,35 +66,35 @@ class NetworksNetworkTestCase(GenericTestCase):
 		self.__rvrs2 = self.__create(DnsReverseZoneTestCase, subnet)
 
 	def __removeObject(self, thing):
-		proc = thing.remove(dn = thing.dn)
+		proc = thing.remove(dn=thing.dn)
 		self.__checkProcess(proc, thing, 'remove')
 		thing.tearDown()
 
-	def setUp(self, subnet = None):
+	def setUp(self, subnet=None):
 		super(NetworksNetworkTestCase, self).setUp()
 		if subnet is None:
 			subnet = self.random(2)
 		self.__createObjects(subnet)
 		ranges = ['19.168.%s.32 19.168.%s.254' % (subnet, subnet),
-			  '19.168.%s.30 19.168.%s.31'  % (subnet, subnet),
-			  '19.168.%s.28 19.168.%s.29'  % (subnet, subnet),]
+			  '19.168.%s.30 19.168.%s.31' % (subnet, subnet),
+			  '19.168.%s.28 19.168.%s.29' % (subnet, subnet), ]
 		# NOTE: Checking the ip range fails due to Bug #7809
 		self.uncheckedProperties.add('ipRange')
 		self.createProperties = {
 			'network': '19.168.%s.0' % subnet,
 			'netmask': '24',
 			'ipRange': {'append': ranges[:2]},
-			'dhcpEntryZone':       self.__dhcp1.dn,
+			'dhcpEntryZone': self.__dhcp1.dn,
 			'dnsEntryZoneForward': self.__frwd1.dn,
 			'dnsEntryZoneReverse': self.__rvrs1.dn,
-			}
+		}
 		self.modifyProperties = {
 			'ipRange': {'remove': ranges[:1],
 				    'append': ranges[2:]},
-			'dhcpEntryZone':       self.__dhcp2.dn,
+			'dhcpEntryZone': self.__dhcp2.dn,
 			'dnsEntryZoneForward': self.__frwd2.dn,
 			'dnsEntryZoneReverse': self.__rvrs2.dn,
-			}
+		}
 		self.name = 'testnetwork'
 
 	def tearDown(self):
@@ -110,7 +111,7 @@ def suite():
 	import unittest
 	suite = unittest.TestSuite()
 	# NOTE: disabled due to Bug #7814.
-	#suite.addTest(NetworksNetworkTestCase())
+	# suite.addTest(NetworksNetworkTestCase())
 	return suite
 
 

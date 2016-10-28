@@ -84,7 +84,7 @@ disabled."""
 	today = int(time.time() / 24 / 3600)  # time.time() returns the local time
 	ldap_filter = '(shadowExpire<=%s)' % (today,)
 	if options.last_week:
-		ldap_filter = '(&(shadowExpire>=%s)(shadowExpire<=%s))' % (today-6, today,)
+		ldap_filter = '(&(shadowExpire>=%s)(shadowExpire<=%s))' % (today - 6, today,)
 	results = udm_modules.lookup('users/user', None, lo, scope='sub', filter=ldap_filter)
 
 	for entry in results:

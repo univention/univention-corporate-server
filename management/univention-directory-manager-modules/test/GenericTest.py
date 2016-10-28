@@ -35,10 +35,12 @@ from BaseTest import BaseCase, TestError, ProcessFailedError
 
 
 class ObjectNotFoundError(TestError):
+
 	'''Assertion error in the Univention Admin test suite.
 
 	Raised when a created object cannot be found.
 	'''
+
 	def __init__(self, test, dn):
 		helper = ''
 		if dn is not None:
@@ -47,11 +49,14 @@ class ObjectNotFoundError(TestError):
 			% (test.name, helper, test.modname)
 		TestError.__init__(self, error, test)
 
+
 class LeftoverObjectFound(TestError):
+
 	'''Assertion error in the Univention Admin test suite.
 
 	Raised when a deleted object can still be found.
 	'''
+
 	def __init__(self, test, dn):
 		helper = ''
 		if dn is not None:
@@ -60,36 +65,45 @@ class LeftoverObjectFound(TestError):
 			% (test.name, helper, test.modname)
 		TestError.__init__(self, error, test)
 
+
 class ObjectNotIdentifiedError(TestError):
+
 	'''Assertion error in the Univention Admin test suite.
 
 	Raised when a found object cannot be identified.
 	'''
+
 	def __init__(self, test, dn):
 		error = 'Failed to identify object %s at DN %s (module %s)' \
 			% (test.name, dn, test.modname)
 		TestError.__init__(self, error, test)
 
+
 class PropertyInvalidError(TestError):
+
 	'''Assertion error in the Univention Admin test suite.
 
 	Raised when an object has an incorrect property.
 	'''
+
 	def __init__(self, test, dn, property, expected, actual):
 		d = test.module.property_descriptions
 		description = d[property].short_description
 		e1 = 'Incorrect property %s (%s)' % (property, description)
 		e2 = 'of object %s at DN %s (module %s).' \
 		     % (test.name, dn, test.modname)
-		e3= 'Expected: "%s" Actual: "%s"' % (expected, actual)
+		e3 = 'Expected: "%s" Actual: "%s"' % (expected, actual)
 		error = '%s %s %s' % (e1, e2, e3)
 		TestError.__init__(self, error, test)
 
+
 class ObjectClassNotPresentError(TestError):
+
 	'''Assertion error in the Univention Admin test suite.
 
 	Raised when an object has an incorrect objectClass.
 	'''
+
 	def __init__(self, test, dn, option, expected, actual):
 		o = test.module.options
 		description = o[option].short_description
@@ -97,12 +111,13 @@ class ObjectClassNotPresentError(TestError):
 		     % (option, description)
 		e2 = 'of object %s at DN %s (module %s).' \
 		     % (test.name, dn, test.modname)
-		e3= 'Expected: "%s" Actual: "%s"' % (expected, actual)
+		e3 = 'Expected: "%s" Actual: "%s"' % (expected, actual)
 		error = '%s %s %s' % (e1, e2, e3)
 		TestError.__init__(self, error, test)
 
 
 class GenericTestCase(BaseCase):
+
 	'''A generic test case for a Univention Admin module.
 
 	Provides methods to create, modify and remove the current object.
@@ -147,6 +162,7 @@ class GenericTestCase(BaseCase):
 			self.modname = "custom/module"
 			super(MyTestCase, self).__init__(*args, **kwargs)
 	'''
+
 	def __init__(self, *args, **kwargs):
 		super(GenericTestCase, self).__init__(*args, **kwargs)
 
@@ -157,14 +173,14 @@ class GenericTestCase(BaseCase):
 		# NOTE: this filter might be a little fragile...
 		cmd.filter('%s="%s"' % (self.identifier, self.name))
 
-	def __setupCommandUpdate(self, cmd, name, properties, options = None):
+	def __setupCommandUpdate(self, cmd, name, properties, options=None):
 		descriptions = self.module.property_descriptions
 		special = set(('position',))
 		single = (p for p in properties
-			  if not p in special
+			  if p not in special
 			  if not descriptions[p].multivalue)
-		multi  = (p for p in properties
-			  if not p in special
+		multi = (p for p in properties
+			  if p not in special
 			  if descriptions[p].multivalue)
 		# set identifying property
 		if name is not None:
@@ -276,26 +292,26 @@ class GenericTestCase(BaseCase):
 		self.dn = dn
 		self.__leftover_dns.add(dn)
 
-	def testObjectExists(self, dn = None):
+	def testObjectExists(self, dn=None):
 		'''Check that the object exists.
 
 		"DN", if given, indicates the DN of the object to test.
-		
+
 		Raise "ObjectNotFoundError" if it does not exists.
 		'''
-		dn, attr = self.search(dn = dn)
+		dn, attr = self.search(dn=dn)
 		if attr is None:
 			raise ObjectNotFoundError(self, dn)
 		self.useDN(dn)
 
-	def testObjectExistsNot(self, dn = None):
+	def testObjectExistsNot(self, dn=None):
 		'''Check that the object does not exists.
 
 		"DN", if given, indicates the DN of the object to test.
 
 		Raise "LeftoverObjectFound" if it does exists.
 		'''
-		dn, attr = self.search(dn = dn)
+		dn, attr = self.search(dn=dn)
 		if bool(attr):
 			self.useDN(dn)
 			raise LeftoverObjectFound(self, dn)
@@ -306,7 +322,7 @@ class GenericTestCase(BaseCase):
 		Raise "ObjectNotIdentifiedError" if the module cannot identify
 		the current object.
 		'''
-		_, attr = self.search(dn = self.dn)
+		_, attr = self.search(dn=self.dn)
 		if not self.module.identify(self.dn, attr):
 			raise ObjectNotIdentifiedError(self, self.dn)
 
@@ -317,7 +333,7 @@ class GenericTestCase(BaseCase):
 
 		Raise "ObjectClassNotPresentError" if an option is not present.
 		'''
-		attr = self.ldap.get(dn = self.dn, attr = ['objectClass'])
+		attr = self.ldap.get(dn=self.dn, attr=['objectClass'])
 		for o in options:
 			classes = self.module.options[o].objectClasses
 			if not classes:
@@ -337,13 +353,13 @@ class GenericTestCase(BaseCase):
 		'''
 		special = set(('position',))
 		props = (p for p in properties
-			 if not p in special
-			 if not p in self.uncheckedProperties)
-		obj = self.open(dn = self.dn)
+			 if p not in special
+			 if p not in self.uncheckedProperties)
+		obj = self.open(dn=self.dn)
 		for prop in props:
 			self._testProperty(prop, obj, properties)
 
-	def create(self, properties, options = None, name = None):
+	def create(self, properties, options=None, name=None):
 		'''Create an object of the current module.
 
 		"Properties" is a mapping from property names to values.
@@ -357,9 +373,9 @@ class GenericTestCase(BaseCase):
 		self.__setupCommandUpdate(cmd, name, properties, options)
 		return cmd.run()
 
-	def modify(self, properties, dn = None, name = None, newName = None):
+	def modify(self, properties, dn=None, name=None, newName=None):
 		'''Modify an object of the current module.
-		
+
 		"Properties" is a mapping from property names to values;
 		only values that should be changed need to be included.
 		"DN", if given, is the DN of the object to modify.
@@ -376,9 +392,9 @@ class GenericTestCase(BaseCase):
 		self.__setupCommandUpdate(cmd, newName, properties)
 		return cmd.run()
 
-	def remove(self, name = None, dn = None, recursive = False):
+	def remove(self, name=None, dn=None, recursive=False):
 		'''Remove an object of the current module.
-		
+
 		"Name" is the name of the object to remove (defaults to the current objects name).
 		"DN", if given, is the DN of the object to remove.
 		"Recursive" should be True to remove the object recursively.
@@ -391,7 +407,7 @@ class GenericTestCase(BaseCase):
 		if recursive:
 			cmd.recursive()
 		return cmd.run()
-	
+
 	def hookAfterCreated(self, dn):
 		'''Perform additional actions after creating an object.
 
@@ -418,7 +434,7 @@ class GenericTestCase(BaseCase):
 
 	def setUp(self):
 		'''Hook method for setting up the test fixture before exercising it.
-		
+
 		Override this method to set up values for these properties:
 		"name": The name of the object that will be tested.
 			You most definitely want to set this one.
@@ -500,7 +516,7 @@ class GenericTestCase(BaseCase):
 		exists, is identified by the module and has the correct property
 		values set.
 		'''
-		proc = self.modify(self.modifyProperties, dn = self.dn)
+		proc = self.modify(self.modifyProperties, dn=self.dn)
 		self._checkProcess(proc, 'modify')
 		if self.newName is not None:
 			self.dn = None
@@ -516,7 +532,7 @@ class GenericTestCase(BaseCase):
 		This test removes the current object and then checks that it
 		does not exist any more.
 		'''
-		proc = self.remove(dn = self.dn)
+		proc = self.remove(dn=self.dn)
 		self._checkProcess(proc, 'remove')
 		self.testObjectExistsNot(self.dn)
 		self.hookAfterRemoved(self.dn)
@@ -529,7 +545,7 @@ class GenericTestCase(BaseCase):
 		When overriding this method, make sure you call to your superclass first!
 		'''
 		for dn in self.__leftover_dns:
-			self.remove(dn = dn, recursive = True)
+			self.remove(dn=dn, recursive=True)
 
 	def shortDescription(self):
 		return 'testing module %s' % self.modname

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDhcpLeasetimeTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/dhcp_leasetime'
 		super(PolicyDhcpLeasetimeTestCase,
@@ -49,7 +50,7 @@ class PolicyDhcpLeasetimeTestCase(GenericTestCase):
 			'lease_time_min': '5',
 			'lease_time_max': '15',
 			'lease_time_default': '10',
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
@@ -57,12 +58,13 @@ class PolicyDhcpLeasetimeTestCase(GenericTestCase):
 			'lease_time_min': '15',
 			'lease_time_max': '25',
 			'lease_time_default': '20',
-			}
+		}
 		self.name = 'testdhcpleasetimepolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDhcpLeasetimeTestCase())
 	return suite

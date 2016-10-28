@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyLdapServerTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/ldapserver'
 		super(PolicyLdapServerTestCase,
@@ -44,15 +45,16 @@ class PolicyLdapServerTestCase(GenericTestCase):
 		super(PolicyLdapServerTestCase, self).setUp()
 		self.createProperties = {
 			'ldapServer': 'fake'
-			}
+		}
 		self.modifyProperties = {
 			'ldapServer': 'real'
-			}
+		}
 		self.name = 'testldapserverpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyLdapServerTestCase())
 	return suite

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SharesPrinterTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'shares/printer'
 		super(SharesPrinterTestCase, self).__init__(*args, **kwargs)
@@ -43,24 +44,25 @@ class SharesPrinterTestCase(GenericTestCase):
 		super(SharesPrinterTestCase, self).setUp()
 		self.createProperties = {
 			'description': 'some test printer',
-			'location':    'somewhere',
-			'model':       'clown 6.1',
-			'uri':         '//host/printer',
-			'spoolHost':   {'append': ['host1', 'host2']},
-			}
+			'location': 'somewhere',
+			'model': 'clown 6.1',
+			'uri': '//host/printer',
+			'spoolHost': {'append': ['host1', 'host2']},
+		}
 		self.modifyProperties = {
 			'description': 'Some Tested Printer',
-			'location':    'Somewhere Else',
-			'model':       'clown 6.2',
-			'uri':         '//host/coffee',
-			'spoolHost':   {'append': ['host3'],
+			'location': 'Somewhere Else',
+			'model': 'clown 6.2',
+			'uri': '//host/coffee',
+			'spoolHost': {'append': ['host3'],
 					'remove': ['host1']},
-			}
+		}
 		self.name = 'testprinter'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SharesPrinterTestCase())
 	return suite

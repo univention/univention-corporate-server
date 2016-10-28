@@ -36,6 +36,7 @@ from TestDhcpService import DhcpServiceTestCase
 
 
 class DhcpServerTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dhcp/server'
 		super(DhcpServerTestCase, self).__init__(*args, **kwargs)
@@ -54,7 +55,7 @@ class DhcpServerTestCase(GenericTestCase):
 		self.__service = service
 
 	def __removeService(self):
-		proc = self.__service.remove(dn = self.__service.dn)
+		proc = self.__service.remove(dn=self.__service.dn)
 		self.__checkProcess(proc, self.__service, 'remove')
 		self.__service.tearDown()
 

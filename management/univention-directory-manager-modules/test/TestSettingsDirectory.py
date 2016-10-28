@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsDirectoryTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/directory'
 		super(SettingsDirectoryTestCase, self).__init__(*args, **kwargs)
@@ -44,35 +45,35 @@ class SettingsDirectoryTestCase(GenericTestCase):
 		self.defaults = {
 			'computers': {'append': [self.rdn('cn=computers')],
 				      'remove': [base, self.rdn('cn=users')]},
-			'dhcp':      {'append': [self.rdn('cn=dhcp')],
+			'dhcp': {'append': [self.rdn('cn=dhcp')],
 				      'remove': [base, self.rdn('cn=users')]},
-			'dns':       {'append': [self.rdn('cn=dns')],
+			'dns': {'append': [self.rdn('cn=dns')],
 				      'remove': [base, self.rdn('cn=users')]},
-			'groups':    {'append': [self.rdn('cn=groups')],
+			'groups': {'append': [self.rdn('cn=groups')],
 				      'remove': [base, self.rdn('cn=users')]},
-			'license':   {'append': [self.rdn('cn=license')],
+			'license': {'append': [self.rdn('cn=license')],
 				      'remove': [base, self.rdn('cn=users')]},
-			'shares':    {'append': [self.rdn('cn=shares')],
+			'shares': {'append': [self.rdn('cn=shares')],
 				      'remove': [base, self.rdn('cn=users')]},
-			'printers':  {'append': [self.rdn('cn=printers')],
+			'printers': {'append': [self.rdn('cn=printers')],
 				      'remove': [base, self.rdn('cn=users')]},
-			'users':     {'append': [self.rdn('cn=users')],
+			'users': {'append': [self.rdn('cn=users')],
 				      'remove': [base, self.rdn('cn=groups')]}
-			}
+		}
 
 	def setUp(self):
 		super(SettingsDirectoryTestCase, self).setUp()
 		base = self.bc('ldap/base')
 		self.modifyProperties = {
 			'computers': {'set': [base, self.rdn('cn=users')]},
-			'dhcp':      {'set': [base, self.rdn('cn=users')]},
-			'dns':       {'set': [base, self.rdn('cn=users')]},
-			'groups':    {'set': [base, self.rdn('cn=users')]},
-			'license':   {'set': [base, self.rdn('cn=users')]},
-			'printers':  {'set': [base, self.rdn('cn=users')]},
-			'shares':    {'set': [base, self.rdn('cn=users')]},
-			'users':     {'set': [base, self.rdn('cn=groups')]},
-			}
+			'dhcp': {'set': [base, self.rdn('cn=users')]},
+			'dns': {'set': [base, self.rdn('cn=users')]},
+			'groups': {'set': [base, self.rdn('cn=users')]},
+			'license': {'set': [base, self.rdn('cn=users')]},
+			'printers': {'set': [base, self.rdn('cn=users')]},
+			'shares': {'set': [base, self.rdn('cn=users')]},
+			'users': {'set': [base, self.rdn('cn=groups')]},
+		}
 		self.__success = False
 
 	def runTest(self):
@@ -90,7 +91,8 @@ class SettingsDirectoryTestCase(GenericTestCase):
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsDirectoryTestCase())
 	return suite

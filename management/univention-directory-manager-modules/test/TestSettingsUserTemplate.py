@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsUserTemplateTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/usertemplate'
 		super(SettingsUserTemplateTestCase,
@@ -47,35 +48,35 @@ class SettingsUserTemplateTestCase(GenericTestCase):
 			 '<username>@example.com',
 			 'master@<username>.example.com']
 		self.createProperties = {
-			'description':  'this is some user',
-			'title':        'none',
+			'description': 'this is some user',
+			'title': 'none',
 			'organisation': 'univention',
-			'sambahome':    '/smb/home/<username>',
-			'scriptpath':   '/smb/scripts/<username>',
-			'profilepath':  '/home/<username>/profile',
-			'unixhome':     '/home/<username>',
-			'shell':        '/bin/bash',
-			'homedrive':    'I',
+			'sambahome': '/smb/home/<username>',
+			'scriptpath': '/smb/scripts/<username>',
+			'profilepath': '/home/<username>/profile',
+			'unixhome': '/home/<username>',
+			'shell': '/bin/bash',
+			'homedrive': 'I',
 			'e-mail': {'append': email[:2]},
-			}
+		}
 		self.modifyProperties = {
-			'description':  'this is some awesome user',
-			'title':        'Master',
+			'description': 'this is some awesome user',
+			'title': 'Master',
 			'organisation': 'gummikraut',
-			'sambahome':    '/home/<username>',
-			'scriptpath':   '/home/smbscripts/<username>',
-			'profilepath':  '/homedrive/home/<username>/profile',
-			'unixhome':     '/homedrive/home/<username>',
-			'shell':        '/bin/ksh',
-			'homedrive':    'J',
+			'sambahome': '/home/<username>',
+			'scriptpath': '/home/smbscripts/<username>',
+			'profilepath': '/homedrive/home/<username>/profile',
+			'unixhome': '/homedrive/home/<username>',
+			'shell': '/bin/ksh',
+			'homedrive': 'J',
 			'e-mail': {'append': email[2:],
 				   'remove': email[:1]},
-			}
-		
+		}
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsUserTemplateTestCase())
 	return suite

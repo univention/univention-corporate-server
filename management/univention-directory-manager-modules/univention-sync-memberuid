@@ -41,9 +41,12 @@ import univention.config_registry
 
 import univention.debug as ud
 
+
 class ConsistencyError(Exception):
+
 	"""Inconsistence detected."""
 	pass
+
 
 def main():
 	"""synchronise attributes uniqueMember to memberUID of group objects."""
@@ -61,12 +64,12 @@ def main():
 	(options, _arguments) = parser.parse_args()
 
 	ud.init('/var/log/univention/sync-memberuid.log', ud.FLUSH, ud.NO_FUNCTION)
-	ud.set_level( ud.ADMIN, options.debug)
+	ud.set_level(ud.ADMIN, options.debug)
 
 	base_dn = configRegistry['ldap/base']
 
 	lo = ldap.open('localhost', 7389)
-	bindpw = open('/etc/ldap.secret' ).read()
+	bindpw = open('/etc/ldap.secret').read()
 	if bindpw[-1] == '\n':
 		bindpw = bindpw[:-1]
 	lo.simple_bind_s("cn=admin," + base_dn, bindpw)
@@ -75,6 +78,7 @@ def main():
 		process_groups(lo, base_dn, options.test, options.cont)
 	except ConsistencyError:
 		sys.exit(1)
+
 
 def process_groups(lo, base_dn, test=False, cont=False):
 	groups = lo.search_s(base_dn, ldap.SCOPE_SUBTREE,
@@ -93,7 +97,7 @@ def process_groups(lo, base_dn, test=False, cont=False):
 			try:
 				result = lo.search_s(uniqueMember, ldap.SCOPE_BASE,
 						'(objectclass=*)')
-			except ldap.NO_SUCH_OBJECT, ex:
+			except ldap.NO_SUCH_OBJECT as ex:
 				ud.debug(ud.ADMIN, ud.WARN,
 						'searching %s failed: %s' % (uniqueMember, ex))
 				print >> sys.stderr, 'WARNING: DN %s not found' % uniqueMember
@@ -102,8 +106,8 @@ def process_groups(lo, base_dn, test=False, cont=False):
 				ud.debug(ud.ADMIN, ud.WARN,
 						'empty result for uniqueMember %s' % uniqueMember)
 				print >> sys.stderr, \
-						'WARNING: empty result for uniqueMember %s' % \
-						uniqueMember
+					'WARNING: empty result for uniqueMember %s' % \
+					uniqueMember
 				continue
 			_, uniqueMemberAttrs = result[0]
 			uniqueMemberUid = uniqueMemberAttrs.get('uid')
@@ -121,7 +125,7 @@ def process_groups(lo, base_dn, test=False, cont=False):
 			if add:
 				try:
 					lo.modify_s(grp_dn, [(ldap.MOD_ADD, 'memberUid', add)])
-				except ldap.LDAPError, ex:
+				except ldap.LDAPError as ex:
 					ud.debug(ud.ADMIN, ud.ERROR,
 							'adding memberUid entries failed: %s' % ex)
 					if not cont:
@@ -131,7 +135,7 @@ def process_groups(lo, base_dn, test=False, cont=False):
 				try:
 					lo.modify_s(grp_dn,
 							[(ldap.MOD_DELETE, 'memberUid', remove)])
-				except ldap.LDAPError, ex:
+				except ldap.LDAPError as ex:
 					ud.debug(ud.ADMIN, ud.ERROR,
 							'removing memberUid entries failed: %s' % ex)
 					if not cont:

@@ -34,14 +34,18 @@ import univention.debug
 import types
 import base64
 
+
 def DaysToSeconds(days):
-	return str(int(days)*24*60*60)
+	return str(int(days) * 24 * 60 * 60)
+
 
 def SecondsToDays(seconds):
-	return str((int(seconds[0]))/(60*60*24))
+	return str((int(seconds[0])) / (60 * 60 * 24))
+
 
 def StringToLower(string):
 	return string.lower()
+
 
 def ListUniq(list):
 	result = []
@@ -51,11 +55,13 @@ def ListUniq(list):
 				result.append(element)
 	return result
 
+
 def ListToString(list):
-	if len(list)>0:
+	if len(list) > 0:
 		return list[0]
 	else:
 		return ''
+
 
 def ListToIntToString(list_):
 	if list_:
@@ -65,27 +71,34 @@ def ListToIntToString(list_):
 			pass
 	return ''
 
+
 def ListToLowerString(list):
 	return StringToLower(ListToString(list))
 
+
 def ListToLowerList(list):
-	return [ StringToLower(string) for string in list ]
+	return [StringToLower(string) for string in list]
+
 
 def ListToLowerListUniq(list):
 	return ListUniq(ListToLowerList(list))
 
+
 def nothing(a):
 	pass
+
 
 def IgnoreNone(list):
 	if list != 'None':
 		return list
+
 
 def _stringToInt(value):
 	try:
 		return int(value)
 	except (ValueError, TypeError):
 		return 0
+
 
 def unmapUNIX_TimeInterval(value):
 	if isinstance(value, (list, tuple)):
@@ -103,6 +116,7 @@ def unmapUNIX_TimeInterval(value):
 				unit = 'days'
 	return [unicode(value), unit]
 
+
 def mapUNIX_TimeInterval(value):
 	unit = 'seconds'
 	if isinstance(value, (tuple, list)):
@@ -118,7 +132,8 @@ def mapUNIX_TimeInterval(value):
 		value *= 60
 	return unicode(value)
 
-def unmapBase64( value ):
+
+def unmapBase64(value):
 	'''mapBase64 converts binary data (as found in LDAP) to Base64 encoded UDM propertry values'''
 	if len(value) > 1:
 		try:
@@ -131,6 +146,7 @@ def unmapBase64( value ):
 		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in unmapBase64: %s' % e)
 	return ""
+
 
 def mapBase64(value):
 	'''mapBase64 converts Base64 encoded UDM property values to binary data (for storage in LDAP)'''
@@ -149,68 +165,79 @@ def mapBase64(value):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in mapBase64: %s' % e)
 	return ""
 
+
 def BooleanListToString(list):
 	v = univention.admin.mapping.ListToString(list)
 	if v == '0':
 		return ''
 	return v
 
+
 def BooleanUnMap(value):
 	if value == '0':
 		return ''
 	return value
 
+
 class mapping:
+
 	def __init__(self):
-		self._map={}
-		self._unmap={}
+		self._map = {}
+		self._unmap = {}
+
 	def register(self, map_name, unmap_name, map_value=None, unmap_value=None):
-		self._map[map_name]=(unmap_name, map_value)
-		self._unmap[unmap_name]=(map_name, unmap_value)
+		self._map[map_name] = (unmap_name, map_value)
+		self._unmap[unmap_name] = (map_name, unmap_value)
+
 	def unregister(self, map_name):
 		if self._map.has_key(map_name):
 			del(self._map[map_name])
 		else:
-			#univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Trying to remove nonexistent key %s'%map_name)
+			# univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Trying to remove nonexistent key %s'%map_name)
 			pass
+
 	def mapName(self, map_name):
 		if self._map.has_key(map_name):
-			res=self._map[map_name][0]
+			res = self._map[map_name][0]
 		else:
-			res=''
-		#univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'mapping name %s->%s' % (map_name, res))
+			res = ''
+		# univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'mapping name %s->%s' % (map_name, res))
 		return res
+
 	def unmapName(self, unmap_name):
 		if self._unmap.has_key(unmap_name):
-			res=self._unmap[unmap_name][0]
+			res = self._unmap[unmap_name][0]
 		else:
-			res=''
+			res = ''
 		return res
+
 	def mapValue(self, map_name, value):
 		if not value:
 			return ''
 		else:
-			empty=1
+			empty = 1
 			if map_name == 'sambaLogonHours' and len(value) > 0:
 				# can be [0], see Bug #33703
 				empty = 0
 			for v in value:
 				if v:
-					empty=0
+					empty = 0
 			if empty:
 				return ''
 
 		if self._map[map_name][1]:
-			res=self._map[map_name][1](value)
+			res = self._map[map_name][1](value)
 		else:
-			res=value
+			res = value
 		return res
+
 	def unmapValue(self, unmap_name, value):
 		if self._unmap[unmap_name][1]:
-			res=self._unmap[unmap_name][1](value)
+			res = self._unmap[unmap_name][1](value)
 		else:
-			res=value
+			res = value
 		return res
+
 
 def mapCmp(mapping, key, old, new):
 	try:
@@ -221,61 +248,65 @@ def mapCmp(mapping, key, old, new):
 	except KeyError:
 		return old == new
 
+
 def mapDict(mapping, old):
-	new={}
+	new = {}
 	if old:
 		for key, value in old.items():
 			try:
-				k=mapping.unmapName(key)
-				v=mapping.unmapValue(key, value)
+				k = mapping.unmapName(key)
+				v = mapping.unmapValue(key, value)
 			except KeyError:
 				continue
-			new[k]=v
+			new[k] = v
 	return new
 
+
 def mapList(mapping, old):
-	new=[]
+	new = []
 	if old:
 		for i in old:
 			try:
-				k=mapping.unmapName(i)
+				k = mapping.unmapName(i)
 			except KeyError:
 				continue
 			new.append(k)
 	return new
 
+
 def mapDiff(mapping, diff):
-	ml=[]
+	ml = []
 	if diff:
 		for key, oldvalue, newvalue in diff:
 			try:
-				k=mapping.mapName(key)
-				ov=mapping.mapValue(key, oldvalue)
-				nv=mapping.mapValue(key, newvalue)
+				k = mapping.mapName(key)
+				ov = mapping.mapValue(key, oldvalue)
+				nv = mapping.mapValue(key, newvalue)
 			except KeyError:
 				continue
 			if k and ov != nv:
 				ml.append((k, ov, nv))
 	return ml
 
+
 def mapDiffAl(mapping, diff):
-	ml=[]
+	ml = []
 	if diff:
 		for key, oldvalue, newvalue in diff:
 			try:
-				k=mapping.mapName(key)
-				nv=mapping.mapValue(key, newvalue)
+				k = mapping.mapName(key)
+				nv = mapping.mapValue(key, newvalue)
 			except KeyError:
 				continue
 			ml.append((k, nv))
 	return ml
 
+
 def mapRewrite(filter, mapping):
 	try:
-		k=mapping.mapName(filter.variable)
-		v=mapping.mapValue(filter.variable, filter.value)
+		k = mapping.mapName(filter.variable)
+		v = mapping.mapValue(filter.variable, filter.value)
 	except KeyError:
 		return
-	filter.variable=k
-	filter.value=v
-
+	filter.variable = k
+	filter.value = v

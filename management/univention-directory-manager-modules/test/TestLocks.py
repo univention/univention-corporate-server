@@ -35,6 +35,7 @@ from BaseTest import BaseCase, TestError
 
 
 class LeftoverLocks(TestError):
+
 	def __init__(self, dns, test):
 		error = '''There were leftover locks in:
 %s''' % ('\n'.join(dns))
@@ -42,13 +43,14 @@ class LeftoverLocks(TestError):
 
 
 class LockingTestCase(BaseCase):
+
 	def __removeLocks(self, dns):
 		for dn in dns:
 			self.ldap.delete(dn)
 
-	def testLocks(self, remove = False):
-		results = self.ldap.search(filter = '(objectClass=lock)',
-					   attr = ['dn'])
+	def testLocks(self, remove=False):
+		results = self.ldap.search(filter='(objectClass=lock)',
+					   attr=['dn'])
 		dns = [dn for (dn, _) in results]
 		if remove:
 			self.__removeLocks(dns)
@@ -56,16 +58,17 @@ class LockingTestCase(BaseCase):
 			raise LeftoverLocks(dns, self)
 
 	def removeLocks(self):
-		self.testLocks(remove = True)
+		self.testLocks(remove=True)
 
 	def shortDescription(self):
 		return 'searching remaining locks'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
-	suite.addTest(LockingTestCase(methodName = 'testLocks'))
+	suite.addTest(LockingTestCase(methodName='testLocks'))
 	return suite
 
 

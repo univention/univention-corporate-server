@@ -36,6 +36,7 @@ from TestDhcpService import DhcpServiceTestCase
 
 
 class DhcpSubnetTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dhcp/subnet'
 		super(DhcpSubnetTestCase, self).__init__(*args, **kwargs)
@@ -53,11 +54,11 @@ class DhcpSubnetTestCase(GenericTestCase):
 		self.__service = service
 
 	def __removeService(self):
-		proc = self.__service.remove(dn = self.__service.dn)
+		proc = self.__service.remove(dn=self.__service.dn)
 		self.__checkProcess(proc, self.__service, 'remove')
 		self.__service.tearDown()
 
-	def setUp(self, subnet = None):
+	def setUp(self, subnet=None):
 		super(DhcpSubnetTestCase, self).setUp()
 		if subnet is None:
 			subnet = self.random(2)
@@ -72,12 +73,12 @@ class DhcpSubnetTestCase(GenericTestCase):
 		self.createProperties = {
 			'subnetmask': '24',
 			'range': {'append': ranges[:2]},
-			}
+		}
 		self.modifyProperties = {
 			'subnetmask': '16',
 			'range': {'append': ranges[2:],
 				  'remove': ranges[:1]},
-			}
+		}
 		self.name = '19.168.%s.0' % subnet
 
 	def tearDown(self):

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyAdminContainerTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/admin_container'
 		super(PolicyAdminContainerTestCase,
@@ -44,15 +45,16 @@ class PolicyAdminContainerTestCase(GenericTestCase):
 		super(PolicyAdminContainerTestCase, self).setUp()
 		self.createProperties = {
 			'listModules': 'users/passwd'
-			}
+		}
 		self.modifyProperties = {
 			'listModules': 'groups/group'
-			}
+		}
 		self.name = 'testadmincontainerpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyAdminContainerTestCase())
 	return suite

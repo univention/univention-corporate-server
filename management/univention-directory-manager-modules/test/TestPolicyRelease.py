@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyReleaseTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/release'
 		super(PolicyReleaseTestCase,
@@ -44,15 +45,16 @@ class PolicyReleaseTestCase(GenericTestCase):
 		super(PolicyReleaseTestCase, self).setUp()
 		self.createProperties = {
 			'releaseVersion': '4'
-			}
+		}
 		self.modifyProperties = {
 			'releaseVersion': '5'
-			}
+		}
 		self.name = 'testreleasepolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyReleaseTestCase())
 	return suite

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicySoundTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/sound'
 		super(PolicySoundTestCase,
@@ -48,19 +49,20 @@ class PolicySoundTestCase(GenericTestCase):
 			'fixedAttributes': 'univentionSoundEnabled',
 			'enable': '1',
 			'soundModule': 'sb',
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
 			'fixedAttributes': 'univentionSoundModule',
 			'enable': '0',
 			'soundModule': 'auto',
-			}
+		}
 		self.name = 'testsoundpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicySoundTestCase())
 	return suite

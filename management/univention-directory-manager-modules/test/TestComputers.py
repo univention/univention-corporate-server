@@ -36,6 +36,7 @@ from TestNetworksNetwork import NetworksNetworkTestCase
 
 
 class ComputersWindowsTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'computers/windows'
 		super(ComputersWindowsTestCase, self).__init__(*args, **kwargs)
@@ -61,10 +62,10 @@ class ComputersWindowsTestCase(GenericTestCase):
 		self.__network2 = net
 
 	def __removeNetworks(self):
-		proc = self.__network1.remove(dn = self.__network1.dn)
+		proc = self.__network1.remove(dn=self.__network1.dn)
 		self.__checkProcess(proc, self.__network1, 'remove')
 		self.__network1.tearDown()
-		proc = self.__network2.remove(dn = self.__network2.dn)
+		proc = self.__network2.remove(dn=self.__network2.dn)
 		self.__checkProcess(proc, self.__network2, 'remove')
 		self.__network2.tearDown()
 
@@ -83,13 +84,13 @@ class ComputersWindowsTestCase(GenericTestCase):
 			#'password': 'foobarbaz',
 			'mac': '00:12:25:34:44:32',
 			#'network': self.__network1.dn,
-			}
+		}
 		self.modifyProperties = {
 			'description': 'Some Tested Windows Computer',
 			#'password': 'foobarbazi',
 			'mac': '00:12:25:34:44:33',
 			#'network': self.__network2.dn,
-			}
+		}
 		self.name = 'testcomputer'
 
 	def tearDown(self):

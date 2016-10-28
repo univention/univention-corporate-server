@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyShareUserQuotaTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/share_userquota'
 		super(PolicyShareUserQuotaTestCase,
@@ -47,18 +48,19 @@ class PolicyShareUserQuotaTestCase(GenericTestCase):
 			'hardLimitSpace': '200',
 			'softLimitInodes': '30',
 			'hardLimitInodes': '40',
-			}
+		}
 		self.modifyProperties = {
 			'softLimitSpace': '200',
 			'hardLimitSpace': '300',
 			'softLimitInodes': '40',
 			'hardLimitInodes': '50',
-			}
+		}
 		self.name = 'testshareuserquotapolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyShareUserQuotaTestCase())
 	return suite

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyClientDevicesTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/clientdevices'
 		super(PolicyClientDevicesTestCase,
@@ -44,15 +45,16 @@ class PolicyClientDevicesTestCase(GenericTestCase):
 		super(PolicyClientDevicesTestCase, self).setUp()
 		self.createProperties = {
 			'clientDevicesActivate': '0'
-			}
+		}
 		self.modifyProperties = {
 			'clientDevicesActivate': '1'
-			}
+		}
 		self.name = 'testclientdevicespolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyClientDevicesTestCase())
 	return suite

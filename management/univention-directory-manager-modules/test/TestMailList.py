@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class MailListTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'mail/lists'
 		super(MailListTestCase, self).__init__(*args, **kwargs)
@@ -48,19 +49,20 @@ class MailListTestCase(GenericTestCase):
 		self.createProperties = {
 			'description': 'some test mailing list',
 			'mailAddress': 'devnull@%s' % domain,
-			'members':     {'append': [nobody, nogroup]},
-			}
+			'members': {'append': [nobody, nogroup]},
+		}
 		self.modifyProperties = {
 			'description': 'Some Tested Mailing List',
 			'mailAddress': 'devzero@%s' % domain,
-			'members':     {'append': [noone],
+			'members': {'append': [noone],
 					'remove': [nobody]},
-			}
+		}
 		self.name = 'testmailinglist'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(MailListTestCase())
 	return suite

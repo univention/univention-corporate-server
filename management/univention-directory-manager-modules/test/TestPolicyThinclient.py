@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyThinclientTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/thinclient'
 		super(PolicyThinclientTestCase,
@@ -56,7 +57,7 @@ class PolicyThinclientTestCase(GenericTestCase):
 			'fileServer': {'append': files[:2]},
 			'authServer': {'append': auths[:2]},
 			'position': self.rdn('cn=policies')
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
@@ -70,12 +71,13 @@ class PolicyThinclientTestCase(GenericTestCase):
 				       'remove': files[:1]},
 			'authServer': {'append': auths[2:],
 				       'remove': auths[:1]},
-			}
+		}
 		self.name = 'testthinclientpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyThinclientTestCase())
 	return suite

@@ -108,7 +108,7 @@ def server_main(args):
 				os.kill(pid, signal.SIGCONT)
 		except (ValueError, OSError):
 			pid = 0
-		if not pid: # no pid found or no server running
+		if not pid:  # no pid found or no server running
 			os.unlink(socket_path)
 			os.unlink(runfilename)
 			os.rmdir(socket_dir)
@@ -145,7 +145,7 @@ def server_main(args):
 		ud.debug(ud.ADMIN, ud.ERROR, 'daemon [%s] Failed creating socket (%s). Daemon stopped.' % (os.getpid(), socket_path))
 		sys.exit(1)
 
-	#sock.listen(2)
+	# sock.listen(2)
 	try:
 		runfile = open(runfilename, 'w')
 		runfile.write(str(os.getpid()))

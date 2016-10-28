@@ -32,7 +32,6 @@ Univention Directory Manager Tools
 This tool changes the priority from some SRV records from 0 to 100
 '''
 
-import sys, copy
 import univention.admin
 import univention.admin.uldap
 import univention.admin.config
@@ -41,16 +40,16 @@ import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.srv_record
 import univention.config_registry
 
-univention.admin.modules.update()                                                                                                                                                                  
-                                                                                                                                                                                                   
-# update choices-lists which are defined in LDAP                                                                                                                                                   
+univention.admin.modules.update()
+
+# update choices-lists which are defined in LDAP
 univention.admin.syntax.update_choices()
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
-PRIORITY_NEW='100'
-PRIORITY_OLD='0'
+PRIORITY_NEW = '100'
+PRIORITY_OLD = '0'
 
 SRV_RECORDS = [
 	['ldap', 'tcp'],
@@ -72,13 +71,13 @@ for forward_zone in forward_zones:
 	srv_records = univention.admin.modules.lookup(srv_module, co, lo, scope='sub', superordinate=forward_zone, base=configRegistry.get('ldap_base'), filter=None)
 
 	for srv_record in srv_records:
-		name=srv_record.get('name')
-		modify=False
+		name = srv_record.get('name')
+		modify = False
 		if name in SRV_RECORDS:
 			for i in range(len(srv_record['location'])):
 				if len(srv_record['location'][i]) > 0 and srv_record['location'][i][1] == PRIORITY_OLD:
-					srv_record['location'][i][1]=PRIORITY_NEW
-					modify=True
+					srv_record['location'][i][1] = PRIORITY_NEW
+					modify = True
 			if modify:
 
 				# make SRV records uniq
@@ -87,11 +86,8 @@ for forward_zone in forward_zones:
 					if srv_record['location'][i] not in l:
 						l.append(srv_record['location'][i])
 
-				srv_record['location']=l
-				
+				srv_record['location'] = l
+
 				# Change the objects
 				print 'Modify: %s' % srv_record.dn
 				srv_record.modify()
-
-
-

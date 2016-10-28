@@ -33,44 +33,45 @@
 import string
 import types
 
+
 class acctFlags:
+
 	def __init__(self, flagstring=None, flags=None, fallbackflags=None):
 		if flags is not None:
-			self.__flags=flags
+			self.__flags = flags
 			return
-		if not flagstring or not isinstance(flagstring, types.StringTypes) or len(flagstring)!=13:
+		if not flagstring or not isinstance(flagstring, types.StringTypes) or len(flagstring) != 13:
 			if fallbackflags != None:
-				self.__flags=fallbackflags
+				self.__flags = fallbackflags
 				return
-			flagstring="[U          ]"
-		flags={}
-		flagstring=flagstring[1:-1]
+			flagstring = "[U          ]"
+		flags = {}
+		flagstring = flagstring[1:-1]
 		for letter in flagstring:
 			if not letter in string.whitespace:
-				flags[letter]=1
-		self.__flags=flags
-	
+				flags[letter] = 1
+		self.__flags = flags
+
 	def __setitem__(self, key, value):
-		self.__flags[key]=value
-	
+		self.__flags[key] = value
+
 	def __getitem__(self, key):
 		return self.__flags[key]
 
 	def decode(self):
-		flagstring="["
+		flagstring = "["
 		for flag, set in self.__flags.items():
 			if set:
-				flagstring=flagstring+flag
-		while len(flagstring)<12:
-			flagstring+=" "
-		flagstring+="]"
+				flagstring = flagstring + flag
+		while len(flagstring) < 12:
+			flagstring += " "
+		flagstring += "]"
 		return flagstring
 
 	def set(self, flag):
-		self[flag]=1
+		self[flag] = 1
 		return self.decode()
 
 	def unset(self, flag):
-		self[flag]=0
+		self[flag] = 0
 		return self.decode()
-

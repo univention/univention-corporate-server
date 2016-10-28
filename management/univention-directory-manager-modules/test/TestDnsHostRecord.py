@@ -36,6 +36,7 @@ from TestDnsForwardZone import DnsForwardZoneTestCase
 
 
 class DnsHostRecordTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dns/host_record'
 		super(DnsHostRecordTestCase, self).__init__(*args, **kwargs)
@@ -54,7 +55,7 @@ class DnsHostRecordTestCase(GenericTestCase):
 		self.__zone = zone
 
 	def __removeZone(self):
-		proc = self.__zone.remove(dn = self.__zone.dn)
+		proc = self.__zone.remove(dn=self.__zone.dn)
 		self.__checkProcess(proc, self.__zone, 'remove')
 		self.__zone.tearDown()
 
@@ -62,24 +63,21 @@ class DnsHostRecordTestCase(GenericTestCase):
 		super(DnsHostRecordTestCase, self).setUp()
 		self.__createZone()
 		self.superordinate(self.__zone)
-		as = ['192.168.15.15', '192.168.15.16', '0.8.1.5',]
+		a = ['192.168.15.15', '192.168.15.16', '0.8.1.5', ]
 		ms = ['1 nobodo', '1 dibodo', '2 dubidubidu']
 		ts = ['test text', 'text test', 'leo spar raps oel']
 		self.createProperties = {
 			'zonettl': '1234',
-			'a':   {'append': as[:2]},
-			'mx':  {'append': ms[:2]},
+			'a': {'append': a[:2]},
+			'mx': {'append': ms[:2]},
 			'txt': {'append': ts[:2]},
-			}
+		}
 		self.modifyProperties = {
 			'zonettl': '4321',
-			'a':   {'remove': as[:1],
-				'append': as[2:]},
-			'mx':  {'remove': ms[:1],
-				'append': ms[2:]},
-			'txt': {'remove': ts[:1],
-				'append': ts[2:]},
-			}
+			'a': {'remove': a[:1], 'append': a[2:]},
+			'mx': {'remove': ms[:1], 'append': ms[2:]},
+			'txt': {'remove': ts[:1], 'append': ts[2:]},
+		}
 		self.name = 'testdnshost'
 
 	def tearDown(self):
@@ -91,7 +89,7 @@ def suite():
 	import unittest
 	suite = unittest.TestSuite()
 	# NOTE: disabled due to Bug #7813
-	#suite.addTest(DnsHostRecordTestCase())
+	# suite.addTest(DnsHostRecordTestCase())
 	return suite
 
 

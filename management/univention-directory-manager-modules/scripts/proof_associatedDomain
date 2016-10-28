@@ -46,15 +46,9 @@ Use -v to also get a list of computer objects, which have mutliple
 DNSZones and so cannot be associated to one asscoiatedDomain entry
 '''
 parser = OptionParser(usage)
-parser.add_option("-v", "--verbose",
-                    action="store_true", dest="verbose",
-                    help=("print more output"))
-parser.add_option("-a", "--auto-add",
-                    action="store_true", dest="auto_add",
-                    help=("automatically add missing associatedDomain"))
-parser.add_option("-c", "--complete-search",
-                    action="store_true", dest="complete_search",
-                    help=("search complete ldap for computer objects"))
+parser.add_option("-v", "--verbose", action="store_true", dest="verbose", help=("print more output"))
+parser.add_option("-a", "--auto-add", action="store_true", dest="auto_add", help=("automatically add missing associatedDomain"))
+parser.add_option("-c", "--complete-search", action="store_true", dest="complete_search", help=("search complete ldap for computer objects"))
 (options, args) = parser.parse_args()
 
 lo, position = uldap.getAdminConnection()
@@ -63,7 +57,7 @@ ldap_base = position.getBase()
 if options.complete_search:
 	computers_base = ldap_base
 else:
-	computers_base = 'cn=computers,'+ldap_base
+	computers_base = 'cn=computers,' + ldap_base
 dns_base = ldap_base
 
 # get computer objects without associatedDomain
@@ -114,7 +108,7 @@ for computer in computers:
 				for dns_zone in computer_zones[computer]:
 					print "DNSZone: %s" % dns_zone
 	except:
-		pass # no zone for host - nothing to do 
+		pass  # no zone for host - nothing to do
 
 if options.auto_add:
 	print "%s Objects modified" % modified_objects

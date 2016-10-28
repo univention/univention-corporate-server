@@ -38,6 +38,7 @@ import univention.admin.handlers.users.user
 
 univention.admin.modules.update()
 
+
 def lock(userdn, lock_timestamp):
 	"""
 	Lock user account, used by ppolicy OpenLDAP overlay
@@ -48,7 +49,7 @@ def lock(userdn, lock_timestamp):
 
 	"""
 
-	if not lock_timestamp:	## timed unlocking via ppolicy not implemented yet, so block it.
+	if not lock_timestamp:  # timed unlocking via ppolicy not implemented yet, so block it.
 		return
 
 	co = None
@@ -66,4 +67,3 @@ def lock(userdn, lock_timestamp):
 	object.open()
 	object['locked'] = "all"
 	dn = object.modify()
-
