@@ -35,65 +35,67 @@ import ldap
 import sys
 import univention.uldap
 
-ACTIONS = ( 'test', 'remove' )
+ACTIONS = ('test', 'remove')
 
 action = None
 lo = univention.uldap.getAdminConnection()
 
-def remove( ldap_dn ):
+
+def remove(ldap_dn):
 	global action, lo
 	print 'Deleting object %s ' % ldap_dn,
 	if action == 'remove':
-		lo.delete( ldap_dn )
+		lo.delete(ldap_dn)
 		print 'done'
 	else:
 		print '(testing mode)'
 
-def remove_ref( ref_dn, pol_dn ):
+
+def remove_ref(ref_dn, pol_dn):
 	global action, lo
-	print 'Deleting policy reference %s at %s' % ( pol_dn, ref_dn ),
+	print 'Deleting policy reference %s at %s' % (pol_dn, ref_dn),
 	if action == 'remove':
-		lo.lo.modify_s( ref_dn, [ ( ldap.MOD_DELETE, 'univentionPolicyReference', pol_dn ) ] )
+		lo.lo.modify_s(ref_dn, [(ldap.MOD_DELETE, 'univentionPolicyReference', pol_dn)])
 		print 'done'
 	else:
 		print '(testing mode)'
+
 
 def run():
 	global lo
 
 	# find operation objects
-	op_objects = lo.searchDn( filter = 'objectClass=univentionConsoleOperations' )
+	op_objects = lo.searchDn(filter='objectClass=univentionConsoleOperations')
 	for dn in op_objects:
-		remove( dn )
+		remove(dn)
 
-	acl_objects = lo.searchDn( filter = 'objectClass=univentionConsoleACL' )
+	acl_objects = lo.searchDn(filter='objectClass=univentionConsoleACL')
 	for dn in acl_objects:
-		remove( dn )
+		remove(dn)
 
-	policy_objects = lo.searchDn( filter = 'objectClass=univentionPolicyConsoleAccess' )
+	policy_objects = lo.searchDn(filter='objectClass=univentionPolicyConsoleAccess')
 	for pol_dn in policy_objects:
-		ref_objects = lo.searchDn( filter = 'univentionPolicyReference=%s' % pol_dn )
+		ref_objects = lo.searchDn(filter='univentionPolicyReference=%s' % pol_dn)
 		for ref_dn in ref_objects:
-			remove_ref( ref_dn, pol_dn )
-		remove( pol_dn )
+			remove_ref(ref_dn, pol_dn)
+		remove(pol_dn)
 
 
 if __name__ == '__main__':
-	#parse arguments and options
-	parser = optparse.OptionParser( usage = 'Usage: %%prog [options] (%s)\nremove the old UMC LDAP objects' % '|'.join( ACTIONS ) )
+	# parse arguments and options
+	parser = optparse.OptionParser(usage='Usage: %%prog [options] (%s)\nremove the old UMC LDAP objects' % '|'.join(ACTIONS))
 	(options, args, ) = parser.parse_args()
 
 	# check argument (action)
 	if not args:
 		print >>sys.stderr, 'warning: no action given. default is test'
-		args = [ 'test' ]
+		args = ['test']
 
-	if args[ 0 ] not in ( 'test', 'remove' ):
-		print >>sys.stderr, 'error: unknown action %s' % args[ 0 ]
+	if args[0] not in ('test', 'remove'):
+		print >>sys.stderr, 'error: unknown action %s' % args[0]
 		parser.print_help()
-		sys.exit( 3 )
+		sys.exit(3)
 
 	# action!
-	action = args[ 0 ]
+	action = args[0]
 	run()
-

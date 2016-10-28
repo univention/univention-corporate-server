@@ -44,35 +44,36 @@ _ = translation.translate
 #
 # load all additional hook files from */site-packages/univention/admin/hooks.d/*.py
 #
+
+
 def import_hook_files():
 	for dir in sys.path:
-		if os.path.exists( os.path.join( dir, 'univention/admin/hook.py' ) ):
-			if os.path.isdir( os.path.join( dir, 'univention/admin/hooks.d/' ) ):
-				for f in os.listdir( os.path.join( dir, 'univention/admin/hooks.d/' ) ):
+		if os.path.exists(os.path.join(dir, 'univention/admin/hook.py')):
+			if os.path.isdir(os.path.join(dir, 'univention/admin/hooks.d/')):
+				for f in os.listdir(os.path.join(dir, 'univention/admin/hooks.d/')):
 					if f.endswith('.py'):
-						fn = os.path.join( dir, 'univention/admin/hooks.d/', f )
+						fn = os.path.join(dir, 'univention/admin/hooks.d/', f)
 						try:
 							with open(fn, 'r') as fd:
 								exec fd in sys.modules[__name__].__dict__
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_hook_files: importing "%s"' % fn)
 						except:
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_hook_files: loading %s failed' % fn )
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc() )
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_hook_files: loading %s failed' % fn)
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_hook_files: TRACEBACK:\n%s' % traceback.format_exc())
 
 
 class simpleHook(object):
-	type='simpleHook'
+	type = 'simpleHook'
 
 	def hook_open(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _open called')
 		pass
 
-
 	def hook_ldap_pre_create(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_create called')
 		pass
 
-	def hook_ldap_addlist(self, module, al = []):
+	def hook_ldap_addlist(self, module, al=[]):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_addlist called')
 		return al
 
@@ -80,19 +81,17 @@ class simpleHook(object):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_create called')
 		pass
 
-
 	def hook_ldap_pre_modify(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_modify called')
 		pass
 
-	def hook_ldap_modlist(self, module, ml = []):
+	def hook_ldap_modlist(self, module, ml=[]):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_modlist called')
 		return ml
 
 	def hook_ldap_post_modify(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_post_modify called')
 		pass
-
 
 	def hook_ldap_pre_remove(self, module):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.hook.simpleHook: _ldap_pre_remove called')

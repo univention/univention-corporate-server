@@ -32,20 +32,21 @@
 # <http://www.gnu.org/licenses/>.
 
 
-import ldap, sys
+import ldap
+import sys
 
 import univention.baseconfig
 
-baseConfig=univention.baseconfig.baseConfig()
+baseConfig = univention.baseconfig.baseConfig()
 baseConfig.load()
 
-baseDN=baseConfig['ldap/base']
+baseDN = baseConfig['ldap/base']
 
-lo=ldap.open('localhost', 7389)
-bindpw=open('/etc/ldap.secret').read()
+lo = ldap.open('localhost', 7389)
+bindpw = open('/etc/ldap.secret').read()
 if bindpw[-1] == '\n':
-	bindpw=bindpw[0:-1]
-lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+	bindpw = bindpw[0:-1]
+lo.simple_bind_s("cn=admin," + baseDN, bindpw)
 
 
 def print_usage():
@@ -66,7 +67,7 @@ if len(sys.argv) > 1:
 	else:
 		print_usage()
 		sys.exit()
-	
+
 # What we gonna do:
 # 1. list all objectClass=univentionWindows
 # 2. look if Flag M is set, if yes query
@@ -74,28 +75,29 @@ if len(sys.argv) > 1:
 count_flags = 0
 count_updated_flags = 0
 
-res_uPR=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionWindows', ['sambaAcctFlags'])
-for i in range(0,len(res_uPR)):
+res_uPR = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionWindows', ['sambaAcctFlags'])
+for i in range(0, len(res_uPR)):
 	flags = res_uPR[i][1]["sambaAcctFlags"][0]
-	for p in range(1,len(flags)-1):
-		if flags[p:p+1] == "M":
-			print "found Windows-Account with old (wrong) Flag M (should be W) in %s (%s,%d)" % (res_uPR[i][0],flags,p)
+	for p in range(1, len(flags) - 1):
+		if flags[p:p + 1] == "M":
+			print "found Windows-Account with old (wrong) Flag M (should be W) in %s (%s,%d)" % (res_uPR[i][0], flags, p)
 			count_flags = count_flags + 1
 			inp = ""
 			if not update_all:
 				if query:
 					print "update Flag (y/N)?"
 					inp = sys.stdin.readline()
-			else: inp="y"
+			else:
+				inp = "y"
 			if inp[:1] == "y":
-				modlist=[(ldap.MOD_REPLACE,"sambaAcctFlags",flags[:p]+"W"+flags[p+1:])]
-				lo.modify(res_uPR[i][0],modlist)
+				modlist = [(ldap.MOD_REPLACE, "sambaAcctFlags", flags[:p] + "W" + flags[p + 1:])]
+				lo.modify(res_uPR[i][0], modlist)
 				print "updated"
 				count_updated_flags = count_updated_flags + 1
 
 
-print "Found",count_flags,"flags that seemed to be wrong, updated",
-print count_updated_flags,"of them."
+print "Found", count_flags, "flags that seemed to be wrong, updated",
+print count_updated_flags, "of them."
 
 if not query and not update_all:
 	print "\nRun this script with an option to change the listed flags,"

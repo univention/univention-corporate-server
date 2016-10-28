@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDhcpScopeTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/dhcp_scope'
 		super(PolicyDhcpScopeTestCase,
@@ -51,7 +52,7 @@ class PolicyDhcpScopeTestCase(GenericTestCase):
 			'duplicates': 'allow',
 			'booting': 'deny',
 			'scopeUnknownClients': 'deny',
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
@@ -61,12 +62,13 @@ class PolicyDhcpScopeTestCase(GenericTestCase):
 			'duplicates': 'deny',
 			'booting': 'allow',
 			'scopeUnknownClients': 'allow',
-			}
+		}
 		self.name = 'testdhcpscopepolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDhcpScopeTestCase())
 	return suite

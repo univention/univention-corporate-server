@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyRepositorySyncTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/repositorysync'
 		super(PolicyRepositorySyncTestCase,
@@ -53,7 +54,7 @@ class PolicyRepositorySyncTestCase(GenericTestCase):
 			'day': {'append': days[:2]},
 			'hour': {'append': hours[:2]},
 			'minute': {'append': minutes[:2]},
-			}
+		}
 		self.modifyProperties = {
 			'month': {'append': months[2:],
 				  'remove': months[:1]},
@@ -65,12 +66,13 @@ class PolicyRepositorySyncTestCase(GenericTestCase):
 				 'remove': hours[:1]},
 			'minute': {'append': minutes[2:],
 				   'remove': minutes[:1]},
-			}
+		}
 		self.name = 'testrepositorysyncpolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyRepositorySyncTestCase())
 	return suite

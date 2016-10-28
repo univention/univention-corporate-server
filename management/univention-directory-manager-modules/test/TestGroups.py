@@ -36,6 +36,7 @@ from TestUsers import UserBaseCase
 
 
 class GroupBaseCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'groups/group'
 		super(GroupBaseCase, self).__init__(*args, **kwargs)
@@ -66,7 +67,7 @@ class GroupBaseCase(GenericTestCase):
 			self.__users.append(self.__createUser(name))
 
 	def __removeUser(self, user):
-		proc = user.remove(dn = user.dn)
+		proc = user.remove(dn=user.dn)
 		self.__checkProcess(proc, user.name, 'remove')
 
 	def __removeUsers(self):
@@ -78,32 +79,32 @@ class GroupBaseCase(GenericTestCase):
 		self.__createUsers()
 		dns = [user.dn for user in self.__users]
 		self.createProperties = {
-			'description':	  'some test group',
+			'description': 'some test group',
 			#'mailAddress':	  'testgroup@testdomain',
 			'sambaGroupType': '2',
-			'sambaRID':	  '11',
-			'users':	  {'append': dns[:2]},
-			}
+			'sambaRID': '11',
+			'users': {'append': dns[:2]},
+		}
 		self.modifyProperties = {
-			'description':	  'Some Tested Group',
+			'description': 'Some Tested Group',
 			#'mailAddress':	  'testedgroup@testeddomain',
 			'sambaGroupType': '3',
-			'users':	  {'append': dns[2:],
+			'users': {'append': dns[2:],
 					   'remove': dns[:1]}
-			}
+		}
 
 	def __testGroupnameLock(self):
-		proc = self.create({}, name = self.name)
+		proc = self.create({}, name=self.name)
 		self.assertRaises(TestError, proc.check)
 
 	def __testGidnumberLock(self, dn):
-		attrs = self.ldap.get(dn = self.dn, attr = ['gidNumber'])
-		if not 'gidNumber' in attrs:
+		attrs = self.ldap.get(dn=self.dn, attr=['gidNumber'])
+		if 'gidNumber' not in attrs:
 			return
 		props = {
 			'gidNumber': attrs['gidNumber'][0],
-			}
-		proc = self.create(props, name = 'shmoogroup')
+		}
+		proc = self.create(props, name='shmoogroup')
 		self.assertRaises(TestError, proc.check)
 
 	def hookAfterCreated(self, dn):
@@ -117,11 +118,14 @@ class GroupBaseCase(GenericTestCase):
 
 
 class GroupTestCase(GroupBaseCase):
+
 	def setUp(self):
 		super(GroupTestCase, self).setUp()
 		self.name = 'testgroup'
 
+
 class SingleLetterGroupTestCase(GroupBaseCase):
+
 	def setUp(self):
 		super(SingleLetterGroupTestCase, self).setUp()
 		self.name = 't'

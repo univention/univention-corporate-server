@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsProhibitedUsernameTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/prohibited_username'
 		super(SettingsProhibitedUsernameTestCase,
@@ -44,16 +45,17 @@ class SettingsProhibitedUsernameTestCase(GenericTestCase):
 		super(SettingsProhibitedUsernameTestCase, self).setUp()
 		self.createProperties = {
 			'usernames': {'append': ['boot', 'nobody']}
-			}
+		}
 		self.modifyProperties = {
 			'usernames': {'append': ['root'],
 				      'remove': ['boot']}
-			}
+		}
 		self.name = 'testsettingprohibitedusername'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsProhibitedUsernameTestCase())
 	return suite

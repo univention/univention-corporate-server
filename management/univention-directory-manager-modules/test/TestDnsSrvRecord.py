@@ -36,6 +36,7 @@ from TestDnsForwardZone import DnsForwardZoneTestCase
 
 
 class DnsSrvRecordTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dns/srv_record'
 		super(DnsSrvRecordTestCase, self).__init__(*args, **kwargs)
@@ -54,7 +55,7 @@ class DnsSrvRecordTestCase(GenericTestCase):
 		self.__zone = zone
 
 	def __removeZone(self):
-		proc = self.__zone.remove(dn = self.__zone.dn)
+		proc = self.__zone.remove(dn=self.__zone.dn)
 		self.__checkProcess(proc, self.__zone, 'remove')
 		self.__zone.tearDown()
 
@@ -68,15 +69,15 @@ class DnsSrvRecordTestCase(GenericTestCase):
 		self.createProperties = {
 			'zonettl': '123',
 			'location': {'append': locs[:2]},
-			}
+		}
 		self.modifyProperties = {
 			'zonettl': '124',
 			'location': {'remove': locs[:1],
 				     'append': locs[2:]},
-			}
+		}
 		self.name = 'testdnssrv tcp'
 		self.dn = 'relativeDomainName=_testdnssrv._tcp,%s' \
-			  % self.__zone.dn
+			% self.__zone.dn
 
 	def tearDown(self):
 		super(DnsSrvRecordTestCase, self).tearDown()

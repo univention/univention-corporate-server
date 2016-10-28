@@ -140,7 +140,7 @@ def bind():
 		else:
 			lo, position = uldap.getAdminConnection(start_tls)
 		return lo, position
-	except univention.admin.uexceptions.authFail, ex:
+	except univention.admin.uexceptions.authFail as ex:
 		msg = 'authentication error: %s' % (ex,)
 		ud.debug(ud.ADMIN, ud.WARN, msg)
 		print >> sys.stderr, msg
@@ -260,7 +260,7 @@ def add_a_record(name, *adresses):
 
 	tmp = record['a']
 	for addr in adresses:
-		if not addr in tmp:
+		if addr not in tmp:
 			tmp.append(addr)
 	record['a'] = tmp
 
@@ -383,14 +383,14 @@ def main():
 				parser.error('Unknown type "%s"' % (typ,))
 		else:
 			parser.error('E: No valid command "%s". See --help.' % (command,))
-	except univention.admin.uexceptions.objectExists, ex:
+	except univention.admin.uexceptions.objectExists as ex:
 		if not options.ignore_exists:
 			print >> sys.stderr, 'E: Object "%s" exists' % (ex,)
 			raise
 			sys.exit(1)
 	except (ValueError, TypeError,
 			univention.admin.uexceptions.valueInvalidSyntax,
-			univention.admin.uexceptions.valueRequired), ex:
+			univention.admin.uexceptions.valueRequired) as ex:
 		print >> sys.stderr, 'E: failed %s' % (ex,)
 		raise
 		sys.exit(1)

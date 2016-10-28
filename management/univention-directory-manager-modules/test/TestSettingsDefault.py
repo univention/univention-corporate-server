@@ -35,39 +35,40 @@ from GenericTest import GenericTestCase
 
 
 class SettingsDefaultTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/default'
 		super(SettingsDefaultTestCase, self).__init__(*args, **kwargs)
 		self.container = self.rdn('cn=default,cn=univention')
 		self.defaults = {
-			'defaultGroup': \
+			'defaultGroup':
 			self.rdn('cn=Domain Users,cn=groups'),
-			'defaultComputerGroup': \
+			'defaultComputerGroup':
 			self.rdn('cn=Windows Hosts,cn=groups'),
-			'defaultDomainControllerGroup': \
+			'defaultDomainControllerGroup':
 			self.rdn('cn=DC Slave Hosts,cn=groups'),
-			'defaultKdeProfiles': \
+			'defaultKdeProfiles':
 			{'append':
 			 ['none',
 			  '/usr/share/univention-kde-profiles/kde.lockeddown',
 			  '/usr/share/univention-kde-profiles/kde.restricted'],
 			 'remove':
 			 ['moobaz', 'goobaz']},
-			}
+		}
 
 	def setUp(self):
 		super(SettingsDefaultTestCase, self).setUp()
 		self.modifyProperties = {
-			'defaultGroup': \
+			'defaultGroup':
 			self.rdn('cn=Domain Admins,cn=groups'),
-			'defaultComputerGroup': \
+			'defaultComputerGroup':
 			self.rdn('cn=Domain Users,cn=groups'),
-			'defaultDomainControllerGroup': \
+			'defaultDomainControllerGroup':
 			self.rdn('cn=Domain Users,cn=groups'),
-			'defaultKdeProfiles': \
+			'defaultKdeProfiles':
 			{'append': ['moobaz', 'goobaz'],
 			 'remove': []},
-			}
+		}
 		self.__success = False
 
 	def runTest(self):
@@ -85,7 +86,8 @@ class SettingsDefaultTestCase(GenericTestCase):
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsDefaultTestCase())
 	return suite

@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import getopt, datetime
+import getopt
+import datetime
 import traceback
 
 import univention.debug
@@ -43,10 +44,12 @@ import univention.license
 License = univention.admin.license.License
 _license = univention.admin.license._license
 
+
 class UsageError(Exception):
 	pass
 
-def usage(msg = None):
+
+def usage(msg=None):
 	out = []
 	script_name = 'univention-license-check'
 	if msg:
@@ -59,24 +62,27 @@ def usage(msg = None):
 	out.append('OPERATION FAILED')
 	return out
 
+
 def parse_options(argv):
 	options = {}
-	long_opts = [ 'binddn=', 'bindpw=', 'list-dns' ]
+	long_opts = ['binddn=', 'bindpw=', 'list-dns']
 	try:
 		opts, args = getopt.getopt(argv, '', long_opts)
 	except getopt.error, msg:
-		raise UsageError, str(msg)
+		raise UsageError(str(msg))
 	if args:
-		raise UsageError, 'options "%s" not recognized' % ' '.join(args)
+		raise UsageError('options "%s" not recognized' % ' '.join(args))
 	for opt, val in opts:
 		options[opt[2:]] = val
 	return options
+
 
 def default_pw():
 		secret = open('/etc/ldap.secret', 'r')
 		passwd = secret.readline().strip()
 		secret.close()
 		return passwd
+
 
 def format(label, num, max, expired, cmp, ignored=False):
 	args = [(label + ':').ljust(20), str(num).rjust(9), str(max).rjust(9), 'OK']
@@ -88,6 +94,7 @@ def format(label, num, max, expired, cmp, ignored=False):
 		args[-1] = 'IGNORED'
 	return '%s %s of %s... %s' % tuple(args)
 
+
 def find_licenses(lo, baseDN, module='*'):
 	def find_wrap(dir):
 		try:
@@ -95,12 +102,12 @@ def find_licenses(lo, baseDN, module='*'):
 		except uexceptions.noObject:
 			return []
 	filter = 'univentionLicenseModule=%s' % module
-	dirs = [ 'cn=directory,cn=univention,%s' % baseDN,
-		 'cn=default containers,cn=univention,%s' % baseDN ]
-	objects = [ o for d in dirs for o in find_wrap(d) ]
-	containers = [ c for o in objects for c in lo.get(o)['univentionLicenseObject'] ]
-	licenses = [ l for c in containers for l in lo.searchDn(base=c, filter=filter) ]
+	dirs = ['cn=directory,cn=univention,%s' % baseDN, 'cn=default containers,cn=univention,%s' % baseDN]
+	objects = [o for d in dirs for o in find_wrap(d)]
+	containers = [c for o in objects for c in lo.get(o)['univentionLicenseObject']]
+	licenses = [l for c in containers for l in lo.searchDn(base=c, filter=filter)]
 	return licenses
+
 
 def choose_license(lo, dns):
 	for dn in dns:
@@ -110,10 +117,12 @@ def choose_license(lo, dns):
 		return dn, retval
 	return None, -1
 
+
 def check_license(lo, dn, list_dns, expired):
 	if expired == -1:
 		return ['No valid license object found', 'OPERATION FAILED']
 	out = []
+
 	def check_code(code):
 		for label, value in [('searchpath', 8), ('basedn', 4), ('enddate', 2), ('signature', 1)]:
 			if code >= value:
@@ -122,6 +131,7 @@ def check_license(lo, dn, list_dns, expired):
 			else:
 				ok = 'OK'
 			out.append('Checking %s... %s' % ((label.ljust(10)), ok))
+
 	def check_type():
 		def mylen(xs):
 			if xs is None:
@@ -130,15 +140,11 @@ def check_license(lo, dn, list_dns, expired):
 		v = _license.version
 		types = _license.licenses[v]
 		if dn is None:
-			max = [ _license.licenses[v][type]
-				for type in types ]
+			max = [_license.licenses[v][type] for type in types]
 		else:
-			max = [ lo.get(dn)[_license.keys[v][type]][0]
-				for type in types ]
-		objs = [ lo.searchDn(filter=_license.filters[v][type])
-		       	for type in types ]
-		num = [ mylen (obj)
-			for obj in objs]
+			max = [lo.get(dn)[_license.keys[v][type]][0] for type in types]
+		objs = [lo.searchDn(filter=_license.filters[v][type]) for type in types]
+		num = [mylen(obj) for obj in objs]
 		expired = _license.checkObjectCounts(max, num)
 		for i in range(len(types)):
 			t = types[i]
@@ -147,13 +153,14 @@ def check_license(lo, dn, list_dns, expired):
 			odn = objs[i]
 			if i == License.USERS or i == License.ACCOUNT:
 				n -= _license.sysAccountsFound
-				if n < 0: n=0
-			e = i+1
+				if n < 0:
+					n = 0
+			e = i + 1
 			l = _license.names[v][i]
 			if m:
 				if list_dns:
 					out.append("")
-				
+
 				ignored = False
 				if v == '2' and i == License.SERVERS:
 					# Ignore the server count
@@ -161,9 +168,10 @@ def check_license(lo, dn, list_dns, expired):
 				out.append(format(l, n, m, 0, _license.compare, ignored))
 				if list_dns and not max == 'unlimited':
 					for dnout in odn:
-						out.extend( [ "  %s" % dnout, ] )
+						out.extend(["  %s" % dnout, ])
 				if list_dns and (i == License.USERS or i == License.ACCOUNT):
 					out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
+
 	def check_time():
 		now = datetime.date.today()
 		then = lo.get(dn)['univentionLicenseEndDate'][0]
@@ -182,6 +190,7 @@ def check_license(lo, dn, list_dns, expired):
 		check_time()
 	return out
 
+
 def main(argv):
 	options = parse_options(argv)
 	configRegistry = univention.config_registry.ConfigRegistry()
@@ -195,30 +204,27 @@ def main(argv):
 		try:
 			bindpw = default_pw()
 		except IOError:
-			raise UsageError, "Permission denied, try `--binddn' and `--bindpwd'"
+			raise UsageError("Permission denied, try `--binddn' and `--bindpwd'")
 	try:
-		lo = univention.admin.uldap.access(host = master,
-						   port = port,
-						   base = baseDN,
-						   binddn = binddn,
-						   bindpw = bindpw)
+		lo = univention.admin.uldap.access(host=master, port=port, base=baseDN, binddn=binddn, bindpw=bindpw)
 	except uexceptions.authFail:
-		raise UsageError, "Authentication failed, try `--bindpwd'"
+		raise UsageError("Authentication failed, try `--bindpwd'")
 
 	out = ['Base DN: %s' % baseDN]
 	try:
 		_license.init_select(lo, 'admin')
-		out.extend( check_license(lo, None, options.has_key('list-dns'), 0) )
+		out.extend(check_license(lo, None, options.has_key('list-dns'), 0))
 	except uexceptions.base:
 		dns = find_licenses(lo, baseDN, 'admin')
 		dn, expired = choose_license(lo, dns)
-		out.extend( check_license(lo, dn, options.has_key('list-dns'), expired) )
+		out.extend(check_license(lo, dn, options.has_key('list-dns'), expired))
 	except Exception:
 		# output any other tracebacks
 		trace_out = traceback.format_exc().splitlines()
 		out.extend(trace_out)
 	finally:
 		return out
+
 
 def doit(argv):
 	try:

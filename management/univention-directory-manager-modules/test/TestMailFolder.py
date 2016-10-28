@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class MailFolderTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'mail/folder'
 		super(MailFolderTestCase, self).__init__(*args, **kwargs)
@@ -43,36 +44,37 @@ class MailFolderTestCase(GenericTestCase):
 	def setUp(self):
 		super(MailFolderTestCase, self).setUp()
 		domain = self.bc('domainname')
-		adminRead  = 'Administrator@%s read' % domain
-		adminAll   = 'Administrator@%s all' % domain
+		adminRead = 'Administrator@%s read' % domain
+		adminAll = 'Administrator@%s all' % domain
 		nobodyRead = 'nobody@%s read' % domain
 		adminsAll = 'Domain Admins all'
 		usersRead = 'Domain Users read'
-		usersAll  = 'Domain Users all'
+		usersAll = 'Domain Users all'
 		self.createProperties = {
-			'mailDomain':		domain,
-			'kolabHomeServer':	'nohost.%s' % domain,
-			'cyrus-userquota':	'2',
-			'userNamespace':	'FALSE',
-			'sharedFolderUserACL':  {'append':
+			'mailDomain': domain,
+			'kolabHomeServer': 'nohost.%s' % domain,
+			'cyrus-userquota': '2',
+			'userNamespace': 'FALSE',
+			'sharedFolderUserACL': {'append':
 						 [adminRead, nobodyRead]},
 			'sharedFolderGroupACL': {'append':
 						 [adminsAll, usersRead]},
-			}
+		}
 		self.modifyProperties = {
-			'kolabHomeServer':	'onehost.%s' % domain,
-			'cyrus-userquota':	'4',
-			'sharedFolderUserACL':  {'append': [adminAll],
+			'kolabHomeServer': 'onehost.%s' % domain,
+			'cyrus-userquota': '4',
+			'sharedFolderUserACL': {'append': [adminAll],
 						 'remove': [adminRead]},
 			'sharedFolderGroupACL': {'append': [usersAll],
 						 'remove': [usersRead]},
-			}
+		}
 		self.name = 'testmailfolder'
 		self.dn = self.rdn('cn=%s@%s' % (self.name, domain))
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(MailFolderTestCase())
 	return suite

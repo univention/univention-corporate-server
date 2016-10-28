@@ -33,14 +33,16 @@
 
 from unittest import TestCase
 
-import os, random, string
+import os
+import random
+import string
 
 
 import univention.config_registry
 import univention.admin.uexceptions as uex
-import univention.admin.config	    as uconf
-import univention.admin.modules     as umod
-import univention.admin.uldap       as uldap
+import univention.admin.config as uconf
+import univention.admin.modules as umod
+import univention.admin.uldap as uldap
 
 
 _OPTIONS = ('binddn', 'bindpw', 'position', 'tls')
@@ -48,13 +50,15 @@ _UNIVENTION_ADMIN = '/usr/sbin/univention-admin'
 
 
 class TestError(AssertionError):
+
 	'''Base class for exceptions in the test suite.
 
 	Inherit from this class if you want to define your own test-specific
 	error cases.  You want to pass your error message, optionally along
 	with the failed test object, to this classes constructor.'''
 	# TODO: I want to extract test case information from the docstring.
-	def __init__(self, error, test = None):
+
+	def __init__(self, error, test=None):
 		if test is not None:
 			if test.__doc__ is not None:
 				t = 'Failed to: %s\n'
@@ -62,12 +66,15 @@ class TestError(AssertionError):
 				error = t + error
 		AssertionError.__init__(self, error)
 
+
 class ProcessFailedError(TestError):
+
 	'''Assertion error in the Univention Admin test suite.
 
 	Raised when a subprocess failed.
 	'''
-	def __init__(self, proc, message = '', test = None):
+
+	def __init__(self, proc, message='', test=None):
 		self.name = proc.name
 		self.status = proc.status
 		self.output = proc.output
@@ -79,6 +86,7 @@ class ProcessFailedError(TestError):
 
 
 class BaseCase(TestCase):
+
 	'''Base class for Univention Admin test cases.
 
 	Provides access to the Univention Admin command-line interface,
@@ -87,7 +95,8 @@ class BaseCase(TestCase):
 	NOTE: If you want to define a test case for a Univention Admin module,
 	you really want to inherit from GenericTestCase instead.
 	'''
-	def __init__(self, options = None, *args, **kwargs):
+
+	def __init__(self, options=None, *args, **kwargs):
 		super(BaseCase, self).__init__(*args, **kwargs)
 		self.__initModule()
 		self.__initBaseConfig()
@@ -125,9 +134,9 @@ class BaseCase(TestCase):
 		bindpw = self.__options['bindpw']
 		tls = self.__options.get('tls', 2)
 		try:
-			return uldap.access(host = master, base = baseDN,
-					    binddn = binddn, bindpw = bindpw,
-					    start_tls = tls)
+			return uldap.access(host=master, base=baseDN,
+					    binddn=binddn, bindpw=bindpw,
+					    start_tls=tls)
 		except uex.authFail:
 			# TODO: handle authentication failure
 			return None
@@ -137,7 +146,7 @@ class BaseCase(TestCase):
 		self.__configRegistry.load()
 
 	def __initConfig(self):
-		self.__config = uconf.config(host = self.bc('ldap/master'))
+		self.__config = uconf.config(host=self.bc('ldap/master'))
 
 	def __initModule(self):
 		self.module = None
@@ -156,19 +165,19 @@ class BaseCase(TestCase):
 		self.__options = options
 		if options is None:
 			self.__options = {}
-		if not 'binddn' in self.__options:
+		if 'binddn' not in self.__options:
 			self.__options['binddn'] = self.__getDefaultBinddn()
-		if not 'bindpw' in self.__options:
+		if 'bindpw' not in self.__options:
 			self.__options['bindpw'] = self.__getDefaultBindpw()
 
-	def bc(self, key, default = None):
+	def bc(self, key, default=None):
 		'''Fetch "key" from Univention Baseconfig.
 
 		Return "default" if not "key" in Baseconfig. [default: None]
 		'''
 		return self.__configRegistry.get(key, default)
 
-	def random(self, digits = 4):
+	def random(self, digits=4):
 		'''Return a string of "Digit" random digits. [default: 4]
 		'''
 		return ''.join(random.sample(string.digits, digits))
@@ -178,7 +187,7 @@ class BaseCase(TestCase):
 		'''
 		return '%s,%s' % (rdn, self.bc('ldap/base'))
 
-	def open(self, dn = None, filter = None):
+	def open(self, dn=None, filter=None):
 		'''Lookup and open a univention admin object.
 
 		"DN", if given, is the DN of the object to open.
@@ -193,7 +202,7 @@ class BaseCase(TestCase):
 		# don't filter, search by DN
 		if dn is not None:
 			filter = None
-			kwargs = { 'base': dn, 'scope': 'base' }
+			kwargs = {'base': dn, 'scope': 'base'}
 		# set superordinate if present
 		kwargs.setdefault('superordinate', self.superordinate())
 		obj = self.module.lookup(self.__config, self.ldap,
@@ -201,7 +210,7 @@ class BaseCase(TestCase):
 		obj.open()
 		return obj
 
-	def search(self, filter = None, dn = None):
+	def search(self, filter=None, dn=None):
 		'''Search an LDAP object.
 
 		"DN", if given, is the DN of the object to search for.
@@ -211,16 +220,16 @@ class BaseCase(TestCase):
 		'''
 		# don't filter, search by DN
 		if dn is not None:
-			return dn, self.ldap.get(dn = dn)
+			return dn, self.ldap.get(dn=dn)
 		# filter by identifier by default
 		if filter is None:
 			filter = self.__getDefaultFilter()
-		result = self.ldap.search(filter = filter)
+		result = self.ldap.search(filter=filter)
 		if result:
 			return result[0]
 		return None, None
 
-	def arg(self, argument = None):
+	def arg(self, argument=None):
 		'''Set or query the current objects "arg".
 
 		Set "arg" to "Argument", if given, otherwise just return it.
@@ -234,7 +243,7 @@ class BaseCase(TestCase):
 		self.__arg = argument
 		return self.__arg
 
-	def superordinate(self, argument = None):
+	def superordinate(self, argument=None):
 		'''Set or query the current objectts "superordinate".
 
 		Set the superordinate to "Argument", if given; otherwise just
@@ -256,12 +265,13 @@ class BaseCase(TestCase):
 			sup = getattr(argument, 'superordinate')
 		if callable(sup):
 			sup = sup()
-		kwargs = { 'base': dn, 'scope': 'base', 'superordinate': sup } 
+		kwargs = {'base': dn, 'scope': 'base', 'superordinate': sup}
 		res = supmod.lookup(self.__config, self.ldap, '', **kwargs)
 		self.__superordinate = res[0]
 		return self.__superordinate
 
 	class __Command(object):
+
 		'''A command line object to call "univention-admin".
 
 		Contains the module and action to perform and can be extended
@@ -350,7 +360,7 @@ class BaseCase(TestCase):
 			self.status = status
 			return self
 
-		def check(self, message = '', test = None):
+		def check(self, message='', test=None):
 			'''Check that the command ran successfully.
 
 			"Message" is an optional error message to print if the
@@ -363,7 +373,7 @@ class BaseCase(TestCase):
 			if self.status is not None:
 				raise ProcessFailedError(self, message, test)
 
-	def Command(self, action, module = None):
+	def Command(self, action, module=None):
 		'''Create a command line object to perform "Action" on "Module".
 
 		"Module" defaults to the current module.

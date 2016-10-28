@@ -36,8 +36,9 @@ import univention.admin.uexceptions
 
 
 class conjunction:
+
 	"""LDAP filter conjunction (&) or disjunction (|)."""
-	_type_='conjunction'
+	_type_ = 'conjunction'
 
 	def __init__(self, type, expressions):
 		'''Create LDAP filter conjunction or disjunction.
@@ -45,8 +46,8 @@ class conjunction:
 		>>> c = conjunction('&', '(objectClass=*)')
 		>>> c = conjunction('|', '(objectClass=*)')
 		'''
-		self.type=type
-		self.expressions=expressions
+		self.type = type
+		self.expressions = expressions
 
 	def __str__(self):
 		'''Return string representation.
@@ -79,8 +80,9 @@ class conjunction:
 
 
 class expression:
+
 	"""LDAP filter expression."""
-	_type_='expression'
+	_type_ = 'expression'
 
 	def __init__(self, variable='', value='', operator='='):
 		'''Create LDAP filter expression.
@@ -89,9 +91,9 @@ class expression:
 		>>> e = expression('objectClass', '*', '!=')
 		>>> e = expression('uidNumber', '10', '<') # < <= > >=
 		'''
-		self.variable=variable
-		self.value=value
-		self.operator=operator
+		self.variable = variable
+		self.value = value
+		self.operator = operator
 
 	def __str__(self):
 		'''Return string representation.
@@ -104,17 +106,17 @@ class expression:
 		'(!(uidNumber>=10))'
 		'''
 		if self.operator == '<=':
-			return '(%s<=%s)' % ( self.variable, self.value )
+			return '(%s<=%s)' % (self.variable, self.value)
 		elif self.operator == '<':
-			return '(!(%s>=%s))' % ( self.variable, self.value )
+			return '(!(%s>=%s))' % (self.variable, self.value)
 		elif self.operator == '>=':
-			return '(%s>=%s)' % ( self.variable, self.value )
+			return '(%s>=%s)' % (self.variable, self.value)
 		elif self.operator == '>':
-			return '(!(%s<=%s))' % ( self.variable, self.value )
+			return '(!(%s<=%s))' % (self.variable, self.value)
 		elif self.operator == '!=':
-			return '(!(%s=%s))' % ( self.variable, self.value )
+			return '(!(%s=%s))' % (self.variable, self.value)
 		else:
-			return '(%s=%s)' % ( self.variable, self.value )
+			return '(%s=%s)' % (self.variable, self.value)
 
 	def __unicode__(self):
 		return self.__str__()
@@ -150,42 +152,42 @@ def parse(filter_s, begin=0, end=-1):
 		return filter_s
 
 	def split(str):
-		expressions=[]
-		depth=0
-		i=0
-		begin=-1
+		expressions = []
+		depth = 0
+		i = 0
+		begin = -1
 		for c in str:
 			if c == '(':
-				depth+=1
+				depth += 1
 				if depth == 1:
-					begin=i
+					begin = i
 			elif c == ')':
-				depth-=1
+				depth -= 1
 				if depth == 0 and begin > -1:
-					expressions.append(str[begin:i+1])
-					begin=-1
-			i+=1
+					expressions.append(str[begin:i + 1])
+					begin = -1
+			i += 1
 		return expressions
 
 	if end == -1:
-		end=len(filter_s)-1
+		end = len(filter_s) - 1
 
 	if filter_s[begin] == '(' and filter_s[end] == ')':
-		begin+=1
-		end-=1
+		begin += 1
+		end -= 1
 
 	if filter_s[begin] in ['&', '|', '!']:
 		# new conjunction
-		ftype=filter_s[begin]
-		begin+=1
-		expressions=[]
-		for s in split(filter_s[begin:end+1]):
+		ftype = filter_s[begin]
+		begin += 1
+		expressions = []
+		for s in split(filter_s[begin:end + 1]):
 			expressions.append(parse(s))
-		c=conjunction(ftype, expressions)
+		c = conjunction(ftype, expressions)
 		return c
 	else:
-		if filter_s.find ('=') == -1:
-			raise univention.admin.uexceptions.valueInvalidSyntax ()
+		if filter_s.find('=') == -1:
+			raise univention.admin.uexceptions.valueInvalidSyntax()
 
 		# new expression
 		if '<=' in filter_s:
@@ -194,7 +196,7 @@ def parse(filter_s, begin=0, end=-1):
 			delim = '>='
 		else:
 			delim = '='
-		variable, value=filter_s[begin:end+1].split(delim, 1)
+		variable, value = filter_s[begin:end + 1].split(delim, 1)
 		return expression(variable, value, operator=delim)
 
 
@@ -224,6 +226,8 @@ def walk(filter, expression_walk_function=None, conjunction_walk_function=None, 
 
 
 FQDN_REGEX = re.compile(r'(?:^|\()fqdn=([^)]+)(?:\)|$)')
+
+
 def replace_fqdn_filter(filter_s):
 	'''
 	Replaces a filter expression for the read-only attribute fqdn. If no

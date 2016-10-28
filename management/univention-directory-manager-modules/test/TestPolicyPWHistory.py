@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyPWHistoryTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/pwhistory'
 		super(PolicyPWHistoryTestCase,
@@ -50,7 +51,7 @@ class PolicyPWHistoryTestCase(GenericTestCase):
 			'expiryInterval': '4',
 			'pwLength': '4',
 			'position': self.rdn('cn=policies'),
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
@@ -58,12 +59,13 @@ class PolicyPWHistoryTestCase(GenericTestCase):
 			'length': '5',
 			'expiryInterval': '5',
 			'pwLength': '5',
-			}
+		}
 		self.name = 'testpwhistorypolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyPWHistoryTestCase())
 	return suite

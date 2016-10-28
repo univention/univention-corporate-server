@@ -36,7 +36,7 @@ from BaseTest import BaseCase, TestError
 
 _FORBIDDEN_MODULES = set((
 	'users/passwd',			# searching users/passwd is forbidden
-	))
+))
 
 
 # So... process handling with subprocess is really broken: it just hangs on
@@ -64,6 +64,7 @@ _FORBIDDEN_MODULES = set((
 
 
 class ListingFailed(TestError):
+
 	def __init__(self, test, proc):
 		helper = ''
 		if test.supname is not None:
@@ -72,7 +73,9 @@ class ListingFailed(TestError):
 %s''' % (test.modname, helper, proc.name, proc.status, ''.join(proc.output))
 		TestError.__init__(self, error, test)
 
+
 class ListingForbidden(TestError):
+
 	def __init__(self, test, proc):
 		error = '''Listing of forbidden module %s succeeded: subprocess %s returned %s:
 %s''' % (test.modname, proc.name, proc.status, ''.join(proc.output))
@@ -80,6 +83,7 @@ class ListingForbidden(TestError):
 
 
 class ModuleListTestCase(BaseCase):
+
 	def __init__(self, modname, *args, **kwargs):
 		self.modname = modname
 		super(ModuleListTestCase, self).__init__(*args, **kwargs)
@@ -87,11 +91,10 @@ class ModuleListTestCase(BaseCase):
 		self.dns = set()
 
 	def __getSuperordinateDNs(self):
-		module = ModuleListTestCase(modname = self.supname,
-					    methodName = 'testList')
+		module = ModuleListTestCase(modname=self.supname, methodName='testList')
 		return module.getList()
 
-	def __runProcess(self, superordinate = None):
+	def __runProcess(self, superordinate=None):
 		cmd = self.Command('list')
 		if superordinate is not None:
 			cmd.superordinate(superordinate)
@@ -111,16 +114,14 @@ class ModuleListTestCase(BaseCase):
 			raise ListingForbidden(self, proc)
 
 	def __filterDNs(self, proc):
-		dns = [line[3:].strip()
-		       for line in proc.output
-		       if line.startswith('DN:')]
+		dns = [line[3:].strip() for line in proc.output if line.startswith('DN:')]
 		return dns
 
 	def __updateDNs(self, procs):
 		for p in procs:
 			self.dns.update(self.__filterDNs(p))
 
-	def testList(self, wantDNs = False):
+	def testList(self, wantDNs=False):
 		'''Test listing the objects of SELF.MODNAME.
 
 		If WANTDNS is True, a collection of DNs of these objects will
@@ -145,23 +146,23 @@ class ModuleListTestCase(BaseCase):
 	def getList(self):
 		'''Return the collection of DNs of objects for SELF.MODNAME.
 		'''
-		return self.testList(wantDNs = True)
+		return self.testList(wantDNs=True)
 
 	def shortDescription(self):
 		return 'listing module %s' % self.modname
 
 
 def suite():
-	import sys, unittest
+
+	import sys
+	import unittest
 	prefix = 'univention/admin/handlers/'
 	suite = unittest.TestSuite()
-	modules = [mod[len(prefix):]
-		   for mod in sys.modules
-		   if mod.startswith(prefix)]
-	modules.sort()
+	modules = sorted(
+		[mod[len(prefix):] for mod in sys.modules if mod.startswith(prefix)]
+	)
 	for mod in modules:
-		suite.addTest(ModuleListTestCase(modname = mod,
-						 methodName = 'testList'))
+		suite.addTest(ModuleListTestCase(modname=mod, methodName='testList'))
 	return suite
 
 

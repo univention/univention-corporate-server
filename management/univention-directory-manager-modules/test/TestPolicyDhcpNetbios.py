@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDhcpNetbiosTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/dhcp_netbios'
 		super(PolicyDhcpNetbiosTestCase,
@@ -50,7 +51,7 @@ class PolicyDhcpNetbiosTestCase(GenericTestCase):
 			'netbios_scope': 'watawa',
 			'netbios_node_type': '1',
 			'netbios_name_servers': {'append': servers[:2]}
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
@@ -59,12 +60,13 @@ class PolicyDhcpNetbiosTestCase(GenericTestCase):
 			'netbios_node_type': '4',
 			'netbios_name_servers': {'append': servers[2:],
 						 'remove': servers[:1]}
-			}
+		}
 		self.name = 'testdhcpnetbiospolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDhcpNetbiosTestCase())
 	return suite

@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDhcpStatementsTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/dhcp_statements'
 		super(PolicyDhcpStatementsTestCase,
@@ -52,7 +53,7 @@ class PolicyDhcpStatementsTestCase(GenericTestCase):
 			'authoritative': 'yes',
 			'boot-unknown-clients': 'true',
 			'serverIdentifier': 'lebtwostacs',
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'posixAccount',
 			'prohibitedObjectClasses': 'univentionHost',
@@ -63,12 +64,13 @@ class PolicyDhcpStatementsTestCase(GenericTestCase):
 			'authoritative': 'no',
 			'boot-unknown-clients': 'false',
 			'serverIdentifier': 'ahuuhathnusasachtue',
-			}
+		}
 		self.name = 'testdhcpstatementspolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDhcpStatementsTestCase())
 	return suite

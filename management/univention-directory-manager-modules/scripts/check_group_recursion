@@ -49,8 +49,10 @@ configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 grp2childgrps = {}
 
+
 class groupRecursionDetected(univention.admin.uexceptions.base):
-	message='circular group recursion detected'
+	message = 'circular group recursion detected'
+
 	def __init__(self, recursionlist):
 		self.recursionlist = recursionlist
 
@@ -59,23 +61,23 @@ def get_ldap_connection(baseDN):
 	if os.path.exists('/etc/ldap.secret'):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
 		secretFileName = '/etc/ldap.secret'
-		binddn = 'cn=admin,'+baseDN
+		binddn = 'cn=admin,' + baseDN
 	elif os.path.exists('/etc/machine.secret'):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % configRegistry.get('ldap/hostdn'))
 		secretFileName = '/etc/machine.secret'
 		binddn = configRegistry.get('ldap/hostdn')
 
 	try:
-		secretFile = open(secretFileName,'r')
+		secretFile = open(secretFileName, 'r')
 	except IOError:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "loading %s failed" % secretFileName)
 		sys.exit(1)
 	pwdLine = secretFile.readline()
-	pwd = re.sub('\n','',pwdLine)
+	pwd = re.sub('\n', '', pwdLine)
 
 	try:
-		lo=univention.admin.uldap.access(host=configRegistry['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=2)
-	except Exception, e:
+		lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=2)
+	except Exception as e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'authentication error: %s' % str(e))
 		sys.exit(1)
 
@@ -88,29 +90,26 @@ def get_ldap_connection(baseDN):
 	return lo, position
 
 
-
-
 def checkChilds(grp_module, dn, parents, verbose=False, exception=False):
 	global grp2childgrps, co, lo
 
-	if not dn in grp2childgrps:
+	if dn not in grp2childgrps:
 		grpobj = univention.admin.objects.get(grp_module, co, lo, position='', dn=dn, attr=None)
 		grpobj.open()
 		childs = grpobj['nestedGroup']
-		grp2childgrps[ dn ] = childs
+		grp2childgrps[dn] = childs
 	else:
-		childs = grp2childgrps[ dn ]
+		childs = grp2childgrps[dn]
 
-	new_parents = parents + [ dn.lower() ]
+	new_parents = parents + [dn.lower()]
 	for childgrp in childs:
 		if verbose:
-			print '%s+--> %s' % ('|    ' * (len(parents)+1), childgrp)
+			print '%s+--> %s' % ('|    ' * (len(parents) + 1), childgrp)
 		if childgrp.lower() in new_parents:
-			recursionlist = new_parents[ new_parents.index(childgrp.lower()): ] + [ childgrp ]
-			raise groupRecursionDetected( recursionlist )
+			recursionlist = new_parents[new_parents.index(childgrp.lower()):] + [childgrp]
+			raise groupRecursionDetected(recursionlist)
 
 		checkChilds(grp_module, childgrp, new_parents, verbose)
-
 
 
 def main():
@@ -126,7 +125,7 @@ def main():
 
 	univention.admin.modules.update()
 	lo, position = get_ldap_connection(basedn)
-	grp_module = univention.admin.modules.get( 'groups/group' )
+	grp_module = univention.admin.modules.get('groups/group')
 	univention.admin.modules.init(lo, position, grp_module)
 	co = univention.admin.config.config()
 
@@ -145,22 +144,21 @@ def main():
 
 		try:
 			checkChilds(grp_module, grpobjlist[i].dn, [], options.verbose)
-		except groupRecursionDetected, e:
+		except groupRecursionDetected as e:
 			txtring = ''
 			for dn in e.recursionlist:
 				txtring += '--> %s\n' % dn
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Recursion detected: %s\n%s' % (grpobjlist[i].dn, txtring) )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Recursion detected: %s\n%s' % (grpobjlist[i].dn, txtring))
 			print
 			print 'Recursion detected:'
 			for dn in e.recursionlist:
 				print '--> %s' % dn
 			recursionCnt += 1
 
-	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt )
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt)
 	if options.verbose:
 		print
 		print 'Tests have been finished. %d group(s) with circular recursion found.' % recursionCnt
 
 if __name__ == '__main__':
 	main()
-

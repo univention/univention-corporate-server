@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsPrinterURITestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/printeruri'
 		super(SettingsPrinterURITestCase,
@@ -45,16 +46,17 @@ class SettingsPrinterURITestCase(GenericTestCase):
 		      self).setUp()
 		self.createProperties = {
 			'printeruri': {'append': ['/dev/null', '/dev/zero']},
-			}
+		}
 		self.modifyProperties = {
 			'printeruri': {'append': ['/dev/bogus'],
 				       'remove': ['/dev/zero']},
-			}
+		}
 		self.name = 'testprinterurisetting'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsPrinterURITestCase())
 	return suite

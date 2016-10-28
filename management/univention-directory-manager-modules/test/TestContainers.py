@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase, TestError
 
 
 class PathRegisteredError(TestError):
+
 	def __init__(self, test, dn, type):
 		e1 = 'Object %s at DN %s (module %s)' \
 		     % (test.name, dn, test.modname)
@@ -42,7 +43,9 @@ class PathRegisteredError(TestError):
 		error = e1 + e2
 		TestError.__init__(self, error, test)
 
+
 class PathNotRegisteredError(TestError):
+
 	def __init__(self, test, dn, type):
 		e1 = 'Object %s at DN %s (module %s)' \
 		     % (test.name, dn, test.modname)
@@ -53,6 +56,7 @@ class PathNotRegisteredError(TestError):
 
 # TODO: Find a way to use umlauts in container names so we can test them.
 class ContainerBaseCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'container/%s' % self.type
 		super(ContainerBaseCase, self).__init__(*args, **kwargs)
@@ -62,7 +66,7 @@ class ContainerBaseCase(GenericTestCase):
 	def __checkDefaultContainers(self, dn, type):
 		container = self.rdn('cn=default containers,cn=univention')
 		attribute = 'univention%sObject' % type.capitalize()
-		attr = self.ldap.get(dn = container, attr = [attribute])
+		attr = self.ldap.get(dn=container, attr=[attribute])
 		return dn in attr.get(attribute, [])
 
 	# Ensure container object is not registered as a default container.
@@ -95,7 +99,7 @@ class ContainerBaseCase(GenericTestCase):
 			'licensePath': '0',
 			'policyPath': '0',
 			'description': 'some test %s container' % self.type,
-			}
+		}
 		self.modifyProperties = {
 			'dnsPath': '1',
 			'dhcpPath': '1',
@@ -104,24 +108,28 @@ class ContainerBaseCase(GenericTestCase):
 			'computerPath': '1',
 			'licensePath': '1',
 			'policyPath': '1',
-			'description': 'Some Tested %s Container' \
+			'description': 'Some Tested %s Container'
 			% self.type.upper(),
-			}
+		}
 
 
 class ContainerCNTestCase(ContainerBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		self.type = 'cn'
 		super(ContainerCNTestCase, self).__init__(*args, **kwargs)
 
+
 class ContainerOUTestCase(ContainerBaseCase):
+
 	def __init__(self, *args, **kwargs):
-		self.type = 'ou' 
+		self.type = 'ou'
 		super(ContainerOUTestCase, self).__init__(*args, **kwargs)
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(ContainerCNTestCase())
 	suite.addTest(ContainerOUTestCase())

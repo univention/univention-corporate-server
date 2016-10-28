@@ -34,10 +34,11 @@
 from GenericTest import GenericTestCase, TestError
 
 import univention.admin.uexceptions as uex
-import univention.admin.uldap       as uldap
+import univention.admin.uldap as uldap
 
 
 class GroupMembershipError(TestError):
+
 	def __init__(self, test, group):
 		e1 = 'User %s at DN %s (module %s)' \
 		     % (test.name, test.dn, test.modname)
@@ -45,7 +46,9 @@ class GroupMembershipError(TestError):
 		error = e1 + e2
 		TestError.__init__(self, error, test)
 
+
 class AccountEnabledError(TestError):
+
 	def __init__(self, test, type):
 		e1 = 'User %s at DN %s (module %s)' \
 		     % (test.name, test.dn, test.modname)
@@ -55,6 +58,7 @@ class AccountEnabledError(TestError):
 
 
 class UserBaseCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'users/user'
 		super(UserBaseCase, self).__init__(*args, **kwargs)
@@ -72,13 +76,13 @@ class UserBaseCase(GenericTestCase):
 			'lastname': 'Bar',
 			'password': self.random(8),
 			'description': 'some test user',
-			}
+		}
 		propsAddKerberos = {}
 		propsAddMail = {
 			'mailPrimaryAddress': 'foobar@example.com',
 			'mailGlobalSpamFolder': '1',
 			'mailAlternativeAddress': 'barfooz@example.com',
-			}
+		}
 		propsAddPerson = {
 			'title': 'Dr.',
 			'firstname': 'Foo',
@@ -90,37 +94,37 @@ class UserBaseCase(GenericTestCase):
 			'employeeNumber': '13',
 			'employeeType': 'paperboy',
 			'e-mail': {'append': ['foobar@example.com',
-					      'foobar@%s' \
+					      'foobar@%s'
 					      % self.bc('domainname')]},
 			'phone': {'append': ['(+44)421-3424324322',
 					     '2421/3424324322']},
 			'mobileTelephoneNumber': {'append': ['007',
 							     '207']},
-			'pagerTelephoneNumber':  {'append': ['008',
+			'pagerTelephoneNumber': {'append': ['008',
 							     '208']},
-			'homeTelephoneNumber':   {'append': ['009',
+			'homeTelephoneNumber': {'append': ['009',
 							     '209']},
-			'homePostalAddress':     {'append': ['somewhere',
+			'homePostalAddress': {'append': ['somewhere',
 							     'somewhere2']},
 			'secretary': self.rdn('uid=Administrator,cn=users'),
-			}
+		}
 		propsAddPosix = {
 			'unixhome': '/home/foobar',
 			'shell': '/bin/ksh',
 			'primaryGroup': self.__groups[0],
 			'groups': {'set': self.__groups[1:-1]},
-			}
+		}
 		propsAddSamba = {
 			'sambahome': '//Master/home',
 			'scriptpath': 'Master/script',
 			'homedrive': 'Master/foo',
 			'profilepath': '//Master/foobar',
 			'sambaLogonHours': '011111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111',
-			}
+		}
 		propsAddPSK = {
 			'userexpiry': '22.02.15',
 			'disabled': '1',
-			}
+		}
 		if self.kerberos:
 			propsAdd.update(propsAddKerberos)
 		if self.mail:
@@ -140,14 +144,14 @@ class UserBaseCase(GenericTestCase):
 			'lastname': 'Baz',
 			'password': self.random(8),
 			'description': 'Some Tested User',
-			}
+		}
 		propsModKerberos = {}
 		propsModMail = {
 			'mailPrimaryAddress': 'foo_bar@example.com',
 			'mailGlobalSpamFolder': '0',
 			'mailAlternativeAddress': {'set':
 						   ['bar_fooz@example.com']},
-			}
+		}
 		propsModPerson = {
 			'title': 'Mooh',
 			'firstname': 'Mooh',
@@ -158,38 +162,38 @@ class UserBaseCase(GenericTestCase):
 			'roomNumber': '543',
 			'employeeNumber': '14',
 			'employeeType': 'milkman',
-			'e-mail': {'append': ['mooh@%s' \
+			'e-mail': {'append': ['mooh@%s'
 					      % self.bc('domainname')],
-				   'remove': ['foobar@%s' \
+				   'remove': ['foobar@%s'
 					      % self.bc('domainname')]},
-			'phone': {'append': ['05555555555',],
-				  'remove': ['(+44)421-3424324322',]},
+			'phone': {'append': ['05555555555', ],
+				  'remove': ['(+44)421-3424324322', ]},
 			'mobileTelephoneNumber': {'append': ['008'],
 						  'remove': ['007']},
-			'pagerTelephoneNumber':  {'append': ['009'],
+			'pagerTelephoneNumber': {'append': ['009'],
 						  'remove': ['008']},
-			'homeTelephoneNumber':   {'append': ['010'],
+			'homeTelephoneNumber': {'append': ['010'],
 						  'remove': ['009']},
-			'homePostalAddress':     {'append': ['somewhere3'],
+			'homePostalAddress': {'append': ['somewhere3'],
 						  'remove': ['somewhere']},
 			'secretary': self.rdn('uid=foobar,cn=users'),
-			}
+		}
 		propsModPosix = {
 			'unixhome': '/home/foobari',
 			'shell': '/bin/kshi',
 			'primaryGroup': self.__groups[0],
 			'groups': {'set': self.__groups[3:]},
-			}
+		}
 		propsModSamba = {
 			'sambahome': '//Master/homies',
 			'scriptpath': 'Master/scripties',
 			'homedrive': 'Master/fooies',
 			'profilepath': '//Master/foobaries',
 			'sambaLogonHours': '111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111',
-			}
+		}
 		propsModPSK = {
 			'userexpiry': '23.03.15',
-			}
+		}
 		self.modifyProperties = propsMod
 		if self.kerberos:
 			propsMod.update(propsModKerberos)
@@ -219,12 +223,12 @@ class UserBaseCase(GenericTestCase):
 			if getattr(self, o):
 				self.createOptions.add(o)
 		self.dn = 'uid=%s,%s' \
-			  % (self.name, self.createProperties['position'])
+			% (self.name, self.createProperties['position'])
 
 	def __testGroupMember(self, group):
 		if not self.posix:
 			return
-		attrs = self.ldap.get(dn = group, attr = ['uniqueMember'])
+		attrs = self.ldap.get(dn=group, attr=['uniqueMember'])
 		if not ('uniqueMember' in attrs and
 			self.dn in attrs['uniqueMember']):
 			raise GroupMembershipError(self, group)
@@ -234,8 +238,8 @@ class UserBaseCase(GenericTestCase):
 			return
 		try:
 			master = self.bc('ldap/master')
-			ldap = uldap.access(binddn = self.dn, bindpw = passwd,
-					    host = master, base = self.dn)
+			ldap = uldap.access(binddn=self.dn, bindpw=passwd,
+					    host=master, base=self.dn)
 			raise AccountEnabledError(self, 'posix')
 		except uex.authFail:
 			pass
@@ -243,10 +247,10 @@ class UserBaseCase(GenericTestCase):
 	def __testSambaDisabled(self):
 		if not self.samba:
 			return
-		attrs = self.ldap.get(dn = self.dn, attr = ['sambaAcctFlags'])
+		attrs = self.ldap.get(dn=self.dn, attr=['sambaAcctFlags'])
 		if not attrs['sambaAcctFlags']:
 			return
-		if not 'D' in attrs['sambaAcctFlags'][0]:
+		if 'D' not in attrs['sambaAcctFlags'][0]:
 			raise AccountEnabledError(self, 'samba')
 
 	def __testUsernameLock(self):
@@ -255,13 +259,13 @@ class UserBaseCase(GenericTestCase):
 			'lastname': 'Bar',
 			'password': 'barfoobaz',
 			'description': 'testuser',
-			}
+		}
 		proc = self.create(props)
 		self.assertRaises(TestError, proc.check)
 
 	def __testUidnumberLock(self, dn):
-		attrs = self.ldap.get(dn = self.dn, attr = ['uidNumber'])
-		if not 'uidNumber' in attrs:
+		attrs = self.ldap.get(dn=self.dn, attr=['uidNumber'])
+		if 'uidNumber' not in attrs:
 			return
 		props = {
 			'uidNumber': attrs['uidNumber'][0],
@@ -269,7 +273,7 @@ class UserBaseCase(GenericTestCase):
 			'lastname': 'Bar',
 			'password': 'barfoobaz',
 			'description': 'testuser',
-			}
+		}
 		proc = self.create(props)
 		self.assertRaises(TestError, proc.check)
 
@@ -303,6 +307,7 @@ class UserBaseCase(GenericTestCase):
 
 
 class UserFullTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserFullTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = True
@@ -311,7 +316,9 @@ class UserFullTestCase(UserBaseCase):
 		self.posix = True
 		self.samba = True
 
+
 class UserNoKrbTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserNoKrbTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = False
@@ -320,7 +327,9 @@ class UserNoKrbTestCase(UserBaseCase):
 		self.posix = True
 		self.samba = True
 
+
 class UserNoMailTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserNoMailTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = True
@@ -329,7 +338,9 @@ class UserNoMailTestCase(UserBaseCase):
 		self.posix = True
 		self.samba = True
 
+
 class UserNoPrsnTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserNoPrsnTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = True
@@ -338,7 +349,9 @@ class UserNoPrsnTestCase(UserBaseCase):
 		self.posix = True
 		self.samba = True
 
+
 class UserNoPsxTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserNoPsxTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = True
@@ -347,7 +360,9 @@ class UserNoPsxTestCase(UserBaseCase):
 		self.posix = False
 		self.samba = True
 
+
 class UserNoSmbTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserNoSmbTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = True
@@ -356,7 +371,9 @@ class UserNoSmbTestCase(UserBaseCase):
 		self.posix = True
 		self.samba = False
 
+
 class UserKrbTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserKrbTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = True
@@ -365,7 +382,9 @@ class UserKrbTestCase(UserBaseCase):
 		self.posix = False
 		self.samba = False
 
+
 class UserMailTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserMailTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = False
@@ -374,7 +393,9 @@ class UserMailTestCase(UserBaseCase):
 		self.posix = False
 		self.samba = False
 
+
 class UserPrsnTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserPrsnTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = False
@@ -383,7 +404,9 @@ class UserPrsnTestCase(UserBaseCase):
 		self.posix = False
 		self.samba = False
 
+
 class UserPsxTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserPsxTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = False
@@ -392,7 +415,9 @@ class UserPsxTestCase(UserBaseCase):
 		self.posix = True
 		self.samba = False
 
+
 class UserSmbTestCase(UserBaseCase):
+
 	def __init__(self, *args, **kwargs):
 		super(UserSmbTestCase, self).__init__(*args, **kwargs)
 		self.kerberos = False
@@ -400,6 +425,7 @@ class UserSmbTestCase(UserBaseCase):
 		self.person = False
 		self.posix = False
 		self.samba = True
+
 
 class UserMinimalTestCase(UserBaseCase):
 	# All options are implicitly False anyway
@@ -413,6 +439,7 @@ def suite():
 	suite.addTest(UserMinimalTestCase())
 	return suite
 
+
 def extended():
 	import unittest
 	suite = unittest.TestSuite()
@@ -425,12 +452,12 @@ def extended():
 	# NOTE: these are supposed to fail
 	# User objects require one of the
 	# person, posix or samba options
-	#suite.addTest(UserKrbTestCase())
-	#suite.addTest(UserMailTestCase())
+	# suite.addTest(UserKrbTestCase())
+	# suite.addTest(UserMailTestCase())
 	# NOTE: This fails due to Bug #7331
-	#suite.addTest(UserPrsnTestCase())
+	# suite.addTest(UserPrsnTestCase())
 	# NOTE: This fails due to Bug #7751
-	#suite.addTest(UserPsxTestCase())
+	# suite.addTest(UserPsxTestCase())
 	suite.addTest(UserSmbTestCase())
 	suite.addTest(UserMinimalTestCase())
 	return suite

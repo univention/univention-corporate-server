@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyDesktopTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/desktop'
 		super(PolicyDesktopTestCase,
@@ -48,19 +49,20 @@ class PolicyDesktopTestCase(GenericTestCase):
 			'fixedAttributes': 'univentionDesktopProfile',
 			'language': 'de_DE@euro',
 			'profile': 'gaga',
-			}
+		}
 		self.modifyProperties = {
 			'requiredObjectClasses': 'univentionHost',
 			'prohibitedObjectClasses': 'posixAccount',
 			'fixedAttributes': 'univentionDesktopLanguage',
 			'language': 'en_US',
 			'profile': 'bubu',
-			}
+		}
 		self.name = 'testdesktoppolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyDesktopTestCase())
 	return suite

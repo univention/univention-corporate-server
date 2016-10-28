@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class PolicyMaintenanceTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'policies/maintenance'
 		super(PolicyMaintenanceTestCase,
@@ -57,7 +58,7 @@ class PolicyMaintenanceTestCase(GenericTestCase):
 			'day': {'append': days[:2]},
 			'hour': {'append': hours[:2]},
 			'minute': {'append': minutes[:2]},
-			}
+		}
 		self.modifyProperties = {
 			'startup': '0',
 			'shutdown': '0',
@@ -73,12 +74,13 @@ class PolicyMaintenanceTestCase(GenericTestCase):
 				 'remove': hours[:1]},
 			'minute': {'append': minutes[2:],
 				   'remove': minutes[:1]},
-			}
+		}
 		self.name = 'testmaintenancepolicy'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(PolicyMaintenanceTestCase())
 	return suite

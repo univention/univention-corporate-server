@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class MailDomainTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'mail/domain'
 		super(MailDomainTestCase, self).__init__(*args, **kwargs)
@@ -46,7 +47,8 @@ class MailDomainTestCase(GenericTestCase):
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(MailDomainTestCase())
 	return suite

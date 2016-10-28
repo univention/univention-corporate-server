@@ -35,6 +35,7 @@ from GenericTest import GenericTestCase
 
 
 class SettingsPrinterModelTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'settings/printermodel'
 		super(SettingsPrinterModelTestCase,
@@ -48,15 +49,16 @@ class SettingsPrinterModelTestCase(GenericTestCase):
 		foo3 = '"fooprinter3.ppd" "fooprinter 3 cups v2"'
 		self.createProperties = {
 			'printmodel': {'append': [foo1, foo2]},
-			}
+		}
 		self.modifyProperties = {
 			'printmodel': {'append': [foo3], 'remove': [foo1]},
-			}
+		}
 		self.name = 'testprintermodels'
 
 
 def suite():
-	import sys, unittest
+
+	import unittest
 	suite = unittest.TestSuite()
 	suite.addTest(SettingsPrinterModelTestCase())
 	return suite

@@ -36,6 +36,7 @@ from TestDnsReverseZone import DnsReverseZoneTestCase
 
 
 class DnsPtrRecordTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dns/ptr_record'
 		super(DnsPtrRecordTestCase, self).__init__(*args, **kwargs)
@@ -54,7 +55,7 @@ class DnsPtrRecordTestCase(GenericTestCase):
 		self.__zone = zone
 
 	def __removeZone(self):
-		proc = self.__zone.remove(dn = self.__zone.dn)
+		proc = self.__zone.remove(dn=self.__zone.dn)
 		self.__checkProcess(proc, self.__zone, 'remove')
 		self.__zone.tearDown()
 
@@ -64,10 +65,10 @@ class DnsPtrRecordTestCase(GenericTestCase):
 		self.superordinate(self.__zone)
 		self.createProperties = {
 			'ptr_record': 'support.example.com.',
-			}
+		}
 		self.modifyProperties = {
 			'ptr_record': 'support',
-			}
+		}
 		self.name = '5'
 
 	def tearDown(self):

@@ -36,6 +36,7 @@ from TestDnsForwardZone import DnsForwardZoneTestCase
 
 
 class DnsAliasTestCase(GenericTestCase):
+
 	def __init__(self, *args, **kwargs):
 		self.modname = 'dns/alias'
 		super(DnsAliasTestCase, self).__init__(*args, **kwargs)
@@ -54,7 +55,7 @@ class DnsAliasTestCase(GenericTestCase):
 		self.__zone = zone
 
 	def __removeZone(self):
-		proc = self.__zone.remove(dn = self.__zone.dn)
+		proc = self.__zone.remove(dn=self.__zone.dn)
 		self.__checkProcess(proc, self.__zone, 'remove')
 		self.__zone.tearDown()
 
@@ -65,11 +66,11 @@ class DnsAliasTestCase(GenericTestCase):
 		self.createProperties = {
 			'cname': 'betumen',
 			'zonettl': '5',
-			}
+		}
 		self.modifyProperties = {
 			'cname': 'mojave',
 			'zonettl': '77',
-			}
+		}
 		self.name = 'testdnsalias'
 
 	def tearDown(self):
@@ -81,7 +82,7 @@ def suite():
 	import unittest
 	suite = unittest.TestSuite()
 	# NOTE: disabled due to Bug #7813
-	#suite.addTest(DnsAliasTestCase())
+	# suite.addTest(DnsAliasTestCase())
 	return suite
 
 

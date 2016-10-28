@@ -40,7 +40,7 @@ lines_processed = 0
 print "\t\t('', ''),"
 for i in lines:
 	elem = i.split()
-	lines_processed = lines_processed +1
+	lines_processed = lines_processed + 1
 	country = ""
 	for j in elem[1:]:
 		country = country + j + " "
@@ -50,4 +50,3 @@ for i in lines:
 		syntax = syntax + ","
 
 	print syntax
-		
