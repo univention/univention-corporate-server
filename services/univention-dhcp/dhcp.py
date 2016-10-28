@@ -49,13 +49,15 @@ filter = '''(|
 	)'''.replace('\n', '').replace('\t', '')
 attributes = []
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 from univention.config_registry import ConfigRegistry
 import univention.debug as ud
 
+
 def handler(dn, new, old):
 	pass
+
 
 def postrun():
 	ucr = ConfigRegistry()
@@ -66,7 +68,7 @@ def postrun():
 			ud.debug(ud.LISTENER, ud.INFO, 'DHCP: Restarting server')
 			try:
 				listener.run('/etc/init.d/univention-dhcp', ['univention-dhcp', 'restart'], uid=0)
-			except Exception, e:
+			except Exception as e:
 				ud.debug(ud.ADMIN, ud.WARN, 'The restart of the DHCP server failed: %s' % str(e))
 		else:
 			ud.debug(ud.ADMIN, ud.INFO, 'DHCP: the automatic restart of the dhcp server by the listener is disabled. Set dhcpd/restart/listener to true to enable this option.')

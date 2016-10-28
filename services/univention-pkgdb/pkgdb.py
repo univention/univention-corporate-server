@@ -30,22 +30,22 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import os
 import listener
 import subprocess
 import univention.debug
 
-name='pkgdb'
-description='Package-Database'
-filter='(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMemberServer)(objectClass=univentionMobileClient))'
-attributes=['uid']
+name = 'pkgdb'
+description = 'Package-Database'
+filter = '(|(objectClass=univentionDomainController)(objectClass=univentionClient)(objectClass=univentionMemberServer)(objectClass=univentionMobileClient))'
+attributes = ['uid']
 
-hostname=listener.baseConfig['hostname']
-domainname=listener.baseConfig['domainname']
+hostname = listener.baseConfig['hostname']
+domainname = listener.baseConfig['domainname']
 
-ADD_DIR='/var/lib/univention-pkgdb/add'
-DELETE_DIR='/var/lib/univention-pkgdb/delete'
+ADD_DIR = '/var/lib/univention-pkgdb/add'
+DELETE_DIR = '/var/lib/univention-pkgdb/delete'
 
 
 def exec_pkgdb(args):
@@ -62,7 +62,8 @@ def exec_pkgdb(args):
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "pkgdb: return code %d" % retcode)
 	return retcode
 
-def add_system( sysname ):
+
+def add_system(sysname):
 	retcode = exec_pkgdb(['--add-system', sysname])
 	if retcode != 0:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "error while adding system=%s to pkgdb" % sysname)
@@ -70,7 +71,8 @@ def add_system( sysname ):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "successful added system=%s" % sysname)
 	return retcode
 
-def del_system( sysname ):
+
+def del_system(sysname):
 	retcode = exec_pkgdb(['--del-system', sysname])
 	if retcode != 0:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, "error while deleting system=%s to pkgdb" % sysname)
@@ -78,35 +80,38 @@ def del_system( sysname ):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "successful added system=%s" % sysname)
 	return retcode
 
+
 def initialize():
 	# TODO: call add_system for every system in the directory already
 	pass
 
-def handler(dn, new, old):
-	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "pkgdb handler dn=%s" %(dn))
 
+def handler(dn, new, old):
+	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "pkgdb handler dn=%s" % (dn))
 
 	try:
 		if old and not new:
 			if 'uid' in old:
-				if del_system( old['uid'][0] ) != 0:
+				if del_system(old['uid'][0]) != 0:
 					listener.setuid(0)
-					file = open( os.path.join(DELETE_DIR, old['uid'][0]), 'w' )
-					file.write( old['uid'][0]  + '\n' )
+					file = open(os.path.join(DELETE_DIR, old['uid'][0]), 'w')
+					file.write(old['uid'][0] + '\n')
 					file.close()
 
 		elif new and not old:
 			if 'uid' in new:
-				if (add_system( new['uid'][0] )) != 0:
+				if (add_system(new['uid'][0])) != 0:
 					listener.setuid(0)
-					file = open( os.path.join(ADD_DIR, new['uid'][0]), 'w' )
-					file.write( new['uid'][0]  + '\n' )
+					file = open(os.path.join(ADD_DIR, new['uid'][0]), 'w')
+					file.write(new['uid'][0] + '\n')
 					file.close()
 	finally:
 		listener.unsetuid()
 
+
 def postrun():
 	pass
+
 
 def clean():
 	pass

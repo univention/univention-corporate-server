@@ -30,47 +30,46 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__=''  # workaround for PEP 366
+__package__ = ''  # workaround for PEP 366
 import listener
 import univention.config_registry as ucr
 import univention.pkgdb
 import univention.debug
 import univention.uldap
 
-name='pkgdb-watch'
-description='watches the availability of the software monitor service'
-filter='(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
-attributes=['univentionService']
+name = 'pkgdb-watch'
+description = 'watches the availability of the software monitor service'
+filter = '(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))'
+attributes = ['univentionService']
 ldap_info = {}
 
-def handler( dn, new, old ):
-	if new and 'Software Monitor' in new.get( 'univentionService', () ):
-		listener.setuid( 0 )
-		ucr.handler_set( ( 'pkgdb/scan=yes', ) )
+
+def handler(dn, new, old):
+	if new and 'Software Monitor' in new.get('univentionService', ()):
+		listener.setuid(0)
+		ucr.handler_set(('pkgdb/scan=yes', ))
 		listener.unsetuid()
-	elif old and 'Software Monitor' in old.get( 'univentionService', () ):
+	elif old and 'Software Monitor' in old.get('univentionService', ()):
 		if not ldap_info['lo']:
 			ldap_reconnect()
 		if ldap_info['lo'] and not ldap_info['lo'].search(filter='(&%s(univentionService=Software Monitor))' % filter, attr=['univentionService']):
-			listener.setuid( 0 )
-			ucr.handler_set( ( 'pkgdb/scan=no', ) )
+			listener.setuid(0)
+			ucr.handler_set(('pkgdb/scan=no', ))
 			listener.unsetuid()
+
 
 def ldap_reconnect():
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'pkgdb-watch: ldap reconnect triggered')
 	if 'ldapserver' in ldap_info and 'basedn' in ldap_info and 'binddn' in ldap_info and 'bindpw' in ldap_info:
 		try:
-			ldap_info['lo'] = univention.uldap.access(host = ldap_info['ldapserver'],
-								  base = ldap_info['basedn'],
-								  binddn = ldap_info['binddn'],
-								  bindpw = ldap_info['bindpw'],
-								  start_tls = 2)
-		except ValueError, ex:
+			ldap_info['lo'] = univention.uldap.access(host=ldap_info['ldapserver'], base=ldap_info['basedn'], binddn=ldap_info['binddn'], bindpw=ldap_info['bindpw'], start_tls=2)
+		except ValueError as ex:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'pkgdb-watch: ldap reconnect failed: %s' % str(ex))
 			ldap_info['lo'] = None
 		else:
 			if ldap_info['lo'] is None:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'pkgdb-watch: ldap reconnect failed')
+
 
 def setdata(key, value):
 	if key == 'bindpw':
@@ -78,8 +77,8 @@ def setdata(key, value):
 	else:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'pkgdb-watch: listener passed key="%s" value="%s"' % (key, value))
 
-	if key in [ 'ldapserver', 'basedn', 'binddn', 'bindpw' ]:
-		ldap_info[ key ] = value
+	if key in ['ldapserver', 'basedn', 'binddn', 'bindpw']:
+		ldap_info[key] = value
 	else:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'pkgdb-watch: listener passed unknown data (key="%s" value="%s")' % (key, value))
 
